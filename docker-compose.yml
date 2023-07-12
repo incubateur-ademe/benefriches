@@ -1,0 +1,14 @@
+version: "3"
+services:
+  web:
+    build:
+      context: app
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
+    volumes:
+      - ./app:/app
+    ports:
+      - 5173:5173
+    stdin_open: true
+    tty: true
