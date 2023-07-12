@@ -2,12 +2,12 @@ version: "3"
 services:
   web:
     build:
-      context: app
+      context: web
     environment:
       - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
     volumes:
-      - ./app:/app
+      - ./web:/app
     ports:
       - 3000:3000
     stdin_open: true
