@@ -1,0 +1,20 @@
+name: Connect with scalingo
+on:
+  push:
+    branches:
+      - "chore/init-scalingo"
+jobs:
+    deploy:
+      name: "Connect to staging"
+      runs-on: ubuntu-latest
+      environment: staging
+      steps:
+        - name: Install scalingo CLI
+          run: |
+            wget -qO- https://cli-dl.scalingo.com/install.sh | bash
+            echo "$HOME/bin" >> $GITHUB_PATH
+        - name: Login to scalingo
+          run: scalingo login --api-token ${{ secrets.SCALINGO_API_TOKEN }}
+        - name: Check info
+          run: scalingo apps-info --app benefriches-staging
+      
