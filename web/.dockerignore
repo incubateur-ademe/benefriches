@@ -1,5 +1,7 @@
 node_modules
-.DS_Store
 dist
+.git
+*.md
+.DS_Store
 *.local
 .idea
