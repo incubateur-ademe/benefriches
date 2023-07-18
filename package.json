@@ -1,0 +1,16 @@
+{
+  "name": "benefriches-root",
+  "license": "MIT",
+  "engines": {
+    "node": "18"
+  },
+  "workspaces": [
+    "web"
+  ],
+  "version": "1.0.0",
+  "packageManager": "pnpm@8.6.7",
+  "scripts": {
+    "lint": "pnpm run -r lint",
+    "format": "pnpm run -r format"
+  }
+}
