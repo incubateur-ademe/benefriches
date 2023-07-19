@@ -17,6 +17,9 @@ importers:
 
   web:
     dependencies:
+      '@codegouvfr/react-dsfr':
+        specifier: ^0.72.1
+        version: 0.72.1
       local-web-server:
         specifier: ^5.3.0
         version: 5.3.0
@@ -304,6 +307,13 @@ packages:
       '@babel/helper-validator-identifier': 7.22.5
       to-fast-properties: 2.0.0
     dev: true
+
+  /@codegouvfr/react-dsfr@0.72.1:
+    resolution: {integrity: sha512-rZYYGAXpVtjXAykHBM7FsPlnuFxLbruqSI2rTh9tCnNLy5AHpRidX0RSOP1YZDkM2qXnUM09m+X7XQbh41Ob1A==}
+    hasBin: true
+    dependencies:
+      tsafe: 1.6.4
+    dev: false
 
   /@esbuild/android-arm64@0.18.14:
     resolution: {integrity: sha512-rZ2v+Luba5/3D6l8kofWgTnqE+qsC/L5MleKIKFyllHTKHrNBMqeRCnZI1BtRx8B24xMYxeU32iIddRQqMsOsg==}
@@ -3022,6 +3032,10 @@ packages:
   /toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
+    dev: false
+
+  /tsafe@1.6.4:
+    resolution: {integrity: sha512-l4Z54QFGHO8GF0gBpb3yPGHjkIkIirl8rwW+lMBmtEMzOJeRs8BdjkDEx6nU8Ak9PQVp/KNDtECxTja8MMIDoA==}
     dev: false
 
   /tslib@1.14.1:
