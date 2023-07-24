@@ -1,0 +1,4 @@
+{
+  "*.(ts|js|jsx|tsx)": "pnpm lint",
+  "*.(js|jsx|ts|tsx|css|md|json)": "pnpm prettier"
+}

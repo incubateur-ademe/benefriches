@@ -10,7 +10,12 @@
   "version": "1.0.0",
   "packageManager": "pnpm@8.6.7",
   "scripts": {
+    "prepare": "husky install",
     "lint": "pnpm run -r lint",
     "format": "pnpm run -r format"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0",
+    "lint-staged": "^13.2.3"
   }
 }
