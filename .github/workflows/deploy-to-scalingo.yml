@@ -4,8 +4,10 @@ on:
     branches:
       - "chore/init-scalingo"
 jobs:
-    build-web-artefact:
+    deploy:
+      name: "Build dist and deploy to staging"
       runs-on: ubuntu-latest
+      environment: staging
       steps:
         - uses: actions/checkout@v3
         - uses: pnpm/action-setup@v2
@@ -21,17 +23,12 @@ jobs:
         - name: Build web
           run: pnpm build
         - name: Create Archive
-          run: mkdir -p web/scalingo && cp -r web/dist web/scalingo/dist && cp web/.buildpacks web/scalingo/.buildpacks && cp web/nginx.conf web/scalingo/nginx.conf && cp web/Procfile web/scalingo/Procfile && tar -czf web/web-scalingo.tar.gz web/scalingo
+          run: mkdir -p scalingo/web && cp -r web/dist scalingo/web/dist && cp web/.buildpacks scalingo/web/.buildpacks && cp web/nginx.conf scalingo/web/nginx.conf && cp web/Procfile scalingo/web/Procfile && tar -czf web-scalingo.tar.gz scalingo
         - name: Archive dist
           uses: actions/upload-artifact@v3
           with:
             name: web-scalingo
-            path: web/web-scalingo.tar.gz
-    deploy:
-      name: "Connect to staging"
-      runs-on: ubuntu-latest
-      environment: staging
-      steps:
+            path: web-scalingo.tar.gz
         - name: Install scalingo CLI
           run: |
             wget -qO- https://cli-dl.scalingo.com/install.sh | bash
@@ -40,3 +37,9 @@ jobs:
           run: scalingo login --api-token ${{ secrets.SCALINGO_API_TOKEN }}
         - name: Check info
           run: scalingo apps-info --app benefriches-staging
+        - name: Download web artefact
+          uses: actions/download-artifact@v3
+          with:
+            name: web-scalingo
+        - name: Deploy front
+          run: scalingo --app benefriches-staging deploy web-scalingo.tar.gz
