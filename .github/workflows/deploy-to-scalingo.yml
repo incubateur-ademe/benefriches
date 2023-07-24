@@ -20,11 +20,13 @@ jobs:
           run: pnpm install
         - name: Build web
           run: pnpm build
+        - name: Create Archive
+          run: mkdir -p web/scalingo && cp -r web/dist web/scalingo/dist && cp web/.buildpacks web/scalingo/.buildpacks && cp web/nginx.conf web/scalingo/nginx.conf && cp web/Procfile web/scalingo/Procfile && tar -czf web/web-scalingo.tar.gz web/scalingo
         - name: Archive dist
           uses: actions/upload-artifact@v3
           with:
-            name: web-dist
-            path: web/web-dist.tar.gz
+            name: web-scalingo
+            path: web/web-scalingo.tar.gz
     deploy:
       name: "Connect to staging"
       runs-on: ubuntu-latest
