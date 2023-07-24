@@ -12,7 +12,9 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "pnpm run -r lint",
-    "format": "pnpm run -r format"
+    "format": "pnpm run -r format",
+    "format:check": "pnpm run -r format:check",
+    "build": "pnpm run -r build"
   },
   "devDependencies": {
     "husky": "^8.0.0",
