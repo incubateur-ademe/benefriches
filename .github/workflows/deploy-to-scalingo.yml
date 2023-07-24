@@ -23,7 +23,7 @@ jobs:
         - name: Build web
           run: pnpm build
         - name: Create Archive
-          run: mkdir -p scalingo/web && cp -r web/dist scalingo/web/dist && cp web/.buildpacks scalingo/web/.buildpacks && cp web/nginx.conf scalingo/web/nginx.conf && cp web/Procfile scalingo/web/Procfile && tar -czf web-scalingo.tar.gz scalingo
+          run: mkdir -p scalingo/web && cp -r web/dist "$_" && cp -r web/scalingo/* "$_" && cp web/scalingo/.buildpacks "$_" && tar -czf web-scalingo.tar.gz scalingo
         - name: Archive dist
           uses: actions/upload-artifact@v3
           with:
