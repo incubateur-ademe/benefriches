@@ -2,7 +2,7 @@ name: Deploy web on scalingo
 on:
   push:
     branches:
-      - "chore/init-scalingo"
+      - "main"
 jobs:
     deploy:
       name: "Build front and deploy to scalingo on ${{ vars.SCALINGO_APP_NAME }}"
