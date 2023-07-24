@@ -11,8 +11,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\"",
-    "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\"",
+    "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",
+    "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",
     "lint": "eslint src --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "serve": "ws --hostname 0.0.0.0 --port 3000 -d dist --spa index.html",

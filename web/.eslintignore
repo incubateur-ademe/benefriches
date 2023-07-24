@@ -1,0 +1,6 @@
+dist/
+node_modules/
+.eslintrc.cjs
+.idea/
+.git/
+vite.config.ts
