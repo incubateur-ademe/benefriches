@@ -4,6 +4,27 @@ on:
     branches:
       - "chore/init-scalingo"
 jobs:
+    build-web-artefact:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v3
+        - uses: pnpm/action-setup@v2
+          with:
+            version: 8
+        - name: Use Node.js
+          uses: actions/setup-node@v3
+          with:
+            node-version: "18"
+            cache: "pnpm"
+        - name: Install dependencies
+          run: pnpm install
+        - name: Build web
+          run: pnpm build
+        - name: Archive dist
+          uses: actions/upload-artifact@v3
+          with:
+            name: web-dist
+            path: web/web-dist.tar.gz
     deploy:
       name: "Connect to staging"
       runs-on: ubuntu-latest
@@ -17,4 +38,3 @@ jobs:
           run: scalingo login --api-token ${{ secrets.SCALINGO_API_TOKEN }}
         - name: Check info
           run: scalingo apps-info --app benefriches-staging
-      
