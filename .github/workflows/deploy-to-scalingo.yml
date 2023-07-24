@@ -1,11 +1,11 @@
-name: Connect with scalingo
+name: Deploy web on scalingo
 on:
   push:
     branches:
       - "chore/init-scalingo"
 jobs:
     deploy:
-      name: "Build dist and deploy to staging"
+      name: "Build front and deploy to scalingo on staging"
       runs-on: ubuntu-latest
       environment: staging
       steps:
@@ -35,8 +35,6 @@ jobs:
             echo "$HOME/bin" >> $GITHUB_PATH
         - name: Login to scalingo
           run: scalingo login --api-token ${{ secrets.SCALINGO_API_TOKEN }}
-        - name: Check info
-          run: scalingo apps-info --app benefriches-staging
         - name: Download web artefact
           uses: actions/download-artifact@v3
           with:
