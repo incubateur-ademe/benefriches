@@ -5,7 +5,7 @@ on:
       - "chore/init-scalingo"
 jobs:
     deploy:
-      name: "Build front and deploy to scalingo on staging"
+      name: "Build front and deploy to scalingo on ${{ vars.SCALINGO_APP_NAME }}"
       runs-on: ubuntu-latest
       environment: staging
       steps:
@@ -27,7 +27,7 @@ jobs:
         - name: Archive dist
           uses: actions/upload-artifact@v3
           with:
-            name: web-scalingo
+            name: web-scalingo-v${{ github.run_number }}
             path: web-scalingo.tar.gz
         - name: Install scalingo CLI
           run: |
@@ -38,6 +38,6 @@ jobs:
         - name: Download web artefact
           uses: actions/download-artifact@v3
           with:
-            name: web-scalingo
+            name: web-scalingo-v${{ github.run_number }}
         - name: Deploy front
-          run: scalingo --app benefriches-staging deploy web-scalingo.tar.gz
+          run: scalingo --app ${{ vars.SCALINGO_APP_NAME }} deploy web-scalingo.tar.gz
