@@ -24,7 +24,7 @@
     "prebuild": "only-include-used-icons"
   },
   "dependencies": {
-    "@codegouvfr/react-dsfr": "^0.72.1",
+    "@codegouvfr/react-dsfr": "^0.72.4",
     "local-web-server": "^5.3.0",
     "prettier": "^3.0.0",
     "react": "^18.2.0",
