@@ -1,0 +1,20 @@
+FROM node:18-alpine as base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
+COPY ./web/package.json /app/web/
+WORKDIR /app
+
+FROM base as deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --ignore-scripts
+
+# web only
+FROM base as web
+COPY ./web/ /app/web
+COPY --from=deps /app/node_modules/ /app/node_modules
+COPY --from=deps /app/web/node_modules/ /app/web/node_modules
+WORKDIR /app/web
+EXPOSE 3000
+CMD ["./node_modules/.bin/vite"]
