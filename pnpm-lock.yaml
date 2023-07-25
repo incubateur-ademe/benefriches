@@ -9,14 +9,17 @@ importers:
   .:
     devDependencies:
       husky:
-        specifier: ^8.0.0
-        version: 8.0.0
+        specifier: ^8.0.3
+        version: 8.0.3
       lint-staged:
         specifier: ^13.2.3
         version: 13.2.3
 
   web:
     dependencies:
+      '@codegouvfr/react-dsfr':
+        specifier: ^0.72.4
+        version: 0.72.4
       local-web-server:
         specifier: ^5.3.0
         version: 5.3.0
@@ -304,6 +307,13 @@ packages:
       '@babel/helper-validator-identifier': 7.22.5
       to-fast-properties: 2.0.0
     dev: true
+
+  /@codegouvfr/react-dsfr@0.72.4:
+    resolution: {integrity: sha512-LOp9EhS23ArI+/gVPGkbUVl11CPGWG5BZroonc95qCExG4OhuOFUYRSM1KWIcz07MNhyAVQlhiL3Iv3ITUDM5A==}
+    hasBin: true
+    dependencies:
+      tsafe: 1.6.4
+    dev: false
 
   /@esbuild/android-arm64@0.18.14:
     resolution: {integrity: sha512-rZ2v+Luba5/3D6l8kofWgTnqE+qsC/L5MleKIKFyllHTKHrNBMqeRCnZI1BtRx8B24xMYxeU32iIddRQqMsOsg==}
@@ -1750,8 +1760,8 @@ packages:
     engines: {node: '>=14.18.0'}
     dev: true
 
-  /husky@8.0.0:
-    resolution: {integrity: sha512-4qbE/5dzNDNxFEkX9MNRPKl5+omTXQzdILCUWiqG/lWIAioiM5vln265/l6I2Zx8gpW8l1ukZwGQeCFbBZ6+6w==}
+  /husky@8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
     engines: {node: '>=14'}
     hasBin: true
     dev: true
@@ -3022,6 +3032,10 @@ packages:
   /toidentifier@1.0.1:
     resolution: {integrity: sha512-o5sSPKEkg/DIQNmH43V0/uerLrpzVedkUh8tGNvaeXpfpuwjKenlSox/2O/BTlZUtEe+JG7s5YhEz608PlAHRA==}
     engines: {node: '>=0.6'}
+    dev: false
+
+  /tsafe@1.6.4:
+    resolution: {integrity: sha512-l4Z54QFGHO8GF0gBpb3yPGHjkIkIirl8rwW+lMBmtEMzOJeRs8BdjkDEx6nU8Ak9PQVp/KNDtECxTja8MMIDoA==}
     dev: false
 
   /tslib@1.14.1:
