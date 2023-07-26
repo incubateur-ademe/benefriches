@@ -9,8 +9,8 @@ services:
       - CHOKIDAR_USEPOLLING=true
       - NODE_ENV=development
     volumes:
-      - ./web:/app/web
-      - /app/web/node_modules
+      - ./apps/web:/app/apps/web
+      - /app/apps/web/node_modules
     ports:
       - 3000:3000
     stdin_open: true

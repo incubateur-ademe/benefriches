@@ -15,7 +15,7 @@ importers:
         specifier: ^13.2.3
         version: 13.2.3
 
-  web:
+  apps/web:
     dependencies:
       '@codegouvfr/react-dsfr':
         specifier: ^0.73.0
