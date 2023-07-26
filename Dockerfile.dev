@@ -4,7 +4,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /app/
-COPY ./web/package.json /app/web/
+COPY ./apps/web/package.json /app/apps/web/
 WORKDIR /app
 
 FROM base as deps
@@ -12,9 +12,9 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 # web only
 FROM base as web
-COPY ./web/ /app/web
-COPY --from=deps /app/node_modules/ /app/node_modules
-COPY --from=deps /app/web/node_modules/ /app/web/node_modules
-WORKDIR /app/web
+COPY ./apps/web/ /app/apps/web/
+COPY --from=deps /app/node_modules/ /app/node_modules/
+COPY --from=deps /app/apps/web/node_modules/ /app/apps/web/node_modules/
+WORKDIR /app/apps/web
 EXPOSE 3000
 CMD ["./node_modules/.bin/vite"]
