@@ -24,10 +24,8 @@
   },
   "dependencies": {
     "@codegouvfr/react-dsfr": "^0.73.0",
-    "prettier": "^3.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "vite": "^4.4.7"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.16",
@@ -39,6 +37,8 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "typescript": "^5.1.6"
+    "prettier": "^3.0.0",
+    "typescript": "^5.1.6",
+    "vite": "^4.4.7"
   }
 }
