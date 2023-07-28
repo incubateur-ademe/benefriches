@@ -1,8 +1,0 @@
-Dockerfile
-node_modules
-dist
-.git
-*.md
-.DS_Store
-*.local
-.idea

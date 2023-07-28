@@ -1,6 +1,12 @@
-node_modules
-Dockerfile.*
 .git
 .gitignore
-*.md
-dist
+.idea
+LICENSE
+Dockerfile.*
+**/.dockerignore
+**/*.md
+**/dist
+**/node_modules
+**/scalingo
+**/.DS_Store
+**/*.local
