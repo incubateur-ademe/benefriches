@@ -1,8 +1,12 @@
-import { createUser } from "./users.usecases";
+import { CreateUser, createUser } from "./users.usecases";
 
 describe("Register", () => {
+
+  beforeEach(() => {
+  })
+
   test("User account creation", () => {
-    expect(createUser("test@beta.gouv.fr", "mypassword123456789")).toEqual({
+    expect(("test@beta.gouv.fr", "mypassword123456789")).toEqual({
       email: "test@beta.gouv.fr",
       password: "mypassword123456789",
     });
@@ -31,4 +35,14 @@ describe("Register", () => {
       "Password should be 12 or more characters",
     );
   });
+
+  test("Create user generate unique id", () => {
+
+    expect(() => createUser("test@beta.gouv.fr", "password with more than 12 characters")).toEqual({
+      email: "test@beta.gouv.fr",
+      password: "password with more than 12 characters",
+      id: "c08d7bca-2dd4-4521-bdd1-79e30984d08a",
+    })
+  })
+
 });
