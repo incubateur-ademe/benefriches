@@ -3,11 +3,9 @@ import { DeterministicUiidGenerator } from "../../adapters/uuid-generator/Determ
 import { UuidGenerator } from "../gateways/UuidGenerator";
 import { CreateUser } from "./users.usecases";
 
-
-
 describe("Register", () => {
   let uuidGenerator: UuidGenerator;
-  let inMemoryUserRepository : InMemoryUserRepository;
+  let inMemoryUserRepository: InMemoryUserRepository;
   const fakeUuid = "608fb1d0-23be-4885-a0e7-b02e3c8c796f";
 
   beforeEach(() => {
