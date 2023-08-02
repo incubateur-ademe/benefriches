@@ -26,10 +26,10 @@ export class CreateUser {
     ));
     if (userExistsWithEmail) throw new Error("Given email already exists");
 
-    return {
+    this.userRepository.save({
       email: email,
       password: password,
       id: this.uuidGenerator.generate(),
-    };
+    });
   }
 }

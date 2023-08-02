@@ -1,21 +1,18 @@
 import { InMemoryUserRepository } from "../../adapters/user-repository/InMemoryUserRepository";
 import { DeterministicUiidGenerator } from "../../adapters/uuid-generator/DeterministicUuidGenerator";
+import { UuidGenerator } from "../gateways/UuidGenerator";
 import { CreateUser } from "./users.usecases";
 
-describe("Register", () => {
-  const fakeUuid = "608fb1d0-23be-4885-a0e7-b02e3c8c796f";
-  const uuidGenerator = new DeterministicUiidGenerator(fakeUuid);
-  const inMemoryUserRepository = new InMemoryUserRepository();
 
-  test("User account creation", async () => {
-    const usecase = new CreateUser(uuidGenerator, inMemoryUserRepository);
-    expect(
-      await usecase.execute("test@beta.gouv.fr", "mypassword123456789"),
-    ).toEqual({
-      email: "test@beta.gouv.fr",
-      password: "mypassword123456789",
-      id: fakeUuid,
-    });
+
+describe("Register", () => {
+  let uuidGenerator: UuidGenerator;
+  let inMemoryUserRepository : InMemoryUserRepository;
+  const fakeUuid = "608fb1d0-23be-4885-a0e7-b02e3c8c796f";
+
+  beforeEach(() => {
+    uuidGenerator = new DeterministicUiidGenerator(fakeUuid);
+    inMemoryUserRepository = new InMemoryUserRepository();
   });
 
   test("User account creation : check password", async () => {
@@ -54,5 +51,18 @@ describe("Register", () => {
     expect(() => usecase.execute(email, "mypassword123456789")).rejects.toThrow(
       "Given email already exists",
     );
+  });
+
+  test("User is persisted when create user is successful", async () => {
+    const email = "user@beta.gouv.fr";
+    const usecase = new CreateUser(uuidGenerator, inMemoryUserRepository);
+    await usecase.execute(email, "mypassword123456789");
+    expect(inMemoryUserRepository._getUsers()).toEqual([
+      {
+        email: "user@beta.gouv.fr",
+        password: "mypassword123456789",
+        id: fakeUuid,
+      },
+    ]);
   });
 });
