@@ -1,7 +1,12 @@
-import { sum } from "./users.usecases";
+import { createUser } from "./users.usecases";
 
-describe("first test", () => {
-  test("1st test", () => {
-    expect(sum(1, 2)).toEqual(4);
+describe("Register", () => {
+  test("User account creation", () => {
+    expect(createUser("test@beta.gouv.fr", "mypassword")).toEqual({ "email": "test@beta.gouv.fr", "password": "mypassword"});
+  });
+
+  test("User account creation : check password", () => {
+    //@ts-expect-error
+    expect(() => createUser("test@beta.gouv.fr")).toThrowError("Password is required");
   });
 });
