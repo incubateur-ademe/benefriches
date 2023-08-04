@@ -1,4 +1,4 @@
-import { UuidGenerator } from "../../core/gateways/UuidGenerator";
+import { UuidGenerator } from "../../domain/gateways/UuidGenerator";
 
 export class DeterministicUiidGenerator implements UuidGenerator {
   constructor(private fakeUuid: string) {}
