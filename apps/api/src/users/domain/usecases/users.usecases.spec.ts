@@ -1,7 +1,7 @@
 import { InMemoryUserRepository } from "../../adapters/user-repository/InMemoryUserRepository";
 import { DeterministicUiidGenerator } from "../../adapters/uuid-generator/DeterministicUuidGenerator";
 import { UuidGenerator } from "../gateways/UuidGenerator";
-import { CreateUser } from "./users.usecases";
+import { CreateUserUseCase } from "./users.usecases";
 
 describe("Register", () => {
   let uuidGenerator: UuidGenerator;
@@ -14,30 +14,42 @@ describe("Register", () => {
   });
 
   test("User account creation : check password", async () => {
-    const usecase = new CreateUser(uuidGenerator, inMemoryUserRepository);
-    //@ts-expect-error
-    expect(() => usecase.execute("test@beta.gouv.fr")).rejects.toThrow(
-      "Password is required",
+    const usecase = new CreateUserUseCase(
+      uuidGenerator,
+      inMemoryUserRepository,
     );
+    expect(() =>
+      //@ts-expect-error
+      usecase.execute({ email: "test@beta.gouv.fr" }),
+    ).rejects.toThrow("Password is required");
   });
 
   test("Cannot create account without email", async () => {
-    const usecase = new CreateUser(uuidGenerator, inMemoryUserRepository);
+    const usecase = new CreateUserUseCase(
+      uuidGenerator,
+      inMemoryUserRepository,
+    );
     //@ts-expect-error
-    expect(() => usecase.execute(null)).rejects.toThrow("Email is required");
+    expect(() => usecase.execute({})).rejects.toThrow("Email is required");
   });
 
   test("Cannot create account with invalid email", async () => {
-    const usecase = new CreateUser(uuidGenerator, inMemoryUserRepository);
-    expect(() => usecase.execute("invalid-email", "mypasword")).rejects.toThrow(
-      "Email is invalid",
+    const usecase = new CreateUserUseCase(
+      uuidGenerator,
+      inMemoryUserRepository,
     );
+    expect(() =>
+      usecase.execute({ email: "invalid-email", password: "mypasword" }),
+    ).rejects.toThrow("Email is invalid");
   });
 
   test("Cannot create account with password too short", async () => {
-    const usecase = new CreateUser(uuidGenerator, inMemoryUserRepository);
+    const usecase = new CreateUserUseCase(
+      uuidGenerator,
+      inMemoryUserRepository,
+    );
     expect(() =>
-      usecase.execute("test@beta.gouv.fr", "mypasword"),
+      usecase.execute({ email: "test@beta.gouv.fr", password: "mypasword" }),
     ).rejects.toThrow("Password should be 12 or more characters");
   });
 
@@ -45,16 +57,22 @@ describe("Register", () => {
     const email = "user@beta.gouv.fr";
     const user = { email, password: "mypassword123456789", id: fakeUuid };
     inMemoryUserRepository._setUsers([user]);
-    const usecase = new CreateUser(uuidGenerator, inMemoryUserRepository);
-    expect(() => usecase.execute(email, "mypassword123456789")).rejects.toThrow(
-      "Given email already exists",
+    const usecase = new CreateUserUseCase(
+      uuidGenerator,
+      inMemoryUserRepository,
     );
+    expect(() =>
+      usecase.execute({ email, password: "mypassword123456789" }),
+    ).rejects.toThrow("Given email already exists");
   });
 
   test("User is persisted when create user is successful", async () => {
     const email = "user@beta.gouv.fr";
-    const usecase = new CreateUser(uuidGenerator, inMemoryUserRepository);
-    await usecase.execute(email, "mypassword123456789");
+    const usecase = new CreateUserUseCase(
+      uuidGenerator,
+      inMemoryUserRepository,
+    );
+    await usecase.execute({ email, password: "mypassword123456789" });
     expect(inMemoryUserRepository._getUsers()).toEqual([
       {
         email: "user@beta.gouv.fr",
