@@ -23,8 +23,8 @@ describe("Register", () => {
       inMemoryUserRepository,
       hashGenerator,
     );
-    expect(() =>
-      //@ts-expect-error
+    await expect(() =>
+      //@ts-expect-error password is not passed to execute()
       usecase.execute({ email: "test@beta.gouv.fr" }),
     ).rejects.toThrow("Password is required");
   });
@@ -35,8 +35,8 @@ describe("Register", () => {
       inMemoryUserRepository,
       hashGenerator,
     );
-    //@ts-expect-error
-    expect(() => usecase.execute({})).rejects.toThrow("Email is required");
+    //@ts-expect-error nothing passed to execute()
+    await expect(usecase.execute({})).rejects.toThrow("Email is required");
   });
 
   test("Cannot create account with invalid email", async () => {
@@ -45,7 +45,7 @@ describe("Register", () => {
       inMemoryUserRepository,
       hashGenerator,
     );
-    expect(() =>
+    await expect(
       usecase.execute({ email: "invalid-email", password: "mypasword" }),
     ).rejects.toThrow("Email is invalid");
   });
@@ -56,7 +56,7 @@ describe("Register", () => {
       inMemoryUserRepository,
       hashGenerator,
     );
-    expect(() =>
+    await expect(
       usecase.execute({ email: "test@beta.gouv.fr", password: "mypasword" }),
     ).rejects.toThrow("Password should be 12 or more characters");
   });
@@ -70,7 +70,7 @@ describe("Register", () => {
       inMemoryUserRepository,
       hashGenerator,
     );
-    expect(() =>
+    await expect(
       usecase.execute({ email, password: "mypassword123456789" }),
     ).rejects.toThrow("Given email already exists");
   });
@@ -84,7 +84,7 @@ describe("Register", () => {
       hashGenerator,
     );
     await usecase.execute({ email, password });
-    const savedUser = inMemoryUserRepository._getUsers()[0];
+    const [savedUser] = inMemoryUserRepository._getUsers();
 
     expect(savedUser.email).toEqual(email);
     expect(savedUser.id).toEqual(fakeUuid);
@@ -99,7 +99,7 @@ describe("Register", () => {
       hashGenerator,
     );
     await usecase.execute({ email, password });
-    const savedUser = inMemoryUserRepository._getUsers()[0];
+    const [savedUser] = inMemoryUserRepository._getUsers();
     expect(savedUser.password).not.toEqual(password);
   });
 });

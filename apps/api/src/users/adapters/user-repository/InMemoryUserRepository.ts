@@ -5,11 +5,11 @@ export class InMemoryUserRepository implements UserRepository {
   private users: User[] = [];
 
   async existsWithEmail(email: string) {
-    return !!this.users.find((user) => user.email === email);
+    return Promise.resolve(!!this.users.find((user) => user.email === email));
   }
 
   async save(user: User) {
-    this.users.push(user);
+    await Promise.resolve(this.users.push(user));
   }
 
   _getUsers() {
