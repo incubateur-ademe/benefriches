@@ -1,9 +1,9 @@
 import { HashGenerator } from "../../domain/gateways/HashGenerator";
 
 export class DeterministicHashGenerator implements HashGenerator {
-  constructor(private hashPrefix: string) {}
+  constructor(private readonly hashPrefix: string) {}
 
-  async generate(input: string) {
-    return `${this.hashPrefix}:${input}`;
+  generate(input: string) {
+    return Promise.resolve(`${this.hashPrefix}:${input}`);
   }
 }
