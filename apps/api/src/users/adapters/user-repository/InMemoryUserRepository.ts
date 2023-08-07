@@ -4,6 +4,10 @@ import { User } from "../../domain/models/user";
 export class InMemoryUserRepository implements UserRepository {
   private users: User[] = [];
 
+  async getWithEmail(email: string) {
+    return Promise.resolve(this.users.find((user) => user.email === email));
+  }
+
   async existsWithEmail(email: string) {
     return Promise.resolve(!!this.users.find((user) => user.email === email));
   }

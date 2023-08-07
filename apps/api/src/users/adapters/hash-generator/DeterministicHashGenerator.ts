@@ -6,4 +6,9 @@ export class DeterministicHashGenerator implements HashGenerator {
   generate(input: string) {
     return Promise.resolve(`${this.hashPrefix}:${input}`);
   }
+
+  async compare(plainString: string, hash: string) {
+    const hashedInput = await this.generate(plainString);
+    return hashedInput === hash;
+  }
 }

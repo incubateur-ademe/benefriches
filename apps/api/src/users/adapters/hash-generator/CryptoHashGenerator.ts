@@ -8,4 +8,8 @@ export class CryptoHashGenerator implements HashGenerator {
     const hash = await bcrypt.hash(input, this.saltRounds);
     return hash;
   }
+
+  async compare(plainText: string, hash: string): Promise<boolean> {
+    return await bcrypt.compare(plainText, hash);
+  }
 }
