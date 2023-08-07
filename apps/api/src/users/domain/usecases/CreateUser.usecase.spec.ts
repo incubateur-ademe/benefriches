@@ -3,7 +3,7 @@ import { InMemoryUserRepository } from "../../adapters/user-repository/InMemoryU
 import { DeterministicUiidGenerator } from "../../adapters/uuid-generator/DeterministicUuidGenerator";
 import { HashGenerator } from "../gateways/HashGenerator";
 import { UuidGenerator } from "../gateways/UuidGenerator";
-import { CreateUserUseCase } from "./users.usecases";
+import { CreateUserUseCase } from "./CreateUser.usecase";
 
 describe("Register", () => {
   let uuidGenerator: UuidGenerator;
