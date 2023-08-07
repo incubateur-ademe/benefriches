@@ -1,22 +1,27 @@
+import { DeterministicHashGenerator } from "../../adapters/hash-generator/DeterministicHashGenerator";
 import { InMemoryUserRepository } from "../../adapters/user-repository/InMemoryUserRepository";
 import { DeterministicUiidGenerator } from "../../adapters/uuid-generator/DeterministicUuidGenerator";
+import { HashGenerator } from "../gateways/HashGenerator";
 import { UuidGenerator } from "../gateways/UuidGenerator";
 import { CreateUserUseCase } from "./users.usecases";
 
 describe("Register", () => {
   let uuidGenerator: UuidGenerator;
   let inMemoryUserRepository: InMemoryUserRepository;
+  let hashGenerator: HashGenerator;
   const fakeUuid = "608fb1d0-23be-4885-a0e7-b02e3c8c796f";
 
   beforeEach(() => {
     uuidGenerator = new DeterministicUiidGenerator(fakeUuid);
     inMemoryUserRepository = new InMemoryUserRepository();
+    hashGenerator = new DeterministicHashGenerator("hashed");
   });
 
   test("User account creation : check password", async () => {
     const usecase = new CreateUserUseCase(
       uuidGenerator,
       inMemoryUserRepository,
+      hashGenerator,
     );
     expect(() =>
       //@ts-expect-error
@@ -28,6 +33,7 @@ describe("Register", () => {
     const usecase = new CreateUserUseCase(
       uuidGenerator,
       inMemoryUserRepository,
+      hashGenerator,
     );
     //@ts-expect-error
     expect(() => usecase.execute({})).rejects.toThrow("Email is required");
@@ -37,6 +43,7 @@ describe("Register", () => {
     const usecase = new CreateUserUseCase(
       uuidGenerator,
       inMemoryUserRepository,
+      hashGenerator,
     );
     expect(() =>
       usecase.execute({ email: "invalid-email", password: "mypasword" }),
@@ -47,6 +54,7 @@ describe("Register", () => {
     const usecase = new CreateUserUseCase(
       uuidGenerator,
       inMemoryUserRepository,
+      hashGenerator,
     );
     expect(() =>
       usecase.execute({ email: "test@beta.gouv.fr", password: "mypasword" }),
@@ -60,6 +68,7 @@ describe("Register", () => {
     const usecase = new CreateUserUseCase(
       uuidGenerator,
       inMemoryUserRepository,
+      hashGenerator,
     );
     expect(() =>
       usecase.execute({ email, password: "mypassword123456789" }),
@@ -68,17 +77,29 @@ describe("Register", () => {
 
   test("User is persisted when create user is successful", async () => {
     const email = "user@beta.gouv.fr";
+    const password = "mypassword123456789";
     const usecase = new CreateUserUseCase(
       uuidGenerator,
       inMemoryUserRepository,
+      hashGenerator,
     );
-    await usecase.execute({ email, password: "mypassword123456789" });
-    expect(inMemoryUserRepository._getUsers()).toEqual([
-      {
-        email: "user@beta.gouv.fr",
-        password: "mypassword123456789",
-        id: fakeUuid,
-      },
-    ]);
+    await usecase.execute({ email, password });
+    const savedUser = inMemoryUserRepository._getUsers()[0];
+
+    expect(savedUser.email).toEqual(email);
+    expect(savedUser.id).toEqual(fakeUuid);
+  });
+
+  test("Should not store user's password", async () => {
+    const email = "user@beta.gouv.fr";
+    const password = "my-strong-password";
+    const usecase = new CreateUserUseCase(
+      uuidGenerator,
+      inMemoryUserRepository,
+      hashGenerator,
+    );
+    await usecase.execute({ email, password });
+    const savedUser = inMemoryUserRepository._getUsers()[0];
+    expect(savedUser.password).not.toEqual(password);
   });
 });

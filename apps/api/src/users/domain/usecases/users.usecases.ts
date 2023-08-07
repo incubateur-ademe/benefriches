@@ -2,6 +2,7 @@ import z from "zod";
 import { UuidGenerator } from "../gateways/UuidGenerator";
 import { UserRepository } from "../gateways/UserRepository";
 import { UseCase } from "../../../shared-kernel/usecase";
+import { HashGenerator } from "../gateways/HashGenerator";
 
 export namespace CreateUser {
   export type Request = { email: string; password: string };
@@ -14,6 +15,7 @@ export class CreateUserUseCase
   constructor(
     private uuidGenerator: UuidGenerator,
     private userRepository: UserRepository,
+    private hashGenerator: HashGenerator,
   ) {}
 
   async execute({ email, password }: CreateUser.Request) {
@@ -36,7 +38,7 @@ export class CreateUserUseCase
 
     this.userRepository.save({
       email: email,
-      password: password,
+      password: await this.hashGenerator.generate(password),
       id: this.uuidGenerator.generate(),
     });
   }
