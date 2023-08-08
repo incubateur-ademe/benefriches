@@ -1,6 +1,8 @@
 import { DeterministicHashGenerator } from "../../adapters/hash-generator/DeterministicHashGenerator";
 import { InMemoryUserRepository } from "../../adapters/user-repository/InMemoryUserRepository";
 import { JwtGenerator } from "../gateways/JwtGenerator";
+import { EmailAddress } from "../models/emailAddress";
+import { User } from "../models/user";
 import { LoginUseCase } from "./Login.usecase";
 
 describe("Login Use Case", () => {
@@ -57,14 +59,17 @@ describe("Login Use Case", () => {
   });
 
   test("Cannot login if password is wrong", async () => {
-    const user = {
+    const user = User.create({
       id: "608fb1d0-23be-4885-a0e7-b02e3c8c796f",
-      email: "user@beta.gouv.fr",
+      email: EmailAddress.create("user@beta.gouv.fr"),
       password: "hashed:my-strong-passw0rd",
-    };
+    });
     userRepository._setUsers([user]);
 
-    const loginRequest = { email: user.email, password: "another-password" };
+    const loginRequest = {
+      email: "user@beta.gouv.fr",
+      password: "another-password",
+    };
     const usecase = new LoginUseCase(
       userRepository,
       hashGenerator,
@@ -78,14 +83,14 @@ describe("Login Use Case", () => {
   test("Can login", async () => {
     const password = "my-strong-passw0rd";
     const hashedPassword = await hashGenerator.generate(password);
-    const user = {
+    const user = User.create({
       id: "608fb1d0-23be-4885-a0e7-b02e3c8c796f",
-      email: "user@beta.gouv.fr",
+      email: EmailAddress.create("user@beta.gouv.fr"),
       password: hashedPassword,
-    };
+    });
     userRepository._setUsers([user]);
 
-    const loginRequest = { email: user.email, password };
+    const loginRequest = { email: "user@beta.gouv.fr", password };
     const usecase = new LoginUseCase(
       userRepository,
       hashGenerator,

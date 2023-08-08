@@ -1,15 +1,15 @@
-import z from "zod";
 import { UuidGenerator } from "../gateways/UuidGenerator";
 import { UserRepository } from "../gateways/UserRepository";
 import { UseCase } from "../../../shared-kernel/usecase";
 import { HashGenerator } from "../gateways/HashGenerator";
+import { EmailAddress } from "../models/emailAddress";
+import { Password } from "../models/password";
+import { User } from "../models/user";
 
 type Request = {
   email: string;
   password: string;
 };
-
-const PASSWORD_MIN_LENGTH = 12;
 
 export class CreateUserUseCase implements UseCase<Request, void> {
   constructor(
@@ -18,24 +18,24 @@ export class CreateUserUseCase implements UseCase<Request, void> {
     private readonly hashGenerator: HashGenerator,
   ) {}
 
-  async execute({ email, password }: Request) {
-    if (!email) throw new Error("Email is required");
+  async execute(userProps: Request) {
+    if (!userProps.email) throw new Error("Email is required");
+    if (!userProps.password) throw new Error("Password is required");
 
-    z.string().email({ message: "Email is invalid" }).parse(email);
-    if (!password) throw new Error("Password is required");
-    z.string()
-      .min(PASSWORD_MIN_LENGTH, "Password should be 12 or more characters")
-      .parse(password);
+    const email = EmailAddress.create(userProps.email);
+    const password = Password.create(userProps.password);
+    const passwordHash = await this.hashGenerator.generate(password.getValue());
+    const user = User.create({
+      id: this.uuidGenerator.generate(),
+      email,
+      password: passwordHash,
+    });
 
     const userExistsWithEmail = !!(await this.userRepository.existsWithEmail(
-      email,
+      email.getValue(),
     ));
     if (userExistsWithEmail) throw new Error("Given email already exists");
 
-    await this.userRepository.save({
-      email: email,
-      password: await this.hashGenerator.generate(password),
-      id: this.uuidGenerator.generate(),
-    });
+    await this.userRepository.save(user);
   }
 }
