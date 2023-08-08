@@ -3,6 +3,17 @@ import rules from "../dist/SiteFoncier";
 
 const engine = new Engine(rules);
 
+class ConsoleWarning extends Error {
+  constructor(message) {
+    super(`Failing due to console.warn while running test!\n\n${message}`);
+    this.name = "ConsoleWarning";
+  }
+}
+
+console.warn = (message) => {
+  throw new ConsoleWarning(message);
+};
+
 describe("Publicode algorithm: collecte d’informations", () => {
   test("doit renvoyer une adresse nulle", () => {
     expect(engine.evaluate("adresse").nodeValue).toBeUndefined();
@@ -35,6 +46,12 @@ describe("Publicode algorithm: collecte d’informations", () => {
 describe("Publicode algorithm: calcul de la surface de la friche", () => {
   test("doit renvoyer une surface de friche nulle", () => {
     expect(engine.evaluate("surface friche").nodeValue).toEqual(0);
+  });
+
+  test("doit retourner une erreur lors du calcul de surface si l’unité utilisée est mauvaise", () => {
+    const situation = { "espaces . ancienne usine": "2500 €" };
+    engine.setSituation(situation);
+    expect(() => engine.evaluate("surface friche")).toThrow(ConsoleWarning);
   });
 
   test("doit renvoyer une surface de friche égale à la superficie des anciennes usines", () => {
