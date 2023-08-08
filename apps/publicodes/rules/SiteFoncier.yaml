@@ -1,0 +1,115 @@
+adresse:
+  question: Où est situé votre site ?
+  type: texte
+
+type:
+  question: De quel type de site s’agit-il ?
+  une possibilité:
+    choix obligatoire: oui
+    possibilités:
+      - friche
+      - terre agricole
+      - prairie
+      - forêt
+  avec:
+    friche:
+      par défaut:
+        valeur: non
+    terre agricole:
+      par défaut:
+        valeur: non
+    prairie:
+      par défaut:
+        valeur: non
+    forêt:
+      par défaut:
+        valeur: non
+             
+espaces: 
+  question: Quels espaces y a t-il sur cette {{ type }} ?
+  plusieurs possibilités:
+    - ancienne usine
+    - ancienne carrière
+    - anciens espaces de stockage
+    - espaces verts
+  avec:
+    ancienne usine:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    ancienne carrière:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    anciens espaces de stockage:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    espaces verts:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+
+surface friche:
+  somme:
+    - espaces . ancienne usine
+    - espaces . ancienne carrière
+    - espaces . anciens espaces de stockage
+    - espaces . espaces verts
+
+coût annuel friche:
+  applicable si: type . friche = oui
+  avec: 
+    par m2:
+      avec: 
+        gardiennage: 
+          valeur: 15€/m2
+          unité: €/m2
+        entretien: 
+          valeur: 30€/m2
+          unité: €/m2
+        dépot sauvage: 
+          valeur: 50€/m2
+          unité: €/m2
+        traitement des eaux:
+          valeur: 12€/m2
+          unité: €/m2
+        inondations: 
+          valeur: 20€/m2
+          unité: €/m2
+        accidents: 
+          valeur: 20€/m2
+          unité: €/m2
+    total:
+      avec: 
+        gardiennage: 
+          valeur: coût annuel friche . par m2 . gardiennage * surface friche
+          unité: €
+        entretien: 
+          valeur: coût annuel friche . par m2 . entretien * surface friche
+          unité: €
+        dépot sauvage: 
+          valeur: coût annuel friche . par m2 . dépot sauvage * surface friche
+          unité: €
+        traitement des eaux: 
+          valeur: coût annuel friche . par m2 . traitement des eaux * surface friche
+          unité: €
+        inondations: 
+          valeur: coût annuel friche . par m2 . inondations * surface friche
+          unité: €
+        accidents: 
+          valeur: coût annuel friche . par m2 . accidents * surface friche
+          unité: €      
+  unité: € 
+  somme:
+    - coût annuel friche . total . gardiennage
+    - coût annuel friche . total . entretien
+    - coût annuel friche . total . dépot sauvage
+    - coût annuel friche . total . traitement des eaux
+    - coût annuel friche . total . inondations
+    - coût annuel friche . total . accidents
+  
