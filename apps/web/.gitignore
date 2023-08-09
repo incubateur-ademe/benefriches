@@ -10,19 +10,18 @@ lerna-debug.log*
 node_modules
 dist
 
-dist-ssr
 *.local
 
-# Editor directories and files
+# IDEs and editors
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 
 # @codegouvfr/react-dsfr
 /public/dsfr/

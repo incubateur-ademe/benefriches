@@ -1,7 +1,17 @@
 .DS_Store
-.idea
 node_modules
 .env
 .env.local
 storage
 logs
+
+# IDEs and editors
+.vscode/*
+!.vscode/extensions.json
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
