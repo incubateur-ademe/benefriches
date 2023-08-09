@@ -16,3 +16,5 @@ jobs:
     uses: ./.github/workflows/deploy-to-scalingo.yml
     with:
       tag: "v${{ github.run_number }}"
+    secrets:
+      SCALINGO_API_TOKEN: ${{secrets.SCALINGO_API_TOKEN}}
