@@ -47,4 +47,4 @@ jobs:
           with:
             name: web-scalingo-v${{ inputs.tag }}
         - name: Deploy front
-          run: scalingo --app ${{ secrets.SCALINGO_API_TOKEN }} deploy web-scalingo.tar.gz
+          run: scalingo --app ${{ vars.SCALINGO_APP_NAME }} deploy web-scalingo.tar.gz
