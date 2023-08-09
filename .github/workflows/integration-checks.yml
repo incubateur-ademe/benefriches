@@ -5,9 +5,11 @@ name: Integration validation (install, typecheck, lint, format, build)
 
 on:
   push:
-    branches: [ "main" ]
+    branches-ignore:
+      - main
   pull_request:
     types: [opened, synchronize]
+  workflow_call:
 
 jobs:
   build:
