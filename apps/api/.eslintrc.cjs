@@ -38,5 +38,10 @@ module.exports = {
         ignoreReadonlyClassProperties: true,
       },
     ],
+    // needed for NestJS empty module classes
+    "@typescript-eslint/no-extraneous-class": [
+      "error",
+      { allowWithDecorator: true },
+    ],
   },
 };
