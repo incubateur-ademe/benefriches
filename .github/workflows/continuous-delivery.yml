@@ -10,9 +10,16 @@ jobs:
   integration-checks:
     uses: ./.github/workflows/integration-checks.yml
 
-  deploy-web:
+  build-and-upload-web-artifact:
     # jobs are run in parallel by default, we want them to run sequentially
     needs: [integration-checks]
+    uses: ./.github/workflows/build-and-upload-web-artifact.yml
+    with:
+      tag: "v${{ github.run_number }}"
+      
+  deploy-web:
+    # jobs are run in parallel by default, we want them to run sequentially
+    needs: [build-and-upload-web-artifact]
     uses: ./.github/workflows/deploy-to-scalingo.yml
     with:
       tag: "v${{ github.run_number }}"

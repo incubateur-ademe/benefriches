@@ -12,39 +12,19 @@ on:
 
 jobs:
     deploy:
-      name: "Build front and deploy to scalingo on ${{ vars.SCALINGO_APP_NAME }}"
       runs-on: ubuntu-latest
       environment: staging
       steps:
         - uses: actions/checkout@v3
-        - uses: pnpm/action-setup@v2
-          with:
-            version: 8
-        - name: Use Node.js
-          uses: actions/setup-node@v3
-          with:
-            node-version: "18"
-            cache: "pnpm"
-        - name: Install dependencies
-          run: pnpm install
-        - name: Build web
-          run: pnpm build
-        - name: Create Archive
-          run: mkdir -p scalingo/web && cp -r apps/web/dist "$_" && cp -r apps/web/scalingo/* "$_" && cp apps/web/scalingo/.buildpacks "$_" && tar -czf web-scalingo.tar.gz scalingo
-        - name: Archive dist
-          uses: actions/upload-artifact@v3
+        - name: Download web artifact
+          uses: actions/download-artifact@v3
           with:
             name: web-scalingo-v${{ inputs.tag }}
-            path: web-scalingo.tar.gz
         - name: Install scalingo CLI
           run: |
             wget -qO- https://cli-dl.scalingo.com/install.sh | bash
             echo "$HOME/bin" >> $GITHUB_PATH
         - name: Login to scalingo
           run: scalingo login --api-token ${{ secrets.SCALINGO_API_TOKEN }}
-        - name: Download web artefact
-          uses: actions/download-artifact@v3
-          with:
-            name: web-scalingo-v${{ inputs.tag }}
         - name: Deploy front
           run: scalingo --app ${{ vars.SCALINGO_APP_NAME }} deploy web-scalingo.tar.gz
