@@ -1,8 +1,15 @@
 name: Deploy web on scalingo
+
 on:
-  push:
-    branches:
-      - "main"
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
+    secrets:
+      SCALINGO_API_TOKEN:
+        required: true
+
 jobs:
     deploy:
       name: "Build front and deploy to scalingo on ${{ vars.SCALINGO_APP_NAME }}"
@@ -27,7 +34,7 @@ jobs:
         - name: Archive dist
           uses: actions/upload-artifact@v3
           with:
-            name: web-scalingo-v${{ github.run_number }}
+            name: web-scalingo-v${{ inputs.tag }}
             path: web-scalingo.tar.gz
         - name: Install scalingo CLI
           run: |
@@ -38,6 +45,6 @@ jobs:
         - name: Download web artefact
           uses: actions/download-artifact@v3
           with:
-            name: web-scalingo-v${{ github.run_number }}
+            name: web-scalingo-v${{ inputs.tag }}
         - name: Deploy front
-          run: scalingo --app ${{ vars.SCALINGO_APP_NAME }} deploy web-scalingo.tar.gz
+          run: scalingo --app ${{ secrets.SCALINGO_API_TOKEN }} deploy web-scalingo.tar.gz
