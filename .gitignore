@@ -5,6 +5,10 @@ node_modules
 storage
 logs
 
+# used to build api
+.tmp-build
+*.tar.gz
+
 # IDEs and editors
 .vscode/*
 !.vscode/extensions.json

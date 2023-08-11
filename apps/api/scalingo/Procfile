@@ -1,0 +1,1 @@
+web: cd apps/api && node ./dist/src/main.js
