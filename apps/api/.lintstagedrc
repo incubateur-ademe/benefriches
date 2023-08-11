@@ -1,4 +1,4 @@
 {
   "*.(ts|js)": "pnpm lint",
-  "*.(js|ts|md|json)": "pnpm prettier"
+  "*.(js|ts|md|json)": "pnpm format:check"
 }
