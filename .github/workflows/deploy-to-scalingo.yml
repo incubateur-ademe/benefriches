@@ -1,4 +1,4 @@
-name: Deploy web on scalingo
+name: Deploy application on scalingo
 
 on:
   workflow_call:
@@ -20,11 +20,21 @@ jobs:
           uses: actions/download-artifact@v3
           with:
             name: web-scalingo-v${{ inputs.tag }}
+        - name: Download api artifact
+          uses: actions/download-artifact@v3
+          with:
+            name: api-scalingo-v${{ inputs.tag }}
         - name: Install scalingo CLI
           run: |
             wget -qO- https://cli-dl.scalingo.com/install.sh | bash
             echo "$HOME/bin" >> $GITHUB_PATH
         - name: Login to scalingo
           run: scalingo login --api-token ${{ secrets.SCALINGO_API_TOKEN }}
-        - name: Deploy front
-          run: scalingo --app ${{ vars.SCALINGO_APP_NAME }} deploy web-scalingo.tar.gz
+        - name: Deploy web
+          run: |
+            echo "Deploying webapp on app ${{ vars.SCALINGO_APP_NAME }}"
+            scalingo --app ${{ vars.SCALINGO_APP_NAME }} deploy web-scalingo.tar.gz
+        - name: Deploy api
+          run: |
+            echo "Deploying API on app ${{ vars.SCALINGO_API_APP_NAME }}"
+            scalingo --app ${{ vars.SCALINGO_API_APP_NAME }} deploy api-scalingo.tar.gz
