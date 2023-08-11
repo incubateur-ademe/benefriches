@@ -7,13 +7,12 @@
   "engines": {
     "node": "18"
   },
-  "main": "dist/main.js",
   "scripts": {
     "build": "nest build",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
+    "start:prod": "node dist/src/main",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "lint": "eslint . --ext js,ts --report-unused-disable-directives --max-warnings 0",
