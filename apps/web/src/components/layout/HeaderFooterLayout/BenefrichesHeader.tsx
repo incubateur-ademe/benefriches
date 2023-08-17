@@ -1,4 +1,5 @@
 import { Header } from "@codegouvfr/react-dsfr/Header";
+import { routes } from "../../../router";
 
 function BenefrichesHeader() {
   return (
@@ -16,10 +17,7 @@ function BenefrichesHeader() {
       }}
       navigation={[
         {
-          linkProps: {
-            href: "#",
-            target: "_self",
-          },
+          linkProps: routes.home().link,
           text: "Accueil",
           isActive: true,
         },
