@@ -29,11 +29,6 @@ const setup = async () => {
     await spawnPostgresDb();
     // Run migrations
     await sqlConnection.migrate.latest();
-    console.log(
-      await sqlConnection("pg_catalog.pg_tables")
-        .select("tablename")
-        .where({ schemaname: "public" }),
-    );
   } catch (error) {
     await stopPostresDb();
   } finally {
