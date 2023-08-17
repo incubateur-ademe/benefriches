@@ -19,11 +19,11 @@ jobs:
         - name: Download web artifact
           uses: actions/download-artifact@v3
           with:
-            name: web-scalingo-v${{ inputs.tag }}
+            name: web-scalingo-${{ inputs.tag }}
         - name: Download api artifact
           uses: actions/download-artifact@v3
           with:
-            name: api-scalingo-v${{ inputs.tag }}
+            name: api-scalingo-${{ inputs.tag }}
         - name: Install scalingo CLI
           run: |
             wget -qO- https://cli-dl.scalingo.com/install.sh | bash
