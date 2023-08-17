@@ -16,8 +16,8 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "lint": "eslint . --ext js,ts --report-unused-disable-directives --max-warnings 0",
-    "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",
-    "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/"
+    "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
+    "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",
