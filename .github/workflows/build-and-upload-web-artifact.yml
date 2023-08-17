@@ -29,5 +29,5 @@ jobs:
       - name: Archive dist
         uses: actions/upload-artifact@v3
         with:
-          name: web-scalingo-v${{ inputs.tag }}
+          name: web-scalingo-${{ inputs.tag }}
           path: web-scalingo.tar.gz
