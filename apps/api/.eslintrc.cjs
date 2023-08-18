@@ -29,15 +29,6 @@ module.exports = {
     "@typescript-eslint/prefer-readonly": "error",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/consistent-type-definitions": "off",
-    "@typescript-eslint/no-magic-numbers": [
-      "error",
-      {
-        ignoreTypeIndexes: true,
-        ignoreEnums: true,
-        ignoreNumericLiteralTypes: true,
-        ignoreReadonlyClassProperties: true,
-      },
-    ],
     // needed for NestJS empty module classes
     "@typescript-eslint/no-extraneous-class": [
       "error",
