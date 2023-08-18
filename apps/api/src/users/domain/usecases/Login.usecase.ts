@@ -1,6 +1,6 @@
 import { UseCase } from "../../../shared-kernel/usecase";
 import { HashGenerator } from "../gateways/HashGenerator";
-import { JwtGenerator } from "../gateways/JwtGenerator";
+import { AccessTokenService } from "../gateways/AccessTokenService";
 import { UserRepository } from "../gateways/UserRepository";
 
 type Request = {
@@ -14,7 +14,7 @@ export class LoginUseCase implements UseCase<Request, Response> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashGenerator: HashGenerator,
-    private readonly jwtGenerator: JwtGenerator,
+    private readonly accessTokenService: AccessTokenService,
   ) {}
 
   async execute({ email, password }: Request): Promise<Response> {
@@ -30,7 +30,7 @@ export class LoginUseCase implements UseCase<Request, Response> {
     );
     if (!isPasswordRight) throw new Error("Wrong password");
 
-    const accessJwt = await this.jwtGenerator.sign(user.id);
+    const accessJwt = await this.accessTokenService.sign(user.email);
     return accessJwt;
   }
 }

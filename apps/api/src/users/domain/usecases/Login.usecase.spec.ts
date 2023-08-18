@@ -1,6 +1,6 @@
 import { DeterministicHashGenerator } from "../../adapters/hash-generator/DeterministicHashGenerator";
 import { InMemoryUserRepository } from "../../adapters/user-repository/InMemoryUserRepository";
-import { JwtGenerator } from "../gateways/JwtGenerator";
+import { AccessTokenService } from "../gateways/AccessTokenService";
 import { EmailAddress } from "../models/emailAddress";
 import { User } from "../models/user";
 import { LoginUseCase } from "./Login.usecase";
@@ -8,12 +8,12 @@ import { LoginUseCase } from "./Login.usecase";
 describe("Login Use Case", () => {
   let userRepository: InMemoryUserRepository;
   let hashGenerator: DeterministicHashGenerator;
-  let jwtGenerator: JwtGenerator;
+  let accessTokenService: AccessTokenService;
 
   beforeEach(() => {
     userRepository = new InMemoryUserRepository();
     hashGenerator = new DeterministicHashGenerator("hashed");
-    jwtGenerator = {
+    accessTokenService = {
       sign() {
         return Promise.resolve("signed-jwt-token");
       },
@@ -24,7 +24,7 @@ describe("Login Use Case", () => {
     const usecase = new LoginUseCase(
       userRepository,
       hashGenerator,
-      jwtGenerator,
+      accessTokenService,
     );
     //@ts-expect-error nothing passed to execute
     await expect(usecase.execute({})).rejects.toThrow("Email is required");
@@ -34,7 +34,7 @@ describe("Login Use Case", () => {
     const usecase = new LoginUseCase(
       userRepository,
       hashGenerator,
-      jwtGenerator,
+      accessTokenService,
     );
     const email = "user@beta.gouv.fr";
     //@ts-expect-error no password passed to execute
@@ -47,7 +47,7 @@ describe("Login Use Case", () => {
     const usecase = new LoginUseCase(
       userRepository,
       hashGenerator,
-      jwtGenerator,
+      accessTokenService,
     );
     const userCredentials = {
       email: "user@beta.gouv.fr",
@@ -73,7 +73,7 @@ describe("Login Use Case", () => {
     const usecase = new LoginUseCase(
       userRepository,
       hashGenerator,
-      jwtGenerator,
+      accessTokenService,
     );
     await expect(usecase.execute(loginRequest)).rejects.toThrow(
       "Wrong password",
@@ -94,7 +94,7 @@ describe("Login Use Case", () => {
     const usecase = new LoginUseCase(
       userRepository,
       hashGenerator,
-      jwtGenerator,
+      accessTokenService,
     );
     const accessJwt = await usecase.execute(loginRequest);
     expect(accessJwt).toEqual("signed-jwt-token");
