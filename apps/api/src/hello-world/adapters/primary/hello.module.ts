@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
-import { HelloController } from "./adapters/primary/hello.controller";
-import { SayHelloUseCase } from "./domain/usecases/sayHello.usecase";
+import { HelloController } from "./hello.controller";
+import { SayHelloUseCase } from "../../domain/usecases/sayHello.usecase";
 
 @Module({
   imports: [],
