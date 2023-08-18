@@ -22,7 +22,6 @@ describe("Hello controller", () => {
   it(`/GET /hello`, async () => {
     const response = await supertest(app.getHttpServer()).get("/hello");
 
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     expect(response.statusCode).toEqual(200);
     expect(response.text).toEqual("Hello!");
   });

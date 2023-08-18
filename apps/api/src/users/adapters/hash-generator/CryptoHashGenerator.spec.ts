@@ -2,7 +2,6 @@ import { CryptoHashGenerator } from "./CryptoHashGenerator";
 
 describe("CryptoHashGenerator", () => {
   test("Validates hash string", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const hasher = new CryptoHashGenerator(2);
     const str = "my-string";
     const hash = await hasher.generate(str);
@@ -10,7 +9,6 @@ describe("CryptoHashGenerator", () => {
   });
 
   test("Does not validate hash with different input", async () => {
-    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     const hasher = new CryptoHashGenerator(3);
     const str1 = "my-string";
     const hash = await hasher.generate(str1);
