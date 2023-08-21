@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, HttpCode, Post } from "@nestjs/common";
 import { z } from "nestjs-zod/z";
 import { createZodDto } from "nestjs-zod";
 import { LoginUseCase } from "src/auth/domain/usecases/Login.usecase";
@@ -14,6 +14,7 @@ class LoginDto extends createZodDto(LoginDtoSchema) {}
 export class AuthController {
   constructor(private readonly loginUseCase: LoginUseCase) {}
 
+  @HttpCode(200)
   @Post("/login")
   async login(@Body() loginDto: LoginDto) {
     const accessToken = await this.loginUseCase.execute(loginDto);
