@@ -7,6 +7,7 @@ import { DeterministicHashGenerator } from "src/users/adapters/hash-generator/De
 import { RandomUiidGenerator } from "src/users/adapters/uuid-generator/RandomUuidGenerator";
 import { JwtService } from "@nestjs/jwt";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { ConfigModule } from "@nestjs/config";
 
 describe("Auth controller", () => {
   let app: INestApplication;
@@ -18,6 +19,8 @@ describe("Auth controller", () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
     })
+      .overrideModule(ConfigModule)
+      .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
       .overrideProvider("HashGenerator")
       .useValue(hashGenerator)
       .compile();
