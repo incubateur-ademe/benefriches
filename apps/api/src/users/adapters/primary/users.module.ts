@@ -9,17 +9,8 @@ import { UuidGenerator } from "src/users/domain/gateways/UuidGenerator";
 import { UserRepository } from "src/users/domain/gateways/UserRepository";
 import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
 import { CryptoHashGenerator } from "../hash-generator/CryptoHashGenerator";
-import { LoginUseCase } from "src/users/domain/usecases/Login.usecase";
-import { AccessTokenService } from "src/users/domain/gateways/AccessTokenService";
-import { JwtModule, JwtService } from "@nestjs/jwt";
 
 @Module({
-  imports: [
-    JwtModule.register({
-      secret: process.env.AUTH_JWT_SECRET,
-      signOptions: { expiresIn: process.env.AUTH_JWT_EXPIRATION },
-    }),
-  ],
   controllers: [UsersController],
   providers: [
     {
@@ -41,15 +32,6 @@ import { JwtModule, JwtService } from "@nestjs/jwt";
         hashGenerator: HashGenerator,
       ) => new CreateUserUseCase(uuidGenerator, userRepository, hashGenerator),
       inject: ["UuidGenerator", "UserRepository", "HashGenerator"],
-    },
-    {
-      provide: LoginUseCase,
-      useFactory: (
-        userRepository: UserRepository,
-        hashGenerator: HashGenerator,
-        jwtService: AccessTokenService,
-      ) => new LoginUseCase(userRepository, hashGenerator, jwtService),
-      inject: ["UserRepository", "HashGenerator", JwtService],
     },
   ],
 })
