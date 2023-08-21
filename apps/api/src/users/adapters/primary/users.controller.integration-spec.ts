@@ -5,6 +5,7 @@ import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
 import { AppModule } from "src/app.module";
 import { User } from "src/users/domain/models/user";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 describe("Users controller", () => {
   let app: INestApplication;
@@ -17,7 +18,7 @@ describe("Users controller", () => {
 
     app = moduleRef.createNestApplication();
     await app.init();
-    sqlConnection = app.get("SqlConnection");
+    sqlConnection = app.get(SqlConnection);
   });
 
   afterAll(async () => {
