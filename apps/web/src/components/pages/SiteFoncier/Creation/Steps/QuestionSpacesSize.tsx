@@ -1,31 +1,35 @@
 import { routes } from "@/router";
 import { ButtonsGroup } from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormDataContext } from "../StateProvider";
-import { SPACES_LABELS } from "../constants";
+import { SPACES_KINDS, SpaceKindsType } from "../../constants";
+import { SiteFoncierPublicodesContext } from "../../PublicodesProvider";
 
-type FormValues = {
-  [key: string]: string;
-};
-
-const STATE_RELATED_MESSAGE =
-  "Plusieurs réponses sont possibles. Si vous ne savez pas qualifier des espaces de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
+type FormValues = Record<SpaceKindsType, string>;
 
 function SiteFoncierCreationQuestionSpacesSize() {
+  const [totalArea, setTotalArea] = useState(0);
+
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
-  } = useForm();
+  } = useForm<FormValues>();
 
   const { spacesKinds } = useContext(FormDataContext);
-
-  const stateRelatedMessage = useMemo(
-    () => (errors.spacesKinds ? STATE_RELATED_MESSAGE : undefined),
-    [errors.spacesKinds],
+  const { computeTotalSurface, setSpacesSituation } = useContext(
+    SiteFoncierPublicodesContext,
   );
+
+  console.log(errors);
+
+  const onBlur = useCallback(() => {
+    setSpacesSituation(getValues());
+    setTotalArea(computeTotalSurface());
+  }, [computeTotalSurface, getValues, setSpacesSituation]);
 
   const onSubmit: SubmitHandler<FormValues> = useCallback((data) => {
     console.log(data);
@@ -37,21 +41,32 @@ function SiteFoncierCreationQuestionSpacesSize() {
       <h2>Quelles sont les superficies des différents espaces ?</h2>
 
       {spacesKinds.map((key) => (
-        <Input
-          label={SPACES_LABELS[key]}
-          hintText="Superficie en m²"
-          state="default"
-          stateRelatedMessage={stateRelatedMessage}
-          key={key}
-          nativeInputProps={{
-            ...register(key),
-            inputMode: "numeric",
-            pattern: "[0-9]*",
-            type: "number",
-            placeholder: "5000",
-          }}
-        />
+        <>
+          <Input
+            label={SPACES_KINDS[key].label}
+            hintText="Superficie en m²"
+            state="default"
+            nativeInputProps={{
+              ...register(key, { required: "Ce champ est requis" }),
+              onBlur,
+              key,
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+              type: "number",
+              placeholder: "5000",
+            }}
+          />
+        </>
       ))}
+
+      <Input
+        label="Surface totale de la friche"
+        hintText="Superficie en m²"
+        disabled
+        nativeInputProps={{
+          value: totalArea,
+        }}
+      />
 
       <ButtonsGroup
         buttonsEquisized

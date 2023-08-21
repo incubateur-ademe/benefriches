@@ -1,16 +1,22 @@
-import { CallOut } from "@codegouvfr/react-dsfr/CallOut";
+import { useContext, useMemo } from "react";
+
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { routes } from "@/router";
+import { FormDataContext } from "../StateProvider";
 
 function SiteFoncierCreationConfirmation() {
+  const { kind } = useContext(FormDataContext);
+  const next = useMemo(
+    () => (kind === "friche" ? "espaces.surfaces" : "type"),
+    [kind],
+  );
+
   return (
     <>
-      <CallOut title="En construction">
-        Bénéfriches est actuellement en cours de construction
-      </CallOut>
+      <h2>Le site a été créé ! </h2>
       <Button
         priority="secondary"
-        linkProps={routes.siteFoncierForm({ question: "type" }).link}
+        linkProps={routes.siteFoncierForm({ question: next }).link}
       >
         Retour
       </Button>

@@ -3,7 +3,7 @@ adresse:
   type: texte
 
 type:
-  question: De quel type de site s’agit-il ?
+  question: De quel type de site s'agit-il ?
   une possibilité:
     choix obligatoire: oui
     possibilités:
@@ -28,12 +28,26 @@ type:
 espaces: 
   question: Quels espaces y a t-il sur cette {{ type }} ?
   plusieurs possibilités:
-    - ancienne usine
-    - ancienne carrière
+    - anciens sites de production
     - anciens espaces de stockage
-    - espaces verts
+    - ancienne carrière
+    - autres bâtiments
+    - parking ou VRD bétonnisé
+    - parking ou VRD gravier
+    - autre surface imperméabilisée
+    - autre suface non végétalisée perméable
+    - surface végétalisée
+    - pleine terre
+    - plan d'eau
+    - autre
+
   avec:
-    ancienne usine:
+    anciens sites de production:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2    
+    anciens espaces de stockage:
       type: number
       unité: m2
       par défaut:
@@ -43,12 +57,47 @@ espaces:
       unité: m2
       par défaut:
         valeur: 0 m2
-    anciens espaces de stockage:
+    autres bâtiments:
       type: number
       unité: m2
       par défaut:
         valeur: 0 m2
-    espaces verts:
+    parking ou VRD bétonnisé:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    parking ou VRD gravier:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    autre surface imperméabilisée:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    autre suface non végétalisée perméable:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    surface végétalisée:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    pleine terre:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    plan d'eau:
+      type: number
+      unité: m2
+      par défaut:
+        valeur: 0 m2
+    autre:
       type: number
       unité: m2
       par défaut:
@@ -56,10 +105,18 @@ espaces:
 
 surface friche:
   somme:
-    - espaces . ancienne usine
-    - espaces . ancienne carrière
+    - espaces . anciens sites de production
     - espaces . anciens espaces de stockage
-    - espaces . espaces verts
+    - espaces . autres bâtiments
+    - espaces . ancienne carrière
+    - espaces . parking ou VRD bétonnisé
+    - espaces . parking ou VRD gravier
+    - espaces . autre surface imperméabilisée
+    - espaces . autre suface non végétalisée perméable
+    - espaces . surface végétalisée
+    - espaces . pleine terre
+    - espaces . plan d'eau
+    - espaces . autre
 
 coût annuel friche:
   applicable si: type . friche = oui

@@ -133,24 +133,6 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
 
-  apps/publicodes:
-    devDependencies:
-      '@babel/preset-env':
-        specifier: ^7.22.10
-        version: 7.22.10(@babel/core@7.22.9)
-      '@types/jest':
-        specifier: ^29.5.3
-        version: 29.5.3
-      jest:
-        specifier: ^29.6.2
-        version: 29.6.2(@types/node@20.4.8)(ts-node@10.9.1)
-      publicodes:
-        specifier: 1.0.0-beta.71
-        version: 1.0.0-beta.71(@types/mocha@9.1.1)
-      yaml:
-        specifier: ^2.3.1
-        version: 2.3.1
-
   apps/publicodes-rules:
     devDependencies:
       '@babel/preset-env':

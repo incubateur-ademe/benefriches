@@ -11,6 +11,7 @@ import SiteFoncierCreationQuestionAddress from "./Steps/QuestionAddress";
 import SiteFoncierCreationQuestionSpacesKind from "./Steps/QuestionSpacesKind";
 import SiteFoncierCreationQuestionSpacesSize from "./Steps/QuestionSpacesSize";
 import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
+import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 
 const TRAME = {
   construction: SiteFoncierCreationConstruction,
@@ -36,7 +37,9 @@ function SiteFoncierCreation(props: {
         <SiteFoncierCreationFormStepper route={props.route} />
       )}
 
-      <FormDataProvider>{question && <Component />}</FormDataProvider>
+      <SiteFoncierPublicodesProvider>
+        <FormDataProvider>{question && <Component />}</FormDataProvider>
+      </SiteFoncierPublicodesProvider>
     </>
   );
 }

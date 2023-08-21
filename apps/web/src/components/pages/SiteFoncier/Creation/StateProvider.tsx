@@ -6,11 +6,12 @@ import {
   Dispatch,
   useCallback,
 } from "react";
-import { SITE_KINDS, SPACES_KEYS } from "./constants";
-// import PublicodesEngine from "publicodes";
-// import rules from "publicodes-rules";
+import { SITE_KINDS, SpaceKindsType } from "../constants";
 
-// const publicodesEngine = new PublicodesEngine(rules);
+import PublicodesEngine from "publicodes";
+import rules from "publicodes-rules";
+
+const publicodesEngine = new PublicodesEngine(rules);
 
 // interface FormData {
 //   type: "friche" | "prairie" | "forêt" | "terre agricole";
@@ -86,7 +87,6 @@ import { SITE_KINDS, SPACES_KEYS } from "./constants";
 //   };
 // }
 
-type SpaceKindsType = Array<(typeof SPACES_KEYS)[number]>;
 type KindType = (typeof SITE_KINDS)[number] | null | undefined;
 export type AddressType = string | null | undefined;
 type DataTypes = {
@@ -101,12 +101,13 @@ type DataTypes = {
 };
 
 export type FormDataProvider = {
-  spacesKinds: Array<(typeof SPACES_KEYS)[number]>;
+  spacesKinds: Array<SpaceKindsType>;
   kind: KindType;
   setKind: (kind: KindType) => void;
-  setSpacesKinds: Dispatch<React.SetStateAction<SpaceKindsType>>;
+  setSpacesKinds: Dispatch<React.SetStateAction<Array<SpaceKindsType>>>;
   address: AddressType;
   setAddress: (address: AddressType) => void;
+  publicodesEngine: PublicodesEngine;
 };
 
 const FormDataContext = createContext<FormDataProvider>({
@@ -116,11 +117,12 @@ const FormDataContext = createContext<FormDataProvider>({
   setSpacesKinds: () => null,
   address: null,
   setAddress: () => null,
+  publicodesEngine,
 });
 
 const FormDataProvider = (props: { children?: ReactNode }) => {
   const [data, setData] = useState<DataTypes>({});
-  const [spacesKinds, setSpacesKinds] = useState<SpaceKindsType>([]);
+  const [spacesKinds, setSpacesKinds] = useState<Array<SpaceKindsType>>([]);
 
   const setKind = useCallback((kind: KindType) => {
     setData((currentValue) => ({ ...currentValue, kind }));
@@ -138,6 +140,7 @@ const FormDataProvider = (props: { children?: ReactNode }) => {
       setSpacesKinds,
       setAddress,
       address: data.location?.address,
+      publicodesEngine,
     }),
     [data.kind, data.location?.address, setAddress, setKind, spacesKinds],
   );

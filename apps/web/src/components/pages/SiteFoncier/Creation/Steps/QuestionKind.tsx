@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { RadioButtons } from "@codegouvfr/react-dsfr/RadioButtons";
 import { ButtonsGroup } from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { routes } from "@/router";
-import { SITE_KINDS } from "../constants";
+import { SITE_KINDS } from "../../constants";
 import { useContext, useMemo } from "react";
 import { FormDataContext } from "../StateProvider";
 

@@ -3,12 +3,12 @@ import { useForm } from "react-hook-form";
 import { routes } from "@/router";
 import { ButtonsGroup } from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { SPACES_KEYS, SPACES_LABELS } from "../constants";
+import { SPACES_KINDS, SpaceKindsType } from "../../constants";
 import { useContext, useMemo } from "react";
 import { FormDataContext } from "../StateProvider";
 
 type FormValues = {
-  spacesKinds: Array<(typeof SPACES_KEYS)[number]>;
+  spacesKinds: Array<SpaceKindsType>;
 };
 
 const STATE_RELATED_MESSAGE =
@@ -32,8 +32,8 @@ function SiteFoncierCreationQuestionSpacesKind() {
     [errors.spacesKinds],
   );
 
-  const options = Object.entries(SPACES_LABELS).map(([key, value]) => ({
-    label: value,
+  const options = Object.keys(SPACES_KINDS).map((key) => ({
+    label: SPACES_KINDS[key as SpaceKindsType].label,
     nativeInputProps: {
       value: key,
       ...register("spacesKinds", { required: true }),
