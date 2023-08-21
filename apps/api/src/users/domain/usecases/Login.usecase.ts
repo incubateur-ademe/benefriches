@@ -30,7 +30,11 @@ export class LoginUseCase implements UseCase<Request, Response> {
     );
     if (!isPasswordRight) throw new Error("Wrong password");
 
-    const accessJwt = await this.accessTokenService.sign(user.email);
+    const accessJwt = await this.accessTokenService.sign({
+      sub: user.id,
+      id: user.id,
+      email: user.email,
+    });
     return accessJwt;
   }
 }
