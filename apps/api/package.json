@@ -16,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "test": "pnpm test:unit && pnpm test:integration",
     "test:unit": "jest --config ./test/jest.config.ts",
-    "test:integration": "jest --config ./test/jest-integration.config.ts",
+    "test:integration": "jest --runInBand --config ./test/jest-integration.config.ts",
     "lint": "eslint . --ext js,ts --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
     "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
