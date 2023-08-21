@@ -1,7 +1,7 @@
-import { UseCase } from "../../../shared-kernel/usecase";
-import { HashGenerator } from "../gateways/HashGenerator";
-import { AccessTokenService } from "../gateways/AccessTokenService";
-import { UserRepository } from "../gateways/UserRepository";
+import { UseCase } from "src/shared-kernel/usecase";
+import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
+import { AccessTokenService } from "src/users/domain/gateways/AccessTokenService";
+import { UserRepository } from "src/users/domain/gateways/UserRepository";
 
 type Request = {
   email: string;
