@@ -1,31 +1,37 @@
-import knex, { Knex } from "knex";
+import { Knex } from "knex";
 import { Module } from "@nestjs/common";
 import { JwtModule, JwtService } from "@nestjs/jwt";
 import { LoginUseCase } from "src/auth/domain/usecases/Login.usecase";
 import { UserRepository } from "src/users/domain/gateways/UserRepository";
 import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
 import { AccessTokenService } from "src/users/domain/gateways/AccessTokenService";
-import knexConfig from "src/shared-kernel/adapters/sql-knex/knexfile";
 import { SqlUserRepository } from "src/users/adapters/user-repository/SqlUserRepository";
 import { CryptoHashGenerator } from "src/users/adapters/hash-generator/CryptoHashGenerator";
 import { AuthController } from "./auth.controller";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 @Module({
   imports: [
-    JwtModule.register({
-      secret: process.env.AUTH_JWT_SECRET,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        return {
+          secret: configService.getOrThrow<string>("AUTH_JWT_SECRET"),
+          signOptions: {
+            expiresIn: configService.getOrThrow<string>("AUTH_JWT_EXPIRATION"),
+          },
+        };
+      },
+      inject: [ConfigService],
     }),
   ],
   controllers: [AuthController],
   providers: [
     {
-      provide: "SqlConnection",
-      useValue: knex(knexConfig.test),
-    },
-    {
       provide: "UserRepository",
       useFactory: (sqlConnection: Knex) => new SqlUserRepository(sqlConnection),
-      inject: ["SqlConnection"],
+      inject: [SqlConnection],
     },
     { provide: "HashGenerator", useClass: CryptoHashGenerator },
     {
