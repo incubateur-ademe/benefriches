@@ -32,7 +32,7 @@ describe("Auth controller", () => {
     await app.close();
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await sqlConnection("users").truncate();
   });
 
