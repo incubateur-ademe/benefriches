@@ -30,7 +30,7 @@ describe("Users controller", () => {
     await sqlConnection.destroy();
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await sqlConnection("users").truncate();
   });
 
