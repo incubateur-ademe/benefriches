@@ -6,6 +6,7 @@ import { Knex } from "knex";
 import { AppModule } from "src/app.module";
 import { User } from "src/users/domain/models/user";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { ConfigModule } from "@nestjs/config";
 
 describe("Users controller", () => {
   let app: INestApplication;
@@ -14,7 +15,10 @@ describe("Users controller", () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideModule(ConfigModule)
+      .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
+      .compile();
 
     app = moduleRef.createNestApplication();
     await app.init();
