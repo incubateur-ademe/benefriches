@@ -1,0 +1,57 @@
+enum EnvType {
+  LOCAL = "local",
+  STAGING = "staging",
+  PRODUCTION = "production",
+}
+
+type AppConfigProps = {
+  envType: EnvType;
+  port: number;
+};
+
+export class AppConfig {
+  private constructor(private readonly appConfigProps: AppConfigProps) {}
+
+  public get port() {
+    return this.appConfigProps.port;
+  }
+
+  public static fromObject(props: Record<string, string | undefined>) {
+    return new AppConfig({
+      port: requireInt(props.PORT),
+      envType: requireStringInList(props.ENV_TYPE, Object.values(EnvType)),
+    });
+  }
+
+  public static fromDotEnvFile() {
+    dotenv.config();
+    return AppConfig.fromObject(process.env);
+  }
+}
+
+const requireInt = (value: string | undefined) => {
+  // @ts-expect-error we check for NaN just after
+  const parsed = parseInt(value, 10);
+  if (!value || isNaN(parsed)) {
+    throw new Error(`Cannot parse integer from ${value}`);
+  }
+  return parsed;
+};
+
+const requireString = (value: string | undefined) => {
+  if (typeof value !== "string") {
+    throw new Error(`Cannot parse string from ${value}`);
+  }
+  return value;
+};
+
+function requireStringInList<T extends string[]>(
+  value: string | undefined,
+  whitelist: T,
+) {
+  const str = requireString(value);
+  if (!whitelist.includes(str)) {
+    throw new Error(`${value} should be one of ${whitelist.join(",")}`);
+  }
+  return str as T[number];
+}

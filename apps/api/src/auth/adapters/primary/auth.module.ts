@@ -1,8 +1,6 @@
 import knex, { Knex } from "knex";
 import { Module } from "@nestjs/common";
-import { PassportModule } from "@nestjs/passport";
 import { JwtModule, JwtService } from "@nestjs/jwt";
-import { JwtStrategy } from "./jwtStrategy";
 import { LoginUseCase } from "src/auth/domain/usecases/Login.usecase";
 import { UserRepository } from "src/users/domain/gateways/UserRepository";
 import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
@@ -14,14 +12,12 @@ import { AuthController } from "./auth.controller";
 
 @Module({
   imports: [
-    PassportModule,
     JwtModule.register({
       secret: process.env.AUTH_JWT_SECRET,
     }),
   ],
   controllers: [AuthController],
   providers: [
-    JwtStrategy,
     {
       provide: "SqlConnection",
       useValue: knex(knexConfig.test),
