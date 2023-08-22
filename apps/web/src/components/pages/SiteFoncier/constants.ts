@@ -57,3 +57,5 @@ export const SITE_KINDS = [
   "forêt",
   "prairie",
 ] as const;
+
+export type SiteKindsType = (typeof SITE_KINDS)[number];

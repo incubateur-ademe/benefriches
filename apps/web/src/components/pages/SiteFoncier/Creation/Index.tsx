@@ -13,7 +13,7 @@ import SiteFoncierCreationQuestionSpacesSize from "./Steps/QuestionSpacesSize";
 import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
 import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 
-const TRAME = {
+const STEPS = {
   construction: SiteFoncierCreationConstruction,
   intro: SiteFoncierCreationIntro,
   type: SiteFoncierCreationFormQuestionKind,
@@ -29,16 +29,17 @@ function SiteFoncierCreation(props: {
   route: Route<typeof routes.siteFoncierForm>;
 }) {
   const { question } = useMemo(() => props.route.params, [props]);
-  const Component = useMemo(() => TRAME[question], [question]);
+  const Component = useMemo(() => STEPS[question], [question]);
 
   return (
     <>
-      {!STEPPER_EXCLUDES.includes(question) && (
-        <SiteFoncierCreationFormStepper route={props.route} />
-      )}
-
       <SiteFoncierPublicodesProvider>
-        <FormDataProvider>{question && <Component />}</FormDataProvider>
+        <FormDataProvider>
+          {!STEPPER_EXCLUDES.includes(question) && (
+            <SiteFoncierCreationFormStepper route={props.route} />
+          )}
+          {question && <Component />}
+        </FormDataProvider>
       </SiteFoncierPublicodesProvider>
     </>
   );
