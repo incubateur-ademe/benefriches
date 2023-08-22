@@ -4,7 +4,7 @@ import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
 import { AppModule } from "src/app.module";
 import { DeterministicHashGenerator } from "src/users/adapters/secondary/hash-generator/DeterministicHashGenerator";
-import { RandomUiidGenerator } from "src/users/adapters/secondary/uuid-generator/RandomUuidGenerator";
+import { RandomUuidGenerator } from "src/users/adapters/secondary/uuid-generator/RandomUuidGenerator";
 import { JwtService } from "@nestjs/jwt";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { ConfigModule } from "@nestjs/config";
@@ -46,7 +46,7 @@ describe("Auth controller", () => {
 
       // create user in DB
       await sqlConnection("users").insert({
-        id: new RandomUiidGenerator().generate(),
+        id: new RandomUuidGenerator().generate(),
         email: userEmail,
         password: await hashGenerator.generate(password),
       });
@@ -64,7 +64,7 @@ describe("Auth controller", () => {
 
       // create user in DB
       await sqlConnection("users").insert({
-        id: new RandomUiidGenerator().generate(),
+        id: new RandomUuidGenerator().generate(),
         email: userEmail,
         password: await hashGenerator.generate(password),
       });
