@@ -1,4 +1,4 @@
-import { HashGenerator } from "../../domain/gateways/HashGenerator";
+import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
 
 export class DeterministicHashGenerator implements HashGenerator {
   constructor(private readonly hashPrefix: string) {}

@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { HashGenerator } from "../../domain/gateways/HashGenerator";
+import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
 
 export class CryptoHashGenerator implements HashGenerator {
   constructor(private readonly saltRounds: number = 10) {}
