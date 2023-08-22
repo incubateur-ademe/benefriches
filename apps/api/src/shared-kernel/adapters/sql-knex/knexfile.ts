@@ -1,18 +1,16 @@
 import type { Knex } from "knex";
 
-const config: Record<string, Knex.Config> = {
-  test: {
-    client: "postgresql",
-    connection: {
-      port: 5432,
-      user: "postgres",
-      password: "secret",
-      database: "benefriches_db",
-    },
-    migrations: {
-      tableName: "knex_migrations",
-      directory: __dirname + "/migrations/",
-    },
+const config: Knex.Config = {
+  client: "postgresql",
+  connection: () => ({
+    port: process.env.DATABASE_PORT ? Number(process.env.DATABASE_PORT) : 5432,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_DB_NAME,
+  }),
+  migrations: {
+    tableName: "knex_migrations",
+    directory: __dirname + "/migrations/",
   },
 };
 

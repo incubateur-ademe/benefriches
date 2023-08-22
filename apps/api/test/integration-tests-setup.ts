@@ -1,5 +1,6 @@
 import path from "path";
 import knex, { Knex } from "knex";
+import dotenv from "dotenv";
 import {
   DockerComposeEnvironment,
   StartedDockerComposeEnvironment,
@@ -23,7 +24,10 @@ export const stopPostresDb = async () => {
 };
 
 const setup = async () => {
-  const sqlConnection: Knex = knex(knexConfig.test);
+  // load env vars in process.env
+  dotenv.config({ path: ".env.test" });
+
+  const sqlConnection: Knex = knex(knexConfig);
   try {
     console.log("Starting Postgres Docker testcontainer");
     await spawnPostgresDb();
