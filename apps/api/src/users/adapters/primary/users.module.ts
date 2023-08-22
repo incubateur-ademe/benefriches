@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { UsersController } from "./users.controller";
 import { CreateUserUseCase } from "src/users/domain/usecases/CreateUser.usecase";
 import { SqlUserRepository } from "../secondary/user-repository/SqlUserRepository";
-import { RandomUiidGenerator } from "../secondary/uuid-generator/RandomUuidGenerator";
+import { RandomUuidGenerator } from "../secondary/uuid-generator/RandomUuidGenerator";
 import { UuidGenerator } from "src/users/domain/gateways/UuidGenerator";
 import { UserRepository } from "src/users/domain/gateways/UserRepository";
 import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
@@ -13,7 +13,7 @@ import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection
 @Module({
   controllers: [UsersController],
   providers: [
-    { provide: "UuidGenerator", useClass: RandomUiidGenerator },
+    { provide: "UuidGenerator", useClass: RandomUuidGenerator },
     {
       provide: "UserRepository",
       useFactory: (sqlConnection: Knex) => new SqlUserRepository(sqlConnection),
