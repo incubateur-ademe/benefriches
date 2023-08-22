@@ -1,8 +1,8 @@
-import { DeterministicHashGenerator } from "../../adapters/hash-generator/DeterministicHashGenerator";
-import { InMemoryUserRepository } from "../../adapters/user-repository/InMemoryUserRepository";
-import { DeterministicUiidGenerator } from "../../adapters/uuid-generator/DeterministicUuidGenerator";
-import { HashGenerator } from "../gateways/HashGenerator";
-import { UuidGenerator } from "../gateways/UuidGenerator";
+import { DeterministicHashGenerator } from "src/users/adapters/secondary/hash-generator/DeterministicHashGenerator";
+import { InMemoryUserRepository } from "src/users/adapters/secondary/user-repository/InMemoryUserRepository";
+import { DeterministicUiidGenerator } from "src/users/adapters/secondary/uuid-generator/DeterministicUuidGenerator";
+import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
+import { UuidGenerator } from "src/users/domain/gateways/UuidGenerator";
 import { CreateUserUseCase } from "./CreateUser.usecase";
 
 describe("Register", () => {

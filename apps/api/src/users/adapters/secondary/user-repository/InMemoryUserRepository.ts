@@ -1,5 +1,5 @@
-import { UserRepository } from "../../domain/gateways/UserRepository";
-import { User } from "../../domain/models/user";
+import { UserRepository } from "src/users/domain/gateways/UserRepository";
+import { User } from "src/users/domain/models/user";
 
 export class InMemoryUserRepository implements UserRepository {
   private users: User[] = [];

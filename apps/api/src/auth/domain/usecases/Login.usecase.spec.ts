@@ -1,5 +1,5 @@
-import { DeterministicHashGenerator } from "src/users/adapters/hash-generator/DeterministicHashGenerator";
-import { InMemoryUserRepository } from "src/users/adapters/user-repository/InMemoryUserRepository";
+import { DeterministicHashGenerator } from "src/users/adapters/secondary/hash-generator/DeterministicHashGenerator";
+import { InMemoryUserRepository } from "src/users/adapters/secondary/user-repository/InMemoryUserRepository";
 import { AccessTokenService } from "src/users/domain/gateways/AccessTokenService";
 import { EmailAddress } from "src/users/domain/models/emailAddress";
 import { User } from "src/users/domain/models/user";
