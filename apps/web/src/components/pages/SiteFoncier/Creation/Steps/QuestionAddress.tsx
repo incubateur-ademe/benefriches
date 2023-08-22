@@ -1,25 +1,32 @@
 import { useContext } from "react";
+import { useForm } from "react-hook-form";
 
 import { routes } from "@/router";
 import { ButtonsGroup } from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { AddressType, FormDataContext } from "../StateProvider";
-import { useForm } from "react-hook-form";
+import { FormDataContext } from "../StateProvider";
 
 type FormValues = {
-  address: AddressType;
+  address: string | undefined | null;
 };
 
 function SiteFoncierCreationQuestionAddress() {
   const { setAddress, address, kind } = useContext(FormDataContext);
 
-  const { register, handleSubmit } = useForm<FormValues>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>({
     defaultValues: {
       address,
     },
   });
 
   const onSubmit = handleSubmit(({ address }) => {
+    if (!address) {
+      return;
+    }
     setAddress(address);
     const question = kind !== "friche" ? "construction" : "espaces.types";
     routes.siteFoncierForm({ question }).push();
@@ -32,8 +39,11 @@ function SiteFoncierCreationQuestionAddress() {
       <Input
         label="Adresse du site"
         state="default"
-        nativeInputProps={register("address")}
+        nativeInputProps={register("address", {
+          required: "Ce champ est requis",
+        })}
       />
+      {errors.address && <p>{errors.address.message}</p>}
 
       <ButtonsGroup
         buttonsEquisized

@@ -6,8 +6,7 @@ import { routes } from "@/router";
 import { FormDataContext } from "../StateProvider";
 import { SiteKindsType } from "../../constants";
 
-type SectionType = "type" | "adresse" | "espaces";
-type ArraySection = Array<SectionType>;
+type ArraySection = Array<"type" | "adresse" | "espaces">;
 type SectionsByKind = {
   [key in SiteKindsType]: ArraySection;
 };
@@ -33,43 +32,42 @@ const DEFAULT_STEPPER = {
   title: "Type",
 };
 
-function SiteFoncierCreationStepper(props: {
+type Props = {
   route: Route<typeof routes.siteFoncierForm>;
-}) {
-  const { params } = useMemo(() => props.route, [props]);
-  const [section] = useMemo<Array<SectionType>>(
-    () => params.question.split(".") as Array<SectionType>,
-    [params],
-  );
+};
+
+function SiteFoncierCreationStepper({ route }: Props) {
+  const { params } = route;
+  const [section] = params.question.split(".") as ArraySection;
 
   const { kind } = useContext(FormDataContext);
 
   const stepperProps = useMemo(() => {
-    if (kind) {
-      const sections = SECTIONS_BY_KIND[kind];
-      const currentStepIndex = sections.indexOf(section);
-      const currentStep = currentStepIndex + 1;
-      const stepCount = sections.length;
-      const title = section.charAt(0).toUpperCase() + section.slice(1);
+    if (!kind || !section) {
+      return DEFAULT_STEPPER;
+    }
+    const sections = SECTIONS_BY_KIND[kind];
+    const currentStepIndex = sections.indexOf(section);
+    const currentStep = currentStepIndex + 1;
+    const stepCount = sections.length;
+    const title = section.charAt(0).toUpperCase() + section.slice(1);
 
-      if (currentStepIndex === stepCount - 1) {
-        return {
-          currentStep,
-          stepCount,
-          title,
-        };
-      }
-
-      const nextSection = sections[currentStepIndex + 1];
-
+    if (currentStepIndex === stepCount - 1) {
       return {
         currentStep,
-        nextTitle: nextSection.charAt(0).toUpperCase() + nextSection.slice(1),
         stepCount,
         title,
       };
     }
-    return DEFAULT_STEPPER;
+
+    const nextSection = sections[currentStepIndex + 1];
+
+    return {
+      currentStep,
+      nextTitle: nextSection.charAt(0).toUpperCase() + nextSection.slice(1),
+      stepCount,
+      title,
+    };
   }, [kind, section]);
 
   return <>{section && <Stepper {...stepperProps} />}</>;

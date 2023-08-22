@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { Route } from "type-route";
 import { routes } from "@/router";
 
@@ -13,7 +12,7 @@ import SiteFoncierCreationQuestionSpacesSize from "./Steps/QuestionSpacesSize";
 import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
 import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 
-const STEPS = {
+const QUESTIONS_COMPONENTS_CORRELATION = {
   construction: SiteFoncierCreationConstruction,
   intro: SiteFoncierCreationIntro,
   type: SiteFoncierCreationFormQuestionKind,
@@ -23,22 +22,24 @@ const STEPS = {
   confirmation: SiteFoncierCreationConfirmation,
 };
 
-const STEPPER_EXCLUDES = ["intro", "construction", "confirmation"];
+const STEPPER_EXCLUDED = ["intro", "construction", "confirmation"];
 
-function SiteFoncierCreation(props: {
+type Props = {
   route: Route<typeof routes.siteFoncierForm>;
-}) {
-  const { question } = useMemo(() => props.route.params, [props]);
-  const Component = useMemo(() => STEPS[question], [question]);
+};
+
+function SiteFoncierCreation({ route }: Props) {
+  const { question } = route.params;
+  const QuestionComponent = QUESTIONS_COMPONENTS_CORRELATION[question];
 
   return (
     <>
       <SiteFoncierPublicodesProvider>
         <FormDataProvider>
-          {!STEPPER_EXCLUDES.includes(question) && (
-            <SiteFoncierCreationFormStepper route={props.route} />
+          {!STEPPER_EXCLUDED.includes(question) && (
+            <SiteFoncierCreationFormStepper route={route} />
           )}
-          {question && <Component />}
+          {question && <QuestionComponent />}
         </FormDataProvider>
       </SiteFoncierPublicodesProvider>
     </>

@@ -6,7 +6,7 @@ import { FormDataContext } from "../StateProvider";
 
 function SiteFoncierCreationConfirmation() {
   const { kind } = useContext(FormDataContext);
-  const next = useMemo(
+  const previous = useMemo(
     () => (kind === "friche" ? "espaces.surfaces" : "type"),
     [kind],
   );
@@ -16,7 +16,7 @@ function SiteFoncierCreationConfirmation() {
       <h2>Le site a été créé ! </h2>
       <Button
         priority="secondary"
-        linkProps={routes.siteFoncierForm({ question: next }).link}
+        linkProps={routes.siteFoncierForm({ question: previous }).link}
       >
         Retour
       </Button>
