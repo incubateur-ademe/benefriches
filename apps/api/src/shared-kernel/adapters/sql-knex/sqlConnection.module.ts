@@ -2,7 +2,7 @@ import knex from "knex";
 import knexConfig from "./knexfile";
 import { Global, Module } from "@nestjs/common";
 
-export const SqlConnection = "SqlConection";
+export const SqlConnection = "SqlConnection";
 
 @Global()
 @Module({
