@@ -9,7 +9,7 @@ describe("SqlUserRepository integration", () => {
   let sqlUserRepository: SqlUserRepository;
 
   beforeAll(() => {
-    sqlConnection = knex(knexConfig.test);
+    sqlConnection = knex(knexConfig);
   });
 
   afterAll(async () => {

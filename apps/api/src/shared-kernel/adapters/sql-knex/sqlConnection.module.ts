@@ -10,7 +10,7 @@ export const SqlConnection = "SqlConnection";
   providers: [
     {
       provide: SqlConnection,
-      useValue: knex(knexConfig.test),
+      useValue: knex(knexConfig),
     },
   ],
 })
