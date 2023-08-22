@@ -1,15 +1,19 @@
 import {
   useState,
   createContext,
-  useMemo,
   ReactNode,
   Dispatch,
   useCallback,
 } from "react";
-import { SiteKindsType, SpaceKindsType } from "../constants";
+
+import {
+  SiteKindsType,
+  SurfaceKindsType,
+  SurfacesDistributionType,
+} from "../constants";
 
 type DataTypes = {
-  kind?: SiteKindsType | null | undefined;
+  kind?: SiteKindsType | undefined;
   name?: string;
   description?: string;
   location?: {
@@ -20,28 +24,37 @@ type DataTypes = {
 };
 
 export type FormDataProvider = {
-  spacesKinds: Array<SpaceKindsType>;
-  kind: SiteKindsType | null | undefined;
+  surfaceKinds: Array<SurfaceKindsType>;
+  kind: SiteKindsType | undefined;
   setKind: (kind: SiteKindsType) => void;
-  setSpacesKinds: Dispatch<React.SetStateAction<Array<SpaceKindsType>>>;
-  address: string | null | undefined;
+  setSurfaceKinds: Dispatch<React.SetStateAction<Array<SurfaceKindsType>>>;
+  address: string | undefined;
   setAddress: (address: string) => void;
+  surfacesDistribution: SurfacesDistributionType;
+  setSurfacesDistribution: Dispatch<
+    React.SetStateAction<SurfacesDistributionType>
+  >;
 };
 
 const DEFAULT_VALUES = {
-  spacesKinds: [],
-  kind: null,
-  setKind: () => null,
-  setSpacesKinds: () => null,
-  address: null,
-  setAddress: () => null,
+  surfaceKinds: [],
+  kind: undefined,
+  setKind: () => undefined,
+  setSurfaceKinds: () => undefined,
+  address: undefined,
+  setAddress: () => undefined,
+  surfacesDistribution: {},
+  setSurfacesDistribution: () => undefined,
 };
 
 const FormDataContext = createContext<FormDataProvider>(DEFAULT_VALUES);
 
 const FormDataProvider = (props: { children?: ReactNode }) => {
   const [data, setData] = useState<DataTypes>(DEFAULT_VALUES);
-  const [spacesKinds, setSpacesKinds] = useState<Array<SpaceKindsType>>([]);
+  // TODO: Fusionner surfaceKinds et surfacesDistribution
+  const [surfaceKinds, setSurfaceKinds] = useState<Array<SurfaceKindsType>>([]);
+  const [surfacesDistribution, setSurfacesDistribution] =
+    useState<SurfacesDistributionType>({});
 
   const setKind = useCallback((kind: SiteKindsType) => {
     setData((currentValue) => ({ ...currentValue, kind }));
@@ -51,20 +64,19 @@ const FormDataProvider = (props: { children?: ReactNode }) => {
     setData((currentValue) => ({ ...currentValue, location: { address } }));
   }, []);
 
-  const formDataValue = useMemo(
-    () => ({
-      kind: data.kind,
-      setKind,
-      spacesKinds,
-      setSpacesKinds,
-      setAddress,
-      address: data.location?.address,
-    }),
-    [data.kind, data.location?.address, setAddress, setKind, spacesKinds],
-  );
-
   return (
-    <FormDataContext.Provider value={formDataValue}>
+    <FormDataContext.Provider
+      value={{
+        kind: data.kind,
+        setKind,
+        surfaceKinds,
+        setSurfaceKinds,
+        setAddress,
+        surfacesDistribution,
+        setSurfacesDistribution,
+        address: data.location?.address,
+      }}
+    >
       {props.children}
     </FormDataContext.Provider>
   );

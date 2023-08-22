@@ -2,50 +2,57 @@ import { createContext, useMemo, ReactNode, useCallback } from "react";
 
 import PublicodesEngine from "publicodes";
 import rules from "publicodes-rules";
-import { SPACES_KINDS, SpaceKindsType } from "./constants";
+import {
+  SURFACE_KINDS,
+  SurfaceKindsType,
+  SurfacesDistributionType,
+} from "./constants";
 
 const publicodesEngine = new PublicodesEngine(rules);
 
-type FormSpacesSizes = Record<SpaceKindsType, string>;
-type PublicodesKeys = (typeof SPACES_KINDS)[SpaceKindsType]["publicodeKey"];
-type PublicodesSpacesSizes = Record<PublicodesKeys, string>;
+type PublicodesKeys = (typeof SURFACE_KINDS)[SurfaceKindsType]["publicodeKey"];
+type PublicodesSurfacesDistribution = Record<PublicodesKeys, string>;
 
 type SiteFoncierPublicodesProvider = {
   computeTotalSurface: () => number;
-  setSpacesSituation: (values: FormSpacesSizes) => void;
+  setSurfaceSituation: (values: SurfacesDistributionType) => void;
 };
 
 const SiteFoncierPublicodesContext =
   createContext<SiteFoncierPublicodesProvider>({
     computeTotalSurface: () => 0,
-    setSpacesSituation: () => undefined,
+    setSurfaceSituation: () => undefined,
   });
 
-const formatSpacesValuesForPublicodes = (
-  values: FormSpacesSizes,
-): PublicodesSpacesSizes => {
+const formatSurfaceValuesForPublicodes = (
+  values: SurfacesDistributionType,
+): PublicodesSurfacesDistribution => {
   const publicodesArray = Object.entries(values).map(([key, value]) => {
-    const newKey = SPACES_KINDS[key as SpaceKindsType].publicodeKey;
+    const newKey = SURFACE_KINDS[key as SurfaceKindsType].publicodeKey;
     return [newKey, `${value || 0}m2`];
   });
-  return Object.fromEntries(publicodesArray) as PublicodesSpacesSizes;
+  return Object.fromEntries(publicodesArray) as PublicodesSurfacesDistribution;
 };
 
 const SiteFoncierPublicodesProvider = (props: { children?: ReactNode }) => {
-  const setSpacesSituation = useCallback((values: FormSpacesSizes) => {
-    publicodesEngine.setSituation(formatSpacesValuesForPublicodes(values));
-  }, []);
+  const setSurfaceSituation = useCallback(
+    (values: SurfacesDistributionType) => {
+      publicodesEngine.setSituation(formatSurfaceValuesForPublicodes(values));
+    },
+    [],
+  );
 
   const computeTotalSurface = useCallback(() => {
+    // TODO: Retourner une erreur si une erreur de calcul est détectée
     return publicodesEngine.evaluate("surface friche").nodeValue as number;
   }, []);
 
   const value = useMemo(
     () => ({
       computeTotalSurface,
-      setSpacesSituation,
+      setSurfaceSituation,
     }),
-    [computeTotalSurface, setSpacesSituation],
+    [computeTotalSurface, setSurfaceSituation],
   );
 
   return (

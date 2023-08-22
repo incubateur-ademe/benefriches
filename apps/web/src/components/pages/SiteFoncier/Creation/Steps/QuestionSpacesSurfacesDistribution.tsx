@@ -4,59 +4,56 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { useCallback, useContext, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FormDataContext } from "../StateProvider";
-import { SPACES_KINDS, SpaceKindsType } from "../../constants";
+import { SURFACE_KINDS, SurfacesDistributionType } from "../../constants";
 import { SiteFoncierPublicodesContext } from "../../PublicodesProvider";
 
-type FormValues = Record<SpaceKindsType, string>;
+type FormValues = SurfacesDistributionType;
 
-function SiteFoncierCreationQuestionSpacesSize() {
+function SiteFoncierCreationQuestionSurfacesDistribution() {
   const [totalArea, setTotalArea] = useState(0);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<FormValues>();
-
-  const { spacesKinds } = useContext(FormDataContext);
-  const { computeTotalSurface, setSpacesSituation } = useContext(
+  const { surfaceKinds, setSurfacesDistribution, surfacesDistribution } =
+    useContext(FormDataContext);
+  const { computeTotalSurface, setSurfaceSituation } = useContext(
     SiteFoncierPublicodesContext,
   );
 
-  console.log(errors);
+  const { register, handleSubmit, getValues } = useForm<FormValues>({
+    defaultValues: surfacesDistribution,
+  });
 
   const onBlur = useCallback(() => {
-    setSpacesSituation(getValues());
+    setSurfaceSituation(getValues());
     setTotalArea(computeTotalSurface());
-  }, [computeTotalSurface, getValues, setSpacesSituation]);
-
-  const onSubmit: SubmitHandler<FormValues> = useCallback((data) => {
-    console.log(data);
-    routes.siteFoncierForm({ question: "confirmation" }).push();
-  }, []);
+  }, [computeTotalSurface, getValues, setSurfaceSituation]);
+  setSurfaceSituation;
+  const onSubmit: SubmitHandler<FormValues> = useCallback(
+    (data) => {
+      setSurfacesDistribution(data);
+      routes.siteFoncierForm({ question: "confirmation" }).push();
+    },
+    [setSurfacesDistribution],
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h2>Quelles sont les superficies des différents espaces ?</h2>
 
-      {spacesKinds.map((key) => (
-        <>
-          <Input
-            label={SPACES_KINDS[key].label}
-            hintText="Superficie en m²"
-            state="default"
-            nativeInputProps={{
-              ...register(key, { required: "Ce champ est requis" }),
-              onBlur,
-              key,
-              inputMode: "numeric",
-              pattern: "[0-9]*",
-              type: "number",
-              placeholder: "5000",
-            }}
-          />
-        </>
+      {surfaceKinds.map((key) => (
+        <Input
+          label={SURFACE_KINDS[key].label}
+          hintText="Superficie en m²"
+          state="default"
+          key={key}
+          nativeInputProps={{
+            ...register(key, { required: "Ce champ est requis" }),
+            onBlur,
+            inputMode: "numeric",
+            pattern: "[0-9]*",
+            type: "number",
+            placeholder: "5000",
+          }}
+        />
       ))}
 
       <Input
@@ -90,4 +87,4 @@ function SiteFoncierCreationQuestionSpacesSize() {
   );
 }
 
-export default SiteFoncierCreationQuestionSpacesSize;
+export default SiteFoncierCreationQuestionSurfacesDistribution;

@@ -7,8 +7,8 @@ import SiteFoncierCreationFormStepper from "./Steps/Stepper";
 import SiteFoncierCreationConstruction from "./Steps/Construction";
 import SiteFoncierCreationIntro from "./Steps/Intro";
 import SiteFoncierCreationQuestionAddress from "./Steps/QuestionAddress";
-import SiteFoncierCreationQuestionSpacesKind from "./Steps/QuestionSpacesKind";
-import SiteFoncierCreationQuestionSpacesSize from "./Steps/QuestionSpacesSize";
+import QuestionSpacesSurfacesKind from "./Steps/QuestionSpacesSurfacesKind";
+import QuestionSpacesSurfacesDistribution from "./Steps/QuestionSpacesSurfacesDistribution";
 import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
 import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 
@@ -17,8 +17,8 @@ const QUESTIONS_COMPONENTS_CORRELATION = {
   intro: SiteFoncierCreationIntro,
   type: SiteFoncierCreationFormQuestionKind,
   adresse: SiteFoncierCreationQuestionAddress,
-  "espaces.types": SiteFoncierCreationQuestionSpacesKind,
-  "espaces.surfaces": SiteFoncierCreationQuestionSpacesSize,
+  "espaces.types": QuestionSpacesSurfacesKind,
+  "espaces.surfaces": QuestionSpacesSurfacesDistribution,
   confirmation: SiteFoncierCreationConfirmation,
 };
 

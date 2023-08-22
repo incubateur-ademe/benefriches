@@ -7,7 +7,7 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { FormDataContext } from "../StateProvider";
 
 type FormValues = {
-  address: string | undefined | null;
+  address: string | undefined;
 };
 
 function SiteFoncierCreationQuestionAddress() {

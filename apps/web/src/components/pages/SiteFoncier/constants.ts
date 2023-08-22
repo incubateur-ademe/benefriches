@@ -1,4 +1,4 @@
-export const SPACES_KINDS = {
+export const SURFACE_KINDS = {
   production: {
     label: "Anciens ateliers / sites de production",
     publicodeKey: "espaces . anciens sites de production",
@@ -49,7 +49,7 @@ export const SPACES_KINDS = {
   },
 } as const;
 
-export type SpaceKindsType = keyof typeof SPACES_KINDS;
+export type SurfaceKindsType = keyof typeof SURFACE_KINDS;
 
 export const SITE_KINDS = [
   "friche",
@@ -59,3 +59,7 @@ export const SITE_KINDS = [
 ] as const;
 
 export type SiteKindsType = (typeof SITE_KINDS)[number];
+
+export type SurfacesDistributionType = Partial<
+  Record<SurfaceKindsType, string>
+>;

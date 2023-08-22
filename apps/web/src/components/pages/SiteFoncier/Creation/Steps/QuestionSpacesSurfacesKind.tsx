@@ -3,19 +3,19 @@ import { useForm } from "react-hook-form";
 import { routes } from "@/router";
 import { ButtonsGroup } from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { SPACES_KINDS, SpaceKindsType } from "../../constants";
+import { SURFACE_KINDS, SurfaceKindsType } from "../../constants";
 import { useContext, useMemo } from "react";
 import { FormDataContext } from "../StateProvider";
 
 type FormValues = {
-  spacesKinds: Array<SpaceKindsType>;
+  surfaceKinds: Array<SurfaceKindsType>;
 };
 
 const STATE_RELATED_MESSAGE =
   "Plusieurs réponses sont possibles. Si vous ne savez pas qualifier des espaces de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
 
-function SiteFoncierCreationQuestionSpacesKind() {
-  const { spacesKinds, setSpacesKinds } = useContext(FormDataContext);
+function SiteFoncierCreationQuestionSurfacesKind() {
+  const { surfaceKinds, setSurfaceKinds } = useContext(FormDataContext);
 
   const {
     register,
@@ -23,25 +23,25 @@ function SiteFoncierCreationQuestionSpacesKind() {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
-      spacesKinds,
+      surfaceKinds,
     },
   });
 
   const stateRelatedMessage = useMemo(
-    () => (errors.spacesKinds ? STATE_RELATED_MESSAGE : undefined),
-    [errors.spacesKinds],
+    () => (errors.surfaceKinds ? STATE_RELATED_MESSAGE : undefined),
+    [errors.surfaceKinds],
   );
 
-  const options = Object.keys(SPACES_KINDS).map((key) => ({
-    label: SPACES_KINDS[key as SpaceKindsType].label,
+  const options = Object.keys(SURFACE_KINDS).map((key) => ({
+    label: SURFACE_KINDS[key as SurfaceKindsType].label,
     nativeInputProps: {
       value: key,
-      ...register("spacesKinds", { required: true }),
+      ...register("surfaceKinds", { required: true }),
     },
   }));
 
-  const onSubmit = handleSubmit(({ spacesKinds }) => {
-    setSpacesKinds(spacesKinds);
+  const onSubmit = handleSubmit(({ surfaceKinds }) => {
+    setSurfaceKinds(surfaceKinds);
     routes.siteFoncierForm({ question: "espaces.surfaces" }).push();
   });
 
@@ -75,4 +75,4 @@ function SiteFoncierCreationQuestionSpacesKind() {
   );
 }
 
-export default SiteFoncierCreationQuestionSpacesKind;
+export default SiteFoncierCreationQuestionSurfacesKind;

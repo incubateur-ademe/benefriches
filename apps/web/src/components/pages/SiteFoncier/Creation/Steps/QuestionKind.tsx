@@ -11,7 +11,7 @@ const STATE_RELATED_MESSAGE =
   "Cette information est requise pour la suite du questionnaire.";
 
 type FormValues = {
-  siteKind: SiteKindsType | undefined | null;
+  siteKind: SiteKindsType | undefined;
 };
 
 function SiteFoncierCreationQuestionKind() {
