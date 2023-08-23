@@ -5,7 +5,7 @@ import {
   DockerComposeEnvironment,
   StartedDockerComposeEnvironment,
 } from "testcontainers";
-import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexfile";
+import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexConfig";
 
 const composeFilePath = path.resolve(process.cwd(), "../..");
 const composeFile = "docker-compose.db.yml";

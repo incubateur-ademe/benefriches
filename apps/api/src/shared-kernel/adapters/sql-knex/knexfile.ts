@@ -1,17 +1,11 @@
-import type { Knex } from "knex";
+import path from "path";
+import dotenv from "dotenv";
+import config from "./knexConfig";
 
-const config: Knex.Config = {
-  client: "postgresql",
-  connection: () => ({
-    port: process.env.DATABASE_PORT ? Number(process.env.DATABASE_PORT) : 5432,
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_DB_NAME,
-  }),
-  migrations: {
-    tableName: "knex_migrations",
-    directory: __dirname + "/migrations/",
-  },
-};
+// This file is used by knex migration scripts
+
+// load env vars
+const dotEnvPath = path.resolve(process.cwd(), "../../../../.env");
+dotenv.config({ path: dotEnvPath });
 
 export default config;

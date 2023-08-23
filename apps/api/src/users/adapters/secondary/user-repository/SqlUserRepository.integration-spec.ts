@@ -1,5 +1,5 @@
 import knex, { Knex } from "knex";
-import knexConfig from "src/shared-kernel/adapters/sql-knex/knexfile";
+import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { User } from "src/users/domain/models/user";
 import { EmailAddress } from "src/users/domain/models/emailAddress";
 import { SqlUserRepository } from "./SqlUserRepository";
