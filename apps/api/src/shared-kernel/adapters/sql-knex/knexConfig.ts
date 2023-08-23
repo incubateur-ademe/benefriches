@@ -15,7 +15,7 @@ const config: Knex.Config = {
           password: process.env.DATABASE_PASSWORD,
           database: process.env.DATABASE_DB_NAME,
           ssl: {
-            rejectUnauthorized: process.env.NODE_ENV === "production",
+            rejectUnauthorized: process.env.NODE_ENV !== "production",
           },
         };
   },
