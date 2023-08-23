@@ -1,1 +1,2 @@
 web: cd apps/api && node ./dist/src/main.js
+postdeploy: cd apps/api && pnpm knex:migrate-latest
