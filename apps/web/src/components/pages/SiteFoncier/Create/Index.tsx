@@ -5,7 +5,6 @@ import { FormDataProvider } from "./StateProvider";
 import SiteFoncierCreationFormQuestionKind from "./Steps/QuestionKind";
 import SiteFoncierCreationFormStepper from "./Steps/Stepper";
 import SiteFoncierCreationConstruction from "./Steps/Construction";
-import SiteFoncierCreationIntro from "./Steps/Intro";
 import SiteFoncierCreationQuestionAddress from "./Steps/QuestionAddress";
 import QuestionSpacesSurfacesKind from "./Steps/QuestionSpacesSurfacesKind";
 import QuestionSpacesSurfacesDistribution from "./Steps/QuestionSpacesSurfacesDistribution";
@@ -14,7 +13,6 @@ import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 
 const QUESTIONS_COMPONENTS_CORRELATION = {
   construction: SiteFoncierCreationConstruction,
-  intro: SiteFoncierCreationIntro,
   type: SiteFoncierCreationFormQuestionKind,
   adresse: SiteFoncierCreationQuestionAddress,
   "espaces.types": QuestionSpacesSurfacesKind,
@@ -22,7 +20,7 @@ const QUESTIONS_COMPONENTS_CORRELATION = {
   confirmation: SiteFoncierCreationConfirmation,
 };
 
-const STEPPER_EXCLUDED = ["intro", "construction", "confirmation"];
+const STEPPER_EXCLUDED = ["construction", "confirmation"];
 
 type Props = {
   route: Route<typeof routes.createSiteFoncier>;

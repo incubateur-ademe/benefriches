@@ -60,11 +60,6 @@ function SiteFoncierCreationQuestionKind() {
         inlineLayoutWhen="always"
         buttons={[
           {
-            children: "Retour",
-            linkProps: routes.createSiteFoncier({ question: "intro" }).link,
-            priority: "secondary",
-          },
-          {
             children: "Suivant",
             nativeButtonProps: { type: "submit" },
           },
