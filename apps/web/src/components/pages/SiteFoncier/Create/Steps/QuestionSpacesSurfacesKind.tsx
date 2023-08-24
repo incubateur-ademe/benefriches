@@ -42,7 +42,7 @@ function SiteFoncierCreationQuestionSurfacesKind() {
 
   const onSubmit = handleSubmit(({ surfaceKinds }) => {
     setSurfaceKinds(surfaceKinds);
-    routes.siteFoncierForm({ question: "espaces.surfaces" }).push();
+    routes.createSiteFoncier({ question: "espaces.surfaces" }).push();
   });
 
   return (
@@ -62,7 +62,7 @@ function SiteFoncierCreationQuestionSurfacesKind() {
         buttons={[
           {
             children: "Retour",
-            linkProps: routes.siteFoncierForm({ question: "adresse" }).link,
+            linkProps: routes.createSiteFoncier({ question: "adresse" }).link,
             priority: "secondary",
           },
           {

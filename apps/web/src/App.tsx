@@ -2,11 +2,11 @@ import { fr } from "@codegouvfr/react-dsfr";
 import HeaderFooterLayout from "./components/layout/HeaderFooterLayout/HeaderFooterLayout";
 import { useRoute, routes } from "./router";
 import HomePage from "./components/pages/Home";
-import SiteFoncierCreationForm from "./components/pages/SiteFoncier/Creation/Index";
 import SitesFonciersListPage from "./components/pages/SiteFoncier/List";
 import SiteFoncierDetailsPage from "./components/pages/SiteFoncier/Details";
 import LoginPage from "./components/pages/Login";
 import CreateUserPage from "./components/pages/CreateUser";
+import CreateSiteFoncierPage from "./components/pages/SiteFoncier/Create/Index";
 
 function App() {
   const route = useRoute();
@@ -25,8 +25,8 @@ function App() {
         )}
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
-        {route.name === routes.siteFoncierForm.name && (
-          <SiteFoncierCreationForm route={route} />
+        {route.name === routes.createSiteFoncier.name && (
+          <CreateSiteFoncierPage route={route} />
         )}
         {route.name === false && <>Page non trouvée</>}
       </main>

@@ -10,7 +10,7 @@ function SiteFoncierCreationConstruction() {
       </CallOut>
       <Button
         priority="secondary"
-        linkProps={routes.siteFoncierForm({ question: "type" }).link}
+        linkProps={routes.createSiteFoncier({ question: "type" }).link}
       >
         Retour
       </Button>

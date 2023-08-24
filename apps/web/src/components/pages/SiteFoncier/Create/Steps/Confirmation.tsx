@@ -37,7 +37,7 @@ function SiteFoncierCreationConfirmation() {
 
       <Button
         priority="secondary"
-        linkProps={routes.siteFoncierForm({ question: previous }).link}
+        linkProps={routes.createSiteFoncier({ question: previous }).link}
       >
         Retour
       </Button>

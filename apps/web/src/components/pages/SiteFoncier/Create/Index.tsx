@@ -25,10 +25,10 @@ const QUESTIONS_COMPONENTS_CORRELATION = {
 const STEPPER_EXCLUDED = ["intro", "construction", "confirmation"];
 
 type Props = {
-  route: Route<typeof routes.siteFoncierForm>;
+  route: Route<typeof routes.createSiteFoncier>;
 };
 
-function SiteFoncierCreation({ route }: Props) {
+function CreateSiteFoncierPage({ route }: Props) {
   const { question } = route.params;
   const QuestionComponent = QUESTIONS_COMPONENTS_CORRELATION[question];
 
@@ -46,4 +46,4 @@ function SiteFoncierCreation({ route }: Props) {
   );
 }
 
-export default SiteFoncierCreation;
+export default CreateSiteFoncierPage;
