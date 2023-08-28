@@ -10,7 +10,7 @@ function SiteFoncierCreationIntro() {
         plus tard les compléter.
       </p>
 
-      <Button linkProps={routes.siteFoncierForm({ question: "type" }).link}>
+      <Button linkProps={routes.createSiteFoncier({ question: "type" }).link}>
         C’est parti
       </Button>
     </>

@@ -33,7 +33,7 @@ const DEFAULT_STEPPER = {
 };
 
 type Props = {
-  route: Route<typeof routes.siteFoncierForm>;
+  route: Route<typeof routes.createSiteFoncier>;
 };
 
 function SiteFoncierCreationStepper({ route }: Props) {

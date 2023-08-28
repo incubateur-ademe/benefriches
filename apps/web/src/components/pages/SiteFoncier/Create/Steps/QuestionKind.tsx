@@ -43,7 +43,7 @@ function SiteFoncierCreationQuestionKind() {
     }
     setKind(siteKind);
     const question = siteKind !== "friche" ? "construction" : "adresse";
-    routes.siteFoncierForm({ question }).push();
+    routes.createSiteFoncier({ question }).push();
   });
 
   return (
@@ -61,7 +61,7 @@ function SiteFoncierCreationQuestionKind() {
         buttons={[
           {
             children: "Retour",
-            linkProps: routes.siteFoncierForm({ question: "intro" }).link,
+            linkProps: routes.createSiteFoncier({ question: "intro" }).link,
             priority: "secondary",
           },
           {

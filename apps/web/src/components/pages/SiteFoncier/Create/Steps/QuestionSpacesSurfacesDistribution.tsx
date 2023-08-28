@@ -30,7 +30,7 @@ function SiteFoncierCreationQuestionSurfacesDistribution() {
   const onSubmit: SubmitHandler<FormValues> = useCallback(
     (data) => {
       setSurfacesDistribution(data);
-      routes.siteFoncierForm({ question: "confirmation" }).push();
+      routes.createSiteFoncier({ question: "confirmation" }).push();
     },
     [setSurfacesDistribution],
   );
@@ -71,7 +71,7 @@ function SiteFoncierCreationQuestionSurfacesDistribution() {
         buttons={[
           {
             children: "Retour",
-            linkProps: routes.siteFoncierForm({ question: "espaces.types" })
+            linkProps: routes.createSiteFoncier({ question: "espaces.types" })
               .link,
             priority: "secondary",
           },
