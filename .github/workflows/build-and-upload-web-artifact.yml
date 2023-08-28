@@ -22,6 +22,8 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
+      - name: Build publicodes-rules
+        run: pnpm --filter=publicodes-rules build
       - name: Build web
         run: pnpm --filter=web build
       - name: Create Archive
