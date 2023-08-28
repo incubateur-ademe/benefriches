@@ -11,6 +11,13 @@ export type QuestionType =
 
 const { RouteProvider, useRoute, routes } = createRouter({
   home: defineRoute("/"),
+  login: defineRoute("/se-connecter"),
+  createUser: defineRoute("/creer-un-compte"),
+  mesSitesFonciers: defineRoute("/mes-sites-fonciers"),
+  siteFoncierDetails: defineRoute(
+    { siteFoncierName: param.path.string },
+    (params) => `/mes-sites-fonciers/${params.siteFoncierName}`,
+  ),
   siteFoncierForm: defineRoute(
     {
       question: param.query.optional.ofType<QuestionType>().default("intro"),
