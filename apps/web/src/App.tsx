@@ -1,14 +1,20 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { CallOut } from "@codegouvfr/react-dsfr/CallOut";
 import HeaderFooterLayout from "./components/layout/HeaderFooterLayout/HeaderFooterLayout";
+import { useRoute } from "./router";
+import HomePage from "./components/pages/Home";
+import SiteFoncierCreationForm from "./components/pages/SiteFoncier/Creation/Index";
 
 function App() {
+  const route = useRoute();
+
   return (
     <HeaderFooterLayout>
       <main className={fr.cx("fr-container", "fr-py-10w")}>
-        <CallOut title="En construction">
-          Bénéfriches est actuellement en cours de construction
-        </CallOut>
+        {route.name === "home" && <HomePage />}
+        {route.name === "siteFoncierForm" && (
+          <SiteFoncierCreationForm route={route} />
+        )}
+        {route.name === false && <>Not Found</>}
       </main>
     </HeaderFooterLayout>
   );

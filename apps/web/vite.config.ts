@@ -12,4 +12,7 @@ export default defineConfig({
     strictPort: true,
     port: 3000, // you can replace this port with any port
   },
+  resolve: {
+    alias: [{ find: "@", replacement: "/src" }],
+  },
 });

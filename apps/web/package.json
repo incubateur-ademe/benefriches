@@ -24,8 +24,12 @@
   },
   "dependencies": {
     "@codegouvfr/react-dsfr": "^0.73.0",
+    "publicodes": "1.0.0-beta.71",
+    "publicodes-rules": "workspace:^",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.45.4",
+    "type-route": "^1.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.16",
