@@ -1,7 +1,7 @@
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { routes } from "@/router";
 
-function SiteFoncierCreationIntro() {
+function OnboardingPage() {
   return (
     <>
       <h1>Tout commence sur un site foncier</h1>
@@ -10,11 +10,9 @@ function SiteFoncierCreationIntro() {
         plus tard les compléter.
       </p>
 
-      <Button linkProps={routes.createSiteFoncier({ question: "type" }).link}>
-        C’est parti
-      </Button>
+      <Button linkProps={routes.createSiteFoncier().link}>C’est parti</Button>
     </>
   );
 }
 
-export default SiteFoncierCreationIntro;
+export default OnboardingPage;

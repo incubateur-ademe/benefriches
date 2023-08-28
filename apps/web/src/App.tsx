@@ -7,6 +7,7 @@ import SiteFoncierDetailsPage from "./components/pages/SiteFoncier/Details";
 import LoginPage from "./components/pages/Login";
 import CreateUserPage from "./components/pages/CreateUser";
 import CreateSiteFoncierPage from "./components/pages/SiteFoncier/Create/Index";
+import OnboardingPage from "./components/pages/Onboarding";
 
 function App() {
   const route = useRoute();
@@ -15,6 +16,9 @@ function App() {
     <HeaderFooterLayout>
       <main className={fr.cx("fr-container", "fr-py-10w")}>
         {route.name === routes.home.name && <HomePage />}
+        {route.name === routes.login.name && <LoginPage />}
+        {route.name === routes.createUser.name && <CreateUserPage />}
+        {route.name === routes.onboarding.name && <OnboardingPage />}
         {route.name === routes.mesSitesFonciers.name && (
           <SitesFonciersListPage />
         )}
@@ -23,8 +27,6 @@ function App() {
             siteFoncierName={route.params.siteFoncierName}
           />
         )}
-        {route.name === routes.login.name && <LoginPage />}
-        {route.name === routes.createUser.name && <CreateUserPage />}
         {route.name === routes.createSiteFoncier.name && (
           <CreateSiteFoncierPage route={route} />
         )}
