@@ -174,7 +174,13 @@ importers:
       type-route:
         specifier: ^1.0.1
         version: 1.0.1
+      xstate:
+        specifier: ^4.38.2
+        version: 4.38.2
     devDependencies:
+      '@types/jest':
+        specifier: ^29.5.3
+        version: 29.5.3
       '@types/react':
         specifier: ^18.2.16
         version: 18.2.16
@@ -202,9 +208,15 @@ importers:
       eslint-plugin-react-refresh:
         specifier: ^0.4.3
         version: 0.4.3(eslint@8.45.0)
+      jest:
+        specifier: ^29.6.2
+        version: 29.6.2(@types/node@20.4.8)(ts-node@10.9.1)
       prettier:
         specifier: ^3.0.0
         version: 3.0.0
+      ts-jest:
+        specifier: ^29.1.1
+        version: 29.1.1(@babel/core@7.22.9)(jest@29.6.2)(typescript@5.1.6)
       typescript:
         specifier: ^5.1.6
         version: 5.1.6
@@ -7771,6 +7783,10 @@ packages:
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
     dev: true
+
+  /xstate@4.38.2:
+    resolution: {integrity: sha512-Fba/DwEPDLneHT3tbJ9F3zafbQXszOlyCJyQqqdzmtlY/cwE2th462KK48yaANf98jHlP6lJvxfNtN0LFKXPQg==}
+    dev: false
 
   /xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
