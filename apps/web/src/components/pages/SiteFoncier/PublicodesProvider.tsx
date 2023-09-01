@@ -2,20 +2,35 @@ import { createContext, useMemo, ReactNode, useCallback } from "react";
 
 import PublicodesEngine from "publicodes";
 import rules from "publicodes-rules";
-import {
-  SURFACE_KINDS,
-  SurfaceKindsType,
-  SurfacesDistributionType,
-} from "./constants";
+
+const SURFACES_CATEGORIES_CORRELATION = {
+  production: "espaces . anciens sites de production",
+  storage: "espaces . anciens espaces de stockage",
+  quarry: "espaces . ancienne carrière",
+  buildings: "espaces . autres bâtiments",
+  concrete_car_park: "espaces . parking ou VRD bétonnisé",
+  gravel_car_park: "espaces . parking ou VRD gravier",
+  other_sealed_surface: "espaces . autre surface imperméabilisée",
+  non_vegetated_permeable_surface:
+    "espaces . autre suface non végétalisée perméable",
+  vegetated_surface: "espaces . surface végétalisée",
+  open_ground: "espaces . pleine terre",
+  body_of_water: "espaces . plan d’eau",
+  other: "espaces . autre",
+} as const;
+
+export type TSurfaceCategory = keyof typeof SURFACES_CATEGORIES_CORRELATION;
+
+export type TSurfacesDistribution = Partial<Record<TSurfaceCategory, string>>;
 
 const publicodesEngine = new PublicodesEngine(rules);
 
-type PublicodesKeys = (typeof SURFACE_KINDS)[SurfaceKindsType]["publicodeKey"];
+type PublicodesKeys =
+  (typeof SURFACES_CATEGORIES_CORRELATION)[TSurfaceCategory];
 type PublicodesSurfacesDistribution = Record<PublicodesKeys, string>;
-
 type SiteFoncierPublicodesProvider = {
   computeTotalSurface: () => number;
-  setSurfaceSituation: (values: SurfacesDistributionType) => void;
+  setSurfaceSituation: (values: TSurfacesDistribution) => void;
 };
 
 const SiteFoncierPublicodesContext =
@@ -25,22 +40,19 @@ const SiteFoncierPublicodesContext =
   });
 
 const formatSurfaceValuesForPublicodes = (
-  values: SurfacesDistributionType,
+  values: TSurfacesDistribution,
 ): PublicodesSurfacesDistribution => {
   const publicodesArray = Object.entries(values).map(([key, value]) => {
-    const newKey = SURFACE_KINDS[key as SurfaceKindsType].publicodeKey;
+    const newKey = SURFACES_CATEGORIES_CORRELATION[key as TSurfaceCategory];
     return [newKey, `${value || 0}m2`];
   });
   return Object.fromEntries(publicodesArray) as PublicodesSurfacesDistribution;
 };
 
 const SiteFoncierPublicodesProvider = (props: { children?: ReactNode }) => {
-  const setSurfaceSituation = useCallback(
-    (values: SurfacesDistributionType) => {
-      publicodesEngine.setSituation(formatSurfaceValuesForPublicodes(values));
-    },
-    [],
-  );
+  const setSurfaceSituation = useCallback((values: TSurfacesDistribution) => {
+    publicodesEngine.setSituation(formatSurfaceValuesForPublicodes(values));
+  }, []);
 
   const computeTotalSurface = useCallback(() => {
     // TODO: Retourner une erreur si une erreur de calcul est détectée

@@ -18,12 +18,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { siteFoncierName: param.path.string },
     (params) => `/mes-sites-fonciers/${params.siteFoncierName}`,
   ),
-  createSiteFoncier: defineRoute(
-    {
-      question: param.query.optional.ofType<QuestionType>().default("type"),
-    },
-    () => "/creer-site-foncier",
-  ),
+  createSiteFoncier: defineRoute("/creer-site-foncier"),
 });
 
 export { RouteProvider, useRoute, routes };

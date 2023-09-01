@@ -28,7 +28,7 @@ function App() {
           />
         )}
         {route.name === routes.createSiteFoncier.name && (
-          <CreateSiteFoncierPage route={route} />
+          <CreateSiteFoncierPage />
         )}
         {route.name === false && <>Page non trouvée</>}
       </main>
