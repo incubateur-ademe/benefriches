@@ -1,19 +1,12 @@
-import { useContext, useMemo } from "react";
+import { useContext } from "react";
 
-import { Button } from "@codegouvfr/react-dsfr/Button";
-import { routes } from "@/router";
-import { FormDataContext } from "../StateProvider";
-import { SURFACE_KINDS } from "../../constants";
 import { SiteFoncierPublicodesContext } from "../../PublicodesProvider";
+import { useFormContext } from "react-hook-form";
+import { TContext } from "../StateMachine";
 
 function SiteFoncierCreationConfirmation() {
-  const { kind, address, surfacesDistribution, surfaceKinds } =
-    useContext(FormDataContext);
-
-  const previous = useMemo(
-    () => (kind === "friche" ? "espaces.surfaces" : "type"),
-    [kind],
-  );
+  const { getValues } = useFormContext();
+  const { category, surfaces, address }: TContext = getValues();
 
   const { computeTotalSurface } = useContext(SiteFoncierPublicodesContext);
 
@@ -22,25 +15,19 @@ function SiteFoncierCreationConfirmation() {
       <h2>Récapitulatif du site foncier</h2>
 
       <h3>
-        {kind &&
+        {category &&
           `${
-            kind.charAt(0).toUpperCase() + kind.slice(1)
+            category.charAt(0).toUpperCase() + category.slice(1)
           } située l’adresse : ${address}`}
       </h3>
       <p>{address}</p>
 
-      {surfaceKinds.map((key) => (
-        <p>{`${SURFACE_KINDS[key].label} : ${surfacesDistribution[key]} m²`}</p>
-      ))}
+      {surfaces &&
+        surfaces.map(({ category, superficie }) => (
+          <p>{`${category} : ${superficie} m²`}</p>
+        ))}
 
       <p>Total surface: {computeTotalSurface()} m²</p>
-
-      <Button
-        priority="secondary"
-        linkProps={routes.createSiteFoncier({ question: previous }).link}
-      >
-        Retour
-      </Button>
     </>
   );
 }

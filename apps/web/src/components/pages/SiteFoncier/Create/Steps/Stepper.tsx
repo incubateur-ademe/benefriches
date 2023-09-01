@@ -1,76 +1,63 @@
-import { Route } from "type-route";
-import { useContext, useMemo } from "react";
-
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
-import { routes } from "@/router";
-import { FormDataContext } from "../StateProvider";
-import { SiteKindsType } from "../../constants";
+import { StateFrom } from "xstate";
+import stateMachine, { FRICHE_STATES, STATES } from "../StateMachine";
 
-type ArraySection = Array<"type" | "adresse" | "espaces">;
-type SectionsByKind = {
-  [key in SiteKindsType]: ArraySection;
-};
-
-const SECTIONS_BY_KIND: SectionsByKind = {
-  friche: [
-    "type",
-    "adresse",
-    "espaces",
-    // "gestion",
-    // "denomination",
-    // "confirmation"
-  ],
-  "terre agricole": [],
-  forêt: [],
-  prairie: [],
-};
-
-const DEFAULT_STEPPER = {
-  currentStep: 1,
-  nextTitle: "Adresse",
-  stepCount: 5,
-  title: "Type",
+const STEPS = {
+  [STATES.ADDRESS]: {
+    currentStep: 2,
+    nextTitle: "Espaces",
+    stepCount: 4,
+    title: "Adresse",
+  },
+  [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.LAST_ACTIVITY}`]: {
+    currentStep: 3,
+    nextTitle: "Espaces",
+    stepCount: 4,
+    title: "Espaces",
+  },
+  [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_CATEGORIES}`]: {
+    currentStep: 3,
+    nextTitle: "Espaces",
+    stepCount: 4,
+    title: "Espaces",
+  },
+  [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_DISTRIBUTION}`]: {
+    currentStep: 3,
+    nextTitle: "Dénomination",
+    stepCount: 4,
+    title: "Espaces",
+  },
 };
 
 type Props = {
-  route: Route<typeof routes.createSiteFoncier>;
+  state: StateFrom<typeof stateMachine>;
 };
 
-function SiteFoncierCreationStepper({ route }: Props) {
-  const { params } = route;
-  const [section] = params.question.split(".") as ArraySection;
+function SiteFoncierCreationStepper({ state }: Props) {
+  if (state.done) {
+    return null;
+  }
 
-  const { kind } = useContext(FormDataContext);
+  if (state.matches(STATES.CATEGORY)) {
+    return (
+      <div className="fr-stepper">
+        <h2 className="fr-stepper__title">
+          <span className="fr-stepper__state">Étape 1</span>
+          Type
+        </h2>
+        <p className="fr-stepper__details">
+          <span className="fr-text--bold">Étape suivante :</span> Adresse
+        </p>
+      </div>
+    );
+  }
+  const stepKey = Object.keys(STEPS).find((key) => state.matches(key));
 
-  const stepperProps = useMemo(() => {
-    if (!kind || !section) {
-      return DEFAULT_STEPPER;
-    }
-    const sections = SECTIONS_BY_KIND[kind];
-    const currentStepIndex = sections.indexOf(section);
-    const currentStep = currentStepIndex + 1;
-    const stepCount = sections.length;
-    const title = section.charAt(0).toUpperCase() + section.slice(1);
+  if (stepKey) {
+    return <Stepper {...STEPS[stepKey]} />;
+  }
 
-    if (currentStepIndex === stepCount - 1) {
-      return {
-        currentStep,
-        stepCount,
-        title,
-      };
-    }
-
-    const nextSection = sections[currentStepIndex + 1];
-
-    return {
-      currentStep,
-      nextTitle: nextSection.charAt(0).toUpperCase() + nextSection.slice(1),
-      stepCount,
-      title,
-    };
-  }, [kind, section]);
-
-  return <>{section && <Stepper {...stepperProps} />}</>;
+  return null;
 }
 
 export default SiteFoncierCreationStepper;
