@@ -1,7 +1,7 @@
 import { interpret } from "xstate";
 import stateMachine, { FRICHE_STATES, STATES } from "./StateMachine";
 
-describe("State machine: Site foncier", () => {
+describe("Site foncier state machine: NEXT transitions", () => {
   it("should display initial state", () => {
     const expectedValue = STATES.CATEGORY;
     expect(stateMachine.initialState.value).toEqual(expectedValue);
@@ -60,7 +60,7 @@ describe("State machine: Site foncier", () => {
     });
   });
 
-  describe("Friche submachine", () => {
+  describe("Friche submachine: NEXT transitions", () => {
     it("should display initial state", () => {
       const fricheMachine = stateMachine.withContext({ category: "friche" });
       const addressStep = fricheMachine.transition(
@@ -83,12 +83,13 @@ describe("State machine: Site foncier", () => {
       const espacesActivites = fricheMachine.transition(addressStep, "NEXT");
       const espacesTypes = fricheMachine.transition(espacesActivites, "NEXT");
       const espacesSurfaces = fricheMachine.transition(espacesTypes, "NEXT");
-      const finalState = fricheMachine.transition(espacesSurfaces, "NEXT");
+      const denomination = fricheMachine.transition(espacesSurfaces, "NEXT");
+      const finalState = fricheMachine.transition(denomination, "NEXT");
       expect(finalState.value).toEqual(STATES.CONFIRMATION);
       expect(finalState.done).toBeTruthy();
     });
 
-    it("should transition from last activity to surfaces distribution", () => {
+    it("should transition from last activity to surfaces distribution if category is agricole", () => {
       const fricheMachine = stateMachine.withContext({
         category: "friche",
         lastActivity: "agricole",
@@ -103,6 +104,83 @@ describe("State machine: Site foncier", () => {
         [STATES.FRICHE_MACHINE]: FRICHE_STATES.SURFACES_DISTRIBUTION,
       };
       expect(actualState.matches(expectedState)).toBeTruthy();
+    });
+  });
+});
+
+describe("Site foncier state machine: BACK transitions", () => {
+  it("should display initial state and cannot go back", () => {
+    const expectedValue = STATES.CATEGORY;
+    expect(stateMachine.initialState.value).toEqual(expectedValue);
+
+    const machine = interpret(stateMachine).start();
+
+    machine.subscribe((state) => {
+      expect(state.can("BACK")).toEqual(false);
+    });
+
+    const result = machine.send({ type: "BACK" });
+    expect(result.changed).toEqual(false);
+    machine.stop();
+  });
+
+  it("should transition from En contruction to Type", () => {
+    const categoryState = stateMachine.transition(STATES.BUILDING, "BACK");
+
+    expect(categoryState.matches(STATES.CATEGORY)).toBeTruthy();
+  });
+
+  it("should transition from Adresse to Type though BACK event", () => {
+    const nextState = stateMachine
+      .withContext({ category: "friche" })
+      .transition(STATES.ADDRESS, { type: "BACK" });
+    expect(nextState.matches(STATES.CATEGORY)).toBeTruthy();
+  });
+
+  describe("Friche submachine: NEXT transitions", () => {
+    it("should transition from Friche sub machine to adresse", () => {
+      const nextState = stateMachine
+        .withContext({ category: "friche" })
+        .transition(`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.LAST_ACTIVITY}`, {
+          type: "BACK",
+        });
+      expect(nextState.matches(STATES.ADDRESS)).toBeTruthy();
+    });
+
+    it("should transition from final state to initial state", () => {
+      const fricheMachine = stateMachine.withContext({ category: "friche" });
+      const denomination = fricheMachine.transition(
+        STATES.CONFIRMATION,
+        "BACK",
+      );
+      const espacesSurfaces = fricheMachine.transition(denomination, "BACK");
+      const espacesTypes = fricheMachine.transition(espacesSurfaces, "BACK");
+      const actualState = fricheMachine.transition(espacesTypes, "BACK");
+
+      expect(
+        actualState.matches({
+          [STATES.FRICHE_MACHINE]: FRICHE_STATES.LAST_ACTIVITY,
+        }),
+      ).toBeTruthy();
+    });
+
+    it("should transition from surfaces distribution to last activity if category is agricole", () => {
+      const fricheMachine = stateMachine.withContext({
+        category: "friche",
+        lastActivity: "agricole",
+      });
+      const actualState = fricheMachine.transition(
+        {
+          [STATES.FRICHE_MACHINE]: FRICHE_STATES.SURFACES_DISTRIBUTION,
+        },
+        "BACK",
+      );
+
+      expect(
+        actualState.matches({
+          [STATES.FRICHE_MACHINE]: FRICHE_STATES.LAST_ACTIVITY,
+        }),
+      ).toBeTruthy();
     });
   });
 });

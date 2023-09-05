@@ -30,6 +30,8 @@ export type TContext = {
     category: (typeof ALLOWED_SURFACES_CATEGORIES)[number];
     superficie: number;
   }>;
+  name?: string;
+  description?: string;
 };
 
 type TStoreEvent = { type: "STORE_VALUE"; value: TContext };
@@ -42,6 +44,7 @@ export const STATES = {
   ADDRESS: "adresse",
   FRICHE_MACHINE: "fricheMachine",
   BUILDING: "construction",
+  DENOMINATION: "denomination",
   CONFIRMATION: "confirmation",
 };
 
@@ -49,10 +52,6 @@ export const FRICHE_STATES = {
   LAST_ACTIVITY: "espacesActivites",
   SURFACES_CATEGORIES: "espacesTypes",
   SURFACES_DISTRIBUTION: "espacesSurfaces",
-};
-
-const TAGS = {
-  AREA: "area",
 };
 
 const CONDITIONS = {
@@ -97,7 +96,6 @@ export default createMachine(
         initial: FRICHE_STATES.LAST_ACTIVITY,
         states: {
           [FRICHE_STATES.LAST_ACTIVITY]: {
-            tags: TAGS.AREA,
             on: {
               STORE_VALUE: { actions: STORE_CONTEXT_ACTION },
               NEXT: [
@@ -112,7 +110,6 @@ export default createMachine(
             },
           },
           [FRICHE_STATES.SURFACES_CATEGORIES]: {
-            tags: TAGS.AREA,
             on: {
               NEXT: {
                 target: FRICHE_STATES.SURFACES_DISTRIBUTION,
@@ -123,10 +120,9 @@ export default createMachine(
             },
           },
           [FRICHE_STATES.SURFACES_DISTRIBUTION]: {
-            tags: TAGS.AREA,
             on: {
               NEXT: {
-                target: `#${MACHINE_ID}.${STATES.CONFIRMATION}`,
+                target: `#${MACHINE_ID}.${STATES.DENOMINATION}`,
               },
               BACK: [
                 {
@@ -143,10 +139,6 @@ export default createMachine(
         on: {
           BACK: {
             target: `#${MACHINE_ID}.${STATES.ADDRESS}`,
-            actions: {
-              type: "reset",
-              params: {},
-            },
           },
         },
       },
@@ -155,16 +147,32 @@ export default createMachine(
         on: {
           BACK: {
             target: STATES.CATEGORY,
-            actions: {
-              type: "reset",
-              params: {},
-            },
           },
         },
       },
       // ---- COMMON ----
+      [STATES.DENOMINATION]: {
+        on: {
+          STORE_VALUE: { actions: STORE_CONTEXT_ACTION },
+          NEXT: { target: STATES.CONFIRMATION },
+          BACK: [
+            {
+              target: `${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_DISTRIBUTION}`,
+              cond: CONDITIONS.IS_FRICHE,
+            },
+            {
+              target: STATES.BUILDING,
+            },
+          ],
+        },
+      },
       [STATES.CONFIRMATION]: {
         type: "final",
+        on: {
+          BACK: {
+            target: STATES.DENOMINATION,
+          },
+        },
       },
     },
     predictableActionArguments: true,
@@ -177,7 +185,6 @@ export default createMachine(
   {
     actions: {
       [STORE_CONTEXT_ACTION]: assign((_, event: TStoreEvent) => event.value),
-      reset: assign({}),
     },
     services: {},
     guards: {
