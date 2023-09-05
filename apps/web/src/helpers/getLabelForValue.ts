@@ -29,7 +29,7 @@ const getSurfaceCategoryLabel = (
     case "other_sealed_surface":
       return "Autre surface imperméabilisée";
     case "non_vegetated_permeable_surface":
-      return "Autre suface non végétalisée perméable";
+      return "Autre surface non végétalisée perméable";
     case "vegetated_surface":
       return "Surface végétalisée";
     case "open_ground":
