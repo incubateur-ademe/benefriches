@@ -12,6 +12,7 @@ import { useMachine } from "@xstate/react";
 import { FormProvider, useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Button from "@codegouvfr/react-dsfr/Button";
+import SiteFoncierCreationStepDenomination from "./Steps/Denomination";
 
 const STEPS_COMPONENTS = {
   [STATES.BUILDING]: SiteFoncierCreationConstruction,
@@ -23,6 +24,7 @@ const STEPS_COMPONENTS = {
     SiteFoncierCreationStepFricheSurfacesCategory,
   [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_DISTRIBUTION}`]:
     SiteFoncierCreationStepFricheSurfacesDistribution,
+  [STATES.DENOMINATION]: SiteFoncierCreationStepDenomination,
   [STATES.CONFIRMATION]: SiteFoncierCreationConfirmation,
 };
 
