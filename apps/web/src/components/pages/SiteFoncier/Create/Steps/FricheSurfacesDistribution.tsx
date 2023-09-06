@@ -13,18 +13,22 @@ function SiteFoncierCreationStepFricheSurfacesDistribution() {
 
   const {
     register,
+    getValues,
     formState: { errors },
     control,
   } = useFormContext();
-  const { computeTotalSurface } = useContext(SiteFoncierPublicodesContext);
+  const { computeTotalSurface, setSurfaceSituation } = useContext(
+    SiteFoncierPublicodesContext,
+  );
 
   const { fields } = useFieldArray<TContext, "surfaces", "id">({
     name: "surfaces",
     control,
   });
 
-  const onBlur = () => {
-    //setSurfaceSituation(fields);
+  const onChange = () => {
+    const values = getValues("surfaces") as TContext["surfaces"];
+    setSurfaceSituation(values);
     setTotalArea(computeTotalSurface());
   };
 
@@ -47,8 +51,8 @@ function SiteFoncierCreationStepFricheSurfacesDistribution() {
             ...register(`surfaces.${index}.superficie` as const, {
               required: ERROR_MESSAGE,
               min: 1,
+              onChange,
             }),
-            onBlur,
             inputMode: "numeric",
             pattern: "[0-9]*",
             type: "number",
