@@ -140,7 +140,7 @@ describe("Site foncier state machine: BACK transitions", () => {
     expect(nextState.matches(STATES.CATEGORY)).toBeTruthy();
   });
 
-  describe("Friche submachine: NEXT transitions", () => {
+  describe("Friche submachine: BACK transitions", () => {
     it("should transition from Friche sub machine to adresse", () => {
       const nextState = stateMachine
         .withContext({ category: "friche" })
@@ -152,11 +152,10 @@ describe("Site foncier state machine: BACK transitions", () => {
 
     it("should transition from final state to initial state", () => {
       const fricheMachine = stateMachine.withContext({ category: "friche" });
-      const denomination = fricheMachine.transition(
-        STATES.CONFIRMATION,
+      const espacesSurfaces = fricheMachine.transition(
+        STATES.DENOMINATION,
         "BACK",
       );
-      const espacesSurfaces = fricheMachine.transition(denomination, "BACK");
       const espacesTypes = fricheMachine.transition(espacesSurfaces, "BACK");
       const actualState = fricheMachine.transition(espacesTypes, "BACK");
 

@@ -171,11 +171,6 @@ export default createMachine(
       },
       [STATES.CONFIRMATION]: {
         type: "final",
-        on: {
-          BACK: {
-            target: STATES.DENOMINATION,
-          },
-        },
       },
     },
     predictableActionArguments: true,
