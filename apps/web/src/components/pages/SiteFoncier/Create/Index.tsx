@@ -49,7 +49,7 @@ function CreateSiteFoncierPage() {
   };
 
   const { handleSubmit, reset, ...methods } = useForm<TContext>({
-    defaultValues: state.context,
+    values: state.context,
   });
 
   const onSubmit = handleSubmit((values) => onNext(values));
