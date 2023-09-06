@@ -102,6 +102,9 @@ export default createMachine(
                 {
                   target: FRICHE_STATES.SURFACES_DISTRIBUTION,
                   cond: CONDITIONS.IS_AGRICOLE,
+                  actions: assign({
+                    surfaces: [{ category: "open_ground", superficie: 0 }],
+                  }),
                 },
                 {
                   target: FRICHE_STATES.SURFACES_CATEGORIES,
