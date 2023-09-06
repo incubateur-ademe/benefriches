@@ -89,7 +89,7 @@ describe("Site foncier state machine: NEXT transitions", () => {
       expect(finalState.done).toBeTruthy();
     });
 
-    it("should transition from last activity to surfaces distribution if category is agricole", () => {
+    it("should transition from last activity to surfaces distribution if category is agricole and assign surfaces in context", () => {
       const fricheMachine = stateMachine.withContext({
         category: "friche",
         lastActivity: "agricole",
@@ -104,6 +104,9 @@ describe("Site foncier state machine: NEXT transitions", () => {
         [STATES.FRICHE_MACHINE]: FRICHE_STATES.SURFACES_DISTRIBUTION,
       };
       expect(actualState.matches(expectedState)).toBeTruthy();
+      expect(actualState.context.surfaces).toEqual([
+        { category: "open_ground", superficie: 0 },
+      ]);
     });
   });
 });
