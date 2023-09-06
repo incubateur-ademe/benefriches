@@ -20,6 +20,10 @@ const ACTIVITIES = [
     label: "Mine ou Carrière",
   },
   {
+    value: "accomodation",
+    label: "Habitat, petit commerce, équipement public",
+  },
+  {
     value: "other",
     label: "Autre / NSP",
   },
