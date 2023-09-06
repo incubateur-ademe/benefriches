@@ -1,39 +1,19 @@
+import { ALLOWED_SURFACES_CATEGORIES } from "@/components/pages/SiteFoncier/Create/StateMachine";
+
 const getSurfaceCategoryLabel = (
-  value:
-    | "production"
-    | "storage"
-    | "quarry"
-    | "buildings"
-    | "concrete_car_park"
-    | "gravel_car_park"
-    | "other_sealed_surface"
-    | "non_vegetated_permeable_surface"
-    | "vegetated_surface"
-    | "open_ground"
-    | "other"
-    | "body_of_water",
+  value: (typeof ALLOWED_SURFACES_CATEGORIES)[number],
 ) => {
   switch (value) {
-    case "production":
-      return "Anciens ateliers / sites de production";
-    case "storage":
-      return "Anciens bâtiments de stockage";
-    case "quarry":
-      return "Anciens bâtiments de stockage";
+    case "impermeable_soils":
+      return "Sols imperméabilisés (Parking bétonisé, voirie...)";
     case "buildings":
-      return "Autres bâtiments";
-    case "concrete_car_park":
-      return "Parking ou VRD bétonnisé";
-    case "gravel_car_park":
-      return "Parking ou VRD gravier";
-    case "other_sealed_surface":
-      return "Autre surface imperméabilisée";
-    case "non_vegetated_permeable_surface":
-      return "Autre surface non végétalisée perméable";
-    case "vegetated_surface":
-      return "Surface végétalisée";
-    case "open_ground":
-      return "Pleine terre";
+      return "Bâtiments (anciens sites de production, de stockages...)";
+    case "permeable_artificial_soils":
+      return "Sols artificialisés perméables (Parking, gravier...)";
+    case "natural_areas":
+      return "Espaces naturels (avec ou sans végétation : espaces verts, pleine terre)";
+    case "body_of_water":
+      return "Plan d’eau";
     case "other":
       return "Autre / NSP";
     default:

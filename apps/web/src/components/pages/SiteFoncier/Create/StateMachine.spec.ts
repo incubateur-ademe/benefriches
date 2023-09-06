@@ -105,7 +105,7 @@ describe("Site foncier state machine: NEXT transitions", () => {
       };
       expect(actualState.matches(expectedState)).toBeTruthy();
       expect(actualState.context.surfaces).toEqual([
-        { category: "open_ground", superficie: 0 },
+        { category: "natural_areas", superficie: 0 },
       ]);
     });
   });

@@ -8,16 +8,10 @@ export const ALLOWED_CATEGORIES = [
 ] as const;
 
 export const ALLOWED_SURFACES_CATEGORIES = [
-  "production",
-  "storage",
-  "quarry",
+  "impermeable_soils",
   "buildings",
-  "concrete_car_park",
-  "gravel_car_park",
-  "other_sealed_surface",
-  "non_vegetated_permeable_surface",
-  "vegetated_surface",
-  "open_ground",
+  "permeable_artificial_soils",
+  "natural_areas",
   "body_of_water",
   "other",
 ] as const;
@@ -103,7 +97,7 @@ export default createMachine(
                   target: FRICHE_STATES.SURFACES_DISTRIBUTION,
                   cond: CONDITIONS.IS_AGRICOLE,
                   actions: assign({
-                    surfaces: [{ category: "open_ground", superficie: 0 }],
+                    surfaces: [{ category: "natural_areas", superficie: 0 }],
                   }),
                 },
                 {

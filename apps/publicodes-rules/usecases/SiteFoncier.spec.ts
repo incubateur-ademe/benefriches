@@ -49,22 +49,22 @@ describe("Publicode algorithm: calcul de la surface de la friche", () => {
   });
 
   test("doit retourner une erreur lors du calcul de surface si l’unité utilisée est mauvaise", () => {
-    const situation = { "espaces . anciens sites de production": "2500 €" };
+    const situation = { "espaces . sols imperméabilisés": "2500 €" };
     engine.setSituation(situation);
     expect(() => engine.evaluate("surface friche")).toThrow(ConsoleWarning);
   });
 
   test("doit renvoyer une surface de friche égale à la superficie des anciennes usines", () => {
-    const situation = { "espaces . anciens sites de production": "2500 m2" };
+    const situation = { "espaces . sols imperméabilisés": "2500 m2" };
     engine.setSituation(situation);
     expect(engine.evaluate("surface friche").nodeValue).toEqual(2500);
   });
 
   test("doit renvoyer une surface de friche égale à la somme des superficies des espaces", () => {
     const situation = {
-      "espaces . anciens sites de production": "2500 m2",
-      "espaces . anciens espaces de stockage": "200 m2",
-      "espaces . ancienne carrière": "400 m2",
+      "espaces . sols imperméabilisés": "2500 m2",
+      "espaces . bâtiments": "200 m2",
+      "espaces . sols artificialisés perméables": "400 m2",
     };
     engine.setSituation(situation);
     expect(engine.evaluate("surface friche").nodeValue).toEqual(3100);
@@ -73,9 +73,9 @@ describe("Publicode algorithm: calcul de la surface de la friche", () => {
 
 describe("Publicode algorithm: calcul du coût annuel de la friche", () => {
   const situation = {
-    "espaces . anciens sites de production": "2500 m2",
-    "espaces . anciens espaces de stockage": "200 m2",
-    "espaces . ancienne carrière": "400 m2",
+    "espaces . sols imperméabilisés": "2500 m2",
+    "espaces . bâtiments": "200 m2",
+    "espaces . sols artificialisés perméables": "400 m2",
   };
 
   beforeAll(() => {

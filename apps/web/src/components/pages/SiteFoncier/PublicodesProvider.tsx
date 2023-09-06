@@ -5,18 +5,11 @@ import rules from "publicodes-rules";
 import { TContext } from "./Create/StateMachine";
 
 const SURFACES_CATEGORIES_CORRELATION = {
-  production: "espaces . anciens sites de production",
-  storage: "espaces . anciens espaces de stockage",
-  quarry: "espaces . ancienne carrière",
-  buildings: "espaces . autres bâtiments",
-  concrete_car_park: "espaces . parking ou VRD bétonnisé",
-  gravel_car_park: "espaces . parking ou VRD gravier",
-  other_sealed_surface: "espaces . autre surface imperméabilisée",
-  non_vegetated_permeable_surface:
-    "espaces . autre suface non végétalisée perméable",
-  vegetated_surface: "espaces . surface végétalisée",
-  open_ground: "espaces . pleine terre",
-  body_of_water: "espaces . plan d’eau",
+  impermeable_soils: "espaces . sols imperméabilisés",
+  buildings: "espaces . bâtiments",
+  permeable_artificial_soils: "espaces . sols artificialisés perméables",
+  natural_areas: "espaces . espaces naturels",
+  body_of_water: "espaces . plan d'eau",
   other: "espaces . autre",
 } as const;
 
