@@ -28,9 +28,11 @@ function SiteFoncierCreationStepCategory() {
     <>
       <h2>De quel type de site s’agit-il ?</h2>
 
-      <RadioButtons options={options} />
-
-      {errors[KEY] && <p>{error.message}</p>}
+      <RadioButtons
+        options={options}
+        state={error ? "error" : "default"}
+        stateRelatedMessage={error ? error.message : undefined}
+      />
     </>
   );
 }

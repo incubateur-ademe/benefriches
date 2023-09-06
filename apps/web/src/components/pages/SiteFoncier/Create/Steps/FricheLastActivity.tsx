@@ -47,9 +47,11 @@ function SiteFoncierCreationStepFricheLastActivity() {
     <>
       <h2>Quels espaces y a t-il sur cette friche ?</h2>
 
-      <RadioButtons options={options} />
-
-      {errors[KEY] && <p>{error.message}</p>}
+      <RadioButtons
+        options={options}
+        state={error ? "error" : "default"}
+        stateRelatedMessage={error ? error.message : undefined}
+      />
     </>
   );
 }
