@@ -2,6 +2,7 @@ import { createContext, useMemo, ReactNode, useCallback } from "react";
 
 import PublicodesEngine from "publicodes";
 import rules from "publicodes-rules";
+import { TContext } from "./Create/StateMachine";
 
 const SURFACES_CATEGORIES_CORRELATION = {
   production: "espaces . anciens sites de production",
@@ -21,7 +22,7 @@ const SURFACES_CATEGORIES_CORRELATION = {
 
 export type TSurfaceCategory = keyof typeof SURFACES_CATEGORIES_CORRELATION;
 
-export type TSurfacesDistribution = Partial<Record<TSurfaceCategory, string>>;
+export type TSurfacesDistribution = TContext["surfaces"];
 
 const publicodesEngine = new PublicodesEngine(rules);
 
@@ -42,9 +43,9 @@ const SiteFoncierPublicodesContext =
 const formatSurfaceValuesForPublicodes = (
   values: TSurfacesDistribution,
 ): PublicodesSurfacesDistribution => {
-  const publicodesArray = Object.entries(values).map(([key, value]) => {
-    const newKey = SURFACES_CATEGORIES_CORRELATION[key as TSurfaceCategory];
-    return [newKey, `${value || 0}m2`];
+  const publicodesArray = (values || []).map(({ category, superficie }) => {
+    const newKey = SURFACES_CATEGORIES_CORRELATION[category];
+    return [newKey, `${superficie || 0}m2`];
   });
   return Object.fromEntries(publicodesArray) as PublicodesSurfacesDistribution;
 };
