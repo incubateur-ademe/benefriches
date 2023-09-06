@@ -18,12 +18,12 @@ function SiteFoncierCreationStepAddress() {
 
       <Input
         label="Adresse du site"
-        state="default"
+        state={error ? "error" : "default"}
+        stateRelatedMessage={error ? error.message : undefined}
         nativeInputProps={register(KEY, {
           required: "Ce champ est requis",
         })}
       />
-      {errors[KEY] && <p>{error.message}</p>}
     </>
   );
 }

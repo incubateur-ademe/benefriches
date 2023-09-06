@@ -12,7 +12,7 @@ function SiteFoncierCreationStepDenomination() {
   } = useFormContext();
 
   const nameError = errors[NAME_KEY] as FieldError;
-  const descriptionError = errors[NAME_KEY] as FieldError;
+  const descriptionError = errors[DESCRIPTION_TYPE] as FieldError;
 
   return (
     <>
@@ -20,19 +20,22 @@ function SiteFoncierCreationStepDenomination() {
 
       <Input
         label="Nom du site"
-        state="default"
+        state={nameError ? "error" : "default"}
+        stateRelatedMessage={nameError ? nameError.message : undefined}
         nativeInputProps={register(NAME_KEY, {
           required: "Ce champ est requis",
         })}
       />
-      {nameError && <p>{nameError.message}</p>}
 
       <Input
         label="Descriptif du site"
         textArea
+        state={descriptionError ? "error" : "default"}
+        stateRelatedMessage={
+          descriptionError ? descriptionError.message : undefined
+        }
         nativeTextAreaProps={register(DESCRIPTION_TYPE)}
       />
-      {descriptionError && <p>{descriptionError.message}</p>}
     </>
   );
 }

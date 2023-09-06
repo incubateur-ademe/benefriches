@@ -10,13 +10,14 @@ const ERROR_MESSAGE =
   "Plusieurs réponses sont possibles. Si vous ne savez pas qualifier des espaces de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
 
 type CustomCheckboxProps = {
+  state: "default" | "error";
+  stateRelatedMessage: typeof ERROR_MESSAGE | undefined;
   value: { category: string; superficie: string }[];
   onChange: (props: { category: string; superficie: string }[]) => void;
 };
 
 const CustomCheckbox = (props: CustomCheckboxProps) => {
-  const value = props.value || [];
-  const onChange = props.onChange;
+  const { value = [], onChange, state, stateRelatedMessage } = props;
 
   const options = ALLOWED_SURFACES_CATEGORIES.map((key) => ({
     label: getSurfaceCategoryLabel(key),
@@ -31,7 +32,13 @@ const CustomCheckbox = (props: CustomCheckboxProps) => {
     },
   }));
 
-  return <Checkbox options={options} state="default" />;
+  return (
+    <Checkbox
+      state={state}
+      stateRelatedMessage={stateRelatedMessage}
+      options={options}
+    />
+  );
 };
 
 function SiteFoncierCreationStepFricheSurfacesCategory() {
@@ -46,12 +53,16 @@ function SiteFoncierCreationStepFricheSurfacesCategory() {
       <h2>Quels espaces y a t-il sur cette friche ?</h2>
 
       <Controller
-        render={({ field }) => <CustomCheckbox {...field} />}
+        render={({ field }) => (
+          <CustomCheckbox
+            {...field}
+            state={errors[KEY] ? "error" : "default"}
+            stateRelatedMessage={errors[KEY] ? ERROR_MESSAGE : undefined}
+          />
+        )}
         control={control}
         {...register("surfaces", { required: ERROR_MESSAGE })}
       />
-
-      {errors[KEY] && <p>{ERROR_MESSAGE}</p>}
     </>
   );
 }

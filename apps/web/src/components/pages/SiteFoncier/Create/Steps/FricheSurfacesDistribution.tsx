@@ -28,31 +28,33 @@ function SiteFoncierCreationStepFricheSurfacesDistribution() {
     setTotalArea(computeTotalSurface());
   };
 
-  const surfacesErrors = errors[KEY] as FieldErrors;
+  const surfacesErrors = (errors[KEY] as FieldErrors) || {};
+
   return (
     <>
       <h2>Quelles sont les superficies des différents espaces ?</h2>
 
       {fields.map((field, index) => (
-        <div key={field.id}>
-          <Input
-            label={getSurfaceCategoryLabel(field.category)}
-            hintText="Superficie en m²"
-            state="default"
-            key={field.id}
-            nativeInputProps={{
-              ...register(`surfaces.${index}.superficie` as const, {
-                required: ERROR_MESSAGE,
-              }),
-              onBlur,
-              inputMode: "numeric",
-              pattern: "[0-9]*",
-              type: "number",
-              placeholder: "5000",
-            }}
-          />
-          {surfacesErrors && surfacesErrors[index] && <p>{ERROR_MESSAGE}</p>}
-        </div>
+        <Input
+          label={getSurfaceCategoryLabel(field.category)}
+          hintText="Superficie en m²"
+          state={surfacesErrors[index] ? "error" : "default"}
+          stateRelatedMessage={
+            surfacesErrors[index] ? ERROR_MESSAGE : undefined
+          }
+          key={field.id}
+          nativeInputProps={{
+            ...register(`surfaces.${index}.superficie` as const, {
+              required: ERROR_MESSAGE,
+              min: 1,
+            }),
+            onBlur,
+            inputMode: "numeric",
+            pattern: "[0-9]*",
+            type: "number",
+            placeholder: "5000",
+          }}
+        />
       ))}
 
       <Input
