@@ -1,9 +1,13 @@
 import { FieldError, useFormContext } from "react-hook-form";
 
 import { RadioButtons } from "@codegouvfr/react-dsfr/RadioButtons";
-import { ALLOWED_CATEGORIES } from "../StateMachine";
+import { SiteFoncierType } from "../../siteFoncier";
 
 const KEY = "category";
+
+const capitalize = (str: string) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 function SiteFoncierCreationStepCategory() {
   const {
@@ -13,8 +17,8 @@ function SiteFoncierCreationStepCategory() {
 
   const error = errors[KEY] as FieldError;
 
-  const options = ALLOWED_CATEGORIES.map((value) => ({
-    label: value.charAt(0).toUpperCase() + value.slice(1),
+  const options = Object.values(SiteFoncierType).map((value) => ({
+    label: capitalize(value),
     nativeInputProps: {
       value,
       ...register(KEY, {

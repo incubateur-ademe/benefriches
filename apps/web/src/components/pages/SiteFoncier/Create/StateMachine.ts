@@ -1,11 +1,5 @@
 import { createMachine, assign } from "xstate";
-
-export const ALLOWED_CATEGORIES = [
-  "friche",
-  "terre agricole",
-  "forêt",
-  "prairie",
-] as const;
+import { SiteFoncierType } from "../siteFoncier";
 
 export const ALLOWED_SURFACES_CATEGORIES = [
   "impermeable_soils",
@@ -17,7 +11,7 @@ export const ALLOWED_SURFACES_CATEGORIES = [
 ] as const;
 
 export type TContext = {
-  category?: (typeof ALLOWED_CATEGORIES)[number];
+  category?: SiteFoncierType;
   lastActivity?: "agricole" | "industrial" | "quarry" | "other";
   address?: string;
   surfaces?: Array<{
@@ -181,7 +175,7 @@ export default createMachine(
     services: {},
     guards: {
       [CONDITIONS.IS_FRICHE]: (context: TContext) =>
-        context.category === "friche",
+        context.category === SiteFoncierType.FRICHE,
       [CONDITIONS.IS_AGRICOLE]: (context: TContext) =>
         context.lastActivity === "agricole",
     },

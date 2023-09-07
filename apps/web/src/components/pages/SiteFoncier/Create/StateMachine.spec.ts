@@ -1,5 +1,6 @@
 import { interpret } from "xstate";
 import stateMachine, { FRICHE_STATES, STATES } from "./StateMachine";
+import { SiteFoncierType } from "../siteFoncier";
 
 describe("Site foncier state machine: NEXT transitions", () => {
   it("should display initial state", () => {
@@ -17,7 +18,7 @@ describe("Site foncier state machine: NEXT transitions", () => {
   it("should transition from Type to Adresse", () => {
     const nextState = stateMachine.transition(STATES.CATEGORY, {
       type: "STORE_VALUE",
-      value: { category: "friche" },
+      value: { category: SiteFoncierType.FRICHE },
     });
     const actualState = stateMachine.transition(nextState, { type: "NEXT" });
     expect(actualState.matches(STATES.ADDRESS)).toBeTruthy();
@@ -26,13 +27,13 @@ describe("Site foncier state machine: NEXT transitions", () => {
   it("should store category and address", () => {
     const nextState = stateMachine.transition(STATES.CATEGORY, {
       type: "STORE_VALUE",
-      value: { category: "friche" },
+      value: { category: SiteFoncierType.FRICHE },
     });
     const actualState = stateMachine.transition(nextState, {
       type: "STORE_VALUE",
       value: { address: "2 rue de la paix" },
     });
-    expect(actualState.context.category).toEqual("friche");
+    expect(actualState.context.category).toEqual(SiteFoncierType.FRICHE);
     expect(actualState.context.address).toEqual("2 rue de la paix");
   });
 
@@ -51,7 +52,7 @@ describe("Site foncier state machine: NEXT transitions", () => {
         .start();
 
       machine.send([
-        { type: "STORE_VALUE", value: { category: "friche" } },
+        { type: "STORE_VALUE", value: { category: SiteFoncierType.FRICHE } },
         { type: "NEXT" },
         { type: "NEXT" },
       ]);
@@ -62,7 +63,9 @@ describe("Site foncier state machine: NEXT transitions", () => {
 
   describe("Friche submachine: NEXT transitions", () => {
     it("should display initial state", () => {
-      const fricheMachine = stateMachine.withContext({ category: "friche" });
+      const fricheMachine = stateMachine.withContext({
+        category: SiteFoncierType.FRICHE,
+      });
       const addressStep = fricheMachine.transition(
         stateMachine.initialState.value,
         "NEXT",
@@ -75,7 +78,9 @@ describe("Site foncier state machine: NEXT transitions", () => {
     });
 
     it("should transition from initial state to final state", () => {
-      const fricheMachine = stateMachine.withContext({ category: "friche" });
+      const fricheMachine = stateMachine.withContext({
+        category: SiteFoncierType.FRICHE,
+      });
       const addressStep = fricheMachine.transition(
         stateMachine.initialState.value,
         "NEXT",
@@ -91,7 +96,7 @@ describe("Site foncier state machine: NEXT transitions", () => {
 
     it("should transition from last activity to surfaces distribution if category is agricole and assign surfaces in context", () => {
       const fricheMachine = stateMachine.withContext({
-        category: "friche",
+        category: SiteFoncierType.FRICHE,
         lastActivity: "agricole",
       });
       const addressStep = fricheMachine.transition(
@@ -135,7 +140,7 @@ describe("Site foncier state machine: BACK transitions", () => {
 
   it("should transition from Adresse to Type though BACK event", () => {
     const nextState = stateMachine
-      .withContext({ category: "friche" })
+      .withContext({ category: SiteFoncierType.FRICHE })
       .transition(STATES.ADDRESS, { type: "BACK" });
     expect(nextState.matches(STATES.CATEGORY)).toBeTruthy();
   });
@@ -143,7 +148,7 @@ describe("Site foncier state machine: BACK transitions", () => {
   describe("Friche submachine: BACK transitions", () => {
     it("should transition from Friche sub machine to adresse", () => {
       const nextState = stateMachine
-        .withContext({ category: "friche" })
+        .withContext({ category: SiteFoncierType.FRICHE })
         .transition(`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.LAST_ACTIVITY}`, {
           type: "BACK",
         });
@@ -151,7 +156,9 @@ describe("Site foncier state machine: BACK transitions", () => {
     });
 
     it("should transition from final state to initial state", () => {
-      const fricheMachine = stateMachine.withContext({ category: "friche" });
+      const fricheMachine = stateMachine.withContext({
+        category: SiteFoncierType.FRICHE,
+      });
       const espacesSurfaces = fricheMachine.transition(
         STATES.DENOMINATION,
         "BACK",
@@ -168,7 +175,7 @@ describe("Site foncier state machine: BACK transitions", () => {
 
     it("should transition from surfaces distribution to last activity if category is agricole", () => {
       const fricheMachine = stateMachine.withContext({
-        category: "friche",
+        category: SiteFoncierType.FRICHE,
         lastActivity: "agricole",
       });
       const actualState = fricheMachine.transition(
