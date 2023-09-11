@@ -1,4 +1,4 @@
-import { FieldError, useFormContext } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import { RadioButtons } from "@codegouvfr/react-dsfr/RadioButtons";
 import { SiteFoncierType } from "../../siteFoncier";
@@ -10,12 +10,9 @@ const capitalize = (str: string) => {
 };
 
 function SiteFoncierCreationStepCategory() {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+  const { register, formState } = useFormContext<{ category: string }>();
 
-  const error = errors[KEY] as FieldError;
+  const error = formState.errors.category;
 
   const options = Object.values(SiteFoncierType).map((value) => ({
     label: capitalize(value),

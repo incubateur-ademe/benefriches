@@ -2,9 +2,9 @@ import SiteFoncierCreationStepCategory from "./Steps/Category";
 import SiteFoncierCreationStepper from "./Steps/Stepper";
 import SiteFoncierCreationConstruction from "./Steps/Construction";
 import SiteFoncierCreationStepAddress from "./Steps/Address";
-import SiteFoncierCreationStepFricheLastActivity from "./Steps/FricheLastActivity";
-import SiteFoncierCreationStepFricheSurfacesCategory from "./Steps/FricheSurfacesCategory";
-import SiteFoncierCreationStepFricheSurfacesDistribution from "./Steps/FricheSurfacesDistribution";
+import SiteFoncierCreationStepFricheLastActivity from "./Steps/friche/FricheLastActivity";
+import SiteFoncierCreationStepFricheSurfacesCategory from "./Steps/friche/FricheSurfacesCategory";
+import SiteFoncierCreationStepFricheSurfacesDistribution from "./Steps/friche/FricheSurfacesDistribution";
 import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
 import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 import stateMachine, { STATES, FRICHE_STATES, TContext } from "./StateMachine";
@@ -16,8 +16,8 @@ import SiteFoncierCreationStepDenomination from "./Steps/Denomination";
 
 const STEPS_COMPONENTS = {
   [STATES.BUILDING]: SiteFoncierCreationConstruction,
-  [STATES.CATEGORY]: SiteFoncierCreationStepCategory,
-  [STATES.ADDRESS]: SiteFoncierCreationStepAddress,
+  [STATES.TYPE_STEP]: SiteFoncierCreationStepCategory,
+  [STATES.ADDRESS_STEP]: SiteFoncierCreationStepAddress,
   [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.LAST_ACTIVITY}`]:
     SiteFoncierCreationStepFricheLastActivity,
   [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_CATEGORIES}`]:

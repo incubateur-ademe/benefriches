@@ -1,7 +1,7 @@
 import { Controller, useFormContext } from "react-hook-form";
 
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { ALLOWED_SURFACES_CATEGORIES } from "../StateMachine";
+import { ALLOWED_SURFACES_CATEGORIES } from "../../StateMachine";
 import { ChangeEvent } from "react";
 import { getSurfaceCategoryLabel } from "@/helpers/getLabelForValue";
 

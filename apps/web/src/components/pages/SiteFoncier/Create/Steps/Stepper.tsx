@@ -38,7 +38,7 @@ function SiteFoncierCreationStepper({ state }: Props) {
     return null;
   }
 
-  if (state.matches(STATES.CATEGORY)) {
+  if (state.matches(STATES.TYPE_STEP)) {
     return (
       <div className="fr-stepper">
         <h2 className="fr-stepper__title">

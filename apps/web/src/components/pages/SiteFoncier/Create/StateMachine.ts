@@ -28,8 +28,8 @@ type TEvent = { type: "NEXT" } | { type: "BACK" } | TStoreEvent;
 const MACHINE_ID = "siteFoncier";
 
 export const STATES = {
-  CATEGORY: "type",
-  ADDRESS: "adresse",
+  TYPE_STEP: "type",
+  ADDRESS_STEP: "adresse",
   FRICHE_MACHINE: "fricheMachine",
   BUILDING: "construction",
   DENOMINATION: "denomination",
@@ -52,22 +52,22 @@ const STORE_CONTEXT_ACTION = "storeContext";
 export default createMachine(
   {
     id: MACHINE_ID,
-    initial: `${STATES.CATEGORY}`,
+    initial: STATES.TYPE_STEP,
     context: {} as TContext,
     states: {
-      [STATES.CATEGORY]: {
+      [STATES.TYPE_STEP]: {
         on: {
           STORE_VALUE: { actions: STORE_CONTEXT_ACTION },
           NEXT: [
             {
-              target: STATES.ADDRESS,
+              target: STATES.ADDRESS_STEP,
               cond: CONDITIONS.IS_FRICHE,
             },
             { target: STATES.BUILDING },
           ],
         },
       },
-      [STATES.ADDRESS]: {
+      [STATES.ADDRESS_STEP]: {
         on: {
           STORE_VALUE: { actions: STORE_CONTEXT_ACTION },
           NEXT: {
@@ -75,7 +75,7 @@ export default createMachine(
             cond: CONDITIONS.IS_FRICHE,
           },
           BACK: {
-            target: STATES.CATEGORY,
+            target: STATES.TYPE_STEP,
           },
         },
       },
@@ -129,7 +129,7 @@ export default createMachine(
         },
         on: {
           BACK: {
-            target: `#${MACHINE_ID}.${STATES.ADDRESS}`,
+            target: `#${MACHINE_ID}.${STATES.ADDRESS_STEP}`,
           },
         },
       },
@@ -137,7 +137,7 @@ export default createMachine(
       [STATES.BUILDING]: {
         on: {
           BACK: {
-            target: STATES.CATEGORY,
+            target: STATES.TYPE_STEP,
           },
         },
       },

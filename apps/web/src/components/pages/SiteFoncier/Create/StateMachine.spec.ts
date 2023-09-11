@@ -4,28 +4,28 @@ import { SiteFoncierType } from "../siteFoncier";
 
 describe("Site foncier state machine: NEXT transitions", () => {
   it("should display initial state", () => {
-    const expectedValue = STATES.CATEGORY;
+    const expectedValue = STATES.TYPE_STEP;
     expect(stateMachine.initialState.value).toEqual(expectedValue);
   });
 
   it("should transition from Type to En construction", () => {
-    const actualState = stateMachine.transition(STATES.CATEGORY, {
+    const actualState = stateMachine.transition(STATES.TYPE_STEP, {
       type: "NEXT",
     });
     expect(actualState.matches(STATES.BUILDING)).toBeTruthy();
   });
 
   it("should transition from Type to Adresse", () => {
-    const nextState = stateMachine.transition(STATES.CATEGORY, {
+    const nextState = stateMachine.transition(STATES.TYPE_STEP, {
       type: "STORE_VALUE",
       value: { category: SiteFoncierType.FRICHE },
     });
     const actualState = stateMachine.transition(nextState, { type: "NEXT" });
-    expect(actualState.matches(STATES.ADDRESS)).toBeTruthy();
+    expect(actualState.matches(STATES.ADDRESS_STEP)).toBeTruthy();
   });
 
   it("should store category and address", () => {
-    const nextState = stateMachine.transition(STATES.CATEGORY, {
+    const nextState = stateMachine.transition(STATES.TYPE_STEP, {
       type: "STORE_VALUE",
       value: { category: SiteFoncierType.FRICHE },
     });
@@ -41,7 +41,7 @@ describe("Site foncier state machine: NEXT transitions", () => {
     return new Promise<void>((done) => {
       const machine = interpret(stateMachine)
         .onTransition((state) => {
-          if (state.matches({ selected: STATES.ADDRESS })) {
+          if (state.matches({ selected: STATES.ADDRESS_STEP })) {
             // eslint-disable-next-line jest/no-conditional-expect
             expect(state.context.category).toBeDefined();
           }
@@ -118,7 +118,7 @@ describe("Site foncier state machine: NEXT transitions", () => {
 
 describe("Site foncier state machine: BACK transitions", () => {
   it("should display initial state and cannot go back", () => {
-    const expectedValue = STATES.CATEGORY;
+    const expectedValue = STATES.TYPE_STEP;
     expect(stateMachine.initialState.value).toEqual(expectedValue);
 
     const machine = interpret(stateMachine).start();
@@ -135,14 +135,14 @@ describe("Site foncier state machine: BACK transitions", () => {
   it("should transition from En contruction to Type", () => {
     const categoryState = stateMachine.transition(STATES.BUILDING, "BACK");
 
-    expect(categoryState.matches(STATES.CATEGORY)).toBeTruthy();
+    expect(categoryState.matches(STATES.TYPE_STEP)).toBeTruthy();
   });
 
   it("should transition from Adresse to Type though BACK event", () => {
     const nextState = stateMachine
       .withContext({ category: SiteFoncierType.FRICHE })
-      .transition(STATES.ADDRESS, { type: "BACK" });
-    expect(nextState.matches(STATES.CATEGORY)).toBeTruthy();
+      .transition(STATES.ADDRESS_STEP, { type: "BACK" });
+    expect(nextState.matches(STATES.TYPE_STEP)).toBeTruthy();
   });
 
   describe("Friche submachine: BACK transitions", () => {
@@ -152,7 +152,7 @@ describe("Site foncier state machine: BACK transitions", () => {
         .transition(`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.LAST_ACTIVITY}`, {
           type: "BACK",
         });
-      expect(nextState.matches(STATES.ADDRESS)).toBeTruthy();
+      expect(nextState.matches(STATES.ADDRESS_STEP)).toBeTruthy();
     });
 
     it("should transition from final state to initial state", () => {

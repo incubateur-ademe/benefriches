@@ -22,6 +22,7 @@ function SiteFoncierCreationStepAddress() {
         stateRelatedMessage={error ? error.message : undefined}
         nativeInputProps={register(KEY, {
           required: "Ce champ est requis",
+          min: 0,
         })}
       />
     </>

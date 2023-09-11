@@ -2,8 +2,8 @@ import { getSurfaceCategoryLabel } from "@/helpers/getLabelForValue";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { useContext, useState } from "react";
 import { FieldErrors, useFieldArray, useFormContext } from "react-hook-form";
-import { TContext } from "../StateMachine";
-import { SiteFoncierPublicodesContext } from "../../PublicodesProvider";
+import { TContext } from "../../StateMachine";
+import { SiteFoncierPublicodesContext } from "../../../PublicodesProvider";
 
 const KEY = "surfaces";
 const ERROR_MESSAGE = "Cette valeur est requise";
