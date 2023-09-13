@@ -15,6 +15,7 @@ function BenefrichesFooter() {
           <a
             href="https://github.com/incubateur-ademe/benefriches"
             target="_blank"
+            rel="noreferrer"
           >
             Voir le code source
           </a>
