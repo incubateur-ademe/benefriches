@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { INestApplication } from "@nestjs/common";
-import supertest from "supertest";
+import { ConfigModule } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
+import supertest from "supertest";
 import { AppModule } from "src/app.module";
-import { User } from "src/users/domain/models/user";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { ConfigModule } from "@nestjs/config";
+import { User } from "src/users/domain/models/user";
 
 describe("Users controller", () => {
   let app: INestApplication;

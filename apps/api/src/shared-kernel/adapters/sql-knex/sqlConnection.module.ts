@@ -1,6 +1,6 @@
+import { Global, Module } from "@nestjs/common";
 import knex from "knex";
 import knexConfig from "./knexConfig";
-import { Global, Module } from "@nestjs/common";
 
 export const SqlConnection = "SqlConnection";
 

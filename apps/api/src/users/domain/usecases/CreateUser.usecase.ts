@@ -1,7 +1,7 @@
-import { UuidGenerator } from "../gateways/UuidGenerator";
-import { UserRepository } from "../gateways/UserRepository";
 import { UseCase } from "../../../shared-kernel/usecase";
 import { HashGenerator } from "../gateways/HashGenerator";
+import { UserRepository } from "../gateways/UserRepository";
+import { UuidGenerator } from "../gateways/UuidGenerator";
 import { EmailAddress } from "../models/emailAddress";
 import { Password } from "../models/password";
 import { User } from "../models/user";

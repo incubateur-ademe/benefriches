@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from "@nestjs/common";
-import { z } from "nestjs-zod/z";
 import { createZodDto } from "nestjs-zod";
+import { z } from "nestjs-zod/z";
 import { CreateUserUseCase } from "src/users/domain/usecases/CreateUser.usecase";
 
 const CreateUserDtoSchema = z.object({

@@ -1,6 +1,6 @@
-import path from "path";
-import knex, { Knex } from "knex";
 import dotenv from "dotenv";
+import knex, { Knex } from "knex";
+import path from "path";
 import {
   DockerComposeEnvironment,
   StartedDockerComposeEnvironment,

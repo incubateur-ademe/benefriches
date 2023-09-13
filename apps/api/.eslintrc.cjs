@@ -24,6 +24,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: "./tsconfig.json",
   },
+  plugins: ["simple-import-sort"],
   rules: {
     "@typescript-eslint/prefer-ts-expect-error": "error",
     "@typescript-eslint/prefer-readonly": "error",
@@ -33,6 +34,23 @@ module.exports = {
     "@typescript-eslint/no-extraneous-class": [
       "error",
       { allowWithDecorator: true },
+    ],
+    "simple-import-sort/imports": [
+      "error",
+      {
+        groups: [
+          [
+            "^@?\\w",
+            "^src/",
+            "^\\u0000",
+            "^\\.\\.(?!/?$)",
+            "^\\.\\./?$",
+            "^\\./(?=.*/)(?!/?$)",
+            "^\\.(?!/?$)",
+            "^\\./?$",
+          ],
+        ],
+      },
     ],
   },
 };
