@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { getSurfaceCategoryLabel } from "@/helpers/getLabelForValue";
+import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
 import { FricheSurfaceType } from "../../../siteFoncier";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
@@ -11,20 +11,20 @@ type Props = {
   onBack: () => void;
 };
 
-function SiteFoncierCreationStepFricheSurfacesCategory({
+function SiteFoncierCreationStepFricheSurfacesType({
   onSubmit,
   onBack,
 }: Props) {
   const { register, handleSubmit } = useForm<FormValues>();
 
   const options = Object.values(FricheSurfaceType).map((key) => ({
-    label: getSurfaceCategoryLabel(key),
+    label: getSurfaceTypeLabel(key),
     nativeInputProps: register(key),
   }));
 
   return (
     <>
-      <h2>Quels espaces y a t-il sur cette friche ?</h2>
+      <h2>Quels espaces y a-t-il sur cette friche ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox options={options} />
         <ButtonsGroup
@@ -48,4 +48,4 @@ function SiteFoncierCreationStepFricheSurfacesCategory({
   );
 }
 
-export default SiteFoncierCreationStepFricheSurfacesCategory;
+export default SiteFoncierCreationStepFricheSurfacesType;

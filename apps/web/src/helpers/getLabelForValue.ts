@@ -1,6 +1,6 @@
 import { FricheSurfaceType } from "@/components/pages/SiteFoncier/siteFoncier";
 
-const getSurfaceCategoryLabel = (value: FricheSurfaceType) => {
+export const getSurfaceTypeLabel = (value: FricheSurfaceType) => {
   switch (value) {
     case "impermeable_soils":
       return "Sols imperméabilisés (Parking bétonisé, voirie...)";
@@ -18,5 +18,3 @@ const getSurfaceCategoryLabel = (value: FricheSurfaceType) => {
       return "Autre / NSP";
   }
 };
-
-export { getSurfaceCategoryLabel };

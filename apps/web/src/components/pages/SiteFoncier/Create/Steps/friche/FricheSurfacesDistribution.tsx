@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { FricheSurfaceType } from "../../../siteFoncier";
-import { getSurfaceCategoryLabel } from "@/helpers/getLabelForValue";
+import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
 
 interface Props {
   surfaces: { type: FricheSurfaceType }[];
@@ -27,7 +27,7 @@ function FricheSurfacesDistribution({ surfaces = [], onSubmit }: Props) {
         {surfaces.map(({ type }) => (
           <Input
             key={`input-${type}`}
-            label={getSurfaceCategoryLabel(type)}
+            label={getSurfaceTypeLabel(type)}
             hintText="en m2"
             nativeInputProps={{
               type: "number",

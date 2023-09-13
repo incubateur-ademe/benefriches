@@ -24,5 +24,5 @@ export enum FricheSurfaceType {
 
 export type FricheSite = SiteFoncier & {
   lastActivity: "agricole" | "industrial" | "quarry" | "accomodation" | "other";
-  surfaces: { type: FricheSurfaceType; area: number };
+  surfaces: { type: FricheSurfaceType; surface: number }[];
 };

@@ -3,7 +3,7 @@ import SiteFoncierCreationStepper from "./Steps/Stepper";
 import SiteFoncierCreationConstruction from "./Steps/Construction";
 import SiteFoncierCreationStepAddress from "./Steps/Address";
 import SiteFoncierCreationStepFricheLastActivity from "./Steps/friche/FricheLastActivity";
-import SiteFoncierCreationStepFricheSurfacesCategory from "./Steps/friche/FricheSurfacesCategory";
+import SiteFoncierCreationStepFricheSurfacesTypes from "./Steps/friche/FricheSurfacesType";
 import SiteFoncierCreationStepFricheSurfacesDistribution from "./Steps/friche/FricheSurfacesDistribution";
 import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
 import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
@@ -38,8 +38,8 @@ function CreateSiteFoncierPage() {
           onBack={onBack}
         />
       ),
-      [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_CATEGORIES}`]: (
-        <SiteFoncierCreationStepFricheSurfacesCategory
+      [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_TYPES}`]: (
+        <SiteFoncierCreationStepFricheSurfacesTypes
           onSubmit={(data: Record<FricheSurfaceType, boolean>) => {
             const surfaces = Object.entries(data)
               .filter(([, value]) => {

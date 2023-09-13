@@ -15,7 +15,7 @@ const STEPS = {
     currentStep: 3,
     title: "Espaces",
   },
-  [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_CATEGORIES}`]: {
+  [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_TYPES}`]: {
     currentStep: 3,
     title: "Espaces",
   },

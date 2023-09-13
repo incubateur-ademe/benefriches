@@ -2,9 +2,9 @@ import { createContext, useMemo, ReactNode, useCallback } from "react";
 
 import PublicodesEngine from "publicodes";
 import rules from "publicodes-rules";
-import { TContext } from "./Create/StateMachine";
+import { FricheSite } from "./siteFoncier";
 
-const SURFACES_CATEGORIES_CORRELATION = {
+const SURFACES_TYPES_CORRELATION = {
   impermeable_soils: "espaces . sols imperméabilisés",
   buildings: "espaces . bâtiments",
   permeable_artificial_soils: "espaces . sols artificialisés perméables",
@@ -13,14 +13,13 @@ const SURFACES_CATEGORIES_CORRELATION = {
   other: "espaces . autre",
 } as const;
 
-export type TSurfaceCategory = keyof typeof SURFACES_CATEGORIES_CORRELATION;
+export type TSurfaceType = keyof typeof SURFACES_TYPES_CORRELATION;
 
-export type TSurfacesDistribution = TContext["surfaces"];
+export type TSurfacesDistribution = FricheSite["surfaces"];
 
 const publicodesEngine = new PublicodesEngine(rules);
 
-type PublicodesKeys =
-  (typeof SURFACES_CATEGORIES_CORRELATION)[TSurfaceCategory];
+type PublicodesKeys = (typeof SURFACES_TYPES_CORRELATION)[TSurfaceType];
 type PublicodesSurfacesDistribution = Record<PublicodesKeys, string>;
 type SiteFoncierPublicodesProvider = {
   computeTotalSurface: () => number;
@@ -34,11 +33,11 @@ const SiteFoncierPublicodesContext =
   });
 
 const formatSurfaceValuesForPublicodes = (
-  values: TSurfacesDistribution,
+  values: TSurfacesDistribution = [],
 ): PublicodesSurfacesDistribution => {
-  const publicodesArray = (values || []).map(({ category, superficie }) => {
-    const newKey = SURFACES_CATEGORIES_CORRELATION[category];
-    return [newKey, `${superficie || 0}m2`];
+  const publicodesArray = values.map(({ type, surface }) => {
+    const newKey = SURFACES_TYPES_CORRELATION[type];
+    return [newKey, `${surface || 0}m2`];
   });
   return Object.fromEntries(publicodesArray) as PublicodesSurfacesDistribution;
 };

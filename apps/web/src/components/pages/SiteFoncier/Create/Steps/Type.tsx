@@ -14,7 +14,7 @@ type FormValues = {
 const requiredMessage =
   "Ce champ est nécessaire pour déterminer les questions suivantes";
 
-function SiteFoncierCreationStepCategory({ onSubmit }: Props) {
+function SiteFoncierCreationStepType({ onSubmit }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
   const error = formState.errors.type;
 
@@ -66,4 +66,4 @@ function SiteFoncierCreationStepCategory({ onSubmit }: Props) {
   );
 }
 
-export default SiteFoncierCreationStepCategory;
+export default SiteFoncierCreationStepType;

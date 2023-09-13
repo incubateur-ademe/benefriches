@@ -29,12 +29,12 @@ export const STATES = {
 
 export const FRICHE_STATES = {
   LAST_ACTIVITY: "espacesActivites",
-  SURFACES_CATEGORIES: "espacesTypes",
+  SURFACES_TYPES: "espacesTypes",
   SURFACES_DISTRIBUTION: "espacesSurfaces",
 };
 
 const CONDITIONS = {
-  IS_FRICHE: "categoryIsFriche",
+  IS_FRICHE: "typeIsFriche",
   IS_AGRICOLE: "lastActivityIsAgricole",
 };
 
@@ -82,16 +82,18 @@ export default createMachine(
                   target: FRICHE_STATES.SURFACES_DISTRIBUTION,
                   cond: CONDITIONS.IS_AGRICOLE,
                   actions: assign({
-                    surfaces: [{ type: "natural_areas", superficie: 0 }],
+                    surfaces: [
+                      { type: FricheSurfaceType.NATURAL_AREAS, superficie: 0 },
+                    ],
                   }),
                 },
                 {
-                  target: FRICHE_STATES.SURFACES_CATEGORIES,
+                  target: FRICHE_STATES.SURFACES_TYPES,
                 },
               ],
             },
           },
-          [FRICHE_STATES.SURFACES_CATEGORIES]: {
+          [FRICHE_STATES.SURFACES_TYPES]: {
             on: {
               STORE_VALUE: { actions: STORE_CONTEXT_ACTION },
               NEXT: {
@@ -114,7 +116,7 @@ export default createMachine(
                   cond: CONDITIONS.IS_AGRICOLE,
                 },
                 {
-                  target: FRICHE_STATES.SURFACES_CATEGORIES,
+                  target: FRICHE_STATES.SURFACES_TYPES,
                 },
               ],
             },
