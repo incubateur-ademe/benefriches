@@ -7,10 +7,10 @@ type FormValues = {
   description?: string;
 };
 
-interface Props {
+type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-}
+};
 
 function PrairieDenominationStep({ onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();

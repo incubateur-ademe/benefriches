@@ -4,10 +4,10 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { FricheSurfaceType } from "../../../siteFoncier";
 import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
 
-interface Props {
+type Props = {
   surfaces: { type: FricheSurfaceType }[];
   onSubmit: (data: FormValues) => void;
-}
+};
 
 type FormValues = Record<FricheSurfaceType, number>;
 

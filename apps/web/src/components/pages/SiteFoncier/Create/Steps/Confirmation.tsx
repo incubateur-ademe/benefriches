@@ -1,8 +1,8 @@
 import { SiteFoncier } from "../../siteFoncier";
 
-interface Props {
+type Props = {
   site: Partial<SiteFoncier>;
-}
+};
 
 function PrairieCreationConfirmation({ site }: Props) {
   return (

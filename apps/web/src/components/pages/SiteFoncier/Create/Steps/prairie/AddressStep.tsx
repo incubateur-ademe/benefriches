@@ -2,9 +2,9 @@ import { useForm } from "react-hook-form";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-interface Props {
+type Props = {
   onSubmit: (address: string) => void;
-}
+};
 
 type FormValues = {
   address: string;
