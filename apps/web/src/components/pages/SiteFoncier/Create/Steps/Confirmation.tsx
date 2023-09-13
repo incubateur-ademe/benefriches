@@ -1,36 +1,20 @@
-import { useContext } from "react";
+import { SiteFoncier } from "../../siteFoncier";
 
-import { SiteFoncierPublicodesContext } from "../../PublicodesProvider";
-import { useFormContext } from "react-hook-form";
-import { TContext } from "../StateMachine";
-import { getSurfaceCategoryLabel } from "@/helpers/getLabelForValue";
+interface Props {
+  site: Partial<SiteFoncier>;
+}
 
-function SiteFoncierCreationConfirmation() {
-  const { getValues } = useFormContext();
-  const { category, surfaces, address, name, description }: TContext =
-    getValues();
-
-  const { computeTotalSurface } = useContext(SiteFoncierPublicodesContext);
-
+function PrairieCreationConfirmation({ site }: Props) {
   return (
     <>
-      <h2>Récapitulatif du site foncier</h2>
-
-      <h3>{name}</h3>
-
-      <p>Type : {category}</p>
-      <p>{address}</p>
-
-      <p>{description}</p>
-
-      {surfaces &&
-        surfaces.map(({ category, superficie }) => (
-          <p>{`${getSurfaceCategoryLabel(category)} : ${superficie} m²`}</p>
-        ))}
-
-      <p>Total surface: {computeTotalSurface()} m²</p>
+      <h2>✅ Le site "{site.name}" est créé !</h2>
+      <p>
+        Vous pouvez maintenant découvrir ses caractéristiques géographiques,
+        créer un projet sur ce site ou bien renseigner un nouveau site
+        retournant à votre tableau de bord.
+      </p>
     </>
   );
 }
 
-export default SiteFoncierCreationConfirmation;
+export default PrairieCreationConfirmation;

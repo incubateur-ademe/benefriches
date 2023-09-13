@@ -1,28 +1,19 @@
 import { createMachine, assign } from "xstate";
-import { SiteFoncierType } from "../siteFoncier";
-
-export const ALLOWED_SURFACES_CATEGORIES = [
-  "impermeable_soils",
-  "buildings",
-  "permeable_artificial_soils",
-  "natural_areas",
-  "body_of_water",
-  "other",
-] as const;
+import { FricheSite, FricheSurfaceType, SiteFoncierType } from "../siteFoncier";
 
 export type TContext = {
-  category?: SiteFoncierType;
-  lastActivity?: "agricole" | "industrial" | "quarry" | "other";
+  type?: SiteFoncierType;
+  lastActivity?: FricheSite["lastActivity"];
   address?: string;
   surfaces?: Array<{
-    category: (typeof ALLOWED_SURFACES_CATEGORIES)[number];
-    superficie: number;
+    type: FricheSurfaceType;
+    superficie?: number;
   }>;
   name?: string;
   description?: string;
 };
 
-type TStoreEvent = { type: "STORE_VALUE"; value: TContext };
+type TStoreEvent = { type: "STORE_VALUE"; data: TContext };
 type TEvent = { type: "NEXT" } | { type: "BACK" } | TStoreEvent;
 
 const MACHINE_ID = "siteFoncier";
@@ -91,7 +82,7 @@ export default createMachine(
                   target: FRICHE_STATES.SURFACES_DISTRIBUTION,
                   cond: CONDITIONS.IS_AGRICOLE,
                   actions: assign({
-                    surfaces: [{ category: "natural_areas", superficie: 0 }],
+                    surfaces: [{ type: "natural_areas", superficie: 0 }],
                   }),
                 },
                 {
@@ -102,6 +93,7 @@ export default createMachine(
           },
           [FRICHE_STATES.SURFACES_CATEGORIES]: {
             on: {
+              STORE_VALUE: { actions: STORE_CONTEXT_ACTION },
               NEXT: {
                 target: FRICHE_STATES.SURFACES_DISTRIBUTION,
               },
@@ -112,6 +104,7 @@ export default createMachine(
           },
           [FRICHE_STATES.SURFACES_DISTRIBUTION]: {
             on: {
+              STORE_VALUE: { actions: STORE_CONTEXT_ACTION },
               NEXT: {
                 target: `#${MACHINE_ID}.${STATES.DENOMINATION}`,
               },
@@ -170,12 +163,17 @@ export default createMachine(
   },
   {
     actions: {
-      [STORE_CONTEXT_ACTION]: assign((_, event: TStoreEvent) => event.value),
+      [STORE_CONTEXT_ACTION]: assign((context, event: TStoreEvent) => {
+        return {
+          ...context,
+          ...event.data,
+        };
+      }),
     },
     services: {},
     guards: {
       [CONDITIONS.IS_FRICHE]: (context: TContext) =>
-        context.category === SiteFoncierType.FRICHE,
+        context.type === SiteFoncierType.FRICHE,
       [CONDITIONS.IS_AGRICOLE]: (context: TContext) =>
         context.lastActivity === "agricole",
     },

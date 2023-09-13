@@ -1,32 +1,52 @@
-import { FieldError, useFormContext } from "react-hook-form";
-
+import { useForm } from "react-hook-form";
 import { Input } from "@codegouvfr/react-dsfr/Input";
+import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
-const KEY = "address";
+interface Props {
+  onSubmit: (data: FormValues) => void;
+  onBack: () => void;
+}
 
-function SiteFoncierCreationStepAddress() {
-  const {
-    register,
-    formState: { errors },
-  } = useFormContext();
+type FormValues = {
+  address: string;
+};
 
-  const error = errors[KEY] as FieldError;
+function SiteCreationAddressStep({ onSubmit, onBack }: Props) {
+  const { register, handleSubmit, formState } = useForm<FormValues>();
+
+  const error = formState.errors.address;
 
   return (
     <>
-      <h2>Où est située cette friche ?</h2>
-
-      <Input
-        label="Adresse du site"
-        state={error ? "error" : "default"}
-        stateRelatedMessage={error ? error.message : undefined}
-        nativeInputProps={register(KEY, {
-          required: "Ce champ est requis",
-          min: 0,
-        })}
-      />
+      <h2>Où est située cette prairie ?</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Input
+          label="Adresse du site"
+          state={error ? "error" : "default"}
+          stateRelatedMessage={error ? error.message : undefined}
+          nativeInputProps={register("address", {
+            required: "Ce champ est requis",
+          })}
+        />
+        <ButtonsGroup
+          buttonsEquisized
+          inlineLayoutWhen="always"
+          buttons={[
+            {
+              children: "Retour",
+              onClick: onBack,
+              priority: "secondary",
+              nativeButtonProps: { type: "button" },
+            },
+            {
+              children: "Suivant",
+              nativeButtonProps: { type: "submit" },
+            },
+          ]}
+        />
+      </form>
     </>
   );
 }
 
-export default SiteFoncierCreationStepAddress;
+export default SiteCreationAddressStep;

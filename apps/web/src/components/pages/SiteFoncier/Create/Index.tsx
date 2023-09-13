@@ -1,4 +1,4 @@
-import SiteFoncierCreationStepCategory from "./Steps/Category";
+import SiteFoncierCreationStepType from "./Steps/Type";
 import SiteFoncierCreationStepper from "./Steps/Stepper";
 import SiteFoncierCreationConstruction from "./Steps/Construction";
 import SiteFoncierCreationStepAddress from "./Steps/Address";
@@ -9,38 +9,15 @@ import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
 import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 import stateMachine, { STATES, FRICHE_STATES, TContext } from "./StateMachine";
 import { useMachine } from "@xstate/react";
-import { FormProvider, useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import Button from "@codegouvfr/react-dsfr/Button";
 import SiteFoncierCreationStepDenomination from "./Steps/Denomination";
-
-const STEPS_COMPONENTS = {
-  [STATES.BUILDING]: SiteFoncierCreationConstruction,
-  [STATES.TYPE_STEP]: SiteFoncierCreationStepCategory,
-  [STATES.ADDRESS_STEP]: SiteFoncierCreationStepAddress,
-  [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.LAST_ACTIVITY}`]:
-    SiteFoncierCreationStepFricheLastActivity,
-  [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_CATEGORIES}`]:
-    SiteFoncierCreationStepFricheSurfacesCategory,
-  [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_DISTRIBUTION}`]:
-    SiteFoncierCreationStepFricheSurfacesDistribution,
-  [STATES.DENOMINATION]: SiteFoncierCreationStepDenomination,
-  [STATES.CONFIRMATION]: SiteFoncierCreationConfirmation,
-};
+import { FricheSurfaceType } from "../siteFoncier";
 
 function CreateSiteFoncierPage() {
   const [state, send] = useMachine(stateMachine);
   const statesAsString = state.toStrings();
 
-  const stepKey = Object.keys(STEPS_COMPONENTS).find((key) =>
-    statesAsString.includes(key),
-  );
-  const StepComponent = stepKey
-    ? STEPS_COMPONENTS[stepKey]
-    : STEPS_COMPONENTS[STATES.BUILDING];
-
-  const onNext = (value: TContext) => {
-    send("STORE_VALUE", { value });
+  const onNext = (data: Partial<TContext>) => {
+    send("STORE_VALUE", { data });
     send("NEXT");
   };
 
@@ -48,54 +25,73 @@ function CreateSiteFoncierPage() {
     send("BACK");
   };
 
-  const { handleSubmit, reset, ...methods } = useForm<TContext>({
-    values: state.context,
-  });
+  const getStepComponent = () => {
+    const STEPS_COMPONENTS = {
+      [STATES.BUILDING]: <SiteFoncierCreationConstruction />,
+      [STATES.TYPE_STEP]: <SiteFoncierCreationStepType onSubmit={onNext} />,
+      [STATES.ADDRESS_STEP]: (
+        <SiteFoncierCreationStepAddress onSubmit={onNext} onBack={onBack} />
+      ),
+      [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.LAST_ACTIVITY}`]: (
+        <SiteFoncierCreationStepFricheLastActivity
+          onSubmit={onNext}
+          onBack={onBack}
+        />
+      ),
+      [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_CATEGORIES}`]: (
+        <SiteFoncierCreationStepFricheSurfacesCategory
+          onSubmit={(data: Record<FricheSurfaceType, boolean>) => {
+            const surfaces = Object.entries(data)
+              .filter(([, value]) => {
+                return value;
+              })
+              .map(([surfaceType]) => {
+                return { type: surfaceType as FricheSurfaceType };
+              });
+            onNext({ surfaces });
+          }}
+          onBack={onBack}
+        />
+      ),
+      [`${STATES.FRICHE_MACHINE}.${FRICHE_STATES.SURFACES_DISTRIBUTION}`]: (
+        <SiteFoncierCreationStepFricheSurfacesDistribution
+          surfaces={state.context.surfaces!}
+          onSubmit={(data) => {
+            const surfaces = Object.entries(data).map(([type, surface]) => ({
+              type: type as FricheSurfaceType,
+              surface,
+            }));
+            onNext({ surfaces });
+          }}
+        />
+      ),
+      [STATES.DENOMINATION]: (
+        <SiteFoncierCreationStepDenomination
+          onSubmit={onNext}
+          onBack={onBack}
+        />
+      ),
+      [STATES.CONFIRMATION]: (
+        <SiteFoncierCreationConfirmation site={state.context} />
+      ),
+    };
 
-  const onSubmit = handleSubmit((values) => onNext(values));
+    const stepKey = statesAsString.at(-1);
+    return STEPS_COMPONENTS[stepKey as string];
+  };
 
   return (
-    <>
-      <SiteFoncierPublicodesProvider>
-        <FormProvider handleSubmit={handleSubmit} reset={reset} {...methods}>
-          <SiteFoncierCreationStepper state={state} />
-          <form onSubmit={onSubmit}>
-            <StepComponent />
-
-            {state.can("BACK") && state.can("NEXT") && (
-              <ButtonsGroup
-                buttonsEquisized
-                inlineLayoutWhen="always"
-                buttons={[
-                  {
-                    children: "Retour",
-                    onClick: onBack,
-                    priority: "secondary",
-                    nativeButtonProps: { type: "button" },
-                  },
-                  {
-                    children: "Suivant",
-                    nativeButtonProps: { type: "submit" },
-                  },
-                ]}
-              />
-            )}
-            {state.can("BACK") && !state.can("NEXT") && (
-              <Button
-                priority="secondary"
-                nativeButtonProps={{ type: "button" }}
-                onClick={onBack}
-              >
-                Retour
-              </Button>
-            )}
-            {!state.can("BACK") && state.can("NEXT") && (
-              <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
-            )}
-          </form>
-        </FormProvider>
-      </SiteFoncierPublicodesProvider>
-    </>
+    <SiteFoncierPublicodesProvider>
+      <SiteFoncierCreationStepper state={state} />
+      <pre>
+        {JSON.stringify(
+          { state: state.value, context: state.context },
+          null,
+          2,
+        )}
+      </pre>
+      {getStepComponent()}
+    </SiteFoncierPublicodesProvider>
   );
 }
 

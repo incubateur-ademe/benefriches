@@ -1,76 +1,54 @@
-import { getSurfaceCategoryLabel } from "@/helpers/getLabelForValue";
+import { useForm } from "react-hook-form";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { useContext, useState } from "react";
-import { FieldErrors, useFieldArray, useFormContext } from "react-hook-form";
-import { TContext } from "../../StateMachine";
-import { SiteFoncierPublicodesContext } from "../../../PublicodesProvider";
+import Button from "@codegouvfr/react-dsfr/Button";
+import { FricheSurfaceType } from "../../../siteFoncier";
+import { getSurfaceCategoryLabel } from "@/helpers/getLabelForValue";
 
-const KEY = "surfaces";
-const ERROR_MESSAGE = "Cette valeur est requise";
+interface Props {
+  surfaces: { type: FricheSurfaceType }[];
+  onSubmit: (data: FormValues) => void;
+}
 
-function SiteFoncierCreationStepFricheSurfacesDistribution() {
-  const [totalArea, setTotalArea] = useState(0);
+type FormValues = Record<FricheSurfaceType, number>;
 
-  const {
-    register,
-    getValues,
-    formState: { errors },
-    control,
-  } = useFormContext();
-  const { computeTotalSurface, setSurfaceSituation } = useContext(
-    SiteFoncierPublicodesContext,
-  );
+const sumSurfaces = (surfaces: FormValues) => {
+  // TODO: remove the + number conversion
+  return Object.values(surfaces).reduce((surface, sum) => +surface + sum, 0);
+};
 
-  const { fields } = useFieldArray<TContext, "surfaces", "id">({
-    name: "surfaces",
-    control,
-  });
-
-  const onChange = () => {
-    const values = getValues("surfaces") as TContext["surfaces"];
-    setSurfaceSituation(values);
-    setTotalArea(computeTotalSurface());
-  };
-
-  const surfacesErrors = (errors[KEY] as FieldErrors) || {};
+function FricheSurfacesDistribution({ surfaces = [], onSubmit }: Props) {
+  const { register, handleSubmit, watch } = useForm<FormValues>();
+  const _onSubmit = handleSubmit(onSubmit);
 
   return (
     <>
       <h2>Quelles sont les superficies des différents espaces ?</h2>
-
-      {fields.map((field, index) => (
+      <form onSubmit={_onSubmit}>
+        {surfaces.map(({ type }) => (
+          <Input
+            key={`input-${type}`}
+            label={getSurfaceCategoryLabel(type)}
+            hintText="en m2"
+            nativeInputProps={{
+              type: "number",
+              ...register(type, {
+                min: 0,
+              }),
+            }}
+          />
+        ))}
         <Input
-          label={getSurfaceCategoryLabel(field.category)}
-          hintText="Superficie en m²"
-          state={surfacesErrors[index] ? "error" : "default"}
-          stateRelatedMessage={
-            surfacesErrors[index] ? ERROR_MESSAGE : undefined
-          }
-          key={field.id}
+          label="Total superficie de la friche"
+          hintText="en m2"
           nativeInputProps={{
-            ...register(`surfaces.${index}.superficie` as const, {
-              required: ERROR_MESSAGE,
-              min: 1,
-              onChange,
-            }),
-            inputMode: "numeric",
-            pattern: "[0-9]*",
-            type: "number",
-            placeholder: "5000",
+            value: sumSurfaces(watch()),
           }}
+          disabled
         />
-      ))}
-
-      <Input
-        label="Surface totale de la friche"
-        hintText="Superficie en m²"
-        disabled
-        nativeInputProps={{
-          value: totalArea,
-        }}
-      />
+        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+      </form>
     </>
   );
 }
 
-export default SiteFoncierCreationStepFricheSurfacesDistribution;
+export default FricheSurfacesDistribution;

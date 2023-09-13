@@ -1,12 +1,12 @@
-import { FieldError, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import RadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
+import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
-const KEY = "lastActivity";
 const ERROR_MESSAGE =
   "Si vous ne savez pas qualifier l’activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
 
-const ACTIVITIES = [
+const FRICHE_ACTIVITY_OPTIONS = [
   {
     value: "agricole",
     label: "Agriculture",
@@ -27,21 +27,34 @@ const ACTIVITIES = [
     value: "other",
     label: "Autre / NSP",
   },
-];
+] as const;
 
-function SiteFoncierCreationStepFricheLastActivity() {
+type FormValues = {
+  lastActivity: (typeof FRICHE_ACTIVITY_OPTIONS)[number]["value"];
+};
+
+type Props = {
+  onSubmit: (data: FormValues) => void;
+  onBack: () => void;
+};
+
+function SiteFoncierCreationStepFricheLastActivity({
+  onSubmit,
+  onBack,
+}: Props) {
   const {
     register,
+    handleSubmit,
     formState: { errors },
-  } = useFormContext();
+  } = useForm<FormValues>();
 
-  const error = errors[KEY] as FieldError;
+  const error = errors.lastActivity;
 
-  const options = ACTIVITIES.map((activity) => ({
+  const options = FRICHE_ACTIVITY_OPTIONS.map((activity) => ({
     ...activity,
     nativeInputProps: {
       value: activity.value,
-      ...register(KEY, {
+      ...register("lastActivity", {
         required: ERROR_MESSAGE,
       }),
     },
@@ -49,13 +62,30 @@ function SiteFoncierCreationStepFricheLastActivity() {
 
   return (
     <>
-      <h2>Quels espaces y a t-il sur cette friche ?</h2>
-
-      <RadioButtons
-        options={options}
-        state={error ? "error" : "default"}
-        stateRelatedMessage={error ? error.message : undefined}
-      />
+      <h2>Quelle est la dernière activité connue de la friche ?</h2>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <RadioButtons
+          options={options}
+          state={error ? "error" : "default"}
+          stateRelatedMessage={error ? error.message : undefined}
+        />
+        <ButtonsGroup
+          buttonsEquisized
+          inlineLayoutWhen="always"
+          buttons={[
+            {
+              children: "Retour",
+              onClick: onBack,
+              priority: "secondary",
+              nativeButtonProps: { type: "button" },
+            },
+            {
+              children: "Suivant",
+              nativeButtonProps: { type: "submit" },
+            },
+          ]}
+        />
+      </form>
     </>
   );
 }

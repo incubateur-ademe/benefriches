@@ -4,7 +4,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { SiteFoncierType } from "../../siteFoncier";
 
 type Props = {
-  onSubmit: (siteType: SiteFoncierType) => void;
+  onSubmit: (data: FormValues) => void;
 };
 
 type FormValues = {
@@ -16,7 +16,6 @@ const requiredMessage =
 
 function SiteFoncierCreationStepCategory({ onSubmit }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
-  const _onSubmit = handleSubmit(({ type }) => onSubmit(type));
   const error = formState.errors.type;
 
   const _options = [
@@ -55,7 +54,7 @@ function SiteFoncierCreationStepCategory({ onSubmit }: Props) {
   return (
     <>
       <h2>De quel type de site s’agit-il ?</h2>
-      <form onSubmit={_onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           options={_options}
           state={error ? "error" : "default"}

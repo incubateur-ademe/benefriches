@@ -1,8 +1,6 @@
-import { ALLOWED_SURFACES_CATEGORIES } from "@/components/pages/SiteFoncier/Create/StateMachine";
+import { FricheSurfaceType } from "@/components/pages/SiteFoncier/siteFoncier";
 
-const getSurfaceCategoryLabel = (
-  value: (typeof ALLOWED_SURFACES_CATEGORIES)[number],
-) => {
+const getSurfaceCategoryLabel = (value: FricheSurfaceType) => {
   switch (value) {
     case "impermeable_soils":
       return "Sols imperméabilisés (Parking bétonisé, voirie...)";
