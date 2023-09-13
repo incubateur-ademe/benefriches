@@ -1,5 +1,5 @@
-import { Footer } from "@codegouvfr/react-dsfr/Footer";
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
+import { Footer } from "@codegouvfr/react-dsfr/Footer";
 
 function BenefrichesFooter() {
   return (
