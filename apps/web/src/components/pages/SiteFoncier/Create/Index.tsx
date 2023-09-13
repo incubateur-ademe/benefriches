@@ -83,13 +83,6 @@ function CreateSiteFoncierPage() {
   return (
     <SiteFoncierPublicodesProvider>
       <SiteFoncierCreationStepper state={state} />
-      <pre>
-        {JSON.stringify(
-          { state: state.value, context: state.context },
-          null,
-          2,
-        )}
-      </pre>
       {getStepComponent()}
     </SiteFoncierPublicodesProvider>
   );
