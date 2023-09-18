@@ -25,17 +25,17 @@
   },
   "dependencies": {
     "@codegouvfr/react-dsfr": "^0.73.0",
-    "@xstate/react": "^3.2.2",
     "antd": "^5.9.0",
     "leaflet": "^1.9.4",
+    "@reduxjs/toolkit": "^1.9.5",
     "publicodes": "1.0.0-beta.71",
     "publicodes-rules": "workspace:^",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
     "react-leaflet": "^4.2.1",
-    "type-route": "^1.0.1",
-    "xstate": "^4.38.2"
+    "react-redux": "^8.1.2",
+    "type-route": "^1.0.1"
   },
   "devDependencies": {
     "@types/geojson": "^7946.0.10",

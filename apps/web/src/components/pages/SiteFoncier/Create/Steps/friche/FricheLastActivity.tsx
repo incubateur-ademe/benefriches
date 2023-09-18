@@ -1,46 +1,46 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import RadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
+import { FricheLastActivity } from "../../../siteFoncier";
 
 const ERROR_MESSAGE =
   "Si vous ne savez pas qualifier l’activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
 
+const OTHER_VALUE = "OTHER";
+
 const FRICHE_ACTIVITY_OPTIONS = [
   {
-    value: "agricole",
-    label: "Agriculture",
-  },
-  {
-    value: "industrial",
+    value: FricheLastActivity.INDUSTRY,
     label: "Industrie, transport, zone commerciale ou militaire",
   },
   {
-    value: "quarry",
+    value: FricheLastActivity.MINE_OR_QUARRY,
     label: "Mine ou Carrière",
   },
   {
-    value: "accomodation",
+    value: FricheLastActivity.AGRICULTURE,
+    label: "Agriculture",
+  },
+  {
+    value: FricheLastActivity.HOUSING_OR_BUSINESS,
     label: "Habitat, petit commerce, équipement public",
   },
   {
-    value: "other",
+    value: OTHER_VALUE,
     label: "Autre / NSP",
   },
 ] as const;
 
 type FormValues = {
-  lastActivity: (typeof FRICHE_ACTIVITY_OPTIONS)[number]["value"];
+  lastActivity: FricheLastActivity | typeof OTHER_VALUE;
 };
 
 type Props = {
-  onSubmit: (data: FormValues) => void;
+  onSubmit: (data: { lastActivity: FricheLastActivity | null }) => void;
   onBack: () => void;
 };
 
-function SiteFoncierCreationStepFricheLastActivity({
-  onSubmit,
-  onBack,
-}: Props) {
+function FricheLastActivityForm({ onSubmit, onBack }: Props) {
   const {
     register,
     handleSubmit,
@@ -59,10 +59,18 @@ function SiteFoncierCreationStepFricheLastActivity({
     },
   }));
 
+  const _onSubmit = handleSubmit((data) => {
+    if (data.lastActivity === OTHER_VALUE) {
+      onSubmit({ lastActivity: null });
+      return;
+    }
+    onSubmit(data as { lastActivity: FricheLastActivity });
+  });
+
   return (
     <>
       <h2>Quelle est la dernière activité connue de la friche ?</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={_onSubmit}>
         <RadioButtons
           options={options}
           state={error ? "error" : "default"}
@@ -89,4 +97,4 @@ function SiteFoncierCreationStepFricheLastActivity({
   );
 }
 
-export default SiteFoncierCreationStepFricheLastActivity;
+export default FricheLastActivityForm;

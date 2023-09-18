@@ -1,10 +1,9 @@
 import { BanFeature } from "./Create/BaseAddressNationale/search";
 
 export enum SiteFoncierType {
-  FRICHE = "friche",
-  TERRE_AGRICOLE = "terre agricole",
-  PRAIRIE = "prairie",
-  FORET = "forêt",
+  FRICHE = "FRICHE",
+  NATURAL_SPACE = "NATURAL_SPACE",
+  AGRICULTURAL_LAND = "AGRICULTURAL_LAND",
 }
 
 export type SiteFoncier = {
@@ -18,16 +17,32 @@ export type SiteFoncier = {
   surface: number;
 };
 
-export enum FricheSurfaceType {
+export enum FricheSpaceType {
   "IMPERMEABLE_SOILS" = "impermeable_soils",
   "BUILDINGS" = "buildings",
   "PERMEABLE_ARTIFICIAL_SOILS" = "permeable_artificial_soils",
   "NATURAL_AREAS" = "natural_areas",
-  "BODY_OF_WATER" = "body_of_water",
+  "AGRICULTURAL_LAND" = "AGRICULTURAL_LAND",
   "OTHER" = "other",
 }
 
+export enum FricheLastActivity {
+  AGRICULTURE = "AGRICULTURE",
+  INDUSTRY = "INDUSTRY",
+  MINE_OR_QUARRY = "MINE_OR_QUARRY",
+  HOUSING_OR_BUSINESS = "HOUSING_OR_BUSINESS",
+}
+
 export type FricheSite = SiteFoncier & {
-  lastActivity: "agricole" | "industrial" | "quarry" | "accomodation" | "other";
-  surfaces: { type: FricheSurfaceType; surface: number }[];
+  type: SiteFoncierType.FRICHE;
+  lastActivity?: FricheLastActivity;
+  spaces: { type: FricheSpaceType; surface: number }[];
+};
+
+export type AgriculturalSite = SiteFoncier & {
+  type: SiteFoncierType.AGRICULTURAL_LAND;
+};
+
+export type NaturalSite = SiteFoncier & {
+  type: SiteFoncierType.NATURAL_SPACE;
 };

@@ -21,7 +21,7 @@ function SiteCreationAddressStep({ onSubmit, onBack }: Props) {
 
   return (
     <>
-      <h2>Où est située cette prairie ?</h2>
+      <h2>Où est située cette friche ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           render={({ field: { ref, ...fieldRest } }) => (

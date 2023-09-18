@@ -27,25 +27,17 @@ function SiteFoncierCreationStepType({ onSubmit }: Props) {
       },
     },
     {
-      label: "Terre agricole",
+      label: "Espace naturel",
       nativeInputProps: {
-        disabled: true,
-        value: SiteFoncierType.TERRE_AGRICOLE,
+        value: SiteFoncierType.NATURAL_SPACE,
         ...register("type", { required: requiredMessage }),
       },
     },
     {
-      label: "Prairie",
-      nativeInputProps: {
-        value: SiteFoncierType.PRAIRIE,
-        ...register("type", { required: requiredMessage }),
-      },
-    },
-    {
-      label: "Forêt",
+      label: "Espace agricole",
       nativeInputProps: {
         disabled: true,
-        value: SiteFoncierType.FORET,
+        value: SiteFoncierType.AGRICULTURAL_LAND,
         ...register("type", { required: requiredMessage }),
       },
     },
