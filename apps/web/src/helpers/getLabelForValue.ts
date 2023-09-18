@@ -1,20 +1,18 @@
-import { FricheSurfaceType } from "@/components/pages/SiteFoncier/siteFoncier";
+import { FricheSpaceType } from "@/components/pages/SiteFoncier/siteFoncier";
 
-export const getSurfaceTypeLabel = (value: FricheSurfaceType) => {
+export const getSurfaceTypeLabel = (value: FricheSpaceType) => {
   switch (value) {
     case "impermeable_soils":
-      return "Sols imperméabilisés (Parking bétonisé, voirie...)";
+      return "Sols imperméabilisés (parking bitumé, voirie...)";
     case "buildings":
-      return "Bâtiments (anciens sites de production, de stockages...)";
+      return "Bâtiments (anciens sites de production, de stockage...)";
     case "permeable_artificial_soils":
-      return "Sols artificialisés perméables (Parking, gravier...)";
+      return "Sols artificialisés perméables (parc, pelouse, gravier...)";
     case "natural_areas":
-      return "Espaces naturels (avec ou sans végétation : espaces verts, pleine terre)";
-    case "body_of_water":
-      return "Plan d’eau";
-    case "other":
-      return "Autre / NSP";
+      return "Espaces naturels (prairie, forêt, zone humid...)";
+    case "AGRICULTURAL_LAND":
+      return "Espaces agricoles (cultures, vignes, vergers...)";
     default:
-      return "Autre / NSP";
+      return "Autre";
   }
 };

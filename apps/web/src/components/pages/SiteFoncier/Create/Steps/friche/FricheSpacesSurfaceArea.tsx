@@ -1,23 +1,25 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { FricheSurfaceType } from "../../../siteFoncier";
+import { FricheSpaceType } from "../../../siteFoncier";
 
 import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
 
 type Props = {
-  surfaces: { type: FricheSurfaceType }[];
+  spaces: { type: FricheSpaceType }[];
   onSubmit: (data: FormValues) => void;
 };
 
-type FormValues = Record<FricheSurfaceType, number>;
+type FormValues = Record<FricheSpaceType, number>;
 
-const sumSurfaces = (surfaces: FormValues) => {
-  // TODO: remove the + number conversion
-  return Object.values(surfaces).reduce((surface, sum) => +surface + sum, 0);
+const sumSurfaces = (spaces: FormValues) => {
+  return Object.values(spaces).reduce((sum, surface) => {
+    if (isNaN(surface)) return sum;
+    return surface + sum;
+  }, 0);
 };
 
-function FricheSurfacesDistribution({ surfaces = [], onSubmit }: Props) {
+function FricheSpacesSurfaceAreaForm({ spaces = [], onSubmit }: Props) {
   const { register, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
@@ -25,7 +27,7 @@ function FricheSurfacesDistribution({ surfaces = [], onSubmit }: Props) {
     <>
       <h2>Quelles sont les superficies des différents espaces ?</h2>
       <form onSubmit={_onSubmit}>
-        {surfaces.map(({ type }) => (
+        {spaces.map(({ type }) => (
           <Input
             key={`input-${type}`}
             label={getSurfaceTypeLabel(type)}
@@ -34,6 +36,7 @@ function FricheSurfacesDistribution({ surfaces = [], onSubmit }: Props) {
               type: "number",
               ...register(type, {
                 min: 0,
+                valueAsNumber: true,
               }),
             }}
           />
@@ -52,4 +55,4 @@ function FricheSurfacesDistribution({ surfaces = [], onSubmit }: Props) {
   );
 }
 
-export default FricheSurfacesDistribution;
+export default FricheSpacesSurfaceAreaForm;
