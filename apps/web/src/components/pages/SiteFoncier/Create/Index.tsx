@@ -1,4 +1,3 @@
-import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 import SiteFoncierCreationStepAddress from "./Steps/Address";
 import FricheCreationWizard from "./Steps/friche/FricheCreationWizard";
 import FricheCreationStepper from "./Steps/friche/Stepper";
@@ -38,10 +37,10 @@ function CreateSiteFoncierPage() {
   };
 
   return (
-    <SiteFoncierPublicodesProvider>
+    <>
       <FricheCreationStepper step={siteCreationState.step} />
       {getStepComponent()}
-    </SiteFoncierPublicodesProvider>
+    </>
   );
 }
 

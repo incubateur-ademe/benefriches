@@ -1,3 +1,4 @@
+/*
 import { createContext, ReactNode, useCallback, useMemo } from "react";
 import PublicodesEngine from "publicodes";
 import rules from "publicodes-rules";
@@ -14,7 +15,7 @@ const SURFACES_TYPES_CORRELATION = {
 
 export type TSurfaceType = keyof typeof SURFACES_TYPES_CORRELATION;
 
-export type TSurfacesDistribution = FricheSite["surfaces"];
+export type TSurfacesDistribution = FricheSite["spaces"];
 
 const publicodesEngine = new PublicodesEngine(rules);
 
@@ -66,3 +67,4 @@ const SiteFoncierPublicodesProvider = (props: { children?: ReactNode }) => {
   );
 };
 export { SiteFoncierPublicodesContext, SiteFoncierPublicodesProvider };
+*/
