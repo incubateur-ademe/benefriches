@@ -36,7 +36,7 @@ export enum FricheLastActivity {
 export type FricheSite = SiteFoncier & {
   type: SiteFoncierType.FRICHE;
   lastActivity?: FricheLastActivity;
-  spaces: { type: FricheSpaceType; surface: number }[];
+  spaces: { type: FricheSpaceType; surface?: number }[];
 };
 
 export type AgriculturalSite = SiteFoncier & {
