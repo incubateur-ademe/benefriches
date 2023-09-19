@@ -1,6 +1,6 @@
 // https://adresse.data.gouv.fr/api-doc/adresse
 
-import { FeatureCollection, Feature, Point } from "geojson";
+import { Feature, FeatureCollection, Point } from "geojson";
 
 const BAN_API_URL = "https://api-adresse.data.gouv.fr/search/?";
 

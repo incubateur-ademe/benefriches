@@ -1,8 +1,7 @@
-import { ConfigProvider } from "antd";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { startReactDsfr } from "@codegouvfr/react-dsfr/spa";
-
+import { ConfigProvider } from "antd";
 import App from "./App.tsx";
 import { RouteProvider } from "./router";
 startReactDsfr({ defaultColorScheme: "system" });

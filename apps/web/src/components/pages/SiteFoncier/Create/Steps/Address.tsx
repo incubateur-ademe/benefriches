@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import BaseAdresseNationaleAutocomplete from "../BaseAddressNationale/AutocompleteField";
 import { SiteFoncier } from "../../siteFoncier";
+import BaseAdresseNationaleAutocomplete from "../BaseAddressNationale/AutocompleteField";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -23,21 +23,21 @@ function SiteCreationAddressStep({ onSubmit, onBack }: Props) {
     <>
       <h2>Où est située cette prairie ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-         <Controller
-        render={({ field: { ref, ...fieldRest } }) => (
-          <BaseAdresseNationaleAutocomplete
-            {...fieldRest}
-            inputRef={ref}
-            inputProps={{
-              label: "Adresse du site",
-              state: error ? "error" : "default",
-              stateRelatedMessage: error ? error.message : undefined,
-            }}
-          />
-        )}
-        control={control}
-        name={name}
-      />
+        <Controller
+          render={({ field: { ref, ...fieldRest } }) => (
+            <BaseAdresseNationaleAutocomplete
+              {...fieldRest}
+              inputRef={ref}
+              inputProps={{
+                label: "Adresse du site",
+                state: error ? "error" : "default",
+                stateRelatedMessage: error ? error.message : undefined,
+              }}
+            />
+          )}
+          control={control}
+          name={name}
+        />
         <ButtonsGroup
           buttonsEquisized
           inlineLayoutWhen="always"
