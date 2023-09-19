@@ -1,11 +1,10 @@
-import { BanFeature } from "@/helpers/baseAdresseNationaleSearch";
 import { assign, createMachine } from "xstate";
 import { FricheSite, FricheSurfaceType, SiteFoncierType } from "../siteFoncier";
+import { BanFeature } from "./BaseAddressNationale/search";
 
 export type TContext = {
   type?: SiteFoncierType;
   lastActivity?: FricheSite["lastActivity"];
-  address?: string;
   location?: {
     address: string;
     ban?: BanFeature;
