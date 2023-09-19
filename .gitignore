@@ -4,6 +4,7 @@ node_modules
 .env.local
 storage
 logs
+.eslintcache
 
 # used to build api
 .tmp-build
