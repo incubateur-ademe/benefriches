@@ -1,3 +1,4 @@
+import { BanFeature } from "@/helpers/baseAdresseNationaleSearch";
 import { assign, createMachine } from "xstate";
 import { FricheSite, FricheSurfaceType, SiteFoncierType } from "../siteFoncier";
 
@@ -5,6 +6,10 @@ export type TContext = {
   type?: SiteFoncierType;
   lastActivity?: FricheSite["lastActivity"];
   address?: string;
+  location?: {
+    address: string;
+    ban?: BanFeature;
+  };
   surfaces?: Array<{
     type: FricheSurfaceType;
     superficie?: number;

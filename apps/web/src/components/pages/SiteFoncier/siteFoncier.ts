@@ -1,3 +1,5 @@
+import { BanFeature } from "@/helpers/baseAdresseNationaleSearch";
+
 export enum SiteFoncierType {
   FRICHE = "friche",
   TERRE_AGRICOLE = "terre agricole",
@@ -9,7 +11,10 @@ export type SiteFoncier = {
   name: string;
   description: string;
   type: SiteFoncierType;
-  address: string;
+  location: {
+    address: string;
+    ban?: BanFeature;
+  };
   surface: number;
 };
 
