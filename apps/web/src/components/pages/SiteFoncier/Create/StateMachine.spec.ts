@@ -31,10 +31,10 @@ describe("Site foncier state machine: NEXT transitions", () => {
     });
     const actualState = stateMachine.transition(nextState, {
       type: "STORE_VALUE",
-      data: { address: "2 rue de la paix" },
+      data: { location: { address: "2 rue de la paix" } },
     });
     expect(actualState.context.type).toEqual(SiteFoncierType.FRICHE);
-    expect(actualState.context.address).toEqual("2 rue de la paix");
+    expect(actualState.context.location?.address).toEqual("2 rue de la paix");
   });
 
   it("should transition from Adresse to Friche sub machine", () => {
