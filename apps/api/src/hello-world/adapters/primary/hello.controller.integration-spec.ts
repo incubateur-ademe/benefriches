@@ -1,6 +1,6 @@
-import supertest from "supertest";
-import { Test as NestTest } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
+import { Test as NestTest } from "@nestjs/testing";
+import supertest from "supertest";
 import { HelloModule } from "./hello.module";
 
 describe("Hello controller", () => {

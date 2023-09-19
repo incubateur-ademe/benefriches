@@ -1,6 +1,6 @@
 import { interpret } from "xstate";
-import stateMachine, { FRICHE_STATES, STATES } from "./StateMachine";
 import { SiteFoncierType } from "../siteFoncier";
+import stateMachine, { FRICHE_STATES, STATES } from "./StateMachine";
 
 describe("Site foncier state machine: NEXT transitions", () => {
   it("should display initial state", () => {

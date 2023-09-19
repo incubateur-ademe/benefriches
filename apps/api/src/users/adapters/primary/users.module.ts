@@ -1,14 +1,14 @@
 import { Module } from "@nestjs/common";
-import { UsersController } from "./users.controller";
-import { CreateUserUseCase } from "src/users/domain/usecases/CreateUser.usecase";
-import { SqlUserRepository } from "../secondary/user-repository/SqlUserRepository";
-import { RandomUuidGenerator } from "../secondary/uuid-generator/RandomUuidGenerator";
-import { UuidGenerator } from "src/users/domain/gateways/UuidGenerator";
-import { UserRepository } from "src/users/domain/gateways/UserRepository";
-import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
-import { CryptoHashGenerator } from "../secondary/hash-generator/CryptoHashGenerator";
 import { Knex } from "knex";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
+import { UserRepository } from "src/users/domain/gateways/UserRepository";
+import { UuidGenerator } from "src/users/domain/gateways/UuidGenerator";
+import { CreateUserUseCase } from "src/users/domain/usecases/CreateUser.usecase";
+import { CryptoHashGenerator } from "../secondary/hash-generator/CryptoHashGenerator";
+import { SqlUserRepository } from "../secondary/user-repository/SqlUserRepository";
+import { RandomUuidGenerator } from "../secondary/uuid-generator/RandomUuidGenerator";
+import { UsersController } from "./users.controller";
 
 @Module({
   controllers: [UsersController],

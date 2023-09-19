@@ -1,16 +1,16 @@
-import SiteFoncierCreationStepType from "./Steps/Type";
-import SiteFoncierCreationStepper from "./Steps/Stepper";
-import SiteFoncierCreationConstruction from "./Steps/Construction";
-import SiteFoncierCreationStepAddress from "./Steps/Address";
-import SiteFoncierCreationStepFricheLastActivity from "./Steps/friche/FricheLastActivity";
-import SiteFoncierCreationStepFricheSurfacesTypes from "./Steps/friche/FricheSurfacesType";
-import SiteFoncierCreationStepFricheSurfacesDistribution from "./Steps/friche/FricheSurfacesDistribution";
-import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
-import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
-import stateMachine, { STATES, FRICHE_STATES, TContext } from "./StateMachine";
 import { useMachine } from "@xstate/react";
-import SiteFoncierCreationStepDenomination from "./Steps/Denomination";
+import { SiteFoncierPublicodesProvider } from "../PublicodesProvider";
 import { FricheSurfaceType } from "../siteFoncier";
+import SiteFoncierCreationStepAddress from "./Steps/Address";
+import SiteFoncierCreationConfirmation from "./Steps/Confirmation";
+import SiteFoncierCreationConstruction from "./Steps/Construction";
+import SiteFoncierCreationStepDenomination from "./Steps/Denomination";
+import SiteFoncierCreationStepFricheLastActivity from "./Steps/friche/FricheLastActivity";
+import SiteFoncierCreationStepFricheSurfacesDistribution from "./Steps/friche/FricheSurfacesDistribution";
+import SiteFoncierCreationStepFricheSurfacesTypes from "./Steps/friche/FricheSurfacesType";
+import SiteFoncierCreationStepper from "./Steps/Stepper";
+import SiteFoncierCreationStepType from "./Steps/Type";
+import stateMachine, { FRICHE_STATES, STATES, TContext } from "./StateMachine";
 
 function CreateSiteFoncierPage() {
   const [state, send] = useMachine(stateMachine);

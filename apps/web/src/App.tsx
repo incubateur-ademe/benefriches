@@ -1,13 +1,13 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import HeaderFooterLayout from "./components/layout/HeaderFooterLayout/HeaderFooterLayout";
-import { useRoute, routes } from "./router";
-import HomePage from "./components/pages/Home";
-import SitesFonciersListPage from "./components/pages/SiteFoncier/List";
-import SiteFoncierDetailsPage from "./components/pages/SiteFoncier/Details";
-import LoginPage from "./components/pages/Login";
 import CreateUserPage from "./components/pages/CreateUser";
-import CreateSiteFoncierPage from "./components/pages/SiteFoncier/Create/Index";
+import HomePage from "./components/pages/Home";
+import LoginPage from "./components/pages/Login";
 import OnboardingPage from "./components/pages/Onboarding";
+import CreateSiteFoncierPage from "./components/pages/SiteFoncier/Create/Index";
+import SiteFoncierDetailsPage from "./components/pages/SiteFoncier/Details";
+import SitesFonciersListPage from "./components/pages/SiteFoncier/List";
+import { routes, useRoute } from "./router";
 
 function App() {
   const route = useRoute();

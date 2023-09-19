@@ -1,4 +1,5 @@
 import { Button } from "@codegouvfr/react-dsfr/Button";
+
 import { routes } from "@/router";
 
 function OnboardingPage() {

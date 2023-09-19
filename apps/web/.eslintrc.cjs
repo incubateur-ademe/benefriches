@@ -20,7 +20,7 @@ module.exports = {
     project: ["./tsconfig.json", "./tsconfig.node.json"],
     tsconfigRootDir: __dirname,
   },
-  plugins: ["react-refresh"],
+  plugins: ["react-refresh", "simple-import-sort"],
   rules: {
     "react-refresh/only-export-components": [
       "warn",
@@ -35,6 +35,25 @@ module.exports = {
         checksVoidReturn: {
           attributes: false,
         },
+      },
+    ],
+    "simple-import-sort/imports": [
+      "error",
+      {
+        groups: [
+          [
+            // `react` related packages come first.
+            "^react",
+            "^@?\\w",
+            "^src/",
+            "^\\u0000",
+            "^\\.\\.(?!/?$)",
+            "^\\.\\./?$",
+            "^\\./(?=.*/)(?!/?$)",
+            "^\\.(?!/?$)",
+            "^\\./?$",
+          ],
+        ],
       },
     ],
   },

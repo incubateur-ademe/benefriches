@@ -1,6 +1,6 @@
 import { UseCase } from "src/shared-kernel/usecase";
-import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
 import { AccessTokenService } from "src/users/domain/gateways/AccessTokenService";
+import { HashGenerator } from "src/users/domain/gateways/HashGenerator";
 import { UserRepository } from "src/users/domain/gateways/UserRepository";
 
 type Request = {

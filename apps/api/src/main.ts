@@ -1,8 +1,8 @@
-import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app.module";
 import { ConfigService } from "@nestjs/config";
-import { SqlConnection } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { NestFactory } from "@nestjs/core";
 import { Knex } from "knex";
+import { SqlConnection } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

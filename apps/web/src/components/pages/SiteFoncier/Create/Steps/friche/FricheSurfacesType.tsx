@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
-import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
-import { FricheSurfaceType } from "../../../siteFoncier";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
+import { FricheSurfaceType } from "../../../siteFoncier";
+
+import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
 
 type FormValues = Record<FricheSurfaceType, boolean>;
 

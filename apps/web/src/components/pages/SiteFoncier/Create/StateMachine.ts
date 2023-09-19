@@ -1,4 +1,4 @@
-import { createMachine, assign } from "xstate";
+import { assign, createMachine } from "xstate";
 import { FricheSite, FricheSurfaceType, SiteFoncierType } from "../siteFoncier";
 
 export type TContext = {

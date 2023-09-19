@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import BenefrichesHeader from "./BenefrichesHeader";
 import BenefrichesFooter from "./BenefrichesFooter";
+import BenefrichesHeader from "./BenefrichesHeader";
 
 type HeaderFooterLayoutProps = {
   children: ReactNode;

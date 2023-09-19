@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post } from "@nestjs/common";
-import { z } from "nestjs-zod/z";
 import { createZodDto } from "nestjs-zod";
+import { z } from "nestjs-zod/z";
 import { LoginUseCase } from "src/auth/domain/usecases/Login.usecase";
 
 const LoginDtoSchema = z.object({

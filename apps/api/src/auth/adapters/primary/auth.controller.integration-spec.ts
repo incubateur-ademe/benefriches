@@ -1,13 +1,13 @@
 import { INestApplication } from "@nestjs/common";
-import supertest from "supertest";
+import { ConfigModule } from "@nestjs/config";
+import { JwtService } from "@nestjs/jwt";
 import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
+import supertest from "supertest";
 import { AppModule } from "src/app.module";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { DeterministicHashGenerator } from "src/users/adapters/secondary/hash-generator/DeterministicHashGenerator";
 import { RandomUuidGenerator } from "src/users/adapters/secondary/uuid-generator/RandomUuidGenerator";
-import { JwtService } from "@nestjs/jwt";
-import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { ConfigModule } from "@nestjs/config";
 
 describe("Auth controller", () => {
   let app: INestApplication;

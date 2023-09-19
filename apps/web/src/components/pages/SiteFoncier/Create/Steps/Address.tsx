@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { Input } from "@codegouvfr/react-dsfr/Input";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import { Input } from "@codegouvfr/react-dsfr/Input";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
