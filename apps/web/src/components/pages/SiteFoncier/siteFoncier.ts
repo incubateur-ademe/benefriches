@@ -1,4 +1,4 @@
-import { BanFeature } from "@/helpers/baseAdresseNationaleSearch";
+import { BanFeature } from "./Create/BaseAddressNationale/search";
 
 export enum SiteFoncierType {
   FRICHE = "friche",

@@ -1,9 +1,7 @@
-import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
-
-import { AutoComplete } from "antd";
 import { ChangeEvent, useState } from "react";
 import { RefCallBack } from "react-hook-form";
-
+import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
+import { AutoComplete } from "antd";
 import MarkerLeafletMap from "./MarkerLeafletMap";
 import banSearch, { BanFeature } from "./search";
 
