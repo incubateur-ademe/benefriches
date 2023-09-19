@@ -1,6 +1,7 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { Input } from "@codegouvfr/react-dsfr/Input";
+import BaseAdresseNationaleAutocomplete from "../Fields/BaseAdresseNationaleAutocomplete";
+import { SiteFoncier } from "../../siteFoncier";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -8,25 +9,31 @@ type Props = {
 };
 
 type FormValues = {
-  address: string;
+  location: SiteFoncier["location"];
 };
 
 function SiteCreationAddressStep({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+  const { register, handleSubmit, formState, control } = useForm<FormValues>();
 
-  const error = formState.errors.address;
+  const error = formState.errors.location;
 
   return (
     <>
       <h2>Où est située cette prairie ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Adresse du site"
-          state={error ? "error" : "default"}
-          stateRelatedMessage={error ? error.message : undefined}
-          nativeInputProps={register("address", {
-            required: "Ce champ est requis",
-          })}
+        <Controller
+          render={({ field }) => (
+            <BaseAdresseNationaleAutocomplete
+              {...field}
+              inputProps={{
+                label: "Adresse du site",
+                state: error ? "error" : "default",
+                stateRelatedMessage: error ? error.message : undefined,
+              }}
+            />
+          )}
+          control={control}
+          {...register("location", { required: "Ce champ est requis" })}
         />
         <ButtonsGroup
           buttonsEquisized

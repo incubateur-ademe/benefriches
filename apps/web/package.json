@@ -25,7 +25,9 @@
   },
   "dependencies": {
     "@codegouvfr/react-dsfr": "^0.73.0",
+    "@types/geojson": "^7946.0.10",
     "@xstate/react": "^3.2.2",
+    "antd": "^5.9.0",
     "publicodes": "1.0.0-beta.71",
     "publicodes-rules": "workspace:^",
     "react": "^18.2.0",
