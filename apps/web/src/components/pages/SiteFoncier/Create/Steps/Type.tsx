@@ -27,17 +27,9 @@ function SiteFoncierCreationStepType({ onSubmit }: Props) {
       },
     },
     {
-      label: "Espace naturel",
+      label: "Espace naturel ou agricole",
       nativeInputProps: {
         value: SiteFoncierType.NATURAL_AREA,
-        ...register("type", { required: requiredMessage }),
-      },
-    },
-    {
-      label: "Espace agricole",
-      nativeInputProps: {
-        disabled: true,
-        value: SiteFoncierType.AGRICULTURAL_LAND,
         ...register("type", { required: requiredMessage }),
       },
     },

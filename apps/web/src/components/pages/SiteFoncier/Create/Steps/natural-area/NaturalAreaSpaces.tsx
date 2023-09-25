@@ -10,6 +10,9 @@ type Props = {
 type FormValues = Record<NaturalAreaSpaceType, boolean>;
 
 const options = [
+  { label: "Culture", value: NaturalAreaSpaceType.CULTIVATION },
+  { label: "Verger", value: NaturalAreaSpaceType.ORCHARD },
+  { label: "Vigne", value: NaturalAreaSpaceType.VINEYARD },
   { label: "Forêt", value: NaturalAreaSpaceType.FOREST },
   { label: "Prairie", value: NaturalAreaSpaceType.PRAIRIE },
   { label: "Zone humide", value: NaturalAreaSpaceType.WET_LAND },
@@ -26,7 +29,7 @@ function NaturalAreaSpacesForm({ onSubmit }: Props) {
 
   return (
     <>
-      <h2>Quels types de végétation y a-t-il sur la prairie ?</h2>
+      <h2>Quels types d'espaces y a-t-il sur ce site ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox options={checkboxOptions} />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>

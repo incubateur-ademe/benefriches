@@ -1,7 +1,6 @@
 export enum SiteFoncierType {
   FRICHE = "FRICHE",
   NATURAL_AREA = "NATURAL_AREA",
-  AGRICULTURAL_LAND = "AGRICULTURAL_LAND",
 }
 
 export type SiteFoncier = {
@@ -34,15 +33,14 @@ export type FricheSite = SiteFoncier & {
   spaces: { type: FricheSpaceType; surface?: number }[];
 };
 
-export type AgriculturalSite = SiteFoncier & {
-  type: SiteFoncierType.AGRICULTURAL_LAND;
-};
-
 export enum NaturalAreaSpaceType {
-  FOREST = "FOREST",
+  ORCHARD = "ORCHARD", // verger
+  CULTIVATION = "CULTIVATION", // culture
+  VINEYARD = "VINEYARD", // vigne
   PRAIRIE = "PRAIRIE",
-  WET_LAND = "WET_LAND",
-  WATER = "WATER",
+  FOREST = "FOREST",
+  WET_LAND = "WET_LAND", // zone humide
+  WATER = "WATER", // plan d'eau
 }
 
 export enum VegetationType {
