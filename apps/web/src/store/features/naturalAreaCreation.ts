@@ -16,6 +16,9 @@ export enum NaturalAreaCreationStep {
   // forest
   FOREST_TREES_STEP = "FOREST_TREES_STEP",
   FOREST_TREES_DISTRIBUTION = "FOREST_TREES_DISTRIBUTION_STEP",
+  // carbon summary
+  SOIL_SUMMARY_STEP = "SOIL_SUMMARY_STEP",
+  CARBON_SUMMARY_STEP = "CARBON_SUMMARY_STEP",
   // site management
   OWNER_STEP = "OWNER_STEP",
   RUNNING_COMPANY_STEP = "RUNNING_COMPANY_STEP",
@@ -36,6 +39,8 @@ const naturalAreaInitialState: NaturalAreaCreationState = {
   step: NaturalAreaCreationStep.SPACES_STEP,
   nextSteps: [
     NaturalAreaCreationStep.SPACES_SURFACE_AREA_STEP,
+    NaturalAreaCreationStep.SOIL_SUMMARY_STEP,
+    NaturalAreaCreationStep.CARBON_SUMMARY_STEP,
     NaturalAreaCreationStep.OWNER_STEP,
     NaturalAreaCreationStep.NAMING_STEP,
     NaturalAreaCreationStep.CONFIRMATION_STEP,
