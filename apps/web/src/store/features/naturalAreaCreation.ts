@@ -2,31 +2,44 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
   NaturalArea,
+  NaturalAreaSpaceType,
   SiteFoncierType,
 } from "@/components/pages/SiteFoncier/siteFoncier";
 
 export enum NaturalAreaCreationStep {
   // spaces
   SPACES_STEP = "SPACES_STEP",
-  SURFACE_STEP = "SURFACE_STEP",
   SPACES_SURFACE_AREA_STEP = "SPACES_SURFACE_AREA_STEP",
+  // prairie
+  PRAIRIE_VEGETATION_STEP = "PRAIRIE_VEGETATION_STEP",
+  PRAIRIE_VEGETATION_DISTRIBUTION_STEP = "PRAIRIE_VEGETATION_DISTRIBUTION_STEP",
+  // forest
+  FOREST_TREES_STEP = "FOREST_TREES_STEP",
+  FOREST_TREES_DISTRIBUTION = "FOREST_TREES_DISTRIBUTION_STEP",
   // site management
   OWNER_STEP = "OWNER_STEP",
   RUNNING_COMPANY_STEP = "RUNNING_COMPANY_STEP",
   FULL_TIME_JOBS_INVOLVED_STEP = "FULL_TIME_JOBS_INVOLVED_STEP",
   PROFIT_AND_RENT_PAID_STEP = "PROFIT_AND_RENT_PAID_STEP",
   // other
-  NAMING_STEP = "naming",
+  NAMING_STEP = "NAMING",
   CONFIRMATION_STEP = "CONFIRMATION_STEP",
 }
 
 type NaturalAreaCreationState = {
   step: NaturalAreaCreationStep;
+  nextSteps: NaturalAreaCreationStep[];
   naturalAreaData: Partial<NaturalArea>;
 };
 
 const naturalAreaInitialState: NaturalAreaCreationState = {
   step: NaturalAreaCreationStep.SPACES_STEP,
+  nextSteps: [
+    NaturalAreaCreationStep.SPACES_SURFACE_AREA_STEP,
+    NaturalAreaCreationStep.OWNER_STEP,
+    NaturalAreaCreationStep.NAMING_STEP,
+    NaturalAreaCreationStep.CONFIRMATION_STEP,
+  ],
   naturalAreaData: {
     type: SiteFoncierType.NATURAL_AREA,
   },
@@ -37,12 +50,41 @@ const naturalAreaCreationSlice = createSlice({
   initialState: naturalAreaInitialState,
   reducers: {
     setSpacesTypes: (state, action: PayloadAction<NaturalArea["spaces"]>) => {
+      // setting spaces
       state.naturalAreaData.spaces = action.payload;
-      state.step = NaturalAreaCreationStep.SURFACE_STEP;
+
+      // setting next steps
+      state.step = state.nextSteps[0];
+      state.nextSteps.shift();
+
+      const spacesSteps = action.payload
+        .map((space) => {
+          if (space.type === NaturalAreaSpaceType.FOREST)
+            return [
+              NaturalAreaCreationStep.FOREST_TREES_STEP,
+              NaturalAreaCreationStep.FOREST_TREES_DISTRIBUTION,
+            ];
+          if (space.type === NaturalAreaSpaceType.PRAIRIE)
+            return [
+              NaturalAreaCreationStep.PRAIRIE_VEGETATION_STEP,
+              NaturalAreaCreationStep.PRAIRIE_VEGETATION_DISTRIBUTION_STEP,
+            ];
+          return [];
+        })
+        .flat();
+      state.nextSteps = [...spacesSteps, ...state.nextSteps];
     },
-    setSurface: (state, action: PayloadAction<NaturalArea["surface"]>) => {
-      state.naturalAreaData.surface = action.payload;
-      state.step = NaturalAreaCreationStep.OWNER_STEP;
+    setSpacesSurfaceArea: (
+      state,
+      action: PayloadAction<Partial<Record<NaturalAreaSpaceType, number>>>,
+    ) => {
+      state.naturalAreaData.spaces = state.naturalAreaData.spaces!.map(
+        ({ type }) => {
+          return { type, surface: action.payload[type] };
+        },
+      );
+      state.step = state.nextSteps[0];
+      state.nextSteps.shift();
     },
     setOwners: (state, action: PayloadAction<NaturalArea["owners"]>) => {
       state.naturalAreaData.owners = action.payload;
@@ -74,17 +116,14 @@ const naturalAreaCreationSlice = createSlice({
         state.naturalAreaData.description = action.payload.description;
       state.step = NaturalAreaCreationStep.CONFIRMATION_STEP;
     },
-    setSpacesSurfaceArea: (
-      state,
-      action: PayloadAction<NaturalArea["spaces"]>,
-    ) => {
-      state.naturalAreaData.spaces = action.payload;
+    goToNextStep: (state) => {
+      state.step = state.nextSteps[0];
+      state.nextSteps.shift();
     },
   },
 });
 
 export const {
-  setSurface,
   setSpacesTypes,
   setSpacesSurfaceArea,
   setOwners,

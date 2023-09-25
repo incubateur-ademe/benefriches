@@ -1,5 +1,6 @@
 import {
   AgricultureCompany,
+  NaturalArea,
   NaturalAreaSpaceType,
   Owner,
   OwnerType,
@@ -21,8 +22,8 @@ import {
   setOwners,
   setProfitAndRentPaid,
   setRunningCompany,
+  setSpacesSurfaceArea,
   setSpacesTypes,
-  setSurface,
 } from "@/store/features/naturalAreaCreation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
@@ -47,11 +48,15 @@ function NaturalAreaCreationWizard() {
             }}
           />
         );
-      case NaturalAreaCreationStep.SURFACE_STEP:
+      case NaturalAreaCreationStep.SPACES_SURFACE_AREA_STEP:
         return (
           <NaturalAreaSurfaceForm
+            spaces={
+              naturalSpaceCreationState.naturalAreaData
+                .spaces as NaturalArea["spaces"]
+            }
             onSubmit={(data) => {
-              dispatch(setSurface(data.surface));
+              dispatch(setSpacesSurfaceArea(data));
             }}
           />
         );
