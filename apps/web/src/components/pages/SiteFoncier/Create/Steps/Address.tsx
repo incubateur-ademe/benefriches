@@ -1,27 +1,33 @@
 import { Controller, useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { SiteFoncier } from "../../siteFoncier";
+import { SiteFoncierType } from "../../siteFoncier";
 import BaseAdresseNationaleAutocomplete from "../BaseAddressNationale/AutocompleteField";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  siteType: SiteFoncierType;
 };
 
 type FormValues = {
-  location: SiteFoncier["location"];
+  location: { address: string };
 };
 
-function SiteCreationAddressStep({ onSubmit, onBack }: Props) {
+function SiteCreationAddressStep({ onSubmit, onBack, siteType }: Props) {
   const { register, handleSubmit, formState, control } = useForm<FormValues>();
 
   const error = formState.errors.location;
 
   const { name } = register("location", { required: "Ce champ est requis" });
 
+  const title =
+    siteType === SiteFoncierType.FRICHE
+      ? "Où se situe cette friche ?"
+      : "Où se situe cet espace naturel ?";
+
   return (
     <>
-      <h2>Où est située cette friche ?</h2>
+      <h2>{title}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           render={({ field: { ref, ...fieldRest } }) => (

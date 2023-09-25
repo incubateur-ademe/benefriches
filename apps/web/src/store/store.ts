@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import fricheCreation from "./features/fricheCreation";
+import naturalAreaCreation from "./features/naturalAreaCreation";
 import siteCreation from "./features/siteCreation";
 
 export const store = configureStore({
   reducer: {
     siteCreation,
     fricheCreation,
+    naturalAreaCreation,
   },
 });
 
