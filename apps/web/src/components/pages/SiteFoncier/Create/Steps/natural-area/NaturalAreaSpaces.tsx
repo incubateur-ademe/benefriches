@@ -8,7 +8,7 @@ type Props = {
   onSubmit: (formValue: FormValues) => void;
 };
 
-type FormValues = Record<NaturalAreaSpaceType, boolean>;
+type FormValues = { spaces: NaturalAreaSpaceType[] };
 
 const options = Object.values(NaturalAreaSpaceType).map((type) => ({
   value: type,
@@ -16,18 +16,36 @@ const options = Object.values(NaturalAreaSpaceType).map((type) => ({
 }));
 
 function NaturalAreaSpacesForm({ onSubmit }: Props) {
-  const { handleSubmit, register } = useForm<FormValues>();
+  const { handleSubmit, register, formState } = useForm<FormValues>({
+    defaultValues: {
+      spaces: [],
+    },
+  });
+
+  console.log({ formState });
 
   const checkboxOptions = options.map((option) => ({
     label: option.label,
-    nativeInputProps: register(option.value),
+    nativeInputProps: {
+      ...register("spaces", {
+        required:
+          "Ce champ est nécessaire pour déterminer les questions suivantes",
+      }),
+      value: option.value,
+    },
   }));
+
+  const error = formState.errors.spaces;
 
   return (
     <>
       <h2>Quels types d'espaces y a-t-il sur ce site ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Checkbox options={checkboxOptions} />
+        <Checkbox
+          options={checkboxOptions}
+          state={error ? "error" : "default"}
+          stateRelatedMessage={error ? error.message : undefined}
+        />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
     </>

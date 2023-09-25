@@ -1,7 +1,6 @@
 import {
   AgricultureCompany,
   NaturalArea,
-  NaturalAreaSpaceType,
   Owner,
   OwnerType,
 } from "../../../siteFoncier";
@@ -39,12 +38,7 @@ function NaturalAreaCreationWizard() {
         return (
           <NaturalAreaSpacesForm
             onSubmit={(data) => {
-              const spaces = Object.entries(data)
-                .filter(([, value]) => value === true)
-                .map(([spaceType]) => ({
-                  type: spaceType as NaturalAreaSpaceType,
-                }));
-              dispatch(setSpacesTypes(spaces));
+              dispatch(setSpacesTypes(data.spaces));
             }}
           />
         );

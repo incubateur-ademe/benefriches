@@ -49,30 +49,29 @@ const naturalAreaCreationSlice = createSlice({
   name: "naturalAreaCreation",
   initialState: naturalAreaInitialState,
   reducers: {
-    setSpacesTypes: (state, action: PayloadAction<NaturalArea["spaces"]>) => {
+    setSpacesTypes: (state, action: PayloadAction<NaturalAreaSpaceType[]>) => {
       // setting spaces
-      state.naturalAreaData.spaces = action.payload;
+      const naturalAreaSpaces = action.payload;
+      state.naturalAreaData.spaces = naturalAreaSpaces.map((spaceType) => ({
+        type: spaceType,
+      }));
 
       // setting next steps
       state.step = state.nextSteps[0];
       state.nextSteps.shift();
+      if (naturalAreaSpaces.includes(NaturalAreaSpaceType.PRAIRIE)) {
+        state.nextSteps = [
+          NaturalAreaCreationStep.PRAIRIE_VEGETATION_STEP,
+          ...state.nextSteps,
+        ];
+      }
 
-      const spacesSteps = action.payload
-        .map((space) => {
-          if (space.type === NaturalAreaSpaceType.FOREST)
-            return [
-              NaturalAreaCreationStep.FOREST_TREES_STEP,
-              NaturalAreaCreationStep.FOREST_TREES_DISTRIBUTION,
-            ];
-          if (space.type === NaturalAreaSpaceType.PRAIRIE)
-            return [
-              NaturalAreaCreationStep.PRAIRIE_VEGETATION_STEP,
-              NaturalAreaCreationStep.PRAIRIE_VEGETATION_DISTRIBUTION_STEP,
-            ];
-          return [];
-        })
-        .flat();
-      state.nextSteps = [...spacesSteps, ...state.nextSteps];
+      if (naturalAreaSpaces.includes(NaturalAreaSpaceType.FOREST)) {
+        state.nextSteps = [
+          NaturalAreaCreationStep.FOREST_TREES_STEP,
+          ...state.nextSteps,
+        ];
+      }
     },
     setSpacesSurfaceArea: (
       state,
