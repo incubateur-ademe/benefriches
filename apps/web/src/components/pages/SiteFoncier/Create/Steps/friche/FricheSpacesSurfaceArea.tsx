@@ -19,7 +19,7 @@ const sumSurfaces = (spaces: FormValues) => {
   }, 0);
 };
 
-function FricheSpacesSurfaceAreaForm({ spaces = [], onSubmit }: Props) {
+function FricheSpacesSurfaceAreaForm({ spaces, onSubmit }: Props) {
   const { register, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
