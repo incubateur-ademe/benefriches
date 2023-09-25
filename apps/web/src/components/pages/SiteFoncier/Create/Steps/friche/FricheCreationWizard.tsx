@@ -32,7 +32,9 @@ function FricheCreationWizard() {
           <FricheSpacesTypeForm
             onSubmit={(data) => {
               const spaces = Object.entries(data)
-                .filter(([value]) => value)
+                .filter(([, value]) => {
+                  return value === true;
+                })
                 .map(([spaceType]) => {
                   return { type: spaceType as FricheSpaceType };
                 });
