@@ -9,6 +9,7 @@ export enum CreationStep {
   TYPE_STEP = "TYPE_STEP",
   ADDRESS_STEP = "ADDRESS_STEP",
   FRICHE_CREATION = "FRICHE_CREATION",
+  NATURAL_SPACE_CREATION = "NATURAL_SPACE_CREATION",
 }
 
 type SiteCreationState = {
@@ -31,7 +32,16 @@ export const siteCreationSlice = createSlice({
     },
     setAddress: (state, action: PayloadAction<string>) => {
       state.siteData.address = action.payload;
-      state.step = CreationStep.FRICHE_CREATION;
+      switch (state.siteData.type) {
+        case SiteFoncierType.FRICHE:
+          state.step = CreationStep.FRICHE_CREATION;
+          break;
+        case SiteFoncierType.NATURAL_AREA:
+          state.step = CreationStep.NATURAL_SPACE_CREATION;
+          break;
+        default:
+          break;
+      }
     },
   },
 });

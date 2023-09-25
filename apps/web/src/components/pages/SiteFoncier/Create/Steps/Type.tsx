@@ -29,7 +29,7 @@ function SiteFoncierCreationStepType({ onSubmit }: Props) {
     {
       label: "Espace naturel",
       nativeInputProps: {
-        value: SiteFoncierType.NATURAL_SPACE,
+        value: SiteFoncierType.NATURAL_AREA,
         ...register("type", { required: requiredMessage }),
       },
     },

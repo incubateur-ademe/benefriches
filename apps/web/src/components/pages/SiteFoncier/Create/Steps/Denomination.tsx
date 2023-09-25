@@ -12,20 +12,16 @@ type Props = {
   onBack: () => void;
 };
 
-function PrairieDenominationStep({ onSubmit, onBack }: Props) {
+function SiteNameAndDescriptionForm({ onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
-  const _onSubmit = handleSubmit((data) => {
-    onSubmit(data);
-  });
 
   const nameError = formState.errors.name;
-  const descriptionError = formState.errors.description;
 
   return (
     <>
       <h2>Dénomination du site</h2>
 
-      <form onSubmit={_onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           label="Nom du site"
           state={nameError ? "error" : "default"}
@@ -37,10 +33,6 @@ function PrairieDenominationStep({ onSubmit, onBack }: Props) {
         <Input
           label="Descriptif du site"
           textArea
-          state={descriptionError ? "error" : "default"}
-          stateRelatedMessage={
-            descriptionError ? descriptionError.message : undefined
-          }
           nativeTextAreaProps={register("description")}
         />
         <ButtonsGroup
@@ -64,4 +56,4 @@ function PrairieDenominationStep({ onSubmit, onBack }: Props) {
   );
 }
 
-export default PrairieDenominationStep;
+export default SiteNameAndDescriptionForm;

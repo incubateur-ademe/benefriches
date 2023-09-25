@@ -1,6 +1,8 @@
+import { SiteFoncierType } from "../siteFoncier";
 import SiteFoncierCreationStepAddress from "./Steps/Address";
 import FricheCreationWizard from "./Steps/friche/FricheCreationWizard";
 import FricheCreationStepper from "./Steps/friche/Stepper";
+import NaturalAreaCreationWizard from "./Steps/natural-area";
 import SiteFoncierCreationStepType from "./Steps/Type";
 
 import {
@@ -27,12 +29,15 @@ function CreateSiteFoncierPage() {
       case CreationStep.ADDRESS_STEP:
         return (
           <SiteFoncierCreationStepAddress
-            onSubmit={(data) => dispatch(setAddress(data.address))}
+            siteType={siteCreationState.siteData.type as SiteFoncierType}
+            onSubmit={(data) => dispatch(setAddress(data.location.address))}
             onBack={() => {}}
           />
         );
       case CreationStep.FRICHE_CREATION:
         return <FricheCreationWizard />;
+      case CreationStep.NATURAL_SPACE_CREATION:
+        return <NaturalAreaCreationWizard />;
     }
   };
 

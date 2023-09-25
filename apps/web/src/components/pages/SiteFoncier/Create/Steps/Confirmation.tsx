@@ -4,7 +4,7 @@ type Props = {
   site: Partial<SiteFoncier>;
 };
 
-function PrairieCreationConfirmation({ site }: Props) {
+function SiteCreationConfirmation({ site }: Props) {
   return (
     <>
       <h2>✅ Le site "{site.name}" est créé !</h2>
@@ -17,4 +17,4 @@ function PrairieCreationConfirmation({ site }: Props) {
   );
 }
 
-export default PrairieCreationConfirmation;
+export default SiteCreationConfirmation;

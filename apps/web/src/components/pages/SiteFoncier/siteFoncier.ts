@@ -1,8 +1,6 @@
-import { BanFeature } from "./Create/BaseAddressNationale/search";
-
 export enum SiteFoncierType {
   FRICHE = "FRICHE",
-  NATURAL_SPACE = "NATURAL_SPACE",
+  NATURAL_AREA = "NATURAL_AREA",
   AGRICULTURAL_LAND = "AGRICULTURAL_LAND",
 }
 
@@ -10,10 +8,7 @@ export type SiteFoncier = {
   name: string;
   description: string;
   type: SiteFoncierType;
-  location: {
-    address: string;
-    ban?: BanFeature;
-  };
+  address: string;
   surface: number;
 };
 
@@ -43,6 +38,77 @@ export type AgriculturalSite = SiteFoncier & {
   type: SiteFoncierType.AGRICULTURAL_LAND;
 };
 
-export type NaturalSite = SiteFoncier & {
-  type: SiteFoncierType.NATURAL_SPACE;
+export enum NaturalAreaSpaceType {
+  FOREST = "FOREST",
+  PRAIRIE = "PRAIRIE",
+  WET_LAND = "WET_LAND",
+  WATER = "WATER",
+}
+
+export enum VegetationType {
+  GRASS = "GRASS",
+  TREES = "TREES",
+  BUSHES = "BUSHES",
+}
+
+export type NaturalArea = SiteFoncier & {
+  type: SiteFoncierType.NATURAL_AREA;
+  spaces: { type: NaturalAreaSpaceType; surface?: number }[];
+  owners: Owner[];
+  runningCompany: string;
+  fullTimeJobsInvolvedCount: number;
+  yearlyProfitAmount: number;
+  yearlyRentAmount?: number;
 };
+
+export enum OwnerType {
+  AGRICULTURAL_COMPANY = "AGRICULTURAL_COMPANY",
+  LOCAL_OR_REGIONAL_AUTHORITY = "LOCAL_OR_REGIONAL_AUTHORITY",
+  OTHER = "OTHER",
+}
+
+export type AgricultureCompany = {
+  type: OwnerType.AGRICULTURAL_COMPANY;
+  name: string;
+};
+
+export type Owner =
+  | { type: OwnerType.LOCAL_OR_REGIONAL_AUTHORITY }
+  | { type: OwnerType.OTHER }
+  | AgricultureCompany;
+
+// const n: NaturalArea = {
+//   name: "Prairie Blajan, route des Pyrénnées",
+//   description: "Une description de la prairie",
+//   type: SiteFoncierType.NATURAL_AREA,
+//   address: "1 route des Pyrénnées",
+//   // spaces
+//   surface: 5000,
+//   spaces: {
+//     prairie: {
+//       grass: 0.8,
+//       trees: 0,
+//       bushes: 0.2,
+//     },
+//     forest: {},
+//   },
+//   spaces_: [
+//     {
+//       type: "prairie",
+//       vegetation: {
+//         grass: 0.8,
+//       },
+//     },
+//   ],
+//   // management
+//   owners: [
+//     {
+//       type: OwnerType.AGRICULTURAL_COMPANY,
+//       name: "Hello",
+//     },
+//     { type: OwnerType.LOCAL_OR_REGIONAL_AUTHORITY },
+//   ],
+//   manager: "GAEC La Castanède",
+//   fullTimeJobsInvolvedCount: 1.5,
+//   yearlyRentAmount: 2000,
+// };
