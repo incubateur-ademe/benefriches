@@ -29,14 +29,22 @@ describe("GetTownPopulationDensity use case", () => {
     const result = await usecase.execute({ cityCode: "54321" });
 
     expect(result).toBeDefined();
-    expect(result).toEqual(3989.36);
+    expect(result).toEqual({
+      sources: { area: 118.3, population: 471941 },
+      unit: "hab/km2",
+      value: 3989.36,
+    });
   });
 
   test("it should compute population density for a small town", async () => {
     const usecase = new GetTownPopulationDensityUseCase(townDataProvider);
     const result = await usecase.execute({ cityCode: "38375" });
 
-    expect(result).toEqual(0.86);
+    expect(result).toEqual({
+      sources: { area: 123.5, population: 106 },
+      unit: "hab/km2",
+      value: 0.86,
+    });
   });
 
   test("it should throw error if density is not computable", async () => {

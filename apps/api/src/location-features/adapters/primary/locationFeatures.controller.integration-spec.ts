@@ -50,7 +50,14 @@ describe("LocationFeatures controller", () => {
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({
         cityCode: "75056",
-        populationDensity: 203.6,
+        populationDensity: {
+          sources: {
+            area: 10540,
+            population: 2145906,
+          },
+          unit: "hab/km2",
+          value: 203.6,
+        },
       });
     });
   });

@@ -6,10 +6,17 @@ type Request = {
   cityCode: string;
 };
 
-type Response = number;
+type Response = {
+  value: number;
+  unit: "hab/km2";
+  sources: {
+    population: number;
+    area: number;
+  };
+};
 
 export class GetTownPopulationDensityUseCase
-  implements UseCase<Request, number>
+  implements UseCase<Request, Response>
 {
   constructor(private readonly townDataProvider: TownDataProvider) {}
 
@@ -21,6 +28,13 @@ export class GetTownPopulationDensityUseCase
     const density = town.population / town.area;
     const rounded = Math.round(density * 100) / 100;
 
-    return rounded;
+    return {
+      value: rounded,
+      unit: "hab/km2",
+      sources: {
+        population: town.population,
+        area: town.area,
+      },
+    };
   }
 }
