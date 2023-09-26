@@ -1,4 +1,3 @@
-import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { APP_PIPE } from "@nestjs/core";
@@ -13,7 +12,6 @@ import { UsersModule } from "./users/adapters/primary/users.module";
   imports: [
     ConfigModule.forRoot(),
     SqlConnectionModule,
-    HttpModule,
     AuthModule,
     HelloModule,
     UsersModule,

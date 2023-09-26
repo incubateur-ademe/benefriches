@@ -1,14 +1,28 @@
 import { INestApplication } from "@nestjs/common";
 import { Test as NestTest } from "@nestjs/testing";
 import supertest from "supertest";
-import { LocationFeaturesModule } from "./locationFeatures.module";
+import { GetTownPopulationDensityUseCase } from "src/location-features/domain/usecases/getTownPopulationDensity.usecase";
+import { MockLocalDataInseeService } from "../secondary/town-data-provider/LocalDataInseeService.mock";
+import { LocationFeaturesController } from "./locationFeatures.controller";
 
 describe("LocationFeatures controller", () => {
   let app: INestApplication;
 
   beforeAll(async () => {
     const moduleRef = await NestTest.createTestingModule({
-      imports: [LocationFeaturesModule],
+      controllers: [LocationFeaturesController],
+      providers: [
+        {
+          provide: "MockLocalDataInseeService",
+          useClass: MockLocalDataInseeService,
+        },
+        {
+          provide: GetTownPopulationDensityUseCase,
+          useFactory: (townDataProvider: MockLocalDataInseeService) =>
+            new GetTownPopulationDensityUseCase(townDataProvider),
+          inject: ["MockLocalDataInseeService"],
+        },
+      ],
     }).compile();
 
     app = moduleRef.createNestApplication();

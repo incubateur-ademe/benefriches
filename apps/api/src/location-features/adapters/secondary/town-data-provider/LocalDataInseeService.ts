@@ -6,6 +6,7 @@ import {
   Injectable,
   NotFoundException,
 } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { AxiosError } from "axios";
 import { catchError, map } from "rxjs";
 import { TownDataProvider } from "src/location-features/domain/gateways/TownDataProvider";
@@ -19,14 +20,6 @@ Dataset documentation (BDCOM):
 https://api.insee.fr/catalogue/site/themes/wso2/subthemes/insee/templates/api/documentation/download.jag?tenant=carbon.super&resourceUrl=/registry/resource/_system/governance/apimgt/applicationdata/provider/insee/DonneesLocales/V0.1/documentation/files/doc_BDCOM.xlsx
 */
 const API_URL = "https://api.insee.fr/donnees-locales/V0.1";
-const BEARER_TOKEN = process.env.INSEE_API_TOKEN;
-
-const HEADERS = {
-  headers: {
-    Accept: "application/json",
-    Authorization: `Bearer ${BEARER_TOKEN}`,
-  },
-};
 
 const DATA_CONFIG = {
   dataset: "BDCOM2020",
@@ -55,13 +48,24 @@ interface InseeData {
 
 @Injectable()
 export class LocalDataInseeService implements TownDataProvider {
-  private readonly httpService: HttpService = new HttpService();
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
+  ) {}
 
   getTownAreaAndPopulation(cityCode: string) {
+    const inseeApiToken =
+      this.configService.getOrThrow<string>("INSEE_API_TOKEN");
+    const config = {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${inseeApiToken}`,
+      },
+    };
     return this.httpService
       .get(
         `${API_URL}/donnees/geo-${DATA_CONFIG.junction}@${DATA_CONFIG.dataset}/${DATA_CONFIG.geolevel}-${cityCode}.${DATA_CONFIG.mode}`,
-        HEADERS,
+        config,
       )
       .pipe(
         map((res) => {

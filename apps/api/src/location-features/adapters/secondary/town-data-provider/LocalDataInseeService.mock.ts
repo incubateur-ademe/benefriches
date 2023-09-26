@@ -19,6 +19,11 @@ const SAMPLES = [
     population: 106,
     area: 123.5,
   },
+  {
+    cityCode: "75056",
+    population: 2145906,
+    area: 10540,
+  },
 ];
 
 export class MockLocalDataInseeService implements TownDataProvider {
