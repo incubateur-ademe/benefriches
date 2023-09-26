@@ -19,28 +19,33 @@ const sumSurfaces = (spaces: FormValues) => {
 };
 
 function NaturalAreaSurfaceForm({ spaces, onSubmit }: Props) {
-  const { register, handleSubmit, watch } = useForm<FormValues>();
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>();
 
   return (
     <>
       <h2>Quelles sont les superficies des différents espaces ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {spaces.map(({ type }) => (
-          <Input
-            key={`input-${type}`}
-            label={getLabelForNaturalAreaSpaceType(type)}
-            hintText="en m2"
-            nativeInputProps={{
-              type: "number",
-              ...register(type, {
-                required: "Ce champ est requis",
-                min: 0,
-                valueAsNumber: true,
-              }),
-              placeholder: "250 000",
-            }}
-          />
-        ))}
+        {spaces.map(({ type }) => {
+          const error = formState.errors[type];
+          return (
+            <Input
+              key={`input-${type}`}
+              label={getLabelForNaturalAreaSpaceType(type)}
+              hintText="en m2"
+              state={error ? "error" : "default"}
+              stateRelatedMessage={error ? error.message : undefined}
+              nativeInputProps={{
+                type: "number",
+                ...register(type, {
+                  required: "Ce champ est requis",
+                  min: 0,
+                  valueAsNumber: true,
+                }),
+                placeholder: "250 000",
+              }}
+            />
+          );
+        })}
         <Input
           label="Total superficie de l'espace naturel"
           hintText="en m2"
