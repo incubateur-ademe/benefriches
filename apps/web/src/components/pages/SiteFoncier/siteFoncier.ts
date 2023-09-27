@@ -70,7 +70,7 @@ export type Forest = {
   trees: { type: TreeType; surface?: number }[];
 };
 
-type Prairie = {
+export type Prairie = {
   type: NaturalAreaSpaceType.PRAIRIE;
   vegetation: { type: VegetationType; surface?: number }[];
 };

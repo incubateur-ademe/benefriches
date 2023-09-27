@@ -6,7 +6,9 @@ import {
   NaturalAreaSpaceType,
   Owner,
   OwnerType,
+  Prairie,
   TreeType,
+  VegetationType,
 } from "../../../siteFoncier";
 import SiteCreationConfirmation from "../Confirmation";
 import SiteNameAndDescriptionForm from "../Denomination";
@@ -16,6 +18,8 @@ import NaturalAreaJobsInvolvedForm from "./management/NaturalAreaJobsInvolvedFor
 import NaturalAreaOwnerForm from "./management/NaturalAreaOwnerForm";
 import NaturalAreaProfitAndRentPaidForm from "./management/NaturalAreaRevenueAndExpensesForm";
 import NaturalAreaRunningCompanyForm from "./management/NaturalAreaRunningCompanyForm";
+import PrairieVegetationDistributionForm from "./prairie/PrairieVegetationDistributionForm";
+import PrairieVegetationForm from "./prairie/PrairieVegetationForm";
 import CarbonSummary from "./CarbonSummary";
 import NaturalAreaSpacesForm from "./NaturalAreaSpaces";
 import NaturalAreaSurfaceForm from "./NaturalAreaSurfaceForm";
@@ -30,6 +34,8 @@ import {
   setFullTimeJobsInvolved,
   setNameAndDescription,
   setOwners,
+  setPrairieVegetation,
+  setPrairieVegetationSurfaces,
   setProfitAndRentPaid,
   setRunningCompany,
   setSpacesSurfaceArea,
@@ -86,6 +92,27 @@ function NaturalAreaCreationWizard() {
           <ForestTreesDistribution
             onSubmit={(data) => dispatch(setForestTreesSurfaces(data))}
             trees={forest.trees.map(({ type }) => type)}
+          />
+        );
+      case NaturalAreaCreationStep.PRAIRIE_VEGETATION_STEP:
+        return (
+          <PrairieVegetationForm
+            onSubmit={(data) => {
+              const vegetation = Object.entries(data)
+                .filter(([, value]) => value === true)
+                .map(([type]) => type as VegetationType);
+              dispatch(setPrairieVegetation(vegetation));
+            }}
+          />
+        );
+      case NaturalAreaCreationStep.PRAIRIE_VEGETATION_DISTRIBUTION_STEP:
+        const prairie = spaces.find(
+          (space) => space.type === NaturalAreaSpaceType.PRAIRIE,
+        ) as Prairie;
+        return (
+          <PrairieVegetationDistributionForm
+            onSubmit={(data) => dispatch(setPrairieVegetationSurfaces(data))}
+            vegetation={prairie.vegetation.map(({ type }) => type)}
           />
         );
       case NaturalAreaCreationStep.SOIL_SUMMARY_STEP:

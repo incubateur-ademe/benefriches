@@ -4,8 +4,10 @@ import {
   Forest,
   NaturalArea,
   NaturalAreaSpaceType,
+  Prairie,
   SiteFoncierType,
   TreeType,
+  VegetationType,
 } from "@/components/pages/SiteFoncier/siteFoncier";
 
 export enum NaturalAreaCreationStep {
@@ -138,6 +140,47 @@ const naturalAreaCreationSlice = createSlice({
       state.step = nextStep;
       state.nextSteps = nextSteps;
     },
+    setPrairieVegetation: (state, action: PayloadAction<VegetationType[]>) => {
+      const vegetation = action.payload;
+      const prairie = state.naturalAreaData.spaces?.find(
+        (space) => space.type === NaturalAreaSpaceType.PRAIRIE,
+      ) as Prairie | undefined;
+
+      if (prairie) {
+        prairie.vegetation = vegetation.map((vegetationType) => ({
+          type: vegetationType,
+        }));
+      }
+
+      if (vegetation.length > 1) {
+        state.nextSteps = [
+          NaturalAreaCreationStep.PRAIRIE_VEGETATION_DISTRIBUTION_STEP,
+          ...state.nextSteps,
+        ];
+      }
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+    },
+    setPrairieVegetationSurfaces: (
+      state,
+      action: PayloadAction<Partial<Record<VegetationType, number>>>,
+    ) => {
+      const vegetationSurfaces = action.payload;
+      const prairie = state.naturalAreaData.spaces?.find(
+        (space) => space.type === NaturalAreaSpaceType.PRAIRIE,
+      ) as Prairie;
+
+      prairie.vegetation = Object.entries(vegetationSurfaces).map(
+        ([vegetationType, surface]) => {
+          return { type: vegetationType as VegetationType, surface };
+        },
+      );
+
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+    },
     setOwners: (state, action: PayloadAction<NaturalArea["owners"]>) => {
       state.naturalAreaData.owners = action.payload;
       state.step = NaturalAreaCreationStep.RUNNING_COMPANY_STEP;
@@ -181,6 +224,8 @@ export const {
   setSpacesSurfaceArea,
   setForestTrees,
   setForestTreesSurfaces,
+  setPrairieVegetation,
+  setPrairieVegetationSurfaces,
   setOwners,
   setRunningCompany,
   setFullTimeJobsInvolved,
