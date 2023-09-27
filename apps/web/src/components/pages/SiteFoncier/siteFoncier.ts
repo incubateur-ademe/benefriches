@@ -8,7 +8,6 @@ export type SiteFoncier = {
   description: string;
   type: SiteFoncierType;
   address: string;
-  surface: number;
 };
 
 export enum FricheSpaceType {
@@ -51,13 +50,43 @@ export enum VegetationType {
 
 export type NaturalArea = SiteFoncier & {
   type: SiteFoncierType.NATURAL_AREA;
-  spaces: { type: NaturalAreaSpaceType; surface?: number }[];
+  spaces: NaturalAreaSpace[];
   owners: Owner[];
   runningCompany: string;
   fullTimeJobsInvolvedCount: number;
   yearlyProfitAmount: number;
   yearlyRentAmount?: number;
 };
+
+export enum TreeType {
+  DECIDUOUS = "DECIDUOUS", // feuillus
+  RESINOUS = "RESINOUS",
+  POPLAR = "POPLAR", // peupleraie
+  MIXED = "MIXED",
+}
+
+export type Forest = {
+  type: NaturalAreaSpaceType.FOREST;
+  trees: { type: TreeType; surface?: number }[];
+};
+
+type Prairie = {
+  type: NaturalAreaSpaceType.PRAIRIE;
+  vegetation: { type: VegetationType; surface?: number }[];
+};
+
+type OtherSpace = Omit<
+  NaturalAreaSpaceType,
+  NaturalAreaSpaceType.FOREST | NaturalAreaSpaceType.PRAIRIE
+>;
+
+type NaturalAreaSpace =
+  | Forest
+  | Prairie
+  | {
+      type: OtherSpace;
+      surface?: number;
+    };
 
 export enum OwnerType {
   AGRICULTURAL_COMPANY = "AGRICULTURAL_COMPANY",
@@ -74,39 +103,3 @@ export type Owner =
   | { type: OwnerType.LOCAL_OR_REGIONAL_AUTHORITY }
   | { type: OwnerType.OTHER }
   | AgricultureCompany;
-
-// const n: NaturalArea = {
-//   name: "Prairie Blajan, route des Pyrénnées",
-//   description: "Une description de la prairie",
-//   type: SiteFoncierType.NATURAL_AREA,
-//   address: "1 route des Pyrénnées",
-//   // spaces
-//   surface: 5000,
-//   spaces: {
-//     prairie: {
-//       grass: 0.8,
-//       trees: 0,
-//       bushes: 0.2,
-//     },
-//     forest: {},
-//   },
-//   spaces_: [
-//     {
-//       type: "prairie",
-//       vegetation: {
-//         grass: 0.8,
-//       },
-//     },
-//   ],
-//   // management
-//   owners: [
-//     {
-//       type: OwnerType.AGRICULTURAL_COMPANY,
-//       name: "Hello",
-//     },
-//     { type: OwnerType.LOCAL_OR_REGIONAL_AUTHORITY },
-//   ],
-//   manager: "GAEC La Castanède",
-//   fullTimeJobsInvolvedCount: 1.5,
-//   yearlyRentAmount: 2000,
-// };
