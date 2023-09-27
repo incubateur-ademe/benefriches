@@ -28,13 +28,13 @@ type TownCarbonStocksPerSoilCategoryProps = {
     cultivation: number;
     prairie: number;
     forest: number;
-    wet_land: number;
+    wetLand: number;
     orchard: number;
     vineyard: number;
-    artificialised_soils: number;
-    artificial_impermeable_soils: number;
-    artificial_grassed_soils: number;
-    artificial_bushy_and_tree_filled_soils: number;
+    artificialisedSoils: number;
+    artificialImpermeableSoils: number;
+    artificialGrassedSoils: number;
+    artificialBushyAndTreeFilledSoils: number;
   };
   cityCode: string;
 };

@@ -58,13 +58,13 @@ describe("CarbonStocksPerSoilsCategoryService", () => {
         cultivation: 36,
         prairie: 49,
         forest: 47,
-        wet_land: 125,
+        wetLand: 125,
         orchard: 46,
         vineyard: 39,
-        artificialised_soils: 24.5,
-        artificial_impermeable_soils: 30,
-        artificial_grassed_soils: 49,
-        artificial_bushy_and_tree_filled_soils: 47,
+        artificialisedSoils: 24.5,
+        artificialImpermeableSoils: 30,
+        artificialGrassedSoils: 49,
+        artificialBushyAndTreeFilledSoils: 47,
       });
     });
 
@@ -76,13 +76,13 @@ describe("CarbonStocksPerSoilsCategoryService", () => {
         cultivation: 50,
         prairie: 69,
         forest: 60,
-        wet_land: 125,
+        wetLand: 125,
         orchard: 46,
         vineyard: 39,
-        artificialised_soils: 34.5,
-        artificial_impermeable_soils: 30,
-        artificial_grassed_soils: 69,
-        artificial_bushy_and_tree_filled_soils: 60,
+        artificialisedSoils: 34.5,
+        artificialImpermeableSoils: 30,
+        artificialGrassedSoils: 69,
+        artificialBushyAndTreeFilledSoils: 60,
       });
     });
   });
