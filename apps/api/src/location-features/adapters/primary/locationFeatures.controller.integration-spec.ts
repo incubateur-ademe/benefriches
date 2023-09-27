@@ -13,14 +13,14 @@ describe("LocationFeatures controller", () => {
       controllers: [LocationFeaturesController],
       providers: [
         {
-          provide: "MockLocalDataInseeService",
+          provide: "TownDataProvider",
           useClass: MockLocalDataInseeService,
         },
         {
           provide: GetTownPopulationDensityUseCase,
           useFactory: (townDataProvider: MockLocalDataInseeService) =>
             new GetTownPopulationDensityUseCase(townDataProvider),
-          inject: ["MockLocalDataInseeService"],
+          inject: ["TownDataProvider"],
         },
       ],
     }).compile();
