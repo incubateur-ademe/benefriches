@@ -120,12 +120,11 @@ function NaturalAreaCreationWizard() {
           />
         );
       case NaturalAreaCreationStep.RUNNING_COMPANY_STEP:
-         
         const agriculturalCompanyOwner =
           naturalSpaceCreationState.naturalAreaData.owners?.find(
             (owner) => owner.type === OwnerType.AGRICULTURAL_COMPANY,
           ) as AgricultureCompany | undefined;
-         
+
         const runningCompanyName = agriculturalCompanyOwner?.name ?? "";
         return (
           <NaturalAreaRunningCompanyForm
