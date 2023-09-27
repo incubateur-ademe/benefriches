@@ -1,7 +1,10 @@
 import { INestApplication } from "@nestjs/common";
 import { Test as NestTest } from "@nestjs/testing";
 import supertest from "supertest";
+import { CarbonStocksPerSoilsCategoryDataProvider } from "src/location-features/domain/gateways/CarbonStocksPerSoilCategoryDataProvider";
+import { GetTownCarbonStocksPerSoilsCategoryUseCase } from "src/location-features/domain/usecases/getTownCarbonStocksPerSoilsCategory";
 import { GetTownPopulationDensityUseCase } from "src/location-features/domain/usecases/getTownPopulationDensity.usecase";
+import { CarbonStocksPerSoilsCategoryService } from "../secondary/town-data-provider/CarbonStocksPerSoilsCategoryService";
 import { MockLocalDataInseeService } from "../secondary/town-data-provider/LocalDataInseeService.mock";
 import { LocationFeaturesController } from "./locationFeatures.controller";
 
@@ -21,6 +24,17 @@ describe("LocationFeatures controller", () => {
           useFactory: (townDataProvider: MockLocalDataInseeService) =>
             new GetTownPopulationDensityUseCase(townDataProvider),
           inject: ["TownDataProvider"],
+        },
+        {
+          provide: "CarbonStocksPerSoilsCategoryDataProvider",
+          useClass: CarbonStocksPerSoilsCategoryService,
+        },
+        {
+          provide: GetTownCarbonStocksPerSoilsCategoryUseCase,
+          useFactory: (
+            dataProvider: CarbonStocksPerSoilsCategoryDataProvider,
+          ) => new GetTownCarbonStocksPerSoilsCategoryUseCase(dataProvider),
+          inject: ["CarbonStocksPerSoilsCategoryDataProvider"],
         },
       ],
     }).compile();
@@ -57,6 +71,27 @@ describe("LocationFeatures controller", () => {
           },
           unit: "hab/km2",
           value: 203.6,
+        },
+        carbonStocks: {
+          cityCode: "75056",
+          stocks: {
+            artificial_bushy_and_tree_filled_soils: 83,
+            artificial_grassed_soils: 55,
+            artificial_impermeable_soils: 30,
+            artificialised_soils: 27.5,
+            cultivation: 43,
+            forest: 83,
+            orchard: 46,
+            prairie: 55,
+            vineyard: 39,
+            wet_land: 125,
+          },
+          stocksUnit: "tC/ha",
+          zpcCode: "2_2",
+          zpcDescription: {
+            climat: "Climat chaud tempéré sec",
+            texture: "Moyenne",
+          },
         },
       });
     });

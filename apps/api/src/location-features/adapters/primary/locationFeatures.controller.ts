@@ -1,10 +1,12 @@
 import { BadRequestException, Controller, Get, Query } from "@nestjs/common";
+import { GetTownCarbonStocksPerSoilsCategoryUseCase } from "src/location-features/domain/usecases/getTownCarbonStocksPerSoilsCategory";
 import { GetTownPopulationDensityUseCase } from "src/location-features/domain/usecases/getTownPopulationDensity.usecase";
 
 @Controller("location-features")
 export class LocationFeaturesController {
   constructor(
     private readonly getTownPopulationDensity: GetTownPopulationDensityUseCase,
+    private readonly getTownCarbonStocksPerSoilsCategory: GetTownCarbonStocksPerSoilsCategoryUseCase,
   ) {}
 
   @Get()
@@ -14,9 +16,13 @@ export class LocationFeaturesController {
     }
 
     const density = await this.getTownPopulationDensity.execute({ cityCode });
+    const carbonStocks = await this.getTownCarbonStocksPerSoilsCategory.execute(
+      { cityCode },
+    );
     return {
       populationDensity: density,
       cityCode,
+      carbonStocks,
     };
   }
 }

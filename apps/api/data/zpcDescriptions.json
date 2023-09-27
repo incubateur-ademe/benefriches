@@ -1,0 +1,58 @@
+{
+  "1_1": {
+    "texture": "Grossière",
+    "climat": "Climat chaud tempéré humide"
+  },
+  "1_2": {
+    "texture": "Grossière",
+    "climat": "Climat chaud tempéré sec"
+  },
+  "1_3": {
+    "texture": "Grossière",
+    "climat": "Climat frais tempéré humide"
+  },
+  "2_1": {
+    "texture": "Moyenne",
+    "climat": "Climat chaud tempéré humide"
+  },
+  "2_2": {
+    "texture": "Moyenne",
+    "climat": "Climat chaud tempéré sec"
+  },
+  "2_3": {
+    "texture": "Moyenne",
+    "climat": "Climat frais tempéré humide"
+  },
+  "3_1": {
+    "texture": "Moyenne-fine",
+    "climat": "Climat chaud tempéré humide"
+  },
+  "3_2": {
+    "texture": "Moyenne-fine",
+    "climat": "Climat chaud tempéré sec"
+  },
+  "3_3": {
+    "texture": "Moyenne-fine",
+    "climat": "Climat frais tempéré humide"
+  },
+  "4_1": {
+    "texture": "Fine",
+    "climat": "Climat chaud tempéré humide"
+  },
+  "4_2": {
+    "texture": "Fine",
+    "climat": "Climat chaud tempéré sec"
+  },
+  "4_3": {
+    "texture": "Fine",
+    "climat": "Climat frais tempéré humide"
+  },
+  "5_1": {
+    "texture": "Très-fine",
+    "climat": "Climat chaud tempéré humide"
+  },
+  "5_3": {
+    "texture": "Très-fine",
+    "climat": "Climat frais tempéré humide"
+  }
+}
