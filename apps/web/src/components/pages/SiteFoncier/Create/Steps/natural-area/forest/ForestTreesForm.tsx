@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { TreeType } from "../../../siteFoncier";
-import { getLabelForTreeType } from "./forest/treeTypeLabelMapping";
+import { TreeType } from "../../../../siteFoncier";
+import { getLabelForTreeType } from "./treeTypeLabelMapping";
 
 type Props = {
   onSubmit: (formValue: FormValues) => void;

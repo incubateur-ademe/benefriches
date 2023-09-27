@@ -10,13 +10,13 @@ import {
 } from "../../../siteFoncier";
 import SiteCreationConfirmation from "../Confirmation";
 import SiteNameAndDescriptionForm from "../Denomination";
+import ForestTreesDistribution from "./forest/ForestTreesDistribution";
+import ForestTreesForm from "./forest/ForestTreesForm";
 import NaturalAreaJobsInvolvedForm from "./management/NaturalAreaJobsInvolvedForm";
 import NaturalAreaOwnerForm from "./management/NaturalAreaOwnerForm";
 import NaturalAreaProfitAndRentPaidForm from "./management/NaturalAreaRevenueAndExpensesForm";
 import NaturalAreaRunningCompanyForm from "./management/NaturalAreaRunningCompanyForm";
 import CarbonSummary from "./CarbonSummary";
-import ForestTreesDistribution from "./ForestTreesDistribution";
-import ForestTreesForm from "./ForestTreesForm";
 import NaturalAreaSpacesForm from "./NaturalAreaSpaces";
 import NaturalAreaSurfaceForm from "./NaturalAreaSurfaceForm";
 import SoilSummary from "./SoilSummary";
