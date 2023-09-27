@@ -1,8 +1,12 @@
+/* eslint-disable no-case-declarations */
 import {
   AgricultureCompany,
+  Forest,
   NaturalArea,
+  NaturalAreaSpaceType,
   Owner,
   OwnerType,
+  TreeType,
 } from "../../../siteFoncier";
 import SiteCreationConfirmation from "../Confirmation";
 import SiteNameAndDescriptionForm from "../Denomination";
@@ -10,12 +14,19 @@ import NaturalAreaJobsInvolvedForm from "./management/NaturalAreaJobsInvolvedFor
 import NaturalAreaOwnerForm from "./management/NaturalAreaOwnerForm";
 import NaturalAreaProfitAndRentPaidForm from "./management/NaturalAreaRevenueAndExpensesForm";
 import NaturalAreaRunningCompanyForm from "./management/NaturalAreaRunningCompanyForm";
+import CarbonSummary from "./CarbonSummary";
+import ForestTreesDistribution from "./ForestTreesDistribution";
+import ForestTreesForm from "./ForestTreesForm";
 import NaturalAreaSpacesForm from "./NaturalAreaSpaces";
 import NaturalAreaSurfaceForm from "./NaturalAreaSurfaceForm";
+import SoilSummary from "./SoilSummary";
 import Stepper from "./Stepper";
 
 import {
+  goToNextStep,
   NaturalAreaCreationStep,
+  setForestTrees,
+  setForestTreesSurfaces,
   setFullTimeJobsInvolved,
   setNameAndDescription,
   setOwners,
@@ -32,6 +43,9 @@ function NaturalAreaCreationWizard() {
   );
   const dispatch = useAppDispatch();
 
+  const spaces = naturalSpaceCreationState.naturalAreaData
+    .spaces as NaturalArea["spaces"];
+
   const getStepComponent = () => {
     switch (naturalSpaceCreationState.step) {
       case NaturalAreaCreationStep.SPACES_STEP:
@@ -46,14 +60,43 @@ function NaturalAreaCreationWizard() {
         return (
           <NaturalAreaSurfaceForm
             spaces={
-              naturalSpaceCreationState.naturalAreaData
-                .spaces as NaturalArea["spaces"]
+              spaces?.map(({ type }) => type as NaturalAreaSpaceType) ?? []
             }
             onSubmit={(data) => {
               dispatch(setSpacesSurfaceArea(data));
             }}
           />
         );
+      case NaturalAreaCreationStep.FOREST_TREES_STEP:
+        return (
+          <ForestTreesForm
+            onSubmit={(data) => {
+              const trees = Object.entries(data)
+                .filter(([, value]) => value === true)
+                .map(([type]) => type as TreeType);
+              dispatch(setForestTrees(trees));
+            }}
+          />
+        );
+      case NaturalAreaCreationStep.FOREST_TREES_DISTRIBUTION:
+        const forest = spaces.find(
+          (space) => space.type === NaturalAreaSpaceType.FOREST,
+        ) as Forest;
+        return (
+          <ForestTreesDistribution
+            onSubmit={(data) => dispatch(setForestTreesSurfaces(data))}
+            trees={forest.trees.map(({ type }) => type)}
+          />
+        );
+      case NaturalAreaCreationStep.SOIL_SUMMARY_STEP:
+        return (
+          <SoilSummary
+            onNextClick={() => dispatch(goToNextStep())}
+            surface={10000}
+          />
+        );
+      case NaturalAreaCreationStep.CARBON_SUMMARY_STEP:
+        return <CarbonSummary onNextClick={() => dispatch(goToNextStep())} />;
       case NaturalAreaCreationStep.OWNER_STEP:
         return (
           <NaturalAreaOwnerForm
@@ -77,12 +120,12 @@ function NaturalAreaCreationWizard() {
           />
         );
       case NaturalAreaCreationStep.RUNNING_COMPANY_STEP:
-        // eslint-disable-next-line no-case-declarations
+         
         const agriculturalCompanyOwner =
           naturalSpaceCreationState.naturalAreaData.owners?.find(
             (owner) => owner.type === OwnerType.AGRICULTURAL_COMPANY,
           ) as AgricultureCompany | undefined;
-        // eslint-disable-next-line no-case-declarations
+         
         const runningCompanyName = agriculturalCompanyOwner?.name ?? "";
         return (
           <NaturalAreaRunningCompanyForm

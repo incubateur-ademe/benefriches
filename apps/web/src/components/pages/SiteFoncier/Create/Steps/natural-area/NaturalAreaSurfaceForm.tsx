@@ -5,7 +5,7 @@ import { NaturalAreaSpaceType } from "../../../siteFoncier";
 import { getLabelForNaturalAreaSpaceType } from "./naturalAreaSpaceTypeLabelMapping";
 
 type Props = {
-  spaces: { type: NaturalAreaSpaceType }[];
+  spaces: NaturalAreaSpaceType[];
   onSubmit: (data: FormValues) => void;
 };
 
@@ -25,7 +25,7 @@ function NaturalAreaSurfaceForm({ spaces, onSubmit }: Props) {
     <>
       <h2>Quelles sont les superficies des différents espaces ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {spaces.map(({ type }) => {
+        {spaces.map((type) => {
           const error = formState.errors[type];
           return (
             <Input

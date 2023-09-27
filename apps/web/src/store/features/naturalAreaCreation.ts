@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
+  Forest,
   NaturalArea,
   NaturalAreaSpaceType,
   SiteFoncierType,
+  TreeType,
 } from "@/components/pages/SiteFoncier/siteFoncier";
 
 export enum NaturalAreaCreationStep {
@@ -82,12 +84,47 @@ const naturalAreaCreationSlice = createSlice({
       state,
       action: PayloadAction<Partial<Record<NaturalAreaSpaceType, number>>>,
     ) => {
-      state.naturalAreaData.spaces = state.naturalAreaData.spaces!.map(
-        ({ type }) => {
-          return { type, surface: action.payload[type] };
+      state.naturalAreaData.spaces = Object.entries(action.payload).map(
+        ([type, surface]) => {
+          return { type, surface };
         },
       );
       state.step = state.nextSteps[0];
+      state.nextSteps.shift();
+    },
+    setForestTrees: (state, action: PayloadAction<TreeType[]>) => {
+      const trees = action.payload;
+      const forest = state.naturalAreaData.spaces?.find(
+        (space) => space.type === NaturalAreaSpaceType.FOREST,
+      ) as Forest | undefined;
+
+      if (forest) {
+        forest.trees = trees.map((treeType) => ({ type: treeType }));
+      }
+
+      if (trees.length > 1) {
+        state.step = NaturalAreaCreationStep.FOREST_TREES_DISTRIBUTION;
+      } else {
+        state.step = NaturalAreaCreationStep.SOIL_SUMMARY_STEP;
+      }
+      state.nextSteps.shift();
+    },
+    setForestTreesSurfaces: (
+      state,
+      action: PayloadAction<Partial<Record<TreeType, number>>>,
+    ) => {
+      const treesSurfaces = action.payload;
+      const forest = state.naturalAreaData.spaces?.find(
+        (space) => space.type === NaturalAreaSpaceType.FOREST,
+      ) as Forest;
+
+      forest.trees = Object.entries(treesSurfaces).map(
+        ([treeType, surface]) => {
+          return { type: treeType as TreeType, surface };
+        },
+      );
+
+      state.step = NaturalAreaCreationStep.SOIL_SUMMARY_STEP;
       state.nextSteps.shift();
     },
     setOwners: (state, action: PayloadAction<NaturalArea["owners"]>) => {
@@ -130,11 +167,14 @@ const naturalAreaCreationSlice = createSlice({
 export const {
   setSpacesTypes,
   setSpacesSurfaceArea,
+  setForestTrees,
+  setForestTreesSurfaces,
   setOwners,
   setRunningCompany,
   setFullTimeJobsInvolved,
   setProfitAndRentPaid,
   setNameAndDescription,
+  goToNextStep,
 } = naturalAreaCreationSlice.actions;
 
 export default naturalAreaCreationSlice.reducer;

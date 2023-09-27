@@ -22,8 +22,6 @@ function NaturalAreaSpacesForm({ onSubmit }: Props) {
     },
   });
 
-  console.log({ formState });
-
   const checkboxOptions = options.map((option) => ({
     label: option.label,
     nativeInputProps: {
