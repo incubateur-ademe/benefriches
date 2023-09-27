@@ -52,6 +52,11 @@ const naturalAreaInitialState: NaturalAreaCreationState = {
   },
 };
 
+const getNextSteps = (steps: NaturalAreaCreationStep[]) => {
+  const [nextStep, ...nextSteps] = steps;
+  return { nextStep, nextSteps };
+};
+
 const naturalAreaCreationSlice = createSlice({
   name: "naturalAreaCreation",
   initialState: naturalAreaInitialState,
@@ -63,9 +68,10 @@ const naturalAreaCreationSlice = createSlice({
         type: spaceType,
       }));
 
-      // setting next steps
-      state.step = state.nextSteps[0];
-      state.nextSteps.shift();
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+
       if (naturalAreaSpaces.includes(NaturalAreaSpaceType.PRAIRIE)) {
         state.nextSteps = [
           NaturalAreaCreationStep.PRAIRIE_VEGETATION_STEP,
@@ -89,8 +95,9 @@ const naturalAreaCreationSlice = createSlice({
           return { type, surface };
         },
       );
-      state.step = state.nextSteps[0];
-      state.nextSteps.shift();
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
     setForestTrees: (state, action: PayloadAction<TreeType[]>) => {
       const trees = action.payload;
@@ -103,11 +110,14 @@ const naturalAreaCreationSlice = createSlice({
       }
 
       if (trees.length > 1) {
-        state.step = NaturalAreaCreationStep.FOREST_TREES_DISTRIBUTION;
-      } else {
-        state.step = NaturalAreaCreationStep.SOIL_SUMMARY_STEP;
+        state.nextSteps = [
+          NaturalAreaCreationStep.FOREST_TREES_DISTRIBUTION,
+          ...state.nextSteps,
+        ];
       }
-      state.nextSteps.shift();
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
     setForestTreesSurfaces: (
       state,
@@ -124,8 +134,9 @@ const naturalAreaCreationSlice = createSlice({
         },
       );
 
-      state.step = NaturalAreaCreationStep.SOIL_SUMMARY_STEP;
-      state.nextSteps.shift();
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
     setOwners: (state, action: PayloadAction<NaturalArea["owners"]>) => {
       state.naturalAreaData.owners = action.payload;
@@ -158,8 +169,9 @@ const naturalAreaCreationSlice = createSlice({
       state.step = NaturalAreaCreationStep.CONFIRMATION_STEP;
     },
     goToNextStep: (state) => {
-      state.step = state.nextSteps[0];
-      state.nextSteps.shift();
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
   },
 });
