@@ -60,6 +60,10 @@ export type NaturalArea = SiteFoncier & {
     taxes: number;
     otherExpenses: number;
   };
+  yearlyOperationIncome: {
+    operations: number;
+    other: number;
+  };
 };
 
 export enum TreeType {
