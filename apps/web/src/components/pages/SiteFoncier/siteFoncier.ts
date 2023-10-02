@@ -52,7 +52,8 @@ export type NaturalArea = SiteFoncier & {
   type: SiteFoncierType.NATURAL_AREA;
   spaces: NaturalAreaSpace[];
   owners: Owner[];
-  runningCompany: string;
+  operatingCompanyName?: string;
+  operationStatus: OperationStatus;
   fullTimeJobsInvolvedCount: number;
   yearlyProfitAmount: number;
   yearlyRentAmount?: number;
@@ -94,12 +95,19 @@ export enum OwnerType {
   OTHER = "OTHER",
 }
 
-export type AgricultureCompany = {
+export type AgriculturalCompany = {
   type: OwnerType.AGRICULTURAL_COMPANY;
   name: string;
 };
 
 export type Owner =
   | { type: OwnerType.LOCAL_OR_REGIONAL_AUTHORITY }
-  | { type: OwnerType.OTHER }
-  | AgricultureCompany;
+  | { type: OwnerType.OTHER; name: string }
+  | AgriculturalCompany;
+
+export enum OperationStatus {
+  OPERATED_BY_OWNER = "OPERATED_BY_OWNER",
+  OPERATED_BY_OTHER_COMPANY = "OPERATED_BY_OTHER_COMPANY",
+  NOT_OPERATED = "NOT_OPERATED",
+  UNKNOWN = "UNKNOWN",
+}

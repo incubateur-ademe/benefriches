@@ -4,6 +4,7 @@ import {
   Forest,
   NaturalArea,
   NaturalAreaSpaceType,
+  OperationStatus,
   Prairie,
   SiteFoncierType,
   TreeType,
@@ -25,7 +26,7 @@ export enum NaturalAreaCreationStep {
   CARBON_SUMMARY_STEP = "CARBON_SUMMARY_STEP",
   // site management
   OWNER_STEP = "OWNER_STEP",
-  RUNNING_COMPANY_STEP = "RUNNING_COMPANY_STEP",
+  OPERATION_STEP = "OPERATION_STEP",
   FULL_TIME_JOBS_INVOLVED_STEP = "FULL_TIME_JOBS_INVOLVED_STEP",
   PROFIT_AND_RENT_PAID_STEP = "PROFIT_AND_RENT_PAID_STEP",
   // other
@@ -183,11 +184,23 @@ const naturalAreaCreationSlice = createSlice({
     },
     setOwners: (state, action: PayloadAction<NaturalArea["owners"]>) => {
       state.naturalAreaData.owners = action.payload;
-      state.step = NaturalAreaCreationStep.RUNNING_COMPANY_STEP;
+      state.step = NaturalAreaCreationStep.OPERATION_STEP;
     },
-    setRunningCompany: (state, action: PayloadAction<string>) => {
-      state.naturalAreaData.runningCompany = action.payload;
-      state.step = NaturalAreaCreationStep.FULL_TIME_JOBS_INVOLVED_STEP;
+    setOperationData: (
+      state,
+      action: PayloadAction<{
+        operationStatus: OperationStatus;
+        operatingCompanyName?: string;
+      }>,
+    ) => {
+      const { operationStatus, operatingCompanyName } = action.payload;
+      state.naturalAreaData.operationStatus = operationStatus;
+      if (operatingCompanyName) {
+        state.naturalAreaData.operatingCompanyName = operatingCompanyName;
+      }
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
     setFullTimeJobsInvolved: (state, action: PayloadAction<number>) => {
       state.naturalAreaData.fullTimeJobsInvolvedCount = action.payload;
@@ -227,7 +240,7 @@ export const {
   setPrairieVegetation,
   setPrairieVegetationSurfaces,
   setOwners,
-  setRunningCompany,
+  setOperationData,
   setFullTimeJobsInvolved,
   setProfitAndRentPaid,
   setNameAndDescription,
