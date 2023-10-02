@@ -28,7 +28,7 @@ export enum NaturalAreaCreationStep {
   OWNER_STEP = "OWNER_STEP",
   OPERATION_STEP = "OPERATION_STEP",
   FULL_TIME_JOBS_INVOLVED_STEP = "FULL_TIME_JOBS_INVOLVED_STEP",
-  PROFIT_AND_RENT_PAID_STEP = "PROFIT_AND_RENT_PAID_STEP",
+  YEARLY_EXPENSES_STEP = "YEARLY_EXPENSES_STEP",
   // other
   NAMING_STEP = "NAMING",
   CONFIRMATION_STEP = "CONFIRMATION_STEP",
@@ -47,6 +47,9 @@ const naturalAreaInitialState: NaturalAreaCreationState = {
     NaturalAreaCreationStep.SOIL_SUMMARY_STEP,
     NaturalAreaCreationStep.CARBON_SUMMARY_STEP,
     NaturalAreaCreationStep.OWNER_STEP,
+    NaturalAreaCreationStep.OPERATION_STEP,
+    NaturalAreaCreationStep.FULL_TIME_JOBS_INVOLVED_STEP,
+    NaturalAreaCreationStep.YEARLY_EXPENSES_STEP,
     NaturalAreaCreationStep.NAMING_STEP,
     NaturalAreaCreationStep.CONFIRMATION_STEP,
   ],
@@ -204,16 +207,22 @@ const naturalAreaCreationSlice = createSlice({
     },
     setFullTimeJobsInvolved: (state, action: PayloadAction<number>) => {
       state.naturalAreaData.fullTimeJobsInvolvedCount = action.payload;
-      state.step = NaturalAreaCreationStep.PROFIT_AND_RENT_PAID_STEP;
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
-    setProfitAndRentPaid: (
+    setYearlyOperationExpenses: (
       state,
-      action: PayloadAction<{ profit: number; rentPaid?: number }>,
+      action: PayloadAction<{
+        rent: number;
+        taxes: number;
+        otherExpenses: number;
+      }>,
     ) => {
-      state.naturalAreaData.yearlyProfitAmount = action.payload.profit;
-      if (action.payload.rentPaid)
-        state.naturalAreaData.yearlyRentAmount = action.payload.rentPaid;
-      state.step = NaturalAreaCreationStep.NAMING_STEP;
+      state.naturalAreaData.yearlyOperationExpenses = action.payload;
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
     setNameAndDescription: (
       state,
@@ -242,7 +251,7 @@ export const {
   setOwners,
   setOperationData,
   setFullTimeJobsInvolved,
-  setProfitAndRentPaid,
+  setYearlyOperationExpenses,
   setNameAndDescription,
   goToNextStep,
 } = naturalAreaCreationSlice.actions;

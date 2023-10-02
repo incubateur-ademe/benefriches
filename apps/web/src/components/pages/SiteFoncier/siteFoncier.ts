@@ -55,8 +55,11 @@ export type NaturalArea = SiteFoncier & {
   operatingCompanyName?: string;
   operationStatus: OperationStatus;
   fullTimeJobsInvolvedCount: number;
-  yearlyProfitAmount: number;
-  yearlyRentAmount?: number;
+  yearlyOperationExpenses: {
+    rent: number;
+    taxes: number;
+    otherExpenses: number;
+  };
 };
 
 export enum TreeType {

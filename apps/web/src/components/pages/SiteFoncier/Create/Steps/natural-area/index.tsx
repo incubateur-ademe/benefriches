@@ -12,9 +12,9 @@ import SiteNameAndDescriptionForm from "../Denomination";
 import ForestTreesDistribution from "./forest/ForestTreesDistribution";
 import ForestTreesForm from "./forest/ForestTreesForm";
 import NaturalAreaFullTimeJobsInvolvedForm from "./management/full-time-jobs-form";
-import NaturalAreaProfitAndRentPaidForm from "./management/NaturalAreaRevenueAndExpensesForm";
 import NaturalAreaOperatingCompanyForm from "./management/operating-company-form";
 import NaturalAreaOwnersForm from "./management/owners-form";
+import NaturalAreaYearlyOperationExpensesForm from "./management/yearly-operation-expenses";
 import PrairieVegetationDistributionForm from "./prairie/PrairieVegetationDistributionForm";
 import PrairieVegetationForm from "./prairie/PrairieVegetationForm";
 import CarbonSummary from "./CarbonSummary";
@@ -31,7 +31,6 @@ import {
   setNameAndDescription,
   setPrairieVegetation,
   setPrairieVegetationSurfaces,
-  setProfitAndRentPaid,
   setSpacesSurfaceArea,
   setSpacesTypes,
 } from "@/store/features/naturalAreaCreation";
@@ -124,13 +123,8 @@ function NaturalAreaCreationWizard() {
         return <NaturalAreaOperatingCompanyForm />;
       case NaturalAreaCreationStep.FULL_TIME_JOBS_INVOLVED_STEP:
         return <NaturalAreaFullTimeJobsInvolvedForm />;
-      case NaturalAreaCreationStep.PROFIT_AND_RENT_PAID_STEP:
-        return (
-          <NaturalAreaProfitAndRentPaidForm
-            onSubmit={(data) => dispatch(setProfitAndRentPaid(data))}
-            onBack={() => {}}
-          />
-        );
+      case NaturalAreaCreationStep.YEARLY_EXPENSES_STEP:
+        return <NaturalAreaYearlyOperationExpensesForm />;
       case NaturalAreaCreationStep.NAMING_STEP:
         return (
           <SiteNameAndDescriptionForm
