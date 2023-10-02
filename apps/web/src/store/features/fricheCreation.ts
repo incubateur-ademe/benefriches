@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import {
-  FricheSite,
-  SiteFoncierType,
-} from "@/components/pages/SiteFoncier/siteFoncier";
+import { FricheSite } from "@/components/pages/SiteFoncier/friche";
+import { SiteFoncierType } from "@/components/pages/SiteFoncier/siteFoncier";
 
 export enum FricheCreationStep {
   LAST_ACTIVITY_STEP = "LAST_ACTIVITY_STEP",

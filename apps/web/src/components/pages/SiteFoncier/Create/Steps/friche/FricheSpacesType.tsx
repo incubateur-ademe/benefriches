@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { FricheSpaceType } from "../../../siteFoncier";
 
+import { FricheSpaceType } from "@/components/pages/SiteFoncier/friche";
 import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
 
 type FormValues = Record<FricheSpaceType, boolean>;

@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { FricheSpaceType } from "../../../siteFoncier";
 
+import { FricheSpaceType } from "@/components/pages/SiteFoncier/friche";
 import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
 
 type Props = {

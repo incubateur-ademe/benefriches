@@ -1,9 +1,12 @@
-import { FricheSite, FricheSpaceType } from "../../../siteFoncier";
 import SiteFoncierCreationStepFricheLastActivity from "./FricheLastActivity";
 import FricheSpacesSurfaceAreaForm from "./FricheSpacesSurfaceArea";
 import FricheSpacesTypeForm from "./FricheSpacesType";
 import FricheCreationStepper from "./Stepper";
 
+import {
+  FricheSite,
+  FricheSpaceType,
+} from "@/components/pages/SiteFoncier/friche";
 import {
   FricheCreationStep,
   setLastActivity,
