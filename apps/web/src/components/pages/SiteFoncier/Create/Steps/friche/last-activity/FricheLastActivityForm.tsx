@@ -4,11 +4,6 @@ import RadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
 
 import { FricheLastActivity } from "@/components/pages/SiteFoncier/friche";
 
-const ERROR_MESSAGE =
-  "Si vous ne savez pas qualifier l’activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
-
-const OTHER_VALUE = "OTHER";
-
 const FRICHE_ACTIVITY_OPTIONS = [
   {
     value: FricheLastActivity.INDUSTRY,
@@ -27,21 +22,20 @@ const FRICHE_ACTIVITY_OPTIONS = [
     label: "Habitat, petit commerce, équipement public",
   },
   {
-    value: OTHER_VALUE,
+    value: FricheLastActivity.UNKNOWN,
     label: "Autre / NSP",
   },
 ] as const;
 
 type FormValues = {
-  lastActivity: FricheLastActivity | typeof OTHER_VALUE;
+  lastActivity: FricheLastActivity;
 };
 
 type Props = {
-  onSubmit: (data: { lastActivity: FricheLastActivity | null }) => void;
-  onBack: () => void;
+  onSubmit: (formData: FormValues) => void;
 };
 
-function FricheLastActivityForm({ onSubmit, onBack }: Props) {
+function FricheLastActivityForm({ onSubmit }: Props) {
   const {
     register,
     handleSubmit,
@@ -55,23 +49,16 @@ function FricheLastActivityForm({ onSubmit, onBack }: Props) {
     nativeInputProps: {
       value: activity.value,
       ...register("lastActivity", {
-        required: ERROR_MESSAGE,
+        required:
+          "Si vous ne savez pas qualifier l’activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.",
       }),
     },
   }));
 
-  const _onSubmit = handleSubmit((data) => {
-    if (data.lastActivity === OTHER_VALUE) {
-      onSubmit({ lastActivity: null });
-      return;
-    }
-    onSubmit(data as { lastActivity: FricheLastActivity });
-  });
-
   return (
     <>
       <h2>Quelle est la dernière activité connue de la friche ?</h2>
-      <form onSubmit={_onSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           options={options}
           state={error ? "error" : "default"}
@@ -81,12 +68,6 @@ function FricheLastActivityForm({ onSubmit, onBack }: Props) {
           buttonsEquisized
           inlineLayoutWhen="always"
           buttons={[
-            {
-              children: "Retour",
-              onClick: onBack,
-              priority: "secondary",
-              nativeButtonProps: { type: "button" },
-            },
             {
               children: "Suivant",
               nativeButtonProps: { type: "submit" },

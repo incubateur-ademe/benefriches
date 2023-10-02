@@ -27,11 +27,9 @@ const fricheCreationSlice = createSlice({
   reducers: {
     setLastActivity: (
       state,
-      action: PayloadAction<FricheSite["lastActivity"] | null>,
+      action: PayloadAction<FricheSite["lastActivity"]>,
     ) => {
-      if (action.payload) {
-        state.fricheData.lastActivity = action.payload;
-      }
+      state.fricheData.lastActivity = action.payload;
       state.step = FricheCreationStep.SPACES_STEP;
     },
     setSpacesTypes: (state, action: PayloadAction<FricheSite["spaces"]>) => {

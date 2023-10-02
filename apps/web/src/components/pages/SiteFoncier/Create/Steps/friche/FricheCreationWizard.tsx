@@ -1,6 +1,6 @@
-import SiteFoncierCreationStepFricheLastActivity from "./FricheLastActivity";
 import FricheSpacesSurfaceAreaForm from "./FricheSpacesSurfaceArea";
 import FricheSpacesTypeForm from "./FricheSpacesType";
+import FricheLastActivityForm from "./last-activity";
 import FricheCreationStepper from "./Stepper";
 
 import {
@@ -9,7 +9,6 @@ import {
 } from "@/components/pages/SiteFoncier/friche";
 import {
   FricheCreationStep,
-  setLastActivity,
   setSpacesSurfaceArea,
   setSpacesTypes,
 } from "@/store/features/fricheCreation";
@@ -22,14 +21,7 @@ function FricheCreationWizard() {
   const getStepComponent = () => {
     switch (fricheCreationState.step) {
       case FricheCreationStep.LAST_ACTIVITY_STEP:
-        return (
-          <SiteFoncierCreationStepFricheLastActivity
-            onSubmit={(data) => {
-              dispatch(setLastActivity(data.lastActivity));
-            }}
-            onBack={() => {}}
-          />
-        );
+        return <FricheLastActivityForm />;
       case FricheCreationStep.SPACES_STEP:
         return (
           <FricheSpacesTypeForm
