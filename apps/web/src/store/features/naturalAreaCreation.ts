@@ -6,10 +6,10 @@ import {
   NaturalAreaSpaceType,
   OperationStatus,
   Prairie,
-  SiteFoncierType,
   TreeType,
   VegetationType,
-} from "@/components/pages/SiteFoncier/siteFoncier";
+} from "@/components/pages/SiteFoncier/naturalArea";
+import { SiteFoncierType } from "@/components/pages/SiteFoncier/siteFoncier";
 
 export enum NaturalAreaCreationStep {
   // spaces

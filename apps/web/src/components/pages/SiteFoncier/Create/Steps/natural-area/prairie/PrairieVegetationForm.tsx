@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { VegetationType } from "../../../../siteFoncier";
 import { getLabelForVegetationType } from "./vegetationTypeLabelMapping";
+
+import { VegetationType } from "@/components/pages/SiteFoncier/naturalArea";
 
 type Props = {
   onSubmit: (formValue: FormValues) => void;

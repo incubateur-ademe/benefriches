@@ -1,7 +1,7 @@
 import {
   NaturalArea,
   OperationStatus,
-} from "@/components/pages/SiteFoncier/siteFoncier";
+} from "@/components/pages/SiteFoncier/naturalArea";
 import { setYearlyOperationExpenses } from "@/store/features/naturalAreaCreation";
 import { AppDispatch } from "@/store/store";
 

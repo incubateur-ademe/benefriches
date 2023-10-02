@@ -1,4 +1,4 @@
-import { TreeType } from "@/components/pages/SiteFoncier/siteFoncier";
+import { TreeType } from "@/components/pages/SiteFoncier/naturalArea";
 
 export const getLabelForTreeType = (treeType: TreeType) => {
   switch (treeType) {

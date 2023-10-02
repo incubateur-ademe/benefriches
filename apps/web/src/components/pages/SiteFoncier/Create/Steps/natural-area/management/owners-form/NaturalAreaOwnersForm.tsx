@@ -3,7 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
-import { OwnerType } from "@/components/pages/SiteFoncier/siteFoncier";
+import { OwnerType } from "@/components/pages/SiteFoncier/naturalArea";
 
 type Props = {
   onSubmit: (data: FormValues) => void;

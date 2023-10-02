@@ -1,4 +1,4 @@
-import { NaturalAreaSpaceType } from "../../../siteFoncier";
+import { NaturalAreaSpaceType } from "@/components/pages/SiteFoncier/naturalArea";
 
 export const getLabelForNaturalAreaSpaceType = (type: NaturalAreaSpaceType) => {
   switch (type) {

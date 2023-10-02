@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import Input from "@codegouvfr/react-dsfr/Input";
-import { TreeType } from "../../../../siteFoncier";
 import { getLabelForTreeType } from "./treeTypeLabelMapping";
+
+import { TreeType } from "@/components/pages/SiteFoncier/naturalArea";
 
 type Props = {
   onSubmit: (formValue: FormValues) => void;

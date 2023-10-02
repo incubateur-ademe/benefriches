@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { NaturalAreaSpaceType } from "../../../siteFoncier";
 import { getLabelForNaturalAreaSpaceType } from "./naturalAreaSpaceTypeLabelMapping";
+
+import { NaturalAreaSpaceType } from "@/components/pages/SiteFoncier/naturalArea";
 
 type Props = {
   onSubmit: (formValue: FormValues) => void;
