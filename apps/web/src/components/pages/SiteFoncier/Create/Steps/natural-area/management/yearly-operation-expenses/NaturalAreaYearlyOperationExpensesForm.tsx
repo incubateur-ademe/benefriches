@@ -34,9 +34,7 @@ function NaturalAreaYearlyOperationExpensesForm({
 
   return (
     <>
-      <h2>
-        Emplois temps plein mobilisés pour l'exploitation de l'espace naturel
-      </h2>
+      <h2>Dépenses annuelles</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {askForRent && (
           <Input
