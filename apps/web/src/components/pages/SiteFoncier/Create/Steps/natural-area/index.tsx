@@ -11,7 +11,7 @@ import SiteCreationConfirmation from "../Confirmation";
 import SiteNameAndDescriptionForm from "../Denomination";
 import ForestTreesDistribution from "./forest/ForestTreesDistribution";
 import ForestTreesForm from "./forest/ForestTreesForm";
-import NaturalAreaJobsInvolvedForm from "./management/NaturalAreaJobsInvolvedForm";
+import NaturalAreaFullTimeJobsInvolvedForm from "./management/full-time-jobs-form";
 import NaturalAreaProfitAndRentPaidForm from "./management/NaturalAreaRevenueAndExpensesForm";
 import NaturalAreaOperatingCompanyForm from "./management/operating-company-form";
 import NaturalAreaOwnersForm from "./management/owners-form";
@@ -28,7 +28,6 @@ import {
   NaturalAreaCreationStep,
   setForestTrees,
   setForestTreesSurfaces,
-  setFullTimeJobsInvolved,
   setNameAndDescription,
   setPrairieVegetation,
   setPrairieVegetationSurfaces,
@@ -124,14 +123,7 @@ function NaturalAreaCreationWizard() {
       case NaturalAreaCreationStep.OPERATION_STEP:
         return <NaturalAreaOperatingCompanyForm />;
       case NaturalAreaCreationStep.FULL_TIME_JOBS_INVOLVED_STEP:
-        return (
-          <NaturalAreaJobsInvolvedForm
-            onSubmit={(data) =>
-              dispatch(setFullTimeJobsInvolved(data.jobsInvolved))
-            }
-            onBack={() => {}}
-          />
-        );
+        return <NaturalAreaFullTimeJobsInvolvedForm />;
       case NaturalAreaCreationStep.PROFIT_AND_RENT_PAID_STEP:
         return (
           <NaturalAreaProfitAndRentPaidForm
