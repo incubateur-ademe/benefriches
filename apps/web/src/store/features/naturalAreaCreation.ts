@@ -29,6 +29,7 @@ export enum NaturalAreaCreationStep {
   OPERATION_STEP = "OPERATION_STEP",
   FULL_TIME_JOBS_INVOLVED_STEP = "FULL_TIME_JOBS_INVOLVED_STEP",
   YEARLY_EXPENSES_STEP = "YEARLY_EXPENSES_STEP",
+  YEARLY_INCOME_STEP = "YEARLY_INCOME_STEP",
   // other
   NAMING_STEP = "NAMING",
   CONFIRMATION_STEP = "CONFIRMATION_STEP",
@@ -50,6 +51,7 @@ const naturalAreaInitialState: NaturalAreaCreationState = {
     NaturalAreaCreationStep.OPERATION_STEP,
     NaturalAreaCreationStep.FULL_TIME_JOBS_INVOLVED_STEP,
     NaturalAreaCreationStep.YEARLY_EXPENSES_STEP,
+    NaturalAreaCreationStep.YEARLY_INCOME_STEP,
     NaturalAreaCreationStep.NAMING_STEP,
     NaturalAreaCreationStep.CONFIRMATION_STEP,
   ],
@@ -187,7 +189,9 @@ const naturalAreaCreationSlice = createSlice({
     },
     setOwners: (state, action: PayloadAction<NaturalArea["owners"]>) => {
       state.naturalAreaData.owners = action.payload;
-      state.step = NaturalAreaCreationStep.OPERATION_STEP;
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
     setOperationData: (
       state,
@@ -224,6 +228,18 @@ const naturalAreaCreationSlice = createSlice({
       state.step = nextStep;
       state.nextSteps = nextSteps;
     },
+    setYearlyOperationIncome: (
+      state,
+      action: PayloadAction<{
+        operations: number;
+        other: number;
+      }>,
+    ) => {
+      state.naturalAreaData.yearlyOperationIncome = action.payload;
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+    },
     setNameAndDescription: (
       state,
       action: PayloadAction<{ name: string; description?: string }>,
@@ -252,6 +268,7 @@ export const {
   setOperationData,
   setFullTimeJobsInvolved,
   setYearlyOperationExpenses,
+  setYearlyOperationIncome,
   setNameAndDescription,
   goToNextStep,
 } = naturalAreaCreationSlice.actions;

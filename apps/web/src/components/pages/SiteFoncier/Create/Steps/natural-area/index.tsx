@@ -15,6 +15,7 @@ import NaturalAreaFullTimeJobsInvolvedForm from "./management/full-time-jobs-for
 import NaturalAreaOperatingCompanyForm from "./management/operating-company-form";
 import NaturalAreaOwnersForm from "./management/owners-form";
 import NaturalAreaYearlyOperationExpensesForm from "./management/yearly-operation-expenses";
+import NaturalAreaYearlyOperationIncomeForm from "./management/yearly-operation-income";
 import PrairieVegetationDistributionForm from "./prairie/PrairieVegetationDistributionForm";
 import PrairieVegetationForm from "./prairie/PrairieVegetationForm";
 import CarbonSummary from "./CarbonSummary";
@@ -125,6 +126,8 @@ function NaturalAreaCreationWizard() {
         return <NaturalAreaFullTimeJobsInvolvedForm />;
       case NaturalAreaCreationStep.YEARLY_EXPENSES_STEP:
         return <NaturalAreaYearlyOperationExpensesForm />;
+      case NaturalAreaCreationStep.YEARLY_INCOME_STEP:
+        return <NaturalAreaYearlyOperationIncomeForm />;
       case NaturalAreaCreationStep.NAMING_STEP:
         return (
           <SiteNameAndDescriptionForm
