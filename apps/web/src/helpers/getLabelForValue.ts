@@ -1,4 +1,4 @@
-import { FricheSpaceType } from "@/components/pages/SiteFoncier/siteFoncier";
+import { FricheSpaceType } from "@/components/pages/SiteFoncier/naturalArea";
 
 export const getSurfaceTypeLabel = (value: FricheSpaceType) => {
   switch (value) {

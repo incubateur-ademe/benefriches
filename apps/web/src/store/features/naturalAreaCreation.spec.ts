@@ -7,9 +7,9 @@ import reducer, {
 
 import {
   NaturalAreaSpaceType,
-  SiteFoncierType,
   TreeType,
-} from "@/components/pages/SiteFoncier/siteFoncier";
+} from "@/components/pages/SiteFoncier/naturalArea";
+import { SiteFoncierType } from "@/components/pages/SiteFoncier/siteFoncier";
 
 describe("Natural Area creation flow", () => {
   describe("setSpacesTypes", () => {

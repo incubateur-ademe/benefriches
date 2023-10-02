@@ -3,7 +3,7 @@ import {
   NaturalArea,
   OperationStatus,
   OwnerType,
-} from "@/components/pages/SiteFoncier/siteFoncier";
+} from "@/components/pages/SiteFoncier/naturalArea";
 import { setOperationData } from "@/store/features/naturalAreaCreation";
 import { AppDispatch } from "@/store/store";
 

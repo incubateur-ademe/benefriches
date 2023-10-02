@@ -1,4 +1,4 @@
-import { VegetationType } from "@/components/pages/SiteFoncier/siteFoncier";
+import { VegetationType } from "@/components/pages/SiteFoncier/naturalArea";
 
 export const getLabelForVegetationType = (vegetationType: VegetationType) => {
   switch (vegetationType) {

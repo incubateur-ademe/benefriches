@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { NaturalAreaSpaceType } from "../../../siteFoncier";
 import { getLabelForNaturalAreaSpaceType } from "./naturalAreaSpaceTypeLabelMapping";
+
+import { NaturalAreaSpaceType } from "@/components/pages/SiteFoncier/naturalArea";
 
 type Props = {
   spaces: NaturalAreaSpaceType[];

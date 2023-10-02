@@ -3,7 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Input from "@codegouvfr/react-dsfr/Input";
 import RadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
 
-import { OperationStatus } from "@/components/pages/SiteFoncier/siteFoncier";
+import { OperationStatus } from "@/components/pages/SiteFoncier/naturalArea";
 
 type Props = {
   onSubmit: (formData: FormValues) => void;

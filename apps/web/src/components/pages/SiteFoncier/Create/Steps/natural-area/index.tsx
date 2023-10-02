@@ -1,12 +1,4 @@
 /* eslint-disable no-case-declarations */
-import {
-  Forest,
-  NaturalArea,
-  NaturalAreaSpaceType,
-  Prairie,
-  TreeType,
-  VegetationType,
-} from "../../../siteFoncier";
 import SiteCreationConfirmation from "../Confirmation";
 import SiteNameAndDescriptionForm from "../Denomination";
 import ForestTreesDistribution from "./forest/ForestTreesDistribution";
@@ -24,6 +16,14 @@ import NaturalAreaSurfaceForm from "./NaturalAreaSurfaceForm";
 import SoilSummary from "./SoilSummary";
 import Stepper from "./Stepper";
 
+import {
+  Forest,
+  NaturalArea,
+  NaturalAreaSpaceType,
+  Prairie,
+  TreeType,
+  VegetationType,
+} from "@/components/pages/SiteFoncier/naturalArea";
 import {
   goToNextStep,
   NaturalAreaCreationStep,

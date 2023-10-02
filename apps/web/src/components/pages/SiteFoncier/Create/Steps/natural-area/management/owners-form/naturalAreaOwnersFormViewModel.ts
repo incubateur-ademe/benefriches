@@ -1,4 +1,4 @@
-import { Owner, OwnerType } from "@/components/pages/SiteFoncier/siteFoncier";
+import { Owner, OwnerType } from "@/components/pages/SiteFoncier/naturalArea";
 import { setOwners } from "@/store/features/naturalAreaCreation";
 import { AppDispatch } from "@/store/store";
 
