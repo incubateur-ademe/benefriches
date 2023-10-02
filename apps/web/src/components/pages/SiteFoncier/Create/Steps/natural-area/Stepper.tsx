@@ -17,7 +17,7 @@ const getCurrentStep = (step: CreationStep | NaturalAreaCreationStep) => {
     case NaturalAreaCreationStep.SPACES_SURFACE_AREA_STEP:
       return steps[2];
     case NaturalAreaCreationStep.OWNER_STEP:
-    case NaturalAreaCreationStep.RUNNING_COMPANY_STEP:
+    case NaturalAreaCreationStep.OPERATION_STEP:
     case NaturalAreaCreationStep.FULL_TIME_JOBS_INVOLVED_STEP:
     case NaturalAreaCreationStep.PROFIT_AND_RENT_PAID_STEP:
       return steps[3];

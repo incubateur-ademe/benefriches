@@ -7,18 +7,19 @@ import { OwnerType } from "@/components/pages/SiteFoncier/siteFoncier";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  onBack: () => void;
 };
 
 type FormValues = Record<OwnerType, boolean> & {
-  agriculturalCompanyName: string;
+  agriculturalCompanyName?: string;
+  otherCompanyName?: string;
 };
 
-function NaturalAreaOwnerForm({ onSubmit, onBack }: Props) {
+function NaturalAreaOwnersForm({ onSubmit }: Props) {
   const { register, handleSubmit, watch } = useForm<FormValues>();
 
   const hasAgriculturalCompanyOwner =
     watch(OwnerType.AGRICULTURAL_COMPANY) === true;
+  const hasOtherOwner = watch(OwnerType.OTHER) === true;
 
   return (
     <>
@@ -56,16 +57,21 @@ function NaturalAreaOwnerForm({ onSubmit, onBack }: Props) {
             { label: "Autre/NSP", nativeInputProps: register(OwnerType.OTHER) },
           ]}
         />
+        {hasOtherOwner && (
+          <Input
+            label=""
+            nativeInputProps={{
+              placeholder: "Nom de l'entreprise",
+              ...register("otherCompanyName", {
+                required: "Ce champ est requis",
+              }),
+            }}
+          />
+        )}
         <ButtonsGroup
           buttonsEquisized
           inlineLayoutWhen="always"
           buttons={[
-            {
-              children: "Retour",
-              onClick: onBack,
-              priority: "secondary",
-              nativeButtonProps: { type: "button" },
-            },
             {
               children: "Suivant",
               nativeButtonProps: { type: "submit" },
@@ -77,4 +83,4 @@ function NaturalAreaOwnerForm({ onSubmit, onBack }: Props) {
   );
 }
 
-export default NaturalAreaOwnerForm;
+export default NaturalAreaOwnersForm;

@@ -1,11 +1,8 @@
 /* eslint-disable no-case-declarations */
 import {
-  AgricultureCompany,
   Forest,
   NaturalArea,
   NaturalAreaSpaceType,
-  Owner,
-  OwnerType,
   Prairie,
   TreeType,
   VegetationType,
@@ -15,9 +12,9 @@ import SiteNameAndDescriptionForm from "../Denomination";
 import ForestTreesDistribution from "./forest/ForestTreesDistribution";
 import ForestTreesForm from "./forest/ForestTreesForm";
 import NaturalAreaJobsInvolvedForm from "./management/NaturalAreaJobsInvolvedForm";
-import NaturalAreaOwnerForm from "./management/NaturalAreaOwnerForm";
 import NaturalAreaProfitAndRentPaidForm from "./management/NaturalAreaRevenueAndExpensesForm";
-import NaturalAreaRunningCompanyForm from "./management/NaturalAreaRunningCompanyForm";
+import NaturalAreaOperatingCompanyForm from "./management/operating-company-form";
+import NaturalAreaOwnersForm from "./management/owners-form";
 import PrairieVegetationDistributionForm from "./prairie/PrairieVegetationDistributionForm";
 import PrairieVegetationForm from "./prairie/PrairieVegetationForm";
 import CarbonSummary from "./CarbonSummary";
@@ -33,11 +30,9 @@ import {
   setForestTreesSurfaces,
   setFullTimeJobsInvolved,
   setNameAndDescription,
-  setOwners,
   setPrairieVegetation,
   setPrairieVegetationSurfaces,
   setProfitAndRentPaid,
-  setRunningCompany,
   setSpacesSurfaceArea,
   setSpacesTypes,
 } from "@/store/features/naturalAreaCreation";
@@ -125,43 +120,9 @@ function NaturalAreaCreationWizard() {
       case NaturalAreaCreationStep.CARBON_SUMMARY_STEP:
         return <CarbonSummary onNextClick={() => dispatch(goToNextStep())} />;
       case NaturalAreaCreationStep.OWNER_STEP:
-        return (
-          <NaturalAreaOwnerForm
-            onBack={() => {}}
-            onSubmit={(data) => {
-              const owners: Owner[] = [];
-              if (data.AGRICULTURAL_COMPANY === true) {
-                owners.push({
-                  type: OwnerType.AGRICULTURAL_COMPANY,
-                  name: data.agriculturalCompanyName,
-                });
-              }
-              if (data.LOCAL_OR_REGIONAL_AUTHORITY === true) {
-                owners.push({ type: OwnerType.LOCAL_OR_REGIONAL_AUTHORITY });
-              }
-              if (data.OTHER) {
-                owners.push({ type: OwnerType.OTHER });
-              }
-              dispatch(setOwners(owners));
-            }}
-          />
-        );
-      case NaturalAreaCreationStep.RUNNING_COMPANY_STEP:
-        const agriculturalCompanyOwner =
-          naturalSpaceCreationState.naturalAreaData.owners?.find(
-            (owner) => owner.type === OwnerType.AGRICULTURAL_COMPANY,
-          ) as AgricultureCompany | undefined;
-
-        const runningCompanyName = agriculturalCompanyOwner?.name ?? "";
-        return (
-          <NaturalAreaRunningCompanyForm
-            defaultCompanyName={runningCompanyName}
-            onSubmit={(runningCompanyName) =>
-              dispatch(setRunningCompany(runningCompanyName))
-            }
-            onBack={() => {}}
-          />
-        );
+        return <NaturalAreaOwnersForm />;
+      case NaturalAreaCreationStep.OPERATION_STEP:
+        return <NaturalAreaOperatingCompanyForm />;
       case NaturalAreaCreationStep.FULL_TIME_JOBS_INVOLVED_STEP:
         return (
           <NaturalAreaJobsInvolvedForm
