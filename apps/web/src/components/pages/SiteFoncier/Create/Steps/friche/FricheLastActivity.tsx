@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import RadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
-import { FricheLastActivity } from "../../../siteFoncier";
+
+import { FricheLastActivity } from "@/components/pages/SiteFoncier/friche";
 
 const ERROR_MESSAGE =
   "Si vous ne savez pas qualifier l’activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
