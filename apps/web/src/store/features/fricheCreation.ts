@@ -10,6 +10,7 @@ export enum FricheCreationStep {
   LAST_ACTIVITY_STEP = "LAST_ACTIVITY_STEP",
   SPACES_STEP = "SPACES_STEP",
   SPACES_SURFACE_AREA_STEP = "SPACES_SURFACE_AREA_STEP",
+  NAMING_STEP = "NAMING_STEP",
 }
 
 type FricheCreationState = {
@@ -23,6 +24,7 @@ const fricheInitialState: FricheCreationState = {
   nextSteps: [
     FricheCreationStep.SPACES_STEP,
     FricheCreationStep.SPACES_SURFACE_AREA_STEP,
+    FricheCreationStep.NAMING_STEP,
   ],
   fricheData: {
     type: SiteFoncierType.FRICHE,
@@ -63,6 +65,10 @@ const fricheCreationSlice = createSlice({
       action: PayloadAction<FricheSite["spaces"]>,
     ) => {
       state.fricheData.spaces = action.payload;
+
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
   },
 });

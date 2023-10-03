@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { getLabelForFricheSpaceType } from "./spaces/fricheSpaceTypeLabelMapping";
+import { getLabelForFricheSpaceType } from "../spaces/fricheSpaceTypeLabelMapping";
 
 import { FricheSpaceType } from "@/components/pages/SiteFoncier/friche";
 
 type Props = {
-  spaces: { type: FricheSpaceType }[];
+  spaces: FricheSpaceType[];
   onSubmit: (data: FormValues) => void;
 };
 
@@ -27,14 +27,14 @@ function FricheSpacesSurfaceAreaForm({ spaces, onSubmit }: Props) {
     <>
       <h2>Quelles sont les superficies des différents espaces ?</h2>
       <form onSubmit={_onSubmit}>
-        {spaces.map(({ type }) => (
+        {spaces.map((spaceType) => (
           <Input
-            key={`input-${type}`}
-            label={getLabelForFricheSpaceType(type)}
+            key={`input-${spaceType}`}
+            label={getLabelForFricheSpaceType(spaceType)}
             hintText="en m2"
             nativeInputProps={{
               type: "number",
-              ...register(type, {
+              ...register(spaceType, {
                 min: 0,
                 valueAsNumber: true,
               }),

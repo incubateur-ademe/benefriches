@@ -1,20 +1,12 @@
-import FricheSpacesSurfaceAreaForm from "./FricheSpacesSurfaceArea";
 import FricheLastActivityForm from "./last-activity";
 import FricheSpacesForm from "./spaces";
+import FricheSpacesSurfaceAreaForm from "./spaces-surface-area";
 import FricheCreationStepper from "./Stepper";
 
-import {
-  FricheSite,
-  FricheSpaceType,
-} from "@/components/pages/SiteFoncier/friche";
-import {
-  FricheCreationStep,
-  setSpacesSurfaceArea,
-} from "@/store/features/fricheCreation";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { FricheCreationStep } from "@/store/features/fricheCreation";
+import { useAppSelector } from "@/store/hooks";
 
 function FricheCreationWizard() {
-  const dispatch = useAppDispatch();
   const fricheCreationState = useAppSelector((state) => state.fricheCreation);
 
   const getStepComponent = () => {
@@ -24,20 +16,7 @@ function FricheCreationWizard() {
       case FricheCreationStep.SPACES_STEP:
         return <FricheSpacesForm />;
       case FricheCreationStep.SPACES_SURFACE_AREA_STEP:
-        return (
-          <FricheSpacesSurfaceAreaForm
-            spaces={
-              fricheCreationState.fricheData.spaces as FricheSite["spaces"]
-            }
-            onSubmit={(data) => {
-              const spaces = Object.entries(data).map(([type, surface]) => ({
-                type: type as FricheSpaceType,
-                surface,
-              }));
-              dispatch(setSpacesSurfaceArea(spaces));
-            }}
-          />
-        );
+        return <FricheSpacesSurfaceAreaForm />;
     }
   };
 
