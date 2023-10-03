@@ -1,6 +1,6 @@
 import FricheSpacesSurfaceAreaForm from "./FricheSpacesSurfaceArea";
-import FricheSpacesTypeForm from "./FricheSpacesType";
 import FricheLastActivityForm from "./last-activity";
+import FricheSpacesForm from "./spaces";
 import FricheCreationStepper from "./Stepper";
 
 import {
@@ -10,7 +10,6 @@ import {
 import {
   FricheCreationStep,
   setSpacesSurfaceArea,
-  setSpacesTypes,
 } from "@/store/features/fricheCreation";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
@@ -23,21 +22,7 @@ function FricheCreationWizard() {
       case FricheCreationStep.LAST_ACTIVITY_STEP:
         return <FricheLastActivityForm />;
       case FricheCreationStep.SPACES_STEP:
-        return (
-          <FricheSpacesTypeForm
-            onSubmit={(data) => {
-              const spaces = Object.entries(data)
-                .filter(([, value]) => {
-                  return value === true;
-                })
-                .map(([spaceType]) => {
-                  return { type: spaceType as FricheSpaceType };
-                });
-              dispatch(setSpacesTypes(spaces));
-            }}
-            onBack={() => {}}
-          />
-        );
+        return <FricheSpacesForm />;
       case FricheCreationStep.SPACES_SURFACE_AREA_STEP:
         return (
           <FricheSpacesSurfaceAreaForm

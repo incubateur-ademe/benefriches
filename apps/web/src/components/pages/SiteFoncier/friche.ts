@@ -7,12 +7,11 @@ export type FricheSite = SiteFoncier & {
 };
 
 export enum FricheSpaceType {
-  "IMPERMEABLE_SOILS" = "impermeable_soils",
-  "BUILDINGS" = "buildings",
-  "PERMEABLE_ARTIFICIAL_SOILS" = "permeable_artificial_soils",
-  "NATURAL_AREAS" = "natural_areas",
-  "AGRICULTURAL_LAND" = "AGRICULTURAL_LAND",
-  "OTHER" = "other",
+  IMPERMEABLE_SOILS = "impermeable_soils",
+  BUILDINGS = "buildings",
+  PERMEABLE_ARTIFICIAL_SOILS = "permeable_artificial_soils",
+  NATURAL_AREAS = "natural_areas",
+  OTHER = "other",
 }
 
 export enum FricheLastActivity {
