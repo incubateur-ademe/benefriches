@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
+import { getLabelForFricheSpaceType } from "./spaces/fricheSpaceTypeLabelMapping";
 
 import { FricheSpaceType } from "@/components/pages/SiteFoncier/friche";
-import { getSurfaceTypeLabel } from "@/helpers/getLabelForValue";
 
 type Props = {
   spaces: { type: FricheSpaceType }[];
@@ -30,7 +30,7 @@ function FricheSpacesSurfaceAreaForm({ spaces, onSubmit }: Props) {
         {spaces.map(({ type }) => (
           <Input
             key={`input-${type}`}
-            label={getSurfaceTypeLabel(type)}
+            label={getLabelForFricheSpaceType(type)}
             hintText="en m2"
             nativeInputProps={{
               type: "number",
