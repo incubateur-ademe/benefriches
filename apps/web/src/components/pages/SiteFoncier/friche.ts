@@ -3,8 +3,16 @@ import { SiteFoncier, SiteFoncierType } from "./siteFoncier";
 export type FricheSite = SiteFoncier & {
   type: SiteFoncierType.FRICHE;
   lastActivity?: FricheLastActivity;
-  spaces: { type: FricheSpaceType; surface?: number }[];
+  spaces: FricheSpace[];
 };
+
+export enum FricheLastActivity {
+  AGRICULTURE = "AGRICULTURE",
+  INDUSTRY = "INDUSTRY",
+  MINE_OR_QUARRY = "MINE_OR_QUARRY",
+  HOUSING_OR_BUSINESS = "HOUSING_OR_BUSINESS",
+  UNKNOWN = "UNKNOWN",
+}
 
 export enum FricheSpaceType {
   IMPERMEABLE_SOILS = "impermeable_soils",
@@ -14,10 +22,24 @@ export enum FricheSpaceType {
   OTHER = "other",
 }
 
-export enum FricheLastActivity {
-  AGRICULTURE = "AGRICULTURE",
-  INDUSTRY = "INDUSTRY",
-  MINE_OR_QUARRY = "MINE_OR_QUARRY",
-  HOUSING_OR_BUSINESS = "HOUSING_OR_BUSINESS",
-  UNKNOWN = "UNKNOWN",
+type FricheSpace =
+  | PermeableArtificializedSoilSpace
+  | {
+      type:
+        | FricheSpaceType.IMPERMEABLE_SOILS
+        | FricheSpaceType.BUILDINGS
+        | FricheSpaceType.NATURAL_AREAS
+        | FricheSpaceType.OTHER;
+      surface?: number;
+    };
+
+export type PermeableArtificializedSoilSpace = {
+  type: FricheSpaceType.PERMEABLE_ARTIFICIAL_SOILS;
+  soilComposition?: { type: PermeableArtificializedSoil; surface?: number }[];
+};
+
+export enum PermeableArtificializedSoil {
+  MINERAL = "MINERAL",
+  TREE_FILLED = "TREE_FILLED",
+  GRASS_OR_BUSHES_FILLED = "GRASS_OR_BUSHES_FILLED",
 }

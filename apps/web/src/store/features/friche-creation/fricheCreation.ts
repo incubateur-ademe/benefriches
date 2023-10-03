@@ -3,13 +3,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   FricheSite,
   FricheSpaceType,
+  PermeableArtificializedSoil,
+  PermeableArtificializedSoilSpace,
 } from "@/components/pages/SiteFoncier/friche";
 import { SiteFoncierType } from "@/components/pages/SiteFoncier/siteFoncier";
 
 export enum FricheCreationStep {
   LAST_ACTIVITY_STEP = "LAST_ACTIVITY_STEP",
+  // spaces
   SPACES_STEP = "SPACES_STEP",
   SPACES_SURFACE_AREA_STEP = "SPACES_SURFACE_AREA_STEP",
+  PERMEABLE_ARTIFICIAL_SOILS_COMPOSITION = "PERMEABLE_ARTIFICIAL_SOILS_COMPOSITION",
+  PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION = "PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION",
   NAMING_STEP = "NAMING_STEP",
 }
 
@@ -19,7 +24,7 @@ type FricheCreationState = {
   fricheData: Partial<FricheSite>;
 };
 
-const fricheInitialState: FricheCreationState = {
+export const fricheInitialState: FricheCreationState = {
   step: FricheCreationStep.LAST_ACTIVITY_STEP,
   nextSteps: [
     FricheCreationStep.SPACES_STEP,
@@ -59,6 +64,13 @@ const fricheCreationSlice = createSlice({
       const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
       state.step = nextStep;
       state.nextSteps = nextSteps;
+
+      if (fricheSpaces.includes(FricheSpaceType.PERMEABLE_ARTIFICIAL_SOILS)) {
+        state.nextSteps = [
+          FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_COMPOSITION,
+          ...state.nextSteps,
+        ];
+      }
     },
     setSpacesSurfaceArea: (
       state,
@@ -70,10 +82,45 @@ const fricheCreationSlice = createSlice({
       state.step = nextStep;
       state.nextSteps = nextSteps;
     },
+    setPermeableArtificializedSoilComposition: (
+      state,
+      action: PayloadAction<PermeableArtificializedSoil[]>,
+    ) => {
+      const permeableArtificializedSoilSpace = state.fricheData.spaces?.find(
+        (space) => space.type === FricheSpaceType.PERMEABLE_ARTIFICIAL_SOILS,
+      ) as PermeableArtificializedSoilSpace;
+
+      if (action.payload.length === 0) {
+        permeableArtificializedSoilSpace.soilComposition = [
+          { type: PermeableArtificializedSoil.MINERAL },
+        ];
+      } else {
+        permeableArtificializedSoilSpace.soilComposition = action.payload.map(
+          (soilType) => {
+            return { type: soilType };
+          },
+        );
+      }
+
+      if (action.payload.length > 1) {
+        state.nextSteps = [
+          FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION,
+          ...state.nextSteps,
+        ];
+      }
+
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+    },
   },
 });
 
-export const { setLastActivity, setSpacesTypes, setSpacesSurfaceArea } =
-  fricheCreationSlice.actions;
+export const {
+  setLastActivity,
+  setSpacesTypes,
+  setSpacesSurfaceArea,
+  setPermeableArtificializedSoilComposition,
+} = fricheCreationSlice.actions;
 
 export default fricheCreationSlice.reducer;
