@@ -2,7 +2,7 @@ import {
   FricheSite,
   FricheSpaceType,
 } from "@/components/pages/SiteFoncier/friche";
-import { setSpacesSurfaceArea } from "@/store/features/fricheCreation";
+import { setSpacesSurfaceArea } from "@/store/features/friche-creation/fricheCreation";
 import { AppDispatch } from "@/store/store";
 
 type FormData = Partial<Record<FricheSpaceType, number>>;

@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import fricheCreation from "./features/fricheCreation";
+import fricheCreation from "./features/friche-creation/fricheCreation";
 import naturalAreaCreation from "./features/naturalAreaCreation";
 import siteCreation from "./features/siteCreation";
 

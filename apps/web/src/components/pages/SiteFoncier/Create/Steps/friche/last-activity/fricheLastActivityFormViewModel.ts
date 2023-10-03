@@ -1,5 +1,5 @@
 import { FricheLastActivity } from "@/components/pages/SiteFoncier/friche";
-import { setLastActivity } from "@/store/features/fricheCreation";
+import { setLastActivity } from "@/store/features/friche-creation/fricheCreation";
 import { AppDispatch } from "@/store/store";
 
 type FormData = {
