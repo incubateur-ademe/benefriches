@@ -113,6 +113,26 @@ const fricheCreationSlice = createSlice({
       state.step = nextStep;
       state.nextSteps = nextSteps;
     },
+    setPermeableArtificializedSoilDistribution: (
+      state,
+      action: PayloadAction<
+        Partial<Record<PermeableArtificializedSoil, number>>
+      >,
+    ) => {
+      const permeableArtificializedSoilSpace = state.fricheData.spaces?.find(
+        (space) => space.type === FricheSpaceType.PERMEABLE_ARTIFICIAL_SOILS,
+      ) as PermeableArtificializedSoilSpace;
+
+      permeableArtificializedSoilSpace.soilComposition = Object.entries(
+        action.payload,
+      ).map(([type, surface]) => {
+        return { type: type as PermeableArtificializedSoil, surface };
+      });
+
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+    },
   },
 });
 
@@ -121,6 +141,7 @@ export const {
   setSpacesTypes,
   setSpacesSurfaceArea,
   setPermeableArtificializedSoilComposition,
+  setPermeableArtificializedSoilDistribution,
 } = fricheCreationSlice.actions;
 
 export default fricheCreationSlice.reducer;
