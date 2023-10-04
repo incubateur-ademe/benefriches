@@ -1,14 +1,15 @@
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
 
-import { FricheCreationStep } from "@/store/features/fricheCreation";
+import { FricheCreationStep } from "@/store/features/friche-creation/fricheCreation";
 import { CreationStep } from "@/store/features/siteCreation";
 
 const steps = [
   { stepNumber: 1, title: "Type de site" },
   { stepNumber: 2, title: "Adresse" },
   { stepNumber: 3, title: "Espaces" },
-  { stepNumber: 4, title: "Gestion du site" },
-  { stepNumber: 5, title: "Dénomination" },
+  { stepNumber: 4, title: "Pollution" },
+  { stepNumber: 5, title: "Gestion du site" },
+  { stepNumber: 6, title: "Dénomination" },
 ];
 
 const getCurrentStep = (step: CreationStep | FricheCreationStep) => {
@@ -20,7 +21,11 @@ const getCurrentStep = (step: CreationStep | FricheCreationStep) => {
     case FricheCreationStep.LAST_ACTIVITY_STEP:
     case FricheCreationStep.SPACES_STEP:
     case FricheCreationStep.SPACES_SURFACE_AREA_STEP:
+    case FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_COMPOSITION:
+    case FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION:
       return steps[2];
+    case FricheCreationStep.NAMING_STEP:
+      return steps[5];
   }
 };
 
