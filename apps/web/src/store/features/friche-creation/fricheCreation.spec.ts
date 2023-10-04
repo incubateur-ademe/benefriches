@@ -3,6 +3,7 @@ import reducer, {
   fricheInitialState,
   setLastActivity,
   setPermeableArtificializedSoilComposition,
+  setPermeableArtificializedSoilDistribution,
   setSpacesTypes,
 } from "./fricheCreation";
 
@@ -180,6 +181,43 @@ describe("Friche creation flow", () => {
         },
         step: FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION,
         nextSteps: [FricheCreationStep.NAMING_STEP],
+      });
+    });
+  });
+  describe("setPermeableArtificializedSoilDistribution", () => {
+    it("when friche permeable artificialized soil has only one type of soil, next step should be the following one", () => {
+      const state = {
+        fricheData: {
+          ...fricheInitialState.fricheData,
+          spaces: [
+            {
+              type: FricheSpaceType.PERMEABLE_ARTIFICIAL_SOILS,
+              soilComposition: [{ type: PermeableArtificializedSoil.MINERAL }],
+            },
+          ],
+        },
+        step: FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION,
+        nextSteps: [FricheCreationStep.NAMING_STEP],
+      };
+      const action = setPermeableArtificializedSoilDistribution({
+        [PermeableArtificializedSoil.MINERAL]: 1500,
+      });
+      const newState = reducer(state, action);
+
+      expect(newState).toEqual({
+        fricheData: {
+          ...state.fricheData,
+          spaces: [
+            {
+              type: FricheSpaceType.PERMEABLE_ARTIFICIAL_SOILS,
+              soilComposition: [
+                { type: PermeableArtificializedSoil.MINERAL, surface: 1500 },
+              ],
+            },
+          ],
+        },
+        step: FricheCreationStep.NAMING_STEP,
+        nextSteps: [],
       });
     });
   });
