@@ -1,12 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import HeaderFooterLayout from "./components/layout/HeaderFooterLayout/HeaderFooterLayout";
-import CreateUserPage from "./components/pages/CreateUser";
-import HomePage from "./components/pages/Home";
-import LoginPage from "./components/pages/Login";
-import OnboardingPage from "./components/pages/Onboarding";
-import CreateSiteFoncierPage from "./components/pages/SiteFoncier/Create/Index";
-import SiteFoncierDetailsPage from "./components/pages/SiteFoncier/Details";
-import SitesFonciersListPage from "./components/pages/SiteFoncier/List";
+import CreateSiteFoncierPage from "./features/create-site/views";
+import HomePage from "./features/home/views/Home";
+import LoginPage from "./features/login";
+import OnboardingPage from "./features/onboarding/views";
+import SiteFoncierDetailsPage from "./features/site-details/views";
+import SitesFonciersListPage from "./features/site-list/views";
+import CreateUserPage from "./features/users/views";
+import HeaderFooterLayout from "./shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import { routes, useRoute } from "./router";
 
 function App() {
