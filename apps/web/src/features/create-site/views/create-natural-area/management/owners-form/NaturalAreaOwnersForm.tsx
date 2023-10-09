@@ -40,6 +40,7 @@ function NaturalAreaOwnersForm({ onSubmit }: Props) {
               placeholder: "Nom de l'entreprise",
               ...register("agriculturalCompanyName", {
                 required: "Ce champ est requis",
+                shouldUnregister: true,
               }),
             }}
           />
@@ -64,6 +65,7 @@ function NaturalAreaOwnersForm({ onSubmit }: Props) {
               placeholder: "Nom de l'entreprise",
               ...register("otherCompanyName", {
                 required: "Ce champ est requis",
+                shouldUnregister: true,
               }),
             }}
           />

@@ -91,6 +91,7 @@ function NaturalAreaOperatingCompanyForm({ onSubmit, ownerName }: Props) {
               placeholder: "Nom de l'exploitant",
               ...register("otherCompanyName", {
                 required: "Ce champ est requis",
+                shouldUnregister: true,
               }),
             }}
           />
