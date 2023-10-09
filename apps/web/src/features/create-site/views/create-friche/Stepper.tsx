@@ -6,7 +6,7 @@ import { CreationStep } from "@/features/create-site/application/createSite.redu
 const steps = [
   { stepNumber: 1, title: "Type de site" },
   { stepNumber: 2, title: "Adresse" },
-  { stepNumber: 3, title: "Espaces" },
+  { stepNumber: 3, title: "Sols" },
   { stepNumber: 4, title: "Pollution" },
   { stepNumber: 5, title: "Gestion du site" },
   { stepNumber: 6, title: "Dénomination" },
@@ -18,13 +18,15 @@ const getCurrentStep = (step: CreationStep | FricheCreationStep) => {
       return steps[0];
     case CreationStep.ADDRESS_STEP:
       return steps[1];
-    case FricheCreationStep.LAST_ACTIVITY_STEP:
+    case FricheCreationStep.SOIL_INTRODUCTION:
+    case FricheCreationStep.SURFACE_AREA:
     case FricheCreationStep.SPACES_STEP:
     case FricheCreationStep.SPACES_SURFACE_AREA_STEP:
     case FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_COMPOSITION:
     case FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION:
       return steps[2];
     case FricheCreationStep.NAMING_STEP:
+    case FricheCreationStep.LAST_ACTIVITY_STEP:
       return steps[5];
   }
 };

@@ -3,9 +3,11 @@ import FricheLastActivityForm from "./last-activity";
 import PermeableArtificializedSoilForm from "./permeable-artificialized-soil-composition";
 import PermeableArtificializedSoilDistributionForm from "./permeable-artificialized-soil-distribution";
 import SoilContaminationForm from "./soil-contamination";
+import FricheSoilIntroduction from "./soil-introduction";
 import FricheSpacesForm from "./spaces";
 import FricheSpacesSurfaceAreaForm from "./spaces-surface-area";
 import FricheCreationStepper from "./Stepper";
+import FricheSurfaceAreaForm from "./surface-area";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -14,6 +16,10 @@ function FricheCreationWizard() {
 
   const getStepComponent = () => {
     switch (fricheCreationState.step) {
+      case FricheCreationStep.SOIL_INTRODUCTION:
+        return <FricheSoilIntroduction />;
+      case FricheCreationStep.SURFACE_AREA:
+        return <FricheSurfaceAreaForm />;
       case FricheCreationStep.LAST_ACTIVITY_STEP:
         return <FricheLastActivityForm />;
       case FricheCreationStep.SPACES_STEP:
