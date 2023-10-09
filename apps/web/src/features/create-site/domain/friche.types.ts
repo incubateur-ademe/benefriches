@@ -3,6 +3,7 @@ import { SiteFoncier, SiteFoncierType } from "./siteFoncier.types";
 
 export type FricheSite = SiteFoncier & {
   type: SiteFoncierType.FRICHE;
+  surfaceArea: number;
   lastActivity?: FricheLastActivity;
   spaces: FricheSpace[];
   naturalAreas?: NaturalAreaSpaceType[];

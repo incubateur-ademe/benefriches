@@ -11,6 +11,9 @@ import { SiteFoncierType } from "@/features/create-site/domain/siteFoncier.types
 
 export enum FricheCreationStep {
   LAST_ACTIVITY_STEP = "LAST_ACTIVITY_STEP",
+  // soils
+  SOIL_INTRODUCTION = "SOIL_INTRODUCTION",
+  SURFACE_AREA = "SURFACE_AREA",
   // spaces
   SPACES_STEP = "SPACES_STEP",
   SPACES_SURFACE_AREA_STEP = "SPACES_SURFACE_AREA_STEP",
@@ -30,11 +33,12 @@ type FricheCreationState = {
 };
 
 export const fricheInitialState: FricheCreationState = {
-  step: FricheCreationStep.LAST_ACTIVITY_STEP,
+  step: FricheCreationStep.SOIL_INTRODUCTION,
   nextSteps: [
     FricheCreationStep.SPACES_STEP,
     FricheCreationStep.SPACES_SURFACE_AREA_STEP,
     FricheCreationStep.SOIL_CONTAMINATION,
+    FricheCreationStep.LAST_ACTIVITY_STEP,
     FricheCreationStep.NAMING_STEP,
   ],
   fricheData: {
@@ -51,6 +55,13 @@ const fricheCreationSlice = createSlice({
   name: "fricheCreation",
   initialState: fricheInitialState,
   reducers: {
+    setSurfaceArea: (state, action: PayloadAction<number>) => {
+      state.fricheData.surfaceArea = action.payload;
+
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+    },
     setLastActivity: (
       state,
       action: PayloadAction<FricheSite["lastActivity"]>,
@@ -162,6 +173,7 @@ const fricheCreationSlice = createSlice({
 });
 
 export const {
+  setSurfaceArea,
   setLastActivity,
   setSpacesTypes,
   setSpacesSurfaceArea,

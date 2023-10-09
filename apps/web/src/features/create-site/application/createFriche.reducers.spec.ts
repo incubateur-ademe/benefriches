@@ -5,6 +5,7 @@ import reducer, {
   setPermeableArtificializedSoilComposition,
   setPermeableArtificializedSoilDistribution,
   setSpacesTypes,
+  setSurfaceArea,
 } from "./createFriche.reducers";
 
 import {
@@ -14,6 +15,27 @@ import {
 } from "@/features/create-site/domain/friche.types";
 
 describe("Friche creation flow", () => {
+  describe("setSurfaceArea", () => {
+    it("sets surface area and goes to next step", () => {
+      const state = {
+        fricheData: fricheInitialState.fricheData,
+        step: FricheCreationStep.SURFACE_AREA,
+        nextSteps: [FricheCreationStep.NAMING_STEP],
+      };
+      const action = setSurfaceArea(4500);
+      const newState = reducer(state, action);
+
+      expect(newState).toEqual({
+        fricheData: {
+          ...state.fricheData,
+          surfaceArea: 4500,
+        },
+        step: FricheCreationStep.NAMING_STEP,
+        nextSteps: [],
+      });
+    });
+  });
+
   describe("setLastActivity", () => {
     it("when friche last activity is set, next step should be spaces", () => {
       const state = fricheInitialState;
