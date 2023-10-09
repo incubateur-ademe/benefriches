@@ -2,6 +2,7 @@ import { FricheCreationStep } from "../../application/createFriche.reducers";
 import FricheLastActivityForm from "./last-activity";
 import PermeableArtificializedSoilForm from "./permeable-artificialized-soil-composition";
 import PermeableArtificializedSoilDistributionForm from "./permeable-artificialized-soil-distribution";
+import SoilContaminationForm from "./soil-contamination";
 import FricheSpacesForm from "./spaces";
 import FricheSpacesSurfaceAreaForm from "./spaces-surface-area";
 import FricheCreationStepper from "./Stepper";
@@ -23,6 +24,8 @@ function FricheCreationWizard() {
         return <PermeableArtificializedSoilForm />;
       case FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION:
         return <PermeableArtificializedSoilDistributionForm />;
+      case FricheCreationStep.SOIL_CONTAMINATION:
+        return <SoilContaminationForm />;
     }
   };
 

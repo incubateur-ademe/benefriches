@@ -18,6 +18,8 @@ export enum FricheCreationStep {
   PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION = "PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION",
   NATURAL_AREAS = "NATURAL_AREAS",
   NATURAL_AREAS_SURFACE_AREA = "NATURAL_AREAS_SURFACE_AREA",
+  // pollution
+  SOIL_CONTAMINATION = "SOIL_CONTAMINATION",
   NAMING_STEP = "NAMING_STEP",
 }
 
@@ -32,6 +34,7 @@ export const fricheInitialState: FricheCreationState = {
   nextSteps: [
     FricheCreationStep.SPACES_STEP,
     FricheCreationStep.SPACES_SURFACE_AREA_STEP,
+    FricheCreationStep.SOIL_CONTAMINATION,
     FricheCreationStep.NAMING_STEP,
   ],
   fricheData: {
@@ -146,6 +149,12 @@ const fricheCreationSlice = createSlice({
     setNaturalAreas: (state, action: PayloadAction<NaturalAreaSpaceType[]>) => {
       state.fricheData.naturalAreas = action.payload;
     },
+    setContaminatedSoilSurface: (state, action: PayloadAction<number>) => {
+      state.fricheData.contaminatedSoilSurface = action.payload;
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+    },
   },
 });
 
@@ -156,6 +165,7 @@ export const {
   setPermeableArtificializedSoilComposition,
   setPermeableArtificializedSoilDistribution,
   setNaturalAreas,
+  setContaminatedSoilSurface,
 } = fricheCreationSlice.actions;
 
 export default fricheCreationSlice.reducer;

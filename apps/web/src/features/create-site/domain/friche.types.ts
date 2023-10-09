@@ -6,6 +6,7 @@ export type FricheSite = SiteFoncier & {
   lastActivity?: FricheLastActivity;
   spaces: FricheSpace[];
   naturalAreas?: NaturalAreaSpaceType[];
+  contaminatedSoilSurface: number;
 };
 
 export enum FricheLastActivity {
