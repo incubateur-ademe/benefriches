@@ -2,7 +2,6 @@ import reducer, {
   FricheCreationStep,
   fricheInitialState,
   setLastActivity,
-  setNaturalAreas,
   setPermeableArtificializedSoilComposition,
   setPermeableArtificializedSoilDistribution,
   setSpacesTypes,
@@ -13,7 +12,6 @@ import {
   FricheSpaceType,
   PermeableArtificializedSoil,
 } from "@/features/create-site/domain/friche.types";
-import { NaturalAreaSpaceType } from "@/features/create-site/domain/naturalArea.types";
 
 describe("Friche creation flow", () => {
   describe("setLastActivity", () => {
@@ -242,41 +240,6 @@ describe("Friche creation flow", () => {
                 { type: PermeableArtificializedSoil.MINERAL, surface: 1500 },
               ],
             },
-          ],
-        },
-        step: FricheCreationStep.NAMING_STEP,
-        nextSteps: [],
-      });
-    });
-  });
-
-  describe("setNaturalAreas", () => {
-    it("when friche has natural areas, next step should be the following one", () => {
-      const state = {
-        fricheData: {
-          ...fricheInitialState.fricheData,
-          spaces: [
-            {
-              type: FricheSpaceType.NATURAL_AREAS,
-            },
-          ],
-        },
-        step: FricheCreationStep.NATURAL_AREAS,
-        nextSteps: [FricheCreationStep.NAMING_STEP],
-      };
-      const action = setNaturalAreas([
-        NaturalAreaSpaceType.CULTIVATION,
-        NaturalAreaSpaceType.WATER,
-      ]);
-      const newState = reducer(state, action);
-
-      expect(newState).toEqual({
-        fricheData: {
-          ...state.fricheData,
-          spaces: [
-            NaturalAreaSpaceType.CULTIVATION,
-            NaturalAreaSpaceType.ORCHARD,
-            NaturalAreaSpaceType.WATER,
           ],
         },
         step: FricheCreationStep.NAMING_STEP,

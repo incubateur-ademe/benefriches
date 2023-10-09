@@ -148,6 +148,9 @@ const fricheCreationSlice = createSlice({
     },
     setNaturalAreas: (state, action: PayloadAction<NaturalAreaSpaceType[]>) => {
       state.fricheData.naturalAreas = action.payload;
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
     },
     setContaminatedSoilSurface: (state, action: PayloadAction<number>) => {
       state.fricheData.contaminatedSoilSurface = action.payload;
