@@ -14,6 +14,7 @@ export enum FricheCreationStep {
   SURFACE_AREA = "SURFACE_AREA",
   SOILS = "SOILS",
   NATURAL_OR_AGRICULTURAL_SOILS = "NATURAL_OR_AGRICULTURAL_SOILS",
+  SOILS_SURFACE_AREAS = "SOILS_SURFACE_AREAS",
   // pollution
   SOIL_CONTAMINATION = "SOIL_CONTAMINATION",
   NAMING_STEP = "NAMING_STEP",
@@ -30,6 +31,7 @@ export const fricheInitialState: FricheCreationState = {
   nextSteps: [
     FricheCreationStep.SURFACE_AREA,
     FricheCreationStep.SOILS,
+    FricheCreationStep.SOILS_SURFACE_AREAS,
     FricheCreationStep.SOIL_CONTAMINATION,
     FricheCreationStep.LAST_ACTIVITY_STEP,
     FricheCreationStep.NAMING_STEP,
@@ -85,6 +87,16 @@ const fricheCreationSlice = createSlice({
       state.step = nextStep;
       state.nextSteps = nextSteps;
     },
+    setSoilsSurfaceAreas: (
+      state,
+      action: PayloadAction<FricheSite["soilsSurfaceAreas"]>,
+    ) => {
+      state.fricheData.soilsSurfaceAreas = action.payload;
+
+      const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
+      state.step = nextStep;
+      state.nextSteps = nextSteps;
+    },
     setLastActivity: (
       state,
       action: PayloadAction<FricheSite["lastActivity"]>,
@@ -119,6 +131,7 @@ export const {
   setSurfaceArea,
   setSoils,
   addSoils,
+  setSoilsSurfaceAreas,
   setLastActivity,
   setNaturalAreas,
   setContaminatedSoilSurface,

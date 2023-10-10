@@ -4,6 +4,7 @@ import reducer, {
   fricheInitialState,
   setLastActivity,
   setSoils,
+  setSoilsSurfaceAreas,
   setSurfaceArea,
 } from "./createFriche.reducers";
 
@@ -138,6 +139,33 @@ describe("Friche creation flow", () => {
         fricheData: {
           ...state.fricheData,
           soils: [FricheSoilType.WATER, FricheSoilType.PRAIRIE_TREES],
+        },
+        step: FricheCreationStep.NAMING_STEP,
+        nextSteps: [],
+      });
+    });
+  });
+
+  describe("setSoilsSurfaceAreas", () => {
+    it("sets soils area and goes to next step when no agricultural/natural area", () => {
+      const state = {
+        fricheData: fricheInitialState.fricheData,
+        step: FricheCreationStep.SOILS_SURFACE_AREAS,
+        nextSteps: [FricheCreationStep.NAMING_STEP],
+      };
+      const action = setSoilsSurfaceAreas({
+        [FricheSoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED]: 10000,
+        [FricheSoilType.BUILDINGS]: 5000,
+      });
+      const newState = reducer(state, action);
+
+      expect(newState).toEqual({
+        fricheData: {
+          ...state.fricheData,
+          soilsSurfaceAreas: {
+            [FricheSoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED]: 10000,
+            [FricheSoilType.BUILDINGS]: 5000,
+          },
         },
         step: FricheCreationStep.NAMING_STEP,
         nextSteps: [],

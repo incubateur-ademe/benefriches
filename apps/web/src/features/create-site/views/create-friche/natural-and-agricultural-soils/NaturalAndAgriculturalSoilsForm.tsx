@@ -1,17 +1,9 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { getLabelForNaturalAndAgriculturalSoilsType } from "./naturalAndAgriculturalSoilTypeLabelMapping";
+import { getLabelForFricheSoilType } from "../soilTypeLabelMapping";
 
 import { FricheSoilType } from "@/features/create-site/domain/friche.types";
-
-export type FormValues = {
-  soils: FricheNaturalAndAgriculturalSoilTypeOption[];
-};
-
-type Props = {
-  onSubmit: (data: FormValues) => void;
-};
 
 const options = [
   FricheSoilType.FOREST_DECIDUOUS,
@@ -29,14 +21,21 @@ const options = [
   FricheSoilType.UNKNOWN_NATURAL_AREA,
 ] as const;
 
-export type FricheNaturalAndAgriculturalSoilTypeOption =
-  (typeof options)[number];
+type FricheNaturalAndAgriculturalSoilTypeOption = (typeof options)[number];
+
+export type FormValues = {
+  soils: FricheNaturalAndAgriculturalSoilTypeOption[];
+};
+
+type Props = {
+  onSubmit: (data: FormValues) => void;
+};
 
 function NaturalAndAgriculturalSoilsForm({ onSubmit }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
 
   const checkboxOptions = options.map((soilType) => ({
-    label: getLabelForNaturalAndAgriculturalSoilsType(soilType),
+    label: getLabelForFricheSoilType(soilType),
     nativeInputProps: {
       ...register("soils", {
         required:
