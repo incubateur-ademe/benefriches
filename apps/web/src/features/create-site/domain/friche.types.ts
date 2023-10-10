@@ -4,8 +4,9 @@ import { SiteFoncier, SiteFoncierType } from "./siteFoncier.types";
 export type FricheSite = SiteFoncier & {
   type: SiteFoncierType.FRICHE;
   surfaceArea: number;
+  soils: FricheSoilType[];
+  hasNaturalOrAgriculturalSoils: boolean;
   lastActivity?: FricheLastActivity;
-  spaces: FricheSpace[];
   naturalAreas?: NaturalAreaSpaceType[];
   contaminatedSoilSurface: number;
 };
@@ -18,32 +19,23 @@ export enum FricheLastActivity {
   UNKNOWN = "UNKNOWN",
 }
 
-export enum FricheSpaceType {
-  IMPERMEABLE_SOILS = "impermeable_soils",
-  BUILDINGS = "buildings",
-  PERMEABLE_ARTIFICIAL_SOILS = "permeable_artificial_soils",
-  NATURAL_AREAS = "natural_areas",
-  OTHER = "other",
-}
-
-type FricheSpace =
-  | PermeableArtificializedSoilSpace
-  | {
-      type:
-        | FricheSpaceType.IMPERMEABLE_SOILS
-        | FricheSpaceType.BUILDINGS
-        | FricheSpaceType.NATURAL_AREAS
-        | FricheSpaceType.OTHER;
-      surface?: number;
-    };
-
-export type PermeableArtificializedSoilSpace = {
-  type: FricheSpaceType.PERMEABLE_ARTIFICIAL_SOILS;
-  soilComposition?: { type: PermeableArtificializedSoil; surface?: number }[];
-};
-
-export enum PermeableArtificializedSoil {
-  MINERAL = "MINERAL",
-  TREE_FILLED = "TREE_FILLED",
-  GRASS_OR_BUSHES_FILLED = "GRASS_OR_BUSHES_FILLED",
+export enum FricheSoilType {
+  BUILDINGS = "BUILDINGS",
+  IMPERMEABLE_SOILS = "IMPERMEABLE_SOILS",
+  MINERAL_SOIL = "MINERAL_SOIL",
+  ARTIFICIAL_GRASS_OR_BUSHES_FILLED = "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+  ARTIFICIAL_TREE_FILLED = "ARTIFICIAL_TREE_FILLED",
+  FOREST_DECIDUOUS = "FOREST_DECIDUOUS",
+  FOREST_CONIFER = "FOREST_CONIFER",
+  FOREST_POPLAR = "FOREST_POPLAR",
+  FOREST_MIXED = "FOREST_MIXED",
+  PRAIRIE_GRASS = "PRAIRIE_GRASS",
+  PRAIRIE_BUSHES = "PRAIRIE_BUSHES",
+  PRAIRIE_TREES = "PRAIRIE_TREES",
+  ORCHARD = "ORCHARD", // verger
+  CULTIVATION = "CULTIVATION", // culture
+  VINEYARD = "VINEYARD", // vigne
+  WET_LAND = "WET_LAND", // zone humide
+  WATER = "WATER", // plan d'eau
+  UNKNOWN_NATURAL_AREA = "UNKNOWN_NATURAL_AREA",
 }
