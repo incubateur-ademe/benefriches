@@ -5,6 +5,7 @@ export type FricheSite = SiteFoncier & {
   type: SiteFoncierType.FRICHE;
   surfaceArea: number;
   soils: FricheSoilType[];
+  soilsSurfaceAreas: Partial<Record<FricheSoilType, number>>;
   hasNaturalOrAgriculturalSoils: boolean;
   lastActivity?: FricheLastActivity;
   naturalAreas?: NaturalAreaSpaceType[];

@@ -4,6 +4,7 @@ import NaturalAndAgriculturalSoilsForm from "./natural-and-agricultural-soils";
 import SoilContaminationForm from "./soil-contamination";
 import FricheSoilIntroduction from "./soil-introduction";
 import FricheSoilsForm from "./soils";
+import FricheSoilsSurfaceAreasForm from "./soils-surface-areas";
 import FricheCreationStepper from "./Stepper";
 import FricheSurfaceAreaForm from "./surface-area";
 
@@ -22,6 +23,8 @@ function FricheCreationWizard() {
         return <FricheSoilsForm />;
       case FricheCreationStep.NATURAL_OR_AGRICULTURAL_SOILS:
         return <NaturalAndAgriculturalSoilsForm />;
+      case FricheCreationStep.SOILS_SURFACE_AREAS:
+        return <FricheSoilsSurfaceAreasForm />;
       case FricheCreationStep.LAST_ACTIVITY_STEP:
         return <FricheLastActivityForm />;
       case FricheCreationStep.SOIL_CONTAMINATION:
