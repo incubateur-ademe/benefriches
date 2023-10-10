@@ -1,16 +1,16 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { getLabelForFricheSpaceType } from "../spaces/fricheSpaceTypeLabelMapping";
+import { getLabelForFricheSoilType } from "../soils/fricheSoilTypeLabelMapping";
 
-import { FricheSpaceType } from "@/features/create-site/domain/friche.types";
+import { FricheSoilType } from "@/features/create-site/domain/friche.types";
 
 type Props = {
-  spaces: FricheSpaceType[];
+  spaces: FricheSoilType[];
   onSubmit: (data: FormValues) => void;
 };
 
-type FormValues = Record<FricheSpaceType, number>;
+type FormValues = Record<FricheSoilType, number>;
 
 const sumSurfaces = (spaces: FormValues) => {
   return Object.values(spaces).reduce((sum, surface) => {
@@ -30,7 +30,7 @@ function FricheSpacesSurfaceAreaForm({ spaces, onSubmit }: Props) {
         {spaces.map((spaceType) => (
           <Input
             key={`input-${spaceType}`}
-            label={getLabelForFricheSpaceType(spaceType)}
+            label={getLabelForFricheSoilType(spaceType)}
             hintText="en m2"
             nativeInputProps={{
               type: "number",

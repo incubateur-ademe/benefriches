@@ -29,10 +29,10 @@ export enum NaturalAreaSpaceType {
 }
 
 export enum TreeType {
-  DECIDUOUS = "DECIDUOUS", // feuillus
-  RESINOUS = "RESINOUS",
-  POPLAR = "POPLAR", // peupleraie
-  MIXED = "MIXED",
+  DECIDUOUS = "FOREST_DECIDUOUS", // feuillus
+  RESINOUS = "FOREST_RESINOUS",
+  POPLAR = "FOREST_POPLAR", // peupleraie
+  MIXED = "FOREST_MIXED",
 }
 
 export type Forest = {

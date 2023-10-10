@@ -20,10 +20,8 @@ const getCurrentStep = (step: CreationStep | FricheCreationStep) => {
       return steps[1];
     case FricheCreationStep.SOIL_INTRODUCTION:
     case FricheCreationStep.SURFACE_AREA:
-    case FricheCreationStep.SPACES_STEP:
-    case FricheCreationStep.SPACES_SURFACE_AREA_STEP:
-    case FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_COMPOSITION:
-    case FricheCreationStep.PERMEABLE_ARTIFICIAL_SOILS_DISTRIBUTION:
+    case FricheCreationStep.SOILS:
+    case FricheCreationStep.NATURAL_OR_AGRICULTURAL_SOILS:
       return steps[2];
     case FricheCreationStep.NAMING_STEP:
     case FricheCreationStep.LAST_ACTIVITY_STEP:

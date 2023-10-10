@@ -20,7 +20,7 @@ function SurfaceAreaForm({ onSubmit }: Props) {
       <h2>Quelle est la superficie totale de la friche ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          label="Superficie polluée"
+          label="Superficie totale"
           hintText="en m2"
           state={error ? "error" : "default"}
           stateRelatedMessage={error ? error.message : undefined}
