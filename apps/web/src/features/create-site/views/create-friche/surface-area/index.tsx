@@ -1,6 +1,6 @@
 import FricheSurfaceAreaForm from "./FricheSurfaceAreaForm";
 
-import { setSurfaceArea } from "@/features/create-site/application/createFriche.reducers";
+import { setSurfaceArea } from "@/features/create-site/application/createFriche.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 

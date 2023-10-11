@@ -26,7 +26,7 @@ import {
   setPrairieVegetationSurfaces,
   setSpacesSurfaceArea,
   setSpacesTypes,
-} from "@/features/create-site/application/createNaturalArea.reducers";
+} from "@/features/create-site/application/createNaturalArea.reducer";
 import {
   Forest,
   NaturalArea,

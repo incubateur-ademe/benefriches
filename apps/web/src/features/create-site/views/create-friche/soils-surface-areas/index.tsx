@@ -2,7 +2,7 @@ import FricheSoilsSurfaceAreasForm, {
   type FormValues,
 } from "./FricheSoilsSurfaceAreasForm";
 
-import { setSoilsSurfaceAreas } from "@/features/create-site/application/createFriche.reducers";
+import { setSoilsSurfaceAreas } from "@/features/create-site/application/createFriche.reducer";
 import { FricheSite } from "@/features/create-site/domain/friche.types";
 import {
   useAppDispatch,

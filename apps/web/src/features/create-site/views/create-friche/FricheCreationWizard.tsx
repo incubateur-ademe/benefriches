@@ -1,4 +1,4 @@
-import { FricheCreationStep } from "../../application/createFriche.reducers";
+import { FricheCreationStep } from "../../application/createFriche.reducer";
 import FricheLastActivityForm from "./last-activity";
 import NaturalAndAgriculturalSoilsForm from "./natural-and-agricultural-soils";
 import SoilContaminationForm from "./soil-contamination";

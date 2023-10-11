@@ -3,7 +3,7 @@ import reducer, {
   setForestTrees,
   setSpacesSurfaceArea,
   setSpacesTypes,
-} from "./createNaturalArea.reducers";
+} from "./createNaturalArea.reducer";
 
 import {
   NaturalAreaSpaceType,

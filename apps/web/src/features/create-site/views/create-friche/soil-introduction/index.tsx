@@ -1,6 +1,6 @@
 import FricheSoilIntroduction from "./FricheSoilIntroduction";
 
-import { goToNextStep } from "@/features/create-site/application/createFriche.reducers";
+import { goToNextStep } from "@/features/create-site/application/createFriche.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function FricheSoilIntroductionContainer() {

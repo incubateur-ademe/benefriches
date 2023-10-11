@@ -3,7 +3,7 @@ import FricheSoilsForm, {
   NATURAL_OR_AGRICULTURAL_SOILS,
 } from "./FricheSoilsForm";
 
-import { setSoils } from "@/features/create-site/application/createFriche.reducers";
+import { setSoils } from "@/features/create-site/application/createFriche.reducer";
 import { FricheSoilType } from "@/features/create-site/domain/friche.types";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";

@@ -1,4 +1,4 @@
-import { setLastActivity } from "@/features/create-site/application/createFriche.reducers";
+import { setLastActivity } from "@/features/create-site/application/createFriche.reducer";
 import { FricheLastActivity } from "@/features/create-site/domain/friche.types";
 import { AppDispatch } from "@/store";
 

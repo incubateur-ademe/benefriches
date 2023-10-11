@@ -1,6 +1,6 @@
 import FricheSoilsSummary from "./FricheSoilsSummary";
 
-import { goToNextStep } from "@/features/create-site/application/createFriche.reducers";
+import { goToNextStep } from "@/features/create-site/application/createFriche.reducer";
 import { FricheSite } from "@/features/create-site/domain/friche.types";
 import {
   useAppDispatch,

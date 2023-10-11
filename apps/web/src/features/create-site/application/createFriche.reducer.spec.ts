@@ -6,7 +6,7 @@ import reducer, {
   setSoils,
   setSoilsSurfaceAreas,
   setSurfaceArea,
-} from "./createFriche.reducers";
+} from "./createFriche.reducer";
 
 import {
   FricheLastActivity,

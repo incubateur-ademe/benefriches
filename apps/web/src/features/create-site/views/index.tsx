@@ -9,7 +9,7 @@ import {
   CreationStep,
   setAddress,
   setSiteType,
-} from "@/features/create-site/application/createSite.reducers";
+} from "@/features/create-site/application/createSite.reducer";
 import {
   useAppDispatch,
   useAppSelector,

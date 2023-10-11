@@ -1,7 +1,7 @@
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
-import { FricheCreationStep } from "../../application/createFriche.reducers";
+import { FricheCreationStep } from "../../application/createFriche.reducer";
 
-import { CreationStep } from "@/features/create-site/application/createSite.reducers";
+import { CreationStep } from "@/features/create-site/application/createSite.reducer";
 
 const steps = [
   { stepNumber: 1, title: "Type de site" },

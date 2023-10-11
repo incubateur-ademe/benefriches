@@ -1,4 +1,4 @@
-import { setYearlyOperationIncome } from "@/features/create-site/application/createNaturalArea.reducers";
+import { setYearlyOperationIncome } from "@/features/create-site/application/createNaturalArea.reducer";
 import { AppDispatch } from "@/store";
 
 type FormData = {

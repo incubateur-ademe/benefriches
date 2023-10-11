@@ -1,6 +1,6 @@
 import SoilContaminationForm from "./SoilContaminationForm";
 
-import { setContaminatedSoilSurface } from "@/features/create-site/application/createFriche.reducers";
+import { setContaminatedSoilSurface } from "@/features/create-site/application/createFriche.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 

@@ -1,7 +1,7 @@
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
-import { NaturalAreaCreationStep } from "../../application/createNaturalArea.reducers";
+import { NaturalAreaCreationStep } from "../../application/createNaturalArea.reducer";
 
-import { CreationStep } from "@/features/create-site/application/createSite.reducers";
+import { CreationStep } from "@/features/create-site/application/createSite.reducer";
 
 const steps = [
   { stepNumber: 1, title: "Type de site" },

@@ -1,4 +1,4 @@
-import { setOperationData } from "@/features/create-site/application/createNaturalArea.reducers";
+import { setOperationData } from "@/features/create-site/application/createNaturalArea.reducer";
 import {
   AgriculturalCompany,
   NaturalArea,

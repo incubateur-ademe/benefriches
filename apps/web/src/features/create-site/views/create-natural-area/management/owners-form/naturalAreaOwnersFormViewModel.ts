@@ -1,4 +1,4 @@
-import { setOwners } from "@/features/create-site/application/createNaturalArea.reducers";
+import { setOwners } from "@/features/create-site/application/createNaturalArea.reducer";
 import {
   Owner,
   OwnerType,

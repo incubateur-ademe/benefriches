@@ -1,4 +1,4 @@
-import { setYearlyOperationExpenses } from "@/features/create-site/application/createNaturalArea.reducers";
+import { setYearlyOperationExpenses } from "@/features/create-site/application/createNaturalArea.reducer";
 import {
   NaturalArea,
   OperationStatus,

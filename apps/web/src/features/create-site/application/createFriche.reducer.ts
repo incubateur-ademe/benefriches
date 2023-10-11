@@ -16,6 +16,7 @@ export enum FricheCreationStep {
   NATURAL_OR_AGRICULTURAL_SOILS = "NATURAL_OR_AGRICULTURAL_SOILS",
   SOILS_SURFACE_AREAS = "SOILS_SURFACE_AREAS",
   SOILS_SUMMARY = "SOILS_SUMMARY",
+  SOILS_CARBON_STORAGE = "SOILS_CARBON_STORAGE",
   // pollution
   SOIL_CONTAMINATION = "SOIL_CONTAMINATION",
   NAMING_STEP = "NAMING_STEP",
@@ -34,6 +35,7 @@ export const fricheInitialState: FricheCreationState = {
     FricheCreationStep.SOILS,
     FricheCreationStep.SOILS_SURFACE_AREAS,
     FricheCreationStep.SOILS_SUMMARY,
+    FricheCreationStep.SOILS_CARBON_STORAGE,
     FricheCreationStep.SOIL_CONTAMINATION,
     FricheCreationStep.LAST_ACTIVITY_STEP,
     FricheCreationStep.NAMING_STEP,
