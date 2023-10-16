@@ -20,6 +20,7 @@ export enum FricheCreationStep {
   // pollution
   SOIL_CONTAMINATION = "SOIL_CONTAMINATION",
   NAMING_STEP = "NAMING_STEP",
+  CREATION_CONFIRMATION = "CREATION_CONFIRMATION",
 }
 
 type FricheCreationState = {
@@ -35,10 +36,10 @@ export const fricheInitialState: FricheCreationState = {
     FricheCreationStep.SOILS,
     FricheCreationStep.SOILS_SURFACE_AREAS,
     FricheCreationStep.SOILS_SUMMARY,
-    FricheCreationStep.SOILS_CARBON_STORAGE,
     FricheCreationStep.SOIL_CONTAMINATION,
     FricheCreationStep.LAST_ACTIVITY_STEP,
     FricheCreationStep.NAMING_STEP,
+    FricheCreationStep.CREATION_CONFIRMATION,
   ],
   fricheData: {
     type: SiteFoncierType.FRICHE,
@@ -123,6 +124,15 @@ const fricheCreationSlice = createSlice({
       state.step = nextStep;
       state.nextSteps = nextSteps;
     },
+    setNameAndDescription: (
+      state,
+      action: PayloadAction<{ name: string; description?: string }>,
+    ) => {
+      state.fricheData.name = action.payload.name;
+      if (action.payload.description)
+        state.fricheData.description = action.payload.description;
+      state.step = FricheCreationStep.CREATION_CONFIRMATION;
+    },
     goToNextStep: (state) => {
       const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
       state.step = nextStep;
@@ -139,6 +149,7 @@ export const {
   setLastActivity,
   setNaturalAreas,
   setContaminatedSoilSurface,
+  setNameAndDescription,
   goToNextStep,
 } = fricheCreationSlice.actions;
 

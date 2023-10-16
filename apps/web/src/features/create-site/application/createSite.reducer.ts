@@ -46,8 +46,6 @@ export const siteCreationSlice = createSlice({
   },
 });
 
-export const fricheCreationSlice = createSlice;
-
 export const { setSiteType, setAddress } = siteCreationSlice.actions;
 
 export default siteCreationSlice.reducer;

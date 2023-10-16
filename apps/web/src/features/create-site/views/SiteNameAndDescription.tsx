@@ -2,17 +2,16 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
-type FormValues = {
+export type FormValues = {
   name: string;
   description?: string;
 };
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  onBack: () => void;
 };
 
-function SiteNameAndDescriptionForm({ onSubmit, onBack }: Props) {
+function SiteNameAndDescriptionForm({ onSubmit }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
 
   const nameError = formState.errors.name;
@@ -39,12 +38,6 @@ function SiteNameAndDescriptionForm({ onSubmit, onBack }: Props) {
           buttonsEquisized
           inlineLayoutWhen="always"
           buttons={[
-            {
-              children: "Retour",
-              onClick: onBack,
-              priority: "secondary",
-              nativeButtonProps: { type: "button" },
-            },
             {
               children: "Suivant",
               nativeButtonProps: { type: "submit" },

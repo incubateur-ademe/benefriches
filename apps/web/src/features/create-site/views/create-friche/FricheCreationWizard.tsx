@@ -1,4 +1,5 @@
 import { FricheCreationStep } from "../../application/createFriche.reducer";
+import FricheNameAndDescriptionForm from "./denomination";
 import FricheLastActivityForm from "./last-activity";
 import NaturalAndAgriculturalSoilsForm from "./natural-and-agricultural-soils";
 import SoilContaminationForm from "./soil-contamination";
@@ -32,6 +33,8 @@ function FricheCreationWizard() {
         return <FricheLastActivityForm />;
       case FricheCreationStep.SOIL_CONTAMINATION:
         return <SoilContaminationForm />;
+      case FricheCreationStep.NAMING_STEP:
+        return <FricheNameAndDescriptionForm />;
     }
   };
 

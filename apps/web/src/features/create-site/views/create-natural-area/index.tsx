@@ -1,6 +1,6 @@
 /* eslint-disable no-case-declarations */
 import SiteCreationConfirmation from "../Confirmation";
-import SiteNameAndDescriptionForm from "../Denomination";
+import SiteNameAndDescriptionForm from "../SiteNameAndDescription";
 import ForestTreesDistribution from "./forest/ForestTreesDistribution";
 import ForestTreesForm from "./forest/ForestTreesForm";
 import NaturalAreaFullTimeJobsInvolvedForm from "./management/full-time-jobs-form";
@@ -135,7 +135,6 @@ function NaturalAreaCreationWizard() {
         return (
           <SiteNameAndDescriptionForm
             onSubmit={(data) => dispatch(setNameAndDescription(data))}
-            onBack={() => {}}
           />
         );
       case NaturalAreaCreationStep.CONFIRMATION_STEP:
