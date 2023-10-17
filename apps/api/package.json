@@ -21,7 +21,9 @@
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
     "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
     "knex:new-migration": "knex migrate:make -x ts --knexfile=src/shared-kernel/adapters/sql-knex/knexfile.ts",
-    "knex:migrate-latest": "knex migrate:latest --knexfile=src/shared-kernel/adapters/sql-knex/knexfile.ts"
+    "knex:migrate-latest": "knex migrate:latest --knexfile=src/shared-kernel/adapters/sql-knex/knexfile.ts",
+    "knex:seed-make": "knex seed:make --knexfile=src/shared-kernel/adapters/sql-knex/knexfile.ts",
+    "knex:seed-run": "knex seed:run --knexfile=src/shared-kernel/adapters/sql-knex/knexfile.ts"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.1.18",
