@@ -5,7 +5,7 @@ export enum SiteFoncierType {
 
 export type SiteFoncier = {
   name: string;
-  description: string;
+  description?: string;
   type: SiteFoncierType;
   address: string;
 };
