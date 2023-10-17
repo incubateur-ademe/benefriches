@@ -16,6 +16,8 @@ export type Address = {
 };
 
 export type SiteFoncier = {
+  name: string;
+  description?: string;
   type: SiteFoncierType;
   address: Address;
 };
