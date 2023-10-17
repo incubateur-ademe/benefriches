@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import BaseAdresseNationaleAutocomplete from "../../../components/pages/SiteFoncier/Create/BaseAddressNationale/AutocompleteField";
-import { SiteFoncierType } from "../domain/siteFoncier.types";
+import { Address, SiteFoncierType } from "../../domain/siteFoncier.types";
+import SearchAddressAutocomplete from "./SearchAddressAutocompleteContainer";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -10,39 +10,52 @@ type Props = {
 };
 
 type FormValues = {
-  location: { address: string };
+  selectedAddress?: Address;
+  searchText: string;
 };
 
 function SiteAddressForm({ onSubmit, onBack, siteType }: Props) {
-  const { register, handleSubmit, formState, control } = useForm<FormValues>();
+  const { handleSubmit, formState, control, watch, setValue, register } =
+    useForm<FormValues>();
 
-  const error = formState.errors.location;
-
-  const { name } = register("location", { required: "Ce champ est requis" });
+  const error = formState.errors.selectedAddress;
 
   const title =
     siteType === SiteFoncierType.FRICHE
       ? "Où se situe cette friche ?"
       : "Où se situe cet espace naturel ?";
 
+  register("selectedAddress", {
+    required: "L'adresse est nécessaire pour les étapes suivantes",
+  });
+
   return (
     <>
       <h2>{title}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <pre>{JSON.stringify(watch(), null, 2)}</pre>
         <Controller
-          render={({ field: { ref, ...fieldRest } }) => (
-            <BaseAdresseNationaleAutocomplete
-              {...fieldRest}
-              inputRef={ref}
-              inputProps={{
+          control={control}
+          name="searchText"
+          render={({ field }) => (
+            <SearchAddressAutocomplete
+              searchInputValue={field.value}
+              onSearchInputChange={(searchText: string) => {
+                field.onChange(searchText);
+                setValue("selectedAddress", undefined);
+              }}
+              selectedAddress={watch("selectedAddress")}
+              onSelect={(v) => {
+                setValue("selectedAddress", v);
+                setValue("searchText", v.value);
+              }}
+              searchInputProps={{
                 label: "Adresse du site",
                 state: error ? "error" : "default",
                 stateRelatedMessage: error ? error.message : undefined,
               }}
             />
           )}
-          control={control}
-          name={name}
         />
         <ButtonsGroup
           buttonsEquisized
