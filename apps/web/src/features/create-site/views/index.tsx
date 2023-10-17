@@ -1,7 +1,7 @@
 import { SiteFoncierType } from "../domain/siteFoncier.types";
+import SiteAddressForm from "./address/AddressForm";
 import FricheCreationWizard from "./create-friche/FricheCreationWizard";
 import FricheCreationStepper from "./create-friche/Stepper";
-import SiteAddressForm from "./Address";
 import NaturalAreaCreationWizard from "./create-natural-area";
 import SiteTypeForm from "./Type";
 
@@ -33,7 +33,7 @@ function CreateSiteFoncierPage() {
         return (
           <SiteAddressForm
             siteType={siteCreationState.siteData.type as SiteFoncierType}
-            onSubmit={(data) => dispatch(setAddress(data.location.address))}
+            onSubmit={(data) => dispatch(setAddress(data.selectedAddress!))}
             onBack={() => {}}
           />
         );

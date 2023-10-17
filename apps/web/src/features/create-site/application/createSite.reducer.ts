@@ -30,7 +30,7 @@ export const siteCreationSlice = createSlice({
       state.siteData.type = action.payload;
       state.step = CreationStep.ADDRESS_STEP;
     },
-    setAddress: (state, action: PayloadAction<string>) => {
+    setAddress: (state, action: PayloadAction<SiteFoncier["address"]>) => {
       state.siteData.address = action.payload;
       switch (state.siteData.type) {
         case SiteFoncierType.FRICHE:
