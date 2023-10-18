@@ -32,7 +32,9 @@ const setup = async () => {
     console.log("Starting Postgres Docker testcontainer");
     await spawnPostgresDb();
     // Run migrations
-    await sqlConnection.migrate.latest();
+    await sqlConnection.migrate.latest().then(function () {
+      return sqlConnection.seed.run();
+    });
   } catch (error) {
     await stopPostresDb();
   } finally {

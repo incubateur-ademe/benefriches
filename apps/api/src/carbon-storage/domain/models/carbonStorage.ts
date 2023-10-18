@@ -1,23 +1,25 @@
 // ZPC = zone pédo climatique
 // https://docs.datagir.ademe.fr/documentation-aldo/stocks/methode-generale
 
-export enum SoilType {
-  // artificiels
+export enum SoilCategoryType {
+  // artificial
   BUILDINGS = "buildings",
   IMPERMEABLE_SOILS = "impermeable_soils",
   MINERAL_SOIL = "mineral_soil",
   ARTIFICIAL_GRASS_OR_BUSHES_FILLED = "artificial_grass_or_bushes_filled",
   ARTIFICIAL_TREE_FILLED = "artificial_tree_filled",
   // forest
+  FOREST = "forest",
   FOREST_DECIDUOUS = "forest_deciduous",
   FOREST_CONIFER = "forest_conifer",
   FOREST_POPLAR = "forest_poplar",
   FOREST_MIXED = "forest_mixed",
   // prairie
+  PRAIRIE = "prairie",
   PRAIRIE_GRASS = "prairie_grass",
   PRAIRIE_BUSHES = "prairie_bushes",
   PRAIRIE_TREES = "prairie_trees",
-  // autre
+  // other
   ORCHARD = "orchard", // verger
   CULTIVATION = "cultivation", // culture
   VINEYARD = "vineyard", // vigne
@@ -25,23 +27,29 @@ export enum SoilType {
   WATER = "water", // plan d'eau
 }
 
+export enum ReservoirType {
+  SOIL = "soil",
+  NON_FOREST_BIOMASS = "non_forest_biomass",
+  DEAD_FOREST_BIOMASS = "dead_forest_biomass",
+  LIVE_FOREST_BIOMASS = "live_forest_biomass",
+  LITTER = "litter",
+}
+
+export enum LocalisationCategoryType {
+  ZPC = "zpc",
+  REGION = "region",
+  SER_GROUP = "groupeser",
+  GRECO = "greco",
+  RAD13 = "rad13",
+  POPULATION_BASE = "bassin_populicole",
+  COUNTRY = "pays",
+}
+
 type CarbonStorageProps = {
-  reservoir:
-    | "dead_forest_biomass"
-    | "live_forest_biomass"
-    | "soil"
-    | "non_forest_biomass"
-    | "litter";
-  soil_category: SoilType;
+  reservoir: ReservoirType;
+  soil_category: SoilCategoryType;
   stock_tC_by_ha: number;
-  localisation_category:
-    | "zpc"
-    | "region"
-    | "groupeser"
-    | "greco"
-    | "rad13"
-    | "bassin_populicole"
-    | "pays";
+  localisation_category: LocalisationCategoryType;
   localisation_code: string;
 };
 
