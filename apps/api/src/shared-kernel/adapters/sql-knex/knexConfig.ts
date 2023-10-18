@@ -30,6 +30,9 @@ const config: Knex.Config = {
     tableName: "knex_migrations",
     directory: __dirname + "/migrations/",
   },
+  seeds: {
+    directory: __dirname + "/seeds/",
+  },
 };
 
 export default config;
