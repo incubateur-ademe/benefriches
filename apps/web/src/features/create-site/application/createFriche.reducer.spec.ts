@@ -2,14 +2,14 @@ import reducer, {
   addSoils,
   FricheCreationStep,
   fricheInitialState,
-  setLastActivity,
+  setActivity,
   setSoils,
   setSoilsSurfaceAreas,
   setSurfaceArea,
 } from "./createFriche.reducer";
 
 import {
-  FricheLastActivity,
+  FricheActivity,
   FricheSoilType,
 } from "@/features/create-site/domain/friche.types";
 
@@ -173,20 +173,20 @@ describe("Friche creation flow", () => {
     });
   });
 
-  describe("setLastActivity", () => {
-    it("when friche last activity is set, next step should be spaces", () => {
+  describe("setActivity", () => {
+    it("when friche activity is set, go to next step", () => {
       const state = {
         fricheData: fricheInitialState.fricheData,
         step: FricheCreationStep.LAST_ACTIVITY_STEP,
         nextSteps: [FricheCreationStep.NAMING_STEP],
       };
-      const action = setLastActivity(FricheLastActivity.INDUSTRY);
+      const action = setActivity(FricheActivity.INDUSTRY);
       const newState = reducer(state, action);
 
       expect(newState).toEqual({
         fricheData: {
           ...state.fricheData,
-          lastActivity: FricheLastActivity.INDUSTRY,
+          activity: FricheActivity.INDUSTRY,
         },
         step: FricheCreationStep.NAMING_STEP,
         nextSteps: state.nextSteps.slice(1),
