@@ -115,11 +115,8 @@ const fricheCreationSlice = createSlice({
       state.step = nextStep;
       state.nextSteps = nextSteps;
     },
-    setLastActivity: (
-      state,
-      action: PayloadAction<FricheSite["lastActivity"]>,
-    ) => {
-      state.fricheData.lastActivity = action.payload;
+    setActivity: (state, action: PayloadAction<FricheSite["activity"]>) => {
+      state.fricheData.activity = action.payload;
 
       const { nextStep, nextSteps } = getNextSteps(state.nextSteps);
       state.step = nextStep;
@@ -204,7 +201,7 @@ export const {
   setSoils,
   addSoils,
   setSoilsSurfaceAreas,
-  setLastActivity,
+  setActivity,
   setNaturalAreas,
   setContaminatedSoilSurface,
   setOwner,

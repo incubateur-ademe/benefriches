@@ -2,53 +2,69 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import RadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
 
-import { FricheLastActivity } from "@/features/create-site/domain/friche.types";
+import { FricheActivity } from "@/features/create-site/domain/friche.types";
 
 const FRICHE_ACTIVITY_OPTIONS = [
   {
-    value: FricheLastActivity.INDUSTRY,
-    label: "Industrie, transport, zone commerciale ou militaire",
+    value: FricheActivity.INDUSTRY,
+    label: "Friche industrielle (usine, mine, carrière...)",
   },
   {
-    value: FricheLastActivity.MINE_OR_QUARRY,
-    label: "Mine ou Carrière",
+    value: FricheActivity.MILITARY,
+    label: "Friche militaire",
   },
   {
-    value: FricheLastActivity.AGRICULTURE,
-    label: "Agriculture",
+    value: FricheActivity.RAILWAY,
+    label: "Friche ferroviaire (voies ferrées, gare...)",
   },
   {
-    value: FricheLastActivity.HOUSING_OR_BUSINESS,
-    label: "Habitat, petit commerce, équipement public",
+    value: FricheActivity.PORT,
+    label: "Friche portuaire (ports, chantiers navals...)",
   },
   {
-    value: FricheLastActivity.UNKNOWN,
-    label: "Autre / NSP",
+    value: FricheActivity.AGRICULTURE,
+    label: "Friche agricole",
+  },
+  {
+    value: FricheActivity.HOSPITAL,
+    label: "Friche hospitalière",
+  },
+  {
+    value: FricheActivity.ADMINISTRATION,
+    label: "Friche administrative (école, mairie...)",
+  },
+  {
+    value: FricheActivity.BUSINESS,
+    label: "Friche commerciale (ZAC, hôtel, restaurant...)",
+  },
+  {
+    value: FricheActivity.HOUSING,
+    label: "Friche d’habitat (immeuble, quartier résidentiel...)",
   },
 ] as const;
 
-type FormValues = {
-  lastActivity: FricheLastActivity;
+export type FormValues = {
+  activity: FricheActivity;
 };
 
 type Props = {
   onSubmit: (formData: FormValues) => void;
 };
 
-function FricheLastActivityForm({ onSubmit }: Props) {
+function FricheActivityForm({ onSubmit }: Props) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
 
-  const error = errors.lastActivity;
+  const error = errors.activity;
 
   const options = FRICHE_ACTIVITY_OPTIONS.map((activity) => ({
     ...activity,
     nativeInputProps: {
       value: activity.value,
-      ...register("lastActivity", {
+      ...register("activity", {
         required:
           "Si vous ne savez pas qualifier l’activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.",
       }),
@@ -79,4 +95,4 @@ function FricheLastActivityForm({ onSubmit }: Props) {
   );
 }
 
-export default FricheLastActivityForm;
+export default FricheActivityForm;

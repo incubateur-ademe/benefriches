@@ -4,8 +4,8 @@ import FricheManagementIntroduction from "./site-management/introduction";
 import FricheOwnerForm from "./site-management/owner";
 import FricheRecentAccidentsForm from "./site-management/recent-accidents";
 import FricheTenantForm from "./site-management/tenant";
+import FricheActivityForm from "./activity";
 import FricheNameAndDescriptionForm from "./denomination";
-import FricheLastActivityForm from "./last-activity";
 import NaturalAndAgriculturalSoilsForm from "./natural-and-agricultural-soils";
 import SoilContaminationForm from "./soil-contamination";
 import FricheSoilIntroduction from "./soil-introduction";
@@ -35,7 +35,7 @@ function FricheCreationWizard() {
       case FricheCreationStep.SOILS_SUMMARY:
         return <FricheSoilSummary />;
       case FricheCreationStep.LAST_ACTIVITY_STEP:
-        return <FricheLastActivityForm />;
+        return <FricheActivityForm />;
       case FricheCreationStep.SOIL_CONTAMINATION:
         return <SoilContaminationForm />;
       case FricheCreationStep.MANAGEMENT_INTRODUCTION:

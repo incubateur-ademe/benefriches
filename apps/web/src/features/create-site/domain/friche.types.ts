@@ -7,7 +7,7 @@ export type FricheSite = SiteFoncier & {
   soils: FricheSoilType[];
   soilsSurfaceAreas: Partial<Record<FricheSoilType, number>>;
   hasNaturalOrAgriculturalSoils: boolean;
-  lastActivity?: FricheLastActivity;
+  activity?: FricheActivity;
   naturalAreas?: NaturalAreaSpaceType[];
   contaminatedSoilSurface: number;
   fullTimeJobsInvolved: number;
@@ -19,12 +19,16 @@ export type FricheSite = SiteFoncier & {
   deaths?: number;
 };
 
-export enum FricheLastActivity {
+export enum FricheActivity {
   AGRICULTURE = "AGRICULTURE",
   INDUSTRY = "INDUSTRY",
-  MINE_OR_QUARRY = "MINE_OR_QUARRY",
-  HOUSING_OR_BUSINESS = "HOUSING_OR_BUSINESS",
-  UNKNOWN = "UNKNOWN",
+  MILITARY = "MILITARY",
+  RAILWAY = "RAILWAY",
+  PORT = "PORT",
+  HOSPITAL = "HOSPITAL",
+  ADMINISTRATION = "ADMINISTRATION",
+  BUSINESS = "BUSINESS",
+  HOUSING = "HOUSING",
 }
 
 export enum OwnerType {
