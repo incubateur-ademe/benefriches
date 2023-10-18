@@ -11,7 +11,7 @@ import { City } from "./../../../../carbon-storage/domain/models/city";
 const dataPath = path.resolve(__dirname, "./../../../../../data/cities.csv");
 
 const HEADER =
-  "insee;name;department;region,epci;zpc;code_greco;code_groupeser;code_ser;code_rad13;code_bassin_populicole";
+  "insee;name;department;region,epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";
 
 const readCsvData = async () => {
   return new Promise((resolve, reject) => {
@@ -33,7 +33,6 @@ const readCsvData = async () => {
         code_greco,
         code_groupeser,
         code_ser,
-        code_rad13,
         code_bassin_populicole,
       ] = line.split(";");
       data.push(
@@ -44,7 +43,6 @@ const readCsvData = async () => {
           region,
           zpc,
           epci,
-          code_rad13,
           code_greco: code_greco.split(","),
           code_ser: code_ser.split(","),
           code_groupeser: code_groupeser.split(","),

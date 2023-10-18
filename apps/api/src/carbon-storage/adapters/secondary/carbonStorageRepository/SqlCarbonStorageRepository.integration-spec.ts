@@ -1,5 +1,6 @@
 import knex, { Knex } from "knex";
 import {
+  LocalisationCategoryType,
   ReservoirType,
   SoilCategoryType,
 } from "src/carbon-storage/domain/models/carbonStorage";
@@ -194,19 +195,19 @@ describe("SqlCarbonStorageRepository integration", () => {
 
     // RESERVOIR FOREST BIOMASS
     const carbonStorageInDeadForestBiomassForForest = result.filter(
-      ({ reservoir, soil_category, localisation_code }) =>
+      ({ reservoir, soil_category, localisation_category }) =>
         reservoir === ReservoirType.DEAD_FOREST_BIOMASS &&
         soil_category === SoilCategoryType.FOREST_CONIFER &&
-        localisation_code === "France",
+        localisation_category === LocalisationCategoryType.REGION,
     );
 
     expect(carbonStorageInDeadForestBiomassForForest.length).toEqual(1);
 
     const carbonStorageInLiveForestBiomassForForest = result.filter(
-      ({ reservoir, soil_category, localisation_code }) =>
+      ({ reservoir, soil_category, localisation_category }) =>
         reservoir === ReservoirType.LIVE_FOREST_BIOMASS &&
         soil_category === SoilCategoryType.FOREST_CONIFER &&
-        localisation_code === "France",
+        localisation_category === LocalisationCategoryType.REGION,
     );
 
     expect(carbonStorageInLiveForestBiomassForForest.length).toEqual(1);

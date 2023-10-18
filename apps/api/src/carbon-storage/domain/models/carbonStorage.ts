@@ -38,8 +38,7 @@ export enum LocalisationCategoryType {
   REGION = "region",
   SER_GROUP = "groupeser",
   GRECO = "greco",
-  RAD13 = "rad13",
-  POPULATION_BASE = "bassin_populicole",
+  POPLAR_POOL = "bassin_populicole",
   COUNTRY = "pays",
 }
 
