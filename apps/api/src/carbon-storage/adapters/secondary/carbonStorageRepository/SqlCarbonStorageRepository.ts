@@ -26,8 +26,8 @@ const filterCarbonStorageByLocalisationPriority = (
   const localisationPriorityOrder = [
     LocalisationCategoryType.SER_GROUP,
     LocalisationCategoryType.GRECO,
-    LocalisationCategoryType.RAD13,
-    LocalisationCategoryType.POPULATION_BASE,
+    LocalisationCategoryType.REGION,
+    LocalisationCategoryType.POPLAR_POOL,
     LocalisationCategoryType.COUNTRY,
   ];
 
@@ -115,7 +115,7 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
           localisation_code: city.zpc,
           localisation_category: LocalisationCategoryType.ZPC,
         })
-        // Search in reservoir "non_forest_biomass"
+        // Search in reservoir "non_forest_biomass" and "forest_biomass"
         .orWhere({
           localisation_code: city.region,
           localisation_category: LocalisationCategoryType.REGION,
@@ -135,12 +135,8 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
             .whereIn("localisation_code", city.code_greco);
         });
         void localisationClause.orWhere({
-          localisation_code: city.code_rad13,
-          localisation_category: LocalisationCategoryType.RAD13,
-        });
-        void localisationClause.orWhere({
           localisation_code: city.code_bassin_populicole,
-          localisation_category: LocalisationCategoryType.POPULATION_BASE,
+          localisation_category: LocalisationCategoryType.POPLAR_POOL,
         });
         void localisationClause.orWhere({
           localisation_code: "France",

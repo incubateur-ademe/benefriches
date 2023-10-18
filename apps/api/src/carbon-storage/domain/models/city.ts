@@ -9,7 +9,6 @@ type CityProps = {
   code_greco: string[];
   code_groupeser: string[];
   code_ser: string[];
-  code_rad13: string | undefined;
   code_bassin_populicole: string | undefined;
 };
 
@@ -21,7 +20,6 @@ export class City {
     readonly region: string,
     readonly zpc: string,
     readonly epci: string,
-    readonly code_rad13: string | undefined,
     readonly code_greco: string[],
     readonly code_ser: string[],
     readonly code_groupeser: string[],
@@ -38,7 +36,6 @@ export class City {
     code_greco,
     code_ser,
     code_groupeser,
-    code_rad13,
     code_bassin_populicole,
   }: CityProps): City {
     return new City(
@@ -48,7 +45,6 @@ export class City {
       region,
       zpc,
       epci,
-      code_rad13,
       code_greco,
       code_ser,
       code_groupeser,

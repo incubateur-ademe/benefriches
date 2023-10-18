@@ -12,7 +12,6 @@ export async function up(knex: Knex): Promise<void> {
     t.specificType("code_ser", "text ARRAY");
     t.specificType("code_groupeser", "text ARRAY");
     t.specificType("code_greco", "text ARRAY");
-    t.string("code_rad13");
     t.string("code_bassin_populicole");
   });
 }
