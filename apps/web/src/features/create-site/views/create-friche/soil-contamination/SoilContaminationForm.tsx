@@ -23,7 +23,8 @@ function SoilContaminationForm({ onSubmit }: Props) {
     shouldUnregister: true,
   });
 
-  const error = formState.errors.hasContaminatedSoils;
+  const hasContaminatedSoilsError = formState.errors.hasContaminatedSoils;
+  const contaminatedSurfaceError = formState.errors.contaminatedSurface;
 
   const _options = [
     {
@@ -48,19 +49,29 @@ function SoilContaminationForm({ onSubmit }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           options={_options}
-          state={error ? "error" : "default"}
-          stateRelatedMessage={error ? error.message : undefined}
+          state={hasContaminatedSoilsError ? "error" : "default"}
+          stateRelatedMessage={
+            hasContaminatedSoilsError
+              ? hasContaminatedSoilsError.message
+              : undefined
+          }
         />
         {watch("hasContaminatedSoils") === "yes" && (
           <Input
             label="Superficie polluée"
             hintText="en m2"
+            state={contaminatedSurfaceError ? "error" : "default"}
+            stateRelatedMessage={
+              contaminatedSurfaceError
+                ? contaminatedSurfaceError.message
+                : undefined
+            }
             nativeInputProps={{
               type: "number",
               ...register("contaminatedSurface", {
                 min: 0,
                 valueAsNumber: true,
-                required: true,
+                required: requiredMessage,
               }),
             }}
           />
