@@ -33,7 +33,7 @@ describe("SqlCarbonStorageRepository integration", () => {
     const soilStorageValues = result.filter(
       ({ reservoir }) => reservoir === ReservoirType.SOIL,
     );
-    expect(soilStorageValues.length).toEqual(10);
+    expect(soilStorageValues.length).toEqual(15);
 
     const nonForestBiomassStorageValues = result.filter(
       ({ reservoir }) => reservoir === ReservoirType.NON_FOREST_BIOMASS,
@@ -58,9 +58,9 @@ describe("SqlCarbonStorageRepository integration", () => {
 
   test("Gets carbon storage entries for a city and specific soils for a simple case", async () => {
     const soilCategories = [
-      "artificial_tree_filled",
-      "forest_deciduous",
-    ] as SoilCategoryType[];
+      SoilCategoryType.ARTIFICIAL_TREE_FILLED,
+      SoilCategoryType.FOREST_DECIDUOUS,
+    ];
 
     const result = await sqlCarbonStorageRepository.getCarbonStorageForCity(
       "01027",
@@ -71,7 +71,7 @@ describe("SqlCarbonStorageRepository integration", () => {
     const carbonStorageInSoilForForest = result.filter(
       ({ reservoir, soil_category }) =>
         reservoir === ReservoirType.SOIL &&
-        soil_category === SoilCategoryType.FOREST,
+        soil_category === SoilCategoryType.FOREST_DECIDUOUS,
     );
 
     expect(carbonStorageInSoilForForest.length).toEqual(1);
@@ -127,12 +127,12 @@ describe("SqlCarbonStorageRepository integration", () => {
 
   test("Gets carbon storage entries for a city and specific soils for a city with no information on forest", async () => {
     const soilCategories = [
-      "artificial_tree_filled",
-      "forest_conifer",
-      "prairie_bushes",
-      "water",
-      "wet_land",
-    ] as SoilCategoryType[];
+      SoilCategoryType.ARTIFICIAL_TREE_FILLED,
+      SoilCategoryType.FOREST_CONIFER,
+      SoilCategoryType.PRAIRIE_BUSHES,
+      SoilCategoryType.WATER,
+      SoilCategoryType.WET_LAND,
+    ];
 
     const result = await sqlCarbonStorageRepository.getCarbonStorageForCity(
       "01026",
@@ -143,7 +143,7 @@ describe("SqlCarbonStorageRepository integration", () => {
     const carbonStorageInSoilForForest = result.filter(
       ({ reservoir, soil_category }) =>
         reservoir === ReservoirType.SOIL &&
-        soil_category === SoilCategoryType.FOREST,
+        soil_category === SoilCategoryType.FOREST_CONIFER,
     );
 
     expect(carbonStorageInSoilForForest.length).toEqual(1);
@@ -159,7 +159,7 @@ describe("SqlCarbonStorageRepository integration", () => {
     const carbonStorageInSoilForPrairie = result.filter(
       ({ reservoir, soil_category }) =>
         reservoir === ReservoirType.SOIL &&
-        soil_category === SoilCategoryType.PRAIRIE,
+        soil_category === SoilCategoryType.PRAIRIE_BUSHES,
     );
 
     expect(carbonStorageInSoilForPrairie.length).toEqual(1);
@@ -224,10 +224,10 @@ describe("SqlCarbonStorageRepository integration", () => {
 
   test("Gets carbon storage entries for a city and specific soils for a city with unprecise information on forest", async () => {
     const soilCategories = [
-      "artificial_tree_filled",
-      "forest_mixed",
-      "prairie_bushes",
-    ] as SoilCategoryType[];
+      SoilCategoryType.ARTIFICIAL_TREE_FILLED,
+      SoilCategoryType.FOREST_MIXED,
+      SoilCategoryType.PRAIRIE_BUSHES,
+    ];
 
     const result = await sqlCarbonStorageRepository.getCarbonStorageForCity(
       "01033",
@@ -238,7 +238,7 @@ describe("SqlCarbonStorageRepository integration", () => {
     const carbonStorageInSoilForForest = result.filter(
       ({ reservoir, soil_category }) =>
         reservoir === ReservoirType.SOIL &&
-        soil_category === SoilCategoryType.FOREST,
+        soil_category === SoilCategoryType.FOREST_MIXED,
     );
 
     expect(carbonStorageInSoilForForest.length).toEqual(1);
@@ -254,7 +254,7 @@ describe("SqlCarbonStorageRepository integration", () => {
     const carbonStorageInSoilForPrairie = result.filter(
       ({ reservoir, soil_category }) =>
         reservoir === ReservoirType.SOIL &&
-        soil_category === SoilCategoryType.PRAIRIE,
+        soil_category === SoilCategoryType.PRAIRIE_BUSHES,
     );
 
     expect(carbonStorageInSoilForPrairie.length).toEqual(1);
