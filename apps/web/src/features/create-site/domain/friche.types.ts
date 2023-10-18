@@ -10,6 +10,13 @@ export type FricheSite = SiteFoncier & {
   lastActivity?: FricheLastActivity;
   naturalAreas?: NaturalAreaSpaceType[];
   contaminatedSoilSurface: number;
+  fullTimeJobsInvolved: number;
+  owner: { type: string; name?: string };
+  tenantBusinessName?: string;
+  hasRecentAccidents: boolean;
+  minorInjuriesPerson?: number;
+  severeInjuriesPerson?: number;
+  deaths?: number;
 };
 
 export enum FricheLastActivity {
@@ -18,6 +25,16 @@ export enum FricheLastActivity {
   MINE_OR_QUARRY = "MINE_OR_QUARRY",
   HOUSING_OR_BUSINESS = "HOUSING_OR_BUSINESS",
   UNKNOWN = "UNKNOWN",
+}
+
+export enum OwnerType {
+  MUNICIPALITY = "MUNICIPALITY", // commune
+  COMMUNITY_OF_MUNICIPALITIES = "COMMUNITY_OF_MUNICIPALITIES", // communauté de communes
+  DEPARTMENT = "DEPARTMENT",
+  REGION = "REGION",
+  STATE = "STATE",
+  COMPANY = "COMPANY",
+  PRIVATE_INDIVIDUAL = "PRIVATE_INDIVIDUAL",
 }
 
 export enum FricheSoilType {
