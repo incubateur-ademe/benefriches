@@ -9,13 +9,11 @@ export enum SoilCategoryType {
   ARTIFICIAL_GRASS_OR_BUSHES_FILLED = "artificial_grass_or_bushes_filled",
   ARTIFICIAL_TREE_FILLED = "artificial_tree_filled",
   // forest
-  FOREST = "forest",
   FOREST_DECIDUOUS = "forest_deciduous",
   FOREST_CONIFER = "forest_conifer",
   FOREST_POPLAR = "forest_poplar",
   FOREST_MIXED = "forest_mixed",
   // prairie
-  PRAIRIE = "prairie",
   PRAIRIE_GRASS = "prairie_grass",
   PRAIRIE_BUSHES = "prairie_bushes",
   PRAIRIE_TREES = "prairie_trees",

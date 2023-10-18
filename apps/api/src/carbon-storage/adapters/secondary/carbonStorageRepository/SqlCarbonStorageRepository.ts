@@ -20,12 +20,6 @@ const FOREST_CATEGORIES = [
   SoilCategoryType.FOREST_POPLAR,
 ];
 
-const PRAIRIE_CATEGORIES = [
-  SoilCategoryType.PRAIRIE_BUSHES,
-  SoilCategoryType.PRAIRIE_GRASS,
-  SoilCategoryType.PRAIRIE_TREES,
-];
-
 const filterCarbonStorageByLocalisationPriority = (
   carbonStorage: CarbonStorage[],
 ) => {
@@ -107,28 +101,11 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
     const hasForest = soilCategories.some((category) =>
       FOREST_CATEGORIES.includes(category),
     );
-    const hasPrairie = soilCategories.some((category) =>
-      PRAIRIE_CATEGORIES.includes(category),
-    );
 
     const query = this.sqlConnection<CarbonStorage>("carbon_storage").select();
 
     if (hasSoilsCategory) {
-      void query.where((soilsCategoryClause) => {
-        void soilsCategoryClause.whereIn("soil_category", soilCategories);
-        if (hasForest) {
-          void soilsCategoryClause.orWhere(
-            "soil_category",
-            SoilCategoryType.FOREST,
-          );
-        }
-        if (hasPrairie) {
-          void soilsCategoryClause.orWhere(
-            "soil_category",
-            SoilCategoryType.PRAIRIE,
-          );
-        }
-      });
+      void query.whereIn("soil_category", soilCategories);
     }
 
     void query.andWhere((localisationClause) => {
