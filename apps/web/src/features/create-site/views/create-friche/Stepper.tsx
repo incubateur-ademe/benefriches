@@ -21,9 +21,21 @@ const getCurrentStep = (step: CreationStep | FricheCreationStep) => {
     case FricheCreationStep.SOIL_INTRODUCTION:
     case FricheCreationStep.SURFACE_AREA:
     case FricheCreationStep.SOILS:
+    case FricheCreationStep.SOILS_SURFACE_AREAS:
+    case FricheCreationStep.SOILS_SUMMARY:
+    case FricheCreationStep.SOILS_CARBON_STORAGE:
       return steps[2];
+    case FricheCreationStep.SOIL_CONTAMINATION:
+      return steps[3];
+    case FricheCreationStep.MANAGEMENT_INTRODUCTION:
+    case FricheCreationStep.OWNER:
+    case FricheCreationStep.TENANT:
+    case FricheCreationStep.RECENT_ACCIDENTS:
+    case FricheCreationStep.FULL_TIME_JOBS_INVOLVED:
+      return steps[4];
     case FricheCreationStep.NAMING_STEP:
     case FricheCreationStep.LAST_ACTIVITY_STEP:
+    case FricheCreationStep.CREATION_CONFIRMATION:
       return steps[5];
   }
 };
