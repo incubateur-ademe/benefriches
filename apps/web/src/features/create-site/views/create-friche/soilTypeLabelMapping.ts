@@ -36,7 +36,5 @@ export const getLabelForFricheSoilType = (value: FricheSoilType): string => {
       return "Vigne";
     case FricheSoilType.WATER:
       return "Plan d'eau";
-    case FricheSoilType.UNKNOWN_NATURAL_AREA:
-      return "Autre espace naturel ou agricole";
   }
 };

@@ -1,4 +1,3 @@
-import { NaturalAreaSpaceType } from "./naturalArea.types";
 import { SiteFoncier, SiteFoncierType } from "./siteFoncier.types";
 
 export type FricheSite = SiteFoncier & {
@@ -6,9 +5,7 @@ export type FricheSite = SiteFoncier & {
   surfaceArea: number;
   soils: FricheSoilType[];
   soilsSurfaceAreas: Partial<Record<FricheSoilType, number>>;
-  hasNaturalOrAgriculturalSoils: boolean;
   activity?: FricheActivity;
-  naturalAreas?: NaturalAreaSpaceType[];
   contaminatedSoilSurface: number;
   fullTimeJobsInvolved: number;
   owner: { type: string; name?: string };
@@ -59,5 +56,4 @@ export enum FricheSoilType {
   VINEYARD = "VINEYARD", // vigne
   WET_LAND = "WET_LAND", // zone humide
   WATER = "WATER", // plan d'eau
-  UNKNOWN_NATURAL_AREA = "UNKNOWN_NATURAL_AREA",
 }
