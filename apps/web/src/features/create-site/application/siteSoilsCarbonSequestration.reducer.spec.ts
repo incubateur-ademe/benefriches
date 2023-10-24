@@ -1,4 +1,4 @@
-import { FricheSoilType } from "../domain/friche.types";
+import { SoilType } from "../domain/siteFoncier.types";
 import { SoilsCarbonSequestrationMock } from "../infrastructure/soils-carbon-storage-service/soilsCarbonSequestrationMock";
 import { fetchCarbonSequestrationForSoils } from "./siteSoilsCarbonSequestration.actions";
 
@@ -9,8 +9,8 @@ describe("Site carbon sequestration reducer", () => {
     const mockedResult = {
       totalCarbonStorage: 350,
       soilsStorage: {
-        [FricheSoilType.BUILDINGS]: 30,
-        [FricheSoilType.MINERAL_SOIL]: 320,
+        [SoilType.BUILDINGS]: 30,
+        [SoilType.MINERAL_SOIL]: 320,
       },
     };
     const store = createStore({
@@ -22,8 +22,8 @@ describe("Site carbon sequestration reducer", () => {
     const siteInfo = {
       cityCode: "75011",
       soils: {
-        [FricheSoilType.BUILDINGS]: 1400,
-        [FricheSoilType.MINERAL_SOIL]: 5000,
+        [SoilType.BUILDINGS]: 1400,
+        [SoilType.MINERAL_SOIL]: 5000,
       },
     };
     await store.dispatch(fetchCarbonSequestrationForSoils(siteInfo));
@@ -47,8 +47,8 @@ describe("Site carbon sequestration reducer", () => {
     const siteInfo = {
       cityCode: "75011",
       soils: {
-        [FricheSoilType.BUILDINGS]: 1400,
-        [FricheSoilType.MINERAL_SOIL]: 5000,
+        [SoilType.BUILDINGS]: 1400,
+        [SoilType.MINERAL_SOIL]: 5000,
       },
     };
     await store.dispatch(fetchCarbonSequestrationForSoils(siteInfo));

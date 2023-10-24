@@ -1,12 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { Address, SiteFoncierType } from "../../domain/siteFoncier.types";
+import { Address } from "../../domain/siteFoncier.types";
 import SearchAddressAutocomplete from "./SearchAddressAutocompleteContainer";
 
 type Props = {
-  onSubmit: (data: FormValues) => void;
-  onBack: () => void;
-  siteType: SiteFoncierType;
+  onSubmit: (address: Address) => void;
+  isFriche: boolean;
 };
 
 type FormValues = {
@@ -14,16 +13,15 @@ type FormValues = {
   searchText: string;
 };
 
-function SiteAddressForm({ onSubmit, onBack, siteType }: Props) {
+function SiteAddressForm({ onSubmit, isFriche }: Props) {
   const { handleSubmit, formState, control, watch, setValue, register } =
     useForm<FormValues>();
 
   const error = formState.errors.selectedAddress;
 
-  const title =
-    siteType === SiteFoncierType.FRICHE
-      ? "Où se situe cette friche ?"
-      : "Où se situe cet espace naturel ?";
+  const title = isFriche
+    ? "Où se situe cette friche ?"
+    : "Où se situe ce site ?";
 
   register("selectedAddress", {
     required: "L'adresse est nécessaire pour les étapes suivantes",
@@ -32,7 +30,11 @@ function SiteAddressForm({ onSubmit, onBack, siteType }: Props) {
   return (
     <>
       <h2>{title}</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit((formData: FormValues) => {
+          onSubmit(formData.selectedAddress!);
+        })}
+      >
         <Controller
           control={control}
           name="searchText"
@@ -60,12 +62,6 @@ function SiteAddressForm({ onSubmit, onBack, siteType }: Props) {
           buttonsEquisized
           inlineLayoutWhen="always"
           buttons={[
-            {
-              children: "Retour",
-              onClick: onBack,
-              priority: "secondary",
-              nativeButtonProps: { type: "button" },
-            },
             {
               children: "Suivant",
               nativeButtonProps: { type: "submit" },

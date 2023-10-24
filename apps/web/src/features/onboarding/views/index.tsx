@@ -7,11 +7,15 @@ function OnboardingPage() {
     <>
       <h1>Tout commence sur un site foncier</h1>
       <p>
-        La plupart des questions ne sont pas obligatoire. Vous pourrez venir
-        plus tard les compléter.
+        Nous allons d’abord parler du site existant : la nature du site, la
+        typologie de ses sols, les dépenses associées, etc. Une fois que ce site
+        sera décrit, vous pourrez alors créer un ou plusieurs projets
+        d’aménagement sur ce site.
       </p>
 
-      <Button linkProps={routes.createSiteFoncier().link}>C’est parti</Button>
+      <Button linkProps={routes.createSiteFoncier().link}>
+        Saisir les informations du site
+      </Button>
     </>
   );
 }
