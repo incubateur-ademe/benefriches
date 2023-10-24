@@ -1,6 +1,10 @@
 import FricheSecuringCostsForm, { FormValues } from "./FricheSecuringCostsForm";
 
-import { addExpenses } from "@/features/create-site/application/createSite.reducer";
+import {
+  addExpenses,
+  goToStep,
+  SiteCreationStep,
+} from "@/features/create-site/application/createSite.reducer";
 import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 import {
   useAppDispatch,
@@ -49,6 +53,7 @@ const mapProps = (
         });
 
       dispatch(addExpenses(expenses));
+      dispatch(goToStep(SiteCreationStep.YEARLY_EXPENSES));
     },
   };
 };
