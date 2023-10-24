@@ -1,5 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import CreateSiteFoncierPage from "./features/create-site/views";
+import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWizard";
 import HomePage from "./features/home/views/Home";
 import LoginPage from "./features/login";
 import OnboardingPage from "./features/onboarding/views";

@@ -1,15 +1,15 @@
-import { FricheSoilType } from "../domain/friche.types";
+import { SoilType } from "../domain/siteFoncier.types";
 
 import { createAppAsyncThunk } from "@/appAsyncThunk";
 
 export type GetSiteSoilsCarbonSequestrationPayload = {
   cityCode: string;
-  soils: Partial<Record<FricheSoilType, number>>;
+  soils: Partial<Record<SoilType, number>>;
 };
 
 export type SiteSoilsCarbonSequestrationResult = {
   totalCarbonStorage: number;
-  soilsStorage: Partial<Record<FricheSoilType, number>>;
+  soilsStorage: Partial<Record<SoilType, number>>;
 };
 
 export interface SoilsCarbonSequestrationGateway {
