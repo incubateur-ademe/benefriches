@@ -33,7 +33,6 @@ function SiteAddressForm({ onSubmit, onBack, siteType }: Props) {
     <>
       <h2>{title}</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <pre>{JSON.stringify(watch(), null, 2)}</pre>
         <Controller
           control={control}
           name="searchText"
