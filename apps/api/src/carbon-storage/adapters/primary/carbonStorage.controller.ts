@@ -10,7 +10,7 @@ type QueryPayload = {
   }[];
 };
 
-@Controller("carbon-storage")
+@Controller("site-soils-carbon-sequestration")
 export class CarbonStorageController {
   constructor(
     private readonly getCityCarbonStoragePerSoilsCategory: GetCityCarbonStoragePerSoilsCategoryUseCase,
@@ -24,12 +24,24 @@ export class CarbonStorageController {
       throw new BadRequestException("City code is missing");
     }
 
-    return await this.getCityCarbonStoragePerSoilsCategory.execute({
-      cityCode: cityCode,
-      soils: soils.map(({ surfaceArea, type }) => ({
-        surfaceArea: parseFloat(surfaceArea),
-        type: type.toLowerCase() as SoilCategoryType,
-      })),
-    });
+    const { totalCarbonStorage, soilsCarbonStorage } =
+      await this.getCityCarbonStoragePerSoilsCategory.execute({
+        cityCode: cityCode,
+        soils: soils.map(({ surfaceArea, type }) => ({
+          surfaceArea: parseFloat(surfaceArea),
+          type: type.toLowerCase() as SoilCategoryType,
+        })),
+      });
+
+    return {
+      totalCarbonStorage,
+      soilsCarbonStorage: soilsCarbonStorage.map(
+        ({ type, surfaceArea, carbonStorage }) => ({
+          type: type.toUpperCase(),
+          surfaceArea,
+          carbonStorage,
+        }),
+      ),
+    };
   }
 }
