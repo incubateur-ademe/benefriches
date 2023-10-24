@@ -5,7 +5,11 @@ import {
   goToStep,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
-import { Expense } from "@/features/create-site/domain/siteFoncier.types";
+import { hasTenant } from "@/features/create-site/domain/site.functions";
+import {
+  Expense,
+  SiteFoncier,
+} from "@/features/create-site/domain/siteFoncier.types";
 import {
   useAppDispatch,
   useAppSelector,
@@ -17,7 +21,7 @@ const mapProps = (
   siteCreationState: RootState["siteCreation"],
 ) => {
   return {
-    hasTenant: !!siteCreationState.siteData.tenantBusinessName,
+    hasTenant: hasTenant(siteCreationState.siteData as SiteFoncier),
     onSubmit: (formData: FormValues) => {
       const expenses: Expense[] = [];
 
