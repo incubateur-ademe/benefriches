@@ -11,7 +11,7 @@ import { City } from "./../../../../carbon-storage/domain/models/city";
 const dataPath = path.resolve(__dirname, "./../../../../../data/cities.csv");
 
 const HEADER =
-  "insee;name;department;region,epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";
+  "insee;name;department;region;epci;zpc;code_greco;code_groupeser;code_ser;code_bassin_populicole";
 
 const readCsvData = async () => {
   return new Promise((resolve, reject) => {
