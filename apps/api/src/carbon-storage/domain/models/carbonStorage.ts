@@ -1,6 +1,3 @@
-// ZPC = zone pédo climatique
-// https://docs.datagir.ademe.fr/documentation-aldo/stocks/methode-generale
-
 export enum SoilCategoryType {
   // artificial
   BUILDINGS = "buildings",
