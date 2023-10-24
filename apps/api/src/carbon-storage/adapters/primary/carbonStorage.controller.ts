@@ -3,8 +3,8 @@ import { SoilCategoryType } from "src/carbon-storage/domain/models/carbonStorage
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/domain/usecases/getCityCarbonStoragePerSoilsCategory";
 
 type QueryPayload = {
-  cityCode: string;
-  soils: {
+  cityCode?: string;
+  soils?: {
     surfaceArea: string;
     type: SoilCategoryType;
   }[];
@@ -22,6 +22,10 @@ export class CarbonStorageController {
 
     if (!cityCode) {
       throw new BadRequestException("City code is missing");
+    }
+
+    if (!soils || soils.length === 0) {
+      throw new BadRequestException("Soils are missing");
     }
 
     const { totalCarbonStorage, soilsCarbonStorage } =
