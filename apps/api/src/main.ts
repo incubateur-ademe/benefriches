@@ -6,6 +6,7 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix("api");
 
   // test SQL connection so we fail fast if DB is not accesible
   const sqlConnection: Knex = app.get(SqlConnection);
