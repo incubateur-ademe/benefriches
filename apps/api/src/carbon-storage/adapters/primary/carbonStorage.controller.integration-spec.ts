@@ -29,10 +29,10 @@ describe("CarbonStorage controller", () => {
     await sqlConnection.destroy();
   });
 
-  describe("Get /site-soils-carbon-sequestration", () => {
+  describe("Get /site-soils-carbon-storage", () => {
     it("can't return information if there is no cityCode indication", async () => {
       const response = await supertest(app.getHttpServer()).get(
-        "/site-soils-carbon-sequestration",
+        "/site-soils-carbon-storage",
       );
 
       expect(response.status).toEqual(400);
@@ -40,7 +40,7 @@ describe("CarbonStorage controller", () => {
 
     it("can't return information if there is no soils indication", async () => {
       const response = await supertest(app.getHttpServer()).get(
-        "/site-soils-carbon-sequestration?cityCode=01081",
+        "/site-soils-carbon-storage?cityCode=01081",
       );
 
       expect(response.status).toEqual(400);
@@ -48,7 +48,7 @@ describe("CarbonStorage controller", () => {
 
     it("returns an object with totalCarbonStorage and soilsCarbonStorage", async () => {
       const response = await supertest(app.getHttpServer()).get(
-        "/site-soils-carbon-sequestration?cityCode=01081&soils[0][surfaceArea]=1.5&soils[0][type]=CULTIVATION&soils[1][surfaceArea]=3&soils[1][type]=FOREST_DECIDUOUS",
+        "/site-soils-carbon-storage?cityCode=01081&soils[0][surfaceArea]=1.5&soils[0][type]=CULTIVATION&soils[1][surfaceArea]=3&soils[1][type]=FOREST_DECIDUOUS",
       );
 
       expect(response.status).toEqual(200);
