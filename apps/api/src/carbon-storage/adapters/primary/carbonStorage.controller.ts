@@ -1,14 +1,22 @@
-import { BadRequestException, Controller, Get, Query } from "@nestjs/common";
+import { Controller, Get, Query } from "@nestjs/common";
+import { createZodDto } from "nestjs-zod";
+import { z } from "nestjs-zod/z";
 import { SoilCategoryType } from "src/carbon-storage/domain/models/carbonStorage";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/domain/usecases/getCityCarbonStoragePerSoilsCategory";
 
-type QueryPayload = {
-  cityCode?: string;
-  soils?: {
-    surfaceArea: string;
-    type: SoilCategoryType;
-  }[];
-};
+const GetSoilsCarbonStorageDtoSchema = z.object({
+  cityCode: z.string(),
+  soils: z.array(
+    z.object({
+      surfaceArea: z.string().transform(Number),
+      type: z.string().toLowerCase().pipe(z.nativeEnum(SoilCategoryType)),
+    }),
+  ),
+});
+
+class GetSoilsCarbonStorageDto extends createZodDto(
+  GetSoilsCarbonStorageDtoSchema,
+) {}
 
 @Controller("site-soils-carbon-storage")
 export class CarbonStorageController {
@@ -17,23 +25,15 @@ export class CarbonStorageController {
   ) {}
 
   @Get()
-  async getFeaturesFromLocation(@Query() query: QueryPayload) {
+  async getSiteSoilsCarbonStorage(@Query() query: GetSoilsCarbonStorageDto) {
     const { cityCode, soils } = query;
-
-    if (!cityCode) {
-      throw new BadRequestException("City code is missing");
-    }
-
-    if (!soils || soils.length === 0) {
-      throw new BadRequestException("Soils are missing");
-    }
 
     const { totalCarbonStorage, soilsCarbonStorage } =
       await this.getCityCarbonStoragePerSoilsCategory.execute({
         cityCode: cityCode,
         soils: soils.map(({ surfaceArea, type }) => ({
-          surfaceArea: parseFloat(surfaceArea),
-          type: type.toLowerCase() as SoilCategoryType,
+          surfaceArea: surfaceArea,
+          type,
         })),
       });
 
