@@ -32,10 +32,11 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase
 
     const soilsCarbonStorage = soils.map(({ type, surfaceArea }) => {
       const entriesForCategory = carbonStorage.filter(
-        ({ soil_category }) => soil_category === type,
+        ({ soilCategory }) => soilCategory === type,
       );
       const totalForCategory = entriesForCategory.reduce(
-        (total, { stock_tC_by_ha }) => total + stock_tC_by_ha * surfaceArea,
+        (total, { carbonStorageInTonByHectare }) =>
+          total + carbonStorageInTonByHectare * surfaceArea,
         0,
       );
       return { type, surfaceArea, carbonStorage: totalForCategory };

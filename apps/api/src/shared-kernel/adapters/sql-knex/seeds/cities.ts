@@ -2,7 +2,10 @@ import fs from "fs";
 import { Knex } from "knex";
 import path from "path";
 import readline from "readline";
-import { City } from "./../../../../carbon-storage/domain/models/city";
+import {
+  City,
+  CityProps,
+} from "./../../../../carbon-storage/domain/models/city";
 
 /**
  * @param { import("knex").Knex } knex
@@ -17,7 +20,7 @@ const readCsvData = async () => {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(dataPath, "utf-8");
     const rl = readline.createInterface({ input: readStream });
-    const data: City[] = [];
+    const data: CityProps[] = [];
 
     rl.on("line", (line) => {
       if (line === HEADER) {
@@ -30,25 +33,24 @@ const readCsvData = async () => {
         region,
         epci,
         zpc,
-        code_greco,
-        code_groupeser,
-        code_ser,
-        code_bassin_populicole,
+        codeGreco,
+        codeSerGroup,
+        codeSer,
+        codePoplarPool,
       ] = line.split(";");
-      data.push(
-        City.create({
-          insee,
-          name,
-          department,
-          region,
-          zpc,
-          epci,
-          code_greco: code_greco.split(","),
-          code_ser: code_ser.split(","),
-          code_groupeser: code_groupeser.split(","),
-          code_bassin_populicole,
-        }),
-      );
+      const city = City.create({
+        insee,
+        name,
+        department,
+        region,
+        zpc,
+        epci,
+        code_greco: codeGreco.split(","),
+        code_ser: codeSer.split(","),
+        code_groupeser: codeSerGroup.split(","),
+        code_bassin_populicole: codePoplarPool,
+      });
+      data.push(city.toDatabaseFormat());
     });
     rl.on("error", (error) => {
       reject(error);

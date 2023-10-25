@@ -1,4 +1,4 @@
-type CityProps = {
+export type CityProps = {
   name: string;
   insee: string;
   department: string;
@@ -20,10 +20,10 @@ export class City {
     readonly region: string,
     readonly zpc: string,
     readonly epci: string,
-    readonly code_greco: string[],
-    readonly code_ser: string[],
-    readonly code_groupeser: string[],
-    readonly code_bassin_populicole: string | undefined,
+    readonly codeGreco: string[],
+    readonly codeSer: string[],
+    readonly codeSerGroup: string[],
+    readonly codePoplarPool: string | undefined,
   ) {}
 
   static create({
@@ -50,5 +50,20 @@ export class City {
       code_groupeser,
       code_bassin_populicole,
     );
+  }
+
+  toDatabaseFormat() {
+    return {
+      insee: this.insee,
+      name: this.name,
+      department: this.department,
+      region: this.region,
+      zpc: this.zpc,
+      epci: this.epci,
+      code_greco: this.codeGreco,
+      code_ser: this.codeSer,
+      code_groupeser: this.codeSerGroup,
+      code_bassin_populicole: this.codePoplarPool,
+    };
   }
 }
