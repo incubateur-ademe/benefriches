@@ -20,7 +20,12 @@ const mapProps = (
   const { loadingState, carbonSequestration } = siteCarbonSequestration;
 
   return {
-    onNext: () => dispatch(goToStep(SiteCreationStep.MANAGEMENT_INTRODUCTION)),
+    onNext: () => {
+      const nextStep = siteCreation.siteData.isFriche
+        ? SiteCreationStep.SOIL_CONTAMINATION
+        : SiteCreationStep.MANAGEMENT_INTRODUCTION;
+      dispatch(goToStep(nextStep));
+    },
     loadSiteCarbonSequestration: () =>
       dispatch(
         fetchCarbonSequestrationForSoils({
