@@ -39,12 +39,12 @@ export class CarbonStorageController {
 
     return {
       totalCarbonStorage,
-      soilsCarbonStorage: soilsCarbonStorage.map(
-        ({ type, surfaceArea, carbonStorage }) => ({
-          type: type.toUpperCase(),
-          surfaceArea,
-          carbonStorage,
+      soilsStorage: soilsCarbonStorage.reduce(
+        (soilsStorage, { type, carbonStorage }) => ({
+          ...soilsStorage,
+          [type.toUpperCase()]: carbonStorage,
         }),
+        {},
       ),
     };
   }
