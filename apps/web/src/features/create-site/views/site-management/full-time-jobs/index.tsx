@@ -15,16 +15,15 @@ import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (
   dispatch: AppDispatch,
-  siteCreationState: RootState["siteCreation"],
+  { siteData }: RootState["siteCreation"],
 ) => {
   return {
     onSubmit: (data: FormValues) => {
       dispatch(setFullTimeJobsInvolved(data.fullTimeJobsInvolved));
-      if (siteCreationState.siteData.isFriche) {
-        dispatch(goToStep(SiteCreationStep.RECENT_ACCIDENTS));
-      } else {
-        dispatch(goToStep(SiteCreationStep.NAMING));
-      }
+      const nextStep = siteData.isFriche
+        ? SiteCreationStep.RECENT_ACCIDENTS
+        : SiteCreationStep.YEARLY_EXPENSES;
+      dispatch(goToStep(nextStep));
     },
   };
 };

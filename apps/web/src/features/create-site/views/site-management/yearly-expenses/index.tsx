@@ -53,7 +53,7 @@ const mapProps = (
 
       const nextStep = siteData.isFriche
         ? SiteCreationStep.SOILS_DEGRADATION_YEARLY_EXPENSES
-        : SiteCreationStep.EXPENSES_SUMMARY;
+        : SiteCreationStep.YEARLY_INCOME;
       dispatch(goToStep(nextStep));
     },
   };

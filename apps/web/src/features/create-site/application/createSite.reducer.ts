@@ -79,6 +79,7 @@ export enum SiteCreationStep {
   FRICHE_SECURING_EXPENSES = "FRICHE_SECURING_EXPENSES",
   YEARLY_EXPENSES = "YEARLY_EXPENSES",
   SOILS_DEGRADATION_YEARLY_EXPENSES = "SOILS_DEGRADATION_YEARLY_EXPENSES",
+  YEARLY_INCOME = "YEARLY_INCOME",
   EXPENSES_SUMMARY = "EXPENSES_SUMMARY",
   // NAMING
   FRICHE_ACTIVITY = "FRICHE_ACTIVITY",
@@ -158,6 +159,9 @@ export const siteCreationSlice = createSlice({
         ...action.payload,
       ];
     },
+    setYearlyIncome: (state, action: PayloadAction<number>) => {
+      state.siteData.yearlyIncome = action.payload;
+    },
     setFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
       state.siteData.fricheActivity = action.payload;
     },
@@ -187,6 +191,7 @@ export const {
   setFullTimeJobsInvolved,
   setFricheRecentAccidents,
   addExpenses,
+  setYearlyIncome,
   setFricheActivity,
   setNameAndDescription,
 

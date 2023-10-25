@@ -2,7 +2,7 @@ import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
 
 import { SiteCreationStep } from "@/features/create-site/application/createSite.reducer";
 
-const steps = [
+const fricheStepsCategories = [
   "Type de site",
   "Adresse",
   "Sols",
@@ -11,21 +11,27 @@ const steps = [
   "Dénomination",
 ] as const;
 
-const getCurrentStep = (step: SiteCreationStep): string => {
+const siteStepsCategores = fricheStepsCategories.filter(
+  (step) => step !== "Pollution",
+);
+
+type StepCategory = (typeof fricheStepsCategories)[number];
+
+const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
   switch (step) {
     case SiteCreationStep.SITE_TYPE:
-      return steps[0];
+      return "Type de site";
     case SiteCreationStep.ADDRESS:
-      return steps[1];
+      return "Adresse";
     case SiteCreationStep.SOILS_INTRODUCTION:
     case SiteCreationStep.SOILS:
     case SiteCreationStep.SURFACE_AREA:
     case SiteCreationStep.SOILS_SURFACE_AREAS:
     case SiteCreationStep.SOILS_SUMMARY:
     case SiteCreationStep.SOILS_CARBON_SEQUESTRATION:
-      return steps[2];
+      return "Sols";
     case SiteCreationStep.SOIL_CONTAMINATION:
-      return steps[3];
+      return "Pollution";
     case SiteCreationStep.MANAGEMENT_INTRODUCTION:
     case SiteCreationStep.OWNER:
     case SiteCreationStep.TENANT:
@@ -34,12 +40,13 @@ const getCurrentStep = (step: SiteCreationStep): string => {
     case SiteCreationStep.FRICHE_SECURING_EXPENSES:
     case SiteCreationStep.YEARLY_EXPENSES:
     case SiteCreationStep.SOILS_DEGRADATION_YEARLY_EXPENSES:
+    case SiteCreationStep.YEARLY_INCOME:
     case SiteCreationStep.EXPENSES_SUMMARY:
-      return steps[4];
+      return "Gestion du site";
     case SiteCreationStep.FRICHE_ACTIVITY:
     case SiteCreationStep.NAMING:
     case SiteCreationStep.CREATION_CONFIRMATION:
-      return steps[5];
+      return "Dénomination";
   }
 };
 
@@ -49,19 +56,17 @@ type Props = {
 };
 
 function SiteCreationStepper({ step, isFriche }: Props) {
-  const currentStep = getCurrentStep(step);
+  const currentStepCategory = getCurrentStepCategory(step);
 
-  if (!currentStep) return null;
-
-  const stepsToDisplay = isFriche
-    ? steps
-    : steps.filter((step) => step !== "Pollution");
+  const stepsCategories = isFriche ? fricheStepsCategories : siteStepsCategores;
 
   return (
     <Stepper
-      title={currentStep}
-      currentStep={steps.findIndex((step) => step === currentStep) + 1}
-      stepCount={stepsToDisplay.length}
+      title={currentStepCategory}
+      currentStep={
+        stepsCategories.findIndex((step) => step === currentStepCategory) + 1
+      }
+      stepCount={stepsCategories.length}
     />
   );
 }

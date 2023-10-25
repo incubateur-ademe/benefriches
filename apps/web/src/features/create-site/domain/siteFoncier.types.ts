@@ -38,6 +38,7 @@ export type SiteFoncier = {
   severeInjuriesPerson?: number;
   deaths?: number;
   yearlyExpenses: Expense[];
+  yearlyIncome?: number;
 };
 
 export enum SoilType {

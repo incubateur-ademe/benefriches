@@ -47,7 +47,7 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant }: Props) {
 
   return (
     <>
-      <h2>Dépenses annuelles liées à la gestion de la friche</h2>
+      <h2>Dépenses annuelles liées à la gestion du site</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         {inputs.map(({ name, label, displayOnlyIfHasTenant }) => {
           if (displayOnlyIfHasTenant && !hasTenant) {

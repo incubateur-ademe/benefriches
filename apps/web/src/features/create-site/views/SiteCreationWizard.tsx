@@ -1,4 +1,5 @@
 import { SiteCreationStep } from "../application/createSite.reducer";
+import SiteExpensesSummary from "./site-management/expenses-summary";
 import FricheSecuringCostsForm from "./site-management/friche-securing-costs";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
@@ -7,6 +8,7 @@ import FricheRecentAccidentsForm from "./site-management/recent-accidents";
 import SoilsDegradationYearlyExpenses from "./site-management/soils-degradation-yearly-expenses";
 import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
+import SiteYearlyIncomeForm from "./site-management/yearly-income";
 import SiteSoilsCarbonSequestration from "./soils/soils-carbon-sequestration";
 import SiteSoilsIntroduction from "./soils/soils-introduction";
 import SiteSoilsForm from "./soils/soils-selection";
@@ -60,8 +62,12 @@ function SiteCreationWizard() {
         return <FricheSecuringCostsForm />;
       case SiteCreationStep.YEARLY_EXPENSES:
         return <SiteYearlyExpensesForm />;
+      case SiteCreationStep.YEARLY_INCOME:
+        return <SiteYearlyIncomeForm />;
       case SiteCreationStep.SOILS_DEGRADATION_YEARLY_EXPENSES:
         return <SoilsDegradationYearlyExpenses />;
+      case SiteCreationStep.EXPENSES_SUMMARY:
+        return <SiteExpensesSummary />;
       case SiteCreationStep.FRICHE_ACTIVITY:
         return <FricheActivityForm />;
       case SiteCreationStep.NAMING:
