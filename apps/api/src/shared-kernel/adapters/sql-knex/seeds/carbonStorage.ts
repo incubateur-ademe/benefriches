@@ -2,7 +2,10 @@ import fs from "fs";
 import { Knex } from "knex";
 import path from "path";
 import readline from "readline";
-import { CarbonStorage } from "./../../../../carbon-storage/domain/models/carbonStorage";
+import {
+  CarbonStorage,
+  CarbonStorageProps,
+} from "./../../../../carbon-storage/domain/models/carbonStorage";
 
 const dataPath = path.resolve(
   __dirname,
@@ -15,32 +18,32 @@ const readCsvData = async () => {
   return new Promise((resolve, reject) => {
     const readStream = fs.createReadStream(dataPath, "utf-8");
     const rl = readline.createInterface({ input: readStream });
-    const data: CarbonStorage[] = [];
+    const data: CarbonStorageProps[] = [];
     rl.on("line", (line) => {
       if (line === HEADER) {
         return;
       }
       const [
         reservoir,
-        soil_category,
-        stock_tC_by_ha,
-        localisation_category,
-        localisation_code,
+        soilCategory,
+        carbonStorageInTonByHectare,
+        localisationCategory,
+        localisationCode,
       ] = line.split(",") as [
         CarbonStorage["reservoir"],
-        CarbonStorage["soil_category"],
-        CarbonStorage["stock_tC_by_ha"],
-        CarbonStorage["localisation_category"],
-        CarbonStorage["localisation_code"],
+        CarbonStorage["soilCategory"],
+        CarbonStorage["carbonStorageInTonByHectare"],
+        CarbonStorage["localisationCategory"],
+        CarbonStorage["localisationCode"],
       ];
       data.push(
         CarbonStorage.create({
           reservoir,
-          soil_category,
-          stock_tC_by_ha,
-          localisation_category,
-          localisation_code,
-        }),
+          soil_category: soilCategory,
+          stock_tC_by_ha: carbonStorageInTonByHectare,
+          localisation_category: localisationCategory,
+          localisation_code: localisationCode,
+        }).toDatabaseFormat(),
       );
     });
     rl.on("error", (error) => {

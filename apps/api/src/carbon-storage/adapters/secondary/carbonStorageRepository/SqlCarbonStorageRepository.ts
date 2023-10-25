@@ -7,11 +7,12 @@ import { Knex } from "knex";
 import { CarbonStorageRepository } from "src/carbon-storage/domain/gateways/CarbonStorageRepository";
 import {
   CarbonStorage,
+  CarbonStorageProps,
   LocalisationCategoryType,
   ReservoirType,
   SoilCategoryType,
 } from "src/carbon-storage/domain/models/carbonStorage";
-import { City } from "src/carbon-storage/domain/models/city";
+import { City, CityProps } from "src/carbon-storage/domain/models/city";
 
 const FOREST_CATEGORIES = [
   SoilCategoryType.FOREST_CONIFER,
@@ -34,18 +35,17 @@ const filterCarbonStorageByLocalisationPriority = (
   return carbonStorage.reduce((result: CarbonStorage[], entry) => {
     // Check if there is already an entry for this category
     const existingIndex = result.findIndex(
-      (element) => element.soil_category === entry.soil_category,
+      (element) => element.soilCategory === entry.soilCategory,
     );
     if (existingIndex === -1) {
       return [...result, entry];
     }
 
-    const { localisation_category } = result[existingIndex];
-    const currentPosition = localisationPriorityOrder.indexOf(
-      localisation_category,
-    );
+    const { localisationCategory } = result[existingIndex];
+    const currentPosition =
+      localisationPriorityOrder.indexOf(localisationCategory);
     const elemPosition = localisationPriorityOrder.indexOf(
-      entry.localisation_category,
+      entry.localisationCategory,
     );
     if (elemPosition < currentPosition) {
       const newResult = [...result];
@@ -66,10 +66,10 @@ const getForestLitterCarbonStorage = (soilCategories: SoilCategoryType[]) => {
   return forestCategories.map(
     (category) =>
       ({
-        localisation_code: "France",
-        localisation_category: LocalisationCategoryType.COUNTRY,
-        soil_category: category,
-        stock_tC_by_ha: 9,
+        localisationCode: "France",
+        localisationCategory: LocalisationCategoryType.COUNTRY,
+        soilCategory: category,
+        carbonStorageInTonByHectare: 9,
         reservoir: ReservoirType.LITTER,
       }) as CarbonStorage,
   );
@@ -88,21 +88,24 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
     }
 
     // Get zpc, region, code_groupeser...
-    const city = await this.sqlConnection<City>("cities")
+    const sqlCity = await this.sqlConnection<CityProps>("cities")
       .select()
       .where({ insee: cityCode })
       .first();
 
-    if (!city) {
+    if (!sqlCity) {
       throw new NotFoundException();
     }
+
+    const city = City.create(sqlCity);
 
     const hasSoilsCategory = soilCategories.length > 0;
     const hasForest = soilCategories.some((category) =>
       FOREST_CATEGORIES.includes(category),
     );
 
-    const query = this.sqlConnection<CarbonStorage>("carbon_storage").select();
+    const query =
+      this.sqlConnection<CarbonStorageProps>("carbon_storage").select();
 
     if (hasSoilsCategory) {
       void query.whereIn("soil_category", soilCategories);
@@ -123,21 +126,31 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
 
       if (hasForest || !hasSoilsCategory) {
         // Search in reservoir "live_forest_biomass" and "dead_forest_biomass"
-        void localisationClause.orWhere((build) => {
-          void build
-            .where("localisation_category", LocalisationCategoryType.SER_GROUP)
-            .whereIn("localisation_code", city.code_groupeser);
-        });
+        if (city.codeSerGroup.length > 0) {
+          void localisationClause.orWhere((build) => {
+            void build
+              .where(
+                "localisation_category",
+                LocalisationCategoryType.SER_GROUP,
+              )
+              .whereIn("localisation_code", city.codeSerGroup);
+          });
+        }
+        if (city.codeGreco.length > 0) {
+          void localisationClause.orWhere((build) => {
+            void build
+              .where("localisation_category", LocalisationCategoryType.GRECO)
+              .whereIn("localisation_code", city.codeGreco);
+          });
+        }
 
-        void localisationClause.orWhere((build) => {
-          void build
-            .where("localisation_category", LocalisationCategoryType.GRECO)
-            .whereIn("localisation_code", city.code_greco);
-        });
-        void localisationClause.orWhere({
-          localisation_code: city.code_bassin_populicole,
-          localisation_category: LocalisationCategoryType.POPLAR_POOL,
-        });
+        if (city.codePoplarPool) {
+          void localisationClause.orWhere({
+            localisation_code: city.codePoplarPool,
+            localisation_category: LocalisationCategoryType.POPLAR_POOL,
+          });
+        }
+
         void localisationClause.orWhere({
           localisation_code: "France",
           localisation_category: LocalisationCategoryType.COUNTRY,
@@ -145,7 +158,9 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
       }
     });
 
-    const result = await query;
+    const result = (await query).map((element) =>
+      CarbonStorage.create(element),
+    );
 
     const soilsStorage = result.filter(
       ({ reservoir }) => reservoir === ReservoirType.SOIL,

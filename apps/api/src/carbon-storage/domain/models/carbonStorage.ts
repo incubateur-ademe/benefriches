@@ -39,7 +39,7 @@ export enum LocalisationCategoryType {
   COUNTRY = "pays",
 }
 
-type CarbonStorageProps = {
+export type CarbonStorageProps = {
   reservoir: ReservoirType;
   soil_category: SoilCategoryType;
   stock_tC_by_ha: number;
@@ -49,11 +49,11 @@ type CarbonStorageProps = {
 
 export class CarbonStorage {
   private constructor(
-    readonly reservoir: CarbonStorageProps["reservoir"],
-    readonly soil_category: CarbonStorageProps["soil_category"],
-    readonly stock_tC_by_ha: CarbonStorageProps["stock_tC_by_ha"],
-    readonly localisation_category: CarbonStorageProps["localisation_category"],
-    readonly localisation_code: CarbonStorageProps["localisation_code"],
+    readonly reservoir: ReservoirType,
+    readonly soilCategory: SoilCategoryType,
+    readonly carbonStorageInTonByHectare: number,
+    readonly localisationCategory: LocalisationCategoryType,
+    readonly localisationCode: string,
   ) {}
 
   static create({
@@ -70,5 +70,15 @@ export class CarbonStorage {
       localisation_category,
       localisation_code,
     );
+  }
+
+  toDatabaseFormat() {
+    return {
+      reservoir: this.reservoir,
+      soil_category: this.soilCategory,
+      stock_tC_by_ha: this.carbonStorageInTonByHectare,
+      localisation_category: this.localisationCategory,
+      localisation_code: this.localisationCode,
+    };
   }
 }
