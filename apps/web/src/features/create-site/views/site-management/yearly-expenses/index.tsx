@@ -18,10 +18,10 @@ import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (
   dispatch: AppDispatch,
-  siteCreationState: RootState["siteCreation"],
+  { siteData }: RootState["siteCreation"],
 ) => {
   return {
-    hasTenant: hasTenant(siteCreationState.siteData as SiteFoncier),
+    hasTenant: hasTenant(siteData as SiteFoncier),
     onSubmit: (formData: FormValues) => {
       const expenses: Expense[] = formData.otherExpenses.map(({ amount }) => {
         return { amount, bearer: "owner", type: "other" };
@@ -50,7 +50,11 @@ const mapProps = (
       }
 
       dispatch(addExpenses(expenses));
-      dispatch(goToStep(SiteCreationStep.NAMING));
+
+      const nextStep = siteData.isFriche
+        ? SiteCreationStep.SOILS_DEGRADATION_YEARLY_EXPENSES
+        : SiteCreationStep.EXPENSES_SUMMARY;
+      dispatch(goToStep(nextStep));
     },
   };
 };

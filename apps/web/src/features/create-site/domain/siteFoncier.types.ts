@@ -72,6 +72,6 @@ export enum OwnerType {
 
 export type Expense = {
   type: string;
-  bearer: "owner" | "tenant";
+  bearer: "owner" | "tenant" | "local_or_regional_authority" | "society";
   amount: number;
 };
