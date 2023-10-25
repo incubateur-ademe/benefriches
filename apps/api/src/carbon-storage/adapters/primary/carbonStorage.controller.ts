@@ -10,7 +10,7 @@ type QueryPayload = {
   }[];
 };
 
-@Controller("site-soils-carbon-sequestration")
+@Controller("site-soils-carbon-storage")
 export class CarbonStorageController {
   constructor(
     private readonly getCityCarbonStoragePerSoilsCategory: GetCityCarbonStoragePerSoilsCategoryUseCase,
