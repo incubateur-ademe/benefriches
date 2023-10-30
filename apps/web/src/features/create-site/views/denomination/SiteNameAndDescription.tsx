@@ -19,11 +19,10 @@ function SiteNameAndDescriptionForm({ onSubmit }: Props) {
   return (
     <>
       <h2>Dénomination du site</h2>
-      <p>Le nom du site tel qu’il est notoirement utilisé par les riverains.</p>
-      <p>Vous pouvez décrire l’activité du site, historique ou actuelle.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           label="Nom du site"
+          hintText="Le nom du site tel qu’il est notoirement utilisé par les riverains."
           state={nameError ? "error" : "default"}
           stateRelatedMessage={nameError ? nameError.message : undefined}
           nativeInputProps={register("name", {
@@ -32,6 +31,7 @@ function SiteNameAndDescriptionForm({ onSubmit }: Props) {
         />
         <Input
           label="Descriptif du site"
+          hintText="Vous pouvez décrire l’activité du site, historique ou actuelle."
           textArea
           nativeTextAreaProps={register("description")}
         />
