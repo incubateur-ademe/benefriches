@@ -27,25 +27,17 @@ export class CarbonStorageController {
   @Get()
   async getSiteSoilsCarbonStorage(@Query() query: GetSoilsCarbonStorageDto) {
     const { cityCode, soils } = query;
-
     const { totalCarbonStorage, soilsCarbonStorage } =
       await this.getCityCarbonStoragePerSoilsCategory.execute({
-        cityCode: cityCode,
-        soils: soils.map(({ surfaceArea, type }) => ({
-          surfaceArea: surfaceArea,
-          type,
-        })),
+        cityCode,
+        soils,
       });
-
     return {
       totalCarbonStorage,
-      soilsStorage: soilsCarbonStorage.reduce(
-        (soilsStorage, { type, carbonStorage }) => ({
-          ...soilsStorage,
-          [type.toUpperCase()]: carbonStorage,
-        }),
-        {},
-      ),
+      soilsStorage: soilsCarbonStorage.map((soilCarbonStorage) => ({
+        ...soilCarbonStorage,
+        type: soilCarbonStorage.type.toUpperCase(),
+      })),
     };
   }
 }
