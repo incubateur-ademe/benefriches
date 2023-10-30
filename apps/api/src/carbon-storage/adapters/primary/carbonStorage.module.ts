@@ -10,7 +10,7 @@ import { CarbonStorageController } from "./carbonStorage.controller";
   controllers: [CarbonStorageController],
   providers: [
     {
-      provide: "CarbonStorageRepository",
+      provide: SqlCarbonStorageRepository,
       useFactory: (sqlConnection: Knex) =>
         new SqlCarbonStorageRepository(sqlConnection),
       inject: [SqlConnection],
@@ -19,7 +19,7 @@ import { CarbonStorageController } from "./carbonStorage.controller";
       provide: GetCityCarbonStoragePerSoilsCategoryUseCase,
       useFactory: (dataProvider: CarbonStorageRepository) =>
         new GetCityCarbonStoragePerSoilsCategoryUseCase(dataProvider),
-      inject: ["CarbonStorageRepository"],
+      inject: [SqlCarbonStorageRepository],
     },
   ],
 })
