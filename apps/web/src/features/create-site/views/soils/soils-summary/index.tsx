@@ -13,8 +13,7 @@ import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteFoncier>) => {
   return {
-    onNext: () =>
-      dispatch(goToStep(SiteCreationStep.SOILS_CARBON_SEQUESTRATION)),
+    onNext: () => dispatch(goToStep(SiteCreationStep.SOILS_CARBON_STORAGE)),
     soilsSurfaceAreas: siteData.soilsSurfaceAreas ?? {},
     totalSurfaceArea: siteData.surfaceArea ?? 0,
   };

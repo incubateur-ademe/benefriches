@@ -1,18 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { SoilsCarbonSequestrationGateway } from "./features/create-site/application/siteSoilsCarbonSequestration.actions";
+import { SoilsCarbonStorageGateway } from "./features/create-site/application/siteSoilsCarbonStorage.actions";
 
 import siteCreation from "@/features/create-site/application/createSite.reducer";
-import siteCarbonSequestration from "@/features/create-site/application/siteSoilsCarbonSequestration.reducer";
+import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 
 export type AppDependencies = {
-  soilsCarbonSequestrationService: SoilsCarbonSequestrationGateway;
+  soilsCarbonStorageService: SoilsCarbonStorageGateway;
 };
 
 export const createStore = (appDependencies: AppDependencies) =>
   configureStore({
     reducer: {
       siteCreation,
-      siteCarbonSequestration,
+      siteCarbonStorage,
     },
     middleware(getDefaultMiddleware) {
       return getDefaultMiddleware({

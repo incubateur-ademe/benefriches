@@ -28,7 +28,7 @@ const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
     case SiteCreationStep.SURFACE_AREA:
     case SiteCreationStep.SOILS_SURFACE_AREAS:
     case SiteCreationStep.SOILS_SUMMARY:
-    case SiteCreationStep.SOILS_CARBON_SEQUESTRATION:
+    case SiteCreationStep.SOILS_CARBON_STORAGE:
       return "Sols";
     case SiteCreationStep.SOIL_CONTAMINATION:
       return "Pollution";
