@@ -14,20 +14,21 @@ import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (
   dispatch: AppDispatch,
-  { siteCreation, siteCarbonStorage }: RootState,
+  siteData: RootState["siteCreation"]["siteData"],
+  siteCarbonStorage: RootState["siteCarbonStorage"],
 ) => {
-  const siteCityCode = siteCreation.siteData.address?.cityCode ?? "";
-  const fricheSoils = siteCreation.siteData.soilsSurfaceAreas ?? {};
+  const siteCityCode = siteData.address?.cityCode ?? "";
+  const fricheSoils = siteData.soilsSurfaceAreas ?? {};
   const { loadingState, carbonStorage } = siteCarbonStorage;
 
   return {
     onNext: () => {
-      const nextStep = siteCreation.siteData.isFriche
+      const nextStep = siteData.isFriche
         ? SiteCreationStep.SOIL_CONTAMINATION
         : SiteCreationStep.MANAGEMENT_INTRODUCTION;
       dispatch(goToStep(nextStep));
     },
-    loadSiteCarbonStorage: async () => {
+    fetchSiteCarbonStorage: async () => {
       const soils = Object.entries(fricheSoils).map(([type, surfaceArea]) => ({
         type: type as SoilType,
         surfaceArea,
@@ -46,9 +47,16 @@ const mapProps = (
 
 function SiteSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();
-  const appState = useAppSelector((state) => state);
+  const siteData = useAppSelector((state) => state.siteCreation.siteData);
+  const siteCarbonStorageState = useAppSelector(
+    (state) => state.siteCarbonStorage,
+  );
 
-  return <SiteSoilsCarbonStorage {...mapProps(dispatch, appState)} />;
+  return (
+    <SiteSoilsCarbonStorage
+      {...mapProps(dispatch, siteData, siteCarbonStorageState)}
+    />
+  );
 }
 
 export default SiteSoilsCarbonStorageContainer;
