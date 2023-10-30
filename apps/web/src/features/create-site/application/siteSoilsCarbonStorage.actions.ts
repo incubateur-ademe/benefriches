@@ -9,7 +9,11 @@ export type GetSiteSoilsCarbonStoragePayload = {
 
 export type SiteSoilsCarbonStorageResult = {
   totalCarbonStorage: number;
-  soilsStorage: Partial<Record<SoilType, number>>;
+  soilsStorage: {
+    type: SoilType;
+    surfaceArea: number;
+    carbonStorage: number;
+  }[];
 };
 
 export interface SoilsCarbonStorageGateway {
