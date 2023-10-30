@@ -4,7 +4,7 @@ import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 import { SoilType } from "../../../domain/siteFoncier.types";
-import { getLabelForSoilType } from "../../soilTypeLabelMapping";
+import { getLongLabelForSoilType } from "../../soilTypeLabelMapping";
 
 export type FormValues = {
   soils: SoilType[];
@@ -18,7 +18,7 @@ type Props = {
 const mapSoilOptions =
   (register: UseFormRegister<FormValues>) => (soilType: SoilType) => {
     return {
-      label: getLabelForSoilType(soilType),
+      label: getLongLabelForSoilType(soilType),
       nativeInputProps: {
         ...register("soils", {
           required:

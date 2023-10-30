@@ -3,15 +3,15 @@ import { SoilType } from "../domain/siteFoncier.types";
 export const getLabelForSoilType = (value: SoilType): string => {
   switch (value) {
     case SoilType.BUILDINGS:
-      return "Bâtiments (anciens sites de production, de stockage...)";
+      return "Bâtiments";
     case SoilType.IMPERMEABLE_SOILS:
-      return "Sols imperméabilisés (parking bitumé, voirie...)";
+      return "Sols imperméabilisés";
     case SoilType.MINERAL_SOIL:
-      return "Sol minéral (parking ou voirie en gravier, dalles alvéolées...)";
+      return "Sol minéral";
     case SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
-      return "Sol enherbé et arbustif (parc ou jardin en pelouse, aménagement paysager)";
+      return "Sol enherbé et arbustif";
     case SoilType.ARTIFICIAL_TREE_FILLED:
-      return "Sol arboré (parc ou jardin avec des arbres plantés)";
+      return "Sol arboré";
     case SoilType.FOREST_CONIFER:
       return "Forêt de conifères";
     case SoilType.FOREST_DECIDUOUS:
@@ -36,5 +36,22 @@ export const getLabelForSoilType = (value: SoilType): string => {
       return "Vigne";
     case SoilType.WATER:
       return "Plan d'eau";
+  }
+};
+
+export const getLongLabelForSoilType = (value: SoilType): string => {
+  switch (value) {
+    case SoilType.BUILDINGS:
+      return "Bâtiments (anciens sites de production, de stockage...)";
+    case SoilType.IMPERMEABLE_SOILS:
+      return "Sols imperméabilisés (parking bitumé, voirie...)";
+    case SoilType.MINERAL_SOIL:
+      return "Sol minéral (parking ou voirie en gravier, dalles alvéolées...)";
+    case SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
+      return "Sol enherbé et arbustif (parc ou jardin en pelouse, aménagement paysager)";
+    case SoilType.ARTIFICIAL_TREE_FILLED:
+      return "Sol arboré (parc ou jardin avec des arbres plantés)";
+    default:
+      return getLabelForSoilType(value);
   }
 };
