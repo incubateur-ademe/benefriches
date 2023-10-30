@@ -1,7 +1,5 @@
-import Chart from "react-apexcharts";
-import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { getLabelForSoilType } from "../../soilTypeLabelMapping";
+import SurfaceAreaPieChart from "./SurfaceAreaPieChart";
 
 import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -23,26 +21,18 @@ const SiteSoilsSummary = ({
     convertSquareMetersToHectares(totalSurfaceArea),
   );
 
-  const series = Object.values(soilsSurfaceAreas);
-  const labels = Object.keys(soilsSurfaceAreas).map((soilType) =>
-    getLabelForSoilType(soilType as SoilType),
-  );
-
   return (
     <>
       <h2>Récapitulatif des sols du site</h2>
       <p>
-        Superficie totale du site : {formattedTotalSurfaceArea} m2, soit{" "}
-        {formattedTotalSurfaceAreaInHectare} ha.
+        Superficie totale du site :{" "}
+        <strong>
+          {formattedTotalSurfaceArea} m2, soit{" "}
+          {formattedTotalSurfaceAreaInHectare} ha
+        </strong>
+        .
       </p>
-      <div className={fr.cx("fr-container", "fr-py-4w")}>
-        <Chart
-          type="pie"
-          width="800"
-          series={series}
-          options={{ labels, chart: { fontFamily: "" } }}
-        />
-      </div>
+      <SurfaceAreaPieChart soilsSurfaceAreas={soilsSurfaceAreas} />
       <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
         Suivant
       </Button>
