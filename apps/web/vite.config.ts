@@ -9,7 +9,6 @@ export default defineConfig(({ mode }) => {
     "/api": {
       target: env.API_HOST,
       changeOrigin: true,
-      rewrite: (path: string) => path.replace(/^\/api/, ""),
     },
   };
 
