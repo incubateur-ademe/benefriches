@@ -54,10 +54,18 @@ describe("CarbonStorage controller", () => {
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({
         totalCarbonStorage: 739.11,
-        soilsStorage: {
-          [SoilCategoryType.CULTIVATION.toUpperCase()]: 82.5,
-          [SoilCategoryType.FOREST_DECIDUOUS.toUpperCase()]: 656.61,
-        },
+        soilsStorage: [
+          {
+            type: SoilCategoryType.CULTIVATION,
+            surfaceArea: 1.5,
+            carbonStorage: 82.5,
+          },
+          {
+            type: SoilCategoryType.FOREST_DECIDUOUS,
+            surfaceArea: 3,
+            carbonStorage: 656.61,
+          },
+        ],
       });
     });
   });
