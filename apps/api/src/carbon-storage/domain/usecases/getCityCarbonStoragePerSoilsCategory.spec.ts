@@ -17,8 +17,8 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
     const result = await usecase.execute({
       cityCode: "01026",
       soils: [
-        { surfaceArea: 1.15, type: SoilCategoryType.CULTIVATION },
-        { surfaceArea: 4, type: SoilCategoryType.PRAIRIE_BUSHES },
+        { surfaceArea: 11500, type: SoilCategoryType.CULTIVATION },
+        { surfaceArea: 40000, type: SoilCategoryType.PRAIRIE_BUSHES },
       ],
     });
 
@@ -38,9 +38,9 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
     const result = await usecase.execute({
       cityCode: "01027",
       soils: [
-        { surfaceArea: 0.15, type: SoilCategoryType.ARTIFICIAL_TREE_FILLED },
-        { surfaceArea: 4, type: SoilCategoryType.PRAIRIE_BUSHES },
-        { surfaceArea: 1.2, type: SoilCategoryType.FOREST_DECIDUOUS },
+        { surfaceArea: 1500, type: SoilCategoryType.ARTIFICIAL_TREE_FILLED },
+        { surfaceArea: 40000, type: SoilCategoryType.PRAIRIE_BUSHES },
+        { surfaceArea: 12000, type: SoilCategoryType.FOREST_DECIDUOUS },
       ],
     });
 
@@ -72,8 +72,8 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
     const result = await usecase.execute({
       cityCode: "01027",
       soils: [
-        { surfaceArea: 1.5, type: SoilCategoryType.CULTIVATION },
-        { surfaceArea: 3, type: SoilCategoryType.FOREST_DECIDUOUS },
+        { surfaceArea: 15000, type: SoilCategoryType.CULTIVATION },
+        { surfaceArea: 30000, type: SoilCategoryType.FOREST_DECIDUOUS },
       ],
     });
 
@@ -82,12 +82,12 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       soilsCarbonStorage: [
         {
           type: SoilCategoryType.CULTIVATION,
-          surfaceArea: 1.5,
+          surfaceArea: 15000,
           carbonStorage: 75,
         },
         {
           type: SoilCategoryType.FOREST_DECIDUOUS,
-          surfaceArea: 3,
+          surfaceArea: 30000,
           carbonStorage: 557.61,
         },
       ],
