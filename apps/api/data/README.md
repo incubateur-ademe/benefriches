@@ -157,7 +157,7 @@ Correspondance des clés de colonnes :
 
 - cultures --> `cultivation`
 - prairies --> `prairie_grass`, `prairie_trees` et `prairie_bushes` (3 entrées sont créées pour prairie)
-- forêts --> `forest_poplar`, `forest_mixed` et `forest_deciduous` (3 entrées sont créées pour les forêts)
+- forêts --> `forest_poplar`, `forest_mixed`, `forest_conifer` et `forest_deciduous` (4 entrées sont créées pour les forêts)
 - zones humides --> `wet_land`
 - vergers --> `orchard`
 - vignes --> `vineyard`
