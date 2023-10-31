@@ -4,16 +4,24 @@ import { SoilCategoryType } from "../models/carbonStorage";
 
 type Request = {
   cityCode: string;
-  soils: { surfaceArea: number; type: SoilCategoryType }[];
+  soils: {
+    surfaceArea: number; // m2
+    type: SoilCategoryType;
+  }[];
 };
 
 type Response = {
   totalCarbonStorage: number;
   soilsCarbonStorage: {
     surfaceArea: number;
-    carbonStorage: number;
+    carbonStorage: number; // m2
     type: SoilCategoryType;
   }[];
+};
+
+// TODO: use a shared service with frontend
+const convertSquareMetersToHectares = (surfaceAreaInSquareMeters: number) => {
+  return surfaceAreaInSquareMeters / 10000;
 };
 
 export class GetCityCarbonStoragePerSoilsCategoryUseCase
@@ -36,7 +44,9 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase
       );
       const totalForCategory = entriesForCategory.reduce(
         (total, { carbonStorageInTonByHectare }) =>
-          total + carbonStorageInTonByHectare * surfaceArea,
+          total +
+          carbonStorageInTonByHectare *
+            convertSquareMetersToHectares(surfaceArea),
         0,
       );
       return { type, surfaceArea, carbonStorage: totalForCategory };
