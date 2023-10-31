@@ -8,10 +8,10 @@ describe("Site carbon sequestration reducer", () => {
   it("should get carbon sequestration for city code and soils", async () => {
     const mockedResult = {
       totalCarbonStorage: 350,
-      soilsStorage: {
-        [SoilType.BUILDINGS]: 30,
-        [SoilType.MINERAL_SOIL]: 320,
-      },
+      soilsStorage: [
+        { type: SoilType.BUILDINGS, carbonStorage: 30, surfaceArea: 1400 },
+        { type: SoilType.MINERAL_SOIL, carbonStorage: 320, surfaceArea: 5000 },
+      ],
     };
     const store = createStore({
       soilsCarbonStorageService: new SoilsCarbonStorageMock(mockedResult),
