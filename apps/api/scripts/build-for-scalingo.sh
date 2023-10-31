@@ -16,6 +16,9 @@ mkdir -pv .tmp-build/apps/api/dist
 cp -v apps/api/package.json .tmp-build/apps/api/
 cp -rv apps/api/dist .tmp-build/apps/api/
 
+# Copy data files needed for seed
+cp -rv apps/api/data .tmp-build/app/api/
+
 # Copy scalingo specific files
 cp -v apps/api/scalingo/.buildpacks apps/api/scalingo/Procfile .tmp-build/
 
