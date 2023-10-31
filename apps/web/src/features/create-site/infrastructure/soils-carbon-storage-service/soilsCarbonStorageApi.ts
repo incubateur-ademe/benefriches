@@ -15,7 +15,7 @@ export class SoilsCarbonStorageApi implements SoilsCarbonStorageGateway {
   }: GetSiteSoilsCarbonStoragePayload) {
     const queryString = objectToQueryParams({ cityCode, soils });
     const response = await fetch(
-      `/api/site-soils-carbon-storage?${queryString}`,
+      `/api/carbon-storage/site-soils?${queryString}`,
     );
 
     if (!response.ok) throw new Error("Error while computing carbon storage");

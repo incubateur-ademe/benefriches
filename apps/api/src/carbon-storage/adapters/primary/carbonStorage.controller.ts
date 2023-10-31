@@ -18,13 +18,13 @@ class GetSoilsCarbonStorageDto extends createZodDto(
   GetSoilsCarbonStorageDtoSchema,
 ) {}
 
-@Controller("site-soils-carbon-storage")
+@Controller("carbon-storage")
 export class CarbonStorageController {
   constructor(
     private readonly getCityCarbonStoragePerSoilsCategory: GetCityCarbonStoragePerSoilsCategoryUseCase,
   ) {}
 
-  @Get()
+  @Get("site-soils")
   async getSiteSoilsCarbonStorage(@Query() query: GetSoilsCarbonStorageDto) {
     const { cityCode, soils } = query;
     const { totalCarbonStorage, soilsCarbonStorage } =
