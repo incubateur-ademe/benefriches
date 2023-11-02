@@ -1,6 +1,7 @@
 import { LocalCarbonStorageRepository } from "src/carbon-storage/adapters/secondary/carbonStorageRepository/LocalCarbonStorageRepository.mock";
 import { CarbonStorageRepository } from "../gateways/CarbonStorageRepository";
-import { SoilCategoryType } from "../models/carbonStorage";
+import { SoilCategory, SoilCategoryType } from "../models/soilCategory";
+import { SurfaceArea } from "../models/surfaceArea";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "./getCityCarbonStoragePerSoilsCategory";
 
 describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
@@ -17,8 +18,14 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
     const result = await usecase.execute({
       cityCode: "01026",
       soils: [
-        { surfaceArea: 11500, type: SoilCategoryType.CULTIVATION },
-        { surfaceArea: 40000, type: SoilCategoryType.PRAIRIE_BUSHES },
+        {
+          surfaceArea: SurfaceArea.create(11500),
+          type: SoilCategory.create(SoilCategoryType.CULTIVATION),
+        },
+        {
+          surfaceArea: SurfaceArea.create(40000),
+          type: SoilCategory.create(SoilCategoryType.PRAIRIE_BUSHES),
+        },
       ],
     });
 
@@ -38,9 +45,18 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
     const result = await usecase.execute({
       cityCode: "01027",
       soils: [
-        { surfaceArea: 1500, type: SoilCategoryType.ARTIFICIAL_TREE_FILLED },
-        { surfaceArea: 40000, type: SoilCategoryType.PRAIRIE_BUSHES },
-        { surfaceArea: 12000, type: SoilCategoryType.FOREST_DECIDUOUS },
+        {
+          surfaceArea: SurfaceArea.create(1500),
+          type: SoilCategory.create(SoilCategoryType.ARTIFICIAL_TREE_FILLED),
+        },
+        {
+          surfaceArea: SurfaceArea.create(40000),
+          type: SoilCategory.create(SoilCategoryType.PRAIRIE_BUSHES),
+        },
+        {
+          surfaceArea: SurfaceArea.create(12000),
+          type: SoilCategory.create(SoilCategoryType.FOREST_DECIDUOUS),
+        },
       ],
     });
 
@@ -72,8 +88,14 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
     const result = await usecase.execute({
       cityCode: "01027",
       soils: [
-        { surfaceArea: 15000, type: SoilCategoryType.CULTIVATION },
-        { surfaceArea: 30000, type: SoilCategoryType.FOREST_DECIDUOUS },
+        {
+          surfaceArea: SurfaceArea.create(15000),
+          type: SoilCategory.create(SoilCategoryType.CULTIVATION),
+        },
+        {
+          surfaceArea: SurfaceArea.create(30000),
+          type: SoilCategory.create(SoilCategoryType.FOREST_DECIDUOUS),
+        },
       ],
     });
 
@@ -89,6 +111,79 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
           type: SoilCategoryType.FOREST_DECIDUOUS,
           surfaceArea: 30000,
           carbonStorage: 557.61,
+        },
+      ],
+    });
+  });
+
+  test("it should return the right total for all kinds of impermeable soils", async () => {
+    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(
+      carbonStorageRepository,
+    );
+    const result = await usecase.execute({
+      cityCode: "01027",
+      soils: [
+        {
+          surfaceArea: SurfaceArea.create(15000),
+          type: SoilCategory.create(SoilCategoryType.IMPERMEABLE_SOILS),
+        },
+        {
+          surfaceArea: SurfaceArea.create(30000),
+          type: SoilCategory.create(SoilCategoryType.BUILDINGS),
+        },
+        {
+          surfaceArea: SurfaceArea.create(20000),
+          type: SoilCategory.create(SoilCategoryType.MINERAL_SOIL),
+        },
+      ],
+    });
+
+    const CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS = 30;
+
+    expect(result).toEqual({
+      totalCarbonStorage:
+        CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * (1.5 + 3 + 2),
+      soilsCarbonStorage: [
+        {
+          type: SoilCategoryType.IMPERMEABLE_SOILS,
+          surfaceArea: 15000,
+          carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 1.5,
+        },
+        {
+          type: SoilCategoryType.BUILDINGS,
+          surfaceArea: 30000,
+          carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 3,
+        },
+        {
+          type: SoilCategoryType.MINERAL_SOIL,
+          surfaceArea: 20000,
+          carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 2,
+        },
+      ],
+    });
+  });
+
+  test("it should find no carbon for soils water", async () => {
+    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(
+      carbonStorageRepository,
+    );
+    const result = await usecase.execute({
+      cityCode: "01027",
+      soils: [
+        {
+          surfaceArea: SurfaceArea.create(15000),
+          type: SoilCategory.create(SoilCategoryType.WATER),
+        },
+      ],
+    });
+
+    expect(result).toEqual({
+      totalCarbonStorage: 0,
+      soilsCarbonStorage: [
+        {
+          type: SoilCategoryType.WATER,
+          surfaceArea: 15000,
+          carbonStorage: 0,
         },
       ],
     });
