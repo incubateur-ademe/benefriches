@@ -56,6 +56,12 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.futureOperator = action.payload;
     },
+    setReinstatementContractOwner: (
+      state,
+      action: PayloadAction<Project["reinstatementContractOwner"]>,
+    ) => {
+      state.projectData.reinstatementContractOwner = action.payload;
+    },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
@@ -66,6 +72,7 @@ export const {
   setTypes,
   setRenewableEnergyTypes,
   setFutureOperator,
+  setReinstatementContractOwner,
   goToStep,
 } = projectCreationSlice.actions;
 

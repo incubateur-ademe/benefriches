@@ -22,4 +22,5 @@ export type Project = {
     | "user_company"
     | "local_or_regional_authority"
     | "other_company";
+  reinstatementContractOwner?: string;
 };
