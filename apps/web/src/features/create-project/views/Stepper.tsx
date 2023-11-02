@@ -18,7 +18,7 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:
       return "Type de projet";
     case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
-    case ProjectCreationStep.STAKEHOLDERS_OPERATOR:
+    case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:
     case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
     case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_FULL_TIME_JOBS:
     case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:

@@ -20,7 +20,7 @@ export enum ProjectCreationStep {
   RENEWABLE_ENERGY_TYPES = "RENEWABLE_ENERGY_TYPES",
   CREATION_CONFIRMATION = "CREATION_CONFIRMATION",
   STAKEHOLDERS_INTRODUCTION = "STAKEHOLDERS_INTRODUCTION",
-  STAKEHOLDERS_OPERATOR = "STAKEHOLDERS_OPERATOR",
+  STAKEHOLDERS_FUTURE_OPERATOR = "STAKEHOLDERS_FUTURE_OPERATOR",
   STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER = "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
   STAKEHOLDERS_REINSTATEMENT_FULL_TIME_JOBS = "STAKEHOLDERS_REINSTATEMENT_FULL_TIME_JOBS",
   STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS = "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS",
@@ -50,13 +50,23 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.renewableEnergyTypes = action.payload;
     },
+    setFutureOperator: (
+      state,
+      action: PayloadAction<Project["futureOperator"]>,
+    ) => {
+      state.projectData.futureOperator = action.payload;
+    },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
   },
 });
 
-export const { setTypes, setRenewableEnergyTypes, goToStep } =
-  projectCreationSlice.actions;
+export const {
+  setTypes,
+  setRenewableEnergyTypes,
+  setFutureOperator,
+  goToStep,
+} = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;
