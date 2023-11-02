@@ -7,10 +7,12 @@ import Stepper from "./Stepper";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectCreationWizard() {
-  const projectCreationState = useAppSelector((state) => state.projectCreation);
+  const projectCreationStep = useAppSelector(
+    (state) => state.projectCreation.step,
+  );
 
   const getStepComponent = () => {
-    switch (projectCreationState.step) {
+    switch (projectCreationStep) {
       case ProjectCreationStep.PROJECT_TYPES:
         return <ProjectTypesForm />;
       case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:
@@ -22,7 +24,7 @@ function ProjectCreationWizard() {
 
   return (
     <>
-      <Stepper step={projectCreationState.step} />
+      <Stepper step={projectCreationStep} />
       {getStepComponent()}
     </>
   );

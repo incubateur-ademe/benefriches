@@ -40,7 +40,7 @@ function ProjectTypesForm({ onSubmit }: Props) {
 
   return (
     <>
-      <h2>Qu’y aura t-il sur la friche une fois aménagée ?</h2>
+      <h2>Qu’y aura t-il sur le site une fois aménagé ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox
           options={options.map(mapOptions(register))}

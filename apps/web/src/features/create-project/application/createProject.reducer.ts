@@ -1,14 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
-  Project,
   ProjectType,
   RenewableEnergyType,
 } from "@/features/create-project/domain/project.types";
+import { SiteFoncier } from "@/features/create-site/domain/siteFoncier.types";
 
 export type ProjectCreationState = {
   step: ProjectCreationStep;
-  projectData: Partial<Project>;
+  projectData: {
+    types: ProjectType[];
+    renewableEnergyTypes: RenewableEnergyType[];
+    relatedSite: SiteFoncier | undefined;
+  };
 };
 
 export enum ProjectCreationStep {
@@ -19,7 +23,11 @@ export enum ProjectCreationStep {
 
 export const projectCreationInitialState: ProjectCreationState = {
   step: ProjectCreationStep.PROJECT_TYPES,
-  projectData: {},
+  projectData: {
+    types: [],
+    renewableEnergyTypes: [],
+    relatedSite: undefined,
+  },
 };
 
 export const projectCreationSlice = createSlice({
