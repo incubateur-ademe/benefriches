@@ -1,9 +1,15 @@
+import { getLabelForExpenseBearer } from "./expenseBearerLabelMapping";
+import { getLabelForExpenseCategory } from "./expenseCategoryLabelMapping";
 import SiteExpensesSummary from "./SiteExpensesSummary";
 
 import {
   goToStep,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
+import {
+  groupExpensesByBearer,
+  groupExpensesByCategory,
+} from "@/features/create-site/domain/expenses.functions";
 import {
   useAppDispatch,
   useAppSelector,
@@ -12,9 +18,26 @@ import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (
   dispatch: AppDispatch,
-  { siteData }: RootState["siteCreation"],
+  siteData: RootState["siteCreation"]["siteData"],
 ) => {
   return {
+    expensesByBearer: groupExpensesByBearer(siteData.yearlyExpenses!).map(
+      ({ amount, bearer }) => {
+        return {
+          bearer: getLabelForExpenseBearer(bearer, {
+            ownerName: siteData.owner?.name,
+            tenantName: siteData.tenantBusinessName,
+          }),
+          amount,
+        };
+      },
+    ),
+    expensesByCategory: groupExpensesByCategory(siteData.yearlyExpenses!).map(
+      ({ amount, category }) => ({
+        amount,
+        category: getLabelForExpenseCategory(category),
+      }),
+    ),
     onNext: () => {
       const nextStep = siteData.isFriche
         ? SiteCreationStep.FRICHE_ACTIVITY
@@ -26,9 +49,9 @@ const mapProps = (
 
 function SiteExpensesSummaryContainer() {
   const dispatch = useAppDispatch();
-  const siteCreationState = useAppSelector((state) => state.siteCreation);
+  const siteData = useAppSelector((state) => state.siteCreation.siteData);
 
-  return <SiteExpensesSummary {...mapProps(dispatch, siteCreationState)} />;
+  return <SiteExpensesSummary {...mapProps(dispatch, siteData)} />;
 }
 
 export default SiteExpensesSummaryContainer;

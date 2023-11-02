@@ -16,6 +16,24 @@ import {
 } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch, RootState } from "@/store";
 
+type SafetyExpenseProps = {
+  type: string;
+  amount: number;
+  bearer?: Expense["bearer"];
+};
+const buildSafetyExpense = ({
+  type,
+  amount,
+  bearer = "owner",
+}: SafetyExpenseProps): Expense => {
+  return {
+    category: "safety",
+    type,
+    amount,
+    bearer,
+  };
+};
+
 const mapProps = (
   dispatch: AppDispatch,
   siteCreationState: RootState["siteCreation"],
@@ -26,35 +44,44 @@ const mapProps = (
       const expenses: Expense[] = [];
 
       if (formData.securityExpenses)
-        expenses.push({
-          type: "security",
-          amount: formData.securityExpenses,
-          bearer: formData.securityExpensesBearer ?? "owner",
-        });
+        expenses.push(
+          buildSafetyExpense({
+            type: "security",
+            amount: formData.securityExpenses,
+            bearer: formData.securityExpensesBearer,
+          }),
+        );
+
       if (formData.accidentsExpenses)
-        expenses.push({
-          type: "accidents",
-          amount: formData.accidentsExpenses,
-          bearer: "owner",
-        });
+        expenses.push(
+          buildSafetyExpense({
+            type: "accidents",
+            amount: formData.accidentsExpenses,
+          }),
+        );
       if (formData.illegalDumpingExpenses)
-        expenses.push({
-          type: "illegalDumping",
-          amount: formData.illegalDumpingExpenses,
-          bearer: formData.illegalDumpingExpensesBearer ?? "owner",
-        });
+        expenses.push(
+          buildSafetyExpense({
+            type: "illegalDumping",
+            amount: formData.illegalDumpingExpenses,
+            bearer: formData.illegalDumpingExpensesBearer,
+          }),
+        );
       if (formData.maintenanceExpenses)
-        expenses.push({
-          type: "maintenance",
-          amount: formData.maintenanceExpenses,
-          bearer: "owner",
-        });
+        expenses.push(
+          buildSafetyExpense({
+            type: "maintenance",
+            amount: formData.maintenanceExpenses,
+          }),
+        );
       if (formData.otherExpenses)
-        expenses.push({
-          type: "other",
-          amount: formData.otherExpenses,
-          bearer: formData.otherExpensesBearer ?? "owner",
-        });
+        expenses.push(
+          buildSafetyExpense({
+            type: "other",
+            amount: formData.otherExpenses,
+            bearer: formData.otherExpensesBearer,
+          }),
+        );
 
       dispatch(addExpenses(expenses));
       dispatch(goToStep(SiteCreationStep.YEARLY_EXPENSES));

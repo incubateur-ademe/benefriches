@@ -39,12 +39,14 @@ const mapProps = (
       if (formData.floodsRegulationYearlyExpenses)
         expenses.push({
           type: "floodsRegulation",
+          category: "soils_degradation",
           amount: formData.floodsRegulationYearlyExpenses,
           bearer: "local_or_regional_authority",
         });
       if (formData.waterTreatmentYearlyExpenses)
         expenses.push({
           type: "waterTreatment",
+          category: "soils_degradation",
           amount: formData.waterTreatmentYearlyExpenses,
           bearer: "society",
         });
