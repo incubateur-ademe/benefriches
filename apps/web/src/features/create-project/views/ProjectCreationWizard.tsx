@@ -1,6 +1,7 @@
 import { ProjectCreationStep } from "../application/createProject.reducer";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import SiteOperatorForm from "./stakeholders/operator";
+import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 import ProjectCreationConfirmation from "./confirmation";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
@@ -23,6 +24,8 @@ function ProjectCreationWizard() {
         return <ProjectStakeholdersIntroduction />;
       case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:
         return <SiteOperatorForm />;
+      case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
+        return <SiteReinstatementContractOwnerForm />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }
