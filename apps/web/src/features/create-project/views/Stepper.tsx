@@ -4,7 +4,7 @@ import { ProjectCreationStep } from "@/features/create-project/application/creat
 
 const stepCategories = [
   "Type de projet",
-  "Panneaux photovoltaïques",
+  "Photovoltaïque",
   "Aménagement des sols",
   "Acteurs",
   "Coûts et recettes",
@@ -18,6 +18,8 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.PROJECT_TYPES:
     case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:
       return "Type de projet";
+    case ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER:
+        return "Photovoltaïque";
     case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:
     case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:

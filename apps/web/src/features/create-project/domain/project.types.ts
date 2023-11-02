@@ -14,12 +14,26 @@ export enum RenewableEnergyType {
   BIOMASS = "BIOMASS",
 }
 
+export enum PhotovoltaicKeyParameter {
+  POWER = "POWER",
+  SURFACE = "SURFACE",
+}
+
 export type Project = {
   name: string;
   description?: string;
   relatedSiteId: string;
   types: ProjectType[];
   renewableEnergyTypes: RenewableEnergyType[];
+  photovoltaic: {
+    keyParameter: PhotovoltaicKeyParameter | undefined;
+    power: number;
+    surface: number;
+    expectedAnnualProduction: number;
+    contractDuration: number;
+    foundationsSurface: number;
+    accessPathsSurface: number;
+  };
   futureOperator: ProjectStakeholder;
   conversionFullTimeJobsInvolved: number;
   reinstatementFullTimeJobsInvolved?: number;

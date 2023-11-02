@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
+  PhotovoltaicKeyParameter,
   Project,
   ProjectSite,
   ProjectType,
@@ -16,6 +17,8 @@ export type ProjectCreationState = {
 export enum ProjectCreationStep {
   PROJECT_TYPES = "PROJECT_TYPES",
   RENEWABLE_ENERGY_TYPES = "RENEWABLE_ENERGY_TYPES",
+  // Photovoltaic
+  PHOTOVOLTAIC_KEY_PARAMETER = "PHOTOVOLTAIC_KEY_PARAMETER",
   // Acteurs
   STAKEHOLDERS_INTRODUCTION = "STAKEHOLDERS_INTRODUCTION",
   STAKEHOLDERS_FUTURE_OPERATOR = "STAKEHOLDERS_FUTURE_OPERATOR",
@@ -139,6 +142,12 @@ export const projectCreationSlice = createSlice({
       state.projectData.name = name;
       if (description) state.projectData.description = description;
     },
+    setPhotovoltaicKeyParameter: (
+      state,
+      action: PayloadAction<PhotovoltaicKeyParameter>,
+    ) => {
+      state.projectData.photovoltaic = { keyParameter: action.payload };
+    },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
@@ -159,6 +168,7 @@ export const {
   addYearlyProjectedRevenue,
   setNameAndDescription,
   goToStep,
+  setPhotovoltaicKeyParameter,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;
