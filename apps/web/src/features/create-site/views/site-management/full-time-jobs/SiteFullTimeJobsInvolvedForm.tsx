@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { Input } from "@codegouvfr/react-dsfr/Input";
+
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -10,17 +11,8 @@ export type FormValues = {
   fullTimeJobsInvolved: number;
 };
 
-const validatePositiveNumber = (value: number) => {
-  if (isNaN(value) || value < 0) {
-    return "La valeur renseignée doit être un nombre supérieur à zéro.";
-  }
-  return true;
-};
-
 function SiteFullTimeJobsInvolvedForm({ onSubmit }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
-
-  const error = formState.errors.fullTimeJobsInvolved;
+  const { control, handleSubmit } = useForm<FormValues>();
 
   return (
     <>
@@ -28,17 +20,11 @@ function SiteFullTimeJobsInvolvedForm({ onSubmit }: Props) {
         Combien d'emplois équivalent temps-plein sont mobilisés sur le site ?
       </h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
+        <NumericInput
+          name="fullTimeJobsInvolved"
           label="Emplois temps plein"
-          state={error ? "error" : "default"}
-          stateRelatedMessage={error ? error.message : undefined}
-          nativeInputProps={{
-            ...register("fullTimeJobsInvolved", {
-              required: "Ce champ est requis",
-              valueAsNumber: true,
-              validate: validatePositiveNumber,
-            }),
-          }}
+          rules={{ required: "Ce champ est requis" }}
+          control={control}
         />
         <ButtonsGroup
           buttonsEquisized

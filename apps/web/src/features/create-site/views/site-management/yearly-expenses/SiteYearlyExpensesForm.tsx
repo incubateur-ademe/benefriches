@@ -2,7 +2,8 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { Input } from "@codegouvfr/react-dsfr/Input";
+
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 export type FormValues = {
   rent?: number;
@@ -35,7 +36,7 @@ const inputs = [
 ] as const;
 
 function SiteYearlyExpensesForm({ onSubmit, hasTenant }: Props) {
-  const { register, handleSubmit, formState, control } = useForm<FormValues>({
+  const { handleSubmit, control } = useForm<FormValues>({
     shouldUnregister: true,
   });
 
@@ -53,30 +54,25 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant }: Props) {
           if (displayOnlyIfHasTenant && !hasTenant) {
             return null;
           }
-          const error = formState.errors[name];
           return (
-            <Input
-              label={label}
+            <NumericInput
+              name={name}
               key={name}
+              label={label}
               hintText="€ / an"
-              state={error ? "error" : "default"}
-              stateRelatedMessage={error ? error.message : undefined}
-              nativeInputProps={register(name, {
-                valueAsNumber: true,
-                required: "Ce champ est requis",
-              })}
+              control={control}
+              rules={{ required: "Ce champ est requis" }}
             />
           );
         })}
         {fields.map((field, index) => {
           return (
-            <Input
+            <NumericInput
+              name={`otherExpenses.${index}.amount`}
               label={`Autre dépense ${index + 1}`}
               key={field.id}
               hintText="€ / an"
-              nativeInputProps={register(`otherExpenses.${index}.amount`, {
-                valueAsNumber: true,
-              })}
+              control={control}
             />
           );
         })}

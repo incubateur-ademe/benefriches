@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
-import Input from "@codegouvfr/react-dsfr/Input";
+
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -11,28 +12,18 @@ type FormValues = {
 };
 
 function SurfaceAreaForm({ onSubmit }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
-
-  const error = formState.errors.surfaceArea;
+  const { control, handleSubmit } = useForm<FormValues>();
 
   return (
     <>
       <h2>Quelle est la superficie totale du site ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
+        <NumericInput
+          name="surfaceArea"
           label="Superficie totale"
           hintText="en m2"
-          state={error ? "error" : "default"}
-          stateRelatedMessage={error ? error.message : undefined}
-          nativeInputProps={{
-            type: "number",
-            ...register("surfaceArea", {
-              min: 0,
-              valueAsNumber: true,
-              required:
-                "Ce champ est nécessaire pour déterminer les questions suivantes",
-            }),
-          }}
+          rules={{ required: "Ce champ est requis" }}
+          control={control}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>

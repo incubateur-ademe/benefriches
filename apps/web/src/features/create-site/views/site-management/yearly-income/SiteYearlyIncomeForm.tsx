@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { Input } from "@codegouvfr/react-dsfr/Input";
+
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -11,47 +12,26 @@ export type FormValues = {
   otherIncome: number;
 };
 
-const validatePositiveNumber = (value: number) => {
-  if (isNaN(value) || value < 0) {
-    return "La valeur renseignée doit être un nombre supérieur à zéro.";
-  }
-  return true;
-};
-
 function SiteYearlyIncomeForm({ onSubmit }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
-
-  const errors = formState.errors;
+  const { control, handleSubmit } = useForm<FormValues>();
 
   return (
     <>
       <h2>Recettes annuelles liées à l’exploitation du site</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
+        <NumericInput
+          name="operationsIncome"
           label="Recettes d'exploitation"
           hintText="€ / an"
-          state={errors.operationsIncome ? "error" : "default"}
-          stateRelatedMessage={errors?.operationsIncome?.message}
-          nativeInputProps={{
-            ...register("operationsIncome", {
-              required: "Ce champ est requis",
-              valueAsNumber: true,
-              validate: validatePositiveNumber,
-            }),
-          }}
+          rules={{ required: "Ce champ est requis" }}
+          control={control}
         />
-        <Input
+        <NumericInput
+          name="otherIncome"
           label="Autres recettes"
           hintText="€ / an"
-          state={errors.otherIncome ? "error" : "default"}
-          stateRelatedMessage={errors.otherIncome?.message}
-          nativeInputProps={{
-            ...register("otherIncome", {
-              required: "Ce champ est requis",
-              valueAsNumber: true,
-              validate: validatePositiveNumber,
-            }),
-          }}
+          rules={{ required: "Ce champ est requis" }}
+          control={control}
         />
         <ButtonsGroup
           buttonsEquisized
