@@ -137,8 +137,8 @@ export const siteCreationSlice = createSlice({
       state,
       action: PayloadAction<{
         hasRecentAccidents: boolean;
-        minorInjuriesPerson?: number;
-        severeInjuriesPerson?: number;
+        minorInjuriesPersons?: number;
+        severeInjuriesPersons?: number;
         deaths?: number;
       }>,
     ) => {
@@ -146,10 +146,10 @@ export const siteCreationSlice = createSlice({
       state.siteData.hasRecentAccidents = action.payload.hasRecentAccidents;
 
       if (hasRecentAccidents) {
-        state.siteData.minorInjuriesPerson =
-          action.payload.minorInjuriesPerson ?? 0;
-        state.siteData.severeInjuriesPerson =
-          action.payload.severeInjuriesPerson ?? 0;
+        state.siteData.minorInjuriesPersons =
+          action.payload.minorInjuriesPersons ?? 0;
+        state.siteData.severeInjuriesPersons =
+          action.payload.severeInjuriesPersons ?? 0;
         state.siteData.deaths = action.payload.deaths ?? 0;
       }
     },
