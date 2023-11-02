@@ -34,8 +34,8 @@ export type SiteFoncier = {
   owner: { type: OwnerType; name?: string };
   tenantBusinessName: string;
   hasRecentAccidents: boolean;
-  minorInjuriesPerson?: number;
-  severeInjuriesPerson?: number;
+  minorInjuriesPersons?: number;
+  severeInjuriesPersons?: number;
   deaths?: number;
   yearlyExpenses: Expense[];
   yearlyIncome?: number;
