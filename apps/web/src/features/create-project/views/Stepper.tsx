@@ -2,13 +2,29 @@ import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
 
 import { ProjectCreationStep } from "@/features/create-project/application/createProject.reducer";
 
-const steps = ["Type de projet", "Dénomination"] as const;
+const stepCategories = [
+  "Type de projet",
+  "Panneaux photovoltaïques",
+  "Aménagement des sols",
+  "Acteurs",
+  "Dénomination",
+] as const;
 
-const getCurrentStep = (step: ProjectCreationStep): string => {
+type StepCategory = (typeof stepCategories)[number];
+
+const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
   switch (step) {
     case ProjectCreationStep.PROJECT_TYPES:
     case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:
-      return steps[0];
+      return "Type de projet";
+    case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
+    case ProjectCreationStep.STAKEHOLDERS_OPERATOR:
+    case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
+    case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_FULL_TIME_JOBS:
+    case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:
+    case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE:
+    case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNER:
+      return "Acteurs";
     case ProjectCreationStep.CREATION_CONFIRMATION:
       return "Dénomination";
   }
@@ -19,15 +35,19 @@ type Props = {
 };
 
 function ProjectCreationStepper({ step }: Props) {
-  const currentStep = getCurrentStep(step);
+  const currentStepCategory = getCategoryForStep(step);
 
-  if (!currentStep) return null;
+  if (!currentStepCategory) return null;
 
   return (
     <Stepper
-      title={currentStep}
-      currentStep={steps.findIndex((step) => step === currentStep) + 1}
-      stepCount={steps.length}
+      title={currentStepCategory}
+      currentStep={
+        stepCategories.findIndex(
+          (stepCategory) => stepCategory === currentStepCategory,
+        ) + 1
+      }
+      stepCount={stepCategories.length}
     />
   );
 }
