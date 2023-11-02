@@ -13,7 +13,7 @@ function ProjectRenewableEnergyTypesFormContainer() {
     <ProjectTypeForm
       onSubmit={(data) => {
         dispatch(setRenewableEnergyTypes(data.renewableEnergyTypes));
-        dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
+        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));
       }}
     />
   );
