@@ -6,6 +6,7 @@ import { SoilType } from "../../../domain/siteFoncier.types";
 import { getLabelForSoilType } from "../../soilTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 type Props = {
   totalSurfaceArea: number;
@@ -25,7 +26,7 @@ function SiteSoilsSurfaceAreasForm({
   totalSurfaceArea,
   onSubmit,
 }: Props) {
-  const { register, handleSubmit, watch } = useForm<FormValues>();
+  const { control, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
   return (
@@ -39,17 +40,12 @@ function SiteSoilsSurfaceAreasForm({
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
           <div key={`input-${soilType}`} className={fr.cx("fr-grid-row")}>
-            <Input
-              style={{ width: "50%" }}
+            <NumericInput
+              name={soilType}
               label={getLabelForSoilType(soilType)}
               hintText="en m2"
-              nativeInputProps={{
-                type: "number",
-                ...register(soilType, {
-                  min: 0,
-                  valueAsNumber: true,
-                }),
-              }}
+              rules={{ required: "Ce champ est requis" }}
+              control={control}
             />
             <legend
               className={fr.cx("fr-mb-4w", "fr-ml-1w")}

@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { Input } from "@codegouvfr/react-dsfr/Input";
 
 import { SiteFoncier } from "@/features/create-site/domain/siteFoncier.types";
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 
 type ExpensesBearer = SiteFoncier["yearlyExpenses"][number]["bearer"];
@@ -53,7 +53,7 @@ const expenseBearerOptions = [
 ];
 
 function FricheSecuringExpensessForm({ onSubmit, hasTenant }: Props) {
-  const { register, handleSubmit, formState, watch } = useForm<FormValues>();
+  const { register, control, handleSubmit, watch } = useForm<FormValues>();
 
   return (
     <>
@@ -65,19 +65,15 @@ function FricheSecuringExpensessForm({ onSubmit, hasTenant }: Props) {
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {inputs.map(({ name, label, askForBearer }) => {
-          const error = formState.errors[name];
           return (
             <>
-              <Input
+              <NumericInput
+                control={control}
                 label={label}
-                key={name}
                 hintText="€ / an"
-                state={error ? "error" : "default"}
-                stateRelatedMessage={error ? error.message : undefined}
-                nativeInputProps={register(name, {
-                  valueAsNumber: true,
-                  required: "Ce champ est requis",
-                })}
+                name={name}
+                key={name}
+                rules={{ required: "Ce champ est requis" }}
               />
               {askForBearer && hasTenant && !!watch(name) && (
                 <RadioButtons

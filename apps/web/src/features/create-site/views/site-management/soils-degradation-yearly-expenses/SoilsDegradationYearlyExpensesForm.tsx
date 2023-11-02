@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import { Input } from "@codegouvfr/react-dsfr/Input";
+
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 export type FormValues = {
   waterTreatmentYearlyExpenses?: number;
@@ -18,7 +19,7 @@ function SoilsDegradationYearlyExpenses({
   askForWaterTreatmentExpenses,
   askForFloodsRegulationExpenses,
 }: Props) {
-  const { register, handleSubmit } = useForm<FormValues>();
+  const { control, handleSubmit } = useForm<FormValues>();
 
   return (
     <>
@@ -30,21 +31,19 @@ function SoilsDegradationYearlyExpenses({
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {askForWaterTreatmentExpenses && (
-          <Input
+          <NumericInput
+            name="waterTreatmentYearlyExpenses"
+            control={control}
             label="Coûts de traitement des eaux"
             hintText="€ / an"
-            nativeInputProps={register("waterTreatmentYearlyExpenses", {
-              valueAsNumber: true,
-            })}
           />
         )}
         {askForFloodsRegulationExpenses && (
-          <Input
+          <NumericInput
+            name="floodsRegulationYearlyExpenses"
+            control={control}
             label="Coûts de régulation des inondations"
             hintText="€ / an"
-            nativeInputProps={register("floodsRegulationYearlyExpenses", {
-              valueAsNumber: true,
-            })}
           />
         )}
         <ButtonsGroup

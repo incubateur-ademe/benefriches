@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
-import Input from "@codegouvfr/react-dsfr/Input";
 
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 
 type Props = {
@@ -19,13 +19,12 @@ const requiredMessage =
   "Ce champ est nécessaire pour déterminer les questions suivantes";
 
 function SoilContaminationForm({ onSubmit }: Props) {
-  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
-    defaultValues: { contaminatedSurface: 0 },
-    shouldUnregister: true,
-  });
+  const { register, control, handleSubmit, formState, watch } =
+    useForm<FormValues>({
+      shouldUnregister: true,
+    });
 
   const hasContaminatedSoilsError = formState.errors.hasContaminatedSoils;
-  const contaminatedSurfaceError = formState.errors.contaminatedSurface;
 
   const options = [
     {
@@ -56,23 +55,12 @@ function SoilContaminationForm({ onSubmit }: Props) {
           error={hasContaminatedSoilsError}
         />
         {watch("hasContaminatedSoils") === "yes" && (
-          <Input
+          <NumericInput
+            name="contaminatedSurface"
             label="Superficie polluée"
             hintText="en m2"
-            state={contaminatedSurfaceError ? "error" : "default"}
-            stateRelatedMessage={
-              contaminatedSurfaceError
-                ? contaminatedSurfaceError.message
-                : undefined
-            }
-            nativeInputProps={{
-              type: "number",
-              ...register("contaminatedSurface", {
-                min: 0,
-                valueAsNumber: true,
-                required: requiredMessage,
-              }),
-            }}
+            rules={{ required: "Ce champ est requis" }}
+            control={control}
           />
         )}
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
