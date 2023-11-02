@@ -41,7 +41,7 @@ function PhotovoltaicInfrastructureSurfacesContainer() {
       )}
       onSubmit={(data) => {
         dispatch(setPhotovoltaicInfrastructureSurfaces(data));
-        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));
+        dispatch(goToStep(ProjectCreationStep.SOILS_SURFACE_DISTRIBUTION));
       }}
     />
   );

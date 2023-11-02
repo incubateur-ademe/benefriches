@@ -3,10 +3,10 @@ import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import highchartsVariablePie from "highcharts/modules/variable-pie";
 import HighchartsReact from "highcharts-react-official";
-import { getLabelForSoilType } from "../../soilTypeLabelMapping";
 
 import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
+import { getLabelForSoilType } from "@/shared/views/helpers/soilTypeLabelMapping";
 highchartsVariablePie(Highcharts);
 
 type Props = {

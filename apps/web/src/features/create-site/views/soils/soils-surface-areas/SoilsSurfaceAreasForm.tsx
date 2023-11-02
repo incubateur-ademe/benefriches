@@ -3,10 +3,11 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { SoilType } from "../../../domain/siteFoncier.types";
-import { getLabelForSoilType } from "../../soilTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { getPercentage } from "@/shared/services/percentage/percentage";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import { getLabelForSoilType } from "@/shared/views/helpers/soilTypeLabelMapping";
 
 type Props = {
   totalSurfaceArea: number;
@@ -15,11 +16,6 @@ type Props = {
 };
 
 export type FormValues = Record<SoilType, number>;
-
-const getPercentage = (part: number, total: number) => {
-  if (isNaN(part) || !total) return 0;
-  return (part * 100) / total;
-};
 
 function SiteSoilsSurfaceAreasForm({
   soils,

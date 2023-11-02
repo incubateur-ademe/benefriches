@@ -27,6 +27,8 @@ export enum ProjectCreationStep {
   PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION = "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
   PHOTOVOLTAIC_CONTRACT_DURATION = "PHOTOVOLTAIC_CONTRACT_DURATION",
   PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE = "PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE",
+  SOILS_SURFACE_DISTRIBUTION = "SOILS_SURFACE_DISTRIBUTION",
+
   // Acteurs
   STAKEHOLDERS_INTRODUCTION = "STAKEHOLDERS_INTRODUCTION",
   STAKEHOLDERS_FUTURE_OPERATOR = "STAKEHOLDERS_FUTURE_OPERATOR",
@@ -68,7 +70,11 @@ export const projectCreationInitialState: ProjectCreationState = {
     surfaceArea: 150000,
     name: "Friche industrielle de Blajan",
     soilsSurfaceAreas: {
-      [SoilType.CULTIVATION]: 14999,
+      [SoilType.CULTIVATION]: 10000,
+      [SoilType.FOREST_DECIDUOUS]: 120000,
+      [SoilType.PRAIRIE_GRASS]: 10000,
+      [SoilType.MINERAL_SOIL]: 9500,
+      [SoilType.BUILDINGS]: 500,
     },
   },
   siteDataLoadingState: "idle",
@@ -198,6 +204,12 @@ export const projectCreationSlice = createSlice({
       state.projectData.photovoltaicFoundationsSurface =
         action.payload.photovoltaicFoundationsSurface;
     },
+    setSoilsSurfaceAreas: (
+      state,
+      action: PayloadAction<Project["soilsSurfaceAreas"]>,
+    ) => {
+      state.projectData.soilsSurfaceAreas = action.payload;
+    },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
@@ -236,6 +248,7 @@ export const {
   setPhotovoltaicExpectedAnnualProduction,
   setPhotovoltaicContractDuration,
   setPhotovoltaicInfrastructureSurfaces,
+  setSoilsSurfaceAreas,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;

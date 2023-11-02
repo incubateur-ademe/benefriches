@@ -4,7 +4,8 @@ import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 import { SoilType } from "../../../domain/siteFoncier.types";
-import { getLongLabelForSoilType } from "../../soilTypeLabelMapping";
+
+import { getLongLabelForSoilType } from "@/shared/views/helpers/soilTypeLabelMapping";
 
 export type FormValues = {
   soils: SoilType[];

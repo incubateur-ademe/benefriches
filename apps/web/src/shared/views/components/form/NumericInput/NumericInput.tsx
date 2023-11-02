@@ -5,20 +5,12 @@ import {
   UseControllerProps,
 } from "react-hook-form";
 import DsfrInput from "@codegouvfr/react-dsfr/Input";
+import { numberToString, stringToNumber } from "./helpers";
 
 type Props<T extends FieldValues> = {
   label: string;
   hintText?: string;
 } & UseControllerProps<T>;
-
-const stringToNumber = (value: string) => {
-  const output = parseFloat(value);
-  return isNaN(output) ? undefined : output;
-};
-
-const numberToString = (value: number) => {
-  return isNaN(value) ? "" : value.toString();
-};
 
 const NumericInput = <T extends FieldValues>({
   control,
