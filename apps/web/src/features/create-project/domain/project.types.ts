@@ -18,4 +18,8 @@ export type Project = {
   relatedSite: SiteFoncier;
   types: ProjectType[];
   renewableEnergyTypes: RenewableEnergyType[];
+  futureOperator?:
+    | "user_company"
+    | "local_or_regional_authority"
+    | "other_company";
 };

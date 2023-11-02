@@ -12,7 +12,7 @@ function ProjectStakeholdersIntroductionContainer() {
   return (
     <ProjectStakeholdersIntroduction
       onNext={() =>
-        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_OPERATOR))
+        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR))
       }
     />
   );
