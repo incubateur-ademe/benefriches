@@ -1,3 +1,4 @@
+import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
 
 export enum ProjectType {
@@ -25,15 +26,13 @@ export type Project = {
   relatedSiteId: string;
   types: ProjectType[];
   renewableEnergyTypes: RenewableEnergyType[];
-  photovoltaic: {
-    keyParameter: PhotovoltaicKeyParameter | undefined;
-    power: number;
-    surface: number;
-    expectedAnnualProduction: number;
-    contractDuration: number;
-    foundationsSurface: number;
-    accessPathsSurface: number;
-  };
+  photovoltaicKeyParameter: PhotovoltaicKeyParameter;
+  photovoltaicPower: number;
+  photovoltaicSurface: number;
+  photovoltaicExpectedAnnualProduction: number;
+  photovoltaicContractDuration: number;
+  photovoltaicFoundationsSurface: number;
+  photovoltaicAccessPathsSurface: number;
   futureOperator: ProjectStakeholder;
   conversionFullTimeJobsInvolved: number;
   reinstatementFullTimeJobsInvolved?: number;
@@ -62,9 +61,9 @@ type ProjectStakeholderStructure =
 type ProjectStakeholder =
   | { name: string; structureType: ProjectStakeholderStructure }
   | {
-      name: LocalAndRegionalAuthority;
-      structureType: "local_or_regional_authority";
-    };
+    name: LocalAndRegionalAuthority;
+    structureType: "local_or_regional_authority";
+  };
 
 export type ProjectSite = {
   id: string;
@@ -80,4 +79,6 @@ export type ProjectSite = {
     name: string;
     structureType: ProjectStakeholderStructure;
   };
+  soilsSurfaceAreas: Partial<Record<SoilType, number>>
+  surfaceArea: number;
 };

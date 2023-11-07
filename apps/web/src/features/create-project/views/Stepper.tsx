@@ -19,7 +19,9 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:
       return "Type de projet";
     case ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER:
-        return "Photovoltaïque";
+    case ProjectCreationStep.PHOTOVOLTAIC_POWER:
+    case ProjectCreationStep.PHOTOVOLTAIC_SURFACE:
+      return "Photovoltaïque";
     case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:
     case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:

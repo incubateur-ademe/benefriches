@@ -5,6 +5,7 @@ import {
   ProjectCreationStep,
   setPhotovoltaicKeyParameter,
 } from "@/features/create-project/application/createProject.reducer";
+import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function PhotovoltaicKeyParameterContainer() {
@@ -12,8 +13,12 @@ function PhotovoltaicKeyParameterContainer() {
   return (
     <PhotovoltaicKeyParameterForm
       onSubmit={(data) => {
-        dispatch(setPhotovoltaicKeyParameter(data.photovoltaic.keyParameter));
-        dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
+        const nextStep =
+          data.photovoltaicKeyParameter === PhotovoltaicKeyParameter.POWER
+            ? ProjectCreationStep.PHOTOVOLTAIC_POWER
+            : ProjectCreationStep.PHOTOVOLTAIC_SURFACE;
+        dispatch(setPhotovoltaicKeyParameter(data.photovoltaicKeyParameter));
+        dispatch(goToStep(nextStep));
       }}
     />
   );

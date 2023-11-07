@@ -9,9 +9,7 @@ type Props = {
 };
 
 type FormValues = {
-  photovoltaic: {
-    keyParameter: PhotovoltaicKeyParameter;
-  };
+  photovoltaicKeyParameter: PhotovoltaicKeyParameter;
 };
 
 const requiredMessage =
@@ -19,7 +17,7 @@ const requiredMessage =
 
 function KeyParameterForm({ onSubmit }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
-  const error = formState.errors.photovoltaic?.keyParameter;
+  const error = formState.errors.photovoltaicKeyParameter;
 
   const options = [
     {
@@ -50,7 +48,7 @@ function KeyParameterForm({ onSubmit }: Props) {
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
-          {...register("photovoltaic.keyParameter", {
+          {...register("photovoltaicKeyParameter", {
             required: requiredMessage,
           })}
           options={options}

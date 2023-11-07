@@ -7,6 +7,7 @@ import {
   ProjectType,
   RenewableEnergyType,
 } from "@/features/create-project/domain/project.types";
+import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 
 export type ProjectCreationState = {
   step: ProjectCreationStep;
@@ -19,6 +20,8 @@ export enum ProjectCreationStep {
   RENEWABLE_ENERGY_TYPES = "RENEWABLE_ENERGY_TYPES",
   // Photovoltaic
   PHOTOVOLTAIC_KEY_PARAMETER = "PHOTOVOLTAIC_KEY_PARAMETER",
+  PHOTOVOLTAIC_POWER = "PHOTOVOLTAIC_POWER",
+  PHOTOVOLTAIC_SURFACE = "PHOTOVOLTAIC_SURFACE",
   // Acteurs
   STAKEHOLDERS_INTRODUCTION = "STAKEHOLDERS_INTRODUCTION",
   STAKEHOLDERS_FUTURE_OPERATOR = "STAKEHOLDERS_FUTURE_OPERATOR",
@@ -46,15 +49,21 @@ export const projectCreationInitialState: ProjectCreationState = {
   projectData: {
     yearlyProjectedCosts: [],
     yearlyProjectedRevenue: [],
+    types: [],
+    renewableEnergyTypes: [],
   },
   siteData: {
     id: "id-site",
     isFriche: true,
-    name: "my site",
     owner: {
       id: "owner-uuid",
       name: "SARL Propriétaire",
       structureType: "company",
+    },
+    surfaceArea: 150000,
+    name: "Friche industrielle de Blajan",
+    soilsSurfaceAreas: {
+      [SoilType.CULTIVATION]: 14999,
     },
   },
 };
@@ -146,7 +155,13 @@ export const projectCreationSlice = createSlice({
       state,
       action: PayloadAction<PhotovoltaicKeyParameter>,
     ) => {
-      state.projectData.photovoltaic = { keyParameter: action.payload };
+      state.projectData.photovoltaicKeyParameter = action.payload;
+    },
+    setPhotovoltaicPower: (state, action: PayloadAction<number>) => {
+      state.projectData.photovoltaicPower = action.payload;
+    },
+    setPhotovoltaicSurface: (state, action: PayloadAction<number>) => {
+      state.projectData.photovoltaicSurface = action.payload;
     },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
@@ -169,6 +184,8 @@ export const {
   setNameAndDescription,
   goToStep,
   setPhotovoltaicKeyParameter,
+  setPhotovoltaicPower,
+  setPhotovoltaicSurface,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;
