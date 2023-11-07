@@ -21,6 +21,9 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER:
     case ProjectCreationStep.PHOTOVOLTAIC_POWER:
     case ProjectCreationStep.PHOTOVOLTAIC_SURFACE:
+    case ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION:
+    case ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION:
+    case ProjectCreationStep.PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE:
       return "Photovoltaïque";
     case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:

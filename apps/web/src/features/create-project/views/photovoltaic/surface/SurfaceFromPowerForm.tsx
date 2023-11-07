@@ -33,12 +33,10 @@ function PhotovoltaicSurfaceFromPowerForm({
 
   const hintText = `en m² (maximum conseillé : ${formatNumberFr(
     siteSurfaceArea,
-    0,
   )} m²)`;
 
   const maxErrorMessage = `La superficie des panneaux ne peut pas être supérieure à la superficie totale du site (${formatNumberFr(
     siteSurfaceArea,
-    0,
   )} m²).`;
 
   return (
@@ -52,7 +50,7 @@ function PhotovoltaicSurfaceFromPowerForm({
       </p>
       <p>
         Pour la puissance que vous avez renseigné (
-        {formatNumberFr(photovoltaicPower, 0)}&#8239;kWh), la superficie occupée
+        {formatNumberFr(photovoltaicPower)}&#8239;kWh), la superficie occupée
         par les panneaux devrait donc être de{" "}
         {formatNumberFr(recommendedSurface)}&#8239;m².
       </p>

@@ -22,6 +22,9 @@ export enum ProjectCreationStep {
   PHOTOVOLTAIC_KEY_PARAMETER = "PHOTOVOLTAIC_KEY_PARAMETER",
   PHOTOVOLTAIC_POWER = "PHOTOVOLTAIC_POWER",
   PHOTOVOLTAIC_SURFACE = "PHOTOVOLTAIC_SURFACE",
+  PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION = "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
+  PHOTOVOLTAIC_CONTRACT_DURATION = "PHOTOVOLTAIC_CONTRACT_DURATION",
+  PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE = "PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE",
   // Acteurs
   STAKEHOLDERS_INTRODUCTION = "STAKEHOLDERS_INTRODUCTION",
   STAKEHOLDERS_FUTURE_OPERATOR = "STAKEHOLDERS_FUTURE_OPERATOR",
@@ -163,6 +166,27 @@ export const projectCreationSlice = createSlice({
     setPhotovoltaicSurface: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicSurface = action.payload;
     },
+    setPhotovoltaicExpectedAnnualProduction: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
+      state.projectData.photovoltaic.expectedAnnualProduction = action.payload;
+    },
+    setPhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
+      state.projectData.photovoltaic.contractDuration = action.payload;
+    },
+    setPhotovoltaicInfrastructureSurfaces: (
+      state,
+      action: PayloadAction<{
+        foundationsSurface: number;
+        accessPathsSurface: number;
+      }>,
+    ) => {
+      state.projectData.photovoltaic.accessPathsSurface =
+        action.payload.accessPathsSurface;
+      state.projectData.photovoltaic.foundationsSurface =
+        action.payload.foundationsSurface;
+    },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
@@ -186,6 +210,9 @@ export const {
   setPhotovoltaicKeyParameter,
   setPhotovoltaicPower,
   setPhotovoltaicSurface,
+  setPhotovoltaicExpectedAnnualProduction,
+  setPhotovoltaicContractDuration,
+  setPhotovoltaicInfrastructureSurfaces,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;

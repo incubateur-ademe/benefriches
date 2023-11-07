@@ -12,6 +12,8 @@ import {
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
 
+const RATIO_KWC_PER_M2 = 0.0714;
+
 function PhotovoltaicPowerContainer() {
   const dispatch = useAppDispatch();
   const relatedSite = useAppSelector(
@@ -28,7 +30,9 @@ function PhotovoltaicPowerContainer() {
   );
 
   if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.SURFACE) {
-    const maxRecommendedPower = Math.round(photovoltaicSurface * 0.0714);
+    const maxRecommendedPower = Math.round(
+      photovoltaicSurface * RATIO_KWC_PER_M2,
+    );
 
     return (
       <PhotovoltaicPowerFromSurfaceForm
@@ -36,7 +40,11 @@ function PhotovoltaicPowerContainer() {
         photovoltaicSurfaceArea={photovoltaicSurface}
         onSubmit={(data) => {
           dispatch(setPhotovoltaicPower(data.photovoltaic.power));
-          dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
+          dispatch(
+            goToStep(
+              ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION,
+            ),
+          );
         }}
       />
     );
