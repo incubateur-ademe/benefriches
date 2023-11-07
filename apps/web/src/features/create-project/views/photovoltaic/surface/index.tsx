@@ -1,10 +1,12 @@
 import PhotovoltaicSurfaceForm from "./SurfaceForm";
+import PhotovoltaicSurfaceFromPowerForm from "./SurfaceFromPowerForm";
 
 import {
   goToStep,
   ProjectCreationStep,
   setPhotovoltaicSurface,
 } from "@/features/create-project/application/createProject.reducer";
+import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import {
   useAppDispatch,
   useAppSelector,
@@ -20,16 +22,31 @@ function PhotovoltaicSurfaceContainer() {
   );
   const { surfaceArea } = siteData;
 
-  const recommendedSurface = (photovoltaicPower || 0) * 14;
+  const photovoltaicKeyParameter = useAppSelector(
+    (state) => state.projectCreation.projectData.photovoltaicKeyParameter,
+  );
+
+  if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.POWER) {
+    const recommendedSurface = Math.round((photovoltaicPower || 0) * 14);
+    return (
+      <PhotovoltaicSurfaceFromPowerForm
+        recommendedSurface={recommendedSurface}
+        siteSurfaceArea={surfaceArea}
+        photovoltaicPower={photovoltaicPower || 0}
+        onSubmit={(data) => {
+          dispatch(setPhotovoltaicSurface(data.photovoltaicSurface));
+          dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
+        }}
+      />
+    );
+  }
 
   return (
     <PhotovoltaicSurfaceForm
-      recommendedSurface={recommendedSurface}
       siteSurfaceArea={surfaceArea}
-      photovoltaicPower={photovoltaicPower || 0}
       onSubmit={(data) => {
         dispatch(setPhotovoltaicSurface(data.photovoltaicSurface));
-        dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
+        dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_POWER));
       }}
     />
   );

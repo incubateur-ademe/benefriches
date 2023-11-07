@@ -1,7 +1,7 @@
-export function formatNumberFr(n: number, maximumFractionDigits = 2): string {
+export function formatNumberFr(n: number): string {
   if (isNaN(n)) {
     return "Valeur invalide";
   }
 
-  return new Intl.NumberFormat("fr-FR", { maximumFractionDigits }).format(n);
+  return new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(n);
 }
