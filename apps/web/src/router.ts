@@ -19,6 +19,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
     (params) => `/mes-sites-fonciers/${params.siteFoncierName}`,
   ),
   createSiteFoncier: defineRoute("/creer-site-foncier"),
+  createProject: defineRoute("/creer-projet"),
 });
 
 export { RouteProvider, useRoute, routes };
