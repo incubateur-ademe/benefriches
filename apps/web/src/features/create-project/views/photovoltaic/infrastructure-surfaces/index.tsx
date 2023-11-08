@@ -29,6 +29,8 @@ function PhotovoltaicInfrastructureSurfacesContainer() {
     <PhotovoltaicInfrastructureSurfacesForm
       suggestedAccessPathsSurface={suggestedAccessPathsSurface}
       suggestedFoundationsSurface={suggestedFoundationsSurface}
+      accessPathsRatio={RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS}
+      foundationsRatio={RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS}
       onSubmit={(data) => {
         dispatch(setPhotovoltaicInfrastructureSurfaces(data.photovoltaic));
         dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));

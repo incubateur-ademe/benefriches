@@ -9,6 +9,7 @@ type Props = {
   recommendedSurface: number;
   photovoltaicPower: number;
   siteSurfaceArea: number;
+  computationRatio: number;
 };
 
 type FormValues = {
@@ -22,6 +23,7 @@ function PhotovoltaicSurfaceFromPowerForm({
   photovoltaicPower,
   recommendedSurface,
   siteSurfaceArea,
+  computationRatio,
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
@@ -46,7 +48,7 @@ function PhotovoltaicSurfaceFromPowerForm({
       </h2>
       <p>
         Le ratio superficie / puissance d’installation est de{" "}
-        <strong>14000&#8239;m² pour 1000 kWc.</strong>
+        <strong>{computationRatio * 1000}&#8239;m² pour 1000 kWc.</strong>
       </p>
       <p>
         Pour la puissance que vous avez renseigné (

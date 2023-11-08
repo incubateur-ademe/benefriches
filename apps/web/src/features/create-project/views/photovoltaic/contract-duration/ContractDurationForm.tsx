@@ -33,7 +33,7 @@ function PhotovoltaicAnnualProductionForm({
       </h2>
       <p>
         La durée de contrat moyenne pour la revente de production photovoltaïque
-        est de 20 ans.
+        est de {suggestedContractDuration} ans.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput

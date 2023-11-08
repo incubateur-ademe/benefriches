@@ -27,6 +27,9 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea }: Props) {
       <h2>
         Quel superficie du site occuperont les panneaux photovoltaïques&#8239;?
       </h2>
+      <p>
+        Le site fait <strong>{formatNumberFr(siteSurfaceArea)}</strong> m²
+      </p>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput

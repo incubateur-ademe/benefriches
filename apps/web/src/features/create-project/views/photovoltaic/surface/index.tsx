@@ -12,31 +12,33 @@ import {
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
 
+// 14000 m² for 1000 kWc
 const RATIO_M2_PER_KWC = 14;
+
+const computeSurfaceFromPower = (power = 0) => {
+  return Math.round(power * RATIO_M2_PER_KWC);
+};
 
 function PhotovoltaicSurfaceContainer() {
   const dispatch = useAppDispatch();
-  const siteData = useAppSelector(
-    (state) => state.projectCreation.siteData,
+  const surfaceArea = useAppSelector(
+    (state) => state.projectCreation.siteData?.surfaceArea,
   );
   const photovoltaicPower = useAppSelector(
     (state) => state.projectCreation.projectData.photovoltaicPower,
   );
-  const { surfaceArea } = siteData;
 
   const photovoltaicKeyParameter = useAppSelector(
     (state) => state.projectCreation.projectData.photovoltaicKeyParameter,
   );
 
   if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.POWER) {
-    const recommendedSurface = Math.round(
-      (photovoltaicPower || 0) * RATIO_M2_PER_KWC,
-    );
     return (
       <PhotovoltaicSurfaceFromPowerForm
-        recommendedSurface={recommendedSurface}
-        siteSurfaceArea={surfaceArea}
-        photovoltaicPower={photovoltaicPower || 0}
+        recommendedSurface={computeSurfaceFromPower(photovoltaicPower)}
+        siteSurfaceArea={surfaceArea ?? 0}
+        photovoltaicPower={photovoltaicPower ?? 0}
+        computationRatio={RATIO_M2_PER_KWC}
         onSubmit={(data) => {
           dispatch(setPhotovoltaicSurface(data.photovoltaic.surface));
           dispatch(
@@ -51,7 +53,7 @@ function PhotovoltaicSurfaceContainer() {
 
   return (
     <PhotovoltaicSurfaceForm
-      siteSurfaceArea={surfaceArea}
+      siteSurfaceArea={surfaceArea ?? 0}
       onSubmit={(data) => {
         dispatch(setPhotovoltaicSurface(data.photovoltaicSurface));
         dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_POWER));

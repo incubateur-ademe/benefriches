@@ -7,6 +7,8 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   suggestedFoundationsSurface: number;
   suggestedAccessPathsSurface: number;
+  foundationsRatio: number;
+  accessPathsRatio: number;
 };
 
 type FormValues = {
@@ -19,6 +21,8 @@ type FormValues = {
 function PhotovoltaicInfrastructureSurfacesForm({
   suggestedFoundationsSurface,
   suggestedAccessPathsSurface,
+  foundationsRatio,
+  accessPathsRatio,
   onSubmit,
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
@@ -40,8 +44,8 @@ function PhotovoltaicInfrastructureSurfacesForm({
       </p>
 
       <ul>
-        <li>Fondations des panneaux : 0.02 m² par KWc</li>
-        <li>Pistes d’accès : 0.88 m² par KWc</li>
+        <li>Fondations des panneaux : {foundationsRatio} m² par KWc</li>
+        <li>Pistes d’accès : {accessPathsRatio} m² par KWc</li>
       </ul>
 
       <p>Vous pourvez modifier ces superficies.</p>

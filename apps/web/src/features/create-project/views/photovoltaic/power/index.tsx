@@ -12,14 +12,18 @@ import {
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
 
+// 714 kWc pour 10000 m²
 const RATIO_KWC_PER_M2 = 0.0714;
+
+const computePowerFromSurface = (surface: number) => {
+  return Math.round(surface * RATIO_KWC_PER_M2);
+};
 
 function PhotovoltaicPowerContainer() {
   const dispatch = useAppDispatch();
-  const relatedSite = useAppSelector(
-    (state) => state.projectCreation.projectData.relatedSite,
+  const surfaceArea = useAppSelector(
+    (state) => state.projectCreation.projectData.relatedSite.surfaceArea,
   );
-  const { surfaceArea } = relatedSite;
 
   const photovoltaicSurface = useAppSelector(
     (state) => state.projectCreation.projectData.photovoltaic.surface,
@@ -30,14 +34,11 @@ function PhotovoltaicPowerContainer() {
   );
 
   if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.SURFACE) {
-    const maxRecommendedPower = Math.round(
-      photovoltaicSurface * RATIO_KWC_PER_M2,
-    );
-
     return (
       <PhotovoltaicPowerFromSurfaceForm
-        maxRecommendedPower={maxRecommendedPower}
+        maxRecommendedPower={computePowerFromSurface(photovoltaicSurface)}
         photovoltaicSurfaceArea={photovoltaicSurface}
+        computationRatio={RATIO_KWC_PER_M2}
         onSubmit={(data) => {
           dispatch(setPhotovoltaicPower(data.photovoltaic.power));
           dispatch(

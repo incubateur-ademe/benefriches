@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 type Props = {
@@ -32,8 +33,9 @@ function PhotovoltaicAnnualProductionForm({
         Quelle est la production annuelle attendue de votre installation ?
       </h2>
       <p>
-        Production calculée à partir de la puissance, de la superficie au sol et
-        du taux d’ensoleillement dans la zone géographique du site.
+        D’après le taux d’ensolleillement moyen en France et à partir de la
+        puissance de vos futurs panneaux, vous pouvez attendre une production
+        annuelle de {formatNumberFr(suggestedAnnualProduction)} MWh/an.
       </p>
       <p>Vous pouvez la modifier.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
