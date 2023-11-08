@@ -20,10 +20,12 @@ function PhotovoltaicInfrastructureSurfacesContainer() {
     (state) => state.projectCreation.projectData.photovoltaic.power,
   );
 
-  const suggestedAccessPathsSurface =
-    photovoltaicPower * RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS;
-  const suggestedFoundationsSurface =
-    photovoltaicPower * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS;
+  const suggestedAccessPathsSurface = Math.round(
+    photovoltaicPower * RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
+  );
+  const suggestedFoundationsSurface = Math.round(
+    photovoltaicPower * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
+  );
 
   return (
     <PhotovoltaicInfrastructureSurfacesForm

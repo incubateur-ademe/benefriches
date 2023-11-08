@@ -41,7 +41,7 @@ function PhotovoltaicAnnualProductionForm({
           label="Durée du contrat de revente"
           hintText="en années"
           rules={{
-            min: 0,
+            min: 2,
             required:
               "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
