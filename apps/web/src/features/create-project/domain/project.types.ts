@@ -1,4 +1,4 @@
-import { SiteFoncier } from "@/features/create-site/domain/siteFoncier.types";
+import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
 
 export enum ProjectType {
   RENEWABLE_ENERGY = "RENEWABLE_ENERGY",
@@ -15,12 +15,37 @@ export enum RenewableEnergyType {
 }
 
 export type Project = {
-  relatedSite: SiteFoncier;
+  name: string;
+  relatedSiteId: string;
   types: ProjectType[];
   renewableEnergyTypes: RenewableEnergyType[];
-  futureOperator?:
-    | "user_company"
-    | "local_or_regional_authority"
-    | "other_company";
-  reinstatementContractOwner?: string;
+  futureOperator: ProjectStakeholder;
+};
+
+type ProjectStakeholderStructure =
+  | "company"
+  | "local_or_regional_authority"
+  | "unknown";
+
+type ProjectStakeholder =
+  | { name: string; structureType: ProjectStakeholderStructure }
+  | {
+      name: LocalAndRegionalAuthority;
+      structureType: "local_or_regional_authority";
+    };
+
+export type ProjectSite = {
+  id: string;
+  name: string;
+  isFriche: boolean;
+  owner: {
+    id: string;
+    name: string;
+    structureType: ProjectStakeholderStructure;
+  };
+  tenant?: {
+    id: string;
+    name: string;
+    structureType: ProjectStakeholderStructure;
+  };
 };
