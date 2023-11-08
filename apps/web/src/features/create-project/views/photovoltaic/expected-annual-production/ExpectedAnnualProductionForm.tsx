@@ -33,11 +33,11 @@ function PhotovoltaicAnnualProductionForm({
         Quelle est la production annuelle attendue de votre installation ?
       </h2>
       <p>
-        D’après le taux d’ensolleillement moyen en France et à partir de la
+        D’après le taux d’ensoleillement moyen en France et à partir de la
         puissance de vos futurs panneaux, vous pouvez attendre une production
         annuelle de {formatNumberFr(suggestedAnnualProduction)} MWh/an.
       </p>
-      <p>Vous pouvez la modifier.</p>
+      <p>Vous pouvez modifier cette valeur.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaic.expectedAnnualProduction"
