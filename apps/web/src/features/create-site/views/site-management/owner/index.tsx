@@ -14,7 +14,9 @@ const mapProps = (dispatch: AppDispatch) => {
     onSubmit: (data: FormValues) => {
       switch (data.ownerType) {
         case "LOCAL_OR_REGIONAL_AUTHORITY":
-          dispatch(setOwner({ type: data.localAndRegionalAuthorityType! }));
+          dispatch(
+            setOwner({ type: data.localAndRegionalAuthorityType as OwnerType }),
+          );
           break;
         case "USER_COMPANY":
         case "OTHER_COMPANY":
