@@ -32,11 +32,8 @@ export enum ProjectCreationStep {
 
 export const projectCreationInitialState: ProjectCreationState = {
   step: ProjectCreationStep.PROJECT_TYPES,
-  projectData: {
-    types: [],
-    renewableEnergyTypes: [],
-    relatedSite: undefined,
-  },
+  projectData: {},
+  siteData: null,
 };
 
 export const projectCreationSlice = createSlice({
