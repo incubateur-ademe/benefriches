@@ -4,6 +4,7 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Select } from "@codegouvfr/react-dsfr/SelectNext";
 
 import { OwnerType } from "@/features/create-site/domain/siteFoncier.types";
+import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 
 type Props = {
@@ -12,7 +13,7 @@ type Props = {
 
 export type FormValues = {
   ownerType: OwnerOptions;
-  localAndRegionalAuthorityType?: (typeof localAndRegionalAuthorityOptions)[number]["value"];
+  localAndRegionalAuthorityType?: LocalAndRegionalAuthority;
   ownerName?: string;
 };
 
