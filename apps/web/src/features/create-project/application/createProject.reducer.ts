@@ -16,14 +16,18 @@ export type ProjectCreationState = {
 export enum ProjectCreationStep {
   PROJECT_TYPES = "PROJECT_TYPES",
   RENEWABLE_ENERGY_TYPES = "RENEWABLE_ENERGY_TYPES",
-  CREATION_CONFIRMATION = "CREATION_CONFIRMATION",
+  // Acteurs
   STAKEHOLDERS_INTRODUCTION = "STAKEHOLDERS_INTRODUCTION",
   STAKEHOLDERS_FUTURE_OPERATOR = "STAKEHOLDERS_FUTURE_OPERATOR",
   STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER = "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER",
-  STAKEHOLDERS_REINSTATEMENT_FULL_TIME_JOBS = "STAKEHOLDERS_REINSTATEMENT_FULL_TIME_JOBS",
+  STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS = "STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS",
   STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS = "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS",
   STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE = "STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE",
   STAKEHOLDERS_FUTURE_OWNER = "STAKEHOLDERS_FUTURE_OWNER",
+  // Coûts et recette
+  COSTS_AND_REVENUE_INTRODUCTION = "COST_AND_REVENUE_INTRODUCTION",
+  // Confirmation
+  CREATION_CONFIRMATION = "CREATION_CONFIRMATION",
 }
 
 export const projectCreationInitialState: ProjectCreationState = {
@@ -67,6 +71,12 @@ export const projectCreationSlice = createSlice({
           action.payload.reinstatementFullTimeJobs;
       }
     },
+    setOperationsFullTimeJobsInvolved: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
+      state.projectData.operationsFullTimeJobsInvolved = action.payload;
+    },
     setReinstatementContractOwner: (
       state,
       action: PayloadAction<Project["reinstatementContractOwner"]>,
@@ -85,6 +95,7 @@ export const {
   setFutureOperator,
   setReinstatementContractOwner,
   setFullTimeJobsInvolved,
+  setOperationsFullTimeJobsInvolved,
   goToStep,
 } = projectCreationSlice.actions;
 
