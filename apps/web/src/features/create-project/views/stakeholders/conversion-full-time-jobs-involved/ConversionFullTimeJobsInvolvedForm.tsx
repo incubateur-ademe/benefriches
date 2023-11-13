@@ -13,7 +13,7 @@ export type FormValues = {
   fullTimeJobs: number;
 };
 
-function ProjectFullTimeJobsInvolvedForm({
+function ConversionFullTimeJobsInvolvedForm({
   askForReinstatementFullTimeJobs,
   onSubmit,
 }: Props) {
@@ -56,4 +56,4 @@ function ProjectFullTimeJobsInvolvedForm({
   );
 }
 
-export default ProjectFullTimeJobsInvolvedForm;
+export default ConversionFullTimeJobsInvolvedForm;

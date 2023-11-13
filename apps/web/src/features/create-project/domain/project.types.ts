@@ -20,7 +20,7 @@ export type Project = {
   types: ProjectType[];
   renewableEnergyTypes: RenewableEnergyType[];
   futureOperator: ProjectStakeholder;
-  fullTimeJobsInvolved: number;
+  conversionFullTimeJobsInvolved: number;
   reinstatementFullTimeJobsInvolved: number;
   reinstatementContractOwner: ProjectStakeholder;
   operationsFullTimeJobsInvolved: number;
