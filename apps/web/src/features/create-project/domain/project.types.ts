@@ -20,6 +20,9 @@ export type Project = {
   types: ProjectType[];
   renewableEnergyTypes: RenewableEnergyType[];
   futureOperator: ProjectStakeholder;
+  fullTimeJobsInvolved: number;
+  reinstatementFullTimeJobsInvolved: number;
+  reinstatementContractOwner: ProjectStakeholder;
 };
 
 type ProjectStakeholderStructure =

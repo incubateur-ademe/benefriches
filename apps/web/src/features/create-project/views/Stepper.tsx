@@ -20,7 +20,7 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:
     case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
-    case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_FULL_TIME_JOBS:
+    case ProjectCreationStep.STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS:
     case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNER:

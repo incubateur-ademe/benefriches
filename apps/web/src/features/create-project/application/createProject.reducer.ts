@@ -1,18 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
+  Project,
+  ProjectSite,
   ProjectType,
   RenewableEnergyType,
 } from "@/features/create-project/domain/project.types";
-import { SiteFoncier } from "@/features/create-site/domain/siteFoncier.types";
 
 export type ProjectCreationState = {
   step: ProjectCreationStep;
-  projectData: {
-    types: ProjectType[];
-    renewableEnergyTypes: RenewableEnergyType[];
-    relatedSite: SiteFoncier | undefined;
-  };
+  projectData: Partial<Project>;
+  siteData: ProjectSite | null;
 };
 
 export enum ProjectCreationStep {
@@ -56,6 +54,19 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.futureOperator = action.payload;
     },
+    setFullTimeJobsInvolved: (
+      state,
+      action: PayloadAction<{
+        reinstatementFullTimeJobs?: number;
+        fullTimeJobs: number;
+      }>,
+    ) => {
+      state.projectData.fullTimeJobsInvolved = action.payload.fullTimeJobs;
+      if (action.payload.reinstatementFullTimeJobs !== undefined) {
+        state.projectData.reinstatementFullTimeJobsInvolved =
+          action.payload.reinstatementFullTimeJobs;
+      }
+    },
     setReinstatementContractOwner: (
       state,
       action: PayloadAction<Project["reinstatementContractOwner"]>,
@@ -73,6 +84,7 @@ export const {
   setRenewableEnergyTypes,
   setFutureOperator,
   setReinstatementContractOwner,
+  setFullTimeJobsInvolved,
   goToStep,
 } = projectCreationSlice.actions;
 
