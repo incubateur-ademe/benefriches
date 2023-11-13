@@ -58,14 +58,15 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.futureOperator = action.payload;
     },
-    setFullTimeJobsInvolved: (
+    setConversionFullTimeJobsInvolved: (
       state,
       action: PayloadAction<{
         reinstatementFullTimeJobs?: number;
         fullTimeJobs: number;
       }>,
     ) => {
-      state.projectData.fullTimeJobsInvolved = action.payload.fullTimeJobs;
+      state.projectData.conversionFullTimeJobsInvolved =
+        action.payload.fullTimeJobs;
       if (action.payload.reinstatementFullTimeJobs !== undefined) {
         state.projectData.reinstatementFullTimeJobsInvolved =
           action.payload.reinstatementFullTimeJobs;
@@ -94,7 +95,7 @@ export const {
   setRenewableEnergyTypes,
   setFutureOperator,
   setReinstatementContractOwner,
-  setFullTimeJobsInvolved,
+  setConversionFullTimeJobsInvolved,
   setOperationsFullTimeJobsInvolved,
   goToStep,
 } = projectCreationSlice.actions;

@@ -1,8 +1,8 @@
 import { ProjectCreationStep } from "../application/createProject.reducer";
+import ProjectFullTimeJobsInvolvedForm from "./stakeholders/conversion-full-time-jobs-involved";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
 import SiteOperatorForm from "./stakeholders/operator";
-import ProjectFullTimeJobsInvolvedForm from "./stakeholders/reconversion-full-time-jobs-involved";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 import ProjectCreationConfirmation from "./confirmation";
 import ProjectTypesForm from "./project-types";
