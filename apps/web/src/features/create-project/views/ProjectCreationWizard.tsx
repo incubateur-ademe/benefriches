@@ -1,5 +1,6 @@
 import { ProjectCreationStep } from "../application/createProject.reducer";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
+import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
 import SiteOperatorForm from "./stakeholders/operator";
 import ProjectFullTimeJobsInvolvedForm from "./stakeholders/reconversion-full-time-jobs-involved";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
@@ -29,6 +30,8 @@ function ProjectCreationWizard() {
         return <SiteReinstatementContractOwnerForm />;
       case ProjectCreationStep.STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS:
         return <ProjectFullTimeJobsInvolvedForm />;
+      case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:
+        return <OperationsFullTimeJobsInvolvedForm />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }

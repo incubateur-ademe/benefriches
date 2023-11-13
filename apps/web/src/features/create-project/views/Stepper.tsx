@@ -7,6 +7,7 @@ const stepCategories = [
   "Panneaux photovoltaïques",
   "Aménagement des sols",
   "Acteurs",
+  "Coûts et recettes",
   "Dénomination",
 ] as const;
 
@@ -25,6 +26,8 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNER:
       return "Acteurs";
+    case ProjectCreationStep.COSTS_AND_REVENUE_INTRODUCTION:
+      return "Coûts et recettes";
     case ProjectCreationStep.CREATION_CONFIRMATION:
       return "Dénomination";
   }

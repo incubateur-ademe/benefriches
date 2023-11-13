@@ -23,6 +23,7 @@ export type Project = {
   fullTimeJobsInvolved: number;
   reinstatementFullTimeJobsInvolved: number;
   reinstatementContractOwner: ProjectStakeholder;
+  operationsFullTimeJobsInvolved: number;
 };
 
 type ProjectStakeholderStructure =
