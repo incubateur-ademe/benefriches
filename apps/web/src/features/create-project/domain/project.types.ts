@@ -21,9 +21,16 @@ export type Project = {
   renewableEnergyTypes: RenewableEnergyType[];
   futureOperator: ProjectStakeholder;
   conversionFullTimeJobsInvolved: number;
-  reinstatementFullTimeJobsInvolved: number;
-  reinstatementContractOwner: ProjectStakeholder;
+  reinstatementFullTimeJobsInvolved?: number;
+  reinstatementContractOwner?: ProjectStakeholder;
   operationsFullTimeJobsInvolved: number;
+  reinstatementCost?: number;
+  photovoltaicPanelsInstallationCost: number;
+  yearlyProjectedCosts: Expense[];
+};
+
+type Expense = {
+  amount: number;
 };
 
 type ProjectStakeholderStructure =
