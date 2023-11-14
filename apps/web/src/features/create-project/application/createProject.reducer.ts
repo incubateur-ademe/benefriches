@@ -25,14 +25,22 @@ export enum ProjectCreationStep {
   STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE = "STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE",
   STAKEHOLDERS_FUTURE_OWNER = "STAKEHOLDERS_FUTURE_OWNER",
   // Coûts et recette
-  COSTS_AND_REVENUE_INTRODUCTION = "COST_AND_REVENUE_INTRODUCTION",
+  COSTS_INTRODUCTION = "COST_INTRODUCTION",
+  COSTS_REINSTATEMENT = "COSTS_REINSTATEMENT",
+  COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION = "COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION",
+  COSTS_PROJECTED_YEARLY_COSTS = "COSTS_PROJECTED_YEARLY_COSTS",
+  REVENUE_INTRODUCTION = "REVENUE_INTRODUCTION",
+  REVENUE_FINANCIAL_ASSISTANCE = "REVENUE_FINANCIAL_ASSISTANCE",
+  REVENUE_PROJECTED_YEARLY_REVENUE = "REVENUE_PROJECTED_YEARLY_REVENUE",
   // Confirmation
   CREATION_CONFIRMATION = "CREATION_CONFIRMATION",
 }
 
 export const projectCreationInitialState: ProjectCreationState = {
   step: ProjectCreationStep.PROJECT_TYPES,
-  projectData: {},
+  projectData: {
+    yearlyProjectedCosts: [],
+  },
   siteData: null,
 };
 
@@ -81,6 +89,24 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.reinstatementContractOwner = action.payload;
     },
+    setReinstatementCost: (state, action: PayloadAction<number>) => {
+      state.projectData.reinstatementCost = action.payload;
+    },
+    setPhotovoltaicPanelsInstallationCost: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
+      state.projectData.photovoltaicPanelsInstallationCost = action.payload;
+    },
+    addYearlyProjectedCosts: (
+      state,
+      action: PayloadAction<Project["yearlyProjectedCosts"]>,
+    ) => {
+      state.projectData.yearlyProjectedCosts = [
+        ...(state.projectData.yearlyProjectedCosts ?? []),
+        ...action.payload,
+      ];
+    },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
@@ -94,6 +120,9 @@ export const {
   setReinstatementContractOwner,
   setConversionFullTimeJobsInvolved,
   setOperationsFullTimeJobsInvolved,
+  setReinstatementCost,
+  setPhotovoltaicPanelsInstallationCost,
+  addYearlyProjectedCosts,
   goToStep,
 } = projectCreationSlice.actions;
 

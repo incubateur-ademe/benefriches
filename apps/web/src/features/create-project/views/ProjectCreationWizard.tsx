@@ -1,4 +1,9 @@
 import { ProjectCreationStep } from "../application/createProject.reducer";
+import ProjectCostsIntroduction from "./costs/introduction";
+import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
+import ReinstatementsCostsForm from "./costs/reinstatement-costs";
+import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
+import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectFullTimeJobsInvolvedForm from "./stakeholders/conversion-full-time-jobs-involved";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
@@ -32,6 +37,16 @@ function ProjectCreationWizard() {
         return <ProjectFullTimeJobsInvolvedForm />;
       case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:
         return <OperationsFullTimeJobsInvolvedForm />;
+      case ProjectCreationStep.COSTS_INTRODUCTION:
+        return <ProjectCostsIntroduction />;
+      case ProjectCreationStep.COSTS_REINSTATEMENT:
+        return <ReinstatementsCostsForm />;
+      case ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION:
+        return <PhotovoltaicPanelsInstallationCostsForm />;
+      case ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS:
+        return <YearlyProjectedCostsForm />;
+      case ProjectCreationStep.REVENUE_INTRODUCTION:
+        return <ProjectRevenueIntroduction />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }

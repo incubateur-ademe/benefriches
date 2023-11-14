@@ -26,7 +26,13 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNER:
       return "Acteurs";
-    case ProjectCreationStep.COSTS_AND_REVENUE_INTRODUCTION:
+    case ProjectCreationStep.COSTS_INTRODUCTION:
+    case ProjectCreationStep.COSTS_REINSTATEMENT:
+    case ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION:
+    case ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS:
+    case ProjectCreationStep.REVENUE_INTRODUCTION:
+    case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
+    case ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE:
       return "Coûts et recettes";
     case ProjectCreationStep.CREATION_CONFIRMATION:
       return "Dénomination";
