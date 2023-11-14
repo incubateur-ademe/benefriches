@@ -13,8 +13,8 @@ export type FormValues = {
   otherAmount?: number;
 };
 
-const sumAllRevenue = (costs: FormValues): number => {
-  return Object.values(costs).reduce((sum, cost) => sum + (cost ?? 0), 0);
+const sumAllRevenue = (amounts: FormValues): number => {
+  return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
 const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {

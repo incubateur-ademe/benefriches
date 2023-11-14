@@ -9,13 +9,13 @@ type Props = {
 };
 
 export type FormValues = {
-  worksCost?: number;
-  technicalStudyCost?: number;
-  otherCost?: number;
+  worksAmount?: number;
+  technicalStudyAmount?: number;
+  otherAmount?: number;
 };
 
-const sumAllCosts = (costs: FormValues): number => {
-  return Object.values(costs).reduce((sum, cost) => sum + (cost ?? 0), 0);
+const sumAmounts = (amounts: FormValues): number => {
+  return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
 const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit }: Props) => {
@@ -31,24 +31,24 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit }: Props) => {
           control={control}
           label="Travaux"
           hintText="€"
-          name="worksCost"
+          name="worksAmount"
         />
         <NumericInput
           control={control}
           label="Études et honoraires techniques"
           hintText="€"
-          name="technicalStudyCost"
+          name="technicalStudyAmount"
         />
         <NumericInput
           control={control}
           label="Frais divers"
           hintText="€"
-          name="otherCost"
+          name="otherAmount"
         />
         <p>
           <strong>
             Total des coûts d'installation :{" "}
-            {formatNumberFr(sumAllCosts(allCosts))} €
+            {formatNumberFr(sumAmounts(allCosts))} €
           </strong>
         </p>
         <ButtonsGroup

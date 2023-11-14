@@ -12,8 +12,8 @@ import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {
-    onSubmit: (costs: FormValues) => {
-      const yearlyProjectedCosts = Object.values(costs)
+    onSubmit: (amounts: FormValues) => {
+      const yearlyProjectedCosts = Object.values(amounts)
         .filter((amount) => !!amount)
         .map((amount) => ({ amount }));
       dispatch(addYearlyProjectedCosts(yearlyProjectedCosts));

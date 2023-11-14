@@ -9,16 +9,16 @@ type Props = {
 };
 
 export type FormValues = {
-  wasteCollectionCost?: number;
-  asbestosRemovalCost?: number;
-  demolitionCost?: number;
-  remediationCost?: number;
-  deimpermeabilizationCost?: number;
-  sustainableSoilsReinstatementCost?: number;
+  wasteCollectionAmount?: number;
+  asbestosRemovalAmount?: number;
+  demolitionAmount?: number;
+  remediationAmount?: number;
+  deimpermeabilizationAmount?: number;
+  sustainableSoilsReinstatementAmount?: number;
 };
 
-const sumAllCosts = (costs: FormValues): number => {
-  return Object.values(costs).reduce((sum, cost) => sum + (cost ?? 0), 0);
+const sumAmounts = (amounts: FormValues): number => {
+  return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
 const ReinstatementsCostsForm = ({ onSubmit }: Props) => {
@@ -39,42 +39,42 @@ const ReinstatementsCostsForm = ({ onSubmit }: Props) => {
           control={control}
           label="Enlèvement des déchets"
           hintText="€"
-          name="wasteCollectionCost"
+          name="wasteCollectionAmount"
         />
         <NumericInput
           control={control}
           label="Désamiantage"
           hintText="€"
-          name="asbestosRemovalCost"
+          name="asbestosRemovalAmount"
         />
         <NumericInput
           control={control}
           label="Déconstruction"
           hintText="€"
-          name="demolitionCost"
+          name="demolitionAmount"
         />
         <NumericInput
           control={control}
           label="Dépollution"
           hintText="€"
-          name="remediationCost"
+          name="remediationAmount"
         />
         <NumericInput
           control={control}
           label="Désimperméabilisation"
           hintText="€"
-          name="deimpermeabilizationCost"
+          name="deimpermeabilizationAmount"
         />
         <NumericInput
           control={control}
           label="Restauration écologique des sols"
           hintText="€"
-          name="sustainableSoilsReinstatementCost"
+          name="sustainableSoilsReinstatementAmount"
         />
         <p>
           <strong>
             Total des coûts des travaux de remise en état :{" "}
-            {formatNumberFr(sumAllCosts(allCosts))} €
+            {formatNumberFr(sumAmounts(allCosts))} €
           </strong>
         </p>
         <ButtonsGroup
