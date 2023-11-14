@@ -3,13 +3,16 @@ import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
 import ReinstatementsCostsForm from "./costs/reinstatement-costs";
 import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
+import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistance";
 import ProjectRevenueIntroduction from "./revenue/introduction";
+import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
 import ProjectFullTimeJobsInvolvedForm from "./stakeholders/conversion-full-time-jobs-involved";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
 import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 import ProjectCreationConfirmation from "./confirmation";
+import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
 import Stepper from "./Stepper";
@@ -47,6 +50,12 @@ function ProjectCreationWizard() {
         return <YearlyProjectedCostsForm />;
       case ProjectCreationStep.REVENUE_INTRODUCTION:
         return <ProjectRevenueIntroduction />;
+      case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
+        return <ProjectFinancialAssistanceRevenueForm />;
+      case ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE:
+        return <ProjectYearlyProjectedRevenueForm />;
+      case ProjectCreationStep.NAMING:
+        return <ProjectNameAndDescriptionForm />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }

@@ -16,6 +16,7 @@ export enum RenewableEnergyType {
 
 export type Project = {
   name: string;
+  description?: string;
   relatedSiteId: string;
   types: ProjectType[];
   renewableEnergyTypes: RenewableEnergyType[];
@@ -26,10 +27,16 @@ export type Project = {
   operationsFullTimeJobsInvolved: number;
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
+  financialAssistanceRevenue: number;
   yearlyProjectedCosts: Expense[];
+  yearlyProjectedRevenue: Revenue[];
 };
 
 type Expense = {
+  amount: number;
+};
+
+type Revenue = {
   amount: number;
 };
 

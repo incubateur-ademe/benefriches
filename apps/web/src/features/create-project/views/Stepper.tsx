@@ -34,6 +34,7 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
     case ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE:
       return "Coûts et recettes";
+    case ProjectCreationStep.NAMING:
     case ProjectCreationStep.CREATION_CONFIRMATION:
       return "Dénomination";
   }

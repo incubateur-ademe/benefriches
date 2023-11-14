@@ -32,6 +32,8 @@ export enum ProjectCreationStep {
   REVENUE_INTRODUCTION = "REVENUE_INTRODUCTION",
   REVENUE_FINANCIAL_ASSISTANCE = "REVENUE_FINANCIAL_ASSISTANCE",
   REVENUE_PROJECTED_YEARLY_REVENUE = "REVENUE_PROJECTED_YEARLY_REVENUE",
+  // Naming
+  NAMING = "NAMING",
   // Confirmation
   CREATION_CONFIRMATION = "CREATION_CONFIRMATION",
 }
@@ -40,6 +42,7 @@ export const projectCreationInitialState: ProjectCreationState = {
   step: ProjectCreationStep.PROJECT_TYPES,
   projectData: {
     yearlyProjectedCosts: [],
+    yearlyProjectedRevenue: [],
   },
   siteData: null,
 };
@@ -107,6 +110,26 @@ export const projectCreationSlice = createSlice({
         ...action.payload,
       ];
     },
+    setFinancialAssistanceRevenue: (state, action: PayloadAction<number>) => {
+      state.projectData.financialAssistanceRevenue = action.payload;
+    },
+    addYearlyProjectedRevenue: (
+      state,
+      action: PayloadAction<Project["yearlyProjectedRevenue"]>,
+    ) => {
+      state.projectData.yearlyProjectedRevenue = [
+        ...(state.projectData.yearlyProjectedRevenue ?? []),
+        ...action.payload,
+      ];
+    },
+    setNameAndDescription: (
+      state,
+      action: PayloadAction<{ name: string; description?: string }>,
+    ) => {
+      const { name, description } = action.payload;
+      state.projectData.name = name;
+      if (description) state.projectData.description = description;
+    },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
@@ -123,6 +146,9 @@ export const {
   setReinstatementCost,
   setPhotovoltaicPanelsInstallationCost,
   addYearlyProjectedCosts,
+  setFinancialAssistanceRevenue,
+  addYearlyProjectedRevenue,
+  setNameAndDescription,
   goToStep,
 } = projectCreationSlice.actions;
 
