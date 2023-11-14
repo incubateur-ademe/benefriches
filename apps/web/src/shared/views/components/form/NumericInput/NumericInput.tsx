@@ -12,7 +12,7 @@ type Props<T extends FieldValues> = {
 } & UseControllerProps<T>;
 
 const stringToNumber = (value: string) => {
-  const output = parseInt(value, 10);
+  const output = parseFloat(value);
   return isNaN(output) ? undefined : output;
 };
 
