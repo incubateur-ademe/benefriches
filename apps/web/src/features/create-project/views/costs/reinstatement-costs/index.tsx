@@ -10,9 +10,9 @@ import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {
-    onSubmit: (costs: FormValues) => {
-      const totalCost = Object.values(costs).reduce(
-        (sum, cost) => sum + (cost ?? 0),
+    onSubmit: (amounts: FormValues) => {
+      const totalCost = Object.values(amounts).reduce(
+        (sum, amount) => sum + (amount ?? 0),
         0,
       );
       dispatch(setReinstatementCost(totalCost));

@@ -15,8 +15,8 @@ export type FormValues = {
   otherAmount?: number;
 };
 
-const sumAllCosts = (costs: FormValues): number => {
-  return Object.values(costs).reduce((sum, cost) => sum + (cost ?? 0), 0);
+const sumAmounts = (amounts: FormValues): number => {
+  return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
 const YearlyProjectedCostsForm = ({ onSubmit }: Props) => {
@@ -55,7 +55,7 @@ const YearlyProjectedCostsForm = ({ onSubmit }: Props) => {
         <p>
           <strong>
             Total des dépenses annuelles :{" "}
-            {formatNumberFr(sumAllCosts(allCosts))} €
+            {formatNumberFr(sumAmounts(allCosts))} €
           </strong>
         </p>
         <ButtonsGroup

@@ -44,7 +44,16 @@ export const projectCreationInitialState: ProjectCreationState = {
     yearlyProjectedCosts: [],
     yearlyProjectedRevenue: [],
   },
-  siteData: null,
+  siteData: {
+    id: "id-site",
+    isFriche: true,
+    name: "my site",
+    owner: {
+      id: "owner-uuid",
+      name: "SARL Propriétaire",
+      structureType: "company",
+    },
+  },
 };
 
 export const projectCreationSlice = createSlice({
