@@ -170,22 +170,22 @@ export const projectCreationSlice = createSlice({
       state,
       action: PayloadAction<number>,
     ) => {
-      state.projectData.photovoltaic.expectedAnnualProduction = action.payload;
+      state.projectData.photovoltaicExpectedAnnualProduction = action.payload;
     },
     setPhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
-      state.projectData.photovoltaic.contractDuration = action.payload;
+      state.projectData.photovoltaicContractDuration = action.payload;
     },
     setPhotovoltaicInfrastructureSurfaces: (
       state,
       action: PayloadAction<{
-        foundationsSurface: number;
-        accessPathsSurface: number;
+        photovoltaicAccessPathsSurface: number;
+        photovoltaicFoundationsSurface: number;
       }>,
     ) => {
-      state.projectData.photovoltaic.accessPathsSurface =
-        action.payload.accessPathsSurface;
-      state.projectData.photovoltaic.foundationsSurface =
-        action.payload.foundationsSurface;
+      state.projectData.photovoltaicAccessPathsSurface =
+        action.payload.photovoltaicAccessPathsSurface;
+      state.projectData.photovoltaicFoundationsSurface =
+        action.payload.photovoltaicFoundationsSurface;
     },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;

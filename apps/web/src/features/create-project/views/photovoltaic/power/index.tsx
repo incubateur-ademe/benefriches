@@ -22,15 +22,15 @@ const computePowerFromSurface = (surface: number) => {
 function PhotovoltaicPowerContainer() {
   const dispatch = useAppDispatch();
   const surfaceArea = useAppSelector(
-    (state) => state.projectCreation.projectData.relatedSite.surfaceArea,
+    (state) => state.projectCreation.siteData?.surfaceArea ?? 0,
   );
 
   const photovoltaicSurface = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaic.surface,
+    (state) => state.projectCreation.projectData.photovoltaicSurface ?? 0,
   );
 
   const photovoltaicKeyParameter = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaic.keyParameter,
+    (state) => state.projectCreation.projectData.photovoltaicKeyParameter,
   );
 
   if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.SURFACE) {
@@ -40,7 +40,7 @@ function PhotovoltaicPowerContainer() {
         photovoltaicSurfaceArea={photovoltaicSurface}
         computationRatio={RATIO_KWC_PER_M2}
         onSubmit={(data) => {
-          dispatch(setPhotovoltaicPower(data.photovoltaic.power));
+          dispatch(setPhotovoltaicPower(data.photovoltaicPower));
           dispatch(
             goToStep(
               ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION,

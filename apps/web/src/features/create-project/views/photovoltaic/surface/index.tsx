@@ -40,7 +40,7 @@ function PhotovoltaicSurfaceContainer() {
         photovoltaicPower={photovoltaicPower ?? 0}
         computationRatio={RATIO_M2_PER_KWC}
         onSubmit={(data) => {
-          dispatch(setPhotovoltaicSurface(data.photovoltaic.surface));
+          dispatch(setPhotovoltaicSurface(data.photovoltaicSurface));
           dispatch(
             goToStep(
               ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION,

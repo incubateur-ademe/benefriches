@@ -10,9 +10,7 @@ type Props = {
 };
 
 type FormValues = {
-  photovoltaic: {
-    expectedAnnualProduction: number;
-  };
+  photovoltaicExpectedAnnualProduction: number;
 };
 
 function PhotovoltaicAnnualProductionForm({
@@ -21,9 +19,7 @@ function PhotovoltaicAnnualProductionForm({
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaic: {
-        expectedAnnualProduction: suggestedAnnualProduction,
-      },
+      photovoltaicExpectedAnnualProduction: suggestedAnnualProduction,
     },
   });
 
@@ -40,7 +36,7 @@ function PhotovoltaicAnnualProductionForm({
       <p>Vous pouvez modifier cette valeur.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
-          name="photovoltaic.expectedAnnualProduction"
+          name="photovoltaicExpectedAnnualProduction"
           label="Production attendue de l’installation"
           hintText="en MWh/an"
           rules={{

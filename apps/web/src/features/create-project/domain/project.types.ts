@@ -61,9 +61,9 @@ type ProjectStakeholderStructure =
 type ProjectStakeholder =
   | { name: string; structureType: ProjectStakeholderStructure }
   | {
-    name: LocalAndRegionalAuthority;
-    structureType: "local_or_regional_authority";
-  };
+      name: LocalAndRegionalAuthority;
+      structureType: "local_or_regional_authority";
+    };
 
 export type ProjectSite = {
   id: string;
@@ -79,6 +79,6 @@ export type ProjectSite = {
     name: string;
     structureType: ProjectStakeholderStructure;
   };
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>
+  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
   surfaceArea: number;
 };

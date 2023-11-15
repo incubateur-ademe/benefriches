@@ -20,7 +20,7 @@ const AVERAGE_ANNUAL_PRODUCTION_IN_KWH_BY_KWC_IN_FRANCE = 1100;
 function PhotovoltaicExpectedAnnualProductionContainer() {
   const dispatch = useAppDispatch();
   const photovoltaicPower = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaic.power,
+    (state) => state.projectCreation.projectData.photovoltaicPower ?? 0,
   );
 
   const suggestedAnnualProductionMWhPerYear = Math.round(
@@ -34,7 +34,7 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
       onSubmit={(data) => {
         dispatch(
           setPhotovoltaicExpectedAnnualProduction(
-            data.photovoltaic.expectedAnnualProduction,
+            data.photovoltaicExpectedAnnualProduction,
           ),
         );
         dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION));

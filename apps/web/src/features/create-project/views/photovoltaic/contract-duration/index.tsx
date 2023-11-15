@@ -16,11 +16,9 @@ function PhotovoltaicContractDurationContainer() {
       suggestedContractDuration={AVERAGE_CONTRACT_DURATION}
       onSubmit={(data) => {
         dispatch(
-          setPhotovoltaicContractDuration(data.photovoltaic.contractDuration),
+          setPhotovoltaicContractDuration(data.photovoltaicContractDuration),
         );
-        dispatch(
-          goToStep(ProjectCreationStep.PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE),
-        );
+        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));
       }}
     />
   );

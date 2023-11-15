@@ -9,9 +9,7 @@ type Props = {
 };
 
 type FormValues = {
-  photovoltaic: {
-    contractDuration: number;
-  };
+  photovoltaicContractDuration: number;
 };
 
 function PhotovoltaicAnnualProductionForm({
@@ -20,9 +18,7 @@ function PhotovoltaicAnnualProductionForm({
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaic: {
-        contractDuration: suggestedContractDuration,
-      },
+      photovoltaicContractDuration: suggestedContractDuration,
     },
   });
 
@@ -37,7 +33,7 @@ function PhotovoltaicAnnualProductionForm({
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
-          name="photovoltaic.contractDuration"
+          name="photovoltaicContractDuration"
           label="Durée du contrat de revente"
           hintText="en années"
           rules={{

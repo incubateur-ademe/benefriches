@@ -12,9 +12,7 @@ type Props = {
 };
 
 type FormValues = {
-  photovoltaic: {
-    power: number;
-  };
+  photovoltaicPower: number;
 };
 
 function PhotovoltaicPowerFromSurfaceForm({
@@ -25,9 +23,7 @@ function PhotovoltaicPowerFromSurfaceForm({
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaic: {
-        power: maxRecommendedPower,
-      },
+      photovoltaicPower: maxRecommendedPower,
     },
   });
 
@@ -50,7 +46,7 @@ function PhotovoltaicPowerFromSurfaceForm({
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
-          name="photovoltaic.power"
+          name="photovoltaicPower"
           label="Puissance de l’installation"
           hintText={hintText}
           rules={{

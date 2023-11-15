@@ -12,10 +12,8 @@ type Props = {
 };
 
 type FormValues = {
-  photovoltaic: {
-    accessPathsSurface: number;
-    foundationsSurface: number;
-  };
+  photovoltaicAccessPathsSurface: number;
+  photovoltaicFoundationsSurface: number;
 };
 
 function PhotovoltaicInfrastructureSurfacesForm({
@@ -27,10 +25,8 @@ function PhotovoltaicInfrastructureSurfacesForm({
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaic: {
-        foundationsSurface: suggestedFoundationsSurface,
-        accessPathsSurface: suggestedAccessPathsSurface,
-      },
+      photovoltaicFoundationsSurface: suggestedFoundationsSurface,
+      photovoltaicAccessPathsSurface: suggestedAccessPathsSurface,
     },
   });
 
@@ -52,7 +48,7 @@ function PhotovoltaicInfrastructureSurfacesForm({
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
-          name="photovoltaic.foundationsSurface"
+          name="photovoltaicFoundationsSurface"
           label="Fondations des panneaux"
           hintText="en m²"
           rules={{
@@ -64,7 +60,7 @@ function PhotovoltaicInfrastructureSurfacesForm({
         />
 
         <NumericInput
-          name="photovoltaic.accessPathsSurface"
+          name="photovoltaicAccessPathsSurface"
           label="Pistes d’accès"
           hintText="en m²"
           rules={{

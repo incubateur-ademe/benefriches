@@ -17,7 +17,7 @@ function PhotovoltaicInfrastructureSurfacesContainer() {
   const dispatch = useAppDispatch();
 
   const photovoltaicPower = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaic.power,
+    (state) => state.projectCreation.projectData.photovoltaicPower ?? 0,
   );
 
   const suggestedAccessPathsSurface = Math.round(
@@ -34,7 +34,7 @@ function PhotovoltaicInfrastructureSurfacesContainer() {
       accessPathsRatio={RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS}
       foundationsRatio={RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS}
       onSubmit={(data) => {
-        dispatch(setPhotovoltaicInfrastructureSurfaces(data.photovoltaic));
+        dispatch(setPhotovoltaicInfrastructureSurfaces(data));
         dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
       }}
     />
