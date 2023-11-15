@@ -27,7 +27,7 @@ export enum ProjectCreationStep {
   PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION = "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
   PHOTOVOLTAIC_CONTRACT_DURATION = "PHOTOVOLTAIC_CONTRACT_DURATION",
   PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE = "PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE",
-  SOILS_SURFACE_DISTRIBUTION = "SOILS_SURFACE_DISTRIBUTION",
+  SOILS_SURFACE_AREAS = "SOILS_SURFACE_AREAS",
 
   // Acteurs
   STAKEHOLDERS_INTRODUCTION = "STAKEHOLDERS_INTRODUCTION",
@@ -70,11 +70,11 @@ export const projectCreationInitialState: ProjectCreationState = {
     surfaceArea: 150000,
     name: "Friche industrielle de Blajan",
     soilsSurfaceAreas: {
-      [SoilType.CULTIVATION]: 10000,
+      [SoilType.CULTIVATION]: 18500,
       [SoilType.FOREST_DECIDUOUS]: 120000,
       [SoilType.PRAIRIE_GRASS]: 10000,
-      [SoilType.MINERAL_SOIL]: 9500,
-      [SoilType.BUILDINGS]: 500,
+      [SoilType.MINERAL_SOIL]: 900,
+      [SoilType.BUILDINGS]: 600,
     },
   },
   siteDataLoadingState: "idle",

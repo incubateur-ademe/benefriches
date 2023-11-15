@@ -14,9 +14,9 @@ import { getPercentage } from "@/shared/services/percentage/percentage";
 type Props<T extends FieldValues> = {
   label: string;
   hintText?: string;
-  maxAvailable: number;
+  maxAllowed: number;
   sliderProps: SliderBaseProps;
-  inputNativeProps: InputProps["nativeInputProps"];
+  inputProps: InputProps["nativeInputProps"];
 } & UseControllerProps<T>;
 
 const SliderNumericInput = <T extends FieldValues>({
@@ -24,39 +24,27 @@ const SliderNumericInput = <T extends FieldValues>({
   name,
   label,
   hintText,
-  maxAvailable,
+  maxAllowed,
   sliderProps,
-  inputNativeProps,
+  inputProps,
 }: Props<T>) => {
   const { field, fieldState } = useController<T>({
     name,
     control,
     rules: {
-      max: maxAvailable,
+      min: 0,
+      max: maxAllowed,
     },
   });
 
   const onChangeSlider = (newValue: number) => {
-    if (newValue >= maxAvailable) {
-      return field.onChange(maxAvailable);
+    if (newValue >= maxAllowed) {
+      return field.onChange(maxAllowed);
     }
     field.onChange(newValue);
   };
 
   const error = fieldState.error;
-
-  const nativeInputProps = {
-    name: field.name,
-    value: numberToString(field.value),
-    onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-      field.onChange(stringToNumber(ev.target.value)),
-    onBlur: field.onBlur,
-    type: "number",
-    style: { width: "150px" },
-    max: maxAvailable,
-    min: 0,
-    ...inputNativeProps,
-  };
 
   return (
     <div className="fr-col">
@@ -66,9 +54,21 @@ const SliderNumericInput = <T extends FieldValues>({
         hintText={hintText}
         state={error ? "error" : "default"}
         stateRelatedMessage={error ? error.message : undefined}
-        nativeInputProps={nativeInputProps}
+        nativeInputProps={{
+          type: "number",
+          name: field.name,
+          value: numberToString(field.value),
+          onChange: (ev: ChangeEvent<HTMLInputElement>) =>
+            field.onChange(stringToNumber(ev.target.value)),
+          onBlur: field.onBlur,
+          min: 0,
+          max: maxAllowed,
+          style: { width: "150px" },
+          ...inputProps,
+        }}
         style={{ display: "flex", justifyContent: "space-between" }}
       />
+
       {sliderProps.max && (
         <legend style={{ display: "flex", justifyContent: "flex-end" }}>
           {Math.round(getPercentage(field.value, sliderProps.max))}%

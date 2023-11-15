@@ -18,6 +18,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             token: {
               fontFamily: "inherit",
             },
+            components: {
+              Slider: {
+                controlSize: 20,
+              },
+            },
           }}
         >
           <App />

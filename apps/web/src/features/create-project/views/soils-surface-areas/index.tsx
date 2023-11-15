@@ -1,4 +1,4 @@
-import SoilDistributionForm from "./SoilsSurfaceDistributionForm";
+import SoilDistributionForm from "./SoilsSurfaceAreasForm";
 
 import {
   goToStep,
@@ -11,7 +11,7 @@ import {
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
 
-function ProjectSoilsSurfaceDistributionContainer() {
+function ProjectSoilsSurfaceAreasContainer() {
   const dispatch = useAppDispatch();
 
   const relatedSite = useAppSelector(
@@ -52,4 +52,4 @@ function ProjectSoilsSurfaceDistributionContainer() {
   );
 }
 
-export default ProjectSoilsSurfaceDistributionContainer;
+export default ProjectSoilsSurfaceAreasContainer;
