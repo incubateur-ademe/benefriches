@@ -1,6 +1,4 @@
-import {
-  SoilType,
-} from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
 
 export enum ProjectType {
