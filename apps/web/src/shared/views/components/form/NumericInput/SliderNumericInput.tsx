@@ -14,9 +14,9 @@ import { getPercentage } from "@/shared/services/percentage/percentage";
 type Props<T extends FieldValues> = {
   label: string;
   hintText?: string;
-  maxAllowed: number;
-  sliderProps: SliderBaseProps;
-  inputProps: InputProps["nativeInputProps"];
+  maxAllowed?: number;
+  sliderProps?: SliderBaseProps;
+  inputProps?: InputProps["nativeInputProps"];
 } & UseControllerProps<T>;
 
 const SliderNumericInput = <T extends FieldValues>({
@@ -37,8 +37,18 @@ const SliderNumericInput = <T extends FieldValues>({
     },
   });
 
-  const onChangeSlider = (newValue: number) => {
-    if (newValue >= maxAllowed) {
+  const onChangeSlider = (newValue: number) =>
+    onChangeNumericSliderInput(newValue);
+
+  const onChangeInput = (ev: ChangeEvent<HTMLInputElement>) => {
+    const newValue = stringToNumber(ev.target.value);
+    if (newValue) {
+      onChangeNumericSliderInput(newValue);
+    }
+  };
+
+  const onChangeNumericSliderInput = (newValue: number) => {
+    if (maxAllowed && newValue >= maxAllowed) {
       return field.onChange(maxAllowed);
     }
     field.onChange(newValue);
@@ -58,8 +68,7 @@ const SliderNumericInput = <T extends FieldValues>({
           type: "number",
           name: field.name,
           value: numberToString(field.value),
-          onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-            field.onChange(stringToNumber(ev.target.value)),
+          onChange: onChangeInput,
           onBlur: field.onBlur,
           min: 0,
           max: maxAllowed,
@@ -69,7 +78,7 @@ const SliderNumericInput = <T extends FieldValues>({
         style={{ display: "flex", justifyContent: "space-between" }}
       />
 
-      {sliderProps.max && (
+      {sliderProps?.max && (
         <legend style={{ display: "flex", justifyContent: "flex-end" }}>
           {Math.round(getPercentage(field.value, sliderProps.max))}%
         </legend>

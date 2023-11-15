@@ -177,9 +177,6 @@ function SoilsSurfaceAreasForm({
               label={getLabelForSoilType(soilType)}
               maxAllowed={remainingSurface + surface}
               hintText={hintText}
-              inputProps={{
-                step: 100,
-              }}
               sliderProps={{
                 min: 0,
                 marks,
