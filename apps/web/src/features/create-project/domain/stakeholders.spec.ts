@@ -14,6 +14,8 @@ describe("Project stakeholders", () => {
           name: "SARL Propriétaire",
           structureType: "company",
         },
+        surfaceArea: 1200,
+        soilsSurfaceAreas: {},
       };
 
       expect(getSiteStakeholders(projectSite)).toEqual([
@@ -36,6 +38,8 @@ describe("Project stakeholders", () => {
           name: "SCOP Exploitant du site",
           structureType: "company",
         },
+        surfaceArea: 1200,
+        soilsSurfaceAreas: {},
       };
 
       expect(getSiteStakeholders(projectSite)).toEqual([

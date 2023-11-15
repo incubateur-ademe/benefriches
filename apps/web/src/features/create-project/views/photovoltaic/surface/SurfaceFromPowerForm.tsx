@@ -40,17 +40,17 @@ function PhotovoltaicSurfaceFromPowerForm({
   return (
     <>
       <h2>
-        Quel superficie du site occuperont les panneaux photovoltaïques&#8239;?
+        Quel superficie du site occuperont les panneaux photovoltaïques&nbsp;?
       </h2>
       <p>
         Le ratio superficie / puissance d’installation est de{" "}
-        <strong>{computationRatio * 1000}&#8239;m² pour 1000 kWc.</strong>
+        <strong>{computationRatio * 1000}&nbsp;m² pour 1000 kWc.</strong>
       </p>
       <p>
         Pour la puissance que vous avez renseigné (
-        {formatNumberFr(photovoltaicPower)}&#8239;kWh), la superficie occupée
-        par les panneaux devrait donc être de{" "}
-        {formatNumberFr(recommendedSurface)}&#8239;m².
+        {formatNumberFr(photovoltaicPower)}&nbsp;kWh), la superficie occupée par
+        les panneaux devrait donc être de {formatNumberFr(recommendedSurface)}
+        &nbsp;m².
       </p>
       <p>Vous pouvez modifier cette superficie.</p>
       <form onSubmit={handleSubmit(onSubmit)}>

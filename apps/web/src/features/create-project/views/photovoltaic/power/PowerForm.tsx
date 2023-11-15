@@ -30,12 +30,12 @@ function PhotovoltaicPowerForm({
       <h2>Quel sera la puissance de votre installation ?</h2>
       <p>
         Le ratio superficie / puissance d’installation est de{" "}
-        <strong>14000&#8239;m² pour 1000 kWc.</strong>
+        <strong>14000&nbsp;m² pour 1000 kWc.</strong>
       </p>
       <p>
         La superficie du site étant de {formatNumberFr(siteSurfaceArea)}
-        &#8239;m², votre puissance devrait être de maximum{" "}
-        {formatNumberFr(maxRecommendedPower)}&#8239;kWc.
+        &nbsp;m², votre puissance devrait être de maximum{" "}
+        {formatNumberFr(maxRecommendedPower)}&nbsp;kWc.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput

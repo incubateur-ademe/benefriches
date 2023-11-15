@@ -37,13 +37,13 @@ function KeyParameterForm({ onSubmit }: Props) {
       </h2>
       <p>
         Si vous savez déjà quelle puissance doit faire l’installation,
-        sélectionnez «&#8239;La puissance d’installation&#8239;». Bénéfriches
+        sélectionnez «&nbsp;La puissance d’installation&nbsp;». Bénéfriches
         calculera alors la superficie au sol requise.
       </p>
       <p>
         Si vous souhaitez que la puissance d’installation s’adapte à une
-        certaine superficie au sol, sélectionnez «&#8239;La superficie de
-        l’installation&#8239;». Bénéfriches calculera alors la puissance que
+        certaine superficie au sol, sélectionnez «&nbsp;La superficie de
+        l’installation&nbsp;». Bénéfriches calculera alors la puissance que
         pourra faire votre installation.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
