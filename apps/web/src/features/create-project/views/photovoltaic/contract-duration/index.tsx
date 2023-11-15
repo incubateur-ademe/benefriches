@@ -18,7 +18,9 @@ function PhotovoltaicContractDurationContainer() {
         dispatch(
           setPhotovoltaicContractDuration(data.photovoltaicContractDuration),
         );
-        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));
+        dispatch(
+          goToStep(ProjectCreationStep.PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE),
+        );
       }}
     />
   );

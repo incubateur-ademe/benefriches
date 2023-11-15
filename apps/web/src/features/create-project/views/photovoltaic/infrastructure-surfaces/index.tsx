@@ -35,7 +35,7 @@ function PhotovoltaicInfrastructureSurfacesContainer() {
       foundationsRatio={RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS}
       onSubmit={(data) => {
         dispatch(setPhotovoltaicInfrastructureSurfaces(data));
-        dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
+        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));
       }}
     />
   );
