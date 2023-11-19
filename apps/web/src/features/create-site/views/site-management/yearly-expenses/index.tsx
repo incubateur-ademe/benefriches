@@ -8,7 +8,7 @@ import {
 import { hasTenant } from "@/features/create-site/domain/site.functions";
 import {
   Expense,
-  SiteFoncier,
+  SiteDraft,
 } from "@/features/create-site/domain/siteFoncier.types";
 import {
   useAppDispatch,
@@ -21,7 +21,7 @@ const mapProps = (
   { siteData }: RootState["siteCreation"],
 ) => {
   return {
-    hasTenant: hasTenant(siteData as SiteFoncier),
+    hasTenant: hasTenant(siteData as SiteDraft),
     onSubmit: (formData: FormValues) => {
       const expenses: Expense[] = formData.otherExpenses.map(({ amount }) => {
         return { amount, bearer: "owner", type: "other", category: "other" };

@@ -1,18 +1,33 @@
 type Props = {
   siteName: string;
+  loadingState: "idle" | "loading" | "success" | "error";
 };
 
-function SiteCreationConfirmation({ siteName }: Props) {
-  return (
-    <>
-      <h2>✅ Le site "{siteName}" est créé !</h2>
-      <p>
-        Vous pouvez maintenant découvrir ses caractéristiques géographiques,
-        créer un projet sur ce site ou bien renseigner un nouveau site
-        retournant à votre tableau de bord.
-      </p>
-    </>
-  );
+function SiteCreationConfirmation({ siteName, loadingState }: Props) {
+  switch (loadingState) {
+    case "idle":
+      return null;
+    case "loading":
+      return <p>Création du site "{siteName}", veuillez patienter...</p>;
+    case "error":
+      return (
+        <p>
+          Une erreur est survenue lors de la création du site "{siteName}",
+          veuillez réessayer.
+        </p>
+      );
+    case "success":
+      return (
+        <>
+          <h2>✅ Le site "{siteName}" est créé !</h2>
+          <p>
+            Vous pouvez maintenant découvrir ses caractéristiques géographiques,
+            créer un projet sur ce site ou bien renseigner un nouveau site en
+            retournant sur votre tableau de bord.
+          </p>
+        </>
+      );
+  }
 }
 
 export default SiteCreationConfirmation;

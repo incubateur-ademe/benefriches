@@ -1,3 +1,4 @@
+import { saveSiteAction } from "../../application/createSite.actions";
 import SiteNameAndDescriptionForm, {
   FormValues,
 } from "./SiteNameAndDescription";
@@ -14,6 +15,7 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (formData: FormValues) => {
       dispatch(setNameAndDescription(formData));
+      void dispatch(saveSiteAction());
       dispatch(goToStep(SiteCreationStep.CREATION_CONFIRMATION));
     },
   };

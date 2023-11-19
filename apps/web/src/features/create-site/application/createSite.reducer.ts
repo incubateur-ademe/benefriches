@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { saveSiteAction } from "./createSite.actions";
 
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import {
   Expense,
   OwnerType,
-  SiteFoncier,
+  SiteDraft,
   SoilType,
 } from "@/features/create-site/domain/siteFoncier.types";
 
 export type SiteCreationState = {
   step: SiteCreationStep;
-  siteData: Partial<SiteFoncier>;
+  siteData: Partial<SiteDraft>;
+  saveLoadingState: "idle" | "loading" | "success" | "error";
 };
 
 const isSoilTypePrairie = (soilType: SoilType) => {
@@ -89,6 +91,7 @@ export enum SiteCreationStep {
 
 export const siteCreationInitialState: SiteCreationState = {
   step: SiteCreationStep.SITE_TYPE,
+  saveLoadingState: "idle",
   siteData: {
     soils: [],
     yearlyExpenses: [],
@@ -105,7 +108,7 @@ export const siteCreationSlice = createSlice({
     setIsFriche: (state, action: PayloadAction<boolean>) => {
       state.siteData.isFriche = action.payload;
     },
-    setAddress: (state, action: PayloadAction<SiteFoncier["address"]>) => {
+    setAddress: (state, action: PayloadAction<SiteDraft["address"]>) => {
       state.siteData.address = action.payload;
       state.step = SiteCreationStep.SOILS_INTRODUCTION;
     },
@@ -114,7 +117,7 @@ export const siteCreationSlice = createSlice({
     },
     setSoilsSurfaceAreas: (
       state,
-      action: PayloadAction<SiteFoncier["soilsSurfaceAreas"]>,
+      action: PayloadAction<SiteDraft["soilsSurfaceAreas"]>,
     ) => {
       state.siteData.soilsSurfaceAreas = action.payload;
     },
@@ -176,6 +179,17 @@ export const siteCreationSlice = createSlice({
     goToStep: (state, action: PayloadAction<SiteCreationStep>) => {
       state.step = action.payload;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(saveSiteAction.pending, (state) => {
+      state.saveLoadingState = "loading";
+    });
+    builder.addCase(saveSiteAction.fulfilled, (state) => {
+      state.saveLoadingState = "success";
+    });
+    builder.addCase(saveSiteAction.rejected, (state) => {
+      state.saveLoadingState = "error";
+    });
   },
 });
 

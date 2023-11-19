@@ -17,7 +17,7 @@ export type Address = {
   lat: number;
 };
 
-export type SiteFoncier = {
+export type SiteDraft = {
   isFriche: boolean;
   name: string;
   description?: string;
