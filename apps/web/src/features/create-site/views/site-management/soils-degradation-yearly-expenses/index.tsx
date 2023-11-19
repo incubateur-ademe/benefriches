@@ -14,7 +14,7 @@ import {
 } from "@/features/create-site/domain/site.functions";
 import {
   Expense,
-  SiteFoncier,
+  SiteDraft,
 } from "@/features/create-site/domain/siteFoncier.types";
 import {
   useAppDispatch,
@@ -28,11 +28,11 @@ const mapProps = (
 ) => {
   return {
     askForWaterTreatmentExpenses: hasContaminatedSoils(
-      siteCreationState.siteData as SiteFoncier,
+      siteCreationState.siteData as SiteDraft,
     ),
     askForFloodsRegulationExpenses:
-      hasImpermeableSoils(siteCreationState.siteData as SiteFoncier) ||
-      hasBuildings(siteCreationState.siteData as SiteFoncier),
+      hasImpermeableSoils(siteCreationState.siteData as SiteDraft) ||
+      hasBuildings(siteCreationState.siteData as SiteDraft),
     onSubmit: (formData: FormValues) => {
       const expenses: Expense[] = [];
 

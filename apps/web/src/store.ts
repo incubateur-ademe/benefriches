@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { CreateSiteGateway } from "./features/create-site/application/createSite.actions";
 import { SoilsCarbonStorageGateway } from "./features/create-site/application/siteSoilsCarbonStorage.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
@@ -7,6 +8,7 @@ import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbo
 
 export type AppDependencies = {
   soilsCarbonStorageService: SoilsCarbonStorageGateway;
+  createSiteService: CreateSiteGateway;
 };
 
 export const createStore = (appDependencies: AppDependencies) =>

@@ -4,9 +4,9 @@ import {
   hasImpermeableSoils,
   hasTenant,
 } from "./site.functions";
-import { OwnerType, SiteFoncier, SoilType } from "./siteFoncier.types";
+import { OwnerType, SiteDraft, SoilType } from "./siteFoncier.types";
 
-const buildSite = (siteProps: Partial<SiteFoncier> = {}): SiteFoncier => {
+const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
   return {
     name: "My site",
     owner: { type: OwnerType.MUNICIPALITY },

@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
-import { SiteFoncier } from "@/features/create-site/domain/siteFoncier.types";
+import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 
-type ExpensesBearer = SiteFoncier["yearlyExpenses"][number]["bearer"];
+type ExpensesBearer = SiteDraft["yearlyExpenses"][number]["bearer"];
 
 export type FormValues = {
   securityExpenses?: number;

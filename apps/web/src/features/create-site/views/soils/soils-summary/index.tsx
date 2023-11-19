@@ -1,4 +1,4 @@
-import { SiteFoncier } from "../../../domain/siteFoncier.types";
+import { SiteDraft } from "../../../domain/siteFoncier.types";
 import SiteSoilsSummary from "./SiteSoilsSummary";
 
 import {
@@ -11,7 +11,7 @@ import {
 } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
-const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteFoncier>) => {
+const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {
   return {
     onNext: () => dispatch(goToStep(SiteCreationStep.SOILS_CARBON_STORAGE)),
     soilsSurfaceAreas: siteData.soilsSurfaceAreas ?? {},
