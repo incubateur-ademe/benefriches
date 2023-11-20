@@ -8,6 +8,7 @@ function SiteCreationConfirmationContainer() {
   );
   return (
     <SiteCreationConfirmation
+      siteId={siteData.id ?? ""}
       siteName={siteData.name ?? ""}
       loadingState={creationLoadingState}
     />

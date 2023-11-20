@@ -18,6 +18,7 @@ export type Address = {
 };
 
 export type SiteDraft = {
+  id: string;
   isFriche: boolean;
   name: string;
   description?: string;

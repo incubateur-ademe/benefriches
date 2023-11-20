@@ -1,9 +1,14 @@
+import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+
+import { routes } from "@/router";
+
 type Props = {
+  siteId: string;
   siteName: string;
   loadingState: "idle" | "loading" | "success" | "error";
 };
 
-function SiteCreationConfirmation({ siteName, loadingState }: Props) {
+function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -25,6 +30,21 @@ function SiteCreationConfirmation({ siteName, loadingState }: Props) {
             créer un projet sur ce site ou bien renseigner un nouveau site en
             retournant sur votre tableau de bord.
           </p>
+          <ButtonsGroup
+            buttons={[
+              {
+                priority: "secondary",
+                children: "Retour à mes projets",
+                linkProps: routes.projectsList().link,
+              },
+              {
+                priority: "primary",
+                children: "Créer un projet sur ce site",
+                linkProps: routes.createProject({ siteId }).link,
+              },
+            ]}
+            inlineLayoutWhen="always"
+          />
         </>
       );
   }

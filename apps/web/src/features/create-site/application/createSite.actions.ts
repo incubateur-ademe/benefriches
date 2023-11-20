@@ -1,4 +1,3 @@
-import { v4 as uuid } from "uuid";
 import z from "zod";
 import { FricheActivity } from "../domain/friche.types";
 import { OwnerType, SoilType } from "../domain/siteFoncier.types";
@@ -6,6 +5,7 @@ import { OwnerType, SoilType } from "../domain/siteFoncier.types";
 import { createAppAsyncThunk } from "@/appAsyncThunk";
 
 const createSiteSchema = z.object({
+  id: z.string().uuid(),
   name: z.string(),
   description: z.string().optional(),
   isFriche: z.boolean(),
@@ -49,7 +49,7 @@ const createSiteSchema = z.object({
 
 type SiteCreatePayload = z.infer<typeof createSiteSchema>;
 
-export type CreateSiteGatewayPayload = SiteCreatePayload & { id: string };
+export type CreateSiteGatewayPayload = SiteCreatePayload;
 export type CreateSiteGatewayResult = void;
 
 export interface CreateSiteGateway {
@@ -63,6 +63,6 @@ export const saveSiteAction = createAppAsyncThunk<CreateSiteGatewayResult>(
 
     const siteToCreate = createSiteSchema.parse(siteCreation.siteData);
 
-    await extra.createSiteService.save({ id: uuid(), ...siteToCreate });
+    await extra.createSiteService.save(siteToCreate);
   },
 );
