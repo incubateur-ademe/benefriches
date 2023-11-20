@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { v4 as uuid } from "uuid";
 import { saveSiteAction } from "./createSite.actions";
 
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
@@ -89,18 +90,21 @@ export enum SiteCreationStep {
   CREATION_CONFIRMATION = "CREATION_CONFIRMATION",
 }
 
-export const siteCreationInitialState: SiteCreationState = {
-  step: SiteCreationStep.SITE_TYPE,
-  saveLoadingState: "idle",
-  siteData: {
-    soils: [],
-    yearlyExpenses: [],
-  },
+const getInitialState = (): SiteCreationState => {
+  return {
+    step: SiteCreationStep.SITE_TYPE,
+    saveLoadingState: "idle",
+    siteData: {
+      id: uuid(),
+      soils: [],
+      yearlyExpenses: [],
+    },
+  };
 };
 
 export const siteCreationSlice = createSlice({
   name: "siteCreation",
-  initialState: siteCreationInitialState,
+  initialState: getInitialState(),
   reducers: {
     setSurfaceArea: (state, action: PayloadAction<number>) => {
       state.siteData.surfaceArea = action.payload;
