@@ -3,10 +3,9 @@ import {
   CreateSiteGatewayPayload,
 } from "../../application/createSite.actions";
 
-const SITES_LIST_STORAGE_KEY = "benefriches/sites-list";
+import { delay } from "@/shared/services/delay/delay";
 
-const delay = (delayInMs: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, delayInMs));
+export const SITES_LIST_STORAGE_KEY = "benefriches/sites-list";
 
 export class LocalStorageCreateSiteApi implements CreateSiteGateway {
   async save(newSite: CreateSiteGatewayPayload) {

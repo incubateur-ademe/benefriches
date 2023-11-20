@@ -1,10 +1,8 @@
 import { GetSiteGateway } from "../../application/createProject.actions";
 import { ProjectSite } from "../../domain/project.types";
 
-const SITES_LIST_STORAGE_KEY = "benefriches/sites-list";
-
-const delay = (delayInMs: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, delayInMs));
+import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
+import { delay } from "@/shared/services/delay/delay";
 
 export class LocalStorageGetSiteApi implements GetSiteGateway {
   async getById(siteId: string): Promise<ProjectSite | undefined> {
