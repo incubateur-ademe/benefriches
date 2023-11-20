@@ -47,6 +47,8 @@ export type Project = {
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;
 };
 
+export type DocumentType = "BUILDING_PERMIT" | "FORECAST_BALANCE_SHEET";
+
 type Expense = {
   amount: number;
 };
