@@ -3,6 +3,7 @@ import { LocalStorageCreateSiteApi } from "../infrastructure/create-site-service
 import { SoilsCarbonStorageMock } from "../infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
 
+import { LocalStorageGetSiteApi } from "@/features/create-project/infrastructure/get-site-service/localStorageGetSiteService";
 import { createStore } from "@/store";
 
 describe("Site carbon sequestration reducer", () => {
@@ -17,6 +18,7 @@ describe("Site carbon sequestration reducer", () => {
     const store = createStore({
       soilsCarbonStorageService: new SoilsCarbonStorageMock(mockedResult),
       createSiteService: new LocalStorageCreateSiteApi(),
+      getSiteService: new LocalStorageGetSiteApi(),
     });
 
     const siteInfo = {
@@ -38,6 +40,7 @@ describe("Site carbon sequestration reducer", () => {
   it("should return error state when service fails", async () => {
     const store = createStore({
       createSiteService: new LocalStorageCreateSiteApi(),
+      getSiteService: new LocalStorageGetSiteApi(),
       soilsCarbonStorageService: new SoilsCarbonStorageMock(
         // @ts-expect-error intended failure
         null,

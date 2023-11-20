@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchRelatedSiteAction } from "./createProject.actions";
 
 import {
   PhotovoltaicKeyParameter,
@@ -13,6 +14,7 @@ export type ProjectCreationState = {
   step: ProjectCreationStep;
   projectData: Partial<Project>;
   siteData: ProjectSite | null;
+  siteDataLoadingState: "idle" | "loading" | "success" | "error";
 };
 
 export enum ProjectCreationStep {
@@ -69,6 +71,7 @@ export const projectCreationInitialState: ProjectCreationState = {
       [SoilType.CULTIVATION]: 14999,
     },
   },
+  siteDataLoadingState: "idle",
 };
 
 export const projectCreationSlice = createSlice({
@@ -198,6 +201,18 @@ export const projectCreationSlice = createSlice({
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
+  },
+  extraReducers(builder) {
+    builder.addCase(fetchRelatedSiteAction.pending, (state) => {
+      state.siteDataLoadingState = "loading";
+    });
+    builder.addCase(fetchRelatedSiteAction.fulfilled, (state, action) => {
+      state.siteDataLoadingState = "success";
+      state.siteData = action.payload;
+    });
+    builder.addCase(fetchRelatedSiteAction.rejected, (state) => {
+      state.siteDataLoadingState = "error";
+    });
   },
 });
 

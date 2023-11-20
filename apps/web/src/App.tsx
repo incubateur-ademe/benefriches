@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import CreateProjectIntroductionPage from "./features/create-project/views/introduction";
 import CreateProjectPage from "./features/create-project/views/ProjectCreationWizard";
 import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWizard";
 import HomePage from "./features/home/views/Home";
@@ -30,6 +31,9 @@ function App() {
         )}
         {route.name === routes.createSiteFoncier.name && (
           <CreateSiteFoncierPage />
+        )}
+        {route.name === routes.createProjectIntro.name && (
+          <CreateProjectIntroductionPage route={route} />
         )}
         {route.name === routes.createProject.name && <CreateProjectPage />}
         {route.name === false && <>Page non trouvée</>}
