@@ -1,34 +1,33 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { PHOTOVOLTAIC_RATIO_KWC_PER_M2 } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  maxRecommendedPower: number;
+  recommendedElectricalPowerKWc: number;
   photovoltaicSurfaceArea: number;
-  computationRatio: number;
 };
 
 type FormValues = {
-  photovoltaicPower: number;
+  photovoltaicInstallationElectricalPowerKWc: number;
 };
 
 function PhotovoltaicPowerFromSurfaceForm({
   onSubmit,
   photovoltaicSurfaceArea,
-  maxRecommendedPower,
-  computationRatio,
+  recommendedElectricalPowerKWc,
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaicPower: maxRecommendedPower,
+      photovoltaicInstallationElectricalPowerKWc: recommendedElectricalPowerKWc,
     },
   });
 
   const hintText = `en kWc (maximum conseillé : ${formatNumberFr(
-    maxRecommendedPower,
+    recommendedElectricalPowerKWc,
   )} kWh)`;
 
   return (
@@ -36,23 +35,25 @@ function PhotovoltaicPowerFromSurfaceForm({
       <h2>Quel sera la puissance de votre installation ?</h2>
       <p>
         Le ratio puissance / superficie d’installation est de{" "}
-        <strong>{computationRatio * 10000}&nbsp;kWc pour 10 000 m².</strong>
+        <strong>
+          {PHOTOVOLTAIC_RATIO_KWC_PER_M2 * 10000}&nbsp;kWc pour 10 000 m².
+        </strong>
       </p>
       <p>
         La superficie qu’occuperont les panneaux étant de{" "}
         {formatNumberFr(photovoltaicSurfaceArea)}
         &nbsp;m², votre puissance devrait être de{" "}
-        {formatNumberFr(maxRecommendedPower)}&nbsp;kWc.
+        {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
-          name="photovoltaicPower"
+          name="photovoltaicInstallationElectricalPowerKWc"
           label="Puissance de l’installation"
           hintText={hintText}
           rules={{
             min: 0,
             max: {
-              value: maxRecommendedPower,
+              value: recommendedElectricalPowerKWc,
               message:
                 "La puissance de l’installation est supérieure à la puissance calculée à partir de la surface d’occupation des panneaux.",
             },

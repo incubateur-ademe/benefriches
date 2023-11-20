@@ -1,28 +1,29 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  maxRecommendedPower: number;
+  maxRecommendedElectricalPowerKWc: number;
   siteSurfaceArea: number;
 };
 
 type FormValues = {
-  photovoltaicPower: number;
+  photovoltaicInstallationElectricalPowerKWc: number;
 };
 
 function PhotovoltaicPowerForm({
   onSubmit,
   siteSurfaceArea,
-  maxRecommendedPower,
+  maxRecommendedElectricalPowerKWc,
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>();
 
   const hintText = `en kWc (maximum conseillé : ${formatNumberFr(
-    maxRecommendedPower,
+    maxRecommendedElectricalPowerKWc,
   )} kWh)`;
 
   return (
@@ -30,22 +31,24 @@ function PhotovoltaicPowerForm({
       <h2>Quel sera la puissance de votre installation ?</h2>
       <p>
         Le ratio superficie / puissance d’installation est de{" "}
-        <strong>14000&nbsp;m² pour 1000 kWc.</strong>
+        <strong>
+          {PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000}&nbsp;m² pour 1000 kWc.
+        </strong>
       </p>
       <p>
         La superficie du site étant de {formatNumberFr(siteSurfaceArea)}
         &nbsp;m², votre puissance devrait être de maximum{" "}
-        {formatNumberFr(maxRecommendedPower)}&nbsp;kWc.
+        {formatNumberFr(maxRecommendedElectricalPowerKWc)}&nbsp;kWc.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
-          name="photovoltaicPower"
+          name="photovoltaicInstallationElectricalPowerKWc"
           label="Puissance de l’installation"
           hintText={hintText}
           rules={{
             min: 0,
             max: {
-              value: maxRecommendedPower,
+              value: maxRecommendedElectricalPowerKWc,
               message:
                 "La superficie induite par la puissance d’installation est supérieure à la superficie de la friche. Nous vous conseillons de réduire la puissance d’installation.",
             },

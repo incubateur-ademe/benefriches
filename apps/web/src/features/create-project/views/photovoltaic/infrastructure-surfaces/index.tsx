@@ -6,33 +6,39 @@ import {
   setPhotovoltaicInfrastructureSurfaces,
 } from "@/features/create-project/application/createProject.reducer";
 import {
+  RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
+  RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
+} from "@/features/create-project/domain/photovoltaic";
+import {
   useAppDispatch,
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
 
-const RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS = 0.88;
-const RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS = 0.02;
+const computeAccessPathsAverageSurfaceFromElectricalPower = (
+  electricalPower: number,
+) => Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS);
+
+const computeFoundationsAverageSurfaceFromElectricalPower = (
+  electricalPower: number,
+) => Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS);
 
 function PhotovoltaicInfrastructureSurfacesContainer() {
   const dispatch = useAppDispatch();
 
-  const photovoltaicPower = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicPower ?? 0,
-  );
-
-  const suggestedAccessPathsSurface = Math.round(
-    photovoltaicPower * RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
-  );
-  const suggestedFoundationsSurface = Math.round(
-    photovoltaicPower * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
+  const electricalPowerKWc = useAppSelector(
+    (state) =>
+      state.projectCreation.projectData
+        .photovoltaicInstallationElectricalPowerKWc ?? 0,
   );
 
   return (
     <PhotovoltaicInfrastructureSurfacesForm
-      suggestedAccessPathsSurface={suggestedAccessPathsSurface}
-      suggestedFoundationsSurface={suggestedFoundationsSurface}
-      accessPathsRatio={RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS}
-      foundationsRatio={RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS}
+      suggestedAccessPathsSurface={computeAccessPathsAverageSurfaceFromElectricalPower(
+        electricalPowerKWc,
+      )}
+      suggestedFoundationsSurface={computeFoundationsAverageSurfaceFromElectricalPower(
+        electricalPowerKWc,
+      )}
       onSubmit={(data) => {
         dispatch(setPhotovoltaicInfrastructureSurfaces(data));
         dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));

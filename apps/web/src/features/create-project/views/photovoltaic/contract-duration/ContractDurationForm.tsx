@@ -1,24 +1,22 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS } from "@/features/create-project/domain/photovoltaic";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  suggestedContractDuration: number;
 };
 
 type FormValues = {
   photovoltaicContractDuration: number;
 };
 
-function PhotovoltaicAnnualProductionForm({
-  suggestedContractDuration,
-  onSubmit,
-}: Props) {
+function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaicContractDuration: suggestedContractDuration,
+      photovoltaicContractDuration:
+        AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS,
     },
   });
 
@@ -29,7 +27,7 @@ function PhotovoltaicAnnualProductionForm({
       </h2>
       <p>
         La durée de contrat moyenne pour la revente de production photovoltaïque
-        est de {suggestedContractDuration} ans.
+        est de {AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS} ans.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput

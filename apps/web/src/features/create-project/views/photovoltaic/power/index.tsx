@@ -4,29 +4,40 @@ import PhotovoltaicPowerFromSurfaceForm from "./PowerFromSurfaceForm";
 import {
   goToStep,
   ProjectCreationStep,
-  setPhotovoltaicPower,
+  setPhotovoltaicInstallationElectricalPower,
 } from "@/features/create-project/application/createProject.reducer";
+import {
+  PHOTOVOLTAIC_RATIO_KWC_PER_M2,
+  PHOTOVOLTAIC_RATIO_M2_PER_KWC,
+} from "@/features/create-project/domain/photovoltaic";
 import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import {
   useAppDispatch,
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
 
-// 714 kWc pour 10000 m²
-const RATIO_KWC_PER_M2 = 0.0714;
+const computePhotovoltaicElectricalPowerFromSurface = (
+  surfaceSquareMeters: number,
+) => {
+  return Math.round(surfaceSquareMeters * PHOTOVOLTAIC_RATIO_KWC_PER_M2);
+};
 
-const computePowerFromSurface = (surface: number) => {
-  return Math.round(surface * RATIO_KWC_PER_M2);
+const computeMaxPhotovoltaicElectricalPowerFromSiteSurface = (
+  surfaceSquareMeters: number,
+) => {
+  return Math.round(surfaceSquareMeters / PHOTOVOLTAIC_RATIO_M2_PER_KWC);
 };
 
 function PhotovoltaicPowerContainer() {
   const dispatch = useAppDispatch();
-  const surfaceArea = useAppSelector(
+  const siteSurfaceArea = useAppSelector(
     (state) => state.projectCreation.siteData?.surfaceArea ?? 0,
   );
 
-  const photovoltaicSurface = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicSurface ?? 0,
+  const surfaceSquareMeters = useAppSelector(
+    (state) =>
+      state.projectCreation.projectData
+        .photovoltaicInstallationSurfaceSquareMeters ?? 0,
   );
 
   const photovoltaicKeyParameter = useAppSelector(
@@ -36,11 +47,16 @@ function PhotovoltaicPowerContainer() {
   if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.SURFACE) {
     return (
       <PhotovoltaicPowerFromSurfaceForm
-        maxRecommendedPower={computePowerFromSurface(photovoltaicSurface)}
-        photovoltaicSurfaceArea={photovoltaicSurface}
-        computationRatio={RATIO_KWC_PER_M2}
+        recommendedElectricalPowerKWc={computePhotovoltaicElectricalPowerFromSurface(
+          surfaceSquareMeters,
+        )}
+        photovoltaicSurfaceArea={surfaceSquareMeters}
         onSubmit={(data) => {
-          dispatch(setPhotovoltaicPower(data.photovoltaicPower));
+          dispatch(
+            setPhotovoltaicInstallationElectricalPower(
+              data.photovoltaicInstallationElectricalPowerKWc,
+            ),
+          );
           dispatch(
             goToStep(
               ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION,
@@ -51,14 +67,18 @@ function PhotovoltaicPowerContainer() {
     );
   }
 
-  const maxRecommendedPower = Math.round(surfaceArea / 14);
-
   return (
     <PhotovoltaicPowerForm
-      maxRecommendedPower={maxRecommendedPower}
-      siteSurfaceArea={surfaceArea}
+      maxRecommendedElectricalPowerKWc={computeMaxPhotovoltaicElectricalPowerFromSiteSurface(
+        siteSurfaceArea,
+      )}
+      siteSurfaceArea={siteSurfaceArea}
       onSubmit={(data) => {
-        dispatch(setPhotovoltaicPower(data.photovoltaicPower));
+        dispatch(
+          setPhotovoltaicInstallationElectricalPower(
+            data.photovoltaicInstallationElectricalPowerKWc,
+          ),
+        );
         dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_SURFACE));
       }}
     />

@@ -160,11 +160,19 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.photovoltaicKeyParameter = action.payload;
     },
-    setPhotovoltaicPower: (state, action: PayloadAction<number>) => {
-      state.projectData.photovoltaicPower = action.payload;
+    setPhotovoltaicInstallationElectricalPower: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
+      state.projectData.photovoltaicInstallationElectricalPowerKWc =
+        action.payload;
     },
-    setPhotovoltaicSurface: (state, action: PayloadAction<number>) => {
-      state.projectData.photovoltaicSurface = action.payload;
+    setPhotovoltaicInstallationSurface: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
+      state.projectData.photovoltaicInstallationSurfaceSquareMeters =
+        action.payload;
     },
     setPhotovoltaicExpectedAnnualProduction: (
       state,
@@ -208,8 +216,8 @@ export const {
   setNameAndDescription,
   goToStep,
   setPhotovoltaicKeyParameter,
-  setPhotovoltaicPower,
-  setPhotovoltaicSurface,
+  setPhotovoltaicInstallationElectricalPower,
+  setPhotovoltaicInstallationSurface,
   setPhotovoltaicExpectedAnnualProduction,
   setPhotovoltaicContractDuration,
   setPhotovoltaicInfrastructureSurfaces,

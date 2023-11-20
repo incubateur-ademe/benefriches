@@ -10,7 +10,7 @@ type Props = {
 };
 
 type FormValues = {
-  photovoltaicSurface: number;
+  photovoltaicInstallationSurfaceSquareMeters: number;
 };
 
 function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea }: Props) {
@@ -33,7 +33,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea }: Props) {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
-          name="photovoltaicSurface"
+          name="photovoltaicInstallationSurfaceSquareMeters"
           label="Superficie de l’installation"
           hintText={hintText}
           rules={{

@@ -6,7 +6,7 @@ import NumericInput from "@/shared/views/components/form/NumericInput/NumericInp
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  suggestedAnnualProduction: number;
+  suggestedAnnualProductionInMegaWattPerYear: number;
 };
 
 type FormValues = {
@@ -15,11 +15,12 @@ type FormValues = {
 
 function PhotovoltaicAnnualProductionForm({
   onSubmit,
-  suggestedAnnualProduction,
+  suggestedAnnualProductionInMegaWattPerYear,
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaicExpectedAnnualProduction: suggestedAnnualProduction,
+      photovoltaicExpectedAnnualProduction:
+        suggestedAnnualProductionInMegaWattPerYear,
     },
   });
 
@@ -31,7 +32,8 @@ function PhotovoltaicAnnualProductionForm({
       <p>
         D’après le taux d’ensoleillement moyen en France et à partir de la
         puissance de vos futurs panneaux, vous pouvez attendre une production
-        annuelle de {formatNumberFr(suggestedAnnualProduction)} MWh/an.
+        annuelle de {formatNumberFr(suggestedAnnualProductionInMegaWattPerYear)}{" "}
+        MWh/an.
       </p>
       <p>Vous pouvez modifier cette valeur.</p>
       <form onSubmit={handleSubmit(onSubmit)}>

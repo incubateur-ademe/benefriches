@@ -27,8 +27,8 @@ export type Project = {
   types: ProjectType[];
   renewableEnergyTypes: RenewableEnergyType[];
   photovoltaicKeyParameter: PhotovoltaicKeyParameter;
-  photovoltaicPower: number;
-  photovoltaicSurface: number;
+  photovoltaicInstallationElectricalPowerKWc: number;
+  photovoltaicInstallationSurfaceSquareMeters: number;
   photovoltaicExpectedAnnualProduction: number;
   photovoltaicContractDuration: number;
   photovoltaicFoundationsSurface: number;

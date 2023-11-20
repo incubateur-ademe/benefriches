@@ -5,32 +5,34 @@ import {
   ProjectCreationStep,
   setPhotovoltaicExpectedAnnualProduction,
 } from "@/features/create-project/application/createProject.reducer";
+import { AVERAGE_PHOTOVOLTAIC_ANNUAL_PRODUCTION_IN_KWH_BY_KWC_IN_FRANCE } from "@/features/create-project/domain/photovoltaic";
 import {
   useAppDispatch,
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
 
-// Production annuelle en kWh/kWc en France
-// https://www.hellowatt.fr/panneaux-solaires-photovoltaiques/production-panneaux-solaires
-// TODO: Get real accurate value from localisation
-// https://re.jrc.ec.europa.eu/pvg_tools/fr/tools.html
-// https://www.monkitsolaire.fr/blog/kwh-et-kwc-comprendre-les-unites-de-mesure-en-autoconsommation-n400
-const AVERAGE_ANNUAL_PRODUCTION_IN_KWH_BY_KWC_IN_FRANCE = 1100;
+const computeAveragePhotovoltaicAnnualProductionInMegaWattPerYear = (
+  electricalPower: number,
+) =>
+  Math.round(
+    (AVERAGE_PHOTOVOLTAIC_ANNUAL_PRODUCTION_IN_KWH_BY_KWC_IN_FRANCE *
+      electricalPower) /
+      1000,
+  );
 
 function PhotovoltaicExpectedAnnualProductionContainer() {
   const dispatch = useAppDispatch();
-  const photovoltaicPower = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicPower ?? 0,
-  );
-
-  const suggestedAnnualProductionMWhPerYear = Math.round(
-    (AVERAGE_ANNUAL_PRODUCTION_IN_KWH_BY_KWC_IN_FRANCE * photovoltaicPower) /
-      1000,
+  const electricalPowerKWc = useAppSelector(
+    (state) =>
+      state.projectCreation.projectData
+        .photovoltaicInstallationElectricalPowerKWc ?? 0,
   );
 
   return (
     <PhotovoltaicExpectedAnnualProductionForm
-      suggestedAnnualProduction={suggestedAnnualProductionMWhPerYear}
+      suggestedAnnualProductionInMegaWattPerYear={computeAveragePhotovoltaicAnnualProductionInMegaWattPerYear(
+        electricalPowerKWc,
+      )}
       onSubmit={(data) => {
         dispatch(
           setPhotovoltaicExpectedAnnualProduction(
