@@ -22,7 +22,9 @@ function ProjectSoilsSurfaceAreasContainer() {
   );
 
   const photovoltaicSurface = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicSurface ?? 0,
+    (state) =>
+      state.projectCreation.projectData
+        .photovoltaicInstallationSurfaceSquareMeters ?? 0,
   );
   const photovoltaicFoundationsSurface = useAppSelector(
     (state) => state.projectCreation.projectData.photovoltaicFoundationsSurface,
