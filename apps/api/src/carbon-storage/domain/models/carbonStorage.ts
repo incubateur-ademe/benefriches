@@ -1,8 +1,7 @@
-export enum SoilCategoryType {
+// Values from database
+export enum RepositorySoilCategoryType {
   // artificial
-  BUILDINGS = "buildings",
   IMPERMEABLE_SOILS = "impermeable_soils",
-  MINERAL_SOIL = "mineral_soil",
   ARTIFICIAL_GRASS_OR_BUSHES_FILLED = "artificial_grass_or_bushes_filled",
   ARTIFICIAL_TREE_FILLED = "artificial_tree_filled",
   // forest
@@ -41,7 +40,7 @@ export enum LocalisationCategoryType {
 
 export type CarbonStorageProps = {
   reservoir: ReservoirType;
-  soil_category: SoilCategoryType;
+  soil_category: RepositorySoilCategoryType;
   stock_tC_by_ha: number;
   localisation_category: LocalisationCategoryType;
   localisation_code: string;
@@ -50,7 +49,7 @@ export type CarbonStorageProps = {
 export class CarbonStorage {
   private constructor(
     readonly reservoir: ReservoirType,
-    readonly soilCategory: SoilCategoryType,
+    readonly soilCategory: RepositorySoilCategoryType,
     readonly carbonStorageInTonByHectare: number,
     readonly localisationCategory: LocalisationCategoryType,
     readonly localisationCode: string,

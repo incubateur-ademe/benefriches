@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { CarbonStorageRepository } from "src/carbon-storage/domain/gateways/CarbonStorageRepository";
 import {
   CarbonStorage,
-  SoilCategoryType,
+  RepositorySoilCategoryType,
 } from "src/carbon-storage/domain/models/carbonStorage";
 
 const SOILS_CS = [
@@ -282,7 +282,7 @@ const CITIES = {
 export class LocalCarbonStorageRepository implements CarbonStorageRepository {
   async getCarbonStorageForCity(
     cityCode: "01026" | "01027",
-    soils: SoilCategoryType[],
+    soils: RepositorySoilCategoryType[],
   ): Promise<CarbonStorage[]> {
     if (cityCode.length === 0) {
       throw new BadRequestException();

@@ -1,15 +1,28 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "nestjs-zod/z";
-import { SoilCategoryType } from "src/carbon-storage/domain/models/carbonStorage";
+import {
+  SoilCategory,
+  SoilCategoryType,
+} from "src/carbon-storage/domain/models/soilCategory";
+import { SurfaceArea } from "src/carbon-storage/domain/models/surfaceArea";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/domain/usecases/getCityCarbonStoragePerSoilsCategory";
 
 const GetSoilsCarbonStorageDtoSchema = z.object({
   cityCode: z.string(),
   soils: z.array(
     z.object({
-      surfaceArea: z.string().transform(Number),
-      type: z.string().toLowerCase().pipe(z.nativeEnum(SoilCategoryType)),
+      surfaceArea: z
+        .string()
+        .refine((v) => !isNaN(Number(v)) && Number(v) >= 0, {
+          message: "Invalid number for surfaceArea",
+        })
+        .transform(Number)
+        .transform((val) => SurfaceArea.create(val)),
+      type: z
+        .string()
+        .pipe(z.nativeEnum(SoilCategoryType))
+        .transform((val) => SoilCategory.create(val)),
     }),
   ),
 });
@@ -34,10 +47,7 @@ export class CarbonStorageController {
       });
     return {
       totalCarbonStorage,
-      soilsStorage: soilsCarbonStorage.map((soilCarbonStorage) => ({
-        ...soilCarbonStorage,
-        type: soilCarbonStorage.type.toUpperCase(),
-      })),
+      soilsStorage: soilsCarbonStorage,
     };
   }
 }

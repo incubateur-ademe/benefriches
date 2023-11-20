@@ -9,16 +9,16 @@ import {
   CarbonStorage,
   CarbonStorageProps,
   LocalisationCategoryType,
+  RepositorySoilCategoryType,
   ReservoirType,
-  SoilCategoryType,
 } from "src/carbon-storage/domain/models/carbonStorage";
 import { City, CityProps } from "src/carbon-storage/domain/models/city";
 
 const FOREST_CATEGORIES = [
-  SoilCategoryType.FOREST_CONIFER,
-  SoilCategoryType.FOREST_DECIDUOUS,
-  SoilCategoryType.FOREST_MIXED,
-  SoilCategoryType.FOREST_POPLAR,
+  RepositorySoilCategoryType.FOREST_CONIFER,
+  RepositorySoilCategoryType.FOREST_DECIDUOUS,
+  RepositorySoilCategoryType.FOREST_MIXED,
+  RepositorySoilCategoryType.FOREST_POPLAR,
 ];
 
 const filterCarbonStorageByLocalisationPriority = (
@@ -56,7 +56,9 @@ const filterCarbonStorageByLocalisationPriority = (
   }, []);
 };
 
-const getForestLitterCarbonStorage = (soilCategories: SoilCategoryType[]) => {
+const getForestLitterCarbonStorage = (
+  soilCategories: RepositorySoilCategoryType[],
+) => {
   const forestCategories =
     soilCategories.length === 0
       ? FOREST_CATEGORIES
@@ -81,7 +83,7 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
 
   async getCarbonStorageForCity(
     cityCode: string,
-    soilCategories: SoilCategoryType[],
+    soilCategories: RepositorySoilCategoryType[],
   ): Promise<CarbonStorage[]> {
     if (cityCode.length === 0) {
       throw new BadRequestException();

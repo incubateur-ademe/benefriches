@@ -1,8 +1,11 @@
-import { CarbonStorage, SoilCategoryType } from "../models/carbonStorage";
+import {
+  CarbonStorage,
+  RepositorySoilCategoryType,
+} from "../models/carbonStorage";
 
 export interface CarbonStorageRepository {
   getCarbonStorageForCity(
     cityCode: string,
-    soilCategories: SoilCategoryType[],
+    soilCategories: RepositorySoilCategoryType[],
   ): Promise<CarbonStorage[]>;
 }

@@ -1,27 +1,23 @@
 import { UseCase } from "../../../shared-kernel/usecase";
 import { CarbonStorageRepository } from "../gateways/CarbonStorageRepository";
-import { SoilCategoryType } from "../models/carbonStorage";
+import { SoilCategory, SoilCategoryType } from "../models/soilCategory";
+import { SurfaceArea, SurfaceAreaType } from "../models/surfaceArea";
 
 type Request = {
   cityCode: string;
   soils: {
-    surfaceArea: number; // m2
-    type: SoilCategoryType;
+    surfaceArea: SurfaceArea;
+    type: SoilCategory;
   }[];
 };
 
 type Response = {
   totalCarbonStorage: number;
   soilsCarbonStorage: {
-    surfaceArea: number;
+    surfaceArea: SurfaceAreaType;
     carbonStorage: number; // m2
     type: SoilCategoryType;
   }[];
-};
-
-// TODO: use a shared service with frontend
-const convertSquareMetersToHectares = (surfaceAreaInSquareMeters: number) => {
-  return surfaceAreaInSquareMeters / 10000;
 };
 
 export class GetCityCarbonStoragePerSoilsCategoryUseCase
@@ -35,21 +31,23 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase
     const carbonStorage =
       await this.carbonStorageRepository.getCarbonStorageForCity(
         cityCode,
-        soils.map(({ type }) => type),
+        soils.map(({ type }) => type.getRepositorySoilCategory()),
       );
 
     const soilsCarbonStorage = soils.map(({ type, surfaceArea }) => {
       const entriesForCategory = carbonStorage.filter(
-        ({ soilCategory }) => soilCategory === type,
+        ({ soilCategory }) => soilCategory === type.getRepositorySoilCategory(),
       );
       const totalForCategory = entriesForCategory.reduce(
         (total, { carbonStorageInTonByHectare }) =>
-          total +
-          carbonStorageInTonByHectare *
-            convertSquareMetersToHectares(surfaceArea),
+          total + carbonStorageInTonByHectare * surfaceArea.getInHectares(),
         0,
       );
-      return { type, surfaceArea, carbonStorage: totalForCategory };
+      return {
+        type: type.getValue(),
+        surfaceArea: surfaceArea.getInSquareMeters(),
+        carbonStorage: totalForCategory,
+      };
     });
 
     const totalCarbonStorage = Object.values(soilsCarbonStorage).reduce(
