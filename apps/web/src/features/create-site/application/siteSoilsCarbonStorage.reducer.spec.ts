@@ -1,4 +1,5 @@
 import { SoilType } from "../domain/siteFoncier.types";
+import { LocalStorageCreateSiteApi } from "../infrastructure/create-site-service/localStorageCreateSiteApi";
 import { SoilsCarbonStorageMock } from "../infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
 
@@ -15,6 +16,7 @@ describe("Site carbon sequestration reducer", () => {
     };
     const store = createStore({
       soilsCarbonStorageService: new SoilsCarbonStorageMock(mockedResult),
+      createSiteService: new LocalStorageCreateSiteApi(),
     });
 
     const siteInfo = {
@@ -35,6 +37,7 @@ describe("Site carbon sequestration reducer", () => {
 
   it("should return error state when service fails", async () => {
     const store = createStore({
+      createSiteService: new LocalStorageCreateSiteApi(),
       soilsCarbonStorageService: new SoilsCarbonStorageMock(
         // @ts-expect-error intended failure
         null,
