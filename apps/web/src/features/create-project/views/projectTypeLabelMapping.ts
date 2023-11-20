@@ -24,6 +24,6 @@ export const getLabelForRenewableEnergyType = (
     case RenewableEnergyType.GEOTHERMAL:
       return "Géothermie";
     case RenewableEnergyType.BIOMASS:
-      return "Biomass";
+      return "Biomasse";
   }
 };

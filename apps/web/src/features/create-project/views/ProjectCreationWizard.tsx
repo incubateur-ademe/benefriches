@@ -3,6 +3,12 @@ import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
 import ReinstatementsCostsForm from "./costs/reinstatement-costs";
 import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
+import PhotovoltaicContractDurationContainer from "./photovoltaic/contract-duration";
+import PhotovoltaicExpectedAnnualProductionContainer from "./photovoltaic/expected-annual-production";
+import PhotovoltaicInfrastructureSurfacesContainer from "./photovoltaic/infrastructure-surfaces";
+import PhotovoltaicKeyParameter from "./photovoltaic/key-parameter";
+import PhotovoltaicPower from "./photovoltaic/power";
+import PhotovoltaicSurface from "./photovoltaic/surface";
 import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistance";
 import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
@@ -56,6 +62,18 @@ function ProjectCreationWizard() {
         return <ProjectYearlyProjectedRevenueForm />;
       case ProjectCreationStep.NAMING:
         return <ProjectNameAndDescriptionForm />;
+      case ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER:
+        return <PhotovoltaicKeyParameter />;
+      case ProjectCreationStep.PHOTOVOLTAIC_POWER:
+        return <PhotovoltaicPower />;
+      case ProjectCreationStep.PHOTOVOLTAIC_SURFACE:
+        return <PhotovoltaicSurface />;
+      case ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION:
+        return <PhotovoltaicExpectedAnnualProductionContainer />;
+      case ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION:
+        return <PhotovoltaicContractDurationContainer />;
+      case ProjectCreationStep.PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE:
+        return <PhotovoltaicInfrastructureSurfacesContainer />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }

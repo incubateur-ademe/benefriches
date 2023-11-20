@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
+  PhotovoltaicKeyParameter,
   Project,
   ProjectSite,
   ProjectType,
   RenewableEnergyType,
 } from "@/features/create-project/domain/project.types";
+import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 
 export type ProjectCreationState = {
   step: ProjectCreationStep;
@@ -16,6 +18,13 @@ export type ProjectCreationState = {
 export enum ProjectCreationStep {
   PROJECT_TYPES = "PROJECT_TYPES",
   RENEWABLE_ENERGY_TYPES = "RENEWABLE_ENERGY_TYPES",
+  // Photovoltaic
+  PHOTOVOLTAIC_KEY_PARAMETER = "PHOTOVOLTAIC_KEY_PARAMETER",
+  PHOTOVOLTAIC_POWER = "PHOTOVOLTAIC_POWER",
+  PHOTOVOLTAIC_SURFACE = "PHOTOVOLTAIC_SURFACE",
+  PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION = "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
+  PHOTOVOLTAIC_CONTRACT_DURATION = "PHOTOVOLTAIC_CONTRACT_DURATION",
+  PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE = "PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE",
   // Acteurs
   STAKEHOLDERS_INTRODUCTION = "STAKEHOLDERS_INTRODUCTION",
   STAKEHOLDERS_FUTURE_OPERATOR = "STAKEHOLDERS_FUTURE_OPERATOR",
@@ -43,15 +52,21 @@ export const projectCreationInitialState: ProjectCreationState = {
   projectData: {
     yearlyProjectedCosts: [],
     yearlyProjectedRevenue: [],
+    types: [],
+    renewableEnergyTypes: [],
   },
   siteData: {
     id: "id-site",
     isFriche: true,
-    name: "my site",
     owner: {
       id: "owner-uuid",
       name: "SARL Propriétaire",
       structureType: "company",
+    },
+    surfaceArea: 150000,
+    name: "Friche industrielle de Blajan",
+    soilsSurfaceAreas: {
+      [SoilType.CULTIVATION]: 14999,
     },
   },
 };
@@ -139,6 +154,47 @@ export const projectCreationSlice = createSlice({
       state.projectData.name = name;
       if (description) state.projectData.description = description;
     },
+    setPhotovoltaicKeyParameter: (
+      state,
+      action: PayloadAction<PhotovoltaicKeyParameter>,
+    ) => {
+      state.projectData.photovoltaicKeyParameter = action.payload;
+    },
+    setPhotovoltaicInstallationElectricalPower: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
+      state.projectData.photovoltaicInstallationElectricalPowerKWc =
+        action.payload;
+    },
+    setPhotovoltaicInstallationSurface: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
+      state.projectData.photovoltaicInstallationSurfaceSquareMeters =
+        action.payload;
+    },
+    setPhotovoltaicExpectedAnnualProduction: (
+      state,
+      action: PayloadAction<number>,
+    ) => {
+      state.projectData.photovoltaicExpectedAnnualProduction = action.payload;
+    },
+    setPhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
+      state.projectData.photovoltaicContractDuration = action.payload;
+    },
+    setPhotovoltaicInfrastructureSurfaces: (
+      state,
+      action: PayloadAction<{
+        photovoltaicAccessPathsSurface: number;
+        photovoltaicFoundationsSurface: number;
+      }>,
+    ) => {
+      state.projectData.photovoltaicAccessPathsSurface =
+        action.payload.photovoltaicAccessPathsSurface;
+      state.projectData.photovoltaicFoundationsSurface =
+        action.payload.photovoltaicFoundationsSurface;
+    },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
     },
@@ -159,6 +215,12 @@ export const {
   addYearlyProjectedRevenue,
   setNameAndDescription,
   goToStep,
+  setPhotovoltaicKeyParameter,
+  setPhotovoltaicInstallationElectricalPower,
+  setPhotovoltaicInstallationSurface,
+  setPhotovoltaicExpectedAnnualProduction,
+  setPhotovoltaicContractDuration,
+  setPhotovoltaicInfrastructureSurfaces,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;

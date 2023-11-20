@@ -1,3 +1,4 @@
+import { RenewableEnergyType } from "../../domain/project.types";
 import ProjectTypeForm from "./ProjectTypeForm";
 
 import {
@@ -12,8 +13,13 @@ function ProjectRenewableEnergyTypesFormContainer() {
   return (
     <ProjectTypeForm
       onSubmit={(data) => {
+        const nextStep = data.renewableEnergyTypes.includes(
+          RenewableEnergyType.PHOTOVOLTAIC,
+        )
+          ? ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER
+          : ProjectCreationStep.CREATION_CONFIRMATION;
         dispatch(setRenewableEnergyTypes(data.renewableEnergyTypes));
-        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));
+        dispatch(goToStep(nextStep));
       }}
     />
   );
