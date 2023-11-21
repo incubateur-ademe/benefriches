@@ -27,7 +27,6 @@ export enum ProjectCreationStep {
   PHOTOVOLTAIC_SURFACE = "PHOTOVOLTAIC_SURFACE",
   PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION = "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION",
   PHOTOVOLTAIC_CONTRACT_DURATION = "PHOTOVOLTAIC_CONTRACT_DURATION",
-  PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE = "PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE",
   SOILS_SURFACE_AREAS = "SOILS_SURFACE_AREAS",
 
   // Acteurs
@@ -193,18 +192,6 @@ export const projectCreationSlice = createSlice({
     setPhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicContractDuration = action.payload;
     },
-    setPhotovoltaicInfrastructureSurfaces: (
-      state,
-      action: PayloadAction<{
-        photovoltaicAccessPathsSurface: number;
-        photovoltaicFoundationsSurface: number;
-      }>,
-    ) => {
-      state.projectData.photovoltaicAccessPathsSurface =
-        action.payload.photovoltaicAccessPathsSurface;
-      state.projectData.photovoltaicFoundationsSurface =
-        action.payload.photovoltaicFoundationsSurface;
-    },
     setSoilsSurfaceAreas: (
       state,
       action: PayloadAction<Project["soilsSurfaceAreas"]>,
@@ -248,7 +235,6 @@ export const {
   setPhotovoltaicInstallationSurface,
   setPhotovoltaicExpectedAnnualProduction,
   setPhotovoltaicContractDuration,
-  setPhotovoltaicInfrastructureSurfaces,
   setSoilsSurfaceAreas,
 } = projectCreationSlice.actions;
 
