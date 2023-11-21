@@ -120,11 +120,11 @@ function SoilsSurfaceAreasForm({
     ...watchSoils[index],
   }));
 
-  const totalAllowedSurface = useMemo(
+  const totalAllocatedSurface = useMemo(
     () => getTotalSurface(controlledSoilsFields),
     [controlledSoilsFields],
   );
-  const remainingSurface = totalSurfaceArea - totalAllowedSurface;
+  const freeSurface = totalSurfaceArea - totalAllocatedSurface;
   const totalFlatSurface = useMemo(
     () => getTotalFlatSurface(controlledSoilsFields),
     [controlledSoilsFields],
@@ -175,7 +175,7 @@ function SoilsSurfaceAreasForm({
               control={control}
               name={`soilsSurfaceAreas.${index}.surface`}
               label={getLabelForSoilType(soilType)}
-              maxAllowed={remainingSurface + surface}
+              maxAllowed={freeSurface + surface}
               hintText={hintText}
               sliderProps={{
                 min: 0,
@@ -231,13 +231,13 @@ function SoilsSurfaceAreasForm({
           label="Total de toutes les surfaces allouées"
           hintText="en m²"
           nativeInputProps={{
-            value: totalAllowedSurface,
+            value: totalAllocatedSurface,
             max: totalSurfaceArea,
           }}
           disabled
-          state={totalAllowedSurface < totalSurfaceArea ? "error" : "default"}
+          state={totalAllocatedSurface < totalSurfaceArea ? "error" : "default"}
           stateRelatedMessage={`- ${formatNumberFr(
-            totalSurfaceArea - totalAllowedSurface,
+            totalSurfaceArea - totalAllocatedSurface,
           )} m²`}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
