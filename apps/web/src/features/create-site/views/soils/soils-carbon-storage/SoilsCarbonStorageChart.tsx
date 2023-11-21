@@ -3,9 +3,9 @@ import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import highchartsVariablePie from "highcharts/modules/variable-pie";
 import HighchartsReact from "highcharts-react-official";
-import { getLabelForSoilType } from "../../soilTypeLabelMapping";
 
 import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 highchartsVariablePie(Highcharts);
 

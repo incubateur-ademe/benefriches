@@ -2,9 +2,9 @@ import { useRef } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { getLabelForSoilType } from "../../soilTypeLabelMapping";
 
 import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;

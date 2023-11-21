@@ -43,6 +43,7 @@ export type Project = {
   financialAssistanceRevenue: number;
   yearlyProjectedCosts: Expense[];
   yearlyProjectedRevenue: Revenue[];
+  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
 };
 
 type Expense = {

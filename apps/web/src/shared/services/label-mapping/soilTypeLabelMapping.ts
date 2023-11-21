@@ -1,4 +1,4 @@
-import { SoilType } from "../domain/siteFoncier.types";
+import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 
 export const getLabelForSoilType = (value: SoilType): string => {
   switch (value) {

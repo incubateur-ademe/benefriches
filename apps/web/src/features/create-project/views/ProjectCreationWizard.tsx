@@ -21,6 +21,7 @@ import ProjectCreationConfirmation from "./confirmation";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
+import ProjectSoilsSurfaceAreasContainer from "./soils-surface-areas";
 import Stepper from "./Stepper";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -74,6 +75,8 @@ function ProjectCreationWizard() {
         return <PhotovoltaicContractDurationContainer />;
       case ProjectCreationStep.PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE:
         return <PhotovoltaicInfrastructureSurfacesContainer />;
+      case ProjectCreationStep.SOILS_SURFACE_AREAS:
+        return <ProjectSoilsSurfaceAreasContainer />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }
