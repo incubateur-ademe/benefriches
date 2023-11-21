@@ -23,6 +23,14 @@ const formatNumericImpact = (impact: number) => {
   return `${signPrefix} ${formatNumberFr(Math.abs(impact))}`;
 };
 
+const allowedProjectTypesErrorMessage = `Cette fonctionnalité n’est pas encore accessible, veuillez sélectionner uniquement l’option ${getLabelForProjectType(
+  ProjectType.RENEWABLE_ENERGY,
+)}`;
+
+const validateSelectedProjectTypes = (types: ProjectType[]) =>
+  (types.length === 1 && types[0] === ProjectType.RENEWABLE_ENERGY) ||
+  allowedProjectTypesErrorMessage;
+
 const mapOptions =
   (register: UseFormRegister<FormValues>, siteSurfaceArea: number) =>
   (projectType: ProjectType) => {
@@ -45,9 +53,11 @@ const mapOptions =
         ...register("types", {
           required:
             "Ce champ est nécessaire pour déterminer les questions suivantes",
+          validate: {
+            allowedProjectTypes: validateSelectedProjectTypes,
+          },
         }),
         value: projectType,
-        disabled: projectType !== ProjectType.RENEWABLE_ENERGY,
       },
     };
   };
@@ -63,13 +73,18 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
   const validationError = formState.errors.types;
 
+  const state =
+    validationError && validationError.type !== "allowedProjectTypes"
+      ? "error"
+      : "default";
+
   return (
     <>
       <h2>Qu’y aura t-il sur le site une fois aménagé ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}
-          state={validationError ? "error" : "default"}
+          state={state}
           stateRelatedMessage={
             validationError ? validationError.message : undefined
           }
