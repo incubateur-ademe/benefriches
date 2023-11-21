@@ -23,6 +23,17 @@ const formatNumericImpact = (impact: number) => {
   return `${signPrefix} ${formatNumberFr(Math.abs(impact))}`;
 };
 
+const allowedRenewableEnergyTypesErrorMessage = `Cette fonctionnalité n’est pas encore accessible, veuillez sélectionner uniquement l’option ${getLabelForRenewableEnergyType(
+  RenewableEnergyType.PHOTOVOLTAIC,
+)}`;
+
+const validateSelectedRenewableEnergyTypes = (
+  renewableEnergyTypes: RenewableEnergyType[],
+) =>
+  (renewableEnergyTypes.length === 1 &&
+    renewableEnergyTypes[0] === RenewableEnergyType.PHOTOVOLTAIC) ||
+  allowedRenewableEnergyTypesErrorMessage;
+
 const mapOptions =
   (register: UseFormRegister<FormValues>, siteSurfaceArea: number) =>
   (enrTypes: RenewableEnergyType) => {
@@ -44,9 +55,11 @@ const mapOptions =
         ...register("renewableEnergyTypes", {
           required:
             "Ce champ est nécessaire pour déterminer les questions suivantes",
+          validate: {
+            allowedRenewableEnergyTypes: validateSelectedRenewableEnergyTypes,
+          },
         }),
         value: enrTypes,
-        disabled: enrTypes !== RenewableEnergyType.PHOTOVOLTAIC,
       },
     };
   };
@@ -62,13 +75,18 @@ function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
   const validationError = formState.errors.renewableEnergyTypes;
 
+  const state =
+    validationError && validationError.type !== "allowedRenewableEnergyTypes"
+      ? "error"
+      : "default";
+
   return (
     <>
       <h2>Quel système d’EnR souhaitez-vous installer ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}
-          state={validationError ? "error" : "default"}
+          state={state}
           stateRelatedMessage={
             validationError ? validationError.message : undefined
           }
