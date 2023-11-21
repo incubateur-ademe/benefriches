@@ -7,8 +7,11 @@ import {
 import DsfrInput, { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { Slider } from "antd";
 import { SliderBaseProps } from "antd/es/slider";
-import { numberToString, stringToNumber } from "./helpers";
 
+import {
+  numberToString,
+  stringToNumber,
+} from "@/shared/services/number-conversion/numberConversion";
 import { getPercentage } from "@/shared/services/percentage/percentage";
 
 type Props<T extends FieldValues> = {

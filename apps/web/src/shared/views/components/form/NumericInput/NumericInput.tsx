@@ -5,7 +5,11 @@ import {
   UseControllerProps,
 } from "react-hook-form";
 import DsfrInput from "@codegouvfr/react-dsfr/Input";
-import { numberToString, stringToNumber } from "./helpers";
+
+import {
+  numberToString,
+  stringToNumber,
+} from "@/shared/services/number-conversion/numberConversion";
 
 type Props<T extends FieldValues> = {
   label: string;
