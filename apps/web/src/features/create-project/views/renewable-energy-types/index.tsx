@@ -1,17 +1,24 @@
 import { RenewableEnergyType } from "../../domain/project.types";
-import ProjectTypeForm from "./ProjectTypeForm";
+import ProjectTypeForm from "./RenewableEnergyTypeForm";
 
 import {
   goToStep,
   ProjectCreationStep,
   setRenewableEnergyTypes,
 } from "@/features/create-project/application/createProject.reducer";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/views/hooks/store.hooks";
 
 function ProjectRenewableEnergyTypesFormContainer() {
   const dispatch = useAppDispatch();
+  const siteSurfaceArea = useAppSelector(
+    (state) => state.projectCreation.siteData?.surfaceArea ?? 0,
+  );
   return (
     <ProjectTypeForm
+      siteSurfaceArea={siteSurfaceArea}
       onSubmit={(data) => {
         const nextStep = data.renewableEnergyTypes.includes(
           RenewableEnergyType.PHOTOVOLTAIC,
