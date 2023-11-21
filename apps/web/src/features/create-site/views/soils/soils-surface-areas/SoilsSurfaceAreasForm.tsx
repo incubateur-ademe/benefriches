@@ -1,13 +1,12 @@
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { SoilType } from "../../../domain/siteFoncier.types";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
-import { getPercentage } from "@/shared/services/percentage/percentage";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 
 type Props = {
   totalSurfaceArea: number;
@@ -17,47 +16,93 @@ type Props = {
 
 export type FormValues = Record<SoilType, number>;
 
+const getTotalSurface = (soilsSurfaceAreas: FormValues) =>
+  Object.values(soilsSurfaceAreas)
+    .filter(Number)
+    .reduce((total, surface) => total + surface, 0);
+
+const getInitialSurfacesFormSoilTypes = (soils: SoilType[]) =>
+  soils.reduce(
+    (soilSurfaceAreas, soilType) => ({ ...soilSurfaceAreas, [soilType]: 0 }),
+    {},
+  );
+
 function SiteSoilsSurfaceAreasForm({
   soils,
   totalSurfaceArea,
   onSubmit,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const defaultValues = useMemo(
+    () => getInitialSurfacesFormSoilTypes(soils),
+    [soils],
+  );
+  const { control, handleSubmit, watch, reset } = useForm<FormValues>({
+    defaultValues,
+  });
   const _onSubmit = handleSubmit(onSubmit);
+
+  const soilsValues = watch();
+
+  const totalAllocatedSurface = useMemo(
+    () => getTotalSurface(soilsValues),
+    [soilsValues],
+  );
+
+  const freeSurface = totalSurfaceArea - totalAllocatedSurface;
 
   return (
     <>
       <h2>Quelles sont les superficies des différents sols ?</h2>
+      <p>La superficie du site est de {formatNumberFr(totalSurfaceArea)} m2.</p>
       <p>
-        La superficie du site est de {formatNumberFr(totalSurfaceArea)} m2. Les
-        superficies des différents sols doivent totaliser{" "}
+        Les superficies des différents sols doivent totaliser{" "}
         {formatNumberFr(totalSurfaceArea)} m2.
       </p>
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
-          <div key={`input-${soilType}`} className={fr.cx("fr-grid-row")}>
-            <NumericInput
-              name={soilType}
-              label={getLabelForSoilType(soilType)}
-              hintText="en m2"
-              rules={{ required: "Ce champ est requis" }}
-              control={control}
-            />
-            <legend
-              className={fr.cx("fr-mb-4w", "fr-ml-1w")}
-              style={{ alignSelf: "end" }}
-            >
-              {Math.round(getPercentage(watch(soilType), totalSurfaceArea))}%
-            </legend>
-          </div>
+          <SliderNumericInput
+            key={soilType}
+            control={control}
+            name={soilType}
+            label={getLabelForSoilType(soilType)}
+            hintText="en m2"
+            maxAllowed={freeSurface + soilsValues[soilType]}
+            sliderProps={{
+              min: 0,
+              max: totalSurfaceArea,
+              tooltip: {
+                formatter: (value?: number) =>
+                  value && `${formatNumberFr(value)} m²`,
+              },
+            }}
+          />
         ))}
+        <div
+          className="fr-py-7v"
+          style={{ display: "flex", justifyContent: "space-between" }}
+        >
+          <Button
+            onClick={() => reset(defaultValues)}
+            priority="secondary"
+            nativeButtonProps={{ type: "button" }}
+          >
+            Réinitialiser les valeurs
+          </Button>
+        </div>
+
         <Input
-          label="Total de toutes les superficies du site"
+          label="Total de toutes les superficies allouées"
           hintText="en m2"
           nativeInputProps={{
-            value: totalSurfaceArea,
+            value: totalAllocatedSurface,
+            max: totalSurfaceArea,
+            type: "number",
           }}
           disabled
+          state={totalAllocatedSurface < totalSurfaceArea ? "error" : "default"}
+          stateRelatedMessage={`- ${formatNumberFr(
+            totalSurfaceArea - totalAllocatedSurface,
+          )} m²`}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
