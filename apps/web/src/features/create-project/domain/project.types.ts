@@ -1,5 +1,6 @@
 import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
+import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 
 export enum ProjectType {
   RENEWABLE_ENERGY = "RENEWABLE_ENERGY",
@@ -81,4 +82,54 @@ export type ProjectSite = {
   };
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;
   surfaceArea: number;
+};
+
+const getPrevisionalProjectSocioEconomicImpactPerHectare = (
+  projectType: ProjectType,
+) => {
+  switch (projectType) {
+    case ProjectType.BUILDINGS:
+      return 15000;
+    case ProjectType.NATURAL_URBAN_SPACES:
+      return 10000;
+    case ProjectType.URBAN_AGRICULTURE:
+      return 12000;
+    case ProjectType.RENEWABLE_ENERGY:
+      return 5000;
+  }
+};
+
+export const getPrevisionalProjectSocioEconomicImpact = (
+  projectType: ProjectType,
+  siteSurfaceArea: number,
+) => {
+  return Math.round(
+    getPrevisionalProjectSocioEconomicImpactPerHectare(projectType) *
+      convertSquareMetersToHectares(siteSurfaceArea),
+  );
+};
+
+const getPrevisionalEnrSocioEconomicImpactPerHectare = (
+  enrProjectType: RenewableEnergyType,
+) => {
+  switch (enrProjectType) {
+    case RenewableEnergyType.AGRIVOLTAIC:
+      return -21000;
+    case RenewableEnergyType.BIOMASS:
+      return -11000;
+    case RenewableEnergyType.GEOTHERMAL:
+      return 10000;
+    case RenewableEnergyType.PHOTOVOLTAIC:
+      return -10000;
+  }
+};
+
+export const getPrevisionalEnrSocioEconomicImpact = (
+  enrProjectType: RenewableEnergyType,
+  siteSurfaceArea: number,
+) => {
+  return Math.round(
+    getPrevisionalEnrSocioEconomicImpactPerHectare(enrProjectType) *
+      convertSquareMetersToHectares(siteSurfaceArea),
+  );
 };
