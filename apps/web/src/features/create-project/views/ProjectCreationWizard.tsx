@@ -18,6 +18,7 @@ import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-t
 import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 import ProjectCreationConfirmation from "./confirmation";
+import ProjectDocumentsContainer from "./documents";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
@@ -33,6 +34,8 @@ function ProjectCreationWizard() {
 
   const getStepComponent = () => {
     switch (projectCreationStep) {
+      case ProjectCreationStep.DOCUMENTS:
+        return <ProjectDocumentsContainer />;
       case ProjectCreationStep.PROJECT_TYPES:
         return <ProjectTypesForm />;
       case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:

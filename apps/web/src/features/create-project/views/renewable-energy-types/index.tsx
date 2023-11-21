@@ -1,5 +1,4 @@
-import { RenewableEnergyType } from "../../domain/project.types";
-import ProjectTypeForm from "./RenewableEnergyTypeForm";
+import RenewableEnergyTypeForm from "./RenewableEnergyTypeForm";
 
 import {
   goToStep,
@@ -17,16 +16,11 @@ function ProjectRenewableEnergyTypesFormContainer() {
     (state) => state.projectCreation.siteData?.surfaceArea ?? 0,
   );
   return (
-    <ProjectTypeForm
+    <RenewableEnergyTypeForm
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={(data) => {
-        const nextStep = data.renewableEnergyTypes.includes(
-          RenewableEnergyType.PHOTOVOLTAIC,
-        )
-          ? ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER
-          : ProjectCreationStep.CREATION_CONFIRMATION;
         dispatch(setRenewableEnergyTypes(data.renewableEnergyTypes));
-        dispatch(goToStep(nextStep));
+        dispatch(goToStep(ProjectCreationStep.DOCUMENTS));
       }}
     />
   );
