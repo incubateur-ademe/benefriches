@@ -1,3 +1,7 @@
+import {
+  RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
+  RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
+} from "../../domain/photovoltaic";
 import SoilDistributionForm from "./SoilsSurfaceAreasForm";
 
 import {
@@ -10,6 +14,14 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
+
+const computeAccessPathsAverageSurfaceFromElectricalPower = (
+  electricalPower: number,
+) => Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS);
+
+const computeFoundationsAverageSurfaceFromElectricalPower = (
+  electricalPower: number,
+) => Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS);
 
 function ProjectSoilsSurfaceAreasContainer() {
   const dispatch = useAppDispatch();
@@ -26,11 +38,11 @@ function ProjectSoilsSurfaceAreasContainer() {
       state.projectCreation.projectData
         .photovoltaicInstallationSurfaceSquareMeters ?? 0,
   );
-  const photovoltaicFoundationsSurface = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicFoundationsSurface,
-  );
-  const photovoltaicAccessPathsSurface = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicAccessPathsSurface,
+
+  const photovoltaicElectricalPowerKWc = useAppSelector(
+    (state) =>
+      state.projectCreation.projectData
+        .photovoltaicInstallationElectricalPowerKWc ?? 0,
   );
 
   return (
@@ -39,8 +51,14 @@ function ProjectSoilsSurfaceAreasContainer() {
       siteSoils={siteSoilsSurfaceAreas}
       minAdvisedFlatSurfaces={photovoltaicSurface}
       minAdvisedSoilSurfacesByType={{
-        [SoilType.MINERAL_SOIL]: photovoltaicAccessPathsSurface,
-        [SoilType.IMPERMEABLE_SOILS]: photovoltaicFoundationsSurface,
+        [SoilType.MINERAL_SOIL]:
+          computeAccessPathsAverageSurfaceFromElectricalPower(
+            photovoltaicElectricalPowerKWc,
+          ),
+        [SoilType.IMPERMEABLE_SOILS]:
+          computeFoundationsAverageSurfaceFromElectricalPower(
+            photovoltaicElectricalPowerKWc,
+          ),
       }}
       onSubmit={({ soilsSurfaceAreas }) => {
         dispatch(

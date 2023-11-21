@@ -32,8 +32,6 @@ export type Project = {
   photovoltaicInstallationSurfaceSquareMeters: number;
   photovoltaicExpectedAnnualProduction: number;
   photovoltaicContractDuration: number;
-  photovoltaicFoundationsSurface: number;
-  photovoltaicAccessPathsSurface: number;
   futureOperator: ProjectStakeholder;
   conversionFullTimeJobsInvolved: number;
   reinstatementFullTimeJobsInvolved?: number;

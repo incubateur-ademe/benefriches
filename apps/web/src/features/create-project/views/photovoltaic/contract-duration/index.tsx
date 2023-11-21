@@ -15,9 +15,7 @@ function PhotovoltaicContractDurationContainer() {
         dispatch(
           setPhotovoltaicContractDuration(data.photovoltaicContractDuration),
         );
-        dispatch(
-          goToStep(ProjectCreationStep.PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE),
-        );
+        dispatch(goToStep(ProjectCreationStep.SOILS_SURFACE_AREAS));
       }}
     />
   );

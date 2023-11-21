@@ -5,7 +5,6 @@ import ReinstatementsCostsForm from "./costs/reinstatement-costs";
 import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
 import PhotovoltaicContractDurationContainer from "./photovoltaic/contract-duration";
 import PhotovoltaicExpectedAnnualProductionContainer from "./photovoltaic/expected-annual-production";
-import PhotovoltaicInfrastructureSurfacesContainer from "./photovoltaic/infrastructure-surfaces";
 import PhotovoltaicKeyParameter from "./photovoltaic/key-parameter";
 import PhotovoltaicPower from "./photovoltaic/power";
 import PhotovoltaicSurface from "./photovoltaic/surface";
@@ -73,8 +72,6 @@ function ProjectCreationWizard() {
         return <PhotovoltaicExpectedAnnualProductionContainer />;
       case ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION:
         return <PhotovoltaicContractDurationContainer />;
-      case ProjectCreationStep.PHOTOVOLTAIC_INFRASTRUCTURES_SURFACE:
-        return <PhotovoltaicInfrastructureSurfacesContainer />;
       case ProjectCreationStep.SOILS_SURFACE_AREAS:
         return <ProjectSoilsSurfaceAreasContainer />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
