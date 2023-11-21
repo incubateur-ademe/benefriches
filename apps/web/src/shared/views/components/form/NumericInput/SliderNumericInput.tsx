@@ -51,7 +51,7 @@ const SliderNumericInput = <T extends FieldValues>({
   };
 
   const onChangeNumericSliderInput = (newValue: number) => {
-    if (maxAllowed && newValue >= maxAllowed) {
+    if (maxAllowed !== undefined && newValue >= maxAllowed) {
       return field.onChange(maxAllowed);
     }
     field.onChange(newValue);
