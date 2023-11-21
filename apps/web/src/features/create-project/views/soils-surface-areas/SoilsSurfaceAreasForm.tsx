@@ -6,16 +6,16 @@ import { FLAT_SOIL_TYPES, SOIL_TYPES } from "../../domain/soils.types";
 import SoilsSurfaceAreasAddButton from "./SoilsSurfaceAreasAddButton";
 
 import {
-  SiteFoncier,
+  SiteDraft,
   SoilType,
 } from "@/features/create-site/domain/siteFoncier.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
-import { getLabelForSoilType } from "@/shared/views/helpers/soilTypeLabelMapping";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  siteSoils: SiteFoncier["soilsSurfaceAreas"];
+  siteSoils: SiteDraft["soilsSurfaceAreas"];
   totalSurfaceArea: number;
   minAdvisedFlatSurfaces: number;
   minAdvisedSoilSurfacesByType: Partial<Record<SoilType, number>>;

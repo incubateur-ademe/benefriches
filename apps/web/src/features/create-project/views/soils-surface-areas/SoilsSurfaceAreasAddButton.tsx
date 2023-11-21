@@ -4,7 +4,7 @@ import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import Select from "@codegouvfr/react-dsfr/Select";
 
 import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
-import { getLabelForSoilType } from "@/shared/views/helpers/soilTypeLabelMapping";
+import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
   onValidate: (data: { soilType: SoilType; surface: number }) => void;

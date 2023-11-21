@@ -5,9 +5,9 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { SoilType } from "../../../domain/siteFoncier.types";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { getPercentage } from "@/shared/services/percentage/percentage";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
-import { getLabelForSoilType } from "@/shared/views/helpers/soilTypeLabelMapping";
 
 type Props = {
   totalSurfaceArea: number;

@@ -4,7 +4,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
-import { getLabelForSoilType } from "@/shared/views/helpers/soilTypeLabelMapping";
+import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;

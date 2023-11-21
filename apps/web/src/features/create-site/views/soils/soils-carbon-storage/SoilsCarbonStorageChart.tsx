@@ -5,8 +5,8 @@ import highchartsVariablePie from "highcharts/modules/variable-pie";
 import HighchartsReact from "highcharts-react-official";
 
 import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
-import { getLabelForSoilType } from "@/shared/views/helpers/soilTypeLabelMapping";
 highchartsVariablePie(Highcharts);
 
 type Props = {
