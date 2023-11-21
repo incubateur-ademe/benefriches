@@ -5,6 +5,7 @@ import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWiza
 import HomePage from "./features/home/views/Home";
 import LoginPage from "./features/login";
 import OnboardingPage from "./features/onboarding/views";
+import ProjectsListPage from "./features/projects/views/ProjectsListPage";
 import SiteFoncierDetailsPage from "./features/site-details/views";
 import SitesFonciersListPage from "./features/site-list/views";
 import CreateUserPage from "./features/users/views";
@@ -32,6 +33,7 @@ function App() {
         {route.name === routes.createSiteFoncier.name && (
           <CreateSiteFoncierPage />
         )}
+        {route.name === routes.projectsList.name && <ProjectsListPage />}
         {route.name === routes.createProjectIntro.name && (
           <CreateProjectIntroductionPage route={route} />
         )}

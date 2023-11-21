@@ -1,10 +1,9 @@
 import { SoilType } from "../domain/siteFoncier.types";
-import { LocalStorageCreateSiteApi } from "../infrastructure/create-site-service/localStorageCreateSiteApi";
 import { SoilsCarbonStorageMock } from "../infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
 
-import { LocalStorageGetSiteApi } from "@/features/create-project/infrastructure/get-site-service/localStorageGetSiteService";
 import { createStore } from "@/store";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 describe("Site carbon sequestration reducer", () => {
   it("should get carbon sequestration for city code and soils", async () => {
@@ -15,11 +14,11 @@ describe("Site carbon sequestration reducer", () => {
         { type: SoilType.MINERAL_SOIL, carbonStorage: 320, surfaceArea: 5000 },
       ],
     };
-    const store = createStore({
-      soilsCarbonStorageService: new SoilsCarbonStorageMock(mockedResult),
-      createSiteService: new LocalStorageCreateSiteApi(),
-      getSiteService: new LocalStorageGetSiteApi(),
-    });
+    const store = createStore(
+      getTestAppDependencies({
+        soilsCarbonStorageService: new SoilsCarbonStorageMock(mockedResult),
+      }),
+    );
 
     const siteInfo = {
       cityCode: "75011",
@@ -38,15 +37,15 @@ describe("Site carbon sequestration reducer", () => {
   });
 
   it("should return error state when service fails", async () => {
-    const store = createStore({
-      createSiteService: new LocalStorageCreateSiteApi(),
-      getSiteService: new LocalStorageGetSiteApi(),
-      soilsCarbonStorageService: new SoilsCarbonStorageMock(
-        // @ts-expect-error intended failure
-        null,
-        true,
-      ),
-    });
+    const store = createStore(
+      getTestAppDependencies({
+        soilsCarbonStorageService: new SoilsCarbonStorageMock(
+          // @ts-expect-error intended failure
+          null,
+          true,
+        ),
+      }),
+    );
 
     const siteInfo = {
       cityCode: "75011",
