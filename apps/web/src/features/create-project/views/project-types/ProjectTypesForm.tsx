@@ -18,6 +18,11 @@ type FormValues = {
   types: ProjectType[];
 };
 
+const formatNumericImpact = (impact: number) => {
+  const signPrefix = impact > 0 ? "+" : "-";
+  return `${signPrefix} ${formatNumberFr(Math.abs(impact))}`;
+};
+
 const mapOptions =
   (register: UseFormRegister<FormValues>, siteSurfaceArea: number) =>
   (projectType: ProjectType) => {
@@ -25,17 +30,15 @@ const mapOptions =
       projectType,
       siteSurfaceArea,
     );
-    const hintPrefix = potentialImpact > 0 ? "+" : "-";
     const hintColor =
       potentialImpact > 0 ? "--text-default-success" : "--text-default-error";
-    const formattedHintValue = formatNumberFr(Math.abs(potentialImpact));
 
     return {
       label: getLabelForProjectType(projectType),
       hintText: (
         <div style={{ color: `var(${hintColor})` }}>
-          {hintPrefix} {formattedHintValue} € / an d’impacts socio-économiques
-          potentiels
+          {formatNumericImpact(potentialImpact)} € / an d’impacts
+          socio-économiques potentiels
         </div>
       ),
       nativeInputProps: {
