@@ -1,11 +1,13 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  surfaceArea: number;
 };
 
 type HasContaminatedSoilsString = "yes" | "no";
@@ -18,7 +20,7 @@ type FormValues = {
 const requiredMessage =
   "Ce champ est nécessaire pour déterminer les questions suivantes";
 
-function SoilContaminationForm({ onSubmit }: Props) {
+function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
   const { register, control, handleSubmit, formState, watch } =
     useForm<FormValues>({
       shouldUnregister: true,
@@ -55,13 +57,24 @@ function SoilContaminationForm({ onSubmit }: Props) {
           error={hasContaminatedSoilsError}
         />
         {watch("hasContaminatedSoils") === "yes" && (
-          <NumericInput
-            name="contaminatedSurface"
-            label="Superficie polluée"
-            hintText="en m2"
-            rules={{ required: "Ce champ est requis" }}
-            control={control}
-          />
+          <div className="fr-pb-7v">
+            <SliderNumericInput
+              control={control}
+              name="contaminatedSurface"
+              label="Superficie polluée"
+              hintText="en m2"
+              required="Ce champ est requis"
+              minValue={5}
+              sliderStartValue={0}
+              sliderEndValue={surfaceArea}
+              sliderProps={{
+                tooltip: {
+                  formatter: (value?: number) =>
+                    value && `${formatNumberFr(value)} m²`,
+                },
+              }}
+            />
+          </div>
         )}
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>

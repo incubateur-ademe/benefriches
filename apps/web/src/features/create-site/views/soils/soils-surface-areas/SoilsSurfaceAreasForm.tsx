@@ -27,6 +27,12 @@ const getInitialSurfacesFormSoilTypes = (soils: SoilType[]) =>
     {},
   );
 
+const SLIDER_PROPS = {
+  tooltip: {
+    formatter: (value?: number) => value && `${formatNumberFr(value)} m²`,
+  },
+};
+
 function SiteSoilsSurfaceAreasForm({
   soils,
   totalSurfaceArea,
@@ -66,21 +72,13 @@ function SiteSoilsSurfaceAreasForm({
             name={soilType}
             label={getLabelForSoilType(soilType)}
             hintText="en m2"
-            maxAllowed={freeSurface + soilsValues[soilType]}
-            sliderProps={{
-              min: 0,
-              max: totalSurfaceArea,
-              tooltip: {
-                formatter: (value?: number) =>
-                  value && `${formatNumberFr(value)} m²`,
-              },
-            }}
+            sliderStartValue={0}
+            sliderEndValue={totalSurfaceArea}
+            maxValue={freeSurface + soilsValues[soilType]}
+            sliderProps={SLIDER_PROPS}
           />
         ))}
-        <div
-          className="fr-py-7v"
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
+        <div className="fr-py-7v">
           <Button
             onClick={() => reset(defaultValues)}
             priority="secondary"

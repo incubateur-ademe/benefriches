@@ -87,6 +87,12 @@ const getAvailableSoilTypes = (soilsSurfaceAreas: SoilsSurfaceAreas[]) => {
   return SOIL_TYPES.filter((soilType) => !selectedSoilTypes.includes(soilType));
 };
 
+const SLIDER_PROPS = {
+  tooltip: {
+    formatter: (value?: number) => value && `${formatNumberFr(value)} m²`,
+  },
+};
+
 function SoilsSurfaceAreasForm({
   onSubmit,
   totalSurfaceArea,
@@ -175,16 +181,13 @@ function SoilsSurfaceAreasForm({
               control={control}
               name={`soilsSurfaceAreas.${index}.surface`}
               label={getLabelForSoilType(soilType)}
-              maxAllowed={freeSurface + surface}
+              maxValue={freeSurface + surface}
               hintText={hintText}
+              sliderStartValue={0}
+              sliderEndValue={totalSurfaceArea}
               sliderProps={{
-                min: 0,
                 marks,
-                max: totalSurfaceArea,
-                tooltip: {
-                  formatter: (value?: number) =>
-                    value && `${formatNumberFr(value)} m²`,
-                },
+                ...SLIDER_PROPS,
               }}
             />
           );
