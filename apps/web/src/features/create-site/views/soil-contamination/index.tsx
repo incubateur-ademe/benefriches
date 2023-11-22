@@ -5,11 +5,15 @@ import {
   setContaminatedSoilSurface,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
-const mapProps = (dispatch: AppDispatch) => {
+const mapProps = (dispatch: AppDispatch, surfaceArea: number) => {
   return {
+    surfaceArea,
     onSubmit: (data: { contaminatedSurface: number }) => {
       dispatch(setContaminatedSoilSurface(data.contaminatedSurface ?? 0));
       dispatch(goToStep(SiteCreationStep.MANAGEMENT_INTRODUCTION));
@@ -19,8 +23,11 @@ const mapProps = (dispatch: AppDispatch) => {
 
 function SoilContaminationFormController() {
   const dispatch = useAppDispatch();
+  const surfaceArea = useAppSelector(
+    (state) => state.siteCreation.siteData.surfaceArea ?? 0,
+  );
 
-  return <SoilContaminationForm {...mapProps(dispatch)} />;
+  return <SoilContaminationForm {...mapProps(dispatch, surfaceArea)} />;
 }
 
 export default SoilContaminationFormController;

@@ -1,6 +1,7 @@
 import { ChangeEvent } from "react";
 import {
   FieldValues,
+  RegisterOptions,
   useController,
   UseControllerProps,
 } from "react-hook-form";
@@ -17,7 +18,12 @@ import { getPercentage } from "@/shared/services/percentage/percentage";
 type Props<T extends FieldValues> = {
   label: string;
   hintText?: string;
-  maxAllowed?: number;
+  minValue?: number;
+  maxValue?: number;
+  required?: RegisterOptions["required"];
+  validate?: RegisterOptions["validate"];
+  sliderStartValue: number;
+  sliderEndValue: number;
   sliderProps?: SliderBaseProps;
   inputProps?: InputProps["nativeInputProps"];
 } & UseControllerProps<T>;
@@ -25,18 +31,27 @@ type Props<T extends FieldValues> = {
 const SliderNumericInput = <T extends FieldValues>({
   control,
   name,
+  minValue,
+  maxValue,
+  required,
+  validate,
   label,
   hintText,
-  maxAllowed,
+  sliderStartValue,
+  sliderEndValue,
   sliderProps,
   inputProps,
 }: Props<T>) => {
+  const min = minValue ?? sliderStartValue;
+  const max = maxValue ?? sliderEndValue;
   const { field, fieldState } = useController<T>({
     name,
     control,
     rules: {
-      min: 0,
-      max: maxAllowed,
+      min,
+      max,
+      required,
+      validate,
     },
   });
 
@@ -51,8 +66,11 @@ const SliderNumericInput = <T extends FieldValues>({
   };
 
   const onChangeNumericSliderInput = (newValue: number) => {
-    if (maxAllowed !== undefined && newValue >= maxAllowed) {
-      return field.onChange(maxAllowed);
+    if (newValue > max) {
+      return field.onChange(max);
+    }
+    if (newValue < min) {
+      return field.onChange(min);
     }
     field.onChange(newValue);
   };
@@ -68,29 +86,29 @@ const SliderNumericInput = <T extends FieldValues>({
         state={error ? "error" : "default"}
         stateRelatedMessage={error ? error.message : undefined}
         nativeInputProps={{
+          min,
+          max,
           type: "number",
           name: field.name,
           value: numberToString(field.value),
           onChange: onChangeInput,
           onBlur: field.onBlur,
-          min: 0,
-          max: maxAllowed,
           style: { width: "150px" },
           ...inputProps,
         }}
         style={{ display: "flex", justifyContent: "space-between" }}
       />
 
-      {sliderProps?.max && (
-        <legend style={{ display: "flex", justifyContent: "flex-end" }}>
-          {Math.round(getPercentage(field.value, sliderProps.max))}%
-        </legend>
-      )}
+      <legend style={{ display: "flex", justifyContent: "flex-end" }}>
+        {Math.round(getPercentage(field.value, sliderEndValue))}%
+      </legend>
 
       <Slider
         className="fr-col"
         onChange={onChangeSlider}
         value={field.value}
+        min={sliderStartValue}
+        max={sliderEndValue}
         {...sliderProps}
       />
     </div>
