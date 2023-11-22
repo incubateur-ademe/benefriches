@@ -13,7 +13,10 @@ const MarkerLeafletMap = (props: PropsType) => {
   const position = [lat, long] as LatLngExpression;
 
   return (
-    <div className="fr-my-2w" style={{ height: "400px", width: "100%" }}>
+    <div
+      className="fr-mb-2w fr-mt-7w"
+      style={{ height: "400px", width: "100%" }}
+    >
       <MapContainer center={position} zoom={150} style={{ height: "inherit" }}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
