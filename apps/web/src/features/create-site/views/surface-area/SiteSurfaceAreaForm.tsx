@@ -22,7 +22,13 @@ function SurfaceAreaForm({ onSubmit }: Props) {
           name="surfaceArea"
           label="Superficie totale"
           hintText="en m2"
-          rules={{ required: "Ce champ est requis" }}
+          rules={{
+            required: "Ce champ est requis",
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
           control={control}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>

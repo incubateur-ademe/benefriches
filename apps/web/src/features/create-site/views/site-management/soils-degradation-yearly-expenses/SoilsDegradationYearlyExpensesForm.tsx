@@ -36,6 +36,12 @@ function SoilsDegradationYearlyExpenses({
             control={control}
             label="Coûts de traitement des eaux"
             hintText="€ / an"
+            rules={{
+              min: {
+                value: 0,
+                message: "Veuillez sélectionner un montant valide",
+              },
+            }}
           />
         )}
         {askForFloodsRegulationExpenses && (
@@ -44,6 +50,12 @@ function SoilsDegradationYearlyExpenses({
             control={control}
             label="Coûts de régulation des inondations"
             hintText="€ / an"
+            rules={{
+              min: {
+                value: 0,
+                message: "Veuillez sélectionner un montant valide",
+              },
+            }}
           />
         )}
         <ButtonsGroup

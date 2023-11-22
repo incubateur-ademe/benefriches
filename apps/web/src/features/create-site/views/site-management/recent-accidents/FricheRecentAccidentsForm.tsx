@@ -57,16 +57,34 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
               name="minorInjuriesPersons"
               label="Nombre de blessés légers"
               control={control}
+              rules={{
+                min: {
+                  value: 0,
+                  message: "Veuillez sélectionner un montant valide",
+                },
+              }}
             />
             <NumericInput
               name="severeInjuriesPersons"
               label="Nombre de blessés graves"
               control={control}
+              rules={{
+                min: {
+                  value: 0,
+                  message: "Veuillez sélectionner un montant valide",
+                },
+              }}
             />
             <NumericInput
               name="deaths"
               label="Nombre de morts"
               control={control}
+              rules={{
+                min: {
+                  value: 0,
+                  message: "Veuillez sélectionner un montant valide",
+                },
+              }}
             />
           </>
         )}

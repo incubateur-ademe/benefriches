@@ -23,14 +23,24 @@ function SiteYearlyIncomeForm({ onSubmit }: Props) {
           name="operationsIncome"
           label="Recettes d'exploitation"
           hintText="€ / an"
-          rules={{ required: "Ce champ est requis" }}
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
           control={control}
         />
         <NumericInput
           name="otherIncome"
           label="Autres recettes"
           hintText="€ / an"
-          rules={{ required: "Ce champ est requis" }}
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
           control={control}
         />
         <ButtonsGroup

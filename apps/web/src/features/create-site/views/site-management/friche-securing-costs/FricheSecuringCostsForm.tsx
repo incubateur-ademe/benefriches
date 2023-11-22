@@ -57,7 +57,7 @@ function FricheSecuringExpensessForm({ onSubmit, hasTenant }: Props) {
 
   return (
     <>
-      <h2>Coûts annules liés à la sécurisation de la friche</h2>
+      <h2>Coûts annuels liés à la sécurisation de la friche</h2>
       <p>
         Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de
         gardiennage, d’entretien, de débarras de dépôt sauvage sont
@@ -73,7 +73,12 @@ function FricheSecuringExpensessForm({ onSubmit, hasTenant }: Props) {
                 hintText="€ / an"
                 name={name}
                 key={name}
-                rules={{ required: "Ce champ est requis" }}
+                rules={{
+                  min: {
+                    value: 0,
+                    message: "Veuillez sélectionner un montant valide",
+                  },
+                }}
               />
               {askForBearer && hasTenant && !!watch(name) && (
                 <RadioButtons
