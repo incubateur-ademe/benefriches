@@ -23,7 +23,12 @@ function SiteFullTimeJobsInvolvedForm({ onSubmit }: Props) {
         <NumericInput
           name="fullTimeJobsInvolved"
           label="Emplois temps plein"
-          rules={{ required: "Ce champ est requis" }}
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
           control={control}
         />
         <ButtonsGroup

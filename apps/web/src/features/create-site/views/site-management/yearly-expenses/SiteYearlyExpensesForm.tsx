@@ -61,7 +61,12 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant }: Props) {
               label={label}
               hintText="€ / an"
               control={control}
-              rules={{ required: "Ce champ est requis" }}
+              rules={{
+                min: {
+                  value: 0,
+                  message: "Veuillez sélectionner un montant valide",
+                },
+              }}
             />
           );
         })}
@@ -73,6 +78,12 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant }: Props) {
               key={field.id}
               hintText="€ / an"
               control={control}
+              rules={{
+                min: {
+                  value: 0,
+                  message: "Veuillez sélectionner un montant valide",
+                },
+              }}
             />
           );
         })}
