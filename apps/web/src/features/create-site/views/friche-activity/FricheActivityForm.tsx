@@ -65,7 +65,7 @@ function FricheActivityForm({ onSubmit }: Props) {
 
   return (
     <>
-      <h2>Quelle est la dernière activité connue de la friche ?</h2>
+      <h2>De quel type de friche s’agit-il ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("activity", {
