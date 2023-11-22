@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchRelatedSiteAction } from "./createProject.actions";
+import { v4 as uuid } from "uuid";
+import {
+  fetchRelatedSiteAction,
+  saveProjectAction,
+} from "./createProject.actions";
 
 import {
   PhotovoltaicKeyParameter,
@@ -8,13 +12,15 @@ import {
   ProjectType,
   RenewableEnergyType,
 } from "@/features/create-project/domain/project.types";
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+
+type LoadingState = "idle" | "loading" | "success" | "error";
 
 export type ProjectCreationState = {
   step: ProjectCreationStep;
   projectData: Partial<Project>;
-  siteData: ProjectSite | null;
-  siteDataLoadingState: "idle" | "loading" | "success" | "error";
+  siteData?: ProjectSite;
+  siteDataLoadingState: LoadingState;
+  saveProjectLoadingState: LoadingState;
 };
 
 export enum ProjectCreationStep {
@@ -51,38 +57,25 @@ export enum ProjectCreationStep {
   CREATION_CONFIRMATION = "CREATION_CONFIRMATION",
 }
 
-export const projectCreationInitialState: ProjectCreationState = {
-  step: ProjectCreationStep.PROJECT_TYPES,
-  projectData: {
-    yearlyProjectedCosts: [],
-    yearlyProjectedRevenue: [],
-    types: [],
-    renewableEnergyTypes: [],
-  },
-  siteData: {
-    id: "id-site",
-    isFriche: true,
-    owner: {
-      id: "owner-uuid",
-      name: "SARL Propriétaire",
-      structureType: "company",
+export const getInitialState = (): ProjectCreationState => {
+  return {
+    step: ProjectCreationStep.PROJECT_TYPES,
+    projectData: {
+      id: uuid(),
+      yearlyProjectedCosts: [],
+      yearlyProjectedRevenue: [],
+      types: [],
+      renewableEnergyTypes: [],
     },
-    surfaceArea: 150000,
-    name: "Friche industrielle de Blajan",
-    soilsSurfaceAreas: {
-      [SoilType.CULTIVATION]: 18500,
-      [SoilType.FOREST_DECIDUOUS]: 120000,
-      [SoilType.PRAIRIE_GRASS]: 10000,
-      [SoilType.MINERAL_SOIL]: 900,
-      [SoilType.BUILDINGS]: 600,
-    },
-  },
-  siteDataLoadingState: "idle",
+    siteData: undefined,
+    siteDataLoadingState: "idle",
+    saveProjectLoadingState: "idle",
+  };
 };
 
 export const projectCreationSlice = createSlice({
   name: "projectCreation",
-  initialState: projectCreationInitialState,
+  initialState: getInitialState(),
   reducers: {
     setTypes: (state, action: PayloadAction<ProjectType[]>) => {
       state.projectData.types = action.payload;
@@ -203,6 +196,7 @@ export const projectCreationSlice = createSlice({
     },
   },
   extraReducers(builder) {
+    /* fetch related site */
     builder.addCase(fetchRelatedSiteAction.pending, (state) => {
       state.siteDataLoadingState = "loading";
     });
@@ -212,6 +206,16 @@ export const projectCreationSlice = createSlice({
     });
     builder.addCase(fetchRelatedSiteAction.rejected, (state) => {
       state.siteDataLoadingState = "error";
+    });
+    /* save project */
+    builder.addCase(saveProjectAction.pending, (state) => {
+      state.saveProjectLoadingState = "loading";
+    });
+    builder.addCase(saveProjectAction.fulfilled, (state) => {
+      state.saveProjectLoadingState = "success";
+    });
+    builder.addCase(saveProjectAction.rejected, (state) => {
+      state.saveProjectLoadingState = "error";
     });
   },
 });

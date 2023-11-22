@@ -5,7 +5,7 @@ import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
 import { delay } from "@/shared/services/delay/delay";
 
-const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
+export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 
 export const groupProjectsBySiteId = (projects: Project[]) => {
   return projects.reduce(

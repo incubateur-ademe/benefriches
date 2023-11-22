@@ -1,3 +1,4 @@
+import { saveProjectAction } from "../../application/createProject.actions";
 import ProjectNameAndDescriptionForm, {
   FormValues,
 } from "./ProjectNameAndDescriptionForm";
@@ -14,6 +15,7 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (formData: FormValues) => {
       dispatch(setNameAndDescription(formData));
+      void dispatch(saveProjectAction());
       dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
     },
   };

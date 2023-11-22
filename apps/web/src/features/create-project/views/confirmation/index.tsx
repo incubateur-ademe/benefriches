@@ -3,13 +3,15 @@ import ProjectCreationConfirmation from "./ProjectCreationConfirmation";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectCreationConfirmationContainer() {
-  const { projectData, siteData } = useAppSelector(
+  const { projectData, siteData, saveProjectLoadingState } = useAppSelector(
     (state) => state.projectCreation,
   );
+
   return (
     <ProjectCreationConfirmation
       projectName={projectData.name ?? ""}
       siteName={siteData?.name ?? ""}
+      loadingState={saveProjectLoadingState}
     />
   );
 }

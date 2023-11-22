@@ -22,6 +22,7 @@ export enum PhotovoltaicKeyParameter {
 }
 
 export type Project = {
+  id: string;
   name: string;
   description?: string;
   relatedSiteId: string;
