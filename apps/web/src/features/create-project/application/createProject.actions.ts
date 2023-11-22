@@ -36,8 +36,6 @@ const saveProjectSchema = z.object({
   photovoltaicInstallationSurfaceSquareMeters: z.number().nonnegative(),
   photovoltaicExpectedAnnualProduction: z.number().nonnegative(),
   photovoltaicContractDuration: z.number().nonnegative(),
-  photovoltaicFoundationsSurface: z.number().nonnegative(),
-  photovoltaicAccessPathsSurface: z.number().nonnegative(),
   futureOperator: z
     .object({ name: z.string(), structureType: z.string() })
     .optional(),
