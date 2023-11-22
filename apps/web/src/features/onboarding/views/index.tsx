@@ -13,8 +13,8 @@ function OnboardingPage() {
         d’aménagement sur ce site.
       </p>
 
-      <Button linkProps={routes.createSiteFoncier().link}>
-        Saisir les informations du site
+      <Button linkProps={routes.createSiteFoncierDocuments().link}>
+        Commencer
       </Button>
     </>
   );
