@@ -9,25 +9,29 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
+import { AppDispatch, RootState } from "@/store";
 
-const mapProps = (dispatch: AppDispatch, surfaceArea: number) => {
+const mapProps = (
+  dispatch: AppDispatch,
+  siteData: RootState["siteCreation"]["siteData"],
+) => {
   return {
-    surfaceArea,
+    surfaceArea: siteData.surfaceArea ?? 0,
     onSubmit: (data: { contaminatedSurface: number }) => {
+      const nextStep = siteData.isFriche
+        ? SiteCreationStep.FRICHE_ACTIVITY
+        : SiteCreationStep.NAMING;
       dispatch(setContaminatedSoilSurface(data.contaminatedSurface ?? 0));
-      dispatch(goToStep(SiteCreationStep.MANAGEMENT_INTRODUCTION));
+      dispatch(goToStep(nextStep));
     },
   };
 };
 
 function SoilContaminationFormController() {
   const dispatch = useAppDispatch();
-  const surfaceArea = useAppSelector(
-    (state) => state.siteCreation.siteData.surfaceArea ?? 0,
-  );
+  const siteData = useAppSelector((state) => state.siteCreation.siteData);
 
-  return <SoilContaminationForm {...mapProps(dispatch, surfaceArea)} />;
+  return <SoilContaminationForm {...mapProps(dispatch, siteData)} />;
 }
 
 export default SoilContaminationFormController;

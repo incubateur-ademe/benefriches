@@ -5,9 +5,9 @@ import { SiteCreationStep } from "@/features/create-site/application/createSite.
 const fricheStepsCategories = [
   "Type de site",
   "Adresse",
+  "Gestion du site",
   "Sols",
   "Pollution",
-  "Gestion du site",
   "Dénomination",
 ] as const;
 
