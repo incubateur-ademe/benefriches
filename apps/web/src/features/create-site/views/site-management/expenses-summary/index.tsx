@@ -26,7 +26,7 @@ const mapProps = (
         return {
           bearer: getLabelForExpenseBearer(bearer, {
             ownerName: siteData.owner?.name,
-            tenantName: siteData.tenantBusinessName,
+            tenantName: siteData.tenant?.name,
           }),
           amount,
         };
