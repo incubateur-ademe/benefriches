@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
+import { fetchRelatedSiteAction } from "@/features/create-project/application/createProject.actions";
 import {
   goToStep,
   ProjectCreationStep,
@@ -13,12 +15,12 @@ import {
 } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
-const mapProps = (dispatch: AppDispatch, projectSite: ProjectSite) => {
-  const siteStakeholders = getSiteStakeholders(projectSite);
-
+const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
+  const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
   return {
     siteStakeholders,
     onSubmit: (data: FormValues) => {
+      if (!projectSite) return;
       switch (data.futureOperator) {
         case "site_stakeholder":
           // eslint-disable-next-line no-case-declarations
@@ -48,7 +50,7 @@ const mapProps = (dispatch: AppDispatch, projectSite: ProjectSite) => {
           dispatch(
             setFutureOperator({
               name: "TODO: nom de la structure de l'utilisateur",
-              structureType: "unknown",
+              structureType: "company",
             }),
           );
           break;
@@ -71,8 +73,13 @@ const mapProps = (dispatch: AppDispatch, projectSite: ProjectSite) => {
 function SiteOperatorFormContainer() {
   const dispatch = useAppDispatch();
   const projectSite = useAppSelector((state) => state.projectCreation.siteData);
+  useEffect(() => {
+    void dispatch(
+      fetchRelatedSiteAction("7cb24d2c-8833-4255-9e13-c8a97858607d"),
+    );
+  }, [dispatch]);
 
-  return <SiteOperatorForm {...mapProps(dispatch, projectSite!)} />;
+  return <SiteOperatorForm {...mapProps(dispatch, projectSite)} />;
 }
 
 export default SiteOperatorFormContainer;

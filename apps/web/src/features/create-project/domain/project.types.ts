@@ -73,12 +73,10 @@ export type ProjectSite = {
   name: string;
   isFriche: boolean;
   owner: {
-    id: string;
     name: string;
     structureType: ProjectStakeholderStructure;
   };
   tenant?: {
-    id: string;
     name: string;
     structureType: ProjectStakeholderStructure;
   };

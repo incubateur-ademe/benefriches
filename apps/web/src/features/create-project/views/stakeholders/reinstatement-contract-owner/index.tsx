@@ -50,7 +50,7 @@ const mapProps = (dispatch: AppDispatch, projectSite: ProjectSite) => {
           dispatch(
             setReinstatementContractOwner({
               name: "TODO: nom de la structure de l'utilisateur",
-              structureType: "unknown",
+              structureType: "company",
             }),
           );
           break;

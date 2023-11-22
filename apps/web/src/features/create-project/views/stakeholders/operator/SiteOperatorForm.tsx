@@ -47,20 +47,26 @@ export type FormValues = {
 const requiredMessage = "Champ requis";
 
 const getOperatorOptions = (siteStakeholders: Props["siteStakeholders"]) => {
+  const siteStakeholderOptions = [];
+
+  if (siteStakeholders.length > 1) {
+    siteStakeholderOptions.push({
+      label: "Un acteur du site existant",
+      value: "site_stakeholder",
+    });
+  } else if (siteStakeholders.length === 1 && siteStakeholders[0]) {
+    siteStakeholderOptions.push({
+      label: siteStakeholders[0].name,
+      value: siteStakeholders[0].role,
+    });
+  }
+
   return [
     {
       label: "Mon entreprise",
       value: "user_company",
     },
-    siteStakeholders.length > 1
-      ? {
-          label: "Un acteur du site existant",
-          value: "site_stakeholder",
-        }
-      : {
-          label: siteStakeholders[0]!.name,
-          value: siteStakeholders[0]!.role,
-        },
+    ...siteStakeholderOptions,
     {
       label: "Une collectivité",
       value: "local_or_regional_authority",

@@ -10,7 +10,6 @@ describe("Project stakeholders", () => {
         name: "Mon projet de reconversion",
         isFriche: false,
         owner: {
-          id: "owner-uuid-456",
           name: "SARL Propriétaire",
           structureType: "company",
         },
@@ -29,12 +28,10 @@ describe("Project stakeholders", () => {
         name: "Mon projet de reconversion",
         isFriche: false,
         owner: {
-          id: "owner-uuid-456",
           name: "SARL Propriétaire",
           structureType: "company",
         },
         tenant: {
-          id: "tenant-uuid:987",
           name: "SCOP Exploitant du site",
           structureType: "company",
         },

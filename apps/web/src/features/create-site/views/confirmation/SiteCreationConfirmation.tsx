@@ -40,7 +40,7 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
               {
                 priority: "primary",
                 children: "Créer un projet sur ce site",
-                linkProps: routes.createProject({ siteId }).link,
+                linkProps: routes.createProjectIntro({ siteId }).link,
               },
             ]}
             inlineLayoutWhen="always"
