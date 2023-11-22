@@ -1,6 +1,6 @@
 import z from "zod";
 import { FricheActivity } from "../domain/friche.types";
-import { OwnerType, SoilType } from "../domain/siteFoncier.types";
+import { SoilType } from "../domain/siteFoncier.types";
 
 import { createAppAsyncThunk } from "@/appAsyncThunk";
 
@@ -28,10 +28,15 @@ const createSiteSchema = z.object({
   // management
   fullTimeJobsInvolved: z.number().nonnegative(),
   owner: z.object({
-    type: z.nativeEnum(OwnerType),
+    structureType: z.string(),
     name: z.string().optional(),
   }),
-  tenantBusinessName: z.string().optional(),
+  tenant: z
+    .object({
+      structureType: z.string(),
+      name: z.string().optional(),
+    })
+    .optional(),
   hasRecentAccidents: z.boolean().optional(),
   minorInjuriesPersons: z.number().nonnegative().optional(),
   severeInjuriesPersons: z.number().nonnegative().optional(),
@@ -50,13 +55,12 @@ const createSiteSchema = z.object({
 type SiteCreatePayload = z.infer<typeof createSiteSchema>;
 
 export type CreateSiteGatewayPayload = SiteCreatePayload;
-export type CreateSiteGatewayResult = void;
 
 export interface CreateSiteGateway {
-  save(siteData: CreateSiteGatewayPayload): Promise<CreateSiteGatewayResult>;
+  save(siteData: CreateSiteGatewayPayload): Promise<void>;
 }
 
-export const saveSiteAction = createAppAsyncThunk<CreateSiteGatewayResult>(
+export const saveSiteAction = createAppAsyncThunk<void>(
   "site/create",
   async (_, { getState, extra }) => {
     const { siteCreation } = getState();

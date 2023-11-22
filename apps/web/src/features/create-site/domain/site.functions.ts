@@ -13,5 +13,5 @@ export const hasContaminatedSoils = (site: SiteDraft) => {
 };
 
 export const hasTenant = (site: SiteDraft) => {
-  return Boolean(site.tenantBusinessName);
+  return Boolean(site.tenant);
 };

@@ -32,8 +32,8 @@ export type SiteDraft = {
   fricheActivity?: FricheActivity;
   // management
   fullTimeJobsInvolved: number;
-  owner: { type: OwnerType; name?: string };
-  tenantBusinessName: string;
+  owner: { structureType: OwnerStructureType; name: string };
+  tenant: { structureType: TenantStructureType; name: string };
   hasRecentAccidents: boolean;
   minorInjuriesPersons?: number;
   severeInjuriesPersons?: number;
@@ -62,15 +62,12 @@ export enum SoilType {
   WATER = "WATER", // plan d'eau
 }
 
-export enum OwnerType {
-  MUNICIPALITY = "MUNICIPALITY", // commune
-  COMMUNITY_OF_MUNICIPALITIES = "COMMUNITY_OF_MUNICIPALITIES", // communauté de communes
-  DEPARTMENT = "DEPARTMENT",
-  REGION = "REGION",
-  STATE = "STATE",
-  COMPANY = "COMPANY",
-  PRIVATE_INDIVIDUAL = "PRIVATE_INDIVIDUAL",
-}
+export type OwnerStructureType =
+  | "local_or_regional_authority"
+  | "company"
+  | "private_individual";
+
+export type TenantStructureType = "local_or_regional_authority" | "company";
 
 export type Expense = {
   type: string;

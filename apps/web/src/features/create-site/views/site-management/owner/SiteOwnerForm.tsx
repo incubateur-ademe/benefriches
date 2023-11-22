@@ -3,55 +3,64 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { Select } from "@codegouvfr/react-dsfr/SelectNext";
 
-import { OwnerType } from "@/features/create-site/domain/siteFoncier.types";
-import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
+import {
+  getLabelForLocalOrRegionalAuthority,
+  LocalAndRegionalAuthority,
+} from "@/shared/domain/localOrRegionalAuthority";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
 };
 
-export type FormValues = {
-  ownerType: OwnerOptions;
-  localAndRegionalAuthorityType?: LocalAndRegionalAuthority;
-  ownerName?: string;
-};
+export type FormValues =
+  | {
+      ownerType: "user_company";
+      localAndRegionalAuthorityType: undefined;
+      ownerName: undefined;
+    }
+  | {
+      ownerType: "local_or_regional_authority";
+      localAndRegionalAuthorityType: LocalAndRegionalAuthority;
+      ownerName: undefined;
+    }
+  | {
+      ownerType: "private_individual" | "other_company";
+      ownerName: string;
+      localAndRegionalAuthorityType: undefined;
+    };
 
-type OwnerOptions =
-  | "PRIVATE_INDIVIDUAL" // particulier
-  | "LOCAL_OR_REGIONAL_AUTHORITY" // collectivité
-  | "USER_COMPANY"
-  | "OTHER_COMPANY";
-
-const localAndRegionalAuthorityOptions = [
-  { label: "Commune", value: OwnerType.MUNICIPALITY },
-  {
-    label: "Communauté de communes / Agglomération",
-    value: OwnerType.COMMUNITY_OF_MUNICIPALITIES,
-  },
-  { label: "Département", value: OwnerType.DEPARTMENT },
-  { label: "Région", value: OwnerType.REGION },
-  { label: "L'État", value: OwnerType.STATE },
-];
+const localAndRegionalAuthorityOptions = (
+  [
+    "municipality",
+    "community_of_municipalities",
+    "department",
+    "region",
+    "state",
+  ] as const
+).map((localOrRegionalAuthority) => ({
+  label: getLabelForLocalOrRegionalAuthority(localOrRegionalAuthority),
+  value: localOrRegionalAuthority,
+}));
 
 const requiredMessage = "Champ requis";
 
 const options = [
   {
     label: "La collectivité",
-    value: "LOCAL_OR_REGIONAL_AUTHORITY",
+    value: "local_or_regional_authority",
   },
   {
     label: "Mon entreprise",
-    value: "USER_COMPANY",
+    value: "user_company",
   },
   {
     label: "Une autre entreprise",
-    value: "OTHER_COMPANY",
+    value: "other_company",
   },
   {
     label: "Un particulier",
-    value: "PRIVATE_INDIVIDUAL",
+    value: "private_individual",
   },
 ];
 
@@ -60,15 +69,12 @@ function SiteOwnerForm({ onSubmit }: Props) {
     shouldUnregister: true,
   });
 
-  const { ownerType: ownerTypeError, ownerName: ownerNameError } =
-    formState.errors;
   const ownerTypeSelected = watch("ownerType");
-  const shouldAskForOwnerName = [
-    "OTHER_COMPANY",
-    "PRIVATE_INDIVIDUAL",
-  ].includes(ownerTypeSelected);
+  const shouldAskForOwnerName =
+    ownerTypeSelected === "private_individual" ||
+    ownerTypeSelected === "other_company";
   const shouldAskForLocalOrAuthorityType =
-    ownerTypeSelected === "LOCAL_OR_REGIONAL_AUTHORITY";
+    ownerTypeSelected === "local_or_regional_authority";
 
   return (
     <>
@@ -77,16 +83,14 @@ function SiteOwnerForm({ onSubmit }: Props) {
         <RadioButtons
           {...register("ownerType", { required: requiredMessage })}
           options={options}
-          error={ownerTypeError}
+          error={formState.errors.ownerType}
         />
 
         {shouldAskForOwnerName && (
           <Input
             label=""
-            state={ownerNameError ? "error" : "default"}
-            stateRelatedMessage={
-              ownerNameError ? ownerNameError.message : undefined
-            }
+            state={formState.errors.ownerName ? "error" : "default"}
+            stateRelatedMessage={formState.errors.ownerName?.message}
             nativeInputProps={{
               placeholder: "Nom de l'entreprise ou du particulier",
               ...register("ownerName", {

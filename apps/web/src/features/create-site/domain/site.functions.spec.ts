@@ -4,14 +4,14 @@ import {
   hasImpermeableSoils,
   hasTenant,
 } from "./site.functions";
-import { OwnerType, SiteDraft, SoilType } from "./siteFoncier.types";
+import { SiteDraft, SoilType } from "./siteFoncier.types";
 
 const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
   return {
     id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
     name: "My site",
-    owner: { type: OwnerType.MUNICIPALITY },
-    tenantBusinessName: "Tenant SARL",
+    owner: { structureType: "local_or_regional_authority", name: "department" },
+    tenant: { structureType: "company", name: "Tenant SARL" },
     soils: [],
     soilsSurfaceAreas: {},
     surfaceArea: 15000,
@@ -53,12 +53,14 @@ describe("Site functions", () => {
 
   describe("hasTenant", () => {
     it("returns false when no tenant", () => {
-      const site = buildSite({ tenantBusinessName: undefined });
+      const site = buildSite({ tenant: undefined });
       expect(hasTenant(site)).toEqual(false);
     });
 
     it("returns true when tenant", () => {
-      const site = buildSite({ tenantBusinessName: "A tenant business name" });
+      const site = buildSite({
+        tenant: { structureType: "company", name: "A tenant business name" },
+      });
       expect(hasTenant(site)).toEqual(true);
     });
   });

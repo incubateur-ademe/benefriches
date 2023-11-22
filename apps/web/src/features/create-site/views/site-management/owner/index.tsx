@@ -5,7 +5,6 @@ import {
   setOwner,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
-import { OwnerType } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
@@ -13,19 +12,28 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (data: FormValues) => {
       switch (data.ownerType) {
-        case "LOCAL_OR_REGIONAL_AUTHORITY":
-          dispatch(
-            setOwner({ type: data.localAndRegionalAuthorityType as OwnerType }),
-          );
-          break;
-        case "USER_COMPANY":
-        case "OTHER_COMPANY":
-          dispatch(setOwner({ type: OwnerType.COMPANY, name: data.ownerName }));
-          break;
-        case "PRIVATE_INDIVIDUAL":
+        case "local_or_regional_authority":
           dispatch(
             setOwner({
-              type: OwnerType.PRIVATE_INDIVIDUAL,
+              structureType: "local_or_regional_authority",
+              name: data.localAndRegionalAuthorityType,
+            }),
+          );
+          break;
+        case "user_company":
+          dispatch(
+            setOwner({ structureType: "company", name: "Générale du Solaire" }),
+          );
+          break;
+        case "other_company":
+          dispatch(
+            setOwner({ structureType: "company", name: data.ownerName }),
+          );
+          break;
+        case "private_individual":
+          dispatch(
+            setOwner({
+              structureType: "private_individual",
               name: data.ownerName,
             }),
           );

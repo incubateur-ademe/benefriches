@@ -11,8 +11,21 @@ import { AppDispatch } from "@/store";
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (data: FormValues) => {
-      if (data.tenantBusinessName) {
-        dispatch(setTenant(data.tenantBusinessName));
+      if (data.tenantType === "company") {
+        dispatch(
+          setTenant({
+            structureType: "company",
+            name: data.companyName,
+          }),
+        );
+      }
+      if (data.tenantType === "local_or_regional_authority") {
+        dispatch(
+          setTenant({
+            structureType: "local_or_regional_authority",
+            name: data.localOrRegionalAuthority,
+          }),
+        );
       }
       dispatch(goToStep(SiteCreationStep.FULL_TIME_JOBS_INVOLVED));
     },

@@ -5,7 +5,6 @@ import { saveSiteAction } from "./createSite.actions";
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import {
   Expense,
-  OwnerType,
   SiteDraft,
   SoilType,
 } from "@/features/create-site/domain/siteFoncier.types";
@@ -131,13 +130,10 @@ export const siteCreationSlice = createSlice({
     setFullTimeJobsInvolved: (state, action: PayloadAction<number>) => {
       state.siteData.fullTimeJobsInvolved = action.payload;
     },
-    setTenant: (state, action: PayloadAction<string>) => {
-      state.siteData.tenantBusinessName = action.payload;
+    setTenant: (state, action: PayloadAction<SiteDraft["tenant"]>) => {
+      state.siteData.tenant = action.payload;
     },
-    setOwner: (
-      state,
-      action: PayloadAction<{ type: OwnerType; name?: string }>,
-    ) => {
+    setOwner: (state, action: PayloadAction<SiteDraft["owner"]>) => {
       state.siteData.owner = action.payload;
     },
     setFricheRecentAccidents: (
