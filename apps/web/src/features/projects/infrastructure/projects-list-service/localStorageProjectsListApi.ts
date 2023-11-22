@@ -7,18 +7,23 @@ import { delay } from "@/shared/services/delay/delay";
 
 export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 
-export const groupProjectsBySiteId = (projects: Project[]) => {
+export const groupProjectsBySiteId = (projects: ProjectInLocalStorage[]) => {
   return projects.reduce(
     (grouped, project) => {
-      const group = grouped[project.siteId];
-      if (group) return { ...grouped, [project.siteId]: [...group, project] };
-      return { ...grouped, [project.siteId]: [project] };
+      const group = grouped[project.relatedSiteId];
+      if (group)
+        return { ...grouped, [project.relatedSiteId]: [...group, project] };
+      return { ...grouped, [project.relatedSiteId]: [project] };
     },
-    {} as Record<string, Project[]>,
+    {} as Record<string, ProjectInLocalStorage[]>,
   );
 };
 
-export type Project = { id: string; name: string; siteId: string };
+export type ProjectInLocalStorage = {
+  id: string;
+  name: string;
+  relatedSiteId: string;
+};
 
 const getSiteByIdFromLocalStorage = (siteId: string) => {
   const fromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
@@ -38,7 +43,7 @@ export class LocalStorageProjectsListApi implements ProjectsListGateway {
     const fromLocalStorage = localStorage.getItem(PROJECTS_LIST_STORAGE_KEY);
 
     const projectsList = fromLocalStorage
-      ? (JSON.parse(fromLocalStorage) as Project[])
+      ? (JSON.parse(fromLocalStorage) as ProjectInLocalStorage[])
       : [];
 
     const projectsBySiteId = groupProjectsBySiteId(projectsList);
