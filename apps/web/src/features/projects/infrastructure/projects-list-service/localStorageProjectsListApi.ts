@@ -7,50 +7,37 @@ import { delay } from "@/shared/services/delay/delay";
 
 export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 
-export const groupProjectsBySiteId = (projects: ProjectInLocalStorage[]) => {
-  return projects.reduce(
-    (grouped, project) => {
-      const group = grouped[project.relatedSiteId];
-      if (group)
-        return { ...grouped, [project.relatedSiteId]: [...group, project] };
-      return { ...grouped, [project.relatedSiteId]: [project] };
-    },
-    {} as Record<string, ProjectInLocalStorage[]>,
-  );
-};
-
-export type ProjectInLocalStorage = {
+type ProjectInLocalStorage = {
   id: string;
   name: string;
   relatedSiteId: string;
-};
-
-const getSiteByIdFromLocalStorage = (siteId: string) => {
-  const fromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
-  const siteList = fromLocalStorage
-    ? (JSON.parse(fromLocalStorage) as ProjectSite[])
-    : [];
-
-  if (!siteList) return undefined;
-
-  return siteList.find((site) => site.id === siteId);
 };
 
 export class LocalStorageProjectsListApi implements ProjectsListGateway {
   async getProjectsListBySite(): Promise<ProjectsBySite[]> {
     await delay(500);
 
-    const fromLocalStorage = localStorage.getItem(PROJECTS_LIST_STORAGE_KEY);
+    const sitesFromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
 
-    const projectsList = fromLocalStorage
-      ? (JSON.parse(fromLocalStorage) as ProjectInLocalStorage[])
+    const sitesList = sitesFromLocalStorage
+      ? (JSON.parse(sitesFromLocalStorage) as ProjectSite[])
       : [];
 
-    const projectsBySiteId = groupProjectsBySiteId(projectsList);
+    const projectsFromLocalStorage = localStorage.getItem(
+      PROJECTS_LIST_STORAGE_KEY,
+    );
 
-    return Object.entries(projectsBySiteId).map(([siteId, projects]) => {
-      const siteData = getSiteByIdFromLocalStorage(siteId);
-      return { siteId, siteName: siteData?.name ?? "", projects };
+    const projectsList = projectsFromLocalStorage
+      ? (JSON.parse(projectsFromLocalStorage) as ProjectInLocalStorage[])
+      : [];
+
+    const projectsBySiteId = sitesList.map((site) => {
+      const projectsOnSite = projectsList.filter(
+        (project) => project.relatedSiteId === site.id,
+      );
+      return { siteId: site.id, siteName: site.name, projects: projectsOnSite };
     });
+
+    return projectsBySiteId;
   }
 }
