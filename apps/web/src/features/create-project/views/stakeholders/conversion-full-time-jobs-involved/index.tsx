@@ -14,7 +14,7 @@ import {
 } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
-const mapProps = (dispatch: AppDispatch, projectSite: ProjectSite | null) => {
+const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
   return {
     askForReinstatementFullTimeJobs: projectSite?.isFriche ?? false,
     onSubmit: (data: FormValues) => {
