@@ -18,7 +18,7 @@ const mapProps = (dispatch: AppDispatch, creationState: SiteCreationState) => {
     isFriche: creationState.siteData.isFriche!,
     onSubmit: (address: Address) => {
       dispatch(setAddress(address));
-      dispatch(goToStep(SiteCreationStep.MANAGEMENT_INTRODUCTION));
+      dispatch(goToStep(SiteCreationStep.SURFACE_AREA));
     },
   };
 };

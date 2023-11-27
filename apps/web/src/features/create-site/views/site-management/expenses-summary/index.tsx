@@ -38,7 +38,12 @@ const mapProps = (
         category: getLabelForExpenseCategory(category),
       }),
     ),
-    onNext: () => dispatch(goToStep(SiteCreationStep.SOILS_INTRODUCTION)),
+    onNext: () => {
+      const nextStep = siteData.isFriche
+        ? SiteCreationStep.FRICHE_ACTIVITY
+        : SiteCreationStep.NAMING;
+      dispatch(goToStep(nextStep));
+    },
   };
 };
 

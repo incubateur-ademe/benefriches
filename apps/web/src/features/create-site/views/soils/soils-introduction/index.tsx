@@ -18,7 +18,7 @@ function SiteSoilsIntroductionContainer() {
   return (
     <SiteSoilsIntroduction
       isFriche={!!isFriche}
-      onNext={() => dispatch(goToStep(SiteCreationStep.SURFACE_AREA))}
+      onNext={() => dispatch(goToStep(SiteCreationStep.SOILS))}
     />
   );
 }
