@@ -40,36 +40,72 @@ const ReinstatementsCostsForm = ({ onSubmit }: Props) => {
           label="Enlèvement des déchets"
           hintText="€"
           name="wasteCollectionAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Désamiantage"
           hintText="€"
           name="asbestosRemovalAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Déconstruction"
           hintText="€"
           name="demolitionAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Dépollution"
           hintText="€"
           name="remediationAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Désimperméabilisation"
           hintText="€"
           name="deimpermeabilizationAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Restauration écologique des sols"
           hintText="€"
           name="sustainableSoilsReinstatementAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <p>
           <strong>

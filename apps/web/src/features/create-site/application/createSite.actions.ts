@@ -26,7 +26,7 @@ const createSiteSchema = z.object({
   contaminatedSoilSurface: z.number().nonnegative().optional(),
   fricheActivity: z.nativeEnum(FricheActivity).optional(),
   // management
-  fullTimeJobsInvolved: z.number().nonnegative(),
+  fullTimeJobsInvolved: z.number().nonnegative().optional(),
   owner: z.object({
     structureType: z.string(),
     name: z.string().optional(),

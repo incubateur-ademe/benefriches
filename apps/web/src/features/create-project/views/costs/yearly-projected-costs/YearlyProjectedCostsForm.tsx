@@ -33,24 +33,48 @@ const YearlyProjectedCostsForm = ({ onSubmit }: Props) => {
           label="Loyer"
           hintText="€"
           name="rentAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Maintenance"
           hintText="€"
           name="maintenanceAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Taxes et impôts"
           hintText="€"
           name="taxesAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Autres dépenses"
           hintText="€"
           name="otherAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <p>
           <strong>

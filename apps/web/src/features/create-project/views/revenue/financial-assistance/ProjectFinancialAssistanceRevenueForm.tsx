@@ -32,18 +32,36 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit }: Props) => {
           label="Participation des collectivités"
           hintText="€"
           name="localOrRegionalAuthorityAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Subvention publiques"
           hintText="€"
           name="publicSubsidiesAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Autres ressources"
           hintText="€"
           name="otherAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <p>
           <strong>

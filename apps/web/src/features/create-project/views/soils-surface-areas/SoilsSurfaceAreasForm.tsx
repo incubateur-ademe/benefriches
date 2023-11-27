@@ -43,37 +43,6 @@ const computeDefaultValues = (
   return siteSoilsAsArray as SoilsSurfaceAreas[];
 };
 
-const getHintTextAndMarks = ({
-  existingSurface,
-  minAdvisedSurface,
-}: {
-  existingSurface?: number;
-  minAdvisedSurface?: number;
-}) => {
-  const marks = [];
-
-  const hintSurfaceText = `Actuellement : ${formatNumberFr(
-    existingSurface ?? 0,
-  )} m²`;
-  let hintAdvisedSurfaceText = "";
-
-  if (minAdvisedSurface) {
-    hintAdvisedSurfaceText = ` - Minimum conseillé : ${formatNumberFr(
-      minAdvisedSurface,
-    )} m²`;
-    marks.push([minAdvisedSurface, `${formatNumberFr(minAdvisedSurface)} m²`]);
-  }
-
-  if (existingSurface) {
-    marks.push([existingSurface, `${formatNumberFr(existingSurface)} m²`]);
-  }
-
-  return {
-    hintText: `${hintSurfaceText}${hintAdvisedSurfaceText}`,
-    marks: Object.fromEntries(marks) as Record<number, string>,
-  };
-};
-
 const getTotalSurface = (soilsSurfaceAreas: SoilsSurfaceAreas[]) =>
   soilsSurfaceAreas.reduce((total, { surface }) => total + surface, 0);
 const getTotalFlatSurface = (soilsSurfaceAreas: SoilsSurfaceAreas[]) =>
@@ -158,7 +127,8 @@ function SoilsSurfaceAreasForm({
         <p>
           Les <strong>sols minéraux</strong> devraient faire au minimum{" "}
           {formatNumberFr(minAdvisedSoilSurfacesByType[SoilType.MINERAL_SOIL])}{" "}
-          m2. C’est la superficie requise <strong>les pistes d’accès</strong>.
+          m2. C’est la superficie requise pour{" "}
+          <strong>les pistes d’accès</strong>.
         </p>
       )}
 
@@ -171,10 +141,7 @@ function SoilsSurfaceAreasForm({
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {controlledSoilsFields.map(({ soilType, surface, id }, index) => {
-          const { hintText, marks } = getHintTextAndMarks({
-            existingSurface: siteSoils[soilType],
-            minAdvisedSurface: minAdvisedSoilSurfacesByType[soilType],
-          });
+          const minAdvisedSurface = minAdvisedSoilSurfacesByType[soilType];
           return (
             <SliderNumericInput
               key={id}
@@ -182,11 +149,29 @@ function SoilsSurfaceAreasForm({
               name={`soilsSurfaceAreas.${index}.surface`}
               label={getLabelForSoilType(soilType)}
               maxValue={freeSurface + surface}
-              hintText={hintText}
+              hintText={`Actuellement : ${formatNumberFr(
+                siteSoils[soilType] ?? 0,
+              )} m²${
+                minAdvisedSurface
+                  ? ` - Minimum conseillé : ${formatNumberFr(
+                      minAdvisedSurface,
+                    )} m²`
+                  : ""
+              }`}
               sliderStartValue={0}
               sliderEndValue={totalSurfaceArea}
               sliderProps={{
-                marks,
+                marks: {
+                  0: "0",
+                  [totalSurfaceArea]: formatNumberFr(totalSurfaceArea),
+                  ...(minAdvisedSurface
+                    ? {
+                        [minAdvisedSurface]: `${formatNumberFr(
+                          minAdvisedSurface,
+                        )} m²`,
+                      }
+                    : {}),
+                },
                 ...SLIDER_PROPS,
               }}
             />

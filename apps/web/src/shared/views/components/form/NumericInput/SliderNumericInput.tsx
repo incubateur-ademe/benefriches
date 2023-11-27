@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import {
   FieldValues,
   RegisterOptions,
@@ -28,6 +28,16 @@ type Props<T extends FieldValues> = {
   inputProps?: InputProps["nativeInputProps"];
 } & UseControllerProps<T>;
 
+const getValidatedNewValue = (newValue: number, min: number, max: number) => {
+  if (newValue > max) {
+    return max;
+  }
+  if (newValue < min) {
+    return min;
+  }
+  return newValue;
+};
+
 const SliderNumericInput = <T extends FieldValues>({
   control,
   name,
@@ -55,24 +65,24 @@ const SliderNumericInput = <T extends FieldValues>({
     },
   });
 
-  const onChangeSlider = (newValue: number) =>
-    onChangeNumericSliderInput(newValue);
+  const [inputValue, setInputValue] = useState<string>(field.value);
 
-  const onChangeInput = (ev: ChangeEvent<HTMLInputElement>) => {
-    const newValue = stringToNumber(ev.target.value);
-    if (newValue) {
-      onChangeNumericSliderInput(newValue);
+  const onChangeInput = (ev: ChangeEvent<HTMLInputElement>) =>
+    setInputValue(ev.target.value);
+
+  const onLeaveInput = () => {
+    const newValue = stringToNumber(inputValue);
+    if (newValue !== undefined) {
+      return onChangeNumericSliderInput(newValue);
     }
+    // si la valeur entrée manuellement n’est pas valide, on remet la valeur actuelle
+    setInputValue(field.value);
   };
 
   const onChangeNumericSliderInput = (newValue: number) => {
-    if (newValue > max) {
-      return field.onChange(max);
-    }
-    if (newValue < min) {
-      return field.onChange(min);
-    }
-    field.onChange(newValue);
+    const validatedNewValue = getValidatedNewValue(newValue, min, max);
+    field.onChange(validatedNewValue);
+    setInputValue(numberToString(validatedNewValue));
   };
 
   const error = fieldState.error;
@@ -89,23 +99,22 @@ const SliderNumericInput = <T extends FieldValues>({
           min,
           max,
           type: "number",
-          name: field.name,
-          value: numberToString(field.value),
+          value: inputValue,
           onChange: onChangeInput,
-          onBlur: field.onBlur,
+          onClick: onLeaveInput, // TODO à améliorer: le click sur les boutons +- ne trigger pas d’event focus
+          onBlur: onLeaveInput,
           style: { width: "150px" },
           ...inputProps,
         }}
         style={{ display: "flex", justifyContent: "space-between" }}
       />
-
       <legend style={{ display: "flex", justifyContent: "flex-end" }}>
         {Math.round(getPercentage(field.value, sliderEndValue))}%
       </legend>
 
       <Slider
         className="fr-col"
-        onChange={onChangeSlider}
+        onChange={onChangeNumericSliderInput}
         value={field.value}
         min={sliderStartValue}
         max={sliderEndValue}
