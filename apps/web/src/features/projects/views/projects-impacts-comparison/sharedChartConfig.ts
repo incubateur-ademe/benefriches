@@ -11,4 +11,5 @@ export const sharedChartConfig: Partial<Options> = {
   yAxis: {
     title: { text: "" },
   },
+  credits: { enabled: false },
 };
