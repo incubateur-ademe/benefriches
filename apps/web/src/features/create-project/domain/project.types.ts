@@ -120,7 +120,7 @@ const getPrevisionalEnrSocioEconomicImpactPerHectare = (
     case RenewableEnergyType.GEOTHERMAL:
       return 10000;
     case RenewableEnergyType.PHOTOVOLTAIC:
-      return -10000;
+      return 10000;
   }
 };
 
