@@ -1,6 +1,6 @@
 import { Options } from "highcharts";
 
-export const sharedChartConfig: Partial<Options> = {
+export const sharedChartConfig: Options = {
   chart: {
     type: "column",
     height: "200px",
@@ -12,4 +12,4 @@ export const sharedChartConfig: Partial<Options> = {
     title: { text: "" },
   },
   credits: { enabled: false },
-};
+} as const;
