@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
 import CarbonEmissionComparisonChart from "./carbon-emission/CarbonEmissionComparisonChart";
+import CarbonStorageComparisonChart from "./carbon-storage/CarbonStorageComparisonChart";
 import EconomicEvaluationComparisonChart from "./economic-evaluation/EconomicEvaluationComparisonChart";
 import RentIncomeComparisonChart from "./economic-impacts/RentIncomeComparisonChart";
 import SecuringCostComparisonChart from "./economic-impacts/SecuringCostComparisonChart";
@@ -15,6 +16,7 @@ import WaterRegulationFinancialImpactComparisonChart from "./ecosystem-financial
 import FullTimeJobsComparisonChart from "./full-time-jobs/FullTimeJobsComparisonChart";
 import OperationsFullTimeJobsComparisonChart from "./full-time-jobs/OperationsFullTimeJobsComparisonChart";
 import ReconversionFullTimeJobsComparisonChart from "./full-time-jobs/ReconversionFullTimeJobsComparisonChart";
+import SocioEconomicBenefitsComparisonByDomainChart from "./socioeconomic-benefits/SocioEconomicBenefitsComparisonByDomainChart";
 import SocioEconomicBenefitsComparisonChart from "./socioeconomic-benefits/SocioEconomicBenefitsComparisonChart";
 import SocioEconomicImpactComparisonChart from "./socioeconomic-impacts/SocioEconomicImpactComparison";
 import NonPollutedSoilsImpactComparisonChart from "./soil-impacts/NonPollutedSoilsImpactComparisonChart";
@@ -81,7 +83,21 @@ function ProjectsImpactsComparisonPage({ projectName, siteName }: Props) {
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-6")}>
             <ImpactCard>
+              <CarbonStorageComparisonChart />
+            </ImpactCard>
+          </div>
+        </div>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col-6")}>
+            <ImpactCard>
               <SocioEconomicBenefitsComparisonChart />
+            </ImpactCard>
+          </div>
+        </div>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col")}>
+            <ImpactCard>
+              <SocioEconomicBenefitsComparisonByDomainChart />
             </ImpactCard>
           </div>
         </div>
