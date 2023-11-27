@@ -1,0 +1,187 @@
+import { ReactNode } from "react";
+import { fr } from "@codegouvfr/react-dsfr";
+import { Notice } from "@codegouvfr/react-dsfr/Notice";
+import CarbonEmissionComparisonChart from "./carbon-emission/CarbonEmissionComparisonChart";
+import EconomicEvaluationComparisonChart from "./economic-evaluation/EconomicEvaluationComparisonChart";
+import RentIncomeComparisonChart from "./economic-impacts/RentIncomeComparisonChart";
+import SecuringCostComparisonChart from "./economic-impacts/SecuringCostComparisonChart";
+import TaxRevenueComparisonChart from "./economic-impacts/TaxRevenueComparisonChart";
+import CarbonStorageEmissionFinancialImpactComparisonChart from "./ecosystem-financial-impacts/CarbonStorageEmissionFinancialImpactComparisonChart";
+import EnergyProductionCarbonEmissionFinancialImpactComparisonChart from "./ecosystem-financial-impacts/EnergyProductionCarbonEmissionFinancialImpactComparisonChart";
+import EnvironmentImpactComparisonChart from "./ecosystem-financial-impacts/EnvironmentImpactComparisonChart";
+import PollinationFinancialImpactComparisonChart from "./ecosystem-financial-impacts/PollinationFinancialImpactComparisonChart";
+import WaterCycleFinancialImpactComparison from "./ecosystem-financial-impacts/WaterCycleFinancialImpactComparisonChart";
+import WaterRegulationFinancialImpactComparisonChart from "./ecosystem-financial-impacts/WaterRegulationFinancialImpactComparisonChart";
+import FullTimeJobsComparisonChart from "./full-time-jobs/FullTimeJobsComparisonChart";
+import OperationsFullTimeJobsComparisonChart from "./full-time-jobs/OperationsFullTimeJobsComparisonChart";
+import ReconversionFullTimeJobsComparisonChart from "./full-time-jobs/ReconversionFullTimeJobsComparisonChart";
+import SocioEconomicBenefitsComparisonChart from "./socioeconomic-benefits/SocioEconomicBenefitsComparisonChart";
+import SocioEconomicImpactComparisonChart from "./socioeconomic-impacts/SocioEconomicImpactComparison";
+import NonPollutedSoilsImpactComparisonChart from "./soil-impacts/NonPollutedSoilsImpactComparisonChart";
+import PermeableSoilsImpactComparisonChart from "./soil-impacts/PermeableSoilsImpactComparisonChart";
+
+type Props = {
+  projectName: string;
+  siteName: string;
+};
+
+type ImpactCardProps = {
+  children: ReactNode;
+};
+
+const ImpactCard = ({ children }: ImpactCardProps) => {
+  return (
+    <div
+      style={{ border: "3px solid #cccccc", borderRadius: "8px" }}
+      className={fr.cx("fr-py-2w", "fr-px-2w")}
+    >
+      {children}
+    </div>
+  );
+};
+
+function ProjectsImpactsComparisonPage({ projectName, siteName }: Props) {
+  return (
+    <div>
+      <h2>{projectName}</h2>
+      <h3>{siteName}</h3>
+      <Notice
+        title="Les indicateurs montrent le différentiel entre la situation actuelle et la situation avec le projet, sur la période sélectionnée"
+        isClosable
+        className={fr.cx("fr-mb-2w")}
+      />
+      <Notice
+        title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
+        isClosable
+        className={fr.cx("fr-mb-4w")}
+      />
+      <div className={fr.cx("fr-mb-6w")}>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <EconomicEvaluationComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <SocioEconomicImpactComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <FullTimeJobsComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <CarbonEmissionComparisonChart />
+            </ImpactCard>
+          </div>
+        </div>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col-6")}>
+            <ImpactCard>
+              <SocioEconomicBenefitsComparisonChart />
+            </ImpactCard>
+          </div>
+        </div>
+      </div>
+      <div className={fr.cx("fr-mb-6w")}>
+        <h4>Retombées économiques</h4>
+        <p>
+          Economies, bénéfices ou déficits réalisés une fois le site reconverti
+        </p>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <RentIncomeComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <TaxRevenueComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <SecuringCostComparisonChart />
+            </ImpactCard>
+          </div>
+        </div>
+      </div>
+      <div className={fr.cx("fr-mb-6w")}>
+        <h4>Services écosystémiques</h4>
+        <p>
+          Monétarisation des services rendus à la société humaine par la nature
+          et le projet
+        </p>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <CarbonStorageEmissionFinancialImpactComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <EnergyProductionCarbonEmissionFinancialImpactComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <WaterRegulationFinancialImpactComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <EnvironmentImpactComparisonChart />
+            </ImpactCard>
+          </div>
+        </div>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <PollinationFinancialImpactComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <WaterCycleFinancialImpactComparison />
+            </ImpactCard>
+          </div>
+        </div>
+      </div>
+      <div className={fr.cx("fr-mb-6w")}>
+        <h4>Impacts sur les personnes</h4>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <ReconversionFullTimeJobsComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <OperationsFullTimeJobsComparisonChart />
+            </ImpactCard>
+          </div>
+        </div>
+      </div>
+      <div className={fr.cx("fr-mb-6w")}>
+        <h4>État des surfaces</h4>
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <PermeableSoilsImpactComparisonChart />
+            </ImpactCard>
+          </div>
+          <div className={fr.cx("fr-col-3")}>
+            <ImpactCard>
+              <NonPollutedSoilsImpactComparisonChart />
+            </ImpactCard>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ProjectsImpactsComparisonPage;
