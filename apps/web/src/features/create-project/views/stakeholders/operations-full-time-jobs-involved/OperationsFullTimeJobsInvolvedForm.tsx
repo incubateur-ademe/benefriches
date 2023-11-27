@@ -25,7 +25,13 @@ function OperationsFullTimeJobsInvolvedForm({ onSubmit }: Props) {
           control={control}
           name="fullTimeJobs"
           label="Maintenance des panneaux photovoltaïques"
-          rules={{ required: "Ce champ est requis" }}
+          rules={{
+            required: "Ce champ est requis",
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <ButtonsGroup
           buttonsEquisized

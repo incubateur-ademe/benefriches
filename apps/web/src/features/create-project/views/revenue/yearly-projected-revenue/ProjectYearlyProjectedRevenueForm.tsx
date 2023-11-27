@@ -31,12 +31,24 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {
           label="Recettes d'exploitation"
           hintText="€ / an"
           name="operationsAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Autres recettes"
           hintText="€ / an"
           name="otherAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <p>
           <strong>

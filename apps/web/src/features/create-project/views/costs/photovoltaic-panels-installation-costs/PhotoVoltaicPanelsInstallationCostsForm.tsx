@@ -32,18 +32,36 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit }: Props) => {
           label="Travaux"
           hintText="€"
           name="worksAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Études et honoraires techniques"
           hintText="€"
           name="technicalStudyAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <NumericInput
           control={control}
           label="Frais divers"
           hintText="€"
           name="otherAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
         />
         <p>
           <strong>
