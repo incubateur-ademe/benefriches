@@ -93,7 +93,7 @@ function SiteReinstatementContractOwnerForm({
         ?
       </h2>
       <p>
-        Les travaux de remise en état incluent la désimperméabimisation des
+        Les travaux de remise en état incluent la désimperméabilisation des
         sols, la dépollution, l’enlèvement des déchets, la déconstruction, etc.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>

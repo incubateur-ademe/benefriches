@@ -158,7 +158,8 @@ function SoilsSurfaceAreasForm({
         <p>
           Les <strong>sols minéraux</strong> devraient faire au minimum{" "}
           {formatNumberFr(minAdvisedSoilSurfacesByType[SoilType.MINERAL_SOIL])}{" "}
-          m2. C’est la superficie requise <strong>les pistes d’accès</strong>.
+          m2. C’est la superficie requise pour{" "}
+          <strong>les pistes d’accès</strong>.
         </p>
       )}
 
