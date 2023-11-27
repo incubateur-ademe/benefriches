@@ -34,9 +34,12 @@ function SiteTypeForm({ onSubmit }: Props) {
       <h2>Votre site est-il une friche ?</h2>
       <p>
         Une friche est un terrain ou un bâtiment ayant été utilisé mais qui ne
-        l’est plus à l’heure actuelle. Une friche peut être industrielle,
-        militaire, ferroviaire, portuaire... mais aussi agricole, hospitalière,
-        administrative, commerciale ou d’habitat.
+        l’est plus à l’heure actuelle.
+      </p>
+      <p>
+        Une friche peut être industrielle, militaire, ferroviaire, portuaire...
+        mais aussi agricole, hospitalière, administrative, commerciale ou
+        d’habitat.
       </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons

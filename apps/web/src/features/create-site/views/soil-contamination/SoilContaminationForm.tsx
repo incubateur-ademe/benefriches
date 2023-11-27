@@ -46,6 +46,8 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
         Les polluants principaux des friches pouvant représenter un risque
         sanitaire : métaux lourds, hydrocarbures, composants organiques
         volatils, pesticides, nitrites, nitrates, cyanures, polychlorobiphényle.
+      </p>
+      <p>
         La pollution à l’amiante n’est pas à renseigner, mais un poste de
         dépense “désamiantage” pourra être alloué dans la partie “création d’un
         projet sur la friche”.

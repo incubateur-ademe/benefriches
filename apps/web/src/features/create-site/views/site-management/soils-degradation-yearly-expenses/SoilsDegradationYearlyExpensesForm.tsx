@@ -23,7 +23,7 @@ function SoilsDegradationYearlyExpenses({
 
   return (
     <>
-      <h2>Coûts annules liés à la sécurisation de la friche</h2>
+      <h2>Coûts annuels liés à la sécurisation de la friche</h2>
       <p>
         Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de
         gardiennage, d’entretien, de débarras de dépôt sauvage sont
