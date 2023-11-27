@@ -1,26 +1,27 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
-import CarbonEmissionComparisonChart from "./carbon-emission/CarbonEmissionComparisonChart";
-import CarbonStorageComparisonChart from "./carbon-storage/CarbonStorageComparisonChart";
-import EconomicEvaluationComparisonChart from "./economic-evaluation/EconomicEvaluationComparisonChart";
-import RentIncomeComparisonChart from "./economic-impacts/RentIncomeComparisonChart";
-import SecuringCostComparisonChart from "./economic-impacts/SecuringCostComparisonChart";
-import TaxRevenueComparisonChart from "./economic-impacts/TaxRevenueComparisonChart";
-import CarbonStorageEmissionFinancialImpactComparisonChart from "./ecosystem-financial-impacts/CarbonStorageEmissionFinancialImpactComparisonChart";
-import EnergyProductionCarbonEmissionFinancialImpactComparisonChart from "./ecosystem-financial-impacts/EnergyProductionCarbonEmissionFinancialImpactComparisonChart";
-import EnvironmentImpactComparisonChart from "./ecosystem-financial-impacts/EnvironmentImpactComparisonChart";
-import PollinationFinancialImpactComparisonChart from "./ecosystem-financial-impacts/PollinationFinancialImpactComparisonChart";
-import WaterCycleFinancialImpactComparison from "./ecosystem-financial-impacts/WaterCycleFinancialImpactComparisonChart";
-import WaterRegulationFinancialImpactComparisonChart from "./ecosystem-financial-impacts/WaterRegulationFinancialImpactComparisonChart";
-import FullTimeJobsComparisonChart from "./full-time-jobs/FullTimeJobsComparisonChart";
-import OperationsFullTimeJobsComparisonChart from "./full-time-jobs/OperationsFullTimeJobsComparisonChart";
-import ReconversionFullTimeJobsComparisonChart from "./full-time-jobs/ReconversionFullTimeJobsComparisonChart";
-import SocioEconomicBenefitsComparisonByDomainChart from "./socioeconomic-benefits/SocioEconomicBenefitsComparisonByDomainChart";
-import SocioEconomicBenefitsComparisonChart from "./socioeconomic-benefits/SocioEconomicBenefitsComparisonChart";
-import SocioEconomicImpactComparisonChart from "./socioeconomic-impacts/SocioEconomicImpactComparison";
-import NonPollutedSoilsImpactComparisonChart from "./soil-impacts/NonPollutedSoilsImpactComparisonChart";
-import PermeableSoilsImpactComparisonChart from "./soil-impacts/PermeableSoilsImpactComparisonChart";
+import ProjectsComparisonActionBar from "./actions/ActionBar";
+import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
+import CarbonStorageComparisonChart from "./charts/carbon-storage/CarbonStorageComparisonChart";
+import EconomicEvaluationComparisonChart from "./charts/economic-evaluation/EconomicEvaluationComparisonChart";
+import RentIncomeComparisonChart from "./charts/economic-impacts/RentIncomeComparisonChart";
+import SecuringCostComparisonChart from "./charts/economic-impacts/SecuringCostComparisonChart";
+import TaxRevenueComparisonChart from "./charts/economic-impacts/TaxRevenueComparisonChart";
+import CarbonStorageEmissionFinancialImpactComparisonChart from "./charts/ecosystem-financial-impacts/CarbonStorageEmissionFinancialImpactComparisonChart";
+import EnergyProductionCarbonEmissionFinancialImpactComparisonChart from "./charts/ecosystem-financial-impacts/EnergyProductionCarbonEmissionFinancialImpactComparisonChart";
+import EnvironmentImpactComparisonChart from "./charts/ecosystem-financial-impacts/EnvironmentImpactComparisonChart";
+import PollinationFinancialImpactComparisonChart from "./charts/ecosystem-financial-impacts/PollinationFinancialImpactComparisonChart";
+import WaterCycleFinancialImpactComparison from "./charts/ecosystem-financial-impacts/WaterCycleFinancialImpactComparisonChart";
+import WaterRegulationFinancialImpactComparisonChart from "./charts/ecosystem-financial-impacts/WaterRegulationFinancialImpactComparisonChart";
+import FullTimeJobsComparisonChart from "./charts/full-time-jobs/FullTimeJobsComparisonChart";
+import OperationsFullTimeJobsComparisonChart from "./charts/full-time-jobs/OperationsFullTimeJobsComparisonChart";
+import ReconversionFullTimeJobsComparisonChart from "./charts/full-time-jobs/ReconversionFullTimeJobsComparisonChart";
+import SocioEconomicBenefitsComparisonByDomainChart from "./charts/socioeconomic-benefits/SocioEconomicBenefitsComparisonByDomainChart";
+import SocioEconomicBenefitsComparisonChart from "./charts/socioeconomic-benefits/SocioEconomicBenefitsComparisonChart";
+import SocioEconomicImpactComparisonChart from "./charts/socioeconomic-impacts/SocioEconomicImpactComparison";
+import NonPollutedSoilsImpactComparisonChart from "./charts/soil-impacts/NonPollutedSoilsImpactComparisonChart";
+import PermeableSoilsImpactComparisonChart from "./charts/soil-impacts/PermeableSoilsImpactComparisonChart";
 
 type Props = {
   projectName: string;
@@ -55,8 +56,9 @@ function ProjectsImpactsComparisonPage({ projectName, siteName }: Props) {
       <Notice
         title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
         isClosable
-        className={fr.cx("fr-mb-4w")}
+        className={fr.cx("fr-mb-2w")}
       />
+      <ProjectsComparisonActionBar />
       <div className={fr.cx("fr-mb-6w")}>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
