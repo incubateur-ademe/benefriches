@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
-import { fetchRelatedSiteAction } from "@/features/create-project/application/createProject.actions";
 import {
   goToStep,
   ProjectCreationStep,
@@ -73,11 +71,6 @@ const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
 function SiteOperatorFormContainer() {
   const dispatch = useAppDispatch();
   const projectSite = useAppSelector((state) => state.projectCreation.siteData);
-  useEffect(() => {
-    void dispatch(
-      fetchRelatedSiteAction("7cb24d2c-8833-4255-9e13-c8a97858607d"),
-    );
-  }, [dispatch]);
 
   return <SiteOperatorForm {...mapProps(dispatch, projectSite)} />;
 }
