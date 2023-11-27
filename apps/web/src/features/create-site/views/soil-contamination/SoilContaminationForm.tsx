@@ -12,9 +12,9 @@ type Props = {
 
 type HasContaminatedSoilsString = "yes" | "no";
 
-type FormValues = {
+export type FormValues = {
   hasContaminatedSoils: HasContaminatedSoilsString;
-  contaminatedSurface: number;
+  contaminatedSurface?: number;
 };
 
 const requiredMessage =
@@ -65,7 +65,6 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
               name="contaminatedSurface"
               label="Superficie polluée"
               hintText="en m2"
-              required="Ce champ est requis"
               minValue={5}
               sliderStartValue={0}
               sliderEndValue={surfaceArea}

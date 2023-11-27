@@ -23,6 +23,7 @@ const createSiteSchema = z.object({
   surfaceArea: z.number().nonnegative(),
   soilsSurfaceAreas: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
   // contamination
+  hasContaminatedSoils: z.boolean(),
   contaminatedSoilSurface: z.number().nonnegative().optional(),
   fricheActivity: z.nativeEnum(FricheActivity).optional(),
   // management

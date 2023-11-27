@@ -6,6 +6,9 @@ import NumericInput from "@/shared/views/components/form/NumericInput/NumericInp
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  hasBuildings: boolean;
+  hasContaminatedSoils: boolean;
+  hasImpermeableSoils: boolean;
 };
 
 export type FormValues = {
@@ -21,7 +24,12 @@ const sumAmounts = (amounts: FormValues): number => {
   return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
-const ReinstatementsCostsForm = ({ onSubmit }: Props) => {
+const ReinstatementsCostsForm = ({
+  onSubmit,
+  hasContaminatedSoils,
+  hasBuildings,
+  hasImpermeableSoils,
+}: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>();
 
   const allCosts = watch();
@@ -29,11 +37,52 @@ const ReinstatementsCostsForm = ({ onSubmit }: Props) => {
   return (
     <>
       <h2>Coûts de travaux de la remise en état de la friche</h2>
-      <p>
-        Le site que vous allez aménager est une friche. Vous allez donc engager
-        des travaux de déconstruction et de remise en état pour la rendre
-        exploitable.
-      </p>
+      {hasContaminatedSoils && (hasBuildings || hasImpermeableSoils) && (
+        <>
+          <p>
+            Le site que vous allez aménager est une friche partiellement
+            imperméable et partiellement polluée.
+          </p>
+          <p>
+            Vous allez donc engager des travaux de déconstruction pour la rendre
+            perméable, de dépollution pour enrayer le risque sanitaire et de
+            remise en état pour la rendre exploitable.
+          </p>
+        </>
+      )}
+      {hasContaminatedSoils && !(hasBuildings || hasImpermeableSoils) && (
+        <>
+          <p>
+            Le site que vous allez aménager est une friche partiellement
+            polluée.
+          </p>
+          <p>
+            Vous allez donc engager des travaux de dépollution pour enrayer le
+            risque sanitaire et de remise en état pour la rendre exploitable.
+          </p>
+        </>
+      )}
+
+      {(hasBuildings || hasImpermeableSoils) && !hasContaminatedSoils && (
+        <>
+          <p>
+            Le site que vous allez aménager est une friche partiellement
+            imperméable.
+          </p>
+          <p>
+            Vous allez donc engager des travaux de déconstruction pour la rendre
+            perméable et de remise en état pour la rendre exploitable.
+          </p>
+        </>
+      )}
+
+      {!hasBuildings && !hasImpermeableSoils && !hasContaminatedSoils && (
+        <p>
+          Le site que vous allez aménager est une friche. Vous allez donc
+          engager des travaux de remise en état pour la rendre exploitable.
+        </p>
+      )}
+
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
@@ -47,54 +96,66 @@ const ReinstatementsCostsForm = ({ onSubmit }: Props) => {
             },
           }}
         />
-        <NumericInput
-          control={control}
-          label="Désamiantage"
-          hintText="€"
-          name="asbestosRemovalAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez sélectionner un montant valide",
-            },
-          }}
-        />
-        <NumericInput
-          control={control}
-          label="Déconstruction"
-          hintText="€"
-          name="demolitionAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez sélectionner un montant valide",
-            },
-          }}
-        />
-        <NumericInput
-          control={control}
-          label="Dépollution"
-          hintText="€"
-          name="remediationAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez sélectionner un montant valide",
-            },
-          }}
-        />
-        <NumericInput
-          control={control}
-          label="Désimperméabilisation"
-          hintText="€"
-          name="deimpermeabilizationAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez sélectionner un montant valide",
-            },
-          }}
-        />
+        {hasContaminatedSoils && (
+          <NumericInput
+            control={control}
+            label="Désamiantage"
+            hintText="€"
+            name="asbestosRemovalAmount"
+            rules={{
+              min: {
+                value: 0,
+                message: "Veuillez sélectionner un montant valide",
+              },
+            }}
+          />
+        )}
+
+        {hasBuildings && (
+          <NumericInput
+            control={control}
+            label="Déconstruction"
+            hintText="€"
+            name="demolitionAmount"
+            rules={{
+              min: {
+                value: 0,
+                message: "Veuillez sélectionner un montant valide",
+              },
+            }}
+          />
+        )}
+
+        {hasContaminatedSoils && (
+          <NumericInput
+            control={control}
+            label="Dépollution"
+            hintText="€"
+            name="remediationAmount"
+            rules={{
+              min: {
+                value: 0,
+                message: "Veuillez sélectionner un montant valide",
+              },
+            }}
+          />
+        )}
+
+        {hasImpermeableSoils && (
+          <NumericInput
+            control={control}
+            label="Désimperméabilisation"
+            hintText="€"
+            name="deimpermeabilizationAmount"
+            rules={{
+              min: {
+                value: 0,
+                message: "Veuillez sélectionner un montant valide",
+              },
+            }}
+          />
+        )}
+
         <NumericInput
           control={control}
           label="Restauration écologique des sols"

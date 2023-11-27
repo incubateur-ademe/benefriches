@@ -28,6 +28,7 @@ export type SiteDraft = {
   soils: SoilType[];
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;
   // contamination
+  hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;
   fricheActivity?: FricheActivity;
   // management
