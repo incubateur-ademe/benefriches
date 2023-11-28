@@ -5,10 +5,12 @@ import { routes } from "@/router";
 type Props = {
   siteName: string;
   projectName: string;
+  projectId: string;
   loadingState: "idle" | "loading" | "success" | "error";
 };
 
 function ProjectCreationConfirmation({
+  projectId,
   projectName,
   siteName,
   loadingState,
@@ -40,6 +42,13 @@ function ProjectCreationConfirmation({
                 priority: "secondary",
                 children: "Retour à mes projets",
                 linkProps: routes.myProjects().link,
+              },
+              {
+                priority: "primary",
+                children: "Comparer les impacts",
+                linkProps: routes.selectProjectToCompare({
+                  baseProjectId: projectId,
+                }).link,
               },
             ]}
             inlineLayoutWhen="always"

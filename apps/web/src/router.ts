@@ -1,13 +1,5 @@
 import { createRouter, defineRoute, param } from "type-route";
 
-export type QuestionType =
-  | "construction"
-  | "type"
-  | "adresse"
-  | "espaces.types"
-  | "espaces.surfaces"
-  | "confirmation";
-
 const { RouteProvider, useRoute, routes } = createRouter({
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
@@ -34,6 +26,14 @@ const { RouteProvider, useRoute, routes } = createRouter({
     (params) => `/projets/${params.projectId}/impacts`,
   ),
   myProjects: defineRoute(["/mes-projets", "/"]),
+  selectProjectToCompare: defineRoute(
+    { baseProjectId: param.path.string },
+    (params) => `/mes-projets/${params.baseProjectId}/comparaison`,
+  ),
+  compareProjects: defineRoute(
+    { baseProjectId: param.path.string, avecProjet: param.query.string },
+    (params) => `/mes-projets/${params.baseProjectId}/comparaison`,
+  ),
 });
 
 export { RouteProvider, useRoute, routes };

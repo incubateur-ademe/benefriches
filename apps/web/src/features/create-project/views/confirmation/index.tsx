@@ -9,6 +9,7 @@ function ProjectCreationConfirmationContainer() {
 
   return (
     <ProjectCreationConfirmation
+      projectId={projectData.id ?? ""}
       projectName={projectData.name ?? ""}
       siteName={siteData?.name ?? ""}
       loadingState={saveProjectLoadingState}
