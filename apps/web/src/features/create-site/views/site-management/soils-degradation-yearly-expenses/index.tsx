@@ -9,7 +9,6 @@ import {
 } from "@/features/create-site/application/createSite.reducer";
 import {
   hasBuildings,
-  hasContaminatedSoils,
   hasImpermeableSoils,
 } from "@/features/create-site/domain/site.functions";
 import {
@@ -27,9 +26,8 @@ const mapProps = (
   siteCreationState: RootState["siteCreation"],
 ) => {
   return {
-    askForWaterTreatmentExpenses: hasContaminatedSoils(
-      siteCreationState.siteData as SiteDraft,
-    ),
+    askForWaterTreatmentExpenses:
+      siteCreationState.siteData.hasContaminatedSoils ?? false,
     askForFloodsRegulationExpenses:
       hasImpermeableSoils(siteCreationState.siteData as SiteDraft) ||
       hasBuildings(siteCreationState.siteData as SiteDraft),

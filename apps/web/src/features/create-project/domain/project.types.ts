@@ -80,6 +80,8 @@ export type ProjectSite = {
     name: string;
     structureType: ProjectStakeholderStructure;
   };
+  hasContaminatedSoils: boolean;
+  contaminatedSoilSurface?: number;
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;
   surfaceArea: number;
 };

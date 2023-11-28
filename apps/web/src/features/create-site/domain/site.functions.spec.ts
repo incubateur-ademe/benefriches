@@ -1,9 +1,4 @@
-import {
-  hasBuildings,
-  hasContaminatedSoils,
-  hasImpermeableSoils,
-  hasTenant,
-} from "./site.functions";
+import { hasBuildings, hasImpermeableSoils, hasTenant } from "./site.functions";
 import { SiteDraft, SoilType } from "./siteFoncier.types";
 
 const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
@@ -19,6 +14,7 @@ const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
     isFriche: false,
     hasRecentAccidents: false,
     fullTimeJobsInvolved: 0,
+    hasContaminatedSoils: false,
     address: {
       city: "Paris",
       cityCode: "75109",
@@ -34,23 +30,6 @@ const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
 };
 
 describe("Site functions", () => {
-  describe("hasContaminatedSoils", () => {
-    it("returns false when has no contaminated soils", () => {
-      const site = buildSite({ contaminatedSoilSurface: undefined });
-      expect(hasContaminatedSoils(site)).toEqual(false);
-    });
-
-    it("returns true when has contaminated soils with surface zero", () => {
-      const site = buildSite({ contaminatedSoilSurface: 0 });
-      expect(hasContaminatedSoils(site)).toEqual(false);
-    });
-
-    it("returns true when has contaminated soils with non-null surface", () => {
-      const site = buildSite({ contaminatedSoilSurface: 1000 });
-      expect(hasContaminatedSoils(site)).toEqual(true);
-    });
-  });
-
   describe("hasTenant", () => {
     it("returns false when no tenant", () => {
       const site = buildSite({ tenant: undefined });

@@ -14,6 +14,7 @@ describe("Project stakeholders", () => {
           structureType: "company",
         },
         surfaceArea: 1200,
+        hasContaminatedSoils: false,
         soilsSurfaceAreas: {},
       };
 
@@ -36,6 +37,7 @@ describe("Project stakeholders", () => {
           structureType: "company",
         },
         surfaceArea: 1200,
+        hasContaminatedSoils: false,
         soilsSurfaceAreas: {},
       };
 

@@ -124,8 +124,19 @@ export const siteCreationSlice = createSlice({
     ) => {
       state.siteData.soilsSurfaceAreas = action.payload;
     },
-    setContaminatedSoilSurface: (state, action: PayloadAction<number>) => {
-      state.siteData.contaminatedSoilSurface = action.payload;
+    setContaminatedSoils: (
+      state,
+      action: PayloadAction<{
+        hasContaminatedSoils: boolean;
+        contaminatedSoilSurface?: number;
+      }>,
+    ) => {
+      const { hasContaminatedSoils, contaminatedSoilSurface } = action.payload;
+      state.siteData.hasContaminatedSoils = hasContaminatedSoils;
+
+      if (hasContaminatedSoils && contaminatedSoilSurface) {
+        state.siteData.contaminatedSoilSurface = contaminatedSoilSurface;
+      }
     },
     setFullTimeJobsInvolved: (state, action: PayloadAction<number>) => {
       state.siteData.fullTimeJobsInvolved = action.payload;
@@ -199,7 +210,7 @@ export const {
   setSurfaceArea,
   setSoils,
   setSoilsSurfaceAreas,
-  setContaminatedSoilSurface,
+  setContaminatedSoils,
   setOwner,
   setTenant,
   setFullTimeJobsInvolved,

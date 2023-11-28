@@ -1,8 +1,8 @@
-import SoilContaminationForm from "./SoilContaminationForm";
+import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
 
 import {
   goToStep,
-  setContaminatedSoilSurface,
+  setContaminatedSoils,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
 import {
@@ -14,8 +14,13 @@ import { AppDispatch } from "@/store";
 const mapProps = (dispatch: AppDispatch, surfaceArea: number) => {
   return {
     surfaceArea,
-    onSubmit: (data: { contaminatedSurface: number }) => {
-      dispatch(setContaminatedSoilSurface(data.contaminatedSurface ?? 0));
+    onSubmit: ({ hasContaminatedSoils, contaminatedSurface }: FormValues) => {
+      dispatch(
+        setContaminatedSoils({
+          hasContaminatedSoils: hasContaminatedSoils === "yes",
+          contaminatedSoilSurface: contaminatedSurface,
+        }),
+      );
       dispatch(goToStep(SiteCreationStep.MANAGEMENT_INTRODUCTION));
     },
   };
