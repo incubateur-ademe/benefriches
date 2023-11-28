@@ -31,10 +31,7 @@ function ProjectsListPage({ projectsListFetchingState, projectsList }: Props) {
               Pour démarrer, créez le site sur lequel vous prévoyez votre
               projet.
             </p>
-            <Button
-              priority="primary"
-              linkProps={routes.createSiteFoncier().link}
-            >
+            <Button priority="primary" linkProps={routes.onboarding().link}>
               Créer un site
             </Button>
           </>
