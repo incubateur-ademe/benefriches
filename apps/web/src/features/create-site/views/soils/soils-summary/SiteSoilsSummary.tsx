@@ -1,7 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import SurfaceAreaPieChart from "./SurfaceAreaPieChart";
 
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 

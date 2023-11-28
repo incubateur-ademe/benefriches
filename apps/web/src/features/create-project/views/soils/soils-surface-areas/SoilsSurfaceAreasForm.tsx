@@ -1,11 +1,6 @@
 import { useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
-import {
-  FLAT_SOIL_TYPES,
-  isSoilNatural,
-  SOIL_TYPES,
-} from "../../domain/soils.types";
 import FlatSurfacesNotice from "./FlatSurfacesNotice";
 import ImpermeableSurfacesNotice from "./ImpermeableSurfacesNotice";
 import MineralSoilSurfaceNotice from "./MineralSoilSurfaceNotice";
@@ -14,9 +9,12 @@ import TotalAllocatedSurfacesInput from "./TotalAllocatedSurfacesInput";
 import TotalFlatSurfacesInput from "./TotalFlatSurfacesInput";
 
 import {
-  SiteDraft,
-  SoilType,
-} from "@/features/create-site/domain/siteFoncier.types";
+  FLAT_SOIL_TYPES,
+  isSoilNatural,
+  SOIL_TYPES,
+} from "@/features/create-project/domain/soils.types";
+import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";

@@ -3,7 +3,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
