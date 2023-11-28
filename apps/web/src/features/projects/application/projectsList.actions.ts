@@ -1,15 +1,27 @@
-import { ProjectsBySite } from "../domain/projects.types";
+import { ProjectsList, SitesList } from "../domain/projects.types";
 
 import { createAppAsyncThunk } from "@/appAsyncThunk";
 
 export interface ProjectsListGateway {
-  getProjectsListBySite(): Promise<ProjectsBySite[]>;
+  getProjectsList(): Promise<ProjectsList>;
 }
 
-export const fetchProjectsListBySite = createAppAsyncThunk<ProjectsBySite[]>(
-  "projects/fetchListBySite",
+export const fetchProjects = createAppAsyncThunk<ProjectsList>(
+  "projects/fetchList",
   async (_, { extra }) => {
-    const result = await extra.projectsListService.getProjectsListBySite();
+    const result = await extra.projectsListService.getProjectsList();
+    return result;
+  },
+);
+
+export interface SitesGateway {
+  getSitesList(): Promise<SitesList>;
+}
+
+export const fetchSites = createAppAsyncThunk<SitesList>(
+  "projects/fetchSites",
+  async (_, { extra }) => {
+    const result = await extra.sitesService.getSitesList();
     return result;
   },
 );

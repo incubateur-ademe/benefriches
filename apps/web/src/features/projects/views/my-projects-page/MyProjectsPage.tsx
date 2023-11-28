@@ -1,20 +1,19 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ProjectsBySite } from "../../domain/projects.types";
-import ProjectsList from "../ProjectsList";
+import { ProjectsGroupedBySite } from "../../domain/projects.types";
+import ProjectsList from "./ProjectsList";
 
 import { routes } from "@/router";
 
 type Props = {
-  projectsListFetchingState: "idle" | "loading" | "error" | "success";
-  projectsList: ProjectsBySite[];
+  loadingState: "idle" | "loading" | "error" | "success";
+  projectsList: ProjectsGroupedBySite;
 };
 
-function ProjectsListPage({ projectsListFetchingState, projectsList }: Props) {
+function MyProjectsPage({ loadingState, projectsList }: Props) {
   const getProjectListsPageContent = () => {
-    if (projectsListFetchingState === "loading")
-      return <p>Chargement de vos projets...</p>;
+    if (loadingState === "loading") return <p>Chargement de vos projets...</p>;
 
-    if (projectsListFetchingState === "error")
+    if (loadingState === "error")
       return (
         <p>
           Une erreur est survenue lors du chargement de vos projets. Veuillez
@@ -22,7 +21,7 @@ function ProjectsListPage({ projectsListFetchingState, projectsList }: Props) {
         </p>
       );
 
-    if (projectsListFetchingState === "success") {
+    if (loadingState === "success") {
       if (projectsList.length === 0) {
         return (
           <>
@@ -50,4 +49,4 @@ function ProjectsListPage({ projectsListFetchingState, projectsList }: Props) {
   );
 }
 
-export default ProjectsListPage;
+export default MyProjectsPage;

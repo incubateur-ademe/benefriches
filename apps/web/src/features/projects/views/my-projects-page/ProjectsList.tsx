@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import { ProjectsBySite } from "../domain/projects.types";
+import { ProjectsGroupedBySite } from "../../domain/projects.types";
+import ProjectCard from "../ProjectCard";
 import NewProjectButton from "./NewProjectButton";
-import ProjectCard from "./ProjectCard";
 
 type Props = {
-  projectsList: ProjectsBySite[];
+  projectsList: ProjectsGroupedBySite;
 };
 
 function SiteName({ children }: { children: ReactNode }) {

@@ -35,7 +35,7 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
               {
                 priority: "secondary",
                 children: "Retour à mes projets",
-                linkProps: routes.projectsList().link,
+                linkProps: routes.myProjects().link,
               },
               {
                 priority: "primary",

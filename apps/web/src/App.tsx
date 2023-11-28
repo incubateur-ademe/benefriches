@@ -5,8 +5,8 @@ import SiteCreationDocumentsPage from "./features/create-site/views/documents";
 import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWizard";
 import LoginPage from "./features/login";
 import OnboardingPage from "./features/onboarding/views";
+import MyProjectsPage from "./features/projects/views/my-projects-page";
 import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison/ProjectsImpactsComparisonPage";
-import ProjectsListPage from "./features/projects/views/ProjectsListPage";
 import SiteFoncierDetailsPage from "./features/site-details/views";
 import SitesFonciersListPage from "./features/site-list/views";
 import CreateUserPage from "./features/users/views";
@@ -36,7 +36,7 @@ function App() {
         {route.name === routes.createSiteFoncierDocuments.name && (
           <SiteCreationDocumentsPage />
         )}
-        {route.name === routes.projectsList.name && <ProjectsListPage />}
+        {route.name === routes.myProjects.name && <MyProjectsPage />}
         {route.name === routes.createProjectIntro.name && (
           <CreateProjectIntroductionPage route={route} />
         )}

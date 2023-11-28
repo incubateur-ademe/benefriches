@@ -3,6 +3,7 @@ import { LocalStorageSaveProjectApi } from "@/features/create-project/infrastruc
 import { LocalStorageCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
 import { SoilsCarbonStorageMock } from "@/features/create-site/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { LocalStorageProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/localStorageProjectsListApi";
+import { LocalStorageSitesApi } from "@/features/projects/infrastructure/sites-service/localStorageSitesApi";
 import { AppDependencies } from "@/store";
 
 export const getTestAppDependencies = (
@@ -17,6 +18,7 @@ export const getTestAppDependencies = (
     getSiteService: new LocalStorageGetSiteApi(),
     projectsListService: new LocalStorageProjectsListApi(),
     saveProjectGateway: new LocalStorageSaveProjectApi(),
+    sitesService: new LocalStorageSitesApi(),
     ...depsOverride,
   };
 };

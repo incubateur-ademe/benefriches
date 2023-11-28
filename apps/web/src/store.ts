@@ -5,7 +5,10 @@ import {
 } from "./features/create-project/application/createProject.actions";
 import { CreateSiteGateway } from "./features/create-site/application/createSite.actions";
 import { SoilsCarbonStorageGateway } from "./features/create-site/application/siteSoilsCarbonStorage.actions";
-import { ProjectsListGateway } from "./features/projects/application/projectsList.actions";
+import {
+  ProjectsListGateway,
+  SitesGateway,
+} from "./features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
@@ -18,6 +21,7 @@ export type AppDependencies = {
   saveProjectGateway: SaveProjectGateway;
   getSiteService: GetSiteGateway;
   projectsListService: ProjectsListGateway;
+  sitesService: SitesGateway;
 };
 
 export const createStore = (appDependencies: AppDependencies) =>

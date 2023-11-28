@@ -1,5 +1,5 @@
 import { ProjectsListGateway } from "../../application/projectsList.actions";
-import { ProjectsBySite } from "../../domain/projects.types";
+import { ProjectsList } from "../../domain/projects.types";
 
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
@@ -14,7 +14,7 @@ type ProjectInLocalStorage = {
 };
 
 export class LocalStorageProjectsListApi implements ProjectsListGateway {
-  async getProjectsListBySite(): Promise<ProjectsBySite[]> {
+  async getProjectsList(): Promise<ProjectsList> {
     await delay(500);
 
     const sitesFromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
@@ -31,13 +31,15 @@ export class LocalStorageProjectsListApi implements ProjectsListGateway {
       ? (JSON.parse(projectsFromLocalStorage) as ProjectInLocalStorage[])
       : [];
 
-    const projectsBySiteId = sitesList.map((site) => {
-      const projectsOnSite = projectsList.filter(
-        (project) => project.relatedSiteId === site.id,
-      );
-      return { siteId: site.id, siteName: site.name, projects: projectsOnSite };
+    return projectsList.map((project) => {
+      const projectSite = sitesList.find(
+        (site) => project.relatedSiteId === site.id,
+      ) as ProjectSite;
+      return {
+        id: project.id,
+        name: project.name,
+        site: { id: projectSite.id, name: projectSite.name },
+      };
     });
-
-    return projectsBySiteId;
   }
 }
