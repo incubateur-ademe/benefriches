@@ -24,6 +24,65 @@ const sumAmounts = (amounts: FormValues): number => {
   return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
+const ReinstatementCostFormExplanation = ({
+  hasContaminatedSoils,
+  hasImpermeableSurface,
+}: {
+  hasContaminatedSoils: boolean;
+  hasImpermeableSurface: boolean;
+}) => {
+  if (hasContaminatedSoils) {
+    if (hasImpermeableSurface) {
+      return (
+        <section>
+          <p>
+            Le site que vous allez aménager est une friche partiellement
+            imperméable et partiellement polluée.
+          </p>
+          <p>
+            Vous allez donc engager des travaux de déconstruction pour la rendre
+            perméable, de dépollution pour enrayer le risque sanitaire et de
+            remise en état pour la rendre exploitable.
+          </p>
+        </section>
+      );
+    }
+    return (
+      <section>
+        <p>
+          Le site que vous allez aménager est une friche partiellement polluée.
+        </p>
+        <p>
+          Vous allez donc engager des travaux de dépollution pour enrayer le
+          risque sanitaire et de remise en état pour la rendre exploitable.
+        </p>
+      </section>
+    );
+  }
+  if (hasImpermeableSurface) {
+    return (
+      <section>
+        <p>
+          Le site que vous allez aménager est une friche partiellement
+          imperméable.
+        </p>
+        <p>
+          Vous allez donc engager des travaux de déconstruction pour la rendre
+          perméable et de remise en état pour la rendre exploitable.
+        </p>
+      </section>
+    );
+  }
+  return (
+    <section>
+      <p>
+        Le site que vous allez aménager est une friche. Vous allez donc engager
+        des travaux de remise en état pour la rendre exploitable.
+      </p>
+    </section>
+  );
+};
+
 const ReinstatementsCostsForm = ({
   onSubmit,
   hasContaminatedSoils,
@@ -34,54 +93,15 @@ const ReinstatementsCostsForm = ({
 
   const allCosts = watch();
 
+  const hasImpermeableSurface = hasBuildings || hasImpermeableSoils;
+
   return (
     <>
       <h2>Coûts de travaux de la remise en état de la friche</h2>
-      {hasContaminatedSoils && (hasBuildings || hasImpermeableSoils) && (
-        <>
-          <p>
-            Le site que vous allez aménager est une friche partiellement
-            imperméable et partiellement polluée.
-          </p>
-          <p>
-            Vous allez donc engager des travaux de déconstruction pour la rendre
-            perméable, de dépollution pour enrayer le risque sanitaire et de
-            remise en état pour la rendre exploitable.
-          </p>
-        </>
-      )}
-      {hasContaminatedSoils && !(hasBuildings || hasImpermeableSoils) && (
-        <>
-          <p>
-            Le site que vous allez aménager est une friche partiellement
-            polluée.
-          </p>
-          <p>
-            Vous allez donc engager des travaux de dépollution pour enrayer le
-            risque sanitaire et de remise en état pour la rendre exploitable.
-          </p>
-        </>
-      )}
-
-      {(hasBuildings || hasImpermeableSoils) && !hasContaminatedSoils && (
-        <>
-          <p>
-            Le site que vous allez aménager est une friche partiellement
-            imperméable.
-          </p>
-          <p>
-            Vous allez donc engager des travaux de déconstruction pour la rendre
-            perméable et de remise en état pour la rendre exploitable.
-          </p>
-        </>
-      )}
-
-      {!hasBuildings && !hasImpermeableSoils && !hasContaminatedSoils && (
-        <p>
-          Le site que vous allez aménager est une friche. Vous allez donc
-          engager des travaux de remise en état pour la rendre exploitable.
-        </p>
-      )}
+      <ReinstatementCostFormExplanation
+        hasContaminatedSoils={hasContaminatedSoils}
+        hasImpermeableSurface={hasImpermeableSurface}
+      />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
@@ -96,35 +116,31 @@ const ReinstatementsCostsForm = ({
             },
           }}
         />
-        {hasContaminatedSoils && (
-          <NumericInput
-            control={control}
-            label="Désamiantage"
-            hintText="€"
-            name="asbestosRemovalAmount"
-            rules={{
-              min: {
-                value: 0,
-                message: "Veuillez sélectionner un montant valide",
-              },
-            }}
-          />
-        )}
+        <NumericInput
+          control={control}
+          label="Désamiantage"
+          hintText="€"
+          name="asbestosRemovalAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
+        />
 
-        {hasBuildings && (
-          <NumericInput
-            control={control}
-            label="Déconstruction"
-            hintText="€"
-            name="demolitionAmount"
-            rules={{
-              min: {
-                value: 0,
-                message: "Veuillez sélectionner un montant valide",
-              },
-            }}
-          />
-        )}
+        <NumericInput
+          control={control}
+          label="Déconstruction"
+          hintText="€"
+          name="demolitionAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
+        />
 
         {hasContaminatedSoils && (
           <NumericInput
@@ -141,7 +157,7 @@ const ReinstatementsCostsForm = ({
           />
         )}
 
-        {hasImpermeableSoils && (
+        {hasImpermeableSurface && (
           <NumericInput
             control={control}
             label="Désimperméabilisation"
