@@ -17,7 +17,7 @@ function BenefrichesHeader() {
       }}
       navigation={[
         {
-          linkProps: routes.home().link,
+          linkProps: routes.projectsList().link,
           text: "Accueil",
           isActive: true,
         },

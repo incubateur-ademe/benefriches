@@ -3,7 +3,6 @@ import CreateProjectIntroductionPage from "./features/create-project/views/intro
 import CreateProjectPage from "./features/create-project/views/ProjectCreationWizard";
 import SiteCreationDocumentsPage from "./features/create-site/views/documents";
 import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWizard";
-import HomePage from "./features/home/views/Home";
 import LoginPage from "./features/login";
 import OnboardingPage from "./features/onboarding/views";
 import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison/ProjectsImpactsComparisonPage";
@@ -20,7 +19,6 @@ function App() {
   return (
     <HeaderFooterLayout>
       <main className={fr.cx("fr-container", "fr-py-10w")}>
-        {route.name === routes.home.name && <HomePage />}
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
         {route.name === routes.onboarding.name && <OnboardingPage />}

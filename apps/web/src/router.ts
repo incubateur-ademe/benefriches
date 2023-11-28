@@ -9,7 +9,6 @@ export type QuestionType =
   | "confirmation";
 
 const { RouteProvider, useRoute, routes } = createRouter({
-  home: defineRoute("/"),
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
   onboarding: defineRoute("/premiers-pas"),
@@ -36,7 +35,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { projectId: param.path.string },
     (params) => `/projets/${params.projectId}/impacts`,
   ),
-  projectsList: defineRoute("/mes-projets"),
+  projectsList: defineRoute(["/mes-projets", "/"]),
 });
 
 export { RouteProvider, useRoute, routes };
