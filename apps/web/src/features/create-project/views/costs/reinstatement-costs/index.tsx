@@ -6,7 +6,7 @@ import {
 import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { ProjectSite } from "@/features/create-project/domain/project.types";
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 import {
   useAppDispatch,
   useAppSelector,

@@ -1,6 +1,5 @@
-import { SoilType } from "../domain/siteFoncier.types";
-
 import { createAppAsyncThunk } from "@/appAsyncThunk";
+import { SoilType } from "@/shared/domain/soils";
 
 export type GetSiteSoilsCarbonStoragePayload = {
   cityCode: string;

@@ -3,8 +3,8 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
-import { SoilType } from "../../../domain/siteFoncier.types";
 
+import { SoilType } from "@/shared/domain/soils";
 import { getLongLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 

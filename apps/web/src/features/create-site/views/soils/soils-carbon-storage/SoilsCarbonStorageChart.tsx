@@ -4,7 +4,7 @@ import * as Highcharts from "highcharts";
 import highchartsVariablePie from "highcharts/modules/variable-pie";
 import HighchartsReact from "highcharts-react-official";
 
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 highchartsVariablePie(Highcharts);

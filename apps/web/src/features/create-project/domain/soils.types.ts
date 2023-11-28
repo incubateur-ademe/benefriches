@@ -1,4 +1,4 @@
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 
 export const SOIL_TYPES = [
   SoilType.BUILDINGS,

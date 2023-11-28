@@ -1,5 +1,5 @@
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
+import { SoilType } from "@/shared/domain/soils";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 
 export enum ProjectType {

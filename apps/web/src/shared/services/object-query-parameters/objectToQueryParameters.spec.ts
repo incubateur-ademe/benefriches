@@ -1,6 +1,6 @@
 import { objectToQueryParams } from "./objectToQueryParameters";
 
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 
 describe("objectToQueryParams", () => {
   it('should return cityCode=75011 for { cityCode: "75011" }', () => {
