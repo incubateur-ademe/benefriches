@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import ProjectCard from "../ProjectCard";
+import ProjectCard from "./SelectableProjectCard";
 
 import { routes } from "@/router";
 
@@ -45,21 +45,22 @@ function ProjectsComparisonSelectionPage({
         >
           <div className={fr.cx("fr-col-3")}>
             <ProjectCard
-              name={baseProject.site.name}
-              isReconversionProject={false}
               isSelected={selectedProjectId === STATU_QUO}
               onSelect={onSelect(STATU_QUO)}
-            />
+            >
+              Site existant
+              <p>({baseProject.site.name})</p>
+            </ProjectCard>
           </div>
           {projectsToCompare.map((project) => {
             return (
               <div className={fr.cx("fr-col-3")} key={project.id}>
                 <ProjectCard
-                  name={project.name}
-                  isReconversionProject
                   isSelected={project.id === selectedProjectId}
                   onSelect={onSelect(project.id)}
-                />
+                >
+                  {project.name}
+                </ProjectCard>
               </div>
             );
           })}
