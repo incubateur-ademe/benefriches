@@ -39,7 +39,7 @@ function PhotovoltaicSurfaceFromPowerForm({
   return (
     <>
       <h2>
-        Quel superficie du site occuperont les panneaux photovoltaïques&nbsp;?
+        Quelle superficie du site occuperont les panneaux photovoltaïques&nbsp;?
       </h2>
       <p>
         Le ratio superficie / puissance d’installation considéré est de{" "}
