@@ -11,8 +11,7 @@ function NewProjectButton({ siteId }: Props) {
     <a {...routes.createProjectIntro({ siteId }).link}>
       <div
         style={{
-          border: "2px gray dashed",
-          borderRadius: "9px",
+          border: "2px #ddd dashed",
           minHeight: "160px",
           display: "flex",
           alignItems: "center",
