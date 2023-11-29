@@ -23,7 +23,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
   ),
   projectImpacts: defineRoute(
     { projectId: param.path.string },
-    (params) => `/projets/${params.projectId}/impacts`,
+    (params) => `/mes-projets/${params.projectId}/impacts`,
   ),
   myProjects: defineRoute(["/mes-projets", "/"]),
   selectProjectToCompare: defineRoute(
