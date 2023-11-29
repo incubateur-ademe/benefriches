@@ -9,8 +9,8 @@ type Props = {
 };
 
 export type FormValues = {
-  reinstatementFullTimeJobsInvolved: number;
-  fullTimeJobs: number;
+  reinstatementFullTimeJobsInvolved?: number;
+  fullTimeJobs?: number;
 };
 
 function ConversionFullTimeJobsInvolvedForm({
@@ -33,7 +33,6 @@ function ConversionFullTimeJobsInvolvedForm({
             name="reinstatementFullTimeJobsInvolved"
             label="Remise en état de la friche"
             rules={{
-              required: "Ce champ est requis",
               min: {
                 value: 0,
                 message: "Veuillez sélectionner un montant valide",
@@ -46,7 +45,6 @@ function ConversionFullTimeJobsInvolvedForm({
           name="fullTimeJobs"
           label="Installation des panneaux photovoltaïques"
           rules={{
-            required: "Ce champ est requis",
             min: {
               value: 0,
               message: "Veuillez sélectionner un montant valide",

@@ -8,7 +8,7 @@ type Props = {
 };
 
 export type FormValues = {
-  fullTimeJobs: number;
+  fullTimeJobs?: number;
 };
 
 function OperationsFullTimeJobsInvolvedForm({ onSubmit }: Props) {
@@ -26,7 +26,6 @@ function OperationsFullTimeJobsInvolvedForm({ onSubmit }: Props) {
           name="fullTimeJobs"
           label="Maintenance des panneaux photovoltaïques"
           rules={{
-            required: "Ce champ est requis",
             min: {
               value: 0,
               message: "Veuillez sélectionner un montant valide",

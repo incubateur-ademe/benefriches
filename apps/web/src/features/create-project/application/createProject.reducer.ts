@@ -96,14 +96,16 @@ export const projectCreationSlice = createSlice({
       state,
       action: PayloadAction<{
         reinstatementFullTimeJobs?: number;
-        fullTimeJobs: number;
+        fullTimeJobs?: number;
       }>,
     ) => {
-      state.projectData.conversionFullTimeJobsInvolved =
-        action.payload.fullTimeJobs;
-      if (action.payload.reinstatementFullTimeJobs !== undefined) {
+      const { fullTimeJobs, reinstatementFullTimeJobs } = action.payload;
+      if (fullTimeJobs) {
+        state.projectData.conversionFullTimeJobsInvolved = fullTimeJobs;
+      }
+      if (reinstatementFullTimeJobs !== undefined) {
         state.projectData.reinstatementFullTimeJobsInvolved =
-          action.payload.reinstatementFullTimeJobs;
+          reinstatementFullTimeJobs;
       }
     },
     setOperationsFullTimeJobsInvolved: (

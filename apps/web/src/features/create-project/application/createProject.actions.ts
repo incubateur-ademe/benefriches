@@ -39,12 +39,12 @@ const saveProjectSchema = z.object({
   futureOperator: z
     .object({ name: z.string(), structureType: z.string() })
     .optional(),
-  conversionFullTimeJobsInvolved: z.number().nonnegative(),
+  conversionFullTimeJobsInvolved: z.number().nonnegative().optional(),
   reinstatementFullTimeJobsInvolved: z.number().nonnegative().optional(),
   reinstatementContractOwner: z
     .object({ name: z.string(), structureType: z.string() })
     .optional(),
-  operationsFullTimeJobsInvolved: z.number().nonnegative(),
+  operationsFullTimeJobsInvolved: z.number().nonnegative().optional(),
   reinstatementCost: z.number().nonnegative().optional(),
   photovoltaicPanelsInstallationCost: z.number().nonnegative(),
   financialAssistanceRevenue: z.number().nonnegative(),

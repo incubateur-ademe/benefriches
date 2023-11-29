@@ -34,10 +34,10 @@ export type Project = {
   photovoltaicExpectedAnnualProduction: number;
   photovoltaicContractDuration: number;
   futureOperator: ProjectStakeholder;
-  conversionFullTimeJobsInvolved: number;
+  conversionFullTimeJobsInvolved?: number;
   reinstatementFullTimeJobsInvolved?: number;
   reinstatementContractOwner?: ProjectStakeholder;
-  operationsFullTimeJobsInvolved: number;
+  operationsFullTimeJobsInvolved?: number;
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
   financialAssistanceRevenue: number;
