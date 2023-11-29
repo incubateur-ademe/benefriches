@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
@@ -63,6 +63,11 @@ const ImpactCard = ({
 };
 
 function ProjectImpactsPage({ projectName, siteName }: Props) {
+  ``;
+  const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">(
+    "all",
+  );
+
   return (
     <div>
       <h2>{projectName}</h2>
@@ -72,7 +77,11 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
         isClosable
         className={fr.cx("fr-mb-2w")}
       />
-      <ProjectsComparisonActionBar />
+      <ProjectsComparisonActionBar
+        selectedFilter={selectedFilter}
+        onMonetaryFilterClick={() => setSelectedFilter("monetary")}
+        onAllFilterClick={() => setSelectedFilter("all")}
+      />
       <div className={fr.cx("fr-mb-6w")}>
         <ImpactsRow>
           <div className={fr.cx("fr-col-3")}>
@@ -90,30 +99,36 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
               isPositive
             />
           </div>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="Emploi"
-              impact="+1,4 ETP"
-              text="mobilisé"
-              isPositive
-            />
-          </div>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="Émissions de CO2-eq"
-              impact="3 952 t"
-              isPositive
-              text="évitées"
-            />
-          </div>
+          {selectedFilter === "all" && (
+            <>
+              <div className={fr.cx("fr-col-3")}>
+                <ImpactCard
+                  title="Emploi"
+                  impact="+1,4 ETP"
+                  text="mobilisé"
+                  isPositive
+                />
+              </div>
+              <div className={fr.cx("fr-col-3")}>
+                <ImpactCard
+                  title="Émissions de CO2-eq"
+                  impact="3 952 t"
+                  isPositive
+                  text="évitées"
+                />
+              </div>
+            </>
+          )}
         </ImpactsRow>
-        <ImpactsRow>
-          <div className={fr.cx("fr-col-6")}>
-            <ImpactContainer>
-              <CarbonStorageChart />
-            </ImpactContainer>
-          </div>
-        </ImpactsRow>
+        {selectedFilter === "all" && (
+          <ImpactsRow>
+            <div className={fr.cx("fr-col-6")}>
+              <ImpactContainer>
+                <CarbonStorageChart />
+              </ImpactContainer>
+            </div>
+          </ImpactsRow>
+        )}
         <ImpactsRow>
           <div className={fr.cx("fr-col-6")}>
             <ImpactContainer>
@@ -124,7 +139,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
         <ImpactsRow>
           <div className={fr.cx("fr-col-md")}>
             <ImpactContainer>
-              <SocioEconomicBenefitsByDomainChart />{" "}
+              <SocioEconomicBenefitsByDomainChart />
             </ImpactContainer>
           </div>
         </ImpactsRow>
@@ -224,44 +239,48 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           </div>
         </div>
       </div>
-      <div className={fr.cx("fr-mb-6w")}>
-        <h4>Impacts sur les personnes</h4>
-        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="Emplois liés à la reconversion du site"
-              impact="+1,2 ETP"
-              isPositive
-            />
-          </div>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="Emplois liés à l'exploitation du site"
-              impact="+0,22 ETP"
-              isPositive
-            />
-          </div>
-        </div>
-      </div>
-      <div className={fr.cx("fr-mb-6w")}>
-        <h4>État des surfaces</h4>
-        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="Surface perméable"
-              impact="+48 750 m2"
-              isPositive
-            />
-          </div>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="Surface non polluée"
-              impact="+30 000 m2"
-              isPositive
-            />
+      {selectedFilter === "all" && (
+        <div className={fr.cx("fr-mb-6w")}>
+          <h4>Impacts sur les personnes</h4>
+          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+            <div className={fr.cx("fr-col-3")}>
+              <ImpactCard
+                title="Emplois liés à la reconversion du site"
+                impact="+1,2 ETP"
+                isPositive
+              />
+            </div>
+            <div className={fr.cx("fr-col-3")}>
+              <ImpactCard
+                title="Emplois liés à l'exploitation du site"
+                impact="+0,22 ETP"
+                isPositive
+              />
+            </div>
           </div>
         </div>
-      </div>
+      )}
+      {selectedFilter === "all" && (
+        <div className={fr.cx("fr-mb-6w")}>
+          <h4>État des surfaces</h4>
+          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+            <div className={fr.cx("fr-col-3")}>
+              <ImpactCard
+                title="Surface perméable"
+                impact="+48 750 m2"
+                isPositive
+              />
+            </div>
+            <div className={fr.cx("fr-col-3")}>
+              <ImpactCard
+                title="Surface non polluée"
+                impact="+30 000 m2"
+                isPositive
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
