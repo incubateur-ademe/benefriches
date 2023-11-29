@@ -15,7 +15,7 @@ const initialState: State = {
     lastName: "User",
     organization: {
       id: "e6d44e75-96ca-418b-852e-eb4a6a71fbce",
-      name: "ADEME",
+      name: "Générale du Solaire",
       type: "company",
     },
   },
