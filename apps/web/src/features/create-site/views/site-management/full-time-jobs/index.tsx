@@ -19,7 +19,8 @@ const mapProps = (
 ) => {
   return {
     onSubmit: (data: FormValues) => {
-      dispatch(setFullTimeJobsInvolved(data.fullTimeJobsInvolved));
+      if (data.fullTimeJobsInvolved !== undefined)
+        dispatch(setFullTimeJobsInvolved(data.fullTimeJobsInvolved));
       const nextStep = siteData.isFriche
         ? SiteCreationStep.RECENT_ACCIDENTS
         : SiteCreationStep.YEARLY_EXPENSES;

@@ -8,7 +8,7 @@ type Props = {
 };
 
 export type FormValues = {
-  fullTimeJobsInvolved: number;
+  fullTimeJobsInvolved?: number;
 };
 
 function SiteFullTimeJobsInvolvedForm({ onSubmit }: Props) {

@@ -32,7 +32,7 @@ export type SiteDraft = {
   contaminatedSoilSurface?: number;
   fricheActivity?: FricheActivity;
   // management
-  fullTimeJobsInvolved: number;
+  fullTimeJobsInvolved?: number;
   owner: { structureType: OwnerStructureType; name: string };
   tenant: { structureType: TenantStructureType; name: string };
   hasRecentAccidents: boolean;
