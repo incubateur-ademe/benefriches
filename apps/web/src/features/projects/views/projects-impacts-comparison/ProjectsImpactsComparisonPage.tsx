@@ -1,9 +1,11 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
+import { Route } from "type-route";
+import { fetchProjectDetails } from "../../application/projectDetails.actions";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
-import CarbonStorageComparisonChart from "./charts/carbon-storage/CarbonStorageComparisonChart";
+import CarbonStorageComparisonChart from "./charts/carbon-storage";
 import EconomicEvaluationComparisonChart from "./charts/economic-evaluation/EconomicEvaluationComparisonChart";
 import RentIncomeComparisonChart from "./charts/economic-impacts/RentIncomeComparisonChart";
 import SecuringCostComparisonChart from "./charts/economic-impacts/SecuringCostComparisonChart";
@@ -24,9 +26,14 @@ import NonPollutedSoilsImpactComparisonChart from "./charts/soil-impacts/NonPoll
 import PermeableSoilsImpactComparisonChart from "./charts/soil-impacts/PermeableSoilsImpactComparisonChart";
 import ImpactsComparisonPageHeader from "./ImpactsComparisonPageHeader";
 
+import { routes } from "@/router";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "@/shared/views/hooks/store.hooks";
+
 type Props = {
-  projectName: string;
-  siteName: string;
+  route: Route<typeof routes.compareProjects>;
 };
 
 type ImpactCardProps = {
@@ -44,16 +51,29 @@ const ImpactCard = ({ children }: ImpactCardProps) => {
   );
 };
 
-function ProjectsImpactsComparisonPage({ projectName, siteName }: Props) {
+function ProjectsImpactsComparisonPage({ route }: Props) {
   const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">(
     "all",
   );
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    void dispatch(fetchProjectDetails(route.params.baseProjectId));
+  }, [dispatch, route.params.baseProjectId]);
+
+  const { siteData, projectData, projectDataLoadingState } = useAppSelector(
+    (state) => state.projectDetails,
+  );
+
+  if (projectDataLoadingState === "loading") {
+    return <p>Chargement en cours ...</p>;
+  }
 
   return (
     <div>
       <ImpactsComparisonPageHeader
-        projectName={projectName}
-        siteName={siteName}
+        projectName={siteData?.name ?? ""}
+        siteName={projectData?.name ?? ""}
       />
       <Notice
         title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."

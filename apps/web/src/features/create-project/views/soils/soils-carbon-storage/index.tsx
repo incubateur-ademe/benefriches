@@ -4,8 +4,8 @@ import {
   goToStep,
   ProjectCreationStep,
 } from "@/features/create-project/application/createProject.reducer";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/soilsCarbonStorage.actions";
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/shared/application/actions/soilsCarbonStorage.actions";
 import {
   useAppDispatch,
   useAppSelector,

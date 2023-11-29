@@ -15,6 +15,8 @@ import projectCreation from "@/features/create-project/application/createProject
 import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
+import { ProjectsDetailsGateway } from "@/features/projects/application/projectDetails.actions";
+import projectDetails from "@/features/projects/application/projectDetails.reducer";
 import projectsList from "@/features/projects/application/projectsList.reducer";
 import currentUser from "@/features/users/application/user.reducer";
 
@@ -26,6 +28,7 @@ export type AppDependencies = {
   saveProjectGateway: SaveProjectGateway;
   getSiteService: GetSiteGateway;
   projectsListService: ProjectsListGateway;
+  projectDetailsService: ProjectsDetailsGateway;
   sitesService: SitesGateway;
 };
 
@@ -37,6 +40,7 @@ export const createStore = (appDependencies: AppDependencies) =>
       siteCarbonStorage,
       projectsList,
       currentUser,
+      projectDetails,
       projectSoilsCarbonStorage,
     },
     middleware(getDefaultMiddleware) {
