@@ -2,16 +2,18 @@ import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
-import SocioEconomicBenefitsBarChart from "./SocioEconomicBenefitsBarChart";
+import CarbonStorageChart from "./charts/CarbonStorageChart";
+import SocioEconomicBenefitsBarChart from "./charts/SocioEconomicBenefitsBarChart";
+import SocioEconomicBenefitsByDomainChart from "./charts/SocioEconomicBenefitsByDomainChart";
 
 type Props = {
   projectName: string;
   siteName: string;
 };
 
-type ImpactCardProps = {
+type ImpactIndicatorProps = {
   title: string;
-  value: string;
+  impact: string;
   isPositive?: boolean;
   text?: string;
 };
@@ -23,18 +25,25 @@ const ImpactsRow = ({ children }: { children: ReactNode }) => {
     </div>
   );
 };
-
-const ImpactCard = ({
-  title,
-  value,
-  text,
-  isPositive = false,
-}: ImpactCardProps) => {
+const ImpactContainer = ({ children }: { children: ReactNode }) => {
   return (
     <div
       style={{ border: "2px solid gray", borderRadius: "9px" }}
       className={fr.cx("fr-py-2w", "fr-px-3w")}
     >
+      {children}
+    </div>
+  );
+};
+
+const ImpactCard = ({
+  title,
+  impact,
+  isPositive,
+  text,
+}: ImpactIndicatorProps) => {
+  return (
+    <ImpactContainer>
       <p>
         <strong>{title}</strong>
       </p>
@@ -46,10 +55,10 @@ const ImpactCard = ({
           })`,
         }}
       >
-        {value}
+        {impact}
       </h5>
       {text && <legend>{text}</legend>}
-    </div>
+    </ImpactContainer>
   );
 };
 
@@ -69,14 +78,14 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Bilan économique"
-              value="-9 794 959 €"
+              impact="-9 794 959 €"
               text="pour Générale du Solaire"
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Impacts socio-économiques"
-              value="+4 497 195 €"
+              impact="+4 497 195 €"
               text="pour la communauté"
               isPositive
             />
@@ -84,7 +93,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Emploi"
-              value="+1,4 ETP"
+              impact="+1,4 ETP"
               text="mobilisé"
               isPositive
             />
@@ -92,25 +101,31 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Émissions de CO2-eq"
-              value="3 952 t"
+              impact="3 952 t"
               isPositive
               text="évitées"
             />
           </div>
         </ImpactsRow>
         <ImpactsRow>
-          <div className={fr.cx("fr-col-2")}>
-            Stockage du carbone dans les sols
+          <div className={fr.cx("fr-col-6")}>
+            <ImpactContainer>
+              <CarbonStorageChart />
+            </ImpactContainer>
           </div>
         </ImpactsRow>
         <ImpactsRow>
-          <div className={fr.cx("fr-col-2")}>
-            Bénéficiaires des impacts socio-économiques
+          <div className={fr.cx("fr-col-6")}>
+            <ImpactContainer>
+              <SocioEconomicBenefitsBarChart />
+            </ImpactContainer>
           </div>
         </ImpactsRow>
         <ImpactsRow>
-          <div className={fr.cx("fr-col-2")}>
-            Domaines concernés par les impacts socio-économiques
+          <div className={fr.cx("fr-col-md")}>
+            <ImpactContainer>
+              <SocioEconomicBenefitsByDomainChart />{" "}
+            </ImpactContainer>
           </div>
         </ImpactsRow>
       </div>
@@ -123,7 +138,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Recettes d'exploitation"
-              value="+5 574 227 €"
+              impact="+5 574 227 €"
               text="pour Générale du Solaire"
               isPositive
             />
@@ -131,7 +146,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Revenu locatif"
-              value="+381 974 €"
+              impact="+381 974 €"
               text="pour la mairie de Blajan"
               isPositive
             />
@@ -139,7 +154,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Recettes fiscales"
-              value="+425 699 €"
+              impact="+425 699 €"
               text="pour la collectivité"
               isPositive
             />
@@ -147,7 +162,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Arrêt de la sécurisation de la friche"
-              value="+3 624 908 €"
+              impact="+3 624 908 €"
               text="pour Terre Cuit d'Occitanie"
               isPositive
             />
@@ -164,28 +179,28 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Émissions de CO2-eq évitées grâce au stockage du carbone"
-              value="+77 339 €"
+              impact="+77 339 €"
               isPositive
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Émissions de CO2-eq évitées grâce à la production d'ENR"
-              value="+615 175 €"
+              impact="+615 175 €"
               isPositive
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Régulation de la qualité de l'eau"
-              value="+9 471 €"
+              impact="+9 471 €"
               isPositive
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Aménité environnementale"
-              value="+3 624 908 €"
+              impact="+3 624 908 €"
               isPositive
             />
           </div>
@@ -194,7 +209,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Pollinisation"
-              value="+5 574 227 €"
+              impact="+5 574 227 €"
               isPositive
               text="pour Générale du Solaire"
             />
@@ -202,7 +217,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Cycle de l'eau"
-              value="+381 974 €"
+              impact="+381 974 €"
               isPositive
               text="pour la mairie de Blajan"
             />
@@ -215,14 +230,14 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Emplois liés à la reconversion du site"
-              value="+1,2 ETP"
+              impact="+1,2 ETP"
               isPositive
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Emplois liés à l'exploitation du site"
-              value="+0,22 ETP"
+              impact="+0,22 ETP"
               isPositive
             />
           </div>
@@ -234,20 +249,19 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Surface perméable"
-              value="+48 750 m2"
+              impact="+48 750 m2"
               isPositive
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="Surface non polluée"
-              value="+30 000 m2"
+              impact="+30 000 m2"
               isPositive
             />
           </div>
         </div>
       </div>
-      <SocioEconomicBenefitsBarChart />
     </div>
   );
 }
