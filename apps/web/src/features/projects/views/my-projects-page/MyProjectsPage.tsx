@@ -1,5 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { ProjectsGroupedBySite } from "../../domain/projects.types";
+import MyProjectsPageHeader from "./MyProjectsPageHeader";
 import ProjectsList from "./ProjectsList";
 
 import { routes } from "@/router";
@@ -43,7 +44,7 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
 
   return (
     <>
-      <h2>Mes projets</h2>
+      <MyProjectsPageHeader />
       {getProjectListsPageContent()}
     </>
   );
