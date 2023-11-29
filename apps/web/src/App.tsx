@@ -9,8 +9,6 @@ import MyProjectsPage from "./features/projects/views/my-projects-page";
 import ProjectImpactsPage from "./features/projects/views/project-impacts-page/ProjectImpactsPage";
 import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison/ProjectsImpactsComparisonPage";
 import ProjectsComparisonSelectionPage from "./features/projects/views/select-projects-comparison-page";
-import SiteFoncierDetailsPage from "./features/site-details/views";
-import SitesFonciersListPage from "./features/site-list/views";
 import CreateUserPage from "./features/users/views";
 import HeaderFooterLayout from "./shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import { routes, useRoute } from "./router";
@@ -24,14 +22,6 @@ function App() {
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
         {route.name === routes.onboarding.name && <OnboardingPage />}
-        {route.name === routes.mesSitesFonciers.name && (
-          <SitesFonciersListPage />
-        )}
-        {route.name === routes.siteFoncierDetails.name && (
-          <SiteFoncierDetailsPage
-            siteFoncierName={route.params.siteFoncierName}
-          />
-        )}
         {route.name === routes.createSiteFoncier.name && (
           <CreateSiteFoncierPage />
         )}

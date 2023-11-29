@@ -4,11 +4,6 @@ const { RouteProvider, useRoute, routes } = createRouter({
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
   onboarding: defineRoute("/premiers-pas"),
-  mesSitesFonciers: defineRoute("/mes-sites-fonciers"),
-  siteFoncierDetails: defineRoute(
-    { siteFoncierName: param.path.string },
-    (params) => `/mes-sites-fonciers/${params.siteFoncierName}`,
-  ),
   createSiteFoncierDocuments: defineRoute("/creer-site-foncier/documents"),
   createSiteFoncier: defineRoute("/creer-site-foncier"),
   createProjectIntro: defineRoute(
