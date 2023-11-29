@@ -14,6 +14,7 @@ import projectCreation from "@/features/create-project/application/createProject
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import projectsList from "@/features/projects/application/projectsList.reducer";
+import currentUser from "@/features/users/application/user.reducer";
 
 export type AppDependencies = {
   soilsCarbonStorageService: SoilsCarbonStorageGateway;
@@ -31,6 +32,7 @@ export const createStore = (appDependencies: AppDependencies) =>
       projectCreation,
       siteCarbonStorage,
       projectsList,
+      currentUser,
     },
     middleware(getDefaultMiddleware) {
       return getDefaultMiddleware({

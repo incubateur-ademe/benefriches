@@ -13,6 +13,7 @@ import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 type Props = {
   onSubmit: (data: FormValues) => void;
   siteStakeholders: SiteStakeholder[];
+  currentUserCompany: string;
 };
 type FutureOperatorOption =
   | "user_company"
@@ -46,7 +47,10 @@ export type FormValues = {
 
 const requiredMessage = "Champ requis";
 
-const getOperatorOptions = (siteStakeholders: Props["siteStakeholders"]) => {
+const getOperatorOptions = (
+  siteStakeholders: Props["siteStakeholders"],
+  currentUserCompany: string,
+) => {
   const siteStakeholderOptions = [];
 
   if (siteStakeholders.length > 1) {
@@ -63,7 +67,7 @@ const getOperatorOptions = (siteStakeholders: Props["siteStakeholders"]) => {
 
   return [
     {
-      label: "Mon entreprise",
+      label: `Mon entreprise, ${currentUserCompany}`,
       value: "user_company",
     },
     ...siteStakeholderOptions,
@@ -82,7 +86,11 @@ const getOperatorOptions = (siteStakeholders: Props["siteStakeholders"]) => {
   ];
 };
 
-function SiteOperatorForm({ onSubmit, siteStakeholders }: Props) {
+function SiteOperatorForm({
+  onSubmit,
+  siteStakeholders,
+  currentUserCompany,
+}: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -95,7 +103,7 @@ function SiteOperatorForm({ onSubmit, siteStakeholders }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("futureOperator", { required: requiredMessage })}
-          options={getOperatorOptions(siteStakeholders)}
+          options={getOperatorOptions(siteStakeholders, currentUserCompany)}
           error={formState.errors.futureOperator}
         />
         {selectedFutureOperator === "site_stakeholder" && (

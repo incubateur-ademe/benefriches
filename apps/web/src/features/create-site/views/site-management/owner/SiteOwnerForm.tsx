@@ -11,6 +11,7 @@ import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  currentUserCompany: string;
 };
 
 export type FormValues =
@@ -45,29 +46,29 @@ const localAndRegionalAuthorityOptions = (
 
 const requiredMessage = "Champ requis";
 
-const options = [
-  {
-    label: "La collectivité",
-    value: "local_or_regional_authority",
-  },
-  {
-    label: "Mon entreprise",
-    value: "user_company",
-  },
-  {
-    label: "Une autre entreprise",
-    value: "other_company",
-  },
-  {
-    label: "Un particulier",
-    value: "private_individual",
-  },
-];
-
-function SiteOwnerForm({ onSubmit }: Props) {
+function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     shouldUnregister: true,
   });
+
+  const options = [
+    {
+      label: "La collectivité",
+      value: "local_or_regional_authority",
+    },
+    {
+      label: `Mon entreprise, ${currentUserCompany}`,
+      value: "user_company",
+    },
+    {
+      label: "Une autre entreprise",
+      value: "other_company",
+    },
+    {
+      label: "Un particulier",
+      value: "private_individual",
+    },
+  ];
 
   const ownerTypeSelected = watch("ownerType");
   const shouldAskForOwnerName =
