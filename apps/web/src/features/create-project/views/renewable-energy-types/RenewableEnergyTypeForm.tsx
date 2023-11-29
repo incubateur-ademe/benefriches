@@ -83,6 +83,10 @@ function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   return (
     <>
       <h2>Quel système d’EnR souhaitez-vous installer ?</h2>
+      <p>
+        Votre projet peut contenir plusieurs systèmes de production d’énergies
+        renouvelables ; plusieurs réponses sont donc possibles.
+      </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}

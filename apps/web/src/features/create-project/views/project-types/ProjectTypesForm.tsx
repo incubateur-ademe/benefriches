@@ -81,6 +81,10 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   return (
     <>
       <h2>Qu’y aura t-il sur le site une fois aménagé ?</h2>
+      <p>
+        Votre projet peut contenir plusieurs aménagements ; plusieurs réponses
+        sont donc possibles.
+      </p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}
