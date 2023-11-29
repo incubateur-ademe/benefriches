@@ -1,0 +1,4 @@
+.leaflet-control-zoom a {
+  /* fix conflicting style with dsfr on zoom buttons */
+  background-image: none;
+}

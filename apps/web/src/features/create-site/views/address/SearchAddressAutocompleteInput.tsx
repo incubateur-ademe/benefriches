@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { AutoComplete } from "antd";
-import MarkerLeafletMap from "./MarkerLeafletMap";
 
 import { Address } from "@/features/create-site/domain/siteFoncier.types";
+import MarkerLeafletMap from "@/shared/views/components/MarkerLeafletMap/MarkerLeafletMap";
 
 export interface AddressService {
   search(searchText: string): Promise<Address[]>;
@@ -57,9 +57,9 @@ const SearchAddressAutocompleteInput = ({
   };
 
   return (
-    <>
+    <div className="fr-grid-row fr-grid-row--gutters">
       <AutoComplete
-        className="fr-pb-7v"
+        className="fr-col-17 fr-col-lg-5 fr-mb-12v"
         value={autocompleteValue}
         style={{ width: "100%" }}
         options={suggestions}
@@ -75,10 +75,10 @@ const SearchAddressAutocompleteInput = ({
           }}
         />
       </AutoComplete>
-      {long && lat && (
+      <div className="fr-col-12 fr-col-lg-7">
         <MarkerLeafletMap lat={lat} long={long} popup={searchInputValue} />
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 
