@@ -6,6 +6,7 @@ import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWiza
 import LoginPage from "./features/login";
 import OnboardingPage from "./features/onboarding/views";
 import MyProjectsPage from "./features/projects/views/my-projects-page";
+import ProjectImpactsPage from "./features/projects/views/project-impacts-page/ProjectImpactsPage";
 import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison/ProjectsImpactsComparisonPage";
 import ProjectsComparisonSelectionPage from "./features/projects/views/select-projects-comparison-page";
 import SiteFoncierDetailsPage from "./features/site-details/views";
@@ -50,6 +51,12 @@ function App() {
         )}
         {route.name === routes.selectProjectToCompare.name && (
           <ProjectsComparisonSelectionPage route={route} />
+        )}
+        {route.name === routes.projectImpacts.name && (
+          <ProjectImpactsPage
+            siteName="Ancienne carrière d'argile de Blajan"
+            projectName="Centrale photovoltaïque"
+          />
         )}
         {route.name === false && <>Page non trouvée</>}
       </main>

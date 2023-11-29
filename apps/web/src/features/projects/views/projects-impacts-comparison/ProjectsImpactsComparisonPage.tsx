@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
-import ProjectsComparisonActionBar from "./actions/ActionBar";
+import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
 import CarbonStorageComparisonChart from "./charts/carbon-storage/CarbonStorageComparisonChart";
 import EconomicEvaluationComparisonChart from "./charts/economic-evaluation/EconomicEvaluationComparisonChart";
