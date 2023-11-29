@@ -23,9 +23,7 @@ const mapProps = (
   return {
     hasTenant: hasTenant(siteData as SiteDraft),
     onSubmit: (formData: FormValues) => {
-      const expenses: Expense[] = formData.otherExpenses.map(({ amount }) => {
-        return { amount, bearer: "owner", type: "other", category: "other" };
-      });
+      const expenses: Expense[] = [];
 
       if (formData.rent) {
         expenses.push({
@@ -48,6 +46,14 @@ const mapProps = (
           type: "otherTaxes",
           category: "taxes",
           amount: formData.otherTaxes,
+          bearer: "tenant",
+        });
+      }
+      if (formData.otherExpense) {
+        expenses.push({
+          type: "other",
+          category: "other",
+          amount: formData.otherExpense,
           bearer: "tenant",
         });
       }
