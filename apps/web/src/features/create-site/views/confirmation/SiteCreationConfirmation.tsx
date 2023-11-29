@@ -38,6 +38,11 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
                 linkProps: routes.myProjects().link,
               },
               {
+                priority: "secondary",
+                children: "Découvrir les caractéristiques géographiques",
+                disabled: true,
+              },
+              {
                 priority: "primary",
                 children: "Créer un projet sur ce site",
                 linkProps: routes.createProjectIntro({ siteId }).link,

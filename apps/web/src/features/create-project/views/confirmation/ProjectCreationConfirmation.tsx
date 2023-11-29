@@ -3,7 +3,6 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { routes } from "@/router";
 
 type Props = {
-  siteName: string;
   projectName: string;
   projectId: string;
   loadingState: "idle" | "loading" | "success" | "error";
@@ -12,7 +11,6 @@ type Props = {
 function ProjectCreationConfirmation({
   projectId,
   projectName,
-  siteName,
   loadingState,
 }: Props) {
   switch (loadingState) {
@@ -32,9 +30,9 @@ function ProjectCreationConfirmation({
         <>
           <h2>✅ Le projet "{projectName}" est créé !</h2>
           <p>
-            Vous pouvez maintenant découvrir ses impacts, comparer votre projet
-            avec un statut quo ou bien renseigner un nouveau projet sur le site
-            « {siteName} » en retournant sur la liste des projets.
+            Vous pouvez maintenant découvrir ses impacts, comparer ce projet
+            avec un autre projet ou bien retourner à votre liste de projets,
+            pour créer un nouveau projet ou un nouveau site.
           </p>
           <ButtonsGroup
             buttons={[
