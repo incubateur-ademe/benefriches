@@ -32,10 +32,7 @@ function App() {
         )}
         {route.name === routes.createProject.name && <CreateProjectPage />}
         {route.name === routes.compareProjects.name && (
-          <ProjectsImpactsComparisonPage
-            siteName="Ancienne carrière d'argile de Blajan"
-            projectName="Centrale photovoltaïque"
-          />
+          <ProjectsImpactsComparisonPage route={route} />
         )}
         {route.name === routes.selectProjectToCompare.name && (
           <ProjectsComparisonSelectionPage route={route} />
