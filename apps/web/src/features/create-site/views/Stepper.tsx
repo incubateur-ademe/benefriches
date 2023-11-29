@@ -39,7 +39,6 @@ const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
     case SiteCreationStep.FULL_TIME_JOBS_INVOLVED:
     case SiteCreationStep.FRICHE_SECURING_EXPENSES:
     case SiteCreationStep.YEARLY_EXPENSES:
-    case SiteCreationStep.SOILS_DEGRADATION_YEARLY_EXPENSES:
     case SiteCreationStep.YEARLY_INCOME:
     case SiteCreationStep.EXPENSES_SUMMARY:
       return "Gestion du site";

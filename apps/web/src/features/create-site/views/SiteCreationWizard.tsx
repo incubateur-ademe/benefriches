@@ -5,7 +5,6 @@ import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
 import SiteOwnerForm from "./site-management/owner";
 import FricheRecentAccidentsForm from "./site-management/recent-accidents";
-import SoilsDegradationYearlyExpenses from "./site-management/soils-degradation-yearly-expenses";
 import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/yearly-income";
@@ -64,8 +63,6 @@ function SiteCreationWizard() {
         return <SiteYearlyExpensesForm />;
       case SiteCreationStep.YEARLY_INCOME:
         return <SiteYearlyIncomeForm />;
-      case SiteCreationStep.SOILS_DEGRADATION_YEARLY_EXPENSES:
-        return <SoilsDegradationYearlyExpenses />;
       case SiteCreationStep.EXPENSES_SUMMARY:
         return <SiteExpensesSummary />;
       case SiteCreationStep.FRICHE_ACTIVITY:
