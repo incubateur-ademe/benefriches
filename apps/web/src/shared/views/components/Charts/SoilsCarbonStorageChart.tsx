@@ -4,7 +4,7 @@ import * as Highcharts from "highcharts";
 import highchartsVariablePie from "highcharts/modules/variable-pie";
 import HighchartsReact from "highcharts-react-official";
 
-import { SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 highchartsVariablePie(Highcharts);
@@ -17,7 +17,7 @@ type Props = {
   }[];
 };
 
-const SiteSoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
+const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
 
   const variablePieChartOptions: Highcharts.Options = {
@@ -46,6 +46,7 @@ const SiteSoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
           y: convertSquareMetersToHectares(soilData.surfaceArea),
           z: soilData.carbonStorage,
           name: getLabelForSoilType(soilData.type),
+          color: getColorForSoilType(soilData.type as SoilType),
         })),
       },
     ],
@@ -62,4 +63,4 @@ const SiteSoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
   );
 };
 
-export default SiteSoilsCarbonStorageChart;
+export default SoilsCarbonStorageChart;

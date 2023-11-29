@@ -1,4 +1,4 @@
-import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
+import { fetchCarbonStorageForSiteAndProjectSoils } from "./soilsCarbonStorage.actions";
 
 import { SoilType } from "@/shared/domain/soils";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
@@ -6,7 +6,7 @@ import { createStore } from "@/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 describe("Site carbon sequestration reducer", () => {
-  it("should get carbon sequestration for city code and soils", async () => {
+  it("should get carbon sequestration for city code and project and site soils", async () => {
     const mockedResult = {
       totalCarbonStorage: 350,
       soilsStorage: [
@@ -22,17 +22,23 @@ describe("Site carbon sequestration reducer", () => {
 
     const siteInfo = {
       cityCode: "75011",
-      soils: [
+      siteSoils: [
         { type: SoilType.BUILDINGS, surfaceArea: 1400 },
         { type: SoilType.MINERAL_SOIL, surfaceArea: 5000 },
       ],
+      projectSoils: [
+        { type: SoilType.BUILDINGS, surfaceArea: 400 },
+        { type: SoilType.MINERAL_SOIL, surfaceArea: 500 },
+        { type: SoilType.PRAIRIE_GRASS, surfaceArea: 5500 },
+      ],
     };
-    await store.dispatch(fetchCarbonStorageForSoils(siteInfo));
+    await store.dispatch(fetchCarbonStorageForSiteAndProjectSoils(siteInfo));
 
     const state = store.getState();
-    expect(state.siteCarbonStorage).toEqual({
+    expect(state.projectSoilsCarbonStorage).toEqual({
       loadingState: "success",
-      carbonStorage: mockedResult,
+      siteCarbonStorage: mockedResult,
+      projectCarbonStorage: mockedResult,
     });
   });
 
@@ -49,15 +55,20 @@ describe("Site carbon sequestration reducer", () => {
 
     const siteInfo = {
       cityCode: "75011",
-      soils: [
+      siteSoils: [
         { type: SoilType.BUILDINGS, surfaceArea: 1400 },
         { type: SoilType.MINERAL_SOIL, surfaceArea: 5000 },
       ],
+      projectSoils: [
+        { type: SoilType.BUILDINGS, surfaceArea: 400 },
+        { type: SoilType.MINERAL_SOIL, surfaceArea: 500 },
+        { type: SoilType.PRAIRIE_GRASS, surfaceArea: 5500 },
+      ],
     };
-    await store.dispatch(fetchCarbonStorageForSoils(siteInfo));
+    await store.dispatch(fetchCarbonStorageForSiteAndProjectSoils(siteInfo));
 
     const state = store.getState();
-    expect(state.siteCarbonStorage).toEqual({
+    expect(state.projectSoilsCarbonStorage).toEqual({
       loadingState: "error",
       carbonStorage: undefined,
     });

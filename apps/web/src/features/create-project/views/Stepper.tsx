@@ -25,6 +25,8 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION:
       return "Photovoltaïque";
     case ProjectCreationStep.SOILS_SURFACE_AREAS:
+    case ProjectCreationStep.SOILS_SUMMARY:
+    case ProjectCreationStep.SOILS_CARBON_STORAGE:
       return "Aménagement des sols";
     case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:

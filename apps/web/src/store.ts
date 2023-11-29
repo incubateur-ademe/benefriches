@@ -4,13 +4,14 @@ import {
   SaveProjectGateway,
 } from "./features/create-project/application/createProject.actions";
 import { CreateSiteGateway } from "./features/create-site/application/createSite.actions";
-import { SoilsCarbonStorageGateway } from "./features/create-site/application/siteSoilsCarbonStorage.actions";
 import {
   ProjectsListGateway,
   SitesGateway,
 } from "./features/projects/application/projectsList.actions";
+import { SoilsCarbonStorageGateway } from "./shared/domain/gateways/SoilsCarbonStorageApi";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
+import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import projectsList from "@/features/projects/application/projectsList.reducer";
@@ -33,6 +34,7 @@ export const createStore = (appDependencies: AppDependencies) =>
       siteCarbonStorage,
       projectsList,
       currentUser,
+      projectSoilsCarbonStorage,
     },
     middleware(getDefaultMiddleware) {
       return getDefaultMiddleware({

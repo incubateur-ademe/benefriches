@@ -8,13 +8,15 @@ import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPie
 type Props = {
   onNext: () => void;
   totalSurfaceArea: number;
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  siteSoilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  projectSoilsSurfaceAreas: Partial<Record<SoilType, number>>;
 };
 
 const SiteSoilsSummary = ({
   totalSurfaceArea,
   onNext,
-  soilsSurfaceAreas,
+  siteSoilsSurfaceAreas,
+  projectSoilsSurfaceAreas,
 }: Props) => {
   const formattedTotalSurfaceArea = formatNumberFr(totalSurfaceArea);
   const formattedTotalSurfaceAreaInHectare = formatNumberFr(
@@ -23,7 +25,7 @@ const SiteSoilsSummary = ({
 
   return (
     <>
-      <h2>Récapitulatif des sols du site</h2>
+      <h2>Répartition finale des sols du site à l’issue du projet</h2>
       <p>
         Superficie totale du site :{" "}
         <strong>
@@ -32,7 +34,17 @@ const SiteSoilsSummary = ({
         </strong>
         .
       </p>
-      <SurfaceAreaPieChart soilsSurfaceAreas={soilsSurfaceAreas} />
+      <div className="fr-grid-row fr-grid-row--gutters">
+        <div className="fr-col-6">
+          <h3>Avant</h3>
+          <SurfaceAreaPieChart soilsSurfaceAreas={siteSoilsSurfaceAreas} />
+        </div>
+        <div className="fr-col-6">
+          <h3>Après</h3>
+          <SurfaceAreaPieChart soilsSurfaceAreas={projectSoilsSurfaceAreas} />
+        </div>
+      </div>
+
       <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
         Suivant
       </Button>
