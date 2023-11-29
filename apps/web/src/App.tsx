@@ -1,10 +1,9 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import CreateProjectIntroductionPage from "./features/create-project/views/introduction";
 import CreateProjectPage from "./features/create-project/views/ProjectCreationWizard";
-import SiteCreationDocumentsPage from "./features/create-site/views/documents";
+import CreateSiteIntroductionPage from "./features/create-site/views/introduction/CreateSiteIntroductionPage";
 import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWizard";
 import LoginPage from "./features/login";
-import OnboardingPage from "./features/onboarding/views";
 import MyProjectsPage from "./features/projects/views/my-projects-page";
 import ProjectImpactsPage from "./features/projects/views/project-impacts-page/ProjectImpactsPage";
 import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison/ProjectsImpactsComparisonPage";
@@ -21,12 +20,11 @@ function App() {
       <main className={fr.cx("fr-container", "fr-py-10w")}>
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
-        {route.name === routes.onboarding.name && <OnboardingPage />}
+        {route.name === routes.createSiteFoncierIntro.name && (
+          <CreateSiteIntroductionPage />
+        )}
         {route.name === routes.createSiteFoncier.name && (
           <CreateSiteFoncierPage />
-        )}
-        {route.name === routes.createSiteFoncierDocuments.name && (
-          <SiteCreationDocumentsPage />
         )}
         {route.name === routes.myProjects.name && <MyProjectsPage />}
         {route.name === routes.createProjectIntro.name && (

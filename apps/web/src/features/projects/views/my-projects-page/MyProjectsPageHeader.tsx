@@ -11,7 +11,10 @@ function MyProjectsPageHeader() {
     >
       <h2>Mes projets</h2>
       <div>
-        <Button priority="primary" linkProps={routes.onboarding().link}>
+        <Button
+          priority="primary"
+          linkProps={routes.createSiteFoncierIntro().link}
+        >
           Nouveau site
         </Button>
       </div>

@@ -31,7 +31,10 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
               Pour démarrer, créez le site sur lequel vous prévoyez votre
               projet.
             </p>
-            <Button priority="primary" linkProps={routes.onboarding().link}>
+            <Button
+              priority="primary"
+              linkProps={routes.createSiteFoncierIntro().link}
+            >
               Créer un site
             </Button>
           </>
