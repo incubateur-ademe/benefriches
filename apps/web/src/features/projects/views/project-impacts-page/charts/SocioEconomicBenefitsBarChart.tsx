@@ -1,20 +1,15 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { sharedChartConfig } from "../../shared/sharedChartConfig";
 
 function SocioEconomicBenefitsBarChart() {
   const barChartOptions: Highcharts.Options = {
-    title: { text: "" },
-    chart: {
-      type: "column",
-      backgroundColor: "transparent",
-      style: { fontFamily: "Marianne" },
-    },
+    ...sharedChartConfig,
     xAxis: {
       categories: ["Entreprises", "Collectivité", "Société humaine"],
     },
     yAxis: {
       title: { text: "" },
-      min: 0,
     },
     tooltip: {
       valueSuffix: " €",
@@ -36,7 +31,7 @@ function SocioEconomicBenefitsBarChart() {
   };
 
   return (
-    <div style={{ width: "50%" }}>
+    <div>
       <p>
         <strong>Bénéficiaires des impacts socio-économiques</strong>
       </p>
