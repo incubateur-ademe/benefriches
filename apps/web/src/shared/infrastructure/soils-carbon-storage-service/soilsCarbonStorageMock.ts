@@ -1,11 +1,11 @@
 import {
-  SiteSoilsCarbonStorageResult,
   SoilsCarbonStorageGateway,
-} from "../../application/siteSoilsCarbonStorage.actions";
+  SoilsCarbonStorageResult,
+} from "@/shared/domain/gateways/SoilsCarbonStorageApi";
 
 export class SoilsCarbonStorageMock implements SoilsCarbonStorageGateway {
   constructor(
-    private result: SiteSoilsCarbonStorageResult,
+    private result: SoilsCarbonStorageResult,
     private shouldFail: boolean = false,
   ) {}
 

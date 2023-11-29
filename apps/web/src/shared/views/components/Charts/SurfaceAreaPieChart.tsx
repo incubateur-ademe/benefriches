@@ -3,7 +3,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-import { SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
@@ -17,6 +17,7 @@ const SurfaceAreaPieChart = ({ soilsSurfaceAreas }: Props) => {
       return {
         name: getLabelForSoilType(soilType as SoilType),
         y: surfaceArea,
+        color: getColorForSoilType(soilType as SoilType),
       };
     },
   );

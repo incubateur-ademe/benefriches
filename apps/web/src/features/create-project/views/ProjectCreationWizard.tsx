@@ -11,6 +11,9 @@ import PhotovoltaicSurface from "./photovoltaic/surface";
 import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistance";
 import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
+import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
+import ProjectSoilsSummaryContainer from "./soils/soils-summary";
+import ProjectSoilsSurfaceAreasContainer from "./soils/soils-surface-areas";
 import ProjectFullTimeJobsInvolvedForm from "./stakeholders/conversion-full-time-jobs-involved";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
@@ -20,7 +23,6 @@ import ProjectCreationConfirmation from "./confirmation";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
-import ProjectSoilsSurfaceAreasContainer from "./soils-surface-areas";
 import Stepper from "./Stepper";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -74,6 +76,10 @@ function ProjectCreationWizard() {
         return <PhotovoltaicContractDurationContainer />;
       case ProjectCreationStep.SOILS_SURFACE_AREAS:
         return <ProjectSoilsSurfaceAreasContainer />;
+      case ProjectCreationStep.SOILS_SUMMARY:
+        return <ProjectSoilsSummaryContainer />;
+      case ProjectCreationStep.SOILS_CARBON_STORAGE:
+        return <ProjectSoilsCarbonStorageContainer />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }
