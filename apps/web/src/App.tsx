@@ -17,7 +17,7 @@ function App() {
 
   return (
     <HeaderFooterLayout>
-      <main className={fr.cx("fr-container", "fr-py-10w")}>
+      <main className={fr.cx("fr-container", "fr-py-4w")}>
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
         {route.name === routes.createSiteFoncierIntro.name && (
