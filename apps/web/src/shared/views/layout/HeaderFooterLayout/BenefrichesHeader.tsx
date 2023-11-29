@@ -18,7 +18,7 @@ function BenefrichesHeader() {
       navigation={[
         {
           linkProps: routes.myProjects().link,
-          text: "Accueil",
+          text: "Mes projets",
           isActive: true,
         },
       ]}
