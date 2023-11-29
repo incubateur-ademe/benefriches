@@ -159,20 +159,18 @@ const ReinstatementsCostsForm = ({
           />
         )}
 
-        {hasImpermeableSurface && (
-          <NumericInput
-            control={control}
-            label="Désimperméabilisation"
-            hintText="€"
-            name="deimpermeabilizationAmount"
-            rules={{
-              min: {
-                value: 0,
-                message: "Veuillez sélectionner un montant valide",
-              },
-            }}
-          />
-        )}
+        <NumericInput
+          control={control}
+          label="Désimperméabilisation"
+          hintText="€"
+          name="deimpermeabilizationAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez sélectionner un montant valide",
+            },
+          }}
+        />
 
         <NumericInput
           control={control}
