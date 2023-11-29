@@ -31,7 +31,7 @@ const SurfaceAreaPieChart = ({ soilsSurfaceAreas }: Props) => {
     },
     tooltip: {
       pointFormat:
-        "Superficie : <strong>{point.y} m2</strong> ({point.percentage:.1f}%)",
+        "Superficie : <strong>{point.y} m2</strong> ({point.percentage:.2f}%)",
     },
     plotOptions: { pie: { cursor: "pointer" } },
     series: [
