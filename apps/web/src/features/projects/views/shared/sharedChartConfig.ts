@@ -1,9 +1,10 @@
-import { Options } from "highcharts";
-
-export const sharedChartConfig: Options = {
+export const sharedChartConfig = {
   chart: {
     type: "column",
     height: "200px",
+    style: {
+      fontFamily: "Marianne",
+    },
   },
   title: {
     text: "",
