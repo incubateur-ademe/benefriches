@@ -9,7 +9,7 @@ type Props = {
 };
 
 function SiteName({ children }: { children: ReactNode }) {
-  return <h4 style={{ textDecoration: "underline" }}>{children}</h4>;
+  return <h4>{children}</h4>;
 }
 
 function GridColumn({ children }: { children: ReactNode }) {
