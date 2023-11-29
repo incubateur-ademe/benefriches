@@ -20,8 +20,8 @@ function SiteAddressForm({ onSubmit, isFriche }: Props) {
   const error = formState.errors.selectedAddress;
 
   const title = isFriche
-    ? "Où se situe cette friche ?"
-    : "Où se situe ce site ?";
+    ? "Où est située cette friche ?"
+    : "Où est situé ce site ?";
 
   register("selectedAddress", {
     required: "L'adresse est nécessaire pour les étapes suivantes",

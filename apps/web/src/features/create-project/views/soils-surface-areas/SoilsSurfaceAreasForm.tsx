@@ -114,7 +114,8 @@ function SoilsSurfaceAreasForm({
       <h2>Quelle sera la future répartition des sols ?</h2>
       {minAdvisedSoilSurfacesByType[SoilType.IMPERMEABLE_SOILS] && (
         <p>
-          Les <strong>sols imperméables</strong> devraient faire au minimum{" "}
+          Compte tenu des ratios usuels, les <strong>sols imperméables</strong>{" "}
+          devraient faire au minimum{" "}
           {formatNumberFr(
             minAdvisedSoilSurfacesByType[SoilType.IMPERMEABLE_SOILS],
           )}{" "}
@@ -125,7 +126,8 @@ function SoilsSurfaceAreasForm({
 
       {minAdvisedSoilSurfacesByType[SoilType.MINERAL_SOIL] && (
         <p>
-          Les <strong>sols minéraux</strong> devraient faire au minimum{" "}
+          Compte tenu des ratios usuels, les <strong>sols minéraux</strong>{" "}
+          devraient faire au minimum{" "}
           {formatNumberFr(minAdvisedSoilSurfacesByType[SoilType.MINERAL_SOIL])}{" "}
           m2. C’est la superficie requise pour{" "}
           <strong>les pistes d’accès</strong>.
@@ -133,7 +135,8 @@ function SoilsSurfaceAreasForm({
       )}
 
       <p>
-        Les <strong>surfaces planes</strong> (c’est-à-dire tous les sols hors{" "}
+        Compte tenu des ratios usuels, les <strong>surfaces planes</strong>{" "}
+        (c’est-à-dire tous les sols hors{" "}
         <strong>bâtiments, forêts, prairie arborée et sols arboré</strong>)
         devraient totaliser au minimum {formatNumberFr(minAdvisedFlatSurfaces)}{" "}
         m2. C’est la superficie requise pour vos panneaux photovoltaïques.

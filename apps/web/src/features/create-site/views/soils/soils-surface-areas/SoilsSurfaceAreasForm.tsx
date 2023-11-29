@@ -59,10 +59,10 @@ function SiteSoilsSurfaceAreasForm({
   return (
     <>
       <h2>Quelles sont les superficies des différents sols ?</h2>
-      <p>La superficie du site est de {formatNumberFr(totalSurfaceArea)} m2.</p>
       <p>
-        Les superficies des différents sols doivent totaliser{" "}
-        {formatNumberFr(totalSurfaceArea)} m2.
+        La somme des superficies des différents sols doit être égale à la
+        superficie totale du site, soit{" "}
+        <strong>{formatNumberFr(totalSurfaceArea)} m2</strong>.
       </p>
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (

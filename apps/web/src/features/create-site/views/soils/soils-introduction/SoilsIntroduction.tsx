@@ -9,9 +9,9 @@ const SiteSoilsIntroduction = ({ isFriche, onNext }: Props) => {
   return (
     <>
       <p>
-        Commençons par parler des <strong>sols</strong> qui existent
-        actuellement sur {isFriche ? "la friche" : "le site"} : leur typologie
-        et leur superficie.
+        Parlons maintenant des <strong>sols</strong> qui existent actuellement
+        sur {isFriche ? "la friche" : "le site"} : leur typologie, leur
+        occupation et les superficies correspondantes.
       </p>
       <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
         Suivant

@@ -22,7 +22,7 @@ function ProjectNameAndDescriptionForm({ onSubmit }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           label="Nom du projet"
-          hintText="Le nom du projet tel qu’il est notoirement utilisé par les collectivités."
+          hintText="Le nom du projet tel qu’il est courament utilisé par les collectivités."
           state={nameError ? "error" : "default"}
           stateRelatedMessage={nameError ? nameError.message : undefined}
           nativeInputProps={register("name", {

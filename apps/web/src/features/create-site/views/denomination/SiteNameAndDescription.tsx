@@ -22,7 +22,7 @@ function SiteNameAndDescriptionForm({ onSubmit }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           label="Nom du site"
-          hintText="Le nom du site tel qu’il est notoirement utilisé par les riverains."
+          hintText="Le nom du site tel qu’il est courament utilisé par les riverains."
           state={nameError ? "error" : "default"}
           stateRelatedMessage={nameError ? nameError.message : undefined}
           nativeInputProps={register("name", {

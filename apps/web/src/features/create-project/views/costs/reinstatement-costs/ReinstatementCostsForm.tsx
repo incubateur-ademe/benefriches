@@ -40,9 +40,9 @@ const ReinstatementCostFormExplanation = ({
             imperméable et partiellement polluée.
           </p>
           <p>
-            Vous allez donc engager des travaux de déconstruction pour la rendre
-            perméable, de dépollution pour enrayer le risque sanitaire et de
-            remise en état pour la rendre exploitable.
+            Vous allez donc potentiellement engager des travaux de
+            déconstruction (bâtiments obsolètes, désimperméabilisation de
+            parking et voiries etc...) et des travaux de dépollution.
           </p>
         </section>
       );
@@ -53,34 +53,36 @@ const ReinstatementCostFormExplanation = ({
           Le site que vous allez aménager est une friche partiellement polluée.
         </p>
         <p>
-          Vous allez donc engager des travaux de dépollution pour enrayer le
-          risque sanitaire et de remise en état pour la rendre exploitable.
+          Vous allez donc potentiellement engager des travaux de dépollution.
         </p>
       </section>
     );
-  }
-  if (hasImpermeableSurface) {
+  } else {
+    if (hasImpermeableSurface) {
+      return (
+        <section>
+          <p>
+            Le site que vous allez aménager est une friche partiellement
+            imperméable.
+          </p>
+          <p>
+            Vous allez donc potentiellement engager des travaux de
+            déconstruction (bâtiments obsolètes, désimperméabilisation de
+            parking et voiries etc...)
+          </p>
+        </section>
+      );
+    }
     return (
       <section>
         <p>
-          Le site que vous allez aménager est une friche partiellement
-          imperméable.
-        </p>
-        <p>
-          Vous allez donc engager des travaux de déconstruction pour la rendre
-          perméable et de remise en état pour la rendre exploitable.
+          Le site que vous allez aménager est une friche. Vous allez donc
+          potentiellement engager des travaux de remise en état pour la rendre
+          exploitable.
         </p>
       </section>
     );
   }
-  return (
-    <section>
-      <p>
-        Le site que vous allez aménager est une friche. Vous allez donc engager
-        des travaux de remise en état pour la rendre exploitable.
-      </p>
-    </section>
-  );
 };
 
 const ReinstatementsCostsForm = ({

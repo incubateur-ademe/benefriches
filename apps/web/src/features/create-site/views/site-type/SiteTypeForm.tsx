@@ -33,8 +33,9 @@ function SiteTypeForm({ onSubmit }: Props) {
     <>
       <h2>Votre site est-il une friche ?</h2>
       <p>
-        Une friche est un terrain ou un bâtiment ayant été utilisé mais qui ne
-        l’est plus à l’heure actuelle.
+        Une friche est un terrain, bâti ou non bâti, inutilisé et dont l'état,
+        la configuration ou l'occupation totale ou partielle ne permet pas un
+        réemploi sans un aménagement ou dex travaux préalables.
       </p>
       <p>
         Une friche peut être industrielle, militaire, ferroviaire, portuaire...
