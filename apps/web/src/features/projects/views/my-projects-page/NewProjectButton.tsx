@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr/fr";
 import "@codegouvfr/react-dsfr/dsfr/utility/icons/icons-system/icons-system.css";
 
 import { routes } from "@/router";
@@ -20,7 +19,9 @@ function NewProjectButton({ siteId }: Props) {
           justifyContent: "center",
         }}
       >
-        <div className={fr.cx("fr-icon-add-line", "fr-icon--lg")} />
+        <button>
+          <strong>Créer un projet alternatif</strong>
+        </button>
       </div>
     </a>
   );
