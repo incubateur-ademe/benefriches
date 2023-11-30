@@ -1,9 +1,6 @@
-import Button from "@codegouvfr/react-dsfr/Button";
 import { ProjectsGroupedBySite } from "../../domain/projects.types";
 import MyProjectsPageHeader from "./MyProjectsPageHeader";
 import ProjectsList from "./ProjectsList";
-
-import { routes } from "@/router";
 
 type Props = {
   loadingState: "idle" | "loading" | "error" | "success";
@@ -31,12 +28,6 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
               Pour démarrer, créez le site sur lequel vous prévoyez votre
               projet.
             </p>
-            <Button
-              priority="primary"
-              linkProps={routes.createSiteFoncierIntro().link}
-            >
-              Créer un site
-            </Button>
           </>
         );
       }
