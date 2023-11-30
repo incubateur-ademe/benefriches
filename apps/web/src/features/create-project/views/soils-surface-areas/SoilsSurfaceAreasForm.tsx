@@ -1,9 +1,17 @@
 import { useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { Input } from "@codegouvfr/react-dsfr/Input";
-import { FLAT_SOIL_TYPES, SOIL_TYPES } from "../../domain/soils.types";
+import {
+  FLAT_SOIL_TYPES,
+  isSoilNatural,
+  SOIL_TYPES,
+} from "../../domain/soils.types";
+import FlatSurfacesNotice from "./FlatSurfacesNotice";
+import ImpermeableSurfacesNotice from "./ImpermeableSurfacesNotice";
+import MineralSoilSurfaceNotice from "./MineralSoilSurfaceNotice";
 import SoilsSurfaceAreasAddButton from "./SoilsSurfaceAreasAddButton";
+import TotalAllocatedSurfacesInput from "./TotalAllocatedSurfacesInput";
+import TotalFlatSurfacesInput from "./TotalFlatSurfacesInput";
 
 import {
   SiteDraft,
@@ -18,7 +26,8 @@ type Props = {
   siteSoils: SiteDraft["soilsSurfaceAreas"];
   totalSurfaceArea: number;
   minAdvisedFlatSurfaces: number;
-  minAdvisedSoilSurfacesByType: Partial<Record<SoilType, number>>;
+  minAdvisedImpermeableSurface: number;
+  minAdvisedMineralSurface: number;
 };
 
 type SoilsSurfaceAreas = { soilType: SoilType; surface: number };
@@ -28,33 +37,60 @@ type FormValues = {
 
 const computeDefaultValues = (
   siteSoils: Props["siteSoils"],
-  minAdvisedSoilSurfacesByType: Props["minAdvisedSoilSurfacesByType"],
+  minAdvisedImpermeableSurface: number,
+  minAdvisedMineralSurface: number,
 ) => {
   const siteSoilsAsArray = Object.entries(siteSoils).map(
     ([soilType, surface]) => ({ soilType, surface }),
   );
 
-  [SoilType.IMPERMEABLE_SOILS, SoilType.MINERAL_SOIL].forEach((soilType) => {
-    if (minAdvisedSoilSurfacesByType[soilType] && !siteSoils[soilType]) {
-      siteSoilsAsArray.unshift({ soilType: soilType, surface: 0 });
-    }
-  });
+  if (minAdvisedImpermeableSurface && !siteSoils[SoilType.IMPERMEABLE_SOILS])
+    siteSoilsAsArray.unshift({
+      soilType: SoilType.IMPERMEABLE_SOILS,
+      surface: 0,
+    });
+  if (minAdvisedMineralSurface && !siteSoils[SoilType.MINERAL_SOIL])
+    siteSoilsAsArray.unshift({
+      soilType: SoilType.MINERAL_SOIL,
+      surface: 0,
+    });
 
   return siteSoilsAsArray as SoilsSurfaceAreas[];
 };
 
 const getTotalSurface = (soilsSurfaceAreas: SoilsSurfaceAreas[]) =>
   soilsSurfaceAreas.reduce((total, { surface }) => total + surface, 0);
+
 const getTotalFlatSurface = (soilsSurfaceAreas: SoilsSurfaceAreas[]) =>
   getTotalSurface(
     soilsSurfaceAreas.filter(({ soilType }) =>
       FLAT_SOIL_TYPES.includes(soilType),
     ),
   );
-const getAvailableSoilTypes = (soilsSurfaceAreas: SoilsSurfaceAreas[]) => {
-  const selectedSoilTypes = soilsSurfaceAreas.map(({ soilType }) => soilType);
-  return SOIL_TYPES.filter((soilType) => !selectedSoilTypes.includes(soilType));
+
+const getCreatableSoils = (newSoils: SoilType[], currentSoils: SoilType[]) => {
+  return SOIL_TYPES.filter(
+    (soilType) =>
+      !newSoils.includes(soilType) &&
+      canCreateOrIncreaseSurfaceForSoilType(soilType, currentSoils),
+  );
 };
+
+const canCreateOrIncreaseSurfaceForSoilType = (
+  soilType: SoilType,
+  currentSoils: SoilType[],
+) => {
+  if (
+    (soilType === SoilType.PRAIRIE_GRASS &&
+      currentSoils.includes(SoilType.PRAIRIE_BUSHES)) ||
+    currentSoils.includes(SoilType.PRAIRIE_TREES)
+  ) {
+    return true;
+  }
+  return !isSoilNatural(soilType);
+};
+
+const mapSoilType = ({ soilType }: SoilsSurfaceAreas) => soilType;
 
 const SLIDER_PROPS = {
   tooltip: {
@@ -67,11 +103,13 @@ function SoilsSurfaceAreasForm({
   totalSurfaceArea,
   siteSoils,
   minAdvisedFlatSurfaces,
-  minAdvisedSoilSurfacesByType,
+  minAdvisedImpermeableSurface,
+  minAdvisedMineralSurface,
 }: Props) {
   const defaultSoilsSurfaceAreas = computeDefaultValues(
     siteSoils,
-    minAdvisedSoilSurfacesByType,
+    minAdvisedImpermeableSurface,
+    minAdvisedMineralSurface,
   );
 
   const defaultValues = {
@@ -104,54 +142,51 @@ function SoilsSurfaceAreasForm({
     () => getTotalFlatSurface(controlledSoilsFields),
     [controlledSoilsFields],
   );
-  const availableSoilTypes = useMemo(
-    () => getAvailableSoilTypes(controlledSoilsFields),
-    [controlledSoilsFields],
-  );
 
+  const currentSiteSoilsList = Object.entries(siteSoils).map(
+    ([soilType]) => soilType as SoilType,
+  );
+  const availableSoilTypes = useMemo(
+    () =>
+      getCreatableSoils(
+        controlledSoilsFields.map(mapSoilType),
+        currentSiteSoilsList,
+      ),
+    [controlledSoilsFields, currentSiteSoilsList],
+  );
   return (
     <>
       <h2>Quelle sera la future répartition des sols ?</h2>
-      {minAdvisedSoilSurfacesByType[SoilType.IMPERMEABLE_SOILS] && (
-        <p>
-          Compte tenu des ratios usuels, les <strong>sols imperméables</strong>{" "}
-          devraient faire au minimum{" "}
-          {formatNumberFr(
-            minAdvisedSoilSurfacesByType[SoilType.IMPERMEABLE_SOILS],
-          )}{" "}
-          m2. C’est la superficie qu’occuperont{" "}
-          <strong>les fondations des panneaux</strong>.
-        </p>
-      )}
-
-      {minAdvisedSoilSurfacesByType[SoilType.MINERAL_SOIL] && (
-        <p>
-          Compte tenu des ratios usuels, les <strong>sols minéraux</strong>{" "}
-          devraient faire au minimum{" "}
-          {formatNumberFr(minAdvisedSoilSurfacesByType[SoilType.MINERAL_SOIL])}{" "}
-          m2. C’est la superficie requise pour{" "}
-          <strong>les pistes d’accès</strong>.
-        </p>
-      )}
-
-      <p>
-        Compte tenu des ratios usuels, les <strong>surfaces planes</strong>{" "}
-        (c’est-à-dire tous les sols hors{" "}
-        <strong>bâtiments, forêts, prairie arborée et sols arboré</strong>)
-        devraient totaliser au minimum {formatNumberFr(minAdvisedFlatSurfaces)}{" "}
-        m2. C’est la superficie requise pour vos panneaux photovoltaïques.
-      </p>
+      {minAdvisedImpermeableSurface ? (
+        <ImpermeableSurfacesNotice
+          advisedSurface={minAdvisedImpermeableSurface}
+        />
+      ) : null}
+      {minAdvisedMineralSurface ? (
+        <MineralSoilSurfaceNotice advisedSurface={minAdvisedMineralSurface} />
+      ) : null}
+      <FlatSurfacesNotice advisedSurface={minAdvisedFlatSurfaces} />
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {controlledSoilsFields.map(({ soilType, surface, id }, index) => {
-          const minAdvisedSurface = minAdvisedSoilSurfacesByType[soilType];
+          const minAdvisedSurface =
+            (soilType === SoilType.IMPERMEABLE_SOILS &&
+              minAdvisedImpermeableSurface) ||
+            (soilType === SoilType.MINERAL_SOIL && minAdvisedMineralSurface) ||
+            null;
+          const maxValue = canCreateOrIncreaseSurfaceForSoilType(
+            soilType,
+            currentSiteSoilsList,
+          )
+            ? freeSurface + surface
+            : siteSoils[soilType];
           return (
             <SliderNumericInput
               key={id}
               control={control}
               name={`soilsSurfaceAreas.${index}.surface`}
               label={getLabelForSoilType(soilType)}
-              maxValue={freeSurface + surface}
+              maxValue={maxValue}
               hintText={`Actuellement : ${formatNumberFr(
                 siteSoils[soilType] ?? 0,
               )} m²${
@@ -198,38 +233,13 @@ function SoilsSurfaceAreasForm({
             soilTypes={availableSoilTypes}
           />
         </div>
-
-        <Input
-          label="Total des surfaces planes"
-          nativeInputProps={{
-            value: totalFlatSurface,
-            type: "number",
-            min: minAdvisedFlatSurfaces,
-          }}
-          disabled
-          hintText={`Minimum conseillé : ${formatNumberFr(
-            minAdvisedFlatSurfaces,
-          )} m²`}
-          state={
-            totalFlatSurface < minAdvisedFlatSurfaces ? "error" : "default"
-          }
-          stateRelatedMessage={`La surface requise pour vos panneaux photovoltaïques est de ${formatNumberFr(
-            minAdvisedFlatSurfaces,
-          )} m²`}
+        <TotalFlatSurfacesInput
+          allocatedFlatSurface={totalFlatSurface}
+          minAdvisedFlatSurface={minAdvisedFlatSurfaces}
         />
-
-        <Input
-          label="Total de toutes les surfaces allouées"
-          hintText="en m²"
-          nativeInputProps={{
-            value: totalAllocatedSurface,
-            max: totalSurfaceArea,
-          }}
-          disabled
-          state={totalAllocatedSurface < totalSurfaceArea ? "error" : "default"}
-          stateRelatedMessage={`- ${formatNumberFr(
-            totalSurfaceArea - totalAllocatedSurface,
-          )} m²`}
+        <TotalAllocatedSurfacesInput
+          totalAllocatedSurface={totalAllocatedSurface}
+          totalSurface={totalSurfaceArea}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>

@@ -9,7 +9,6 @@ import {
   ProjectCreationStep,
   setSoilsSurfaceAreas,
 } from "@/features/create-project/application/createProject.reducer";
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 import {
   useAppDispatch,
   useAppSelector,
@@ -50,16 +49,12 @@ function ProjectSoilsSurfaceAreasContainer() {
       totalSurfaceArea={siteSurfaceArea}
       siteSoils={siteSoilsSurfaceAreas}
       minAdvisedFlatSurfaces={photovoltaicSurface}
-      minAdvisedSoilSurfacesByType={{
-        [SoilType.MINERAL_SOIL]:
-          computeAccessPathsAverageSurfaceFromElectricalPower(
-            photovoltaicElectricalPowerKWc,
-          ),
-        [SoilType.IMPERMEABLE_SOILS]:
-          computeFoundationsAverageSurfaceFromElectricalPower(
-            photovoltaicElectricalPowerKWc,
-          ),
-      }}
+      minAdvisedImpermeableSurface={computeFoundationsAverageSurfaceFromElectricalPower(
+        photovoltaicElectricalPowerKWc,
+      )}
+      minAdvisedMineralSurface={computeAccessPathsAverageSurfaceFromElectricalPower(
+        photovoltaicElectricalPowerKWc,
+      )}
       onSubmit={({ soilsSurfaceAreas }) => {
         dispatch(
           setSoilsSurfaceAreas(

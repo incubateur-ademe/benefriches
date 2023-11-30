@@ -33,3 +33,16 @@ const NON_FLAT_SOIL_TYPES = [
 export const FLAT_SOIL_TYPES = SOIL_TYPES.filter(
   (soilType) => !NON_FLAT_SOIL_TYPES.includes(soilType),
 );
+
+export const isSoilNatural = (soilType: SoilType): boolean => {
+  return [
+    SoilType.FOREST_CONIFER,
+    SoilType.FOREST_DECIDUOUS,
+    SoilType.FOREST_MIXED,
+    SoilType.FOREST_POPLAR,
+    SoilType.PRAIRIE_TREES,
+    SoilType.PRAIRIE_BUSHES,
+    SoilType.PRAIRIE_GRASS,
+    SoilType.WET_LAND,
+  ].includes(soilType);
+};
