@@ -77,6 +77,11 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
         isClosable
         className={fr.cx("fr-mb-2w")}
       />
+      <Notice
+        title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
+        isClosable
+        className={fr.cx("fr-mb-2w")}
+      />
       <ProjectsComparisonActionBar
         selectedFilter={selectedFilter}
         onMonetaryFilterClick={() => setSelectedFilter("monetary")}
