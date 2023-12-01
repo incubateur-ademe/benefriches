@@ -27,13 +27,13 @@ function CarbonStorageChart() {
     series: [
       {
         name: "Sol imperméabilisé (dont bâtiments)",
-        data: [157.5, 427.5],
+        data: [90, 10],
         type: "area",
       },
-      { name: "Sol minéral", data: [22.5, 0], type: "area" },
-      { name: "Sol enherbé et arbustif", data: [247.5, 0], type: "area" },
-      { name: "Prairie herbacée", data: [379.7, 0], type: "area" },
-      { name: "Forêt mixte", data: [276, 0], type: "area" },
+      { name: "Sol minéral", data: [120, 68.51], type: "area" },
+      { name: "Prairie arbustive", data: [246, 66.7], type: "area" },
+      { name: "Prairie herbacée", data: [300, 831.7], type: "area" },
+      { name: "Forêt de feuillus", data: [175.05, 103.8], type: "area" },
     ],
   };
 
