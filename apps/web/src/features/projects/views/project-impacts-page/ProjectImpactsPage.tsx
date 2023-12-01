@@ -5,6 +5,7 @@ import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonStorageChart from "./charts/CarbonStorageChart";
 import SocioEconomicBenefitsBarChart from "./charts/SocioEconomicBenefitsBarChart";
 import SocioEconomicBenefitsByDomainChart from "./charts/SocioEconomicBenefitsByDomainChart";
+import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
 type Props = {
   projectName: string;
@@ -70,8 +71,10 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
 
   return (
     <div>
-      <h2>{projectName}</h2>
-      <h3>{siteName}</h3>
+      <ProjectsImpactsPageHeader
+        projectName={projectName}
+        siteName={siteName}
+      />
       <Notice
         title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
         isClosable

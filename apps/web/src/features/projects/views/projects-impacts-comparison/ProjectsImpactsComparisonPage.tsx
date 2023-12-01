@@ -22,6 +22,7 @@ import SocioEconomicBenefitsComparisonChart from "./charts/socioeconomic-benefit
 import SocioEconomicImpactComparisonChart from "./charts/socioeconomic-impacts/SocioEconomicImpactComparison";
 import NonPollutedSoilsImpactComparisonChart from "./charts/soil-impacts/NonPollutedSoilsImpactComparisonChart";
 import PermeableSoilsImpactComparisonChart from "./charts/soil-impacts/PermeableSoilsImpactComparisonChart";
+import ImpactsComparisonPageHeader from "./ImpactsComparisonPageHeader";
 
 type Props = {
   projectName: string;
@@ -50,8 +51,10 @@ function ProjectsImpactsComparisonPage({ projectName, siteName }: Props) {
 
   return (
     <div>
-      <h2>{projectName}</h2>
-      <h3>{siteName}</h3>
+      <ImpactsComparisonPageHeader
+        projectName={projectName}
+        siteName={siteName}
+      />
       <Notice
         title="Les indicateurs montrent le différentiel entre la situation actuelle et la situation avec le projet, sur la période sélectionnée"
         isClosable
