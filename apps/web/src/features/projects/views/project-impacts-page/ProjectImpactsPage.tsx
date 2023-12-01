@@ -102,7 +102,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="🌍 Impacts socio-économiques"
-              impact="+4 497 195 €"
+              impact="+5 024 394 €"
               text="pour la communauté"
               isPositive
             />
@@ -221,7 +221,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="🚵 Aménité environnementale"
-              impact="+3 624 908 €"
+              impact="-2083 €"
               isPositive
             />
           </div>
@@ -230,7 +230,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="🐝 Pollinisation"
-              impact="+5 574 227 €"
+              impact="-606 €"
               isPositive
               text="pour Générale du Solaire"
             />
@@ -238,7 +238,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="💧 Cycle de l'eau"
-              impact="+381 974 €"
+              impact="+508 €"
               isPositive
               text="pour la mairie de Blajan"
             />
