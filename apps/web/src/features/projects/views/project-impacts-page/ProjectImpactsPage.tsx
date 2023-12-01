@@ -91,14 +91,14 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
         <ImpactsRow>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
-              title="Bilan économique"
+              title="💰 Bilan économique"
               impact="-9 794 959 €"
               text="pour Générale du Solaire"
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
-              title="Impacts socio-économiques"
+              title="🌍 Impacts socio-économiques"
               impact="+4 497 195 €"
               text="pour la communauté"
               isPositive
@@ -108,7 +108,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
             <>
               <div className={fr.cx("fr-col-3")}>
                 <ImpactCard
-                  title="Emploi"
+                  title="💼 Emploi"
                   impact="+1,4 ETP"
                   text="mobilisé"
                   isPositive
@@ -116,7 +116,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
               </div>
               <div className={fr.cx("fr-col-3")}>
                 <ImpactCard
-                  title="Émissions de CO2-eq"
+                  title="☁️ Émissions de CO2-eq"
                   impact="3 952 t"
                   isPositive
                   text="évitées"
@@ -196,28 +196,28 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
-              title="Émissions de CO2-eq évitées grâce au stockage du carbone"
+              title="🍂 Émissions de CO2-eq évitées grâce au stockage du carbone"
               impact="+77 339 €"
               isPositive
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
-              title="Émissions de CO2-eq évitées grâce à la production d'ENR"
+              title="🔆 Émissions de CO2-eq évitées grâce à la production d'ENR"
               impact="+615 175 €"
               isPositive
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
-              title="Régulation de la qualité de l'eau"
+              title="🫧 Régulation de la qualité de l'eau"
               impact="+9 471 €"
               isPositive
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
-              title="Aménité environnementale"
+              title="🚵 Aménité environnementale"
               impact="+3 624 908 €"
               isPositive
             />
@@ -226,7 +226,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
-              title="Pollinisation"
+              title="🐝 Pollinisation"
               impact="+5 574 227 €"
               isPositive
               text="pour Générale du Solaire"
@@ -234,7 +234,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
-              title="Cycle de l'eau"
+              title="💧 Cycle de l'eau"
               impact="+381 974 €"
               isPositive
               text="pour la mairie de Blajan"
@@ -248,14 +248,14 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
             <div className={fr.cx("fr-col-3")}>
               <ImpactCard
-                title="Emplois liés à la reconversion du site"
+                title="👷 Emplois liés à la reconversion du site"
                 impact="+1,2 ETP"
                 isPositive
               />
             </div>
             <div className={fr.cx("fr-col-3")}>
               <ImpactCard
-                title="Emplois liés à l'exploitation du site"
+                title="🧑‍🔧 Emplois liés à l'exploitation du site"
                 impact="+0,22 ETP"
                 isPositive
               />
@@ -269,14 +269,14 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
             <div className={fr.cx("fr-col-3")}>
               <ImpactCard
-                title="Surface perméable"
+                title="🌧 Surface perméable"
                 impact="+48 750 m2"
                 isPositive
               />
             </div>
             <div className={fr.cx("fr-col-3")}>
               <ImpactCard
-                title="Surface non polluée"
+                title="✨ Surface non polluée"
                 impact="+30 000 m2"
                 isPositive
               />
