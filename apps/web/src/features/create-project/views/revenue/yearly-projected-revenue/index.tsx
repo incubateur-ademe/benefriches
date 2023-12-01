@@ -17,7 +17,7 @@ const mapProps = (dispatch: AppDispatch) => {
         .filter((amount) => !!amount)
         .map((amount) => ({ amount }));
       dispatch(addYearlyProjectedRevenue(yearlyProjectedRevenue));
-      dispatch(goToStep(ProjectCreationStep.NAMING));
+      dispatch(goToStep(ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE));
     },
   };
 };

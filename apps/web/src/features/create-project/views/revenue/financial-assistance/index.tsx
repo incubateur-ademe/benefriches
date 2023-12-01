@@ -18,7 +18,7 @@ const mapProps = (dispatch: AppDispatch) => {
         0,
       );
       dispatch(setFinancialAssistanceRevenue(totalRevenue));
-      dispatch(goToStep(ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE));
+      dispatch(goToStep(ProjectCreationStep.NAMING));
     },
   };
 };

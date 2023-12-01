@@ -10,7 +10,7 @@ import { AppDispatch } from "@/store";
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onNext: () => {
-      dispatch(goToStep(ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE));
+      dispatch(goToStep(ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE));
     },
   };
 };

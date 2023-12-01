@@ -40,8 +40,8 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION:
     case ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS:
     case ProjectCreationStep.REVENUE_INTRODUCTION:
-    case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
     case ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE:
+    case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
       return "Coûts et recettes";
     case ProjectCreationStep.NAMING:
     case ProjectCreationStep.CREATION_CONFIRMATION:

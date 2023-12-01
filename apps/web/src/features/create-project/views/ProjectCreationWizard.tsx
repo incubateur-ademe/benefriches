@@ -59,10 +59,10 @@ function ProjectCreationWizard() {
         return <YearlyProjectedCostsForm />;
       case ProjectCreationStep.REVENUE_INTRODUCTION:
         return <ProjectRevenueIntroduction />;
-      case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
-        return <ProjectFinancialAssistanceRevenueForm />;
       case ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE:
         return <ProjectYearlyProjectedRevenueForm />;
+      case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
+        return <ProjectFinancialAssistanceRevenueForm />;
       case ProjectCreationStep.NAMING:
         return <ProjectNameAndDescriptionForm />;
       case ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER:
