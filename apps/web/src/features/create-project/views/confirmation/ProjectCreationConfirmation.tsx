@@ -43,6 +43,11 @@ function ProjectCreationConfirmation({
               },
               {
                 priority: "primary",
+                children: "Découvrir les impacts",
+                linkProps: routes.projectImpacts({ projectId }).link,
+              },
+              {
+                priority: "primary",
                 children: "Comparer les impacts",
                 linkProps: routes.selectProjectToCompare({
                   baseProjectId: projectId,
