@@ -125,16 +125,14 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
             </>
           )}
         </ImpactsRow>
-        {selectedFilter === "all" && (
-          <ImpactsRow>
+        <ImpactsRow>
+          {selectedFilter === "all" && (
             <div className={fr.cx("fr-col-6")}>
               <ImpactContainer>
                 <CarbonStorageChart />
               </ImpactContainer>
             </div>
-          </ImpactsRow>
-        )}
-        <ImpactsRow>
+          )}
           <div className={fr.cx("fr-col-6")}>
             <ImpactContainer>
               <SocioEconomicBenefitsBarChart />

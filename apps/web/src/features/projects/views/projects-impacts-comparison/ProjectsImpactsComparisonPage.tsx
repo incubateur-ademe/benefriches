@@ -89,16 +89,15 @@ function ProjectsImpactsComparisonPage({ projectName, siteName }: Props) {
             </>
           )}
         </div>
-        {selectedFilter === "all" && (
-          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          {selectedFilter === "all" && (
             <div className={fr.cx("fr-col-6")}>
               <ImpactCard>
                 <CarbonStorageComparisonChart />
               </ImpactCard>
             </div>
-          </div>
-        )}
-        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+          )}
           <div className={fr.cx("fr-col-6")}>
             <ImpactCard>
               <SocioEconomicBenefitsComparisonChart />

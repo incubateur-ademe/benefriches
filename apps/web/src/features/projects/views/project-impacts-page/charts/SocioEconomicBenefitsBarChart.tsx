@@ -5,6 +5,11 @@ import { sharedChartConfig } from "../../shared/sharedChartConfig";
 function SocioEconomicBenefitsBarChart() {
   const barChartOptions: Highcharts.Options = {
     ...sharedChartConfig,
+    chart: {
+      ...sharedChartConfig.chart,
+      type: "area",
+      height: "400",
+    },
     xAxis: {
       categories: ["Entreprises", "Collectivité", "Société humaine"],
     },
