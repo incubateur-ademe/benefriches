@@ -116,9 +116,9 @@ const getPrevisionalEnrSocioEconomicImpactPerHectare = (
 ) => {
   switch (enrProjectType) {
     case RenewableEnergyType.AGRIVOLTAIC:
-      return -21000;
+      return 21000;
     case RenewableEnergyType.BIOMASS:
-      return -11000;
+      return 11000;
     case RenewableEnergyType.GEOTHERMAL:
       return 10000;
     case RenewableEnergyType.PHOTOVOLTAIC:
