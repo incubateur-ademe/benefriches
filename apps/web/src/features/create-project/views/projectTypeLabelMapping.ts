@@ -5,7 +5,7 @@ export const getLabelForProjectType = (value: ProjectType): string => {
     case ProjectType.BUILDINGS:
       return "Bâtiments, quartier mixte (Habitations, commerces, infrastructures..)";
     case ProjectType.NATURAL_URBAN_SPACES:
-      return "Espaces de nature urbain (Parc, aménagement paysager...)";
+      return "Espace de nature en ville (Parc, aménagement paysager...)";
     case ProjectType.URBAN_AGRICULTURE:
       return "Agriculture urbaine (Production de fruits et légumes)";
     case ProjectType.RENEWABLE_ENERGY:

@@ -46,15 +46,15 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
       instructions={
         <>
           <p>
-            Les polluants principaux des friches pouvant représenter un risque
-            sanitaire : métaux lourds, hydrocarbures, composants organiques
-            volatils, pesticides, nitrites, nitrates, cyanures,
-            polychlorobiphényle.
+            Les friches sont bien souvent des sites dont les sols (voire les
+            eaux souterraines) peuvent être pollués, avec des pollutions
+            multiples, témoignages des activités successives sur plusieurs
+            décennies.
           </p>
           <p>
-            La pollution à l’amiante n’est pas à renseigner, mais un poste de
-            dépense “désamiantage” pourra être alloué dans la partie “création
-            d’un projet sur la friche”.
+            Ces pollutions (hydrocarbures, composants organiques volatils,
+            cyanures, plomb, etc.) peuvent notamment représenter un risque
+            sanitaire préjudiciable à un nouvel usage.
           </p>
         </>
       }

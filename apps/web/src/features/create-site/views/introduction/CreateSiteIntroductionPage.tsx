@@ -5,7 +5,7 @@ import { routes } from "@/router";
 function CreateSiteIntroductionPage() {
   return (
     <>
-      <h1>Tout commence sur un site foncier</h1>
+      <h1>Tout commence sur un site</h1>
       <p>
         Nous allons d’abord parler du <strong>site existant</strong> : la nature
         du site, la typologie de ses sols, les dépenses associées, etc.

@@ -25,7 +25,7 @@ function PhotovoltaicPowerForm({
 
   const hintText = `en kWc (maximum conseillé : ${formatNumberFr(
     maxRecommendedElectricalPowerKWc,
-  )} kWh)`;
+  )} kWc)`;
 
   return (
     <WizardFormLayout title="Quel sera la puissance de votre installation ?">

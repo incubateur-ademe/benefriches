@@ -21,7 +21,7 @@ function CarbonStorageComparisonChart() {
         stacking: "normal",
         pointPadding: 0.05,
         borderWidth: 0,
-        dataLabels: { enabled: true, format: "{point.y} t stockées" },
+        dataLabels: { enabled: true, format: "{point.y} t" },
       },
     },
     series: [

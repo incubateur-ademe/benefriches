@@ -21,7 +21,7 @@ function CarbonStorageChart() {
       area: {
         stacking: "normal",
         borderWidth: 0,
-        dataLabels: { enabled: true, format: "{point.y} t stockées" },
+        dataLabels: { enabled: true, format: "{point.y} t" },
       },
     },
     series: [
