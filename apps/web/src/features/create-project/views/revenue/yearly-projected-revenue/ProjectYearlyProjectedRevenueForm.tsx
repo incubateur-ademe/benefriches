@@ -3,6 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -23,8 +24,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {
   const allCosts = watch();
 
   return (
-    <>
-      <h2>Recettes annuelles prévisionnelles</h2>
+    <WizardFormLayout title="Recettes annuelles prévisionnelles">
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
@@ -67,7 +67,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 };
 

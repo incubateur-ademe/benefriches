@@ -9,6 +9,7 @@ import {
   LocalAndRegionalAuthority,
 } from "@/shared/domain/localOrRegionalAuthority";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -92,15 +93,16 @@ function SiteReinstatementContractOwnerForm({
   const selectedFutureOperator = watch("futureOperator");
 
   return (
-    <>
-      <h2>
-        Qui sera le maître d’ouvrage des travaux de remise en état de la friche
-        ?
-      </h2>
-      <p>
-        Les travaux de remise en état incluent la désimperméabilisation des
-        sols, la dépollution, l’enlèvement des déchets, la déconstruction, etc.
-      </p>
+    <WizardFormLayout
+      title="Qui sera le maître d’ouvrage des travaux de remise en état de la friche ?"
+      instructions={
+        <p>
+          Les travaux de remise en état incluent la désimperméabilisation des
+          sols, la dépollution, l’enlèvement des déchets, la déconstruction,
+          etc.
+        </p>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("futureOperator", { required: requiredMessage })}
@@ -149,7 +151,7 @@ function SiteReinstatementContractOwnerForm({
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

@@ -20,6 +20,7 @@ import {
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -155,18 +156,24 @@ function SoilsSurfaceAreasForm({
     [controlledSoilsFields, currentSiteSoilsList],
   );
   return (
-    <>
-      <h2>Quelle sera la future répartition des sols ?</h2>
-      {minAdvisedImpermeableSurface ? (
-        <ImpermeableSurfacesNotice
-          advisedSurface={minAdvisedImpermeableSurface}
-        />
-      ) : null}
-      {minAdvisedMineralSurface ? (
-        <MineralSoilSurfaceNotice advisedSurface={minAdvisedMineralSurface} />
-      ) : null}
-      <FlatSurfacesNotice advisedSurface={minAdvisedFlatSurfaces} />
-
+    <WizardFormLayout
+      title="Quelle sera la future répartition des sols ?"
+      instructions={
+        <>
+          {minAdvisedImpermeableSurface ? (
+            <ImpermeableSurfacesNotice
+              advisedSurface={minAdvisedImpermeableSurface}
+            />
+          ) : null}
+          {minAdvisedMineralSurface ? (
+            <MineralSoilSurfaceNotice
+              advisedSurface={minAdvisedMineralSurface}
+            />
+          ) : null}
+          <FlatSurfacesNotice advisedSurface={minAdvisedFlatSurfaces} />
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         {controlledSoilsFields.map(({ soilType, surface, id }, index) => {
           const minAdvisedSurface =
@@ -243,7 +250,7 @@ function SoilsSurfaceAreasForm({
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

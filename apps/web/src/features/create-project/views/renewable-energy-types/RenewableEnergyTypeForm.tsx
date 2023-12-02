@@ -8,6 +8,7 @@ import {
 import { getLabelForRenewableEnergyType } from "../projectTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -81,12 +82,15 @@ function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
       : "default";
 
   return (
-    <>
-      <h2>Quel système d’EnR souhaitez-vous installer ?</h2>
-      <p>
-        Votre projet peut contenir plusieurs systèmes de production d’énergies
-        renouvelables ; plusieurs réponses sont donc possibles.
-      </p>
+    <WizardFormLayout
+      title="Quel système d’EnR souhaitez-vous installer ?"
+      instructions={
+        <p>
+          Votre projet peut contenir plusieurs systèmes de production d’énergies
+          renouvelables ; plusieurs réponses sont donc possibles.
+        </p>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}
@@ -97,7 +101,7 @@ function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

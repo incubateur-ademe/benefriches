@@ -9,6 +9,7 @@ import {
   LocalAndRegionalAuthority,
 } from "@/shared/domain/localOrRegionalAuthority";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -98,8 +99,7 @@ function SiteOperatorForm({
   const selectedFutureOperator = watch("futureOperator");
 
   return (
-    <>
-      <h2>Qui sera l'exploitant du site ?</h2>
+    <WizardFormLayout title="Qui sera l'exploitant du site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("futureOperator", { required: requiredMessage })}
@@ -148,7 +148,7 @@ function SiteOperatorForm({
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

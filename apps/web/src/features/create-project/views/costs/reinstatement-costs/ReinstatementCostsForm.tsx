@@ -3,6 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -98,13 +99,15 @@ const ReinstatementsCostsForm = ({
   const hasImpermeableSurface = hasBuildings || hasImpermeableSoils;
 
   return (
-    <>
-      <h2>Coûts de travaux de la remise en état de la friche</h2>
-      <ReinstatementCostFormExplanation
-        hasContaminatedSoils={hasContaminatedSoils}
-        hasImpermeableSurface={hasImpermeableSurface}
-      />
-
+    <WizardFormLayout
+      title="Coûts de travaux de la remise en état de la friche"
+      instructions={
+        <ReinstatementCostFormExplanation
+          hasContaminatedSoils={hasContaminatedSoils}
+          hasImpermeableSurface={hasImpermeableSurface}
+        />
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
@@ -201,7 +204,7 @@ const ReinstatementsCostsForm = ({
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 };
 

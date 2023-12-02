@@ -7,6 +7,7 @@ import { SoilType } from "../../../domain/siteFoncier.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   totalSurfaceArea: number;
@@ -57,13 +58,16 @@ function SiteSoilsSurfaceAreasForm({
   const freeSurface = totalSurfaceArea - totalAllocatedSurface;
 
   return (
-    <>
-      <h2>Quelles sont les superficies des différents sols ?</h2>
-      <p>
-        La somme des superficies des différents sols doit être égale à la
-        superficie totale du site, soit{" "}
-        <strong>{formatNumberFr(totalSurfaceArea)} m2</strong>.
-      </p>
+    <WizardFormLayout
+      title="Quelles sont les superficies des différents sols ?"
+      instructions={
+        <p>
+          La somme des superficies des différents sols doit être égale à la
+          superficie totale du site, soit{" "}
+          <strong>{formatNumberFr(totalSurfaceArea)} m2</strong>.
+        </p>
+      }
+    >
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
           <SliderNumericInput
@@ -104,7 +108,7 @@ function SiteSoilsSurfaceAreasForm({
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

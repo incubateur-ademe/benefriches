@@ -3,6 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -24,8 +25,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit }: Props) => {
   const allCosts = watch();
 
   return (
-    <>
-      <h2>Aides financières aux travaux</h2>
+    <WizardFormLayout title="Aides financières aux travaux">
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
@@ -80,7 +80,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit }: Props) => {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 };
 

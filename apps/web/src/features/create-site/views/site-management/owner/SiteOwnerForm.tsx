@@ -8,6 +8,7 @@ import {
   LocalAndRegionalAuthority,
 } from "@/shared/domain/localOrRegionalAuthority";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -78,8 +79,7 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
     ownerTypeSelected === "local_or_regional_authority";
 
   return (
-    <>
-      <h2>Qui est le propriétaire de cette friche ?</h2>
+    <WizardFormLayout title="Qui est le propriétaire de cette friche ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("ownerType", { required: requiredMessage })}
@@ -120,7 +120,7 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

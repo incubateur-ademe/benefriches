@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
 export type FormValues = {
   name: string;
   description?: string;
@@ -17,8 +19,7 @@ function SiteNameAndDescriptionForm({ onSubmit }: Props) {
   const nameError = formState.errors.name;
 
   return (
-    <>
-      <h2>Dénomination du site</h2>
+    <WizardFormLayout title="Dénomination du site">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           label="Nom du site"
@@ -46,7 +47,7 @@ function SiteNameAndDescriptionForm({ onSubmit }: Props) {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

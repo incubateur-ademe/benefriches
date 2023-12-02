@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
   rent?: number;
@@ -44,8 +45,7 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant }: Props) {
   });
 
   return (
-    <>
-      <h2>Dépenses annuelles liées à la gestion du site</h2>
+    <WizardFormLayout title="Dépenses annuelles liées à la gestion du site">
       <form onSubmit={handleSubmit(onSubmit)}>
         {inputs.map(({ name, label, displayOnlyIfHasTenant }) => {
           if (displayOnlyIfHasTenant && !hasTenant) {
@@ -78,7 +78,7 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant }: Props) {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

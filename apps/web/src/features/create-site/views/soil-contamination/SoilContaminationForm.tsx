@@ -4,6 +4,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -40,18 +41,24 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
   ];
 
   return (
-    <>
-      <h2>Les sols de la friche sont-ils pollués ?</h2>
-      <p>
-        Les polluants principaux des friches pouvant représenter un risque
-        sanitaire : métaux lourds, hydrocarbures, composants organiques
-        volatils, pesticides, nitrites, nitrates, cyanures, polychlorobiphényle.
-      </p>
-      <p>
-        La pollution à l’amiante n’est pas à renseigner, mais un poste de
-        dépense “désamiantage” pourra être alloué dans la partie “création d’un
-        projet sur la friche”.
-      </p>
+    <WizardFormLayout
+      title="Les sols de la friche sont-ils pollués ?"
+      instructions={
+        <>
+          <p>
+            Les polluants principaux des friches pouvant représenter un risque
+            sanitaire : métaux lourds, hydrocarbures, composants organiques
+            volatils, pesticides, nitrites, nitrates, cyanures,
+            polychlorobiphényle.
+          </p>
+          <p>
+            La pollution à l’amiante n’est pas à renseigner, mais un poste de
+            dépense “désamiantage” pourra être alloué dans la partie “création
+            d’un projet sur la friche”.
+          </p>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("hasContaminatedSoils", { required: requiredMessage })}
@@ -79,7 +86,7 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
         )}
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

@@ -8,6 +8,7 @@ import {
   LocalAndRegionalAuthority,
 } from "@/shared/domain/localOrRegionalAuthority";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -62,8 +63,7 @@ function SiteTenantForm({ onSubmit }: Props) {
   const selectedTenantType = watch("tenantType");
 
   return (
-    <>
-      <h2>Le site est-il encore loué par un exploitant ?</h2>
+    <WizardFormLayout title="Le site est-il encore loué par un exploitant ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("tenantType", { required: requiredMessage })}
@@ -90,7 +90,7 @@ function SiteTenantForm({ onSubmit }: Props) {
         )}
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

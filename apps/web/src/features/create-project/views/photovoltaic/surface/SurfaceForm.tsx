@@ -3,6 +3,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -23,14 +24,14 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea }: Props) {
   )} m²).`;
 
   return (
-    <>
-      <h2>
-        Quelle superficie du site occuperont les panneaux photovoltaïques&nbsp;?
-      </h2>
-      <p>
-        Le site fait <strong>{formatNumberFr(siteSurfaceArea)}</strong> m²
-      </p>
-
+    <WizardFormLayout
+      title="Quelle superficie du site occuperont les panneaux photovoltaïques ?"
+      instructions={
+        <p>
+          Le site fait <strong>{formatNumberFr(siteSurfaceArea)}</strong> m²
+        </p>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicInstallationSurfaceSquareMeters"
@@ -49,7 +50,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea }: Props) {
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

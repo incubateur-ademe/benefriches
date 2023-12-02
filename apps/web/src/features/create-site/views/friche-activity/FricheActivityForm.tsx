@@ -3,6 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 const FRICHE_ACTIVITY_OPTIONS = [
   {
@@ -64,8 +65,7 @@ function FricheActivityForm({ onSubmit }: Props) {
   const error = errors.activity;
 
   return (
-    <>
-      <h2>De quel type de friche s’agit-il ?</h2>
+    <WizardFormLayout title="De quel type de friche s’agit-il ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("activity", {
@@ -85,7 +85,7 @@ function FricheActivityForm({ onSubmit }: Props) {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

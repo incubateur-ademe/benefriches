@@ -8,6 +8,7 @@ import {
 import { getLabelForProjectType } from "../projectTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -79,12 +80,15 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
       : "default";
 
   return (
-    <>
-      <h2>Qu’y aura t-il sur le site une fois aménagé ?</h2>
-      <p>
-        Votre projet peut contenir plusieurs aménagements ; plusieurs réponses
-        sont donc possibles.
-      </p>
+    <WizardFormLayout
+      title="Qu’y aura t-il sur le site une fois aménagé ?"
+      instructions={
+        <p>
+          Votre projet peut contenir plusieurs aménagements ; plusieurs réponses
+          sont donc possibles.
+        </p>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}
@@ -95,7 +99,7 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

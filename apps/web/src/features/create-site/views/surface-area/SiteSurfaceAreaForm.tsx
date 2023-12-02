@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -15,8 +16,7 @@ function SurfaceAreaForm({ onSubmit }: Props) {
   const { control, handleSubmit } = useForm<FormValues>();
 
   return (
-    <>
-      <h2>Quelle est la superficie totale du site ?</h2>
+    <WizardFormLayout title="Quelle est la superficie totale du site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="surfaceArea"
@@ -33,7 +33,7 @@ function SurfaceAreaForm({ onSubmit }: Props) {
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

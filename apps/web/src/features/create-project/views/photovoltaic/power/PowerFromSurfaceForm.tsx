@@ -4,6 +4,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { PHOTOVOLTAIC_RATIO_KWC_PER_M2 } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -31,20 +32,26 @@ function PhotovoltaicPowerFromSurfaceForm({
   )} kWh)`;
 
   return (
-    <>
-      <h2>Quel sera la puissance de votre installation ?</h2>
-      <p>
-        Le ratio puissance / superficie d’installation considéré est de{" "}
-        <strong>
-          {PHOTOVOLTAIC_RATIO_KWC_PER_M2 * 10000}&nbsp;kWc pour 10 000 m².
-        </strong>
-      </p>
-      <p>
-        La superficie qu’occuperont les panneaux étant de{" "}
-        {formatNumberFr(photovoltaicSurfaceArea)}
-        &nbsp;m², votre puissance devrait être de{" "}
-        {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
-      </p>
+    <WizardFormLayout
+      title="Quel sera la puissance de votre installation ?"
+      instructions={
+        <>
+          {" "}
+          <p>
+            Le ratio puissance / superficie d’installation considéré est de{" "}
+            <strong>
+              {PHOTOVOLTAIC_RATIO_KWC_PER_M2 * 10000}&nbsp;kWc pour 10 000 m².
+            </strong>
+          </p>
+          <p>
+            La superficie qu’occuperont les panneaux étant de{" "}
+            {formatNumberFr(photovoltaicSurfaceArea)}
+            &nbsp;m², votre puissance devrait être de{" "}
+            {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
+          </p>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicInstallationElectricalPowerKWc"
@@ -64,7 +71,7 @@ function PhotovoltaicPowerFromSurfaceForm({
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

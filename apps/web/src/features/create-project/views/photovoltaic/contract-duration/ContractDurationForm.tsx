@@ -3,6 +3,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import { AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS } from "@/features/create-project/domain/photovoltaic";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -21,14 +22,15 @@ function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
   });
 
   return (
-    <>
-      <h2>
-        Quelle sera la durée du contrat de revente d’énergie au distributeur ?
-      </h2>
-      <p>
-        La durée usuelle de contrat de revente de production photovoltaïque est
-        de {AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS} ans.
-      </p>
+    <WizardFormLayout
+      title="Quelle sera la durée du contrat de revente d’énergie au distributeur ?"
+      instructions={
+        <p>
+          La durée usuelle de contrat de revente de production photovoltaïque
+          est de {AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS} ans.
+        </p>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicContractDuration"
@@ -43,7 +45,7 @@ function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

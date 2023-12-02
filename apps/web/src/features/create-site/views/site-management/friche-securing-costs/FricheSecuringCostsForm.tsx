@@ -4,6 +4,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type ExpensesBearer = SiteDraft["yearlyExpenses"][number]["bearer"];
 
@@ -56,13 +57,16 @@ function FricheSecuringExpensessForm({ onSubmit, hasTenant }: Props) {
   const { register, control, handleSubmit, watch } = useForm<FormValues>();
 
   return (
-    <>
-      <h2>Coûts annuels liés à la sécurisation de la friche</h2>
-      <p>
-        Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de
-        gardiennage, d’entretien, de débarras de dépôt sauvage sont
-        habituellement à la charge de l’exploitant.
-      </p>
+    <WizardFormLayout
+      title="Coûts annuels liés à la sécurisation de la friche"
+      instructions={
+        <p>
+          Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de
+          gardiennage, d’entretien, de débarras de dépôt sauvage sont
+          habituellement à la charge de l’exploitant.
+        </p>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         {inputs.map(({ name, label, askForBearer }) => {
           return (
@@ -100,7 +104,7 @@ function FricheSecuringExpensessForm({ onSubmit, hasTenant }: Props) {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

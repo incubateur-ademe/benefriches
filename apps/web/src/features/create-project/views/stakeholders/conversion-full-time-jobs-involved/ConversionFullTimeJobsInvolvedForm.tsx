@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   askForReinstatementFullTimeJobs: boolean;
@@ -22,10 +23,7 @@ function ConversionFullTimeJobsInvolvedForm({
   });
 
   return (
-    <>
-      <h2>
-        Emplois équivalent temps plein mobilisés pour la reconversion du site
-      </h2>
+    <WizardFormLayout title="Emplois équivalent temps plein mobilisés pour la reconversion du site">
       <form onSubmit={handleSubmit(onSubmit)}>
         {askForReinstatementFullTimeJobs && (
           <NumericInput
@@ -62,7 +60,7 @@ function ConversionFullTimeJobsInvolvedForm({
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

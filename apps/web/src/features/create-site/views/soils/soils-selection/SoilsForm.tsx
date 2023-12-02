@@ -6,6 +6,7 @@ import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 import { SoilType } from "../../../domain/siteFoncier.types";
 
 import { getLongLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
   soils: SoilType[];
@@ -113,12 +114,12 @@ function SiteSoilsForm({ onSubmit, isFriche }: Props) {
     : siteSoilOptionsCategories;
 
   return (
-    <>
-      <h2>
-        Quels types de sols y a-t-il sur {isFriche ? "cette friche" : "ce site"}{" "}
-        ?
-      </h2>
-      <p>Plusieurs réponses possibles.</p>
+    <WizardFormLayout
+      title={`Quels types de sols y a-t-il sur ${
+        isFriche ? "cette friche" : "ce site"
+      } ?`}
+      instructions={<p>Plusieurs réponses possibles.</p>}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={fr.cx("fr-accordions-group", "fr-pb-3w")}>
           {optionsCategories.map(({ category, options }, index) => {
@@ -149,7 +150,7 @@ function SiteSoilsForm({ onSubmit, isFriche }: Props) {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

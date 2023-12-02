@@ -3,6 +3,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -39,8 +40,7 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
   ];
 
   return (
-    <>
-      <h2>Y a-t-il eu des accidents sur la friche ces 5 dernières années ?</h2>
+    <WizardFormLayout title="Y a-t-il eu des accidents sur la friche ces 5 dernières années ?">
       <p>
         Personnes entrées illégalement sur la friche et s’étant blessées ou
         tuées.
@@ -90,7 +90,7 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
         )}
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

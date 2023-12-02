@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -15,11 +16,10 @@ function OperationsFullTimeJobsInvolvedForm({ onSubmit }: Props) {
   const { handleSubmit, control } = useForm<FormValues>();
 
   return (
-    <>
-      <h2>
-        Emplois équivalent temps plein mobilisés pour l’exploitation du site
-        reconverti
-      </h2>
+    <WizardFormLayout
+      title="Emplois équivalent temps plein mobilisés pour l’exploitation du site
+    reconverti"
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
@@ -43,7 +43,7 @@ function OperationsFullTimeJobsInvolvedForm({ onSubmit }: Props) {
           ]}
         />
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 

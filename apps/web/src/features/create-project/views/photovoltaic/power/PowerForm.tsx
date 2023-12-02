@@ -4,6 +4,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -27,8 +28,7 @@ function PhotovoltaicPowerForm({
   )} kWh)`;
 
   return (
-    <>
-      <h2>Quel sera la puissance de votre installation ?</h2>
+    <WizardFormLayout title="Quel sera la puissance de votre installation ?">
       <p>
         Le ratio superficie / puissance d’installation considéré est de{" "}
         <strong>
@@ -59,7 +59,7 @@ function PhotovoltaicPowerForm({
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
-    </>
+    </WizardFormLayout>
   );
 }
 
