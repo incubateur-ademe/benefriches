@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
 import { fetchRelatedSiteAction } from "../../application/createProject.actions";
-import CreateProjectIntroductionPage from "./CreateProjetIntroduction";
+import CreateProjectIntroductionPage from "./CreateProjetIntroductionPage";
 
 import { routes } from "@/router";
 import {

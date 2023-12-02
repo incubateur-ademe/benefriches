@@ -20,7 +20,7 @@ function ProjectRenewableEnergyTypesFormContainer() {
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={(data) => {
         dispatch(setRenewableEnergyTypes(data.renewableEnergyTypes));
-        dispatch(goToStep(ProjectCreationStep.DOCUMENTS));
+        dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER));
       }}
     />
   );

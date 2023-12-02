@@ -24,7 +24,6 @@ export type ProjectCreationState = {
 };
 
 export enum ProjectCreationStep {
-  DOCUMENTS = "DOCUMENTS",
   PROJECT_TYPES = "PROJECT_TYPES",
   RENEWABLE_ENERGY_TYPES = "RENEWABLE_ENERGY_TYPES",
   // Photovoltaic

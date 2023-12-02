@@ -17,7 +17,6 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
   switch (step) {
     case ProjectCreationStep.PROJECT_TYPES:
     case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:
-    case ProjectCreationStep.DOCUMENTS:
       return "Type de projet";
     case ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER:
     case ProjectCreationStep.PHOTOVOLTAIC_POWER:
