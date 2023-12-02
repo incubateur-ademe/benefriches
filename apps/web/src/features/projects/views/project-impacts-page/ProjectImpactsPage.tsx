@@ -76,7 +76,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
         siteName={siteName}
       />
       <Notice
-        title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
+        title="Les indicateurs montrent le différentiel entre la situation actuelle et la situation avec le projet, sur la période sélectionnée"
         isClosable
         className={fr.cx("fr-mb-2w")}
       />
