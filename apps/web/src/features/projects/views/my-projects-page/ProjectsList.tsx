@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import { Card } from "@codegouvfr/react-dsfr/Card";
 import { ProjectsGroupedBySite } from "../../domain/projects.types";
 import NewProjectButton from "./NewProjectButton";
+import ProjectCard from "./ProjectCard";
 
 import { routes } from "@/router";
 
@@ -29,18 +29,22 @@ function ProjectsList({ projectsList }: Props) {
           </p>
           <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
             <GridColumn>
-              <Card title="Pas de changement" desc="(site en friche)" border />
+              <ProjectCard
+                projectName="Pas de changement"
+                details="(site en friche)"
+                yearlyProfit={-391179}
+              />
             </GridColumn>
             {projectGroup.projects.map((project) => {
+              const projectImpactsLinkProps = routes.projectImpacts({
+                projectId: project.id,
+              }).link;
               return (
                 <GridColumn key={project.id}>
-                  <Card
-                    title={project.name}
-                    enlargeLink
-                    linkProps={
-                      routes.projectImpacts({ projectId: project.id }).link
-                    }
-                    border
+                  <ProjectCard
+                    projectName={project.name}
+                    impactLinkProps={projectImpactsLinkProps}
+                    yearlyProfit={425968}
                   />
                 </GridColumn>
               );
