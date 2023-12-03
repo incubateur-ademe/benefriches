@@ -9,6 +9,9 @@ function SocioEconomicBenefitsByDomainChart() {
       ...sharedChartConfig.chart,
       height: "400",
     },
+    legend: {
+      enabled: false,
+    },
     xAxis: {
       categories: [
         "Sols",

@@ -10,7 +10,7 @@ function CarbonStorageComparisonChart() {
       height: "400",
     },
     xAxis: {
-      categories: ["Pas de projet", "Centrale photovoltaïque"],
+      categories: ["Pas de changement", "Centrale photovoltaïque"],
       crosshair: false,
     },
     tooltip: {

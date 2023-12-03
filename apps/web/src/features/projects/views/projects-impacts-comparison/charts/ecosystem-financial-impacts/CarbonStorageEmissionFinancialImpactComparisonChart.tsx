@@ -21,7 +21,7 @@ function CarbonStorageEmissionFinancialImpactComparisonChart() {
     series: [
       {
         type: "column",
-        name: "Pas de projet",
+        name: "Pas de changement",
         data: [511890],
       },
       {

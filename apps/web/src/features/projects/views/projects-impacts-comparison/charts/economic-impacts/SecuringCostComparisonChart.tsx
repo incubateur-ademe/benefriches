@@ -21,7 +21,7 @@ function SecuringCostComparisonChart() {
     series: [
       {
         type: "column",
-        name: "Pas de projet",
+        name: "Pas de changement",
         data: [-3890401],
       },
       {

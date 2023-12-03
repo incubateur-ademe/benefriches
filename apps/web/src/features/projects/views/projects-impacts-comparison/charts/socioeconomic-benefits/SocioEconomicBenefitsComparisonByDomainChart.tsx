@@ -36,7 +36,7 @@ function SocioEconomicBenefitsComparisonByDomainChart() {
     series: [
       {
         type: "column",
-        name: "Pas de projet",
+        name: "Pas de changement",
         data: [532168, 2438, 0, 81523, 81523, -43530, -3890401, 21391, 0],
       },
       {

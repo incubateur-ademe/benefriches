@@ -10,6 +10,9 @@ function SocioEconomicBenefitsBarChart() {
       type: "area",
       height: "400",
     },
+    legend: {
+      enabled: false,
+    },
     xAxis: {
       categories: ["Entreprises", "Collectivité", "Société humaine"],
     },

@@ -21,7 +21,7 @@ function PollinationFinancialImpactComparisonChart() {
     series: [
       {
         type: "column",
-        name: "Pas de projet",
+        name: "Pas de changement",
         data: [5706],
       },
       {

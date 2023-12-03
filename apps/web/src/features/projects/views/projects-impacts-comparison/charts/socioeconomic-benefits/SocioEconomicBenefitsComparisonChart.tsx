@@ -22,7 +22,7 @@ function SocioEconomicBenefitsComparisonChart() {
     series: [
       {
         type: "column",
-        name: "Pas de projet",
+        name: "Pas de changement",
         data: [-3869011, -9471, 589994],
       },
       {
