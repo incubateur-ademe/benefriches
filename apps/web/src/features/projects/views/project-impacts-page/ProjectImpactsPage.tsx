@@ -8,6 +8,7 @@ import SocioEconomicBenefitsByDomainChart from "./charts/SocioEconomicBenefitsBy
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
 type Props = {
+  projectId: string;
   projectName: string;
   siteName: string;
 };
@@ -63,7 +64,7 @@ const ImpactCard = ({
   );
 };
 
-function ProjectImpactsPage({ projectName, siteName }: Props) {
+function ProjectImpactsPage({ projectId, projectName, siteName }: Props) {
   ``;
   const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">(
     "all",
@@ -72,6 +73,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
   return (
     <div>
       <ProjectsImpactsPageHeader
+        projectId={projectId}
         projectName={projectName}
         siteName={siteName}
       />
@@ -221,7 +223,7 @@ function ProjectImpactsPage({ projectName, siteName }: Props) {
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
               title="🚵 Aménité environnementale"
-              impact="-2083 €"
+              impact="-2 083 €"
               isPositive
             />
           </div>

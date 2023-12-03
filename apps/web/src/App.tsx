@@ -42,6 +42,7 @@ function App() {
         )}
         {route.name === routes.projectImpacts.name && (
           <ProjectImpactsPage
+            projectId={route.params.projectId}
             siteName="Ancienne carrière d'argile de Blajan"
             projectName="Centrale photovoltaïque"
           />

@@ -1,12 +1,19 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
+import { routes } from "@/router";
+
 type Props = {
   projectName: string;
+  projectId: string;
   siteName: string;
 };
 
-const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
+const ProjectsImpactsPageHeader = ({
+  projectName,
+  projectId,
+  siteName,
+}: Props) => {
   return (
     <>
       <div
@@ -29,8 +36,10 @@ const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
             },
             {
               priority: "secondary",
-              disabled: true,
               children: "Comparer les impacts",
+              linkProps: routes.selectProjectToCompare({
+                baseProjectId: projectId,
+              }).link,
             },
             { priority: "secondary", disabled: true, children: "Exporter" },
           ]}
