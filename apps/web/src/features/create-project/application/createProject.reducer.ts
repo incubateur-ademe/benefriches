@@ -76,6 +76,9 @@ export const projectCreationSlice = createSlice({
   name: "projectCreation",
   initialState: getInitialState(),
   reducers: {
+    resetState: () => {
+      return getInitialState();
+    },
     setTypes: (state, action: PayloadAction<ProjectType[]>) => {
       state.projectData.types = action.payload;
     },
@@ -222,6 +225,7 @@ export const projectCreationSlice = createSlice({
 });
 
 export const {
+  resetState,
   setTypes,
   setRenewableEnergyTypes,
   setFutureOperator,

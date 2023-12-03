@@ -1,8 +1,17 @@
+import { useEffect } from "react";
 import { Button } from "@codegouvfr/react-dsfr/Button";
+import { resetState } from "../../application/createSite.reducer";
 
 import { routes } from "@/router";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function CreateSiteIntroductionPage() {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(resetState());
+  }, [dispatch]);
+
   return (
     <>
       <h1>Tout commence sur un site</h1>

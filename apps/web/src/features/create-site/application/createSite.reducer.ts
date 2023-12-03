@@ -59,6 +59,9 @@ export const siteCreationSlice = createSlice({
   name: "siteCreation",
   initialState: getInitialState(),
   reducers: {
+    resetState: () => {
+      return getInitialState();
+    },
     setSurfaceArea: (state, action: PayloadAction<number>) => {
       state.siteData.surfaceArea = action.payload;
     },
@@ -159,6 +162,7 @@ export const siteCreationSlice = createSlice({
 });
 
 export const {
+  resetState,
   setIsFriche,
   setAddress,
   setSurfaceArea,
