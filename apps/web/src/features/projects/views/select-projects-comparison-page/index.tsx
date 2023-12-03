@@ -25,7 +25,8 @@ function ProjectsComparisonSelectionPageContainer({ route }: Props) {
   );
   const allProjects = useAppSelector(selectProjects);
   const projectsToCompare = allProjects.filter(
-    (project) => project.id !== route.params.baseProjectId,
+    (project) =>
+      project.site.id === baseProject?.site.id && project.id !== baseProject.id,
   );
 
   useEffect(() => {
