@@ -9,7 +9,7 @@ export const SITES_LIST_STORAGE_KEY = "benefriches/sites-list";
 
 export class LocalStorageCreateSiteApi implements CreateSiteGateway {
   async save(newSite: CreateSiteGatewayPayload) {
-    await delay(500);
+    await delay(300);
 
     const fromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
     const siteList = fromLocalStorage

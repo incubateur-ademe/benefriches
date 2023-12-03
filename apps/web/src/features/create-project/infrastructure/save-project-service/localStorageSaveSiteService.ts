@@ -8,7 +8,7 @@ import { delay } from "@/shared/services/delay/delay";
 
 export class LocalStorageSaveProjectApi implements SaveProjectGateway {
   async save(newProject: SaveProjectGatewayPayload) {
-    await delay(500);
+    await delay(300);
 
     const fromLocalStorage = localStorage.getItem(PROJECTS_LIST_STORAGE_KEY);
     const projectsList = fromLocalStorage

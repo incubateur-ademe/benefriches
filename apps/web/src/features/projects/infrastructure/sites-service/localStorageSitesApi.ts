@@ -7,7 +7,7 @@ import { delay } from "@/shared/services/delay/delay";
 
 export class LocalStorageSitesApi implements SitesGateway {
   async getSitesList(): Promise<SitesList> {
-    await delay(500);
+    await delay(300);
 
     const sitesFromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
 
