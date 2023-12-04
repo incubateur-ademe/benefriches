@@ -55,10 +55,10 @@ function PhotovoltaicSurfaceFromPowerForm({
             {formatNumberFr(recommendedSurface)}
             &nbsp;m².
           </p>
+          <p>Vous pouvez modifier cette superficie.</p>
         </>
       }
     >
-      <p>Vous pouvez modifier cette superficie.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicInstallationSurfaceSquareMeters"
