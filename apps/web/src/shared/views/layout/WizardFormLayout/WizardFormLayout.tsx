@@ -16,10 +16,10 @@ function WizardFormLayout({ title, children, instructions = null }: Props) {
       </section>
       {instructions && (
         <section
-          className={fr.cx("fr-ml-6w", "fr-py-1w")}
-          style={{ flex: "2" }}
+          className={fr.cx("fr-pl-2w", "fr-ml-2w", "fr-py-1w")}
+          style={{ flex: "2", borderLeft: "2px solid #ddd" }}
         >
-          {instructions}
+          <div>{instructions}</div>
         </section>
       )}
     </div>
