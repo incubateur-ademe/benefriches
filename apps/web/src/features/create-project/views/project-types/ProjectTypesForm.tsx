@@ -81,11 +81,11 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
 
   return (
     <WizardFormLayout
-      title="Qu’y aura t-il sur le site une fois aménagé ?"
+      title="Quel est l’usage principal prévu sur le site ?"
       instructions={
         <p>
-          Votre projet peut contenir plusieurs aménagements ; plusieurs réponses
-          sont donc possibles.
+          Votre projet peut contenir plusieurs aménagements, toutefois il s’agit
+          de l’usage principal qui doit être renseigné.
         </p>
       }
     >
