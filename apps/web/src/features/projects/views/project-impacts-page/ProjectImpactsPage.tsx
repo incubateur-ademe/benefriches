@@ -170,7 +170,7 @@ function ProjectImpactsPage({ projectId, projectName, siteName }: Props) {
             <ImpactCard
               title="Revenu locatif"
               impact="+381 974 €"
-              text="pour la mairie de Blajan"
+              text="pour Imerys"
               isPositive
             />
           </div>

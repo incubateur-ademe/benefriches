@@ -21,12 +21,12 @@ function RentIncomeComparisonChart() {
     series: [
       {
         type: "column",
-        name: "Imerys",
+        name: "Pas changement",
         data: [21391],
       },
       {
         type: "column",
-        name: "Mairie de Blajan",
+        name: "Centrale photovoltaïque",
         data: [381974],
       },
     ],
