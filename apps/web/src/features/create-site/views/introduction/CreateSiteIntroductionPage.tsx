@@ -63,7 +63,7 @@ function CreateSiteIntroductionPage() {
 
       <p>
         Vous pourrez remplir le formulaire si vous ne disposez pas de toutes les
-        informations, BENEFRICHES vous proposant des valeurs par défaut, issues
+        informations, Bénéfriches vous proposant des valeurs par défaut, issues
         du retour d'expérience de l'ADEME ou autres ressources documentaires.
       </p>
       <p>
