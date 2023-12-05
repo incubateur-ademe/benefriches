@@ -3,28 +3,30 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
-import { ProjectAndSiteSoilsCarbonStorageResult } from "@/shared/application/actions/soilsCarbonStorage.actions";
+import { ProjectDetailsState } from "@/features/projects/application/projectDetails.reducer";
 import { SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
-type TypeSiteSoilsStorage =
-  ProjectAndSiteSoilsCarbonStorageResult["siteCarbonStorage"]["soilsStorage"];
-type TypeProjectSoilsStorage =
-  ProjectAndSiteSoilsCarbonStorageResult["siteCarbonStorage"]["soilsStorage"];
 type Props = {
-  siteSoilsStorage: TypeSiteSoilsStorage;
-  projectSoilsStorage: TypeProjectSoilsStorage;
+  currentCarbonStorage: Exclude<
+    ProjectDetailsState["currentCarbonStorage"],
+    undefined
+  >;
+  projectedCarbonStorage: Exclude<
+    ProjectDetailsState["projectedCarbonStorage"],
+    undefined
+  >;
 };
 
 const getData = (
   soilType: SoilType,
-  siteSoilsStorage: TypeSiteSoilsStorage,
-  projectSoilsStorage: TypeProjectSoilsStorage,
+  currentCarbonStorage: Props["currentCarbonStorage"]["soilsStorage"],
+  projectedCarbonStorage: Props["projectedCarbonStorage"]["soilsStorage"],
 ) => {
-  const soilTypeInSite = siteSoilsStorage.find(
+  const soilTypeInSite = currentCarbonStorage.find(
     (storage) => storage.type === soilType,
   );
-  const soilTypeInProject = projectSoilsStorage.find(
+  const soilTypeInProject = projectedCarbonStorage.find(
     (storage) => storage.type === soilType,
   );
   return [
@@ -34,15 +36,16 @@ const getData = (
 };
 
 function CarbonStorageComparisonChart({
-  siteSoilsStorage,
-  projectSoilsStorage,
+  currentCarbonStorage,
+  projectedCarbonStorage,
 }: Props) {
   const soilsTypes = useMemo(
     () =>
-      [...(siteSoilsStorage ?? []), ...(projectSoilsStorage ?? [])].map(
-        ({ type }) => type,
-      ),
-    [projectSoilsStorage, siteSoilsStorage],
+      [
+        ...currentCarbonStorage.soilsStorage,
+        ...projectedCarbonStorage.soilsStorage,
+      ].map(({ type }) => type),
+    [currentCarbonStorage, projectedCarbonStorage],
   );
 
   const barChartOptions: Highcharts.Options = {
@@ -69,7 +72,11 @@ function CarbonStorageComparisonChart({
     series: soilsTypes.map((soilType) => ({
       name: getLabelForSoilType(soilType),
       type: "column",
-      data: getData(soilType, siteSoilsStorage, projectSoilsStorage),
+      data: getData(
+        soilType,
+        currentCarbonStorage.soilsStorage,
+        projectedCarbonStorage.soilsStorage,
+      ),
     })),
   };
 

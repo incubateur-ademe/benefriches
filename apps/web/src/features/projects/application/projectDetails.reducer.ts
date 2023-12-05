@@ -1,29 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProjectDetailsResult } from "../infrastructure/project-details-service/localStorageProjectDetailsApi";
-import { fetchProjectDetails } from "./projectDetails.actions";
-
 import {
-  fetchCarbonStorageForSiteAndProjectSoils,
-  ProjectAndSiteSoilsCarbonStorageResult,
-} from "@/shared/application/actions/soilsCarbonStorage.actions";
+  CurrentAndProjectedSoilsCarbonStorageResult,
+  fetchCurrentAndProjectedSoilsCarbonStorage,
+  fetchProjectDetails,
+} from "./projectDetails.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type ProjectCreationState = {
+export type ProjectDetailsState = {
   projectData?: ProjectDetailsResult["projectData"];
   siteData?: ProjectDetailsResult["siteData"];
   projectDataLoadingState: LoadingState;
   carbonStorageDataLoadingState: LoadingState;
-  siteCarbonStorage?: ProjectAndSiteSoilsCarbonStorageResult["siteCarbonStorage"];
-  projectCarbonStorage?: ProjectAndSiteSoilsCarbonStorageResult["projectCarbonStorage"];
+  currentCarbonStorage?: CurrentAndProjectedSoilsCarbonStorageResult["current"];
+  projectedCarbonStorage?: CurrentAndProjectedSoilsCarbonStorageResult["projected"];
 };
 
-export const getInitialState = (): ProjectCreationState => {
+export const getInitialState = (): ProjectDetailsState => {
   return {
     projectData: undefined,
     siteData: undefined,
-    siteCarbonStorage: undefined,
-    projectCarbonStorage: undefined,
+    currentCarbonStorage: undefined,
+    projectedCarbonStorage: undefined,
     carbonStorageDataLoadingState: "idle",
     projectDataLoadingState: "idle",
   };
@@ -48,21 +47,21 @@ export const projectDetailsSlice = createSlice({
     });
     /* fetch carbon storage */
     builder.addCase(
-      fetchCarbonStorageForSiteAndProjectSoils.pending,
+      fetchCurrentAndProjectedSoilsCarbonStorage.pending,
       (state) => {
         state.carbonStorageDataLoadingState = "loading";
       },
     );
     builder.addCase(
-      fetchCarbonStorageForSiteAndProjectSoils.fulfilled,
+      fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled,
       (state, action) => {
         state.carbonStorageDataLoadingState = "success";
-        state.siteCarbonStorage = action.payload.siteCarbonStorage;
-        state.projectCarbonStorage = action.payload.projectCarbonStorage;
+        state.currentCarbonStorage = action.payload.current;
+        state.projectedCarbonStorage = action.payload.projected;
       },
     );
     builder.addCase(
-      fetchCarbonStorageForSiteAndProjectSoils.rejected,
+      fetchCurrentAndProjectedSoilsCarbonStorage.rejected,
       (state) => {
         state.carbonStorageDataLoadingState = "error";
       },
