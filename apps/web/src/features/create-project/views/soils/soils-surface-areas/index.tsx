@@ -66,7 +66,7 @@ function ProjectSoilsSurfaceAreasContainer() {
             ),
           ),
         );
-        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));
+        dispatch(goToStep(ProjectCreationStep.SOILS_SUMMARY));
       }}
     />
   );
