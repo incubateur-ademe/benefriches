@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import CarbonStorageComparisonChart from "./CarbonStorageComparisonChart";
 
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/projects/application/projectDetails.actions";
-import { ProjectDetailsState } from "@/features/projects/application/projectDetails.reducer";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/projects/application/projectImpactsComparison.actions";
+import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
 import {
   useAppDispatch,
   useAppSelector,
@@ -10,22 +11,22 @@ import {
 
 type SuccessData = {
   carbonStorageDataLoadingState: Exclude<
-    ProjectDetailsState["carbonStorageDataLoadingState"],
+    ProjectImpactsComparisonState["carbonStorageDataLoadingState"],
     "idle" | "error" | "loading"
   >;
   currentCarbonStorage: Exclude<
-    ProjectDetailsState["currentCarbonStorage"],
+    ProjectImpactsComparisonState["currentCarbonStorage"],
     undefined
   >;
   projectedCarbonStorage: Exclude<
-    ProjectDetailsState["projectedCarbonStorage"],
+    ProjectImpactsComparisonState["projectedCarbonStorage"],
     undefined
   >;
 };
 
 type LoadingOrErrorData = {
   carbonStorageDataLoadingState: Exclude<
-    ProjectDetailsState["carbonStorageDataLoadingState"],
+    ProjectImpactsComparisonState["carbonStorageDataLoadingState"],
     "success"
   >;
   currentCarbonStorage: undefined;
@@ -38,7 +39,7 @@ function CarbonStorageComparisonChartContainer() {
     currentCarbonStorage,
     projectedCarbonStorage,
     carbonStorageDataLoadingState,
-  } = useAppSelector((state) => state.projectDetails) as
+  } = useAppSelector((state) => state.projectImpactsComparison) as
     | SuccessData
     | LoadingOrErrorData;
 
@@ -47,14 +48,22 @@ function CarbonStorageComparisonChartContainer() {
       await dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
     }
     void fetchData();
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (carbonStorageDataLoadingState === "loading") {
     return <p>Calcul du pouvoir de stockage de carbone par les sols...</p>;
   }
 
   if (carbonStorageDataLoadingState === "error") {
-    return <p>Une erreur s’est produite lors du calcul</p>;
+    return (
+      <Alert
+        description="Une erreur s’est produite lors du calcul du pouvoir de stockage de carbone par les sols..."
+        severity="error"
+        title="Erreur"
+        className="fr-my-7v"
+      />
+    );
   }
 
   if (carbonStorageDataLoadingState === "success") {

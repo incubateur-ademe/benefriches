@@ -1,4 +1,4 @@
-import { ProjectsDetailsGateway } from "../../application/projectDetails.actions";
+import { ProjectsDetailsGateway } from "../../application/projectImpactsComparison.actions";
 
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
@@ -21,7 +21,7 @@ export type ProjectDetailsResult = {
 
 export class LocalStorageProjectDetailsApi implements ProjectsDetailsGateway {
   async getProjectById(projectId: string): Promise<ProjectDetailsResult> {
-    await delay(500);
+    await delay(300);
 
     try {
       const projectsFromLocalStorage = localStorage.getItem(

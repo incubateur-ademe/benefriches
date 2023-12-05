@@ -3,17 +3,17 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
-import { ProjectDetailsState } from "@/features/projects/application/projectDetails.reducer";
+import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
 import { SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
   currentCarbonStorage: Exclude<
-    ProjectDetailsState["currentCarbonStorage"],
+    ProjectImpactsComparisonState["currentCarbonStorage"],
     undefined
   >;
   projectedCarbonStorage: Exclude<
-    ProjectDetailsState["projectedCarbonStorage"],
+    ProjectImpactsComparisonState["projectedCarbonStorage"],
     undefined
   >;
 };

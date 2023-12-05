@@ -2,48 +2,60 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ProjectDetailsResult } from "../infrastructure/project-details-service/localStorageProjectDetailsApi";
 import {
   CurrentAndProjectedSoilsCarbonStorageResult,
+  fetchBaseProjectAndWithProjectData,
   fetchCurrentAndProjectedSoilsCarbonStorage,
-  fetchProjectDetails,
-} from "./projectDetails.actions";
+} from "./projectImpactsComparison.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type ProjectDetailsState = {
+export type ProjectImpactsComparisonState = {
+  baseProjectId?: string;
+  withProject?: string;
   projectData?: ProjectDetailsResult["projectData"];
+  otherProjectData?: ProjectDetailsResult["projectData"];
   siteData?: ProjectDetailsResult["siteData"];
-  projectDataLoadingState: LoadingState;
+  dataLoadingState: LoadingState;
   carbonStorageDataLoadingState: LoadingState;
   currentCarbonStorage?: CurrentAndProjectedSoilsCarbonStorageResult["current"];
   projectedCarbonStorage?: CurrentAndProjectedSoilsCarbonStorageResult["projected"];
 };
 
-export const getInitialState = (): ProjectDetailsState => {
+export const getInitialState = (): ProjectImpactsComparisonState => {
   return {
+    baseProjectId: undefined,
+    withProject: undefined,
     projectData: undefined,
+    otherProjectData: undefined,
     siteData: undefined,
     currentCarbonStorage: undefined,
     projectedCarbonStorage: undefined,
     carbonStorageDataLoadingState: "idle",
-    projectDataLoadingState: "idle",
+    dataLoadingState: "idle",
   };
 };
 
-export const projectDetailsSlice = createSlice({
-  name: "projectDetails",
+export const projectImpactsComparisonSlice = createSlice({
+  name: "projectImpactsComparison",
   initialState: getInitialState(),
   reducers: {},
   extraReducers(builder) {
     /* fetch project */
-    builder.addCase(fetchProjectDetails.pending, (state) => {
-      state.projectDataLoadingState = "loading";
+    builder.addCase(fetchBaseProjectAndWithProjectData.pending, (state) => {
+      state.dataLoadingState = "loading";
     });
-    builder.addCase(fetchProjectDetails.fulfilled, (state, action) => {
-      state.projectDataLoadingState = "success";
-      state.projectData = action.payload.projectData;
-      state.siteData = action.payload.siteData;
-    });
-    builder.addCase(fetchProjectDetails.rejected, (state) => {
-      state.projectDataLoadingState = "error";
+    builder.addCase(
+      fetchBaseProjectAndWithProjectData.fulfilled,
+      (state, action) => {
+        state.dataLoadingState = "success";
+        state.projectData = action.payload.projectData;
+        state.siteData = action.payload.siteData;
+        state.otherProjectData = action.payload.otherProjectData;
+        state.baseProjectId = action.payload.baseProjectId;
+        state.withProject = action.payload.withProject;
+      },
+    );
+    builder.addCase(fetchBaseProjectAndWithProjectData.rejected, (state) => {
+      state.dataLoadingState = "error";
     });
     /* fetch carbon storage */
     builder.addCase(
@@ -69,4 +81,4 @@ export const projectDetailsSlice = createSlice({
   },
 });
 
-export default projectDetailsSlice.reducer;
+export default projectImpactsComparisonSlice.reducer;
