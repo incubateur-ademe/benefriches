@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 import {
   CurrentAndProjectedSoilsCarbonStorageResult,
   fetchCurrentAndProjectedSoilsCarbonStorage,
-} from "@/shared/application/actions/soilsCarbonStorage.actions";
+} from "./soilsCarbonStorage.actions";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
 

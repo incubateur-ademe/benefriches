@@ -1,67 +1,70 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import CarbonStorageComparisonChart from "./CarbonStorageComparisonChart";
 
-import { fetchCarbonStorageForSiteAndProjectSoils } from "@/shared/application/actions/soilsCarbonStorage.actions";
-import { SoilType } from "@/shared/domain/soils";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/projects/application/projectDetails.actions";
+import { ProjectDetailsState } from "@/features/projects/application/projectDetails.reducer";
 import {
   useAppDispatch,
   useAppSelector,
 } from "@/shared/views/hooks/store.hooks";
 
+type SuccessData = {
+  carbonStorageDataLoadingState: Exclude<
+    ProjectDetailsState["carbonStorageDataLoadingState"],
+    "idle" | "error" | "loading"
+  >;
+  currentCarbonStorage: Exclude<
+    ProjectDetailsState["currentCarbonStorage"],
+    undefined
+  >;
+  projectedCarbonStorage: Exclude<
+    ProjectDetailsState["projectedCarbonStorage"],
+    undefined
+  >;
+};
+
+type LoadingOrErrorData = {
+  carbonStorageDataLoadingState: Exclude<
+    ProjectDetailsState["carbonStorageDataLoadingState"],
+    "success"
+  >;
+  currentCarbonStorage: undefined;
+  projectedCarbonStorage: undefined;
+};
+
 function CarbonStorageComparisonChartContainer() {
   const dispatch = useAppDispatch();
   const {
-    siteData,
-    projectData,
-    siteCarbonStorage,
-    projectCarbonStorage,
+    currentCarbonStorage,
+    projectedCarbonStorage,
     carbonStorageDataLoadingState,
-  } = useAppSelector((state) => state.projectDetails);
-
-  const cityCode = siteData?.address.cityCode;
-  const siteSoils = useMemo(
-    () => siteData?.soilsSurfaceAreas ?? {},
-    [siteData?.soilsSurfaceAreas],
-  );
-  const projectSoils = useMemo(
-    () => projectData?.soilsSurfaceAreas ?? {},
-    [projectData?.soilsSurfaceAreas],
-  );
+  } = useAppSelector((state) => state.projectDetails) as
+    | SuccessData
+    | LoadingOrErrorData;
 
   useEffect(() => {
-    if (cityCode && siteSoils && projectSoils) {
-      void dispatch(
-        fetchCarbonStorageForSiteAndProjectSoils({
-          cityCode,
-          siteSoils: Object.entries(siteSoils).map(([type, surfaceArea]) => ({
-            type: type as SoilType,
-            surfaceArea,
-          })),
-          projectSoils: Object.entries(projectSoils).map(
-            ([type, surfaceArea]) => ({
-              type: type as SoilType,
-              surfaceArea,
-            }),
-          ),
-        }),
-      );
+    async function fetchData() {
+      await dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
     }
-  }, [cityCode, dispatch, projectSoils, siteSoils]);
+    void fetchData();
+  }, [dispatch]);
 
   if (carbonStorageDataLoadingState === "loading") {
     return <p>Calcul du pouvoir de stockage de carbone par les sols...</p>;
   }
 
-  if (!projectCarbonStorage || !siteCarbonStorage) {
+  if (carbonStorageDataLoadingState === "error") {
     return <p>Une erreur s’est produite lors du calcul</p>;
   }
 
-  return (
-    <CarbonStorageComparisonChart
-      projectSoilsStorage={projectCarbonStorage.soilsStorage}
-      siteSoilsStorage={siteCarbonStorage.soilsStorage}
-    />
-  );
+  if (carbonStorageDataLoadingState === "success") {
+    return (
+      <CarbonStorageComparisonChart
+        currentCarbonStorage={currentCarbonStorage}
+        projectedCarbonStorage={projectedCarbonStorage}
+      />
+    );
+  }
 }
 
 export default CarbonStorageComparisonChartContainer;

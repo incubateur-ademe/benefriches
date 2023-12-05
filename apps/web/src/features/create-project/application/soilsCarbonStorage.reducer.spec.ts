@@ -3,8 +3,8 @@ import { ProjectSite } from "../domain/project.types";
 import { GetSiteServiceMock } from "../infrastructure/get-site-service/GetSiteServiceMock";
 import { fetchRelatedSiteAction } from "./createProject.actions";
 import { setSoilsSurfaceAreas } from "./createProject.reducer";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./soilsCarbonStorage.actions";
 
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/shared/application/actions/soilsCarbonStorage.actions";
 import { SoilType } from "@/shared/domain/soils";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { createStore } from "@/store";
