@@ -35,7 +35,8 @@ function PhotovoltaicPowerForm({
           <p>
             Le ratio superficie / puissance d’installation considéré est de{" "}
             <strong>
-              {PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000}&nbsp;m² pour 1000 kWc.
+              {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m²
+              pour 1 000 kWc.
             </strong>
           </p>
           <p>

@@ -40,11 +40,15 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
   ];
 
   return (
-    <WizardFormLayout title="Y a-t-il eu des accidents sur la friche ces 5 dernières années ?">
-      <p>
-        Personnes entrées illégalement sur la friche et s’étant blessées ou
-        tuées.
-      </p>
+    <WizardFormLayout
+      title="Y a-t-il eu des accidents sur la friche ces 5 dernières années ?"
+      instructions={
+        <p>
+          Personnes entrées illégalement sur la friche et s’étant blessées ou
+          tuées.
+        </p>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("hasRecentAccidents", { required: requiredMessage })}
