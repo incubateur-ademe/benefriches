@@ -69,9 +69,7 @@ const mapProps = (
           );
           break;
       }
-      dispatch(
-        goToStep(ProjectCreationStep.STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS),
-      );
+      dispatch(goToStep(ProjectCreationStep.COSTS_INTRODUCTION));
     },
   };
 };
