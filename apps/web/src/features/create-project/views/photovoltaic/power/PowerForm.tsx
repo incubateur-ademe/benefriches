@@ -28,18 +28,25 @@ function PhotovoltaicPowerForm({
   )} kWc)`;
 
   return (
-    <WizardFormLayout title="Quel sera la puissance de votre installation ?">
-      <p>
-        Le ratio superficie / puissance d’installation considéré est de{" "}
-        <strong>
-          {PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000}&nbsp;m² pour 1000 kWc.
-        </strong>
-      </p>
-      <p>
-        La superficie du site étant de {formatNumberFr(siteSurfaceArea)}
-        &nbsp;m², votre puissance devrait être de maximum{" "}
-        {formatNumberFr(maxRecommendedElectricalPowerKWc)}&nbsp;kWc.
-      </p>
+    <WizardFormLayout
+      title="Quel sera la puissance de votre installation ?"
+      instructions={
+        <>
+          <p>
+            Le ratio superficie / puissance d’installation considéré est de{" "}
+            <strong>
+              {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m²
+              pour 1 000 kWc.
+            </strong>
+          </p>
+          <p>
+            La superficie du site étant de {formatNumberFr(siteSurfaceArea)}
+            &nbsp;m², votre puissance devrait être de maximum{" "}
+            {formatNumberFr(maxRecommendedElectricalPowerKWc)}&nbsp;kWc.
+          </p>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicInstallationElectricalPowerKWc"
