@@ -1,25 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-  fetchCarbonStorageForSiteAndProjectSoils,
-  ProjectAndSiteSoilsCarbonStorageResult,
+  CurrentAndProjectedSoilsCarbonStorageResult,
+  fetchCurrentAndProjectedSoilsCarbonStorage,
 } from "./soilsCarbonStorage.actions";
 
-type LoadingState = "idle" | "loading" | "success" | "error";
+export type LoadingState = "idle" | "loading" | "success" | "error";
 
 export type State = {
   loadingState: LoadingState;
-  siteCarbonStorage:
-    | ProjectAndSiteSoilsCarbonStorageResult["siteCarbonStorage"]
-    | undefined;
-  projectCarbonStorage:
-    | ProjectAndSiteSoilsCarbonStorageResult["projectCarbonStorage"]
-    | undefined;
+  current?: CurrentAndProjectedSoilsCarbonStorageResult["current"];
+  projected?: CurrentAndProjectedSoilsCarbonStorageResult["projected"];
 };
 
 const initialState: State = {
   loadingState: "idle",
-  siteCarbonStorage: undefined,
-  projectCarbonStorage: undefined,
+  current: undefined,
+  projected: undefined,
 };
 
 export const siteCarbonStorage = createSlice({
@@ -28,21 +24,21 @@ export const siteCarbonStorage = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
-      fetchCarbonStorageForSiteAndProjectSoils.pending,
+      fetchCurrentAndProjectedSoilsCarbonStorage.pending,
       (state) => {
         state.loadingState = "loading";
       },
     );
     builder.addCase(
-      fetchCarbonStorageForSiteAndProjectSoils.fulfilled,
+      fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled,
       (state, action) => {
         state.loadingState = "success";
-        state.siteCarbonStorage = action.payload.siteCarbonStorage;
-        state.projectCarbonStorage = action.payload.projectCarbonStorage;
+        state.current = action.payload.current;
+        state.projected = action.payload.projected;
       },
     );
     builder.addCase(
-      fetchCarbonStorageForSiteAndProjectSoils.rejected,
+      fetchCurrentAndProjectedSoilsCarbonStorage.rejected,
       (state) => {
         state.loadingState = "error";
       },
