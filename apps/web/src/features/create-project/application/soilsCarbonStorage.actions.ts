@@ -1,8 +1,6 @@
 import { createAppAsyncThunk } from "@/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
 
-type Soils = { type: SoilType; surfaceArea: number }[];
-
 type SoilsCarbonStorageResult = {
   totalCarbonStorage: number;
   soilsStorage: {
@@ -12,33 +10,46 @@ type SoilsCarbonStorageResult = {
   }[];
 };
 
-export type ProjectAndSiteSoilsCarbonStorageResult = {
-  siteCarbonStorage: SoilsCarbonStorageResult;
-  projectCarbonStorage: SoilsCarbonStorageResult;
+export type CurrentAndProjectedSoilsCarbonStorageResult = {
+  current: SoilsCarbonStorageResult;
+  projected: SoilsCarbonStorageResult;
 };
 
-type Payload = { siteSoils: Soils; projectSoils: Soils; cityCode: string };
+export const fetchCurrentAndProjectedSoilsCarbonStorage =
+  createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
+    "project/fetchCurrentAndProjectedSoilsCarbonStorage",
+    async (_, { extra, getState }) => {
+      const { projectCreation } = getState();
+      const cityCode = projectCreation.siteData?.address?.cityCode;
+      const siteSoils = projectCreation.siteData?.soilsSurfaceAreas ?? {};
+      const projectSoils = projectCreation.projectData.soilsSurfaceAreas ?? {};
 
-export const fetchCarbonStorageForSiteAndProjectSoils = createAppAsyncThunk<
-  ProjectAndSiteSoilsCarbonStorageResult,
-  Payload
->(
-  "project/fetchCarbonStorageForSiteAndProjectSoils",
-  async (payload, { extra }) => {
-    const [siteCarbonStorage, projectCarbonStorage] = await Promise.all([
-      await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
-        cityCode: payload.cityCode,
-        soils: payload.siteSoils,
-      }),
-      await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
-        soils: payload.projectSoils,
-        cityCode: payload.cityCode,
-      }),
-    ]);
+      if (!cityCode) {
+        return Promise.reject(
+          "fetchCurrentAndProjectedSoilsCarbonStorage: Missing city code",
+        );
+      }
 
-    return {
-      siteCarbonStorage,
-      projectCarbonStorage,
-    };
-  },
-);
+      const [current, projected] = await Promise.all([
+        await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+          cityCode,
+          soils: Object.entries(siteSoils).map(([type, surfaceArea]) => ({
+            type: type as SoilType,
+            surfaceArea,
+          })),
+        }),
+        await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+          soils: Object.entries(projectSoils).map(([type, surfaceArea]) => ({
+            type: type as SoilType,
+            surfaceArea,
+          })),
+          cityCode,
+        }),
+      ]);
+
+      return {
+        current,
+        projected,
+      };
+    },
+  );
