@@ -1,8 +1,8 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
-import { Route } from "type-route";
-import { fetchProjectDetails } from "../../application/projectDetails.actions";
+import { ProjectImpactsComparisonState } from "../../application/projectImpactsComparison.reducer";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
 import CarbonStorageComparisonChart from "./charts/carbon-storage";
@@ -26,15 +26,19 @@ import NonPollutedSoilsImpactComparisonChart from "./charts/soil-impacts/NonPoll
 import PermeableSoilsImpactComparisonChart from "./charts/soil-impacts/PermeableSoilsImpactComparisonChart";
 import ImpactsComparisonPageHeader from "./ImpactsComparisonPageHeader";
 
-import { routes } from "@/router";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
-
-type Props = {
-  route: Route<typeof routes.compareProjects>;
+type SuccessDataProps = {
+  siteData: Exclude<ProjectImpactsComparisonState["siteData"], undefined>;
+  projectData: Exclude<ProjectImpactsComparisonState["projectData"], undefined>;
+  loadingState: "success";
 };
+
+type ErrorOrLoadingDataProps = {
+  siteData: undefined;
+  projectData: undefined;
+  loadingState: "idle" | "error" | "loading";
+};
+
+type Props = SuccessDataProps | ErrorOrLoadingDataProps;
 
 type ImpactCardProps = {
   children: ReactNode;
@@ -51,29 +55,39 @@ const ImpactCard = ({ children }: ImpactCardProps) => {
   );
 };
 
-function ProjectsImpactsComparisonPage({ route }: Props) {
+function ProjectsImpactsComparisonPage({
+  siteData,
+  projectData,
+  loadingState,
+}: Props) {
   const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">(
     "all",
   );
-  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    void dispatch(fetchProjectDetails(route.params.baseProjectId));
-  }, [dispatch, route.params.baseProjectId]);
-
-  const { siteData, projectData, projectDataLoadingState } = useAppSelector(
-    (state) => state.projectDetails,
-  );
-
-  if (projectDataLoadingState === "loading") {
+  if (loadingState === "loading") {
     return <p>Chargement en cours ...</p>;
+  }
+
+  if (loadingState === "error") {
+    return (
+      <Alert
+        description="Une erreur s’est produite lors du chargement des données."
+        severity="error"
+        title="Erreur"
+        className="fr-my-7v"
+      />
+    );
+  }
+
+  if (loadingState !== "success") {
+    return null;
   }
 
   return (
     <div>
       <ImpactsComparisonPageHeader
-        projectName={siteData?.name ?? ""}
-        siteName={projectData?.name ?? ""}
+        projectName={projectData.name}
+        siteName={siteData.name}
       />
       <Notice
         title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
