@@ -1,8 +1,24 @@
 import { useEffect, useMemo } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
+import L from "leaflet";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/leaflet.css";
 import "./leaflet-override.css";
+
+// https://github.com/PaulLeCam/react-leaflet/issues/808
+const customMarkerIcon = L.icon({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41],
+});
 
 type PropsType = {
   lat?: number;
@@ -58,7 +74,9 @@ const MarkerLeafletMap = ({ lat, long, popup }: PropsType) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         {displayMarker && (
-          <Marker position={position}>{popup && <Popup>{popup}</Popup>}</Marker>
+          <Marker position={position} icon={customMarkerIcon}>
+            {popup && <Popup>{popup}</Popup>}
+          </Marker>
         )}
       </MapContainer>
     </div>
