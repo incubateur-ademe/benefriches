@@ -221,11 +221,7 @@ function ProjectImpactsPage({ projectId, projectName, siteName }: Props) {
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="🚵 Aménité environnementale"
-              impact="-2 083 €"
-              isPositive
-            />
+            <ImpactCard title="🚵 Aménité environnementale" impact="-2 083 €" />
           </div>
         </div>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
@@ -233,7 +229,6 @@ function ProjectImpactsPage({ projectId, projectName, siteName }: Props) {
             <ImpactCard
               title="🐝 Pollinisation"
               impact="-606 €"
-              isPositive
               text="pour Générale du Solaire"
             />
           </div>

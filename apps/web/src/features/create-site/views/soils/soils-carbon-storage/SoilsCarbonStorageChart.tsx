@@ -33,6 +33,9 @@ const SiteSoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
       pointFormat:
         "Superficie : <strong>{point.y:.2f} ha ({point.percentage:.1f}%)</strong><br>Carbone stockable: <strong>{point.z:.2f} t/ha</strong>",
     },
+    credits: {
+      enabled: false,
+    },
     plotOptions: { variablepie: { cursor: "pointer" } },
     series: [
       {
