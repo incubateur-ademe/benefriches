@@ -43,7 +43,7 @@ function CarbonStorageChart() {
         <strong>Stockage du carbone dans les sols</strong>
       </p>
       <p>
-        <strong>+571 t stockées</strong>
+        <strong>+150 t stockées</strong>
       </p>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </div>
