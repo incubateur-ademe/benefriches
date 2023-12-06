@@ -9,8 +9,8 @@ const ProjectRevenueIntroduction = ({ onNext }: Props) => {
     <>
       <h2>Recettes liées au projet</h2>
       <p>
-        Les aides aux travaux et l’exploitation des panneaux photovoltaïques
-        vont générer des recettes financières.
+        L'exploitation des panneaux photovoltaïques va générer des recettes
+        financières.
       </p>
       <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
         Suivant
