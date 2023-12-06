@@ -1,7 +1,7 @@
-import { SoilType } from "../domain/siteFoncier.types";
-import { SoilsCarbonStorageMock } from "../infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
 
+import { SoilType } from "@/shared/domain/soils";
+import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { createStore } from "@/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 

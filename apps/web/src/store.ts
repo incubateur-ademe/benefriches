@@ -3,21 +3,25 @@ import {
   GetSiteGateway,
   SaveProjectGateway,
 } from "./features/create-project/application/createProject.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "./features/create-project/application/soilsCarbonStorage.actions";
 import { CreateSiteGateway } from "./features/create-site/application/createSite.actions";
-import { SoilsCarbonStorageGateway } from "./features/create-site/application/siteSoilsCarbonStorage.actions";
+import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "./features/create-site/application/siteSoilsCarbonStorage.actions";
 import {
   ProjectsListGateway,
   SitesGateway,
 } from "./features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
+import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import projectsList from "@/features/projects/application/projectsList.reducer";
 import currentUser from "@/features/users/application/user.reducer";
 
 export type AppDependencies = {
-  soilsCarbonStorageService: SoilsCarbonStorageGateway;
+  soilsCarbonStorageService:
+    | SiteSoilsCarbonStorageGateway
+    | ProjectSoilsCarbonStorageGateway;
   createSiteService: CreateSiteGateway;
   saveProjectGateway: SaveProjectGateway;
   getSiteService: GetSiteGateway;
@@ -33,6 +37,7 @@ export const createStore = (appDependencies: AppDependencies) =>
       siteCarbonStorage,
       projectsList,
       currentUser,
+      projectSoilsCarbonStorage,
     },
     middleware(getDefaultMiddleware) {
       return getDefaultMiddleware({

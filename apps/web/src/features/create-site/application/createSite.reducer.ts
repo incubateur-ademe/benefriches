@@ -6,8 +6,8 @@ import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import {
   Expense,
   SiteDraft,
-  SoilType,
 } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 
 export type SiteCreationState = {
   step: SiteCreationStep;

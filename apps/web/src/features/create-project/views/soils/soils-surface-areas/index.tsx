@@ -1,7 +1,3 @@
-import {
-  RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
-  RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
-} from "../../domain/photovoltaic";
 import SoilDistributionForm from "./SoilsSurfaceAreasForm";
 
 import {
@@ -9,6 +5,10 @@ import {
   ProjectCreationStep,
   setSoilsSurfaceAreas,
 } from "@/features/create-project/application/createProject.reducer";
+import {
+  RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
+  RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
+} from "@/features/create-project/domain/photovoltaic";
 import {
   useAppDispatch,
   useAppSelector,
@@ -66,7 +66,7 @@ function ProjectSoilsSurfaceAreasContainer() {
             ),
           ),
         );
-        dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION));
+        dispatch(goToStep(ProjectCreationStep.SOILS_SUMMARY));
       }}
     />
   );

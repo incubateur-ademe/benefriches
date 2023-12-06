@@ -7,7 +7,7 @@ import {
 } from "../domain/project.types";
 
 import { createAppAsyncThunk } from "@/appAsyncThunk";
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 
 export interface GetSiteGateway {
   getById(siteId: string): Promise<ProjectSite | undefined>;

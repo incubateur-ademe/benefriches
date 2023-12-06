@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import Button from "@codegouvfr/react-dsfr/Button";
-import SoilsCarbonStorageChart from "./SoilsCarbonStorageChart";
 
 import { SiteSoilsCarbonStorageResult } from "@/features/create-site/application/siteSoilsCarbonStorage.actions";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 
 type Props = {
   onNext: () => void;

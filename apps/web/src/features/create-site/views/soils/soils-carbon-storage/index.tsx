@@ -5,7 +5,7 @@ import {
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 import { fetchCarbonStorageForSoils } from "@/features/create-site/application/siteSoilsCarbonStorage.actions";
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
+import { SoilType } from "@/shared/domain/soils";
 import {
   useAppDispatch,
   useAppSelector,

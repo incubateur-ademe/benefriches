@@ -1,5 +1,5 @@
-import { SoilType } from "@/features/create-site/domain/siteFoncier.types";
 import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
+import { SoilType } from "@/shared/domain/soils";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 
 export enum ProjectType {
@@ -68,6 +68,18 @@ type ProjectStakeholder =
       structureType: "local_or_regional_authority";
     };
 
+export type Address = {
+  id: string;
+  value: string;
+  city: string;
+  cityCode: string;
+  postCode: string;
+  streetNumber?: string;
+  streetName?: string;
+  long: number;
+  lat: number;
+};
+
 export type ProjectSite = {
   id: string;
   name: string;
@@ -84,6 +96,7 @@ export type ProjectSite = {
   contaminatedSoilSurface?: number;
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;
   surfaceArea: number;
+  address: Address;
 };
 
 const getPrevisionalProjectSocioEconomicImpactPerHectare = (

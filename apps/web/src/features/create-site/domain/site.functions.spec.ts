@@ -1,5 +1,7 @@
 import { hasBuildings, hasImpermeableSoils, hasTenant } from "./site.functions";
-import { SiteDraft, SoilType } from "./siteFoncier.types";
+import { SiteDraft } from "./siteFoncier.types";
+
+import { SoilType } from "@/shared/domain/soils";
 
 const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
   return {
