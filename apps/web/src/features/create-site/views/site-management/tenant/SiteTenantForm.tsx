@@ -82,7 +82,7 @@ function SiteTenantForm({ onSubmit }: Props) {
         )}
         {selectedTenantType === "company" && (
           <Input
-            label="Raison sociale de l'entreprise"
+            label="Nom de l'entreprise"
             nativeInputProps={register("companyName", {
               required: "Ce champ est requis",
             })}
