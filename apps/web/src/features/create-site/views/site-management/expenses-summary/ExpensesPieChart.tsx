@@ -24,6 +24,9 @@ const ExpensesPieChart = ({ expenses }: Props) => {
         fontFamily: "Marianne",
       },
     },
+    credits: {
+      enabled: false,
+    },
     tooltip: {
       pointFormat:
         "Montant : <strong>{point.y} € / an</strong> ({point.percentage:.1f}%)",
