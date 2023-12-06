@@ -38,7 +38,7 @@ function SiteTypeForm({ onSubmit }: Props) {
           <p>
             Une friche est un terrain, bâti ou non bâti, inutilisé et dont
             l'état, la configuration ou l'occupation totale ou partielle ne
-            permet pas un réemploi sans un aménagement ou dex travaux
+            permet pas un réemploi sans un aménagement ou des travaux
             préalables.
           </p>
           <p>
