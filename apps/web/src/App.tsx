@@ -6,7 +6,7 @@ import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWiza
 import LoginPage from "./features/login";
 import MyProjectsPage from "./features/projects/views/my-projects-page";
 import ProjectImpactsPage from "./features/projects/views/project-impacts-page/ProjectImpactsPage";
-import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison/ProjectsImpactsComparisonPage";
+import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison";
 import ProjectsComparisonSelectionPage from "./features/projects/views/select-projects-comparison-page";
 import CreateUserPage from "./features/users/views";
 import HeaderFooterLayout from "./shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
@@ -32,10 +32,7 @@ function App() {
         )}
         {route.name === routes.createProject.name && <CreateProjectPage />}
         {route.name === routes.compareProjects.name && (
-          <ProjectsImpactsComparisonPage
-            siteName="Ancienne carrière d'argile de Blajan"
-            projectName="Centrale photovoltaïque"
-          />
+          <ProjectsImpactsComparisonPage route={route} />
         )}
         {route.name === routes.selectProjectToCompare.name && (
           <ProjectsComparisonSelectionPage route={route} />

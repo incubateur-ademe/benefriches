@@ -1,9 +1,11 @@
 import { ReactNode, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
+import { ProjectImpactsComparisonState } from "../../application/projectImpactsComparison.reducer";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
-import CarbonStorageComparisonChart from "./charts/carbon-storage/CarbonStorageComparisonChart";
+import CarbonStorageComparisonChart from "./charts/carbon-storage";
 import EconomicEvaluationComparisonChart from "./charts/economic-evaluation/EconomicEvaluationComparisonChart";
 import RentIncomeComparisonChart from "./charts/economic-impacts/RentIncomeComparisonChart";
 import SecuringCostComparisonChart from "./charts/economic-impacts/SecuringCostComparisonChart";
@@ -24,10 +26,19 @@ import NonPollutedSoilsImpactComparisonChart from "./charts/soil-impacts/NonPoll
 import PermeableSoilsImpactComparisonChart from "./charts/soil-impacts/PermeableSoilsImpactComparisonChart";
 import ImpactsComparisonPageHeader from "./ImpactsComparisonPageHeader";
 
-type Props = {
-  projectName: string;
-  siteName: string;
+type SuccessDataProps = {
+  siteData: Exclude<ProjectImpactsComparisonState["siteData"], undefined>;
+  projectData: Exclude<ProjectImpactsComparisonState["projectData"], undefined>;
+  loadingState: "success";
 };
+
+type ErrorOrLoadingDataProps = {
+  siteData: undefined;
+  projectData: undefined;
+  loadingState: "idle" | "error" | "loading";
+};
+
+type Props = SuccessDataProps | ErrorOrLoadingDataProps;
 
 type ImpactCardProps = {
   children: ReactNode;
@@ -44,16 +55,39 @@ const ImpactCard = ({ children }: ImpactCardProps) => {
   );
 };
 
-function ProjectsImpactsComparisonPage({ projectName, siteName }: Props) {
+function ProjectsImpactsComparisonPage({
+  siteData,
+  projectData,
+  loadingState,
+}: Props) {
   const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">(
     "all",
   );
 
+  if (loadingState === "loading") {
+    return <p>Chargement en cours ...</p>;
+  }
+
+  if (loadingState === "error") {
+    return (
+      <Alert
+        description="Une erreur s’est produite lors du chargement des données."
+        severity="error"
+        title="Erreur"
+        className="fr-my-7v"
+      />
+    );
+  }
+
+  if (loadingState !== "success") {
+    return null;
+  }
+
   return (
     <div>
       <ImpactsComparisonPageHeader
-        projectName={projectName}
-        siteName={siteName}
+        projectName={projectData.name}
+        siteName={siteData.name}
       />
       <Notice
         title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."

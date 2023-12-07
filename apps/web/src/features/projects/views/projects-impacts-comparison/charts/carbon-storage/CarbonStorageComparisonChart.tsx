@@ -1,8 +1,53 @@
+import { useMemo } from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
-function CarbonStorageComparisonChart() {
+import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
+import { SoilType } from "@/shared/domain/soils";
+import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+
+type Props = {
+  currentCarbonStorage: Exclude<
+    ProjectImpactsComparisonState["currentCarbonStorage"],
+    undefined
+  >;
+  projectedCarbonStorage: Exclude<
+    ProjectImpactsComparisonState["projectedCarbonStorage"],
+    undefined
+  >;
+};
+
+const getData = (
+  soilType: SoilType,
+  currentCarbonStorage: Props["currentCarbonStorage"]["soilsStorage"],
+  projectedCarbonStorage: Props["projectedCarbonStorage"]["soilsStorage"],
+) => {
+  const soilTypeInSite = currentCarbonStorage.find(
+    (storage) => storage.type === soilType,
+  );
+  const soilTypeInProject = projectedCarbonStorage.find(
+    (storage) => storage.type === soilType,
+  );
+  return [
+    Math.round(soilTypeInSite?.carbonStorage ?? 0 * 100) / 100,
+    Math.round(soilTypeInProject?.carbonStorage ?? 0 * 100) / 100,
+  ];
+};
+
+function CarbonStorageComparisonChart({
+  currentCarbonStorage,
+  projectedCarbonStorage,
+}: Props) {
+  const soilsTypes = useMemo(
+    () =>
+      [
+        ...currentCarbonStorage.soilsStorage,
+        ...projectedCarbonStorage.soilsStorage,
+      ].map(({ type }) => type),
+    [currentCarbonStorage, projectedCarbonStorage],
+  );
+
   const barChartOptions: Highcharts.Options = {
     ...sharedChartConfig,
     chart: {
@@ -24,17 +69,15 @@ function CarbonStorageComparisonChart() {
         dataLabels: { enabled: true, format: "{point.y} t" },
       },
     },
-    series: [
-      {
-        name: "Sol imperméabilisé (dont bâtiments)",
-        data: [90, 10],
-        type: "column",
-      },
-      { name: "Sol minéral", data: [120, 68.51], type: "column" },
-      { name: "Prairie arbustive", data: [246, 66.7], type: "column" },
-      { name: "Prairie herbacée", data: [300, 831.7], type: "column" },
-      { name: "Forêt de feuillus", data: [175.05, 103.8], type: "column" },
-    ],
+    series: soilsTypes.map((soilType) => ({
+      name: getLabelForSoilType(soilType),
+      type: "column",
+      data: getData(
+        soilType,
+        currentCarbonStorage.soilsStorage,
+        projectedCarbonStorage.soilsStorage,
+      ),
+    })),
   };
 
   return (
