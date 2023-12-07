@@ -1,12 +1,7 @@
 import { validate as uuidValidate } from "uuid";
-import { ProjectDetailsResult } from "../infrastructure/project-details-service/localStorageProjectDetailsApi";
 
 import { createAppAsyncThunk } from "@/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
-
-export interface ProjectsDetailsGateway {
-  getProjectById(id: string): Promise<ProjectDetailsResult>;
-}
 
 type SoilsCarbonStorageResult = {
   totalCarbonStorage: number;
@@ -84,6 +79,37 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
     },
   );
 
+export type ProjectSite = {
+  id: string;
+  name: string;
+  isFriche: boolean;
+  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  surfaceArea: number;
+  address: {
+    id: string;
+    value: string;
+    city: string;
+    cityCode: string;
+    postCode: string;
+    streetNumber?: string;
+    streetName?: string;
+    long: number;
+    lat: number;
+  };
+};
+
+export type Project = {
+  id: string;
+  name: string;
+  relatedSiteId: string;
+  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+};
+
+export type ProjectDetailsResult = {
+  projectData?: Project;
+  siteData?: ProjectSite;
+};
+
 type FetchDataResult = {
   projectData: ProjectDetailsResult["projectData"];
   siteData: ProjectDetailsResult["siteData"];
@@ -91,6 +117,10 @@ type FetchDataResult = {
   baseProjectId: string;
   withProject: string;
 };
+
+export interface ProjectsDetailsGateway {
+  getProjectById(id: string): Promise<ProjectDetailsResult>;
+}
 
 export const fetchBaseProjectAndWithProjectData = createAppAsyncThunk<
   FetchDataResult,

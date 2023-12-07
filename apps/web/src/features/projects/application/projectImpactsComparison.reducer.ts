@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ProjectDetailsResult } from "../infrastructure/project-details-service/localStorageProjectDetailsApi";
 import {
   CurrentAndProjectedSoilsCarbonStorageResult,
   fetchBaseProjectAndWithProjectData,
   fetchCurrentAndProjectedSoilsCarbonStorage,
+  ProjectDetailsResult,
 } from "./projectImpactsComparison.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";

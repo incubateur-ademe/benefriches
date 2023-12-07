@@ -1,6 +1,9 @@
-import { ProjectsDetailsGateway } from "../../application/projectImpactsComparison.actions";
+import {
+  ProjectDetailsResult,
+  ProjectsDetailsGateway,
+  ProjectSite,
+} from "../../application/projectImpactsComparison.actions";
 
-import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
 import { SoilType } from "@/shared/domain/soils";
 import { delay } from "@/shared/services/delay/delay";
@@ -12,11 +15,6 @@ type ProjectInLocalStorage = {
   name: string;
   relatedSiteId: string;
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;
-};
-
-export type ProjectDetailsResult = {
-  projectData?: ProjectInLocalStorage;
-  siteData?: ProjectSite;
 };
 
 export class LocalStorageProjectDetailsApi implements ProjectsDetailsGateway {
