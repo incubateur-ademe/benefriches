@@ -1,17 +1,28 @@
 import { ReactNode, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
-import CarbonStorageChart from "./charts/CarbonStorageChart";
+import CarbonStorageChart from "./charts/carbon-storage";
 import SocioEconomicBenefitsBarChart from "./charts/SocioEconomicBenefitsBarChart";
 import SocioEconomicBenefitsByDomainChart from "./charts/SocioEconomicBenefitsByDomainChart";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
-type Props = {
+type SuccessDataProps = {
   projectId: string;
   projectName: string;
   siteName: string;
+  loadingState: "success";
 };
+
+type ErrorOrLoadingDataProps = {
+  projectId: string;
+  projectName: undefined;
+  siteName: undefined;
+  loadingState: "idle" | "error" | "loading";
+};
+
+type Props = SuccessDataProps | ErrorOrLoadingDataProps;
 
 type ImpactIndicatorProps = {
   title: string;
@@ -64,11 +75,35 @@ const ImpactCard = ({
   );
 };
 
-function ProjectImpactsPage({ projectId, projectName, siteName }: Props) {
+function ProjectImpactsPage({
+  projectId,
+  projectName,
+  siteName,
+  loadingState,
+}: Props) {
   ``;
   const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">(
     "all",
   );
+
+  if (loadingState === "loading") {
+    return <p>Chargement en cours ...</p>;
+  }
+
+  if (loadingState === "error") {
+    return (
+      <Alert
+        description="Une erreur s’est produite lors du chargement des données."
+        severity="error"
+        title="Erreur"
+        className="fr-my-7v"
+      />
+    );
+  }
+
+  if (loadingState !== "success") {
+    return null;
+  }
 
   return (
     <div>

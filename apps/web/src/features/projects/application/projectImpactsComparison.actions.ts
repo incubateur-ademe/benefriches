@@ -1,4 +1,5 @@
 import { validate as uuidValidate } from "uuid";
+import { Project, ProjectSite } from "../domain/projects.types";
 
 import { createAppAsyncThunk } from "@/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
@@ -78,32 +79,6 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       };
     },
   );
-
-export type ProjectSite = {
-  id: string;
-  name: string;
-  isFriche: boolean;
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
-  surfaceArea: number;
-  address: {
-    id: string;
-    value: string;
-    city: string;
-    cityCode: string;
-    postCode: string;
-    streetNumber?: string;
-    streetName?: string;
-    long: number;
-    lat: number;
-  };
-};
-
-export type Project = {
-  id: string;
-  name: string;
-  relatedSiteId: string;
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
-};
 
 export type ProjectDetailsResult = {
   projectData?: Project;
