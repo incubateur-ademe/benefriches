@@ -1,6 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { sharedChartConfig } from "../../shared/sharedChartConfig";
+import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
 function SocioEconomicBenefitsByDomainChart() {
   const barChartOptions: Highcharts.Options = {

@@ -3,9 +3,11 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
-import CarbonStorageChart from "./charts/carbon-storage";
-import SocioEconomicBenefitsBarChart from "./charts/SocioEconomicBenefitsBarChart";
-import SocioEconomicBenefitsByDomainChart from "./charts/SocioEconomicBenefitsByDomainChart";
+import CarbonStorageChart from "./impacts/carbon-storage";
+import ImpactCard from "./impacts/ImpactCard";
+import ImpactContainer from "./impacts/ImpactContainer";
+import SocioEconomicBenefitsBarChart from "./impacts/socio-economic/SocioEconomicBenefitsBarChart";
+import SocioEconomicBenefitsByDomainChart from "./impacts/socio-economic/SocioEconomicBenefitsByDomainChart";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
 type SuccessDataProps = {
@@ -24,54 +26,11 @@ type ErrorOrLoadingDataProps = {
 
 type Props = SuccessDataProps | ErrorOrLoadingDataProps;
 
-type ImpactIndicatorProps = {
-  title: string;
-  impact: string;
-  isPositive?: boolean;
-  text?: string;
-};
-
 const ImpactsRow = ({ children }: { children: ReactNode }) => {
   return (
     <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
       {children}
     </div>
-  );
-};
-const ImpactContainer = ({ children }: { children: ReactNode }) => {
-  return (
-    <div
-      style={{ border: "2px solid gray", borderRadius: "9px" }}
-      className={fr.cx("fr-py-2w", "fr-px-3w")}
-    >
-      {children}
-    </div>
-  );
-};
-
-const ImpactCard = ({
-  title,
-  impact,
-  isPositive,
-  text,
-}: ImpactIndicatorProps) => {
-  return (
-    <ImpactContainer>
-      <p>
-        <strong>{title}</strong>
-      </p>
-      <h5
-        className={fr.cx("fr-mb-1v")}
-        style={{
-          color: `var(${
-            isPositive ? "--text-default-success" : "--text-default-error"
-          })`,
-        }}
-      >
-        {impact}
-      </h5>
-      {text && <legend>{text}</legend>}
-    </ImpactContainer>
   );
 };
 
