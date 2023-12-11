@@ -1,8 +1,12 @@
 import {
-  ProjectDetailsResult,
-  ProjectsDetailsGateway,
-  ProjectSite,
+  ProjectDetailsResult as ProjectImpactsResult,
+  ProjectsDetailsGateway as ProjectImpactsGateway,
+} from "../../application/projectImpacts.actions";
+import {
+  ProjectDetailsResult as ProjectImpactsComparisonResult,
+  ProjectsDetailsGateway as ProjectImpactsComparisonGateway,
 } from "../../application/projectImpactsComparison.actions";
+import { ProjectSite } from "../../domain/projects.types";
 
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
 import { SoilType } from "@/shared/domain/soils";
@@ -17,8 +21,12 @@ type ProjectInLocalStorage = {
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;
 };
 
-export class LocalStorageProjectDetailsApi implements ProjectsDetailsGateway {
-  async getProjectById(projectId: string): Promise<ProjectDetailsResult> {
+export class LocalStorageProjectDetailsApi
+  implements ProjectImpactsComparisonGateway, ProjectImpactsGateway
+{
+  async getProjectById(
+    projectId: string,
+  ): Promise<ProjectImpactsComparisonResult | ProjectImpactsResult> {
     await delay(300);
 
     try {

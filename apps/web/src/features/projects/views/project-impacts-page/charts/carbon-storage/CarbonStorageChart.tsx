@@ -3,20 +3,19 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
-import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
+import { ProjectImpactsState } from "@/features/projects/application/projectImpacts.reducer";
 import { SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type CurrentCarbonStorageType = Exclude<
-  ProjectImpactsComparisonState["currentCarbonStorage"],
+  ProjectImpactsState["currentCarbonStorage"],
   undefined
 >;
 
 type ProjectedCarbonStorageType = Exclude<
-  ProjectImpactsComparisonState["currentCarbonStorage"],
+  ProjectImpactsState["currentCarbonStorage"],
   undefined
 >;
-
 type Props = {
   currentCarbonStorage: CurrentCarbonStorageType;
   projectedCarbonStorage: ProjectedCarbonStorageType;
@@ -44,7 +43,7 @@ const getMergedSoilTypes = (
   projected: ProjectedCarbonStorageType["soilsStorage"],
 ) => Array.from(new Set([...current, ...projected].map(({ type }) => type)));
 
-function CarbonStorageComparisonChart({
+function CarbonStorageChart({
   currentCarbonStorage,
   projectedCarbonStorage,
 }: Props) {
@@ -61,6 +60,7 @@ function CarbonStorageComparisonChart({
     ...sharedChartConfig,
     chart: {
       ...sharedChartConfig.chart,
+      type: "area",
       height: "400",
     },
     xAxis: {
@@ -71,16 +71,15 @@ function CarbonStorageComparisonChart({
       valueSuffix: " tonnes stockées",
     },
     plotOptions: {
-      column: {
+      area: {
         stacking: "normal",
-        pointPadding: 0.05,
         borderWidth: 0,
         dataLabels: { enabled: true, format: "{point.y} t" },
       },
     },
     series: soilsTypes.map((soilType) => ({
       name: getLabelForSoilType(soilType),
-      type: "column",
+      type: "area",
       data: getData(
         soilType,
         currentCarbonStorage.soilsStorage,
@@ -94,9 +93,12 @@ function CarbonStorageComparisonChart({
       <p>
         <strong>Stockage du carbone dans les sols</strong>
       </p>
+      <p>
+        <strong>+150 t stockées</strong>
+      </p>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </div>
   );
 }
 
-export default CarbonStorageComparisonChart;
+export default CarbonStorageChart;
