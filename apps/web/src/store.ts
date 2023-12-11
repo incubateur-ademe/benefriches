@@ -15,6 +15,7 @@ import projectCreation from "@/features/create-project/application/createProject
 import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
+import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
 import projectImpactsComparison from "@/features/projects/application/projectImpactsComparison.reducer";
 import projectsList from "@/features/projects/application/projectsList.reducer";
@@ -40,6 +41,7 @@ export const createStore = (appDependencies: AppDependencies) =>
       siteCarbonStorage,
       projectsList,
       currentUser,
+      projectImpacts,
       projectImpactsComparison,
       projectSoilsCarbonStorage,
     },
