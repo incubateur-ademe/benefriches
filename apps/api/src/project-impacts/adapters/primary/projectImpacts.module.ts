@@ -1,9 +1,13 @@
 import { Module } from "@nestjs/common";
 import {
+  GetProjectContaminatedSoilsImpactUseCase,
+  ProjectRepository as ContaminatedSoilProjectRepository,
+} from "src/project-impacts/core/getProjectContaminatedSoilsImpact.usecase";
+import {
   GetProjectPermeableSoilsImpactsUseCase,
-  ProjectRepository,
+  ProjectRepository as SoilsDistributionProjectRepository,
 } from "src/project-impacts/core/getProjectPermeableSoilsImpacts.usecase";
-import { InMemoryProjectRepository } from "../secondary/project-repository/MockProjectRepository";
+import { InMemoryProjectRepository } from "../secondary/project-repository/InMemoryProjectRepository";
 import { ProjectImpactsController } from "./projectImpacts.controller";
 
 @Module({
@@ -12,12 +16,24 @@ import { ProjectImpactsController } from "./projectImpacts.controller";
     {
       provide: InMemoryProjectRepository,
       useFactory: () =>
-        new InMemoryProjectRepository({ current: [], future: [] }),
+        new InMemoryProjectRepository({
+          decontaminatedSoilsSurface: 0,
+          soilsDistribution: {
+            current: [],
+            future: [],
+          },
+        }),
     },
     {
       provide: GetProjectPermeableSoilsImpactsUseCase,
-      useFactory: (projectRepo: ProjectRepository) =>
+      useFactory: (projectRepo: SoilsDistributionProjectRepository) =>
         new GetProjectPermeableSoilsImpactsUseCase(projectRepo),
+      inject: [InMemoryProjectRepository],
+    },
+    {
+      provide: GetProjectContaminatedSoilsImpactUseCase,
+      useFactory: (projectRepo: ContaminatedSoilProjectRepository) =>
+        new GetProjectContaminatedSoilsImpactUseCase(projectRepo),
       inject: [InMemoryProjectRepository],
     },
   ],

@@ -30,7 +30,6 @@ export class GetProjectPermeableSoilsImpactsUseCase
   constructor(private readonly projectRepository: ProjectRepository) {}
 
   async execute({ projectId }: Request): Promise<Result> {
-    console.log(projectId);
     if (!projectId) throw new Error("projectId is required");
     try {
       const projectSoilsDistribution =
@@ -48,10 +47,10 @@ export class GetProjectPermeableSoilsImpactsUseCase
           isPermeableSoil(soil.type),
         ),
       );
-      return Promise.resolve({
+      return {
         permeableSoilsSurfaceDifference:
           projectPermeableSoilsSurface - currentPermeableSoilsSurface,
-      });
+      };
     } catch (err) {
       throw new Error(
         `Error while retrieving soils distribution for project ${projectId}`,
