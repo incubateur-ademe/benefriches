@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -31,10 +30,9 @@ function PhotovoltaicAnnualProductionForm({
       instructions={
         <>
           <p>
-            D’après le taux d’ensoleillement moyen en France et à partir de la
-            puissance de vos futurs panneaux, vous pouvez attendre une
-            production annuelle de{" "}
-            {formatNumberFr(suggestedAnnualProductionInMegaWattPerYear)} MWh/an.
+            Production calculée à partir de la puissance, de la superficie au
+            sol et du taux d’ensoleillement dans la zone géographique du site.
+            Vous pouvez la modifier.
           </p>
           <p>Vous pouvez modifier cette valeur.</p>
         </>

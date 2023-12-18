@@ -26,8 +26,8 @@ function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
       title="Quelle sera la durée du contrat de revente d’énergie au distributeur ?"
       instructions={
         <p>
-          La durée usuelle de contrat de revente de production photovoltaïque
-          est de {AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS} ans.
+          Ceci est la durée de contrat moyen de l’utilisation de panneaux
+          photovoltaïques. Vous pouvez la modifier.
         </p>
       }
     >
