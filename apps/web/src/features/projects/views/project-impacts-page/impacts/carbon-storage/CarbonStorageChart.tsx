@@ -21,6 +21,10 @@ type Props = {
   projectedCarbonStorage: ProjectedCarbonStorageType;
 };
 
+const roundTo2Digits = (value: number) => {
+  return Math.round(value * 100) / 100;
+};
+
 const getData = (
   soilType: SoilType,
   currentCarbonStorage: CurrentCarbonStorageType["soilsStorage"],
@@ -33,8 +37,8 @@ const getData = (
     (storage) => storage.type === soilType,
   );
   return [
-    Math.round(soilTypeInSite?.carbonStorage ?? 0 * 100) / 100,
-    Math.round(soilTypeInProject?.carbonStorage ?? 0 * 100) / 100,
+    roundTo2Digits(soilTypeInSite?.carbonStorage ?? 0),
+    roundTo2Digits(soilTypeInProject?.carbonStorage ?? 0),
   ];
 };
 
