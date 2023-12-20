@@ -20,8 +20,12 @@ const mapProps = (
   dispatch: AppDispatch,
   siteData: RootState["siteCreation"]["siteData"],
 ) => {
+  if (!siteData.yearlyExpenses || siteData.yearlyExpenses.length === 0) {
+    return { hasExpenses: false, expensesByBearer: [], expensesByCategory: [] };
+  }
   return {
-    expensesByBearer: groupExpensesByBearer(siteData.yearlyExpenses!).map(
+    hasExpenses: true,
+    expensesByBearer: groupExpensesByBearer(siteData.yearlyExpenses).map(
       ({ amount, bearer }) => {
         return {
           bearer: getLabelForExpenseBearer(bearer, {
@@ -32,7 +36,7 @@ const mapProps = (
         };
       },
     ),
-    expensesByCategory: groupExpensesByCategory(siteData.yearlyExpenses!).map(
+    expensesByCategory: groupExpensesByCategory(siteData.yearlyExpenses).map(
       ({ amount, category }) => ({
         amount,
         category: getLabelForExpenseCategory(category),
