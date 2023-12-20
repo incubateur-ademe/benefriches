@@ -4,6 +4,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -71,7 +72,7 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
               control={control}
               name="contaminatedSurface"
               label="Superficie polluée"
-              hintText="en m2"
+              hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
               minValue={5}
               sliderStartValue={0}
               sliderEndValue={surfaceArea}
