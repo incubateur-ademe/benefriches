@@ -4,6 +4,7 @@ import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
+import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 type Props = {
   onNext: () => void;
@@ -16,7 +17,6 @@ const SiteSoilsSummary = ({
   onNext,
   soilsSurfaceAreas,
 }: Props) => {
-  const formattedTotalSurfaceArea = formatNumberFr(totalSurfaceArea);
   const formattedTotalSurfaceAreaInHectare = formatNumberFr(
     convertSquareMetersToHectares(totalSurfaceArea),
   );
@@ -27,7 +27,7 @@ const SiteSoilsSummary = ({
       <p>
         Superficie totale du site :{" "}
         <strong>
-          {formattedTotalSurfaceArea} m2, soit{" "}
+          <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />, soit{" "}
           {formattedTotalSurfaceAreaInHectare} ha
         </strong>
         .

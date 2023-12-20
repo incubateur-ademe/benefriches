@@ -1,4 +1,4 @@
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 type Props = {
   advisedSurface: number;
@@ -8,7 +8,8 @@ function ImpermeableSurfacesNotice({ advisedSurface }: Props) {
   return (
     <p>
       Compte tenu des ratios usuels, les <strong>sols imperméables</strong>{" "}
-      devraient faire au minimum {formatNumberFr(advisedSurface)} m2. C’est la
+      devraient faire au minimum{" "}
+      <SurfaceArea surfaceAreaInSquareMeters={advisedSurface} />. C’est la
       superficie qu’occuperont <strong>les fondations des panneaux</strong>.
     </p>
   );

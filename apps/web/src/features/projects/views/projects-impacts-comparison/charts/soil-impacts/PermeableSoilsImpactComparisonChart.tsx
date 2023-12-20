@@ -2,6 +2,8 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
+
 function PermeableSoilsImpactComparisonChart() {
   const barChartOptions: Highcharts.Options = {
     ...sharedChartConfig,
@@ -10,13 +12,16 @@ function PermeableSoilsImpactComparisonChart() {
       crosshair: false,
     },
     tooltip: {
-      valueSuffix: " m2",
+      valueSuffix: ` ${SQUARE_METERS_HTML_SYMBOL}`,
     },
     plotOptions: {
       column: {
         pointPadding: 0.05,
         borderWidth: 0,
-        dataLabels: { enabled: true, format: "{point.y} m2" },
+        dataLabels: {
+          enabled: true,
+          format: `{point.y} ${SQUARE_METERS_HTML_SYMBOL}`,
+        },
       },
     },
     series: [

@@ -7,6 +7,9 @@ import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
+import SurfaceArea, {
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -64,7 +67,10 @@ function SiteSoilsSurfaceAreasForm({
         <p>
           La somme des superficies des différents sols doit être égale à la
           superficie totale du site, soit{" "}
-          <strong>{formatNumberFr(totalSurfaceArea)} m2</strong>.
+          <strong>
+            <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />
+          </strong>
+          .
         </p>
       }
     >
@@ -75,7 +81,7 @@ function SiteSoilsSurfaceAreasForm({
             control={control}
             name={soilType}
             label={getLabelForSoilType(soilType)}
-            hintText="en m2"
+            hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
             sliderStartValue={0}
             sliderEndValue={totalSurfaceArea}
             maxValue={freeSurface + soilsValues[soilType]}
@@ -94,7 +100,7 @@ function SiteSoilsSurfaceAreasForm({
 
         <Input
           label="Total de toutes les superficies allouées"
-          hintText="en m2"
+          hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
           nativeInputProps={{
             value: totalAllocatedSurface,
             max: totalSurfaceArea,

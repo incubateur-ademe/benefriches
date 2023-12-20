@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -21,7 +22,7 @@ function SurfaceAreaForm({ onSubmit }: Props) {
         <NumericInput
           name="surfaceArea"
           label="Superficie totale"
-          hintText="en m2"
+          hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
           rules={{
             required: "Ce champ est requis",
             min: {

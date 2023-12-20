@@ -10,6 +10,8 @@ import SocioEconomicBenefitsBarChart from "./impacts/socio-economic/SocioEconomi
 import SocioEconomicBenefitsByDomainChart from "./impacts/socio-economic/SocioEconomicBenefitsByDomainChart";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
+
 type SuccessDataProps = {
   projectId: string;
   projectName: string;
@@ -264,14 +266,14 @@ function ProjectImpactsPage({
             <div className={fr.cx("fr-col-3")}>
               <ImpactCard
                 title="🌧 Surface perméable"
-                impact="+48 750 m2"
+                impact={`+48 750 ${SQUARE_METERS_HTML_SYMBOL}`}
                 isPositive
               />
             </div>
             <div className={fr.cx("fr-col-3")}>
               <ImpactCard
                 title="✨ Surface non polluée"
-                impact="+30 000 m2"
+                impact={`+30 000 ${SQUARE_METERS_HTML_SYMBOL}`}
                 isPositive
               />
             </div>
