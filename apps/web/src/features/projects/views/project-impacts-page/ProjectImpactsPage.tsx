@@ -2,8 +2,10 @@ import { ReactNode, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
+import { Project } from "../../domain/projects.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonStorageChart from "./impacts/carbon-storage";
+import EconomicResults from "./impacts/economic-results";
 import ImpactCard from "./impacts/ImpactCard";
 import ImpactContainer from "./impacts/ImpactContainer";
 import SocioEconomicBenefitsBarChart from "./impacts/socio-economic/SocioEconomicBenefitsBarChart";
@@ -14,14 +16,14 @@ import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea
 
 type SuccessDataProps = {
   projectId: string;
-  projectName: string;
+  projectData: Project;
   siteName: string;
   loadingState: "success";
 };
 
 type ErrorOrLoadingDataProps = {
   projectId: string;
-  projectName: undefined;
+  projectData: undefined;
   siteName: undefined;
   loadingState: "idle" | "error" | "loading";
 };
@@ -32,7 +34,7 @@ const ImpactsRow = ({ children }: { children: ReactNode }) => {
   return <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>{children}</div>;
 };
 
-function ProjectImpactsPage({ projectId, projectName, siteName, loadingState }: Props) {
+function ProjectImpactsPage({ projectId, projectData, siteName, loadingState }: Props) {
   ``;
   const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">("all");
 
@@ -59,7 +61,7 @@ function ProjectImpactsPage({ projectId, projectName, siteName, loadingState }: 
     <div>
       <ProjectsImpactsPageHeader
         projectId={projectId}
-        projectName={projectName}
+        projectName={projectData.name}
         siteName={siteName}
       />
       <Notice
@@ -84,11 +86,7 @@ function ProjectImpactsPage({ projectId, projectName, siteName, loadingState }: 
       <div className={fr.cx("fr-mb-6w")}>
         <ImpactsRow>
           <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="💰 Bilan économique"
-              impact="-9 794 959 €"
-              text="pour Générale du Solaire"
-            />
+            <EconomicResults projectData={projectData} duration={10} />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
