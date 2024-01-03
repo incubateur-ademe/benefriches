@@ -20,8 +20,20 @@ const mapProps = (
   dispatch: AppDispatch,
   siteData: RootState["siteCreation"]["siteData"],
 ) => {
+  const onNext = () => {
+    const nextStep = siteData.isFriche
+      ? SiteCreationStep.FRICHE_ACTIVITY
+      : SiteCreationStep.NAMING;
+    dispatch(goToStep(nextStep));
+  };
+
   if (!siteData.yearlyExpenses || siteData.yearlyExpenses.length === 0) {
-    return { hasExpenses: false, expensesByBearer: [], expensesByCategory: [] };
+    return {
+      hasExpenses: false,
+      expensesByBearer: [],
+      expensesByCategory: [],
+      onNext,
+    };
   }
   return {
     hasExpenses: true,
@@ -42,12 +54,7 @@ const mapProps = (
         category: getLabelForExpenseCategory(category),
       }),
     ),
-    onNext: () => {
-      const nextStep = siteData.isFriche
-        ? SiteCreationStep.FRICHE_ACTIVITY
-        : SiteCreationStep.NAMING;
-      dispatch(goToStep(nextStep));
-    },
+    onNext,
   };
 };
 
