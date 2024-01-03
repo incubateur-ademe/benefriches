@@ -33,13 +33,7 @@ export type FormValues =
     };
 
 const localAndRegionalAuthorityOptions = (
-  [
-    "municipality",
-    "community_of_municipalities",
-    "department",
-    "region",
-    "state",
-  ] as const
+  ["municipality", "community_of_municipalities", "department", "region", "state"] as const
 ).map((localOrRegionalAuthority) => ({
   label: getLabelForLocalOrRegionalAuthority(localOrRegionalAuthority),
   value: localOrRegionalAuthority,
@@ -73,10 +67,8 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
 
   const ownerTypeSelected = watch("ownerType");
   const shouldAskForOwnerName =
-    ownerTypeSelected === "private_individual" ||
-    ownerTypeSelected === "other_company";
-  const shouldAskForLocalOrAuthorityType =
-    ownerTypeSelected === "local_or_regional_authority";
+    ownerTypeSelected === "private_individual" || ownerTypeSelected === "other_company";
+  const shouldAskForLocalOrAuthorityType = ownerTypeSelected === "local_or_regional_authority";
 
   return (
     <WizardFormLayout title="Qui est le propriétaire de cette friche ?">

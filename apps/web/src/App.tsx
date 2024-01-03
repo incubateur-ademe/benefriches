@@ -20,12 +20,8 @@ function App() {
       <main className={fr.cx("fr-container", "fr-py-4w")}>
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
-        {route.name === routes.createSiteFoncierIntro.name && (
-          <CreateSiteIntroductionPage />
-        )}
-        {route.name === routes.createSiteFoncier.name && (
-          <CreateSiteFoncierPage />
-        )}
+        {route.name === routes.createSiteFoncierIntro.name && <CreateSiteIntroductionPage />}
+        {route.name === routes.createSiteFoncier.name && <CreateSiteFoncierPage />}
         {route.name === routes.myProjects.name && <MyProjectsPage />}
         {route.name === routes.createProjectIntro.name && (
           <CreateProjectIntroductionPage route={route} />

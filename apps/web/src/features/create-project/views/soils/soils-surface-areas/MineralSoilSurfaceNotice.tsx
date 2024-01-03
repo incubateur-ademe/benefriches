@@ -7,10 +7,9 @@ type Props = {
 function MineralSoilSurfaceNotice({ advisedSurface }: Props) {
   return (
     <p>
-      Compte tenu des ratios usuels, les <strong>sols minéraux</strong>{" "}
-      devraient faire au minimum{" "}
-      <SurfaceArea surfaceAreaInSquareMeters={advisedSurface} />. C’est la
-      superficie requise pour <strong>les pistes d’accès</strong>.
+      Compte tenu des ratios usuels, les <strong>sols minéraux</strong> devraient faire au minimum{" "}
+      <SurfaceArea surfaceAreaInSquareMeters={advisedSurface} />. C’est la superficie requise pour{" "}
+      <strong>les pistes d’accès</strong>.
     </p>
   );
 }

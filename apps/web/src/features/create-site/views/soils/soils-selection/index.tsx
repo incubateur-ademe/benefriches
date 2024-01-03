@@ -1,20 +1,10 @@
-import {
-  goToStep,
-  setSoils,
-  SiteCreationStep,
-} from "../../../application/createSite.reducer";
+import { goToStep, setSoils, SiteCreationStep } from "../../../application/createSite.reducer";
 import SiteSoilsForm, { FormValues } from "./SoilsForm";
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch, RootState } from "@/store";
 
-const mapProps = (
-  dispatch: AppDispatch,
-  siteCreationState: RootState["siteCreation"],
-) => {
+const mapProps = (dispatch: AppDispatch, siteCreationState: RootState["siteCreation"]) => {
   return {
     isFriche: !!siteCreationState.siteData.isFriche,
     onSubmit: (formData: FormValues) => {

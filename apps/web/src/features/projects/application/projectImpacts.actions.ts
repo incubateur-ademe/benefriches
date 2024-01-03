@@ -87,18 +87,15 @@ type FetchDataResult = {
   siteData: ProjectDetailsResult["siteData"];
 };
 
-export const fetchProjectAndSiteData = createAppAsyncThunk<
-  FetchDataResult,
-  string
->("projectImpacts/fetchProjectAndSiteData", async (projectId, { extra }) => {
-  if (!uuidValidate(projectId)) {
-    return Promise.reject(
-      "fetchProjectAndSiteData: Wrong format for projectId",
-    );
-  }
+export const fetchProjectAndSiteData = createAppAsyncThunk<FetchDataResult, string>(
+  "projectImpacts/fetchProjectAndSiteData",
+  async (projectId, { extra }) => {
+    if (!uuidValidate(projectId)) {
+      return Promise.reject("fetchProjectAndSiteData: Wrong format for projectId");
+    }
 
-  const { projectData, siteData } =
-    await extra.projectDetailsService.getProjectById(projectId);
+    const { projectData, siteData } = await extra.projectDetailsService.getProjectById(projectId);
 
-  return { projectData, siteData };
-});
+    return { projectData, siteData };
+  },
+);

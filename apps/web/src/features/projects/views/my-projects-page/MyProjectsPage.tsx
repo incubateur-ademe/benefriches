@@ -14,8 +14,7 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
     if (loadingState === "error")
       return (
         <p>
-          Une erreur est survenue lors du chargement de vos projets. Veuillez
-          recharger la page.
+          Une erreur est survenue lors du chargement de vos projets. Veuillez recharger la page.
         </p>
       );
 
@@ -24,10 +23,7 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
         return (
           <>
             <p>Vous n'avez pas encore de projets.</p>
-            <p>
-              Pour démarrer, créez le site sur lequel vous prévoyez votre
-              projet.
-            </p>
+            <p>Pour démarrer, créez le site sur lequel vous prévoyez votre projet.</p>
           </>
         );
       }

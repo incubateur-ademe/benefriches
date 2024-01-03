@@ -5,10 +5,7 @@ import {
   ProjectCreationStep,
   setRenewableEnergyTypes,
 } from "@/features/create-project/application/createProject.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectRenewableEnergyTypesFormContainer() {
   const dispatch = useAppDispatch();

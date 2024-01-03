@@ -6,10 +6,7 @@ import {
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
 import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, currentUserCompany: string) => {
@@ -26,14 +23,10 @@ const mapProps = (dispatch: AppDispatch, currentUserCompany: string) => {
           );
           break;
         case "user_company":
-          dispatch(
-            setOwner({ structureType: "company", name: currentUserCompany }),
-          );
+          dispatch(setOwner({ structureType: "company", name: currentUserCompany }));
           break;
         case "other_company":
-          dispatch(
-            setOwner({ structureType: "company", name: data.ownerName }),
-          );
+          dispatch(setOwner({ structureType: "company", name: data.ownerName }));
           break;
         case "private_individual":
           dispatch(

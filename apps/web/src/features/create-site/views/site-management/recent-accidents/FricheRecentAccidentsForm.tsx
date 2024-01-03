@@ -21,10 +21,9 @@ export type FormValues = {
 const requiredMessage = "Ce champ est requis";
 
 function FricheRecentAccidentsForm({ onSubmit }: Props) {
-  const { register, control, handleSubmit, formState, watch } =
-    useForm<FormValues>({
-      shouldUnregister: true,
-    });
+  const { register, control, handleSubmit, formState, watch } = useForm<FormValues>({
+    shouldUnregister: true,
+  });
 
   const { hasRecentAccidents: hasRecentAccidentsError } = formState.errors;
 
@@ -43,10 +42,7 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
     <WizardFormLayout
       title="Y a-t-il eu des accidents sur la friche ces 5 dernières années ?"
       instructions={
-        <p>
-          Personnes entrées illégalement sur la friche et s’étant blessées ou
-          tuées.
-        </p>
+        <p>Personnes entrées illégalement sur la friche et s’étant blessées ou tuées.</p>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

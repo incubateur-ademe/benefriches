@@ -24,9 +24,7 @@ function ProjectsList({ projectsList }: Props) {
       {projectsList.map((projectGroup) => (
         <div className="fr-mb-5w" key={projectGroup.siteId}>
           <SiteName key={projectGroup.siteId}>{projectGroup.siteName}</SiteName>
-          <p>
-            {projectGroup.projects.length + 1} futurs possibles pour ce site :
-          </p>
+          <p>{projectGroup.projects.length + 1} futurs possibles pour ce site :</p>
           <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
             <GridColumn>
               <ProjectCard

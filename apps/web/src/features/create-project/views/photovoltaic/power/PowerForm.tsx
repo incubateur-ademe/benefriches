@@ -35,8 +35,7 @@ function PhotovoltaicPowerForm({
           <p>
             Le ratio superficie / puissance d’installation considéré est de{" "}
             <strong>
-              {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m²
-              pour 1 000 kWc.
+              {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m² pour 1 000 kWc.
             </strong>
           </p>
           <p>
@@ -59,8 +58,7 @@ function PhotovoltaicPowerForm({
               message:
                 "La superficie induite par la puissance d’installation est supérieure à la superficie de la friche. Nous vous conseillons de réduire la puissance d’installation.",
             },
-            required:
-              "Ce champ est nécessaire pour déterminer les questions suivantes",
+            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           control={control}
         />

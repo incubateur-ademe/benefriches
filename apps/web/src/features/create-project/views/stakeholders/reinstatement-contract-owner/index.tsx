@@ -10,17 +10,10 @@ import {
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { getSiteStakeholders } from "@/features/create-project/domain/stakeholders";
 import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
-const mapProps = (
-  dispatch: AppDispatch,
-  currentUserCompany: string,
-  projectSite: ProjectSite,
-) => {
+const mapProps = (dispatch: AppDispatch, currentUserCompany: string, projectSite: ProjectSite) => {
   const siteStakeholders = getSiteStakeholders(projectSite);
 
   return {
@@ -31,9 +24,7 @@ const mapProps = (
         case "site_stakeholder":
           // eslint-disable-next-line no-case-declarations
           const futureOperator =
-            data.siteStakeholder === "owner"
-              ? projectSite.owner
-              : projectSite.tenant!;
+            data.siteStakeholder === "owner" ? projectSite.owner : projectSite.tenant!;
           dispatch(setReinstatementContractOwner(futureOperator));
           break;
         case "site_owner":
@@ -80,9 +71,7 @@ function SiteReinstatementContractOwnerFormContainer() {
   const projectSite = useAppSelector((state) => state.projectCreation.siteData);
 
   return (
-    <SiteReinstatementContractOwnerForm
-      {...mapProps(dispatch, currentUserCompany, projectSite!)}
-    />
+    <SiteReinstatementContractOwnerForm {...mapProps(dispatch, currentUserCompany, projectSite!)} />
   );
 }
 

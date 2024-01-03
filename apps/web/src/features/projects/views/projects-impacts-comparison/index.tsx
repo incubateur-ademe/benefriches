@@ -5,10 +5,7 @@ import { ProjectImpactsComparisonState } from "../../application/projectImpactsC
 import ProjectsImpactsComparisonPage from "./ProjectsImpactsComparisonPage";
 
 import { routes } from "@/router";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   route: Route<typeof routes.compareProjects>;
@@ -29,10 +26,7 @@ type ErrorOrLoadingDataProps = {
 function ProjectsImpactsComparison({ route }: Props) {
   const dispatch = useAppDispatch();
 
-  const { baseProjectId, avecProjet } = useMemo(
-    () => route.params,
-    [route.params],
-  );
+  const { baseProjectId, avecProjet } = useMemo(() => route.params, [route.params]);
 
   const { siteData, projectData, dataLoadingState } = useAppSelector(
     (state) => state.projectImpactsComparison,

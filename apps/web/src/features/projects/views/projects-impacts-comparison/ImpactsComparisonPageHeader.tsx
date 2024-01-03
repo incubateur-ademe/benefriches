@@ -9,10 +9,7 @@ type Props = {
 const ImpactsComparisonPageHeader = ({ projectName, siteName }: Props) => {
   return (
     <>
-      <div
-        className={fr.cx("fr-grid-row")}
-        style={{ justifyContent: "space-between" }}
-      >
+      <div className={fr.cx("fr-grid-row")} style={{ justifyContent: "space-between" }}>
         <h2>{projectName}</h2>
         <ButtonsGroup
           inlineLayoutWhen="always"

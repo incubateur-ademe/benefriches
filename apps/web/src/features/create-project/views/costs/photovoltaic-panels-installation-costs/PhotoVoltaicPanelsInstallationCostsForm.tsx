@@ -64,10 +64,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit }: Props) => {
           }}
         />
         <p>
-          <strong>
-            Total des coûts d'installation :{" "}
-            {formatNumberFr(sumAmounts(allCosts))} €
-          </strong>
+          <strong>Total des coûts d'installation : {formatNumberFr(sumAmounts(allCosts))} €</strong>
         </p>
         <ButtonsGroup
           buttonsEquisized

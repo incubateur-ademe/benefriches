@@ -29,23 +29,12 @@ type ErrorOrLoadingDataProps = {
 type Props = SuccessDataProps | ErrorOrLoadingDataProps;
 
 const ImpactsRow = ({ children }: { children: ReactNode }) => {
-  return (
-    <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-      {children}
-    </div>
-  );
+  return <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>{children}</div>;
 };
 
-function ProjectImpactsPage({
-  projectId,
-  projectName,
-  siteName,
-  loadingState,
-}: Props) {
+function ProjectImpactsPage({ projectId, projectName, siteName, loadingState }: Props) {
   ``;
-  const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">(
-    "all",
-  );
+  const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">("all");
 
   if (loadingState === "loading") {
     return <p>Chargement en cours ...</p>;
@@ -108,12 +97,7 @@ function ProjectImpactsPage({
           {selectedFilter === "all" && (
             <>
               <div className={fr.cx("fr-col-3")}>
-                <ImpactCard
-                  title="💼 Emploi"
-                  impact="+1,4 ETP"
-                  text="mobilisé"
-                  isPositive
-                />
+                <ImpactCard title="💼 Emploi" impact="+1,4 ETP" text="mobilisé" isPositive />
               </div>
               <div className={fr.cx("fr-col-3")}>
                 <ImpactCard
@@ -150,9 +134,7 @@ function ProjectImpactsPage({
       </div>
       <div className={fr.cx("fr-mb-6w")}>
         <h4>Retombées économiques</h4>
-        <p>
-          Economies, bénéfices ou déficits réalisés une fois le site reconverti
-        </p>
+        <p>Economies, bénéfices ou déficits réalisés une fois le site reconverti</p>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
@@ -163,12 +145,7 @@ function ProjectImpactsPage({
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="Revenu locatif"
-              impact="+381 974 €"
-              text="pour Imerys"
-              isPositive
-            />
+            <ImpactCard title="Revenu locatif" impact="+381 974 €" text="pour Imerys" isPositive />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
@@ -190,10 +167,7 @@ function ProjectImpactsPage({
       </div>
       <div className={fr.cx("fr-mb-6w")}>
         <h4>Services écosystémiques</h4>
-        <p>
-          Monétarisation des services rendus à la société humaine par la nature
-          et le projet
-        </p>
+        <p>Monétarisation des services rendus à la société humaine par la nature et le projet</p>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard
@@ -210,11 +184,7 @@ function ProjectImpactsPage({
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="🫧 Régulation de la qualité de l'eau"
-              impact="+9 471 €"
-              isPositive
-            />
+            <ImpactCard title="🫧 Régulation de la qualité de l'eau" impact="+9 471 €" isPositive />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard title="🚵 Aménité environnementale" impact="-2 083 €" />
@@ -222,11 +192,7 @@ function ProjectImpactsPage({
         </div>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
-            <ImpactCard
-              title="🐝 Pollinisation"
-              impact="-606 €"
-              text="pour Générale du Solaire"
-            />
+            <ImpactCard title="🐝 Pollinisation" impact="-606 €" text="pour Générale du Solaire" />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard

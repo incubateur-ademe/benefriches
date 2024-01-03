@@ -7,10 +7,7 @@ type Props = {
   totalAllocatedSurface: number;
 };
 
-function TotalAllocatedSurfacesInput({
-  totalSurface,
-  totalAllocatedSurface,
-}: Props) {
+function TotalAllocatedSurfacesInput({ totalSurface, totalAllocatedSurface }: Props) {
   const remainingSurfaceToAllocate = totalSurface - totalAllocatedSurface;
   const hasMissingAllocatedSurface = remainingSurfaceToAllocate > 0;
 

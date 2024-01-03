@@ -4,9 +4,7 @@ function CreateUserPage() {
   return (
     <>
       <h1>Créer un compte</h1>
-      <CallOut title="En construction">
-        La création de compte est en cours de construction
-      </CallOut>
+      <CallOut title="En construction">La création de compte est en cours de construction</CallOut>
     </>
   );
 }

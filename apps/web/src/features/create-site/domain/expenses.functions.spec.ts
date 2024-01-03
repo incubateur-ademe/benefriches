@@ -1,7 +1,4 @@
-import {
-  groupExpensesByBearer,
-  groupExpensesByCategory,
-} from "./expenses.functions";
+import { groupExpensesByBearer, groupExpensesByCategory } from "./expenses.functions";
 import { Expense } from "./siteFoncier.types";
 
 const buildExpense = (expenseData: Partial<Expense>): Expense => {
@@ -27,9 +24,7 @@ describe("Expenses functions", () => {
         buildExpense({ amount: 1400, bearer: "owner" }),
         buildExpense({ amount: 100, bearer: "owner" }),
       ];
-      expect(groupExpensesByBearer(expenses)).toEqual([
-        { amount: 3000, bearer: "owner" },
-      ]);
+      expect(groupExpensesByBearer(expenses)).toEqual([{ amount: 3000, bearer: "owner" }]);
     });
 
     it("should group expenses for mixed bearers", () => {
@@ -61,9 +56,7 @@ describe("Expenses functions", () => {
         buildExpense({ amount: 1400, category: "safety" }),
         buildExpense({ amount: 100, category: "safety" }),
       ];
-      expect(groupExpensesByCategory(expenses)).toEqual([
-        { amount: 3000, category: "safety" },
-      ]);
+      expect(groupExpensesByCategory(expenses)).toEqual([{ amount: 3000, category: "safety" }]);
     });
 
     it("should group expenses for mixed categories", () => {

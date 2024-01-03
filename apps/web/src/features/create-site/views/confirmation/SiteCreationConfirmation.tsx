@@ -16,19 +16,15 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
       return <p>Création du site "{siteName}", veuillez patienter...</p>;
     case "error":
       return (
-        <p>
-          Une erreur est survenue lors de la création du site "{siteName}",
-          veuillez réessayer.
-        </p>
+        <p>Une erreur est survenue lors de la création du site "{siteName}", veuillez réessayer.</p>
       );
     case "success":
       return (
         <>
           <h2>✅ Le site "{siteName}" est créé !</h2>
           <p>
-            Vous pouvez maintenant découvrir ses caractéristiques géographiques,
-            créer un projet sur ce site ou bien renseigner un nouveau site en
-            retournant sur votre tableau de bord.
+            Vous pouvez maintenant découvrir ses caractéristiques géographiques, créer un projet sur
+            ce site ou bien renseigner un nouveau site en retournant sur votre tableau de bord.
           </p>
           <ButtonsGroup
             buttons={[

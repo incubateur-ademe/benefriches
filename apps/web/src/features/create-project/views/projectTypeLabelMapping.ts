@@ -13,9 +13,7 @@ export const getLabelForProjectType = (value: ProjectType): string => {
   }
 };
 
-export const getLabelForRenewableEnergyType = (
-  value: RenewableEnergyType,
-): string => {
+export const getLabelForRenewableEnergyType = (value: RenewableEnergyType): string => {
   switch (value) {
     case RenewableEnergyType.PHOTOVOLTAIC:
       return "Photovoltaïque";

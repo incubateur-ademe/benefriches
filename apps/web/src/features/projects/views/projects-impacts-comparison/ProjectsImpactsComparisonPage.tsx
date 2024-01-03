@@ -55,14 +55,8 @@ const ImpactCard = ({ children }: ImpactCardProps) => {
   );
 };
 
-function ProjectsImpactsComparisonPage({
-  siteData,
-  projectData,
-  loadingState,
-}: Props) {
-  const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">(
-    "all",
-  );
+function ProjectsImpactsComparisonPage({ siteData, projectData, loadingState }: Props) {
+  const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">("all");
 
   if (loadingState === "loading") {
     return <p>Chargement en cours ...</p>;
@@ -85,10 +79,7 @@ function ProjectsImpactsComparisonPage({
 
   return (
     <div>
-      <ImpactsComparisonPageHeader
-        projectName={projectData.name}
-        siteName={siteData.name}
-      />
+      <ImpactsComparisonPageHeader projectName={projectData.name} siteName={siteData.name} />
       <Notice
         title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
         isClosable
@@ -151,9 +142,7 @@ function ProjectsImpactsComparisonPage({
       </div>
       <div className={fr.cx("fr-mb-6w")}>
         <h4>Retombées économiques</h4>
-        <p>
-          Economies, bénéfices ou déficits réalisés une fois le site reconverti
-        </p>
+        <p>Economies, bénéfices ou déficits réalisés une fois le site reconverti</p>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard>
@@ -174,10 +163,7 @@ function ProjectsImpactsComparisonPage({
       </div>
       <div className={fr.cx("fr-mb-6w")}>
         <h4>Services écosystémiques</h4>
-        <p>
-          Monétarisation des services rendus à la société humaine par la nature
-          et le projet
-        </p>
+        <p>Monétarisation des services rendus à la société humaine par la nature et le projet</p>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard>

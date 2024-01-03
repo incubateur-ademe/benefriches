@@ -7,10 +7,7 @@ import {
 import { Address } from "../../domain/siteFoncier.types";
 import AddressForm from "./AddressForm";
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, creationState: SiteCreationState) => {

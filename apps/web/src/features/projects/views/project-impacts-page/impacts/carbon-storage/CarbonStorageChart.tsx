@@ -7,15 +7,9 @@ import { ProjectImpactsState } from "@/features/projects/application/projectImpa
 import { SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
-type CurrentCarbonStorageType = Exclude<
-  ProjectImpactsState["currentCarbonStorage"],
-  undefined
->;
+type CurrentCarbonStorageType = Exclude<ProjectImpactsState["currentCarbonStorage"], undefined>;
 
-type ProjectedCarbonStorageType = Exclude<
-  ProjectImpactsState["currentCarbonStorage"],
-  undefined
->;
+type ProjectedCarbonStorageType = Exclude<ProjectImpactsState["currentCarbonStorage"], undefined>;
 type Props = {
   currentCarbonStorage: CurrentCarbonStorageType;
   projectedCarbonStorage: ProjectedCarbonStorageType;
@@ -30,12 +24,8 @@ const getData = (
   currentCarbonStorage: CurrentCarbonStorageType["soilsStorage"],
   projectedCarbonStorage: ProjectedCarbonStorageType["soilsStorage"],
 ) => {
-  const soilTypeInSite = currentCarbonStorage.find(
-    (storage) => storage.type === soilType,
-  );
-  const soilTypeInProject = projectedCarbonStorage.find(
-    (storage) => storage.type === soilType,
-  );
+  const soilTypeInSite = currentCarbonStorage.find((storage) => storage.type === soilType);
+  const soilTypeInProject = projectedCarbonStorage.find((storage) => storage.type === soilType);
   return [
     roundTo2Digits(soilTypeInSite?.carbonStorage ?? 0),
     roundTo2Digits(soilTypeInProject?.carbonStorage ?? 0),
@@ -47,16 +37,10 @@ const getMergedSoilTypes = (
   projected: ProjectedCarbonStorageType["soilsStorage"],
 ) => Array.from(new Set([...current, ...projected].map(({ type }) => type)));
 
-function CarbonStorageChart({
-  currentCarbonStorage,
-  projectedCarbonStorage,
-}: Props) {
+function CarbonStorageChart({ currentCarbonStorage, projectedCarbonStorage }: Props) {
   const soilsTypes = useMemo(
     () =>
-      getMergedSoilTypes(
-        currentCarbonStorage.soilsStorage,
-        projectedCarbonStorage.soilsStorage,
-      ),
+      getMergedSoilTypes(currentCarbonStorage.soilsStorage, projectedCarbonStorage.soilsStorage),
     [currentCarbonStorage, projectedCarbonStorage],
   );
 

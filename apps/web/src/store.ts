@@ -22,9 +22,7 @@ import projectsList from "@/features/projects/application/projectsList.reducer";
 import currentUser from "@/features/users/application/user.reducer";
 
 export type AppDependencies = {
-  soilsCarbonStorageService:
-    | SiteSoilsCarbonStorageGateway
-    | ProjectSoilsCarbonStorageGateway;
+  soilsCarbonStorageService: SiteSoilsCarbonStorageGateway | ProjectSoilsCarbonStorageGateway;
   createSiteService: CreateSiteGateway;
   saveProjectGateway: SaveProjectGateway;
   getSiteService: GetSiteGateway;

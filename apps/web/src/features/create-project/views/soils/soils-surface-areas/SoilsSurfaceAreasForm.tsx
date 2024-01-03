@@ -39,9 +39,10 @@ const computeDefaultValues = (
   minAdvisedImpermeableSurface: number,
   minAdvisedMineralSurface: number,
 ) => {
-  const siteSoilsAsArray = Object.entries(siteSoils).map(
-    ([soilType, surface]) => ({ soilType, surface }),
-  );
+  const siteSoilsAsArray = Object.entries(siteSoils).map(([soilType, surface]) => ({
+    soilType,
+    surface,
+  }));
 
   if (minAdvisedImpermeableSurface && !siteSoils[SoilType.IMPERMEABLE_SOILS])
     siteSoilsAsArray.unshift({
@@ -61,27 +62,18 @@ const getTotalSurface = (soilsSurfaceAreas: SoilsSurfaceAreas[]) =>
   soilsSurfaceAreas.reduce((total, { surface }) => total + surface, 0);
 
 const getTotalFlatSurface = (soilsSurfaceAreas: SoilsSurfaceAreas[]) =>
-  getTotalSurface(
-    soilsSurfaceAreas.filter(({ soilType }) =>
-      FLAT_SOIL_TYPES.includes(soilType),
-    ),
-  );
+  getTotalSurface(soilsSurfaceAreas.filter(({ soilType }) => FLAT_SOIL_TYPES.includes(soilType)));
 
 const getCreatableSoils = (newSoils: SoilType[], currentSoils: SoilType[]) => {
   return SOIL_TYPES.filter(
     (soilType) =>
-      !newSoils.includes(soilType) &&
-      canCreateOrIncreaseSurfaceForSoilType(soilType, currentSoils),
+      !newSoils.includes(soilType) && canCreateOrIncreaseSurfaceForSoilType(soilType, currentSoils),
   );
 };
 
-const canCreateOrIncreaseSurfaceForSoilType = (
-  soilType: SoilType,
-  currentSoils: SoilType[],
-) => {
+const canCreateOrIncreaseSurfaceForSoilType = (soilType: SoilType, currentSoils: SoilType[]) => {
   if (
-    (soilType === SoilType.PRAIRIE_GRASS &&
-      currentSoils.includes(SoilType.PRAIRIE_BUSHES)) ||
+    (soilType === SoilType.PRAIRIE_GRASS && currentSoils.includes(SoilType.PRAIRIE_BUSHES)) ||
     currentSoils.includes(SoilType.PRAIRIE_TREES)
   ) {
     return true;
@@ -142,15 +134,9 @@ function SoilsSurfaceAreasForm({
     [controlledSoilsFields],
   );
 
-  const currentSiteSoilsList = Object.entries(siteSoils).map(
-    ([soilType]) => soilType as SoilType,
-  );
+  const currentSiteSoilsList = Object.entries(siteSoils).map(([soilType]) => soilType as SoilType);
   const availableSoilTypes = useMemo(
-    () =>
-      getCreatableSoils(
-        controlledSoilsFields.map(mapSoilType),
-        currentSiteSoilsList,
-      ),
+    () => getCreatableSoils(controlledSoilsFields.map(mapSoilType), currentSiteSoilsList),
     [controlledSoilsFields, currentSiteSoilsList],
   );
   return (
@@ -159,14 +145,10 @@ function SoilsSurfaceAreasForm({
       instructions={
         <>
           {minAdvisedImpermeableSurface ? (
-            <ImpermeableSurfacesNotice
-              advisedSurface={minAdvisedImpermeableSurface}
-            />
+            <ImpermeableSurfacesNotice advisedSurface={minAdvisedImpermeableSurface} />
           ) : null}
           {minAdvisedMineralSurface ? (
-            <MineralSoilSurfaceNotice
-              advisedSurface={minAdvisedMineralSurface}
-            />
+            <MineralSoilSurfaceNotice advisedSurface={minAdvisedMineralSurface} />
           ) : null}
           <FlatSurfacesNotice advisedSurface={minAdvisedFlatSurfaces} />
         </>
@@ -175,14 +157,10 @@ function SoilsSurfaceAreasForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         {controlledSoilsFields.map(({ soilType, surface, id }, index) => {
           const minAdvisedSurface =
-            (soilType === SoilType.IMPERMEABLE_SOILS &&
-              minAdvisedImpermeableSurface) ||
+            (soilType === SoilType.IMPERMEABLE_SOILS && minAdvisedImpermeableSurface) ||
             (soilType === SoilType.MINERAL_SOIL && minAdvisedMineralSurface) ||
             null;
-          const maxValue = canCreateOrIncreaseSurfaceForSoilType(
-            soilType,
-            currentSiteSoilsList,
-          )
+          const maxValue = canCreateOrIncreaseSurfaceForSoilType(soilType, currentSiteSoilsList)
             ? freeSurface + surface
             : siteSoils[soilType];
           return (
@@ -192,13 +170,9 @@ function SoilsSurfaceAreasForm({
               name={`soilsSurfaceAreas.${index}.surface`}
               label={getLabelForSoilType(soilType)}
               maxValue={maxValue}
-              hintText={`Actuellement : ${formatNumberFr(
-                siteSoils[soilType] ?? 0,
-              )} m²${
+              hintText={`Actuellement : ${formatNumberFr(siteSoils[soilType] ?? 0)} m²${
                 minAdvisedSurface
-                  ? ` - Minimum conseillé : ${formatNumberFr(
-                      minAdvisedSurface,
-                    )} m²`
+                  ? ` - Minimum conseillé : ${formatNumberFr(minAdvisedSurface)} m²`
                   : ""
               }`}
               sliderStartValue={0}
@@ -209,9 +183,7 @@ function SoilsSurfaceAreasForm({
                   [totalSurfaceArea]: formatNumberFr(totalSurfaceArea),
                   ...(minAdvisedSurface
                     ? {
-                        [minAdvisedSurface]: `${formatNumberFr(
-                          minAdvisedSurface,
-                        )} m²`,
+                        [minAdvisedSurface]: `${formatNumberFr(minAdvisedSurface)} m²`,
                       }
                     : {}),
                 },
@@ -221,10 +193,7 @@ function SoilsSurfaceAreasForm({
           );
         })}
 
-        <div
-          className="fr-py-7v"
-          style={{ display: "flex", justifyContent: "space-between" }}
-        >
+        <div className="fr-py-7v" style={{ display: "flex", justifyContent: "space-between" }}>
           <Button
             onClick={() => reset(defaultValues)}
             priority="secondary"

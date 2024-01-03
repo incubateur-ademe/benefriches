@@ -13,10 +13,7 @@ import { AppDispatch } from "@/store";
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (amounts: FormValues) => {
-      const totalCost = Object.values(amounts).reduce(
-        (sum, amount) => sum + (amount ?? 0),
-        0,
-      );
+      const totalCost = Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
       dispatch(setPhotovoltaicPanelsInstallationCost(totalCost));
       dispatch(goToStep(ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS));
     },

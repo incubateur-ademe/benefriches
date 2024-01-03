@@ -1,6 +1,4 @@
-import FricheRecentAccidentsForm, {
-  FormValues,
-} from "./FricheRecentAccidentsForm";
+import FricheRecentAccidentsForm, { FormValues } from "./FricheRecentAccidentsForm";
 
 import {
   goToStep,

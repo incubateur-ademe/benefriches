@@ -56,10 +56,7 @@ type Revenue = {
   amount: number;
 };
 
-type ProjectStakeholderStructure =
-  | "company"
-  | "local_or_regional_authority"
-  | "unknown";
+type ProjectStakeholderStructure = "company" | "local_or_regional_authority" | "unknown";
 
 type ProjectStakeholder =
   | { name: string; structureType: ProjectStakeholderStructure }
@@ -99,9 +96,7 @@ export type ProjectSite = {
   address: Address;
 };
 
-const getPrevisionalProjectSocioEconomicImpactPerHectare = (
-  projectType: ProjectType,
-) => {
+const getPrevisionalProjectSocioEconomicImpactPerHectare = (projectType: ProjectType) => {
   switch (projectType) {
     case ProjectType.BUILDINGS:
       return 15000;
@@ -124,9 +119,7 @@ export const getPrevisionalProjectSocioEconomicImpact = (
   );
 };
 
-const getPrevisionalEnrSocioEconomicImpactPerHectare = (
-  enrProjectType: RenewableEnergyType,
-) => {
+const getPrevisionalEnrSocioEconomicImpactPerHectare = (enrProjectType: RenewableEnergyType) => {
   switch (enrProjectType) {
     case RenewableEnergyType.AGRIVOLTAIC:
       return 21000;

@@ -45,10 +45,7 @@ export type SiteDraft = {
   yearlyIncome?: number;
 };
 
-export type OwnerStructureType =
-  | "local_or_regional_authority"
-  | "company"
-  | "private_individual";
+export type OwnerStructureType = "local_or_regional_authority" | "company" | "private_individual";
 
 export type TenantStructureType = "local_or_regional_authority" | "company";
 

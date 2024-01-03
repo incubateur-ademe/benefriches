@@ -21,9 +21,7 @@ export type GetSoilsCarbonStoragePayload = {
 };
 
 export interface SoilsCarbonStorageGateway {
-  getForCityCodeAndSoils(
-    payload: GetSoilsCarbonStoragePayload,
-  ): Promise<SoilsCarbonStorageResult>;
+  getForCityCodeAndSoils(payload: GetSoilsCarbonStoragePayload): Promise<SoilsCarbonStorageResult>;
 }
 
 export const fetchCurrentAndProjectedSoilsCarbonStorage =
@@ -36,9 +34,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       const projectSoils = projectCreation.projectData.soilsSurfaceAreas ?? {};
 
       if (!cityCode) {
-        return Promise.reject(
-          "fetchCurrentAndProjectedSoilsCarbonStorage: Missing city code",
-        );
+        return Promise.reject("fetchCurrentAndProjectedSoilsCarbonStorage: Missing city code");
       }
 
       const [current, projected] = await Promise.all([

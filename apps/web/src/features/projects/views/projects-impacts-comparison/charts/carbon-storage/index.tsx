@@ -4,20 +4,14 @@ import CarbonStorageComparisonChart from "./CarbonStorageComparisonChart";
 
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/projects/application/projectImpactsComparison.actions";
 import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type SuccessData = {
   carbonStorageDataLoadingState: Exclude<
     ProjectImpactsComparisonState["carbonStorageDataLoadingState"],
     "idle" | "error" | "loading"
   >;
-  currentCarbonStorage: Exclude<
-    ProjectImpactsComparisonState["currentCarbonStorage"],
-    undefined
-  >;
+  currentCarbonStorage: Exclude<ProjectImpactsComparisonState["currentCarbonStorage"], undefined>;
   projectedCarbonStorage: Exclude<
     ProjectImpactsComparisonState["projectedCarbonStorage"],
     undefined
@@ -35,13 +29,8 @@ type LoadingOrErrorData = {
 
 function CarbonStorageComparisonChartContainer() {
   const dispatch = useAppDispatch();
-  const {
-    currentCarbonStorage,
-    projectedCarbonStorage,
-    carbonStorageDataLoadingState,
-  } = useAppSelector((state) => state.projectImpactsComparison) as
-    | SuccessData
-    | LoadingOrErrorData;
+  const { currentCarbonStorage, projectedCarbonStorage, carbonStorageDataLoadingState } =
+    useAppSelector((state) => state.projectImpactsComparison) as SuccessData | LoadingOrErrorData;
 
   useEffect(() => {
     async function fetchData() {

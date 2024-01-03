@@ -4,15 +4,11 @@ import {
   goToStep,
   ProjectCreationStep,
 } from "@/features/create-project/application/createProject.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectSoilsSummaryContainer() {
   const dispatch = useAppDispatch();
-  const onNext = () =>
-    dispatch(goToStep(ProjectCreationStep.SOILS_CARBON_STORAGE));
+  const onNext = () => dispatch(goToStep(ProjectCreationStep.SOILS_CARBON_STORAGE));
   const siteSoilsSurfaceAreas = useAppSelector(
     (state) => state.projectCreation.siteData?.soilsSurfaceAreas ?? {},
   );

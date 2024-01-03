@@ -28,9 +28,7 @@ const allowedRenewableEnergyTypesErrorMessage = `Cette fonctionnalité n’est p
   RenewableEnergyType.PHOTOVOLTAIC,
 )}`;
 
-const validateSelectedRenewableEnergyTypes = (
-  renewableEnergyTypes: RenewableEnergyType[],
-) =>
+const validateSelectedRenewableEnergyTypes = (renewableEnergyTypes: RenewableEnergyType[]) =>
   (renewableEnergyTypes.length === 1 &&
     renewableEnergyTypes[0] === RenewableEnergyType.PHOTOVOLTAIC) ||
   allowedRenewableEnergyTypesErrorMessage;
@@ -38,24 +36,18 @@ const validateSelectedRenewableEnergyTypes = (
 const mapOptions =
   (register: UseFormRegister<FormValues>, siteSurfaceArea: number) =>
   (enrTypes: RenewableEnergyType) => {
-    const potentialImpact = getPrevisionalEnrSocioEconomicImpact(
-      enrTypes,
-      siteSurfaceArea,
-    );
-    const hintColor =
-      potentialImpact > 0 ? "--text-default-success" : "--text-default-error";
+    const potentialImpact = getPrevisionalEnrSocioEconomicImpact(enrTypes, siteSurfaceArea);
+    const hintColor = potentialImpact > 0 ? "--text-default-success" : "--text-default-error";
     return {
       label: getLabelForRenewableEnergyType(enrTypes),
       hintText: (
         <div style={{ color: `var(${hintColor})` }}>
-          {formatNumericImpact(potentialImpact)} € / an d’impacts
-          socio-économiques potentiels
+          {formatNumericImpact(potentialImpact)} € / an d’impacts socio-économiques potentiels
         </div>
       ),
       nativeInputProps: {
         ...register("renewableEnergyTypes", {
-          required:
-            "Ce champ est nécessaire pour déterminer les questions suivantes",
+          required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           validate: {
             allowedRenewableEnergyTypes: validateSelectedRenewableEnergyTypes,
           },
@@ -77,17 +69,15 @@ function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   const validationError = formState.errors.renewableEnergyTypes;
 
   const state =
-    validationError && validationError.type !== "allowedRenewableEnergyTypes"
-      ? "error"
-      : "default";
+    validationError && validationError.type !== "allowedRenewableEnergyTypes" ? "error" : "default";
 
   return (
     <WizardFormLayout
       title="Quel système d’EnR souhaitez-vous installer ?"
       instructions={
         <p>
-          Votre projet peut contenir plusieurs systèmes de production d’énergies
-          renouvelables ; plusieurs réponses sont donc possibles.
+          Votre projet peut contenir plusieurs systèmes de production d’énergies renouvelables ;
+          plusieurs réponses sont donc possibles.
         </p>
       }
     >
@@ -95,9 +85,7 @@ function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}
           state={state}
-          stateRelatedMessage={
-            validationError ? validationError.message : undefined
-          }
+          stateRelatedMessage={validationError ? validationError.message : undefined}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>

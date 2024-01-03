@@ -11,9 +11,7 @@ const fricheStepsCategories = [
   "Dénomination",
 ] as const;
 
-const siteStepsCategores = fricheStepsCategories.filter(
-  (step) => step !== "Pollution",
-);
+const siteStepsCategores = fricheStepsCategories.filter((step) => step !== "Pollution");
 
 type StepCategory = (typeof fricheStepsCategories)[number];
 
@@ -62,9 +60,7 @@ function SiteCreationStepper({ step, isFriche }: Props) {
   return (
     <Stepper
       title={currentStepCategory}
-      currentStep={
-        stepsCategories.findIndex((step) => step === currentStepCategory) + 1
-      }
+      currentStep={stepsCategories.findIndex((step) => step === currentStepCategory) + 1}
       stepCount={stepsCategories.length}
     />
   );

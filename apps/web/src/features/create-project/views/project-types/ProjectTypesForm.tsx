@@ -1,10 +1,7 @@
 import { useForm, UseFormRegister } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
-import {
-  getPrevisionalProjectSocioEconomicImpact,
-  ProjectType,
-} from "../../domain/project.types";
+import { getPrevisionalProjectSocioEconomicImpact, ProjectType } from "../../domain/project.types";
 import { getLabelForProjectType } from "../projectTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -35,25 +32,19 @@ const validateSelectedProjectTypes = (types: ProjectType[]) =>
 const mapOptions =
   (register: UseFormRegister<FormValues>, siteSurfaceArea: number) =>
   (projectType: ProjectType) => {
-    const potentialImpact = getPrevisionalProjectSocioEconomicImpact(
-      projectType,
-      siteSurfaceArea,
-    );
-    const hintColor =
-      potentialImpact > 0 ? "--text-default-success" : "--text-default-error";
+    const potentialImpact = getPrevisionalProjectSocioEconomicImpact(projectType, siteSurfaceArea);
+    const hintColor = potentialImpact > 0 ? "--text-default-success" : "--text-default-error";
 
     return {
       label: getLabelForProjectType(projectType),
       hintText: (
         <div style={{ color: `var(${hintColor})` }}>
-          {formatNumericImpact(potentialImpact)} € / an d’impacts
-          socio-économiques potentiels
+          {formatNumericImpact(potentialImpact)} € / an d’impacts socio-économiques potentiels
         </div>
       ),
       nativeInputProps: {
         ...register("types", {
-          required:
-            "Ce champ est nécessaire pour déterminer les questions suivantes",
+          required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           validate: {
             allowedProjectTypes: validateSelectedProjectTypes,
           },
@@ -75,17 +66,15 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   const validationError = formState.errors.types;
 
   const state =
-    validationError && validationError.type !== "allowedProjectTypes"
-      ? "error"
-      : "default";
+    validationError && validationError.type !== "allowedProjectTypes" ? "error" : "default";
 
   return (
     <WizardFormLayout
       title="Quel est l’usage principal prévu sur le site ?"
       instructions={
         <p>
-          Votre projet peut contenir plusieurs aménagements, toutefois il s’agit
-          de l’usage principal qui doit être renseigné.
+          Votre projet peut contenir plusieurs aménagements, toutefois il s’agit de l’usage
+          principal qui doit être renseigné.
         </p>
       }
     >
@@ -93,9 +82,7 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}
           state={state}
-          stateRelatedMessage={
-            validationError ? validationError.message : undefined
-          }
+          stateRelatedMessage={validationError ? validationError.message : undefined}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>

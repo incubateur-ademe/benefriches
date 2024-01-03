@@ -1,7 +1,4 @@
-import {
-  goToStep,
-  ProjectCreationStep,
-} from "../../../application/createProject.reducer";
+import { goToStep, ProjectCreationStep } from "../../../application/createProject.reducer";
 import ProjectRevenueIntroduction from "./ProjectRevenueIntroduction";
 
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";

@@ -19,10 +19,7 @@ const baseButtonProps = {
 
 function FilterButton({ children, isActive, onClick }: Props) {
   return (
-    <Button
-      {...(isActive ? activeButtonProps : baseButtonProps)}
-      onClick={onClick}
-    >
+    <Button {...(isActive ? activeButtonProps : baseButtonProps)} onClick={onClick}>
       {children}
     </Button>
   );

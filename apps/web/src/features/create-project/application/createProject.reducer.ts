@@ -1,9 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
-import {
-  fetchRelatedSiteAction,
-  saveProjectAction,
-} from "./createProject.actions";
+import { fetchRelatedSiteAction, saveProjectAction } from "./createProject.actions";
 
 import {
   PhotovoltaicKeyParameter,
@@ -83,16 +80,10 @@ export const projectCreationSlice = createSlice({
     setTypes: (state, action: PayloadAction<ProjectType[]>) => {
       state.projectData.types = action.payload;
     },
-    setRenewableEnergyTypes: (
-      state,
-      action: PayloadAction<RenewableEnergyType[]>,
-    ) => {
+    setRenewableEnergyTypes: (state, action: PayloadAction<RenewableEnergyType[]>) => {
       state.projectData.renewableEnergyTypes = action.payload;
     },
-    setFutureOperator: (
-      state,
-      action: PayloadAction<Project["futureOperator"]>,
-    ) => {
+    setFutureOperator: (state, action: PayloadAction<Project["futureOperator"]>) => {
       state.projectData.futureOperator = action.payload;
     },
     setConversionFullTimeJobsInvolved: (
@@ -107,14 +98,10 @@ export const projectCreationSlice = createSlice({
         state.projectData.conversionFullTimeJobsInvolved = fullTimeJobs;
       }
       if (reinstatementFullTimeJobs !== undefined) {
-        state.projectData.reinstatementFullTimeJobsInvolved =
-          reinstatementFullTimeJobs;
+        state.projectData.reinstatementFullTimeJobsInvolved = reinstatementFullTimeJobs;
       }
     },
-    setOperationsFullTimeJobsInvolved: (
-      state,
-      action: PayloadAction<number>,
-    ) => {
+    setOperationsFullTimeJobsInvolved: (state, action: PayloadAction<number>) => {
       state.projectData.operationsFullTimeJobsInvolved = action.payload;
     },
     setReinstatementContractOwner: (
@@ -126,16 +113,10 @@ export const projectCreationSlice = createSlice({
     setReinstatementCost: (state, action: PayloadAction<number>) => {
       state.projectData.reinstatementCost = action.payload;
     },
-    setPhotovoltaicPanelsInstallationCost: (
-      state,
-      action: PayloadAction<number>,
-    ) => {
+    setPhotovoltaicPanelsInstallationCost: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicPanelsInstallationCost = action.payload;
     },
-    addYearlyProjectedCosts: (
-      state,
-      action: PayloadAction<Project["yearlyProjectedCosts"]>,
-    ) => {
+    addYearlyProjectedCosts: (state, action: PayloadAction<Project["yearlyProjectedCosts"]>) => {
       state.projectData.yearlyProjectedCosts = [
         ...(state.projectData.yearlyProjectedCosts ?? []),
         ...action.payload,
@@ -161,39 +142,22 @@ export const projectCreationSlice = createSlice({
       state.projectData.name = name;
       if (description) state.projectData.description = description;
     },
-    setPhotovoltaicKeyParameter: (
-      state,
-      action: PayloadAction<PhotovoltaicKeyParameter>,
-    ) => {
+    setPhotovoltaicKeyParameter: (state, action: PayloadAction<PhotovoltaicKeyParameter>) => {
       state.projectData.photovoltaicKeyParameter = action.payload;
     },
-    setPhotovoltaicInstallationElectricalPower: (
-      state,
-      action: PayloadAction<number>,
-    ) => {
-      state.projectData.photovoltaicInstallationElectricalPowerKWc =
-        action.payload;
+    setPhotovoltaicInstallationElectricalPower: (state, action: PayloadAction<number>) => {
+      state.projectData.photovoltaicInstallationElectricalPowerKWc = action.payload;
     },
-    setPhotovoltaicInstallationSurface: (
-      state,
-      action: PayloadAction<number>,
-    ) => {
-      state.projectData.photovoltaicInstallationSurfaceSquareMeters =
-        action.payload;
+    setPhotovoltaicInstallationSurface: (state, action: PayloadAction<number>) => {
+      state.projectData.photovoltaicInstallationSurfaceSquareMeters = action.payload;
     },
-    setPhotovoltaicExpectedAnnualProduction: (
-      state,
-      action: PayloadAction<number>,
-    ) => {
+    setPhotovoltaicExpectedAnnualProduction: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicExpectedAnnualProduction = action.payload;
     },
     setPhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicContractDuration = action.payload;
     },
-    setSoilsSurfaceAreas: (
-      state,
-      action: PayloadAction<Project["soilsSurfaceAreas"]>,
-    ) => {
+    setSoilsSurfaceAreas: (state, action: PayloadAction<Project["soilsSurfaceAreas"]>) => {
       state.projectData.soilsSurfaceAreas = action.payload;
     },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {

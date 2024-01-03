@@ -63,9 +63,7 @@ function ProjectCreationStepper({ step }: Props) {
     <Stepper
       title={currentStepCategory}
       currentStep={
-        stepCategories.findIndex(
-          (stepCategory) => stepCategory === currentStepCategory,
-        ) + 1
+        stepCategories.findIndex((stepCategory) => stepCategory === currentStepCategory) + 1
       }
       stepCount={stepCategories.length}
     />

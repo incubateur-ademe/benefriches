@@ -1,10 +1,7 @@
 type StringableValue = string | number | boolean;
 
 type QueryParamsObject = {
-  [key: string]:
-    | StringableValue
-    | StringableValue[]
-    | { [key: string]: StringableValue }[];
+  [key: string]: StringableValue | StringableValue[] | { [key: string]: StringableValue }[];
 };
 
 export const objectToQueryParams = (obj: QueryParamsObject) => {
@@ -15,10 +12,7 @@ export const objectToQueryParams = (obj: QueryParamsObject) => {
       value.forEach((item, index) => {
         if (typeof item === "object") {
           for (const [nestedKey, nestedValue] of Object.entries(item)) {
-            params.append(
-              `${key}[${index}][${nestedKey}]`,
-              String(nestedValue),
-            );
+            params.append(`${key}[${index}][${nestedKey}]`, String(nestedValue));
           }
         } else {
           params.append(`${key}[${index}]`, String(item));

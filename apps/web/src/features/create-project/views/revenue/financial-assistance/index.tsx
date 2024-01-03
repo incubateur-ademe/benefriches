@@ -13,10 +13,7 @@ import { AppDispatch } from "@/store";
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (revenue: FormValues) => {
-      const totalRevenue = Object.values(revenue).reduce(
-        (sum, revenue) => sum + (revenue ?? 0),
-        0,
-      );
+      const totalRevenue = Object.values(revenue).reduce((sum, revenue) => sum + (revenue ?? 0), 0);
       dispatch(setFinancialAssistanceRevenue(totalRevenue));
       dispatch(goToStep(ProjectCreationStep.NAMING));
     },

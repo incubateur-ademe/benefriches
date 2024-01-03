@@ -8,12 +8,7 @@ type Props = {
   onNext: () => void;
 };
 
-function SiteExpensesSummary({
-  onNext,
-  hasExpenses,
-  expensesByBearer,
-  expensesByCategory,
-}: Props) {
+function SiteExpensesSummary({ onNext, hasExpenses, expensesByBearer, expensesByCategory }: Props) {
   return (
     <>
       <h2>Récapitulatif des coûts annuels du site</h2>

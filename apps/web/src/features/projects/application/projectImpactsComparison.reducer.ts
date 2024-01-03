@@ -43,41 +43,29 @@ export const projectImpactsComparisonSlice = createSlice({
     builder.addCase(fetchBaseProjectAndWithProjectData.pending, (state) => {
       state.dataLoadingState = "loading";
     });
-    builder.addCase(
-      fetchBaseProjectAndWithProjectData.fulfilled,
-      (state, action) => {
-        state.dataLoadingState = "success";
-        state.projectData = action.payload.projectData;
-        state.siteData = action.payload.siteData;
-        state.otherProjectData = action.payload.otherProjectData;
-        state.baseProjectId = action.payload.baseProjectId;
-        state.withProject = action.payload.withProject;
-      },
-    );
+    builder.addCase(fetchBaseProjectAndWithProjectData.fulfilled, (state, action) => {
+      state.dataLoadingState = "success";
+      state.projectData = action.payload.projectData;
+      state.siteData = action.payload.siteData;
+      state.otherProjectData = action.payload.otherProjectData;
+      state.baseProjectId = action.payload.baseProjectId;
+      state.withProject = action.payload.withProject;
+    });
     builder.addCase(fetchBaseProjectAndWithProjectData.rejected, (state) => {
       state.dataLoadingState = "error";
     });
     /* fetch carbon storage */
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.pending,
-      (state) => {
-        state.carbonStorageDataLoadingState = "loading";
-      },
-    );
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled,
-      (state, action) => {
-        state.carbonStorageDataLoadingState = "success";
-        state.currentCarbonStorage = action.payload.current;
-        state.projectedCarbonStorage = action.payload.projected;
-      },
-    );
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.rejected,
-      (state) => {
-        state.carbonStorageDataLoadingState = "error";
-      },
-    );
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.pending, (state) => {
+      state.carbonStorageDataLoadingState = "loading";
+    });
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled, (state, action) => {
+      state.carbonStorageDataLoadingState = "success";
+      state.currentCarbonStorage = action.payload.current;
+      state.projectedCarbonStorage = action.payload.projected;
+    });
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.rejected, (state) => {
+      state.carbonStorageDataLoadingState = "error";
+    });
   },
 });
 

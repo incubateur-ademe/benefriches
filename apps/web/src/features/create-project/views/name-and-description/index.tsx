@@ -1,7 +1,5 @@
 import { saveProjectAction } from "../../application/createProject.actions";
-import ProjectNameAndDescriptionForm, {
-  FormValues,
-} from "./ProjectNameAndDescriptionForm";
+import ProjectNameAndDescriptionForm, { FormValues } from "./ProjectNameAndDescriptionForm";
 
 import {
   goToStep,

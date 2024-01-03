@@ -76,10 +76,7 @@ function SiteCreationWizard() {
 
   return (
     <>
-      <Stepper
-        isFriche={siteCreationState.siteData.isFriche}
-        step={siteCreationState.step}
-      />
+      <Stepper isFriche={siteCreationState.siteData.isFriche} step={siteCreationState.step} />
       {getStepComponent()}
     </>
   );

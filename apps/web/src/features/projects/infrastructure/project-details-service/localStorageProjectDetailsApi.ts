@@ -30,9 +30,7 @@ export class LocalStorageProjectDetailsApi
     await delay(300);
 
     try {
-      const projectsFromLocalStorage = localStorage.getItem(
-        PROJECTS_LIST_STORAGE_KEY,
-      );
+      const projectsFromLocalStorage = localStorage.getItem(PROJECTS_LIST_STORAGE_KEY);
 
       const projectsList = projectsFromLocalStorage
         ? (JSON.parse(projectsFromLocalStorage) as ProjectInLocalStorage[])
@@ -44,17 +42,13 @@ export class LocalStorageProjectDetailsApi
         return { projectData: undefined, siteData: undefined };
       }
 
-      const sitesFromLocalStorage = localStorage.getItem(
-        SITES_LIST_STORAGE_KEY,
-      );
+      const sitesFromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
 
       const sitesList = sitesFromLocalStorage
         ? (JSON.parse(sitesFromLocalStorage) as ProjectSite[])
         : [];
 
-      const relatedSite = sitesList.find(
-        (site) => site.id === project.relatedSiteId,
-      );
+      const relatedSite = sitesList.find((site) => site.id === project.relatedSiteId);
 
       return { siteData: relatedSite, projectData: project };
     } catch (error) {

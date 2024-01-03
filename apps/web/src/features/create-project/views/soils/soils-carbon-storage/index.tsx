@@ -6,10 +6,7 @@ import {
 } from "@/features/create-project/application/createProject.reducer";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/soilsCarbonStorage.actions";
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
 type SuccessData = {
@@ -27,8 +24,7 @@ type LoadingOrErrorData = {
 type PropsState = SuccessData | LoadingOrErrorData;
 
 const mapProps = (dispatch: AppDispatch) => ({
-  onNext: () =>
-    dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION)),
+  onNext: () => dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_INTRODUCTION)),
   fetchSoilsCarbonStorage: async () => {
     await dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
   },

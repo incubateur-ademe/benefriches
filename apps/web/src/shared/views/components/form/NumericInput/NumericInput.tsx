@@ -1,9 +1,5 @@
 import { ChangeEvent } from "react";
-import {
-  FieldValues,
-  useController,
-  UseControllerProps,
-} from "react-hook-form";
+import { FieldValues, useController, UseControllerProps } from "react-hook-form";
 import DsfrInput from "@codegouvfr/react-dsfr/Input";
 
 import {

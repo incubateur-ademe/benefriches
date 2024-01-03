@@ -19,13 +19,8 @@ export type Props = {
   projectsToCompare: { id: string; name: string }[];
 };
 
-function ProjectsComparisonSelectionPage({
-  baseProject,
-  projectsToCompare,
-}: Props) {
-  const [selectedProjectId, setSelectedProjectId] = useState<
-    string | undefined
-  >(undefined);
+function ProjectsComparisonSelectionPage({ baseProject, projectsToCompare }: Props) {
+  const [selectedProjectId, setSelectedProjectId] = useState<string | undefined>(undefined);
 
   const onSelect = (projectId: string) => () => {
     setSelectedProjectId(projectId);
@@ -36,13 +31,10 @@ function ProjectsComparisonSelectionPage({
       <h1>Comparaison des impacts des projets</h1>
       <section>
         <p>
-          A quel futur voulez-vous comparer le projet de{" "}
-          <strong>"{baseProject.name}"</strong> sur le site{" "}
-          <strong>"{baseProject.site.name}"</strong> ?
+          A quel futur voulez-vous comparer le projet de <strong>"{baseProject.name}"</strong> sur
+          le site <strong>"{baseProject.site.name}"</strong> ?
         </p>
-        <div
-          className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-2w")}
-        >
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-2w")}>
           <div className={fr.cx("fr-col-3")}>
             <ProjectCard
               isSelected={selectedProjectId === STATU_QUO}

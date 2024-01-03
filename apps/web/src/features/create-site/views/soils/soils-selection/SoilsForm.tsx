@@ -17,19 +17,17 @@ type Props = {
   isFriche: boolean;
 };
 
-const mapSoilOptions =
-  (register: UseFormRegister<FormValues>) => (soilType: SoilType) => {
-    return {
-      label: getLongLabelForSoilType(soilType),
-      nativeInputProps: {
-        ...register("soils", {
-          required:
-            "Ce champ est nécessaire pour déterminer les questions suivantes",
-        }),
-        value: soilType,
-      },
-    };
+const mapSoilOptions = (register: UseFormRegister<FormValues>) => (soilType: SoilType) => {
+  return {
+    label: getLongLabelForSoilType(soilType),
+    nativeInputProps: {
+      ...register("soils", {
+        required: "Ce champ est nécessaire pour déterminer les questions suivantes",
+      }),
+      value: soilType,
+    },
   };
+};
 
 const siteSoilOptionsCategories = [
   {
@@ -38,11 +36,7 @@ const siteSoilOptionsCategories = [
   },
   {
     category: "Prairies",
-    options: [
-      SoilType.PRAIRIE_BUSHES,
-      SoilType.PRAIRIE_GRASS,
-      SoilType.PRAIRIE_TREES,
-    ],
+    options: [SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_TREES],
   },
   {
     category: "Forêts",
@@ -109,32 +103,22 @@ function SiteSoilsForm({ onSubmit, isFriche }: Props) {
 
   const validationError = formState.errors.soils;
 
-  const optionsCategories = isFriche
-    ? fricheSoilOptionsCategories
-    : siteSoilOptionsCategories;
+  const optionsCategories = isFriche ? fricheSoilOptionsCategories : siteSoilOptionsCategories;
 
   return (
     <WizardFormLayout
-      title={`Quels types de sols y a-t-il sur ${
-        isFriche ? "cette friche" : "ce site"
-      } ?`}
+      title={`Quels types de sols y a-t-il sur ${isFriche ? "cette friche" : "ce site"} ?`}
       instructions={<p>Plusieurs réponses possibles.</p>}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={fr.cx("fr-accordions-group", "fr-pb-3w")}>
           {optionsCategories.map(({ category, options }, index) => {
             return (
-              <Accordion
-                label={category}
-                key={category}
-                defaultExpanded={index === 0}
-              >
+              <Accordion label={category} key={category} defaultExpanded={index === 0}>
                 <Checkbox
                   options={options.map(mapSoilOptions(register))}
                   state={validationError ? "error" : "default"}
-                  stateRelatedMessage={
-                    validationError ? validationError.message : undefined
-                  }
+                  stateRelatedMessage={validationError ? validationError.message : undefined}
                 />
               </Accordion>
             );

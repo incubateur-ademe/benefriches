@@ -1,8 +1,6 @@
 import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 
-export const getLabelForExpenseCategory = (
-  expenseCategory: Expense["category"],
-): string => {
+export const getLabelForExpenseCategory = (expenseCategory: Expense["category"]): string => {
   switch (expenseCategory) {
     case "rent":
       return "Loyer";

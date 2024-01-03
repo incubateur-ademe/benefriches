@@ -29,9 +29,7 @@ function PhotovoltaicSurfaceFromPowerForm({
     },
   });
 
-  const hintText = `en m² (maximum conseillé : ${formatNumberFr(
-    siteSurfaceArea,
-  )} m²)`;
+  const hintText = `en m² (maximum conseillé : ${formatNumberFr(siteSurfaceArea)} m²)`;
 
   const maxErrorMessage = `La superficie des panneaux ne peut pas être supérieure à la superficie totale du site (${formatNumberFr(
     siteSurfaceArea,
@@ -45,14 +43,12 @@ function PhotovoltaicSurfaceFromPowerForm({
           <p>
             Le ratio superficie / puissance d’installation considéré est de{" "}
             <strong>
-              {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m²
-              pour 1 000 kWc.
+              {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m² pour 1 000 kWc.
             </strong>
           </p>
           <p>
-            Pour la puissance que vous avez renseigné (
-            {formatNumberFr(electricalPowerKWc)}&nbsp;kWc), la superficie
-            occupée par les panneaux devrait donc être de{" "}
+            Pour la puissance que vous avez renseigné ({formatNumberFr(electricalPowerKWc)}
+            &nbsp;kWc), la superficie occupée par les panneaux devrait donc être de{" "}
             {formatNumberFr(recommendedSurface)}
             &nbsp;m².
           </p>
@@ -71,8 +67,7 @@ function PhotovoltaicSurfaceFromPowerForm({
               value: siteSurfaceArea,
               message: maxErrorMessage,
             },
-            required:
-              "Ce champ est nécessaire pour déterminer les questions suivantes",
+            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           control={control}
         />

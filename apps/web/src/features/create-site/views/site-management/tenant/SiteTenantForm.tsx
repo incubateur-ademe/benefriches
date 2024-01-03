@@ -43,13 +43,7 @@ const tenantOptions = [
 ];
 
 const localAndRegionalAuthorityOptions = (
-  [
-    "municipality",
-    "community_of_municipalities",
-    "department",
-    "region",
-    "state",
-  ] as const
+  ["municipality", "community_of_municipalities", "department", "region", "state"] as const
 ).map((localOrRegionalAuthority) => ({
   label: getLabelForLocalOrRegionalAuthority(localOrRegionalAuthority),
   value: localOrRegionalAuthority,

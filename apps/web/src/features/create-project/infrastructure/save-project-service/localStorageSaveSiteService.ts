@@ -14,9 +14,6 @@ export class LocalStorageSaveProjectApi implements SaveProjectGateway {
     const projectsList = fromLocalStorage
       ? (JSON.parse(fromLocalStorage) as SaveProjectGatewayPayload[])
       : [];
-    localStorage.setItem(
-      PROJECTS_LIST_STORAGE_KEY,
-      JSON.stringify([...projectsList, newProject]),
-    );
+    localStorage.setItem(PROJECTS_LIST_STORAGE_KEY, JSON.stringify([...projectsList, newProject]));
   }
 }

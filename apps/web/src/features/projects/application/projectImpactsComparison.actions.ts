@@ -31,8 +31,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
         );
       }
 
-      const { siteData, projectData, otherProjectData } =
-        projectImpactsComparison;
+      const { siteData, projectData, otherProjectData } = projectImpactsComparison;
 
       if (!siteData || !projectData) {
         return Promise.reject(
@@ -45,10 +44,8 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       const projectSoils = projectData.soilsSurfaceAreas;
       const otherProjectSoils = otherProjectData?.soilsSurfaceAreas ?? {};
 
-      const currentSoils =
-        withProject === "STATU_QUO" ? siteSoils : projectSoils;
-      const projectedSoils =
-        withProject === "STATU_QUO" ? projectSoils : otherProjectSoils;
+      const currentSoils = withProject === "STATU_QUO" ? siteSoils : projectSoils;
+      const projectedSoils = withProject === "STATU_QUO" ? projectSoils : otherProjectSoils;
 
       if (!cityCode || !currentSoils || !projectedSoils) {
         return Promise.reject(
@@ -104,9 +101,7 @@ export const fetchBaseProjectAndWithProjectData = createAppAsyncThunk<
   "projectImpactsComparison/fetchBaseProjectAndWithProjectData",
   async ({ baseProjectId, withProject }, { extra }) => {
     if (!uuidValidate(baseProjectId)) {
-      return Promise.reject(
-        "fetchBaseProjectAndWithProjectData: Wrong format for baseProjectId",
-      );
+      return Promise.reject("fetchBaseProjectAndWithProjectData: Wrong format for baseProjectId");
     }
 
     const { projectData, siteData } =
@@ -126,8 +121,6 @@ export const fetchBaseProjectAndWithProjectData = createAppAsyncThunk<
       return { projectData, siteData, baseProjectId, withProject };
     }
 
-    return Promise.reject(
-      "fetchBaseProjectAndWithProjectData: Wrong format for withProject",
-    );
+    return Promise.reject("fetchBaseProjectAndWithProjectData: Wrong format for withProject");
   },
 );

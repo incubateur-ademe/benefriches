@@ -1,7 +1,4 @@
-import {
-  convertHectaresToSquareMeters,
-  convertSquareMetersToHectares,
-} from "./surfaceArea";
+import { convertHectaresToSquareMeters, convertSquareMetersToHectares } from "./surfaceArea";
 
 describe("Surface Area service", () => {
   it("converts square meters to hectares", () => {

@@ -52,8 +52,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {
         />
         <p>
           <strong>
-            Total des recettes annuelles :{" "}
-            {formatNumberFr(sumAllRevenue(allCosts))} €
+            Total des recettes annuelles : {formatNumberFr(sumAllRevenue(allCosts))} €
           </strong>
         </p>
         <ButtonsGroup

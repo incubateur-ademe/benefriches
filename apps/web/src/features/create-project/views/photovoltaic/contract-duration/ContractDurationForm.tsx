@@ -16,8 +16,7 @@ type FormValues = {
 function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaicContractDuration:
-        AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS,
+      photovoltaicContractDuration: AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS,
     },
   });
 
@@ -26,8 +25,8 @@ function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
       title="Quelle sera la durée du contrat de revente d’énergie au distributeur ?"
       instructions={
         <p>
-          Ceci est la durée de contrat moyen de l’utilisation de panneaux
-          photovoltaïques. Vous pouvez la modifier.
+          Ceci est la durée de contrat moyen de l’utilisation de panneaux photovoltaïques. Vous
+          pouvez la modifier.
         </p>
       }
     >
@@ -38,8 +37,7 @@ function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
           hintText="en années"
           rules={{
             min: 2,
-            required:
-              "Ce champ est nécessaire pour déterminer les questions suivantes",
+            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           control={control}
         />

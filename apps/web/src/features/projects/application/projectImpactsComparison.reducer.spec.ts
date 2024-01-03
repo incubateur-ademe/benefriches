@@ -153,9 +153,7 @@ describe("Project impacts comparison reducer", () => {
     it("should return error when there is no siteData nor projectData in projectImpactsComparison store", async () => {
       const store = createStore(
         getTestAppDependencies({
-          soilsCarbonStorageService: new SoilsCarbonStorageMock(
-            SOILS_STORAGE_API_MOCKED_RESULT,
-          ),
+          soilsCarbonStorageService: new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT),
         }),
       );
 
@@ -176,9 +174,7 @@ describe("Project impacts comparison reducer", () => {
     });
 
     it("should call soils carbon service with the right payload for statu_quo comparaison", async () => {
-      const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(
-        SOILS_STORAGE_API_MOCKED_RESULT,
-      );
+      const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT);
       jest.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
       const store = createStore(
         getTestAppDependencies({
@@ -198,21 +194,15 @@ describe("Project impacts comparison reducer", () => {
       );
       await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
-      expect(
-        soilsCarbonStorageMockSpy.getForCityCodeAndSoils,
-      ).toHaveBeenCalledTimes(2);
-      expect(
-        soilsCarbonStorageMockSpy.getForCityCodeAndSoils,
-      ).toHaveBeenCalledWith({
+      expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledTimes(2);
+      expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledWith({
         cityCode: "75110",
         soils: [
           { surfaceArea: 1400, type: "BUILDINGS" },
           { surfaceArea: 1500, type: "MINERAL_SOIL" },
         ],
       });
-      expect(
-        soilsCarbonStorageMockSpy.getForCityCodeAndSoils,
-      ).toHaveBeenCalledWith({
+      expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledWith({
         cityCode: "75110",
         soils: [
           { surfaceArea: 400, type: "BUILDINGS" },
@@ -223,9 +213,7 @@ describe("Project impacts comparison reducer", () => {
     });
 
     it("should call soils carbon service with the right payload for projects comparaison", async () => {
-      const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(
-        SOILS_STORAGE_API_MOCKED_RESULT,
-      );
+      const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT);
       jest.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
       const store = createStore(
         getTestAppDependencies({
@@ -245,9 +233,7 @@ describe("Project impacts comparison reducer", () => {
       );
       await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
-      expect(
-        soilsCarbonStorageMockSpy.getForCityCodeAndSoils,
-      ).toHaveBeenNthCalledWith(1, {
+      expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenNthCalledWith(1, {
         cityCode: "75110",
         soils: [
           { surfaceArea: 400, type: "BUILDINGS" },
@@ -255,9 +241,7 @@ describe("Project impacts comparison reducer", () => {
           { surfaceArea: 2000, type: "PRAIRIE_GRASS" },
         ],
       });
-      expect(
-        soilsCarbonStorageMockSpy.getForCityCodeAndSoils,
-      ).toHaveBeenNthCalledWith(2, {
+      expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenNthCalledWith(2, {
         cityCode: "75110",
         soils: [
           { surfaceArea: 400, type: "BUILDINGS" },
@@ -270,9 +254,7 @@ describe("Project impacts comparison reducer", () => {
     it("should get carbon sequestration for project and statu quo", async () => {
       const store = createStore(
         getTestAppDependencies({
-          soilsCarbonStorageService: new SoilsCarbonStorageMock(
-            SOILS_STORAGE_API_MOCKED_RESULT,
-          ),
+          soilsCarbonStorageService: new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT),
           projectDetailsService: new ProjectDetailsServiceMock({
             projectData: PROJECT_MOCKED_RESULT,
             siteData: SITE_MOCKED_RESULT,
@@ -305,9 +287,7 @@ describe("Project impacts comparison reducer", () => {
     it("should get carbon sequestration for project and another project", async () => {
       const store = createStore(
         getTestAppDependencies({
-          soilsCarbonStorageService: new SoilsCarbonStorageMock(
-            SOILS_STORAGE_API_MOCKED_RESULT,
-          ),
+          soilsCarbonStorageService: new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT),
           projectDetailsService: new ProjectDetailsServiceMock({
             projectData: PROJECT_MOCKED_RESULT,
             siteData: SITE_MOCKED_RESULT,

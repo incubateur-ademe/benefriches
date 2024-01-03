@@ -77,10 +77,7 @@ const YearlyProjectedCostsForm = ({ onSubmit }: Props) => {
           }}
         />
         <p>
-          <strong>
-            Total des dépenses annuelles :{" "}
-            {formatNumberFr(sumAmounts(allCosts))} €
-          </strong>
+          <strong>Total des dépenses annuelles : {formatNumberFr(sumAmounts(allCosts))} €</strong>
         </p>
         <ButtonsGroup
           buttonsEquisized

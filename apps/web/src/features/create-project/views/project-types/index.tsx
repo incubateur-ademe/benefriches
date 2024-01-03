@@ -6,10 +6,7 @@ import {
   ProjectCreationStep,
   setTypes,
 } from "@/features/create-project/application/createProject.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectTypesFormContainer() {
   const dispatch = useAppDispatch();

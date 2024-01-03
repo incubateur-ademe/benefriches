@@ -23,26 +23,17 @@ export const siteCarbonStorage = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.pending,
-      (state) => {
-        state.loadingState = "loading";
-      },
-    );
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled,
-      (state, action) => {
-        state.loadingState = "success";
-        state.current = action.payload.current;
-        state.projected = action.payload.projected;
-      },
-    );
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.rejected,
-      (state) => {
-        state.loadingState = "error";
-      },
-    );
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.pending, (state) => {
+      state.loadingState = "loading";
+    });
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled, (state, action) => {
+      state.loadingState = "success";
+      state.current = action.payload.current;
+      state.projected = action.payload.projected;
+    });
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.rejected, (state) => {
+      state.loadingState = "error";
+    });
   },
 });
 

@@ -17,9 +17,7 @@ const ImpactCard = ({ title, impact, isPositive, text }: Props) => {
       <h5
         className={fr.cx("fr-mb-1v")}
         style={{
-          color: `var(${
-            isPositive ? "--text-default-success" : "--text-default-error"
-          })`,
+          color: `var(${isPositive ? "--text-default-success" : "--text-default-error"})`,
         }}
       >
         {impact}

@@ -11,9 +11,7 @@ const isSoilTypeForest = (soilType: SoilType) => {
 };
 
 const isSoilTypeAgricultural = (soilType: SoilType) => {
-  return [SoilType.VINEYARD, SoilType.ORCHARD, SoilType.CULTIVATION].includes(
-    soilType,
-  );
+  return [SoilType.VINEYARD, SoilType.ORCHARD, SoilType.CULTIVATION].includes(soilType);
 };
 
 const isSoilTypeArtificial = (soilType: SoilType) => {
@@ -39,14 +37,11 @@ export const generateSiteDesignation = (siteData: SiteDraft) => {
 
   const { soils = [] } = siteData;
 
-  const nonArtificialSoils = soils.filter(
-    (soilType) => !isSoilTypeArtificial(soilType),
-  );
+  const nonArtificialSoils = soils.filter((soilType) => !isSoilTypeArtificial(soilType));
   if (nonArtificialSoils.length === 0) return "espace";
   if (nonArtificialSoils.every(isSoilTypePrairie)) return "prairie";
   if (nonArtificialSoils.every(isSoilTypeForest)) return "forêt";
-  if (nonArtificialSoils.every(isSoilTypeAgricultural))
-    return "espace agricole";
+  if (nonArtificialSoils.every(isSoilTypeAgricultural)) return "espace agricole";
   if (nonArtificialSoils.every(isSoilTypeNatural)) return "espace naturel";
   return "espace naturel et agricole";
 };

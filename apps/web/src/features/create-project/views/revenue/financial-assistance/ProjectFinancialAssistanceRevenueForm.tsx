@@ -64,10 +64,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit }: Props) => {
           }}
         />
         <p>
-          <strong>
-            Total des aides aux travaux :{" "}
-            {formatNumberFr(sumAllRevenue(allCosts))} €
-          </strong>
+          <strong>Total des aides aux travaux : {formatNumberFr(sumAllRevenue(allCosts))} €</strong>
         </p>
         <ButtonsGroup
           buttonsEquisized

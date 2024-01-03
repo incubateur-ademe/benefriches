@@ -12,11 +12,7 @@ type Props = {
   soilsSurfaceAreas: Partial<Record<SoilType, number>>;
 };
 
-const SiteSoilsSummary = ({
-  totalSurfaceArea,
-  onNext,
-  soilsSurfaceAreas,
-}: Props) => {
+const SiteSoilsSummary = ({ totalSurfaceArea, onNext, soilsSurfaceAreas }: Props) => {
   const formattedTotalSurfaceAreaInHectare = formatNumberFr(
     convertSquareMetersToHectares(totalSurfaceArea),
   );

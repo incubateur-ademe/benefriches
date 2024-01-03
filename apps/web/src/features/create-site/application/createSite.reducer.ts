@@ -3,10 +3,7 @@ import { v4 as uuid } from "uuid";
 import { saveSiteAction } from "./createSite.actions";
 
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
-import {
-  Expense,
-  SiteDraft,
-} from "@/features/create-site/domain/siteFoncier.types";
+import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { SoilType } from "@/shared/domain/soils";
 
 export type SiteCreationState = {
@@ -75,10 +72,7 @@ export const siteCreationSlice = createSlice({
     setSoils: (state, action: PayloadAction<SoilType[]>) => {
       state.siteData.soils = action.payload;
     },
-    setSoilsSurfaceAreas: (
-      state,
-      action: PayloadAction<SiteDraft["soilsSurfaceAreas"]>,
-    ) => {
+    setSoilsSurfaceAreas: (state, action: PayloadAction<SiteDraft["soilsSurfaceAreas"]>) => {
       state.siteData.soilsSurfaceAreas = action.payload;
     },
     setContaminatedSoils: (
@@ -117,18 +111,13 @@ export const siteCreationSlice = createSlice({
       state.siteData.hasRecentAccidents = action.payload.hasRecentAccidents;
 
       if (hasRecentAccidents) {
-        state.siteData.minorInjuriesPersons =
-          action.payload.minorInjuriesPersons ?? 0;
-        state.siteData.severeInjuriesPersons =
-          action.payload.severeInjuriesPersons ?? 0;
+        state.siteData.minorInjuriesPersons = action.payload.minorInjuriesPersons ?? 0;
+        state.siteData.severeInjuriesPersons = action.payload.severeInjuriesPersons ?? 0;
         state.siteData.deaths = action.payload.deaths ?? 0;
       }
     },
     addExpenses: (state, action: PayloadAction<Expense[]>) => {
-      state.siteData.yearlyExpenses = [
-        ...(state.siteData.yearlyExpenses ?? []),
-        ...action.payload,
-      ];
+      state.siteData.yearlyExpenses = [...(state.siteData.yearlyExpenses ?? []), ...action.payload];
     },
     setYearlyIncome: (state, action: PayloadAction<number>) => {
       state.siteData.yearlyIncome = action.payload;
@@ -141,8 +130,7 @@ export const siteCreationSlice = createSlice({
       action: PayloadAction<{ name: string; description?: string }>,
     ) => {
       state.siteData.name = action.payload.name;
-      if (action.payload.description)
-        state.siteData.description = action.payload.description;
+      if (action.payload.description) state.siteData.description = action.payload.description;
     },
     goToStep: (state, action: PayloadAction<SiteCreationStep>) => {
       state.step = action.payload;

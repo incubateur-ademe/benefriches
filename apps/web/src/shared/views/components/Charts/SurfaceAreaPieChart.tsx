@@ -13,15 +13,13 @@ type Props = {
 
 const SurfaceAreaPieChart = ({ soilsSurfaceAreas }: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
-  const data = Object.entries(soilsSurfaceAreas).map(
-    ([soilType, surfaceArea]) => {
-      return {
-        name: getLabelForSoilType(soilType as SoilType),
-        y: surfaceArea,
-        color: getColorForSoilType(soilType as SoilType),
-      };
-    },
-  );
+  const data = Object.entries(soilsSurfaceAreas).map(([soilType, surfaceArea]) => {
+    return {
+      name: getLabelForSoilType(soilType as SoilType),
+      y: surfaceArea,
+      color: getColorForSoilType(soilType as SoilType),
+    };
+  });
 
   const variablePieChartOptions: Highcharts.Options = {
     title: { text: "" },

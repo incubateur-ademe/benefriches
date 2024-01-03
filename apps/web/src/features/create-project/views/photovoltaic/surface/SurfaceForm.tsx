@@ -43,8 +43,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea }: Props) {
               value: siteSurfaceArea,
               message: maxErrorMessage,
             },
-            required:
-              "Ce champ est nécessaire pour déterminer les questions suivantes",
+            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           control={control}
         />

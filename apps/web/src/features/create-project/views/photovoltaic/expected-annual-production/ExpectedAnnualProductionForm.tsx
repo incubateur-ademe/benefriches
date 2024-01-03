@@ -19,8 +19,7 @@ function PhotovoltaicAnnualProductionForm({
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaicExpectedAnnualProduction:
-        suggestedAnnualProductionInMegaWattPerYear,
+      photovoltaicExpectedAnnualProduction: suggestedAnnualProductionInMegaWattPerYear,
     },
   });
 
@@ -30,9 +29,8 @@ function PhotovoltaicAnnualProductionForm({
       instructions={
         <>
           <p>
-            Production calculée à partir de la puissance, de la superficie au
-            sol et du taux d’ensoleillement dans la zone géographique du site.
-            Vous pouvez la modifier.
+            Production calculée à partir de la puissance, de la superficie au sol et du taux
+            d’ensoleillement dans la zone géographique du site. Vous pouvez la modifier.
           </p>
           <p>Vous pouvez modifier cette valeur.</p>
         </>
@@ -45,8 +43,7 @@ function PhotovoltaicAnnualProductionForm({
           hintText="en MWh/an"
           rules={{
             min: 0,
-            required:
-              "Ce champ est nécessaire pour déterminer les questions suivantes",
+            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           control={control}
         />

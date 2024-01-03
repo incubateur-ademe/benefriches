@@ -5,10 +5,7 @@ import { resetState } from "../../application/createProject.reducer";
 import CreateProjectIntroductionPage from "./CreateProjetIntroductionPage";
 
 import { routes } from "@/router";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   route: Route<typeof routes.createProjectIntro>;
@@ -16,9 +13,7 @@ type Props = {
 
 function CreateProjectIntroductionContainer({ route }: Props) {
   const dispatch = useAppDispatch();
-  const { siteData, siteDataLoadingState } = useAppSelector(
-    (state) => state.projectCreation,
-  );
+  const { siteData, siteDataLoadingState } = useAppSelector((state) => state.projectCreation);
 
   useEffect(() => {
     dispatch(resetState());

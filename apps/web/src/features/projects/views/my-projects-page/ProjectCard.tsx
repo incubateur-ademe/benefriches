@@ -10,12 +10,7 @@ type Props = {
   impactLinkProps?: { href: string };
 };
 
-function ProjectCard({
-  projectName,
-  yearlyProfit,
-  details,
-  impactLinkProps,
-}: Props) {
+function ProjectCard({ projectName, yearlyProfit, details, impactLinkProps }: Props) {
   const linkProps = impactLinkProps ?? { href: "#" };
   const desc =
     yearlyProfit < 0 ? (

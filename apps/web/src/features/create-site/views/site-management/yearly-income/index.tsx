@@ -11,10 +11,7 @@ import { AppDispatch } from "@/store";
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (data: FormValues) => {
-      const income = Object.entries(data).reduce(
-        (sum, [, amount]) => sum + (amount ?? 0),
-        0,
-      );
+      const income = Object.entries(data).reduce((sum, [, amount]) => sum + (amount ?? 0), 0);
       dispatch(setYearlyIncome(income));
       dispatch(goToStep(SiteCreationStep.EXPENSES_SUMMARY));
     },

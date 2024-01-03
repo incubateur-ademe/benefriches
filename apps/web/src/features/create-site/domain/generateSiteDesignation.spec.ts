@@ -48,11 +48,7 @@ describe("generateSiteName", () => {
   it("should generate 'prairie' when no friche and non-artificial soils are of type prairie", () => {
     const site = buildSiteDraft({
       isFriche: false,
-      soils: [
-        SoilType.PRAIRIE_BUSHES,
-        SoilType.PRAIRIE_GRASS,
-        SoilType.MINERAL_SOIL,
-      ],
+      soils: [SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_GRASS, SoilType.MINERAL_SOIL],
     });
     expect(generateSiteDesignation(site)).toEqual("prairie");
   });
@@ -68,11 +64,7 @@ describe("generateSiteName", () => {
   it("should generate 'forêt' when no friche and non-artificial soils are of type forest", () => {
     const site = buildSiteDraft({
       isFriche: false,
-      soils: [
-        SoilType.FOREST_CONIFER,
-        SoilType.FOREST_POPLAR,
-        SoilType.MINERAL_SOIL,
-      ],
+      soils: [SoilType.FOREST_CONIFER, SoilType.FOREST_POPLAR, SoilType.MINERAL_SOIL],
     });
     expect(generateSiteDesignation(site)).toEqual("forêt");
   });
@@ -96,11 +88,7 @@ describe("generateSiteName", () => {
   it("should generate 'espace naturel' for a mix of prairie and forest", () => {
     const site = buildSiteDraft({
       isFriche: false,
-      soils: [
-        SoilType.FOREST_CONIFER,
-        SoilType.PRAIRIE_BUSHES,
-        SoilType.PRAIRIE_GRASS,
-      ],
+      soils: [SoilType.FOREST_CONIFER, SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_GRASS],
     });
     expect(generateSiteDesignation(site)).toEqual("espace naturel");
   });
@@ -108,12 +96,7 @@ describe("generateSiteName", () => {
   it("should generate 'espace naturel' for a mix of prairie, forest, wet land and water", () => {
     const site = buildSiteDraft({
       isFriche: false,
-      soils: [
-        SoilType.FOREST_POPLAR,
-        SoilType.PRAIRIE_TREES,
-        SoilType.WATER,
-        SoilType.WET_LAND,
-      ],
+      soils: [SoilType.FOREST_POPLAR, SoilType.PRAIRIE_TREES, SoilType.WATER, SoilType.WET_LAND],
     });
     expect(generateSiteDesignation(site)).toEqual("espace naturel");
   });
@@ -121,12 +104,7 @@ describe("generateSiteName", () => {
   it("should generate 'espace naturel et agricole' for a mix of prairie, forest and cultivation", () => {
     const site = buildSiteDraft({
       isFriche: false,
-      soils: [
-        SoilType.FOREST_POPLAR,
-        SoilType.PRAIRIE_TREES,
-        SoilType.WATER,
-        SoilType.CULTIVATION,
-      ],
+      soils: [SoilType.FOREST_POPLAR, SoilType.PRAIRIE_TREES, SoilType.WATER, SoilType.CULTIVATION],
     });
     expect(generateSiteDesignation(site)).toEqual("espace naturel et agricole");
   });
@@ -134,10 +112,7 @@ describe("generateSiteName", () => {
   it("should generate 'espace' when no friche and all soils are artifical", () => {
     const site = buildSiteDraft({
       isFriche: false,
-      soils: [
-        SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-        SoilType.MINERAL_SOIL,
-      ],
+      soils: [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED, SoilType.MINERAL_SOIL],
     });
     expect(generateSiteDesignation(site)).toEqual("espace");
   });

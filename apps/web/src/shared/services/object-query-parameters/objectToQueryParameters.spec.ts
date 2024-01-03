@@ -21,9 +21,7 @@ describe("objectToQueryParams", () => {
     const input = {
       soils: ["BUILDINGS", "MINERAL_SOIL", "PRAIRIE"],
     };
-    const expectedOutput = encodeURI(
-      "soils[0]=BUILDINGS&soils[1]=MINERAL_SOIL&soils[2]=PRAIRIE",
-    );
+    const expectedOutput = encodeURI("soils[0]=BUILDINGS&soils[1]=MINERAL_SOIL&soils[2]=PRAIRIE");
 
     expect(objectToQueryParams(input)).toEqual(expectedOutput);
   });

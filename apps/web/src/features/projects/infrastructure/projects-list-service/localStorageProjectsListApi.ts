@@ -23,9 +23,7 @@ export class LocalStorageProjectsListApi implements ProjectsListGateway {
       ? (JSON.parse(sitesFromLocalStorage) as ProjectSite[])
       : [];
 
-    const projectsFromLocalStorage = localStorage.getItem(
-      PROJECTS_LIST_STORAGE_KEY,
-    );
+    const projectsFromLocalStorage = localStorage.getItem(PROJECTS_LIST_STORAGE_KEY);
 
     const projectsList = projectsFromLocalStorage
       ? (JSON.parse(projectsFromLocalStorage) as ProjectInLocalStorage[])

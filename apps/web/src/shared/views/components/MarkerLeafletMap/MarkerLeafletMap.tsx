@@ -40,10 +40,7 @@ const SET_VIEW_OPTIONS = {
   },
 };
 
-const MarkerLeafletMapSetView = ({
-  position,
-  zoom,
-}: MarkerLeafletMapSetViewPropsType) => {
+const MarkerLeafletMapSetView = ({ position, zoom }: MarkerLeafletMapSetViewPropsType) => {
   const map = useMap();
 
   useEffect(() => {
@@ -58,10 +55,7 @@ const MarkerLeafletMap = ({ lat, long, popup }: PropsType) => {
   const zoom = isValidPosition ? 150 : 5;
   const displayMarker = isValidPosition;
   const position = useMemo(
-    () =>
-      (isValidPosition
-        ? [lat, long]
-        : FRANCE_CENTER_LAG_LONG_POSITION) as LatLngExpression,
+    () => (isValidPosition ? [lat, long] : FRANCE_CENTER_LAG_LONG_POSITION) as LatLngExpression,
     [isValidPosition, lat, long],
   );
 

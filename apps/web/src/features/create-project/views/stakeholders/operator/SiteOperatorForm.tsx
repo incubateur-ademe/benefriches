@@ -27,13 +27,7 @@ type FutureOperatorOption =
 type SiteStakholderOption = SiteStakeholder["role"];
 
 const localAndRegionalAuthorityOptions = (
-  [
-    "municipality",
-    "community_of_municipalities",
-    "department",
-    "region",
-    "state",
-  ] as const
+  ["municipality", "community_of_municipalities", "department", "region", "state"] as const
 ).map((localOrRegionalAuthority) => ({
   label: getLabelForLocalOrRegionalAuthority(localOrRegionalAuthority),
   value: localOrRegionalAuthority,
@@ -87,11 +81,7 @@ const getOperatorOptions = (
   ];
 };
 
-function SiteOperatorForm({
-  onSubmit,
-  siteStakeholders,
-  currentUserCompany,
-}: Props) {
+function SiteOperatorForm({ onSubmit, siteStakeholders, currentUserCompany }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });

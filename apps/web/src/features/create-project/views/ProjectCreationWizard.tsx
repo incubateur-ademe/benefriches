@@ -28,9 +28,7 @@ import Stepper from "./Stepper";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectCreationWizard() {
-  const projectCreationStep = useAppSelector(
-    (state) => state.projectCreation.step,
-  );
+  const projectCreationStep = useAppSelector((state) => state.projectCreation.step);
 
   const getStepComponent = () => {
     switch (projectCreationStep) {

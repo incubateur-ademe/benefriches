@@ -6,14 +6,8 @@ import {
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
 import { hasTenant } from "@/features/create-site/domain/site.functions";
-import {
-  Expense,
-  SiteDraft,
-} from "@/features/create-site/domain/siteFoncier.types";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch, RootState } from "@/store";
 
 type SafetyExpenseProps = {
@@ -21,11 +15,7 @@ type SafetyExpenseProps = {
   amount: number;
   bearer?: Expense["bearer"];
 };
-const buildSafetyExpense = ({
-  type,
-  amount,
-  bearer = "owner",
-}: SafetyExpenseProps): Expense => {
+const buildSafetyExpense = ({ type, amount, bearer = "owner" }: SafetyExpenseProps): Expense => {
   return {
     category: "safety",
     type,
@@ -34,10 +24,7 @@ const buildSafetyExpense = ({
   };
 };
 
-const mapProps = (
-  dispatch: AppDispatch,
-  siteCreationState: RootState["siteCreation"],
-) => {
+const mapProps = (dispatch: AppDispatch, siteCreationState: RootState["siteCreation"]) => {
   return {
     hasTenant: hasTenant(siteCreationState.siteData as SiteDraft),
     onSubmit: (formData: FormValues) => {

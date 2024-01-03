@@ -13,16 +13,16 @@ export interface GetSiteGateway {
   getById(siteId: string): Promise<ProjectSite | undefined>;
 }
 
-export const fetchRelatedSiteAction = createAppAsyncThunk<
-  ProjectSite,
-  ProjectSite["id"]
->("project/fetchRelatedSite", async (siteId, { extra }) => {
-  const projectSite = await extra.getSiteService.getById(siteId);
+export const fetchRelatedSiteAction = createAppAsyncThunk<ProjectSite, ProjectSite["id"]>(
+  "project/fetchRelatedSite",
+  async (siteId, { extra }) => {
+    const projectSite = await extra.getSiteService.getById(siteId);
 
-  if (!projectSite) throw new Error("Site not found");
+    if (!projectSite) throw new Error("Site not found");
 
-  return projectSite;
-});
+    return projectSite;
+  },
+);
 
 const saveProjectSchema = z.object({
   id: z.string().uuid(),
@@ -36,22 +36,16 @@ const saveProjectSchema = z.object({
   photovoltaicInstallationSurfaceSquareMeters: z.number().nonnegative(),
   photovoltaicExpectedAnnualProduction: z.number().nonnegative(),
   photovoltaicContractDuration: z.number().nonnegative(),
-  futureOperator: z
-    .object({ name: z.string(), structureType: z.string() })
-    .optional(),
+  futureOperator: z.object({ name: z.string(), structureType: z.string() }).optional(),
   conversionFullTimeJobsInvolved: z.number().nonnegative().optional(),
   reinstatementFullTimeJobsInvolved: z.number().nonnegative().optional(),
-  reinstatementContractOwner: z
-    .object({ name: z.string(), structureType: z.string() })
-    .optional(),
+  reinstatementContractOwner: z.object({ name: z.string(), structureType: z.string() }).optional(),
   operationsFullTimeJobsInvolved: z.number().nonnegative().optional(),
   reinstatementCost: z.number().nonnegative().optional(),
   photovoltaicPanelsInstallationCost: z.number().nonnegative(),
   financialAssistanceRevenue: z.number().nonnegative(),
   yearlyProjectedCosts: z.object({ amount: z.number().nonnegative() }).array(),
-  yearlyProjectedRevenue: z
-    .object({ amount: z.number().nonnegative() })
-    .array(),
+  yearlyProjectedRevenue: z.object({ amount: z.number().nonnegative() }).array(),
   soilsSurfaceAreas: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
 });
 

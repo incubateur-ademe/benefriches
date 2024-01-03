@@ -27,13 +27,7 @@ type FutureOperatorOption =
 type SiteStakholderOption = SiteStakeholder["role"];
 
 const localAndRegionalAuthorityOptions = (
-  [
-    "municipality",
-    "community_of_municipalities",
-    "department",
-    "region",
-    "state",
-  ] as const
+  ["municipality", "community_of_municipalities", "department", "region", "state"] as const
 ).map((localOrRegionalAuthority) => ({
   label: getLabelForLocalOrRegionalAuthority(localOrRegionalAuthority),
   value: localOrRegionalAuthority,
@@ -97,9 +91,8 @@ function SiteReinstatementContractOwnerForm({
       title="Qui sera le maître d’ouvrage des travaux de remise en état de la friche ?"
       instructions={
         <p>
-          Les travaux de remise en état incluent la désimperméabilisation des
-          sols, la dépollution, l’enlèvement des déchets, la déconstruction,
-          etc.
+          Les travaux de remise en état incluent la désimperméabilisation des sols, la dépollution,
+          l’enlèvement des déchets, la déconstruction, etc.
         </p>
       }
     >

@@ -37,39 +37,31 @@ const ReinstatementCostFormExplanation = ({
       return (
         <section>
           <p>
-            Le site que vous allez aménager est une friche partiellement
-            imperméable et partiellement polluée.
+            Le site que vous allez aménager est une friche partiellement imperméable et
+            partiellement polluée.
           </p>
           <p>
-            Vous allez donc potentiellement engager des travaux de
-            déconstruction (bâtiments obsolètes, désimperméabilisation de
-            parking et voiries etc...) et des travaux de dépollution.
+            Vous allez donc potentiellement engager des travaux de déconstruction (bâtiments
+            obsolètes, désimperméabilisation de parking et voiries etc...) et des travaux de
+            dépollution.
           </p>
         </section>
       );
     }
     return (
       <section>
-        <p>
-          Le site que vous allez aménager est une friche partiellement polluée.
-        </p>
-        <p>
-          Vous allez donc potentiellement engager des travaux de dépollution.
-        </p>
+        <p>Le site que vous allez aménager est une friche partiellement polluée.</p>
+        <p>Vous allez donc potentiellement engager des travaux de dépollution.</p>
       </section>
     );
   } else {
     if (hasImpermeableSurface) {
       return (
         <section>
+          <p>Le site que vous allez aménager est une friche partiellement imperméable.</p>
           <p>
-            Le site que vous allez aménager est une friche partiellement
-            imperméable.
-          </p>
-          <p>
-            Vous allez donc potentiellement engager des travaux de
-            déconstruction (bâtiments obsolètes, désimperméabilisation de
-            parking et voiries etc...)
+            Vous allez donc potentiellement engager des travaux de déconstruction (bâtiments
+            obsolètes, désimperméabilisation de parking et voiries etc...)
           </p>
         </section>
       );
@@ -77,9 +69,8 @@ const ReinstatementCostFormExplanation = ({
     return (
       <section>
         <p>
-          Le site que vous allez aménager est une friche. Vous allez donc
-          potentiellement engager des travaux de remise en état pour la rendre
-          exploitable.
+          Le site que vous allez aménager est une friche. Vous allez donc potentiellement engager
+          des travaux de remise en état pour la rendre exploitable.
         </p>
       </section>
     );
@@ -189,8 +180,7 @@ const ReinstatementsCostsForm = ({
         />
         <p>
           <strong>
-            Total des coûts des travaux de remise en état :{" "}
-            {formatNumberFr(sumAmounts(allCosts))} €
+            Total des coûts des travaux de remise en état : {formatNumberFr(sumAmounts(allCosts))} €
           </strong>
         </p>
         <ButtonsGroup

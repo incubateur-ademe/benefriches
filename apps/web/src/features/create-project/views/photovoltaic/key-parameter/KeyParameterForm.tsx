@@ -13,8 +13,7 @@ type FormValues = {
   photovoltaicKeyParameter: PhotovoltaicKeyParameter;
 };
 
-const requiredMessage =
-  "Ce champ est nécessaire pour déterminer les questions suivantes";
+const requiredMessage = "Ce champ est nécessaire pour déterminer les questions suivantes";
 
 function KeyParameterForm({ onSubmit }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
@@ -37,15 +36,14 @@ function KeyParameterForm({ onSubmit }: Props) {
       instructions={
         <>
           <p>
-            Si vous savez déjà quelle puissance doit faire l’installation,
-            sélectionnez «&nbsp;La puissance d’installation&nbsp;». Bénéfriches
-            calculera alors la superficie au sol requise.
+            Si vous savez déjà quelle puissance doit faire l’installation, sélectionnez «&nbsp;La
+            puissance d’installation&nbsp;». Bénéfriches calculera alors la superficie au sol
+            requise.
           </p>
           <p>
-            Si vous souhaitez que la puissance d’installation s’adapte à une
-            certaine superficie au sol, sélectionnez «&nbsp;La superficie de
-            l’installation&nbsp;». Bénéfriches calculera alors la puissance que
-            pourra faire votre installation.
+            Si vous souhaitez que la puissance d’installation s’adapte à une certaine superficie au
+            sol, sélectionnez «&nbsp;La superficie de l’installation&nbsp;». Bénéfriches calculera
+            alors la puissance que pourra faire votre installation.
           </p>
         </>
       }

@@ -1,10 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import {
-  FieldValues,
-  RegisterOptions,
-  useController,
-  UseControllerProps,
-} from "react-hook-form";
+import { FieldValues, RegisterOptions, useController, UseControllerProps } from "react-hook-form";
 import DsfrInput, { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { Slider } from "antd";
 import { SliderBaseProps } from "antd/es/slider";
@@ -67,8 +62,7 @@ const SliderNumericInput = <T extends FieldValues>({
 
   const [inputValue, setInputValue] = useState<string>(field.value);
 
-  const onChangeInput = (ev: ChangeEvent<HTMLInputElement>) =>
-    setInputValue(ev.target.value);
+  const onChangeInput = (ev: ChangeEvent<HTMLInputElement>) => setInputValue(ev.target.value);
 
   const onLeaveInput = () => {
     const newValue = stringToNumber(inputValue);

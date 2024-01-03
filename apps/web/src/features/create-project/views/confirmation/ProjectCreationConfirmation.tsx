@@ -8,11 +8,7 @@ type Props = {
   loadingState: "idle" | "loading" | "success" | "error";
 };
 
-function ProjectCreationConfirmation({
-  projectId,
-  projectName,
-  loadingState,
-}: Props) {
+function ProjectCreationConfirmation({ projectId, projectName, loadingState }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -21,8 +17,7 @@ function ProjectCreationConfirmation({
     case "error":
       return (
         <p>
-          Une erreur est survenue lors de la création du projet "{projectName}",
-          veuillez réessayer.
+          Une erreur est survenue lors de la création du projet "{projectName}", veuillez réessayer.
         </p>
       );
     case "success":
@@ -30,9 +25,9 @@ function ProjectCreationConfirmation({
         <>
           <h2>✅ Le projet "{projectName}" est créé !</h2>
           <p>
-            Vous pouvez maintenant découvrir ses impacts, comparer ce projet
-            avec un autre projet ou bien retourner à votre liste de projets,
-            pour créer un nouveau projet ou un nouveau site.
+            Vous pouvez maintenant découvrir ses impacts, comparer ce projet avec un autre projet ou
+            bien retourner à votre liste de projets, pour créer un nouveau projet ou un nouveau
+            site.
           </p>
           <ButtonsGroup
             buttons={[

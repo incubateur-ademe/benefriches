@@ -1,14 +1,8 @@
 import { SiteDraft } from "../../../domain/siteFoncier.types";
 import SiteSoilsSummary from "./SiteSoilsSummary";
 
-import {
-  goToStep,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { goToStep, SiteCreationStep } from "@/features/create-site/application/createSite.reducer";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {

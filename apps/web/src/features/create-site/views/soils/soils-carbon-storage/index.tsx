@@ -1,15 +1,9 @@
-import {
-  goToStep,
-  SiteCreationStep,
-} from "../../../application/createSite.reducer";
+import { goToStep, SiteCreationStep } from "../../../application/createSite.reducer";
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 import { fetchCarbonStorageForSoils } from "@/features/create-site/application/siteSoilsCarbonStorage.actions";
 import { SoilType } from "@/shared/domain/soils";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (
@@ -48,15 +42,9 @@ const mapProps = (
 function SiteSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();
   const siteData = useAppSelector((state) => state.siteCreation.siteData);
-  const siteCarbonStorageState = useAppSelector(
-    (state) => state.siteCarbonStorage,
-  );
+  const siteCarbonStorageState = useAppSelector((state) => state.siteCarbonStorage);
 
-  return (
-    <SiteSoilsCarbonStorage
-      {...mapProps(dispatch, siteData, siteCarbonStorageState)}
-    />
-  );
+  return <SiteSoilsCarbonStorage {...mapProps(dispatch, siteData, siteCarbonStorageState)} />;
 }
 
 export default SiteSoilsCarbonStorageContainer;

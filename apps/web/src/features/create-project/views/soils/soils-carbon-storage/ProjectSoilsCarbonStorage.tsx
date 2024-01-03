@@ -62,8 +62,7 @@ const ProjectSoilsCarbonStorage = ({
 
   if (loadingState === "success") {
     const diffCarbonStorage =
-      projectedCarbonStorage.totalCarbonStorage -
-      currentCarbonStorage.totalCarbonStorage;
+      projectedCarbonStorage.totalCarbonStorage - currentCarbonStorage.totalCarbonStorage;
     const isDiffPositive = diffCarbonStorage > 0;
     return (
       <>
@@ -73,17 +72,14 @@ const ProjectSoilsCarbonStorage = ({
             <p>Bonne nouvelle !</p>
             <p>
               Ce site pourrait stocker{" "}
-              <strong>
-                {formatNumberFr(diffCarbonStorage)} tonnes de carbone en plus.
-              </strong>
+              <strong>{formatNumberFr(diffCarbonStorage)} tonnes de carbone en plus.</strong>
             </p>
           </>
         ) : (
           <p>
             Ce site stockerait{" "}
             <strong>
-              {formatNumberFr(Math.abs(diffCarbonStorage))} tonnes de carbone en
-              moins.
+              {formatNumberFr(Math.abs(diffCarbonStorage))} tonnes de carbone en moins.
             </strong>
           </p>
         )}
@@ -91,23 +87,18 @@ const ProjectSoilsCarbonStorage = ({
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-6">
             <h3>
-              Avant : {formatNumberFr(currentCarbonStorage.totalCarbonStorage)}{" "}
-              tonnes de CO2-eq stockées
+              Avant : {formatNumberFr(currentCarbonStorage.totalCarbonStorage)} tonnes de CO2-eq
+              stockées
             </h3>
-            <SoilsCarbonStorageChart
-              soilsCarbonStorage={currentCarbonStorage.soilsStorage}
-            />
+            <SoilsCarbonStorageChart soilsCarbonStorage={currentCarbonStorage.soilsStorage} />
           </div>
 
           <div className="fr-col-6">
             <h3>
-              Après :{" "}
-              {formatNumberFr(projectedCarbonStorage.totalCarbonStorage)} tonnes
-              de CO2-eq stockées
+              Après : {formatNumberFr(projectedCarbonStorage.totalCarbonStorage)} tonnes de CO2-eq
+              stockées
             </h3>
-            <SoilsCarbonStorageChart
-              soilsCarbonStorage={projectedCarbonStorage.soilsStorage}
-            />
+            <SoilsCarbonStorageChart soilsCarbonStorage={projectedCarbonStorage.soilsStorage} />
           </div>
         </div>
 

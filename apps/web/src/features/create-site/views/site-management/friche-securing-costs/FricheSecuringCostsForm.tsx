@@ -61,9 +61,8 @@ function FricheSecuringExpensessForm({ onSubmit, hasTenant }: Props) {
       title="Coûts annuels liés à la sécurisation de la friche"
       instructions={
         <p>
-          Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de
-          gardiennage, d’entretien, de débarras de dépôt sauvage sont
-          habituellement à la charge de l’exploitant.
+          Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de gardiennage,
+          d’entretien, de débarras de dépôt sauvage sont habituellement à la charge de l’exploitant.
         </p>
       }
     >

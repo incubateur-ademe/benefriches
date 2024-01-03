@@ -9,18 +9,13 @@ import {
   RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
   RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
 } from "@/features/create-project/domain/photovoltaic";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const computeAccessPathsAverageSurfaceFromElectricalPower = (
-  electricalPower: number,
-) => Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS);
+const computeAccessPathsAverageSurfaceFromElectricalPower = (electricalPower: number) =>
+  Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS);
 
-const computeFoundationsAverageSurfaceFromElectricalPower = (
-  electricalPower: number,
-) => Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS);
+const computeFoundationsAverageSurfaceFromElectricalPower = (electricalPower: number) =>
+  Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS);
 
 function ProjectSoilsSurfaceAreasContainer() {
   const dispatch = useAppDispatch();
@@ -33,15 +28,11 @@ function ProjectSoilsSurfaceAreasContainer() {
   );
 
   const photovoltaicSurface = useAppSelector(
-    (state) =>
-      state.projectCreation.projectData
-        .photovoltaicInstallationSurfaceSquareMeters ?? 0,
+    (state) => state.projectCreation.projectData.photovoltaicInstallationSurfaceSquareMeters ?? 0,
   );
 
   const photovoltaicElectricalPowerKWc = useAppSelector(
-    (state) =>
-      state.projectCreation.projectData
-        .photovoltaicInstallationElectricalPowerKWc ?? 0,
+    (state) => state.projectCreation.projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
   );
 
   return (
@@ -59,10 +50,7 @@ function ProjectSoilsSurfaceAreasContainer() {
         dispatch(
           setSoilsSurfaceAreas(
             Object.fromEntries(
-              soilsSurfaceAreas.map(({ soilType, surface }) => [
-                soilType,
-                surface,
-              ]),
+              soilsSurfaceAreas.map(({ soilType, surface }) => [soilType, surface]),
             ),
           ),
         );

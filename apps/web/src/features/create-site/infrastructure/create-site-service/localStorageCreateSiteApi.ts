@@ -1,7 +1,4 @@
-import {
-  CreateSiteGateway,
-  CreateSiteGatewayPayload,
-} from "../../application/createSite.actions";
+import { CreateSiteGateway, CreateSiteGatewayPayload } from "../../application/createSite.actions";
 
 import { delay } from "@/shared/services/delay/delay";
 
@@ -15,9 +12,6 @@ export class LocalStorageCreateSiteApi implements CreateSiteGateway {
     const siteList = fromLocalStorage
       ? (JSON.parse(fromLocalStorage) as CreateSiteGatewayPayload[])
       : [];
-    localStorage.setItem(
-      SITES_LIST_STORAGE_KEY,
-      JSON.stringify([...siteList, newSite]),
-    );
+    localStorage.setItem(SITES_LIST_STORAGE_KEY, JSON.stringify([...siteList, newSite]));
   }
 }

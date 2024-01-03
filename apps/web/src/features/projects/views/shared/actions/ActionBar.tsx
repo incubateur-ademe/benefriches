@@ -27,17 +27,11 @@ function ProjectsComparisonActionBar({
           <SearchInput />
         </div>
         <div className={fr.cx("fr-mr-2w")}>
-          <FilterButton
-            isActive={selectedFilter === "all"}
-            onClick={onAllFilterClick}
-          >
+          <FilterButton isActive={selectedFilter === "all"} onClick={onAllFilterClick}>
             Tous les indicateurs
           </FilterButton>
         </div>
-        <FilterButton
-          isActive={selectedFilter === "monetary"}
-          onClick={onMonetaryFilterClick}
-        >
+        <FilterButton isActive={selectedFilter === "monetary"} onClick={onMonetaryFilterClick}>
           Indicateurs monétaires uniquement
         </FilterButton>
       </div>

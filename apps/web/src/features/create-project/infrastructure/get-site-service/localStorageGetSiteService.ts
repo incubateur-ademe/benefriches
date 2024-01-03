@@ -8,9 +8,7 @@ export class LocalStorageGetSiteApi implements GetSiteGateway {
   async getById(siteId: string): Promise<ProjectSite | undefined> {
     await delay(300);
     const fromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
-    const siteList = fromLocalStorage
-      ? (JSON.parse(fromLocalStorage) as ProjectSite[])
-      : [];
+    const siteList = fromLocalStorage ? (JSON.parse(fromLocalStorage) as ProjectSite[]) : [];
 
     if (!siteList) return undefined;
 

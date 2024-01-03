@@ -19,14 +19,12 @@ export type FormValues = {
   contaminatedSurface?: number;
 };
 
-const requiredMessage =
-  "Ce champ est nécessaire pour déterminer les questions suivantes";
+const requiredMessage = "Ce champ est nécessaire pour déterminer les questions suivantes";
 
 function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
-  const { register, control, handleSubmit, formState, watch } =
-    useForm<FormValues>({
-      shouldUnregister: true,
-    });
+  const { register, control, handleSubmit, formState, watch } = useForm<FormValues>({
+    shouldUnregister: true,
+  });
 
   const hasContaminatedSoilsError = formState.errors.hasContaminatedSoils;
 
@@ -47,15 +45,13 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
       instructions={
         <>
           <p>
-            Les friches sont bien souvent des sites dont les sols (voire les
-            eaux souterraines) peuvent être pollués, avec des pollutions
-            multiples, témoignages des activités successives sur plusieurs
-            décennies.
+            Les friches sont bien souvent des sites dont les sols (voire les eaux souterraines)
+            peuvent être pollués, avec des pollutions multiples, témoignages des activités
+            successives sur plusieurs décennies.
           </p>
           <p>
-            Ces pollutions (hydrocarbures, composants organiques volatils,
-            cyanures, plomb, etc.) peuvent notamment représenter un risque
-            sanitaire préjudiciable à un nouvel usage.
+            Ces pollutions (hydrocarbures, composants organiques volatils, cyanures, plomb, etc.)
+            peuvent notamment représenter un risque sanitaire préjudiciable à un nouvel usage.
           </p>
         </>
       }
@@ -78,8 +74,7 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
               sliderEndValue={surfaceArea}
               sliderProps={{
                 tooltip: {
-                  formatter: (value?: number) =>
-                    value && `${formatNumberFr(value)} m²`,
+                  formatter: (value?: number) => value && `${formatNumberFr(value)} m²`,
                 },
               }}
             />

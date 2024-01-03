@@ -31,14 +31,9 @@ const SiteSoilsCarbonStorage = ({
         <>
           <p>
             Ce site stocke environ{" "}
-            <strong>
-              {formatNumberFr(siteCarbonStorage.totalCarbonStorage)} t
-            </strong>{" "}
-            de carbone.
+            <strong>{formatNumberFr(siteCarbonStorage.totalCarbonStorage)} t</strong> de carbone.
           </p>
-          <SoilsCarbonStorageChart
-            soilsCarbonStorage={siteCarbonStorage.soilsStorage}
-          />
+          <SoilsCarbonStorageChart soilsCarbonStorage={siteCarbonStorage.soilsStorage} />
         </>
       )}
       <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>

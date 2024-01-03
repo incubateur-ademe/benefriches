@@ -1,14 +1,8 @@
-import {
-  goToStep,
-  ProjectCreationStep,
-} from "../../../application/createProject.reducer";
+import { goToStep, ProjectCreationStep } from "../../../application/createProject.reducer";
 import ProjectCostsIntroduction from "./ProjectCostsIntroduction";
 
 import { ProjectSite } from "@/features/create-project/domain/project.types";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {

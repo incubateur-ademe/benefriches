@@ -1,7 +1,5 @@
 import { saveSiteAction } from "../../application/createSite.actions";
-import SiteNameAndDescriptionForm, {
-  FormValues,
-} from "./SiteNameAndDescription";
+import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
 
 import {
   goToStep,

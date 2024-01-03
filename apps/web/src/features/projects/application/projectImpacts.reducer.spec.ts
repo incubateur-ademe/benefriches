@@ -64,9 +64,7 @@ describe("Project impacts reducer", () => {
         }),
       );
 
-      await store.dispatch(
-        fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]),
-      );
+      await store.dispatch(fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]));
 
       const state = store.getState();
       expect(state.projectImpacts).toEqual({
@@ -89,9 +87,7 @@ describe("Project impacts reducer", () => {
         }),
       );
 
-      await store.dispatch(
-        fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]),
-      );
+      await store.dispatch(fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]));
 
       const state = store.getState();
       expect(state.projectImpacts).toEqual({
@@ -109,9 +105,7 @@ describe("Project impacts reducer", () => {
     it("should return error when there is no siteData nor projectData in projectImpacts store", async () => {
       const store = createStore(
         getTestAppDependencies({
-          soilsCarbonStorageService: new SoilsCarbonStorageMock(
-            SOILS_STORAGE_API_MOCKED_RESULT,
-          ),
+          soilsCarbonStorageService: new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT),
         }),
       );
 
@@ -129,9 +123,7 @@ describe("Project impacts reducer", () => {
     });
 
     it("should call soils carbon service with the right payload", async () => {
-      const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(
-        SOILS_STORAGE_API_MOCKED_RESULT,
-      );
+      const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT);
       jest.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
       const store = createStore(
         getTestAppDependencies({
@@ -143,26 +135,18 @@ describe("Project impacts reducer", () => {
         }),
       );
 
-      await store.dispatch(
-        fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]),
-      );
+      await store.dispatch(fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]));
       await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
-      expect(
-        soilsCarbonStorageMockSpy.getForCityCodeAndSoils,
-      ).toHaveBeenCalledTimes(2);
-      expect(
-        soilsCarbonStorageMockSpy.getForCityCodeAndSoils,
-      ).toHaveBeenCalledWith({
+      expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledTimes(2);
+      expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledWith({
         cityCode: "75110",
         soils: [
           { surfaceArea: 1400, type: "BUILDINGS" },
           { surfaceArea: 1500, type: "MINERAL_SOIL" },
         ],
       });
-      expect(
-        soilsCarbonStorageMockSpy.getForCityCodeAndSoils,
-      ).toHaveBeenCalledWith({
+      expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledWith({
         cityCode: "75110",
         soils: [
           { surfaceArea: 400, type: "BUILDINGS" },
@@ -175,9 +159,7 @@ describe("Project impacts reducer", () => {
     it("should get carbon sequestration for project and site", async () => {
       const store = createStore(
         getTestAppDependencies({
-          soilsCarbonStorageService: new SoilsCarbonStorageMock(
-            SOILS_STORAGE_API_MOCKED_RESULT,
-          ),
+          soilsCarbonStorageService: new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT),
           projectDetailsService: new ProjectDetailsServiceMock({
             projectData: PROJECT_MOCKED_RESULT,
             siteData: SITE_MOCKED_RESULT,
@@ -185,9 +167,7 @@ describe("Project impacts reducer", () => {
         }),
       );
 
-      await store.dispatch(
-        fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]),
-      );
+      await store.dispatch(fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]));
       await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
       const state = store.getState();
@@ -216,9 +196,7 @@ describe("Project impacts reducer", () => {
         }),
       );
 
-      await store.dispatch(
-        fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]),
-      );
+      await store.dispatch(fetchProjectAndSiteData(PROJECT_MOCKED_RESULT["id"]));
       await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
       const state = store.getState();

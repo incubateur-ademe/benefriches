@@ -4,14 +4,9 @@ import {
   SiteCreationStep,
 } from "../../../application/createSite.reducer";
 import { SiteDraft } from "../../../domain/siteFoncier.types";
-import SiteSoilsSurfaceAreasForm, {
-  type FormValues,
-} from "./SoilsSurfaceAreasForm";
+import SiteSoilsSurfaceAreasForm, { type FormValues } from "./SoilsSurfaceAreasForm";
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {

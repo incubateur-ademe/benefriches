@@ -1,22 +1,14 @@
-import SiteFullTimeJobsInvolvedForm, {
-  FormValues,
-} from "./SiteFullTimeJobsInvolvedForm";
+import SiteFullTimeJobsInvolvedForm, { FormValues } from "./SiteFullTimeJobsInvolvedForm";
 
 import {
   goToStep,
   setFullTimeJobsInvolved,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch, RootState } from "@/store";
 
-const mapProps = (
-  dispatch: AppDispatch,
-  { siteData }: RootState["siteCreation"],
-) => {
+const mapProps = (dispatch: AppDispatch, { siteData }: RootState["siteCreation"]) => {
   return {
     onSubmit: (data: FormValues) => {
       if (data.fullTimeJobsInvolved !== undefined)

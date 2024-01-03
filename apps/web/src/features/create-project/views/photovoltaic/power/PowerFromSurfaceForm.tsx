@@ -40,8 +40,7 @@ function PhotovoltaicPowerFromSurfaceForm({
           <p>
             Le ratio puissance / superficie d’installation considéré est de{" "}
             <strong>
-              {formatNumberFr(PHOTOVOLTAIC_RATIO_KWC_PER_M2 * 10000)}&nbsp;kWc
-              pour 10 000 m².
+              {formatNumberFr(PHOTOVOLTAIC_RATIO_KWC_PER_M2 * 10000)}&nbsp;kWc pour 10 000 m².
             </strong>
           </p>
           <p>
@@ -65,8 +64,7 @@ function PhotovoltaicPowerFromSurfaceForm({
               message:
                 "La puissance de l’installation est supérieure à la puissance calculée à partir de la surface d’occupation des panneaux.",
             },
-            required:
-              "Ce champ est nécessaire pour déterminer les questions suivantes",
+            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           control={control}
         />

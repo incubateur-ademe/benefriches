@@ -14,10 +14,7 @@ export type FormValues = {
   fullTimeJobs?: number;
 };
 
-function ConversionFullTimeJobsInvolvedForm({
-  askForReinstatementFullTimeJobs,
-  onSubmit,
-}: Props) {
+function ConversionFullTimeJobsInvolvedForm({ askForReinstatementFullTimeJobs, onSubmit }: Props) {
   const { handleSubmit, control } = useForm<FormValues>({
     shouldUnregister: true,
   });

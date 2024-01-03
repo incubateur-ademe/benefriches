@@ -46,26 +46,17 @@ export const projectImpactsSlice = createSlice({
       state.dataLoadingState = "error";
     });
     /* fetch carbon storage */
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.pending,
-      (state) => {
-        state.carbonStorageDataLoadingState = "loading";
-      },
-    );
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled,
-      (state, action) => {
-        state.carbonStorageDataLoadingState = "success";
-        state.currentCarbonStorage = action.payload.current;
-        state.projectedCarbonStorage = action.payload.projected;
-      },
-    );
-    builder.addCase(
-      fetchCurrentAndProjectedSoilsCarbonStorage.rejected,
-      (state) => {
-        state.carbonStorageDataLoadingState = "error";
-      },
-    );
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.pending, (state) => {
+      state.carbonStorageDataLoadingState = "loading";
+    });
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled, (state, action) => {
+      state.carbonStorageDataLoadingState = "success";
+      state.currentCarbonStorage = action.payload.current;
+      state.projectedCarbonStorage = action.payload.projected;
+    });
+    builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.rejected, (state) => {
+      state.carbonStorageDataLoadingState = "error";
+    });
   },
 });
 

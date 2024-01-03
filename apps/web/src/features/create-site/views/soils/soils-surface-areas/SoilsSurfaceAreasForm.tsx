@@ -26,10 +26,7 @@ const getTotalSurface = (soilsSurfaceAreas: FormValues) =>
     .reduce((total, surface) => total + surface, 0);
 
 const getInitialSurfacesFormSoilTypes = (soils: SoilType[]) =>
-  soils.reduce(
-    (soilSurfaceAreas, soilType) => ({ ...soilSurfaceAreas, [soilType]: 0 }),
-    {},
-  );
+  soils.reduce((soilSurfaceAreas, soilType) => ({ ...soilSurfaceAreas, [soilType]: 0 }), {});
 
 const SLIDER_PROPS = {
   tooltip: {
@@ -37,15 +34,8 @@ const SLIDER_PROPS = {
   },
 };
 
-function SiteSoilsSurfaceAreasForm({
-  soils,
-  totalSurfaceArea,
-  onSubmit,
-}: Props) {
-  const defaultValues = useMemo(
-    () => getInitialSurfacesFormSoilTypes(soils),
-    [soils],
-  );
+function SiteSoilsSurfaceAreasForm({ soils, totalSurfaceArea, onSubmit }: Props) {
+  const defaultValues = useMemo(() => getInitialSurfacesFormSoilTypes(soils), [soils]);
   const { control, handleSubmit, watch, reset } = useForm<FormValues>({
     defaultValues,
   });
@@ -53,10 +43,7 @@ function SiteSoilsSurfaceAreasForm({
 
   const soilsValues = watch();
 
-  const totalAllocatedSurface = useMemo(
-    () => getTotalSurface(soilsValues),
-    [soilsValues],
-  );
+  const totalAllocatedSurface = useMemo(() => getTotalSurface(soilsValues), [soilsValues]);
 
   const freeSurface = totalSurfaceArea - totalAllocatedSurface;
 
@@ -65,8 +52,8 @@ function SiteSoilsSurfaceAreasForm({
       title="Quelles sont les superficies des différents sols ?"
       instructions={
         <p>
-          La somme des superficies des différents sols doit être égale à la
-          superficie totale du site, soit{" "}
+          La somme des superficies des différents sols doit être égale à la superficie totale du
+          site, soit{" "}
           <strong>
             <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />
           </strong>
@@ -108,9 +95,7 @@ function SiteSoilsSurfaceAreasForm({
           }}
           disabled
           state={totalAllocatedSurface < totalSurfaceArea ? "error" : "default"}
-          stateRelatedMessage={`- ${formatNumberFr(
-            totalSurfaceArea - totalAllocatedSurface,
-          )} m²`}
+          stateRelatedMessage={`- ${formatNumberFr(totalSurfaceArea - totalAllocatedSurface)} m²`}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>

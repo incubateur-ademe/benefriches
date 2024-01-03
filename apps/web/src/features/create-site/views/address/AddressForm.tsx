@@ -14,14 +14,11 @@ type FormValues = {
 };
 
 function SiteAddressForm({ onSubmit, isFriche }: Props) {
-  const { handleSubmit, formState, control, watch, setValue, register } =
-    useForm<FormValues>();
+  const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>();
 
   const error = formState.errors.selectedAddress;
 
-  const title = isFriche
-    ? "Où est située cette friche ?"
-    : "Où est situé ce site ?";
+  const title = isFriche ? "Où est située cette friche ?" : "Où est situé ce site ?";
 
   register("selectedAddress", {
     required: "L'adresse est nécessaire pour les étapes suivantes",

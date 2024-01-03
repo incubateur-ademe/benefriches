@@ -12,9 +12,7 @@ function PhotovoltaicContractDurationContainer() {
   return (
     <PhotovoltaicContractDurationForm
       onSubmit={(data) => {
-        dispatch(
-          setPhotovoltaicContractDuration(data.photovoltaicContractDuration),
-        );
+        dispatch(setPhotovoltaicContractDuration(data.photovoltaicContractDuration));
         dispatch(goToStep(ProjectCreationStep.SOILS_SURFACE_AREAS));
       }}
     />

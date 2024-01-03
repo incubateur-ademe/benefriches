@@ -1,9 +1,5 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import {
-  ProjectsGroupedBySite,
-  ProjectsList,
-  SitesList,
-} from "../domain/projects.types";
+import { ProjectsGroupedBySite, ProjectsList, SitesList } from "../domain/projects.types";
 import { fetchProjects, fetchSites } from "./projectsList.actions";
 
 import { RootState } from "@/store";
@@ -62,12 +58,9 @@ export const selectProjectById = createSelector(
   },
 );
 
-export const selectProjects = createSelector(
-  [selectSelf],
-  (state): ProjectsList => {
-    return state.projects;
-  },
-);
+export const selectProjects = createSelector([selectSelf], (state): ProjectsList => {
+  return state.projects;
+});
 
 export const selectProjectsGroupedBySite = createSelector(
   [selectSelf],
@@ -76,9 +69,7 @@ export const selectProjectsGroupedBySite = createSelector(
       return {
         siteId: site.id,
         siteName: site.name,
-        projects: state.projects.filter(
-          (project) => project.site.id === site.id,
-        ),
+        projects: state.projects.filter((project) => project.site.id === site.id),
       };
     });
   },
@@ -89,14 +80,11 @@ export const selectSitesAndProjectsLoadingState = createSelector(
   (state): LoadingState => {
     const { projectsLoadingState, sitesLoadingState } = state;
 
-    if (projectsLoadingState === "error" || sitesLoadingState === "error")
-      return "error";
+    if (projectsLoadingState === "error" || sitesLoadingState === "error") return "error";
 
-    if (projectsLoadingState === "loading" || sitesLoadingState === "loading")
-      return "loading";
+    if (projectsLoadingState === "loading" || sitesLoadingState === "loading") return "loading";
 
-    if (projectsLoadingState === "success" && sitesLoadingState === "success")
-      return "success";
+    if (projectsLoadingState === "success" && sitesLoadingState === "success") return "success";
 
     return "idle";
   },

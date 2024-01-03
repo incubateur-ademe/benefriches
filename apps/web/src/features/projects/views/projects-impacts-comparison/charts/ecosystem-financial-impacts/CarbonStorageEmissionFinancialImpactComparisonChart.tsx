@@ -35,9 +35,7 @@ function CarbonStorageEmissionFinancialImpactComparisonChart() {
   return (
     <div>
       <p>
-        <strong>
-          🍂 Émissions de CO2-eq évitées grâce au stockage du carbone
-        </strong>
+        <strong>🍂 Émissions de CO2-eq évitées grâce au stockage du carbone</strong>
       </p>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </div>

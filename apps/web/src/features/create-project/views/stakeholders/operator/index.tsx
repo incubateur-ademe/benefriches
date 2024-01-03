@@ -8,17 +8,10 @@ import {
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { getSiteStakeholders } from "@/features/create-project/domain/stakeholders";
 import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
-const mapProps = (
-  dispatch: AppDispatch,
-  currentUserCompany: string,
-  projectSite?: ProjectSite,
-) => {
+const mapProps = (dispatch: AppDispatch, currentUserCompany: string, projectSite?: ProjectSite) => {
   const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
 
   return {
@@ -30,9 +23,7 @@ const mapProps = (
         case "site_stakeholder":
           // eslint-disable-next-line no-case-declarations
           const futureOperator =
-            data.siteStakeholder === "owner"
-              ? projectSite.owner
-              : projectSite.tenant!;
+            data.siteStakeholder === "owner" ? projectSite.owner : projectSite.tenant!;
           dispatch(setFutureOperator(futureOperator));
           break;
         case "site_owner":
@@ -68,9 +59,7 @@ const mapProps = (
           );
           break;
       }
-      dispatch(
-        goToStep(ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER),
-      );
+      dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER));
     },
   };
 };
@@ -80,11 +69,7 @@ function SiteOperatorFormContainer() {
   const projectSite = useAppSelector((state) => state.projectCreation.siteData);
   const currentUserCompany = useAppSelector(selectCurrentUserCompany);
 
-  return (
-    <SiteOperatorForm
-      {...mapProps(dispatch, currentUserCompany, projectSite)}
-    />
-  );
+  return <SiteOperatorForm {...mapProps(dispatch, currentUserCompany, projectSite)} />;
 }
 
 export default SiteOperatorFormContainer;

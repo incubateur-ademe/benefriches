@@ -25,7 +25,6 @@ export const fetchCarbonStorageForSoils = createAppAsyncThunk<
   SiteSoilsCarbonStorageResult,
   GetSiteSoilsCarbonStoragePayload
 >("site/fetchCarbonStorageForSoils", async (payload, { extra }) => {
-  const result =
-    await extra.soilsCarbonStorageService.getForCityCodeAndSoils(payload);
+  const result = await extra.soilsCarbonStorageService.getForCityCodeAndSoils(payload);
   return result;
 });

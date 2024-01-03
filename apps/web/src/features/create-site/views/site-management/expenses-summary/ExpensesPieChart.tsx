@@ -28,8 +28,7 @@ const ExpensesPieChart = ({ expenses }: Props) => {
       enabled: false,
     },
     tooltip: {
-      pointFormat:
-        "Montant : <strong>{point.y} € / an</strong> ({point.percentage:.1f}%)",
+      pointFormat: "Montant : <strong>{point.y} € / an</strong> ({point.percentage:.1f}%)",
     },
     plotOptions: { pie: { cursor: "pointer" } },
     series: [

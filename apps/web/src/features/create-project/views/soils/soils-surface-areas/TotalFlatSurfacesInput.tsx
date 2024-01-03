@@ -7,12 +7,8 @@ type Props = {
   minAdvisedFlatSurface: number;
 };
 
-function TotalFlatSurfacesInput({
-  allocatedFlatSurface,
-  minAdvisedFlatSurface,
-}: Props) {
-  const hasMissingAllocatedFlatSurface =
-    allocatedFlatSurface < minAdvisedFlatSurface;
+function TotalFlatSurfacesInput({ allocatedFlatSurface, minAdvisedFlatSurface }: Props) {
+  const hasMissingAllocatedFlatSurface = allocatedFlatSurface < minAdvisedFlatSurface;
 
   return (
     <Input
@@ -23,9 +19,7 @@ function TotalFlatSurfacesInput({
         min: minAdvisedFlatSurface,
       }}
       disabled
-      hintText={`Minimum conseillé : ${formatNumberFr(
-        minAdvisedFlatSurface,
-      )} m²`}
+      hintText={`Minimum conseillé : ${formatNumberFr(minAdvisedFlatSurface)} m²`}
       state={hasMissingAllocatedFlatSurface ? "error" : "default"}
       stateRelatedMessage={`La surface requise pour vos panneaux photovoltaïques est de ${formatNumberFr(
         minAdvisedFlatSurface,

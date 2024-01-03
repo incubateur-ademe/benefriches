@@ -3,10 +3,7 @@ import { fetchProjectAndSiteData } from "../../application/projectImpacts.action
 import { ProjectImpactsState } from "../../application/projectImpacts.reducer";
 import ProjectsImpactsPage from "./ProjectImpactsPage";
 
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   projectId: string;

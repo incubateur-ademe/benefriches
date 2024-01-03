@@ -1,17 +1,11 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
 import { fetchProjects } from "../../application/projectsList.actions";
-import {
-  selectProjectById,
-  selectProjects,
-} from "../../application/projectsList.reducer";
+import { selectProjectById, selectProjects } from "../../application/projectsList.reducer";
 import ProjectsComparisonSelectionPage from "./ProjectsComparisonSelection.page";
 
 import { routes } from "@/router";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   route: Route<typeof routes.selectProjectToCompare>;
@@ -25,8 +19,7 @@ function ProjectsComparisonSelectionPageContainer({ route }: Props) {
   );
   const allProjects = useAppSelector(selectProjects);
   const projectsToCompare = allProjects.filter(
-    (project) =>
-      project.site.id === baseProject?.site.id && project.id !== baseProject.id,
+    (project) => project.site.id === baseProject?.site.id && project.id !== baseProject.id,
   );
 
   useEffect(() => {

@@ -3,9 +3,7 @@ import {
   goToStep,
   ProjectCreationStep,
 } from "../../../application/createProject.reducer";
-import YearlyProjectedsCostsForm, {
-  FormValues,
-} from "./YearlyProjectedCostsForm";
+import YearlyProjectedsCostsForm, { FormValues } from "./YearlyProjectedCostsForm";
 
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
