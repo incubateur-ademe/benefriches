@@ -1,6 +1,8 @@
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import { Footer } from "@codegouvfr/react-dsfr/Footer";
 
+import { routes } from "@/router";
+
 function BenefrichesFooter() {
   return (
     <Footer
@@ -32,7 +34,10 @@ function BenefrichesFooter() {
           </a>
         </>
       }
-      bottomItems={[headerFooterDisplayItem]}
+      bottomItems={[
+        { text: "Statistiques", linkProps: routes.stats().link },
+        headerFooterDisplayItem,
+      ]}
     />
   );
 }

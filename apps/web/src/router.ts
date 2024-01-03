@@ -28,6 +28,8 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { baseProjectId: param.path.string, avecProjet: param.query.string },
     (params) => `/mes-projets/${params.baseProjectId}/comparaison`,
   ),
+  budget: defineRoute("/budget"),
+  stats: defineRoute("/statistiques"),
 });
 
 export { RouteProvider, useRoute, routes };

@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import BudgetPage from "./features/budget/views/BudgetPage";
 import CreateProjectIntroductionPage from "./features/create-project/views/introduction";
 import CreateProjectPage from "./features/create-project/views/ProjectCreationWizard";
 import CreateSiteIntroductionPage from "./features/create-site/views/introduction/CreateSiteIntroductionPage";
@@ -8,6 +9,7 @@ import MyProjectsPage from "./features/projects/views/my-projects-page";
 import ProjectImpactsPage from "./features/projects/views/project-impacts-page";
 import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison";
 import ProjectsComparisonSelectionPage from "./features/projects/views/select-projects-comparison-page";
+import StatsPage from "./features/stats/views/StatsPage";
 import CreateUserPage from "./features/users/views";
 import HeaderFooterLayout from "./shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import { routes, useRoute } from "./router";
@@ -36,6 +38,8 @@ function App() {
         {route.name === routes.projectImpacts.name && (
           <ProjectImpactsPage projectId={route.params.projectId} />
         )}
+        {route.name === routes.budget.name && <BudgetPage />}
+        {route.name === routes.stats.name && <StatsPage />}
         {route.name === false && <>Page non trouvée</>}
       </main>
     </HeaderFooterLayout>
