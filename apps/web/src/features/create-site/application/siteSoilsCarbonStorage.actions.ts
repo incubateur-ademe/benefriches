@@ -1,3 +1,5 @@
+import { SiteCarbonStorage } from "./siteSoilsCarbonStorage.reducer";
+
 import { createAppAsyncThunk } from "@/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
 
@@ -22,9 +24,13 @@ export interface SoilsCarbonStorageGateway {
 }
 
 export const fetchCarbonStorageForSoils = createAppAsyncThunk<
-  SiteSoilsCarbonStorageResult,
+  SiteCarbonStorage,
   GetSiteSoilsCarbonStoragePayload
 >("site/fetchCarbonStorageForSoils", async (payload, { extra }) => {
   const result = await extra.soilsCarbonStorageService.getForCityCodeAndSoils(payload);
-  return result;
+
+  return {
+    total: result.totalCarbonStorage,
+    soils: result.soilsStorage,
+  };
 });

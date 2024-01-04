@@ -1,14 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  fetchCarbonStorageForSoils,
-  SiteSoilsCarbonStorageResult,
-} from "./siteSoilsCarbonStorage.actions";
+import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
+
+import { SoilType } from "@/shared/domain/soils";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
+export type SiteCarbonStorage = {
+  total: number;
+  soils: { type: SoilType; surfaceArea: number; carbonStorage: number }[];
+};
+
 export type State = {
   loadingState: LoadingState;
-  carbonStorage: SiteSoilsCarbonStorageResult | undefined;
+  carbonStorage: SiteCarbonStorage | undefined;
 };
 
 const initialState: State = {

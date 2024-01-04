@@ -1,14 +1,15 @@
 import { useEffect } from "react";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { SiteSoilsCarbonStorageResult } from "@/features/create-site/application/siteSoilsCarbonStorage.actions";
+import { SiteCarbonStorage } from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
+import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 
 type Props = {
   onNext: () => void;
   loading: boolean;
-  siteCarbonStorage?: SiteSoilsCarbonStorageResult;
+  siteCarbonStorage?: SiteCarbonStorage;
   fetchSiteCarbonStorage: () => void;
 };
 
@@ -30,10 +31,20 @@ const SiteSoilsCarbonStorage = ({
       {siteCarbonStorage && (
         <>
           <p>
-            Ce site stocke environ{" "}
-            <strong>{formatNumberFr(siteCarbonStorage.totalCarbonStorage)} t</strong> de carbone.
+            Ce site stocke environ <strong>{formatNumberFr(siteCarbonStorage.total)} t</strong> de
+            carbone.
           </p>
-          <SoilsCarbonStorageChart soilsCarbonStorage={siteCarbonStorage.soilsStorage} />
+          <p>
+            ℹ️ C'est l'équivalent de ce qu'émettent{" "}
+            <strong>
+              {formatNumberFr(
+                getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson(siteCarbonStorage.total),
+              )}{" "}
+              français
+            </strong>{" "}
+            en 1 an.
+          </p>
+          <SoilsCarbonStorageChart soilsCarbonStorage={siteCarbonStorage.soils} />
         </>
       )}
       <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>

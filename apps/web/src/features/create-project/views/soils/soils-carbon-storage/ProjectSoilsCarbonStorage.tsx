@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
+import CarbonStorageDifferenceSection from "./CarbonStorageDifferenceSection";
 
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -61,28 +62,14 @@ const ProjectSoilsCarbonStorage = ({
   }
 
   if (loadingState === "success") {
-    const diffCarbonStorage =
-      projectedCarbonStorage.totalCarbonStorage - currentCarbonStorage.totalCarbonStorage;
-    const isDiffPositive = diffCarbonStorage > 0;
     return (
       <>
         <h2>Stockage du carbone par les sols</h2>
-        {isDiffPositive ? (
-          <>
-            <p>Bonne nouvelle !</p>
-            <p>
-              Ce site pourrait stocker{" "}
-              <strong>{formatNumberFr(diffCarbonStorage)} tonnes de carbone en plus.</strong>
-            </p>
-          </>
-        ) : (
-          <p>
-            Ce site stockerait{" "}
-            <strong>
-              {formatNumberFr(Math.abs(diffCarbonStorage))} tonnes de carbone en moins.
-            </strong>
-          </p>
-        )}
+        <CarbonStorageDifferenceSection
+          carbonStorageDifference={
+            projectedCarbonStorage.totalCarbonStorage - currentCarbonStorage.totalCarbonStorage
+          }
+        />
         <p></p>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-6">
