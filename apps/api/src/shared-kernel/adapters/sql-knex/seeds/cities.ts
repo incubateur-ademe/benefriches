@@ -2,10 +2,7 @@ import fs from "fs";
 import { Knex } from "knex";
 import path from "path";
 import readline from "readline";
-import {
-  City,
-  CityProps,
-} from "./../../../../carbon-storage/domain/models/city";
+import { City, CityProps } from "./../../../../carbon-storage/domain/models/city";
 
 /**
  * @param { import("knex").Knex } knex

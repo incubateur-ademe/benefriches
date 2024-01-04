@@ -31,9 +31,7 @@ export class CreateUserUseCase implements UseCase<Request, void> {
       password: passwordHash,
     });
 
-    const userExistsWithEmail = !!(await this.userRepository.existsWithEmail(
-      email.getValue(),
-    ));
+    const userExistsWithEmail = !!(await this.userRepository.existsWithEmail(email.getValue()));
     if (userExistsWithEmail) throw new Error("Given email already exists");
 
     await this.userRepository.save(user);

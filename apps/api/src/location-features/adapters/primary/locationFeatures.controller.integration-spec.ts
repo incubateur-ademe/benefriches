@@ -35,9 +35,7 @@ describe("LocationFeatures controller", () => {
 
   describe("Get /location-features", () => {
     it("can't return information if there is no location indication", async () => {
-      const response = await supertest(app.getHttpServer()).get(
-        "/location-features",
-      );
+      const response = await supertest(app.getHttpServer()).get("/location-features");
 
       expect(response.status).toEqual(400);
     });

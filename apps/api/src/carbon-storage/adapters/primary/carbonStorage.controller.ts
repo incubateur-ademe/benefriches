@@ -1,10 +1,7 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "nestjs-zod/z";
-import {
-  SoilCategory,
-  SoilCategoryType,
-} from "src/carbon-storage/domain/models/soilCategory";
+import { SoilCategory, SoilCategoryType } from "src/carbon-storage/domain/models/soilCategory";
 import { SurfaceArea } from "src/carbon-storage/domain/models/surfaceArea";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/domain/usecases/getCityCarbonStoragePerSoilsCategory";
 
@@ -27,9 +24,7 @@ const GetSoilsCarbonStorageDtoSchema = z.object({
   ),
 });
 
-class GetSoilsCarbonStorageDto extends createZodDto(
-  GetSoilsCarbonStorageDtoSchema,
-) {}
+class GetSoilsCarbonStorageDto extends createZodDto(GetSoilsCarbonStorageDtoSchema) {}
 
 @Controller("carbon-storage")
 export class CarbonStorageController {

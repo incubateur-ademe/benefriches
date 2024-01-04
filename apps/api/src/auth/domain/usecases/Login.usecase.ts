@@ -24,10 +24,7 @@ export class LoginUseCase implements UseCase<Request, Response> {
     const user = await this.userRepository.getWithEmail(email);
     if (!user) throw new Error("User not found");
 
-    const isPasswordRight = await this.hashGenerator.compare(
-      password,
-      user.password,
-    );
+    const isPasswordRight = await this.hashGenerator.compare(password, user.password);
     if (!isPasswordRight) throw new Error("Wrong password");
 
     const accessJwt = await this.accessTokenService.sign({

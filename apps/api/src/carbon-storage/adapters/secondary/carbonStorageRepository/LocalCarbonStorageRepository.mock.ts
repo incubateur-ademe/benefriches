@@ -262,12 +262,7 @@ const LITTER = [
 ];
 
 const CITIES = {
-  "01026": [
-    ...SOILS_CS,
-    ...NON_FOREST_BIOMASS,
-    ...FOREST_BIOMASS_COUNTRY,
-    ...LITTER,
-  ],
+  "01026": [...SOILS_CS, ...NON_FOREST_BIOMASS, ...FOREST_BIOMASS_COUNTRY, ...LITTER],
   "01027": [
     ...SOILS_CS,
     ...NON_FOREST_BIOMASS,

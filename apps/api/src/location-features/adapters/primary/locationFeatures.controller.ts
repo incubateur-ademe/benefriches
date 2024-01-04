@@ -3,9 +3,7 @@ import { GetTownPopulationDensityUseCase } from "src/location-features/domain/us
 
 @Controller("location-features")
 export class LocationFeaturesController {
-  constructor(
-    private readonly getTownPopulationDensity: GetTownPopulationDensityUseCase,
-  ) {}
+  constructor(private readonly getTownPopulationDensity: GetTownPopulationDensityUseCase) {}
 
   @Get()
   async getFeaturesFromLocation(@Query("cityCode") cityCode: string) {

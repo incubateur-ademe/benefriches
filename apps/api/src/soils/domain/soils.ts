@@ -17,10 +17,7 @@ export type SoilType =
   | "WET_LAND" // zone humide
   | "WATER"; // plan d'eau
 
-const IMPERMEABLE_SOILS: readonly SoilType[] = [
-  "BUILDINGS",
-  "IMPERMEABLE_SOILS",
-];
+const IMPERMEABLE_SOILS: readonly SoilType[] = ["BUILDINGS", "IMPERMEABLE_SOILS"];
 
 export const isImpermeableSoil = (soilType: SoilType) => {
   return IMPERMEABLE_SOILS.includes(soilType);

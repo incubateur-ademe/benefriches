@@ -36,10 +36,7 @@ export class SoilCategory extends ValueObject<SoilCategoryType> {
   }
 
   getRepositorySoilCategory(): RepositorySoilCategoryType {
-    if (
-      this.value === SoilCategoryType.BUILDINGS ||
-      this.value === SoilCategoryType.MINERAL_SOIL
-    ) {
+    if (this.value === SoilCategoryType.BUILDINGS || this.value === SoilCategoryType.MINERAL_SOIL) {
       return SoilCategoryType.IMPERMEABLE_SOILS.toLowerCase() as RepositorySoilCategoryType;
     }
 

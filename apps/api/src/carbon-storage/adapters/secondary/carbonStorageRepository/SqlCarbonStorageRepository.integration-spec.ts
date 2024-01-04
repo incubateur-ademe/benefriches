@@ -27,13 +27,8 @@ describe("SqlCarbonStorageRepository integration", () => {
   });
 
   test("returns values for all soil categories if no category is provided", async () => {
-    const result = await sqlCarbonStorageRepository.getCarbonStorageForCity(
-      "01027",
-      [],
-    );
-    const soilStorageValues = result.filter(
-      ({ reservoir }) => reservoir === ReservoirType.SOIL,
-    );
+    const result = await sqlCarbonStorageRepository.getCarbonStorageForCity("01027", []);
+    const soilStorageValues = result.filter(({ reservoir }) => reservoir === ReservoirType.SOIL);
     expect(soilStorageValues.length).toEqual(15);
 
     const nonForestBiomassStorageValues = result.filter(
@@ -86,17 +81,14 @@ describe("SqlCarbonStorageRepository integration", () => {
     // RESERVOIR NON FOREST BIOMASS
     expect(carbonStorageInSoilForArtificialTreeFilled.length).toEqual(1);
 
-    const carbonStorageInNonForestBiomassForArtificialTreeFilled =
-      result.filter(
-        ({ reservoir, soilCategory }) =>
-          reservoir === ReservoirType.NON_FOREST_BIOMASS &&
-          soilCategory === RepositorySoilCategoryType.ARTIFICIAL_TREE_FILLED,
-      );
+    const carbonStorageInNonForestBiomassForArtificialTreeFilled = result.filter(
+      ({ reservoir, soilCategory }) =>
+        reservoir === ReservoirType.NON_FOREST_BIOMASS &&
+        soilCategory === RepositorySoilCategoryType.ARTIFICIAL_TREE_FILLED,
+    );
 
     // RESERVOIR FOREST BIOMASS
-    expect(
-      carbonStorageInNonForestBiomassForArtificialTreeFilled.length,
-    ).toEqual(1);
+    expect(carbonStorageInNonForestBiomassForArtificialTreeFilled.length).toEqual(1);
 
     const carbonStorageInDeadForestBiomassForForest = result.filter(
       ({ reservoir, soilCategory }) =>
@@ -167,23 +159,19 @@ describe("SqlCarbonStorageRepository integration", () => {
 
     const carbonStorageInSoilForWetLand = result.filter(
       ({ reservoir, soilCategory }) =>
-        reservoir === ReservoirType.SOIL &&
-        soilCategory === RepositorySoilCategoryType.WET_LAND,
+        reservoir === ReservoirType.SOIL && soilCategory === RepositorySoilCategoryType.WET_LAND,
     );
 
     expect(carbonStorageInSoilForWetLand.length).toEqual(1);
 
     // RESERVOIR NF BIOMASS
-    const carbonStorageInNonForestBiomassForArtificialTreeFilled =
-      result.filter(
-        ({ reservoir, soilCategory }) =>
-          reservoir === ReservoirType.NON_FOREST_BIOMASS &&
-          soilCategory === RepositorySoilCategoryType.ARTIFICIAL_TREE_FILLED,
-      );
+    const carbonStorageInNonForestBiomassForArtificialTreeFilled = result.filter(
+      ({ reservoir, soilCategory }) =>
+        reservoir === ReservoirType.NON_FOREST_BIOMASS &&
+        soilCategory === RepositorySoilCategoryType.ARTIFICIAL_TREE_FILLED,
+    );
 
-    expect(
-      carbonStorageInNonForestBiomassForArtificialTreeFilled.length,
-    ).toEqual(1);
+    expect(carbonStorageInNonForestBiomassForArtificialTreeFilled.length).toEqual(1);
 
     const carbonStorageInNonForestBiomassForPrairie = result.filter(
       ({ reservoir, soilCategory }) =>
@@ -261,16 +249,13 @@ describe("SqlCarbonStorageRepository integration", () => {
     expect(carbonStorageInSoilForPrairie.length).toEqual(1);
 
     // RESERVOIR NF BIOMASS
-    const carbonStorageInNonForestBiomassForArtificialTreeFilled =
-      result.filter(
-        ({ reservoir, soilCategory }) =>
-          reservoir === ReservoirType.NON_FOREST_BIOMASS &&
-          soilCategory === RepositorySoilCategoryType.ARTIFICIAL_TREE_FILLED,
-      );
+    const carbonStorageInNonForestBiomassForArtificialTreeFilled = result.filter(
+      ({ reservoir, soilCategory }) =>
+        reservoir === ReservoirType.NON_FOREST_BIOMASS &&
+        soilCategory === RepositorySoilCategoryType.ARTIFICIAL_TREE_FILLED,
+    );
 
-    expect(
-      carbonStorageInNonForestBiomassForArtificialTreeFilled.length,
-    ).toEqual(1);
+    expect(carbonStorageInNonForestBiomassForArtificialTreeFilled.length).toEqual(1);
 
     const carbonStorageInNonForestBiomassForPrairie = result.filter(
       ({ reservoir, soilCategory }) =>

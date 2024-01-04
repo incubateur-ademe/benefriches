@@ -15,9 +15,7 @@ type MockProjectData = {
 };
 
 export class InMemoryProjectRepository
-  implements
-    SoilsDistributionProjectRepository,
-    ContaminatedSoilProjectRepository
+  implements SoilsDistributionProjectRepository, ContaminatedSoilProjectRepository
 {
   constructor(
     private readonly projectData: MockProjectData,

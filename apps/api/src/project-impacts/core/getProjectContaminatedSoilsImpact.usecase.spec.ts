@@ -10,9 +10,7 @@ describe("GetProjectContaminatedSoilsImpactUseCase", () => {
       },
       decontaminatedSoilsSurface: 0,
     });
-    const usecase = new GetProjectContaminatedSoilsImpactUseCase(
-      projectRepository,
-    );
+    const usecase = new GetProjectContaminatedSoilsImpactUseCase(projectRepository);
     const result = await usecase.execute({ projectId: "project-id-1" });
     expect(result).toEqual({ contaminatedSoilsSurfaceDifference: 0 });
   });
@@ -25,9 +23,7 @@ describe("GetProjectContaminatedSoilsImpactUseCase", () => {
       },
       decontaminatedSoilsSurface: 35000,
     });
-    const usecase = new GetProjectContaminatedSoilsImpactUseCase(
-      projectRepository,
-    );
+    const usecase = new GetProjectContaminatedSoilsImpactUseCase(projectRepository);
     const result = await usecase.execute({ projectId: "project-id-1" });
     expect(result).toEqual({ contaminatedSoilsSurfaceDifference: 35000 });
   });

@@ -9,28 +9,19 @@ type Result = {
 };
 
 export interface ProjectRepository {
-  getProjectDecontaminatedSoilsSurface(
-    projectId: string,
-  ): Promise<number | null>;
+  getProjectDecontaminatedSoilsSurface(projectId: string): Promise<number | null>;
 }
 
-export class GetProjectContaminatedSoilsImpactUseCase
-  implements UseCase<Request, Result>
-{
+export class GetProjectContaminatedSoilsImpactUseCase implements UseCase<Request, Result> {
   constructor(private readonly projectRepository: ProjectRepository) {}
 
   async execute({ projectId }: Request): Promise<Result> {
     if (!projectId) throw new Error("projectId is required");
     try {
-      const result =
-        await this.projectRepository.getProjectDecontaminatedSoilsSurface(
-          projectId,
-        );
+      const result = await this.projectRepository.getProjectDecontaminatedSoilsSurface(projectId);
       return { contaminatedSoilsSurfaceDifference: result ?? 0 };
     } catch (err) {
-      throw new Error(
-        `Error while retrieving soils distribution for project ${projectId}`,
-      );
+      throw new Error(`Error while retrieving soils distribution for project ${projectId}`);
     }
   }
 }

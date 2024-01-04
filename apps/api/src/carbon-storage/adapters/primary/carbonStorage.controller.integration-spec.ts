@@ -31,9 +31,7 @@ describe("CarbonStorage controller", () => {
 
   describe("Get /carbon-storage/site-soils", () => {
     it("can't return information if there is no cityCode indication", async () => {
-      const response = await supertest(app.getHttpServer()).get(
-        "/carbon-storage/site-soils",
-      );
+      const response = await supertest(app.getHttpServer()).get("/carbon-storage/site-soils");
 
       expect(response.status).toEqual(400);
     });

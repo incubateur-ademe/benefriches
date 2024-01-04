@@ -1,10 +1,7 @@
 import dotenv from "dotenv";
 import knex, { Knex } from "knex";
 import path from "path";
-import {
-  DockerComposeEnvironment,
-  StartedDockerComposeEnvironment,
-} from "testcontainers";
+import { DockerComposeEnvironment, StartedDockerComposeEnvironment } from "testcontainers";
 import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexConfig";
 
 const composeFilePath = path.resolve(process.cwd(), "../..");
@@ -13,10 +10,7 @@ const composeFile = "docker-compose.db.yml";
 let dockerPostgresInstance: StartedDockerComposeEnvironment;
 
 export const spawnPostgresDb = async () => {
-  dockerPostgresInstance = await new DockerComposeEnvironment(
-    composeFilePath,
-    composeFile,
-  ).up();
+  dockerPostgresInstance = await new DockerComposeEnvironment(composeFilePath, composeFile).up();
 };
 
 export const stopPostresDb = async () => {

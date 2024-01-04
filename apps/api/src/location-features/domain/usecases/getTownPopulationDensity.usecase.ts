@@ -15,15 +15,11 @@ type Response = {
   };
 };
 
-export class GetTownPopulationDensityUseCase
-  implements UseCase<Request, Response>
-{
+export class GetTownPopulationDensityUseCase implements UseCase<Request, Response> {
   constructor(private readonly townDataProvider: TownDataProvider) {}
 
   async execute({ cityCode }: Request): Promise<Response> {
-    const town = await lastValueFrom(
-      this.townDataProvider.getTownAreaAndPopulation(cityCode),
-    );
+    const town = await lastValueFrom(this.townDataProvider.getTownAreaAndPopulation(cityCode));
 
     const density = town.population / town.area;
     const rounded = Math.round(density * 100) / 100;

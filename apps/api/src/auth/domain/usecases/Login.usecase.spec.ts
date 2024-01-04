@@ -21,41 +21,25 @@ describe("Login Use Case", () => {
   });
 
   test("Cannot login without email", async () => {
-    const usecase = new LoginUseCase(
-      userRepository,
-      hashGenerator,
-      accessTokenService,
-    );
+    const usecase = new LoginUseCase(userRepository, hashGenerator, accessTokenService);
     //@ts-expect-error nothing passed to execute
     await expect(usecase.execute({})).rejects.toThrow("Email is required");
   });
 
   test("Cannot login without password", async () => {
-    const usecase = new LoginUseCase(
-      userRepository,
-      hashGenerator,
-      accessTokenService,
-    );
+    const usecase = new LoginUseCase(userRepository, hashGenerator, accessTokenService);
     const email = "user@beta.gouv.fr";
     //@ts-expect-error no password passed to execute
-    await expect(usecase.execute({ email })).rejects.toThrow(
-      "Password is required",
-    );
+    await expect(usecase.execute({ email })).rejects.toThrow("Password is required");
   });
 
   test("Cannot login if user does not exist", async () => {
-    const usecase = new LoginUseCase(
-      userRepository,
-      hashGenerator,
-      accessTokenService,
-    );
+    const usecase = new LoginUseCase(userRepository, hashGenerator, accessTokenService);
     const userCredentials = {
       email: "user@beta.gouv.fr",
       password: "my-strong-passw0rd",
     };
-    await expect(usecase.execute(userCredentials)).rejects.toThrow(
-      "User not found",
-    );
+    await expect(usecase.execute(userCredentials)).rejects.toThrow("User not found");
   });
 
   test("Cannot login if password is wrong", async () => {
@@ -70,14 +54,8 @@ describe("Login Use Case", () => {
       email: "user@beta.gouv.fr",
       password: "another-password",
     };
-    const usecase = new LoginUseCase(
-      userRepository,
-      hashGenerator,
-      accessTokenService,
-    );
-    await expect(usecase.execute(loginRequest)).rejects.toThrow(
-      "Wrong password",
-    );
+    const usecase = new LoginUseCase(userRepository, hashGenerator, accessTokenService);
+    await expect(usecase.execute(loginRequest)).rejects.toThrow("Wrong password");
   });
 
   test("Can login", async () => {
@@ -91,11 +69,7 @@ describe("Login Use Case", () => {
     userRepository._setUsers([user]);
 
     const loginRequest = { email: "user@beta.gouv.fr", password };
-    const usecase = new LoginUseCase(
-      userRepository,
-      hashGenerator,
-      accessTokenService,
-    );
+    const usecase = new LoginUseCase(userRepository, hashGenerator, accessTokenService);
     const accessJwt = await usecase.execute(loginRequest);
     expect(accessJwt).toEqual("signed-jwt-token");
   });

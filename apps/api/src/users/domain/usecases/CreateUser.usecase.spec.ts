@@ -18,11 +18,7 @@ describe("Register", () => {
   });
 
   test("User account creation : check password", async () => {
-    const usecase = new CreateUserUseCase(
-      uuidGenerator,
-      inMemoryUserRepository,
-      hashGenerator,
-    );
+    const usecase = new CreateUserUseCase(uuidGenerator, inMemoryUserRepository, hashGenerator);
     await expect(() =>
       //@ts-expect-error password is not passed to execute()
       usecase.execute({ email: "test@beta.gouv.fr" }),
@@ -30,32 +26,20 @@ describe("Register", () => {
   });
 
   test("Cannot create account without email", async () => {
-    const usecase = new CreateUserUseCase(
-      uuidGenerator,
-      inMemoryUserRepository,
-      hashGenerator,
-    );
+    const usecase = new CreateUserUseCase(uuidGenerator, inMemoryUserRepository, hashGenerator);
     //@ts-expect-error nothing passed to execute()
     await expect(usecase.execute({})).rejects.toThrow("Email is required");
   });
 
   test("Cannot create account with invalid email", async () => {
-    const usecase = new CreateUserUseCase(
-      uuidGenerator,
-      inMemoryUserRepository,
-      hashGenerator,
-    );
+    const usecase = new CreateUserUseCase(uuidGenerator, inMemoryUserRepository, hashGenerator);
     await expect(
       usecase.execute({ email: "invalid-email", password: "mypasword" }),
     ).rejects.toThrow("Email is invalid");
   });
 
   test("Cannot create account with password too short", async () => {
-    const usecase = new CreateUserUseCase(
-      uuidGenerator,
-      inMemoryUserRepository,
-      hashGenerator,
-    );
+    const usecase = new CreateUserUseCase(uuidGenerator, inMemoryUserRepository, hashGenerator);
     await expect(
       usecase.execute({ email: "test@beta.gouv.fr", password: "mypasword" }),
     ).rejects.toThrow("Password should be 12 or more characters");
@@ -65,24 +49,16 @@ describe("Register", () => {
     const email = "user@beta.gouv.fr";
     const user = { email, password: "mypassword123456789", id: fakeUuid };
     inMemoryUserRepository._setUsers([user]);
-    const usecase = new CreateUserUseCase(
-      uuidGenerator,
-      inMemoryUserRepository,
-      hashGenerator,
+    const usecase = new CreateUserUseCase(uuidGenerator, inMemoryUserRepository, hashGenerator);
+    await expect(usecase.execute({ email, password: "mypassword123456789" })).rejects.toThrow(
+      "Given email already exists",
     );
-    await expect(
-      usecase.execute({ email, password: "mypassword123456789" }),
-    ).rejects.toThrow("Given email already exists");
   });
 
   test("User is persisted when create user is successful", async () => {
     const email = "user@beta.gouv.fr";
     const password = "mypassword123456789";
-    const usecase = new CreateUserUseCase(
-      uuidGenerator,
-      inMemoryUserRepository,
-      hashGenerator,
-    );
+    const usecase = new CreateUserUseCase(uuidGenerator, inMemoryUserRepository, hashGenerator);
     await usecase.execute({ email, password });
     const [savedUser] = inMemoryUserRepository._getUsers();
 
@@ -93,11 +69,7 @@ describe("Register", () => {
   test("Should not store user's password", async () => {
     const email = "user@beta.gouv.fr";
     const password = "my-strong-password";
-    const usecase = new CreateUserUseCase(
-      uuidGenerator,
-      inMemoryUserRepository,
-      hashGenerator,
-    );
+    const usecase = new CreateUserUseCase(uuidGenerator, inMemoryUserRepository, hashGenerator);
     await usecase.execute({ email, password });
     const [savedUser] = inMemoryUserRepository._getUsers();
     expect(savedUser.password).not.toEqual(password);

@@ -19,9 +19,7 @@ export class ProjectImpactsController {
   }
 
   @Get("contaminated-soils-surface/:projectId")
-  async getProjectContaminatedSoilsImpact(
-    @Param("projectId") projectId: string,
-  ) {
+  async getProjectContaminatedSoilsImpact(@Param("projectId") projectId: string) {
     const result = await this.getProjectContaminatedSoilsImpactUseCase.execute({
       projectId,
     });

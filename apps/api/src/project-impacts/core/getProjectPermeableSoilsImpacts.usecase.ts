@@ -24,37 +24,27 @@ const sumSurfaces = (soils: { surfaceArea: number }[]) => {
   }, 0);
 };
 
-export class GetProjectPermeableSoilsImpactsUseCase
-  implements UseCase<Request, Result>
-{
+export class GetProjectPermeableSoilsImpactsUseCase implements UseCase<Request, Result> {
   constructor(private readonly projectRepository: ProjectRepository) {}
 
   async execute({ projectId }: Request): Promise<Result> {
     if (!projectId) throw new Error("projectId is required");
     try {
       const projectSoilsDistribution =
-        await this.projectRepository.getProjectCurrentAndFutureSoilsDistribution(
-          projectId,
-        );
+        await this.projectRepository.getProjectCurrentAndFutureSoilsDistribution(projectId);
 
       const currentPermeableSoilsSurface = sumSurfaces(
-        projectSoilsDistribution.current.filter((soil) =>
-          isPermeableSoil(soil.type),
-        ),
+        projectSoilsDistribution.current.filter((soil) => isPermeableSoil(soil.type)),
       );
       const projectPermeableSoilsSurface = sumSurfaces(
-        projectSoilsDistribution.future.filter((soil) =>
-          isPermeableSoil(soil.type),
-        ),
+        projectSoilsDistribution.future.filter((soil) => isPermeableSoil(soil.type)),
       );
       return {
         permeableSoilsSurfaceDifference:
           projectPermeableSoilsSurface - currentPermeableSoilsSurface,
       };
     } catch (err) {
-      throw new Error(
-        `Error while retrieving soils distribution for project ${projectId}`,
-      );
+      throw new Error(`Error while retrieving soils distribution for project ${projectId}`);
     }
   }
 }

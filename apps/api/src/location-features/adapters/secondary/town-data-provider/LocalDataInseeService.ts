@@ -34,9 +34,7 @@ interface InseeData {
   Cellule: {
     Zone: { "@codgeo": string; "@nivgeo": typeof DATA_CONFIG.geolevel };
     Mesure: {
-      "@code":
-        | typeof DATA_CONFIG.populationCode
-        | typeof DATA_CONFIG.superficieCode;
+      "@code": typeof DATA_CONFIG.populationCode | typeof DATA_CONFIG.superficieCode;
     };
     Modalite: {
       "@code": typeof DATA_CONFIG.mode;
@@ -54,8 +52,7 @@ export class LocalDataInseeService implements TownDataProvider {
   ) {}
 
   getTownAreaAndPopulation(cityCode: string) {
-    const inseeApiToken =
-      this.configService.getOrThrow<string>("INSEE_API_TOKEN");
+    const inseeApiToken = this.configService.getOrThrow<string>("INSEE_API_TOKEN");
     const config = {
       headers: {
         Accept: "application/json",
@@ -73,13 +70,9 @@ export class LocalDataInseeService implements TownDataProvider {
           const superficie = result.Cellule.find(
             (cellule) => cellule.Mesure["@code"] === "SUPERFICIE",
           );
-          const population = result.Cellule.find(
-            (cellule) => cellule.Mesure["@code"] === "PMUN20",
-          );
+          const population = result.Cellule.find((cellule) => cellule.Mesure["@code"] === "PMUN20");
           if (!population || !superficie) {
-            throw new NotFoundException(
-              `No data found for cityCode: ${cityCode}`,
-            );
+            throw new NotFoundException(`No data found for cityCode: ${cityCode}`);
           }
           return Town.create({
             cityCode,
@@ -91,10 +84,7 @@ export class LocalDataInseeService implements TownDataProvider {
       .pipe(
         catchError((error: AxiosError) => {
           if (!error.response) {
-            throw new HttpException(
-              "Something went wrong while setting up the request",
-              500,
-            );
+            throw new HttpException("Something went wrong while setting up the request", 500);
           }
           switch (error.response.status) {
             case 400:
@@ -104,10 +94,7 @@ export class LocalDataInseeService implements TownDataProvider {
             case 404:
               throw new NotFoundException(error.response.data);
             default:
-              throw new HttpException(
-                error.response.data as string,
-                error.response.status,
-              );
+              throw new HttpException(error.response.data as string, error.response.status);
           }
         }),
       );

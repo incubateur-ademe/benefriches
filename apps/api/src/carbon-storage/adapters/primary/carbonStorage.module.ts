@@ -11,8 +11,7 @@ import { CarbonStorageController } from "./carbonStorage.controller";
   providers: [
     {
       provide: SqlCarbonStorageRepository,
-      useFactory: (sqlConnection: Knex) =>
-        new SqlCarbonStorageRepository(sqlConnection),
+      useFactory: (sqlConnection: Knex) => new SqlCarbonStorageRepository(sqlConnection),
       inject: [SqlConnection],
     },
     {

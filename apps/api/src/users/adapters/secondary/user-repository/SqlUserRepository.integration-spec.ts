@@ -30,11 +30,7 @@ describe("SqlUserRepository integration", () => {
 
     await sqlUserRepository.save(user);
 
-    const result = await sqlConnection<User[]>("users").select(
-      "id",
-      "email",
-      "password",
-    );
+    const result = await sqlConnection<User[]>("users").select("id", "email", "password");
     expect(result).toEqual([
       {
         id: user.id,
@@ -62,9 +58,7 @@ describe("SqlUserRepository integration", () => {
       password: "super-strong-hashed-password",
     };
     await sqlConnection("users").insert(userProps);
-    const result = await sqlUserRepository.existsWithEmail(
-      "another-user@mail.com",
-    );
+    const result = await sqlUserRepository.existsWithEmail("another-user@mail.com");
     expect(result).toEqual(false);
   });
 

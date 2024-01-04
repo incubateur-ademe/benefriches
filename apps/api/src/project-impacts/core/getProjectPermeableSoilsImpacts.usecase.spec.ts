@@ -10,9 +10,7 @@ describe("GetProjectPermeableSoilsImpactsUseCase", () => {
       },
       decontaminatedSoilsSurface: 0,
     });
-    const usecase = new GetProjectPermeableSoilsImpactsUseCase(
-      projectRepository,
-    );
+    const usecase = new GetProjectPermeableSoilsImpactsUseCase(projectRepository);
     const result = await usecase.execute({ projectId: "project-id" });
     expect(result).toEqual({ permeableSoilsSurfaceDifference: 0 });
   });
@@ -34,9 +32,7 @@ describe("GetProjectPermeableSoilsImpactsUseCase", () => {
       },
       decontaminatedSoilsSurface: 0,
     });
-    const usecase = new GetProjectPermeableSoilsImpactsUseCase(
-      projectRepository,
-    );
+    const usecase = new GetProjectPermeableSoilsImpactsUseCase(projectRepository);
     const result = await usecase.execute({ projectId: "project-id-1" });
     expect(result).toEqual({ permeableSoilsSurfaceDifference: 1000 });
   });
@@ -58,9 +54,7 @@ describe("GetProjectPermeableSoilsImpactsUseCase", () => {
       },
       decontaminatedSoilsSurface: 0,
     });
-    const usecase = new GetProjectPermeableSoilsImpactsUseCase(
-      projectRepository,
-    );
+    const usecase = new GetProjectPermeableSoilsImpactsUseCase(projectRepository);
     const result = await usecase.execute({ projectId: "project-id-1" });
     expect(result).toEqual({ permeableSoilsSurfaceDifference: 2000 });
   });
@@ -81,9 +75,7 @@ describe("GetProjectPermeableSoilsImpactsUseCase", () => {
       },
       decontaminatedSoilsSurface: 0,
     });
-    const usecase = new GetProjectPermeableSoilsImpactsUseCase(
-      projectRepository,
-    );
+    const usecase = new GetProjectPermeableSoilsImpactsUseCase(projectRepository);
     const result = await usecase.execute({ projectId: "project-id-1" });
     expect(result).toEqual({ permeableSoilsSurfaceDifference: -5000 });
   });
@@ -96,9 +88,7 @@ describe("GetProjectPermeableSoilsImpactsUseCase", () => {
       },
       decontaminatedSoilsSurface: 0,
     });
-    const usecase = new GetProjectPermeableSoilsImpactsUseCase(
-      projectRepository,
-    );
+    const usecase = new GetProjectPermeableSoilsImpactsUseCase(projectRepository);
     // @ts-expect-error no project id passed
     await expect(usecase.execute({ projectId: undefined })).rejects.toThrow(
       "projectId is required",
@@ -116,12 +106,8 @@ describe("GetProjectPermeableSoilsImpactsUseCase", () => {
       },
       { shouldFail: true },
     );
-    const usecase = new GetProjectPermeableSoilsImpactsUseCase(
-      projectRepository,
-    );
-    await expect(
-      usecase.execute({ projectId: "project-id-1" }),
-    ).rejects.toThrow(
+    const usecase = new GetProjectPermeableSoilsImpactsUseCase(projectRepository);
+    await expect(usecase.execute({ projectId: "project-id-1" })).rejects.toThrow(
       "Error while retrieving soils distribution for project project-id-1",
     );
   });

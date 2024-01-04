@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { Knex } from "knex";
 import { CarbonStorageRepository } from "src/carbon-storage/domain/gateways/CarbonStorageRepository";
 import {
@@ -21,9 +17,7 @@ const FOREST_CATEGORIES = [
   RepositorySoilCategoryType.FOREST_POPLAR,
 ];
 
-const filterCarbonStorageByLocalisationPriority = (
-  carbonStorage: CarbonStorage[],
-) => {
+const filterCarbonStorageByLocalisationPriority = (carbonStorage: CarbonStorage[]) => {
   const localisationPriorityOrder = [
     LocalisationCategoryType.SER_GROUP,
     LocalisationCategoryType.GRECO,
@@ -42,11 +36,8 @@ const filterCarbonStorageByLocalisationPriority = (
     }
 
     const { localisationCategory } = result[existingIndex];
-    const currentPosition =
-      localisationPriorityOrder.indexOf(localisationCategory);
-    const elemPosition = localisationPriorityOrder.indexOf(
-      entry.localisationCategory,
-    );
+    const currentPosition = localisationPriorityOrder.indexOf(localisationCategory);
+    const elemPosition = localisationPriorityOrder.indexOf(entry.localisationCategory);
     if (elemPosition < currentPosition) {
       const newResult = [...result];
       newResult[existingIndex] = entry;
@@ -56,15 +47,11 @@ const filterCarbonStorageByLocalisationPriority = (
   }, []);
 };
 
-const getForestLitterCarbonStorage = (
-  soilCategories: RepositorySoilCategoryType[],
-) => {
+const getForestLitterCarbonStorage = (soilCategories: RepositorySoilCategoryType[]) => {
   const forestCategories =
     soilCategories.length === 0
       ? FOREST_CATEGORIES
-      : soilCategories.filter((category) =>
-          FOREST_CATEGORIES.includes(category),
-        );
+      : soilCategories.filter((category) => FOREST_CATEGORIES.includes(category));
   return forestCategories.map(
     (category) =>
       ({
@@ -102,12 +89,9 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
     const city = City.create(sqlCity);
 
     const hasSoilsCategory = soilCategories.length > 0;
-    const hasForest = soilCategories.some((category) =>
-      FOREST_CATEGORIES.includes(category),
-    );
+    const hasForest = soilCategories.some((category) => FOREST_CATEGORIES.includes(category));
 
-    const query =
-      this.sqlConnection<CarbonStorageProps>("carbon_storage").select();
+    const query = this.sqlConnection<CarbonStorageProps>("carbon_storage").select();
 
     if (hasSoilsCategory) {
       void query.whereIn("soil_category", soilCategories);
@@ -131,10 +115,7 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
         if (city.codeSerGroup.length > 0) {
           void localisationClause.orWhere((build) => {
             void build
-              .where(
-                "localisation_category",
-                LocalisationCategoryType.SER_GROUP,
-              )
+              .where("localisation_category", LocalisationCategoryType.SER_GROUP)
               .whereIn("localisation_code", city.codeSerGroup);
           });
         }
@@ -160,13 +141,9 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
       }
     });
 
-    const result = (await query).map((element) =>
-      CarbonStorage.create(element),
-    );
+    const result = (await query).map((element) => CarbonStorage.create(element));
 
-    const soilsStorage = result.filter(
-      ({ reservoir }) => reservoir === ReservoirType.SOIL,
-    );
+    const soilsStorage = result.filter(({ reservoir }) => reservoir === ReservoirType.SOIL);
     const nonForestBiomassStorage = result.filter(
       ({ reservoir }) => reservoir === ReservoirType.NON_FOREST_BIOMASS,
     );
@@ -175,14 +152,10 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
     // of precision. We want to use the best value we can found.
     // See data/README.md
     const deadForestBiomass = filterCarbonStorageByLocalisationPriority(
-      result.filter(
-        ({ reservoir }) => reservoir === ReservoirType.DEAD_FOREST_BIOMASS,
-      ),
+      result.filter(({ reservoir }) => reservoir === ReservoirType.DEAD_FOREST_BIOMASS),
     );
     const liveForestBiomass = filterCarbonStorageByLocalisationPriority(
-      result.filter(
-        ({ reservoir }) => reservoir === ReservoirType.LIVE_FOREST_BIOMASS,
-      ),
+      result.filter(({ reservoir }) => reservoir === ReservoirType.LIVE_FOREST_BIOMASS),
     );
 
     // Litter biomass for forest is a constant value standing for the average value in France

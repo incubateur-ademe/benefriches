@@ -11,17 +11,15 @@ describe("GetTownPopulationDensity use case", () => {
 
   test("it should throw BadRequestException if no cityCode is provided", async () => {
     const usecase = new GetTownPopulationDensityUseCase(townDataProvider);
-    await expect(() => usecase.execute({ cityCode: "" })).rejects.toThrow(
-      BadRequestException,
-    );
+    await expect(() => usecase.execute({ cityCode: "" })).rejects.toThrow(BadRequestException);
   });
 
   test("it should throw NotFoundException if a wrong cityCode is provided", async () => {
     const usecase = new GetTownPopulationDensityUseCase(townDataProvider);
 
-    await expect(() =>
-      usecase.execute({ cityCode: "Wrong cityCode" }),
-    ).rejects.toThrow(NotFoundException);
+    await expect(() => usecase.execute({ cityCode: "Wrong cityCode" })).rejects.toThrow(
+      NotFoundException,
+    );
   });
 
   test("it should compute population density for Toulouse", async () => {
@@ -49,8 +47,6 @@ describe("GetTownPopulationDensity use case", () => {
 
   test("it should throw error if density is not computable", async () => {
     const usecase = new GetTownPopulationDensityUseCase(townDataProvider);
-    await expect(() => usecase.execute({ cityCode: "01039" })).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(() => usecase.execute({ cityCode: "01039" })).rejects.toThrow(NotFoundException);
   });
 });

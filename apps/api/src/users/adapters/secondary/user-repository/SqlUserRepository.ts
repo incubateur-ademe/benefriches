@@ -14,10 +14,7 @@ export class SqlUserRepository implements UserRepository {
   }
 
   async existsWithEmail(email: string): Promise<boolean> {
-    const exists = await this.sqlConnection<User>("users")
-      .select("id")
-      .where({ email })
-      .first();
+    const exists = await this.sqlConnection<User>("users").select("id").where({ email }).first();
     return !!exists;
   }
 

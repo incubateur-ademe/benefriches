@@ -20,19 +20,14 @@ type Response = {
   }[];
 };
 
-export class GetCityCarbonStoragePerSoilsCategoryUseCase
-  implements UseCase<Request, Response>
-{
-  constructor(
-    private readonly carbonStorageRepository: CarbonStorageRepository,
-  ) {}
+export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<Request, Response> {
+  constructor(private readonly carbonStorageRepository: CarbonStorageRepository) {}
 
   async execute({ cityCode, soils = [] }: Request): Promise<Response> {
-    const carbonStorage =
-      await this.carbonStorageRepository.getCarbonStorageForCity(
-        cityCode,
-        soils.map(({ type }) => type.getRepositorySoilCategory()),
-      );
+    const carbonStorage = await this.carbonStorageRepository.getCarbonStorageForCity(
+      cityCode,
+      soils.map(({ type }) => type.getRepositorySoilCategory()),
+    );
 
     const soilsCarbonStorage = soils.map(({ type, surfaceArea }) => {
       const entriesForCategory = carbonStorage.filter(
