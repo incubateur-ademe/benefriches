@@ -29,12 +29,12 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
 
   const options = [
     {
-      label: "Non/NSP",
-      value: "no",
-    },
-    {
       label: "Oui",
       value: "yes",
+    },
+    {
+      label: "Non / NSP",
+      value: "no",
     },
   ];
 

@@ -34,7 +34,7 @@ function SoilContaminationForm({ onSubmit, surfaceArea }: Props) {
       value: "yes",
     },
     {
-      label: "Non/NSP",
+      label: "Non / NSP",
       value: "no",
     },
   ];
