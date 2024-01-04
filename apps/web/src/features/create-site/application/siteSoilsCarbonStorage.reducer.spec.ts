@@ -32,7 +32,10 @@ describe("Site carbon sequestration reducer", () => {
     const state = store.getState();
     expect(state.siteCarbonStorage).toEqual({
       loadingState: "success",
-      carbonStorage: mockedResult,
+      carbonStorage: {
+        total: mockedResult.totalCarbonStorage,
+        soils: mockedResult.soilsStorage,
+      },
     });
   });
 
