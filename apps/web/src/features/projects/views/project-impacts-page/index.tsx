@@ -38,7 +38,7 @@ function ProjectsImpacts({ projectId }: Props) {
   if (dataLoadingState === "success") {
     return (
       <ProjectsImpactsPage
-        projectName={projectData.name}
+        projectData={projectData}
         projectId={projectId}
         siteName={siteData.name}
         loadingState="success"
@@ -48,7 +48,7 @@ function ProjectsImpacts({ projectId }: Props) {
 
   return (
     <ProjectsImpactsPage
-      projectName={undefined}
+      projectData={undefined}
       projectId={projectId}
       siteName={undefined}
       loadingState={dataLoadingState}
