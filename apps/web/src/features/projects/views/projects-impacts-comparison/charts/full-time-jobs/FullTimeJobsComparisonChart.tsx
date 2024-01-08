@@ -16,7 +16,7 @@ function FullTimeJobsComparisonChart() {
       column: {
         pointPadding: 0.05,
         borderWidth: 0,
-        dataLabels: { enabled: true, format: "{point.y} ETP" },
+        dataLabels: { enabled: true, format: "{point.y:,.1f} ETP" },
       },
     },
     series: [
