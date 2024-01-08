@@ -62,7 +62,7 @@ function CarbonStorageChart({ currentCarbonStorage, projectedCarbonStorage }: Pr
       area: {
         stacking: "normal",
         borderWidth: 0,
-        dataLabels: { enabled: true, format: "{point.y} t" },
+        dataLabels: { enabled: true, format: "{point.y:,.0f} t" },
       },
     },
     series: soilsTypes.map((soilType) => ({

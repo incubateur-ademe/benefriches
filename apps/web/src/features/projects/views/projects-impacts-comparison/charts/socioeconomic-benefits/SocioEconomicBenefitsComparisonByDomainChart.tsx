@@ -30,7 +30,7 @@ function SocioEconomicBenefitsComparisonByDomainChart() {
       column: {
         pointPadding: 0.05,
         borderWidth: 0,
-        dataLabels: { enabled: true, format: "{point.y} €" },
+        dataLabels: { enabled: true, format: "{point.y:,.0f} €" },
       },
     },
     series: [

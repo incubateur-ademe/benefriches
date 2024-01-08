@@ -26,7 +26,7 @@ function SocioEconomicBenefitsBarChart() {
       column: {
         pointPadding: 0.1,
         borderWidth: 0,
-        dataLabels: { enabled: true, format: "{point.y} €" },
+        dataLabels: { enabled: true, format: "{point.y:,.0f} €" },
       },
     },
     series: [

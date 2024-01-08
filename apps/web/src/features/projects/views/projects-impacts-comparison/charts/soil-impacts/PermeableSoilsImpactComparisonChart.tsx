@@ -20,7 +20,7 @@ function PermeableSoilsImpactComparisonChart() {
         borderWidth: 0,
         dataLabels: {
           enabled: true,
-          format: `{point.y} ${SQUARE_METERS_HTML_SYMBOL}`,
+          format: `{point.y:,.0f} ${SQUARE_METERS_HTML_SYMBOL}`,
         },
       },
     },
