@@ -50,7 +50,12 @@ const createSiteSchema = z.object({
       amount: z.number().nonnegative(),
     })
     .array(),
-  yearlyIncome: z.number().nonnegative().optional(),
+  yearlyIncomes: z
+    .object({
+      type: z.string(),
+      amount: z.number().nonnegative(),
+    })
+    .array(),
 });
 
 type SiteCreatePayload = z.infer<typeof createSiteSchema>;
