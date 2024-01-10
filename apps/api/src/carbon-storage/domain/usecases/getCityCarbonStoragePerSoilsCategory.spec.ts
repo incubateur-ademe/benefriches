@@ -98,11 +98,13 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
           type: SoilCategoryType.CULTIVATION,
           surfaceArea: 15000,
           carbonStorage: 75,
+          carbonStorageInTonPerSquareMeters: 0.005,
         },
         {
           type: SoilCategoryType.FOREST_DECIDUOUS,
           surfaceArea: 30000,
           carbonStorage: 557.61,
+          carbonStorageInTonPerSquareMeters: 0.018587,
         },
       ],
     });
@@ -137,16 +139,19 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
           type: SoilCategoryType.IMPERMEABLE_SOILS,
           surfaceArea: 15000,
           carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 1.5,
+          carbonStorageInTonPerSquareMeters: 0.003,
         },
         {
           type: SoilCategoryType.BUILDINGS,
           surfaceArea: 30000,
           carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 3,
+          carbonStorageInTonPerSquareMeters: 0.003,
         },
         {
           type: SoilCategoryType.MINERAL_SOIL,
           surfaceArea: 20000,
           carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 2,
+          carbonStorageInTonPerSquareMeters: 0.003,
         },
       ],
     });
@@ -171,6 +176,7 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
           type: SoilCategoryType.WATER,
           surfaceArea: 15000,
           carbonStorage: 0,
+          carbonStorageInTonPerSquareMeters: 0,
         },
       ],
     });

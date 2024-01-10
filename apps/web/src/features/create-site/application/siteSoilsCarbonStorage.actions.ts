@@ -14,6 +14,7 @@ export type SiteSoilsCarbonStorageResult = {
     type: SoilType;
     surfaceArea: number;
     carbonStorage: number;
+    carbonStorageInTonPerSquareMeters: number;
   }[];
 };
 

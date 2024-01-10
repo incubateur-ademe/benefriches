@@ -41,7 +41,7 @@ export enum LocalisationCategoryType {
 export type CarbonStorageProps = {
   reservoir: ReservoirType;
   soil_category: RepositorySoilCategoryType;
-  stock_tC_by_ha: number;
+  stock_tC_by_ha: string;
   localisation_category: LocalisationCategoryType;
   localisation_code: string;
 };
@@ -65,7 +65,7 @@ export class CarbonStorage {
     return new CarbonStorage(
       reservoir,
       soil_category,
-      stock_tC_by_ha,
+      parseFloat(stock_tC_by_ha),
       localisation_category,
       localisation_code,
     );
@@ -75,7 +75,7 @@ export class CarbonStorage {
     return {
       reservoir: this.reservoir,
       soil_category: this.soilCategory,
-      stock_tC_by_ha: this.carbonStorageInTonByHectare,
+      stock_tC_by_ha: this.carbonStorageInTonByHectare.toString(),
       localisation_category: this.localisationCategory,
       localisation_code: this.localisationCode,
     };

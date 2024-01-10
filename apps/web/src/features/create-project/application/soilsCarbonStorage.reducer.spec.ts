@@ -13,8 +13,18 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 const SOILS_STORAGE_API_MOCKED_RESULT = {
   totalCarbonStorage: 350,
   soilsStorage: [
-    { type: SoilType.BUILDINGS, carbonStorage: 30, surfaceArea: 1400 },
-    { type: SoilType.MINERAL_SOIL, carbonStorage: 320, surfaceArea: 5000 },
+    {
+      type: SoilType.BUILDINGS,
+      carbonStorage: 30,
+      surfaceArea: 1400,
+      carbonStorageInTonPerSquareMeters: 0.021,
+    },
+    {
+      type: SoilType.MINERAL_SOIL,
+      carbonStorage: 320,
+      surfaceArea: 5000,
+      carbonStorageInTonPerSquareMeters: 0.064,
+    },
   ],
 };
 

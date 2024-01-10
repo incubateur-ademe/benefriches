@@ -7,7 +7,12 @@ type LoadingState = "idle" | "loading" | "success" | "error";
 
 export type SiteCarbonStorage = {
   total: number;
-  soils: { type: SoilType; surfaceArea: number; carbonStorage: number }[];
+  soils: {
+    type: SoilType;
+    surfaceArea: number;
+    carbonStorage: number;
+    carbonStorageInTonPerSquareMeters: number;
+  }[];
 };
 
 export type State = {
