@@ -71,7 +71,7 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
   const shouldAskForLocalOrAuthorityType = ownerTypeSelected === "local_or_regional_authority";
 
   return (
-    <WizardFormLayout title="Qui est le propriétaire de cette friche ?">
+    <WizardFormLayout title="Qui est le propriétaire actuel de cette friche ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("ownerType", { required: requiredMessage })}

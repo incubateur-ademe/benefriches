@@ -42,11 +42,11 @@ export const getLabelForSoilType = (value: SoilType): string => {
 export const getLongLabelForSoilType = (value: SoilType): string => {
   switch (value) {
     case SoilType.BUILDINGS:
-      return "Bâtiments (anciens sites de production, de stockage...)";
+      return "Bâtiments (anciens sites de production, de stockage…)";
     case SoilType.IMPERMEABLE_SOILS:
-      return "Sols imperméabilisés (parking ou voirie bitumée...)";
+      return "Sols imperméabilisés (parking ou voirie bitumée…)";
     case SoilType.MINERAL_SOIL:
-      return "Sol minéral (parking ou voirie en gravier, dalles alvéolées...)";
+      return "Sol minéral (parking ou voirie en gravier, sols semi-perméables…)";
     case SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
       return "Sol enherbé et arbustif (parc ou espaces verts en pelouse)";
     case SoilType.ARTIFICIAL_TREE_FILLED:

@@ -108,7 +108,16 @@ function SiteSoilsForm({ onSubmit, isFriche }: Props) {
   return (
     <WizardFormLayout
       title={`Quels types de sols y a-t-il sur ${isFriche ? "cette friche" : "ce site"} ?`}
-      instructions={<p>Plusieurs réponses possibles.</p>}
+      instructions={
+        <>
+          {" "}
+          <p>Plusieurs réponses possibles.</p>
+          <p>
+            Il est important de définir la typologie des sols pour connaître la quantité de carbone
+            stocké par le site.
+          </p>
+        </>
+      }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={fr.cx("fr-accordions-group", "fr-pb-3w")}>

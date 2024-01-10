@@ -23,7 +23,7 @@ const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
           <strong>{formatNumberFr(carbonStorageDifference)} tonnes de carbone en plus.</strong>
         </p>
         <p>
-          ℹ️ C'est l'équivalent de ce qu'émettent{" "}
+          C'est l'équivalent de ce qu'émettent{" "}
           <strong>
             {formatNumberFr(carbonStorageDifferenceInAnnualFrenchEmissionPerPerson)} français
           </strong>{" "}
@@ -42,7 +42,7 @@ const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
         </strong>
       </p>
       <p>
-        ℹ️ C'est l'équivalent de ce qu'émettent{" "}
+        C'est l'équivalent de ce qu'émettent{" "}
         <strong>
           {formatNumberFr(carbonStorageDifferenceInAnnualFrenchEmissionPerPerson)} français
         </strong>{" "}
