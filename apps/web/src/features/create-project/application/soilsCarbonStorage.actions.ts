@@ -29,7 +29,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
     "project/fetchCurrentAndProjectedSoilsCarbonStorage",
     async (_, { extra, getState }) => {
       const { projectCreation } = getState();
-      const cityCode = projectCreation.siteData?.address?.cityCode;
+      const cityCode = projectCreation.siteData?.address.cityCode;
       const siteSoils = projectCreation.siteData?.soilsSurfaceAreas ?? {};
       const projectSoils = projectCreation.projectData.soilsSurfaceAreas ?? {};
 

@@ -57,8 +57,6 @@ type Props = {
 function ProjectCreationStepper({ step }: Props) {
   const currentStepCategory = getCategoryForStep(step);
 
-  if (!currentStepCategory) return null;
-
   return (
     <Stepper
       title={currentStepCategory}

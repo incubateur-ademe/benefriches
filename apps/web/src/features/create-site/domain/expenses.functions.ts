@@ -5,14 +5,11 @@ type GroupedByExpensesKey = "bearer" | "category";
 const groupAndSumBy =
   <K extends GroupedByExpensesKey>(key: K) =>
   (expenses: Expense[]) => {
-    return expenses.reduce(
-      (expensesByKey, expense) => {
-        const group = expense[key];
-        const totalAmountForKey = expense.amount + (expensesByKey[group] ?? 0);
-        return { ...expensesByKey, [group]: totalAmountForKey };
-      },
-      {} as Record<Expense[K], number>,
-    );
+    return expenses.reduce<Record<Expense[K], number>>((expensesByKey, expense) => {
+      const group = expense[key];
+      const totalAmountForKey = expense.amount + expensesByKey[group];
+      return { ...expensesByKey, [group]: totalAmountForKey };
+    }, {});
   };
 
 export const groupExpensesByBearer = (expenses: Expense[]) => {
