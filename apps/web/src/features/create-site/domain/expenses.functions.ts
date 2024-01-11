@@ -8,9 +8,9 @@ const groupAndSumBy =
     return expenses.reduce<Record<Expense[K], number>>(
       (expensesByKey, expense) => {
         const group = expense[key];
-        const totalAmountForKey = expense.amount + expensesByKey[group];
-        expensesByKey[group] = totalAmountForKey;
-        return expensesByKey;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        const totalAmountForKey = expense.amount + (expensesByKey[group] ?? 0);
+        return { ...expensesByKey, [group]: totalAmountForKey };
       },
       // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
       {} as Record<Expense[K], number>,
