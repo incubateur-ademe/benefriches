@@ -156,7 +156,6 @@ describe("CreateNewSite Use Case", () => {
     it("Cannot create a new friche without providing fricheActivity", async () => {
       const siteProps = buildFricheProps();
       // @ts-expect-error dynamic delete
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete siteProps.fricheActivity;
 
       const usecase = new CreateNewSiteUseCase(siteRepository);
