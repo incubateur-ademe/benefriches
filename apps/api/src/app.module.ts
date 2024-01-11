@@ -8,6 +8,7 @@ import { HelloModule } from "./hello-world/adapters/primary/hello.module";
 import { LocationFeaturesModule } from "./location-features/adapters/primary/locationFeatures.module";
 import { ProjectImpactsModule } from "./project-impacts/adapters/primary/projectImpacts.module";
 import { SqlConnectionModule } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SitesModule } from "./sites/adapters/primary/sites.module";
 import { UsersModule } from "./users/adapters/primary/users.module";
 
 @Module({
@@ -20,6 +21,7 @@ import { UsersModule } from "./users/adapters/primary/users.module";
     LocationFeaturesModule,
     CarbonStorageModule,
     ProjectImpactsModule,
+    SitesModule,
   ],
   providers: [{ provide: APP_PIPE, useClass: ZodValidationPipe }],
 })
