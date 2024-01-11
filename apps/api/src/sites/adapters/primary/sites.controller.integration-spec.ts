@@ -43,13 +43,14 @@ describe("LocationFeatures controller", () => {
 
   describe("POST /sites", () => {
     it("can't create a site without mandatory data", async () => {
-      const response = await supertest(app.getHttpServer()).post("/sites").send({});
+      const response = await supertest(app.getHttpServer()).post("/sites").send({
+        isFriche: false,
+      });
 
       expect(response.status).toEqual(400);
       expect(response.body).toHaveProperty("errors");
 
       const mandatoryFields = [
-        // "isFriche",
         "id",
         "name",
         "address",
@@ -69,30 +70,29 @@ describe("LocationFeatures controller", () => {
     });
 
     it("can create a site", async () => {
-      const response = await supertest(app.getHttpServer())
-        .post("/sites")
-        .send({
-          id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-          isFriche: false,
-          owner: { name: "Owner name", structureType: "company" },
-          name: "Friche industrielle",
-          surfaceArea: 2900,
-          address: {
-            lat: 2.347,
-            long: 48.859,
-            city: "Paris",
-            banId: "75110_7043",
-            cityCode: "75110",
-            postCode: "75010",
-            value: "Rue de Paradis 75010 Paris",
-          },
-          soilsDistribution: {
-            BUILDINGS: 1400,
-            MINERAL_SOIL: 1500,
-          },
-          yearlyExpenses: [],
-          yearlyIncomes: [],
-        });
+      const validSite = {
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        isFriche: false,
+        owner: { name: "Owner name", structureType: "company" },
+        name: "Friche industrielle",
+        surfaceArea: 2900,
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          city: "Paris",
+          banId: "75110_7043",
+          cityCode: "75110",
+          postCode: "75010",
+          value: "Rue de Paradis 75010 Paris",
+        },
+        soilsDistribution: {
+          BUILDINGS: 1400,
+          MINERAL_SOIL: 1500,
+        },
+        yearlyExpenses: [],
+        yearlyIncomes: [],
+      };
+      const response = await supertest(app.getHttpServer()).post("/sites").send(validSite);
 
       expect(response.status).toEqual(201);
 
@@ -105,7 +105,7 @@ describe("LocationFeatures controller", () => {
       });
     });
 
-    it.only("can create a friche site", async () => {
+    it("can create a friche site", async () => {
       const response = await supertest(app.getHttpServer())
         .post("/sites")
         .send({
