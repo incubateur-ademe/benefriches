@@ -43,12 +43,6 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       const siteSoils = siteData.soilsSurfaceAreas;
       const projectSoils = projectData.soilsSurfaceAreas;
 
-      if (!cityCode || !siteSoils || !projectSoils) {
-        return Promise.reject(
-          "fetchCurrentAndProjectedSoilsCarbonStorage: Missing parameters cityCode or soils",
-        );
-      }
-
       const [current, projected] = await Promise.all([
         await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
           cityCode,
