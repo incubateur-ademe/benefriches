@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -13,10 +14,6 @@ export type FormValues = {
   localOrRegionalAuthorityAmount?: number;
   publicSubsidiesAmount?: number;
   otherAmount?: number;
-};
-
-const sumAllRevenue = (amounts: FormValues): number => {
-  return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
 const ProjectFinancialAssistanceRevenueForm = ({ onSubmit }: Props) => {
@@ -64,7 +61,9 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit }: Props) => {
           }}
         />
         <p>
-          <strong>Total des aides aux travaux : {formatNumberFr(sumAllRevenue(allCosts))} €</strong>
+          <strong>
+            Total des aides aux travaux : {formatNumberFr(sumObjectValues(allCosts))} €
+          </strong>
         </p>
         <ButtonsGroup
           buttonsEquisized

@@ -7,13 +7,14 @@ import ProjectFinancialAssistanceRevenueForm, {
   FormValues,
 } from "./ProjectFinancialAssistanceRevenueForm";
 
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (revenue: FormValues) => {
-      const totalRevenue = Object.values(revenue).reduce((sum, revenue) => sum + (revenue ?? 0), 0);
+      const totalRevenue = sumObjectValues(revenue);
       dispatch(setFinancialAssistanceRevenue(totalRevenue));
       dispatch(goToStep(ProjectCreationStep.NAMING));
     },

@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -19,10 +20,6 @@ export type FormValues = {
   remediationAmount?: number;
   deimpermeabilizationAmount?: number;
   sustainableSoilsReinstatementAmount?: number;
-};
-
-const sumAmounts = (amounts: FormValues): number => {
-  return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
 const ReinstatementCostFormExplanation = ({
@@ -180,7 +177,8 @@ const ReinstatementsCostsForm = ({
         />
         <p>
           <strong>
-            Total des coûts des travaux de remise en état : {formatNumberFr(sumAmounts(allCosts))} €
+            Total des coûts des travaux de remise en état :{" "}
+            {formatNumberFr(sumObjectValues(allCosts))} €
           </strong>
         </p>
         <ButtonsGroup

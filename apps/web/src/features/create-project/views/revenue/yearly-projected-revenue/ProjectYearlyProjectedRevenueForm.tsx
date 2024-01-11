@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -12,10 +13,6 @@ type Props = {
 export type FormValues = {
   operationsAmount?: number;
   otherAmount?: number;
-};
-
-const sumAllRevenue = (amounts: FormValues): number => {
-  return Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
 };
 
 const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {
@@ -52,7 +49,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {
         />
         <p>
           <strong>
-            Total des recettes annuelles : {formatNumberFr(sumAllRevenue(allCosts))} €
+            Total des recettes annuelles : {formatNumberFr(sumObjectValues(allCosts))} €
           </strong>
         </p>
         <ButtonsGroup

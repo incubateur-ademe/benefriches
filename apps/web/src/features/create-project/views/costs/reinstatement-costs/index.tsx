@@ -7,6 +7,7 @@ import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { SoilType } from "@/shared/domain/soils";
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
@@ -27,7 +28,7 @@ const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
       hasImpermeableSoils(soilsSurfaceAreas) || hasMineralSoils(soilsSurfaceAreas),
     hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
     onSubmit: (amounts: FormValues) => {
-      const totalCost = Object.values(amounts).reduce((sum, amount) => sum + (amount ?? 0), 0);
+      const totalCost = sumObjectValues(amounts);
       dispatch(setReinstatementCost(totalCost));
       dispatch(goToStep(ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION));
     },
