@@ -42,7 +42,7 @@ export type SiteDraft = {
   severeInjuriesPersons?: number;
   deaths?: number;
   yearlyExpenses: Expense[];
-  yearlyIncome?: number;
+  yearlyIncomes: Income[];
 };
 
 export type OwnerStructureType = "local_or_regional_authority" | "company" | "private_individual";
@@ -53,5 +53,10 @@ export type Expense = {
   type: string;
   bearer: "owner" | "tenant" | "local_or_regional_authority" | "society";
   category: "rent" | "safety" | "soils_degradation" | "taxes" | "other";
+  amount: number;
+};
+
+export type Income = {
+  type: string;
   amount: number;
 };

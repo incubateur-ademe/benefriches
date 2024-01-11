@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import { saveSiteAction } from "./createSite.actions";
 
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
-import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import { Expense, Income, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { SoilType } from "@/shared/domain/soils";
 
 export type SiteCreationState = {
@@ -48,6 +48,7 @@ const getInitialState = (): SiteCreationState => {
       id: uuid(),
       soils: [],
       yearlyExpenses: [],
+      yearlyIncomes: [],
     },
   };
 };
@@ -119,8 +120,8 @@ export const siteCreationSlice = createSlice({
     addExpenses: (state, action: PayloadAction<Expense[]>) => {
       state.siteData.yearlyExpenses = [...(state.siteData.yearlyExpenses ?? []), ...action.payload];
     },
-    setYearlyIncome: (state, action: PayloadAction<number>) => {
-      state.siteData.yearlyIncome = action.payload;
+    addIncomes: (state, action: PayloadAction<Income[]>) => {
+      state.siteData.yearlyIncomes = action.payload;
     },
     setFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
       state.siteData.fricheActivity = action.payload;
@@ -162,7 +163,7 @@ export const {
   setFullTimeJobsInvolved,
   setFricheRecentAccidents,
   addExpenses,
-  setYearlyIncome,
+  addIncomes,
   setFricheActivity,
   setNameAndDescription,
 

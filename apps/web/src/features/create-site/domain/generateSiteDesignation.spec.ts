@@ -13,6 +13,7 @@ const buildSiteDraft = (siteData: Partial<SiteDraft>): SiteDraft => {
     soilsSurfaceAreas: {},
     surfaceArea: 15000,
     yearlyExpenses: [],
+    yearlyIncomes: [],
     isFriche: false,
     hasRecentAccidents: false,
     fullTimeJobsInvolved: 0,
