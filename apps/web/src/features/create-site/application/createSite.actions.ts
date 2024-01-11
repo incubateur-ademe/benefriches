@@ -66,13 +66,10 @@ export interface CreateSiteGateway {
   save(siteData: CreateSiteGatewayPayload): Promise<void>;
 }
 
-export const saveSiteAction = createAppAsyncThunk<void>(
-  "site/create",
-  async (_, { getState, extra }) => {
-    const { siteCreation } = getState();
+export const saveSiteAction = createAppAsyncThunk("site/create", async (_, { getState, extra }) => {
+  const { siteCreation } = getState();
 
-    const siteToCreate = createSiteSchema.parse(siteCreation.siteData);
+  const siteToCreate = createSiteSchema.parse(siteCreation.siteData);
 
-    await extra.createSiteService.save(siteToCreate);
-  },
-);
+  await extra.createSiteService.save(siteToCreate);
+});

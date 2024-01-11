@@ -57,7 +57,7 @@ export interface SaveProjectGateway {
   save(siteData: SaveProjectGatewayPayload): Promise<void>;
 }
 
-export const saveProjectAction = createAppAsyncThunk<void>(
+export const saveProjectAction = createAppAsyncThunk(
   "project/save",
   async (_, { getState, extra }) => {
     const { projectCreation } = getState();
