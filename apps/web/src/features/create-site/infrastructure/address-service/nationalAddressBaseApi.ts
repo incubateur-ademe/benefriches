@@ -39,8 +39,6 @@ const mapNationalBaseAddressToAddress = (
 };
 
 export class NationalAddressBaseService implements AddressService {
-  constructor() {}
-
   async search(searchText: string): Promise<Address[]> {
     const queryParams = new URLSearchParams({ q: searchText });
 

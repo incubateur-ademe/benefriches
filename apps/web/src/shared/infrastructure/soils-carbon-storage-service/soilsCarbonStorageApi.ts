@@ -13,8 +13,6 @@ import { objectToQueryParams } from "@/shared/services/object-query-parameters/o
 export class SoilsCarbonStorageApi
   implements SiteSoilsCarbonStorageGateway, ProjectSoilsCarbonStorageGateway
 {
-  constructor() {}
-
   async getForCityCodeAndSoils({
     cityCode,
     soils,
