@@ -62,12 +62,15 @@ const SliderNumericInput = <T extends FieldValues>({
 
   const [inputValue, setInputValue] = useState<string>(field.value);
 
-  const onChangeInput = (ev: ChangeEvent<HTMLInputElement>) => setInputValue(ev.target.value);
+  const onChangeInput = (ev: ChangeEvent<HTMLInputElement>) => {
+    setInputValue(ev.target.value);
+  };
 
   const onLeaveInput = () => {
     const newValue = stringToNumber(inputValue);
     if (newValue !== undefined) {
-      return onChangeNumericSliderInput(newValue);
+      onChangeNumericSliderInput(newValue);
+      return;
     }
     // si la valeur entrée manuellement n’est pas valide, on remet la valeur actuelle
     setInputValue(field.value);

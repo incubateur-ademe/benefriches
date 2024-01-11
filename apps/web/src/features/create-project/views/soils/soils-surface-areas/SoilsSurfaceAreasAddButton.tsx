@@ -29,7 +29,9 @@ function SoilsSurfaceAreasAddButton({ onValidate, soilTypes }: Props) {
   return (
     <>
       <Button
-        onClick={() => modal.open()}
+        onClick={() => {
+          modal.open();
+        }}
         priority="secondary"
         nativeButtonProps={{ type: "button" }}
       >
@@ -49,7 +51,9 @@ function SoilsSurfaceAreasAddButton({ onValidate, soilTypes }: Props) {
         <Select
           label="Type de sol"
           nativeSelectProps={{
-            onChange: (event) => setValue(event.target.value as SoilType),
+            onChange: (event) => {
+              setValue(event.target.value as SoilType);
+            },
             value,
           }}
         >

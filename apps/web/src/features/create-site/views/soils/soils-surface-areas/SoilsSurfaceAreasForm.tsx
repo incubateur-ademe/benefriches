@@ -77,7 +77,9 @@ function SiteSoilsSurfaceAreasForm({ soils, totalSurfaceArea, onSubmit }: Props)
         ))}
         <div className="fr-py-7v">
           <Button
-            onClick={() => reset(defaultValues)}
+            onClick={() => {
+              reset(defaultValues);
+            }}
             priority="secondary"
             nativeButtonProps={{ type: "button" }}
           >

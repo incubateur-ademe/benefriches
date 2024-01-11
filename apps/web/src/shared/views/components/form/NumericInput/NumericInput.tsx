@@ -31,8 +31,9 @@ const NumericInput = <T extends FieldValues>({
   const nativeInputProps = {
     name: field.name,
     value: numberToString(field.value),
-    onChange: (ev: ChangeEvent<HTMLInputElement>) =>
-      field.onChange(stringToNumber(ev.target.value)),
+    onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+      field.onChange(stringToNumber(ev.target.value));
+    },
     onBlur: field.onBlur,
     type: "number",
   };

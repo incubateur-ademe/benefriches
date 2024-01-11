@@ -87,8 +87,12 @@ function ProjectsImpactsComparisonPage({ siteData, projectData, loadingState }: 
       />
       <ProjectsComparisonActionBar
         selectedFilter={selectedFilter}
-        onMonetaryFilterClick={() => setSelectedFilter("monetary")}
-        onAllFilterClick={() => setSelectedFilter("all")}
+        onMonetaryFilterClick={() => {
+          setSelectedFilter("monetary");
+        }}
+        onAllFilterClick={() => {
+          setSelectedFilter("all");
+        }}
       />
       <div className={fr.cx("fr-mb-6w")}>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>

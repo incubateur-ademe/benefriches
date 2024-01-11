@@ -195,7 +195,9 @@ function SoilsSurfaceAreasForm({
 
         <div className="fr-py-7v" style={{ display: "flex", justifyContent: "space-between" }}>
           <Button
-            onClick={() => reset(defaultValues)}
+            onClick={() => {
+              reset(defaultValues);
+            }}
             priority="secondary"
             nativeButtonProps={{ type: "button" }}
           >
@@ -203,7 +205,9 @@ function SoilsSurfaceAreasForm({
           </Button>
 
           <SoilsSurfaceAreasAddButton
-            onValidate={(data: SoilsSurfaceAreas) => append(data)}
+            onValidate={(data: SoilsSurfaceAreas) => {
+              append(data);
+            }}
             soilTypes={availableSoilTypes}
           />
         </div>

@@ -10,7 +10,7 @@ export interface AddressService {
 }
 
 export type PropTypes = {
-  searchInputValue: string;
+  searchInputValue: string | undefined;
   onSearchInputChange: (v: string) => void;
   searchInputProps: InputProps.RegularInput;
   selectedAddress?: Address;
@@ -70,7 +70,9 @@ const SearchAddressAutocompleteInput = ({
           {...searchInputProps}
           nativeInputProps={{
             value: searchInputValue ?? "",
-            onChange: (e: ChangeEvent<HTMLInputElement>) => onSearchInputChange(e.target.value),
+            onChange: (e: ChangeEvent<HTMLInputElement>) => {
+              onSearchInputChange(e.target.value);
+            },
           }}
         />
       </AutoComplete>
