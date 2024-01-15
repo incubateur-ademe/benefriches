@@ -28,6 +28,11 @@ export type SiteExpense = {
   amount: number;
 };
 
+type SiteIncome = {
+  type: string;
+  amount: number;
+};
+
 type OwnerStructureType = "local_or_regional_authority" | "company" | "private_individual";
 
 export type Owner = { structureType: OwnerStructureType; name: string };
@@ -50,7 +55,7 @@ export type ProjectSite = {
     lat: number;
   };
   yearlyExpenses: SiteExpense[];
-  yearlyIncome?: number;
+  yearlyIncomes: SiteIncome[];
   owner: Owner;
 };
 

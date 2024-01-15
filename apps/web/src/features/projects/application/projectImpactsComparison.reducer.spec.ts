@@ -69,6 +69,7 @@ const SITE_MOCKED_RESULT = {
     [SoilType.MINERAL_SOIL]: 1500,
   },
   yearlyExpenses: [],
+  yearlyIncomes: [],
 };
 
 const OTHER_PROJECT_ID = "a2c1a172-4ee3-4c76-8367-5519ca73ea2a";

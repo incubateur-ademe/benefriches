@@ -60,14 +60,14 @@ export const getEconomicResultsOfProjectForDuration = (
 };
 
 export const getEconomicResultsOfSitePerYear = (siteData: ProjectSite) => {
-  const { yearlyExpenses, yearlyIncome } = siteData;
+  const { yearlyExpenses, yearlyIncomes } = siteData;
 
-  const costs = yearlyIncome ?? 0;
-  const benefits = yearlyExpenses
-    .filter(({ bearer }) => !bearer || bearer === "owner")
+  const incomes = yearlyIncomes.reduce((total, expense) => expense.amount + total, 0);
+  const expenses = yearlyExpenses
+    .filter(({ bearer }) => bearer === "owner")
     .reduce((total, expense) => expense.amount + total, 0);
 
-  return benefits - costs;
+  return incomes - expenses;
 };
 
 export const getEconomicResultsOfSiteForDuration = (

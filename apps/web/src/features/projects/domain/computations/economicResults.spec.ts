@@ -50,6 +50,7 @@ const SITE_MOCKED = {
     [SoilType.MINERAL_SOIL]: 1500,
   },
   yearlyExpenses: [],
+  yearlyIncomes: [],
 } as ProjectSite;
 
 describe("economicResults computation functions", () => {
@@ -169,9 +170,9 @@ describe("economicResults computation functions", () => {
             { amount: 500, type: "", bearer: "tenant", category: "taxes" },
             { amount: 1500, bearer: "tenant", category: "soils_degradation", type: "" },
           ],
-          yearlyIncome: 700,
+          yearlyIncomes: [{ type: "operationsIncome", amount: 700 }],
         }),
-      ).toEqual(200);
+      ).toEqual(-200);
     });
   });
 
@@ -190,11 +191,11 @@ describe("economicResults computation functions", () => {
               { amount: 500, type: "", bearer: "tenant", category: "taxes" },
               { amount: 1500, bearer: "tenant", category: "soils_degradation", type: "" },
             ],
-            yearlyIncome: 700,
+            yearlyIncomes: [{ type: "operationsIncome", amount: 700 }],
           },
           10,
         ),
-      ).toEqual(500);
+      ).toEqual(-500);
     });
   });
 });

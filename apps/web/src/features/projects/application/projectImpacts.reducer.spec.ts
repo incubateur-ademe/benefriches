@@ -69,6 +69,7 @@ const SITE_MOCKED_RESULT = {
     [SoilType.MINERAL_SOIL]: 1500,
   },
   yearlyExpenses: [],
+  yearlyIncomes: [],
 };
 
 describe("Project impacts reducer", () => {
