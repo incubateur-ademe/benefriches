@@ -76,9 +76,11 @@ describe("CarbonStorage controller", () => {
             type: SoilCategoryType.CULTIVATION,
             surfaceArea: 1500,
             carbonStorage: 8.25,
+            carbonStorageInTonPerSquareMeters: 0.0055,
           },
           {
             type: SoilCategoryType.FOREST_DECIDUOUS,
+            carbonStorageInTonPerSquareMeters: 0.021887,
             surfaceArea: 3000,
             carbonStorage: 65.661,
           },

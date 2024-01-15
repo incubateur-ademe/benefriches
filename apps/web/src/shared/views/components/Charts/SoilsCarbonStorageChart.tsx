@@ -6,7 +6,6 @@ import HighchartsReact from "highcharts-react-official";
 
 import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
-import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 highchartsVariablePie(Highcharts);
 
 type Props = {
@@ -14,6 +13,7 @@ type Props = {
     type: SoilType;
     surfaceArea: number;
     carbonStorage: number;
+    carbonStorageInTonPerSquareMeters: number;
   }[];
 };
 
@@ -28,26 +28,34 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
         fontFamily: "Marianne",
       },
     },
-    tooltip: {
-      distance: 40,
-      pointFormat:
-        "Superficie : <strong>{point.y:.2f} ha ({point.percentage:.1f}%)</strong><br>Carbone stockable: <strong>{point.z:.2f} t/ha</strong>",
-    },
     credits: {
       enabled: false,
     },
-    plotOptions: { variablepie: { cursor: "pointer" } },
+    tooltip: {
+      distance: 40,
+      pointFormat:
+        "<strong>{point.y:.2f} T de carbone stockées</strong><br>" +
+        "Superficie : {point.options.custom.superficie} m²<br>" +
+        "Carbone stockable / m² : {point.z:.4f} T",
+    },
+    plotOptions: {
+      series: {
+        keys: ["name", "z", "y", "custom.superficie", "color"],
+      },
+      variablepie: { cursor: "pointer" },
+    },
     series: [
       {
         name: "",
         type: "variablepie",
         zMin: 0,
-        data: soilsCarbonStorage.map((soilData) => ({
-          y: convertSquareMetersToHectares(soilData.surfaceArea),
-          z: soilData.carbonStorage,
-          name: getLabelForSoilType(soilData.type),
-          color: getColorForSoilType(soilData.type as SoilType),
-        })),
+        data: soilsCarbonStorage.map((soilData) => [
+          getLabelForSoilType(soilData.type),
+          soilData.carbonStorageInTonPerSquareMeters,
+          soilData.carbonStorage,
+          soilData.surfaceArea,
+          getColorForSoilType(soilData.type as SoilType),
+        ]),
       },
     ],
   };

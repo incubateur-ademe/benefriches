@@ -14,8 +14,9 @@ type Request = {
 type Response = {
   totalCarbonStorage: number;
   soilsCarbonStorage: {
-    surfaceArea: SurfaceAreaType;
-    carbonStorage: number; // m2
+    surfaceArea: SurfaceAreaType; // m²
+    carbonStorage: number;
+    carbonStorageInTonPerSquareMeters: number;
     type: SoilCategoryType;
   }[];
 };
@@ -33,15 +34,17 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<Requ
       const entriesForCategory = carbonStorage.filter(
         ({ soilCategory }) => soilCategory === type.getRepositorySoilCategory(),
       );
-      const totalForCategory = entriesForCategory.reduce(
-        (total, { carbonStorageInTonByHectare }) =>
-          total + carbonStorageInTonByHectare * surfaceArea.getInHectares(),
+      const totalCarbonStoragePerHectare = entriesForCategory.reduce(
+        (total, { carbonStorageInTonByHectare }) => total + carbonStorageInTonByHectare,
         0,
       );
+      const carbonStorageInTonPerSquareMeters = totalCarbonStoragePerHectare / 10000;
+      const totalForCategory = carbonStorageInTonPerSquareMeters * surfaceArea.getInSquareMeters();
       return {
         type: type.getValue(),
         surfaceArea: surfaceArea.getInSquareMeters(),
         carbonStorage: totalForCategory,
+        carbonStorageInTonPerSquareMeters,
       };
     });
 

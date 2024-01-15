@@ -19,26 +19,21 @@ const readCsvData = async () => {
       if (line === HEADER) {
         return;
       }
-      const [
-        reservoir,
-        soilCategory,
-        carbonStorageInTonByHectare,
-        localisationCategory,
-        localisationCode,
-      ] = line.split(",") as [
-        CarbonStorage["reservoir"],
-        CarbonStorage["soilCategory"],
-        CarbonStorage["carbonStorageInTonByHectare"],
-        CarbonStorage["localisationCategory"],
-        CarbonStorage["localisationCode"],
-      ];
+      const [reservoir, soil_category, stock_tC_by_ha, localisation_category, localisation_code] =
+        line.split(",") as [
+          CarbonStorageProps["reservoir"],
+          CarbonStorageProps["soil_category"],
+          CarbonStorageProps["stock_tC_by_ha"],
+          CarbonStorageProps["localisation_category"],
+          CarbonStorageProps["localisation_code"],
+        ];
       data.push(
         CarbonStorage.create({
           reservoir,
-          soil_category: soilCategory,
-          stock_tC_by_ha: carbonStorageInTonByHectare,
-          localisation_category: localisationCategory,
-          localisation_code: localisationCode,
+          soil_category,
+          stock_tC_by_ha,
+          localisation_category,
+          localisation_code,
         }).toDatabaseFormat(),
       );
     });
