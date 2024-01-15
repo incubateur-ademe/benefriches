@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 import { startReactDsfr } from "@codegouvfr/react-dsfr/spa";
 import { ConfigProvider as AntdConfigProvider } from "antd";
+import "./main.css";
 import { theme } from "./antdConfig";
 import App from "./App.tsx";
 import { appDependencies } from "./appDependencies.ts";

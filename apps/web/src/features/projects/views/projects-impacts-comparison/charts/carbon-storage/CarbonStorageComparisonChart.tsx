@@ -4,7 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
 import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
-import { SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type CurrentCarbonStorageType = Exclude<
@@ -75,6 +75,7 @@ function CarbonStorageComparisonChart({ currentCarbonStorage, projectedCarbonSto
     series: soilsTypes.map((soilType) => ({
       name: getLabelForSoilType(soilType),
       type: "column",
+      color: getColorForSoilType(soilType),
       data: getData(
         soilType,
         currentCarbonStorage.soilsStorage,

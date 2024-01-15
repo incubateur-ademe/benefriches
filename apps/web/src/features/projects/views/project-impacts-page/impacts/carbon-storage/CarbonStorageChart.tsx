@@ -4,7 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
 import { ProjectImpactsState } from "@/features/projects/application/projectImpacts.reducer";
-import { SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type CurrentCarbonStorageType = Exclude<ProjectImpactsState["currentCarbonStorage"], undefined>;
@@ -68,6 +68,7 @@ function CarbonStorageChart({ currentCarbonStorage, projectedCarbonStorage }: Pr
     series: soilsTypes.map((soilType) => ({
       name: getLabelForSoilType(soilType),
       type: "area",
+      color: getColorForSoilType(soilType),
       data: getData(
         soilType,
         currentCarbonStorage.soilsStorage,

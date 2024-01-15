@@ -1,3 +1,5 @@
+import { soilColors } from "@/theme";
+
 export enum SoilType {
   BUILDINGS = "BUILDINGS",
   IMPERMEABLE_SOILS = "IMPERMEABLE_SOILS",
@@ -21,38 +23,38 @@ export enum SoilType {
 export const getColorForSoilType = (value: SoilType): string => {
   switch (value) {
     case SoilType.BUILDINGS:
-      return "#fe6a35";
+      return soilColors["buildings"];
     case SoilType.IMPERMEABLE_SOILS:
-      return "#6b8abc";
+      return soilColors["impermeable-soils"];
     case SoilType.MINERAL_SOIL:
-      return "#00e272";
+      return soilColors["mineral-soils"];
     case SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
-      return "#645fd5";
+      return soilColors["artificial-grass-or-bushes-filled"];
     case SoilType.ARTIFICIAL_TREE_FILLED:
-      return "#2caffe";
+      return soilColors["artificial-tree-filled"];
     case SoilType.FOREST_CONIFER:
-      return "#2ee0ca";
+      return soilColors["forest-conifer"];
     case SoilType.FOREST_DECIDUOUS:
-      return "#d568fb";
+      return soilColors["forest-deciduous"];
     case SoilType.FOREST_POPLAR:
-      return "#d568fb";
+      return soilColors["forest-poplar"];
     case SoilType.FOREST_MIXED:
-      return "#feb56a";
+      return soilColors["forest-mixed"];
     case SoilType.PRAIRIE_GRASS:
-      return "#91e8e1";
+      return soilColors["prairie-grass"];
     case SoilType.PRAIRIE_BUSHES:
-      return "#45b8fe";
+      return soilColors["prairie-bushes"];
     case SoilType.PRAIRIE_TREES:
-      return "#2caffe";
+      return soilColors["prairie-trees"];
     case SoilType.WET_LAND:
-      return "#544fc5";
+      return soilColors["wet-land"];
     case SoilType.CULTIVATION:
-      return "#fa4b42";
+      return soilColors["cultivation"];
     case SoilType.ORCHARD:
-      return "#00e272";
+      return soilColors["orchard"];
     case SoilType.VINEYARD:
-      return "#d4f8f4";
+      return soilColors["vineyard"];
     case SoilType.WATER:
-      return "#2caffe";
+      return soilColors["water"];
   }
 };
