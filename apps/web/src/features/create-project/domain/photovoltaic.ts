@@ -11,7 +11,7 @@ export const PHOTOVOLTAIC_RATIO_M2_PER_KWC = 14;
 // https://www.monkitsolaire.fr/blog/kwh-et-kwc-comprendre-les-unites-de-mesure-en-autoconsommation-n400
 export const AVERAGE_PHOTOVOLTAIC_ANNUAL_PRODUCTION_IN_KWH_BY_KWC_IN_FRANCE = 1100;
 
-export const AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS = 20;
+export const AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS = 30;
 
 export const RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS = 0.88;
 export const RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS = 0.02;

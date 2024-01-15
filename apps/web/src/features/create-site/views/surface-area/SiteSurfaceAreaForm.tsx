@@ -17,7 +17,15 @@ function SurfaceAreaForm({ onSubmit }: Props) {
   const { control, handleSubmit } = useForm<FormValues>();
 
   return (
-    <WizardFormLayout title="Quelle est la superficie totale du site ?">
+    <WizardFormLayout
+      title="Quelle est la superficie totale du site ?"
+      instructions={
+        <>
+          <p>Superficie à renseigner en m².</p>
+          <p>Pour rappel :1 ha = 10 000 m²</p>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="surfaceArea"

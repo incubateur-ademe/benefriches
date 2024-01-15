@@ -49,6 +49,7 @@ function PhotovoltaicPowerFromSurfaceForm({
             &nbsp;m², votre puissance devrait être de{" "}
             {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
           </p>
+          <p>Vous pouvez modifier cette puissance.</p>
         </>
       }
     >

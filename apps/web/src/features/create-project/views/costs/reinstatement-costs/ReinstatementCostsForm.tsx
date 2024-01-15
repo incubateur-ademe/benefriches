@@ -88,7 +88,7 @@ const ReinstatementsCostsForm = ({
 
   return (
     <WizardFormLayout
-      title="Coûts de travaux de la remise en état de la friche"
+      title="Coûts prévisionnels des travaux de remise en état de la friche"
       instructions={
         <ReinstatementCostFormExplanation
           hasContaminatedSoils={hasContaminatedSoils}
@@ -99,7 +99,7 @@ const ReinstatementsCostsForm = ({
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
-          label="Enlèvement des déchets"
+          label="Évacuation et traitement des déchets"
           hintText="€"
           name="wasteCollectionAmount"
           rules={{
