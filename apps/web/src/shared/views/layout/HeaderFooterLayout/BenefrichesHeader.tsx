@@ -1,5 +1,7 @@
+import { Badge } from "@codegouvfr/react-dsfr/Badge";
 import { Header } from "@codegouvfr/react-dsfr/Header";
-import { routes } from "../../../../router";
+
+import { routes } from "@/router";
 
 function BenefrichesHeader() {
   return (
@@ -15,6 +17,11 @@ function BenefrichesHeader() {
         href: "/",
         title: "Accueil - Bénéfriches",
       }}
+      operatorLogo={{
+        alt: "Logo de Bénéfriches",
+        imgUrl: "benefriches.png",
+        orientation: "horizontal",
+      }}
       navigation={[
         {
           linkProps: routes.myProjects().link,
@@ -23,6 +30,11 @@ function BenefrichesHeader() {
         },
       ]}
       serviceTitle="Bénéfriches"
+      serviceTagline={
+        <Badge small noIcon severity="new">
+          En construction
+        </Badge>
+      }
     />
   );
 }
