@@ -69,7 +69,7 @@ function CarbonStorageComparisonChart({ currentCarbonStorage, projectedCarbonSto
         stacking: "normal",
         pointPadding: 0.05,
         borderWidth: 0,
-        dataLabels: { enabled: true, format: "{point.y} t" },
+        dataLabels: { enabled: true, format: "{point.y:,.0f} t" },
       },
     },
     series: soilsTypes.map((soilType) => ({
