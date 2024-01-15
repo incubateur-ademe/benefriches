@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
-import { SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
-import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import {
+  getDescriptionForSoilType,
+  getLabelForSoilType,
+} from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import SurfaceArea, {
   SQUARE_METERS_HTML_SYMBOL,
@@ -45,7 +48,7 @@ function SiteSoilsSurfaceAreasForm({ soils, totalSurfaceArea, onSubmit }: Props)
 
   const totalAllocatedSurface = useMemo(() => getTotalSurface(soilsValues), [soilsValues]);
 
-  const freeSurface = totalSurfaceArea - totalAllocatedSurface;
+  const remainder = totalSurfaceArea - totalAllocatedSurface;
 
   return (
     <WizardFormLayout
@@ -68,11 +71,17 @@ function SiteSoilsSurfaceAreasForm({ soils, totalSurfaceArea, onSubmit }: Props)
             control={control}
             name={soilType}
             label={getLabelForSoilType(soilType)}
-            hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
+            hintText={getDescriptionForSoilType(soilType)}
             sliderStartValue={0}
             sliderEndValue={totalSurfaceArea}
-            maxValue={freeSurface + soilsValues[soilType]}
-            sliderProps={SLIDER_PROPS}
+            sliderProps={{
+              styles: {
+                track: {
+                  background: getColorForSoilType(soilType),
+                },
+              },
+              ...SLIDER_PROPS,
+            }}
           />
         ))}
         <div className="fr-py-7v">
@@ -96,8 +105,10 @@ function SiteSoilsSurfaceAreasForm({ soils, totalSurfaceArea, onSubmit }: Props)
             type: "number",
           }}
           disabled
-          state={totalAllocatedSurface < totalSurfaceArea ? "error" : "default"}
-          stateRelatedMessage={`- ${formatNumberFr(totalSurfaceArea - totalAllocatedSurface)} m²`}
+          state={remainder !== 0 ? "error" : "default"}
+          stateRelatedMessage={`${remainder > 0 ? "-" : "+"} ${formatNumberFr(
+            Math.abs(remainder),
+          )} m²`}
         />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>

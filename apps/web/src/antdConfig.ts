@@ -4,7 +4,7 @@ export const theme = {
   },
   components: {
     Slider: {
-      controlSize: 20,
+      controlSize: 25,
     },
   },
 };

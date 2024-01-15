@@ -5,7 +5,10 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 
 import { SoilType } from "@/shared/domain/soils";
-import { getLongLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import {
+  getDescriptionForSoilType,
+  getLabelForSoilType,
+} from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -19,7 +22,8 @@ type Props = {
 
 const mapSoilOptions = (register: UseFormRegister<FormValues>) => (soilType: SoilType) => {
   return {
-    label: getLongLabelForSoilType(soilType),
+    label: getLabelForSoilType(soilType),
+    hintText: getDescriptionForSoilType(soilType),
     nativeInputProps: {
       ...register("soils", {
         required: "Ce champ est nécessaire pour déterminer les questions suivantes",
@@ -36,7 +40,7 @@ const siteSoilOptionsCategories = [
   },
   {
     category: "Prairies",
-    options: [SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_TREES],
+    options: [SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_TREES],
   },
   {
     category: "Forêts",
@@ -52,7 +56,7 @@ const siteSoilOptionsCategories = [
     options: [SoilType.WATER, SoilType.WET_LAND],
   },
   {
-    category: "Sols artificialisés",
+    category: "Sols artificiels",
     options: [
       SoilType.BUILDINGS,
       SoilType.IMPERMEABLE_SOILS,
@@ -65,36 +69,33 @@ const siteSoilOptionsCategories = [
 
 const fricheSoilOptionsCategories = [
   {
-    category: "Sols artificialisés",
-    options: [
-      SoilType.BUILDINGS,
-      SoilType.IMPERMEABLE_SOILS,
-      SoilType.MINERAL_SOIL,
-      SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-      SoilType.ARTIFICIAL_TREE_FILLED,
-    ],
+    category: "Sols artificiels minéraux",
+    options: [SoilType.BUILDINGS, SoilType.IMPERMEABLE_SOILS, SoilType.MINERAL_SOIL],
   },
   {
-    category: "Espaces agricoles en friche",
-    options: [
-      SoilType.CULTIVATION,
-      SoilType.VINEYARD,
-      SoilType.ORCHARD,
-      SoilType.PRAIRIE_BUSHES,
-      SoilType.PRAIRIE_GRASS,
-      SoilType.PRAIRIE_TREES,
-    ],
+    category: "Sols artificiels végétalisés",
+    options: [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED, SoilType.ARTIFICIAL_TREE_FILLED],
   },
   {
-    category: "Autres espaces",
+    category: "Prairies naturelles ou agricoles",
+    options: [SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_TREES],
+  },
+  {
+    category: "Espaces agricoles",
+    options: [SoilType.CULTIVATION, SoilType.VINEYARD, SoilType.ORCHARD],
+  },
+  {
+    category: "Forêts",
     options: [
       SoilType.FOREST_DECIDUOUS,
       SoilType.FOREST_CONIFER,
       SoilType.FOREST_POPLAR,
       SoilType.FOREST_MIXED,
-      SoilType.WET_LAND,
-      SoilType.WATER,
     ],
+  },
+  {
+    category: "Autres espaces naturels",
+    options: [SoilType.WET_LAND, SoilType.WATER],
   },
 ] as const;
 

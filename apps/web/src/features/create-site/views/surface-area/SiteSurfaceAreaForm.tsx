@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -14,7 +15,9 @@ type FormValues = {
 };
 
 function SurfaceAreaForm({ onSubmit }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>();
+  const { control, handleSubmit, watch } = useForm<FormValues>();
+
+  const surface = watch("surfaceArea");
 
   return (
     <WizardFormLayout
@@ -40,6 +43,12 @@ function SurfaceAreaForm({ onSubmit }: Props) {
           }}
           control={control}
         />
+        {!isNaN(surface) && (
+          <p>
+            Soit <strong>{convertSquareMetersToHectares(surface)}</strong> ha.
+          </p>
+        )}
+
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
     </WizardFormLayout>

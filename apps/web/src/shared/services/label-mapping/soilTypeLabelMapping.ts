@@ -39,19 +39,25 @@ export const getLabelForSoilType = (value: SoilType): string => {
   }
 };
 
-export const getLongLabelForSoilType = (value: SoilType): string => {
+export const getDescriptionForSoilType = (value: SoilType): string => {
   switch (value) {
     case SoilType.BUILDINGS:
-      return "Bâtiments (anciens sites de production, de stockage…)";
+      return "Anciens sites de production, de stockage…";
     case SoilType.IMPERMEABLE_SOILS:
-      return "Sols imperméabilisés (parking ou voirie bitumée…)";
+      return "Parking ou voirie bitumée…";
     case SoilType.MINERAL_SOIL:
-      return "Sol perméable minéral (parking ou voirie en gravier, sols semi-perméables…)";
+      return "Parking ou voirie en gravier, sols semi-perméables…";
     case SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
-      return "Sol enherbé et arbustif (parc ou espaces verts en pelouse)";
+      return "Parc ou jardin en pelouse…";
     case SoilType.ARTIFICIAL_TREE_FILLED:
-      return "Sol arboré (parc ou espaces verts avec des arbres plantés)";
+      return "Parc ou jardin avec des arbres plantés…";
+    case SoilType.PRAIRIE_GRASS:
+      return "Composée uniquement d’herbes et de fleurs";
+    case SoilType.PRAIRIE_TREES:
+      return "Composée d’herbe et de buissons";
+    case SoilType.CULTIVATION:
+      return "Céréalières, de légumes…";
     default:
-      return getLabelForSoilType(value);
+      return "";
   }
 };

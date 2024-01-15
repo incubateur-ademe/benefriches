@@ -14,7 +14,7 @@ import {
   SOIL_TYPES,
 } from "@/features/create-project/domain/soils.types";
 import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
-import { SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
@@ -186,6 +186,11 @@ function SoilsSurfaceAreasForm({
                         [minAdvisedSurface]: `${formatNumberFr(minAdvisedSurface)} m²`,
                       }
                     : {}),
+                },
+                styles: {
+                  track: {
+                    background: getColorForSoilType(soilType),
+                  },
                 },
                 ...SLIDER_PROPS,
               }}
