@@ -39,7 +39,7 @@ const addressSchema = z.object({
   lat: z.number(),
 });
 
-export const nonFricheSitePropsSchema = z.object({
+export const nonFricheSiteSchema = z.object({
   isFriche: z.literal(false),
   id: z.string().uuid(),
   name: z.string(),
@@ -60,11 +60,12 @@ export const nonFricheSitePropsSchema = z.object({
       name: z.string().optional(),
     })
     .optional(),
+  createdAt: z.date(),
 });
 
-export type NonFricheSite = z.infer<typeof nonFricheSitePropsSchema>;
+export type NonFricheSite = z.infer<typeof nonFricheSiteSchema>;
 
-export const frichePropsSchema = nonFricheSitePropsSchema.extend({
+export const fricheSchema = nonFricheSiteSchema.extend({
   isFriche: z.literal(true),
   fricheActivity: fricheActivitySchema,
   hasContaminatedSoils: z.boolean().optional(),
@@ -74,11 +75,9 @@ export const frichePropsSchema = nonFricheSitePropsSchema.extend({
   accidentsDeaths: z.number().nonnegative().optional(),
 });
 
-export type FricheSite = z.infer<typeof frichePropsSchema>;
+export type FricheSite = z.infer<typeof fricheSchema>;
 
-export const sitePropsSchema = z.discriminatedUnion("isFriche", [
-  nonFricheSitePropsSchema,
-  frichePropsSchema,
-]);
+// discriminated unions might get deprecated in favor of a better solution: https://github.com/colinhacks/zod/issues/2106
+export const siteSchema = z.discriminatedUnion("isFriche", [nonFricheSiteSchema, fricheSchema]);
 
-export type Site = z.infer<typeof sitePropsSchema>;
+export type Site = z.infer<typeof siteSchema>;

@@ -22,6 +22,8 @@ export type SqlSite = {
   friche_accidents_minor_injuries?: number;
   friche_accidents_severe_injuries?: number;
   friche_accidents_deaths?: number;
+  // dates
+  created_at: Date;
 };
 
 export type SqlAddress = {
@@ -74,6 +76,7 @@ export class SqlSiteRepository implements SiteRepository {
           owner_structure_type: site.owner.structureType,
           tenant_name: site.tenant?.name,
           tenant_structure_type: site.tenant?.structureType,
+          created_at: site.createdAt,
           ...(site.isFriche
             ? {
                 friche_activity: site.fricheActivity,

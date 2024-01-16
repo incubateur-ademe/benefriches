@@ -1,13 +1,22 @@
 /* eslint-disable jest/no-conditional-expect */
 import { z } from "zod";
+import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemorySiteRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
-import { FricheSite, NonFricheSite } from "../models/site";
-import { CreateNewSiteUseCase } from "./createNewSite.usecase";
+import {
+  CreateNewSiteUseCase,
+  DateProvider,
+  FricheSiteProps,
+  NonFricheSiteProps,
+} from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {
   let siteRepository: InMemorySiteRepository;
+  let dateProvider: DateProvider;
+  const fakeNow = new Date("2024-01-03T13:50:45");
 
-  const buildMinimalSiteProps = (propsOverride?: Partial<NonFricheSite>): NonFricheSite => {
+  const buildMinimalSiteProps = (
+    propsOverride?: Partial<NonFricheSiteProps>,
+  ): NonFricheSiteProps => {
     return {
       id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
       name: "My site",
@@ -40,7 +49,7 @@ describe("CreateNewSite Use Case", () => {
     };
   };
 
-  const buildFricheProps = (propsOverride?: Partial<FricheSite>): FricheSite => {
+  const buildFricheProps = (propsOverride?: Partial<FricheSiteProps>): FricheSiteProps => {
     return {
       ...buildMinimalSiteProps(),
       isFriche: true,
@@ -58,6 +67,7 @@ describe("CreateNewSite Use Case", () => {
 
   beforeEach(() => {
     siteRepository = new InMemorySiteRepository();
+    dateProvider = new DeterministicDateProvider(fakeNow);
   });
 
   describe("Mandatory data", () => {
@@ -76,7 +86,7 @@ describe("CreateNewSite Use Case", () => {
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete siteProps[mandatoryField];
 
-      const usecase = new CreateNewSiteUseCase(siteRepository);
+      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 
       expect.assertions(2);
       try {
@@ -92,7 +102,7 @@ describe("CreateNewSite Use Case", () => {
   it("Cannot create a new site with invalid surfaceArea", async () => {
     const siteProps = buildMinimalSiteProps({ surfaceArea: -1000 });
 
-    const usecase = new CreateNewSiteUseCase(siteRepository);
+    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
     expect.assertions(2);
     try {
       await usecase.execute({ siteProps });
@@ -106,13 +116,13 @@ describe("CreateNewSite Use Case", () => {
   it("Can create a new site with minimal data", async () => {
     const siteProps = buildMinimalSiteProps();
 
-    const usecase = new CreateNewSiteUseCase(siteRepository);
+    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 
     await usecase.execute({ siteProps });
 
     const savedSites = siteRepository._getSites();
 
-    expect(savedSites).toEqual([siteProps]);
+    expect(savedSites).toEqual([{ ...siteProps, createdAt: fakeNow }]);
   });
 
   it("Can create a new site with complete data", async () => {
@@ -130,21 +140,21 @@ describe("CreateNewSite Use Case", () => {
       ],
     });
 
-    const usecase = new CreateNewSiteUseCase(siteRepository);
+    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 
     await usecase.execute({ siteProps });
 
     const savedSites = siteRepository._getSites();
 
-    expect(savedSites).toEqual([siteProps]);
+    expect(savedSites).toEqual([{ ...siteProps, createdAt: fakeNow }]);
   });
 
   it("Cannot create a site when already exists", async () => {
     const siteProps = buildMinimalSiteProps();
 
-    siteRepository._setSites([siteProps]);
+    siteRepository._setSites([{ ...siteProps, createdAt: new Date() }]);
 
-    const usecase = new CreateNewSiteUseCase(siteRepository);
+    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
     await expect(usecase.execute({ siteProps })).rejects.toThrow(
       `Site with id ${siteProps.id} already exists`,
     );
@@ -154,15 +164,15 @@ describe("CreateNewSite Use Case", () => {
 
   describe("Friche", () => {
     it("Cannot create a new friche without providing fricheActivity", async () => {
-      const siteProps = buildFricheProps();
+      const fricheProps = buildFricheProps();
       // @ts-expect-error dynamic delete
-      delete siteProps.fricheActivity;
+      delete fricheProps.fricheActivity;
 
-      const usecase = new CreateNewSiteUseCase(siteRepository);
+      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 
       expect.assertions(2);
       try {
-        await usecase.execute({ siteProps });
+        await usecase.execute({ siteProps: fricheProps });
       } catch (err) {
         const zIssues = getZodIssues(err);
         expect(zIssues.length).toEqual(1);
@@ -173,13 +183,13 @@ describe("CreateNewSite Use Case", () => {
     it("Can create a new friche with minimal data", async () => {
       const fricheProps = buildFricheProps();
 
-      const usecase = new CreateNewSiteUseCase(siteRepository);
+      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({ siteProps: fricheProps });
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual([fricheProps]);
+      expect(savedSites).toEqual([{ ...fricheProps, createdAt: fakeNow }]);
     });
 
     it("Can create a new friche with complete data", async () => {
@@ -198,13 +208,13 @@ describe("CreateNewSite Use Case", () => {
         accidentsDeaths: 2,
       });
 
-      const usecase = new CreateNewSiteUseCase(siteRepository);
+      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({ siteProps: fricheProps });
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual([fricheProps]);
+      expect(savedSites).toEqual([{ ...fricheProps, createdAt: fakeNow }]);
     });
   });
 });

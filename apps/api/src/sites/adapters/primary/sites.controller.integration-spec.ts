@@ -5,8 +5,8 @@ import { Knex } from "knex";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { Site } from "src/sites/domain/models/site";
 import { SqlSite } from "../secondary/site-repository/SqlSiteRepository";
+import { CreateSiteBodyDto } from "./sites.controller";
 
 type BadRequestResponseBody = {
   errors: { path: string[] }[];
@@ -43,7 +43,7 @@ describe("Sites controller", () => {
   });
 
   const buildValidSitePayload = () => {
-    const validSite: Site = {
+    const validSiteBody: CreateSiteBodyDto = {
       id: "03a53ffd-4f71-419e-8d04-041311eefa23",
       isFriche: false,
       owner: { name: "Owner name", structureType: "company" },
@@ -65,7 +65,7 @@ describe("Sites controller", () => {
       yearlyExpenses: [],
       yearlyIncomes: [],
     };
-    return validSite;
+    return validSiteBody;
   };
 
   describe("POST /sites", () => {
@@ -79,7 +79,7 @@ describe("Sites controller", () => {
       "owner",
       "yearlyExpenses",
       "yearlyIncomes",
-    ] as (keyof Site)[])(
+    ] as (keyof CreateSiteBodyDto)[])(
       "can't create a site without mandatory field %s",
       async (mandatoryField) => {
         const requestBody = buildValidSitePayload();

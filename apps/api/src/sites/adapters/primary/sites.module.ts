@@ -1,5 +1,7 @@
 import { Module } from "@nestjs/common";
 import { Knex } from "knex";
+import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
+import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
   CreateNewSiteUseCase,
@@ -17,9 +19,14 @@ import { SitesController } from "./sites.controller";
       inject: [SqlConnection],
     },
     {
+      provide: "DateProvider",
+      useClass: DateProvider,
+    },
+    {
       provide: CreateNewSiteUseCase,
-      useFactory: (siteRepository: SiteRepository) => new CreateNewSiteUseCase(siteRepository),
-      inject: ["SiteRepository"],
+      useFactory: (siteRepository: SiteRepository, dateProvider: IDateProvider) =>
+        new CreateNewSiteUseCase(siteRepository, dateProvider),
+      inject: ["SiteRepository", "DateProvider"],
     },
   ],
 })
