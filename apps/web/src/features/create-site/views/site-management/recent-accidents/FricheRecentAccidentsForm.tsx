@@ -27,17 +27,6 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
 
   const { hasRecentAccidents: hasRecentAccidentsError } = formState.errors;
 
-  const options = [
-    {
-      label: "Oui",
-      value: "yes",
-    },
-    {
-      label: "Non / NSP",
-      value: "no",
-    },
-  ];
-
   return (
     <WizardFormLayout
       title="Y a-t-il eu des accidents sur la friche ces 5 dernières années ?"
@@ -48,7 +37,12 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("hasRecentAccidents", { required: requiredMessage })}
-          options={options}
+          options={[
+            {
+              label: "Oui",
+              value: "yes",
+            },
+          ]}
           error={hasRecentAccidentsError}
         />
         {watch("hasRecentAccidents") === "yes" && (
@@ -60,7 +54,7 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
               rules={{
                 min: {
                   value: 0,
-                  message: "Veuillez sélectionner un montant valide",
+                  message: "Veuillez entrer un nombre positif",
                 },
               }}
             />
@@ -71,7 +65,7 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
               rules={{
                 min: {
                   value: 0,
-                  message: "Veuillez sélectionner un montant valide",
+                  message: "Veuillez entrer un nombre positif",
                 },
               }}
             />
@@ -82,12 +76,22 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
               rules={{
                 min: {
                   value: 0,
-                  message: "Veuillez sélectionner un montant valide",
+                  message: "Veuillez entrer un nombre positif",
                 },
               }}
             />
           </>
         )}
+        <RadioButtons
+          {...register("hasRecentAccidents", { required: requiredMessage })}
+          options={[
+            {
+              label: "Non / NSP",
+              value: "no",
+            },
+          ]}
+          error={hasRecentAccidentsError}
+        />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
     </WizardFormLayout>
