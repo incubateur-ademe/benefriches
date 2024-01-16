@@ -8,9 +8,9 @@ import {
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
-const mapProps = (dispatch: AppDispatch, surfaceArea: number) => {
+const mapProps = (dispatch: AppDispatch, siteSurfaceArea: number) => {
   return {
-    surfaceArea,
+    siteSurfaceArea,
     onSubmit: ({ hasContaminatedSoils, contaminatedSurface }: FormValues) => {
       dispatch(
         setContaminatedSoils({
@@ -25,9 +25,9 @@ const mapProps = (dispatch: AppDispatch, surfaceArea: number) => {
 
 function SoilContaminationFormController() {
   const dispatch = useAppDispatch();
-  const surfaceArea = useAppSelector((state) => state.siteCreation.siteData.surfaceArea ?? 0);
+  const siteSurfaceArea = useAppSelector((state) => state.siteCreation.siteData.surfaceArea ?? 0);
 
-  return <SoilContaminationForm {...mapProps(dispatch, surfaceArea)} />;
+  return <SoilContaminationForm {...mapProps(dispatch, siteSurfaceArea)} />;
 }
 
 export default SoilContaminationFormController;
