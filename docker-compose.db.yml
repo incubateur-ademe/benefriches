@@ -9,3 +9,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: benefriches_db
+    volumes:
+      - benefriches_pg_data:/var/lib/postgresql/data
+
+volumes:
+  benefriches_pg_data:
