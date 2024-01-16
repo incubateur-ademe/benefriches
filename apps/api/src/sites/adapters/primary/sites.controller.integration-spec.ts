@@ -12,7 +12,7 @@ type BadRequestResponseBody = {
   errors: { path: string[] }[];
 };
 
-describe("LocationFeatures controller", () => {
+describe("Sites controller", () => {
   let app: INestApplication;
   let sqlConnection: Knex;
 
