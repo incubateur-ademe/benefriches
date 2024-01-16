@@ -14,7 +14,6 @@ export class SitesController {
   async createNewSite(
     @Body(new ZodValidationPipe(sitePropsSchema)) createSiteDto: CreateSiteBodyDto,
   ) {
-    console.log(createSiteDto);
     await this.createNewSiteUseCase.execute({ siteProps: createSiteDto });
   }
 }
