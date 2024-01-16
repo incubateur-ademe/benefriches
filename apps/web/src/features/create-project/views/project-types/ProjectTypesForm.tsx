@@ -70,7 +70,7 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
 
   return (
     <WizardFormLayout
-      title="Quel est l’usage principal prévu sur le site ?"
+      title="Que souhaitez-vous aménager sur ce site ?"
       instructions={
         <p>
           Votre projet peut contenir plusieurs aménagements, toutefois il s’agit de l’usage
