@@ -15,6 +15,7 @@ import {
 describe("SqlSiteRepository integration", () => {
   let sqlConnection: Knex;
   let siteRepository: SqlSiteRepository;
+  const now = new Date();
 
   const buildSite = (propsOverride?: Partial<NonFricheSite>): NonFricheSite => {
     return {
@@ -43,6 +44,7 @@ describe("SqlSiteRepository integration", () => {
         value: "1 rue de Londres, 75009 Paris",
         streetName: "rue de Londres",
       },
+      createdAt: now,
       ...propsOverride,
     };
   };
@@ -72,6 +74,7 @@ describe("SqlSiteRepository integration", () => {
       surface_area: 140000.2,
       is_friche: false,
       owner_structure_type: "company",
+      created_at: now,
     });
     const result = await siteRepository.existsWithId(siteId);
     expect(result).toEqual(true);
@@ -107,6 +110,7 @@ describe("SqlSiteRepository integration", () => {
         surface_area: "21000.00",
         tenant_name: null,
         tenant_structure_type: null,
+        created_at: now,
       },
     ]);
   });
@@ -142,6 +146,7 @@ describe("SqlSiteRepository integration", () => {
         surface_area: "21000.00",
         tenant_name: "Tenant SARL",
         tenant_structure_type: "company",
+        created_at: now,
       },
     ]);
   });
@@ -180,6 +185,7 @@ describe("SqlSiteRepository integration", () => {
         tenant_name: null,
         tenant_structure_type: null,
         full_time_jobs_involved: null,
+        created_at: now,
       },
     ]);
   });

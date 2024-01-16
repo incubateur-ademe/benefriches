@@ -1,10 +1,12 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { ZodValidationPipe } from "nestjs-zod";
 import { z } from "zod";
-import { sitePropsSchema } from "src/sites/domain/models/site";
-import { CreateNewSiteUseCase } from "src/sites/domain/usecases/createNewSite.usecase";
+import {
+  CreateNewSiteUseCase,
+  sitePropsSchema,
+} from "src/sites/domain/usecases/createNewSite.usecase";
 
-type CreateSiteBodyDto = z.infer<typeof sitePropsSchema>;
+export type CreateSiteBodyDto = z.infer<typeof sitePropsSchema>;
 
 @Controller("sites")
 export class SitesController {

@@ -19,6 +19,8 @@ export async function up(knex: Knex): Promise<void> {
     table.integer("friche_accidents_minor_injuries");
     table.integer("friche_accidents_severe_injuries");
     table.integer("friche_accidents_deaths");
+    // dates
+    table.timestamp("created_at").notNullable();
   });
 }
 
