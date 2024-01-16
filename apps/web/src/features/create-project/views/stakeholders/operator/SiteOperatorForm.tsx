@@ -42,7 +42,7 @@ export type FormValues = {
 
 const requiredMessage = "Champ requis";
 
-const getOperatorOptions = (
+const getSiteRelatedOperatorOptions = (
   siteStakeholders: Props["siteStakeholders"],
   currentUserCompany: string,
 ) => {
@@ -66,18 +66,6 @@ const getOperatorOptions = (
       value: "user_company",
     },
     ...siteStakeholderOptions,
-    {
-      label: "Une collectivité",
-      value: "local_or_regional_authority",
-    },
-    {
-      label: "Une autre structure",
-      value: "other_structure",
-    },
-    {
-      label: "NSP",
-      value: "unknown",
-    },
   ];
 };
 
@@ -93,7 +81,7 @@ function SiteOperatorForm({ onSubmit, siteStakeholders, currentUserCompany }: Pr
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("futureOperator", { required: requiredMessage })}
-          options={getOperatorOptions(siteStakeholders, currentUserCompany)}
+          options={getSiteRelatedOperatorOptions(siteStakeholders, currentUserCompany)}
           error={formState.errors.futureOperator}
         />
         {selectedFutureOperator === "site_stakeholder" && (
@@ -109,6 +97,16 @@ function SiteOperatorForm({ onSubmit, siteStakeholders, currentUserCompany }: Pr
             }))}
           />
         )}
+        <RadioButtons
+          {...register("futureOperator", { required: requiredMessage })}
+          options={[
+            {
+              label: "Une collectivité",
+              value: "local_or_regional_authority",
+            },
+          ]}
+          error={formState.errors.futureOperator}
+        />
         {selectedFutureOperator === "local_or_regional_authority" && (
           <Select
             label="Type de collectivité"
@@ -119,6 +117,16 @@ function SiteOperatorForm({ onSubmit, siteStakeholders, currentUserCompany }: Pr
             options={localAndRegionalAuthorityOptions}
           />
         )}
+        <RadioButtons
+          {...register("futureOperator", { required: requiredMessage })}
+          options={[
+            {
+              label: "Une autre structure",
+              value: "other_structure",
+            },
+          ]}
+          error={formState.errors.futureOperator}
+        />
         {selectedFutureOperator === "other_structure" && (
           <Input
             label="Nom de la structure"
@@ -127,6 +135,16 @@ function SiteOperatorForm({ onSubmit, siteStakeholders, currentUserCompany }: Pr
             })}
           />
         )}
+        <RadioButtons
+          {...register("futureOperator", { required: requiredMessage })}
+          options={[
+            {
+              label: "NSP",
+              value: "unknown",
+            },
+          ]}
+          error={formState.errors.futureOperator}
+        />
         <ButtonsGroup
           buttonsEquisized
           inlineLayoutWhen="always"

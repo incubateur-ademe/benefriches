@@ -27,21 +27,6 @@ export type FormValues =
 
 const requiredMessage = "Ce champ est requis";
 
-const tenantOptions = [
-  {
-    label: "Oui, par une collectivité",
-    value: "local_or_regional_authority",
-  },
-  {
-    label: "Oui, par une entreprise",
-    value: "company",
-  },
-  {
-    label: "Non / NSP",
-    value: "unknown",
-  },
-];
-
 const localAndRegionalAuthorityOptions = (
   ["municipality", "community_of_municipalities", "department", "region", "state"] as const
 ).map((localOrRegionalAuthority) => ({
@@ -61,7 +46,12 @@ function SiteTenantForm({ onSubmit }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("tenantType", { required: requiredMessage })}
-          options={tenantOptions}
+          options={[
+            {
+              label: "Oui, par une collectivité",
+              value: "local_or_regional_authority",
+            },
+          ]}
           error={formState.errors.tenantType}
         />
         {selectedTenantType === "local_or_regional_authority" && (
@@ -74,6 +64,16 @@ function SiteTenantForm({ onSubmit }: Props) {
             options={localAndRegionalAuthorityOptions}
           />
         )}
+        <RadioButtons
+          {...register("tenantType", { required: requiredMessage })}
+          options={[
+            {
+              label: "Oui, par une entreprise",
+              value: "company",
+            },
+          ]}
+          error={formState.errors.tenantType}
+        />
         {selectedTenantType === "company" && (
           <Input
             label="Nom de l'entreprise"
@@ -82,6 +82,17 @@ function SiteTenantForm({ onSubmit }: Props) {
             })}
           />
         )}
+
+        <RadioButtons
+          {...register("tenantType", { required: requiredMessage })}
+          options={[
+            {
+              label: "Non / NSP",
+              value: "unknown",
+            },
+          ]}
+          error={formState.errors.tenantType}
+        />
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
     </WizardFormLayout>

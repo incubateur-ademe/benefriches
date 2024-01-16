@@ -46,28 +46,9 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
     shouldUnregister: true,
   });
 
-  const options = [
-    {
-      label: "La collectivité",
-      value: "local_or_regional_authority",
-    },
-    {
-      label: `Mon entreprise, ${currentUserCompany}`,
-      value: "user_company",
-    },
-    {
-      label: "Une autre entreprise",
-      value: "other_company",
-    },
-    {
-      label: "Un particulier",
-      value: "private_individual",
-    },
-  ];
-
   const ownerTypeSelected = watch("ownerType");
-  const shouldAskForOwnerName =
-    ownerTypeSelected === "private_individual" || ownerTypeSelected === "other_company";
+  const shouldAskForPrivateName = ownerTypeSelected === "private_individual";
+  const shouldAskForCompanyName = ownerTypeSelected === "other_company";
   const shouldAskForLocalOrAuthorityType = ownerTypeSelected === "local_or_regional_authority";
 
   return (
@@ -75,24 +56,14 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("ownerType", { required: requiredMessage })}
-          options={options}
+          options={[
+            {
+              label: "La collectivité",
+              value: "local_or_regional_authority",
+            },
+          ]}
           error={formState.errors.ownerType}
         />
-
-        {shouldAskForOwnerName && (
-          <Input
-            label=""
-            state={formState.errors.ownerName ? "error" : "default"}
-            stateRelatedMessage={formState.errors.ownerName?.message}
-            nativeInputProps={{
-              placeholder: "Nom de l'entreprise ou du particulier",
-              ...register("ownerName", {
-                required: "Ce champ est requis",
-                shouldUnregister: true,
-              }),
-            }}
-          />
-        )}
         {shouldAskForLocalOrAuthorityType && (
           <Select
             label="Type de collectivité"
@@ -101,6 +72,70 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
             options={localAndRegionalAuthorityOptions}
           />
         )}
+
+        <RadioButtons
+          {...register("ownerType", { required: requiredMessage })}
+          options={[
+            {
+              label: `Mon entreprise, ${currentUserCompany}`,
+              value: "user_company",
+            },
+          ]}
+          error={formState.errors.ownerType}
+        />
+
+        <RadioButtons
+          {...register("ownerType", { required: requiredMessage })}
+          options={[
+            {
+              label: "Une autre entreprise",
+              value: "other_company",
+            },
+          ]}
+          error={formState.errors.ownerType}
+        />
+
+        {shouldAskForCompanyName && (
+          <Input
+            label=""
+            state={formState.errors.ownerName ? "error" : "default"}
+            stateRelatedMessage={formState.errors.ownerName?.message}
+            nativeInputProps={{
+              placeholder: "Nom de l'entreprise",
+              ...register("ownerName", {
+                required: "Ce champ est requis",
+                shouldUnregister: true,
+              }),
+            }}
+          />
+        )}
+
+        <RadioButtons
+          {...register("ownerType", { required: requiredMessage })}
+          options={[
+            {
+              label: "Un particulier",
+              value: "private_individual",
+            },
+          ]}
+          error={formState.errors.ownerType}
+        />
+
+        {shouldAskForPrivateName && (
+          <Input
+            label=""
+            state={formState.errors.ownerName ? "error" : "default"}
+            stateRelatedMessage={formState.errors.ownerName?.message}
+            nativeInputProps={{
+              placeholder: "Nom du particulier",
+              ...register("ownerName", {
+                required: "Ce champ est requis",
+                shouldUnregister: true,
+              }),
+            }}
+          />
+        )}
+
         <ButtonsGroup
           buttonsEquisized
           inlineLayoutWhen="always"

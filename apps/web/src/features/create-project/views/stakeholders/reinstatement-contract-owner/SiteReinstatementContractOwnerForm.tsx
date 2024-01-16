@@ -42,7 +42,7 @@ export type FormValues = {
 
 const requiredMessage = "Champ requis";
 
-const getOperatorOptions = (
+const getSiteRelatedOperatorOptions = (
   siteStakeholders: Props["siteStakeholders"],
   currentUserCompany: string,
 ) => {
@@ -60,18 +60,6 @@ const getOperatorOptions = (
           label: siteStakeholders[0]!.name,
           value: siteStakeholders[0]!.role,
         },
-    {
-      label: "Une collectivité",
-      value: "local_or_regional_authority",
-    },
-    {
-      label: "Une autre structure",
-      value: "other_structure",
-    },
-    {
-      label: "NSP",
-      value: "unknown",
-    },
   ];
 };
 
@@ -99,7 +87,7 @@ function SiteReinstatementContractOwnerForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("futureOperator", { required: requiredMessage })}
-          options={getOperatorOptions(siteStakeholders, currentUserCompany)}
+          options={getSiteRelatedOperatorOptions(siteStakeholders, currentUserCompany)}
           error={formState.errors.futureOperator}
         />
         {selectedFutureOperator === "site_stakeholder" && (
@@ -115,6 +103,16 @@ function SiteReinstatementContractOwnerForm({
             }))}
           />
         )}
+        <RadioButtons
+          {...register("futureOperator", { required: requiredMessage })}
+          options={[
+            {
+              label: "Une collectivité",
+              value: "local_or_regional_authority",
+            },
+          ]}
+          error={formState.errors.futureOperator}
+        />
         {selectedFutureOperator === "local_or_regional_authority" && (
           <Select
             label="Type de collectivité"
@@ -125,6 +123,16 @@ function SiteReinstatementContractOwnerForm({
             options={localAndRegionalAuthorityOptions}
           />
         )}
+        <RadioButtons
+          {...register("futureOperator", { required: requiredMessage })}
+          options={[
+            {
+              label: "Une autre structure",
+              value: "other_structure",
+            },
+          ]}
+          error={formState.errors.futureOperator}
+        />
         {selectedFutureOperator === "other_structure" && (
           <Input
             label="Nom de la structure"
@@ -133,6 +141,16 @@ function SiteReinstatementContractOwnerForm({
             })}
           />
         )}
+        <RadioButtons
+          {...register("futureOperator", { required: requiredMessage })}
+          options={[
+            {
+              label: "NSP",
+              value: "unknown",
+            },
+          ]}
+          error={formState.errors.futureOperator}
+        />
         <ButtonsGroup
           buttonsEquisized
           inlineLayoutWhen="always"
