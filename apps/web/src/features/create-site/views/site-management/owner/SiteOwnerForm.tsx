@@ -97,16 +97,13 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
 
         {shouldAskForCompanyName && (
           <Input
-            label=""
+            label="Nom de l'entreprise"
             state={formState.errors.ownerName ? "error" : "default"}
             stateRelatedMessage={formState.errors.ownerName?.message}
-            nativeInputProps={{
-              placeholder: "Nom de l'entreprise",
-              ...register("ownerName", {
-                required: "Ce champ est requis",
-                shouldUnregister: true,
-              }),
-            }}
+            nativeInputProps={register("ownerName", {
+              required: "Ce champ est requis",
+              shouldUnregister: true,
+            })}
           />
         )}
 
@@ -123,16 +120,13 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
 
         {shouldAskForPrivateName && (
           <Input
-            label=""
+            label="Nom du particulier"
             state={formState.errors.ownerName ? "error" : "default"}
             stateRelatedMessage={formState.errors.ownerName?.message}
-            nativeInputProps={{
-              placeholder: "Nom du particulier",
-              ...register("ownerName", {
-                required: "Ce champ est requis",
-                shouldUnregister: true,
-              }),
-            }}
+            nativeInputProps={register("ownerName", {
+              required: "Ce champ est requis",
+              shouldUnregister: true,
+            })}
           />
         )}
 
