@@ -3,6 +3,8 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Address } from "../../domain/siteFoncier.types";
 import SearchAddressAutocomplete from "./SearchAddressAutocompleteContainer";
 
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
 type Props = {
   onSubmit: (address: Address) => void;
   isFriche: boolean;
@@ -26,46 +28,58 @@ function SiteAddressForm({ onSubmit, isFriche }: Props) {
 
   return (
     <>
-      <h2>{title}</h2>
-      <form
-        onSubmit={handleSubmit((formData: FormValues) => {
-          onSubmit(formData.selectedAddress!);
-        })}
+      <WizardFormLayout
+        title={title}
+        instructions={
+          <div>
+            <p>Bénéfriches a besoin de connaître l'adresse du site.</p>
+            <p>
+              Si vous ne connaissez pas l'adresse exacte, entrez simplement le nom de la commune ou
+              son code postal.
+            </p>
+          </div>
+        }
       >
-        <Controller
-          control={control}
-          name="searchText"
-          render={({ field }) => (
-            <SearchAddressAutocomplete
-              searchInputValue={field.value}
-              onSearchInputChange={(searchText: string) => {
-                field.onChange(searchText);
-                setValue("selectedAddress", undefined);
-              }}
-              selectedAddress={watch("selectedAddress")}
-              onSelect={(v) => {
-                setValue("selectedAddress", v);
-                setValue("searchText", v.value);
-              }}
-              searchInputProps={{
-                label: "Adresse du site",
-                state: error ? "error" : "default",
-                stateRelatedMessage: error ? error.message : undefined,
-              }}
-            />
-          )}
-        />
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
-      </form>
+        <form
+          onSubmit={handleSubmit((formData: FormValues) => {
+            onSubmit(formData.selectedAddress!);
+          })}
+        >
+          <Controller
+            control={control}
+            name="searchText"
+            render={({ field }) => (
+              <SearchAddressAutocomplete
+                searchInputValue={field.value}
+                onSearchInputChange={(searchText: string) => {
+                  field.onChange(searchText);
+                  setValue("selectedAddress", undefined);
+                }}
+                selectedAddress={watch("selectedAddress")}
+                onSelect={(v) => {
+                  setValue("selectedAddress", v);
+                  setValue("searchText", v.value);
+                }}
+                searchInputProps={{
+                  label: "Adresse du site",
+                  state: error ? "error" : "default",
+                  stateRelatedMessage: error ? error.message : undefined,
+                }}
+              />
+            )}
+          />
+          <ButtonsGroup
+            buttonsEquisized
+            inlineLayoutWhen="always"
+            buttons={[
+              {
+                children: "Suivant",
+                nativeButtonProps: { type: "submit" },
+              },
+            ]}
+          />
+        </form>
+      </WizardFormLayout>
     </>
   );
 }

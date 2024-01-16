@@ -57,9 +57,9 @@ const SearchAddressAutocompleteInput = ({
   };
 
   return (
-    <div className="fr-grid-row fr-grid-row--gutters">
+    <div>
       <AutoComplete
-        className="fr-col-17 fr-col-lg-5 fr-mb-12v"
+        className="fr-mb-8w"
         value={autocompleteValue}
         style={{ width: "100%" }}
         options={suggestions}
@@ -76,9 +76,7 @@ const SearchAddressAutocompleteInput = ({
           }}
         />
       </AutoComplete>
-      <div className="fr-col-12 fr-col-lg-7">
-        <MarkerLeafletMap lat={lat} long={long} popup={searchInputValue} />
-      </div>
+      <MarkerLeafletMap lat={lat} long={long} popup={searchInputValue} />
     </div>
   );
 };
