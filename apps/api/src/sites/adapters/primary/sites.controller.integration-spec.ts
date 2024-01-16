@@ -5,6 +5,7 @@ import { Knex } from "knex";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { Site } from "src/sites/domain/models/site";
 import { SqlSite } from "../secondary/site-repository/SqlSiteRepository";
 
 type BadRequestResponseBody = {
@@ -41,33 +42,60 @@ describe("LocationFeatures controller", () => {
     await sqlConnection("sites").delete();
   });
 
+  const buildValidSitePayload = () => {
+    const validSite: Site = {
+      id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+      isFriche: false,
+      owner: { name: "Owner name", structureType: "company" },
+      name: "Friche industrielle",
+      surfaceArea: 2900,
+      address: {
+        lat: 2.347,
+        long: 48.859,
+        city: "Paris",
+        banId: "75110_7043",
+        cityCode: "75110",
+        postCode: "75010",
+        value: "Rue de Paradis 75010 Paris",
+      },
+      soilsDistribution: {
+        BUILDINGS: 1400,
+        MINERAL_SOIL: 1500,
+      },
+      yearlyExpenses: [],
+      yearlyIncomes: [],
+    };
+    return validSite;
+  };
+
   describe("POST /sites", () => {
-    it("can't create a site without mandatory data", async () => {
-      const response = await supertest(app.getHttpServer()).post("/sites").send({
-        isFriche: false,
-      });
+    it.each([
+      "id",
+      "isFriche",
+      "name",
+      "address",
+      "surfaceArea",
+      "soilsDistribution",
+      "owner",
+      "yearlyExpenses",
+      "yearlyIncomes",
+    ] as (keyof Site)[])(
+      "can't create a site without mandatory field %s",
+      async (mandatoryField) => {
+        const requestBody = buildValidSitePayload();
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete requestBody[mandatoryField];
 
-      expect(response.status).toEqual(400);
-      expect(response.body).toHaveProperty("errors");
+        const response = await supertest(app.getHttpServer()).post("/sites").send(requestBody);
 
-      const mandatoryFields = [
-        "id",
-        "name",
-        "address",
-        "surfaceArea",
-        "soilsDistribution",
-        "owner",
-        "yearlyExpenses",
-        "yearlyIncomes",
-      ];
+        expect(response.status).toEqual(400);
+        expect(response.body).toHaveProperty("errors");
 
-      const responseErrors = (response.body as BadRequestResponseBody).errors;
-      expect(responseErrors).toHaveLength(mandatoryFields.length);
-      const inputFieldsWithError = responseErrors.map((error) => error.path.join("."));
-      mandatoryFields.forEach((mandatoryField) => {
-        expect(inputFieldsWithError).toContain(mandatoryField);
-      });
-    });
+        const responseErrors = (response.body as BadRequestResponseBody).errors;
+        expect(responseErrors).toHaveLength(1);
+        expect(responseErrors[0].path).toContain(mandatoryField);
+      },
+    );
 
     it("can create a site", async () => {
       const validSite = {
