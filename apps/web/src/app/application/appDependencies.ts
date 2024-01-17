@@ -1,6 +1,7 @@
 import { AppDependencies } from "./store";
 
 import { LocalStorageGetSiteApi } from "@/features/create-project/infrastructure/get-site-service/localStorageGetSiteService";
+import { ExpectedPhotovoltaicPerformanceApi } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceApi";
 import { LocalStorageSaveProjectApi } from "@/features/create-project/infrastructure/save-project-service/localStorageSaveSiteService";
 import { LocalStorageCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
@@ -16,4 +17,5 @@ export const appDependencies: AppDependencies = {
   projectDetailsService: new LocalStorageProjectDetailsApi(),
   sitesService: new LocalStorageSitesApi(),
   saveProjectGateway: new LocalStorageSaveProjectApi(),
+  photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
 };
