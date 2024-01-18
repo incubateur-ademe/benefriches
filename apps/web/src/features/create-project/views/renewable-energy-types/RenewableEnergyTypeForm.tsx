@@ -5,7 +5,10 @@ import {
   getPrevisionalEnrSocioEconomicImpact,
   RenewableEnergyType,
 } from "../../domain/project.types";
-import { getLabelForRenewableEnergyType } from "../projectTypeLabelMapping";
+import {
+  getDescriptionForRenewableEnergyType,
+  getLabelForRenewableEnergyType,
+} from "../projectTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -41,9 +44,12 @@ const mapOptions =
     return {
       label: getLabelForRenewableEnergyType(enrTypes),
       hintText: (
-        <div style={{ color: `var(${hintColor})` }}>
-          {formatNumericImpact(potentialImpact)} € / an d’impacts socio-économiques potentiels
-        </div>
+        <>
+          <legend>{getDescriptionForRenewableEnergyType(enrTypes)}</legend>
+          <div style={{ color: `var(${hintColor})` }}>
+            {formatNumericImpact(potentialImpact)} € / an d’impacts socio-économiques potentiels
+          </div>
+        </>
       ),
       nativeInputProps: {
         ...register("renewableEnergyTypes", {

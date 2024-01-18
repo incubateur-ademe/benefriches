@@ -25,3 +25,16 @@ export const getLabelForRenewableEnergyType = (value: RenewableEnergyType): stri
       return "Biomasse";
   }
 };
+
+export const getDescriptionForRenewableEnergyType = (value: RenewableEnergyType): string => {
+  switch (value) {
+    case RenewableEnergyType.PHOTOVOLTAIC:
+      return "Production d’électricité grâce à des capteurs ou centrales solaires";
+    case RenewableEnergyType.AGRIVOLTAIC:
+      return "Production d’électricité photovoltaïque associée à une production agricole";
+    case RenewableEnergyType.GEOTHERMAL:
+      return "Production de chaleur à partir du sol ou de l’eau en souterrain";
+    case RenewableEnergyType.BIOMASS:
+      return "Production d’électricité par combustion de matière organique";
+  }
+};
