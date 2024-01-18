@@ -25,7 +25,7 @@ const mapProps = (dispatch: AppDispatch) => {
         });
       }
       if (incomes.length > 0) dispatch(addIncomes(incomes));
-      dispatch(goToStep(SiteCreationStep.EXPENSES_SUMMARY));
+      dispatch(goToStep(SiteCreationStep.NAMING));
     },
   };
 };

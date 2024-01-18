@@ -12,7 +12,9 @@ import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["siteData"]) => {
   const onNext = () => {
-    const nextStep = siteData.isFriche ? SiteCreationStep.FRICHE_ACTIVITY : SiteCreationStep.NAMING;
+    const nextStep = siteData.isFriche
+      ? SiteCreationStep.FRICHE_ACTIVITY
+      : SiteCreationStep.YEARLY_INCOME;
     dispatch(goToStep(nextStep));
   };
 
