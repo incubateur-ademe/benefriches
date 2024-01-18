@@ -20,6 +20,7 @@ export type FormValues = {
   remediationAmount?: number;
   deimpermeabilizationAmount?: number;
   sustainableSoilsReinstatementAmount?: number;
+  otherReinstatementCostAmount?: number;
 };
 
 const ReinstatementCostFormExplanation = ({
@@ -105,7 +106,7 @@ const ReinstatementsCostsForm = ({
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
         />
@@ -117,7 +118,7 @@ const ReinstatementsCostsForm = ({
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
         />
@@ -130,7 +131,7 @@ const ReinstatementsCostsForm = ({
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
         />
@@ -144,7 +145,7 @@ const ReinstatementsCostsForm = ({
             rules={{
               min: {
                 value: 0,
-                message: "Veuillez sélectionner un montant valide",
+                message: "Veuillez entrer un montant valide",
               },
             }}
           />
@@ -158,7 +159,7 @@ const ReinstatementsCostsForm = ({
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
         />
@@ -171,7 +172,19 @@ const ReinstatementsCostsForm = ({
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
+            },
+          }}
+        />
+        <NumericInput
+          control={control}
+          label="Autres dépenses de remise en état"
+          hintText="€"
+          name="otherReinstatementCostAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez entrer un montant valide",
             },
           }}
         />
