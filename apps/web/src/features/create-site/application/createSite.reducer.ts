@@ -68,7 +68,6 @@ export const siteCreationSlice = createSlice({
     },
     setAddress: (state, action: PayloadAction<SiteDraft["address"]>) => {
       state.siteData.address = action.payload;
-      state.step = SiteCreationStep.SOILS_INTRODUCTION;
     },
     setSoils: (state, action: PayloadAction<SoilType[]>) => {
       state.siteData.soils = action.payload;
