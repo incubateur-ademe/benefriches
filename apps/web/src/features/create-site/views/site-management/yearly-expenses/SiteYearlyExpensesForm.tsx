@@ -46,6 +46,12 @@ const siteManagementInputs = [
     askForBearer: false,
   },
   {
+    name: "maintenance",
+    label: "Entretien",
+    displayOnlyIfHasTenant: false,
+    askForBearer: false,
+  },
+  {
     name: "otherManagementCosts",
     label: "Autres coûts de gestion",
     displayOnlyIfHasTenant: false,
@@ -58,12 +64,6 @@ const siteSecuringInputs = [
     name: "security",
     label: "Gardiennage",
     askForBearer: true,
-    displayIfHasRecentAccidents: false,
-  },
-  {
-    name: "maintenance",
-    label: "Entretien",
-    askForBearer: false,
     displayIfHasRecentAccidents: false,
   },
   {

@@ -7,11 +7,11 @@ const expensesConfig = [
   { expenseItem: "rent", category: "rent", defaultBearer: "tenant" },
   { expenseItem: "propertyTaxes", category: "taxes", defaultBearer: "owner" },
   { expenseItem: "otherTaxes", category: "taxes", defaultBearer: "tenant" },
+  { expenseItem: "maintenance", category: "site_management", defaultBearer: "tenant" },
   { expenseItem: "otherManagementCosts", category: "site_management", defaultBearer: "tenant" },
   { expenseItem: "security", category: "safety", defaultBearer: "tenant" },
   { expenseItem: "illegalDumpingCost", category: "safety", defaultBearer: "tenant" },
   { expenseItem: "accidentsCost", category: "safety", defaultBearer: "tenant" },
-  { expenseItem: "maintenance", category: "safety", defaultBearer: "tenant" },
   { expenseItem: "otherSecuringCosts", category: "safety", defaultBearer: "tenant" },
 ] as const;
 
