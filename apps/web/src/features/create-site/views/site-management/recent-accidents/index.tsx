@@ -18,7 +18,7 @@ const mapProps = (dispatch: AppDispatch) => {
           ...dataRest,
         }),
       );
-      dispatch(goToStep(SiteCreationStep.FRICHE_SECURING_EXPENSES));
+      dispatch(goToStep(SiteCreationStep.YEARLY_EXPENSES));
     },
   };
 };

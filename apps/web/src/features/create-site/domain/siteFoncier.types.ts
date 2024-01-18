@@ -52,7 +52,7 @@ export type TenantStructureType = "local_or_regional_authority" | "company";
 export type Expense = {
   type: string;
   bearer: "owner" | "tenant" | "local_or_regional_authority" | "society";
-  category: "rent" | "safety" | "soils_degradation" | "taxes" | "other";
+  category: "rent" | "safety" | "site_management" | "soils_degradation" | "taxes" | "other";
   amount: number;
 };
 

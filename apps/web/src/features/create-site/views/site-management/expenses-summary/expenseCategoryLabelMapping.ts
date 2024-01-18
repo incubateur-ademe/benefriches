@@ -6,6 +6,8 @@ export const getLabelForExpenseCategory = (expenseCategory: Expense["category"])
       return "Loyer";
     case "safety":
       return "Sécurisation du site";
+    case "site_management":
+      return "Autre coûts de gestion du site";
     case "taxes":
       return "Taxes";
     case "soils_degradation":

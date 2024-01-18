@@ -1,6 +1,5 @@
 import { SiteCreationStep } from "../application/createSite.reducer";
 import SiteExpensesSummary from "./site-management/expenses-summary";
-import FricheSecuringCostsForm from "./site-management/friche-securing-costs";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
 import SiteOwnerForm from "./site-management/owner";
@@ -57,8 +56,6 @@ function SiteCreationWizard() {
         return <SiteFullTimeJobsInvolvedForm />;
       case SiteCreationStep.RECENT_ACCIDENTS:
         return <FricheRecentAccidentsForm />;
-      case SiteCreationStep.FRICHE_SECURING_EXPENSES:
-        return <FricheSecuringCostsForm />;
       case SiteCreationStep.YEARLY_EXPENSES:
         return <SiteYearlyExpensesForm />;
       case SiteCreationStep.YEARLY_INCOME:

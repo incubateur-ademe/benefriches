@@ -1,3 +1,4 @@
+import { mapFormDataToExpenses } from "./mappers";
 import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
 
 import {
@@ -11,50 +12,17 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, { siteData }: RootState["siteCreation"]) => {
+  const siteHasTenant = hasTenant(siteData as SiteDraft);
   return {
-    hasTenant: hasTenant(siteData as SiteDraft),
+    hasTenant: siteHasTenant,
+    isFriche: !!siteData.isFriche,
+    hasRecentAccidents: !!siteData.hasRecentAccidents,
     onSubmit: (formData: FormValues) => {
-      const expenses: Expense[] = [];
-
-      if (formData.rent) {
-        expenses.push({
-          type: "rent",
-          category: "rent",
-          amount: formData.rent,
-          bearer: "tenant",
-        });
-      }
-      if (formData.propertyTaxes) {
-        expenses.push({
-          type: "propertyTaxes",
-          category: "taxes",
-          amount: formData.propertyTaxes,
-          bearer: "owner",
-        });
-      }
-      if (formData.otherTaxes) {
-        expenses.push({
-          type: "otherTaxes",
-          category: "taxes",
-          amount: formData.otherTaxes,
-          bearer: "tenant",
-        });
-      }
-      if (formData.otherExpense) {
-        expenses.push({
-          type: "other",
-          category: "other",
-          amount: formData.otherExpense,
-          bearer: "tenant",
-        });
-      }
+      const expenses: Expense[] = mapFormDataToExpenses(formData, { siteHasTenant });
 
       dispatch(addExpenses(expenses));
 
-      const nextStep = siteData.isFriche
-        ? SiteCreationStep.EXPENSES_SUMMARY
-        : SiteCreationStep.YEARLY_INCOME;
-      dispatch(goToStep(nextStep));
+      dispatch(goToStep(SiteCreationStep.EXPENSES_SUMMARY));
     },
   };
 };
