@@ -35,6 +35,8 @@ const mapNationalBaseAddressToAddress = (
     postCode: nationalBaseAddress.properties.postcode,
     long: nationalBaseAddress.geometry.coordinates[0]!,
     lat: nationalBaseAddress.geometry.coordinates[1]!,
+    streetName: nationalBaseAddress.properties.street,
+    streetNumber: nationalBaseAddress.properties.housenumber,
   };
 };
 
