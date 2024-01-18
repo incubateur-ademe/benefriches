@@ -138,7 +138,7 @@ const ReinstatementsCostsForm = ({
         {hasContaminatedSoils && (
           <NumericInput
             control={control}
-            label="Dépollution"
+            label="Dépollution des sols"
             hintText="€"
             name="remediationAmount"
             rules={{
