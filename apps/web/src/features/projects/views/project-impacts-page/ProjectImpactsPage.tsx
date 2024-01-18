@@ -188,7 +188,7 @@ function ProjectImpactsPage({ projectId, projectName, siteName, loadingState }: 
             />
           </div>
           <div className={fr.cx("fr-col-3")}>
-            <ImpactCard title="🫧 Régulation de la qualité de l'eau" impact="+9 471 €" isPositive />
+            <ImpactCard title="🚰 Régulation de la qualité de l'eau" impact="+9 471 €" isPositive />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard title="🚵 Aménité environnementale" impact="-2 083 €" />

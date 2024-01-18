@@ -35,7 +35,7 @@ function WaterRegulationFinancialImpactComparisonChart() {
   return (
     <div>
       <p>
-        <strong>🫧 Régulation de la qualité de l'eau </strong>
+        <strong>🚰 Régulation de la qualité de l'eau </strong>
       </p>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </div>
