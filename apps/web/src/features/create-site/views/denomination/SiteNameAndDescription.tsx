@@ -10,11 +10,16 @@ export type FormValues = {
 };
 
 type Props = {
+  defaultSiteName: string;
   onSubmit: (data: FormValues) => void;
 };
 
-function SiteNameAndDescriptionForm({ onSubmit }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+function SiteNameAndDescriptionForm({ onSubmit, defaultSiteName }: Props) {
+  const { register, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: {
+      name: defaultSiteName,
+    },
+  });
 
   const nameError = formState.errors.name;
 

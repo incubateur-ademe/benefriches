@@ -1,3 +1,4 @@
+import { getFricheActivityLabel } from "./friche.types";
 import { SiteDraft } from "./siteFoncier.types";
 
 import { SoilType } from "@/shared/domain/soils";
@@ -33,7 +34,8 @@ const isSoilTypeNatural = (soilType: SoilType) => {
 };
 
 export const generateSiteDesignation = (siteData: SiteDraft) => {
-  if (siteData.isFriche) return "friche";
+  if (siteData.isFriche)
+    return siteData.fricheActivity ? getFricheActivityLabel(siteData.fricheActivity) : "friche";
 
   const { soils = [] } = siteData;
 
@@ -44,4 +46,14 @@ export const generateSiteDesignation = (siteData: SiteDraft) => {
   if (nonArtificialSoils.every(isSoilTypeAgricultural)) return "espace agricole";
   if (nonArtificialSoils.every(isSoilTypeNatural)) return "espace naturel";
   return "espace naturel et agricole";
+};
+
+export const generateSiteName = (siteData: SiteDraft): string => {
+  const designation = generateSiteDesignation(siteData);
+
+  const { city } = siteData.address;
+
+  const name = `${designation} de ${city}`;
+
+  return name.charAt(0).toUpperCase() + name.slice(1);
 };
