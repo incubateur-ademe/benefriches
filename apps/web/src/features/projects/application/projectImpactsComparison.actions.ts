@@ -27,7 +27,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       const { withProject, baseProjectId } = projectImpactsComparison;
 
       if (!baseProjectId || !uuidValidate(baseProjectId)) {
-        return Promise.reject(
+        throw new Error(
           "fetchCurrentAndProjectedSoilsCarbonStorage: Wrong format for baseProjectId",
         );
       }
@@ -35,7 +35,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       const { siteData, projectData, otherProjectData } = projectImpactsComparison;
 
       if (!siteData || !projectData) {
-        return Promise.reject(
+        throw new Error(
           "fetchCurrentAndProjectedSoilsCarbonStorage: Missing siteData or projectData",
         );
       }
@@ -96,7 +96,7 @@ export const fetchBaseProjectAndWithProjectData = createAppAsyncThunk<
   "projectImpactsComparison/fetchBaseProjectAndWithProjectData",
   async ({ baseProjectId, withProject }, { extra }) => {
     if (!uuidValidate(baseProjectId)) {
-      return Promise.reject("fetchBaseProjectAndWithProjectData: Wrong format for baseProjectId");
+      throw new Error("fetchBaseProjectAndWithProjectData: Wrong format for baseProjectId");
     }
 
     const { projectData, siteData } =
@@ -116,6 +116,6 @@ export const fetchBaseProjectAndWithProjectData = createAppAsyncThunk<
       return { projectData, siteData, baseProjectId, withProject };
     }
 
-    return Promise.reject("fetchBaseProjectAndWithProjectData: Wrong format for withProject");
+    throw new Error("fetchBaseProjectAndWithProjectData: Wrong format for withProject");
   },
 );

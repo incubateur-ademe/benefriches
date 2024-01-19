@@ -35,7 +35,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       const projectSoils = projectCreation.projectData.soilsDistribution ?? {};
 
       if (!cityCode) {
-        return Promise.reject("fetchCurrentAndProjectedSoilsCarbonStorage: Missing city code");
+        throw new Error("fetchCurrentAndProjectedSoilsCarbonStorage: Missing city code");
       }
 
       const [current, projected] = await Promise.all([
