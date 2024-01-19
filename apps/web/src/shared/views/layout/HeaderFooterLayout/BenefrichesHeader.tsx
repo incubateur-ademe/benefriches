@@ -31,7 +31,7 @@ function BenefrichesHeader() {
       ]}
       serviceTitle="Bénéfriches"
       serviceTagline={
-        <Badge small noIcon severity="new">
+        <Badge small noIcon severity="new" as="span">
           En construction
         </Badge>
       }
