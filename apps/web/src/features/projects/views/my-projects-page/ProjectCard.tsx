@@ -15,11 +15,11 @@ function ProjectCard({ projectName, yearlyProfit, details, impactLinkProps }: Pr
   const desc =
     yearlyProfit < 0 ? (
       <strong style={{ color: "var(--text-default-error)" }}>
-        {formatNumberFr(yearlyProfit)} €/an de charges d'exploitation"
+        {formatNumberFr(yearlyProfit)} €/an de charges d'exploitation
       </strong>
     ) : (
       <strong style={{ color: "var(--text-default-success)" }}>
-        {formatNumberFr(yearlyProfit)} €/an de bénéfices d'exploitation"
+        {formatNumberFr(yearlyProfit)} €/an de bénéfices d'exploitation
       </strong>
     );
   const footer = impactLinkProps ? (
