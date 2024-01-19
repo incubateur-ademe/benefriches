@@ -25,7 +25,7 @@ function SurfaceAreaForm({ onSubmit }: Props) {
       instructions={
         <>
           <p>Superficie à renseigner en m².</p>
-          <p>Pour rappel :1 ha = 10 000 m²</p>
+          <p>Pour rappel : 1 ha = 10 000 m²</p>
         </>
       }
     >
