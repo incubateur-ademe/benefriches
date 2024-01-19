@@ -24,9 +24,9 @@
     /* folders */
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"]
-    }
+      "@/*": ["src/*"],
+    },
   },
   "include": ["src", "jest.config.ts", "tailwind.config.js", "postcss.config.js"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [{ "path": "./tsconfig.node.json" }],
 }
