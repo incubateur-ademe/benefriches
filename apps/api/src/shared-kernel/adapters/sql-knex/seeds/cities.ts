@@ -49,7 +49,7 @@ const readCsvData = async () => {
       });
       data.push(city.toDatabaseFormat());
     });
-    rl.on("error", (error) => {
+    rl.on("error", (error: Error) => {
       reject(error);
     });
     rl.on("close", () => {

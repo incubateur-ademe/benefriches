@@ -37,7 +37,7 @@ const readCsvData = async () => {
         }).toDatabaseFormat(),
       );
     });
-    rl.on("error", (error) => {
+    rl.on("error", (error: Error) => {
       reject(error);
     });
     rl.on("close", () => {
