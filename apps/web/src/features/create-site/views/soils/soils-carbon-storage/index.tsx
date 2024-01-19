@@ -12,7 +12,7 @@ const mapProps = (
   siteCarbonStorage: RootState["siteCarbonStorage"],
 ) => {
   const siteCityCode = siteData.address?.cityCode ?? "";
-  const fricheSoils = siteData.soilsSurfaceAreas ?? {};
+  const fricheSoils = siteData.soilsDistribution ?? {};
   const { loadingState, carbonStorage } = siteCarbonStorage;
 
   return {

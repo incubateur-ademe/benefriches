@@ -9,10 +9,10 @@ import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/yearly-income";
 import SiteSoilsCarbonStorage from "./soils/soils-carbon-storage";
+import SiteSoilsDistributionForm from "./soils/soils-distribution";
 import SiteSoilsIntroduction from "./soils/soils-introduction";
 import SiteSoilsForm from "./soils/soils-selection";
 import SiteSoilsSummary from "./soils/soils-summary";
-import SiteSoilsSurfaceAreasForm from "./soils/soils-surface-areas";
 import AddressForm from "./address";
 import SiteCreationConfirmation from "./confirmation";
 import SiteNameAndDescriptionForm from "./denomination";
@@ -40,7 +40,7 @@ function SiteCreationWizard() {
       case SiteCreationStep.SOILS:
         return <SiteSoilsForm />;
       case SiteCreationStep.SOILS_SURFACE_AREAS:
-        return <SiteSoilsSurfaceAreasForm />;
+        return <SiteSoilsDistributionForm />;
       case SiteCreationStep.SOILS_SUMMARY:
         return <SiteSoilsSummary />;
       case SiteCreationStep.SOILS_CARBON_STORAGE:

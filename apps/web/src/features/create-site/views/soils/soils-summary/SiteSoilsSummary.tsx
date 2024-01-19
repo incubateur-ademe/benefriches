@@ -9,10 +9,10 @@ import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 type Props = {
   onNext: () => void;
   totalSurfaceArea: number;
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  soilsDistribution: Partial<Record<SoilType, number>>;
 };
 
-const SiteSoilsSummary = ({ totalSurfaceArea, onNext, soilsSurfaceAreas }: Props) => {
+const SiteSoilsSummary = ({ totalSurfaceArea, onNext, soilsDistribution }: Props) => {
   const formattedTotalSurfaceAreaInHectare = formatNumberFr(
     convertSquareMetersToHectares(totalSurfaceArea),
   );
@@ -28,7 +28,7 @@ const SiteSoilsSummary = ({ totalSurfaceArea, onNext, soilsSurfaceAreas }: Props
         </strong>
         .
       </p>
-      <SurfaceAreaPieChart soilsSurfaceAreas={soilsSurfaceAreas} />
+      <SurfaceAreaPieChart soilsDistribution={soilsDistribution} />
       <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
         Suivant
       </Button>

@@ -21,7 +21,7 @@ const createSiteSchema = z.object({
     lat: z.number(),
   }),
   surfaceArea: z.number().nonnegative(),
-  soilsSurfaceAreas: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
+  soilsDistribution: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
   // contamination
   hasContaminatedSoils: z.boolean().optional(),
   contaminatedSoilSurface: z.number().nonnegative().optional(),

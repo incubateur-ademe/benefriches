@@ -41,8 +41,8 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       }
 
       const cityCode = siteData.address.cityCode;
-      const siteSoils = siteData.soilsSurfaceAreas;
-      const projectSoils = projectData.soilsSurfaceAreas;
+      const siteSoils = siteData.soilsDistribution;
+      const projectSoils = projectData.soilsDistribution;
 
       const [current, projected] = await Promise.all([
         await extra.soilsCarbonStorageService.getForCityCodeAndSoils({

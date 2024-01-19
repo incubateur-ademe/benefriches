@@ -4,7 +4,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import FlatSurfacesNotice from "./FlatSurfacesNotice";
 import ImpermeableSurfacesNotice from "./ImpermeableSurfacesNotice";
 import MineralSoilSurfaceNotice from "./MineralSoilSurfaceNotice";
-import SoilsSurfaceAreasAddButton from "./SoilsSurfaceAreasAddButton";
+import SoilsDistributionAddButton from "./SoilsAddButton";
 import TotalAllocatedSurfacesInput from "./TotalAllocatedSurfacesInput";
 import TotalFlatSurfacesInput from "./TotalFlatSurfacesInput";
 
@@ -22,16 +22,16 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  siteSoils: SiteDraft["soilsSurfaceAreas"];
+  siteSoils: SiteDraft["soilsDistribution"];
   totalSurfaceArea: number;
   minAdvisedFlatSurfaces: number;
   minAdvisedImpermeableSurface: number;
   minAdvisedMineralSurface: number;
 };
 
-type SoilsSurfaceAreas = { soilType: SoilType; surface: number };
+type SoilsDistribution = { soilType: SoilType; surface: number };
 type FormValues = {
-  soilsSurfaceAreas: SoilsSurfaceAreas[];
+  soilsDistribution: SoilsDistribution[];
 };
 
 const computeDefaultValues = (
@@ -55,14 +55,14 @@ const computeDefaultValues = (
       surface: 0,
     });
 
-  return siteSoilsAsArray as SoilsSurfaceAreas[];
+  return siteSoilsAsArray as SoilsDistribution[];
 };
 
-const getTotalSurface = (soilsSurfaceAreas: SoilsSurfaceAreas[]) =>
-  soilsSurfaceAreas.reduce((total, { surface }) => total + surface, 0);
+const getTotalSurface = (soilsDistribution: SoilsDistribution[]) =>
+  soilsDistribution.reduce((total, { surface }) => total + surface, 0);
 
-const getTotalFlatSurface = (soilsSurfaceAreas: SoilsSurfaceAreas[]) =>
-  getTotalSurface(soilsSurfaceAreas.filter(({ soilType }) => FLAT_SOIL_TYPES.includes(soilType)));
+const getTotalFlatSurface = (soilsDistribution: SoilsDistribution[]) =>
+  getTotalSurface(soilsDistribution.filter(({ soilType }) => FLAT_SOIL_TYPES.includes(soilType)));
 
 const getCreatableSoils = (newSoils: SoilType[], currentSoils: SoilType[]) => {
   return SOIL_TYPES.filter(
@@ -81,7 +81,7 @@ const canCreateOrIncreaseSurfaceForSoilType = (soilType: SoilType, currentSoils:
   return !isSoilNatural(soilType);
 };
 
-const mapSoilType = ({ soilType }: SoilsSurfaceAreas) => soilType;
+const mapSoilType = ({ soilType }: SoilsDistribution) => soilType;
 
 const SLIDER_PROPS = {
   tooltip: {
@@ -89,7 +89,7 @@ const SLIDER_PROPS = {
   },
 };
 
-function SoilsSurfaceAreasForm({
+function SoilsDistributionForm({
   onSubmit,
   totalSurfaceArea,
   siteSoils,
@@ -97,14 +97,14 @@ function SoilsSurfaceAreasForm({
   minAdvisedImpermeableSurface,
   minAdvisedMineralSurface,
 }: Props) {
-  const defaultSoilsSurfaceAreas = computeDefaultValues(
+  const defaultSoilsDistribution = computeDefaultValues(
     siteSoils,
     minAdvisedImpermeableSurface,
     minAdvisedMineralSurface,
   );
 
   const defaultValues = {
-    soilsSurfaceAreas: defaultSoilsSurfaceAreas,
+    soilsDistribution: defaultSoilsDistribution,
   };
 
   const { control, handleSubmit, watch, reset } = useForm<FormValues>({
@@ -113,10 +113,10 @@ function SoilsSurfaceAreasForm({
 
   const { fields, append } = useFieldArray({
     control,
-    name: "soilsSurfaceAreas",
+    name: "soilsDistribution",
   });
 
-  const watchSoils = watch("soilsSurfaceAreas");
+  const watchSoils = watch("soilsDistribution");
 
   // Controlled Field Array: https://react-hook-form.com/docs/usefieldarray
   const controlledSoilsFields = fields.map((field, index) => ({
@@ -167,7 +167,7 @@ function SoilsSurfaceAreasForm({
             <SliderNumericInput
               key={id}
               control={control}
-              name={`soilsSurfaceAreas.${index}.surface`}
+              name={`soilsDistribution.${index}.surface`}
               label={getLabelForSoilType(soilType)}
               maxValue={maxValue}
               hintText={`Actuellement : ${formatNumberFr(siteSoils[soilType] ?? 0)} m²${
@@ -209,8 +209,8 @@ function SoilsSurfaceAreasForm({
             Réinitialiser les valeurs
           </Button>
 
-          <SoilsSurfaceAreasAddButton
-            onValidate={(data: SoilsSurfaceAreas) => {
+          <SoilsDistributionAddButton
+            onValidate={(data: SoilsDistribution) => {
               append(data);
             }}
             soilTypes={availableSoilTypes}
@@ -230,4 +230,4 @@ function SoilsSurfaceAreasForm({
   );
 }
 
-export default SoilsSurfaceAreasForm;
+export default SoilsDistributionForm;

@@ -1,9 +1,9 @@
-import SoilDistributionForm from "./SoilsSurfaceAreasForm";
+import SoilDistributionForm from "./SoilsDistributionForm";
 
 import {
   goToStep,
   ProjectCreationStep,
-  setSoilsSurfaceAreas,
+  setSoilsDistribution,
 } from "@/features/create-project/application/createProject.reducer";
 import {
   RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
@@ -17,14 +17,14 @@ const computeAccessPathsAverageSurfaceFromElectricalPower = (electricalPower: nu
 const computeFoundationsAverageSurfaceFromElectricalPower = (electricalPower: number) =>
   Math.round(electricalPower * RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS);
 
-function ProjectSoilsSurfaceAreasContainer() {
+function ProjectSoilsDistributionContainer() {
   const dispatch = useAppDispatch();
 
   const siteSurfaceArea = useAppSelector(
     (state) => state.projectCreation.siteData?.surfaceArea ?? 0,
   );
-  const siteSoilsSurfaceAreas = useAppSelector(
-    (state) => state.projectCreation.siteData?.soilsSurfaceAreas ?? {},
+  const siteSoilsDistribution = useAppSelector(
+    (state) => state.projectCreation.siteData?.soilsDistribution ?? {},
   );
 
   const photovoltaicSurface = useAppSelector(
@@ -38,7 +38,7 @@ function ProjectSoilsSurfaceAreasContainer() {
   return (
     <SoilDistributionForm
       totalSurfaceArea={siteSurfaceArea}
-      siteSoils={siteSoilsSurfaceAreas}
+      siteSoils={siteSoilsDistribution}
       minAdvisedFlatSurfaces={photovoltaicSurface}
       minAdvisedImpermeableSurface={computeFoundationsAverageSurfaceFromElectricalPower(
         photovoltaicElectricalPowerKWc,
@@ -46,11 +46,11 @@ function ProjectSoilsSurfaceAreasContainer() {
       minAdvisedMineralSurface={computeAccessPathsAverageSurfaceFromElectricalPower(
         photovoltaicElectricalPowerKWc,
       )}
-      onSubmit={({ soilsSurfaceAreas }) => {
+      onSubmit={({ soilsDistribution }) => {
         dispatch(
-          setSoilsSurfaceAreas(
+          setSoilsDistribution(
             Object.fromEntries(
-              soilsSurfaceAreas.map(({ soilType, surface }) => [soilType, surface]),
+              soilsDistribution.map(({ soilType, surface }) => [soilType, surface]),
             ),
           ),
         );
@@ -60,4 +60,4 @@ function ProjectSoilsSurfaceAreasContainer() {
   );
 }
 
-export default ProjectSoilsSurfaceAreasContainer;
+export default ProjectSoilsDistributionContainer;

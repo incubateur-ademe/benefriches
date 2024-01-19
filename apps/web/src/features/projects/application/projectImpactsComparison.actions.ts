@@ -41,9 +41,9 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       }
 
       const cityCode = siteData.address.cityCode;
-      const siteSoils = siteData.soilsSurfaceAreas;
-      const projectSoils = projectData.soilsSurfaceAreas;
-      const otherProjectSoils = otherProjectData?.soilsSurfaceAreas ?? {};
+      const siteSoils = siteData.soilsDistribution;
+      const projectSoils = projectData.soilsDistribution;
+      const otherProjectSoils = otherProjectData?.soilsDistribution ?? {};
 
       const currentSoils = withProject === "STATU_QUO" ? siteSoils : projectSoils;
       const projectedSoils = withProject === "STATU_QUO" ? projectSoils : otherProjectSoils;

@@ -11,7 +11,7 @@ const buildSiteDraft = (siteData: Partial<SiteDraft>): SiteDraft => {
     owner: { structureType: "local_or_regional_authority", name: "department" },
     tenant: { structureType: "company", name: "Tenant SARL" },
     soils: [],
-    soilsSurfaceAreas: {},
+    soilsDistribution: {},
     surfaceArea: 15000,
     yearlyExpenses: [],
     yearlyIncomes: [],

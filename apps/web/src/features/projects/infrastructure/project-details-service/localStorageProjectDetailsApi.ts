@@ -18,7 +18,7 @@ type ProjectInLocalStorage = {
   id: string;
   name: string;
   relatedSiteId: string;
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  soilsDistribution: Partial<Record<SoilType, number>>;
 };
 
 export class LocalStorageProjectDetailsApi

@@ -2,7 +2,7 @@
 import { ProjectSite } from "../domain/project.types";
 import { GetSiteServiceMock } from "../infrastructure/get-site-service/GetSiteServiceMock";
 import { fetchRelatedSiteAction } from "./createProject.actions";
-import { setSoilsSurfaceAreas } from "./createProject.reducer";
+import { setSoilsDistribution } from "./createProject.reducer";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./soilsCarbonStorage.actions";
 
 import { SoilType } from "@/shared/domain/soils";
@@ -44,7 +44,7 @@ const SITE_MOCKED_RESULT = {
     postCode: "75010",
     value: "Rue de Paradis 75010 Paris",
   },
-  soilsSurfaceAreas: {
+  soilsDistribution: {
     [SoilType.BUILDINGS]: 1400,
     [SoilType.MINERAL_SOIL]: 1500,
   },
@@ -85,7 +85,7 @@ describe("Site carbon sequestration reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setSoilsSurfaceAreas(PROJECT_SOILS_MOCK));
+    store.dispatch(setSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledTimes(2);
@@ -115,7 +115,7 @@ describe("Site carbon sequestration reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setSoilsSurfaceAreas(PROJECT_SOILS_MOCK));
+    store.dispatch(setSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     const state = store.getState();
@@ -138,7 +138,7 @@ describe("Site carbon sequestration reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setSoilsSurfaceAreas(PROJECT_SOILS_MOCK));
+    store.dispatch(setSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     const state = store.getState();

@@ -31,8 +31,8 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
     async (_, { extra, getState }) => {
       const { projectCreation } = getState();
       const cityCode = projectCreation.siteData?.address.cityCode;
-      const siteSoils = projectCreation.siteData?.soilsSurfaceAreas ?? {};
-      const projectSoils = projectCreation.projectData.soilsSurfaceAreas ?? {};
+      const siteSoils = projectCreation.siteData?.soilsDistribution ?? {};
+      const projectSoils = projectCreation.projectData.soilsDistribution ?? {};
 
       if (!cityCode) {
         return Promise.reject("fetchCurrentAndProjectedSoilsCarbonStorage: Missing city code");

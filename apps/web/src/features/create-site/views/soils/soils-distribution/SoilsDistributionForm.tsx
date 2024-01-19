@@ -23,13 +23,13 @@ type Props = {
 
 export type FormValues = Record<SoilType, number>;
 
-const getTotalSurface = (soilsSurfaceAreas: FormValues) =>
-  Object.values(soilsSurfaceAreas)
+const getTotalSurface = (soilsDistribution: FormValues) =>
+  Object.values(soilsDistribution)
     .filter(Number)
     .reduce((total, surface) => total + surface, 0);
 
 const getInitialSurfacesFormSoilTypes = (soils: SoilType[]) =>
-  soils.reduce((soilSurfaceAreas, soilType) => ({ ...soilSurfaceAreas, [soilType]: 0 }), {});
+  soils.reduce((soilsDistribution, soilType) => ({ ...soilsDistribution, [soilType]: 0 }), {});
 
 const SLIDER_PROPS = {
   tooltip: {
@@ -37,7 +37,7 @@ const SLIDER_PROPS = {
   },
 };
 
-function SiteSoilsSurfaceAreasForm({ soils, totalSurfaceArea, onSubmit }: Props) {
+function SiteSoilsDistributionForm({ soils, totalSurfaceArea, onSubmit }: Props) {
   const defaultValues = useMemo(() => getInitialSurfacesFormSoilTypes(soils), [soils]);
   const { control, handleSubmit, watch, reset } = useForm<FormValues>({
     defaultValues,
@@ -116,4 +116,4 @@ function SiteSoilsSurfaceAreasForm({ soils, totalSurfaceArea, onSubmit }: Props)
   );
 }
 
-export default SiteSoilsSurfaceAreasForm;
+export default SiteSoilsDistributionForm;

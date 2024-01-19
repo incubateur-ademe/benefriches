@@ -32,7 +32,7 @@ const PROJECT_MOCKED_RESULT = {
   id: "4343b02e-d066-437c-b626-4fbd1ef2ed18",
   name: "Centrale photovoltaique",
   relatedSiteId: "03a53ffd-4f71-419e-8d04-041311eefa23",
-  soilsSurfaceAreas: {
+  soilsDistribution: {
     [SoilType.BUILDINGS]: 400,
     [SoilType.MINERAL_SOIL]: 500,
     [SoilType.PRAIRIE_GRASS]: 2000,
@@ -55,7 +55,7 @@ const SITE_MOCKED_RESULT = {
     postCode: "75010",
     value: "Rue de Paradis 75010 Paris",
   },
-  soilsSurfaceAreas: {
+  soilsDistribution: {
     [SoilType.BUILDINGS]: 1400,
     [SoilType.MINERAL_SOIL]: 1500,
   },

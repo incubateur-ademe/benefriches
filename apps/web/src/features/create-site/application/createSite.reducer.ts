@@ -72,8 +72,8 @@ export const siteCreationSlice = createSlice({
     setSoils: (state, action: PayloadAction<SoilType[]>) => {
       state.siteData.soils = action.payload;
     },
-    setSoilsSurfaceAreas: (state, action: PayloadAction<SiteDraft["soilsSurfaceAreas"]>) => {
-      state.siteData.soilsSurfaceAreas = action.payload;
+    setSoilsDistribution: (state, action: PayloadAction<SiteDraft["soilsDistribution"]>) => {
+      state.siteData.soilsDistribution = action.payload;
     },
     setContaminatedSoils: (
       state,
@@ -155,7 +155,7 @@ export const {
   setAddress,
   setSurfaceArea,
   setSoils,
-  setSoilsSurfaceAreas,
+  setSoilsDistribution,
   setContaminatedSoils,
   setOwner,
   setTenant,

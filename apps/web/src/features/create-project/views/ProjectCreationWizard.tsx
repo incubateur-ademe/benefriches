@@ -12,8 +12,8 @@ import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistanc
 import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
 import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
+import ProjectSoilsDistributionContainer from "./soils/soils-distribution";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
-import ProjectSoilsSurfaceAreasContainer from "./soils/soils-surface-areas";
 import ProjectFullTimeJobsInvolvedForm from "./stakeholders/conversion-full-time-jobs-involved";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
@@ -73,7 +73,7 @@ function ProjectCreationWizard() {
       case ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION:
         return <PhotovoltaicContractDurationContainer />;
       case ProjectCreationStep.SOILS_SURFACE_AREAS:
-        return <ProjectSoilsSurfaceAreasContainer />;
+        return <ProjectSoilsDistributionContainer />;
       case ProjectCreationStep.SOILS_SUMMARY:
         return <ProjectSoilsSummaryContainer />;
       case ProjectCreationStep.SOILS_CARBON_STORAGE:

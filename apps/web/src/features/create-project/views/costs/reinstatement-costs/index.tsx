@@ -11,21 +11,21 @@ import { sumObjectValues } from "@/shared/services/sum/sum";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
 
-const hasBuildings = (soilsSurfaceAreas: ProjectSite["soilsSurfaceAreas"]) =>
-  soilsSurfaceAreas[SoilType.BUILDINGS] ? soilsSurfaceAreas[SoilType.BUILDINGS] > 0 : false;
-const hasImpermeableSoils = (soilsSurfaceAreas: ProjectSite["soilsSurfaceAreas"]) =>
-  soilsSurfaceAreas[SoilType.IMPERMEABLE_SOILS]
-    ? soilsSurfaceAreas[SoilType.IMPERMEABLE_SOILS] > 0
+const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
+  soilsDistribution[SoilType.BUILDINGS] ? soilsDistribution[SoilType.BUILDINGS] > 0 : false;
+const hasImpermeableSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
+  soilsDistribution[SoilType.IMPERMEABLE_SOILS]
+    ? soilsDistribution[SoilType.IMPERMEABLE_SOILS] > 0
     : false;
-const hasMineralSoils = (soilsSurfaceAreas: ProjectSite["soilsSurfaceAreas"]) =>
-  soilsSurfaceAreas[SoilType.MINERAL_SOIL] ? soilsSurfaceAreas[SoilType.MINERAL_SOIL] > 0 : false;
+const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
+  soilsDistribution[SoilType.MINERAL_SOIL] ? soilsDistribution[SoilType.MINERAL_SOIL] > 0 : false;
 
 const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
-  const soilsSurfaceAreas = siteData?.soilsSurfaceAreas ?? {};
+  const soilsDistribution = siteData?.soilsDistribution ?? {};
   return {
-    hasBuildings: hasBuildings(soilsSurfaceAreas),
+    hasBuildings: hasBuildings(soilsDistribution),
     hasImpermeableSoils:
-      hasImpermeableSoils(soilsSurfaceAreas) || hasMineralSoils(soilsSurfaceAreas),
+      hasImpermeableSoils(soilsDistribution) || hasMineralSoils(soilsDistribution),
     hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
     onSubmit: (amounts: FormValues) => {
       const totalCost = sumObjectValues(amounts);

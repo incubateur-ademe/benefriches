@@ -24,7 +24,7 @@ export type ProjectSite = {
   id: string;
   name: string;
   isFriche: boolean;
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  soilsDistribution: Partial<Record<SoilType, number>>;
   surfaceArea: number;
   address: {
     id: string;
@@ -43,5 +43,5 @@ export type Project = {
   id: string;
   name: string;
   relatedSiteId: string;
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  soilsDistribution: Partial<Record<SoilType, number>>;
 };

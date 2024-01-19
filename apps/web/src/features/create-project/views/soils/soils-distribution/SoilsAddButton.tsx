@@ -16,7 +16,7 @@ const modal = createModal({
   isOpenedByDefault: false,
 });
 
-function SoilsSurfaceAreasAddButton({ onValidate, soilTypes }: Props) {
+function SoilsAddButton({ onValidate, soilTypes }: Props) {
   const [value, setValue] = useState<SoilType>();
 
   const onClick = () => {
@@ -69,4 +69,4 @@ function SoilsSurfaceAreasAddButton({ onValidate, soilTypes }: Props) {
   );
 }
 
-export default SoilsSurfaceAreasAddButton;
+export default SoilsAddButton;

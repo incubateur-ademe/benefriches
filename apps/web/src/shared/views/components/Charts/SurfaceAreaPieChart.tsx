@@ -8,12 +8,12 @@ import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  soilsDistribution: Partial<Record<SoilType, number>>;
 };
 
-const SurfaceAreaPieChart = ({ soilsSurfaceAreas }: Props) => {
+const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
-  const data = Object.entries(soilsSurfaceAreas).map(([soilType, surfaceArea]) => {
+  const data = Object.entries(soilsDistribution).map(([soilType, surfaceArea]) => {
     return {
       name: getLabelForSoilType(soilType as SoilType),
       y: surfaceArea,

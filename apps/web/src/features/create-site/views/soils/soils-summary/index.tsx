@@ -8,7 +8,7 @@ import { AppDispatch } from "@/store";
 const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {
   return {
     onNext: () => dispatch(goToStep(SiteCreationStep.SOILS_CARBON_STORAGE)),
-    soilsSurfaceAreas: siteData.soilsSurfaceAreas ?? {},
+    soilsDistribution: siteData.soilsDistribution ?? {},
     totalSurfaceArea: siteData.surfaceArea ?? 0,
   };
 };

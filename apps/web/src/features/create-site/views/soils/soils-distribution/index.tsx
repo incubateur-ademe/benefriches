@@ -1,10 +1,10 @@
 import {
   goToStep,
-  setSoilsSurfaceAreas,
+  setSoilsDistribution,
   SiteCreationStep,
 } from "../../../application/createSite.reducer";
 import { SiteDraft } from "../../../domain/siteFoncier.types";
-import SiteSoilsSurfaceAreasForm, { type FormValues } from "./SoilsSurfaceAreasForm";
+import SiteSoilsDistributionForm, { type FormValues } from "./SoilsDistributionForm";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { AppDispatch } from "@/store";
@@ -12,7 +12,7 @@ import { AppDispatch } from "@/store";
 const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {
   return {
     onSubmit: (formData: FormValues) => {
-      dispatch(setSoilsSurfaceAreas(formData));
+      dispatch(setSoilsDistribution(formData));
       dispatch(goToStep(SiteCreationStep.SOILS_SUMMARY));
     },
     soils: siteData.soils ?? [],
@@ -20,11 +20,11 @@ const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {
   };
 };
 
-function SiteSoilsSurfaceAreasFormContainer() {
+function SiteSoilsDistributionFormContainer() {
   const dispatch = useAppDispatch();
   const siteData = useAppSelector((state) => state.siteCreation.siteData);
 
-  return <SiteSoilsSurfaceAreasForm {...mapProps(dispatch, siteData)} />;
+  return <SiteSoilsDistributionForm {...mapProps(dispatch, siteData)} />;
 }
 
-export default SiteSoilsSurfaceAreasFormContainer;
+export default SiteSoilsDistributionFormContainer;

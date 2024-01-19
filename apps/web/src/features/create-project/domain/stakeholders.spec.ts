@@ -24,7 +24,7 @@ describe("Project stakeholders", () => {
         },
         surfaceArea: 1200,
         hasContaminatedSoils: false,
-        soilsSurfaceAreas: {},
+        soilsDistribution: {},
       };
 
       expect(getSiteStakeholders(projectSite)).toEqual([
@@ -56,7 +56,7 @@ describe("Project stakeholders", () => {
         },
         surfaceArea: 1200,
         hasContaminatedSoils: false,
-        soilsSurfaceAreas: {},
+        soilsDistribution: {},
       };
 
       expect(getSiteStakeholders(projectSite)).toEqual([

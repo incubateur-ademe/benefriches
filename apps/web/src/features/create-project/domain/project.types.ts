@@ -43,7 +43,7 @@ export type Project = {
   financialAssistanceRevenue: number;
   yearlyProjectedCosts: Expense[];
   yearlyProjectedRevenue: Revenue[];
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  soilsDistribution: Partial<Record<SoilType, number>>;
 };
 
 export type DocumentType = "BUILDING_PERMIT" | "FORECAST_BALANCE_SHEET";
@@ -91,7 +91,7 @@ export type ProjectSite = {
   };
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  soilsDistribution: Partial<Record<SoilType, number>>;
   surfaceArea: number;
   address: Address;
 };

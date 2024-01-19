@@ -28,7 +28,7 @@ export type SiteDraft = {
   // soils
   surfaceArea: number;
   soils: SoilType[];
-  soilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  soilsDistribution: Partial<Record<SoilType, number>>;
   // contamination
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;

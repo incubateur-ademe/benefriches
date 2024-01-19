@@ -157,8 +157,8 @@ export const projectCreationSlice = createSlice({
     setPhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicContractDuration = action.payload;
     },
-    setSoilsSurfaceAreas: (state, action: PayloadAction<Project["soilsSurfaceAreas"]>) => {
-      state.projectData.soilsSurfaceAreas = action.payload;
+    setSoilsDistribution: (state, action: PayloadAction<Project["soilsDistribution"]>) => {
+      state.projectData.soilsDistribution = action.payload;
     },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {
       state.step = action.payload;
@@ -209,7 +209,7 @@ export const {
   setPhotovoltaicInstallationSurface,
   setPhotovoltaicExpectedAnnualProduction,
   setPhotovoltaicContractDuration,
-  setSoilsSurfaceAreas,
+  setSoilsDistribution,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;

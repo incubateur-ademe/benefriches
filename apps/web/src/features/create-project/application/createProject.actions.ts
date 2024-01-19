@@ -46,7 +46,7 @@ const saveProjectSchema = z.object({
   financialAssistanceRevenue: z.number().nonnegative(),
   yearlyProjectedCosts: z.object({ amount: z.number().nonnegative() }).array(),
   yearlyProjectedRevenue: z.object({ amount: z.number().nonnegative() }).array(),
-  soilsSurfaceAreas: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
+  soilsDistribution: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
 });
 
 type SaveProjectPayload = z.infer<typeof saveProjectSchema>;

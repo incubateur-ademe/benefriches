@@ -9,15 +9,15 @@ import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 type Props = {
   onNext: () => void;
   totalSurfaceArea: number;
-  siteSoilsSurfaceAreas: Partial<Record<SoilType, number>>;
-  projectSoilsSurfaceAreas: Partial<Record<SoilType, number>>;
+  siteSoilsDistribution: Partial<Record<SoilType, number>>;
+  projectSoilsDistribution: Partial<Record<SoilType, number>>;
 };
 
 const SiteSoilsSummary = ({
   totalSurfaceArea,
   onNext,
-  siteSoilsSurfaceAreas,
-  projectSoilsSurfaceAreas,
+  siteSoilsDistribution,
+  projectSoilsDistribution,
 }: Props) => {
   const formattedTotalSurfaceAreaInHectare = formatNumberFr(
     convertSquareMetersToHectares(totalSurfaceArea),
@@ -37,11 +37,11 @@ const SiteSoilsSummary = ({
       <div className="fr-grid-row fr-grid-row--gutters">
         <div className="fr-col-6">
           <h3>Avant</h3>
-          <SurfaceAreaPieChart soilsSurfaceAreas={siteSoilsSurfaceAreas} />
+          <SurfaceAreaPieChart soilsDistribution={siteSoilsDistribution} />
         </div>
         <div className="fr-col-6">
           <h3>Après</h3>
-          <SurfaceAreaPieChart soilsSurfaceAreas={projectSoilsSurfaceAreas} />
+          <SurfaceAreaPieChart soilsDistribution={projectSoilsDistribution} />
         </div>
       </div>
 
