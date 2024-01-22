@@ -5,6 +5,7 @@ import { getPrevisionalProjectSocioEconomicImpact, ProjectType } from "../../dom
 import { getLabelForProjectType } from "../projectTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import AboutFormsModal from "@/shared/views/components/AboutFormsModal/AboutFormsModal";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -69,24 +70,27 @@ function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
     validationError && validationError.type !== "allowedProjectTypes" ? "error" : "default";
 
   return (
-    <WizardFormLayout
-      title="Que souhaitez-vous aménager sur ce site ?"
-      instructions={
-        <p>
-          Votre projet peut contenir plusieurs aménagements, toutefois il s’agit de l’usage
-          principal qui doit être renseigné.
-        </p>
-      }
-    >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Checkbox
-          options={options.map(mapOptions(register, siteSurfaceArea))}
-          state={state}
-          stateRelatedMessage={validationError ? validationError.message : undefined}
-        />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
-      </form>
-    </WizardFormLayout>
+    <>
+      <AboutFormsModal />
+      <WizardFormLayout
+        title="Que souhaitez-vous aménager sur ce site ?"
+        instructions={
+          <p>
+            Votre projet peut contenir plusieurs aménagements, toutefois il s’agit de l’usage
+            principal qui doit être renseigné.
+          </p>
+        }
+      >
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Checkbox
+            options={options.map(mapOptions(register, siteSurfaceArea))}
+            state={state}
+            stateRelatedMessage={validationError ? validationError.message : undefined}
+          />
+          <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        </form>
+      </WizardFormLayout>
+    </>
   );
 }
 
