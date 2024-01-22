@@ -1,3 +1,5 @@
+import { fr } from "@codegouvfr/react-dsfr";
+import Accordion from "@codegouvfr/react-dsfr/Accordion";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/router";
@@ -24,31 +26,28 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
       return (
         <>
           <h2>Vous avez un projet d'aménagement sur le site "{siteName}".</h2>
-          <h3>Documents utiles</h3>
           <p>
-            Pour vous aider à saisir les informations liées à votre projet, nous vous conseillons de
-            mobiliser les ressources suivantes :
+            Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du
+            projet, la transformation des sols du site, les acteurs associés, les coûts et recettes
+            prévisionnels, le calendrier des travaux , etc.
           </p>
-          <ul>
-            <li>Plan d'aménagement (ou plan masse)</li>
-            <li>Permis d'aménager ou de construire</li>
-            <li>
-              Dossiers réglementaires le cas échéant (ICPE, loi sur l'eau, dérogation espèces
-              protégées, etc.)
-            </li>
-            <li>Acte de vente</li>
-            <li>Bilan économique de l'opération (ou plan d'affaire le cas échéant</li>
-          </ul>
-          <p>
-            Vous pourrez remplir le formulaire si vous ne disposez pas de toutes les informations,
-            Bénéfriches vous proposant des valeurs par défaut, issues du retour d'expérience de
-            l'ADEME ou autres ressources documentaires.
-          </p>
-          <p>
-            Néanmoins, plus les données renseignées seront spécifiques, plus les résultats seront
-            pertinents et fiables !
-          </p>
-          <Button linkProps={routes.createProject({ siteId }).link}>C'est parti !</Button>
+          <Accordion label="Documents utiles" className={fr.cx("fr-mb-4w")}>
+            <p>
+              Pour vous aider à saisir les informations liées à votre projet, il peut être utile
+              d'avoir les ressources suivantes :
+            </p>
+            <ul>
+              <li>Plan d'aménagement (ou plan masse)</li>
+              <li>Permis d'aménager ou de construire</li>
+              <li>
+                Dossiers réglementaires le cas échéant (ICPE, loi sur l'eau, dérogation espèces
+                protégées, etc.)
+              </li>
+              <li>Titre de propriété ou acte de vente</li>
+              <li>Bilan économique de l'opération (ou plan d'affaire le cas échéant)</li>
+            </ul>
+          </Accordion>
+          <Button linkProps={routes.createProject({ siteId }).link}>Commencer</Button>
         </>
       );
   }
