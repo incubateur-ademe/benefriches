@@ -4,6 +4,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { PHOTOVOLTAIC_RATIO_KWC_PER_M2 } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -56,7 +57,7 @@ function PhotovoltaicPowerFromSurfaceForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicInstallationElectricalPowerKWc"
-          label="Puissance de l’installation"
+          label={<RequiredLabel label="Puissance de l’installation" />}
           hintText={hintText}
           rules={{
             min: 0,

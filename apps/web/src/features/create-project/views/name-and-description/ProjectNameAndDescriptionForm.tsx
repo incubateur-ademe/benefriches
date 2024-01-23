@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -27,7 +28,7 @@ function ProjectNameAndDescriptionForm({ onSubmit, defaultProjectName }: Props) 
     <WizardFormLayout title="Dénomination du projet">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
-          label="Nom du projet"
+          label={<RequiredLabel label="Nom du projet" />}
           hintText="Le nom du projet tel qu’il est courament utilisé par les collectivités."
           state={nameError ? "error" : "default"}
           stateRelatedMessage={nameError ? nameError.message : undefined}
