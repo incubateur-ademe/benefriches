@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, ReactNode } from "react";
 import { FieldValues, useController, UseControllerProps } from "react-hook-form";
 import DsfrInput from "@codegouvfr/react-dsfr/Input";
 
@@ -8,7 +8,7 @@ import {
 } from "@/shared/services/number-conversion/numberConversion";
 
 type Props<T extends FieldValues> = {
-  label: string;
+  label: ReactNode;
   hintText?: string;
 } & UseControllerProps<T>;
 
