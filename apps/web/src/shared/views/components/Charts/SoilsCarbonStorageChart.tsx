@@ -34,13 +34,13 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
     tooltip: {
       distance: 40,
       pointFormat:
-        "<strong>{point.y:.2f} T de carbone stockées</strong><br>" +
-        "Superficie : {point.options.custom.superficie} m²<br>" +
+        "<strong>{point.options.custom.carbonStorage:.2f} T de carbone stockées</strong><br>" +
+        "Superficie : {point.y:,.0f} m²<br>" +
         "Carbone stockable / m² : {point.z:.4f} T",
     },
     plotOptions: {
       series: {
-        keys: ["name", "z", "y", "custom.superficie", "color"],
+        keys: ["name", "z", "y", "custom.carbonStorage", "color"],
       },
       variablepie: { cursor: "pointer" },
     },
@@ -52,8 +52,8 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
         data: soilsCarbonStorage.map((soilData) => [
           getLabelForSoilType(soilData.type),
           soilData.carbonStorageInTonPerSquareMeters,
-          soilData.carbonStorage,
           soilData.surfaceArea,
+          soilData.carbonStorage,
           getColorForSoilType(soilData.type as SoilType),
         ]),
       },
