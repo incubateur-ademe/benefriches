@@ -6,7 +6,7 @@ import { ProjectImpactsComparisonState } from "../../application/projectImpactsC
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
 import CarbonStorageComparisonChart from "./charts/carbon-storage";
-import EconomicEvaluationComparisonChart from "./charts/economic-evaluation/EconomicEvaluationComparisonChart";
+import EconomicEvaluationComparisonChart from "./charts/economic-evaluation";
 import RentIncomeComparisonChart from "./charts/economic-impacts/RentIncomeComparisonChart";
 import SecuringCostComparisonChart from "./charts/economic-impacts/SecuringCostComparisonChart";
 import TaxRevenueComparisonChart from "./charts/economic-impacts/TaxRevenueComparisonChart";
@@ -98,7 +98,7 @@ function ProjectsImpactsComparisonPage({ siteData, projectData, loadingState }: 
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard>
-              <EconomicEvaluationComparisonChart />
+              <EconomicEvaluationComparisonChart duration={10} />
             </ImpactCard>
           </div>
           <div className={fr.cx("fr-col-3")}>

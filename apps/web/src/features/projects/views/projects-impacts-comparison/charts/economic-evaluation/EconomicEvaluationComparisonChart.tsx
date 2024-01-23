@@ -2,7 +2,19 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
-function EconomicEvaluationComparisonChart() {
+type Props = {
+  baseOwnerName: string;
+  withOwnerName: string;
+  withImpactValue: number;
+  baseImpactValue: number;
+};
+
+function EconomicEvaluationComparisonChart({
+  baseOwnerName,
+  withOwnerName,
+  withImpactValue,
+  baseImpactValue,
+}: Props) {
   const barChartOptions: Highcharts.Options = {
     ...sharedChartConfig,
     xAxis: {
@@ -24,13 +36,13 @@ function EconomicEvaluationComparisonChart() {
     series: [
       {
         type: "column",
-        name: "Terre Cuite d'Occitanie",
-        data: [-3911792],
+        name: baseOwnerName,
+        data: [baseImpactValue],
       },
       {
         type: "column",
-        name: "Générale du Solaire",
-        data: [-9794959],
+        name: withOwnerName,
+        data: [withImpactValue],
       },
     ],
   };

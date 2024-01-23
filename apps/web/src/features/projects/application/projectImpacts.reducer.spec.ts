@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+import { Owner, ProjectStakeholder } from "../domain/projects.types";
 import { ProjectDetailsServiceMock } from "../infrastructure/project-details-service/projectDetailsServiceMock";
 import {
   fetchCurrentAndProjectedSoilsCarbonStorage,
@@ -37,12 +38,20 @@ const PROJECT_MOCKED_RESULT = {
     [SoilType.MINERAL_SOIL]: 500,
     [SoilType.PRAIRIE_GRASS]: 2000,
   },
+  futureOperator: {
+    name: "Test",
+    structureType: "company",
+  } as ProjectStakeholder,
+  photovoltaicPanelsInstallationCost: 150000,
+  financialAssistanceRevenue: 50000,
+  yearlyProjectedCosts: [],
+  yearlyProjectedRevenue: [],
 };
 
 const SITE_MOCKED_RESULT = {
   id: "03a53ffd-4f71-419e-8d04-041311eefa23",
   isFriche: true,
-  owner: { name: "", structureType: "unknown" },
+  owner: { name: "", structureType: "company" } as Owner,
   name: "Friche industrielle",
   surfaceArea: 2900,
   hasContaminatedSoils: false,
@@ -59,6 +68,8 @@ const SITE_MOCKED_RESULT = {
     [SoilType.BUILDINGS]: 1400,
     [SoilType.MINERAL_SOIL]: 1500,
   },
+  yearlyExpenses: [],
+  yearlyIncomes: [],
 };
 
 describe("Project impacts reducer", () => {

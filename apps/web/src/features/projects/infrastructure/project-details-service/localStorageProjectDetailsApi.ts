@@ -14,11 +14,32 @@ import { delay } from "@/shared/services/delay/delay";
 
 export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 
+export type Stakeholder =
+  | {
+      name: string;
+      structureType: "company" | "local_or_regional_authority" | "unknown";
+    }
+  | {
+      name: "municipality" | "community_of_municipalities" | "department" | "region" | "state";
+      structureType: "local_or_regional_authority";
+    };
+
 type ProjectInLocalStorage = {
   id: string;
   name: string;
   relatedSiteId: string;
   soilsDistribution: Partial<Record<SoilType, number>>;
+  futureOperator: Stakeholder;
+  reinstatementContractOwner?: Stakeholder;
+  reinstatementCost?: number;
+  photovoltaicPanelsInstallationCost: number;
+  financialAssistanceRevenue: number;
+  yearlyProjectedCosts: {
+    amount: number;
+  }[];
+  yearlyProjectedRevenue: {
+    amount: number;
+  }[];
 };
 
 export class LocalStorageProjectDetailsApi
