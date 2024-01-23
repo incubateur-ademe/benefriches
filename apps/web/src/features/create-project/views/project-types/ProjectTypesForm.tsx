@@ -4,8 +4,8 @@ import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import { getPrevisionalProjectSocioEconomicImpact, ProjectType } from "../../domain/project.types";
 import { getLabelForProjectType } from "../projectTypeLabelMapping";
 
+import AboutFormsModal from "@/shared/app-settings/views/AboutFormsModal";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
-import AboutFormsModal from "@/shared/views/components/AboutFormsModal/AboutFormsModal";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {

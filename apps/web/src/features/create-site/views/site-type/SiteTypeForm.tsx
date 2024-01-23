@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import AboutFormsModal from "@/shared/views/components/AboutFormsModal/AboutFormsModal";
+import AboutFormsModal from "@/shared/app-settings/views/AboutFormsModal";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
