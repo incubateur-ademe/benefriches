@@ -1,6 +1,7 @@
 import { mapFormDataToExpenses } from "./mappers";
 import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
 
+import { AppDispatch, RootState } from "@/app/application/store";
 import {
   addExpenses,
   goToStep,
@@ -9,7 +10,6 @@ import {
 import { hasTenant } from "@/features/create-site/domain/site.functions";
 import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, { siteData }: RootState["siteCreation"]) => {
   const siteHasTenant = hasTenant(siteData as SiteDraft);

@@ -2,6 +2,7 @@ import ConversionFullTimeJobsInvolvedForm, {
   FormValues,
 } from "./ConversionFullTimeJobsInvolvedForm";
 
+import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   ProjectCreationStep,
@@ -9,7 +10,6 @@ import {
 } from "@/features/create-project/application/createProject.reducer";
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
   return {

@@ -7,9 +7,9 @@ import PhotovoltaicPanelsInstallationCostsForm, {
   FormValues,
 } from "./PhotoVoltaicPanelsInstallationCostsForm";
 
+import { AppDispatch } from "@/app/application/store";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {

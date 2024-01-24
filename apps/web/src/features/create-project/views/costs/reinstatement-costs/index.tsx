@@ -5,11 +5,11 @@ import {
 } from "../../../application/createProject.reducer";
 import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
+import { AppDispatch } from "@/app/application/store";
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { SoilType } from "@/shared/domain/soils";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
   soilsDistribution[SoilType.BUILDINGS] ? soilsDistribution[SoilType.BUILDINGS] > 0 : false;

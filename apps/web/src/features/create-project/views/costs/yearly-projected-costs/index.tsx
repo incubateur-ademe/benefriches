@@ -5,8 +5,8 @@ import {
 } from "../../../application/createProject.reducer";
 import YearlyProjectedsCostsForm, { FormValues } from "./YearlyProjectedCostsForm";
 
+import { AppDispatch } from "@/app/application/store";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {

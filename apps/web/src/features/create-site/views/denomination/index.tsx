@@ -3,13 +3,13 @@ import { SiteDraft } from "../../domain/siteFoncier.types";
 import { generateSiteName } from "../../domain/siteName";
 import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
 
+import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   setNameAndDescription,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, siteData: SiteDraft) => {
   return {

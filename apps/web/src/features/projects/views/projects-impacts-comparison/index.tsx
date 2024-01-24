@@ -4,7 +4,7 @@ import { fetchBaseProjectAndWithProjectData } from "../../application/projectImp
 import { ProjectImpactsComparisonState } from "../../application/projectImpactsComparison.reducer";
 import ProjectsImpactsComparisonPage from "./ProjectsImpactsComparisonPage";
 
-import { routes } from "@/router";
+import { routes } from "@/app/application/router";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {

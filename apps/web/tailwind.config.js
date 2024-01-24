@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import theme from "./src/theme";
+import theme from "./src/app/views/theme";
 
 export default {
   prefix: "tw-",

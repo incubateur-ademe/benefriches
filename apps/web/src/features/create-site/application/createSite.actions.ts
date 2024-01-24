@@ -1,7 +1,7 @@
 import z from "zod";
 import { FricheActivity } from "../domain/friche.types";
 
-import { createAppAsyncThunk } from "@/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
 
 const createSiteSchema = z.object({

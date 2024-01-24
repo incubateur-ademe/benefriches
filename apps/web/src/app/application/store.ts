@@ -2,14 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import {
   GetSiteGateway,
   SaveProjectGateway,
-} from "./features/create-project/application/createProject.actions";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "./features/create-project/application/soilsCarbonStorage.actions";
-import { CreateSiteGateway } from "./features/create-site/application/createSite.actions";
-import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "./features/create-site/application/siteSoilsCarbonStorage.actions";
+} from "../../features/create-project/application/createProject.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.actions";
+import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
+import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
 import {
   ProjectsListGateway,
   SitesGateway,
-} from "./features/projects/application/projectsList.actions";
+} from "../../features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
 import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";

@@ -1,4 +1,4 @@
-import { soilColors } from "@/theme";
+import { soilColors } from "@/app/views/theme";
 
 export enum SoilType {
   BUILDINGS = "BUILDINGS",

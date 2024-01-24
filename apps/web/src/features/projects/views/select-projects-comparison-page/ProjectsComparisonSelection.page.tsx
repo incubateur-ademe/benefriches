@@ -3,7 +3,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import ProjectCard from "./SelectableProjectCard";
 
-import { routes } from "@/router";
+import { routes } from "@/app/application/router";
 
 const STATU_QUO = "STATU_QUO";
 

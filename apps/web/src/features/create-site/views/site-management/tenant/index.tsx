@@ -1,5 +1,6 @@
 import FricheTenantForm, { FormValues } from "./SiteTenantForm";
 
+import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   setTenant,
@@ -7,7 +8,6 @@ import {
 } from "@/features/create-site/application/createSite.reducer";
 import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {
   return {

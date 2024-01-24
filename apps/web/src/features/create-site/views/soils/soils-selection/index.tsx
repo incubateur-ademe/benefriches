@@ -1,8 +1,8 @@
 import { goToStep, setSoils, SiteCreationStep } from "../../../application/createSite.reducer";
 import SiteSoilsForm, { FormValues } from "./SoilsForm";
 
+import { AppDispatch, RootState } from "@/app/application/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch, RootState } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, siteCreationState: RootState["siteCreation"]) => {
   return {

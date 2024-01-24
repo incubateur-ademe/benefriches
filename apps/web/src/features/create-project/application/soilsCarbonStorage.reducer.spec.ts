@@ -5,9 +5,9 @@ import { fetchRelatedSiteAction } from "./createProject.actions";
 import { setSoilsDistribution } from "./createProject.reducer";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./soilsCarbonStorage.actions";
 
+import { createStore } from "@/app/application/store";
 import { SoilType } from "@/shared/domain/soils";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
-import { createStore } from "@/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 const SOILS_STORAGE_API_MOCKED_RESULT = {

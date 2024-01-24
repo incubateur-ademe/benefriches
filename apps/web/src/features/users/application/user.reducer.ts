@@ -1,7 +1,7 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { User } from "../domain/user";
 
-import { RootState } from "@/store";
+import { RootState } from "@/app/application/store";
 
 export type State = {
   currentUser: User | null;

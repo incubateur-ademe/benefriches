@@ -1,6 +1,6 @@
 import "@codegouvfr/react-dsfr/dsfr/utility/icons/icons-system/icons-system.css";
 
-import { routes } from "@/router";
+import { routes } from "@/app/application/router";
 
 type Props = {
   siteId: string;

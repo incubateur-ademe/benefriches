@@ -1,6 +1,6 @@
 import { ProjectsList, SitesList } from "../domain/projects.types";
 
-import { createAppAsyncThunk } from "@/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 export interface ProjectsListGateway {
   getProjectsList(): Promise<ProjectsList>;

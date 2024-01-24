@@ -2,13 +2,13 @@ import OperationsFullTimeJobsInvolvedForm, {
   FormValues,
 } from "./OperationsFullTimeJobsInvolvedForm";
 
+import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   ProjectCreationStep,
   setOperationsFullTimeJobsInvolved,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {

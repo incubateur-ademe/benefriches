@@ -6,7 +6,7 @@ import {
   RenewableEnergyType,
 } from "../domain/project.types";
 
-import { createAppAsyncThunk } from "@/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
 
 export interface GetSiteGateway {

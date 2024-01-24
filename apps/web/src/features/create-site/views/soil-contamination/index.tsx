@@ -1,12 +1,12 @@
 import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
 
+import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   setContaminatedSoils,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, siteSurfaceArea: number) => {
   return {

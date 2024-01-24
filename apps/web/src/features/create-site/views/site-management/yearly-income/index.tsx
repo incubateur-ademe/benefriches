@@ -1,12 +1,12 @@
 import SiteYearlyIncomeForm, { FormValues } from "./SiteYearlyIncomeForm";
 
+import { AppDispatch } from "@/app/application/store";
 import {
   addIncomes,
   goToStep,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {

@@ -1,7 +1,7 @@
 import { validate as uuidValidate } from "uuid";
 import { Project, ProjectSite } from "../domain/projects.types";
 
-import { createAppAsyncThunk } from "@/appAsyncThunk";
+import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
 
 type SoilsCarbonStorageResult = {

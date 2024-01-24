@@ -4,7 +4,7 @@ import { ProjectsGroupedBySite } from "../../domain/projects.types";
 import NewProjectButton from "./NewProjectButton";
 import ProjectCard from "./ProjectCard";
 
-import { routes } from "@/router";
+import { routes } from "@/app/application/router";
 
 type Props = {
   projectsList: ProjectsGroupedBySite;

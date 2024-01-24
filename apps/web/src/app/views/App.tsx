@@ -1,18 +1,19 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import BudgetPage from "./features/budget/views/BudgetPage";
-import CreateProjectIntroductionPage from "./features/create-project/views/introduction";
-import CreateProjectPage from "./features/create-project/views/ProjectCreationWizard";
-import CreateSiteIntroductionPage from "./features/create-site/views/introduction/CreateSiteIntroductionPage";
-import CreateSiteFoncierPage from "./features/create-site/views/SiteCreationWizard";
-import LoginPage from "./features/login";
-import MyProjectsPage from "./features/projects/views/my-projects-page";
-import ProjectImpactsPage from "./features/projects/views/project-impacts-page";
-import ProjectsImpactsComparisonPage from "./features/projects/views/projects-impacts-comparison";
-import ProjectsComparisonSelectionPage from "./features/projects/views/select-projects-comparison-page";
-import StatsPage from "./features/stats/views/StatsPage";
-import CreateUserPage from "./features/users/views";
-import HeaderFooterLayout from "./shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
-import { routes, useRoute } from "./router";
+import { routes, useRoute } from "../application/router";
+import BudgetPage from "./pages/BudgetPage";
+import StatsPage from "./pages/StatsPage";
+
+import CreateProjectIntroductionPage from "@/features/create-project/views/introduction";
+import CreateProjectPage from "@/features/create-project/views/ProjectCreationWizard";
+import CreateSiteIntroductionPage from "@/features/create-site/views/introduction/CreateSiteIntroductionPage";
+import CreateSiteFoncierPage from "@/features/create-site/views/SiteCreationWizard";
+import LoginPage from "@/features/login";
+import MyProjectsPage from "@/features/projects/views/my-projects-page";
+import ProjectImpactsPage from "@/features/projects/views/project-impacts-page";
+import ProjectsImpactsComparisonPage from "@/features/projects/views/projects-impacts-comparison";
+import ProjectsComparisonSelectionPage from "@/features/projects/views/select-projects-comparison-page";
+import CreateUserPage from "@/features/users/views";
+import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 
 function App() {
   const route = useRoute();

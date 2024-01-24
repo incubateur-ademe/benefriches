@@ -1,7 +1,7 @@
 import { Badge } from "@codegouvfr/react-dsfr/Badge";
 import { Header } from "@codegouvfr/react-dsfr/Header";
 
-import { routes } from "@/router";
+import { routes } from "@/app/application/router";
 
 function BenefrichesHeader() {
   return (

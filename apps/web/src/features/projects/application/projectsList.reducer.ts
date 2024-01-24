@@ -2,7 +2,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { ProjectsGroupedBySite, ProjectsList, SitesList } from "../domain/projects.types";
 import { fetchProjects, fetchSites } from "./projectsList.actions";
 
-import { RootState } from "@/store";
+import { RootState } from "@/app/application/store";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
 

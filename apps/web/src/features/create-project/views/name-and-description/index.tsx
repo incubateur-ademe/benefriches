@@ -1,13 +1,13 @@
 import { saveProjectAction } from "../../application/createProject.actions";
 import ProjectNameAndDescriptionForm, { FormValues } from "./ProjectNameAndDescriptionForm";
 
+import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   ProjectCreationStep,
   setNameAndDescription,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {

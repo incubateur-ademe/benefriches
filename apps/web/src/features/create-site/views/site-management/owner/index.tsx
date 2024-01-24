@@ -1,5 +1,6 @@
 import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 
+import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   setOwner,
@@ -7,7 +8,6 @@ import {
 } from "@/features/create-site/application/createSite.reducer";
 import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { AppDispatch } from "@/store";
 
 const mapProps = (dispatch: AppDispatch, currentUserCompany: string) => {
   return {
