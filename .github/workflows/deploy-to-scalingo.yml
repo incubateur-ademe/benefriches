@@ -6,14 +6,22 @@ on:
       tag:
         type: string
         required: true
-    secrets:
-      SCALINGO_API_TOKEN:
+      env:
+        type: string
+        required: true
+  workflow_dispatch:
+    inputs:
+      tag:
+        type: string
+        required: true
+      env:
+        type: string
         required: true
 
 jobs:
     deploy:
       runs-on: ubuntu-latest
-      environment: staging
+      environment: ${{inputs.env}}
       steps:
         - uses: actions/checkout@v3
         - name: Download web artifact
