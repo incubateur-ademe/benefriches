@@ -12,10 +12,14 @@ import {
 } from "../../features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
+import { LocalAuthoritiesGateway as ProjectLocalAuthoritiesGateway } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
+import projectSiteLocalAuthorities from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
 import projectPvExpectedPerformancesStorage from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
 import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
+import { LocalAuthoritiesGateway as SiteLocalAuthoritiesGateway } from "@/features/create-site/application/siteLocalAuthorities.actions";
+import siteLocalAuthorities from "@/features/create-site/application/siteLocalAuthorities.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
@@ -32,6 +36,7 @@ export type AppDependencies = {
   projectDetailsService: ProjectsDetailsGateway;
   sitesService: SitesGateway;
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
+  localAuthoritiesService: SiteLocalAuthoritiesGateway | ProjectLocalAuthoritiesGateway;
 };
 
 export const createStore = (appDependencies: AppDependencies) =>
@@ -46,6 +51,8 @@ export const createStore = (appDependencies: AppDependencies) =>
       projectImpacts,
       projectImpactsComparison,
       projectSoilsCarbonStorage,
+      siteLocalAuthorities,
+      projectSiteLocalAuthorities,
     },
     middleware(getDefaultMiddleware) {
       return getDefaultMiddleware({

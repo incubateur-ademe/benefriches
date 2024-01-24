@@ -1,45 +1,39 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Input from "@codegouvfr/react-dsfr/Input";
-import Select from "@codegouvfr/react-dsfr/SelectNext";
 
+import { ProjectSiteLocalAuthoritiesState } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { SiteStakeholder } from "@/features/create-project/domain/stakeholders";
-import {
-  getLabelForLocalOrRegionalAuthority,
-  LocalAndRegionalAuthority,
-} from "@/shared/domain/localOrRegionalAuthority";
+import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
+import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
   currentUserCompany: string;
   siteStakeholders: SiteStakeholder[];
+  projectSiteLocalAuthorities: ProjectSiteLocalAuthoritiesState;
 };
-type FutureOperatorOption =
-  | "user_company"
-  | "site_stakeholder"
-  | "site_owner"
-  | "local_or_regional_authority"
-  | "other_structure"
-  | "unknown";
 
-type SiteStakholderOption = SiteStakeholder["role"];
-
-const localAndRegionalAuthorityOptions = (
-  ["municipality", "community_of_municipalities", "department", "region", "state"] as const
-).map((localOrRegionalAuthority) => ({
-  label: getLabelForLocalOrRegionalAuthority(localOrRegionalAuthority),
-  value: localOrRegionalAuthority,
-}));
-
-export type FormValues = {
-  futureOperator: FutureOperatorOption;
-  siteStakeholder?: SiteStakholderOption;
-  localOrRegionalAuthority?: LocalAndRegionalAuthority;
-  otherStructureName?: string;
-};
+export type FormValues =
+  | {
+      futureOperator: "local_or_regional_authority";
+      localAuthority: LocalAutorityStructureType;
+      otherStructureName: undefined;
+    }
+  | {
+      futureOperator: "other_structure";
+      otherStructureName: string;
+      localAuthority: undefined;
+    }
+  | {
+      futureOperator: "user_company" | "site_tenant" | "site_owner" | "unknown";
+      localAuthority: undefined;
+      otherStructureName: undefined;
+    };
 
 const requiredMessage = "Champ requis";
 
@@ -52,15 +46,10 @@ const getSiteRelatedOperatorOptions = (
       label: `Mon entreprise, ${currentUserCompany}`,
       value: "user_company",
     },
-    siteStakeholders.length > 1
-      ? {
-          label: "Un acteur du site existant",
-          value: "site_stakeholder",
-        }
-      : {
-          label: siteStakeholders[0]!.name,
-          value: siteStakeholders[0]!.role,
-        },
+    ...siteStakeholders.map(({ name, role }) => ({
+      label: name,
+      value: role,
+    })),
   ];
 };
 
@@ -68,6 +57,7 @@ function SiteReinstatementContractOwnerForm({
   onSubmit,
   currentUserCompany,
   siteStakeholders,
+  projectSiteLocalAuthorities,
 }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
@@ -103,21 +93,6 @@ function SiteReinstatementContractOwnerForm({
             ),
           )}
 
-          {selectedFutureOperator === "site_stakeholder" && (
-            <Select
-              label="Acteur du site existant"
-              placeholder="Sélectionnez l'acteur du site existant"
-              nativeSelectProps={register("siteStakeholder", {
-                required: "Ce champ est requis",
-              })}
-              state={formState.errors.siteStakeholder ? "error" : "default"}
-              stateRelatedMessage={formState.errors.siteStakeholder?.message}
-              options={siteStakeholders.map(({ name, role }) => ({
-                label: name,
-                value: role,
-              }))}
-            />
-          )}
           <RadioButton
             label="Une collectivité"
             value="local_or_regional_authority"
@@ -125,15 +100,16 @@ function SiteReinstatementContractOwnerForm({
           />
 
           {selectedFutureOperator === "local_or_regional_authority" && (
-            <Select
-              label="Type de collectivité"
+            <LocalAuthoritySelect
+              data={projectSiteLocalAuthorities.localAuthorities}
+              loadingData={projectSiteLocalAuthorities.loadingState}
+              label={<RequiredLabel label="Type de collectivité" />}
               placeholder="Sélectionnez un type de collectivité"
-              state={formState.errors.localOrRegionalAuthority ? "error" : "default"}
-              stateRelatedMessage={formState.errors.localOrRegionalAuthority?.message}
-              nativeSelectProps={register("localOrRegionalAuthority", {
+              state={formState.errors.localAuthority ? "error" : "default"}
+              stateRelatedMessage={formState.errors.localAuthority?.message}
+              nativeSelectProps={register("localAuthority", {
                 required: "Ce champ est requis",
               })}
-              options={localAndRegionalAuthorityOptions}
             />
           )}
           <RadioButton
@@ -153,7 +129,7 @@ function SiteReinstatementContractOwnerForm({
             />
           )}
           <RadioButton
-            label="NSP"
+            label="Ne sait pas"
             value="unknown"
             {...register("futureOperator", { required: requiredMessage })}
           />

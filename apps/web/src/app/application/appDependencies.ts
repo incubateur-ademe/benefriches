@@ -7,6 +7,7 @@ import { LocalStorageCreateSiteApi } from "@/features/create-site/infrastructure
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { LocalStorageProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/localStorageProjectsListApi";
 import { LocalStorageSitesApi } from "@/features/projects/infrastructure/sites-service/localStorageSitesApi";
+import { LocalAuthoritiesGeoApi } from "@/shared/infrastructure/local-authorities-service/localAuthoritiesGeoApi";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
 
 export const appDependencies: AppDependencies = {
@@ -18,4 +19,5 @@ export const appDependencies: AppDependencies = {
   sitesService: new LocalStorageSitesApi(),
   saveProjectGateway: new LocalStorageSaveProjectApi(),
   photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
+  localAuthoritiesService: new LocalAuthoritiesGeoApi(),
 };

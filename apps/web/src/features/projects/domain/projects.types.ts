@@ -1,5 +1,9 @@
-import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
 import { SoilType } from "@/shared/domain/soils";
+import {
+  LocalAutorityStructureType,
+  OwnerStructureType,
+  TenantStructureType,
+} from "@/shared/domain/stakeholder";
 
 export type ProjectsList = {
   id: string;
@@ -33,8 +37,6 @@ type SiteIncome = {
   amount: number;
 };
 
-type OwnerStructureType = "local_or_regional_authority" | "company" | "private_individual";
-
 export type Owner = { structureType: OwnerStructureType; name: string };
 
 export type ProjectSite = {
@@ -67,14 +69,15 @@ type Revenue = {
   amount: number;
 };
 
-type ProjectStakeholderStructure = "company" | "local_or_regional_authority" | "unknown";
+type ProjectStakeholderStructure =
+  | OwnerStructureType
+  | TenantStructureType
+  | "company"
+  | LocalAutorityStructureType
+  | "other"
+  | "unknown";
 
-export type ProjectStakeholder =
-  | { name: string; structureType: ProjectStakeholderStructure }
-  | {
-      name: LocalAndRegionalAuthority;
-      structureType: "local_or_regional_authority";
-    };
+export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
 
 export type Project = {
   id: string;

@@ -1,44 +1,36 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import Input from "@codegouvfr/react-dsfr/Input";
-import Select from "@codegouvfr/react-dsfr/SelectNext";
 
-import {
-  getLabelForLocalOrRegionalAuthority,
-  LocalAndRegionalAuthority,
-} from "@/shared/domain/localOrRegionalAuthority";
+import { SiteLocalAuthoritiesState } from "@/features/create-site/application/siteLocalAuthorities.reducer";
+import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
+import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  siteLocalAuthorities: SiteLocalAuthoritiesState;
 };
 
 export type FormValues =
   | {
       tenantType: "local_or_regional_authority";
-      localOrRegionalAuthority: LocalAndRegionalAuthority;
+      localAuthority: LocalAutorityStructureType;
       companyName: undefined;
     }
   | {
       tenantType: "company";
       companyName: string;
-      localOrRegionalAuthority: undefined;
+      localAuthority: undefined;
     }
-  | { tenantType: "unknown"; localOrRegionalAuthority: undefined; companyName: undefined };
+  | { tenantType: "unknown"; localAuthority: undefined; companyName: undefined };
 
 const requiredMessage = "Ce champ est requis";
 
-const localAndRegionalAuthorityOptions = (
-  ["municipality", "community_of_municipalities", "department", "region", "state"] as const
-).map((localOrRegionalAuthority) => ({
-  label: getLabelForLocalOrRegionalAuthority(localOrRegionalAuthority),
-  value: localOrRegionalAuthority,
-}));
-
-function SiteTenantForm({ onSubmit }: Props) {
+function SiteTenantForm({ onSubmit, siteLocalAuthorities }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -61,15 +53,16 @@ function SiteTenantForm({ onSubmit }: Props) {
           />
 
           {selectedTenantType === "local_or_regional_authority" && (
-            <Select
+            <LocalAuthoritySelect
+              data={siteLocalAuthorities.localAuthorities}
+              loadingData={siteLocalAuthorities.loadingState}
               label={<RequiredLabel label="Type de collectivité" />}
               placeholder="Sélectionnez un type de collectivité"
-              state={formState.errors.localOrRegionalAuthority ? "error" : "default"}
-              stateRelatedMessage={formState.errors.localOrRegionalAuthority?.message}
-              nativeSelectProps={register("localOrRegionalAuthority", {
+              state={formState.errors.localAuthority ? "error" : "default"}
+              stateRelatedMessage={formState.errors.localAuthority?.message}
+              nativeSelectProps={register("localAuthority", {
                 required: "Ce champ est requis",
               })}
-              options={localAndRegionalAuthorityOptions}
             />
           )}
           <RadioButton

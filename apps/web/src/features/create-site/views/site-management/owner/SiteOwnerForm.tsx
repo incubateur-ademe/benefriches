@@ -1,13 +1,11 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
-import { Select } from "@codegouvfr/react-dsfr/SelectNext";
 
-import {
-  getLabelForLocalOrRegionalAuthority,
-  LocalAndRegionalAuthority,
-} from "@/shared/domain/localOrRegionalAuthority";
+import { SiteLocalAuthoritiesState } from "@/features/create-site/application/siteLocalAuthorities.reducer";
+import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
+import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -15,35 +13,29 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   currentUserCompany: string;
+  siteLocalAuthorities: SiteLocalAuthoritiesState;
 };
 
 export type FormValues =
   | {
       ownerType: "user_company";
-      localAndRegionalAuthorityType: undefined;
+      localAuthority: undefined;
       ownerName: undefined;
     }
   | {
       ownerType: "local_or_regional_authority";
-      localAndRegionalAuthorityType: LocalAndRegionalAuthority;
+      localAuthority: LocalAutorityStructureType;
       ownerName: undefined;
     }
   | {
       ownerType: "private_individual" | "other_company";
       ownerName: string;
-      localAndRegionalAuthorityType: undefined;
+      localAuthority: undefined;
     };
-
-const localAndRegionalAuthorityOptions = (
-  ["municipality", "community_of_municipalities", "department", "region", "state"] as const
-).map((localOrRegionalAuthority) => ({
-  label: getLabelForLocalOrRegionalAuthority(localOrRegionalAuthority),
-  value: localOrRegionalAuthority,
-}));
 
 const requiredMessage = "Ce champ requis pour la suite du formulaire";
 
-function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
+function SiteOwnerForm({ onSubmit, currentUserCompany, siteLocalAuthorities }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -51,7 +43,7 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
   const ownerTypeSelected = watch("ownerType");
   const shouldAskForPrivateName = ownerTypeSelected === "private_individual";
   const shouldAskForCompanyName = ownerTypeSelected === "other_company";
-  const shouldAskForLocalOrAuthorityType = ownerTypeSelected === "local_or_regional_authority";
+  const shouldAskForLocalAuthorityType = ownerTypeSelected === "local_or_regional_authority";
 
   return (
     <WizardFormLayout title="Qui est le propriétaire actuel de cette friche ?">
@@ -63,21 +55,22 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
           }
         >
           <RadioButton
-            label="La collectivité"
+            label="Une collectivité"
             value="local_or_regional_authority"
             {...register("ownerType", { required: requiredMessage })}
           />
 
-          {shouldAskForLocalOrAuthorityType && (
-            <Select
+          {shouldAskForLocalAuthorityType && (
+            <LocalAuthoritySelect
+              data={siteLocalAuthorities.localAuthorities}
+              loadingData={siteLocalAuthorities.loadingState}
               label={<RequiredLabel label="Type de collectivité" />}
               placeholder="Sélectionnez un type de collectivité"
-              state={formState.errors.localAndRegionalAuthorityType ? "error" : "default"}
-              stateRelatedMessage={formState.errors.localAndRegionalAuthorityType?.message}
-              nativeSelectProps={register("localAndRegionalAuthorityType", {
+              state={formState.errors.localAuthority ? "error" : "default"}
+              stateRelatedMessage={formState.errors.localAuthority?.message}
+              nativeSelectProps={register("localAuthority", {
                 required: "Ce champ est requis",
               })}
-              options={localAndRegionalAuthorityOptions}
             />
           )}
           <RadioButton

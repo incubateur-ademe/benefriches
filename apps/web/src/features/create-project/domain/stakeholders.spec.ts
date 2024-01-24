@@ -28,7 +28,7 @@ describe("Project stakeholders", () => {
       };
 
       expect(getSiteStakeholders(projectSite)).toEqual([
-        { name: "SARL Propriétaire", role: "owner" },
+        { name: "SARL Propriétaire", role: "site_owner" },
       ]);
     });
 
@@ -60,8 +60,8 @@ describe("Project stakeholders", () => {
       };
 
       expect(getSiteStakeholders(projectSite)).toEqual([
-        { name: "SARL Propriétaire", role: "owner" },
-        { name: "SCOP Exploitant du site", role: "tenant" },
+        { name: "SARL Propriétaire", role: "site_owner" },
+        { name: "SCOP Exploitant du site", role: "site_tenant" },
       ]);
     });
   });
