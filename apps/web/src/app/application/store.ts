@@ -12,6 +12,8 @@ import {
 } from "../../features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
+import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
+import projectPvExpectedPerformancesStorage from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
 import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
@@ -29,6 +31,7 @@ export type AppDependencies = {
   projectsListService: ProjectsListGateway;
   projectDetailsService: ProjectsDetailsGateway;
   sitesService: SitesGateway;
+  photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
 };
 
 export const createStore = (appDependencies: AppDependencies) =>
@@ -36,6 +39,7 @@ export const createStore = (appDependencies: AppDependencies) =>
     reducer: {
       siteCreation,
       projectCreation,
+      projectPvExpectedPerformancesStorage,
       siteCarbonStorage,
       projectsList,
       currentUser,

@@ -1,12 +1,17 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
+import ExpectedAnnualProductionComputationDetails from "./ExpectedAnnualProductionComputationDetails";
+import ExpectedAnnualProductionHint from "./ExpectedAnnualProductionHint";
 
+import { State } from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  suggestedAnnualProductionInMegaWattPerYear: number;
+  surfaceArea?: number;
+  computationContext?: State["computationContext"];
+  expectedPerformanceMwhPerYear?: State["expectedPerformanceMwhPerYear"];
 };
 
 type FormValues = {
@@ -15,11 +20,13 @@ type FormValues = {
 
 function PhotovoltaicAnnualProductionForm({
   onSubmit,
-  suggestedAnnualProductionInMegaWattPerYear,
+  expectedPerformanceMwhPerYear,
+  computationContext,
+  surfaceArea,
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
-      photovoltaicExpectedAnnualProduction: suggestedAnnualProductionInMegaWattPerYear,
+      photovoltaicExpectedAnnualProduction: expectedPerformanceMwhPerYear,
     },
   });
 
@@ -28,11 +35,16 @@ function PhotovoltaicAnnualProductionForm({
       title="Quelle est la production annuelle attendue de votre installation ?"
       instructions={
         <>
-          <p>
-            Production calculée à partir de la puissance, de la superficie au sol et du taux
-            d’ensoleillement dans la zone géographique du site. Vous pouvez la modifier.
-          </p>
-          <p>Vous pouvez modifier cette valeur.</p>
+          <ExpectedAnnualProductionHint
+            expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
+          />
+
+          {computationContext && surfaceArea && (
+            <ExpectedAnnualProductionComputationDetails
+              computationContext={computationContext}
+              surfaceArea={surfaceArea}
+            />
+          )}
         </>
       }
     >

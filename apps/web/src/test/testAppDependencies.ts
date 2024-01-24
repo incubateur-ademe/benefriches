@@ -1,5 +1,9 @@
 import { AppDependencies } from "@/app/application/store";
 import { LocalStorageGetSiteApi } from "@/features/create-project/infrastructure/get-site-service/localStorageGetSiteService";
+import {
+  ExpectedPhotovoltaicPerformanceMock,
+  MOCK_RESULT,
+} from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
 import { LocalStorageSaveProjectApi } from "@/features/create-project/infrastructure/save-project-service/localStorageSaveSiteService";
 import { LocalStorageCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
@@ -21,6 +25,7 @@ export const getTestAppDependencies = (
     projectDetailsService: new LocalStorageProjectDetailsApi(),
     saveProjectGateway: new LocalStorageSaveProjectApi(),
     sitesService: new LocalStorageSitesApi(),
+    photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
     ...depsOverride,
   };
 };
