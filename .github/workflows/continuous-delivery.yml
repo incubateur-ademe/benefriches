@@ -31,4 +31,4 @@ jobs:
     uses: ./.github/workflows/deploy-to-scalingo.yml
     with:
       tag: "v${{ github.run_number }}"
-      env: staging
+      environment: staging
