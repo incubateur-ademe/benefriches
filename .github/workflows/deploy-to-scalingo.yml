@@ -6,22 +6,18 @@ on:
       tag:
         type: string
         required: true
-      environment:
-        type: string
-        required: true
   workflow_dispatch:
     inputs:
       tag:
         type: string
         required: true
       environment:
-        type: string
+        type: environment
         required: true
 
 jobs:
     deploy:
       runs-on: ubuntu-latest
-      environment: ${{inputs.environment}}
       steps:
         - uses: actions/checkout@v3
         - name: Debug env
