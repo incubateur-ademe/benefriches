@@ -4,7 +4,7 @@ import { fetchRelatedSiteAction } from "../../application/createProject.actions"
 import { resetState } from "../../application/createProject.reducer";
 import CreateProjectIntroductionPage from "./CreateProjetIntroductionPage";
 
-import { routes } from "@/app/application/router";
+import { routes } from "@/app/views/router";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {

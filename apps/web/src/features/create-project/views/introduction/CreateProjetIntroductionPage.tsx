@@ -2,7 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Accordion from "@codegouvfr/react-dsfr/Accordion";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 
-import { routes } from "@/app/application/router";
+import { routes } from "@/app/views/router";
 
 type Props = {
   siteId: string;

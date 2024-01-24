@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
-import { routes } from "@/app/application/router";
+import { routes } from "@/app/views/router";
 
 type Props = {
   projectName: string;

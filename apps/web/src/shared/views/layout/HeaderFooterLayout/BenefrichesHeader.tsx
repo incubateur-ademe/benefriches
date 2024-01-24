@@ -1,8 +1,6 @@
 import { Badge } from "@codegouvfr/react-dsfr/Badge";
 import { Header } from "@codegouvfr/react-dsfr/Header";
 
-import { routes } from "@/app/application/router";
-
 function BenefrichesHeader() {
   return (
     <Header
@@ -22,13 +20,13 @@ function BenefrichesHeader() {
         imgUrl: "benefriches.png",
         orientation: "horizontal",
       }}
-      navigation={[
-        {
-          linkProps: routes.myProjects().link,
-          text: "Mes projets",
-          isActive: true,
-        },
-      ]}
+      // navigation={[
+      //   {
+      //     linkProps: routes.myProjects().link,
+      //     text: "Mes projets",
+      //     isActive: true,
+      //   },
+      // ]}
       serviceTitle="Bénéfriches"
       serviceTagline={
         <Badge small noIcon severity="new" as="span">

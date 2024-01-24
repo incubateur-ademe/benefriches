@@ -1,7 +1,7 @@
 import { headerFooterDisplayItem } from "@codegouvfr/react-dsfr/Display";
 import { Footer } from "@codegouvfr/react-dsfr/Footer";
 
-import { routes } from "@/app/application/router";
+import { routes } from "@/app/views/router";
 
 function BenefrichesFooter() {
   return (

@@ -1,7 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { routes, useRoute } from "../application/router";
 import BudgetPage from "./pages/BudgetPage";
+import HomePage from "./pages/HomePage";
 import StatsPage from "./pages/StatsPage";
+import { routes, useRoute } from "./router";
 
 import CreateProjectIntroductionPage from "@/features/create-project/views/introduction";
 import CreateProjectPage from "@/features/create-project/views/ProjectCreationWizard";
@@ -21,6 +22,7 @@ function App() {
   return (
     <HeaderFooterLayout>
       <main className={fr.cx("fr-container", "fr-py-4w")}>
+        {route.name === routes.home.name && <HomePage />}
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
         {route.name === routes.createSiteFoncierIntro.name && <CreateSiteIntroductionPage />}

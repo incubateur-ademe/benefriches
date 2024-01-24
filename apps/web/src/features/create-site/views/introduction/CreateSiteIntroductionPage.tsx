@@ -4,7 +4,7 @@ import Accordion from "@codegouvfr/react-dsfr/Accordion";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 import { resetState } from "../../application/createSite.reducer";
 
-import { routes } from "@/app/application/router";
+import { routes } from "@/app/views/router";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function CreateSiteIntroductionPage() {

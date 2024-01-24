@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { routes } from "@/app/application/router";
+import { routes } from "@/app/views/router";
 
 function MyProjectsPageHeader() {
   return (

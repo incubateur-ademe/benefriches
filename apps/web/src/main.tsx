@@ -5,10 +5,10 @@ import { startReactDsfr } from "@codegouvfr/react-dsfr/spa";
 import { ConfigProvider as AntdConfigProvider } from "antd";
 import "./main.css";
 import { appDependencies } from "./app/application/appDependencies.ts";
-import { RouteProvider } from "./app/application/router.ts";
 import { createStore } from "./app/application/store.ts";
 import { theme } from "./app/views/antdConfig.ts";
 import App from "./app/views/App.tsx";
+import { RouteProvider } from "./app/views/router.ts";
 startReactDsfr({ defaultColorScheme: "system" });
 
 ReactDOM.createRoot(document.getElementById("root")!).render(

@@ -4,7 +4,7 @@ import { fetchProjects } from "../../application/projectsList.actions";
 import { selectProjectById, selectProjects } from "../../application/projectsList.reducer";
 import ProjectsComparisonSelectionPage from "./ProjectsComparisonSelection.page";
 
-import { routes } from "@/app/application/router";
+import { routes } from "@/app/views/router";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
