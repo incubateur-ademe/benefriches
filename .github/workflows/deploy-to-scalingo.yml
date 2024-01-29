@@ -6,17 +6,17 @@ on:
       tag:
         type: string
         required: true
-  workflow_dispatch:
-    inputs:
-      tag:
-        type: string
-        required: true
       environment:
         type: environment
+        required: true
+    secrets:
+      SCALINGO_API_TOKEN:
         required: true
 
 jobs:
     deploy:
+      name: "Deploy to ${{inputs.environment}}"
+      environment: ${{inputs.environment}}
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
