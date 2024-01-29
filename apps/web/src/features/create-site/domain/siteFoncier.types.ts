@@ -49,10 +49,29 @@ export type SiteDraft = {
 export type Tenant = { structureType: TenantStructureType; name: string } | undefined;
 export type Owner = { structureType: OwnerStructureType; name: string };
 
+export type ExpensePurpose =
+  | "rent"
+  | "propertyTaxes"
+  | "otherTaxes"
+  | "maintenance"
+  | "otherManagementCosts"
+  | "security"
+  | "illegalDumpingCost"
+  | "accidentsCost"
+  | "otherSecuringCosts";
+
+type ExpensePurposeCategory =
+  | "rent"
+  | "safety"
+  | "site_management"
+  | "soils_degradation"
+  | "taxes"
+  | "other";
+
 export type Expense = {
-  type: string;
+  purpose: ExpensePurpose;
+  purposeCategory: ExpensePurposeCategory;
   bearer: "owner" | "tenant" | "local_or_regional_authority" | "society";
-  category: "rent" | "safety" | "site_management" | "soils_degradation" | "taxes" | "other";
   amount: number;
 };
 

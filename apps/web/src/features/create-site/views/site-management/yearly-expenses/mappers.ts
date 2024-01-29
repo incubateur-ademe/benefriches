@@ -4,15 +4,15 @@ import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
 const expensesConfig = [
-  { expenseItem: "rent", category: "rent", defaultBearer: "tenant" },
-  { expenseItem: "propertyTaxes", category: "taxes", defaultBearer: "owner" },
-  { expenseItem: "otherTaxes", category: "taxes", defaultBearer: "tenant" },
-  { expenseItem: "maintenance", category: "site_management", defaultBearer: "tenant" },
-  { expenseItem: "otherManagementCosts", category: "site_management", defaultBearer: "tenant" },
-  { expenseItem: "security", category: "safety", defaultBearer: "tenant" },
-  { expenseItem: "illegalDumpingCost", category: "safety", defaultBearer: "tenant" },
-  { expenseItem: "accidentsCost", category: "safety", defaultBearer: "tenant" },
-  { expenseItem: "otherSecuringCosts", category: "safety", defaultBearer: "tenant" },
+  { purpose: "rent", purposeCategory: "rent", defaultBearer: "tenant" },
+  { purpose: "propertyTaxes", purposeCategory: "taxes", defaultBearer: "owner" },
+  { purpose: "otherTaxes", purposeCategory: "taxes", defaultBearer: "tenant" },
+  { purpose: "maintenance", purposeCategory: "site_management", defaultBearer: "tenant" },
+  { purpose: "otherManagementCosts", purposeCategory: "site_management", defaultBearer: "tenant" },
+  { purpose: "security", purposeCategory: "safety", defaultBearer: "tenant" },
+  { purpose: "illegalDumpingCost", purposeCategory: "safety", defaultBearer: "tenant" },
+  { purpose: "accidentsCost", purposeCategory: "safety", defaultBearer: "tenant" },
+  { purpose: "otherSecuringCosts", purposeCategory: "safety", defaultBearer: "tenant" },
 ] as const;
 
 const getDefaultBearerForExpense = (
@@ -30,7 +30,7 @@ export const mapFormDataToExpenses = (
 ): Expense[] => {
   return typedObjectKeys(formData).reduce<Expense[]>((acc, key) => {
     const formValue = formData[key];
-    const expenseConfig = expensesConfig.find((e) => e.expenseItem === key);
+    const expenseConfig = expensesConfig.find((e) => e.purpose === key);
     if (!formValue.amount || !expenseConfig) return acc;
 
     const expense: Expense = {
@@ -39,8 +39,8 @@ export const mapFormDataToExpenses = (
         "bearer" in formValue && formValue.bearer
           ? formValue.bearer
           : getDefaultBearerForExpense(expenseConfig, siteHasTenant),
-      type: expenseConfig.expenseItem,
-      category: expenseConfig.category,
+      purpose: expenseConfig.purpose,
+      purposeCategory: expenseConfig.purposeCategory,
     };
     return [...acc, expense];
   }, []);

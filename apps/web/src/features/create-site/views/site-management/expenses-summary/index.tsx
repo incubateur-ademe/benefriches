@@ -1,13 +1,7 @@
-import { getLabelForExpenseBearer } from "./expenseBearerLabelMapping";
-import { getLabelForExpenseCategory } from "./expenseCategoryLabelMapping";
 import SiteExpensesSummary from "./SiteExpensesSummary";
 
 import { AppDispatch, RootState } from "@/app/application/store";
 import { goToStep, SiteCreationStep } from "@/features/create-site/application/createSite.reducer";
-import {
-  groupExpensesByBearer,
-  groupExpensesByCategory,
-} from "@/features/create-site/domain/expenses.functions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["siteData"]) => {
@@ -18,31 +12,10 @@ const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["si
     dispatch(goToStep(nextStep));
   };
 
-  if (!siteData.yearlyExpenses || siteData.yearlyExpenses.length === 0) {
-    return {
-      hasExpenses: false,
-      expensesByBearer: [],
-      expensesByCategory: [],
-      onNext,
-    };
-  }
   return {
-    hasExpenses: true,
-    expensesByBearer: groupExpensesByBearer(siteData.yearlyExpenses).map(({ amount, bearer }) => {
-      return {
-        bearer: getLabelForExpenseBearer(bearer, {
-          ownerName: siteData.owner?.name,
-          tenantName: siteData.tenant?.name,
-        }),
-        amount,
-      };
-    }),
-    expensesByCategory: groupExpensesByCategory(siteData.yearlyExpenses).map(
-      ({ amount, category }) => ({
-        amount,
-        category: getLabelForExpenseCategory(category),
-      }),
-    ),
+    isFriche: !!siteData.isFriche,
+    ownerExpenses: (siteData.yearlyExpenses ?? []).filter(({ bearer }) => bearer === "owner"),
+    tenantExpenses: (siteData.yearlyExpenses ?? []).filter(({ bearer }) => bearer === "tenant"),
     onNext,
   };
 };

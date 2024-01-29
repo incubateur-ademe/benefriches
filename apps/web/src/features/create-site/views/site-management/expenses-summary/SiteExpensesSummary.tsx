@@ -1,36 +1,35 @@
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
-import ExpensesPieChart from "./ExpensesPieChart";
+import ExpensesBarChart from "./ExpensesBarChart";
+
+import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 
 type Props = {
-  hasExpenses: boolean;
-  expensesByBearer: { bearer: string; amount: number }[];
-  expensesByCategory: { category: string; amount: number }[];
+  isFriche: boolean;
+  ownerExpenses: Expense[];
+  tenantExpenses: Expense[];
   onNext: () => void;
 };
 
-function SiteExpensesSummary({ onNext, hasExpenses, expensesByBearer, expensesByCategory }: Props) {
+function SiteExpensesSummary({ onNext, isFriche, ownerExpenses, tenantExpenses }: Props) {
+  const hasOwnerExpenses = ownerExpenses.length > 0;
+  const hasTenantExpenses = tenantExpenses.length > 0;
+  const hasNoExpenses = !hasOwnerExpenses && !hasTenantExpenses;
+
   return (
     <>
-      <h2>Récapitulatif des coûts annuels du site</h2>
-      {hasExpenses ? (
+      <h2>Récapitulatif des coûts annuels liés {isFriche ? "à la friche" : "au site"}</h2>
+      {hasNoExpenses && <p>Aucune dépense renseignée pour ce site.</p>}
+      {hasOwnerExpenses && (
         <>
-          <h3>Par acteurs</h3>
-          <ExpensesPieChart
-            expenses={expensesByBearer.map((expense) => ({
-              amount: expense.amount,
-              label: expense.bearer,
-            }))}
-          />
-          <h3>Par type de dépenses</h3>
-          <ExpensesPieChart
-            expenses={expensesByCategory.map((expense) => ({
-              amount: expense.amount,
-              label: expense.category,
-            }))}
-          />
+          <h3>À la charge du propriétaire</h3>
+          <ExpensesBarChart expenses={ownerExpenses} />
         </>
-      ) : (
-        <p>Aucune dépense renseignée.</p>
+      )}
+      {hasTenantExpenses && (
+        <>
+          <h3>À la charge de l'exploitant</h3>
+          <ExpensesBarChart expenses={tenantExpenses} />
+        </>
       )}
       <ButtonsGroup
         buttonsEquisized

@@ -41,7 +41,7 @@ const siteManagementInputs = [
   },
   {
     name: "otherTaxes",
-    label: "Autre charge fiscale",
+    label: "Autres charges fiscales",
     displayOnlyIfHasTenant: true,
     askForBearer: false,
   },

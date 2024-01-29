@@ -1,6 +1,6 @@
-import { Expense } from "./siteFoncier.types";
+import { Expense, ExpensePurpose } from "./siteFoncier.types";
 
-type GroupedByExpensesKey = "bearer" | "category";
+type GroupedByExpensesKey = "bearer" | "purposeCategory";
 
 const groupAndSumBy =
   <K extends GroupedByExpensesKey>(key: K) =>
@@ -27,10 +27,33 @@ export const groupExpensesByBearer = (expenses: Expense[]) => {
 };
 
 export const groupExpensesByCategory = (expenses: Expense[]) => {
-  const expensesMapByCategory = groupAndSumBy("category")(expenses);
+  const expensesMapByCategory = groupAndSumBy("purposeCategory")(expenses);
 
   return Object.entries(expensesMapByCategory).map(([category, amount]) => ({
-    category: category as Expense["category"],
+    purposeCategory: category as Expense["purposeCategory"],
     amount,
   }));
+};
+
+export const getLabelForExpensePurpose = (expensePurpose: ExpensePurpose): string => {
+  switch (expensePurpose) {
+    case "propertyTaxes":
+      return "Taxe foncière";
+    case "otherTaxes":
+      return "Autres charges fiscales";
+    case "rent":
+      return "Loyer";
+    case "accidentsCost":
+      return "Accidents";
+    case "illegalDumpingCost":
+      return "Débarras de dépôt sauvage";
+    case "maintenance":
+      return "Entretien";
+    case "otherManagementCosts":
+      return "Autre coûts de gestion";
+    case "security":
+      return "Gardiennage";
+    case "otherSecuringCosts":
+      return "Autres frais de sécurisation";
+  }
 };
