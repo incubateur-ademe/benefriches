@@ -39,6 +39,12 @@ function HomePage() {
           &nbsp;et la&nbsp;
           <ExternalLink href={BENEFRICHES_DOCUMENTATION_URL}>notice d'utilisation</ExternalLink>.
         </span>
+        <br />
+        <br />
+        <span>
+          Un webinaire de présentation avec du retour d'expérience est aussi accessible en{" "}
+          <ExternalLink href="https://www.dailymotion.com/video/x8msk3b">replay</ExternalLink>.
+        </span>
       </CallOut>
     </>
   );
