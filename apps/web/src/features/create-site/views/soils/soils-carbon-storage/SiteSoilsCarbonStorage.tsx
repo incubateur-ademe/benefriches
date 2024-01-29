@@ -38,7 +38,9 @@ const SiteSoilsCarbonStorage = ({
             C'est l'équivalent de ce qu'émettent{" "}
             <strong>
               {formatNumberFr(
-                getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson(siteCarbonStorage.total),
+                Math.round(
+                  getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson(siteCarbonStorage.total),
+                ),
               )}{" "}
               français
             </strong>{" "}
