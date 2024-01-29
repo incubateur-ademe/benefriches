@@ -39,8 +39,8 @@ jobs:
         - name: Deploy web
           run: |
             echo "Deploying webapp on app ${{ vars.SCALINGO_APP_NAME }}"
-            scalingo --app ${{ vars.SCALINGO_APP_NAME }} deploy web-scalingo.tar.gz
+            scalingo --region ${{vars.SCALINGO_APP_REGION}} --app ${{ vars.SCALINGO_APP_NAME }} deploy web-scalingo.tar.gz
         - name: Deploy api
           run: |
             echo "Deploying API on app ${{ vars.SCALINGO_API_APP_NAME }}"
-            scalingo --app ${{ vars.SCALINGO_API_APP_NAME }} deploy api-scalingo.tar.gz
+            scalingo --region ${{vars.SCALINGO_APP_REGION}} --app ${{ vars.SCALINGO_API_APP_NAME }} deploy api-scalingo.tar.gz
