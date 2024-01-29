@@ -20,8 +20,6 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
-        - name: Debug env
-          run: env
         - name: Download web artifact
           uses: actions/download-artifact@v3
           with:
