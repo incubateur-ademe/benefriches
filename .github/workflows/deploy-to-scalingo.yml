@@ -7,7 +7,7 @@ on:
         type: string
         required: true
       environment:
-        type: environment
+        type: string
         required: true
     secrets:
       SCALINGO_API_TOKEN:
