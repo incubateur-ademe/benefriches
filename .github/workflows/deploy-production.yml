@@ -1,0 +1,33 @@
+name: "Deploy production"
+
+# Run when push occurs on main branch
+on:
+  workflow_dispatch:
+
+jobs:
+  integration-checks:
+    uses: ./.github/workflows/integration-checks.yml
+
+  build-and-upload-web-artifact:
+    # jobs are run in parallel by default, we want them to run sequentially
+    needs: [integration-checks]
+    uses: ./.github/workflows/build-and-upload-web-artifact.yml
+    with:
+      tag: "v${{ github.run_number }}"
+
+  build-and-upload-api-artifact:
+    # jobs are run in parallel by default, we want them to run sequentially
+    needs: [integration-checks]
+    uses: ./.github/workflows/build-and-upload-api-artifact.yml
+    with:
+      tag: "v${{ github.run_number }}"
+
+  deploy-production:
+    name: Deploy production
+    # jobs are run in parallel by default, we want them to run sequentially
+    needs: [build-and-upload-web-artifact, build-and-upload-api-artifact]
+    uses: ./.github/workflows/deploy-to-scalingo.yml
+    with:
+      tag: "v${{ github.run_number }}"
+      environment: production
+    secrets: inherit
