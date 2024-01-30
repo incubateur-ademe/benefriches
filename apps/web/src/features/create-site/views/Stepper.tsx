@@ -9,6 +9,7 @@ const fricheStepsCategories = [
   "Pollution",
   "Gestion du site",
   "Dénomination",
+  "Récapitulatif",
 ] as const;
 
 const siteStepsCategores = fricheStepsCategories.filter((step) => step !== "Pollution");
@@ -43,8 +44,10 @@ const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
       return "Gestion du site";
     case SiteCreationStep.FRICHE_ACTIVITY:
     case SiteCreationStep.NAMING:
-    case SiteCreationStep.CREATION_CONFIRMATION:
       return "Dénomination";
+    case SiteCreationStep.SUMMARY:
+    case SiteCreationStep.CREATION_CONFIRMATION:
+      return "Récapitulatif";
   }
 };
 

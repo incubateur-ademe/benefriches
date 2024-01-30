@@ -21,6 +21,7 @@ import FricheActivityForm from "./friche-activity";
 import SiteTypeForm from "./site-type";
 import SoilContaminationForm from "./soil-contamination";
 import Stepper from "./Stepper";
+import SiteDataSummary from "./summary";
 import SiteSurfaceAreaForm from "./surface-area";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -72,6 +73,8 @@ function SiteCreationWizard() {
         return <FricheActivityForm />;
       case SiteCreationStep.NAMING:
         return <SiteNameAndDescriptionForm />;
+      case SiteCreationStep.SUMMARY:
+        return <SiteDataSummary />;
       case SiteCreationStep.CREATION_CONFIRMATION:
         return <SiteCreationConfirmation />;
     }
