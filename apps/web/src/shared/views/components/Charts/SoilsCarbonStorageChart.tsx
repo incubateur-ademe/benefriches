@@ -34,9 +34,9 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
     tooltip: {
       distance: 40,
       pointFormat:
-        "<strong>{point.options.custom.carbonStorage:.2f} t de carbone stockées</strong><br>" +
+        "Stocke <strong>{point.options.custom.carbonStorage:,.0f} t de carbone </strong><br>" +
         "Superficie : {point.y:,.0f} m²<br>" +
-        "Carbone stockable / m² : {point.z:.4f} T",
+        "Carbone stockable / m² : {point.z:.3f} t",
     },
     plotOptions: {
       series: {
