@@ -13,6 +13,10 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 
 const mapProps = (dispatch: AppDispatch, currentUserCompany: string, projectSite?: ProjectSite) => {
   const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
+  const isFriche = projectSite?.isFriche;
+  const nextStep = isFriche
+    ? ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER
+    : ProjectCreationStep.COSTS_INTRODUCTION;
 
   return {
     currentUserCompany,
@@ -59,7 +63,7 @@ const mapProps = (dispatch: AppDispatch, currentUserCompany: string, projectSite
           );
           break;
       }
-      dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER));
+      dispatch(goToStep(nextStep));
     },
   };
 };
