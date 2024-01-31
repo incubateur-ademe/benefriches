@@ -109,11 +109,14 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant, isFriche, hasRecentAccide
             les coûts moyens en France de chaque poste de dépense.
           </p>
           <p>Vous pouvez modifier ces montants.</p>
-          <p>
-            Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de gardiennage,
-            d’entretien, de débarras de dépôt sauvage sont habituellement à la charge de
-            l’exploitant.
-          </p>
+          {hasTenant && (
+            <p>
+              Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de gardiennage,
+              d’entretien, de débarras de dépôt sauvage sont habituellement à la charge de
+              l’exploitant.
+            </p>
+          )}
+
           <p>Les montants sont à saisir en HT (hors taxe).</p>
         </>
       }
