@@ -8,7 +8,8 @@ import {
   getLabelForLocalOrRegionalAuthority,
   LocalAndRegionalAuthority,
 } from "@/shared/domain/localOrRegionalAuthority";
-import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
+import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -79,72 +80,77 @@ function SiteOperatorForm({ onSubmit, siteStakeholders, currentUserCompany }: Pr
   return (
     <WizardFormLayout title="Qui sera l'exploitant du site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RadioButtons
-          {...register("futureOperator", { required: requiredMessage })}
-          options={getSiteRelatedOperatorOptions(siteStakeholders, currentUserCompany)}
-          error={formState.errors.futureOperator}
-        />
-        {selectedFutureOperator === "site_stakeholder" && (
-          <Select
-            label="Acteur du site existant"
-            placeholder="Sélectionnez l'acteur du site existant"
-            nativeSelectProps={register("siteStakeholder", {
-              required: "Ce champ est requis",
-            })}
-            options={siteStakeholders.map(({ name, role }) => ({
-              label: name,
-              value: role,
-            }))}
+        <Fieldset
+          state={formState.errors.futureOperator ? "error" : "default"}
+          stateRelatedMessage={
+            formState.errors.futureOperator ? formState.errors.futureOperator.message : undefined
+          }
+        >
+          {getSiteRelatedOperatorOptions(siteStakeholders, currentUserCompany).map(
+            ({ label, value }) => (
+              <RadioButton
+                label={label}
+                value={value}
+                key={value}
+                {...register("futureOperator", { required: requiredMessage })}
+              />
+            ),
+          )}
+
+          {selectedFutureOperator === "site_stakeholder" && (
+            <Select
+              label="Acteur du site existant"
+              placeholder="Sélectionnez l'acteur du site existant"
+              state={formState.errors.siteStakeholder ? "error" : "default"}
+              stateRelatedMessage={formState.errors.siteStakeholder?.message}
+              nativeSelectProps={register("siteStakeholder", {
+                required: "Ce champ est requis",
+              })}
+              options={siteStakeholders.map(({ name, role }) => ({
+                label: name,
+                value: role,
+              }))}
+            />
+          )}
+          <RadioButton
+            label="Une collectivité"
+            value="local_or_regional_authority"
+            {...register("futureOperator", { required: requiredMessage })}
           />
-        )}
-        <RadioButtons
-          {...register("futureOperator", { required: requiredMessage })}
-          options={[
-            {
-              label: "Une collectivité",
-              value: "local_or_regional_authority",
-            },
-          ]}
-          error={formState.errors.futureOperator}
-        />
-        {selectedFutureOperator === "local_or_regional_authority" && (
-          <Select
-            label="Type de collectivité"
-            placeholder="Sélectionnez un type de collectivité"
-            nativeSelectProps={register("localOrRegionalAuthority", {
-              required: "Ce champ est requis",
-            })}
-            options={localAndRegionalAuthorityOptions}
+
+          {selectedFutureOperator === "local_or_regional_authority" && (
+            <Select
+              label="Type de collectivité"
+              placeholder="Sélectionnez un type de collectivité"
+              state={formState.errors.localOrRegionalAuthority ? "error" : "default"}
+              stateRelatedMessage={formState.errors.localOrRegionalAuthority?.message}
+              nativeSelectProps={register("localOrRegionalAuthority", {
+                required: "Ce champ est requis",
+              })}
+              options={localAndRegionalAuthorityOptions}
+            />
+          )}
+          <RadioButton
+            label="Une autre structure"
+            value="other_structure"
+            {...register("futureOperator", { required: requiredMessage })}
           />
-        )}
-        <RadioButtons
-          {...register("futureOperator", { required: requiredMessage })}
-          options={[
-            {
-              label: "Une autre structure",
-              value: "other_structure",
-            },
-          ]}
-          error={formState.errors.futureOperator}
-        />
-        {selectedFutureOperator === "other_structure" && (
-          <Input
-            label="Nom de la structure"
-            nativeInputProps={register("otherStructureName", {
-              required: "Ce champ est requis",
-            })}
+          {selectedFutureOperator === "other_structure" && (
+            <Input
+              label="Nom de la structure"
+              state={formState.errors.otherStructureName ? "error" : "default"}
+              stateRelatedMessage={formState.errors.otherStructureName?.message}
+              nativeInputProps={register("otherStructureName", {
+                required: "Ce champ est requis",
+              })}
+            />
+          )}
+          <RadioButton
+            label="NSP"
+            value="unknown"
+            {...register("futureOperator", { required: requiredMessage })}
           />
-        )}
-        <RadioButtons
-          {...register("futureOperator", { required: requiredMessage })}
-          options={[
-            {
-              label: "NSP",
-              value: "unknown",
-            },
-          ]}
-          error={formState.errors.futureOperator}
-        />
+        </Fieldset>
         <ButtonsGroup
           buttonsEquisized
           inlineLayoutWhen="always"

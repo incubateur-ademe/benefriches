@@ -7,7 +7,9 @@ import {
   getLabelForLocalOrRegionalAuthority,
   LocalAndRegionalAuthority,
 } from "@/shared/domain/localOrRegionalAuthority";
-import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
+import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -39,7 +41,7 @@ const localAndRegionalAuthorityOptions = (
   value: localOrRegionalAuthority,
 }));
 
-const requiredMessage = "Champ requis";
+const requiredMessage = "Ce champ requis pour la suite du formulaire";
 
 function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
@@ -54,81 +56,72 @@ function SiteOwnerForm({ onSubmit, currentUserCompany }: Props) {
   return (
     <WizardFormLayout title="Qui est le propriétaire actuel de cette friche ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RadioButtons
-          {...register("ownerType", { required: requiredMessage })}
-          options={[
-            {
-              label: "La collectivité",
-              value: "local_or_regional_authority",
-            },
-          ]}
-          error={formState.errors.ownerType}
-        />
-        {shouldAskForLocalOrAuthorityType && (
-          <Select
-            label="Type de collectivité"
-            placeholder="Sélectionnez un type de collectivité"
-            nativeSelectProps={register("localAndRegionalAuthorityType")}
-            options={localAndRegionalAuthorityOptions}
+        <Fieldset
+          state={formState.errors.ownerType ? "error" : "default"}
+          stateRelatedMessage={
+            formState.errors.ownerType ? formState.errors.ownerType.message : undefined
+          }
+        >
+          <RadioButton
+            label="La collectivité"
+            value="local_or_regional_authority"
+            {...register("ownerType", { required: requiredMessage })}
           />
-        )}
 
-        <RadioButtons
-          {...register("ownerType", { required: requiredMessage })}
-          options={[
-            {
-              label: `Mon entreprise, ${currentUserCompany}`,
-              value: "user_company",
-            },
-          ]}
-          error={formState.errors.ownerType}
-        />
-
-        <RadioButtons
-          {...register("ownerType", { required: requiredMessage })}
-          options={[
-            {
-              label: "Une autre entreprise",
-              value: "other_company",
-            },
-          ]}
-          error={formState.errors.ownerType}
-        />
-
-        {shouldAskForCompanyName && (
-          <Input
-            label="Nom de l'entreprise"
-            state={formState.errors.ownerName ? "error" : "default"}
-            stateRelatedMessage={formState.errors.ownerName?.message}
-            nativeInputProps={register("ownerName", {
-              required: "Ce champ est requis",
-              shouldUnregister: true,
-            })}
+          {shouldAskForLocalOrAuthorityType && (
+            <Select
+              label={<RequiredLabel label="Type de collectivité" />}
+              placeholder="Sélectionnez un type de collectivité"
+              state={formState.errors.localAndRegionalAuthorityType ? "error" : "default"}
+              stateRelatedMessage={formState.errors.localAndRegionalAuthorityType?.message}
+              nativeSelectProps={register("localAndRegionalAuthorityType", {
+                required: "Ce champ est requis",
+              })}
+              options={localAndRegionalAuthorityOptions}
+            />
+          )}
+          <RadioButton
+            label={`Mon entreprise, ${currentUserCompany}`}
+            value="user_company"
+            {...register("ownerType", { required: requiredMessage })}
           />
-        )}
 
-        <RadioButtons
-          {...register("ownerType", { required: requiredMessage })}
-          options={[
-            {
-              label: "Un particulier",
-              value: "private_individual",
-            },
-          ]}
-          error={formState.errors.ownerType}
-        />
-
-        {shouldAskForPrivateName && (
-          <Input
-            label="Nom du particulier"
-            state={formState.errors.ownerName ? "error" : "default"}
-            stateRelatedMessage={formState.errors.ownerName?.message}
-            nativeInputProps={register("ownerName", {
-              required: "Ce champ est requis",
-              shouldUnregister: true,
-            })}
+          <RadioButton
+            label={`Une autre entreprise`}
+            value="other_company"
+            {...register("ownerType", { required: requiredMessage })}
           />
-        )}
+
+          {shouldAskForCompanyName && (
+            <Input
+              label={<RequiredLabel label="Nom de l'entreprise" />}
+              state={formState.errors.ownerName ? "error" : "default"}
+              stateRelatedMessage={formState.errors.ownerName?.message}
+              nativeInputProps={register("ownerName", {
+                required: "Ce champ est requis",
+                shouldUnregister: true,
+              })}
+            />
+          )}
+
+          <RadioButton
+            label={`Un particulier`}
+            value="private_individual"
+            {...register("ownerType", { required: requiredMessage })}
+          />
+
+          {shouldAskForPrivateName && (
+            <Input
+              label={<RequiredLabel label="Nom du particulier" />}
+              state={formState.errors.ownerName ? "error" : "default"}
+              stateRelatedMessage={formState.errors.ownerName?.message}
+              nativeInputProps={register("ownerName", {
+                required: "Ce champ est requis",
+                shouldUnregister: true,
+              })}
+            />
+          )}
+        </Fieldset>
 
         <ButtonsGroup
           buttonsEquisized

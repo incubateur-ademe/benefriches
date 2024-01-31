@@ -42,6 +42,10 @@ const FRICHE_ACTIVITY_OPTIONS = [
     value: FricheActivity.HOUSING,
     label: "Friche d’habitat (immeuble, quartier résidentiel...)",
   },
+  {
+    value: FricheActivity.OTHER,
+    label: "Autre",
+  },
 ];
 
 export type FormValues = {

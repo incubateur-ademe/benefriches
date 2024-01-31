@@ -3,6 +3,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -32,7 +33,7 @@ function SurfaceAreaForm({ onSubmit }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="surfaceArea"
-          label="Superficie totale"
+          label={<RequiredLabel label="Superficie totale" />}
           hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
           rules={{
             required: "Ce champ est requis",

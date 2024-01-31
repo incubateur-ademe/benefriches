@@ -2,8 +2,10 @@ import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
-import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -19,8 +21,6 @@ export type FormValues = {
   contaminatedSurface?: number;
 };
 
-const requiredMessage = "Ce champ est nécessaire pour déterminer les questions suivantes";
-
 function SoilContaminationForm({ onSubmit, siteSurfaceArea }: Props) {
   const { register, control, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
@@ -30,6 +30,9 @@ function SoilContaminationForm({ onSubmit, siteSurfaceArea }: Props) {
   const contaminatedSurfaceHintText = `en ${SQUARE_METERS_HTML_SYMBOL} (maximum ${formatNumberFr(
     siteSurfaceArea,
   )} ${SQUARE_METERS_HTML_SYMBOL})`;
+
+  const hasContaminatedSoilsValue = watch("hasContaminatedSoils");
+  const hasContaminatedSoils = hasContaminatedSoilsValue === "yes";
 
   return (
     <WizardFormLayout
@@ -49,47 +52,38 @@ function SoilContaminationForm({ onSubmit, siteSurfaceArea }: Props) {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RadioButtons
-          {...register("hasContaminatedSoils", { required: requiredMessage })}
-          options={[
-            {
-              label: "Oui",
-              value: "yes",
-            },
-          ]}
-          error={hasContaminatedSoilsError}
-        />
-        {watch("hasContaminatedSoils") === "yes" && (
-          <div className="fr-pb-7v">
-            <NumericInput
-              control={control}
-              label="Superficie polluée"
-              hintText={contaminatedSurfaceHintText}
-              name="contaminatedSurface"
-              rules={{
-                required: "Ce champ est requis",
-                min: {
-                  value: 0,
-                  message: "Veuillez sélectionner une surface valide.",
-                },
-                max: {
-                  value: siteSurfaceArea,
-                  message: "La superficie polluée ne peut être supérieure à la superficie du site.",
-                },
-              }}
-            />
-          </div>
-        )}
-        <RadioButtons
-          {...register("hasContaminatedSoils", { required: requiredMessage })}
-          options={[
-            {
-              label: "Non",
-              value: "No",
-            },
-          ]}
-          error={hasContaminatedSoilsError}
-        />
+        <Fieldset
+          state={hasContaminatedSoilsError ? "error" : "default"}
+          stateRelatedMessage={
+            hasContaminatedSoilsError ? hasContaminatedSoilsError.message : undefined
+          }
+        >
+          <RadioButton label="Oui" value="yes" {...register("hasContaminatedSoils")} />
+          {hasContaminatedSoils && (
+            <div className="fr-pb-7v">
+              <NumericInput
+                control={control}
+                label={<RequiredLabel label="Superficie polluée" />}
+                hintText={contaminatedSurfaceHintText}
+                name="contaminatedSurface"
+                rules={{
+                  required: "Ce champ est requis",
+                  min: {
+                    value: 0,
+                    message: "Veuillez sélectionner une surface valide.",
+                  },
+                  max: {
+                    value: siteSurfaceArea,
+                    message:
+                      "La superficie polluée ne peut être supérieure à la superficie du site.",
+                  },
+                }}
+              />
+            </div>
+          )}
+          <RadioButton {...register("hasContaminatedSoils")} label="Non" value="no" />
+        </Fieldset>
+
         <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
       </form>
     </WizardFormLayout>

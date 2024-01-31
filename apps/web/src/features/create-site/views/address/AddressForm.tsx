@@ -3,6 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Address } from "../../domain/siteFoncier.types";
 import SearchAddressAutocomplete from "./SearchAddressAutocompleteContainer";
 
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -61,7 +62,7 @@ function SiteAddressForm({ onSubmit, isFriche }: Props) {
                   setValue("searchText", v.value);
                 }}
                 searchInputProps={{
-                  label: "Adresse du site",
+                  label: <RequiredLabel label="Adresse du site" />,
                   state: error ? "error" : "default",
                   stateRelatedMessage: error ? error.message : undefined,
                 }}

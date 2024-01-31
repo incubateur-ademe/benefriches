@@ -8,6 +8,7 @@ export enum FricheActivity {
   ADMINISTRATION = "ADMINISTRATION",
   BUSINESS = "BUSINESS",
   HOUSING = "HOUSING",
+  OTHER = "OTHER",
 }
 
 export const getFricheActivityLabel = (fricheActivity: FricheActivity): string => {
@@ -30,5 +31,7 @@ export const getFricheActivityLabel = (fricheActivity: FricheActivity): string =
       return "Friche commerciale";
     case FricheActivity.HOUSING:
       return "Friche d'habitat";
+    case FricheActivity.OTHER:
+      return "Friche";
   }
 };
