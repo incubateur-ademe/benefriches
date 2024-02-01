@@ -10,6 +10,7 @@ import {
 type Props<T extends FieldValues> = {
   label: ReactNode;
   hintText?: string;
+  placeholder?: string;
 } & UseControllerProps<T>;
 
 const NumericInput = <T extends FieldValues>({
@@ -18,6 +19,7 @@ const NumericInput = <T extends FieldValues>({
   label,
   hintText,
   rules,
+  placeholder,
 }: Props<T>) => {
   const { field, fieldState } = useController<T>({
     name,
@@ -36,6 +38,7 @@ const NumericInput = <T extends FieldValues>({
     },
     onBlur: field.onBlur,
     type: "number",
+    placeholder,
   };
 
   return (

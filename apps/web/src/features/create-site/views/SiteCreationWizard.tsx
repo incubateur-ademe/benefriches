@@ -8,7 +8,9 @@ import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/yearly-income";
 import SiteSoilsCarbonStorage from "./soils/soils-carbon-storage";
-import SiteSoilsDistributionForm from "./soils/soils-distribution";
+import SiteSoilsDistributionAccuracySelection from "./soils/soils-distribution/accuracy-selection";
+import SiteSoilsDistributionByPercentage from "./soils/soils-distribution/by-percentage";
+import SiteSoilsDistributionBySquareMeters from "./soils/soils-distribution/by-square-meters";
 import SiteSoilsIntroduction from "./soils/soils-introduction";
 import SiteSoilsForm from "./soils/soils-selection";
 import SiteSoilsSummary from "./soils/soils-summary";
@@ -38,8 +40,12 @@ function SiteCreationWizard() {
         return <SiteSurfaceAreaForm />;
       case SiteCreationStep.SOILS:
         return <SiteSoilsForm />;
-      case SiteCreationStep.SOILS_SURFACE_AREAS:
-        return <SiteSoilsDistributionForm />;
+      case SiteCreationStep.SOILS_SURFACE_AREAS_ACCURACY_SELECTION:
+        return <SiteSoilsDistributionAccuracySelection />;
+      case SiteCreationStep.SOILS_SURFACE_AREAS_BY_PERCENTAGE:
+        return <SiteSoilsDistributionByPercentage />;
+      case SiteCreationStep.SOILS_SURFACE_AREAS_BY_SQUARE_METERS:
+        return <SiteSoilsDistributionBySquareMeters />;
       case SiteCreationStep.SOILS_SUMMARY:
         return <SiteSoilsSummary />;
       case SiteCreationStep.SOILS_CARBON_STORAGE:

@@ -9,7 +9,7 @@ const mapProps = (dispatch: AppDispatch, siteCreationState: RootState["siteCreat
     isFriche: !!siteCreationState.siteData.isFriche,
     onSubmit: (formData: FormValues) => {
       dispatch(setSoils(formData.soils));
-      dispatch(goToStep(SiteCreationStep.SOILS_SURFACE_AREAS));
+      dispatch(goToStep(SiteCreationStep.SOILS_SURFACE_AREAS_ACCURACY_SELECTION));
     },
   };
 };
