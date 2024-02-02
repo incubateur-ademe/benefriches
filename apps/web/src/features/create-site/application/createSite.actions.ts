@@ -44,9 +44,9 @@ const createSiteSchema = z.object({
   deaths: z.number().nonnegative().optional(),
   yearlyExpenses: z
     .object({
-      type: z.string(),
+      purpose: z.string(),
       bearer: z.string(),
-      category: z.string(),
+      purposeCategory: z.string(),
       amount: z.number().nonnegative(),
     })
     .array(),

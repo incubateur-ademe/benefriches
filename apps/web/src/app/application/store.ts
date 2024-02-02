@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
 import {
   GetSiteGateway,
   SaveProjectGateway,
@@ -39,21 +39,32 @@ export type AppDependencies = {
   localAuthoritiesService: SiteLocalAuthoritiesGateway | ProjectLocalAuthoritiesGateway;
 };
 
-export const createStore = (appDependencies: AppDependencies) =>
-  configureStore({
-    reducer: {
-      siteCreation,
-      projectCreation,
-      projectPvExpectedPerformancesStorage,
-      siteCarbonStorage,
-      projectsList,
-      currentUser,
-      projectImpacts,
-      projectImpactsComparison,
-      projectSoilsCarbonStorage,
-      siteLocalAuthorities,
-      projectSiteLocalAuthorities,
-    },
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type PreloadedStateFromReducer<R extends Reducer<any, any, any>> =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  R extends Reducer<any, any, infer P> ? P : never;
+
+const rootReducer = combineReducers({
+  siteCreation,
+  projectCreation,
+  projectPvExpectedPerformancesStorage,
+  siteCarbonStorage,
+  projectsList,
+  currentUser,
+  projectImpacts,
+  projectImpactsComparison,
+  projectSoilsCarbonStorage,
+  siteLocalAuthorities,
+  projectSiteLocalAuthorities,
+});
+
+export const createStore = (
+  appDependencies: AppDependencies,
+  preloadedState?: PreloadedStateFromReducer<typeof rootReducer>,
+) => {
+  return configureStore({
+    reducer: rootReducer,
+    preloadedState,
     middleware(getDefaultMiddleware) {
       return getDefaultMiddleware({
         thunk: {
@@ -62,6 +73,7 @@ export const createStore = (appDependencies: AppDependencies) =>
       });
     },
   });
+};
 
 type Store = ReturnType<typeof createStore>;
 

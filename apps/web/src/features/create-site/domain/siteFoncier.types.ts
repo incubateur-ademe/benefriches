@@ -37,7 +37,7 @@ export type SiteDraft = {
   // management
   fullTimeJobsInvolved?: number;
   owner: { structureType: OwnerStructureType; name: string };
-  tenant: { structureType: TenantStructureType; name: string };
+  tenant?: { structureType: TenantStructureType; name: string };
   hasRecentAccidents: boolean;
   minorInjuriesPersons?: number;
   severeInjuriesPersons?: number;
