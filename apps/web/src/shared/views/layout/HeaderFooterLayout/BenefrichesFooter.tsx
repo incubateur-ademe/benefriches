@@ -35,6 +35,7 @@ function BenefrichesFooter() {
         </>
       }
       bottomItems={[
+        { text: "Mentions légales", linkProps: routes.mentionsLegales().link },
         { text: "Statistiques", linkProps: routes.stats().link },
         headerFooterDisplayItem,
       ]}
