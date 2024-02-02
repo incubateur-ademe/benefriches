@@ -1,13 +1,8 @@
 root /app/dist;
 
-http {
-  server {
-    add-header Content-Security-Policy default-src 'none'; connect-src 'self' https://api-adresse.data.gouv.fr/search/; font-src 'self'; img-src 'self' data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org;
-  }
-}
-
 location / {
   try_files $uri $uri/ /index.html =404;
+  add-header Content-Security-Policy default-src 'none'; connect-src 'self' https://api-adresse.data.gouv.fr/search/; font-src 'self'; img-src 'self' data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org;
 }
 
 location /api {
