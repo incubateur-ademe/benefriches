@@ -2,7 +2,7 @@
   "name": "benefriches-root",
   "license": "MIT",
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "version": "1.0.0",
   "packageManager": "pnpm@8.6.7",
