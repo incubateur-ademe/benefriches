@@ -19,7 +19,7 @@ Les données sont stockées dans une base PostgreSQL.
 Le projet est organisé en monorepo et géré avec le gestionnaire de packages `pnpm`.
 
 ### Pré-requis
-* node (version 18 ou supérieure)
+* node (version 20 ou supérieure)
 * pnpm (version 8.6 ou supérieur)
 * docker (optionnel)
 * postgresql (si docker non installé)
