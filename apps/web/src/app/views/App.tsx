@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import AccessibilitePage from "./pages/AccessibilitePage";
 import BudgetPage from "./pages/BudgetPage";
 import HomePage from "./pages/HomePage";
 import MentionsLegalesPage from "./pages/MentionsLegalesPage";
@@ -45,6 +46,7 @@ function App() {
         {route.name === routes.budget.name && <BudgetPage />}
         {route.name === routes.stats.name && <StatsPage />}
         {route.name === routes.mentionsLegales.name && <MentionsLegalesPage />}
+        {route.name === routes.accessibilite.name && <AccessibilitePage />}
         {route.name === false && <>Page non trouvée</>}
       </main>
     </HeaderFooterLayout>

@@ -32,6 +32,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
   budget: defineRoute("/budget"),
   stats: defineRoute("/statistiques"),
   mentionsLegales: defineRoute("/mentions-legales"),
+  accessibilite: defineRoute("/accessibilite"),
 });
 
 export { RouteProvider, useRoute, routes };
