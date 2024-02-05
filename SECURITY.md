@@ -2,14 +2,14 @@
 
 Ce document décrit les procédures de sécurité et les politiques générales pour le projet 'benefriches'.
 
-  * [Signaler une faille](#signaler-une-faille)
-  * [Politique de divulgation](#politique-de-divulgation)
-  * [Commentaires sur cette politique](#commentaires-sur-cette-politique)
+  - [Signaler une faille](#signaler-une-faille)
+  - [Politique de divulgation et de correction](#politique-de-divulgation-et-de-correction)
+  - [Commentaires sur cette politique](#commentaires-sur-cette-politique)
 
 ## Signaler une faille
 
 L’équipe de Bénéfriches prend au très au sérieux la sécurité de l’application.
-Signalez toute faille de sécurité en envoyant un mail à l’équipe stephane.ruhlmann[at]beta.gouv.fr
+Signalez toute faille de sécurité en envoyant contactant l’équipe via notre [formulaire de contact](https://tally.so/r/w7xBV6).
 
 L’équipe accusera réception de votre mail dans les 72 heures. Après la réponse initiale à votre rapport, elle vous tiendra informé de la progression vers une correction et une annonce complète, et pourra vous demander des informations ou des conseils supplémentaires.
 

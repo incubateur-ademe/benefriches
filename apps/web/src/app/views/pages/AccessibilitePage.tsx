@@ -44,6 +44,11 @@ function AccessibilitePage() {
       </p>
       <ul className="basic-information feedback h-card">
         <li>
+          <ExternalLink href="https://tally.so/r/w7xBV6">
+            Formulaire de contact Bénéfriches
+          </ExternalLink>
+        </li>
+        <li>
           Téléphone&nbsp;: <ExternalLink href="tel:+33147652000">01 47 65 20 00</ExternalLink>
         </li>
 
