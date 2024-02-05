@@ -3,6 +3,7 @@ import AccessibilitePage from "./pages/AccessibilitePage";
 import BudgetPage from "./pages/BudgetPage";
 import HomePage from "./pages/HomePage";
 import MentionsLegalesPage from "./pages/MentionsLegalesPage";
+import PolitiqueConfidentialitePage from "./pages/PolitiqueConfidentialitePage";
 import StatsPage from "./pages/StatsPage";
 import { routes, useRoute } from "./router";
 
@@ -47,6 +48,7 @@ function App() {
         {route.name === routes.stats.name && <StatsPage />}
         {route.name === routes.mentionsLegales.name && <MentionsLegalesPage />}
         {route.name === routes.accessibilite.name && <AccessibilitePage />}
+        {route.name === routes.politiqueConfidentialite.name && <PolitiqueConfidentialitePage />}
         {route.name === false && <>Page non trouvée</>}
       </main>
     </HeaderFooterLayout>

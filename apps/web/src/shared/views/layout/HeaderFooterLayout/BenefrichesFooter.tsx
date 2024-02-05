@@ -35,8 +35,9 @@ function BenefrichesFooter() {
         </>
       }
       accessibilityLinkProps={{ ...routes.accessibilite().link }}
+      termsLinkProps={{ ...routes.mentionsLegales().link }}
       bottomItems={[
-        { text: "Mentions légales", linkProps: routes.mentionsLegales().link },
+        { text: "Politique de confidentialité", linkProps: routes.politiqueConfidentialite().link },
         { text: "Statistiques", linkProps: routes.stats().link },
         headerFooterDisplayItem,
       ]}
