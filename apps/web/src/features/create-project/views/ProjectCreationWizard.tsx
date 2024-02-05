@@ -19,6 +19,8 @@ import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
 import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
+import ProjectTimetableIntroductionContainer from "./timetable/introduction";
+import TimetableProjectionFormContainer from "./timetable/projection";
 import ProjectCreationConfirmation from "./confirmation";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectTypesForm from "./project-types";
@@ -78,6 +80,10 @@ function ProjectCreationWizard() {
         return <ProjectSoilsSummaryContainer />;
       case ProjectCreationStep.SOILS_CARBON_STORAGE:
         return <ProjectSoilsCarbonStorageContainer />;
+      case ProjectCreationStep.TIMETABLE_INTRODUCTION:
+        return <ProjectTimetableIntroductionContainer />;
+      case ProjectCreationStep.TIMETABLE_PROJECTION:
+        return <TimetableProjectionFormContainer />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }

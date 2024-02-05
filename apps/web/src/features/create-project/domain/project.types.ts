@@ -44,6 +44,15 @@ export type Project = {
   yearlyProjectedCosts: Expense[];
   yearlyProjectedRevenue: Revenue[];
   soilsDistribution: Partial<Record<SoilType, number>>;
+  reinstatementTimetable?: {
+    startDate: string;
+    endDate: string;
+  };
+  photovoltaicInstallationTimetable?: {
+    startDate: string;
+    endDate: string;
+  };
+  firstYearOfOperation?: string;
 };
 
 export type DocumentType = "BUILDING_PERMIT" | "FORECAST_BALANCE_SHEET";

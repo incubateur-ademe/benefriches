@@ -16,7 +16,7 @@ const mapProps = (dispatch: AppDispatch) => {
     onSubmit: (revenue: FormValues) => {
       const totalRevenue = sumObjectValues(revenue);
       dispatch(setFinancialAssistanceRevenue(totalRevenue));
-      dispatch(goToStep(ProjectCreationStep.NAMING));
+      dispatch(goToStep(ProjectCreationStep.TIMETABLE_INTRODUCTION));
     },
   };
 };

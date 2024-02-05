@@ -47,6 +47,19 @@ const saveProjectSchema = z.object({
   yearlyProjectedCosts: z.object({ amount: z.number().nonnegative() }).array(),
   yearlyProjectedRevenue: z.object({ amount: z.number().nonnegative() }).array(),
   soilsDistribution: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
+  reinstatementTimetable: z
+    .object({
+      startDate: z.string().pipe(z.coerce.date()).optional(),
+      endDate: z.string().pipe(z.coerce.date()).optional(),
+    })
+    .optional(),
+  photovoltaicInstallationTimetable: z
+    .object({
+      startDate: z.string().pipe(z.coerce.date()).optional(),
+      endDate: z.string().pipe(z.coerce.date()).optional(),
+    })
+    .optional(),
+  firstYearOfOperation: z.string().optional(),
 });
 
 type SaveProjectPayload = z.infer<typeof saveProjectSchema>;
