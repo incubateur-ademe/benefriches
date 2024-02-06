@@ -68,25 +68,6 @@ type ExpensePurposeCategory =
   | "taxes"
   | "other";
 
-export type ExpensePurpose =
-  | "rent"
-  | "propertyTaxes"
-  | "otherTaxes"
-  | "maintenance"
-  | "otherManagementCosts"
-  | "security"
-  | "illegalDumpingCost"
-  | "accidentsCost"
-  | "otherSecuringCosts";
-
-type ExpensePurposeCategory =
-  | "rent"
-  | "safety"
-  | "site_management"
-  | "soils_degradation"
-  | "taxes"
-  | "other";
-
 export type Expense = {
   purpose: ExpensePurpose;
   purposeCategory: ExpensePurposeCategory;
