@@ -40,13 +40,21 @@ function SoilContaminationForm({ onSubmit, siteSurfaceArea }: Props) {
       instructions={
         <>
           <p>
-            Les friches sont bien souvent des sites dont les sols (voire les eaux souterraines)
-            peuvent être pollués, avec des pollutions multiples, témoignages des activités
-            successives sur plusieurs décennies.
+            Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
+            activités passées, avec potentiellement 2 conséquences&nbsp;:
           </p>
+          <ol>
+            <li>Un impact sur la qualité des eaux souterraines</li>
+            <li>
+              La nécessité d’engager des études puis des travaux afin de les traiter et ainsi
+              permettre un usage futur sans risques sanitaires. Ces études et travaux représentent
+              des dépenses généralement importantes qui contraignent la concrétisation de projets de
+              reconversion.
+            </li>
+          </ol>
           <p>
-            Ces pollutions (hydrocarbures, composants organiques volatils, cyanures, plomb, etc.)
-            peuvent notamment représenter un risque sanitaire préjudiciable à un nouvel usage.
+            Bénéfriches propose des indicateurs liés à la qualité des eaux souterraines et à la
+            surface dépolluée.
           </p>
         </>
       }

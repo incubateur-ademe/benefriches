@@ -22,7 +22,33 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit }: Props) => {
   const allCosts = watch();
 
   return (
-    <WizardFormLayout title="Aides financières aux travaux">
+    <WizardFormLayout
+      title="Aides financières aux travaux"
+      instructions={
+        <>
+          <span className="fr-text--lg">💡</span>
+
+          <p>Les recettes de l’opération peuvent avoir différentes origines&nbsp;:</p>
+          <ul>
+            <li>
+              Le produit attendu de la vente de droits à construire aux promoteurs ou de la vente
+              directe de terrains aménagés aux particuliers ou aux entreprises utilisatrices
+              (promoteurs, etc.),
+            </li>
+            <li>
+              Les contributions publiques de collectivités : ventes de foncier pour équipements et
+              espaces publics à la collectivité, participation pour remise d’ouvrage (en
+              concession), apport en nature (foncier, etc.), subvention d’équilibre (concédant ou
+              régie),
+            </li>
+            <li>
+              Les subventions publiques (Etat, région, ANAH, ANRU, ADEME, etc.) attribuées pour
+              financer certaines dépenses.
+            </li>
+          </ul>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
