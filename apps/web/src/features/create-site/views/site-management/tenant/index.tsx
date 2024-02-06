@@ -1,46 +1,60 @@
+import { useEffect } from "react";
 import FricheTenantForm, { FormValues } from "./SiteTenantForm";
 
-import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   setTenant,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
-import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import { fetchSiteLocalAuthorities } from "@/features/create-site/application/siteLocalAuthorities.actions";
+import { SiteLocalAuthorities } from "@/features/create-site/application/siteLocalAuthorities.reducer";
+import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
+import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {
-  return {
-    onSubmit: (data: FormValues) => {
-      if (data.tenantType === "company") {
-        dispatch(
-          setTenant({
-            structureType: "company",
-            name: data.companyName,
-          }),
-        );
-      }
-      if (data.tenantType === "local_or_regional_authority") {
-        dispatch(
-          setTenant({
-            structureType: "local_or_regional_authority",
-            name: data.localOrRegionalAuthority,
-          }),
-        );
-      }
-      const nextStep = siteData.isFriche
-        ? SiteCreationStep.RECENT_ACCIDENTS
-        : SiteCreationStep.YEARLY_EXPENSES;
-      dispatch(goToStep(nextStep));
-    },
-  };
+const convertFormValuesForStore = (
+  data: FormValues,
+  localAuthorities: SiteLocalAuthorities,
+): Tenant => {
+  if (data.tenantType === "local_or_regional_authority") {
+    return {
+      name: formatLocalAuthorityName(data.localAuthority, localAuthorities),
+      structureType: data.localAuthority,
+    };
+  }
+
+  if (data.tenantType === "company") {
+    return {
+      structureType: "company",
+      name: data.companyName,
+    };
+  }
+  return undefined;
 };
 
 function FricheTenantFormContainer() {
   const dispatch = useAppDispatch();
   const siteDraft = useAppSelector((state) => state.siteCreation.siteData);
+  const siteLocalAuthorities = useAppSelector((state) => state.siteLocalAuthorities);
+  const { localAuthorities } = siteLocalAuthorities;
 
-  return <FricheTenantForm {...mapProps(dispatch, siteDraft)} />;
+  useEffect(() => {
+    void dispatch(fetchSiteLocalAuthorities());
+  }, [dispatch]);
+
+  const onSubmit = (data: FormValues) => {
+    if (!localAuthorities) return;
+    const tenant = convertFormValuesForStore(data, localAuthorities);
+    if (tenant) {
+      dispatch(setTenant(tenant));
+    }
+    const nextStep = siteDraft.isFriche
+      ? SiteCreationStep.RECENT_ACCIDENTS
+      : SiteCreationStep.YEARLY_EXPENSES;
+    dispatch(goToStep(nextStep));
+  };
+
+  return <FricheTenantForm onSubmit={onSubmit} siteLocalAuthorities={siteLocalAuthorities} />;
 }
 
 export default FricheTenantFormContainer;

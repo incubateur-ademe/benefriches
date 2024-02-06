@@ -9,6 +9,7 @@ import { LocalStorageCreateSiteApi } from "@/features/create-site/infrastructure
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { LocalStorageProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/localStorageProjectsListApi";
 import { LocalStorageSitesApi } from "@/features/projects/infrastructure/sites-service/localStorageSitesApi";
+import { LocalAuthoritiesMock } from "@/shared/infrastructure/local-authorities-service/localAuthoritiesMock";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 
 export const getTestAppDependencies = (
@@ -26,6 +27,24 @@ export const getTestAppDependencies = (
     saveProjectGateway: new LocalStorageSaveProjectApi(),
     sitesService: new LocalStorageSitesApi(),
     photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
+    localAuthoritiesService: new LocalAuthoritiesMock({
+      city: {
+        code: "",
+        name: "",
+      },
+      epci: {
+        code: "",
+        name: "",
+      },
+      department: {
+        code: "",
+        name: "",
+      },
+      region: {
+        code: "",
+        name: "",
+      },
+    }),
     ...depsOverride,
   };
 };

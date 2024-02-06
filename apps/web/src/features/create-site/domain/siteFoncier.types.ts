@@ -1,6 +1,7 @@
 import { FricheActivity } from "./friche.types";
 
 import { SoilType } from "@/shared/domain/soils";
+import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 
 export enum SiteFoncierType {
   FRICHE = "FRICHE",
@@ -45,9 +46,8 @@ export type SiteDraft = {
   yearlyIncomes: Income[];
 };
 
-export type OwnerStructureType = "local_or_regional_authority" | "company" | "private_individual";
-
-export type TenantStructureType = "local_or_regional_authority" | "company";
+export type Tenant = { structureType: TenantStructureType; name: string } | undefined;
+export type Owner = { structureType: OwnerStructureType; name: string };
 
 export type Expense = {
   type: string;

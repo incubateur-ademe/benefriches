@@ -141,7 +141,7 @@ describe("Sites controller", () => {
           name: "Ancienne gare de Bercy",
           isFriche: true,
           fricheActivity: "RAILWAY",
-          owner: { structureType: "local_or_regional_authority", name: "department" },
+          owner: { structureType: "department", name: "Le département Paris" },
           tenant: { structureType: "company", name: "Tenant SARL" },
           soilsDistribution: {
             BUILDINGS: 12300,

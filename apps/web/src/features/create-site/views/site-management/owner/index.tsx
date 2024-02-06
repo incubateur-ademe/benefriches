@@ -1,52 +1,71 @@
+import { useEffect } from "react";
 import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 
-import { AppDispatch } from "@/app/application/store";
 import {
   goToStep,
   setOwner,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
+import { fetchSiteLocalAuthorities } from "@/features/create-site/application/siteLocalAuthorities.actions";
+import { SiteLocalAuthorities } from "@/features/create-site/application/siteLocalAuthorities.reducer";
+import { Owner } from "@/features/create-site/domain/siteFoncier.types";
 import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
+import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const mapProps = (dispatch: AppDispatch, currentUserCompany: string) => {
-  return {
-    currentUserCompany,
-    onSubmit: (data: FormValues) => {
-      switch (data.ownerType) {
-        case "local_or_regional_authority":
-          dispatch(
-            setOwner({
-              structureType: "local_or_regional_authority",
-              name: data.localAndRegionalAuthorityType,
-            }),
-          );
-          break;
-        case "user_company":
-          dispatch(setOwner({ structureType: "company", name: currentUserCompany }));
-          break;
-        case "other_company":
-          dispatch(setOwner({ structureType: "company", name: data.ownerName }));
-          break;
-        case "private_individual":
-          dispatch(
-            setOwner({
-              structureType: "private_individual",
-              name: data.ownerName,
-            }),
-          );
-          break;
-      }
-      dispatch(goToStep(SiteCreationStep.TENANT));
-    },
-  };
+const convertFormValuesForStore = (
+  data: FormValues,
+  currentUserCompany: string,
+  localAuthorities: SiteLocalAuthorities,
+): Owner => {
+  switch (data.ownerType) {
+    case "user_company":
+      return {
+        name: currentUserCompany,
+        structureType: "company",
+      };
+    case "local_or_regional_authority":
+      return {
+        name: formatLocalAuthorityName(data.localAuthority, localAuthorities),
+        structureType: data.localAuthority,
+      };
+    case "other_company":
+      return {
+        name: data.ownerName,
+        structureType: "company",
+      };
+    case "private_individual":
+      return {
+        name: data.ownerName,
+        structureType: "private_individual",
+      };
+  }
 };
 
 function SiteOwnerFormContainer() {
   const currentUserCompany = useAppSelector(selectCurrentUserCompany);
+  const siteLocalAuthorities = useAppSelector((state) => state.siteLocalAuthorities);
   const dispatch = useAppDispatch();
 
-  return <SiteOwnerForm {...mapProps(dispatch, currentUserCompany)} />;
+  const { localAuthorities } = siteLocalAuthorities;
+
+  const onSubmit = (data: FormValues) => {
+    if (!localAuthorities) return;
+    dispatch(setOwner(convertFormValuesForStore(data, currentUserCompany, localAuthorities)));
+    dispatch(goToStep(SiteCreationStep.TENANT));
+  };
+
+  useEffect(() => {
+    void dispatch(fetchSiteLocalAuthorities());
+  }, [dispatch]);
+
+  return (
+    <SiteOwnerForm
+      currentUserCompany={currentUserCompany}
+      siteLocalAuthorities={siteLocalAuthorities}
+      onSubmit={onSubmit}
+    />
+  );
 }
 
 export default SiteOwnerFormContainer;

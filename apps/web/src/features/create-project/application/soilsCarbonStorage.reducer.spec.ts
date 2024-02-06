@@ -31,7 +31,7 @@ const SOILS_STORAGE_API_MOCKED_RESULT = {
 const SITE_MOCKED_RESULT = {
   id: "03a53ffd-4f71-419e-8d04-041311eefa23",
   isFriche: true,
-  owner: { name: "", structureType: "unknown" },
+  owner: { name: "", structureType: "company" },
   name: "Friche industrielle",
   surfaceArea: 2900,
   hasContaminatedSoils: false,

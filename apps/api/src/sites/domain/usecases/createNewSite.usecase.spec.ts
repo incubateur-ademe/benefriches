@@ -23,8 +23,8 @@ describe("CreateNewSite Use Case", () => {
       isFriche: false,
       surfaceArea: 15000,
       owner: {
-        structureType: "local_or_regional_authority",
-        name: "department",
+        structureType: "department",
+        name: "Le département Paris",
       },
       soilsDistribution: {
         BUILDINGS: 3000,

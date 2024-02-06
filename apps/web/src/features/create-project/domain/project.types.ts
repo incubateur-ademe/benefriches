@@ -1,5 +1,9 @@
-import { LocalAndRegionalAuthority } from "@/shared/domain/localOrRegionalAuthority";
 import { SoilType } from "@/shared/domain/soils";
+import {
+  LocalAutorityStructureType,
+  OwnerStructureType,
+  TenantStructureType,
+} from "@/shared/domain/stakeholder";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 
 export enum ProjectType {
@@ -56,14 +60,15 @@ type Revenue = {
   amount: number;
 };
 
-type ProjectStakeholderStructure = "company" | "local_or_regional_authority" | "unknown";
+type ProjectStakeholderStructure =
+  | OwnerStructureType
+  | TenantStructureType
+  | "company"
+  | LocalAutorityStructureType
+  | "other"
+  | "unknown";
 
-type ProjectStakeholder =
-  | { name: string; structureType: ProjectStakeholderStructure }
-  | {
-      name: LocalAndRegionalAuthority;
-      structureType: "local_or_regional_authority";
-    };
+export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
 
 export type Address = {
   id: string;
@@ -83,11 +88,11 @@ export type ProjectSite = {
   isFriche: boolean;
   owner: {
     name: string;
-    structureType: ProjectStakeholderStructure;
+    structureType: OwnerStructureType;
   };
   tenant?: {
     name: string;
-    structureType: ProjectStakeholderStructure;
+    structureType: TenantStructureType;
   };
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;

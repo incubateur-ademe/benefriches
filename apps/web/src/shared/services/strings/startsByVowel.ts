@@ -1,0 +1,23 @@
+export const startsByVowel = (value: string) =>
+  [
+    "a",
+    "i",
+    "e",
+    "o",
+    "u",
+    "â",
+    "ê",
+    "î",
+    "ô",
+    "û",
+    "ä",
+    "ë",
+    "ï",
+    "ö",
+    "ü",
+    "à",
+    "é",
+    "è",
+    "ù",
+    "œ",
+  ].includes(value.charAt(0).toLowerCase());

@@ -10,19 +10,15 @@ import { ProjectSite } from "../../domain/projects.types";
 
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
 import { SoilType } from "@/shared/domain/soils";
+import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import { delay } from "@/shared/services/delay/delay";
 
 export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 
-export type Stakeholder =
-  | {
-      name: string;
-      structureType: "company" | "local_or_regional_authority" | "unknown";
-    }
-  | {
-      name: "municipality" | "community_of_municipalities" | "department" | "region" | "state";
-      structureType: "local_or_regional_authority";
-    };
+export type Stakeholder = {
+  name: string;
+  structureType: "company" | LocalAutorityStructureType | "other" | "unknown";
+};
 
 type ProjectInLocalStorage = {
   id: string;
