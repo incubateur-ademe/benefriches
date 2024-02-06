@@ -54,6 +54,24 @@ function PhotovoltaicSurfaceFromPowerForm({
             &nbsp;m².
           </p>
           <p>Vous pouvez modifier cette superficie.</p>
+
+          <p>
+            La superficie d’installation des panneaux ne peut être supérieure à la superficie totale
+            de la friche ({formatNumberFr(siteSurfaceArea)} m²).
+          </p>
+
+          <span className="fr-text--lg">💡</span>
+          <p>
+            Une centrale au sol peut facilement être implantée sur des espaces imperméabilisés (non
+            bâtis) ou minéralisés, mais également sur des espaces enherbés ou avec de la végétation
+            basse (broussailles, garrigue, etc.) qu’ils soient artificialisés ou naturels.
+          </p>
+          <p>
+            Dès lors que de la végétation haute est présente (sols artificiels ou prairies arborés,
+            forêts), l’implantation nécessite des investissements (coupes) et est à éviter (pour des
+            raisons de biodiversité et de puits de carbone&nbsp;!)
+          </p>
+          <p>Le devenir des sols sera abordés ultérieurement dans Bénéfriches.</p>
         </>
       }
     >
