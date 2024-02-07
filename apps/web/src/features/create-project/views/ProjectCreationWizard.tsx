@@ -11,6 +11,8 @@ import PhotovoltaicSurface from "./photovoltaic/surface";
 import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistance";
 import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
+import ProjectScheduleIntroductionContainer from "./schedule/introduction";
+import ProjectScheduleProjectionFormContainer from "./schedule/projection";
 import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
 import ProjectSoilsDistributionContainer from "./soils/soils-distribution";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
@@ -19,8 +21,6 @@ import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
 import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
-import ProjectTimetableIntroductionContainer from "./timetable/introduction";
-import TimetableProjectionFormContainer from "./timetable/projection";
 import ProjectCreationConfirmation from "./confirmation";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectTypesForm from "./project-types";
@@ -80,10 +80,10 @@ function ProjectCreationWizard() {
         return <ProjectSoilsSummaryContainer />;
       case ProjectCreationStep.SOILS_CARBON_STORAGE:
         return <ProjectSoilsCarbonStorageContainer />;
-      case ProjectCreationStep.TIMETABLE_INTRODUCTION:
-        return <ProjectTimetableIntroductionContainer />;
-      case ProjectCreationStep.TIMETABLE_PROJECTION:
-        return <TimetableProjectionFormContainer />;
+      case ProjectCreationStep.SCHEDULE_INTRODUCTION:
+        return <ProjectScheduleIntroductionContainer />;
+      case ProjectCreationStep.SCHEDULE_PROJECTION:
+        return <ProjectScheduleProjectionFormContainer />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }

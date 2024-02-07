@@ -6,38 +6,38 @@ import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
-  askForReinstatementTimetable: boolean;
+  askForReinstatementSchedule: boolean;
   onSubmit: (data: FormValues) => void;
 };
 
 export type FormValues = {
-  reinstatementTimetable?: {
+  reinstatementSchedule?: {
     startDate: string;
     endDate: string;
   };
-  photovoltaicInstallationTimetable: {
+  photovoltaicInstallationSchedule: {
     startDate: string;
     endDate: string;
   };
   firstYearOfOperation: string;
 };
 
-function TimetableProjectionForm({ askForReinstatementTimetable, onSubmit }: Props) {
+function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit }: Props) {
   const { handleSubmit, register, formState } = useForm<FormValues>();
 
   const { errors } = formState;
   const {
-    reinstatementTimetable: reinstatementError,
-    photovoltaicInstallationTimetable: photovoltaicError,
+    reinstatementSchedule: reinstatementError,
+    photovoltaicInstallationSchedule: photovoltaicError,
   } = errors;
 
   return (
     <WizardFormLayout title="Calendrier prévisionnel des travaux">
       <form onSubmit={handleSubmit(onSubmit)}>
-        {askForReinstatementTimetable && (
+        {askForReinstatementSchedule && (
           <Fieldset
             legend="Travaux de remise en état de la friche"
-            state={formState.errors.reinstatementTimetable ? "error" : "default"}
+            state={formState.errors.reinstatementSchedule ? "error" : "default"}
             stateRelatedMessage={
               reinstatementError ? (
                 <ul className="tw-m-0">
@@ -57,7 +57,7 @@ function TimetableProjectionForm({ askForReinstatementTimetable, onSubmit }: Pro
                 label="Début des travaux"
                 nativeInputProps={{
                   type: "date",
-                  ...register("reinstatementTimetable.startDate"),
+                  ...register("reinstatementSchedule.startDate"),
                 }}
               />
               <Input
@@ -65,7 +65,7 @@ function TimetableProjectionForm({ askForReinstatementTimetable, onSubmit }: Pro
                 label="Fin des travaux"
                 nativeInputProps={{
                   type: "date",
-                  ...register("reinstatementTimetable.endDate"),
+                  ...register("reinstatementSchedule.endDate"),
                 }}
               />
             </div>
@@ -73,7 +73,7 @@ function TimetableProjectionForm({ askForReinstatementTimetable, onSubmit }: Pro
         )}
         <Fieldset
           legend="Travaux d’installation des panneaux photovoltaïques"
-          state={formState.errors.photovoltaicInstallationTimetable ? "error" : "default"}
+          state={formState.errors.photovoltaicInstallationSchedule ? "error" : "default"}
           stateRelatedMessage={
             photovoltaicError ? (
               <ul className="tw-m-0">
@@ -91,7 +91,7 @@ function TimetableProjectionForm({ askForReinstatementTimetable, onSubmit }: Pro
               label="Début des travaux"
               nativeInputProps={{
                 type: "date",
-                ...register("photovoltaicInstallationTimetable.startDate"),
+                ...register("photovoltaicInstallationSchedule.startDate"),
               }}
             />
 
@@ -100,7 +100,7 @@ function TimetableProjectionForm({ askForReinstatementTimetable, onSubmit }: Pro
               label="Fin des travaux"
               nativeInputProps={{
                 type: "date",
-                ...register("photovoltaicInstallationTimetable.endDate"),
+                ...register("photovoltaicInstallationSchedule.endDate"),
               }}
             />
           </div>
@@ -135,4 +135,4 @@ function TimetableProjectionForm({ askForReinstatementTimetable, onSubmit }: Pro
   );
 }
 
-export default TimetableProjectionForm;
+export default ScheduleProjectionForm;

@@ -49,8 +49,8 @@ export enum ProjectCreationStep {
   REVENUE_PROJECTED_YEARLY_REVENUE = "REVENUE_PROJECTED_YEARLY_REVENUE",
   REVENUE_FINANCIAL_ASSISTANCE = "REVENUE_FINANCIAL_ASSISTANCE",
   // Calendrier
-  TIMETABLE_INTRODUCTION = "TIMETABLE_INTRODUCTION",
-  TIMETABLE_PROJECTION = "TIMETABLE_PROJECTION",
+  SCHEDULE_INTRODUCTION = "SCHEDULE_INTRODUCTION",
+  SCHEDULE_PROJECTION = "SCHEDULE_PROJECTION",
   // Naming
   NAMING = "NAMING",
   // Confirmation
@@ -163,17 +163,14 @@ export const projectCreationSlice = createSlice({
     setSoilsDistribution: (state, action: PayloadAction<Project["soilsDistribution"]>) => {
       state.projectData.soilsDistribution = action.payload;
     },
-    setReinstatementTimetable: (
-      state,
-      action: PayloadAction<Project["reinstatementTimetable"]>,
-    ) => {
-      state.projectData.reinstatementTimetable = action.payload;
+    setReinstatementSchedule: (state, action: PayloadAction<Project["reinstatementSchedule"]>) => {
+      state.projectData.reinstatementSchedule = action.payload;
     },
-    setPhotovoltaicPanelsInstallationTimetableTimetable: (
+    setPhotovoltaicPanelsInstallationSchedule: (
       state,
-      action: PayloadAction<Project["photovoltaicInstallationTimetable"]>,
+      action: PayloadAction<Project["photovoltaicInstallationSchedule"]>,
     ) => {
-      state.projectData.photovoltaicInstallationTimetable = action.payload;
+      state.projectData.photovoltaicInstallationSchedule = action.payload;
     },
     setFirstYearOfOperation: (state, action: PayloadAction<Project["firstYearOfOperation"]>) => {
       state.projectData.firstYearOfOperation = action.payload;
@@ -229,8 +226,8 @@ export const {
   setPhotovoltaicContractDuration,
   setSoilsDistribution,
   setFirstYearOfOperation,
-  setPhotovoltaicPanelsInstallationTimetableTimetable,
-  setReinstatementTimetable,
+  setPhotovoltaicPanelsInstallationSchedule,
+  setReinstatementSchedule,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;

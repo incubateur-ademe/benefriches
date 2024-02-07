@@ -4,16 +4,14 @@ type Props = {
   onNext: () => void;
 };
 
-const TimetableIntroduction = ({ onNext }: Props) => {
+const ScheduleIntroduction = ({ onNext }: Props) => {
   return (
     <>
       <h2>C’est presque fini !</h2>
       <p>Quand commence ce beau projet ?</p>
-      <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-        Suivant
-      </Button>
+      <Button onClick={onNext}>Suivant</Button>
     </>
   );
 };
 
-export default TimetableIntroduction;
+export default ScheduleIntroduction;

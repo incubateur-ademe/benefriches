@@ -44,11 +44,11 @@ export type Project = {
   yearlyProjectedCosts: Expense[];
   yearlyProjectedRevenue: Revenue[];
   soilsDistribution: Partial<Record<SoilType, number>>;
-  reinstatementTimetable?: {
+  reinstatementSchedule?: {
     startDate: string;
     endDate: string;
   };
-  photovoltaicInstallationTimetable?: {
+  photovoltaicInstallationSchedule?: {
     startDate: string;
     endDate: string;
   };
