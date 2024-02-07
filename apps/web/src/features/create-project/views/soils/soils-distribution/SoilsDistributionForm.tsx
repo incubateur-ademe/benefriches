@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
-import FlatSurfacesNotice from "./FlatSurfacesNotice";
-import ImpermeableSurfacesNotice from "./ImpermeableSurfacesNotice";
-import MineralSoilSurfaceNotice from "./MineralSoilSurfaceNotice";
+import PhotovoltaicFlatSurfacesNotice from "./PhotovoltaicFlatSurfacesNotice";
+import PhotovoltaicSoilsImpactsNotice from "./PhotovoltaicSoilsImpactsNotice";
 import SoilsDistributionAddButton from "./SoilsAddButton";
 import TotalAllocatedSurfacesInput from "./TotalAllocatedSurfacesInput";
 import TotalFlatSurfacesInput from "./TotalFlatSurfacesInput";
@@ -144,13 +143,11 @@ function SoilsDistributionForm({
       title="Quelle sera la future répartition des sols ?"
       instructions={
         <>
-          {minAdvisedImpermeableSurface ? (
-            <ImpermeableSurfacesNotice advisedSurface={minAdvisedImpermeableSurface} />
-          ) : null}
-          {minAdvisedMineralSurface ? (
-            <MineralSoilSurfaceNotice advisedSurface={minAdvisedMineralSurface} />
-          ) : null}
-          <FlatSurfacesNotice advisedSurface={minAdvisedFlatSurfaces} />
+          <PhotovoltaicSoilsImpactsNotice
+            advisedImpermeableSurface={minAdvisedImpermeableSurface}
+            advisedMineralSurface={minAdvisedMineralSurface}
+          />
+          <PhotovoltaicFlatSurfacesNotice advisedSurface={minAdvisedFlatSurfaces} />
         </>
       }
     >
@@ -179,7 +176,6 @@ function SoilsDistributionForm({
               sliderEndValue={totalSurfaceArea}
               sliderProps={{
                 marks: {
-                  0: "0",
                   [totalSurfaceArea]: formatNumberFr(totalSurfaceArea),
                   ...(minAdvisedSurface
                     ? {
