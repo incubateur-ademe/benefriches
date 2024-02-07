@@ -11,6 +11,8 @@ import PhotovoltaicSurface from "./photovoltaic/surface";
 import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistance";
 import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
+import ProjectScheduleIntroductionContainer from "./schedule/introduction";
+import ProjectScheduleProjectionFormContainer from "./schedule/projection";
 import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
 import ProjectSoilsDistributionContainer from "./soils/soils-distribution";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
@@ -78,6 +80,10 @@ function ProjectCreationWizard() {
         return <ProjectSoilsSummaryContainer />;
       case ProjectCreationStep.SOILS_CARBON_STORAGE:
         return <ProjectSoilsCarbonStorageContainer />;
+      case ProjectCreationStep.SCHEDULE_INTRODUCTION:
+        return <ProjectScheduleIntroductionContainer />;
+      case ProjectCreationStep.SCHEDULE_PROJECTION:
+        return <ProjectScheduleProjectionFormContainer />;
       case ProjectCreationStep.CREATION_CONFIRMATION:
         return <ProjectCreationConfirmation />;
     }
