@@ -76,6 +76,6 @@ export type Expense = {
 };
 
 export type Income = {
-  type: string;
+  source: string;
   amount: number;
 };

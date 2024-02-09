@@ -14,13 +14,13 @@ const mapProps = (dispatch: AppDispatch) => {
       const incomes = [];
       if (formData.operationsIncome) {
         incomes.push({
-          type: "operations",
+          source: "operations",
           amount: formData.operationsIncome,
         });
       }
       if (formData.otherIncome) {
         incomes.push({
-          type: "other",
+          source: "other",
           amount: formData.otherIncome,
         });
       }

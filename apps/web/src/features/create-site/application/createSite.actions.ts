@@ -52,7 +52,7 @@ const createSiteSchema = z.object({
     .array(),
   yearlyIncomes: z
     .object({
-      type: z.string(),
+      source: z.string(),
       amount: z.number().nonnegative(),
     })
     .array(),

@@ -66,7 +66,7 @@ export const siteWithExhaustiveData: SiteDraft = {
       purposeCategory: "safety",
     },
   ],
-  yearlyIncomes: [{ amount: 150000, type: "income" }],
+  yearlyIncomes: [{ amount: 150000, source: "income" }],
   isFriche: false,
   hasRecentAccidents: false,
   fullTimeJobsInvolved: 0.5,
