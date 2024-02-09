@@ -214,10 +214,10 @@ describe("SqlSiteRepository integration", () => {
 
   it("Saves given site with expenses and incomes in sites, expenses and incomes", async () => {
     const site: NonFricheSite = buildSite({
-      yearlyExpenses: [{ amount: 45000, bearer: "owner", category: "other", type: "other" }],
+      yearlyExpenses: [{ amount: 45000, bearer: "owner", category: "other", purpose: "other" }],
       yearlyIncomes: [
-        { amount: 20000, type: "operations" },
-        { amount: 32740.3, type: "other" },
+        { amount: 20000, source: "operations" },
+        { amount: 32740.3, source: "other" },
       ],
     });
 
@@ -228,17 +228,17 @@ describe("SqlSiteRepository integration", () => {
 
     const expensesResult = await sqlConnection<SqlSiteExpense[]>("site_expenses").select(
       "amount",
-      "type",
+      "purpose",
     );
-    expect(expensesResult).toEqual([{ amount: "45000.00", type: "other" }]);
+    expect(expensesResult).toEqual([{ amount: "45000.00", purpose: "other" }]);
 
     const incomesResult = await sqlConnection<SqlSiteIncome[]>("site_incomes").select(
       "amount",
-      "type",
+      "source",
     );
     expect(incomesResult).toEqual([
-      { amount: "20000.00", type: "operations" },
-      { amount: "32740.30", type: "other" },
+      { amount: "20000.00", source: "operations" },
+      { amount: "32740.30", source: "other" },
     ]);
   });
 

@@ -48,14 +48,14 @@ export type SqlSoilsDistribution = {
 };
 
 export type SqlSiteExpense = {
-  type: string;
+  purpose: string;
   bearer: string;
   category: string;
   amount: number;
 };
 
 export type SqlSiteIncome = {
-  type: string;
+  source: string;
   amount: number;
 };
 

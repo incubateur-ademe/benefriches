@@ -16,14 +16,14 @@ const fricheActivitySchema = z.enum([
 export type FricheActivity = z.infer<typeof fricheActivitySchema>;
 
 const expenseSchema = z.object({
-  type: z.string(),
+  purpose: z.string(),
   bearer: z.string(),
   category: z.string(),
   amount: z.number().nonnegative(),
 });
 
 const incomeSchema = z.object({
-  type: z.string(),
+  source: z.string(),
   amount: z.number().nonnegative(),
 });
 
