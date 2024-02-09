@@ -3,6 +3,7 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { FricheSite, NonFricheSite } from "src/sites/domain/models/site";
+import { buildMinimalSite } from "src/sites/domain/models/site.mock";
 import {
   SqlAddress,
   SqlSite,
@@ -16,38 +17,6 @@ describe("SqlSiteRepository integration", () => {
   let sqlConnection: Knex;
   let siteRepository: SqlSiteRepository;
   const now = new Date();
-
-  const buildSite = (propsOverride?: Partial<NonFricheSite>): NonFricheSite => {
-    return {
-      id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
-      name: "My site",
-      surfaceArea: 21000,
-      owner: {
-        structureType: "department",
-        name: "Le département Paris",
-      },
-      soilsDistribution: {
-        BUILDINGS: 3000,
-        MINERAL_SOIL: 5000,
-        PRAIRIE_BUSHES: 13000,
-      },
-      yearlyExpenses: [],
-      yearlyIncomes: [],
-      isFriche: false,
-      address: {
-        banId: "123abc",
-        city: "Paris",
-        cityCode: "75109",
-        postCode: "75009",
-        lat: 48.876517,
-        long: 2.330785,
-        value: "1 rue de Londres, 75009 Paris",
-        streetName: "rue de Londres",
-      },
-      createdAt: now,
-      ...propsOverride,
-    };
-  };
 
   beforeAll(() => {
     sqlConnection = knex(knexConfig);
@@ -87,7 +56,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   it("Saves given site with minimal data in sites", async () => {
-    const site: NonFricheSite = buildSite();
+    const site: NonFricheSite = buildMinimalSite({ createdAt: now });
 
     await siteRepository.save(site);
 
@@ -107,7 +76,7 @@ describe("SqlSiteRepository integration", () => {
         name: "My site",
         owner_name: "Le département Paris",
         owner_structure_type: "department",
-        surface_area: "21000.00",
+        surface_area: "15000.00",
         tenant_name: null,
         tenant_structure_type: null,
         created_at: now,
@@ -116,13 +85,14 @@ describe("SqlSiteRepository integration", () => {
   });
 
   it("Saves given site with complete data in sites table", async () => {
-    const site: NonFricheSite = buildSite({
+    const site: NonFricheSite = buildMinimalSite({
       description: "Description of site",
       fullTimeJobsInvolved: 1.3,
       tenant: {
         structureType: "company",
         name: "Tenant SARL",
       },
+      createdAt: now,
     });
 
     await siteRepository.save(site);
@@ -143,7 +113,7 @@ describe("SqlSiteRepository integration", () => {
         name: "My site",
         owner_name: "Le département Paris",
         owner_structure_type: "department",
-        surface_area: "21000.00",
+        surface_area: "15000.00",
         tenant_name: "Tenant SARL",
         tenant_structure_type: "company",
         created_at: now,
@@ -153,7 +123,8 @@ describe("SqlSiteRepository integration", () => {
 
   it("Saves given site with friche data in sites table", async () => {
     const site: FricheSite = {
-      ...buildSite(),
+      ...buildMinimalSite(),
+      createdAt: now,
       description: "Description of site",
       isFriche: true,
       fricheActivity: "HOUSING",
@@ -181,7 +152,7 @@ describe("SqlSiteRepository integration", () => {
         name: "My site",
         owner_name: "Le département Paris",
         owner_structure_type: "department",
-        surface_area: "21000.00",
+        surface_area: "15000.00",
         tenant_name: null,
         tenant_structure_type: null,
         full_time_jobs_involved: null,
@@ -191,7 +162,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   it("Saves given site with minimal data in sites, soils distribution, address tables", async () => {
-    const site: NonFricheSite = buildSite();
+    const site: NonFricheSite = buildMinimalSite();
 
     await siteRepository.save(site);
 
@@ -207,13 +178,15 @@ describe("SqlSiteRepository integration", () => {
 
     expect(soilsDistributionResult).toEqual([
       { soil_type: "BUILDINGS", surface_area: "3000.00", site_id: site.id },
+      { soil_type: "ARTIFICIAL_TREE_FILLED", surface_area: "5000.00", site_id: site.id },
+      { soil_type: "FOREST_MIXED", surface_area: "60000.00", site_id: site.id },
       { soil_type: "MINERAL_SOIL", surface_area: "5000.00", site_id: site.id },
-      { soil_type: "PRAIRIE_BUSHES", surface_area: "13000.00", site_id: site.id },
+      { soil_type: "IMPERMEABLE_SOILS", surface_area: "1300.00", site_id: site.id },
     ]);
   });
 
   it("Saves given site with expenses and incomes in sites, expenses and incomes", async () => {
-    const site: NonFricheSite = buildSite({
+    const site: NonFricheSite = buildMinimalSite({
       yearlyExpenses: [{ amount: 45000, bearer: "owner", category: "other", type: "other" }],
       yearlyIncomes: [
         { amount: 20000, type: "operations" },
@@ -243,7 +216,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   it("Doesn't save given site and address if something goes wrong with insertion of soils distributions", async () => {
-    const site: NonFricheSite = buildSite({
+    const site: NonFricheSite = buildMinimalSite({
       soilsDistribution: {
         // @ts-expect-error string is passed instead of number
         MINERAL_SOIL: "wrong-value",
