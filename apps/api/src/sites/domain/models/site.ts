@@ -67,7 +67,7 @@ export type NonFricheSite = z.infer<typeof nonFricheSiteSchema>;
 
 export const fricheSchema = nonFricheSiteSchema.extend({
   isFriche: z.literal(true),
-  fricheActivity: fricheActivitySchema,
+  fricheActivity: fricheActivitySchema.optional(),
   hasContaminatedSoils: z.boolean().optional(),
   contaminatedSoilSurface: z.number().nonnegative().optional(),
   accidentsMinorInjuries: z.number().nonnegative().optional(),

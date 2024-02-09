@@ -53,7 +53,6 @@ describe("CreateNewSite Use Case", () => {
     return {
       ...buildMinimalSiteProps(),
       isFriche: true,
-      fricheActivity: "INDUSTRY",
       ...propsOverride,
     };
   };
@@ -163,23 +162,6 @@ describe("CreateNewSite Use Case", () => {
   });
 
   describe("Friche", () => {
-    it("Cannot create a new friche without providing fricheActivity", async () => {
-      const fricheProps = buildFricheProps();
-      // @ts-expect-error dynamic delete
-      delete fricheProps.fricheActivity;
-
-      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
-
-      expect.assertions(2);
-      try {
-        await usecase.execute({ siteProps: fricheProps });
-      } catch (err) {
-        const zIssues = getZodIssues(err);
-        expect(zIssues.length).toEqual(1);
-        expect(zIssues[0].path).toEqual(["fricheActivity"]);
-      }
-    });
-
     it("Can create a new friche with minimal data", async () => {
       const fricheProps = buildFricheProps();
 
@@ -201,6 +183,7 @@ describe("CreateNewSite Use Case", () => {
           name: "Tenant SARL",
         },
         // friche-only data
+        fricheActivity: "INDUSTRY",
         hasContaminatedSoils: true,
         contaminatedSoilSurface: 1400,
         accidentsMinorInjuries: 2,
