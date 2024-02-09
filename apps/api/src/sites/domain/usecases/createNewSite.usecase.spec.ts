@@ -132,7 +132,9 @@ describe("CreateNewSite Use Case", () => {
         structureType: "company",
         name: "Tenant SARL",
       },
-      yearlyExpenses: [{ amount: 45000, bearer: "owner", category: "other", purpose: "other" }],
+      yearlyExpenses: [
+        { amount: 45000, bearer: "owner", purposeCategory: "other", purpose: "other" },
+      ],
       yearlyIncomes: [
         { amount: 20000, source: "other" },
         { amount: 32740.3, source: "other" },

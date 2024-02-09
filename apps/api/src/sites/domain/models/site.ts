@@ -18,7 +18,7 @@ export type FricheActivity = z.infer<typeof fricheActivitySchema>;
 const expenseSchema = z.object({
   purpose: z.string(),
   bearer: z.string(),
-  category: z.string(),
+  purposeCategory: z.string(),
   amount: z.number().nonnegative(),
 });
 

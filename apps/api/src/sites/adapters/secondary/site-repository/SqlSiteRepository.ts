@@ -50,7 +50,7 @@ export type SqlSoilsDistribution = {
 export type SqlSiteExpense = {
   purpose: string;
   bearer: string;
-  category: string;
+  purpose_category: string;
   amount: number;
 };
 
@@ -124,7 +124,10 @@ export class SqlSiteRepository implements SiteRepository {
           return {
             id: uuid(),
             site_id: insertedSite.id,
-            ...expense,
+            purpose_category: expense.purposeCategory,
+            amount: expense.amount,
+            bearer: expense.bearer,
+            purpose: expense.purpose,
           };
         });
         await trx<SqlSiteExpense[]>("site_expenses").insert(siteExpensesToInsert);
