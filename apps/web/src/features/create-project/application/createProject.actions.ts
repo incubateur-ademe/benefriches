@@ -43,7 +43,7 @@ const saveProjectSchema = z.object({
   operationsFullTimeJobsInvolved: z.number().nonnegative().optional(),
   reinstatementCost: z.number().nonnegative().optional(),
   photovoltaicPanelsInstallationCost: z.number().nonnegative(),
-  financialAssistanceRevenue: z.number().nonnegative(),
+  financialAssistanceRevenue: z.number().nonnegative().optional(),
   yearlyProjectedCosts: z.object({ amount: z.number().nonnegative() }).array(),
   yearlyProjectedRevenue: z.object({ amount: z.number().nonnegative() }).array(),
   soilsDistribution: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
