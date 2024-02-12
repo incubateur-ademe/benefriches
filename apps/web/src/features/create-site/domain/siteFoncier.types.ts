@@ -9,7 +9,7 @@ export enum SiteFoncierType {
 }
 
 export type Address = {
-  id: string;
+  banId: string;
   value: string;
   city: string;
   cityCode: string;
