@@ -28,7 +28,7 @@ const mapNationalBaseAddressToAddress = (
   nationalBaseAddress: Feature<Point, GeoJsonProperties>,
 ): Address => {
   return {
-    id: nationalBaseAddress.properties.id,
+    banId: nationalBaseAddress.properties.id,
     value: nationalBaseAddress.properties.label,
     city: nationalBaseAddress.properties.city,
     cityCode: nationalBaseAddress.properties.citycode,

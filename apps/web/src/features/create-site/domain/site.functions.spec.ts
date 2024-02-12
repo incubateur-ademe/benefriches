@@ -22,7 +22,7 @@ const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
       city: "Paris",
       cityCode: "75109",
       postCode: "75009",
-      id: "123abc",
+      banId: "123abc",
       lat: 48.876517,
       long: 2.330785,
       value: "1 rue de Londres, 75009 Paris",

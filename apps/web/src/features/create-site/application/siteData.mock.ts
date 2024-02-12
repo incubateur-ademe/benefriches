@@ -72,7 +72,7 @@ export const siteWithExhaustiveData: SiteDraft = {
   fullTimeJobsInvolved: 0.5,
   hasContaminatedSoils: false,
   address: {
-    id: "31070_p4ur8e",
+    banId: "31070_p4ur8e",
     value: "Sendere 31350 Blajan",
     city: "Blajan",
     cityCode: "31070",
@@ -119,7 +119,7 @@ export const siteWithMinimalData: SiteDraft = {
   fullTimeJobsInvolved: 0.5,
   hasContaminatedSoils: false,
   address: {
-    id: "31070_p4ur8e",
+    banId: "31070_p4ur8e",
     value: "Sendere 31350 Blajan",
     city: "Blajan",
     cityCode: "31070",

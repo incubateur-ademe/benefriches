@@ -32,7 +32,7 @@ const SearchAddressAutocompleteInput = ({
   selectedAddress,
   addressService,
 }: PropTypes) => {
-  const autocompleteValue = selectedAddress?.id;
+  const autocompleteValue = selectedAddress?.banId;
   const { long, lat } = selectedAddress ?? {};
 
   const [suggestions, setSuggestions] = useState<Option[]>([]);
@@ -45,7 +45,7 @@ const SearchAddressAutocompleteInput = ({
     const options = await addressService.search(text);
     setSuggestions(
       options.map((address) => ({
-        value: address.id,
+        value: address.banId,
         label: address.value,
         properties: address,
       })),

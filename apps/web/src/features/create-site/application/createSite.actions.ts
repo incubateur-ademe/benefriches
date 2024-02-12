@@ -10,7 +10,7 @@ const createSiteSchema = z.object({
   description: z.string().optional(),
   isFriche: z.boolean(),
   address: z.object({
-    id: z.string(),
+    banId: z.string(),
     value: z.string(),
     city: z.string(),
     cityCode: z.string(),
