@@ -9,6 +9,7 @@ import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { LocalStorageProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/localStorageProjectsListApi";
 import { LocalStorageSitesApi } from "@/features/projects/infrastructure/sites-service/localStorageSitesApi";
+import { LocalStorageUserService } from "@/features/users/infra/get-user-service/LocalStorageUserService";
 import { LocalAuthoritiesMock } from "@/shared/infrastructure/local-authorities-service/localAuthoritiesMock";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 
@@ -27,6 +28,7 @@ export const getTestAppDependencies = (
     saveProjectGateway: new LocalStorageSaveProjectApi(),
     sitesService: new LocalStorageSitesApi(),
     photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
+    userService: new LocalStorageUserService(),
     localAuthoritiesService: new LocalAuthoritiesMock({
       city: {
         code: "",

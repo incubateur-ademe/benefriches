@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import AccessibilitePage from "./pages/AccessibilitePage";
 import BudgetPage from "./pages/BudgetPage";
@@ -16,11 +17,18 @@ import MyProjectsPage from "@/features/projects/views/my-projects-page";
 import ProjectImpactsPage from "@/features/projects/views/project-impacts-page";
 import ProjectsImpactsComparisonPage from "@/features/projects/views/projects-impacts-comparison";
 import ProjectsComparisonSelectionPage from "@/features/projects/views/select-projects-comparison-page";
+import { initCurrentUserAction } from "@/features/users/application/initCurrentUser.action";
 import CreateUserPage from "@/features/users/views";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 
 function App() {
   const route = useRoute();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    void dispatch(initCurrentUserAction());
+  }, [dispatch]);
 
   return (
     <HeaderFooterLayout>
