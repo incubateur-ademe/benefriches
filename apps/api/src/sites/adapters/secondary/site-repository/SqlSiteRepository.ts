@@ -1,65 +1,75 @@
 import { Knex } from "knex";
 import { v4 as uuid } from "uuid";
+import { SitesRepository } from "src/sites/domain/gateways/SitesRepository";
 import { Site } from "src/sites/domain/models/site";
-import { SiteRepository } from "src/sites/domain/usecases/createNewSite.usecase";
 import { SoilType } from "src/soils/domain/soils";
 
-export type SqlSite = {
+declare module "knex/types/tables" {
+  interface Tables {
+    sites: SqlSite;
+    addresses: SqlAddress;
+    site_soils_distributions: SqlSoilsDistribution;
+    site_expenses: SqlSiteExpense;
+    site_incomes: SqlSiteIncome;
+  }
+}
+
+type SqlSite = {
   id: string;
   name: string;
-  description?: string;
+  description: string | null;
   surface_area: number;
   is_friche: boolean;
-  full_time_jobs_involved?: number;
+  full_time_jobs_involved: number | null;
   owner_structure_type: string;
-  owner_name?: string;
-  tenant_structure_type?: string;
-  tenant_name?: string;
+  owner_name: string | null;
+  tenant_structure_type: string | null;
+  tenant_name: string | null;
   // friche related
-  friche_activity?: string;
-  friche_has_contaminated_soils?: boolean;
-  friche_contaminated_soil_surface_area?: number;
-  friche_accidents_minor_injuries?: number;
-  friche_accidents_severe_injuries?: number;
-  friche_accidents_deaths?: number;
+  friche_activity: string | null;
+  friche_has_contaminated_soils: boolean | null;
+  friche_contaminated_soil_surface_area: number | null;
+  friche_accidents_minor_injuries: number | null;
+  friche_accidents_severe_injuries: number | null;
+  friche_accidents_deaths: number | null;
   // dates
   created_at: Date;
 };
 
-export type SqlAddress = {
+type SqlAddress = {
   id: string;
   ban_id: string;
   value: string;
   city: string;
   city_code: string;
   post_code: string;
-  lat?: number;
-  long?: number;
-  street_name?: string;
-  street_number?: string;
+  lat: number;
+  long: number;
+  street_name: string | null;
+  street_number: string | null;
   site_id: string;
 };
 
-export type SqlSoilsDistribution = {
+type SqlSoilsDistribution = {
   id: string;
   soil_type: SoilType;
   surface_area: number;
   site_id: string;
 };
 
-export type SqlSiteExpense = {
+type SqlSiteExpense = {
   type: string;
   bearer: string;
   category: string;
   amount: number;
 };
 
-export type SqlSiteIncome = {
+type SqlSiteIncome = {
   type: string;
   amount: number;
 };
 
-export class SqlSiteRepository implements SiteRepository {
+export class SqlSiteRepository implements SitesRepository {
   constructor(private readonly sqlConnection: Knex) {}
 
   async save(site: Site): Promise<void> {

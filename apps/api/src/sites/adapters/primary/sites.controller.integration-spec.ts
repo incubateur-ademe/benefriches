@@ -5,7 +5,6 @@ import { Knex } from "knex";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SqlSite } from "../secondary/site-repository/SqlSiteRepository";
 import { CreateSiteBodyDto } from "./sites.controller";
 
 type BadRequestResponseBody = {
@@ -116,7 +115,7 @@ describe("Sites controller", () => {
 
       expect(response.status).toEqual(201);
 
-      const sitesInDb = await sqlConnection<SqlSite>("sites").select("id", "name", "surface_area");
+      const sitesInDb = await sqlConnection("sites").select("id", "name", "surface_area");
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
@@ -161,7 +160,7 @@ describe("Sites controller", () => {
 
       expect(response.status).toEqual(201);
 
-      const sitesInDb = await sqlConnection<SqlSite>("sites").select(
+      const sitesInDb = await sqlConnection("sites").select(
         "id",
         "name",
         "is_friche",
