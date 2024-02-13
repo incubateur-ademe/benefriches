@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
 import supertest from "supertest";
+import { v4 as uuid } from "uuid";
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { CreateSiteBodyDto } from "./sites.controller";
@@ -174,6 +175,80 @@ describe("Sites controller", () => {
         surface_area: 15000.0,
         friche_activity: "RAILWAY",
         is_friche: true,
+      });
+    });
+  });
+
+  describe("GET /sites/:siteId", () => {
+    it("gets a 404 error when site does not exist", async () => {
+      const siteId = uuid();
+      const response = await supertest(app.getHttpServer()).get(`/sites/${siteId}`).send();
+
+      expect(response.status).toEqual(404);
+    });
+
+    it("gets a 200 response when site exists", async () => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        name: "Friche Amiens",
+        description: "Description of site",
+        surface_area: 14000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        tenant_structure_type: "company",
+        created_at: new Date(),
+        is_friche: true,
+        friche_activity: "INDUSTRY",
+        friche_has_contaminated_soils: true,
+        friche_contaminated_soil_surface_area: 230,
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "8 Boulevard du Port 80000 Amiens",
+        street_number: "8",
+        street_name: "Boulevard du Port",
+        city_code: "80021",
+        post_code: "80000",
+        city: "Amiens",
+        ban_id: "80021_6590_00008",
+        long: 49.897443,
+        lat: 2.290084,
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "FOREST_MIXED", surface_area: 1200 },
+        { id: uuid(), site_id: siteId, soil_type: "PRAIRIE_GRASS", surface_area: 12800 },
+      ]);
+      const response = await supertest(app.getHttpServer()).get(`/sites/${siteId}`).send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({
+        id: siteId,
+        name: "Friche Amiens",
+        surfaceArea: 14000,
+        owner: { name: "Owner name", structureType: "company" },
+        tenant: { structureType: "company" },
+        isFriche: true,
+        hasContaminatedSoils: true,
+        contaminatedSoilSurface: 230,
+        address: {
+          value: "8 Boulevard du Port 80000 Amiens",
+          streetNumber: "8",
+          streetName: "Boulevard du Port",
+          banId: "80021_6590_00008",
+          postCode: "80000",
+          cityCode: "80021",
+          city: "Amiens",
+          long: 49.897443,
+          lat: 2.290084,
+        },
+        soilsDistribution: {
+          FOREST_MIXED: 1200,
+          PRAIRIE_GRASS: 12800,
+        },
       });
     });
   });

@@ -5,6 +5,7 @@ import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SitesRepository } from "src/sites/domain/gateways/SitesRepository";
 import { CreateNewSiteUseCase } from "src/sites/domain/usecases/createNewSite.usecase";
+import { GetSiteByIdUseCase } from "src/sites/domain/usecases/getSiteById.usecase";
 import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepository";
 import { SitesController } from "./sites.controller";
 
@@ -25,6 +26,11 @@ import { SitesController } from "./sites.controller";
       useFactory: (siteRepository: SitesRepository, dateProvider: IDateProvider) =>
         new CreateNewSiteUseCase(siteRepository, dateProvider),
       inject: ["SiteRepository", "DateProvider"],
+    },
+    {
+      provide: GetSiteByIdUseCase,
+      useFactory: (siteRepository: SitesRepository) => new GetSiteByIdUseCase(siteRepository),
+      inject: ["SiteRepository"],
     },
   ],
 })

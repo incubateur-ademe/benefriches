@@ -39,6 +39,8 @@ const addressSchema = z.object({
   lat: z.number(),
 });
 
+export type Address = z.infer<typeof addressSchema>;
+
 export const nonFricheSiteSchema = z.object({
   isFriche: z.literal(false),
   id: z.string().uuid(),
