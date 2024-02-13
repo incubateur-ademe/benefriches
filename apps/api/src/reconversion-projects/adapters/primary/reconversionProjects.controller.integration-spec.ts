@@ -35,15 +35,6 @@ describe("ReconversionProjects controller", () => {
     await sqlConnection.destroy();
   });
 
-  afterEach(async () => {
-    await sqlConnection("reconversion_project_yearly_expenses").delete();
-    await sqlConnection("reconversion_project_yearly_revenues").delete();
-    await sqlConnection("reconversion_project_soils_distributions").delete();
-    await sqlConnection("reconversion_project_development_plans").delete();
-    await sqlConnection("reconversion_projects").delete();
-    await sqlConnection("sites").delete();
-  });
-
   describe("POST /reconversion-projects", () => {
     it.each([
       "id",

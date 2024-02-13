@@ -34,14 +34,6 @@ describe("Sites controller", () => {
     await sqlConnection.destroy();
   });
 
-  afterEach(async () => {
-    await sqlConnection("addresses").delete();
-    await sqlConnection("site_expenses").delete();
-    await sqlConnection("site_incomes").delete();
-    await sqlConnection("site_soils_distributions").delete();
-    await sqlConnection("sites").delete();
-  });
-
   const buildValidSitePayload = () => {
     const validSiteBody: CreateSiteBodyDto = {
       id: "03a53ffd-4f71-419e-8d04-041311eefa23",
