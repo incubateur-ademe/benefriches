@@ -6,6 +6,7 @@ const config: JestConfigWithTsJest = {
   testMatch: ["<rootDir>/src/**/*.integration-spec.ts"],
   globalSetup: "<rootDir>/test/integration-tests-setup.ts",
   globalTeardown: "<rootDir>/test/integration-tests-teardown.ts",
+  setupFilesAfterEnv: ["<rootDir>/test/integration-tests-global-hooks.ts"],
 };
 
 export default config;
