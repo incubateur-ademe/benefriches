@@ -6,7 +6,6 @@ import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { buildMinimalReconversionProjectProps } from "src/reconversion-projects/domain/model/reconversionProject.mock";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SqlReconversionProject } from "../secondary/reconversion-project-repository/SqlReconversionProjectRepository";
 import { CreateReconversionProjectBodyDto } from "./reconversionProjects.controller";
 
 type BadRequestResponseBody = {
@@ -81,9 +80,10 @@ describe("ReconversionProjects controller", () => {
 
       expect(response.status).toEqual(201);
 
-      const reconversionProjectsInDb = await sqlConnection<SqlReconversionProject>(
-        "reconversion_projects",
-      ).select("id", "name");
+      const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
+        "id",
+        "name",
+      );
       expect(reconversionProjectsInDb.length).toEqual(1);
       expect(reconversionProjectsInDb[0]).toEqual({
         id: requestBody.id,

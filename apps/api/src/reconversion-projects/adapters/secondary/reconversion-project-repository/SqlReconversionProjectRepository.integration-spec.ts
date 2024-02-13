@@ -2,14 +2,7 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import { buildReconversionProject } from "src/reconversion-projects/domain/model/reconversionProject.mock";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import {
-  SqlDevelopmentPlan,
-  SqlExpense,
-  SqlReconversionProject,
-  SqlReconversionProjectRepository,
-  SqlRevenue,
-  SqlSoilsDistribution,
-} from "./SqlReconversionProjectRepository";
+import { SqlReconversionProjectRepository } from "./SqlReconversionProjectRepository";
 
 describe("SqlReconversionProjectRepository integration", () => {
   let sqlConnection: Knex;
@@ -72,8 +65,7 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       await reconversionProjectRepository.save(reconversionProject);
 
-      const result =
-        await sqlConnection<SqlReconversionProject[]>("reconversion_projects").select("*");
+      const result = await sqlConnection("reconversion_projects").select("*");
       expect(result).toEqual([
         {
           id: reconversionProject.id,
@@ -119,8 +111,7 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       await reconversionProjectRepository.save(reconversionProject);
 
-      const result =
-        await sqlConnection<SqlReconversionProject[]>("reconversion_projects").select("*");
+      const result = await sqlConnection("reconversion_projects").select("*");
       expect(result).toEqual([
         {
           id: reconversionProject.id,
@@ -163,11 +154,10 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       await reconversionProjectRepository.save(reconversionProject);
 
-      const result =
-        await sqlConnection<SqlReconversionProject[]>("reconversion_projects").select("id");
+      const result = await sqlConnection("reconversion_projects").select("id");
       expect(result).toEqual([{ id: reconversionProject.id }]);
 
-      const soilsDistributionResult = await sqlConnection<SqlSoilsDistribution[]>(
+      const soilsDistributionResult = await sqlConnection(
         "reconversion_project_soils_distributions",
       ).select("surface_area", "soil_type", "reconversion_project_id");
 
@@ -184,7 +174,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         },
       ]);
 
-      const developmentPlansResult = await sqlConnection<SqlDevelopmentPlan[]>(
+      const developmentPlansResult = await sqlConnection(
         "reconversion_project_development_plans",
       ).select("surface_area", "type", "features", "reconversion_project_id", "cost");
       expect(developmentPlansResult).toEqual([
@@ -197,7 +187,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         },
       ]);
 
-      const yearlyExpensesResult = await sqlConnection<SqlExpense[]>(
+      const yearlyExpensesResult = await sqlConnection(
         "reconversion_project_yearly_expenses",
       ).select("amount", "purpose", "reconversion_project_id");
       expect(yearlyExpensesResult).toEqual([
@@ -208,7 +198,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         },
       ]);
 
-      const yearlyRevenuesResult = await sqlConnection<SqlRevenue[]>(
+      const yearlyRevenuesResult = await sqlConnection(
         "reconversion_project_yearly_revenues",
       ).select("amount", "source", "reconversion_project_id");
       expect(yearlyRevenuesResult).toEqual([
