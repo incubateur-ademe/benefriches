@@ -120,7 +120,7 @@ describe("Sites controller", () => {
       expect(sitesInDb[0]).toEqual({
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         name: "Friche industrielle",
-        surface_area: "2900.00",
+        surface_area: 2900.0,
       });
     });
 
@@ -171,7 +171,7 @@ describe("Sites controller", () => {
       expect(sitesInDb[0]).toEqual({
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         name: "Ancienne gare de Bercy",
-        surface_area: "15000.00",
+        surface_area: 15000.0,
         friche_activity: "RAILWAY",
         is_friche: true,
       });
