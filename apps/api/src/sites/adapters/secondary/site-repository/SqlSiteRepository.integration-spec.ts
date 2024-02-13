@@ -26,13 +26,8 @@ describe("SqlSiteRepository integration", () => {
     await sqlConnection.destroy();
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     siteRepository = new SqlSiteRepository(sqlConnection);
-    await sqlConnection("addresses").delete();
-    await sqlConnection("site_expenses").delete();
-    await sqlConnection("site_incomes").delete();
-    await sqlConnection("site_soils_distributions").delete();
-    await sqlConnection("sites").delete();
   });
 
   describe("existsWithId", () => {

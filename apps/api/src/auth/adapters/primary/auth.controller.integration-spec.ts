@@ -35,10 +35,6 @@ describe("Auth controller", () => {
     await app.close();
   });
 
-  afterEach(async () => {
-    await sqlConnection("users").truncate();
-  });
-
   describe("POST /auth/login", () => {
     it("can't login with wrong credentials", async () => {
       const userEmail = "user@mail.com";

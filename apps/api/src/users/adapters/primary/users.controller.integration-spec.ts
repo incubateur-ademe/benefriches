@@ -30,10 +30,6 @@ describe("Users controller", () => {
     await sqlConnection.destroy();
   });
 
-  afterEach(async () => {
-    await sqlConnection("users").truncate();
-  });
-
   describe("POST /users", () => {
     it("can't create a user without email", async () => {
       const response = await supertest(app.getHttpServer())

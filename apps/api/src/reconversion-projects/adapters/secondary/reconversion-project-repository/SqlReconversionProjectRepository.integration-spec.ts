@@ -24,14 +24,8 @@ describe("SqlReconversionProjectRepository integration", () => {
     await sqlConnection.destroy();
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     reconversionProjectRepository = new SqlReconversionProjectRepository(sqlConnection);
-    await sqlConnection("reconversion_project_soils_distributions").delete();
-    await sqlConnection("reconversion_project_development_plans").delete();
-    await sqlConnection("reconversion_project_yearly_expenses").delete();
-    await sqlConnection("reconversion_project_yearly_revenues").delete();
-    await sqlConnection("reconversion_projects").delete();
-    await sqlConnection("sites").delete();
   });
 
   const insertSiteInDb = async (): Promise<string> => {
