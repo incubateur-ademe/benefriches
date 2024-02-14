@@ -11,9 +11,9 @@ export const buildMinimalReconversionProjectProps = (
     developmentPlans: [
       {
         type: "PHOTOVOLTAIC_POWER_PLANT",
-        surfaceArea: 1200,
         cost: 1300,
         features: {
+          surfaceArea: 1200,
           contractDuration: 25,
           electricalPowerKWc: 10000,
           expectedAnnualProduction: 12000,
