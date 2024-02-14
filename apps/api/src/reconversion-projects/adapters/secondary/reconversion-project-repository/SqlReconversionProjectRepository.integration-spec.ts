@@ -154,8 +154,8 @@ describe("SqlReconversionProjectRepository integration", () => {
               contractDuration: 26,
               electricalPowerKWc: 10000,
               expectedAnnualProduction: 1000,
+              surfaceArea: 3400,
             },
-            surfaceArea: 3400,
             type: "PHOTOVOLTAIC_POWER_PLANT",
           },
         ],
@@ -186,10 +186,9 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       const developmentPlansResult = await sqlConnection<SqlDevelopmentPlan[]>(
         "reconversion_project_development_plans",
-      ).select("surface_area", "type", "features", "reconversion_project_id", "cost");
+      ).select("type", "features", "reconversion_project_id", "cost");
       expect(developmentPlansResult).toEqual([
         {
-          surface_area: "3400.00",
           type: reconversionProject.developmentPlans[0].type,
           cost: "129999.99",
           features: reconversionProject.developmentPlans[0].features,

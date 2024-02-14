@@ -2,6 +2,7 @@ import { z } from "zod";
 import { soilTypeSchema } from "src/soils/domain/soils";
 
 const photovoltaicPowerStationFeaturesSchema = z.object({
+  surfaceArea: z.number().nonnegative(),
   electricalPowerKWc: z.number().nonnegative(),
   expectedAnnualProduction: z.number().nonnegative(),
   contractDuration: z.number().nonnegative(),
@@ -10,7 +11,6 @@ const photovoltaicPowerStationFeaturesSchema = z.object({
 const developmentPlanSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
-    surfaceArea: z.number().nonnegative(),
     cost: z.number().nonnegative(),
     features: photovoltaicPowerStationFeaturesSchema,
   }),

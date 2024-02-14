@@ -32,7 +32,6 @@ export type SqlSoilsDistribution = {
 export type SqlDevelopmentPlan = {
   id: string;
   type: string;
-  surface_area: number;
   cost: number;
   features: unknown;
   reconversion_project_id: string;
@@ -99,11 +98,10 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
 
       // development plans
       const developmentPlansToInsert: SqlDevelopmentPlan[] =
-        reconversionProject.developmentPlans.map(({ features, surfaceArea, type, cost }) => {
+        reconversionProject.developmentPlans.map(({ features, type, cost }) => {
           return {
             id: uuid(),
             type,
-            surface_area: surfaceArea,
             cost,
             features,
             reconversion_project_id: insertedReconversionProject.id,
