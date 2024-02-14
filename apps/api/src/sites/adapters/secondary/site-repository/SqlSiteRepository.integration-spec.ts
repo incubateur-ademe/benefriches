@@ -204,17 +204,17 @@ describe("SqlSiteRepository integration", () => {
 
       const expensesResult = await sqlConnection<SqlSiteExpense[]>("site_expenses").select(
         "amount",
-        "type",
+        "purpose",
       );
-      expect(expensesResult).toEqual([{ amount: "45000.00", type: "other" }]);
+      expect(expensesResult).toEqual([{ amount: "45000.00", purpose: "other" }]);
 
       const incomesResult = await sqlConnection<SqlSiteIncome[]>("site_incomes").select(
         "amount",
-        "type",
+        "source",
       );
       expect(incomesResult).toEqual([
-        { amount: "20000.00", type: "operations" },
-        { amount: "32740.30", type: "other" },
+        { amount: "20000.00", source: "operations" },
+        { amount: "32740.30", source: "other" },
       ]);
     });
 
