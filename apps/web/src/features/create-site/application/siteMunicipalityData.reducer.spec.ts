@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { ProjectCreationStep } from "./createProject.reducer";
-import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
+import { SiteCreationStep } from "./createSite.reducer";
+import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 
 import { createStore, RootState } from "@/app/application/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
@@ -51,7 +51,7 @@ const PARIS_ADDRESS_MOCK = {
   lat: 2.347,
   long: 48.859,
   city: "Paris",
-  id: "75110_7043",
+  banId: "75110_7043",
   cityCode: "75110",
   postCode: "75010",
   value: "Rue de Paradis 75010 Paris",
@@ -61,23 +61,13 @@ const GRENOBLE_ADDRESS_MOCK = {
   lat: 5.7243,
   long: 45.182081,
   city: "Grenoble",
-  id: "38185",
+  banId: "38185",
   cityCode: "38185",
   postCode: "38100",
   value: "Grenoble",
 };
 
-const INITIAL_STATE = {
-  siteData: {
-    address: PARIS_ADDRESS_MOCK,
-  },
-  step: ProjectCreationStep.PROJECT_TYPES,
-  projectData: {},
-  siteDataLoadingState: "success",
-  saveProjectLoadingState: "idle",
-} as RootState["projectCreation"];
-
-describe("Site Local Authorities reducer", () => {
+describe("Site Municipality data reducer", () => {
   it("should return error when there is no siteData in createSite store", async () => {
     const store = createStore(
       getTestAppDependencies({
@@ -85,79 +75,106 @@ describe("Site Local Authorities reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteMunicipalityData());
 
     const state = store.getState();
-    expect(state.projectSiteLocalAuthorities).toEqual({
+    expect(state.siteMunicipalityData).toEqual({
       loadingState: "error",
       localAuthorities: undefined,
     });
   });
 
-  it("should call Local Authorities Service with the right payload", async () => {
-    const localAuthoritiesMockSpy = new AdministrativeDivisionMock(API_MOCKED_RESULT["75110"]);
-    jest.spyOn(localAuthoritiesMockSpy, "getMunicipalityData");
+  it("should call Municipality data service with the right payload", async () => {
+    const mockSpy = new AdministrativeDivisionMock(API_MOCKED_RESULT["75110"]);
+    jest.spyOn(mockSpy, "getMunicipalityData");
+
+    const initialState: RootState["siteCreation"] = {
+      siteData: {
+        address: PARIS_ADDRESS_MOCK,
+      },
+      saveLoadingState: "idle",
+      step: SiteCreationStep.OWNER,
+    };
 
     const store = createStore(
       getTestAppDependencies({
-        municipalityDataService: localAuthoritiesMockSpy,
+        municipalityDataService: mockSpy,
       }),
       {
-        projectCreation: INITIAL_STATE,
+        siteCreation: initialState,
       },
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteMunicipalityData());
 
-    expect(localAuthoritiesMockSpy.getMunicipalityData).toHaveBeenCalledTimes(1);
-    expect(localAuthoritiesMockSpy.getMunicipalityData).toHaveBeenCalledWith("75110");
+    expect(mockSpy.getMunicipalityData).toHaveBeenCalledTimes(1);
+    expect(mockSpy.getMunicipalityData).toHaveBeenCalledWith("75110");
   });
 
   it("should get site local authorities with no epci for paris 10", async () => {
+    const initialState: RootState["siteCreation"] = {
+      siteData: {
+        address: PARIS_ADDRESS_MOCK,
+      },
+      saveLoadingState: "idle",
+      step: SiteCreationStep.OWNER,
+    };
+
     const store = createStore(
       getTestAppDependencies({
         municipalityDataService: new AdministrativeDivisionMock(API_MOCKED_RESULT["75110"]),
       }),
       {
-        projectCreation: INITIAL_STATE,
+        siteCreation: initialState,
       },
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteMunicipalityData());
 
     const state = store.getState();
-    expect(state.projectSiteLocalAuthorities).toEqual({
+    expect(state.siteMunicipalityData).toEqual({
       loadingState: "success",
-      localAuthorities: API_MOCKED_RESULT["75110"].localAuthorities,
+      ...API_MOCKED_RESULT["75110"],
     });
   });
 
   it("should get all site local authorities for grenoble cityCode", async () => {
-    const initialState = {
-      ...INITIAL_STATE,
+    const initialState: RootState["siteCreation"] = {
       siteData: {
         address: GRENOBLE_ADDRESS_MOCK,
       },
-    } as RootState["projectCreation"];
+      saveLoadingState: "idle",
+      step: SiteCreationStep.OWNER,
+    };
+
     const store = createStore(
       getTestAppDependencies({
         municipalityDataService: new AdministrativeDivisionMock(API_MOCKED_RESULT["38185"]),
       }),
       {
-        projectCreation: initialState,
+        siteCreation: initialState,
       },
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteMunicipalityData());
 
     const state = store.getState();
-    expect(state.projectSiteLocalAuthorities).toEqual({
+    expect(state.siteMunicipalityData).toEqual({
       loadingState: "success",
       localAuthorities: API_MOCKED_RESULT["38185"].localAuthorities,
+      population: API_MOCKED_RESULT["38185"].population,
     });
   });
 
   it("should return error state when service fails", async () => {
+    const initialState: RootState["siteCreation"] = {
+      siteData: {
+        address: GRENOBLE_ADDRESS_MOCK,
+      },
+      saveLoadingState: "idle",
+      step: SiteCreationStep.OWNER,
+    };
+
     const store = createStore(
       getTestAppDependencies({
         municipalityDataService: new AdministrativeDivisionMock(
@@ -167,14 +184,14 @@ describe("Site Local Authorities reducer", () => {
         ),
       }),
       {
-        projectCreation: INITIAL_STATE,
+        siteCreation: initialState,
       },
     );
 
-    await store.dispatch(fetchSiteLocalAuthorities());
+    await store.dispatch(fetchSiteMunicipalityData());
 
     const state = store.getState();
-    expect(state.projectSiteLocalAuthorities).toEqual({
+    expect(state.siteMunicipalityData).toEqual({
       loadingState: "error",
       localAuthorities: undefined,
     });

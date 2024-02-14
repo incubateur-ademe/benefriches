@@ -1,8 +1,10 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
 
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type YearlyExpenseBearer = "owner" | "tenant";
@@ -23,6 +25,9 @@ type Props = {
   hasTenant: boolean;
   hasRecentAccidents: boolean;
   isFriche: boolean;
+  prefillIllegalDumpingAmount: number;
+  prefillSecurityAmount: number;
+  prefillMaintenanceAmount: number;
   onSubmit: (data: FormValues) => void;
 };
 
@@ -53,7 +58,17 @@ const siteManagementInputs = [
   },
   {
     name: "otherManagementCosts",
-    label: "Autres coûts de gestion",
+    label: (
+      <>
+        Autres coûts de gestion
+        <TooltipInfoButton
+          text="Par exemple, le maintien de bâtiments en bon état (ex&nbsp;: chauffage pour éviter le gel
+          de canalisation ou la dégradation liée l’humidité), la taille de la végétation ou encore
+          le règlement des factures d’eau ou d’électricité."
+          id="other-management-costs"
+        />
+      </>
+    ),
     displayOnlyIfHasTenant: false,
     askForBearer: true,
   },
@@ -68,7 +83,21 @@ const siteSecuringInputs = [
   },
   {
     name: "illegalDumpingCost",
-    label: "Débarras de dépôt sauvage",
+    label: (
+      <>
+        Débarras de dépôt sauvage
+        <TooltipInfoButton
+          text="L’enquête menée en 2019 par l’ADEME indique un ratio moyen de 4.7 kg/hab/an et un coût
+          moyen de 900 €/tonne (Nb&nbsp;: bien qu’on relève une occurrence non négligeable de coûts
+          plus élevés (500 à 1000 €/tonne voire supérieurs à 1000 €/tonne), qui peuvent être liés à
+          des typologies de déchets particulières (déchets dangereux, encombrants) ou à des besoins
+          de gestion (évacuation ou traitement) spécifiques, une majorité des valeurs répertoriées
+          sont comprises entre 100 et 500 €/tonne)."
+          id="illegal-dumping-cost"
+        />
+      </>
+    ),
+
     askForBearer: true,
     displayIfHasRecentAccidents: false,
   },
@@ -80,7 +109,16 @@ const siteSecuringInputs = [
   },
   {
     name: "otherSecuringCosts",
-    label: "Autres coûts de sécurisation",
+    label: (
+      <>
+        Autres coûts de sécurisation
+        <TooltipInfoButton
+          text="La sécurisation peut aussi passer, par exemple, par la mise en place de portail, clôture
+          ou de cadenas, voire de protections sur les parties vitrées."
+          id="other-security-costs"
+        />
+      </>
+    ),
     askForBearer: true,
     displayIfHasRecentAccidents: false,
   },
@@ -91,9 +129,22 @@ const expenseBearerOptions = [
   { label: "A la charge du propriétaire", value: "owner" },
 ];
 
-function SiteYearlyExpensesForm({ onSubmit, hasTenant, isFriche, hasRecentAccidents }: Props) {
+function SiteYearlyExpensesForm({
+  onSubmit,
+  hasTenant,
+  isFriche,
+  hasRecentAccidents,
+  prefillIllegalDumpingAmount,
+  prefillSecurityAmount,
+  prefillMaintenanceAmount,
+}: Props) {
   const { handleSubmit, control, watch, register } = useForm<FormValues>({
     shouldUnregister: true,
+    defaultValues: {
+      illegalDumpingCost: { amount: prefillIllegalDumpingAmount },
+      maintenance: { amount: prefillMaintenanceAmount },
+      security: { amount: prefillSecurityAmount },
+    },
   });
 
   const title = `Coûts annuels ${isFriche ? "de la friche" : "du site"}`;
@@ -102,30 +153,7 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant, isFriche, hasRecentAccide
     <WizardFormLayout
       title={title}
       instructions={
-        <>
-          <p>Les coûts liés au projet sur site seront saisis dans une étape ultérieure.</p>
-          <p>
-            Les montants pré-remplis le sont d’après les informations que vous avez renseignéés et
-            les coûts moyens en France de chaque poste de dépense.
-          </p>
-          <p>Vous pouvez modifier ces montants.</p>
-          {hasTenant && isFriche && (
-            <p>
-              Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de gardiennage,
-              d’entretien, de débarras de dépôt sauvage sont habituellement à la charge de
-              l’exploitant.
-            </p>
-          )}
-
-          {hasTenant && !isFriche && (
-            <p>
-              Sauf en cas de défaillance de l’exploitant (faillite...), les coûts d’entretien sont
-              habituellement à la charge de l’exploitant.
-            </p>
-          )}
-
-          <p>Les montants sont à saisir en HT (hors taxe).</p>
-        </>
+        <SiteYearlyExpensesFormInstructions isFriche={isFriche} hasTenant={hasTenant} />
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

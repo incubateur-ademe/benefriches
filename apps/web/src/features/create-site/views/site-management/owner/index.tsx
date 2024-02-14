@@ -6,8 +6,8 @@ import {
   setOwner,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
-import { fetchSiteLocalAuthorities } from "@/features/create-site/application/siteLocalAuthorities.actions";
-import { SiteLocalAuthorities } from "@/features/create-site/application/siteLocalAuthorities.reducer";
+import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
+import { SiteLocalAuthorities } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Owner } from "@/features/create-site/domain/siteFoncier.types";
 import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
@@ -44,10 +44,8 @@ const convertFormValuesForStore = (
 
 function SiteOwnerFormContainer() {
   const currentUserCompany = useAppSelector(selectCurrentUserCompany);
-  const siteLocalAuthorities = useAppSelector((state) => state.siteLocalAuthorities);
+  const { localAuthorities, loadingState } = useAppSelector((state) => state.siteMunicipalityData);
   const dispatch = useAppDispatch();
-
-  const { localAuthorities } = siteLocalAuthorities;
 
   const onSubmit = (data: FormValues) => {
     if (!localAuthorities) return;
@@ -56,13 +54,13 @@ function SiteOwnerFormContainer() {
   };
 
   useEffect(() => {
-    void dispatch(fetchSiteLocalAuthorities());
+    void dispatch(fetchSiteMunicipalityData());
   }, [dispatch]);
 
   return (
     <SiteOwnerForm
       currentUserCompany={currentUserCompany}
-      siteLocalAuthorities={siteLocalAuthorities}
+      siteLocalAuthorities={{ localAuthorities, loadingState }}
       onSubmit={onSubmit}
     />
   );

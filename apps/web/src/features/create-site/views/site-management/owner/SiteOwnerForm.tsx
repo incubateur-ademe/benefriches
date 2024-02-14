@@ -2,7 +2,10 @@ import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
-import { SiteLocalAuthoritiesState } from "@/features/create-site/application/siteLocalAuthorities.reducer";
+import {
+  LoadingState,
+  SiteLocalAuthorities,
+} from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
@@ -13,7 +16,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   currentUserCompany: string;
-  siteLocalAuthorities: SiteLocalAuthoritiesState;
+  siteLocalAuthorities: { loadingState: LoadingState; localAuthorities?: SiteLocalAuthorities };
 };
 
 export type FormValues =
