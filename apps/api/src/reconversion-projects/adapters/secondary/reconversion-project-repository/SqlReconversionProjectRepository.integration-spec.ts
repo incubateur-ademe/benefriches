@@ -2,14 +2,7 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import { buildReconversionProject } from "src/reconversion-projects/domain/model/reconversionProject.mock";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import {
-  SqlDevelopmentPlan,
-  SqlExpense,
-  SqlReconversionProject,
-  SqlReconversionProjectRepository,
-  SqlRevenue,
-  SqlSoilsDistribution,
-} from "./SqlReconversionProjectRepository";
+import { SqlReconversionProjectRepository } from "./SqlReconversionProjectRepository";
 
 describe("SqlReconversionProjectRepository integration", () => {
   let sqlConnection: Knex;
@@ -72,8 +65,7 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       await reconversionProjectRepository.save(reconversionProject);
 
-      const result =
-        await sqlConnection<SqlReconversionProject[]>("reconversion_projects").select("*");
+      const result = await sqlConnection("reconversion_projects").select("*");
       expect(result).toEqual([
         {
           id: reconversionProject.id,
@@ -89,7 +81,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_cost: null,
           reinstatement_full_time_jobs_involved: null,
           conversion_full_time_jobs_involved: null,
-          reinstatement_financial_assistance_amount: "120.00",
+          reinstatement_financial_assistance_amount: 120.0,
         },
       ]);
     });
@@ -119,8 +111,7 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       await reconversionProjectRepository.save(reconversionProject);
 
-      const result =
-        await sqlConnection<SqlReconversionProject[]>("reconversion_projects").select("*");
+      const result = await sqlConnection("reconversion_projects").select("*");
       expect(result).toEqual([
         {
           id: reconversionProject.id,
@@ -130,14 +121,14 @@ describe("SqlReconversionProjectRepository integration", () => {
           description: reconversionProject.description,
           future_operator_name: reconversionProject.futureOperator?.name,
           future_operator_structure_type: reconversionProject.futureOperator?.structureType,
-          future_operations_full_time_jobs: "0.50",
+          future_operations_full_time_jobs: 0.5,
           reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
           reinstatement_contract_owner_structure_type:
             reconversionProject.reinstatementContractOwner?.structureType,
-          reinstatement_cost: "149950.00",
-          reinstatement_full_time_jobs_involved: "1.20",
-          conversion_full_time_jobs_involved: "0.40",
-          reinstatement_financial_assistance_amount: "50000.00",
+          reinstatement_cost: 149950.0,
+          reinstatement_full_time_jobs_involved: 1.2,
+          conversion_full_time_jobs_involved: 0.4,
+          reinstatement_financial_assistance_amount: 50000.0,
         },
       ]);
     });
@@ -163,57 +154,56 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       await reconversionProjectRepository.save(reconversionProject);
 
-      const result =
-        await sqlConnection<SqlReconversionProject[]>("reconversion_projects").select("id");
+      const result = await sqlConnection("reconversion_projects").select("id");
       expect(result).toEqual([{ id: reconversionProject.id }]);
 
-      const soilsDistributionResult = await sqlConnection<SqlSoilsDistribution[]>(
+      const soilsDistributionResult = await sqlConnection(
         "reconversion_project_soils_distributions",
       ).select("surface_area", "soil_type", "reconversion_project_id");
 
       expect(soilsDistributionResult).toEqual([
         {
           soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-          surface_area: "1200.00",
+          surface_area: 1200.0,
           reconversion_project_id: reconversionProject.id,
         },
         {
           soil_type: "PRAIRIE_GRASS",
-          surface_area: "5000.00",
+          surface_area: 5000.0,
           reconversion_project_id: reconversionProject.id,
         },
       ]);
 
-      const developmentPlansResult = await sqlConnection<SqlDevelopmentPlan[]>(
+      const developmentPlansResult = await sqlConnection(
         "reconversion_project_development_plans",
       ).select("type", "features", "reconversion_project_id", "cost");
       expect(developmentPlansResult).toEqual([
         {
           type: reconversionProject.developmentPlans[0].type,
-          cost: "129999.99",
+          cost: 129999.99,
           features: reconversionProject.developmentPlans[0].features,
           reconversion_project_id: reconversionProject.id,
         },
       ]);
 
-      const yearlyExpensesResult = await sqlConnection<SqlExpense[]>(
+      const yearlyExpensesResult = await sqlConnection(
         "reconversion_project_yearly_expenses",
       ).select("amount", "purpose", "reconversion_project_id");
       expect(yearlyExpensesResult).toEqual([
         {
           purpose: "rent",
-          amount: "12000.00",
+          amount: 12000.0,
           reconversion_project_id: reconversionProject.id,
         },
       ]);
 
-      const yearlyRevenuesResult = await sqlConnection<SqlRevenue[]>(
+      const yearlyRevenuesResult = await sqlConnection(
         "reconversion_project_yearly_revenues",
       ).select("amount", "source", "reconversion_project_id");
       expect(yearlyRevenuesResult).toEqual([
         {
           source: "operations",
-          amount: "13000.00",
+          amount: 13000.0,
           reconversion_project_id: reconversionProject.id,
         },
       ]);

@@ -1,17 +1,9 @@
-/* eslint-disable jest/no-conditional-expect */
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { FricheSite, NonFricheSite } from "src/sites/domain/models/site";
 import { buildMinimalSite } from "src/sites/domain/models/site.mock";
-import {
-  SqlAddress,
-  SqlSite,
-  SqlSiteExpense,
-  SqlSiteIncome,
-  SqlSiteRepository,
-  SqlSoilsDistribution,
-} from "./SqlSiteRepository";
+import { SqlSiteRepository } from "./SqlSiteRepository";
 
 describe("SqlSiteRepository integration", () => {
   let sqlConnection: Knex;
@@ -58,7 +50,7 @@ describe("SqlSiteRepository integration", () => {
 
       await siteRepository.save(site);
 
-      const sitesResult = await sqlConnection<SqlSite[]>("sites").select("*");
+      const sitesResult = await sqlConnection("sites").select("*");
       expect(sitesResult).toEqual([
         {
           id: site.id,
@@ -74,7 +66,7 @@ describe("SqlSiteRepository integration", () => {
           name: "My site",
           owner_name: "Le département Paris",
           owner_structure_type: "department",
-          surface_area: "15000.00",
+          surface_area: 15000.0,
           tenant_name: null,
           tenant_structure_type: null,
           created_at: now,
@@ -95,7 +87,7 @@ describe("SqlSiteRepository integration", () => {
 
       await siteRepository.save(site);
 
-      const sitesResult = await sqlConnection<SqlSite[]>("sites").select("*");
+      const sitesResult = await sqlConnection("sites").select("*");
       expect(sitesResult).toEqual([
         {
           id: site.id,
@@ -106,12 +98,12 @@ describe("SqlSiteRepository integration", () => {
           friche_activity: null,
           friche_contaminated_soil_surface_area: null,
           friche_has_contaminated_soils: null,
-          full_time_jobs_involved: "1.30",
+          full_time_jobs_involved: 1.3,
           is_friche: false,
           name: "My site",
           owner_name: "Le département Paris",
           owner_structure_type: "department",
-          surface_area: "15000.00",
+          surface_area: 15000.0,
           tenant_name: "Tenant SARL",
           tenant_structure_type: "company",
           created_at: now,
@@ -135,7 +127,7 @@ describe("SqlSiteRepository integration", () => {
 
       await siteRepository.save(site);
 
-      const sitesResult = await sqlConnection<SqlSite[]>("sites").select("*");
+      const sitesResult = await sqlConnection("sites").select("*");
       expect(sitesResult).toEqual([
         {
           id: site.id,
@@ -144,13 +136,13 @@ describe("SqlSiteRepository integration", () => {
           friche_accidents_severe_injuries: 1,
           friche_accidents_deaths: 0,
           friche_activity: "HOUSING",
-          friche_contaminated_soil_surface_area: "1400.00",
+          friche_contaminated_soil_surface_area: 1400.0,
           friche_has_contaminated_soils: true,
           is_friche: true,
           name: "My site",
           owner_name: "Le département Paris",
           owner_structure_type: "department",
-          surface_area: "15000.00",
+          surface_area: 15000.0,
           tenant_name: null,
           tenant_structure_type: null,
           full_time_jobs_involved: null,
@@ -164,25 +156,24 @@ describe("SqlSiteRepository integration", () => {
 
       await siteRepository.save(site);
 
-      const sitesResult = await sqlConnection<SqlSite[]>("sites").select("id");
+      const sitesResult = await sqlConnection("sites").select("id");
       expect(sitesResult).toEqual([{ id: site.id }]);
 
-      const addressResult = await sqlConnection<SqlAddress[]>("addresses").select(
-        "value",
-        "site_id",
-      );
+      const addressResult = await sqlConnection("addresses").select("value", "site_id");
       expect(addressResult).toEqual([{ value: site.address.value, site_id: site.id }]);
 
-      const soilsDistributionResult = await sqlConnection<SqlSoilsDistribution[]>(
-        "site_soils_distributions",
-      ).select("surface_area", "soil_type", "site_id");
+      const soilsDistributionResult = await sqlConnection("site_soils_distributions").select(
+        "surface_area",
+        "soil_type",
+        "site_id",
+      );
 
       expect(soilsDistributionResult).toEqual([
-        { soil_type: "BUILDINGS", surface_area: "3000.00", site_id: site.id },
-        { soil_type: "ARTIFICIAL_TREE_FILLED", surface_area: "5000.00", site_id: site.id },
-        { soil_type: "FOREST_MIXED", surface_area: "60000.00", site_id: site.id },
-        { soil_type: "MINERAL_SOIL", surface_area: "5000.00", site_id: site.id },
-        { soil_type: "IMPERMEABLE_SOILS", surface_area: "1300.00", site_id: site.id },
+        { soil_type: "BUILDINGS", surface_area: 3000.0, site_id: site.id },
+        { soil_type: "ARTIFICIAL_TREE_FILLED", surface_area: 5000.0, site_id: site.id },
+        { soil_type: "FOREST_MIXED", surface_area: 60000.0, site_id: site.id },
+        { soil_type: "MINERAL_SOIL", surface_area: 5000.0, site_id: site.id },
+        { soil_type: "IMPERMEABLE_SOILS", surface_area: 1300.0, site_id: site.id },
       ]);
     });
 
@@ -199,19 +190,13 @@ describe("SqlSiteRepository integration", () => {
 
       await siteRepository.save(site);
 
-      const sitesResult = await sqlConnection<SqlSite[]>("sites").select("id");
+      const sitesResult = await sqlConnection("sites").select("id");
       expect(sitesResult).toEqual([{ id: site.id }]);
 
-      const expensesResult = await sqlConnection<SqlSiteExpense[]>("site_expenses").select(
-        "amount",
-        "purpose",
-      );
+      const expensesResult = await sqlConnection("site_expenses").select("amount", "purpose");
       expect(expensesResult).toEqual([{ amount: "45000.00", purpose: "other" }]);
 
-      const incomesResult = await sqlConnection<SqlSiteIncome[]>("site_incomes").select(
-        "amount",
-        "source",
-      );
+      const incomesResult = await sqlConnection("site_incomes").select("amount", "source");
       expect(incomesResult).toEqual([
         { amount: "20000.00", source: "operations" },
         { amount: "32740.30", source: "other" },
@@ -226,22 +211,16 @@ describe("SqlSiteRepository integration", () => {
         },
       });
 
-      expect.assertions(3);
+      await expect(siteRepository.save(site)).rejects.toThrow();
 
-      try {
-        await siteRepository.save(site);
-      } catch (err) {
-        const sitesResult = await sqlConnection<SqlSite[]>("sites").select("id");
-        expect(sitesResult).toEqual([]);
+      const sitesResult = await sqlConnection("sites").select("id");
+      expect(sitesResult).toEqual([]);
 
-        const addressResult = await sqlConnection<SqlAddress[]>("addresses").select("value");
-        expect(addressResult).toEqual([]);
+      const addressResult = await sqlConnection("addresses").select("value");
+      expect(addressResult).toEqual([]);
 
-        const soilsDistributionResult = await sqlConnection<SqlSoilsDistribution[]>(
-          "site_soils_distributions",
-        ).select("id");
-        expect(soilsDistributionResult).toEqual([]);
-      }
+      const soilsDistributionResult = await sqlConnection("site_soils_distributions").select("id");
+      expect(soilsDistributionResult).toEqual([]);
     });
   });
 });

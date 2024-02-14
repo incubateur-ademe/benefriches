@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { UseCase } from "src/shared-kernel/usecase";
+import { SitesRepository } from "../gateways/SitesRepository";
 import { fricheSchema, nonFricheSiteSchema, Site } from "../models/site";
 
 // we can't use .omit method on siteSchema because zod doesn not allow it on discrimnated union
@@ -19,18 +20,13 @@ type Request = {
   siteProps: SiteProps;
 };
 
-export interface SiteRepository {
-  save(site: Site): Promise<void>;
-  existsWithId(siteId: Site["id"]): Promise<boolean>;
-}
-
 export interface DateProvider {
   now(): Date;
 }
 
 export class CreateNewSiteUseCase implements UseCase<Request, void> {
   constructor(
-    private readonly siteRepository: SiteRepository,
+    private readonly siteRepository: SitesRepository,
     private readonly dateProvider: DateProvider,
   ) {}
 

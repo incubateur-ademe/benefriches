@@ -1,4 +1,9 @@
 import type { Knex } from "knex";
+import { types } from "pg";
+
+types.setTypeParser(types.builtins.NUMERIC, (val: string | null) => {
+  return val === null ? null : parseFloat(val);
+});
 
 const config: Knex.Config = {
   client: "pg",

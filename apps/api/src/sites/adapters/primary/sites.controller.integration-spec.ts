@@ -5,7 +5,6 @@ import { Knex } from "knex";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SqlSite } from "../secondary/site-repository/SqlSiteRepository";
 import { CreateSiteBodyDto } from "./sites.controller";
 
 type BadRequestResponseBody = {
@@ -116,12 +115,12 @@ describe("Sites controller", () => {
 
       expect(response.status).toEqual(201);
 
-      const sitesInDb = await sqlConnection<SqlSite>("sites").select("id", "name", "surface_area");
+      const sitesInDb = await sqlConnection("sites").select("id", "name", "surface_area");
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         name: "Friche industrielle",
-        surface_area: "2900.00",
+        surface_area: 2900.0,
       });
     });
 
@@ -161,7 +160,7 @@ describe("Sites controller", () => {
 
       expect(response.status).toEqual(201);
 
-      const sitesInDb = await sqlConnection<SqlSite>("sites").select(
+      const sitesInDb = await sqlConnection("sites").select(
         "id",
         "name",
         "is_friche",
@@ -172,7 +171,7 @@ describe("Sites controller", () => {
       expect(sitesInDb[0]).toEqual({
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         name: "Ancienne gare de Bercy",
-        surface_area: "15000.00",
+        surface_area: 15000.0,
         friche_activity: "RAILWAY",
         is_friche: true,
       });

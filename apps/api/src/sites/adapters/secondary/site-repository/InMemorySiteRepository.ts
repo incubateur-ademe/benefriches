@@ -1,10 +1,10 @@
-import { NonFricheSite } from "src/sites/domain/models/site";
-import { SiteRepository } from "src/sites/domain/usecases/createNewSite.usecase";
+import { SitesRepository } from "src/sites/domain/gateways/SitesRepository";
+import { Site } from "src/sites/domain/models/site";
 
-export class InMemorySiteRepository implements SiteRepository {
-  private sites: NonFricheSite[] = [];
+export class InMemorySitesRepository implements SitesRepository {
+  private sites: Site[] = [];
 
-  async save(site: NonFricheSite) {
+  async save(site: Site) {
     this.sites.push(site);
     await Promise.resolve();
   }
@@ -18,7 +18,7 @@ export class InMemorySiteRepository implements SiteRepository {
     return this.sites;
   }
 
-  _setSites(sites: NonFricheSite[]) {
+  _setSites(sites: Site[]) {
     this.sites = sites;
   }
 }

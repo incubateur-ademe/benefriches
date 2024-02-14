@@ -4,7 +4,16 @@ import { ReconversionProject } from "src/reconversion-projects/domain/model/reco
 import { ReconversionProjectRepository } from "src/reconversion-projects/domain/usecases/createReconversionProject.usecase";
 import { SoilType } from "src/soils/domain/soils";
 
-export type SqlReconversionProject = {
+declare module "knex/types/tables" {
+  interface Tables {
+    reconversion_projects: SqlReconversionProject;
+    reconversion_project_soils_distributions: SqlSoilsDistribution;
+    reconversion_project_development_plans: SqlDevelopmentPlan;
+    reconversion_project_yearly_expenses: SqlExpense;
+    reconversion_project_yearly_revenues: SqlRevenue;
+  }
+}
+type SqlReconversionProject = {
   id: string;
   name: string;
   description?: string;
@@ -22,14 +31,14 @@ export type SqlReconversionProject = {
   created_at: Date;
 };
 
-export type SqlSoilsDistribution = {
+type SqlSoilsDistribution = {
   id: string;
   soil_type: SoilType;
   surface_area: number;
   reconversion_project_id: string;
 };
 
-export type SqlDevelopmentPlan = {
+type SqlDevelopmentPlan = {
   id: string;
   type: string;
   cost: number;
@@ -37,14 +46,14 @@ export type SqlDevelopmentPlan = {
   reconversion_project_id: string;
 };
 
-export type SqlExpense = {
+type SqlExpense = {
   id: string;
   purpose: string;
   amount: number;
   reconversion_project_id: string;
 };
 
-export type SqlRevenue = {
+type SqlRevenue = {
   id: string;
   source: string;
   amount: number;
@@ -56,9 +65,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
 
   async save(reconversionProject: ReconversionProject): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {
-      const [insertedReconversionProject] = await trx<SqlReconversionProject>(
-        "reconversion_projects",
-      ).insert(
+      const [insertedReconversionProject] = await trx("reconversion_projects").insert(
         {
           id: reconversionProject.id,
           name: reconversionProject.name,
@@ -92,9 +99,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           reconversion_project_id: insertedReconversionProject.id,
         };
       });
-      await trx<SqlSoilsDistribution[]>("reconversion_project_soils_distributions").insert(
-        soilsDistributionToInsert,
-      );
+      await trx("reconversion_project_soils_distributions").insert(soilsDistributionToInsert);
 
       // development plans
       const developmentPlansToInsert: SqlDevelopmentPlan[] =
@@ -107,9 +112,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
             reconversion_project_id: insertedReconversionProject.id,
           };
         });
-      await trx<SqlDevelopmentPlan[]>("reconversion_project_development_plans").insert(
-        developmentPlansToInsert,
-      );
+      await trx("reconversion_project_development_plans").insert(developmentPlansToInsert);
 
       const yearlyExpensesToInsert: SqlExpense[] = reconversionProject.yearlyProjectedCosts.map(
         ({ amount, purpose }) => {
@@ -121,9 +124,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           };
         },
       );
-      await trx<SqlExpense[]>("reconversion_project_yearly_expenses").insert(
-        yearlyExpensesToInsert,
-      );
+      await trx("reconversion_project_yearly_expenses").insert(yearlyExpensesToInsert);
       const yearlyRevenuesToInsert: SqlRevenue[] = reconversionProject.yearlyProjectedRevenues.map(
         ({ amount, source }) => {
           return {
@@ -134,9 +135,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           };
         },
       );
-      await trx<SqlRevenue[]>("reconversion_project_yearly_revenues").insert(
-        yearlyRevenuesToInsert,
-      );
+      await trx("reconversion_project_yearly_revenues").insert(yearlyRevenuesToInsert);
     });
   }
 
