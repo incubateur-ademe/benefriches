@@ -39,7 +39,6 @@ describe("CreateReconversionProject Use Case", () => {
       "relatedSiteId",
       "developmentPlans",
       "soilsDistribution",
-      "financialAssistanceRevenue",
       "yearlyProjectedCosts",
       "yearlyProjectedRevenues",
     ])("Cannot create a reconversion project without providing %s", async (mandatoryField) => {

@@ -17,7 +17,7 @@ export type SqlReconversionProject = {
   reinstatement_cost?: number;
   reinstatement_full_time_jobs_involved?: number;
   conversion_full_time_jobs_involved?: number;
-  financial_assistance_amount?: number;
+  reinstatement_financial_assistance_amount?: number;
   // dates
   created_at: Date;
 };
@@ -76,7 +76,8 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           reinstatement_full_time_jobs_involved:
             reconversionProject.reinstatementFullTimeJobsInvolved,
           conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
-          financial_assistance_amount: reconversionProject.financialAssistanceRevenue,
+          reinstatement_financial_assistance_amount:
+            reconversionProject.reinstatementFinancialAssistanceAmount,
         },
         "id",
       );

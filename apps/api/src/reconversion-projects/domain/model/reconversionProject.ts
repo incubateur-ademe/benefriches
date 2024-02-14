@@ -29,7 +29,7 @@ export const reconversionProjectSchema = z.object({
   reinstatementContractOwner: z.object({ name: z.string(), structureType: z.string() }).optional(),
   operationsFullTimeJobsInvolved: z.number().nonnegative().optional(),
   reinstatementCost: z.number().nonnegative().optional(),
-  financialAssistanceRevenue: z.number().nonnegative(),
+  reinstatementFinancialAssistanceAmount: z.number().nonnegative().optional(),
   yearlyProjectedCosts: z.object({ purpose: z.string(), amount: z.number().nonnegative() }).array(),
   yearlyProjectedRevenues: z
     .object({ source: z.string(), amount: z.number().nonnegative() })

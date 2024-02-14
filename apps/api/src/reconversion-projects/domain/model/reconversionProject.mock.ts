@@ -27,7 +27,7 @@ export const buildMinimalReconversionProjectProps = (
       MINERAL_SOIL: 5000,
       IMPERMEABLE_SOILS: 1300,
     },
-    financialAssistanceRevenue: 120,
+    reinstatementFinancialAssistanceAmount: 120,
     yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
     yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
 

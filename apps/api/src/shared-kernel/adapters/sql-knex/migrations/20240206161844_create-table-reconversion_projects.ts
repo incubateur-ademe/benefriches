@@ -17,7 +17,7 @@ export async function up(knex: Knex): Promise<void> {
     table.decimal("reinstatement_full_time_jobs_involved", 6, 2);
     // conversion
     table.decimal("conversion_full_time_jobs_involved", 6, 2);
-    table.decimal("financial_assistance_amount", 15, 2);
+    table.decimal("reinstatement_financial_assistance_amount", 15, 2);
     // dates
     table.timestamp("created_at").notNullable();
   });
