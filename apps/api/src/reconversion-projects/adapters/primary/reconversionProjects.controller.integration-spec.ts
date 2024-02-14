@@ -42,7 +42,6 @@ describe("ReconversionProjects controller", () => {
       "relatedSiteId",
       "developmentPlans",
       "soilsDistribution",
-      "financialAssistanceRevenue",
       "yearlyProjectedCosts",
       "yearlyProjectedRevenues",
     ] as (keyof CreateReconversionProjectBodyDto)[])(

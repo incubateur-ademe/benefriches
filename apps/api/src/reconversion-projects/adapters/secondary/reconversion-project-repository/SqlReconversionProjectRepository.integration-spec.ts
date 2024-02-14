@@ -89,7 +89,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_cost: null,
           reinstatement_full_time_jobs_involved: null,
           conversion_full_time_jobs_involved: null,
-          financial_assistance_amount: "120.00",
+          reinstatement_financial_assistance_amount: "120.00",
         },
       ]);
     });
@@ -114,7 +114,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         },
         operationsFullTimeJobsInvolved: 0.5,
         reinstatementCost: 149950,
-        financialAssistanceRevenue: 50000,
+        reinstatementFinancialAssistanceAmount: 50000,
       });
 
       await reconversionProjectRepository.save(reconversionProject);
@@ -137,7 +137,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_cost: "149950.00",
           reinstatement_full_time_jobs_involved: "1.20",
           conversion_full_time_jobs_involved: "0.40",
-          financial_assistance_amount: "50000.00",
+          reinstatement_financial_assistance_amount: "50000.00",
         },
       ]);
     });
