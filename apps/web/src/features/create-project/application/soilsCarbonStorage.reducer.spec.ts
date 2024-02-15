@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ProjectSite } from "../domain/project.types";
-import { GetSiteServiceMock } from "../infrastructure/get-site-service/GetSiteServiceMock";
+import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
 import { fetchRelatedSiteAction } from "./createProject.actions";
 import { setSoilsDistribution } from "./createProject.reducer";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./soilsCarbonStorage.actions";
@@ -80,7 +80,7 @@ describe("Site carbon sequestration reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         soilsCarbonStorageService: soilsCarbonStorageMockSpy,
-        getSiteService: new GetSiteServiceMock(SITE_MOCKED_RESULT),
+        getSiteByIdService: new SitesServiceMock(SITE_MOCKED_RESULT),
       }),
     );
 
@@ -110,7 +110,7 @@ describe("Site carbon sequestration reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         soilsCarbonStorageService: new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT),
-        getSiteService: new GetSiteServiceMock(SITE_MOCKED_RESULT),
+        getSiteByIdService: new SitesServiceMock(SITE_MOCKED_RESULT),
       }),
     );
 

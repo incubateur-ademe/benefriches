@@ -1,8 +1,8 @@
 import { AppDependencies } from "./store";
 
-import { LocalStorageGetSiteApi } from "@/features/create-project/infrastructure/get-site-service/localStorageGetSiteService";
 import { ExpectedPhotovoltaicPerformanceApi } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceApi";
 import { LocalStorageSaveProjectApi } from "@/features/create-project/infrastructure/save-project-service/localStorageSaveSiteService";
+import { HttpSitesService } from "@/features/create-project/infrastructure/sites-service/HttpSiteService";
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { LocalStorageProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/localStorageProjectsListApi";
@@ -14,7 +14,7 @@ import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-stor
 export const appDependencies: AppDependencies = {
   soilsCarbonStorageService: new SoilsCarbonStorageApi(),
   createSiteService: new HttpCreateSiteApi(),
-  getSiteService: new LocalStorageGetSiteApi(),
+  getSiteByIdService: new HttpSitesService(),
   projectsListService: new LocalStorageProjectsListApi(),
   projectDetailsService: new LocalStorageProjectDetailsApi(),
   sitesService: new LocalStorageSitesApi(),

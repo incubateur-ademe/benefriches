@@ -9,14 +9,14 @@ import {
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
 
-export interface GetSiteGateway {
+export interface GetSitesByIdGateway {
   getById(siteId: string): Promise<ProjectSite | undefined>;
 }
 
 export const fetchRelatedSiteAction = createAppAsyncThunk<ProjectSite, ProjectSite["id"]>(
   "project/fetchRelatedSite",
   async (siteId, { extra }) => {
-    const projectSite = await extra.getSiteService.getById(siteId);
+    const projectSite = await extra.getSiteByIdService.getById(siteId);
 
     if (!projectSite) throw new Error("Site not found");
 

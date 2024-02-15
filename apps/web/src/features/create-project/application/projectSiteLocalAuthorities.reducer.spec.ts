@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ProjectSite } from "../domain/project.types";
-import { GetSiteServiceMock } from "../infrastructure/get-site-service/GetSiteServiceMock";
+import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
 import { fetchRelatedSiteAction } from "./createProject.actions";
 import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
 
@@ -108,7 +108,7 @@ describe("Site Local Authorities reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         localAuthoritiesService: localAuthoritiesMockSpy,
-        getSiteService: new GetSiteServiceMock(SITE_PARIS_MOCKED_RESULT),
+        getSiteByIdService: new SitesServiceMock(SITE_PARIS_MOCKED_RESULT),
       }),
     );
 
@@ -123,7 +123,7 @@ describe("Site Local Authorities reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         localAuthoritiesService: new LocalAuthoritiesMock(API_MOCKED_RESULT["75110"]),
-        getSiteService: new GetSiteServiceMock(SITE_PARIS_MOCKED_RESULT),
+        getSiteByIdService: new SitesServiceMock(SITE_PARIS_MOCKED_RESULT),
       }),
     );
 
@@ -141,7 +141,7 @@ describe("Site Local Authorities reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         localAuthoritiesService: new LocalAuthoritiesMock(API_MOCKED_RESULT["38185"]),
-        getSiteService: new GetSiteServiceMock(SITE_GRENOBLE_MOCKED_RESULT),
+        getSiteByIdService: new SitesServiceMock(SITE_GRENOBLE_MOCKED_RESULT),
       }),
     );
 

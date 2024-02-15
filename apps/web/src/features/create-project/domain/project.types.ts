@@ -103,7 +103,7 @@ export type ProjectSite = {
     name: string;
     structureType: TenantStructureType;
   };
-  hasContaminatedSoils: boolean;
+  hasContaminatedSoils?: boolean;
   contaminatedSoilSurface?: number;
   soilsDistribution: Partial<Record<SoilType, number>>;
   surfaceArea: number;

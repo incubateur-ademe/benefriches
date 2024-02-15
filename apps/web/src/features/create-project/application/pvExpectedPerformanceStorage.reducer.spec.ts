@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ProjectSite } from "../domain/project.types";
-import { GetSiteServiceMock } from "../infrastructure/get-site-service/GetSiteServiceMock";
 import { ExpectedPhotovoltaicPerformanceMock } from "../infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
+import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
 import { fetchRelatedSiteAction } from "./createProject.actions";
 import { setPhotovoltaicInstallationElectricalPower } from "./createProject.reducer";
 import {
@@ -85,7 +85,7 @@ describe("Photovoltaic expected performance reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         photovoltaicPerformanceService: mockSpy,
-        getSiteService: new GetSiteServiceMock(SITE_MOCKED_RESULT),
+        getSiteByIdService: new SitesServiceMock(SITE_MOCKED_RESULT),
       }),
     );
 
@@ -105,7 +105,7 @@ describe("Photovoltaic expected performance reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(API_MOCKED_RESULT),
-        getSiteService: new GetSiteServiceMock(SITE_MOCKED_RESULT),
+        getSiteByIdService: new SitesServiceMock(SITE_MOCKED_RESULT),
       }),
     );
 
