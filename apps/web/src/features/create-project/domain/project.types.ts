@@ -44,9 +44,9 @@ export type Project = {
   operationsFullTimeJobsInvolved?: number;
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
-  financialAssistanceRevenue: number;
+  reinstatementFinancialAssistanceAmount: number;
   yearlyProjectedCosts: Expense[];
-  yearlyProjectedRevenue: Revenue[];
+  yearlyProjectedRevenues: Revenue[];
   soilsDistribution: Partial<Record<SoilType, number>>;
   reinstatementSchedule?: {
     startDate: string;

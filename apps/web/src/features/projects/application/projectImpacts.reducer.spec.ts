@@ -43,9 +43,9 @@ const PROJECT_MOCKED_RESULT = {
     structureType: "company",
   } as ProjectStakeholder,
   photovoltaicPanelsInstallationCost: 150000,
-  financialAssistanceRevenue: 50000,
+  reinstatementFinancialAssistanceAmount: 50000,
   yearlyProjectedCosts: [],
-  yearlyProjectedRevenue: [],
+  yearlyProjectedRevenues: [],
 };
 
 const SITE_MOCKED_RESULT = {

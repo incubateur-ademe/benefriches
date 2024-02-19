@@ -63,7 +63,7 @@ export const getInitialState = (): ProjectCreationState => {
     projectData: {
       id: uuid(),
       yearlyProjectedCosts: [],
-      yearlyProjectedRevenue: [],
+      yearlyProjectedRevenues: [],
       types: [],
       renewableEnergyTypes: [],
     },
@@ -125,15 +125,15 @@ export const projectCreationSlice = createSlice({
         ...action.payload,
       ];
     },
-    setFinancialAssistanceRevenue: (state, action: PayloadAction<number>) => {
-      state.projectData.financialAssistanceRevenue = action.payload;
+    setReinstatementFinancialAssistanceAmount: (state, action: PayloadAction<number>) => {
+      state.projectData.reinstatementFinancialAssistanceAmount = action.payload;
     },
     addYearlyProjectedRevenue: (
       state,
-      action: PayloadAction<Project["yearlyProjectedRevenue"]>,
+      action: PayloadAction<Project["yearlyProjectedRevenues"]>,
     ) => {
-      state.projectData.yearlyProjectedRevenue = [
-        ...(state.projectData.yearlyProjectedRevenue ?? []),
+      state.projectData.yearlyProjectedRevenues = [
+        ...(state.projectData.yearlyProjectedRevenues ?? []),
         ...action.payload,
       ];
     },
@@ -215,7 +215,7 @@ export const {
   setReinstatementCost,
   setPhotovoltaicPanelsInstallationCost,
   addYearlyProjectedCosts,
-  setFinancialAssistanceRevenue,
+  setReinstatementFinancialAssistanceAmount,
   addYearlyProjectedRevenue,
   setNameAndDescription,
   goToStep,
