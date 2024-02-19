@@ -61,7 +61,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         owner_structure_type: "company",
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
-        created_at: new Date(),
+        created_at: new Date("2024-02-01"),
         is_friche: false,
       };
       const siteInDb2 = {
@@ -73,7 +73,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         owner_structure_type: "company",
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
-        created_at: new Date(),
+        created_at: new Date("2024-02-20"),
         is_friche: false,
       };
       const projectInDb1 = {
@@ -107,17 +107,17 @@ describe("ReconversionProjectsListRepository integration", () => {
       expect(result).toHaveLength(2);
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([
         {
-          siteName: siteInDb1.name,
-          siteId: siteInDb1.id,
-          reconversionProjects: [{ id: projectInDb1.id, name: projectInDb1.name }],
-        },
-        {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
           reconversionProjects: [
             { id: projectInDb2.id, name: projectInDb2.name },
             { id: projectInDb3.id, name: projectInDb3.name },
           ],
+        },
+        {
+          siteName: siteInDb1.name,
+          siteId: siteInDb1.id,
+          reconversionProjects: [{ id: projectInDb1.id, name: projectInDb1.name }],
         },
       ]);
     });

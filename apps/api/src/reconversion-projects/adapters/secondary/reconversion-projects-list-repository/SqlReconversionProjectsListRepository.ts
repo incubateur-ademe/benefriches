@@ -18,7 +18,8 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
           ELSE json_agg(json_build_object('id', rp.id, 'name', rp.name)) 
         END as "reconversionProjects"`),
       )
-      .groupBy("sites.id")) as {
+      .groupBy("sites.id")
+      .orderBy("sites.created_at", "desc")) as {
       siteId: string;
       siteName: string;
       reconversionProjects: { id: string; name: string }[];

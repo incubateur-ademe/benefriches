@@ -103,7 +103,7 @@ describe("ReconversionProjects controller", () => {
         owner_structure_type: "company",
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
-        created_at: new Date(),
+        created_at: new Date("2024-02-10"),
         is_friche: false,
       };
       const siteInDb2 = {
@@ -115,7 +115,7 @@ describe("ReconversionProjects controller", () => {
         owner_structure_type: "company",
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
-        created_at: new Date(),
+        created_at: new Date("2024-02-01"),
         is_friche: false,
       };
       const projectInDb1 = {
