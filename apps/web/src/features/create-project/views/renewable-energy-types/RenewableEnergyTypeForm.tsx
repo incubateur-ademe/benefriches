@@ -3,11 +3,11 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import {
   getPrevisionalEnrSocioEconomicImpact,
-  RenewableEnergyType,
+  RenewableEnergyDevelopmentPlanType,
 } from "../../domain/project.types";
 import {
   getDescriptionForRenewableEnergyType,
-  getLabelForRenewableEnergyType,
+  getLabelForRenewableEnergyProductionType,
 } from "../projectTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -19,7 +19,7 @@ type Props = {
 };
 
 type FormValues = {
-  renewableEnergyTypes: RenewableEnergyType[];
+  renewableEnergyTypes: RenewableEnergyDevelopmentPlanType[];
 };
 
 const formatNumericImpact = (impact: number) => {
@@ -27,22 +27,23 @@ const formatNumericImpact = (impact: number) => {
   return `${signPrefix} ${formatNumberFr(Math.abs(impact))}`;
 };
 
-const allowedRenewableEnergyTypesErrorMessage = `Cette fonctionnalité n’est pas encore accessible, veuillez sélectionner uniquement l’option ${getLabelForRenewableEnergyType(
-  RenewableEnergyType.PHOTOVOLTAIC,
+const allowedRenewableEnergyTypesErrorMessage = `Cette fonctionnalité n’est pas encore accessible, veuillez sélectionner uniquement l’option ${getLabelForRenewableEnergyProductionType(
+  "PHOTOVOLTAIC_POWER_PLANT",
 )}`;
 
-const validateSelectedRenewableEnergyTypes = (renewableEnergyTypes: RenewableEnergyType[]) =>
-  (renewableEnergyTypes.length === 1 &&
-    renewableEnergyTypes[0] === RenewableEnergyType.PHOTOVOLTAIC) ||
+const validateSelectedRenewableEnergyTypes = (
+  renewableEnergyTypes: RenewableEnergyDevelopmentPlanType[],
+) =>
+  (renewableEnergyTypes.length === 1 && renewableEnergyTypes[0] === "PHOTOVOLTAIC_POWER_PLANT") ||
   allowedRenewableEnergyTypesErrorMessage;
 
 const mapOptions =
   (register: UseFormRegister<FormValues>, siteSurfaceArea: number) =>
-  (enrTypes: RenewableEnergyType) => {
+  (enrTypes: RenewableEnergyDevelopmentPlanType) => {
     const potentialImpact = getPrevisionalEnrSocioEconomicImpact(enrTypes, siteSurfaceArea);
     const hintColor = potentialImpact > 0 ? "--text-default-success" : "--text-default-error";
     return {
-      label: getLabelForRenewableEnergyType(enrTypes),
+      label: getLabelForRenewableEnergyProductionType(enrTypes),
       hintText: (
         <>
           <legend>{getDescriptionForRenewableEnergyType(enrTypes)}</legend>
@@ -63,12 +64,7 @@ const mapOptions =
     };
   };
 
-const options = [
-  RenewableEnergyType.PHOTOVOLTAIC,
-  RenewableEnergyType.AGRIVOLTAIC,
-  RenewableEnergyType.GEOTHERMAL,
-  RenewableEnergyType.BIOMASS,
-];
+const options = ["PHOTOVOLTAIC_POWER_PLANT", "AGRIVOLTAIC", "GEOTHERMAL", "BIOMASS"] as const;
 
 function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();

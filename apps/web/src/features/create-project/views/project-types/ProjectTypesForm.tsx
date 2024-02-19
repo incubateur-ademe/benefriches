@@ -1,8 +1,11 @@
 import { useForm, UseFormRegister } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
-import { getPrevisionalProjectSocioEconomicImpact, ProjectType } from "../../domain/project.types";
-import { getLabelForProjectType } from "../projectTypeLabelMapping";
+import {
+  DevelopmentPlanCategory,
+  getPrevisionalProjectSocioEconomicImpact,
+} from "../../domain/project.types";
+import { getLabelForDevelopmentPlanCategory } from "../projectTypeLabelMapping";
 
 import AboutFormsModal from "@/shared/app-settings/views/AboutFormsModal";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -14,7 +17,7 @@ type Props = {
 };
 
 type FormValues = {
-  types: ProjectType[];
+  developmentPlanCategory: DevelopmentPlanCategory[];
 };
 
 const formatNumericImpact = (impact: number) => {
@@ -22,29 +25,29 @@ const formatNumericImpact = (impact: number) => {
   return `${signPrefix} ${formatNumberFr(Math.abs(impact))}`;
 };
 
-const allowedProjectTypesErrorMessage = `Cette fonctionnalité n’est pas encore accessible, veuillez sélectionner uniquement l’option ${getLabelForProjectType(
-  ProjectType.RENEWABLE_ENERGY,
+const allowedProjectTypesErrorMessage = `Cette fonctionnalité n’est pas encore accessible, veuillez sélectionner uniquement l’option ${getLabelForDevelopmentPlanCategory(
+  "RENEWABLE_ENERGY",
 )}`;
 
-const validateSelectedProjectTypes = (types: ProjectType[]) =>
-  (types.length === 1 && types[0] === ProjectType.RENEWABLE_ENERGY) ||
+const validateSelectedProjectTypes = (developmentPlanCategory: DevelopmentPlanCategory[]) =>
+  (developmentPlanCategory.length === 1 && developmentPlanCategory[0] === "RENEWABLE_ENERGY") ||
   allowedProjectTypesErrorMessage;
 
 const mapOptions =
   (register: UseFormRegister<FormValues>, siteSurfaceArea: number) =>
-  (projectType: ProjectType) => {
+  (projectType: DevelopmentPlanCategory) => {
     const potentialImpact = getPrevisionalProjectSocioEconomicImpact(projectType, siteSurfaceArea);
     const hintColor = potentialImpact > 0 ? "--text-default-success" : "--text-default-error";
 
     return {
-      label: getLabelForProjectType(projectType),
+      label: getLabelForDevelopmentPlanCategory(projectType),
       hintText: (
         <div style={{ color: `var(${hintColor})` }}>
           {formatNumericImpact(potentialImpact)} € / an d’impacts socio-économiques potentiels
         </div>
       ),
       nativeInputProps: {
-        ...register("types", {
+        ...register("developmentPlanCategory", {
           required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           validate: {
             allowedProjectTypes: validateSelectedProjectTypes,
@@ -56,15 +59,15 @@ const mapOptions =
   };
 
 const options = [
-  ProjectType.BUILDINGS,
-  ProjectType.NATURAL_URBAN_SPACES,
-  ProjectType.URBAN_AGRICULTURE,
-  ProjectType.RENEWABLE_ENERGY,
-];
+  "BUILDINGS",
+  "NATURAL_URBAN_SPACES",
+  "URBAN_AGRICULTURE",
+  "RENEWABLE_ENERGY",
+] as const;
 
 function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
-  const validationError = formState.errors.types;
+  const validationError = formState.errors.developmentPlanCategory;
 
   const state =
     validationError && validationError.type !== "allowedProjectTypes" ? "error" : "default";

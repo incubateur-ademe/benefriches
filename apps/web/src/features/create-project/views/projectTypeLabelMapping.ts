@@ -1,40 +1,47 @@
-import { ProjectType, RenewableEnergyType } from "../domain/project.types";
+import {
+  DevelopmentPlanCategory,
+  RenewableEnergyDevelopmentPlanType,
+} from "../domain/project.types";
 
-export const getLabelForProjectType = (value: ProjectType): string => {
+export const getLabelForDevelopmentPlanCategory = (value: DevelopmentPlanCategory): string => {
   switch (value) {
-    case ProjectType.BUILDINGS:
+    case "BUILDINGS":
       return "Bâtiments, quartier mixte (Habitations, commerces, infrastructures..)";
-    case ProjectType.NATURAL_URBAN_SPACES:
+    case "NATURAL_URBAN_SPACES":
       return "Espace de nature en ville (Parc, aménagement paysager...)";
-    case ProjectType.URBAN_AGRICULTURE:
+    case "URBAN_AGRICULTURE":
       return "Agriculture urbaine (Production de fruits et légumes)";
-    case ProjectType.RENEWABLE_ENERGY:
+    case "RENEWABLE_ENERGY":
       return "Énergies renouvelables (Photovoltaïques, géothermie...)";
   }
 };
 
-export const getLabelForRenewableEnergyType = (value: RenewableEnergyType): string => {
+export const getLabelForRenewableEnergyProductionType = (
+  value: RenewableEnergyDevelopmentPlanType,
+): string => {
   switch (value) {
-    case RenewableEnergyType.PHOTOVOLTAIC:
+    case "PHOTOVOLTAIC_POWER_PLANT":
       return "Photovoltaïque";
-    case RenewableEnergyType.AGRIVOLTAIC:
+    case "AGRIVOLTAIC":
       return "Agrivoltaïque";
-    case RenewableEnergyType.GEOTHERMAL:
+    case "GEOTHERMAL":
       return "Géothermie";
-    case RenewableEnergyType.BIOMASS:
+    case "BIOMASS":
       return "Biomasse";
   }
 };
 
-export const getDescriptionForRenewableEnergyType = (value: RenewableEnergyType): string => {
+export const getDescriptionForRenewableEnergyType = (
+  value: RenewableEnergyDevelopmentPlanType,
+): string => {
   switch (value) {
-    case RenewableEnergyType.PHOTOVOLTAIC:
+    case "PHOTOVOLTAIC_POWER_PLANT":
       return "Production d’électricité grâce à des capteurs ou centrales solaires";
-    case RenewableEnergyType.AGRIVOLTAIC:
+    case "AGRIVOLTAIC":
       return "Production d’électricité photovoltaïque associée à une production agricole";
-    case RenewableEnergyType.GEOTHERMAL:
+    case "GEOTHERMAL":
       return "Production de chaleur à partir du sol ou de l’eau en souterrain";
-    case RenewableEnergyType.BIOMASS:
+    case "BIOMASS":
       return "Production d’électricité par combustion de matière organique";
   }
 };

@@ -3,11 +3,11 @@ import { v4 as uuid } from "uuid";
 import { fetchRelatedSiteAction, saveProjectAction } from "./createProject.actions";
 
 import {
+  DevelopmentPlanCategory,
   PhotovoltaicKeyParameter,
   Project,
   ProjectSite,
-  ProjectType,
-  RenewableEnergyType,
+  RenewableEnergyDevelopmentPlanType,
 } from "@/features/create-project/domain/project.types";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
@@ -64,7 +64,7 @@ export const getInitialState = (): ProjectCreationState => {
       id: uuid(),
       yearlyProjectedCosts: [],
       yearlyProjectedRevenues: [],
-      types: [],
+      developmentPlanCategory: [],
       renewableEnergyTypes: [],
     },
     siteData: undefined,
@@ -80,10 +80,13 @@ export const projectCreationSlice = createSlice({
     resetState: () => {
       return getInitialState();
     },
-    setTypes: (state, action: PayloadAction<ProjectType[]>) => {
-      state.projectData.types = action.payload;
+    setDevelopmentPlanCategories: (state, action: PayloadAction<DevelopmentPlanCategory[]>) => {
+      state.projectData.developmentPlanCategory = action.payload;
     },
-    setRenewableEnergyTypes: (state, action: PayloadAction<RenewableEnergyType[]>) => {
+    setRenewableEnergyDevelopmentPlanType: (
+      state,
+      action: PayloadAction<RenewableEnergyDevelopmentPlanType[]>,
+    ) => {
       state.projectData.renewableEnergyTypes = action.payload;
     },
     setFutureOperator: (state, action: PayloadAction<Project["futureOperator"]>) => {
@@ -206,8 +209,8 @@ export const projectCreationSlice = createSlice({
 
 export const {
   resetState,
-  setTypes,
-  setRenewableEnergyTypes,
+  setDevelopmentPlanCategories,
+  setRenewableEnergyDevelopmentPlanType,
   setFutureOperator,
   setReinstatementContractOwner,
   setConversionFullTimeJobsInvolved,

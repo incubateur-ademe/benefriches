@@ -2,8 +2,7 @@ import { z } from "zod";
 import {
   PhotovoltaicKeyParameter,
   ProjectSite,
-  ProjectType,
-  RenewableEnergyType,
+  renewableEnergyProductionDevelopmentPlanTypeSchema,
 } from "../domain/project.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
@@ -29,8 +28,7 @@ const saveProjectSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   relatedSiteId: z.string().uuid(),
-  types: z.nativeEnum(ProjectType).array().nonempty(),
-  renewableEnergyTypes: z.nativeEnum(RenewableEnergyType).array().nonempty(),
+  renewableEnergyTypes: renewableEnergyProductionDevelopmentPlanTypeSchema.array().nonempty(),
   photovoltaicKeyParameter: z.nativeEnum(PhotovoltaicKeyParameter),
   photovoltaicInstallationElectricalPowerKWc: z.number().nonnegative(),
   photovoltaicInstallationSurfaceSquareMeters: z.number().nonnegative(),
@@ -62,12 +60,10 @@ const saveProjectSchema = z.object({
   firstYearOfOperation: z.string().optional(),
 });
 
-type SaveProjectPayload = z.infer<typeof saveProjectSchema>;
-
-export type SaveProjectGatewayPayload = SaveProjectPayload;
+export type SaveProjectPayload = z.infer<typeof saveProjectSchema>;
 
 export interface SaveProjectGateway {
-  save(siteData: SaveProjectGatewayPayload): Promise<void>;
+  save(siteData: SaveProjectPayload): Promise<void>;
 }
 
 export const saveProjectAction = createAppAsyncThunk(

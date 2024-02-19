@@ -1,42 +1,36 @@
-import { generateProjectName } from "./projectName";
-
-import { ProjectType, RenewableEnergyType } from "@/features/create-project/domain/project.types";
+import { generateProjectName, ProjectInfo } from "./projectName";
 
 describe("Project name generation", () => {
   it("should return 'Projet photovoltaïque'", () => {
-    const project = {
-      id: "site-uuid-123",
-      types: [ProjectType.RENEWABLE_ENERGY],
-      renewableEnergyTypes: [RenewableEnergyType.PHOTOVOLTAIC],
+    const project: ProjectInfo = {
+      developmentPlanCategory: ["RENEWABLE_ENERGY"],
+      renewableEnergyTypes: ["PHOTOVOLTAIC_POWER_PLANT"],
     };
 
     expect(generateProjectName(project)).toEqual("Projet photovoltaïque");
   });
 
   it("should return 'Projet agrivoltaïque'", () => {
-    const project = {
-      id: "site-uuid-123",
-      types: [ProjectType.RENEWABLE_ENERGY],
-      renewableEnergyTypes: [RenewableEnergyType.AGRIVOLTAIC],
+    const project: ProjectInfo = {
+      developmentPlanCategory: ["RENEWABLE_ENERGY"],
+      renewableEnergyTypes: ["AGRIVOLTAIC"],
     };
 
     expect(generateProjectName(project)).toEqual("Projet agrivoltaïque");
   });
 
   it("should return 'Projet EnR mixte' when multiple renewable energy", () => {
-    const project = {
-      id: "site-uuid-123",
-      types: [ProjectType.RENEWABLE_ENERGY],
-      renewableEnergyTypes: [RenewableEnergyType.AGRIVOLTAIC, RenewableEnergyType.BIOMASS],
+    const project: ProjectInfo = {
+      developmentPlanCategory: ["RENEWABLE_ENERGY"],
+      renewableEnergyTypes: ["AGRIVOLTAIC", "BIOMASS"],
     };
 
     expect(generateProjectName(project)).toEqual("Projet EnR mixte");
   });
 
   it("should return 'Projet EnR mixte' when no renewable energy info", () => {
-    const project = {
-      id: "site-uuid-123",
-      types: [ProjectType.RENEWABLE_ENERGY],
+    const project: ProjectInfo = {
+      developmentPlanCategory: ["RENEWABLE_ENERGY"],
       renewableEnergyTypes: [],
     };
 
@@ -44,9 +38,8 @@ describe("Project name generation", () => {
   });
 
   it("should return 'Projet extension urbaine'", () => {
-    const project = {
-      id: "site-uuid-123",
-      types: [ProjectType.BUILDINGS],
+    const project: ProjectInfo = {
+      developmentPlanCategory: ["BUILDINGS"],
       renewableEnergyTypes: [],
     };
 
@@ -56,9 +49,8 @@ describe("Project name generation", () => {
   });
 
   it("should return 'Projet mixte' when multiple projects", () => {
-    const project = {
-      id: "site-uuid-123",
-      types: [ProjectType.BUILDINGS, ProjectType.NATURAL_URBAN_SPACES],
+    const project: ProjectInfo = {
+      developmentPlanCategory: ["BUILDINGS", "NATURAL_URBAN_SPACES"],
       renewableEnergyTypes: [],
     };
 

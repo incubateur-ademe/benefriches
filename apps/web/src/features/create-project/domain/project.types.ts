@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import { SoilType } from "@/shared/domain/soils";
 import {
   LocalAutorityStructureType,
@@ -6,19 +8,21 @@ import {
 } from "@/shared/domain/stakeholder";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 
-export enum ProjectType {
-  RENEWABLE_ENERGY = "RENEWABLE_ENERGY",
-  URBAN_AGRICULTURE = "URBAN_AGRICULTURE",
-  BUILDINGS = "BUILDINGS",
-  NATURAL_URBAN_SPACES = "NATURAL_URBAN_SPACES",
-}
+export type DevelopmentPlanCategory =
+  | "RENEWABLE_ENERGY"
+  | "URBAN_AGRICULTURE"
+  | "BUILDINGS"
+  | "NATURAL_URBAN_SPACES";
 
-export enum RenewableEnergyType {
-  PHOTOVOLTAIC = "PHOTOVOLTAIC",
-  AGRIVOLTAIC = "AGRIVOLTAIC",
-  GEOTHERMAL = "GEOTHERMAL",
-  BIOMASS = "BIOMASS",
-}
+export const renewableEnergyProductionDevelopmentPlanTypeSchema = z.enum([
+  "PHOTOVOLTAIC_POWER_PLANT",
+  "AGRIVOLTAIC",
+  "GEOTHERMAL",
+  "BIOMASS",
+]);
+export type RenewableEnergyDevelopmentPlanType = z.infer<
+  typeof renewableEnergyProductionDevelopmentPlanTypeSchema
+>;
 
 export enum PhotovoltaicKeyParameter {
   POWER = "POWER",
@@ -30,8 +34,8 @@ export type Project = {
   name: string;
   description?: string;
   relatedSiteId: string;
-  types: ProjectType[];
-  renewableEnergyTypes: RenewableEnergyType[];
+  developmentPlanCategory: DevelopmentPlanCategory[];
+  renewableEnergyTypes: RenewableEnergyDevelopmentPlanType[];
   photovoltaicKeyParameter: PhotovoltaicKeyParameter;
   photovoltaicInstallationElectricalPowerKWc: number;
   photovoltaicInstallationSurfaceSquareMeters: number;
@@ -110,21 +114,23 @@ export type ProjectSite = {
   address: Address;
 };
 
-const getPrevisionalProjectSocioEconomicImpactPerHectare = (projectType: ProjectType) => {
+const getPrevisionalProjectSocioEconomicImpactPerHectare = (
+  projectType: DevelopmentPlanCategory,
+) => {
   switch (projectType) {
-    case ProjectType.BUILDINGS:
+    case "BUILDINGS":
       return 15000;
-    case ProjectType.NATURAL_URBAN_SPACES:
+    case "NATURAL_URBAN_SPACES":
       return 10000;
-    case ProjectType.URBAN_AGRICULTURE:
+    case "URBAN_AGRICULTURE":
       return 12000;
-    case ProjectType.RENEWABLE_ENERGY:
+    case "RENEWABLE_ENERGY":
       return 5000;
   }
 };
 
 export const getPrevisionalProjectSocioEconomicImpact = (
-  projectType: ProjectType,
+  projectType: DevelopmentPlanCategory,
   siteSurfaceArea: number,
 ) => {
   return Math.round(
@@ -133,25 +139,27 @@ export const getPrevisionalProjectSocioEconomicImpact = (
   );
 };
 
-const getPrevisionalEnrSocioEconomicImpactPerHectare = (enrProjectType: RenewableEnergyType) => {
-  switch (enrProjectType) {
-    case RenewableEnergyType.AGRIVOLTAIC:
+const getPrevisionalEnrSocioEconomicImpactPerHectare = (
+  renewableEnergyProductionType: RenewableEnergyDevelopmentPlanType,
+) => {
+  switch (renewableEnergyProductionType) {
+    case "AGRIVOLTAIC":
       return 21000;
-    case RenewableEnergyType.BIOMASS:
+    case "BIOMASS":
       return 11000;
-    case RenewableEnergyType.GEOTHERMAL:
+    case "GEOTHERMAL":
       return 10000;
-    case RenewableEnergyType.PHOTOVOLTAIC:
+    case "PHOTOVOLTAIC_POWER_PLANT":
       return 10000;
   }
 };
 
 export const getPrevisionalEnrSocioEconomicImpact = (
-  enrProjectType: RenewableEnergyType,
+  renewableEnergyProductionType: RenewableEnergyDevelopmentPlanType,
   siteSurfaceArea: number,
 ) => {
   return Math.round(
-    getPrevisionalEnrSocioEconomicImpactPerHectare(enrProjectType) *
+    getPrevisionalEnrSocioEconomicImpactPerHectare(renewableEnergyProductionType) *
       convertSquareMetersToHectares(siteSurfaceArea),
   );
 };
