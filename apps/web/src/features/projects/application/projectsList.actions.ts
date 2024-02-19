@@ -1,27 +1,15 @@
-import { ProjectsList, SitesList } from "../domain/projects.types";
+import { ReconversionProjectsGroupedBySite } from "../domain/projects.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
-export interface ProjectsListGateway {
-  getProjectsList(): Promise<ProjectsList>;
+export interface ReconversionProjectsListGateway {
+  getGroupedBySite(): Promise<ReconversionProjectsGroupedBySite>;
 }
 
-export const fetchProjects = createAppAsyncThunk<ProjectsList>(
+export const fetchReconversionProjects = createAppAsyncThunk<ReconversionProjectsGroupedBySite>(
   "projects/fetchList",
   async (_, { extra }) => {
-    const result = await extra.projectsListService.getProjectsList();
-    return result;
-  },
-);
-
-export interface SitesGateway {
-  getSitesList(): Promise<SitesList>;
-}
-
-export const fetchSites = createAppAsyncThunk<SitesList>(
-  "projects/fetchSites",
-  async (_, { extra }) => {
-    const result = await extra.sitesService.getSitesList();
+    const result = await extra.reconversionProjectsListService.getGroupedBySite();
     return result;
   },
 );

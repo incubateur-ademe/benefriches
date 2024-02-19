@@ -1,93 +1,81 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { ProjectsGroupedBySite, ProjectsList, SitesList } from "../domain/projects.types";
-import { fetchProjects, fetchSites } from "./projectsList.actions";
+import { ReconversionProjectsGroupedBySite } from "../domain/projects.types";
+import { fetchReconversionProjects } from "./projectsList.actions";
 
 import { RootState } from "@/app/application/store";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
 
 export type State = {
-  projectsLoadingState: LoadingState;
-  projects: ProjectsList;
-  sitesLoadingState: LoadingState;
-  sites: SitesList;
+  reconversionProjectsLoadingState: LoadingState;
+  reconversionProjects: ReconversionProjectsGroupedBySite;
 };
 
 const initialState: State = {
-  projectsLoadingState: "idle",
-  projects: [],
-  sitesLoadingState: "idle",
-  sites: [],
+  reconversionProjectsLoadingState: "idle",
+  reconversionProjects: [],
 };
 
-export const projectsList = createSlice({
-  name: "projectsList",
+export const reconversionProjectsList = createSlice({
+  name: "reconversionProjectsList",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchProjects.pending, (state) => {
-      state.projectsLoadingState = "loading";
+    builder.addCase(fetchReconversionProjects.pending, (state) => {
+      state.reconversionProjectsLoadingState = "loading";
     });
-    builder.addCase(fetchProjects.fulfilled, (state, action) => {
-      state.projectsLoadingState = "success";
-      state.projects = action.payload;
+    builder.addCase(fetchReconversionProjects.fulfilled, (state, action) => {
+      state.reconversionProjectsLoadingState = "success";
+      state.reconversionProjects = action.payload;
     });
-    builder.addCase(fetchProjects.rejected, (state) => {
-      state.projectsLoadingState = "error";
-    });
-
-    builder.addCase(fetchSites.pending, (state) => {
-      state.sitesLoadingState = "loading";
-    });
-    builder.addCase(fetchSites.fulfilled, (state, action) => {
-      state.sitesLoadingState = "success";
-      state.sites = action.payload;
-    });
-    builder.addCase(fetchSites.rejected, (state) => {
-      state.sitesLoadingState = "error";
+    builder.addCase(fetchReconversionProjects.rejected, (state) => {
+      state.reconversionProjectsLoadingState = "error";
     });
   },
 });
 
-const selectSelf = (state: RootState) => state.projectsList;
+const selectSelf = (state: RootState) => state.reconversionProjectsList;
 
-export const selectProjectById = createSelector(
+type ReconversionProjectWithSite = {
+  id: string;
+  name: string;
+  site: {
+    id: string;
+    name: string;
+  };
+};
+export const selectReconversionProjectById = createSelector(
   [selectSelf, (_state, projectId: string) => projectId],
-  (state, projectId): ProjectsList[number] | undefined => {
-    return state.projects.find((project) => project.id === projectId);
+  (state, projectId): ReconversionProjectWithSite | undefined => {
+    const projectsGroup = state.reconversionProjects.find((group) =>
+      group.reconversionProjects.find((project) => project.id === projectId),
+    );
+    const project = projectsGroup?.reconversionProjects.find((p) => p.id === projectId);
+
+    if (!projectsGroup || !project) return undefined;
+
+    return {
+      id: project.id,
+      name: project.name,
+      site: {
+        id: projectsGroup.siteId,
+        name: projectsGroup.siteName,
+      },
+    };
   },
 );
 
-export const selectProjects = createSelector([selectSelf], (state): ProjectsList => {
-  return state.projects;
-});
+export const selectComparableProjects = createSelector(
+  [selectSelf, selectReconversionProjectById],
+  (state, project): ReconversionProjectsGroupedBySite[number]["reconversionProjects"] => {
+    if (!project) return [];
 
-export const selectProjectsGroupedBySite = createSelector(
-  [selectSelf],
-  (state): ProjectsGroupedBySite => {
-    return state.sites.map((site) => {
-      return {
-        siteId: site.id,
-        siteName: site.name,
-        projects: state.projects.filter((project) => project.site.id === site.id),
-      };
-    });
+    const projectGroup = state.reconversionProjects.find(
+      (group) => group.siteId === project.site.id,
+    );
+
+    return projectGroup?.reconversionProjects.filter((p) => p.id !== project.id) ?? [];
   },
 );
 
-export const selectSitesAndProjectsLoadingState = createSelector(
-  [selectSelf],
-  (state): LoadingState => {
-    const { projectsLoadingState, sitesLoadingState } = state;
-
-    if (projectsLoadingState === "error" || sitesLoadingState === "error") return "error";
-
-    if (projectsLoadingState === "loading" || sitesLoadingState === "loading") return "loading";
-
-    if (projectsLoadingState === "success" && sitesLoadingState === "success") return "success";
-
-    return "idle";
-  },
-);
-
-export default projectsList.reducer;
+export default reconversionProjectsList.reducer;

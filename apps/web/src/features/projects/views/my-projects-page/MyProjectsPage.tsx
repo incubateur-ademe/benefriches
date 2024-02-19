@@ -1,10 +1,10 @@
-import { ProjectsGroupedBySite } from "../../domain/projects.types";
+import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 import MyProjectsPageHeader from "./MyProjectsPageHeader";
 import ProjectsList from "./ProjectsList";
 
 type Props = {
   loadingState: "idle" | "loading" | "error" | "success";
-  projectsList: ProjectsGroupedBySite;
+  projectsList: ReconversionProjectsGroupedBySite;
 };
 
 function MyProjectsPage({ loadingState, projectsList }: Props) {

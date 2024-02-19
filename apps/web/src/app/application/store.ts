@@ -6,10 +6,7 @@ import {
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.actions";
 import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
-import {
-  ProjectsListGateway,
-  SitesGateway,
-} from "../../features/projects/application/projectsList.actions";
+import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
 import { LocalAuthoritiesGateway as ProjectLocalAuthoritiesGateway } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
@@ -24,7 +21,7 @@ import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbo
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
 import projectImpactsComparison from "@/features/projects/application/projectImpactsComparison.reducer";
-import projectsList from "@/features/projects/application/projectsList.reducer";
+import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
 import { UserGateway } from "@/features/users/application/initCurrentUser.action";
 import currentUser from "@/features/users/application/user.reducer";
 
@@ -32,9 +29,8 @@ export type AppDependencies = {
   soilsCarbonStorageService: SiteSoilsCarbonStorageGateway | ProjectSoilsCarbonStorageGateway;
   createSiteService: CreateSiteGateway;
   saveProjectGateway: SaveProjectGateway;
-  projectsListService: ProjectsListGateway;
+  reconversionProjectsListService: ReconversionProjectsListGateway;
   projectDetailsService: ProjectsDetailsGateway;
-  sitesService: SitesGateway;
   getSiteByIdService: GetSitesByIdGateway;
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
   localAuthoritiesService: SiteLocalAuthoritiesGateway | ProjectLocalAuthoritiesGateway;
@@ -51,7 +47,7 @@ const rootReducer = combineReducers({
   projectCreation,
   projectPvExpectedPerformancesStorage,
   siteCarbonStorage,
-  projectsList,
+  reconversionProjectsList,
   currentUser,
   projectImpacts,
   projectImpactsComparison,

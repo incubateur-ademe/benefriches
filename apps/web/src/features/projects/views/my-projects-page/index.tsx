@@ -1,24 +1,20 @@
 import { useEffect } from "react";
-import { fetchProjects, fetchSites } from "../../application/projectsList.actions";
-import {
-  selectProjectsGroupedBySite,
-  selectSitesAndProjectsLoadingState,
-} from "../../application/projectsList.reducer";
+import { fetchReconversionProjects } from "../../application/projectsList.actions";
 import MyProjectsPage from "./MyProjectsPage";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function MyProjectsPageContainer() {
   const dispatch = useAppDispatch();
-  const loadingState = useAppSelector(selectSitesAndProjectsLoadingState);
-  const projectsGroupedBySite = useAppSelector(selectProjectsGroupedBySite);
+  const { reconversionProjects: projects, reconversionProjectsLoadingState } = useAppSelector(
+    (state) => state.reconversionProjectsList,
+  );
 
   useEffect(() => {
-    void dispatch(fetchProjects());
-    void dispatch(fetchSites());
+    void dispatch(fetchReconversionProjects());
   }, [dispatch]);
 
-  return <MyProjectsPage projectsList={projectsGroupedBySite} loadingState={loadingState} />;
+  return <MyProjectsPage projectsList={projects} loadingState={reconversionProjectsLoadingState} />;
 }
 
 export default MyProjectsPageContainer;

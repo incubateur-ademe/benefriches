@@ -5,11 +5,16 @@ import {
   ReconversionProjectRepository,
   SiteRepository,
 } from "src/reconversion-projects/domain/usecases/createReconversionProject.usecase";
+import {
+  GetReconversionProjectsBySiteUseCase,
+  ReconversionProjectsListRepository,
+} from "src/reconversion-projects/domain/usecases/getReconversionProjectsBySite.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 import { SqlReconversionProjectRepository } from "../secondary/reconversion-project-repository/SqlReconversionProjectRepository";
+import { SqlReconversionProjectsListRepository } from "../secondary/reconversion-projects-list-repository/SqlReconversionProjectsListRepository";
 import { ReconversionProjectController } from "./reconversionProjects.controller";
 
 @Module({
@@ -42,6 +47,17 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           reconversionProjectRepository,
         ),
       inject: ["DateProvider", "SiteRepository", "ReconversionProjectRepository"],
+    },
+    {
+      provide: "ReconversionProjectsListRepository",
+      useFactory: (sqlConnection: Knex) => new SqlReconversionProjectsListRepository(sqlConnection),
+      inject: [SqlConnection],
+    },
+    {
+      provide: GetReconversionProjectsBySiteUseCase,
+      useFactory: (reconversionProjectsListRepository: ReconversionProjectsListRepository) =>
+        new GetReconversionProjectsBySiteUseCase(reconversionProjectsListRepository),
+      inject: ["ReconversionProjectsListRepository"],
     },
   ],
 })

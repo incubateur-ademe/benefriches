@@ -46,30 +46,25 @@ export class LocalStorageProjectDetailsApi
   ): Promise<ProjectImpactsComparisonResult | ProjectImpactsResult> {
     await delay(300);
 
-    try {
-      const projectsFromLocalStorage = localStorage.getItem(PROJECTS_LIST_STORAGE_KEY);
+    const projectsFromLocalStorage = localStorage.getItem(PROJECTS_LIST_STORAGE_KEY);
 
-      const projectsList = projectsFromLocalStorage
-        ? (JSON.parse(projectsFromLocalStorage) as ProjectInLocalStorage[])
-        : [];
+    const projectsList = projectsFromLocalStorage
+      ? (JSON.parse(projectsFromLocalStorage) as ProjectInLocalStorage[])
+      : [];
 
-      const project = projectsList.find((project) => project.id === projectId);
+    const project = projectsList.find((project) => project.id === projectId);
 
-      if (!project) {
-        return { projectData: undefined, siteData: undefined };
-      }
+    if (!project) throw new Error(`Could not find ReconversionProject with id ${projectId}`);
 
-      const sitesFromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
+    const sitesFromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
 
-      const sitesList = sitesFromLocalStorage
-        ? (JSON.parse(sitesFromLocalStorage) as ProjectSite[])
-        : [];
+    const sitesList = sitesFromLocalStorage
+      ? (JSON.parse(sitesFromLocalStorage) as ProjectSite[])
+      : [];
 
-      const relatedSite = sitesList.find((site) => site.id === project.relatedSiteId);
+    const relatedSite = sitesList.find((site) => site.id === project.relatedSiteId);
+    if (!relatedSite) throw new Error(`Could not find Site with id ${project.relatedSiteId}`);
 
-      return { siteData: relatedSite, projectData: project };
-    } catch (error) {
-      return { projectData: undefined, siteData: undefined };
-    }
+    return { siteData: relatedSite, projectData: project };
   }
 }
