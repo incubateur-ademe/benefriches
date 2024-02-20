@@ -12,7 +12,7 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (formData: { surfaceArea: number }) => {
       dispatch(setSurfaceArea(formData.surfaceArea));
-      dispatch(goToStep(SiteCreationStep.SOILS));
+      dispatch(goToStep(SiteCreationStep.SOILS_SELECTION));
     },
   };
 };

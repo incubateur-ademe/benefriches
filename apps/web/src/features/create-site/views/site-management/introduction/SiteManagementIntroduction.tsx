@@ -7,7 +7,7 @@ type Props = {
 const SiteManagementIntroduction = ({ onNext }: Props) => {
   return (
     <>
-      <h2>Parlons maintenant de la gestion du site</h2>
+      <h2>Parlons d’abord de la gestion du site</h2>
       <p>
         Différents acteurs sont liés à la friche, et différentes dépenses peuvent leur incomber.
       </p>

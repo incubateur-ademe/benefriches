@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["siteData"]) => {
   const onNext = () => {
     const nextStep = siteData.isFriche
-      ? SiteCreationStep.FRICHE_ACTIVITY
+      ? SiteCreationStep.SOILS_INTRODUCTION
       : SiteCreationStep.YEARLY_INCOME;
     dispatch(goToStep(nextStep));
   };

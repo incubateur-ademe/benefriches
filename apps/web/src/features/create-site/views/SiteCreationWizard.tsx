@@ -14,6 +14,7 @@ import SiteSoilsDistributionBySquareMeters from "./soils/soils-distribution/by-s
 import SiteSoilsIntroduction from "./soils/soils-introduction";
 import SiteSoilsForm from "./soils/soils-selection";
 import SiteSoilsSummary from "./soils/soils-summary";
+import SiteSurfaceAreaForm from "./soils/surface-area";
 import AddressForm from "./address";
 import SiteCreationConfirmation from "./confirmation";
 import SiteNameAndDescriptionForm from "./denomination";
@@ -22,7 +23,6 @@ import SiteTypeForm from "./site-type";
 import SoilContaminationForm from "./soil-contamination";
 import Stepper from "./Stepper";
 import SiteDataSummary from "./summary";
-import SiteSurfaceAreaForm from "./surface-area";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -39,7 +39,7 @@ function SiteCreationWizard() {
         return <SiteSoilsIntroduction />;
       case SiteCreationStep.SURFACE_AREA:
         return <SiteSurfaceAreaForm />;
-      case SiteCreationStep.SOILS:
+      case SiteCreationStep.SOILS_SELECTION:
         return <SiteSoilsForm />;
       case SiteCreationStep.SOILS_SURFACE_AREAS_ACCURACY_SELECTION:
         return <SiteSoilsDistributionAccuracySelection />;

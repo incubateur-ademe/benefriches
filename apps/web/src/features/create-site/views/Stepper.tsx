@@ -5,9 +5,9 @@ import { SiteCreationStep } from "@/features/create-site/application/createSite.
 const fricheStepsCategories = [
   "Type de site",
   "Adresse",
+  "Gestion du site",
   "Sols",
   "Pollution",
-  "Gestion du site",
   "Dénomination",
   "Récapitulatif",
 ] as const;
@@ -23,7 +23,7 @@ const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
     case SiteCreationStep.ADDRESS:
       return "Adresse";
     case SiteCreationStep.SOILS_INTRODUCTION:
-    case SiteCreationStep.SOILS:
+    case SiteCreationStep.SOILS_SELECTION:
     case SiteCreationStep.SURFACE_AREA:
     case SiteCreationStep.SOILS_SURFACE_AREAS_ACCURACY_SELECTION:
     case SiteCreationStep.SOILS_SURFACE_AREAS_BY_PERCENTAGE:

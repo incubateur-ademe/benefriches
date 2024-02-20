@@ -34,7 +34,6 @@ const convertFormValuesForStore = (
 
 function FricheTenantFormContainer() {
   const dispatch = useAppDispatch();
-  const siteDraft = useAppSelector((state) => state.siteCreation.siteData);
   const siteLocalAuthorities = useAppSelector((state) => state.siteLocalAuthorities);
   const { localAuthorities } = siteLocalAuthorities;
 
@@ -48,10 +47,7 @@ function FricheTenantFormContainer() {
     if (tenant) {
       dispatch(setTenant(tenant));
     }
-    const nextStep = siteDraft.isFriche
-      ? SiteCreationStep.RECENT_ACCIDENTS
-      : SiteCreationStep.YEARLY_EXPENSES;
-    dispatch(goToStep(nextStep));
+    dispatch(goToStep(SiteCreationStep.FULL_TIME_JOBS_INVOLVED));
   };
 
   return <FricheTenantForm onSubmit={onSubmit} siteLocalAuthorities={siteLocalAuthorities} />;

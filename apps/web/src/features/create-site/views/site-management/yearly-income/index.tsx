@@ -25,7 +25,7 @@ const mapProps = (dispatch: AppDispatch) => {
         });
       }
       if (incomes.length > 0) dispatch(addIncomes(incomes));
-      dispatch(goToStep(SiteCreationStep.NAMING));
+      dispatch(goToStep(SiteCreationStep.SOILS_INTRODUCTION));
     },
   };
 };
