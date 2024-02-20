@@ -114,28 +114,32 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         });
       await trx("reconversion_project_development_plans").insert(developmentPlansToInsert);
 
-      const yearlyExpensesToInsert: SqlExpense[] = reconversionProject.yearlyProjectedCosts.map(
-        ({ amount, purpose }) => {
-          return {
-            id: uuid(),
-            amount,
-            purpose,
-            reconversion_project_id: insertedReconversionProject.id,
-          };
-        },
-      );
-      await trx("reconversion_project_yearly_expenses").insert(yearlyExpensesToInsert);
-      const yearlyRevenuesToInsert: SqlRevenue[] = reconversionProject.yearlyProjectedRevenues.map(
-        ({ amount, source }) => {
-          return {
-            id: uuid(),
-            amount,
-            source,
-            reconversion_project_id: insertedReconversionProject.id,
-          };
-        },
-      );
-      await trx("reconversion_project_yearly_revenues").insert(yearlyRevenuesToInsert);
+      if (reconversionProject.yearlyProjectedCosts.length > 0) {
+        const yearlyExpensesToInsert: SqlExpense[] = reconversionProject.yearlyProjectedCosts.map(
+          ({ amount, purpose }) => {
+            return {
+              id: uuid(),
+              amount,
+              purpose,
+              reconversion_project_id: insertedReconversionProject.id,
+            };
+          },
+        );
+        await trx("reconversion_project_yearly_expenses").insert(yearlyExpensesToInsert);
+      }
+
+      if (reconversionProject.yearlyProjectedRevenues.length > 0) {
+        const yearlyRevenuesToInsert: SqlRevenue[] =
+          reconversionProject.yearlyProjectedRevenues.map(({ amount, source }) => {
+            return {
+              id: uuid(),
+              amount,
+              source,
+              reconversion_project_id: insertedReconversionProject.id,
+            };
+          });
+        await trx("reconversion_project_yearly_revenues").insert(yearlyRevenuesToInsert);
+      }
     });
   }
 

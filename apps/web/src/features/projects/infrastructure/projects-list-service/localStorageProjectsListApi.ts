@@ -1,5 +1,5 @@
-import { ProjectsListGateway } from "../../application/projectsList.actions";
-import { ProjectsList } from "../../domain/projects.types";
+import { ReconversionProjectsListGateway } from "../../application/projectsList.actions";
+import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
@@ -13,8 +13,8 @@ type ProjectInLocalStorage = {
   relatedSiteId: string;
 };
 
-export class LocalStorageProjectsListApi implements ProjectsListGateway {
-  async getProjectsList(): Promise<ProjectsList> {
+export class LocalStorageProjectsListApi implements ReconversionProjectsListGateway {
+  async getGroupedBySite(): Promise<ReconversionProjectsGroupedBySite> {
     await delay(300);
 
     const sitesFromLocalStorage = localStorage.getItem(SITES_LIST_STORAGE_KEY);
@@ -29,14 +29,12 @@ export class LocalStorageProjectsListApi implements ProjectsListGateway {
       ? (JSON.parse(projectsFromLocalStorage) as ProjectInLocalStorage[])
       : [];
 
-    return projectsList.map((project) => {
-      const projectSite = sitesList.find(
-        (site) => project.relatedSiteId === site.id,
-      ) as ProjectSite;
+    return sitesList.map((site) => {
+      const projects = projectsList.filter((p) => p.relatedSiteId === site.id);
       return {
-        id: project.id,
-        name: project.name,
-        site: { id: projectSite.id, name: projectSite.name },
+        siteId: site.id,
+        siteName: site.name,
+        reconversionProjects: projects.map(({ name, id }) => ({ name, id })),
       };
     });
   }

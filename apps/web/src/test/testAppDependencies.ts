@@ -7,8 +7,7 @@ import { LocalStorageSaveProjectApi } from "@/features/create-project/infrastruc
 import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
-import { LocalStorageProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/localStorageProjectsListApi";
-import { LocalStorageSitesApi } from "@/features/projects/infrastructure/sites-service/localStorageSitesApi";
+import { InMemoryReconversionProjectsListService } from "@/features/projects/infrastructure/projects-list-service/InMemoryProjectsListService";
 import { LocalStorageUserService } from "@/features/users/infra/get-user-service/LocalStorageUserService";
 import { LocalAuthoritiesMock } from "@/shared/infrastructure/local-authorities-service/localAuthoritiesMock";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
@@ -22,10 +21,9 @@ export const getTestAppDependencies = (
       totalCarbonStorage: 0,
     }),
     createSiteService: new InMemoryCreateSiteService(),
-    projectsListService: new LocalStorageProjectsListApi(),
+    reconversionProjectsListService: new InMemoryReconversionProjectsListService([]),
     projectDetailsService: new LocalStorageProjectDetailsApi(),
     saveProjectGateway: new LocalStorageSaveProjectApi(),
-    sitesService: new LocalStorageSitesApi(),
     getSiteByIdService: new SitesServiceMock(),
     photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
     userService: new LocalStorageUserService(),

@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import { ProjectsGroupedBySite } from "../../domain/projects.types";
+import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 import NewProjectButton from "./NewProjectButton";
 import ProjectCard from "./ProjectCard";
 
 import { routes } from "@/app/views/router";
 
 type Props = {
-  projectsList: ProjectsGroupedBySite;
+  projectsList: ReconversionProjectsGroupedBySite;
 };
 
 function SiteName({ children }: { children: ReactNode }) {
@@ -24,8 +24,8 @@ function ProjectsList({ projectsList }: Props) {
       {projectsList.map((projectGroup) => (
         <div className="fr-mb-5w" key={projectGroup.siteId}>
           <SiteName key={projectGroup.siteId}>{projectGroup.siteName}</SiteName>
-          {projectGroup.projects.length > 0 ? (
-            <p>{projectGroup.projects.length + 1} futurs possibles pour ce site :</p>
+          {projectGroup.reconversionProjects.length > 0 ? (
+            <p>{projectGroup.reconversionProjects.length + 1} futurs possibles pour ce site :</p>
           ) : (
             <p>1 futur possible pour ce site :</p>
           )}
@@ -37,7 +37,7 @@ function ProjectsList({ projectsList }: Props) {
                 yearlyProfit={-391179}
               />
             </GridColumn>
-            {projectGroup.projects.map((project) => {
+            {projectGroup.reconversionProjects.map((project) => {
               const projectImpactsLinkProps = routes.projectImpacts({
                 projectId: project.id,
               }).link;
