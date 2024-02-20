@@ -67,7 +67,7 @@ function SiteReinstatementContractOwnerFormContainer() {
         convertFormValuesForStore(data, projectSite, currentUserCompany, siteLocalAuthorities),
       ),
     );
-    dispatch(goToStep(ProjectCreationStep.COSTS_INTRODUCTION));
+    dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS));
   };
 
   useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);

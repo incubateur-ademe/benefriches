@@ -59,7 +59,7 @@ function SiteOperatorFormContainer() {
 
   const nextStep = projectSite?.isFriche
     ? ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER
-    : ProjectCreationStep.COSTS_INTRODUCTION;
+    : ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS;
 
   const onSubmit = (data: FormValues) => {
     if (!projectSite || !siteLocalAuthorities) return;
