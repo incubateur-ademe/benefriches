@@ -1,18 +1,18 @@
 import { useMemo } from "react";
 import EconomicEvaluationComparisonChart from "./EconomicEvaluationComparisonChart";
 
-import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
 import {
   getEconomicResultsOfProjectForDuration,
   getEconomicResultsOfSiteForDuration,
 } from "@/features/projects/domain/computations/economicResults";
+import { Project, ProjectSite } from "@/features/projects/domain/projects.types";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type SuccessDataState = {
-  siteData: Exclude<ProjectImpactsComparisonState["siteData"], undefined>;
-  projectData: Exclude<ProjectImpactsComparisonState["projectData"], undefined>;
-  otherProjectData: Exclude<ProjectImpactsComparisonState["otherProjectData"], undefined>;
-  withProject: string;
+  baseScenarioType: "PROJECT" | "STATU_QUO";
+  baseScenarioSiteData: ProjectSite;
+  baseScenarioProjectData: Project;
+  withScenarioProjectData: Project;
 };
 
 type Props = {
@@ -20,27 +20,41 @@ type Props = {
 };
 
 function EconomicEvaluationComparisonContainer({ duration }: Props) {
-  const { siteData, projectData, withProject, otherProjectData } = useAppSelector(
-    (state) => state.projectImpactsComparison,
-  ) as SuccessDataState;
+  const {
+    baseScenarioType,
+    baseScenarioProjectData,
+    baseScenarioSiteData,
+    withScenarioProjectData,
+  } = useAppSelector((state) => ({
+    baseScenarioType: state.projectImpactsComparison.baseScenario.type,
+    baseScenarioSiteData: state.projectImpactsComparison.baseScenario.siteData,
+    baseScenarioProjectData: state.projectImpactsComparison.baseScenario.projectData,
+    withScenarioProjectData: state.projectImpactsComparison.withScenario.projectData,
+  })) as SuccessDataState;
 
   const { baseImpactValue, withImpactValue, baseOwnerName, withOwnerName } = useMemo(() => {
-    if (withProject === "STATU_QUO") {
+    if (baseScenarioType === "STATU_QUO") {
       return {
-        baseImpactValue: getEconomicResultsOfSiteForDuration(siteData, duration),
+        baseImpactValue: getEconomicResultsOfSiteForDuration(baseScenarioSiteData, duration),
 
-        withImpactValue: getEconomicResultsOfProjectForDuration(projectData, duration),
-        baseOwnerName: siteData.owner.name,
-        withOwnerName: projectData.futureOperator.name,
+        withImpactValue: getEconomicResultsOfProjectForDuration(withScenarioProjectData, duration),
+        baseOwnerName: baseScenarioSiteData.owner.name,
+        withOwnerName: withScenarioProjectData.futureOperator.name,
       };
     }
     return {
-      baseImpactValue: getEconomicResultsOfProjectForDuration(projectData, duration),
-      withImpactValue: getEconomicResultsOfProjectForDuration(otherProjectData, duration),
-      withOwnerName: otherProjectData.futureOperator.name,
-      baseOwnerName: projectData.futureOperator.name,
+      baseImpactValue: getEconomicResultsOfProjectForDuration(baseScenarioProjectData, duration),
+      withImpactValue: getEconomicResultsOfProjectForDuration(withScenarioProjectData, duration),
+      withOwnerName: withScenarioProjectData.futureOperator.name,
+      baseOwnerName: baseScenarioProjectData.futureOperator.name,
     };
-  }, [duration, otherProjectData, projectData, siteData, withProject]);
+  }, [
+    baseScenarioProjectData,
+    baseScenarioSiteData,
+    baseScenarioType,
+    duration,
+    withScenarioProjectData,
+  ]);
 
   return (
     <EconomicEvaluationComparisonChart

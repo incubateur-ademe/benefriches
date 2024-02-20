@@ -4,7 +4,7 @@ import { Project, ProjectSite } from "../domain/projects.types";
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
 
-type SoilsCarbonStorageResult = {
+type SoilsCarbonStorage = {
   totalCarbonStorage: number;
   soilsStorage: {
     type: SoilType;
@@ -15,8 +15,8 @@ type SoilsCarbonStorageResult = {
 };
 
 export type CurrentAndProjectedSoilsCarbonStorageResult = {
-  current: SoilsCarbonStorageResult;
-  projected: SoilsCarbonStorageResult;
+  current: SoilsCarbonStorage;
+  projected: SoilsCarbonStorage;
 };
 
 export const fetchCurrentAndProjectedSoilsCarbonStorage =
@@ -24,33 +24,39 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
     "projectImpactsComparison/fetchCurrentAndProjectedSoilsCarbonStorage",
     async (_, { extra, getState }) => {
       const { projectImpactsComparison } = getState();
-      const { withProject, baseProjectId } = projectImpactsComparison;
+      const { withScenario, baseScenario } = projectImpactsComparison;
+      const { projectData: baseProjectData, siteData: baseSiteData, type } = baseScenario;
+      const { projectData: withProjectData, siteData: withProjectSiteData } = withScenario;
 
-      if (!baseProjectId || !uuidValidate(baseProjectId)) {
+      if (!baseSiteData) {
         throw new Error(
-          "fetchCurrentAndProjectedSoilsCarbonStorage: Wrong format for baseProjectId",
+          "fetchCurrentAndProjectedSoilsCarbonStorage: Missing base siteData or projectData",
         );
       }
 
-      const { siteData, projectData, otherProjectData } = projectImpactsComparison;
-
-      if (!siteData || !projectData) {
+      if (type !== "STATU_QUO" && !baseProjectData) {
         throw new Error(
-          "fetchCurrentAndProjectedSoilsCarbonStorage: Missing siteData or projectData",
+          "fetchCurrentAndProjectedSoilsCarbonStorage: Missing base siteData or projectData",
         );
       }
 
-      const cityCode = siteData.address.cityCode;
-      const siteSoils = siteData.soilsDistribution;
-      const projectSoils = projectData.soilsDistribution;
-      const otherProjectSoils = otherProjectData?.soilsDistribution ?? {};
+      if (!withProjectSiteData || !withProjectData) {
+        throw new Error(
+          "fetchCurrentAndProjectedSoilsCarbonStorage: Missing with siteData or projectData",
+        );
+      }
 
-      const currentSoils = withProject === "STATU_QUO" ? siteSoils : projectSoils;
-      const projectedSoils = withProject === "STATU_QUO" ? projectSoils : otherProjectSoils;
+      const baseCityCode = baseSiteData.address.cityCode;
+      const withCityCode = withProjectSiteData.address.cityCode;
+      const currentSoils =
+        type === "STATU_QUO"
+          ? baseSiteData.soilsDistribution
+          : baseProjectData?.soilsDistribution || {};
+      const projectedSoils = withProjectData.soilsDistribution;
 
       const [current, projected] = await Promise.all([
         await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
-          cityCode,
+          cityCode: baseCityCode,
           soils: Object.entries(currentSoils).map(([type, surfaceArea]) => ({
             type: type as SoilType,
             surfaceArea,
@@ -61,7 +67,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
             type: type as SoilType,
             surfaceArea,
           })),
-          cityCode,
+          cityCode: withCityCode,
         }),
       ]);
 
@@ -78,11 +84,18 @@ export type ProjectDetailsResult = {
 };
 
 type FetchDataResult = {
-  projectData: ProjectDetailsResult["projectData"];
-  siteData: ProjectDetailsResult["siteData"];
-  otherProjectData?: ProjectDetailsResult["projectData"];
-  baseProjectId: string;
-  withProject: string;
+  baseScenario: {
+    type: "STATU_QUO" | "PROJECT";
+    id: string;
+    projectData?: Project;
+    siteData: ProjectSite;
+  };
+  withScenario: {
+    type: "PROJECT";
+    id: string;
+    projectData: Project;
+    siteData: ProjectSite;
+  };
 };
 
 export interface ProjectsDetailsGateway {
@@ -102,20 +115,50 @@ export const fetchBaseProjectAndWithProjectData = createAppAsyncThunk<
     const { projectData, siteData } =
       await extra.projectDetailsService.getProjectById(baseProjectId);
 
-    if (uuidValidate(withProject)) {
-      const { projectData: otherProjectData } =
-        await extra.projectDetailsService.getProjectById(withProject);
-      return {
-        projectData,
-        siteData,
-        otherProjectData,
-        baseProjectId,
-        withProject,
-      };
-    } else if (withProject === "STATU_QUO") {
-      return { projectData, siteData, baseProjectId, withProject };
+    if (!projectData || !siteData) {
+      throw new Error("fetchBaseProjectAndWithProjectData: base project or base site not found");
     }
 
-    throw new Error("fetchBaseProjectAndWithProjectData: Wrong format for withProject");
+    if (withProject === "STATU_QUO") {
+      return {
+        baseScenario: {
+          type: "STATU_QUO",
+          id: siteData.id,
+          siteData,
+        },
+        withScenario: {
+          type: "PROJECT",
+          id: baseProjectId,
+          projectData,
+          siteData,
+        },
+      };
+    }
+
+    if (!uuidValidate(withProject)) {
+      throw new Error("fetchBaseProjectAndWithProjectData: Wrong format for withProject");
+    }
+
+    const { projectData: otherProjectData, siteData: otherProjectSiteData } =
+      await extra.projectDetailsService.getProjectById(withProject);
+
+    if (!otherProjectData || !otherProjectSiteData) {
+      throw new Error("fetchBaseProjectAndWithProjectData: base project or base site not found");
+    }
+
+    return {
+      baseScenario: {
+        type: "PROJECT",
+        id: baseProjectId,
+        projectData,
+        siteData,
+      },
+      withScenario: {
+        type: "PROJECT",
+        id: withProject,
+        projectData: otherProjectData,
+        siteData: otherProjectSiteData,
+      },
+    };
   },
 );
