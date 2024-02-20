@@ -1,9 +1,12 @@
-import { SaveProjectGateway, SaveProjectPayload } from "../../application/createProject.actions";
+import {
+  SaveProjectPayload,
+  SaveReconversionProjectGateway,
+} from "../../application/createProject.actions";
 
 import { PROJECTS_LIST_STORAGE_KEY } from "@/features/projects/infrastructure/projects-list-service/localStorageProjectsListApi";
 import { delay } from "@/shared/services/delay/delay";
 
-export class LocalStorageSaveProjectApi implements SaveProjectGateway {
+export class LocalStorageSaveProjectApi implements SaveReconversionProjectGateway {
   async save(newProject: SaveProjectPayload) {
     await delay(300);
 

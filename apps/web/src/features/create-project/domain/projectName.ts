@@ -2,9 +2,12 @@ import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
 } from "../views/projectTypeLabelMapping";
-import { Project } from "./project.types";
+import { ReconversionProjectCreationData } from "./project.types";
 
-export type ProjectInfo = Pick<Project, "developmentPlanCategories" | "renewableEnergyTypes">;
+export type ProjectInfo = Pick<
+  ReconversionProjectCreationData,
+  "developmentPlanCategories" | "renewableEnergyTypes"
+>;
 
 const generateRenewableEnergyProjectName = (
   renewableEnergyTypes: ProjectInfo["renewableEnergyTypes"],

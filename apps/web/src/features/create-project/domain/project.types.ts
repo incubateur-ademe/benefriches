@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import { SoilType } from "@/shared/domain/soils";
 import {
   LocalAutorityStructureType,
@@ -14,22 +12,18 @@ export type DevelopmentPlanCategory =
   | "BUILDINGS"
   | "NATURAL_URBAN_SPACES";
 
-export const renewableEnergyProductionDevelopmentPlanTypeSchema = z.enum([
-  "PHOTOVOLTAIC_POWER_PLANT",
-  "AGRIVOLTAIC",
-  "GEOTHERMAL",
-  "BIOMASS",
-]);
-export type RenewableEnergyDevelopmentPlanType = z.infer<
-  typeof renewableEnergyProductionDevelopmentPlanTypeSchema
->;
+export type RenewableEnergyDevelopmentPlanType =
+  | "PHOTOVOLTAIC_POWER_PLANT"
+  | "AGRIVOLTAIC"
+  | "GEOTHERMAL"
+  | "BIOMASS";
 
 export enum PhotovoltaicKeyParameter {
   POWER = "POWER",
   SURFACE = "SURFACE",
 }
 
-export type Project = {
+export type ReconversionProjectCreationData = {
   id: string;
   name: string;
   description?: string;
@@ -67,10 +61,12 @@ export type DocumentType = "BUILDING_PERMIT" | "FORECAST_BALANCE_SHEET";
 
 type Expense = {
   amount: number;
+  purpose: string;
 };
 
 type Revenue = {
   amount: number;
+  source: string;
 };
 
 type ProjectStakeholderStructure =
