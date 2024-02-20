@@ -24,9 +24,9 @@ const PROJECT_MOCKED = {
     structureType: "company",
   } as ProjectStakeholder,
   photovoltaicPanelsInstallationCost: 150000,
-  financialAssistanceRevenue: 50000,
+  reinstatementFinancialAssistanceAmount: 50000,
   yearlyProjectedCosts: [],
-  yearlyProjectedRevenue: [],
+  yearlyProjectedRevenues: [],
 } as Project;
 
 const SITE_MOCKED = {
@@ -114,7 +114,7 @@ describe("economicResults computation functions", () => {
         getEconomicResultsOfProjectExploitationPerYear({
           ...PROJECT_MOCKED,
           yearlyProjectedCosts: [{ amount: 1000 }, { amount: 2000 }, { amount: 500 }],
-          yearlyProjectedRevenue: [{ amount: 6000 }, { amount: 50 }],
+          yearlyProjectedRevenues: [{ amount: 6000 }, { amount: 50 }],
         }),
       ).toEqual(2550);
     });
@@ -134,7 +134,7 @@ describe("economicResults computation functions", () => {
           {
             ...PROJECT_MOCKED,
             yearlyProjectedCosts: [{ amount: 1000 }, { amount: 2000 }, { amount: 500 }],
-            yearlyProjectedRevenue: [{ amount: 6000 }, { amount: 50 }],
+            yearlyProjectedRevenues: [{ amount: 6000 }, { amount: 50 }],
           },
           1,
         ),
@@ -147,7 +147,7 @@ describe("economicResults computation functions", () => {
           {
             ...PROJECT_MOCKED,
             yearlyProjectedCosts: [{ amount: 1000 }, { amount: 2000 }, { amount: 500 }],
-            yearlyProjectedRevenue: [{ amount: 6000 }, { amount: 50 }],
+            yearlyProjectedRevenues: [{ amount: 6000 }, { amount: 50 }],
           },
           10,
         ),

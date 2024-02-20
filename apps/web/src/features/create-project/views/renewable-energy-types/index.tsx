@@ -3,7 +3,7 @@ import RenewableEnergyTypeForm from "./RenewableEnergyTypeForm";
 import {
   goToStep,
   ProjectCreationStep,
-  setRenewableEnergyTypes,
+  setRenewableEnergyDevelopmentPlanType,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -16,7 +16,7 @@ function ProjectRenewableEnergyTypesFormContainer() {
     <RenewableEnergyTypeForm
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={(data) => {
-        dispatch(setRenewableEnergyTypes(data.renewableEnergyTypes));
+        dispatch(setRenewableEnergyDevelopmentPlanType(data.renewableEnergyTypes));
         dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER));
       }}
     />

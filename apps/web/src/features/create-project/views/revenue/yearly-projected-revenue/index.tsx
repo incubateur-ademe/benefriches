@@ -11,10 +11,10 @@ import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (revenue: FormValues) => {
-      const yearlyProjectedRevenue = Object.values(revenue)
+      const yearlyProjectedRevenues = Object.values(revenue)
         .filter((amount) => !!amount)
         .map((amount) => ({ amount }));
-      dispatch(addYearlyProjectedRevenue(yearlyProjectedRevenue));
+      dispatch(addYearlyProjectedRevenue(yearlyProjectedRevenues));
       dispatch(goToStep(ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE));
     },
   };

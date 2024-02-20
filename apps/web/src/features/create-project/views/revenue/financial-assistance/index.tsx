@@ -1,7 +1,7 @@
 import {
   goToStep,
   ProjectCreationStep,
-  setFinancialAssistanceRevenue,
+  setReinstatementFinancialAssistanceAmount,
 } from "../../../application/createProject.reducer";
 import ProjectFinancialAssistanceRevenueForm, {
   FormValues,
@@ -15,7 +15,7 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (revenue: FormValues) => {
       const totalRevenue = sumObjectValues(revenue);
-      dispatch(setFinancialAssistanceRevenue(totalRevenue));
+      dispatch(setReinstatementFinancialAssistanceAmount(totalRevenue));
       dispatch(goToStep(ProjectCreationStep.SCHEDULE_INTRODUCTION));
     },
   };

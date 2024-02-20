@@ -19,7 +19,7 @@ export const getIsOperatorOwnerOfReinstatementCost = (
 
 export const getEconomicResultsOfProjectInstallation = (projectData: Project) => {
   const {
-    financialAssistanceRevenue,
+    reinstatementFinancialAssistanceAmount,
     reinstatementCost,
     photovoltaicPanelsInstallationCost,
     futureOperator,
@@ -35,16 +35,16 @@ export const getEconomicResultsOfProjectInstallation = (projectData: Project) =>
     ? photovoltaicPanelsInstallationCost + (reinstatementCost ?? 0)
     : photovoltaicPanelsInstallationCost;
 
-  const benefits = isOperatorOwnerOfReinstatementCost ? financialAssistanceRevenue : 0;
+  const benefits = isOperatorOwnerOfReinstatementCost ? reinstatementFinancialAssistanceAmount : 0;
 
   return benefits - costs;
 };
 
 export const getEconomicResultsOfProjectExploitationPerYear = (projectData: Project) => {
-  const { yearlyProjectedRevenue, yearlyProjectedCosts } = projectData;
+  const { yearlyProjectedRevenues, yearlyProjectedCosts } = projectData;
 
   const costs = yearlyProjectedCosts.reduce((total, expense) => expense.amount + total, 0);
-  const benefits = yearlyProjectedRevenue.reduce((total, expense) => expense.amount + total, 0);
+  const benefits = yearlyProjectedRevenues.reduce((total, expense) => expense.amount + total, 0);
 
   return benefits - costs;
 };
