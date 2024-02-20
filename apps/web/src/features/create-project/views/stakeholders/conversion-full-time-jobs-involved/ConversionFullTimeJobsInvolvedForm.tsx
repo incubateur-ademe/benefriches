@@ -10,7 +10,7 @@ type Props = {
 };
 
 export type FormValues = {
-  reinstatementFullTimeJobsInvolved?: number;
+  reinstatementFullTimeJobs?: number;
   fullTimeJobs?: number;
 };
 
@@ -25,7 +25,7 @@ function ConversionFullTimeJobsInvolvedForm({ askForReinstatementFullTimeJobs, o
         {askForReinstatementFullTimeJobs && (
           <NumericInput
             control={control}
-            name="reinstatementFullTimeJobsInvolved"
+            name="reinstatementFullTimeJobs"
             label="Remise en état de la friche"
             rules={{
               min: {

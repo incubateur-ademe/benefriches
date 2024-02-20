@@ -15,7 +15,7 @@ const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
   return {
     askForReinstatementFullTimeJobs: projectSite?.isFriche ?? false,
     onSubmit: (data: FormValues) => {
-      if (data.fullTimeJobs || data.reinstatementFullTimeJobsInvolved)
+      if (data.fullTimeJobs || data.reinstatementFullTimeJobs)
         dispatch(setConversionFullTimeJobsInvolved(data));
       dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS));
     },
