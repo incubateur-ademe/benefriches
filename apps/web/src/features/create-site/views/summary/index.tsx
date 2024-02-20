@@ -32,6 +32,7 @@ function SiteDataSummaryContainer() {
         name: siteData.name ?? "",
         description: siteData.description,
         fricheActivity: siteData.fricheActivity,
+        isFriche: siteData.isFriche ?? false,
       }}
       onNext={onNext}
     />

@@ -31,6 +31,7 @@ type Props = {
     fricheActivity?: FricheActivity;
     name: string;
     description?: string;
+    isFriche: boolean;
   };
   onNext: () => void;
 };
@@ -73,38 +74,41 @@ function SiteDataSummary({ siteData, onNext }: Props) {
               value={siteData.fullTimeJobsInvolved}
             />
           </dl>
-          <dl>
-            <DataLine
-              label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
-              value={
-                siteData.accidents ? (
-                  <strong>{sumObjectValues(siteData.accidents)}</strong>
-                ) : (
-                  "Aucun"
-                )
-              }
-              className="fr-mt-2w fr-mb-1w"
-            />
-            {siteData.accidents && (
-              <div className="fr-ml-2w">
-                <DataLine
-                  label="Blessés légers"
-                  value={siteData.accidents.minorInjuries ?? 0}
-                  className="fr-my-1w"
-                />
-                <DataLine
-                  label="Blessés graves"
-                  value={siteData.accidents.severyInjuries ?? 0}
-                  className="fr-my-1w"
-                />
-                <DataLine
-                  label="Tués"
-                  value={siteData.accidents.deaths ?? 0}
-                  className="fr-my-1w"
-                />
-              </div>
-            )}
-          </dl>
+          {siteData.isFriche && (
+            <dl>
+              <DataLine
+                label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
+                value={
+                  siteData.accidents ? (
+                    <strong>{sumObjectValues(siteData.accidents)}</strong>
+                  ) : (
+                    "Aucun"
+                  )
+                }
+                className="fr-mt-2w fr-mb-1w"
+              />
+              {siteData.accidents && (
+                <div className="fr-ml-2w">
+                  <DataLine
+                    label="Blessés légers"
+                    value={siteData.accidents.minorInjuries ?? 0}
+                    className="fr-my-1w"
+                  />
+                  <DataLine
+                    label="Blessés graves"
+                    value={siteData.accidents.severyInjuries ?? 0}
+                    className="fr-my-1w"
+                  />
+                  <DataLine
+                    label="Tués"
+                    value={siteData.accidents.deaths ?? 0}
+                    className="fr-my-1w"
+                  />
+                </div>
+              )}
+            </dl>
+          )}
+
           <dl>
             <DataLine
               label={<strong>Coûts annuels du site</strong>}
@@ -128,20 +132,26 @@ function SiteDataSummary({ siteData, onNext }: Props) {
                 );
               },
             )}
-            <p className={fr.cx("fr-ml-2w", "fr-my-1w", "fr-text--bold")}>Sécurisation du site</p>
-            {(["security", "maintenance", "illegalDumpingCost", "otherSecuringCosts"] as const).map(
-              (purpose) => {
-                const amount =
-                  siteData.expenses.find((exp) => exp.purpose === purpose)?.amount ?? 0;
-                return (
-                  <DataLine
-                    label={getLabelForExpensePurpose(purpose)}
-                    value={`${formatNumberFr(amount)} €`}
-                    className="fr-ml-4w fr-my-1w"
-                    key={purpose}
-                  />
-                );
-              },
+            {siteData.isFriche && (
+              <>
+                <p className={fr.cx("fr-ml-2w", "fr-my-1w", "fr-text--bold")}>
+                  Sécurisation du site
+                </p>
+                {(
+                  ["security", "maintenance", "illegalDumpingCost", "otherSecuringCosts"] as const
+                ).map((purpose) => {
+                  const amount =
+                    siteData.expenses.find((exp) => exp.purpose === purpose)?.amount ?? 0;
+                  return (
+                    <DataLine
+                      label={getLabelForExpensePurpose(purpose)}
+                      value={`${formatNumberFr(amount)} €`}
+                      className="fr-ml-4w fr-my-1w"
+                      key={purpose}
+                    />
+                  );
+                })}
+              </>
             )}
           </dl>
         </Accordion>
@@ -168,18 +178,21 @@ function SiteDataSummary({ siteData, onNext }: Props) {
             })}
           </dl>
         </Accordion>
-        <Accordion label="Pollution" defaultExpanded>
-          <dl>
-            <DataLine
-              label={<strong>Superficie polluée</strong>}
-              value={
-                siteData.contaminatedSurfaceArea
-                  ? `${formatNumberFr(siteData.contaminatedSurfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`
-                  : "Pas de pollution"
-              }
-            />
-          </dl>
-        </Accordion>
+        {siteData.isFriche && (
+          <Accordion label="Pollution" defaultExpanded>
+            <dl>
+              <DataLine
+                label={<strong>Superficie polluée</strong>}
+                value={
+                  siteData.contaminatedSurfaceArea
+                    ? `${formatNumberFr(siteData.contaminatedSurfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`
+                    : "Pas de pollution"
+                }
+              />
+            </dl>
+          </Accordion>
+        )}
+
         <Accordion label="Dénomination" defaultExpanded>
           {siteData.fricheActivity ? (
             <dl>

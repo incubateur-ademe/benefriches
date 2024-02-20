@@ -109,11 +109,18 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant, isFriche, hasRecentAccide
             les coûts moyens en France de chaque poste de dépense.
           </p>
           <p>Vous pouvez modifier ces montants.</p>
-          {hasTenant && (
+          {hasTenant && isFriche && (
             <p>
               Sauf en cas de défaillance de l’exploitant (faillite...), les coûts de gardiennage,
               d’entretien, de débarras de dépôt sauvage sont habituellement à la charge de
               l’exploitant.
+            </p>
+          )}
+
+          {hasTenant && !isFriche && (
+            <p>
+              Sauf en cas de défaillance de l’exploitant (faillite...), les coûts d’entretien sont
+              habituellement à la charge de l’exploitant.
             </p>
           )}
 
@@ -151,30 +158,40 @@ function SiteYearlyExpensesForm({ onSubmit, hasTenant, isFriche, hasRecentAccide
             </>
           );
         })}
-        <h3>Sécurisation du site</h3>
-        {siteSecuringInputs.map(({ name, label, askForBearer, displayIfHasRecentAccidents }) => {
-          if (displayIfHasRecentAccidents && !hasRecentAccidents) return null;
-          return (
-            <>
-              <NumericInput
-                name={`${name}.amount`}
-                key={name}
-                label={label}
-                hintText="€ / an"
-                control={control}
-                rules={{
-                  min: {
-                    value: 0,
-                    message: "Veuillez sélectionner un montant valide",
-                  },
-                }}
-              />
-              {askForBearer && hasTenant && !!watch(`${name}.amount`) && (
-                <RadioButtons {...register(`${name}.bearer`)} options={expenseBearerOptions} />
-              )}
-            </>
-          );
-        })}
+        {isFriche && (
+          <>
+            <h3>Sécurisation du site</h3>
+            {siteSecuringInputs.map(
+              ({ name, label, askForBearer, displayIfHasRecentAccidents }) => {
+                if (displayIfHasRecentAccidents && !hasRecentAccidents) return null;
+                return (
+                  <>
+                    <NumericInput
+                      name={`${name}.amount`}
+                      key={name}
+                      label={label}
+                      hintText="€ / an"
+                      control={control}
+                      rules={{
+                        min: {
+                          value: 0,
+                          message: "Veuillez sélectionner un montant valide",
+                        },
+                      }}
+                    />
+                    {askForBearer && hasTenant && !!watch(`${name}.amount`) && (
+                      <RadioButtons
+                        {...register(`${name}.bearer`)}
+                        options={expenseBearerOptions}
+                      />
+                    )}
+                  </>
+                );
+              },
+            )}
+          </>
+        )}
+
         <ButtonsGroup
           buttonsEquisized
           inlineLayoutWhen="always"
