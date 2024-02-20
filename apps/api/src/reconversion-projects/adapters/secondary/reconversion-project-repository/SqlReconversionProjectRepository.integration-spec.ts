@@ -1,6 +1,9 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
-import { buildReconversionProject } from "src/reconversion-projects/domain/model/reconversionProject.mock";
+import {
+  buildCompleteReconversionProjectProps,
+  buildReconversionProject,
+} from "src/reconversion-projects/domain/model/reconversionProject.mock";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { SqlReconversionProjectRepository } from "./SqlReconversionProjectRepository";
 
@@ -81,7 +84,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_cost: null,
           reinstatement_full_time_jobs_involved: null,
           conversion_full_time_jobs_involved: null,
-          reinstatement_financial_assistance_amount: 120.0,
+          reinstatement_financial_assistance_amount: null,
         },
       ]);
     });
@@ -89,24 +92,9 @@ describe("SqlReconversionProjectRepository integration", () => {
     it("Saves given reconversion project with complete data in table reconversion_projects", async () => {
       const siteId = await insertSiteInDb();
       const reconversionProject = buildReconversionProject({
+        ...buildCompleteReconversionProjectProps(),
         createdAt: now,
         relatedSiteId: siteId,
-        name: "A complete project",
-        description: "A description",
-        // developmentPlans: z.array(developmentPlanSchema).nonempty(),
-        futureOperator: {
-          name: "Future operator's name",
-          structureType: "company",
-        },
-        conversionFullTimeJobsInvolved: 0.4,
-        reinstatementFullTimeJobsInvolved: 1.2,
-        reinstatementContractOwner: {
-          name: "Future operator's name",
-          structureType: "company",
-        },
-        operationsFullTimeJobsInvolved: 0.5,
-        reinstatementCost: 149950,
-        reinstatementFinancialAssistanceAmount: 50000,
       });
 
       await reconversionProjectRepository.save(reconversionProject);
@@ -121,14 +109,16 @@ describe("SqlReconversionProjectRepository integration", () => {
           description: reconversionProject.description,
           future_operator_name: reconversionProject.futureOperator?.name,
           future_operator_structure_type: reconversionProject.futureOperator?.structureType,
-          future_operations_full_time_jobs: 0.5,
+          future_operations_full_time_jobs: reconversionProject.operationsFullTimeJobsInvolved,
           reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
           reinstatement_contract_owner_structure_type:
             reconversionProject.reinstatementContractOwner?.structureType,
-          reinstatement_cost: 149950.0,
-          reinstatement_full_time_jobs_involved: 1.2,
-          conversion_full_time_jobs_involved: 0.4,
-          reinstatement_financial_assistance_amount: 50000.0,
+          reinstatement_cost: reconversionProject.reinstatementCost,
+          reinstatement_full_time_jobs_involved:
+            reconversionProject.reinstatementFullTimeJobsInvolved,
+          conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
+          reinstatement_financial_assistance_amount:
+            reconversionProject.reinstatementFinancialAssistanceAmount,
         },
       ]);
     });
@@ -136,20 +126,9 @@ describe("SqlReconversionProjectRepository integration", () => {
     it("Saves given reconversion project in tables reconversion_projects_soils_distributions, reconversion_projects_development_plans, reconversion_project_yearly_expenses and reconversion_project_yearly_revenues", async () => {
       const siteId = await insertSiteInDb();
       const reconversionProject = buildReconversionProject({
+        ...buildCompleteReconversionProjectProps(),
         relatedSiteId: siteId,
         soilsDistribution: { ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1200, PRAIRIE_GRASS: 5000 },
-        developmentPlans: [
-          {
-            cost: 129999.99,
-            features: {
-              contractDuration: 26,
-              electricalPowerKWc: 10000,
-              expectedAnnualProduction: 1000,
-              surfaceArea: 3400,
-            },
-            type: "PHOTOVOLTAIC_POWER_PLANT",
-          },
-        ],
       });
 
       await reconversionProjectRepository.save(reconversionProject);
@@ -180,7 +159,7 @@ describe("SqlReconversionProjectRepository integration", () => {
       expect(developmentPlansResult).toEqual([
         {
           type: reconversionProject.developmentPlans[0].type,
-          cost: 129999.99,
+          cost: 1300,
           features: reconversionProject.developmentPlans[0].features,
           reconversion_project_id: reconversionProject.id,
         },

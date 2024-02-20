@@ -5,6 +5,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 import { buildMinimalSite } from "src/sites/domain/models/site.mock";
 import {
+  buildCompleteReconversionProjectProps,
   buildMinimalReconversionProjectProps,
   buildReconversionProject,
 } from "../model/reconversionProject.mock";
@@ -32,19 +33,44 @@ describe("CreateReconversionProject Use Case", () => {
     reconversionProjectRepository = new InMemoryReconversionProjectRepository();
   });
 
-  describe("Mandatory input data", () => {
-    it.each([
-      "id",
-      "name",
-      "relatedSiteId",
-      "developmentPlans",
-      "soilsDistribution",
-      "yearlyProjectedCosts",
-      "yearlyProjectedRevenues",
-    ])("Cannot create a reconversion project without providing %s", async (mandatoryField) => {
-      const reconversionProjectProps = buildMinimalReconversionProjectProps(); // @ts-expect-error dynamic delete
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete reconversionProjectProps[mandatoryField];
+  describe("Error cases", () => {
+    describe("Mandatory input data", () => {
+      it.each([
+        "id",
+        "name",
+        "relatedSiteId",
+        "developmentPlans",
+        "soilsDistribution",
+        "yearlyProjectedCosts",
+        "yearlyProjectedRevenues",
+      ])("Cannot create a reconversion project without providing %s", async (mandatoryField) => {
+        const reconversionProjectProps = buildMinimalReconversionProjectProps(); // @ts-expect-error dynamic delete
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete reconversionProjectProps[mandatoryField];
+
+        const usecase = new CreateReconversionProjectUseCase(
+          dateProvider,
+          siteRepository,
+          reconversionProjectRepository,
+        );
+
+        expect.assertions(3);
+        try {
+          await usecase.execute({ reconversionProjectProps });
+        } catch (err) {
+          const zIssues = getZodIssues(err);
+          expect(zIssues.length).toEqual(1);
+          expect(zIssues[0].path).toEqual([mandatoryField]);
+          expect(zIssues[0].code).toEqual("invalid_type");
+        }
+      });
+    });
+
+    it("Cannot create a reconversion project with no development plan", async () => {
+      const reconversionProjectProps = buildMinimalReconversionProjectProps({
+        // @ts-expect-error developmentPlans is declared as a non-empty array
+        developmentPlans: [],
+      });
 
       const usecase = new CreateReconversionProjectUseCase(
         dateProvider,
@@ -58,7 +84,7 @@ describe("CreateReconversionProject Use Case", () => {
       } catch (err) {
         const zIssues = getZodIssues(err);
         expect(zIssues.length).toEqual(1);
-        expect(zIssues[0].path).toEqual([mandatoryField]);
+        expect(zIssues[0].path).toEqual(["developmentPlans"]);
       }
     });
 
@@ -92,24 +118,32 @@ describe("CreateReconversionProject Use Case", () => {
         `ReconversionProject with id ${reconversionProjectProps.id} already exists`,
       );
     });
+  });
 
-    it("Can create a reconversion project", async () => {
-      const reconversionProjectProps = buildMinimalReconversionProjectProps();
-
-      siteRepository._setSites([buildMinimalSite({ id: reconversionProjectProps.relatedSiteId })]);
+  describe("Success cases", () => {
+    it.each([
+      { case: "with minimal data", props: buildMinimalReconversionProjectProps() },
+      {
+        case: "with no costs and no revenues",
+        props: buildMinimalReconversionProjectProps({
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
+        }),
+      },
+      { case: "with exhaustive data", props: buildCompleteReconversionProjectProps() },
+    ])("Can create a reconversion project $case", async ({ props }) => {
+      siteRepository._setSites([buildMinimalSite({ id: props.relatedSiteId })]);
 
       const usecase = new CreateReconversionProjectUseCase(
         dateProvider,
         siteRepository,
         reconversionProjectRepository,
       );
-      await usecase.execute({ reconversionProjectProps });
+      await usecase.execute({ reconversionProjectProps: props });
 
       const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
-      expect(savedReconversionProjects).toEqual([
-        { ...reconversionProjectProps, createdAt: fakeNow },
-      ]);
+      expect(savedReconversionProjects).toEqual([{ ...props, createdAt: fakeNow }]);
     });
   });
 });
