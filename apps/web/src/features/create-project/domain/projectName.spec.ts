@@ -3,7 +3,7 @@ import { generateProjectName, ProjectInfo } from "./projectName";
 describe("Project name generation", () => {
   it("should return 'Projet photovoltaïque'", () => {
     const project: ProjectInfo = {
-      developmentPlanCategory: ["RENEWABLE_ENERGY"],
+      developmentPlanCategories: ["RENEWABLE_ENERGY"],
       renewableEnergyTypes: ["PHOTOVOLTAIC_POWER_PLANT"],
     };
 
@@ -12,7 +12,7 @@ describe("Project name generation", () => {
 
   it("should return 'Projet agrivoltaïque'", () => {
     const project: ProjectInfo = {
-      developmentPlanCategory: ["RENEWABLE_ENERGY"],
+      developmentPlanCategories: ["RENEWABLE_ENERGY"],
       renewableEnergyTypes: ["AGRIVOLTAIC"],
     };
 
@@ -21,7 +21,7 @@ describe("Project name generation", () => {
 
   it("should return 'Projet EnR mixte' when multiple renewable energy", () => {
     const project: ProjectInfo = {
-      developmentPlanCategory: ["RENEWABLE_ENERGY"],
+      developmentPlanCategories: ["RENEWABLE_ENERGY"],
       renewableEnergyTypes: ["AGRIVOLTAIC", "BIOMASS"],
     };
 
@@ -30,7 +30,7 @@ describe("Project name generation", () => {
 
   it("should return 'Projet EnR mixte' when no renewable energy info", () => {
     const project: ProjectInfo = {
-      developmentPlanCategory: ["RENEWABLE_ENERGY"],
+      developmentPlanCategories: ["RENEWABLE_ENERGY"],
       renewableEnergyTypes: [],
     };
 
@@ -39,7 +39,7 @@ describe("Project name generation", () => {
 
   it("should return 'Projet extension urbaine'", () => {
     const project: ProjectInfo = {
-      developmentPlanCategory: ["BUILDINGS"],
+      developmentPlanCategories: ["BUILDINGS"],
       renewableEnergyTypes: [],
     };
 
@@ -50,7 +50,7 @@ describe("Project name generation", () => {
 
   it("should return 'Projet mixte' when multiple projects", () => {
     const project: ProjectInfo = {
-      developmentPlanCategory: ["BUILDINGS", "NATURAL_URBAN_SPACES"],
+      developmentPlanCategories: ["BUILDINGS", "NATURAL_URBAN_SPACES"],
       renewableEnergyTypes: [],
     };
 

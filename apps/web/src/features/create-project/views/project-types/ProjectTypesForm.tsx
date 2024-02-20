@@ -17,7 +17,7 @@ type Props = {
 };
 
 type FormValues = {
-  developmentPlanCategory: DevelopmentPlanCategory[];
+  developmentPlanCategories: DevelopmentPlanCategory[];
 };
 
 const formatNumericImpact = (impact: number) => {
@@ -29,8 +29,8 @@ const allowedProjectTypesErrorMessage = `Cette fonctionnalité n’est pas encor
   "RENEWABLE_ENERGY",
 )}`;
 
-const validateSelectedProjectTypes = (developmentPlanCategory: DevelopmentPlanCategory[]) =>
-  (developmentPlanCategory.length === 1 && developmentPlanCategory[0] === "RENEWABLE_ENERGY") ||
+const validateSelectedProjectTypes = (developmentPlanCategories: DevelopmentPlanCategory[]) =>
+  (developmentPlanCategories.length === 1 && developmentPlanCategories[0] === "RENEWABLE_ENERGY") ||
   allowedProjectTypesErrorMessage;
 
 const mapOptions =
@@ -47,7 +47,7 @@ const mapOptions =
         </div>
       ),
       nativeInputProps: {
-        ...register("developmentPlanCategory", {
+        ...register("developmentPlanCategories", {
           required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           validate: {
             allowedProjectTypes: validateSelectedProjectTypes,
@@ -67,7 +67,7 @@ const options = [
 
 function ProjectTypesForm({ onSubmit, siteSurfaceArea }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
-  const validationError = formState.errors.developmentPlanCategory;
+  const validationError = formState.errors.developmentPlanCategories;
 
   const state =
     validationError && validationError.type !== "allowedProjectTypes" ? "error" : "default";

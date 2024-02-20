@@ -15,8 +15,8 @@ function ProjectTypesFormContainer() {
   return (
     <ProjectTypeForm
       siteSurfaceArea={siteSurfaceArea}
-      onSubmit={({ developmentPlanCategory }) => {
-        dispatch(setDevelopmentPlanCategories(developmentPlanCategory));
+      onSubmit={({ developmentPlanCategories }) => {
+        dispatch(setDevelopmentPlanCategories(developmentPlanCategories));
         dispatch(goToStep(ProjectCreationStep.RENEWABLE_ENERGY_TYPES));
       }}
     />

@@ -64,7 +64,7 @@ export const getInitialState = (): ProjectCreationState => {
       id: uuid(),
       yearlyProjectedCosts: [],
       yearlyProjectedRevenues: [],
-      developmentPlanCategory: [],
+      developmentPlanCategories: [],
       renewableEnergyTypes: [],
     },
     siteData: undefined,
@@ -81,7 +81,7 @@ export const projectCreationSlice = createSlice({
       return getInitialState();
     },
     setDevelopmentPlanCategories: (state, action: PayloadAction<DevelopmentPlanCategory[]>) => {
-      state.projectData.developmentPlanCategory = action.payload;
+      state.projectData.developmentPlanCategories = action.payload;
     },
     setRenewableEnergyDevelopmentPlanType: (
       state,

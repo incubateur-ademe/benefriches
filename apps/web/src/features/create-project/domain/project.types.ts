@@ -34,7 +34,7 @@ export type Project = {
   name: string;
   description?: string;
   relatedSiteId: string;
-  developmentPlanCategory: DevelopmentPlanCategory[];
+  developmentPlanCategories: DevelopmentPlanCategory[];
   renewableEnergyTypes: RenewableEnergyDevelopmentPlanType[];
   photovoltaicKeyParameter: PhotovoltaicKeyParameter;
   photovoltaicInstallationElectricalPowerKWc: number;
