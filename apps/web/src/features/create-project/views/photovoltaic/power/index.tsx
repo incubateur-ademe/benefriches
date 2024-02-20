@@ -6,15 +6,12 @@ import {
   ProjectCreationStep,
   setPhotovoltaicInstallationElectricalPower,
 } from "@/features/create-project/application/createProject.reducer";
-import {
-  PHOTOVOLTAIC_RATIO_KWC_PER_M2,
-  PHOTOVOLTAIC_RATIO_M2_PER_KWC,
-} from "@/features/create-project/domain/photovoltaic";
+import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const computePhotovoltaicElectricalPowerFromSurface = (surfaceSquareMeters: number) => {
-  return Math.round(surfaceSquareMeters * PHOTOVOLTAIC_RATIO_KWC_PER_M2);
+  return Math.round(surfaceSquareMeters / PHOTOVOLTAIC_RATIO_M2_PER_KWC);
 };
 
 const computeMaxPhotovoltaicElectricalPowerFromSiteSurface = (surfaceSquareMeters: number) => {

@@ -1,7 +1,4 @@
-// 714 kWc pour 10000 m²
-export const PHOTOVOLTAIC_RATIO_KWC_PER_M2 = 0.0714;
-
-// 14 000 m² pour 1000 kWc
+// 12 500 m² pour 1000 kWc
 export const PHOTOVOLTAIC_RATIO_M2_PER_KWC = 12.5;
 
 export const AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS = 30;

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { PHOTOVOLTAIC_RATIO_KWC_PER_M2 } from "@/features/create-project/domain/photovoltaic";
+import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -41,7 +41,7 @@ function PhotovoltaicPowerFromSurfaceForm({
           <p>
             Le ratio puissance / superficie d’installation considéré est de{" "}
             <strong>
-              {formatNumberFr(PHOTOVOLTAIC_RATIO_KWC_PER_M2 * 10000)}&nbsp;kWc pour 10 000 m².
+              {formatNumberFr(10000 / PHOTOVOLTAIC_RATIO_M2_PER_KWC)}&nbsp;kWc pour 10 000 m².
             </strong>
           </p>
           <p>
