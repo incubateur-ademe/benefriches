@@ -22,11 +22,11 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit }: Props) => {
   const allCosts = watch();
 
   return (
-    <WizardFormLayout title="Coûts d’installation des panneaux photovoltaïques">
+    <WizardFormLayout title="Coûts prévisionnels d’installation des panneaux photovoltaïques">
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
-          label="Travaux"
+          label="Travaux d’installation"
           hintText="€"
           name="worksAmount"
           rules={{
@@ -50,7 +50,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit }: Props) => {
         />
         <NumericInput
           control={control}
-          label="Frais divers"
+          label="Autres dépenses d’installation"
           hintText="€"
           name="otherAmount"
           rules={{
