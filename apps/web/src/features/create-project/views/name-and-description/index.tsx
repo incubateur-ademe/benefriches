@@ -1,5 +1,5 @@
 import { saveProjectAction } from "../../application/createProject.actions";
-import { Project } from "../../domain/project.types";
+import { ReconversionProjectCreationData } from "../../domain/project.types";
 import { generateProjectName } from "../../domain/projectName";
 import ProjectNameAndDescriptionForm, { FormValues } from "./ProjectNameAndDescriptionForm";
 
@@ -11,7 +11,7 @@ import {
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const mapProps = (dispatch: AppDispatch, projectData: Project) => {
+const mapProps = (dispatch: AppDispatch, projectData: ReconversionProjectCreationData) => {
   return {
     defaultProjectName: generateProjectName(projectData),
     onSubmit: (formData: FormValues) => {
@@ -26,7 +26,11 @@ function ProjectNameAndDescriptionFormContainer() {
   const dispatch = useAppDispatch();
   const projectData = useAppSelector((state) => state.projectCreation.projectData);
 
-  return <ProjectNameAndDescriptionForm {...mapProps(dispatch, projectData as Project)} />;
+  return (
+    <ProjectNameAndDescriptionForm
+      {...mapProps(dispatch, projectData as ReconversionProjectCreationData)}
+    />
+  );
 }
 
 export default ProjectNameAndDescriptionFormContainer;

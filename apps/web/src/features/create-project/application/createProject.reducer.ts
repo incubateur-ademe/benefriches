@@ -5,8 +5,8 @@ import { fetchRelatedSiteAction, saveProjectAction } from "./createProject.actio
 import {
   DevelopmentPlanCategory,
   PhotovoltaicKeyParameter,
-  Project,
   ProjectSite,
+  ReconversionProjectCreationData,
   RenewableEnergyDevelopmentPlanType,
 } from "@/features/create-project/domain/project.types";
 
@@ -14,7 +14,7 @@ type LoadingState = "idle" | "loading" | "success" | "error";
 
 export type ProjectCreationState = {
   step: ProjectCreationStep;
-  projectData: Partial<Project>;
+  projectData: Partial<ReconversionProjectCreationData>;
   siteData?: ProjectSite;
   siteDataLoadingState: LoadingState;
   saveProjectLoadingState: LoadingState;
@@ -89,7 +89,10 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.renewableEnergyTypes = action.payload;
     },
-    setFutureOperator: (state, action: PayloadAction<Project["futureOperator"]>) => {
+    setFutureOperator: (
+      state,
+      action: PayloadAction<ReconversionProjectCreationData["futureOperator"]>,
+    ) => {
       state.projectData.futureOperator = action.payload;
     },
     setConversionFullTimeJobsInvolved: (
@@ -112,7 +115,7 @@ export const projectCreationSlice = createSlice({
     },
     setReinstatementContractOwner: (
       state,
-      action: PayloadAction<Project["reinstatementContractOwner"]>,
+      action: PayloadAction<ReconversionProjectCreationData["reinstatementContractOwner"]>,
     ) => {
       state.projectData.reinstatementContractOwner = action.payload;
     },
@@ -122,7 +125,10 @@ export const projectCreationSlice = createSlice({
     setPhotovoltaicPanelsInstallationCost: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicPanelsInstallationCost = action.payload;
     },
-    addYearlyProjectedCosts: (state, action: PayloadAction<Project["yearlyProjectedCosts"]>) => {
+    addYearlyProjectedCosts: (
+      state,
+      action: PayloadAction<ReconversionProjectCreationData["yearlyProjectedCosts"]>,
+    ) => {
       state.projectData.yearlyProjectedCosts = [
         ...(state.projectData.yearlyProjectedCosts ?? []),
         ...action.payload,
@@ -133,7 +139,7 @@ export const projectCreationSlice = createSlice({
     },
     addYearlyProjectedRevenue: (
       state,
-      action: PayloadAction<Project["yearlyProjectedRevenues"]>,
+      action: PayloadAction<ReconversionProjectCreationData["yearlyProjectedRevenues"]>,
     ) => {
       state.projectData.yearlyProjectedRevenues = [
         ...(state.projectData.yearlyProjectedRevenues ?? []),
@@ -163,19 +169,28 @@ export const projectCreationSlice = createSlice({
     setPhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicContractDuration = action.payload;
     },
-    setSoilsDistribution: (state, action: PayloadAction<Project["soilsDistribution"]>) => {
+    setSoilsDistribution: (
+      state,
+      action: PayloadAction<ReconversionProjectCreationData["soilsDistribution"]>,
+    ) => {
       state.projectData.soilsDistribution = action.payload;
     },
-    setReinstatementSchedule: (state, action: PayloadAction<Project["reinstatementSchedule"]>) => {
+    setReinstatementSchedule: (
+      state,
+      action: PayloadAction<ReconversionProjectCreationData["reinstatementSchedule"]>,
+    ) => {
       state.projectData.reinstatementSchedule = action.payload;
     },
     setPhotovoltaicPanelsInstallationSchedule: (
       state,
-      action: PayloadAction<Project["photovoltaicInstallationSchedule"]>,
+      action: PayloadAction<ReconversionProjectCreationData["photovoltaicInstallationSchedule"]>,
     ) => {
       state.projectData.photovoltaicInstallationSchedule = action.payload;
     },
-    setFirstYearOfOperation: (state, action: PayloadAction<Project["firstYearOfOperation"]>) => {
+    setFirstYearOfOperation: (
+      state,
+      action: PayloadAction<ReconversionProjectCreationData["firstYearOfOperation"]>,
+    ) => {
       state.projectData.firstYearOfOperation = action.payload;
     },
     goToStep: (state, action: PayloadAction<ProjectCreationStep>) => {

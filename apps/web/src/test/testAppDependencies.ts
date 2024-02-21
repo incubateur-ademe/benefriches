@@ -23,7 +23,7 @@ export const getTestAppDependencies = (
     createSiteService: new InMemoryCreateSiteService(),
     reconversionProjectsListService: new InMemoryReconversionProjectsListService([]),
     projectDetailsService: new LocalStorageProjectDetailsApi(),
-    saveProjectGateway: new LocalStorageSaveProjectApi(),
+    saveReconversionProjectService: new LocalStorageSaveProjectApi(),
     getSiteByIdService: new SitesServiceMock(),
     photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
     userService: new LocalStorageUserService(),
