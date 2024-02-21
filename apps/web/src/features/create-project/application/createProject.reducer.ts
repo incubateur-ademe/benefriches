@@ -44,6 +44,7 @@ export enum ProjectCreationStep {
   STAKEHOLDERS_FUTURE_SITE_OWNER = "STAKEHOLDERS_NEW_OWNER",
   // Coûts et recette
   COSTS_INTRODUCTION = "COST_INTRODUCTION",
+  COSTS_REAL_ESTATE_TRANSACTION_AMOUNT = "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT",
   COSTS_REINSTATEMENT = "COSTS_REINSTATEMENT",
   COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION = "COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION",
   COSTS_PROJECTED_YEARLY_COSTS = "COSTS_PROJECTED_YEARLY_COSTS",
@@ -120,6 +121,9 @@ export const projectCreationSlice = createSlice({
       action: PayloadAction<ReconversionProjectCreationData["reinstatementContractOwner"]>,
     ) => {
       state.projectData.reinstatementContractOwner = action.payload;
+    },
+    setRealEstateTransactionCost: (state, action: PayloadAction<number>) => {
+      state.projectData.realEstateTransactionCost = action.payload;
     },
     setReinstatementCost: (state, action: PayloadAction<number>) => {
       state.projectData.reinstatementCost = action.payload;
@@ -262,6 +266,7 @@ export const {
   setReinstatementSchedule,
   setHasRealEstateTransaction,
   setFutureSiteOwner,
+  setRealEstateTransactionCost,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;

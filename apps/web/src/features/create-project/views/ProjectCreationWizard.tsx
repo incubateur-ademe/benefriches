@@ -1,6 +1,7 @@
 import { ProjectCreationStep } from "../application/createProject.reducer";
 import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
+import RealEstateTransactionCostsContainer from "./costs/real-estate-transaction-costs";
 import ReinstatementsCostsForm from "./costs/reinstatement-costs";
 import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
 import PhotovoltaicContractDurationContainer from "./photovoltaic/contract-duration";
@@ -58,6 +59,8 @@ function ProjectCreationWizard() {
         return <ProjectCostsIntroduction />;
       case ProjectCreationStep.COSTS_REINSTATEMENT:
         return <ReinstatementsCostsForm />;
+      case ProjectCreationStep.COSTS_REAL_ESTATE_TRANSACTION_AMOUNT:
+        return <RealEstateTransactionCostsContainer />;
       case ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION:
         return <PhotovoltaicPanelsInstallationCostsForm />;
       case ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS:

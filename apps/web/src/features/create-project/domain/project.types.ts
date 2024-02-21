@@ -42,6 +42,7 @@ export type ReconversionProjectCreationData = {
   reinstatementFullTimeJobsInvolved?: number;
   reinstatementContractOwner?: ProjectStakeholder;
   operationsFullTimeJobsInvolved?: number;
+  realEstateTransactionCost?: number;
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
   reinstatementFinancialAssistanceAmount: number;
