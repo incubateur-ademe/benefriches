@@ -36,6 +36,8 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE:
     case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNER:
+    case ProjectCreationStep.STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION:
+    case ProjectCreationStep.STAKEHOLDERS_FUTURE_SITE_OWNER:
       return "Acteurs";
     case ProjectCreationStep.COSTS_INTRODUCTION:
     case ProjectCreationStep.COSTS_REINSTATEMENT:

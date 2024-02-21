@@ -25,54 +25,55 @@ type Props = {
 
 export type FormValues =
   | {
-      futureOperator: "local_or_regional_authority";
+      futureSiteOwner: "local_or_regional_authority";
       localAuthority: LocalAutorityStructureType;
       otherStructureName: undefined;
     }
   | {
-      futureOperator: "other_structure";
+      futureSiteOwner: "other_structure";
       otherStructureName: string;
       localAuthority: undefined;
     }
   | {
-      futureOperator: "user_company" | "site_tenant" | "site_owner" | "unknown";
+      futureSiteOwner: "user_company" | "site_tenant" | "unknown";
       localAuthority: undefined;
       otherStructureName: undefined;
     };
 
 const requiredMessage = "Ce champ est requis";
 
-const getSiteRelatedOperatorOptions = (
-  siteStakeholders: Props["siteStakeholders"],
+const isCurrentUserSiteOwner = (
   currentUserCompany: Props["currentUserCompany"],
-) => {
-  return [
-    {
-      label: currentUserCompany.name,
-      value: "user_company",
-    },
-    ...siteStakeholders
-      .filter(
-        (stakeholder) => !isCurrentUserSameSiteStakeholderEntity(currentUserCompany, stakeholder),
-      )
-      .map(({ name, role }) => ({
-        label: name,
-        value: role,
-      })),
-  ];
-};
+  currentSiteOwner?: SiteStakeholder,
+): boolean => isCurrentUserSameSiteStakeholderEntity(currentUserCompany, currentSiteOwner);
 
-function SiteOperatorForm({
+const isCurrentUserSiteTenant = (
+  currentUserCompany: Props["currentUserCompany"],
+  currentSiteTenant: SiteStakeholder,
+): boolean => isCurrentUserSameSiteStakeholderEntity(currentUserCompany, currentSiteTenant);
+
+function FutureSiteOwnerForm({
   onSubmit,
-  siteStakeholders,
   currentUserCompany,
+  siteStakeholders,
   projectSiteLocalAuthorities,
 }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
 
-  const selectedFutureOperator = watch("futureOperator");
+  const selectedFutureOperator = watch("futureSiteOwner");
+
+  const currentSiteOwner = siteStakeholders.find(({ role }) => role === "site_owner");
+  const currentSiteTenant = siteStakeholders.find(({ role }) => role === "site_tenant");
+
+  const shouldDisplayCurrentUserCompanyOption = !isCurrentUserSiteOwner(
+    currentUserCompany,
+    currentSiteOwner,
+  );
+
+  const shouldDisplaySiteTenantOption =
+    currentSiteTenant && !isCurrentUserSiteTenant(currentUserCompany, currentSiteTenant);
 
   const localAuthoritiesExcludedValues = getLocalAuthoritiesExcludedValues(
     currentUserCompany,
@@ -80,23 +81,28 @@ function SiteOperatorForm({
   );
 
   return (
-    <WizardFormLayout title="Qui sera l'exploitant du site ?">
+    <WizardFormLayout title="Qui sera le nouveau propriétaire du site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
-          state={formState.errors.futureOperator ? "error" : "default"}
+          state={formState.errors.futureSiteOwner ? "error" : "default"}
           stateRelatedMessage={
-            formState.errors.futureOperator ? formState.errors.futureOperator.message : undefined
+            formState.errors.futureSiteOwner ? formState.errors.futureSiteOwner.message : undefined
           }
         >
-          {getSiteRelatedOperatorOptions(siteStakeholders, currentUserCompany).map(
-            ({ label, value }) => (
-              <RadioButton
-                label={label}
-                value={value}
-                key={value}
-                {...register("futureOperator", { required: requiredMessage })}
-              />
-            ),
+          {shouldDisplayCurrentUserCompanyOption && (
+            <RadioButton
+              label={currentUserCompany.name}
+              value="user_company"
+              {...register("futureSiteOwner", { required: requiredMessage })}
+            />
+          )}
+
+          {shouldDisplaySiteTenantOption && (
+            <RadioButton
+              label={currentSiteTenant.name}
+              value="site_tenant"
+              {...register("futureSiteOwner", { required: requiredMessage })}
+            />
           )}
 
           <RadioButton
@@ -106,7 +112,7 @@ function SiteOperatorForm({
                 : "Une collectivité"
             }
             value="local_or_regional_authority"
-            {...register("futureOperator", { required: requiredMessage })}
+            {...register("futureSiteOwner", { required: requiredMessage })}
           />
 
           {selectedFutureOperator === "local_or_regional_authority" && (
@@ -127,8 +133,9 @@ function SiteOperatorForm({
           <RadioButton
             label="Une autre structure"
             value="other_structure"
-            {...register("futureOperator", { required: requiredMessage })}
+            {...register("futureSiteOwner", { required: requiredMessage })}
           />
+
           {selectedFutureOperator === "other_structure" && (
             <Input
               label="Nom de la structure"
@@ -139,10 +146,11 @@ function SiteOperatorForm({
               })}
             />
           )}
+
           <RadioButton
             label="Ne sait pas"
             value="unknown"
-            {...register("futureOperator", { required: requiredMessage })}
+            {...register("futureSiteOwner", { required: requiredMessage })}
           />
         </Fieldset>
         <ButtonsGroup
@@ -160,4 +168,4 @@ function SiteOperatorForm({
   );
 }
 
-export default SiteOperatorForm;
+export default FutureSiteOwnerForm;

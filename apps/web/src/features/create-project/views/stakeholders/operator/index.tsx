@@ -65,7 +65,7 @@ function SiteOperatorFormContainer() {
     if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
       setFutureOperator(
-        convertFormValuesForStore(data, projectSite, currentUserCompany, siteLocalAuthorities),
+        convertFormValuesForStore(data, projectSite, currentUserCompany.name, siteLocalAuthorities),
       ),
     );
     dispatch(goToStep(nextStep));

@@ -1,32 +1,29 @@
 import { useEffect } from "react";
-import SiteReinstatementContractOwnerForm, {
-  FormValues,
-} from "./SiteReinstatementContractOwnerForm";
+import FutureSiteOwnerForm, { FormValues } from "./FutureSiteOwnerForm";
 
 import {
   goToStep,
   ProjectCreationStep,
-  setReinstatementContractOwner,
+  setFutureSiteOwner,
 } from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { getSiteStakeholders } from "@/features/create-project/domain/stakeholders";
 import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
+import { User } from "@/features/users/domain/user";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const convertFormValuesForStore = (
   data: FormValues,
   projectSite: ProjectSite,
-  currentUserCompany: string,
+  currentUserCompany: Exclude<User["organization"], undefined>,
   siteLocalAuthorities: SiteLocalAuthorities,
 ): ProjectStakeholder => {
-  switch (data.futureOperator) {
+  switch (data.futureSiteOwner) {
     case "site_tenant":
       return projectSite.tenant!;
-    case "site_owner":
-      return projectSite.owner;
     case "local_or_regional_authority":
       return {
         name: formatLocalAuthorityName(data.localAuthority, siteLocalAuthorities),
@@ -34,8 +31,8 @@ const convertFormValuesForStore = (
       };
     case "user_company":
       return {
-        name: currentUserCompany,
-        structureType: "company",
+        name: currentUserCompany.name,
+        structureType: currentUserCompany.type,
       };
     case "other_structure":
       return {
@@ -50,30 +47,29 @@ const convertFormValuesForStore = (
   }
 };
 
-function SiteReinstatementContractOwnerFormContainer() {
+function FutureOwnerFormContainer() {
   const dispatch = useAppDispatch();
-  const currentUserCompany = useAppSelector(selectCurrentUserCompany);
   const projectSite = useAppSelector((state) => state.projectCreation.siteData);
-
+  const currentUserCompany = useAppSelector(selectCurrentUserCompany);
   const projectSiteLocalAuthorities = useAppSelector((state) => state.projectSiteLocalAuthorities);
-
   const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
+
   const siteLocalAuthorities = projectSiteLocalAuthorities.localAuthorities;
 
   const onSubmit = (data: FormValues) => {
     if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
-      setReinstatementContractOwner(
-        convertFormValuesForStore(data, projectSite, currentUserCompany.name, siteLocalAuthorities),
+      setFutureSiteOwner(
+        convertFormValuesForStore(data, projectSite, currentUserCompany, siteLocalAuthorities),
       ),
     );
-    dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS));
+    dispatch(goToStep(ProjectCreationStep.COSTS_INTRODUCTION));
   };
 
   useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
 
   return (
-    <SiteReinstatementContractOwnerForm
+    <FutureSiteOwnerForm
       onSubmit={onSubmit}
       siteStakeholders={siteStakeholders}
       currentUserCompany={currentUserCompany}
@@ -82,4 +78,4 @@ function SiteReinstatementContractOwnerFormContainer() {
   );
 }
 
-export default SiteReinstatementContractOwnerFormContainer;
+export default FutureOwnerFormContainer;

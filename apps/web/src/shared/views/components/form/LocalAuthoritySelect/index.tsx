@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Select, SelectProps } from "@codegouvfr/react-dsfr/SelectNext";
+import { LOCAL_AUTHORITY_AVAILABLE_VALUES } from "./values";
 
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
@@ -25,12 +26,13 @@ type DataProps = {
       name: string;
     };
   };
+  excludedValues?: string[];
 };
 
 type Props = DataProps & Omit<SelectProps<SelectProps.Option[]>, "options">;
 
 const LocalAuthoritySelect = forwardRef<HTMLDivElement, Props>((props: Props) => {
-  const { loadingData, data, ...rest } = props;
+  const { loadingData, data, excludedValues: propsExcludedValues = [], ...rest } = props;
 
   if (loadingData === "loading") {
     return "Chargement des données...";
@@ -53,11 +55,11 @@ const LocalAuthoritySelect = forwardRef<HTMLDivElement, Props>((props: Props) =>
 
   const { epci } = data;
 
-  const localAuthorities = ["municipality", "department", "region"];
+  const excludedValues = epci ? propsExcludedValues : ["epci", ...propsExcludedValues];
 
-  if (epci) {
-    localAuthorities.splice(1, 0, "epci");
-  }
+  const localAuthorities = LOCAL_AUTHORITY_AVAILABLE_VALUES.filter(
+    (val) => !(epci ? excludedValues : ["epci", ...excludedValues]).includes(val),
+  );
 
   const options = localAuthorities.map((value) => ({
     label: formatLocalAuthorityName(value as LocalAutorityStructureType, data),

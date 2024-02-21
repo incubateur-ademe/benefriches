@@ -3,7 +3,12 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Input from "@codegouvfr/react-dsfr/Input";
 
 import { ProjectSiteLocalAuthoritiesState } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
-import { SiteStakeholder } from "@/features/create-project/domain/stakeholders";
+import {
+  getLocalAuthoritiesExcludedValues,
+  isCurrentUserSameSiteStakeholderEntity,
+  SiteStakeholder,
+} from "@/features/create-project/domain/stakeholders";
+import { User } from "@/features/users/domain/user";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
@@ -13,7 +18,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   onSubmit: (data: FormValues) => void;
-  currentUserCompany: string;
+  currentUserCompany: Exclude<User["organization"], undefined>;
   siteStakeholders: SiteStakeholder[];
   projectSiteLocalAuthorities: ProjectSiteLocalAuthoritiesState;
 };
@@ -35,21 +40,25 @@ export type FormValues =
       otherStructureName: undefined;
     };
 
-const requiredMessage = "Champ requis";
+const requiredMessage = "Ce champ est requis";
 
 const getSiteRelatedOperatorOptions = (
   siteStakeholders: Props["siteStakeholders"],
-  currentUserCompany: string,
+  currentUserCompany: Props["currentUserCompany"],
 ) => {
   return [
     {
-      label: `Mon entreprise, ${currentUserCompany}`,
+      label: currentUserCompany.name,
       value: "user_company",
     },
-    ...siteStakeholders.map(({ name, role }) => ({
-      label: name,
-      value: role,
-    })),
+    ...siteStakeholders
+      .filter(
+        (stakeholder) => !isCurrentUserSameSiteStakeholderEntity(currentUserCompany, stakeholder),
+      )
+      .map(({ name, role }) => ({
+        label: name,
+        value: role,
+      })),
   ];
 };
 
@@ -64,6 +73,11 @@ function SiteReinstatementContractOwnerForm({
   });
 
   const selectedFutureOperator = watch("futureOperator");
+
+  const localAuthoritiesExcludedValues = getLocalAuthoritiesExcludedValues(
+    currentUserCompany,
+    siteStakeholders,
+  );
 
   return (
     <WizardFormLayout
@@ -94,7 +108,11 @@ function SiteReinstatementContractOwnerForm({
           )}
 
           <RadioButton
-            label="Une collectivité"
+            label={
+              localAuthoritiesExcludedValues.length > 0
+                ? "Une autre collectivité"
+                : "Une collectivité"
+            }
             value="local_or_regional_authority"
             {...register("futureOperator", { required: requiredMessage })}
           />
@@ -103,6 +121,7 @@ function SiteReinstatementContractOwnerForm({
             <LocalAuthoritySelect
               data={projectSiteLocalAuthorities.localAuthorities}
               loadingData={projectSiteLocalAuthorities.loadingState}
+              excludedValues={localAuthoritiesExcludedValues}
               label={<RequiredLabel label="Type de collectivité" />}
               placeholder="Sélectionnez un type de collectivité"
               state={formState.errors.localAuthority ? "error" : "default"}
