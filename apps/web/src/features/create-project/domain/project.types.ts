@@ -54,7 +54,7 @@ export type ReconversionProjectCreationData = {
     startDate: string;
     endDate: string;
   };
-  firstYearOfOperation?: string;
+  firstYearOfOperation?: number;
 };
 
 export type DocumentType = "BUILDING_PERMIT" | "FORECAST_BALANCE_SHEET";

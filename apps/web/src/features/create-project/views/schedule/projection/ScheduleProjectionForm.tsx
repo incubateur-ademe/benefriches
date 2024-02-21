@@ -3,6 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Input from "@codegouvfr/react-dsfr/Input";
 
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
+import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -19,11 +20,11 @@ export type FormValues = {
     startDate: string;
     endDate: string;
   };
-  firstYearOfOperation: string;
+  firstYearOfOperation: number;
 };
 
 function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit }: Props) {
-  const { handleSubmit, register, formState } = useForm<FormValues>();
+  const { handleSubmit, register, control, formState } = useForm<FormValues>();
 
   const { errors } = formState;
   const {
@@ -106,18 +107,20 @@ function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit }: Props
           </div>
         </Fieldset>
 
-        <Input
+        <NumericInput
           label="Mise en service du site"
-          state={formState.errors.firstYearOfOperation ? "error" : "default"}
-          stateRelatedMessage={
-            formState.errors.firstYearOfOperation
-              ? formState.errors.firstYearOfOperation.message
-              : undefined
-          }
-          nativeInputProps={{
-            pattern: "[0-9]{4}",
-            ...register("firstYearOfOperation"),
-            placeholder: "2025",
+          name="firstYearOfOperation"
+          placeholder="2025"
+          control={control}
+          rules={{
+            min: {
+              value: 2000,
+              message: "Veuillez entrer une année valide",
+            },
+            max: {
+              value: 2100,
+              message: "Veuillez entrer une année valide",
+            },
           }}
         />
         <ButtonsGroup

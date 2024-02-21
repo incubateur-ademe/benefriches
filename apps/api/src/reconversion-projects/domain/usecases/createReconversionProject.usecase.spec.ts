@@ -5,7 +5,7 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 import { buildMinimalSite } from "src/sites/domain/models/site.mock";
 import {
-  buildCompleteReconversionProjectProps,
+  buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
   buildReconversionProject,
 } from "../model/reconversionProject.mock";
@@ -130,7 +130,7 @@ describe("CreateReconversionProject Use Case", () => {
           yearlyProjectedRevenues: [],
         }),
       },
-      { case: "with exhaustive data", props: buildCompleteReconversionProjectProps() },
+      { case: "with exhaustive data", props: buildExhaustiveReconversionProjectProps() },
     ])("Can create a reconversion project $case", async ({ props }) => {
       siteRepository._setSites([buildMinimalSite({ id: props.relatedSiteId })]);
 

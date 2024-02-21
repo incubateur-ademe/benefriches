@@ -5,7 +5,10 @@ import { Knex } from "knex";
 import supertest from "supertest";
 import { v4 as uuid } from "uuid";
 import { AppModule } from "src/app.module";
-import { buildMinimalReconversionProjectProps } from "src/reconversion-projects/domain/model/reconversionProject.mock";
+import {
+  buildExhaustiveReconversionProjectProps,
+  buildMinimalReconversionProjectProps,
+} from "src/reconversion-projects/domain/model/reconversionProject.mock";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { CreateReconversionProjectBodyDto } from "./reconversionProjects.controller";
 
@@ -64,8 +67,10 @@ describe("ReconversionProjects controller", () => {
       },
     );
 
-    it("can create a reconversion project", async () => {
-      const requestBody = buildMinimalReconversionProjectProps();
+    it.each([
+      { case: "with minimal data", requestBody: buildMinimalReconversionProjectProps() },
+      { case: "with exhaustive data", requestBody: buildExhaustiveReconversionProjectProps() },
+    ])("get a 201 response and reconversion project is created $case", async ({ requestBody }) => {
       await sqlConnection("sites").insert({
         id: requestBody.relatedSiteId,
         name: "Site name",
