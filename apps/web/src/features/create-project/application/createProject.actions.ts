@@ -19,6 +19,11 @@ export const fetchRelatedSiteAction = createAppAsyncThunk<ProjectSite, ProjectSi
   },
 );
 
+const scheduleSchema = z.object({
+  startDate: z.string().pipe(z.coerce.date()),
+  endDate: z.string().pipe(z.coerce.date()),
+});
+
 const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),
   electricalPowerKWc: z.number().nonnegative(),
@@ -31,6 +36,7 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
     type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
     cost: z.number().nonnegative(),
     features: photovoltaicPowerStationFeaturesSchema,
+    installationSchedule: scheduleSchema.optional(),
   }),
 ]);
 
@@ -52,19 +58,8 @@ const saveProjectSchema = z.object({
     .object({ amount: z.number().nonnegative(), source: z.string() })
     .array(),
   soilsDistribution: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
-  reinstatementSchedule: z
-    .object({
-      startDate: z.string().pipe(z.coerce.date()).optional(),
-      endDate: z.string().pipe(z.coerce.date()).optional(),
-    })
-    .optional(),
-  photovoltaicInstallationSchedule: z
-    .object({
-      startDate: z.string().pipe(z.coerce.date()).optional(),
-      endDate: z.string().pipe(z.coerce.date()).optional(),
-    })
-    .optional(),
-  firstYearOfOperation: z.string().optional(),
+  reinstatementSchedule: scheduleSchema.optional(),
+  operationsFirstYear: z.number().optional(),
 });
 
 export type SaveProjectPayload = z.infer<typeof saveProjectSchema>;
@@ -94,10 +89,13 @@ export const saveProjectAction = createAppAsyncThunk(
       yearlyProjectedCosts: projectData.yearlyProjectedCosts,
       yearlyProjectedRevenues: projectData.yearlyProjectedRevenues,
       soilsDistribution: projectData.soilsDistribution,
+      reinstatementSchedule: projectData.reinstatementSchedule,
+      operationsFirstYear: projectData.firstYearOfOperation,
       developmentPlans: [
         {
           type: "PHOTOVOLTAIC_POWER_PLANT",
           cost: projectData.photovoltaicPanelsInstallationCost,
+          installationSchedule: projectData.photovoltaicInstallationSchedule,
           features: {
             surfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters,
             electricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc,

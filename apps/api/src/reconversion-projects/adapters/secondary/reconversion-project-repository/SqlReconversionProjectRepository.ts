@@ -21,12 +21,16 @@ type SqlReconversionProject = {
   future_operator_name?: string;
   future_operator_structure_type?: string;
   future_operations_full_time_jobs?: number;
+  conversion_full_time_jobs_involved?: number;
+  operations_first_year?: number;
+  // reinstatement
   reinstatement_contract_owner_name?: string;
   reinstatement_contract_owner_structure_type?: string;
   reinstatement_cost?: number;
   reinstatement_full_time_jobs_involved?: number;
-  conversion_full_time_jobs_involved?: number;
   reinstatement_financial_assistance_amount?: number;
+  reinstatement_schedule_start_date?: Date;
+  reinstatement_schedule_end_date?: Date;
   // dates
   created_at: Date;
 };
@@ -44,6 +48,8 @@ type SqlDevelopmentPlan = {
   cost: number;
   features: unknown;
   reconversion_project_id: string;
+  schedule_start_date?: Date;
+  schedule_end_date?: Date;
 };
 
 type SqlExpense = {
@@ -84,6 +90,9 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
           reinstatement_financial_assistance_amount:
             reconversionProject.reinstatementFinancialAssistanceAmount,
+          reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
+          reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
+          operations_first_year: reconversionProject.operationsFirstYear,
         },
         "id",
       );
@@ -103,15 +112,19 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
 
       // development plans
       const developmentPlansToInsert: SqlDevelopmentPlan[] =
-        reconversionProject.developmentPlans.map(({ features, type, cost }) => {
-          return {
-            id: uuid(),
-            type,
-            cost,
-            features,
-            reconversion_project_id: insertedReconversionProject.id,
-          };
-        });
+        reconversionProject.developmentPlans.map(
+          ({ features, type, cost, installationSchedule }) => {
+            return {
+              id: uuid(),
+              type,
+              cost,
+              features,
+              schedule_start_date: installationSchedule?.startDate,
+              schedule_end_date: installationSchedule?.endDate,
+              reconversion_project_id: insertedReconversionProject.id,
+            };
+          },
+        );
       await trx("reconversion_project_development_plans").insert(developmentPlansToInsert);
 
       if (reconversionProject.yearlyProjectedCosts.length > 0) {

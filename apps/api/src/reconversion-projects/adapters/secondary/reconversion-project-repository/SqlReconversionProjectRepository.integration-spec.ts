@@ -1,7 +1,7 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import {
-  buildCompleteReconversionProjectProps,
+  buildExhaustiveReconversionProjectProps,
   buildReconversionProject,
 } from "src/reconversion-projects/domain/model/reconversionProject.mock";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
@@ -85,14 +85,17 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_full_time_jobs_involved: null,
           conversion_full_time_jobs_involved: null,
           reinstatement_financial_assistance_amount: null,
+          reinstatement_schedule_start_date: null,
+          reinstatement_schedule_end_date: null,
+          operations_first_year: null,
         },
       ]);
     });
 
-    it("Saves given reconversion project with complete data in table reconversion_projects", async () => {
+    it("Saves given reconversion project with exhaustive data in table reconversion_projects", async () => {
       const siteId = await insertSiteInDb();
       const reconversionProject = buildReconversionProject({
-        ...buildCompleteReconversionProjectProps(),
+        ...buildExhaustiveReconversionProjectProps(),
         createdAt: now,
         relatedSiteId: siteId,
       });
@@ -119,6 +122,9 @@ describe("SqlReconversionProjectRepository integration", () => {
           conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
           reinstatement_financial_assistance_amount:
             reconversionProject.reinstatementFinancialAssistanceAmount,
+          reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
+          reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
+          operations_first_year: reconversionProject.operationsFirstYear,
         },
       ]);
     });
@@ -126,7 +132,7 @@ describe("SqlReconversionProjectRepository integration", () => {
     it("Saves given reconversion project in tables reconversion_projects_soils_distributions, reconversion_projects_development_plans, reconversion_project_yearly_expenses and reconversion_project_yearly_revenues", async () => {
       const siteId = await insertSiteInDb();
       const reconversionProject = buildReconversionProject({
-        ...buildCompleteReconversionProjectProps(),
+        ...buildExhaustiveReconversionProjectProps(),
         relatedSiteId: siteId,
         soilsDistribution: { ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1200, PRAIRIE_GRASS: 5000 },
       });
@@ -155,13 +161,23 @@ describe("SqlReconversionProjectRepository integration", () => {
 
       const developmentPlansResult = await sqlConnection(
         "reconversion_project_development_plans",
-      ).select("type", "features", "reconversion_project_id", "cost");
+      ).select(
+        "type",
+        "features",
+        "reconversion_project_id",
+        "cost",
+        "schedule_start_date",
+        "schedule_end_date",
+      );
       expect(developmentPlansResult).toEqual([
         {
           type: reconversionProject.developmentPlans[0].type,
           cost: 1300,
           features: reconversionProject.developmentPlans[0].features,
           reconversion_project_id: reconversionProject.id,
+          schedule_start_date:
+            reconversionProject.developmentPlans[0].installationSchedule?.startDate,
+          schedule_end_date: reconversionProject.developmentPlans[0].installationSchedule?.endDate,
         },
       ]);
 

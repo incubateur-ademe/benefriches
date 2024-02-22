@@ -37,7 +37,7 @@ export const buildMinimalReconversionProjectProps = (
   };
 };
 
-export const buildCompleteReconversionProjectProps = (): Required<ReconversionProjectProps> => {
+export const buildExhaustiveReconversionProjectProps = (): Required<ReconversionProjectProps> => {
   return {
     ...baseReconversionProjectProps,
     developmentPlans: [
@@ -49,6 +49,10 @@ export const buildCompleteReconversionProjectProps = (): Required<ReconversionPr
           contractDuration: 25,
           electricalPowerKWc: 10000,
           expectedAnnualProduction: 12000,
+        },
+        installationSchedule: {
+          startDate: new Date("2028-07-01"),
+          endDate: new Date("2029-03-01"),
         },
       },
     ],
@@ -67,6 +71,11 @@ export const buildCompleteReconversionProjectProps = (): Required<ReconversionPr
     },
     reinstatementCost: 90000,
     reinstatementFinancialAssistanceAmount: 14999.99,
+    reinstatementSchedule: {
+      startDate: new Date("2025-02-01"),
+      endDate: new Date("2028-06-30"),
+    },
+    operationsFirstYear: 2029,
   };
 };
 

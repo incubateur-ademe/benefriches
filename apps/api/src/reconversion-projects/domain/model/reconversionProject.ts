@@ -1,17 +1,27 @@
 import { z } from "zod";
 import { soilTypeSchema } from "src/soils/domain/soils";
 
-const photovoltaicPowerStationFeaturesSchema = z.object({
+export const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),
   electricalPowerKWc: z.number().nonnegative(),
   expectedAnnualProduction: z.number().nonnegative(),
   contractDuration: z.number().nonnegative(),
 });
 
+const scheduleSchema = z.object({
+  startDate: z.date(),
+  endDate: z.date(),
+});
+
+const baseDevelopmentPlanSchema = z.object({
+  type: z.string(),
+  cost: z.number().nonnegative(),
+  installationSchedule: scheduleSchema.optional(),
+});
+
 const developmentPlanSchema = z.discriminatedUnion("type", [
-  z.object({
+  baseDevelopmentPlanSchema.extend({
     type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
-    cost: z.number().nonnegative(),
     features: photovoltaicPowerStationFeaturesSchema,
   }),
 ]);
@@ -35,6 +45,8 @@ export const reconversionProjectSchema = z.object({
     .object({ source: z.string(), amount: z.number().nonnegative() })
     .array(),
   soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
+  reinstatementSchedule: scheduleSchema.optional(),
+  operationsFirstYear: z.number().int().min(2000).optional(),
 });
 
 export type ReconversionProject = z.infer<typeof reconversionProjectSchema>;
