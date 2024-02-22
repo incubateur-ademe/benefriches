@@ -37,6 +37,7 @@ describe("Sites controller", () => {
   const buildValidSitePayload = () => {
     const validSiteBody: CreateSiteBodyDto = {
       id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+      createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
       isFriche: false,
       owner: { name: "Owner name", structureType: "company" },
       name: "Friche industrielle",
@@ -92,6 +93,7 @@ describe("Sites controller", () => {
     it("can create a site", async () => {
       const validSite = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         isFriche: false,
         owner: { name: "Owner name", structureType: "company" },
         name: "Friche industrielle",
@@ -130,6 +132,7 @@ describe("Sites controller", () => {
         .post("/sites")
         .send({
           id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
+          createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
           name: "Ancienne gare de Bercy",
           isFriche: true,
           fricheActivity: "RAILWAY",
@@ -191,6 +194,7 @@ describe("Sites controller", () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
+        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         name: "Friche Amiens",
         description: "Description of site",
         surface_area: 14000,

@@ -55,6 +55,7 @@ describe("SqlSiteRepository integration", () => {
       expect(sitesResult).toEqual([
         {
           id: site.id,
+          created_by: site.createdBy,
           description: null,
           friche_accidents_deaths: null,
           friche_accidents_severe_injuries: null,
@@ -92,6 +93,7 @@ describe("SqlSiteRepository integration", () => {
       expect(sitesResult).toEqual([
         {
           id: site.id,
+          created_by: site.createdBy,
           description: "Description of site",
           friche_accidents_deaths: null,
           friche_accidents_severe_injuries: null,
@@ -132,6 +134,7 @@ describe("SqlSiteRepository integration", () => {
       expect(sitesResult).toEqual([
         {
           id: site.id,
+          created_by: site.createdBy,
           description: "Description of site",
           friche_accidents_minor_injuries: 2,
           friche_accidents_severe_injuries: 1,
@@ -230,6 +233,7 @@ describe("SqlSiteRepository integration", () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
         name: "Site 123",
         description: "Description of site",
         surface_area: 14000,
@@ -298,6 +302,7 @@ describe("SqlSiteRepository integration", () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
         name: "Site 456",
         surface_area: 14000,
         owner_structure_type: "company",
@@ -352,6 +357,7 @@ describe("SqlSiteRepository integration", () => {
       const nonExistingSiteId = uuid();
       await sqlConnection("sites").insert({
         id: uuid(),
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
         name: "Site 123",
         description: "Description of site",
         surface_area: 14000,

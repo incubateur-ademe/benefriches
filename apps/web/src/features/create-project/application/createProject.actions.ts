@@ -42,6 +42,7 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
 
 const saveProjectSchema = z.object({
   id: z.string().uuid(),
+  createdBy: z.string().uuid(),
   name: z.string(),
   description: z.string().optional(),
   relatedSiteId: z.string().uuid(),
@@ -71,12 +72,13 @@ export interface SaveReconversionProjectGateway {
 export const saveProjectAction = createAppAsyncThunk(
   "project/save",
   async (_, { getState, extra }) => {
-    const { projectCreation } = getState();
+    const { projectCreation, currentUser } = getState();
     const { projectData, siteData } = projectCreation;
 
     const mappedProjectData = {
       id: projectData.id,
       name: projectData.name,
+      createdBy: currentUser.currentUser?.id,
       description: projectData.description,
       relatedSiteId: siteData?.id,
       futureOperator: projectData.futureOperator,

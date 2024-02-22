@@ -28,6 +28,7 @@ describe("SqlReconversionProjectRepository integration", () => {
     const siteId = uuid();
     await sqlConnection("sites").insert({
       id: siteId,
+      created_by: "9b3a4906-1db2-441d-97d5-7be287add907",
       name: "Site name",
       surface_area: 14000,
       is_friche: false,
@@ -72,6 +73,7 @@ describe("SqlReconversionProjectRepository integration", () => {
       expect(result).toEqual([
         {
           id: reconversionProject.id,
+          created_by: reconversionProject.createdBy,
           name: reconversionProject.name,
           related_site_id: siteId,
           created_at: now,
@@ -106,6 +108,7 @@ describe("SqlReconversionProjectRepository integration", () => {
       expect(result).toEqual([
         {
           id: reconversionProject.id,
+          created_by: reconversionProject.createdBy,
           name: reconversionProject.name,
           related_site_id: siteId,
           created_at: now,

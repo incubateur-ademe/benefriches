@@ -3,6 +3,7 @@ import { ReconversionProject } from "./reconversionProject";
 
 const baseReconversionProjectProps: ReconversionProjectProps = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",
+  createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
   relatedSiteId: "f590f643-cd9a-4187-8973-f90e9f1998c8",
   name: "Centrale photovoltaique",
   developmentPlans: [

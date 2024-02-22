@@ -9,6 +9,7 @@ import {
 } from "./siteData.mock";
 
 import { createStore, RootState } from "@/app/application/store";
+import { buildUser } from "@/features/users/domain/user.mock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 describe("Create site reducer", () => {
@@ -19,6 +20,28 @@ describe("Create site reducer", () => {
         saveLoadingState: "idle",
         step: SiteCreationStep.CREATION_CONFIRMATION,
         siteData,
+      };
+
+      const store = createStore(getTestAppDependencies(), {
+        siteCreation: initialState,
+        currentUser: {
+          currentUser: buildUser(),
+        },
+      });
+      await store.dispatch(saveSiteAction());
+
+      const state = store.getState();
+      expect(state.siteCreation).toEqual({
+        ...initialState,
+        saveLoadingState: "error",
+      });
+    });
+
+    it("should be in error state when no user id in store", async () => {
+      const initialState: RootState["siteCreation"] = {
+        saveLoadingState: "idle",
+        step: SiteCreationStep.CREATION_CONFIRMATION,
+        siteData: siteWithMinimalData,
       };
 
       const store = createStore(getTestAppDependencies(), {
@@ -43,7 +66,7 @@ describe("Create site reducer", () => {
       const shouldFail = true;
       const store = createStore(
         getTestAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) }),
-        { siteCreation: initialState },
+        { siteCreation: initialState, currentUser: { currentUser: buildUser() } },
       );
       await store.dispatch(saveSiteAction());
 
@@ -68,6 +91,7 @@ describe("Create site reducer", () => {
 
       const store = createStore(getTestAppDependencies(), {
         siteCreation: initialState,
+        currentUser: { currentUser: buildUser() },
       });
 
       await store.dispatch(saveSiteAction());

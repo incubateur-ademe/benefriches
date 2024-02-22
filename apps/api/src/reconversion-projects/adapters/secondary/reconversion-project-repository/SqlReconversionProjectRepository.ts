@@ -15,6 +15,7 @@ declare module "knex/types/tables" {
 }
 type SqlReconversionProject = {
   id: string;
+  created_by: string;
   name: string;
   description?: string;
   related_site_id: string;
@@ -74,6 +75,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       const [insertedReconversionProject] = await trx("reconversion_projects").insert(
         {
           id: reconversionProject.id,
+          created_by: reconversionProject.createdBy,
           name: reconversionProject.name,
           description: reconversionProject.description,
           created_at: reconversionProject.createdAt,
