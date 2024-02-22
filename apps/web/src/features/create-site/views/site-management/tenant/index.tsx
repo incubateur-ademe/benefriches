@@ -6,8 +6,8 @@ import {
   setTenant,
   SiteCreationStep,
 } from "@/features/create-site/application/createSite.reducer";
-import { fetchSiteLocalAuthorities } from "@/features/create-site/application/siteLocalAuthorities.actions";
-import { SiteLocalAuthorities } from "@/features/create-site/application/siteLocalAuthorities.reducer";
+import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
+import { SiteLocalAuthorities } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -34,11 +34,10 @@ const convertFormValuesForStore = (
 
 function FricheTenantFormContainer() {
   const dispatch = useAppDispatch();
-  const siteLocalAuthorities = useAppSelector((state) => state.siteLocalAuthorities);
-  const { localAuthorities } = siteLocalAuthorities;
+  const { localAuthorities, loadingState } = useAppSelector((state) => state.siteMunicipalityData);
 
   useEffect(() => {
-    void dispatch(fetchSiteLocalAuthorities());
+    void dispatch(fetchSiteMunicipalityData());
   }, [dispatch]);
 
   const onSubmit = (data: FormValues) => {
@@ -50,7 +49,12 @@ function FricheTenantFormContainer() {
     dispatch(goToStep(SiteCreationStep.FULL_TIME_JOBS_INVOLVED));
   };
 
-  return <FricheTenantForm onSubmit={onSubmit} siteLocalAuthorities={siteLocalAuthorities} />;
+  return (
+    <FricheTenantForm
+      onSubmit={onSubmit}
+      siteLocalAuthorities={{ localAuthorities, loadingState }}
+    />
+  );
 }
 
 export default FricheTenantFormContainer;

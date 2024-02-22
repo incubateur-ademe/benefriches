@@ -9,14 +9,14 @@ import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../.
 import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
-import { LocalAuthoritiesGateway as ProjectLocalAuthoritiesGateway } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
+import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import projectSiteLocalAuthorities from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
 import projectPvExpectedPerformancesStorage from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
 import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
-import { LocalAuthoritiesGateway as SiteLocalAuthoritiesGateway } from "@/features/create-site/application/siteLocalAuthorities.actions";
-import siteLocalAuthorities from "@/features/create-site/application/siteLocalAuthorities.reducer";
+import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/application/siteMunicipalityData.actions";
+import siteMunicipalityData from "@/features/create-site/application/siteMunicipalityData.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
@@ -33,8 +33,8 @@ export type AppDependencies = {
   projectDetailsService: ProjectsDetailsGateway;
   getSiteByIdService: GetSitesByIdGateway;
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
-  localAuthoritiesService: SiteLocalAuthoritiesGateway | ProjectLocalAuthoritiesGateway;
   userService: UserGateway;
+  municipalityDataService: CreateSiteMunicipalityDataGateway | CreateProjectMunicipalityDataGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,7 +52,7 @@ const rootReducer = combineReducers({
   projectImpacts,
   projectImpactsComparison,
   projectSoilsCarbonStorage,
-  siteLocalAuthorities,
+  siteMunicipalityData,
   projectSiteLocalAuthorities,
 });
 

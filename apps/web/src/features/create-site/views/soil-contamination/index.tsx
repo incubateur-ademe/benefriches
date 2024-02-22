@@ -18,7 +18,7 @@ const mapProps = (dispatch: AppDispatch, siteSurfaceArea: number) => {
           contaminatedSoilSurface: contaminatedSurface,
         }),
       );
-      dispatch(goToStep(SiteCreationStep.FRICHE_ACTIVITY));
+      dispatch(goToStep(SiteCreationStep.MANAGEMENT_INTRODUCTION));
     },
   };
 };

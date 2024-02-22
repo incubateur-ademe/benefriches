@@ -9,7 +9,7 @@ import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { InMemoryReconversionProjectsListService } from "@/features/projects/infrastructure/projects-list-service/InMemoryProjectsListService";
 import { LocalStorageUserService } from "@/features/users/infra/get-user-service/LocalStorageUserService";
-import { LocalAuthoritiesMock } from "@/shared/infrastructure/local-authorities-service/localAuthoritiesMock";
+import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 
 export const getTestAppDependencies = (
@@ -27,23 +27,26 @@ export const getTestAppDependencies = (
     getSiteByIdService: new SitesServiceMock(),
     photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
     userService: new LocalStorageUserService(),
-    localAuthoritiesService: new LocalAuthoritiesMock({
-      city: {
-        code: "",
-        name: "",
+    municipalityDataService: new AdministrativeDivisionMock({
+      localAuthorities: {
+        city: {
+          code: "",
+          name: "",
+        },
+        epci: {
+          code: "",
+          name: "",
+        },
+        department: {
+          code: "",
+          name: "",
+        },
+        region: {
+          code: "",
+          name: "",
+        },
       },
-      epci: {
-        code: "",
-        name: "",
-      },
-      department: {
-        code: "",
-        name: "",
-      },
-      region: {
-        code: "",
-        name: "",
-      },
+      population: 0,
     }),
     ...depsOverride,
   };
