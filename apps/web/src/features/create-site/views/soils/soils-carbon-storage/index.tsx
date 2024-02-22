@@ -19,7 +19,7 @@ const mapProps = (
     onNext: () => {
       const nextStep = siteData.isFriche
         ? SiteCreationStep.SOIL_CONTAMINATION
-        : SiteCreationStep.NAMING;
+        : SiteCreationStep.MANAGEMENT_INTRODUCTION;
       dispatch(goToStep(nextStep));
     },
     fetchSiteCarbonStorage: async () => {
