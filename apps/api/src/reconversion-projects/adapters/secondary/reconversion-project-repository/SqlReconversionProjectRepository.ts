@@ -23,6 +23,8 @@ type SqlReconversionProject = {
   related_site_id: string;
   future_operator_name?: string;
   future_operator_structure_type?: string;
+  future_site_owner_name?: string;
+  future_site_owner_structure_type?: string;
   future_operations_full_time_jobs?: number;
   conversion_full_time_jobs_involved?: number;
   operations_first_year?: number;
@@ -30,6 +32,7 @@ type SqlReconversionProject = {
   reinstatement_contract_owner_name?: string;
   reinstatement_contract_owner_structure_type?: string;
   reinstatement_cost?: number;
+  real_estate_transaction_cost?: number;
   reinstatement_full_time_jobs_involved?: number;
   reinstatement_financial_assistance_amount?: number;
   reinstatement_schedule_start_date?: Date;
@@ -84,11 +87,14 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           related_site_id: reconversionProject.relatedSiteId,
           future_operator_name: reconversionProject.futureOperator?.name,
           future_operator_structure_type: reconversionProject.futureOperator?.structureType,
+          future_site_owner_name: reconversionProject.futureSiteOwner?.name,
+          future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
           future_operations_full_time_jobs: reconversionProject.operationsFullTimeJobsInvolved,
           reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
           reinstatement_contract_owner_structure_type:
             reconversionProject.reinstatementContractOwner?.structureType,
           reinstatement_cost: reconversionProject.reinstatementCost,
+          real_estate_transaction_cost: reconversionProject.realEstateTransactionCost,
           reinstatement_full_time_jobs_involved:
             reconversionProject.reinstatementFullTimeJobsInvolved,
           conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
