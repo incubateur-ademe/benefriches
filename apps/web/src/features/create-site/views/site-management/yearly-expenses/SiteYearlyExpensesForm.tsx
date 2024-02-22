@@ -25,9 +25,11 @@ type Props = {
   hasTenant: boolean;
   hasRecentAccidents: boolean;
   isFriche: boolean;
-  prefillIllegalDumpingAmount: number;
-  prefillSecurityAmount: number;
-  prefillMaintenanceAmount: number;
+  defaultValues: {
+    illegalDumpingCost?: { amount?: number };
+    security?: { amount?: number };
+    maintenance: { amount?: number };
+  };
   onSubmit: (data: FormValues) => void;
 };
 
@@ -134,17 +136,11 @@ function SiteYearlyExpensesForm({
   hasTenant,
   isFriche,
   hasRecentAccidents,
-  prefillIllegalDumpingAmount,
-  prefillSecurityAmount,
-  prefillMaintenanceAmount,
+  defaultValues,
 }: Props) {
   const { handleSubmit, control, watch, register } = useForm<FormValues>({
     shouldUnregister: true,
-    defaultValues: {
-      illegalDumpingCost: { amount: prefillIllegalDumpingAmount },
-      maintenance: { amount: prefillMaintenanceAmount },
-      security: { amount: prefillSecurityAmount },
-    },
+    defaultValues,
   });
 
   const title = `Coûts annuels ${isFriche ? "de la friche" : "du site"}`;

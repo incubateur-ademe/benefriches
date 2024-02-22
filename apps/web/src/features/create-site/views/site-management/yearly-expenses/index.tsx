@@ -18,22 +18,42 @@ import { hasTenant } from "@/features/create-site/domain/site.functions";
 import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+const getDefaultValues = (siteData: SiteDraft, population?: number) => {
+  const { soilsDistribution = {}, surfaceArea, isFriche } = siteData;
+  const buildingsSurface = soilsDistribution.BUILDINGS;
+  const maintenance = buildingsSurface
+    ? computeMaintenanceDefaultCost(buildingsSurface)
+    : undefined;
+
+  if (isFriche) {
+    const illegalDumpingCost = population
+      ? computeIllegalDumpingDefaultCost(population)
+      : undefined;
+    const security = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
+
+    return {
+      illegalDumpingCost: { amount: illegalDumpingCost },
+      security: { amount: security },
+      maintenance: { amount: maintenance },
+    };
+  }
+  return {
+    maintenance: { amount: maintenance },
+  };
+};
+
 const mapProps = (
   dispatch: AppDispatch,
   { siteData }: RootState["siteCreation"],
   population?: number,
 ) => {
   const siteHasTenant = hasTenant(siteData as SiteDraft);
-  const { soilsDistribution = {}, surfaceArea = 0 } = siteData;
-  const buildingsSurface = soilsDistribution.BUILDINGS ?? 0;
 
   return {
     hasTenant: siteHasTenant,
     isFriche: !!siteData.isFriche,
     hasRecentAccidents: !!siteData.hasRecentAccidents,
-    prefillIllegalDumpingAmount: computeIllegalDumpingDefaultCost(population ?? 0),
-    prefillSecurityAmount: computeSecurityDefaultCost(surfaceArea),
-    prefillMaintenanceAmount: computeMaintenanceDefaultCost(buildingsSurface),
+    defaultValues: getDefaultValues(siteData as SiteDraft, population),
     onSubmit: (formData: FormValues) => {
       const expenses: Expense[] = mapFormDataToExpenses(formData, { siteHasTenant });
 
