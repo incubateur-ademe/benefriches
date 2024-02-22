@@ -3,23 +3,13 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
-import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
+import { SoilsCarbonStorage } from "@/features/projects/application/projectImpactsComparison.reducer";
 import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
-type CurrentCarbonStorageType = Exclude<
-  ProjectImpactsComparisonState["currentCarbonStorage"],
-  undefined
->;
-
-type ProjectedCarbonStorageType = Exclude<
-  ProjectImpactsComparisonState["currentCarbonStorage"],
-  undefined
->;
-
 type Props = {
-  currentCarbonStorage: CurrentCarbonStorageType;
-  projectedCarbonStorage: ProjectedCarbonStorageType;
+  currentCarbonStorage: SoilsCarbonStorage;
+  projectedCarbonStorage: SoilsCarbonStorage;
 };
 
 const roundTo2Digits = (value: number) => {
@@ -28,8 +18,8 @@ const roundTo2Digits = (value: number) => {
 
 const getData = (
   soilType: SoilType,
-  currentCarbonStorage: CurrentCarbonStorageType["soilsStorage"],
-  projectedCarbonStorage: ProjectedCarbonStorageType["soilsStorage"],
+  currentCarbonStorage: SoilsCarbonStorage["soilsStorage"],
+  projectedCarbonStorage: SoilsCarbonStorage["soilsStorage"],
 ) => {
   const soilTypeInSite = currentCarbonStorage.find((storage) => storage.type === soilType);
   const soilTypeInProject = projectedCarbonStorage.find((storage) => storage.type === soilType);
@@ -40,8 +30,8 @@ const getData = (
 };
 
 const getMergedSoilTypes = (
-  current: CurrentCarbonStorageType["soilsStorage"],
-  projected: ProjectedCarbonStorageType["soilsStorage"],
+  current: SoilsCarbonStorage["soilsStorage"],
+  projected: SoilsCarbonStorage["soilsStorage"],
 ) => Array.from(new Set([...current, ...projected].map(({ type }) => type)));
 
 function CarbonStorageComparisonChart({ currentCarbonStorage, projectedCarbonStorage }: Props) {

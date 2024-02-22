@@ -1,34 +1,59 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Project, ProjectSite } from "../domain/projects.types";
 import {
-  CurrentAndProjectedSoilsCarbonStorageResult,
   fetchBaseProjectAndWithProjectData,
   fetchCurrentAndProjectedSoilsCarbonStorage,
-  ProjectDetailsResult,
 } from "./projectImpactsComparison.actions";
+
+import { SoilType } from "@/shared/domain/soils";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
+export type SoilsCarbonStorage = {
+  totalCarbonStorage: number;
+  soilsStorage: {
+    type: SoilType;
+    surfaceArea: number;
+    carbonStorage: number;
+    carbonStorageInTonPerSquareMeters: number;
+  }[];
+};
+
 export type ProjectImpactsComparisonState = {
-  baseProjectId?: string;
-  withProject?: string;
-  projectData?: ProjectDetailsResult["projectData"];
-  otherProjectData?: ProjectDetailsResult["projectData"];
-  siteData?: ProjectDetailsResult["siteData"];
+  baseScenario: {
+    type?: "STATU_QUO" | "PROJECT";
+    id?: string;
+    projectData?: Project;
+    siteData?: ProjectSite;
+    soilsCarbonStorage?: SoilsCarbonStorage;
+  };
+  withScenario: {
+    type?: "PROJECT";
+    id?: string;
+    projectData?: Project;
+    siteData?: ProjectSite;
+    soilsCarbonStorage?: SoilsCarbonStorage;
+  };
   dataLoadingState: LoadingState;
   carbonStorageDataLoadingState: LoadingState;
-  currentCarbonStorage?: CurrentAndProjectedSoilsCarbonStorageResult["current"];
-  projectedCarbonStorage?: CurrentAndProjectedSoilsCarbonStorageResult["projected"];
 };
 
 export const getInitialState = (): ProjectImpactsComparisonState => {
   return {
-    baseProjectId: undefined,
-    withProject: undefined,
-    projectData: undefined,
-    otherProjectData: undefined,
-    siteData: undefined,
-    currentCarbonStorage: undefined,
-    projectedCarbonStorage: undefined,
+    baseScenario: {
+      id: undefined,
+      type: undefined,
+      projectData: undefined,
+      siteData: undefined,
+      soilsCarbonStorage: undefined,
+    },
+    withScenario: {
+      id: undefined,
+      type: undefined,
+      projectData: undefined,
+      siteData: undefined,
+      soilsCarbonStorage: undefined,
+    },
     carbonStorageDataLoadingState: "idle",
     dataLoadingState: "idle",
   };
@@ -45,11 +70,8 @@ export const projectImpactsComparisonSlice = createSlice({
     });
     builder.addCase(fetchBaseProjectAndWithProjectData.fulfilled, (state, action) => {
       state.dataLoadingState = "success";
-      state.projectData = action.payload.projectData;
-      state.siteData = action.payload.siteData;
-      state.otherProjectData = action.payload.otherProjectData;
-      state.baseProjectId = action.payload.baseProjectId;
-      state.withProject = action.payload.withProject;
+      state.baseScenario = action.payload.baseScenario;
+      state.withScenario = action.payload.withScenario;
     });
     builder.addCase(fetchBaseProjectAndWithProjectData.rejected, (state) => {
       state.dataLoadingState = "error";
@@ -60,8 +82,8 @@ export const projectImpactsComparisonSlice = createSlice({
     });
     builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.fulfilled, (state, action) => {
       state.carbonStorageDataLoadingState = "success";
-      state.currentCarbonStorage = action.payload.current;
-      state.projectedCarbonStorage = action.payload.projected;
+      state.baseScenario.soilsCarbonStorage = action.payload.current;
+      state.withScenario.soilsCarbonStorage = action.payload.projected;
     });
     builder.addCase(fetchCurrentAndProjectedSoilsCarbonStorage.rejected, (state) => {
       state.carbonStorageDataLoadingState = "error";

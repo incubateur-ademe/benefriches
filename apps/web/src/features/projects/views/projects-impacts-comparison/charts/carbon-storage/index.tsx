@@ -3,26 +3,17 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import CarbonStorageComparisonChart from "./CarbonStorageComparisonChart";
 
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/projects/application/projectImpactsComparison.actions";
-import { ProjectImpactsComparisonState } from "@/features/projects/application/projectImpactsComparison.reducer";
+import { SoilsCarbonStorage } from "@/features/projects/application/projectImpactsComparison.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type SuccessData = {
-  carbonStorageDataLoadingState: Exclude<
-    ProjectImpactsComparisonState["carbonStorageDataLoadingState"],
-    "idle" | "error" | "loading"
-  >;
-  currentCarbonStorage: Exclude<ProjectImpactsComparisonState["currentCarbonStorage"], undefined>;
-  projectedCarbonStorage: Exclude<
-    ProjectImpactsComparisonState["projectedCarbonStorage"],
-    undefined
-  >;
+  carbonStorageDataLoadingState: "success";
+  currentCarbonStorage: SoilsCarbonStorage;
+  projectedCarbonStorage: SoilsCarbonStorage;
 };
 
 type LoadingOrErrorData = {
-  carbonStorageDataLoadingState: Exclude<
-    ProjectImpactsComparisonState["carbonStorageDataLoadingState"],
-    "success"
-  >;
+  carbonStorageDataLoadingState: "idle" | "error" | "loading";
   currentCarbonStorage: undefined;
   projectedCarbonStorage: undefined;
 };
@@ -30,7 +21,11 @@ type LoadingOrErrorData = {
 function CarbonStorageComparisonChartContainer() {
   const dispatch = useAppDispatch();
   const { currentCarbonStorage, projectedCarbonStorage, carbonStorageDataLoadingState } =
-    useAppSelector((state) => state.projectImpactsComparison) as SuccessData | LoadingOrErrorData;
+    useAppSelector((state) => ({
+      carbonStorageDataLoadingState: state.projectImpactsComparison.carbonStorageDataLoadingState,
+      currentCarbonStorage: state.projectImpactsComparison.baseScenario.soilsCarbonStorage,
+      projectedCarbonStorage: state.projectImpactsComparison.withScenario.soilsCarbonStorage,
+    })) as SuccessData | LoadingOrErrorData;
 
   useEffect(() => {
     async function fetchData() {

@@ -96,19 +96,26 @@ describe("Project impacts comparison reducer", () => {
 
       const state = store.getState();
       expect(state.projectImpactsComparison).toEqual({
-        dataLoadingState: "error",
-        projectData: undefined,
-        siteData: undefined,
-        baseProjectId: undefined,
-        withProject: undefined,
-        otherProjectData: undefined,
+        baseScenario: {
+          id: undefined,
+          type: undefined,
+          projectData: undefined,
+          siteData: undefined,
+          soilsCarbonStorage: undefined,
+        },
+        withScenario: {
+          id: undefined,
+          type: undefined,
+          projectData: undefined,
+          siteData: undefined,
+          soilsCarbonStorage: undefined,
+        },
         carbonStorageDataLoadingState: "idle",
-        currentCarbonStorage: undefined,
-        projectedCarbonStorage: undefined,
+        dataLoadingState: "error",
       });
     });
 
-    it("should fetch and assign project and site data in projectImpactsComparison store", async () => {
+    it("should fetch and assign project and site data in projectImpactsComparison store for statu quo situation", async () => {
       const store = createStore(
         getTestAppDependencies({
           projectDetailsService: new ProjectDetailsServiceMock({
@@ -128,13 +135,20 @@ describe("Project impacts comparison reducer", () => {
       const state = store.getState();
       expect(state.projectImpactsComparison).toEqual({
         dataLoadingState: "success",
-        baseProjectId: PROJECT_MOCKED_RESULT["id"],
-        withProject: "STATU_QUO",
-        projectData: PROJECT_MOCKED_RESULT,
-        siteData: SITE_MOCKED_RESULT,
+        baseScenario: {
+          id: SITE_MOCKED_RESULT["id"],
+          type: "STATU_QUO",
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: undefined,
+        },
+        withScenario: {
+          id: PROJECT_MOCKED_RESULT["id"],
+          type: "PROJECT",
+          projectData: PROJECT_MOCKED_RESULT,
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: undefined,
+        },
         carbonStorageDataLoadingState: "idle",
-        currentCarbonStorage: undefined,
-        projectedCarbonStorage: undefined,
       });
     });
 
@@ -158,14 +172,21 @@ describe("Project impacts comparison reducer", () => {
       const state = store.getState();
       expect(state.projectImpactsComparison).toEqual({
         dataLoadingState: "success",
-        baseProjectId: PROJECT_MOCKED_RESULT["id"],
-        withProject: OTHER_PROJECT_ID,
-        projectData: PROJECT_MOCKED_RESULT,
-        otherProjectData: PROJECT_MOCKED_RESULT,
-        siteData: SITE_MOCKED_RESULT,
+        baseScenario: {
+          id: PROJECT_MOCKED_RESULT["id"],
+          type: "PROJECT",
+          projectData: PROJECT_MOCKED_RESULT,
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: undefined,
+        },
+        withScenario: {
+          id: OTHER_PROJECT_ID,
+          type: "PROJECT",
+          projectData: PROJECT_MOCKED_RESULT,
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: undefined,
+        },
         carbonStorageDataLoadingState: "idle",
-        currentCarbonStorage: undefined,
-        projectedCarbonStorage: undefined,
       });
     });
   });
@@ -182,15 +203,22 @@ describe("Project impacts comparison reducer", () => {
 
       const state = store.getState();
       expect(state.projectImpactsComparison).toEqual({
+        baseScenario: {
+          id: undefined,
+          type: undefined,
+          projectData: undefined,
+          siteData: undefined,
+          soilsCarbonStorage: undefined,
+        },
+        withScenario: {
+          id: undefined,
+          type: undefined,
+          projectData: undefined,
+          siteData: undefined,
+          soilsCarbonStorage: undefined,
+        },
         carbonStorageDataLoadingState: "error",
-        currentCarbonStorage: undefined,
-        projectedCarbonStorage: undefined,
-        baseProjectId: undefined,
         dataLoadingState: "idle",
-        otherProjectData: undefined,
-        projectData: undefined,
-        siteData: undefined,
-        withProject: undefined,
       });
     });
 
@@ -294,14 +322,20 @@ describe("Project impacts comparison reducer", () => {
       const state = store.getState();
       expect(state.projectImpactsComparison).toEqual({
         dataLoadingState: "success",
-        baseProjectId: PROJECT_MOCKED_RESULT["id"],
-        withProject: "STATU_QUO",
-        projectData: PROJECT_MOCKED_RESULT,
-        otherProjectData: undefined,
-        siteData: SITE_MOCKED_RESULT,
         carbonStorageDataLoadingState: "success",
-        currentCarbonStorage: SOILS_STORAGE_API_MOCKED_RESULT,
-        projectedCarbonStorage: SOILS_STORAGE_API_MOCKED_RESULT,
+        baseScenario: {
+          id: SITE_MOCKED_RESULT["id"],
+          type: "STATU_QUO",
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: SOILS_STORAGE_API_MOCKED_RESULT,
+        },
+        withScenario: {
+          id: PROJECT_MOCKED_RESULT["id"],
+          type: "PROJECT",
+          projectData: PROJECT_MOCKED_RESULT,
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: SOILS_STORAGE_API_MOCKED_RESULT,
+        },
       });
     });
 
@@ -327,14 +361,22 @@ describe("Project impacts comparison reducer", () => {
       const state = store.getState();
       expect(state.projectImpactsComparison).toEqual({
         dataLoadingState: "success",
-        baseProjectId: PROJECT_MOCKED_RESULT["id"],
-        withProject: OTHER_PROJECT_ID,
-        projectData: PROJECT_MOCKED_RESULT,
-        otherProjectData: PROJECT_MOCKED_RESULT,
-        siteData: SITE_MOCKED_RESULT,
         carbonStorageDataLoadingState: "success",
-        currentCarbonStorage: SOILS_STORAGE_API_MOCKED_RESULT,
-        projectedCarbonStorage: SOILS_STORAGE_API_MOCKED_RESULT,
+
+        baseScenario: {
+          id: PROJECT_MOCKED_RESULT["id"],
+          type: "PROJECT",
+          projectData: PROJECT_MOCKED_RESULT,
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: SOILS_STORAGE_API_MOCKED_RESULT,
+        },
+        withScenario: {
+          id: OTHER_PROJECT_ID,
+          type: "PROJECT",
+          projectData: PROJECT_MOCKED_RESULT,
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: SOILS_STORAGE_API_MOCKED_RESULT,
+        },
       });
     });
 
@@ -364,14 +406,20 @@ describe("Project impacts comparison reducer", () => {
       const state = store.getState();
       expect(state.projectImpactsComparison).toEqual({
         carbonStorageDataLoadingState: "error",
-        currentCarbonStorage: undefined,
-        projectedCarbonStorage: undefined,
-        baseProjectId: PROJECT_MOCKED_RESULT["id"],
         dataLoadingState: "success",
-        otherProjectData: undefined,
-        projectData: PROJECT_MOCKED_RESULT,
-        siteData: SITE_MOCKED_RESULT,
-        withProject: "STATU_QUO",
+        baseScenario: {
+          id: SITE_MOCKED_RESULT["id"],
+          type: "STATU_QUO",
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: undefined,
+        },
+        withScenario: {
+          id: PROJECT_MOCKED_RESULT["id"],
+          type: "PROJECT",
+          projectData: PROJECT_MOCKED_RESULT,
+          siteData: SITE_MOCKED_RESULT,
+          soilsCarbonStorage: undefined,
+        },
       });
     });
   });

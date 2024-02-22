@@ -2,7 +2,7 @@ import { ReactNode, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
-import { ProjectImpactsComparisonState } from "../../application/projectImpactsComparison.reducer";
+import { Project, ProjectSite } from "../../domain/projects.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
 import CarbonStorageComparisonChart from "./charts/carbon-storage";
@@ -24,17 +24,33 @@ import SocioEconomicBenefitsComparisonChart from "./charts/socioeconomic-benefit
 import SocioEconomicImpactComparisonChart from "./charts/socioeconomic-impacts/SocioEconomicImpactComparison";
 import NonPollutedSoilsImpactComparisonChart from "./charts/soil-impacts/NonPollutedSoilsImpactComparisonChart";
 import PermeableSoilsImpactComparisonChart from "./charts/soil-impacts/PermeableSoilsImpactComparisonChart";
-import ImpactsComparisonPageHeader from "./ImpactsComparisonPageHeader";
+import ImpactsComparisonPageHeader from "./ImpactsComparisonHeader";
 
 type SuccessDataProps = {
-  siteData: Exclude<ProjectImpactsComparisonState["siteData"], undefined>;
-  projectData: Exclude<ProjectImpactsComparisonState["projectData"], undefined>;
   loadingState: "success";
+  baseScenario:
+    | {
+        type: "STATU_QUO";
+        id: string;
+        siteData: ProjectSite;
+      }
+    | {
+        type: "PROJECT";
+        id: string;
+        projectData: Project;
+        siteData: ProjectSite;
+      };
+  withScenario: {
+    type: "PROJECT";
+    id: string;
+    projectData: Project;
+    siteData: ProjectSite;
+  };
 };
 
 type ErrorOrLoadingDataProps = {
-  siteData: undefined;
-  projectData: undefined;
+  withScenario: undefined;
+  baseScenario: undefined;
   loadingState: "idle" | "error" | "loading";
 };
 
@@ -55,7 +71,7 @@ const ImpactCard = ({ children }: ImpactCardProps) => {
   );
 };
 
-function ProjectsImpactsComparisonPage({ siteData, projectData, loadingState }: Props) {
+function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingState }: Props) {
   const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">("all");
 
   if (loadingState === "loading") {
@@ -79,7 +95,7 @@ function ProjectsImpactsComparisonPage({ siteData, projectData, loadingState }: 
 
   return (
     <div>
-      <ImpactsComparisonPageHeader projectName={projectData.name} siteName={siteData.name} />
+      <ImpactsComparisonPageHeader baseScenario={baseScenario} withScenario={withScenario} />
       <Notice
         title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
         isClosable

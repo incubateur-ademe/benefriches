@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { Route } from "type-route";
 import { fetchBaseProjectAndWithProjectData } from "../../application/projectImpactsComparison.actions";
-import { ProjectImpactsComparisonState } from "../../application/projectImpactsComparison.reducer";
+import { Project, ProjectSite } from "../../domain/projects.types";
 import ProjectsImpactsComparisonPage from "./ProjectsImpactsComparisonPage";
 
 import { routes } from "@/app/views/router";
@@ -12,15 +12,41 @@ type Props = {
 };
 
 type SuccessDataProps = {
-  siteData: Exclude<ProjectImpactsComparisonState["siteData"], undefined>;
-  projectData: Exclude<ProjectImpactsComparisonState["projectData"], undefined>;
+  baseScenario:
+    | {
+        type: "STATU_QUO";
+        id: string;
+        siteData: ProjectSite;
+      }
+    | {
+        type: "PROJECT";
+        id: string;
+        projectData: Project;
+        siteData: ProjectSite;
+      };
+  withScenario: {
+    type: "PROJECT";
+    id: string;
+    projectData: Project;
+    siteData: ProjectSite;
+  };
   dataLoadingState: "success";
 };
 
 type ErrorOrLoadingDataProps = {
-  siteData: undefined;
-  projectData: undefined;
   dataLoadingState: "idle" | "error" | "loading";
+  baseScenario: {
+    id: undefined;
+    type: undefined;
+    projectData: undefined;
+    siteData: undefined;
+  };
+  withScenario: {
+    id: undefined;
+    type: undefined;
+    projectData: undefined;
+    siteData: undefined;
+  };
 };
 
 function ProjectsImpactsComparison({ route }: Props) {
@@ -28,7 +54,7 @@ function ProjectsImpactsComparison({ route }: Props) {
 
   const { baseProjectId, avecProjet } = useMemo(() => route.params, [route.params]);
 
-  const { siteData, projectData, dataLoadingState } = useAppSelector(
+  const { baseScenario, withScenario, dataLoadingState } = useAppSelector(
     (state) => state.projectImpactsComparison,
   ) as SuccessDataProps | ErrorOrLoadingDataProps;
 
@@ -47,8 +73,8 @@ function ProjectsImpactsComparison({ route }: Props) {
   if (dataLoadingState === "success") {
     return (
       <ProjectsImpactsComparisonPage
-        siteData={siteData}
-        projectData={projectData}
+        baseScenario={baseScenario}
+        withScenario={withScenario}
         loadingState="success"
       />
     );
@@ -56,8 +82,8 @@ function ProjectsImpactsComparison({ route }: Props) {
 
   return (
     <ProjectsImpactsComparisonPage
-      siteData={undefined}
-      projectData={undefined}
+      baseScenario={undefined}
+      withScenario={undefined}
       loadingState={dataLoadingState}
     />
   );
