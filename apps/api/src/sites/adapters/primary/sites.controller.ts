@@ -10,6 +10,7 @@ import {
   SiteNotFoundError,
 } from "src/sites/domain/usecases/getSiteById.usecase";
 
+// here we can't use createZodDto because sitePropsSchema is a discriminated union: https://github.com/risen228/nestjs-zod/issues/41
 export type CreateSiteBodyDto = z.infer<typeof sitePropsSchema>;
 
 @Controller("sites")
