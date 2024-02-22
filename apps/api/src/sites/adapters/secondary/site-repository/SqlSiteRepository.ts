@@ -1,5 +1,7 @@
+import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import { v4 as uuid } from "uuid";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SitesRepository } from "src/sites/domain/gateways/SitesRepository";
 import { Site } from "src/sites/domain/models/site";
 import { SiteViewModel } from "src/sites/domain/usecases/getSiteById.usecase";
@@ -72,7 +74,7 @@ type SqlSiteIncome = {
 };
 
 export class SqlSiteRepository implements SitesRepository {
-  constructor(private readonly sqlConnection: Knex) {}
+  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async save(site: Site): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {

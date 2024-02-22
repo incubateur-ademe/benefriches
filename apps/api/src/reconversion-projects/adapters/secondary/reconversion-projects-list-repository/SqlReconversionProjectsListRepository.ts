@@ -1,11 +1,13 @@
+import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import {
   ReconversionProjectsGroupedBySite,
   ReconversionProjectsListRepository,
 } from "src/reconversion-projects/domain/usecases/getReconversionProjectsBySite.usecase";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 export class SqlReconversionProjectsListRepository implements ReconversionProjectsListRepository {
-  constructor(private readonly sqlConnection: Knex) {}
+  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
   async getGroupedBySite(): Promise<ReconversionProjectsGroupedBySite> {
     const result = (await this.sqlConnection("sites")
       .leftJoin("reconversion_projects as rp", "sites.id", "=", "rp.related_site_id")

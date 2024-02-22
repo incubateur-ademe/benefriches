@@ -3,7 +3,6 @@ import {
   BadRequestException,
   ForbiddenException,
   HttpException,
-  Injectable,
   NotFoundException,
 } from "@nestjs/common";
 import { AxiosError } from "axios";
@@ -54,7 +53,6 @@ interface PVGISResult {
   };
 }
 
-@Injectable()
 export class PhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
   constructor(private readonly httpService: HttpService) {}
 

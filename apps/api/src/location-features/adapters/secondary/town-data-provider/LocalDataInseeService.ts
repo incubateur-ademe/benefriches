@@ -3,7 +3,6 @@ import {
   BadRequestException,
   ForbiddenException,
   HttpException,
-  Injectable,
   NotFoundException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -44,7 +43,6 @@ interface InseeData {
   }[];
 }
 
-@Injectable()
 export class LocalDataInseeService implements TownDataProvider {
   constructor(
     private readonly configService: ConfigService,

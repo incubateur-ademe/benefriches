@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException } from "@nestjs/common";
 import { CarbonStorageRepository } from "src/carbon-storage/domain/gateways/CarbonStorageRepository";
 import {
   CarbonStorage,
@@ -273,7 +273,6 @@ const CITIES = {
   ],
 };
 
-@Injectable()
 export class LocalCarbonStorageRepository implements CarbonStorageRepository {
   async getCarbonStorageForCity(
     cityCode: "01026" | "01027",

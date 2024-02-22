@@ -6,6 +6,7 @@ import { Knex } from "knex";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { CryptoHashGenerator } from "src/users/adapters/secondary/hash-generator/CryptoHashGenerator";
 import { DeterministicHashGenerator } from "src/users/adapters/secondary/hash-generator/DeterministicHashGenerator";
 import { RandomUuidGenerator } from "src/users/adapters/secondary/uuid-generator/RandomUuidGenerator";
 
@@ -21,7 +22,7 @@ describe("Auth controller", () => {
     })
       .overrideModule(ConfigModule)
       .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
-      .overrideProvider("HashGenerator")
+      .overrideProvider(CryptoHashGenerator)
       .useValue(hashGenerator)
       .compile();
 

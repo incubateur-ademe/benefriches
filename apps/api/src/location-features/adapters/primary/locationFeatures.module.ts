@@ -13,20 +13,20 @@ import { LocationFeaturesController } from "./locationFeatures.controller";
   imports: [ConfigModule, HttpModule],
   controllers: [LocationFeaturesController],
   providers: [
-    { provide: "TownDataProvider", useClass: LocalDataInseeService },
     {
       provide: GetTownPopulationDensityUseCase,
       useFactory: (townDataProvider: TownDataProvider) =>
         new GetTownPopulationDensityUseCase(townDataProvider),
-      inject: ["TownDataProvider"],
+      inject: [LocalDataInseeService],
     },
-    { provide: "PhotovoltaicDataProvider", useClass: PhotovoltaicGeoInfoSystemApi },
     {
       provide: GetPhotovoltaicExpectedPerformanceUseCase,
       useFactory: (photovoltaicDataProvider: PhotovoltaicDataProvider) =>
         new GetPhotovoltaicExpectedPerformanceUseCase(photovoltaicDataProvider),
-      inject: ["PhotovoltaicDataProvider"],
+      inject: [PhotovoltaicGeoInfoSystemApi],
     },
+    PhotovoltaicGeoInfoSystemApi,
+    LocalDataInseeService,
   ],
 })
 export class LocationFeaturesModule {}

@@ -1,9 +1,11 @@
+import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { UserRepository } from "src/users/domain/gateways/UserRepository";
 import { User } from "src/users/domain/models/user";
 
 export class SqlUserRepository implements UserRepository {
-  constructor(private readonly sqlConnection: Knex) {}
+  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async save(user: User): Promise<void> {
     await this.sqlConnection<User>("users").insert({

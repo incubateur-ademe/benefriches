@@ -1,7 +1,9 @@
+import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import { ReconversionProject } from "src/reconversion-projects/domain/model/reconversionProject";
 import { ReconversionProjectRepository } from "src/reconversion-projects/domain/usecases/createReconversionProject.usecase";
+import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SoilType } from "src/soils/domain/soils";
 
 declare module "knex/types/tables" {
@@ -68,7 +70,7 @@ type SqlRevenue = {
 };
 
 export class SqlReconversionProjectRepository implements ReconversionProjectRepository {
-  constructor(private readonly sqlConnection: Knex) {}
+  constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async save(reconversionProject: ReconversionProject): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {
