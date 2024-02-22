@@ -7,6 +7,7 @@ export const buildMinimalSiteProps = (
   return {
     id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
     name: "My site",
+    createdBy: "841aaa8c-39c1-4953-8459-1f6fab6dd948",
     isFriche: false,
     surfaceArea: 15000,
     owner: {

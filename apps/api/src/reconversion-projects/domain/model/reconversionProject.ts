@@ -28,6 +28,7 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
 
 export const reconversionProjectSchema = z.object({
   id: z.string().uuid(),
+  createdBy: z.string().uuid(),
   createdAt: z.date(),
   name: z.string(),
   description: z.string().optional(),

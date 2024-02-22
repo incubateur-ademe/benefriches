@@ -68,9 +68,9 @@ export const siteWithExhaustiveData: SiteDraft = {
   ],
   yearlyIncomes: [{ amount: 150000, source: "income" }],
   isFriche: false,
-  hasRecentAccidents: false,
   fullTimeJobsInvolved: 0.5,
   hasContaminatedSoils: false,
+  contaminatedSoilSurface: 1000,
   address: {
     banId: "31070_p4ur8e",
     value: "Sendere 31350 Blajan",

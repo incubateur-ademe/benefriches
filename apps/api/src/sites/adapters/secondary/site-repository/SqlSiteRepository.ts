@@ -18,6 +18,7 @@ declare module "knex/types/tables" {
 type SqlSite = {
   id: string;
   name: string;
+  created_by: string;
   description: string | null;
   surface_area: number;
   is_friche: boolean;
@@ -78,6 +79,7 @@ export class SqlSiteRepository implements SitesRepository {
       const [insertedSite] = await trx<SqlSite>("sites").insert(
         {
           id: site.id,
+          created_by: site.createdBy,
           name: site.name,
           description: site.description,
           surface_area: site.surfaceArea,

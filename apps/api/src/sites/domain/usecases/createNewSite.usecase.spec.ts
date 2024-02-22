@@ -25,6 +25,7 @@ describe("CreateNewSite Use Case", () => {
   describe("Mandatory data", () => {
     it.each([
       "id",
+      "createdBy",
       "address",
       "surfaceArea",
       "isFriche",

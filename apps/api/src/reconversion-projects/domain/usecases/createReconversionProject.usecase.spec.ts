@@ -38,6 +38,7 @@ describe("CreateReconversionProject Use Case", () => {
       it.each([
         "id",
         "name",
+        "createdBy",
         "relatedSiteId",
         "developmentPlans",
         "soilsDistribution",

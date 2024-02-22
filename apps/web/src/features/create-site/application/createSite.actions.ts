@@ -6,6 +6,7 @@ import { SoilType } from "@/shared/domain/soils";
 
 const createSiteSchema = z.object({
   id: z.string().uuid(),
+  createdBy: z.string().uuid(),
   name: z.string(),
   description: z.string().optional(),
   isFriche: z.boolean(),
@@ -67,9 +68,12 @@ export interface CreateSiteGateway {
 }
 
 export const saveSiteAction = createAppAsyncThunk("site/create", async (_, { getState, extra }) => {
-  const { siteCreation } = getState();
+  const { siteCreation, currentUser } = getState();
 
-  const siteToCreate = createSiteSchema.parse(siteCreation.siteData);
+  const siteToCreate = createSiteSchema.parse({
+    ...siteCreation.siteData,
+    createdBy: currentUser.currentUser?.id,
+  });
 
   await extra.createSiteService.save(siteToCreate);
 });

@@ -19,6 +19,7 @@ describe("GetSiteById Use Case", () => {
     it("Can get an existing site", async () => {
       const site: Site = {
         id: "4550d9f0-ce28-43ae-a319-94851ae033db",
+        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         name: "My existing site",
         isFriche: true,
         surfaceArea: 140000,
@@ -60,6 +61,7 @@ describe("GetSiteById Use Case", () => {
 
       expect(result).toMatchObject({
         id: site.id,
+        createdBy: site.createdBy,
         name: site.name,
         isFriche: site.isFriche,
         owner: site.owner,

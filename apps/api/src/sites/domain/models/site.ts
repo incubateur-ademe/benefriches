@@ -45,6 +45,7 @@ export const nonFricheSiteSchema = z.object({
   isFriche: z.literal(false),
   id: z.string().uuid(),
   name: z.string(),
+  createdBy: z.string().uuid(),
   description: z.string().optional(),
   address: addressSchema.strict(),
   surfaceArea: z.number().nonnegative(),
