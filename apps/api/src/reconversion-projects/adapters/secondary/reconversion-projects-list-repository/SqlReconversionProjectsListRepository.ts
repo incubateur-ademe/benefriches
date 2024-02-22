@@ -3,13 +3,18 @@ import { Knex } from "knex";
 import {
   ReconversionProjectsGroupedBySite,
   ReconversionProjectsListRepository,
-} from "src/reconversion-projects/domain/usecases/getReconversionProjectsBySite.usecase";
+} from "src/reconversion-projects/domain/usecases/getUserReconversionProjectsBySite.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 export class SqlReconversionProjectsListRepository implements ReconversionProjectsListRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
-  async getGroupedBySite(): Promise<ReconversionProjectsGroupedBySite> {
+  async getGroupedBySite({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<ReconversionProjectsGroupedBySite> {
     const result = (await this.sqlConnection("sites")
+      .where("sites.created_by", userId)
       .leftJoin("reconversion_projects as rp", "sites.id", "=", "rp.related_site_id")
       .select(
         "sites.id as siteId",

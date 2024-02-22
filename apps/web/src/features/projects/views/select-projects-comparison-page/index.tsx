@@ -8,6 +8,7 @@ import {
 import ProjectsComparisonSelectionPage from "./ProjectsComparisonSelection.page";
 
 import { routes } from "@/app/views/router";
+import { selectCurrentUserId } from "@/features/users/application/user.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
@@ -24,12 +25,13 @@ function ProjectsComparisonSelectionPageContainer({ route }: Props) {
     selectComparableProjects(state, baseProject?.id ?? ""),
   );
 
+  const currentUserId = useAppSelector(selectCurrentUserId);
+
   useEffect(() => {
-    const effect = () => {
-      void dispatch(fetchReconversionProjects());
-    };
-    effect();
-  }, [dispatch]);
+    if (currentUserId) {
+      void dispatch(fetchReconversionProjects({ userId: currentUserId }));
+    }
+  }, [dispatch, currentUserId]);
 
   if (!baseProject) return null;
 

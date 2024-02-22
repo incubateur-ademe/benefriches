@@ -5,9 +5,9 @@ import {
   SiteRepository,
 } from "src/reconversion-projects/domain/usecases/createReconversionProject.usecase";
 import {
-  GetReconversionProjectsBySiteUseCase,
+  GetUserReconversionProjectsBySiteUseCase,
   ReconversionProjectsListRepository,
-} from "src/reconversion-projects/domain/usecases/getReconversionProjectsBySite.usecase";
+} from "src/reconversion-projects/domain/usecases/getUserReconversionProjectsBySite.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
@@ -33,9 +33,9 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       inject: [DateProvider, SqlSiteRepository, SqlReconversionProjectRepository],
     },
     {
-      provide: GetReconversionProjectsBySiteUseCase,
+      provide: GetUserReconversionProjectsBySiteUseCase,
       useFactory: (reconversionProjectsListRepository: ReconversionProjectsListRepository) =>
-        new GetReconversionProjectsBySiteUseCase(reconversionProjectsListRepository),
+        new GetUserReconversionProjectsBySiteUseCase(reconversionProjectsListRepository),
       inject: [SqlReconversionProjectsListRepository],
     },
     SqlReconversionProjectRepository,

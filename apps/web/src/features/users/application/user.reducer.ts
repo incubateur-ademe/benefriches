@@ -32,4 +32,11 @@ export const selectCurrentUserCompany = createSelector(
   },
 );
 
+export const selectCurrentUserId = createSelector(
+  [(state: RootState) => state.currentUser],
+  (state) => {
+    return state.currentUser?.id;
+  },
+);
+
 export default userSlice.reducer;
