@@ -5,6 +5,7 @@ import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onNext: () => void;
@@ -18,8 +19,7 @@ const SiteSoilsSummary = ({ totalSurfaceArea, onNext, soilsDistribution }: Props
   );
 
   return (
-    <>
-      <h2>Récapitulatif des sols du site</h2>
+    <WizardFormLayout title="Récapitulatif des sols du site">
       <p>
         Superficie totale du site :{" "}
         <strong>
@@ -32,7 +32,7 @@ const SiteSoilsSummary = ({ totalSurfaceArea, onNext, soilsDistribution }: Props
       <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
         Suivant
       </Button>
-    </>
+    </WizardFormLayout>
   );
 };
 
