@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import SustainableSoilsReinstatementInfoButton from "./SustainableSoilsReinstatementInfoButton";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
@@ -166,7 +167,12 @@ const ReinstatementsCostsForm = ({
 
         <NumericInput
           control={control}
-          label="Restauration écologique des sols"
+          label={
+            <>
+              Restauration écologique des sols
+              <SustainableSoilsReinstatementInfoButton />
+            </>
+          }
           hintText="€"
           name="sustainableSoilsReinstatementAmount"
           rules={{
