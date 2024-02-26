@@ -49,13 +49,15 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
         name: "",
         type: "variablepie",
         zMin: 0,
-        data: soilsCarbonStorage.map((soilData) => [
-          getLabelForSoilType(soilData.type),
-          soilData.carbonStorageInTonPerSquareMeters,
-          soilData.surfaceArea,
-          soilData.carbonStorage,
-          getColorForSoilType(soilData.type as SoilType),
-        ]),
+        data: soilsCarbonStorage
+          .filter(({ surfaceArea }) => surfaceArea > 0)
+          .map((soilData) => [
+            getLabelForSoilType(soilData.type),
+            soilData.carbonStorageInTonPerSquareMeters,
+            soilData.surfaceArea,
+            soilData.carbonStorage,
+            getColorForSoilType(soilData.type as SoilType),
+          ]),
       },
     ],
   };
