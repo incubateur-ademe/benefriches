@@ -10,6 +10,6 @@ export class HttpCreateSiteApi implements CreateSiteGateway {
       },
     });
 
-    if (!response.ok) throw new Error("Error while computing carbon storage");
+    if (!response.ok) throw new Error("Error while creating site");
   }
 }
