@@ -62,7 +62,10 @@ function SiteDataSummary({ siteData, onNext }: Props) {
             <DataLine label={<strong>Adresse du site</strong>} value={siteData.address} />
           </dl>
         </Accordion>
-        <Accordion label="Gestion de la friche" defaultExpanded>
+        <Accordion
+          label={siteData.isFriche ? "Gestion de la friche" : "Gestion du site"}
+          defaultExpanded
+        >
           <dl>
             <DataLine label={<strong>Propriétaire actuel</strong>} value={siteData.ownerName} />
             <DataLine
