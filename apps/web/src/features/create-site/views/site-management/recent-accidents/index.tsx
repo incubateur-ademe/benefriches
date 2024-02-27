@@ -1,11 +1,7 @@
 import FricheRecentAccidentsForm, { FormValues } from "./FricheRecentAccidentsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import {
-  goToStep,
-  setFricheRecentAccidents,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeFricheRecentAccidents } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch) => {
@@ -13,12 +9,11 @@ const mapProps = (dispatch: AppDispatch) => {
     onSubmit: (data: FormValues) => {
       const { hasRecentAccidents, ...dataRest } = data;
       dispatch(
-        setFricheRecentAccidents({
+        completeFricheRecentAccidents({
           hasRecentAccidents: hasRecentAccidents === "yes",
           ...dataRest,
         }),
       );
-      dispatch(goToStep(SiteCreationStep.YEARLY_EXPENSES));
     },
   };
 };

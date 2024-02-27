@@ -1,10 +1,6 @@
 import SiteTypeForm from "./SiteTypeForm";
 
-import {
-  goToStep,
-  setIsFriche,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeSiteTypeStep } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function SiteTypeFormContainer() {
@@ -12,8 +8,7 @@ function SiteTypeFormContainer() {
   return (
     <SiteTypeForm
       onSubmit={(data) => {
-        dispatch(setIsFriche(data.isFriche === "yes"));
-        dispatch(goToStep(SiteCreationStep.ADDRESS));
+        dispatch(completeSiteTypeStep({ isFriche: data.isFriche === "yes" }));
       }}
     />
   );

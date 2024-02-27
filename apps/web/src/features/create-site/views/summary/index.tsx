@@ -1,4 +1,4 @@
-import { goToStep, SiteCreationStep } from "../../application/createSite.reducer";
+import { completeSummary } from "../../application/createSite.reducer";
 import SiteDataSummary from "./SiteDataSummary";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -8,7 +8,7 @@ function SiteDataSummaryContainer() {
   const dispatch = useAppDispatch();
 
   const onNext = () => {
-    dispatch(goToStep(SiteCreationStep.CREATION_CONFIRMATION));
+    dispatch(completeSummary());
   };
 
   return (

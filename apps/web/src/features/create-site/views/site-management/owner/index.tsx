@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 
-import {
-  goToStep,
-  setOwner,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeOwner } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import { SiteLocalAuthorities } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Owner } from "@/features/create-site/domain/siteFoncier.types";
@@ -49,8 +45,11 @@ function SiteOwnerFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     if (!localAuthorities) return;
-    dispatch(setOwner(convertFormValuesForStore(data, currentUserCompany, localAuthorities)));
-    dispatch(goToStep(SiteCreationStep.TENANT));
+    dispatch(
+      completeOwner({
+        owner: convertFormValuesForStore(data, currentUserCompany, localAuthorities),
+      }),
+    );
   };
 
   useEffect(() => {

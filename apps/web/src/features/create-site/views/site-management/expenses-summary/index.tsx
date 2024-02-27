@@ -1,15 +1,12 @@
 import SiteExpensesSummary from "./SiteExpensesSummary";
 
 import { AppDispatch, RootState } from "@/app/application/store";
-import { goToStep, SiteCreationStep } from "@/features/create-site/application/createSite.reducer";
+import { completeYearlyExpensesSummary } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["siteData"]) => {
   const onNext = () => {
-    const nextStep = siteData.isFriche
-      ? SiteCreationStep.FRICHE_ACTIVITY
-      : SiteCreationStep.YEARLY_INCOME;
-    dispatch(goToStep(nextStep));
+    dispatch(completeYearlyExpensesSummary());
   };
 
   return {

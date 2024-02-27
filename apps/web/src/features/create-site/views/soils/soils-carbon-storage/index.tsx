@@ -1,4 +1,4 @@
-import { goToStep, SiteCreationStep } from "../../../application/createSite.reducer";
+import { completeSoilsCarbonStorage } from "../../../application/createSite.reducer";
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 import { AppDispatch, RootState } from "@/app/application/store";
@@ -17,10 +17,7 @@ const mapProps = (
 
   return {
     onNext: () => {
-      const nextStep = siteData.isFriche
-        ? SiteCreationStep.SOIL_CONTAMINATION
-        : SiteCreationStep.MANAGEMENT_INTRODUCTION;
-      dispatch(goToStep(nextStep));
+      dispatch(completeSoilsCarbonStorage());
     },
     fetchSiteCarbonStorage: async () => {
       const soils = Object.entries(fricheSoils).map(([type, surfaceArea]) => ({

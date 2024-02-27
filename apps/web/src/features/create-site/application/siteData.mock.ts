@@ -21,6 +21,7 @@ export const siteWithExhaustiveData: SiteDraft = {
     [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED]: 10000,
     [SoilType.FOREST_DECIDUOUS]: 12000,
   },
+  soilsDistributionEntryMode: "square_meters",
   surfaceArea: 30000,
   yearlyExpenses: [
     {
@@ -111,6 +112,7 @@ export const siteWithMinimalData: SiteDraft = {
     [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED]: 10000,
     [SoilType.FOREST_DECIDUOUS]: 12000,
   },
+  soilsDistributionEntryMode: "square_meters",
   surfaceArea: 30000,
   yearlyExpenses: [],
   yearlyIncomes: [],

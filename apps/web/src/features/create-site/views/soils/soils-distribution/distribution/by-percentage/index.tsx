@@ -1,11 +1,7 @@
 import { useMemo } from "react";
 import SiteSoilsDistributionByPercentageForm, { type FormValues } from "./ByPercentageForm";
 
-import {
-  goToStep,
-  setSoilsDistribution,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
 import { SoilType } from "@/shared/domain/soils";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -34,8 +30,7 @@ function SiteSoilsDistributionByPercentageContainer() {
   );
 
   const onSubmit = (formData: FormValues) => {
-    dispatch(setSoilsDistribution(formatFormValues(formData)));
-    dispatch(goToStep(SiteCreationStep.SOILS_SUMMARY));
+    dispatch(completeSoilsDistribution({ distribution: formatFormValues(formData) }));
   };
 
   return <SiteSoilsDistributionByPercentageForm onSubmit={onSubmit} soils={siteData.soils ?? []} />;

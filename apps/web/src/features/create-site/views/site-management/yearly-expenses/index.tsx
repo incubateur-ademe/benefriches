@@ -3,11 +3,7 @@ import { mapFormDataToExpenses } from "./mappers";
 import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
 
 import { AppDispatch, RootState } from "@/app/application/store";
-import {
-  addExpenses,
-  goToStep,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeYearlyExpenses } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
   computeIllegalDumpingDefaultCost,
@@ -57,9 +53,7 @@ const mapProps = (
     onSubmit: (formData: FormValues) => {
       const expenses: Expense[] = mapFormDataToExpenses(formData, { siteHasTenant });
 
-      dispatch(addExpenses(expenses));
-
-      dispatch(goToStep(SiteCreationStep.EXPENSES_SUMMARY));
+      dispatch(completeYearlyExpenses(expenses));
     },
   };
 };
