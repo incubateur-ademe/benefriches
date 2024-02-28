@@ -1,3 +1,4 @@
+import { selectCurrentStep } from "../application/createSite.reducer";
 import SiteExpensesSummary from "./site-management/expenses-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
@@ -25,10 +26,11 @@ import SiteDataSummary from "./summary";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function SiteCreationWizard() {
-  const siteCreationState = useAppSelector((state) => state.siteCreation);
+  const currentStep = useAppSelector(selectCurrentStep);
+  const siteData = useAppSelector((state) => state.siteCreation.siteData);
 
   const getStepComponent = () => {
-    switch (siteCreationState.step) {
+    switch (currentStep) {
       case "SITE_TYPE":
         return <SiteTypeForm />;
       case "ADDRESS":
@@ -78,7 +80,7 @@ function SiteCreationWizard() {
 
   return (
     <>
-      <Stepper isFriche={siteCreationState.siteData.isFriche} step={siteCreationState.step} />
+      <Stepper isFriche={siteData.isFriche} step={currentStep} />
       {getStepComponent()}
     </>
   );

@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
 import { saveSiteAction } from "./createSite.actions";
 
+import { RootState } from "@/app/application/store";
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import {
   Address,
@@ -49,7 +50,7 @@ function staticNextStep(nextStep: SiteCreationStep) {
 }
 
 export type SiteCreationState = {
-  step: SiteCreationStep;
+  stepsHistory: SiteCreationStep[];
   siteData: Partial<SiteDraft>;
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
@@ -98,7 +99,7 @@ const siteCreationStepsConfig = {
 
 export const getInitialState = (): SiteCreationState => {
   return {
-    step: "SITE_TYPE",
+    stepsHistory: ["SITE_TYPE"],
     saveLoadingState: "idle",
     siteData: {
       id: uuid(),
@@ -118,22 +119,22 @@ export const siteCreationSlice = createSlice({
     },
     completeSiteTypeStep: (state, action: PayloadAction<{ isFriche: boolean }>) => {
       state.siteData.isFriche = action.payload.isFriche;
-      state.step = siteCreationStepsConfig["SITE_TYPE"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["SITE_TYPE"].getNextStep());
     },
     completeAddressStep: (state, action: PayloadAction<{ address: Address }>) => {
       state.siteData.address = action.payload.address;
-      state.step = siteCreationStepsConfig["ADDRESS"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["ADDRESS"].getNextStep());
     },
     completeSoilsIntroduction: (state) => {
-      state.step = siteCreationStepsConfig["SOILS_INTRODUCTION"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["SOILS_INTRODUCTION"].getNextStep());
     },
     completeSiteSurfaceArea: (state, action: PayloadAction<{ surfaceArea: number }>) => {
       state.siteData.surfaceArea = action.payload.surfaceArea;
-      state.step = siteCreationStepsConfig["SURFACE_AREA"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["SURFACE_AREA"].getNextStep());
     },
     completeSoils: (state, action: PayloadAction<{ soils: SoilType[] }>) => {
       state.siteData.soils = action.payload.soils;
-      state.step = siteCreationStepsConfig["SOILS_SELECTION"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["SOILS_SELECTION"].getNextStep());
     },
     completeSoilsSurfaceAreaDistributionEntryMode: (
       state,
@@ -153,22 +154,28 @@ export const siteCreationSlice = createSlice({
       }
 
       state.siteData.soilsDistributionEntryMode = action.payload;
-      state.step = siteCreationStepsConfig[
-        "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"
-      ].getNextStep(state.siteData);
+      state.stepsHistory.push(
+        siteCreationStepsConfig["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"].getNextStep(
+          state.siteData,
+        ),
+      );
     },
     completeSoilsDistribution: (
       state,
       action: PayloadAction<{ distribution: SoilsSurfaceAreaDistribution }>,
     ) => {
       state.siteData.soilsDistribution = action.payload.distribution;
-      state.step = siteCreationStepsConfig["SOILS_SURFACE_AREAS_DISTRIBUTION"].getNextStep();
+      state.stepsHistory.push(
+        siteCreationStepsConfig["SOILS_SURFACE_AREAS_DISTRIBUTION"].getNextStep(),
+      );
     },
     completeSoilsSummary: (state) => {
-      state.step = siteCreationStepsConfig["SOILS_SUMMARY"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["SOILS_SUMMARY"].getNextStep());
     },
     completeSoilsCarbonStorage: (state) => {
-      state.step = siteCreationStepsConfig["SOILS_CARBON_STORAGE"].getNextStep(state.siteData);
+      state.stepsHistory.push(
+        siteCreationStepsConfig["SOILS_CARBON_STORAGE"].getNextStep(state.siteData),
+      );
     },
     completeSoilsContamination: (
       state,
@@ -184,24 +191,26 @@ export const siteCreationSlice = createSlice({
         state.siteData.contaminatedSoilSurface = contaminatedSoilSurface;
       }
 
-      state.step = siteCreationStepsConfig["SOILS_CONTAMINATION"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["SOILS_CONTAMINATION"].getNextStep());
     },
     completeManagementIntroduction: (state) => {
-      state.step = siteCreationStepsConfig["MANAGEMENT_INTRODUCTION"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["MANAGEMENT_INTRODUCTION"].getNextStep());
     },
     completeOwner: (state, action: PayloadAction<{ owner: Owner }>) => {
       state.siteData.owner = action.payload.owner;
-      state.step = siteCreationStepsConfig["OWNER"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["OWNER"].getNextStep());
     },
     completeTenant: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
       state.siteData.tenant = action.payload.tenant;
-      state.step = siteCreationStepsConfig["TENANT"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["TENANT"].getNextStep());
     },
     completeFullTimeJobsInvolved: (state, action: PayloadAction<{ jobs?: number }>) => {
       if (action.payload.jobs) {
         state.siteData.fullTimeJobsInvolved = action.payload.jobs;
       }
-      state.step = siteCreationStepsConfig["FULL_TIME_JOBS_INVOLVED"].getNextStep(state.siteData);
+      state.stepsHistory.push(
+        siteCreationStepsConfig["FULL_TIME_JOBS_INVOLVED"].getNextStep(state.siteData),
+      );
     },
     completeFricheRecentAccidents: (
       state,
@@ -226,31 +235,50 @@ export const siteCreationSlice = createSlice({
         state.siteData.deaths = action.payload.deaths ?? 0;
       }
 
-      state.step = siteCreationStepsConfig["FRICHE_RECENT_ACCIDENTS"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["FRICHE_RECENT_ACCIDENTS"].getNextStep());
     },
     completeYearlyExpenses: (state, action: PayloadAction<Expense[]>) => {
       state.siteData.yearlyExpenses = action.payload;
-      state.step = siteCreationStepsConfig["YEARLY_EXPENSES"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["YEARLY_EXPENSES"].getNextStep());
     },
     completeYearlyExpensesSummary: (state) => {
-      state.step = siteCreationStepsConfig["YEARLY_EXPENSES_SUMMARY"].getNextStep(state.siteData);
+      state.stepsHistory.push(
+        siteCreationStepsConfig["YEARLY_EXPENSES_SUMMARY"].getNextStep(state.siteData),
+      );
     },
     completeYearlyIncome: (state, action: PayloadAction<Income[]>) => {
       state.siteData.yearlyIncomes = action.payload;
-      state.step = siteCreationStepsConfig["YEARLY_INCOME"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["YEARLY_INCOME"].getNextStep());
     },
     completeFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
       state.siteData.fricheActivity = action.payload;
-      state.step = siteCreationStepsConfig["FRICHE_ACTIVITY"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["FRICHE_ACTIVITY"].getNextStep());
     },
     completeNaming: (state, action: PayloadAction<{ name: string; description?: string }>) => {
       state.siteData.name = action.payload.name;
       if (action.payload.description) state.siteData.description = action.payload.description;
 
-      state.step = siteCreationStepsConfig["NAMING"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["NAMING"].getNextStep());
     },
     completeSummary: (state) => {
-      state.step = siteCreationStepsConfig["FINAL_SUMMARY"].getNextStep();
+      state.stepsHistory.push(siteCreationStepsConfig["FINAL_SUMMARY"].getNextStep());
+    },
+    revertStep: (
+      state,
+      action: PayloadAction<{ resetFields: (keyof SiteDraft)[] } | undefined>,
+    ) => {
+      const { siteData: initialSiteData } = getInitialState();
+
+      if (action.payload) {
+        action.payload.resetFields.forEach((field) => {
+          // @ts-expect-error to fix
+          state.siteData[field] = initialSiteData[field] ?? undefined;
+        });
+      }
+
+      if (state.stepsHistory.length > 1) {
+        state.stepsHistory = state.stepsHistory.slice(0, -1);
+      }
     },
   },
   extraReducers(builder) {
@@ -265,6 +293,13 @@ export const siteCreationSlice = createSlice({
     });
   },
 });
+
+export const selectCurrentStep = createSelector(
+  [(state: RootState) => state.siteCreation],
+  (state): SiteCreationStep => {
+    return state.stepsHistory.at(-1) || "SITE_TYPE";
+  },
+);
 
 export const {
   resetState,
@@ -289,6 +324,7 @@ export const {
   completeFricheActivity,
   completeNaming,
   completeSummary,
+  revertStep,
 } = siteCreationSlice.actions;
 
 export default siteCreationSlice.reducer;

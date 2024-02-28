@@ -92,7 +92,7 @@ describe("Site Municipality data reducer", () => {
         address: PARIS_ADDRESS_MOCK,
       },
       saveLoadingState: "idle",
-      step: "OWNER",
+      stepsHistory: ["OWNER"],
     };
 
     const store = createStore(
@@ -116,7 +116,7 @@ describe("Site Municipality data reducer", () => {
         address: PARIS_ADDRESS_MOCK,
       },
       saveLoadingState: "idle",
-      step: "OWNER",
+      stepsHistory: ["OWNER"],
     };
 
     const store = createStore(
@@ -143,7 +143,7 @@ describe("Site Municipality data reducer", () => {
         address: GRENOBLE_ADDRESS_MOCK,
       },
       saveLoadingState: "idle",
-      step: "OWNER",
+      stepsHistory: ["OWNER"],
     };
 
     const store = createStore(
@@ -171,7 +171,7 @@ describe("Site Municipality data reducer", () => {
         address: GRENOBLE_ADDRESS_MOCK,
       },
       saveLoadingState: "idle",
-      step: "OWNER",
+      stepsHistory: ["OWNER"],
     };
 
     const store = createStore(
