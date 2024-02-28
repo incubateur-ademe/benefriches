@@ -1,11 +1,7 @@
 import SiteYearlyIncomeForm, { FormValues } from "./SiteYearlyIncomeForm";
 
 import { AppDispatch } from "@/app/application/store";
-import {
-  addIncomes,
-  goToStep,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeYearlyIncome } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch) => {
@@ -24,8 +20,7 @@ const mapProps = (dispatch: AppDispatch) => {
           amount: formData.otherIncome,
         });
       }
-      if (incomes.length > 0) dispatch(addIncomes(incomes));
-      dispatch(goToStep(SiteCreationStep.NAMING));
+      dispatch(completeYearlyIncome(incomes));
     },
   };
 };

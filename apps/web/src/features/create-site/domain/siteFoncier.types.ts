@@ -20,6 +20,8 @@ export type Address = {
   lat: number;
 };
 
+export type SoilsSurfaceAreaDistribution = Partial<Record<SoilType, number>>;
+
 export type SiteDraft = {
   id: string;
   isFriche: boolean;
@@ -29,7 +31,8 @@ export type SiteDraft = {
   // soils
   surfaceArea: number;
   soils: SoilType[];
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  soilsDistributionEntryMode: "default_even_split" | "total_surface_percentage" | "square_meters";
+  soilsDistribution: SoilsSurfaceAreaDistribution;
   // contamination
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;
@@ -46,7 +49,7 @@ export type SiteDraft = {
   yearlyIncomes: Income[];
 };
 
-export type Tenant = { structureType: TenantStructureType; name: string } | undefined;
+export type Tenant = { structureType: TenantStructureType; name: string };
 export type Owner = { structureType: OwnerStructureType; name: string };
 
 export type ExpensePurpose =

@@ -2,12 +2,12 @@ import { SiteDraft } from "../../../domain/siteFoncier.types";
 import SiteSoilsSummary from "./SiteSoilsSummary";
 
 import { AppDispatch } from "@/app/application/store";
-import { goToStep, SiteCreationStep } from "@/features/create-site/application/createSite.reducer";
+import { completeSoilsSummary } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, siteData: Partial<SiteDraft>) => {
   return {
-    onNext: () => dispatch(goToStep(SiteCreationStep.SOILS_CARBON_STORAGE)),
+    onNext: () => dispatch(completeSoilsSummary()),
     soilsDistribution: siteData.soilsDistribution ?? {},
     totalSurfaceArea: siteData.surfaceArea ?? 0,
   };

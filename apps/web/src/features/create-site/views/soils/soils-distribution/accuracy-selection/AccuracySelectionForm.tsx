@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -9,7 +10,7 @@ type Props = {
 };
 
 export type FormValues = {
-  accuracy: "percentage" | "square_meters" | "none";
+  accuracy: SiteDraft["soilsDistributionEntryMode"];
 };
 
 function SiteSoilsDistributionAccuracySelectionForm({ onSubmit }: Props) {
@@ -40,11 +41,11 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit }: Props) {
             },
             {
               label: "Oui, je connais approximativement les superficies, je peux les saisir en %",
-              value: "percentage",
+              value: "total_surface_percentage",
             },
             {
               label: "Non, je ne connais pas les superficies",
-              value: "none",
+              value: "default_even_split",
             },
           ]}
         />

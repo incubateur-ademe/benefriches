@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { SiteCreationStep } from "./createSite.reducer";
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 
 import { createStore, RootState } from "@/app/application/store";
@@ -93,7 +92,7 @@ describe("Site Municipality data reducer", () => {
         address: PARIS_ADDRESS_MOCK,
       },
       saveLoadingState: "idle",
-      step: SiteCreationStep.OWNER,
+      step: "OWNER",
     };
 
     const store = createStore(
@@ -117,7 +116,7 @@ describe("Site Municipality data reducer", () => {
         address: PARIS_ADDRESS_MOCK,
       },
       saveLoadingState: "idle",
-      step: SiteCreationStep.OWNER,
+      step: "OWNER",
     };
 
     const store = createStore(
@@ -144,7 +143,7 @@ describe("Site Municipality data reducer", () => {
         address: GRENOBLE_ADDRESS_MOCK,
       },
       saveLoadingState: "idle",
-      step: SiteCreationStep.OWNER,
+      step: "OWNER",
     };
 
     const store = createStore(
@@ -172,7 +171,7 @@ describe("Site Municipality data reducer", () => {
         address: GRENOBLE_ADDRESS_MOCK,
       },
       saveLoadingState: "idle",
-      step: SiteCreationStep.OWNER,
+      step: "OWNER",
     };
 
     const store = createStore(

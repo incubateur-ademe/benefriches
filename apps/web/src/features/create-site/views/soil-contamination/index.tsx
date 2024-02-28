@@ -1,11 +1,7 @@
 import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
 
 import { AppDispatch } from "@/app/application/store";
-import {
-  goToStep,
-  setContaminatedSoils,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeSoilsContamination } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, siteSurfaceArea: number) => {
@@ -13,12 +9,11 @@ const mapProps = (dispatch: AppDispatch, siteSurfaceArea: number) => {
     siteSurfaceArea,
     onSubmit: ({ hasContaminatedSoils, contaminatedSurface }: FormValues) => {
       dispatch(
-        setContaminatedSoils({
+        completeSoilsContamination({
           hasContaminatedSoils: hasContaminatedSoils === "yes",
           contaminatedSoilSurface: contaminatedSurface,
         }),
       );
-      dispatch(goToStep(SiteCreationStep.MANAGEMENT_INTRODUCTION));
     },
   };
 };

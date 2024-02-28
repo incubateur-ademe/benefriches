@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 import FricheTenantForm, { FormValues } from "./SiteTenantForm";
 
-import {
-  goToStep,
-  setTenant,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeTenant } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import { SiteLocalAuthorities } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
@@ -15,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 const convertFormValuesForStore = (
   data: FormValues,
   localAuthorities: SiteLocalAuthorities,
-): Tenant => {
+): Tenant | undefined => {
   if (data.tenantType === "local_or_regional_authority") {
     return {
       name: formatLocalAuthorityName(data.localAuthority, localAuthorities),
@@ -43,10 +39,7 @@ function FricheTenantFormContainer() {
   const onSubmit = (data: FormValues) => {
     if (!localAuthorities) return;
     const tenant = convertFormValuesForStore(data, localAuthorities);
-    if (tenant) {
-      dispatch(setTenant(tenant));
-    }
-    dispatch(goToStep(SiteCreationStep.FULL_TIME_JOBS_INVOLVED));
+    dispatch(completeTenant({ tenant }));
   };
 
   return (

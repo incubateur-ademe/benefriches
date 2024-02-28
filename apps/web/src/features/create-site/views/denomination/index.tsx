@@ -3,19 +3,14 @@ import { generateSiteName } from "../../domain/siteName";
 import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
 
 import { AppDispatch } from "@/app/application/store";
-import {
-  goToStep,
-  setNameAndDescription,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeNaming } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, siteData: SiteDraft) => {
   return {
     defaultSiteName: generateSiteName(siteData),
     onSubmit: (formData: FormValues) => {
-      dispatch(setNameAndDescription(formData));
-      dispatch(goToStep(SiteCreationStep.SUMMARY));
+      dispatch(completeNaming(formData));
     },
   };
 };

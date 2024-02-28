@@ -18,35 +18,34 @@ type StepCategory = (typeof fricheStepsCategories)[number];
 
 const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
   switch (step) {
-    case SiteCreationStep.SITE_TYPE:
+    case "SITE_TYPE":
       return "Type de site";
-    case SiteCreationStep.ADDRESS:
+    case "ADDRESS":
       return "Adresse";
-    case SiteCreationStep.SOILS_INTRODUCTION:
-    case SiteCreationStep.SOILS_SELECTION:
-    case SiteCreationStep.SURFACE_AREA:
-    case SiteCreationStep.SOILS_SURFACE_AREAS_ACCURACY_SELECTION:
-    case SiteCreationStep.SOILS_SURFACE_AREAS_BY_PERCENTAGE:
-    case SiteCreationStep.SOILS_SURFACE_AREAS_BY_SQUARE_METERS:
-    case SiteCreationStep.SOILS_SUMMARY:
-    case SiteCreationStep.SOILS_CARBON_STORAGE:
+    case "SOILS_INTRODUCTION":
+    case "SOILS_SELECTION":
+    case "SURFACE_AREA":
+    case "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE":
+    case "SOILS_SURFACE_AREAS_DISTRIBUTION":
+    case "SOILS_SUMMARY":
+    case "SOILS_CARBON_STORAGE":
       return "Sols";
-    case SiteCreationStep.SOIL_CONTAMINATION:
+    case "SOILS_CONTAMINATION":
       return "Pollution";
-    case SiteCreationStep.MANAGEMENT_INTRODUCTION:
-    case SiteCreationStep.OWNER:
-    case SiteCreationStep.TENANT:
-    case SiteCreationStep.RECENT_ACCIDENTS:
-    case SiteCreationStep.FULL_TIME_JOBS_INVOLVED:
-    case SiteCreationStep.YEARLY_EXPENSES:
-    case SiteCreationStep.YEARLY_INCOME:
-    case SiteCreationStep.EXPENSES_SUMMARY:
+    case "MANAGEMENT_INTRODUCTION":
+    case "OWNER":
+    case "TENANT":
+    case "FRICHE_RECENT_ACCIDENTS":
+    case "FULL_TIME_JOBS_INVOLVED":
+    case "YEARLY_EXPENSES":
+    case "YEARLY_INCOME":
+    case "YEARLY_EXPENSES_SUMMARY":
       return "Gestion du site";
-    case SiteCreationStep.FRICHE_ACTIVITY:
-    case SiteCreationStep.NAMING:
+    case "FRICHE_ACTIVITY":
+    case "NAMING":
       return "Dénomination";
-    case SiteCreationStep.SUMMARY:
-    case SiteCreationStep.CREATION_CONFIRMATION:
+    case "FINAL_SUMMARY":
+    case "CREATION_CONFIRMATION":
       return "Récapitulatif";
   }
 };

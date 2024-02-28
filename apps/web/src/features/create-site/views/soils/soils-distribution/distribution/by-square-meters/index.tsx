@@ -1,11 +1,7 @@
 import { useMemo } from "react";
 import SiteSoilsDistributionBySquareMetersForm, { type FormValues } from "./BySquareMeters";
 
-import {
-  goToStep,
-  setSoilsDistribution,
-  SiteCreationStep,
-} from "@/features/create-site/application/createSite.reducer";
+import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
 import { SoilType } from "@/shared/domain/soils";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -28,8 +24,7 @@ function SiteSoilsDistributionBySquareMetersFormContainer() {
   );
 
   const onSubmit = (formData: FormValues) => {
-    dispatch(setSoilsDistribution(formatFormValues(formData)));
-    dispatch(goToStep(SiteCreationStep.SOILS_SUMMARY));
+    dispatch(completeSoilsDistribution({ distribution: formatFormValues(formData) }));
   };
 
   return (

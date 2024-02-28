@@ -1,4 +1,4 @@
-import { goToStep, SiteCreationStep } from "../../../application/createSite.reducer";
+import { completeSoilsIntroduction } from "../../../application/createSite.reducer";
 import SiteSoilsIntroduction from "./SoilsIntroduction";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -10,7 +10,7 @@ function SiteSoilsIntroductionContainer() {
   return (
     <SiteSoilsIntroduction
       isFriche={!!isFriche}
-      onNext={() => dispatch(goToStep(SiteCreationStep.SURFACE_AREA))}
+      onNext={() => dispatch(completeSoilsIntroduction())}
     />
   );
 }

@@ -1,4 +1,4 @@
-import { goToStep, setSoils, SiteCreationStep } from "../../../application/createSite.reducer";
+import { completeSoils } from "../../../application/createSite.reducer";
 import SiteSoilsForm, { FormValues } from "./SoilsForm";
 
 import { AppDispatch, RootState } from "@/app/application/store";
@@ -8,8 +8,7 @@ const mapProps = (dispatch: AppDispatch, siteCreationState: RootState["siteCreat
   return {
     isFriche: !!siteCreationState.siteData.isFriche,
     onSubmit: (formData: FormValues) => {
-      dispatch(setSoils(formData.soils));
-      dispatch(goToStep(SiteCreationStep.SOILS_SURFACE_AREAS_ACCURACY_SELECTION));
+      dispatch(completeSoils({ soils: formData.soils }));
     },
   };
 };

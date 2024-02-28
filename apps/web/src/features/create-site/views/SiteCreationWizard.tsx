@@ -1,4 +1,3 @@
-import { SiteCreationStep } from "../application/createSite.reducer";
 import SiteExpensesSummary from "./site-management/expenses-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
@@ -9,8 +8,7 @@ import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/yearly-income";
 import SiteSoilsCarbonStorage from "./soils/soils-carbon-storage";
 import SiteSoilsDistributionAccuracySelection from "./soils/soils-distribution/accuracy-selection";
-import SiteSoilsDistributionByPercentage from "./soils/soils-distribution/by-percentage";
-import SiteSoilsDistributionBySquareMeters from "./soils/soils-distribution/by-square-meters";
+import SiteSoilsDistribution from "./soils/soils-distribution/distribution";
 import SiteSoilsIntroduction from "./soils/soils-introduction";
 import SiteSoilsForm from "./soils/soils-selection";
 import SiteSoilsSummary from "./soils/soils-summary";
@@ -31,51 +29,49 @@ function SiteCreationWizard() {
 
   const getStepComponent = () => {
     switch (siteCreationState.step) {
-      case SiteCreationStep.SITE_TYPE:
+      case "SITE_TYPE":
         return <SiteTypeForm />;
-      case SiteCreationStep.ADDRESS:
+      case "ADDRESS":
         return <AddressForm />;
-      case SiteCreationStep.SOILS_INTRODUCTION:
+      case "SOILS_INTRODUCTION":
         return <SiteSoilsIntroduction />;
-      case SiteCreationStep.SURFACE_AREA:
+      case "SURFACE_AREA":
         return <SiteSurfaceAreaForm />;
-      case SiteCreationStep.SOILS_SELECTION:
+      case "SOILS_SELECTION":
         return <SiteSoilsForm />;
-      case SiteCreationStep.SOILS_SURFACE_AREAS_ACCURACY_SELECTION:
+      case "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE":
         return <SiteSoilsDistributionAccuracySelection />;
-      case SiteCreationStep.SOILS_SURFACE_AREAS_BY_PERCENTAGE:
-        return <SiteSoilsDistributionByPercentage />;
-      case SiteCreationStep.SOILS_SURFACE_AREAS_BY_SQUARE_METERS:
-        return <SiteSoilsDistributionBySquareMeters />;
-      case SiteCreationStep.SOILS_SUMMARY:
+      case "SOILS_SURFACE_AREAS_DISTRIBUTION":
+        return <SiteSoilsDistribution />;
+      case "SOILS_SUMMARY":
         return <SiteSoilsSummary />;
-      case SiteCreationStep.SOILS_CARBON_STORAGE:
+      case "SOILS_CARBON_STORAGE":
         return <SiteSoilsCarbonStorage />;
-      case SiteCreationStep.SOIL_CONTAMINATION:
+      case "SOILS_CONTAMINATION":
         return <SoilContaminationForm />;
-      case SiteCreationStep.MANAGEMENT_INTRODUCTION:
+      case "MANAGEMENT_INTRODUCTION":
         return <SiteManagementIntroduction />;
-      case SiteCreationStep.OWNER:
+      case "OWNER":
         return <SiteOwnerForm />;
-      case SiteCreationStep.TENANT:
+      case "TENANT":
         return <SiteTenantForm />;
-      case SiteCreationStep.FULL_TIME_JOBS_INVOLVED:
+      case "FULL_TIME_JOBS_INVOLVED":
         return <SiteFullTimeJobsInvolvedForm />;
-      case SiteCreationStep.RECENT_ACCIDENTS:
+      case "FRICHE_RECENT_ACCIDENTS":
         return <FricheRecentAccidentsForm />;
-      case SiteCreationStep.YEARLY_EXPENSES:
+      case "YEARLY_EXPENSES":
         return <SiteYearlyExpensesForm />;
-      case SiteCreationStep.YEARLY_INCOME:
+      case "YEARLY_INCOME":
         return <SiteYearlyIncomeForm />;
-      case SiteCreationStep.EXPENSES_SUMMARY:
+      case "YEARLY_EXPENSES_SUMMARY":
         return <SiteExpensesSummary />;
-      case SiteCreationStep.FRICHE_ACTIVITY:
+      case "FRICHE_ACTIVITY":
         return <FricheActivityForm />;
-      case SiteCreationStep.NAMING:
+      case "NAMING":
         return <SiteNameAndDescriptionForm />;
-      case SiteCreationStep.SUMMARY:
+      case "FINAL_SUMMARY":
         return <SiteDataSummary />;
-      case SiteCreationStep.CREATION_CONFIRMATION:
+      case "CREATION_CONFIRMATION":
         return <SiteCreationConfirmation />;
     }
   };
