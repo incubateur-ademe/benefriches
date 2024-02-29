@@ -1,6 +1,6 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
-import { ReconversionProjectsGroupedBySite } from "src/reconversion-projects/domain/usecases/getReconversionProjectsBySite.usecase";
+import { ReconversionProjectsGroupedBySite } from "src/reconversion-projects/domain/usecases/getUserReconversionProjectsBySite.usecase";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { SqlReconversionProjectsListRepository } from "./SqlReconversionProjectsListRepository";
 
@@ -20,15 +20,44 @@ describe("ReconversionProjectsListRepository integration", () => {
     reconversionProjectsListRepository = new SqlReconversionProjectsListRepository(sqlConnection);
   });
 
-  describe("getById", () => {
+  describe("getGroupedBySite", () => {
     it("returns empty list when no sites", async () => {
-      const result = await reconversionProjectsListRepository.getGroupedBySite();
+      const result = await reconversionProjectsListRepository.getGroupedBySite({
+        userId: uuid(),
+      });
+      expect(result).toEqual<ReconversionProjectsGroupedBySite>([]);
+    });
+
+    it("returns empty list when no sites for given user", async () => {
+      const creatorId = uuid();
+      const siteInDb = {
+        id: uuid(),
+        created_by: creatorId,
+        name: "Site 123",
+        description: "Description of site",
+        surface_area: 14000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        tenant_name: "Tenant name",
+        tenant_structure_type: "company",
+        created_at: new Date(),
+        is_friche: true,
+        friche_activity: "HOUSING",
+        friche_has_contaminated_soils: true,
+        friche_contaminated_soil_surface_area: 230,
+      };
+      await sqlConnection("sites").insert(siteInDb);
+      const result = await reconversionProjectsListRepository.getGroupedBySite({
+        userId: uuid(),
+      });
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([]);
     });
 
     it("returns sites with no projects", async () => {
+      const userId = uuid();
       const siteInDb = {
         id: uuid(),
+        created_by: userId,
         name: "Site 123",
         description: "Description of site",
         surface_area: 14000,
@@ -44,7 +73,7 @@ describe("ReconversionProjectsListRepository integration", () => {
       };
       await sqlConnection("sites").insert(siteInDb);
 
-      const result = await reconversionProjectsListRepository.getGroupedBySite();
+      const result = await reconversionProjectsListRepository.getGroupedBySite({ userId });
 
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([
         { siteName: siteInDb.name, siteId: siteInDb.id, reconversionProjects: [] },
@@ -52,8 +81,10 @@ describe("ReconversionProjectsListRepository integration", () => {
     });
 
     it("returns reconversion projects grouped by sites", async () => {
+      const userId = uuid();
       const siteInDb1 = {
         id: uuid(),
+        created_by: userId,
         name: "Site A",
         description: "Description of site",
         surface_area: 14000,
@@ -66,6 +97,7 @@ describe("ReconversionProjectsListRepository integration", () => {
       };
       const siteInDb2 = {
         id: uuid(),
+        created_by: userId,
         name: "Site B",
         description: "Description of site",
         surface_area: 190000,
@@ -78,18 +110,21 @@ describe("ReconversionProjectsListRepository integration", () => {
       };
       const projectInDb1 = {
         id: uuid(),
+        created_by: userId,
         name: "Centrale pv",
         related_site_id: siteInDb1.id,
         created_at: new Date(),
       };
       const projectInDb2 = {
         id: uuid(),
+        created_by: userId,
         name: "Centrale pv",
         related_site_id: siteInDb2.id,
         created_at: new Date(),
       };
       const projectInDb3 = {
         id: uuid(),
+        created_by: userId,
         name: "Centrale pv",
         related_site_id: siteInDb2.id,
         created_at: new Date(),
@@ -102,7 +137,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         projectInDb3,
       ]);
 
-      const result = await reconversionProjectsListRepository.getGroupedBySite();
+      const result = await reconversionProjectsListRepository.getGroupedBySite({ userId });
 
       expect(result).toHaveLength(2);
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([

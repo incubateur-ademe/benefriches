@@ -32,7 +32,7 @@ describe("Projects list reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchReconversionProjects());
+      await store.dispatch(fetchReconversionProjects({ userId: "user123" }));
 
       const state = store.getState();
 
@@ -49,7 +49,7 @@ describe("Projects list reducer", () => {
         }),
       );
 
-      await store.dispatch(fetchReconversionProjects());
+      await store.dispatch(fetchReconversionProjects({ userId: "user123" }));
 
       const state = store.getState();
 
