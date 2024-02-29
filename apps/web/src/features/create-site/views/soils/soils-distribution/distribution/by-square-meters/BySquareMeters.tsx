@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
 import { SoilType } from "@/shared/domain/soils";
@@ -9,6 +8,7 @@ import {
   getDescriptionForSoilType,
   getLabelForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -17,6 +17,7 @@ type Props = {
   totalSurfaceArea: number;
   soils: SoilType[];
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 export type FormValues = Record<SoilType, number>;
@@ -26,7 +27,12 @@ const getTotalSurface = (soilsDistribution: FormValues) =>
     .filter(Number)
     .reduce((total, surface) => total + surface, 0);
 
-function SiteSoilsDistributionBySquareMetersForm({ soils, totalSurfaceArea, onSubmit }: Props) {
+function SiteSoilsDistributionBySquareMetersForm({
+  soils,
+  totalSurfaceArea,
+  onSubmit,
+  onBack,
+}: Props) {
   const { control, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
@@ -86,7 +92,7 @@ function SiteSoilsDistributionBySquareMetersForm({ soils, totalSurfaceArea, onSu
               : `${remainder > 0 ? "-" : "+"} ${formatNumberFr(Math.abs(remainder))} m²`
           }
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
@@ -31,6 +31,7 @@ type Props = {
     maintenance: { amount?: number };
   };
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 const siteManagementInputs = [
@@ -133,6 +134,7 @@ const expenseBearerOptions = [
 
 function SiteYearlyExpensesForm({
   onSubmit,
+  onBack,
   hasTenant,
   isFriche,
   hasRecentAccidents,
@@ -216,16 +218,7 @@ function SiteYearlyExpensesForm({
           </>
         )}
 
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

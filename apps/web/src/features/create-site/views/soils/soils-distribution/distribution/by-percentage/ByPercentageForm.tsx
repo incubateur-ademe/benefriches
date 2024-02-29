@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
 import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
@@ -9,12 +8,14 @@ import {
   getDescriptionForSoilType,
   getLabelForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   soils: SoilType[];
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 export type FormValues = Record<SoilType, number>;
@@ -30,7 +31,7 @@ const SLIDER_PROPS = {
   },
 };
 
-function SiteSoilsDistributionByPercentageForm({ soils, onSubmit }: Props) {
+function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Props) {
   const { control, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
@@ -81,7 +82,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit }: Props) {
               : `${remainder > 0 ? "-" : "+"} ${formatNumberFr(Math.abs(remainder))} %`
           }
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

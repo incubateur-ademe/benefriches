@@ -1,19 +1,19 @@
-import Button from "@codegouvfr/react-dsfr/Button";
-
 import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onNext: () => void;
+  onBack: () => void;
   totalSurfaceArea: number;
   soilsDistribution: Partial<Record<SoilType, number>>;
 };
 
-const SiteSoilsSummary = ({ totalSurfaceArea, onNext, soilsDistribution }: Props) => {
+const SiteSoilsSummary = ({ totalSurfaceArea, onNext, onBack, soilsDistribution }: Props) => {
   const formattedTotalSurfaceAreaInHectare = formatNumberFr(
     convertSquareMetersToHectares(totalSurfaceArea),
   );
@@ -29,9 +29,7 @@ const SiteSoilsSummary = ({ totalSurfaceArea, onNext, soilsDistribution }: Props
         .
       </p>
       <SurfaceAreaPieChart soilsDistribution={soilsDistribution} />
-      <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-        Suivant
-      </Button>
+      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </WizardFormLayout>
   );
 };

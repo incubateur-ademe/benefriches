@@ -1,7 +1,6 @@
 import { useForm, UseFormRegister } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
 import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 
 import { SoilType } from "@/shared/domain/soils";
@@ -9,6 +8,7 @@ import {
   getDescriptionForSoilType,
   getLabelForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -17,6 +17,7 @@ export type FormValues = {
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   isFriche: boolean;
 };
 
@@ -99,7 +100,7 @@ const fricheSoilOptionsCategories = [
   },
 ] as const;
 
-function SiteSoilsForm({ onSubmit, isFriche }: Props) {
+function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
 
   const validationError = formState.errors.soils;
@@ -134,15 +135,7 @@ function SiteSoilsForm({ onSubmit, isFriche }: Props) {
             );
           })}
         </div>
-        <ButtonsGroup
-          buttonsEquisized
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

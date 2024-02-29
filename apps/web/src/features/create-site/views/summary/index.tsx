@@ -1,4 +1,4 @@
-import { completeSummary } from "../../application/createSite.reducer";
+import { completeSummary, revertStep } from "../../application/createSite.reducer";
 import SiteDataSummary from "./SiteDataSummary";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -9,6 +9,10 @@ function SiteDataSummaryContainer() {
 
   const onNext = () => {
     dispatch(completeSummary());
+  };
+
+  const onBack = () => {
+    dispatch(revertStep());
   };
 
   return (
@@ -35,6 +39,7 @@ function SiteDataSummaryContainer() {
         isFriche: siteData.isFriche ?? false,
       }}
       onNext={onNext}
+      onBack={onBack}
     />
   );
 }

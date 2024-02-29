@@ -1,7 +1,10 @@
 import SiteExpensesSummary from "./SiteExpensesSummary";
 
 import { AppDispatch, RootState } from "@/app/application/store";
-import { completeYearlyExpensesSummary } from "@/features/create-site/application/createSite.reducer";
+import {
+  completeYearlyExpensesSummary,
+  revertStep,
+} from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["siteData"]) => {
@@ -14,6 +17,9 @@ const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["si
     ownerExpenses: (siteData.yearlyExpenses ?? []).filter(({ bearer }) => bearer === "owner"),
     tenantExpenses: (siteData.yearlyExpenses ?? []).filter(({ bearer }) => bearer === "tenant"),
     onNext,
+    onBack: () => {
+      dispatch(revertStep());
+    },
   };
 };
 

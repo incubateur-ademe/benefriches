@@ -1,3 +1,4 @@
+import { revertSoilsContaminationStep } from "../../application/createSite.actions";
 import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -7,6 +8,9 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 const mapProps = (dispatch: AppDispatch, siteSurfaceArea: number) => {
   return {
     siteSurfaceArea,
+    onBack: () => {
+      dispatch(revertSoilsContaminationStep());
+    },
     onSubmit: ({ hasContaminatedSoils, contaminatedSurface }: FormValues) => {
       dispatch(
         completeSoilsContamination({

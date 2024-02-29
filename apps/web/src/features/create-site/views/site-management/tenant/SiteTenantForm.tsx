@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 import Input from "@codegouvfr/react-dsfr/Input";
 
 import {
@@ -7,6 +6,7 @@ import {
   SiteLocalAuthorities,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -15,6 +15,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   siteLocalAuthorities: { loadingState: LoadingState; localAuthorities?: SiteLocalAuthorities };
 };
 
@@ -33,7 +34,7 @@ export type FormValues =
 
 const requiredMessage = "Ce champ est requis";
 
-function SiteTenantForm({ onSubmit, siteLocalAuthorities }: Props) {
+function SiteTenantForm({ onSubmit, onBack, siteLocalAuthorities }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -91,7 +92,7 @@ function SiteTenantForm({ onSubmit, siteLocalAuthorities }: Props) {
             {...register("tenantType", { required: requiredMessage })}
           />
         </Fieldset>
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -54,12 +54,13 @@ export type FormValues = {
 
 type Props = {
   onSubmit: (formData: FormValues) => void;
+  onBack: () => void;
 };
 
 const requiredMessage =
   "Si vous ne savez pas qualifier l’activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
 
-function FricheActivityForm({ onSubmit }: Props) {
+function FricheActivityForm({ onSubmit, onBack }: Props) {
   const {
     register,
     handleSubmit,
@@ -78,16 +79,7 @@ function FricheActivityForm({ onSubmit }: Props) {
           options={FRICHE_ACTIVITY_OPTIONS}
           error={error}
         />
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );
