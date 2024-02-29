@@ -1,4 +1,4 @@
-import { ProjectCreationStep } from "../application/createProject.reducer";
+import { selectCurrentStep } from "../application/createProject.reducer";
 import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
 import RealEstateTransactionCostsContainer from "./costs/real-estate-transaction-costs";
@@ -33,74 +33,74 @@ import Stepper from "./Stepper";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectCreationWizard() {
-  const projectCreationStep = useAppSelector((state) => state.projectCreation.step);
+  const currentStep = useAppSelector(selectCurrentStep);
 
   const getStepComponent = () => {
-    switch (projectCreationStep) {
-      case ProjectCreationStep.PROJECT_TYPES:
+    switch (currentStep) {
+      case "PROJECT_TYPES":
         return <ProjectTypesForm />;
-      case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:
+      case "RENEWABLE_ENERGY_TYPES":
         return <RenewableEnergyTypesForm />;
-      case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
+      case "STAKEHOLDERS_INTRODUCTION":
         return <ProjectStakeholdersIntroduction />;
-      case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:
+      case "STAKEHOLDERS_FUTURE_OPERATOR":
         return <SiteOperatorForm />;
-      case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
+      case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
         return <SiteReinstatementContractOwnerForm />;
-      case ProjectCreationStep.STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS:
+      case "STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS":
         return <ProjectFullTimeJobsInvolvedForm />;
-      case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:
+      case "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS":
         return <OperationsFullTimeJobsInvolvedForm />;
-      case ProjectCreationStep.STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION:
+      case "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION":
         return <HasRealEstateTransactionFormContainer />;
-      case ProjectCreationStep.STAKEHOLDERS_FUTURE_SITE_OWNER:
+      case "STAKEHOLDERS_NEW_OWNER":
         return <FutureOwnerFormContainer />;
-      case ProjectCreationStep.COSTS_INTRODUCTION:
+      case "COSTS_INTRODUCTION":
         return <ProjectCostsIntroduction />;
-      case ProjectCreationStep.COSTS_REINSTATEMENT:
+      case "COSTS_REINSTATEMENT":
         return <ReinstatementsCostsForm />;
-      case ProjectCreationStep.COSTS_REAL_ESTATE_TRANSACTION_AMOUNT:
+      case "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT":
         return <RealEstateTransactionCostsContainer />;
-      case ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION:
+      case "COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION":
         return <PhotovoltaicPanelsInstallationCostsForm />;
-      case ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS:
+      case "COSTS_PROJECTED_YEARLY_COSTS":
         return <YearlyProjectedCostsForm />;
-      case ProjectCreationStep.REVENUE_INTRODUCTION:
+      case "REVENUE_INTRODUCTION":
         return <ProjectRevenueIntroduction />;
-      case ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE:
+      case "REVENUE_PROJECTED_YEARLY_REVENUE":
         return <ProjectYearlyProjectedRevenueForm />;
-      case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
+      case "REVENUE_FINANCIAL_ASSISTANCE":
         return <ProjectFinancialAssistanceRevenueForm />;
-      case ProjectCreationStep.NAMING:
+      case "NAMING":
         return <ProjectNameAndDescriptionForm />;
-      case ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER:
+      case "PHOTOVOLTAIC_KEY_PARAMETER":
         return <PhotovoltaicKeyParameter />;
-      case ProjectCreationStep.PHOTOVOLTAIC_POWER:
+      case "PHOTOVOLTAIC_POWER":
         return <PhotovoltaicPower />;
-      case ProjectCreationStep.PHOTOVOLTAIC_SURFACE:
+      case "PHOTOVOLTAIC_SURFACE":
         return <PhotovoltaicSurface />;
-      case ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION:
+      case "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION":
         return <PhotovoltaicExpectedAnnualProductionContainer />;
-      case ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION:
+      case "PHOTOVOLTAIC_CONTRACT_DURATION":
         return <PhotovoltaicContractDurationContainer />;
-      case ProjectCreationStep.SOILS_SURFACE_AREAS:
+      case "SOILS_SURFACE_AREAS":
         return <ProjectSoilsDistributionContainer />;
-      case ProjectCreationStep.SOILS_SUMMARY:
+      case "SOILS_SUMMARY":
         return <ProjectSoilsSummaryContainer />;
-      case ProjectCreationStep.SOILS_CARBON_STORAGE:
+      case "SOILS_CARBON_STORAGE":
         return <ProjectSoilsCarbonStorageContainer />;
-      case ProjectCreationStep.SCHEDULE_INTRODUCTION:
+      case "SCHEDULE_INTRODUCTION":
         return <ProjectScheduleIntroductionContainer />;
-      case ProjectCreationStep.SCHEDULE_PROJECTION:
+      case "SCHEDULE_PROJECTION":
         return <ProjectScheduleProjectionFormContainer />;
-      case ProjectCreationStep.CREATION_CONFIRMATION:
+      case "CREATION_CONFIRMATION":
         return <ProjectCreationConfirmation />;
     }
   };
 
   return (
     <>
-      <Stepper step={projectCreationStep} />
+      <Stepper step={currentStep} />
       {getStepComponent()}
     </>
   );

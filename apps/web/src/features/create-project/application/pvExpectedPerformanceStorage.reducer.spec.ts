@@ -3,7 +3,7 @@ import { ProjectSite } from "../domain/project.types";
 import { ExpectedPhotovoltaicPerformanceMock } from "../infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
 import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
 import { fetchRelatedSiteAction } from "./createProject.actions";
-import { setPhotovoltaicInstallationElectricalPower } from "./createProject.reducer";
+import { completePhotovoltaicInstallationElectricalPower } from "./createProject.reducer";
 import {
   fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation,
   PhotovoltaicPerformanceApiResult,
@@ -90,7 +90,7 @@ describe("Photovoltaic expected performance reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setPhotovoltaicInstallationElectricalPower(3));
+    store.dispatch(completePhotovoltaicInstallationElectricalPower(3));
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
     expect(mockSpy.getExpectedPhotovoltaicPerformance).toHaveBeenCalledTimes(1);
@@ -110,7 +110,7 @@ describe("Photovoltaic expected performance reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setPhotovoltaicInstallationElectricalPower(3.0));
+    store.dispatch(completePhotovoltaicInstallationElectricalPower(3.0));
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
     const state = store.getState();
@@ -133,7 +133,7 @@ describe("Photovoltaic expected performance reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setPhotovoltaicInstallationElectricalPower(3.0));
+    store.dispatch(completePhotovoltaicInstallationElectricalPower(3.0));
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
     const state = store.getState();

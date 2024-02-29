@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { ProjectCreationStep } from "./createProject.reducer";
 import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
 
 import { createStore, RootState } from "@/app/application/store";
@@ -71,7 +70,7 @@ const INITIAL_STATE = {
   siteData: {
     address: PARIS_ADDRESS_MOCK,
   },
-  step: ProjectCreationStep.PROJECT_TYPES,
+  stepsHistory: ["PROJECT_TYPES"],
   projectData: {},
   siteDataLoadingState: "success",
   saveProjectLoadingState: "idle",

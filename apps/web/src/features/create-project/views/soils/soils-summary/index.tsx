@@ -1,14 +1,13 @@
 import ProjectSoilsSummary from "./ProjectSoilsSummary";
 
-import {
-  goToStep,
-  ProjectCreationStep,
-} from "@/features/create-project/application/createProject.reducer";
+import { completeSoilsSummaryStep } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectSoilsSummaryContainer() {
   const dispatch = useAppDispatch();
-  const onNext = () => dispatch(goToStep(ProjectCreationStep.SOILS_CARBON_STORAGE));
+  const onNext = () => {
+    dispatch(completeSoilsSummaryStep());
+  };
   const siteSoilsDistribution = useAppSelector(
     (state) => state.projectCreation.siteData?.soilsDistribution ?? {},
   );

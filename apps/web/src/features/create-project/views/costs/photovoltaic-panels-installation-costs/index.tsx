@@ -1,8 +1,4 @@
-import {
-  goToStep,
-  ProjectCreationStep,
-  setPhotovoltaicPanelsInstallationCost,
-} from "../../../application/createProject.reducer";
+import { completePhotovoltaicPanelsInstallationCost } from "../../../application/createProject.reducer";
 import PhotovoltaicPanelsInstallationCostsForm, {
   FormValues,
 } from "./PhotoVoltaicPanelsInstallationCostsForm";
@@ -15,8 +11,7 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (amounts: FormValues) => {
       const totalCost = sumObjectValues(amounts);
-      dispatch(setPhotovoltaicPanelsInstallationCost(totalCost));
-      dispatch(goToStep(ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS));
+      dispatch(completePhotovoltaicPanelsInstallationCost(totalCost));
     },
   };
 };

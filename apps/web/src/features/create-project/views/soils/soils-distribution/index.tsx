@@ -1,10 +1,6 @@
 import SoilDistributionForm from "./SoilsDistributionForm";
 
-import {
-  goToStep,
-  ProjectCreationStep,
-  setSoilsDistribution,
-} from "@/features/create-project/application/createProject.reducer";
+import { completeSoilsDistribution } from "@/features/create-project/application/createProject.reducer";
 import {
   RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
   RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
@@ -48,13 +44,12 @@ function ProjectSoilsDistributionContainer() {
       )}
       onSubmit={({ soilsDistribution }) => {
         dispatch(
-          setSoilsDistribution(
+          completeSoilsDistribution(
             Object.fromEntries(
               soilsDistribution.map(({ soilType, surface }) => [soilType, surface]),
             ),
           ),
         );
-        dispatch(goToStep(ProjectCreationStep.SOILS_SUMMARY));
       }}
     />
   );

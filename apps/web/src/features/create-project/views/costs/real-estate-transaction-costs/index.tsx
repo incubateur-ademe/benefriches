@@ -1,8 +1,4 @@
-import {
-  goToStep,
-  ProjectCreationStep,
-  setRealEstateTransactionCost,
-} from "../../../application/createProject.reducer";
+import { completeRealEstateTransactionCost } from "../../../application/createProject.reducer";
 import RealEstateTransactionCostsForm, { FormValues } from "./RealEstateTransactionCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -13,8 +9,7 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (data: FormValues) => {
       const totalCost = sumObjectValues(data);
-      dispatch(setRealEstateTransactionCost(totalCost));
-      dispatch(goToStep(ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION));
+      dispatch(completeRealEstateTransactionCost(totalCost));
     },
   };
 };

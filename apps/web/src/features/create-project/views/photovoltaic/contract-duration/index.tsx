@@ -1,10 +1,6 @@
 import PhotovoltaicContractDurationForm from "./ContractDurationForm";
 
-import {
-  goToStep,
-  ProjectCreationStep,
-  setPhotovoltaicContractDuration,
-} from "@/features/create-project/application/createProject.reducer";
+import { completePhotovoltaicContractDuration } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function PhotovoltaicContractDurationContainer() {
@@ -12,8 +8,7 @@ function PhotovoltaicContractDurationContainer() {
   return (
     <PhotovoltaicContractDurationForm
       onSubmit={(data) => {
-        dispatch(setPhotovoltaicContractDuration(data.photovoltaicContractDuration));
-        dispatch(goToStep(ProjectCreationStep.SOILS_SURFACE_AREAS));
+        dispatch(completePhotovoltaicContractDuration(data.photovoltaicContractDuration));
       }}
     />
   );

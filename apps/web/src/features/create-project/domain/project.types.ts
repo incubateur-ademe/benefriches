@@ -1,3 +1,5 @@
+import { Schedule } from "../application/createProject.actions";
+
 import { SoilType } from "@/shared/domain/soils";
 import {
   LocalAutorityStructureType,
@@ -49,14 +51,8 @@ export type ReconversionProjectCreationData = {
   yearlyProjectedCosts: Expense[];
   yearlyProjectedRevenues: Revenue[];
   soilsDistribution: Partial<Record<SoilType, number>>;
-  reinstatementSchedule?: {
-    startDate: string;
-    endDate: string;
-  };
-  photovoltaicInstallationSchedule?: {
-    startDate: string;
-    endDate: string;
-  };
+  reinstatementSchedule?: Schedule;
+  photovoltaicInstallationSchedule?: Schedule;
   firstYearOfOperation?: number;
 };
 

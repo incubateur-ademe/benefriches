@@ -2,7 +2,7 @@
 import { ProjectSite } from "../domain/project.types";
 import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
 import { fetchRelatedSiteAction } from "./createProject.actions";
-import { setSoilsDistribution } from "./createProject.reducer";
+import { completeSoilsDistribution } from "./createProject.reducer";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./soilsCarbonStorage.actions";
 
 import { createStore } from "@/app/application/store";
@@ -85,7 +85,7 @@ describe("Site carbon sequestration reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setSoilsDistribution(PROJECT_SOILS_MOCK));
+    store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledTimes(2);
@@ -115,7 +115,7 @@ describe("Site carbon sequestration reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setSoilsDistribution(PROJECT_SOILS_MOCK));
+    store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     const state = store.getState();
@@ -138,7 +138,7 @@ describe("Site carbon sequestration reducer", () => {
     );
 
     await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(setSoilsDistribution(PROJECT_SOILS_MOCK));
+    store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     const state = store.getState();
