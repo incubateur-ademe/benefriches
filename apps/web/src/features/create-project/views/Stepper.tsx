@@ -16,43 +16,43 @@ type StepCategory = (typeof stepCategories)[number];
 
 const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
   switch (step) {
-    case ProjectCreationStep.PROJECT_TYPES:
-    case ProjectCreationStep.RENEWABLE_ENERGY_TYPES:
+    case "PROJECT_TYPES":
+    case "RENEWABLE_ENERGY_TYPES":
       return "Type de projet";
-    case ProjectCreationStep.PHOTOVOLTAIC_KEY_PARAMETER:
-    case ProjectCreationStep.PHOTOVOLTAIC_POWER:
-    case ProjectCreationStep.PHOTOVOLTAIC_SURFACE:
-    case ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION:
-    case ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION:
+    case "PHOTOVOLTAIC_KEY_PARAMETER":
+    case "PHOTOVOLTAIC_POWER":
+    case "PHOTOVOLTAIC_SURFACE":
+    case "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION":
+    case "PHOTOVOLTAIC_CONTRACT_DURATION":
       return "Photovoltaïque";
-    case ProjectCreationStep.SOILS_SURFACE_AREAS:
-    case ProjectCreationStep.SOILS_SUMMARY:
-    case ProjectCreationStep.SOILS_CARBON_STORAGE:
+    case "SOILS_SURFACE_AREAS":
+    case "SOILS_SUMMARY":
+    case "SOILS_CARBON_STORAGE":
       return "Aménagement des sols";
-    case ProjectCreationStep.STAKEHOLDERS_INTRODUCTION:
-    case ProjectCreationStep.STAKEHOLDERS_FUTURE_OPERATOR:
-    case ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER:
-    case ProjectCreationStep.STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS:
-    case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:
-    case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE:
-    case ProjectCreationStep.STAKEHOLDERS_FUTURE_OWNER:
-    case ProjectCreationStep.STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION:
-    case ProjectCreationStep.STAKEHOLDERS_FUTURE_SITE_OWNER:
+    case "STAKEHOLDERS_INTRODUCTION":
+    case "STAKEHOLDERS_FUTURE_OPERATOR":
+    case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
+    case "STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS":
+    case "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS":
+    case "STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE":
+    case "STAKEHOLDERS_FUTURE_OWNER":
+    case "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION":
+    case "STAKEHOLDERS_NEW_OWNER":
       return "Acteurs";
-    case ProjectCreationStep.COSTS_INTRODUCTION:
-    case ProjectCreationStep.COSTS_REAL_ESTATE_TRANSACTION_AMOUNT:
-    case ProjectCreationStep.COSTS_REINSTATEMENT:
-    case ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION:
-    case ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS:
-    case ProjectCreationStep.REVENUE_INTRODUCTION:
-    case ProjectCreationStep.REVENUE_PROJECTED_YEARLY_REVENUE:
-    case ProjectCreationStep.REVENUE_FINANCIAL_ASSISTANCE:
+    case "COSTS_INTRODUCTION":
+    case "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT":
+    case "COSTS_REINSTATEMENT":
+    case "COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION":
+    case "COSTS_PROJECTED_YEARLY_COSTS":
+    case "REVENUE_INTRODUCTION":
+    case "REVENUE_PROJECTED_YEARLY_REVENUE":
+    case "REVENUE_FINANCIAL_ASSISTANCE":
       return "Coûts et recettes";
-    case ProjectCreationStep.SCHEDULE_INTRODUCTION:
-    case ProjectCreationStep.SCHEDULE_PROJECTION:
+    case "SCHEDULE_INTRODUCTION":
+    case "SCHEDULE_PROJECTION":
       return "Calendrier";
-    case ProjectCreationStep.NAMING:
-    case ProjectCreationStep.CREATION_CONFIRMATION:
+    case "NAMING":
+    case "CREATION_CONFIRMATION":
       return "Dénomination";
   }
 };

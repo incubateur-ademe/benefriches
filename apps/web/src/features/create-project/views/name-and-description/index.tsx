@@ -4,20 +4,15 @@ import { generateProjectName } from "../../domain/projectName";
 import ProjectNameAndDescriptionForm, { FormValues } from "./ProjectNameAndDescriptionForm";
 
 import { AppDispatch } from "@/app/application/store";
-import {
-  goToStep,
-  ProjectCreationStep,
-  setNameAndDescription,
-} from "@/features/create-project/application/createProject.reducer";
+import { completeNaming } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, projectData: ReconversionProjectCreationData) => {
   return {
     defaultProjectName: generateProjectName(projectData),
     onSubmit: (formData: FormValues) => {
-      dispatch(setNameAndDescription(formData));
+      dispatch(completeNaming(formData));
       void dispatch(saveProjectAction());
-      dispatch(goToStep(ProjectCreationStep.CREATION_CONFIRMATION));
     },
   };
 };

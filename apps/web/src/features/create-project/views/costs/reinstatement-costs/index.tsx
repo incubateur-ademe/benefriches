@@ -1,8 +1,4 @@
-import {
-  goToStep,
-  ProjectCreationStep,
-  setReinstatementCost,
-} from "../../../application/createProject.reducer";
+import { completeReinstatementCost } from "../../../application/createProject.reducer";
 import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -29,8 +25,7 @@ const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
     hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
     onSubmit: (amounts: FormValues) => {
       const totalCost = sumObjectValues(amounts);
-      dispatch(setReinstatementCost(totalCost));
-      dispatch(goToStep(ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION));
+      dispatch(completeReinstatementCost(totalCost));
     },
   };
 };

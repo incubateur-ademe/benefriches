@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
-import {
-  goToStep,
-  ProjectCreationStep,
-  setFutureOperator,
-} from "@/features/create-project/application/createProject.reducer";
+import { completeFutureOperator } from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
@@ -57,18 +53,13 @@ function SiteOperatorFormContainer() {
   const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
   const siteLocalAuthorities = projectSiteLocalAuthorities.localAuthorities;
 
-  const nextStep = projectSite?.isFriche
-    ? ProjectCreationStep.STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER
-    : ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS;
-
   const onSubmit = (data: FormValues) => {
     if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
-      setFutureOperator(
+      completeFutureOperator(
         convertFormValuesForStore(data, projectSite, currentUserCompany.name, siteLocalAuthorities),
       ),
     );
-    dispatch(goToStep(nextStep));
   };
 
   useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);

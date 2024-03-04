@@ -1,10 +1,6 @@
 import ProjectTypeForm from "./ProjectTypesForm";
 
-import {
-  goToStep,
-  ProjectCreationStep,
-  setDevelopmentPlanCategories,
-} from "@/features/create-project/application/createProject.reducer";
+import { completeDevelopmentPlanCategories } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectTypesFormContainer() {
@@ -16,8 +12,7 @@ function ProjectTypesFormContainer() {
     <ProjectTypeForm
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={({ developmentPlanCategories }) => {
-        dispatch(setDevelopmentPlanCategories(developmentPlanCategories));
-        dispatch(goToStep(ProjectCreationStep.RENEWABLE_ENERGY_TYPES));
+        dispatch(completeDevelopmentPlanCategories(developmentPlanCategories));
       }}
     />
   );

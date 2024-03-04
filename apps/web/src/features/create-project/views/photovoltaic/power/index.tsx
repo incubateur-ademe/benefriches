@@ -1,11 +1,7 @@
 import PhotovoltaicPowerForm from "./PowerForm";
 import PhotovoltaicPowerFromSurfaceForm from "./PowerFromSurfaceForm";
 
-import {
-  goToStep,
-  ProjectCreationStep,
-  setPhotovoltaicInstallationElectricalPower,
-} from "@/features/create-project/application/createProject.reducer";
+import { completePhotovoltaicInstallationElectricalPower } from "@/features/create-project/application/createProject.reducer";
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -32,6 +28,14 @@ function PhotovoltaicPowerContainer() {
     (state) => state.projectCreation.projectData.photovoltaicKeyParameter,
   );
 
+  const onSubmit = (data: { photovoltaicInstallationElectricalPowerKWc: number }) => {
+    dispatch(
+      completePhotovoltaicInstallationElectricalPower(
+        data.photovoltaicInstallationElectricalPowerKWc,
+      ),
+    );
+  };
+
   if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.SURFACE) {
     return (
       <PhotovoltaicPowerFromSurfaceForm
@@ -39,14 +43,7 @@ function PhotovoltaicPowerContainer() {
           surfaceSquareMeters,
         )}
         photovoltaicSurfaceArea={surfaceSquareMeters}
-        onSubmit={(data) => {
-          dispatch(
-            setPhotovoltaicInstallationElectricalPower(
-              data.photovoltaicInstallationElectricalPowerKWc,
-            ),
-          );
-          dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION));
-        }}
+        onSubmit={onSubmit}
       />
     );
   }
@@ -57,14 +54,7 @@ function PhotovoltaicPowerContainer() {
         siteSurfaceArea,
       )}
       siteSurfaceArea={siteSurfaceArea}
-      onSubmit={(data) => {
-        dispatch(
-          setPhotovoltaicInstallationElectricalPower(
-            data.photovoltaicInstallationElectricalPowerKWc,
-          ),
-        );
-        dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_SURFACE));
-      }}
+      onSubmit={onSubmit}
     />
   );
 }

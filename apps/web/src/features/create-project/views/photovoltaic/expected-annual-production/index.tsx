@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 import PhotovoltaicExpectedAnnualProductionForm from "./ExpectedAnnualProductionForm";
 
-import {
-  goToStep,
-  ProjectCreationStep,
-  setPhotovoltaicExpectedAnnualProduction,
-} from "@/features/create-project/application/createProject.reducer";
+import { completePhotovoltaicExpectedAnnualProduction } from "@/features/create-project/application/createProject.reducer";
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -34,9 +30,8 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
       surfaceArea={surfaceArea}
       onSubmit={(data) => {
         dispatch(
-          setPhotovoltaicExpectedAnnualProduction(data.photovoltaicExpectedAnnualProduction),
+          completePhotovoltaicExpectedAnnualProduction(data.photovoltaicExpectedAnnualProduction),
         );
-        dispatch(goToStep(ProjectCreationStep.PHOTOVOLTAIC_CONTRACT_DURATION));
       }}
     />
   );

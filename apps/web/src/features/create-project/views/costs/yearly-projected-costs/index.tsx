@@ -1,8 +1,4 @@
-import {
-  addYearlyProjectedCosts,
-  goToStep,
-  ProjectCreationStep,
-} from "../../../application/createProject.reducer";
+import { completeYearlyProjectedCosts } from "../../../application/createProject.reducer";
 import YearlyProjectedsCostsForm, { FormValues } from "./YearlyProjectedCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -25,8 +21,7 @@ const mapProps = (dispatch: AppDispatch) => {
           purpose: costsFormMap[sourceKey],
           amount: costs[sourceKey] as number,
         }));
-      dispatch(addYearlyProjectedCosts(yearlyProjectedCosts));
-      dispatch(goToStep(ProjectCreationStep.REVENUE_INTRODUCTION));
+      dispatch(completeYearlyProjectedCosts(yearlyProjectedCosts));
     },
   };
 };

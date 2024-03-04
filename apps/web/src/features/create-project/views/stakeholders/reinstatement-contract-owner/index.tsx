@@ -3,11 +3,7 @@ import SiteReinstatementContractOwnerForm, {
   FormValues,
 } from "./SiteReinstatementContractOwnerForm";
 
-import {
-  goToStep,
-  ProjectCreationStep,
-  setReinstatementContractOwner,
-} from "@/features/create-project/application/createProject.reducer";
+import { completeReinstatementContractOwner } from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
@@ -63,11 +59,10 @@ function SiteReinstatementContractOwnerFormContainer() {
   const onSubmit = (data: FormValues) => {
     if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
-      setReinstatementContractOwner(
+      completeReinstatementContractOwner(
         convertFormValuesForStore(data, projectSite, currentUserCompany.name, siteLocalAuthorities),
       ),
     );
-    dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS));
   };
 
   useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
