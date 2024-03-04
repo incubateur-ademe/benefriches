@@ -1,6 +1,7 @@
 import { ProjectCreationStep } from "../application/createProject.reducer";
 import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
+import RealEstateTransactionCostsContainer from "./costs/real-estate-transaction-costs";
 import ReinstatementsCostsForm from "./costs/reinstatement-costs";
 import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
 import PhotovoltaicContractDurationContainer from "./photovoltaic/contract-duration";
@@ -17,6 +18,8 @@ import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
 import ProjectSoilsDistributionContainer from "./soils/soils-distribution";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
 import ProjectFullTimeJobsInvolvedForm from "./stakeholders/conversion-full-time-jobs-involved";
+import FutureOwnerFormContainer from "./stakeholders/future-site-owner";
+import HasRealEstateTransactionFormContainer from "./stakeholders/has-real-estate-transaction";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
 import SiteOperatorForm from "./stakeholders/operator";
@@ -48,10 +51,16 @@ function ProjectCreationWizard() {
         return <ProjectFullTimeJobsInvolvedForm />;
       case ProjectCreationStep.STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS:
         return <OperationsFullTimeJobsInvolvedForm />;
+      case ProjectCreationStep.STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION:
+        return <HasRealEstateTransactionFormContainer />;
+      case ProjectCreationStep.STAKEHOLDERS_FUTURE_SITE_OWNER:
+        return <FutureOwnerFormContainer />;
       case ProjectCreationStep.COSTS_INTRODUCTION:
         return <ProjectCostsIntroduction />;
       case ProjectCreationStep.COSTS_REINSTATEMENT:
         return <ReinstatementsCostsForm />;
+      case ProjectCreationStep.COSTS_REAL_ESTATE_TRANSACTION_AMOUNT:
+        return <RealEstateTransactionCostsContainer />;
       case ProjectCreationStep.COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION:
         return <PhotovoltaicPanelsInstallationCostsForm />;
       case ProjectCreationStep.COSTS_PROJECTED_YEARLY_COSTS:

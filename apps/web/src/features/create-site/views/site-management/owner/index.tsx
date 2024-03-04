@@ -47,7 +47,7 @@ function SiteOwnerFormContainer() {
     if (!localAuthorities) return;
     dispatch(
       completeOwner({
-        owner: convertFormValuesForStore(data, currentUserCompany, localAuthorities),
+        owner: convertFormValuesForStore(data, currentUserCompany.name, localAuthorities),
       }),
     );
   };
@@ -58,8 +58,8 @@ function SiteOwnerFormContainer() {
 
   return (
     <SiteOwnerForm
-      currentUserCompany={currentUserCompany}
       siteLocalAuthorities={{ localAuthorities, loadingState }}
+      currentUserCompany={currentUserCompany.name}
       onSubmit={onSubmit}
     />
   );

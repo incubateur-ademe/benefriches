@@ -40,8 +40,11 @@ export enum ProjectCreationStep {
   STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS = "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS",
   STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE = "STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE",
   STAKEHOLDERS_FUTURE_OWNER = "STAKEHOLDERS_FUTURE_OWNER",
+  STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION = "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION",
+  STAKEHOLDERS_FUTURE_SITE_OWNER = "STAKEHOLDERS_NEW_OWNER",
   // Coûts et recette
   COSTS_INTRODUCTION = "COST_INTRODUCTION",
+  COSTS_REAL_ESTATE_TRANSACTION_AMOUNT = "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT",
   COSTS_REINSTATEMENT = "COSTS_REINSTATEMENT",
   COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION = "COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION",
   COSTS_PROJECTED_YEARLY_COSTS = "COSTS_PROJECTED_YEARLY_COSTS",
@@ -119,6 +122,9 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.reinstatementContractOwner = action.payload;
     },
+    setRealEstateTransactionCost: (state, action: PayloadAction<number>) => {
+      state.projectData.realEstateTransactionCost = action.payload;
+    },
     setReinstatementCost: (state, action: PayloadAction<number>) => {
       state.projectData.reinstatementCost = action.payload;
     },
@@ -180,6 +186,18 @@ export const projectCreationSlice = createSlice({
       action: PayloadAction<ReconversionProjectCreationData["reinstatementSchedule"]>,
     ) => {
       state.projectData.reinstatementSchedule = action.payload;
+    },
+    setHasRealEstateTransaction: (
+      state,
+      action: PayloadAction<ReconversionProjectCreationData["hasRealEstateTransaction"]>,
+    ) => {
+      state.projectData.hasRealEstateTransaction = action.payload;
+    },
+    setFutureSiteOwner: (
+      state,
+      action: PayloadAction<ReconversionProjectCreationData["futureSiteOwner"]>,
+    ) => {
+      state.projectData.futureSiteOwner = action.payload;
     },
     setPhotovoltaicPanelsInstallationSchedule: (
       state,
@@ -246,6 +264,9 @@ export const {
   setFirstYearOfOperation,
   setPhotovoltaicPanelsInstallationSchedule,
   setReinstatementSchedule,
+  setHasRealEstateTransaction,
+  setFutureSiteOwner,
+  setRealEstateTransactionCost,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;

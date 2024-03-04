@@ -5,6 +5,6 @@ export type User = {
   organization?: {
     id: string;
     name: string;
-    type: string;
+    type: "company";
   };
 };

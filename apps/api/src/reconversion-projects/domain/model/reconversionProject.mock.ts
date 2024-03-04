@@ -62,6 +62,10 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
       name: "Future operating company name",
       structureType: "company",
     },
+    futureSiteOwner: {
+      name: "Future site owner company name",
+      structureType: "company",
+    },
     conversionFullTimeJobsInvolved: 0.3,
     operationsFullTimeJobsInvolved: 2,
     // reinstatement
@@ -71,6 +75,7 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
       structureType: "company",
     },
     reinstatementCost: 90000,
+    realEstateTransactionCost: 150000,
     reinstatementFinancialAssistanceAmount: 14999.99,
     reinstatementSchedule: {
       startDate: new Date("2025-02-01"),

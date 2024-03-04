@@ -15,7 +15,7 @@ const mapProps = (dispatch: AppDispatch) => {
     onSubmit: (data: FormValues) => {
       if (data.fullTimeJobs !== undefined)
         dispatch(setOperationsFullTimeJobsInvolved(data.fullTimeJobs));
-      dispatch(goToStep(ProjectCreationStep.COSTS_INTRODUCTION));
+      dispatch(goToStep(ProjectCreationStep.STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION));
     },
   };
 };

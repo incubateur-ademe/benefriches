@@ -36,10 +36,13 @@ export type ReconversionProjectCreationData = {
   photovoltaicExpectedAnnualProduction: number;
   photovoltaicContractDuration: number;
   futureOperator: ProjectStakeholder;
+  hasRealEstateTransaction: boolean;
+  futureSiteOwner: ProjectStakeholder;
   conversionFullTimeJobsInvolved?: number;
   reinstatementFullTimeJobsInvolved?: number;
   reinstatementContractOwner?: ProjectStakeholder;
   operationsFullTimeJobsInvolved?: number;
+  realEstateTransactionCost?: number;
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
   reinstatementFinancialAssistanceAmount: number;

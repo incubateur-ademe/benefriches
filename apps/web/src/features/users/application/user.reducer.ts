@@ -25,9 +25,13 @@ export const userSlice = createSlice({
 
 export const selectCurrentUserCompany = createSelector(
   [(state: RootState) => state.currentUser],
-  (state): string => {
+  (state): Exclude<User["organization"], undefined> => {
     return (
-      state.currentUser?.organization?.name ?? "Votre entreprise (raison sociale non renseignée)"
+      state.currentUser?.organization ?? {
+        id: "",
+        type: "company",
+        name: "Votre entreprise (raison sociale non renseignée)",
+      }
     );
   },
 );
