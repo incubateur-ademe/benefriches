@@ -1,3 +1,4 @@
+import { revertFricheActivityStep } from "../../application/createSite.actions";
 import FricheActivityForm, { FormValues } from "./FricheActivityForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -8,6 +9,9 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (formData: FormValues) => {
       dispatch(completeFricheActivity(formData.activity));
+    },
+    onBack: () => {
+      dispatch(revertFricheActivityStep());
     },
   };
 };

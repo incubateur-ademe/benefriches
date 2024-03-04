@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 
 import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  onBack: () => void;
   onSubmit: (data: FormValues) => void;
 };
 
@@ -13,7 +14,7 @@ export type FormValues = {
   accuracy: SiteDraft["soilsDistributionEntryMode"];
 };
 
-function SiteSoilsDistributionAccuracySelectionForm({ onSubmit }: Props) {
+function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack }: Props) {
   const { handleSubmit, register, formState } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
@@ -49,7 +50,7 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit }: Props) {
             },
           ]}
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

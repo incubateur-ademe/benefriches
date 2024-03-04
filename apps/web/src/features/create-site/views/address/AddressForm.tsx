@@ -1,13 +1,14 @@
 import { Controller, useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Address } from "../../domain/siteFoncier.types";
 import SearchAddressAutocomplete from "./SearchAddressAutocompleteContainer";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (address: Address) => void;
+  onBack: () => void;
   isFriche: boolean;
 };
 
@@ -16,7 +17,7 @@ type FormValues = {
   searchText: string;
 };
 
-function SiteAddressForm({ onSubmit, isFriche }: Props) {
+function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
   const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>();
 
   const error = formState.errors.selectedAddress;
@@ -69,16 +70,7 @@ function SiteAddressForm({ onSubmit, isFriche }: Props) {
               />
             )}
           />
-          <ButtonsGroup
-            buttonsEquisized
-            inlineLayoutWhen="always"
-            buttons={[
-              {
-                children: "Suivant",
-                nativeButtonProps: { type: "submit" },
-              },
-            ]}
-          />
+          <BackNextButtonsGroup onBack={onBack} />
         </form>
       </WizardFormLayout>
     </>

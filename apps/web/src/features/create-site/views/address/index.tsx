@@ -1,3 +1,4 @@
+import { revertAddressStep } from "../../application/createSite.actions";
 import { completeAddressStep, SiteCreationState } from "../../application/createSite.reducer";
 import { Address } from "../../domain/siteFoncier.types";
 import AddressForm from "./AddressForm";
@@ -10,6 +11,9 @@ const mapProps = (dispatch: AppDispatch, creationState: SiteCreationState) => {
     isFriche: creationState.siteData.isFriche!,
     onSubmit: (address: Address) => {
       dispatch(completeAddressStep({ address }));
+    },
+    onBack: () => {
+      dispatch(revertAddressStep());
     },
   };
 };

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import FricheTenantForm, { FormValues } from "./SiteTenantForm";
 
+import { revertTenantStep } from "@/features/create-site/application/createSite.actions";
 import { completeTenant } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import { SiteLocalAuthorities } from "@/features/create-site/application/siteMunicipalityData.reducer";
@@ -42,9 +43,14 @@ function FricheTenantFormContainer() {
     dispatch(completeTenant({ tenant }));
   };
 
+  const onBack = () => {
+    dispatch(revertTenantStep());
+  };
+
   return (
     <FricheTenantForm
       onSubmit={onSubmit}
+      onBack={onBack}
       siteLocalAuthorities={{ localAuthorities, loadingState }}
     />
   );

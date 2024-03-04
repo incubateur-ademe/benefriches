@@ -1,3 +1,4 @@
+import { revertNamingStep } from "../../application/createSite.actions";
 import { SiteDraft } from "../../domain/siteFoncier.types";
 import { generateSiteName } from "../../domain/siteName";
 import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
@@ -11,6 +12,9 @@ const mapProps = (dispatch: AppDispatch, siteData: SiteDraft) => {
     defaultSiteName: generateSiteName(siteData),
     onSubmit: (formData: FormValues) => {
       dispatch(completeNaming(formData));
+    },
+    onBack: () => {
+      dispatch(revertNamingStep());
     },
   };
 };

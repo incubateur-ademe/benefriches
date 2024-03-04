@@ -1,8 +1,34 @@
 import z from "zod";
 import { FricheActivity } from "../domain/friche.types";
+import { revertStep } from "./createSite.reducer";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
+
+export const revertAddressStep = () => revertStep({ resetFields: ["address"] });
+export const revertSurfaceAreaStep = () => revertStep({ resetFields: ["surfaceArea"] });
+export const revertSoilsSelectionStep = () => revertStep({ resetFields: ["soils"] });
+export const revertSoilsSurfaceAreaDistributionEntryModeStep = () =>
+  revertStep({
+    resetFields: ["soilsDistributionEntryMode", "soilsDistribution"],
+  });
+export const revertSoilsDistributionStep = () => revertStep({ resetFields: ["soilsDistribution"] });
+export const revertSoilsContaminationStep = () =>
+  revertStep({
+    resetFields: ["hasContaminatedSoils", "contaminatedSoilSurface"],
+  });
+export const revertOwnerStep = () => revertStep({ resetFields: ["owner"] });
+export const revertTenantStep = () => revertStep({ resetFields: ["tenant"] });
+export const revertFullTimeJobsInvolvedStep = () =>
+  revertStep({ resetFields: ["fullTimeJobsInvolved"] });
+export const revertFricheRecentAccidentsStep = () =>
+  revertStep({
+    resetFields: ["hasRecentAccidents", "minorInjuriesPersons", "severeInjuriesPersons", "deaths"],
+  });
+export const revertYearlyExpensesStep = () => revertStep({ resetFields: ["yearlyExpenses"] });
+export const revertYearlyIncomeStep = () => revertStep({ resetFields: ["yearlyIncomes"] });
+export const revertFricheActivityStep = () => revertStep({ resetFields: ["fricheActivity"] });
+export const revertNamingStep = () => revertStep({ resetFields: ["name", "description"] });
 
 const createSiteSchema = z.object({
   id: z.string().uuid(),

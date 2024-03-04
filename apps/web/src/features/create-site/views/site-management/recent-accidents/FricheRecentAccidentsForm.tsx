@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -8,6 +8,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 type HasRecentAccidentsStringOption = "yes" | "no";
@@ -19,7 +20,7 @@ export type FormValues = {
   deaths?: number;
 };
 
-function FricheRecentAccidentsForm({ onSubmit }: Props) {
+function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
   const { register, control, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -80,7 +81,7 @@ function FricheRecentAccidentsForm({ onSubmit }: Props) {
           )}
           <RadioButton label="Non / NSP" value="no" {...register("hasRecentAccidents")} />
         </Fieldset>
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

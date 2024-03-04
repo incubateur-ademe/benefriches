@@ -3,6 +3,7 @@ import { mapFormDataToExpenses } from "./mappers";
 import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
 
 import { AppDispatch, RootState } from "@/app/application/store";
+import { revertYearlyExpensesStep } from "@/features/create-site/application/createSite.actions";
 import { completeYearlyExpenses } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
@@ -50,6 +51,9 @@ const mapProps = (
     isFriche: !!siteData.isFriche,
     hasRecentAccidents: !!siteData.hasRecentAccidents,
     defaultValues: getDefaultValues(siteData as SiteDraft, population),
+    onBack: () => {
+      dispatch(revertYearlyExpensesStep());
+    },
     onSubmit: (formData: FormValues) => {
       const expenses: Expense[] = mapFormDataToExpenses(formData, { siteHasTenant });
 

@@ -1,14 +1,15 @@
 import { useEffect } from "react";
-import Button from "@codegouvfr/react-dsfr/Button";
 
 import { SiteCarbonStorage } from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onNext: () => void;
+  onBack: () => void;
   loading: boolean;
   siteCarbonStorage?: SiteCarbonStorage;
   fetchSiteCarbonStorage: () => void;
@@ -16,6 +17,7 @@ type Props = {
 
 const SiteSoilsCarbonStorage = ({
   onNext,
+  onBack,
   loading,
   siteCarbonStorage,
   fetchSiteCarbonStorage,
@@ -108,9 +110,7 @@ const SiteSoilsCarbonStorage = ({
           <SoilsCarbonStorageChart soilsCarbonStorage={siteCarbonStorage.soils} />
         </>
       )}
-      <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-        Suivant
-      </Button>
+      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </WizardFormLayout>
   );
 };

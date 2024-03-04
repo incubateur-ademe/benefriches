@@ -1,4 +1,4 @@
-import { completeSoilsCarbonStorage } from "../../../application/createSite.reducer";
+import { completeSoilsCarbonStorage, revertStep } from "../../../application/createSite.reducer";
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 import { AppDispatch, RootState } from "@/app/application/store";
@@ -18,6 +18,9 @@ const mapProps = (
   return {
     onNext: () => {
       dispatch(completeSoilsCarbonStorage());
+    },
+    onBack: () => {
+      dispatch(revertStep());
     },
     fetchSiteCarbonStorage: async () => {
       const soils = Object.entries(fricheSoils).map(([type, surfaceArea]) => ({

@@ -1,11 +1,12 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 
 type Props = {
   onNext: () => void;
+  onBack: () => void;
   isFriche: boolean;
 };
 
-const SiteSoilsIntroduction = ({ isFriche, onNext }: Props) => {
+const SiteSoilsIntroduction = ({ isFriche, onNext, onBack }: Props) => {
   return (
     <>
       <p>
@@ -13,9 +14,7 @@ const SiteSoilsIntroduction = ({ isFriche, onNext }: Props) => {
         {isFriche ? "la friche" : "le site"} : leur typologie, leur occupation et les superficies
         correspondantes.
       </p>
-      <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-        Suivant
-      </Button>
+      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </>
   );
 };

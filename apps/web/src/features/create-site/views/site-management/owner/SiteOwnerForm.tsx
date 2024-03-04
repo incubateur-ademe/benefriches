@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
 import {
@@ -7,6 +6,7 @@ import {
   SiteLocalAuthorities,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -15,6 +15,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   currentUserCompany: string;
   siteLocalAuthorities: { loadingState: LoadingState; localAuthorities?: SiteLocalAuthorities };
 };
@@ -38,7 +39,7 @@ export type FormValues =
 
 const requiredMessage = "Ce champ requis pour la suite du formulaire";
 
-function SiteOwnerForm({ onSubmit, currentUserCompany, siteLocalAuthorities }: Props) {
+function SiteOwnerForm({ onSubmit, onBack, currentUserCompany, siteLocalAuthorities }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -118,17 +119,7 @@ function SiteOwnerForm({ onSubmit, currentUserCompany, siteLocalAuthorities }: P
             />
           )}
         </Fieldset>
-
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

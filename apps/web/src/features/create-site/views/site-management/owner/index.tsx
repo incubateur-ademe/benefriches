@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 
+import { revertOwnerStep } from "@/features/create-site/application/createSite.actions";
 import { completeOwner } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import { SiteLocalAuthorities } from "@/features/create-site/application/siteMunicipalityData.reducer";
@@ -52,6 +53,10 @@ function SiteOwnerFormContainer() {
     );
   };
 
+  const onBack = () => {
+    dispatch(revertOwnerStep());
+  };
+
   useEffect(() => {
     void dispatch(fetchSiteMunicipalityData());
   }, [dispatch]);
@@ -61,6 +66,7 @@ function SiteOwnerFormContainer() {
       siteLocalAuthorities={{ localAuthorities, loadingState }}
       currentUserCompany={currentUserCompany.name}
       onSubmit={onSubmit}
+      onBack={onBack}
     />
   );
 }

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -11,6 +11,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   siteSurfaceArea: number;
 };
 
@@ -21,7 +22,7 @@ export type FormValues = {
   contaminatedSurface?: number;
 };
 
-function SoilContaminationForm({ onSubmit, siteSurfaceArea }: Props) {
+function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
   const { register, control, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -92,7 +93,7 @@ function SoilContaminationForm({ onSubmit, siteSurfaceArea }: Props) {
           <RadioButton {...register("hasContaminatedSoils")} label="Non" value="no" />
         </Fieldset>
 
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );
