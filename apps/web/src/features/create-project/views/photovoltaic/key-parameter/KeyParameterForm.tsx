@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 
 import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 type FormValues = {
@@ -15,7 +16,7 @@ type FormValues = {
 
 const requiredMessage = "Ce champ est nécessaire pour déterminer les questions suivantes";
 
-function KeyParameterForm({ onSubmit }: Props) {
+function KeyParameterForm({ onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
   const error = formState.errors.photovoltaicKeyParameter;
 
@@ -56,7 +57,7 @@ function KeyParameterForm({ onSubmit }: Props) {
           options={options}
           error={error}
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

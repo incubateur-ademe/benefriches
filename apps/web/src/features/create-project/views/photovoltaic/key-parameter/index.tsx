@@ -1,6 +1,9 @@
 import PhotovoltaicKeyParameterForm from "./KeyParameterForm";
 
-import { completePhotovoltaicKeyParameter } from "@/features/create-project/application/createProject.reducer";
+import {
+  completePhotovoltaicKeyParameter,
+  revertPhotovoltaicKeyParameter,
+} from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function PhotovoltaicKeyParameterContainer() {
@@ -10,6 +13,7 @@ function PhotovoltaicKeyParameterContainer() {
       onSubmit={(data) => {
         dispatch(completePhotovoltaicKeyParameter(data.photovoltaicKeyParameter));
       }}
+      onBack={() => dispatch(revertPhotovoltaicKeyParameter())}
     />
   );
 }

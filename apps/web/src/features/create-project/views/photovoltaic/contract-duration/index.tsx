@@ -1,6 +1,9 @@
 import PhotovoltaicContractDurationForm from "./ContractDurationForm";
 
-import { completePhotovoltaicContractDuration } from "@/features/create-project/application/createProject.reducer";
+import {
+  completePhotovoltaicContractDuration,
+  revertPhotovoltaicContractDuration,
+} from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function PhotovoltaicContractDurationContainer() {
@@ -10,6 +13,7 @@ function PhotovoltaicContractDurationContainer() {
       onSubmit={(data) => {
         dispatch(completePhotovoltaicContractDuration(data.photovoltaicContractDuration));
       }}
+      onBack={() => dispatch(revertPhotovoltaicContractDuration())}
     />
   );
 }

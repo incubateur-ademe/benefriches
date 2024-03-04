@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { computeTransferTaxFromSellingPrice } from "@/features/create-project/domain/defaultValues";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 export type FormValues = {
@@ -15,7 +16,7 @@ export type FormValues = {
   transferTax?: number;
 };
 
-const RealEstateTransactionCostsForm = ({ onSubmit }: Props) => {
+const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
   const { handleSubmit, control, watch, setValue } = useForm<FormValues>();
 
   const sellingPrice = watch("sellingPrice");
@@ -82,17 +83,7 @@ const RealEstateTransactionCostsForm = ({ onSubmit }: Props) => {
             },
           }}
         />
-
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

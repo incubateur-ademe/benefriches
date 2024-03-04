@@ -1,15 +1,16 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 
 type Props = {
   onNext: () => void;
+  onBack: () => void;
 };
 
-const ScheduleIntroduction = ({ onNext }: Props) => {
+const ScheduleIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <>
       <h2>C’est presque fini !</h2>
       <p>Quand commence ce beau projet ?</p>
-      <Button onClick={onNext}>Suivant</Button>
+      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </>
   );
 };

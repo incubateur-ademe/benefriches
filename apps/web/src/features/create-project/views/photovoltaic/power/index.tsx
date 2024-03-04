@@ -1,7 +1,10 @@
 import PhotovoltaicPowerForm from "./PowerForm";
 import PhotovoltaicPowerFromSurfaceForm from "./PowerFromSurfaceForm";
 
-import { completePhotovoltaicInstallationElectricalPower } from "@/features/create-project/application/createProject.reducer";
+import {
+  completePhotovoltaicInstallationElectricalPower,
+  revertPhotovoltaicInstallationElectricalPower,
+} from "@/features/create-project/application/createProject.reducer";
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -36,6 +39,10 @@ function PhotovoltaicPowerContainer() {
     );
   };
 
+  const onBack = () => {
+    dispatch(revertPhotovoltaicInstallationElectricalPower());
+  };
+
   if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.SURFACE) {
     return (
       <PhotovoltaicPowerFromSurfaceForm
@@ -44,6 +51,7 @@ function PhotovoltaicPowerContainer() {
         )}
         photovoltaicSurfaceArea={surfaceSquareMeters}
         onSubmit={onSubmit}
+        onBack={onBack}
       />
     );
   }
@@ -55,6 +63,7 @@ function PhotovoltaicPowerContainer() {
       )}
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={onSubmit}
+      onBack={onBack}
     />
   );
 }

@@ -1,18 +1,19 @@
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 export type FormValues = {
   fullTimeJobs?: number;
 };
 
-function OperationsFullTimeJobsInvolvedForm({ onSubmit }: Props) {
+function OperationsFullTimeJobsInvolvedForm({ onSubmit, onBack }: Props) {
   const { handleSubmit, control } = useForm<FormValues>();
 
   return (
@@ -32,16 +33,7 @@ function OperationsFullTimeJobsInvolvedForm({ onSubmit }: Props) {
             },
           }}
         />
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

@@ -1,6 +1,9 @@
 import HasRealEstateTransactionForm, { FormValues } from "./HasRealEstateTransactionForm";
 
-import { completeHasRealEstateTransaction } from "@/features/create-project/application/createProject.reducer";
+import {
+  completeHasRealEstateTransaction,
+  revertHasRealEstateTransaction,
+} from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function HasRealEstateTransactionFormContainer() {
@@ -12,7 +15,17 @@ function HasRealEstateTransactionFormContainer() {
     dispatch(completeHasRealEstateTransaction(hasRealEstateTransaction));
   };
 
-  return <HasRealEstateTransactionForm onSubmit={onSubmit} currentOwnerName={siteOwner?.name} />;
+  const onBack = () => {
+    dispatch(revertHasRealEstateTransaction());
+  };
+
+  return (
+    <HasRealEstateTransactionForm
+      onSubmit={onSubmit}
+      onBack={onBack}
+      currentOwnerName={siteOwner?.name}
+    />
+  );
 }
 
 export default HasRealEstateTransactionFormContainer;

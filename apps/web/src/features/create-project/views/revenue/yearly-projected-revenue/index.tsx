@@ -1,4 +1,7 @@
-import { completeYearlyProjectedRevenue } from "../../../application/createProject.reducer";
+import {
+  completeYearlyProjectedRevenue,
+  revertYearlyProjectedRevenue,
+} from "../../../application/createProject.reducer";
 import YearlyProjectedsRevenueForm, { FormValues } from "./ProjectYearlyProjectedRevenueForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -21,6 +24,9 @@ const mapProps = (dispatch: AppDispatch) => {
         }));
 
       dispatch(completeYearlyProjectedRevenue(yearlyProjectedRevenues));
+    },
+    onBack: () => {
+      dispatch(revertYearlyProjectedRevenue());
     },
   };
 };

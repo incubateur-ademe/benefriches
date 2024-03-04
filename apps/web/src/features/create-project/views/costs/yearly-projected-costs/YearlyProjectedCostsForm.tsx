@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 export type FormValues = {
@@ -17,7 +18,7 @@ export type FormValues = {
   otherAmount?: number;
 };
 
-const YearlyProjectedCostsForm = ({ onSubmit }: Props) => {
+const YearlyProjectedCostsForm = ({ onSubmit, onBack }: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>();
 
   const allCosts = watch();
@@ -78,16 +79,7 @@ const YearlyProjectedCostsForm = ({ onSubmit }: Props) => {
             Total des dépenses annuelles : {formatNumberFr(sumObjectValues(allCosts))} €
           </strong>
         </p>
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

@@ -1,6 +1,9 @@
 import ScheduleIntroduction from "./ScheduleIntroduction";
 
-import { completeScheduleIntroductionStep } from "@/features/create-project/application/createProject.reducer";
+import {
+  completeScheduleIntroductionStep,
+  revertScheduleIntroductionStep,
+} from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function ProjectScheduleIntroductionContainer() {
@@ -10,6 +13,9 @@ function ProjectScheduleIntroductionContainer() {
     <ScheduleIntroduction
       onNext={() => {
         dispatch(completeScheduleIntroductionStep());
+      }}
+      onBack={() => {
+        dispatch(revertScheduleIntroductionStep());
       }}
     />
   );

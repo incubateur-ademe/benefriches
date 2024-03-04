@@ -1,4 +1,7 @@
-import { completePhotovoltaicPanelsInstallationCost } from "../../../application/createProject.reducer";
+import {
+  completePhotovoltaicPanelsInstallationCost,
+  revertPhotovoltaicPanelsInstallationCost,
+} from "../../../application/createProject.reducer";
 import PhotovoltaicPanelsInstallationCostsForm, {
   FormValues,
 } from "./PhotoVoltaicPanelsInstallationCostsForm";
@@ -12,6 +15,9 @@ const mapProps = (dispatch: AppDispatch) => {
     onSubmit: (amounts: FormValues) => {
       const totalCost = sumObjectValues(amounts);
       dispatch(completePhotovoltaicPanelsInstallationCost(totalCost));
+    },
+    onBack: () => {
+      dispatch(revertPhotovoltaicPanelsInstallationCost());
     },
   };
 };

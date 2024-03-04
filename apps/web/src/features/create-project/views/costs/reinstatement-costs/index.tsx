@@ -1,4 +1,7 @@
-import { completeReinstatementCost } from "../../../application/createProject.reducer";
+import {
+  completeReinstatementCost,
+  revertReinstatementCost,
+} from "../../../application/createProject.reducer";
 import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -26,6 +29,9 @@ const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
     onSubmit: (amounts: FormValues) => {
       const totalCost = sumObjectValues(amounts);
       dispatch(completeReinstatementCost(totalCost));
+    },
+    onBack: () => {
+      dispatch(revertReinstatementCost());
     },
   };
 };

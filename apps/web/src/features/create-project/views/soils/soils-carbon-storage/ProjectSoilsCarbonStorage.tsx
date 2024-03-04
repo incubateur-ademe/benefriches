@@ -5,10 +5,12 @@ import CarbonStorageDifferenceSection from "./CarbonStorageDifferenceSection";
 
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 
 type PropsFunction = {
   onNext: () => void;
+  onBack: () => void;
   fetchSoilsCarbonStorage: () => void;
 };
 
@@ -29,6 +31,7 @@ type Props = PropsFunction & PropsData;
 
 const ProjectSoilsCarbonStorage = ({
   onNext,
+  onBack,
   fetchSoilsCarbonStorage,
   loadingState,
   currentCarbonStorage,
@@ -89,9 +92,7 @@ const ProjectSoilsCarbonStorage = ({
           </div>
         </div>
 
-        <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-          Suivant
-        </Button>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
       </>
     );
   }

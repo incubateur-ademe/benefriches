@@ -1,19 +1,20 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 
 import { AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS } from "@/features/create-project/domain/photovoltaic";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 type FormValues = {
   photovoltaicContractDuration: number;
 };
 
-function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
+function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       photovoltaicContractDuration: AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS,
@@ -41,7 +42,7 @@ function PhotovoltaicAnnualProductionForm({ onSubmit }: Props) {
           }}
           control={control}
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

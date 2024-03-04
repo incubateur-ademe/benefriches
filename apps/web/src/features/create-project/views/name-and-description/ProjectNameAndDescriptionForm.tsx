@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -13,9 +13,10 @@ export type FormValues = {
 type Props = {
   defaultProjectName: string;
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
-function ProjectNameAndDescriptionForm({ onSubmit, defaultProjectName }: Props) {
+function ProjectNameAndDescriptionForm({ onSubmit, onBack, defaultProjectName }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: {
       name: defaultProjectName,
@@ -42,16 +43,7 @@ function ProjectNameAndDescriptionForm({ onSubmit, defaultProjectName }: Props) 
           textArea
           nativeTextAreaProps={register("description")}
         />
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

@@ -1,13 +1,14 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   siteSurfaceArea: number;
 };
 
@@ -15,7 +16,7 @@ type FormValues = {
   photovoltaicInstallationSurfaceSquareMeters: number;
 };
 
-function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea }: Props) {
+function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
   const { control, handleSubmit } = useForm<FormValues>();
 
   const hintText = `en m² (maximum : ${formatNumberFr(siteSurfaceArea)} m²)`;
@@ -64,7 +65,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea }: Props) {
           }}
           control={control}
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

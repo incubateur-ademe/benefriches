@@ -1,4 +1,7 @@
-import { completeYearlyProjectedCosts } from "../../../application/createProject.reducer";
+import {
+  completeYearlyProjectedCosts,
+  revertYearlyProjectedCosts,
+} from "../../../application/createProject.reducer";
 import YearlyProjectedsCostsForm, { FormValues } from "./YearlyProjectedCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -22,6 +25,9 @@ const mapProps = (dispatch: AppDispatch) => {
           amount: costs[sourceKey] as number,
         }));
       dispatch(completeYearlyProjectedCosts(yearlyProjectedCosts));
+    },
+    onBack: () => {
+      dispatch(revertYearlyProjectedCosts());
     },
   };
 };

@@ -1,5 +1,4 @@
 import { useForm, UseFormRegister } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import {
   getPrevisionalEnrSocioEconomicImpact,
@@ -11,10 +10,12 @@ import {
 } from "../projectTypeLabelMapping";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   siteSurfaceArea: number;
 };
 
@@ -66,7 +67,7 @@ const mapOptions =
 
 const options = ["PHOTOVOLTAIC_POWER_PLANT", "AGRIVOLTAIC", "GEOTHERMAL", "BIOMASS"] as const;
 
-function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
+function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
   const validationError = formState.errors.renewableEnergyTypes;
 
@@ -89,7 +90,7 @@ function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea }: Props) {
           state={state}
           stateRelatedMessage={validationError ? validationError.message : undefined}
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

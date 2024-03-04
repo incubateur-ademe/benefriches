@@ -1,13 +1,13 @@
-import Button from "@codegouvfr/react-dsfr/Button";
-
 import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 type Props = {
   onNext: () => void;
+  onBack: () => void;
   totalSurfaceArea: number;
   siteSoilsDistribution: Partial<Record<SoilType, number>>;
   projectSoilsDistribution: Partial<Record<SoilType, number>>;
@@ -16,6 +16,7 @@ type Props = {
 const SiteSoilsSummary = ({
   totalSurfaceArea,
   onNext,
+  onBack,
   siteSoilsDistribution,
   projectSoilsDistribution,
 }: Props) => {
@@ -44,10 +45,7 @@ const SiteSoilsSummary = ({
           <SurfaceAreaPieChart soilsDistribution={projectSoilsDistribution} />
         </div>
       </div>
-
-      <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-        Suivant
-      </Button>
+      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </>
   );
 };

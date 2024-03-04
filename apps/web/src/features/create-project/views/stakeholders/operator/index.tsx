@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
-import { completeFutureOperator } from "@/features/create-project/application/createProject.reducer";
+import {
+  completeFutureOperator,
+  revertFutureOperator,
+} from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
@@ -62,11 +65,16 @@ function SiteOperatorFormContainer() {
     );
   };
 
+  const onBack = () => {
+    dispatch(revertFutureOperator());
+  };
+
   useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
 
   return (
     <SiteOperatorForm
       onSubmit={onSubmit}
+      onBack={onBack}
       siteStakeholders={siteStakeholders}
       currentUserCompany={currentUserCompany}
       projectSiteLocalAuthorities={projectSiteLocalAuthorities}

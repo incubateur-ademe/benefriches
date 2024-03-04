@@ -53,7 +53,7 @@ function ProjectCreationWizard() {
         return <OperationsFullTimeJobsInvolvedForm />;
       case "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION":
         return <HasRealEstateTransactionFormContainer />;
-      case "STAKEHOLDERS_NEW_OWNER":
+      case "STAKEHOLDERS_FUTURE_SITE_OWNER":
         return <FutureOwnerFormContainer />;
       case "COSTS_INTRODUCTION":
         return <ProjectCostsIntroduction />;

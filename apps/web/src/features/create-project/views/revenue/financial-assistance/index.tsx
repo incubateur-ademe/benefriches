@@ -1,4 +1,7 @@
-import { completeReinstatementFinancialAssistance } from "../../../application/createProject.reducer";
+import {
+  completeReinstatementFinancialAssistance,
+  revertReinstatementFinancialAssistance,
+} from "../../../application/createProject.reducer";
 import ProjectFinancialAssistanceRevenueForm, {
   FormValues,
 } from "./ProjectFinancialAssistanceRevenueForm";
@@ -12,6 +15,9 @@ const mapProps = (dispatch: AppDispatch) => {
     onSubmit: (revenue: FormValues) => {
       const totalRevenue = sumObjectValues(revenue);
       dispatch(completeReinstatementFinancialAssistance(totalRevenue));
+    },
+    onBack: () => {
+      dispatch(revertReinstatementFinancialAssistance());
     },
   };
 };

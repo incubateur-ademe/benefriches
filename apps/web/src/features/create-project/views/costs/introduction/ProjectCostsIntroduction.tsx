@@ -1,10 +1,11 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 
 type Props = {
   onNext: () => void;
+  onBack: () => void;
 };
 
-const ProjectCostsIntroduction = ({ onNext }: Props) => {
+const ProjectCostsIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <>
       <h2>Coûts liés au projet</h2>
@@ -12,9 +13,7 @@ const ProjectCostsIntroduction = ({ onNext }: Props) => {
         Les travaux de remise en état de la friche, d’installation des panneaux, de raccordement et
         d’exploitation vont générer des dépenses.
       </p>
-      <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-        Suivant
-      </Button>
+      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </>
   );
 };

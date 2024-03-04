@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Input from "@codegouvfr/react-dsfr/Input";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -9,6 +9,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   askForReinstatementSchedule: boolean;
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 export type FormValues = {
@@ -23,7 +24,7 @@ export type FormValues = {
   firstYearOfOperation: number;
 };
 
-function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit }: Props) {
+function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit, onBack }: Props) {
   const { handleSubmit, register, control, formState } = useForm<FormValues>();
 
   const { errors } = formState;
@@ -123,16 +124,7 @@ function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit }: Props
             },
           }}
         />
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );
