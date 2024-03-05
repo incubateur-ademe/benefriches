@@ -1,19 +1,20 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   currentOwnerName?: string;
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 export type FormValues = {
   hasRealEstateTransaction: "yes" | "no";
 };
 
-function HasRealEstateTransactionForm({ onSubmit, currentOwnerName }: Props) {
+function HasRealEstateTransactionForm({ onSubmit, onBack, currentOwnerName }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: { hasRealEstateTransaction: "no" },
   });
@@ -37,7 +38,7 @@ function HasRealEstateTransactionForm({ onSubmit, currentOwnerName }: Props) {
           ]}
           error={formState.errors.hasRealEstateTransaction}
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

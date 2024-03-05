@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import FutureSiteOwnerForm, { FormValues } from "./FutureSiteOwnerForm";
 
-import { completeFutureSiteOwner } from "@/features/create-project/application/createProject.reducer";
+import {
+  completeFutureSiteOwner,
+  revertFutureSiteOwner,
+} from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
@@ -61,11 +64,16 @@ function FutureOwnerFormContainer() {
     );
   };
 
+  const onBack = () => {
+    dispatch(revertFutureSiteOwner());
+  };
+
   useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
 
   return (
     <FutureSiteOwnerForm
       onSubmit={onSubmit}
+      onBack={onBack}
       siteStakeholders={siteStakeholders}
       currentUserCompany={currentUserCompany}
       projectSiteLocalAuthorities={projectSiteLocalAuthorities}

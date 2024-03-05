@@ -1,13 +1,19 @@
 import ScheduleProjectionForm, { FormValues } from "./ScheduleProjectionForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { completeScheduleStep } from "@/features/create-project/application/createProject.reducer";
+import {
+  completeScheduleStep,
+  revertScheduleStep,
+} from "@/features/create-project/application/createProject.reducer";
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
   return {
     askForReinstatementSchedule: projectSite?.isFriche ?? false,
+    onBack: () => {
+      dispatch(revertScheduleStep());
+    },
     onSubmit: ({
       firstYearOfOperation,
       photovoltaicInstallationSchedule,

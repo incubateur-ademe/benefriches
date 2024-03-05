@@ -16,11 +16,13 @@ import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   siteSoils: SiteDraft["soilsDistribution"];
   totalSurfaceArea: number;
   minAdvisedFlatSurfaces: number;
@@ -90,6 +92,7 @@ const SLIDER_PROPS = {
 
 function SoilsDistributionForm({
   onSubmit,
+  onBack,
   totalSurfaceArea,
   siteSoils,
   minAdvisedFlatSurfaces,
@@ -220,7 +223,7 @@ function SoilsDistributionForm({
           totalAllocatedSurface={totalAllocatedSurface}
           totalSurface={totalSurfaceArea}
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

@@ -1,10 +1,11 @@
-import Button from "@codegouvfr/react-dsfr/Button";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 
 type Props = {
   onNext: () => void;
+  onBack: () => void;
 };
 
-const ProjectStakeholdersIntroduction = ({ onNext }: Props) => {
+const ProjectStakeholdersIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <>
       <h2>Différents acteurs vont prendre part à votre projet</h2>
@@ -12,9 +13,7 @@ const ProjectStakeholdersIntroduction = ({ onNext }: Props) => {
         Nous avons besoin de les connaître pour savoir à qui seront imputables les différents coûts,
         recettes et impacts.
       </p>
-      <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-        Suivant
-      </Button>
+      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </>
   );
 };

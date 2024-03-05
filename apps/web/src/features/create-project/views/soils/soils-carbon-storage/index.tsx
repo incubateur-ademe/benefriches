@@ -1,7 +1,10 @@
 import SiteSoilsCarbonStorage from "./ProjectSoilsCarbonStorage";
 
 import { AppDispatch } from "@/app/application/store";
-import { completeSoilsCarbonStorageStep } from "@/features/create-project/application/createProject.reducer";
+import {
+  completeSoilsCarbonStorageStep,
+  revertSoilsCarbonStorageStep,
+} from "@/features/create-project/application/createProject.reducer";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/soilsCarbonStorage.actions";
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -24,6 +27,7 @@ const mapProps = (dispatch: AppDispatch) => ({
   onNext: () => {
     dispatch(completeSoilsCarbonStorageStep());
   },
+  onBack: () => dispatch(revertSoilsCarbonStorageStep()),
   fetchSoilsCarbonStorage: async () => {
     await dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
   },

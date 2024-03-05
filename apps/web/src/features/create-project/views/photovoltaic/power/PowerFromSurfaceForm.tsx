@@ -1,14 +1,15 @@
 import { useForm } from "react-hook-form";
-import Button from "@codegouvfr/react-dsfr/Button";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   recommendedElectricalPowerKWc: number;
   photovoltaicSurfaceArea: number;
 };
@@ -19,6 +20,7 @@ type FormValues = {
 
 function PhotovoltaicPowerFromSurfaceForm({
   onSubmit,
+  onBack,
   photovoltaicSurfaceArea,
   recommendedElectricalPowerKWc,
 }: Props) {
@@ -37,7 +39,6 @@ function PhotovoltaicPowerFromSurfaceForm({
       title="Quel sera la puissance de votre installation ?"
       instructions={
         <>
-          {" "}
           <p>
             Le ratio puissance / superficie d’installation considéré est de{" "}
             <strong>
@@ -70,7 +71,7 @@ function PhotovoltaicPowerFromSurfaceForm({
           }}
           control={control}
         />
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

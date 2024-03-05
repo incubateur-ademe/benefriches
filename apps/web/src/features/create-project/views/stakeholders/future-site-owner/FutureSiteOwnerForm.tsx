@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Input from "@codegouvfr/react-dsfr/Input";
 
 import { ProjectSiteLocalAuthoritiesState } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
@@ -10,6 +9,7 @@ import {
 } from "@/features/create-project/domain/stakeholders";
 import { User } from "@/features/users/domain/user";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -18,6 +18,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
   siteStakeholders: SiteStakeholder[];
   currentUserCompany: Exclude<User["organization"], undefined>;
   projectSiteLocalAuthorities: ProjectSiteLocalAuthoritiesState;
@@ -54,6 +55,7 @@ const isCurrentUserSiteTenant = (
 
 function FutureSiteOwnerForm({
   onSubmit,
+  onBack,
   currentUserCompany,
   siteStakeholders,
   projectSiteLocalAuthorities,
@@ -153,16 +155,7 @@ function FutureSiteOwnerForm({
             {...register("futureSiteOwner", { required: requiredMessage })}
           />
         </Fieldset>
-        <ButtonsGroup
-          buttonsEquisized
-          inlineLayoutWhen="always"
-          buttons={[
-            {
-              children: "Suivant",
-              nativeButtonProps: { type: "submit" },
-            },
-          ]}
-        />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

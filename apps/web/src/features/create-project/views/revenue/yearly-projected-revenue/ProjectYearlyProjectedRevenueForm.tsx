@@ -3,11 +3,13 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  onBack: () => void;
 };
 
 export type FormValues = {
@@ -15,7 +17,7 @@ export type FormValues = {
   otherAmount?: number;
 };
 
-const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {
+const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack }: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>();
 
   const allCosts = watch();
@@ -62,6 +64,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit }: Props) => {
             },
           ]}
         />
+        <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
   );

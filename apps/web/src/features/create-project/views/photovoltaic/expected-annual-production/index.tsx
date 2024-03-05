@@ -1,7 +1,10 @@
 import { useEffect } from "react";
 import PhotovoltaicExpectedAnnualProductionForm from "./ExpectedAnnualProductionForm";
 
-import { completePhotovoltaicExpectedAnnualProduction } from "@/features/create-project/application/createProject.reducer";
+import {
+  completePhotovoltaicExpectedAnnualProduction,
+  revertPhotovoltaicExpectedAnnualProduction,
+} from "@/features/create-project/application/createProject.reducer";
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -33,6 +36,7 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
           completePhotovoltaicExpectedAnnualProduction(data.photovoltaicExpectedAnnualProduction),
         );
       }}
+      onBack={() => dispatch(revertPhotovoltaicExpectedAnnualProduction())}
     />
   );
 }

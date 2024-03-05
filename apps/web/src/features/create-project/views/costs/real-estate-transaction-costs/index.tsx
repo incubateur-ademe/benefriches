@@ -1,4 +1,7 @@
-import { completeRealEstateTransactionCost } from "../../../application/createProject.reducer";
+import {
+  completeRealEstateTransactionCost,
+  revertRealEstateTransactionCost,
+} from "../../../application/createProject.reducer";
 import RealEstateTransactionCostsForm, { FormValues } from "./RealEstateTransactionCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
@@ -10,6 +13,9 @@ const mapProps = (dispatch: AppDispatch) => {
     onSubmit: (data: FormValues) => {
       const totalCost = sumObjectValues(data);
       dispatch(completeRealEstateTransactionCost(totalCost));
+    },
+    onBack: () => {
+      dispatch(revertRealEstateTransactionCost());
     },
   };
 };

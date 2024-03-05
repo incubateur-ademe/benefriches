@@ -1,4 +1,7 @@
-import { completeCostsIntroductionStep } from "../../../application/createProject.reducer";
+import {
+  completeCostsIntroductionStep,
+  revertCostsIntroductionStep,
+} from "../../../application/createProject.reducer";
 import ProjectCostsIntroduction from "./ProjectCostsIntroduction";
 
 import { AppDispatch } from "@/app/application/store";
@@ -8,6 +11,9 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onNext: () => {
       dispatch(completeCostsIntroductionStep());
+    },
+    onBack: () => {
+      dispatch(revertCostsIntroductionStep());
     },
   };
 };

@@ -1,6 +1,9 @@
 import ProjectStakeholdersIntroduction from "./StakeholdersIntroduction";
 
-import { completeStakeholdersIntroductionStep } from "@/features/create-project/application/createProject.reducer";
+import {
+  completeStakeholdersIntroductionStep,
+  revertStakeholdersIntroductionStep,
+} from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function ProjectStakeholdersIntroductionContainer() {
@@ -9,6 +12,7 @@ function ProjectStakeholdersIntroductionContainer() {
   return (
     <ProjectStakeholdersIntroduction
       onNext={() => dispatch(completeStakeholdersIntroductionStep())}
+      onBack={() => dispatch(revertStakeholdersIntroductionStep())}
     />
   );
 }

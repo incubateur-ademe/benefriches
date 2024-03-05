@@ -37,10 +37,8 @@ export type ProjectCreationStep =
   | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
   | "STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS"
   | "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS"
-  | "STAKEHOLDERS_FUTURE_OWNERSHIP_CHANGE"
-  | "STAKEHOLDERS_FUTURE_OWNER"
+  | "STAKEHOLDERS_FUTURE_SITE_OWNER"
   | "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION"
-  | "STAKEHOLDERS_NEW_OWNER"
   | "COSTS_INTRODUCTION"
   | "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT"
   | "COSTS_REINSTATEMENT"
@@ -145,7 +143,7 @@ export const projectCreationSlice = createSlice({
       const hasRealEstateTransaction = action.payload;
       state.projectData.hasRealEstateTransaction = hasRealEstateTransaction;
       const nextStep = hasRealEstateTransaction
-        ? "STAKEHOLDERS_FUTURE_OWNER"
+        ? "STAKEHOLDERS_FUTURE_SITE_OWNER"
         : "COSTS_INTRODUCTION";
       state.stepsHistory.push(nextStep);
     },
@@ -183,10 +181,7 @@ export const projectCreationSlice = createSlice({
       state,
       action: PayloadAction<ReconversionProjectCreationData["yearlyProjectedCosts"]>,
     ) => {
-      state.projectData.yearlyProjectedCosts = [
-        ...(state.projectData.yearlyProjectedCosts ?? []),
-        ...action.payload,
-      ];
+      state.projectData.yearlyProjectedCosts = action.payload;
       state.stepsHistory.push("REVENUE_INTRODUCTION");
     },
     completeRevenuIntroductionStep: (state) => {
@@ -200,10 +195,7 @@ export const projectCreationSlice = createSlice({
       state,
       action: PayloadAction<ReconversionProjectCreationData["yearlyProjectedRevenues"]>,
     ) => {
-      state.projectData.yearlyProjectedRevenues = [
-        ...(state.projectData.yearlyProjectedRevenues ?? []),
-        ...action.payload,
-      ];
+      state.projectData.yearlyProjectedRevenues = action.payload;
       state.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");
     },
     completeNaming: (state, action: PayloadAction<{ name: string; description?: string }>) => {
@@ -281,6 +273,27 @@ export const projectCreationSlice = createSlice({
         );
       state.stepsHistory.push("NAMING");
     },
+    revertStep: (
+      state,
+      action: PayloadAction<{ resetFields: (keyof ReconversionProjectCreationData)[] } | undefined>,
+    ) => {
+      const { projectData: initialData } = getInitialState();
+
+      if (action.payload) {
+        action.payload.resetFields.forEach(
+          <K extends keyof ReconversionProjectCreationData>(field: K) => {
+            state.projectData[field] =
+              field in initialData
+                ? (initialData[field] as ReconversionProjectCreationData[K])
+                : undefined;
+          },
+        );
+      }
+
+      if (state.stepsHistory.length > 1) {
+        state.stepsHistory = state.stepsHistory.slice(0, -1);
+      }
+    },
   },
   extraReducers(builder) {
     /* fetch related site */
@@ -313,6 +326,61 @@ export const selectCurrentStep = createSelector(
     return state.stepsHistory.at(-1) ?? "PROJECT_TYPES";
   },
 );
+
+const { revertStep } = projectCreationSlice.actions;
+export const revertDevelopmentPlanCategories = () =>
+  revertStep({ resetFields: ["developmentPlanCategories"] });
+export const revertRenewableEnergyDevelopmentPlanType = () =>
+  revertStep({ resetFields: ["renewableEnergyTypes"] });
+export const revertStakeholdersIntroductionStep = () => revertStep({ resetFields: [] });
+export const revertFutureOperator = () => revertStep({ resetFields: ["futureOperator"] });
+export const revertConversionFullTimeJobsInvolved = () =>
+  revertStep({
+    resetFields: ["reinstatementFullTimeJobsInvolved", "conversionFullTimeJobsInvolved"],
+  });
+export const revertOperationsFullTimeJobsInvolved = () =>
+  revertStep({ resetFields: ["operationsFullTimeJobsInvolved"] });
+export const revertReinstatementContractOwner = () =>
+  revertStep({ resetFields: ["reinstatementContractOwner"] });
+export const revertHasRealEstateTransaction = () =>
+  revertStep({ resetFields: ["hasRealEstateTransaction"] });
+export const revertFutureSiteOwner = () => revertStep({ resetFields: ["futureSiteOwner"] });
+export const revertCostsIntroductionStep = () => revertStep();
+export const revertRealEstateTransactionCost = () =>
+  revertStep({ resetFields: ["realEstateTransactionCost"] });
+export const revertReinstatementCost = () => revertStep({ resetFields: ["reinstatementCost"] });
+export const revertPhotovoltaicPanelsInstallationCost = () =>
+  revertStep({ resetFields: ["photovoltaicPanelsInstallationCost"] });
+export const revertYearlyProjectedCosts = () =>
+  revertStep({ resetFields: ["yearlyProjectedCosts"] });
+export const revertRevenuIntroductionStep = () => revertStep();
+export const revertReinstatementFinancialAssistance = () =>
+  revertStep({ resetFields: ["reinstatementFinancialAssistanceAmount"] });
+export const revertYearlyProjectedRevenue = () =>
+  revertStep({ resetFields: ["yearlyProjectedRevenues"] });
+export const revertNaming = () => revertStep({ resetFields: ["name", "description"] });
+export const revertPhotovoltaicKeyParameter = () =>
+  revertStep({ resetFields: ["photovoltaicKeyParameter"] });
+export const revertPhotovoltaicInstallationElectricalPower = () =>
+  revertStep({ resetFields: ["photovoltaicInstallationElectricalPowerKWc"] });
+export const revertPhotovoltaicInstallationSurface = () =>
+  revertStep({ resetFields: ["photovoltaicInstallationSurfaceSquareMeters"] });
+export const revertPhotovoltaicExpectedAnnualProduction = () =>
+  revertStep({ resetFields: ["photovoltaicExpectedAnnualProduction"] });
+export const revertPhotovoltaicContractDuration = () =>
+  revertStep({ resetFields: ["photovoltaicContractDuration"] });
+export const revertSoilsDistribution = () => revertStep({ resetFields: ["soilsDistribution"] });
+export const revertSoilsSummaryStep = () => revertStep();
+export const revertSoilsCarbonStorageStep = () => revertStep();
+export const revertScheduleIntroductionStep = () => revertStep();
+export const revertScheduleStep = () =>
+  revertStep({
+    resetFields: [
+      "firstYearOfOperation",
+      "reinstatementSchedule",
+      "photovoltaicInstallationSchedule",
+    ],
+  });
 
 export const {
   resetState,

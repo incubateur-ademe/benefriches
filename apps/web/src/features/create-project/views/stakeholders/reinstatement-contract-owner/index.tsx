@@ -3,7 +3,10 @@ import SiteReinstatementContractOwnerForm, {
   FormValues,
 } from "./SiteReinstatementContractOwnerForm";
 
-import { completeReinstatementContractOwner } from "@/features/create-project/application/createProject.reducer";
+import {
+  completeReinstatementContractOwner,
+  revertReinstatementContractOwner,
+} from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
@@ -65,11 +68,16 @@ function SiteReinstatementContractOwnerFormContainer() {
     );
   };
 
+  const onBack = () => {
+    dispatch(revertReinstatementContractOwner());
+  };
+
   useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
 
   return (
     <SiteReinstatementContractOwnerForm
       onSubmit={onSubmit}
+      onBack={onBack}
       siteStakeholders={siteStakeholders}
       currentUserCompany={currentUserCompany}
       projectSiteLocalAuthorities={projectSiteLocalAuthorities}
