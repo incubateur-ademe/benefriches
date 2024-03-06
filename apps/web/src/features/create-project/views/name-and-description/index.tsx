@@ -1,4 +1,3 @@
-import { saveProjectAction } from "../../application/createProject.actions";
 import { ReconversionProjectCreationData } from "../../domain/project.types";
 import { generateProjectName } from "../../domain/projectName";
 import ProjectNameAndDescriptionForm, { FormValues } from "./ProjectNameAndDescriptionForm";
@@ -15,7 +14,6 @@ const mapProps = (dispatch: AppDispatch, projectData: ReconversionProjectCreatio
     defaultProjectName: generateProjectName(projectData),
     onSubmit: (formData: FormValues) => {
       dispatch(completeNaming(formData));
-      void dispatch(saveProjectAction());
     },
     onBack: () => {
       dispatch(revertNaming());

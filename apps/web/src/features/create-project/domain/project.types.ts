@@ -58,14 +58,14 @@ export type ReconversionProjectCreationData = {
 
 export type DocumentType = "BUILDING_PERMIT" | "FORECAST_BALANCE_SHEET";
 
-type Expense = {
+export type Expense = {
   amount: number;
-  purpose: string;
+  purpose: "rent" | "maintenance" | "taxes" | "other";
 };
 
-type Revenue = {
+export type Revenue = {
   amount: number;
-  source: string;
+  source: "operations" | "other";
 };
 
 type ProjectStakeholderStructure =
@@ -157,4 +157,25 @@ export const getPrevisionalEnrSocioEconomicImpact = (
     getPrevisionalEnrSocioEconomicImpactPerHectare(renewableEnergyProductionType) *
       convertSquareMetersToHectares(siteSurfaceArea),
   );
+};
+
+export const getLabelForExpensePurpose = (expensePurpose: Expense["purpose"]): string => {
+  switch (expensePurpose) {
+    case "taxes":
+      return "Impôts et taxes";
+    case "other":
+      return "Autres dépenses";
+    case "rent":
+      return "Loyer";
+    case "maintenance":
+      return "Maintenance";
+  }
+};
+export const getLabelForRevenueSource = (revenueSource: Revenue["source"]): string => {
+  switch (revenueSource) {
+    case "operations":
+      return "Recettes d'exploitation";
+    case "other":
+      return "Autres recettes";
+  }
 };
