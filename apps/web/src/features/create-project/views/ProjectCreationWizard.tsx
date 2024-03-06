@@ -29,6 +29,7 @@ import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
 import Stepper from "./Stepper";
+import ProjectionCreationDataSummaryContainer from "./summary";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -93,6 +94,8 @@ function ProjectCreationWizard() {
         return <ProjectScheduleIntroductionContainer />;
       case "SCHEDULE_PROJECTION":
         return <ProjectScheduleProjectionFormContainer />;
+      case "FINAL_SUMMARY":
+        return <ProjectionCreationDataSummaryContainer />;
       case "CREATION_CONFIRMATION":
         return <ProjectCreationConfirmation />;
     }

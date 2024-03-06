@@ -20,8 +20,8 @@ export const fetchRelatedSiteAction = createAppAsyncThunk<ProjectSite, ProjectSi
 );
 
 const scheduleSchema = z.object({
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
 });
 
 export type Schedule = z.infer<typeof scheduleSchema>;
@@ -74,7 +74,7 @@ export interface SaveReconversionProjectGateway {
 }
 
 export const saveProjectAction = createAppAsyncThunk(
-  "project/save",
+  "projectCreation/save",
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
     const { projectData, siteData } = projectCreation;

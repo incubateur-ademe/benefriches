@@ -1,0 +1,58 @@
+import { saveProjectAction } from "../../application/createProject.actions";
+import { revertFinalSummaryStep } from "../../application/createProject.reducer";
+import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
+
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+function ProjectionCreationDataSummaryContainer() {
+  const projectData = useAppSelector((state) => state.projectCreation.projectData);
+  const siteData = useAppSelector((state) => state.projectCreation.siteData);
+  const dispatch = useAppDispatch();
+
+  const onNext = () => {
+    void dispatch(saveProjectAction());
+  };
+
+  const onBack = () => {
+    dispatch(revertFinalSummaryStep());
+  };
+
+  return (
+    <ProjectionCreationDataSummary
+      onNext={onNext}
+      onBack={onBack}
+      projectData={{
+        name: projectData.name ?? "",
+        description: projectData.description,
+        developmentPlanCategory: projectData.developmentPlanCategories![0]!,
+        renewableEnergy: projectData.renewableEnergyTypes![0]!,
+        photovoltaicElectricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
+        photovoltaicSurfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters ?? 0,
+        photovoltaicExpectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction ?? 0,
+        photovoltaicContractDuration: projectData.photovoltaicContractDuration ?? 0,
+        soilsDistribution: projectData.soilsDistribution ?? {},
+        futureOwner: projectData.futureSiteOwner?.name,
+        futureOperator: projectData.futureOperator?.name,
+        reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
+        reinstatementFullTimeJobs: projectData.reinstatementFullTimeJobsInvolved,
+        conversionFullTimeJobs: projectData.conversionFullTimeJobsInvolved,
+        operationsFullTimeJobs: projectData.operationsFullTimeJobsInvolved,
+        realEstateTransactionCost: projectData.realEstateTransactionCost,
+        finanalAssistanceAmount: projectData.reinstatementFinancialAssistanceAmount,
+        reinstatementCost: projectData.reinstatementCost,
+        photovoltaicPanelsInstallationCost: projectData.photovoltaicPanelsInstallationCost,
+        yearlyProjectedCosts: projectData.yearlyProjectedCosts ?? [],
+        yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
+        reinstatementSchedule: projectData.reinstatementSchedule,
+        photovoltaticInstallationSchedule: projectData.photovoltaicInstallationSchedule,
+
+        firstYearOfOperation: projectData.firstYearOfOperation,
+      }}
+      siteData={{
+        surfaceArea: siteData?.surfaceArea ?? 0,
+      }}
+    />
+  );
+}
+
+export default ProjectionCreationDataSummaryContainer;

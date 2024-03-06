@@ -50,6 +50,7 @@ export type ProjectCreationStep =
   | "SCHEDULE_INTRODUCTION"
   | "SCHEDULE_PROJECTION"
   | "NAMING"
+  | "FINAL_SUMMARY"
   | "CREATION_CONFIRMATION";
 
 export const getInitialState = (): ProjectCreationState => {
@@ -66,6 +67,11 @@ export const getInitialState = (): ProjectCreationState => {
     siteDataLoadingState: "idle",
     saveProjectLoadingState: "idle",
   };
+};
+
+type ScheduleStrings = {
+  startDate: string;
+  endDate: string;
 };
 
 const scheduleStringToDates = (scheduleStrings: {
@@ -203,6 +209,9 @@ export const projectCreationSlice = createSlice({
       state.projectData.name = name;
       if (description) state.projectData.description = description;
 
+      state.stepsHistory.push("FINAL_SUMMARY");
+    },
+    completeFinalSummaryStep: (state) => {
       state.stepsHistory.push("CREATION_CONFIRMATION");
     },
     completePhotovoltaicKeyParameter: (state, action: PayloadAction<PhotovoltaicKeyParameter>) => {
@@ -258,8 +267,8 @@ export const projectCreationSlice = createSlice({
       state,
       action: PayloadAction<{
         firstYearOfOperation: number;
-        photovoltaicInstallationSchedule?: { startDate: string; endDate: string };
-        reinstatementSchedule?: { startDate: string; endDate: string };
+        photovoltaicInstallationSchedule?: ScheduleStrings;
+        reinstatementSchedule?: ScheduleStrings;
       }>,
     ) => {
       const { firstYearOfOperation, photovoltaicInstallationSchedule, reinstatementSchedule } =
@@ -313,9 +322,11 @@ export const projectCreationSlice = createSlice({
     });
     builder.addCase(saveProjectAction.fulfilled, (state) => {
       state.saveProjectLoadingState = "success";
+      state.stepsHistory.push("CREATION_CONFIRMATION");
     });
     builder.addCase(saveProjectAction.rejected, (state) => {
       state.saveProjectLoadingState = "error";
+      state.stepsHistory.push("CREATION_CONFIRMATION");
     });
   },
 });
@@ -381,6 +392,7 @@ export const revertScheduleStep = () =>
       "photovoltaicInstallationSchedule",
     ],
   });
+export const revertFinalSummaryStep = () => revertStep();
 
 export const {
   resetState,
