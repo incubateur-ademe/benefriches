@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-import { fetchProjectAndSiteData } from "../../application/projectImpacts.actions";
-import { ProjectImpactsState } from "../../application/projectImpacts.reducer";
-import ProjectsImpactsPage from "./ProjectImpactsPage";
+import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
+import ProjectImpactsPageWrapper from "./ProjectImpactsPageWrapper";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -9,49 +8,22 @@ type Props = {
   projectId: string;
 };
 
-type SuccessDataProps = {
-  siteData: Exclude<ProjectImpactsState["siteData"], undefined>;
-  projectData: Exclude<ProjectImpactsState["projectData"], undefined>;
-  dataLoadingState: "success";
-};
-
-type ErrorOrLoadingDataProps = {
-  siteData: undefined;
-  projectData: undefined;
-  dataLoadingState: "idle" | "error" | "loading";
-};
-
 function ProjectsImpacts({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
-  const { siteData, projectData, dataLoadingState } = useAppSelector(
+  const { projectData, impactsData, dataLoadingState } = useAppSelector(
     (state) => state.projectImpacts,
-  ) as SuccessDataProps | ErrorOrLoadingDataProps;
+  );
 
   useEffect(() => {
-    async function fetchData() {
-      await dispatch(fetchProjectAndSiteData(projectId));
-    }
-    void fetchData();
+    void dispatch(fetchReconversionProjectImpacts(projectId));
   }, [projectId, dispatch]);
 
-  if (dataLoadingState === "success") {
-    return (
-      <ProjectsImpactsPage
-        projectData={projectData}
-        projectId={projectId}
-        siteName={siteData.name}
-        loadingState="success"
-      />
-    );
-  }
-
   return (
-    <ProjectsImpactsPage
-      projectData={undefined}
-      projectId={projectId}
-      siteName={undefined}
-      loadingState={dataLoadingState}
+    <ProjectImpactsPageWrapper
+      projectData={projectData}
+      impactsData={impactsData}
+      dataLoadingState={dataLoadingState}
     />
   );
 }

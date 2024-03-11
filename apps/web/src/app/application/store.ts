@@ -18,6 +18,7 @@ import siteCreation from "@/features/create-site/application/createSite.reducer"
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/application/siteMunicipalityData.actions";
 import siteMunicipalityData from "@/features/create-site/application/siteMunicipalityData.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
+import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
 import projectImpactsComparison from "@/features/projects/application/projectImpactsComparison.reducer";
@@ -35,6 +36,7 @@ export type AppDependencies = {
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
   userService: UserGateway;
   municipalityDataService: CreateSiteMunicipalityDataGateway | CreateProjectMunicipalityDataGateway;
+  reconversionProjectImpacts: ReconversionProjectImpactsGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

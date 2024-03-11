@@ -1,18 +1,16 @@
+/* eslint-disable */
 import { useMemo } from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { sharedChartConfig } from "../../../shared/sharedChartConfig";
 
-import { ProjectImpactsState } from "@/features/projects/application/projectImpacts.reducer";
 import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import { SoilsCarbonStorageResult } from "@/features/projects/application/fetchReconversionProjectCarbonStorageImpact.action";
 
-type CurrentCarbonStorageType = Exclude<ProjectImpactsState["currentCarbonStorage"], undefined>;
-
-type ProjectedCarbonStorageType = Exclude<ProjectImpactsState["currentCarbonStorage"], undefined>;
 type Props = {
-  currentCarbonStorage: CurrentCarbonStorageType;
-  projectedCarbonStorage: ProjectedCarbonStorageType;
+  currentCarbonStorage: SoilsCarbonStorageResult;
+  projectedCarbonStorage: SoilsCarbonStorageResult;
 };
 
 const roundTo2Digits = (value: number) => {
@@ -21,8 +19,8 @@ const roundTo2Digits = (value: number) => {
 
 const getData = (
   soilType: SoilType,
-  currentCarbonStorage: CurrentCarbonStorageType["soilsStorage"],
-  projectedCarbonStorage: ProjectedCarbonStorageType["soilsStorage"],
+  currentCarbonStorage: SoilsCarbonStorageResult["soilsStorage"],
+  projectedCarbonStorage: SoilsCarbonStorageResult["soilsStorage"],
 ) => {
   const soilTypeInSite = currentCarbonStorage.find((storage) => storage.type === soilType);
   const soilTypeInProject = projectedCarbonStorage.find((storage) => storage.type === soilType);
@@ -33,8 +31,8 @@ const getData = (
 };
 
 const getMergedSoilTypes = (
-  current: CurrentCarbonStorageType["soilsStorage"],
-  projected: ProjectedCarbonStorageType["soilsStorage"],
+  current: SoilsCarbonStorageResult["soilsStorage"],
+  projected: SoilsCarbonStorageResult["soilsStorage"],
 ) => Array.from(new Set([...current, ...projected].map(({ type }) => type)));
 
 function CarbonStorageChart({ currentCarbonStorage, projectedCarbonStorage }: Props) {

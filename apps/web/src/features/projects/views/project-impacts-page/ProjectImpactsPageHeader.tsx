@@ -19,22 +19,11 @@ const ProjectsImpactsPageHeader = ({ projectName, projectId, siteName }: Props) 
           buttons={[
             {
               priority: "secondary",
-              disabled: true,
-              children: "Modifier le site",
-            },
-            {
-              priority: "secondary",
-              disabled: true,
-              children: "Modifier le projet",
-            },
-            {
-              priority: "secondary",
               children: "Comparer les impacts",
               linkProps: routes.selectProjectToCompare({
                 baseProjectId: projectId,
               }).link,
             },
-            { priority: "secondary", disabled: true, children: "Exporter" },
           ]}
         />
       </div>
