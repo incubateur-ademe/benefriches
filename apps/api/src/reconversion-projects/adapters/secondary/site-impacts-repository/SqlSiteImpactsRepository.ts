@@ -12,7 +12,15 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
 
   async getById(siteId: string): Promise<SiteImpactsDataView | undefined> {
     const sqlSite = await this.sqlConnection("sites")
-      .select("id", "name", "friche_contaminated_soil_surface_area", "full_time_jobs_involved")
+      .select(
+        "id",
+        "name",
+        "friche_contaminated_soil_surface_area",
+        "full_time_jobs_involved",
+        "friche_accidents_minor_injuries",
+        "friche_accidents_severe_injuries",
+        "friche_accidents_deaths",
+      )
       .where("id", siteId)
       .first();
 
@@ -33,6 +41,14 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
           [soil_type as SoilType]: surface_area,
         };
       }, {}),
+      hasAccidents: Boolean(
+        sqlSite.friche_accidents_deaths ??
+          sqlSite.friche_accidents_minor_injuries ??
+          sqlSite.friche_accidents_severe_injuries,
+      ),
+      accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
+      accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
+      accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
     };
   }
 }

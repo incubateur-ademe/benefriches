@@ -3,6 +3,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ContaminatedSurfaceImpactChart from "./impacts/environment/ContaminatedSurfaceImpactCard";
 import PermeableSurfaceImpactChart from "./impacts/environment/PermeableSurfaceImpactCard";
+import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
 import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
 import ImpactChartCard from "./ImpactChartCard";
 
@@ -68,9 +69,14 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
               fullTimeJobsImpact={impacts.fullTimeJobs}
             />
           </div>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactChartCard title="💥 Accidents évités sur la friche" />
-          </div>
+          {impacts.accidents && (
+            <div className={fr.cx("fr-col-3")}>
+              <AccidentsImpactCard
+                reconversionProjectName={project.name}
+                accidentsImpact={impacts.accidents}
+              />
+            </div>
+          )}
           <div className={fr.cx("fr-col-3")}>
             <ImpactChartCard title="🏠 Foyers alimentés par les EnR" />
           </div>

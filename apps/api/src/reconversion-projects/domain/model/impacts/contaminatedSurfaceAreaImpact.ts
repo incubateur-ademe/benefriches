@@ -7,7 +7,9 @@ export type ContaminatedSurfaceAreaImpact = {
   forecast: number;
 };
 
-export const computeContaminatedSurfaceAreaImpact = (input: ContaminatedSurfaceAreaImpactInput) => {
+export const computeContaminatedSurfaceAreaImpact = (
+  input: ContaminatedSurfaceAreaImpactInput,
+): ContaminatedSurfaceAreaImpact => {
   return {
     base: input.currentContaminatedSurfaceArea,
     forecast: 0,

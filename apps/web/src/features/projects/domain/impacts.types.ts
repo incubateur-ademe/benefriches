@@ -21,4 +21,20 @@ export type ReconversionProjectImpacts = {
     conversion: { current: number; forecast: number };
     operations: { current: number; forecast: number };
   };
+  accidents?: {
+    current: number;
+    forecast: 0;
+    severeInjuries: {
+      current: number;
+      forecast: 0;
+    };
+    minorInjuries: {
+      current: number;
+      forecast: 0;
+    };
+    deaths: {
+      current: number;
+      forecast: 0;
+    };
+  };
 };

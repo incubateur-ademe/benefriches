@@ -1,5 +1,6 @@
 import { UseCase } from "src/shared-kernel/usecase";
 import { SoilsDistribution } from "src/soils/domain/soils";
+import { AccidentsImpactResult, computeAccidentsImpact } from "../model/impacts/accidentsImpact";
 import {
   computeContaminatedSurfaceAreaImpact,
   ContaminatedSurfaceAreaImpact,
@@ -20,6 +21,10 @@ export type SiteImpactsDataView = {
   contaminatedSoilSurface?: number;
   soilsDistribution: SoilsDistribution;
   fullTimeJobs?: number;
+  hasAccidents: boolean;
+  accidentsDeaths?: number;
+  accidentsMinorInjuries?: number;
+  accidentsSevereInjuries?: number;
 };
 
 export interface SiteImpactsRepository {
@@ -56,6 +61,7 @@ export type Result = {
     contaminatedSurfaceArea?: ContaminatedSurfaceAreaImpact;
     permeableSurfaceArea: PermeableSurfaceAreaImpactResult;
     fullTimeJobs: FullTimeJobsImpactResult;
+    accidents?: AccidentsImpactResult;
   };
 };
 
@@ -121,6 +127,13 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           },
           evaluationPeriodInYears,
         }),
+        accidents: relatedSite.hasAccidents
+          ? computeAccidentsImpact({
+              severeInjuries: relatedSite.accidentsSevereInjuries,
+              minorInjuries: relatedSite.accidentsMinorInjuries,
+              deaths: relatedSite.accidentsDeaths,
+            })
+          : undefined,
       },
     };
   }

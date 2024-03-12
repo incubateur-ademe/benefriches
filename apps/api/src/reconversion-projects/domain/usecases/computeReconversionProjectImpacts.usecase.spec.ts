@@ -83,6 +83,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
       },
       fullTimeJobs: 1,
+      hasAccidents: true,
+      accidentsDeaths: 0,
+      accidentsMinorInjuries: 1,
+      accidentsSevereInjuries: 2,
     } as const;
 
     it("returns impacts over 10 years for a reconversion project dedicated to renewable energy production on friche with contaminated soil", async () => {
@@ -132,6 +136,22 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             operations: {
               current: 1,
               forecast: 0.5,
+            },
+          },
+          accidents: {
+            current: 3,
+            forecast: 0,
+            deaths: {
+              current: 0,
+              forecast: 0,
+            },
+            severeInjuries: {
+              current: 2,
+              forecast: 0,
+            },
+            minorInjuries: {
+              current: 1,
+              forecast: 0,
             },
           },
         },

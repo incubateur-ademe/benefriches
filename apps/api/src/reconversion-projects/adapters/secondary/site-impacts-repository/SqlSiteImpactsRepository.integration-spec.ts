@@ -39,6 +39,9 @@ describe("SqlSiteRepository integration", () => {
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
         full_time_jobs_involved: 2,
+        friche_accidents_deaths: 1,
+        friche_accidents_minor_injuries: 2,
+        friche_accidents_severe_injuries: 0,
       });
 
       await sqlConnection("site_soils_distributions").insert([
@@ -57,6 +60,43 @@ describe("SqlSiteRepository integration", () => {
           PRAIRIE_GRASS: 12800,
         },
         fullTimeJobs: 2,
+        hasAccidents: true,
+        accidentsDeaths: 1,
+        accidentsMinorInjuries: 2,
+        accidentsSevereInjuries: 0,
+      });
+    });
+    it("gets site with data needed for impact computation when no full time jobs, no accidents and no contaminated surface", async () => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        name: "Site 123",
+        description: "Description of site",
+        surface_area: 14000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        tenant_name: "Tenant name",
+        tenant_structure_type: "company",
+        created_at: new Date(),
+        is_friche: true,
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "FOREST_MIXED", surface_area: 1200 },
+        { id: uuid(), site_id: siteId, soil_type: "PRAIRIE_GRASS", surface_area: 12800 },
+      ]);
+
+      const result = await siteRepository.getById(siteId);
+
+      expect(result).toEqual<SiteImpactsDataView>({
+        id: siteId,
+        name: "Site 123",
+        soilsDistribution: {
+          FOREST_MIXED: 1200,
+          PRAIRIE_GRASS: 12800,
+        },
+        hasAccidents: false,
       });
     });
   });
