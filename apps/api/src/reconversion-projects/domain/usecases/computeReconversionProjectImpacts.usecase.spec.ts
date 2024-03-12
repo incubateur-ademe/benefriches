@@ -77,20 +77,16 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         contaminatedSurfaceArea: {
           base: 20000,
           forecast: 0,
-          difference: -20000,
         },
         permeableSurfaceArea: {
           base: 60000,
-          difference: -10000,
           forecast: 50000,
           greenSoil: {
             base: 40000,
-            difference: -10000,
             forecast: 30000,
           },
           mineralSoil: {
             base: 20000,
-            difference: 0,
             forecast: 20000,
           },
         },

@@ -11,7 +11,6 @@ type Props = {
   contaminatedSurfaceImpact: {
     base: number;
     forecast: number;
-    difference: number;
   };
 };
 
@@ -58,11 +57,12 @@ function ContaminatedSurfaceImpactCard({
     ],
   };
 
+  const totalDifference = contaminatedSurfaceImpact.forecast - contaminatedSurfaceImpact.base;
   return (
     <ImpactCard title="✨ Surface polluée">
       <div style={{ textAlign: "center" }}>
-        {contaminatedSurfaceImpact.difference >= 0 && "+"}
-        {formatNumberFr(contaminatedSurfaceImpact.difference)} {SQUARE_METERS_HTML_SYMBOL}
+        {totalDifference >= 0 && "+"}
+        {formatNumberFr(totalDifference)} {SQUARE_METERS_HTML_SYMBOL}
       </div>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>

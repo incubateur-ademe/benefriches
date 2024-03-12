@@ -11,16 +11,13 @@ type Props = {
   permeableSurfaceImpact: {
     base: number;
     forecast: number;
-    difference: number;
     greenSoil: {
       base: number;
       forecast: number;
-      difference: number;
     };
     mineralSoil: {
       base: number;
       forecast: number;
-      difference: number;
     };
   };
 };
@@ -73,11 +70,12 @@ function PermeableSurfaceImpactCard({ reconversionProjectName, permeableSurfaceI
     ],
   };
 
+  const totalDifference = permeableSurfaceImpact.forecast - permeableSurfaceImpact.base;
   return (
     <ImpactCard title="🌧 Surfaces perméables">
       <div style={{ textAlign: "center" }}>
-        {permeableSurfaceImpact.difference >= 0 && "+"}
-        {formatNumberFr(permeableSurfaceImpact.difference)} {SQUARE_METERS_HTML_SYMBOL}
+        {totalDifference >= 0 && "+"}
+        {formatNumberFr(totalDifference)} {SQUARE_METERS_HTML_SYMBOL}
       </div>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>

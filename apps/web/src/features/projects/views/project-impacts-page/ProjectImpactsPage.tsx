@@ -13,22 +13,18 @@ type Props = {
     permeableSurfaceArea: {
       base: number;
       forecast: number;
-      difference: number;
       greenSoil: {
         base: number;
         forecast: number;
-        difference: number;
       };
       mineralSoil: {
         base: number;
         forecast: number;
-        difference: number;
       };
     };
     contaminatedSurfaceArea?: {
       base: number;
       forecast: number;
-      difference: number;
     };
   };
 };

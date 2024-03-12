@@ -5,7 +5,6 @@ describe("ContaminatedSurfaceArea impact", () => {
     expect(computeContaminatedSurfaceAreaImpact({ currentContaminatedSurfaceArea: 0 })).toEqual({
       base: 0,
       forecast: 0,
-      difference: 0,
     });
   });
 
@@ -14,7 +13,6 @@ describe("ContaminatedSurfaceArea impact", () => {
       {
         base: 25000,
         forecast: 0,
-        difference: -25000,
       },
     );
   });
