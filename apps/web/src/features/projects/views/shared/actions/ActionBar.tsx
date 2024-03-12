@@ -33,7 +33,7 @@ function ProjectsComparisonActionBar({ selectedFilter, onFilterClick }: Props) {
               onFilterClick("economic");
             }}
           >
-            Économie
+            Économiques
           </FilterButton>
         </div>
         <div className={fr.cx("fr-mr-2w")}>
@@ -43,7 +43,7 @@ function ProjectsComparisonActionBar({ selectedFilter, onFilterClick }: Props) {
               onFilterClick("social");
             }}
           >
-            Social
+            Sociaux
           </FilterButton>
         </div>
         <div className={fr.cx("fr-mr-2w")}>
@@ -53,7 +53,7 @@ function ProjectsComparisonActionBar({ selectedFilter, onFilterClick }: Props) {
               onFilterClick("environment");
             }}
           >
-            Environnement
+            Environnementaux
           </FilterButton>
         </div>
       </div>
