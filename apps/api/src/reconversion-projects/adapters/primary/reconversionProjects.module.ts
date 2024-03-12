@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
   ReconversionProjectRepository,
@@ -37,6 +38,16 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       useFactory: (reconversionProjectsListRepository: ReconversionProjectsListRepository) =>
         new GetUserReconversionProjectsBySiteUseCase(reconversionProjectsListRepository),
       inject: [SqlReconversionProjectsListRepository],
+    },
+    {
+      provide: ComputeReconversionProjectImpactsUseCase,
+      useFactory(
+        reconversionProjectRepo: SqlReconversionProjectRepository,
+        siteRepo: SqlSiteRepository,
+      ) {
+        return new ComputeReconversionProjectImpactsUseCase(reconversionProjectRepo, siteRepo);
+      },
+      inject: [SqlReconversionProjectRepository, SqlSiteRepository],
     },
     SqlReconversionProjectRepository,
     SqlReconversionProjectsListRepository,

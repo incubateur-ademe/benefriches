@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 import { photovoltaicPowerStationFeaturesSchema } from "src/reconversion-projects/domain/model/reconversionProject";
+import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
   reconversionProjectPropsSchema,
@@ -43,6 +44,7 @@ export class ReconversionProjectController {
   constructor(
     private readonly createReconversionProjectUseCase: CreateReconversionProjectUseCase,
     private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
+    private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
   ) {}
 
   @Post()
@@ -57,6 +59,15 @@ export class ReconversionProjectController {
   @Get("list-by-site")
   async getListGroupedBySite(@Query() { userId }: GetListGroupedBySiteQueryDto) {
     const result = await this.getReconversionProjectsBySite.execute({ userId });
+    return result;
+  }
+
+  @Get(":reconversionProjectId/impacts")
+  async getProjectImpacts(@Param("reconversionProjectId") reconversionProjectId: string) {
+    const result = await this.getReconversionProjectImpactsUseCase.execute({
+      reconversionProjectId,
+    });
+
     return result;
   }
 }

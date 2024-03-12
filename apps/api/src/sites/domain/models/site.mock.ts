@@ -1,5 +1,5 @@
 import { FricheSiteProps, NonFricheSiteProps } from "../usecases/createNewSite.usecase";
-import { NonFricheSite } from "./site";
+import { FricheSite, NonFricheSite } from "./site";
 
 export const buildMinimalSiteProps = (
   propsOverride?: Partial<NonFricheSiteProps>,
@@ -50,6 +50,14 @@ export const buildFricheProps = (propsOverride?: Partial<FricheSiteProps>): Fric
     ...buildMinimalSiteProps(),
     isFriche: true,
     fricheActivity: "INDUSTRY",
+    ...propsOverride,
+  };
+};
+
+export const buildMinimalFriche = (propsOverride?: Partial<FricheSite>): FricheSite => {
+  return {
+    ...buildFricheProps(),
+    createdAt: new Date(),
     ...propsOverride,
   };
 };
