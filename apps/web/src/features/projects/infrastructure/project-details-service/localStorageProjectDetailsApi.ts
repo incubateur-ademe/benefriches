@@ -1,8 +1,4 @@
 import {
-  ProjectDetailsResult as ProjectImpactsResult,
-  ProjectsDetailsGateway as ProjectImpactsGateway,
-} from "../../application/projectImpacts.actions";
-import {
   ProjectDetailsResult as ProjectImpactsComparisonResult,
   ProjectsDetailsGateway as ProjectImpactsComparisonGateway,
 } from "../../application/projectImpactsComparison.actions";
@@ -38,12 +34,8 @@ type ProjectInLocalStorage = {
   }[];
 };
 
-export class LocalStorageProjectDetailsApi
-  implements ProjectImpactsComparisonGateway, ProjectImpactsGateway
-{
-  async getProjectById(
-    projectId: string,
-  ): Promise<ProjectImpactsComparisonResult | ProjectImpactsResult> {
+export class LocalStorageProjectDetailsApi implements ProjectImpactsComparisonGateway {
+  async getProjectById(projectId: string): Promise<ProjectImpactsComparisonResult> {
     await delay(300);
 
     const projectsFromLocalStorage = localStorage.getItem(PROJECTS_LIST_STORAGE_KEY);

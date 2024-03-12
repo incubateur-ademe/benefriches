@@ -3,6 +3,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Notice } from "@codegouvfr/react-dsfr/Notice";
 import { Project, ProjectSite } from "../../domain/projects.types";
+import { ImpactCategoryFilter } from "../project-impacts-page/ProjectImpactsPage";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
 import CarbonStorageComparisonChart from "./charts/carbon-storage";
@@ -72,7 +73,7 @@ const ImpactCard = ({ children }: ImpactCardProps) => {
 };
 
 function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingState }: Props) {
-  const [selectedFilter, setSelectedFilter] = useState<"all" | "monetary">("all");
+  const [selectedFilter, setSelectedFilter] = useState<ImpactCategoryFilter>("all");
 
   if (loadingState === "loading") {
     return <p>Chargement en cours ...</p>;
@@ -103,11 +104,10 @@ function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingStat
       />
       <ProjectsComparisonActionBar
         selectedFilter={selectedFilter}
-        onMonetaryFilterClick={() => {
-          setSelectedFilter("monetary");
-        }}
-        onAllFilterClick={() => {
-          setSelectedFilter("all");
+        onFilterClick={(clickedFilter: ImpactCategoryFilter) => {
+          setSelectedFilter((currentFilter) =>
+            currentFilter === clickedFilter ? "all" : clickedFilter,
+          );
         }}
       />
       <div className={fr.cx("fr-mb-6w")}>

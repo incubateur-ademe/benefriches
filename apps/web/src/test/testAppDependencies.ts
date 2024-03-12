@@ -8,6 +8,7 @@ import { SitesServiceMock } from "@/features/create-project/infrastructure/sites
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { InMemoryReconversionProjectsListService } from "@/features/projects/infrastructure/projects-list-service/InMemoryProjectsListService";
+import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 import { LocalStorageUserService } from "@/features/users/infra/get-user-service/LocalStorageUserService";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
@@ -23,6 +24,7 @@ export const getTestAppDependencies = (
     createSiteService: new InMemoryCreateSiteService(),
     reconversionProjectsListService: new InMemoryReconversionProjectsListService([]),
     projectDetailsService: new LocalStorageProjectDetailsApi(),
+    reconversionProjectImpacts: new MockReconversionProjectImpactsApi(),
     saveReconversionProjectService: new LocalStorageSaveProjectApi(),
     getSiteByIdService: new SitesServiceMock(),
     photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
