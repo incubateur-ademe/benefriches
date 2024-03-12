@@ -47,18 +47,19 @@ function ContaminatedSurfaceImpactCard({
     },
     series: [
       {
-        name: "Surface non polluée",
+        name: "Surface polluée",
         type: "area",
         data: [
           roundTo2Digits(contaminatedSurfaceImpact.base),
           roundTo2Digits(contaminatedSurfaceImpact.forecast),
         ],
+        showInLegend: false,
       },
     ],
   };
 
   return (
-    <ImpactCard title="✨ Surface non polluée">
+    <ImpactCard title="✨ Surface polluée">
       <div style={{ textAlign: "center" }}>
         {contaminatedSurfaceImpact.difference >= 0 && "+"}
         {formatNumberFr(contaminatedSurfaceImpact.difference)} {SQUARE_METERS_HTML_SYMBOL}

@@ -105,8 +105,9 @@ function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingStat
       <ProjectsComparisonActionBar
         selectedFilter={selectedFilter}
         onFilterClick={(clickedFilter: ImpactCategoryFilter) => {
-          const newFilter = selectedFilter === clickedFilter ? "all" : clickedFilter;
-          setSelectedFilter(newFilter);
+          setSelectedFilter((currentFilter) =>
+            currentFilter === clickedFilter ? "all" : clickedFilter,
+          );
         }}
       />
       <div className={fr.cx("fr-mb-6w")}>

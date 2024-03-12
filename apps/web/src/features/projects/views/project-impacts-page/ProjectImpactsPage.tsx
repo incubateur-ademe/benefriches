@@ -50,8 +50,9 @@ const NewProjectImpactsPage = ({ project, impacts }: Props) => {
       <ProjectsComparisonActionBar
         selectedFilter={selectedFilter}
         onFilterClick={(clickedFilter: ImpactCategoryFilter) => {
-          const newFilter = selectedFilter === clickedFilter ? "all" : clickedFilter;
-          setSelectedFilter(newFilter);
+          setSelectedFilter((currentFilter) =>
+            currentFilter === clickedFilter ? "all" : clickedFilter,
+          );
         }}
       />
       <ImpactsChartsView project={project} impacts={impacts} />
