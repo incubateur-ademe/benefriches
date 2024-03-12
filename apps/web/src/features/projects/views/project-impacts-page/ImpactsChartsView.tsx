@@ -1,31 +1,16 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ContaminatedSurfaceImpactChart from "./impacts/environment/ContaminatedSurfaceImpactCard";
 import PermeableSurfaceImpactChart from "./impacts/environment/PermeableSurfaceImpactCard";
+import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
 import ImpactChartCard from "./ImpactChartCard";
 
 type Props = {
   project: {
     name: string;
   };
-  impacts: {
-    permeableSurfaceArea: {
-      base: number;
-      forecast: number;
-      greenSoil: {
-        base: number;
-        forecast: number;
-      };
-      mineralSoil: {
-        base: number;
-        forecast: number;
-      };
-    };
-    contaminatedSurfaceArea?: {
-      base: number;
-      forecast: number;
-    };
-  };
+  impacts: ReconversionProjectImpacts;
 };
 
 const Row = ({ children }: { children: ReactNode }) => {
@@ -78,7 +63,10 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
         <h3>Impacts sociaux</h3>
         <Row>
           <div className={fr.cx("fr-col-3")}>
-            <ImpactChartCard title="🧑‍🔧 Emplois équivalent temps plein" />
+            <FullTimeJobsImpactCard
+              reconversionProjectName={project.name}
+              fullTimeJobsImpact={impacts.fullTimeJobs}
+            />
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactChartCard title="💥 Accidents évités sur la friche" />

@@ -39,6 +39,10 @@ class GetListGroupedBySiteQueryDto extends createZodDto(
   }),
 ) {}
 
+class GetReconversionProjectImpactsQueryDto extends createZodDto(
+  z.object({ evaluationPeriodInYears: z.coerce.number().nonnegative() }),
+) {}
+
 @Controller("reconversion-projects")
 export class ReconversionProjectController {
   constructor(
@@ -63,9 +67,13 @@ export class ReconversionProjectController {
   }
 
   @Get(":reconversionProjectId/impacts")
-  async getProjectImpacts(@Param("reconversionProjectId") reconversionProjectId: string) {
+  async getProjectImpacts(
+    @Param("reconversionProjectId") reconversionProjectId: string,
+    @Query() { evaluationPeriodInYears }: GetReconversionProjectImpactsQueryDto,
+  ) {
     const result = await this.getReconversionProjectImpactsUseCase.execute({
       reconversionProjectId,
+      evaluationPeriodInYears,
     });
 
     return result;

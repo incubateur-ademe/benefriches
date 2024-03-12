@@ -1,20 +1,24 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 import { ImpactCategoryFilter, ViewMode } from "../../project-impacts-page/ProjectImpactsPage";
-import ProjectDurationSelect from "./ProjectDurationSelect";
+import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
 
 type Props = {
   selectedFilter: ImpactCategoryFilter;
   selectedViewMode: ViewMode;
+  evaluationPeriod: number;
   onFilterClick: (filterValue: ImpactCategoryFilter) => void;
   onViewModeClick: (viewMode: ViewMode) => void;
+  onEvaluationPeriodChange: (n: number) => void;
 };
 
-function ProjectsComparisonActionBar({
+function ImpactsActionBar({
   onFilterClick,
   onViewModeClick,
   selectedFilter,
   selectedViewMode,
+  evaluationPeriod,
+  onEvaluationPeriodChange,
 }: Props) {
   const getFilterSegmentInputProps = (value: ImpactCategoryFilter) => {
     return {
@@ -79,10 +83,13 @@ function ProjectsComparisonActionBar({
             },
           ]}
         />
-        <ProjectDurationSelect />
+        <ImpactEvaluationPeriodSelect
+          onChange={onEvaluationPeriodChange}
+          value={evaluationPeriod}
+        />
       </div>
     </section>
   );
 }
 
-export default ProjectsComparisonActionBar;
+export default ImpactsActionBar;

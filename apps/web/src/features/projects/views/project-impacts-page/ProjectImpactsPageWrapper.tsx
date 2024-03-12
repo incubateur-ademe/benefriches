@@ -2,11 +2,18 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import { ProjectImpactsState } from "../../application/projectImpacts.reducer";
 import ProjectImpactsPage from "./ProjectImpactsPage";
 
+type Props = ProjectImpactsState & {
+  onEvaluationPeriodChange: (n: number) => void;
+  evaluationPeriod: number;
+};
+
 function ProjectImpactsPageWrapper({
   projectData,
   impactsData,
   dataLoadingState,
-}: ProjectImpactsState) {
+  onEvaluationPeriodChange,
+  evaluationPeriod,
+}: Props) {
   if (dataLoadingState === "loading") {
     return <p>Chargement en cours ...</p>;
   }
@@ -23,7 +30,14 @@ function ProjectImpactsPageWrapper({
   }
 
   if (dataLoadingState === "success") {
-    return <ProjectImpactsPage project={projectData!} impacts={impactsData!} />;
+    return (
+      <ProjectImpactsPage
+        project={projectData!}
+        impacts={impactsData!}
+        evaluationPeriod={evaluationPeriod}
+        onEvaluationPeriodChange={onEvaluationPeriodChange}
+      />
+    );
   }
 }
 

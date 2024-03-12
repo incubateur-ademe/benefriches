@@ -1,10 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   fetchReconversionProjectImpacts,
   ReconversionProjectImpactsResult,
 } from "./fetchReconversionProjectImpacts.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
+
+const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 10;
 
 export type ProjectImpactsState = {
   dataLoadingState: LoadingState;
@@ -15,6 +17,7 @@ export type ProjectImpactsState = {
     relatedSiteName: string;
   };
   impactsData?: ReconversionProjectImpactsResult["impacts"];
+  evaluationPeriod: number;
 };
 
 export const getInitialState = (): ProjectImpactsState => {
@@ -22,13 +25,18 @@ export const getInitialState = (): ProjectImpactsState => {
     impactsData: undefined,
     projectData: undefined,
     dataLoadingState: "idle",
+    evaluationPeriod: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
   };
 };
 
 export const projectImpactsSlice = createSlice({
   name: "projectImpacts",
   initialState: getInitialState(),
-  reducers: {},
+  reducers: {
+    setEvaluationPeriod: (state, action: PayloadAction<number>) => {
+      state.evaluationPeriod = action.payload;
+    },
+  },
   extraReducers(builder) {
     /* fetch reconversion project impacts */
     builder.addCase(fetchReconversionProjectImpacts.pending, (state) => {
@@ -49,5 +57,7 @@ export const projectImpactsSlice = createSlice({
     });
   },
 });
+
+export const { setEvaluationPeriod } = projectImpactsSlice.actions;
 
 export default projectImpactsSlice.reducer;

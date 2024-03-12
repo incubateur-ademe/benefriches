@@ -1,3 +1,4 @@
+import { differenceInDays } from "date-fns";
 import { z } from "zod";
 import { soilTypeSchema } from "src/soils/domain/soils";
 
@@ -12,6 +13,8 @@ const scheduleSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
 });
+
+export type Schedule = z.infer<typeof scheduleSchema>;
 
 const baseDevelopmentPlanSchema = z.object({
   type: z.string(),
@@ -53,3 +56,9 @@ export const reconversionProjectSchema = z.object({
 });
 
 export type ReconversionProject = z.infer<typeof reconversionProjectSchema>;
+
+export const getDurationFromScheduleInYears = ({ startDate, endDate }: Schedule) => {
+  const durationInDays = differenceInDays(endDate, startDate);
+
+  return durationInDays / 365;
+};

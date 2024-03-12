@@ -1,8 +1,11 @@
+import { ReconversionProjectImpacts } from "../domain/impacts.types";
+
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 export interface ReconversionProjectImpactsGateway {
   getReconversionProjectImpacts(
     reconversionProjectId: string,
+    evaluationPeriodInYears: number,
   ): Promise<ReconversionProjectImpactsResult>;
 }
 
@@ -11,28 +14,20 @@ export type ReconversionProjectImpactsResult = {
   name: string;
   relatedSiteId: string;
   relatedSiteName: string;
-  impacts: {
-    permeableSurfaceArea: {
-      base: number;
-      forecast: number;
-      greenSoil: {
-        base: number;
-        forecast: number;
-      };
-      mineralSoil: {
-        base: number;
-        forecast: number;
-      };
-    };
-    contaminatedSurfaceArea?: { base: number; forecast: number };
-  };
+  impacts: ReconversionProjectImpacts;
 };
 
 export const fetchReconversionProjectImpacts = createAppAsyncThunk<
   ReconversionProjectImpactsResult,
-  string
->("projectImpacts/fetchReconversionProjectImpacts", async (projectId, { extra }) => {
-  const data = await extra.reconversionProjectImpacts.getReconversionProjectImpacts(projectId);
+  { evaluationPeriod: number; projectId: string }
+>(
+  "projectImpacts/fetchReconversionProjectImpacts",
+  async ({ projectId, evaluationPeriod }, { extra }) => {
+    const data = await extra.reconversionProjectImpacts.getReconversionProjectImpacts(
+      projectId,
+      evaluationPeriod,
+    );
 
-  return data;
-});
+    return data;
+  },
+);

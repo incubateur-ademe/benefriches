@@ -5,34 +5,46 @@ import {
   ContaminatedSurfaceAreaImpact,
 } from "../model/impacts/contaminatedSurfaceAreaImpact";
 import {
+  computeFullTimeJobsImpact,
+  FullTimeJobsImpactResult,
+} from "../model/impacts/fullTimeJobsImpact";
+import {
   computePermeableSurfaceAreaImpact,
   PermeableSurfaceAreaImpactResult,
 } from "../model/impacts/permeableSurfaceAreaImpact";
+import { getDurationFromScheduleInYears, Schedule } from "../model/reconversionProject";
 
-type Site = {
+export type SiteImpactsDataView = {
   id: string;
   name: string;
   contaminatedSoilSurface?: number;
   soilsDistribution: SoilsDistribution;
+  fullTimeJobs?: number;
 };
 
-export interface SiteRepository {
-  getById(siteId: string): Promise<Site | undefined>;
+export interface SiteImpactsRepository {
+  getById(siteId: string): Promise<SiteImpactsDataView | undefined>;
 }
 
-type ReconversionProject = {
+export type ReconversionProjectImpactsDataView = {
   id: string;
   name: string;
   relatedSiteId: string;
   soilsDistribution: SoilsDistribution;
+  conversionFullTimeJobs?: number;
+  reinstatementFullTimeJobs?: number;
+  operationsFullTimeJobs?: number;
+  conversionSchedule?: Schedule;
+  reinstatementSchedule?: Schedule;
 };
 
-export interface ReconversionProjectRepository {
-  getById(reconversionProjectId: string): Promise<ReconversionProject | undefined>;
+export interface ReconversionProjectImpactsRepository {
+  getById(reconversionProjectId: string): Promise<ReconversionProjectImpactsDataView | undefined>;
 }
 
 type Request = {
   reconversionProjectId: string;
+  evaluationPeriodInYears: number;
 };
 
 export type Result = {
@@ -43,6 +55,7 @@ export type Result = {
   impacts: {
     contaminatedSurfaceArea?: ContaminatedSurfaceAreaImpact;
     permeableSurfaceArea: PermeableSurfaceAreaImpactResult;
+    fullTimeJobs: FullTimeJobsImpactResult;
   };
 };
 
@@ -64,11 +77,11 @@ class SiteNotFound extends Error {
 
 export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request, Result> {
   constructor(
-    private readonly reconversionProjectRepository: ReconversionProjectRepository,
-    private readonly siteRepository: SiteRepository,
+    private readonly reconversionProjectRepository: ReconversionProjectImpactsRepository,
+    private readonly siteRepository: SiteImpactsRepository,
   ) {}
 
-  async execute({ reconversionProjectId }: Request): Promise<Result> {
+  async execute({ reconversionProjectId, evaluationPeriodInYears }: Request): Promise<Result> {
     const reconversionProject =
       await this.reconversionProjectRepository.getById(reconversionProjectId);
 
@@ -93,6 +106,21 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
               currentContaminatedSurfaceArea: relatedSite.contaminatedSoilSurface,
             })
           : undefined,
+        fullTimeJobs: computeFullTimeJobsImpact({
+          current: { operationsFullTimeJobs: relatedSite.fullTimeJobs },
+          forecast: {
+            operationsFullTimeJobs: reconversionProject.operationsFullTimeJobs,
+            conversionFullTimeJobs: reconversionProject.conversionFullTimeJobs,
+            conversionDurationInYears:
+              reconversionProject.conversionSchedule &&
+              getDurationFromScheduleInYears(reconversionProject.conversionSchedule),
+            reinstatementFullTimeJobs: reconversionProject.reinstatementFullTimeJobs,
+            reinstatementDurationInYears:
+              reconversionProject.reinstatementSchedule &&
+              getDurationFromScheduleInYears(reconversionProject.reinstatementSchedule),
+          },
+          evaluationPeriodInYears,
+        }),
       },
     };
   }
