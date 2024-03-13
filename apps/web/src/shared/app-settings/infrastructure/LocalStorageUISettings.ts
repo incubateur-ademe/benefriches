@@ -10,7 +10,6 @@ export class LocalStorageAppSettings implements AppSettingsGateway {
     const appSettings = fromLocalStorage
       ? (JSON.parse(fromLocalStorage) as AppSettings)
       : DEFAULT_APP_SETTINGS;
-
     return appSettings;
   }
 
@@ -20,6 +19,15 @@ export class LocalStorageAppSettings implements AppSettingsGateway {
     localStorage.setItem(
       APP_SETTINGS_STORAGE_KEY,
       JSON.stringify({ ...appSettings, shouldDisplayFormsNotice: value }),
+    );
+  }
+
+  setShouldDisplayProjectsComparisonNotice(value: boolean) {
+    const appSettings = this.getAll();
+
+    localStorage.setItem(
+      APP_SETTINGS_STORAGE_KEY,
+      JSON.stringify({ ...appSettings, shouldDisplayProjectsComparisonNotice: value }),
     );
   }
 }

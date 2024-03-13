@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import AboutComparisonModal from "./AboutComparisonModal";
 import { getProjectsInfosList, getSelectionInfos, getSitesInfosList } from "./getSelectionDetails";
 import ScenariiGroup from "./ScenariiGroup";
 import ScenariiSelectionBar from "./ScenariiSelectionBar";
@@ -19,9 +20,9 @@ function ScenariiListContainer({ projectsList }: Props) {
   const [selectedProjectScenarii, setSelectedBaseProjectScenarii] = useState<string[]>([]);
 
   const onChangeSelectedProject = (id: string, checked: boolean) => {
-    setSelectedBaseProjectScenarii((current) =>
-      checked ? [...current, id] : current.filter((selectedId) => id !== selectedId),
-    );
+    setSelectedBaseProjectScenarii((current) => {
+      return checked ? [...current, id] : current.filter((selectedId) => id !== selectedId);
+    });
   };
 
   const onChangeSelectedSite = (value?: string) => {
@@ -42,8 +43,12 @@ function ScenariiListContainer({ projectsList }: Props) {
     [projectsInfosList, selectedProjectScenarii, selectedStatuQuoScenario, siteInfosList],
   );
 
+  const shouldOpenModal = selectedIds.length > 0;
+
   return (
     <>
+      <AboutComparisonModal isOpen={shouldOpenModal} />
+
       {(baseScenario || withScenario) && (
         <ScenariiSelectionBar
           baseScenario={baseScenario}
