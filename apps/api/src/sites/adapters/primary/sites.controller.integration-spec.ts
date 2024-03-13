@@ -146,7 +146,10 @@ describe("Sites controller", () => {
           surfaceArea: 15000,
           yearlyExpenses: [],
           yearlyIncomes: [],
-          hasRecentAccidents: false,
+          hasRecentAccidents: true,
+          accidentsMinorInjuries: 1,
+          accidentsSevereInjuries: 2,
+          accidentsDeaths: 0,
           fullTimeJobsInvolved: 1.2,
           hasContaminatedSoils: true,
           contaminatedSoilsSurface: 1400.3,
@@ -170,6 +173,9 @@ describe("Sites controller", () => {
         "is_friche",
         "friche_activity",
         "surface_area",
+        "friche_accidents_deaths",
+        "friche_accidents_severe_injuries",
+        "friche_accidents_minor_injuries",
       );
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
@@ -178,6 +184,9 @@ describe("Sites controller", () => {
         surface_area: 15000.0,
         friche_activity: "RAILWAY",
         is_friche: true,
+        friche_accidents_deaths: 0,
+        friche_accidents_severe_injuries: 2,
+        friche_accidents_minor_injuries: 1,
       });
     });
   });

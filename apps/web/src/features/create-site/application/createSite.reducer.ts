@@ -170,9 +170,9 @@ export const siteCreationSlice = createSlice({
           }
         | {
             hasRecentAccidents: true;
-            minorInjuriesPersons?: number;
-            severeInjuriesPersons?: number;
-            deaths?: number;
+            accidentsMinorInjuries?: number;
+            accidentSevereInjuries?: number;
+            accidentsDeaths?: number;
           }
       >,
     ) => {
@@ -180,9 +180,9 @@ export const siteCreationSlice = createSlice({
       state.siteData.hasRecentAccidents = action.payload.hasRecentAccidents;
 
       if (hasRecentAccidents) {
-        state.siteData.minorInjuriesPersons = action.payload.minorInjuriesPersons ?? 0;
-        state.siteData.severeInjuriesPersons = action.payload.severeInjuriesPersons ?? 0;
-        state.siteData.deaths = action.payload.deaths ?? 0;
+        state.siteData.accidentsMinorInjuries = action.payload.accidentsMinorInjuries ?? 0;
+        state.siteData.accidentSevereInjuries = action.payload.accidentSevereInjuries ?? 0;
+        state.siteData.accidentsDeaths = action.payload.accidentsDeaths ?? 0;
       }
 
       state.stepsHistory.push("YEARLY_EXPENSES");

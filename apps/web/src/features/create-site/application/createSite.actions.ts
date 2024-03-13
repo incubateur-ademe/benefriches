@@ -23,7 +23,12 @@ export const revertFullTimeJobsInvolvedStep = () =>
   revertStep({ resetFields: ["fullTimeJobsInvolved"] });
 export const revertFricheRecentAccidentsStep = () =>
   revertStep({
-    resetFields: ["hasRecentAccidents", "minorInjuriesPersons", "severeInjuriesPersons", "deaths"],
+    resetFields: [
+      "hasRecentAccidents",
+      "accidentsMinorInjuries",
+      "accidentSevereInjuries",
+      "accidentsDeaths",
+    ],
   });
 export const revertYearlyExpensesStep = () => revertStep({ resetFields: ["yearlyExpenses"] });
 export const revertYearlyIncomeStep = () => revertStep({ resetFields: ["yearlyIncomes"] });
@@ -66,9 +71,9 @@ const createSiteSchema = z.object({
     })
     .optional(),
   hasRecentAccidents: z.boolean().optional(),
-  minorInjuriesPersons: z.number().nonnegative().optional(),
-  severeInjuriesPersons: z.number().nonnegative().optional(),
-  deaths: z.number().nonnegative().optional(),
+  accidentsMinorInjuries: z.number().nonnegative().optional(),
+  accidentSevereInjuries: z.number().nonnegative().optional(),
+  accidentsDeaths: z.number().nonnegative().optional(),
   yearlyExpenses: z
     .object({
       purpose: z.string(),

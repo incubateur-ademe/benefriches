@@ -42,9 +42,9 @@ export type SiteDraft = {
   owner: { structureType: OwnerStructureType; name: string };
   tenant?: { structureType: TenantStructureType; name: string };
   hasRecentAccidents?: boolean;
-  minorInjuriesPersons?: number;
-  severeInjuriesPersons?: number;
-  deaths?: number;
+  accidentsMinorInjuries?: number;
+  accidentSevereInjuries?: number;
+  accidentsDeaths?: number;
   yearlyExpenses: Expense[];
   yearlyIncomes: Income[];
 };

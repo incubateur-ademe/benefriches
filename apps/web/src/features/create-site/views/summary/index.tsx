@@ -24,9 +24,9 @@ function SiteDataSummaryContainer() {
         fullTimeJobsInvolved: siteData.fullTimeJobsInvolved ?? 0,
         accidents: siteData.hasRecentAccidents
           ? {
-              deaths: siteData.deaths,
-              severyInjuries: siteData.severeInjuriesPersons,
-              minorInjuries: siteData.minorInjuriesPersons,
+              accidentsDeaths: siteData.accidentsDeaths,
+              severyInjuries: siteData.accidentSevereInjuries,
+              minorInjuries: siteData.accidentsMinorInjuries,
             }
           : null,
         expenses: siteData.yearlyExpenses ?? [],
