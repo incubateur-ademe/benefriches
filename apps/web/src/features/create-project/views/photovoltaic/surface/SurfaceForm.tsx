@@ -44,7 +44,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
           <p>
             Dès lors que de la végétation haute est présente (sols artificiels ou prairies arborés,
             forêts), l’implantation nécessite des investissements (coupes) et est à éviter (pour des
-            raisons de biodiversité et de puits de carbone&nbsp;!)
+            raisons de biodiversité et de puits de carbone).
           </p>
           <p>Le devenir des sols sera abordés ultérieurement dans Bénéfriches.</p>
         </>

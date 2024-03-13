@@ -27,7 +27,7 @@ export const getLabelForRenewableEnergyProductionType = (
     case "GEOTHERMAL":
       return "Géothermie";
     case "BIOMASS":
-      return "Biomasse";
+      return "Biomasse / Méthanisation";
   }
 };
 
@@ -36,12 +36,12 @@ export const getDescriptionForRenewableEnergyType = (
 ): string => {
   switch (value) {
     case "PHOTOVOLTAIC_POWER_PLANT":
-      return "Production d’électricité grâce à des capteurs ou centrales solaires";
+      return "Production d’électricité à partir du soleil ";
     case "AGRIVOLTAIC":
       return "Production d’électricité photovoltaïque associée à une production agricole";
     case "GEOTHERMAL":
       return "Production de chaleur à partir du sol ou de l’eau en souterrain";
     case "BIOMASS":
-      return "Production d’électricité par combustion de matière organique";
+      return "Production d’électricité par combustion ou fermentation de matières organiques";
   }
 };

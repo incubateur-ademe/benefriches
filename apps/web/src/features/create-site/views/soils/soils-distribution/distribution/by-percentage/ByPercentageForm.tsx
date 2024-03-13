@@ -78,7 +78,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
           state={remainder === 0 ? "success" : "error"}
           stateRelatedMessage={
             remainder === 0
-              ? "Les pourcentages alloués sont égals à 100%"
+              ? "Les pourcentages alloués sont égaux à 100%"
               : `${remainder > 0 ? "-" : "+"} ${formatNumberFr(Math.abs(remainder))} %`
           }
         />

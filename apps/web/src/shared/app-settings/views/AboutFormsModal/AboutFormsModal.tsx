@@ -59,13 +59,14 @@ function AboutFormsModal({ shouldOpenModal, setShouldNotDisplayAgain }: Props) {
         <li>
           <strong>La plupart des questions ne sont pas obligatoires</strong>
         </li>
-        <p>Vous pouvez les laisser vides. Les questions obligatoires sont signalées par un *.</p>
+        <p>Vous pouvez ne pas y répondre. Les questions obligatoires sont signalées par un *.</p>
         <li>
           <strong>Sur certaines questions, Bénéfriches vous propose des réponses par défaut</strong>
         </li>
         <p>
-          Bénéfriches vous propose des valeurs par défaut, issues du retour d'éxpériences de l'ADEME
-          ou autres ressources documentaires. Vous pouvez modifier ces valeurs.
+          Ces valeurs sont calculées à partir des réponses que vous avez apportées, en combinaison
+          avec des ratios issus du retour d'expériences de l'ADEME ou d’autres ressources
+          documentaires. Vous pouvez les modifier.
         </p>
       </ul>
       <StopDisplayingModalCheckbox

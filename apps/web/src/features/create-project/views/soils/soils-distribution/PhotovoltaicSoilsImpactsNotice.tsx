@@ -25,7 +25,7 @@ function PhotovoltaicSoilsImpactsNotice({
       <p>
         Comme tout projet de production d’énergie, l’implantation de centrale photovoltaïque au sol
         génère, comme son nom le laisse entendre, des impacts sur les sols. Ces impacts sont
-        toutefois limités&nbsp;!
+        toutefois limités.
       </p>
       <p>
         Ils sont liés à la création des pistes d’accès, à l’implantation des structures porteuses
