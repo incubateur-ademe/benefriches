@@ -109,6 +109,8 @@ function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingStat
             currentFilter === clickedFilter ? "all" : clickedFilter,
           );
         }}
+        onViewModeClick={() => null}
+        selectedViewMode="charts"
       />
       <div className={fr.cx("fr-mb-6w")}>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
