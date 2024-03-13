@@ -1,6 +1,8 @@
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { routes } from "@/app/views/router";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   siteId: string;
@@ -16,12 +18,18 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
       return <p>Création du site "{siteName}", veuillez patienter...</p>;
     case "error":
       return (
-        <p>Une erreur est survenue lors de la création du site "{siteName}", veuillez réessayer.</p>
+        <WizardFormLayout title="Échec de la création du site">
+          <Alert
+            description={`Une erreur est survenue lors de la création du site "${siteName}", veuillez réessayer.`}
+            severity="error"
+            title="Le site n’a pas pu être enregistré"
+            className="fr-my-7v"
+          />
+        </WizardFormLayout>
       );
     case "success":
       return (
-        <>
-          <h2>✅ Le site "{siteName}" est créé !</h2>
+        <WizardFormLayout title={`✅ Le site "${siteName}" est créé !`}>
           <p>
             Vous pouvez maintenant découvrir ses caractéristiques géographiques, créer un projet sur
             ce site ou bien renseigner un nouveau site en retournant sur votre tableau de bord.
@@ -46,7 +54,7 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
             ]}
             inlineLayoutWhen="always"
           />
-        </>
+        </WizardFormLayout>
       );
   }
 }

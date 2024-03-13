@@ -2,6 +2,7 @@ import ExpensesBarChart from "./ExpensesBarChart";
 
 import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   isFriche: boolean;
@@ -17,8 +18,9 @@ function SiteExpensesSummary({ onNext, onBack, isFriche, ownerExpenses, tenantEx
   const hasNoExpenses = !hasOwnerExpenses && !hasTenantExpenses;
 
   return (
-    <>
-      <h2>Récapitulatif des coûts annuels liés {isFriche ? "à la friche" : "au site"}</h2>
+    <WizardFormLayout
+      title={`Récapitulatif des coûts annuels liés ${isFriche ? "à la friche" : "au site"}`}
+    >
       {hasNoExpenses && <p>Aucune dépense renseignée pour ce site.</p>}
       {hasOwnerExpenses && (
         <>
@@ -33,7 +35,7 @@ function SiteExpensesSummary({ onNext, onBack, isFriche, ownerExpenses, tenantEx
         </>
       )}
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </>
+    </WizardFormLayout>
   );
 }
 

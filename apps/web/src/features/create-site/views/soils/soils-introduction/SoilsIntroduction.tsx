@@ -1,4 +1,5 @@
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onNext: () => void;
@@ -7,15 +8,15 @@ type Props = {
 };
 
 const SiteSoilsIntroduction = ({ isFriche, onNext, onBack }: Props) => {
+  const title = `Parlons d’abord des sols qui existent actuellement sur ${isFriche ? "la friche" : "le site"}`;
   return (
-    <>
+    <WizardFormLayout title={title}>
       <p>
-        Parlons d’abord des <strong>sols</strong> qui existent actuellement sur{" "}
-        {isFriche ? "la friche" : "le site"} : leur typologie, leur occupation et les superficies
+        Nous avons besoin de connaître leur typologie, leur occupation et les superficies
         correspondantes.
       </p>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </>
+    </WizardFormLayout>
   );
 };
 

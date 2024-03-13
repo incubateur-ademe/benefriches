@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
-import Button from "@codegouvfr/react-dsfr/Button";
 import CarbonStorageDifferenceSection from "./CarbonStorageDifferenceSection";
 
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type PropsFunction = {
   onNext: () => void;
@@ -48,19 +48,15 @@ const ProjectSoilsCarbonStorage = ({
 
   if (loadingState === "error") {
     return (
-      <>
-        <h2>Stockage du carbone par les sols</h2>
-
+      <WizardFormLayout title="Stockage du carbone par les sols">
         <Alert
           description="Une erreur s’est produite lors du calcul du pouvoir de stockage de carbone par les sols..."
           severity="error"
           title="Erreur"
           className="fr-my-7v"
         />
-        <Button nativeButtonProps={{ type: "submit" }} onClick={onNext}>
-          Suivant
-        </Button>
-      </>
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </WizardFormLayout>
     );
   }
 
@@ -73,7 +69,6 @@ const ProjectSoilsCarbonStorage = ({
             projectedCarbonStorage.totalCarbonStorage - currentCarbonStorage.totalCarbonStorage
           }
         />
-        <p></p>
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-6">
             <h3>

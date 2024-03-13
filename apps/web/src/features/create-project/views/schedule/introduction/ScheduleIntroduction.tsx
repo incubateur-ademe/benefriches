@@ -1,4 +1,5 @@
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onNext: () => void;
@@ -7,11 +8,10 @@ type Props = {
 
 const ScheduleIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <>
-      <h2>C’est presque fini !</h2>
+    <WizardFormLayout title="C’est presque fini !">
       <p>Quand commence ce beau projet ?</p>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </>
+    </WizardFormLayout>
   );
 };
 

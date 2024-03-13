@@ -1,4 +1,5 @@
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onNext: () => void;
@@ -7,14 +8,13 @@ type Props = {
 
 const ProjectCostsIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <>
-      <h2>Coûts liés au projet</h2>
+    <WizardFormLayout title="Coûts liés au projet">
       <p>
         Les travaux de remise en état de la friche, d’installation des panneaux, de raccordement et
         d’exploitation vont générer des dépenses.
       </p>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </>
+    </WizardFormLayout>
   );
 };
 

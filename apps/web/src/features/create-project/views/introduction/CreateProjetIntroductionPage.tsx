@@ -3,6 +3,7 @@ import Accordion from "@codegouvfr/react-dsfr/Accordion";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/app/views/router";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   siteId: string;
@@ -18,14 +19,15 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
       return <p>Chargement des informations du site, veuillez patienter...</p>;
     case "error":
       return (
-        <p>
-          Une erreur est survenue lors du chargement des informations du site, veuillez réessayer.
-        </p>
+        <WizardFormLayout title="Le site demandé n’a pas pu ếtre chargé">
+          <p>
+            Une erreur est survenue lors du chargement des informations du site, veuillez réessayer.
+          </p>
+        </WizardFormLayout>
       );
     case "success":
       return (
-        <>
-          <h2>Vous avez un projet d'aménagement sur le site "{siteName}".</h2>
+        <WizardFormLayout title={`Vous avez un projet d'aménagement sur le site "${siteName}".`}>
           <p>
             Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du
             projet, la transformation des sols du site, les acteurs associés, les coûts et recettes
@@ -48,7 +50,7 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
             </ul>
           </Accordion>
           <Button linkProps={routes.createProject({ siteId }).link}>Commencer</Button>
-        </>
+        </WizardFormLayout>
       );
   }
 }

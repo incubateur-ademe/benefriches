@@ -6,6 +6,7 @@ import { resetState } from "../../application/createSite.reducer";
 
 import { routes } from "@/app/views/router";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 function CreateSiteIntroductionPage() {
   const dispatch = useAppDispatch();
@@ -15,8 +16,7 @@ function CreateSiteIntroductionPage() {
   }, [dispatch]);
 
   return (
-    <>
-      <h1>Tout commence sur un site</h1>
+    <WizardFormLayout title="Tout commence sur un site">
       <p>
         Nous allons d’abord parler du <strong>site existant</strong> : la nature du site, la
         typologie de ses sols, les dépenses associées, etc.
@@ -57,7 +57,7 @@ function CreateSiteIntroductionPage() {
         </ul>
       </Accordion>
       <Button linkProps={routes.createSiteFoncier().link}>Commencer</Button>
-    </>
+    </WizardFormLayout>
   );
 }
 
