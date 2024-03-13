@@ -7,8 +7,6 @@ import ImpactChartCard from "./ImpactChartCard";
 type Props = {
   project: {
     name: string;
-    id: string;
-    relatedSiteName: string;
   };
   impacts: {
     permeableSurfaceArea: {
@@ -38,13 +36,16 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
   return (
     <div>
       <section>
+        <h3>Impacts économiques</h3>
         <Row>
           <div className={fr.cx("fr-col-6")}>
             <ImpactChartCard title="Analyse coûts bénéfices" />
           </div>
           <div className={fr.cx("fr-col-6")}>
             <ImpactChartCard title="Bilan de l'opération" />
-            <ImpactChartCard title="Impacts socio-économiques" />
+            <div className="fr-mt-3w">
+              <ImpactChartCard title="Impacts socio-économiques" />
+            </div>
           </div>
         </Row>
       </section>
