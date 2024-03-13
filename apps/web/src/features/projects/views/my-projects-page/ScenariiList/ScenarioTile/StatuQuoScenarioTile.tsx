@@ -40,7 +40,7 @@ function StatuQuoScenarioTile({
 
   const shouldDisplayCheckbox = isSelected || ((hasSelectedValues || isHovered) && isSelectable);
 
-  const projectIcon = isFriche ? "icons/friche.svg" : "icons/agricole.svg";
+  const projectIcon = isFriche ? "/icons/friche.svg" : "/icons/agricole.svg";
 
   return (
     <ScenarioTile

@@ -15,7 +15,7 @@ type Props = {
 
 const getProjectPictoUrl = (type: string) => {
   if (type === "PHOTOVOLTAIC_POWER_PLANT") {
-    return "icons/photovoltaique.svg";
+    return "/icons/photovoltaique.svg";
   }
   return undefined;
 };
