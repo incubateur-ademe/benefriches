@@ -35,7 +35,7 @@ export type ImpactCategoryFilter = ImpactCategory | "all";
 export type ViewMode = "charts" | "list";
 
 const NewProjectImpactsPage = ({ project, impacts }: Props) => {
-  const [, setSelectedFilter] = useState<ImpactCategoryFilter>("all");
+  const [currentFilter, setSelectedFilter] = useState<ImpactCategoryFilter>("all");
   const [currentViewMode, setViewMode] = useState<ViewMode>("charts");
 
   return (
@@ -46,6 +46,8 @@ const NewProjectImpactsPage = ({ project, impacts }: Props) => {
         siteName={project.relatedSiteName}
       />
       <ProjectsComparisonActionBar
+        selectedFilter={currentFilter}
+        selectedViewMode={currentViewMode}
         onFilterClick={setSelectedFilter}
         onViewModeClick={setViewMode}
       />

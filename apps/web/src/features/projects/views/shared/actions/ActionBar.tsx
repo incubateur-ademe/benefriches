@@ -4,11 +4,36 @@ import { ImpactCategoryFilter, ViewMode } from "../../project-impacts-page/Proje
 import ProjectDurationSelect from "./ProjectDurationSelect";
 
 type Props = {
+  selectedFilter: ImpactCategoryFilter;
+  selectedViewMode: ViewMode;
   onFilterClick: (filterValue: ImpactCategoryFilter) => void;
   onViewModeClick: (viewMode: ViewMode) => void;
 };
 
-function ProjectsComparisonActionBar({ onFilterClick, onViewModeClick }: Props) {
+function ProjectsComparisonActionBar({
+  onFilterClick,
+  onViewModeClick,
+  selectedFilter,
+  selectedViewMode,
+}: Props) {
+  const getFilterSegmentInputProps = (value: ImpactCategoryFilter) => {
+    return {
+      checked: selectedFilter === value,
+      onClick: () => {
+        onFilterClick(value);
+      },
+    };
+  };
+
+  const getViewSegmentInputProps = (value: ViewMode) => {
+    return {
+      checked: selectedViewMode === value,
+      onClick: () => {
+        onViewModeClick(value);
+      },
+    };
+  };
+
   return (
     <section
       className={fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w")}
@@ -21,35 +46,19 @@ function ProjectsComparisonActionBar({ onFilterClick, onViewModeClick }: Props) 
           segments={[
             {
               label: "Tous",
-              nativeInputProps: {
-                onClick: () => {
-                  onFilterClick("all");
-                },
-              },
+              nativeInputProps: getFilterSegmentInputProps("all"),
             },
             {
               label: "Économiques",
-              nativeInputProps: {
-                onClick: () => {
-                  onFilterClick("economic");
-                },
-              },
+              nativeInputProps: getFilterSegmentInputProps("economic"),
             },
             {
               label: "Sociaux",
-              nativeInputProps: {
-                onClick: () => {
-                  onFilterClick("social");
-                },
-              },
+              nativeInputProps: getFilterSegmentInputProps("social"),
             },
             {
               label: "Environnementaux",
-              nativeInputProps: {
-                onClick: () => {
-                  onFilterClick("environment");
-                },
-              },
+              nativeInputProps: getFilterSegmentInputProps("environment"),
             },
           ]}
         />
@@ -62,19 +71,11 @@ function ProjectsComparisonActionBar({ onFilterClick, onViewModeClick }: Props) 
           segments={[
             {
               label: "Vue graphiques",
-              nativeInputProps: {
-                onClick: () => {
-                  onViewModeClick("charts");
-                },
-              },
+              nativeInputProps: getViewSegmentInputProps("charts"),
             },
             {
               label: "Vue liste",
-              nativeInputProps: {
-                onClick: () => {
-                  onViewModeClick("list");
-                },
-              },
+              nativeInputProps: getViewSegmentInputProps("list"),
             },
           ]}
         />
