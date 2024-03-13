@@ -12,8 +12,10 @@ import {
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
+import { SqlReconversionProjectImpactsRepository } from "../secondary/reconversion-project-impacts-repository/SqlReconversionProjectImpactsRepository";
 import { SqlReconversionProjectRepository } from "../secondary/reconversion-project-repository/SqlReconversionProjectRepository";
 import { SqlReconversionProjectsListRepository } from "../secondary/reconversion-projects-list-repository/SqlReconversionProjectsListRepository";
+import { SqlSiteImpactsRepository } from "../secondary/site-impacts-repository/SqlSiteImpactsRepository";
 import { ReconversionProjectController } from "./reconversionProjects.controller";
 
 @Module({
@@ -42,16 +44,18 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     {
       provide: ComputeReconversionProjectImpactsUseCase,
       useFactory(
-        reconversionProjectRepo: SqlReconversionProjectRepository,
-        siteRepo: SqlSiteRepository,
+        reconversionProjectRepo: SqlReconversionProjectImpactsRepository,
+        siteRepo: SqlSiteImpactsRepository,
       ) {
         return new ComputeReconversionProjectImpactsUseCase(reconversionProjectRepo, siteRepo);
       },
-      inject: [SqlReconversionProjectRepository, SqlSiteRepository],
+      inject: [SqlReconversionProjectImpactsRepository, SqlSiteImpactsRepository],
     },
     SqlReconversionProjectRepository,
     SqlReconversionProjectsListRepository,
     SqlSiteRepository,
+    SqlReconversionProjectImpactsRepository,
+    SqlSiteImpactsRepository,
     DateProvider,
   ],
 })

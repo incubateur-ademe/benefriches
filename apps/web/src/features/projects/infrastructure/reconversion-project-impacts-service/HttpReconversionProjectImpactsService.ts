@@ -6,8 +6,11 @@ import {
 export class HttpReconversionProjectImpactsApi implements ReconversionProjectImpactsGateway {
   async getReconversionProjectImpacts(
     reconversionProjectId: string,
+    evaluationPeriodInYears: number,
   ): Promise<ReconversionProjectImpactsResult> {
-    const response = await fetch(`/api/reconversion-projects/${reconversionProjectId}/impacts`);
+    const response = await fetch(
+      `/api/reconversion-projects/${reconversionProjectId}/impacts?evaluationPeriodInYears=${evaluationPeriodInYears}`,
+    );
 
     if (!response.ok) throw new Error(`Error while fetching reconversion projects`);
 

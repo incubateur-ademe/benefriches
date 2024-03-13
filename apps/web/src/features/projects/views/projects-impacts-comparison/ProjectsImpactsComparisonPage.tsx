@@ -103,6 +103,8 @@ function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingStat
         className={fr.cx("fr-mb-2w")}
       />
       <ProjectsComparisonActionBar
+        evaluationPeriod={10}
+        onEvaluationPeriodChange={() => null}
         selectedFilter={selectedFilter}
         onFilterClick={(clickedFilter: ImpactCategoryFilter) => {
           setSelectedFilter((currentFilter) =>
