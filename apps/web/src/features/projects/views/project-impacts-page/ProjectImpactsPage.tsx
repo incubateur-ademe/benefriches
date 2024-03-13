@@ -32,9 +32,11 @@ type Props = {
 type ImpactCategory = "economic" | "environment" | "social";
 export type ImpactCategoryFilter = ImpactCategory | "all";
 
+export type ViewMode = "charts" | "list";
+
 const NewProjectImpactsPage = ({ project, impacts }: Props) => {
-  const [selectedFilter, setSelectedFilter] = useState<ImpactCategoryFilter>("all");
-  console.log(selectedFilter);
+  const [, setSelectedFilter] = useState<ImpactCategoryFilter>("all");
+  const [currentViewMode, setViewMode] = useState<ViewMode>("charts");
 
   return (
     <div>
@@ -44,14 +46,10 @@ const NewProjectImpactsPage = ({ project, impacts }: Props) => {
         siteName={project.relatedSiteName}
       />
       <ProjectsComparisonActionBar
-        selectedFilter={selectedFilter}
-        onFilterClick={(clickedFilter: ImpactCategoryFilter) => {
-          setSelectedFilter((currentFilter) =>
-            currentFilter === clickedFilter ? "all" : clickedFilter,
-          );
-        }}
+        onFilterClick={setSelectedFilter}
+        onViewModeClick={setViewMode}
       />
-      <ImpactsChartsView project={project} impacts={impacts} />
+      {currentViewMode === "charts" && <ImpactsChartsView project={project} impacts={impacts} />}
     </div>
   );
 };

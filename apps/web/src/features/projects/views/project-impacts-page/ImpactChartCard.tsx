@@ -9,7 +9,7 @@ type Props = {
 const ImpactCard = ({ title, children }: Props) => {
   return (
     <figure
-      style={{ border: "2px solid #cccccc", borderRadius: "9px" }}
+      style={{ border: "1px solid #DDDDDD", background: "#ECF5FD" }}
       className={fr.cx("fr-py-2w", "fr-px-3w", "fr-m-0")}
     >
       <strong>{title}</strong>

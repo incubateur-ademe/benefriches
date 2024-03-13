@@ -25,7 +25,7 @@
     "prebuild": "only-include-used-icons"
   },
   "dependencies": {
-    "@codegouvfr/react-dsfr": "^1.2.1",
+    "@codegouvfr/react-dsfr": "^1.9.2",
     "@reduxjs/toolkit": "^2.0.1",
     "antd": "^5.13.2",
     "highcharts": "^11.3.0",

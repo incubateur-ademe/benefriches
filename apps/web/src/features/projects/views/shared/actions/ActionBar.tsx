@@ -1,69 +1,83 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import Button from "@codegouvfr/react-dsfr/Button";
-import { ImpactCategoryFilter } from "../../project-impacts-page/ProjectImpactsPage";
-import FilterButton from "./FilterButton";
+import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
+import { ImpactCategoryFilter, ViewMode } from "../../project-impacts-page/ProjectImpactsPage";
 import ProjectDurationSelect from "./ProjectDurationSelect";
 
 type Props = {
-  selectedFilter: ImpactCategoryFilter;
   onFilterClick: (filterValue: ImpactCategoryFilter) => void;
+  onViewModeClick: (viewMode: ViewMode) => void;
 };
 
-function ProjectsComparisonActionBar({ selectedFilter, onFilterClick }: Props) {
+function ProjectsComparisonActionBar({ onFilterClick, onViewModeClick }: Props) {
   return (
     <section
       className={fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w")}
       style={{ justifyContent: "space-between", alignItems: "center" }}
     >
       <div className={fr.cx("fr-grid-row")} style={{ alignItems: "center" }}>
-        <div className={fr.cx("fr-mr-2w")}>
-          <FilterButton
-            isActive={selectedFilter === "all"}
-            onClick={() => {
-              onFilterClick("all");
-            }}
-          >
-            Tous
-          </FilterButton>
-        </div>
-        <div className={fr.cx("fr-mr-2w")}>
-          <FilterButton
-            isActive={selectedFilter === "economic"}
-            onClick={() => {
-              onFilterClick("economic");
-            }}
-          >
-            Économiques
-          </FilterButton>
-        </div>
-        <div className={fr.cx("fr-mr-2w")}>
-          <FilterButton
-            isActive={selectedFilter === "social"}
-            onClick={() => {
-              onFilterClick("social");
-            }}
-          >
-            Sociaux
-          </FilterButton>
-        </div>
-        <div className={fr.cx("fr-mr-2w")}>
-          <FilterButton
-            isActive={selectedFilter === "environment"}
-            onClick={() => {
-              onFilterClick("environment");
-            }}
-          >
-            Environnementaux
-          </FilterButton>
-        </div>
+        <SegmentedControl
+          legend="Filtres"
+          hideLegend
+          segments={[
+            {
+              label: "Tous",
+              nativeInputProps: {
+                onClick: () => {
+                  onFilterClick("all");
+                },
+              },
+            },
+            {
+              label: "Économiques",
+              nativeInputProps: {
+                onClick: () => {
+                  onFilterClick("economic");
+                },
+              },
+            },
+            {
+              label: "Sociaux",
+              nativeInputProps: {
+                onClick: () => {
+                  onFilterClick("social");
+                },
+              },
+            },
+            {
+              label: "Environnementaux",
+              nativeInputProps: {
+                onClick: () => {
+                  onFilterClick("environment");
+                },
+              },
+            },
+          ]}
+        />
       </div>
       <div className={fr.cx("fr-grid-row", "fr-btns-group--between")}>
-        <Button size="small" priority="secondary" className="fr-mr-2w">
-          Vue graphiques
-        </Button>
-        <Button size="small" priority="secondary" className="fr-mr-2w">
-          Vue liste
-        </Button>
+        <SegmentedControl
+          legend="Filtres"
+          className="fr-mr-3w"
+          hideLegend
+          segments={[
+            {
+              label: "Vue graphiques",
+              nativeInputProps: {
+                onClick: () => {
+                  onViewModeClick("charts");
+                },
+              },
+            },
+            {
+              label: "Vue liste",
+              nativeInputProps: {
+                onClick: () => {
+                  onViewModeClick("list");
+                },
+              },
+            },
+          ]}
+        />
         <ProjectDurationSelect />
       </div>
     </section>
