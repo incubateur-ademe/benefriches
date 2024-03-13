@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import ImpactsChartsView from "./ImpactsChartsView";
+import ImpactsListView from "./ImpactsListView";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
 type Props = {
@@ -45,6 +46,7 @@ const ProjectImpactsPage = ({
         onEvaluationPeriodChange={onEvaluationPeriodChange}
       />
       {currentViewMode === "charts" && <ImpactsChartsView project={project} impacts={impacts} />}
+      {currentViewMode === "list" && <ImpactsListView project={project} impacts={impacts} />}
     </div>
   );
 };
