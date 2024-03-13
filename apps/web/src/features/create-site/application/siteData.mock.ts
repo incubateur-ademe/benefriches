@@ -90,9 +90,9 @@ export const fricheWithExhaustiveData: SiteDraft = {
   hasContaminatedSoils: true,
   contaminatedSoilSurface: 2300,
   hasRecentAccidents: true,
-  severeInjuriesPersons: 1,
-  minorInjuriesPersons: 2,
-  deaths: 0,
+  accidentSevereInjuries: 1,
+  accidentsMinorInjuries: 2,
+  accidentsDeaths: 0,
   fricheActivity: FricheActivity.INDUSTRY,
 } as const;
 

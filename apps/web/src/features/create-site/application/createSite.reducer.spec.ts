@@ -649,9 +649,9 @@ describe("Create site reducer", () => {
           store.dispatch(
             completeFricheRecentAccidents({
               hasRecentAccidents: true,
-              deaths: 1,
-              severeInjuriesPersons: 2,
-              minorInjuriesPersons: 3,
+              accidentsDeaths: 1,
+              accidentSevereInjuries: 2,
+              accidentsMinorInjuries: 3,
             }),
           );
 
@@ -661,9 +661,9 @@ describe("Create site reducer", () => {
             siteData: {
               ...initialState.siteData,
               hasRecentAccidents: true,
-              deaths: 1,
-              severeInjuriesPersons: 2,
-              minorInjuriesPersons: 3,
+              accidentsDeaths: 1,
+              accidentSevereInjuries: 2,
+              accidentsMinorInjuries: 3,
             },
             stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES"],
           });
@@ -689,9 +689,9 @@ describe("Create site reducer", () => {
             siteData: {
               isFriche: true,
               hasRecentAccidents: true,
-              deaths: 1,
-              severeInjuriesPersons: 2,
-              minorInjuriesPersons: 0,
+              accidentsDeaths: 1,
+              accidentSevereInjuries: 2,
+              accidentsMinorInjuries: 0,
             },
           });
           const { siteCreation: initialState } = store.getState();
@@ -704,9 +704,9 @@ describe("Create site reducer", () => {
             siteData: {
               ...initialState.siteData,
               hasRecentAccidents: undefined,
-              deaths: undefined,
-              severeInjuriesPersons: undefined,
-              minorInjuriesPersons: undefined,
+              accidentsDeaths: undefined,
+              accidentSevereInjuries: undefined,
+              accidentsMinorInjuries: undefined,
             },
             stepsHistory: initialState.stepsHistory.slice(0, -1),
           });

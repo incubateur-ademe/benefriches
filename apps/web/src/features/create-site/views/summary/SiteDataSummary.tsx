@@ -22,7 +22,7 @@ type Props = {
     accidents: {
       minorInjuries?: number;
       severyInjuries?: number;
-      deaths?: number;
+      accidentsDeaths?: number;
     } | null;
     expenses: Expense[];
     totalSurfaceArea: number;
@@ -105,7 +105,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
                   />
                   <DataLine
                     label="Tués"
-                    value={siteData.accidents.deaths ?? 0}
+                    value={siteData.accidents.accidentsDeaths ?? 0}
                     className="fr-my-1w"
                   />
                 </div>
