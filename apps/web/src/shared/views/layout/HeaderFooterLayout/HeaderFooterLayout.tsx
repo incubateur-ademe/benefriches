@@ -8,11 +8,11 @@ type HeaderFooterLayoutProps = {
 
 function HeaderFooterLayout({ children }: HeaderFooterLayoutProps) {
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <BenefrichesHeader />
       {children}
       <BenefrichesFooter />
-    </>
+    </div>
   );
 }
 
