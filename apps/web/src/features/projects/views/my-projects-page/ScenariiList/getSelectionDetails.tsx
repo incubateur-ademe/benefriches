@@ -21,10 +21,10 @@ export const getProjectsInfosList = (
   );
 
 export const getSitesInfosList = (projectsList: ReconversionProjectsGroupedBySite): SiteInfos[] =>
-  projectsList.map(({ reconversionProjects, siteId, siteName }) => ({
+  projectsList.map(({ reconversionProjects, siteId, siteName, isFriche }) => ({
     id: siteId,
     name: siteName,
-    isFriche: true, // TODO : get this information from api
+    isFriche,
     reconversionProjectIds: reconversionProjects.map(({ id }) => id),
   }));
 

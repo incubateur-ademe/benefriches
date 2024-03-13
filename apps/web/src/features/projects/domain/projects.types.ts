@@ -22,6 +22,7 @@ export type SitesList = {
 export type ProjectsGroup = {
   siteId: string;
   siteName: string;
+  isFriche: boolean;
   reconversionProjects: { id: string; name: string }[];
 };
 
