@@ -68,7 +68,7 @@ function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
               />
               <NumericInput
                 name="accidentsDeaths"
-                label="Nombre de morts"
+                label="Nombre de décès"
                 control={control}
                 rules={{
                   min: {
