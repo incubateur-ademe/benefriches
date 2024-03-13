@@ -72,16 +72,16 @@ const ProjectSoilsCarbonStorage = ({
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-6">
             <h3>
-              Avant : {formatNumberFr(currentCarbonStorage.totalCarbonStorage)} tonnes de CO2-eq
-              stockées
+              Site existant : {formatNumberFr(currentCarbonStorage.totalCarbonStorage)} tonnes de
+              CO2-eq stockées
             </h3>
             <SoilsCarbonStorageChart soilsCarbonStorage={currentCarbonStorage.soilsStorage} />
           </div>
 
           <div className="fr-col-6">
             <h3>
-              Après : {formatNumberFr(projectedCarbonStorage.totalCarbonStorage)} tonnes de CO2-eq
-              stockées
+              Site avec projet : {formatNumberFr(projectedCarbonStorage.totalCarbonStorage)} tonnes
+              de CO2-eq stockées
             </h3>
             <SoilsCarbonStorageChart soilsCarbonStorage={projectedCarbonStorage.soilsStorage} />
           </div>

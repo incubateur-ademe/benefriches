@@ -37,11 +37,11 @@ const SiteSoilsSummary = ({
       </p>
       <div className="fr-grid-row fr-grid-row--gutters">
         <div className="fr-col-6">
-          <h3>Avant</h3>
+          <h3>Site existant</h3>
           <SurfaceAreaPieChart soilsDistribution={siteSoilsDistribution} />
         </div>
         <div className="fr-col-6">
-          <h3>Après</h3>
+          <h3>Site avec projet</h3>
           <SurfaceAreaPieChart soilsDistribution={projectSoilsDistribution} />
         </div>
       </div>
