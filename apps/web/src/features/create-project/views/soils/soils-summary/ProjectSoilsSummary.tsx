@@ -26,7 +26,7 @@ const SiteSoilsSummary = ({
 
   return (
     <>
-      <h2>Répartition finale des sols du site à l’issue du projet</h2>
+      <h2>Récapitulatif de la typologie des sols</h2>
       <p>
         Superficie totale du site :{" "}
         <strong>
