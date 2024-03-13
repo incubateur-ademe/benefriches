@@ -1,7 +1,6 @@
 import { ReactNode, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import { Notice } from "@codegouvfr/react-dsfr/Notice";
 import { Project, ProjectSite } from "../../domain/projects.types";
 import { ImpactCategoryFilter } from "../project-impacts-page/ProjectImpactsPage";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
@@ -97,11 +96,6 @@ function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingStat
   return (
     <div>
       <ImpactsComparisonPageHeader baseScenario={baseScenario} withScenario={withScenario} />
-      <Notice
-        title="Les indicateurs monétaires tiennent compte du coefficient d'actualisation sur la période sélectionnée."
-        isClosable
-        className={fr.cx("fr-mb-2w")}
-      />
       <ProjectsComparisonActionBar
         evaluationPeriod={10}
         onEvaluationPeriodChange={() => null}
