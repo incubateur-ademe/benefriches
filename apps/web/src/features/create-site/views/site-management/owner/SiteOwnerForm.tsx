@@ -63,7 +63,6 @@ function SiteOwnerForm({ onSubmit, onBack, currentUserCompany, siteLocalAuthorit
             value="local_or_regional_authority"
             {...register("ownerType", { required: requiredMessage })}
           />
-
           {shouldAskForLocalAuthorityType && (
             <LocalAuthoritySelect
               data={siteLocalAuthorities.localAuthorities}
@@ -82,13 +81,11 @@ function SiteOwnerForm({ onSubmit, onBack, currentUserCompany, siteLocalAuthorit
             value="user_company"
             {...register("ownerType", { required: requiredMessage })}
           />
-
           <RadioButton
             label={`Une autre entreprise`}
             value="other_company"
             {...register("ownerType", { required: requiredMessage })}
           />
-
           {shouldAskForCompanyName && (
             <Input
               label={<RequiredLabel label="Nom de l'entreprise" />}
@@ -100,13 +97,11 @@ function SiteOwnerForm({ onSubmit, onBack, currentUserCompany, siteLocalAuthorit
               })}
             />
           )}
-
           <RadioButton
             label={`Un particulier`}
             value="private_individual"
             {...register("ownerType", { required: requiredMessage })}
           />
-
           {shouldAskForPrivateName && (
             <Input
               label={<RequiredLabel label="Nom du particulier" />}

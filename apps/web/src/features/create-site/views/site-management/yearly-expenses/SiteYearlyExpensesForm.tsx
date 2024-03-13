@@ -90,7 +90,7 @@ const siteSecuringInputs = [
       <>
         Débarras de dépôt sauvage
         <TooltipInfoButton
-          text="L’enquête menée en 2019 par l’ADEME indique un ratio moyen de 4.7 kg/hab/an et un coût
+          text="L’enquête menée en 2019 par l’ADEME indique un ratio moyen de 4,7 kg/hab/an et un coût
           moyen de 900 €/tonne (Nb&nbsp;: bien qu’on relève une occurrence non négligeable de coûts
           plus élevés (500 à 1000 €/tonne voire supérieurs à 1000 €/tonne), qui peuvent être liés à
           des typologies de déchets particulières (déchets dangereux, encombrants) ou à des besoins

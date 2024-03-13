@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 
+import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
@@ -47,7 +48,7 @@ function SurfaceAreaForm({ onSubmit, onBack }: Props) {
         />
         {!isNaN(surface) && (
           <p>
-            Soit <strong>{convertSquareMetersToHectares(surface)}</strong> ha.
+            Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
           </p>
         )}
 

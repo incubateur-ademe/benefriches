@@ -75,7 +75,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
             />
             <DataLine
               label={<strong>Nombre d'emplois temps plein mobilisés sur le site</strong>}
-              value={siteData.fullTimeJobsInvolved}
+              value={formatNumberFr(siteData.fullTimeJobsInvolved)}
             />
           </dl>
           {siteData.isFriche && (
