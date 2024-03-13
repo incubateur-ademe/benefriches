@@ -1,6 +1,6 @@
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 import MyProjectsPageHeader from "./MyProjectsPageHeader";
-import ProjectsList from "./ProjectsList";
+import ScenariiList from "./ScenariiList";
 
 type Props = {
   loadingState: "idle" | "loading" | "error" | "success";
@@ -27,7 +27,7 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
           </>
         );
       }
-      return <ProjectsList projectsList={projectsList} />;
+      return <ScenariiList projectsList={projectsList} />;
     }
     return null;
   };

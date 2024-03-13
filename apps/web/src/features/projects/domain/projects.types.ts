@@ -19,11 +19,13 @@ export type SitesList = {
   name: string;
 }[];
 
-export type ReconversionProjectsGroupedBySite = {
+export type ProjectsGroup = {
   siteId: string;
   siteName: string;
   reconversionProjects: { id: string; name: string }[];
-}[];
+};
+
+export type ReconversionProjectsGroupedBySite = ProjectsGroup[];
 
 export type SiteExpense = {
   type: string;
