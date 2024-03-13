@@ -19,6 +19,7 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
       .select(
         "sites.id as siteId",
         "sites.name as siteName",
+        "sites.is_friche as isFriche",
         this.sqlConnection.raw(`
         CASE 
           WHEN count(rp.id) = 0 THEN '[]'::json
@@ -29,7 +30,8 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
       .orderBy("sites.created_at", "desc")) as {
       siteId: string;
       siteName: string;
-      reconversionProjects: { id: string; name: string }[];
+      isFriche: boolean;
+      reconversionProjects: { id: string; name: string; developmentsPlans: string[] }[];
     }[];
 
     return result;

@@ -8,6 +8,7 @@ import { ReconversionProjectList } from ".";
 type Props = {
   siteId: string;
   siteName: string;
+  isFriche: boolean;
   reconversionProjects: ReconversionProjectList;
   selectedIds: string[];
   selectableIds: string[];
@@ -26,6 +27,7 @@ function GridColumn({ children }: { children: ReactNode }) {
 function ScenariiGroup({
   siteId,
   siteName,
+  isFriche,
   reconversionProjects,
   selectedIds,
   selectableIds,
@@ -48,8 +50,8 @@ function ScenariiGroup({
             onChangeSelectedSite={onChangeSelectedSite}
             selectedIds={selectedIds}
             selectableIds={selectableIds}
-            // TODO : get these information from api
-            isFriche={true}
+            isFriche={isFriche}
+            // TODO : get this information from api
             yearlyProfit={-391179}
           />
         </GridColumn>

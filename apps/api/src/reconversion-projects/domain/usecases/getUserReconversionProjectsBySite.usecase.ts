@@ -3,6 +3,7 @@ import { UseCase } from "src/shared-kernel/usecase";
 export type ReconversionProjectsGroupedBySite = {
   siteName: string;
   siteId: string;
+  isFriche: boolean;
   reconversionProjects: { id: string; name: string }[];
 }[];
 

@@ -182,6 +182,7 @@ describe("ReconversionProjects controller", () => {
         {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
+          isFriche: siteInDb1.is_friche,
           reconversionProjects: [
             { id: projectInDb1.id, name: projectInDb1.name },
             { id: projectInDb2.id, name: projectInDb2.name },
@@ -190,6 +191,7 @@ describe("ReconversionProjects controller", () => {
         {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
+          isFriche: siteInDb2.is_friche,
           reconversionProjects: [],
         },
       ]);

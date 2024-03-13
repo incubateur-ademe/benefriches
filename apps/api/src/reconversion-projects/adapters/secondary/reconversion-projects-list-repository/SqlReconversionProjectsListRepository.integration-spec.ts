@@ -76,7 +76,12 @@ describe("ReconversionProjectsListRepository integration", () => {
       const result = await reconversionProjectsListRepository.getGroupedBySite({ userId });
 
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([
-        { siteName: siteInDb.name, siteId: siteInDb.id, reconversionProjects: [] },
+        {
+          siteName: siteInDb.name,
+          siteId: siteInDb.id,
+          isFriche: siteInDb.is_friche,
+          reconversionProjects: [],
+        },
       ]);
     });
 
@@ -144,6 +149,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
+          isFriche: siteInDb2.is_friche,
           reconversionProjects: [
             { id: projectInDb2.id, name: projectInDb2.name },
             { id: projectInDb3.id, name: projectInDb3.name },
@@ -152,6 +158,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
+          isFriche: siteInDb1.is_friche,
           reconversionProjects: [{ id: projectInDb1.id, name: projectInDb1.name }],
         },
       ]);

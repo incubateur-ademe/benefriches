@@ -34,6 +34,7 @@ export class LocalStorageProjectsListApi implements ReconversionProjectsListGate
       return {
         siteId: site.id,
         siteName: site.name,
+        isFriche: site.isFriche,
         reconversionProjects: projects.map(({ name, id }) => ({ name, id })),
       };
     });
