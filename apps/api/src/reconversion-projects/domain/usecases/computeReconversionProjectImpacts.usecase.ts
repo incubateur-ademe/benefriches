@@ -1,18 +1,21 @@
 import { UseCase } from "src/shared-kernel/usecase";
 import { SoilsDistribution } from "src/soils/domain/soils";
-import { AccidentsImpactResult, computeAccidentsImpact } from "../model/impacts/accidentsImpact";
+import {
+  AccidentsImpactResult,
+  computeAccidentsImpact,
+} from "../model/impacts/accidents/accidentsImpact";
 import {
   computeContaminatedSurfaceAreaImpact,
   ContaminatedSurfaceAreaImpact,
-} from "../model/impacts/contaminatedSurfaceAreaImpact";
+} from "../model/impacts/contaminated-surface/contaminatedSurfaceAreaImpact";
 import {
   computeFullTimeJobsImpact,
   FullTimeJobsImpactResult,
-} from "../model/impacts/fullTimeJobsImpact";
+} from "../model/impacts/full-time-jobs/fullTimeJobsImpact";
 import {
   computePermeableSurfaceAreaImpact,
   PermeableSurfaceAreaImpactResult,
-} from "../model/impacts/permeableSurfaceAreaImpact";
+} from "../model/impacts/permeable-surface/permeableSurfaceAreaImpact";
 import { getDurationFromScheduleInYears, Schedule } from "../model/reconversionProject";
 
 export type SiteImpactsDataView = {
