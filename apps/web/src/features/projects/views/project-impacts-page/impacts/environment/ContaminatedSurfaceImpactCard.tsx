@@ -1,6 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { sharedChartConfig } from "../../../shared/sharedChartConfig";
+import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -23,12 +23,7 @@ function ContaminatedSurfaceImpactCard({
   contaminatedSurfaceImpact,
 }: Props) {
   const barChartOptions: Highcharts.Options = {
-    ...sharedChartConfig,
-    chart: {
-      ...sharedChartConfig.chart,
-      type: "area",
-      height: "240",
-    },
+    ...baseAreaChartConfig,
     xAxis: {
       categories: ["Pas de changement", reconversionProjectName],
       crosshair: false,

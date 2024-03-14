@@ -1,12 +1,12 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { sharedChartConfig } from "../../../shared/sharedChartConfig";
+import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 function PermeableSoilsImpactComparisonChart() {
   const barChartOptions: Highcharts.Options = {
-    ...sharedChartConfig,
+    ...baseColumnChartConfig,
     xAxis: {
       categories: [""],
       crosshair: false,

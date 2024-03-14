@@ -1,12 +1,12 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { sharedChartConfig } from "../../../shared/sharedChartConfig";
+import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 
 function SocioEconomicBenefitsByDomainChart() {
   const barChartOptions: Highcharts.Options = {
-    ...sharedChartConfig,
+    ...baseColumnChartConfig,
     chart: {
-      ...sharedChartConfig.chart,
+      ...baseColumnChartConfig.chart,
       height: "400",
     },
     legend: {

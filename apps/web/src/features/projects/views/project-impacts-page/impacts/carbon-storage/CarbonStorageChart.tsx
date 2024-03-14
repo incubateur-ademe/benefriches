@@ -2,7 +2,7 @@
 import { useMemo } from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { sharedChartConfig } from "../../../shared/sharedChartConfig";
+import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 
 import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
@@ -43,10 +43,9 @@ function CarbonStorageChart({ currentCarbonStorage, projectedCarbonStorage }: Pr
   );
 
   const barChartOptions: Highcharts.Options = {
-    ...sharedChartConfig,
+    ...baseAreaChartConfig,
     chart: {
-      ...sharedChartConfig.chart,
-      type: "area",
+      ...baseAreaChartConfig.chart,
       height: "400",
     },
     xAxis: {

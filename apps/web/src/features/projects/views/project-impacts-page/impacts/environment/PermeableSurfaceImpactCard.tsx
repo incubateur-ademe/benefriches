@@ -1,6 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { sharedChartConfig } from "../../../shared/sharedChartConfig";
+import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -28,12 +28,7 @@ const roundTo2Digits = (value: number) => {
 
 function PermeableSurfaceImpactCard({ reconversionProjectName, permeableSurfaceImpact }: Props) {
   const barChartOptions: Highcharts.Options = {
-    ...sharedChartConfig,
-    chart: {
-      ...sharedChartConfig.chart,
-      type: "area",
-      height: "240",
-    },
+    ...baseAreaChartConfig,
     xAxis: {
       categories: ["Pas de changement", reconversionProjectName],
     },
@@ -47,7 +42,6 @@ function PermeableSurfaceImpactCard({ reconversionProjectName, permeableSurfaceI
       area: {
         stacking: "normal",
         borderWidth: 0,
-        // dataLabels: { enabled: false, format: `{point.y:,.0f} ${SQUARE_METERS_HTML_SYMBOL}` },
       },
     },
     series: [

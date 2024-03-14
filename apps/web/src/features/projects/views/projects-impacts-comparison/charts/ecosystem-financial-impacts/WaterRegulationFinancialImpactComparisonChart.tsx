@@ -1,10 +1,10 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { sharedChartConfig } from "../../../shared/sharedChartConfig";
+import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 
 function WaterRegulationFinancialImpactComparisonChart() {
   const barChartOptions: Highcharts.Options = {
-    ...sharedChartConfig,
+    ...baseColumnChartConfig,
     xAxis: {
       categories: [""],
     },
