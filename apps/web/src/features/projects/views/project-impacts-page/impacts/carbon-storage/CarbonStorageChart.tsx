@@ -7,14 +7,11 @@ import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { SoilsCarbonStorageResult } from "@/features/projects/application/fetchReconversionProjectCarbonStorageImpact.action";
+import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   currentCarbonStorage: SoilsCarbonStorageResult;
   projectedCarbonStorage: SoilsCarbonStorageResult;
-};
-
-const roundTo2Digits = (value: number) => {
-  return Math.round(value * 100) / 100;
 };
 
 const getData = (

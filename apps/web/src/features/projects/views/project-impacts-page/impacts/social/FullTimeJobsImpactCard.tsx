@@ -4,6 +4,7 @@ import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   reconversionProjectName: string;
@@ -19,10 +20,6 @@ type Props = {
       forecast: number;
     };
   };
-};
-
-const roundTo2Digits = (value: number) => {
-  return Math.round(value * 100) / 100;
 };
 
 function FullTimeJobsImpactCard({ reconversionProjectName, fullTimeJobsImpact }: Props) {

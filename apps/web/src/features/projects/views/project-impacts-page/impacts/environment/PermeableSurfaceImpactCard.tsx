@@ -4,6 +4,7 @@ import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 type Props = {
@@ -20,10 +21,6 @@ type Props = {
       forecast: number;
     };
   };
-};
-
-const roundTo2Digits = (value: number) => {
-  return Math.round(value * 100) / 100;
 };
 
 function PermeableSurfaceImpactCard({ reconversionProjectName, permeableSurfaceImpact }: Props) {
