@@ -25,6 +25,12 @@ export class SqlReconversionProjectImpactsRepository
         "reinstatement_full_time_jobs_involved",
         "reinstatement_schedule_start_date",
         "reinstatement_schedule_end_date",
+        "future_operator_name",
+        "future_site_owner_name",
+        "reinstatement_contract_owner_name",
+        "real_estate_transaction_cost",
+        "reinstatement_financial_assistance_amount",
+        "reinstatement_cost",
       )
       .where({ id: reconversionProjectId })
       .first();
@@ -38,7 +44,8 @@ export class SqlReconversionProjectImpactsRepository
       .where("reconversion_project_id", reconversionProjectId);
 
     const sqlDevelopmentPlan = await this.sqlConnection("reconversion_project_development_plans")
-      .select("schedule_start_date", "schedule_end_date")
+      .select("schedule_start_date", "schedule_end_date", "cost")
+      .where("reconversion_project_id", reconversionProjectId)
       .first();
     const conversionSchedule =
       sqlDevelopmentPlan?.schedule_start_date && sqlDevelopmentPlan.schedule_end_date
@@ -56,6 +63,14 @@ export class SqlReconversionProjectImpactsRepository
           }
         : undefined;
 
+    const sqlExpenses = await this.sqlConnection("reconversion_project_yearly_expenses")
+      .select("amount", "purpose")
+      .where("reconversion_project_id", reconversionProjectId);
+
+    const sqlRevenues = await this.sqlConnection("reconversion_project_yearly_revenues")
+      .select("amount", "source")
+      .where("reconversion_project_id", reconversionProjectId);
+
     return {
       id: reconversionProject.id,
       name: reconversionProject.name,
@@ -72,6 +87,17 @@ export class SqlReconversionProjectImpactsRepository
       reinstatementFullTimeJobs:
         reconversionProject.reinstatement_full_time_jobs_involved ?? undefined,
       reinstatementSchedule,
+      futureOperatorName: reconversionProject.future_operator_name ?? undefined,
+      futureSiteOwnerName: reconversionProject.future_site_owner_name ?? undefined,
+      reinstatementContractOwnerName:
+        reconversionProject.reinstatement_contract_owner_name ?? undefined,
+      realEstateTransactionCost: reconversionProject.real_estate_transaction_cost ?? 0,
+      reinstatementCost: reconversionProject.reinstatement_cost ?? 0,
+      developmentPlanInstallationCost: sqlDevelopmentPlan?.cost ?? 0,
+      reinstatementFinancialAssistanceAmount:
+        reconversionProject.reinstatement_financial_assistance_amount ?? 0,
+      yearlyProjectedCosts: sqlExpenses,
+      yearlyProjectedRevenues: sqlRevenues,
     };
   }
 }

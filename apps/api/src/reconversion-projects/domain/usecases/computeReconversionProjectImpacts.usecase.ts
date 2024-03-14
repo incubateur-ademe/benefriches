@@ -9,6 +9,10 @@ import {
   ContaminatedSurfaceAreaImpact,
 } from "../model/impacts/contaminated-surface/contaminatedSurfaceAreaImpact";
 import {
+  computeEconomicBalanceImpact,
+  EconomicBalanceImpactResult,
+} from "../model/impacts/economicBalance/economicBalanceImpact";
+import {
   computeFullTimeJobsImpact,
   FullTimeJobsImpactResult,
 } from "../model/impacts/full-time-jobs/fullTimeJobsImpact";
@@ -44,6 +48,15 @@ export type ReconversionProjectImpactsDataView = {
   operationsFullTimeJobs?: number;
   conversionSchedule?: Schedule;
   reinstatementSchedule?: Schedule;
+  futureOperatorName?: string;
+  futureSiteOwnerName?: string;
+  reinstatementContractOwnerName?: string;
+  realEstateTransactionCost?: number;
+  reinstatementCost?: number;
+  developmentPlanInstallationCost?: number;
+  reinstatementFinancialAssistanceAmount?: number;
+  yearlyProjectedCosts: { amount: number; purpose: string }[];
+  yearlyProjectedRevenues: { amount: number; source: string }[];
 };
 
 export interface ReconversionProjectImpactsRepository {
@@ -65,6 +78,7 @@ export type Result = {
     permeableSurfaceArea: PermeableSurfaceAreaImpactResult;
     fullTimeJobs: FullTimeJobsImpactResult;
     accidents?: AccidentsImpactResult;
+    economicBalance: EconomicBalanceImpactResult;
   };
 };
 
@@ -106,6 +120,21 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       relatedSiteId: reconversionProject.relatedSiteId,
       relatedSiteName: relatedSite.name,
       impacts: {
+        economicBalance: computeEconomicBalanceImpact(
+          {
+            futureOperatorName: reconversionProject.futureOperatorName,
+            futureSiteOwnerName: reconversionProject.futureSiteOwnerName,
+            reinstatementContractOwnerName: reconversionProject.reinstatementContractOwnerName,
+            reinstatementCost: reconversionProject.reinstatementCost,
+            yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
+            yearlyProjectedRevenues: reconversionProject.yearlyProjectedRevenues,
+            realEstateTransactionCost: reconversionProject.realEstateTransactionCost,
+            reinstatementFinancialAssistanceAmount:
+              reconversionProject.reinstatementFinancialAssistanceAmount,
+            developmentPlanInstallationCost: reconversionProject.developmentPlanInstallationCost,
+          },
+          evaluationPeriodInYears,
+        ),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,
           forecastSoilsDistribution: reconversionProject.soilsDistribution,
