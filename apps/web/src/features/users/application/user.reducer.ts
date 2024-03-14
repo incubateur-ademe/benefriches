@@ -30,7 +30,7 @@ export const selectCurrentUserCompany = createSelector(
       state.currentUser?.organization ?? {
         id: "",
         type: "company",
-        name: "Votre entreprise (raison sociale non renseignée)",
+        name: "Raison sociale non renseignée",
       }
     );
   },
