@@ -76,10 +76,12 @@ function ImpactsActionBar({
             {
               label: "Vue graphiques",
               nativeInputProps: getViewSegmentInputProps("charts"),
+              iconId: "fr-icon-line-chart-fill",
             },
             {
               label: "Vue liste",
               nativeInputProps: getViewSegmentInputProps("list"),
+              iconId: "fr-icon-list-unordered",
             },
           ]}
         />
