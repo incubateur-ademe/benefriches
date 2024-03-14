@@ -6,6 +6,7 @@ type Props = {
 function SiteYearlyExpensesFormInstructions({ hasTenant, isFriche }: Props) {
   return (
     <>
+      <div>💡</div>
       <p>Un site qui reste en l’état, sans intervention, c’est un site qui coûte&nbsp;!</p>
       <ul>
         <li>De manière directe, via la fiscalité locale (ex&nbsp;: taxe foncière)</li>
