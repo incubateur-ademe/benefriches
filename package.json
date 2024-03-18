@@ -7,16 +7,16 @@
   "version": "1.0.0",
   "packageManager": "pnpm@8.6.7",
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky",
     "lint": "pnpm run -r lint",
     "format": "pnpm run -r format",
-    "test":"pnpm run -r test",
+    "test": "pnpm run -r test",
     "format:check": "pnpm run -r format:check",
     "typecheck": "pnpm run -r typecheck",
     "build": "pnpm run -r build"
   },
   "devDependencies": {
-    "husky": "^8.0.3",
+    "husky": "^9.0.11",
     "lint-staged": "^13.2.3"
   }
 }
