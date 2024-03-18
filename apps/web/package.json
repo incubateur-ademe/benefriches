@@ -41,12 +41,12 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@types/geojson": "^7946.0.13",
-    "@types/jest": "^29.5.11",
+    "@types/geojson": "^7946.0.14",
+    "@types/jest": "^29.5.12",
     "@types/leaflet": "^1.9.8",
-    "@types/react": "^18.2.48",
-    "@types/react-dom": "^18.2.18",
-    "@types/uuid": "^9.0.7",
+    "@types/react": "^18.2.66",
+    "@types/react-dom": "^18.2.22",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "@vitejs/plugin-react": "^4.2.1",
