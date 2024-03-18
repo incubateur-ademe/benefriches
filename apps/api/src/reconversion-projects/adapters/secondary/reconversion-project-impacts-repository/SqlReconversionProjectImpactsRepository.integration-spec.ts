@@ -67,7 +67,9 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           schedule_start_date: new Date("2025-01-01"),
           schedule_end_date: new Date("2025-05-15"),
           type: "any",
-          features: {},
+          features: {
+            expectedAnnualProduction: 10,
+          },
         },
       ]);
 
@@ -92,6 +94,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           startDate: new Date("2024-07-01"),
           endDate: new Date("2024-12-31"),
         },
+        developmentPlanExpectedAnnualEnergyProductionMWh: 10,
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {

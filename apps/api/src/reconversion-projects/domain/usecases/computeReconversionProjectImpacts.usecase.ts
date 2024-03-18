@@ -13,6 +13,10 @@ import {
   FullTimeJobsImpactResult,
 } from "../model/impacts/full-time-jobs/fullTimeJobsImpact";
 import {
+  computeHouseholdsPoweredByRenewableEnergyImpact,
+  HouseholdsPoweredByRenewableEnergyImpact,
+} from "../model/impacts/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
+import {
   computePermeableSurfaceAreaImpact,
   PermeableSurfaceAreaImpactResult,
 } from "../model/impacts/permeable-surface/permeableSurfaceAreaImpact";
@@ -44,6 +48,7 @@ export type ReconversionProjectImpactsDataView = {
   operationsFullTimeJobs?: number;
   conversionSchedule?: Schedule;
   reinstatementSchedule?: Schedule;
+  developmentPlanExpectedAnnualEnergyProductionMWh?: number;
 };
 
 export interface ReconversionProjectImpactsRepository {
@@ -61,10 +66,11 @@ export type Result = {
   relatedSiteId: string;
   relatedSiteName: string;
   impacts: {
-    contaminatedSurfaceArea?: ContaminatedSurfaceAreaImpact;
+    contaminatedSurfaceArea: ContaminatedSurfaceAreaImpact | undefined;
     permeableSurfaceArea: PermeableSurfaceAreaImpactResult;
     fullTimeJobs: FullTimeJobsImpactResult;
-    accidents?: AccidentsImpactResult;
+    accidents: AccidentsImpactResult | undefined;
+    householdsPoweredByRenewableEnergy: HouseholdsPoweredByRenewableEnergyImpact | undefined;
   };
 };
 
@@ -137,6 +143,14 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
               deaths: relatedSite.accidentsDeaths,
             })
           : undefined,
+
+        householdsPoweredByRenewableEnergy:
+          reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh
+            ? computeHouseholdsPoweredByRenewableEnergyImpact({
+                forecastRenewableEnergyAnnualProductionMWh:
+                  reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
+              })
+            : undefined,
       },
     };
   }

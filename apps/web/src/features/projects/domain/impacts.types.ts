@@ -37,4 +37,8 @@ export type ReconversionProjectImpacts = {
       forecast: 0;
     };
   };
+  householdsPoweredByRenewableEnergy?: {
+    current: 0;
+    forecast: number;
+  };
 };

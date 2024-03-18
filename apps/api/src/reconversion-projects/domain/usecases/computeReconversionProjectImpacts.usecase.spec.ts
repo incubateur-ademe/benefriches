@@ -71,6 +71,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2026-01-01"),
       },
+      developmentPlanExpectedAnnualEnergyProductionMWh: 4679,
     } as const;
     const site: SiteImpactsDataView = {
       id: reconversionProjectImpactDataView.relatedSiteId,
@@ -153,6 +154,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               current: 1,
               forecast: 0,
             },
+          },
+          householdsPoweredByRenewableEnergy: {
+            current: 0,
+            forecast: 1000,
           },
         },
       });
