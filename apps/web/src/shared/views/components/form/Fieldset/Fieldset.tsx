@@ -13,7 +13,7 @@ export type Props = {
 };
 
 const getDefaultId = (name: string, reactId: string) => {
-  return `fr-fieldset-radio${`-${name}-${reactId}`}`;
+  return `fr-fieldset-radio-${name}-${reactId}`;
 };
 
 const Fieldset = (props: Props) => {
