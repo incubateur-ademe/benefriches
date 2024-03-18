@@ -4,6 +4,7 @@ import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import CostBenefitAnalysisCard from "./impacts/cost-benefit-analysis/CostBenefitAnalysisCard";
 import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanceImpactCard";
 import ContaminatedSurfaceImpactChart from "./impacts/environment/ContaminatedSurfaceImpactCard";
+import HouseholdsPoweredByRenewableEnergyImpactCard from "./impacts/environment/HouseholdsPoweredByRenewableEnergyImpactCard";
 import PermeableSurfaceImpactChart from "./impacts/environment/PermeableSurfaceImpactCard";
 import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
 import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
@@ -85,9 +86,14 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
               />
             </div>
           )}
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactChartCard title="🏠 Foyers alimentés par les EnR" />
-          </div>
+          {impacts.householdsPoweredByRenewableEnergy && (
+            <div className={fr.cx("fr-col-3")}>
+              <HouseholdsPoweredByRenewableEnergyImpactCard
+                reconversionProjectName={project.name}
+                householdsPoweredByRenewableEnergy={impacts.householdsPoweredByRenewableEnergy}
+              />
+            </div>
+          )}
         </Row>
       </section>
     </div>
