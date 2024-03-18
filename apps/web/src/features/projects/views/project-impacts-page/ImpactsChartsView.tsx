@@ -4,6 +4,7 @@ import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ContaminatedSurfaceImpactChart from "./impacts/environment/ContaminatedSurfaceImpactCard";
 import HouseholdsPoweredByRenewableEnergyImpactCard from "./impacts/environment/HouseholdsPoweredByRenewableEnergyImpactCard";
 import PermeableSurfaceImpactChart from "./impacts/environment/PermeableSurfaceImpactCard";
+import StoredAndAvoidedCO2ImpactCard from "./impacts/environment/StoredAndAvoidedCO2ImpactCard";
 import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
 import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
 import ImpactChartCard from "./ImpactChartCard";
@@ -42,9 +43,14 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
           <div className={fr.cx("fr-col-3")}>
             <ImpactChartCard title="🍂 Carbone stocké dans les sols" />
           </div>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactChartCard title="☁️ CO2-eq stocké ou évité" />
-          </div>
+          {impacts.avoidedCO2TonsWithEnergyProduction && (
+            <div className={fr.cx("fr-col-3")}>
+              <StoredAndAvoidedCO2ImpactCard
+                reconversionProjectName={project.name}
+                avoidedCO2TonsWithEnergyProduction={impacts.avoidedCO2TonsWithEnergyProduction}
+              />
+            </div>
+          )}
           <div className={fr.cx("fr-col-3")}>
             <PermeableSurfaceImpactChart
               reconversionProjectName={project.name}

@@ -41,4 +41,8 @@ export type ReconversionProjectImpacts = {
     current: 0;
     forecast: number;
   };
+  avoidedCO2TonsWithEnergyProduction?: {
+    current: 0;
+    forecast: number;
+  };
 };

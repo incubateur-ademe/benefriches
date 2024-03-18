@@ -159,6 +159,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             current: 0,
             forecast: 1000,
           },
+          avoidedCO2TonsWithEnergyProduction: {
+            current: 0,
+            forecast: 112.29599999999999,
+          },
         },
       });
     });
