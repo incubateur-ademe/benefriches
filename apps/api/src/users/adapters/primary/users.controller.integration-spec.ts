@@ -3,13 +3,14 @@ import { INestApplication } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
+import { Server } from "net";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { User } from "src/users/domain/models/user";
 
 describe("Users controller", () => {
-  let app: INestApplication;
+  let app: INestApplication<Server>;
   let sqlConnection: Knex;
 
   beforeAll(async () => {

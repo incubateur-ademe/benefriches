@@ -2,6 +2,7 @@ import { INestApplication } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
+import { Server } from "net";
 import supertest from "supertest";
 import { v4 as uuid } from "uuid";
 import { z, ZodError } from "zod";
@@ -18,7 +19,7 @@ type BadRequestResponseBody = {
 };
 
 describe("ReconversionProjects controller", () => {
-  let app: INestApplication;
+  let app: INestApplication<Server>;
   let sqlConnection: Knex;
 
   beforeAll(async () => {

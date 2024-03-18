@@ -1,10 +1,11 @@
 import { INestApplication } from "@nestjs/common";
 import { Test as NestTest } from "@nestjs/testing";
+import { Server } from "net";
 import supertest from "supertest";
 import { HelloModule } from "./hello.module";
 
 describe("Hello controller", () => {
-  let app: INestApplication;
+  let app: INestApplication<Server>;
 
   beforeAll(async () => {
     const moduleRef = await NestTest.createTestingModule({

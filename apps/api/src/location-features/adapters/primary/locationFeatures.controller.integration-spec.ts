@@ -1,5 +1,6 @@
 import { INestApplication } from "@nestjs/common";
 import { Test as NestTest } from "@nestjs/testing";
+import { Server } from "net";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/domain/usecases/getPhotovoltaicExpectedPerformanceUseCase";
@@ -9,7 +10,7 @@ import { MockLocalDataInseeService } from "../secondary/town-data-provider/Local
 import { LocationFeaturesController } from "./locationFeatures.controller";
 
 describe("LocationFeatures controller", () => {
-  let app: INestApplication;
+  let app: INestApplication<Server>;
 
   beforeAll(async () => {
     const moduleRef = await NestTest.createTestingModule({
