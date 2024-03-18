@@ -5,6 +5,10 @@ import {
   computeAccidentsImpact,
 } from "../model/impacts/accidents/accidentsImpact";
 import {
+  AvoidedCO2WithEnergyProductionImpact,
+  computeAvoidedCO2TonsWithEnergyProductionImpact,
+} from "../model/impacts/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
+import {
   computeContaminatedSurfaceAreaImpact,
   ContaminatedSurfaceAreaImpact,
 } from "../model/impacts/contaminated-surface/contaminatedSurfaceAreaImpact";
@@ -85,6 +89,7 @@ export type Result = {
     accidents: AccidentsImpactResult | undefined;
     economicBalance: EconomicBalanceImpactResult;
     householdsPoweredByRenewableEnergy: HouseholdsPoweredByRenewableEnergyImpact | undefined;
+    avoidedCO2TonsWithEnergyProduction: AvoidedCO2WithEnergyProductionImpact | undefined;
   };
 };
 
@@ -177,6 +182,13 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh
             ? computeHouseholdsPoweredByRenewableEnergyImpact({
                 forecastRenewableEnergyAnnualProductionMWh:
+                  reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
+              })
+            : undefined,
+        avoidedCO2TonsWithEnergyProduction:
+          reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh
+            ? computeAvoidedCO2TonsWithEnergyProductionImpact({
+                forecastAnnualEnergyProductionMWh:
                   reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
               })
             : undefined,

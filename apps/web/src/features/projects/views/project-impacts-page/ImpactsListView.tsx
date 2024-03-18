@@ -84,7 +84,10 @@ const ImpactValue = ({ children, isTotal = false }: ImpactValueProps) => {
   );
 };
 
-const formatImpact = (impactValue: number) => {
+const formatImpact = (impactValue: number, { withSign } = { withSign: false }) => {
+  const formattedValue = formatNumberFr(roundTo2Digits(impactValue));
+  if (!withSign) return formattedValue;
+
   const prefix = impactValue > 0 ? "+" : "";
   return prefix + formatNumberFr(roundTo2Digits(impactValue));
 };
@@ -180,6 +183,28 @@ const ImpactsListView = ({ impacts }: Props) => {
         )}
         <FoldableImpactItemRow>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <ImpactLabel>☁️ CO2-eq stocké ou évité</ImpactLabel>
+            <ImpactValue isTotal>
+              {formatImpact(impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0, {
+                withSign: false,
+              })}
+              &nbsp;t
+            </ImpactValue>
+          </div>
+          <ImpactDetailRow>
+            <ImpactDetailLabel>
+              ⚡️ Émissions de CO2-eq évitées grâce à la production d'EnR
+            </ImpactDetailLabel>
+            <ImpactValue>
+              {formatImpact(impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0, {
+                withSign: false,
+              })}
+              &nbsp;t
+            </ImpactValue>
+          </ImpactDetailRow>
+        </FoldableImpactItemRow>
+        <FoldableImpactItemRow>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
             <ImpactLabel>🌧 Surface perméable</ImpactLabel>
             <ImpactValue isTotal>
               {formatImpact(
@@ -240,15 +265,21 @@ const ImpactsListView = ({ impacts }: Props) => {
           <FoldableImpactItemRow>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <ImpactLabel>🤕 Accidents évités sur la friche</ImpactLabel>
-              <ImpactValue isTotal>{formatImpact(impacts.accidents.current)}</ImpactValue>
+              <ImpactValue isTotal>
+                {formatImpact(impacts.accidents.current, { withSign: false })}
+              </ImpactValue>
             </div>
             <ImpactDetailRow>
               <ImpactDetailLabel>💥 Blessés légers évités</ImpactDetailLabel>
-              <ImpactValue>{formatImpact(impacts.accidents.minorInjuries.current)}</ImpactValue>
+              <ImpactValue>
+                {formatImpact(impacts.accidents.minorInjuries.current, { withSign: false })}
+              </ImpactValue>
             </ImpactDetailRow>
             <ImpactDetailRow>
               <ImpactDetailLabel>🚑 Blessés graves évités</ImpactDetailLabel>
-              <ImpactValue>{formatImpact(impacts.accidents.severeInjuries.current)}</ImpactValue>
+              <ImpactValue>
+                {formatImpact(impacts.accidents.severeInjuries.current, { withSign: false })}
+              </ImpactValue>
             </ImpactDetailRow>
           </FoldableImpactItemRow>
         )}
@@ -256,7 +287,9 @@ const ImpactsListView = ({ impacts }: Props) => {
           <ImpactItemRow>
             <ImpactLabel>🏠 Foyers alimentés par les EnR</ImpactLabel>
             <ImpactValue isTotal>
-              {formatImpact(impacts.householdsPoweredByRenewableEnergy.forecast)}
+              {formatImpact(impacts.householdsPoweredByRenewableEnergy.forecast, {
+                withSign: false,
+              })}
             </ImpactValue>
           </ImpactItemRow>
         )}
