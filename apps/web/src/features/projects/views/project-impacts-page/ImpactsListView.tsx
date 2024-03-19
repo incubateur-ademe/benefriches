@@ -93,6 +93,76 @@ const ImpactsListView = ({ impacts }: Props) => {
   return (
     <div style={{ maxWidth: "900px", margin: "auto" }}>
       <section className="fr-mb-5w">
+        <h3>Analyse coûts bénéfices</h3>
+        <ImpactItemRow>
+          <ImpactLabel>📉 Bilan de l’opération</ImpactLabel>
+          <ImpactValue>
+            {formatImpact(impacts.economicBalance.total)}
+            {" €"}
+          </ImpactValue>
+        </ImpactItemRow>
+      </section>
+      <section className="fr-mb-5w">
+        <h3>Bilan de l’opération</h3>
+        {!!impacts.economicBalance.costs.realEstateTransaction && (
+          <ImpactItemRow>
+            <ImpactLabel>🏠 Acquisition du site</ImpactLabel>
+            <ImpactValue>
+              {formatImpact(impacts.economicBalance.costs.realEstateTransaction)}
+              {" €"}
+            </ImpactValue>
+          </ImpactItemRow>
+        )}
+        {!!impacts.economicBalance.costs.siteReinstatement && (
+          <ImpactItemRow>
+            <ImpactLabel>🏗 Remise en état de la friche</ImpactLabel>
+            <ImpactValue>
+              {formatImpact(impacts.economicBalance.costs.siteReinstatement)}
+              {" €"}
+            </ImpactValue>
+          </ImpactItemRow>
+        )}
+        {!!impacts.economicBalance.costs.developmentPlanInstallation && (
+          <ImpactItemRow>
+            <ImpactLabel>⚡️ Installation des panneaux photovoltaïques</ImpactLabel>
+            <ImpactValue>
+              {formatImpact(impacts.economicBalance.costs.developmentPlanInstallation)}
+              {" €"}
+            </ImpactValue>
+          </ImpactItemRow>
+        )}
+        {!!impacts.economicBalance.revenues.financialAssistance && (
+          <ImpactItemRow>
+            <ImpactLabel>🏦 Aides financières</ImpactLabel>
+            <ImpactValue>
+              {formatImpact(impacts.economicBalance.revenues.financialAssistance)}
+              {" €"}
+            </ImpactValue>
+          </ImpactItemRow>
+        )}
+        <ImpactItemRow>
+          <ImpactLabel>💸️ Charges d’exploitation</ImpactLabel>
+          <ImpactValue>
+            {formatImpact(impacts.economicBalance.costs.operationsCosts.total)}
+            {" €"}
+          </ImpactValue>
+        </ImpactItemRow>
+        <ImpactItemRow>
+          <ImpactLabel>💰 Recettes d’exploitation</ImpactLabel>
+          <ImpactValue>
+            {formatImpact(impacts.economicBalance.revenues.operationsRevenues.total)}
+            {" €"}
+          </ImpactValue>
+        </ImpactItemRow>
+        <ImpactItemRow>
+          <ImpactLabel>Total du bilan de l’opération</ImpactLabel>
+          <ImpactValue isTotal>
+            {formatImpact(impacts.economicBalance.total)}
+            {" €"}
+          </ImpactValue>
+        </ImpactItemRow>
+      </section>
+      <section className="fr-mb-5w">
         <h3>Impacts économiques</h3>
       </section>
       <section className="fr-mb-5w">

@@ -1,3 +1,6 @@
+type PurposeCost = "rent" | "maintenance" | "taxes" | "other";
+type SourceRevenue = "operations" | "other";
+
 export type ReconversionProjectImpacts = {
   permeableSurfaceArea: {
     base: number;
@@ -35,6 +38,29 @@ export type ReconversionProjectImpacts = {
     deaths: {
       current: number;
       forecast: 0;
+    };
+  };
+  economicBalance: {
+    total: number;
+    bearer?: string;
+    costs: {
+      total: number;
+      operationsCosts: {
+        total: number;
+        expenses: { purpose: PurposeCost; amount: number }[];
+      };
+      siteReinstatement?: number;
+      developmentPlanInstallation: number;
+      realEstateTransaction?: number;
+    };
+    revenues: {
+      total: number;
+      operationsRevenues: {
+        bearer?: string;
+        total: number;
+        revenues: { source: SourceRevenue; amount: number }[];
+      };
+      financialAssistance?: number;
     };
   };
 };

@@ -1,11 +1,11 @@
-export const baseColumnChartConfig = {
+export const baseColumnChartConfig: Highcharts.Options = {
   chart: {
     type: "column",
     height: "240px",
     style: {
       fontFamily: "Marianne",
     },
-    background: "#ECF5FD",
+    backgroundColor: "#ECF5FD",
   },
   title: {
     text: "",
