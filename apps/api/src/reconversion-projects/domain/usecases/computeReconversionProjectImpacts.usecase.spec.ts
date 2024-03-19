@@ -93,6 +93,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         { amount: 20000, source: "sell" },
         { amount: 1000, source: "other" },
       ],
+      developmentPlanExpectedAnnualEnergyProductionMWh: 4679,
     } as const;
     const site: SiteImpactsDataView = {
       id: reconversionProjectImpactDataView.relatedSiteId,
@@ -204,6 +205,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               current: 1,
               forecast: 0,
             },
+          },
+          householdsPoweredByRenewableEnergy: {
+            current: 0,
+            forecast: 1000,
           },
         },
       });

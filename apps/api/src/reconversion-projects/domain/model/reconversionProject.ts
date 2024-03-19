@@ -29,6 +29,8 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
+export type DevelopmentPlan = z.infer<typeof developmentPlanSchema>;
+
 export const reconversionProjectSchema = z.object({
   id: z.string().uuid(),
   createdBy: z.string().uuid(),

@@ -63,4 +63,8 @@ export type ReconversionProjectImpacts = {
       financialAssistance?: number;
     };
   };
+  householdsPoweredByRenewableEnergy?: {
+    current: 0;
+    forecast: number;
+  };
 };

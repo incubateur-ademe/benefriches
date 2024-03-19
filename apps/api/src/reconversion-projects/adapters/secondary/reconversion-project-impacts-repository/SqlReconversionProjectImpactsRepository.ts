@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+import { DevelopmentPlan } from "src/reconversion-projects/domain/model/reconversionProject";
 import {
   ReconversionProjectImpactsDataView,
   ReconversionProjectImpactsRepository,
@@ -44,7 +45,7 @@ export class SqlReconversionProjectImpactsRepository
       .where("reconversion_project_id", reconversionProjectId);
 
     const sqlDevelopmentPlan = await this.sqlConnection("reconversion_project_development_plans")
-      .select("schedule_start_date", "schedule_end_date", "cost")
+      .select("schedule_start_date", "schedule_end_date", "cost", "features")
       .where("reconversion_project_id", reconversionProjectId)
       .first();
     const conversionSchedule =
@@ -70,6 +71,10 @@ export class SqlReconversionProjectImpactsRepository
     const sqlRevenues = await this.sqlConnection("reconversion_project_yearly_revenues")
       .select("amount", "source")
       .where("reconversion_project_id", reconversionProjectId);
+
+    const developmentPlanExpectedAnnualEnergyProductionMWh = sqlDevelopmentPlan?.features
+      ? (sqlDevelopmentPlan.features as DevelopmentPlan["features"]).expectedAnnualProduction
+      : undefined;
 
     return {
       id: reconversionProject.id,
@@ -98,6 +103,7 @@ export class SqlReconversionProjectImpactsRepository
         reconversionProject.reinstatement_financial_assistance_amount ?? 0,
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
+      developmentPlanExpectedAnnualEnergyProductionMWh,
     };
   }
 }

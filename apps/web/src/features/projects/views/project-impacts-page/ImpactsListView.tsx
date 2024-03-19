@@ -252,6 +252,14 @@ const ImpactsListView = ({ impacts }: Props) => {
             </ImpactDetailRow>
           </FoldableImpactItemRow>
         )}
+        {impacts.householdsPoweredByRenewableEnergy && (
+          <ImpactItemRow>
+            <ImpactLabel>🏠 Foyers alimentés par les EnR</ImpactLabel>
+            <ImpactValue isTotal>
+              {formatImpact(impacts.householdsPoweredByRenewableEnergy.forecast)}
+            </ImpactValue>
+          </ImpactItemRow>
+        )}
       </section>
     </div>
   );
