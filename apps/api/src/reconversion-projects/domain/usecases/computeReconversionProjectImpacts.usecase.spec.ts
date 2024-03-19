@@ -34,6 +34,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         name: "Test reconversion project",
         relatedSiteId: siteId,
         soilsDistribution: {},
+        realEstateTransactionCost: 0,
+        reinstatementCost: 0,
+        developmentPlanInstallationCost: 0,
+        reinstatementFinancialAssistanceAmount: 0,
+        yearlyProjectedCosts: [],
+        yearlyProjectedRevenues: [],
       });
       const siteRepository = new InMemorySiteImpactsRepository();
       const usecase = new ComputeReconversionProjectImpactsUseCase(
@@ -71,6 +77,22 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2026-01-01"),
       },
+      futureOperatorName: "Mairie de Blajan",
+      futureSiteOwnerName: "Mairie de Blajan",
+      reinstatementContractOwnerName: "Mairie de Blajan",
+      realEstateTransactionCost: 150000,
+      reinstatementCost: 500000,
+      developmentPlanInstallationCost: 200000,
+      reinstatementFinancialAssistanceAmount: 150000,
+      yearlyProjectedCosts: [
+        { amount: 1000, purpose: "taxes" },
+        { amount: 10000, purpose: "maintenance" },
+      ],
+      yearlyProjectedRevenues: [
+        { amount: 10000, source: "rent" },
+        { amount: 20000, source: "sell" },
+        { amount: 1000, source: "other" },
+      ],
     } as const;
     const site: SiteImpactsDataView = {
       id: reconversionProjectImpactDataView.relatedSiteId,
@@ -110,6 +132,35 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         relatedSiteId: site.id,
         relatedSiteName: site.name,
         impacts: {
+          economicBalance: {
+            total: -500000,
+            bearer: "Mairie de Blajan",
+            costs: {
+              total: -960000,
+              operationsCosts: {
+                total: -110000,
+                expenses: [
+                  { amount: -10000, purpose: "taxes" },
+                  { amount: -100000, purpose: "maintenance" },
+                ],
+              },
+              siteReinstatement: -500000,
+              developmentPlanInstallation: -200000,
+              realEstateTransaction: -150000,
+            },
+            revenues: {
+              total: 460000,
+              operationsRevenues: {
+                total: 310000,
+                revenues: [
+                  { amount: 100000, source: "rent" },
+                  { amount: 200000, source: "sell" },
+                  { amount: 10000, source: "other" },
+                ],
+              },
+              financialAssistance: 150000,
+            },
+          },
           contaminatedSurfaceArea: {
             base: 20000,
             forecast: 0,

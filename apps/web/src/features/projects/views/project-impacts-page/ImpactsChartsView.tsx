@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
+import CostBenefitAnalysisCard from "./impacts/cost-benefit-analysis/CostBenefitAnalysisCard";
+import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanceImpactCard";
 import ContaminatedSurfaceImpactChart from "./impacts/environment/ContaminatedSurfaceImpactCard";
 import PermeableSurfaceImpactChart from "./impacts/environment/PermeableSurfaceImpactCard";
 import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
@@ -21,21 +23,27 @@ const Row = ({ children }: { children: ReactNode }) => {
 const ImpactsChartsView = ({ project, impacts }: Props) => {
   return (
     <div>
-      <section>
+      <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts économiques</h3>
         <Row>
           <div className={fr.cx("fr-col-6")}>
-            <ImpactChartCard title="Analyse coûts bénéfices" />
+            <CostBenefitAnalysisCard
+              economicBalanceTotal={impacts.economicBalance.total}
+              socioEconomicImpactTotal={258000}
+            />
           </div>
           <div className={fr.cx("fr-col-6")}>
-            <ImpactChartCard title="Bilan de l'opération" />
+            <EconomicBalanceImpactCard
+              costs={impacts.economicBalance.costs}
+              revenues={impacts.economicBalance.revenues}
+            />
             <div className="fr-mt-3w">
               <ImpactChartCard title="Impacts socio-économiques" />
             </div>
           </div>
         </Row>
       </section>
-      <section>
+      <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts environnementaux</h3>
         <Row>
           <div className={fr.cx("fr-col-3")}>
@@ -60,7 +68,7 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
           )}
         </Row>
       </section>
-      <section>
+      <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts sociaux</h3>
         <Row>
           <div className={fr.cx("fr-col-3")}>

@@ -44,6 +44,10 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         future_operations_full_time_jobs: 0.2,
         reinstatement_schedule_start_date: new Date("2024-07-01"),
         reinstatement_schedule_end_date: new Date("2024-12-31"),
+        future_operator_name: "Mairie de Blajan",
+        future_site_owner_name: "Mairie de Blajan",
+        reinstatement_contract_owner_name: "Mairie de Blajan",
+        reinstatement_cost: 15000,
       });
 
       await sqlConnection("reconversion_project_soils_distributions").insert([
@@ -92,6 +96,15 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           startDate: new Date("2024-07-01"),
           endDate: new Date("2024-12-31"),
         },
+        futureOperatorName: "Mairie de Blajan",
+        futureSiteOwnerName: "Mairie de Blajan",
+        reinstatementContractOwnerName: "Mairie de Blajan",
+        realEstateTransactionCost: 0,
+        reinstatementCost: 15000,
+        developmentPlanInstallationCost: 0,
+        reinstatementFinancialAssistanceAmount: 0,
+        yearlyProjectedCosts: [],
+        yearlyProjectedRevenues: [],
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {
@@ -147,6 +160,20 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           BUILDINGS: 1200,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 30000,
         },
+        yearlyProjectedCosts: [],
+        yearlyProjectedRevenues: [],
+        conversionFullTimeJobs: undefined,
+        conversionSchedule: undefined,
+        developmentPlanInstallationCost: 0,
+        futureOperatorName: undefined,
+        futureSiteOwnerName: undefined,
+        operationsFullTimeJobs: undefined,
+        realEstateTransactionCost: 0,
+        reinstatementContractOwnerName: undefined,
+        reinstatementCost: 0,
+        reinstatementFinancialAssistanceAmount: 0,
+        reinstatementFullTimeJobs: undefined,
+        reinstatementSchedule: undefined,
       });
     });
   });
