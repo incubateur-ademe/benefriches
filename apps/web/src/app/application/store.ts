@@ -21,7 +21,8 @@ import projectImpacts from "@/features/projects/application/projectImpacts.reduc
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
 import projectImpactsComparison from "@/features/projects/application/projectImpactsComparison.reducer";
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
-import { UserGateway } from "@/features/users/application/initCurrentUser.action";
+import { CreateUserGateway } from "@/features/users/application/createUser.action";
+import { CurrentUserGateway } from "@/features/users/application/initCurrentUser.action";
 import currentUser from "@/features/users/application/user.reducer";
 
 export type AppDependencies = {
@@ -32,9 +33,10 @@ export type AppDependencies = {
   projectDetailsService: ProjectsDetailsGateway;
   getSiteByIdService: GetSitesByIdGateway;
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
-  userService: UserGateway;
   municipalityDataService: CreateSiteMunicipalityDataGateway | CreateProjectMunicipalityDataGateway;
   reconversionProjectImpacts: ReconversionProjectImpactsGateway;
+  currentUserService: CurrentUserGateway;
+  createUserService: CreateUserGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

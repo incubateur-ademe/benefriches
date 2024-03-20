@@ -16,7 +16,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  currentUserCompany: string;
+  currentUserStructureName?: string;
   siteLocalAuthorities: { loadingState: LoadingState; localAuthorities?: SiteLocalAuthorities };
 };
 
@@ -39,7 +39,12 @@ export type FormValues =
 
 const requiredMessage = "Ce champ requis pour la suite du formulaire";
 
-function SiteOwnerForm({ onSubmit, onBack, currentUserCompany, siteLocalAuthorities }: Props) {
+function SiteOwnerForm({
+  onSubmit,
+  onBack,
+  currentUserStructureName,
+  siteLocalAuthorities,
+}: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -76,11 +81,13 @@ function SiteOwnerForm({ onSubmit, onBack, currentUserCompany, siteLocalAuthorit
               })}
             />
           )}
-          <RadioButton
-            label={`Mon entreprise, ${currentUserCompany}`}
-            value="user_company"
-            {...register("ownerType", { required: requiredMessage })}
-          />
+          {currentUserStructureName && (
+            <RadioButton
+              label={`Votre entreprise, ${currentUserStructureName}`}
+              value="user_company"
+              {...register("ownerType", { required: requiredMessage })}
+            />
+          )}
           <RadioButton
             label={`Une autre entreprise`}
             value="other_company"

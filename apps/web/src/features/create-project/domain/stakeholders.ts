@@ -1,6 +1,6 @@
 import { ProjectSite } from "./project.types";
 
-import { User } from "@/features/users/domain/user";
+import { UserStructure } from "@/features/users/domain/user";
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 import { LOCAL_AUTHORITY_AVAILABLE_VALUES } from "@/shared/views/components/form/LocalAuthoritySelect/values";
 
@@ -24,23 +24,23 @@ export const getSiteStakeholders = (site: ProjectSite): SiteStakeholder[] => {
 };
 
 export const isCurrentUserSameSiteStakeholderEntity = (
-  currentUserOrganization: Exclude<User["organization"], undefined>,
-  stakeholderEntity?: SiteStakeholder,
+  currentUserStructure: UserStructure,
+  stakeholder?: SiteStakeholder,
 ): boolean => {
-  if (!stakeholderEntity) {
+  if (!stakeholder) {
     return false;
   }
   return (
-    currentUserOrganization.type === stakeholderEntity.structureType &&
-    currentUserOrganization.name === stakeholderEntity.name
+    currentUserStructure.type === stakeholder.structureType &&
+    currentUserStructure.name === stakeholder.name
   );
 };
 
 export const getLocalAuthoritiesExcludedValues = (
-  currentUserOrganization: Exclude<User["organization"], undefined>,
+  currentUserStructure: UserStructure,
   siteStakeholderEntities: SiteStakeholder[],
 ) =>
   [
-    currentUserOrganization.type,
+    currentUserStructure.type,
     ...siteStakeholderEntities.map(({ structureType }) => structureType),
   ].filter((value) => LOCAL_AUTHORITY_AVAILABLE_VALUES.includes(value));

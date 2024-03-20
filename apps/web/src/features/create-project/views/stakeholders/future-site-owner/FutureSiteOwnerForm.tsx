@@ -7,7 +7,7 @@ import {
   isCurrentUserSameSiteStakeholderEntity,
   SiteStakeholder,
 } from "@/features/create-project/domain/stakeholders";
-import { User } from "@/features/users/domain/user";
+import { UserStructure } from "@/features/users/domain/user";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
@@ -20,7 +20,7 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   siteStakeholders: SiteStakeholder[];
-  currentUserCompany: Exclude<User["organization"], undefined>;
+  currentUserStructure?: UserStructure;
   projectSiteLocalAuthorities: ProjectSiteLocalAuthoritiesState;
 };
 
@@ -44,19 +44,19 @@ export type FormValues =
 const requiredMessage = "Ce champ est requis";
 
 const isCurrentUserSiteOwner = (
-  currentUserCompany: Props["currentUserCompany"],
+  currentUserStructure: UserStructure,
   currentSiteOwner?: SiteStakeholder,
-): boolean => isCurrentUserSameSiteStakeholderEntity(currentUserCompany, currentSiteOwner);
+): boolean => isCurrentUserSameSiteStakeholderEntity(currentUserStructure, currentSiteOwner);
 
 const isCurrentUserSiteTenant = (
-  currentUserCompany: Props["currentUserCompany"],
+  currentUserStructure: UserStructure,
   currentSiteTenant: SiteStakeholder,
-): boolean => isCurrentUserSameSiteStakeholderEntity(currentUserCompany, currentSiteTenant);
+): boolean => isCurrentUserSameSiteStakeholderEntity(currentUserStructure, currentSiteTenant);
 
 function FutureSiteOwnerForm({
   onSubmit,
   onBack,
-  currentUserCompany,
+  currentUserStructure,
   siteStakeholders,
   projectSiteLocalAuthorities,
 }: Props) {
@@ -69,18 +69,18 @@ function FutureSiteOwnerForm({
   const currentSiteOwner = siteStakeholders.find(({ role }) => role === "site_owner");
   const currentSiteTenant = siteStakeholders.find(({ role }) => role === "site_tenant");
 
-  const shouldDisplayCurrentUserCompanyOption = !isCurrentUserSiteOwner(
-    currentUserCompany,
-    currentSiteOwner,
-  );
+  const shouldDisplayCurrentUserCompanyOption = currentUserStructure
+    ? !isCurrentUserSiteOwner(currentUserStructure, currentSiteOwner)
+    : false;
 
   const shouldDisplaySiteTenantOption =
-    currentSiteTenant && !isCurrentUserSiteTenant(currentUserCompany, currentSiteTenant);
+    currentUserStructure && currentSiteTenant
+      ? !isCurrentUserSiteTenant(currentUserStructure, currentSiteTenant)
+      : false;
 
-  const localAuthoritiesExcludedValues = getLocalAuthoritiesExcludedValues(
-    currentUserCompany,
-    siteStakeholders,
-  );
+  const localAuthoritiesExcludedValues = currentUserStructure
+    ? getLocalAuthoritiesExcludedValues(currentUserStructure, siteStakeholders)
+    : [];
 
   return (
     <WizardFormLayout title="Qui sera le nouveau propriétaire du site ?">
@@ -91,15 +91,15 @@ function FutureSiteOwnerForm({
             formState.errors.futureSiteOwner ? formState.errors.futureSiteOwner.message : undefined
           }
         >
-          {shouldDisplayCurrentUserCompanyOption && (
+          {currentUserStructure && shouldDisplayCurrentUserCompanyOption && (
             <RadioButton
-              label={currentUserCompany.name}
+              label={currentUserStructure.name}
               value="user_company"
               {...register("futureSiteOwner", { required: requiredMessage })}
             />
           )}
 
-          {shouldDisplaySiteTenantOption && (
+          {currentSiteTenant && shouldDisplaySiteTenantOption && (
             <RadioButton
               label={currentSiteTenant.name}
               value="site_tenant"

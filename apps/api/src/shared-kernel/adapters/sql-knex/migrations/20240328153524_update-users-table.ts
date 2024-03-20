@@ -11,6 +11,7 @@ export async function up(knex: Knex): Promise<void> {
     t.string("firstname");
     t.string("lastname");
     t.string("structure_type");
+    t.string("structure_activity");
     t.string("structure_name");
     t.timestamp("created_at").notNullable();
     t.timestamp("personal_data_storage_consented_at").notNullable();

@@ -9,15 +9,15 @@ import { fetchSiteLocalAuthorities } from "@/features/create-project/application
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { getSiteStakeholders } from "@/features/create-project/domain/stakeholders";
-import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
-import { User } from "@/features/users/domain/user";
+import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
+import { UserStructure } from "@/features/users/domain/user";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const convertFormValuesForStore = (
   data: FormValues,
   projectSite: ProjectSite,
-  currentUserCompany: Exclude<User["organization"], undefined>,
+  currentUserStructure: UserStructure | undefined,
   siteLocalAuthorities: SiteLocalAuthorities,
 ): ProjectStakeholder => {
   switch (data.futureSiteOwner) {
@@ -29,9 +29,10 @@ const convertFormValuesForStore = (
         structureType: data.localAuthority,
       };
     case "user_company":
+      if (!currentUserStructure) return { name: "", structureType: "unknown" };
       return {
-        name: currentUserCompany.name,
-        structureType: currentUserCompany.type,
+        name: currentUserStructure.name ?? "",
+        structureType: currentUserStructure.type as ProjectStakeholder["structureType"],
       };
     case "other_structure":
       return {
@@ -49,7 +50,7 @@ const convertFormValuesForStore = (
 function FutureOwnerFormContainer() {
   const dispatch = useAppDispatch();
   const projectSite = useAppSelector((state) => state.projectCreation.siteData);
-  const currentUserCompany = useAppSelector(selectCurrentUserCompany);
+  const currentUserStructure = useAppSelector(selectCurrentUserStructure);
   const projectSiteLocalAuthorities = useAppSelector((state) => state.projectSiteLocalAuthorities);
   const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
 
@@ -59,7 +60,7 @@ function FutureOwnerFormContainer() {
     if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
       completeFutureSiteOwner(
-        convertFormValuesForStore(data, projectSite, currentUserCompany, siteLocalAuthorities),
+        convertFormValuesForStore(data, projectSite, currentUserStructure, siteLocalAuthorities),
       ),
     );
   };
@@ -75,7 +76,7 @@ function FutureOwnerFormContainer() {
       onSubmit={onSubmit}
       onBack={onBack}
       siteStakeholders={siteStakeholders}
-      currentUserCompany={currentUserCompany}
+      currentUserStructure={currentUserStructure}
       projectSiteLocalAuthorities={projectSiteLocalAuthorities}
     />
   );
