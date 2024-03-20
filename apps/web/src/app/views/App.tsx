@@ -13,6 +13,7 @@ import CreateProjectPage from "@/features/create-project/views/ProjectCreationWi
 import CreateSiteIntroductionPage from "@/features/create-site/views/introduction/CreateSiteIntroductionPage";
 import CreateSiteFoncierPage from "@/features/create-site/views/SiteCreationWizard";
 import LoginPage from "@/features/login";
+import OnboardingPage from "@/features/onboarding";
 import MyProjectsPage from "@/features/projects/views/my-projects-page";
 import ProjectImpactsPage from "@/features/projects/views/project-impacts-page";
 import ProjectsImpactsComparisonPage from "@/features/projects/views/projects-impacts-comparison";
@@ -34,6 +35,7 @@ function App() {
     <HeaderFooterLayout>
       <main className={fr.cx("fr-container", "fr-py-4w")} style={{ flexGrow: 1 }}>
         {route.name === routes.home.name && <HomePage />}
+        {route.name === routes.onboarding.name && <OnboardingPage />}
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
         {route.name === routes.createSiteFoncierIntro.name && <CreateSiteIntroductionPage />}
