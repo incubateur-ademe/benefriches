@@ -16,6 +16,7 @@ global.afterEach(async () => {
     "site_soils_distributions",
     "sites",
     "users",
+    "identities",
   ] as const;
 
   try {
