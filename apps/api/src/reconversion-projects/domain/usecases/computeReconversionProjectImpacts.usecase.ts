@@ -28,18 +28,25 @@ import {
   computePermeableSurfaceAreaImpact,
   PermeableSurfaceAreaImpactResult,
 } from "../model/impacts/permeable-surface/permeableSurfaceAreaImpact";
+import {
+  computeSocioEconomicImpacts,
+  SocioEconomicImpactsResult,
+} from "../model/impacts/socio-economic/computeSocioEconomicImpacts";
 import { getDurationFromScheduleInYears, Schedule } from "../model/reconversionProject";
 
 export type SiteImpactsDataView = {
   id: string;
   name: string;
   contaminatedSoilSurface?: number;
+  ownerName: string;
+  tenantName?: string;
   soilsDistribution: SoilsDistribution;
   fullTimeJobs?: number;
   hasAccidents: boolean;
   accidentsDeaths?: number;
   accidentsMinorInjuries?: number;
   accidentsSevereInjuries?: number;
+  yearlyCosts: { bearer: string; amount: number; purpose: string }[];
 };
 
 export interface SiteImpactsRepository {
@@ -90,6 +97,7 @@ export type Result = {
     economicBalance: EconomicBalanceImpactResult;
     householdsPoweredByRenewableEnergy: HouseholdsPoweredByRenewableEnergyImpact | undefined;
     avoidedCO2TonsWithEnergyProduction: AvoidedCO2WithEnergyProductionImpact | undefined;
+    socioeconomic: SocioEconomicImpactsResult;
   };
 };
 
@@ -146,6 +154,14 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           },
           evaluationPeriodInYears,
         ),
+        socioeconomic: computeSocioEconomicImpacts({
+          currentOwner: relatedSite.ownerName,
+          currentTenant: relatedSite.tenantName,
+          yearlyCurrentCosts: relatedSite.yearlyCosts,
+          yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
+          futureSiteOwner: reconversionProject.futureSiteOwnerName,
+          evaluationPeriodInYears,
+        }),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,
           forecastSoilsDistribution: reconversionProject.soilsDistribution,

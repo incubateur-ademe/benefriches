@@ -29,9 +29,9 @@ describe("SqlSiteRepository integration", () => {
         name: "Site 123",
         description: "Description of site",
         surface_area: 14000,
-        owner_name: "Owner name",
+        owner_name: "Current site owner",
         owner_structure_type: "company",
-        tenant_name: "Tenant name",
+        tenant_name: "Current tenant",
         tenant_structure_type: "company",
         created_at: new Date(),
         is_friche: true,
@@ -49,6 +49,17 @@ describe("SqlSiteRepository integration", () => {
         { id: uuid(), site_id: siteId, soil_type: "PRAIRIE_GRASS", surface_area: 12800 },
       ]);
 
+      await sqlConnection("site_expenses").insert([
+        {
+          id: uuid(),
+          site_id: siteId,
+          amount: 100,
+          bearer: "tenant",
+          purpose: "rent",
+          purpose_category: "rent",
+        },
+      ]);
+
       const result = await siteRepository.getById(siteId);
 
       expect(result).toEqual<Required<SiteImpactsDataView>>({
@@ -64,6 +75,9 @@ describe("SqlSiteRepository integration", () => {
         accidentsDeaths: 1,
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 0,
+        ownerName: "Current site owner",
+        tenantName: "Current tenant",
+        yearlyCosts: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
       });
     });
     it("gets site with data needed for impact computation when no full time jobs, no accidents and no contaminated surface", async () => {
@@ -76,8 +90,6 @@ describe("SqlSiteRepository integration", () => {
         surface_area: 14000,
         owner_name: "Owner name",
         owner_structure_type: "company",
-        tenant_name: "Tenant name",
-        tenant_structure_type: "company",
         created_at: new Date(),
         is_friche: true,
       });
@@ -96,7 +108,9 @@ describe("SqlSiteRepository integration", () => {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
         },
+        ownerName: "Owner name",
         hasAccidents: false,
+        yearlyCosts: [],
       });
     });
   });

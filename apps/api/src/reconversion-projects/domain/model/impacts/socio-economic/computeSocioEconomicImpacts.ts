@@ -1,0 +1,108 @@
+import { ReconversionProject } from "../../reconversionProject";
+
+const RENT_PURPOSE_KEY = "rent";
+const TAXES_PURPOSE_KEY = "taxes";
+
+const FRICHE_COST_PURPOSES = [
+  "security",
+  "illegalDumpingCost",
+  "accidentsCost",
+  "otherSecuringCosts",
+] as const;
+
+type SocioEconomicImpactsInput = {
+  evaluationPeriodInYears: number;
+  currentOwner: string;
+  currentTenant?: string;
+  futureSiteOwner?: string;
+  yearlyCurrentCosts: { purpose: string; amount: number }[];
+  yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"];
+};
+
+type BaseEconomicImpact = { actor: string; amount: number };
+type RentalIncomeImpact = BaseEconomicImpact & {
+  impact: "rental_income";
+  impactCategory: "economic_direct";
+};
+type AvoidedFricheCostsImpact = BaseEconomicImpact & {
+  impact: "avoided_friche_costs";
+  impactCategory: "economic_direct";
+};
+type TaxesIncomeImpact = BaseEconomicImpact & {
+  impact: "taxes_income";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
+type EconomicImpact = RentalIncomeImpact | AvoidedFricheCostsImpact | TaxesIncomeImpact;
+
+export type SocioEconomicImpactsResult = {
+  impacts: EconomicImpact[];
+};
+
+export const computeSocioEconomicImpacts = (
+  input: SocioEconomicImpactsInput,
+): SocioEconomicImpactsResult => {
+  const impacts: EconomicImpact[] = [];
+
+  const projectedRentCost = input.yearlyProjectedCosts.find(
+    ({ purpose }) => purpose === RENT_PURPOSE_KEY,
+  );
+  const currentRentCost = input.yearlyCurrentCosts.find(
+    ({ purpose }) => purpose === RENT_PURPOSE_KEY,
+  );
+  if (projectedRentCost) {
+    if (input.futureSiteOwner) {
+      impacts.push({
+        amount: projectedRentCost.amount * input.evaluationPeriodInYears,
+        actor: input.futureSiteOwner,
+        impact: "rental_income",
+        impactCategory: "economic_direct",
+      });
+    }
+    if (currentRentCost) {
+      impacts.push({
+        amount: (projectedRentCost.amount - currentRentCost.amount) * input.evaluationPeriodInYears,
+        actor: input.currentOwner,
+        impact: "rental_income",
+        impactCategory: "economic_direct",
+      });
+    }
+  } else if (currentRentCost) {
+    impacts.push({
+      amount: -currentRentCost.amount * input.evaluationPeriodInYears,
+      actor: input.currentOwner,
+      impact: "rental_income",
+      impactCategory: "economic_direct",
+    });
+  }
+
+  const currentFricheCosts = input.yearlyCurrentCosts.filter(({ purpose }) =>
+    FRICHE_COST_PURPOSES.includes(purpose as (typeof FRICHE_COST_PURPOSES)[number]),
+  );
+  if (currentFricheCosts.length) {
+    const fricheCostImpactAmount = currentFricheCosts
+      .map(({ amount }) => amount)
+      .reduce((sum, amount) => sum + amount, 0);
+    impacts.push({
+      amount: fricheCostImpactAmount * input.evaluationPeriodInYears,
+      actor: input.currentTenant ?? input.currentOwner,
+      impact: "avoided_friche_costs",
+      impactCategory: "economic_direct",
+    });
+  }
+
+  const currentTaxesAmount =
+    input.yearlyCurrentCosts.find(({ purpose }) => purpose === TAXES_PURPOSE_KEY)?.amount ?? 0;
+  const projectedTaxesAmount =
+    input.yearlyProjectedCosts.find(({ purpose }) => purpose === TAXES_PURPOSE_KEY)?.amount ?? 0;
+  if (currentTaxesAmount || projectedTaxesAmount) {
+    impacts.push({
+      amount: (projectedTaxesAmount - currentTaxesAmount) * input.evaluationPeriodInYears,
+      impact: "taxes_income",
+      impactCategory: "economic_indirect",
+      actor: "community",
+    });
+  }
+
+  return { impacts };
+};

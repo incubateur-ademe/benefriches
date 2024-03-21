@@ -1,6 +1,21 @@
 type PurposeCost = "rent" | "maintenance" | "taxes" | "other";
 type SourceRevenue = "operations" | "other";
 
+type BaseEconomicImpact = { actor: string; amount: number };
+type RentalIncomeImpact = BaseEconomicImpact & {
+  impact: "rental_income";
+  impactCategory: "economic_direct";
+};
+type AvoidedFricheCostsImpact = BaseEconomicImpact & {
+  impact: "avoided_friche_costs";
+  impactCategory: "economic_direct";
+};
+type TaxesIncomeImpact = BaseEconomicImpact & {
+  impact: "taxes_income";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
+
 export type ReconversionProjectImpacts = {
   permeableSurfaceArea: {
     base: number;
@@ -70,5 +85,8 @@ export type ReconversionProjectImpacts = {
   avoidedCO2TonsWithEnergyProduction?: {
     current: 0;
     forecast: number;
+  };
+  socioeconomic: {
+    impacts: (RentalIncomeImpact | AvoidedFricheCostsImpact | TaxesIncomeImpact)[];
   };
 };

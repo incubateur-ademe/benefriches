@@ -11,6 +11,7 @@ import ImpactItemGroup from "./ImpactItemGroup";
 import ImpactItemRow from "./ImpactItemRow";
 import ImpactLabel from "./ImpactLabel";
 import ImpactValue from "./ImpactValue";
+import SocioEconomicImpactsListSection from "./SocioEconomicSection";
 
 type Props = {
   project: {
@@ -80,9 +81,7 @@ const ImpactsListView = ({ impacts }: Props) => {
           <ImpactValue isTotal>{formatMonetaryImpact(impacts.economicBalance.total)}</ImpactValue>
         </ImpactItemRow>
       </section>
-      <section className="fr-mb-5w">
-        <h3>Impacts économiques</h3>
-      </section>
+      <SocioEconomicImpactsListSection socioEconomicImpacts={impacts.socioeconomic.impacts} />
       <section className="fr-mb-5w">
         <h3>Impacts environnementaux</h3>
         {impacts.contaminatedSurfaceArea && (

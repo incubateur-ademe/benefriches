@@ -62,6 +62,8 @@ type SqlSoilsDistribution = {
 };
 
 type SqlSiteExpense = {
+  id: string;
+  site_id: string;
   purpose: string;
   bearer: string;
   purpose_category: string;
@@ -69,6 +71,8 @@ type SqlSiteExpense = {
 };
 
 type SqlSiteIncome = {
+  id: string;
+  site_id: string;
   source: string;
   amount: number;
 };
