@@ -1,4 +1,4 @@
-import { Schedule } from "../application/createProject.actions";
+import { Schedule } from "../application/saveReconversionProject.action";
 
 import { SoilType } from "@/shared/domain/soils";
 import {

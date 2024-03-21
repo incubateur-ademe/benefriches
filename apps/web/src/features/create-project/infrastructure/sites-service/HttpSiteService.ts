@@ -1,4 +1,4 @@
-import { GetSitesByIdGateway } from "../../application/createProject.actions";
+import { GetSitesByIdGateway } from "../../application/fetchRelatedSite.action";
 import { ProjectSite } from "../../domain/project.types";
 
 export class HttpSitesService implements GetSitesByIdGateway {

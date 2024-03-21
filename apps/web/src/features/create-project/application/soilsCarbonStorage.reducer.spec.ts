@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { ProjectSite } from "../domain/project.types";
 import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
-import { fetchRelatedSiteAction } from "./createProject.actions";
 import { completeSoilsDistribution } from "./createProject.reducer";
+import { fetchRelatedSite } from "./fetchRelatedSite.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./soilsCarbonStorage.actions";
 
 import { createStore } from "@/app/application/store";
@@ -84,7 +84,7 @@ describe("Site carbon sequestration reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
+    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
     store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
@@ -114,7 +114,7 @@ describe("Site carbon sequestration reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
+    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
     store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
@@ -137,7 +137,7 @@ describe("Site carbon sequestration reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
+    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
     store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 

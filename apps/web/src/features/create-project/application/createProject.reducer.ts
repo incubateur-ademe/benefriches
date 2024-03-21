@@ -1,6 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
-import { fetchRelatedSiteAction, saveProjectAction, Schedule } from "./createProject.actions";
+import { fetchRelatedSite } from "./fetchRelatedSite.action";
+import { saveReconversionProject, Schedule } from "./saveReconversionProject.action";
 
 import { RootState } from "@/app/application/store";
 import {
@@ -306,25 +307,25 @@ export const projectCreationSlice = createSlice({
   },
   extraReducers(builder) {
     /* fetch related site */
-    builder.addCase(fetchRelatedSiteAction.pending, (state) => {
+    builder.addCase(fetchRelatedSite.pending, (state) => {
       state.siteDataLoadingState = "loading";
     });
-    builder.addCase(fetchRelatedSiteAction.fulfilled, (state, action) => {
+    builder.addCase(fetchRelatedSite.fulfilled, (state, action) => {
       state.siteDataLoadingState = "success";
       state.siteData = action.payload;
     });
-    builder.addCase(fetchRelatedSiteAction.rejected, (state) => {
+    builder.addCase(fetchRelatedSite.rejected, (state) => {
       state.siteDataLoadingState = "error";
     });
     /* save project */
-    builder.addCase(saveProjectAction.pending, (state) => {
+    builder.addCase(saveReconversionProject.pending, (state) => {
       state.saveProjectLoadingState = "loading";
     });
-    builder.addCase(saveProjectAction.fulfilled, (state) => {
+    builder.addCase(saveReconversionProject.fulfilled, (state) => {
       state.saveProjectLoadingState = "success";
       state.stepsHistory.push("CREATION_CONFIRMATION");
     });
-    builder.addCase(saveProjectAction.rejected, (state) => {
+    builder.addCase(saveReconversionProject.rejected, (state) => {
       state.saveProjectLoadingState = "error";
       state.stepsHistory.push("CREATION_CONFIRMATION");
     });

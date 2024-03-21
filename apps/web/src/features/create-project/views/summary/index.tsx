@@ -1,5 +1,5 @@
-import { saveProjectAction } from "../../application/createProject.actions";
 import { revertFinalSummaryStep } from "../../application/createProject.reducer";
+import { saveReconversionProject } from "../../application/saveReconversionProject.action";
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -10,7 +10,7 @@ function ProjectionCreationDataSummaryContainer() {
   const dispatch = useAppDispatch();
 
   const onNext = () => {
-    void dispatch(saveProjectAction());
+    void dispatch(saveReconversionProject());
   };
 
   const onBack = () => {

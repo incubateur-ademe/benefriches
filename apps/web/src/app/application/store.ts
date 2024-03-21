@@ -1,8 +1,5 @@
 import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
-import {
-  GetSitesByIdGateway,
-  SaveReconversionProjectGateway,
-} from "../../features/create-project/application/createProject.actions";
+import { GetSitesByIdGateway } from "../../features/create-project/application/fetchRelatedSite.action";
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.actions";
 import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
@@ -13,6 +10,7 @@ import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } f
 import projectSiteLocalAuthorities from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
 import projectPvExpectedPerformancesStorage from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
+import { SaveReconversionProjectGateway } from "@/features/create-project/application/saveReconversionProject.action";
 import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/application/siteMunicipalityData.actions";

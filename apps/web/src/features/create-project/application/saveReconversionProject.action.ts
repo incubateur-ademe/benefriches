@@ -1,23 +1,7 @@
 import { z } from "zod";
-import { ProjectSite } from "../domain/project.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
-
-export interface GetSitesByIdGateway {
-  getById(siteId: string): Promise<ProjectSite | undefined>;
-}
-
-export const fetchRelatedSiteAction = createAppAsyncThunk<ProjectSite, ProjectSite["id"]>(
-  "project/fetchRelatedSite",
-  async (siteId, { extra }) => {
-    const projectSite = await extra.getSiteByIdService.getById(siteId);
-
-    if (!projectSite) throw new Error("Site not found");
-
-    return projectSite;
-  },
-);
 
 const scheduleSchema = z.object({
   startDate: z.date().optional(),
@@ -73,7 +57,7 @@ export interface SaveReconversionProjectGateway {
   save(siteData: SaveProjectPayload): Promise<void>;
 }
 
-export const saveProjectAction = createAppAsyncThunk(
+export const saveReconversionProject = createAppAsyncThunk(
   "projectCreation/save",
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();

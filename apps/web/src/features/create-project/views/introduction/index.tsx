@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
-import { fetchRelatedSiteAction } from "../../application/createProject.actions";
 import { resetState } from "../../application/createProject.reducer";
+import { fetchRelatedSite } from "../../application/fetchRelatedSite.action";
 import CreateProjectIntroductionPage from "./CreateProjetIntroductionPage";
 
 import { routes } from "@/app/views/router";
@@ -17,7 +17,7 @@ function CreateProjectIntroductionContainer({ route }: Props) {
 
   useEffect(() => {
     dispatch(resetState());
-    void dispatch(fetchRelatedSiteAction(route.params.siteId));
+    void dispatch(fetchRelatedSite(route.params.siteId));
   }, [route.params.siteId, dispatch]);
 
   return (

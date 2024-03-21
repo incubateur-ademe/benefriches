@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Accordion from "@codegouvfr/react-dsfr/Accordion";
-import { Schedule } from "../../application/createProject.actions";
+import { Schedule } from "../../application/saveReconversionProject.action";
 import {
   DevelopmentPlanCategory,
   Expense,

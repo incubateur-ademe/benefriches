@@ -2,8 +2,8 @@
 import { ProjectSite } from "../domain/project.types";
 import { ExpectedPhotovoltaicPerformanceMock } from "../infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
 import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
-import { fetchRelatedSiteAction } from "./createProject.actions";
 import { completePhotovoltaicInstallationElectricalPower } from "./createProject.reducer";
+import { fetchRelatedSite } from "./fetchRelatedSite.action";
 import {
   fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation,
   PhotovoltaicPerformanceApiResult,
@@ -89,7 +89,7 @@ describe("Photovoltaic expected performance reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
+    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
     store.dispatch(completePhotovoltaicInstallationElectricalPower(3));
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
@@ -109,7 +109,7 @@ describe("Photovoltaic expected performance reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
+    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
     store.dispatch(completePhotovoltaicInstallationElectricalPower(3.0));
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
@@ -132,7 +132,7 @@ describe("Photovoltaic expected performance reducer", () => {
       }),
     );
 
-    await store.dispatch(fetchRelatedSiteAction(SITE_MOCKED_RESULT["id"]));
+    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
     store.dispatch(completePhotovoltaicInstallationElectricalPower(3.0));
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
