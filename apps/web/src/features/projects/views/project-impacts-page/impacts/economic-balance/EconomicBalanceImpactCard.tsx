@@ -114,7 +114,7 @@ function EconomicBalanceImpactCard({ revenues, costs }: Props) {
         {
           value: 0,
           width: 2,
-          color: "black",
+          color: "#929292",
         },
       ],
     },

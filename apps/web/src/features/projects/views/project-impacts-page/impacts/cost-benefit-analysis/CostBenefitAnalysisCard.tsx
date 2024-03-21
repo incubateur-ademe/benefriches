@@ -57,11 +57,6 @@ function CostBenefitAnalysisCard({
         return `<span style="font-size: 0.8em;">${this.series.name}</span><br>${this.point.name} : <strong>${formatNumberFr(this.y ?? 0)} €</strong>`;
       },
     },
-    plotOptions: {
-      column: {
-        stacking: "normal",
-      },
-    },
     series: [
       {
         name: "Analyse coûts bénéfices",
