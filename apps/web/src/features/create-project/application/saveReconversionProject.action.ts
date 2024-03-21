@@ -4,8 +4,8 @@ import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 import { SoilType } from "@/shared/domain/soils";
 
 const scheduleSchema = z.object({
-  startDate: z.date().optional(),
-  endDate: z.date().optional(),
+  startDate: z.date(),
+  endDate: z.date(),
 });
 
 export type Schedule = z.infer<typeof scheduleSchema>;

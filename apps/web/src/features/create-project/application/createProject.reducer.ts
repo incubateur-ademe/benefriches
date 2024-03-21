@@ -267,7 +267,7 @@ export const projectCreationSlice = createSlice({
     completeScheduleStep: (
       state,
       action: PayloadAction<{
-        firstYearOfOperation: number;
+        firstYearOfOperation?: number;
         photovoltaicInstallationSchedule?: ScheduleStrings;
         reinstatementSchedule?: ScheduleStrings;
       }>,

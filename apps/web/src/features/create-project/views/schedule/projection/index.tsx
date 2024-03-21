@@ -14,14 +14,25 @@ const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
     onBack: () => {
       dispatch(revertScheduleStep());
     },
-    onSubmit: ({
-      firstYearOfOperation,
-      photovoltaicInstallationSchedule,
-      reinstatementSchedule,
-    }: FormValues) => {
+    onSubmit: (formData: FormValues) => {
+      const reinstatementSchedule =
+        formData.reinstatementSchedule?.startDate && formData.reinstatementSchedule.endDate
+          ? {
+              startDate: formData.reinstatementSchedule.startDate,
+              endDate: formData.reinstatementSchedule.endDate,
+            }
+          : undefined;
+      const photovoltaicInstallationSchedule =
+        formData.photovoltaicInstallationSchedule.startDate &&
+        formData.photovoltaicInstallationSchedule.endDate
+          ? {
+              startDate: formData.photovoltaicInstallationSchedule.startDate,
+              endDate: formData.photovoltaicInstallationSchedule.endDate,
+            }
+          : undefined;
       dispatch(
         completeScheduleStep({
-          firstYearOfOperation,
+          firstYearOfOperation: formData.firstYearOfOperation,
           photovoltaicInstallationSchedule,
           reinstatementSchedule,
         }),

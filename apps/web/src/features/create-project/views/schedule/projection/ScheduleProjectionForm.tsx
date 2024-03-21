@@ -21,7 +21,7 @@ export type FormValues = {
     startDate: string;
     endDate: string;
   };
-  firstYearOfOperation: number;
+  firstYearOfOperation?: number;
 };
 
 function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit, onBack }: Props) {
