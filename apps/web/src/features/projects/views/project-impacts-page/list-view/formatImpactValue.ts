@@ -1,0 +1,54 @@
+import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { roundTo1Digit, roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
+
+const NO_BREAK_SPACE = "\u00A0";
+
+type ImpactFormatType = "monetary" | "co2" | "surface_area" | "default";
+
+type ImpactFormatConfig = Record<
+  ImpactFormatType,
+  {
+    unitSuffix: string;
+    roundFn: typeof roundTo1Digit | typeof roundTo2Digits;
+  }
+>;
+
+const impactFormatConfig: ImpactFormatConfig = {
+  monetary: {
+    roundFn: roundTo2Digits,
+    unitSuffix: `${NO_BREAK_SPACE}€`,
+  },
+  co2: {
+    roundFn: roundTo1Digit,
+    unitSuffix: `${NO_BREAK_SPACE}t`,
+  },
+  surface_area: {
+    roundFn: roundTo1Digit,
+    unitSuffix: `${NO_BREAK_SPACE}${SQUARE_METERS_HTML_SYMBOL}`,
+  },
+  default: {
+    roundFn: roundTo1Digit,
+    unitSuffix: "",
+  },
+} as const;
+
+const getSignPrefix = (value: number) => {
+  return value > 0 ? "+" : "";
+};
+
+const formatImpactValue =
+  (formatType: ImpactFormatType) =>
+  (impactValue: number, { withSignPrefix } = { withSignPrefix: true }) => {
+    const { roundFn, unitSuffix } = impactFormatConfig[formatType];
+
+    const roundedValue = roundFn(impactValue);
+    const prefix = withSignPrefix ? getSignPrefix(impactValue) : "";
+
+    return `${prefix}${formatNumberFr(roundedValue)}${unitSuffix}`;
+  };
+
+export const formatDefaultImpact = formatImpactValue("default");
+export const formatMonetaryImpact = formatImpactValue("monetary");
+export const formatSurfaceAreaImpact = formatImpactValue("surface_area");
+export const formatCO2Impact = formatImpactValue("co2");

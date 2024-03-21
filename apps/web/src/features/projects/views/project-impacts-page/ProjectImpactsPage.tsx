@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
+import ImpactsListView from "./list-view/ImpactsListView";
 import ImpactsChartsView from "./ImpactsChartsView";
-import ImpactsListView from "./ImpactsListView";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
 type Props = {
