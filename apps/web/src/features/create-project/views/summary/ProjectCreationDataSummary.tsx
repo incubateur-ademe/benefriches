@@ -195,13 +195,13 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             label={<strong>Aides financières aux travaux</strong>}
             value={`${formatNumberFr(projectData.finanalAssistanceAmount ?? 0)} €`}
           />
-          {projectData.reinstatementCost && (
+          {!!projectData.reinstatementCost && (
             <DataLine
               label={<strong>Coûts prévisionnels de remise en état de la friche</strong>}
               value={`${formatNumberFr(projectData.reinstatementCost)} €`}
             />
           )}
-          {projectData.photovoltaicPanelsInstallationCost && (
+          {!!projectData.photovoltaicPanelsInstallationCost && (
             <DataLine
               label={
                 <strong>Coûts prévisionnels d'installation des panneaux photovoltaïques</strong>
