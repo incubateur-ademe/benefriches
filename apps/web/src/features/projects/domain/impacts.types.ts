@@ -15,6 +15,11 @@ type TaxesIncomeImpact = BaseEconomicImpact & {
   impactCategory: "economic_indirect";
   actor: "community";
 };
+type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
+  impact: "property_transfer_duties_income";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
 
 export type ReconversionProjectImpacts = {
   permeableSurfaceArea: {
@@ -87,6 +92,11 @@ export type ReconversionProjectImpacts = {
     forecast: number;
   };
   socioeconomic: {
-    impacts: (RentalIncomeImpact | AvoidedFricheCostsImpact | TaxesIncomeImpact)[];
+    impacts: (
+      | RentalIncomeImpact
+      | AvoidedFricheCostsImpact
+      | TaxesIncomeImpact
+      | PropertyTransferDutiesIncomeImpact
+    )[];
   };
 };

@@ -38,7 +38,9 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
   const taxesIncomeImpacts = socioEconomicImpacts.filter(
     (impact) => impact.impact === "taxes_income",
   );
-  const hasTaxesIncomeImpacts = socioEconomicImpacts.length > 0;
+  const hasTaxesIncomeImpacts = taxesIncomeImpacts.length > 0;
+  const propertyTransferDutiesIncomeImpact =
+    socioEconomicImpacts.find((i) => i.impact === "property_transfer_duties_income") ?? null;
 
   return (
     <section className="fr-mb-5w">
@@ -70,6 +72,17 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
             {taxesIncomeImpacts.map((impact) => {
               return <SocioEconomicImpactRow key={impact.actor + impact.amount} impact={impact} />;
             })}
+          </ImpactItemGroup>
+        )}
+        {propertyTransferDutiesIncomeImpact && (
+          <ImpactItemGroup>
+            <ImpactLabel>🏛 Droits de mutation sur la vente du site</ImpactLabel>
+            <SocioEconomicImpactRow
+              key={
+                propertyTransferDutiesIncomeImpact.actor + propertyTransferDutiesIncomeImpact.amount
+              }
+              impact={propertyTransferDutiesIncomeImpact}
+            />
           </ImpactItemGroup>
         )}
       </section>

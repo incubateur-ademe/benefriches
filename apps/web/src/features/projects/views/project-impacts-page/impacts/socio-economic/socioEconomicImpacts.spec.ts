@@ -33,6 +33,12 @@ describe("SocioEconomicImpacts helpers", () => {
           impactCategory: "economic_indirect",
         },
         {
+          amount: 400,
+          actor: "community",
+          impact: "property_transfer_duties_income",
+          impactCategory: "economic_indirect",
+        },
+        {
           amount: 5000,
           actor: "Bénéfriches core team",
           impact: "avoided_friche_costs",
@@ -42,7 +48,7 @@ describe("SocioEconomicImpacts helpers", () => {
       expect(result).toEqual(
         new Map([
           ["economic_direct", 8000],
-          ["economic_indirect", 1000],
+          ["economic_indirect", 1400],
         ]),
       );
     });
@@ -80,12 +86,18 @@ describe("SocioEconomicImpacts helpers", () => {
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
         },
+        {
+          amount: 567,
+          actor: "community",
+          impact: "property_transfer_duties_income",
+          impactCategory: "economic_indirect",
+        },
       ]);
       expect(result).toEqual(
         new Map([
           ["Future owner", 4000],
           ["Current owner", 3000],
-          ["community", 1000],
+          ["community", 1567],
         ]),
       );
     });

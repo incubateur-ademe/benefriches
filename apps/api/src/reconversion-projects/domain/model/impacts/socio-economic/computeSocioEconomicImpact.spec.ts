@@ -258,4 +258,39 @@ describe("Socio-economic impacts", () => {
       });
     });
   });
+
+  describe("Property transfer duties income", () => {
+    it("returns no impact when no property transfer duties", () => {
+      const result = computeSocioEconomicImpacts({
+        evaluationPeriodInYears: 10,
+        currentOwner: "Current owner",
+        yearlyCurrentCosts: [],
+        yearlyProjectedCosts: [],
+      });
+      expect(result).toEqual<SocioEconomicImpactsResult>({
+        impacts: [],
+      });
+    });
+
+    it("returns property transfer duties income impact for community", () => {
+      const result = computeSocioEconomicImpacts({
+        evaluationPeriodInYears: 10,
+        currentOwner: "Current owner",
+        currentTenant: "Current tenant",
+        yearlyCurrentCosts: [],
+        yearlyProjectedCosts: [],
+        propertyTransferDutiesAmount: 5000,
+      });
+      expect(result).toEqual<SocioEconomicImpactsResult>({
+        impacts: [
+          {
+            actor: "community",
+            amount: 5000,
+            impact: "property_transfer_duties_income",
+            impactCategory: "economic_indirect",
+          },
+        ],
+      });
+    });
+  });
 });
