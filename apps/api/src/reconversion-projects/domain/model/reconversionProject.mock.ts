@@ -75,7 +75,8 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
       structureType: "company",
     },
     reinstatementCost: 90000,
-    realEstateTransactionCost: 150000,
+    realEstateTransactionSellingPrice: 150000,
+    realEstateTransactionPropertyTransferDuties: 12000,
     reinstatementFinancialAssistanceAmount: 14999.99,
     reinstatementSchedule: {
       startDate: new Date("2025-02-01"),

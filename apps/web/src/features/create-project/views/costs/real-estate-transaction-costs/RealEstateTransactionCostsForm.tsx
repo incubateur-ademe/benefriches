@@ -13,7 +13,7 @@ type Props = {
 
 export type FormValues = {
   sellingPrice?: number;
-  transferTax?: number;
+  propertyTransferDuties?: number;
 };
 
 const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
@@ -23,7 +23,7 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
 
   useEffect(() => {
     setValue(
-      "transferTax",
+      "propertyTransferDuties",
       sellingPrice && !isNaN(sellingPrice)
         ? computeTransferTaxFromSellingPrice(sellingPrice)
         : undefined,
@@ -75,7 +75,7 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
           control={control}
           label="Droit de mutation"
           hintText="€"
-          name="transferTax"
+          name="propertyTransferDuties"
           rules={{
             min: {
               value: 0,

@@ -130,7 +130,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_contract_owner_name: null,
           reinstatement_contract_owner_structure_type: null,
           reinstatement_cost: null,
-          real_estate_transaction_cost: null,
+          real_estate_transaction_selling_price: null,
+          real_estate_transaction_property_transfer_duties: null,
           reinstatement_full_time_jobs_involved: null,
           conversion_full_time_jobs_involved: null,
           reinstatement_financial_assistance_amount: null,
@@ -169,7 +170,10 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_contract_owner_structure_type:
             reconversionProject.reinstatementContractOwner?.structureType,
           reinstatement_cost: reconversionProject.reinstatementCost,
-          real_estate_transaction_cost: reconversionProject.realEstateTransactionCost,
+          real_estate_transaction_selling_price:
+            reconversionProject.realEstateTransactionSellingPrice,
+          real_estate_transaction_property_transfer_duties:
+            reconversionProject.realEstateTransactionPropertyTransferDuties,
           reinstatement_full_time_jobs_involved:
             reconversionProject.reinstatementFullTimeJobsInvolved,
           conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,

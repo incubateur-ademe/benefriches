@@ -27,7 +27,7 @@ type ProjectProps = {
   reinstatementFinancialAssistanceAmount?: number;
   reinstatementCost?: number;
   developmentPlanInstallationCost?: number;
-  realEstateTransactionCost?: number;
+  realEstateTransactionTotalCost?: number;
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
   reinstatementContractOwnerName?: string;
@@ -35,11 +35,11 @@ type ProjectProps = {
   yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"];
 };
 
-type EconomicResultInstallationProps = {
+type ReconversionProjectInstallationCostResult = {
   reinstatementFinancialAssistanceAmount: number;
   reinstatementCost: number;
   developmentPlanInstallationCost: number;
-  realEstateTransactionCost: number;
+  realEstateTransactionTotalCost: number;
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
   reinstatementContractOwnerName?: string;
@@ -49,11 +49,11 @@ export const getEconomicResultsOfProjectInstallation = ({
   reinstatementFinancialAssistanceAmount,
   reinstatementCost,
   developmentPlanInstallationCost,
-  realEstateTransactionCost,
+  realEstateTransactionTotalCost,
   futureOperatorName,
   futureSiteOwnerName,
   reinstatementContractOwnerName,
-}: EconomicResultInstallationProps) => {
+}: ReconversionProjectInstallationCostResult) => {
   const isOperatorOwnerOfReinstatement = futureOperatorName === reinstatementContractOwnerName;
   const isOperatorFutureSiteOwner = futureSiteOwnerName === futureOperatorName;
 
@@ -68,7 +68,10 @@ export const getEconomicResultsOfProjectInstallation = ({
     Object.entries({
       developmentPlanInstallation: -developmentPlanInstallationCost,
       siteReinstatement: isOperatorOwnerOfReinstatement ? -reinstatementCost : undefined,
-      realEstateTransaction: isOperatorFutureSiteOwner ? -realEstateTransactionCost : undefined,
+      realEstateTransaction:
+        isOperatorFutureSiteOwner && realEstateTransactionTotalCost
+          ? -realEstateTransactionTotalCost
+          : undefined,
     }).filter(([, amount]) => amount !== undefined),
   ) as {
     siteReinstatement?: number;
@@ -130,7 +133,7 @@ export const computeEconomicBalanceImpact = (
     reinstatementFinancialAssistanceAmount = 0,
     reinstatementCost = 0,
     developmentPlanInstallationCost = 0,
-    realEstateTransactionCost = 0,
+    realEstateTransactionTotalCost = 0,
     reinstatementContractOwnerName,
     futureSiteOwnerName,
     futureOperatorName,
@@ -147,7 +150,7 @@ export const computeEconomicBalanceImpact = (
     reinstatementFinancialAssistanceAmount,
     reinstatementCost,
     developmentPlanInstallationCost,
-    realEstateTransactionCost,
+    realEstateTransactionTotalCost,
     futureOperatorName,
     futureSiteOwnerName,
     reinstatementContractOwnerName,
