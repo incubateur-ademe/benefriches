@@ -17,7 +17,7 @@ function WizardFormLayout({ title, children, instructions = null }: Props) {
         </section>
         {instructions && (
           <section
-            className={fr.cx("fr-px-2w", "fr-ml-2w", "fr-pt-2w")}
+            className={fr.cx("fr-p-2w", "fr-ml-2w")}
             style={{ flex: "2", maxWidth: "33%", background: "var(--background-alt-grey)" }}
           >
             <div>{instructions}</div>
