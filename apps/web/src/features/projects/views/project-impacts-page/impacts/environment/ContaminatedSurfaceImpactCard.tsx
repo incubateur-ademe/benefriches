@@ -23,7 +23,6 @@ function ContaminatedSurfaceImpactCard({
     ...baseAreaChartConfig,
     xAxis: {
       categories: ["Pas de changement", reconversionProjectName],
-      crosshair: false,
     },
     yAxis: {
       visible: false,

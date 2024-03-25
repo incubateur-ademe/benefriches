@@ -46,7 +46,6 @@ function CarbonStorageComparisonChart({ currentCarbonStorage, projectedCarbonSto
     },
     xAxis: {
       categories: ["Pas de changement", "Centrale photovoltaïque"],
-      crosshair: false,
     },
     tooltip: {
       valueSuffix: " tonnes stockées",

@@ -7,7 +7,6 @@ function SocioEconomicImpactComparisonChart() {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [""],
-      crosshair: false,
     },
     tooltip: {
       valueSuffix: " €",

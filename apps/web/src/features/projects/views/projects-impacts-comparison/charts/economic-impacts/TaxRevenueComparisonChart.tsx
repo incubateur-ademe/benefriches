@@ -7,7 +7,6 @@ function TaxRevenueComparisonChart() {
     ...baseColumnChartConfig,
     xAxis: {
       categories: ["pour la collectivité"],
-      crosshair: false,
     },
     tooltip: {
       valueSuffix: " €",

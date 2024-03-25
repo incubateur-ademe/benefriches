@@ -9,7 +9,6 @@ function PermeableSoilsImpactComparisonChart() {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [""],
-      crosshair: false,
     },
     tooltip: {
       valueSuffix: ` ${SQUARE_METERS_HTML_SYMBOL}`,

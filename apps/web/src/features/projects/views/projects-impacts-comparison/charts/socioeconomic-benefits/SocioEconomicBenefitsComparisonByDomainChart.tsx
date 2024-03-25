@@ -21,7 +21,6 @@ function SocioEconomicBenefitsComparisonByDomainChart() {
         "Immobilier",
         "Service public",
       ],
-      crosshair: false,
     },
     tooltip: {
       valueSuffix: " €",

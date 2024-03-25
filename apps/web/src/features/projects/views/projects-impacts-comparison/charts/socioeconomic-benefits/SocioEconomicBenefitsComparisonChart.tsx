@@ -7,7 +7,6 @@ function SocioEconomicBenefitsComparisonChart() {
     ...baseColumnChartConfig,
     xAxis: {
       categories: ["Entreprises", "Collectivité", "Société"],
-      crosshair: false,
     },
     tooltip: {
       valueSuffix: " €",

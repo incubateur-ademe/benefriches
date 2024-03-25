@@ -7,7 +7,6 @@ function CarbonEmissionComparisonChart() {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [""],
-      crosshair: false,
     },
     tooltip: {
       valueSuffix: " tonnes évitées",

@@ -7,7 +7,6 @@ function FullTimeJobsComparisonChart() {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [""],
-      crosshair: false,
     },
     tooltip: {
       valueSuffix: " équivalents temps-plein",
