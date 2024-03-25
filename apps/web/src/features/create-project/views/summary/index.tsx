@@ -37,7 +37,10 @@ function ProjectionCreationDataSummaryContainer() {
         reinstatementFullTimeJobs: projectData.reinstatementFullTimeJobsInvolved,
         conversionFullTimeJobs: projectData.conversionFullTimeJobsInvolved,
         operationsFullTimeJobs: projectData.operationsFullTimeJobsInvolved,
-        realEstateTransactionCost: projectData.realEstateTransactionCost,
+        realEstateTransactionTotalCost: projectData.realEstateTransactionSellingPrice
+          ? projectData.realEstateTransactionSellingPrice +
+            (projectData.realEstateTransactionPropertyTransferDuties ?? 0)
+          : 0,
         finanalAssistanceAmount: projectData.reinstatementFinancialAssistanceAmount,
         reinstatementCost: projectData.reinstatementCost,
         photovoltaicPanelsInstallationCost: projectData.photovoltaicPanelsInstallationCost,

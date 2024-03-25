@@ -38,19 +38,24 @@ export type ReconversionProjectCreationData = {
   photovoltaicExpectedAnnualProduction: number;
   photovoltaicContractDuration: number;
   futureOperator: ProjectStakeholder;
-  hasRealEstateTransaction: boolean;
   futureSiteOwner: ProjectStakeholder;
   conversionFullTimeJobsInvolved?: number;
   reinstatementFullTimeJobsInvolved?: number;
   reinstatementContractOwner?: ProjectStakeholder;
   operationsFullTimeJobsInvolved?: number;
-  realEstateTransactionCost?: number;
+  soilsDistribution: Partial<Record<SoilType, number>>;
+  // real estate transaction
+  hasRealEstateTransaction: boolean;
+  realEstateTransactionSellingPrice?: number;
+  realEstateTransactionPropertyTransferDuties?: number;
+  // costs
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
   reinstatementFinancialAssistanceAmount: number;
   yearlyProjectedCosts: Expense[];
+  // revenues
   yearlyProjectedRevenues: Revenue[];
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  // schedules
   reinstatementSchedule?: Schedule;
   photovoltaicInstallationSchedule?: Schedule;
   firstYearOfOperation?: number;

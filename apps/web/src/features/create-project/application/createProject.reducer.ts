@@ -172,8 +172,15 @@ export const projectCreationSlice = createSlice({
       }
       state.stepsHistory.push("COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION");
     },
-    completeRealEstateTransactionCost: (state, action: PayloadAction<number>) => {
-      state.projectData.realEstateTransactionCost = action.payload;
+    completeRealEstateTransactionCost: (
+      state,
+      action: PayloadAction<{ sellingPrice: number; propertyTransferDuties?: number }>,
+    ) => {
+      state.projectData.realEstateTransactionSellingPrice = action.payload.sellingPrice;
+      if (action.payload.propertyTransferDuties) {
+        state.projectData.realEstateTransactionPropertyTransferDuties =
+          action.payload.propertyTransferDuties;
+      }
       state.stepsHistory.push("COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION");
     },
     completeReinstatementCost: (state, action: PayloadAction<number>) => {
@@ -359,7 +366,12 @@ export const revertHasRealEstateTransaction = () =>
 export const revertFutureSiteOwner = () => revertStep({ resetFields: ["futureSiteOwner"] });
 export const revertCostsIntroductionStep = () => revertStep();
 export const revertRealEstateTransactionCost = () =>
-  revertStep({ resetFields: ["realEstateTransactionCost"] });
+  revertStep({
+    resetFields: [
+      "realEstateTransactionSellingPrice",
+      "realEstateTransactionPropertyTransferDuties",
+    ],
+  });
 export const revertReinstatementCost = () => revertStep({ resetFields: ["reinstatementCost"] });
 export const revertPhotovoltaicPanelsInstallationCost = () =>
   revertStep({ resetFields: ["photovoltaicPanelsInstallationCost"] });

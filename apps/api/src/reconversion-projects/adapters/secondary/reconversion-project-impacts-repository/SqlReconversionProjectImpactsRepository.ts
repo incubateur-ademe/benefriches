@@ -29,7 +29,8 @@ export class SqlReconversionProjectImpactsRepository
         "future_operator_name",
         "future_site_owner_name",
         "reinstatement_contract_owner_name",
-        "real_estate_transaction_cost",
+        "real_estate_transaction_selling_price",
+        "real_estate_transaction_property_transfer_duties",
         "reinstatement_financial_assistance_amount",
         "reinstatement_cost",
       )
@@ -76,6 +77,11 @@ export class SqlReconversionProjectImpactsRepository
       ? (sqlDevelopmentPlan.features as DevelopmentPlan["features"]).expectedAnnualProduction
       : undefined;
 
+    const realEstateTransactionTotalCost = reconversionProject.real_estate_transaction_selling_price
+      ? reconversionProject.real_estate_transaction_selling_price +
+        (reconversionProject.real_estate_transaction_property_transfer_duties ?? 0)
+      : undefined;
+
     return {
       id: reconversionProject.id,
       name: reconversionProject.name,
@@ -96,7 +102,7 @@ export class SqlReconversionProjectImpactsRepository
       futureSiteOwnerName: reconversionProject.future_site_owner_name ?? undefined,
       reinstatementContractOwnerName:
         reconversionProject.reinstatement_contract_owner_name ?? undefined,
-      realEstateTransactionCost: reconversionProject.real_estate_transaction_cost ?? 0,
+      realEstateTransactionTotalCost,
       reinstatementCost: reconversionProject.reinstatement_cost ?? 0,
       developmentPlanInstallationCost: sqlDevelopmentPlan?.cost ?? 0,
       reinstatementFinancialAssistanceAmount:

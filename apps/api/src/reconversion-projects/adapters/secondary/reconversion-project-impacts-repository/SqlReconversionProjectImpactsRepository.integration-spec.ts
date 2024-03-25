@@ -48,6 +48,8 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         future_site_owner_name: "Mairie de Blajan",
         reinstatement_contract_owner_name: "Mairie de Blajan",
         reinstatement_cost: 15000,
+        real_estate_transaction_selling_price: 100000,
+        real_estate_transaction_property_transfer_duties: 8000,
       });
 
       await sqlConnection("reconversion_project_soils_distributions").insert([
@@ -101,7 +103,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         futureOperatorName: "Mairie de Blajan",
         futureSiteOwnerName: "Mairie de Blajan",
         reinstatementContractOwnerName: "Mairie de Blajan",
-        realEstateTransactionCost: 0,
+        realEstateTransactionTotalCost: 108000,
         reinstatementCost: 15000,
         developmentPlanInstallationCost: 0,
         reinstatementFinancialAssistanceAmount: 0,
@@ -171,7 +173,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         futureOperatorName: undefined,
         futureSiteOwnerName: undefined,
         operationsFullTimeJobs: undefined,
-        realEstateTransactionCost: 0,
+        realEstateTransactionTotalCost: undefined,
         reinstatementContractOwnerName: undefined,
         reinstatementCost: 0,
         reinstatementFinancialAssistanceAmount: 0,
