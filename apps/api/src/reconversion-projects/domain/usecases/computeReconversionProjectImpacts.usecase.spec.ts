@@ -94,6 +94,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         { amount: 1000, source: "other" },
       ],
       developmentPlanExpectedAnnualEnergyProductionMWh: 4679,
+      realEstateTransactionPropertyTransferDutiesAmount: 5432,
     } as const;
     const site: SiteImpactsDataView = {
       id: reconversionProjectImpactDataView.relatedSiteId,
@@ -159,6 +160,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 actor: "community",
                 amount: 5000,
                 impact: "taxes_income",
+                impactCategory: "economic_indirect",
+              },
+              {
+                actor: "community",
+                amount: 5432,
+                impact: "property_transfer_duties_income",
                 impactCategory: "economic_indirect",
               },
             ],

@@ -17,6 +17,7 @@ type SocioEconomicImpactsInput = {
   futureSiteOwner?: string;
   yearlyCurrentCosts: { purpose: string; amount: number }[];
   yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"];
+  propertyTransferDutiesAmount?: number;
 };
 
 type BaseEconomicImpact = { actor: string; amount: number };
@@ -33,7 +34,16 @@ type TaxesIncomeImpact = BaseEconomicImpact & {
   impactCategory: "economic_indirect";
   actor: "community";
 };
-type EconomicImpact = RentalIncomeImpact | AvoidedFricheCostsImpact | TaxesIncomeImpact;
+type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
+  impact: "property_transfer_duties_income";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
+type EconomicImpact =
+  | RentalIncomeImpact
+  | AvoidedFricheCostsImpact
+  | TaxesIncomeImpact
+  | PropertyTransferDutiesIncomeImpact;
 
 export type SocioEconomicImpactsResult = {
   impacts: EconomicImpact[];
@@ -101,6 +111,15 @@ export const computeSocioEconomicImpacts = (
       impact: "taxes_income",
       impactCategory: "economic_indirect",
       actor: "community",
+    });
+  }
+
+  if (input.propertyTransferDutiesAmount) {
+    impacts.push({
+      amount: input.propertyTransferDutiesAmount,
+      impact: "property_transfer_duties_income",
+      actor: "community",
+      impactCategory: "economic_indirect",
     });
   }
 

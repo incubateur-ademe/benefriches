@@ -103,6 +103,8 @@ export class SqlReconversionProjectImpactsRepository
       reinstatementContractOwnerName:
         reconversionProject.reinstatement_contract_owner_name ?? undefined,
       realEstateTransactionTotalCost,
+      realEstateTransactionPropertyTransferDutiesAmount:
+        reconversionProject.real_estate_transaction_property_transfer_duties ?? undefined,
       reinstatementCost: reconversionProject.reinstatement_cost ?? 0,
       developmentPlanInstallationCost: sqlDevelopmentPlan?.cost ?? 0,
       reinstatementFinancialAssistanceAmount:

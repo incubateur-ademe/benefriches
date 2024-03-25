@@ -67,6 +67,7 @@ export type ReconversionProjectImpactsDataView = {
   futureSiteOwnerName?: string;
   reinstatementContractOwnerName?: string;
   realEstateTransactionTotalCost?: number;
+  realEstateTransactionPropertyTransferDutiesAmount?: number;
   reinstatementCost?: number;
   developmentPlanInstallationCost?: number;
   reinstatementFinancialAssistanceAmount?: number;
@@ -160,6 +161,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           yearlyCurrentCosts: relatedSite.yearlyCosts,
           yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
           futureSiteOwner: reconversionProject.futureSiteOwnerName,
+          propertyTransferDutiesAmount:
+            reconversionProject.realEstateTransactionPropertyTransferDutiesAmount,
           evaluationPeriodInYears,
         }),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({

@@ -110,6 +110,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         yearlyProjectedCosts: [],
         yearlyProjectedRevenues: [],
         developmentPlanExpectedAnnualEnergyProductionMWh: 10,
+        realEstateTransactionPropertyTransferDutiesAmount: 8000,
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {
