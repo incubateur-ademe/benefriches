@@ -1,25 +1,20 @@
 // Values from database
-export enum RepositorySoilCategoryType {
-  // artificial
-  IMPERMEABLE_SOILS = "impermeable_soils",
-  ARTIFICIAL_GRASS_OR_BUSHES_FILLED = "artificial_grass_or_bushes_filled",
-  ARTIFICIAL_TREE_FILLED = "artificial_tree_filled",
-  // forest
-  FOREST_DECIDUOUS = "forest_deciduous",
-  FOREST_CONIFER = "forest_conifer",
-  FOREST_POPLAR = "forest_poplar",
-  FOREST_MIXED = "forest_mixed",
-  // prairie
-  PRAIRIE_GRASS = "prairie_grass",
-  PRAIRIE_BUSHES = "prairie_bushes",
-  PRAIRIE_TREES = "prairie_trees",
-  // other
-  ORCHARD = "orchard", // verger
-  CULTIVATION = "cultivation", // culture
-  VINEYARD = "vineyard", // vigne
-  WET_LAND = "wet_land", // zone humide
-  WATER = "water", // plan d'eau
-}
+export type RepositorySoilCategoryType =
+  | "impermeable_soils"
+  | "artificial_grass_or_bushes_filled"
+  | "artificial_tree_filled"
+  | "forest_deciduous"
+  | "forest_conifer"
+  | "forest_poplar"
+  | "forest_mixed"
+  | "prairie_grass"
+  | "prairie_bushes"
+  | "prairie_trees"
+  | "orchard"
+  | "cultivation"
+  | "vineyard"
+  | "wet_land"
+  | "water";
 
 export enum ReservoirType {
   SOIL = "soil",

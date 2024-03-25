@@ -5,7 +5,6 @@ import { Knex } from "knex";
 import { Server } from "net";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
-import { SoilCategoryType } from "src/carbon-storage/domain/models/soilCategory";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 describe("CarbonStorage controller", () => {
@@ -74,13 +73,13 @@ describe("CarbonStorage controller", () => {
         totalCarbonStorage: 73.91,
         soilsStorage: [
           {
-            type: SoilCategoryType.CULTIVATION,
+            type: "CULTIVATION",
             surfaceArea: 1500,
             carbonStorage: 8.25,
             carbonStorageInTonPerSquareMeters: 0.0055,
           },
           {
-            type: SoilCategoryType.FOREST_DECIDUOUS,
+            type: "FOREST_DECIDUOUS",
             carbonStorageInTonPerSquareMeters: 0.021887,
             surfaceArea: 3000,
             carbonStorage: 65.661,

@@ -1,7 +1,5 @@
 import { LocalCarbonStorageRepository } from "src/carbon-storage/adapters/secondary/carbonStorageRepository/LocalCarbonStorageRepository.mock";
 import { CarbonStorageRepository } from "../gateways/CarbonStorageRepository";
-import { SoilCategory, SoilCategoryType } from "../models/soilCategory";
-import { SurfaceArea } from "../models/surfaceArea";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "./getCityCarbonStoragePerSoilsCategory";
 
 describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
@@ -17,12 +15,12 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       cityCode: "01026",
       soils: [
         {
-          surfaceArea: SurfaceArea.create(11500),
-          type: SoilCategory.create(SoilCategoryType.CULTIVATION),
+          surfaceArea: 11500,
+          type: "CULTIVATION",
         },
         {
-          surfaceArea: SurfaceArea.create(40000),
-          type: SoilCategory.create(SoilCategoryType.PRAIRIE_BUSHES),
+          surfaceArea: 40000,
+          type: "PRAIRIE_BUSHES",
         },
       ],
     });
@@ -40,16 +38,16 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       cityCode: "01027",
       soils: [
         {
-          surfaceArea: SurfaceArea.create(1500),
-          type: SoilCategory.create(SoilCategoryType.ARTIFICIAL_TREE_FILLED),
+          surfaceArea: 1500,
+          type: "ARTIFICIAL_TREE_FILLED",
         },
         {
-          surfaceArea: SurfaceArea.create(40000),
-          type: SoilCategory.create(SoilCategoryType.PRAIRIE_BUSHES),
+          surfaceArea: 40000,
+          type: "PRAIRIE_BUSHES",
         },
         {
-          surfaceArea: SurfaceArea.create(12000),
-          type: SoilCategory.create(SoilCategoryType.FOREST_DECIDUOUS),
+          surfaceArea: 12000,
+          type: "FOREST_DECIDUOUS",
         },
       ],
     });
@@ -81,12 +79,12 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       cityCode: "01027",
       soils: [
         {
-          surfaceArea: SurfaceArea.create(15000),
-          type: SoilCategory.create(SoilCategoryType.CULTIVATION),
+          surfaceArea: 15000,
+          type: "CULTIVATION",
         },
         {
-          surfaceArea: SurfaceArea.create(30000),
-          type: SoilCategory.create(SoilCategoryType.FOREST_DECIDUOUS),
+          surfaceArea: 30000,
+          type: "FOREST_DECIDUOUS",
         },
       ],
     });
@@ -95,13 +93,13 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       totalCarbonStorage: 632.61,
       soilsCarbonStorage: [
         {
-          type: SoilCategoryType.CULTIVATION,
+          type: "CULTIVATION",
           surfaceArea: 15000,
           carbonStorage: 75,
           carbonStorageInTonPerSquareMeters: 0.005,
         },
         {
-          type: SoilCategoryType.FOREST_DECIDUOUS,
+          type: "FOREST_DECIDUOUS",
           surfaceArea: 30000,
           carbonStorage: 557.61,
           carbonStorageInTonPerSquareMeters: 0.018587,
@@ -116,16 +114,16 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       cityCode: "01027",
       soils: [
         {
-          surfaceArea: SurfaceArea.create(15000),
-          type: SoilCategory.create(SoilCategoryType.IMPERMEABLE_SOILS),
+          surfaceArea: 15000,
+          type: "IMPERMEABLE_SOILS",
         },
         {
-          surfaceArea: SurfaceArea.create(30000),
-          type: SoilCategory.create(SoilCategoryType.BUILDINGS),
+          surfaceArea: 30000,
+          type: "BUILDINGS",
         },
         {
-          surfaceArea: SurfaceArea.create(20000),
-          type: SoilCategory.create(SoilCategoryType.MINERAL_SOIL),
+          surfaceArea: 20000,
+          type: "MINERAL_SOIL",
         },
       ],
     });
@@ -136,19 +134,19 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       totalCarbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * (1.5 + 3 + 2),
       soilsCarbonStorage: [
         {
-          type: SoilCategoryType.IMPERMEABLE_SOILS,
+          type: "IMPERMEABLE_SOILS",
           surfaceArea: 15000,
           carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 1.5,
           carbonStorageInTonPerSquareMeters: 0.003,
         },
         {
-          type: SoilCategoryType.BUILDINGS,
+          type: "BUILDINGS",
           surfaceArea: 30000,
           carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 3,
           carbonStorageInTonPerSquareMeters: 0.003,
         },
         {
-          type: SoilCategoryType.MINERAL_SOIL,
+          type: "MINERAL_SOIL",
           surfaceArea: 20000,
           carbonStorage: CARBON_STORAGE_BY_HECTARE_FOR_IMPERMEABLE_SOILS * 2,
           carbonStorageInTonPerSquareMeters: 0.003,
@@ -163,8 +161,8 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       cityCode: "01027",
       soils: [
         {
-          surfaceArea: SurfaceArea.create(15000),
-          type: SoilCategory.create(SoilCategoryType.WATER),
+          surfaceArea: 15000,
+          type: "WATER",
         },
       ],
     });
@@ -173,7 +171,7 @@ describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
       totalCarbonStorage: 0,
       soilsCarbonStorage: [
         {
-          type: SoilCategoryType.WATER,
+          type: "WATER",
           surfaceArea: 15000,
           carbonStorage: 0,
           carbonStorageInTonPerSquareMeters: 0,

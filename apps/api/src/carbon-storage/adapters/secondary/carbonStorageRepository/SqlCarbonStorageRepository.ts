@@ -12,11 +12,13 @@ import { City, CityProps } from "src/carbon-storage/domain/models/city";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 const FOREST_CATEGORIES = [
-  RepositorySoilCategoryType.FOREST_CONIFER,
-  RepositorySoilCategoryType.FOREST_DECIDUOUS,
-  RepositorySoilCategoryType.FOREST_MIXED,
-  RepositorySoilCategoryType.FOREST_POPLAR,
-];
+  "forest_conifer",
+  "forest_deciduous",
+  "forest_mixed",
+  "forest_poplar",
+] as const;
+
+type ForestCategory = (typeof FOREST_CATEGORIES)[number];
 
 const filterCarbonStorageByLocalisationPriority = (carbonStorage: CarbonStorage[]) => {
   const localisationPriorityOrder = [
@@ -52,7 +54,7 @@ const getForestLitterCarbonStorage = (soilCategories: RepositorySoilCategoryType
   const forestCategories =
     soilCategories.length === 0
       ? FOREST_CATEGORIES
-      : soilCategories.filter((category) => FOREST_CATEGORIES.includes(category));
+      : soilCategories.filter((category) => FOREST_CATEGORIES.includes(category as ForestCategory));
   return forestCategories.map(
     (category) =>
       ({
@@ -89,7 +91,9 @@ export class SqlCarbonStorageRepository implements CarbonStorageRepository {
     const city = City.create(sqlCity);
 
     const hasSoilsCategory = soilCategories.length > 0;
-    const hasForest = soilCategories.some((category) => FOREST_CATEGORIES.includes(category));
+    const hasForest = soilCategories.some((category) =>
+      FOREST_CATEGORIES.includes(category as ForestCategory),
+    );
 
     const query = this.sqlConnection<CarbonStorageProps>("carbon_storage").select();
 
