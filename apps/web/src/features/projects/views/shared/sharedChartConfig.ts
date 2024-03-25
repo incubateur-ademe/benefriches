@@ -1,7 +1,7 @@
 export const baseColumnChartConfig: Highcharts.Options = {
   chart: {
     type: "column",
-    height: "240px",
+    height: "275px",
     style: {
       fontFamily: "Marianne",
     },

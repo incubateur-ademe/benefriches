@@ -20,6 +20,8 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
         "friche_accidents_minor_injuries",
         "friche_accidents_severe_injuries",
         "friche_accidents_deaths",
+        "owner_name",
+        "tenant_name",
       )
       .where("id", siteId)
       .first();
@@ -28,6 +30,10 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
 
     const sqlSoilDistributions = await this.sqlConnection("site_soils_distributions")
       .select("soil_type", "surface_area")
+      .where("site_id", siteId);
+
+    const sqlYearlyExpenses = await this.sqlConnection("site_expenses")
+      .select("amount", "purpose", "bearer")
       .where("site_id", siteId);
 
     return {
@@ -49,6 +55,9 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
       accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
       accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
       accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
+      ownerName: sqlSite.owner_name ?? "",
+      tenantName: sqlSite.tenant_name ?? undefined,
+      yearlyCosts: sqlYearlyExpenses,
     };
   }
 }

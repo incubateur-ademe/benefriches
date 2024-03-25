@@ -105,11 +105,19 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         IMPERMEABLE_SOILS: 10000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
       },
+      ownerName: "Current owner",
+      tenantName: "Current tenant",
       fullTimeJobs: 1,
       hasAccidents: true,
       accidentsDeaths: 0,
       accidentsMinorInjuries: 1,
       accidentsSevereInjuries: 2,
+      yearlyCosts: [
+        { amount: 54000, bearer: "tenant", purpose: "rent" },
+        { amount: 11600, bearer: "tenant", purpose: "security" },
+        { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
+        { amount: 500, bearer: "owner", purpose: "taxes" },
+      ],
     } as const;
 
     it("returns impacts over 10 years for a reconversion project dedicated to renewable energy production on friche with contaminated soil", async () => {
@@ -133,6 +141,28 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         relatedSiteId: site.id,
         relatedSiteName: site.name,
         impacts: {
+          socioeconomic: {
+            impacts: [
+              {
+                actor: "Current owner",
+                amount: -540000,
+                impact: "rental_income",
+                impactCategory: "economic_direct",
+              },
+              {
+                actor: "Current tenant",
+                amount: 131000,
+                impact: "avoided_friche_costs",
+                impactCategory: "economic_direct",
+              },
+              {
+                actor: "community",
+                amount: 5000,
+                impact: "taxes_income",
+                impactCategory: "economic_indirect",
+              },
+            ],
+          },
           economicBalance: {
             total: -500000,
             bearer: "Mairie de Blajan",

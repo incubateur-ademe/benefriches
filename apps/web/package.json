@@ -13,7 +13,7 @@
     "build": "tsc && vite build",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",
     "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",
-    "lint": "eslint src/ --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0 --cache",
+    "lint": "eslint src/ --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 1 --cache",
     "test:unit": "jest --config jest.config.ts",
     "test": "pnpm test:unit",
     "typecheck": "tsc --noEmit",

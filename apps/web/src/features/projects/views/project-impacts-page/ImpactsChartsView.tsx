@@ -9,6 +9,7 @@ import PermeableSurfaceImpactChart from "./impacts/environment/PermeableSurfaceI
 import StoredAndAvoidedCO2ImpactCard from "./impacts/environment/StoredAndAvoidedCO2ImpactCard";
 import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
 import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
+import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";
 import ImpactChartCard from "./ImpactChartCard";
 
 type Props = {
@@ -40,7 +41,7 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
               revenues={impacts.economicBalance.revenues}
             />
             <div className="fr-mt-3w">
-              <ImpactChartCard title="Impacts socio-économiques" />
+              <SocioEconomicImpactsCard socioEconomicImpacts={impacts.socioeconomic.impacts} />
             </div>
           </div>
         </Row>
