@@ -29,8 +29,10 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
         <>
           <span className="fr-text--lg">💡</span>
 
-          <p>Les recettes de l’opération peuvent avoir différentes origines&nbsp;:</p>
-          <ul>
+          <p className="fr-text--xs">
+            Les recettes de l’opération peuvent avoir différentes origines&nbsp;:
+          </p>
+          <ul className="fr-text--xs">
             <li>
               Le produit attendu de la vente de droits à construire aux promoteurs ou de la vente
               directe de terrains aménagés aux particuliers ou aux entreprises utilisatrices

@@ -63,17 +63,19 @@ function PhotovoltaicSurfaceFromPowerForm({
           </p>
 
           <span className="fr-text--lg">💡</span>
-          <p>
+          <p className="fr-text--xs">
             Une centrale au sol peut facilement être implantée sur des espaces imperméabilisés (non
             bâtis) ou minéralisés, mais également sur des espaces enherbés ou avec de la végétation
             basse (broussailles, garrigue, etc.) qu’ils soient artificialisés ou naturels.
           </p>
-          <p>
+          <p className="fr-text--xs">
             Dès lors que de la végétation haute est présente (sols artificiels ou prairies arborés,
             forêts), l’implantation nécessite des investissements (coupes) et est à éviter (pour des
             raisons de biodiversité et de puits de carbone).
           </p>
-          <p>Le devenir des sols sera abordés ultérieurement dans Bénéfriches.</p>
+          <p className="fr-text--xs">
+            Le devenir des sols sera abordés ultérieurement dans Bénéfriches.
+          </p>
         </>
       }
     >
