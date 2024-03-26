@@ -650,7 +650,7 @@ describe("Create site reducer", () => {
             completeFricheRecentAccidents({
               hasRecentAccidents: true,
               accidentsDeaths: 1,
-              accidentSevereInjuries: 2,
+              accidentsSevereInjuries: 2,
               accidentsMinorInjuries: 3,
             }),
           );
@@ -662,7 +662,7 @@ describe("Create site reducer", () => {
               ...initialState.siteData,
               hasRecentAccidents: true,
               accidentsDeaths: 1,
-              accidentSevereInjuries: 2,
+              accidentsSevereInjuries: 2,
               accidentsMinorInjuries: 3,
             },
             stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES"],
@@ -690,7 +690,7 @@ describe("Create site reducer", () => {
               isFriche: true,
               hasRecentAccidents: true,
               accidentsDeaths: 1,
-              accidentSevereInjuries: 2,
+              accidentsSevereInjuries: 2,
               accidentsMinorInjuries: 0,
             },
           });
@@ -705,7 +705,7 @@ describe("Create site reducer", () => {
               ...initialState.siteData,
               hasRecentAccidents: undefined,
               accidentsDeaths: undefined,
-              accidentSevereInjuries: undefined,
+              accidentsSevereInjuries: undefined,
               accidentsMinorInjuries: undefined,
             },
             stepsHistory: initialState.stepsHistory.slice(0, -1),

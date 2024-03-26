@@ -26,7 +26,7 @@ export const revertFricheRecentAccidentsStep = () =>
     resetFields: [
       "hasRecentAccidents",
       "accidentsMinorInjuries",
-      "accidentSevereInjuries",
+      "accidentsSevereInjuries",
       "accidentsDeaths",
     ],
   });
@@ -72,7 +72,7 @@ const createSiteSchema = z.object({
     .optional(),
   hasRecentAccidents: z.boolean().optional(),
   accidentsMinorInjuries: z.number().nonnegative().optional(),
-  accidentSevereInjuries: z.number().nonnegative().optional(),
+  accidentsSevereInjuries: z.number().nonnegative().optional(),
   accidentsDeaths: z.number().nonnegative().optional(),
   yearlyExpenses: z
     .object({

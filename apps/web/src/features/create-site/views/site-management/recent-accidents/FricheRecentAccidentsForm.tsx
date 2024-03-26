@@ -16,7 +16,7 @@ type HasRecentAccidentsStringOption = "yes" | "no";
 export type FormValues = {
   hasRecentAccidents: HasRecentAccidentsStringOption;
   accidentsMinorInjuries?: number;
-  accidentSevereInjuries?: number;
+  accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
 };
 
@@ -56,7 +56,7 @@ function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
                 }}
               />
               <NumericInput
-                name="accidentSevereInjuries"
+                name="accidentsSevereInjuries"
                 label="Nombre de blessés graves"
                 control={control}
                 rules={{

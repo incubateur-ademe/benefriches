@@ -25,7 +25,7 @@ function SiteDataSummaryContainer() {
         accidents: siteData.hasRecentAccidents
           ? {
               accidentsDeaths: siteData.accidentsDeaths,
-              severyInjuries: siteData.accidentSevereInjuries,
+              severyInjuries: siteData.accidentsSevereInjuries,
               minorInjuries: siteData.accidentsMinorInjuries,
             }
           : null,

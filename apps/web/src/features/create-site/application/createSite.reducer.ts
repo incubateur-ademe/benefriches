@@ -171,7 +171,7 @@ export const siteCreationSlice = createSlice({
         | {
             hasRecentAccidents: true;
             accidentsMinorInjuries?: number;
-            accidentSevereInjuries?: number;
+            accidentsSevereInjuries?: number;
             accidentsDeaths?: number;
           }
       >,
@@ -181,7 +181,7 @@ export const siteCreationSlice = createSlice({
 
       if (hasRecentAccidents) {
         state.siteData.accidentsMinorInjuries = action.payload.accidentsMinorInjuries ?? 0;
-        state.siteData.accidentSevereInjuries = action.payload.accidentSevereInjuries ?? 0;
+        state.siteData.accidentsSevereInjuries = action.payload.accidentsSevereInjuries ?? 0;
         state.siteData.accidentsDeaths = action.payload.accidentsDeaths ?? 0;
       }
 

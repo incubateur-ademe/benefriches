@@ -43,7 +43,7 @@ export type SiteDraft = {
   tenant?: { structureType: TenantStructureType; name: string };
   hasRecentAccidents?: boolean;
   accidentsMinorInjuries?: number;
-  accidentSevereInjuries?: number;
+  accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
   yearlyExpenses: Expense[];
   yearlyIncomes: Income[];
