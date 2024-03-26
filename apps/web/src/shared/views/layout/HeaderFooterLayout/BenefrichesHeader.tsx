@@ -1,5 +1,6 @@
-import { Badge } from "@codegouvfr/react-dsfr/Badge";
 import { Header } from "@codegouvfr/react-dsfr/Header";
+
+import { routes } from "@/app/views/router";
 
 function BenefrichesHeader() {
   return (
@@ -20,19 +21,13 @@ function BenefrichesHeader() {
         imgUrl: "benefriches.png",
         orientation: "horizontal",
       }}
-      // navigation={[
-      //   {
-      //     linkProps: routes.myProjects().link,
-      //     text: "Mes projets",
-      //     isActive: true,
-      //   },
-      // ]}
-      serviceTitle="Bénéfriches"
-      serviceTagline={
-        <Badge small noIcon severity="new" as="span">
-          En construction
-        </Badge>
-      }
+      quickAccessItems={[
+        {
+          iconId: "fr-icon-account-line",
+          linkProps: routes.myProjects().link,
+          text: "Mes projets",
+        },
+      ]}
     />
   );
 }
