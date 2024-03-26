@@ -8,6 +8,7 @@ import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructur
 import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
 import { LocalStorageUserService } from "@/features/users/infra/get-user-service/LocalStorageUserService";
+import { HttpCreateIdentityApi } from "@/features/users/infra/identity-service/HttpIdentityService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
 
@@ -22,4 +23,5 @@ export const appDependencies: AppDependencies = {
   photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceApi(),
   userService: new LocalStorageUserService(),
   municipalityDataService: new AdministrativeDivisionGeoApi(),
+  identityService: new HttpCreateIdentityApi(),
 };

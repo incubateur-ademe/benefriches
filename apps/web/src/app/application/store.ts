@@ -21,6 +21,7 @@ import projectImpacts from "@/features/projects/application/projectImpacts.reduc
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
 import projectImpactsComparison from "@/features/projects/application/projectImpactsComparison.reducer";
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
+import { IdentityGateway } from "@/features/users/application/createIdentity.action";
 import { UserGateway } from "@/features/users/application/initCurrentUser.action";
 import currentUser from "@/features/users/application/user.reducer";
 
@@ -35,6 +36,7 @@ export type AppDependencies = {
   userService: UserGateway;
   municipalityDataService: CreateSiteMunicipalityDataGateway | CreateProjectMunicipalityDataGateway;
   reconversionProjectImpacts: ReconversionProjectImpactsGateway;
+  identityService: IdentityGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

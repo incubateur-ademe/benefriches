@@ -19,6 +19,7 @@ export const initCurrentUserAction = createAppAsyncThunk(
       id: uuid(),
       firstName: "Utilisateur/rice",
       lastName: "Anonyme",
+      identitySaved: false,
     };
     await extra.userService.saveCurrentUser(anonymousUser);
 
