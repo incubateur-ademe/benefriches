@@ -6,11 +6,11 @@ import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanc
 import ContaminatedSurfaceImpactChart from "./impacts/environment/ContaminatedSurfaceImpactCard";
 import HouseholdsPoweredByRenewableEnergyImpactCard from "./impacts/environment/HouseholdsPoweredByRenewableEnergyImpactCard";
 import PermeableSurfaceImpactChart from "./impacts/environment/PermeableSurfaceImpactCard";
+import SoilsCarbonStorageImpactCard from "./impacts/environment/SoilsCarbonStorageImpactCard";
 import StoredAndAvoidedCO2ImpactCard from "./impacts/environment/StoredAndAvoidedCO2ImpactCard";
 import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
 import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
 import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";
-import ImpactChartCard from "./ImpactChartCard";
 
 type Props = {
   project: {
@@ -49,14 +49,13 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
       <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts environnementaux</h3>
         <Row>
-          <div className={fr.cx("fr-col-3")}>
-            <ImpactChartCard title="🍂 Carbone stocké dans les sols" />
-          </div>
+          <SoilsCarbonStorageImpactCard soilsCarbonStorageImpact={impacts.soilsCarbonStorage} />
           {impacts.avoidedCO2TonsWithEnergyProduction && (
             <div className={fr.cx("fr-col-3")}>
               <StoredAndAvoidedCO2ImpactCard
                 reconversionProjectName={project.name}
                 avoidedCO2TonsWithEnergyProduction={impacts.avoidedCO2TonsWithEnergyProduction}
+                soilsCarbonStorage={impacts.soilsCarbonStorage}
               />
             </div>
           )}

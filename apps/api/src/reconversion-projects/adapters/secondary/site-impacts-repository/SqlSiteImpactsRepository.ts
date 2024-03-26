@@ -36,9 +36,15 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
       .select("amount", "purpose", "bearer")
       .where("site_id", siteId);
 
+    const sqlAddress = await this.sqlConnection("addresses")
+      .select("city_code")
+      .where("site_id", siteId)
+      .first();
+
     return {
       id: sqlSite.id,
       name: sqlSite.name,
+      addressCityCode: sqlAddress?.city_code ?? "",
       contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
       fullTimeJobs: sqlSite.full_time_jobs_involved ?? undefined,
       soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {

@@ -1,3 +1,5 @@
+import { SoilType } from "@/shared/domain/soils";
+
 type PurposeCost = "rent" | "maintenance" | "taxes" | "other";
 type SourceRevenue = "operations" | "other";
 
@@ -90,6 +92,24 @@ export type ReconversionProjectImpacts = {
   avoidedCO2TonsWithEnergyProduction?: {
     current: 0;
     forecast: number;
+  };
+  soilsCarbonStorage: {
+    current: {
+      total: number;
+      soils: {
+        type: SoilType;
+        surfaceArea: number;
+        carbonStorage: number;
+      }[];
+    };
+    forecast: {
+      total: number;
+      soils: {
+        type: SoilType;
+        surfaceArea: number;
+        carbonStorage: number;
+      }[];
+    };
   };
   socioeconomic: {
     impacts: (

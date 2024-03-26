@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 import { InMemoryReconversionProjectImpactsRepository } from "src/reconversion-projects/adapters/secondary/reconversion-project-impacts-repository/InMemoryReconversionProjectImpactsRepository";
 import { InMemorySiteImpactsRepository } from "src/reconversion-projects/adapters/secondary/site-impacts-repository/InMemorySiteImpactsRepository";
+import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
   ComputeReconversionProjectImpactsUseCase,
   ReconversionProjectImpactsDataView,
@@ -16,6 +17,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const usecase = new ComputeReconversionProjectImpactsUseCase(
         projectRepository,
         siteRepository,
+        new FakeGetSoilsCarbonStorageService(),
       );
 
       const reconversionProjectId = uuid();
@@ -45,6 +47,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const usecase = new ComputeReconversionProjectImpactsUseCase(
         projectRepository,
         siteRepository,
+        new FakeGetSoilsCarbonStorageService(),
       );
 
       const evaluationPeriodInYears = 10;
@@ -106,6 +109,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         IMPERMEABLE_SOILS: 10000,
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
       },
+      addressCityCode: "23456",
       ownerName: "Current owner",
       tenantName: "Current tenant",
       fullTimeJobs: 1,
@@ -131,6 +135,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const usecase = new ComputeReconversionProjectImpactsUseCase(
         projectRepository,
         siteRepository,
+        new FakeGetSoilsCarbonStorageService(),
       );
       const result = await usecase.execute({
         reconversionProjectId: reconversionProjectImpactDataView.id,
@@ -250,6 +255,48 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           avoidedCO2TonsWithEnergyProduction: {
             current: 0,
             forecast: 112.29599999999999,
+          },
+          soilsCarbonStorage: {
+            current: {
+              total: 20,
+              soils: [
+                {
+                  type: "IMPERMEABLE_SOILS",
+                  carbonStorage: 2,
+                  surfaceArea: 1000,
+                },
+                {
+                  type: "BUILDINGS",
+                  carbonStorage: 2,
+                  surfaceArea: 1000,
+                },
+                {
+                  type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                  carbonStorage: 16,
+                  surfaceArea: 1000,
+                },
+              ],
+            },
+            forecast: {
+              total: 20,
+              soils: [
+                {
+                  type: "IMPERMEABLE_SOILS",
+                  carbonStorage: 2,
+                  surfaceArea: 1000,
+                },
+                {
+                  type: "BUILDINGS",
+                  carbonStorage: 2,
+                  surfaceArea: 1000,
+                },
+                {
+                  type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                  carbonStorage: 16,
+                  surfaceArea: 1000,
+                },
+              ],
+            },
           },
         },
       });

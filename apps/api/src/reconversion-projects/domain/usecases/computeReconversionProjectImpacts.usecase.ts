@@ -32,11 +32,17 @@ import {
   computeSocioEconomicImpacts,
   SocioEconomicImpactsResult,
 } from "../model/impacts/socio-economic/computeSocioEconomicImpacts";
+import {
+  computeSoilsCarbonStorageImpact,
+  GetSoilsCarbonStoragePerSoilsService,
+  SoilsCarbonStorageImpactResult,
+} from "../model/impacts/soils-carbon-storage/soilsCarbonStorageImpact";
 import { getDurationFromScheduleInYears, Schedule } from "../model/reconversionProject";
 
 export type SiteImpactsDataView = {
   id: string;
   name: string;
+  addressCityCode: string;
   contaminatedSoilSurface?: number;
   ownerName: string;
   tenantName?: string;
@@ -98,6 +104,7 @@ export type Result = {
     economicBalance: EconomicBalanceImpactResult;
     householdsPoweredByRenewableEnergy: HouseholdsPoweredByRenewableEnergyImpact | undefined;
     avoidedCO2TonsWithEnergyProduction: AvoidedCO2WithEnergyProductionImpact | undefined;
+    soilsCarbonStorage: SoilsCarbonStorageImpactResult;
     socioeconomic: SocioEconomicImpactsResult;
   };
 };
@@ -122,6 +129,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
   constructor(
     private readonly reconversionProjectRepository: ReconversionProjectImpactsRepository,
     private readonly siteRepository: SiteImpactsRepository,
+    private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
   ) {}
 
   async execute({ reconversionProjectId, evaluationPeriodInYears }: Request): Promise<Result> {
@@ -211,6 +219,12 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
                   reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
               })
             : undefined,
+        soilsCarbonStorage: await computeSoilsCarbonStorageImpact({
+          currentSoilsDistribution: relatedSite.soilsDistribution,
+          forecastSoilsDistribution: reconversionProject.soilsDistribution,
+          siteCityCode: relatedSite.addressCityCode,
+          getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
+        }),
       },
     };
   }

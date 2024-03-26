@@ -98,19 +98,28 @@ const ImpactsListView = ({ impacts }: Props) => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <ImpactLabel>☁️ CO2-eq stocké ou évité</ImpactLabel>
             <ImpactValue isTotal>
-              {formatCO2Impact(impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0, {
-                withSignPrefix: false,
-              })}
+              {formatCO2Impact(
+                impacts.soilsCarbonStorage.forecast.total -
+                  impacts.soilsCarbonStorage.current.total +
+                  (impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0),
+              )}
             </ImpactValue>
           </div>
+          <ImpactDetailRow>
+            <ImpactDetailLabel>🍂 Carbone stocké dans les sols</ImpactDetailLabel>
+            <ImpactValue>
+              {formatCO2Impact(
+                impacts.soilsCarbonStorage.forecast.total -
+                  impacts.soilsCarbonStorage.current.total,
+              )}
+            </ImpactValue>
+          </ImpactDetailRow>
           <ImpactDetailRow>
             <ImpactDetailLabel>
               ⚡️ Émissions de CO2-eq évitées grâce à la production d'EnR
             </ImpactDetailLabel>
             <ImpactValue>
-              {formatCO2Impact(impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0, {
-                withSignPrefix: false,
-              })}
+              {formatCO2Impact(impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0)}
             </ImpactValue>
           </ImpactDetailRow>
         </ImpactItemGroup>
