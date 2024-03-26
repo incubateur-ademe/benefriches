@@ -47,11 +47,10 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
           [soil_type as SoilType]: surface_area,
         };
       }, {}),
-      hasAccidents: Boolean(
-        sqlSite.friche_accidents_deaths ??
-          sqlSite.friche_accidents_minor_injuries ??
-          sqlSite.friche_accidents_severe_injuries,
-      ),
+      hasAccidents:
+        Boolean(sqlSite.friche_accidents_deaths) ||
+        Boolean(sqlSite.friche_accidents_minor_injuries) ||
+        Boolean(sqlSite.friche_accidents_severe_injuries),
       accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
       accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
       accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
