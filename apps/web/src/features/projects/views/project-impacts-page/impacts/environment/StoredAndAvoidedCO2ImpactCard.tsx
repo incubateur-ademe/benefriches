@@ -24,9 +24,6 @@ function StoredAndAvoidedCO2ImpactCard({
       categories: ["Pas de changement", reconversionProjectName],
       crosshair: false,
     },
-    yAxis: {
-      visible: false,
-    },
     tooltip: {
       valueSuffix: `&nbsp; t`,
     },

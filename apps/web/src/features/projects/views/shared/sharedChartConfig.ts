@@ -19,7 +19,9 @@ export const baseColumnChartConfig: Highcharts.Options = {
 export const baseAreaChartConfig: Highcharts.Options = {
   chart: {
     type: "area",
-    height: "240px",
+    height: "100%",
+    marginLeft: 0,
+    marginRight: 0,
     style: {
       fontFamily: "Marianne",
     },
@@ -29,7 +31,8 @@ export const baseAreaChartConfig: Highcharts.Options = {
     text: "",
   },
   yAxis: {
-    title: { text: "" },
+    visible: false,
+    tickLength: 0,
   },
   credits: { enabled: false },
 } as const;

@@ -65,9 +65,6 @@ function AccidentsImpactCard({ reconversionProjectName, accidentsImpact }: Props
     xAxis: {
       categories: ["Pas de changement", reconversionProjectName],
     },
-    yAxis: {
-      visible: false,
-    },
     tooltip: {
       valueSuffix: ` ETP`,
     },

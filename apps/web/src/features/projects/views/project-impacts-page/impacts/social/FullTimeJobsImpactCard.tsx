@@ -28,9 +28,6 @@ function FullTimeJobsImpactCard({ reconversionProjectName, fullTimeJobsImpact }:
     xAxis: {
       categories: ["Pas de changement", reconversionProjectName],
     },
-    yAxis: {
-      visible: false,
-    },
     tooltip: {
       valueSuffix: ` ETP`,
     },

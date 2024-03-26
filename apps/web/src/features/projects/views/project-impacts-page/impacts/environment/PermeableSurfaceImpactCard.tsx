@@ -29,9 +29,6 @@ function PermeableSurfaceImpactCard({ reconversionProjectName, permeableSurfaceI
     xAxis: {
       categories: ["Pas de changement", reconversionProjectName],
     },
-    yAxis: {
-      visible: false,
-    },
     tooltip: {
       valueSuffix: `&nbsp;${SQUARE_METERS_HTML_SYMBOL}`,
     },

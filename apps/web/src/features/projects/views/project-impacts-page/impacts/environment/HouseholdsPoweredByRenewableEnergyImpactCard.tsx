@@ -23,9 +23,6 @@ function HouseholdsPoweredByRenewableEnergyImpactCard({
     xAxis: {
       categories: ["Pas de changement", reconversionProjectName],
     },
-    yAxis: {
-      visible: false,
-    },
     plotOptions: {
       area: {
         borderWidth: 0,
