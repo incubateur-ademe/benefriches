@@ -84,12 +84,13 @@ const ImpactsListView = ({ impacts }: Props) => {
       <SocioEconomicImpactsListSection socioEconomicImpacts={impacts.socioeconomic.impacts} />
       <section className="fr-mb-5w">
         <h3>Impacts environnementaux</h3>
-        {impacts.contaminatedSurfaceArea && (
+        {impacts.nonContaminatedSurfaceArea && (
           <ImpactItemRow>
-            <ImpactLabel>✨ Surface polluée</ImpactLabel>
+            <ImpactLabel>✨ Surface non polluée</ImpactLabel>
             <ImpactValue isTotal>
               {formatSurfaceAreaImpact(
-                impacts.contaminatedSurfaceArea.forecast - impacts.contaminatedSurfaceArea.base,
+                impacts.nonContaminatedSurfaceArea.forecast -
+                  impacts.nonContaminatedSurfaceArea.current,
               )}
             </ImpactValue>
           </ImpactItemRow>

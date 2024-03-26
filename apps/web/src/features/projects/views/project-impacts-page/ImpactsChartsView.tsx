@@ -3,8 +3,8 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import CostBenefitAnalysisCard from "./impacts/cost-benefit-analysis/CostBenefitAnalysisCard";
 import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanceImpactCard";
-import ContaminatedSurfaceImpactChart from "./impacts/environment/ContaminatedSurfaceImpactCard";
 import HouseholdsPoweredByRenewableEnergyImpactCard from "./impacts/environment/HouseholdsPoweredByRenewableEnergyImpactCard";
+import ContaminatedSurfaceImpactChart from "./impacts/environment/NonContaminatedSurfaceImpactCard";
 import PermeableSurfaceImpactChart from "./impacts/environment/PermeableSurfaceImpactCard";
 import SoilsCarbonStorageImpactCard from "./impacts/environment/SoilsCarbonStorageImpactCard";
 import StoredAndAvoidedCO2ImpactCard from "./impacts/environment/StoredAndAvoidedCO2ImpactCard";
@@ -65,11 +65,11 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
               permeableSurfaceImpact={impacts.permeableSurfaceArea}
             />
           </div>
-          {impacts.contaminatedSurfaceArea && (
+          {impacts.nonContaminatedSurfaceArea && (
             <div className={fr.cx("fr-col-3")}>
               <ContaminatedSurfaceImpactChart
                 reconversionProjectName={project.name}
-                contaminatedSurfaceImpact={impacts.contaminatedSurfaceArea}
+                nonContaminatedSurfaceImpact={impacts.nonContaminatedSurfaceArea}
               />
             </div>
           )}

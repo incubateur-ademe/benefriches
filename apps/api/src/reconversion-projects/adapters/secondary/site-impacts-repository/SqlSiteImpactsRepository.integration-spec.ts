@@ -77,6 +77,7 @@ describe("SqlSiteRepository integration", () => {
         name: "Site 123",
         addressCityCode: "01234",
         contaminatedSoilSurface: 230,
+        surfaceArea: 14000,
         soilsDistribution: {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
@@ -126,6 +127,7 @@ describe("SqlSiteRepository integration", () => {
         id: siteId,
         name: "Site 123",
         addressCityCode: "01234",
+        surfaceArea: 14000,
         soilsDistribution: {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
