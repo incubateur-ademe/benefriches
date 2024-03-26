@@ -172,6 +172,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           propertyTransferDutiesAmount:
             reconversionProject.realEstateTransactionPropertyTransferDutiesAmount,
           evaluationPeriodInYears,
+          baseSoilsDistribution: relatedSite.soilsDistribution,
+          forecastSoilsDistribution: reconversionProject.soilsDistribution,
         }),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,

@@ -1,7 +1,7 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
-import { sumSocioEconomicImpactsByActor } from "./socioEconomicImpacts";
+import { getActorLabel, sumSocioEconomicImpactsByActor } from "./socioEconomicImpacts";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -9,11 +9,6 @@ import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
-};
-
-const getActorLabel = (actor: string) => {
-  if (actor === "community") return "Collectivité";
-  return actor;
 };
 
 function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {

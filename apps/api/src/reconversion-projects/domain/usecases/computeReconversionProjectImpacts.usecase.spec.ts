@@ -173,6 +173,38 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 impact: "property_transfer_duties_income",
                 impactCategory: "economic_indirect",
               },
+              {
+                actor: "human_society",
+                amount: 29820,
+                impact: "ecosystem_services",
+                impactCategory: "environmental_monetary",
+                details: [
+                  {
+                    amount: 1420,
+                    impact: "nature_related_wellness_and_leisure",
+                  },
+                  {
+                    amount: 1840,
+                    impact: "pollination",
+                  },
+                  {
+                    amount: 680,
+                    impact: "invasive_species_regulation",
+                  },
+                  {
+                    amount: 19500,
+                    impact: "water_cycle",
+                  },
+                  {
+                    amount: 1380,
+                    impact: "nitrogen_cycle",
+                  },
+                  {
+                    amount: 5000,
+                    impact: "soil_erosion",
+                  },
+                ],
+              },
             ],
           },
           economicBalance: {

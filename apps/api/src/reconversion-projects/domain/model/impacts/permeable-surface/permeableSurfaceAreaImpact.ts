@@ -1,10 +1,9 @@
-import { typedObjectEntries } from "src/shared-kernel/typedEntries";
 import {
   isGreenSoil,
   isMineralSoil,
   isPermeableSoil,
   SoilsDistribution,
-  SoilType,
+  sumSoilsSurfaceAreasWhere,
 } from "src/soils/domain/soils";
 
 export type PermeableSurfaceAreaImpactResult = {
@@ -23,15 +22,6 @@ export type PermeableSurfaceAreaImpactResult = {
 type PermeableSurfaceAreaImpactInput = {
   baseSoilsDistribution: SoilsDistribution;
   forecastSoilsDistribution: SoilsDistribution;
-};
-
-const sumSoilsSurfaceAreasWhere = (
-  soilsDistribution: SoilsDistribution,
-  cb: (s: SoilType) => boolean,
-) => {
-  return typedObjectEntries(soilsDistribution)
-    .filter(([soilType]) => cb(soilType))
-    .reduce((sum, [, area]) => sum + (area ?? 0), 0);
 };
 
 export const computePermeableSurfaceAreaImpact = (
