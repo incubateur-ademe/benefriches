@@ -1,23 +1,23 @@
+import { SoilType } from "src/soils/domain/soils";
 import { UseCase } from "../../../shared-kernel/usecase";
 import { CarbonStorageRepository } from "../gateways/CarbonStorageRepository";
-import { SoilCategory, SoilCategoryType } from "../models/soilCategory";
-import { SurfaceArea, SurfaceAreaType } from "../models/surfaceArea";
+import { mapSoilTypeToRepositorySoilCategory } from "../models/soilCategory";
 
 type Request = {
   cityCode: string;
   soils: {
-    surfaceArea: SurfaceArea;
-    type: SoilCategory;
+    surfaceArea: number;
+    type: SoilType;
   }[];
 };
 
-type Response = {
+export type Response = {
   totalCarbonStorage: number;
   soilsCarbonStorage: {
-    surfaceArea: SurfaceAreaType; // m²
+    surfaceArea: number; // m²
     carbonStorage: number;
     carbonStorageInTonPerSquareMeters: number;
-    type: SoilCategoryType;
+    type: SoilType;
   }[];
 };
 
@@ -27,22 +27,22 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<Requ
   async execute({ cityCode, soils = [] }: Request): Promise<Response> {
     const carbonStorage = await this.carbonStorageRepository.getCarbonStorageForCity(
       cityCode,
-      soils.map(({ type }) => type.getRepositorySoilCategory()),
+      soils.map(({ type }) => mapSoilTypeToRepositorySoilCategory(type)),
     );
 
     const soilsCarbonStorage = soils.map(({ type, surfaceArea }) => {
       const entriesForCategory = carbonStorage.filter(
-        ({ soilCategory }) => soilCategory === type.getRepositorySoilCategory(),
+        ({ soilCategory }) => soilCategory === mapSoilTypeToRepositorySoilCategory(type),
       );
       const totalCarbonStoragePerHectare = entriesForCategory.reduce(
         (total, { carbonStorageInTonByHectare }) => total + carbonStorageInTonByHectare,
         0,
       );
       const carbonStorageInTonPerSquareMeters = totalCarbonStoragePerHectare / 10000;
-      const totalForCategory = carbonStorageInTonPerSquareMeters * surfaceArea.getInSquareMeters();
+      const totalForCategory = carbonStorageInTonPerSquareMeters * surfaceArea;
       return {
-        type: type.getValue(),
-        surfaceArea: surfaceArea.getInSquareMeters(),
+        type,
+        surfaceArea,
         carbonStorage: totalForCategory,
         carbonStorageInTonPerSquareMeters,
       };
