@@ -60,11 +60,22 @@ describe("SqlSiteRepository integration", () => {
         },
       ]);
 
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        ban_id: "123456",
+        city: "City name",
+        post_code: "1234",
+        value: "1 rue de la paix",
+        site_id: siteId,
+        city_code: "01234",
+      });
+
       const result = await siteRepository.getById(siteId);
 
       expect(result).toEqual<Required<SiteImpactsDataView>>({
         id: siteId,
         name: "Site 123",
+        addressCityCode: "01234",
         contaminatedSoilSurface: 230,
         soilsDistribution: {
           FOREST_MIXED: 1200,
@@ -99,11 +110,22 @@ describe("SqlSiteRepository integration", () => {
         { id: uuid(), site_id: siteId, soil_type: "PRAIRIE_GRASS", surface_area: 12800 },
       ]);
 
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        ban_id: "123456",
+        city: "City name",
+        post_code: "1234",
+        value: "1 rue de la paix",
+        site_id: siteId,
+        city_code: "01234",
+      });
+
       const result = await siteRepository.getById(siteId);
 
       expect(result).toEqual<SiteImpactsDataView>({
         id: siteId,
         name: "Site 123",
+        addressCityCode: "01234",
         soilsDistribution: {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,

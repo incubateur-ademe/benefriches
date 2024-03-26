@@ -1,4 +1,7 @@
 import { Module } from "@nestjs/common";
+import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
+import { SqlCarbonStorageRepository } from "src/carbon-storage/adapters/secondary/carbonStorageRepository/SqlCarbonStorageRepository";
+import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/domain/usecases/getCityCarbonStoragePerSoilsCategory";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
@@ -20,6 +23,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
 
 @Module({
   controllers: [ReconversionProjectController],
+  imports: [CarbonStorageModule],
   providers: [
     {
       provide: CreateReconversionProjectUseCase,
@@ -46,10 +50,19 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       useFactory(
         reconversionProjectRepo: SqlReconversionProjectImpactsRepository,
         siteRepo: SqlSiteImpactsRepository,
+        getCityCarbonStoragePerSoilsCategoryUseCase: GetCityCarbonStoragePerSoilsCategoryUseCase,
       ) {
-        return new ComputeReconversionProjectImpactsUseCase(reconversionProjectRepo, siteRepo);
+        return new ComputeReconversionProjectImpactsUseCase(
+          reconversionProjectRepo,
+          siteRepo,
+          getCityCarbonStoragePerSoilsCategoryUseCase,
+        );
       },
-      inject: [SqlReconversionProjectImpactsRepository, SqlSiteImpactsRepository],
+      inject: [
+        SqlReconversionProjectImpactsRepository,
+        SqlSiteImpactsRepository,
+        GetCityCarbonStoragePerSoilsCategoryUseCase,
+      ],
     },
     SqlReconversionProjectRepository,
     SqlReconversionProjectsListRepository,
@@ -57,6 +70,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     SqlReconversionProjectImpactsRepository,
     SqlSiteImpactsRepository,
     DateProvider,
+    SqlCarbonStorageRepository,
   ],
 })
 export class ReconversionProjectsModule {}
