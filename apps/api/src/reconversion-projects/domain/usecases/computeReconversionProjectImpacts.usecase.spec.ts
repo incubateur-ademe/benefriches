@@ -58,7 +58,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
   });
 
   describe("Success cases", () => {
-    const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
+    const reconversionProjectImpactDataView: Required<ReconversionProjectImpactsDataView> = {
       id: uuid(),
       name: "Project with big impacts",
       relatedSiteId: uuid(),
@@ -99,10 +99,11 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       developmentPlanExpectedAnnualEnergyProductionMWh: 4679,
       realEstateTransactionPropertyTransferDutiesAmount: 5432,
     } as const;
-    const site: SiteImpactsDataView = {
+    const site: Required<SiteImpactsDataView> = {
       id: reconversionProjectImpactDataView.relatedSiteId,
       contaminatedSoilSurface: 20000,
       name: "My base site",
+      surfaceArea: 50000,
       soilsDistribution: {
         ...reconversionProjectImpactDataView.soilsDistribution,
         PRAIRIE_TREES: 0,
@@ -236,9 +237,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               financialAssistance: 150000,
             },
           },
-          contaminatedSurfaceArea: {
-            base: 20000,
-            forecast: 0,
+          nonContaminatedSurfaceArea: {
+            current: 30000,
+            forecast: 50000,
           },
           permeableSurfaceArea: {
             base: 60000,

@@ -9,10 +9,6 @@ import {
   computeAvoidedCO2TonsWithEnergyProductionImpact,
 } from "../model/impacts/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import {
-  computeContaminatedSurfaceAreaImpact,
-  ContaminatedSurfaceAreaImpact,
-} from "../model/impacts/contaminated-surface/contaminatedSurfaceAreaImpact";
-import {
   computeEconomicBalanceImpact,
   EconomicBalanceImpactResult,
 } from "../model/impacts/economicBalance/economicBalanceImpact";
@@ -24,6 +20,10 @@ import {
   computeHouseholdsPoweredByRenewableEnergyImpact,
   HouseholdsPoweredByRenewableEnergyImpact,
 } from "../model/impacts/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
+import {
+  computeNonContaminatedSurfaceAreaImpact,
+  NonContaminatedSurfaceAreaImpact,
+} from "../model/impacts/non-contaminated-surface/nonContaminatedSurfaceAreaImpact";
 import {
   computePermeableSurfaceAreaImpact,
   PermeableSurfaceAreaImpactResult,
@@ -46,6 +46,7 @@ export type SiteImpactsDataView = {
   contaminatedSoilSurface?: number;
   ownerName: string;
   tenantName?: string;
+  surfaceArea: number;
   soilsDistribution: SoilsDistribution;
   fullTimeJobs?: number;
   hasAccidents: boolean;
@@ -97,7 +98,7 @@ export type Result = {
   relatedSiteId: string;
   relatedSiteName: string;
   impacts: {
-    contaminatedSurfaceArea: ContaminatedSurfaceAreaImpact | undefined;
+    nonContaminatedSurfaceArea: NonContaminatedSurfaceAreaImpact | undefined;
     permeableSurfaceArea: PermeableSurfaceAreaImpactResult;
     fullTimeJobs: FullTimeJobsImpactResult;
     accidents: AccidentsImpactResult | undefined;
@@ -179,9 +180,10 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           baseSoilsDistribution: relatedSite.soilsDistribution,
           forecastSoilsDistribution: reconversionProject.soilsDistribution,
         }),
-        contaminatedSurfaceArea: relatedSite.contaminatedSoilSurface
-          ? computeContaminatedSurfaceAreaImpact({
+        nonContaminatedSurfaceArea: relatedSite.contaminatedSoilSurface
+          ? computeNonContaminatedSurfaceAreaImpact({
               currentContaminatedSurfaceArea: relatedSite.contaminatedSoilSurface,
+              totalSurfaceArea: relatedSite.surfaceArea,
             })
           : undefined,
         fullTimeJobs: computeFullTimeJobsImpact({

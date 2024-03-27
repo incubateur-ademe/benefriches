@@ -2,22 +2,22 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
+import { formatSurfaceAreaImpact } from "../../list-view/formatImpactValue";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 type Props = {
   reconversionProjectName: string;
-  contaminatedSurfaceImpact: {
-    base: number;
+  nonContaminatedSurfaceImpact: {
+    current: number;
     forecast: number;
   };
 };
 
-function ContaminatedSurfaceImpactCard({
+function NonContaminatedSurfaceImpactCard({
   reconversionProjectName,
-  contaminatedSurfaceImpact,
+  nonContaminatedSurfaceImpact,
 }: Props) {
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
@@ -34,27 +34,25 @@ function ContaminatedSurfaceImpactCard({
     },
     series: [
       {
-        name: "Surface polluée",
+        name: "Surface non polluée",
         type: "area",
         data: [
-          roundTo2Digits(contaminatedSurfaceImpact.base),
-          roundTo2Digits(contaminatedSurfaceImpact.forecast),
+          roundTo2Digits(nonContaminatedSurfaceImpact.current),
+          roundTo2Digits(nonContaminatedSurfaceImpact.forecast),
         ],
         showInLegend: false,
       },
     ],
   };
 
-  const totalDifference = contaminatedSurfaceImpact.forecast - contaminatedSurfaceImpact.base;
+  const totalDifference =
+    nonContaminatedSurfaceImpact.forecast - nonContaminatedSurfaceImpact.current;
   return (
-    <ImpactCard title="✨ Surface polluée">
-      <div style={{ textAlign: "center" }}>
-        {totalDifference >= 0 && "+"}
-        {formatNumberFr(totalDifference)} {SQUARE_METERS_HTML_SYMBOL}
-      </div>
+    <ImpactCard title="✨ Surface non polluée">
+      <div style={{ textAlign: "center" }}>{formatSurfaceAreaImpact(totalDifference)}</div>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>
   );
 }
 
-export default ContaminatedSurfaceImpactCard;
+export default NonContaminatedSurfaceImpactCard;

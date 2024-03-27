@@ -15,6 +15,7 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
       .select(
         "id",
         "name",
+        "surface_area",
         "friche_contaminated_soil_surface_area",
         "full_time_jobs_involved",
         "friche_accidents_minor_injuries",
@@ -45,6 +46,7 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
       id: sqlSite.id,
       name: sqlSite.name,
       addressCityCode: sqlAddress?.city_code ?? "",
+      surfaceArea: sqlSite.surface_area,
       contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
       fullTimeJobs: sqlSite.full_time_jobs_involved ?? undefined,
       soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
