@@ -14,6 +14,9 @@ type EnvironmentalMonetaryImpactInput = {
   evaluationPeriodInYears: number;
   baseSoilsDistribution: SoilsDistribution;
   forecastSoilsDistribution: SoilsDistribution;
+  baseSoilsCarbonStorage: number;
+  forecastSoilsCarbonStorage: number;
+  operationsFirstYear?: number;
 };
 
 export type EnvironmentalMonetaryImpact = EcosystemServicesImpact;
@@ -32,7 +35,8 @@ type EcosystemServicesImpact = {
       | "invasive_species_regulation"
       | "water_cycle"
       | "nitrogen_cycle"
-      | "soil_erosion";
+      | "soil_erosion"
+      | "carbon_storage";
   }[];
 };
 
@@ -102,6 +106,32 @@ const computeSoilErosion = (surfaceWithEcosystemBenefits: number) => {
   );
 };
 
+const CO2_EQ_MONETARY_VALUE_EURO_2020 = 90;
+const CO2_EQ_MONETARY_VALUE_EURO_2030 = 250;
+
+export const computeCO2eqMonetaryValueForYear = (year: number) => {
+  const ratioKnownPeriods = Math.pow(
+    CO2_EQ_MONETARY_VALUE_EURO_2030 / CO2_EQ_MONETARY_VALUE_EURO_2020,
+    1 / (2030 - 2020),
+  );
+
+  return Math.round(
+    CO2_EQ_MONETARY_VALUE_EURO_2020 * Math.pow(1 + ratioKnownPeriods - 1, year - 2020),
+  );
+};
+
+const RATIO_CO2_TO_CARBON = 12 / 44;
+export const computeSoilsCarbonStorage = (
+  baseSoilsCarbonStorage: number,
+  forecastSoilsCarbonStorage: number,
+  operationsFirstYear = 2024,
+) => {
+  const co2eqMonetaryValue = computeCO2eqMonetaryValueForYear(operationsFirstYear);
+
+  const soilsCarbonStorageDifference = forecastSoilsCarbonStorage - baseSoilsCarbonStorage;
+  return Math.round((soilsCarbonStorageDifference / RATIO_CO2_TO_CARBON) * co2eqMonetaryValue);
+};
+
 export const computeSoilsDifferential = (
   baseSoilsDistribution: SoilsDistribution,
   forecastSoilsDistribution: SoilsDistribution,
@@ -141,6 +171,14 @@ export const computeEnvironmentalMonetaryImpacts = (
   );
 
   const ecosystemServicesImpacts: EcosystemServicesImpact["details"] = [
+    {
+      amount: computeSoilsCarbonStorage(
+        input.baseSoilsCarbonStorage,
+        input.forecastSoilsCarbonStorage,
+        input.operationsFirstYear,
+      ),
+      impact: "carbon_storage",
+    },
     {
       amount: Math.round(
         computeNatureRelatedWellnessAndLeisure(

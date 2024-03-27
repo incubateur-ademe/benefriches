@@ -33,6 +33,7 @@ export class SqlReconversionProjectImpactsRepository
         "real_estate_transaction_property_transfer_duties",
         "reinstatement_financial_assistance_amount",
         "reinstatement_cost",
+        "operations_first_year",
       )
       .where({ id: reconversionProjectId })
       .first();
@@ -112,6 +113,7 @@ export class SqlReconversionProjectImpactsRepository
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
       developmentPlanExpectedAnnualEnergyProductionMWh,
+      operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
     };
   }
 }

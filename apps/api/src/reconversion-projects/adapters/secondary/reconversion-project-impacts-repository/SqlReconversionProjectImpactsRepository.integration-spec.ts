@@ -50,6 +50,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         reinstatement_cost: 15000,
         real_estate_transaction_selling_price: 100000,
         real_estate_transaction_property_transfer_duties: 8000,
+        operations_first_year: 2025,
       });
 
       await sqlConnection("reconversion_project_soils_distributions").insert([
@@ -111,6 +112,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         yearlyProjectedRevenues: [],
         developmentPlanExpectedAnnualEnergyProductionMWh: 10,
         realEstateTransactionPropertyTransferDutiesAmount: 8000,
+        operationsFirstYear: 2025,
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {

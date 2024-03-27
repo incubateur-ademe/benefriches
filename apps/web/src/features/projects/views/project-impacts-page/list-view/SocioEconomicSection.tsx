@@ -37,6 +37,8 @@ const getLabelForEcosystemServicesImpact = (
       return "🌾 Régulation de l’érosion des sols";
     case "water_cycle":
       return "💧 Cycle de l’eau";
+    case "carbon_storage":
+      return "🍂️ Carbone stocké dans les sols";
   }
 };
 

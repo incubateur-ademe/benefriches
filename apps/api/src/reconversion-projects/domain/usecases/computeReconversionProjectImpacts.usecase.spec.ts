@@ -98,6 +98,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       ],
       developmentPlanExpectedAnnualEnergyProductionMWh: 4679,
       realEstateTransactionPropertyTransferDutiesAmount: 5432,
+      operationsFirstYear: 2025,
     } as const;
     const site: Required<SiteImpactsDataView> = {
       id: reconversionProjectImpactDataView.relatedSiteId,
