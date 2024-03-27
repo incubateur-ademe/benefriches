@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { typedObjectEntries } from "src/shared-kernel/typedEntries";
 
 export const soilTypeSchema = z.enum([
   "BUILDINGS",
@@ -38,6 +39,15 @@ export const isMineralSoil = (soilType: SoilType) => {
   return soilType === "MINERAL_SOIL";
 };
 
+export const sumSoilsSurfaceAreasWhere = (
+  soilsDistribution: SoilsDistribution,
+  cb: (s: SoilType) => boolean,
+) => {
+  return typedObjectEntries(soilsDistribution)
+    .filter(([soilType]) => cb(soilType))
+    .reduce((sum, [, area]) => sum + (area ?? 0), 0);
+};
+
 const GREEN_SOILS: readonly SoilType[] = [
   "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
   "ARTIFICIAL_TREE_FILLED",
@@ -53,6 +63,46 @@ const GREEN_SOILS: readonly SoilType[] = [
   "ORCHARD",
 ];
 
+const FOREST_SOILS: readonly SoilType[] = [
+  "FOREST_CONIFER",
+  "FOREST_DECIDUOUS",
+  "FOREST_MIXED",
+  "FOREST_POPLAR",
+];
+const PRAIRIE_SOILS: readonly SoilType[] = ["PRAIRIE_BUSHES", "PRAIRIE_GRASS", "PRAIRIE_TREES"];
+
 export const isGreenSoil = (soilType: SoilType) => {
   return GREEN_SOILS.includes(soilType);
+};
+
+export const isPrairie = (soilType: SoilType) => {
+  return PRAIRIE_SOILS.includes(soilType);
+};
+
+export const isForest = (soilType: SoilType) => {
+  return FOREST_SOILS.includes(soilType);
+};
+
+export const isWetLand = (soilType: SoilType) => {
+  return "WET_LAND" === soilType;
+};
+
+export const isSurfaceWithEcosystemBenefits = (soilType: SoilType) => {
+  return [...FOREST_SOILS, ...PRAIRIE_SOILS, "ARTIFICIAL_TREE_FILLED", "WET_LAND"].includes(
+    soilType,
+  );
+};
+
+export const isSurfaceWithPermanentVegetation = (soilType: SoilType) => {
+  return isSurfaceWithEcosystemBenefits(soilType);
+};
+
+export const isPermeableSurfaceWithoutPermanentVegetation = (soilType: SoilType) => {
+  return [
+    "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+    "CULTIVATION",
+    "VINEYARD",
+    "ORCHARD",
+    "MINERAL_SOIL",
+  ].includes(soilType);
 };

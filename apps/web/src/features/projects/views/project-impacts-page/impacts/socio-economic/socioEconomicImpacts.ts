@@ -54,5 +54,18 @@ export const getLabelForSocioEconomicImpactCategory = (
       return "Économiques directs";
     case "economic_indirect":
       return "Économiques indirects";
+    case "environmental_monetary":
+      return "Environnementaux monétarisés";
+  }
+};
+
+export const getActorLabel = (label: SocioEconomicImpacts[number]["actor"]) => {
+  switch (label) {
+    case "community":
+      return "Collectivité";
+    case "human_society":
+      return "Société humaine";
+    default:
+      return label;
   }
 };

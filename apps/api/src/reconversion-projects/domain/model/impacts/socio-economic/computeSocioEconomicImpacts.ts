@@ -1,14 +1,13 @@
+import { SoilsDistribution } from "src/soils/domain/soils";
 import { ReconversionProject } from "../../reconversionProject";
-
-const RENT_PURPOSE_KEY = "rent";
-const TAXES_PURPOSE_KEY = "taxes";
-
-const FRICHE_COST_PURPOSES = [
-  "security",
-  "illegalDumpingCost",
-  "accidentsCost",
-  "otherSecuringCosts",
-] as const;
+import {
+  computeDirectAndIndirectEconomicImpacts,
+  DirectAndIndirectEconomicImpact,
+} from "./computeDirectAndIndirectEconomicImpacts";
+import {
+  computeEnvironmentalMonetaryImpacts,
+  EnvironmentalMonetaryImpact,
+} from "./computeEnvironmentalMonetaryImpacts";
 
 type SocioEconomicImpactsInput = {
   evaluationPeriodInYears: number;
@@ -18,32 +17,11 @@ type SocioEconomicImpactsInput = {
   yearlyCurrentCosts: { purpose: string; amount: number }[];
   yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"];
   propertyTransferDutiesAmount?: number;
+  baseSoilsDistribution: SoilsDistribution;
+  forecastSoilsDistribution: SoilsDistribution;
 };
 
-type BaseEconomicImpact = { actor: string; amount: number };
-type RentalIncomeImpact = BaseEconomicImpact & {
-  impact: "rental_income";
-  impactCategory: "economic_direct";
-};
-type AvoidedFricheCostsImpact = BaseEconomicImpact & {
-  impact: "avoided_friche_costs";
-  impactCategory: "economic_direct";
-};
-type TaxesIncomeImpact = BaseEconomicImpact & {
-  impact: "taxes_income";
-  impactCategory: "economic_indirect";
-  actor: "community";
-};
-type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
-  impact: "property_transfer_duties_income";
-  impactCategory: "economic_indirect";
-  actor: "community";
-};
-type EconomicImpact =
-  | RentalIncomeImpact
-  | AvoidedFricheCostsImpact
-  | TaxesIncomeImpact
-  | PropertyTransferDutiesIncomeImpact;
+type EconomicImpact = DirectAndIndirectEconomicImpact | EnvironmentalMonetaryImpact;
 
 export type SocioEconomicImpactsResult = {
   impacts: EconomicImpact[];
@@ -52,76 +30,22 @@ export type SocioEconomicImpactsResult = {
 export const computeSocioEconomicImpacts = (
   input: SocioEconomicImpactsInput,
 ): SocioEconomicImpactsResult => {
-  const impacts: EconomicImpact[] = [];
-
-  const projectedRentCost = input.yearlyProjectedCosts.find(
-    ({ purpose }) => purpose === RENT_PURPOSE_KEY,
-  );
-  const currentRentCost = input.yearlyCurrentCosts.find(
-    ({ purpose }) => purpose === RENT_PURPOSE_KEY,
-  );
-  if (projectedRentCost) {
-    if (input.futureSiteOwner) {
-      impacts.push({
-        amount: projectedRentCost.amount * input.evaluationPeriodInYears,
-        actor: input.futureSiteOwner,
-        impact: "rental_income",
-        impactCategory: "economic_direct",
-      });
-    }
-    if (currentRentCost) {
-      impacts.push({
-        amount: (projectedRentCost.amount - currentRentCost.amount) * input.evaluationPeriodInYears,
-        actor: input.currentOwner,
-        impact: "rental_income",
-        impactCategory: "economic_direct",
-      });
-    }
-  } else if (currentRentCost) {
-    impacts.push({
-      amount: -currentRentCost.amount * input.evaluationPeriodInYears,
-      actor: input.currentOwner,
-      impact: "rental_income",
-      impactCategory: "economic_direct",
-    });
-  }
-
-  const currentFricheCosts = input.yearlyCurrentCosts.filter(({ purpose }) =>
-    FRICHE_COST_PURPOSES.includes(purpose as (typeof FRICHE_COST_PURPOSES)[number]),
-  );
-  if (currentFricheCosts.length) {
-    const fricheCostImpactAmount = currentFricheCosts
-      .map(({ amount }) => amount)
-      .reduce((sum, amount) => sum + amount, 0);
-    impacts.push({
-      amount: fricheCostImpactAmount * input.evaluationPeriodInYears,
-      actor: input.currentTenant ?? input.currentOwner,
-      impact: "avoided_friche_costs",
-      impactCategory: "economic_direct",
-    });
-  }
-
-  const currentTaxesAmount =
-    input.yearlyCurrentCosts.find(({ purpose }) => purpose === TAXES_PURPOSE_KEY)?.amount ?? 0;
-  const projectedTaxesAmount =
-    input.yearlyProjectedCosts.find(({ purpose }) => purpose === TAXES_PURPOSE_KEY)?.amount ?? 0;
-  if (currentTaxesAmount || projectedTaxesAmount) {
-    impacts.push({
-      amount: (projectedTaxesAmount - currentTaxesAmount) * input.evaluationPeriodInYears,
-      impact: "taxes_income",
-      impactCategory: "economic_indirect",
-      actor: "community",
-    });
-  }
-
-  if (input.propertyTransferDutiesAmount) {
-    impacts.push({
-      amount: input.propertyTransferDutiesAmount,
-      impact: "property_transfer_duties_income",
-      actor: "community",
-      impactCategory: "economic_indirect",
-    });
-  }
-
-  return { impacts };
+  return {
+    impacts: [
+      ...computeDirectAndIndirectEconomicImpacts({
+        evaluationPeriodInYears: input.evaluationPeriodInYears,
+        currentOwner: input.currentOwner,
+        currentTenant: input.currentTenant,
+        futureSiteOwner: input.futureSiteOwner,
+        yearlyCurrentCosts: input.yearlyCurrentCosts,
+        yearlyProjectedCosts: input.yearlyProjectedCosts,
+        propertyTransferDutiesAmount: input.propertyTransferDutiesAmount,
+      }),
+      ...computeEnvironmentalMonetaryImpacts({
+        baseSoilsDistribution: input.baseSoilsDistribution,
+        forecastSoilsDistribution: input.forecastSoilsDistribution,
+        evaluationPeriodInYears: input.evaluationPeriodInYears,
+      }),
+    ] as EconomicImpact[],
+  };
 };

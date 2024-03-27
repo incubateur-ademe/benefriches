@@ -23,6 +23,22 @@ type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
   actor: "community";
 };
 
+export type EcosystemServicesImpact = BaseEconomicImpact & {
+  impact: "ecosystem_services";
+  impactCategory: "environmental_monetary";
+  details: {
+    amount: number;
+    impact:
+      | "nature_related_wellness_and_leisure"
+      | "forest_related_product"
+      | "pollination"
+      | "invasive_species_regulation"
+      | "water_cycle"
+      | "nitrogen_cycle"
+      | "soil_erosion";
+  }[];
+};
+
 export type ReconversionProjectImpacts = {
   permeableSurfaceArea: {
     base: number;
@@ -117,6 +133,7 @@ export type ReconversionProjectImpacts = {
       | AvoidedFricheCostsImpact
       | TaxesIncomeImpact
       | PropertyTransferDutiesIncomeImpact
+      | EcosystemServicesImpact
     )[];
   };
 };
