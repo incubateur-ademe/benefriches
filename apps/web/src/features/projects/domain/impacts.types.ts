@@ -23,6 +23,13 @@ type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
   actor: "community";
 };
 
+export type AvoidedCO2EqWithEnRImpact = BaseEconomicImpact & {
+  amount: number;
+  actor: "human_society";
+  impactCategory: "environmental_monetary";
+  impact: "avoided_co2_eq_with_enr";
+};
+
 export type EcosystemServicesImpact = BaseEconomicImpact & {
   impact: "ecosystem_services";
   impactCategory: "environmental_monetary";
@@ -135,6 +142,7 @@ export type ReconversionProjectImpacts = {
       | TaxesIncomeImpact
       | PropertyTransferDutiesIncomeImpact
       | EcosystemServicesImpact
+      | AvoidedCO2EqWithEnRImpact
     )[];
   };
 };

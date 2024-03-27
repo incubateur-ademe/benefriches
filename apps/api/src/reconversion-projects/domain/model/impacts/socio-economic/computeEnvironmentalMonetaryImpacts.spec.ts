@@ -89,8 +89,15 @@ describe("Environmental monetary impacts", () => {
       },
       baseSoilsCarbonStorage: 100,
       forecastSoilsCarbonStorage: 150,
+      avoidedCO2TonsWithEnergyProduction: 10000,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([
+      {
+        amount: 13500000,
+        impact: "avoided_co2_eq_with_enr",
+        impactCategory: "environmental_monetary",
+        actor: "human_society",
+      },
       {
         amount: 27111,
         impact: "ecosystem_services",
