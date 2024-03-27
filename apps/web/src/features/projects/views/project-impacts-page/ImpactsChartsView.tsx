@@ -32,7 +32,7 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
           <div className={fr.cx("fr-col-6")}>
             <CostBenefitAnalysisCard
               economicBalanceTotal={impacts.economicBalance.total}
-              socioEconomicImpactTotal={258000}
+              socioEconomicImpacts={impacts.socioeconomic}
             />
           </div>
           <div className={fr.cx("fr-col-6")}>
