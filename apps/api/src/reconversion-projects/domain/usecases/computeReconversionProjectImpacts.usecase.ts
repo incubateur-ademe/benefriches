@@ -153,6 +153,14 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
     });
 
+    const avoidedCO2TonsWithEnergyProduction =
+      reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh
+        ? computeAvoidedCO2TonsWithEnergyProductionImpact({
+            forecastAnnualEnergyProductionMWh:
+              reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
+          })
+        : undefined;
+
     return {
       id: reconversionProjectId,
       name: reconversionProject.name,
@@ -189,6 +197,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           forecastSoilsCarbonStorage: soilsCarbonStorage.forecast.total,
           operationsFirstYear:
             reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear(),
+          avoidedCO2TonsWithEnergyProduction: avoidedCO2TonsWithEnergyProduction?.forecast,
         }),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,
@@ -230,13 +239,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
                   reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
               })
             : undefined,
-        avoidedCO2TonsWithEnergyProduction:
-          reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh
-            ? computeAvoidedCO2TonsWithEnergyProductionImpact({
-                forecastAnnualEnergyProductionMWh:
-                  reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
-              })
-            : undefined,
+        avoidedCO2TonsWithEnergyProduction,
         soilsCarbonStorage,
       },
     };
