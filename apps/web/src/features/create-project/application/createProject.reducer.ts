@@ -181,6 +181,10 @@ export const projectCreationSlice = createSlice({
         state.projectData.realEstateTransactionPropertyTransferDuties =
           action.payload.propertyTransferDuties;
       }
+      if (state.siteData?.isFriche) {
+        state.stepsHistory.push("COSTS_REINSTATEMENT");
+        return;
+      }
       state.stepsHistory.push("COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION");
     },
     completeReinstatementCost: (state, action: PayloadAction<number>) => {
