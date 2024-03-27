@@ -3,7 +3,9 @@ import { formatMonetaryImpact } from "./formatImpactValue";
 import ImpactDetailLabel from "./ImpactDetailLabel";
 import ImpactDetailRow from "./ImpactItemDetailRow";
 import ImpactItemGroup from "./ImpactItemGroup";
+import ImpactItemRow from "./ImpactItemRow";
 import ImpactLabel from "./ImpactLabel";
+import ImpactSectionTitle from "./ImpactSectionTitle";
 import ImpactValue from "./ImpactValue";
 
 import {
@@ -53,9 +55,16 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({ socioEconomicImpacts
     (impact): impact is WaterRegulationImpact => impact.impact === "water_regulation",
   );
 
+  const total = socioEconomicImpacts
+    .filter(({ impactCategory }) => impactCategory === "environmental_monetary")
+    .reduce((total, { amount }) => total + amount, 0);
+
   return (
     <section className="fr-mb-5w">
-      <h4>Impacts environnementaux monétarisés</h4>
+      <ImpactItemRow>
+        <ImpactSectionTitle>Impacts environnementaux monétarisés</ImpactSectionTitle>
+        <ImpactValue isTotal>{formatMonetaryImpact(total)}</ImpactValue>
+      </ImpactItemRow>
       {avoidedCO2WithEnrImpact && (
         <>
           <ImpactItemGroup>
