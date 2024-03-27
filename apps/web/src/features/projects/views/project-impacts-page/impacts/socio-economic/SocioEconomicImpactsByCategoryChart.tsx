@@ -69,6 +69,12 @@ function SocioEconomicImpactsByCategoryChart({ socioEconomicImpacts }: Props) {
         stacking: "normal",
       },
     },
+    legend: {
+      layout: "vertical",
+      align: "right",
+      width: "40%",
+      verticalAlign: "middle",
+    },
 
     series: [...negativeImpactsSeries, ...positiveImpactsSeries],
   };
