@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import { selectCurrentStep } from "../application/createProject.reducer";
 import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
@@ -102,10 +103,10 @@ function ProjectCreationWizard() {
   };
 
   return (
-    <>
+    <section className={fr.cx("fr-container", "fr-py-4w")}>
       <Stepper step={currentStep} />
       {getStepComponent()}
-    </>
+    </section>
   );
 }
 

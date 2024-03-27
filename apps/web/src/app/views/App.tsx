@@ -32,7 +32,7 @@ function App() {
 
   return (
     <HeaderFooterLayout>
-      <main className={fr.cx("fr-container", "fr-py-4w")} style={{ flexGrow: 1 }}>
+      <main>
         {route.name === routes.home.name && <HomePage />}
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
@@ -57,7 +57,9 @@ function App() {
         {route.name === routes.mentionsLegales.name && <MentionsLegalesPage />}
         {route.name === routes.accessibilite.name && <AccessibilitePage />}
         {route.name === routes.politiqueConfidentialite.name && <PolitiqueConfidentialitePage />}
-        {route.name === false && <>Page non trouvée</>}
+        {route.name === false && (
+          <section className={fr.cx("fr-container", "fr-py-4w")}>Page non trouvée</section>
+        )}
       </main>
     </HeaderFooterLayout>
   );

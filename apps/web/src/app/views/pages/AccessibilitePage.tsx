@@ -1,21 +1,10 @@
-import { ReactNode } from "react";
+import { fr } from "@codegouvfr/react-dsfr";
 
-type ExternalLinkProps = {
-  href: string;
-  children: ReactNode;
-};
-
-const ExternalLink = ({ href, children }: ExternalLinkProps) => {
-  return (
-    <a href={href} rel="noopener noreferrer" target="_blank">
-      {children}
-    </a>
-  );
-};
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 function AccessibilitePage() {
   return (
-    <>
+    <section className={fr.cx("fr-container", "fr-py-4w")}>
       <h1>Déclaration d'accessibilité</h1>
       <p>
         Établie le <em>5 février 2024</em>.
@@ -93,7 +82,7 @@ function AccessibilitePage() {
         </ExternalLink>
         .
       </p>
-    </>
+    </section>
   );
 }
 

@@ -11,7 +11,7 @@ type Props = {
 
 const ProjectsImpactsPageHeader = ({ projectName, projectId, siteName }: Props) => {
   return (
-    <>
+    <section>
       <div className={fr.cx("fr-grid-row")} style={{ justifyContent: "space-between" }}>
         <h2>{projectName}</h2>
         <ButtonsGroup
@@ -28,7 +28,7 @@ const ProjectsImpactsPageHeader = ({ projectName, projectId, siteName }: Props) 
         />
       </div>
       <h3>{siteName}</h3>
-    </>
+    </section>
   );
 };
 

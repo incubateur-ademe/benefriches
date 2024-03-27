@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { fr } from "@codegouvfr/react-dsfr";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import ImpactsListView from "./list-view/ImpactsListView";
@@ -31,7 +32,7 @@ const ProjectImpactsPage = ({
   const [currentViewMode, setViewMode] = useState<ViewMode>("charts");
 
   return (
-    <div>
+    <div className={fr.cx("fr-container", "fr-py-4w")}>
       <ProjectsImpactsPageHeader
         projectId={project.id}
         projectName={project.name}

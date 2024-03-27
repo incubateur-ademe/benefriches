@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { fr } from "@codegouvfr/react-dsfr";
 import { Route } from "type-route";
 import { resetState } from "../../application/createProject.reducer";
 import { fetchRelatedSite } from "../../application/fetchRelatedSite.action";
@@ -21,11 +22,13 @@ function CreateProjectIntroductionContainer({ route }: Props) {
   }, [route.params.siteId, dispatch]);
 
   return (
-    <CreateProjectIntroductionPage
-      siteId={route.params.siteId}
-      siteName={siteData?.name ?? ""}
-      siteLoadingState={siteDataLoadingState}
-    />
+    <section className={fr.cx("fr-container", "fr-py-4w")}>
+      <CreateProjectIntroductionPage
+        siteId={route.params.siteId}
+        siteName={siteData?.name ?? ""}
+        siteLoadingState={siteDataLoadingState}
+      />
+    </section>
   );
 }
 

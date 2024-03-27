@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 import MyProjectsPageHeader from "./MyProjectsPageHeader";
 import ScenariiList from "./ScenariiList";
@@ -33,10 +34,10 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
   };
 
   return (
-    <>
+    <section className={fr.cx("fr-container", "fr-py-4w")}>
       <MyProjectsPageHeader />
       {getProjectListsPageContent()}
-    </>
+    </section>
   );
 }
 

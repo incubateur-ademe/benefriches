@@ -1,6 +1,8 @@
+import { fr } from "@codegouvfr/react-dsfr";
+
 function MentionsLegalesPage() {
   return (
-    <div>
+    <section className={fr.cx("fr-container", "fr-py-4w")}>
       <h1>Mentions légales</h1>
       <h2>Éditeur de la plateforme</h2>
       <p>
@@ -85,7 +87,7 @@ function MentionsLegalesPage() {
         L’ADEME se réserve le droit de modifier les présentes mentions légales à tout moment.
         L’utilisateur est lié par les conditions en vigueur lors de sa visite.
       </p>
-    </div>
+    </section>
   );
 }
 

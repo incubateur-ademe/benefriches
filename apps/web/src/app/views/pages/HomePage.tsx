@@ -1,5 +1,7 @@
-import { ReactNode } from "react";
+import { fr } from "@codegouvfr/react-dsfr";
 import { CallOut } from "@codegouvfr/react-dsfr/CallOut";
+
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 const BENEFRICHES_SPREADSHEET_URL =
   "https://librairie.ademe.fr/changement-climatique-et-energie/3772-evaluer-les-benefices-socio-economiques-de-la-reconversion-de-friches-pour-lutter-contre-l-artificialisation-outil-benefriches.html?results=1009";
@@ -9,22 +11,9 @@ const BENEFRICHES_TUTORIAL_URL = "https://www.dailymotion.com/video/x8l52by";
 const BENEFRICHES_DOCUMENTATION_URL =
   "https://librairie.ademe.fr/changement-climatique-et-energie/3772-evaluer-les-benefices-socio-economiques-de-la-reconversion-de-friches-pour-lutter-contre-l-artificialisation-outil-benefriches.html";
 
-type ExternalLinkProps = {
-  href: string;
-  children: ReactNode;
-};
-
-const ExternalLink = ({ href, children }: ExternalLinkProps) => {
-  return (
-    <a href={href} rel="noopener noreferrer" target="_blank">
-      {children}
-    </a>
-  );
-};
-
 function HomePage() {
   return (
-    <>
+    <section className={fr.cx("fr-container", "fr-py-4w")}>
       <h1>Bénéfriches</h1>
       <CallOut title="Ce service est actuellement en cours de construction.">
         <span>
@@ -46,7 +35,7 @@ function HomePage() {
           <ExternalLink href="https://www.dailymotion.com/video/x8msk3b">replay</ExternalLink>.
         </span>
       </CallOut>
-    </>
+    </section>
   );
 }
 

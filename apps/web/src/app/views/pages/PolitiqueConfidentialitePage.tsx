@@ -1,6 +1,8 @@
+import { fr } from "@codegouvfr/react-dsfr";
+
 function PolitiqueConfidentialitePage() {
   return (
-    <>
+    <section className={fr.cx("fr-container", "fr-py-4w")}>
       <h1>Politique de confidentialité</h1>
       <p>Bénéfriches ne vous demande ni ne stocke d’information nominative.</p>
       <p>
@@ -22,7 +24,7 @@ function PolitiqueConfidentialitePage() {
         services adaptés à votre terminal (ordinateur, mobile ou tablette).
       </p>
       <p>Bénéfriches n'utilise pas de cookies.</p>
-    </>
+    </section>
   );
 }
 

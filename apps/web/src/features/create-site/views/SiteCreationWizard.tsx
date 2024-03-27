@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import { selectCurrentStep } from "../application/createSite.reducer";
 import SiteExpensesSummary from "./site-management/expenses-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
@@ -79,10 +80,10 @@ function SiteCreationWizard() {
   };
 
   return (
-    <>
+    <section className={fr.cx("fr-container", "fr-py-4w")}>
       <Stepper isFriche={siteData.isFriche} step={currentStep} />
       {getStepComponent()}
-    </>
+    </section>
   );
 }
 
