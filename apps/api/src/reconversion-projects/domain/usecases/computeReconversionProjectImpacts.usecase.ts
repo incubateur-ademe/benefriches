@@ -195,6 +195,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           forecastSoilsCarbonStorage: soilsCarbonStorage.forecast.total,
           operationsFirstYear: reconversionProject.operationsFirstYear,
           avoidedCO2TonsWithEnergyProduction: avoidedCO2TonsWithEnergyProduction?.forecast,
+          decontaminatedSurface: relatedSite.contaminatedSoilSurface,
         }),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,

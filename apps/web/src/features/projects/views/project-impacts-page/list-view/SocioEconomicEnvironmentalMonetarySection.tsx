@@ -10,6 +10,7 @@ import {
   AvoidedCO2EqWithEnRImpact,
   EcosystemServicesImpact,
   ReconversionProjectImpacts,
+  WaterRegulationImpact,
 } from "@/features/projects/domain/impacts.types";
 
 type Props = {
@@ -48,6 +49,10 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({ socioEconomicImpacts
     (impact) => impact.impact === "avoided_co2_eq_with_enr",
   ) as AvoidedCO2EqWithEnRImpact | undefined;
 
+  const wateRegulationImpact = socioEconomicImpacts.find(
+    (impact) => impact.impact === "water_regulation",
+  ) as WaterRegulationImpact | undefined;
+
   return (
     <section className="fr-mb-5w">
       <h4>Impacts environnementaux monétarisés</h4>
@@ -68,6 +73,18 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({ socioEconomicImpacts
             </ImpactDetailLabel>
             <ImpactValue>{formatMonetaryImpact(avoidedCO2WithEnrImpact.amount)}</ImpactValue>
           </ImpactDetailRow>
+        </>
+      )}
+
+      {wateRegulationImpact && (
+        <>
+          <ImpactItemGroup>
+            <ImpactLabel>🚰 Régulation de la qualité de l’eau</ImpactLabel>
+            <ImpactDetailRow key={wateRegulationImpact.actor + wateRegulationImpact.amount}>
+              <ImpactDetailLabel>{getActorLabel(wateRegulationImpact.actor)}</ImpactDetailLabel>
+              <ImpactValue>{formatMonetaryImpact(wateRegulationImpact.amount)}</ImpactValue>
+            </ImpactDetailRow>
+          </ImpactItemGroup>
         </>
       )}
 
