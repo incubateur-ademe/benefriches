@@ -49,7 +49,9 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
       <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts environnementaux</h3>
         <Row>
-          <SoilsCarbonStorageImpactCard soilsCarbonStorageImpact={impacts.soilsCarbonStorage} />
+          <div className={fr.cx("fr-col-3")}>
+            <SoilsCarbonStorageImpactCard soilsCarbonStorageImpact={impacts.soilsCarbonStorage} />
+          </div>
           {impacts.avoidedCO2TonsWithEnergyProduction && (
             <div className={fr.cx("fr-col-3")}>
               <StoredAndAvoidedCO2ImpactCard
