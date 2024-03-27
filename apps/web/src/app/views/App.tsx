@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import AccessibilitePage from "./pages/AccessibilitePage";
 import BudgetPage from "./pages/BudgetPage";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/home/HomePage";
 import MentionsLegalesPage from "./pages/MentionsLegalesPage";
 import PolitiqueConfidentialitePage from "./pages/PolitiqueConfidentialitePage";
 import StatsPage from "./pages/StatsPage";
