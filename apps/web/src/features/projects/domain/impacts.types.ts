@@ -24,10 +24,15 @@ type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
 };
 
 export type AvoidedCO2EqWithEnRImpact = BaseEconomicImpact & {
-  amount: number;
   actor: "human_society";
   impactCategory: "environmental_monetary";
   impact: "avoided_co2_eq_with_enr";
+};
+
+export type WaterRegulationImpact = BaseEconomicImpact & {
+  actor: "community";
+  impactCategory: "environmental_monetary";
+  impact: "water_regulation";
 };
 
 export type EcosystemServicesImpact = BaseEconomicImpact & {
@@ -143,6 +148,7 @@ export type ReconversionProjectImpacts = {
       | PropertyTransferDutiesIncomeImpact
       | EcosystemServicesImpact
       | AvoidedCO2EqWithEnRImpact
+      | WaterRegulationImpact
     )[];
   };
 };

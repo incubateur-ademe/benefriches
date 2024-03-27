@@ -18,15 +18,25 @@ type EnvironmentalMonetaryImpactInput = {
   forecastSoilsCarbonStorage: number;
   operationsFirstYear: number;
   avoidedCO2TonsWithEnergyProduction?: number;
+  decontaminatedSurface?: number;
 };
 
-export type EnvironmentalMonetaryImpact = EcosystemServicesImpact | AvoidedCO2EqWithEnRImpact;
+export type EnvironmentalMonetaryImpact =
+  | EcosystemServicesImpact
+  | AvoidedCO2EqWithEnRImpact
+  | WaterRegulationImpact;
 
 type AvoidedCO2EqWithEnRImpact = {
   amount: number;
   actor: "human_society";
   impactCategory: "environmental_monetary";
   impact: "avoided_co2_eq_with_enr";
+};
+type WaterRegulationImpact = {
+  amount: number;
+  actor: "community";
+  impactCategory: "environmental_monetary";
+  impact: "water_regulation";
 };
 type EcosystemServicesImpact = {
   amount: number;
@@ -148,6 +158,19 @@ export const computeAvoidedCO2eqMonetaryValue = (
   return avoidedCO2Tons * co2eqMonetaryValue;
 };
 
+const WATER_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0118;
+const computeWaterRegulation = (
+  forestSurface: number,
+  prairieSurface: number,
+  wetLandSurface: number,
+  decontaminatedSurfaceArea: number,
+) => {
+  return (
+    (forestSurface + prairieSurface + wetLandSurface + decontaminatedSurfaceArea) *
+    WATER_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER
+  );
+};
+
 export const computeSoilsDifferential = (
   baseSoilsDistribution: SoilsDistribution,
   forecastSoilsDistribution: SoilsDistribution,
@@ -199,6 +222,22 @@ export const computeEnvironmentalMonetaryImpacts = (
     soilsDifferential,
     isSurfaceWithEcosystemBenefits,
   );
+
+  const waterRegulationImpact = computeWaterRegulation(
+    forestSurfaceDifference,
+    prairieSurfaceDifference,
+    wetLandSurfaceDifference,
+    input.decontaminatedSurface ?? 0,
+  );
+
+  if (waterRegulationImpact !== 0) {
+    impacts.push({
+      amount: Math.round(waterRegulationImpact * input.evaluationPeriodInYears),
+      impact: "water_regulation",
+      impactCategory: "environmental_monetary",
+      actor: "community",
+    });
+  }
 
   const ecosystemServicesImpacts: EcosystemServicesImpact["details"] = [
     {

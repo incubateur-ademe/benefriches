@@ -195,6 +195,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 impactCategory: "environmental_monetary",
               },
               {
+                actor: "community",
+                amount: 4720,
+                impact: "water_regulation",
+                impactCategory: "environmental_monetary",
+              },
+              {
                 actor: "human_society",
                 amount: 29820,
                 impact: "ecosystem_services",

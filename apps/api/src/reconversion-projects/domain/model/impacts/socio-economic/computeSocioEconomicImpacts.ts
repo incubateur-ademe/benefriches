@@ -23,6 +23,7 @@ type SocioEconomicImpactsInput = {
   forecastSoilsCarbonStorage: number;
   operationsFirstYear: number;
   avoidedCO2TonsWithEnergyProduction?: number;
+  decontaminatedSurface?: number;
 };
 
 type EconomicImpact = DirectAndIndirectEconomicImpact | EnvironmentalMonetaryImpact;
@@ -53,6 +54,7 @@ export const computeSocioEconomicImpacts = (
         forecastSoilsCarbonStorage: input.forecastSoilsCarbonStorage,
         operationsFirstYear: input.operationsFirstYear,
         avoidedCO2TonsWithEnergyProduction: input.avoidedCO2TonsWithEnergyProduction,
+        decontaminatedSurface: input.decontaminatedSurface,
       }),
     ] as EconomicImpact[],
   };
