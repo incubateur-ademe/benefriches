@@ -1,6 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 
+import { routes } from "@/app/views/router";
+
 export default function IntroSection() {
   return (
     <section className={fr.cx("fr-container", "fr-py-10w", "fr-pr-0")}>
@@ -13,7 +15,9 @@ export default function IntroSection() {
             <strong>environnementaux, sociaux et économiques</strong> d'un projet d'aménagement, sur{" "}
             <strong>friche</strong> ou en <strong>extension urbaine</strong>.
           </p>
-          <Button priority="primary">Calculer les impacts de votre projet</Button>
+          <Button priority="primary" linkProps={routes.createSiteFoncierIntro().link}>
+            Calculer les impacts de votre projet
+          </Button>
         </div>
         <div className={fr.cx("fr-col-5")}>
           <img src="/img/home-intro.svg" />

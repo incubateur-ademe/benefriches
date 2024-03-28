@@ -6,6 +6,7 @@ import {
   BENEFRICHES_TUTORIAL_URL,
 } from "../links";
 
+import { routes } from "@/app/views/router";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 export default function CallToActionSection() {
@@ -20,7 +21,9 @@ export default function CallToActionSection() {
               Calculez les impacts d'un projet photovoltaïque sur une friche ou sur un autre site
               grâce à Bénéfriches !
             </p>
-            <Button priority="primary">Accéder à Bénéfriches</Button>
+            <Button priority="primary" linkProps={routes.createSiteFoncierIntro().link}>
+              Accéder à Bénéfriches
+            </Button>
           </div>
           <hr />
           <div className={fr.cx("fr-col-7", "fr-pl-8w")}>
@@ -47,7 +50,9 @@ export default function CallToActionSection() {
               Soyez informé·e de la sortie des fonctionnalités de Bénéfriches en répondant à ce
               questionnaire :
             </p>
-            <Button priority="primary">Être tenu informé</Button>
+            <Button priority="primary" data-tally-open="npKkaE" data-tally-width="450">
+              Être tenu informé
+            </Button>
           </div>
         </div>
       </div>
