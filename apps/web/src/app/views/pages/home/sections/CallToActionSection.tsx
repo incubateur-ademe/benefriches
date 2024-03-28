@@ -11,7 +11,7 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 export default function CallToActionSection() {
   return (
-    <section className={fr.cx("fr-py-10w")} style={{ background: "#F6F6F6" }}>
+    <section className={fr.cx("fr-py-10w")} style={{ background: "#F6F6F6" }} id="cta-section">
       <div className={fr.cx("fr-container")}>
         <div className={fr.cx("fr-grid-row")}>
           <div className={fr.cx("fr-col-5", "fr-pr-8w")} style={{ borderRight: "1px solid #DDD" }}>
