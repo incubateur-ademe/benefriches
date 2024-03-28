@@ -9,7 +9,7 @@ export default function IntroSection() {
           <h1>Bénéfriches</h1>
           <h2>L'outil qui calcule la valeur réelle d'un projet d'aménagement urbain</h2>
           <p className={fr.cx("fr-text--xl")}>
-            Bénéfriches est un outil unmérique qui quantifie et monétarise les impacts{" "}
+            Bénéfriches, l'outil unmérique qui quantifie et monétarise les impacts{" "}
             <strong>environnementaux, sociaux et économiques</strong> d'un projet d'aménagement, sur{" "}
             <strong>friche</strong> ou en <strong>extension urbaine</strong>.
           </p>

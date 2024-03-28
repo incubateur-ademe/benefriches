@@ -23,7 +23,7 @@ function BenefrichesHeader() {
       }}
       quickAccessItems={[
         {
-          iconId: "fr-icon-account-line",
+          iconId: "fr-icon-briefcase-fill",
           linkProps: routes.myProjects().link,
           text: "Mes projets",
         },
