@@ -4,6 +4,7 @@ import DataSourcesSection from "./sections/DataSourcesSection";
 import HowItWorksSection from "./sections/HowItWorksSection";
 import IntroSection from "./sections/IntroSection";
 import MilestonesSection from "./sections/MilestonesSection";
+import SupportedProjectsSection from "./sections/SupportedProjectsSection";
 import TargetsSection from "./sections/TargetsSection";
 
 function HomePage() {
@@ -51,6 +52,7 @@ function HomePage() {
           </div>
         </div>
       </section>
+      <SupportedProjectsSection />
       <MilestonesSection />
       <CallToActionSection />
     </>

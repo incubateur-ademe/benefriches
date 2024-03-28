@@ -35,10 +35,8 @@ export default function CallToActionSection() {
               d'utiliser le{" "}
               <ExternalLink href={BENEFRICHES_SPREADSHEET_URL}>tableur de calcul</ExternalLink>{" "}
               (téléchargement libre). Pour vous aider dans son utilisation, consultez le{" "}
-              <ExternalLink href={BENEFRICHES_TUTORIAL_URL}>tutoriel</ExternalLink>, la
-              <ExternalLink href={BENEFRICHES_DOCUMENTATION_URL}>
-                notice d'utilisation
-              </ExternalLink>{" "}
+              <ExternalLink href={BENEFRICHES_TUTORIAL_URL}>tutoriel</ExternalLink>, la{" "}
+              <ExternalLink href={BENEFRICHES_DOCUMENTATION_URL}>notice d'utilisation</ExternalLink>{" "}
               ou le{" "}
               <ExternalLink href="https://www.dailymotion.com/video/x8msk3b">
                 webinaire de présentation
