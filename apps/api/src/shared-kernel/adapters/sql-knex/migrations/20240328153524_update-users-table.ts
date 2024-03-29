@@ -1,6 +1,9 @@
 import type { Knex } from "knex";
 
 export async function up(knex: Knex): Promise<void> {
+  await knex.schema.alterTable("users", (table) => {
+    table.dropPrimary("users_pkey");
+  });
   await knex.schema.renameTable("users", "users_deprecated");
   await knex.schema.createTable("users", function (t) {
     t.uuid("id").primary();
