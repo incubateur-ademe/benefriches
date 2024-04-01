@@ -1,10 +1,16 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import CallOut from "@codegouvfr/react-dsfr/CallOut";
+import { Route } from "type-route";
 
 import { routes } from "@/app/views/router";
 
-function ProjectsImpactsComparison() {
+type Props = {
+  route: Route<typeof routes.compareProjects>;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function ProjectsImpactsComparison(_: Props) {
   return (
     <div className={fr.cx("fr-container", "fr-py-5v")}>
       <h1>Comparaison de scénarios</h1>
