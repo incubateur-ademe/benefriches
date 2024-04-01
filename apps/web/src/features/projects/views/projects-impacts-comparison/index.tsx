@@ -1,91 +1,23 @@
-import { useEffect, useMemo } from "react";
-import { Route } from "type-route";
-import { fetchBaseProjectAndWithProjectData } from "../../application/projectImpactsComparison.actions";
-import { Project, ProjectSite } from "../../domain/projects.types";
-import ProjectsImpactsComparisonPage from "./ProjectsImpactsComparisonPage";
+import { fr } from "@codegouvfr/react-dsfr";
+import Button from "@codegouvfr/react-dsfr/Button";
+import CallOut from "@codegouvfr/react-dsfr/CallOut";
 
 import { routes } from "@/app/views/router";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-type Props = {
-  route: Route<typeof routes.compareProjects>;
-};
-
-type SuccessDataProps = {
-  baseScenario:
-    | {
-        type: "STATU_QUO";
-        id: string;
-        siteData: ProjectSite;
-      }
-    | {
-        type: "PROJECT";
-        id: string;
-        projectData: Project;
-        siteData: ProjectSite;
-      };
-  withScenario: {
-    type: "PROJECT";
-    id: string;
-    projectData: Project;
-    siteData: ProjectSite;
-  };
-  dataLoadingState: "success";
-};
-
-type ErrorOrLoadingDataProps = {
-  dataLoadingState: "idle" | "error" | "loading";
-  baseScenario: {
-    id: undefined;
-    type: undefined;
-    projectData: undefined;
-    siteData: undefined;
-  };
-  withScenario: {
-    id: undefined;
-    type: undefined;
-    projectData: undefined;
-    siteData: undefined;
-  };
-};
-
-function ProjectsImpactsComparison({ route }: Props) {
-  const dispatch = useAppDispatch();
-
-  const { baseProjectId, avecProjet } = useMemo(() => route.params, [route.params]);
-
-  const { baseScenario, withScenario, dataLoadingState } = useAppSelector(
-    (state) => state.projectImpactsComparison,
-  ) as SuccessDataProps | ErrorOrLoadingDataProps;
-
-  useEffect(() => {
-    async function fetchData() {
-      await dispatch(
-        fetchBaseProjectAndWithProjectData({
-          baseProjectId,
-          withProject: avecProjet,
-        }),
-      );
-    }
-    void fetchData();
-  }, [avecProjet, baseProjectId, dispatch]);
-
-  if (dataLoadingState === "success") {
-    return (
-      <ProjectsImpactsComparisonPage
-        baseScenario={baseScenario}
-        withScenario={withScenario}
-        loadingState="success"
-      />
-    );
-  }
-
+function ProjectsImpactsComparison() {
   return (
-    <ProjectsImpactsComparisonPage
-      baseScenario={undefined}
-      withScenario={undefined}
-      loadingState={dataLoadingState}
-    />
+    <div className={fr.cx("fr-container", "fr-py-5v")}>
+      <h1>Comparaison de scénarios</h1>
+      <CallOut title="En construction">
+        Désolé, cette page est toujours en construction. Les données ne sont donc pas accessibles
+        pour l'instant. Nous travaillons activement pour vous donner de la visibilité le plus
+        rapidement possible.
+      </CallOut>
+
+      <Button priority="primary" {...routes.myProjects().link}>
+        Retour à mes projets
+      </Button>
+    </div>
   );
 }
 
