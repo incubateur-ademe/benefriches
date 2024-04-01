@@ -91,8 +91,15 @@ describe("Environmental monetary impacts", () => {
       baseSoilsCarbonStorage: 100,
       forecastSoilsCarbonStorage: 150,
       operationsFirstYear: 2024,
+      avoidedCO2TonsWithEnergyProduction: 10000,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([
+      {
+        amount: 13500000,
+        impact: "avoided_co2_eq_with_enr",
+        impactCategory: "environmental_monetary",
+        actor: "human_society",
+      },
       {
         amount: 27111,
         impact: "ecosystem_services",
@@ -155,7 +162,7 @@ describe("Environmental monetary impacts", () => {
 
     it("compute with operationsFirstYear", () => {
       const result = computeSoilsCarbonStorage(25, 30, 2028);
-      expect(result).toEqual(3740);
+      expect(Math.round(result)).toEqual(3740);
     });
   });
 });

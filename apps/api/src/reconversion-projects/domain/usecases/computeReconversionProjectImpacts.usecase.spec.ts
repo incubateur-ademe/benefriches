@@ -190,6 +190,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               },
               {
                 actor: "human_society",
+                amount: 168444,
+                impact: "avoided_co2_eq_with_enr",
+                impactCategory: "environmental_monetary",
+              },
+              {
+                actor: "human_society",
                 amount: 29820,
                 impact: "ecosystem_services",
                 impactCategory: "environmental_monetary",
