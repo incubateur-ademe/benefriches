@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { ProjectImpactsState } from "../../application/projectImpacts.reducer";
 import ProjectImpactsPage from "./ProjectImpactsPage";
@@ -15,17 +16,19 @@ function ProjectImpactsPageWrapper({
   evaluationPeriod,
 }: Props) {
   if (dataLoadingState === "loading") {
-    return <p>Chargement en cours ...</p>;
+    return <div className={fr.cx("fr-container", "fr-py-3v")}>Chargement en cours ...</div>;
   }
 
   if (dataLoadingState === "error") {
     return (
-      <Alert
-        description="Une erreur s’est produite lors du chargement des données."
-        severity="error"
-        title="Erreur"
-        className="fr-my-7v"
-      />
+      <div className={fr.cx("fr-container", "fr-py-3v")}>
+        <Alert
+          description="Une erreur s’est produite lors du chargement des données."
+          severity="error"
+          title="Impossible de charger les impacts du projet"
+          className="fr-my-7v"
+        />
+      </div>
     );
   }
 

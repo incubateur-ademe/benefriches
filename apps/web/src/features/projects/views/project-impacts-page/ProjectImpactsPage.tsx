@@ -22,6 +22,27 @@ export type ImpactCategoryFilter = ImpactCategory | "all";
 
 export type ViewMode = "charts" | "list";
 
+const ProjectImpactsPageTabs = () => {
+  return (
+    <ul
+      className={fr.cx("fr-tabs__list", "fr-container", "fr-mx-auto")}
+      style={{ marginLeft: "auto", marginRight: "auto" }}
+      role="tablist"
+    >
+      <li role="presentation">
+        <button className="fr-tabs__tab" tabIndex={0} role="tab" aria-selected="true">
+          Impacts
+        </button>
+      </li>
+      <li role="presentation">
+        <button className="fr-tabs__tab" tabIndex={-1} role="tab" disabled>
+          Caractéristiques
+        </button>
+      </li>
+    </ul>
+  );
+};
+
 const ProjectImpactsPage = ({
   project,
   impacts,
@@ -32,22 +53,36 @@ const ProjectImpactsPage = ({
   const [currentViewMode, setViewMode] = useState<ViewMode>("charts");
 
   return (
-    <div className={fr.cx("fr-container", "fr-py-4w")}>
+    <div style={{ background: "#ECF5FD" }}>
       <ProjectsImpactsPageHeader
         projectId={project.id}
         projectName={project.name}
         siteName={project.relatedSiteName}
       />
-      <ProjectsComparisonActionBar
-        selectedFilter={currentFilter}
-        selectedViewMode={currentViewMode}
-        evaluationPeriod={evaluationPeriod}
-        onFilterClick={setSelectedFilter}
-        onViewModeClick={setViewMode}
-        onEvaluationPeriodChange={onEvaluationPeriodChange}
-      />
-      {currentViewMode === "charts" && <ImpactsChartsView project={project} impacts={impacts} />}
-      {currentViewMode === "list" && <ImpactsListView project={project} impacts={impacts} />}
+
+      <div className={fr.cx("fr-tabs")}>
+        <ProjectImpactsPageTabs />
+        <div
+          className={fr.cx("fr-tabs__panel", "fr-tabs__panel--selected")}
+          role="tabpanel"
+          style={{ background: fr.colors.decisions.background.default.grey.default }}
+        >
+          <div className={fr.cx("fr-container")}>
+            <ProjectsComparisonActionBar
+              selectedFilter={currentFilter}
+              selectedViewMode={currentViewMode}
+              evaluationPeriod={evaluationPeriod}
+              onFilterClick={setSelectedFilter}
+              onViewModeClick={setViewMode}
+              onEvaluationPeriodChange={onEvaluationPeriodChange}
+            />
+            {currentViewMode === "charts" && (
+              <ImpactsChartsView project={project} impacts={impacts} />
+            )}
+            {currentViewMode === "list" && <ImpactsListView project={project} impacts={impacts} />}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

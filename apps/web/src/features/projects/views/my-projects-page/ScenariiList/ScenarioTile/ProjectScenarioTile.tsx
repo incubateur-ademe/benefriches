@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getScenarioPictoUrl } from "../../../shared/scenarioType";
 import ScenarioTile from "./ScenarioTile";
 
 import { routes } from "@/app/views/router";
@@ -11,13 +12,6 @@ type Props = {
   yearlyProfit: number;
   type: string;
   onChangeSelectedProject: (id: string, checked: boolean) => void;
-};
-
-const getProjectPictoUrl = (type: string) => {
-  if (type === "PHOTOVOLTAIC_POWER_PLANT") {
-    return "/icons/photovoltaique.svg";
-  }
-  return undefined;
 };
 
 function ProjectScenarioTile({
@@ -59,7 +53,7 @@ function ProjectScenarioTile({
       impactLinkProps={projectImpactsLinkProps}
       onChangeCheckbox={onChangeCheckbox}
       yearlyProfit={yearlyProfit}
-      pictogramUrl={getProjectPictoUrl(type)}
+      pictogramUrl={getScenarioPictoUrl(type)}
       isSelected={isSelected}
       shouldDisplayCheckbox={shouldDisplayCheckbox}
       onMouseEnter={onMouseEnter}
