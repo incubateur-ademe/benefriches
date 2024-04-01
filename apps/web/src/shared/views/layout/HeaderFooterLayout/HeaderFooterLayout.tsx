@@ -10,7 +10,7 @@ function HeaderFooterLayout({ children }: HeaderFooterLayoutProps) {
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       <BenefrichesHeader />
-      {children}
+      <main style={{ flexGrow: 1 }}>{children}</main>
       <BenefrichesFooter />
     </div>
   );

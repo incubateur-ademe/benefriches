@@ -32,7 +32,7 @@ function App() {
 
   return (
     <HeaderFooterLayout>
-      <main>
+      <>
         {route.name === routes.home.name && <HomePage />}
         {route.name === routes.login.name && <LoginPage />}
         {route.name === routes.createUser.name && <CreateUserPage />}
@@ -60,7 +60,7 @@ function App() {
         {route.name === false && (
           <section className={fr.cx("fr-container", "fr-py-4w")}>Page non trouvée</section>
         )}
-      </main>
+      </>
     </HeaderFooterLayout>
   );
 }
