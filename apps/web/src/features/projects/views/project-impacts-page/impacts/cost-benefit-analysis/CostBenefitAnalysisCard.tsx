@@ -3,18 +3,20 @@ import HighchartsReact from "highcharts-react-official";
 import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
 
+import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   economicBalanceTotal: number;
-  socioEconomicImpactTotal: number;
+  socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"];
 };
 
-function CostBenefitAnalysisCard({
-  economicBalanceTotal,
-  socioEconomicImpactTotal = 156656,
-}: Props) {
+function CostBenefitAnalysisCard({ economicBalanceTotal, socioEconomicImpacts }: Props) {
+  const socioEconomicImpactTotal = socioEconomicImpacts.impacts
+    .map(({ amount }) => amount)
+    .reduce((total, amount) => total + amount, 0);
+
   const maxAbsValue =
     Math.abs(economicBalanceTotal) > Math.abs(socioEconomicImpactTotal)
       ? Math.abs(economicBalanceTotal)

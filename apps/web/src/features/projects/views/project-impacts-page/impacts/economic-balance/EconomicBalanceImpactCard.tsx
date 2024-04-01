@@ -126,7 +126,12 @@ function EconomicBalanceImpactCard({ revenues, costs }: Props) {
         stacking: "normal",
       },
     },
-
+    legend: {
+      layout: "vertical",
+      align: "right",
+      width: "40%",
+      verticalAlign: "middle",
+    },
     series: [
       ...(getRevenuesValue({ operationsRevenues, financialAssistance }).map(({ name, value }) => ({
         name,

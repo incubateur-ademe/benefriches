@@ -3,7 +3,9 @@ import { formatMonetaryImpact } from "./formatImpactValue";
 import ImpactDetailLabel from "./ImpactDetailLabel";
 import ImpactDetailRow from "./ImpactItemDetailRow";
 import ImpactItemGroup from "./ImpactItemGroup";
+import ImpactItemRow from "./ImpactItemRow";
 import ImpactLabel from "./ImpactLabel";
+import ImpactSectionTitle from "./ImpactSectionTitle";
 import ImpactValue from "./ImpactValue";
 import SocioEconomicEnvironmentalMonetaryImpactsSection from "./SocioEconomicEnvironmentalMonetarySection";
 
@@ -16,6 +18,14 @@ type Props = {
 type SocioEconomicImpactRowProps = {
   impact: Props["socioEconomicImpacts"][number];
 };
+
+const sumSocioEconomicImpactsByCategory = (
+  socioEconomicImpacts: Props["socioEconomicImpacts"],
+  category: Props["socioEconomicImpacts"][number]["impactCategory"],
+) =>
+  socioEconomicImpacts
+    .filter(({ impactCategory }) => impactCategory === category)
+    .reduce((total, { amount }) => total + amount, 0);
 
 const SocioEconomicImpactRow = ({ impact }: SocioEconomicImpactRowProps) => {
   return (
@@ -44,11 +54,24 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
   const propertyTransferDutiesIncomeImpact =
     socioEconomicImpacts.find((i) => i.impact === "property_transfer_duties_income") ?? null;
 
+  const economicDirectTotal = sumSocioEconomicImpactsByCategory(
+    socioEconomicImpacts,
+    "economic_direct",
+  );
+
+  const economicIndirectTotal = sumSocioEconomicImpactsByCategory(
+    socioEconomicImpacts,
+    "economic_indirect",
+  );
+
   return (
     <section className="fr-mb-5w">
       <h3>Impacts économiques</h3>
       <section className="fr-mb-5w">
-        <h4>Impacts économiques directs</h4>
+        <ImpactItemRow>
+          <ImpactSectionTitle>Impacts économiques directs</ImpactSectionTitle>
+          <ImpactValue isTotal>{formatMonetaryImpact(economicDirectTotal)}</ImpactValue>
+        </ImpactItemRow>
         {hasRentalIncomeImpacts && (
           <ImpactItemGroup>
             <ImpactLabel>🔑 Revenu locatif</ImpactLabel>
@@ -67,7 +90,10 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
         )}
       </section>
       <section className="fr-mb-5w">
-        <h4>Impacts économiques indirects</h4>
+        <ImpactItemRow>
+          <ImpactSectionTitle>Impacts économiques indirects</ImpactSectionTitle>
+          <ImpactValue isTotal>{formatMonetaryImpact(economicIndirectTotal)}</ImpactValue>
+        </ImpactItemRow>
         {hasTaxesIncomeImpacts && (
           <ImpactItemGroup>
             <ImpactLabel>🏛 Recettes fiscales</ImpactLabel>
