@@ -1,5 +1,7 @@
 import {
+  computeCO2eqMonetaryValueForYear,
   computeEnvironmentalMonetaryImpacts,
+  computeSoilsCarbonStorage,
   computeSoilsDifferential,
   type EnvironmentalMonetaryImpactResult,
 } from "./computeEnvironmentalMonetaryImpacts";
@@ -16,6 +18,9 @@ describe("Environmental monetary impacts", () => {
         PRAIRIE_BUSHES: 1000,
         FOREST_CONIFER: 200,
       },
+      baseSoilsCarbonStorage: 0,
+      forecastSoilsCarbonStorage: 0,
+      operationsFirstYear: 2024,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([]);
   });
@@ -83,14 +88,18 @@ describe("Environmental monetary impacts", () => {
         WET_LAND: 300,
         ARTIFICIAL_TREE_FILLED: 300,
       },
+      baseSoilsCarbonStorage: 100,
+      forecastSoilsCarbonStorage: 150,
+      operationsFirstYear: 2024,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([
       {
-        amount: 2361,
+        amount: 27111,
         impact: "ecosystem_services",
         impactCategory: "environmental_monetary",
         actor: "human_society",
         details: [
+          { amount: 24750, impact: "carbon_storage" },
           { amount: 67, impact: "nature_related_wellness_and_leisure" },
           { amount: 120, impact: "pollination" },
           { amount: 44, impact: "invasive_species_regulation" },
@@ -116,14 +125,18 @@ describe("Environmental monetary impacts", () => {
         WET_LAND: 250,
         IMPERMEABLE_SOILS: 500,
       },
+      baseSoilsCarbonStorage: 250,
+      forecastSoilsCarbonStorage: 150,
+      operationsFirstYear: 2024,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([
       {
-        amount: -882,
+        amount: -50382,
         impact: "ecosystem_services",
         impactCategory: "environmental_monetary",
         actor: "human_society",
         details: [
+          { amount: -49500, impact: "carbon_storage" },
           { amount: -51, impact: "nature_related_wellness_and_leisure" },
           { amount: -51, impact: "pollination" },
           { amount: -746, impact: "water_cycle" },
@@ -131,5 +144,18 @@ describe("Environmental monetary impacts", () => {
         ],
       },
     ]);
+  });
+
+  describe("computeSoilsCarbonStorage", () => {
+    it("compute CO2 eq monetary value for a year", () => {
+      expect(computeCO2eqMonetaryValueForYear(2025)).toEqual(150);
+      expect(computeCO2eqMonetaryValueForYear(2027)).toEqual(184);
+      expect(computeCO2eqMonetaryValueForYear(2030)).toEqual(250);
+    });
+
+    it("compute with operationsFirstYear", () => {
+      const result = computeSoilsCarbonStorage(25, 30, 2028);
+      expect(result).toEqual(3740);
+    });
   });
 });

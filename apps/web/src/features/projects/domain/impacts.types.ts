@@ -35,7 +35,8 @@ export type EcosystemServicesImpact = BaseEconomicImpact & {
       | "invasive_species_regulation"
       | "water_cycle"
       | "nitrogen_cycle"
-      | "soil_erosion";
+      | "soil_erosion"
+      | "carbon_storage";
   }[];
 };
 

@@ -1,3 +1,4 @@
+import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 import { SoilsDistribution } from "src/soils/domain/soils";
 import {
@@ -81,6 +82,7 @@ export type ReconversionProjectImpactsDataView = {
   yearlyProjectedCosts: { amount: number; purpose: string }[];
   yearlyProjectedRevenues: { amount: number; source: string }[];
   developmentPlanExpectedAnnualEnergyProductionMWh?: number;
+  operationsFirstYear?: number;
 };
 
 export interface ReconversionProjectImpactsRepository {
@@ -131,6 +133,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     private readonly reconversionProjectRepository: ReconversionProjectImpactsRepository,
     private readonly siteRepository: SiteImpactsRepository,
     private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
+    private readonly dateProvider: DateProvider,
   ) {}
 
   async execute({ reconversionProjectId, evaluationPeriodInYears }: Request): Promise<Result> {
@@ -142,6 +145,13 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     const relatedSite = await this.siteRepository.getById(reconversionProject.relatedSiteId);
 
     if (!relatedSite) throw new SiteNotFound(reconversionProject.relatedSiteId);
+
+    const soilsCarbonStorage = await computeSoilsCarbonStorageImpact({
+      currentSoilsDistribution: relatedSite.soilsDistribution,
+      forecastSoilsDistribution: reconversionProject.soilsDistribution,
+      siteCityCode: relatedSite.addressCityCode,
+      getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
+    });
 
     return {
       id: reconversionProjectId,
@@ -175,6 +185,10 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           evaluationPeriodInYears,
           baseSoilsDistribution: relatedSite.soilsDistribution,
           forecastSoilsDistribution: reconversionProject.soilsDistribution,
+          baseSoilsCarbonStorage: soilsCarbonStorage.current.total,
+          forecastSoilsCarbonStorage: soilsCarbonStorage.forecast.total,
+          operationsFirstYear:
+            reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear(),
         }),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,
@@ -223,12 +237,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
                   reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
               })
             : undefined,
-        soilsCarbonStorage: await computeSoilsCarbonStorageImpact({
-          currentSoilsDistribution: relatedSite.soilsDistribution,
-          forecastSoilsDistribution: reconversionProject.soilsDistribution,
-          siteCityCode: relatedSite.addressCityCode,
-          getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
-        }),
+        soilsCarbonStorage,
       },
     };
   }

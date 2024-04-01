@@ -19,6 +19,9 @@ type SocioEconomicImpactsInput = {
   propertyTransferDutiesAmount?: number;
   baseSoilsDistribution: SoilsDistribution;
   forecastSoilsDistribution: SoilsDistribution;
+  baseSoilsCarbonStorage: number;
+  forecastSoilsCarbonStorage: number;
+  operationsFirstYear: number;
 };
 
 type EconomicImpact = DirectAndIndirectEconomicImpact | EnvironmentalMonetaryImpact;
@@ -45,6 +48,9 @@ export const computeSocioEconomicImpacts = (
         baseSoilsDistribution: input.baseSoilsDistribution,
         forecastSoilsDistribution: input.forecastSoilsDistribution,
         evaluationPeriodInYears: input.evaluationPeriodInYears,
+        baseSoilsCarbonStorage: input.baseSoilsCarbonStorage,
+        forecastSoilsCarbonStorage: input.forecastSoilsCarbonStorage,
+        operationsFirstYear: input.operationsFirstYear,
       }),
     ] as EconomicImpact[],
   };
