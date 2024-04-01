@@ -1,6 +1,8 @@
 import { v4 as uuid } from "uuid";
 import { InMemoryReconversionProjectImpactsRepository } from "src/reconversion-projects/adapters/secondary/reconversion-project-impacts-repository/InMemoryReconversionProjectImpactsRepository";
 import { InMemorySiteImpactsRepository } from "src/reconversion-projects/adapters/secondary/site-impacts-repository/InMemorySiteImpactsRepository";
+import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
+import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
   ComputeReconversionProjectImpactsUseCase,
@@ -10,14 +12,23 @@ import {
 } from "./computeReconversionProjectImpacts.usecase";
 
 describe("ComputeReconversionProjectImpactsUseCase", () => {
+  let dateProvider: DateProvider;
+  const fakeNow = new Date("2024-01-05T13:00:00");
+
+  beforeEach(() => {
+    dateProvider = new DeterministicDateProvider(fakeNow);
+  });
+
   describe("Error cases", () => {
     it("throws error when reconversion project does not exist", async () => {
       const projectRepository = new InMemoryReconversionProjectImpactsRepository();
       const siteRepository = new InMemorySiteImpactsRepository();
+
       const usecase = new ComputeReconversionProjectImpactsUseCase(
         projectRepository,
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
+        dateProvider,
       );
 
       const reconversionProjectId = uuid();
@@ -48,6 +59,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         projectRepository,
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
+        dateProvider,
       );
 
       const evaluationPeriodInYears = 10;
@@ -138,6 +150,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         projectRepository,
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
+        dateProvider,
       );
       const result = await usecase.execute({
         reconversionProjectId: reconversionProjectImpactDataView.id,

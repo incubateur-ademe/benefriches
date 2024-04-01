@@ -1,3 +1,4 @@
+import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 import { SoilsDistribution } from "src/soils/domain/soils";
 import {
@@ -132,6 +133,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     private readonly reconversionProjectRepository: ReconversionProjectImpactsRepository,
     private readonly siteRepository: SiteImpactsRepository,
     private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
+    private readonly dateProvider: DateProvider,
   ) {}
 
   async execute({ reconversionProjectId, evaluationPeriodInYears }: Request): Promise<Result> {
@@ -185,7 +187,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           forecastSoilsDistribution: reconversionProject.soilsDistribution,
           baseSoilsCarbonStorage: soilsCarbonStorage.current.total,
           forecastSoilsCarbonStorage: soilsCarbonStorage.forecast.total,
-          operationsFirstYear: reconversionProject.operationsFirstYear,
+          operationsFirstYear:
+            reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear(),
         }),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,

@@ -16,7 +16,7 @@ type EnvironmentalMonetaryImpactInput = {
   forecastSoilsDistribution: SoilsDistribution;
   baseSoilsCarbonStorage: number;
   forecastSoilsCarbonStorage: number;
-  operationsFirstYear?: number;
+  operationsFirstYear: number;
 };
 
 export type EnvironmentalMonetaryImpact = EcosystemServicesImpact;
@@ -124,7 +124,7 @@ const RATIO_CO2_TO_CARBON = 12 / 44;
 export const computeSoilsCarbonStorage = (
   baseSoilsCarbonStorage: number,
   forecastSoilsCarbonStorage: number,
-  operationsFirstYear = 2024,
+  operationsFirstYear: number,
 ) => {
   const co2eqMonetaryValue = computeCO2eqMonetaryValueForYear(operationsFirstYear);
 

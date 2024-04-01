@@ -21,7 +21,7 @@ type SocioEconomicImpactsInput = {
   forecastSoilsDistribution: SoilsDistribution;
   baseSoilsCarbonStorage: number;
   forecastSoilsCarbonStorage: number;
-  operationsFirstYear?: number;
+  operationsFirstYear: number;
 };
 
 type EconomicImpact = DirectAndIndirectEconomicImpact | EnvironmentalMonetaryImpact;

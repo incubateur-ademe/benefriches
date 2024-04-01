@@ -51,17 +51,20 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         reconversionProjectRepo: SqlReconversionProjectImpactsRepository,
         siteRepo: SqlSiteImpactsRepository,
         getCityCarbonStoragePerSoilsCategoryUseCase: GetCityCarbonStoragePerSoilsCategoryUseCase,
+        dateProvider: IDateProvider,
       ) {
         return new ComputeReconversionProjectImpactsUseCase(
           reconversionProjectRepo,
           siteRepo,
           getCityCarbonStoragePerSoilsCategoryUseCase,
+          dateProvider,
         );
       },
       inject: [
         SqlReconversionProjectImpactsRepository,
         SqlSiteImpactsRepository,
         GetCityCarbonStoragePerSoilsCategoryUseCase,
+        DateProvider,
       ],
     },
     SqlReconversionProjectRepository,

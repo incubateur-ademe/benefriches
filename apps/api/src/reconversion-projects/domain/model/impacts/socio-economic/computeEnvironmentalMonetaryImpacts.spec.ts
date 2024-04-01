@@ -20,6 +20,7 @@ describe("Environmental monetary impacts", () => {
       },
       baseSoilsCarbonStorage: 0,
       forecastSoilsCarbonStorage: 0,
+      operationsFirstYear: 2024,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([]);
   });
@@ -89,6 +90,7 @@ describe("Environmental monetary impacts", () => {
       },
       baseSoilsCarbonStorage: 100,
       forecastSoilsCarbonStorage: 150,
+      operationsFirstYear: 2024,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([
       {
@@ -125,6 +127,7 @@ describe("Environmental monetary impacts", () => {
       },
       baseSoilsCarbonStorage: 250,
       forecastSoilsCarbonStorage: 150,
+      operationsFirstYear: 2024,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([
       {
