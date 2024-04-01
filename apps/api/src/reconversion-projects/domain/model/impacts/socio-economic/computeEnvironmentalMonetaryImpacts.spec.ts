@@ -92,6 +92,7 @@ describe("Environmental monetary impacts", () => {
       forecastSoilsCarbonStorage: 150,
       operationsFirstYear: 2024,
       avoidedCO2TonsWithEnergyProduction: 10000,
+      decontaminatedSurface: 1000,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([
       {
@@ -99,6 +100,12 @@ describe("Environmental monetary impacts", () => {
         impact: "avoided_co2_eq_with_enr",
         impactCategory: "environmental_monetary",
         actor: "human_society",
+      },
+      {
+        amount: 236,
+        impact: "water_regulation",
+        impactCategory: "environmental_monetary",
+        actor: "community",
       },
       {
         amount: 27111,
@@ -137,6 +144,12 @@ describe("Environmental monetary impacts", () => {
       operationsFirstYear: 2024,
     });
     expect(result).toEqual<EnvironmentalMonetaryImpactResult>([
+      {
+        amount: -65,
+        impact: "water_regulation",
+        impactCategory: "environmental_monetary",
+        actor: "community",
+      },
       {
         amount: -50382,
         impact: "ecosystem_services",

@@ -198,6 +198,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           operationsFirstYear:
             reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear(),
           avoidedCO2TonsWithEnergyProduction: avoidedCO2TonsWithEnergyProduction?.forecast,
+          decontaminatedSurface: relatedSite.contaminatedSoilSurface,
         }),
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,
