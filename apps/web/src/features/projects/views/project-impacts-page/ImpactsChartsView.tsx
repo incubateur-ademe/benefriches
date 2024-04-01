@@ -28,23 +28,31 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
     <div>
       <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts économiques</h3>
-        <Row>
-          <div className={fr.cx("fr-col-6")}>
+        <div
+          style={{
+            display: "grid",
+            gridGap: "1em",
+            gridTemplateColumns: "1fr 1fr",
+            gridTemplateRows: "1fr 1fr",
+          }}
+        >
+          <div style={{ gridRow: "1 / 3" }}>
             <CostBenefitAnalysisCard
               economicBalanceTotal={impacts.economicBalance.total}
               socioEconomicImpacts={impacts.socioeconomic}
             />
           </div>
-          <div className={fr.cx("fr-col-6")}>
+          <div style={{ gridRow: "1" }}>
             <EconomicBalanceImpactCard
               costs={impacts.economicBalance.costs}
               revenues={impacts.economicBalance.revenues}
             />
-            <div className="fr-mt-3w">
-              <SocioEconomicImpactsCard socioEconomicImpacts={impacts.socioeconomic.impacts} />
-            </div>
           </div>
-        </Row>
+
+          <div style={{ gridRow: "2" }}>
+            <SocioEconomicImpactsCard socioEconomicImpacts={impacts.socioeconomic.impacts} />
+          </div>
+        </div>
       </section>
       <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts environnementaux</h3>
