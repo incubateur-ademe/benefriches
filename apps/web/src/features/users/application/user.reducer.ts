@@ -1,15 +1,20 @@
-import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { User } from "../domain/user";
-import { initCurrentUserAction } from "./initCurrentUser.action";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User, UserStructure } from "../domain/user";
+import { createUser } from "./createUser.action";
+import { initCurrentUser } from "./initCurrentUser.action";
 
 import { RootState } from "@/app/application/store";
 
 export type State = {
   currentUser: User | null;
+  currentUserLoaded: boolean;
+  createUserState: "idle" | "loading" | "success" | "error";
 };
 
 const initialState: State = {
   currentUser: null,
+  currentUserLoaded: false,
+  createUserState: "idle",
 };
 
 export const userSlice = createSlice({
@@ -17,22 +22,41 @@ export const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
-    builder.addCase(initCurrentUserAction.fulfilled, (state, action) => {
+    builder.addCase(initCurrentUser.fulfilled, (state, action: PayloadAction<User | undefined>) => {
+      state.currentUserLoaded = true;
+
+      if (action.payload) state.currentUser = action.payload;
+    });
+    builder.addCase(createUser.pending, (state) => {
+      state.createUserState = "loading";
+    });
+    builder.addCase(createUser.fulfilled, (state, action: PayloadAction<User>) => {
       state.currentUser = action.payload;
+      state.createUserState = "success";
+    });
+    builder.addCase(createUser.rejected, (state) => {
+      state.createUserState = "error";
     });
   },
 });
 
-export const selectCurrentUserCompany = createSelector(
+export const selectCurrentUserStructure = createSelector(
   [(state: RootState) => state.currentUser],
-  (state): Exclude<User["organization"], undefined> => {
-    return (
-      state.currentUser?.organization ?? {
-        id: "",
-        type: "company",
-        name: "Raison sociale non renseignée",
-      }
-    );
+  (state): UserStructure | undefined => {
+    return state.currentUser
+      ? {
+          type: state.currentUser.structureType,
+          activity: state.currentUser.structureActivity,
+          name: state.currentUser.structureName,
+        }
+      : undefined;
+  },
+);
+
+export const isCurrentUserLoaded = createSelector(
+  [(state: RootState) => state.currentUser],
+  (state) => {
+    return state.currentUserLoaded;
   },
 );
 

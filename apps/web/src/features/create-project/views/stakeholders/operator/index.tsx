@@ -9,14 +9,14 @@ import { fetchSiteLocalAuthorities } from "@/features/create-project/application
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { getSiteStakeholders } from "@/features/create-project/domain/stakeholders";
-import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
+import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const convertFormValuesForStore = (
   data: FormValues,
   projectSite: ProjectSite,
-  currentUserCompany: string,
+  currentUserStructureName: string | undefined,
   siteLocalAuthorities: SiteLocalAuthorities,
 ): ProjectStakeholder => {
   switch (data.futureOperator) {
@@ -31,7 +31,7 @@ const convertFormValuesForStore = (
       };
     case "user_company":
       return {
-        name: currentUserCompany,
+        name: currentUserStructureName ?? "",
         structureType: "company",
       };
     case "other_structure":
@@ -50,7 +50,7 @@ const convertFormValuesForStore = (
 function SiteOperatorFormContainer() {
   const dispatch = useAppDispatch();
   const projectSite = useAppSelector((state) => state.projectCreation.siteData);
-  const currentUserCompany = useAppSelector(selectCurrentUserCompany);
+  const currentUserStructure = useAppSelector(selectCurrentUserStructure);
   const projectSiteLocalAuthorities = useAppSelector((state) => state.projectSiteLocalAuthorities);
 
   const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
@@ -60,7 +60,12 @@ function SiteOperatorFormContainer() {
     if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
       completeFutureOperator(
-        convertFormValuesForStore(data, projectSite, currentUserCompany.name, siteLocalAuthorities),
+        convertFormValuesForStore(
+          data,
+          projectSite,
+          currentUserStructure?.name,
+          siteLocalAuthorities,
+        ),
       ),
     );
   };
@@ -76,7 +81,7 @@ function SiteOperatorFormContainer() {
       onSubmit={onSubmit}
       onBack={onBack}
       siteStakeholders={siteStakeholders}
-      currentUserCompany={currentUserCompany}
+      currentUserStructure={currentUserStructure}
       projectSiteLocalAuthorities={projectSiteLocalAuthorities}
     />
   );

@@ -11,14 +11,14 @@ import { fetchSiteLocalAuthorities } from "@/features/create-project/application
 import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { getSiteStakeholders } from "@/features/create-project/domain/stakeholders";
-import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
+import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const convertFormValuesForStore = (
   data: FormValues,
   projectSite: ProjectSite,
-  currentUserCompany: string,
+  currentUserStructureName: string | undefined,
   siteLocalAuthorities: SiteLocalAuthorities,
 ): ProjectStakeholder => {
   switch (data.futureOperator) {
@@ -33,7 +33,7 @@ const convertFormValuesForStore = (
       };
     case "user_company":
       return {
-        name: currentUserCompany,
+        name: currentUserStructureName ?? "",
         structureType: "company",
       };
     case "other_structure":
@@ -51,7 +51,7 @@ const convertFormValuesForStore = (
 
 function SiteReinstatementContractOwnerFormContainer() {
   const dispatch = useAppDispatch();
-  const currentUserCompany = useAppSelector(selectCurrentUserCompany);
+  const currentUserStructure = useAppSelector(selectCurrentUserStructure);
   const projectSite = useAppSelector((state) => state.projectCreation.siteData);
 
   const projectSiteLocalAuthorities = useAppSelector((state) => state.projectSiteLocalAuthorities);
@@ -63,7 +63,12 @@ function SiteReinstatementContractOwnerFormContainer() {
     if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
       completeReinstatementContractOwner(
-        convertFormValuesForStore(data, projectSite, currentUserCompany.name, siteLocalAuthorities),
+        convertFormValuesForStore(
+          data,
+          projectSite,
+          currentUserStructure?.name,
+          siteLocalAuthorities,
+        ),
       ),
     );
   };
@@ -79,7 +84,7 @@ function SiteReinstatementContractOwnerFormContainer() {
       onSubmit={onSubmit}
       onBack={onBack}
       siteStakeholders={siteStakeholders}
-      currentUserCompany={currentUserCompany}
+      currentUserStructure={currentUserStructure}
       projectSiteLocalAuthorities={projectSiteLocalAuthorities}
     />
   );

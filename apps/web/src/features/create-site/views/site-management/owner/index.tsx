@@ -6,19 +6,19 @@ import { completeOwner } from "@/features/create-site/application/createSite.red
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import { SiteLocalAuthorities } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Owner } from "@/features/create-site/domain/siteFoncier.types";
-import { selectCurrentUserCompany } from "@/features/users/application/user.reducer";
+import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const convertFormValuesForStore = (
   data: FormValues,
-  currentUserCompany: string,
+  currentUserStructure: string,
   localAuthorities: SiteLocalAuthorities,
 ): Owner => {
   switch (data.ownerType) {
     case "user_company":
       return {
-        name: currentUserCompany,
+        name: currentUserStructure,
         structureType: "company",
       };
     case "local_or_regional_authority":
@@ -40,7 +40,7 @@ const convertFormValuesForStore = (
 };
 
 function SiteOwnerFormContainer() {
-  const currentUserCompany = useAppSelector(selectCurrentUserCompany);
+  const currentUserStructure = useAppSelector(selectCurrentUserStructure);
   const { localAuthorities, loadingState } = useAppSelector((state) => state.siteMunicipalityData);
   const dispatch = useAppDispatch();
 
@@ -48,7 +48,7 @@ function SiteOwnerFormContainer() {
     if (!localAuthorities) return;
     dispatch(
       completeOwner({
-        owner: convertFormValuesForStore(data, currentUserCompany.name, localAuthorities),
+        owner: convertFormValuesForStore(data, currentUserStructure?.name || "", localAuthorities),
       }),
     );
   };
@@ -64,7 +64,7 @@ function SiteOwnerFormContainer() {
   return (
     <SiteOwnerForm
       siteLocalAuthorities={{ localAuthorities, loadingState }}
-      currentUserCompany={currentUserCompany.name}
+      currentUserStructureName={currentUserStructure?.name}
       onSubmit={onSubmit}
       onBack={onBack}
     />

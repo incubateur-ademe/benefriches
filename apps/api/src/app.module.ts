@@ -8,6 +8,7 @@ import { LocationFeaturesModule } from "./location-features/adapters/primary/loc
 import { ReconversionProjectsModule } from "./reconversion-projects/adapters/primary/reconversionProjects.module";
 import { SqlConnectionModule } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SitesModule } from "./sites/adapters/primary/sites.module";
+import { UsersModule } from "./users/adapters/primary/users.module";
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SitesModule } from "./sites/adapters/primary/sites.module";
     CarbonStorageModule,
     SitesModule,
     ReconversionProjectsModule,
+    UsersModule,
   ],
   providers: [{ provide: APP_PIPE, useClass: ZodValidationPipe }],
 })

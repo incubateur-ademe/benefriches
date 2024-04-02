@@ -7,7 +7,7 @@ import {
   isCurrentUserSameSiteStakeholderEntity,
   SiteStakeholder,
 } from "@/features/create-project/domain/stakeholders";
-import { User } from "@/features/users/domain/user";
+import { UserStructure } from "@/features/users/domain/user";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
@@ -19,7 +19,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  currentUserCompany: Exclude<User["organization"], undefined>;
+  currentUserStructure?: UserStructure;
   siteStakeholders: SiteStakeholder[];
   projectSiteLocalAuthorities: ProjectSiteLocalAuthoritiesState;
 };
@@ -45,16 +45,23 @@ const requiredMessage = "Ce champ est requis";
 
 const getSiteRelatedOperatorOptions = (
   siteStakeholders: Props["siteStakeholders"],
-  currentUserCompany: Props["currentUserCompany"],
+  currentUserStructure?: Props["currentUserStructure"],
 ) => {
+  if (!currentUserStructure?.name) {
+    return siteStakeholders.map(({ name, role }) => ({
+      label: name,
+      value: role,
+    }));
+  }
+
   return [
     {
-      label: currentUserCompany.name,
+      label: currentUserStructure.name,
       value: "user_company",
     },
     ...siteStakeholders
       .filter(
-        (stakeholder) => !isCurrentUserSameSiteStakeholderEntity(currentUserCompany, stakeholder),
+        (stakeholder) => !isCurrentUserSameSiteStakeholderEntity(currentUserStructure, stakeholder),
       )
       .map(({ name, role }) => ({
         label: name,
@@ -66,7 +73,7 @@ const getSiteRelatedOperatorOptions = (
 function SiteReinstatementContractOwnerForm({
   onSubmit,
   onBack,
-  currentUserCompany,
+  currentUserStructure,
   siteStakeholders,
   projectSiteLocalAuthorities,
 }: Props) {
@@ -76,10 +83,9 @@ function SiteReinstatementContractOwnerForm({
 
   const selectedFutureOperator = watch("futureOperator");
 
-  const localAuthoritiesExcludedValues = getLocalAuthoritiesExcludedValues(
-    currentUserCompany,
-    siteStakeholders,
-  );
+  const localAuthoritiesExcludedValues = currentUserStructure
+    ? getLocalAuthoritiesExcludedValues(currentUserStructure, siteStakeholders)
+    : [];
 
   return (
     <WizardFormLayout
@@ -98,7 +104,7 @@ function SiteReinstatementContractOwnerForm({
             formState.errors.futureOperator ? formState.errors.futureOperator.message : undefined
           }
         >
-          {getSiteRelatedOperatorOptions(siteStakeholders, currentUserCompany).map(
+          {getSiteRelatedOperatorOptions(siteStakeholders, currentUserStructure).map(
             ({ label, value }) => (
               <RadioButton
                 label={label}

@@ -9,7 +9,8 @@ import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { InMemoryReconversionProjectsListService } from "@/features/projects/infrastructure/projects-list-service/InMemoryProjectsListService";
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
-import { LocalStorageUserService } from "@/features/users/infra/get-user-service/LocalStorageUserService";
+import { InMemoryCreateUserService } from "@/features/users/infra/create-user-service/inMemoryCreateUserService";
+import { LocalStorageUserService } from "@/features/users/infra/current-user-service/LocalStorageUserService";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 
@@ -28,7 +29,6 @@ export const getTestAppDependencies = (
     saveReconversionProjectService: new LocalStorageSaveProjectApi(),
     getSiteByIdService: new SitesServiceMock(),
     photovoltaicPerformanceService: new ExpectedPhotovoltaicPerformanceMock(MOCK_RESULT),
-    userService: new LocalStorageUserService(),
     municipalityDataService: new AdministrativeDivisionMock({
       localAuthorities: {
         city: {
@@ -50,6 +50,8 @@ export const getTestAppDependencies = (
       },
       population: 0,
     }),
+    currentUserService: new LocalStorageUserService(),
+    createUserService: new InMemoryCreateUserService(),
     ...depsOverride,
   };
 };

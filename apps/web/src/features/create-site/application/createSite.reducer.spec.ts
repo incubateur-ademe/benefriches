@@ -941,6 +941,8 @@ describe("Create site reducer", () => {
         siteCreation: initialState,
         currentUser: {
           currentUser: buildUser(),
+          createUserState: "idle",
+          currentUserLoaded: true,
         },
       });
       await store.dispatch(saveSiteAction());
@@ -981,7 +983,14 @@ describe("Create site reducer", () => {
       const shouldFail = true;
       const store = createStore(
         getTestAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) }),
-        { siteCreation: initialState, currentUser: { currentUser: buildUser() } },
+        {
+          siteCreation: initialState,
+          currentUser: {
+            currentUser: buildUser(),
+            createUserState: "idle",
+            currentUserLoaded: true,
+          },
+        },
       );
       await store.dispatch(saveSiteAction());
 
@@ -1006,7 +1015,11 @@ describe("Create site reducer", () => {
 
       const store = createStore(getTestAppDependencies(), {
         siteCreation: initialState,
-        currentUser: { currentUser: buildUser() },
+        currentUser: {
+          currentUser: buildUser(),
+          createUserState: "idle",
+          currentUserLoaded: true,
+        },
       });
 
       await store.dispatch(saveSiteAction());
