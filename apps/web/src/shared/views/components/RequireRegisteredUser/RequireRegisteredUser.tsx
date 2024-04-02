@@ -10,7 +10,6 @@ export default function RequireRegisteredUser({ children }: { children: React.Re
   const currentUserLoaded = useAppSelector(isCurrentUserLoaded);
   const currentUserId = useAppSelector(selectCurrentUserId);
 
-  console.log(currentUserLoaded, currentUserId);
   if (!currentUserLoaded) {
     return null;
   }
