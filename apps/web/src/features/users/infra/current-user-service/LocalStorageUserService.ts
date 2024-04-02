@@ -1,7 +1,7 @@
 import { CurrentUserGateway } from "../../application/initCurrentUser.action";
 import { User } from "../../domain/user";
 
-const CURRENT_USER_STORAGE_KEY = "benefriches/current-user";
+const CURRENT_USER_STORAGE_KEY = "benefriches/current-user/v0";
 
 export class LocalStorageUserService implements CurrentUserGateway {
   get(): Promise<User | undefined> {
