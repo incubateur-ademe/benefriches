@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 
 const values = ["10", "20", "30"] as const;
@@ -10,6 +11,7 @@ type Props = {
 function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
   return (
     <Select
+      className={fr.cx("fr-mb-1w")}
       label=""
       nativeSelectProps={{
         value: value.toString() as (typeof values)[number],

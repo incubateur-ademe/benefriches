@@ -28,28 +28,21 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
     <div>
       <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts économiques</h3>
-        <div
-          style={{
-            display: "grid",
-            gridGap: "1em",
-            gridTemplateColumns: "1fr 1fr",
-            gridTemplateRows: "1fr 1fr",
-          }}
-        >
-          <div style={{ gridRow: "1 / 3" }}>
+        <div className="tw-grid tw-grid-rows-1 lg:tw-grid-rows-2 tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-4">
+          <div className="lg:tw-row-start-1 lg:tw-row-end-3">
             <CostBenefitAnalysisCard
               economicBalanceTotal={impacts.economicBalance.total}
               socioEconomicImpacts={impacts.socioeconomic}
             />
           </div>
-          <div style={{ gridRow: "1" }}>
+          <div className="lg:tw-row-start-1">
             <EconomicBalanceImpactCard
               costs={impacts.economicBalance.costs}
               revenues={impacts.economicBalance.revenues}
             />
           </div>
 
-          <div style={{ gridRow: "2" }}>
+          <div className="lg:tw-row-start-2">
             <SocioEconomicImpactsCard socioEconomicImpacts={impacts.socioeconomic.impacts} />
           </div>
         </div>
@@ -57,11 +50,11 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
       <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts environnementaux</h3>
         <Row>
-          <div className={fr.cx("fr-col-3")}>
+          <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
             <SoilsCarbonStorageImpactCard soilsCarbonStorageImpact={impacts.soilsCarbonStorage} />
           </div>
           {impacts.avoidedCO2TonsWithEnergyProduction && (
-            <div className={fr.cx("fr-col-3")}>
+            <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
               <StoredAndAvoidedCO2ImpactCard
                 reconversionProjectName={project.name}
                 avoidedCO2TonsWithEnergyProduction={impacts.avoidedCO2TonsWithEnergyProduction}
@@ -69,14 +62,14 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
               />
             </div>
           )}
-          <div className={fr.cx("fr-col-3")}>
+          <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
             <PermeableSurfaceImpactChart
               reconversionProjectName={project.name}
               permeableSurfaceImpact={impacts.permeableSurfaceArea}
             />
           </div>
           {impacts.nonContaminatedSurfaceArea && (
-            <div className={fr.cx("fr-col-3")}>
+            <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
               <ContaminatedSurfaceImpactChart
                 reconversionProjectName={project.name}
                 nonContaminatedSurfaceImpact={impacts.nonContaminatedSurfaceArea}
@@ -88,14 +81,14 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
       <section className={fr.cx("fr-pb-8v")}>
         <h3>Impacts sociaux</h3>
         <Row>
-          <div className={fr.cx("fr-col-3")}>
+          <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
             <FullTimeJobsImpactCard
               reconversionProjectName={project.name}
               fullTimeJobsImpact={impacts.fullTimeJobs}
             />
           </div>
           {impacts.accidents && (
-            <div className={fr.cx("fr-col-3")}>
+            <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
               <AccidentsImpactCard
                 reconversionProjectName={project.name}
                 accidentsImpact={impacts.accidents}
@@ -103,7 +96,7 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
             </div>
           )}
           {impacts.householdsPoweredByRenewableEnergy && (
-            <div className={fr.cx("fr-col-3")}>
+            <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
               <HouseholdsPoweredByRenewableEnergyImpactCard
                 reconversionProjectName={project.name}
                 householdsPoweredByRenewableEnergy={impacts.householdsPoweredByRenewableEnergy}
