@@ -5,31 +5,31 @@ import formatLocalAuthorityName, {
 
 describe("strings: format mairies name", () => {
   it("should format municipality name with « élision »", () => {
-    expect(formatMunicipalityName("Ornon")).toEqual("La mairie d’Ornon");
-    expect(formatMunicipalityName("ornon")).toEqual("La mairie d’Ornon");
+    expect(formatMunicipalityName("Ornon")).toEqual("Mairie d’Ornon");
+    expect(formatMunicipalityName("ornon")).toEqual("Mairie d’Ornon");
   });
   it("should format municipality name without « élision »", () => {
-    expect(formatMunicipalityName("Lens")).toEqual("La mairie de Lens");
-    expect(formatMunicipalityName("lens")).toEqual("La mairie de Lens");
+    expect(formatMunicipalityName("Lens")).toEqual("Mairie de Lens");
+    expect(formatMunicipalityName("lens")).toEqual("Mairie de Lens");
   });
   it("should format municipality name with « élision » for city that starts with « H »", () => {
-    expect(formatMunicipalityName("Hesdin")).toEqual("La mairie d’Hesdin");
-    expect(formatMunicipalityName("hesdin")).toEqual("La mairie d’Hesdin");
+    expect(formatMunicipalityName("Hesdin")).toEqual("Mairie d’Hesdin");
+    expect(formatMunicipalityName("hesdin")).toEqual("Mairie d’Hesdin");
   });
 });
 
 describe("strings: format epcis name", () => {
   it("should format epci name with « Communauté de Communes »", () => {
-    expect(formatEpciName("CC de l’Oisans")).toEqual("La Communauté de Communes de l’Oisans");
+    expect(formatEpciName("CC de l’Oisans")).toEqual("Communauté de Communes de l’Oisans");
   });
   it("should format epci name with « Communauté d’Agglomération »", () => {
     expect(formatEpciName("CA Villefranche Beaujolais Saône")).toEqual(
-      "La Communauté d’Agglomération Villefranche Beaujolais Saône",
+      "Communauté d’Agglomération Villefranche Beaujolais Saône",
     );
   });
   it("should format epci name with « Communauté Urbaine »", () => {
     expect(formatEpciName("CU Angers Loire Métropole")).toEqual(
-      "La Communauté Urbaine Angers Loire Métropole",
+      "Communauté Urbaine Angers Loire Métropole",
     );
   });
   it("should not format epci name with no CA nor CC", () => {
@@ -80,14 +80,14 @@ describe("strings: format local authority name", () => {
   });
 
   it("should format municipality name", () => {
-    expect(formatLocalAuthorityName("municipality", withEPCI)).toEqual("La mairie de Grenoble");
+    expect(formatLocalAuthorityName("municipality", withEPCI)).toEqual("Mairie de Grenoble");
   });
 
   it("should format region name", () => {
-    expect(formatLocalAuthorityName("region", withEPCI)).toEqual("La région Auvergne-Rhône-Alpes");
+    expect(formatLocalAuthorityName("region", withEPCI)).toEqual("Région Auvergne-Rhône-Alpes");
   });
 
   it("should format department name", () => {
-    expect(formatLocalAuthorityName("department", withEPCI)).toEqual("Le département Isère");
+    expect(formatLocalAuthorityName("department", withEPCI)).toEqual("Département Isère");
   });
 });
