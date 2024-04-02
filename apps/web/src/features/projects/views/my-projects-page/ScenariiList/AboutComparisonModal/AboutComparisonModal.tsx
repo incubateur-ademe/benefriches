@@ -65,8 +65,8 @@ function AboutComparisonModal({ shouldOpenModal, setShouldNotDisplayAgain }: Pro
       <p>Vous pouvez comparer : </p>
 
       <ul>
-        <li>Des scenarii différents au sein d’un même site</li>
-        <li>Des scenarii similaires au sein de sites différents</li>
+        <li>Des scenarii différents sur un même site</li>
+        <li>Des scenarii similaires sur des sites différents</li>
       </ul>
       <p>Vous ne pouvez pas comparer des scenarii différents sur des sites différents.</p>
       <StopDisplayingModalCheckbox
