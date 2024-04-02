@@ -25,7 +25,7 @@ jobs:
       - name: Build web
         run: pnpm --filter=web build
       - name: Create Archive
-        run: mkdir -p scalingo/web && cp -r apps/web/dist "$_" && cp -r apps/web/scalingo/* "$_" && cp apps/web/scalingo/.buildpacks "$_" && tar -czf web-scalingo.tar.gz scalingo
+        run: mkdir -p scalingo/web && cp -r apps/web/dist "$_" && cp -r apps/web/scalingo/* "$_" && cp apps/web/scalingo/.buildpacks "$_" && cp apps/web/scripts/generateEnvVarsJsFile.sh "$_" && tar -czf web-scalingo.tar.gz scalingo
       - name: Archive dist
         uses: actions/upload-artifact@v3
         with:
