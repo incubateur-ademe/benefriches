@@ -40,11 +40,12 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
       title="Les sols de la friche sont-ils pollués ?"
       instructions={
         <>
-          <p>
+          <span className="fr-text--lg">💡</span>
+          <p className="fr-text--xs">
             Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
             activités passées, avec potentiellement 2 conséquences&nbsp;:
           </p>
-          <ol>
+          <ol className="fr-text--xs">
             <li>Un impact sur la qualité des eaux souterraines</li>
             <li>
               La nécessité d’engager des études puis des travaux afin de les traiter et ainsi
@@ -53,7 +54,7 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
               reconversion.
             </li>
           </ol>
-          <p>
+          <p className="fr-text--xs">
             Bénéfriches propose des indicateurs liés à la qualité des eaux souterraines et à la
             surface dépolluée.
           </p>
