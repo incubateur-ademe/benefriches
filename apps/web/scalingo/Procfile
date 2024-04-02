@@ -1,1 +1,1 @@
-web: chmod +x dist/generateEnvVarsJsFile.sh && dist/generateEnvVarsJsFile.sh dist/js/env-vars.js && bin/run
+web: chmod +x generateEnvVarsJsFile.sh && generateEnvVarsJsFile.sh dist/js/env-vars.js && bin/run
