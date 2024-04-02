@@ -25,3 +25,5 @@ dist
 
 # @codegouvfr/react-dsfr
 /public/dsfr/
+
+/public/js/env-vars.js

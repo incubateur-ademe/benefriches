@@ -9,6 +9,7 @@
     "node": "20"
   },
   "scripts": {
+    "setup-env-vars": "export $(cat .env | grep 'WEBAPP_' | xargs) && chmod +x scripts/generateEnvVarsJsFile.sh && bash scripts/generateEnvVarsJsFile.sh public/js/env-vars.js",
     "dev": "vite",
     "build": "tsc && vite build",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",

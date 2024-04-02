@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { BENEFRICHES_ENV } from "../application/envVars";
 import AccessibilitePage from "./pages/AccessibilitePage";
 import BudgetPage from "./pages/BudgetPage";
 import HomePage from "./pages/home/HomePage";
 import MentionsLegalesPage from "./pages/MentionsLegalesPage";
 import PolitiqueConfidentialitePage from "./pages/PolitiqueConfidentialitePage";
 import StatsPage from "./pages/StatsPage";
+import MatomoContainer from "./MatomoContainer";
 import { routes, useRoute } from "./router";
 
 import CreateProjectIntroductionPage from "@/features/create-project/views/introduction";
@@ -61,6 +63,9 @@ function App() {
           <section className={fr.cx("fr-container", "fr-py-4w")}>Page non trouvée</section>
         )}
       </>
+      {BENEFRICHES_ENV.matomoTrackingEnabled && (
+        <MatomoContainer containerUrl={BENEFRICHES_ENV.matomoContainerUrl} />
+      )}
     </HeaderFooterLayout>
   );
 }
