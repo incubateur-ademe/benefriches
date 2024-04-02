@@ -87,7 +87,6 @@ function PolitiqueConfidentialiteContent() {
           préférences de internaute (thème sombre ou clair, choix de ne plus afficher certaines
           informations, etc.)
         </li>
-        <li>Bénéfriches n'utilise pas de cookies nominatifs.</li>
         <li>
           Bénéfriches n'utilise pas de cookies non essentiels au service ou n’ayant pas pour
           finalité exclusive de faciliter la communication par voie électronique.{" "}
