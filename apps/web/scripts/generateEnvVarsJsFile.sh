@@ -2,6 +2,7 @@
 
 FILE_DESTINATION=${1:-./env-vars.js}
 
+echo "Generating ${FILE_DESTINATION}"
 rm -f "${FILE_DESTINATION}"
 touch "${FILE_DESTINATION}"
 
