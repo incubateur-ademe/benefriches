@@ -1,10 +1,12 @@
 import { getActorLabel } from "../impacts/socio-economic/socioEconomicImpacts";
+import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModal";
 import { formatMonetaryImpact } from "./formatImpactValue";
 import ImpactDetailLabel from "./ImpactDetailLabel";
 import ImpactDetailRow from "./ImpactItemDetailRow";
 import ImpactItemGroup from "./ImpactItemGroup";
 import ImpactItemRow from "./ImpactItemRow";
 import ImpactLabel from "./ImpactLabel";
+import ImpactMainTitle from "./ImpactMainTitle";
 import ImpactSectionTitle from "./ImpactSectionTitle";
 import ImpactValue from "./ImpactValue";
 import SocioEconomicEnvironmentalMonetaryImpactsSection from "./SocioEconomicEnvironmentalMonetarySection";
@@ -13,6 +15,7 @@ import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.t
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
+  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 type SocioEconomicImpactRowProps = {
@@ -36,7 +39,10 @@ const SocioEconomicImpactRow = ({ impact }: SocioEconomicImpactRowProps) => {
   );
 };
 
-const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
+const SocioEconomicImpactsListSection = ({
+  socioEconomicImpacts,
+  openImpactDescriptionModal,
+}: Props) => {
   const rentalIncomeImpacts = socioEconomicImpacts.filter(
     (impact) => impact.impact === "rental_income",
   );
@@ -66,7 +72,12 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
 
   return (
     <section className="fr-mb-5w">
-      <h3>Impacts économiques</h3>
+      <ImpactMainTitle
+        title="Impacts socio-économiques"
+        onClick={() => {
+          openImpactDescriptionModal("socio-economic");
+        }}
+      />
       <section className="fr-mb-5w">
         <ImpactItemRow>
           <ImpactSectionTitle>Impacts économiques directs</ImpactSectionTitle>

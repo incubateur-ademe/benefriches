@@ -13,6 +13,7 @@ type SourceRevenue = "operations" | "other";
 type Props = {
   costs: ReconversionProjectImpacts["economicBalance"]["costs"];
   revenues: ReconversionProjectImpacts["economicBalance"]["revenues"];
+  displayDescriptionModal: () => void;
 };
 
 const getYearlyCostPurposeLabel = (purpose: PurposeCost) => {
@@ -87,7 +88,7 @@ const getRevenuesValue = ({
   ].filter((serie) => !!serie.value) as { name: string; value: number }[];
 };
 
-function EconomicBalanceImpactCard({ revenues, costs }: Props) {
+function EconomicBalanceImpactCard({ revenues, costs, displayDescriptionModal }: Props) {
   const { financialAssistance, operationsRevenues } = revenues;
   const { operationsCosts, developmentPlanInstallation, siteReinstatement, realEstateTransaction } =
     costs;
@@ -152,7 +153,7 @@ function EconomicBalanceImpactCard({ revenues, costs }: Props) {
   };
 
   return (
-    <ImpactCard title="Bilan de l'opération">
+    <ImpactCard title="Bilan de l'opération" displayDescriptionModal={displayDescriptionModal}>
       {revenues.total > 0 || costs.total > 0 ? (
         <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
       ) : (

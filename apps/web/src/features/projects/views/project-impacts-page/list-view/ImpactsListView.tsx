@@ -1,4 +1,5 @@
 import { ReconversionProjectImpacts } from "../../../domain/impacts.types";
+import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModal";
 import {
   formatCO2Impact,
   formatDefaultImpact,
@@ -10,6 +11,7 @@ import ImpactDetailRow from "./ImpactItemDetailRow";
 import ImpactItemGroup from "./ImpactItemGroup";
 import ImpactItemRow from "./ImpactItemRow";
 import ImpactLabel from "./ImpactLabel";
+import ImpactMainTitle from "./ImpactMainTitle";
 import ImpactSectionTitle from "./ImpactSectionTitle";
 import ImpactValue from "./ImpactValue";
 import SocioEconomicImpactsListSection from "./SocioEconomicSection";
@@ -19,13 +21,19 @@ type Props = {
     name: string;
   };
   impacts: ReconversionProjectImpacts;
+  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
-const ImpactsListView = ({ impacts }: Props) => {
+const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
   return (
     <div style={{ maxWidth: "900px", margin: "auto" }}>
       <section className="fr-mb-5w">
-        <h3>Analyse coûts bénéfices</h3>
+        <ImpactMainTitle
+          title="Analyse coûts bénéfices"
+          onClick={() => {
+            openImpactDescriptionModal("cost-benefit-analysis");
+          }}
+        />
         <ImpactItemRow>
           <ImpactLabel>📉 Bilan de l’opération</ImpactLabel>
           <ImpactValue>{formatMonetaryImpact(impacts.economicBalance.total)}</ImpactValue>
@@ -36,7 +44,12 @@ const ImpactsListView = ({ impacts }: Props) => {
         </ImpactItemRow>
       </section>
       <section className="fr-mb-5w">
-        <h3>Bilan de l’opération</h3>
+        <ImpactMainTitle
+          title="Bilan de l’opération"
+          onClick={() => {
+            openImpactDescriptionModal("economic-balance");
+          }}
+        />
         {!!impacts.economicBalance.costs.realEstateTransaction && (
           <ImpactItemRow>
             <ImpactLabel>🏠 Acquisition du site</ImpactLabel>
@@ -86,7 +99,10 @@ const ImpactsListView = ({ impacts }: Props) => {
           <ImpactValue isTotal>{formatMonetaryImpact(impacts.economicBalance.total)}</ImpactValue>
         </ImpactItemRow>
       </section>
-      <SocioEconomicImpactsListSection socioEconomicImpacts={impacts.socioeconomic.impacts} />
+      <SocioEconomicImpactsListSection
+        socioEconomicImpacts={impacts.socioeconomic.impacts}
+        openImpactDescriptionModal={openImpactDescriptionModal}
+      />
       <section className="fr-mb-5w">
         <h3>Impacts environnementaux</h3>
         {impacts.nonContaminatedSurfaceArea && (

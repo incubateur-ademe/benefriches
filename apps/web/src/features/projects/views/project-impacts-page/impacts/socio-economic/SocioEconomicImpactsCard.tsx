@@ -8,6 +8,7 @@ import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.t
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
+  displayDescriptionModal: () => void;
 };
 
 type ChartViewMode = "by_actor" | "by_category";
@@ -49,7 +50,7 @@ const ChartViewModeControl = ({
   );
 };
 
-function SocioEconomicImpactsCard({ socioEconomicImpacts }: Props) {
+function SocioEconomicImpactsCard({ socioEconomicImpacts, displayDescriptionModal }: Props) {
   const [currentChartViewMode, setChartViewMode] = useState<ChartViewMode>("by_category");
 
   return (
@@ -59,7 +60,9 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts }: Props) {
           className="fr-mb-2w"
           style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
         >
-          <strong>Impacts socio-économiques</strong>
+          <strong className="tw-cursor-pointer" onClick={displayDescriptionModal}>
+            Impacts socio-économiques
+          </strong>
           <ChartViewModeControl
             currentChartViewMode={currentChartViewMode}
             setChartViewMode={setChartViewMode}
