@@ -74,7 +74,7 @@ function PhotovoltaicSurfaceFromPowerForm({
             raisons de biodiversité et de puits de carbone).
           </p>
           <p className="fr-text--xs">
-            Le devenir des sols sera abordés plus loin dans le formulaire.
+            Le devenir des sols sera abordé plus loin dans le formulaire.
           </p>
         </>
       }
