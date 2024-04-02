@@ -36,9 +36,17 @@ pnpm --filter api knex:migrate-latest # lancement des migrations
 pnpm --filter api knex:seed-run # chargement des données nécessaires à l'application
 ```
 
+### Création des variables d'environnement
+Utilisation des valeurs exposées dans `apps/web/.env.example` et `apps/api/.env.example`.
+```sh
+cp apps/web/.env.example apps/web/.env
+cp apps/api/.env.example apps/api/.env
+```
+
 ### Lancement de l'application en mode développement
 ```sh
 pnpm --filter api start:dev
+pnpm --filter web setup-env-vars
 pnpm --filter web dev
 ```
 
