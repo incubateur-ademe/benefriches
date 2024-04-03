@@ -7,6 +7,7 @@ import {
   ImpactDescriptionModal,
   ImpactDescriptionModalCategory,
 } from "./modals/ImpactDescriptionModal";
+import AboutImpactsModal from "./AboutImpactsModal";
 import ImpactsChartsView from "./ImpactsChartsView";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
@@ -104,6 +105,7 @@ const ProjectImpactsPage = ({
           </div>
         </div>
       </div>
+      <AboutImpactsModal />
     </div>
   );
 };

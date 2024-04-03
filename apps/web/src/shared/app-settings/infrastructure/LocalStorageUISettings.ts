@@ -16,18 +16,30 @@ export class LocalStorageAppSettings implements AppSettingsGateway {
   setShouldDisplayFormsNotice(value: boolean) {
     const appSettings = this.getAll();
 
-    localStorage.setItem(
-      APP_SETTINGS_STORAGE_KEY,
-      JSON.stringify({ ...appSettings, shouldDisplayFormsNotice: value }),
-    );
+    const updatedAppSettings: AppSettings = {
+      ...appSettings,
+      shouldDisplayFormsNotice: value,
+    };
+
+    localStorage.setItem(APP_SETTINGS_STORAGE_KEY, JSON.stringify(updatedAppSettings));
   }
 
   setShouldDisplayProjectsComparisonNotice(value: boolean) {
     const appSettings = this.getAll();
 
-    localStorage.setItem(
-      APP_SETTINGS_STORAGE_KEY,
-      JSON.stringify({ ...appSettings, shouldDisplayProjectsComparisonNotice: value }),
-    );
+    const updatedAppSettings: AppSettings = {
+      ...appSettings,
+      shouldDisplayProjectsComparisonNotice: value,
+    };
+
+    localStorage.setItem(APP_SETTINGS_STORAGE_KEY, JSON.stringify(updatedAppSettings));
+  }
+
+  setShouldDisplayImpactsNotice(value: boolean) {
+    const appSettings = this.getAll();
+
+    const updatedAppSettings: AppSettings = { ...appSettings, shouldDisplayImpactsNotice: value };
+
+    localStorage.setItem(APP_SETTINGS_STORAGE_KEY, JSON.stringify(updatedAppSettings));
   }
 }
