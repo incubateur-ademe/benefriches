@@ -3,24 +3,19 @@ import HighchartsReact from "highcharts-react-official";
 import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
 
-import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   economicBalanceTotal: number;
-  socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"];
+  socioEconomicImpactsTotal: number;
 };
 
-function CostBenefitAnalysisCard({ economicBalanceTotal, socioEconomicImpacts }: Props) {
-  const socioEconomicImpactTotal = socioEconomicImpacts.impacts
-    .map(({ amount }) => amount)
-    .reduce((total, amount) => total + amount, 0);
-
+function CostBenefitAnalysisCard({ economicBalanceTotal, socioEconomicImpactsTotal }: Props) {
   const maxAbsValue =
-    Math.abs(economicBalanceTotal) > Math.abs(socioEconomicImpactTotal)
+    Math.abs(economicBalanceTotal) > Math.abs(socioEconomicImpactsTotal)
       ? Math.abs(economicBalanceTotal)
-      : Math.abs(socioEconomicImpactTotal);
+      : Math.abs(socioEconomicImpactsTotal);
 
   const barChartOptions: Highcharts.Options = {
     ...baseColumnChartConfig,
@@ -31,7 +26,7 @@ function CostBenefitAnalysisCard({ economicBalanceTotal, socioEconomicImpacts }:
     xAxis: {
       categories: [
         `<strong>Bilan de l’opération</strong><br>${formatNumberFr(economicBalanceTotal)} €`,
-        `<strong>Impacts socio-économiques</strong><br>+${formatNumberFr(socioEconomicImpactTotal)} €`,
+        `<strong>Impacts socio-économiques</strong><br>+${formatNumberFr(socioEconomicImpactsTotal)} €`,
       ],
       lineWidth: 0,
     },
@@ -64,7 +59,7 @@ function CostBenefitAnalysisCard({ economicBalanceTotal, socioEconomicImpacts }:
         name: "Analyse coûts bénéfices",
         data: [
           { y: roundTo2Digits(economicBalanceTotal), name: "Bilan de l’opération" },
-          { y: roundTo2Digits(socioEconomicImpactTotal), name: "Impacts socio-économiques" },
+          { y: roundTo2Digits(socioEconomicImpactsTotal), name: "Impacts socio-économiques" },
         ],
         type: "column",
       },

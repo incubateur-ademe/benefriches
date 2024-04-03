@@ -163,6 +163,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         relatedSiteName: site.name,
         impacts: {
           socioeconomic: {
+            total: -195584,
             impacts: [
               {
                 actor: "Current owner",
