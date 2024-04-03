@@ -11,19 +11,21 @@ import StoredAndAvoidedCO2ImpactCard from "./impacts/environment/StoredAndAvoide
 import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
 import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
 import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";
+import { ImpactDescriptionModalCategory } from "./modals/ImpactDescriptionModal";
 
 type Props = {
   project: {
     name: string;
   };
   impacts: ReconversionProjectImpacts;
+  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 const Row = ({ children }: { children: ReactNode }) => {
   return <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>{children}</div>;
 };
 
-const ImpactsChartsView = ({ project, impacts }: Props) => {
+const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Props) => {
   return (
     <div>
       <section className={fr.cx("fr-pb-8v")}>
@@ -33,17 +35,28 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
             <CostBenefitAnalysisCard
               economicBalanceTotal={impacts.economicBalance.total}
               socioEconomicImpactsTotal={impacts.socioeconomic.total}
+              displayDescriptionModal={() => {
+                openImpactDescriptionModal("cost-benefit-analysis");
+              }}
             />
           </div>
           <div className="lg:tw-row-start-1">
             <EconomicBalanceImpactCard
               costs={impacts.economicBalance.costs}
               revenues={impacts.economicBalance.revenues}
+              displayDescriptionModal={() => {
+                openImpactDescriptionModal("economic-balance");
+              }}
             />
           </div>
 
           <div className="lg:tw-row-start-2">
-            <SocioEconomicImpactsCard socioEconomicImpacts={impacts.socioeconomic.impacts} />
+            <SocioEconomicImpactsCard
+              socioEconomicImpacts={impacts.socioeconomic.impacts}
+              displayDescriptionModal={() => {
+                openImpactDescriptionModal("socio-economic");
+              }}
+            />
           </div>
         </div>
       </section>

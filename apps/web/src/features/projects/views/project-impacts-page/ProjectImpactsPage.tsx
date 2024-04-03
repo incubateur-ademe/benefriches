@@ -3,6 +3,10 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import ImpactsListView from "./list-view/ImpactsListView";
+import {
+  ImpactDescriptionModal,
+  ImpactDescriptionModalCategory,
+} from "./modals/ImpactDescriptionModal";
 import ImpactsChartsView from "./ImpactsChartsView";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
@@ -52,6 +56,9 @@ const ProjectImpactsPage = ({
   const [currentFilter, setSelectedFilter] = useState<ImpactCategoryFilter>("all");
   const [currentViewMode, setViewMode] = useState<ViewMode>("charts");
 
+  const [modalCategoryOpened, setModalCategoryOpened] =
+    useState<ImpactDescriptionModalCategory>(undefined);
+
   return (
     <div style={{ background: "#ECF5FD" }}>
       <ProjectsImpactsPageHeader
@@ -76,10 +83,24 @@ const ProjectImpactsPage = ({
               onViewModeClick={setViewMode}
               onEvaluationPeriodChange={onEvaluationPeriodChange}
             />
+            <ImpactDescriptionModal
+              modalCategory={modalCategoryOpened}
+              onChangeModalCategoryOpened={setModalCategoryOpened}
+            />
             {currentViewMode === "charts" && (
-              <ImpactsChartsView project={project} impacts={impacts} />
+              <ImpactsChartsView
+                project={project}
+                impacts={impacts}
+                openImpactDescriptionModal={setModalCategoryOpened}
+              />
             )}
-            {currentViewMode === "list" && <ImpactsListView project={project} impacts={impacts} />}
+            {currentViewMode === "list" && (
+              <ImpactsListView
+                project={project}
+                impacts={impacts}
+                openImpactDescriptionModal={setModalCategoryOpened}
+              />
+            )}
           </div>
         </div>
       </div>
