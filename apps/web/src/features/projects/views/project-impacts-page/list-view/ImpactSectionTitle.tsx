@@ -6,7 +6,7 @@ type Props = {
 };
 
 const ImpactSectionTitle = ({ children }: Props) => {
-  return <h4 className={fr.cx("fr-summary__title", "fr-mb-0")}>{children}</h4>;
+  return <h4 className={fr.cx("fr-summary__title", "fr-mb-0", "fr-p-2v")}>{children}</h4>;
 };
 
 export default ImpactSectionTitle;

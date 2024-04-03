@@ -10,6 +10,7 @@ import ImpactDetailRow from "./ImpactItemDetailRow";
 import ImpactItemGroup from "./ImpactItemGroup";
 import ImpactItemRow from "./ImpactItemRow";
 import ImpactLabel from "./ImpactLabel";
+import ImpactSectionTitle from "./ImpactSectionTitle";
 import ImpactValue from "./ImpactValue";
 import SocioEconomicImpactsListSection from "./SocioEconomicSection";
 
@@ -155,6 +156,7 @@ const ImpactsListView = ({ impacts }: Props) => {
       </section>
       <section>
         <h3>Impacts sociaux</h3>
+        <ImpactSectionTitle>Impacts sur l’emploi</ImpactSectionTitle>
         <ImpactItemGroup>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <ImpactLabel>🧑‍🔧 Emplois équivalent temps plein mobilisés</ImpactLabel>
@@ -179,41 +181,48 @@ const ImpactsListView = ({ impacts }: Props) => {
             </ImpactValue>
           </ImpactDetailRow>
         </ImpactItemGroup>
+
         {impacts.accidents && (
-          <ImpactItemGroup>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <ImpactLabel>🤕 Accidents évités sur la friche</ImpactLabel>
-              <ImpactValue isTotal>
-                {formatDefaultImpact(impacts.accidents.current, { withSignPrefix: false })}
-              </ImpactValue>
-            </div>
-            <ImpactDetailRow>
-              <ImpactDetailLabel>💥 Blessés légers évités</ImpactDetailLabel>
-              <ImpactValue>
-                {formatDefaultImpact(impacts.accidents.minorInjuries.current, {
-                  withSignPrefix: false,
-                })}
-              </ImpactValue>
-            </ImpactDetailRow>
-            <ImpactDetailRow>
-              <ImpactDetailLabel>🚑 Blessés graves évités</ImpactDetailLabel>
-              <ImpactValue>
-                {formatDefaultImpact(impacts.accidents.severeInjuries.current, {
-                  withSignPrefix: false,
-                })}
-              </ImpactValue>
-            </ImpactDetailRow>
-          </ImpactItemGroup>
+          <>
+            <ImpactSectionTitle>Impacts sur les riverains</ImpactSectionTitle>
+            <ImpactItemGroup>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <ImpactLabel>🤕 Accidents évités sur la friche</ImpactLabel>
+                <ImpactValue isTotal>
+                  {formatDefaultImpact(impacts.accidents.current, { withSignPrefix: false })}
+                </ImpactValue>
+              </div>
+              <ImpactDetailRow>
+                <ImpactDetailLabel>💥 Blessés légers évités</ImpactDetailLabel>
+                <ImpactValue>
+                  {formatDefaultImpact(impacts.accidents.minorInjuries.current, {
+                    withSignPrefix: false,
+                  })}
+                </ImpactValue>
+              </ImpactDetailRow>
+              <ImpactDetailRow>
+                <ImpactDetailLabel>🚑 Blessés graves évités</ImpactDetailLabel>
+                <ImpactValue>
+                  {formatDefaultImpact(impacts.accidents.severeInjuries.current, {
+                    withSignPrefix: false,
+                  })}
+                </ImpactValue>
+              </ImpactDetailRow>
+            </ImpactItemGroup>
+          </>
         )}
         {impacts.householdsPoweredByRenewableEnergy && (
-          <ImpactItemRow>
-            <ImpactLabel>🏠 Foyers alimentés par les EnR</ImpactLabel>
-            <ImpactValue isTotal>
-              {formatDefaultImpact(impacts.householdsPoweredByRenewableEnergy.forecast, {
-                withSignPrefix: false,
-              })}
-            </ImpactValue>
-          </ImpactItemRow>
+          <>
+            <ImpactSectionTitle>Impacts sur la société française</ImpactSectionTitle>
+            <ImpactItemRow>
+              <ImpactLabel>🏠 Foyers alimentés par les EnR</ImpactLabel>
+              <ImpactValue isTotal>
+                {formatDefaultImpact(impacts.householdsPoweredByRenewableEnergy.forecast, {
+                  withSignPrefix: false,
+                })}
+              </ImpactValue>
+            </ImpactItemRow>
+          </>
         )}
       </section>
     </div>
