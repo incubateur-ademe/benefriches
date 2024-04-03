@@ -32,7 +32,7 @@ const ImpactsChartsView = ({ project, impacts }: Props) => {
           <div className="lg:tw-row-start-1 lg:tw-row-end-3">
             <CostBenefitAnalysisCard
               economicBalanceTotal={impacts.economicBalance.total}
-              socioEconomicImpacts={impacts.socioeconomic}
+              socioEconomicImpactsTotal={impacts.socioeconomic.total}
             />
           </div>
           <div className="lg:tw-row-start-1">

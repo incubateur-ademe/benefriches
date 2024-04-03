@@ -30,6 +30,10 @@ const ImpactsListView = ({ impacts }: Props) => {
           <ImpactLabel>📉 Bilan de l’opération</ImpactLabel>
           <ImpactValue>{formatMonetaryImpact(impacts.economicBalance.total)}</ImpactValue>
         </ImpactItemRow>
+        <ImpactItemRow>
+          <ImpactLabel>🌎 Impacts socio-économiques</ImpactLabel>
+          <ImpactValue>{formatMonetaryImpact(impacts.socioeconomic.total)}</ImpactValue>
+        </ImpactItemRow>
       </section>
       <section className="fr-mb-5w">
         <h3>Bilan de l’opération</h3>

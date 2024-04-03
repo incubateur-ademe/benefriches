@@ -30,32 +30,35 @@ type EconomicImpact = DirectAndIndirectEconomicImpact | EnvironmentalMonetaryImp
 
 export type SocioEconomicImpactsResult = {
   impacts: EconomicImpact[];
+  total: number;
 };
 
 export const computeSocioEconomicImpacts = (
   input: SocioEconomicImpactsInput,
 ): SocioEconomicImpactsResult => {
+  const impacts = [
+    ...computeDirectAndIndirectEconomicImpacts({
+      evaluationPeriodInYears: input.evaluationPeriodInYears,
+      currentOwner: input.currentOwner,
+      currentTenant: input.currentTenant,
+      futureSiteOwner: input.futureSiteOwner,
+      yearlyCurrentCosts: input.yearlyCurrentCosts,
+      yearlyProjectedCosts: input.yearlyProjectedCosts,
+      propertyTransferDutiesAmount: input.propertyTransferDutiesAmount,
+    }),
+    ...computeEnvironmentalMonetaryImpacts({
+      baseSoilsDistribution: input.baseSoilsDistribution,
+      forecastSoilsDistribution: input.forecastSoilsDistribution,
+      evaluationPeriodInYears: input.evaluationPeriodInYears,
+      baseSoilsCarbonStorage: input.baseSoilsCarbonStorage,
+      forecastSoilsCarbonStorage: input.forecastSoilsCarbonStorage,
+      operationsFirstYear: input.operationsFirstYear,
+      avoidedCO2TonsWithEnergyProduction: input.avoidedCO2TonsWithEnergyProduction,
+      decontaminatedSurface: input.decontaminatedSurface,
+    }),
+  ] as EconomicImpact[];
   return {
-    impacts: [
-      ...computeDirectAndIndirectEconomicImpacts({
-        evaluationPeriodInYears: input.evaluationPeriodInYears,
-        currentOwner: input.currentOwner,
-        currentTenant: input.currentTenant,
-        futureSiteOwner: input.futureSiteOwner,
-        yearlyCurrentCosts: input.yearlyCurrentCosts,
-        yearlyProjectedCosts: input.yearlyProjectedCosts,
-        propertyTransferDutiesAmount: input.propertyTransferDutiesAmount,
-      }),
-      ...computeEnvironmentalMonetaryImpacts({
-        baseSoilsDistribution: input.baseSoilsDistribution,
-        forecastSoilsDistribution: input.forecastSoilsDistribution,
-        evaluationPeriodInYears: input.evaluationPeriodInYears,
-        baseSoilsCarbonStorage: input.baseSoilsCarbonStorage,
-        forecastSoilsCarbonStorage: input.forecastSoilsCarbonStorage,
-        operationsFirstYear: input.operationsFirstYear,
-        avoidedCO2TonsWithEnergyProduction: input.avoidedCO2TonsWithEnergyProduction,
-        decontaminatedSurface: input.decontaminatedSurface,
-      }),
-    ] as EconomicImpact[],
+    total: impacts.map(({ amount }) => amount).reduce((total, amount) => total + amount, 0),
+    impacts,
   };
 };

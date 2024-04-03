@@ -141,6 +141,7 @@ export type ReconversionProjectImpacts = {
     };
   };
   socioeconomic: {
+    total: number;
     impacts: (
       | RentalIncomeImpact
       | AvoidedFricheCostsImpact
