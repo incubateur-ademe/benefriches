@@ -1,16 +1,19 @@
+import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Badge from "@codegouvfr/react-dsfr/Badge";
+import Button from "@codegouvfr/react-dsfr/Button";
 import { Card } from "@codegouvfr/react-dsfr/Card";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
 type SupportedProjectCardProps = {
   formerActivity: string;
-  projectType: string;
+  projectType: ReactNode;
   projectLocation: string;
   economicBalanceInMillionEuros: number;
   socioEconomicImpactAmountInMillionEuros: number;
   imgUrl: string;
+  reportUrl: string;
 };
 
 function SupportedProjectCard({
@@ -20,14 +23,23 @@ function SupportedProjectCard({
   economicBalanceInMillionEuros,
   socioEconomicImpactAmountInMillionEuros,
   imgUrl,
+  reportUrl,
 }: SupportedProjectCardProps) {
   return (
     <div>
       <Card
         background
         badge={<Badge>{formerActivity}</Badge>}
-        style={{ width: "360px", minHeight: "480px" }}
+        style={{ width: "360px" }}
         border
+        footer={
+          <Button
+            priority="primary"
+            linkProps={{ href: reportUrl, rel: "noopener noreferrer", target: "_blank" }}
+          >
+            Télécharger le cas d'étude
+          </Button>
+        }
         desc={
           <div>
             <div className={fr.cx("fr-text--md")}>
@@ -60,7 +72,7 @@ function SupportedProjectCard({
             </div>
           </div>
         }
-        imageAlt={`Illustration du projet ${projectType} à ${projectLocation}`}
+        imageAlt={`Illustration du projet à ${projectLocation}`}
         imageUrl={imgUrl}
         size="small"
         title={projectType}
@@ -84,14 +96,21 @@ export default function SupportedProjectsSection() {
             economicBalanceInMillionEuros={-11.4}
             socioEconomicImpactAmountInMillionEuros={1.4}
             imgUrl="/img/friche-balaruc.jpeg"
+            reportUrl="https://librairie.ademe.fr/ged/3687/benefriches-fiche-presentation-resultats-balaruc.pdf"
           />
           <SupportedProjectCard
-            projectType="Zone d'activité économique"
+            projectType={
+              // this style makes sure the title takes as much height as other cards which are longer
+              <span style={{ display: "block", marginBottom: "28px" }}>
+                Zone d'activité économique
+              </span>
+            }
             projectLocation="Melun Val de Seine (77)"
             formerActivity="Friche partielle"
             economicBalanceInMillionEuros={-4.1}
             socioEconomicImpactAmountInMillionEuros={1.7}
             imgUrl="/img/friche-melun.jpeg"
+            reportUrl="https://librairie.ademe.fr/ged/3687/benefriches-fiche-presentation-resultats-camvs-site-a.pdf"
           />
           <SupportedProjectCard
             projectType="Zone d'activité, dépôt bus et maraîchage"
@@ -100,6 +119,7 @@ export default function SupportedProjectsSection() {
             economicBalanceInMillionEuros={-6.5}
             socioEconomicImpactAmountInMillionEuros={10.1}
             imgUrl="/img/friche-paris-sud-avenir.jpeg"
+            reportUrl="https://librairie.ademe.fr/ged/3687/benefriches-fiche-presentation-resultats-gpsea.pdf"
           />
           <SupportedProjectCard
             projectType="Bureaux, commerces et espace vert"
@@ -108,6 +128,7 @@ export default function SupportedProjectsSection() {
             economicBalanceInMillionEuros={-3.8}
             socioEconomicImpactAmountInMillionEuros={26.8}
             imgUrl="/img/friche-melun-2.jpeg"
+            reportUrl="https://librairie.ademe.fr/ged/3687/benefriches-fiche-presentation-resultats-camvs-site-b.pdf"
           />
         </div>
       </div>
