@@ -1,6 +1,8 @@
 import { ReactElement, useEffect, useMemo } from "react";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
+import RealEstateAcquisitionDescription from "./economic-balance/RealEstateAcquisition";
+import AvoidedFricheCostsDescription from "./socio-economic/AvoidedFricheCosts";
 import CostBenefitAnalysisDescription from "./cost-benefit-analysis";
 import EconomicBalanceDescription from "./economic-balance";
 import ModalBreadcrumb, { ModalBreadcrumbSegments } from "./ModalBreadcrumb";
@@ -10,6 +12,8 @@ export type ImpactDescriptionModalCategory =
   | "economic-balance"
   | "cost-benefit-analysis"
   | "socio-economic"
+  | "real-estate-acquisition"
+  | "avoided-friche-costs"
   | undefined;
 
 type Props = {
@@ -58,6 +62,39 @@ const getModalContent = (
           { label: "Impacts socio-économiques", isCurrent: true },
         ],
         content: <SocioEconomicDescription />,
+      };
+
+    case "real-estate-acquisition":
+      return {
+        title: "🏠 Acquisition du site",
+        breadcrumbSegments: [
+          {
+            label: "Bilan de l’opération",
+            onClick: () => {
+              onChangeModalCategoryOpened("economic-balance");
+            },
+          },
+          { label: "Acquisition du site", isCurrent: true },
+        ],
+        content: <RealEstateAcquisitionDescription />,
+      };
+
+    case "avoided-friche-costs":
+      return {
+        title: "🏚 Dépenses de gestion et de sécurisation de la friche évitées",
+        breadcrumbSegments: [
+          {
+            label: "Impacts socio-économiques",
+            onClick: () => {
+              onChangeModalCategoryOpened("socio-economic");
+            },
+          },
+          {
+            label: "Impacts économiques directs",
+          },
+          { label: "Dépenses friche évitées", isCurrent: true },
+        ],
+        content: <AvoidedFricheCostsDescription />,
       };
     default:
       return { title: "", content: undefined };

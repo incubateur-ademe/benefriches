@@ -59,7 +59,11 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
           }}
         />
         {!!impacts.economicBalance.costs.realEstateTransaction && (
-          <ImpactItemRow>
+          <ImpactItemRow
+            onClick={() => {
+              openImpactDescriptionModal("real-estate-acquisition");
+            }}
+          >
             <ImpactLabel>🏠 Acquisition du site</ImpactLabel>
             <ImpactValue>
               {formatMonetaryImpact(impacts.economicBalance.costs.realEstateTransaction)}

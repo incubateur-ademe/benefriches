@@ -26,13 +26,17 @@ const ModalBreadcrumb = ({ segments }: Props) => {
         <ol className="fr-breadcrumb__list">
           {segments.map(({ onClick, isCurrent, label }) => (
             <li key={label}>
-              <button
-                className="fr-breadcrumb__link"
-                onClick={onClick}
-                aria-current={isCurrent ? "page" : "false"}
-              >
-                {label}
-              </button>
+              {onClick ? (
+                <button
+                  className="fr-breadcrumb__link"
+                  onClick={onClick}
+                  aria-current={isCurrent ? "page" : "false"}
+                >
+                  {label}
+                </button>
+              ) : (
+                <span style={{ lineHeight: "1.25rem", verticalAlign: "top" }}>{label}</span>
+              )}
             </li>
           ))}
         </ol>
