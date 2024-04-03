@@ -72,7 +72,7 @@ function CostBenefitAnalysisCard({
   };
 
   return (
-    <ImpactCard title="Analyse coûts bénéfices" displayDescriptionModal={displayDescriptionModal}>
+    <ImpactCard title="Analyse coûts bénéfices" onTitleClick={displayDescriptionModal}>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>
   );

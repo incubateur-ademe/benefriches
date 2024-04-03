@@ -3,10 +3,10 @@ import { ReactNode } from "react";
 type Props = {
   title: ReactNode;
   children?: ReactNode;
-  displayDescriptionModal?: () => void;
+  onTitleClick?: () => void;
 };
 
-const ImpactCard = ({ title, children, displayDescriptionModal }: Props) => {
+const ImpactCard = ({ title, children, onTitleClick }: Props) => {
   return (
     <figure
       style={{
@@ -16,8 +16,8 @@ const ImpactCard = ({ title, children, displayDescriptionModal }: Props) => {
       }}
       className="tw-flex tw-flex-col fr-py-2w fr-px-3w fr-m-0"
     >
-      {displayDescriptionModal ? (
-        <strong className="tw-cursor-pointer" onClick={displayDescriptionModal}>
+      {onTitleClick ? (
+        <strong className="tw-cursor-pointer" onClick={onTitleClick}>
           {title}
         </strong>
       ) : (

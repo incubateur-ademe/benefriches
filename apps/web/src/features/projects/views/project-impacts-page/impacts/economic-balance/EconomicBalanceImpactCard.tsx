@@ -153,7 +153,7 @@ function EconomicBalanceImpactCard({ revenues, costs, displayDescriptionModal }:
   };
 
   return (
-    <ImpactCard title="Bilan de l'opération" displayDescriptionModal={displayDescriptionModal}>
+    <ImpactCard title="Bilan de l'opération" onTitleClick={displayDescriptionModal}>
       {revenues.total > 0 || costs.total > 0 ? (
         <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
       ) : (

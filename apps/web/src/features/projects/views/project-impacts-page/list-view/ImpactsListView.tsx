@@ -34,11 +34,19 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
             openImpactDescriptionModal("cost-benefit-analysis");
           }}
         />
-        <ImpactItemRow>
+        <ImpactItemRow
+          onClick={() => {
+            openImpactDescriptionModal("economic-balance");
+          }}
+        >
           <ImpactLabel>📉 Bilan de l’opération</ImpactLabel>
           <ImpactValue>{formatMonetaryImpact(impacts.economicBalance.total)}</ImpactValue>
         </ImpactItemRow>
-        <ImpactItemRow>
+        <ImpactItemRow
+          onClick={() => {
+            openImpactDescriptionModal("socio-economic");
+          }}
+        >
           <ImpactLabel>🌎 Impacts socio-économiques</ImpactLabel>
           <ImpactValue>{formatMonetaryImpact(impacts.socioeconomic.total)}</ImpactValue>
         </ImpactItemRow>
