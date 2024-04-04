@@ -1,6 +1,7 @@
 import { ReconversionProjectImpacts } from "../domain/impacts.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { SoilType } from "@/shared/domain/soils";
 
 export interface ReconversionProjectImpactsGateway {
   getReconversionProjectImpacts(
@@ -14,6 +15,14 @@ export type ReconversionProjectImpactsResult = {
   name: string;
   relatedSiteId: string;
   relatedSiteName: string;
+  projectData: {
+    soilsDistribution: Partial<Record<SoilType, number>>;
+    contaminatedSoilSurface: 0;
+  };
+  siteData: {
+    contaminatedSoilSurface: number;
+    soilsDistribution: Partial<Record<SoilType, number>>;
+  };
   impacts: ReconversionProjectImpacts;
 };
 

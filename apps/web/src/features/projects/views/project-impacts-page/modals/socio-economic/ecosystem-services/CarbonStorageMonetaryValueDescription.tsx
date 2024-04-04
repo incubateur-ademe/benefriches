@@ -1,15 +1,16 @@
 import ModalTitleThree from "../../ModalTitleThree";
 import ModalTitleTwo from "../../ModalTitleTwo";
 
-import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 type Props = {
-  baseSoilsDistribution: ReconversionProjectImpacts["soilsCarbonStorage"]["current"]["soils"];
-  forecastSoilsDistribution: ReconversionProjectImpacts["soilsCarbonStorage"]["forecast"]["soils"];
+  baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];
+  forecastSoilsDistribution: ReconversionProjectImpactsResult["projectData"]["soilsDistribution"];
 };
 
 const formatSoilSurfaceArea = (surfaceArea: number) => {
@@ -52,10 +53,10 @@ const CarbonSoilsStorageMonetaryValueDescription = ({
         occupée par chaque type de sol du site (exprimée en hectare).
       </p>
       <ul>
-        {baseSoilsDistribution.map(({ type, surfaceArea }) => {
+        {Object.entries(baseSoilsDistribution).map(([type, surfaceArea]) => {
           return (
             <li key={type}>
-              {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea)}
+              {getLabelForSoilType(type as SoilType)} : {formatSoilSurfaceArea(surfaceArea)}
             </li>
           );
         })}
@@ -67,10 +68,10 @@ const CarbonSoilsStorageMonetaryValueDescription = ({
         occupée par chaque type de sol du projet (exprimée en hectare).
       </p>
       <ul>
-        {forecastSoilsDistribution.map(({ type, surfaceArea }) => {
+        {Object.entries(forecastSoilsDistribution).map(([type, surfaceArea]) => {
           return (
             <li key={type}>
-              {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea)}
+              {getLabelForSoilType(type as SoilType)} : {formatSoilSurfaceArea(surfaceArea)}
             </li>
           );
         })}

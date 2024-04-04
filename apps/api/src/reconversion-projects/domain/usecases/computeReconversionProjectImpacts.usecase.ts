@@ -99,6 +99,14 @@ export type Result = {
   name: string;
   relatedSiteId: string;
   relatedSiteName: string;
+  projectData: {
+    soilsDistribution: SoilsDistribution;
+    contaminatedSoilSurface: 0;
+  };
+  siteData: {
+    contaminatedSoilSurface: number;
+    soilsDistribution: SoilsDistribution;
+  };
   impacts: {
     nonContaminatedSurfaceArea: NonContaminatedSurfaceAreaImpact | undefined;
     permeableSurfaceArea: PermeableSurfaceAreaImpactResult;
@@ -166,6 +174,14 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       name: reconversionProject.name,
       relatedSiteId: reconversionProject.relatedSiteId,
       relatedSiteName: relatedSite.name,
+      projectData: {
+        soilsDistribution: reconversionProject.soilsDistribution,
+        contaminatedSoilSurface: 0,
+      },
+      siteData: {
+        contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
+        soilsDistribution: relatedSite.soilsDistribution,
+      },
       impacts: {
         economicBalance: computeEconomicBalanceImpact(
           {

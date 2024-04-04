@@ -161,6 +161,19 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         name: reconversionProjectImpactDataView.name,
         relatedSiteId: site.id,
         relatedSiteName: site.name,
+        projectData: {
+          soilsDistribution: reconversionProjectImpactDataView.soilsDistribution,
+          contaminatedSoilSurface: 0,
+        },
+        siteData: {
+          contaminatedSoilSurface: 20000,
+          soilsDistribution: {
+            ...reconversionProjectImpactDataView.soilsDistribution,
+            PRAIRIE_TREES: 0,
+            IMPERMEABLE_SOILS: 10000,
+            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
+          },
+        },
         impacts: {
           socioeconomic: {
             total: -195584,

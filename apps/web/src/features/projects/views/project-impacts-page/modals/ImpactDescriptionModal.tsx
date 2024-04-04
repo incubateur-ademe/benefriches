@@ -5,12 +5,14 @@ import RealEstateAcquisitionDescription from "./economic-balance/RealEstateAcqui
 import AvoidedFricheCostsDescription from "./socio-economic/AvoidedFricheCostsDescription";
 import CarbonSoilsStorageMonetaryValueDescription from "./socio-economic/ecosystem-services/CarbonStorageMonetaryValueDescription";
 import EcosystemServicesDescription from "./socio-economic/ecosystem-services/EcosystemServicesDescription";
+import NatureRelatedWellnessAndLeisureDescription from "./socio-economic/ecosystem-services/NatureRelatedWellnessAndLeisureDescription";
+import WaterRegulationDescription from "./socio-economic/WaterRegulationDescription";
 import CostBenefitAnalysisDescription from "./cost-benefit-analysis";
 import EconomicBalanceDescription from "./economic-balance";
 import ModalBreadcrumb, { ModalBreadcrumbSegments } from "./ModalBreadcrumb";
 import SocioEconomicDescription from "./socio-economic";
 
-import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { SoilsDistribution } from "@/features/projects/application/projectImpacts.reducer";
 
 export type ImpactDescriptionModalCategory =
   | "economic-balance"
@@ -19,19 +21,29 @@ export type ImpactDescriptionModalCategory =
   | "real-estate-acquisition"
   | "avoided-friche-costs"
   | "ecosystem-services"
+  | "water-regulation"
   | "carbon-storage-monetary-value"
+  | "nature-related-wellness-and-leisure"
   | undefined;
 
 type Props = {
   modalCategory: ImpactDescriptionModalCategory;
   onChangeModalCategoryOpened: (modalCategory: ImpactDescriptionModalCategory) => void;
-  impacts: ReconversionProjectImpacts;
+  projectData: {
+    soilsDistribution: SoilsDistribution;
+    contaminatedSoilSurface: 0;
+  };
+  siteData: {
+    contaminatedSoilSurface: number;
+    soilsDistribution: SoilsDistribution;
+  };
 };
 
 const getModalContent = (
   modalCategory: Props["modalCategory"],
   onChangeModalCategoryOpened: Props["onChangeModalCategoryOpened"],
-  impacts: Props["impacts"],
+  projectData: Props["projectData"],
+  siteData: Props["siteData"],
 ): { title: string; content?: ReactElement; breadcrumbSegments?: ModalBreadcrumbSegments } => {
   switch (modalCategory) {
     case "cost-benefit-analysis":
@@ -104,6 +116,28 @@ const getModalContent = (
         ],
         content: <AvoidedFricheCostsDescription />,
       };
+    case "water-regulation":
+      return {
+        title: "🚰 Régulation de la qualité de l’eau",
+        breadcrumbSegments: [
+          {
+            label: "Impacts socio-économiques",
+            onClick: () => {
+              onChangeModalCategoryOpened("socio-economic");
+            },
+          },
+          { label: "Régulation de la qualité de l’eau", isCurrent: true },
+        ],
+        content: (
+          <WaterRegulationDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+            baseContaminatedSurface={siteData.contaminatedSoilSurface}
+            forecastContaminatedSurface={projectData.contaminatedSoilSurface}
+          />
+        ),
+      };
+
     case "ecosystem-services":
       return {
         title: "🌻 Services écosystémiques",
@@ -138,11 +172,38 @@ const getModalContent = (
         ],
         content: (
           <CarbonSoilsStorageMonetaryValueDescription
-            baseSoilsDistribution={impacts.soilsCarbonStorage.current.soils}
-            forecastSoilsDistribution={impacts.soilsCarbonStorage.forecast.soils}
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
           />
         ),
       };
+
+    case "nature-related-wellness-and-leisure":
+      return {
+        title: "🚵‍♂️ Loisirs et bien-être liés à la nature",
+        breadcrumbSegments: [
+          {
+            label: "Impacts socio-économiques",
+            onClick: () => {
+              onChangeModalCategoryOpened("socio-economic");
+            },
+          },
+          {
+            label: "Services écosystémiques",
+            onClick: () => {
+              onChangeModalCategoryOpened("ecosystem-services");
+            },
+          },
+          { label: "Loisirs et bien-être liés à la nature", isCurrent: true },
+        ],
+        content: (
+          <NatureRelatedWellnessAndLeisureDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        ),
+      };
+
     default:
       return { title: "", content: undefined };
   }
@@ -156,11 +217,12 @@ const modal = createModal({
 export function ImpactDescriptionModal({
   modalCategory,
   onChangeModalCategoryOpened,
-  impacts,
+  projectData,
+  siteData,
 }: Props) {
   const { title, content, breadcrumbSegments } = useMemo(
-    () => getModalContent(modalCategory, onChangeModalCategoryOpened, impacts),
-    [impacts, modalCategory, onChangeModalCategoryOpened],
+    () => getModalContent(modalCategory, onChangeModalCategoryOpened, projectData, siteData),
+    [modalCategory, onChangeModalCategoryOpened, projectData, siteData],
   );
 
   useIsModalOpen(modal, {

@@ -12,9 +12,8 @@ type Props = {
 function ProjectsImpacts({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
-  const { projectData, impactsData, dataLoadingState, evaluationPeriod } = useAppSelector(
-    (state) => state.projectImpacts,
-  );
+  const { projectData, relatedSiteData, impactsData, dataLoadingState, evaluationPeriod } =
+    useAppSelector((state) => state.projectImpacts);
 
   useEffect(() => {
     void dispatch(fetchReconversionProjectImpacts({ projectId, evaluationPeriod }));
@@ -23,6 +22,7 @@ function ProjectsImpacts({ projectId }: Props) {
   return (
     <ProjectImpactsPageWrapper
       projectData={projectData}
+      relatedSiteData={relatedSiteData}
       impactsData={impactsData}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
