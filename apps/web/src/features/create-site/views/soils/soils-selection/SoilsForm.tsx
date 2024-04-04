@@ -1,14 +1,14 @@
-import { useForm, UseFormRegister } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
-import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
-import { Checkbox } from "@codegouvfr/react-dsfr/Checkbox";
 
 import { SoilType } from "@/shared/domain/soils";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
+  getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import SelectableTile from "@/shared/views/components/SelectableTile/SelectableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -21,20 +21,7 @@ type Props = {
   isFriche: boolean;
 };
 
-const mapSoilOptions = (register: UseFormRegister<FormValues>) => (soilType: SoilType) => {
-  return {
-    label: getLabelForSoilType(soilType),
-    hintText: getDescriptionForSoilType(soilType),
-    nativeInputProps: {
-      ...register("soils", {
-        required: "Ce champ est nécessaire pour déterminer les questions suivantes",
-      }),
-      value: soilType,
-    },
-  };
-};
-
-const siteSoilOptionsCategories = [
+const siteSoilTypeTilesCategories = [
   {
     category: "Espaces agricoles",
     options: [SoilType.CULTIVATION, SoilType.VINEYARD, SoilType.ORCHARD],
@@ -68,7 +55,7 @@ const siteSoilOptionsCategories = [
   },
 ] as const;
 
-const fricheSoilOptionsCategories = [
+const fricheSoilTypeTilesCategories = [
   {
     category: "Sols artificiels minéraux",
     options: [SoilType.BUILDINGS, SoilType.IMPERMEABLE_SOILS, SoilType.MINERAL_SOIL],
@@ -100,19 +87,44 @@ const fricheSoilOptionsCategories = [
   },
 ] as const;
 
+type SoilTypeTileProps = {
+  soilType: SoilType;
+  isSelected: boolean;
+  onSelect: () => void;
+};
+
+const SoilTypeTile = ({ soilType, isSelected, onSelect }: SoilTypeTileProps) => {
+  const title: string = getLabelForSoilType(soilType);
+  const description: string | undefined = getDescriptionForSoilType(soilType);
+  const imgSrc = `/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`;
+
+  return (
+    <SelectableTile
+      title={title}
+      description={description}
+      imgSrc={imgSrc}
+      isSelected={isSelected}
+      onSelect={onSelect}
+    />
+  );
+};
+
 function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+  const { control, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: {
+      soils: [],
+    },
+  });
 
   const validationError = formState.errors.soils;
 
-  const optionsCategories = isFriche ? fricheSoilOptionsCategories : siteSoilOptionsCategories;
+  const optionsCategories = isFriche ? fricheSoilTypeTilesCategories : siteSoilTypeTilesCategories;
 
   return (
     <WizardFormLayout
       title={`Quels types de sols y a-t-il sur ${isFriche ? "cette friche" : "ce site"} ?`}
       instructions={
         <>
-          {" "}
           <p>Plusieurs réponses possibles.</p>
           <p>
             Il est important de définir la typologie des sols pour connaître la quantité de carbone
@@ -122,19 +134,47 @@ function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={fr.cx("fr-accordions-group", "fr-pb-3w")}>
-          {optionsCategories.map(({ category, options }, index) => {
-            return (
-              <Accordion label={category} key={category} defaultExpanded={index === 0}>
-                <Checkbox
-                  options={options.map(mapSoilOptions(register))}
-                  state={validationError ? "error" : "default"}
-                  stateRelatedMessage={validationError ? validationError.message : undefined}
-                />
-              </Accordion>
-            );
-          })}
-        </div>
+        {optionsCategories.map(({ category, options }) => {
+          return (
+            <section key={category} className={fr.cx("fr-mb-5w")}>
+              <h4>{category}</h4>
+              <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+                {options.map((option) => {
+                  return (
+                    <div className={fr.cx("fr-col-4")} key={option}>
+                      <Controller
+                        control={control}
+                        name="soils"
+                        rules={{ required: "Veuillez sélectionner au moins un type de sol." }}
+                        render={({ field }) => {
+                          const isSelected = field.value.includes(option);
+                          return (
+                            <SoilTypeTile
+                              soilType={option}
+                              isSelected={isSelected}
+                              onSelect={() => {
+                                field.onChange(
+                                  isSelected
+                                    ? field.value.filter((v) => v !== option)
+                                    : [...field.value, option],
+                                );
+                              }}
+                            />
+                          );
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
+        {validationError && (
+          <p className={fr.cx("fr-text--bold")} style={{ color: "var(--text-label-red-marianne)" }}>
+            {validationError.message}
+          </p>
+        )}
         <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>

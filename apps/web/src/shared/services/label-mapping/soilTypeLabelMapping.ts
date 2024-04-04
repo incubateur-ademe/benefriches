@@ -52,12 +52,40 @@ export const getDescriptionForSoilType = (value: SoilType): string => {
     case SoilType.ARTIFICIAL_TREE_FILLED:
       return "Parc ou jardin avec des arbres plantés…";
     case SoilType.PRAIRIE_GRASS:
-      return "Composée uniquement d’herbes et de fleurs";
+      return "Composée uniquement d'herbes et de fleurs";
+    case SoilType.PRAIRIE_BUSHES:
+      return "Composée d'herbe et de buissons";
     case SoilType.PRAIRIE_TREES:
-      return "Composée d’herbe et de buissons";
+      return "Parsemée d'arbres";
     case SoilType.CULTIVATION:
-      return "Céréalières, de légumes…";
+      return "Céréalières, légumières…";
+    case SoilType.WET_LAND:
+      return "Marais, tourbières, prairies humides, mangrove, lagune...";
     default:
       return "";
   }
+};
+
+const soilTypePictogramMap: Record<SoilType, string> = {
+  [SoilType.CULTIVATION]: "cultivation.svg",
+  [SoilType.VINEYARD]: "vineyard.svg",
+  [SoilType.ORCHARD]: "orchard.svg",
+  [SoilType.PRAIRIE_GRASS]: "prairie-grass.svg",
+  [SoilType.PRAIRIE_BUSHES]: "prairie-bushes.svg",
+  [SoilType.PRAIRIE_TREES]: "prairie-trees.svg",
+  [SoilType.FOREST_DECIDUOUS]: "forest-deciduous.svg",
+  [SoilType.FOREST_CONIFER]: "forest-conifer.svg",
+  [SoilType.FOREST_POPLAR]: "forest-poplar.svg",
+  [SoilType.FOREST_MIXED]: "forest-mixed.svg",
+  [SoilType.WATER]: "water.svg",
+  [SoilType.WET_LAND]: "wet-land.svg",
+  [SoilType.BUILDINGS]: "buildings.svg",
+  [SoilType.IMPERMEABLE_SOILS]: "impermeable.svg",
+  [SoilType.MINERAL_SOIL]: "mineral.svg",
+  [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED]: "artificial-grass-or-bushes-filled.svg",
+  [SoilType.ARTIFICIAL_TREE_FILLED]: "artificial-tree-filled.svg",
+} as const;
+
+export const getPictogramForSoilType = (value: SoilType): string => {
+  return soilTypePictogramMap[value];
 };
