@@ -31,6 +31,7 @@ export const generateProjectName = (projectData: ProjectInfo): string => {
     case "BUILDINGS":
     case "NATURAL_URBAN_SPACES":
     case "URBAN_AGRICULTURE":
+    case "COMMERCIAL_ACTIVITY_AREA":
       return `Projet ${getLabelForDevelopmentPlanCategory(projectData.developmentPlanCategories[0]!).toLowerCase()}`;
     case "RENEWABLE_ENERGY":
       return generateRenewableEnergyProjectName(projectData.renewableEnergyTypes);

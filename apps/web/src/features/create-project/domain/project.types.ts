@@ -12,7 +12,8 @@ export type DevelopmentPlanCategory =
   | "RENEWABLE_ENERGY"
   | "URBAN_AGRICULTURE"
   | "BUILDINGS"
-  | "NATURAL_URBAN_SPACES";
+  | "NATURAL_URBAN_SPACES"
+  | "COMMERCIAL_ACTIVITY_AREA";
 
 export type RenewableEnergyDevelopmentPlanType =
   | "PHOTOVOLTAIC_POWER_PLANT"
@@ -112,31 +113,6 @@ export type ProjectSite = {
   soilsDistribution: Partial<Record<SoilType, number>>;
   surfaceArea: number;
   address: Address;
-};
-
-const getPrevisionalProjectSocioEconomicImpactPerHectare = (
-  projectType: DevelopmentPlanCategory,
-) => {
-  switch (projectType) {
-    case "BUILDINGS":
-      return 15000;
-    case "NATURAL_URBAN_SPACES":
-      return 10000;
-    case "URBAN_AGRICULTURE":
-      return 12000;
-    case "RENEWABLE_ENERGY":
-      return 5000;
-  }
-};
-
-export const getPrevisionalProjectSocioEconomicImpact = (
-  projectType: DevelopmentPlanCategory,
-  siteSurfaceArea: number,
-) => {
-  return Math.round(
-    getPrevisionalProjectSocioEconomicImpactPerHectare(projectType) *
-      convertSquareMetersToHectares(siteSurfaceArea),
-  );
 };
 
 const getPrevisionalEnrSocioEconomicImpactPerHectare = (
