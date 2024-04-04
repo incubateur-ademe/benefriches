@@ -34,7 +34,7 @@ function PhotovoltaicAnnualProductionForm({
 
   return (
     <WizardFormLayout
-      title="Quelle est la production annuelle attendue de votre installation ?"
+      title="Quelle est la production annuelle attendue de l'installation ?"
       instructions={
         <>
           <ExpectedAnnualProductionHint

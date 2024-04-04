@@ -10,9 +10,9 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
       {expectedPerformanceMwhPerYear ? (
         <>
           <p>
-            D’après la puissance de crête de votre installation, sa superficie au sol et sa
-            situation géographique (ensoleillement, horizon, etc.), vous pouvez espérer produire en
-            moyenne {formatNumberFr(expectedPerformanceMwhPerYear)} MWh par an.
+            D’après la puissance de crête de l'installation, sa superficie au sol et sa situation
+            géographique (ensoleillement, horizon, etc.), vous pouvez espérer produire en moyenne{" "}
+            {formatNumberFr(expectedPerformanceMwhPerYear)} MWh par an.
           </p>
           <p>
             La valeur qui vous est proposée a été calculée à partir des données du{" "}

@@ -21,7 +21,7 @@ function TotalFlatSurfacesInput({ allocatedFlatSurface, minAdvisedFlatSurface }:
       disabled
       hintText={`Minimum conseillé : ${formatNumberFr(minAdvisedFlatSurface)} m²`}
       state={hasMissingAllocatedFlatSurface ? "error" : "default"}
-      stateRelatedMessage={`La surface requise pour vos panneaux photovoltaïques est de ${formatNumberFr(
+      stateRelatedMessage={`La surface plane requise pour vos panneaux photovoltaïques est de ${formatNumberFr(
         minAdvisedFlatSurface,
       )} m²`}
     />

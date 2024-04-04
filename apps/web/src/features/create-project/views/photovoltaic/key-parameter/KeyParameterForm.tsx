@@ -33,7 +33,7 @@ function KeyParameterForm({ onSubmit, onBack }: Props) {
 
   return (
     <WizardFormLayout
-      title="Quel est le paramètre déterminant pour votre projet photovoltaïque ?"
+      title="Quel est le paramètre déterminant pour la centrale photovoltaïque ?"
       instructions={
         <>
           <p>
@@ -44,7 +44,7 @@ function KeyParameterForm({ onSubmit, onBack }: Props) {
           <p>
             Si vous souhaitez que la puissance d’installation s’adapte à une certaine superficie au
             sol, sélectionnez «&nbsp;La superficie de l’installation&nbsp;». Bénéfriches calculera
-            alors la puissance que pourra faire votre installation.
+            alors la puissance que pourra faire l'installation.
           </p>
         </>
       }

@@ -32,7 +32,7 @@ function PhotovoltaicPowerForm({
 
   return (
     <WizardFormLayout
-      title="Quel sera la puissance de votre installation ?"
+      title="Quelle sera la puissance de l'installation ?"
       instructions={
         <>
           <p>
