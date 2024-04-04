@@ -1,4 +1,3 @@
-import { forwardRef } from "react";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Select, SelectProps } from "@codegouvfr/react-dsfr/SelectNext";
 import { LOCAL_AUTHORITY_AVAILABLE_VALUES } from "./values";
@@ -31,7 +30,7 @@ type DataProps = {
 
 type Props = DataProps & Omit<SelectProps<SelectProps.Option[]>, "options">;
 
-const LocalAuthoritySelect = forwardRef<HTMLDivElement, Props>((props: Props) => {
+const LocalAuthoritySelect = (props: Props) => {
   const { loadingData, data, excludedValues: propsExcludedValues = [], ...rest } = props;
 
   if (loadingData === "loading") {
@@ -67,7 +66,7 @@ const LocalAuthoritySelect = forwardRef<HTMLDivElement, Props>((props: Props) =>
   }));
 
   return <Select {...rest} options={options} />;
-});
+};
 
 LocalAuthoritySelect.displayName = "LocalAuthoritySelect";
 
