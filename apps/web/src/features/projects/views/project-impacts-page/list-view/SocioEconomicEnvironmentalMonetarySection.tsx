@@ -99,7 +99,11 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
               </ImpactValue>
             </ImpactDetailRow>
           </ImpactItemGroup>
-          <ImpactDetailRow key={avoidedCO2WithEnrImpact.impact}>
+          <ImpactDetailRow
+            onClick={() => {
+              openImpactDescriptionModal("avoided-co2-monetary-value-renewable-energy");
+            }}
+          >
             <ImpactDetailLabel>
               ⚡️️ Grâce à la production d’énergies renouvelables
             </ImpactDetailLabel>

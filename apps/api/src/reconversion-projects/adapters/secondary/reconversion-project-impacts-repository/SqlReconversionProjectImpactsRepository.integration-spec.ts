@@ -76,6 +76,8 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           type: "any",
           features: {
             expectedAnnualProduction: 10,
+            surfaceArea: 2000,
+            electricalPowerKWc: 300,
           },
         },
       ]);
@@ -113,6 +115,8 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         developmentPlanExpectedAnnualEnergyProductionMWh: 10,
         realEstateTransactionPropertyTransferDutiesAmount: 8000,
         operationsFirstYear: 2025,
+        developmentPlanElectricalPowerKWc: 300,
+        developmentPlanSurfaceArea: 2000,
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {

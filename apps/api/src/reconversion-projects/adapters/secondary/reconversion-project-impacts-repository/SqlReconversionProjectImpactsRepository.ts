@@ -74,9 +74,15 @@ export class SqlReconversionProjectImpactsRepository
       .select("amount", "source")
       .where("reconversion_project_id", reconversionProjectId);
 
-    const developmentPlanExpectedAnnualEnergyProductionMWh = sqlDevelopmentPlan?.features
-      ? (sqlDevelopmentPlan.features as DevelopmentPlan["features"]).expectedAnnualProduction
-      : undefined;
+    const developmentPlanFeatures = (sqlDevelopmentPlan?.features ?? {
+      expectedAnnualProduction: undefined,
+      surfaceArea: undefined,
+      electricalPowerKWc: undefined,
+    }) as DevelopmentPlan["features"];
+    const developmentPlanExpectedAnnualEnergyProductionMWh =
+      developmentPlanFeatures.expectedAnnualProduction;
+    const developmentPlanSurfaceArea = developmentPlanFeatures.surfaceArea;
+    const developmentPlanElectricalPowerKWc = developmentPlanFeatures.electricalPowerKWc;
 
     const realEstateTransactionTotalCost = reconversionProject.real_estate_transaction_selling_price
       ? reconversionProject.real_estate_transaction_selling_price +
@@ -113,6 +119,8 @@ export class SqlReconversionProjectImpactsRepository
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
       developmentPlanExpectedAnnualEnergyProductionMWh,
+      developmentPlanSurfaceArea,
+      developmentPlanElectricalPowerKWc,
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
     };
   }

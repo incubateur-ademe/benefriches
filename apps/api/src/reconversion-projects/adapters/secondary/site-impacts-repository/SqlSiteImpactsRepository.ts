@@ -38,7 +38,7 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
       .where("site_id", siteId);
 
     const sqlAddress = await this.sqlConnection("addresses")
-      .select("city_code")
+      .select("city_code", "value")
       .where("site_id", siteId)
       .first();
 
@@ -46,6 +46,7 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
       id: sqlSite.id,
       name: sqlSite.name,
       addressCityCode: sqlAddress?.city_code ?? "",
+      addressLabel: sqlAddress?.value ?? "",
       surfaceArea: sqlSite.surface_area,
       contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
       fullTimeJobs: sqlSite.full_time_jobs_involved ?? undefined,
