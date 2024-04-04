@@ -131,6 +131,7 @@ const SocioEconomicImpactsListSection = ({
       </section>
       <SocioEconomicEnvironmentalMonetaryImpactsSection
         socioEconomicImpacts={socioEconomicImpacts}
+        openImpactDescriptionModal={openImpactDescriptionModal}
       />
     </section>
   );

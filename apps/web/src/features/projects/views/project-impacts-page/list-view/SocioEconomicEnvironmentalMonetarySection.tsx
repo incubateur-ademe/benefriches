@@ -1,4 +1,5 @@
 import { getActorLabel } from "../impacts/socio-economic/socioEconomicImpacts";
+import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModal";
 import { formatMonetaryImpact } from "./formatImpactValue";
 import ImpactDetailLabel from "./ImpactDetailLabel";
 import ImpactDetailRow from "./ImpactItemDetailRow";
@@ -17,6 +18,7 @@ import {
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
+  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 const getLabelForEcosystemServicesImpact = (
@@ -42,7 +44,24 @@ const getLabelForEcosystemServicesImpact = (
   }
 };
 
-const SocioEconomicEnvironmentalMonetaryImpactsSection = ({ socioEconomicImpacts }: Props) => {
+const getEcosystemServiceOnClick = (
+  impact: EcosystemServicesImpact["details"][number]["impact"],
+  openImpactDescriptionModal: Props["openImpactDescriptionModal"],
+): (() => void) | undefined => {
+  switch (impact) {
+    case "carbon_storage":
+      return () => {
+        openImpactDescriptionModal("carbon-storage-monetary-value");
+      };
+    default:
+      return undefined;
+  }
+};
+
+const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
+  socioEconomicImpacts,
+  openImpactDescriptionModal,
+}: Props) => {
   const ecosystemServicesImpact = socioEconomicImpacts.find(
     (impact): impact is EcosystemServicesImpact => impact.impact === "ecosystem_services",
   );
@@ -97,7 +116,11 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({ socioEconomicImpacts
 
       {ecosystemServicesImpact && (
         <>
-          <ImpactItemGroup>
+          <ImpactItemGroup
+            onClick={() => {
+              openImpactDescriptionModal("ecosystem-services");
+            }}
+          >
             <ImpactLabel>🌻 Services écosystémiques</ImpactLabel>
             <ImpactDetailRow key={ecosystemServicesImpact.actor + ecosystemServicesImpact.amount}>
               <ImpactDetailLabel>{getActorLabel(ecosystemServicesImpact.actor)}</ImpactDetailLabel>
@@ -107,7 +130,10 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({ socioEconomicImpacts
             </ImpactDetailRow>
           </ImpactItemGroup>
           {ecosystemServicesImpact.details.map(({ amount, impact }) => (
-            <ImpactDetailRow key={impact}>
+            <ImpactDetailRow
+              key={impact}
+              onClick={getEcosystemServiceOnClick(impact, openImpactDescriptionModal)}
+            >
               <ImpactDetailLabel>{getLabelForEcosystemServicesImpact(impact)}</ImpactDetailLabel>
               <ImpactValue>{formatMonetaryImpact(amount)}</ImpactValue>
             </ImpactDetailRow>

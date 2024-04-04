@@ -16,7 +16,7 @@ const ModalBreadcrumb = ({ segments }: Props) => {
   return (
     <nav
       role="navigation"
-      className="fr-breadcrumb"
+      className={"fr-breadcrumb tw-w-3/4"}
       style={{ position: "absolute", top: fr.spacing("1v"), left: fr.spacing("4w") }}
     >
       <button className="fr-breadcrumb__button" aria-expanded="false" aria-controls={breadcrumbId}>
