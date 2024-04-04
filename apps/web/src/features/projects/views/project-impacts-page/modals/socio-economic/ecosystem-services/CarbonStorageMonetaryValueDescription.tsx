@@ -4,12 +4,16 @@ import ModalTitleTwo from "../../ModalTitleTwo";
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 type Props = {
   baseSoilsDistribution: ReconversionProjectImpacts["soilsCarbonStorage"]["current"]["soils"];
   forecastSoilsDistribution: ReconversionProjectImpacts["soilsCarbonStorage"]["forecast"]["soils"];
+};
+
+const formatSoilSurfaceArea = (surfaceArea: number) => {
+  return `${formatNumberFr(convertSquareMetersToHectares(surfaceArea))} ha`;
 };
 
 const CarbonSoilsStorageMonetaryValueDescription = ({
@@ -51,8 +55,7 @@ const CarbonSoilsStorageMonetaryValueDescription = ({
         {baseSoilsDistribution.map(({ type, surfaceArea }) => {
           return (
             <li key={type}>
-              {getLabelForSoilType(type)} :{" "}
-              {`${formatNumberFr(surfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`}
+              {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea)}
             </li>
           );
         })}
@@ -67,8 +70,7 @@ const CarbonSoilsStorageMonetaryValueDescription = ({
         {forecastSoilsDistribution.map(({ type, surfaceArea }) => {
           return (
             <li key={type}>
-              {getLabelForSoilType(type)} :{" "}
-              {`${formatNumberFr(surfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`}
+              {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea)}
             </li>
           );
         })}

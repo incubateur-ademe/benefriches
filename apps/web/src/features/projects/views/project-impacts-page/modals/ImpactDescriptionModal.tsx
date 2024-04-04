@@ -128,7 +128,12 @@ const getModalContent = (
               onChangeModalCategoryOpened("socio-economic");
             },
           },
-          { label: "Services écosystémiques" },
+          {
+            label: "Services écosystémiques",
+            onClick: () => {
+              onChangeModalCategoryOpened("socio-economic");
+            },
+          },
           { label: "Carbone stocké dans les sols", isCurrent: true },
         ],
         content: (
