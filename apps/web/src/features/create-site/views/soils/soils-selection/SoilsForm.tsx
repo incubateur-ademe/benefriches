@@ -170,11 +170,7 @@ function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
             </section>
           );
         })}
-        {validationError && (
-          <p className={fr.cx("fr-text--bold")} style={{ color: "var(--text-label-red-marianne)" }}>
-            {validationError.message}
-          </p>
-        )}
+        {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
         <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
