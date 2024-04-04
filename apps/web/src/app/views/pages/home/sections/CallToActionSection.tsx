@@ -15,7 +15,11 @@ export default function CallToActionSection() {
       <div className={fr.cx("fr-container")}>
         <div className={fr.cx("fr-grid-row")}>
           <div className={fr.cx("fr-col-5", "fr-pr-8w")} style={{ borderRight: "1px solid #DDD" }}>
-            <img src="/icons/photovoltaique.svg" width="100px" className={fr.cx("fr-mb-3w")} />
+            <img
+              src="/img/pictograms/renewable-energy/photovoltaic.svg"
+              width="100px"
+              className={fr.cx("fr-mb-3w")}
+            />
             <h2>Vous êtes développeur de centrales photovoltaïques ?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>
               Calculez les impacts d'un projet photovoltaïque sur une friche ou sur un autre site
@@ -27,7 +31,11 @@ export default function CallToActionSection() {
           </div>
           <hr />
           <div className={fr.cx("fr-col-7", "fr-pl-8w")}>
-            <img src="/icons/amenagement-urbain.svg" width="100px" className={fr.cx("fr-mb-3w")} />
+            <img
+              src="/img/pictograms/development-plans/mixed-used-neighborhood.svg"
+              width="100px"
+              className={fr.cx("fr-mb-3w")}
+            />
             <h2>Vous êtes aménageur urbain ?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>
               Les projets d’aménagement (logements, lieux d’activités, espace vert...) ne sont pas
