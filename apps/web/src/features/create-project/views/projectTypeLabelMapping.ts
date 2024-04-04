@@ -66,7 +66,7 @@ export const getDescriptionForRenewableEnergyType = (
 };
 
 const developmentPlanCategoryPictogramMap: Record<DevelopmentPlanCategory, string> = {
-  BUILDINGS: "mixed-used-neighboorhood.svg",
+  BUILDINGS: "mixed-used-neighborhood.svg",
   NATURAL_URBAN_SPACES: "natural-urban-space.svg",
   COMMERCIAL_ACTIVITY_AREA: "commercial-activity-area.svg",
   URBAN_AGRICULTURE: "urban-agriculture.svg",
