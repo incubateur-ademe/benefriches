@@ -30,7 +30,7 @@ const SocioEconomicDescription = () => {
             réduction du besoin en en déplacements, etc.)
           </li>
         </ul>
-        Les différents indicateurs utilisés dans BENEFRICHES sont présentés ci-dessous et leurs
+        Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-dessous et leurs
         méthodes de calcul sont détaillées au niveau de chacun.
       </p>
 
@@ -40,7 +40,7 @@ const SocioEconomicDescription = () => {
           Évaluer les bénéfices socio-économiques de la reconversion de friches pour lutter contre
           l'artificialisation :{" "}
           <ExternalLink href="https://librairie.ademe.fr/changement-climatique-et-energie/3772-evaluer-les-benefices-socio-economiques-de-la-reconversion-de-friches-pour-lutter-contre-l-artificialisation-outil-benefriches.html">
-            Outil BENEFRICHES.
+            Outil Bénéfriches.
           </ExternalLink>
         </li>
         <li>

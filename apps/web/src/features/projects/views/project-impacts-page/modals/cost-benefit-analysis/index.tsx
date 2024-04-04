@@ -12,7 +12,7 @@ const CostBenefitAnalysisDescription = ({ onChangeModalCategoryOpened }: Props) 
   return (
     <>
       <p>
-        BENEFRICHES repose sur les principes de l’analyse coûts-bénéfices, qui a pour objet
+        Bénéfriches repose sur les principes de l’analyse coûts-bénéfices, qui a pour objet
         d’apprécier l’intérêt d’une opération (projet ou investissement), sur une période donnée.
       </p>
       <p>
