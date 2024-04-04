@@ -43,9 +43,7 @@ describe("Project name generation", () => {
       renewableEnergyTypes: [],
     };
 
-    expect(generateProjectName(project)).toEqual(
-      "Projet bâtiments, quartier mixte (habitations, commerces, infrastructures..)",
-    );
+    expect(generateProjectName(project)).toEqual("Projet quartier");
   });
 
   it("should return 'Projet mixte' when multiple projects", () => {
