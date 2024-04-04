@@ -16,7 +16,7 @@ const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
           className={fr.cx("fr-grid-row", "fr-my-2w")}
           style={{ justifyContent: "space-between", alignItems: "center" }}
         >
-          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-grid-row--middle")}>
+          <div style={{ display: "flex", alignItems: "center" }}>
             <img
               className={fr.cx("fr-mr-3v")}
               src={getScenarioPictoUrl("PHOTOVOLTAIC_POWER_PLANT")}
@@ -32,10 +32,13 @@ const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
               >
                 {projectName}
               </h2>
-              <h3 className={fr.cx("fr-text--lg", "fr-my-0")}>
-                <span className={fr.cx("fr-icon-map-pin-2-line")} aria-hidden="true"></span>
-                {siteName}
-              </h3>
+              <div className={fr.cx("fr-mt-1v")}>
+                <span
+                  className={fr.cx("fr-icon-map-pin-2-line", "fr-icon--sm", "fr-mr-1w")}
+                  aria-hidden="true"
+                ></span>
+                <span className={fr.cx("fr-text--lg")}>{siteName}</span>
+              </div>
             </div>
           </div>
 
