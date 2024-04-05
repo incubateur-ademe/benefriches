@@ -44,6 +44,7 @@ describe("CreateReconversionProject Use Case", () => {
         "soilsDistribution",
         "yearlyProjectedCosts",
         "yearlyProjectedRevenues",
+        "projectPhase",
       ])("Cannot create a reconversion project without providing %s", async (mandatoryField) => {
         const reconversionProjectProps = buildMinimalReconversionProjectProps(); // @ts-expect-error dynamic delete
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete

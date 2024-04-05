@@ -10,7 +10,8 @@ const stepCategories = [
   "Acteurs",
   "Coûts et recettes",
   "Calendrier",
-  "Dénomination",
+  "Dénomination et avancement",
+  "Récapitulatif",
 ] as const;
 
 type StepCategory = (typeof stepCategories)[number];
@@ -51,9 +52,11 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case "SCHEDULE_PROJECTION":
       return "Calendrier";
     case "NAMING":
-    case "FINAL_SUMMARY":
     case "CREATION_CONFIRMATION":
-      return "Dénomination";
+    case "PROJECT_PHASE":
+      return "Dénomination et avancement";
+    case "FINAL_SUMMARY":
+      return "Récapitulatif";
   }
 };
 

@@ -50,6 +50,8 @@ const saveProjectSchema = z.object({
   soilsDistribution: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
   operationsFirstYear: z.number().optional(),
+  projectPhase: z.string(),
+  projectPhaseDetails: z.string().optional(),
 });
 
 export type SaveProjectPayload = z.infer<typeof saveProjectSchema>;
@@ -99,6 +101,8 @@ export const saveReconversionProject = createAppAsyncThunk(
           },
         },
       ],
+      projectPhase: projectData.projectPhase,
+      projectPhaseDetails: projectData.projectPhaseDetails,
     };
 
     const projectToSave = saveProjectSchema.parse(mappedProjectData);

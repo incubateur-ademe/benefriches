@@ -50,6 +50,7 @@ describe("ReconversionProjects controller", () => {
       "soilsDistribution",
       "yearlyProjectedCosts",
       "yearlyProjectedRevenues",
+      "projectPhase",
     ] as (keyof z.infer<typeof createReconversionProjectInputSchema>)[])(
       "can't create a reconversion project without mandatory field %s",
       async (mandatoryField) => {
@@ -91,11 +92,15 @@ describe("ReconversionProjects controller", () => {
       const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
         "id",
         "name",
+        "project_phase",
+        "project_phase_details",
       );
       expect(reconversionProjectsInDb.length).toEqual(1);
       expect(reconversionProjectsInDb[0]).toEqual({
         id: requestBody.id,
         name: requestBody.name,
+        project_phase: requestBody.projectPhase,
+        project_phase_details: requestBody.projectPhaseDetails ?? null,
       });
     });
   });

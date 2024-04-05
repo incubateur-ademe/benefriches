@@ -7,6 +7,8 @@ import { RootState } from "@/app/application/store";
 import {
   DevelopmentPlanCategory,
   PhotovoltaicKeyParameter,
+  ProjectPhase,
+  ProjectPhaseDetails,
   ProjectSite,
   ReconversionProjectCreationData,
   RenewableEnergyDevelopmentPlanType,
@@ -51,6 +53,7 @@ export type ProjectCreationStep =
   | "SCHEDULE_INTRODUCTION"
   | "SCHEDULE_PROJECTION"
   | "NAMING"
+  | "PROJECT_PHASE"
   | "FINAL_SUMMARY"
   | "CREATION_CONFIRMATION";
 
@@ -221,7 +224,7 @@ export const projectCreationSlice = createSlice({
       state.projectData.name = name;
       if (description) state.projectData.description = description;
 
-      state.stepsHistory.push("FINAL_SUMMARY");
+      state.stepsHistory.push("PROJECT_PHASE");
     },
     completeFinalSummaryStep: (state) => {
       state.stepsHistory.push("CREATION_CONFIRMATION");
@@ -293,6 +296,16 @@ export const projectCreationSlice = createSlice({
           photovoltaicInstallationSchedule,
         );
       state.stepsHistory.push("NAMING");
+    },
+    completeProjectPhaseStep: (
+      state,
+      action: PayloadAction<{ phase: ProjectPhase; phaseDetails?: ProjectPhaseDetails }>,
+    ) => {
+      state.projectData.projectPhase = action.payload.phase;
+      if (action.payload.phaseDetails) {
+        state.projectData.projectPhaseDetails = action.payload.phaseDetails;
+      }
+      state.stepsHistory.push("FINAL_SUMMARY");
     },
     revertStep: (
       state,
@@ -401,6 +414,8 @@ export const revertSoilsDistribution = () => revertStep({ resetFields: ["soilsDi
 export const revertSoilsSummaryStep = () => revertStep();
 export const revertSoilsCarbonStorageStep = () => revertStep();
 export const revertScheduleIntroductionStep = () => revertStep();
+export const revertProjectPhaseStep = () =>
+  revertStep({ resetFields: ["projectPhase", "projectPhaseDetails"] });
 export const revertScheduleStep = () =>
   revertStep({
     resetFields: [
@@ -441,6 +456,7 @@ export const {
   completeHasRealEstateTransaction,
   completeFutureSiteOwner,
   completeRealEstateTransactionCost,
+  completeProjectPhaseStep,
 } = projectCreationSlice.actions;
 
 export default projectCreationSlice.reducer;

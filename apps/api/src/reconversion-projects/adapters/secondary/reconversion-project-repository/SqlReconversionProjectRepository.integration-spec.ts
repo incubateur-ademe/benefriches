@@ -138,6 +138,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_schedule_start_date: null,
           reinstatement_schedule_end_date: null,
           operations_first_year: null,
+          project_phase: reconversionProject.projectPhase,
+          project_phase_details: null,
         },
       ]);
     });
@@ -182,6 +184,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
           reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
           operations_first_year: reconversionProject.operationsFirstYear,
+          project_phase: reconversionProject.projectPhase,
+          project_phase_details: reconversionProject.projectPhaseDetails,
         },
       ]);
     });

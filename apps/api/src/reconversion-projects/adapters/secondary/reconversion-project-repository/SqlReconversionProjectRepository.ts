@@ -39,6 +39,9 @@ type SqlReconversionProject = {
   // real estate transaction
   real_estate_transaction_selling_price?: number;
   real_estate_transaction_property_transfer_duties?: number;
+  // project phase
+  project_phase: string;
+  project_phase_details?: string;
   // dates
   created_at: Date;
 };
@@ -108,6 +111,8 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
           reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
           operations_first_year: reconversionProject.operationsFirstYear,
+          project_phase: reconversionProject.projectPhase,
+          project_phase_details: reconversionProject.projectPhaseDetails,
         },
         "id",
       );

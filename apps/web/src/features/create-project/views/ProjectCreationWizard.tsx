@@ -27,6 +27,7 @@ import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 import ProjectCreationConfirmation from "./confirmation";
 import ProjectNameAndDescriptionForm from "./name-and-description";
+import ProjectPhaseForm from "./project-phase";
 import ProjectTypesForm from "./project-types";
 import RenewableEnergyTypesForm from "./renewable-energy-types";
 import Stepper from "./Stepper";
@@ -95,6 +96,8 @@ function ProjectCreationWizard() {
         return <ProjectScheduleIntroductionContainer />;
       case "SCHEDULE_PROJECTION":
         return <ProjectScheduleProjectionFormContainer />;
+      case "PROJECT_PHASE":
+        return <ProjectPhaseForm />;
       case "FINAL_SUMMARY":
         return <ProjectionCreationDataSummaryContainer />;
       case "CREATION_CONFIRMATION":

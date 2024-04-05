@@ -25,6 +25,21 @@ export enum PhotovoltaicKeyParameter {
   SURFACE = "SURFACE",
 }
 
+export type ProjectPhase =
+  | "setup"
+  | "planning"
+  | "design"
+  | "construction"
+  | "completed"
+  | "unknown";
+
+export type ProjectPhaseDetails =
+  | "setup_opportunity_and_feasibility_analysis"
+  | "setup_scenario_selection_and_implementation"
+  | "design_preliminary_draft"
+  | "design_final_draft"
+  | "design_pro_or_permit_filing_or_contract_awarding";
+
 export type ReconversionProjectCreationData = {
   id: string;
   name: string;
@@ -59,6 +74,9 @@ export type ReconversionProjectCreationData = {
   reinstatementSchedule?: Schedule;
   photovoltaicInstallationSchedule?: Schedule;
   firstYearOfOperation?: number;
+  // project phase
+  projectPhase: ProjectPhase;
+  projectPhaseDetails?: ProjectPhaseDetails;
 };
 
 export type DocumentType = "BUILDING_PERMIT" | "FORECAST_BALANCE_SHEET";

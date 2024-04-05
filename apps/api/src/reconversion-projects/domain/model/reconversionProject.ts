@@ -56,6 +56,8 @@ export const reconversionProjectSchema = z.object({
   soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
   operationsFirstYear: z.number().int().min(2000).optional(),
+  projectPhase: z.string(),
+  projectPhaseDetails: z.string().optional(),
 });
 
 export type ReconversionProject = z.infer<typeof reconversionProjectSchema>;

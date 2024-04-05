@@ -27,6 +27,7 @@ const baseReconversionProjectProps: ReconversionProjectProps = {
   },
   yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
+  projectPhase: "planning",
 } as const;
 
 export const buildMinimalReconversionProjectProps = (
@@ -83,6 +84,8 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
       endDate: new Date("2028-06-30"),
     },
     operationsFirstYear: 2029,
+    projectPhase: "design",
+    projectPhaseDetails: "design_final_draft",
   };
 };
 
