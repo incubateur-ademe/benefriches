@@ -33,15 +33,7 @@ function ProjectTypesForm({ onSubmit }: Props) {
   return (
     <>
       <AboutFormsModal />
-      <WizardFormLayout
-        title="Que souhaitez-vous aménager sur ce site ?"
-        instructions={
-          <p>
-            Votre projet peut contenir plusieurs aménagements, toutefois il s’agit de l’usage
-            principal qui doit être renseigné.
-          </p>
-        }
-      >
+      <WizardFormLayout title="Que souhaitez-vous aménager sur ce site ?">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-5w")}>
             {typedObjectKeys(options).map((developmentPlanCategory) => {

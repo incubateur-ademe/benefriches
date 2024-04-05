@@ -75,15 +75,7 @@ function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea, onBack }: Props) 
     validationError && validationError.type !== "allowedRenewableEnergyTypes" ? "error" : "default";
 
   return (
-    <WizardFormLayout
-      title="Quel système d’EnR souhaitez-vous installer ?"
-      instructions={
-        <p>
-          Votre projet peut contenir plusieurs systèmes de production d’énergies renouvelables ;
-          plusieurs réponses sont donc possibles.
-        </p>
-      }
-    >
+    <WizardFormLayout title="Quel système d’EnR souhaitez-vous installer ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Checkbox
           options={options.map(mapOptions(register, siteSurfaceArea))}
