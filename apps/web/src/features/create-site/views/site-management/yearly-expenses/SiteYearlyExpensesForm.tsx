@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
 
+import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
@@ -12,7 +13,7 @@ type YearlyExpenseBearer = "owner" | "tenant";
 export type FormValues = {
   rent: { amount?: number };
   propertyTaxes: { amount?: number };
-  otherTaxes: { amount?: number };
+  operationsTaxes: { amount?: number };
   otherManagementCosts: { amount?: number };
   security: { amount?: number; bearer?: YearlyExpenseBearer };
   accidentsCost: { amount?: number };
@@ -37,25 +38,25 @@ type Props = {
 const siteManagementInputs = [
   {
     name: "rent",
-    label: "Loyer",
+    label: getLabelForExpensePurpose("rent"),
     displayOnlyIfHasTenant: true,
     askForBearer: false,
   },
   {
     name: "propertyTaxes",
-    label: "Taxe foncière",
+    label: getLabelForExpensePurpose("propertyTaxes"),
     displayOnlyIfHasTenant: false,
     askForBearer: false,
   },
   {
-    name: "otherTaxes",
-    label: "Autres charges fiscales",
+    name: "operationsTaxes",
+    label: getLabelForExpensePurpose("operationsTaxes"),
     displayOnlyIfHasTenant: true,
     askForBearer: false,
   },
   {
     name: "maintenance",
-    label: "Entretien",
+    label: getLabelForExpensePurpose("maintenance"),
     displayOnlyIfHasTenant: false,
     askForBearer: false,
   },
@@ -63,7 +64,7 @@ const siteManagementInputs = [
     name: "otherManagementCosts",
     label: (
       <>
-        Autres coûts de gestion
+        {getLabelForExpensePurpose("otherManagementCosts")}
         <TooltipInfoButton
           text="Par exemple, le maintien de bâtiments en bon état (ex&nbsp;: chauffage pour éviter le gel
           de canalisation ou la dégradation liée l’humidité), la taille de la végétation ou encore
@@ -80,7 +81,7 @@ const siteManagementInputs = [
 const siteSecuringInputs = [
   {
     name: "security",
-    label: "Gardiennage",
+    label: getLabelForExpensePurpose("security"),
     askForBearer: true,
     displayIfHasRecentAccidents: false,
   },
@@ -88,7 +89,7 @@ const siteSecuringInputs = [
     name: "illegalDumpingCost",
     label: (
       <>
-        Débarras de dépôt sauvage
+        {getLabelForExpensePurpose("illegalDumpingCost")}
         <TooltipInfoButton
           text="L’enquête menée en 2019 par l’ADEME indique un ratio moyen de 4,7 kg/hab/an et un coût
           moyen de 900 €/tonne (Nb&nbsp;: bien qu’on relève une occurrence non négligeable de coûts
@@ -106,7 +107,7 @@ const siteSecuringInputs = [
   },
   {
     name: "accidentsCost",
-    label: "Accidents",
+    label: getLabelForExpensePurpose("accidentsCost"),
     askForBearer: false,
     displayIfHasRecentAccidents: true,
   },
@@ -114,7 +115,7 @@ const siteSecuringInputs = [
     name: "otherSecuringCosts",
     label: (
       <>
-        Autres coûts de sécurisation
+        {getLabelForExpensePurpose("otherSecuringCosts")}
         <TooltipInfoButton
           text="La sécurisation peut aussi passer, par exemple, par la mise en place de portail, clôture
           ou de cadenas, voire de protections sur les parties vitrées."

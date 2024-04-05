@@ -39,8 +39,8 @@ export const getLabelForExpensePurpose = (expensePurpose: ExpensePurpose): strin
   switch (expensePurpose) {
     case "propertyTaxes":
       return "Taxe foncière";
-    case "otherTaxes":
-      return "Autres charges fiscales";
+    case "operationsTaxes":
+      return "Charges fiscales d'exploitation";
     case "rent":
       return "Loyer";
     case "accidentsCost":

@@ -8,7 +8,7 @@ describe("Site yearly expenses mappers", () => {
         {
           rent: {},
           propertyTaxes: {},
-          otherTaxes: {},
+          operationsTaxes: {},
           maintenance: {},
           otherManagementCosts: {},
           security: {},
@@ -29,7 +29,7 @@ describe("Site yearly expenses mappers", () => {
       propertyTaxes: {
         amount: 130,
       },
-      otherTaxes: {},
+      operationsTaxes: {},
       maintenance: {},
       otherManagementCosts: {},
       security: {
@@ -50,7 +50,7 @@ describe("Site yearly expenses mappers", () => {
     const formCosts: FormValues = {
       rent: { amount: 140 },
       propertyTaxes: { amount: 130 },
-      otherTaxes: { amount: 3 },
+      operationsTaxes: { amount: 3 },
       maintenance: { amount: 19 },
       otherManagementCosts: { amount: 15 },
       security: { amount: 89 },
@@ -61,7 +61,7 @@ describe("Site yearly expenses mappers", () => {
     expect(mapFormDataToExpenses(formCosts, { siteHasTenant: true })).toEqual([
       { purpose: "rent", bearer: "tenant", amount: 140, purposeCategory: "rent" },
       { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
-      { purpose: "otherTaxes", bearer: "tenant", amount: 3, purposeCategory: "taxes" },
+      { purpose: "operationsTaxes", bearer: "tenant", amount: 3, purposeCategory: "taxes" },
       { purpose: "maintenance", bearer: "tenant", amount: 19, purposeCategory: "site_management" },
       {
         purpose: "otherManagementCosts",
@@ -80,7 +80,7 @@ describe("Site yearly expenses mappers", () => {
     const formCosts: FormValues = {
       rent: {},
       propertyTaxes: { amount: 130 },
-      otherTaxes: { amount: 3 },
+      operationsTaxes: {},
       maintenance: { amount: 19 },
       otherManagementCosts: { amount: 15 },
       security: { amount: 89 },
@@ -90,7 +90,6 @@ describe("Site yearly expenses mappers", () => {
     };
     expect(mapFormDataToExpenses(formCosts, { siteHasTenant: false })).toEqual([
       { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
-      { purpose: "otherTaxes", bearer: "owner", amount: 3, purposeCategory: "taxes" },
       { purpose: "maintenance", bearer: "owner", amount: 19, purposeCategory: "site_management" },
       {
         purpose: "otherManagementCosts",
@@ -109,7 +108,7 @@ describe("Site yearly expenses mappers", () => {
     const formCosts: FormValues = {
       rent: { amount: 140 },
       propertyTaxes: { amount: 130 },
-      otherTaxes: { amount: 3 },
+      operationsTaxes: { amount: 3 },
       maintenance: { amount: 19, bearer: "owner" },
       otherManagementCosts: { amount: 15 },
       security: { amount: 89, bearer: "owner" },
@@ -120,7 +119,7 @@ describe("Site yearly expenses mappers", () => {
     expect(mapFormDataToExpenses(formCosts, { siteHasTenant: true })).toEqual([
       { purpose: "rent", bearer: "tenant", amount: 140, purposeCategory: "rent" },
       { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
-      { purpose: "otherTaxes", bearer: "tenant", amount: 3, purposeCategory: "taxes" },
+      { purpose: "operationsTaxes", bearer: "tenant", amount: 3, purposeCategory: "taxes" },
       { purpose: "maintenance", bearer: "owner", amount: 19, purposeCategory: "site_management" },
       {
         purpose: "otherManagementCosts",

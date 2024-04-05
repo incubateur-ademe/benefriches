@@ -55,7 +55,7 @@ export type Owner = { structureType: OwnerStructureType; name: string };
 export type ExpensePurpose =
   | "rent"
   | "propertyTaxes"
-  | "otherTaxes"
+  | "operationsTaxes"
   | "maintenance"
   | "otherManagementCosts"
   | "security"

@@ -122,7 +122,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
               className="fr-mb-1w fr-mt-2w"
             />
             <p className={fr.cx("fr-ml-2w", "fr-my-1w", "fr-text--bold")}>Gestion du site</p>
-            {(["rent", "propertyTaxes", "otherTaxes", "otherManagementCosts"] as const).map(
+            {(["rent", "propertyTaxes", "operationsTaxes", "otherManagementCosts"] as const).map(
               (purpose) => {
                 const amount =
                   siteData.expenses.find((exp) => exp.purpose === purpose)?.amount ?? 0;

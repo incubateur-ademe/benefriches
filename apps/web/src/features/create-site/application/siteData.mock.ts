@@ -39,7 +39,7 @@ export const siteWithExhaustiveData: SiteDraft = {
     {
       amount: 2100,
       bearer: "tenant",
-      purpose: "otherTaxes",
+      purpose: "operationsTaxes",
       purposeCategory: "taxes",
     },
     {

@@ -6,7 +6,7 @@ import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 const expensesConfig = [
   { purpose: "rent", purposeCategory: "rent", defaultBearer: "tenant" },
   { purpose: "propertyTaxes", purposeCategory: "taxes", defaultBearer: "owner" },
-  { purpose: "otherTaxes", purposeCategory: "taxes", defaultBearer: "tenant" },
+  { purpose: "operationsTaxes", purposeCategory: "taxes", defaultBearer: "tenant" },
   { purpose: "maintenance", purposeCategory: "site_management", defaultBearer: "tenant" },
   { purpose: "otherManagementCosts", purposeCategory: "site_management", defaultBearer: "tenant" },
   { purpose: "security", purposeCategory: "safety", defaultBearer: "tenant" },
