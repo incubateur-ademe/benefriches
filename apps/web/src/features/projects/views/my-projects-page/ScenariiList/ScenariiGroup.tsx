@@ -38,7 +38,7 @@ function ScenariiGroup({
     <div className="fr-mb-5w" key={siteId}>
       <SiteName key={siteId}>{siteName}</SiteName>
       {reconversionProjects.length > 0 ? (
-        <p>{reconversionProjects.length + 1} futurs possibles pour ce site :</p>
+        <p>{reconversionProjects.length + 1} scenarii possibles pour ce site :</p>
       ) : (
         <p>1 futur possible pour ce site :</p>
       )}
