@@ -48,9 +48,9 @@ export const getLabelForExpensePurpose = (expensePurpose: ExpensePurpose): strin
     case "illegalDumpingCost":
       return "Débarras de dépôt sauvage";
     case "maintenance":
-      return "Entretien";
+      return "Entretien du site";
     case "otherManagementCosts":
-      return "Autre coûts de gestion";
+      return "Autre dépenses de gestion du site";
     case "security":
       return "Gardiennage";
     case "otherSecuringCosts":

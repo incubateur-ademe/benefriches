@@ -42,7 +42,7 @@ export const getLabelForSoilType = (value: SoilType): string => {
 export const getDescriptionForSoilType = (value: SoilType): string => {
   switch (value) {
     case SoilType.BUILDINGS:
-      return "Anciens sites de production, de stockage…";
+      return "Sites de production, de stockage, de vente…";
     case SoilType.IMPERMEABLE_SOILS:
       return "Parking ou voirie bitumée…";
     case SoilType.MINERAL_SOIL:
