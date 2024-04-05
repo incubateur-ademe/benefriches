@@ -60,7 +60,10 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, displayDescriptionModa
           className="fr-mb-2w"
           style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
         >
-          <strong className="tw-cursor-pointer" onClick={displayDescriptionModal}>
+          <strong
+            className="tw-cursor-pointer hover:tw-underline"
+            onClick={displayDescriptionModal}
+          >
             Impacts socio-économiques
           </strong>
           <ChartViewModeControl

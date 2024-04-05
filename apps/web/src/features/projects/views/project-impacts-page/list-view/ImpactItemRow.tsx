@@ -8,12 +8,12 @@ const ImpactItemRow = ({ children, onClick }: ImpactItemRowProps) => {
   return (
     <div
       onClick={onClick}
+      className={onClick ? "tw-cursor-pointer hover:tw-underline" : ""}
       style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         borderBottom: "1px solid #DDDDDD",
-        cursor: onClick ? "pointer" : "default",
       }}
     >
       {children}

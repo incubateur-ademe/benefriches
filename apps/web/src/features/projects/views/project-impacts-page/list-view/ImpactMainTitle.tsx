@@ -7,7 +7,7 @@ type Props = {
 
 const ImpactMainTitle = ({ title, onClick }: Props) => {
   return (
-    <h3 className="tw-cursor-pointer" onClick={onClick}>
+    <h3 className="tw-cursor-pointer hover:tw-underline" onClick={onClick}>
       {title}
     </h3>
   );

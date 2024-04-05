@@ -17,7 +17,7 @@ const ImpactCard = ({ title, children, onTitleClick }: Props) => {
       className="tw-flex tw-flex-col fr-py-2w fr-px-3w fr-m-0"
     >
       {onTitleClick ? (
-        <strong className="tw-cursor-pointer" onClick={onTitleClick}>
+        <strong className="tw-cursor-pointer hover:tw-underline" onClick={onTitleClick}>
           {title}
         </strong>
       ) : (
