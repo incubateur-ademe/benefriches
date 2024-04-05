@@ -11,7 +11,11 @@ function MyProjectsPageHeader() {
     >
       <h2>Mes projets</h2>
       <div>
-        <Button priority="primary" linkProps={routes.createSiteFoncierIntro().link}>
+        <Button
+          priority="primary"
+          linkProps={routes.createSiteFoncierIntro().link}
+          iconId="fr-icon-add-line"
+        >
           Nouveau site
         </Button>
       </div>
