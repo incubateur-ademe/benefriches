@@ -17,10 +17,10 @@ type FormValues = {
 };
 
 const options: Record<DevelopmentPlanCategory, { disabled: boolean }> = {
+  RENEWABLE_ENERGY: { disabled: false },
   BUILDINGS: { disabled: true },
   NATURAL_URBAN_SPACES: { disabled: true },
   URBAN_AGRICULTURE: { disabled: true },
-  RENEWABLE_ENERGY: { disabled: false },
   COMMERCIAL_ACTIVITY_AREA: { disabled: true },
 };
 
