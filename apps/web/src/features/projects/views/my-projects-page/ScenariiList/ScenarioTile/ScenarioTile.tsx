@@ -63,7 +63,7 @@ function ScenarioTile({
             severity={yearlyProfit < 0 ? "error" : "success"}
             className="fr-my-4v"
           >
-            {formatNumberFr(yearlyProfit)} €/an d’impacts socio-économiques
+            {formatNumberFr(yearlyProfit)} €/an d’impacts
           </Badge>
 
           <Checkbox

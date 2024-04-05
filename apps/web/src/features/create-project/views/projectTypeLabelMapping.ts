@@ -23,9 +23,9 @@ export const getDescriptionForDevelopmentPlanCategory = (
 ): string => {
   switch (value) {
     case "BUILDINGS":
-      return "Logements, lieux d'activité économique, équipements publics, espaces verts...";
+      return "Logements, bureaux, commerces, espaces verts, petite centrale EnR…";
     case "NATURAL_URBAN_SPACES":
-      return "Parc ou espace de nature sauvage";
+      return "Parc ou forêt urbaine";
     case "URBAN_AGRICULTURE":
       return "Production de fruits et légumes";
     case "RENEWABLE_ENERGY":
