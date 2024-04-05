@@ -23,12 +23,12 @@ type Props = {
 
 const siteSoilTypeTilesCategories = [
   {
-    category: "Espaces agricoles",
-    options: [SoilType.CULTIVATION, SoilType.VINEYARD, SoilType.ORCHARD],
+    category: "Prairie naturelle ou agricole",
+    options: [SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_TREES],
   },
   {
-    category: "Prairies",
-    options: [SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_TREES],
+    category: "Espaces agricoles",
+    options: [SoilType.CULTIVATION, SoilType.VINEYARD, SoilType.ORCHARD],
   },
   {
     category: "Forêts",
@@ -44,14 +44,12 @@ const siteSoilTypeTilesCategories = [
     options: [SoilType.WATER, SoilType.WET_LAND],
   },
   {
-    category: "Sols artificiels",
-    options: [
-      SoilType.BUILDINGS,
-      SoilType.IMPERMEABLE_SOILS,
-      SoilType.MINERAL_SOIL,
-      SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-      SoilType.ARTIFICIAL_TREE_FILLED,
-    ],
+    category: "Sols artificiels végétalisés",
+    options: [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED, SoilType.ARTIFICIAL_TREE_FILLED],
+  },
+  {
+    category: "Sols artificiels minéraux",
+    options: [SoilType.BUILDINGS, SoilType.IMPERMEABLE_SOILS, SoilType.MINERAL_SOIL],
   },
 ] as const;
 
