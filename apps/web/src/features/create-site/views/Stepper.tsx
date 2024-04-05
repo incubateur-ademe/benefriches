@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
 
 import { SiteCreationStep } from "@/features/create-site/application/createSite.reducer";
@@ -65,6 +66,7 @@ function SiteCreationStepper({ step, isFriche }: Props) {
       title={currentStepCategory}
       currentStep={stepsCategories.findIndex((step) => step === currentStepCategory) + 1}
       stepCount={stepsCategories.length}
+      className={fr.cx("fr-mb-7w")}
     />
   );
 }

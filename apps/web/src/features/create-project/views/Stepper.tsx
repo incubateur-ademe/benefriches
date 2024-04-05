@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
 
 import { ProjectCreationStep } from "@/features/create-project/application/createProject.reducer";
@@ -70,6 +71,7 @@ function ProjectCreationStepper({ step }: Props) {
         stepCategories.findIndex((stepCategory) => stepCategory === currentStepCategory) + 1
       }
       stepCount={stepCategories.length}
+      className={fr.cx("fr-mb-7w")}
     />
   );
 }

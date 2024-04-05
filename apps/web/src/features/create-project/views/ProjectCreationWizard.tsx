@@ -103,7 +103,7 @@ function ProjectCreationWizard() {
   };
 
   return (
-    <section className={fr.cx("fr-container", "fr-py-4w")}>
+    <section className={fr.cx("fr-container", "fr-py-3w")}>
       <Stepper step={currentStep} />
       {getStepComponent()}
     </section>

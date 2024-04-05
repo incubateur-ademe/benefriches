@@ -80,7 +80,7 @@ function SiteCreationWizard() {
   };
 
   return (
-    <section className={fr.cx("fr-container", "fr-py-4w")}>
+    <section className={fr.cx("fr-container", "fr-py-3w")}>
       <Stepper isFriche={siteData.isFriche} step={currentStep} />
       {getStepComponent()}
     </section>
