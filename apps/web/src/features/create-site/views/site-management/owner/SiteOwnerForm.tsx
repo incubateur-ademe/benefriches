@@ -93,7 +93,7 @@ function SiteOwnerForm({
             />
           )}
           <RadioButton
-            label={`Une autre entreprise`}
+            label={`Une entreprise`}
             value="other_company"
             {...register("ownerType", { required: requiredMessage })}
           />
