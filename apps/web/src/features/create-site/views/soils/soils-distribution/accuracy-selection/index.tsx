@@ -2,9 +2,10 @@ import AccuracySelectionForm, { type FormValues } from "./AccuracySelectionForm"
 
 import { revertSoilsSurfaceAreaDistributionEntryModeStep } from "@/features/create-site/application/createSite.actions";
 import { completeSoilsSurfaceAreaDistributionEntryMode } from "@/features/create-site/application/createSite.reducer";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function SiteSoilsDistributionAccuracySelectionContainer() {
+  const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche) ?? false;
   const dispatch = useAppDispatch();
 
   const onSubmit = ({ accuracy }: FormValues) => {
@@ -15,7 +16,7 @@ function SiteSoilsDistributionAccuracySelectionContainer() {
     dispatch(revertSoilsSurfaceAreaDistributionEntryModeStep());
   };
 
-  return <AccuracySelectionForm onSubmit={onSubmit} onBack={onBack} />;
+  return <AccuracySelectionForm onSubmit={onSubmit} onBack={onBack} isFriche={isFriche} />;
 }
 
 export default SiteSoilsDistributionAccuracySelectionContainer;

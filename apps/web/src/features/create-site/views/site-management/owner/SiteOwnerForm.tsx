@@ -18,6 +18,7 @@ type Props = {
   onBack: () => void;
   currentUserStructureName?: string;
   siteLocalAuthorities: { loadingState: LoadingState; localAuthorities?: SiteLocalAuthorities };
+  isFriche: boolean;
 };
 
 export type FormValues =
@@ -44,6 +45,7 @@ function SiteOwnerForm({
   onBack,
   currentUserStructureName,
   siteLocalAuthorities,
+  isFriche,
 }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     shouldUnregister: true,
@@ -55,7 +57,9 @@ function SiteOwnerForm({
   const shouldAskForLocalAuthorityType = ownerTypeSelected === "local_or_regional_authority";
 
   return (
-    <WizardFormLayout title="Qui est le propriétaire actuel de cette friche ?">
+    <WizardFormLayout
+      title={`Qui est le propriétaire actuel de ${isFriche ? "cette friche" : "ce site"}?`}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={formState.errors.ownerType ? "error" : "default"}

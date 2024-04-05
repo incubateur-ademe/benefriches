@@ -42,6 +42,7 @@ const convertFormValuesForStore = (
 function SiteOwnerFormContainer() {
   const currentUserStructure = useAppSelector(selectCurrentUserStructure);
   const { localAuthorities, loadingState } = useAppSelector((state) => state.siteMunicipalityData);
+  const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche) ?? false;
   const dispatch = useAppDispatch();
 
   const onSubmit = (data: FormValues) => {
@@ -63,6 +64,7 @@ function SiteOwnerFormContainer() {
 
   return (
     <SiteOwnerForm
+      isFriche={isFriche}
       siteLocalAuthorities={{ localAuthorities, loadingState }}
       currentUserStructureName={currentUserStructure?.name}
       onSubmit={onSubmit}

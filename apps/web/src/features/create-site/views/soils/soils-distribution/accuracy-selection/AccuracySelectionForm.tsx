@@ -8,13 +8,14 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onBack: () => void;
   onSubmit: (data: FormValues) => void;
+  isFriche: boolean;
 };
 
 export type FormValues = {
   accuracy: SiteDraft["soilsDistributionEntryMode"];
 };
 
-function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack }: Props) {
+function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, isFriche }: Props) {
   const { handleSubmit, register, formState } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
@@ -22,7 +23,7 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack }: Props)
 
   return (
     <WizardFormLayout
-      title="Connaissez-vous les superficies des différents sols de la friche existante ?"
+      title={`Connaissez-vous les superficies des différents sols ${isFriche ? "de la friche" : "du site"} ?`}
       instructions={
         <p>
           En cochant « Non », Bénéfriches affectera une superficie égale à tous les types de sols.
