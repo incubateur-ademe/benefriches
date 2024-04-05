@@ -35,22 +35,22 @@ function PhotovoltaicSoilsImpactsNotice({
       <p>
         Les ratios usuels suivants sont recommandés par Bénéfriches dans le calcul des surfaces
         imperméabilisées et autrement artificialisées par une centrale photovoltaïque au sol&nbsp;:
-        <ul>
-          <li>
-            Taux d’artificialisation&nbsp;= Taux d’imperméabilisation + Taux d’artificialisation
-            autre (création de pistes d’accès en granulats non liés)
-          </li>
-          <li>
-            Taux d’imperméabilisation&nbsp;= {formatNumberFr(RATIO_IMPERMEABLE_SOIL_HA_PER_MWC, 3)}
-            &nbsp;ha/MWc ou {formatNumberFr(RATIO_IMPERMEABLE_SOIL_SQUARE_METERS_PER_MWC)}
-            &nbsp;m²/MWc
-          </li>
-          <li>
-            Taux d’artificialisation autre&nbsp;= {formatNumberFr(RATIO_MINERAL_SOIL_HA_PER_MWC, 3)}
-            &nbsp;ha/MWc ou {formatNumberFr(RATIO_MINERAL_SOIL_SQUARE_METERS_PER_MWC)}&nbsp;m²/MWc
-          </li>
-        </ul>
       </p>
+      <ul>
+        <li>
+          Taux d’artificialisation&nbsp;= Taux d’imperméabilisation + Taux d’artificialisation autre
+          (création de pistes d’accès en granulats non liés)
+        </li>
+        <li>
+          Taux d’imperméabilisation&nbsp;= {formatNumberFr(RATIO_IMPERMEABLE_SOIL_HA_PER_MWC, 3)}
+          &nbsp;ha/MWc ou {formatNumberFr(RATIO_IMPERMEABLE_SOIL_SQUARE_METERS_PER_MWC)}
+          &nbsp;m²/MWc
+        </li>
+        <li>
+          Taux d’artificialisation autre&nbsp;= {formatNumberFr(RATIO_MINERAL_SOIL_HA_PER_MWC, 3)}
+          &nbsp;ha/MWc ou {formatNumberFr(RATIO_MINERAL_SOIL_SQUARE_METERS_PER_MWC)}&nbsp;m²/MWc
+        </li>
+      </ul>
       <p>
         Compte tenu des ratios, les <strong>sols imperméables</strong> devraient faire au minimum{" "}
         <SurfaceArea surfaceAreaInSquareMeters={advisedImpermeableSurface} /> et les{" "}

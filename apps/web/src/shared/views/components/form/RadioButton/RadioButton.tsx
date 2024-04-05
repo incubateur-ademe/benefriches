@@ -13,11 +13,11 @@ export type Props = {
 
 const RadioButton = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
   const reactId = useId();
-  const { id = reactId, name: nameProps, label, hintText, key, ...rest } = props;
+  const { id = reactId, name: nameProps, label, hintText, ...rest } = props;
   const name = nameProps ?? `radio-name-${reactId}`;
 
   return (
-    <div className={`fr-radio-group`} ref={ref} key={key}>
+    <div className={`fr-radio-group`} ref={ref}>
       <input type="radio" id={id} name={name} {...rest} />
       <label className={fr.cx("fr-label")} htmlFor={id}>
         {label}
