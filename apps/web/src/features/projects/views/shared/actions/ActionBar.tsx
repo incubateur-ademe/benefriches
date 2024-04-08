@@ -53,15 +53,15 @@ function ImpactsActionBar({
               nativeInputProps: getFilterSegmentInputProps("all"),
             },
             {
-              label: "Économiques",
+              label: "Économie",
               nativeInputProps: getFilterSegmentInputProps("economic"),
             },
             {
-              label: "Sociaux",
+              label: "Social",
               nativeInputProps: getFilterSegmentInputProps("social"),
             },
             {
-              label: "Environnementaux",
+              label: "Environnement",
               nativeInputProps: getFilterSegmentInputProps("environment"),
             },
           ]}

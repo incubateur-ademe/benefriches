@@ -28,7 +28,7 @@ const ChartViewModeControl = ({
       hideLegend
       segments={[
         {
-          label: "par types d'impacts",
+          label: "Par types d'impacts",
           nativeInputProps: {
             checked: currentChartViewMode === "by_category",
             onClick: () => {
@@ -37,7 +37,7 @@ const ChartViewModeControl = ({
           },
         },
         {
-          label: "par bénéficiaires",
+          label: "Par bénéficiaires",
           nativeInputProps: {
             checked: currentChartViewMode === "by_actor",
             onClick: () => {

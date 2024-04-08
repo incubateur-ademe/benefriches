@@ -48,7 +48,7 @@ function SurfaceAreaForm({ onSubmit, onBack }: Props) {
         />
         {!isNaN(surface) && (
           <p>
-            Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
+            💡 Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
           </p>
         )}
 
