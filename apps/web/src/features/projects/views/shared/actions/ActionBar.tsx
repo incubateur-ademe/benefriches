@@ -74,7 +74,7 @@ function ImpactsActionBar({
           hideLegend
           segments={[
             {
-              label: "Vue graphiques",
+              label: "Vue graphique",
               nativeInputProps: getViewSegmentInputProps("charts"),
               iconId: "fr-icon-line-chart-fill",
             },
