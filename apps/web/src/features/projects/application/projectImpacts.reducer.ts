@@ -19,10 +19,15 @@ export type ProjectImpactsState = {
     name: string;
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
+    developmentPlan: {
+      surfaceArea?: number;
+      electricalPowerKWc?: number;
+    };
   };
   relatedSiteData?: {
     id: string;
     name: string;
+    addressLabel: string;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
   };

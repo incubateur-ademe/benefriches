@@ -44,6 +44,7 @@ export type SiteImpactsDataView = {
   id: string;
   name: string;
   addressCityCode: string;
+  addressLabel: string;
   contaminatedSoilSurface?: number;
   ownerName: string;
   tenantName?: string;
@@ -82,6 +83,8 @@ export type ReconversionProjectImpactsDataView = {
   yearlyProjectedCosts: { amount: number; purpose: string }[];
   yearlyProjectedRevenues: { amount: number; source: string }[];
   developmentPlanExpectedAnnualEnergyProductionMWh?: number;
+  developmentPlanSurfaceArea?: number;
+  developmentPlanElectricalPowerKWc?: number;
   operationsFirstYear?: number;
 };
 
@@ -102,8 +105,13 @@ export type Result = {
   projectData: {
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
+    developmentPlan: {
+      surfaceArea?: number;
+      electricalPowerKWc?: number;
+    };
   };
   siteData: {
+    addressLabel: string;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
   };
@@ -177,8 +185,13 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       projectData: {
         soilsDistribution: reconversionProject.soilsDistribution,
         contaminatedSoilSurface: 0,
+        developmentPlan: {
+          surfaceArea: reconversionProject.developmentPlanSurfaceArea,
+          electricalPowerKWc: reconversionProject.developmentPlanElectricalPowerKWc,
+        },
       },
       siteData: {
+        addressLabel: relatedSite.addressLabel,
         contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
         soilsDistribution: relatedSite.soilsDistribution,
       },

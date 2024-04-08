@@ -98,6 +98,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       realEstateTransactionTotalCost: 150000,
       reinstatementCost: 500000,
       developmentPlanInstallationCost: 200000,
+      developmentPlanElectricalPowerKWc: 258,
+      developmentPlanSurfaceArea: 20000,
       reinstatementFinancialAssistanceAmount: 150000,
       yearlyProjectedCosts: [
         { amount: 1000, purpose: "taxes" },
@@ -124,6 +126,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
       },
       addressCityCode: "23456",
+      addressLabel: "Blajan",
       ownerName: "Current owner",
       tenantName: "Current tenant",
       fullTimeJobs: 1,
@@ -164,8 +167,13 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         projectData: {
           soilsDistribution: reconversionProjectImpactDataView.soilsDistribution,
           contaminatedSoilSurface: 0,
+          developmentPlan: {
+            electricalPowerKWc: 258,
+            surfaceArea: 20000,
+          },
         },
         siteData: {
+          addressLabel: "Blajan",
           contaminatedSoilSurface: 20000,
           soilsDistribution: {
             ...reconversionProjectImpactDataView.soilsDistribution,

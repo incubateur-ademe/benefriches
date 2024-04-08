@@ -18,8 +18,13 @@ export type ReconversionProjectImpactsResult = {
   projectData: {
     soilsDistribution: Partial<Record<SoilType, number>>;
     contaminatedSoilSurface: 0;
+    developmentPlan: {
+      surfaceArea?: number;
+      electricalPowerKWc?: number;
+    };
   };
   siteData: {
+    addressLabel: string;
     contaminatedSoilSurface: number;
     soilsDistribution: Partial<Record<SoilType, number>>;
   };

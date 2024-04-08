@@ -2,6 +2,7 @@ import { ReactElement, useEffect, useMemo } from "react";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import RealEstateAcquisitionDescription from "./economic-balance/RealEstateAcquisition";
+import AvoidedCO2WithEnRMonetaryValueDescription from "./socio-economic/avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";
 import AvoidedFricheCostsDescription from "./socio-economic/AvoidedFricheCostsDescription";
 import CarbonSoilsStorageMonetaryValueDescription from "./socio-economic/ecosystem-services/CarbonStorageMonetaryValueDescription";
 import EcosystemServicesDescription from "./socio-economic/ecosystem-services/EcosystemServicesDescription";
@@ -21,6 +22,7 @@ export type ImpactDescriptionModalCategory =
   | "real-estate-acquisition"
   | "avoided-friche-costs"
   | "ecosystem-services"
+  | "avoided-co2-monetary-value-renewable-energy"
   | "water-regulation"
   | "carbon-storage-monetary-value"
   | "nature-related-wellness-and-leisure"
@@ -32,8 +34,13 @@ type Props = {
   projectData: {
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
+    developmentPlan: {
+      surfaceArea?: number;
+      electricalPowerKWc?: number;
+    };
   };
   siteData: {
+    addressLabel: string;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
   };
@@ -115,6 +122,29 @@ const getModalContent = (
           { label: "Dépenses friche évitées", isCurrent: true },
         ],
         content: <AvoidedFricheCostsDescription />,
+      };
+    case "avoided-co2-monetary-value-renewable-energy":
+      return {
+        title: "⚡️️ Emissions de CO2-eq évitées grâce à la production d’énergies renouvelables",
+        breadcrumbSegments: [
+          {
+            label: "Impacts socio-économiques",
+            onClick: () => {
+              onChangeModalCategoryOpened("socio-economic");
+            },
+          },
+          {
+            label: "CO2-eq évité grâce aux énergies renouvelables",
+            isCurrent: true,
+          },
+        ],
+        content: (
+          <AvoidedCO2WithEnRMonetaryValueDescription
+            address={siteData.addressLabel}
+            developmentPlanElectricalPowerKWc={projectData.developmentPlan.electricalPowerKWc}
+            developmentPlanSurfaceArea={projectData.developmentPlan.surfaceArea}
+          />
+        ),
       };
     case "water-regulation":
       return {

@@ -20,9 +20,14 @@ type Props = {
     id: string;
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
+    developmentPlan: {
+      surfaceArea?: number;
+      electricalPowerKWc?: number;
+    };
   };
   relatedSite: {
     name: string;
+    addressLabel: string;
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: number;
   };
