@@ -92,7 +92,11 @@ const SocioEconomicImpactsListSection = ({
           </ImpactItemGroup>
         )}
         {hasAvoidedFricheCostsImpacts && (
-          <ImpactItemGroup>
+          <ImpactItemGroup
+            onClick={() => {
+              openImpactDescriptionModal("avoided-friche-costs");
+            }}
+          >
             <ImpactLabel>🏚 Dépenses de gestion et sécurisation de la friche évitées</ImpactLabel>
             {avoidedFricheCostsImpacts.map((impact) => {
               return <SocioEconomicImpactRow key={impact.actor + impact.amount} impact={impact} />;
@@ -127,6 +131,7 @@ const SocioEconomicImpactsListSection = ({
       </section>
       <SocioEconomicEnvironmentalMonetaryImpactsSection
         socioEconomicImpacts={socioEconomicImpacts}
+        openImpactDescriptionModal={openImpactDescriptionModal}
       />
     </section>
   );

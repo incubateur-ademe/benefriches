@@ -87,6 +87,7 @@ const ProjectImpactsPage = ({
             <ImpactDescriptionModal
               modalCategory={modalCategoryOpened}
               onChangeModalCategoryOpened={setModalCategoryOpened}
+              impacts={impacts}
             />
             {currentViewMode === "charts" && (
               <ImpactsChartsView
