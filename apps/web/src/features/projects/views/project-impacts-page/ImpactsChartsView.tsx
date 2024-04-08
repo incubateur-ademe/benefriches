@@ -92,7 +92,14 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
         </Row>
       </section>
       <section className={fr.cx("fr-pb-8v")}>
-        <h3>Impacts sociaux</h3>
+        <h3
+          className="tw-cursor-pointer hover:tw-underline"
+          onClick={() => {
+            openImpactDescriptionModal("social");
+          }}
+        >
+          Impacts sociaux
+        </h3>
         <Row>
           <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
             <FullTimeJobsImpactCard
@@ -113,6 +120,9 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
               <HouseholdsPoweredByRenewableEnergyImpactCard
                 reconversionProjectName={project.name}
                 householdsPoweredByRenewableEnergy={impacts.householdsPoweredByRenewableEnergy}
+                displayDescriptionModal={() => {
+                  openImpactDescriptionModal("households-powered-by-renewable-energy");
+                }}
               />
             </div>
           )}

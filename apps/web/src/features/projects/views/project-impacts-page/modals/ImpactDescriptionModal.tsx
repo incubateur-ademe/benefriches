@@ -2,6 +2,8 @@ import { ReactElement, useEffect, useMemo } from "react";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import RealEstateAcquisitionDescription from "./economic-balance/RealEstateAcquisition";
+import HouseholdsPoweredByRenewableEnergyDescription from "./social/HouseholdsPoweredByRenewableEnergy";
+import SocialMainDescription from "./social/SocialMainDescription";
 import AvoidedCO2WithEnRMonetaryValueDescription from "./socio-economic/avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";
 import AvoidedFricheCostsDescription from "./socio-economic/AvoidedFricheCostsDescription";
 import CarbonSoilsStorageMonetaryValueDescription from "./socio-economic/ecosystem-services/CarbonStorageMonetaryValueDescription";
@@ -26,6 +28,8 @@ export type ImpactDescriptionModalCategory =
   | "water-regulation"
   | "carbon-storage-monetary-value"
   | "nature-related-wellness-and-leisure"
+  | "social"
+  | "households-powered-by-renewable-energy"
   | undefined;
 
 type Props = {
@@ -230,6 +234,33 @@ const getModalContent = (
           <NatureRelatedWellnessAndLeisureDescription
             baseSoilsDistribution={siteData.soilsDistribution}
             forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        ),
+      };
+
+    case "social":
+      return {
+        title: "Impacts sociaux",
+        content: <SocialMainDescription />,
+      };
+
+    case "households-powered-by-renewable-energy":
+      return {
+        title: "🏠 Foyers alimentés par les EnR",
+        breadcrumbSegments: [
+          {
+            label: "Impacts sociaux",
+            onClick: () => {
+              onChangeModalCategoryOpened("social");
+            },
+          },
+          { label: "Foyers alimentés par les EnR", isCurrent: true },
+        ],
+        content: (
+          <HouseholdsPoweredByRenewableEnergyDescription
+            address={siteData.addressLabel}
+            developmentPlanElectricalPowerKWc={projectData.developmentPlan.electricalPowerKWc}
+            developmentPlanSurfaceArea={projectData.developmentPlan.surfaceArea}
           />
         ),
       };
