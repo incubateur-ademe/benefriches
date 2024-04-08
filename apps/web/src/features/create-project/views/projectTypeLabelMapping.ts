@@ -55,13 +55,13 @@ export const getDescriptionForRenewableEnergyType = (
 ): string => {
   switch (value) {
     case "PHOTOVOLTAIC_POWER_PLANT":
-      return "Production d'électricité à partir du soleil ";
+      return "Production d'électricité grâce à des capteurs ou centrales solaires ";
     case "AGRIVOLTAIC":
       return "Production d'électricité photovoltaïque associée à une production agricole";
     case "GEOTHERMAL":
       return "Production de chaleur à partir du sol ou de l'eau en souterrain";
     case "BIOMASS":
-      return "Production d'électricité par combustion ou fermentation de matières organiques";
+      return "Production d'électricité par combustion de matière organique";
   }
 };
 
@@ -75,4 +75,17 @@ const developmentPlanCategoryPictogramMap: Record<DevelopmentPlanCategory, strin
 
 export const getPictogramForDevelopmentPlanCategory = (value: DevelopmentPlanCategory): string => {
   return developmentPlanCategoryPictogramMap[value];
+};
+
+const renewableEnergyPictogramMap: Record<RenewableEnergyDevelopmentPlanType, string> = {
+  PHOTOVOLTAIC_POWER_PLANT: "photovoltaic.svg",
+  AGRIVOLTAIC: "agrivoltaic.svg",
+  GEOTHERMAL: "geothermal.svg",
+  BIOMASS: "biomass.svg",
+} as const;
+
+export const getPictogramForRenewableEnergy = (
+  value: RenewableEnergyDevelopmentPlanType,
+): string => {
+  return renewableEnergyPictogramMap[value];
 };

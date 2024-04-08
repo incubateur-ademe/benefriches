@@ -6,7 +6,6 @@ import {
   OwnerStructureType,
   TenantStructureType,
 } from "@/shared/domain/stakeholder";
-import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 
 export type DevelopmentPlanCategory =
   | "RENEWABLE_ENERGY"
@@ -113,31 +112,6 @@ export type ProjectSite = {
   soilsDistribution: Partial<Record<SoilType, number>>;
   surfaceArea: number;
   address: Address;
-};
-
-const getPrevisionalEnrSocioEconomicImpactPerHectare = (
-  renewableEnergyProductionType: RenewableEnergyDevelopmentPlanType,
-) => {
-  switch (renewableEnergyProductionType) {
-    case "AGRIVOLTAIC":
-      return 21000;
-    case "BIOMASS":
-      return 11000;
-    case "GEOTHERMAL":
-      return 10000;
-    case "PHOTOVOLTAIC_POWER_PLANT":
-      return 10000;
-  }
-};
-
-export const getPrevisionalEnrSocioEconomicImpact = (
-  renewableEnergyProductionType: RenewableEnergyDevelopmentPlanType,
-  siteSurfaceArea: number,
-) => {
-  return Math.round(
-    getPrevisionalEnrSocioEconomicImpactPerHectare(renewableEnergyProductionType) *
-      convertSquareMetersToHectares(siteSurfaceArea),
-  );
 };
 
 export const getLabelForExpensePurpose = (expensePurpose: Expense["purpose"]): string => {

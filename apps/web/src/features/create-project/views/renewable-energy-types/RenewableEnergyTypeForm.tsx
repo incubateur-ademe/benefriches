@@ -1,87 +1,70 @@
-import { useForm, UseFormRegister } from "react-hook-form";
-import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
-import {
-  getPrevisionalEnrSocioEconomicImpact,
-  RenewableEnergyDevelopmentPlanType,
-} from "../../domain/project.types";
-import {
-  getDescriptionForRenewableEnergyType,
-  getLabelForRenewableEnergyProductionType,
-} from "../projectTypeLabelMapping";
+import { Controller, useForm } from "react-hook-form";
+import { fr } from "@codegouvfr/react-dsfr";
+import { RenewableEnergyDevelopmentPlanType } from "../../domain/project.types";
+import RenewableEnergyTile from "./RenewableEnergyTile";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  siteSurfaceArea: number;
 };
 
 type FormValues = {
   renewableEnergyTypes: RenewableEnergyDevelopmentPlanType[];
 };
 
-const formatNumericImpact = (impact: number) => {
-  const signPrefix = impact > 0 ? "+" : "-";
-  return `${signPrefix} ${formatNumberFr(Math.abs(impact))}`;
+const options: Record<RenewableEnergyDevelopmentPlanType, { disabled: boolean }> = {
+  PHOTOVOLTAIC_POWER_PLANT: { disabled: false },
+  AGRIVOLTAIC: { disabled: true },
+  GEOTHERMAL: { disabled: true },
+  BIOMASS: { disabled: true },
 };
 
-const allowedRenewableEnergyTypesErrorMessage = `Cette fonctionnalité n’est pas encore accessible, veuillez sélectionner uniquement l’option ${getLabelForRenewableEnergyProductionType(
-  "PHOTOVOLTAIC_POWER_PLANT",
-)}`;
-
-const validateSelectedRenewableEnergyTypes = (
-  renewableEnergyTypes: RenewableEnergyDevelopmentPlanType[],
-) =>
-  (renewableEnergyTypes.length === 1 && renewableEnergyTypes[0] === "PHOTOVOLTAIC_POWER_PLANT") ||
-  allowedRenewableEnergyTypesErrorMessage;
-
-const mapOptions =
-  (register: UseFormRegister<FormValues>, siteSurfaceArea: number) =>
-  (enrTypes: RenewableEnergyDevelopmentPlanType) => {
-    const potentialImpact = getPrevisionalEnrSocioEconomicImpact(enrTypes, siteSurfaceArea);
-    const hintColor = potentialImpact > 0 ? "--text-default-success" : "--text-default-error";
-    return {
-      label: getLabelForRenewableEnergyProductionType(enrTypes),
-      hintText: (
-        <>
-          <legend>{getDescriptionForRenewableEnergyType(enrTypes)}</legend>
-          <div style={{ color: `var(${hintColor})` }}>
-            {formatNumericImpact(potentialImpact)} € / an d’impacts socio-économiques potentiels
-          </div>
-        </>
-      ),
-      nativeInputProps: {
-        ...register("renewableEnergyTypes", {
-          required: "Ce champ est nécessaire pour déterminer les questions suivantes",
-          validate: {
-            allowedRenewableEnergyTypes: validateSelectedRenewableEnergyTypes,
-          },
-        }),
-        value: enrTypes,
-      },
-    };
-  };
-
-const options = ["PHOTOVOLTAIC_POWER_PLANT", "AGRIVOLTAIC", "GEOTHERMAL", "BIOMASS"] as const;
-
-function RenewableEnergyTypesForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+function RenewableEnergyTypesForm({ onSubmit, onBack }: Props) {
+  const { control, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: { renewableEnergyTypes: [] },
+  });
   const validationError = formState.errors.renewableEnergyTypes;
-
-  const state =
-    validationError && validationError.type !== "allowedRenewableEnergyTypes" ? "error" : "default";
 
   return (
     <WizardFormLayout title="Quel système d’EnR souhaitez-vous installer ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Checkbox
-          options={options.map(mapOptions(register, siteSurfaceArea))}
-          state={state}
-          stateRelatedMessage={validationError ? validationError.message : undefined}
-        />
+        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-5w")}>
+          {typedObjectKeys(options).map((renewableEnergy) => {
+            return (
+              <div className={fr.cx("fr-col-6")} key={renewableEnergy}>
+                <Controller
+                  control={control}
+                  name="renewableEnergyTypes"
+                  rules={{
+                    required: "Veuillez sélectionner au moins un type d'énergie renouvelable.",
+                  }}
+                  render={({ field }) => {
+                    const isSelected = field.value.includes(renewableEnergy);
+                    return (
+                      <RenewableEnergyTile
+                        renewableEnergy={renewableEnergy}
+                        disabled={options[renewableEnergy].disabled}
+                        isSelected={isSelected}
+                        onSelect={() => {
+                          field.onChange(
+                            isSelected
+                              ? field.value.filter((v) => v !== renewableEnergy)
+                              : [...field.value, renewableEnergy],
+                          );
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
+        {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
         <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>
