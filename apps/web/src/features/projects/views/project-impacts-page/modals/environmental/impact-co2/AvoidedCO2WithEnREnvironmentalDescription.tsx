@@ -6,8 +6,8 @@ type Props = {
   developmentPlanElectricalPowerKWc?: number;
 };
 
-const AvoidedCO2WithEnRMonetaryValueDescription = (props: Props) => {
-  return <AvoidedCO2WithEnRDescription withMonetarisation={true} {...props} />;
+const AvoidedCO2WithEnREnvironmentalDescription = (props: Props) => {
+  return <AvoidedCO2WithEnRDescription withMonetarisation={false} {...props} />;
 };
 
-export default AvoidedCO2WithEnRMonetaryValueDescription;
+export default AvoidedCO2WithEnREnvironmentalDescription;

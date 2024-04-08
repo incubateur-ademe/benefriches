@@ -7,8 +7,8 @@ type Props = {
   forecastSoilsDistribution: ReconversionProjectImpactsResult["projectData"]["soilsDistribution"];
 };
 
-const CarbonSoilsStorageMonetaryValueDescription = (props: Props) => {
-  return <CarbonSoilsStorageDescription withMonetarisation={true} {...props} />;
+const CarbonSoilsStorageEnvironmentalDescription = (props: Props) => {
+  return <CarbonSoilsStorageDescription withMonetarisation={false} {...props} />;
 };
 
-export default CarbonSoilsStorageMonetaryValueDescription;
+export default CarbonSoilsStorageEnvironmentalDescription;

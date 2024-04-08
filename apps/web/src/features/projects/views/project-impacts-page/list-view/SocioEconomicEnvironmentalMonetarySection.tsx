@@ -1,5 +1,5 @@
 import { getActorLabel } from "../impacts/socio-economic/socioEconomicImpacts";
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModal";
+import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
 import { formatMonetaryImpact } from "./formatImpactValue";
 import ImpactDetailLabel from "./ImpactDetailLabel";
 import ImpactDetailRow from "./ImpactItemDetailRow";
@@ -51,11 +51,11 @@ const getEcosystemServiceOnClick = (
   switch (impact) {
     case "nature_related_wellness_and_leisure":
       return () => {
-        openImpactDescriptionModal("nature-related-wellness-and-leisure");
+        openImpactDescriptionModal("socio-economic-nature-related-wellness-and-leisure");
       };
     case "carbon_storage":
       return () => {
-        openImpactDescriptionModal("carbon-storage-monetary-value");
+        openImpactDescriptionModal("socio-economic-carbon-storage");
       };
     default:
       return undefined;
@@ -101,7 +101,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
           </ImpactItemGroup>
           <ImpactDetailRow
             onClick={() => {
-              openImpactDescriptionModal("avoided-co2-monetary-value-renewable-energy");
+              openImpactDescriptionModal("socio-economic-avoided-co2-renewable-energy");
             }}
           >
             <ImpactDetailLabel>
@@ -115,7 +115,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
       {waterRegulationImpact && (
         <ImpactItemGroup
           onClick={() => {
-            openImpactDescriptionModal("water-regulation");
+            openImpactDescriptionModal("socio-economic-water-regulation");
           }}
         >
           <ImpactLabel>🚰 Régulation de la qualité de l’eau</ImpactLabel>
@@ -130,7 +130,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
         <>
           <ImpactItemGroup
             onClick={() => {
-              openImpactDescriptionModal("ecosystem-services");
+              openImpactDescriptionModal("socio-economic-ecosystem-services");
             }}
           >
             <ImpactLabel>🌻 Services écosystémiques</ImpactLabel>

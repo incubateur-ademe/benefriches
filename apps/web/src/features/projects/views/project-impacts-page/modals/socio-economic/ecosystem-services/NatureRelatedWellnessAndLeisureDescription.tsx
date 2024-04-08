@@ -1,5 +1,5 @@
-import ModalTitleThree from "../../ModalTitleThree";
-import ModalTitleTwo from "../../ModalTitleTwo";
+import ModalTitleThree from "../../shared/ModalTitleThree";
+import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { isForestPrairieOrWetLand, SoilType } from "@/shared/domain/soils";

@@ -5,9 +5,9 @@ import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import ImpactsListView from "./list-view/ImpactsListView";
 import {
-  ImpactDescriptionModal,
   ImpactDescriptionModalCategory,
-} from "./modals/ImpactDescriptionModal";
+  ImpactDescriptionModalWizard,
+} from "./modals/ImpactDescriptionModalWizard";
 import AboutImpactsModal from "./AboutImpactsModal";
 import ImpactsChartsView from "./ImpactsChartsView";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
@@ -97,7 +97,7 @@ const ProjectImpactsPage = ({
               onViewModeClick={setViewMode}
               onEvaluationPeriodChange={onEvaluationPeriodChange}
             />
-            <ImpactDescriptionModal
+            <ImpactDescriptionModalWizard
               modalCategory={modalCategoryOpened}
               onChangeModalCategoryOpened={setModalCategoryOpened}
               projectData={project}

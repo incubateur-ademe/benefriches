@@ -1,4 +1,4 @@
-import { fr } from "@codegouvfr/react-dsfr";
+import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -31,9 +31,11 @@ const SocioEconomicDescription = () => {
           du besoin en en déplacements, etc.)
         </li>
       </ul>
-      Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-dessous et leurs
-      méthodes de calcul sont détaillées au niveau de chacun.
-      <h2 className={fr.cx("fr-h5")}>Aller plus loin</h2>
+      <p>
+        Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-dessous et leurs
+        méthodes de calcul sont détaillées au niveau de chacun.
+      </p>
+      <ModalTitleTwo>Aller plus loin</ModalTitleTwo>
       <ul>
         <li>
           Évaluer les bénéfices socio-économiques de la reconversion de friches pour lutter contre

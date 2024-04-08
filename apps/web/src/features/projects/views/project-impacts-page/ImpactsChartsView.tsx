@@ -11,7 +11,7 @@ import StoredAndAvoidedCO2ImpactCard from "./impacts/environment/StoredAndAvoide
 import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
 import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
 import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";
-import { ImpactDescriptionModalCategory } from "./modals/ImpactDescriptionModal";
+import { ImpactDescriptionModalCategory } from "./modals/ImpactDescriptionModalWizard";
 
 type Props = {
   project: {
@@ -35,7 +35,7 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
             <CostBenefitAnalysisCard
               economicBalanceTotal={impacts.economicBalance.total}
               socioEconomicImpactsTotal={impacts.socioeconomic.total}
-              displayDescriptionModal={() => {
+              onTitleClick={() => {
                 openImpactDescriptionModal("cost-benefit-analysis");
               }}
             />
@@ -44,7 +44,7 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
             <EconomicBalanceImpactCard
               costs={impacts.economicBalance.costs}
               revenues={impacts.economicBalance.revenues}
-              displayDescriptionModal={() => {
+              onTitleClick={() => {
                 openImpactDescriptionModal("economic-balance");
               }}
             />
@@ -53,7 +53,7 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
           <div className="lg:tw-row-start-2">
             <SocioEconomicImpactsCard
               socioEconomicImpacts={impacts.socioeconomic.impacts}
-              displayDescriptionModal={() => {
+              onTitleClick={() => {
                 openImpactDescriptionModal("socio-economic");
               }}
             />
@@ -61,10 +61,22 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
         </div>
       </section>
       <section className={fr.cx("fr-pb-8v")}>
-        <h3>Impacts environnementaux</h3>
+        <h3
+          className="tw-cursor-pointer hover:tw-underline"
+          onClick={() => {
+            openImpactDescriptionModal("environmental");
+          }}
+        >
+          Impacts environnementaux
+        </h3>
         <Row>
           <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
-            <SoilsCarbonStorageImpactCard soilsCarbonStorageImpact={impacts.soilsCarbonStorage} />
+            <SoilsCarbonStorageImpactCard
+              onTitleClick={() => {
+                openImpactDescriptionModal("environmental-carbon-storage");
+              }}
+              soilsCarbonStorageImpact={impacts.soilsCarbonStorage}
+            />
           </div>
           {impacts.avoidedCO2TonsWithEnergyProduction && (
             <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
@@ -120,8 +132,8 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
               <HouseholdsPoweredByRenewableEnergyImpactCard
                 reconversionProjectName={project.name}
                 householdsPoweredByRenewableEnergy={impacts.householdsPoweredByRenewableEnergy}
-                displayDescriptionModal={() => {
-                  openImpactDescriptionModal("households-powered-by-renewable-energy");
+                onTitleClick={() => {
+                  openImpactDescriptionModal("social-households-powered-by-renewable-energy");
                 }}
               />
             </div>

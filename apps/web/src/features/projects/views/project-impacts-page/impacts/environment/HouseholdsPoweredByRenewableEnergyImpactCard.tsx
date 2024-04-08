@@ -12,13 +12,13 @@ type Props = {
     current: number;
     forecast: number;
   };
-  displayDescriptionModal: () => void;
+  onTitleClick: () => void;
 };
 
 function HouseholdsPoweredByRenewableEnergyImpactCard({
   reconversionProjectName,
   householdsPoweredByRenewableEnergy,
-  displayDescriptionModal,
+  onTitleClick,
 }: Props) {
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
@@ -44,7 +44,7 @@ function HouseholdsPoweredByRenewableEnergyImpactCard({
   };
 
   return (
-    <ImpactCard title="🏠 Foyers alimentés par les EnR" onTitleClick={displayDescriptionModal}>
+    <ImpactCard title="🏠 Foyers alimentés par les EnR" onTitleClick={onTitleClick}>
       <div style={{ textAlign: "center" }}>
         + {formatNumberFr(roundTo2Digits(householdsPoweredByRenewableEnergy.forecast))} foyers
       </div>
