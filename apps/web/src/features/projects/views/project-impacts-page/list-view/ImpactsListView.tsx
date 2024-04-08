@@ -187,7 +187,12 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
         </ImpactItemGroup>
       </section>
       <section>
-        <h3>Impacts sociaux</h3>
+        <ImpactMainTitle
+          title="Impacts sociaux"
+          onClick={() => {
+            openImpactDescriptionModal("social");
+          }}
+        />
         <ImpactSectionTitle>Impacts sur l’emploi</ImpactSectionTitle>
         <ImpactItemGroup>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -246,7 +251,11 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
         {impacts.householdsPoweredByRenewableEnergy && (
           <>
             <ImpactSectionTitle>Impacts sur la société française</ImpactSectionTitle>
-            <ImpactItemRow>
+            <ImpactItemRow
+              onClick={() => {
+                openImpactDescriptionModal("households-powered-by-renewable-energy");
+              }}
+            >
               <ImpactLabel>🏠 Foyers alimentés par les EnR</ImpactLabel>
               <ImpactValue isTotal>
                 {formatDefaultImpact(impacts.householdsPoweredByRenewableEnergy.forecast, {
