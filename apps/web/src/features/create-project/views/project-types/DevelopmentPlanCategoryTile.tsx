@@ -7,7 +7,7 @@ import {
   getPictogramForDevelopmentPlanCategory,
 } from "../projectTypeLabelMapping";
 
-import SelectableTile from "@/shared/views/components/SelectableTile/SelectableTile";
+import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 
 type Props = {
   developmentPlanCategory: DevelopmentPlanCategory;
@@ -26,7 +26,7 @@ export default function DevelopmentPlanCategoryTile({
   const description = getDescriptionForDevelopmentPlanCategory(developmentPlanCategory);
   const imgSrc = `/img/pictograms/development-plans/${getPictogramForDevelopmentPlanCategory(developmentPlanCategory)}`;
   return (
-    <SelectableTile
+    <CheckableTile
       title={title}
       description={
         disabled ? (
@@ -50,6 +50,7 @@ export default function DevelopmentPlanCategoryTile({
       isSelected={isSelected}
       onSelect={onSelect}
       style={{ minHeight: "270px" }}
+      checkType="radio"
     />
   );
 }

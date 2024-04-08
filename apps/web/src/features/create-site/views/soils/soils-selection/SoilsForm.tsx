@@ -8,7 +8,7 @@ import {
   getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import SelectableTile from "@/shared/views/components/SelectableTile/SelectableTile";
+import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -97,7 +97,7 @@ const SoilTypeTile = ({ soilType, isSelected, onSelect }: SoilTypeTileProps) => 
   const imgSrc = `/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`;
 
   return (
-    <SelectableTile
+    <CheckableTile
       title={title}
       description={description}
       imgSrc={imgSrc}

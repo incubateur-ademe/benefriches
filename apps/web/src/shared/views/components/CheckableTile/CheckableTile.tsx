@@ -2,7 +2,9 @@ import React from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 
-type SelectableTileProps = {
+import { noop } from "@/shared/services/noop/noop";
+
+type CheckableTileProps = {
   title: string;
   description?: React.ReactNode;
   imgSrc: string;
@@ -10,9 +12,58 @@ type SelectableTileProps = {
   onSelect: () => void;
   disabled?: boolean;
   style?: React.CSSProperties;
+  checkType?: "checkbox" | "radio";
 };
 
-export default function SelectableTile({
+type NoLabelCheckboxProps = {
+  isChecked: boolean;
+  disabled: boolean;
+};
+
+const NoLabelCheckbox = ({ isChecked, disabled }: NoLabelCheckboxProps) => {
+  return (
+    <Checkbox
+      options={[
+        {
+          label: "",
+          nativeInputProps: {
+            checked: isChecked,
+            onChange: noop,
+            disabled,
+          },
+        },
+      ]}
+    />
+  );
+};
+
+type NoLabelRadioButtonProps = {
+  isChecked: boolean;
+  disabled: boolean;
+  name: string;
+};
+
+const NoLabelRadioButton = ({ isChecked, disabled, name }: NoLabelRadioButtonProps) => {
+  return (
+    <div className={fr.cx("fr-radio-group")}>
+      <input
+        type="radio"
+        disabled={disabled}
+        onChange={noop}
+        onClick={noop}
+        checked={isChecked}
+        id={name}
+        name={name}
+        style={{ position: "absolute", top: "16px", right: "0" }}
+      />
+      <label style={{ width: "24px", height: "24px" }} onClick={noop}>
+        {" "}
+      </label>
+    </div>
+  );
+};
+
+export default function CheckableTile({
   title,
   description,
   imgSrc,
@@ -20,7 +71,8 @@ export default function SelectableTile({
   disabled = false,
   onSelect,
   style,
-}: SelectableTileProps) {
+  checkType = "checkbox",
+}: CheckableTileProps) {
   const tileStyle = {
     border: `1px solid ${isSelected ? "#000091" : "#DDD"}`,
     minHeight: "240px",
@@ -48,6 +100,13 @@ export default function SelectableTile({
     onSelect();
   };
 
+  const checkComponent =
+    checkType === "checkbox" ? (
+      <NoLabelCheckbox isChecked={isSelected} disabled={disabled} />
+    ) : (
+      <NoLabelRadioButton isChecked={isSelected} disabled={disabled} name={title} />
+    );
+
   return (
     <div className={fr.cx("fr-py-2w", "fr-px-3w")} style={tileStyle} onClick={onTileClick}>
       <div style={{ textAlign: "center" }}>
@@ -59,7 +118,7 @@ export default function SelectableTile({
         />
       </div>
       <div className={fr.cx("fr-mt-1w")} style={{ textAlign: "center" }}>
-        <label className={fr.cx("fr-text--lg", "fr-text--bold")} style={titleStyle}>
+        <label className={fr.cx("fr-text--lg", "fr-text--bold")} style={titleStyle} htmlFor={title}>
           {title}
         </label>
       </div>
@@ -68,20 +127,7 @@ export default function SelectableTile({
           <legend className={fr.cx("fr-text--sm")}>{description}</legend>
         </div>
       )}
-      <div style={{ position: "absolute", top: "16px", right: "0" }}>
-        <Checkbox
-          options={[
-            {
-              label: "",
-              nativeInputProps: {
-                checked: isSelected,
-                onChange: () => {},
-                disabled,
-              },
-            },
-          ]}
-        />
-      </div>
+      <div style={{ position: "absolute", top: "16px", right: "0" }}>{checkComponent}</div>
     </div>
   );
 }

@@ -7,7 +7,7 @@ import {
   getPictogramForRenewableEnergy,
 } from "../projectTypeLabelMapping";
 
-import SelectableTile from "@/shared/views/components/SelectableTile/SelectableTile";
+import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 
 type Props = {
   renewableEnergy: RenewableEnergyDevelopmentPlanType;
@@ -26,7 +26,7 @@ export default function RenewableEnergyTile({
   const description = getDescriptionForRenewableEnergyType(renewableEnergy);
   const imgSrc = `/img/pictograms/renewable-energy/${getPictogramForRenewableEnergy(renewableEnergy)}`;
   return (
-    <SelectableTile
+    <CheckableTile
       title={title}
       description={
         disabled ? (
@@ -50,6 +50,7 @@ export default function RenewableEnergyTile({
       isSelected={isSelected}
       onSelect={onSelect}
       style={{ minHeight: "270px" }}
+      checkType="radio"
     />
   );
 }
