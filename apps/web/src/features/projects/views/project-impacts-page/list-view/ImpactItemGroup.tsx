@@ -8,10 +8,10 @@ type Props = {
 const ImpactItemGroup = ({ children, onClick }: Props) => {
   return (
     <div
+      className={onClick ? "tw-cursor-pointer hover:tw-underline" : ""}
       onClick={onClick}
       style={{
         borderBottom: "1px solid #DDDDDD",
-        cursor: onClick ? "pointer" : "default",
       }}
     >
       {children}

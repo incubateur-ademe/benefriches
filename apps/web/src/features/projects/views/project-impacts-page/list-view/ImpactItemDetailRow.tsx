@@ -8,11 +8,11 @@ type Props = {
 const ImpactDetailRow = ({ children, onClick }: Props) => {
   return (
     <div
+      className={onClick ? "tw-cursor-pointer hover:tw-underline" : ""}
       style={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        cursor: onClick ? "pointer" : "inherit",
       }}
       onClick={onClick}
     >

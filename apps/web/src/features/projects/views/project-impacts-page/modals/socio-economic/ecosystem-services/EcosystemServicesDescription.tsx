@@ -13,12 +13,12 @@ const EcosystemServicesDescription = () => {
         comme la lutte contre les îlots de chaleur urbains, la limitation des inondations,
         l’aménagement de jardins récréatifs/partagés.
       </p>
-      <p className="tw-text-center">
+      <div className="tw-text-center">
         <img
           src="/img/modals/services-ecosystemiques.png"
           alt="Schéma illustratif des services écosystémiques"
         />
-      </p>
+      </div>
 
       <ModalTitleTwo>Le principe de monétarisation</ModalTitleTwo>
       <p>
@@ -30,12 +30,12 @@ const EcosystemServicesDescription = () => {
         n’existe pas de prix à on est alors obligé de calculer leur coût ou leur valeur.
       </p>
       <p>Différentes méthodes générales existent pour les évaluer&nbsp;:</p>
-      <p className="tw-text-center">
+      <div className="tw-text-center">
         <img
           src="/img/modals/valeurs-usage-services-ecosystemiques.png"
           alt="Valeurs d’usage direct, valeurs d’usage indirect, valeur d’option, valeur de legs, valeur d’existence"
         />
-      </p>
+      </div>
 
       <p>
         La monétarisation constitue ainsi un moyen d’orienter l’ensemble des politiques publiques

@@ -17,23 +17,22 @@ const SocioEconomicDescription = () => {
       <p>
         S’agissant de projets de renouvellement urbain, les impacts sont nombreux et de différentes
         natures :
-        <ul>
-          <li>
-            environnementaux (ex : maintien de capacité de stockage de carbone dans les sols,
-            création d’ilots de fraicheur),
-          </li>
-          <li>
-            économiques (ex : réduction de dépenses futures en entretien de réseaux ou voiries),
-          </li>
-          <li>
-            sociaux (ex : création d’aménités, amélioration de l’attractivité d’un quartier,
-            réduction du besoin en en déplacements, etc.)
-          </li>
-        </ul>
-        Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-dessous et leurs
-        méthodes de calcul sont détaillées au niveau de chacun.
       </p>
-
+      <ul>
+        <li>
+          environnementaux (ex : maintien de capacité de stockage de carbone dans les sols, création
+          d’ilots de fraicheur),
+        </li>
+        <li>
+          économiques (ex : réduction de dépenses futures en entretien de réseaux ou voiries),
+        </li>
+        <li>
+          sociaux (ex : création d’aménités, amélioration de l’attractivité d’un quartier, réduction
+          du besoin en en déplacements, etc.)
+        </li>
+      </ul>
+      Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-dessous et leurs
+      méthodes de calcul sont détaillées au niveau de chacun.
       <h2 className={fr.cx("fr-h5")}>Aller plus loin</h2>
       <ul>
         <li>

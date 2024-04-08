@@ -6,7 +6,7 @@ type Props = {
 };
 
 const ModalTitleThree = ({ children }: Props) => {
-  return <h2 className={fr.cx("fr-h6", "fr-my-3v")}>{children}</h2>;
+  return <h3 className={fr.cx("fr-h6", "fr-my-3v")}>{children}</h3>;
 };
 
 export default ModalTitleThree;
