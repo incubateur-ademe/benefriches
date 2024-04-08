@@ -5,6 +5,7 @@ import { Button } from "@codegouvfr/react-dsfr/Button";
 import { resetState } from "../../application/createSite.reducer";
 
 import { routes } from "@/app/views/router";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -28,33 +29,32 @@ function CreateSiteIntroductionPage() {
         </p>
         <Accordion label="Documents utiles" className={fr.cx("fr-mb-4w")}>
           <p>
-            Pour vous aider à saisir les informations liées à votre projet, il peut être utile
+            Pour vous aider à renseigner les informations décrivant le site, il peut être utile
             d'avoir les ressources suivantes :
           </p>
           <ul>
-            <li>Plan cadastral du site</li>
-            <li>Acte de vente</li>
-            <li>
-              Logiciel de cartographie satellite (exemple:{" "}
-              <a href="https://www.openstreetmap.fr/" rel="noopener noreferrer" target="_blank">
-                OpenStreetMap
-              </a>
-              )
-            </li>
             <li>Photographies</li>
             <li>
-              Carte des anciens sites industriels et de services (
-              <a
-                href="https://infoterre.brgm.fr/viewer/MainTileForward.do"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                https://infoterre.brgm.fr/viewer/MainTileForward.do
-              </a>
+              Plan cadastral du site (accessible en ligne sur{" "}
+              <ExternalLink href="https://www.geoportail.gouv.fr/">Géoportail</ExternalLink>)
+            </li>
+            <li>
+              Logiciel de cartographie satellite (exemple:{" "}
+              <ExternalLink href="https://www.geoportail.gouv.fr/">Géoportail</ExternalLink> ou{" "}
+              <ExternalLink href="https://www.openstreetmap.fr/">OpenStreetMap</ExternalLink>)
+            </li>
+            <li>
+              Carte des sites et sols potentiellement pollués (
+              <ExternalLink href="https://infoterre.brgm.fr/viewer/MainTileForward.do">
+                Infoterre
+              </ExternalLink>
               )
             </li>
-            <li>Rapports de diagnostics de pollution ou plan de gestion</li>
-            <li>Compte de résultat ou données économiques du site (gardiennage, loyer, etc.)</li>
+            <li>
+              Rapports des éventuelles études menées sur le site (étude de faisabilité d’un projet,
+              étude faune-flore, diagnostic de pollution, etc.)
+            </li>
+            <li>Dépenses liées au site (gardiennage, loyer, etc.)</li>
           </ul>
         </Accordion>
         <Button linkProps={routes.createSiteFoncier().link}>Commencer</Button>
