@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
 import CarbonStorageDifferenceSection from "./CarbonStorageDifferenceSection";
+import { formatCarbonStorage } from "./formatCarbonStorage";
 
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -72,16 +72,16 @@ const ProjectSoilsCarbonStorage = ({
         <div className="fr-grid-row fr-grid-row--gutters">
           <div className="fr-col-6">
             <h3>
-              Site existant : {formatNumberFr(currentCarbonStorage.totalCarbonStorage)} tonnes de
-              CO2-eq stockées
+              Site existant : {formatCarbonStorage(currentCarbonStorage.totalCarbonStorage)} tonnes
+              de CO2-eq stockées
             </h3>
             <SoilsCarbonStorageChart soilsCarbonStorage={currentCarbonStorage.soilsStorage} />
           </div>
 
           <div className="fr-col-6">
             <h3>
-              Site avec projet : {formatNumberFr(projectedCarbonStorage.totalCarbonStorage)} tonnes
-              de CO2-eq stockées
+              Site avec projet : {formatCarbonStorage(projectedCarbonStorage.totalCarbonStorage)}{" "}
+              tonnes de CO2-eq stockées
             </h3>
             <SoilsCarbonStorageChart soilsCarbonStorage={projectedCarbonStorage.soilsStorage} />
           </div>

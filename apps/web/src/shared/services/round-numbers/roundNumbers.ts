@@ -5,3 +5,7 @@ export const roundTo2Digits = (value: number) => {
 export const roundTo1Digit = (value: number) => {
   return Math.round(value * 10) / 10;
 };
+
+export const roundToInteger = (value: number) => {
+  return Math.round(value);
+};

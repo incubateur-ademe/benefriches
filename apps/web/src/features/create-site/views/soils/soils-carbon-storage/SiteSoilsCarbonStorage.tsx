@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { formatCarbonStorage } from "@/features/create-project/views/soils/soils-carbon-storage/formatCarbonStorage";
 import { SiteCarbonStorage } from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -92,8 +93,8 @@ const SiteSoilsCarbonStorage = ({
       {siteCarbonStorage && (
         <>
           <p>
-            Ce site stocke environ <strong>{formatNumberFr(siteCarbonStorage.total)} t</strong> de
-            carbone.
+            Ce site stocke environ <strong>{formatCarbonStorage(siteCarbonStorage.total)} t</strong>{" "}
+            de carbone.
           </p>
           <p>
             C'est l'équivalent de ce qu'émettent{" "}

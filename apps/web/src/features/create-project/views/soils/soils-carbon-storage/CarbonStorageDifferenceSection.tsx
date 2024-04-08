@@ -1,3 +1,5 @@
+import { formatCarbonStorage } from "./formatCarbonStorage";
+
 import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
@@ -20,13 +22,12 @@ const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
         <p>Bonne nouvelle !</p>
         <p>
           Ce site pourrait stocker{" "}
-          <strong>{formatNumberFr(carbonStorageDifference)} tonnes de carbone en plus.</strong>
+          <strong>{formatCarbonStorage(carbonStorageDifference)} tonnes de carbone en plus.</strong>
         </p>
         <p>
           C'est l'équivalent de ce qu'émettent{" "}
           <strong>
-            {formatNumberFr(Math.round(carbonStorageDifferenceInAnnualFrenchEmissionPerPerson))}{" "}
-            français
+            {formatCarbonStorage(carbonStorageDifferenceInAnnualFrenchEmissionPerPerson)} français
           </strong>{" "}
           en 1 an.
         </p>
@@ -39,7 +40,7 @@ const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
       <p>
         Ce site stockerait{" "}
         <strong>
-          {formatNumberFr(Math.abs(carbonStorageDifference))} tonnes de carbone en moins.
+          {formatCarbonStorage(Math.abs(carbonStorageDifference))} tonnes de carbone en moins.
         </strong>
       </p>
       <p>
