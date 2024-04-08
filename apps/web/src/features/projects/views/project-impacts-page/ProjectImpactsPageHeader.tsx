@@ -1,5 +1,4 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
 
 type Props = {
@@ -42,7 +41,7 @@ const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
             </div>
           </div>
 
-          <ButtonsGroup
+          {/* <ButtonsGroup
             inlineLayoutWhen="always"
             buttons={[
               {
@@ -58,7 +57,7 @@ const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
                 title: "Options",
               },
             ]}
-          />
+          /> */}
         </div>
       </div>
     </div>

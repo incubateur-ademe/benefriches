@@ -51,11 +51,11 @@ const ProjectImpactsPageTabs = () => {
           Impacts
         </button>
       </li>
-      <li role="presentation">
-        <button className="fr-tabs__tab" tabIndex={-1} role="tab" disabled>
+      {/* <li role="presentation">
+        <button className="fr-tabs__tab" tabIndex={1} role="tab" disabled>
           Caractéristiques
         </button>
-      </li>
+      </li> */}
     </ul>
   );
 };
