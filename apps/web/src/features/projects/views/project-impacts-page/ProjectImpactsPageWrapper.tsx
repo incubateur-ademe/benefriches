@@ -11,6 +11,7 @@ type Props = ProjectImpactsState & {
 function ProjectImpactsPageWrapper({
   projectData,
   impactsData,
+  relatedSiteData,
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
@@ -36,6 +37,7 @@ function ProjectImpactsPageWrapper({
     return (
       <ProjectImpactsPage
         project={projectData!}
+        relatedSite={relatedSiteData!}
         impacts={impactsData!}
         evaluationPeriod={evaluationPeriod}
         onEvaluationPeriodChange={onEvaluationPeriodChange}

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { SoilsDistribution } from "../../application/projectImpacts.reducer";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import ImpactsListView from "./list-view/ImpactsListView";
@@ -17,7 +18,13 @@ type Props = {
   project: {
     name: string;
     id: string;
-    relatedSiteName: string;
+    soilsDistribution: SoilsDistribution;
+    contaminatedSoilSurface: 0;
+  };
+  relatedSite: {
+    name: string;
+    soilsDistribution: SoilsDistribution;
+    contaminatedSoilSurface: number;
   };
   impacts: ReconversionProjectImpacts;
 };
@@ -50,6 +57,7 @@ const ProjectImpactsPageTabs = () => {
 
 const ProjectImpactsPage = ({
   project,
+  relatedSite,
   impacts,
   onEvaluationPeriodChange,
   evaluationPeriod,
@@ -65,7 +73,7 @@ const ProjectImpactsPage = ({
       <ProjectsImpactsPageHeader
         projectId={project.id}
         projectName={project.name}
-        siteName={project.relatedSiteName}
+        siteName={relatedSite.name}
       />
 
       <div className={fr.cx("fr-tabs")}>
@@ -87,7 +95,8 @@ const ProjectImpactsPage = ({
             <ImpactDescriptionModal
               modalCategory={modalCategoryOpened}
               onChangeModalCategoryOpened={setModalCategoryOpened}
-              impacts={impacts}
+              projectData={project}
+              siteData={relatedSite}
             />
             {currentViewMode === "charts" && (
               <ImpactsChartsView

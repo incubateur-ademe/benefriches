@@ -49,6 +49,10 @@ const getEcosystemServiceOnClick = (
   openImpactDescriptionModal: Props["openImpactDescriptionModal"],
 ): (() => void) | undefined => {
   switch (impact) {
+    case "nature_related_wellness_and_leisure":
+      return () => {
+        openImpactDescriptionModal("nature-related-wellness-and-leisure");
+      };
     case "carbon_storage":
       return () => {
         openImpactDescriptionModal("carbon-storage-monetary-value");
@@ -105,7 +109,11 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
       )}
 
       {waterRegulationImpact && (
-        <ImpactItemGroup>
+        <ImpactItemGroup
+          onClick={() => {
+            openImpactDescriptionModal("water-regulation");
+          }}
+        >
           <ImpactLabel>🚰 Régulation de la qualité de l’eau</ImpactLabel>
           <ImpactDetailRow key={waterRegulationImpact.actor + waterRegulationImpact.amount}>
             <ImpactDetailLabel>{getActorLabel(waterRegulationImpact.actor)}</ImpactDetailLabel>

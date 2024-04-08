@@ -20,6 +20,29 @@ export enum SoilType {
   WATER = "WATER", // plan d'eau
 }
 
+export const isPrairie = (soilType: SoilType) => {
+  return [SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_TREES].includes(
+    soilType,
+  );
+};
+
+export const isForest = (soilType: SoilType) => {
+  return [
+    SoilType.FOREST_CONIFER,
+    SoilType.FOREST_POPLAR,
+    SoilType.FOREST_DECIDUOUS,
+    SoilType.FOREST_MIXED,
+  ].includes(soilType);
+};
+
+export const isWetLand = (soilType: SoilType) => {
+  return SoilType.WET_LAND === soilType;
+};
+
+export const isForestPrairieOrWetLand = (soilType: SoilType) => {
+  return isPrairie(soilType) || isForest(soilType) || isWetLand(soilType);
+};
+
 export const getColorForSoilType = (value: SoilType): string => {
   switch (value) {
     case SoilType.BUILDINGS:
