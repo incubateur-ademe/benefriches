@@ -1,18 +1,17 @@
-import { ImpactDescriptionModalCategory } from "../../modals/ImpactDescriptionModalWizard";
-import ImpactDetailLabel from "../ImpactDetailLabel";
-import ImpactDetailRow from "../ImpactItemDetailRow";
-import ImpactItemGroup from "../ImpactItemGroup";
-import ImpactItemRow from "../ImpactItemRow";
-import ImpactLabel from "../ImpactLabel";
-import ImpactSectionTitle from "../ImpactSectionTitle";
-import ImpactValue from "../ImpactValue";
-
 import {
   AvoidedCO2EqWithEnRImpact,
   EcosystemServicesImpact,
   ReconversionProjectImpacts,
   WaterRegulationImpact,
 } from "@/features/projects/domain/impacts.types";
+import ImpactDetailLabel from "@/features/projects/views/project-impacts-page/list-view/ImpactDetailLabel";
+import ImpactDetailRow from "@/features/projects/views/project-impacts-page/list-view/ImpactItemDetailRow";
+import ImpactItemGroup from "@/features/projects/views/project-impacts-page/list-view/ImpactItemGroup";
+import ImpactItemRow from "@/features/projects/views/project-impacts-page/list-view/ImpactItemRow";
+import ImpactLabel from "@/features/projects/views/project-impacts-page/list-view/ImpactLabel";
+import ImpactSectionTitle from "@/features/projects/views/project-impacts-page/list-view/ImpactSectionTitle";
+import ImpactValue from "@/features/projects/views/project-impacts-page/list-view/ImpactValue";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 

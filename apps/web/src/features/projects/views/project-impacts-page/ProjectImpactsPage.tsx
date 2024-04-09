@@ -73,6 +73,11 @@ const ProjectImpactsPage = ({
   const [modalCategoryOpened, setModalCategoryOpened] =
     useState<ImpactDescriptionModalCategory>(undefined);
 
+  const displayAll = currentFilter === "all";
+  const displayEconomicData = displayAll || currentFilter === "economic";
+  const displayEnvironmentData = displayAll || currentFilter === "environment";
+  const displaySocialData = displayAll || currentFilter === "social";
+
   return (
     <div style={{ background: "#ECF5FD" }}>
       <ProjectsImpactsPageHeader
@@ -107,11 +112,17 @@ const ProjectImpactsPage = ({
               <ImpactsChartsView
                 project={project}
                 impacts={impacts}
+                displayEconomicData={displayEconomicData}
+                displayEnvironmentData={displayEnvironmentData}
+                displaySocialData={displaySocialData}
                 openImpactDescriptionModal={setModalCategoryOpened}
               />
             )}
             {currentViewMode === "list" && (
               <ImpactsListView
+                displayEconomicData={displayEconomicData}
+                displayEnvironmentData={displayEnvironmentData}
+                displaySocialData={displaySocialData}
                 project={project}
                 impacts={impacts}
                 openImpactDescriptionModal={setModalCategoryOpened}
