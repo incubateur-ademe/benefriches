@@ -5,8 +5,13 @@ import {
 import YearlyProjectedsCostsForm, { FormValues } from "./YearlyProjectedCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
+import {
+  computeDefaultPhotovoltaicYearlyMaintenanceAmount,
+  computeDefaultPhotovoltaicYearlyRentAmount,
+  computeDefaultPhotovoltaicYearlyTaxesAmount,
+} from "@/features/create-project/domain/defaultValues";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const costsFormMap = {
   rentAmount: "rent",
@@ -15,8 +20,15 @@ const costsFormMap = {
   otherAmount: "other",
 } as const;
 
-const mapProps = (dispatch: AppDispatch) => {
+const mapProps = (dispatch: AppDispatch, electricalPowerKWc?: number) => {
   return {
+    defaultValues: electricalPowerKWc
+      ? {
+          rent: computeDefaultPhotovoltaicYearlyRentAmount(electricalPowerKWc),
+          maintenance: computeDefaultPhotovoltaicYearlyMaintenanceAmount(electricalPowerKWc),
+          taxes: computeDefaultPhotovoltaicYearlyTaxesAmount(electricalPowerKWc),
+        }
+      : undefined,
     onSubmit: (costs: FormValues) => {
       const yearlyProjectedCosts = typedObjectKeys(costs)
         .filter((sourceKey) => !!costs[sourceKey])
@@ -34,8 +46,11 @@ const mapProps = (dispatch: AppDispatch) => {
 
 function YearlyProjectedCostsFormContainer() {
   const dispatch = useAppDispatch();
+  const electricalPowerKWc = useAppSelector(
+    (state) => state.projectCreation.projectData.photovoltaicInstallationElectricalPowerKWc,
+  );
 
-  return <YearlyProjectedsCostsForm {...mapProps(dispatch)} />;
+  return <YearlyProjectedsCostsForm {...mapProps(dispatch, electricalPowerKWc)} />;
 }
 
 export default YearlyProjectedCostsFormContainer;
