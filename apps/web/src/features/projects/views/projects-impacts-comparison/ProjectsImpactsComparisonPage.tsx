@@ -1,8 +1,8 @@
 import { ReactNode, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import { ImpactCategoryFilter } from "../../application/projectImpacts.reducer";
 import { Project, ProjectSite } from "../../domain/projects.types";
-import { ImpactCategoryFilter } from "../project-impacts-page/ProjectImpactsPage";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissionComparisonChart";
 import CarbonStorageComparisonChart from "./charts/carbon-storage";

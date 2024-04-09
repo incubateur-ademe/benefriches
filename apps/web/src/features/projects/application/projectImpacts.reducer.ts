@@ -9,8 +9,14 @@ import { SoilType } from "@/shared/domain/soils";
 type LoadingState = "idle" | "loading" | "success" | "error";
 
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 10;
+const DEFAULT_VIEW_MODE = "charts";
+const DEFAULT_CATEGORY_FILTER = "all";
 
 export type SoilsDistribution = Partial<Record<SoilType, number>>;
+
+type ImpactCategory = "economic" | "environment" | "social";
+export type ImpactCategoryFilter = ImpactCategory | "all";
+export type ViewMode = "charts" | "list";
 
 export type ProjectImpactsState = {
   dataLoadingState: LoadingState;
@@ -33,6 +39,8 @@ export type ProjectImpactsState = {
   };
   impactsData?: ReconversionProjectImpactsResult["impacts"];
   evaluationPeriod: number;
+  currentViewMode: ViewMode;
+  currentCategoryFilter: ImpactCategoryFilter;
 };
 
 export const getInitialState = (): ProjectImpactsState => {
@@ -42,6 +50,8 @@ export const getInitialState = (): ProjectImpactsState => {
     relatedSiteData: undefined,
     dataLoadingState: "idle",
     evaluationPeriod: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
+    currentViewMode: DEFAULT_VIEW_MODE,
+    currentCategoryFilter: DEFAULT_CATEGORY_FILTER,
   };
 };
 
@@ -51,6 +61,12 @@ export const projectImpactsSlice = createSlice({
   reducers: {
     setEvaluationPeriod: (state, action: PayloadAction<number>) => {
       state.evaluationPeriod = action.payload;
+    },
+    setViewMode: (state, action: PayloadAction<ViewMode>) => {
+      state.currentViewMode = action.payload;
+    },
+    setCategoryFilter: (state, action: PayloadAction<ImpactCategoryFilter>) => {
+      state.currentCategoryFilter = action.payload;
     },
   },
   extraReducers(builder) {
@@ -78,6 +94,6 @@ export const projectImpactsSlice = createSlice({
   },
 });
 
-export const { setEvaluationPeriod } = projectImpactsSlice.actions;
+export const { setEvaluationPeriod, setCategoryFilter, setViewMode } = projectImpactsSlice.actions;
 
 export default projectImpactsSlice.reducer;

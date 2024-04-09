@@ -1,7 +1,11 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
-import { ImpactCategoryFilter, ViewMode } from "../../project-impacts-page/ProjectImpactsPage";
 import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
+
+import {
+  ImpactCategoryFilter,
+  ViewMode,
+} from "@/features/projects/application/projectImpacts.reducer";
 
 type Props = {
   selectedFilter: ImpactCategoryFilter;
