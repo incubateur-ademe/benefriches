@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useAppSelector } from "../../hooks/store.hooks";
 
 import { routes } from "@/app/views/router";
@@ -10,14 +11,13 @@ export default function RequireRegisteredUser({ children }: { children: React.Re
   const currentUserLoaded = useAppSelector(isCurrentUserLoaded);
   const currentUserId = useAppSelector(selectCurrentUserId);
 
-  if (!currentUserLoaded) {
-    return null;
-  }
+  useEffect(() => {
+    if (currentUserLoaded && !currentUserId) {
+      routes.onboarding().replace();
+    }
+  }, [currentUserLoaded, currentUserId]);
 
-  if (!currentUserId) {
-    routes.onboarding().replace();
-    return null;
-  }
+  if (currentUserLoaded && currentUserId) return children;
 
-  return children;
+  return null;
 }
