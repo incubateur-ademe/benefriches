@@ -63,11 +63,13 @@ function AccidentsImpactCard({ reconversionProjectName, accidentsImpact }: Props
   const areaChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
+      labels: { enabled: false },
       categories: ["Pas de changement", reconversionProjectName],
     },
     tooltip: {
       valueSuffix: ` ETP`,
     },
+    legend: { enabled: false },
     plotOptions: {
       area: {
         stacking: "normal",

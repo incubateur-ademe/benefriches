@@ -26,6 +26,7 @@ function StoredAndAvoidedCO2ImpactCard({
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
+      labels: { enabled: false },
       categories: ["Pas de changement", reconversionProjectName],
     },
     tooltip: {
@@ -37,6 +38,7 @@ function StoredAndAvoidedCO2ImpactCard({
         stacking: "normal",
       },
     },
+    legend: { enabled: false },
     series: [
       {
         name: "CO2-eq évité grâce à la production EnR",

@@ -4,7 +4,7 @@ import ImpactCard from "../../ImpactChartCard";
 
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
-import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
+import { roundToInteger } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   reconversionProjectName: string;
@@ -23,6 +23,7 @@ function HouseholdsPoweredByRenewableEnergyImpactCard({
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
+      labels: { enabled: false },
       categories: ["Pas de changement", reconversionProjectName],
     },
     plotOptions: {
@@ -35,8 +36,8 @@ function HouseholdsPoweredByRenewableEnergyImpactCard({
         name: "Foyers alimentés par les EnR",
         type: "area",
         data: [
-          roundTo2Digits(householdsPoweredByRenewableEnergy.current),
-          roundTo2Digits(householdsPoweredByRenewableEnergy.forecast),
+          roundToInteger(householdsPoweredByRenewableEnergy.current),
+          roundToInteger(householdsPoweredByRenewableEnergy.forecast),
         ],
         showInLegend: false,
       },
@@ -46,7 +47,7 @@ function HouseholdsPoweredByRenewableEnergyImpactCard({
   return (
     <ImpactCard title="🏠 Foyers alimentés par les EnR" onTitleClick={onTitleClick}>
       <div style={{ textAlign: "center" }}>
-        + {formatNumberFr(roundTo2Digits(householdsPoweredByRenewableEnergy.forecast))} foyers
+        + {formatNumberFr(roundToInteger(householdsPoweredByRenewableEnergy.forecast))} foyers
       </div>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>

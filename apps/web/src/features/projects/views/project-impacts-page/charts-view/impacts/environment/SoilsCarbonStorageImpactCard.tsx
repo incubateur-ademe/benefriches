@@ -43,6 +43,7 @@ function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact, onTitleClick }
   const chartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
+      labels: { enabled: false },
       categories: ["Pas de changement", "Centrale photovoltaïque"],
     },
     tooltip: {
@@ -55,9 +56,7 @@ function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact, onTitleClick }
         dataLabels: { enabled: true, format: "{point.y:,.0f} t" },
       },
     },
-    legend: {
-      enabled: false,
-    },
+    legend: { enabled: false },
     series: soilsTypes.map((soilType) => ({
       name: getLabelForSoilType(soilType),
       type: "area",

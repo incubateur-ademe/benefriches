@@ -32,6 +32,7 @@ function PermeableSurfaceImpactCard({
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
+      labels: { enabled: false },
       categories: ["Pas de changement", reconversionProjectName],
     },
     tooltip: {
@@ -43,6 +44,7 @@ function PermeableSurfaceImpactCard({
         borderWidth: 0,
       },
     },
+    legend: { enabled: false },
     series: [
       {
         name: "Surface minérale",

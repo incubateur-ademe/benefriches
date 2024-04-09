@@ -26,6 +26,7 @@ function FullTimeJobsImpactCard({ reconversionProjectName, fullTimeJobsImpact }:
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
+      labels: { enabled: false },
       categories: ["Pas de changement", reconversionProjectName],
     },
     tooltip: {
@@ -37,6 +38,7 @@ function FullTimeJobsImpactCard({ reconversionProjectName, fullTimeJobsImpact }:
         borderWidth: 0,
       },
     },
+    legend: { enabled: false },
     series: [
       {
         name: "Reconversion du site",

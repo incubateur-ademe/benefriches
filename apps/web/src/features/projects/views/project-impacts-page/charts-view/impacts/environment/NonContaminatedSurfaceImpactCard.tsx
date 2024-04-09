@@ -24,6 +24,7 @@ function NonContaminatedSurfaceImpactCard({
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
+      labels: { enabled: false },
       categories: ["Pas de changement", reconversionProjectName],
     },
     tooltip: {
@@ -34,6 +35,7 @@ function NonContaminatedSurfaceImpactCard({
         borderWidth: 0,
       },
     },
+    legend: { enabled: false },
     series: [
       {
         name: "Surface non polluée",
@@ -42,7 +44,6 @@ function NonContaminatedSurfaceImpactCard({
           roundTo2Digits(nonContaminatedSurfaceImpact.current),
           roundTo2Digits(nonContaminatedSurfaceImpact.forecast),
         ],
-        showInLegend: false,
       },
     ],
   };
