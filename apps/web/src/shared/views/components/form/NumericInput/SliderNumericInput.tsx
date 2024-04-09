@@ -68,7 +68,7 @@ const SliderNumericInput = <T extends FieldValues>({
 
   const onLeaveInput = () => {
     const newValue = stringToNumber(inputValue);
-    if (newValue !== undefined) {
+    if (newValue !== null) {
       onChangeNumericSliderInput(newValue);
       return;
     }

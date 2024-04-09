@@ -18,11 +18,11 @@ function ProjectCreationConfirmation({ projectId, projectName, loadingState }: P
       return <p>Création du projet "{projectName}", veuillez patienter...</p>;
     case "error":
       return (
-        <WizardFormLayout title="Échec de la création du site">
+        <WizardFormLayout title="Échec de la création du projet">
           <Alert
             description={`Une erreur est survenue lors de la création du projet "${projectName}", veuillez réessayer.`}
             severity="error"
-            title="Le site n’a pas pu être enregistré"
+            title="Le projet n’a pas pu être enregistré"
             className="fr-my-7v"
           />
         </WizardFormLayout>
