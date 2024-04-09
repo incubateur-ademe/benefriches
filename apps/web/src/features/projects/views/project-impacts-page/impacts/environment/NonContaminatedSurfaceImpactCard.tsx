@@ -13,11 +13,13 @@ type Props = {
     current: number;
     forecast: number;
   };
+  onTitleClick: () => void;
 };
 
 function NonContaminatedSurfaceImpactCard({
   reconversionProjectName,
   nonContaminatedSurfaceImpact,
+  onTitleClick,
 }: Props) {
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
@@ -48,7 +50,7 @@ function NonContaminatedSurfaceImpactCard({
   const totalDifference =
     nonContaminatedSurfaceImpact.forecast - nonContaminatedSurfaceImpact.current;
   return (
-    <ImpactCard title="✨ Surface non polluée">
+    <ImpactCard title="✨ Surface non polluée" onTitleClick={onTitleClick}>
       <div style={{ textAlign: "center" }}>{formatSurfaceAreaImpact(totalDifference)}</div>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>

@@ -118,7 +118,11 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
       <section className="fr-mb-5w">
         <h3>Impacts environnementaux</h3>
         {impacts.nonContaminatedSurfaceArea && (
-          <ImpactItemRow>
+          <ImpactItemRow
+            onClick={() => {
+              openImpactDescriptionModal("environmental-non-contamined-surface");
+            }}
+          >
             <ImpactLabel>✨ Surface non polluée</ImpactLabel>
             <ImpactValue isTotal>
               {formatSurfaceAreaImpact(
@@ -166,15 +170,24 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
           </ImpactDetailRow>
         </ImpactItemGroup>
         <ImpactItemGroup>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <ImpactItemRow
+            isTotal
+            onClick={() => {
+              openImpactDescriptionModal("environmental-permeable-surface");
+            }}
+          >
             <ImpactLabel>🌧 Surface perméable</ImpactLabel>
             <ImpactValue isTotal>
               {formatSurfaceAreaImpact(
                 impacts.permeableSurfaceArea.forecast - impacts.permeableSurfaceArea.base,
               )}
             </ImpactValue>
-          </div>
-          <ImpactDetailRow>
+          </ImpactItemRow>
+          <ImpactDetailRow
+            onClick={() => {
+              openImpactDescriptionModal("environmental-minerale-surface");
+            }}
+          >
             <ImpactDetailLabel>🪨 Surface perméable minérale</ImpactDetailLabel>
             <ImpactValue>
               {formatSurfaceAreaImpact(
@@ -183,7 +196,11 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
               )}
             </ImpactValue>
           </ImpactDetailRow>
-          <ImpactDetailRow>
+          <ImpactDetailRow
+            onClick={() => {
+              openImpactDescriptionModal("environmental-green-surface");
+            }}
+          >
             <ImpactDetailLabel>🌱 Surface perméable végétalisée</ImpactDetailLabel>
             <ImpactValue>
               {formatSurfaceAreaImpact(
