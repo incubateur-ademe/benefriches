@@ -39,14 +39,22 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
               d'avoir les ressources suivantes :
             </p>
             <ul>
-              <li>Plan d'aménagement (ou plan masse)</li>
-              <li>Permis d'aménager ou de construire</li>
+              <li>
+                Plan d'aménagement (ou plan masse) ou a minima les principales fonctions du projet
+              </li>
+              <li>
+                Rapports des éventuelles études menées sur le site (étude de faisabilité du projet,
+                étude faune-flore, diagnostic de pollution, etc.)
+              </li>
               <li>
                 Dossiers réglementaires le cas échéant (ICPE, loi sur l'eau, dérogation espèces
                 protégées, etc.)
               </li>
               <li>Titre de propriété ou acte de vente</li>
-              <li>Bilan économique de l'opération (ou plan d'affaire le cas échéant)</li>
+              <li>
+                Bilan économique prévisionnel de l'opération (ou business plan le cas échéant)
+              </li>
+              <li>Acte de vente ou titre de propriété </li>
             </ul>
           </Accordion>
           <Button linkProps={routes.createProject({ siteId }).link}>Commencer</Button>
