@@ -1,4 +1,4 @@
-import { fr } from "@codegouvfr/react-dsfr";
+import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -13,7 +13,7 @@ const EconomicBalanceDescription = () => {
         <strong>Bénéficiaires / déficitaires</strong> : exploitant, aménageur, futur propriétaire
       </p>
 
-      <h2 className={fr.cx("fr-h5")}>Aller plus loin</h2>
+      <ModalTitleTwo>Aller plus loin</ModalTitleTwo>
       <ul>
         <li>
           <ExternalLink href="https://outil2amenagement.cerema.fr/outils/bilan-amenageur">

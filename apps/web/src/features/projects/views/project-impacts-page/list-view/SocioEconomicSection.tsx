@@ -1,5 +1,5 @@
 import { getActorLabel } from "../impacts/socio-economic/socioEconomicImpacts";
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModal";
+import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
 import { formatMonetaryImpact } from "./formatImpactValue";
 import ImpactDetailLabel from "./ImpactDetailLabel";
 import ImpactDetailRow from "./ImpactItemDetailRow";
@@ -94,7 +94,7 @@ const SocioEconomicImpactsListSection = ({
         {hasAvoidedFricheCostsImpacts && (
           <ImpactItemGroup
             onClick={() => {
-              openImpactDescriptionModal("avoided-friche-costs");
+              openImpactDescriptionModal("socio-economic-avoided-friche-costs");
             }}
           >
             <ImpactLabel>🏚 Dépenses de gestion et sécurisation de la friche évitées</ImpactLabel>

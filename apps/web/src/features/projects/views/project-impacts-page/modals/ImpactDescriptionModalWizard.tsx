@@ -1,7 +1,13 @@
 import { ReactElement, useEffect, useMemo } from "react";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
+import CostBenefitAnalysisDescription from "./cost-benefit-analysis/CostBenefitAnalysisDescription";
+import EconomicBalanceDescription from "./economic-balance/EconomicBalanceDescription";
 import RealEstateAcquisitionDescription from "./economic-balance/RealEstateAcquisition";
+import EnvironmentalMainDescription from "./environmental/EnvironmentalMainDescription";
+import AvoidedCO2WithEnREnvironmentalDescription from "./environmental/impact-co2/AvoidedCO2WithEnREnvironmentalDescription";
+import CarbonSoilsStorageEnvironmentalDescription from "./environmental/impact-co2/CarbonSoilsStorageEnvironmentalDescription";
+import ModalBreadcrumb, { ModalBreadcrumbSegments } from "./shared/ModalBreadcrumb";
 import HouseholdsPoweredByRenewableEnergyDescription from "./social/HouseholdsPoweredByRenewableEnergy";
 import SocialMainDescription from "./social/SocialMainDescription";
 import AvoidedCO2WithEnRMonetaryValueDescription from "./socio-economic/avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";
@@ -9,11 +15,8 @@ import AvoidedFricheCostsDescription from "./socio-economic/AvoidedFricheCostsDe
 import CarbonSoilsStorageMonetaryValueDescription from "./socio-economic/ecosystem-services/CarbonStorageMonetaryValueDescription";
 import EcosystemServicesDescription from "./socio-economic/ecosystem-services/EcosystemServicesDescription";
 import NatureRelatedWellnessAndLeisureDescription from "./socio-economic/ecosystem-services/NatureRelatedWellnessAndLeisureDescription";
+import SocioEconomicDescription from "./socio-economic/SocioEconomicDescription";
 import WaterRegulationDescription from "./socio-economic/WaterRegulationDescription";
-import CostBenefitAnalysisDescription from "./cost-benefit-analysis";
-import EconomicBalanceDescription from "./economic-balance";
-import ModalBreadcrumb, { ModalBreadcrumbSegments } from "./ModalBreadcrumb";
-import SocioEconomicDescription from "./socio-economic";
 
 import { SoilsDistribution } from "@/features/projects/application/projectImpacts.reducer";
 
@@ -21,15 +24,18 @@ export type ImpactDescriptionModalCategory =
   | "economic-balance"
   | "cost-benefit-analysis"
   | "socio-economic"
-  | "real-estate-acquisition"
-  | "avoided-friche-costs"
-  | "ecosystem-services"
-  | "avoided-co2-monetary-value-renewable-energy"
-  | "water-regulation"
-  | "carbon-storage-monetary-value"
-  | "nature-related-wellness-and-leisure"
+  | "economic-balance-real-estate-acquisition"
+  | "socio-economic-avoided-friche-costs"
+  | "socio-economic-ecosystem-services"
+  | "socio-economic-avoided-co2-renewable-energy"
+  | "socio-economic-water-regulation"
+  | "socio-economic-carbon-storage"
+  | "socio-economic-nature-related-wellness-and-leisure"
   | "social"
-  | "households-powered-by-renewable-energy"
+  | "social-households-powered-by-renewable-energy"
+  | "environmental"
+  | "environmental-avoided-co2-renewable-energy"
+  | "environmental-carbon-storage"
   | undefined;
 
 type Props = {
@@ -95,7 +101,7 @@ const getModalContent = (
         content: <SocioEconomicDescription />,
       };
 
-    case "real-estate-acquisition":
+    case "economic-balance-real-estate-acquisition":
       return {
         title: "🏠 Acquisition du site",
         breadcrumbSegments: [
@@ -110,7 +116,7 @@ const getModalContent = (
         content: <RealEstateAcquisitionDescription />,
       };
 
-    case "avoided-friche-costs":
+    case "socio-economic-avoided-friche-costs":
       return {
         title: "🏚 Dépenses de gestion et de sécurisation de la friche évitées",
         breadcrumbSegments: [
@@ -127,7 +133,7 @@ const getModalContent = (
         ],
         content: <AvoidedFricheCostsDescription />,
       };
-    case "avoided-co2-monetary-value-renewable-energy":
+    case "socio-economic-avoided-co2-renewable-energy":
       return {
         title: "⚡️️ Emissions de CO2-eq évitées grâce à la production d’énergies renouvelables",
         breadcrumbSegments: [
@@ -150,7 +156,7 @@ const getModalContent = (
           />
         ),
       };
-    case "water-regulation":
+    case "socio-economic-water-regulation":
       return {
         title: "🚰 Régulation de la qualité de l’eau",
         breadcrumbSegments: [
@@ -172,7 +178,7 @@ const getModalContent = (
         ),
       };
 
-    case "ecosystem-services":
+    case "socio-economic-ecosystem-services":
       return {
         title: "🌻 Services écosystémiques",
         breadcrumbSegments: [
@@ -186,7 +192,7 @@ const getModalContent = (
         ],
         content: <EcosystemServicesDescription />,
       };
-    case "carbon-storage-monetary-value":
+    case "socio-economic-carbon-storage":
       return {
         title: "🍂️ Carbone stocké dans les sols",
         breadcrumbSegments: [
@@ -212,7 +218,7 @@ const getModalContent = (
         ),
       };
 
-    case "nature-related-wellness-and-leisure":
+    case "socio-economic-nature-related-wellness-and-leisure":
       return {
         title: "🚵‍♂️ Loisirs et bien-être liés à la nature",
         breadcrumbSegments: [
@@ -225,7 +231,7 @@ const getModalContent = (
           {
             label: "Services écosystémiques",
             onClick: () => {
-              onChangeModalCategoryOpened("ecosystem-services");
+              onChangeModalCategoryOpened("socio-economic-ecosystem-services");
             },
           },
           { label: "Loisirs et bien-être liés à la nature", isCurrent: true },
@@ -244,7 +250,7 @@ const getModalContent = (
         content: <SocialMainDescription />,
       };
 
-    case "households-powered-by-renewable-energy":
+    case "social-households-powered-by-renewable-energy":
       return {
         title: "🏠 Foyers alimentés par les EnR",
         breadcrumbSegments: [
@@ -264,7 +270,54 @@ const getModalContent = (
           />
         ),
       };
+    case "environmental":
+      return {
+        title: "Impacts environnementaux",
+        content: <EnvironmentalMainDescription />,
+      };
+    case "environmental-avoided-co2-renewable-energy":
+      return {
+        title: "⚡️️ Emissions de CO2-eq évitées grâce à la production d’énergies renouvelables",
+        breadcrumbSegments: [
+          {
+            label: "Impacts environnementaux",
+            onClick: () => {
+              onChangeModalCategoryOpened("environmental");
+            },
+          },
+          {
+            label: "CO2-eq évité grâce aux énergies renouvelables",
+            isCurrent: true,
+          },
+        ],
+        content: (
+          <AvoidedCO2WithEnREnvironmentalDescription
+            address={siteData.addressLabel}
+            developmentPlanElectricalPowerKWc={projectData.developmentPlan.electricalPowerKWc}
+            developmentPlanSurfaceArea={projectData.developmentPlan.surfaceArea}
+          />
+        ),
+      };
 
+    case "environmental-carbon-storage":
+      return {
+        title: "🍂️ Carbone stocké dans les sols",
+        breadcrumbSegments: [
+          {
+            label: "Impacts environnementaux",
+            onClick: () => {
+              onChangeModalCategoryOpened("environmental");
+            },
+          },
+          { label: "Carbone stocké dans les sols", isCurrent: true },
+        ],
+        content: (
+          <CarbonSoilsStorageEnvironmentalDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        ),
+      };
     default:
       return { title: "", content: undefined };
   }
@@ -275,7 +328,7 @@ const modal = createModal({
   isOpenedByDefault: false,
 });
 
-export function ImpactDescriptionModal({
+export function ImpactDescriptionModalWizard({
   modalCategory,
   onChangeModalCategoryOpened,
   projectData,

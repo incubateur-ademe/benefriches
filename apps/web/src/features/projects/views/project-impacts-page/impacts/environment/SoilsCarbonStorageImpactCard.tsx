@@ -11,6 +11,7 @@ import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   soilsCarbonStorageImpact: ReconversionProjectImpacts["soilsCarbonStorage"];
+  onTitleClick: () => void;
 };
 
 const getData = (
@@ -31,7 +32,7 @@ const getMergedSoilTypes = (
   projected: ReconversionProjectImpacts["soilsCarbonStorage"]["forecast"]["soils"],
 ) => Array.from(new Set([...current, ...projected].map(({ type }) => type)));
 
-function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact }: Props) {
+function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact, onTitleClick }: Props) {
   const currentSoilsCarbonStorage = soilsCarbonStorageImpact.current;
   const forecastSoilsCarbonStorage = soilsCarbonStorageImpact.forecast;
   const soilsTypes = getMergedSoilTypes(
@@ -69,7 +70,7 @@ function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact }: Props) {
     forecastSoilsCarbonStorage.total - currentSoilsCarbonStorage.total;
 
   return (
-    <ImpactCard title="🍂 Carbone stocké dans les sols">
+    <ImpactCard title="🍂 Carbone stocké dans les sols" onTitleClick={onTitleClick}>
       <div style={{ textAlign: "center" }}>{formatCO2Impact(soilsCarbonStorageVariation)}</div>
 
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />

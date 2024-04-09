@@ -1,6 +1,6 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ImpactDescriptionModalCategory } from "../ImpactDescriptionModal";
+import { ImpactDescriptionModalCategory } from "../ImpactDescriptionModalWizard";
+import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -44,7 +44,7 @@ const CostBenefitAnalysisDescription = ({ onChangeModalCategoryOpened }: Props) 
         </li>
       </ul>
 
-      <h2 className={fr.cx("fr-h5")}>Aller plus loin</h2>
+      <ModalTitleTwo>Aller plus loin</ModalTitleTwo>
       <ul>
         <li>
           <ExternalLink href="https://www.strategie.gouv.fr/publications/guide-de-levaluation-socioeconomique-investissements-publics">

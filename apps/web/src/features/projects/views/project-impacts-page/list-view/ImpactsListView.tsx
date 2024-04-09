@@ -1,5 +1,5 @@
 import { ReconversionProjectImpacts } from "../../../domain/impacts.types";
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModal";
+import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
 import {
   formatCO2Impact,
   formatDefaultImpact,
@@ -61,7 +61,7 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
         {!!impacts.economicBalance.costs.realEstateTransaction && (
           <ImpactItemRow
             onClick={() => {
-              openImpactDescriptionModal("real-estate-acquisition");
+              openImpactDescriptionModal("economic-balance-real-estate-acquisition");
             }}
           >
             <ImpactLabel>🏠 Acquisition du site</ImpactLabel>
@@ -139,7 +139,11 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
               )}
             </ImpactValue>
           </div>
-          <ImpactDetailRow>
+          <ImpactDetailRow
+            onClick={() => {
+              openImpactDescriptionModal("environmental-carbon-storage");
+            }}
+          >
             <ImpactDetailLabel>🍂 Carbone stocké dans les sols</ImpactDetailLabel>
             <ImpactValue>
               {formatCO2Impact(
@@ -148,7 +152,11 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
               )}
             </ImpactValue>
           </ImpactDetailRow>
-          <ImpactDetailRow>
+          <ImpactDetailRow
+            onClick={() => {
+              openImpactDescriptionModal("environmental-avoided-co2-renewable-energy");
+            }}
+          >
             <ImpactDetailLabel>
               ⚡️ Émissions de CO2-eq évitées grâce à la production d'EnR
             </ImpactDetailLabel>
@@ -253,7 +261,7 @@ const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
             <ImpactSectionTitle>Impacts sur la société française</ImpactSectionTitle>
             <ImpactItemRow
               onClick={() => {
-                openImpactDescriptionModal("households-powered-by-renewable-energy");
+                openImpactDescriptionModal("social-households-powered-by-renewable-energy");
               }}
             >
               <ImpactLabel>🏠 Foyers alimentés par les EnR</ImpactLabel>

@@ -1,5 +1,5 @@
-import ModalTitleThree from "../../ModalTitleThree";
-import ModalTitleTwo from "../../ModalTitleTwo";
+import ModalTitleThree from "../../shared/ModalTitleThree";
+import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 

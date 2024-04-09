@@ -9,13 +9,13 @@ import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 type Props = {
   economicBalanceTotal: number;
   socioEconomicImpactsTotal: number;
-  displayDescriptionModal: () => void;
+  onTitleClick: () => void;
 };
 
 function CostBenefitAnalysisCard({
   economicBalanceTotal,
   socioEconomicImpactsTotal,
-  displayDescriptionModal,
+  onTitleClick,
 }: Props) {
   const maxAbsValue =
     Math.abs(economicBalanceTotal) > Math.abs(socioEconomicImpactsTotal)
@@ -72,7 +72,7 @@ function CostBenefitAnalysisCard({
   };
 
   return (
-    <ImpactCard title="Analyse coûts bénéfices" onTitleClick={displayDescriptionModal}>
+    <ImpactCard title="Analyse coûts bénéfices" onTitleClick={onTitleClick}>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>
   );
