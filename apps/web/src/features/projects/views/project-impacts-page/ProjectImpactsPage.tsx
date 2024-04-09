@@ -3,13 +3,13 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { SoilsDistribution } from "../../application/projectImpacts.reducer";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
+import ImpactsChartsView from "./charts-view/ImpactsChartsView";
 import ImpactsListView from "./list-view/ImpactsListView";
 import {
   ImpactDescriptionModalCategory,
   ImpactDescriptionModalWizard,
 } from "./modals/ImpactDescriptionModalWizard";
 import AboutImpactsModal from "./AboutImpactsModal";
-import ImpactsChartsView from "./ImpactsChartsView";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
 type Props = {

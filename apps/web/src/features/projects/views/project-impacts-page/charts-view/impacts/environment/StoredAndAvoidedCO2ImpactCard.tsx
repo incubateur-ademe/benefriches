@@ -1,9 +1,9 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
-import { formatCO2Impact } from "../../list-view/formatImpactValue";
 
+import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
+import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {

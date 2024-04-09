@@ -58,14 +58,3 @@ export const getLabelForSocioEconomicImpactCategory = (
       return "Environnementaux monétarisés";
   }
 };
-
-export const getActorLabel = (label: SocioEconomicImpacts[number]["actor"]) => {
-  switch (label) {
-    case "community":
-      return "Collectivité";
-    case "human_society":
-      return "Société humaine";
-    default:
-      return label;
-  }
-};

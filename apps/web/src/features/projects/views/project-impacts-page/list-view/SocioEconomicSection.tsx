@@ -1,6 +1,5 @@
-import { getActorLabel } from "../impacts/socio-economic/socioEconomicImpacts";
+import { getActorLabel } from "../../shared/socioEconomicLabels";
 import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
-import { formatMonetaryImpact } from "./formatImpactValue";
 import ImpactDetailLabel from "./ImpactDetailLabel";
 import ImpactDetailRow from "./ImpactItemDetailRow";
 import ImpactItemGroup from "./ImpactItemGroup";
@@ -12,6 +11,7 @@ import ImpactValue from "./ImpactValue";
 import SocioEconomicEnvironmentalMonetaryImpactsSection from "./SocioEconomicEnvironmentalMonetarySection";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
