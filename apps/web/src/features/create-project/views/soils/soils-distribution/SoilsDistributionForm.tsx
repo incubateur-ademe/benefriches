@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
-import PhotovoltaicFlatSurfacesNotice from "./PhotovoltaicFlatSurfacesNotice";
 import PhotovoltaicSoilsImpactsNotice from "./PhotovoltaicSoilsImpactsNotice";
 import SoilsDistributionAddButton from "./SoilsAddButton";
 import TotalAllocatedSurfacesInput from "./TotalAllocatedSurfacesInput";
@@ -145,13 +144,11 @@ function SoilsDistributionForm({
     <WizardFormLayout
       title="Quelle sera la future répartition des sols ?"
       instructions={
-        <>
-          <PhotovoltaicSoilsImpactsNotice
-            advisedImpermeableSurface={minAdvisedImpermeableSurface}
-            advisedMineralSurface={minAdvisedMineralSurface}
-          />
-          <PhotovoltaicFlatSurfacesNotice advisedSurface={minAdvisedFlatSurfaces} />
-        </>
+        <PhotovoltaicSoilsImpactsNotice
+          advisedImpermeableSurface={minAdvisedImpermeableSurface}
+          advisedMineralSurface={minAdvisedMineralSurface}
+          advisedFlatSurface={minAdvisedFlatSurfaces}
+        />
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
