@@ -28,9 +28,7 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
         fontFamily: "Marianne",
       },
     },
-    credits: {
-      enabled: false,
-    },
+    credits: { enabled: false },
     tooltip: {
       distance: 40,
       pointFormat:
