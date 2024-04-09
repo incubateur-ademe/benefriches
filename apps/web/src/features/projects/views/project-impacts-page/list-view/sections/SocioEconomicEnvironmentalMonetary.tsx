@@ -1,12 +1,11 @@
-import { getActorLabel } from "../../shared/socioEconomicLabels";
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
-import ImpactDetailLabel from "./ImpactDetailLabel";
-import ImpactDetailRow from "./ImpactItemDetailRow";
-import ImpactItemGroup from "./ImpactItemGroup";
-import ImpactItemRow from "./ImpactItemRow";
-import ImpactLabel from "./ImpactLabel";
-import ImpactSectionTitle from "./ImpactSectionTitle";
-import ImpactValue from "./ImpactValue";
+import { ImpactDescriptionModalCategory } from "../../modals/ImpactDescriptionModalWizard";
+import ImpactDetailLabel from "../ImpactDetailLabel";
+import ImpactDetailRow from "../ImpactItemDetailRow";
+import ImpactItemGroup from "../ImpactItemGroup";
+import ImpactItemRow from "../ImpactItemRow";
+import ImpactLabel from "../ImpactLabel";
+import ImpactSectionTitle from "../ImpactSectionTitle";
+import ImpactValue from "../ImpactValue";
 
 import {
   AvoidedCO2EqWithEnRImpact,
@@ -15,6 +14,7 @@ import {
   WaterRegulationImpact,
 } from "@/features/projects/domain/impacts.types";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];

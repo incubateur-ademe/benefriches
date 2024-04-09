@@ -1,17 +1,17 @@
-import { getActorLabel } from "../../shared/socioEconomicLabels";
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
-import ImpactDetailLabel from "./ImpactDetailLabel";
-import ImpactDetailRow from "./ImpactItemDetailRow";
-import ImpactItemGroup from "./ImpactItemGroup";
-import ImpactItemRow from "./ImpactItemRow";
-import ImpactLabel from "./ImpactLabel";
-import ImpactMainTitle from "./ImpactMainTitle";
-import ImpactSectionTitle from "./ImpactSectionTitle";
-import ImpactValue from "./ImpactValue";
-import SocioEconomicEnvironmentalMonetaryImpactsSection from "./SocioEconomicEnvironmentalMonetarySection";
+import ImpactDetailLabel from "../ImpactDetailLabel";
+import ImpactDetailRow from "../ImpactItemDetailRow";
+import ImpactItemGroup from "../ImpactItemGroup";
+import ImpactItemRow from "../ImpactItemRow";
+import ImpactLabel from "../ImpactLabel";
+import ImpactMainTitle from "../ImpactMainTitle";
+import ImpactSectionTitle from "../ImpactSectionTitle";
+import ImpactValue from "../ImpactValue";
+import SocioEconomicEnvironmentalMonetaryImpactsSection from "./SocioEconomicEnvironmentalMonetary";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
