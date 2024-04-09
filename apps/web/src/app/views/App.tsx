@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { trackPageView } from "../application/analytics";
 import { BENEFRICHES_ENV } from "../application/envVars";
 import AccessibilitePage from "./pages/AccessibilitePage";
 import BudgetPage from "./pages/BudgetPage";
@@ -33,6 +34,10 @@ function App() {
   useEffect(() => {
     void dispatch(initCurrentUser());
   }, [dispatch]);
+
+  useEffect(() => {
+    trackPageView(route.href);
+  }, [route]);
 
   return (
     <HeaderFooterLayout>
@@ -97,7 +102,10 @@ function App() {
         )}
       </>
       {BENEFRICHES_ENV.matomoTrackingEnabled && (
-        <MatomoContainer containerUrl={BENEFRICHES_ENV.matomoContainerUrl} />
+        <MatomoContainer
+          siteId={BENEFRICHES_ENV.matomoSiteId}
+          matomoUrl={BENEFRICHES_ENV.matomoUrl}
+        />
       )}
     </HeaderFooterLayout>
   );

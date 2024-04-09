@@ -9,6 +9,7 @@ if (!windowEnv)
   );
 
 export const BENEFRICHES_ENV = {
-  matomoContainerUrl: windowEnv.WEBAPP_MATOMO_CONTAINER_URL ?? "",
-  matomoTrackingEnabled: Boolean(windowEnv.WEBAPP_MATOMO_CONTAINER_URL),
+  matomoTrackingEnabled: Boolean(windowEnv.WEBAPP_MATOMO_SITE_ID),
+  matomoSiteId: windowEnv.WEBAPP_MATOMO_SITE_ID ?? "",
+  matomoUrl: windowEnv.WEBAPP_MATOMO_URL ?? "",
 };
