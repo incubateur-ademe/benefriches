@@ -1,27 +1,6 @@
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 export type PhotovoltaicPerformanceApiResult = {
-  computationContext: {
-    location: {
-      lat: number;
-      long: number;
-      elevation: number;
-    };
-    dataSources: {
-      radiation: string;
-      meteo: string;
-      period: string;
-      horizon?: string;
-    };
-    pvInstallation: {
-      slope: { value: number; optimal: boolean };
-      azimuth: { value: number; optimal: boolean };
-      type: string;
-      technology: string;
-      peakPower: number;
-      systemLoss: number;
-    };
-  };
   expectedPerformance: {
     kwhPerDay: number;
     kwhPerMonth: number;
@@ -48,7 +27,6 @@ export interface PhotovoltaicPerformanceGateway {
 }
 
 export type FetchResult = {
-  computationContext: PhotovoltaicPerformanceApiResult["computationContext"];
   expectedPerformanceMwhPerYear: number;
 };
 
@@ -75,7 +53,6 @@ export const fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation =
       });
 
       return {
-        computationContext: result.computationContext,
         expectedPerformanceMwhPerYear: Math.round(result.expectedPerformance.kwhPerYear / 1000),
       };
     },
