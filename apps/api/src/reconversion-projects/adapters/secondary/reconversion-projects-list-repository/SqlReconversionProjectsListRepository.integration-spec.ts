@@ -80,6 +80,7 @@ describe("ReconversionProjectsListRepository integration", () => {
           siteName: siteInDb.name,
           siteId: siteInDb.id,
           isFriche: siteInDb.is_friche,
+          fricheActivity: "HOUSING",
           reconversionProjects: [],
         },
       ]);

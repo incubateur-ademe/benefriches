@@ -26,6 +26,7 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
         siteId: "7915a3dc-6928-46c8-81f0-41c5c6dde8f3",
         siteName: "Site 2",
         isFriche: true,
+        fricheActivity: "INDUSTRY",
         reconversionProjects: [
           { id: "78330779-017d-49b3-bb3e-8b5724aaf56f", name: "ReconversionProject 1" },
           { id: "b0f734d3-27f0-4876-a73a-637be27d12d2", name: "ReconversionProject 2" },
