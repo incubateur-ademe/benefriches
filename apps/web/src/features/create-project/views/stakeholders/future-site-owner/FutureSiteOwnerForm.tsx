@@ -69,9 +69,8 @@ function FutureSiteOwnerForm({
   const currentSiteOwner = siteStakeholders.find(({ role }) => role === "site_owner");
   const currentSiteTenant = siteStakeholders.find(({ role }) => role === "site_tenant");
 
-  const shouldDisplayCurrentUserCompanyOption = currentUserStructure
-    ? !isCurrentUserSiteOwner(currentUserStructure, currentSiteOwner)
-    : false;
+  const shouldDisplayCurrentUserCompanyOption =
+    currentUserStructure?.name && !isCurrentUserSiteOwner(currentUserStructure, currentSiteOwner);
 
   const shouldDisplaySiteTenantOption =
     currentUserStructure && currentSiteTenant
@@ -91,7 +90,7 @@ function FutureSiteOwnerForm({
             formState.errors.futureSiteOwner ? formState.errors.futureSiteOwner.message : undefined
           }
         >
-          {currentUserStructure && shouldDisplayCurrentUserCompanyOption && (
+          {shouldDisplayCurrentUserCompanyOption && (
             <RadioButton
               label={currentUserStructure.name}
               value="user_company"
