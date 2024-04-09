@@ -20,6 +20,7 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
         "sites.id as siteId",
         "sites.name as siteName",
         "sites.is_friche as isFriche",
+        "sites.friche_activity as fricheActivity",
         this.sqlConnection.raw(`
         CASE 
           WHEN count(rp.id) = 0 THEN '[]'::json
@@ -31,9 +32,15 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
       siteId: string;
       siteName: string;
       isFriche: boolean;
+      fricheActivity: string | null;
       reconversionProjects: { id: string; name: string; developmentsPlans: string[] }[];
     }[];
 
-    return result;
+    return result.map((reconversionProjectsBySite) => {
+      return {
+        ...reconversionProjectsBySite,
+        fricheActivity: reconversionProjectsBySite.fricheActivity ?? undefined,
+      };
+    });
   }
 }

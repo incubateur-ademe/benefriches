@@ -1,3 +1,4 @@
+import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import { SoilType } from "@/shared/domain/soils";
 import {
   LocalAutorityStructureType,
@@ -23,6 +24,7 @@ export type ProjectsGroup = {
   siteId: string;
   siteName: string;
   isFriche: boolean;
+  fricheActivity?: FricheActivity;
   reconversionProjects: { id: string; name: string }[];
 };
 

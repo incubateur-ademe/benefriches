@@ -5,15 +5,18 @@ import ProjectScenarioTile from "./ScenarioTile/ProjectScenarioTile";
 import StatuQuoScenarioTile from "./ScenarioTile/StatuQuoScenarioTile";
 import { ReconversionProjectList } from ".";
 
+import { FricheActivity } from "@/features/create-site/domain/friche.types";
+
 type Props = {
   siteId: string;
   siteName: string;
-  isFriche: boolean;
   reconversionProjects: ReconversionProjectList;
   selectedIds: string[];
   selectableIds: string[];
   onChangeSelectedSite: (value?: string) => void;
   onChangeSelectedProject: (id: string, checked: boolean) => void;
+  isFriche: boolean;
+  fricheActivity?: FricheActivity;
 };
 
 function SiteName({ children }: { children: ReactNode }) {
@@ -28,6 +31,7 @@ function ScenariiGroup({
   siteId,
   siteName,
   isFriche,
+  fricheActivity,
   reconversionProjects,
   selectedIds,
   selectableIds,
@@ -40,17 +44,17 @@ function ScenariiGroup({
       {reconversionProjects.length > 0 ? (
         <p>{reconversionProjects.length + 1} scenarii possibles pour ce site :</p>
       ) : (
-        <p>1 futur possible pour ce site :</p>
+        <p>1 scenario possible pour ce site :</p>
       )}
       <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
         <GridColumn>
           <StatuQuoScenarioTile
-            siteName={siteName}
+            isFriche={isFriche}
+            fricheActivity={fricheActivity}
             siteId={siteId}
             onChangeSelectedSite={onChangeSelectedSite}
             selectedIds={selectedIds}
             selectableIds={selectableIds}
-            isFriche={isFriche}
             // TODO : get this information from api
             yearlyProfit={-391179}
           />
