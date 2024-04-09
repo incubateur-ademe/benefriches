@@ -7,6 +7,10 @@ import RealEstateAcquisitionDescription from "./economic-balance/RealEstateAcqui
 import EnvironmentalMainDescription from "./environmental/EnvironmentalMainDescription";
 import AvoidedCO2WithEnREnvironmentalDescription from "./environmental/impact-co2/AvoidedCO2WithEnREnvironmentalDescription";
 import CarbonSoilsStorageEnvironmentalDescription from "./environmental/impact-co2/CarbonSoilsStorageEnvironmentalDescription";
+import NonContaminatedSurfaceDescription from "./environmental/NonContaminatedSurface";
+import PermeableGreenSurfaceDescription from "./environmental/permeable-surface/PermeableGreenSurface";
+import PermeableMineraleSurfaceDescription from "./environmental/permeable-surface/PermeableMineraleSurface";
+import PermeableSurfaceDescription from "./environmental/permeable-surface/PermeableSurface";
 import ModalBreadcrumb, { ModalBreadcrumbSegments } from "./shared/ModalBreadcrumb";
 import HouseholdsPoweredByRenewableEnergyDescription from "./social/HouseholdsPoweredByRenewableEnergy";
 import SocialMainDescription from "./social/SocialMainDescription";
@@ -36,6 +40,10 @@ export type ImpactDescriptionModalCategory =
   | "environmental"
   | "environmental-avoided-co2-renewable-energy"
   | "environmental-carbon-storage"
+  | "environmental-non-contamined-surface"
+  | "environmental-permeable-surface"
+  | "environmental-green-surface"
+  | "environmental-minerale-surface"
   | undefined;
 
 type Props = {
@@ -318,6 +326,78 @@ const getModalContent = (
           />
         ),
       };
+
+    case "environmental-non-contamined-surface":
+      return {
+        title: "✨ Surface non polluée",
+        breadcrumbSegments: [
+          {
+            label: "Impacts environnementaux",
+            onClick: () => {
+              onChangeModalCategoryOpened("environmental");
+            },
+          },
+          { label: "Surface non polluée", isCurrent: true },
+        ],
+        content: <NonContaminatedSurfaceDescription />,
+      };
+    case "environmental-permeable-surface":
+      return {
+        title: "🌧 Surface perméable",
+        breadcrumbSegments: [
+          {
+            label: "Impacts environnementaux",
+            onClick: () => {
+              onChangeModalCategoryOpened("environmental");
+            },
+          },
+          { label: "Surface perméable", isCurrent: true },
+        ],
+        content: (
+          <PermeableSurfaceDescription onChangeModalCategoryOpened={onChangeModalCategoryOpened} />
+        ),
+      };
+    case "environmental-minerale-surface":
+      return {
+        title: "🪨 Surface minérale",
+        breadcrumbSegments: [
+          {
+            label: "Impacts environnementaux",
+            onClick: () => {
+              onChangeModalCategoryOpened("environmental");
+            },
+          },
+          {
+            label: "Surface perméable",
+            onClick: () => {
+              onChangeModalCategoryOpened("environmental-permeable-surface");
+            },
+          },
+          { label: "Surface minérale", isCurrent: true },
+        ],
+        content: <PermeableMineraleSurfaceDescription />,
+      };
+    case "environmental-green-surface":
+      return {
+        title: "☘️ Surface végétalisée",
+        breadcrumbSegments: [
+          {
+            label: "Impacts environnementaux",
+            onClick: () => {
+              onChangeModalCategoryOpened("environmental");
+            },
+          },
+          {
+            label: "Surface perméable",
+            onClick: () => {
+              onChangeModalCategoryOpened("environmental-permeable-surface");
+            },
+          },
+          { label: "Surface végétalisée", isCurrent: true },
+        ],
+        content: <PermeableGreenSurfaceDescription />,
+      };
+
     default:
       return { title: "", content: undefined };
   }

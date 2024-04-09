@@ -89,6 +89,9 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
           )}
           <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
             <PermeableSurfaceImpactChart
+              onTitleClick={() => {
+                openImpactDescriptionModal("environmental-permeable-surface");
+              }}
               reconversionProjectName={project.name}
               permeableSurfaceImpact={impacts.permeableSurfaceArea}
             />
@@ -96,6 +99,9 @@ const ImpactsChartsView = ({ project, impacts, openImpactDescriptionModal }: Pro
           {impacts.nonContaminatedSurfaceArea && (
             <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
               <ContaminatedSurfaceImpactChart
+                onTitleClick={() => {
+                  openImpactDescriptionModal("environmental-non-contamined-surface");
+                }}
                 reconversionProjectName={project.name}
                 nonContaminatedSurfaceImpact={impacts.nonContaminatedSurfaceArea}
               />

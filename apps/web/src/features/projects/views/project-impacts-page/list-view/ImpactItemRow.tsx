@@ -2,9 +2,10 @@ import { ReactNode } from "react";
 
 type ImpactItemRowProps = {
   children: ReactNode;
+  isTotal?: boolean;
   onClick?: () => void;
 };
-const ImpactItemRow = ({ children, onClick }: ImpactItemRowProps) => {
+const ImpactItemRow = ({ children, onClick, isTotal }: ImpactItemRowProps) => {
   return (
     <div
       onClick={onClick}
@@ -13,7 +14,7 @@ const ImpactItemRow = ({ children, onClick }: ImpactItemRowProps) => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        borderBottom: "1px solid #DDDDDD",
+        borderBottom: isTotal ? "none" : "1px solid #DDDDDD",
       }}
     >
       {children}

@@ -21,9 +21,14 @@ type Props = {
       forecast: number;
     };
   };
+  onTitleClick: () => void;
 };
 
-function PermeableSurfaceImpactCard({ reconversionProjectName, permeableSurfaceImpact }: Props) {
+function PermeableSurfaceImpactCard({
+  reconversionProjectName,
+  permeableSurfaceImpact,
+  onTitleClick,
+}: Props) {
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
@@ -60,7 +65,7 @@ function PermeableSurfaceImpactCard({ reconversionProjectName, permeableSurfaceI
 
   const totalDifference = permeableSurfaceImpact.forecast - permeableSurfaceImpact.base;
   return (
-    <ImpactCard title="🌧 Surfaces perméables">
+    <ImpactCard title="🌧 Surfaces perméables" onTitleClick={onTitleClick}>
       <div style={{ textAlign: "center" }}>
         {totalDifference >= 0 && "+"}
         {formatNumberFr(totalDifference)} {SQUARE_METERS_HTML_SYMBOL}
