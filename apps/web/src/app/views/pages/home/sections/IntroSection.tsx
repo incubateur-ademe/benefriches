@@ -6,10 +6,9 @@ export default function IntroSection() {
     <section className={fr.cx("fr-container", "fr-py-10w", "fr-pr-0")}>
       <div className={fr.cx("fr-grid-row")}>
         <div className={fr.cx("fr-col-7", "fr-pr-6w", "fr-m-auto")}>
-          <h1>Bénéfriches</h1>
-          <h2>L'outil qui calcule la valeur réelle d'un projet d'aménagement urbain</h2>
+          <h1>Bénéfriches, l'outil qui calcule la valeur réelle de votre projet d'aménagement</h1>
           <p className={fr.cx("fr-text--xl")}>
-            Bénéfriches, l'outil numérique qui quantifie et monétarise les impacts{" "}
+            Bénéfriches quantifie et monétarise les impacts{" "}
             <strong>environnementaux, sociaux et économiques</strong> d'un projet d'aménagement, sur{" "}
             <strong>friche</strong> ou en <strong>extension urbaine</strong>.
           </p>
