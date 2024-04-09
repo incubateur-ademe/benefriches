@@ -21,6 +21,7 @@ export const soilColors = {
 export default {
   extend: {
     colors: {
+      gray: "#DDDDDD",
       // can be used with classes tw-soils-buildings, tw-soils-impermeable-soils...
       soils: soilColors,
     },

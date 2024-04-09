@@ -19,17 +19,16 @@ const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
   if (carbonStorageDifference > 0) {
     return (
       <div>
-        <p>Bonne nouvelle !</p>
         <p>
-          Ce site pourrait stocker{" "}
-          <strong>{formatCarbonStorage(carbonStorageDifference)} tonnes de carbone en plus.</strong>
+          🤩 Bonne nouvelle, ce site pourrait stocker{" "}
+          <strong>{formatCarbonStorage(carbonStorageDifference)} t de carbone</strong> en plus ! 🍂
         </p>
         <p>
           C'est l'équivalent de ce qu'émettent{" "}
           <strong>
             {formatCarbonStorage(carbonStorageDifferenceInAnnualFrenchEmissionPerPerson)} français
           </strong>{" "}
-          en 1 an.
+          en <strong>1 an</strong>.
         </p>
       </div>
     );
@@ -40,7 +39,7 @@ const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
       <p>
         Ce site stockerait{" "}
         <strong>
-          {formatCarbonStorage(Math.abs(carbonStorageDifference))} tonnes de carbone en moins.
+          {formatCarbonStorage(Math.abs(carbonStorageDifference))} t de carbone en moins.
         </strong>
       </p>
       <p>
@@ -49,7 +48,7 @@ const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
           {formatNumberFr(Math.round(carbonStorageDifferenceInAnnualFrenchEmissionPerPerson))}{" "}
           français
         </strong>{" "}
-        en 1 an.
+        en <strong>1 an</strong>.
       </p>
     </div>
   );
