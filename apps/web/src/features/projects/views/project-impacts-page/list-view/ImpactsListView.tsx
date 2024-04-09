@@ -4,7 +4,7 @@ import CostBenefitAnalysisListSection from "./sections/CostBenefitAnalysis";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/Environmental";
 import SocialListSection from "./sections/Social";
-import SocioEconomicImpactsListSection from "./sections/SocioEconomic";
+import SocioEconomicImpactsListSection from "./sections/socio-economic";
 
 type Props = {
   project: {
@@ -12,32 +12,58 @@ type Props = {
   };
   impacts: ReconversionProjectImpacts;
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
+  displayEnvironmentData: boolean;
+  displaySocialData: boolean;
+  displayEconomicData: boolean;
 };
 
-const ImpactsListView = ({ impacts, openImpactDescriptionModal }: Props) => {
+const ImpactsListView = ({
+  impacts,
+  displayEnvironmentData,
+  displaySocialData,
+  displayEconomicData,
+  openImpactDescriptionModal,
+}: Props) => {
+  const displaySocioEconomicSection = displayEconomicData || displayEnvironmentData;
+
   return (
     <div style={{ maxWidth: "900px", margin: "auto" }}>
-      <CostBenefitAnalysisListSection
-        openImpactDescriptionModal={openImpactDescriptionModal}
-        economicBalanceImpactTotal={impacts.economicBalance.total}
-        socioEconomicImpactTotal={impacts.socioeconomic.total}
-      />
-      <EconomicBalanceListSection
-        openImpactDescriptionModal={openImpactDescriptionModal}
-        impact={impacts.economicBalance}
-      />
-      <SocioEconomicImpactsListSection
-        socioEconomicImpacts={impacts.socioeconomic.impacts}
-        openImpactDescriptionModal={openImpactDescriptionModal}
-      />
-      <EnvironmentalListSection
-        impacts={impacts}
-        openImpactDescriptionModal={openImpactDescriptionModal}
-      />
-      <SocialListSection
-        openImpactDescriptionModal={openImpactDescriptionModal}
-        impacts={impacts}
-      />
+      {displayEconomicData && (
+        <>
+          <CostBenefitAnalysisListSection
+            openImpactDescriptionModal={openImpactDescriptionModal}
+            economicBalanceImpactTotal={impacts.economicBalance.total}
+            socioEconomicImpactTotal={impacts.socioeconomic.total}
+          />
+          <EconomicBalanceListSection
+            openImpactDescriptionModal={openImpactDescriptionModal}
+            impact={impacts.economicBalance}
+          />
+        </>
+      )}
+
+      {displaySocioEconomicSection && (
+        <SocioEconomicImpactsListSection
+          socioEconomicImpacts={impacts.socioeconomic.impacts}
+          displayEnvironmentData={displayEnvironmentData}
+          displayEconomicData={displayEconomicData}
+          openImpactDescriptionModal={openImpactDescriptionModal}
+        />
+      )}
+
+      {displayEnvironmentData && (
+        <EnvironmentalListSection
+          impacts={impacts}
+          openImpactDescriptionModal={openImpactDescriptionModal}
+        />
+      )}
+
+      {displaySocialData && (
+        <SocialListSection
+          openImpactDescriptionModal={openImpactDescriptionModal}
+          impacts={impacts}
+        />
+      )}
     </div>
   );
 };
