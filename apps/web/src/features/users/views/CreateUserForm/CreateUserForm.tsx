@@ -62,7 +62,7 @@ function CreateUserForm({ onSubmit, createUserLoadingState }: Props) {
               formState.errors.email ? formState.errors.email.message : undefined
             }
             nativeInputProps={{
-              placeholder: "user@ademe.fr",
+              placeholder: "utilisateur@ademe.fr",
               ...register("email", {
                 required: "Vous devez renseigner votre e-mail pour continuer.",
                 pattern: {
@@ -72,46 +72,39 @@ function CreateUserForm({ onSubmit, createUserLoadingState }: Props) {
               }),
             }}
           />
-          <div className={fr.cx("fr-grid-row")}>
-            <Input
-              label="Nom"
-              nativeInputProps={{ ...register("lastname"), placeholder: "Chateau" }}
-              className={fr.cx("fr-col-6", "fr-pr-3v")}
-            />
-            <Input
-              label="Prénom"
-              nativeInputProps={{ ...register("firstname"), placeholder: "Laurent" }}
-              className={fr.cx("fr-col-6")}
-            />
-          </div>
+          <Input
+            label="Nom"
+            nativeInputProps={{ ...register("lastname"), placeholder: "Chateau" }}
+          />
+          <Input
+            label="Prénom"
+            nativeInputProps={{ ...register("firstname"), placeholder: "Laurent" }}
+          />
           <h4>Votre structure</h4>
-          <div className={fr.cx("fr-grid-row")}>
-            <Select
-              className={fr.cx("fr-col-6", "fr-pr-3v")}
-              label={<RequiredLabel label="Profil" />}
-              placeholder="Collectivité, aménageur urbain..."
-              state={formState.errors.structureActivity ? "error" : "default"}
-              stateRelatedMessage={
-                formState.errors.structureActivity
-                  ? formState.errors.structureActivity.message
-                  : undefined
-              }
-              nativeSelectProps={{
-                ...register("structureActivity", {
-                  required: "Vous devez sélectionner un type de profil pour continuer",
-                }),
-              }}
-              options={structureActivityOptions}
-            />
-            <Input
-              label="Nom"
-              className={fr.cx("fr-col-6")}
-              nativeInputProps={{
-                placeholder: "La région Auvergne-Rhône-Alpes",
-                ...register("structureName"),
-              }}
-            />
-          </div>
+          <Select
+            className={fr.cx("fr-col-6")}
+            label={<RequiredLabel label="Profil" />}
+            placeholder="Collectivité, aménageur urbain..."
+            state={formState.errors.structureActivity ? "error" : "default"}
+            stateRelatedMessage={
+              formState.errors.structureActivity
+                ? formState.errors.structureActivity.message
+                : undefined
+            }
+            nativeSelectProps={{
+              ...register("structureActivity", {
+                required: "Vous devez sélectionner un type de profil pour continuer",
+              }),
+            }}
+            options={structureActivityOptions}
+          />
+          <Input
+            label="Nom de la structure"
+            nativeInputProps={{
+              placeholder: "La région Auvergne-Rhône-Alpes",
+              ...register("structureName"),
+            }}
+          />
           <Checkbox
             state={formState.errors.personnalDataUseConsentment ? "error" : "default"}
             stateRelatedMessage={
