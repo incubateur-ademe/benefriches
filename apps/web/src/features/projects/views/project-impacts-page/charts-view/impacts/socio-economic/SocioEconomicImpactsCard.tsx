@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
-import ImpactCard from "../../ImpactChartCard";
+import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 import SocioEconomicImpactsByActorChart from "./SocioEconomicImpactsByActorChart";
 import SocioEconomicImpactsByCategoryChart from "./SocioEconomicImpactsByCategoryChart";
 

@@ -6,7 +6,7 @@ type Props = {
   onTitleClick?: () => void;
 };
 
-const ImpactCard = ({ title, children, onTitleClick }: Props) => {
+const ImpactChartCard = ({ title, children, onTitleClick }: Props) => {
   const titleClassName = `fr-text--sm ${onTitleClick ? "tw-cursor-pointer hover:tw-underline" : ""}`;
   return (
     <figure
@@ -25,4 +25,4 @@ const ImpactCard = ({ title, children, onTitleClick }: Props) => {
   );
 };
 
-export default ImpactCard;
+export default ImpactChartCard;

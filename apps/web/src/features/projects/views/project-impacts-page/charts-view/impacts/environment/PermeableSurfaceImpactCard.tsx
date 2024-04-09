@@ -1,9 +1,12 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import ImpactCard from "../../ImpactChartCard";
+import ImpactAbsoluteVariation from "../../ImpactChartCard/ImpactAbsoluteVariation";
+import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
+import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVariation";
 
+import { formatSurfaceAreaImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
@@ -66,12 +69,14 @@ function PermeableSurfaceImpactCard({
   };
 
   const totalDifference = permeableSurfaceImpact.forecast - permeableSurfaceImpact.base;
+  const percentageVariation = getPercentageDifference(
+    permeableSurfaceImpact.base,
+    permeableSurfaceImpact.forecast,
+  );
   return (
     <ImpactCard title="🌧 Surfaces perméables" onTitleClick={onTitleClick}>
-      <div style={{ textAlign: "center" }}>
-        {totalDifference >= 0 && "+"}
-        {formatNumberFr(totalDifference)} {SQUARE_METERS_HTML_SYMBOL}
-      </div>
+      <ImpactPercentageVariation percentage={percentageVariation} />
+      <ImpactAbsoluteVariation>{formatSurfaceAreaImpact(totalDifference)}</ImpactAbsoluteVariation>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>
   );

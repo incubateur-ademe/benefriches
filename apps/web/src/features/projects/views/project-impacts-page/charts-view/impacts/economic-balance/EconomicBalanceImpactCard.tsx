@@ -1,6 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import ImpactCard from "../../ImpactChartCard";
+import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";

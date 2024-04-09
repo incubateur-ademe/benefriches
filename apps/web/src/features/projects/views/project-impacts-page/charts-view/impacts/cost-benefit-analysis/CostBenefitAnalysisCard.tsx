@@ -1,6 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import ImpactCard from "../../ImpactChartCard";
+import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";

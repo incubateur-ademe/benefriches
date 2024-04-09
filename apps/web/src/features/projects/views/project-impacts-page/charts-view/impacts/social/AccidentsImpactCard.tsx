@@ -1,9 +1,11 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import ImpactCard from "../../ImpactChartCard";
+import ImpactAbsoluteVariation from "../../ImpactChartCard/ImpactAbsoluteVariation";
+import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
+import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVariation";
 
+import { formatDefaultImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
@@ -81,9 +83,10 @@ function AccidentsImpactCard({ reconversionProjectName, accidentsImpact }: Props
 
   return (
     <ImpactCard title="💥 Accidents évités sur la friche">
-      <div style={{ textAlign: "center" }}>
-        +{formatNumberFr(accidentsImpact.current)} accidents évités
-      </div>
+      <ImpactPercentageVariation percentage={100} />
+      <ImpactAbsoluteVariation>
+        {formatDefaultImpact(accidentsImpact.current)}
+      </ImpactAbsoluteVariation>
       <HighchartsReact highcharts={Highcharts} options={areaChartOptions} />
     </ImpactCard>
   );

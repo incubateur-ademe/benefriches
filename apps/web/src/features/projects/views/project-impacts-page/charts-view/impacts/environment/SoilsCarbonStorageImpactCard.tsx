@@ -1,12 +1,15 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import ImpactCard from "../../ImpactChartCard";
+import ImpactAbsoluteVariation from "../../ImpactChartCard/ImpactAbsoluteVariation";
+import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
+import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVariation";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
@@ -67,11 +70,17 @@ function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact, onTitleClick }
 
   const soilsCarbonStorageVariation =
     forecastSoilsCarbonStorage.total - currentSoilsCarbonStorage.total;
+  const percentageVariation = getPercentageDifference(
+    currentSoilsCarbonStorage.total,
+    forecastSoilsCarbonStorage.total,
+  );
 
   return (
     <ImpactCard title="🍂 Carbone stocké dans les sols" onTitleClick={onTitleClick}>
-      <div style={{ textAlign: "center" }}>{formatCO2Impact(soilsCarbonStorageVariation)}</div>
-
+      <ImpactPercentageVariation percentage={percentageVariation} />
+      <ImpactAbsoluteVariation>
+        {formatCO2Impact(soilsCarbonStorageVariation)}
+      </ImpactAbsoluteVariation>
       <HighchartsReact highcharts={Highcharts} options={chartOptions} />
     </ImpactCard>
   );

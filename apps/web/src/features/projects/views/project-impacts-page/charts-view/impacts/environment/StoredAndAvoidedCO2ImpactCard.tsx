@@ -1,9 +1,12 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import ImpactCard from "../../ImpactChartCard";
+import ImpactAbsoluteVariation from "../../ImpactChartCard/ImpactAbsoluteVariation";
+import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
+import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVariation";
 
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
+import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
@@ -59,13 +62,23 @@ function StoredAndAvoidedCO2ImpactCard({
     ],
   };
 
-  const totalStoredAndAvoidedCO2Impact =
-    avoidedCO2TonsWithEnergyProduction.forecast +
-    (soilsCarbonStorage.forecast.total - soilsCarbonStorage.current.total);
+  const currentTotalStoredAndAvoidedCO2Impact =
+    avoidedCO2TonsWithEnergyProduction.current + soilsCarbonStorage.current.total;
+  const forecastTotalStoredAndAvoidedCO2Impact =
+    avoidedCO2TonsWithEnergyProduction.forecast + soilsCarbonStorage.forecast.total;
+  const storedAndAvoidedCO2ImpactVariation =
+    forecastTotalStoredAndAvoidedCO2Impact - currentTotalStoredAndAvoidedCO2Impact;
+  const percentageVariation = getPercentageDifference(
+    currentTotalStoredAndAvoidedCO2Impact,
+    forecastTotalStoredAndAvoidedCO2Impact,
+  );
 
   return (
     <ImpactCard title="☁️ CO2-eq stocké ou évité">
-      <div style={{ textAlign: "center" }}>{formatCO2Impact(totalStoredAndAvoidedCO2Impact)}</div>
+      <ImpactPercentageVariation percentage={percentageVariation} />
+      <ImpactAbsoluteVariation>
+        {formatCO2Impact(storedAndAvoidedCO2ImpactVariation)}
+      </ImpactAbsoluteVariation>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>
   );

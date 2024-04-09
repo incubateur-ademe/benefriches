@@ -1,5 +1,9 @@
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
-import { roundTo1Digit, roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
+import {
+  roundTo1Digit,
+  roundTo2Digits,
+  roundToInteger,
+} from "@/shared/services/round-numbers/roundNumbers";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 const NO_BREAK_SPACE = "\u00A0";
@@ -52,3 +56,10 @@ export const formatDefaultImpact = formatImpactValue("default");
 export const formatMonetaryImpact = formatImpactValue("monetary");
 export const formatSurfaceAreaImpact = formatImpactValue("surface_area");
 export const formatCO2Impact = formatImpactValue("co2");
+
+export const formatEvolutionPercentage = (evolutionInPercentage: number) => {
+  const roundedValue = roundToInteger(evolutionInPercentage);
+  const prefix = getSignPrefix(evolutionInPercentage);
+
+  return `${prefix}${formatNumberFr(roundedValue)}%`;
+};

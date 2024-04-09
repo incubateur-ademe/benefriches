@@ -19,7 +19,7 @@ export const baseColumnChartConfig: Highcharts.Options = {
 export const baseAreaChartConfig: Highcharts.Options = {
   chart: {
     type: "area",
-    height: "200px",
+    height: "180px",
     marginLeft: 0,
     marginRight: 0,
     style: {

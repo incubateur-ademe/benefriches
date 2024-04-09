@@ -1,9 +1,11 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import ImpactCard from "../../ImpactChartCard";
+import ImpactAbsoluteVariation from "../../ImpactChartCard/ImpactAbsoluteVariation";
+import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
+import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVariation";
 
+import { formatDefaultImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundToInteger } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
@@ -46,9 +48,10 @@ function HouseholdsPoweredByRenewableEnergyImpactCard({
 
   return (
     <ImpactCard title="🏠 Foyers alimentés par les EnR" onTitleClick={onTitleClick}>
-      <div style={{ textAlign: "center" }}>
-        + {formatNumberFr(roundToInteger(householdsPoweredByRenewableEnergy.forecast))} foyers
-      </div>
+      <ImpactPercentageVariation percentage={100} />
+      <ImpactAbsoluteVariation>
+        {formatDefaultImpact(roundToInteger(householdsPoweredByRenewableEnergy.forecast))} foyers
+      </ImpactAbsoluteVariation>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
     </ImpactCard>
   );
