@@ -1,8 +1,8 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
 
+import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 

@@ -1,9 +1,9 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { baseAreaChartConfig } from "../../../shared/sharedChartConfig";
 import ImpactCard from "../../ImpactChartCard";
-import { formatSurfaceAreaImpact } from "../../list-view/formatImpactValue";
 
+import { formatSurfaceAreaImpact } from "@/features/projects/views/shared/formatImpactValue";
+import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 

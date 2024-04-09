@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import { ReconversionProjectImpacts } from "../../domain/impacts.types";
+import { ImpactDescriptionModalCategory } from "./../modals/ImpactDescriptionModalWizard";
 import CostBenefitAnalysisCard from "./impacts/cost-benefit-analysis/CostBenefitAnalysisCard";
 import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanceImpactCard";
 import HouseholdsPoweredByRenewableEnergyImpactCard from "./impacts/environment/HouseholdsPoweredByRenewableEnergyImpactCard";
@@ -11,7 +11,8 @@ import StoredAndAvoidedCO2ImpactCard from "./impacts/environment/StoredAndAvoide
 import AccidentsImpactCard from "./impacts/social/AccidentsImpactCard";
 import FullTimeJobsImpactCard from "./impacts/social/FullTimeJobsImpactCard";
 import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";
-import { ImpactDescriptionModalCategory } from "./modals/ImpactDescriptionModalWizard";
+
+import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 
 type Props = {
   project: {

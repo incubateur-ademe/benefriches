@@ -1,11 +1,5 @@
 import { ReconversionProjectImpacts } from "../../../domain/impacts.types";
 import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
-import {
-  formatCO2Impact,
-  formatDefaultImpact,
-  formatMonetaryImpact,
-  formatSurfaceAreaImpact,
-} from "./formatImpactValue";
 import ImpactDetailLabel from "./ImpactDetailLabel";
 import ImpactDetailRow from "./ImpactItemDetailRow";
 import ImpactItemGroup from "./ImpactItemGroup";
@@ -15,6 +9,13 @@ import ImpactMainTitle from "./ImpactMainTitle";
 import ImpactSectionTitle from "./ImpactSectionTitle";
 import ImpactValue from "./ImpactValue";
 import SocioEconomicImpactsListSection from "./SocioEconomicSection";
+
+import {
+  formatCO2Impact,
+  formatDefaultImpact,
+  formatMonetaryImpact,
+  formatSurfaceAreaImpact,
+} from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   project: {
