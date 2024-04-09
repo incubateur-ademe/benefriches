@@ -35,7 +35,6 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
       title="Montant de la transaction immobilière"
       instructions={
         <>
-          <p>Le prix de vente est à renseigner par l’utilisateur.</p>
           <p>
             Les droits de mutation sont calculés automatiquement selon le prix de vente renseignés.
             Vous pouvez modifier ces montants.
