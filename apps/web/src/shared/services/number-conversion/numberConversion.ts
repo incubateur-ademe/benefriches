@@ -1,6 +1,6 @@
 const stringToNumber = (value: string) => {
   const output = parseFloat(value);
-  return isNaN(output) ? undefined : output;
+  return isNaN(output) ? null : output;
 };
 
 const numberToString = (value: number) => {
