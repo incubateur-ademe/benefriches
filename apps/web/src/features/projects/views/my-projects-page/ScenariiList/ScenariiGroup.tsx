@@ -24,7 +24,11 @@ function SiteName({ children }: { children: ReactNode }) {
 }
 
 function GridColumn({ children }: { children: ReactNode }) {
-  return <div className={fr.cx("fr-col-3")}>{children}</div>;
+  return (
+    <div className={fr.cx("fr-col-md-3", "fr-col-sm-6")} style={{ width: "100%" }}>
+      {children}
+    </div>
+  );
 }
 
 function ScenariiGroup({
