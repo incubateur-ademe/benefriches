@@ -39,7 +39,7 @@ function PhotovoltaicAnnualProductionForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicExpectedAnnualProduction"
-          label="Production attendue de l’installation"
+          label="Production attendue de l'installation"
           hintText="en MWh/an"
           rules={{
             min: 0,

@@ -12,13 +12,13 @@ const CostBenefitAnalysisDescription = ({ onChangeModalCategoryOpened }: Props) 
   return (
     <>
       <p>
-        Bénéfriches repose sur les principes de l’analyse coûts-bénéfices, qui a pour objet
-        d’apprécier l’intérêt d’une opération (projet ou investissement), sur une période donnée.
+        Bénéfriches repose sur les principes de l'analyse coûts-bénéfices, qui a pour objet
+        d'apprécier l'intérêt d'une opération (projet ou investissement), sur une période donnée.
       </p>
       <p>
-        Elle est réalisée en analysant les impacts du projet sur les différents types d’acteurs
+        Elle est réalisée en analysant les impacts du projet sur les différents types d'acteurs
         directement ou indirectement concernés, que ces impacts soient positifs ou négatifs. Puis en
-        les comparant au bilan de l’opération (recettes vs. dépenses nécessaires à sa réalisation).
+        les comparant au bilan de l'opération (recettes vs. dépenses nécessaires à sa réalisation).
       </p>
 
       <ul className="tw-list-none">
@@ -29,7 +29,7 @@ const CostBenefitAnalysisDescription = ({ onChangeModalCategoryOpened }: Props) 
             }}
             priority="tertiary no outline"
           >
-            📉 Bilan de l’opération
+            📉 Bilan de l'opération
           </Button>
         </li>
         <li>
@@ -48,11 +48,11 @@ const CostBenefitAnalysisDescription = ({ onChangeModalCategoryOpened }: Props) 
       <ul>
         <li>
           <ExternalLink href="https://www.strategie.gouv.fr/publications/guide-de-levaluation-socioeconomique-investissements-publics">
-            Guide de l’évaluation socioéconomique des investissements publics
+            Guide de l'évaluation socioéconomique des investissements publics
           </ExternalLink>
         </li>
         <li>
-          Évaluation socioéconomique des opérations d’aménagement urbain :{" "}
+          Évaluation socioéconomique des opérations d'aménagement urbain :{" "}
           <ExternalLink href="https://www.strategie.gouv.fr/publications/referentiel-methodologique-de-levaluation-socioeconomique-operations-damenagement">
             Référentiel&nbsp;méthodologique
           </ExternalLink>

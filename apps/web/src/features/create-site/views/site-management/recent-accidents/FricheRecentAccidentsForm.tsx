@@ -31,7 +31,7 @@ function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
     <WizardFormLayout
       title="Y a-t-il eu des accidents sur la friche ces 5 dernières années ?"
       instructions={
-        <p>Personnes entrées illégalement sur la friche et s’étant blessées ou tuées.</p>
+        <p>Personnes entrées illégalement sur la friche et s'étant blessées ou tuées.</p>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -44,7 +44,7 @@ function PhotovoltaicSurfaceFromPowerForm({
       instructions={
         <>
           <p>
-            Le ratio superficie / puissance d’installation considéré est de{" "}
+            Le ratio superficie / puissance d'installation considéré est de{" "}
             <strong>
               {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m² pour 1 000 kWc.
             </strong>
@@ -58,7 +58,7 @@ function PhotovoltaicSurfaceFromPowerForm({
           <p>Vous pouvez modifier cette superficie.</p>
 
           <p>
-            La superficie d’installation des panneaux ne peut être supérieure à la superficie totale
+            La superficie d'installation des panneaux ne peut être supérieure à la superficie totale
             de la friche ({formatNumberFr(siteSurfaceArea)} m²).
           </p>
 
@@ -66,11 +66,11 @@ function PhotovoltaicSurfaceFromPowerForm({
           <p className="fr-text--xs">
             Une centrale au sol peut facilement être implantée sur des espaces imperméabilisés (non
             bâtis) ou minéralisés, mais également sur des espaces enherbés ou avec de la végétation
-            basse (broussailles, garrigue, etc.) qu’ils soient artificialisés ou naturels.
+            basse (broussailles, garrigue, etc.) qu'ils soient artificialisés ou naturels.
           </p>
           <p className="fr-text--xs">
             Dès lors que de la végétation haute est présente (sols artificiels ou prairies arborés,
-            forêts), l’implantation nécessite des investissements (coupes) et est à éviter (pour des
+            forêts), l'implantation nécessite des investissements (coupes) et est à éviter (pour des
             raisons de biodiversité et de puits de carbone).
           </p>
           <p className="fr-text--xs">
@@ -82,7 +82,7 @@ function PhotovoltaicSurfaceFromPowerForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicInstallationSurfaceSquareMeters"
-          label={<RequiredLabel label="Superficie de l’installation" />}
+          label={<RequiredLabel label="Superficie de l'installation" />}
           hintText={hintText}
           rules={{
             min: 0,

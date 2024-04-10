@@ -27,10 +27,10 @@ function MentionsLegalesPage() {
       <h2 id="directeur-de-la-publication">Directeur de la publication</h2>
       <p>
         Le directeur de publication est M. Boris RAVIGNON, agissant en qualité de
-        Président-directeur général de l’ADEME.
+        Président-directeur général de l'ADEME.
       </p>
       <p>
-        La personne responsable de l’accès aux documents administratifs et des questions relatives à
+        La personne responsable de l'accès aux documents administratifs et des questions relatives à
         la réutilisation des informations est Monsieur Luc MORINIÈRE en qualité de Chef du service
         des affaires juridiques.
       </p>
@@ -60,13 +60,13 @@ function MentionsLegalesPage() {
       </p>
       <h3 id="signaler-un-dysfonctionnement">Signaler un dysfonctionnement</h3>
       <p>
-        Si vous rencontrez un défaut d’accessibilité vous empêchant d’accéder à un contenu ou une
-        fonctionnalité du site, merci de nous en faire part. Si vous n’obtenez pas de réponse rapide
+        Si vous rencontrez un défaut d'accessibilité vous empêchant d'accéder à un contenu ou une
+        fonctionnalité du site, merci de nous en faire part. Si vous n'obtenez pas de réponse rapide
         de notre part, vous êtes en droit de faire parvenir vos doléances ou une demande de saisine
         au Défenseur des droits.
       </p>
       <p>
-        Pour en savoir plus sur la politique d’accessibilité numérique de l’État:{" "}
+        Pour en savoir plus sur la politique d'accessibilité numérique de l'État:{" "}
         <a
           href="http://references.modernisation.gouv.fr/accessibilite-numerique"
           target="_blank"
@@ -79,13 +79,13 @@ function MentionsLegalesPage() {
       <p>
         Le site est protégé par un certificat électronique, matérialisé pour la grande majorité des
         navigateurs par un cadenas. Cette protection participe à la confidentialité des échanges. En
-        aucun cas les services associés à la plateforme ne seront à l’origine d’envoi d&#x27;emails
-        pour demander la saisie d’informations personnelles.
+        aucun cas les services associés à la plateforme ne seront à l'origine d'envoi d&#x27;emails
+        pour demander la saisie d'informations personnelles.
       </p>
       <h2 id="modification-des-mentions-l-gales">Modification des mentions légales</h2>
       <p>
-        L’ADEME se réserve le droit de modifier les présentes mentions légales à tout moment.
-        L’utilisateur est lié par les conditions en vigueur lors de sa visite.
+        L'ADEME se réserve le droit de modifier les présentes mentions légales à tout moment.
+        L'utilisateur est lié par les conditions en vigueur lors de sa visite.
       </p>
     </section>
   );

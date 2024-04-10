@@ -40,13 +40,13 @@ function PhotovoltaicPowerFromSurfaceForm({
       instructions={
         <>
           <p>
-            Le ratio puissance / superficie d’installation considéré est de{" "}
+            Le ratio puissance / superficie d'installation considéré est de{" "}
             <strong>
               {formatNumberFr(10000 / PHOTOVOLTAIC_RATIO_M2_PER_KWC)}&nbsp;kWc pour 10 000 m².
             </strong>
           </p>
           <p>
-            La superficie qu’occuperont les panneaux étant de{" "}
+            La superficie qu'occuperont les panneaux étant de{" "}
             {formatNumberFr(photovoltaicSurfaceArea)}
             &nbsp;m², votre puissance devrait être de{" "}
             {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
@@ -58,14 +58,14 @@ function PhotovoltaicPowerFromSurfaceForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicInstallationElectricalPowerKWc"
-          label={<RequiredLabel label="Puissance de l’installation" />}
+          label={<RequiredLabel label="Puissance de l'installation" />}
           hintText={hintText}
           rules={{
             min: 0,
             max: {
               value: recommendedElectricalPowerKWc,
               message:
-                "La puissance de l’installation est supérieure à la puissance calculée à partir de la surface d’occupation des panneaux.",
+                "La puissance de l'installation est supérieure à la puissance calculée à partir de la surface d'occupation des panneaux.",
             },
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}

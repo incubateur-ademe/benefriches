@@ -32,7 +32,7 @@ const getYearlyCostPurposeLabel = (purpose: PurposeCost) => {
 const getYearlyRevenueSourceLabel = (source: SourceRevenue) => {
   switch (source) {
     case "operations":
-      return "Recettes d’exploitation";
+      return "Recettes d'exploitation";
     case "other":
       return "Autres recettes";
   }
@@ -157,7 +157,7 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
       {revenues.total > 0 || costs.total > 0 ? (
         <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
       ) : (
-        <div>Vous n’avez pas renseigné de coûts ni de dépenses pour ce projet.</div>
+        <div>Vous n'avez pas renseigné de coûts ni de dépenses pour ce projet.</div>
       )}
     </ImpactCard>
   );

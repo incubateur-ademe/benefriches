@@ -81,7 +81,7 @@ function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingStat
   if (loadingState === "error") {
     return (
       <Alert
-        description="Une erreur s’est produite lors du chargement des données."
+        description="Une erreur s'est produite lors du chargement des données."
         severity="error"
         title="Erreur"
         className="fr-my-7v"

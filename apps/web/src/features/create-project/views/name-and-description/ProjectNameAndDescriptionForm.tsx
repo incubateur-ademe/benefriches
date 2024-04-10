@@ -30,7 +30,7 @@ function ProjectNameAndDescriptionForm({ onSubmit, onBack, defaultProjectName }:
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input
           label={<RequiredLabel label="Nom du projet" />}
-          hintText="Le nom du projet tel qu’il est courament utilisé par les collectivités."
+          hintText="Le nom du projet tel qu'il est courament utilisé par les collectivités."
           state={nameError ? "error" : "default"}
           stateRelatedMessage={nameError ? nameError.message : undefined}
           nativeInputProps={register("name", {
@@ -39,7 +39,7 @@ function ProjectNameAndDescriptionForm({ onSubmit, onBack, defaultProjectName }:
         />
         <Input
           label="Descriptif du projet"
-          hintText="Décrivez succinctement le projet : contexte, objectif, état d’avancement..."
+          hintText="Décrivez succinctement le projet : contexte, objectif, état d'avancement..."
           textArea
           nativeTextAreaProps={register("description")}
         />

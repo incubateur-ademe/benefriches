@@ -74,7 +74,7 @@ function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit, onBack 
           </Fieldset>
         )}
         <Fieldset
-          legend="Travaux d’installation des panneaux photovoltaïques"
+          legend="Travaux d'installation des panneaux photovoltaïques"
           state={formState.errors.photovoltaicInstallationSchedule ? "error" : "default"}
           stateRelatedMessage={
             photovoltaicError ? (

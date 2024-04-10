@@ -1,6 +1,6 @@
 # Calcul des stocks de carbone
 
-Le calcul des stocks de carbone de Bénéfriches se base sur la méthode utilisé par [l’outil ALDO](https://docs.datagir.ademe.fr/documentation-aldo/stocks/methode-generale).
+Le calcul des stocks de carbone de Bénéfriches se base sur la méthode utilisé par [l'outil ALDO](https://docs.datagir.ademe.fr/documentation-aldo/stocks/methode-generale).
 
 Les quatre réservoirs de carbone sont pris en considération : Sol, Litière, Biomasse vivante (aérienne et racinaire) et Biomasse morte.
 Pour chacun d'entre eux, des stocks de carbone de référence par occupation de sol ont été attribués.
@@ -24,13 +24,13 @@ Pour la biomasse aérienne et racinaire hors forêt, à savoir vignes, vergers, 
 
 En cumulant les stocks de référence pour les 4 réservoirs, et en fonction de la localisation du territoire (dans une certaine zone pédoclimatique, et une certaine grande région écologique), on obtient alors des stocks de référence à l'hectare qui peuvent être différents pour chaque territoire.
 
-Nous avons construit deux sources de données à partir des données d’Aldo pour nous permettre de calculer les stocks de carbone dont nous avons besoin dans l’outil Bénéfriches : les données communales ([cities.csv](cities.csv)) et les données carbone ([carbonStorage.csv](carbonStorage.csv)).
+Nous avons construit deux sources de données à partir des données d'Aldo pour nous permettre de calculer les stocks de carbone dont nous avons besoin dans l'outil Bénéfriches : les données communales ([cities.csv](cities.csv)) et les données carbone ([carbonStorage.csv](carbonStorage.csv)).
 
 ## Données communales
 
 Les données du fichier [`cities.csv`](cities.csv) sont issues des fichiers ALDO :
 
-### Maillage administratif - millésime communal de 2018 fourni par l’IGN
+### Maillage administratif - millésime communal de 2018 fourni par l'IGN
 
 - [Source Aldo](https://docs.datagir.ademe.fr/documentation-aldo/introduction/sources#maillage-administratif)
 
@@ -63,7 +63,7 @@ La BD Forêt® de l'IGN (Institut national de l'information géographique et for
 ALDO propose les données surfaciques issues de la BD Forêt® V2, 2018.
 Les surfaces sont exprimées par composition selon le type de peuplement (feuillus, mixtes, conifères ou peupleraies)
 
-On récupère dans ce fichier plusieurs types de qualification géographique d’une commune (par son code INSEE) :
+On récupère dans ce fichier plusieurs types de qualification géographique d'une commune (par son code INSEE) :
 
 - code GRECO : Grande Région Ecologique
 - code SER : Sylvo Éco Région
@@ -85,7 +85,7 @@ Les données du fichier [carbonStorage.csv](carbonStorage.csv) sont issues des f
 - [biomass-hors-forets.csv](https://github.com/incubateur-ademe/aldo/blob/main/data/dataByCommune/biomass-hors-forets.csv)
 - [bilan-carbone-foret-par-localisation.csv](https://github.com/incubateur-ademe/aldo/blob/main/data/dataByEpci/bilan-carbone-foret-par-localisation.csv)
 
-On regroupe les données de ces différents fichiers sous la forme d’une table unique contenant les colonnes :
+On regroupe les données de ces différents fichiers sous la forme d'une table unique contenant les colonnes :
 
 - `reservoir`: Le type de réservoir de carbone
 
@@ -150,7 +150,7 @@ Pour chaque ligne du fichier, création de 12 entrées `carbon_storage` (une pou
 - `reservoir` : "soil"
 - `localisation_category`: "zpc"
 - `localisation_code`: colonne "zpc" du fichier source
-- `stock_tC_by_ha`: valeur de l’intersection zpc et type de sol dans le fichier
+- `stock_tC_by_ha`: valeur de l'intersection zpc et type de sol dans le fichier
 - `soil_category`: colonne "zpc" du fichier source
 
 Correspondance des clés de colonnes :
@@ -226,15 +226,15 @@ Pour chaque ligne valide, on ajoute deux entrées dans `carbon_storage` au forma
 
 et
 
-- `localisation_category`: idem qu’au dessus
-- `localisation_code`: idem qu’au dessus
-- `soil_category`: idem qu’au dessus
+- `localisation_category`: idem qu'au dessus
+- `localisation_code`: idem qu'au dessus
+- `soil_category`: idem qu'au dessus
 - `reservoir`: "live_forest_biomass"
 - `stock_tC_by_ha`: colonne `carbone_(tC∙ha-1)`
 
 ### Calcul du stocks de carbone des sols pour Bénéfriches
 
-À partir d’un code INSEE et d’une liste de type de sols avec leurs surfaces, on récupère dans la base `cities` les informations :
+À partir d'un code INSEE et d'une liste de type de sols avec leurs surfaces, on récupère dans la base `cities` les informations :
 
 - région
 - code GRECO : Grande Région Ecologique
@@ -245,7 +245,7 @@ On cherche alors dans la base `carbon_storage` toutes les lignes correspondantes
 
 Pour les lignes relatives à la biomasse forêt ("live_forest_biomass" et "dead_forest_biomass"), on filtre les résultats pour ne garder que les valeurs les plus précises.
 
-L’ordre de priorité est :
+L'ordre de priorité est :
 
 - code groupe SER
 - code GRECO : Grande Région Ecologique
@@ -253,18 +253,18 @@ L’ordre de priorité est :
 - code bassin populicole
 - Pays (valeur moyenne pour la France)
 
-Les villes de la base `cities` peuvent contenir plusieurs codes "groupe SER" et codes "GRECO" car le code INSEE n’est pas assez précis pour associer une seule sylvo éco région (une ville peut être à cheval sur plusieurs zones).
+Les villes de la base `cities` peuvent contenir plusieurs codes "groupe SER" et codes "GRECO" car le code INSEE n'est pas assez précis pour associer une seule sylvo éco région (une ville peut être à cheval sur plusieurs zones).
 
 Le calcul Bénéfriches prend arbitrairement la première valeur de groupe SER ou GRECO rencontrée.  
 Cette imprécision pourra être améliorée plus tard.
 
-On ajoute le cas échéant, le stock de carbone contenu dans la litière des forêts, qui correspond à la valeur moyenne française (9 tonnes de carbone par hectare). Valeur relevée dans le code source d’Aldo.
+On ajoute le cas échéant, le stock de carbone contenu dans la litière des forêts, qui correspond à la valeur moyenne française (9 tonnes de carbone par hectare). Valeur relevée dans le code source d'Aldo.
 
 À partir de la liste des types de sols et de leur surfaces, on multiplie chaque surface par le stock de carbone par hectare associé et on additionne chaque résultat pour obtenir le total de carbone stocké sur le site.
 
 #### Exemple :
 
-On a en données d’entrée :
+On a en données d'entrée :
 
 - Code INSEE: "62498"
 - Types de sols:
@@ -339,7 +339,7 @@ On cherche maintenant les données dans la base de données `carbon_storage`.
 | dead_forest_biomass | forest_deciduous | 6.16           | region                | 32                |
 | live_forest_biomass | forest_deciduous | 97.25          | region                | 32                |
 
-Comme on a récupéré des valeurs plus précise pour `forest_deciduous` grâce au GRECO, on n’utilise pas ces 2 valeurs.
+Comme on a récupéré des valeurs plus précise pour `forest_deciduous` grâce au GRECO, on n'utilise pas ces 2 valeurs.
 
 - on récupère les valeurs suivantes pour le bassin populicole Nord :
 

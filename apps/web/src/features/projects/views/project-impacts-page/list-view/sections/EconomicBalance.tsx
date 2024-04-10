@@ -16,7 +16,7 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
   return (
     <section className="fr-mb-5w">
       <ImpactMainTitle
-        title="Bilan de l’opération"
+        title="Bilan de l'opération"
         onClick={() => {
           openImpactDescriptionModal("economic-balance");
         }}
@@ -52,15 +52,15 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
         </ImpactItemRow>
       )}
       <ImpactItemRow>
-        <ImpactLabel>💸️ Charges d’exploitation</ImpactLabel>
+        <ImpactLabel>💸️ Charges d'exploitation</ImpactLabel>
         <ImpactValue>{formatMonetaryImpact(impact.costs.operationsCosts.total)}</ImpactValue>
       </ImpactItemRow>
       <ImpactItemRow>
-        <ImpactLabel>💰 Recettes d’exploitation</ImpactLabel>
+        <ImpactLabel>💰 Recettes d'exploitation</ImpactLabel>
         <ImpactValue>{formatMonetaryImpact(impact.revenues.operationsRevenues.total)}</ImpactValue>
       </ImpactItemRow>
       <ImpactItemRow>
-        <ImpactLabel>Total du bilan de l’opération</ImpactLabel>
+        <ImpactLabel>Total du bilan de l'opération</ImpactLabel>
         <ImpactValue isTotal>{formatMonetaryImpact(impact.total)}</ImpactValue>
       </ImpactItemRow>
     </section>

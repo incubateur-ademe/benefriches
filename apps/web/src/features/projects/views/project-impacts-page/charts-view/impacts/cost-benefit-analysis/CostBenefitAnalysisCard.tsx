@@ -30,7 +30,7 @@ function CostBenefitAnalysisCard({
     },
     xAxis: {
       categories: [
-        `<strong>Bilan de l’opération</strong><br>${formatNumberFr(economicBalanceTotal)} €`,
+        `<strong>Bilan de l'opération</strong><br>${formatNumberFr(economicBalanceTotal)} €`,
         `<strong>Impacts socio-économiques</strong><br>+${formatNumberFr(socioEconomicImpactsTotal)} €`,
       ],
       lineWidth: 0,
@@ -63,7 +63,7 @@ function CostBenefitAnalysisCard({
       {
         name: "Analyse coûts bénéfices",
         data: [
-          { y: roundTo2Digits(economicBalanceTotal), name: "Bilan de l’opération" },
+          { y: roundTo2Digits(economicBalanceTotal), name: "Bilan de l'opération" },
           { y: roundTo2Digits(socioEconomicImpactsTotal), name: "Impacts socio-économiques" },
         ],
         type: "column",

@@ -32,7 +32,7 @@ const NatureRelatedWellnessAndLeisureDescription = ({
       <p>
         Les zones naturelles et forestières ou encore les prairies favorisent la biodiversité et
         constituent des zones pour lesquelles les citoyens ont un attachement à leur préservation.
-        L’approche socio-économique permet de définir des valeurs d’usage, monétarisées, de services
+        L'approche socio-économique permet de définir des valeurs d'usage, monétarisées, de services
         écosystémiques liés à la biodiversité générale pour ces différentes zones.
       </p>
       <p>
@@ -43,24 +43,24 @@ const NatureRelatedWellnessAndLeisureDescription = ({
       <ul>
         <li>
           Valeur économique des services écosystémiques rendus par les prairies (hors cycles du
-          carbone, de l’azote et de l’eau, régulation de la qualité de l’eau et maintien de la
+          carbone, de l'azote et de l'eau, régulation de la qualité de l'eau et maintien de la
           biodiversité) (exprimée en €/ha).
         </li>
         <li>
           Valeur économique des services écosystémiques rendus par les forêts (hors cycles du
-          carbone, de l’azote et de l’eau, régulation de la qualité de l’eau, produits issus de la
+          carbone, de l'azote et de l'eau, régulation de la qualité de l'eau, produits issus de la
           forêt et maintien de la biodiversité) (exprimée en €/ha).
         </li>
         <li>
           Valeur économique des services écosystémiques rendus par les zones humides (hors cycles du
-          carbone, de l’azote et de l’eau, régulation de la qualité de l’eau et maintien de la
+          carbone, de l'azote et de l'eau, régulation de la qualité de l'eau et maintien de la
           biodiversité) (exprimée en €/ha).
         </li>
       </ul>
       <ModalTitleThree> Données du site</ModalTitleThree>
       <p>
-        Les données du site peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées
-        par Bénéfriches sur la base d’une moyenne ou d’une hypothèse. Il s’agit des éventuelles
+        Les données du site peuvent avoir été saisies par l'utilisateur·ice ou avoir été suggérées
+        par Bénéfriches sur la base d'une moyenne ou d'une hypothèse. Il s'agit des éventuelles
         surfaces du site occupées (i) par des prairies, (ii) par des forêts et (iii) par des zones
         humides (exprimées en hectare).
       </p>
@@ -80,8 +80,8 @@ const NatureRelatedWellnessAndLeisureDescription = ({
 
       <ModalTitleThree> Données du projet</ModalTitleThree>
       <p>
-        Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées
-        par Bénéfriches sur la base d’une moyenne ou d’une hypothèse. Il s’agit des éventuelles
+        Les données du projet peuvent avoir été saisies par l'utilisateur·ice ou avoir été suggérées
+        par Bénéfriches sur la base d'une moyenne ou d'une hypothèse. Il s'agit des éventuelles
         surfaces du site occupées (i) par des prairies, (ii) par des forêts et (iii) par des zones
         humides (exprimées en hectare).
       </p>
@@ -101,12 +101,12 @@ const NatureRelatedWellnessAndLeisureDescription = ({
 
       <ModalTitleTwo>Comment est fait le calcul ?</ModalTitleTwo>
       <p>
-        La valeur de l’indicateur « Loisirs et bien-être liés à la nature » (exprimée en €) est la
+        La valeur de l'indicateur « Loisirs et bien-être liés à la nature » (exprimée en €) est la
         somme, pour chaque type de sol de type « prairies », « forêts » ou « zones humides » de la
         valeur économique des services écosystémiques associée à chacun (exprimée en €/ha)
-        multipliée par la surface du type de sol concerné (exprimée en ha). L’impact de la
-        réalisation du projet sur le site est la différence entre la valeur de l’indicateur calculé
-        pour le projet et celle de l’indicateur calculé pour le site.
+        multipliée par la surface du type de sol concerné (exprimée en ha). L'impact de la
+        réalisation du projet sur le site est la différence entre la valeur de l'indicateur calculé
+        pour le projet et celle de l'indicateur calculé pour le site.
       </p>
       <ModalTitleTwo>Sources</ModalTitleTwo>
       <ul>

@@ -35,8 +35,8 @@ const SiteSoilsCarbonStorage = ({
         <>
           <p>
             Le sol est un milieu vivant composé de minéraux (ex&nbsp;: pierre, argile) mais
-            également de matière organique, issue de la dégradation de végétaux (ex&nbsp;: l’humus
-            des forêts) mais également des organismes vivants qu’il contient&nbsp;: faune, flore,
+            également de matière organique, issue de la dégradation de végétaux (ex&nbsp;: l'humus
+            des forêts) mais également des organismes vivants qu'il contient&nbsp;: faune, flore,
             champignons, micro-organismes.
           </p>
           <p>
@@ -46,8 +46,8 @@ const SiteSoilsCarbonStorage = ({
           </p>
           <p>
             Les calculs sont réalisés à partir des données de référence, exprimées en tonne
-            d'équivalent carbone par hectare de sol sur une durée de 50 ans, de l’outil ALDO
-            développé par l’ADEME. Dans un souci de simplification, seules les valeurs de stocks
+            d'équivalent carbone par hectare de sol sur une durée de 50 ans, de l'outil ALDO
+            développé par l'ADEME. Dans un souci de simplification, seules les valeurs de stocks
             sont utilisées (on ne considère pas les flux).
           </p>
           Sources&nbsp;:
@@ -55,7 +55,7 @@ const SiteSoilsCarbonStorage = ({
             <li>
               Stocks de carbone&nbsp;:{" "}
               <a
-                title="Documentation d’ALDO - ouvre une nouvelle fenêtre"
+                title="Documentation d'ALDO - ouvre une nouvelle fenêtre"
                 target="_blank"
                 rel="noopener noreferrer external"
                 href="https://aldo-carbone.ademe.fr/"
@@ -64,9 +64,9 @@ const SiteSoilsCarbonStorage = ({
               </a>
             </li>
             <li>
-              Notions de stock, flux et paramètre d’influence&nbsp;:{" "}
+              Notions de stock, flux et paramètre d'influence&nbsp;:{" "}
               <a
-                title="Définitions d’ALDO - ouvre une nouvelle fenêtre"
+                title="Définitions d'ALDO - ouvre une nouvelle fenêtre"
                 target="_blank"
                 rel="noopener noreferrer external"
                 href="https://docs.datagir.ademe.fr/documentation-aldo/introduction/definitions"
@@ -75,9 +75,9 @@ const SiteSoilsCarbonStorage = ({
               </a>
             </li>
             <li>
-              Empreinte carbone moyenne annuelle d’un.e français.e&nbsp;:{" "}
+              Empreinte carbone moyenne annuelle d'un.e français.e&nbsp;:{" "}
               <a
-                title="L’empreinte carbone de la France de 1995 à 2022 sur statistiques.developpement-durable.gouv.fr - ouvre une nouvelle fenêtre"
+                title="L'empreinte carbone de la France de 1995 à 2022 sur statistiques.developpement-durable.gouv.fr - ouvre une nouvelle fenêtre"
                 target="_blank"
                 rel="noopener noreferrer external"
                 href="https://www.statistiques.developpement-durable.gouv.fr/lempreinte-carbone-de-la-france-de-1995-2022"

@@ -9,8 +9,8 @@ const PermeableSurfaceDescription = ({ onChangeModalCategoryOpened }: Props) => 
   return (
     <>
       <p>
-        Il s’agit de la surface qui n’est pas imperméabilisée et permet ainsi l’infiltration de
-        l’eau de pluie sur la parcelle. La surface perméable peut être{" "}
+        Il s'agit de la surface qui n'est pas imperméabilisée et permet ainsi l'infiltration de
+        l'eau de pluie sur la parcelle. La surface perméable peut être{" "}
         <Button
           onClick={() => {
             onChangeModalCategoryOpened("environmental-minerale-surface");
@@ -32,7 +32,7 @@ const PermeableSurfaceDescription = ({ onChangeModalCategoryOpened }: Props) => 
       </p>
       <p>
         La valeur est la somme des surfaces détaillées ci-dessus, qui ont été renseignées par
-        l’utilisateur, pour le site et pour le projet.
+        l'utilisateur, pour le site et pour le projet.
       </p>
     </>
   );

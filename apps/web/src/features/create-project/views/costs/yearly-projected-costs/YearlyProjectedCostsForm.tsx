@@ -41,13 +41,13 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
       instructions={
         <>
           <p>
-            Les montants pré-remplis le sont d’après la puissance d’installation que vous avez
+            Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
             renseigné (exprimée en kWc) et les coûts moyens observés.
           </p>
           <p>
             <strong>Source&nbsp;: </strong>
             <ExternalLink href="https://www.cre.fr/documents/Publications/Rapports-thematiques/Couts-et-rentabilites-du-grand-photovoltaique-en-metropole-continentale">
-              Commission de régulation de l’énergie
+              Commission de régulation de l'énergie
             </ExternalLink>
           </p>
           <p>Vous pouvez modifier ces montants.</p>

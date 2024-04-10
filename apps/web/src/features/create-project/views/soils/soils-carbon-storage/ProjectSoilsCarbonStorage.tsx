@@ -60,7 +60,7 @@ const ProjectSoilsCarbonStorage = ({
     return (
       <WizardFormLayout title="Stockage du carbone par les sols">
         <Alert
-          description="Une erreur s’est produite lors du calcul du pouvoir de stockage de carbone par les sols..."
+          description="Une erreur s'est produite lors du calcul du pouvoir de stockage de carbone par les sols..."
           severity="error"
           title="Erreur"
           className="fr-my-7v"

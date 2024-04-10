@@ -9,7 +9,7 @@ function BenefrichesFooter() {
       accessibility="non compliant"
       contentDescription={
         <>
-          Bénéfriches est un service numérique public gratuit, porté par l’accélérateur de la
+          Bénéfriches est un service numérique public gratuit, porté par l'accélérateur de la
           transition écologique, l'incubateur interne de l'ADEME.
           <br />
           Son code est ouvert et accessible à tous{" "}

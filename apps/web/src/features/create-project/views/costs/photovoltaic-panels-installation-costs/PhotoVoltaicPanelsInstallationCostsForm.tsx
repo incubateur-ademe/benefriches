@@ -36,17 +36,17 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
 
   return (
     <WizardFormLayout
-      title="Coûts prévisionnels d’installation des panneaux photovoltaïques"
+      title="Coûts prévisionnels d'installation des panneaux photovoltaïques"
       instructions={
         <>
           <p>
-            Les montants pré-remplis le sont d’après la puissance d’installation que vous avez
+            Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
             renseigné (exprimée en kWc) et les coûts moyens observés.
           </p>
           <p>
             <strong>Source&nbsp;: </strong>
             <ExternalLink href="https://www.cre.fr/documents/Publications/Rapports-thematiques/Couts-et-rentabilites-du-grand-photovoltaique-en-metropole-continentale">
-              Commission de régulation de l’énergie
+              Commission de régulation de l'énergie
             </ExternalLink>
           </p>
           <p>Vous pouvez modifier ces montants.</p>
@@ -56,7 +56,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
-          label="Travaux d’installation"
+          label="Travaux d'installation"
           hintText="€"
           name="worksAmount"
           rules={{
@@ -80,7 +80,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
         />
         <NumericInput
           control={control}
-          label="Autres dépenses d’installation"
+          label="Autres dépenses d'installation"
           hintText="€"
           name="otherAmount"
           rules={{

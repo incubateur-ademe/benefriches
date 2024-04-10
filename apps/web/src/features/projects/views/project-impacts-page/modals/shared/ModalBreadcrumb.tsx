@@ -20,7 +20,7 @@ const ModalBreadcrumb = ({ segments }: Props) => {
       style={{ position: "absolute", top: fr.spacing("1v"), left: fr.spacing("4w") }}
     >
       <button className="fr-breadcrumb__button" aria-expanded="false" aria-controls={breadcrumbId}>
-        Voir le fil d’Ariane
+        Voir le fil d'Ariane
       </button>
       <div className="fr-collapse" id={breadcrumbId}>
         <ol className="fr-breadcrumb__list">

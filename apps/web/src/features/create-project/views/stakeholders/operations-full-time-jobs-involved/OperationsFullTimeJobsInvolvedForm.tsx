@@ -18,7 +18,7 @@ function OperationsFullTimeJobsInvolvedForm({ onSubmit, onBack }: Props) {
 
   return (
     <WizardFormLayout
-      title="Emplois équivalent temps plein mobilisés pour l’exploitation du site
+      title="Emplois équivalent temps plein mobilisés pour l'exploitation du site
     reconverti"
     >
       <form onSubmit={handleSubmit(onSubmit)}>

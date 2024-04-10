@@ -89,11 +89,11 @@ function SiteReinstatementContractOwnerForm({
 
   return (
     <WizardFormLayout
-      title="Qui sera le maître d’ouvrage des travaux de remise en état de la friche ?"
+      title="Qui sera le maître d'ouvrage des travaux de remise en état de la friche ?"
       instructions={
         <p>
           Les travaux de remise en état incluent la désimperméabilisation des sols, la dépollution,
-          l’enlèvement des déchets, la déconstruction, etc.
+          l'enlèvement des déchets, la déconstruction, etc.
         </p>
       }
     >

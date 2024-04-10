@@ -31,13 +31,13 @@ const getLabelForEcosystemServicesImpact = (
     case "nature_related_wellness_and_leisure":
       return "🚵‍♂️ Bien-être et loisirs liés à la nature";
     case "nitrogen_cycle":
-      return "🍄 Cycle de l’azote";
+      return "🍄 Cycle de l'azote";
     case "pollination":
       return "🐝 Pollinisation";
     case "soil_erosion":
-      return "🌾 Régulation de l’érosion des sols";
+      return "🌾 Régulation de l'érosion des sols";
     case "water_cycle":
-      return "💧 Cycle de l’eau";
+      return "💧 Cycle de l'eau";
     case "carbon_storage":
       return "🍂️ Carbone stocké dans les sols";
   }
@@ -104,7 +104,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
             }}
           >
             <ImpactDetailLabel>
-              ⚡️️ Grâce à la production d’énergies renouvelables
+              ⚡️️ Grâce à la production d'énergies renouvelables
             </ImpactDetailLabel>
             <ImpactValue>{formatMonetaryImpact(avoidedCO2WithEnrImpact.amount)}</ImpactValue>
           </ImpactDetailRow>
@@ -117,7 +117,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
             openImpactDescriptionModal("socio-economic-water-regulation");
           }}
         >
-          <ImpactLabel>🚰 Régulation de la qualité de l’eau</ImpactLabel>
+          <ImpactLabel>🚰 Régulation de la qualité de l'eau</ImpactLabel>
           <ImpactDetailRow key={waterRegulationImpact.actor + waterRegulationImpact.amount}>
             <ImpactDetailLabel>{getActorLabel(waterRegulationImpact.actor)}</ImpactDetailLabel>
             <ImpactValue>{formatMonetaryImpact(waterRegulationImpact.amount)}</ImpactValue>

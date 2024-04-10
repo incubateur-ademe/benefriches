@@ -8,7 +8,7 @@ type Props = {
 
 const ScheduleIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <WizardFormLayout title="C’est presque fini !">
+    <WizardFormLayout title="C'est presque fini !">
       <p>Quand commence ce beau projet ?</p>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </WizardFormLayout>

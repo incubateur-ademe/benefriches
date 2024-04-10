@@ -10,12 +10,12 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
       {expectedPerformanceMwhPerYear ? (
         <>
           <p>
-            D’après la puissance de crête de l'installation et sa situation géographique (adresse),
+            D'après la puissance de crête de l'installation et sa situation géographique (adresse),
             vous pouvez espérer produire en moyenne {formatNumberFr(expectedPerformanceMwhPerYear)}{" "}
             MWh par an.
           </p>
           <p>
-            La valeur qui vous est proposée a été calculée à partir des données de l’outil{" "}
+            La valeur qui vous est proposée a été calculée à partir des données de l'outil{" "}
             <a
               target="_blank"
               rel="noopener noreferrer external"
@@ -37,8 +37,8 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
         </>
       ) : (
         <p>
-          Nous n’avons pas réussi à pré-calculer votre potentielle production annuelle. Vous pouvez
-          évaluer votre production grâce à l’outil{" "}
+          Nous n'avons pas réussi à pré-calculer votre potentielle production annuelle. Vous pouvez
+          évaluer votre production grâce à l'outil{" "}
           <a
             target="_blank"
             rel="noopener noreferrer external"
@@ -64,12 +64,12 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
         aria-hidden="true"
       >
         Le <strong>PVGIS (Photovoltaic Geographical Information System)</strong> est un outil
-        gratuit en ligne développé par la Commission Européenne qui permet d’évaluer la production
-        d’énergie d’une installation photovoltaïque. <br />
+        gratuit en ligne développé par la Commission Européenne qui permet d'évaluer la production
+        d'énergie d'une installation photovoltaïque. <br />
         <br />
-        Les <strong>paramètres</strong> comprennent le choix de la base de données d’ensoleillement,
+        Les <strong>paramètres</strong> comprennent le choix de la base de données d'ensoleillement,
         le type de technologie PV, la puissance de crête, les pertes du système, la position de
-        montage, l’inclinaison et l’azimut de la centrale solaire.
+        montage, l'inclinaison et l'azimut de la centrale solaire.
       </span>
     </>
   );

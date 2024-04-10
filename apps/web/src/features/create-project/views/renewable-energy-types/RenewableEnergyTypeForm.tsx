@@ -30,7 +30,7 @@ function RenewableEnergyTypesForm({ onSubmit, onBack }: Props) {
   const validationError = formState.errors.renewableEnergyTypes;
 
   return (
-    <WizardFormLayout title="Quel système d’EnR souhaitez-vous installer ?">
+    <WizardFormLayout title="Quel système d'EnR souhaitez-vous installer ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-5w")}>
           {typedObjectKeys(options).map((renewableEnergy) => {

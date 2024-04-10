@@ -23,10 +23,10 @@ function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
 
   return (
     <WizardFormLayout
-      title="Quelle sera la durée prévisionnelle du contrat de la revente d’énergie au distributeur ?"
+      title="Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur ?"
       instructions={
         <>
-          <p>Ceci est la durée de contrat moyen de l’utilisation de panneaux photovoltaïques.</p>
+          <p>Ceci est la durée de contrat moyen de l'utilisation de panneaux photovoltaïques.</p>
           <p>Vous pouvez modifier cette durée.</p>
         </>
       }

@@ -2,7 +2,7 @@ const AVERAGE_FRENCH_ANNUAL_EMISSIONS_TON_CO2_EQ_PER_PERSON = 9.2;
 
 /* 
 Poids atomique d'un atome de carbone : 12
-Poids atomique d'un atome d’oxygène : 16
+Poids atomique d'un atome d'oxygène : 16
 Poids atomique total du CO2 = 44 (12 + (16 * 2)). 
 Quantité de carbone = Quantité de CO2 * 12 / 44 
 1 kg de CO2 = 0,27 kg de carbone

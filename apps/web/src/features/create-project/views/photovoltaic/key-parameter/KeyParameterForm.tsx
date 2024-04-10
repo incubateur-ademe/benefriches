@@ -22,11 +22,11 @@ function KeyParameterForm({ onSubmit, onBack }: Props) {
 
   const options = [
     {
-      label: "La puissance de l’installation",
+      label: "La puissance de l'installation",
       value: PhotovoltaicKeyParameter.POWER,
     },
     {
-      label: "La superficie de l’installation",
+      label: "La superficie de l'installation",
       value: PhotovoltaicKeyParameter.SURFACE,
     },
   ];
@@ -37,13 +37,13 @@ function KeyParameterForm({ onSubmit, onBack }: Props) {
       instructions={
         <>
           <p>
-            Si vous savez déjà quelle puissance doit faire l’installation, sélectionnez «&nbsp;La
-            puissance d’installation&nbsp;». Bénéfriches calculera alors la superficie au sol
+            Si vous savez déjà quelle puissance doit faire l'installation, sélectionnez «&nbsp;La
+            puissance d'installation&nbsp;». Bénéfriches calculera alors la superficie au sol
             requise.
           </p>
           <p>
-            Si vous souhaitez que la puissance d’installation s’adapte à une certaine superficie au
-            sol, sélectionnez «&nbsp;La superficie de l’installation&nbsp;». Bénéfriches calculera
+            Si vous souhaitez que la puissance d'installation s'adapte à une certaine superficie au
+            sol, sélectionnez «&nbsp;La superficie de l'installation&nbsp;». Bénéfriches calculera
             alors la puissance que pourra faire l'installation.
           </p>
         </>

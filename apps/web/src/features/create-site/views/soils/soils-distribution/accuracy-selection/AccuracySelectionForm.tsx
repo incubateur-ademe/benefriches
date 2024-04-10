@@ -33,7 +33,7 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, isFriche
       <form onSubmit={_onSubmit}>
         <RadioButtons
           {...register("accuracy", {
-            required: "Ce champ est requis pour déterminer l’étape suivante.",
+            required: "Ce champ est requis pour déterminer l'étape suivante.",
           })}
           error={error}
           options={[

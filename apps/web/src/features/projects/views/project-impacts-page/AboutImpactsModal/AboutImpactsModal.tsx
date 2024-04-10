@@ -94,17 +94,17 @@ function AboutImpactsModal({ shouldOpenModal, setShouldNotDisplayAgain }: Props)
           <strong>Les indicateurs affichent la valeur différentielle</strong>
           <p>
             Dans cette page, les indicateurs monétarisés ne montrent pas une comparaison ni un état
-            final mais un différentiel. C’est-à-dire la valeur issue de la monétarisation des
+            final mais un différentiel. C'est-à-dire la valeur issue de la monétarisation des
             impacts, en plus (bénéfices) ou en moins (dommages) que le projet va générer par rapport
             à la conservation du site dans son état.
           </p>
         </li>
         <li>
-          <strong>Le bénéfice de la vente du site n’apparaît pas dans les impacts</strong>
+          <strong>Le bénéfice de la vente du site n'apparaît pas dans les impacts</strong>
           <p>
-            La cession foncière, au bénéfice de l’actuel propriétaire, s’il y a eu vente du site,
-            n’apparaît pas dans les impacts. En revanche, l’acquisition foncière, si elle est à la
-            charge de l’aménageur, est bien prise en compte. Ceci est un parti pris de Bénéfriches.
+            La cession foncière, au bénéfice de l'actuel propriétaire, s'il y a eu vente du site,
+            n'apparaît pas dans les impacts. En revanche, l'acquisition foncière, si elle est à la
+            charge de l'aménageur, est bien prise en compte. Ceci est un parti pris de Bénéfriches.
           </p>
         </li>
         <li>

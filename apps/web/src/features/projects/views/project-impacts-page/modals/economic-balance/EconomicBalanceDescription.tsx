@@ -6,8 +6,8 @@ const EconomicBalanceDescription = () => {
   return (
     <>
       <p>
-        Le bilan d’opération regroupe l’ensemble des recettes et des dépenses d’une opération
-        d’aménagement ou de construction. Son périmètre est donc circonscrit au porteur du projet.
+        Le bilan d'opération regroupe l'ensemble des recettes et des dépenses d'une opération
+        d'aménagement ou de construction. Son périmètre est donc circonscrit au porteur du projet.
       </p>
       <p>
         <strong>Bénéficiaires / déficitaires</strong> : exploitant, aménageur, futur propriétaire
@@ -22,7 +22,7 @@ const EconomicBalanceDescription = () => {
         </li>
         <li>
           <ExternalLink href="https://www.reseaunationalamenageurs.logement.gouv.fr/IMG/pdf/2016-02-22_-_ApprocheSCET-OptimisationEconomiqueOperationsAmenagement.pdf">
-            L’optimisation des coûts des opérations d’aménagement
+            L'optimisation des coûts des opérations d'aménagement
           </ExternalLink>
         </li>
       </ul>

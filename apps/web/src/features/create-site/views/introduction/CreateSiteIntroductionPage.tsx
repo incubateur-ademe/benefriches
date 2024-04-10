@@ -20,7 +20,7 @@ function CreateSiteIntroductionPage() {
     <section className={fr.cx("fr-container", "fr-py-4w")}>
       <WizardFormLayout title="Tout commence sur un site">
         <p>
-          Nous allons d’abord parler du <strong>site existant</strong> : la nature du site, la
+          Nous allons d'abord parler du <strong>site existant</strong> : la nature du site, la
           typologie de ses sols, les dépenses associées, etc.
         </p>
         <p>
@@ -51,7 +51,7 @@ function CreateSiteIntroductionPage() {
               )
             </li>
             <li>
-              Rapports des éventuelles études menées sur le site (étude de faisabilité d’un projet,
+              Rapports des éventuelles études menées sur le site (étude de faisabilité d'un projet,
               étude faune-flore, diagnostic de pollution, etc.)
             </li>
             <li>Dépenses liées au site (gardiennage, loyer, etc.)</li>

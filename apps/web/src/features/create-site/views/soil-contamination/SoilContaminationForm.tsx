@@ -48,7 +48,7 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
           <ol className="fr-text--xs">
             <li>Un impact sur la qualité des eaux souterraines</li>
             <li>
-              La nécessité d’engager des études puis des travaux afin de les traiter et ainsi
+              La nécessité d'engager des études puis des travaux afin de les traiter et ainsi
               permettre un usage futur sans risques sanitaires. Ces études et travaux représentent
               des dépenses généralement importantes qui contraignent la concrétisation de projets de
               reconversion.

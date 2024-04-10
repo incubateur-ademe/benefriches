@@ -40,7 +40,7 @@ const FRICHE_ACTIVITY_OPTIONS = [
   },
   {
     value: FricheActivity.HOUSING,
-    label: "Friche d’habitat (immeuble, quartier résidentiel...)",
+    label: "Friche d'habitat (immeuble, quartier résidentiel...)",
   },
   {
     value: FricheActivity.OTHER,
@@ -58,7 +58,7 @@ type Props = {
 };
 
 const requiredMessage =
-  "Si vous ne savez pas qualifier l’activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
+  "Si vous ne savez pas qualifier l'activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
 
 function FricheActivityForm({ onSubmit, onBack }: Props) {
   const {
@@ -70,7 +70,7 @@ function FricheActivityForm({ onSubmit, onBack }: Props) {
   const error = errors.activity;
 
   return (
-    <WizardFormLayout title="De quel type de friche s’agit-il ?">
+    <WizardFormLayout title="De quel type de friche s'agit-il ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("activity", {

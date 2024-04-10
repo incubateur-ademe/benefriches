@@ -65,7 +65,7 @@ function AboutFormsModal({ shouldOpenModal, setShouldNotDisplayAgain }: Props) {
         </li>
         <p>
           Ces valeurs sont calculées à partir des réponses que vous avez apportées, en combinaison
-          avec des ratios issus du retour d'expériences de l'ADEME ou d’autres ressources
+          avec des ratios issus du retour d'expériences de l'ADEME ou d'autres ressources
           documentaires. Vous pouvez les modifier.
         </p>
       </ul>

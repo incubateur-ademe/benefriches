@@ -114,7 +114,7 @@ function CreateUserForm({ onSubmit, createUserLoadingState }: Props) {
             }
             options={[
               {
-                label: "J’ai lu et j’accepte la politique de confidentialité de Bénéfriches",
+                label: "J'ai lu et j'accepte la politique de confidentialité de Bénéfriches",
                 nativeInputProps: {
                   value: "agreed",
                   ...register("personnalDataUseConsentment", {
@@ -126,9 +126,9 @@ function CreateUserForm({ onSubmit, createUserLoadingState }: Props) {
           />
           {createUserLoadingState === "error" && (
             <Alert
-              description="Une erreur s’est produite lors de la sauvegarde des données... Veuillez réessayer."
+              description="Une erreur s'est produite lors de la sauvegarde des données... Veuillez réessayer."
               severity="error"
-              title="Échec de l’enregistrement"
+              title="Échec de l'enregistrement"
               className="fr-my-7v"
             />
           )}
@@ -158,7 +158,7 @@ function CreateUserForm({ onSubmit, createUserLoadingState }: Props) {
           title="Politique de confidentialité"
           buttons={[
             {
-              children: "C’est compris",
+              children: "C'est compris",
               type: "button",
             },
           ]}

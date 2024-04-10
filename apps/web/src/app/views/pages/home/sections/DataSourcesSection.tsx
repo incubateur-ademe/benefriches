@@ -52,10 +52,10 @@ export default function DataSourcesSection() {
           </p>
           <p className={fr.cx("fr-text--sm")}>
             Instructions du gouvernement, rapports de France Stratégie ou du Secrétariat général
-            pour l'investissement, enquêtes et statistiques de l’INSEE, publications du
-            Commissiariat Général au Développement Durable, de l’EFESE, de l’ADEME, du Shift
-            Project, outils de l’ADEME (ALDO, Base Empreinte), rapports scientifiques... Au total,
-            ce sont plus de 50 sources qui sont utilisées par l’outil.
+            pour l'investissement, enquêtes et statistiques de l'INSEE, publications du
+            Commissiariat Général au Développement Durable, de l'EFESE, de l'ADEME, du Shift
+            Project, outils de l'ADEME (ALDO, Base Empreinte), rapports scientifiques... Au total,
+            ce sont plus de 50 sources qui sont utilisées par l'outil.
           </p>
         </div>
       </div>

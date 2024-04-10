@@ -79,7 +79,7 @@ function ProjectImpactsPageWrapper({
             />
             {dataLoadingState === "error" && (
               <Alert
-                description="Une erreur s’est produite lors du chargement des données."
+                description="Une erreur s'est produite lors du chargement des données."
                 severity="error"
                 title="Impossible de charger les impacts du projet"
                 className="fr-my-7v"

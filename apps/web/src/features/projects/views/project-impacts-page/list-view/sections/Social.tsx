@@ -25,7 +25,7 @@ const SocialListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
           openImpactDescriptionModal("social");
         }}
       />
-      <ImpactSectionTitle>Impacts sur l’emploi</ImpactSectionTitle>
+      <ImpactSectionTitle>Impacts sur l'emploi</ImpactSectionTitle>
       <ImpactItemGroup>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <ImpactLabel>🧑‍🔧 Emplois équivalent temps plein mobilisés</ImpactLabel>

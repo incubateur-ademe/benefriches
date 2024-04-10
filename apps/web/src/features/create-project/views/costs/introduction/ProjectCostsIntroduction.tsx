@@ -10,8 +10,8 @@ const ProjectCostsIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <WizardFormLayout title="Coûts liés au projet">
       <p>
-        Les travaux de remise en état de la friche, d’installation des panneaux, de raccordement et
-        d’exploitation vont générer des dépenses.
+        Les travaux de remise en état de la friche, d'installation des panneaux, de raccordement et
+        d'exploitation vont générer des dépenses.
       </p>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </WizardFormLayout>

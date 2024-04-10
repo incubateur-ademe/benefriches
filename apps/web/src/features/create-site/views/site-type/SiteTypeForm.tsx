@@ -44,7 +44,7 @@ function SiteTypeForm({ onSubmit }: Props) {
             </p>
             <p>
               Une friche peut être industrielle, militaire, ferroviaire, portuaire... mais aussi
-              agricole, hospitalière, administrative, commerciale ou d’habitat.
+              agricole, hospitalière, administrative, commerciale ou d'habitat.
             </p>
           </>
         }

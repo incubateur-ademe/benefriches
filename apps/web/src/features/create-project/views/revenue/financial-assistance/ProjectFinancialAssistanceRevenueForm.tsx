@@ -30,7 +30,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
           <span className="fr-text--lg">💡</span>
 
           <p className="fr-text--xs">
-            Les recettes de l’opération peuvent avoir différentes origines&nbsp;:
+            Les recettes de l'opération peuvent avoir différentes origines&nbsp;:
           </p>
           <ul className="fr-text--xs">
             <li>
@@ -40,8 +40,8 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
             </li>
             <li>
               Les contributions publiques de collectivités : ventes de foncier pour équipements et
-              espaces publics à la collectivité, participation pour remise d’ouvrage (en
-              concession), apport en nature (foncier, etc.), subvention d’équilibre (concédant ou
+              espaces publics à la collectivité, participation pour remise d'ouvrage (en
+              concession), apport en nature (foncier, etc.), subvention d'équilibre (concédant ou
               régie),
             </li>
             <li>

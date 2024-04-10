@@ -18,7 +18,7 @@ function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
   const { control, handleSubmit } = useForm<FormValues>();
 
   return (
-    <WizardFormLayout title="Recettes annuelles liées à l’exploitation du site">
+    <WizardFormLayout title="Recettes annuelles liées à l'exploitation du site">
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="operationsIncome"

@@ -22,7 +22,7 @@ function ProjectCreationConfirmation({ projectId, projectName, loadingState }: P
           <Alert
             description={`Une erreur est survenue lors de la création du projet "${projectName}", veuillez réessayer.`}
             severity="error"
-            title="Le projet n’a pas pu être enregistré"
+            title="Le projet n'a pas pu être enregistré"
             className="fr-my-7v"
           />
         </WizardFormLayout>

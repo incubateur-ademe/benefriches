@@ -11,7 +11,7 @@ export const formatEpciName = (name: string) => {
     return name.replace("CC", "Communauté de Communes");
   }
   if (name.startsWith("CA")) {
-    return name.replace("CA", "Communauté d’Agglomération");
+    return name.replace("CA", "Communauté d'Agglomération");
   }
   if (name.startsWith("CU")) {
     return name.replace("CU", "Communauté Urbaine");
@@ -21,7 +21,7 @@ export const formatEpciName = (name: string) => {
 
 export const formatMunicipalityName = (name: string) => {
   if (startsByVowel(name) || name.toLowerCase().startsWith("h")) {
-    return `Mairie d’${capitalize(name)}`;
+    return `Mairie d'${capitalize(name)}`;
   }
   return `Mairie de ${capitalize(name)}`;
 };

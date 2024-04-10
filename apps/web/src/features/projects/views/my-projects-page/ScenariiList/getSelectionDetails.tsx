@@ -69,7 +69,7 @@ export const getSelectionInfos = (
         baseScenario: {
           type: "STATU_QUO",
           id: baseScenarioId,
-          name: baseScenario.isFriche ? "Site en friche" : "Site en l’état",
+          name: baseScenario.isFriche ? "Site en friche" : "Site en l'état",
           siteName: baseScenario.name,
         },
         withScenario: {
@@ -110,7 +110,7 @@ export const getSelectionInfos = (
       baseScenario: {
         type: "STATU_QUO",
         id: selectedStatuQuoScenario,
-        name: baseScenario.isFriche ? "Site en friche" : "Site en l’état",
+        name: baseScenario.isFriche ? "Site en friche" : "Site en l'état",
         siteName: baseScenario.name,
       },
     };

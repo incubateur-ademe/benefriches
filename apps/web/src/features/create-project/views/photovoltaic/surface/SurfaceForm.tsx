@@ -31,7 +31,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
       instructions={
         <>
           <p>
-            La superficie d’installation des panneaux ne peut être supérieure à la superficie totale
+            La superficie d'installation des panneaux ne peut être supérieure à la superficie totale
             de la friche (<strong>{formatNumberFr(siteSurfaceArea)}</strong> m²).
           </p>
 
@@ -39,11 +39,11 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
           <p className="fr-text--xs">
             Une centrale au sol peut facilement être implantée sur des espaces imperméabilisés (non
             bâtis) ou minéralisés, mais également sur des espaces enherbés ou avec de la végétation
-            basse (broussailles, garrigue, etc.) qu’ils soient artificialisés ou naturels.
+            basse (broussailles, garrigue, etc.) qu'ils soient artificialisés ou naturels.
           </p>
           <p className="fr-text--xs">
             Dès lors que de la végétation haute est présente (sols artificiels ou prairies arborés,
-            forêts), l’implantation nécessite des investissements (coupes) et est à éviter (pour des
+            forêts), l'implantation nécessite des investissements (coupes) et est à éviter (pour des
             raisons de biodiversité et de puits de carbone).
           </p>
           <p className="fr-text--xs">
@@ -55,7 +55,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="photovoltaicInstallationSurfaceSquareMeters"
-          label={<RequiredLabel label="Superficie de l’installation" />}
+          label={<RequiredLabel label="Superficie de l'installation" />}
           hintText={hintText}
           rules={{
             min: 0,

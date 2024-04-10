@@ -19,7 +19,7 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
       return <p>Chargement des informations du site, veuillez patienter...</p>;
     case "error":
       return (
-        <WizardFormLayout title="Le site demandé n’a pas pu ếtre chargé">
+        <WizardFormLayout title="Le site demandé n'a pas pu ếtre chargé">
           <p>
             Une erreur est survenue lors du chargement des informations du site, veuillez réessayer.
           </p>

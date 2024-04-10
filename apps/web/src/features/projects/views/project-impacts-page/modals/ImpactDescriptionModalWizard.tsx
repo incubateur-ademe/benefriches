@@ -82,7 +82,7 @@ const getModalContent = (
       };
     case "economic-balance":
       return {
-        title: "📉 Bilan de l’opération",
+        title: "📉 Bilan de l'opération",
         breadcrumbSegments: [
           {
             label: "Analyse coûts bénéfices",
@@ -90,7 +90,7 @@ const getModalContent = (
               onChangeModalCategoryOpened("cost-benefit-analysis");
             },
           },
-          { label: "Bilan de l’opération", isCurrent: true },
+          { label: "Bilan de l'opération", isCurrent: true },
         ],
         content: <EconomicBalanceDescription />,
       };
@@ -114,7 +114,7 @@ const getModalContent = (
         title: "🏠 Acquisition du site",
         breadcrumbSegments: [
           {
-            label: "Bilan de l’opération",
+            label: "Bilan de l'opération",
             onClick: () => {
               onChangeModalCategoryOpened("economic-balance");
             },
@@ -143,7 +143,7 @@ const getModalContent = (
       };
     case "socio-economic-avoided-co2-renewable-energy":
       return {
-        title: "⚡️️ Emissions de CO2-eq évitées grâce à la production d’énergies renouvelables",
+        title: "⚡️️ Emissions de CO2-eq évitées grâce à la production d'énergies renouvelables",
         breadcrumbSegments: [
           {
             label: "Impacts socio-économiques",
@@ -166,7 +166,7 @@ const getModalContent = (
       };
     case "socio-economic-water-regulation":
       return {
-        title: "🚰 Régulation de la qualité de l’eau",
+        title: "🚰 Régulation de la qualité de l'eau",
         breadcrumbSegments: [
           {
             label: "Impacts socio-économiques",
@@ -174,7 +174,7 @@ const getModalContent = (
               onChangeModalCategoryOpened("socio-economic");
             },
           },
-          { label: "Régulation de la qualité de l’eau", isCurrent: true },
+          { label: "Régulation de la qualité de l'eau", isCurrent: true },
         ],
         content: (
           <WaterRegulationDescription
@@ -285,7 +285,7 @@ const getModalContent = (
       };
     case "environmental-avoided-co2-renewable-energy":
       return {
-        title: "⚡️️ Emissions de CO2-eq évitées grâce à la production d’énergies renouvelables",
+        title: "⚡️️ Emissions de CO2-eq évitées grâce à la production d'énergies renouvelables",
         breadcrumbSegments: [
           {
             label: "Impacts environnementaux",

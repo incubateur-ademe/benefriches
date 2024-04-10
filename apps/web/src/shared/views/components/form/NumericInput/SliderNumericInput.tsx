@@ -72,7 +72,7 @@ const SliderNumericInput = <T extends FieldValues>({
       onChangeNumericSliderInput(newValue);
       return;
     }
-    // si la valeur entrée manuellement n’est pas valide, on remet la valeur actuelle
+    // si la valeur entrée manuellement n'est pas valide, on remet la valeur actuelle
     setInputValue(field.value);
   };
 
@@ -98,7 +98,7 @@ const SliderNumericInput = <T extends FieldValues>({
           type: "number",
           value: inputValue,
           onChange: onChangeInput,
-          onClick: onLeaveInput, // TODO à améliorer: le click sur les boutons +- ne trigger pas d’event focus
+          onClick: onLeaveInput, // TODO à améliorer: le click sur les boutons +- ne trigger pas d'event focus
           onBlur: onLeaveInput,
           style: { width: "150px" },
           ...inputProps,

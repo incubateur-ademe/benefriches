@@ -41,12 +41,12 @@ export default function HowItWorksSection() {
           <HowItWorksStep
             number={1}
             title="Décrivez le site"
-            text="Adresse, type de site, typologie des sols, pollution, gestion du site, etc. Si vous n’avez pas l’info, Bénéfriches vous propose des valeurs par défaut, basées sur des moyennes sur des sites similaires."
+            text="Adresse, type de site, typologie des sols, pollution, gestion du site, etc. Si vous n'avez pas l'info, Bénéfriches vous propose des valeurs par défaut, basées sur des moyennes sur des sites similaires."
           />
           <HowItWorksStep
             number={2}
             title="Renseignez le projet"
-            text="Type de projet, usage des sols, caractéristiques des bâtiments ou équipements, acteurs, coûts et recettes, calendrier, etc. Là aussi, si vous n’avez pas l’info, Bénéfriches vous propose des valeurs par défaut."
+            text="Type de projet, usage des sols, caractéristiques des bâtiments ou équipements, acteurs, coûts et recettes, calendrier, etc. Là aussi, si vous n'avez pas l'info, Bénéfriches vous propose des valeurs par défaut."
           />
           <HowItWorksStep
             number={3}
@@ -68,7 +68,7 @@ export default function HowItWorksSection() {
             text={
               <span>
                 Après avoir renseigné plusieurs sites et projets, vous comparez les impacts entre{" "}
-                <strong>2 variantes</strong> d’un projet, <strong>2 projets différents</strong> sur
+                <strong>2 variantes</strong> d'un projet, <strong>2 projets différents</strong> sur
                 un même site, un même projet sur <strong>2 sites différents</strong> ou un site{" "}
                 <strong>avec et sans projet</strong>.
               </span>

@@ -30,7 +30,7 @@ const mapsProps = (baseScenario: Props["baseScenario"], withScenario: Props["wit
       isStatuQuo,
       isSameSite: true,
       withScenarioName: withScenario.projectData.name || "",
-      baseScenarioName: baseScenario.siteData.isFriche ? "Site en friche" : "Site en l’état",
+      baseScenarioName: baseScenario.siteData.isFriche ? "Site en friche" : "Site en l'état",
       baseSiteName: baseScenario.siteData.name,
     };
   }

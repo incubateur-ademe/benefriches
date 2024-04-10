@@ -20,13 +20,13 @@ const AvoidedCO2WithEnRDescription = ({
   return (
     <>
       <p>
-        La production d’énergie renouvelable (photovoltaïque, géothermique, etc.) présente un
-        caractère faiblement carboné en regard d’autres sources d’énergie notamment d’origine
-        fossile, qu’il est pertinent de prendre en compte dans une analyse coûts-bénéfices.
+        La production d'énergie renouvelable (photovoltaïque, géothermique, etc.) présente un
+        caractère faiblement carboné en regard d'autres sources d'énergie notamment d'origine
+        fossile, qu'il est pertinent de prendre en compte dans une analyse coûts-bénéfices.
       </p>
       <p>
-        Bénéfriches fait l’hypothèse que cette production vient se substituer à un accroissement de
-        la production d’énergie selon le mix énergétique français.
+        Bénéfriches fait l'hypothèse que cette production vient se substituer à un accroissement de
+        la production d'énergie selon le mix énergétique français.
       </p>
       <p>
         <strong>Bénéficiaire</strong> : société humaine
@@ -35,15 +35,15 @@ const AvoidedCO2WithEnRDescription = ({
       <ModalTitleThree>Données systémiques agrégées par Bénéfriches :</ModalTitleThree>
       <ul>
         <li>
-          Facteurs d’émission associés à la production de différentes sources d’énergie (exprimés en
+          Facteurs d'émission associés à la production de différentes sources d'énergie (exprimés en
           kg éq. CO2/kWh)
         </li>
         {withMonetarisation && <li>Valeur tutélaire du carbone (exprimée en €/t éq. CO2)</li>}
       </ul>
       <ModalTitleThree> Données du projet</ModalTitleThree>
       <p>
-        Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées
-        par Bénéfriches sur la base d’une moyenne ou d’une hypothèse.
+        Les données du projet peuvent avoir été saisies par l'utilisateur·ice ou avoir été suggérées
+        par Bénéfriches sur la base d'une moyenne ou d'une hypothèse.
       </p>
       <ul>
         <li>Adresse : {address}</li>
@@ -60,29 +60,29 @@ const AvoidedCO2WithEnRDescription = ({
       </ul>
       <ModalTitleTwo>Comment est fait le calcul ?</ModalTitleTwo>
       <p>
-        Il s’agit d’un calcul différentiel entre (i) l’impact carbone de la production d’énergie
-        associée à la source d’énergie renouvelable du projet et (ii) celui du mixte énergétique
+        Il s'agit d'un calcul différentiel entre (i) l'impact carbone de la production d'énergie
+        associée à la source d'énergie renouvelable du projet et (ii) celui du mixte énergétique
         national.
       </p>
       <p>
-        Pour le photovoltaïque, la production d’énergie renouvelable est calculée avec l’outil PVGIS
+        Pour le photovoltaïque, la production d'énergie renouvelable est calculée avec l'outil PVGIS
         de la Commission européenne compte tenu de la puissance crête de votre installation et de la
-        situation géographique (adresse) du projet, informations saisies par l’utilisateur. Les
-        autres paramètres de l’outil PVGIS ne sont pas modifiés.
+        situation géographique (adresse) du projet, informations saisies par l'utilisateur. Les
+        autres paramètres de l'outil PVGIS ne sont pas modifiés.
       </p>
       <p>
-        On fait l’hypothèse que cette production vient se substituer à un accroissement de la
-        production d’énergie selon le mix énergétique français.
+        On fait l'hypothèse que cette production vient se substituer à un accroissement de la
+        production d'énergie selon le mix énergétique français.
       </p>
       <p>
-        L’impact carbone (exprimé en kg éq. CO2/an) est le produit du facteur d’émission associé à
-        une source d’énergie (exprimé en kg éq. CO2/kWh) par la production d’énergie calculée
+        L'impact carbone (exprimé en kg éq. CO2/an) est le produit du facteur d'émission associé à
+        une source d'énergie (exprimé en kg éq. CO2/kWh) par la production d'énergie calculée
         (exprimée en kWh/an).
       </p>
       {withMonetarisation && (
         <p>
-          La monétarisation de cet impact différentiel consiste à multiplier la valeur d’impact avec
-          la valeur tutélaire du carbone (ou valeur d’action pour le climat).
+          La monétarisation de cet impact différentiel consiste à multiplier la valeur d'impact avec
+          la valeur tutélaire du carbone (ou valeur d'action pour le climat).
         </p>
       )}
 
@@ -90,12 +90,12 @@ const AvoidedCO2WithEnRDescription = ({
       <ul>
         <li>
           <ExternalLink href="https://base-empreinte.ademe.fr/donnees/jeu-donnees">
-            Facteurs d’émission associés à la production de différentes sources d’énergie
+            Facteurs d'émission associés à la production de différentes sources d'énergie
           </ExternalLink>
         </li>
         <li>
           <ExternalLink href="https://re.jrc.ec.europa.eu/pvg_tools/fr/">
-            Estimation de la production d’énergie photovoltaïque géolocalisée
+            Estimation de la production d'énergie photovoltaïque géolocalisée
           </ExternalLink>
         </li>
         {withMonetarisation && (
@@ -118,7 +118,7 @@ const AvoidedCO2WithEnRDescription = ({
 
         <li>
           <ExternalLink href="https://www.strategie.gouv.fr/infographies/de-laction-climat-cest-quoi">
-            Valeur tutélaire du carbone (ou valeur de l’action pour le climat)
+            Valeur tutélaire du carbone (ou valeur de l'action pour le climat)
           </ExternalLink>
         </li>
       </ul>

@@ -44,12 +44,12 @@ function ProjectPhaseForm({ onSubmit, onBack }: Props) {
               style={{ borderLeft: "1px #000091 solid" }}
             >
               <RadioButton
-                label="Opportunité de l’opération, identification et analyses de la faisabilité de différents scénarii possibles"
+                label="Opportunité de l'opération, identification et analyses de la faisabilité de différents scénarii possibles"
                 value="setup_opportunity_and_feasibility_analysis"
                 {...register("phaseDetails", { required: requiredMessage })}
               />
               <RadioButton
-                label="Choix d’un scénario et du processus de sa mise en œuvre"
+                label="Choix d'un scénario et du processus de sa mise en œuvre"
                 value="setup_scenario_selection_and_implementation"
                 {...register("phaseDetails", { required: requiredMessage })}
               />

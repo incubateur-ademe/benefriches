@@ -8,7 +8,7 @@ const NonContaminatedSurfaceDescription = () => {
         et les risques associés, pour les futurs usagers (habitants, salariés, etc.).
       </p>
       <p>
-        La surface non polluée est une donnée saisie par l’utilisateur pour le site et pour le
+        La surface non polluée est une donnée saisie par l'utilisateur pour le site et pour le
         projet.
       </p>
     </>

@@ -42,7 +42,7 @@ function CarbonStorageComparisonChartContainer() {
   if (carbonStorageDataLoadingState === "error") {
     return (
       <Alert
-        description="Une erreur s’est produite lors du calcul du pouvoir de stockage de carbone par les sols..."
+        description="Une erreur s'est produite lors du calcul du pouvoir de stockage de carbone par les sols..."
         severity="error"
         title="Erreur"
         className="fr-my-7v"

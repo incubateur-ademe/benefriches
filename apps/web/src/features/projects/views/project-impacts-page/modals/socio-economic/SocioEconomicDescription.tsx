@@ -6,28 +6,28 @@ const SocioEconomicDescription = () => {
   return (
     <>
       <p>
-        L’évaluation socio-économique a pour objet d’apprécier l’intérêt d’un projet ou d’un
+        L'évaluation socio-économique a pour objet d'apprécier l'intérêt d'un projet ou d'un
         investissement pour la collectivité.
       </p>
       <p>
         Elle est réalisée en analysant les effets du projet (ses impacts) sur les différents types
-        d’acteurs directement ou indirectement concernés, que ces impacts soient positifs ou
-        négatifs. On parle alors d’impacts socio-économiques.
+        d'acteurs directement ou indirectement concernés, que ces impacts soient positifs ou
+        négatifs. On parle alors d'impacts socio-économiques.
       </p>
       <p>
-        S’agissant de projets de renouvellement urbain, les impacts sont nombreux et de différentes
+        S'agissant de projets de renouvellement urbain, les impacts sont nombreux et de différentes
         natures :
       </p>
       <ul>
         <li>
           environnementaux (ex : maintien de capacité de stockage de carbone dans les sols, création
-          d’ilots de fraicheur),
+          d'ilots de fraicheur),
         </li>
         <li>
           économiques (ex : réduction de dépenses futures en entretien de réseaux ou voiries),
         </li>
         <li>
-          sociaux (ex : création d’aménités, amélioration de l’attractivité d’un quartier, réduction
+          sociaux (ex : création d'aménités, amélioration de l'attractivité d'un quartier, réduction
           du besoin en en déplacements, etc.)
         </li>
       </ul>
@@ -45,7 +45,7 @@ const SocioEconomicDescription = () => {
           </ExternalLink>
         </li>
         <li>
-          Évaluation socioéconomique des opérations d’aménagement urbain :{" "}
+          Évaluation socioéconomique des opérations d'aménagement urbain :{" "}
           <ExternalLink href="https://www.strategie.gouv.fr/publications/referentiel-methodologique-de-levaluation-socioeconomique-operations-damenagement">
             Référentiel&nbsp;méthodologique
           </ExternalLink>

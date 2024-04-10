@@ -44,11 +44,11 @@ export default function CallToActionSection() {
             />
             <h2>Vous êtes aménageur urbain ?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>
-              Les projets d’aménagement (logements, lieux d’activités, espace vert...) ne sont pas
+              Les projets d'aménagement (logements, lieux d'activités, espace vert...) ne sont pas
               encore disponibles sur la solution numérique.
             </p>
             <p className={fr.cx("fr-text--sm")}>
-              Ils le seront à partir de l’été 2024. En attendant, il est toujours possible
+              Ils le seront à partir de l'été 2024. En attendant, il est toujours possible
               d'utiliser le{" "}
               <ExternalLink href={BENEFRICHES_SPREADSHEET_URL}>tableur de calcul</ExternalLink>{" "}
               (téléchargement libre). Pour vous aider dans son utilisation, consultez le{" "}

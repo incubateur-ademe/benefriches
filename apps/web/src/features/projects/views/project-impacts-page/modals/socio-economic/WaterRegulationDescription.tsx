@@ -38,8 +38,8 @@ const WaterRegulationDescription = ({
       <p>
         Les friches sont bien souvent concernées par des pollutions des sols, vestiges des activités
         passées. Il peut en résulter des impacts sur les eaux souterraines, à savoir une dégradation
-        de la qualité de l’eau. L’impact, indirect, retenu dans Bénéfriches est le besoin
-        d’épuration des eaux s’infiltrant sur la friche en vue d’en améliorer la qualité.
+        de la qualité de l'eau. L'impact, indirect, retenu dans Bénéfriches est le besoin
+        d'épuration des eaux s'infiltrant sur la friche en vue d'en améliorer la qualité.
       </p>
       <p>
         <strong>Bénéficiaire</strong> : société humaine
@@ -47,12 +47,12 @@ const WaterRegulationDescription = ({
       <ModalTitleTwo>Quelles données sont utilisées dans le calcul ?</ModalTitleTwo>
       <ModalTitleThree> Données systémiques agrégées par Bénéfriches :</ModalTitleThree>
       <ul>
-        <li>Valeur économique d’épuration des eaux souterraines (exprimée en €/ha).</li>
+        <li>Valeur économique d'épuration des eaux souterraines (exprimée en €/ha).</li>
       </ul>
       <ModalTitleThree> Données du site</ModalTitleThree>
       <p>
-        Les données du site peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées
-        par Bénéfriches sur la base d’une moyenne ou d’une hypothèse. Il s’agit de la surface
+        Les données du site peuvent avoir été saisies par l'utilisateur·ice ou avoir été suggérées
+        par Bénéfriches sur la base d'une moyenne ou d'une hypothèse. Il s'agit de la surface
         polluée du site (exprimée en hectare) et des éventuelles surfaces du site occupées (i) par
         des prairies, (ii) par des forêts et (iii) par des zones humides (exprimées en hectare).
       </p>
@@ -72,8 +72,8 @@ const WaterRegulationDescription = ({
       </ul>
       <ModalTitleThree> Données du projet</ModalTitleThree>
       <p>
-        Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées
-        par Bénéfriches sur la base d’une moyenne ou d’une hypothèse. Il s’agit de la surface
+        Les données du projet peuvent avoir été saisies par l'utilisateur·ice ou avoir été suggérées
+        par Bénéfriches sur la base d'une moyenne ou d'une hypothèse. Il s'agit de la surface
         polluée résiduelle après remise en état (exprimée en hectare) et des éventuelles surfaces du
         site occupées (i) par des prairies, (ii) par des forêts et (iii) par des zones humides
         (exprimées en hectare).
@@ -94,15 +94,15 @@ const WaterRegulationDescription = ({
       </ul>
       <ModalTitleTwo>Comment est fait le calcul ?</ModalTitleTwo>
       <p>
-        La valeur de l’indicateur « Régulation de la qualité de l’eau » (exprimée en €) est la
+        La valeur de l'indicateur « Régulation de la qualité de l'eau » (exprimée en €) est la
         somme, pour chaque type de sol de type « prairies », « forêts » ou « zones humides » de la
-        valeur économique d’épuration des eaux souterraines multipliée par la surface du type de sol
+        valeur économique d'épuration des eaux souterraines multipliée par la surface du type de sol
         concerné (exprimée en ha) et de la monétarisation du besoin en épuration des eaux
         souterraines des surfaces dépolluée du site.
       </p>
       <p>
         La monétarisation du besoin en épuration des eaux souterraines lié à la dépollution du site
-        (exprimée en €) est le produit de la surface dépolluée par la valeur économique d’épuration
+        (exprimée en €) est le produit de la surface dépolluée par la valeur économique d'épuration
         des eaux souterraines (exprimée en ha).
       </p>
       <p>

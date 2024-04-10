@@ -67,8 +67,8 @@ const siteManagementInputs = [
         {getLabelForExpensePurpose("otherManagementCosts")}
         <TooltipInfoButton
           text="Par exemple, le maintien de bâtiments en bon état (ex&nbsp;: chauffage pour éviter le gel
-          de canalisation ou la dégradation liée l’humidité), la taille de la végétation ou encore
-          le règlement des factures d’eau ou d’électricité."
+          de canalisation ou la dégradation liée l'humidité), la taille de la végétation ou encore
+          le règlement des factures d'eau ou d'électricité."
           id="other-management-costs"
         />
       </>
@@ -91,8 +91,8 @@ const siteSecuringInputs = [
       <>
         {getLabelForExpensePurpose("illegalDumpingCost")}
         <TooltipInfoButton
-          text="L’enquête menée en 2019 par l’ADEME indique un ratio moyen de 4,7 kg/hab/an et un coût
-          moyen de 900 €/tonne (Nb&nbsp;: bien qu’on relève une occurrence non négligeable de coûts
+          text="L'enquête menée en 2019 par l'ADEME indique un ratio moyen de 4,7 kg/hab/an et un coût
+          moyen de 900 €/tonne (Nb&nbsp;: bien qu'on relève une occurrence non négligeable de coûts
           plus élevés (500 à 1000 €/tonne voire supérieurs à 1000 €/tonne), qui peuvent être liés à
           des typologies de déchets particulières (déchets dangereux, encombrants) ou à des besoins
           de gestion (évacuation ou traitement) spécifiques, une majorité des valeurs répertoriées

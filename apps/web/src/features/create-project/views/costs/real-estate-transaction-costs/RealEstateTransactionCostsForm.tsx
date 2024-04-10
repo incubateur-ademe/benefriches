@@ -40,8 +40,8 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
             Vous pouvez modifier ces montants.
           </p>
           <p>
-            Si les démarches d’acquisition ne sont pas suffisamment avancées, il est possible
-            d’estimer le prix du terrain en consultant les transactions immobilières récentes à
+            Si les démarches d'acquisition ne sont pas suffisamment avancées, il est possible
+            d'estimer le prix du terrain en consultant les transactions immobilières récentes à
             proximité de votre site.
           </p>
 

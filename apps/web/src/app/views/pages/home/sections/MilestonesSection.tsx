@@ -27,7 +27,7 @@ export default function MilestonesSection() {
       <ul style={{ display: "flex", overflowX: "scroll" }} className={fr.cx("fr-mt-5w", "fr-px-0")}>
         <MilestoneItem
           title="🐣 2018"
-          text="Sur le constat qu’il n’existe aucune solution de calcul des impacts des projets d’aménagement, Laurent Chateau, expert friche de l’ADEME, imagine Bénéfriches. Un bureau d’étude est mandaté pour collecter les données et concevoir l’outil."
+          text="Sur le constat qu'il n'existe aucune solution de calcul des impacts des projets d'aménagement, Laurent Chateau, expert friche de l'ADEME, imagine Bénéfriches. Un bureau d'étude est mandaté pour collecter les données et concevoir l'outil."
         />
         <MilestoneItem
           title="📈 2020"
@@ -48,11 +48,11 @@ export default function MilestonesSection() {
         />
         <MilestoneItem
           title="⚡️ Printemps 2024"
-          text="Première mise en ligne de Bénéfriche version SaaS, avec les fonctionnalités “Création de site”, “Création de projet”, “Consultation des impacts”. Le cas d’usage Centrale photovoltaïque est disponible."
+          text="Première mise en ligne de Bénéfriche version SaaS, avec les fonctionnalités “Création de site”, “Création de projet”, “Consultation des impacts”. Le cas d'usage Centrale photovoltaïque est disponible."
         />
         <MilestoneItem
           title="🏘 Été 2024"
-          text="Mise en ligne de la fonctionnalité 'Comparaison des impacts' et du cas d’usage Quartier."
+          text="Mise en ligne de la fonctionnalité 'Comparaison des impacts' et du cas d'usage Quartier."
         />
         <MilestoneItem
           title="🌾 Automne-hiver 2024"

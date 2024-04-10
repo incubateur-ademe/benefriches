@@ -22,7 +22,7 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
           <Alert
             description={`Une erreur est survenue lors de la création du site "${siteName}", veuillez réessayer.`}
             severity="error"
-            title="Le site n’a pas pu être enregistré"
+            title="Le site n'a pas pu être enregistré"
             className="fr-my-7v"
           />
         </WizardFormLayout>

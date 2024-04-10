@@ -40,7 +40,7 @@ const LocalAuthoritySelect = (props: Props) => {
   if (loadingData === "error") {
     return (
       <Alert
-        description="Une erreur s’est produite lors de la récupération des collectivités associées à votre site..."
+        description="Une erreur s'est produite lors de la récupération des collectivités associées à votre site..."
         severity="error"
         title="Erreur"
         className="fr-my-7v"

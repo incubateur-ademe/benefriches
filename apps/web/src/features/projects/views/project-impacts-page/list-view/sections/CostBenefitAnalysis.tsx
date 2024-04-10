@@ -31,7 +31,7 @@ const CostBenefitAnalysisListSection = ({
           openImpactDescriptionModal("economic-balance");
         }}
       >
-        <ImpactLabel>📉 Bilan de l’opération</ImpactLabel>
+        <ImpactLabel>📉 Bilan de l'opération</ImpactLabel>
         <ImpactValue>{formatMonetaryImpact(economicBalanceImpactTotal)}</ImpactValue>
       </ImpactItemRow>
       <ImpactItemRow
