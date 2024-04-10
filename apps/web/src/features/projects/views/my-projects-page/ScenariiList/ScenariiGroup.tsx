@@ -24,7 +24,7 @@ function SiteName({ children }: { children: ReactNode }) {
 }
 
 function GridColumn({ children }: { children: ReactNode }) {
-  return <div className={fr.cx("fr-col-4")}>{children}</div>;
+  return <div className={fr.cx("fr-col-3")}>{children}</div>;
 }
 
 function ScenariiGroup({
@@ -55,8 +55,6 @@ function ScenariiGroup({
             onChangeSelectedSite={onChangeSelectedSite}
             selectedIds={selectedIds}
             selectableIds={selectableIds}
-            // TODO : get this information from api
-            yearlyProfit={-391179}
           />
         </GridColumn>
         {reconversionProjects.map((project) => {
@@ -68,8 +66,6 @@ function ScenariiGroup({
                 selectedIds={selectedIds}
                 selectableIds={selectableIds}
                 onChangeSelectedProject={onChangeSelectedProject}
-                // TODO : get these information from api
-                yearlyProfit={425968}
                 type="PHOTOVOLTAIC_POWER_PLANT"
               />
             </GridColumn>

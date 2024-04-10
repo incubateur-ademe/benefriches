@@ -14,12 +14,11 @@ function NewScenarioTile({ siteId }: Props) {
       style={{
         width: "100%",
         border: "1px dashed",
-        height: "100%",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        minHeight: 340,
+        minHeight: "260px",
         color: "var(--text-title-blue-france)",
       }}
     >

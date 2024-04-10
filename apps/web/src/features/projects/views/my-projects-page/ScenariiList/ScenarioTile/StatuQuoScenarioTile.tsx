@@ -7,7 +7,6 @@ type Props = {
   siteId: string;
   selectedIds: string[];
   selectableIds: string[];
-  yearlyProfit: number;
   onChangeSelectedSite: (value?: string) => void;
   isFriche: boolean;
   fricheActivity?: FricheActivity;
@@ -20,7 +19,6 @@ function StatuQuoScenarioTile({
   selectableIds,
   isFriche,
   fricheActivity,
-  yearlyProfit,
 }: Props) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -52,7 +50,6 @@ function StatuQuoScenarioTile({
       projectName={scenarioTitle}
       details="Pas de changement"
       onChangeCheckbox={onChangeCheckbox}
-      yearlyProfit={yearlyProfit}
       pictogramUrl={projectIcon}
       isSelected={isSelected}
       shouldDisplayCheckbox={shouldDisplayCheckbox}

@@ -9,7 +9,6 @@ type Props = {
   name: string;
   selectedIds: string[];
   selectableIds: string[];
-  yearlyProfit: number;
   type: string;
   onChangeSelectedProject: (id: string, checked: boolean) => void;
 };
@@ -20,7 +19,6 @@ function ProjectScenarioTile({
   type,
   onChangeSelectedProject,
   selectedIds,
-  yearlyProfit,
   selectableIds,
 }: Props) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -52,7 +50,6 @@ function ProjectScenarioTile({
       projectName={name}
       impactLinkProps={projectImpactsLinkProps}
       onChangeCheckbox={onChangeCheckbox}
-      yearlyProfit={yearlyProfit}
       pictogramUrl={getScenarioPictoUrl(type)}
       isSelected={isSelected}
       shouldDisplayCheckbox={shouldDisplayCheckbox}

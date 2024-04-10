@@ -1,12 +1,8 @@
-import Badge from "@codegouvfr/react-dsfr/Badge";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
-
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
 type Props = {
   projectName: string;
   pictogramUrl?: string;
-  yearlyProfit: number;
   details?: string;
   impactLinkProps?: { href: string };
   isSelected: boolean;
@@ -21,7 +17,6 @@ function ScenarioTile({
   isSelected,
   shouldDisplayCheckbox,
   projectName,
-  yearlyProfit,
   details,
   impactLinkProps,
   pictogramUrl,
@@ -45,8 +40,8 @@ function ScenarioTile({
                     src={pictogramUrl}
                     aria-hidden={true}
                     alt="Icône du type de scénario"
-                    width={512}
-                    height={512}
+                    width="80px"
+                    height="80px"
                   />
                 </div>
               </div>
@@ -57,18 +52,10 @@ function ScenarioTile({
           <div className="fr-tile__details" style={{ flexGrow: 1 }}>
             <p className="fr-tile__desc">{details}</p>
           </div>
-          <Badge
-            small
-            noIcon
-            severity={yearlyProfit < 0 ? "error" : "success"}
-            className="fr-my-4v"
-          >
-            {formatNumberFr(yearlyProfit)} €/an d’impacts
-          </Badge>
-
           <Checkbox
             className="fr-mt-3v"
-            style={{ visibility: shouldDisplayCheckbox ? "visible" : "hidden" }}
+            // Scenarii comparison is not released yet
+            style={{ display: "none", visibility: shouldDisplayCheckbox ? "visible" : "hidden" }}
             options={[
               {
                 label: "Comparer",
