@@ -14,7 +14,7 @@ export type FormValues = {
   rent: { amount?: number };
   propertyTaxes: { amount?: number };
   operationsTaxes: { amount?: number };
-  otherManagementCosts: { amount?: number };
+  otherManagementCosts: { amount?: number; bearer?: YearlyExpenseBearer };
   security: { amount?: number; bearer?: YearlyExpenseBearer };
   accidentsCost: { amount?: number };
   maintenance: { amount?: number; bearer?: YearlyExpenseBearer };
@@ -141,7 +141,7 @@ function SiteYearlyExpensesForm({
   hasRecentAccidents,
   defaultValues,
 }: Props) {
-  const { handleSubmit, control, watch, register } = useForm<FormValues>({
+  const { handleSubmit, control, watch, register, formState } = useForm<FormValues>({
     shouldUnregister: true,
     defaultValues,
   });
@@ -178,7 +178,10 @@ function SiteYearlyExpensesForm({
               />
               {askForBearer && hasTenant && !!watch(`${name}.amount`) && (
                 <RadioButtons
-                  {...register(`${name}.bearer` as keyof FormValues)}
+                  error={formState.errors[name]?.bearer ?? undefined}
+                  {...register(`${name}.bearer` as keyof FormValues, {
+                    required: "Cette information est obligatoire.",
+                  })}
                   options={expenseBearerOptions}
                 />
               )}
@@ -208,7 +211,10 @@ function SiteYearlyExpensesForm({
                     />
                     {askForBearer && hasTenant && !!watch(`${name}.amount`) && (
                       <RadioButtons
-                        {...register(`${name}.bearer`)}
+                        error={formState.errors[name]?.bearer}
+                        {...register(`${name}.bearer`, {
+                          required: "Cette information est obligatoire.",
+                        })}
                         options={expenseBearerOptions}
                       />
                     )}
