@@ -14,7 +14,11 @@ export default function CallToActionSection() {
     <section className={fr.cx("fr-py-10w")} style={{ background: "#F6F6F6" }} id="cta-section">
       <div className={fr.cx("fr-container")}>
         <div className={fr.cx("fr-grid-row")}>
-          <div className={fr.cx("fr-col-5", "fr-pr-8w")} style={{ borderRight: "1px solid #DDD" }}>
+          <div
+            className={
+              "fr-col-12 fr-col-md-5 fr-pr-md-8w tw-border-0 tw-border-b md:tw-border-b-0 md:tw-border-r tw-border-solid tw-border-gray fr-pb-12v fr-pb-md-0"
+            }
+          >
             <img
               src="/img/pictograms/renewable-energy/photovoltaic.svg"
               width="100px"
@@ -30,7 +34,9 @@ export default function CallToActionSection() {
             </Button>
           </div>
           <hr />
-          <div className={fr.cx("fr-col-7", "fr-pl-8w")}>
+          <div
+            className={fr.cx("fr-col-12", "fr-col-md-7", "fr-pl-md-8w", "fr-pt-6v", "fr-pt-md-0")}
+          >
             <img
               src="/img/pictograms/development-plans/mixed-used-neighborhood.svg"
               width="100px"

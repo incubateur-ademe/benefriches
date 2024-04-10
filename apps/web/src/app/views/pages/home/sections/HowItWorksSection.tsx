@@ -9,7 +9,7 @@ type HowItWorksStepProps = {
 
 function HowItWorksStep({ number, title, text }: HowItWorksStepProps) {
   return (
-    <div className={fr.cx("fr-col-3")}>
+    <div className={fr.cx("fr-col-12", "fr-col-md-3")}>
       <div
         className={fr.cx("fr-mb-1w")}
         style={{

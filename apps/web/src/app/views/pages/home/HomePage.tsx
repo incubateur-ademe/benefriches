@@ -16,7 +16,7 @@ function HomePage() {
       <HowItWorksSection />
       <section className={fr.cx("fr-container", "fr-py-10w")}>
         <div className={fr.cx("fr-grid-row")}>
-          <div className={fr.cx("fr-col-6")}>
+          <div className={fr.cx("fr-col-md-6")}>
             <h2>Bénéfriches aide les collectivités à préserver les sols</h2>
             <p>
               La reconquête des friches est une opportunité pour atteindre les objectifs de{" "}
@@ -47,7 +47,7 @@ function HomePage() {
               <strong>en prennent conscience et les utilisent dans la prise de décision</strong>.
             </p>
           </div>
-          <div className={fr.cx("fr-col-6", "fr-my-auto", "fr-pl-10w")}>
+          <div className={fr.cx("fr-col-md-6", "fr-my-auto", "fr-pl-md-10w")}>
             <img src="/img/project-illustration.jpeg" className={fr.cx("fr-responsive-img")} />
           </div>
         </div>
