@@ -1,3 +1,4 @@
+import { convertCarbonToCO2eq } from "../../../shared/convertCarbonToCO2eq";
 import ImpactDetailLabel from "../ImpactDetailLabel";
 import ImpactDetailRow from "../ImpactItemDetailRow";
 import ImpactItemGroup from "../ImpactItemGroup";
@@ -18,6 +19,10 @@ type Props = {
 };
 
 const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
+  const soilsStorageCO2eq = convertCarbonToCO2eq(
+    impacts.soilsCarbonStorage.forecast.total - impacts.soilsCarbonStorage.current.total,
+  );
+
   return (
     <section className="fr-mb-5w">
       <h3>Impacts environnementaux</h3>
@@ -41,9 +46,7 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
           <ImpactLabel>☁️ CO2-eq stocké ou évité</ImpactLabel>
           <ImpactValue isTotal>
             {formatCO2Impact(
-              impacts.soilsCarbonStorage.forecast.total -
-                impacts.soilsCarbonStorage.current.total +
-                (impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0),
+              soilsStorageCO2eq + (impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0),
             )}
           </ImpactValue>
         </div>
@@ -52,12 +55,8 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
             openImpactDescriptionModal("environmental-carbon-storage");
           }}
         >
-          <ImpactDetailLabel>🍂 Carbone stocké dans les sols</ImpactDetailLabel>
-          <ImpactValue>
-            {formatCO2Impact(
-              impacts.soilsCarbonStorage.forecast.total - impacts.soilsCarbonStorage.current.total,
-            )}
-          </ImpactValue>
+          <ImpactDetailLabel>🍂 CO2-eq stocké dans les sols</ImpactDetailLabel>
+          <ImpactValue>{formatCO2Impact(soilsStorageCO2eq)}</ImpactValue>
         </ImpactDetailRow>
         <ImpactDetailRow
           onClick={() => {

@@ -4,6 +4,7 @@ import ImpactAbsoluteVariation from "../../ImpactChartCard/ImpactAbsoluteVariati
 import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVariation";
 
+import { convertCarbonToCO2eq } from "@/features/projects/views/shared/convertCarbonToCO2eq";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
@@ -26,6 +27,9 @@ function StoredAndAvoidedCO2ImpactCard({
   avoidedCO2TonsWithEnergyProduction,
   soilsCarbonStorage,
 }: Props) {
+  const currentSoilsStorageCO2eq = convertCarbonToCO2eq(soilsCarbonStorage.current.total);
+  const forecastSoilsStorageCO2eq = convertCarbonToCO2eq(soilsCarbonStorage.forecast.total);
+
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
     xAxis: {
@@ -52,22 +56,22 @@ function StoredAndAvoidedCO2ImpactCard({
         ],
       },
       {
-        name: "Carbone stocké par les sols",
+        name: "CO2-eq stocké par les sols",
         type: "area",
-        data: [
-          roundTo2Digits(soilsCarbonStorage.current.total),
-          roundTo2Digits(soilsCarbonStorage.forecast.total),
-        ],
+        data: [roundTo2Digits(currentSoilsStorageCO2eq), roundTo2Digits(forecastSoilsStorageCO2eq)],
       },
     ],
   };
 
   const currentTotalStoredAndAvoidedCO2Impact =
-    avoidedCO2TonsWithEnergyProduction.current + soilsCarbonStorage.current.total;
+    avoidedCO2TonsWithEnergyProduction.current + currentSoilsStorageCO2eq;
+
   const forecastTotalStoredAndAvoidedCO2Impact =
-    avoidedCO2TonsWithEnergyProduction.forecast + soilsCarbonStorage.forecast.total;
+    avoidedCO2TonsWithEnergyProduction.forecast + forecastSoilsStorageCO2eq;
+
   const storedAndAvoidedCO2ImpactVariation =
     forecastTotalStoredAndAvoidedCO2Impact - currentTotalStoredAndAvoidedCO2Impact;
+
   const percentageVariation = getPercentageDifference(
     currentTotalStoredAndAvoidedCO2Impact,
     forecastTotalStoredAndAvoidedCO2Impact,
