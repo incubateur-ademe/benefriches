@@ -10,19 +10,19 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
       {expectedPerformanceMwhPerYear ? (
         <>
           <p>
-            D’après la puissance de crête de l'installation, sa superficie au sol et sa situation
-            géographique (ensoleillement, horizon, etc.), vous pouvez espérer produire en moyenne{" "}
-            {formatNumberFr(expectedPerformanceMwhPerYear)} MWh par an.
+            D’après la puissance de crête de l'installation et sa situation géographique (adresse),
+            vous pouvez espérer produire en moyenne {formatNumberFr(expectedPerformanceMwhPerYear)}{" "}
+            MWh par an.
           </p>
           <p>
-            La valeur qui vous est proposée a été calculée à partir des données du{" "}
+            La valeur qui vous est proposée a été calculée à partir des données de l’outil{" "}
             <a
               target="_blank"
               rel="noopener noreferrer external"
               title="Site du Photovoltaic Geographical Information System - ouvre une nouvelle fenêtre"
               href="https://re.jrc.ec.europa.eu/pvg_tools/fr/"
             >
-              PVGIS.
+              PVGIS
             </a>
             <button
               className="fr-btn--tooltip fr-btn"
@@ -30,13 +30,10 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
               aria-describedby="tooltip-PVGIS"
             >
               Information contextuelle
-            </button>{" "}
+            </button>
           </p>
 
-          <p>
-            Si vous savez que votre production annuelle sera différente, vous pouvez modifier cette
-            valeur.
-          </p>
+          <p>Vous pouvez modifier cette valeur.</p>
         </>
       ) : (
         <p>

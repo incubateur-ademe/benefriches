@@ -13,23 +13,6 @@ import { createStore } from "@/app/application/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 const API_MOCKED_RESULT = {
-  computationContext: {
-    location: { lat: 48.859, long: 2.347, elevation: 49 },
-    dataSources: {
-      radiation: "PVGIS-SARAH2",
-      meteo: "ERA5",
-      period: "2005 - 2020",
-      horizon: "DEM-calculated",
-    },
-    pvInstallation: {
-      technology: "c-Si",
-      peakPower: 3,
-      systemLoss: 14,
-      slope: { value: 35, optimal: false },
-      azimuth: { value: 0, optimal: false },
-      type: "free-standing",
-    },
-  },
   expectedPerformance: {
     kwhPerDay: 9.43,
     kwhPerMonth: 286.91,
@@ -74,7 +57,6 @@ describe("Photovoltaic expected performance reducer", () => {
     const state = store.getState();
     expect(state.projectPvExpectedPerformancesStorage).toEqual({
       loadingState: "error",
-      computationContext: undefined,
       expectedPerformanceMwhPerYear: undefined,
     });
   });
@@ -116,7 +98,6 @@ describe("Photovoltaic expected performance reducer", () => {
     const state = store.getState();
     expect(state.projectPvExpectedPerformancesStorage).toEqual({
       loadingState: "success",
-      computationContext: API_MOCKED_RESULT.computationContext,
       expectedPerformanceMwhPerYear: 3,
     });
   });
@@ -140,7 +121,6 @@ describe("Photovoltaic expected performance reducer", () => {
     expect(state.projectPvExpectedPerformancesStorage).toEqual({
       loadingState: "error",
       expectedPerformanceMwhPerYear: undefined,
-      computationContext: undefined,
     });
   });
 });

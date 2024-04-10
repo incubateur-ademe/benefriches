@@ -11,11 +11,8 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 function PhotovoltaicExpectedAnnualProductionContainer() {
   const dispatch = useAppDispatch();
 
-  const { loadingState, expectedPerformanceMwhPerYear, computationContext } = useAppSelector(
+  const { loadingState, expectedPerformanceMwhPerYear } = useAppSelector(
     (state) => state.projectPvExpectedPerformancesStorage,
-  );
-  const surfaceArea = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicInstallationSurfaceSquareMeters,
   );
 
   useEffect(() => {
@@ -29,8 +26,6 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
   return (
     <PhotovoltaicExpectedAnnualProductionForm
       expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
-      computationContext={computationContext}
-      surfaceArea={surfaceArea}
       onSubmit={(data) => {
         dispatch(
           completePhotovoltaicExpectedAnnualProduction(data.photovoltaicExpectedAnnualProduction),

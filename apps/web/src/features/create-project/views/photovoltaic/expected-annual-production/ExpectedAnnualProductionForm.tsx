@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import ExpectedAnnualProductionComputationDetails from "./ExpectedAnnualProductionComputationDetails";
 import ExpectedAnnualProductionHint from "./ExpectedAnnualProductionHint";
 
 import { State } from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
@@ -10,8 +9,6 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  surfaceArea?: number;
-  computationContext?: State["computationContext"];
   expectedPerformanceMwhPerYear?: State["expectedPerformanceMwhPerYear"];
 };
 
@@ -23,8 +20,6 @@ function PhotovoltaicAnnualProductionForm({
   onSubmit,
   onBack,
   expectedPerformanceMwhPerYear,
-  computationContext,
-  surfaceArea,
 }: Props) {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
@@ -36,18 +31,9 @@ function PhotovoltaicAnnualProductionForm({
     <WizardFormLayout
       title="Quelle est la production annuelle attendue de l'installation ?"
       instructions={
-        <>
-          <ExpectedAnnualProductionHint
-            expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
-          />
-
-          {computationContext && surfaceArea && (
-            <ExpectedAnnualProductionComputationDetails
-              computationContext={computationContext}
-              surfaceArea={surfaceArea}
-            />
-          )}
-        </>
+        <ExpectedAnnualProductionHint
+          expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
+        />
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
