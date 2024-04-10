@@ -1,6 +1,12 @@
 import { useEffect } from "react";
 import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
-import { setEvaluationPeriod } from "../../application/projectImpacts.reducer";
+import {
+  ImpactCategoryFilter,
+  setCategoryFilter,
+  setEvaluationPeriod,
+  setViewMode,
+  ViewMode,
+} from "../../application/projectImpacts.reducer";
 import ProjectImpactsPageWrapper from "./ProjectImpactsPageWrapper";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -12,8 +18,15 @@ type Props = {
 function ProjectsImpacts({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
-  const { projectData, relatedSiteData, impactsData, dataLoadingState, evaluationPeriod } =
-    useAppSelector((state) => state.projectImpacts);
+  const {
+    projectData,
+    relatedSiteData,
+    impactsData,
+    dataLoadingState,
+    evaluationPeriod,
+    currentCategoryFilter,
+    currentViewMode,
+  } = useAppSelector((state) => state.projectImpacts);
 
   useEffect(() => {
     void dispatch(fetchReconversionProjectImpacts({ projectId, evaluationPeriod }));
@@ -26,9 +39,15 @@ function ProjectsImpacts({ projectId }: Props) {
       impactsData={impactsData}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
+      currentViewMode={currentViewMode}
+      currentCategoryFilter={currentCategoryFilter}
       onEvaluationPeriodChange={(evaluationPeriod: number) =>
         dispatch(setEvaluationPeriod(evaluationPeriod))
       }
+      onCurrentCategoryFilterChange={(category: ImpactCategoryFilter) =>
+        dispatch(setCategoryFilter(category))
+      }
+      onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(setViewMode(viewMode))}
     />
   );
 }

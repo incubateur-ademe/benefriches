@@ -1,11 +1,44 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import { ProjectImpactsState } from "../../application/projectImpacts.reducer";
+import {
+  ImpactCategoryFilter,
+  ProjectImpactsState,
+  ViewMode,
+} from "../../application/projectImpacts.reducer";
+import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import ProjectImpactsPage from "./ProjectImpactsPage";
+import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
+
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 type Props = ProjectImpactsState & {
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number;
+  onCurrentCategoryFilterChange: (n: ImpactCategoryFilter) => void;
+  currentCategoryFilter: ImpactCategoryFilter;
+  onCurrentViewModeChange: (n: ViewMode) => void;
+  currentViewMode: ViewMode;
+};
+
+const ProjectImpactsPageTabs = () => {
+  return (
+    <ul
+      className={fr.cx("fr-tabs__list", "fr-container", "fr-mx-auto")}
+      style={{ marginLeft: "auto", marginRight: "auto" }}
+      role="tablist"
+    >
+      <li role="presentation">
+        <button className="fr-tabs__tab" tabIndex={0} role="tab" aria-selected="true">
+          Impacts
+        </button>
+      </li>
+      {/* <li role="presentation">
+        <button className="fr-tabs__tab" tabIndex={1} role="tab" disabled>
+          Caractéristiques
+        </button>
+      </li> */}
+    </ul>
+  );
 };
 
 function ProjectImpactsPageWrapper({
@@ -15,35 +48,59 @@ function ProjectImpactsPageWrapper({
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
+  currentCategoryFilter,
+  currentViewMode,
+  onCurrentViewModeChange,
+  onCurrentCategoryFilterChange,
 }: Props) {
-  if (dataLoadingState === "loading") {
-    return <div className={fr.cx("fr-container", "fr-py-3v")}>Chargement en cours ...</div>;
-  }
-
-  if (dataLoadingState === "error") {
-    return (
-      <div className={fr.cx("fr-container", "fr-py-3v")}>
-        <Alert
-          description="Une erreur s’est produite lors du chargement des données."
-          severity="error"
-          title="Impossible de charger les impacts du projet"
-          className="fr-my-7v"
-        />
-      </div>
-    );
-  }
-
-  if (dataLoadingState === "success") {
-    return (
-      <ProjectImpactsPage
-        project={projectData!}
-        relatedSite={relatedSiteData!}
-        impacts={impactsData!}
-        evaluationPeriod={evaluationPeriod}
-        onEvaluationPeriodChange={onEvaluationPeriodChange}
+  return (
+    <div style={{ background: "#ECF5FD" }}>
+      <ProjectsImpactsPageHeader
+        projectId={projectData?.id ?? ""}
+        projectName={projectData?.name ?? "Projet photovoltaïque"}
+        siteName={relatedSiteData?.name ?? ""}
       />
-    );
-  }
+
+      <div className={fr.cx("fr-tabs")}>
+        <ProjectImpactsPageTabs />
+        <div
+          className={fr.cx("fr-tabs__panel", "fr-tabs__panel--selected")}
+          role="tabpanel"
+          style={{ background: fr.colors.decisions.background.default.grey.default }}
+        >
+          <div className={fr.cx("fr-container")}>
+            <ProjectsComparisonActionBar
+              selectedFilter={currentCategoryFilter}
+              selectedViewMode={currentViewMode}
+              evaluationPeriod={evaluationPeriod}
+              onFilterClick={onCurrentCategoryFilterChange}
+              onViewModeClick={onCurrentViewModeChange}
+              onEvaluationPeriodChange={onEvaluationPeriodChange}
+            />
+            {dataLoadingState === "error" && (
+              <Alert
+                description="Une erreur s’est produite lors du chargement des données."
+                severity="error"
+                title="Impossible de charger les impacts du projet"
+                className="fr-my-7v"
+              />
+            )}
+            {dataLoadingState === "loading" && <LoadingSpinner />}
+            {dataLoadingState === "success" && (
+              <ProjectImpactsPage
+                project={projectData!}
+                relatedSite={relatedSiteData!}
+                impacts={impactsData!}
+                evaluationPeriod={evaluationPeriod}
+                currentFilter={currentCategoryFilter}
+                currentViewMode={currentViewMode}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default ProjectImpactsPageWrapper;
