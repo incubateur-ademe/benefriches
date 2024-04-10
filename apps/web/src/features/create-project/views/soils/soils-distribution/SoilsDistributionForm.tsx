@@ -148,6 +148,7 @@ function SoilsDistributionForm({
           advisedImpermeableSurface={minAdvisedImpermeableSurface}
           advisedMineralSurface={minAdvisedMineralSurface}
           advisedFlatSurface={minAdvisedFlatSurfaces}
+          siteSurfaceArea={totalSurfaceArea}
         />
       }
     >

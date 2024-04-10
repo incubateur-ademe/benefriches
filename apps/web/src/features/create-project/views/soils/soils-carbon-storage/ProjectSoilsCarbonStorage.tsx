@@ -83,7 +83,8 @@ const ProjectSoilsCarbonStorage = ({
           <div className="tw-border tw-border-solid tw-border-gray tw-p-8">
             <h3 className="tw-uppercase tw-text-base">Site existant :</h3>
             <p>
-              {formatCarbonStorage(currentCarbonStorage.totalCarbonStorage)} t de carbone stockés
+              <strong>{formatCarbonStorage(currentCarbonStorage.totalCarbonStorage)} t</strong> de
+              carbone stockés
             </p>
             <SoilsCarbonStorageChart soilsCarbonStorage={currentCarbonStorage.soilsStorage} />
           </div>
@@ -91,8 +92,8 @@ const ProjectSoilsCarbonStorage = ({
           <div className="tw-border tw-border-solid tw-border-gray tw-p-8">
             <h3 className="tw-uppercase tw-text-base">Site avec projet :</h3>
             <p>
-              {formatCarbonStorage(projectedCarbonStorage.totalCarbonStorage)} t de carbone stockés
-              (
+              <strong>{formatCarbonStorage(projectedCarbonStorage.totalCarbonStorage)} t</strong> de
+              carbone stockés (
               {getPercentageDifferenceFormated(
                 currentCarbonStorage.totalCarbonStorage,
                 projectedCarbonStorage.totalCarbonStorage,

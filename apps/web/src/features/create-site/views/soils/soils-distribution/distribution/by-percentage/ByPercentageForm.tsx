@@ -10,10 +10,12 @@ import {
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
+import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   soils: SoilType[];
+  totalSurfaceArea: number;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -31,7 +33,12 @@ const SLIDER_PROPS = {
   },
 };
 
-function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Props) {
+function SiteSoilsDistributionByPercentageForm({
+  soils,
+  totalSurfaceArea,
+  onSubmit,
+  onBack,
+}: Props) {
   const { control, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
@@ -42,7 +49,19 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
   const remainder = 100 - totalAllocated;
 
   return (
-    <WizardFormLayout title="Quelle est la répartition des différents sols ?">
+    <WizardFormLayout
+      title="Quelle est la répartition des différents sols ?"
+      instructions={
+        <p className="tw-text-warning">
+          ⚠️ Le total des surfaces ne peut pas dépasser{" "}
+          <strong>
+            <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />
+          </strong>
+          . Pour pouvoir augmenter la surface d’un sol, vous devez d’abord réduire la surface d’un
+          autre sol.
+        </p>
+      }
+    >
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
           <SliderNumericInput

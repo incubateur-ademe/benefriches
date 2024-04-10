@@ -22,6 +22,7 @@ export default {
   extend: {
     colors: {
       gray: "#DDDDDD",
+      warning: "#B34000",
       // can be used with classes tw-soils-buildings, tw-soils-impermeable-soils...
       soils: soilColors,
     },

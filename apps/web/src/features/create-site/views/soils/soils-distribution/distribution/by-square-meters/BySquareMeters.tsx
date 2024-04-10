@@ -10,7 +10,9 @@ import {
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
+import SurfaceArea, {
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -46,9 +48,13 @@ function SiteSoilsDistributionBySquareMetersForm({
     <WizardFormLayout
       title="Quelles sont les superficies des différents sols ?"
       instructions={
-        <p>
-          La somme des superficies des différents sols doit être égale à la superficie totale du
-          site.
+        <p className="tw-text-warning">
+          ⚠️ La somme des superficies des différents sols doit être égale à la superficie totale du
+          site (
+          <strong>
+            <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />
+          </strong>
+          ).
         </p>
       }
     >

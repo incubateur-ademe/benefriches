@@ -9,6 +9,7 @@ type Props = {
   advisedImpermeableSurface: number;
   advisedMineralSurface: number;
   advisedFlatSurface: number;
+  siteSurfaceArea: number;
 };
 
 const RATIO_IMPERMEABLE_SOIL_HA_PER_MWC = (RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS / 10000) * 1000;
@@ -21,9 +22,15 @@ function PhotovoltaicSoilsImpactsNotice({
   advisedImpermeableSurface,
   advisedMineralSurface,
   advisedFlatSurface,
+  siteSurfaceArea,
 }: Props) {
   return (
     <>
+      <p className="tw-text-warning">
+        ⚠️ Le total des surfaces ne peut pas dépasser{" "}
+        <SurfaceArea surfaceAreaInSquareMeters={siteSurfaceArea} />. Pour pouvoir augmenter la
+        surface d’un sol, vous devez d’abord réduire la surface d’un autre sol.
+      </p>
       <p>
         Compte tenu des ratios, les <strong>sols imperméables</strong> devraient faire au minimum{" "}
         <SurfaceArea surfaceAreaInSquareMeters={advisedImpermeableSurface} /> et les{" "}
