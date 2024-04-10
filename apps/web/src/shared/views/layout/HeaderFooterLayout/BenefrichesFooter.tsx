@@ -39,6 +39,7 @@ function BenefrichesFooter() {
       bottomItems={[
         { text: "Politique de confidentialité", linkProps: routes.politiqueConfidentialite().link },
         { text: "Statistiques", linkProps: routes.stats().link },
+        { text: "Contact", linkProps: { href: "https://tally.so/r/wvAdk8", target: "_blank" } },
         headerFooterDisplayItem,
       ]}
     />

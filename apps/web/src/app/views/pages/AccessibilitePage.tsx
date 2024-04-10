@@ -33,7 +33,7 @@ function AccessibilitePage() {
       </p>
       <ul className="basic-information feedback h-card">
         <li>
-          <ExternalLink href="https://tally.so/r/w7xBV6">
+          <ExternalLink href="https://tally.so/r/wvAdk8">
             Formulaire de contact Bénéfriches
           </ExternalLink>
         </li>

@@ -45,7 +45,7 @@ function PolitiqueConfidentialiteContent() {
       <p>
         Pour exercer ces droits ou pour toute question sur le traitement de vos données dans ce
         dispositif, vous pouvez nous contacter via le{" "}
-        <a rel="noopener noreferrer" target="_blank" href="https://tally.so/r/w7xBV6">
+        <a rel="noopener noreferrer" target="_blank" href="https://tally.so/r/wvAdk8">
           formulaire de contact Bénéfriches
         </a>
       </p>
