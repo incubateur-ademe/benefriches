@@ -9,27 +9,6 @@ type Request = {
 };
 
 type Response = {
-  computationContext: {
-    location: {
-      lat: number;
-      long: number;
-      elevation: number;
-    };
-    dataSources: {
-      radiation: string;
-      meteo: string;
-      period: string;
-      horizon?: string;
-    };
-    pvInstallation: {
-      slope: { value: number; optimal: boolean };
-      azimuth: { value: number; optimal: boolean };
-      type: string;
-      technology: string;
-      peakPower: number;
-      systemLoss: number;
-    };
-  };
   expectedPerformance: {
     kwhPerDay: number;
     kwhPerMonth: number;
@@ -52,25 +31,6 @@ export class GetPhotovoltaicExpectedPerformanceUseCase implements UseCase<Reques
     );
 
     return {
-      computationContext: {
-        location: result.context.location,
-        dataSources: {
-          radiation: result.context.meteoData.radiationDb,
-          meteo: result.context.meteoData.meteoDb,
-          period: `${result.context.meteoData.yearMin} - ${result.context.meteoData.yearMax}`,
-          horizon: result.context.meteoData.useHorizon
-            ? result.context.meteoData.horizonDb
-            : undefined,
-        },
-        pvInstallation: {
-          technology: result.context.pvModule.technology,
-          peakPower: result.context.pvModule.peakPower,
-          systemLoss: result.context.pvModule.systemLoss,
-          slope: result.context.mountingSystem.slope,
-          azimuth: result.context.mountingSystem.azimuth,
-          type: result.context.mountingSystem.type,
-        },
-      },
       expectedPerformance: result.expectedPerformance,
     };
   }
