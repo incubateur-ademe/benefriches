@@ -8,7 +8,6 @@ import ImpactDetailRow from "@/features/projects/views/project-impacts-page/list
 import ImpactMainTitle from "@/features/projects/views/project-impacts-page/list-view/ImpactMainTitle";
 import ImpactValue from "@/features/projects/views/project-impacts-page/list-view/ImpactValue";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
-import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 type Props = {
@@ -26,7 +25,7 @@ export const SocioEconomicImpactRow = ({ impact }: SocioEconomicImpactRowProps) 
   return (
     <ImpactDetailRow key={impact.actor + impact.amount}>
       <ImpactDetailLabel>{getActorLabel(impact.actor)}</ImpactDetailLabel>
-      <ImpactValue>{formatMonetaryImpact(impact.amount)}</ImpactValue>
+      <ImpactValue isTotal value={impact.amount} type="monetary" />
     </ImpactDetailRow>
   );
 };

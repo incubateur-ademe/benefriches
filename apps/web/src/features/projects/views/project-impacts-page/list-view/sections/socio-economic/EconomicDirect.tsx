@@ -7,7 +7,6 @@ import ImpactLabel from "@/features/projects/views/project-impacts-page/list-vie
 import ImpactSectionTitle from "@/features/projects/views/project-impacts-page/list-view/ImpactSectionTitle";
 import ImpactValue from "@/features/projects/views/project-impacts-page/list-view/ImpactValue";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
-import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
@@ -36,7 +35,7 @@ const SocioEconomicDirectImpactsSection = ({
     <section className="fr-mb-5w">
       <ImpactItemRow>
         <ImpactSectionTitle>Impacts économiques directs</ImpactSectionTitle>
-        <ImpactValue isTotal>{formatMonetaryImpact(economicDirectTotal)}</ImpactValue>
+        <ImpactValue isTotal value={economicDirectTotal} type="monetary" />
       </ImpactItemRow>
       {hasRentalIncomeImpacts && (
         <ImpactItemGroup>

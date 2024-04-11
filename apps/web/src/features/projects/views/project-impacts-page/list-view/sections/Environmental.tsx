@@ -8,10 +8,6 @@ import ImpactValue from "../ImpactValue";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
-import {
-  formatCO2Impact,
-  formatSurfaceAreaImpact,
-} from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   impacts: ReconversionProjectImpacts;
@@ -33,22 +29,24 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
           }}
         >
           <ImpactLabel>✨ Surface non polluée</ImpactLabel>
-          <ImpactValue isTotal>
-            {formatSurfaceAreaImpact(
+          <ImpactValue
+            isTotal
+            value={
               impacts.nonContaminatedSurfaceArea.forecast -
-                impacts.nonContaminatedSurfaceArea.current,
-            )}
-          </ImpactValue>
+              impacts.nonContaminatedSurfaceArea.current
+            }
+            type="surfaceArea"
+          />
         </ImpactItemRow>
       )}
       <ImpactItemGroup>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <ImpactLabel>☁️ CO2-eq stocké ou évité</ImpactLabel>
-          <ImpactValue isTotal>
-            {formatCO2Impact(
-              soilsStorageCO2eq + (impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0),
-            )}
-          </ImpactValue>
+          <ImpactValue
+            isTotal
+            value={soilsStorageCO2eq + (impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0)}
+            type="co2"
+          />
         </div>
         <ImpactDetailRow
           onClick={() => {
@@ -56,7 +54,7 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
           }}
         >
           <ImpactDetailLabel>🍂 CO2-eq stocké dans les sols</ImpactDetailLabel>
-          <ImpactValue>{formatCO2Impact(soilsStorageCO2eq)}</ImpactValue>
+          <ImpactValue value={soilsStorageCO2eq} type="co2" />
         </ImpactDetailRow>
         <ImpactDetailRow
           onClick={() => {
@@ -66,9 +64,10 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
           <ImpactDetailLabel>
             ⚡️ Émissions de CO2-eq évitées grâce à la production d'EnR
           </ImpactDetailLabel>
-          <ImpactValue>
-            {formatCO2Impact(impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0)}
-          </ImpactValue>
+          <ImpactValue
+            value={impacts.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0}
+            type="co2"
+          />
         </ImpactDetailRow>
       </ImpactItemGroup>
       <ImpactItemGroup>
@@ -79,11 +78,11 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
           }}
         >
           <ImpactLabel>🌧 Surface perméable</ImpactLabel>
-          <ImpactValue isTotal>
-            {formatSurfaceAreaImpact(
-              impacts.permeableSurfaceArea.forecast - impacts.permeableSurfaceArea.base,
-            )}
-          </ImpactValue>
+          <ImpactValue
+            isTotal
+            value={impacts.permeableSurfaceArea.forecast - impacts.permeableSurfaceArea.base}
+            type="surfaceArea"
+          />
         </ImpactItemRow>
         <ImpactDetailRow
           onClick={() => {
@@ -91,12 +90,13 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
           }}
         >
           <ImpactDetailLabel>🪨 Surface perméable minérale</ImpactDetailLabel>
-          <ImpactValue>
-            {formatSurfaceAreaImpact(
+          <ImpactValue
+            value={
               impacts.permeableSurfaceArea.mineralSoil.forecast -
-                impacts.permeableSurfaceArea.mineralSoil.base,
-            )}
-          </ImpactValue>
+              impacts.permeableSurfaceArea.mineralSoil.base
+            }
+            type="surfaceArea"
+          />
         </ImpactDetailRow>
         <ImpactDetailRow
           onClick={() => {
@@ -104,12 +104,13 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
           }}
         >
           <ImpactDetailLabel>🌱 Surface perméable végétalisée</ImpactDetailLabel>
-          <ImpactValue>
-            {formatSurfaceAreaImpact(
+          <ImpactValue
+            value={
               impacts.permeableSurfaceArea.greenSoil.forecast -
-                impacts.permeableSurfaceArea.greenSoil.base,
-            )}
-          </ImpactValue>
+              impacts.permeableSurfaceArea.greenSoil.base
+            }
+            type="surfaceArea"
+          />
         </ImpactDetailRow>
       </ImpactItemGroup>
     </section>

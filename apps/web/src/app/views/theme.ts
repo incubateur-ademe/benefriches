@@ -18,6 +18,12 @@ export const soilColors = {
   water: "#1243EB",
 };
 
+export const impactColors = {
+  positive: "#18753C",
+  neutral: "#161616",
+  negative: "#CE0500",
+};
+
 export default {
   extend: {
     colors: {

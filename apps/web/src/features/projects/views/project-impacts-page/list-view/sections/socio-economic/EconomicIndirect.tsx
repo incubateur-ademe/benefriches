@@ -6,7 +6,6 @@ import ImpactItemRow from "@/features/projects/views/project-impacts-page/list-v
 import ImpactLabel from "@/features/projects/views/project-impacts-page/list-view/ImpactLabel";
 import ImpactSectionTitle from "@/features/projects/views/project-impacts-page/list-view/ImpactSectionTitle";
 import ImpactValue from "@/features/projects/views/project-impacts-page/list-view/ImpactValue";
-import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
@@ -29,7 +28,7 @@ const SocioEconomicIndirectImpactsSection = ({ socioEconomicImpacts }: Props) =>
     <section className="fr-mb-5w">
       <ImpactItemRow>
         <ImpactSectionTitle>Impacts économiques indirects</ImpactSectionTitle>
-        <ImpactValue isTotal>{formatMonetaryImpact(economicIndirectTotal)}</ImpactValue>
+        <ImpactValue isTotal type="monetary" value={economicIndirectTotal} />
       </ImpactItemRow>
       {hasTaxesIncomeImpacts && (
         <ImpactItemGroup>

@@ -12,7 +12,6 @@ import ImpactLabel from "@/features/projects/views/project-impacts-page/list-vie
 import ImpactSectionTitle from "@/features/projects/views/project-impacts-page/list-view/ImpactSectionTitle";
 import ImpactValue from "@/features/projects/views/project-impacts-page/list-view/ImpactValue";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
-import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 type Props = {
@@ -85,7 +84,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
     <section className="fr-mb-5w">
       <ImpactItemRow>
         <ImpactSectionTitle>Impacts environnementaux monétarisés</ImpactSectionTitle>
-        <ImpactValue isTotal>{formatMonetaryImpact(total)}</ImpactValue>
+        <ImpactValue isTotal value={total} type="monetary" />
       </ImpactItemRow>
       {avoidedCO2WithEnrImpact && (
         <>
@@ -93,9 +92,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
             <ImpactLabel>☁️ Emissions de CO2-eq évitées</ImpactLabel>
             <ImpactDetailRow key={avoidedCO2WithEnrImpact.actor + avoidedCO2WithEnrImpact.amount}>
               <ImpactDetailLabel>{getActorLabel(avoidedCO2WithEnrImpact.actor)}</ImpactDetailLabel>
-              <ImpactValue isTotal>
-                {formatMonetaryImpact(avoidedCO2WithEnrImpact.amount)}
-              </ImpactValue>
+              <ImpactValue isTotal value={avoidedCO2WithEnrImpact.amount} type="monetary" />
             </ImpactDetailRow>
           </ImpactItemGroup>
           <ImpactDetailRow
@@ -106,7 +103,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
             <ImpactDetailLabel>
               ⚡️️ Grâce à la production d'énergies renouvelables
             </ImpactDetailLabel>
-            <ImpactValue>{formatMonetaryImpact(avoidedCO2WithEnrImpact.amount)}</ImpactValue>
+            <ImpactValue value={avoidedCO2WithEnrImpact.amount} type="monetary" />
           </ImpactDetailRow>
         </>
       )}
@@ -120,7 +117,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
           <ImpactLabel>🚰 Régulation de la qualité de l'eau</ImpactLabel>
           <ImpactDetailRow key={waterRegulationImpact.actor + waterRegulationImpact.amount}>
             <ImpactDetailLabel>{getActorLabel(waterRegulationImpact.actor)}</ImpactDetailLabel>
-            <ImpactValue>{formatMonetaryImpact(waterRegulationImpact.amount)}</ImpactValue>
+            <ImpactValue value={waterRegulationImpact.amount} type="monetary" />
           </ImpactDetailRow>
         </ImpactItemGroup>
       )}
@@ -135,9 +132,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
             <ImpactLabel>🌻 Services écosystémiques</ImpactLabel>
             <ImpactDetailRow key={ecosystemServicesImpact.actor + ecosystemServicesImpact.amount}>
               <ImpactDetailLabel>{getActorLabel(ecosystemServicesImpact.actor)}</ImpactDetailLabel>
-              <ImpactValue isTotal>
-                {formatMonetaryImpact(ecosystemServicesImpact.amount)}
-              </ImpactValue>
+              <ImpactValue isTotal value={ecosystemServicesImpact.amount} type="monetary" />
             </ImpactDetailRow>
           </ImpactItemGroup>
           {ecosystemServicesImpact.details.map(({ amount, impact }) => (
@@ -146,7 +141,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
               onClick={getEcosystemServiceOnClick(impact, openImpactDescriptionModal)}
             >
               <ImpactDetailLabel>{getLabelForEcosystemServicesImpact(impact)}</ImpactDetailLabel>
-              <ImpactValue>{formatMonetaryImpact(amount)}</ImpactValue>
+              <ImpactValue isTotal value={amount} type="monetary" />
             </ImpactDetailRow>
           ))}
         </>

@@ -5,7 +5,6 @@ import ImpactValue from "../ImpactValue";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
-import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   impact: ReconversionProjectImpacts["economicBalance"];
@@ -28,40 +27,38 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
           }}
         >
           <ImpactLabel>🏠 Acquisition du site</ImpactLabel>
-          <ImpactValue>{formatMonetaryImpact(impact.costs.realEstateTransaction)}</ImpactValue>
+          <ImpactValue value={impact.costs.realEstateTransaction} type="monetary" />
         </ImpactItemRow>
       )}
       {!!impact.costs.siteReinstatement && (
         <ImpactItemRow>
           <ImpactLabel>🏗 Remise en état de la friche</ImpactLabel>
-          <ImpactValue>{formatMonetaryImpact(impact.costs.siteReinstatement)}</ImpactValue>
+          <ImpactValue value={impact.costs.siteReinstatement} type="monetary" />
         </ImpactItemRow>
       )}
       {!!impact.costs.developmentPlanInstallation && (
         <ImpactItemRow>
           <ImpactLabel>⚡️ Installation des panneaux photovoltaïques</ImpactLabel>
-          <ImpactValue>
-            {formatMonetaryImpact(impact.costs.developmentPlanInstallation)}
-          </ImpactValue>
+          <ImpactValue value={impact.costs.developmentPlanInstallation} type="monetary" />
         </ImpactItemRow>
       )}
       {!!impact.revenues.financialAssistance && (
         <ImpactItemRow>
           <ImpactLabel>🏦 Aides financières</ImpactLabel>
-          <ImpactValue>{formatMonetaryImpact(impact.revenues.financialAssistance)}</ImpactValue>
+          <ImpactValue value={impact.revenues.financialAssistance} type="monetary" />
         </ImpactItemRow>
       )}
       <ImpactItemRow>
         <ImpactLabel>💸️ Charges d'exploitation</ImpactLabel>
-        <ImpactValue>{formatMonetaryImpact(impact.costs.operationsCosts.total)}</ImpactValue>
+        <ImpactValue value={impact.costs.operationsCosts.total} type="monetary" />
       </ImpactItemRow>
       <ImpactItemRow>
         <ImpactLabel>💰 Recettes d'exploitation</ImpactLabel>
-        <ImpactValue>{formatMonetaryImpact(impact.revenues.operationsRevenues.total)}</ImpactValue>
+        <ImpactValue value={impact.revenues.operationsRevenues.total} type="monetary" />
       </ImpactItemRow>
       <ImpactItemRow>
         <ImpactLabel>Total du bilan de l'opération</ImpactLabel>
-        <ImpactValue isTotal>{formatMonetaryImpact(impact.total)}</ImpactValue>
+        <ImpactValue isTotal value={impact.total} type="monetary" />
       </ImpactItemRow>
     </section>
   );

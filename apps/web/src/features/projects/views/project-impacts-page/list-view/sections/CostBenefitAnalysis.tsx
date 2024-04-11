@@ -5,7 +5,6 @@ import ImpactValue from "../ImpactValue";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
-import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   socioEconomicImpactTotal: ReconversionProjectImpacts["socioeconomic"]["total"];
@@ -32,7 +31,7 @@ const CostBenefitAnalysisListSection = ({
         }}
       >
         <ImpactLabel>📉 Bilan de l'opération</ImpactLabel>
-        <ImpactValue>{formatMonetaryImpact(economicBalanceImpactTotal)}</ImpactValue>
+        <ImpactValue isTotal value={economicBalanceImpactTotal} type="monetary" />
       </ImpactItemRow>
       <ImpactItemRow
         onClick={() => {
@@ -40,7 +39,7 @@ const CostBenefitAnalysisListSection = ({
         }}
       >
         <ImpactLabel>🌎 Impacts socio-économiques</ImpactLabel>
-        <ImpactValue>{formatMonetaryImpact(socioEconomicImpactTotal)}</ImpactValue>
+        <ImpactValue isTotal value={socioEconomicImpactTotal} type="monetary" />
       </ImpactItemRow>
     </section>
   );
