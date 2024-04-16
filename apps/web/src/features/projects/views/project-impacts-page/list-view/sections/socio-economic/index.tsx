@@ -23,7 +23,7 @@ type SocioEconomicImpactRowProps = {
 
 export const SocioEconomicImpactRow = ({ impact }: SocioEconomicImpactRowProps) => {
   return (
-    <ImpactDetailRow key={impact.actor + impact.amount}>
+    <ImpactDetailRow key={`${impact.actor} ${impact.amount}`}>
       <ImpactDetailLabel>{getActorLabel(impact.actor)}</ImpactDetailLabel>
       <ImpactValue isTotal value={impact.amount} type="monetary" />
     </ImpactDetailRow>

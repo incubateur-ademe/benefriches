@@ -41,7 +41,6 @@ function StoredAndAvoidedCO2ImpactCard({
     },
     plotOptions: {
       area: {
-        borderWidth: 0,
         stacking: "normal",
       },
     },

@@ -71,7 +71,7 @@ exports.seed = async function (knex: Knex): Promise<void> {
       .then(function (ids) {
         console.log(`${ids.length} cities inserted`);
       })
-      .catch(function (error) {
+      .catch(function (error: unknown) {
         console.warn(`Error while inserting cities`);
         console.error(error);
       });

@@ -90,7 +90,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
         <>
           <ImpactItemGroup>
             <ImpactLabel>☁️ Emissions de CO2-eq évitées</ImpactLabel>
-            <ImpactDetailRow key={avoidedCO2WithEnrImpact.actor + avoidedCO2WithEnrImpact.amount}>
+            <ImpactDetailRow>
               <ImpactDetailLabel>{getActorLabel(avoidedCO2WithEnrImpact.actor)}</ImpactDetailLabel>
               <ImpactValue isTotal value={avoidedCO2WithEnrImpact.amount} type="monetary" />
             </ImpactDetailRow>
@@ -115,7 +115,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
           }}
         >
           <ImpactLabel>🚰 Régulation de la qualité de l'eau</ImpactLabel>
-          <ImpactDetailRow key={waterRegulationImpact.actor + waterRegulationImpact.amount}>
+          <ImpactDetailRow>
             <ImpactDetailLabel>{getActorLabel(waterRegulationImpact.actor)}</ImpactDetailLabel>
             <ImpactValue value={waterRegulationImpact.amount} type="monetary" />
           </ImpactDetailRow>
@@ -130,7 +130,7 @@ const SocioEconomicEnvironmentalMonetaryImpactsSection = ({
             }}
           >
             <ImpactLabel>🌻 Services écosystémiques</ImpactLabel>
-            <ImpactDetailRow key={ecosystemServicesImpact.actor + ecosystemServicesImpact.amount}>
+            <ImpactDetailRow>
               <ImpactDetailLabel>{getActorLabel(ecosystemServicesImpact.actor)}</ImpactDetailLabel>
               <ImpactValue isTotal value={ecosystemServicesImpact.amount} type="monetary" />
             </ImpactDetailRow>

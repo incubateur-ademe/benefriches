@@ -53,7 +53,7 @@ const Fieldset = (props: Props) => {
         })(),
       )}
       disabled={disabled}
-      aria-labelledby={`${legend !== undefined && legendId}${messagesWrapperId}`}
+      aria-labelledby={`${legend !== undefined ? legendId : ""}${messagesWrapperId}`}
       role={state === "default" ? undefined : "group"}
       {...rest}
     >

@@ -28,11 +28,6 @@ function HouseholdsPoweredByRenewableEnergyImpactCard({
       labels: { enabled: false },
       categories: ["Pas de changement", reconversionProjectName],
     },
-    plotOptions: {
-      area: {
-        borderWidth: 0,
-      },
-    },
     series: [
       {
         name: "Foyers alimentés par les EnR",

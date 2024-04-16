@@ -75,7 +75,6 @@ function AccidentsImpactCard({ reconversionProjectName, accidentsImpact }: Props
     plotOptions: {
       area: {
         stacking: "normal",
-        borderWidth: 0,
       },
     },
     series,

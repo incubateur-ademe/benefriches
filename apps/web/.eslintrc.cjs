@@ -54,6 +54,7 @@ module.exports = {
         ],
       },
     ],
+    "@typescript-eslint/restrict-template-expressions": [2, { allowNumber: true }],
   },
   settings: {
     react: {

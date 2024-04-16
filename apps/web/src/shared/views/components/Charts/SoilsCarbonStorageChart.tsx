@@ -54,7 +54,7 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
             soilData.carbonStorageInTonPerSquareMeters,
             soilData.surfaceArea,
             soilData.carbonStorage,
-            getColorForSoilType(soilData.type as SoilType),
+            getColorForSoilType(soilData.type),
           ]),
       },
     ],

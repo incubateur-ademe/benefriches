@@ -33,11 +33,6 @@ function NonContaminatedSurfaceImpactCard({
     tooltip: {
       valueSuffix: `&nbsp;${SQUARE_METERS_HTML_SYMBOL}`,
     },
-    plotOptions: {
-      area: {
-        borderWidth: 0,
-      },
-    },
     legend: { enabled: false },
     series: [
       {
