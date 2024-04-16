@@ -60,8 +60,8 @@ const MarkerLeafletMap = ({ lat, long, popup }: PropsType) => {
   );
 
   return (
-    <div className="fr-my-2w" style={{ height: "400px", width: "100%" }}>
-      <MapContainer center={position} zoom={zoom} style={{ height: "inherit" }}>
+    <div className="fr-my-2w tw-w-full tw-h-96">
+      <MapContainer center={position} zoom={zoom} className="tw-h-full">
         <MarkerLeafletMapSetView position={position} zoom={zoom} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

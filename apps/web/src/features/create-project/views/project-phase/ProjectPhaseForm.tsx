@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
 import { ProjectPhase, ProjectPhaseDetails } from "../../domain/project.types";
 
+import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -40,8 +41,13 @@ function ProjectPhaseForm({ onSubmit, onBack }: Props) {
           />
           {selectedProjectPhase === "setup" && (
             <div
-              className={fr.cx("fr-pl-2w", "fr-ml-3v", "fr-pt-1w", "fr-my-1w")}
-              style={{ borderLeft: "1px #000091 solid" }}
+              className={classNames(
+                "tw-border-solid",
+                "tw-border-0",
+                "tw-border-l",
+                "tw-border-dsfr-borderBlue",
+                fr.cx("fr-pl-2w", "fr-ml-3v", "fr-pt-1w", "fr-my-1w"),
+              )}
             >
               <RadioButton
                 label="Opportunité de l'opération, identification et analyses de la faisabilité de différents scénarii possibles"
@@ -67,8 +73,13 @@ function ProjectPhaseForm({ onSubmit, onBack }: Props) {
           />
           {selectedProjectPhase === "design" && (
             <div
-              className={fr.cx("fr-pl-2w", "fr-ml-3v", "fr-pt-1w", "fr-my-1w")}
-              style={{ borderLeft: "1px #000091 solid" }}
+              className={classNames(
+                "tw-border-solid",
+                "tw-border-0",
+                "tw-border-l",
+                "tw-border-dsfr-borderBlue",
+                fr.cx("fr-pl-2w", "fr-ml-3v", "fr-pt-1w", "fr-my-1w"),
+              )}
             >
               <RadioButton
                 label="Esquisse / Avant-projet sommaire"

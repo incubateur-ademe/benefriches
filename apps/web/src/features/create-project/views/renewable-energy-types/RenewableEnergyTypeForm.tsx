@@ -32,39 +32,41 @@ function RenewableEnergyTypesForm({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Quel système d'EnR souhaitez-vous installer ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-5w")}>
-          {typedObjectKeys(options).map((renewableEnergy) => {
-            return (
-              <div className={fr.cx("fr-col-6")} key={renewableEnergy}>
-                <Controller
-                  control={control}
-                  name="renewableEnergyTypes"
-                  rules={{
-                    required: "Veuillez sélectionner au moins un type d'énergie renouvelable.",
-                  }}
-                  render={({ field }) => {
-                    const isSelected = field.value.includes(renewableEnergy);
-                    return (
-                      <RenewableEnergyTile
-                        renewableEnergy={renewableEnergy}
-                        disabled={options[renewableEnergy].disabled}
-                        isSelected={isSelected}
-                        onSelect={() => {
-                          field.onChange(
-                            isSelected
-                              ? field.value.filter((v) => v !== renewableEnergy)
-                              : [...field.value, renewableEnergy],
-                          );
-                        }}
-                      />
-                    );
-                  }}
-                />
-              </div>
-            );
-          })}
+        <div className={fr.cx("fr-mb-5w")}>
+          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+            {typedObjectKeys(options).map((renewableEnergy) => {
+              return (
+                <div className={fr.cx("fr-col-12", "fr-col-sm-6")} key={renewableEnergy}>
+                  <Controller
+                    control={control}
+                    name="renewableEnergyTypes"
+                    rules={{
+                      required: "Veuillez sélectionner au moins un type d'énergie renouvelable.",
+                    }}
+                    render={({ field }) => {
+                      const isSelected = field.value.includes(renewableEnergy);
+                      return (
+                        <RenewableEnergyTile
+                          renewableEnergy={renewableEnergy}
+                          disabled={options[renewableEnergy].disabled}
+                          isSelected={isSelected}
+                          onSelect={() => {
+                            field.onChange(
+                              isSelected
+                                ? field.value.filter((v) => v !== renewableEnergy)
+                                : [...field.value, renewableEnergy],
+                            );
+                          }}
+                        />
+                      );
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
         </div>
-        {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
         <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>

@@ -48,7 +48,12 @@ function HomePage() {
             </p>
           </div>
           <div className={fr.cx("fr-col-md-6", "fr-my-auto", "fr-pl-md-10w")}>
-            <img src="/img/project-illustration.jpeg" className={fr.cx("fr-responsive-img")} />
+            <img
+              src="/img/project-illustration.jpeg"
+              className={fr.cx("fr-responsive-img")}
+              alt=""
+              aria-hidden="true"
+            />
           </div>
         </div>
       </section>

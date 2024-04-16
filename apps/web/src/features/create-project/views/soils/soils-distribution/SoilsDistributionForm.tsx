@@ -195,7 +195,7 @@ function SoilsDistributionForm({
           );
         })}
 
-        <div className="fr-py-7v" style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="fr-py-7v tw-flex tw-justify-between">
           <Button
             onClick={() => {
               reset(defaultValues);

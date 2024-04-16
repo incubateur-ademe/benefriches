@@ -40,7 +40,7 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
         </ImpactItemRow>
       )}
       <ImpactItemGroup>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="tw-flex tw-justify-between">
           <ImpactLabel>☁️ CO2-eq stocké ou évité</ImpactLabel>
           <ImpactValue
             isTotal

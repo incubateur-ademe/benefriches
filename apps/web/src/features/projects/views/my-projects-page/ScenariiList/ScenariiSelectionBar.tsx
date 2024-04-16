@@ -1,8 +1,9 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import clsx from "clsx/lite";
 
 import { routes } from "@/app/views/router";
-
+import classNames from "@/shared/views/clsx";
 type Props = {
   baseScenario?: {
     type: "PROJECT" | "STATU_QUO";
@@ -63,27 +64,24 @@ const getCompareButtonProps = (
 function ScenariiSelectionBar({ baseScenario, withScenario, onCancel }: Props) {
   return (
     <div
-      className="fr-py-5v"
-      style={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        width: "100%",
-        zIndex: 2,
-        backgroundColor: "var(--background-open-blue-france",
-      }}
+      className={classNames(
+        "tw-fixed",
+        "tw-bottom-0",
+        "tw-left-0",
+        "tw-w-full",
+        "tw-z-10",
+        "tw-bg-dsfr-openBlue",
+        fr.cx("fr-py-5v"),
+      )}
     >
       <div
-        className={fr.cx("fr-grid-row", "fr-container")}
-        style={{
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
+        className={classNames(
+          fr.cx("fr-grid-row", "fr-container"),
+          "tw-justify-between",
+          "tw-items-center",
+        )}
       >
-        <div
-          className="fr-grid-row"
-          style={{ justifyContent: "space-between", alignItems: "center" }}
-        >
+        <div className={clsx(fr.cx("fr-grid-row"), "tw-justify-between", "tw-items-center")}>
           <ScenarioSelection name={baseScenario?.name} siteName={baseScenario?.siteName} />
           <span className={fr.cx("fr-px-4w", "fr-text--xl", "fr-mb-0", "fr-text--heavy")}>/</span>
           <ScenarioSelection name={withScenario?.name} siteName={withScenario?.siteName} />

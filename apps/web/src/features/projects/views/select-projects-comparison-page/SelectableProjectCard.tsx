@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr/fr";
 
+import classNames from "@/shared/views/clsx";
+
 type Props = {
   children: ReactNode;
   onSelect: () => void;
@@ -10,17 +12,19 @@ type Props = {
 function SelectableProjectCard({ children, isSelected, onSelect }: Props) {
   return (
     <div
-      style={{
-        border: "2px #ddd solid",
-        minHeight: "160px",
-        cursor: "pointer",
-        position: "relative",
-        alignItems: "center",
-      }}
-      className={fr.cx("fr-grid-row", "fr-py-2w", "fr-px-3w")}
+      className={classNames(
+        fr.cx("fr-grid-row", "fr-py-2w", "fr-px-3w"),
+        "tw-border-solid",
+        "tw-border-grey",
+        "tw-border-2",
+        "tw-cursor-pointer",
+        "tw-relative",
+        "tw-items-center",
+        "tw-min-h-40",
+      )}
       onClick={onSelect}
     >
-      <div style={{ position: "absolute", top: "8px", right: "12px" }}>
+      <div className="tw-absolute tw-top-[8px] tw-right-[12px]">
         <input type="radio" checked={isSelected} />
       </div>
       <h5>{children}</h5>

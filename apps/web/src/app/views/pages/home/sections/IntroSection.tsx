@@ -17,7 +17,11 @@ export default function IntroSection() {
           </Button>
         </div>
         <div className={fr.cx("fr-col-12", "fr-col-md-5", "fr-pt-10v", "fr-pt-md-0")}>
-          <img src="/img/home-intro.svg" className="tw-w-full md:tw-w-auto" />
+          <img
+            src="/img/home-intro.svg"
+            className="tw-w-full md:tw-w-auto"
+            alt="capture d’écran de l’outil Bénéfriches"
+          />
         </div>
       </div>
     </section>

@@ -1,4 +1,7 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
+
+import classNames from "@/shared/views/clsx";
 
 type Props = {
   projectName: string;
@@ -12,6 +15,37 @@ type Props = {
   onMouseLeave: () => void;
 };
 
+const ScenarioTileHeader = ({
+  pictogramUrl,
+  projectName,
+}: {
+  pictogramUrl: Props["pictogramUrl"];
+  projectName: Props["projectName"];
+}) => {
+  return (
+    <>
+      {pictogramUrl && (
+        <div className="fr-tile__header">
+          <div className="fr-tile__pictogram">
+            <img
+              className="fr-responsive-img"
+              src={pictogramUrl}
+              aria-hidden={true}
+              alt="Icône du type de scénario"
+              width="80px"
+              height="80px"
+            />
+          </div>
+        </div>
+      )}
+
+      <h3 className={classNames(fr.cx("fr-tile__title"), "before:tw-content-none")}>
+        {projectName}
+      </h3>
+    </>
+  );
+};
+
 function ScenarioTile({
   onChangeCheckbox,
   isSelected,
@@ -22,40 +56,43 @@ function ScenarioTile({
   pictogramUrl,
   ...rest
 }: Props) {
-  const tileStyle = isSelected ? { border: "1px solid var(--border-active-blue-france)" } : {};
   const onChange = () => {
     onChangeCheckbox(!isSelected);
   };
 
   return (
-    <div className="fr-tile" style={tileStyle} {...rest}>
+    <div
+      className={classNames(
+        fr.cx("fr-tile", "fr-tile--no-border"),
+        "tw-bg-none",
+        "tw-border",
+        "tw-border-solid",
+        isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-grey",
+      )}
+      {...rest}
+    >
       <div className="fr-tile__body">
         <div className="fr-tile__content">
-          <a {...impactLinkProps}>
-            {pictogramUrl && (
-              <div className="fr-tile__header">
-                <div className="fr-tile__pictogram">
-                  <img
-                    className="fr-responsive-img"
-                    src={pictogramUrl}
-                    aria-hidden={true}
-                    alt="Icône du type de scénario"
-                    width="80px"
-                    height="80px"
-                  />
-                </div>
-              </div>
-            )}
+          {impactLinkProps ? (
+            <a {...impactLinkProps}>
+              <ScenarioTileHeader projectName={projectName} pictogramUrl={pictogramUrl} />
+            </a>
+          ) : (
+            <div>
+              <ScenarioTileHeader projectName={projectName} pictogramUrl={pictogramUrl} />
+            </div>
+          )}
 
-            <h3 className="fr-tile__title">{projectName}</h3>
-          </a>
-          <div className="fr-tile__details" style={{ flexGrow: 1 }}>
+          <div className="fr-tile__details tw-grow">
             <p className="fr-tile__desc">{details}</p>
           </div>
           <Checkbox
-            className="fr-mt-3v"
+            className={classNames(
+              fr.cx("fr-mt-3v"),
+              shouldDisplayCheckbox ? "tw-visible" : "tw-invisible",
+            )}
             // Scenarii comparison is not released yet
-            style={{ display: "none", visibility: shouldDisplayCheckbox ? "visible" : "hidden" }}
+            style={{ display: "none" }}
             options={[
               {
                 label: "Comparer",

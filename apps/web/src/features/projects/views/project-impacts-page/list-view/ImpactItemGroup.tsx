@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+import classNames from "@/shared/views/clsx";
+
 type Props = {
   children: ReactNode;
   onClick?: () => void;
@@ -8,11 +10,14 @@ type Props = {
 const ImpactItemGroup = ({ children, onClick }: Props) => {
   return (
     <div
-      className={onClick ? "tw-cursor-pointer hover:tw-underline" : ""}
+      className={classNames(
+        "tw-border-grey",
+        "tw-border-0",
+        "tw-border-b",
+        "tw-border-solid",
+        onClick && "tw-cursor-pointer hover:tw-underline",
+      )}
       onClick={onClick}
-      style={{
-        borderBottom: "1px solid #DDDDDD",
-      }}
     >
       {children}
     </div>

@@ -26,7 +26,7 @@ const SocialListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
       />
       <ImpactSectionTitle>Impacts sur l'emploi</ImpactSectionTitle>
       <ImpactItemGroup>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className="tw-flex tw-justify-between">
           <ImpactLabel>🧑‍🔧 Emplois équivalent temps plein mobilisés</ImpactLabel>
           <ImpactValue
             isTotal
@@ -55,7 +55,7 @@ const SocialListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
         <>
           <ImpactSectionTitle>Impacts sur les riverains</ImpactSectionTitle>
           <ImpactItemGroup>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="tw-flex tw-justify-between">
               <ImpactLabel>🤕 Accidents évités sur la friche</ImpactLabel>
               <ImpactValue isTotal value={impacts.accidents.current} />
             </div>

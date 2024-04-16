@@ -1,6 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
 
+import classNames from "@/shared/views/clsx";
+
 type Props = {
   projectName: string;
   projectId: string;
@@ -9,13 +11,16 @@ type Props = {
 
 const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
   return (
-    <div className={fr.cx("fr-py-8v")} style={{ background: "#ECF5FD" }}>
+    <div className={classNames(fr.cx("fr-py-8v"), "tw-bg-impacts-main")}>
       <div className={fr.cx("fr-container")}>
         <div
-          className={fr.cx("fr-grid-row", "fr-my-2w")}
-          style={{ justifyContent: "space-between", alignItems: "center" }}
+          className={classNames(
+            fr.cx("fr-grid-row", "fr-my-2w"),
+            "tw-justify-between",
+            "tw-items-center",
+          )}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
+          <div className="tw-flex tw-items-center">
             <img
               className={fr.cx("fr-mr-3v")}
               src={getScenarioPictoUrl("PHOTOVOLTAIC_POWER_PLANT")}
@@ -25,10 +30,7 @@ const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
               height={76}
             />
             <div>
-              <h2
-                className={fr.cx("fr-my-0")}
-                style={{ color: fr.colors.options.blueEcume.sun247moon675.default }}
-              >
+              <h2 className={classNames(fr.cx("fr-my-0"), "tw-text-impacts-title")}>
                 {projectName}
               </h2>
               <div className={fr.cx("fr-mt-1v")}>

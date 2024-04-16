@@ -27,7 +27,7 @@ const ImpactsListView = ({
   const displaySocioEconomicSection = displayEconomicData || displayEnvironmentData;
 
   return (
-    <div style={{ maxWidth: "900px", margin: "auto" }}>
+    <div className="tw-max-w-4xl tw-mx-auto">
       {displayEconomicData && (
         <>
           <CostBenefitAnalysisListSection

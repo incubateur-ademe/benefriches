@@ -9,6 +9,7 @@ import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
 import ProjectImpactsPage from "./ProjectImpactsPage";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
+import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 type Props = ProjectImpactsState & {
@@ -23,8 +24,7 @@ type Props = ProjectImpactsState & {
 const ProjectImpactsPageTabs = () => {
   return (
     <ul
-      className={fr.cx("fr-tabs__list", "fr-container", "fr-mx-auto")}
-      style={{ marginLeft: "auto", marginRight: "auto" }}
+      className={classNames(fr.cx("fr-tabs__list", "fr-container", "fr-mx-auto"), "tw-mx-auto")}
       role="tablist"
     >
       <li role="presentation">
@@ -54,7 +54,7 @@ function ProjectImpactsPageWrapper({
   onCurrentCategoryFilterChange,
 }: Props) {
   return (
-    <div style={{ background: "#ECF5FD" }}>
+    <div className="tw-bg-impacts-main">
       <ProjectsImpactsPageHeader
         projectId={projectData?.id ?? ""}
         projectName={projectData?.name ?? "Projet photovoltaïque"}
@@ -64,9 +64,11 @@ function ProjectImpactsPageWrapper({
       <div className={fr.cx("fr-tabs")}>
         <ProjectImpactsPageTabs />
         <div
-          className={fr.cx("fr-tabs__panel", "fr-tabs__panel--selected")}
+          className={classNames(
+            fr.cx("fr-tabs__panel", "fr-tabs__panel--selected"),
+            "tw-bg-dsfr-grey",
+          )}
           role="tabpanel"
-          style={{ background: fr.colors.decisions.background.default.grey.default }}
         >
           <div className={fr.cx("fr-container")}>
             <ProjectsComparisonActionBar

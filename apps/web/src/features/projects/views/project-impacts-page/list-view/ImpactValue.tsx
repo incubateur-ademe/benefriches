@@ -5,7 +5,7 @@ import {
   formatSurfaceAreaImpact,
 } from "../../shared/formatImpactValue";
 
-import { impactColors } from "@/app/views/theme";
+import classNames from "@/shared/views/clsx";
 
 const impactTypeFormatterMap = {
   co2: formatCO2Impact,
@@ -21,18 +21,20 @@ type Props = {
 };
 
 const ImpactValue = ({ value, type = "default", isTotal = false }: Props) => {
-  const color =
-    value === 0 ? impactColors.neutral : value > 0 ? impactColors.positive : impactColors.negative;
   return (
     <div
-      style={{
-        padding: "0.5rem",
-        width: "200px",
-        background: "#ECF5FD",
-        textAlign: "center",
-        fontWeight: isTotal ? "700" : "normal",
-        color,
-      }}
+      className={classNames(
+        "tw-w-48",
+        "tw-p-2",
+        "tw-text-center",
+        "tw-bg-impacts-main",
+        isTotal && "tw-font-bold",
+        value === 0
+          ? "tw-text-impacts-neutral"
+          : value > 0
+            ? "tw-text-impacts-positive"
+            : "tw-text-impacts-negative",
+      )}
     >
       {impactTypeFormatterMap[type](value)}
     </div>

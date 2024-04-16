@@ -35,38 +35,42 @@ function ProjectTypesForm({ onSubmit }: Props) {
       <AboutFormsModal />
       <WizardFormLayout title="Que souhaitez-vous aménager sur ce site ?">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-5w")}>
-            {typedObjectKeys(options).map((developmentPlanCategory) => {
-              return (
-                <div className={fr.cx("fr-col-6")} key={developmentPlanCategory}>
-                  <Controller
-                    control={control}
-                    name="developmentPlanCategories"
-                    rules={{ required: "Veuillez sélectionner au moins un type d'aménagement." }}
-                    render={({ field }) => {
-                      const isSelected = field.value.includes(developmentPlanCategory);
-                      return (
-                        <DevelopmentPlanCategoryTile
-                          developmentPlanCategory={developmentPlanCategory}
-                          disabled={options[developmentPlanCategory].disabled}
-                          isSelected={isSelected}
-                          onSelect={() => {
-                            field.onChange(
-                              isSelected
-                                ? field.value.filter((v) => v !== developmentPlanCategory)
-                                : [...field.value, developmentPlanCategory],
-                            );
-                          }}
-                        />
-                      );
-                    }}
-                  />
-                </div>
-              );
-            })}
+          <div className={fr.cx("fr-mb-5w")}>
+            <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+              {typedObjectKeys(options).map((developmentPlanCategory) => {
+                return (
+                  <div className={fr.cx("fr-col-12", "fr-col-sm-6")} key={developmentPlanCategory}>
+                    <Controller
+                      control={control}
+                      name="developmentPlanCategories"
+                      rules={{ required: "Veuillez sélectionner au moins un type d'aménagement." }}
+                      render={({ field }) => {
+                        const isSelected = field.value.includes(developmentPlanCategory);
+                        return (
+                          <DevelopmentPlanCategoryTile
+                            developmentPlanCategory={developmentPlanCategory}
+                            disabled={options[developmentPlanCategory].disabled}
+                            isSelected={isSelected}
+                            onSelect={() => {
+                              field.onChange(
+                                isSelected
+                                  ? field.value.filter((v) => v !== developmentPlanCategory)
+                                  : [...field.value, developmentPlanCategory],
+                              );
+                            }}
+                          />
+                        );
+                      }}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
           </div>
-          {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
-          <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+          <Button className="tw-float-right" nativeButtonProps={{ type: "submit" }}>
+            Suivant
+          </Button>
         </form>
       </WizardFormLayout>
     </>

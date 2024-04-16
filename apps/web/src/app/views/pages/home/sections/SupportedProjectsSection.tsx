@@ -5,6 +5,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { Card } from "@codegouvfr/react-dsfr/Card";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import classNames from "@/shared/views/clsx";
 
 type SupportedProjectCardProps = {
   formerActivity: string;
@@ -29,8 +30,8 @@ function SupportedProjectCard({
     <div>
       <Card
         background
+        classes={{ root: "tw-w-96" }}
         badge={<Badge>{formerActivity}</Badge>}
-        style={{ width: "360px" }}
         border
         footer={
           <Button
@@ -46,24 +47,30 @@ function SupportedProjectCard({
               <span aria-hidden="true" className={fr.cx("fr-icon-map-pin-2-line", "fr-icon--sm")} />{" "}
               {projectLocation}
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="tw-flex tw-justify-between">
               <span className={fr.cx("fr-text--sm", "fr-m-0")}>Bilan de l'opération :</span>
               <span
-                className={fr.cx("fr-text--sm", "fr-m-0", "fr-text--bold")}
-                style={{ color: economicBalanceInMillionEuros > 0 ? "#18753C" : "#CE0500" }}
+                className={classNames(
+                  fr.cx("fr-text--sm", "fr-m-0", "fr-text--bold"),
+                  economicBalanceInMillionEuros > 0
+                    ? "tw-text-impacts-positive"
+                    : "tw-text-impacts-negative",
+                )}
               >
                 {economicBalanceInMillionEuros > 0 ? "+" : ""}
                 &nbsp;
                 {formatNumberFr(economicBalanceInMillionEuros)}&nbsp;M&nbsp;€
               </span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="tw-flex tw-justify-between">
               <span className={fr.cx("fr-text--sm", "fr-m-0")}>Impacts socio-économiques :</span>
               <span
-                className={fr.cx("fr-text--sm", "fr-m-0", "fr-text--bold")}
-                style={{
-                  color: socioEconomicImpactAmountInMillionEuros > 0 ? "#18753C" : "#CE0500",
-                }}
+                className={classNames(
+                  fr.cx("fr-text--sm", "fr-m-0", "fr-text--bold"),
+                  socioEconomicImpactAmountInMillionEuros > 0
+                    ? "tw-text-impacts-positive"
+                    : "tw-text-impacts-negative",
+                )}
               >
                 {socioEconomicImpactAmountInMillionEuros > 0 ? "+" : ""}
                 &nbsp;
@@ -72,7 +79,7 @@ function SupportedProjectCard({
             </div>
           </div>
         }
-        imageAlt={`Illustration du projet à ${projectLocation}`}
+        imageAlt={`Illustration du projet à ${projectLocation} (${formerActivity})`}
         imageUrl={imgUrl}
         size="small"
         title={projectType}
@@ -85,10 +92,10 @@ function SupportedProjectCard({
 
 export default function SupportedProjectsSection() {
   return (
-    <section className={fr.cx("fr-py-10w")} style={{ background: "#F6F6F6" }}>
+    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey")}>
       <div className={fr.cx("fr-container")}>
         <h2>Les projets accompagnés par Bénéfriches</h2>
-        <div style={{ display: "flex", overflowX: "scroll" }} className={fr.cx("fr-mt-5w")}>
+        <div className={classNames("tw-flex", "tw-overflow-x-scroll", fr.cx("fr-mt-5w"))}>
           <SupportedProjectCard
             projectType="Voirie, parking relais, espaces paysagers et ZMEL"
             projectLocation="Balaruc-les-Bains (34)"
@@ -101,9 +108,7 @@ export default function SupportedProjectsSection() {
           <SupportedProjectCard
             projectType={
               // this style makes sure the title takes as much height as other cards which are longer
-              <span style={{ display: "block", marginBottom: "28px" }}>
-                Zone d'activité économique
-              </span>
+              <span className="tw-block tw-mb-[28px]">Zone d'activité économique</span>
             }
             projectLocation="Melun Val de Seine (77)"
             formerActivity="Friche partielle"

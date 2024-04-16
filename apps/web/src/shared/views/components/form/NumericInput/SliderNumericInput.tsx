@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { FieldValues, RegisterOptions, useController, UseControllerProps } from "react-hook-form";
+import { fr } from "@codegouvfr/react-dsfr";
 import DsfrInput, { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { Slider } from "antd";
 import { SliderBaseProps } from "antd/es/slider";
@@ -9,6 +10,7 @@ import {
   stringToNumber,
 } from "@/shared/services/number-conversion/numberConversion";
 import { getPercentage } from "@/shared/services/percentage/percentage";
+import classNames from "@/shared/views/clsx";
 
 type Props<T extends FieldValues> = {
   label: string;
@@ -87,7 +89,11 @@ const SliderNumericInput = <T extends FieldValues>({
   return (
     <div className="fr-col">
       <DsfrInput
-        className="fr-col fr-mb-0 fr-pt-7v"
+        className={classNames(
+          fr.cx("fr-col", "fr-mb-0", "fr-pt-7v"),
+          "tw-flex",
+          "tw-justify-between",
+        )}
         label={label}
         hintText={hintText}
         state={error ? "error" : "default"}
@@ -103,9 +109,8 @@ const SliderNumericInput = <T extends FieldValues>({
           style: { width: "150px" },
           ...inputProps,
         }}
-        style={{ display: "flex", justifyContent: "space-between" }}
       />
-      <legend style={{ display: "flex", justifyContent: "flex-end" }}>
+      <legend className={classNames("tw-flex", "tw-justify-end")}>
         {Math.round(getPercentage(field.value, sliderEndValue))}%
       </legend>
 

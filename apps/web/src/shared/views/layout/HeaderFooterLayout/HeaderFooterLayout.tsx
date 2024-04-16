@@ -2,15 +2,17 @@ import { ReactNode } from "react";
 import BenefrichesFooter from "./BenefrichesFooter";
 import BenefrichesHeader from "./BenefrichesHeader";
 
+import classNames from "@/shared/views/clsx";
+
 type HeaderFooterLayoutProps = {
   children: ReactNode;
 };
 
 function HeaderFooterLayout({ children }: HeaderFooterLayoutProps) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <div className={classNames("tw-flex", "tw-flex-col", "tw-h-screen")}>
       <BenefrichesHeader />
-      <main style={{ flexGrow: 1 }}>{children}</main>
+      <main className="tw-grow">{children}</main>
       <BenefrichesFooter />
     </div>
   );

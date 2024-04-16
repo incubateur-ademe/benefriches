@@ -6,4 +6,7 @@ export default {
   content: ["./src/**/*.{ts,tsx}"],
   theme,
   plugins: [],
+  corePlugins: {
+    preflight: false,
+  },
 };
