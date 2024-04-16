@@ -38,7 +38,6 @@ function FullTimeJobsImpactCard({ reconversionProjectName, fullTimeJobsImpact }:
     plotOptions: {
       area: {
         stacking: "normal",
-        borderWidth: 0,
       },
     },
     legend: { enabled: false },

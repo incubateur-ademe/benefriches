@@ -41,7 +41,9 @@ const SocioEconomicDirectImpactsSection = ({
         <ImpactItemGroup>
           <ImpactLabel>🔑 Revenu locatif</ImpactLabel>
           {rentalIncomeImpacts.map((impact) => {
-            return <SocioEconomicImpactRow key={impact.actor + impact.amount} impact={impact} />;
+            return (
+              <SocioEconomicImpactRow key={`${impact.actor} ${impact.amount}`} impact={impact} />
+            );
           })}
         </ImpactItemGroup>
       )}
@@ -53,7 +55,9 @@ const SocioEconomicDirectImpactsSection = ({
         >
           <ImpactLabel>🏚 Dépenses de gestion et sécurisation de la friche évitées</ImpactLabel>
           {avoidedFricheCostsImpacts.map((impact) => {
-            return <SocioEconomicImpactRow key={impact.actor + impact.amount} impact={impact} />;
+            return (
+              <SocioEconomicImpactRow key={`${impact.actor} ${impact.amount}`} impact={impact} />
+            );
           })}
         </ImpactItemGroup>
       )}

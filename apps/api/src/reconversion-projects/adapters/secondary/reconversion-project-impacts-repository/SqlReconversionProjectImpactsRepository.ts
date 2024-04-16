@@ -6,7 +6,6 @@ import {
   ReconversionProjectImpactsRepository,
 } from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SoilType } from "src/soils/domain/soils";
 
 export class SqlReconversionProjectImpactsRepository
   implements ReconversionProjectImpactsRepository
@@ -96,7 +95,7 @@ export class SqlReconversionProjectImpactsRepository
       soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
         return {
           ...acc,
-          [soil_type as SoilType]: surface_area,
+          [soil_type]: surface_area,
         };
       }, {}),
       conversionFullTimeJobs: reconversionProject.conversion_full_time_jobs_involved ?? undefined,

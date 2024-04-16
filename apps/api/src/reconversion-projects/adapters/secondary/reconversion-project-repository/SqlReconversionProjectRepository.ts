@@ -208,7 +208,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
           return {
             ...acc,
-            [soil_type as SoilType]: surface_area,
+            [soil_type]: surface_area,
           };
         }, {}),
       }

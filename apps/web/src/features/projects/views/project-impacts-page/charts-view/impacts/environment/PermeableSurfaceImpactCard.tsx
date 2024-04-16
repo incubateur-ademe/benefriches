@@ -44,7 +44,6 @@ function PermeableSurfaceImpactCard({
     plotOptions: {
       area: {
         stacking: "normal",
-        borderWidth: 0,
       },
     },
     legend: { enabled: false },

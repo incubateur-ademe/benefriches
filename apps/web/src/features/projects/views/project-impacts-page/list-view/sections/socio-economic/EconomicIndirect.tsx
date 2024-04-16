@@ -34,19 +34,16 @@ const SocioEconomicIndirectImpactsSection = ({ socioEconomicImpacts }: Props) =>
         <ImpactItemGroup>
           <ImpactLabel>🏛 Recettes fiscales</ImpactLabel>
           {taxesIncomeImpacts.map((impact) => {
-            return <SocioEconomicImpactRow key={impact.actor + impact.amount} impact={impact} />;
+            return (
+              <SocioEconomicImpactRow key={`${impact.actor} ${impact.amount}`} impact={impact} />
+            );
           })}
         </ImpactItemGroup>
       )}
       {propertyTransferDutiesIncomeImpact && (
         <ImpactItemGroup>
           <ImpactLabel>🏛 Droits de mutation sur la vente du site</ImpactLabel>
-          <SocioEconomicImpactRow
-            key={
-              propertyTransferDutiesIncomeImpact.actor + propertyTransferDutiesIncomeImpact.amount
-            }
-            impact={propertyTransferDutiesIncomeImpact}
-          />
+          <SocioEconomicImpactRow impact={propertyTransferDutiesIncomeImpact} />
         </ImpactItemGroup>
       )}
     </section>
