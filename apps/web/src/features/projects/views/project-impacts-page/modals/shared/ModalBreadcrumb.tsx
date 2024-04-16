@@ -1,6 +1,8 @@
 import { useId } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 
+import classNames from "@/shared/views/clsx";
+
 export type ModalBreadcrumbSegments = {
   onClick?: () => void;
   label: string;
@@ -16,8 +18,13 @@ const ModalBreadcrumb = ({ segments }: Props) => {
   return (
     <nav
       role="navigation"
-      className={"fr-breadcrumb tw-w-3/4"}
-      style={{ position: "absolute", top: fr.spacing("1v"), left: fr.spacing("4w") }}
+      className={classNames(
+        fr.cx("fr-breadcrumb"),
+        "tw-w-3/4",
+        "tw-absolute",
+        "tw-top-1",
+        "tw-left-8",
+      )}
     >
       <button className="fr-breadcrumb__button" aria-expanded="false" aria-controls={breadcrumbId}>
         Voir le fil d'Ariane
@@ -35,7 +42,7 @@ const ModalBreadcrumb = ({ segments }: Props) => {
                   {label}
                 </button>
               ) : (
-                <span style={{ lineHeight: "1.25rem", verticalAlign: "top" }}>{label}</span>
+                <span className="tw-leading-5 tw-align-top">{label}</span>
               )}
             </li>
           ))}

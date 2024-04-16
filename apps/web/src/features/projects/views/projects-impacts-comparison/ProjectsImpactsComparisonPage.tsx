@@ -26,6 +26,8 @@ import NonPollutedSoilsImpactComparisonChart from "./charts/soil-impacts/NonPoll
 import PermeableSoilsImpactComparisonChart from "./charts/soil-impacts/PermeableSoilsImpactComparisonChart";
 import ImpactsComparisonPageHeader from "./ImpactsComparisonHeader";
 
+import classNames from "@/shared/views/clsx";
+
 type SuccessDataProps = {
   loadingState: "success";
   baseScenario:
@@ -62,10 +64,7 @@ type ImpactCardProps = {
 
 const ImpactCard = ({ children }: ImpactCardProps) => {
   return (
-    <div
-      style={{ border: "3px solid #cccccc", borderRadius: "8px" }}
-      className={fr.cx("fr-py-2w", "fr-px-2w")}
-    >
+    <div className={classNames(fr.cx("fr-py-2w", "fr-px-2w"), "tw-border-grey", "tw-rounded-lg")}>
       {children}
     </div>
   );

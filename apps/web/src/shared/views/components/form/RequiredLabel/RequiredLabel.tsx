@@ -6,9 +6,7 @@ export default function RequiredLabel({ label }: Props) {
   return (
     <>
       {label}&nbsp;
-      <span className="" style={{ color: "var(--text-label-red-marianne)" }}>
-        *
-      </span>
+      <span className={"tw-text-dsfr-red"}>*</span>
     </>
   );
 }

@@ -22,7 +22,7 @@ function SiteExpensesSummary({ onNext, onBack, isFriche, ownerExpenses, tenantEx
       title={`Récapitulatif des coûts annuels liés ${isFriche ? "à la friche" : "au site"}`}
     >
       {hasNoExpenses && <p>Aucune dépense renseignée pour ce site.</p>}
-      <div style={{ display: "flex", justifyContent: "space-around" }}>
+      <div className="tw-flex tw-justify-around">
         {hasOwnerExpenses && (
           <div>
             <h3>À la charge du propriétaire</h3>

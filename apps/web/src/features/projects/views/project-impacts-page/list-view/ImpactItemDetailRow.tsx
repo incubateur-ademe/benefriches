@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+import classNames from "@/shared/views/clsx";
+
 type Props = {
   children: ReactNode;
   onClick?: () => void;
@@ -8,12 +10,12 @@ type Props = {
 const ImpactDetailRow = ({ children, onClick }: Props) => {
   return (
     <div
-      className={onClick ? "tw-cursor-pointer hover:tw-underline" : ""}
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
+      className={classNames(
+        "tw-flex",
+        "tw-justify-between",
+        "tw-items-center",
+        onClick && "tw-cursor-pointer hover:tw-underline",
+      )}
       onClick={onClick}
     >
       {children}

@@ -7,6 +7,7 @@ import {
   getLabelForSoilType,
   getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -136,10 +137,18 @@ function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
           return (
             <section key={category} className={fr.cx("fr-mb-5w")}>
               <h4>{category}</h4>
-              <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+              <div
+                className={classNames(
+                  "tw-grid",
+                  "tw-grid-cols-1",
+                  "sm:tw-grid-cols-2",
+                  "lg:tw-grid-cols-3",
+                  "tw-gap-4",
+                )}
+              >
                 {options.map((option) => {
                   return (
-                    <div className={fr.cx("fr-col-4")} key={option}>
+                    <div key={option}>
                       <Controller
                         control={control}
                         name="soils"

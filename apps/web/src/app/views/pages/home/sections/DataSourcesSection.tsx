@@ -10,9 +10,9 @@ export default function DataSourcesSection() {
           <div className="fr-mb-5w tw-hidden md:tw-flex tw-justify-between tw-items-center">
             <img src="/img/logos/logo-ademe.svg" alt="Logo de l'ADEME" height="80px" />
             <img src="/img/logos/logo-aldo.svg" alt="Logo de l'outil Aldo" height="50px" />
-            <img src="/img/logos/logo-insee.svg" alt="Logo de l'ADEME" height="80px" />
+            <img src="/img/logos/logo-insee.svg" alt="Logo de l'INSEE" height="80px" />
           </div>
-          <div className="tw-flex tw-hidden md:tw-flex tw-justify-between">
+          <div className="tw-hidden md:tw-flex tw-justify-between">
             <img src="/img/logos/logo-brgm.svg" alt="Logo du BRGM" height="80px" />
             <img
               src="/img/logos/logo-shift-project.svg"
@@ -28,7 +28,7 @@ export default function DataSourcesSection() {
           <div className="tw-flex md:tw-hidden tw-gap-8 tw-flex-wrap tw-justify-center">
             <img src="/img/logos/logo-ademe.svg" alt="Logo de l'ADEME" height="60px" />
             <img src="/img/logos/logo-aldo.svg" alt="Logo de l'outil Aldo" height="40px" />
-            <img src="/img/logos/logo-insee.svg" alt="Logo de l'ADEME" height="60px" />
+            <img src="/img/logos/logo-insee.svg" alt="Logo de l'INSEE" height="60px" />
             <img src="/img/logos/logo-brgm.svg" alt="Logo du BRGM" height="60px" />
             <img
               src="/img/logos/logo-shift-project.svg"

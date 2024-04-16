@@ -6,6 +6,7 @@ import {
   ImpactCategoryFilter,
   ViewMode,
 } from "@/features/projects/application/projectImpacts.reducer";
+import classNames from "@/shared/views/clsx";
 
 type Props = {
   selectedFilter: ImpactCategoryFilter;
@@ -44,10 +45,13 @@ function ImpactsActionBar({
 
   return (
     <section
-      className={fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w")}
-      style={{ justifyContent: "space-between", alignItems: "center" }}
+      className={classNames(
+        fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w"),
+        "tw-justify-between",
+        "tw-items-center",
+      )}
     >
-      <div className={fr.cx("fr-grid-row")} style={{ alignItems: "center" }}>
+      <div className={classNames(fr.cx("fr-grid-row"), "tw-items-center")}>
         <SegmentedControl
           legend="Filtres"
           hideLegend

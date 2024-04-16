@@ -7,6 +7,7 @@ import {
   getPictogramForDevelopmentPlanCategory,
 } from "../projectTypeLabelMapping";
 
+import classNames from "@/shared/views/clsx";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 
 type Props = {
@@ -35,8 +36,7 @@ export default function DevelopmentPlanCategoryTile({
             <Badge
               small
               as="span"
-              className={fr.cx("fr-mt-1w")}
-              style={{ fontWeight: "normal", textTransform: "none" }}
+              className={classNames(fr.cx("fr-mt-1w"), "tw-normal-case", "tw-font-normal")}
             >
               Bientôt disponible
             </Badge>
@@ -49,7 +49,6 @@ export default function DevelopmentPlanCategoryTile({
       disabled={disabled}
       isSelected={isSelected}
       onSelect={onSelect}
-      style={{ minHeight: "270px" }}
       checkType="radio"
     />
   );

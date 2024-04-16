@@ -18,17 +18,28 @@ export const soilColors = {
   water: "#1243EB",
 };
 
-export const impactColors = {
-  positive: "#18753C",
-  neutral: "#161616",
-  negative: "#CE0500",
-};
-
 export default {
   extend: {
     colors: {
-      gray: "#DDDDDD",
+      dsfr: {
+        red: "var(--text-label-red-marianne)",
+        openBlue: "var(--background-open-blue-france)",
+        titleBlue: "var(--text-title-blue-france)",
+        borderBlue: "var(--border-plain-blue-france)",
+        grey: "var(--background-default-grey)",
+        greyDisabled: "var(--text-disabled-grey)",
+      },
+      blue: "#137FEB",
+      lightGrey: "#F6F6F6",
+      grey: "#DDDDDD",
       warning: "#B34000",
+      impacts: {
+        title: "var(--blue-ecume-sun-247-moon-675)",
+        main: "#ECF5FD",
+        positive: "#18753C",
+        neutral: "#161616",
+        negative: "#CE0500",
+      },
       // can be used with classes tw-soils-buildings, tw-soils-impermeable-soils...
       soils: soilColors,
     },

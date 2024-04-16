@@ -9,6 +9,7 @@ import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { sumList, sumObjectValues } from "@/shared/services/sum/sum";
+import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -44,9 +45,9 @@ type DataLineProps = {
 };
 function DataLine({ label, value, className = "fr-my-2w" }: DataLineProps) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between" }} className={className}>
+    <div className={classNames(className, "tw-flex", "tw-justify-between")}>
       <dd className="fr-p-0">{label}</dd>
-      <dt style={{ textAlign: "right" }}>{value}</dt>
+      <dt className="tw-text-right">{value}</dt>
     </div>
   );
 }

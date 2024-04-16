@@ -7,21 +7,34 @@ import {
 } from "../links";
 
 import { routes } from "@/app/views/router";
+import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 export default function CallToActionSection() {
   return (
-    <section className={fr.cx("fr-py-10w")} style={{ background: "#F6F6F6" }} id="cta-section">
+    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey")} id="cta-section">
       <div className={fr.cx("fr-container")}>
         <div className={fr.cx("fr-grid-row")}>
           <div
-            className={
-              "fr-col-12 fr-col-md-5 fr-pr-md-8w tw-border-0 tw-border-b md:tw-border-b-0 md:tw-border-r tw-border-solid tw-border-gray fr-pb-12v fr-pb-md-0"
-            }
+            className={classNames(
+              "fr-col-12",
+              "fr-col-md-5",
+              "fr-pr-md-8w",
+              "tw-border-0",
+              "tw-border-b",
+              "md:tw-border-b-0",
+              "md:tw-border-r",
+              "tw-border-solid",
+              "tw-border-grey",
+              "fr-pb-12v",
+              "fr-pb-md-0",
+            )}
           >
             <img
               src="/img/pictograms/renewable-energy/photovoltaic.svg"
               width="100px"
+              aria-hidden="true"
+              alt="icône projet d’aménagement photovoltaïque"
               className={fr.cx("fr-mb-3w")}
             />
             <h2>Vous êtes développeur de centrales photovoltaïques ?</h2>
@@ -40,6 +53,8 @@ export default function CallToActionSection() {
             <img
               src="/img/pictograms/development-plans/mixed-used-neighborhood.svg"
               width="100px"
+              aria-hidden="true"
+              alt="icône projet d’aménagement urbain"
               className={fr.cx("fr-mb-3w")}
             />
             <h2>Vous êtes aménageur urbain ?</h2>

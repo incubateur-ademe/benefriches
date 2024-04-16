@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import classNames from "../../clsx";
 
 type Props = {
   title: string;
@@ -9,15 +10,20 @@ type Props = {
 
 function WizardFormLayout({ title, children, instructions = null }: Props) {
   return (
-    <div style={{ display: "flex" }}>
-      <section style={{ flex: "3", maxWidth: "66%" }}>
+    <div className="tw-grid tw-grid-cols-12 tw-gap-6">
+      <section className="tw-col-span-12 tw-col-start-1 md:tw-col-span-8">
         <h2>{title}</h2>
         {children}
       </section>
       {instructions && (
         <section
-          className={fr.cx("fr-p-3w", "fr-ml-2w")}
-          style={{ flex: "2", maxWidth: "33%", background: "var(--background-alt-grey)" }}
+          className={classNames(
+            fr.cx("fr-p-3w"),
+            "md:tw-grid-start-8",
+            "tw-col-span-12",
+            "md:tw-col-span-4",
+            "tw-bg-lightGrey",
+          )}
         >
           <div>{instructions}</div>
         </section>

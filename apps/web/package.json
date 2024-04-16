@@ -29,6 +29,7 @@
     "@codegouvfr/react-dsfr": "^1.9.2",
     "@reduxjs/toolkit": "^2.2.1",
     "antd": "^5.15.3",
+    "clsx": "^2.1.0",
     "highcharts": "^11.4.0",
     "highcharts-react-official": "^3.2.1",
     "leaflet": "^1.9.4",

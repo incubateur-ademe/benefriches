@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 
+import classNames from "@/shared/views/clsx";
+
 type HowItWorksStepProps = {
   number: number;
   title: string;
@@ -11,18 +13,18 @@ function HowItWorksStep({ number, title, text }: HowItWorksStepProps) {
   return (
     <div className={fr.cx("fr-col-12", "fr-col-md-3")}>
       <div
-        className={fr.cx("fr-mb-1w")}
-        style={{
-          color: "white",
-          paddingTop: "11px",
-          paddingRight: "1px",
-          fontWeight: "bold",
-          textAlign: "center",
-          borderRadius: "32px",
-          width: "48px",
-          height: "48px",
-          background: "#137FEB",
-        }}
+        className={classNames(
+          fr.cx("fr-mb-1w"),
+          "tw-text-white",
+          "tw-rounded-full",
+          "tw-text-center",
+          "tw-h-12",
+          "tw-w-12",
+          "tw-font-bold",
+          "tw-pr-[1px]",
+          "tw-pt-[11px]",
+          "tw-bg-blue",
+        )}
       >
         {number}
       </div>
@@ -34,9 +36,9 @@ function HowItWorksStep({ number, title, text }: HowItWorksStepProps) {
 
 export default function HowItWorksSection() {
   return (
-    <section className={fr.cx("fr-py-10w")} style={{ background: "#F6F6F6" }}>
+    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey")}>
       <div className={fr.cx("fr-container")}>
-        <h2>Bénéfriches, comment ça marche ?</h2>
+        <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mt-5w")}>
           <HowItWorksStep
             number={1}

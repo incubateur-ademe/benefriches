@@ -1,6 +1,7 @@
 import React from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
+import classNames, { ClassValue } from "../../clsx";
 
 import { noop } from "@/shared/services/noop/noop";
 
@@ -11,7 +12,7 @@ type CheckableTileProps = {
   isSelected: boolean;
   onSelect: () => void;
   disabled?: boolean;
-  style?: React.CSSProperties;
+  className?: ClassValue;
   checkType?: "checkbox" | "radio";
 };
 
@@ -54,9 +55,9 @@ const NoLabelRadioButton = ({ isChecked, disabled, name }: NoLabelRadioButtonPro
         checked={isChecked}
         id={name}
         name={name}
-        style={{ position: "absolute", top: "16px", right: "0" }}
+        className="tw-absolute tw-right-0 tw-top-4"
       />
-      <label style={{ width: "24px", height: "24px" }} onClick={noop}>
+      <label className="tw-h-6 tw-w-6" onClick={noop}>
         {" "}
       </label>
     </div>
@@ -70,26 +71,9 @@ export default function CheckableTile({
   isSelected,
   disabled = false,
   onSelect,
-  style,
+  className,
   checkType = "checkbox",
 }: CheckableTileProps) {
-  const tileStyle = {
-    border: `1px solid ${isSelected ? "#000091" : "#DDD"}`,
-    minHeight: "240px",
-    cursor: disabled ? "not-allowed" : "pointer",
-    position: "relative",
-    ...style,
-  } as const;
-
-  const titleStyle = { color: disabled ? "#929292" : "inherit" } as const;
-
-  const descriptionStyle = {
-    textAlign: "center",
-    color: disabled ? "#929292" : "inherit",
-  } as const;
-
-  const imgStyle = { filter: disabled ? "grayScale(100%)" : "none" } as const;
-
   const onTileClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (disabled) {
       return;
@@ -108,26 +92,51 @@ export default function CheckableTile({
     );
 
   return (
-    <div className={fr.cx("fr-py-2w", "fr-px-3w")} style={tileStyle} onClick={onTileClick}>
-      <div style={{ textAlign: "center" }}>
+    <div
+      className={classNames(
+        className,
+        fr.cx("fr-py-2w", "fr-px-3w"),
+        "tw-border",
+        "tw-border-solid",
+        "tw-min-h-56",
+        "tw-relative",
+        "tw-h-full",
+        disabled ? "tw-cursor-not-allowed" : "tw-cursor-pointer",
+        isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-grey",
+      )}
+      onClick={onTileClick}
+    >
+      <div className="tw-text-center">
         <img
           src={imgSrc}
           width="80px"
           alt={`Illustration pour la tuile ${title}`}
-          style={imgStyle}
+          className={classNames(disabled && "tw-filter tw-grayscale")}
         />
       </div>
-      <div className={fr.cx("fr-mt-1w")} style={{ textAlign: "center" }}>
-        <label className={fr.cx("fr-text--lg", "fr-text--bold")} style={titleStyle} htmlFor={title}>
+      <div className={classNames(fr.cx("fr-mt-1w"), "tw-text-center")}>
+        <label
+          className={classNames(
+            fr.cx("fr-text--lg", "fr-text--bold"),
+            disabled && "tw-text-dsfr-greyDisabled",
+          )}
+          htmlFor={title}
+        >
           {title}
         </label>
       </div>
       {description && (
-        <div className={fr.cx("fr-mt-1w")} style={descriptionStyle}>
+        <div
+          className={classNames(
+            "tw-text-center",
+            disabled && "tw-text-dsfr-greyDisabled",
+            fr.cx("fr-mt-1w"),
+          )}
+        >
           <legend className={fr.cx("fr-text--sm")}>{description}</legend>
         </div>
       )}
-      <div style={{ position: "absolute", top: "16px", right: "0" }}>{checkComponent}</div>
+      <div className="tw-absolute tw-top-4 tw-right-0">{checkComponent}</div>
     </div>
   );
 }

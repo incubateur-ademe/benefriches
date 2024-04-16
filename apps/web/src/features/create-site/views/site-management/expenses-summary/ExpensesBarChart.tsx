@@ -6,6 +6,7 @@ import HighchartsReact from "highcharts-react-official";
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
 import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import classNames from "@/shared/views/clsx";
 
 type Props = {
   expenses: Expense[];
@@ -56,7 +57,7 @@ const ExpensesBarChart = ({ expenses }: Props) => {
   };
 
   return (
-    <div className={fr.cx("fr-mb-2w")} style={{ maxWidth: "500px" }}>
+    <div className={classNames(fr.cx("fr-mb-2w"), "tw-max-w-lg")}>
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} ref={barChartRef} />
     </div>
   );

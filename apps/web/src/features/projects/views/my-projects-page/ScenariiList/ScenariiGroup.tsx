@@ -6,6 +6,7 @@ import StatuQuoScenarioTile from "./ScenarioTile/StatuQuoScenarioTile";
 import { ReconversionProjectList } from ".";
 
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
+import classNames from "@/shared/views/clsx";
 
 type Props = {
   siteId: string;
@@ -25,9 +26,7 @@ function SiteName({ children }: { children: ReactNode }) {
 
 function GridColumn({ children }: { children: ReactNode }) {
   return (
-    <div className={fr.cx("fr-col-md-3", "fr-col-sm-6")} style={{ width: "100%" }}>
-      {children}
-    </div>
+    <div className={classNames(fr.cx("fr-col-md-3", "fr-col-sm-6"), "tw-w-full")}>{children}</div>
   );
 }
 

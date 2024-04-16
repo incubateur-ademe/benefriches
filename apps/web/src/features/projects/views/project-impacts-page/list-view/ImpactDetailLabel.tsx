@@ -5,7 +5,7 @@ type Props = {
 };
 
 const ImpactDetailLabel = ({ children }: Props) => {
-  return <div style={{ marginLeft: "1rem", padding: "0.5rem 0" }}>{children}</div>;
+  return <div className="tw-ml-4 tw-py-2">{children}</div>;
 };
 
 export default ImpactDetailLabel;

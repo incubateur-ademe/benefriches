@@ -1,5 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
+import classNames from "@/shared/views/clsx";
+
 type TargetItemProps = {
   title: string;
   text: string;
@@ -8,8 +10,8 @@ type TargetItemProps = {
 function TargetItem({ title, text, imgUrl }: TargetItemProps) {
   return (
     <>
-      <div style={{ height: "100px" }}>
-        <img src={imgUrl} />
+      <div className="tw-h-[100px]">
+        <img src={imgUrl} alt="" aria-hidden="true" />
       </div>
       <span className={fr.cx("fr-text--xl", "fr-text--bold")}>{title}</span>
       <p className={fr.cx("fr-text--sm", "fr-mt-1w")}>{text}</p>
@@ -19,7 +21,7 @@ function TargetItem({ title, text, imgUrl }: TargetItemProps) {
 
 export default function TargetsSection() {
   return (
-    <section className={fr.cx("fr-py-10w")} style={{ background: "#F6F6F6" }}>
+    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey")}>
       <div className={fr.cx("fr-container")}>
         <h2>Un service pour tous les projets d'aménagement</h2>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mt-5w")}>

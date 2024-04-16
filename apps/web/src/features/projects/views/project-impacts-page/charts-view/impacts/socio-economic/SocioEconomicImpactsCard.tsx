@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { fr } from "@codegouvfr/react-dsfr";
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 import SocioEconomicImpactsByActorChart from "./SocioEconomicImpactsByActorChart";
 import SocioEconomicImpactsByCategoryChart from "./SocioEconomicImpactsByCategoryChart";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import classNames from "@/shared/views/clsx";
 
 type Props = {
   socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
@@ -57,8 +59,12 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, onTitleClick }: Props)
     <ImpactCard
       title={
         <div
-          className="fr-mb-2w"
-          style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+          className={classNames(
+            fr.cx("fr-mb-2w"),
+            "tw-flex",
+            "tw-justify-between",
+            "tw-items-center",
+          )}
         >
           <strong className="tw-cursor-pointer hover:tw-underline" onClick={onTitleClick}>
             Impacts socio-économiques
