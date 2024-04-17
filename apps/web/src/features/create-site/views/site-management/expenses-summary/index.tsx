@@ -14,6 +14,8 @@ const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["si
 
   return {
     isFriche: !!siteData.isFriche,
+    ownerName: siteData.owner?.name,
+    tenantName: siteData.tenant?.name,
     ownerExpenses: (siteData.yearlyExpenses ?? []).filter(({ bearer }) => bearer === "owner"),
     tenantExpenses: (siteData.yearlyExpenses ?? []).filter(({ bearer }) => bearer === "tenant"),
     onNext,
