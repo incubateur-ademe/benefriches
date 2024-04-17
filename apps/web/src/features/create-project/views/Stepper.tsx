@@ -52,9 +52,9 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case "SCHEDULE_PROJECTION":
       return "Calendrier";
     case "NAMING":
-    case "CREATION_CONFIRMATION":
     case "PROJECT_PHASE":
       return "Dénomination et avancement";
+    case "CREATION_CONFIRMATION":
     case "FINAL_SUMMARY":
       return "Récapitulatif";
   }
