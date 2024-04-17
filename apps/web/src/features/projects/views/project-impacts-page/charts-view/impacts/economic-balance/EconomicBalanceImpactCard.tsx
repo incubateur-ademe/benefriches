@@ -154,10 +154,10 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
 
   return (
     <ImpactCard title="Bilan de l'opération" onTitleClick={onTitleClick}>
-      {revenues.total > 0 || costs.total > 0 ? (
-        <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
-      ) : (
+      {revenues.total === 0 && costs.total === 0 ? (
         <div>Vous n'avez pas renseigné de coûts ni de dépenses pour ce projet.</div>
+      ) : (
+        <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
       )}
     </ImpactCard>
   );
