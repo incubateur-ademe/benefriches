@@ -2,6 +2,7 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { routes } from "@/app/views/router";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -15,12 +16,16 @@ function ProjectCreationConfirmation({ projectId, projectName, loadingState }: P
     case "idle":
       return null;
     case "loading":
-      return <p>Création du projet "{projectName}", veuillez patienter...</p>;
+      return (
+        <LoadingSpinner
+          loadingText={`Création du projet « ${projectName} », veuillez patienter...`}
+        />
+      );
     case "error":
       return (
         <WizardFormLayout title="Échec de la création du projet">
           <Alert
-            description={`Une erreur est survenue lors de la création du projet "${projectName}", veuillez réessayer.`}
+            description={`Une erreur est survenue lors de la création du projet « ${projectName} », veuillez réessayer.`}
             severity="error"
             title="Le projet n'a pas pu être enregistré"
             className="fr-my-7v"
@@ -29,11 +34,15 @@ function ProjectCreationConfirmation({ projectId, projectName, loadingState }: P
       );
     case "success":
       return (
-        <WizardFormLayout title={`✅ Le projet "${projectName}" est créé !`}>
-          <p>
+        <WizardFormLayout title={`✅ Le projet « ${projectName} » est créé !`}>
+          {/* <p>
             Vous pouvez maintenant découvrir ses impacts, comparer ce projet avec un autre projet ou
             bien retourner à votre liste de projets, pour créer un nouveau projet ou un nouveau
             site.
+          </p> */}
+          <p>
+            Vous pouvez maintenant découvrir ses impacts ou retourner à votre liste de projets, pour
+            créer un nouveau projet ou un nouveau site.
           </p>
           <ButtonsGroup
             buttons={[
@@ -47,13 +56,13 @@ function ProjectCreationConfirmation({ projectId, projectName, loadingState }: P
                 children: "Découvrir les impacts",
                 linkProps: routes.projectImpacts({ projectId }).link,
               },
-              {
-                priority: "primary",
-                children: "Comparer les impacts",
-                linkProps: routes.selectProjectToCompare({
-                  baseProjectId: projectId,
-                }).link,
-              },
+              // {
+              //   priority: "primary",
+              //   children: "Comparer les impacts",
+              //   linkProps: routes.selectProjectToCompare({
+              //     baseProjectId: projectId,
+              //   }).link,
+              // },
             ]}
             inlineLayoutWhen="always"
           />

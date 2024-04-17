@@ -1,4 +1,4 @@
-const LoadingSpinner = () => {
+const LoadingSpinner = ({ loadingText = "Chargement" }: { loadingText?: string }) => {
   return (
     <div className="tw-flex tw-flex-col tw-items-center tw-py-8">
       <div
@@ -12,7 +12,7 @@ const LoadingSpinner = () => {
           <div className="tw-w-8 tw-h-8 tw-bg-blue tw-rounded-full tw-absolute tw-top-0 tw-left-0 tw-animate-pulse"></div>
         </div>
       </div>
-      <span className="tw-font-bold tw-uppercase">Chargement</span>
+      <span className="tw-font-bold tw-uppercase">{loadingText}</span>
     </div>
   );
 };

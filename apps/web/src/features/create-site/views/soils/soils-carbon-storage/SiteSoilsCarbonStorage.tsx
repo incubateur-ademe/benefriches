@@ -6,6 +6,7 @@ import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/d
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -89,7 +90,7 @@ const SiteSoilsCarbonStorage = ({
         </>
       }
     >
-      {loading && <p>Calcul du stockage de carbone du site...</p>}
+      {loading && <LoadingSpinner loadingText="Calcul du stockage de carbone du site..." />}
       {siteCarbonStorage && (
         <>
           <p>

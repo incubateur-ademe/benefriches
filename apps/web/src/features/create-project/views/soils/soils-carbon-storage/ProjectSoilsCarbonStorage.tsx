@@ -9,6 +9,7 @@ import { getPercentageDifference } from "@/shared/services/percentage/percentage
 import { roundToInteger } from "@/shared/services/round-numbers/roundNumbers";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type PropsFunction = {
@@ -53,7 +54,12 @@ const ProjectSoilsCarbonStorage = ({
   }, []);
 
   if (loadingState === "loading") {
-    return <p>Calcul du pouvoir de stockage de carbone par les sols...</p>;
+    return (
+      <>
+        <h2>Stockage du carbone par les sols</h2>
+        <LoadingSpinner loadingText="Calcul du pouvoir de stockage de carbone par les sols..." />
+      </>
+    );
   }
 
   if (loadingState === "error") {

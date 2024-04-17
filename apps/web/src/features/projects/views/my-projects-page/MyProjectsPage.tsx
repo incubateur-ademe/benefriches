@@ -1,7 +1,10 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 import MyProjectsPageHeader from "./MyProjectsPageHeader";
 import ScenariiList from "./ScenariiList";
+
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 type Props = {
   loadingState: "idle" | "loading" | "error" | "success";
@@ -10,13 +13,16 @@ type Props = {
 
 function MyProjectsPage({ loadingState, projectsList }: Props) {
   const getProjectListsPageContent = () => {
-    if (loadingState === "loading") return <p>Chargement de vos projets...</p>;
+    if (loadingState === "loading") return <LoadingSpinner />;
 
     if (loadingState === "error")
       return (
-        <p>
-          Une erreur est survenue lors du chargement de vos projets. Veuillez recharger la page.
-        </p>
+        <Alert
+          description="Une erreur est survenue lors du chargement de vos projets. Veuillez recharger la page."
+          severity="error"
+          title="Chargement des projets"
+          className="fr-my-7v"
+        />
       );
 
     if (loadingState === "success") {

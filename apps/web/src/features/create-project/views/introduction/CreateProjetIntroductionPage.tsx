@@ -3,6 +3,7 @@ import Accordion from "@codegouvfr/react-dsfr/Accordion";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/app/views/router";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -16,7 +17,7 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
     case "idle":
       return null;
     case "loading":
-      return <p>Chargement des informations du site, veuillez patienter...</p>;
+      return <LoadingSpinner />;
     case "error":
       return (
         <WizardFormLayout title="Le site demandé n'a pas pu ếtre chargé">

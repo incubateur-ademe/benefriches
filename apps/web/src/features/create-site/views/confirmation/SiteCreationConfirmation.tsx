@@ -2,6 +2,7 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import { routes } from "@/app/views/router";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -15,12 +16,14 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
     case "idle":
       return null;
     case "loading":
-      return <p>Création du site "{siteName}", veuillez patienter...</p>;
+      return (
+        <LoadingSpinner loadingText={`Création du site « ${siteName} », veuillez patienter...`} />
+      );
     case "error":
       return (
         <WizardFormLayout title="Échec de la création du site">
           <Alert
-            description={`Une erreur est survenue lors de la création du site "${siteName}", veuillez réessayer.`}
+            description={`Une erreur est survenue lors de la création du site « ${siteName} », veuillez réessayer.`}
             severity="error"
             title="Le site n'a pas pu être enregistré"
             className="fr-my-7v"
@@ -29,7 +32,7 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
       );
     case "success":
       return (
-        <WizardFormLayout title={`✅ Le site "${siteName}" est créé !`}>
+        <WizardFormLayout title={`✅ Le site « ${siteName} » est créé !`}>
           <p>
             Vous pouvez maintenant découvrir ses caractéristiques géographiques, créer un projet sur
             ce site ou bien renseigner un nouveau site en retournant sur votre tableau de bord.

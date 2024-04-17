@@ -1,5 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Select, SelectProps } from "@codegouvfr/react-dsfr/SelectNext";
+import LoadingSpinner from "../../Spinner/LoadingSpinner";
 import { LOCAL_AUTHORITY_AVAILABLE_VALUES } from "./values";
 
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
@@ -34,7 +35,7 @@ const LocalAuthoritySelect = (props: Props) => {
   const { loadingData, data, excludedValues: propsExcludedValues = [], ...rest } = props;
 
   if (loadingData === "loading") {
-    return "Chargement des données...";
+    return <LoadingSpinner />;
   }
 
   if (loadingData === "error") {

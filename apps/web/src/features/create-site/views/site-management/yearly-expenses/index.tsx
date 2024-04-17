@@ -13,6 +13,7 @@ import {
 } from "@/features/create-site/domain/defaultValues";
 import { hasTenant } from "@/features/create-site/domain/site.functions";
 import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const getDefaultValues = (siteData: SiteDraft, population?: number) => {
@@ -73,7 +74,7 @@ function SiteYearlyExpensesFormContainer() {
   }, [dispatch]);
 
   if (loadingState === "loading") {
-    return "Chargement...";
+    return <LoadingSpinner />;
   }
 
   return <SiteYearlyExpensesForm {...mapProps(dispatch, siteCreationState, population)} />;

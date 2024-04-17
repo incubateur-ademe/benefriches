@@ -27,6 +27,7 @@ import PermeableSoilsImpactComparisonChart from "./charts/soil-impacts/Permeable
 import ImpactsComparisonPageHeader from "./ImpactsComparisonHeader";
 
 import classNames from "@/shared/views/clsx";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 type SuccessDataProps = {
   loadingState: "success";
@@ -74,7 +75,7 @@ function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingStat
   const [selectedFilter, setSelectedFilter] = useState<ImpactCategoryFilter>("all");
 
   if (loadingState === "loading") {
-    return <p>Chargement en cours ...</p>;
+    return <LoadingSpinner />;
   }
 
   if (loadingState === "error") {

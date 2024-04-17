@@ -6,6 +6,7 @@ import {
   revertPhotovoltaicExpectedAnnualProduction,
 } from "@/features/create-project/application/createProject.reducer";
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function PhotovoltaicExpectedAnnualProductionContainer() {
@@ -20,7 +21,7 @@ function PhotovoltaicExpectedAnnualProductionContainer() {
   }, [dispatch]);
 
   if (loadingState === "loading") {
-    return "Chargement des données...";
+    return <LoadingSpinner />;
   }
 
   return (
