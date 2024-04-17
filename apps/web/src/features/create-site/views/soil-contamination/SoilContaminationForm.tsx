@@ -7,6 +7,7 @@ import NumericInput from "@/shared/views/components/form/NumericInput/NumericInp
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
+import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -39,13 +40,12 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
     <WizardFormLayout
       title="Les sols de la friche sont-ils pollués ?"
       instructions={
-        <>
-          <span className="fr-text--lg">💡</span>
-          <p className="fr-text--xs">
+        <FormDefinition>
+          <p>
             Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
             activités passées, avec potentiellement 2 conséquences&nbsp;:
           </p>
-          <ol className="fr-text--xs">
+          <ol>
             <li>Un impact sur la qualité des eaux souterraines</li>
             <li>
               La nécessité d'engager des études puis des travaux afin de les traiter et ainsi
@@ -54,11 +54,11 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
               reconversion.
             </li>
           </ol>
-          <p className="fr-text--xs">
+          <p>
             Bénéfriches propose des indicateurs liés à la qualité des eaux souterraines et à la
             surface dépolluée.
           </p>
-        </>
+        </FormDefinition>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

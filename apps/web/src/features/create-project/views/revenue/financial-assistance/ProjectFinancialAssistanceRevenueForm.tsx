@@ -4,6 +4,7 @@ import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -26,13 +27,9 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
     <WizardFormLayout
       title="Aides financières aux travaux"
       instructions={
-        <>
-          <span className="fr-text--lg">💡</span>
-
-          <p className="fr-text--xs">
-            Les recettes de l'opération peuvent avoir différentes origines&nbsp;:
-          </p>
-          <ul className="fr-text--xs">
+        <FormDefinition>
+          <p>Les recettes de l'opération peuvent avoir différentes origines&nbsp;:</p>
+          <ul>
             <li>
               Le produit attendu de la vente de droits à construire aux promoteurs ou de la vente
               directe de terrains aménagés aux particuliers ou aux entreprises utilisatrices
@@ -49,7 +46,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
               financer certaines dépenses.
             </li>
           </ul>
-        </>
+        </FormDefinition>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

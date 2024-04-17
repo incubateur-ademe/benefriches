@@ -25,7 +25,7 @@ function WizardFormLayout({ title, children, instructions = null }: Props) {
             "tw-bg-lightGrey",
           )}
         >
-          <div>{instructions}</div>
+          <div className="*:tw-text-sm">{instructions}</div>
         </section>
       )}
     </div>

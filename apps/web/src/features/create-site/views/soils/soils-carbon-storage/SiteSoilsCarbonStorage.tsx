@@ -7,6 +7,7 @@ import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -33,7 +34,7 @@ const SiteSoilsCarbonStorage = ({
     <WizardFormLayout
       title="Stockage du carbone par les sols"
       instructions={
-        <>
+        <FormDefinition>
           <p>
             Le sol est un milieu vivant composé de minéraux (ex&nbsp;: pierre, argile) mais
             également de matière organique, issue de la dégradation de végétaux (ex&nbsp;: l'humus
@@ -87,7 +88,7 @@ const SiteSoilsCarbonStorage = ({
               </a>
             </li>
           </ul>
-        </>
+        </FormDefinition>
       }
     >
       {loading && <LoadingSpinner loadingText="Calcul du stockage de carbone du site..." />}

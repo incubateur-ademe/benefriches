@@ -13,6 +13,7 @@ import NumericInput from "@/shared/views/components/form/NumericInput/NumericInp
 import SurfaceArea, {
   SQUARE_METERS_HTML_SYMBOL,
 } from "@/shared/views/components/SurfaceArea/SurfaceArea";
+import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -48,14 +49,16 @@ function SiteSoilsDistributionBySquareMetersForm({
     <WizardFormLayout
       title="Quelles sont les superficies des différents sols ?"
       instructions={
-        <p className="tw-text-warning">
-          ⚠️ La somme des superficies des différents sols doit être égale à la superficie totale du
-          site (
-          <strong>
-            <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />
-          </strong>
-          ).
-        </p>
+        <FormWarning>
+          <p>
+            La somme des superficies des différents sols doit être égale à la superficie totale du
+            site (
+            <strong>
+              <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />
+            </strong>
+            ).
+          </p>
+        </FormWarning>
       }
     >
       <form onSubmit={_onSubmit}>

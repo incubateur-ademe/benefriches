@@ -5,6 +5,7 @@ import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -62,20 +63,20 @@ function PhotovoltaicSurfaceFromPowerForm({
             de la friche ({formatNumberFr(siteSurfaceArea)} m²).
           </p>
 
-          <span className="fr-text--lg">💡</span>
-          <p className="fr-text--xs">
-            Une centrale au sol peut facilement être implantée sur des espaces imperméabilisés (non
-            bâtis) ou minéralisés, mais également sur des espaces enherbés ou avec de la végétation
-            basse (broussailles, garrigue, etc.) qu'ils soient artificialisés ou naturels.
-          </p>
-          <p className="fr-text--xs">
-            Dès lors que de la végétation haute est présente (sols artificiels ou prairies arborés,
-            forêts), l'implantation nécessite des investissements (coupes) et est à éviter (pour des
-            raisons de biodiversité et de puits de carbone).
-          </p>
-          <p className="fr-text--xs">
-            Le devenir des sols sera abordé plus loin dans le formulaire.
-          </p>
+          <FormDefinition>
+            <p>
+              Une centrale au sol peut facilement être implantée sur des espaces imperméabilisés
+              (non bâtis) ou minéralisés, mais également sur des espaces enherbés ou avec de la
+              végétation basse (broussailles, garrigue, etc.) qu'ils soient artificialisés ou
+              naturels.
+            </p>
+            <p>
+              Dès lors que de la végétation haute est présente (sols artificiels ou prairies
+              arborés, forêts), l'implantation nécessite des investissements (coupes) et est à
+              éviter (pour des raisons de biodiversité et de puits de carbone).
+            </p>
+            <p>Le devenir des sols sera abordé plus loin dans le formulaire.</p>
+          </FormDefinition>
         </>
       }
     >

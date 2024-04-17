@@ -46,6 +46,7 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
           </p>
           <p>
             <strong>Source&nbsp;: </strong>
+            <br />
             <ExternalLink href="https://www.cre.fr/documents/Publications/Rapports-thematiques/Couts-et-rentabilites-du-grand-photovoltaique-en-metropole-continentale">
               Commission de régulation de l'énergie
             </ExternalLink>

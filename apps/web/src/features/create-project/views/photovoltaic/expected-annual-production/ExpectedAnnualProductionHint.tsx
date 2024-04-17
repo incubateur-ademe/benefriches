@@ -24,13 +24,6 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
             >
               PVGIS
             </a>
-            <button
-              className="fr-btn--tooltip fr-btn"
-              id="button-PVGIS"
-              aria-describedby="tooltip-PVGIS"
-            >
-              Information contextuelle
-            </button>
           </p>
 
           <p>Vous pouvez modifier cette valeur.</p>
@@ -47,30 +40,8 @@ function ExpectedAnnualProductionHint({ expectedPerformanceMwhPerYear }: Props) 
           >
             PVGIS.
           </a>
-          <button
-            className="fr-btn--tooltip fr-btn"
-            id="button-PVGIS"
-            aria-describedby="tooltip-PVGIS"
-          >
-            Information contextuelle
-          </button>
         </p>
       )}
-
-      <span
-        className="fr-tooltip fr-placement"
-        id="tooltip-PVGIS"
-        role="tooltip"
-        aria-hidden="true"
-      >
-        Le <strong>PVGIS (Photovoltaic Geographical Information System)</strong> est un outil
-        gratuit en ligne développé par la Commission Européenne qui permet d'évaluer la production
-        d'énergie d'une installation photovoltaïque. <br />
-        <br />
-        Les <strong>paramètres</strong> comprennent le choix de la base de données d'ensoleillement,
-        le type de technologie PV, la puissance de crête, les pertes du système, la position de
-        montage, l'inclinaison et l'azimut de la centrale solaire.
-      </span>
     </>
   );
 }

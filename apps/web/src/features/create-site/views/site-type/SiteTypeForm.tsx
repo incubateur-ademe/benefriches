@@ -3,6 +3,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import AboutFormsModal from "@/shared/app-settings/views/AboutFormsModal";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -36,7 +37,7 @@ function SiteTypeForm({ onSubmit }: Props) {
       <WizardFormLayout
         title="Votre site est-il une friche ?"
         instructions={
-          <>
+          <FormDefinition>
             <p>
               Une friche est un terrain, bâti ou non bâti, inutilisé et dont l'état, la
               configuration ou l'occupation totale ou partielle ne permet pas un réemploi sans un
@@ -46,7 +47,7 @@ function SiteTypeForm({ onSubmit }: Props) {
               Une friche peut être industrielle, militaire, ferroviaire, portuaire... mais aussi
               agricole, hospitalière, administrative, commerciale ou d'habitat.
             </p>
-          </>
+          </FormDefinition>
         }
       >
         <form onSubmit={handleSubmit(onSubmit)}>
