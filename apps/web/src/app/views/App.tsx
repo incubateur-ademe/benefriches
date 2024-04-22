@@ -1,31 +1,44 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { trackPageView } from "../application/analytics";
 import { BENEFRICHES_ENV } from "../application/envVars";
-import AccessibilitePage from "./pages/AccessibilitePage";
-import BudgetPage from "./pages/BudgetPage";
-import HomePage from "./pages/home/HomePage";
-import MentionsLegalesPage from "./pages/MentionsLegalesPage";
-import PolitiqueConfidentialitePage from "./pages/PolitiqueConfidentialitePage";
-import StatsPage from "./pages/StatsPage";
 import MatomoContainer from "./MatomoContainer";
 import { routes, useRoute } from "./router";
 
-import CreateProjectIntroductionPage from "@/features/create-project/views/introduction";
-import CreateProjectPage from "@/features/create-project/views/ProjectCreationWizard";
-import CreateSiteIntroductionPage from "@/features/create-site/views/introduction/CreateSiteIntroductionPage";
-import CreateSiteFoncierPage from "@/features/create-site/views/SiteCreationWizard";
-import LoginPage from "@/features/login";
-import OnboardingPage from "@/features/onboarding";
-import MyProjectsPage from "@/features/projects/views/my-projects-page";
-import ProjectImpactsPage from "@/features/projects/views/project-impacts-page";
-import ProjectsImpactsComparisonPage from "@/features/projects/views/projects-impacts-comparison";
-import ProjectsComparisonSelectionPage from "@/features/projects/views/select-projects-comparison-page";
 import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
-import CreateUserPage from "@/features/users/views";
 import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
+
+/* Lazy-loaded pages */
+const CreateUserPage = lazy(() => import("@/features/users/views"));
+const AccessibilitePage = lazy(() => import("./pages/AccessibilitePage"));
+const BudgetPage = lazy(() => import("./pages/BudgetPage"));
+const HomePage = lazy(() => import("./pages/home/HomePage"));
+const MentionsLegalesPage = lazy(() => import("./pages/MentionsLegalesPage"));
+const PolitiqueConfidentialitePage = lazy(() => import("./pages/PolitiqueConfidentialitePage"));
+const CreateProjectIntroductionPage = lazy(
+  () => import("@/features/create-project/views/introduction"),
+);
+const StatsPage = lazy(() => import("./pages/StatsPage"));
+const CreateProjectPage = lazy(
+  () => import("@/features/create-project/views/ProjectCreationWizard"),
+);
+const CreateSiteIntroductionPage = lazy(
+  () => import("@/features/create-site/views/introduction/CreateSiteIntroductionPage"),
+);
+const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
+const LoginPage = lazy(() => import("@/features/login"));
+const OnboardingPage = lazy(() => import("@/features/onboarding"));
+const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
+const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-impacts-page"));
+const ProjectsImpactsComparisonPage = lazy(
+  () => import("@/features/projects/views/projects-impacts-comparison"),
+);
+const ProjectsComparisonSelectionPage = lazy(
+  () => import("@/features/projects/views/select-projects-comparison-page"),
+);
 
 function App() {
   const route = useRoute();
@@ -41,7 +54,7 @@ function App() {
 
   return (
     <HeaderFooterLayout>
-      <>
+      <Suspense fallback={<LoadingSpinner />}>
         {route.name === routes.home.name && <HomePage />}
         {route.name === routes.onboarding.name && <OnboardingPage />}
         {route.name === routes.login.name && <LoginPage />}
@@ -100,7 +113,7 @@ function App() {
         {route.name === false && (
           <section className={fr.cx("fr-container", "fr-py-4w")}>Page non trouvée</section>
         )}
-      </>
+      </Suspense>
       {BENEFRICHES_ENV.matomoTrackingEnabled && (
         <MatomoContainer
           siteId={BENEFRICHES_ENV.matomoSiteId}
