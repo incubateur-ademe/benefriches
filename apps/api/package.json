@@ -3,10 +3,10 @@
   "private": true,
   "version": "1.0.0",
   "license": "MIT",
-  "packageManager": "pnpm@9.0.1",
+  "packageManager": "pnpm@9.0.5",
   "engines": {
     "node": "20",
-    "pnpm": "9.0.1"
+    "pnpm": "9.0.5"
   },
   "scripts": {
     "build": "nest build",
