@@ -2,8 +2,8 @@ import { useState } from "react";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import Select from "@codegouvfr/react-dsfr/Select";
+import { SoilType } from "shared";
 
-import { SoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {

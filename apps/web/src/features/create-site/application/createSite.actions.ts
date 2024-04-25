@@ -1,9 +1,9 @@
+import { soilTypeSchema } from "shared";
 import z from "zod";
 import { FricheActivity } from "../domain/friche.types";
 import { revertStep } from "./createSite.reducer";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
-import { SoilType } from "@/shared/domain/soils";
 
 export const revertAddressStep = () => revertStep({ resetFields: ["address"] });
 export const revertSurfaceAreaStep = () => revertStep({ resetFields: ["surfaceArea"] });
@@ -53,7 +53,7 @@ const createSiteSchema = z.object({
     lat: z.number(),
   }),
   surfaceArea: z.number().nonnegative(),
-  soilsDistribution: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
+  soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
   // contamination
   hasContaminatedSoils: z.boolean().optional(),
   contaminatedSoilSurface: z.number().nonnegative().optional(),

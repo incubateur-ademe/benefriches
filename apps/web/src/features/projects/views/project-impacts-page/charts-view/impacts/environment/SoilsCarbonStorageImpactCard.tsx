@@ -1,5 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { SoilType } from "shared";
 import ImpactAbsoluteVariation from "../../ImpactChartCard/ImpactAbsoluteVariation";
 import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVariation";
@@ -7,7 +8,7 @@ import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVar
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";

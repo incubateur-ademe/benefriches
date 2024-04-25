@@ -1,7 +1,7 @@
+import { SoilType } from "shared";
 import { ReconversionProjectImpacts } from "../domain/impacts.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
-import { SoilType } from "@/shared/domain/soils";
 
 export interface ReconversionProjectImpactsGateway {
   getReconversionProjectImpacts(

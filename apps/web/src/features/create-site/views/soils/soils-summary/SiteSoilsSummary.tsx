@@ -1,4 +1,5 @@
-import { SoilType } from "@/shared/domain/soils";
+import { SoilType } from "shared";
+
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";

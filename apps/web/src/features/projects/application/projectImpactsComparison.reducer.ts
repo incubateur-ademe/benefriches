@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { SoilType } from "shared";
 import { Project, ProjectSite } from "../domain/projects.types";
 import {
   fetchBaseProjectAndWithProjectData,
   fetchCurrentAndProjectedSoilsCarbonStorage,
 } from "./projectImpactsComparison.actions";
-
-import { SoilType } from "@/shared/domain/soils";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

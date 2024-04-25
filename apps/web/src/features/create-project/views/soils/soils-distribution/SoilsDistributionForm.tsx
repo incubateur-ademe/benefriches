@@ -1,18 +1,14 @@
 import { useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { isSoilFlat, isSoilNatural, SoilType, soilTypes } from "shared";
 import PhotovoltaicSoilsImpactsNotice from "./PhotovoltaicSoilsImpactsNotice";
 import SoilsDistributionAddButton from "./SoilsAddButton";
 import TotalAllocatedSurfacesInput from "./TotalAllocatedSurfacesInput";
 import TotalFlatSurfacesInput from "./TotalFlatSurfacesInput";
 
-import {
-  FLAT_SOIL_TYPES,
-  isSoilNatural,
-  SOIL_TYPES,
-} from "@/features/create-project/domain/soils.types";
 import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
-import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -44,14 +40,14 @@ const computeDefaultValues = (
     surface,
   }));
 
-  if (minAdvisedImpermeableSurface && !siteSoils[SoilType.IMPERMEABLE_SOILS])
+  if (minAdvisedImpermeableSurface && !siteSoils["IMPERMEABLE_SOILS"])
     siteSoilsAsArray.unshift({
-      soilType: SoilType.IMPERMEABLE_SOILS,
+      soilType: "IMPERMEABLE_SOILS",
       surface: 0,
     });
-  if (minAdvisedMineralSurface && !siteSoils[SoilType.MINERAL_SOIL])
+  if (minAdvisedMineralSurface && !siteSoils["MINERAL_SOIL"])
     siteSoilsAsArray.unshift({
-      soilType: SoilType.MINERAL_SOIL,
+      soilType: "MINERAL_SOIL",
       surface: 0,
     });
 
@@ -62,10 +58,10 @@ const getTotalSurface = (soilsDistribution: SoilsDistribution[]) =>
   soilsDistribution.reduce((total, { surface }) => total + surface, 0);
 
 const getTotalFlatSurface = (soilsDistribution: SoilsDistribution[]) =>
-  getTotalSurface(soilsDistribution.filter(({ soilType }) => FLAT_SOIL_TYPES.includes(soilType)));
+  getTotalSurface(soilsDistribution.filter(({ soilType }) => isSoilFlat(soilType)));
 
 const getCreatableSoils = (newSoils: SoilType[], currentSoils: SoilType[]) => {
-  return SOIL_TYPES.filter(
+  return soilTypes.filter(
     (soilType) =>
       !newSoils.includes(soilType) && canCreateOrIncreaseSurfaceForSoilType(soilType, currentSoils),
   );
@@ -73,8 +69,8 @@ const getCreatableSoils = (newSoils: SoilType[], currentSoils: SoilType[]) => {
 
 const canCreateOrIncreaseSurfaceForSoilType = (soilType: SoilType, currentSoils: SoilType[]) => {
   if (
-    (soilType === SoilType.PRAIRIE_GRASS && currentSoils.includes(SoilType.PRAIRIE_BUSHES)) ||
-    currentSoils.includes(SoilType.PRAIRIE_TREES)
+    (soilType === "PRAIRIE_GRASS" && currentSoils.includes("PRAIRIE_BUSHES")) ||
+    currentSoils.includes("PRAIRIE_TREES")
   ) {
     return true;
   }
@@ -155,8 +151,8 @@ function SoilsDistributionForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         {controlledSoilsFields.map(({ soilType, surface, id }, index) => {
           const minAdvisedSurface =
-            (soilType === SoilType.IMPERMEABLE_SOILS && minAdvisedImpermeableSurface) ||
-            (soilType === SoilType.MINERAL_SOIL && minAdvisedMineralSurface) ||
+            (soilType === "IMPERMEABLE_SOILS" && minAdvisedImpermeableSurface) ||
+            (soilType === "MINERAL_SOIL" && minAdvisedMineralSurface) ||
             null;
           const maxValue = canCreateOrIncreaseSurfaceForSoilType(soilType, currentSiteSoilsList)
             ? freeSurface + surface

@@ -1,0 +1,21 @@
+# Logs
+logs
+*.log
+pnpm-debug.log*
+
+node_modules/
+dist/
+*.tsbuildinfo
+
+*.local
+
+# IDEs and editors
+.vscode/*
+!.vscode/extensions.json
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace

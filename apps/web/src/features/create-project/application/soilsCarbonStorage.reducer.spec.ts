@@ -3,24 +3,26 @@ import { ProjectSite } from "../domain/project.types";
 import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
 import { completeSoilsDistribution } from "./createProject.reducer";
 import { fetchRelatedSite } from "./fetchRelatedSite.action";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./soilsCarbonStorage.actions";
+import {
+  fetchCurrentAndProjectedSoilsCarbonStorage,
+  SoilsCarbonStorageResult,
+} from "./soilsCarbonStorage.actions";
 
 import { createStore } from "@/app/application/store";
-import { SoilType } from "@/shared/domain/soils";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-const SOILS_STORAGE_API_MOCKED_RESULT = {
+const SOILS_STORAGE_API_MOCKED_RESULT: SoilsCarbonStorageResult = {
   totalCarbonStorage: 350,
   soilsStorage: [
     {
-      type: SoilType.BUILDINGS,
+      type: "BUILDINGS",
       carbonStorage: 30,
       surfaceArea: 1400,
       carbonStorageInTonPerSquareMeters: 0.021,
     },
     {
-      type: SoilType.MINERAL_SOIL,
+      type: "MINERAL_SOIL",
       carbonStorage: 320,
       surfaceArea: 5000,
       carbonStorageInTonPerSquareMeters: 0.064,
@@ -45,15 +47,15 @@ const SITE_MOCKED_RESULT = {
     value: "Rue de Paradis 75010 Paris",
   },
   soilsDistribution: {
-    [SoilType.BUILDINGS]: 1400,
-    [SoilType.MINERAL_SOIL]: 1500,
+    BUILDINGS: 1400,
+    MINERAL_SOIL: 1500,
   },
 } as ProjectSite;
 
 const PROJECT_SOILS_MOCK = {
-  [SoilType.BUILDINGS]: 400,
-  [SoilType.MINERAL_SOIL]: 500,
-  [SoilType.PRAIRIE_GRASS]: 5500,
+  BUILDINGS: 400,
+  MINERAL_SOIL: 500,
+  PRAIRIE_GRASS: 5500,
 };
 
 describe("Site carbon sequestration reducer", () => {

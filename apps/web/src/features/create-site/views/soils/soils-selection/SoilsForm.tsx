@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
+import { SoilType } from "shared";
 
-import { SoilType } from "@/shared/domain/soils";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
@@ -22,67 +22,57 @@ type Props = {
   isFriche: boolean;
 };
 
-const siteSoilTypeTilesCategories = [
+const siteSoilTypeTilesCategories: readonly { category: string; options: SoilType[] }[] = [
   {
     category: "Prairie naturelle ou agricole",
-    options: [SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_TREES],
+    options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
   },
   {
     category: "Espaces agricoles",
-    options: [SoilType.CULTIVATION, SoilType.VINEYARD, SoilType.ORCHARD],
+    options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
   },
   {
     category: "Forêts",
-    options: [
-      SoilType.FOREST_DECIDUOUS,
-      SoilType.FOREST_CONIFER,
-      SoilType.FOREST_POPLAR,
-      SoilType.FOREST_MIXED,
-    ],
+    options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
   },
   {
     category: "Autres espaces naturels",
-    options: [SoilType.WATER, SoilType.WET_LAND],
+    options: ["WATER", "WET_LAND"],
   },
   {
     category: "Sols artificiels végétalisés",
-    options: [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED, SoilType.ARTIFICIAL_TREE_FILLED],
+    options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
   },
   {
     category: "Sols artificiels minéraux",
-    options: [SoilType.BUILDINGS, SoilType.IMPERMEABLE_SOILS, SoilType.MINERAL_SOIL],
+    options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
   },
-] as const;
+];
 
 const fricheSoilTypeTilesCategories = [
   {
     category: "Sols artificiels minéraux",
-    options: [SoilType.BUILDINGS, SoilType.IMPERMEABLE_SOILS, SoilType.MINERAL_SOIL],
+    options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
   },
   {
     category: "Sols artificiels végétalisés",
-    options: [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED, SoilType.ARTIFICIAL_TREE_FILLED],
+    options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
   },
   {
     category: "Prairies naturelles ou agricoles",
-    options: [SoilType.PRAIRIE_GRASS, SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_TREES],
+    options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
   },
   {
     category: "Espaces agricoles",
-    options: [SoilType.CULTIVATION, SoilType.VINEYARD, SoilType.ORCHARD],
+    options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
   },
   {
     category: "Forêts",
-    options: [
-      SoilType.FOREST_DECIDUOUS,
-      SoilType.FOREST_CONIFER,
-      SoilType.FOREST_POPLAR,
-      SoilType.FOREST_MIXED,
-    ],
+    options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
   },
   {
     category: "Autres espaces naturels",
-    options: [SoilType.WET_LAND, SoilType.WATER],
+    options: ["WET_LAND", "WATER"],
   },
 ] as const;
 

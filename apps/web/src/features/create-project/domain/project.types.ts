@@ -1,6 +1,6 @@
+import { SoilType } from "shared";
 import { Schedule } from "../application/saveReconversionProject.action";
 
-import { SoilType } from "@/shared/domain/soils";
 import {
   LocalAutorityStructureType,
   OwnerStructureType,

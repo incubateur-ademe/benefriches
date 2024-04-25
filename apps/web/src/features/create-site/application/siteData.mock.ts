@@ -1,25 +1,18 @@
 import { FricheActivity } from "../domain/friche.types";
 import { SiteDraft } from "../domain/siteFoncier.types";
 
-import { SoilType } from "@/shared/domain/soils";
-
 export const siteWithExhaustiveData: SiteDraft = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   name: "My site name",
   description: "Description of the site",
   owner: { structureType: "company", name: "SAS Owner" },
   tenant: { structureType: "company", name: "Tenant SARL" },
-  soils: [
-    SoilType.BUILDINGS,
-    SoilType.MINERAL_SOIL,
-    SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-    SoilType.FOREST_DECIDUOUS,
-  ],
+  soils: ["BUILDINGS", "MINERAL_SOIL", "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "FOREST_DECIDUOUS"],
   soilsDistribution: {
-    [SoilType.BUILDINGS]: 3000,
-    [SoilType.MINERAL_SOIL]: 5000,
-    [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED]: 10000,
-    [SoilType.FOREST_DECIDUOUS]: 12000,
+    ["BUILDINGS"]: 3000,
+    ["MINERAL_SOIL"]: 5000,
+    ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED"]: 10000,
+    ["FOREST_DECIDUOUS"]: 12000,
   },
   soilsDistributionEntryMode: "square_meters",
   surfaceArea: 30000,
@@ -100,17 +93,12 @@ export const siteWithMinimalData: SiteDraft = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   name: "My site name",
   owner: { structureType: "company", name: "SAS Owner" },
-  soils: [
-    SoilType.BUILDINGS,
-    SoilType.MINERAL_SOIL,
-    SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-    SoilType.FOREST_DECIDUOUS,
-  ],
+  soils: ["BUILDINGS", "MINERAL_SOIL", "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "FOREST_DECIDUOUS"],
   soilsDistribution: {
-    [SoilType.BUILDINGS]: 3000,
-    [SoilType.MINERAL_SOIL]: 5000,
-    [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED]: 10000,
-    [SoilType.FOREST_DECIDUOUS]: 12000,
+    ["BUILDINGS"]: 3000,
+    ["MINERAL_SOIL"]: 5000,
+    ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED"]: 10000,
+    ["FOREST_DECIDUOUS"]: 12000,
   },
   soilsDistributionEntryMode: "square_meters",
   surfaceArea: 30000,

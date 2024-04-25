@@ -3,8 +3,9 @@ import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import highchartsVariablePie from "highcharts/modules/variable-pie";
 import HighchartsReact from "highcharts-react-official";
+import { SoilType } from "shared";
 
-import { getColorForSoilType, SoilType } from "@/shared/domain/soils";
+import { getColorForSoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 highchartsVariablePie(Highcharts);
 

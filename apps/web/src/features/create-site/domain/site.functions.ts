@@ -1,13 +1,11 @@
 import { SiteDraft } from "./siteFoncier.types";
 
-import { SoilType } from "@/shared/domain/soils";
-
 export const hasBuildings = (site: SiteDraft) => {
-  return site.soils.includes(SoilType.BUILDINGS);
+  return site.soils.includes("BUILDINGS");
 };
 
 export const hasImpermeableSoils = (site: SiteDraft) => {
-  return site.soils.includes(SoilType.IMPERMEABLE_SOILS);
+  return site.soils.includes("IMPERMEABLE_SOILS");
 };
 
 export const hasTenant = (site: SiteDraft) => {

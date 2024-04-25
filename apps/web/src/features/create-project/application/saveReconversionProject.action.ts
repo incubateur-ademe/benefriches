@@ -1,7 +1,7 @@
+import { soilTypeSchema } from "shared";
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
-import { SoilType } from "@/shared/domain/soils";
 
 const scheduleSchema = z.object({
   startDate: z.date(),
@@ -47,7 +47,7 @@ const saveProjectSchema = z.object({
   yearlyProjectedRevenues: z
     .object({ amount: z.number().nonnegative(), source: z.string() })
     .array(),
-  soilsDistribution: z.record(z.nativeEnum(SoilType), z.number().nonnegative()),
+  soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
   operationsFirstYear: z.number().optional(),
   projectPhase: z.string(),

@@ -1,4 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 import { saveSiteAction } from "./createSite.actions";
 
@@ -13,7 +14,6 @@ import {
   SoilsSurfaceAreaDistribution,
   Tenant,
 } from "@/features/create-site/domain/siteFoncier.types";
-import { SoilType } from "@/shared/domain/soils";
 import { splitEvenly } from "@/shared/services/split-number/splitNumber";
 
 export type SiteCreationStep =

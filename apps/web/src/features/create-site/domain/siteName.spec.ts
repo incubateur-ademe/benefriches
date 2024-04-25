@@ -2,8 +2,6 @@ import { FricheActivity } from "./friche.types";
 import { SiteDraft } from "./siteFoncier.types";
 import { generateSiteDesignation, generateSiteName } from "./siteName";
 
-import { SoilType } from "@/shared/domain/soils";
-
 const buildSiteDraft = (siteData: Partial<SiteDraft>): SiteDraft => {
   return {
     id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
@@ -49,7 +47,7 @@ describe("siteName", () => {
     it("should generate 'prairie' when no friche and all soils are of type prairie", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_GRASS],
+        soils: ["PRAIRIE_BUSHES", "PRAIRIE_GRASS"],
       });
       expect(generateSiteDesignation(site)).toEqual("prairie");
     });
@@ -57,7 +55,7 @@ describe("siteName", () => {
     it("should generate 'prairie' when no friche and non-artificial soils are of type prairie", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_GRASS, SoilType.MINERAL_SOIL],
+        soils: ["PRAIRIE_BUSHES", "PRAIRIE_GRASS", "MINERAL_SOIL"],
       });
       expect(generateSiteDesignation(site)).toEqual("prairie");
     });
@@ -65,7 +63,7 @@ describe("siteName", () => {
     it("should generate 'forêt' when no friche and all soils are of type forest", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.FOREST_CONIFER, SoilType.FOREST_MIXED],
+        soils: ["FOREST_CONIFER", "FOREST_MIXED"],
       });
       expect(generateSiteDesignation(site)).toEqual("forêt");
     });
@@ -73,7 +71,7 @@ describe("siteName", () => {
     it("should generate 'forêt' when no friche and non-artificial soils are of type forest", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.FOREST_CONIFER, SoilType.FOREST_POPLAR, SoilType.MINERAL_SOIL],
+        soils: ["FOREST_CONIFER", "FOREST_POPLAR", "MINERAL_SOIL"],
       });
       expect(generateSiteDesignation(site)).toEqual("forêt");
     });
@@ -81,7 +79,7 @@ describe("siteName", () => {
     it("should generate 'espace agricole' when no friche and all soils are agricultural", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.CULTIVATION, SoilType.ORCHARD],
+        soils: ["CULTIVATION", "ORCHARD"],
       });
       expect(generateSiteDesignation(site)).toEqual("espace agricole");
     });
@@ -89,7 +87,7 @@ describe("siteName", () => {
     it("should generate 'espace agricole' when no friche and non-artificial soils are agricultural", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.VINEYARD, SoilType.MINERAL_SOIL],
+        soils: ["VINEYARD", "MINERAL_SOIL"],
       });
       expect(generateSiteDesignation(site)).toEqual("espace agricole");
     });
@@ -97,7 +95,7 @@ describe("siteName", () => {
     it("should generate 'espace naturel' for a mix of prairie and forest", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.FOREST_CONIFER, SoilType.PRAIRIE_BUSHES, SoilType.PRAIRIE_GRASS],
+        soils: ["FOREST_CONIFER", "PRAIRIE_BUSHES", "PRAIRIE_GRASS"],
       });
       expect(generateSiteDesignation(site)).toEqual("espace naturel");
     });
@@ -105,7 +103,7 @@ describe("siteName", () => {
     it("should generate 'espace naturel' for a mix of prairie, forest, wet land and water", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.FOREST_POPLAR, SoilType.PRAIRIE_TREES, SoilType.WATER, SoilType.WET_LAND],
+        soils: ["FOREST_POPLAR", "PRAIRIE_TREES", "WATER", "WET_LAND"],
       });
       expect(generateSiteDesignation(site)).toEqual("espace naturel");
     });
@@ -113,12 +111,7 @@ describe("siteName", () => {
     it("should generate 'espace naturel et agricole' for a mix of prairie, forest and cultivation", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [
-          SoilType.FOREST_POPLAR,
-          SoilType.PRAIRIE_TREES,
-          SoilType.WATER,
-          SoilType.CULTIVATION,
-        ],
+        soils: ["FOREST_POPLAR", "PRAIRIE_TREES", "WATER", "CULTIVATION"],
       });
       expect(generateSiteDesignation(site)).toEqual("espace naturel et agricole");
     });
@@ -126,7 +119,7 @@ describe("siteName", () => {
     it("should generate 'espace' when no friche and all soils are artifical", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED, SoilType.MINERAL_SOIL],
+        soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "MINERAL_SOIL"],
       });
       expect(generateSiteDesignation(site)).toEqual("espace");
     });
@@ -136,12 +129,7 @@ describe("siteName", () => {
     it("should generate 'Espace naturel et agricole de Blajan'", () => {
       const site = buildSiteDraft({
         isFriche: false,
-        soils: [
-          SoilType.FOREST_POPLAR,
-          SoilType.PRAIRIE_TREES,
-          SoilType.WATER,
-          SoilType.CULTIVATION,
-        ],
+        soils: ["FOREST_POPLAR", "PRAIRIE_TREES", "WATER", "CULTIVATION"],
       });
       expect(generateSiteName(site)).toEqual("Espace naturel et agricole de Blajan");
     });
@@ -150,7 +138,7 @@ describe("siteName", () => {
       const site = buildSiteDraft({
         isFriche: true,
         fricheActivity: FricheActivity.INDUSTRY,
-        soils: [SoilType.BUILDINGS, SoilType.MINERAL_SOIL],
+        soils: ["BUILDINGS", "MINERAL_SOIL"],
       });
       expect(generateSiteName(site)).toEqual("Friche industrielle de Blajan");
     });
