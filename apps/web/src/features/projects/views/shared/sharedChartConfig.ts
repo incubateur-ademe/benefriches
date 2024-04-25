@@ -2,10 +2,7 @@ export const baseColumnChartConfig: Highcharts.Options = {
   chart: {
     type: "column",
     height: "275px",
-    style: {
-      fontFamily: "Marianne",
-    },
-    backgroundColor: "#ECF5FD",
+    styledMode: true,
   },
   title: {
     text: "",
@@ -22,10 +19,7 @@ export const baseAreaChartConfig: Highcharts.Options = {
     height: "180px",
     marginLeft: 0,
     marginRight: 0,
-    style: {
-      fontFamily: "Marianne",
-    },
-    backgroundColor: "#ECF5FD",
+    styledMode: true,
   },
   title: {
     text: "",

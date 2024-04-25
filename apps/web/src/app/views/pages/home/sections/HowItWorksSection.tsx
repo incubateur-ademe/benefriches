@@ -36,7 +36,7 @@ function HowItWorksStep({ number, title, text }: HowItWorksStepProps) {
 
 export default function HowItWorksSection() {
   return (
-    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey")}>
+    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey", "dark:tw-bg-darkGrey")}>
       <div className={fr.cx("fr-container")}>
         <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mt-5w")}>

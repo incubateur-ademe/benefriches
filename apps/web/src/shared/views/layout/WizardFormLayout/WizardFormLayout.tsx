@@ -23,6 +23,7 @@ function WizardFormLayout({ title, children, instructions = null }: Props) {
             "tw-col-span-12",
             "md:tw-col-span-4",
             "tw-bg-lightGrey",
+            "dark:tw-bg-darkGrey",
           )}
         >
           <div className="*:tw-text-sm">{instructions}</div>

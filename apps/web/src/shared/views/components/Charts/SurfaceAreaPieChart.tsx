@@ -5,7 +5,7 @@ import HighchartsReact from "highcharts-react-official";
 import { SoilsDistribution, typedObjectEntries } from "shared";
 import { SQUARE_METERS_HTML_SYMBOL } from "../SurfaceArea/SurfaceArea";
 
-import { getColorForSoilType } from "@/shared/domain/soils";
+import { getHighchartStyleForSoilTypes } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
@@ -14,23 +14,21 @@ type Props = {
 
 const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
-  const data = typedObjectEntries(soilsDistribution)
-    .filter(([, surfaceArea]) => (surfaceArea as number) > 0)
-    .map(([soilType, surfaceArea]) => {
-      return {
-        name: getLabelForSoilType(soilType),
-        y: surfaceArea,
-        color: getColorForSoilType(soilType),
-      };
-    });
+  const soilsEntries = typedObjectEntries(soilsDistribution).filter(
+    ([, surfaceArea]) => (surfaceArea as number) > 0,
+  );
+
+  const data = soilsEntries.map(([soilType, surfaceArea]) => {
+    return {
+      name: getLabelForSoilType(soilType),
+      y: surfaceArea,
+    };
+  });
 
   const variablePieChartOptions: Highcharts.Options = {
     title: { text: "" },
     chart: {
-      backgroundColor: "transparent",
-      style: {
-        fontFamily: "Marianne",
-      },
+      styledMode: true,
     },
     credits: { enabled: false },
     tooltip: {
@@ -47,7 +45,10 @@ const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
   };
 
   return (
-    <div className={fr.cx("fr-container", "fr-py-4w")}>
+    <div
+      className={fr.cx("fr-container", "fr-py-4w")}
+      style={getHighchartStyleForSoilTypes(soilsEntries.map(([soilType]) => soilType))}
+    >
       <HighchartsReact
         highcharts={Highcharts}
         options={variablePieChartOptions}

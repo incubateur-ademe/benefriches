@@ -14,7 +14,14 @@ const ImpactChartCard = ({ title, children, onTitleClick }: Props) => {
     <figure
       className={classNames(
         fr.cx("fr-py-2w", "fr-px-3w", "fr-m-0"),
-        "tw-flex tw-flex-col tw-border tw-border-solid tw-border-grey tw-h-full tw-bg-impacts-main",
+        "tw-flex",
+        "tw-flex-col",
+        "tw-border",
+        "tw-border-solid",
+        "tw-border-grey",
+        "tw-h-full",
+        "tw-bg-impacts-main",
+        "dark:tw-bg-darkGrey",
       )}
     >
       <strong

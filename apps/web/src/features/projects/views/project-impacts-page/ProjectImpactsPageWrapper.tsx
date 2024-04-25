@@ -54,7 +54,7 @@ function ProjectImpactsPageWrapper({
   onCurrentCategoryFilterChange,
 }: Props) {
   return (
-    <div className="tw-bg-impacts-main">
+    <div className="tw-bg-impacts-main dark:tw-bg-darkGrey">
       <ProjectsImpactsPageHeader
         projectId={projectData?.id ?? ""}
         projectName={projectData?.name ?? "Projet photovoltaïque"}
