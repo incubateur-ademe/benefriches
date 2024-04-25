@@ -1,16 +1,16 @@
+import { typedObjectEntries } from "shared";
+import { isForest, isPrairie, isWetLand, SoilsDistribution } from "shared";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
-import { isForestPrairieOrWetLand, SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 type Props = {
-  baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];
-  forecastSoilsDistribution: ReconversionProjectImpactsResult["projectData"]["soilsDistribution"];
+  baseSoilsDistribution: SoilsDistribution;
+  forecastSoilsDistribution: SoilsDistribution;
 };
 
 const formatSoilSurfaceArea = (surfaceArea: number) => {
@@ -21,12 +21,12 @@ const NatureRelatedWellnessAndLeisureDescription = ({
   baseSoilsDistribution,
   forecastSoilsDistribution,
 }: Props) => {
-  const baseSoilsWithBenefitsDistributionEntries = Object.entries(baseSoilsDistribution).filter(
-    ([key]) => isForestPrairieOrWetLand(key as SoilType),
+  const baseSoilsWithBenefitsDistributionEntries = typedObjectEntries(baseSoilsDistribution).filter(
+    ([key]) => isPrairie(key) || isForest(key) || isWetLand(key),
   );
-  const forecastSoilsWithBenefitsDistributionEntries = Object.entries(
+  const forecastSoilsWithBenefitsDistributionEntries = typedObjectEntries(
     forecastSoilsDistribution,
-  ).filter(([key]) => isForestPrairieOrWetLand(key as SoilType));
+  ).filter(([key]) => isPrairie(key) || isForest(key) || isWetLand(key));
   return (
     <>
       <p>
@@ -69,7 +69,7 @@ const NatureRelatedWellnessAndLeisureDescription = ({
           baseSoilsWithBenefitsDistributionEntries.map(([type, surfaceArea]) => {
             return (
               <li key={type}>
-                {getLabelForSoilType(type as SoilType)} : {formatSoilSurfaceArea(surfaceArea)}
+                {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
               </li>
             );
           })
@@ -90,7 +90,7 @@ const NatureRelatedWellnessAndLeisureDescription = ({
           forecastSoilsWithBenefitsDistributionEntries.map(([type, surfaceArea]) => {
             return (
               <li key={type}>
-                {getLabelForSoilType(type as SoilType)} : {formatSoilSurfaceArea(surfaceArea)}
+                {getLabelForSoilType(type)} : {formatSoilSurfaceArea(surfaceArea as number)}
               </li>
             );
           })

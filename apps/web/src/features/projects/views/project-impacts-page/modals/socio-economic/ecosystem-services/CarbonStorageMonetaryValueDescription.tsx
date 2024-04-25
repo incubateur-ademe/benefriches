@@ -1,10 +1,9 @@
+import { SoilsDistribution } from "shared";
 import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
 
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
-
 type Props = {
-  baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];
-  forecastSoilsDistribution: ReconversionProjectImpactsResult["projectData"]["soilsDistribution"];
+  baseSoilsDistribution: SoilsDistribution;
+  forecastSoilsDistribution: SoilsDistribution;
 };
 
 const CarbonSoilsStorageMonetaryValueDescription = (props: Props) => {

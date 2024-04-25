@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Accordion from "@codegouvfr/react-dsfr/Accordion";
+import { SoilType } from "shared";
 import { getLabelForExpensePurpose } from "../../domain/expenses.functions";
 import { FricheActivity, getFricheActivityLabel } from "../../domain/friche.types";
 import { Expense } from "../../domain/siteFoncier.types";
 
-import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { sumList, sumObjectValues } from "@/shared/services/sum/sum";

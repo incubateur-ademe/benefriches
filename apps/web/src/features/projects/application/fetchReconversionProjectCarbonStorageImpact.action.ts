@@ -1,4 +1,4 @@
-import { SoilType } from "@/shared/domain/soils";
+import { SoilType } from "shared";
 
 export type SoilsCarbonStorageResult = {
   totalCarbonStorage: number;

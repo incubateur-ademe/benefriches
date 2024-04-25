@@ -50,7 +50,6 @@ import {
 
 import { createStore, RootState } from "@/app/application/store";
 import { buildUser } from "@/features/users/domain/user.mock";
-import { SoilType } from "@/shared/domain/soils";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 describe("Create site reducer", () => {
@@ -209,11 +208,7 @@ describe("Create site reducer", () => {
             stepsHistory: ["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"],
             siteData: {
               surfaceArea: 100000,
-              soils: [
-                SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-                SoilType.BUILDINGS,
-                SoilType.FOREST_CONIFER,
-              ],
+              soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "BUILDINGS", "FOREST_CONIFER"],
             },
           });
 
@@ -228,9 +223,9 @@ describe("Create site reducer", () => {
               ...initialState.siteData,
               soilsDistributionEntryMode: "default_even_split",
               soilsDistribution: {
-                [SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED]: 33333.33,
-                [SoilType.BUILDINGS]: 33333.33,
-                [SoilType.FOREST_CONIFER]: 33333.34,
+                ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED"]: 33333.33,
+                ["BUILDINGS"]: 33333.33,
+                ["FOREST_CONIFER"]: 33333.34,
               },
             },
             stepsHistory: [...initialState.stepsHistory, "SOILS_SUMMARY"],
@@ -242,11 +237,7 @@ describe("Create site reducer", () => {
             stepsHistory: ["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"],
             siteData: {
               surfaceArea: 100000,
-              soils: [
-                SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-                SoilType.BUILDINGS,
-                SoilType.FOREST_CONIFER,
-              ],
+              soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "BUILDINGS", "FOREST_CONIFER"],
             },
           });
 

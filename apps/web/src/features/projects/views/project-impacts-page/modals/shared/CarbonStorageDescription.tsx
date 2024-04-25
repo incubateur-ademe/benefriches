@@ -1,8 +1,8 @@
+import { SoilType } from "shared";
 import ModalTitleThree from "./ModalTitleThree";
 import ModalTitleTwo from "./ModalTitleTwo";
 
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
-import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";

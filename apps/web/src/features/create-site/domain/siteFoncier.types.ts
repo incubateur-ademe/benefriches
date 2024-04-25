@@ -1,6 +1,6 @@
+import { SoilType } from "shared";
 import { FricheActivity } from "./friche.types";
 
-import { SoilType } from "@/shared/domain/soils";
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 
 export enum SiteFoncierType {

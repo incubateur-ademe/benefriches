@@ -1,8 +1,6 @@
 import { hasBuildings, hasImpermeableSoils, hasTenant } from "./site.functions";
 import { SiteDraft } from "./siteFoncier.types";
 
-import { SoilType } from "@/shared/domain/soils";
-
 const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
   return {
     id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
@@ -51,11 +49,7 @@ describe("Site functions", () => {
   describe("hasBuilding", () => {
     it("returns false when no buildings", () => {
       const site = buildSite({
-        soils: [
-          SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-          SoilType.FOREST_DECIDUOUS,
-          SoilType.MINERAL_SOIL,
-        ],
+        soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "FOREST_DECIDUOUS", "MINERAL_SOIL"],
       });
       expect(hasBuildings(site)).toEqual(false);
     });
@@ -63,10 +57,10 @@ describe("Site functions", () => {
     it("returns true when has buildings", () => {
       const site = buildSite({
         soils: [
-          SoilType.BUILDINGS,
-          SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-          SoilType.FOREST_DECIDUOUS,
-          SoilType.MINERAL_SOIL,
+          "BUILDINGS",
+          "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+          "FOREST_DECIDUOUS",
+          "MINERAL_SOIL",
         ],
       });
       expect(hasBuildings(site)).toEqual(true);
@@ -77,10 +71,10 @@ describe("Site functions", () => {
     it("returns false when no impermeable soils", () => {
       const site = buildSite({
         soils: [
-          SoilType.BUILDINGS,
-          SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-          SoilType.FOREST_DECIDUOUS,
-          SoilType.MINERAL_SOIL,
+          "BUILDINGS",
+          "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+          "FOREST_DECIDUOUS",
+          "MINERAL_SOIL",
         ],
       });
       expect(hasImpermeableSoils(site)).toEqual(false);
@@ -89,11 +83,11 @@ describe("Site functions", () => {
     it("returns true when has impermeable soils", () => {
       const site = buildSite({
         soils: [
-          SoilType.BUILDINGS,
-          SoilType.IMPERMEABLE_SOILS,
-          SoilType.ARTIFICIAL_GRASS_OR_BUSHES_FILLED,
-          SoilType.FOREST_DECIDUOUS,
-          SoilType.MINERAL_SOIL,
+          "BUILDINGS",
+          "IMPERMEABLE_SOILS",
+          "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+          "FOREST_DECIDUOUS",
+          "MINERAL_SOIL",
         ],
       });
       expect(hasImpermeableSoils(site)).toEqual(true);

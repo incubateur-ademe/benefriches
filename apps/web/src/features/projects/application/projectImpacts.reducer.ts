@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SoilType } from "shared";
 import {
   fetchReconversionProjectImpacts,
   ReconversionProjectImpactsResult,
 } from "./fetchReconversionProjectImpacts.action";
-
-import { SoilType } from "@/shared/domain/soils";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

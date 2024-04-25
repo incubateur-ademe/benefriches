@@ -27,6 +27,7 @@
     "prebuild": "only-include-used-icons"
   },
   "dependencies": {
+    "shared": "workspace:*",
     "@codegouvfr/react-dsfr": "^1.9.8",
     "@reduxjs/toolkit": "^2.2.3",
     "antd": "^5.16.2",

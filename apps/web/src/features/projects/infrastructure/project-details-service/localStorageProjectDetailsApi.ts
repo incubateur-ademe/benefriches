@@ -1,3 +1,4 @@
+import { SoilType } from "shared";
 import {
   ProjectDetailsResult as ProjectImpactsComparisonResult,
   ProjectsDetailsGateway as ProjectImpactsComparisonGateway,
@@ -5,7 +6,6 @@ import {
 import { ProjectSite } from "../../domain/projects.types";
 
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
-import { SoilType } from "@/shared/domain/soils";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import { delay } from "@/shared/services/delay/delay";
 

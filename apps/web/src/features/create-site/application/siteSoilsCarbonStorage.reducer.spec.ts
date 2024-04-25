@@ -1,23 +1,26 @@
-import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
+import {
+  fetchCarbonStorageForSoils,
+  GetSiteSoilsCarbonStoragePayload,
+  SiteSoilsCarbonStorageResult,
+} from "./siteSoilsCarbonStorage.actions";
 
 import { createStore } from "@/app/application/store";
-import { SoilType } from "@/shared/domain/soils";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 describe("Site carbon sequestration reducer", () => {
   it("should get carbon sequestration for city code and soils", async () => {
-    const mockedResult = {
+    const mockedResult: SiteSoilsCarbonStorageResult = {
       totalCarbonStorage: 350,
       soilsStorage: [
         {
-          type: SoilType.BUILDINGS,
+          type: "BUILDINGS",
           carbonStorage: 30,
           surfaceArea: 1400,
           carbonStorageInTonPerSquareMeters: 0.021,
         },
         {
-          type: SoilType.MINERAL_SOIL,
+          type: "MINERAL_SOIL",
           carbonStorage: 320,
           surfaceArea: 5000,
           carbonStorageInTonPerSquareMeters: 0.064,
@@ -30,11 +33,11 @@ describe("Site carbon sequestration reducer", () => {
       }),
     );
 
-    const siteInfo = {
+    const siteInfo: GetSiteSoilsCarbonStoragePayload = {
       cityCode: "75011",
       soils: [
-        { type: SoilType.BUILDINGS, surfaceArea: 1400 },
-        { type: SoilType.MINERAL_SOIL, surfaceArea: 5000 },
+        { type: "BUILDINGS", surfaceArea: 1400 },
+        { type: "MINERAL_SOIL", surfaceArea: 5000 },
       ],
     };
     await store.dispatch(fetchCarbonStorageForSoils(siteInfo));
@@ -60,11 +63,11 @@ describe("Site carbon sequestration reducer", () => {
       }),
     );
 
-    const siteInfo = {
+    const siteInfo: GetSiteSoilsCarbonStoragePayload = {
       cityCode: "75011",
       soils: [
-        { type: SoilType.BUILDINGS, surfaceArea: 1400 },
-        { type: SoilType.MINERAL_SOIL, surfaceArea: 5000 },
+        { type: "BUILDINGS", surfaceArea: 1400 },
+        { type: "MINERAL_SOIL", surfaceArea: 5000 },
       ],
     };
     await store.dispatch(fetchCarbonStorageForSoils(siteInfo));

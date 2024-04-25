@@ -6,18 +6,15 @@ import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
 import { ProjectSite } from "@/features/create-project/domain/project.types";
-import { SoilType } from "@/shared/domain/soils";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
-  soilsDistribution[SoilType.BUILDINGS] ? soilsDistribution[SoilType.BUILDINGS] > 0 : false;
+  soilsDistribution.BUILDINGS ? soilsDistribution.BUILDINGS > 0 : false;
 const hasImpermeableSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
-  soilsDistribution[SoilType.IMPERMEABLE_SOILS]
-    ? soilsDistribution[SoilType.IMPERMEABLE_SOILS] > 0
-    : false;
+  soilsDistribution.IMPERMEABLE_SOILS ? soilsDistribution.IMPERMEABLE_SOILS > 0 : false;
 const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
-  soilsDistribution[SoilType.MINERAL_SOIL] ? soilsDistribution[SoilType.MINERAL_SOIL] > 0 : false;
+  soilsDistribution.MINERAL_SOIL ? soilsDistribution.MINERAL_SOIL > 0 : false;
 
 const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
   const soilsDistribution = siteData?.soilsDistribution ?? {};

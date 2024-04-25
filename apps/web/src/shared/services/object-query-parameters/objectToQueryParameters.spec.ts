@@ -1,7 +1,5 @@
 import { objectToQueryParams } from "./objectToQueryParameters";
 
-import { SoilType } from "@/shared/domain/soils";
-
 describe("objectToQueryParams", () => {
   it('should return cityCode=75011 for { cityCode: "75011" }', () => {
     const input = { cityCode: "75011" };
@@ -29,8 +27,8 @@ describe("objectToQueryParams", () => {
   it("should handle array of objects", () => {
     const input = {
       soils: [
-        { surfaceArea: 1500, type: SoilType.CULTIVATION },
-        { surfaceArea: 30000, type: SoilType.FOREST_DECIDUOUS },
+        { surfaceArea: 1500, type: "CULTIVATION" },
+        { surfaceArea: 30000, type: "FOREST_DECIDUOUS" },
       ],
     };
     const expectedOutput = encodeURI(
@@ -45,8 +43,8 @@ describe("objectToQueryParams", () => {
       cityCode: "75011",
       expenses: [2000, 150],
       soils: [
-        { surfaceArea: 1500, type: SoilType.CULTIVATION },
-        { surfaceArea: 30000, type: SoilType.FOREST_DECIDUOUS },
+        { surfaceArea: 1500, type: "CULTIVATION" },
+        { surfaceArea: 30000, type: "FOREST_DECIDUOUS" },
       ],
     };
     const expectedOutput = encodeURI(

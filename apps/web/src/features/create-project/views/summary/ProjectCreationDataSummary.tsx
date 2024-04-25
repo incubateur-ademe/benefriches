@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import Accordion from "@codegouvfr/react-dsfr/Accordion";
+import { SoilType } from "shared";
 import { Schedule } from "../../application/saveReconversionProject.action";
 import {
   DevelopmentPlanCategory,
@@ -14,7 +15,6 @@ import {
   getLabelForRenewableEnergyProductionType,
 } from "../projectTypeLabelMapping";
 
-import { SoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { sumList } from "@/shared/services/sum/sum";

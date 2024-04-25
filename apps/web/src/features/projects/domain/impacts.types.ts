@@ -1,4 +1,4 @@
-import { SoilType } from "@/shared/domain/soils";
+import { SoilType } from "shared";
 
 type PurposeCost = "rent" | "maintenance" | "taxes" | "other";
 type SourceRevenue = "operations" | "other";
