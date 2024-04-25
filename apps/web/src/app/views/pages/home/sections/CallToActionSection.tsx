@@ -12,7 +12,10 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 export default function CallToActionSection() {
   return (
-    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey")} id="cta-section">
+    <section
+      className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey", "dark:tw-bg-darkGrey")}
+      id="cta-section"
+    >
       <div className={fr.cx("fr-container")}>
         <div className={fr.cx("fr-grid-row")}>
           <div

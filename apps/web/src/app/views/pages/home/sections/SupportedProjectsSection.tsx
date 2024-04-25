@@ -53,8 +53,8 @@ function SupportedProjectCard({
                 className={classNames(
                   fr.cx("fr-text--sm", "fr-m-0", "fr-text--bold"),
                   economicBalanceInMillionEuros > 0
-                    ? "tw-text-impacts-positive"
-                    : "tw-text-impacts-negative",
+                    ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
+                    : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
                 )}
               >
                 {economicBalanceInMillionEuros > 0 ? "+" : ""}
@@ -68,8 +68,8 @@ function SupportedProjectCard({
                 className={classNames(
                   fr.cx("fr-text--sm", "fr-m-0", "fr-text--bold"),
                   socioEconomicImpactAmountInMillionEuros > 0
-                    ? "tw-text-impacts-positive"
-                    : "tw-text-impacts-negative",
+                    ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
+                    : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
                 )}
               >
                 {socioEconomicImpactAmountInMillionEuros > 0 ? "+" : ""}
@@ -92,7 +92,7 @@ function SupportedProjectCard({
 
 export default function SupportedProjectsSection() {
   return (
-    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey")}>
+    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey", "dark:tw-bg-darkGrey")}>
       <div className={fr.cx("fr-container")}>
         <h2>Les projets accompagnés par Bénéfriches</h2>
         <div className={classNames("tw-flex", "tw-overflow-x-scroll", fr.cx("fr-mt-5w"))}>

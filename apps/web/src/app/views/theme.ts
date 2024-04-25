@@ -32,13 +32,23 @@ export default {
       blue: "#137FEB",
       lightGrey: "#F6F6F6",
       grey: "#DDDDDD",
+      darkGrey: "#333",
       warning: "#B34000",
       impacts: {
         title: "var(--blue-ecume-sun-247-moon-675)",
         main: "#ECF5FD",
-        positive: "#18753C",
-        neutral: "#161616",
-        negative: "#CE0500",
+        positive: {
+          main: "#18753C",
+          light: "#51DB86",
+        },
+        neutral: {
+          main: "#161616",
+          light: "#F6F6F6",
+        },
+        negative: {
+          main: "#CE0500",
+          light: "#FF918F",
+        },
       },
       // can be used with classes tw-soils-buildings, tw-soils-impermeable-soils...
       soils: soilColors,

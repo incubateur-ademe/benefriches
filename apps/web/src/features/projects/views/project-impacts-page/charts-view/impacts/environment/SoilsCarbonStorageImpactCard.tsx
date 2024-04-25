@@ -8,7 +8,7 @@ import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVar
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { getColorForSoilType } from "@/shared/domain/soils";
+import { getHighchartStyleForSoilTypes } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
@@ -63,7 +63,6 @@ function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact, onTitleClick }
     series: soilsTypes.map((soilType) => ({
       name: getLabelForSoilType(soilType),
       type: "area",
-      color: getColorForSoilType(soilType),
       data: getData(soilType, currentSoilsCarbonStorage.soils, forecastSoilsCarbonStorage.soils),
     })),
   };
@@ -81,7 +80,9 @@ function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact, onTitleClick }
       <ImpactAbsoluteVariation>
         {formatCO2Impact(soilsCarbonStorageVariation)}
       </ImpactAbsoluteVariation>
-      <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+      <div style={getHighchartStyleForSoilTypes(soilsTypes)}>
+        <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+      </div>
     </ImpactCard>
   );
 }

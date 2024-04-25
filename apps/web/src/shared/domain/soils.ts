@@ -40,3 +40,16 @@ export const getColorForSoilType = (value: SoilType): string => {
       return soilColors["water"];
   }
 };
+
+export const getHighchartStyleForSoilTypes = (
+  soilTypes: SoilType[],
+  override: Partial<Record<SoilType, string>> = {},
+): React.CSSProperties => {
+  return soilTypes.reduce(
+    (style, soilType, index) => ({
+      ...style,
+      [`--highcharts-color-${index}`]: override[soilType] ?? getColorForSoilType(soilType),
+    }),
+    {},
+  );
+};

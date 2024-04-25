@@ -28,12 +28,13 @@ const ImpactValue = ({ value, type = "default", isTotal = false }: Props) => {
         "tw-p-2",
         "tw-text-center",
         "tw-bg-impacts-main",
+        "dark:tw-bg-darkGrey",
         isTotal && "tw-font-bold",
         value === 0
-          ? "tw-text-impacts-neutral"
+          ? "tw-text-impacts-neutral-main dark:tw-text-impacts-neutral-light"
           : value > 0
-            ? "tw-text-impacts-positive"
-            : "tw-text-impacts-negative",
+            ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
+            : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
       )}
     >
       {impactTypeFormatterMap[type](value)}
