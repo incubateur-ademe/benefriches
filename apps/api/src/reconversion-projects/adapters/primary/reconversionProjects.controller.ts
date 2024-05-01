@@ -21,6 +21,7 @@ export const createReconversionProjectInputSchema = reconversionProjectPropsSche
       z.object({
         type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
         cost: z.number().nonnegative(),
+        developer: z.object({ name: z.string(), structureType: z.string() }),
         features: photovoltaicPowerStationFeaturesSchema,
         installationSchedule: jsonScheduleSchema.optional(),
       }),

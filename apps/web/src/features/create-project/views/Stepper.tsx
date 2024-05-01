@@ -39,6 +39,7 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case "SOILS_CARBON_STORAGE":
       return "Transformation des sols";
     case "STAKEHOLDERS_INTRODUCTION":
+    case "STAKEHOLDERS_PROJECT_DEVELOPER":
     case "STAKEHOLDERS_FUTURE_OPERATOR":
     case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
     case "STAKEHOLDERS_FUTURE_SITE_OWNER":

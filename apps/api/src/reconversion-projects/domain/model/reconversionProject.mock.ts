@@ -10,6 +10,10 @@ const baseReconversionProjectProps: ReconversionProjectProps = {
     {
       type: "PHOTOVOLTAIC_POWER_PLANT",
       cost: 1300,
+      developer: {
+        structureType: "company",
+        name: "Terre cuite d’occitanie",
+      },
       features: {
         surfaceArea: 1200,
         contractDuration: 25,
@@ -46,6 +50,10 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
       {
         type: "PHOTOVOLTAIC_POWER_PLANT",
         cost: 1300,
+        developer: {
+          name: "developer company name",
+          structureType: "company",
+        },
         features: {
           surfaceArea: 1200,
           contractDuration: 25,

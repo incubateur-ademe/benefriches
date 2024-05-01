@@ -57,6 +57,8 @@ type SqlDevelopmentPlan = {
   id: string;
   type: string;
   cost: number;
+  developer_name: string;
+  developer_structure_type: string;
   features: unknown;
   reconversion_project_id: string;
   schedule_start_date?: Date;
@@ -133,10 +135,12 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       // development plans
       const developmentPlansToInsert: SqlDevelopmentPlan[] =
         reconversionProject.developmentPlans.map(
-          ({ features, type, cost, installationSchedule }) => {
+          ({ features, type, cost, installationSchedule, developer }) => {
             return {
               id: uuid(),
               type,
+              developer_name: developer.name,
+              developer_structure_type: developer.structureType,
               cost,
               features,
               schedule_start_date: installationSchedule?.startDate,

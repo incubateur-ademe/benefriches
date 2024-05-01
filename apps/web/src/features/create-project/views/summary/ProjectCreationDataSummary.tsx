@@ -35,6 +35,7 @@ type Props = {
     soilsDistribution: SoilsDistribution;
     futureOwner?: string;
     futureOperator?: string;
+    projectDeveloper?: string;
     reinstatementContractOwner?: string;
     reinstatementFullTimeJobs?: number;
     conversionFullTimeJobs?: number;
@@ -139,6 +140,10 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             })}
         </Accordion>
         <Accordion label="Acteurs du projet" defaultExpanded>
+          <DataLine
+            label={<strong>Aménageur du site</strong>}
+            value={projectData.projectDeveloper}
+          />
           <DataLine
             label={<strong>Futur propriétaire du site</strong>}
             value={projectData.futureOwner ?? "Pas de changement de propriétaire"}

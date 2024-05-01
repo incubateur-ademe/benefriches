@@ -32,21 +32,14 @@ export type FormValues =
       localAuthority: undefined;
     }
   | {
-      stakeholder:
-        | "user_company"
-        | "site_tenant"
-        | "site_owner"
-        | "project_developer"
-        | "future_site_operator"
-        | "reinstatement_contract_owner"
-        | "unknown";
+      stakeholder: "user_company" | "site_tenant" | "site_owner" | "unknown";
       localAuthority: undefined;
       otherStructureName: undefined;
     };
 
 const requiredMessage = "Ce champ est requis";
 
-function FutureSiteOwnerForm({
+function DeveloperForm({
   onSubmit,
   onBack,
   availableStakeholdersList,
@@ -59,7 +52,21 @@ function FutureSiteOwnerForm({
   const selectedStakeholder = watch("stakeholder");
 
   return (
-    <WizardFormLayout title="Qui sera le nouveau propriétaire du site ?">
+    <WizardFormLayout
+      title="Qui sera l'aménageur du site ?"
+      instructions={
+        <>
+          <p>
+            L’aménageur est l’acteur qui va engager la reconversion du site. Le bilan économique de
+            l’opération sera donc à sa charge.
+          </p>
+          <p>
+            L’aménageur peut aussi être l’exploitant du site ; la question sera posée dans l’étape
+            suivante.
+          </p>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={formState.errors.stakeholder ? "error" : "default"}
@@ -75,7 +82,6 @@ function FutureSiteOwnerForm({
               {...register("stakeholder", { required: requiredMessage })}
             />
           ))}
-
           {availableLocalAuthoritiesStakeholders.length > 0 && (
             <RadioButton
               label="Une collectivité"
@@ -127,4 +133,4 @@ function FutureSiteOwnerForm({
   );
 }
 
-export default FutureSiteOwnerForm;
+export default DeveloperForm;
