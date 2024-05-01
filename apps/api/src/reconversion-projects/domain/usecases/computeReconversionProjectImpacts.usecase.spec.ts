@@ -100,6 +100,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       developmentPlanInstallationCost: 200000,
       developmentPlanElectricalPowerKWc: 258,
       developmentPlanSurfaceArea: 20000,
+      developmentPlanDeveloperName: "Mairie de Blajan",
       reinstatementFinancialAssistanceAmount: 150000,
       yearlyProjectedCosts: [
         { amount: 1000, purpose: "taxes" },
