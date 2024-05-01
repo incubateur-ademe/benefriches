@@ -38,56 +38,23 @@ describe("strings: format epcis name", () => {
 });
 
 describe("strings: format local authority name", () => {
-  const withNoEPCI = {
-    city: {
-      name: "Paris 10e Arrondissement",
-      code: "75110",
-    },
-    department: {
-      code: "75",
-      name: "Paris",
-    },
-    region: {
-      code: "11",
-      name: "Île-de-France",
-    },
-  };
-  const withEPCI = {
-    city: {
-      code: "38185",
-      name: "Grenoble",
-    },
-    epci: {
-      code: "200040715",
-      name: "Grenoble-Alpes-Métropole",
-    },
-    department: {
-      code: "38",
-      name: "Isère",
-    },
-    region: {
-      code: "84",
-      name: "Auvergne-Rhône-Alpes",
-    },
-  };
-
-  it("should return empty string", () => {
-    expect(formatLocalAuthorityName("epci", withNoEPCI)).toEqual("");
-  });
-
   it("should format epci name", () => {
-    expect(formatLocalAuthorityName("epci", withEPCI)).toEqual("Grenoble-Alpes-Métropole");
+    expect(formatLocalAuthorityName("epci", "Grenoble-Alpes-Métropole")).toEqual(
+      "Grenoble-Alpes-Métropole",
+    );
   });
 
   it("should format municipality name", () => {
-    expect(formatLocalAuthorityName("municipality", withEPCI)).toEqual("Mairie de Grenoble");
+    expect(formatLocalAuthorityName("municipality", "Grenoble")).toEqual("Mairie de Grenoble");
   });
 
   it("should format region name", () => {
-    expect(formatLocalAuthorityName("region", withEPCI)).toEqual("Région Auvergne-Rhône-Alpes");
+    expect(formatLocalAuthorityName("region", "Auvergne-Rhône-Alpes")).toEqual(
+      "Région Auvergne-Rhône-Alpes",
+    );
   });
 
   it("should format department name", () => {
-    expect(formatLocalAuthorityName("department", withEPCI)).toEqual("Département Isère");
+    expect(formatLocalAuthorityName("department", "Isère")).toEqual("Département Isère");
   });
 });

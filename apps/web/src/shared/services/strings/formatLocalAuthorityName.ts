@@ -26,35 +26,15 @@ export const formatMunicipalityName = (name: string) => {
   return `Mairie de ${capitalize(name)}`;
 };
 
-export default (
-  type: LocalAutorityStructureType,
-  localAuthorities: {
-    city: {
-      code: string;
-      name: string;
-    };
-    epci?: {
-      code: string;
-      name: string;
-    };
-    department: {
-      code: string;
-      name: string;
-    };
-    region: {
-      code: string;
-      name: string;
-    };
-  },
-) => {
+export default (type: LocalAutorityStructureType, localAuthorityName: string) => {
   switch (type) {
     case "municipality":
-      return formatMunicipalityName(localAuthorities.city.name);
+      return formatMunicipalityName(localAuthorityName);
     case "epci":
-      return formatEpciName(localAuthorities.epci?.name ?? "");
+      return formatEpciName(localAuthorityName);
     case "department":
-      return `Département ${localAuthorities.department.name}`;
+      return `Département ${localAuthorityName}`;
     case "region":
-      return `Région ${localAuthorities.region.name}`;
+      return `Région ${localAuthorityName}`;
   }
 };

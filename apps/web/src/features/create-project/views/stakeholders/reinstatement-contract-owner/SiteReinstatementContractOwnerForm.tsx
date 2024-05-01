@@ -1,17 +1,11 @@
 import { useForm } from "react-hook-form";
 import Input from "@codegouvfr/react-dsfr/Input";
+import Select from "@codegouvfr/react-dsfr/SelectNext";
 
-import { ProjectSiteLocalAuthoritiesState } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
-import {
-  getLocalAuthoritiesExcludedValues,
-  isCurrentUserSameSiteStakeholderEntity,
-  SiteStakeholder,
-} from "@/features/create-project/domain/stakeholders";
-import { UserStructure } from "@/features/users/domain/user";
+import { AvailableProjectStakeholder } from "@/features/create-project/application/stakeholders.selector";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
-import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -19,73 +13,49 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  currentUserStructure?: UserStructure;
-  siteStakeholders: SiteStakeholder[];
-  projectSiteLocalAuthorities: ProjectSiteLocalAuthoritiesState;
+  availableStakeholdersList: AvailableProjectStakeholder[];
+  availableLocalAuthoritiesStakeholders: {
+    type: "municipality" | "epci" | "region" | "department";
+    name: string;
+  }[];
 };
 
 export type FormValues =
   | {
-      futureOperator: "local_or_regional_authority";
+      stakeholder: "local_or_regional_authority";
       localAuthority: LocalAutorityStructureType;
       otherStructureName: undefined;
     }
   | {
-      futureOperator: "other_structure";
+      stakeholder: "other_structure";
       otherStructureName: string;
       localAuthority: undefined;
     }
   | {
-      futureOperator: "user_company" | "site_tenant" | "site_owner" | "unknown";
+      stakeholder:
+        | "user_company"
+        | "site_tenant"
+        | "site_owner"
+        | "project_developer"
+        | "future_site_operator"
+        | "unknown";
       localAuthority: undefined;
       otherStructureName: undefined;
     };
 
 const requiredMessage = "Ce champ est requis";
 
-const getSiteRelatedOperatorOptions = (
-  siteStakeholders: Props["siteStakeholders"],
-  currentUserStructure?: Props["currentUserStructure"],
-) => {
-  if (!currentUserStructure?.name) {
-    return siteStakeholders.map(({ name, role }) => ({
-      label: name,
-      value: role,
-    }));
-  }
-
-  return [
-    {
-      label: currentUserStructure.name,
-      value: "user_company",
-    },
-    ...siteStakeholders
-      .filter(
-        (stakeholder) => !isCurrentUserSameSiteStakeholderEntity(currentUserStructure, stakeholder),
-      )
-      .map(({ name, role }) => ({
-        label: name,
-        value: role,
-      })),
-  ];
-};
-
 function SiteReinstatementContractOwnerForm({
   onSubmit,
   onBack,
-  currentUserStructure,
-  siteStakeholders,
-  projectSiteLocalAuthorities,
+  availableStakeholdersList,
+  availableLocalAuthoritiesStakeholders,
 }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
 
-  const selectedFutureOperator = watch("futureOperator");
-
-  const localAuthoritiesExcludedValues = currentUserStructure
-    ? getLocalAuthoritiesExcludedValues(currentUserStructure, siteStakeholders)
-    : [];
+  const selectedStakeholder = watch("stakeholder");
 
   return (
     <WizardFormLayout
@@ -99,37 +69,34 @@ function SiteReinstatementContractOwnerForm({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
-          state={formState.errors.futureOperator ? "error" : "default"}
+          state={formState.errors.stakeholder ? "error" : "default"}
           stateRelatedMessage={
-            formState.errors.futureOperator ? formState.errors.futureOperator.message : undefined
+            formState.errors.stakeholder ? formState.errors.stakeholder.message : undefined
           }
         >
-          {getSiteRelatedOperatorOptions(siteStakeholders, currentUserStructure).map(
-            ({ label, value }) => (
-              <RadioButton
-                label={label}
-                value={value}
-                key={value}
-                {...register("futureOperator", { required: requiredMessage })}
-              />
-            ),
+          {availableStakeholdersList.map(({ name, role }) => (
+            <RadioButton
+              label={role === "user_company" ? `Ma structure, ${name}` : name}
+              value={role}
+              key={role}
+              {...register("stakeholder", { required: requiredMessage })}
+            />
+          ))}
+
+          {availableLocalAuthoritiesStakeholders.length > 0 && (
+            <RadioButton
+              label="Une collectivité"
+              value="local_or_regional_authority"
+              {...register("stakeholder", { required: requiredMessage })}
+            />
           )}
 
-          <RadioButton
-            label={
-              localAuthoritiesExcludedValues.length > 0
-                ? "Une autre collectivité"
-                : "Une collectivité"
-            }
-            value="local_or_regional_authority"
-            {...register("futureOperator", { required: requiredMessage })}
-          />
-
-          {selectedFutureOperator === "local_or_regional_authority" && (
-            <LocalAuthoritySelect
-              data={projectSiteLocalAuthorities.localAuthorities}
-              loadingData={projectSiteLocalAuthorities.loadingState}
-              excludedValues={localAuthoritiesExcludedValues}
+          {selectedStakeholder === "local_or_regional_authority" && (
+            <Select
+              options={availableLocalAuthoritiesStakeholders.map(({ type, name }) => ({
+                label: name,
+                value: type,
+              }))}
               label={<RequiredLabel label="Type de collectivité" />}
               placeholder="Sélectionnez un type de collectivité"
               state={formState.errors.localAuthority ? "error" : "default"}
@@ -139,13 +106,13 @@ function SiteReinstatementContractOwnerForm({
               })}
             />
           )}
+
           <RadioButton
             label="Une autre structure"
             value="other_structure"
-            {...register("futureOperator", { required: requiredMessage })}
+            {...register("stakeholder", { required: requiredMessage })}
           />
-
-          {selectedFutureOperator === "other_structure" && (
+          {selectedStakeholder === "other_structure" && (
             <Input
               label="Nom de la structure"
               state={formState.errors.otherStructureName ? "error" : "default"}
@@ -158,7 +125,7 @@ function SiteReinstatementContractOwnerForm({
           <RadioButton
             label="Ne sait pas"
             value="unknown"
-            {...register("futureOperator", { required: requiredMessage })}
+            {...register("stakeholder", { required: requiredMessage })}
           />
         </Fieldset>
         <BackNextButtonsGroup onBack={onBack} />

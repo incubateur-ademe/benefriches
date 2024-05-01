@@ -1,22 +1,22 @@
 import { useForm } from "react-hook-form";
 import Input from "@codegouvfr/react-dsfr/Input";
+import Select from "@codegouvfr/react-dsfr/SelectNext";
 
-import {
-  LoadingState,
-  SiteLocalAuthorities,
-} from "@/features/create-site/application/siteMunicipalityData.reducer";
+import { LoadingState } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
+import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
-import LocalAuthoritySelect from "@/shared/views/components/form/LocalAuthoritySelect";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  siteLocalAuthorities: { loadingState: LoadingState; localAuthorities?: SiteLocalAuthorities };
+  localAuthoritiesList: { type: "municipality" | "epci" | "region" | "department"; name: string }[];
+  localAuthoritiesLoadingState: LoadingState;
 };
 
 export type FormValues =
@@ -34,7 +34,12 @@ export type FormValues =
 
 const requiredMessage = "Ce champ est requis";
 
-function SiteTenantForm({ onSubmit, onBack, siteLocalAuthorities }: Props) {
+function SiteTenantForm({
+  onSubmit,
+  onBack,
+  localAuthoritiesList,
+  localAuthoritiesLoadingState,
+}: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -57,17 +62,32 @@ function SiteTenantForm({ onSubmit, onBack, siteLocalAuthorities }: Props) {
           />
 
           {selectedTenantType === "local_or_regional_authority" && (
-            <LocalAuthoritySelect
-              data={siteLocalAuthorities.localAuthorities}
-              loadingData={siteLocalAuthorities.loadingState}
-              label={<RequiredLabel label="Type de collectivité" />}
-              placeholder="Sélectionnez un type de collectivité"
-              state={formState.errors.localAuthority ? "error" : "default"}
-              stateRelatedMessage={formState.errors.localAuthority?.message}
-              nativeSelectProps={register("localAuthority", {
-                required: "Ce champ est requis",
-              })}
-            />
+            <>
+              {localAuthoritiesLoadingState === "loading" ? (
+                <LoadingSpinner />
+              ) : (
+                <Select
+                  options={
+                    localAuthoritiesLoadingState === "error"
+                      ? localAuthoritiesList.map(({ type, name }) => ({
+                          label: name,
+                          value: type,
+                        }))
+                      : localAuthoritiesList.map(({ type, name }) => ({
+                          label: formatLocalAuthorityName(type, name),
+                          value: type,
+                        }))
+                  }
+                  label={<RequiredLabel label="Type de collectivité" />}
+                  placeholder="Sélectionnez un type de collectivité"
+                  state={formState.errors.localAuthority ? "error" : "default"}
+                  stateRelatedMessage={formState.errors.localAuthority?.message}
+                  nativeSelectProps={register("localAuthority", {
+                    required: "Ce champ est requis",
+                  })}
+                />
+              )}
+            </>
           )}
           <RadioButton
             label="Oui, par une entreprise"

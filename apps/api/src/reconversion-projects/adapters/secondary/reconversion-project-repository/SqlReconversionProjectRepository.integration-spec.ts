@@ -227,6 +227,8 @@ describe("SqlReconversionProjectRepository integration", () => {
         "features",
         "reconversion_project_id",
         "cost",
+        "developer_structure_type",
+        "developer_name",
         "schedule_start_date",
         "schedule_end_date",
       );
@@ -235,6 +237,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           type: reconversionProject.developmentPlans[0].type,
           cost: 1300,
           features: reconversionProject.developmentPlans[0].features,
+          developer_name: reconversionProject.developmentPlans[0].developer.name,
+          developer_structure_type: reconversionProject.developmentPlans[0].developer.structureType,
           reconversion_project_id: reconversionProject.id,
           schedule_start_date:
             reconversionProject.developmentPlans[0].installationSchedule?.startDate,

@@ -55,6 +55,7 @@ export type ProjectCreationStep =
   | "SOILS_SUMMARY"
   | "SOILS_CARBON_STORAGE"
   | "STAKEHOLDERS_INTRODUCTION"
+  | "STAKEHOLDERS_PROJECT_DEVELOPER"
   | "STAKEHOLDERS_FUTURE_OPERATOR"
   | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
   | "STAKEHOLDERS_FUTURE_SITE_OWNER"
@@ -201,6 +202,13 @@ export const projectCreationSlice = createSlice({
       state.stepsHistory.push("SOILS_SUMMARY");
     },
     completeStakeholdersIntroductionStep: (state) => {
+      state.stepsHistory.push("STAKEHOLDERS_PROJECT_DEVELOPER");
+    },
+    completeProjectDeveloper: (
+      state,
+      action: PayloadAction<ReconversionProjectCreationData["projectDeveloper"]>,
+    ) => {
+      state.projectData.projectDeveloper = action.payload;
       state.stepsHistory.push("STAKEHOLDERS_FUTURE_OPERATOR");
     },
     completeFutureOperator: (
@@ -474,6 +482,7 @@ export const revertCustomSoilsSurfaceAreaAllocationStep = () =>
   revertStep({ resetFields: ["soilsDistribution"] });
 export const revertStakeholdersIntroductionStep = () =>
   revertStep({ resetFields: ["soilsDistribution"] });
+export const revertProjectDeveloper = () => revertStep({ resetFields: ["projectDeveloper"] });
 export const revertFutureOperator = () => revertStep({ resetFields: ["futureOperator"] });
 export const revertConversionFullTimeJobsInvolved = () =>
   revertStep({
@@ -543,6 +552,7 @@ export const {
   completeCustomSoilsSurfaceAreaAllocationStep,
   completeStakeholdersIntroductionStep,
   completeFutureOperator,
+  completeProjectDeveloper,
   completeReinstatementContractOwner,
   completeConversionFullTimeJobsInvolved,
   completeOperationsFullTimeJobsInvolved,

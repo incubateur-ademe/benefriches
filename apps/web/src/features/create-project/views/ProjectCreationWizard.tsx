@@ -26,6 +26,7 @@ import NonSuitableSoilsNotice from "./soils/soils-transformation/non-suitable-so
 import NonSuitableSoilsSelection from "./soils/soils-transformation/non-suitable-soils-selection";
 import NonSuitableSoilsSurfaceToTransformForm from "./soils/soils-transformation/non-suitable-soils-surface-to-transform";
 import SoilsTransformationProjectSelection from "./soils/soils-transformation/transformation-project-selection";
+import DeveloperForm from "./stakeholders/developer";
 import FutureOwnerFormContainer from "./stakeholders/future-site-owner";
 import HasRealEstateTransactionFormContainer from "./stakeholders/has-real-estate-transaction";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
@@ -52,6 +53,9 @@ function ProjectCreationWizard() {
         return <RenewableEnergyTypesForm />;
       case "STAKEHOLDERS_INTRODUCTION":
         return <ProjectStakeholdersIntroduction />;
+
+      case "STAKEHOLDERS_PROJECT_DEVELOPER":
+        return <DeveloperForm />;
       case "STAKEHOLDERS_FUTURE_OPERATOR":
         return <SiteOperatorForm />;
       case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":

@@ -18,6 +18,7 @@ export type Schedule = z.infer<typeof scheduleSchema>;
 
 const baseDevelopmentPlanSchema = z.object({
   type: z.string(),
+  developer: z.object({ name: z.string(), structureType: z.string() }),
   cost: z.number().nonnegative(),
   installationSchedule: scheduleSchema.optional(),
 });

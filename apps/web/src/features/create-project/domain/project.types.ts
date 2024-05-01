@@ -1,6 +1,7 @@
 import { SoilsDistribution, SoilType } from "shared";
 import { Schedule } from "../application/saveReconversionProject.action";
 
+import { UserStructureType } from "@/features/users/domain/user";
 import {
   LocalAutorityStructureType,
   OwnerStructureType,
@@ -66,6 +67,7 @@ export type ReconversionProjectCreationData = {
   photovoltaicInstallationSurfaceSquareMeters: number;
   photovoltaicExpectedAnnualProduction: number;
   photovoltaicContractDuration: number;
+  projectDeveloper: ProjectStakeholder;
   futureOperator: ProjectStakeholder;
   futureSiteOwner: ProjectStakeholder;
   conversionFullTimeJobsInvolved?: number;
@@ -109,12 +111,13 @@ export type Revenue = {
   source: "operations" | "other";
 };
 
-type ProjectStakeholderStructure =
+export type ProjectStakeholderStructure =
   | OwnerStructureType
   | TenantStructureType
   | "company"
   | LocalAutorityStructureType
   | "other"
+  | UserStructureType
   | "unknown";
 
 export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
