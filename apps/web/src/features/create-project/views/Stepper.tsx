@@ -9,6 +9,7 @@ const stepCategories = [
   "Aménagement des sols",
   "Acteurs",
   "Coûts et recettes",
+  "Emploi",
   "Calendrier",
   "Dénomination et avancement",
   "Récapitulatif",
@@ -34,11 +35,12 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case "STAKEHOLDERS_INTRODUCTION":
     case "STAKEHOLDERS_FUTURE_OPERATOR":
     case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
-    case "STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS":
-    case "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS":
     case "STAKEHOLDERS_FUTURE_SITE_OWNER":
     case "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION":
       return "Acteurs";
+    case "RECONVERSION_FULL_TIME_JOBS":
+    case "OPERATIONS_FULL_TIMES_JOBS":
+      return "Emploi";
     case "COSTS_INTRODUCTION":
     case "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT":
     case "COSTS_REINSTATEMENT":

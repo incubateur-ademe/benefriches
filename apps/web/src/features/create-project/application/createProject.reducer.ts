@@ -38,10 +38,10 @@ export type ProjectCreationStep =
   | "STAKEHOLDERS_INTRODUCTION"
   | "STAKEHOLDERS_FUTURE_OPERATOR"
   | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
-  | "STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS"
-  | "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS"
   | "STAKEHOLDERS_FUTURE_SITE_OWNER"
   | "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION"
+  | "RECONVERSION_FULL_TIME_JOBS"
+  | "OPERATIONS_FULL_TIMES_JOBS"
   | "COSTS_INTRODUCTION"
   | "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT"
   | "COSTS_REINSTATEMENT"
@@ -119,7 +119,7 @@ export const projectCreationSlice = createSlice({
       state.projectData.futureOperator = action.payload;
       const nextStep = state.siteData?.isFriche
         ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
-        : "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS";
+        : "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION";
       state.stepsHistory.push(nextStep);
     },
     completeConversionFullTimeJobsInvolved: (
@@ -136,18 +136,18 @@ export const projectCreationSlice = createSlice({
       if (reinstatementFullTimeJobs !== undefined) {
         state.projectData.reinstatementFullTimeJobsInvolved = reinstatementFullTimeJobs;
       }
-      state.stepsHistory.push("STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS");
+      state.stepsHistory.push("OPERATIONS_FULL_TIMES_JOBS");
     },
     completeOperationsFullTimeJobsInvolved: (state, action: PayloadAction<number | undefined>) => {
       state.projectData.operationsFullTimeJobsInvolved = action.payload;
-      state.stepsHistory.push("STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION");
+      state.stepsHistory.push("SCHEDULE_INTRODUCTION");
     },
     completeReinstatementContractOwner: (
       state,
       action: PayloadAction<ReconversionProjectCreationData["reinstatementContractOwner"]>,
     ) => {
       state.projectData.reinstatementContractOwner = action.payload;
-      state.stepsHistory.push("STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS");
+      state.stepsHistory.push("STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION");
     },
     completeHasRealEstateTransaction: (state, action: PayloadAction<boolean>) => {
       const hasRealEstateTransaction = action.payload;
@@ -210,7 +210,9 @@ export const projectCreationSlice = createSlice({
     },
     completeReinstatementFinancialAssistance: (state, action: PayloadAction<number>) => {
       state.projectData.reinstatementFinancialAssistanceAmount = action.payload;
-      state.stepsHistory.push("SCHEDULE_INTRODUCTION");
+      state.stepsHistory.push(
+        state.siteData?.isFriche ? "RECONVERSION_FULL_TIME_JOBS" : "OPERATIONS_FULL_TIMES_JOBS",
+      );
     },
     completeYearlyProjectedRevenue: (
       state,
