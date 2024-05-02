@@ -11,3 +11,49 @@
 .highcharts-background {
   fill: transparent;
 }
+
+/* La librairie du DSFR ne va que jusqu’à 8 pour le Stepper */
+.fr-stepper__steps[data-fr-steps="9"] {
+  --steps: 9;
+  --step-width: calc(100% / 9);
+}
+
+.fr-stepper__steps[data-fr-steps="10"] {
+  --steps: 10;
+  --step-width: calc(100% / 10);
+}
+
+.fr-stepper__steps[data-fr-steps="11"] {
+  --steps: 11;
+  --step-width: calc(100% / 11);
+}
+
+.fr-stepper__steps[data-fr-steps="12"] {
+  --steps: 12;
+  --step-width: calc(100% / 12);
+}
+
+.fr-stepper__steps[data-fr-steps="13"] {
+  --steps: 13;
+  --step-width: calc(100% / 13);
+}
+
+.fr-stepper__steps[data-fr-current-step="9"] {
+  --current-step: 9;
+}
+
+.fr-stepper__steps[data-fr-current-step="10"] {
+  --current-step: 10;
+}
+
+.fr-stepper__steps[data-fr-current-step="11"] {
+  --current-step: 11;
+}
+
+.fr-stepper__steps[data-fr-current-step="12"] {
+  --current-step: 12;
+}
+
+.fr-stepper__steps[data-fr-current-step="13"] {
+  --current-step: 13;
+}

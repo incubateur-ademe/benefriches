@@ -5,6 +5,8 @@ import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels
 import RealEstateTransactionCostsContainer from "./costs/real-estate-transaction-costs";
 import ReinstatementsCostsForm from "./costs/reinstatement-costs";
 import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
+import ProjectFullTimeJobsInvolvedForm from "./jobs/conversion-full-time-jobs-involved";
+import OperationsFullTimeJobsInvolvedForm from "./jobs/operations-full-time-jobs-involved";
 import PhotovoltaicContractDurationContainer from "./photovoltaic/contract-duration";
 import PhotovoltaicExpectedAnnualProductionContainer from "./photovoltaic/expected-annual-production";
 import PhotovoltaicKeyParameter from "./photovoltaic/key-parameter";
@@ -18,11 +20,9 @@ import ProjectScheduleProjectionFormContainer from "./schedule/projection";
 import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
 import ProjectSoilsDistributionContainer from "./soils/soils-distribution";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
-import ProjectFullTimeJobsInvolvedForm from "./stakeholders/conversion-full-time-jobs-involved";
 import FutureOwnerFormContainer from "./stakeholders/future-site-owner";
 import HasRealEstateTransactionFormContainer from "./stakeholders/has-real-estate-transaction";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
-import OperationsFullTimeJobsInvolvedForm from "./stakeholders/operations-full-time-jobs-involved";
 import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 import ProjectCreationConfirmation from "./confirmation";
@@ -50,9 +50,9 @@ function ProjectCreationWizard() {
         return <SiteOperatorForm />;
       case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
         return <SiteReinstatementContractOwnerForm />;
-      case "STAKEHOLDERS_RECONVERSION_FULL_TIME_JOBS":
+      case "RECONVERSION_FULL_TIME_JOBS":
         return <ProjectFullTimeJobsInvolvedForm />;
-      case "STAKEHOLDERS_OPERATIONS_FULL_TIMES_JOBS":
+      case "OPERATIONS_FULL_TIMES_JOBS":
         return <OperationsFullTimeJobsInvolvedForm />;
       case "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION":
         return <HasRealEstateTransactionFormContainer />;
