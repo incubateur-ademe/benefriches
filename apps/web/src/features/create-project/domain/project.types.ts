@@ -40,6 +40,20 @@ export type ProjectPhaseDetails =
   | "design_final_draft"
   | "design_pro_or_permit_filing_or_contract_awarding";
 
+export type ReinstatementCostsPurpose =
+  | "abestos_removal"
+  | "deimpermeabilization"
+  | "demolition"
+  | "other_reinstatement"
+  | "remediation"
+  | "sustainable_soils_reinstatement"
+  | "waste_collection";
+
+export type ReinstatementCosts = {
+  total: number;
+  expenses: { purpose: ReinstatementCostsPurpose; amount: number }[];
+};
+
 export type ReconversionProjectCreationData = {
   id: string;
   name: string;
@@ -64,7 +78,7 @@ export type ReconversionProjectCreationData = {
   realEstateTransactionSellingPrice?: number;
   realEstateTransactionPropertyTransferDuties?: number;
   // costs
-  reinstatementCost?: number;
+  reinstatementCosts?: ReinstatementCosts;
   photovoltaicPanelsInstallationCost: number;
   reinstatementFinancialAssistanceAmount: number;
   yearlyProjectedCosts: Expense[];

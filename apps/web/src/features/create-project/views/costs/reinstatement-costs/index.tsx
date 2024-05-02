@@ -5,8 +5,8 @@ import {
 import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { ProjectSite } from "@/features/create-project/domain/project.types";
-import { sumObjectValues } from "@/shared/services/sum/sum";
+import { ProjectSite, ReinstatementCosts } from "@/features/create-project/domain/project.types";
+import { sumList } from "@/shared/services/sum/sum";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
@@ -16,6 +16,41 @@ const hasImpermeableSoils = (soilsDistribution: ProjectSite["soilsDistribution"]
 const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
   soilsDistribution.MINERAL_SOIL ? soilsDistribution.MINERAL_SOIL > 0 : false;
 
+const convertFormValuesToExpenses = (amounts: FormValues) => {
+  const expenses: ReinstatementCosts["expenses"] = [];
+  if (amounts.asbestosRemovalAmount) {
+    expenses.push({ purpose: "abestos_removal", amount: amounts.asbestosRemovalAmount });
+  }
+
+  if (amounts.deimpermeabilizationAmount) {
+    expenses.push({ purpose: "deimpermeabilization", amount: amounts.deimpermeabilizationAmount });
+  }
+
+  if (amounts.demolitionAmount) {
+    expenses.push({ purpose: "demolition", amount: amounts.demolitionAmount });
+  }
+
+  if (amounts.otherReinstatementCostAmount) {
+    expenses.push({ purpose: "other_reinstatement", amount: amounts.otherReinstatementCostAmount });
+  }
+
+  if (amounts.remediationAmount) {
+    expenses.push({ purpose: "remediation", amount: amounts.remediationAmount });
+  }
+
+  if (amounts.sustainableSoilsReinstatementAmount) {
+    expenses.push({
+      purpose: "sustainable_soils_reinstatement",
+      amount: amounts.sustainableSoilsReinstatementAmount,
+    });
+  }
+
+  if (amounts.wasteCollectionAmount) {
+    expenses.push({ purpose: "waste_collection", amount: amounts.wasteCollectionAmount });
+  }
+  return expenses;
+};
+
 const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
   const soilsDistribution = siteData?.soilsDistribution ?? {};
   return {
@@ -24,8 +59,9 @@ const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
       hasImpermeableSoils(soilsDistribution) || hasMineralSoils(soilsDistribution),
     hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
     onSubmit: (amounts: FormValues) => {
-      const totalCost = sumObjectValues(amounts);
-      dispatch(completeReinstatementCost(totalCost));
+      const expenses = convertFormValuesToExpenses(amounts);
+      const total = sumList(expenses.map(({ amount }) => amount));
+      dispatch(completeReinstatementCost({ expenses, total }));
     },
     onBack: () => {
       dispatch(revertReinstatementCost());

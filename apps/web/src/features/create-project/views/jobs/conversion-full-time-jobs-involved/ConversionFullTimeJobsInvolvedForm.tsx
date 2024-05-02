@@ -6,6 +6,10 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   askForReinstatementFullTimeJobs: boolean;
+  defaultValues: {
+    fullTimeJobs?: number;
+    reinstatementFullTimeJobs?: number;
+  };
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -17,15 +21,33 @@ export type FormValues = {
 
 function ConversionFullTimeJobsInvolvedForm({
   askForReinstatementFullTimeJobs,
+  defaultValues,
   onSubmit,
   onBack,
 }: Props) {
   const { handleSubmit, control } = useForm<FormValues>({
     shouldUnregister: true,
+    defaultValues: {
+      fullTimeJobs: defaultValues.fullTimeJobs,
+      reinstatementFullTimeJobs: defaultValues.reinstatementFullTimeJobs,
+    },
   });
 
   return (
-    <WizardFormLayout title="Emplois équivalent temps plein mobilisés pour la reconversion du site">
+    <WizardFormLayout
+      title="Emplois équivalent temps plein mobilisés pour la reconversion du site"
+      instructions={
+        <>
+          <p>
+            Nombre d’emplois calculé d’après les dépenses que vous avez renseignées à l’étape
+            précédente et le nombre d’emplois par € de chiffre d’affaires des secteurs d’activités
+            concernés (ex : dépollution, déconstruction, gestion de déchets, photovoltaïque) en
+            France.
+          </p>
+          <p>Vous pouvez modifier ces valeurs.</p>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         {askForReinstatementFullTimeJobs && (
           <NumericInput
