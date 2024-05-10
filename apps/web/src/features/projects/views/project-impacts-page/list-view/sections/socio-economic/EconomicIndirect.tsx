@@ -42,7 +42,7 @@ const SocioEconomicIndirectImpactsSection = ({ socioEconomicImpacts }: Props) =>
       )}
       {propertyTransferDutiesIncomeImpact && (
         <ImpactItemGroup>
-          <ImpactLabel>🏛 Droits de mutation sur la vente du site</ImpactLabel>
+          <ImpactLabel>🏛 Droits de mutation sur la transaction foncière</ImpactLabel>
           <SocioEconomicImpactRow impact={propertyTransferDutiesIncomeImpact} />
         </ImpactItemGroup>
       )}
