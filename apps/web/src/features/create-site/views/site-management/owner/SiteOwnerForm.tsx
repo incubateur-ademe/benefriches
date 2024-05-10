@@ -87,7 +87,7 @@ function SiteOwnerForm({
           )}
           {currentUserStructureName && (
             <RadioButton
-              label={`Votre entreprise, ${currentUserStructureName}`}
+              label={`Mon entreprise, ${currentUserStructureName}`}
               value="user_company"
               {...register("ownerType", { required: requiredMessage })}
             />
