@@ -78,7 +78,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       reinstatementFullTimeJobsInvolved: projectData.reinstatementFullTimeJobsInvolved,
       reinstatementContractOwner: projectData.reinstatementContractOwner,
       operationsFullTimeJobsInvolved: projectData.operationsFullTimeJobsInvolved,
-      reinstatementCost: projectData.reinstatementCost,
+      reinstatementCost: projectData.reinstatementCosts?.total,
       realEstateTransactionSellingPrice: projectData.realEstateTransactionSellingPrice,
       realEstateTransactionPropertyTransferDuties:
         projectData.realEstateTransactionPropertyTransferDuties,
