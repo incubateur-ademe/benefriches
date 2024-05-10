@@ -19,7 +19,7 @@ const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
 const convertFormValuesToExpenses = (amounts: FormValues) => {
   const expenses: ReinstatementCosts["expenses"] = [];
   if (amounts.asbestosRemovalAmount) {
-    expenses.push({ purpose: "abestos_removal", amount: amounts.asbestosRemovalAmount });
+    expenses.push({ purpose: "asbestos_removal", amount: amounts.asbestosRemovalAmount });
   }
 
   if (amounts.deimpermeabilizationAmount) {

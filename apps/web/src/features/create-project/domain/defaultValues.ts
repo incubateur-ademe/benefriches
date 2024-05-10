@@ -89,7 +89,7 @@ export const computeDefaultReinstatementFullTimeJobs = (
             amount *
               FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR.SUSTAINABLE_SOILS_REINSTATEMENT
           );
-        case "abestos_removal":
+        case "asbestos_removal":
           return (
             totalJobs +
             amount *

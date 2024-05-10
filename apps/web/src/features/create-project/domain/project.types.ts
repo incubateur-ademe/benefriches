@@ -41,7 +41,7 @@ export type ProjectPhaseDetails =
   | "design_pro_or_permit_filing_or_contract_awarding";
 
 export type ReinstatementCostsPurpose =
-  | "abestos_removal"
+  | "asbestos_removal"
   | "deimpermeabilization"
   | "demolition"
   | "other_reinstatement"
