@@ -1,9 +1,6 @@
 import { useState } from "react";
-import {
-  ImpactCategoryFilter,
-  SoilsDistribution,
-  ViewMode,
-} from "../../application/projectImpacts.reducer";
+import { SoilsDistribution } from "shared";
+import { ImpactCategoryFilter, ViewMode } from "../../application/projectImpacts.reducer";
 import { ReconversionProjectImpacts } from "../../domain/impacts.types";
 import ImpactsChartsView from "./charts-view/ImpactsChartsView";
 import ImpactsListView from "./list-view/ImpactsListView";

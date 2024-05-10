@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SoilsDistribution } from "shared";
 import { Schedule } from "../application/saveReconversionProject.action";
 
 import {
@@ -58,7 +58,7 @@ export type ReconversionProjectCreationData = {
   reinstatementFullTimeJobsInvolved?: number;
   reinstatementContractOwner?: ProjectStakeholder;
   operationsFullTimeJobsInvolved?: number;
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  soilsDistribution: SoilsDistribution;
   // real estate transaction
   hasRealEstateTransaction: boolean;
   realEstateTransactionSellingPrice?: number;
@@ -127,7 +127,7 @@ export type ProjectSite = {
   };
   hasContaminatedSoils?: boolean;
   contaminatedSoilSurface?: number;
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  soilsDistribution: SoilsDistribution;
   surfaceArea: number;
   address: Address;
 };

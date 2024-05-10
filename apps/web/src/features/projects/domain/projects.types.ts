@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SoilsDistribution } from "shared";
 
 import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import {
@@ -49,7 +49,7 @@ export type ProjectSite = {
   id: string;
   name: string;
   isFriche: boolean;
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  soilsDistribution: SoilsDistribution;
   surfaceArea: number;
   address: {
     id: string;
@@ -89,7 +89,7 @@ export type Project = {
   id: string;
   name: string;
   relatedSiteId: string;
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  soilsDistribution: SoilsDistribution;
   futureOperator: ProjectStakeholder;
   reinstatementContractOwner?: ProjectStakeholder;
   reinstatementCost?: number;

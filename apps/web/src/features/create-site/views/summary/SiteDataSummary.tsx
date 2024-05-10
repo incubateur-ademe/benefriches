@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Accordion from "@codegouvfr/react-dsfr/Accordion";
-import { SoilType } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 import { getLabelForExpensePurpose } from "../../domain/expenses.functions";
 import { FricheActivity, getFricheActivityLabel } from "../../domain/friche.types";
 import { Expense } from "../../domain/siteFoncier.types";
@@ -27,7 +27,7 @@ type Props = {
     } | null;
     expenses: Expense[];
     totalSurfaceArea: number;
-    soilsDistribution: Partial<Record<SoilType, number>>;
+    soilsDistribution: SoilsDistribution;
     contaminatedSurfaceArea?: number;
     fricheActivity?: FricheActivity;
     name: string;

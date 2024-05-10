@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import Accordion from "@codegouvfr/react-dsfr/Accordion";
-import { SoilType } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 import { Schedule } from "../../application/saveReconversionProject.action";
 import {
   DevelopmentPlanCategory,
@@ -33,7 +33,7 @@ type Props = {
     photovoltaicSurfaceArea: number;
     photovoltaicExpectedAnnualProduction: number;
     photovoltaicContractDuration: number;
-    soilsDistribution: Partial<Record<SoilType, number>>;
+    soilsDistribution: SoilsDistribution;
     futureOwner?: string;
     futureOperator?: string;
     reinstatementContractOwner?: string;

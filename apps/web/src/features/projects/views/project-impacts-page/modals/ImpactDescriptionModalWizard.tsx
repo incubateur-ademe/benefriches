@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useMemo } from "react";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
+import { SoilsDistribution } from "shared";
 import CostBenefitAnalysisDescription from "./cost-benefit-analysis/CostBenefitAnalysisDescription";
 import EconomicBalanceDescription from "./economic-balance/EconomicBalanceDescription";
 import RealEstateAcquisitionDescription from "./economic-balance/RealEstateAcquisition";
@@ -21,8 +22,6 @@ import EcosystemServicesDescription from "./socio-economic/ecosystem-services/Ec
 import NatureRelatedWellnessAndLeisureDescription from "./socio-economic/ecosystem-services/NatureRelatedWellnessAndLeisureDescription";
 import SocioEconomicDescription from "./socio-economic/SocioEconomicDescription";
 import WaterRegulationDescription from "./socio-economic/WaterRegulationDescription";
-
-import { SoilsDistribution } from "@/features/projects/application/projectImpacts.reducer";
 
 export type ImpactDescriptionModalCategory =
   | "economic-balance"

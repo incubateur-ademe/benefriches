@@ -2,25 +2,25 @@ import { useRef } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { SoilType } from "shared";
+import { SoilsDistribution, typedObjectEntries } from "shared";
 import { SQUARE_METERS_HTML_SYMBOL } from "../SurfaceArea/SurfaceArea";
 
 import { getColorForSoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  soilsDistribution: SoilsDistribution;
 };
 
 const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
-  const data = Object.entries(soilsDistribution)
-    .filter(([, surfaceArea]) => surfaceArea > 0)
+  const data = typedObjectEntries(soilsDistribution)
+    .filter(([, surfaceArea]) => (surfaceArea as number) > 0)
     .map(([soilType, surfaceArea]) => {
       return {
-        name: getLabelForSoilType(soilType as SoilType),
+        name: getLabelForSoilType(soilType),
         y: surfaceArea,
-        color: getColorForSoilType(soilType as SoilType),
+        color: getColorForSoilType(soilType),
       };
     });
 

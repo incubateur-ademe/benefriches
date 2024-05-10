@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SoilType } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 import { saveSiteAction } from "./createSite.actions";
 
@@ -11,7 +11,6 @@ import {
   Income,
   Owner,
   SiteDraft,
-  SoilsSurfaceAreaDistribution,
   Tenant,
 } from "@/features/create-site/domain/siteFoncier.types";
 import { splitEvenly } from "@/shared/services/split-number/splitNumber";
@@ -100,7 +99,7 @@ export const siteCreationSlice = createSlice({
         const totalSurface = state.siteData.surfaceArea ?? 0;
         const soils = state.siteData.soils ?? [];
         const surfaceSplit = splitEvenly(totalSurface, soils.length);
-        const soilsDistribution: SoilsSurfaceAreaDistribution = {};
+        const soilsDistribution: SoilsDistribution = {};
         soils.forEach((soilType, index) => {
           soilsDistribution[soilType] = surfaceSplit[index];
         });
@@ -116,7 +115,7 @@ export const siteCreationSlice = createSlice({
     },
     completeSoilsDistribution: (
       state,
-      action: PayloadAction<{ distribution: SoilsSurfaceAreaDistribution }>,
+      action: PayloadAction<{ distribution: SoilsDistribution }>,
     ) => {
       state.siteData.soilsDistribution = action.payload.distribution;
       state.stepsHistory.push("SOILS_SUMMARY");

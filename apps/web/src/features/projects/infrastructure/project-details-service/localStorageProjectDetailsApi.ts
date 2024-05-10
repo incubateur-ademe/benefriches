@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SoilsDistribution } from "shared";
 import {
   ProjectDetailsResult as ProjectImpactsComparisonResult,
   ProjectsDetailsGateway as ProjectImpactsComparisonGateway,
@@ -20,7 +20,7 @@ type ProjectInLocalStorage = {
   id: string;
   name: string;
   relatedSiteId: string;
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  soilsDistribution: SoilsDistribution;
   futureOperator: Stakeholder;
   reinstatementContractOwner?: Stakeholder;
   reinstatementCost?: number;

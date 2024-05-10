@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SoilsDistribution } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
@@ -11,7 +11,7 @@ type Props = {
   onNext: () => void;
   onBack: () => void;
   totalSurfaceArea: number;
-  soilsDistribution: Partial<Record<SoilType, number>>;
+  soilsDistribution: SoilsDistribution;
 };
 
 const SiteSoilsSummary = ({ totalSurfaceArea, onNext, onBack, soilsDistribution }: Props) => {

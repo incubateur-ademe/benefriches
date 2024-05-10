@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 import { FricheActivity } from "./friche.types";
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
@@ -20,8 +20,6 @@ export type Address = {
   lat: number;
 };
 
-export type SoilsSurfaceAreaDistribution = Partial<Record<SoilType, number>>;
-
 export type SiteDraft = {
   id: string;
   isFriche: boolean;
@@ -32,7 +30,7 @@ export type SiteDraft = {
   surfaceArea: number;
   soils: SoilType[];
   soilsDistributionEntryMode: "default_even_split" | "total_surface_percentage" | "square_meters";
-  soilsDistribution: SoilsSurfaceAreaDistribution;
+  soilsDistribution: SoilsDistribution;
   // contamination
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;

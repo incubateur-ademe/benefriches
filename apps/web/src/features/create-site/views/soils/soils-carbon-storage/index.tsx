@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { typedObjectEntries } from "shared";
 import { completeSoilsCarbonStorage, revertStep } from "../../../application/createSite.reducer";
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
@@ -23,9 +23,9 @@ const mapProps = (
       dispatch(revertStep());
     },
     fetchSiteCarbonStorage: async () => {
-      const soils = Object.entries(fricheSoils).map(([type, surfaceArea]) => ({
-        type: type as SoilType,
-        surfaceArea,
+      const soils = typedObjectEntries(fricheSoils).map(([type, surfaceArea]) => ({
+        type,
+        surfaceArea: surfaceArea as number,
       }));
       await dispatch(
         fetchCarbonStorageForSoils({

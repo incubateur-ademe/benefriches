@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SoilsDistribution } from "shared";
 import { ReconversionProjectImpacts } from "../domain/impacts.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
@@ -16,7 +16,7 @@ export type ReconversionProjectImpactsResult = {
   relatedSiteId: string;
   relatedSiteName: string;
   projectData: {
-    soilsDistribution: Partial<Record<SoilType, number>>;
+    soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
     developmentPlan: {
       surfaceArea?: number;
@@ -26,7 +26,7 @@ export type ReconversionProjectImpactsResult = {
   siteData: {
     addressLabel: string;
     contaminatedSoilSurface: number;
-    soilsDistribution: Partial<Record<SoilType, number>>;
+    soilsDistribution: SoilsDistribution;
   };
   impacts: ReconversionProjectImpacts;
 };

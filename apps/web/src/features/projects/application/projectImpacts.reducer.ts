@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SoilType } from "shared";
+import { SoilsDistribution } from "shared";
 import {
   fetchReconversionProjectImpacts,
   ReconversionProjectImpactsResult,
@@ -10,8 +10,6 @@ type LoadingState = "idle" | "loading" | "success" | "error";
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 10;
 const DEFAULT_VIEW_MODE = "charts";
 const DEFAULT_CATEGORY_FILTER = "all";
-
-export type SoilsDistribution = Partial<Record<SoilType, number>>;
 
 type ImpactCategory = "economic" | "environment" | "social";
 export type ImpactCategoryFilter = ImpactCategory | "all";
