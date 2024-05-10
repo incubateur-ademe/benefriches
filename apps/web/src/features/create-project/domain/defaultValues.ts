@@ -1,4 +1,6 @@
-import { ReinstatementCosts } from "./project.types";
+import { ReinstatementCosts, ReinstatementCostsPurpose } from "./project.types";
+
+import { roundTo1Digit } from "@/shared/services/round-numbers/roundNumbers";
 
 // Droits de mutation par transaction  (Etat + département + collectivité territoriale)
 const TRANSFER_TAX_PERCENT_PER_TRANSACTION = 0.0581;
@@ -69,54 +71,28 @@ export const computeDefaultPhotovoltaicConversionFullTimeJobs = (electricalPower
   return Math.round(electricalPowerKWc * PHOTOVOLTAIC_INSTALLATION_FULL_TIME_JOBS_JOB_PER_KWC);
 };
 
-const FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR = {
-  SUSTAINABLE_SOILS_REINSTATEMENT: 14 / 1000000,
-  DEIMPERMEABILIZATION: 5.45 / 1000000,
-  DEMOLITION_AND_ABESTOS_REMOVAL: 6 / 1000000,
-  WASTE_COLLECTION: 5.7 / 1000000,
-  REMEDIATION_: 5 / 1000000,
+const FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR: Record<
+  ReinstatementCostsPurpose,
+  number | "unknown"
+> = {
+  sustainable_soils_reinstatement: 14 / 1000000,
+  deimpermeabilization: 5.45 / 1000000,
+  asbestos_removal: 6 / 1000000,
+  demolition: 6 / 1000000,
+  waste_collection: 5.7 / 1000000,
+  remediation: 5 / 1000000,
+  other_reinstatement: "unknown",
 };
 
 export const computeDefaultReinstatementFullTimeJobs = (
   reinstatementExpenses: ReinstatementCosts["expenses"],
 ) => {
-  return Math.round(
-    reinstatementExpenses.reduce((totalJobs, { purpose, amount }) => {
-      switch (purpose) {
-        case "sustainable_soils_reinstatement":
-          return (
-            totalJobs +
-            amount *
-              FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR.SUSTAINABLE_SOILS_REINSTATEMENT
-          );
-        case "asbestos_removal":
-          return (
-            totalJobs +
-            amount *
-              FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR.DEMOLITION_AND_ABESTOS_REMOVAL
-          );
-        case "deimpermeabilization":
-          return (
-            totalJobs +
-            amount * FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR.DEIMPERMEABILIZATION
-          );
-        case "demolition":
-          return (
-            totalJobs +
-            amount *
-              FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR.DEMOLITION_AND_ABESTOS_REMOVAL
-          );
-        case "remediation":
-          return (
-            totalJobs + amount * FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR.REMEDIATION_
-          );
-        case "waste_collection":
-          return (
-            totalJobs + amount * FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR.WASTE_COLLECTION
-          );
-        default:
-          return totalJobs;
-      }
-    }, 0),
+  const reinstatementFullTimeJobs = reinstatementExpenses.reduce(
+    (totalJobs, { purpose, amount }) => {
+      const ratio = FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR[purpose];
+      return ratio === "unknown" ? totalJobs : totalJobs + amount * ratio;
+    },
+    0,
   );
+  return roundTo1Digit(reinstatementFullTimeJobs);
 };
