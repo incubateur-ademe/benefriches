@@ -8,6 +8,6 @@ export const hasImpermeableSoils = (site: SiteDraft) => {
   return site.soils.includes("IMPERMEABLE_SOILS");
 };
 
-export const hasTenant = (site: SiteDraft) => {
-  return Boolean(site.tenant);
+export const hasOperator = (site: SiteDraft) => {
+  return Boolean(site.operator);
 };

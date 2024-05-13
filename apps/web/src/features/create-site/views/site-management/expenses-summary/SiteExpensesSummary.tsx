@@ -7,9 +7,9 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 type Props = {
   isFriche: boolean;
   ownerExpenses: Expense[];
-  tenantExpenses: Expense[];
+  operatorExpenses: Expense[];
   ownerName?: string;
-  tenantName?: string;
+  operatorName?: string;
   onNext: () => void;
   onBack: () => void;
 };
@@ -19,13 +19,13 @@ function SiteExpensesSummary({
   onBack,
   isFriche,
   ownerExpenses,
-  tenantExpenses,
-  tenantName,
+  operatorExpenses,
+  operatorName,
   ownerName,
 }: Props) {
   const hasOwnerExpenses = ownerExpenses.length > 0;
-  const hasTenantExpenses = tenantExpenses.length > 0;
-  const hasNoExpenses = !hasOwnerExpenses && !hasTenantExpenses;
+  const hasOperatorExpenses = operatorExpenses.length > 0;
+  const hasNoExpenses = !hasOwnerExpenses && !hasOperatorExpenses;
 
   return (
     <>
@@ -48,9 +48,9 @@ function SiteExpensesSummary({
         >
           <ExpensesBarChart
             ownerExpenses={ownerExpenses}
-            tenantExpenses={tenantExpenses}
+            operatorExpenses={operatorExpenses}
             ownerName={ownerName}
-            tenantName={tenantName}
+            operatorName={operatorName}
           />
         </div>
       )}

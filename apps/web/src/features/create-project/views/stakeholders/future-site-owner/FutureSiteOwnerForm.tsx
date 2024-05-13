@@ -34,7 +34,7 @@ export type FormValues =
   | {
       stakeholder:
         | "user_company"
-        | "site_tenant"
+        | "site_operator"
         | "site_owner"
         | "project_developer"
         | "future_site_operator"

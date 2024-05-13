@@ -16,7 +16,7 @@ describe("Site yearly expenses mappers", () => {
           illegalDumpingCost: {},
           otherSecuringCosts: {},
         },
-        { siteHasTenant: true },
+        { siteHasOperator: true },
       ),
     ).toEqual([]);
   });
@@ -39,10 +39,10 @@ describe("Site yearly expenses mappers", () => {
       illegalDumpingCost: {},
       otherSecuringCosts: {},
     };
-    expect(mapFormDataToExpenses(formCosts, { siteHasTenant: true })).toEqual([
-      { purpose: "rent", bearer: "tenant", amount: 140, purposeCategory: "rent" },
+    expect(mapFormDataToExpenses(formCosts, { siteHasOperator: true })).toEqual([
+      { purpose: "rent", bearer: "operator", amount: 140, purposeCategory: "rent" },
       { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
-      { purpose: "security", bearer: "tenant", amount: 89, purposeCategory: "safety" },
+      { purpose: "security", bearer: "operator", amount: 89, purposeCategory: "safety" },
     ]);
   });
 
@@ -58,25 +58,30 @@ describe("Site yearly expenses mappers", () => {
       illegalDumpingCost: { amount: 90 },
       otherSecuringCosts: { amount: 129 },
     };
-    expect(mapFormDataToExpenses(formCosts, { siteHasTenant: true })).toEqual([
-      { purpose: "rent", bearer: "tenant", amount: 140, purposeCategory: "rent" },
+    expect(mapFormDataToExpenses(formCosts, { siteHasOperator: true })).toEqual([
+      { purpose: "rent", bearer: "operator", amount: 140, purposeCategory: "rent" },
       { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
-      { purpose: "operationsTaxes", bearer: "tenant", amount: 3, purposeCategory: "taxes" },
-      { purpose: "maintenance", bearer: "tenant", amount: 19, purposeCategory: "site_management" },
+      { purpose: "operationsTaxes", bearer: "operator", amount: 3, purposeCategory: "taxes" },
+      {
+        purpose: "maintenance",
+        bearer: "operator",
+        amount: 19,
+        purposeCategory: "site_management",
+      },
       {
         purpose: "otherManagementCosts",
-        bearer: "tenant",
+        bearer: "operator",
         amount: 15,
         purposeCategory: "site_management",
       },
-      { purpose: "security", bearer: "tenant", amount: 89, purposeCategory: "safety" },
-      { purpose: "accidentsCost", bearer: "tenant", amount: 12, purposeCategory: "safety" },
-      { purpose: "illegalDumpingCost", bearer: "tenant", amount: 90, purposeCategory: "safety" },
-      { purpose: "otherSecuringCosts", bearer: "tenant", amount: 129, purposeCategory: "safety" },
+      { purpose: "security", bearer: "operator", amount: 89, purposeCategory: "safety" },
+      { purpose: "accidentsCost", bearer: "operator", amount: 12, purposeCategory: "safety" },
+      { purpose: "illegalDumpingCost", bearer: "operator", amount: 90, purposeCategory: "safety" },
+      { purpose: "otherSecuringCosts", bearer: "operator", amount: 129, purposeCategory: "safety" },
     ]);
   });
 
-  it("returns array with all costs with owner as bearer when no tenant", () => {
+  it("returns array with all costs with owner as bearer when no operator", () => {
     const formCosts: FormValues = {
       rent: {},
       propertyTaxes: { amount: 130 },
@@ -88,7 +93,7 @@ describe("Site yearly expenses mappers", () => {
       illegalDumpingCost: { amount: 90 },
       otherSecuringCosts: { amount: 129 },
     };
-    expect(mapFormDataToExpenses(formCosts, { siteHasTenant: false })).toEqual([
+    expect(mapFormDataToExpenses(formCosts, { siteHasOperator: false })).toEqual([
       { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
       { purpose: "maintenance", bearer: "owner", amount: 19, purposeCategory: "site_management" },
       {
@@ -116,19 +121,19 @@ describe("Site yearly expenses mappers", () => {
       illegalDumpingCost: { amount: 90, bearer: "owner" },
       otherSecuringCosts: { amount: 129, bearer: "owner" },
     };
-    expect(mapFormDataToExpenses(formCosts, { siteHasTenant: true })).toEqual([
-      { purpose: "rent", bearer: "tenant", amount: 140, purposeCategory: "rent" },
+    expect(mapFormDataToExpenses(formCosts, { siteHasOperator: true })).toEqual([
+      { purpose: "rent", bearer: "operator", amount: 140, purposeCategory: "rent" },
       { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
-      { purpose: "operationsTaxes", bearer: "tenant", amount: 3, purposeCategory: "taxes" },
+      { purpose: "operationsTaxes", bearer: "operator", amount: 3, purposeCategory: "taxes" },
       { purpose: "maintenance", bearer: "owner", amount: 19, purposeCategory: "site_management" },
       {
         purpose: "otherManagementCosts",
-        bearer: "tenant",
+        bearer: "operator",
         amount: 15,
         purposeCategory: "site_management",
       },
       { purpose: "security", bearer: "owner", amount: 89, purposeCategory: "safety" },
-      { purpose: "accidentsCost", bearer: "tenant", amount: 12, purposeCategory: "safety" },
+      { purpose: "accidentsCost", bearer: "operator", amount: 12, purposeCategory: "safety" },
       { purpose: "illegalDumpingCost", bearer: "owner", amount: 90, purposeCategory: "safety" },
       { purpose: "otherSecuringCosts", bearer: "owner", amount: 129, purposeCategory: "safety" },
     ]);

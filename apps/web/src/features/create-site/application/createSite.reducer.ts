@@ -9,9 +9,9 @@ import {
   Address,
   Expense,
   Income,
+  Operator,
   Owner,
   SiteDraft,
-  Tenant,
 } from "@/features/create-site/domain/siteFoncier.types";
 import { splitEvenly } from "@/shared/services/split-number/splitNumber";
 
@@ -31,7 +31,8 @@ export type SiteCreationStep =
   // site management
   | "MANAGEMENT_INTRODUCTION"
   | "OWNER"
-  | "TENANT"
+  | "HAS_OPERATOR"
+  | "OPERATOR"
   | "FULL_TIME_JOBS_INVOLVED"
   | "FRICHE_RECENT_ACCIDENTS"
   | "YEARLY_EXPENSES"
@@ -148,10 +149,28 @@ export const siteCreationSlice = createSlice({
     },
     completeOwner: (state, action: PayloadAction<{ owner: Owner }>) => {
       state.siteData.owner = action.payload.owner;
-      state.stepsHistory.push("TENANT");
+      state.stepsHistory.push("HAS_OPERATOR");
     },
-    completeTenant: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
-      state.siteData.tenant = action.payload.tenant;
+    completeHasOperator: (
+      state,
+      action: PayloadAction<{ hasOperator: boolean; operator?: Operator }>,
+    ) => {
+      if (action.payload.hasOperator && action.payload.operator) {
+        state.siteData.hasOperator = true;
+        state.siteData.operator = action.payload.operator;
+        state.stepsHistory.push("FULL_TIME_JOBS_INVOLVED");
+      } else if (action.payload.hasOperator) {
+        state.siteData.hasOperator = true;
+        state.stepsHistory.push("OPERATOR");
+      } else {
+        state.siteData.hasOperator = false;
+        state.stepsHistory.push(
+          state.siteData.isFriche ? "FRICHE_RECENT_ACCIDENTS" : "YEARLY_EXPENSES",
+        );
+      }
+    },
+    completeOperator: (state, action: PayloadAction<{ operator: Operator | undefined }>) => {
+      state.siteData.operator = action.payload.operator;
       state.stepsHistory.push("FULL_TIME_JOBS_INVOLVED");
     },
     completeFullTimeJobsInvolved: (state, action: PayloadAction<{ jobs?: number }>) => {
@@ -264,7 +283,8 @@ export const {
   completeManagementIntroduction,
   completeFullTimeJobsInvolved,
   completeOwner,
-  completeTenant,
+  completeHasOperator,
+  completeOperator,
   completeFricheRecentAccidents,
   completeYearlyExpenses,
   completeYearlyExpensesSummary,

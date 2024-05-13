@@ -6,7 +6,7 @@ export const siteWithExhaustiveData: SiteDraft = {
   name: "My site name",
   description: "Description of the site",
   owner: { structureType: "company", name: "SAS Owner" },
-  tenant: { structureType: "company", name: "Tenant SARL" },
+  operator: { structureType: "company", name: "Exploitant SARL" },
   soils: ["BUILDINGS", "MINERAL_SOIL", "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "FOREST_DECIDUOUS"],
   soilsDistribution: {
     ["BUILDINGS"]: 3000,
@@ -19,7 +19,7 @@ export const siteWithExhaustiveData: SiteDraft = {
   yearlyExpenses: [
     {
       amount: 74539,
-      bearer: "tenant",
+      bearer: "operator",
       purpose: "rent",
       purposeCategory: "rent",
     },
@@ -31,31 +31,31 @@ export const siteWithExhaustiveData: SiteDraft = {
     },
     {
       amount: 2100,
-      bearer: "tenant",
+      bearer: "operator",
       purpose: "operationsTaxes",
       purposeCategory: "taxes",
     },
     {
       amount: 6049,
-      bearer: "tenant",
+      bearer: "operator",
       purpose: "maintenance",
       purposeCategory: "site_management",
     },
     {
       amount: 15000,
-      bearer: "tenant",
+      bearer: "operator",
       purpose: "security",
       purposeCategory: "safety",
     },
     {
       amount: 3400,
-      bearer: "tenant",
+      bearer: "operator",
       purpose: "illegalDumpingCost",
       purposeCategory: "safety",
     },
     {
       amount: 800,
-      bearer: "tenant",
+      bearer: "operator",
       purpose: "accidentsCost",
       purposeCategory: "safety",
     },

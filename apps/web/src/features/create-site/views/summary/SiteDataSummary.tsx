@@ -17,7 +17,7 @@ type Props = {
   siteData: {
     address: string;
     ownerName: string;
-    tenantName?: string;
+    operatorName?: string;
     fullTimeJobsInvolved: number;
     accidents: {
       minorInjuries?: number;
@@ -71,7 +71,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
             <DataLine label={<strong>Propriétaire actuel</strong>} value={siteData.ownerName} />
             <DataLine
               label={<strong>Exploitant actuel</strong>}
-              value={siteData.tenantName ?? "Pas d'exploitant"}
+              value={siteData.operatorName ?? "Pas d'exploitant"}
             />
             <DataLine
               label={<strong>Nombre d'emplois temps plein mobilisés sur le site</strong>}

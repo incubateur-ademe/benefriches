@@ -59,7 +59,7 @@ function SiteOwnerForm({
 
   return (
     <WizardFormLayout
-      title={`Qui est le propriétaire actuel de ${isFriche ? "cette friche" : "ce site"}?`}
+      title={`Qui est le propriétaire actuel de ${isFriche ? "cette friche" : "ce site"} ?`}
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset

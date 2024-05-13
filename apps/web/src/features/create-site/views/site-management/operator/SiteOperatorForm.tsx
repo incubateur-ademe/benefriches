@@ -21,20 +21,19 @@ type Props = {
 
 export type FormValues =
   | {
-      tenantType: "local_or_regional_authority";
+      operatorStructureType: "local_or_regional_authority";
       localAuthority: LocalAutorityStructureType;
-      companyName: undefined;
+      name: undefined;
     }
   | {
-      tenantType: "company";
-      companyName: string;
+      operatorStructureType: "company" | "private_individual";
+      name: string;
       localAuthority: undefined;
-    }
-  | { tenantType: "unknown"; localAuthority: undefined; companyName: undefined };
+    };
 
 const requiredMessage = "Ce champ est requis";
 
-function SiteTenantForm({
+function SiteOperatorForm({
   onSubmit,
   onBack,
   localAuthoritiesList,
@@ -44,24 +43,26 @@ function SiteTenantForm({
     shouldUnregister: true,
   });
 
-  const { tenantType: selectedTenantType } = watch();
+  const { operatorStructureType: selectedOperatorStructureType } = watch();
 
   return (
-    <WizardFormLayout title="Le site est-il encore loué par un exploitant ?">
+    <WizardFormLayout title="Qui est l’exploitant du site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
-          state={formState.errors.tenantType ? "error" : "default"}
+          state={formState.errors.operatorStructureType ? "error" : "default"}
           stateRelatedMessage={
-            formState.errors.tenantType ? formState.errors.tenantType.message : undefined
+            formState.errors.operatorStructureType
+              ? formState.errors.operatorStructureType.message
+              : undefined
           }
         >
           <RadioButton
-            label="Oui, par une collectivité"
+            label="Une collectivité"
             value="local_or_regional_authority"
-            {...register("tenantType", { required: requiredMessage })}
+            {...register("operatorStructureType", { required: requiredMessage })}
           />
 
-          {selectedTenantType === "local_or_regional_authority" && (
+          {selectedOperatorStructureType === "local_or_regional_authority" && (
             <>
               {localAuthoritiesLoadingState === "loading" ? (
                 <LoadingSpinner />
@@ -90,27 +91,38 @@ function SiteTenantForm({
             </>
           )}
           <RadioButton
-            label="Oui, par une entreprise"
+            label="Une entreprise"
             value="company"
-            {...register("tenantType", { required: requiredMessage })}
+            {...register("operatorStructureType", { required: requiredMessage })}
           />
 
-          {selectedTenantType === "company" && (
+          {selectedOperatorStructureType === "company" && (
             <Input
               label={<RequiredLabel label="Nom de l'entreprise" />}
-              state={formState.errors.companyName ? "error" : "default"}
-              stateRelatedMessage={formState.errors.companyName?.message}
-              nativeInputProps={register("companyName", {
+              state={formState.errors.name ? "error" : "default"}
+              stateRelatedMessage={formState.errors.name?.message}
+              nativeInputProps={register("name", {
                 required: "Ce champ est requis",
               })}
             />
           )}
 
           <RadioButton
-            label="Non / NSP"
-            value="unknown"
-            {...register("tenantType", { required: requiredMessage })}
+            label="Un particulier"
+            value="private_individual"
+            {...register("operatorStructureType", { required: requiredMessage })}
           />
+
+          {selectedOperatorStructureType === "private_individual" && (
+            <Input
+              label={<RequiredLabel label="Nom du particulier" />}
+              state={formState.errors.name ? "error" : "default"}
+              stateRelatedMessage={formState.errors.name?.message}
+              nativeInputProps={register("name", {
+                required: "Ce champ est requis",
+              })}
+            />
+          )}
         </Fieldset>
         <BackNextButtonsGroup onBack={onBack} />
       </form>
@@ -118,4 +130,4 @@ function SiteTenantForm({
   );
 }
 
-export default SiteTenantForm;
+export default SiteOperatorForm;

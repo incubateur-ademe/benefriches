@@ -7,7 +7,7 @@ const buildSiteDraft = (siteData: Partial<SiteDraft>): SiteDraft => {
     id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
     name: "My site",
     owner: { structureType: "department", name: "Le département Haute-Garonne" },
-    tenant: { structureType: "company", name: "Tenant SARL" },
+    operator: { structureType: "company", name: "Exploitant SARL" },
     soils: [],
     soilsDistribution: {},
     soilsDistributionEntryMode: "square_meters",

@@ -5,14 +5,15 @@ import {
   revertFricheActivityStep,
   revertFricheRecentAccidentsStep,
   revertFullTimeJobsInvolvedStep,
+  revertHasOperatorStep,
   revertNamingStep,
+  revertOperatorStep,
   revertOwnerStep,
   revertSoilsContaminationStep,
   revertSoilsDistributionStep,
   revertSoilsSelectionStep,
   revertSoilsSurfaceAreaDistributionEntryModeStep,
   revertSurfaceAreaStep,
-  revertTenantStep,
   revertYearlyExpensesStep,
   revertYearlyIncomeStep,
   saveSiteAction,
@@ -22,8 +23,10 @@ import {
   completeFricheActivity,
   completeFricheRecentAccidents,
   completeFullTimeJobsInvolved,
+  completeHasOperator,
   completeManagementIntroduction,
   completeNaming,
+  completeOperator,
   completeOwner,
   completeSiteSurfaceArea,
   completeSiteTypeStep,
@@ -35,7 +38,6 @@ import {
   completeSoilsSummary,
   completeSoilsSurfaceAreaDistributionEntryMode,
   completeSummary,
-  completeTenant,
   completeYearlyExpenses,
   completeYearlyExpensesSummary,
   completeYearlyIncome,
@@ -468,7 +470,7 @@ describe("Create site reducer", () => {
     });
     describe("OWNER", () => {
       describe("complete", () => {
-        it("goes to TENANT step and sets owner when step is completed", () => {
+        it("goes to HAS_OPERATOR step and sets owner when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["OWNER"] });
           const { siteCreation: initialState } = store.getState();
 
@@ -478,7 +480,7 @@ describe("Create site reducer", () => {
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
             siteData: { ...initialState.siteData, owner: siteWithExhaustiveData.owner },
-            stepsHistory: [...initialState.stepsHistory, "TENANT"],
+            stepsHistory: [...initialState.stepsHistory, "HAS_OPERATOR"],
           });
         });
       });
@@ -507,54 +509,135 @@ describe("Create site reducer", () => {
         });
       });
     });
-    describe("TENANT", () => {
+    describe("HAS_OPERATOR", () => {
       describe("complete", () => {
-        it("goes to FULL_TIME_JOBS_INVOLVED step and sets tenant when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["TENANT"] });
+        it("goes to OPERATOR step and sets hasOperator when step is completed and ’other’ option is selected", () => {
+          const store = initStoreWithState({ stepsHistory: ["HAS_OPERATOR"] });
           const { siteCreation: initialState } = store.getState();
 
-          store.dispatch(completeTenant({ tenant: siteWithExhaustiveData.tenant }));
+          store.dispatch(completeHasOperator({ hasOperator: true }));
 
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
-            siteData: { ...initialState.siteData, tenant: siteWithExhaustiveData.tenant },
-            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
+            siteData: { ...initialState.siteData, operator: undefined, hasOperator: true },
+            stepsHistory: [...initialState.stepsHistory, "OPERATOR"],
           });
         });
-        it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and no tenant", () => {
-          const store = initStoreWithState({ stepsHistory: ["TENANT"] });
+        it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and operator is owner", () => {
+          const store = initStoreWithState({ stepsHistory: ["HAS_OPERATOR"] });
           const { siteCreation: initialState } = store.getState();
 
-          store.dispatch(completeTenant({ tenant: undefined }));
-
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: initialState.siteData,
-            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
-          });
-        });
-      });
-      describe("revert", () => {
-        it("goes to previous step and unset tenant", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "TENANT"],
-            siteData: {
-              isFriche: true,
-              tenant: siteWithExhaustiveData.tenant,
-            },
-          });
-          const { siteCreation: initialState } = store.getState();
-
-          store.dispatch(revertTenantStep());
+          store.dispatch(
+            completeHasOperator({ operator: siteWithExhaustiveData.owner, hasOperator: true }),
+          );
 
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
             siteData: {
               ...initialState.siteData,
-              tenant: undefined,
+              operator: siteWithExhaustiveData.owner,
+              hasOperator: true,
+            },
+            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
+          });
+        });
+        it("goes to FRICHE_RECENT_ACCIDENTS step when step is completed and there is no operator", () => {
+          const store = initStoreWithState({
+            stepsHistory: ["HAS_OPERATOR"],
+            siteData: { isFriche: true },
+          });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(completeHasOperator({ hasOperator: false }));
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: { ...initialState.siteData, hasOperator: false },
+            stepsHistory: [...initialState.stepsHistory, "FRICHE_RECENT_ACCIDENTS"],
+          });
+        });
+
+        it("goes to YEARLY_EXPENSES step when step is completed and there is no operator and site is not friche", () => {
+          const store = initStoreWithState({
+            stepsHistory: ["HAS_OPERATOR"],
+          });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(completeHasOperator({ hasOperator: false }));
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: { ...initialState.siteData, operator: undefined, hasOperator: false },
+            stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES"],
+          });
+        });
+      });
+      describe("revert", () => {
+        it("goes to previous step and unset operator and hasOperator", () => {
+          const store = initStoreWithState({
+            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "HAS_OPERATOR"],
+            siteData: {
+              isFriche: true,
+              hasOperator: siteWithExhaustiveData.hasOperator,
+              operator: siteWithExhaustiveData.operator,
+            },
+          });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(revertHasOperatorStep());
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: {
+              ...initialState.siteData,
+              hasOperator: undefined,
+              operator: undefined,
+            },
+            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          });
+        });
+      });
+    });
+    describe("OPERATOR", () => {
+      describe("complete", () => {
+        it("goes to FULL_TIME_JOBS_INVOLVED step and sets operator when step is completed", () => {
+          const store = initStoreWithState({ stepsHistory: ["OPERATOR"] });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(completeOperator({ operator: siteWithExhaustiveData.operator }));
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: { ...initialState.siteData, operator: siteWithExhaustiveData.operator },
+            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
+          });
+        });
+      });
+      describe("revert", () => {
+        it("goes to previous step and unset operator", () => {
+          const store = initStoreWithState({
+            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "OPERATOR"],
+            siteData: {
+              isFriche: true,
+              operator: siteWithExhaustiveData.operator,
+            },
+          });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(revertOperatorStep());
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: {
+              ...initialState.siteData,
+              operator: undefined,
             },
             stepsHistory: initialState.stepsHistory.slice(0, -1),
           });

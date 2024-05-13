@@ -1,4 +1,4 @@
-import { hasBuildings, hasImpermeableSoils, hasTenant } from "./site.functions";
+import { hasBuildings, hasImpermeableSoils, hasOperator } from "./site.functions";
 import { SiteDraft } from "./siteFoncier.types";
 
 const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
@@ -6,7 +6,7 @@ const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
     id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
     name: "My site",
     owner: { structureType: "department", name: "Le département Paris" },
-    tenant: { structureType: "company", name: "Tenant SARL" },
+    operator: { structureType: "company", name: "Expoloitant SARL" },
     soils: [],
     soilsDistribution: {},
     soilsDistributionEntryMode: "square_meters",
@@ -32,17 +32,17 @@ const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
 };
 
 describe("Site functions", () => {
-  describe("hasTenant", () => {
-    it("returns false when no tenant", () => {
-      const site = buildSite({ tenant: undefined });
-      expect(hasTenant(site)).toEqual(false);
+  describe("hasOperator", () => {
+    it("returns false when no operator", () => {
+      const site = buildSite({ operator: undefined });
+      expect(hasOperator(site)).toEqual(false);
     });
 
-    it("returns true when tenant", () => {
+    it("returns true when operator", () => {
       const site = buildSite({
-        tenant: { structureType: "company", name: "A tenant business name" },
+        operator: { structureType: "company", name: "An operator business name" },
       });
-      expect(hasTenant(site)).toEqual(true);
+      expect(hasOperator(site)).toEqual(true);
     });
   });
 

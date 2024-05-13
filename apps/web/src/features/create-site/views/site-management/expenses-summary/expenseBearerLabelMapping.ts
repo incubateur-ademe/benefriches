@@ -2,7 +2,7 @@ import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 
 export const getLabelForExpenseBearer = (
   expenseBearer: Expense["bearer"],
-  siteData: { ownerName?: string; tenantName?: string },
+  siteData: { ownerName?: string; operatorName?: string },
 ): string => {
   switch (expenseBearer) {
     case "local_or_regional_authority":
@@ -11,7 +11,7 @@ export const getLabelForExpenseBearer = (
       return "La société";
     case "owner":
       return siteData.ownerName ?? "Propriétaire du site";
-    case "tenant":
-      return siteData.tenantName ?? "Exploitant du site";
+    case "operator":
+      return siteData.operatorName ?? "Exploitant du site";
   }
 };

@@ -2,10 +2,11 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { selectCurrentStep } from "../application/createSite.reducer";
 import SiteExpensesSummary from "./site-management/expenses-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
+import HasSiteOperatorFormContainer from "./site-management/has-operator";
 import SiteManagementIntroduction from "./site-management/introduction";
+import SiteOperatorFormContainer from "./site-management/operator";
 import SiteOwnerForm from "./site-management/owner";
 import FricheRecentAccidentsForm from "./site-management/recent-accidents";
-import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/yearly-income";
 import SiteSoilsCarbonStorage from "./soils/soils-carbon-storage";
@@ -56,8 +57,10 @@ function SiteCreationWizard() {
         return <SiteManagementIntroduction />;
       case "OWNER":
         return <SiteOwnerForm />;
-      case "TENANT":
-        return <SiteTenantForm />;
+      case "HAS_OPERATOR":
+        return <HasSiteOperatorFormContainer />;
+      case "OPERATOR":
+        return <SiteOperatorFormContainer />;
       case "FULL_TIME_JOBS_INVOLVED":
         return <SiteFullTimeJobsInvolvedForm />;
       case "FRICHE_RECENT_ACCIDENTS":

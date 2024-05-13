@@ -4,7 +4,7 @@ import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import {
   LocalAutorityStructureType,
   OwnerStructureType,
-  TenantStructureType,
+  SiteOperatorStructureType,
 } from "@/shared/domain/stakeholder";
 
 export type ProjectsList = {
@@ -33,7 +33,7 @@ export type ReconversionProjectsGroupedBySite = ProjectsGroup[];
 
 export type SiteExpense = {
   type: string;
-  bearer: "owner" | "tenant" | "local_or_regional_authority" | "society";
+  bearer: "owner" | "operator" | "local_or_regional_authority" | "society";
   category: "rent" | "safety" | "soils_degradation" | "taxes" | "other";
   amount: number;
 };
@@ -77,7 +77,7 @@ type Revenue = {
 
 type ProjectStakeholderStructure =
   | OwnerStructureType
-  | TenantStructureType
+  | SiteOperatorStructureType
   | "company"
   | LocalAutorityStructureType
   | "other"

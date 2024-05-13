@@ -17,7 +17,7 @@ function SiteFullTimeJobsInvolvedForm({ onSubmit, onBack }: Props) {
   const { control, handleSubmit } = useForm<FormValues>();
 
   return (
-    <WizardFormLayout title="Combien d'emplois équivalent temps-plein sont mobilisés sur le site ?">
+    <WizardFormLayout title="Combien d’emploi équivalent temps pleins sont mobilisés pour l’exploitation du site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           name="fullTimeJobsInvolved"

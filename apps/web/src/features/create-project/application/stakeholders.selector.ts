@@ -9,7 +9,7 @@ export type AvailableProjectStakeholder = {
   name: string;
   role:
     | "site_owner"
-    | "site_tenant"
+    | "site_operator"
     | "project_developer"
     | "user_company"
     | "future_operator"
@@ -52,12 +52,12 @@ export const getProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const siteTenant = projectCreation.siteData?.tenant;
-    if (siteTenant && !hasStakeholder(siteTenant, stakeholders)) {
+    const siteOperator = projectCreation.siteData?.operator;
+    if (siteOperator && !hasStakeholder(siteOperator, stakeholders)) {
       stakeholders.push({
-        name: siteTenant.name,
-        role: "site_tenant",
-        structureType: siteTenant.structureType,
+        name: siteOperator.name,
+        role: "site_operator",
+        structureType: siteOperator.structureType,
       });
     }
 
@@ -114,13 +114,13 @@ export const getAvailableLocalAuthoritiesStakeholders = createSelector(
   (siteLocalAuthorities, projectCreation) => {
     const localAuthorities: AvailableLocalAuthorityStakeholder[] = [];
 
-    const { owner: siteOwner, tenant: siteTenant } = projectCreation.siteData ?? {};
+    const { owner: siteOwner, operator: siteOperator } = projectCreation.siteData ?? {};
     const { projectDeveloper, futureOperator, reinstatementContractOwner, futureSiteOwner } =
       projectCreation.projectData;
 
     const projectLocalAuthorities = [
       siteOwner?.structureType,
-      siteTenant?.structureType,
+      siteOperator?.structureType,
       projectDeveloper?.structureType,
       futureOperator?.structureType,
       reinstatementContractOwner?.structureType,

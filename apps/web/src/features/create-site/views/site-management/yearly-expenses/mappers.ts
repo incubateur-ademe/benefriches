@@ -4,29 +4,33 @@ import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
 const expensesConfig = [
-  { purpose: "rent", purposeCategory: "rent", defaultBearer: "tenant" },
+  { purpose: "rent", purposeCategory: "rent", defaultBearer: "operator" },
   { purpose: "propertyTaxes", purposeCategory: "taxes", defaultBearer: "owner" },
-  { purpose: "operationsTaxes", purposeCategory: "taxes", defaultBearer: "tenant" },
-  { purpose: "maintenance", purposeCategory: "site_management", defaultBearer: "tenant" },
-  { purpose: "otherManagementCosts", purposeCategory: "site_management", defaultBearer: "tenant" },
-  { purpose: "security", purposeCategory: "safety", defaultBearer: "tenant" },
-  { purpose: "illegalDumpingCost", purposeCategory: "safety", defaultBearer: "tenant" },
-  { purpose: "accidentsCost", purposeCategory: "safety", defaultBearer: "tenant" },
-  { purpose: "otherSecuringCosts", purposeCategory: "safety", defaultBearer: "tenant" },
+  { purpose: "operationsTaxes", purposeCategory: "taxes", defaultBearer: "operator" },
+  { purpose: "maintenance", purposeCategory: "site_management", defaultBearer: "operator" },
+  {
+    purpose: "otherManagementCosts",
+    purposeCategory: "site_management",
+    defaultBearer: "operator",
+  },
+  { purpose: "security", purposeCategory: "safety", defaultBearer: "operator" },
+  { purpose: "illegalDumpingCost", purposeCategory: "safety", defaultBearer: "operator" },
+  { purpose: "accidentsCost", purposeCategory: "safety", defaultBearer: "operator" },
+  { purpose: "otherSecuringCosts", purposeCategory: "safety", defaultBearer: "operator" },
 ] as const;
 
 const getDefaultBearerForExpense = (
   expenseConfig: (typeof expensesConfig)[number],
-  siteHasTenant: boolean,
+  siteHasOperator: boolean,
 ): Expense["bearer"] => {
-  if (!siteHasTenant) return "owner";
+  if (!siteHasOperator) return "owner";
 
   return expenseConfig.defaultBearer;
 };
 
 export const mapFormDataToExpenses = (
   formData: FormValues,
-  { siteHasTenant }: { siteHasTenant: boolean },
+  { siteHasOperator }: { siteHasOperator: boolean },
 ): Expense[] => {
   return typedObjectKeys(formData).reduce<Expense[]>((acc, key) => {
     const formValue = formData[key];
@@ -38,7 +42,7 @@ export const mapFormDataToExpenses = (
       bearer:
         "bearer" in formValue && formValue.bearer
           ? formValue.bearer
-          : getDefaultBearerForExpense(expenseConfig, siteHasTenant),
+          : getDefaultBearerForExpense(expenseConfig, siteHasOperator),
       purpose: expenseConfig.purpose,
       purposeCategory: expenseConfig.purposeCategory,
     };

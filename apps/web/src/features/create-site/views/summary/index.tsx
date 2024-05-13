@@ -20,7 +20,7 @@ function SiteDataSummaryContainer() {
       siteData={{
         address: siteData.address?.value ?? "",
         ownerName: siteData.owner?.name ?? "",
-        tenantName: siteData.tenant?.name,
+        operatorName: siteData.operator?.name,
         fullTimeJobsInvolved: siteData.fullTimeJobsInvolved ?? 0,
         accidents: siteData.hasRecentAccidents
           ? {

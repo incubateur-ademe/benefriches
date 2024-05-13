@@ -21,7 +21,7 @@ const convertFormValuesForStore = (
   siteLocalAuthorities: AvailableLocalAuthorityStakeholder[],
 ): ProjectStakeholder => {
   switch (data.stakeholder) {
-    case "site_tenant":
+    case "site_operator":
     case "site_owner":
     case "user_company": {
       const stakeholder = stakeholdersList.find(

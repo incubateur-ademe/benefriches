@@ -18,7 +18,8 @@ export const revertSoilsContaminationStep = () =>
     resetFields: ["hasContaminatedSoils", "contaminatedSoilSurface"],
   });
 export const revertOwnerStep = () => revertStep({ resetFields: ["owner"] });
-export const revertTenantStep = () => revertStep({ resetFields: ["tenant"] });
+export const revertHasOperatorStep = () => revertStep({ resetFields: ["hasOperator", "operator"] });
+export const revertOperatorStep = () => revertStep({ resetFields: ["operator"] });
 export const revertFullTimeJobsInvolvedStep = () =>
   revertStep({ resetFields: ["fullTimeJobsInvolved"] });
 export const revertFricheRecentAccidentsStep = () =>
@@ -64,7 +65,7 @@ const createSiteSchema = z.object({
     structureType: z.string(),
     name: z.string().optional(),
   }),
-  tenant: z
+  operator: z
     .object({
       structureType: z.string(),
       name: z.string().optional(),

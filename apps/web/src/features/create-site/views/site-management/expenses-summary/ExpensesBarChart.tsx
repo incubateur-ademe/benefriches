@@ -8,9 +8,9 @@ import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
 type Props = {
   ownerExpenses: Expense[];
-  tenantExpenses: Expense[];
+  operatorExpenses: Expense[];
   ownerName?: string;
-  tenantName?: string;
+  operatorName?: string;
 };
 
 const getColorForPurpose = (purpose: Expense["purpose"]) => {
@@ -35,11 +35,11 @@ const getColorForPurpose = (purpose: Expense["purpose"]) => {
   }
 };
 
-const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName }: Props) => {
+const ExpensesBarChart = ({ ownerExpenses, operatorExpenses, ownerName, operatorName }: Props) => {
   const barChartRef = useRef<HighchartsReact.RefObject>(null);
 
   const ownerTotal = ownerExpenses.reduce((total, { amount }) => total + amount, 0);
-  const tenantTotal = tenantExpenses.reduce((total, { amount }) => total + amount, 0);
+  const operatorTotal = operatorExpenses.reduce((total, { amount }) => total + amount, 0);
 
   const expenses = [
     ...ownerExpenses.map(({ purpose, amount }) => {
@@ -50,7 +50,7 @@ const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName
         color: getColorForPurpose(purpose),
       };
     }),
-    ...tenantExpenses.map(({ purpose, amount }) => {
+    ...operatorExpenses.map(({ purpose, amount }) => {
       return {
         name: getLabelForExpensePurpose(purpose),
         data: [0, -amount],
@@ -65,7 +65,7 @@ const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName
     xAxis: {
       categories: [
         `<strong>${ownerName ? `${ownerName} (propriétaire)` : "Propriétaire"}</strong><br>${formatNumberFr(-ownerTotal)} €/an`,
-        `<strong>${tenantName ? `${tenantName} (locataire)` : "Locataire"}</strong><br>${formatNumberFr(-tenantTotal)} €/an`,
+        `<strong>${operatorName ? `${operatorName} (exploitant)` : "Exploitant"}</strong><br>${formatNumberFr(-operatorTotal)} €/an`,
       ],
       lineWidth: 0,
       type: "category",

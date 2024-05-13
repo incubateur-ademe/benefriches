@@ -35,7 +35,8 @@ const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
       return "Pollution";
     case "MANAGEMENT_INTRODUCTION":
     case "OWNER":
-    case "TENANT":
+    case "HAS_OPERATOR":
+    case "OPERATOR":
     case "FRICHE_RECENT_ACCIDENTS":
     case "FULL_TIME_JOBS_INVOLVED":
     case "YEARLY_EXPENSES":

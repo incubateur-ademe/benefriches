@@ -1,7 +1,7 @@
 import { SoilsDistribution, SoilType } from "shared";
 import { FricheActivity } from "./friche.types";
 
-import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
+import { OwnerStructureType, SiteOperatorStructureType } from "@/shared/domain/stakeholder";
 
 export enum SiteFoncierType {
   FRICHE = "FRICHE",
@@ -38,7 +38,8 @@ export type SiteDraft = {
   // management
   fullTimeJobsInvolved?: number;
   owner: { structureType: OwnerStructureType; name: string };
-  tenant?: { structureType: TenantStructureType; name: string };
+  operator?: { structureType: SiteOperatorStructureType; name: string };
+  hasOperator?: boolean;
   hasRecentAccidents?: boolean;
   accidentsMinorInjuries?: number;
   accidentsSevereInjuries?: number;
@@ -47,7 +48,7 @@ export type SiteDraft = {
   yearlyIncomes: Income[];
 };
 
-export type Tenant = { structureType: TenantStructureType; name: string };
+export type Operator = { structureType: SiteOperatorStructureType; name: string };
 export type Owner = { structureType: OwnerStructureType; name: string };
 
 export type ExpensePurpose =
@@ -72,7 +73,7 @@ type ExpensePurposeCategory =
 export type Expense = {
   purpose: ExpensePurpose;
   purposeCategory: ExpensePurposeCategory;
-  bearer: "owner" | "tenant" | "local_or_regional_authority" | "society";
+  bearer: "owner" | "operator" | "local_or_regional_authority" | "society";
   amount: number;
 };
 

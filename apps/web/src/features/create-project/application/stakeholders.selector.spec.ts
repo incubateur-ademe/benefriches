@@ -50,7 +50,7 @@ const MOCK_STATES = {
 
 describe("Project Stakeholders selector", () => {
   describe("getProjectAvailableStakeholders", () => {
-    it("should return project developer, reinstatement cost owner, future site owner, future site operator, site tenant and site owner and current user structure", () => {
+    it("should return project developer, reinstatement cost owner, future site owner, future site operator, site operator and site owner and current user structure", () => {
       const stakeholders = getProjectAvailableStakeholders.resultFunc(
         MOCK_STATES.projectCreation,
         MOCK_STATES.currentUser,
@@ -98,9 +98,9 @@ describe("Project Stakeholders selector", () => {
 
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
-          name: projectSiteData.tenant.name,
-          role: "site_tenant",
-          structureType: projectSiteData.tenant.structureType,
+          name: projectSiteData.operator.name,
+          role: "site_operator",
+          structureType: projectSiteData.operator.structureType,
         }),
       );
 
@@ -113,7 +113,7 @@ describe("Project Stakeholders selector", () => {
       );
     });
 
-    it("should return project developer, reinstatement cost owner, future site owner, future site operator, site tenant and site owner but not current user structure", () => {
+    it("should return project developer, reinstatement cost owner, future site owner, future site operator, site operator and site owner but not current user structure", () => {
       const stakeholders = getProjectAvailableStakeholders.resultFunc(MOCK_STATES.projectCreation, {
         ...MOCK_STATES.currentUser,
         currentUser: buildUser(),
@@ -156,9 +156,9 @@ describe("Project Stakeholders selector", () => {
       );
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
-          name: projectSiteData.tenant.name,
-          role: "site_tenant",
-          structureType: projectSiteData.tenant.structureType,
+          name: projectSiteData.operator.name,
+          role: "site_operator",
+          structureType: projectSiteData.operator.structureType,
         }),
       );
       expect(stakeholders).not.toContainEqual(
@@ -175,7 +175,7 @@ describe("Project Stakeholders selector", () => {
         {
           ...MOCK_STATES.projectCreation,
           projectData: projectWithMinimalData,
-          siteData: { ...projectSiteData, tenant: undefined },
+          siteData: { ...projectSiteData, operator: undefined },
         } as ProjectCreationState,
         MOCK_STATES.currentUser,
       );
@@ -221,7 +221,7 @@ describe("Project Stakeholders selector", () => {
               structureType: "company",
             },
           },
-          siteData: { ...projectSiteData, tenant: undefined },
+          siteData: { ...projectSiteData, operator: undefined },
         } as ProjectCreationState,
         MOCK_STATES.currentUser,
       );

@@ -32,7 +32,12 @@ export type FormValues =
       localAuthority: undefined;
     }
   | {
-      stakeholder: "user_company" | "site_tenant" | "site_owner" | "project_developer" | "unknown";
+      stakeholder:
+        | "user_company"
+        | "site_operator"
+        | "site_owner"
+        | "project_developer"
+        | "unknown";
       localAuthority: undefined;
       otherStructureName: undefined;
     };

@@ -5,7 +5,7 @@ import { UserStructureType } from "@/features/users/domain/user";
 import {
   LocalAutorityStructureType,
   OwnerStructureType,
-  TenantStructureType,
+  SiteOperatorStructureType,
 } from "@/shared/domain/stakeholder";
 
 export type DevelopmentPlanCategory =
@@ -113,7 +113,7 @@ export type Revenue = {
 
 export type ProjectStakeholderStructure =
   | OwnerStructureType
-  | TenantStructureType
+  | SiteOperatorStructureType
   | "company"
   | LocalAutorityStructureType
   | "other"
@@ -142,9 +142,9 @@ export type ProjectSite = {
     name: string;
     structureType: OwnerStructureType;
   };
-  tenant?: {
+  operator?: {
     name: string;
-    structureType: TenantStructureType;
+    structureType: SiteOperatorStructureType;
   };
   hasContaminatedSoils?: boolean;
   contaminatedSoilSurface?: number;

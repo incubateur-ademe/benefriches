@@ -1,14 +1,14 @@
 import { useEffect } from "react";
-import FricheTenantForm, { FormValues } from "./SiteTenantForm";
+import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
-import { revertTenantStep } from "@/features/create-site/application/createSite.actions";
-import { completeTenant } from "@/features/create-site/application/createSite.reducer";
+import { revertOperatorStep } from "@/features/create-site/application/createSite.actions";
+import { completeOperator } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
   LoadingState,
   SiteLocalAuthorities,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
-import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
+import { Operator } from "@/features/create-site/domain/siteFoncier.types";
 import { OwnerStructureType } from "@/shared/domain/stakeholder";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -62,8 +62,8 @@ const convertFormValuesForStore = (
   data: FormValues,
   localAuthorities: LocalAuthoritiesList,
   localAuthoritiesLoadingState: LoadingState,
-): Tenant | undefined => {
-  if (data.tenantType === "local_or_regional_authority") {
+): Operator | undefined => {
+  if (data.operatorStructureType === "local_or_regional_authority") {
     const localAuthority = localAuthorities.find(({ type }) => type === data.localAuthority);
     if (localAuthoritiesLoadingState === "success" && localAuthority) {
       return {
@@ -77,16 +77,13 @@ const convertFormValuesForStore = (
     };
   }
 
-  if (data.tenantType === "company") {
-    return {
-      structureType: "company",
-      name: data.companyName,
-    };
-  }
-  return undefined;
+  return {
+    structureType: data.operatorStructureType,
+    name: data.name,
+  };
 };
 
-function FricheTenantFormContainer() {
+function SiteOperatorFormContainer() {
   const dispatch = useAppDispatch();
   const siteOwner = useAppSelector((state) => state.siteCreation.siteData.owner);
   const { localAuthorities, loadingState } = useAppSelector((state) => state.siteMunicipalityData);
@@ -99,16 +96,16 @@ function FricheTenantFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     if (!localAuthorities) return;
-    const tenant = convertFormValuesForStore(data, localAuthoritiesList, loadingState);
-    dispatch(completeTenant({ tenant }));
+    const operator = convertFormValuesForStore(data, localAuthoritiesList, loadingState);
+    dispatch(completeOperator({ operator }));
   };
 
   const onBack = () => {
-    dispatch(revertTenantStep());
+    dispatch(revertOperatorStep());
   };
 
   return (
-    <FricheTenantForm
+    <SiteOperatorForm
       onSubmit={onSubmit}
       onBack={onBack}
       localAuthoritiesList={localAuthoritiesList}
@@ -117,4 +114,4 @@ function FricheTenantFormContainer() {
   );
 }
 
-export default FricheTenantFormContainer;
+export default SiteOperatorFormContainer;

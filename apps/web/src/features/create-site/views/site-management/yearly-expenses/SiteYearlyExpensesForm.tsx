@@ -8,7 +8,7 @@ import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-type YearlyExpenseBearer = "owner" | "tenant";
+type YearlyExpenseBearer = "owner" | "operator";
 
 export type FormValues = {
   rent: { amount?: number };
@@ -23,7 +23,7 @@ export type FormValues = {
 };
 
 type Props = {
-  hasTenant: boolean;
+  hasOperator: boolean;
   hasRecentAccidents: boolean;
   isFriche: boolean;
   defaultValues: {
@@ -39,19 +39,19 @@ const siteManagementInputs = [
   {
     name: "rent",
     label: getLabelForExpensePurpose("rent"),
-    displayOnlyIfHasTenant: true,
+    displayOnlyIfHasOperator: true,
     askForBearer: false,
   },
   {
     name: "propertyTaxes",
     label: getLabelForExpensePurpose("propertyTaxes"),
-    displayOnlyIfHasTenant: false,
+    displayOnlyIfHasOperator: false,
     askForBearer: false,
   },
   {
     name: "operationsTaxes",
     label: getLabelForExpensePurpose("operationsTaxes"),
-    displayOnlyIfHasTenant: true,
+    displayOnlyIfHasOperator: true,
     askForBearer: false,
   },
   {
@@ -66,7 +66,7 @@ const siteManagementInputs = [
         />
       </>
     ),
-    displayOnlyIfHasTenant: false,
+    displayOnlyIfHasOperator: false,
     askForBearer: false,
   },
   {
@@ -82,7 +82,7 @@ const siteManagementInputs = [
         />
       </>
     ),
-    displayOnlyIfHasTenant: false,
+    displayOnlyIfHasOperator: false,
     askForBearer: true,
   },
 ] as const;
@@ -155,14 +155,14 @@ const siteSecuringInputs = [
 ] as const;
 
 const expenseBearerOptions = [
-  { label: "A la charge de l'exploitant", value: "tenant" },
+  { label: "A la charge de l'exploitant", value: "operator" },
   { label: "A la charge du propriétaire", value: "owner" },
 ];
 
 function SiteYearlyExpensesForm({
   onSubmit,
   onBack,
-  hasTenant,
+  hasOperator,
   isFriche,
   hasRecentAccidents,
   defaultValues,
@@ -178,8 +178,8 @@ function SiteYearlyExpensesForm({
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Gestion du site</h3>
-        {siteManagementInputs.map(({ name, label, displayOnlyIfHasTenant, askForBearer }) => {
-          if (displayOnlyIfHasTenant && !hasTenant) {
+        {siteManagementInputs.map(({ name, label, displayOnlyIfHasOperator, askForBearer }) => {
+          if (displayOnlyIfHasOperator && !hasOperator) {
             return null;
           }
           return (
@@ -197,7 +197,7 @@ function SiteYearlyExpensesForm({
                   },
                 }}
               />
-              {askForBearer && hasTenant && !!watch(`${name}.amount`) && (
+              {askForBearer && hasOperator && !!watch(`${name}.amount`) && (
                 <RadioButtons
                   error={formState.errors[name]?.bearer ?? undefined}
                   {...register(`${name}.bearer` as keyof FormValues, {
@@ -230,7 +230,7 @@ function SiteYearlyExpensesForm({
                         },
                       }}
                     />
-                    {askForBearer && hasTenant && !!watch(`${name}.amount`) && (
+                    {askForBearer && hasOperator && !!watch(`${name}.amount`) && (
                       <RadioButtons
                         error={formState.errors[name]?.bearer}
                         {...register(`${name}.bearer`, {

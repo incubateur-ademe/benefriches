@@ -11,7 +11,7 @@ import {
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
 } from "@/features/create-site/domain/defaultValues";
-import { hasTenant } from "@/features/create-site/domain/site.functions";
+import { hasOperator } from "@/features/create-site/domain/site.functions";
 import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -45,10 +45,10 @@ const mapProps = (
   { siteData }: RootState["siteCreation"],
   population?: number,
 ) => {
-  const siteHasTenant = hasTenant(siteData as SiteDraft);
+  const siteHasOperator = hasOperator(siteData as SiteDraft);
 
   return {
-    hasTenant: siteHasTenant,
+    hasOperator: siteHasOperator,
     isFriche: !!siteData.isFriche,
     hasRecentAccidents: !!siteData.hasRecentAccidents,
     defaultValues: getDefaultValues(siteData as SiteDraft, population),
@@ -56,7 +56,7 @@ const mapProps = (
       dispatch(revertYearlyExpensesStep());
     },
     onSubmit: (formData: FormValues) => {
-      const expenses: Expense[] = mapFormDataToExpenses(formData, { siteHasTenant });
+      const expenses: Expense[] = mapFormDataToExpenses(formData, { siteHasOperator });
 
       dispatch(completeYearlyExpenses(expenses));
     },

@@ -14,7 +14,7 @@ export const projectSiteData = {
     name: "Mairie de Grenoble",
     structureType: "municipality",
   },
-  tenant: {
+  operator: {
     name: "SARL Locataire",
     structureType: "company",
   },
