@@ -77,14 +77,19 @@ const ProjectSoilsCarbonStorage = ({
   }
 
   if (loadingState === "success") {
+    const carbonStorageDifference =
+      projectedCarbonStorage.totalCarbonStorage - currentCarbonStorage.totalCarbonStorage;
+    const differenceInPercentage =
+      carbonStorageDifference !== 0
+        ? getPercentageDifferenceFormated(
+            currentCarbonStorage.totalCarbonStorage,
+            projectedCarbonStorage.totalCarbonStorage,
+          )
+        : 0;
     return (
       <>
         <h2>Stockage du carbone par les sols</h2>
-        <CarbonStorageDifferenceSection
-          carbonStorageDifference={
-            projectedCarbonStorage.totalCarbonStorage - currentCarbonStorage.totalCarbonStorage
-          }
-        />
+        <CarbonStorageDifferenceSection carbonStorageDifference={carbonStorageDifference} />
         <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6 tw-pb-10">
           <div className="tw-border tw-border-solid tw-border-grey tw-p-8">
             <h3 className="tw-uppercase tw-text-base">Site existant :</h3>
@@ -99,12 +104,7 @@ const ProjectSoilsCarbonStorage = ({
             <h3 className="tw-uppercase tw-text-base">Site avec projet :</h3>
             <p>
               <strong>{formatCarbonStorage(projectedCarbonStorage.totalCarbonStorage)} t</strong> de
-              carbone stockés (
-              {getPercentageDifferenceFormated(
-                currentCarbonStorage.totalCarbonStorage,
-                projectedCarbonStorage.totalCarbonStorage,
-              )}
-              )
+              carbone stockés {differenceInPercentage ? `(${differenceInPercentage})` : null}
             </p>
             <SoilsCarbonStorageChart soilsCarbonStorage={projectedCarbonStorage.soilsStorage} />
           </div>

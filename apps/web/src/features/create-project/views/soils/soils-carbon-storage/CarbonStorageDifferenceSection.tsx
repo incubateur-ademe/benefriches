@@ -1,21 +1,27 @@
-import { formatCarbonStorage } from "./formatCarbonStorage";
+import { formatCarbonStorage, formatPerFrenchPersonAnnualEquivalent } from "./formatCarbonStorage";
 
 import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
 type Props = {
   carbonStorageDifference: number;
 };
 
-const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
+const AnnualFrenchEmissionPerPersonEquivalent = ({ carbonStorage }: { carbonStorage: number }) => {
   const carbonStorageDifferenceInAnnualFrenchEmissionPerPerson = Math.abs(
-    getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson(carbonStorageDifference),
+    getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson(carbonStorage),
   );
+  const formattedValue = formatPerFrenchPersonAnnualEquivalent(
+    carbonStorageDifferenceInAnnualFrenchEmissionPerPerson,
+  );
+  return (
+    <p>
+      C'est l'équivalent de ce qu'émettent <strong>{formattedValue} français</strong> en{" "}
+      <strong>1 an</strong>.
+    </p>
+  );
+};
 
-  if (carbonStorageDifference === 0) {
-    return <p>Ce site stockera autant de carbone.</p>;
-  }
-
+const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
   if (carbonStorageDifference > 0) {
     return (
       <div>
@@ -23,33 +29,31 @@ const CarbonStorageDifferenceSection = ({ carbonStorageDifference }: Props) => {
           🤩 Bonne nouvelle, ce site pourrait stocker{" "}
           <strong>{formatCarbonStorage(carbonStorageDifference)} t de carbone</strong> en plus ! 🍂
         </p>
+        <AnnualFrenchEmissionPerPersonEquivalent carbonStorage={carbonStorageDifference} />
+      </div>
+    );
+  }
+
+  if (carbonStorageDifference < 0) {
+    return (
+      <div>
         <p>
-          C'est l'équivalent de ce qu'émettent{" "}
+          😭 Malheureusement, ce site pourrait stocker{" "}
           <strong>
-            {formatCarbonStorage(carbonStorageDifferenceInAnnualFrenchEmissionPerPerson)} français
-          </strong>{" "}
-          en <strong>1 an</strong>.
+            {formatCarbonStorage(Math.abs(carbonStorageDifference))} t de carbone en moins. ☁️
+          </strong>
         </p>
+        <AnnualFrenchEmissionPerPersonEquivalent
+          carbonStorage={Math.abs(carbonStorageDifference)}
+        />
       </div>
     );
   }
 
   return (
     <div>
-      <p>
-        Ce site stockerait{" "}
-        <strong>
-          {formatCarbonStorage(Math.abs(carbonStorageDifference))} t de carbone en moins.
-        </strong>
-      </p>
-      <p>
-        C'est l'équivalent de ce qu'émettent{" "}
-        <strong>
-          {formatNumberFr(Math.round(carbonStorageDifferenceInAnnualFrenchEmissionPerPerson))}{" "}
-          français
-        </strong>{" "}
-        en <strong>1 an</strong>.
-      </p>
+      <p>Aucun changement notable.</p>
+      <p>La capacité de stockage du carbone par les sols ne sera pas affectée par le projet.</p>
     </div>
   );
 };
