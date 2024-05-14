@@ -3,9 +3,9 @@ import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { SoilsDistribution, typedObjectEntries } from "shared";
-import { SQUARE_METERS_HTML_SYMBOL } from "../SurfaceArea/SurfaceArea";
 
 import { getHighchartStyleForSoilTypes } from "@/shared/domain/soils";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 type Props = {

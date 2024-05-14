@@ -3,16 +3,17 @@ import { useForm } from "react-hook-form";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { SoilType } from "shared";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import {
+  formatNumberFr,
+  formatSurfaceArea,
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/services/format-number/formatNumber";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
-import SurfaceArea, {
-  SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -52,10 +53,7 @@ function SiteSoilsDistributionBySquareMetersForm({
         <FormWarning>
           <p>
             La somme des superficies des différents sols doit être égale à la superficie totale du
-            site (
-            <strong>
-              <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />
-            </strong>
+            site (<strong>{formatSurfaceArea(totalSurfaceArea)}</strong>
             ).
           </p>
         </FormWarning>

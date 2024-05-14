@@ -4,14 +4,13 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { SoilType } from "shared";
 
 import { getColorForSoilType } from "@/shared/domain/soils";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
-import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -57,11 +56,8 @@ function SiteSoilsDistributionByPercentageForm({
         <FormWarning>
           <p>
             Le total des surfaces ne peut pas dépasser{" "}
-            <strong>
-              <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />
-            </strong>
-            . Pour pouvoir augmenter la surface d’un sol, vous devez d’abord réduire la surface d’un
-            autre sol.
+            <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>. Pour pouvoir augmenter la
+            surface d’un sol, vous devez d’abord réduire la surface d’un autre sol.
           </p>
         </FormWarning>
       }

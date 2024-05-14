@@ -2,7 +2,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 
 function NonPollutedSoilsImpactComparisonChart() {
   const barChartOptions: Highcharts.Options = {

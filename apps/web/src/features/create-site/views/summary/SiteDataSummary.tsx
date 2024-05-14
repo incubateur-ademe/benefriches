@@ -6,12 +6,11 @@ import { getLabelForExpensePurpose } from "../../domain/expenses.functions";
 import { FricheActivity, getFricheActivityLabel } from "../../domain/friche.types";
 import { Expense } from "../../domain/siteFoncier.types";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { sumList, sumObjectValues } from "@/shared/services/sum/sum";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -164,9 +163,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
           <dl>
             <DataLine
               label={<strong>Superficie totale du site</strong>}
-              value={
-                <strong>{`${formatNumberFr(siteData.totalSurfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`}</strong>
-              }
+              value={<strong>{formatSurfaceArea(siteData.totalSurfaceArea)}</strong>}
               className="fr-mt-2w fr-mb-1w"
             />
           </dl>
@@ -175,7 +172,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
               return (
                 <DataLine
                   label={getLabelForSoilType(soilType as SoilType)}
-                  value={`${formatNumberFr(surfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`}
+                  value={formatSurfaceArea(surfaceArea)}
                   key={soilType}
                   className="fr-my-1w"
                 />
@@ -190,7 +187,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
                 label={<strong>Superficie polluée</strong>}
                 value={
                   siteData.contaminatedSurfaceArea
-                    ? `${formatNumberFr(siteData.contaminatedSurfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`
+                    ? formatSurfaceArea(siteData.contaminatedSurfaceArea)
                     : "Pas de pollution"
                 }
               />

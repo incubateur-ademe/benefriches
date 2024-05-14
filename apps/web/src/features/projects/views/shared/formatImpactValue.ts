@@ -1,10 +1,12 @@
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import {
+  formatNumberFr,
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/services/format-number/formatNumber";
 import {
   roundTo1Digit,
   roundTo2Digits,
   roundToInteger,
 } from "@/shared/services/round-numbers/roundNumbers";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 
 const NO_BREAK_SPACE = "\u00A0";
 

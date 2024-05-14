@@ -1,12 +1,12 @@
 import { useForm } from "react-hook-form";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -29,9 +29,9 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
   });
 
   const hasContaminatedSoilsError = formState.errors.hasContaminatedSoils;
-  const contaminatedSurfaceHintText = `en ${SQUARE_METERS_HTML_SYMBOL} (maximum ${formatNumberFr(
+  const contaminatedSurfaceHintText = `en ${SQUARE_METERS_HTML_SYMBOL} (maximum ${formatSurfaceArea(
     siteSurfaceArea,
-  )} ${SQUARE_METERS_HTML_SYMBOL})`;
+  )}`;
 
   const hasContaminatedSoilsValue = watch("hasContaminatedSoils");
   const hasContaminatedSoils = hasContaminatedSoilsValue === "yes";

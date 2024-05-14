@@ -5,3 +5,8 @@ export function formatNumberFr(n: number, maximumFractionDigits: number = 2): st
 
   return new Intl.NumberFormat("fr-FR", { maximumFractionDigits }).format(n);
 }
+
+export const SQUARE_METERS_HTML_SYMBOL = "㎡";
+export function formatSurfaceArea(surfaceArea: number): string {
+  return `${formatNumberFr(surfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`;
+}

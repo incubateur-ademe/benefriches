@@ -15,12 +15,11 @@ import {
   getLabelForRenewableEnergyProductionType,
 } from "../projectTypeLabelMapping";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { sumList } from "@/shared/services/sum/sum";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -109,7 +108,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           />
           <DataLine
             label={<strong>Superficie occupée par les panneaux</strong>}
-            value={`${formatNumberFr(projectData.photovoltaicSurfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`}
+            value={formatSurfaceArea(projectData.photovoltaicSurfaceArea)}
           />
           <DataLine
             label={<strong>Production annuelle attendue</strong>}
@@ -123,9 +122,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
         <Accordion label="Répartition des sols" defaultExpanded>
           <DataLine
             label={<strong>Superficie totale du site</strong>}
-            value={
-              <strong>{`${formatNumberFr(siteData.surfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`}</strong>
-            }
+            value={<strong>{formatSurfaceArea(siteData.surfaceArea)}</strong>}
             className="fr-mb-1w"
           />
           {Object.entries(projectData.soilsDistribution)
@@ -134,7 +131,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               return (
                 <DataLine
                   label={getLabelForSoilType(soilType as SoilType)}
-                  value={`${formatNumberFr(surfaceArea)} ${SQUARE_METERS_HTML_SYMBOL}`}
+                  value={formatSurfaceArea(surfaceArea)}
                   key={soilType}
                   className="fr-ml-2w"
                 />

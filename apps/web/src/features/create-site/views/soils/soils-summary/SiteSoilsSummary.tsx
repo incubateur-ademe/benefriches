@@ -1,10 +1,9 @@
 import { SoilsDistribution } from "shared";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
-import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -24,8 +23,7 @@ const SiteSoilsSummary = ({ totalSurfaceArea, onNext, onBack, soilsDistribution 
       <p>
         Superficie totale du site :{" "}
         <strong>
-          <SurfaceArea surfaceAreaInSquareMeters={totalSurfaceArea} />, soit{" "}
-          {formattedTotalSurfaceAreaInHectare} ha
+          {formatSurfaceArea(totalSurfaceArea)}, soit {formattedTotalSurfaceAreaInHectare} ha
         </strong>
         .
       </p>

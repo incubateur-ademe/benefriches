@@ -2,8 +2,7 @@ import {
   RECOMMENDED_M2_PER_KWC_FOR_ACCESS_PATHS,
   RECOMMENDED_M2_PER_KWC_FOR_FOUNDATIONS,
 } from "@/features/create-project/domain/photovoltaic";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
-import SurfaceArea from "@/shared/views/components/SurfaceArea/SurfaceArea";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 
@@ -30,22 +29,21 @@ function PhotovoltaicSoilsImpactsNotice({
     <>
       <FormWarning>
         <p>
-          Le total des surfaces ne peut pas dépasser{" "}
-          <SurfaceArea surfaceAreaInSquareMeters={siteSurfaceArea} />. Pour pouvoir augmenter la
-          surface d’un sol, vous devez d’abord réduire la surface d’un autre sol.
+          Le total des surfaces ne peut pas dépasser {formatSurfaceArea(siteSurfaceArea)}. Pour
+          pouvoir augmenter la surface d’un sol, vous devez d’abord réduire la surface d’un autre
+          sol.
         </p>
       </FormWarning>
       <p>
         Compte tenu des ratios, les <strong>sols imperméables</strong> devraient faire au minimum{" "}
-        <SurfaceArea surfaceAreaInSquareMeters={advisedImpermeableSurface} /> et les{" "}
-        <strong>sols minéraux</strong> devraient faire au minimum{" "}
-        <SurfaceArea surfaceAreaInSquareMeters={advisedMineralSurface} />
+        {formatSurfaceArea(advisedImpermeableSurface)} et les <strong>sols minéraux</strong>{" "}
+        devraient faire au minimum {formatSurfaceArea(advisedMineralSurface)}
       </p>
       <p>
         Compte tenu des ratios usuels, les <strong>surfaces planes</strong> (c'est-à-dire tous les
         sols hors <strong>bâtiments, forêts, prairie arborée et sols arboré</strong>) devraient
-        totaliser au minimum <SurfaceArea surfaceAreaInSquareMeters={advisedFlatSurface} />. C'est
-        la superficie requise pour vos panneaux photovoltaïques.
+        totaliser au minimum {formatSurfaceArea(advisedFlatSurface)}. C'est la superficie requise
+        pour vos panneaux photovoltaïques.
       </p>
 
       <FormDefinition>
