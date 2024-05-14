@@ -24,6 +24,7 @@ type NoLabelCheckboxProps = {
 const NoLabelCheckbox = ({ isChecked, disabled }: NoLabelCheckboxProps) => {
   return (
     <Checkbox
+      className="tw-absolute tw-top-4 tw-right-[-8px]"
       options={[
         {
           label: "",
@@ -46,7 +47,7 @@ type NoLabelRadioButtonProps = {
 
 const NoLabelRadioButton = ({ isChecked, disabled, name }: NoLabelRadioButtonProps) => {
   return (
-    <div className={fr.cx("fr-radio-group")}>
+    <div className={classNames(fr.cx("fr-radio-group"), "tw-absolute tw-top-4 tw-right-2")}>
       <input
         type="radio"
         disabled={disabled}
@@ -55,7 +56,6 @@ const NoLabelRadioButton = ({ isChecked, disabled, name }: NoLabelRadioButtonPro
         checked={isChecked}
         id={name}
         name={name}
-        className="tw-absolute tw-right-0 tw-top-4"
       />
       <label className="tw-h-6 tw-w-6" onClick={noop}>
         {" "}
@@ -95,7 +95,7 @@ export default function CheckableTile({
     <div
       className={classNames(
         className,
-        fr.cx("fr-py-2w", "fr-px-3w"),
+        "tw-p-6",
         "tw-border",
         "tw-border-solid",
         "tw-min-h-56",
@@ -136,7 +136,7 @@ export default function CheckableTile({
           <legend className={fr.cx("fr-text--sm")}>{description}</legend>
         </div>
       )}
-      <div className="tw-absolute tw-top-4 tw-right-0">{checkComponent}</div>
+      {checkComponent}
     </div>
   );
 }
