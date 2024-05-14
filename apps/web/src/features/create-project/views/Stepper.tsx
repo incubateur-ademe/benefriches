@@ -6,7 +6,7 @@ import { ProjectCreationStep } from "@/features/create-project/application/creat
 const stepCategories = [
   "Type de projet",
   "Paramètres du projet",
-  "Aménagement des sols",
+  "Transformation des sols",
   "Acteurs",
   "Coûts et recettes",
   "Emploi",
@@ -28,10 +28,16 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION":
     case "PHOTOVOLTAIC_CONTRACT_DURATION":
       return "Paramètres du projet";
-    case "SOILS_SURFACE_AREAS":
+    case "SOILS_TRANSFORMATION_INTRODUCTION":
+    case "NON_SUITABLE_SOILS_NOTICE":
+    case "NON_SUITABLE_SOILS_SELECTION":
+    case "NON_SUITABLE_SOILS_SURFACE":
+    case "SOILS_TRANSFORMATION_PROJECT_SELECTION":
+    case "SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION":
+    case "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION":
     case "SOILS_SUMMARY":
     case "SOILS_CARBON_STORAGE":
-      return "Aménagement des sols";
+      return "Transformation des sols";
     case "STAKEHOLDERS_INTRODUCTION":
     case "STAKEHOLDERS_FUTURE_OPERATOR":
     case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":

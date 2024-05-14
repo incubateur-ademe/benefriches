@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+import { SoilsDistribution } from "shared";
 import { ProjectSite } from "../domain/project.types";
-import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
-import { completeSoilsDistribution } from "./createProject.reducer";
-import { fetchRelatedSite } from "./fetchRelatedSite.action";
+import { getInitialState as getProjectCreationInitialState } from "./createProject.reducer";
 import {
   fetchCurrentAndProjectedSoilsCarbonStorage,
   SoilsCarbonStorageResult,
 } from "./soilsCarbonStorage.actions";
 
-import { createStore } from "@/app/application/store";
+import { createStore, RootState } from "@/app/application/store";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
@@ -50,12 +49,24 @@ const SITE_MOCKED_RESULT = {
     BUILDINGS: 1400,
     MINERAL_SOIL: 1500,
   },
-} as ProjectSite;
+} satisfies ProjectSite;
 
-const PROJECT_SOILS_MOCK = {
+const PROJECT_SOILS_MOCK: SoilsDistribution = {
   BUILDINGS: 400,
   MINERAL_SOIL: 500,
   PRAIRIE_GRASS: 5500,
+} as const;
+
+const getPreloadedProjectCreationState = (): RootState["projectCreation"] => {
+  const projectCreationDefaultInitialState = getProjectCreationInitialState();
+  return {
+    ...projectCreationDefaultInitialState,
+    siteData: SITE_MOCKED_RESULT,
+    projectData: {
+      ...projectCreationDefaultInitialState.projectData,
+      soilsDistribution: PROJECT_SOILS_MOCK,
+    },
+  };
 };
 
 describe("Site carbon sequestration reducer", () => {
@@ -82,12 +93,10 @@ describe("Site carbon sequestration reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         soilsCarbonStorageService: soilsCarbonStorageMockSpy,
-        getSiteByIdService: new SitesServiceMock(SITE_MOCKED_RESULT),
       }),
+      { projectCreation: getPreloadedProjectCreationState() },
     );
 
-    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledTimes(2);
@@ -112,12 +121,10 @@ describe("Site carbon sequestration reducer", () => {
     const store = createStore(
       getTestAppDependencies({
         soilsCarbonStorageService: new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT),
-        getSiteByIdService: new SitesServiceMock(SITE_MOCKED_RESULT),
       }),
+      { projectCreation: getPreloadedProjectCreationState() },
     );
 
-    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     const state = store.getState();
@@ -137,10 +144,9 @@ describe("Site carbon sequestration reducer", () => {
           true,
         ),
       }),
+      { projectCreation: getPreloadedProjectCreationState() },
     );
 
-    await store.dispatch(fetchRelatedSite(SITE_MOCKED_RESULT["id"]));
-    store.dispatch(completeSoilsDistribution(PROJECT_SOILS_MOCK));
     await store.dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());
 
     const state = store.getState();

@@ -23,6 +23,7 @@ type Props<T extends FieldValues> = {
   sliderEndValue: number;
   sliderProps?: SliderBaseProps;
   inputProps?: InputProps["nativeInputProps"];
+  showPercentage?: boolean;
 } & UseControllerProps<T>;
 
 const getValidatedNewValue = (newValue: number, min: number, max: number) => {
@@ -46,6 +47,7 @@ const SliderNumericInput = <T extends FieldValues>({
   hintText,
   sliderStartValue,
   sliderEndValue,
+  showPercentage = true,
   sliderProps,
   inputProps,
 }: Props<T>) => {
@@ -110,9 +112,11 @@ const SliderNumericInput = <T extends FieldValues>({
           ...inputProps,
         }}
       />
-      <legend className={classNames("tw-flex", "tw-justify-end")}>
-        {Math.round(getPercentage(field.value, sliderEndValue))}%
-      </legend>
+      {showPercentage && (
+        <legend className={classNames("tw-flex", "tw-justify-end")}>
+          {Math.round(getPercentage(field.value, sliderEndValue))}%
+        </legend>
+      )}
 
       <Slider
         className="fr-col"

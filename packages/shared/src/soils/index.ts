@@ -39,6 +39,10 @@ export const isMineralSoil = (soilType: SoilType) => {
   return soilType === "MINERAL_SOIL";
 };
 
+export const getTotalSurfaceArea = (soilsDistribution: SoilsDistribution): number => {
+  return typedObjectEntries(soilsDistribution).reduce((sum, [, area]) => sum + (area ?? 0), 0);
+};
+
 export const sumSoilsSurfaceAreasWhere = (
   soilsDistribution: SoilsDistribution,
   cb: (s: SoilType) => boolean,
@@ -107,31 +111,6 @@ export const isPermeableSurfaceWithoutPermanentVegetation = (soilType: SoilType)
   ].includes(soilType);
 };
 
-export const isSoilNatural = (soilType: SoilType): boolean => {
-  return [
-    "FOREST_CONIFER",
-    "FOREST_DECIDUOUS",
-    "FOREST_MIXED",
-    "FOREST_POPLAR",
-    "PRAIRIE_TREES",
-    "PRAIRIE_BUSHES",
-    "PRAIRIE_GRASS",
-    "WET_LAND",
-  ].includes(soilType);
-};
-
 export const isSoilAgricultural = (soilType: SoilType): boolean => {
   return ["VINEYARD", "ORCHARD", "CULTIVATION"].includes(soilType);
-};
-
-export const isSoilFlat = (soilType: SoilType): boolean => {
-  return ![
-    "BUILDINGS",
-    "FOREST_CONIFER",
-    "FOREST_DECIDUOUS",
-    "FOREST_MIXED",
-    "FOREST_POPLAR",
-    "PRAIRIE_TREES",
-    "ARTIFICIAL_TREE_FILLED",
-  ].includes(soilType);
 };

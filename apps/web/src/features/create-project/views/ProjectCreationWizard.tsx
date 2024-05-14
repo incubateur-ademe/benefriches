@@ -18,8 +18,14 @@ import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenu
 import ProjectScheduleIntroductionContainer from "./schedule/introduction";
 import ProjectScheduleProjectionFormContainer from "./schedule/projection";
 import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
-import ProjectSoilsDistributionContainer from "./soils/soils-distribution";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
+import FutureSoilsSelectionForm from "./soils/soils-transformation/future-soils-selection";
+import FutureSoilsSurfaceAreaForm from "./soils/soils-transformation/future-soils-surface-area";
+import SoilsTransformationIntroduction from "./soils/soils-transformation/introduction";
+import NonSuitableSoilsNotice from "./soils/soils-transformation/non-suitable-soils-notice";
+import NonSuitableSoilsSelection from "./soils/soils-transformation/non-suitable-soils-selection";
+import NonSuitableSoilsSurfaceToTransformForm from "./soils/soils-transformation/non-suitable-soils-surface-to-transform";
+import SoilsTransformationProjectSelection from "./soils/soils-transformation/transformation-project-selection";
 import FutureOwnerFormContainer from "./stakeholders/future-site-owner";
 import HasRealEstateTransactionFormContainer from "./stakeholders/has-real-estate-transaction";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
@@ -86,8 +92,20 @@ function ProjectCreationWizard() {
         return <PhotovoltaicExpectedAnnualProductionContainer />;
       case "PHOTOVOLTAIC_CONTRACT_DURATION":
         return <PhotovoltaicContractDurationContainer />;
-      case "SOILS_SURFACE_AREAS":
-        return <ProjectSoilsDistributionContainer />;
+      case "SOILS_TRANSFORMATION_INTRODUCTION":
+        return <SoilsTransformationIntroduction />;
+      case "NON_SUITABLE_SOILS_NOTICE":
+        return <NonSuitableSoilsNotice />;
+      case "NON_SUITABLE_SOILS_SELECTION":
+        return <NonSuitableSoilsSelection />;
+      case "NON_SUITABLE_SOILS_SURFACE":
+        return <NonSuitableSoilsSurfaceToTransformForm />;
+      case "SOILS_TRANSFORMATION_PROJECT_SELECTION":
+        return <SoilsTransformationProjectSelection />;
+      case "SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION":
+        return <FutureSoilsSelectionForm />;
+      case "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION":
+        return <FutureSoilsSurfaceAreaForm />;
       case "SOILS_SUMMARY":
         return <ProjectSoilsSummaryContainer />;
       case "SOILS_CARBON_STORAGE":
