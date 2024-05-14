@@ -10,8 +10,8 @@ const stepCategories = [
   "Acteurs",
   "Coûts et recettes",
   "Emploi",
-  "Calendrier",
-  "Dénomination et avancement",
+  "Calendrier et avancement",
+  "Dénomination",
   "Récapitulatif",
 ] as const;
 
@@ -52,10 +52,10 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
       return "Coûts et recettes";
     case "SCHEDULE_INTRODUCTION":
     case "SCHEDULE_PROJECTION":
-      return "Calendrier";
-    case "NAMING":
     case "PROJECT_PHASE":
-      return "Dénomination et avancement";
+      return "Calendrier et avancement";
+    case "NAMING":
+      return "Dénomination";
     case "CREATION_CONFIRMATION":
     case "FINAL_SUMMARY":
       return "Récapitulatif";

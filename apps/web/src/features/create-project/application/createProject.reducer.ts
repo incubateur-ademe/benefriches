@@ -227,7 +227,7 @@ export const projectCreationSlice = createSlice({
       state.projectData.name = name;
       if (description) state.projectData.description = description;
 
-      state.stepsHistory.push("PROJECT_PHASE");
+      state.stepsHistory.push("FINAL_SUMMARY");
     },
     completeFinalSummaryStep: (state) => {
       state.stepsHistory.push("CREATION_CONFIRMATION");
@@ -298,7 +298,7 @@ export const projectCreationSlice = createSlice({
         state.projectData.photovoltaicInstallationSchedule = scheduleStringToDates(
           photovoltaicInstallationSchedule,
         );
-      state.stepsHistory.push("NAMING");
+      state.stepsHistory.push("PROJECT_PHASE");
     },
     completeProjectPhaseStep: (
       state,
@@ -308,7 +308,7 @@ export const projectCreationSlice = createSlice({
       if (action.payload.phaseDetails) {
         state.projectData.projectPhaseDetails = action.payload.phaseDetails;
       }
-      state.stepsHistory.push("FINAL_SUMMARY");
+      state.stepsHistory.push("NAMING");
     },
     revertStep: (
       state,
