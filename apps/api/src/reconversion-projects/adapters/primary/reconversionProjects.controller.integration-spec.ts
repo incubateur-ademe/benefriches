@@ -131,8 +131,8 @@ describe("ReconversionProjects controller", () => {
         surface_area: 14000,
         owner_name: "Owner name",
         owner_structure_type: "company",
-        tenant_name: "Tenant name",
-        tenant_structure_type: "company",
+        operator_name: "Operator name",
+        operator_structure_type: "company",
         created_at: new Date("2024-02-10"),
         is_friche: false,
       };
@@ -144,8 +144,8 @@ describe("ReconversionProjects controller", () => {
         surface_area: 190000,
         owner_name: "Owner name",
         owner_structure_type: "company",
-        tenant_name: "Tenant name",
-        tenant_structure_type: "company",
+        operator_name: "Operator name",
+        operator_structure_type: "company",
         created_at: new Date("2024-02-01"),
         is_friche: false,
       };
@@ -171,8 +171,8 @@ describe("ReconversionProjects controller", () => {
         surface_area: 20000,
         owner_name: "Owner name",
         owner_structure_type: "company",
-        tenant_name: "Tenant name",
-        tenant_structure_type: "company",
+        operator_name: "Operator name",
+        operator_structure_type: "company",
         created_at: new Date("2024-02-15"),
         is_friche: false,
       };

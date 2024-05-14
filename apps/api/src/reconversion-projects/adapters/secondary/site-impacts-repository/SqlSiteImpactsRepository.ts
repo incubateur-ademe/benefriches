@@ -21,7 +21,7 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
         "friche_accidents_severe_injuries",
         "friche_accidents_deaths",
         "owner_name",
-        "tenant_name",
+        "operator_name",
       )
       .where("id", siteId)
       .first();
@@ -63,7 +63,7 @@ export class SqlSiteImpactsRepository implements SiteImpactsRepository {
       accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
       accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
       ownerName: sqlSite.owner_name ?? "",
-      tenantName: sqlSite.tenant_name ?? undefined,
+      operatorName: sqlSite.operator_name ?? undefined,
       yearlyCosts: sqlYearlyExpenses,
     };
   }

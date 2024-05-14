@@ -82,9 +82,9 @@ describe("CreateNewSite Use Case", () => {
     const siteProps = buildMinimalSiteProps({
       description: "Description of site",
       fullTimeJobsInvolved: 1.3,
-      tenant: {
+      operator: {
         structureType: "company",
-        name: "Tenant SARL",
+        name: "Operator SARL",
       },
       yearlyExpenses: [
         { amount: 45000, bearer: "owner", purposeCategory: "other", purpose: "other" },
@@ -134,9 +134,9 @@ describe("CreateNewSite Use Case", () => {
       const fricheProps = buildFricheProps({
         description: "Description of site",
         fullTimeJobsInvolved: 1.3,
-        tenant: {
+        operator: {
           structureType: "company",
-          name: "Tenant SARL",
+          name: "Operator SARL",
         },
         // friche-only data
         fricheActivity: "INDUSTRY",

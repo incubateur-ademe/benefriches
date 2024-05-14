@@ -27,8 +27,8 @@ type SqlSite = {
   full_time_jobs_involved: number | null;
   owner_structure_type: string;
   owner_name: string | null;
-  tenant_structure_type: string | null;
-  tenant_name: string | null;
+  operator_structure_type: string | null;
+  operator_name: string | null;
   // friche related
   friche_activity: string | null;
   friche_has_contaminated_soils: boolean | null;
@@ -93,8 +93,8 @@ export class SqlSiteRepository implements SitesRepository {
           full_time_jobs_involved: site.fullTimeJobsInvolved,
           owner_name: site.owner.name,
           owner_structure_type: site.owner.structureType,
-          tenant_name: site.tenant?.name,
-          tenant_structure_type: site.tenant?.structureType,
+          operator_name: site.operator?.name,
+          operator_structure_type: site.operator?.structureType,
           created_at: site.createdAt,
           ...(site.isFriche
             ? {
@@ -182,8 +182,8 @@ export class SqlSiteRepository implements SitesRepository {
         "sites.is_friche",
         "sites.owner_name",
         "sites.owner_structure_type",
-        "sites.tenant_name",
-        "sites.tenant_structure_type",
+        "sites.operator_name",
+        "sites.operator_structure_type",
         "sites.friche_has_contaminated_soils",
         "sites.friche_contaminated_soil_surface_area",
         "sites.surface_area",
@@ -207,8 +207,8 @@ export class SqlSiteRepository implements SitesRepository {
           surface_area: SqlSite["surface_area"];
           owner_name: SqlSite["owner_name"];
           owner_structure_type: SqlSite["owner_structure_type"];
-          tenant_name: SqlSite["tenant_name"];
-          tenant_structure_type: SqlSite["tenant_structure_type"];
+          operator_name: SqlSite["operator_name"];
+          operator_structure_type: SqlSite["operator_structure_type"];
           friche_has_contaminated_soils: SqlSite["friche_has_contaminated_soils"];
           friche_contaminated_soil_surface_area: SqlSite["friche_contaminated_soil_surface_area"];
           address_ban_id: SqlAddress["ban_id"];
@@ -236,8 +236,11 @@ export class SqlSiteRepository implements SitesRepository {
         name: sqlSite.owner_name ?? undefined,
         structureType: sqlSite.owner_structure_type,
       },
-      tenant: sqlSite.tenant_structure_type
-        ? { name: sqlSite.tenant_name ?? undefined, structureType: sqlSite.tenant_structure_type }
+      operator: sqlSite.operator_structure_type
+        ? {
+            name: sqlSite.operator_name ?? undefined,
+            structureType: sqlSite.operator_structure_type,
+          }
         : undefined,
       hasContaminatedSoils: sqlSite.friche_has_contaminated_soils ?? undefined,
       contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,

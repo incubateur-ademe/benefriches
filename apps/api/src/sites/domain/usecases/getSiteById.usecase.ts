@@ -15,7 +15,7 @@ export type SiteViewModel = {
     name?: string;
     structureType: string;
   };
-  tenant?: {
+  operator?: {
     name?: string;
     structureType?: string;
   };

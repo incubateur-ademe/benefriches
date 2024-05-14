@@ -12,7 +12,7 @@ import {
 type SocioEconomicImpactsInput = {
   evaluationPeriodInYears: number;
   currentOwner: string;
-  currentTenant?: string;
+  currentOperator?: string;
   futureSiteOwner?: string;
   yearlyCurrentCosts: { purpose: string; amount: number }[];
   yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"];
@@ -40,7 +40,7 @@ export const computeSocioEconomicImpacts = (
     ...computeDirectAndIndirectEconomicImpacts({
       evaluationPeriodInYears: input.evaluationPeriodInYears,
       currentOwner: input.currentOwner,
-      currentTenant: input.currentTenant,
+      currentOperator: input.currentOperator,
       futureSiteOwner: input.futureSiteOwner,
       yearlyCurrentCosts: input.yearlyCurrentCosts,
       yearlyProjectedCosts: input.yearlyProjectedCosts,

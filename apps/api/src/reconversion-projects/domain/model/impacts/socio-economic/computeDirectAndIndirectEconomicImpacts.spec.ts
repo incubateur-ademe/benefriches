@@ -101,11 +101,11 @@ describe("Socio-economic impacts", () => {
       expect(result).toEqual<SocioEconomicImpactsResult>([]);
     });
 
-    it("returns avoided friche costs for current tenant over 10 years when friche costs", () => {
+    it("returns avoided friche costs for current operator over 10 years when friche costs", () => {
       const result = computeDirectAndIndirectEconomicImpacts({
         evaluationPeriodInYears: 10,
         currentOwner: "Current owner",
-        currentTenant: "Current tenant",
+        currentOperator: "Current operator",
         yearlyCurrentCosts: [
           {
             amount: 14000,
@@ -132,7 +132,7 @@ describe("Socio-economic impacts", () => {
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
-          actor: "Current tenant",
+          actor: "Current operator",
           amount: 220000,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
@@ -140,11 +140,11 @@ describe("Socio-economic impacts", () => {
       ]);
     });
 
-    it("returns avoided friche costs for current owner over 10 years when friche costs but no tenant", () => {
+    it("returns avoided friche costs for current owner over 10 years when friche costs but no operator", () => {
       const result = computeDirectAndIndirectEconomicImpacts({
         evaluationPeriodInYears: 10,
         currentOwner: "Current owner",
-        currentTenant: undefined,
+        currentOperator: undefined,
         yearlyCurrentCosts: [
           {
             amount: 14000,
@@ -250,7 +250,7 @@ describe("Socio-economic impacts", () => {
       const result = computeDirectAndIndirectEconomicImpacts({
         evaluationPeriodInYears: 10,
         currentOwner: "Current owner",
-        currentTenant: "Current tenant",
+        currentOperator: "Current operator",
         yearlyCurrentCosts: [],
         yearlyProjectedCosts: [],
         propertyTransferDutiesAmount: 5000,

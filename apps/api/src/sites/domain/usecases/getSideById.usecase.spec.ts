@@ -28,9 +28,9 @@ describe("GetSiteById Use Case", () => {
           structureType: "department",
           name: "Le département Paris",
         },
-        tenant: {
+        operator: {
           structureType: "company",
-          name: "Tenant company name",
+          name: "Operator company name",
         },
         soilsDistribution: {
           BUILDINGS: 3000,
@@ -65,7 +65,7 @@ describe("GetSiteById Use Case", () => {
         name: site.name,
         isFriche: site.isFriche,
         owner: site.owner,
-        tenant: site.tenant,
+        operator: site.operator,
         soilsDistribution: site.soilsDistribution,
         surfaceArea: site.surfaceArea,
         address: site.address,

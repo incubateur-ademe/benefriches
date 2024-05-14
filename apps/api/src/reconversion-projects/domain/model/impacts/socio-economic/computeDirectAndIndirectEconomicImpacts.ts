@@ -13,7 +13,7 @@ const FRICHE_COST_PURPOSES = [
 type DirectAndIndirectEconomicImpactsInput = {
   evaluationPeriodInYears: number;
   currentOwner: string;
-  currentTenant?: string;
+  currentOperator?: string;
   futureSiteOwner?: string;
   yearlyCurrentCosts: { purpose: string; amount: number }[];
   yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"];
@@ -94,7 +94,7 @@ export const computeDirectAndIndirectEconomicImpacts = (
       .reduce((sum, amount) => sum + amount, 0);
     impacts.push({
       amount: fricheCostImpactAmount * input.evaluationPeriodInYears,
-      actor: input.currentTenant ?? input.currentOwner,
+      actor: input.currentOperator ?? input.currentOwner,
       impact: "avoided_friche_costs",
       impactCategory: "economic_direct",
     });

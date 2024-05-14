@@ -47,7 +47,7 @@ export type SiteImpactsDataView = {
   addressLabel: string;
   contaminatedSoilSurface?: number;
   ownerName: string;
-  tenantName?: string;
+  operatorName?: string;
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;
   fullTimeJobs?: number;
@@ -213,7 +213,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         ),
         socioeconomic: computeSocioEconomicImpacts({
           currentOwner: relatedSite.ownerName,
-          currentTenant: relatedSite.tenantName,
+          currentOperator: relatedSite.operatorName,
           yearlyCurrentCosts: relatedSite.yearlyCosts,
           yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
           futureSiteOwner: reconversionProject.futureSiteOwnerName,

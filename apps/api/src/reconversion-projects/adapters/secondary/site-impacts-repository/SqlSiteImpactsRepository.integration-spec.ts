@@ -31,8 +31,8 @@ describe("SqlSiteRepository integration", () => {
         surface_area: 14000,
         owner_name: "Current site owner",
         owner_structure_type: "company",
-        tenant_name: "Current tenant",
-        tenant_structure_type: "company",
+        operator_name: "Current operator",
+        operator_structure_type: "company",
         created_at: new Date(),
         is_friche: true,
         friche_activity: "HOUSING",
@@ -54,7 +54,7 @@ describe("SqlSiteRepository integration", () => {
           id: uuid(),
           site_id: siteId,
           amount: 100,
-          bearer: "tenant",
+          bearer: "operator",
           purpose: "rent",
           purpose_category: "rent",
         },
@@ -89,8 +89,8 @@ describe("SqlSiteRepository integration", () => {
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 0,
         ownerName: "Current site owner",
-        tenantName: "Current tenant",
-        yearlyCosts: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
+        operatorName: "Current operator",
+        yearlyCosts: [{ amount: 100, bearer: "operator", purpose: "rent" }],
       });
     });
     it("gets site with data needed for impact computation when no full time jobs, no accidents and no contaminated surface", async () => {
