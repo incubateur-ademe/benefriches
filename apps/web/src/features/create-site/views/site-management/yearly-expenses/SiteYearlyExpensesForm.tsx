@@ -56,7 +56,16 @@ const siteManagementInputs = [
   },
   {
     name: "maintenance",
-    label: getLabelForExpensePurpose("maintenance"),
+    label: (
+      <>
+        {getLabelForExpensePurpose("maintenance")}
+        <TooltipInfoButton
+          text=" Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
+      dépenses d'entretien sont à la charge de ce dernier."
+          id="maintenance-costs-info"
+        />
+      </>
+    ),
     displayOnlyIfHasTenant: false,
     askForBearer: false,
   },
@@ -69,7 +78,7 @@ const siteManagementInputs = [
           text="Par exemple, le maintien de bâtiments en bon état (ex&nbsp;: chauffage pour éviter le gel
           de canalisation ou la dégradation liée l'humidité), la taille de la végétation ou encore
           le règlement des factures d'eau ou d'électricité."
-          id="other-management-costs"
+          id="other-management-costs-info"
         />
       </>
     ),
@@ -81,7 +90,16 @@ const siteManagementInputs = [
 const siteSecuringInputs = [
   {
     name: "security",
-    label: getLabelForExpensePurpose("security"),
+    label: (
+      <>
+        {getLabelForExpensePurpose("security")}
+        <TooltipInfoButton
+          text=" Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
+      dépenses de gardiennage sont à la charge de ce dernier."
+          id="security-costs-info"
+        />
+      </>
+    ),
     askForBearer: true,
     displayIfHasRecentAccidents: false,
   },
@@ -91,13 +109,21 @@ const siteSecuringInputs = [
       <>
         {getLabelForExpensePurpose("illegalDumpingCost")}
         <TooltipInfoButton
-          text="L'enquête menée en 2019 par l'ADEME indique un ratio moyen de 4,7 kg/hab/an et un coût
-          moyen de 900 €/tonne (Nb&nbsp;: bien qu'on relève une occurrence non négligeable de coûts
-          plus élevés (500 à 1000 €/tonne voire supérieurs à 1000 €/tonne), qui peuvent être liés à
-          des typologies de déchets particulières (déchets dangereux, encombrants) ou à des besoins
-          de gestion (évacuation ou traitement) spécifiques, une majorité des valeurs répertoriées
-          sont comprises entre 100 et 500 €/tonne)."
-          id="illegal-dumping-cost"
+          text={
+            <span>
+              L'enquête menée en 2019 par l'ADEME indique un ratio moyen de 4,7 kg/hab/an et un coût
+              moyen de 900 €/tonne (Nb&nbsp;: bien qu'on relève une occurrence non négligeable de
+              coûts plus élevés (500 à 1000 €/tonne voire supérieurs à 1000 €/tonne), qui peuvent
+              être liés à des typologies de déchets particulières (déchets dangereux, encombrants)
+              ou à des besoins de gestion (évacuation ou traitement) spécifiques, une majorité des
+              valeurs répertoriées sont comprises entre 100 et 500 €/tonne).
+              <br />
+              <br />
+              Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.)
+              les dépenses de d'enlèvement de déchets sont à la charge de ce dernier.
+            </span>
+          }
+          id="illegal-dumping-costs-info"
         />
       </>
     ),
@@ -119,7 +145,7 @@ const siteSecuringInputs = [
         <TooltipInfoButton
           text="La sécurisation peut aussi passer, par exemple, par la mise en place de portail, clôture
           ou de cadenas, voire de protections sur les parties vitrées."
-          id="other-security-costs"
+          id="other-security-costs-info"
         />
       </>
     ),
@@ -149,12 +175,7 @@ function SiteYearlyExpensesForm({
   const title = `Coûts annuels ${isFriche ? "de la friche" : "du site"}`;
 
   return (
-    <WizardFormLayout
-      title={title}
-      instructions={
-        <SiteYearlyExpensesFormInstructions isFriche={isFriche} hasTenant={hasTenant} />
-      }
-    >
+    <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <h3>Gestion du site</h3>
         {siteManagementInputs.map(({ name, label, displayOnlyIfHasTenant, askForBearer }) => {

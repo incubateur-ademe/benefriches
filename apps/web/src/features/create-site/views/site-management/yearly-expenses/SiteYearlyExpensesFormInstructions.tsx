@@ -1,12 +1,7 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 
-type Props = {
-  hasTenant: boolean;
-  isFriche: boolean;
-};
-
-function SiteYearlyExpensesFormInstructions({ hasTenant, isFriche }: Props) {
+function SiteYearlyExpensesFormInstructions() {
   return (
     <>
       <p>
@@ -47,19 +42,6 @@ function SiteYearlyExpensesFormInstructions({ hasTenant, isFriche }: Props) {
             )
           </li>
         </ul>
-        {hasTenant && isFriche && (
-          <p>
-            Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
-            dépenses de gardiennage, d'entretien, d'enlèvement de déchets sont à la charge de ce
-            dernier.
-          </p>
-        )}
-        {hasTenant && !isFriche && (
-          <p>
-            Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
-            dépenses d'entretien sont à la charge de ce dernier.
-          </p>
-        )}
         <p>La taxe foncière est due par le propriétaire foncier.</p>
       </FormDefinition>
     </>
