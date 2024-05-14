@@ -21,12 +21,11 @@ export const soilTypeSchema = z.enum([
   "WATER", // plan d'eau
 ]);
 
-export const soilTypes = soilTypeSchema.options
+export const soilTypes = soilTypeSchema.options;
 
 export type SoilType = z.infer<typeof soilTypeSchema>;
 
 export type SoilsDistribution = Partial<Record<SoilType, number>>;
-
 
 export const isImpermeableSoil = (soilType: SoilType) => {
   return ["BUILDINGS", "IMPERMEABLE_SOILS"].includes(soilType);
@@ -109,30 +108,30 @@ export const isPermeableSurfaceWithoutPermanentVegetation = (soilType: SoilType)
 };
 
 export const isSoilNatural = (soilType: SoilType): boolean => {
-    return [
-      "FOREST_CONIFER",
-      "FOREST_DECIDUOUS",
-      "FOREST_MIXED",
-      "FOREST_POPLAR",
-      "PRAIRIE_TREES",
-      "PRAIRIE_BUSHES",
-      "PRAIRIE_GRASS",
-      "WET_LAND",
-     ].includes(soilType);
-  };
+  return [
+    "FOREST_CONIFER",
+    "FOREST_DECIDUOUS",
+    "FOREST_MIXED",
+    "FOREST_POPLAR",
+    "PRAIRIE_TREES",
+    "PRAIRIE_BUSHES",
+    "PRAIRIE_GRASS",
+    "WET_LAND",
+  ].includes(soilType);
+};
 
-  export const isSoilAgricultural = (soilType: SoilType):boolean => {
-    return ["VINEYARD", "ORCHARD", "CULTIVATION"].includes(soilType);
-  };
+export const isSoilAgricultural = (soilType: SoilType): boolean => {
+  return ["VINEYARD", "ORCHARD", "CULTIVATION"].includes(soilType);
+};
 
-  export const isSoilFlat = (soilType: SoilType): boolean => {
-    return ![
-      "BUILDINGS",
-      "FOREST_CONIFER",
-      "FOREST_DECIDUOUS",
-      "FOREST_MIXED",
-      "FOREST_POPLAR",
-      "PRAIRIE_TREES",
-      "ARTIFICIAL_TREE_FILLED",
-    ].includes(soilType);
-  }
+export const isSoilFlat = (soilType: SoilType): boolean => {
+  return ![
+    "BUILDINGS",
+    "FOREST_CONIFER",
+    "FOREST_DECIDUOUS",
+    "FOREST_MIXED",
+    "FOREST_POPLAR",
+    "PRAIRIE_TREES",
+    "ARTIFICIAL_TREE_FILLED",
+  ].includes(soilType);
+};
