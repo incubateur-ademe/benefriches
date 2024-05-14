@@ -1,39 +1,24 @@
 import { SoilsDistribution } from "shared";
 
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 
 type Props = {
   onNext: () => void;
   onBack: () => void;
-  totalSurfaceArea: number;
   siteSoilsDistribution: SoilsDistribution;
   projectSoilsDistribution: SoilsDistribution;
 };
 
 const SiteSoilsSummary = ({
-  totalSurfaceArea,
   onNext,
   onBack,
   siteSoilsDistribution,
   projectSoilsDistribution,
 }: Props) => {
-  const formattedTotalSurfaceAreaInHectare = formatNumberFr(
-    convertSquareMetersToHectares(totalSurfaceArea),
-  );
-
   return (
     <>
       <h2>Récapitulatif de la typologie des sols</h2>
-      <p>
-        Superficie totale du site :{" "}
-        <strong>
-          {formatSurfaceArea(totalSurfaceArea)}, soit {formattedTotalSurfaceAreaInHectare} ha
-        </strong>
-        .
-      </p>
       <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6 tw-pb-10">
         <div className="tw-border tw-border-solid tw-border-grey tw-p-8">
           <h3 className="tw-uppercase tw-text-base">Site existant</h3>
