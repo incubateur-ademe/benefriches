@@ -54,6 +54,7 @@ function ProjectionCreationDataSummaryContainer() {
       }}
       siteData={{
         surfaceArea: siteData?.surfaceArea ?? 0,
+        isFriche: siteData?.isFriche ?? false,
       }}
     />
   );

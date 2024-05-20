@@ -3,7 +3,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import classNames from "../../clsx";
 
 type Props = {
-  title: string;
+  title: ReactNode;
   instructions?: ReactNode;
   children: ReactNode;
 };

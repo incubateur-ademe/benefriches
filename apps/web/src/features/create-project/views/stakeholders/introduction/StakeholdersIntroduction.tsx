@@ -8,7 +8,15 @@ type Props = {
 
 const ProjectStakeholdersIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <WizardFormLayout title="Différents acteurs vont prendre part à votre projet">
+    <WizardFormLayout
+      title={
+        <span>
+          🧑‍💼
+          <br />
+          Différents acteurs vont prendre part à votre projet
+        </span>
+      }
+    >
       <p>
         Nous avons besoin de les connaître pour savoir à qui seront imputables les différents coûts,
         recettes et impacts.

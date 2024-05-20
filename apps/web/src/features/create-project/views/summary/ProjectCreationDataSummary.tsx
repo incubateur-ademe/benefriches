@@ -52,6 +52,7 @@ type Props = {
   };
   siteData: {
     surfaceArea: number;
+    isFriche: boolean;
   };
   onNext: () => void;
   onBack: () => void;
@@ -253,15 +254,17 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           })}
         </Accordion>
         <Accordion label="Calendrier" defaultExpanded>
-          <DataLine
-            label={<strong>Travaux de remise en état de la friche</strong>}
-            value={
-              <ScheduleDates
-                startDate={projectData.reinstatementSchedule?.startDate}
-                endDate={projectData.reinstatementSchedule?.endDate}
-              />
-            }
-          />
+          {siteData.isFriche && (
+            <DataLine
+              label={<strong>Travaux de remise en état de la friche</strong>}
+              value={
+                <ScheduleDates
+                  startDate={projectData.reinstatementSchedule?.startDate}
+                  endDate={projectData.reinstatementSchedule?.endDate}
+                />
+              }
+            />
+          )}
           {projectData.photovoltaticInstallationSchedule && (
             <DataLine
               label={<strong>Travaux d'installation des panneaux</strong>}
