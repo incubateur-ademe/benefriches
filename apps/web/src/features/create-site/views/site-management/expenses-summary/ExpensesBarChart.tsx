@@ -69,6 +69,7 @@ const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName
       ],
       lineWidth: 0,
       type: "category",
+      opposite: true,
     },
 
     tooltip: {
@@ -89,15 +90,12 @@ const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName
       enabled: false,
     },
     yAxis: {
-      title: { text: "" },
-      plotLines: [
-        {
-          value: 0,
-          width: 2,
-          color: "#929292",
-        },
-      ],
-      gridLineWidth: 0,
+      title: {
+        text: null,
+      },
+      labels: {
+        enabled: false,
+      },
     },
     legend: {
       layout: "vertical",

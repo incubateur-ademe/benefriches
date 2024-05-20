@@ -24,6 +24,14 @@
   display: none;
 }
 
+.highcharts-legend-item > text {
+  font-weight: normal;
+}
+
+.highcharts-yaxis-grid .highcharts-grid-line {
+  stroke-width: 0;
+}
+
 /* La librairie du DSFR ne va que jusqu’à 8 pour le Stepper */
 .fr-stepper__steps[data-fr-steps="9"] {
   --steps: 9;
