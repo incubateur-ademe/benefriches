@@ -34,7 +34,7 @@ function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit, onBack 
   } = errors;
 
   return (
-    <WizardFormLayout title="Calendrier prévisionnel des travaux">
+    <WizardFormLayout title="Calendrier">
       <form onSubmit={handleSubmit(onSubmit)}>
         {askForReinstatementSchedule && (
           <Fieldset

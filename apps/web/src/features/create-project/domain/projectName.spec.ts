@@ -1,13 +1,13 @@
 import { generateProjectName, ProjectInfo } from "./projectName";
 
 describe("Project name generation", () => {
-  it("should return 'Projet photovoltaïque'", () => {
+  it("should return 'Centrale photovoltaïque'", () => {
     const project: ProjectInfo = {
       developmentPlanCategories: ["RENEWABLE_ENERGY"],
       renewableEnergyTypes: ["PHOTOVOLTAIC_POWER_PLANT"],
     };
 
-    expect(generateProjectName(project)).toEqual("Projet photovoltaïque");
+    expect(generateProjectName(project)).toEqual("Centrale photovoltaïque");
   });
 
   it("should return 'Projet agrivoltaïque'", () => {

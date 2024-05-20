@@ -52,7 +52,7 @@ function SiteOperatorForm({
   const selectedStakeholder = watch("stakeholder");
 
   return (
-    <WizardFormLayout title="Qui sera l'exploitant du site ?">
+    <WizardFormLayout title="Qui sera l’exploitant de la centrale photovoltaïque&nbsp;?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={formState.errors.stakeholder ? "error" : "default"}

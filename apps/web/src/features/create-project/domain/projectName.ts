@@ -13,7 +13,11 @@ const generateRenewableEnergyProjectName = (
   renewableEnergyTypes: ProjectInfo["renewableEnergyTypes"],
 ): string => {
   if (renewableEnergyTypes.length === 1) {
-    return `Projet ${getLabelForRenewableEnergyProductionType(renewableEnergyTypes[0]!).toLowerCase()}`;
+    const [renewableEnergyType] = renewableEnergyTypes;
+    if (renewableEnergyType === "PHOTOVOLTAIC_POWER_PLANT") {
+      return "Centrale photovoltaïque";
+    }
+    return `Projet ${getLabelForRenewableEnergyProductionType(renewableEnergyType!).toLowerCase()}`;
   }
   return "Projet EnR mixte";
 };

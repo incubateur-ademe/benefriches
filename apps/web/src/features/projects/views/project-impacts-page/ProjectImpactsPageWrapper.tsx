@@ -57,7 +57,7 @@ function ProjectImpactsPageWrapper({
     <div className="tw-bg-impacts-main dark:tw-bg-darkGrey">
       <ProjectsImpactsPageHeader
         projectId={projectData?.id ?? ""}
-        projectName={projectData?.name ?? "Projet photovoltaïque"}
+        projectName={projectData?.name ?? "Centrale photovoltaïque"}
         siteName={relatedSiteData?.name ?? ""}
       />
 

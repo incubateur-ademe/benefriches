@@ -58,7 +58,7 @@ const Fieldset = (props: Props) => {
       {...rest}
     >
       {legend !== undefined && (
-        <legend id={legendId} className={fr.cx("fr-fieldset__legend", "fr-text--regular")}>
+        <legend id={legendId} className={fr.cx("fr-fieldset__legend", "fr-text--bold")}>
           {legend}
           {hintText !== undefined && <span className={"fr-hint-text"}>{hintText}</span>}
         </legend>
