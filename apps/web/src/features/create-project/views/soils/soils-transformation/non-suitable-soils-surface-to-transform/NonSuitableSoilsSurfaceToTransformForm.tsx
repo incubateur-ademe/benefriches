@@ -59,7 +59,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
             Les bâtiments seront démolis et deviendront un <strong>sol perméable minéral</strong>.
           </p>
           <p>
-            Les arbres seront coupés. Les sols artificiel arborés deviendront un{" "}
+            Les arbres seront coupés. Les sols artificiels arborés deviendront un{" "}
             <strong>sol enherbé et arbustif</strong> tandis que les prairies arborées et les forêts
             deviendront une <strong>prairie herbacée</strong>.
           </p>

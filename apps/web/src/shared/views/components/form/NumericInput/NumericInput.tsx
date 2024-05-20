@@ -31,7 +31,6 @@ const NumericInput = <T extends FieldValues>({
   });
 
   const error = fieldState.error;
-  error && console.log("error in", name, error);
 
   const nativeInputProps = {
     name: field.name,

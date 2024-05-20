@@ -18,7 +18,7 @@ const NonSuitableSoilsNotice = ({
   return (
     <WizardFormLayout title="😐 Le site n'est pas encore prêt à accueillir une centrale photovoltaïque.">
       <p>
-        Les panneaux photovoltaïque sont censés occuper une surface de{" "}
+        Les panneaux photovoltaïques sont censés occuper une surface de{" "}
         <strong>{formatSurfaceArea(photovoltaicPanelsSurfaceAre)}</strong>. Or, le site ne possède
         que <strong>{formatSurfaceArea(suitableSurfaceArea)}</strong> de surface compatible ; le
         reste étant occupé par des bâtiments, des arbres ou de l'eau.
