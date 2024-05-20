@@ -96,6 +96,10 @@ const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName
       labels: {
         enabled: false,
       },
+      startOnTick: false,
+      endOnTick: false,
+      tickAmount: 1,
+      tickPositions: [0],
     },
     legend: {
       layout: "vertical",
