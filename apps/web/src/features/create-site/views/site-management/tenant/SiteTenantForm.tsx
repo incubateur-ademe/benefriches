@@ -47,7 +47,7 @@ function SiteTenantForm({
   const { tenantType: selectedTenantType } = watch();
 
   return (
-    <WizardFormLayout title="Le site est-il encore loué par un exploitant ?">
+    <WizardFormLayout title="Le site est-il encore loué ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={formState.errors.tenantType ? "error" : "default"}
