@@ -12,7 +12,7 @@ import {
 import {
   computeEconomicBalanceImpact,
   EconomicBalanceImpactResult,
-} from "../model/impacts/economicBalance/economicBalanceImpact";
+} from "../model/impacts/economic-balance/economicBalanceImpact";
 import {
   computeFullTimeJobsImpact,
   FullTimeJobsImpactResult,
@@ -85,6 +85,7 @@ export type ReconversionProjectImpactsDataView = {
   developmentPlanExpectedAnnualEnergyProductionMWh?: number;
   developmentPlanSurfaceArea?: number;
   developmentPlanElectricalPowerKWc?: number;
+  developmentPlanDeveloperName?: string;
   operationsFirstYear?: number;
 };
 
@@ -198,6 +199,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       impacts: {
         economicBalance: computeEconomicBalanceImpact(
           {
+            developmentPlanDeveloperName: reconversionProject.developmentPlanDeveloperName,
             futureOperatorName: reconversionProject.futureOperatorName,
             futureSiteOwnerName: reconversionProject.futureSiteOwnerName,
             reinstatementContractOwnerName: reconversionProject.reinstatementContractOwnerName,

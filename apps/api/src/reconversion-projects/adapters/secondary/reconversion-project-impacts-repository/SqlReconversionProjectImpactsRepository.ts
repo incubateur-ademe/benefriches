@@ -46,7 +46,7 @@ export class SqlReconversionProjectImpactsRepository
       .where("reconversion_project_id", reconversionProjectId);
 
     const sqlDevelopmentPlan = await this.sqlConnection("reconversion_project_development_plans")
-      .select("schedule_start_date", "schedule_end_date", "cost", "features")
+      .select("schedule_start_date", "schedule_end_date", "cost", "features", "developer_name")
       .where("reconversion_project_id", reconversionProjectId)
       .first();
     const conversionSchedule =
@@ -120,6 +120,7 @@ export class SqlReconversionProjectImpactsRepository
       developmentPlanExpectedAnnualEnergyProductionMWh,
       developmentPlanSurfaceArea,
       developmentPlanElectricalPowerKWc,
+      developmentPlanDeveloperName: sqlDevelopmentPlan?.developer_name ?? undefined,
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
     };
   }

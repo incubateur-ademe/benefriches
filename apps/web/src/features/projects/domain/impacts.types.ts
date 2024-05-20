@@ -96,7 +96,7 @@ export type ReconversionProjectImpacts = {
     bearer?: string;
     costs: {
       total: number;
-      operationsCosts: {
+      operationsCosts?: {
         total: number;
         expenses: { purpose: PurposeCost; amount: number }[];
       };
@@ -106,7 +106,7 @@ export type ReconversionProjectImpacts = {
     };
     revenues: {
       total: number;
-      operationsRevenues: {
+      operationsRevenues?: {
         bearer?: string;
         total: number;
         revenues: { source: SourceRevenue; amount: number }[];

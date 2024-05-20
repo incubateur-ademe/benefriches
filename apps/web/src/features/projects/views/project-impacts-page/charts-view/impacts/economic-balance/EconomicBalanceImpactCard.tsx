@@ -62,7 +62,7 @@ const getCostsValues = ({
       name: "Transaction immobilière",
       value: realEstateTransaction,
     },
-    ...operationsCosts.expenses.map(({ amount, purpose }) => ({
+    ...(operationsCosts?.expenses ?? []).map(({ amount, purpose }) => ({
       name: getYearlyCostPurposeLabel(purpose),
       value: amount,
     })),
@@ -81,7 +81,7 @@ const getRevenuesValue = ({
       name: "Aides financières",
       value: financialAssistance,
     },
-    ...operationsRevenues.revenues.map(({ amount, source }) => ({
+    ...(operationsRevenues?.revenues ?? []).map(({ amount, source }) => ({
       name: getYearlyRevenueSourceLabel(source),
       value: amount,
     })),

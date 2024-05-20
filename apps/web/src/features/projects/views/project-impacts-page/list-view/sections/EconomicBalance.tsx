@@ -48,14 +48,19 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
           <ImpactValue value={impact.revenues.financialAssistance} type="monetary" />
         </ImpactItemRow>
       )}
-      <ImpactItemRow>
-        <ImpactLabel>💸️ Charges d'exploitation</ImpactLabel>
-        <ImpactValue value={impact.costs.operationsCosts.total} type="monetary" />
-      </ImpactItemRow>
-      <ImpactItemRow>
-        <ImpactLabel>💰 Recettes d'exploitation</ImpactLabel>
-        <ImpactValue value={impact.revenues.operationsRevenues.total} type="monetary" />
-      </ImpactItemRow>
+      {!!impact.costs.operationsCosts && (
+        <ImpactItemRow>
+          <ImpactLabel>💸️ Charges d'exploitation</ImpactLabel>
+          <ImpactValue value={impact.costs.operationsCosts.total} type="monetary" />
+        </ImpactItemRow>
+      )}
+      {!!impact.revenues.operationsRevenues && (
+        <ImpactItemRow>
+          <ImpactLabel>💰 Recettes d'exploitation</ImpactLabel>
+          <ImpactValue value={impact.revenues.operationsRevenues.total} type="monetary" />
+        </ImpactItemRow>
+      )}
+
       <ImpactItemRow>
         <ImpactLabel>Total du bilan de l'opération</ImpactLabel>
         <ImpactValue isTotal value={impact.total} type="monetary" />

@@ -5,7 +5,7 @@ export type EconomicBalanceImpactResult = {
   bearer?: string;
   costs: {
     total: number;
-    operationsCosts: {
+    operationsCosts?: {
       total: number;
       expenses: { purpose: string; amount: number }[];
     };
@@ -15,7 +15,7 @@ export type EconomicBalanceImpactResult = {
   };
   revenues: {
     total: number;
-    operationsRevenues: {
+    operationsRevenues?: {
       total: number;
       revenues: { source: string; amount: number }[];
     };
@@ -28,6 +28,7 @@ type ProjectProps = {
   reinstatementCost?: number;
   developmentPlanInstallationCost?: number;
   realEstateTransactionTotalCost?: number;
+  developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
   reinstatementContractOwnerName?: string;
@@ -40,6 +41,7 @@ type ReconversionProjectInstallationCostResult = {
   reinstatementCost: number;
   developmentPlanInstallationCost: number;
   realEstateTransactionTotalCost: number;
+  developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
   reinstatementContractOwnerName?: string;
@@ -50,14 +52,15 @@ export const getEconomicResultsOfProjectInstallation = ({
   reinstatementCost,
   developmentPlanInstallationCost,
   realEstateTransactionTotalCost,
-  futureOperatorName,
+  developmentPlanDeveloperName,
   futureSiteOwnerName,
   reinstatementContractOwnerName,
 }: ReconversionProjectInstallationCostResult) => {
-  const isOperatorOwnerOfReinstatement = futureOperatorName === reinstatementContractOwnerName;
-  const isOperatorFutureSiteOwner = futureSiteOwnerName === futureOperatorName;
+  const isDeveloperOwnerOfReinstatement =
+    developmentPlanDeveloperName === reinstatementContractOwnerName;
+  const isDeveloperFutureSiteOwner = futureSiteOwnerName === developmentPlanDeveloperName;
 
-  const revenues = isOperatorOwnerOfReinstatement
+  const revenues = isDeveloperOwnerOfReinstatement
     ? {
         total: reinstatementFinancialAssistanceAmount,
         financialAssistance: reinstatementFinancialAssistanceAmount,
@@ -67,9 +70,9 @@ export const getEconomicResultsOfProjectInstallation = ({
   const costsDetails = Object.fromEntries(
     Object.entries({
       developmentPlanInstallation: -developmentPlanInstallationCost,
-      siteReinstatement: isOperatorOwnerOfReinstatement ? -reinstatementCost : undefined,
+      siteReinstatement: isDeveloperOwnerOfReinstatement ? -reinstatementCost : undefined,
       realEstateTransaction:
-        isOperatorFutureSiteOwner && realEstateTransactionTotalCost
+        isDeveloperFutureSiteOwner && realEstateTransactionTotalCost
           ? -realEstateTransactionTotalCost
           : undefined,
     }).filter(([, amount]) => amount !== undefined),
@@ -137,6 +140,7 @@ export const computeEconomicBalanceImpact = (
     reinstatementContractOwnerName,
     futureSiteOwnerName,
     futureOperatorName,
+    developmentPlanDeveloperName,
     yearlyProjectedCosts,
     yearlyProjectedRevenues,
   }: ProjectProps,
@@ -151,36 +155,53 @@ export const computeEconomicBalanceImpact = (
     reinstatementCost,
     developmentPlanInstallationCost,
     realEstateTransactionTotalCost,
-    futureOperatorName,
+    developmentPlanDeveloperName,
     futureSiteOwnerName,
     reinstatementContractOwnerName,
   });
 
-  const {
-    total: totalExploitation,
-    operationsCosts,
-    operationsRevenues,
-  } = getEconomicResultsOfProjectExploitationForDuration(
-    yearlyProjectedRevenues,
-    yearlyProjectedCosts,
-    durationInYear,
-  );
+  const isDeveloperFutureSiteOperator = futureOperatorName === developmentPlanDeveloperName;
 
   const { total: totalInstallationCosts, ...installationCostsDetails } = costs;
   const { total: totalInstallationRevenues, ...installationRevenuesDetails } = revenues;
 
-  return {
-    total: Math.round(totalInstallation + totalExploitation),
-    bearer: futureOperatorName,
-    costs: {
-      total: totalInstallationCosts + operationsCosts.total,
-      ...installationCostsDetails,
+  if (isDeveloperFutureSiteOperator) {
+    const {
+      total: totalExploitation,
       operationsCosts,
+      operationsRevenues,
+    } = getEconomicResultsOfProjectExploitationForDuration(
+      yearlyProjectedRevenues,
+      yearlyProjectedCosts,
+      durationInYear,
+    );
+
+    return {
+      total: Math.round(totalInstallation + totalExploitation),
+      bearer: developmentPlanDeveloperName,
+      costs: {
+        total: totalInstallationCosts + operationsCosts.total,
+        ...installationCostsDetails,
+        operationsCosts,
+      },
+      revenues: {
+        total: totalInstallationRevenues + operationsRevenues.total,
+        ...installationRevenuesDetails,
+        operationsRevenues,
+      },
+    };
+  }
+
+  return {
+    total: Math.round(totalInstallation),
+    bearer: developmentPlanDeveloperName,
+    costs: {
+      total: totalInstallationCosts,
+      ...installationCostsDetails,
     },
     revenues: {
-      total: totalInstallationRevenues + operationsRevenues.total,
+      total: totalInstallationRevenues,
       ...installationRevenuesDetails,
-      operationsRevenues,
     },
   };
 };

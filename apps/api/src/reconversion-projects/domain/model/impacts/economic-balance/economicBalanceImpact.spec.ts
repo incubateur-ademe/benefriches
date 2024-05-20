@@ -14,6 +14,7 @@ describe("EconomicBalance impact", () => {
           developmentPlanInstallationCost: 150000,
           realEstateTransactionTotalCost: 100000,
           futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
           futureSiteOwnerName: "Mairie de Blajan",
           reinstatementContractOwnerName: "Mairie de Blajan",
         }),
@@ -40,6 +41,7 @@ describe("EconomicBalance impact", () => {
           developmentPlanInstallationCost: 150000,
           realEstateTransactionTotalCost: 100000,
           futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
           futureSiteOwnerName: "Acheteur",
           reinstatementContractOwnerName: "Mairie de Blajan",
         }),
@@ -65,6 +67,7 @@ describe("EconomicBalance impact", () => {
           developmentPlanInstallationCost: 150000,
           realEstateTransactionTotalCost: 100000,
           futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
           futureSiteOwnerName: "Acheteur",
           reinstatementContractOwnerName: "Propriétaire",
         }),
@@ -154,7 +157,7 @@ describe("EconomicBalance impact", () => {
     });
   });
   describe("computeEconomicBalanceImpact", () => {
-    it("should sum installation result and operation result", () => {
+    it("should sum installation result and operation result if projectDeveloper is futureOperator", () => {
       expect(
         computeEconomicBalanceImpact(
           {
@@ -163,6 +166,7 @@ describe("EconomicBalance impact", () => {
             developmentPlanInstallationCost: 150000,
             realEstateTransactionTotalCost: 100000,
             futureOperatorName: "Mairie de Blajan",
+            developmentPlanDeveloperName: "Mairie de Blajan",
             futureSiteOwnerName: "Acheteur",
             reinstatementContractOwnerName: "Propriétaire",
             yearlyProjectedCosts: [],
@@ -198,6 +202,7 @@ describe("EconomicBalance impact", () => {
             developmentPlanInstallationCost: 150000,
             realEstateTransactionTotalCost: 100000,
             futureOperatorName: "Mairie de Blajan",
+            developmentPlanDeveloperName: "Mairie de Blajan",
             futureSiteOwnerName: "Acheteur",
             reinstatementContractOwnerName: "Mairie de Blajan",
             yearlyProjectedCosts: [
@@ -237,6 +242,73 @@ describe("EconomicBalance impact", () => {
               { amount: 100000, source: "other" },
             ],
           },
+          financialAssistance: 50000,
+        },
+      });
+    });
+
+    it("should sum installation and reinstatement result only if projectDeveloper is not futureOperator", () => {
+      expect(
+        computeEconomicBalanceImpact(
+          {
+            reinstatementFinancialAssistanceAmount: 50000,
+            reinstatementCost: 1000000,
+            developmentPlanInstallationCost: 150000,
+            realEstateTransactionTotalCost: 100000,
+            futureOperatorName: "Exploitant",
+            developmentPlanDeveloperName: "Mairie de Blajan",
+            futureSiteOwnerName: "Acheteur",
+            reinstatementContractOwnerName: "Propriétaire",
+            yearlyProjectedCosts: [],
+            yearlyProjectedRevenues: [],
+          },
+          1,
+        ),
+      ).toEqual({
+        total: -150000,
+        bearer: "Mairie de Blajan",
+        costs: {
+          total: -150000,
+          developmentPlanInstallation: -150000,
+        },
+        revenues: {
+          total: 0,
+        },
+      });
+
+      expect(
+        computeEconomicBalanceImpact(
+          {
+            reinstatementFinancialAssistanceAmount: 50000,
+            reinstatementCost: 1000000,
+            developmentPlanInstallationCost: 150000,
+            realEstateTransactionTotalCost: 100000,
+            futureOperatorName: "Exploitant",
+            developmentPlanDeveloperName: "Mairie de Blajan",
+            futureSiteOwnerName: "Acheteur",
+            reinstatementContractOwnerName: "Mairie de Blajan",
+            yearlyProjectedCosts: [
+              { amount: 60000, purpose: "taxes" },
+              { amount: 500, purpose: "maintenance" },
+            ],
+            yearlyProjectedRevenues: [
+              { amount: 10000, source: "rent" },
+              { amount: 20000, source: "sell" },
+              { amount: 5000, source: "other" },
+            ],
+          },
+          20,
+        ),
+      ).toEqual({
+        total: 50000 - 1150000,
+        bearer: "Mairie de Blajan",
+        costs: {
+          total: -1150000,
+          siteReinstatement: -1000000,
+          developmentPlanInstallation: -150000,
+        },
+        revenues: {
+          total: 50000,
           financialAssistance: 50000,
         },
       });

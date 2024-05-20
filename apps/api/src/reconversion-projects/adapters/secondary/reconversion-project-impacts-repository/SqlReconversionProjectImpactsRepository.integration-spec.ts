@@ -74,6 +74,8 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           schedule_start_date: new Date("2025-01-01"),
           schedule_end_date: new Date("2025-05-15"),
           type: "any",
+          developer_name: "Terre cuite d’occitanie",
+          developer_structure_type: "company",
           features: {
             expectedAnnualProduction: 10,
             surfaceArea: 2000,
@@ -117,6 +119,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         operationsFirstYear: 2025,
         developmentPlanElectricalPowerKWc: 300,
         developmentPlanSurfaceArea: 2000,
+        developmentPlanDeveloperName: "Terre cuite d’occitanie",
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {
@@ -177,6 +180,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         conversionFullTimeJobs: undefined,
         conversionSchedule: undefined,
         developmentPlanInstallationCost: 0,
+        developmentPlanDeveloperName: undefined,
         futureOperatorName: undefined,
         futureSiteOwnerName: undefined,
         operationsFullTimeJobs: undefined,
