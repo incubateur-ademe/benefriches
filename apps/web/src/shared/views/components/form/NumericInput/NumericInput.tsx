@@ -9,8 +9,9 @@ import {
 
 type Props<T extends FieldValues> = {
   label: ReactNode;
-  hintText?: string;
+  hintText?: ReactNode;
   placeholder?: string;
+  className?: string;
 } & UseControllerProps<T>;
 
 const NumericInput = <T extends FieldValues>({
@@ -20,6 +21,7 @@ const NumericInput = <T extends FieldValues>({
   hintText,
   rules,
   placeholder,
+  className,
 }: Props<T>) => {
   const { field, fieldState } = useController<T>({
     name,
@@ -48,6 +50,7 @@ const NumericInput = <T extends FieldValues>({
       state={error ? "error" : "default"}
       stateRelatedMessage={error ? error.message : undefined}
       nativeInputProps={nativeInputProps}
+      className={className}
     />
   );
 };

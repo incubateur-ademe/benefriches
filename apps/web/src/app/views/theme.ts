@@ -27,6 +27,7 @@ export default {
         titleBlue: "var(--text-title-blue-france)",
         borderBlue: "var(--border-plain-blue-france)",
         grey: "var(--background-default-grey)",
+        contrastGrey: "var(--background-contrast-grey)",
         greyDisabled: "var(--text-disabled-grey)",
       },
       blue: "#137FEB",

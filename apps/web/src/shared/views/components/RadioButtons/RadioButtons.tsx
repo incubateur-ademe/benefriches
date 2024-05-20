@@ -1,8 +1,8 @@
-import { ChangeEventHandler, forwardRef } from "react";
+import { ChangeEventHandler, forwardRef, ReactNode } from "react";
 import DsfrRadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
 
 type Props = {
-  options: { value: string; label: string }[];
+  options: { value: string; label: string; hintText?: ReactNode }[];
   name: string;
   onChange: ChangeEventHandler;
   onBlur?: ChangeEventHandler;
@@ -13,8 +13,9 @@ const RadioButtons = forwardRef<HTMLInputElement, Props>(function _RadioButtons(
   { name, onChange, onBlur, options, error },
   ref,
 ) {
-  const mappedOptions = options.map(({ value, label }) => ({
+  const mappedOptions = options.map(({ value, label, hintText }) => ({
     label,
+    hintText,
     nativeInputProps: {
       name,
       value,

@@ -1,4 +1,4 @@
-import { SoilsDistribution } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 import { Schedule } from "../application/saveReconversionProject.action";
 
 import {
@@ -72,7 +72,11 @@ export type ReconversionProjectCreationData = {
   reinstatementFullTimeJobsInvolved?: number;
   reinstatementContractOwner?: ProjectStakeholder;
   operationsFullTimeJobsInvolved?: number;
+  // soils transformation
+  baseSoilsDistributionForTransformation: SoilsDistribution;
   soilsDistribution: SoilsDistribution;
+  nonSuitableSoilsToTransform: SoilType[];
+  futureSoilsSelection: SoilType[];
   // real estate transaction
   hasRealEstateTransaction: boolean;
   realEstateTransactionSellingPrice?: number;

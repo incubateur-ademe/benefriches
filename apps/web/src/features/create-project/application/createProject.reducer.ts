@@ -1,5 +1,17 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
+import {
+  getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
+  getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
+} from "../domain/photovoltaic";
+import {
+  canSiteAccomodatePhotovoltaicPanels,
+  preserveCurrentSoils,
+  SoilsTransformationProject,
+  transformNonSuitableSoils,
+  transformSoilsForRenaturation,
+} from "../domain/soilsTransformation";
 import { fetchRelatedSite } from "./fetchRelatedSite.action";
 import { saveReconversionProject, Schedule } from "./saveReconversionProject.action";
 
@@ -33,7 +45,13 @@ export type ProjectCreationStep =
   | "PHOTOVOLTAIC_SURFACE"
   | "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION"
   | "PHOTOVOLTAIC_CONTRACT_DURATION"
-  | "SOILS_SURFACE_AREAS"
+  | "SOILS_TRANSFORMATION_INTRODUCTION"
+  | "NON_SUITABLE_SOILS_NOTICE"
+  | "NON_SUITABLE_SOILS_SELECTION"
+  | "NON_SUITABLE_SOILS_SURFACE"
+  | "SOILS_TRANSFORMATION_PROJECT_SELECTION"
+  | "SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION"
+  | "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION"
   | "SOILS_SUMMARY"
   | "SOILS_CARBON_STORAGE"
   | "STAKEHOLDERS_INTRODUCTION"
@@ -109,6 +127,78 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.renewableEnergyTypes = action.payload;
       state.stepsHistory.push("PHOTOVOLTAIC_KEY_PARAMETER");
+    },
+    completeSoilsTransformationIntroductionStep: (state) => {
+      const nextStep = canSiteAccomodatePhotovoltaicPanels(
+        state.siteData!.soilsDistribution,
+        state.projectData.photovoltaicInstallationSurfaceSquareMeters!,
+      )
+        ? "SOILS_TRANSFORMATION_PROJECT_SELECTION"
+        : "NON_SUITABLE_SOILS_NOTICE";
+      state.stepsHistory.push(nextStep);
+    },
+    completeNonSuitableSoilsNoticeStep: (state) => {
+      state.projectData.baseSoilsDistributionForTransformation =
+        state.siteData?.soilsDistribution ?? {};
+      state.stepsHistory.push("NON_SUITABLE_SOILS_SELECTION");
+    },
+    completeNonSuitableSoilsSelectionStep: (state, action: PayloadAction<SoilType[]>) => {
+      state.projectData.nonSuitableSoilsToTransform = action.payload;
+      state.stepsHistory.push("NON_SUITABLE_SOILS_SURFACE");
+    },
+    completeNonSuitableSoilsSurfaceStep: (state, action: PayloadAction<SoilsDistribution>) => {
+      state.projectData.baseSoilsDistributionForTransformation = transformNonSuitableSoils(
+        state.siteData?.soilsDistribution ?? {},
+        action.payload,
+      );
+
+      state.stepsHistory.push("SOILS_TRANSFORMATION_PROJECT_SELECTION");
+    },
+    completeSoilsTransformationProjectSelectionStep: (
+      state,
+      action: PayloadAction<SoilsTransformationProject>,
+    ) => {
+      const transformationProject = action.payload;
+
+      if (transformationProject === "custom") {
+        state.stepsHistory.push("SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION");
+        return;
+      }
+
+      // soils may have been transformed to suit photovaltaic panels installation
+      const baseSoilsDistribution: SoilsDistribution =
+        state.projectData.baseSoilsDistributionForTransformation ??
+        state.siteData?.soilsDistribution ??
+        {};
+
+      const recommendedImpermeableSurfaceArea =
+        getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea(
+          state.projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
+        );
+      const recommendedMineralSurfaceArea = getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea(
+        state.projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
+      );
+      const transformationFn =
+        transformationProject === "renaturation"
+          ? transformSoilsForRenaturation
+          : preserveCurrentSoils;
+      state.projectData.soilsDistribution = transformationFn(baseSoilsDistribution, {
+        recommendedImpermeableSurfaceArea,
+        recommendedMineralSurfaceArea,
+      });
+
+      state.stepsHistory.push("SOILS_SUMMARY");
+    },
+    completeCustomSoilsSelectionStep: (state, action: PayloadAction<SoilType[]>) => {
+      state.projectData.futureSoilsSelection = action.payload;
+      state.stepsHistory.push("SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION");
+    },
+    completeCustomSoilsSurfaceAreaAllocationStep: (
+      state,
+      action: PayloadAction<SoilsDistribution>,
+    ) => {
+      state.projectData.soilsDistribution = action.payload;
+      state.stepsHistory.push("SOILS_SUMMARY");
     },
     completeStakeholdersIntroductionStep: (state) => {
       state.stepsHistory.push("STAKEHOLDERS_FUTURE_OPERATOR");
@@ -263,7 +353,7 @@ export const projectCreationSlice = createSlice({
     },
     completePhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicContractDuration = action.payload;
-      state.stepsHistory.push("SOILS_SURFACE_AREAS");
+      state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
     },
     completeSoilsDistribution: (
       state,
@@ -371,7 +461,19 @@ export const revertDevelopmentPlanCategories = () =>
   revertStep({ resetFields: ["developmentPlanCategories"] });
 export const revertRenewableEnergyDevelopmentPlanType = () =>
   revertStep({ resetFields: ["renewableEnergyTypes"] });
-export const revertStakeholdersIntroductionStep = () => revertStep({ resetFields: [] });
+export const revertSoilsTransformationIntroductionStep = () => revertStep();
+export const revertNonSuitableSoilsNoticeStep = () => revertStep();
+export const revertNonSuitableSoilsSelectionStep = () =>
+  revertStep({ resetFields: ["nonSuitableSoilsToTransform"] });
+export const revertNonSuitableSoilsSurfaceStep = () =>
+  revertStep({ resetFields: ["baseSoilsDistributionForTransformation"] });
+export const revertSoilsTransformationProjectSelectionStep = () => revertStep({ resetFields: [] });
+export const revertCustomSoilsSelectionStep = () =>
+  revertStep({ resetFields: ["futureSoilsSelection"] });
+export const revertCustomSoilsSurfaceAreaAllocationStep = () =>
+  revertStep({ resetFields: ["soilsDistribution"] });
+export const revertStakeholdersIntroductionStep = () =>
+  revertStep({ resetFields: ["soilsDistribution"] });
 export const revertFutureOperator = () => revertStep({ resetFields: ["futureOperator"] });
 export const revertConversionFullTimeJobsInvolved = () =>
   revertStep({
@@ -413,7 +515,6 @@ export const revertPhotovoltaicExpectedAnnualProduction = () =>
   revertStep({ resetFields: ["photovoltaicExpectedAnnualProduction"] });
 export const revertPhotovoltaicContractDuration = () =>
   revertStep({ resetFields: ["photovoltaicContractDuration"] });
-export const revertSoilsDistribution = () => revertStep({ resetFields: ["soilsDistribution"] });
 export const revertSoilsSummaryStep = () => revertStep();
 export const revertSoilsCarbonStorageStep = () => revertStep();
 export const revertScheduleIntroductionStep = () => revertStep();
@@ -433,6 +534,13 @@ export const {
   resetState,
   completeDevelopmentPlanCategories,
   completeRenewableEnergyDevelopmentPlanType,
+  completeSoilsTransformationIntroductionStep,
+  completeNonSuitableSoilsNoticeStep,
+  completeNonSuitableSoilsSelectionStep,
+  completeNonSuitableSoilsSurfaceStep,
+  completeSoilsTransformationProjectSelectionStep,
+  completeCustomSoilsSelectionStep,
+  completeCustomSoilsSurfaceAreaAllocationStep,
   completeStakeholdersIntroductionStep,
   completeFutureOperator,
   completeReinstatementContractOwner,
@@ -453,7 +561,6 @@ export const {
   completePhotovoltaicContractDuration,
   completeSoilsSummaryStep,
   completeSoilsCarbonStorageStep,
-  completeSoilsDistribution,
   completeScheduleIntroductionStep,
   completeScheduleStep,
   completeHasRealEstateTransaction,
