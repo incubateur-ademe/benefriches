@@ -15,7 +15,15 @@ const SiteManagementIntroduction = ({ isFriche, onNext, onBack }: Props) => {
     ? "Nous avons besoin de les connaître pour savoir à qui seront imputables les différents coûts liés à la friche."
     : "Nous avons besoin de les connaître pour savoir qui prend à sa charge les coûts et touche les éventuelles recettes d'exploitation.";
   return (
-    <WizardFormLayout title={title}>
+    <WizardFormLayout
+      title={
+        <span>
+          🧑‍💼
+          <br />
+          {title}
+        </span>
+      }
+    >
       <p>{text}</p>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </WizardFormLayout>
