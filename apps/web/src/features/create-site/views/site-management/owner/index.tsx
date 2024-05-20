@@ -4,16 +4,55 @@ import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 import { revertOwnerStep } from "@/features/create-site/application/createSite.actions";
 import { completeOwner } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
-import { SiteLocalAuthorities } from "@/features/create-site/application/siteMunicipalityData.reducer";
+import {
+  LoadingState,
+  SiteLocalAuthorities,
+} from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Owner } from "@/features/create-site/domain/siteFoncier.types";
 import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
 import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+type LocalAuthoritiesList = {
+  type: "municipality" | "epci" | "region" | "department";
+  name: string;
+}[];
+
+const getLocalAuthoritiesList = (
+  siteLocalAuthorities?: SiteLocalAuthorities,
+): LocalAuthoritiesList => {
+  const { city, department, region, epci } = siteLocalAuthorities ?? {
+    city: { name: "Mairie" },
+    department: { name: "Département" },
+    region: { name: "Région" },
+    epci: { name: "Établissement public de coopération intercommunale" },
+  };
+
+  return [
+    {
+      type: "municipality",
+      name: city.name,
+    },
+    {
+      type: "epci",
+      name: epci?.name ?? "Établissement public de coopération intercommunale",
+    },
+    {
+      type: "department",
+      name: department.name,
+    },
+    {
+      type: "region",
+      name: region.name,
+    },
+  ];
+};
+
 const convertFormValuesForStore = (
   data: FormValues,
   currentUserStructure: string,
-  localAuthorities: SiteLocalAuthorities,
+  siteLocalAuthorities: LocalAuthoritiesList,
+  siteLocalAuthoritiesLoadingState: LoadingState,
 ): Owner => {
   switch (data.ownerType) {
     case "user_company":
@@ -21,11 +60,19 @@ const convertFormValuesForStore = (
         name: currentUserStructure,
         structureType: "company",
       };
-    case "local_or_regional_authority":
+    case "local_or_regional_authority": {
+      const localAuthority = siteLocalAuthorities.find(({ type }) => type === data.localAuthority);
+      if (siteLocalAuthoritiesLoadingState === "success" && localAuthority) {
+        return {
+          name: formatLocalAuthorityName(data.localAuthority, localAuthority.name),
+          structureType: data.localAuthority,
+        };
+      }
       return {
-        name: formatLocalAuthorityName(data.localAuthority, localAuthorities),
+        name: localAuthority?.name ?? "",
         structureType: data.localAuthority,
       };
+    }
     case "other_company":
       return {
         name: data.ownerName,
@@ -45,11 +92,18 @@ function SiteOwnerFormContainer() {
   const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche) ?? false;
   const dispatch = useAppDispatch();
 
+  const localAuthoritiesList = getLocalAuthoritiesList(localAuthorities);
+
   const onSubmit = (data: FormValues) => {
     if (!localAuthorities) return;
     dispatch(
       completeOwner({
-        owner: convertFormValuesForStore(data, currentUserStructure?.name || "", localAuthorities),
+        owner: convertFormValuesForStore(
+          data,
+          currentUserStructure?.name || "",
+          localAuthoritiesList,
+          loadingState,
+        ),
       }),
     );
   };
@@ -65,7 +119,8 @@ function SiteOwnerFormContainer() {
   return (
     <SiteOwnerForm
       isFriche={isFriche}
-      siteLocalAuthorities={{ localAuthorities, loadingState }}
+      localAuthoritiesList={localAuthoritiesList}
+      localAuthoritiesLoadingState={loadingState}
       currentUserStructureName={currentUserStructure?.name}
       onSubmit={onSubmit}
       onBack={onBack}

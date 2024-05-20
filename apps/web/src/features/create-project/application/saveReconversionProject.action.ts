@@ -19,6 +19,7 @@ const photovoltaicPowerStationFeaturesSchema = z.object({
 
 const developmentPlanSchema = z.discriminatedUnion("type", [
   z.object({
+    developer: z.object({ name: z.string(), structureType: z.string() }),
     type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
     cost: z.number().nonnegative(),
     features: photovoltaicPowerStationFeaturesSchema,
@@ -91,6 +92,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       developmentPlans: [
         {
           type: "PHOTOVOLTAIC_POWER_PLANT",
+          developer: projectData.projectDeveloper,
           cost: projectData.photovoltaicPanelsInstallationCost,
           installationSchedule: projectData.photovoltaicInstallationSchedule,
           features: {

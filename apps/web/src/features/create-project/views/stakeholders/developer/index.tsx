@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import SiteReinstatementContractOwnerForm, {
-  FormValues,
-} from "./SiteReinstatementContractOwnerForm";
+import DeveloperForm, { FormValues } from "./ProjectDeveloperForm";
 
 import {
-  completeReinstatementContractOwner,
-  revertReinstatementContractOwner,
+  completeProjectDeveloper,
+  revertProjectDeveloper,
 } from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import {
@@ -25,8 +23,6 @@ const convertFormValuesForStore = (
   switch (data.stakeholder) {
     case "site_tenant":
     case "site_owner":
-    case "project_developer":
-    case "future_site_operator":
     case "user_company": {
       const stakeholder = stakeholdersList.find(
         ({ role }) => role === data.stakeholder,
@@ -60,9 +56,8 @@ const convertFormValuesForStore = (
   }
 };
 
-function SiteReinstatementContractOwnerFormContainer() {
+function DeveloperFormContainer() {
   const dispatch = useAppDispatch();
-
   const availableStakeholdersList = useAppSelector(getProjectAvailableStakeholders);
   const availableLocalAuthoritiesStakeholders = useAppSelector(
     getAvailableLocalAuthoritiesStakeholders,
@@ -70,7 +65,7 @@ function SiteReinstatementContractOwnerFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     dispatch(
-      completeReinstatementContractOwner(
+      completeProjectDeveloper(
         convertFormValuesForStore(
           data,
           availableStakeholdersList,
@@ -81,13 +76,13 @@ function SiteReinstatementContractOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(revertReinstatementContractOwner());
+    dispatch(revertProjectDeveloper());
   };
 
   useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
 
   return (
-    <SiteReinstatementContractOwnerForm
+    <DeveloperForm
       onSubmit={onSubmit}
       onBack={onBack}
       availableStakeholdersList={availableStakeholdersList}
@@ -96,4 +91,4 @@ function SiteReinstatementContractOwnerFormContainer() {
   );
 }
 
-export default SiteReinstatementContractOwnerFormContainer;
+export default DeveloperFormContainer;

@@ -6,34 +6,46 @@ import {
   revertFutureSiteOwner,
 } from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
-import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
-import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
-import { getSiteStakeholders } from "@/features/create-project/domain/stakeholders";
-import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
-import { UserStructure } from "@/features/users/domain/user";
-import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
+import {
+  AvailableLocalAuthorityStakeholder,
+  AvailableProjectStakeholder,
+  getAvailableLocalAuthoritiesStakeholders,
+  getProjectAvailableStakeholders,
+} from "@/features/create-project/application/stakeholders.selector";
+import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const convertFormValuesForStore = (
   data: FormValues,
-  projectSite: ProjectSite,
-  currentUserStructure: UserStructure | undefined,
-  siteLocalAuthorities: SiteLocalAuthorities,
+  stakeholdersList: AvailableProjectStakeholder[],
+  siteLocalAuthorities: AvailableLocalAuthorityStakeholder[],
 ): ProjectStakeholder => {
-  switch (data.futureSiteOwner) {
+  switch (data.stakeholder) {
     case "site_tenant":
-      return projectSite.tenant!;
-    case "local_or_regional_authority":
+    case "site_owner":
+    case "project_developer":
+    case "future_site_operator":
+    case "reinstatement_contract_owner":
+    case "user_company": {
+      const stakeholder = stakeholdersList.find(
+        ({ role }) => role === data.stakeholder,
+      ) as AvailableProjectStakeholder;
       return {
-        name: formatLocalAuthorityName(data.localAuthority, siteLocalAuthorities),
+        name: stakeholder.name,
+        structureType: stakeholder.structureType,
+      };
+    }
+
+    case "local_or_regional_authority": {
+      const localAuthority = siteLocalAuthorities.find(
+        ({ type }) => type === data.localAuthority,
+      ) as AvailableLocalAuthorityStakeholder;
+      return {
+        name: localAuthority.name,
         structureType: data.localAuthority,
       };
-    case "user_company":
-      if (!currentUserStructure) return { name: "", structureType: "unknown" };
-      return {
-        name: currentUserStructure.name ?? "",
-        structureType: currentUserStructure.type as ProjectStakeholder["structureType"],
-      };
+    }
+
     case "other_structure":
       return {
         name: data.otherStructureName,
@@ -49,18 +61,19 @@ const convertFormValuesForStore = (
 
 function FutureOwnerFormContainer() {
   const dispatch = useAppDispatch();
-  const projectSite = useAppSelector((state) => state.projectCreation.siteData);
-  const currentUserStructure = useAppSelector(selectCurrentUserStructure);
-  const projectSiteLocalAuthorities = useAppSelector((state) => state.projectSiteLocalAuthorities);
-  const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
-
-  const siteLocalAuthorities = projectSiteLocalAuthorities.localAuthorities;
+  const availableStakeholdersList = useAppSelector(getProjectAvailableStakeholders);
+  const availableLocalAuthoritiesStakeholders = useAppSelector(
+    getAvailableLocalAuthoritiesStakeholders,
+  );
 
   const onSubmit = (data: FormValues) => {
-    if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
       completeFutureSiteOwner(
-        convertFormValuesForStore(data, projectSite, currentUserStructure, siteLocalAuthorities),
+        convertFormValuesForStore(
+          data,
+          availableStakeholdersList,
+          availableLocalAuthoritiesStakeholders,
+        ),
       ),
     );
   };
@@ -75,9 +88,10 @@ function FutureOwnerFormContainer() {
     <FutureSiteOwnerForm
       onSubmit={onSubmit}
       onBack={onBack}
-      siteStakeholders={siteStakeholders}
-      currentUserStructure={currentUserStructure}
-      projectSiteLocalAuthorities={projectSiteLocalAuthorities}
+      availableStakeholdersList={availableStakeholdersList.filter(
+        ({ role }) => role !== "site_owner",
+      )}
+      availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />
   );
 }

@@ -31,6 +31,7 @@ function ProjectionCreationDataSummaryContainer() {
         photovoltaicExpectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction ?? 0,
         photovoltaicContractDuration: projectData.photovoltaicContractDuration ?? 0,
         soilsDistribution: projectData.soilsDistribution ?? {},
+        projectDeveloper: projectData.projectDeveloper?.name,
         futureOwner: projectData.futureSiteOwner?.name,
         futureOperator: projectData.futureOperator?.name,
         reinstatementContractOwner: projectData.reinstatementContractOwner?.name,

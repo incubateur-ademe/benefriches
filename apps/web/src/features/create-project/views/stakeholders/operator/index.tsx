@@ -6,34 +6,44 @@ import {
   revertFutureOperator,
 } from "@/features/create-project/application/createProject.reducer";
 import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
-import { SiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
-import { ProjectSite, ProjectStakeholder } from "@/features/create-project/domain/project.types";
-import { getSiteStakeholders } from "@/features/create-project/domain/stakeholders";
-import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
-import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
+import {
+  AvailableLocalAuthorityStakeholder,
+  AvailableProjectStakeholder,
+  getAvailableLocalAuthoritiesStakeholders,
+  getProjectAvailableStakeholders,
+} from "@/features/create-project/application/stakeholders.selector";
+import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const convertFormValuesForStore = (
   data: FormValues,
-  projectSite: ProjectSite,
-  currentUserStructureName: string | undefined,
-  siteLocalAuthorities: SiteLocalAuthorities,
+  stakeholdersList: AvailableProjectStakeholder[],
+  siteLocalAuthorities: AvailableLocalAuthorityStakeholder[],
 ): ProjectStakeholder => {
-  switch (data.futureOperator) {
+  switch (data.stakeholder) {
     case "site_tenant":
-      return projectSite.tenant!;
     case "site_owner":
-      return projectSite.owner;
-    case "local_or_regional_authority":
+    case "project_developer":
+    case "user_company": {
+      const stakeholder = stakeholdersList.find(
+        ({ role }) => role === data.stakeholder,
+      ) as AvailableProjectStakeholder;
       return {
-        name: formatLocalAuthorityName(data.localAuthority, siteLocalAuthorities),
+        name: stakeholder.name,
+        structureType: stakeholder.structureType,
+      };
+    }
+
+    case "local_or_regional_authority": {
+      const localAuthority = siteLocalAuthorities.find(
+        ({ type }) => type === data.localAuthority,
+      ) as AvailableLocalAuthorityStakeholder;
+      return {
+        name: localAuthority.name,
         structureType: data.localAuthority,
       };
-    case "user_company":
-      return {
-        name: currentUserStructureName ?? "",
-        structureType: "company",
-      };
+    }
+
     case "other_structure":
       return {
         name: data.otherStructureName,
@@ -49,22 +59,19 @@ const convertFormValuesForStore = (
 
 function SiteOperatorFormContainer() {
   const dispatch = useAppDispatch();
-  const projectSite = useAppSelector((state) => state.projectCreation.siteData);
-  const currentUserStructure = useAppSelector(selectCurrentUserStructure);
-  const projectSiteLocalAuthorities = useAppSelector((state) => state.projectSiteLocalAuthorities);
 
-  const siteStakeholders = projectSite ? getSiteStakeholders(projectSite) : [];
-  const siteLocalAuthorities = projectSiteLocalAuthorities.localAuthorities;
+  const availableStakeholdersList = useAppSelector(getProjectAvailableStakeholders);
+  const availableLocalAuthoritiesStakeholders = useAppSelector(
+    getAvailableLocalAuthoritiesStakeholders,
+  );
 
   const onSubmit = (data: FormValues) => {
-    if (!projectSite || !siteLocalAuthorities) return;
     dispatch(
       completeFutureOperator(
         convertFormValuesForStore(
           data,
-          projectSite,
-          currentUserStructure?.name,
-          siteLocalAuthorities,
+          availableStakeholdersList,
+          availableLocalAuthoritiesStakeholders,
         ),
       ),
     );
@@ -80,9 +87,8 @@ function SiteOperatorFormContainer() {
     <SiteOperatorForm
       onSubmit={onSubmit}
       onBack={onBack}
-      siteStakeholders={siteStakeholders}
-      currentUserStructure={currentUserStructure}
-      projectSiteLocalAuthorities={projectSiteLocalAuthorities}
+      availableStakeholdersList={availableStakeholdersList}
+      availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />
   );
 }
