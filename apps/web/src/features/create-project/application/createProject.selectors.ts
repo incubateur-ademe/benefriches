@@ -92,16 +92,25 @@ export const selectFutureSoils = createSelector(selectSelf, (state): SoilType[] 
   return state.projectData.futureSoilsSelection ?? [];
 });
 
+const selectPhotovoltaicInstallationElectricalPowerKWc = createSelector(
+  selectSelf,
+  (state): number => state.projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
+);
+
 export const selectRecommendedMineralSurfaceArea = createSelector(
-  selectPhotovoltaicPanelsSurfaceArea,
-  (photovoltaicPanelsSurfaceArea): number => {
-    return getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea(photovoltaicPanelsSurfaceArea);
+  selectPhotovoltaicInstallationElectricalPowerKWc,
+  (photovoltaicInstallationElectricalPowerKwC): number => {
+    return getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea(
+      photovoltaicInstallationElectricalPowerKwC,
+    );
   },
 );
 
 export const selectRecommendedImpermeableSurfaceArea = createSelector(
-  selectPhotovoltaicPanelsSurfaceArea,
-  (photovoltaicPanelsSurfaceArea): number => {
-    return getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea(photovoltaicPanelsSurfaceArea);
+  selectPhotovoltaicInstallationElectricalPowerKWc,
+  (photovoltaicInstallationElectricalPowerKwC): number => {
+    return getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea(
+      photovoltaicInstallationElectricalPowerKwC,
+    );
   },
 );
