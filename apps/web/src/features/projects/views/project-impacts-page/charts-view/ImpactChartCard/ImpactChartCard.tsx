@@ -25,10 +25,7 @@ const ImpactChartCard = ({ title, children, onTitleClick }: Props) => {
       )}
     >
       <strong
-        className={classNames(
-          "fr-text--sm",
-          onTitleClick && "tw-cursor-pointer hover:tw-underline",
-        )}
+        className={classNames("tw-text-lg", onTitleClick && "tw-cursor-pointer hover:tw-underline")}
         onClick={onTitleClick}
       >
         {title}

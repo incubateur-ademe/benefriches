@@ -24,7 +24,6 @@ function SocioEconomicImpactsByCategoryChart({ socioEconomicImpacts }: Props) {
   const negativeImpacts = getNegativeSocioEconomicImpacts(impactsSummedByCategory);
   const totalPositiveImpactsAmount = getTotalImpactsAmount(positiveImpacts);
   const totalNegativeImpactsAmount = getTotalImpactsAmount(negativeImpacts);
-  const maxAbsValue = Math.max(totalPositiveImpactsAmount, Math.abs(totalNegativeImpactsAmount));
 
   const negativeImpactsSeries = Array.from(negativeImpacts).map(([category, amount]) => ({
     name: getLabelForSocioEconomicImpactCategory(category),
@@ -45,21 +44,7 @@ function SocioEconomicImpactsByCategoryChart({ socioEconomicImpacts }: Props) {
         `<strong>Négatif</strong><br>${formatNumberFr(totalNegativeImpactsAmount)} €`,
         `<strong>Positif</strong><br>+${formatNumberFr(totalPositiveImpactsAmount)} €`,
       ],
-      lineWidth: 0,
-    },
-    yAxis: {
-      min: -maxAbsValue,
-      max: maxAbsValue,
-      startOnTick: false,
-      endOnTick: false,
-      title: { text: null },
-      plotLines: [
-        {
-          value: 0,
-          width: 2,
-          color: "#929292",
-        },
-      ],
+      opposite: true,
     },
     tooltip: {
       valueSuffix: ` €`,
@@ -70,15 +55,17 @@ function SocioEconomicImpactsByCategoryChart({ socioEconomicImpacts }: Props) {
       },
     },
     legend: {
-      layout: "vertical",
-      align: "right",
-      width: "40%",
-      verticalAlign: "middle",
+      enabled: false,
     },
-
     series: [...negativeImpactsSeries, ...positiveImpactsSeries],
   };
-  return <HighchartsReact highcharts={Highcharts} options={barChartOptions} />;
+  return (
+    <HighchartsReact
+      containerProps={{ className: "highcharts-no-xaxis" }}
+      highcharts={Highcharts}
+      options={barChartOptions}
+    />
+  );
 }
 
 export default SocioEconomicImpactsByCategoryChart;

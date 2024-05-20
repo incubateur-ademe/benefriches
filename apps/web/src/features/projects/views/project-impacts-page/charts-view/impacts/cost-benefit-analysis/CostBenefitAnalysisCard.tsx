@@ -17,11 +17,6 @@ function CostBenefitAnalysisCard({
   socioEconomicImpactsTotal,
   onTitleClick,
 }: Props) {
-  const maxAbsValue =
-    Math.abs(economicBalanceTotal) > Math.abs(socioEconomicImpactsTotal)
-      ? Math.abs(economicBalanceTotal)
-      : Math.abs(socioEconomicImpactsTotal);
-
   const barChartOptions: Highcharts.Options = {
     ...baseColumnChartConfig,
     chart: {
@@ -33,23 +28,7 @@ function CostBenefitAnalysisCard({
         `<strong>Bilan de l'opération</strong><br>${formatNumberFr(economicBalanceTotal)} €`,
         `<strong>Impacts socio-économiques</strong><br>+${formatNumberFr(socioEconomicImpactsTotal)} €`,
       ],
-      lineWidth: 0,
-    },
-    yAxis: {
-      min: -maxAbsValue,
-      max: maxAbsValue,
-      startOnTick: false,
-      endOnTick: false,
-      tickAmount: 3,
-      title: {
-        text: null,
-      },
-      plotLines: [
-        {
-          value: 0,
-          width: 2,
-        },
-      ],
+      opposite: true,
     },
     legend: {
       enabled: false,
@@ -73,7 +52,11 @@ function CostBenefitAnalysisCard({
 
   return (
     <ImpactCard title="Analyse coûts bénéfices" onTitleClick={onTitleClick}>
-      <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
+      <HighchartsReact
+        containerProps={{ className: "highcharts-no-xaxis" }}
+        highcharts={Highcharts}
+        options={barChartOptions}
+      />
     </ImpactCard>
   );
 }

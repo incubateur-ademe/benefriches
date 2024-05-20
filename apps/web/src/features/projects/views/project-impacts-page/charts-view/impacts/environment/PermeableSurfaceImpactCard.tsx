@@ -43,6 +43,7 @@ function PermeableSurfaceImpactCard({
     },
     plotOptions: {
       area: {
+        ...baseAreaChartConfig.plotOptions?.area,
         stacking: "normal",
       },
     },

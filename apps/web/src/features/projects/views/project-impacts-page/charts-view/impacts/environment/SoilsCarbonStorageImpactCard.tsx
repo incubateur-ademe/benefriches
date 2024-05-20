@@ -55,8 +55,8 @@ function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact, onTitleClick }
     },
     plotOptions: {
       area: {
+        ...baseAreaChartConfig.plotOptions?.area,
         stacking: "normal",
-        dataLabels: { enabled: true, format: "{point.y:,.0f} t" },
       },
     },
     legend: { enabled: false },

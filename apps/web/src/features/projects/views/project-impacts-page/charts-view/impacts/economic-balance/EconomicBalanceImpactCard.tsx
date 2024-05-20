@@ -93,9 +93,6 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
   const { operationsCosts, developmentPlanInstallation, siteReinstatement, realEstateTransaction } =
     costs;
 
-  const maxAbsValue =
-    Math.abs(costs.total) > Math.abs(revenues.total) ? Math.abs(costs.total) : revenues.total;
-
   const barChartOptions: Highcharts.Options = {
     ...baseColumnChartConfig,
     xAxis: {
@@ -103,21 +100,7 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
         `<strong>Dépenses</strong><br>${formatNumberFr(costs.total)} €`,
         `<strong>Recettes</strong><br>+${formatNumberFr(revenues.total)} €`,
       ],
-      lineWidth: 0,
-    },
-    yAxis: {
-      min: -maxAbsValue,
-      max: maxAbsValue,
-      startOnTick: false,
-      endOnTick: false,
-      title: { text: null },
-      plotLines: [
-        {
-          value: 0,
-          width: 2,
-          color: "#929292",
-        },
-      ],
+      opposite: true,
     },
     tooltip: {
       valueSuffix: ` €`,
@@ -128,10 +111,7 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
       },
     },
     legend: {
-      layout: "vertical",
-      align: "right",
-      width: "40%",
-      verticalAlign: "middle",
+      enabled: false,
     },
     series: [
       ...(getRevenuesValue({ operationsRevenues, financialAssistance }).map(({ name, value }) => ({
@@ -157,7 +137,11 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
       {revenues.total === 0 && costs.total === 0 ? (
         <div>Vous n'avez pas renseigné de coûts ni de dépenses pour ce projet.</div>
       ) : (
-        <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
+        <HighchartsReact
+          containerProps={{ className: "highcharts-no-xaxis" }}
+          highcharts={Highcharts}
+          options={barChartOptions}
+        />
       )}
     </ImpactCard>
   );

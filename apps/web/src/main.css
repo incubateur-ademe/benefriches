@@ -12,6 +12,18 @@
   fill: transparent;
 }
 
+.highcharts-grid-line {
+  stroke: var(--highcharts-neutral-color-80);
+}
+
+.highcharts-graph {
+  stroke-width: 0;
+}
+
+.highcharts-no-xaxis .highcharts-xaxis {
+  display: none;
+}
+
 /* La librairie du DSFR ne va que jusqu’à 8 pour le Stepper */
 .fr-stepper__steps[data-fr-steps="9"] {
   --steps: 9;

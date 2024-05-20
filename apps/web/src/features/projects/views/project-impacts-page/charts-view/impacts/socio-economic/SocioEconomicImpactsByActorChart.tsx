@@ -15,10 +15,6 @@ type Props = {
 function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
   const impactsSummedByActor = sumSocioEconomicImpactsByActor(socioEconomicImpacts);
 
-  const maxAbsValue = Math.max(
-    ...Array.from(impactsSummedByActor).map(([, amount]) => Math.abs(amount)),
-  );
-
   const data = Array.from(impactsSummedByActor).map(([actor, amount]) => ({
     name: getActorLabel(actor),
     y: roundTo2Digits(amount),
@@ -32,21 +28,7 @@ function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
         const amountPrefix = amount > 0 ? "+" : "";
         return `<strong>${getActorLabel(actor)}</strong><br><span>${amountPrefix}${formatNumberFr(amount)} €</span>`;
       }),
-      lineWidth: 0,
-    },
-    yAxis: {
-      min: -maxAbsValue,
-      max: maxAbsValue,
-      startOnTick: false,
-      endOnTick: false,
-      title: { text: null },
-      plotLines: [
-        {
-          value: 0,
-          width: 2,
-          color: "#929292",
-        },
-      ],
+      opposite: true,
     },
     legend: {
       enabled: false,
@@ -62,7 +44,13 @@ function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
       },
     ],
   };
-  return <HighchartsReact highcharts={Highcharts} options={barChartOptions} />;
+  return (
+    <HighchartsReact
+      containerProps={{ className: "highcharts-no-xaxis" }}
+      highcharts={Highcharts}
+      options={barChartOptions}
+    />
+  );
 }
 
 export default SocioEconomicImpactsByActorChart;

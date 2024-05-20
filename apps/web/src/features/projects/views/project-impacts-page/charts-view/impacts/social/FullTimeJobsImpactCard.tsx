@@ -37,6 +37,7 @@ function FullTimeJobsImpactCard({ reconversionProjectName, fullTimeJobsImpact }:
     },
     plotOptions: {
       area: {
+        ...baseAreaChartConfig.plotOptions?.area,
         stacking: "normal",
       },
     },

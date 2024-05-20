@@ -69,10 +69,6 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, onTitleClick }: Props)
           <strong className="tw-cursor-pointer hover:tw-underline" onClick={onTitleClick}>
             Impacts socio-économiques
           </strong>
-          <ChartViewModeControl
-            currentChartViewMode={currentChartViewMode}
-            setChartViewMode={setChartViewMode}
-          />
         </div>
       }
     >
@@ -81,6 +77,12 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, onTitleClick }: Props)
       ) : (
         <SocioEconomicImpactsByActorChart socioEconomicImpacts={socioEconomicImpacts} />
       )}
+      <div className="tw-flex tw-justify-center">
+        <ChartViewModeControl
+          currentChartViewMode={currentChartViewMode}
+          setChartViewMode={setChartViewMode}
+        />
+      </div>
     </ImpactCard>
   );
 }

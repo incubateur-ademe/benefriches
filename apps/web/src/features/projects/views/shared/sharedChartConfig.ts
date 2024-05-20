@@ -8,7 +8,16 @@ export const baseColumnChartConfig: Highcharts.Options = {
     text: "",
   },
   yAxis: {
-    title: { text: "" },
+    labels: {
+      enabled: false,
+    },
+    startOnTick: false,
+    endOnTick: false,
+    tickAmount: 1,
+    tickPositions: [0],
+    title: {
+      text: null,
+    },
   },
   credits: { enabled: false },
 } as const;
@@ -29,4 +38,12 @@ export const baseAreaChartConfig: Highcharts.Options = {
     tickLength: 0,
   },
   credits: { enabled: false },
+  plotOptions: {
+    area: {
+      marker: {
+        enabled: false,
+      },
+      lineWidth: 0,
+    },
+  },
 } as const;

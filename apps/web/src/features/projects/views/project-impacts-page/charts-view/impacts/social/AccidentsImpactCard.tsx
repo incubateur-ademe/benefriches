@@ -74,6 +74,7 @@ function AccidentsImpactCard({ reconversionProjectName, accidentsImpact }: Props
     legend: { enabled: false },
     plotOptions: {
       area: {
+        ...baseAreaChartConfig.plotOptions?.area,
         stacking: "normal",
       },
     },
