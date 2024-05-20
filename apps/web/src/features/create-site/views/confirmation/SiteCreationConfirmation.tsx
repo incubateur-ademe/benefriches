@@ -1,5 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import Button from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -33,25 +33,14 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
     case "success":
       return (
         <WizardFormLayout title={`✅ Le site « ${siteName} » est créé !`}>
+          <p>Bravo, vous avez fait la moitié du chemin !</p>
           <p>
-            Vous pouvez maintenant découvrir ses caractéristiques géographiques, créer un projet sur
-            ce site ou bien renseigner un nouveau site en retournant sur votre tableau de bord.
+            Pour consulter les impacts d’un projet sur ce site, il vous faut maintenant renseigner
+            ce projet.
           </p>
-          <ButtonsGroup
-            buttons={[
-              {
-                priority: "secondary",
-                children: "Retour à mes projets",
-                linkProps: routes.myProjects().link,
-              },
-              {
-                priority: "primary",
-                children: "Créer un projet sur ce site",
-                linkProps: routes.createProjectIntro({ siteId }).link,
-              },
-            ]}
-            inlineLayoutWhen="always"
-          />
+          <Button linkProps={routes.createProjectIntro({ siteId }).link}>
+            Renseigner mon projet sur ce site
+          </Button>
         </WizardFormLayout>
       );
   }
