@@ -3,9 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "main": "src/index.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
+    "lint": "eslint",
     "format": "prettier --write --cache \"./**/*.{js,ts,md,json}\" src/",
     "format:check": "prettier --check --cache  \"./**/*.{js,ts,md,json}\" src/"
   },
@@ -16,6 +18,12 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "@eslint/js": "^9.3.0",
+    "eslint": "^9.3.0",
+    "eslint-plugin-jest": "^28.5.0",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5",
+    "typescript-eslint": "^7.9.0"
   }
 }
