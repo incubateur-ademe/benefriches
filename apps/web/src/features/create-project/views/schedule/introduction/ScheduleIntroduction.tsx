@@ -8,8 +8,11 @@ type Props = {
 
 const ScheduleIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <WizardFormLayout title="C'est presque fini !">
-      <p>Quand commence ce beau projet ?</p>
+    <WizardFormLayout title="Pour quand ce projet est-il prévu ?">
+      <p>
+        Pour pouvoir calculer les impacts du projet sur une certaine durée, nous avons besoin de
+        connaître les différéntes échéances.
+      </p>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </WizardFormLayout>
   );
