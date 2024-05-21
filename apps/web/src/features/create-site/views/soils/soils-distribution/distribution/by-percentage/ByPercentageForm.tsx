@@ -1,22 +1,22 @@
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { Input } from "@codegouvfr/react-dsfr/Input";
 import { SoilType } from "shared";
 
 import { getColorForSoilType } from "@/shared/domain/soils";
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
+  getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   soils: SoilType[];
-  totalSurfaceArea: number;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -34,12 +34,7 @@ const SLIDER_PROPS = {
   },
 };
 
-function SiteSoilsDistributionByPercentageForm({
-  soils,
-  totalSurfaceArea,
-  onSubmit,
-  onBack,
-}: Props) {
+function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Props) {
   const { control, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
@@ -55,9 +50,7 @@ function SiteSoilsDistributionByPercentageForm({
       instructions={
         <FormWarning>
           <p>
-            Le total des surfaces ne peut pas dépasser{" "}
-            <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>. Pour pouvoir augmenter la
-            surface d’un sol, vous devez d’abord réduire la surface d’un autre sol.
+            Le total des surfaces doit être égal à <strong>100%</strong>.
           </p>
         </FormWarning>
       }
@@ -69,7 +62,9 @@ function SiteSoilsDistributionByPercentageForm({
             control={control}
             name={soilType}
             label={getLabelForSoilType(soilType)}
+            imgSrc={`/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`}
             hintText={getDescriptionForSoilType(soilType)}
+            hintInputText="en %"
             sliderStartValue={0}
             sliderEndValue={100}
             sliderProps={{
@@ -83,7 +78,7 @@ function SiteSoilsDistributionByPercentageForm({
           />
         ))}
 
-        <Input
+        <RowNumericInput
           className="fr-my-8v"
           label="Total de toutes les surfaces"
           hintText={`en %`}
@@ -97,7 +92,7 @@ function SiteSoilsDistributionByPercentageForm({
           state={remainder === 0 ? "success" : "error"}
           stateRelatedMessage={
             remainder === 0
-              ? "Les pourcentages alloués sont égaux à 100%"
+              ? "Le compte est bon !"
               : `${remainder > 0 ? "-" : "+"} ${formatNumberFr(Math.abs(remainder))} %`
           }
         />

@@ -1,20 +1,20 @@
 import { ChangeEvent, useState } from "react";
 import { FieldValues, RegisterOptions, useController, UseControllerProps } from "react-hook-form";
-import { fr } from "@codegouvfr/react-dsfr";
-import DsfrInput, { InputProps } from "@codegouvfr/react-dsfr/Input";
+import { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { Slider } from "antd";
 import { SliderBaseProps } from "antd/es/slider";
+import SurfaceInput from "./RowNumericInput";
 
 import {
   numberToString,
   stringToNumber,
 } from "@/shared/services/number-conversion/numberConversion";
-import { getPercentage } from "@/shared/services/percentage/percentage";
-import classNames from "@/shared/views/clsx";
 
 type Props<T extends FieldValues> = {
   label: string;
+  imgSrc?: string;
   hintText?: string;
+  hintInputText?: string;
   minValue?: number;
   maxValue?: number;
   required?: RegisterOptions["required"];
@@ -23,7 +23,6 @@ type Props<T extends FieldValues> = {
   sliderEndValue: number;
   sliderProps?: SliderBaseProps;
   inputProps?: InputProps["nativeInputProps"];
-  showPercentage?: boolean;
 } & UseControllerProps<T>;
 
 const getValidatedNewValue = (newValue: number, min: number, max: number) => {
@@ -44,10 +43,11 @@ const SliderNumericInput = <T extends FieldValues>({
   required,
   validate,
   label,
+  imgSrc,
   hintText,
+  hintInputText,
   sliderStartValue,
   sliderEndValue,
-  showPercentage = true,
   sliderProps,
   inputProps,
 }: Props<T>) => {
@@ -90,14 +90,11 @@ const SliderNumericInput = <T extends FieldValues>({
 
   return (
     <div className="fr-col">
-      <DsfrInput
-        className={classNames(
-          fr.cx("fr-col", "fr-mb-0", "fr-pt-7v"),
-          "tw-flex",
-          "tw-justify-between",
-        )}
+      <SurfaceInput
         label={label}
+        imgSrc={imgSrc}
         hintText={hintText}
+        hintInputText={hintInputText}
         state={error ? "error" : "default"}
         stateRelatedMessage={error ? error.message : undefined}
         nativeInputProps={{
@@ -108,18 +105,12 @@ const SliderNumericInput = <T extends FieldValues>({
           onChange: onChangeInput,
           onClick: onLeaveInput, // TODO à améliorer: le click sur les boutons +- ne trigger pas d'event focus
           onBlur: onLeaveInput,
-          style: { width: "150px" },
           ...inputProps,
         }}
       />
-      {showPercentage && (
-        <legend className={classNames("tw-flex", "tw-justify-end")}>
-          {Math.round(getPercentage(field.value, sliderEndValue))}%
-        </legend>
-      )}
 
       <Slider
-        className="fr-col"
+        className="fr-col tw-my-4"
         onChange={onChangeNumericSliderInput}
         value={field.value}
         min={sliderStartValue}

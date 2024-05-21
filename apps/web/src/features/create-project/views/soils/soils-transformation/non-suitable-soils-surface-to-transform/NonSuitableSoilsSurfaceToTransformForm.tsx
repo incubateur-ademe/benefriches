@@ -96,7 +96,6 @@ function NonSuitableSoilsSurfaceToTransformForm({
                   formatter: (value?: number) => value && formatSurfaceArea(value),
                 },
               }}
-              showPercentage={false}
             />
           );
         })}

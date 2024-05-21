@@ -8,7 +8,11 @@ type Props = {
 };
 
 const SiteSoilsIntroduction = ({ isFriche, onNext, onBack }: Props) => {
-  const title = `Parlons d'abord des sols qui existent sur ${isFriche ? "la friche" : "le site"}`;
+  const title = (
+    <>
+      ⛳️ <br /> Parlons d'abord des sols qui existent sur {isFriche ? "la friche" : "le site"}
+    </>
+  );
   return (
     <WizardFormLayout title={title}>
       <p>

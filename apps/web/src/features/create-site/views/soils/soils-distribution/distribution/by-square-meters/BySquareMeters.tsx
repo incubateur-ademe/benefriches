@@ -1,6 +1,5 @@
-import { useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { Input } from "@codegouvfr/react-dsfr/Input";
+import { ChangeEvent, useMemo } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { SoilType } from "shared";
 
 import {
@@ -11,9 +10,14 @@ import {
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
+  getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import {
+  numberToString,
+  stringToNumber,
+} from "@/shared/services/number-conversion/numberConversion";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -37,7 +41,7 @@ function SiteSoilsDistributionBySquareMetersForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const { control, handleSubmit, watch, formState } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
   const soilsValues = watch();
@@ -45,6 +49,7 @@ function SiteSoilsDistributionBySquareMetersForm({
   const totalAllocatedSurface = useMemo(() => getTotalSurface(soilsValues), [soilsValues]);
 
   const remainder = totalSurfaceArea - totalAllocatedSurface;
+  const isValid = remainder === 0;
 
   return (
     <WizardFormLayout
@@ -61,12 +66,9 @@ function SiteSoilsDistributionBySquareMetersForm({
     >
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
-          <NumericInput
+          <Controller
             key={soilType}
             control={control}
-            label={getLabelForSoilType(soilType)}
-            hintText={getDescriptionForSoilType(soilType)}
-            placeholder={"en m²"}
             name={soilType}
             rules={{
               min: {
@@ -79,10 +81,34 @@ function SiteSoilsDistributionBySquareMetersForm({
                   "La surface de ce sol ne peut pas être supérieure à la surface totale du site",
               },
             }}
+            render={({ field }) => {
+              return (
+                <RowNumericInput
+                  state={formState.errors[soilType] ? "error" : "default"}
+                  stateRelatedMessage={
+                    formState.errors[soilType] ? formState.errors[soilType]?.message : undefined
+                  }
+                  nativeInputProps={{
+                    name: field.name,
+                    value: field.value ? numberToString(field.value) : undefined,
+                    onChange: (ev: ChangeEvent<HTMLInputElement>) => {
+                      field.onChange(stringToNumber(ev.target.value));
+                    },
+                    onBlur: field.onBlur,
+                    type: "number",
+                  }}
+                  label={getLabelForSoilType(soilType)}
+                  hintText={getDescriptionForSoilType(soilType)}
+                  hintInputText="en m²"
+                  imgSrc={`/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`}
+                />
+              );
+            }}
           />
         ))}
 
-        <Input
+        <RowNumericInput
+          className="tw-pb-5"
           label="Total de toutes les surfaces"
           hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
           nativeInputProps={{
@@ -92,14 +118,14 @@ function SiteSoilsDistributionBySquareMetersForm({
             type: "number",
           }}
           disabled
-          state={remainder === 0 ? "success" : "error"}
+          state={isValid ? "success" : "error"}
           stateRelatedMessage={
-            remainder === 0
-              ? "Les surfaces allouées sont égales à la surface totale du site"
+            isValid
+              ? "Le compte est bon !"
               : `${remainder > 0 ? "-" : "+"} ${formatNumberFr(Math.abs(remainder))} m²`
           }
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!isValid} />
       </form>
     </WizardFormLayout>
   );
