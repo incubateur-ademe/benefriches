@@ -18,7 +18,10 @@ export const revertSoilsContaminationStep = () =>
     resetFields: ["hasContaminatedSoils", "contaminatedSoilSurface"],
   });
 export const revertOwnerStep = () => revertStep({ resetFields: ["owner"] });
+export const revertIsFricheLeasedStep = () => revertStep({ resetFields: ["isFricheLeased"] });
+export const revertIsSiteWorkedStep = () => revertStep({ resetFields: ["isSiteWorked"] });
 export const revertTenantStep = () => revertStep({ resetFields: ["tenant"] });
+export const revertOperatorStep = () => revertStep({ resetFields: ["tenant"] });
 export const revertFullTimeJobsInvolvedStep = () =>
   revertStep({ resetFields: ["fullTimeJobsInvolved"] });
 export const revertFricheRecentAccidentsStep = () =>

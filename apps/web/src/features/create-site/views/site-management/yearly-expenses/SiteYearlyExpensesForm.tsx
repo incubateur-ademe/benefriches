@@ -177,7 +177,7 @@ function SiteYearlyExpensesForm({
   return (
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <h3>Gestion du site</h3>
+        {isFriche && <h3>Gestion du site</h3>}
         {siteManagementInputs.map(({ name, label, displayOnlyIfHasTenant, askForBearer }) => {
           if (displayOnlyIfHasTenant && !hasTenant) {
             return null;

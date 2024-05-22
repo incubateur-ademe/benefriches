@@ -38,6 +38,8 @@ export type SiteDraft = {
   // management
   fullTimeJobsInvolved?: number;
   owner: { structureType: OwnerStructureType; name: string };
+  isFricheLeased?: boolean;
+  isSiteWorked?: boolean;
   tenant?: { structureType: TenantStructureType; name: string };
   hasRecentAccidents?: boolean;
   accidentsMinorInjuries?: number;
