@@ -12,54 +12,72 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  currentOwnerStructureName: string;
   localAuthoritiesList: { type: "municipality" | "epci" | "region" | "department"; name: string }[];
 };
 
 export type FormValues =
   | {
-      tenantType: "local_or_regional_authority";
+      operator: "site_owner";
+      localAuthority: undefined;
+      companyName: undefined;
+      operatorName: undefined;
+    }
+  | {
+      operator: "local_or_regional_authority";
       localAuthority: LocalAutorityStructureType;
-      companyName: undefined;
-      tenantName: undefined;
-    }
-  | {
-      tenantType: "company";
       companyName: string;
-      localAuthority: undefined;
-      tenantName: undefined;
+      operatorName: string;
     }
   | {
-      tenantType: "private_individual";
+      operator: "company";
+      companyName: string;
+      operatorName: undefined;
       localAuthority: undefined;
+    }
+  | {
+      operator: "private_individual";
       companyName: undefined;
-      tenantName: string;
+      operatorName: string;
+      localAuthority: undefined;
     };
 
 const requiredMessage = "Ce champ est requis";
 
-function SiteTenantForm({ onSubmit, onBack, localAuthoritiesList }: Props) {
+function SiteOperatorForm({
+  onSubmit,
+  onBack,
+  localAuthoritiesList,
+  currentOwnerStructureName,
+}: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
 
-  const { tenantType: selectedTenantType } = watch();
+  const { operator: selectedOperator } = watch();
 
   return (
-    <WizardFormLayout title="Qui est le locataire du site ?">
+    <WizardFormLayout title="Qui est l’exploitant du site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
-          state={formState.errors.tenantType ? "error" : "default"}
+          state={formState.errors.operator ? "error" : "default"}
           stateRelatedMessage={
-            formState.errors.tenantType ? formState.errors.tenantType.message : undefined
+            formState.errors.operator ? formState.errors.operator.message : undefined
           }
         >
           <RadioButton
-            label="Une collectivité"
-            value="local_or_regional_authority"
-            {...register("tenantType", { required: requiredMessage })}
+            label={`Le propriétaire actuel du site, ${currentOwnerStructureName}`}
+            value="site_owner"
+            {...register("operator", { required: requiredMessage })}
           />
 
-          {selectedTenantType === "local_or_regional_authority" && (
+          <RadioButton
+            label="Une collectivité"
+            value="local_or_regional_authority"
+            {...register("operator", { required: requiredMessage })}
+          />
+
+          {selectedOperator === "local_or_regional_authority" && (
             <Select
               options={localAuthoritiesList.map(({ type, name }) => ({
                 label: name,
@@ -77,10 +95,10 @@ function SiteTenantForm({ onSubmit, onBack, localAuthoritiesList }: Props) {
           <RadioButton
             label="Une entreprise"
             value="company"
-            {...register("tenantType", { required: requiredMessage })}
+            {...register("operator", { required: requiredMessage })}
           />
 
-          {selectedTenantType === "company" && (
+          {selectedOperator === "company" && (
             <Input
               label={<RequiredLabel label="Nom de l'entreprise" />}
               state={formState.errors.companyName ? "error" : "default"}
@@ -94,15 +112,15 @@ function SiteTenantForm({ onSubmit, onBack, localAuthoritiesList }: Props) {
           <RadioButton
             label="Un particulier"
             value="private_individual"
-            {...register("tenantType", { required: requiredMessage })}
+            {...register("operator", { required: requiredMessage })}
           />
 
-          {selectedTenantType === "private_individual" && (
+          {selectedOperator === "private_individual" && (
             <Input
               label={<RequiredLabel label="Nom du particulier" />}
-              state={formState.errors.tenantName ? "error" : "default"}
-              stateRelatedMessage={formState.errors.tenantName?.message}
-              nativeInputProps={register("tenantName", {
+              state={formState.errors.operatorName ? "error" : "default"}
+              stateRelatedMessage={formState.errors.operatorName?.message}
+              nativeInputProps={register("operatorName", {
                 required: "Ce champ est requis",
               })}
             />
@@ -114,4 +132,4 @@ function SiteTenantForm({ onSubmit, onBack, localAuthoritiesList }: Props) {
   );
 }
 
-export default SiteTenantForm;
+export default SiteOperatorForm;

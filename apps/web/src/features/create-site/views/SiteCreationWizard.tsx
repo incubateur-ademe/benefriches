@@ -3,8 +3,11 @@ import { selectCurrentStep } from "../application/createSite.reducer";
 import SiteExpensesSummary from "./site-management/expenses-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
+import IsFricheLeasedForm from "./site-management/is-friche-leased";
+import IsSiteWorkedForm from "./site-management/is-site-worked";
 import SiteOwnerForm from "./site-management/owner";
 import FricheRecentAccidentsForm from "./site-management/recent-accidents";
+import SiteOperatorForm from "./site-management/site-operator";
 import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/yearly-income";
@@ -56,6 +59,12 @@ function SiteCreationWizard() {
         return <SiteManagementIntroduction />;
       case "OWNER":
         return <SiteOwnerForm />;
+      case "IS_FRICHE_LEASED":
+        return <IsFricheLeasedForm />;
+      case "IS_SITE_WORKED":
+        return <IsSiteWorkedForm />;
+      case "OPERATOR":
+        return <SiteOperatorForm />;
       case "TENANT":
         return <SiteTenantForm />;
       case "FULL_TIME_JOBS_INVOLVED":
