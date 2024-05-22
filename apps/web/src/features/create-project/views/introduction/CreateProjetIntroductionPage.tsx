@@ -1,5 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import Accordion from "@codegouvfr/react-dsfr/Accordion";
 import { Button } from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/app/views/router";
@@ -28,38 +26,18 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
       );
     case "success":
       return (
-        <WizardFormLayout title={`Vous avez un projet d'aménagement sur le site "${siteName}".`}>
-          <p>
+        <section className="tw-py-7 lg:tw-px-[200px]">
+          <div className="tw-text-[80px] tw-mb-10 tw-leading-none">🏗</div>
+          <h2 className="tw-mb-10">Vous avez un projet d'aménagement sur le site "{siteName}".</h2>
+          <p className="tw-text-xl tw-mb-10">
             Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du
             projet, la transformation des sols du site, les acteurs associés, les coûts et recettes
-            prévisionnels, le calendrier des travaux , etc.
+            prévisionnels, le calendrier des travaux, etc.
           </p>
-          <Accordion label="Documents utiles" className={fr.cx("fr-mb-4w")}>
-            <p>
-              Pour vous aider à saisir les informations liées à votre projet, il peut être utile
-              d'avoir les ressources suivantes :
-            </p>
-            <ul>
-              <li>
-                Plan d'aménagement (ou plan masse) ou a minima les principales fonctions du projet
-              </li>
-              <li>
-                Rapports des éventuelles études menées sur le site (étude de faisabilité du projet,
-                étude faune-flore, diagnostic de pollution, etc.)
-              </li>
-              <li>
-                Dossiers réglementaires le cas échéant (ICPE, loi sur l'eau, dérogation espèces
-                protégées, etc.)
-              </li>
-              <li>Titre de propriété ou acte de vente</li>
-              <li>
-                Bilan économique prévisionnel de l'opération (ou business plan le cas échéant)
-              </li>
-              <li>Acte de vente ou titre de propriété </li>
-            </ul>
-          </Accordion>
-          <Button linkProps={routes.createProject({ siteId }).link}>Commencer</Button>
-        </WizardFormLayout>
+          <Button size="large" linkProps={routes.createProject({ siteId }).link}>
+            Commencer
+          </Button>
+        </section>
       );
   }
 }
