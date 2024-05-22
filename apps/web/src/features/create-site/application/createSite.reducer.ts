@@ -31,7 +31,10 @@ export type SiteCreationStep =
   // site management
   | "MANAGEMENT_INTRODUCTION"
   | "OWNER"
+  | "IS_FRICHE_LEASED"
+  | "IS_SITE_WORKED"
   | "TENANT"
+  | "OPERATOR"
   | "FULL_TIME_JOBS_INVOLVED"
   | "FRICHE_RECENT_ACCIDENTS"
   | "YEARLY_EXPENSES"
@@ -148,10 +151,27 @@ export const siteCreationSlice = createSlice({
     },
     completeOwner: (state, action: PayloadAction<{ owner: Owner }>) => {
       state.siteData.owner = action.payload.owner;
-      state.stepsHistory.push("TENANT");
+      state.stepsHistory.push(state.siteData.isFriche ? "IS_FRICHE_LEASED" : "IS_SITE_WORKED");
+    },
+    completeIsFricheLeased: (state, action: PayloadAction<{ isFricheLeased: boolean }>) => {
+      const { isFricheLeased } = action.payload;
+      state.siteData.isFricheLeased = isFricheLeased;
+      state.stepsHistory.push(isFricheLeased ? "TENANT" : "FULL_TIME_JOBS_INVOLVED");
+    },
+    completeIsSiteWorked: (state, action: PayloadAction<{ isSiteWorked: boolean }>) => {
+      const { isSiteWorked } = action.payload;
+      state.siteData.isSiteWorked = isSiteWorked;
+      state.stepsHistory.push(isSiteWorked ? "OPERATOR" : "YEARLY_EXPENSES");
     },
     completeTenant: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
       state.siteData.tenant = action.payload.tenant;
+      state.stepsHistory.push("FULL_TIME_JOBS_INVOLVED");
+    },
+    completeOperator: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
+      const { tenant } = action.payload;
+      if (tenant) {
+        state.siteData.tenant = tenant;
+      }
       state.stepsHistory.push("FULL_TIME_JOBS_INVOLVED");
     },
     completeFullTimeJobsInvolved: (state, action: PayloadAction<{ jobs?: number }>) => {
@@ -264,7 +284,10 @@ export const {
   completeManagementIntroduction,
   completeFullTimeJobsInvolved,
   completeOwner,
+  completeIsFricheLeased,
+  completeIsSiteWorked,
   completeTenant,
+  completeOperator,
   completeFricheRecentAccidents,
   completeYearlyExpenses,
   completeYearlyExpensesSummary,
