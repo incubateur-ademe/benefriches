@@ -58,7 +58,7 @@ type Props = {
 };
 
 const requiredMessage =
-  "Si vous ne savez pas qualifier l'activité de la friche, sélectionner « Autre / NSP ». Vous pourrez revenir plus tard préciser votre réponse.";
+  "Si vous ne savez pas qualifier l'activité de la friche, sélectionner « Autre / Ne sait pas ». Vous pourrez revenir plus tard préciser votre réponse.";
 
 function FricheActivityForm({ onSubmit, onBack }: Props) {
   const {

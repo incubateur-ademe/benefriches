@@ -79,7 +79,7 @@ function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
               />
             </>
           )}
-          <RadioButton label="Non / NSP" value="no" {...register("hasRecentAccidents")} />
+          <RadioButton label="Non / Ne sait pas" value="no" {...register("hasRecentAccidents")} />
         </Fieldset>
         <BackNextButtonsGroup onBack={onBack} />
       </form>

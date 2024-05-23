@@ -107,7 +107,7 @@ function SiteTenantForm({
           )}
 
           <RadioButton
-            label="Non / NSP"
+            label="Non / Ne sait pas"
             value="unknown"
             {...register("tenantType", { required: requiredMessage })}
           />
