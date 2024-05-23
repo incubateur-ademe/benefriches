@@ -1,14 +1,12 @@
 import { useForm } from "react-hook-form";
 import Input from "@codegouvfr/react-dsfr/Input";
 import { SoilsDistribution, typedObjectEntries } from "shared";
+import SoilSurfaceAreaSliderInput from "./SoilSurfaceAreaSliderInput";
 
-import { getColorForSoilType } from "@/shared/domain/soils";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -70,32 +68,22 @@ function NonSuitableSoilsSurfaceToTransformForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         {typedObjectEntries(soilsToTransform).map(([soilType, surfaceArea]) => {
           const maxValue = surfaceArea as number;
-          const marks =
-            maxValue > missingSuitableSurfaceArea
-              ? {
-                  [missingSuitableSurfaceArea]: formatNumberFr(missingSuitableSurfaceArea),
-                }
-              : {};
+          const marks = {
+            0: "0",
+
+            [maxValue]: formatNumberFr(maxValue),
+          };
+          if (maxValue > missingSuitableSurfaceArea) {
+            marks[missingSuitableSurfaceArea] = formatNumberFr(missingSuitableSurfaceArea);
+          }
           return (
-            <SliderNumericInput
-              key={soilType}
+            <SoilSurfaceAreaSliderInput
+              soilType={soilType}
               control={control}
               name={`soilsTransformation.${soilType}`}
-              label={getLabelForSoilType(soilType)}
+              marks={marks}
               maxValue={maxValue}
-              sliderStartValue={0}
-              sliderEndValue={maxValue}
-              sliderProps={{
-                marks,
-                styles: {
-                  track: {
-                    background: getColorForSoilType(soilType),
-                  },
-                },
-                tooltip: {
-                  formatter: (value?: number) => value && formatSurfaceArea(value),
-                },
-              }}
+              key={soilType}
             />
           );
         })}

@@ -53,7 +53,7 @@ const RowNumericInput = memo(
             fr.cx("fr-mb-0", "fr-pt-7v"),
             "tw-flex",
             "tw-justify-between",
-            "tw-items-start",
+            "tw-items-center",
             fr.cx(
               disabled && "fr-input-group--disabled",
               state === "error" && "fr-input-group--error",
@@ -69,7 +69,8 @@ const RowNumericInput = memo(
             {imgSrc && (
               <img
                 src={imgSrc}
-                width="50px"
+                width="60px"
+                height="60px"
                 aria-hidden="true"
                 alt=""
                 className={classNames(disabled && "tw-filter tw-grayscale")}

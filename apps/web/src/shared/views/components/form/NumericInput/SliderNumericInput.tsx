@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, ReactNode, useState } from "react";
 import { FieldValues, RegisterOptions, useController, UseControllerProps } from "react-hook-form";
 import { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { Slider } from "antd";
@@ -11,7 +11,7 @@ import {
 } from "@/shared/services/number-conversion/numberConversion";
 
 type Props<T extends FieldValues> = {
-  label: string;
+  label: ReactNode;
   imgSrc?: string;
   hintText?: string;
   hintInputText?: string;

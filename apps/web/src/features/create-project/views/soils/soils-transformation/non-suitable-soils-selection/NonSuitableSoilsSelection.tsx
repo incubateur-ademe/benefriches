@@ -37,7 +37,7 @@ const SoilTypeTile = ({ soilType, surfaceArea, isSelected, onSelect }: SoilTypeT
   return (
     <CheckableTile
       title={title}
-      description={formatSurfaceArea(surfaceArea)}
+      description={`Jusqu'à ${formatSurfaceArea(surfaceArea)} supprimables`}
       imgSrc={imgSrc}
       isSelected={isSelected}
       onSelect={onSelect}
