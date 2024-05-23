@@ -28,7 +28,9 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
       return (
         <section className="tw-py-7 lg:tw-px-[200px]">
           <div className="tw-text-[80px] tw-mb-10 tw-leading-none">🏗</div>
-          <h2 className="tw-mb-10">Vous avez un projet d'aménagement sur le site "{siteName}".</h2>
+          <h2 className="tw-mb-10">
+            Vous avez un projet d'aménagement sur le site « {siteName} ».
+          </h2>
           <p className="tw-text-xl tw-mb-10">
             Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du
             projet, la transformation des sols du site, les acteurs associés, les coûts et recettes
