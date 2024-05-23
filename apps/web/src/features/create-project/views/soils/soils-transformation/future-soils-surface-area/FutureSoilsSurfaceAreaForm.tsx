@@ -57,6 +57,7 @@ function FutureSoilsSurfaceAreaForm({
       title="Quelles seront les superficies des sols ?"
       instructions={
         <FutureSoilsSurfaceAreaInstructions
+          availableSurfaceArea={siteSurfaceArea}
           minimumRecommendedImpermeableSurfaceArea={minimumRecommendedImpermeableSurfaceArea}
           minimumRecommendedMineralSurfaceArea={minimumRecommendedMineralSurfaceArea}
           photovoltaicPanelsSurfaceArea={photovoltaicPanelsSurfaceArea}
