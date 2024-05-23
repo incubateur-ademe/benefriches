@@ -10,7 +10,7 @@ type Props = {
   allocatedSuitableSurfaceArea: number;
 };
 
-const successMessage = "Vous avez alloué suffisament de surface compatible.";
+const successMessage = "Le compte est bon !";
 
 function SuitableSurfaceAreaControlInput({
   minSuitableSurfaceAreaToAllocate,
@@ -20,10 +20,10 @@ function SuitableSurfaceAreaControlInput({
     minSuitableSurfaceAreaToAllocate - allocatedSuitableSurfaceArea;
   const hasRemainingSurfaceToAllocate = remainingSurfaceToAllocate > 0;
 
-  const errorMessage = `Il vous reste ${formatSurfaceArea(remainingSurfaceToAllocate)} de surface compatible à allouer.`;
+  const errorMessage = `-${formatSurfaceArea(remainingSurfaceToAllocate)}`;
   return (
     <Input
-      label="Total des surfaces compatibles"
+      label="Total des sols compatibles"
       hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
       nativeInputProps={{
         value: allocatedSuitableSurfaceArea,
