@@ -78,7 +78,7 @@ function FutureSoilsSurfaceAreaForm({
               )}
               {existingSoilSurfaceArea
                 ? `${formatSurfaceArea(existingSoilSurfaceArea)} existant`
-                : "Pas de sol existant"}
+                : null}
             </span>
           );
           return (

@@ -25,8 +25,8 @@ const options = [
     description: (
       <>
         Les bâtiments seront démolis, les sols imperméables seront désimperméabilisés au maximum et
-        les sols minéraux enherbés au maximum. S'il reste un espace enherbé en-dehors de la zone des
-        panneaux, vous pourrez choisir d'y planter des arbres.
+        les sols perméables minéraux enherbés au maximum. S'il reste un espace enherbé en-dehors de
+        la zone des panneaux, vous pourrez choisir d'y planter des arbres.
         <br />
         <Badge
           as="span"
