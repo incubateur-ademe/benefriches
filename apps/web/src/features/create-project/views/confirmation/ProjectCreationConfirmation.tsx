@@ -1,5 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import Button from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -8,10 +8,11 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   projectName: string;
   projectId: string;
+  siteName: string;
   loadingState: "idle" | "loading" | "success" | "error";
 };
 
-function ProjectCreationConfirmation({ projectId, projectName, loadingState }: Props) {
+function ProjectCreationConfirmation({ projectId, projectName, siteName, loadingState }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -34,39 +35,17 @@ function ProjectCreationConfirmation({ projectId, projectName, loadingState }: P
       );
     case "success":
       return (
-        <WizardFormLayout title={`✅ Le projet « ${projectName} » est créé !`}>
-          {/* <p>
-            Vous pouvez maintenant découvrir ses impacts, comparer ce projet avec un autre projet ou
-            bien retourner à votre liste de projets, pour créer un nouveau projet ou un nouveau
-            site.
-          </p> */}
-          <p>
-            Vous pouvez maintenant découvrir ses impacts ou retourner à votre liste de projets, pour
-            créer un nouveau projet ou un nouveau site.
+        <section className="tw-py-7 lg:tw-px-[200px]">
+          <div className="tw-text-[80px] tw-mb-10 tw-leading-none">✅</div>
+          <h2 className="tw-mb-10">Le projet « {projectName} » est créé !</h2>
+          <p className="tw-text-xl tw-mb-10">
+            Bénéfriches peut maintenant calculer les impacts sociaux, économiques et
+            environnementaux de ce projet sur le site « {siteName} ».
           </p>
-          <ButtonsGroup
-            buttons={[
-              {
-                priority: "secondary",
-                children: "Retour à mes projets",
-                linkProps: routes.myProjects().link,
-              },
-              {
-                priority: "primary",
-                children: "Découvrir les impacts",
-                linkProps: routes.projectImpacts({ projectId }).link,
-              },
-              // {
-              //   priority: "primary",
-              //   children: "Comparer les impacts",
-              //   linkProps: routes.selectProjectToCompare({
-              //     baseProjectId: projectId,
-              //   }).link,
-              // },
-            ]}
-            inlineLayoutWhen="always"
-          />
-        </WizardFormLayout>
+          <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
+            Calculer les impacts
+          </Button>
+        </section>
       );
   }
 }

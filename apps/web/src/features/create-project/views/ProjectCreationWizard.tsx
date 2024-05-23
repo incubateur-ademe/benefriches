@@ -127,9 +127,11 @@ function ProjectCreationWizard() {
     }
   };
 
+  const shouldDisplayStepper = currentStep !== "CREATION_CONFIRMATION";
+
   return (
     <section className={fr.cx("fr-container", "fr-py-3w")}>
-      <Stepper step={currentStep} />
+      {shouldDisplayStepper && <Stepper step={currentStep} />}
       {getStepComponent()}
     </section>
   );
