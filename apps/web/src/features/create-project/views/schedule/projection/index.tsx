@@ -9,8 +9,10 @@ import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
+  const nextYear = new Date().getFullYear() + 1;
   return {
     askForReinstatementSchedule: projectSite?.isFriche ?? false,
+    defaultFirstYearOfOperation: nextYear,
     onBack: () => {
       dispatch(revertScheduleStep());
     },

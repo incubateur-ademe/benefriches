@@ -4,9 +4,11 @@ import Input from "@codegouvfr/react-dsfr/Input";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  defaultFirstYearOfOperation: number;
   askForReinstatementSchedule: boolean;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -24,8 +26,17 @@ export type FormValues = {
   firstYearOfOperation?: number;
 };
 
-function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit, onBack }: Props) {
-  const { handleSubmit, register, control, formState } = useForm<FormValues>();
+function ScheduleProjectionForm({
+  defaultFirstYearOfOperation,
+  askForReinstatementSchedule,
+  onSubmit,
+  onBack,
+}: Props) {
+  const { handleSubmit, register, control, formState } = useForm<FormValues>({
+    defaultValues: {
+      firstYearOfOperation: defaultFirstYearOfOperation,
+    },
+  });
 
   const { errors } = formState;
   const {
@@ -34,7 +45,15 @@ function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit, onBack 
   } = errors;
 
   return (
-    <WizardFormLayout title="Calendrier">
+    <WizardFormLayout
+      title="Calendrier"
+      instructions={
+        <>
+          <p>L'année de mise en service est proposée par défaut à l'année suivante.</p>
+          <p>Vous pouvez modifier cette date.</p>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         {askForReinstatementSchedule && (
           <Fieldset
@@ -109,11 +128,13 @@ function ScheduleProjectionForm({ askForReinstatementSchedule, onSubmit, onBack 
         </Fieldset>
 
         <NumericInput
-          label="Mise en service du site"
+          label={<RequiredLabel label="Mise en service du site" />}
           name="firstYearOfOperation"
           placeholder="2025"
           control={control}
           rules={{
+            required:
+              "L'année de mise en service est nécessaire pour pouvoir calculer les impacts de votre projet.",
             min: {
               value: 2000,
               message: "Veuillez entrer une année valide",
