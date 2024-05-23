@@ -54,7 +54,7 @@ function FutureSoilsSurfaceAreaForm({
 
   return (
     <WizardFormLayout
-      title="Quelle sera la future répartition des sols ?"
+      title="Quelles seront les superficies des sols ?"
       instructions={
         <FutureSoilsSurfaceAreaInstructions
           minimumRecommendedImpermeableSurfaceArea={minimumRecommendedImpermeableSurfaceArea}
@@ -66,10 +66,15 @@ function FutureSoilsSurfaceAreaForm({
       <form onSubmit={handleSubmit(_onSubmit)}>
         {selectedSoils.map((soilType) => {
           const existingSoilSurfaceArea = currentSoilsDistribution[soilType];
+          const soilTypeDescription = getDescriptionForSoilType(soilType);
           const hintText = (
             <span>
-              {getDescriptionForSoilType(soilType)}
-              <br />
+              {soilTypeDescription && (
+                <>
+                  <span>{soilTypeDescription}</span>
+                  <br />
+                </>
+              )}
               {existingSoilSurfaceArea
                 ? `${formatSurfaceArea(existingSoilSurfaceArea)} existant`
                 : "Pas de sol existant"}
