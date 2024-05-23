@@ -18,7 +18,7 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
       return <LoadingSpinner />;
     case "error":
       return (
-        <WizardFormLayout title="Le site demandé n'a pas pu ếtre chargé">
+        <WizardFormLayout title="Le site demandé n'a pas pu être chargé">
           <p>
             Une erreur est survenue lors du chargement des informations du site, veuillez réessayer.
           </p>

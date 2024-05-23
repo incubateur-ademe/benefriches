@@ -32,16 +32,17 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
       );
     case "success":
       return (
-        <WizardFormLayout title={`✅ Le site « ${siteName} » est créé !`}>
-          <p>Bravo, vous avez fait la moitié du chemin !</p>
-          <p>
-            Pour consulter les impacts d’un projet sur ce site, il vous faut maintenant renseigner
-            ce projet.
+        <section className="tw-py-7 lg:tw-px-[200px]">
+          <div className="tw-text-[80px] tw-mb-10 tw-leading-none">✅</div>
+          <h2 className="tw-mb-10">Le site « {siteName} » est créé !</h2>
+          <p className="tw-text-xl tw-mb-10">
+            Vous pouvez maintenant renseigner un projet sur ce site avant de pouvoir calculer les
+            impacts qui lui sont associés.
           </p>
-          <Button linkProps={routes.createProjectIntro({ siteId }).link}>
+          <Button size="large" linkProps={routes.createProjectIntro({ siteId }).link}>
             Renseigner mon projet sur ce site
           </Button>
-        </WizardFormLayout>
+        </section>
       );
   }
 }
