@@ -5,11 +5,11 @@ import {
   revertCustomSoilsSurfaceAreaAllocationStep,
 } from "@/features/create-project/application/createProject.reducer";
 import {
+  selectBaseSoilsDistributionForTransformation,
   selectFutureSoils,
   selectPhotovoltaicPanelsSurfaceArea,
   selectRecommendedImpermeableSurfaceArea,
   selectRecommendedMineralSurfaceArea,
-  selectSiteSoilsDistribution,
   selectSiteSurfaceArea,
 } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -23,7 +23,7 @@ function FutureSoilsSurfaceAreaFormContainer() {
     selectRecommendedImpermeableSurfaceArea,
   );
   const minimumRecommendedMineralSurfaceArea = useAppSelector(selectRecommendedMineralSurfaceArea);
-  const currentSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
+  const currentSoilsDistribution = useAppSelector(selectBaseSoilsDistributionForTransformation);
 
   return (
     <FutureSoilsSurfaceAreaForm
