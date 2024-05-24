@@ -3,6 +3,12 @@ import Button from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import {
+  EditorialPageIcon,
+  EditorialPageLayout,
+  EditorialPageText,
+  EditorialPageTitle,
+} from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -35,17 +41,17 @@ function ProjectCreationConfirmation({ projectId, projectName, siteName, loading
       );
     case "success":
       return (
-        <section className="tw-py-7 lg:tw-px-[200px]">
-          <div className="tw-text-[80px] tw-mb-10 tw-leading-none">✅</div>
-          <h2 className="tw-mb-10">Le projet « {projectName} » est créé !</h2>
-          <p className="tw-text-xl tw-mb-10">
+        <EditorialPageLayout>
+          <EditorialPageIcon>✅</EditorialPageIcon>
+          <EditorialPageTitle>Le projet « {projectName} » est créé !</EditorialPageTitle>
+          <EditorialPageText>
             Bénéfriches peut maintenant calculer les impacts sociaux, économiques et
             environnementaux de ce projet sur le site « {siteName} ».
-          </p>
+          </EditorialPageText>
           <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
             Calculer les impacts
           </Button>
-        </section>
+        </EditorialPageLayout>
       );
   }
 }

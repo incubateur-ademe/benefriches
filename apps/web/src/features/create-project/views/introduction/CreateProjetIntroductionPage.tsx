@@ -2,6 +2,12 @@ import { Button } from "@codegouvfr/react-dsfr/Button";
 
 import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import {
+  EditorialPageIcon,
+  EditorialPageLayout,
+  EditorialPageText,
+  EditorialPageTitle,
+} from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -26,20 +32,20 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
       );
     case "success":
       return (
-        <section className="tw-py-7 lg:tw-px-[200px]">
-          <div className="tw-text-[80px] tw-mb-10 tw-leading-none">🏗</div>
-          <h2 className="tw-mb-10">
+        <EditorialPageLayout>
+          <EditorialPageIcon>🏗</EditorialPageIcon>
+          <EditorialPageTitle>
             Vous avez un projet d'aménagement sur le site « {siteName} ».
-          </h2>
-          <p className="tw-text-xl tw-mb-10">
+          </EditorialPageTitle>
+          <EditorialPageText>
             Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du
             projet, la transformation des sols du site, les acteurs associés, les coûts et recettes
             prévisionnels, le calendrier des travaux, etc.
-          </p>
+          </EditorialPageText>
           <Button size="large" linkProps={routes.createProject({ siteId }).link}>
             Commencer
           </Button>
-        </section>
+        </EditorialPageLayout>
       );
   }
 }
