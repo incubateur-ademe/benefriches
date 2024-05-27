@@ -1,6 +1,11 @@
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import {
+  EditorialPageIcon,
+  EditorialPageLayout,
+  EditorialPageText,
+  EditorialPageTitle,
+} from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
   photovoltaicPanelsSurfaceAre: number;
@@ -16,19 +21,22 @@ const NonSuitableSoilsNotice = ({
   onBack,
 }: Props) => {
   return (
-    <WizardFormLayout title="😐 Le site n'est pas encore prêt à accueillir une centrale photovoltaïque.">
-      <p>
+    <EditorialPageLayout>
+      <EditorialPageIcon>😐</EditorialPageIcon>
+      <EditorialPageTitle>
+        Le site n'est pas encore prêt à accueillir une centrale photovoltaïque.
+      </EditorialPageTitle>
+      <EditorialPageText>
         Les panneaux photovoltaïques sont censés occuper une surface de{" "}
         <strong>{formatSurfaceArea(photovoltaicPanelsSurfaceAre)}</strong>. Or, le site ne possède
         que <strong>{formatSurfaceArea(suitableSurfaceArea)}</strong> de surface compatible ; le
         reste étant occupé par des bâtiments, des arbres ou de l'eau.
-      </p>
-      <p>
+        <br />
         Vous pouvez modifier les paramètres de la centrale en retournant dans les étapes
         précédentes, ou choisir de supprimer tout ou partie des espaces en cliquant sur suivant.
-      </p>
+      </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </WizardFormLayout>
+    </EditorialPageLayout>
   );
 };
 
