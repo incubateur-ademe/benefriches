@@ -1,13 +1,16 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { SoilsDistribution, SoilType } from "shared";
+import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere } from "shared";
 import {
   getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
   getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
 } from "../domain/photovoltaic";
 import {
+  getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
   getNonSuitableSoilsForPhotovoltaicPanels,
   getSuitableSoilsForTransformation,
   getSuitableSurfaceAreaForPhotovoltaicPanels,
+  isBiodiversityAndClimateSensibleSoil,
+  willTransformationNoticeablyImpactBiodiversityAndClimate,
 } from "../domain/soilsTransformation";
 
 import { RootState } from "@/app/application/store";
@@ -29,6 +32,11 @@ export const selectBaseSoilsDistributionForTransformation = createSelector(
 export const selectSiteSoilsDistribution = createSelector(
   selectSelf,
   (state): SoilsDistribution => state.siteData?.soilsDistribution ?? {},
+);
+
+export const selectProjectSoilsDistribution = createSelector(
+  selectSelf,
+  (state): SoilsDistribution => state.projectData.soilsDistribution ?? {},
 );
 
 export const selectSiteSurfaceArea = createSelector(
@@ -112,5 +120,33 @@ export const selectRecommendedImpermeableSurfaceArea = createSelector(
     return getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea(
       photovoltaicInstallationElectricalPowerKwC,
     );
+  },
+);
+
+export const selectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed = createSelector(
+  [selectSiteSoilsDistribution, selectProjectSoilsDistribution],
+  (siteSoilsDistribution, projectSoilsDistribution): number => {
+    return getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed(
+      siteSoilsDistribution,
+      projectSoilsDistribution,
+    );
+  },
+);
+
+export const selectWillSoilsTransformationHaveNegativeImpactOnBiodiversityAndClimate =
+  createSelector(
+    [selectSiteSoilsDistribution, selectProjectSoilsDistribution],
+    (siteSoilsDistribution, projectSoilsDistribution): boolean => {
+      return willTransformationNoticeablyImpactBiodiversityAndClimate(
+        siteSoilsDistribution,
+        projectSoilsDistribution,
+      );
+    },
+  );
+
+export const selectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea = createSelector(
+  selectProjectSoilsDistribution,
+  (futureSoilsDistribution): number => {
+    return sumSoilsSurfaceAreasWhere(futureSoilsDistribution, isBiodiversityAndClimateSensibleSoil);
   },
 );

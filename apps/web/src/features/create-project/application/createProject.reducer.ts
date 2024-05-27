@@ -7,6 +7,7 @@ import {
 } from "../domain/photovoltaic";
 import {
   canSiteAccomodatePhotovoltaicPanels,
+  hasSiteSignificantBiodiversityAndClimateSensibleSoils,
   preserveCurrentSoils,
   SoilsTransformationProject,
   transformNonSuitableSoils,
@@ -52,6 +53,7 @@ export type ProjectCreationStep =
   | "SOILS_TRANSFORMATION_PROJECT_SELECTION"
   | "SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION"
   | "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION"
+  | "SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
   | "SOILS_SUMMARY"
   | "SOILS_CARBON_STORAGE"
   | "STAKEHOLDERS_INTRODUCTION"
@@ -131,8 +133,8 @@ export const projectCreationSlice = createSlice({
     },
     completeSoilsTransformationIntroductionStep: (state) => {
       const nextStep = canSiteAccomodatePhotovoltaicPanels(
-        state.siteData!.soilsDistribution,
-        state.projectData.photovoltaicInstallationSurfaceSquareMeters!,
+        state.siteData?.soilsDistribution ?? {},
+        state.projectData.photovoltaicInstallationSurfaceSquareMeters ?? 0,
       )
         ? "SOILS_TRANSFORMATION_PROJECT_SELECTION"
         : "NON_SUITABLE_SOILS_NOTICE";
@@ -188,7 +190,12 @@ export const projectCreationSlice = createSlice({
         recommendedMineralSurfaceArea,
       });
 
-      state.stepsHistory.push("SOILS_SUMMARY");
+      const nextStep = hasSiteSignificantBiodiversityAndClimateSensibleSoils(
+        state.siteData?.soilsDistribution ?? {},
+      )
+        ? "SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
+        : "SOILS_SUMMARY";
+      state.stepsHistory.push(nextStep);
     },
     completeCustomSoilsSelectionStep: (state, action: PayloadAction<SoilType[]>) => {
       state.projectData.futureSoilsSelection = action.payload;
@@ -199,6 +206,15 @@ export const projectCreationSlice = createSlice({
       action: PayloadAction<SoilsDistribution>,
     ) => {
       state.projectData.soilsDistribution = action.payload;
+
+      const nextStep = hasSiteSignificantBiodiversityAndClimateSensibleSoils(
+        state.siteData?.soilsDistribution ?? {},
+      )
+        ? "SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
+        : "SOILS_SUMMARY";
+      state.stepsHistory.push(nextStep);
+    },
+    completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep: (state) => {
       state.stepsHistory.push("SOILS_SUMMARY");
     },
     completeStakeholdersIntroductionStep: (state) => {
@@ -480,8 +496,8 @@ export const revertCustomSoilsSelectionStep = () =>
   revertStep({ resetFields: ["futureSoilsSelection"] });
 export const revertCustomSoilsSurfaceAreaAllocationStep = () =>
   revertStep({ resetFields: ["soilsDistribution"] });
-export const revertStakeholdersIntroductionStep = () =>
-  revertStep({ resetFields: ["soilsDistribution"] });
+export const revertBiodiversityAndClimateImpactNoticeStep = () => revertStep();
+export const revertStakeholdersIntroductionStep = () => revertStep();
 export const revertProjectDeveloper = () => revertStep({ resetFields: ["projectDeveloper"] });
 export const revertFutureOperator = () => revertStep({ resetFields: ["futureOperator"] });
 export const revertConversionFullTimeJobsInvolved = () =>
@@ -550,6 +566,7 @@ export const {
   completeSoilsTransformationProjectSelectionStep,
   completeCustomSoilsSelectionStep,
   completeCustomSoilsSurfaceAreaAllocationStep,
+  completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep,
   completeStakeholdersIntroductionStep,
   completeFutureOperator,
   completeProjectDeveloper,

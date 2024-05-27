@@ -1,4 +1,11 @@
-import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere, typedObjectEntries } from "shared";
+import {
+  isForest,
+  isWetLand,
+  SoilsDistribution,
+  SoilType,
+  sumSoilsSurfaceAreasWhere,
+  typedObjectEntries,
+} from "shared";
 import { z } from "zod";
 
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -233,4 +240,60 @@ export const getSuitableSoilsForTransformation = (currentSoils: SoilType[]): Soi
   return TRANSFORMABLE_SOILS.concat(
     currentSoils.filter((soilType) => !TRANSFORMABLE_SOILS.includes(soilType)),
   );
+};
+
+export const isBiodiversityAndClimateSensibleSoil = (soilType: SoilType): boolean => {
+  return isForest(soilType) || isWetLand(soilType);
+};
+const MINIMUM_NOTICEABLE_BIODIVERSITY_AND_CLIMATE_FAVORABLE_SURFACE_AREA = 1000;
+export const hasSiteSignificantBiodiversityAndClimateSensibleSoils = (
+  siteSoils: SoilsDistribution,
+): boolean => {
+  const biodiversityAndClimateSensibleSurfaceArea = sumSoilsSurfaceAreasWhere(
+    siteSoils,
+    isBiodiversityAndClimateSensibleSoil,
+  );
+  return (
+    biodiversityAndClimateSensibleSurfaceArea >=
+    MINIMUM_NOTICEABLE_BIODIVERSITY_AND_CLIMATE_FAVORABLE_SURFACE_AREA
+  );
+};
+
+const hasBiodiversityAndClimateSensibleSoil = (siteSoils: SoilsDistribution): boolean => {
+  return typedObjectKeys(siteSoils).some(isBiodiversityAndClimateSensibleSoil);
+};
+
+export const getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed = (
+  currentSoils: SoilsDistribution,
+  futureSoils: SoilsDistribution,
+): number => {
+  const currentBiodiversityAndClimateSensibleSurfaceArea = sumSoilsSurfaceAreasWhere(
+    currentSoils,
+    isBiodiversityAndClimateSensibleSoil,
+  );
+  const futureBiodiversityAndClimateSensibleSurfaceArea = sumSoilsSurfaceAreasWhere(
+    futureSoils,
+    isBiodiversityAndClimateSensibleSoil,
+  );
+  const destroyedSurfaceArea =
+    currentBiodiversityAndClimateSensibleSurfaceArea -
+    futureBiodiversityAndClimateSensibleSurfaceArea;
+  return destroyedSurfaceArea > 0 ? destroyedSurfaceArea : 0;
+};
+
+export const willTransformationNoticeablyImpactBiodiversityAndClimate = (
+  currentSoils: SoilsDistribution,
+  futureSoils: SoilsDistribution,
+): boolean => {
+  if (!hasBiodiversityAndClimateSensibleSoil(currentSoils)) return false;
+
+  const destroyedSurfaceArea = getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed(
+    currentSoils,
+    futureSoils,
+  );
+  const currentBiodiversityAndClimateSensibleSurfaceArea = sumSoilsSurfaceAreasWhere(
+    currentSoils,
+    isBiodiversityAndClimateSensibleSoil,
+  );
+  return destroyedSurfaceArea >= currentBiodiversityAndClimateSensibleSurfaceArea * 0.1;
 };

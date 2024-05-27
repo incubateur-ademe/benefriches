@@ -35,6 +35,7 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case "SOILS_TRANSFORMATION_PROJECT_SELECTION":
     case "SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION":
     case "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION":
+    case "SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE":
     case "SOILS_SUMMARY":
     case "SOILS_CARBON_STORAGE":
       return "Transformation des sols";

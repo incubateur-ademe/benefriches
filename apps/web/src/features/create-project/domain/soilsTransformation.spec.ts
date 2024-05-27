@@ -6,6 +6,7 @@ import {
   getSuitableSoilsForTransformation,
   transformNonSuitableSoils,
   transformSoilsForRenaturation,
+  willTransformationNoticeablyImpactBiodiversityAndClimate,
 } from "./soilsTransformation";
 
 const assertSurfaceAreasEqual = (
@@ -522,6 +523,127 @@ describe("Soils transformation", () => {
         "ARTIFICIAL_TREE_FILLED",
       ];
       expect(getSuitableSoilsForTransformation(currentSoils)).toEqual(currentSoils);
+    });
+  });
+
+  describe("willTransformationNoticeablyImpactBiodiversityAndClimate", () => {
+    it("should return false when no forest or wet land on site", () => {
+      const currentSoilsDistribution: SoilsDistribution = {
+        MINERAL_SOIL: 100,
+        PRAIRIE_GRASS: 100,
+      };
+      const futureSoilsDistribution: SoilsDistribution = {
+        MINERAL_SOIL: 100,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 100,
+      };
+      expect(
+        willTransformationNoticeablyImpactBiodiversityAndClimate(
+          currentSoilsDistribution,
+          futureSoilsDistribution,
+        ),
+      ).toBe(false);
+    });
+    it("should return true when 20% of forest will be destroyed", () => {
+      const currentSoilsDistribution: SoilsDistribution = {
+        FOREST_CONIFER: 100,
+        MINERAL_SOIL: 50,
+      };
+      const futureSoilsDistribution: SoilsDistribution = {
+        FOREST_CONIFER: 80,
+        MINERAL_SOIL: 50,
+        PRAIRIE_GRASS: 20,
+      };
+      expect(
+        willTransformationNoticeablyImpactBiodiversityAndClimate(
+          currentSoilsDistribution,
+          futureSoilsDistribution,
+        ),
+      ).toBe(true);
+    });
+    it("should return false when less than 10% of forest will be destroyed", () => {
+      const currentSoilsDistribution: SoilsDistribution = {
+        FOREST_CONIFER: 100,
+        MINERAL_SOIL: 50,
+      };
+      const futureSoilsDistribution: SoilsDistribution = {
+        FOREST_CONIFER: 91,
+        MINERAL_SOIL: 50,
+        PRAIRIE_GRASS: 9,
+      };
+      expect(
+        willTransformationNoticeablyImpactBiodiversityAndClimate(
+          currentSoilsDistribution,
+          futureSoilsDistribution,
+        ),
+      ).toBe(false);
+    });
+    it("should return false when less than 10% of wet land will be destroyed", () => {
+      const currentSoilsDistribution: SoilsDistribution = {
+        WET_LAND: 100,
+        MINERAL_SOIL: 50,
+      };
+      const futureSoilsDistribution: SoilsDistribution = {
+        WET_LAND: 95,
+        MINERAL_SOIL: 55,
+      };
+      expect(
+        willTransformationNoticeablyImpactBiodiversityAndClimate(
+          currentSoilsDistribution,
+          futureSoilsDistribution,
+        ),
+      ).toBe(false);
+    });
+    it("should return true when more than 10% of wet land will be destroyed", () => {
+      const currentSoilsDistribution: SoilsDistribution = {
+        WET_LAND: 100,
+        MINERAL_SOIL: 50,
+      };
+      const futureSoilsDistribution: SoilsDistribution = {
+        WET_LAND: 50,
+        MINERAL_SOIL: 100,
+      };
+      expect(
+        willTransformationNoticeablyImpactBiodiversityAndClimate(
+          currentSoilsDistribution,
+          futureSoilsDistribution,
+        ),
+      ).toBe(true);
+    });
+    it("should return true when more than 10% of cumulated forest and wet land will be destroyed", () => {
+      const currentSoilsDistribution: SoilsDistribution = {
+        WET_LAND: 100,
+        FOREST_DECIDUOUS: 100,
+        MINERAL_SOIL: 50,
+      };
+      const futureSoilsDistribution: SoilsDistribution = {
+        FOREST_DECIDUOUS: 100,
+        MINERAL_SOIL: 150,
+      };
+      expect(
+        willTransformationNoticeablyImpactBiodiversityAndClimate(
+          currentSoilsDistribution,
+          futureSoilsDistribution,
+        ),
+      ).toBe(true);
+    });
+    it("should return false when less than 10% of cumulated forest and wet land will be destroyed", () => {
+      const currentSoilsDistribution: SoilsDistribution = {
+        WET_LAND: 200,
+        FOREST_DECIDUOUS: 100,
+        MINERAL_SOIL: 50,
+      };
+      const futureSoilsDistribution: SoilsDistribution = {
+        WET_LAND: 200,
+        FOREST_DECIDUOUS: 75,
+        MINERAL_SOIL: 50,
+        PRAIRIE_GRASS: 25,
+      };
+      expect(
+        willTransformationNoticeablyImpactBiodiversityAndClimate(
+          currentSoilsDistribution,
+          futureSoilsDistribution,
+        ),
+      ).toBe(false);
     });
   });
 });

@@ -19,6 +19,7 @@ import ProjectScheduleIntroductionContainer from "./schedule/introduction";
 import ProjectScheduleProjectionFormContainer from "./schedule/projection";
 import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
+import ClimateAndBiodiversityImpactNotice from "./soils/soils-transformation/climate-and-biodiversity-impact-notice";
 import FutureSoilsSelectionForm from "./soils/soils-transformation/future-soils-selection";
 import FutureSoilsSurfaceAreaForm from "./soils/soils-transformation/future-soils-surface-area";
 import SoilsTransformationIntroduction from "./soils/soils-transformation/introduction";
@@ -53,7 +54,6 @@ function ProjectCreationWizard() {
         return <RenewableEnergyTypesForm />;
       case "STAKEHOLDERS_INTRODUCTION":
         return <ProjectStakeholdersIntroduction />;
-
       case "STAKEHOLDERS_PROJECT_DEVELOPER":
         return <DeveloperForm />;
       case "STAKEHOLDERS_FUTURE_OPERATOR":
@@ -110,6 +110,8 @@ function ProjectCreationWizard() {
         return <FutureSoilsSelectionForm />;
       case "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION":
         return <FutureSoilsSurfaceAreaForm />;
+      case "SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE":
+        return <ClimateAndBiodiversityImpactNotice />;
       case "SOILS_SUMMARY":
         return <ProjectSoilsSummaryContainer />;
       case "SOILS_CARBON_STORAGE":
