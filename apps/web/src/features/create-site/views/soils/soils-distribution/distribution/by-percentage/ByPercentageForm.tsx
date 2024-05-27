@@ -93,7 +93,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
           stateRelatedMessage={
             remainder === 0
               ? "Le compte est bon !"
-              : `${remainder > 0 ? "-" : "+"} ${formatNumberFr(Math.abs(remainder))} %`
+              : `${formatNumberFr(Math.abs(remainder))}% ${remainder > 0 ? "manquants" : "en trop"}`
           }
         />
         <BackNextButtonsGroup onBack={onBack} />

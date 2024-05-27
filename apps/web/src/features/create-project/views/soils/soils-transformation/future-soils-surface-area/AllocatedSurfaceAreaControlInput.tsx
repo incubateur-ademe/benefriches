@@ -17,8 +17,8 @@ function AllocatedSurfaceAreaControlInput({ availableSurfaceArea, allocatedSurfa
   const hasError = allocatedSurfaceArea !== availableSurfaceArea;
   const errorMessage =
     hasError && hasRemainingSurfaceToAllocate
-      ? `-${formatSurfaceArea(remainingSurfaceToAllocate)}`
-      : `+${formatSurfaceArea(-remainingSurfaceToAllocate)}`;
+      ? `${formatSurfaceArea(remainingSurfaceToAllocate)} manquants`
+      : `${formatSurfaceArea(-remainingSurfaceToAllocate)} en trop`;
   const successMessage = "Le compte est bon !";
 
   return (

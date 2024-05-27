@@ -3,7 +3,6 @@ import { Controller, useForm } from "react-hook-form";
 import { SoilType } from "shared";
 
 import {
-  formatNumberFr,
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
 } from "@/shared/services/format-number/formatNumber";
@@ -122,7 +121,7 @@ function SiteSoilsDistributionBySquareMetersForm({
           stateRelatedMessage={
             isValid
               ? "Le compte est bon !"
-              : `${remainder > 0 ? "-" : "+"} ${formatNumberFr(Math.abs(remainder))} m²`
+              : `${formatSurfaceArea(Math.abs(remainder))} ${remainder > 0 ? "manquants" : "en trop"}`
           }
         />
         <BackNextButtonsGroup onBack={onBack} disabled={!isValid} />
