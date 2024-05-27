@@ -2,6 +2,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
@@ -25,8 +26,8 @@ function CostBenefitAnalysisCard({
     },
     xAxis: {
       categories: [
-        `<strong>Bilan de l'opération</strong><br>${formatNumberFr(economicBalanceTotal)} €`,
-        `<strong>Impacts socio-économiques</strong><br>+${formatNumberFr(socioEconomicImpactsTotal)} €`,
+        `<strong>Bilan de l'opération</strong><br>${formatMonetaryImpact(economicBalanceTotal)}`,
+        `<strong>Impacts socio-économiques</strong><br>${formatMonetaryImpact(socioEconomicImpactsTotal)}`,
       ],
       opposite: true,
     },

@@ -3,8 +3,8 @@ import HighchartsReact from "highcharts-react-official";
 import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type PurposeCost = "rent" | "maintenance" | "taxes" | "other";
@@ -97,8 +97,8 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [
-        `<strong>Dépenses</strong><br>${formatNumberFr(costs.total)} €`,
-        `<strong>Recettes</strong><br>+${formatNumberFr(revenues.total)} €`,
+        `<strong>Dépenses</strong><br>${formatMonetaryImpact(costs.total)}`,
+        `<strong>Recettes</strong><br>${formatMonetaryImpact(revenues.total)}`,
       ],
       opposite: true,
     },

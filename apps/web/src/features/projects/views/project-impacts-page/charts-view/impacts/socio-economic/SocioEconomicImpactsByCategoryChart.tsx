@@ -9,8 +9,8 @@ import {
 } from "./socioEconomicImpacts";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
@@ -41,8 +41,8 @@ function SocioEconomicImpactsByCategoryChart({ socioEconomicImpacts }: Props) {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [
-        `<strong>Négatif</strong><br>${formatNumberFr(totalNegativeImpactsAmount)} €`,
-        `<strong>Positif</strong><br>+${formatNumberFr(totalPositiveImpactsAmount)} €`,
+        `<strong>Négatif</strong><br>${formatMonetaryImpact(totalNegativeImpactsAmount)}`,
+        `<strong>Positif</strong><br>${formatMonetaryImpact(totalPositiveImpactsAmount)}`,
       ],
       opposite: true,
     },
