@@ -12,6 +12,7 @@ type Props<T extends FieldValues> = {
   hintText?: ReactNode;
   placeholder?: string;
   className?: string;
+  allowDecimals?: boolean;
 } & UseControllerProps<T>;
 
 const NumericInput = <T extends FieldValues>({
@@ -22,6 +23,7 @@ const NumericInput = <T extends FieldValues>({
   rules,
   placeholder,
   className,
+  allowDecimals = true,
 }: Props<T>) => {
   const { field, fieldState } = useController<T>({
     name,
@@ -40,6 +42,7 @@ const NumericInput = <T extends FieldValues>({
     },
     onBlur: field.onBlur,
     type: "number",
+    step: allowDecimals ? "0.01" : "1",
     placeholder,
   };
 

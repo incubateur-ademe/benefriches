@@ -48,6 +48,7 @@ function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
                 name="accidentsMinorInjuries"
                 label="Nombre de blessés légers"
                 control={control}
+                allowDecimals={false}
                 rules={{
                   min: {
                     value: 0,
@@ -59,6 +60,7 @@ function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
                 name="accidentsSevereInjuries"
                 label="Nombre de blessés graves"
                 control={control}
+                allowDecimals={false}
                 rules={{
                   min: {
                     value: 0,
@@ -70,6 +72,7 @@ function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
                 name="accidentsDeaths"
                 label="Nombre de décès"
                 control={control}
+                allowDecimals={false}
                 rules={{
                   min: {
                     value: 0,

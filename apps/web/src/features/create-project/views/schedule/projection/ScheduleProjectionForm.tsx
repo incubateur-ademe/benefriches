@@ -132,6 +132,7 @@ function ScheduleProjectionForm({
           name="firstYearOfOperation"
           placeholder="2025"
           control={control}
+          allowDecimals={false}
           rules={{
             required:
               "L'année de mise en service est nécessaire pour pouvoir calculer les impacts de votre projet.",

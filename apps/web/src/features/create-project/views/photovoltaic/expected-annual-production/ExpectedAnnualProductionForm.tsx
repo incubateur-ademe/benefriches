@@ -46,6 +46,7 @@ function PhotovoltaicAnnualProductionForm({
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           control={control}
+          allowDecimals={false}
         />
         <BackNextButtonsGroup onBack={onBack} />
       </form>
