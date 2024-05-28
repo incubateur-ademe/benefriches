@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { selectCurrentStep } from "../application/createSite.reducer";
-import SiteExpensesSummary from "./site-management/expenses-summary";
+import SiteExpensesIncomeSummary from "./site-management/expenses-income-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
 import IsFricheLeasedForm from "./site-management/is-friche-leased";
@@ -76,7 +76,7 @@ function SiteCreationWizard() {
       case "YEARLY_INCOME":
         return <SiteYearlyIncomeForm />;
       case "YEARLY_EXPENSES_SUMMARY":
-        return <SiteExpensesSummary />;
+        return <SiteExpensesIncomeSummary />;
       case "FRICHE_ACTIVITY":
         return <FricheActivityForm />;
       case "NAMING":

@@ -1,5 +1,9 @@
 import { useEffect } from "react";
-import { mapFormDataToExpenses } from "./mappers";
+import {
+  getSiteManagementExpensesWithBearer,
+  getSiteSecurityExpensesWithBearer,
+  mapFormDataToExpenses,
+} from "./mappers";
 import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
 
 import { AppDispatch, RootState } from "@/app/application/store";
@@ -47,16 +51,31 @@ const mapProps = (
 ) => {
   const siteHasTenant = hasTenant(siteData as SiteDraft);
 
+  const siteManagementExpensesWithBearer = getSiteManagementExpensesWithBearer(
+    siteData.isFriche ?? false,
+    siteData.isSiteWorked ?? false,
+    siteHasTenant,
+  );
+
+  const siteSecurityExpensesWithBearer = getSiteSecurityExpensesWithBearer(
+    siteHasTenant,
+    siteData.hasRecentAccidents ?? false,
+  );
+
   return {
     hasTenant: siteHasTenant,
     isFriche: !!siteData.isFriche,
-    hasRecentAccidents: !!siteData.hasRecentAccidents,
+    siteManagementExpensesWithBearer,
+    siteSecurityExpensesWithBearer,
     defaultValues: getDefaultValues(siteData as SiteDraft, population),
     onBack: () => {
       dispatch(revertYearlyExpensesStep());
     },
     onSubmit: (formData: FormValues) => {
-      const expenses: Expense[] = mapFormDataToExpenses(formData, { siteHasTenant });
+      const expenses: Expense[] = mapFormDataToExpenses(formData, [
+        ...siteManagementExpensesWithBearer,
+        ...siteSecurityExpensesWithBearer,
+      ]);
 
       dispatch(completeYearlyExpenses(expenses));
     },

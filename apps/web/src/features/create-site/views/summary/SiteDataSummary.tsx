@@ -69,10 +69,14 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
         >
           <dl>
             <DataLine label={<strong>Propriétaire actuel</strong>} value={siteData.ownerName} />
-            <DataLine
-              label={<strong>Exploitant actuel</strong>}
-              value={siteData.tenantName ?? "Pas d'exploitant"}
-            />
+            {!siteData.tenantName && (
+              <DataLine
+                label={
+                  <strong>{siteData.isFriche ? "Locataire actuel" : "Exploitant actuel"}</strong>
+                }
+                value={siteData.tenantName}
+              />
+            )}
             <DataLine
               label={<strong>Nombre d'emplois temps plein mobilisés sur le site</strong>}
               value={formatNumberFr(siteData.fullTimeJobsInvolved)}
@@ -126,14 +130,16 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
               (purpose) => {
                 const amount =
                   siteData.expenses.find((exp) => exp.purpose === purpose)?.amount ?? 0;
-                return (
-                  <DataLine
-                    label={getLabelForExpensePurpose(purpose)}
-                    value={`${formatNumberFr(amount)} €`}
-                    className="fr-ml-4w fr-ml-3v"
-                    key={purpose}
-                  />
-                );
+                if (amount > 0) {
+                  return (
+                    <DataLine
+                      label={getLabelForExpensePurpose(purpose)}
+                      value={`${formatNumberFr(amount)} €`}
+                      className="fr-ml-4w fr-ml-3v"
+                      key={purpose}
+                    />
+                  );
+                }
               },
             )}
             {siteData.isFriche && (
@@ -146,14 +152,16 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
                 ).map((purpose) => {
                   const amount =
                     siteData.expenses.find((exp) => exp.purpose === purpose)?.amount ?? 0;
-                  return (
-                    <DataLine
-                      label={getLabelForExpensePurpose(purpose)}
-                      value={`${formatNumberFr(amount)} €`}
-                      className="fr-ml-4w fr-my-1w"
-                      key={purpose}
-                    />
-                  );
+                  if (amount > 0) {
+                    return (
+                      <DataLine
+                        label={getLabelForExpensePurpose(purpose)}
+                        value={`${formatNumberFr(amount)} €`}
+                        className="fr-ml-4w fr-my-1w"
+                        key={purpose}
+                      />
+                    );
+                  }
                 })}
               </>
             )}
