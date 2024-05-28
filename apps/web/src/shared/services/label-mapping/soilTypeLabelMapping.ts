@@ -44,7 +44,7 @@ export const getDescriptionForSoilType = (value: SoilType): string => {
     case "BUILDINGS":
       return "Sites de production, de stockage, de vente…";
     case "IMPERMEABLE_SOILS":
-      return "Parking ou voirie bitumée…";
+      return "Parking ou voirie bitumée, dalle en béton…";
     case "MINERAL_SOIL":
       return "Parking ou voirie en gravier, sols semi-perméables…";
     case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
