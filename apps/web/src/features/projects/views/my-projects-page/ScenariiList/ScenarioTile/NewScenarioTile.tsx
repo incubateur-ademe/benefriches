@@ -10,27 +10,26 @@ type Props = {
 
 function NewScenarioTile({ siteId }: Props) {
   return (
-    <a
-      {...routes.createProjectIntro({ siteId }).link}
-      className={classNames(
-        "tw-w-full",
-        "tw-border-dashed",
-        "tw-border",
-        "tw-h-full",
-        "tw-flex",
-        "tw-flex-col",
-        "tw-items-center",
-        "tw-justify-center",
-        "tw-min-h-64",
-        "tw-text-dsfr-titleBlue",
-        "tw-bg-none",
-        "hover:tw-font-bold",
-        "hover:tw-border-solid",
-      )}
-    >
-      <span aria-hidden="true" className={fr.cx("fr-icon--lg", "fr-icon-add-line")}></span>
-      Nouveau scénario
-    </a>
+    <div className="tw-border-dashed tw-border hover:tw-bg-lightGrey">
+      <a
+        {...routes.createProjectIntro({ siteId }).link}
+        className={classNames(
+          "tw-w-full",
+          "tw-h-full",
+          "tw-flex",
+          "tw-flex-col",
+          "tw-items-center",
+          "tw-justify-center",
+          "tw-min-h-64",
+          "tw-text-dsfr-titleBlue",
+          "tw-text-lg",
+          "tw-bg-none",
+        )}
+      >
+        <span aria-hidden="true" className={fr.cx("fr-icon--lg", "fr-icon-add-line")} />
+        Nouveau scénario
+      </a>
+    </div>
   );
 }
 

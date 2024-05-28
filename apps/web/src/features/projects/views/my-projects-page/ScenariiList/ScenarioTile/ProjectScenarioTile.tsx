@@ -55,6 +55,7 @@ function ProjectScenarioTile({
       shouldDisplayCheckbox={shouldDisplayCheckbox}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      isHovered={isHovered}
     />
   );
 }

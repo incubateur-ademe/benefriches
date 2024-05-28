@@ -8,6 +8,7 @@ type Props = {
   pictogramUrl?: string;
   details?: string;
   impactLinkProps?: { href: string };
+  isHovered?: boolean;
   isSelected: boolean;
   shouldDisplayCheckbox: boolean;
   onChangeCheckbox: (selected: boolean) => void;
@@ -39,7 +40,7 @@ const ScenarioTileHeader = ({
         </div>
       )}
 
-      <h3 className={classNames(fr.cx("fr-tile__title"), "before:tw-content-none")}>
+      <h3 className={classNames(fr.cx("fr-tile__title"), "before:tw-content-none", "tw-text-lg")}>
         {projectName}
       </h3>
     </>
@@ -54,6 +55,7 @@ function ScenarioTile({
   details,
   impactLinkProps,
   pictogramUrl,
+  isHovered,
   ...rest
 }: Props) {
   const onChange = () => {
@@ -64,17 +66,17 @@ function ScenarioTile({
     <div
       className={classNames(
         fr.cx("fr-tile", "fr-tile--no-border"),
-        "tw-bg-none",
         "tw-border",
         "tw-border-solid",
         isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-grey",
+        isHovered ? "tw-bg-[#F6F6F6]" : "tw-bg-none",
       )}
       {...rest}
     >
       <div className="fr-tile__body">
         <div className="fr-tile__content">
           {impactLinkProps ? (
-            <a {...impactLinkProps}>
+            <a {...impactLinkProps} className="tw-bg-none">
               <ScenarioTileHeader projectName={projectName} pictogramUrl={pictogramUrl} />
             </a>
           ) : (
@@ -84,7 +86,7 @@ function ScenarioTile({
           )}
 
           <div className="fr-tile__details tw-grow">
-            <p className="fr-tile__desc">{details}</p>
+            <p className="fr-tile__desc tw-text-sm">{details}</p>
           </div>
           <Checkbox
             className={classNames(
