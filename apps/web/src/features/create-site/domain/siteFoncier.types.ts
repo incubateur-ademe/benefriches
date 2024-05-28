@@ -39,7 +39,7 @@ export type SiteDraft = {
   fullTimeJobsInvolved?: number;
   owner: { structureType: OwnerStructureType; name: string };
   isFricheLeased?: boolean;
-  isSiteWorked?: boolean;
+  isSiteOperated?: boolean;
   tenant?: { structureType: TenantStructureType; name: string };
   hasRecentAccidents?: boolean;
   accidentsMinorInjuries?: number;

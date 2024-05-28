@@ -6,7 +6,7 @@ import {
   revertFricheRecentAccidentsStep,
   revertFullTimeJobsInvolvedStep,
   revertIsFricheLeasedStep,
-  revertIsSiteWorkedStep,
+  revertIsSiteOperatedStep,
   revertNamingStep,
   revertOperatorStep,
   revertOwnerStep,
@@ -26,7 +26,7 @@ import {
   completeFricheRecentAccidents,
   completeFullTimeJobsInvolved,
   completeIsFricheLeased,
-  completeIsSiteWorked,
+  completeIsSiteOperated,
   completeManagementIntroduction,
   completeNaming,
   completeOperator,
@@ -490,7 +490,7 @@ describe("Create site reducer", () => {
             stepsHistory: [...initialState.stepsHistory, "IS_FRICHE_LEASED"],
           });
         });
-        it("goes to IS_SITE_WORKED step and sets owner when step is completed", () => {
+        it("goes to IS_SITE_OPERATED step and sets owner when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["OWNER"] });
           const { siteCreation: initialState } = store.getState();
 
@@ -500,7 +500,7 @@ describe("Create site reducer", () => {
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
             siteData: { ...initialState.siteData, owner: siteWithExhaustiveData.owner },
-            stepsHistory: [...initialState.stepsHistory, "IS_SITE_WORKED"],
+            stepsHistory: [...initialState.stepsHistory, "IS_SITE_OPERATED"],
           });
         });
       });
@@ -583,56 +583,56 @@ describe("Create site reducer", () => {
         });
       });
     });
-    describe("IS_SITE_WORKED", () => {
+    describe("IS_SITE_OPERATED", () => {
       describe("complete", () => {
-        it("goes to OPERATOR step and sets isSiteWorked when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["IS_SITE_WORKED"] });
+        it("goes to OPERATOR step and sets isSiteOperated when step is completed", () => {
+          const store = initStoreWithState({ stepsHistory: ["IS_SITE_OPERATED"] });
           const { siteCreation: initialState } = store.getState();
 
-          store.dispatch(completeIsSiteWorked({ isSiteWorked: true }));
+          store.dispatch(completeIsSiteOperated({ isSiteOperated: true }));
 
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
-            siteData: { ...initialState.siteData, isSiteWorked: true },
+            siteData: { ...initialState.siteData, isSiteOperated: true },
             stepsHistory: [...initialState.stepsHistory, "OPERATOR"],
           });
         });
         it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and no tenant", () => {
-          const store = initStoreWithState({ stepsHistory: ["IS_SITE_WORKED"] });
+          const store = initStoreWithState({ stepsHistory: ["IS_SITE_OPERATED"] });
           const { siteCreation: initialState } = store.getState();
 
-          store.dispatch(completeIsSiteWorked({ isSiteWorked: false }));
+          store.dispatch(completeIsSiteOperated({ isSiteOperated: false }));
 
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
             siteData: {
               ...initialState.siteData,
-              isSiteWorked: false,
+              isSiteOperated: false,
             },
             stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES"],
           });
         });
       });
       describe("revert", () => {
-        it("goes to previous step and unset isSiteWorked", () => {
+        it("goes to previous step and unset isSiteOperated", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "IS_SITE_WORKED"],
+            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "IS_SITE_OPERATED"],
             siteData: {
               tenant: siteWithExhaustiveData.tenant,
             },
           });
           const { siteCreation: initialState } = store.getState();
 
-          store.dispatch(revertIsSiteWorkedStep());
+          store.dispatch(revertIsSiteOperatedStep());
 
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
             siteData: {
               ...initialState.siteData,
-              isSiteWorked: undefined,
+              isSiteOperated: undefined,
             },
             stepsHistory: initialState.stepsHistory.slice(0, -1),
           });
@@ -671,7 +671,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset tenant", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "IS_SITE_WORKED", "OPERATOR"],
+            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "IS_SITE_OPERATED", "OPERATOR"],
             siteData: {
               tenant: siteWithExhaustiveData.tenant,
             },
@@ -914,7 +914,7 @@ describe("Create site reducer", () => {
         it("goes to YEARLY_INCOME step if site is worked and sets yearly expenses when step is completed", () => {
           const store = initStoreWithState({
             stepsHistory: ["YEARLY_EXPENSES"],
-            siteData: { isSiteWorked: true },
+            siteData: { isSiteOperated: true },
           });
           const { siteCreation: initialState } = store.getState();
 

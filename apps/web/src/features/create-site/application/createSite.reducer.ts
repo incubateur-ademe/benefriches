@@ -32,7 +32,7 @@ export type SiteCreationStep =
   | "MANAGEMENT_INTRODUCTION"
   | "OWNER"
   | "IS_FRICHE_LEASED"
-  | "IS_SITE_WORKED"
+  | "IS_SITE_OPERATED"
   | "TENANT"
   | "OPERATOR"
   | "FULL_TIME_JOBS_INVOLVED"
@@ -151,17 +151,17 @@ export const siteCreationSlice = createSlice({
     },
     completeOwner: (state, action: PayloadAction<{ owner: Owner }>) => {
       state.siteData.owner = action.payload.owner;
-      state.stepsHistory.push(state.siteData.isFriche ? "IS_FRICHE_LEASED" : "IS_SITE_WORKED");
+      state.stepsHistory.push(state.siteData.isFriche ? "IS_FRICHE_LEASED" : "IS_SITE_OPERATED");
     },
     completeIsFricheLeased: (state, action: PayloadAction<{ isFricheLeased: boolean }>) => {
       const { isFricheLeased } = action.payload;
       state.siteData.isFricheLeased = isFricheLeased;
       state.stepsHistory.push(isFricheLeased ? "TENANT" : "FULL_TIME_JOBS_INVOLVED");
     },
-    completeIsSiteWorked: (state, action: PayloadAction<{ isSiteWorked: boolean }>) => {
-      const { isSiteWorked } = action.payload;
-      state.siteData.isSiteWorked = isSiteWorked;
-      state.stepsHistory.push(isSiteWorked ? "OPERATOR" : "YEARLY_EXPENSES");
+    completeIsSiteOperated: (state, action: PayloadAction<{ isSiteOperated: boolean }>) => {
+      const { isSiteOperated } = action.payload;
+      state.siteData.isSiteOperated = isSiteOperated;
+      state.stepsHistory.push(isSiteOperated ? "OPERATOR" : "YEARLY_EXPENSES");
     },
     completeTenant: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
       state.siteData.tenant = action.payload.tenant;
@@ -209,7 +209,7 @@ export const siteCreationSlice = createSlice({
     completeYearlyExpenses: (state, action: PayloadAction<Expense[]>) => {
       state.siteData.yearlyExpenses = action.payload;
       state.stepsHistory.push(
-        state.siteData.isSiteWorked ? "YEARLY_INCOME" : "YEARLY_EXPENSES_SUMMARY",
+        state.siteData.isSiteOperated ? "YEARLY_INCOME" : "YEARLY_EXPENSES_SUMMARY",
       );
     },
     completeYearlyExpensesSummary: (state) => {
@@ -287,7 +287,7 @@ export const {
   completeFullTimeJobsInvolved,
   completeOwner,
   completeIsFricheLeased,
-  completeIsSiteWorked,
+  completeIsSiteOperated,
   completeTenant,
   completeOperator,
   completeFricheRecentAccidents,

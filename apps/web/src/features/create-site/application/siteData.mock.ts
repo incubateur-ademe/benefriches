@@ -6,7 +6,7 @@ export const siteWithExhaustiveData: SiteDraft = {
   name: "My site name",
   description: "Description of the site",
   owner: { structureType: "company", name: "SAS Owner" },
-  isSiteWorked: true,
+  isSiteOperated: true,
   tenant: { structureType: "company", name: "Tenant SARL" },
   soils: ["BUILDINGS", "MINERAL_SOIL", "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "FOREST_DECIDUOUS"],
   soilsDistribution: {
@@ -81,7 +81,7 @@ export const siteWithExhaustiveData: SiteDraft = {
 export const fricheWithExhaustiveData: SiteDraft = {
   ...siteWithExhaustiveData,
   isFriche: true,
-  isSiteWorked: undefined,
+  isSiteOperated: undefined,
   isFricheLeased: true,
   hasContaminatedSoils: true,
   contaminatedSoilSurface: 2300,
@@ -108,7 +108,7 @@ export const siteWithMinimalData: SiteDraft = {
   yearlyExpenses: [],
   yearlyIncomes: [],
   isFriche: false,
-  isSiteWorked: false,
+  isSiteOperated: false,
   hasRecentAccidents: false,
   fullTimeJobsInvolved: 0.5,
   hasContaminatedSoils: false,

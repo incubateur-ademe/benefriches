@@ -117,10 +117,10 @@ const ExpensesIncomeBarChart = ({
     title: { text: "" },
     xAxis: {
       categories: [
-        `<strong>${ownerName}</strong><br>${formatNumberFr(-ownerExpensesTotal)} €/an`,
-        `<strong>${ownerName}</strong><br>${formatNumberFr(ownerIncomeTotal)} €/an`,
-        `<strong>${tenantName}</strong><br>${formatNumberFr(-tenantExpensesTotal)} €/an`,
-        `<strong>${tenantName}</strong><br>${formatNumberFr(tenantIncomeTotal)} €/an`,
+        `<strong>DÉPENSES<br>${ownerName}</strong><br>${formatNumberFr(-ownerExpensesTotal)} €/an`,
+        `<strong>RECETTES<br>${ownerName}</strong><br>${formatNumberFr(ownerIncomeTotal)} €/an`,
+        `<strong>DÉPENSES<br>${tenantName}</strong><br>${formatNumberFr(-tenantExpensesTotal)} €/an`,
+        `<strong>RECETTES<br>${tenantName}</strong><br>${formatNumberFr(tenantIncomeTotal)} €/an`,
       ],
       lineWidth: 0,
       type: "category",

@@ -10,19 +10,19 @@ type Props = {
 };
 
 export type FormValues = {
-  isSiteWorked: "yes" | "no";
+  isSiteOperated: "yes" | "no";
 };
 
 const requiredMessage = "Ce champ est requis";
 
-function IsSiteWorkedForm({ onSubmit, onBack }: Props) {
+function IsSiteOperatedForm({ onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>();
 
   return (
     <WizardFormLayout title="Le site est-il exploité ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
-          {...register("isSiteWorked", { required: requiredMessage })}
+          {...register("isSiteOperated", { required: requiredMessage })}
           options={[
             {
               label: `Oui`,
@@ -33,7 +33,7 @@ function IsSiteWorkedForm({ onSubmit, onBack }: Props) {
               value: "no",
             },
           ]}
-          error={formState.errors.isSiteWorked}
+          error={formState.errors.isSiteOperated}
         />
         <BackNextButtonsGroup onBack={onBack} />
       </form>
@@ -41,4 +41,4 @@ function IsSiteWorkedForm({ onSubmit, onBack }: Props) {
   );
 }
 
-export default IsSiteWorkedForm;
+export default IsSiteOperatedForm;

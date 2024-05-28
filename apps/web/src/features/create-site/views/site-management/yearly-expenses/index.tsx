@@ -53,7 +53,7 @@ const mapProps = (
 
   const siteManagementExpensesWithBearer = getSiteManagementExpensesWithBearer(
     siteData.isFriche ?? false,
-    siteData.isSiteWorked ?? false,
+    siteData.isSiteOperated ?? false,
     siteHasTenant,
   );
 

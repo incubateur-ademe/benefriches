@@ -4,7 +4,7 @@ import SiteExpensesIncomeSummary from "./site-management/expenses-income-summary
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
 import IsFricheLeasedForm from "./site-management/is-friche-leased";
-import IsSiteWorkedForm from "./site-management/is-site-worked";
+import IsSiteOperatedForm from "./site-management/is-site-operated";
 import SiteOwnerForm from "./site-management/owner";
 import FricheRecentAccidentsForm from "./site-management/recent-accidents";
 import SiteOperatorForm from "./site-management/site-operator";
@@ -61,8 +61,8 @@ function SiteCreationWizard() {
         return <SiteOwnerForm />;
       case "IS_FRICHE_LEASED":
         return <IsFricheLeasedForm />;
-      case "IS_SITE_WORKED":
-        return <IsSiteWorkedForm />;
+      case "IS_SITE_OPERATED":
+        return <IsSiteOperatedForm />;
       case "OPERATOR":
         return <SiteOperatorForm />;
       case "TENANT":
