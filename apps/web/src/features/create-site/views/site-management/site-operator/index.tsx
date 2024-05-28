@@ -12,24 +12,29 @@ import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const getTenant = (data: FormValues, localAuthorities: LocalAuthority[]): Tenant | undefined => {
-  if (data.operator === "local_or_regional_authority") {
-    const localAuthority = localAuthorities.find(
-      ({ type }) => type === data.localAuthority,
-    ) as LocalAuthority;
-    return {
-      name: localAuthority.name,
-      structureType: data.localAuthority,
-    };
+  switch (data.operator) {
+    case "company":
+      return {
+        structureType: data.operator,
+        name: data.companyName,
+      };
+    case "private_individual":
+      return {
+        structureType: data.operator,
+        name: data.operatorName,
+      };
+    case "local_or_regional_authority": {
+      const localAuthority = localAuthorities.find(
+        ({ type }) => type === data.localAuthority,
+      ) as LocalAuthority;
+      return {
+        name: localAuthority.name,
+        structureType: data.localAuthority,
+      };
+    }
+    case "site_owner": // si l’exploitant est le propriétaire, alors il n’y a pas de locataire
+      return undefined;
   }
-
-  if (data.operator === "private_individual") {
-    return {
-      structureType: data.operator,
-      name: data.operatorName,
-    };
-  }
-
-  return undefined;
 };
 
 function SiteOperatorFormContainer() {

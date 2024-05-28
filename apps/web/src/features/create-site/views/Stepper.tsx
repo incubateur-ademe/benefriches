@@ -36,7 +36,7 @@ const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
     case "MANAGEMENT_INTRODUCTION":
     case "OWNER":
     case "IS_FRICHE_LEASED":
-    case "IS_SITE_WORKED":
+    case "IS_SITE_OPERATED":
     case "OPERATOR":
     case "TENANT":
     case "FRICHE_RECENT_ACCIDENTS":

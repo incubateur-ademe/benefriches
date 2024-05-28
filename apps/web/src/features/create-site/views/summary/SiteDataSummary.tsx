@@ -52,6 +52,7 @@ function DataLine({ label, value, className = "fr-my-2w" }: DataLineProps) {
 }
 
 function SiteDataSummary({ siteData, onNext, onBack }: Props) {
+  console.log(siteData.tenantName);
   return (
     <>
       <WizardFormLayout
@@ -69,7 +70,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
         >
           <dl>
             <DataLine label={<strong>Propriétaire actuel</strong>} value={siteData.ownerName} />
-            {!siteData.tenantName && (
+            {siteData.tenantName && (
               <DataLine
                 label={
                   <strong>{siteData.isFriche ? "Locataire actuel" : "Exploitant actuel"}</strong>
