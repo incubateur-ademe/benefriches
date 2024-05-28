@@ -209,7 +209,7 @@ export const siteCreationSlice = createSlice({
     completeYearlyExpenses: (state, action: PayloadAction<Expense[]>) => {
       state.siteData.yearlyExpenses = action.payload;
       state.stepsHistory.push(
-        state.siteData.isFriche ? "YEARLY_EXPENSES_SUMMARY" : "YEARLY_INCOME",
+        state.siteData.isSiteWorked ? "YEARLY_INCOME" : "YEARLY_EXPENSES_SUMMARY",
       );
     },
     completeYearlyExpensesSummary: (state) => {
