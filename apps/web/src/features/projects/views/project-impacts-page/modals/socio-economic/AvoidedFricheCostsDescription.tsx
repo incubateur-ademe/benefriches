@@ -3,7 +3,7 @@ const AvoidedFricheCostsDescription = () => {
     <>
       <p>
         Un site qui reste en l'état, sans intervention, induit des coûts importants, à la charge de
-        l'ancien exploitant ou du propriétaire du terrain :
+        l'ancien locataire ou du propriétaire du terrain :
       </p>
       <ul>
         <li>De manière directe, via la fiscalité locale (taxe foncière)</li>
@@ -16,12 +16,12 @@ const AvoidedFricheCostsDescription = () => {
         </li>
       </ul>
       <p>
-        Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
+        Sauf en cas de défaillance du locataire (faillite, liquidation judiciaire, etc.) les
         dépenses de gardiennage, d'entretien, d'enlèvement de déchets sont à la charge de ce
         dernier.
       </p>
       <p>
-        <strong>Bénéficiaire</strong> : actuel exploitant
+        <strong>Bénéficiaire</strong> : actuel locataire ou propriétaire
       </p>
     </>
   );

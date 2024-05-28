@@ -50,10 +50,11 @@ const RowNumericInput = memo(
       return (
         <div
           className={classNames(
-            fr.cx("fr-mb-0", "fr-pt-7v"),
             "tw-flex",
             "tw-justify-between",
-            "tw-items-center",
+            "tw-items-start",
+            "tw-mb-0",
+            "tw-pt-7",
             fr.cx(
               disabled && "fr-input-group--disabled",
               state === "error" && "fr-input-group--error",
@@ -65,7 +66,7 @@ const RowNumericInput = memo(
           id={id}
           {...rest}
         >
-          <div className="tw-flex tw-gap-1 tw-items-center">
+          <div className="tw-flex tw-gap-1 tw-items-start">
             {imgSrc && (
               <img
                 src={imgSrc}

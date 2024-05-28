@@ -3,12 +3,14 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
-import { Expense } from "@/features/create-site/domain/siteFoncier.types";
+import { Expense, Income } from "@/features/create-site/domain/siteFoncier.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
 type Props = {
   ownerExpenses: Expense[];
   tenantExpenses: Expense[];
+  ownerIncome: Income[];
+  tenantIncome: Income[];
   ownerName?: string;
   tenantName?: string;
 };
@@ -35,11 +37,46 @@ const getColorForPurpose = (purpose: Expense["purpose"]) => {
   }
 };
 
-const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName }: Props) => {
+const getColorForSourceIncome = (source: Income["source"]) => {
+  switch (source) {
+    case "operations":
+      return "#37C95D";
+    case "other":
+      return "#30B151";
+    case "rent":
+      return "#429CF0";
+    default:
+      return "#37C95D";
+  }
+};
+
+const getLabelForRevenueSource = (source: string) => {
+  switch (source) {
+    case "operations":
+      return "Recettes d’exploitation";
+    case "other":
+      return "Autres recettes";
+    case "rent":
+      return "Loyer (propriétaire)";
+    default:
+      return "Autres";
+  }
+};
+
+const ExpensesIncomeBarChart = ({
+  ownerExpenses,
+  tenantExpenses,
+  ownerIncome,
+  tenantIncome,
+  ownerName,
+  tenantName,
+}: Props) => {
   const barChartRef = useRef<HighchartsReact.RefObject>(null);
 
-  const ownerTotal = ownerExpenses.reduce((total, { amount }) => total + amount, 0);
-  const tenantTotal = tenantExpenses.reduce((total, { amount }) => total + amount, 0);
+  const ownerExpensesTotal = ownerExpenses.reduce((total, { amount }) => total + amount, 0);
+  const tenantExpensesTotal = tenantExpenses.reduce((total, { amount }) => total + amount, 0);
+  const tenantIncomeTotal = tenantIncome.reduce((total, { amount }) => total + amount, 0);
+  const ownerIncomeTotal = ownerIncome.reduce((total, { amount }) => total + amount, 0);
 
   const expenses = [
     ...ownerExpenses.map(({ purpose, amount }) => {
@@ -50,12 +87,28 @@ const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName
         color: getColorForPurpose(purpose),
       };
     }),
+    ...ownerIncome.map(({ source, amount }) => {
+      return {
+        name: getLabelForRevenueSource(source),
+        data: [0, amount],
+        type: "column",
+        color: getColorForSourceIncome(source),
+      };
+    }),
     ...tenantExpenses.map(({ purpose, amount }) => {
       return {
         name: getLabelForExpensePurpose(purpose),
-        data: [0, -amount],
+        data: [0, 0, -amount],
         type: "column",
         color: getColorForPurpose(purpose),
+      };
+    }),
+    ...tenantIncome.map(({ source, amount }) => {
+      return {
+        name: getLabelForRevenueSource(source),
+        data: [0, 0, 0, amount],
+        type: "column",
+        color: getColorForSourceIncome(source),
       };
     }),
   ];
@@ -64,8 +117,10 @@ const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName
     title: { text: "" },
     xAxis: {
       categories: [
-        `<strong>${ownerName ? `${ownerName} (propriétaire)` : "Propriétaire"}</strong><br>${formatNumberFr(-ownerTotal)} €/an`,
-        `<strong>${tenantName ? `${tenantName} (locataire)` : "Locataire"}</strong><br>${formatNumberFr(-tenantTotal)} €/an`,
+        `<strong>${ownerName}</strong><br>${formatNumberFr(-ownerExpensesTotal)} €/an`,
+        `<strong>${ownerName}</strong><br>${formatNumberFr(ownerIncomeTotal)} €/an`,
+        `<strong>${tenantName}</strong><br>${formatNumberFr(-tenantExpensesTotal)} €/an`,
+        `<strong>${tenantName}</strong><br>${formatNumberFr(tenantIncomeTotal)} €/an`,
       ],
       lineWidth: 0,
       type: "category",
@@ -123,9 +178,14 @@ const ExpensesBarChart = ({ ownerExpenses, tenantExpenses, ownerName, tenantName
         ),
       }}
     >
-      <HighchartsReact highcharts={Highcharts} options={barChartOptions} ref={barChartRef} />
+      <HighchartsReact
+        containerProps={{ className: "highcharts-no-xaxis" }}
+        highcharts={Highcharts}
+        options={barChartOptions}
+        ref={barChartRef}
+      />
     </div>
   );
 };
 
-export default ExpensesBarChart;
+export default ExpensesIncomeBarChart;
