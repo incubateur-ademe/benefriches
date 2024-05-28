@@ -911,10 +911,10 @@ describe("Create site reducer", () => {
             stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES_SUMMARY"],
           });
         });
-        it("goes to YEARLY_INCOME step if site is not friche and sets yearly expenses when step is completed", () => {
+        it("goes to YEARLY_INCOME step if site is worked and sets yearly expenses when step is completed", () => {
           const store = initStoreWithState({
             stepsHistory: ["YEARLY_EXPENSES"],
-            siteData: { isFriche: false },
+            siteData: { isSiteWorked: true },
           });
           const { siteCreation: initialState } = store.getState();
 
