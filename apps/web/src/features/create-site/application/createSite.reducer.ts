@@ -208,15 +208,17 @@ export const siteCreationSlice = createSlice({
     },
     completeYearlyExpenses: (state, action: PayloadAction<Expense[]>) => {
       state.siteData.yearlyExpenses = action.payload;
-      state.stepsHistory.push("YEARLY_EXPENSES_SUMMARY");
+      state.stepsHistory.push(
+        state.siteData.isFriche ? "YEARLY_EXPENSES_SUMMARY" : "YEARLY_INCOME",
+      );
     },
     completeYearlyExpensesSummary: (state) => {
-      const nextStep = state.siteData.isFriche ? "FRICHE_ACTIVITY" : "YEARLY_INCOME";
+      const nextStep = state.siteData.isFriche ? "FRICHE_ACTIVITY" : "NAMING";
       state.stepsHistory.push(nextStep);
     },
     completeYearlyIncome: (state, action: PayloadAction<Income[]>) => {
       state.siteData.yearlyIncomes = action.payload;
-      state.stepsHistory.push("NAMING");
+      state.stepsHistory.push("YEARLY_EXPENSES_SUMMARY");
     },
     completeFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
       state.siteData.fricheActivity = action.payload;

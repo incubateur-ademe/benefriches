@@ -892,8 +892,11 @@ describe("Create site reducer", () => {
     });
     describe("YEARLY_EXPENSES", () => {
       describe("complete", () => {
-        it("goes to YEARLY_EXPENSES_SUMMARY step and sets yearly expenses when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["YEARLY_EXPENSES"] });
+        it("goes to YEARLY_EXPENSES_SUMMARY step if site is friche and sets yearly expenses when step is completed", () => {
+          const store = initStoreWithState({
+            stepsHistory: ["YEARLY_EXPENSES"],
+            siteData: { isFriche: true },
+          });
           const { siteCreation: initialState } = store.getState();
 
           store.dispatch(completeYearlyExpenses(siteWithExhaustiveData.yearlyExpenses));
@@ -906,6 +909,25 @@ describe("Create site reducer", () => {
               yearlyExpenses: siteWithExhaustiveData.yearlyExpenses,
             },
             stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES_SUMMARY"],
+          });
+        });
+        it("goes to YEARLY_INCOME step if site is not friche and sets yearly expenses when step is completed", () => {
+          const store = initStoreWithState({
+            stepsHistory: ["YEARLY_EXPENSES"],
+            siteData: { isFriche: false },
+          });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(completeYearlyExpenses(siteWithExhaustiveData.yearlyExpenses));
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: {
+              ...initialState.siteData,
+              yearlyExpenses: siteWithExhaustiveData.yearlyExpenses,
+            },
+            stepsHistory: [...initialState.stepsHistory, "YEARLY_INCOME"],
           });
         });
       });
@@ -948,7 +970,7 @@ describe("Create site reducer", () => {
             stepsHistory: [...initialState.stepsHistory, "FRICHE_ACTIVITY"],
           });
         });
-        it("goes to YEARLY_INCOME step when step is completed and site is not a friche", () => {
+        it("goes to NAMING step when step is completed and site is not a friche", () => {
           const store = initStoreWithState({
             stepsHistory: ["YEARLY_EXPENSES_SUMMARY"],
             siteData: { isFriche: false },
@@ -960,13 +982,13 @@ describe("Create site reducer", () => {
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "YEARLY_INCOME"],
+            stepsHistory: [...initialState.stepsHistory, "NAMING"],
           });
         });
       });
     });
     describe("YEARLY_INCOME", () => {
-      it("goes to NAMING step and sets yearly income when step is completed", () => {
+      it("goes to YEARLY_EXPENSES_SUMMARY step and sets yearly income when step is completed", () => {
         const store = initStoreWithState({ stepsHistory: ["YEARLY_INCOME"] });
         const { siteCreation: initialState } = store.getState();
 
@@ -979,7 +1001,7 @@ describe("Create site reducer", () => {
             ...initialState.siteData,
             yearlyIncomes: siteWithExhaustiveData.yearlyIncomes,
           },
-          stepsHistory: [...initialState.stepsHistory, "NAMING"],
+          stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES_SUMMARY"],
         });
       });
       describe("revert", () => {
