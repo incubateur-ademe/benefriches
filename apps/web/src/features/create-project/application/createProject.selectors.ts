@@ -1,9 +1,19 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere } from "shared";
 import {
+  computeDefaultPhotovoltaicConversionFullTimeJobs,
+  computeDefaultPhotovoltaicOperationsFullTimeJobs,
+  computeDefaultPhotovoltaicOtherAmountCost,
+  computeDefaultPhotovoltaicTechnicalStudiesAmountCost,
+  computeDefaultPhotovoltaicWorksAmountCost,
+  computeDefaultPhotovoltaicYearlyMaintenanceAmount,
+  computeDefaultPhotovoltaicYearlyOperationsRevenueAmount,
+  computeDefaultPhotovoltaicYearlyRentAmount,
+  computeDefaultPhotovoltaicYearlyTaxesAmount,
   getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
   getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
 } from "../domain/photovoltaic";
+import { computeDefaultReinstatementFullTimeJobs } from "../domain/reinstatement";
 import {
   getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
   getNonSuitableSoilsForPhotovoltaicPanels,
@@ -12,6 +22,7 @@ import {
   isBiodiversityAndClimateSensibleSoil,
   willTransformationNoticeablyImpactBiodiversityAndClimate,
 } from "../domain/soilsTransformation";
+import { ProjectCreationState } from "./createProject.reducer";
 
 import { RootState } from "@/app/application/store";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -148,5 +159,97 @@ export const selectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea = create
   selectProjectSoilsDistribution,
   (futureSoilsDistribution): number => {
     return sumSoilsSurfaceAreasWhere(futureSoilsDistribution, isBiodiversityAndClimateSensibleSoil);
+  },
+);
+
+const selectProjectData = createSelector(
+  selectSelf,
+  (state): ProjectCreationState["projectData"] => state.projectData,
+);
+
+const selectSiteData = createSelector(
+  selectSelf,
+  (state): ProjectCreationState["siteData"] => state.siteData,
+);
+
+export const getDefaultValuesForYearlyProjectedCosts = createSelector(
+  selectProjectData,
+  (projectData): { rent: number; maintenance: number; taxes: number } | undefined => {
+    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = projectData;
+    return electricalPowerKWc
+      ? {
+          rent: computeDefaultPhotovoltaicYearlyRentAmount(electricalPowerKWc),
+          maintenance: computeDefaultPhotovoltaicYearlyMaintenanceAmount(electricalPowerKWc),
+          taxes: computeDefaultPhotovoltaicYearlyTaxesAmount(electricalPowerKWc),
+        }
+      : undefined;
+  },
+);
+
+export const getDefaultValuesForPhotovoltaicInstallationCosts = createSelector(
+  selectProjectData,
+  (projectData): { works: number; technicalStudy: number; other: number } | undefined => {
+    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = projectData;
+    return electricalPowerKWc
+      ? {
+          works: computeDefaultPhotovoltaicWorksAmountCost(electricalPowerKWc),
+          technicalStudy: computeDefaultPhotovoltaicTechnicalStudiesAmountCost(electricalPowerKWc),
+          other: computeDefaultPhotovoltaicOtherAmountCost(electricalPowerKWc),
+        }
+      : undefined;
+  },
+);
+
+export const getDefaultValuesForFullTimeConversionJobsInvolved = createSelector(
+  selectProjectData,
+  selectSiteData,
+  (projectData, siteData): { fullTimeJobs?: number; reinstatementFullTimeJobs?: number } => {
+    const {
+      photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc,
+      developmentPlanCategories,
+      renewableEnergyTypes,
+      reinstatementCosts,
+    } = projectData;
+
+    const isPhotovoltaicProject =
+      developmentPlanCategories?.includes("RENEWABLE_ENERGY") &&
+      renewableEnergyTypes?.includes("PHOTOVOLTAIC_POWER_PLANT");
+
+    const fullTimeJobs =
+      isPhotovoltaicProject && electricalPowerKWc
+        ? computeDefaultPhotovoltaicConversionFullTimeJobs(electricalPowerKWc)
+        : undefined;
+
+    const reinstatementFullTimeJobs =
+      siteData?.isFriche && reinstatementCosts
+        ? computeDefaultReinstatementFullTimeJobs(reinstatementCosts.expenses)
+        : undefined;
+
+    return {
+      fullTimeJobs,
+      reinstatementFullTimeJobs,
+    };
+  },
+);
+
+export const getDefaultValuesForFullTimeOperationsJobsInvolved = createSelector(
+  selectProjectData,
+  (projectData): number | undefined => {
+    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = projectData;
+
+    return electricalPowerKWc
+      ? computeDefaultPhotovoltaicOperationsFullTimeJobs(electricalPowerKWc)
+      : undefined;
+  },
+);
+
+export const getDefaultValuesForYearlyProjectedOperationsRevenue = createSelector(
+  selectProjectData,
+  (projectData): number | undefined => {
+    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = projectData;
+
+    return electricalPowerKWc
+      ? computeDefaultPhotovoltaicYearlyOperationsRevenueAmount(electricalPowerKWc)
+      : undefined;
   },
 );

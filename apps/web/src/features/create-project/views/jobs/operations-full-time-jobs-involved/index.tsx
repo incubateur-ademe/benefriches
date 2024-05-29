@@ -7,14 +7,12 @@ import {
   completeOperationsFullTimeJobsInvolved,
   revertOperationsFullTimeJobsInvolved,
 } from "@/features/create-project/application/createProject.reducer";
-import { computeDefaultPhotovoltaicOperationsFullTimeJobs } from "@/features/create-project/domain/defaultValues";
+import { getDefaultValuesForFullTimeOperationsJobsInvolved } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const mapProps = (dispatch: AppDispatch, electricalPowerKWc?: number) => {
+const mapProps = (dispatch: AppDispatch, defaultValue?: number) => {
   return {
-    defaultValue: electricalPowerKWc
-      ? computeDefaultPhotovoltaicOperationsFullTimeJobs(electricalPowerKWc)
-      : undefined,
+    defaultValue,
     onSubmit: (data: FormValues) => {
       dispatch(completeOperationsFullTimeJobsInvolved(data.fullTimeJobs));
     },
@@ -26,11 +24,9 @@ const mapProps = (dispatch: AppDispatch, electricalPowerKWc?: number) => {
 
 function OperationsFullTimeJobsInvolvedFormContainer() {
   const dispatch = useAppDispatch();
-  const electricalPowerKWc = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicInstallationElectricalPowerKWc,
-  );
+  const defaultValue = useAppSelector(getDefaultValuesForFullTimeOperationsJobsInvolved);
 
-  return <OperationsFullTimeJobsInvolvedForm {...mapProps(dispatch, electricalPowerKWc)} />;
+  return <OperationsFullTimeJobsInvolvedForm {...mapProps(dispatch, defaultValue)} />;
 }
 
 export default OperationsFullTimeJobsInvolvedFormContainer;

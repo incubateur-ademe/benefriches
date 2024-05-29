@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { computeTransferTaxFromSellingPrice } from "@/features/create-project/domain/defaultValues";
+import { computeTransferTaxFromSellingPrice } from "@/features/create-project/domain/transferTax";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";

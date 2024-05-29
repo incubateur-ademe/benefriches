@@ -7,29 +7,16 @@ import {
   completeConversionFullTimeJobsInvolved,
   revertConversionFullTimeJobsInvolved,
 } from "@/features/create-project/application/createProject.reducer";
-import {
-  computeDefaultPhotovoltaicConversionFullTimeJobs,
-  computeDefaultReinstatementFullTimeJobs,
-} from "@/features/create-project/domain/defaultValues";
-import { ReinstatementCosts } from "@/features/create-project/domain/project.types";
+import { getDefaultValuesForFullTimeConversionJobsInvolved } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (
   dispatch: AppDispatch,
   isFriche: boolean,
-  electricalPowerKWc?: number,
-  reinstatementCosts?: ReinstatementCosts,
+  defaultValues: { fullTimeJobs?: number; reinstatementFullTimeJobs?: number },
 ) => {
   return {
-    defaultValues: {
-      fullTimeJobs: electricalPowerKWc
-        ? computeDefaultPhotovoltaicConversionFullTimeJobs(electricalPowerKWc)
-        : undefined,
-      reinstatementFullTimeJobs:
-        isFriche && reinstatementCosts
-          ? computeDefaultReinstatementFullTimeJobs(reinstatementCosts.expenses)
-          : undefined,
-    },
+    defaultValues,
     askForReinstatementFullTimeJobs: isFriche,
     onSubmit: (data: FormValues) => {
       dispatch(completeConversionFullTimeJobsInvolved(data));
@@ -43,14 +30,9 @@ const mapProps = (
 function ConversionFullTimeJobsInvolvedFormContainer() {
   const dispatch = useAppDispatch();
   const isFriche = useAppSelector((state) => state.projectCreation.siteData?.isFriche ?? false);
-  const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc, reinstatementCosts } =
-    useAppSelector((state) => state.projectCreation.projectData);
+  const defaultValues = useAppSelector(getDefaultValuesForFullTimeConversionJobsInvolved);
 
-  return (
-    <ConversionFullTimeJobsInvolvedForm
-      {...mapProps(dispatch, isFriche, electricalPowerKWc, reinstatementCosts)}
-    />
-  );
+  return <ConversionFullTimeJobsInvolvedForm {...mapProps(dispatch, isFriche, defaultValues)} />;
 }
 
 export default ConversionFullTimeJobsInvolvedFormContainer;
