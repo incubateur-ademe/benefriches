@@ -40,7 +40,7 @@ export default function CallToActionSection() {
               alt="icône projet d’aménagement photovoltaïque"
               className={fr.cx("fr-mb-3w")}
             />
-            <h2>Vous êtes développeur de centrales photovoltaïques ?</h2>
+            <h2>Vous êtes porteur de projet photovoltaïque ?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>
               Calculez les impacts d'un projet photovoltaïque sur une friche ou sur un autre site
               grâce à Bénéfriches !
