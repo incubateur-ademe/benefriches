@@ -66,7 +66,7 @@ const RowNumericInput = memo(
           id={id}
           {...rest}
         >
-          <div className="tw-flex tw-gap-1 tw-items-start">
+          <div className="tw-flex tw-gap-2 tw-items-start">
             {imgSrc && (
               <img
                 src={imgSrc}
