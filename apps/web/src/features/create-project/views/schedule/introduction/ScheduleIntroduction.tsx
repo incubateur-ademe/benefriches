@@ -1,5 +1,10 @@
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import {
+  EditorialPageIcon,
+  EditorialPageLayout,
+  EditorialPageText,
+  EditorialPageTitle,
+} from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
   onNext: () => void;
@@ -8,13 +13,15 @@ type Props = {
 
 const ScheduleIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <WizardFormLayout title="Pour quand ce projet est-il prévu ?">
-      <p>
+    <EditorialPageLayout>
+      <EditorialPageIcon>📆</EditorialPageIcon>
+      <EditorialPageTitle> Pour quand ce projet est-il prévu ?</EditorialPageTitle>
+      <EditorialPageText>
         Pour pouvoir calculer les impacts du projet sur une certaine durée, nous avons besoin de
-        connaître les différéntes échéances.
-      </p>
+        connaître les différentes échéances.
+      </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </WizardFormLayout>
+    </EditorialPageLayout>
   );
 };
 

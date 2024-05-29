@@ -1,5 +1,10 @@
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import {
+  EditorialPageIcon,
+  EditorialPageLayout,
+  EditorialPageText,
+  EditorialPageTitle,
+} from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
   onNext: () => void;
@@ -8,10 +13,14 @@ type Props = {
 
 const ProjectRevenueIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <WizardFormLayout title="Recettes liés au projet">
-      <p>L'exploitation des panneaux photovoltaïques va générer des recettes financières.</p>
-      <BackNextButtonsGroup onNext={onNext} onBack={onBack} />
-    </WizardFormLayout>
+    <EditorialPageLayout>
+      <EditorialPageIcon>💰</EditorialPageIcon>
+      <EditorialPageTitle>Votre projet peut aussi engendrer des recettes</EditorialPageTitle>
+      <EditorialPageText>
+        Par exemple les aides aux travaux ou l’exploitation du site reconverti.{" "}
+      </EditorialPageText>
+      <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+    </EditorialPageLayout>
   );
 };
 

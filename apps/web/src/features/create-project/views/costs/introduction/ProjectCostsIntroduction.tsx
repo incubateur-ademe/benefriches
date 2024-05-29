@@ -1,5 +1,10 @@
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import {
+  EditorialPageIcon,
+  EditorialPageLayout,
+  EditorialPageText,
+  EditorialPageTitle,
+} from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
   onNext: () => void;
@@ -8,13 +13,15 @@ type Props = {
 
 const ProjectCostsIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <WizardFormLayout title="Coûts liés au projet">
-      <p>
-        Les travaux de remise en état de la friche, d'installation des panneaux, de raccordement et
-        d'exploitation vont générer des dépenses.
-      </p>
+    <EditorialPageLayout>
+      <EditorialPageIcon>💸</EditorialPageIcon>
+      <EditorialPageTitle>Votre projet va engendrer des coûts.</EditorialPageTitle>
+      <EditorialPageText>
+        Notamment pour la remise en état de la friche, l’installation des panneaux photovoltaïques
+        et son exploitation.
+      </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </WizardFormLayout>
+    </EditorialPageLayout>
   );
 };
 

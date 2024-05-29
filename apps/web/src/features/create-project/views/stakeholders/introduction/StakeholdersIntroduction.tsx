@@ -1,5 +1,10 @@
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import {
+  EditorialPageIcon,
+  EditorialPageLayout,
+  EditorialPageText,
+  EditorialPageTitle,
+} from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
   onNext: () => void;
@@ -8,21 +13,15 @@ type Props = {
 
 const ProjectStakeholdersIntroduction = ({ onNext, onBack }: Props) => {
   return (
-    <WizardFormLayout
-      title={
-        <span>
-          🧑‍💼
-          <br />
-          Différents acteurs vont prendre part à votre projet
-        </span>
-      }
-    >
-      <p>
+    <EditorialPageLayout>
+      <EditorialPageIcon>🧑‍💼</EditorialPageIcon>
+      <EditorialPageTitle> Différents acteurs vont prendre part à votre projet</EditorialPageTitle>
+      <EditorialPageText>
         Nous avons besoin de les connaître pour savoir à qui seront imputables les différents coûts,
         recettes et impacts.
-      </p>
+      </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </WizardFormLayout>
+    </EditorialPageLayout>
   );
 };
 

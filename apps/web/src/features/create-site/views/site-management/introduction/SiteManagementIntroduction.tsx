@@ -1,5 +1,10 @@
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import {
+  EditorialPageIcon,
+  EditorialPageLayout,
+  EditorialPageText,
+  EditorialPageTitle,
+} from "@/shared/views/layout/EditorialPageLayout";
 
 type Props = {
   isFriche: boolean;
@@ -15,18 +20,12 @@ const SiteManagementIntroduction = ({ isFriche, onNext, onBack }: Props) => {
     ? "Nous avons besoin de les connaître pour savoir à qui seront imputables les différents coûts liés à la friche."
     : "Nous avons besoin de les connaître pour savoir qui prend à sa charge les coûts et touche les éventuelles recettes d'exploitation.";
   return (
-    <WizardFormLayout
-      title={
-        <span>
-          🧑‍💼
-          <br />
-          {title}
-        </span>
-      }
-    >
-      <p>{text}</p>
+    <EditorialPageLayout>
+      <EditorialPageIcon>🧑‍💼</EditorialPageIcon>
+      <EditorialPageTitle>{title}</EditorialPageTitle>
+      <EditorialPageText>{text} </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-    </WizardFormLayout>
+    </EditorialPageLayout>
   );
 };
 
