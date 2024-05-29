@@ -15,7 +15,7 @@ type Props = {
 const SiteSoilsIntroduction = ({ isFriche, onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
-      <EditorialPageIcon>⛳️</EditorialPageIcon>
+      <EditorialPageIcon>🌾</EditorialPageIcon>
       <EditorialPageTitle>
         Parlons d'abord des sols qui existent sur {isFriche ? "la friche" : "le site"}
       </EditorialPageTitle>

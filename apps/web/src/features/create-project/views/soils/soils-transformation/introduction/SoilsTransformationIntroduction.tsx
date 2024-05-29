@@ -14,7 +14,7 @@ type Props = {
 const SoilsTransformationIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
-      <EditorialPageIcon>⛳</EditorialPageIcon>
+      <EditorialPageIcon>🌾</EditorialPageIcon>
       <EditorialPageTitle>
         Nous allons maintenant parler de ce que seront les sols du site.
       </EditorialPageTitle>
