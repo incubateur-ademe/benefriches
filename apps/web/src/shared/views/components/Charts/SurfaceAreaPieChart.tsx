@@ -37,7 +37,7 @@ const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
     plotOptions: { pie: { cursor: "pointer" } },
     series: [
       {
-        name: "Stockage carbone",
+        name: "Superficie",
         type: "pie",
         data,
       },
