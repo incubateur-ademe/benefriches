@@ -1,9 +1,9 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -17,22 +17,25 @@ type Props = {
 type FormValues = {
   photovoltaicInstallationElectricalPowerKWc: number;
 };
-
+const TOO_HIGH_VALUE_WARNING =
+  "La puissance de l'installation est supérieure à la puissance calculée à partir de la surface d'occupation des panneaux.";
 function PhotovoltaicPowerFromSurfaceForm({
   onSubmit,
   onBack,
   photovoltaicSurfaceArea,
   recommendedElectricalPowerKWc,
 }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit, watch } = useForm<FormValues>({
     defaultValues: {
       photovoltaicInstallationElectricalPowerKWc: recommendedElectricalPowerKWc,
     },
   });
 
-  const hintText = `en kWc (maximum conseillé : ${formatNumberFr(
-    recommendedElectricalPowerKWc,
-  )} kWh)`;
+  const hintText = `Maximum conseillé : ${formatNumberFr(recommendedElectricalPowerKWc)} kWh`;
+
+  const electricalPowerKwc = watch("photovoltaicInstallationElectricalPowerKWc");
+
+  const displayTooHighValueWarning = electricalPowerKwc > recommendedElectricalPowerKWc;
 
   return (
     <WizardFormLayout
@@ -56,20 +59,28 @@ function PhotovoltaicPowerFromSurfaceForm({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
+        <Controller
+          control={control}
           name="photovoltaicInstallationElectricalPowerKWc"
-          label={<RequiredLabel label="Puissance de l'installation" />}
-          hintText={hintText}
           rules={{
             min: 0,
-            max: {
-              value: recommendedElectricalPowerKWc,
-              message:
-                "La puissance de l'installation est supérieure à la puissance calculée à partir de la surface d'occupation des panneaux.",
-            },
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
-          control={control}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                stateRelatedMessage={
+                  displayTooHighValueWarning ? TOO_HIGH_VALUE_WARNING : undefined
+                }
+                state={displayTooHighValueWarning ? "warning" : "default"}
+                label={<RequiredLabel label="Puissance de l'installation" />}
+                hintText={hintText}
+                hintInputText="en kWc"
+                className="!tw-pt-4 tw-pb-6"
+              />
+            );
+          }}
         />
         <BackNextButtonsGroup onBack={onBack} />
       </form>

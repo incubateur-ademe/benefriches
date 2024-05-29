@@ -19,7 +19,7 @@ export type RowNumericInputInputProps = {
   hintInputText?: ReactNode;
   hideLabel?: boolean;
   disabled?: boolean;
-  state?: "success" | "error" | "default";
+  state?: "success" | "error" | "default" | "warning";
   stateRelatedMessage?: ReactNode;
   nativeInputProps?: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
 };
@@ -55,11 +55,13 @@ const RowNumericInput = memo(
             "tw-items-start",
             "tw-mb-0",
             "tw-pt-7",
+            "fr-input-group",
             fr.cx(
               disabled && "fr-input-group--disabled",
               state === "error" && "fr-input-group--error",
               state === "success" && "fr-input-group--valid",
             ),
+            state === "warning" && "fr-input-group--info fr-input-group--warning",
             className,
           )}
           ref={ref}
@@ -78,16 +80,27 @@ const RowNumericInput = memo(
               />
             )}
             <label
-              className={classNames(
-                "tw-text-lg",
-                "tw-font-bold",
-                fr.cx("fr-label", hideLabel && "fr-sr-only"),
-              )}
+              className={classNames("tw-text-lg", fr.cx("fr-label", hideLabel && "fr-sr-only"))}
               htmlFor={inputId}
             >
               {label}
               {hintText && (
                 <span className="fr-hint-text tw-text-sm tw-font-normal">{hintText}</span>
+              )}
+              {state !== "default" && (
+                <p
+                  id={messageId}
+                  className={classNames(
+                    "tw-mt-0",
+                    fr.cx(
+                      state === "error" && "fr-error-text",
+                      state === "success" && "fr-valid-text",
+                    ),
+                    state === "warning" && "fr-info-text fr-warning-text",
+                  )}
+                >
+                  {stateRelatedMessage}
+                </p>
               )}
             </label>
           </div>
@@ -101,30 +114,14 @@ const RowNumericInput = memo(
                   state === "error" && "fr-input--error",
                   state === "success" && "fr-input--valid",
                 ),
+                state === "warning" && "fr-input--warning",
               )}
               disabled={disabled}
               aria-describedby={messageId}
               type="number"
               id={inputId}
             />
-            {state === "default" && hintInputText && (
-              <span className="fr-hint-text tw-mt-1">{hintInputText}</span>
-            )}
-
-            {state !== "default" && (
-              <p
-                id={messageId}
-                className={classNames(
-                  "tw-mt-0",
-                  fr.cx(
-                    state === "error" && "fr-error-text",
-                    state === "success" && "fr-valid-text",
-                  ),
-                )}
-              >
-                {stateRelatedMessage}
-              </p>
-            )}
+            {hintInputText && <span className="fr-hint-text tw-mt-1">{hintInputText}</span>}
           </div>
         </div>
       );

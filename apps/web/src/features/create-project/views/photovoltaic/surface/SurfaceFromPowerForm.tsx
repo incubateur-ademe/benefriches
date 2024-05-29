@@ -1,9 +1,9 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -27,7 +27,7 @@ function PhotovoltaicSurfaceFromPowerForm({
   recommendedSurface,
   siteSurfaceArea,
 }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit, watch } = useForm<FormValues>({
     defaultValues: {
       photovoltaicInstallationSurfaceSquareMeters: recommendedSurface,
     },
@@ -38,6 +38,10 @@ function PhotovoltaicSurfaceFromPowerForm({
   const maxErrorMessage = `La superficie des panneaux ne peut pas être supérieure à la superficie totale du site (${formatNumberFr(
     siteSurfaceArea,
   )} m²).`;
+
+  const surface = watch("photovoltaicInstallationSurfaceSquareMeters");
+
+  const displayTooHighValueWarning = surface > siteSurfaceArea;
 
   return (
     <WizardFormLayout
@@ -81,19 +85,26 @@ function PhotovoltaicSurfaceFromPowerForm({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
+        <Controller
+          control={control}
           name="photovoltaicInstallationSurfaceSquareMeters"
-          label={<RequiredLabel label="Superficie de l'installation" />}
-          hintText={hintText}
           rules={{
             min: 0,
-            max: {
-              value: siteSurfaceArea,
-              message: maxErrorMessage,
-            },
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
-          control={control}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                stateRelatedMessage={displayTooHighValueWarning ? maxErrorMessage : undefined}
+                state={displayTooHighValueWarning ? "warning" : "default"}
+                label={<RequiredLabel label="Superficie de l'installation" />}
+                hintText={hintText}
+                hintInputText="en m²"
+                className="!tw-pt-4 tw-pb-6"
+              />
+            );
+          }}
         />
         <BackNextButtonsGroup onBack={onBack} />
       </form>
