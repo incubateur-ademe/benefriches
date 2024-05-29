@@ -7,23 +7,16 @@ import PhotovoltaicPanelsInstallationCostsForm, {
 } from "./PhotoVoltaicPanelsInstallationCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import {
-  computeDefaultPhotovoltaicOtherAmountCost,
-  computeDefaultPhotovoltaicTechnicalStudiesAmountCost,
-  computeDefaultPhotovoltaicWorksAmountCost,
-} from "@/features/create-project/domain/defaultValues";
+import { getDefaultValuesForPhotovoltaicInstallationCosts } from "@/features/create-project/application/createProject.selectors";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const mapProps = (dispatch: AppDispatch, electricalPowerKWc?: number) => {
+const mapProps = (
+  dispatch: AppDispatch,
+  defaultValues?: { works: number; technicalStudy: number; other: number },
+) => {
   return {
-    defaultValues: electricalPowerKWc
-      ? {
-          works: computeDefaultPhotovoltaicWorksAmountCost(electricalPowerKWc),
-          technicalStudy: computeDefaultPhotovoltaicTechnicalStudiesAmountCost(electricalPowerKWc),
-          other: computeDefaultPhotovoltaicOtherAmountCost(electricalPowerKWc),
-        }
-      : undefined,
+    defaultValues,
     onSubmit: (amounts: FormValues) => {
       const totalCost = sumObjectValues(amounts);
       dispatch(completePhotovoltaicPanelsInstallationCost(totalCost));
@@ -36,11 +29,9 @@ const mapProps = (dispatch: AppDispatch, electricalPowerKWc?: number) => {
 
 function PhotovoltaicPanelsInstallationCostsFormContainer() {
   const dispatch = useAppDispatch();
-  const electricalPowerKWc = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicInstallationElectricalPowerKWc,
-  );
+  const defaultValues = useAppSelector(getDefaultValuesForPhotovoltaicInstallationCosts);
 
-  return <PhotovoltaicPanelsInstallationCostsForm {...mapProps(dispatch, electricalPowerKWc)} />;
+  return <PhotovoltaicPanelsInstallationCostsForm {...mapProps(dispatch, defaultValues)} />;
 }
 
 export default PhotovoltaicPanelsInstallationCostsFormContainer;

@@ -5,11 +5,7 @@ import {
 import YearlyProjectedsCostsForm, { FormValues } from "./YearlyProjectedCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import {
-  computeDefaultPhotovoltaicYearlyMaintenanceAmount,
-  computeDefaultPhotovoltaicYearlyRentAmount,
-  computeDefaultPhotovoltaicYearlyTaxesAmount,
-} from "@/features/create-project/domain/defaultValues";
+import { getDefaultValuesForYearlyProjectedCosts } from "@/features/create-project/application/createProject.selectors";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -20,15 +16,12 @@ const costsFormMap = {
   otherAmount: "other",
 } as const;
 
-const mapProps = (dispatch: AppDispatch, electricalPowerKWc?: number) => {
+const mapProps = (
+  dispatch: AppDispatch,
+  defaultValues?: { rent: number; maintenance: number; taxes: number },
+) => {
   return {
-    defaultValues: electricalPowerKWc
-      ? {
-          rent: computeDefaultPhotovoltaicYearlyRentAmount(electricalPowerKWc),
-          maintenance: computeDefaultPhotovoltaicYearlyMaintenanceAmount(electricalPowerKWc),
-          taxes: computeDefaultPhotovoltaicYearlyTaxesAmount(electricalPowerKWc),
-        }
-      : undefined,
+    defaultValues,
     onSubmit: (costs: FormValues) => {
       const yearlyProjectedCosts = typedObjectKeys(costs)
         .filter((sourceKey) => !!costs[sourceKey])
@@ -46,11 +39,9 @@ const mapProps = (dispatch: AppDispatch, electricalPowerKWc?: number) => {
 
 function YearlyProjectedCostsFormContainer() {
   const dispatch = useAppDispatch();
-  const electricalPowerKWc = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicInstallationElectricalPowerKWc,
-  );
+  const defaultValues = useAppSelector(getDefaultValuesForYearlyProjectedCosts);
 
-  return <YearlyProjectedsCostsForm {...mapProps(dispatch, electricalPowerKWc)} />;
+  return <YearlyProjectedsCostsForm {...mapProps(dispatch, defaultValues)} />;
 }
 
 export default YearlyProjectedCostsFormContainer;
