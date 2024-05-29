@@ -64,6 +64,41 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
             <DataLine label={<strong>Adresse du site</strong>} value={siteData.address} />
           </dl>
         </Accordion>
+        <Accordion label="Sols" defaultExpanded>
+          <dl>
+            <DataLine
+              label={<strong>Superficie totale du site</strong>}
+              value={<strong>{formatSurfaceArea(siteData.totalSurfaceArea)}</strong>}
+              className="fr-mt-2w fr-mb-1w"
+            />
+          </dl>
+          <dl className="fr-ml-2w">
+            {Object.entries(siteData.soilsDistribution).map(([soilType, surfaceArea]) => {
+              return (
+                <DataLine
+                  label={getLabelForSoilType(soilType as SoilType)}
+                  value={formatSurfaceArea(surfaceArea)}
+                  key={soilType}
+                  className="fr-my-1w"
+                />
+              );
+            })}
+          </dl>
+        </Accordion>
+        {siteData.isFriche && (
+          <Accordion label="Pollution" defaultExpanded>
+            <dl>
+              <DataLine
+                label={<strong>Superficie polluée</strong>}
+                value={
+                  siteData.contaminatedSurfaceArea
+                    ? formatSurfaceArea(siteData.contaminatedSurfaceArea)
+                    : "Pas de pollution"
+                }
+              />
+            </dl>
+          </Accordion>
+        )}
         <Accordion
           label={siteData.isFriche ? "Gestion de la friche" : "Gestion du site"}
           defaultExpanded
@@ -168,42 +203,6 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
             )}
           </dl>
         </Accordion>
-        <Accordion label="Sols" defaultExpanded>
-          <dl>
-            <DataLine
-              label={<strong>Superficie totale du site</strong>}
-              value={<strong>{formatSurfaceArea(siteData.totalSurfaceArea)}</strong>}
-              className="fr-mt-2w fr-mb-1w"
-            />
-          </dl>
-          <dl className="fr-ml-2w">
-            {Object.entries(siteData.soilsDistribution).map(([soilType, surfaceArea]) => {
-              return (
-                <DataLine
-                  label={getLabelForSoilType(soilType as SoilType)}
-                  value={formatSurfaceArea(surfaceArea)}
-                  key={soilType}
-                  className="fr-my-1w"
-                />
-              );
-            })}
-          </dl>
-        </Accordion>
-        {siteData.isFriche && (
-          <Accordion label="Pollution" defaultExpanded>
-            <dl>
-              <DataLine
-                label={<strong>Superficie polluée</strong>}
-                value={
-                  siteData.contaminatedSurfaceArea
-                    ? formatSurfaceArea(siteData.contaminatedSurfaceArea)
-                    : "Pas de pollution"
-                }
-              />
-            </dl>
-          </Accordion>
-        )}
-
         <Accordion label="Dénomination" defaultExpanded>
           {siteData.fricheActivity ? (
             <dl>
