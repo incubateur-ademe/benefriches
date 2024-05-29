@@ -77,3 +77,24 @@
 .fr-stepper__steps[data-fr-current-step="13"] {
   --current-step: 13;
 }
+
+/* Ajout d’un statut warning sur le même modèle que error et success pour les inputs */
+
+.fr-message--warning::before,
+.fr-warning-text::before {
+  -webkit-mask-image: url("/dsfr/icons/system/fr--warning-fill.svg");
+  mask-image: url("/dsfr/icons/system/fr--warning-fill.svg");
+}
+
+.fr-select-group--warning label,
+.fr-input-group--warning label,
+.fr-range-group--warning label,
+.fr-upload-group--warning label,
+.fr-label--warning,
+.fr-warning-text {
+  color: var(--text-default-warning);
+}
+
+.fr-input-group--warning::before {
+  background-image: linear-gradient(0deg, var(--border-plain-warning), var(--border-plain-warning));
+}

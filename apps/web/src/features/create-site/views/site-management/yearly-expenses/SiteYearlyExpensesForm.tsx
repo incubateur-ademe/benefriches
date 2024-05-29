@@ -9,6 +9,7 @@ import {
   stringToNumber,
 } from "@/shared/services/number-conversion/numberConversion";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
@@ -162,24 +163,10 @@ function SiteYearlyExpensesForm({
                     message: "Veuillez sélectionner un montant valide",
                   },
                 }}
-                render={({ field }) => {
+                render={(controller) => {
                   return (
-                    <RowNumericInput
-                      state={formState.errors[name]?.amount ? "error" : "default"}
-                      stateRelatedMessage={
-                        formState.errors[name]?.amount
-                          ? formState.errors[name]?.amount?.message
-                          : undefined
-                      }
-                      nativeInputProps={{
-                        name: field.name,
-                        value: field.value ? numberToString(field.value) : undefined,
-                        onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-                          field.onChange(stringToNumber(ev.target.value));
-                        },
-                        onBlur: field.onBlur,
-                        type: "number",
-                      }}
+                    <ControlledRowNumericInput
+                      {...controller}
                       label={getLabelForExpense(name)}
                       hintText={
                         !hasTenant || bearer === undefined
@@ -192,6 +179,7 @@ function SiteYearlyExpensesForm({
                   );
                 }}
               />
+
               {bearer === undefined && !!watch(`${name}.amount`) && (
                 <RadioButtons
                   error={formState.errors[name]?.bearer ?? undefined}
