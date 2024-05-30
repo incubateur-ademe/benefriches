@@ -201,20 +201,18 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           />
           {!!projectData.reinstatementCost && (
             <DataLine
-              label={<strong>Coûts prévisionnels de remise en état de la friche</strong>}
+              label={<strong>Coûts de remise en état de la friche</strong>}
               value={`${formatNumberFr(projectData.reinstatementCost)} €`}
             />
           )}
           {!!projectData.photovoltaicPanelsInstallationCost && (
             <DataLine
-              label={
-                <strong>Coûts prévisionnels d'installation des panneaux photovoltaïques</strong>
-              }
+              label={<strong>Coûts d'installation des panneaux photovoltaïques</strong>}
               value={`${formatNumberFr(projectData.photovoltaicPanelsInstallationCost)} €`}
             />
           )}
           <DataLine
-            label={<strong>Dépenses annuelles prévisionnelles</strong>}
+            label={<strong>Dépenses annuelles</strong>}
             value={
               <strong>
                 {formatNumberFr(sumList(projectData.yearlyProjectedCosts.map((e) => e.amount)))} €
@@ -233,7 +231,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             );
           })}
           <DataLine
-            label={<strong>Recettes annuelles prévisionnelles</strong>}
+            label={<strong>Recettes annuelles</strong>}
             value={
               <strong>
                 {formatNumberFr(sumList(projectData.yearlyProjectedRevenues.map((e) => e.amount)))}{" "}

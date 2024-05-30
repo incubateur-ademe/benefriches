@@ -22,7 +22,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack }: Props) => {
   const allCosts = watch();
 
   return (
-    <WizardFormLayout title="Recettes annuelles prévisionnelles">
+    <WizardFormLayout title="Recettes annuelles">
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}

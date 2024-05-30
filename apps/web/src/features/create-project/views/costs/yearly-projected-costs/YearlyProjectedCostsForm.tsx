@@ -37,7 +37,7 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
 
   return (
     <WizardFormLayout
-      title="Dépenses annuelles prévisionnelles"
+      title="Dépenses annuelles"
       instructions={
         <>
           <p>

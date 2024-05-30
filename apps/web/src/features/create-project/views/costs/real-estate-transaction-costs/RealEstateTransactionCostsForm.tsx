@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { computeTransferTaxFromSellingPrice } from "@/features/create-project/domain/defaultValues";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -32,7 +33,7 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
 
   return (
     <WizardFormLayout
-      title="Montant de la transaction immobilière"
+      title="Montant de la transaction foncière"
       instructions={
         <>
           <p>
@@ -44,7 +45,6 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
             d'estimer le prix du terrain en consultant les transactions immobilières récentes à
             proximité de votre site.
           </p>
-
           <a
             title="Explorateur de données de valeurs foncières - ouvre une nouvelle fenêtre"
             target="_blank"
@@ -53,6 +53,12 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
           >
             Explorateur de données de valeurs foncières
           </a>
+          <FormDefinition>
+            <p>
+              Les droits de mutation sont les taxes perçues par les collectivités et l’Etat lorsque
+              qu’un patrimoine change de propriétaire.
+            </p>
+          </FormDefinition>
         </>
       }
     >

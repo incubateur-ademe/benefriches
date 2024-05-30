@@ -92,7 +92,7 @@ const ReinstatementsCostsForm = ({
 
   return (
     <WizardFormLayout
-      title="Coûts prévisionnels des travaux de remise en état de la friche"
+      title="Coûts des travaux de remise en état de la friche"
       instructions={
         <ReinstatementCostFormExplanation
           hasContaminatedSoils={hasContaminatedSoils}
