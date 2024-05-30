@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -55,42 +55,68 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
+        <Controller
           control={control}
-          label="Travaux d'installation"
-          hintText="€"
           name="worksAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Travaux d'installation"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
-        <NumericInput
+
+        <Controller
           control={control}
-          label="Études et honoraires techniques"
-          hintText="€"
           name="technicalStudyAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Études et honoraires techniques"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
-        <NumericInput
+        <Controller
           control={control}
-          label="Autres dépenses d'installation"
-          hintText="€"
           name="otherAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Autres dépenses d'installation"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
+
         <p>
           <strong>
             Total des coûts d'installation : {formatNumberFr(sumObjectValues(allCosts))} €

@@ -1,9 +1,9 @@
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { computeTransferTaxFromSellingPrice } from "@/features/create-project/domain/transferTax";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -63,10 +63,8 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
+        <Controller
           control={control}
-          label="Prix de vente"
-          hintText="€"
           name="sellingPrice"
           rules={{
             min: {
@@ -74,18 +72,36 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
               message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Prix de vente"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-0"
+              />
+            );
+          }}
         />
 
-        <NumericInput
+        <Controller
           control={control}
-          label="Droit de mutation"
-          hintText="€"
           name="propertyTransferDuties"
           rules={{
             min: {
               value: 0,
               message: "Veuillez entrer un montant valide",
             },
+          }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Droit de mutation"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
           }}
         />
         <BackNextButtonsGroup onBack={onBack} />

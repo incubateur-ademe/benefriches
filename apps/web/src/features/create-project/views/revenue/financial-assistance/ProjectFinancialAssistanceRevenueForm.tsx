@@ -1,9 +1,9 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -50,42 +50,67 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
+        <Controller
           control={control}
-          label="Participation des collectivités"
-          hintText="€"
           name="localOrRegionalAuthorityAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Participation des collectivités"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
-        <NumericInput
+        <Controller
           control={control}
-          label="Subvention publiques"
-          hintText="€"
           name="publicSubsidiesAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Subvention publiques"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
-        <NumericInput
+        <Controller
           control={control}
-          label="Autres ressources"
-          hintText="€"
           name="otherAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Autres ressources"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
+
         <p>
           <strong>
             Total des aides aux travaux : {formatNumberFr(sumObjectValues(allCosts))} €

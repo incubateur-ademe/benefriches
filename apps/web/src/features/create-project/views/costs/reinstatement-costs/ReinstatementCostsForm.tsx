@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import SustainableSoilsReinstatementInfoButton from "./SustainableSoilsReinstatementInfoButton";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -77,6 +77,27 @@ const ReinstatementCostFormExplanation = ({
   }
 };
 
+const getCostsInputs = (hasContaminatedSoils: boolean) => {
+  const costs = [
+    { name: "asbestosRemovalAmount", label: "Désamiantage" },
+    { name: "remediationAmount", label: "Dépollution des sols" },
+    { name: "demolitionAmount", label: "Déconstruction" },
+    { name: "deimpermeabilizationAmount", label: "Désimperméabilisation" },
+    { name: "wasteCollectionAmount", label: "Évacuation et traitement des déchets" },
+    {
+      name: "sustainableSoilsReinstatementAmount",
+      label: (
+        <>
+          Restauration écologique des sols
+          <SustainableSoilsReinstatementInfoButton />
+        </>
+      ),
+    },
+    { name: "otherReinstatementCostAmount", label: "Autres dépenses de remise en état" },
+  ] as const;
+  return hasContaminatedSoils ? costs.filter(({ name }) => name !== "remediationAmount") : costs;
+};
+
 const ReinstatementsCostsForm = ({
   onSubmit,
   onBack,
@@ -101,101 +122,30 @@ const ReinstatementsCostsForm = ({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
-          control={control}
-          label="Évacuation et traitement des déchets"
-          hintText="€"
-          name="wasteCollectionAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-        />
-        <NumericInput
-          control={control}
-          label="Désamiantage"
-          hintText="€"
-          name="asbestosRemovalAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-        />
-
-        <NumericInput
-          control={control}
-          label="Déconstruction"
-          hintText="€"
-          name="demolitionAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-        />
-
-        {hasContaminatedSoils && (
-          <NumericInput
+        {getCostsInputs(hasContaminatedSoils).map(({ label, name }) => (
+          <Controller
+            key={name}
             control={control}
-            label="Dépollution des sols"
-            hintText="€"
-            name="remediationAmount"
+            name={name}
             rules={{
               min: {
                 value: 0,
                 message: "Veuillez entrer un montant valide",
               },
             }}
+            render={(controller) => {
+              return (
+                <ControlledRowNumericInput
+                  {...controller}
+                  label={label}
+                  hintInputText="€"
+                  className="!tw-pt-4 !tw-mb-0"
+                />
+              );
+            }}
           />
-        )}
+        ))}
 
-        <NumericInput
-          control={control}
-          label="Désimperméabilisation"
-          hintText="€"
-          name="deimpermeabilizationAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-        />
-
-        <NumericInput
-          control={control}
-          label={
-            <>
-              Restauration écologique des sols
-              <SustainableSoilsReinstatementInfoButton />
-            </>
-          }
-          hintText="€"
-          name="sustainableSoilsReinstatementAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-        />
-        <NumericInput
-          control={control}
-          label="Autres dépenses de remise en état"
-          hintText="€"
-          name="otherReinstatementCostAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-        />
         <p>
           <strong>
             Total des coûts des travaux de remise en état :{" "}

@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -56,54 +56,88 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
+        <Controller
           control={control}
-          label="Loyer"
-          hintText="€"
           name="rentAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Loyer"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
-        <NumericInput
+        <Controller
           control={control}
-          label="Maintenance"
-          hintText="€"
           name="maintenanceAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Maintenance"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
-        <NumericInput
+        <Controller
           control={control}
-          label="Taxes et impôts"
-          hintText="€"
           name="taxesAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Taxes et impôts"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
-        <NumericInput
+
+        <Controller
           control={control}
-          label="Autres dépenses"
-          hintText="€"
           name="otherAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Autres dépenses"
+                hintInputText="€"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
+
         <p>
           <strong>
             Total des dépenses annuelles : {formatNumberFr(sumObjectValues(allCosts))} €

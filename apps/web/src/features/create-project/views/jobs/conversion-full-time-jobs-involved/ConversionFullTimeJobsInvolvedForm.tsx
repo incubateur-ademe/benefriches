@@ -1,7 +1,7 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -50,27 +50,43 @@ function ConversionFullTimeJobsInvolvedForm({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         {askForReinstatementFullTimeJobs && (
-          <NumericInput
+          <Controller
             control={control}
             name="reinstatementFullTimeJobs"
-            label="Remise en état de la friche"
             rules={{
               min: {
                 value: 0,
-                message: "Veuillez sélectionner un montant valide",
+                message: "Veuillez entrer un montant valide",
               },
+            }}
+            render={(controller) => {
+              return (
+                <ControlledRowNumericInput
+                  {...controller}
+                  label="Remise en état de la friche"
+                  className="!tw-pt-4 !tw-mb-3"
+                />
+              );
             }}
           />
         )}
-        <NumericInput
+        <Controller
           control={control}
           name="fullTimeJobs"
-          label="Installation des panneaux photovoltaïques"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
+          }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Installation des panneaux photovoltaïques"
+                className="!tw-pt-4 !tw-mb-8"
+              />
+            );
           }}
         />
         <BackNextButtonsGroup onBack={onBack} />

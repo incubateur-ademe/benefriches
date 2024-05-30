@@ -10,7 +10,7 @@ import {
 type Props<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = RowNumericInputInputProps & UseControllerReturn<TFieldValues, TName>;
+> = RowNumericInputInputProps & UseControllerReturn<TFieldValues, TName> & { noDecimals?: boolean };
 
 const ControlledRowNumericInput = <
   TFieldValues extends FieldValues,
@@ -21,6 +21,7 @@ const ControlledRowNumericInput = <
   nativeInputProps = {},
   stateRelatedMessage,
   state,
+  noDecimals = false,
   ...props
 }: Props<TFieldValues, TName>) => {
   const error = fieldState.error;
@@ -36,6 +37,7 @@ const ControlledRowNumericInput = <
           field.onChange(stringToNumber(ev.target.value));
         },
         onBlur: field.onBlur,
+        step: noDecimals ? "1" : "0.01",
         ...nativeInputProps,
       }}
       {...props}

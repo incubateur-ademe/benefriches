@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -46,30 +46,48 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
+        <Controller
           control={control}
-          label="Recettes d'exploitation"
-          hintText="€ / an"
           name="operationsAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Recettes d'exploitation"
+                hintInputText="€ / an"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
-        <NumericInput
+
+        <Controller
           control={control}
-          label="Autres recettes"
-          hintText="€ / an"
           name="otherAmount"
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez entrer un montant valide",
             },
           }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                {...controller}
+                label="Autres recettes"
+                hintInputText="€ / an"
+                className="!tw-pt-4 !tw-mb-3"
+              />
+            );
+          }}
         />
+
         <p>
           <strong>
             Total des recettes annuelles : {formatNumberFr(sumObjectValues(allCosts))} €
