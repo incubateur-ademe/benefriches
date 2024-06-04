@@ -52,7 +52,7 @@ export type ReinstatementCostsPurpose =
 
 export type ReinstatementCosts = {
   total: number;
-  expenses: { purpose: ReinstatementCostsPurpose; amount: number }[];
+  costs: { purpose: ReinstatementCostsPurpose; amount: number }[];
 };
 
 export type FinancialAssistanceRevenue = {

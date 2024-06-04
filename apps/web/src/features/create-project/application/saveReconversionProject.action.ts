@@ -28,6 +28,8 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
   }),
 ]);
 
+const costSchema = z.object({ amount: z.number().nonnegative(), purpose: z.string() });
+
 const saveProjectSchema = z.object({
   id: z.string().uuid(),
   createdBy: z.string().uuid(),
@@ -43,9 +45,9 @@ const saveProjectSchema = z.object({
   operationsFullTimeJobsInvolved: z.number().nonnegative().optional(),
   realEstateTransactionSellingPrice: z.number().nonnegative().optional(),
   realEstateTransactionPropertyTransferDuties: z.number().nonnegative().optional(),
-  reinstatementCost: z.number().nonnegative().optional(),
+  reinstatementCosts: costSchema.array().optional(),
   reinstatementFinancialAssistanceAmount: z.number().nonnegative().optional(),
-  yearlyProjectedCosts: z.object({ amount: z.number().nonnegative(), purpose: z.string() }).array(),
+  yearlyProjectedCosts: costSchema.array(),
   yearlyProjectedRevenues: z
     .object({ amount: z.number().nonnegative(), source: z.string() })
     .array(),
@@ -80,7 +82,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       reinstatementFullTimeJobsInvolved: projectData.reinstatementFullTimeJobsInvolved,
       reinstatementContractOwner: projectData.reinstatementContractOwner,
       operationsFullTimeJobsInvolved: projectData.operationsFullTimeJobsInvolved,
-      reinstatementCost: projectData.reinstatementCosts?.total,
+      reinstatementCosts: projectData.reinstatementCosts?.costs,
       realEstateTransactionSellingPrice: projectData.realEstateTransactionSellingPrice,
       realEstateTransactionPropertyTransferDuties:
         projectData.realEstateTransactionPropertyTransferDuties,

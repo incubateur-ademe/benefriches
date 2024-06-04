@@ -16,39 +16,45 @@ const hasImpermeableSoils = (soilsDistribution: ProjectSite["soilsDistribution"]
 const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
   soilsDistribution.MINERAL_SOIL ? soilsDistribution.MINERAL_SOIL > 0 : false;
 
-const convertFormValuesToExpenses = (amounts: FormValues) => {
-  const expenses: ReinstatementCosts["expenses"] = [];
+const convertFormValuesToCosts = (amounts: FormValues): ReinstatementCosts["costs"] => {
+  const reinstatementCosts: ReinstatementCosts["costs"] = [];
   if (amounts.asbestosRemovalAmount) {
-    expenses.push({ purpose: "asbestos_removal", amount: amounts.asbestosRemovalAmount });
+    reinstatementCosts.push({ purpose: "asbestos_removal", amount: amounts.asbestosRemovalAmount });
   }
 
   if (amounts.deimpermeabilizationAmount) {
-    expenses.push({ purpose: "deimpermeabilization", amount: amounts.deimpermeabilizationAmount });
+    reinstatementCosts.push({
+      purpose: "deimpermeabilization",
+      amount: amounts.deimpermeabilizationAmount,
+    });
   }
 
   if (amounts.demolitionAmount) {
-    expenses.push({ purpose: "demolition", amount: amounts.demolitionAmount });
+    reinstatementCosts.push({ purpose: "demolition", amount: amounts.demolitionAmount });
   }
 
   if (amounts.otherReinstatementCostAmount) {
-    expenses.push({ purpose: "other_reinstatement", amount: amounts.otherReinstatementCostAmount });
+    reinstatementCosts.push({
+      purpose: "other_reinstatement",
+      amount: amounts.otherReinstatementCostAmount,
+    });
   }
 
   if (amounts.remediationAmount) {
-    expenses.push({ purpose: "remediation", amount: amounts.remediationAmount });
+    reinstatementCosts.push({ purpose: "remediation", amount: amounts.remediationAmount });
   }
 
   if (amounts.sustainableSoilsReinstatementAmount) {
-    expenses.push({
+    reinstatementCosts.push({
       purpose: "sustainable_soils_reinstatement",
       amount: amounts.sustainableSoilsReinstatementAmount,
     });
   }
 
   if (amounts.wasteCollectionAmount) {
-    expenses.push({ purpose: "waste_collection", amount: amounts.wasteCollectionAmount });
+    reinstatementCosts.push({ purpose: "waste_collection", amount: amounts.wasteCollectionAmount });
   }
-  return expenses;
+  return reinstatementCosts;
 };
 
 const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
@@ -59,9 +65,9 @@ const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
       hasImpermeableSoils(soilsDistribution) || hasMineralSoils(soilsDistribution),
     hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
     onSubmit: (amounts: FormValues) => {
-      const expenses = convertFormValuesToExpenses(amounts);
-      const total = sumList(expenses.map(({ amount }) => amount));
-      dispatch(completeReinstatementCost({ expenses, total }));
+      const costs = convertFormValuesToCosts(amounts);
+      const total = sumList(costs.map(({ amount }) => amount));
+      dispatch(completeReinstatementCost({ costs, total }));
     },
     onBack: () => {
       dispatch(revertReinstatementCost());

@@ -16,14 +16,11 @@ const FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR: Record<
 };
 
 export const computeDefaultReinstatementFullTimeJobs = (
-  reinstatementExpenses: ReinstatementCosts["expenses"],
+  reinstatementCosts: ReinstatementCosts["costs"],
 ) => {
-  const reinstatementFullTimeJobs = reinstatementExpenses.reduce(
-    (totalJobs, { purpose, amount }) => {
-      const ratio = FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR[purpose];
-      return ratio === "unknown" ? totalJobs : totalJobs + amount * ratio;
-    },
-    0,
-  );
+  const reinstatementFullTimeJobs = reinstatementCosts.reduce((totalJobs, { purpose, amount }) => {
+    const ratio = FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR[purpose];
+    return ratio === "unknown" ? totalJobs : totalJobs + amount * ratio;
+  }, 0);
   return roundTo1Digit(reinstatementFullTimeJobs);
 };

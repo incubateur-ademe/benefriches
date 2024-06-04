@@ -227,7 +227,7 @@ export const getDefaultValuesForFullTimeConversionJobsInvolved = createSelector(
 
     const reinstatementFullTimeJobs =
       siteData?.isFriche && reinstatementCosts
-        ? computeDefaultReinstatementFullTimeJobs(reinstatementCosts.expenses)
+        ? computeDefaultReinstatementFullTimeJobs(reinstatementCosts.costs)
         : undefined;
 
     return {
