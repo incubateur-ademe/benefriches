@@ -65,7 +65,7 @@ export const computeDefaultPhotovoltaicYearlyMaintenanceAmount = (electricalPowe
 };
 
 const ECONOMICAL_RATIO_OPERATIONS_INCOME_EURO_PER_KWC_PER_YEAR = 0.0065;
-export const computeDefaultPhotovoltaicYearlyOperationsRevenueAmount = (
+export const computeDefaultPhotovoltaicYearlyRecurringRevenueAmount = (
   electricalPowerKWc: number,
 ) => {
   return Math.round(electricalPowerKWc * ECONOMICAL_RATIO_OPERATIONS_INCOME_EURO_PER_KWC_PER_YEAR);

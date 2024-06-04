@@ -1,9 +1,9 @@
 import {
-  Expense,
   ProjectPhase,
   ProjectPhaseDetails,
   ProjectStakeholder,
-  Revenue,
+  RecurringCost,
+  RecurringRevenue,
 } from "../domain/project.types";
 
 export const projectSiteData = {
@@ -44,8 +44,8 @@ export const projectWithMinimalData = {
     MINERAL_SOIL: 5000,
     IMPERMEABLE_SOILS: 1300,
   },
-  yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }] as Expense[],
-  yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }] as Revenue[],
+  yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }] as RecurringCost[],
+  yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }] as RecurringRevenue[],
   projectPhase: "planning",
 } as const;
 

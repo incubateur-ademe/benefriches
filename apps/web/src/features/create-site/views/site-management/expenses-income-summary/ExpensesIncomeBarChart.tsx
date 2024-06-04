@@ -50,7 +50,7 @@ const getColorForSourceIncome = (source: Income["source"]) => {
   }
 };
 
-const getLabelForRevenueSource = (source: string) => {
+const getLabelForOperationsRevenueSource = (source: string) => {
   switch (source) {
     case "operations":
       return "Recettes d’exploitation";
@@ -89,7 +89,7 @@ const ExpensesIncomeBarChart = ({
     }),
     ...ownerIncome.map(({ source, amount }) => {
       return {
-        name: getLabelForRevenueSource(source),
+        name: getLabelForOperationsRevenueSource(source),
         data: [0, amount],
         type: "column",
         color: getColorForSourceIncome(source),
@@ -105,7 +105,7 @@ const ExpensesIncomeBarChart = ({
     }),
     ...tenantIncome.map(({ source, amount }) => {
       return {
-        name: getLabelForRevenueSource(source),
+        name: getLabelForOperationsRevenueSource(source),
         data: [0, 0, 0, amount],
         type: "column",
         color: getColorForSourceIncome(source),

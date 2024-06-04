@@ -4,11 +4,11 @@ import { SoilsDistribution, SoilType } from "shared";
 import { Schedule } from "../../application/saveReconversionProject.action";
 import {
   DevelopmentPlanCategory,
-  Expense,
-  getLabelForExpensePurpose,
-  getLabelForRevenueSource,
+  getLabelForRecurringCostPurpose,
+  getLabelForRecurringRevenueSource,
+  RecurringCost,
+  RecurringRevenue,
   RenewableEnergyDevelopmentPlanType,
-  Revenue,
 } from "../../domain/project.types";
 import {
   getLabelForDevelopmentPlanCategory,
@@ -44,8 +44,8 @@ type Props = {
     finanalAssistanceAmount?: number;
     reinstatementCost?: number;
     photovoltaicPanelsInstallationCost?: number;
-    yearlyProjectedCosts: Expense[];
-    yearlyProjectedRevenues: Revenue[];
+    yearlyProjectedCosts: RecurringCost[];
+    yearlyProjectedRevenues: RecurringRevenue[];
     reinstatementSchedule?: Partial<Schedule>;
     photovoltaticInstallationSchedule?: Partial<Schedule>;
     firstYearOfOperation?: number;
@@ -223,7 +223,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           {projectData.yearlyProjectedCosts.map(({ amount, purpose }) => {
             return (
               <DataLine
-                label={getLabelForExpensePurpose(purpose)}
+                label={getLabelForRecurringCostPurpose(purpose)}
                 value={`${formatNumberFr(amount)} €`}
                 className="fr-ml-2w"
                 key={purpose}
@@ -243,7 +243,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           {projectData.yearlyProjectedRevenues.map(({ amount, source }) => {
             return (
               <DataLine
-                label={getLabelForRevenueSource(source)}
+                label={getLabelForRecurringRevenueSource(source)}
                 value={`${formatNumberFr(amount)} €`}
                 className="fr-ml-2w"
                 key={source}

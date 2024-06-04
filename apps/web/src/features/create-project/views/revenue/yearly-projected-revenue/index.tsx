@@ -5,7 +5,7 @@ import {
 import YearlyProjectedsRevenueForm, { FormValues } from "./ProjectYearlyProjectedRevenueForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { getDefaultValuesForYearlyProjectedOperationsRevenue } from "@/features/create-project/application/createProject.selectors";
+import { getDefaultValuesForYearlyProjectedRecurringRevenue } from "@/features/create-project/application/createProject.selectors";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -37,9 +37,7 @@ const mapProps = (dispatch: AppDispatch, defaultOperationsValue?: number) => {
 
 function YearlyProjectedRevenueFormContainer() {
   const dispatch = useAppDispatch();
-  const defaultOperationsValue = useAppSelector(
-    getDefaultValuesForYearlyProjectedOperationsRevenue,
-  );
+  const defaultOperationsValue = useAppSelector(getDefaultValuesForYearlyProjectedRecurringRevenue);
 
   return <YearlyProjectedsRevenueForm {...mapProps(dispatch, defaultOperationsValue)} />;
 }

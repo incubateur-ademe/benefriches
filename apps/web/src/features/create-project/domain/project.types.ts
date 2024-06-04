@@ -87,9 +87,9 @@ export type ReconversionProjectCreationData = {
   reinstatementCosts?: ReinstatementCosts;
   photovoltaicPanelsInstallationCost: number;
   reinstatementFinancialAssistanceAmount: number;
-  yearlyProjectedCosts: Expense[];
+  yearlyProjectedCosts: RecurringCost[];
   // revenues
-  yearlyProjectedRevenues: Revenue[];
+  yearlyProjectedRevenues: RecurringRevenue[];
   // schedules
   reinstatementSchedule?: Schedule;
   photovoltaicInstallationSchedule?: Schedule;
@@ -101,12 +101,12 @@ export type ReconversionProjectCreationData = {
 
 export type DocumentType = "BUILDING_PERMIT" | "FORECAST_BALANCE_SHEET";
 
-export type Expense = {
+export type RecurringCost = {
   amount: number;
   purpose: "rent" | "maintenance" | "taxes" | "other";
 };
 
-export type Revenue = {
+export type RecurringRevenue = {
   amount: number;
   source: "operations" | "other";
 };
@@ -153,8 +153,8 @@ export type ProjectSite = {
   address: Address;
 };
 
-export const getLabelForExpensePurpose = (expensePurpose: Expense["purpose"]): string => {
-  switch (expensePurpose) {
+export const getLabelForRecurringCostPurpose = (costPurpose: RecurringCost["purpose"]): string => {
+  switch (costPurpose) {
     case "taxes":
       return "Impôts et taxes";
     case "other":
@@ -165,7 +165,9 @@ export const getLabelForExpensePurpose = (expensePurpose: Expense["purpose"]): s
       return "Maintenance";
   }
 };
-export const getLabelForRevenueSource = (revenueSource: Revenue["source"]): string => {
+export const getLabelForRecurringRevenueSource = (
+  revenueSource: RecurringRevenue["source"],
+): string => {
   switch (revenueSource) {
     case "operations":
       return "Recettes d'exploitation";

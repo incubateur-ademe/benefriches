@@ -7,7 +7,7 @@ import {
   computeDefaultPhotovoltaicTechnicalStudiesAmountCost,
   computeDefaultPhotovoltaicWorksAmountCost,
   computeDefaultPhotovoltaicYearlyMaintenanceAmount,
-  computeDefaultPhotovoltaicYearlyOperationsRevenueAmount,
+  computeDefaultPhotovoltaicYearlyRecurringRevenueAmount,
   computeDefaultPhotovoltaicYearlyRentAmount,
   computeDefaultPhotovoltaicYearlyTaxesAmount,
   getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
@@ -243,13 +243,13 @@ export const getDefaultValuesForFullTimeOperationsJobsInvolved = createSelector(
   },
 );
 
-export const getDefaultValuesForYearlyProjectedOperationsRevenue = createSelector(
+export const getDefaultValuesForYearlyProjectedRecurringRevenue = createSelector(
   selectProjectData,
   (projectData): number | undefined => {
     const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = projectData;
 
     return electricalPowerKWc
-      ? computeDefaultPhotovoltaicYearlyOperationsRevenueAmount(electricalPowerKWc)
+      ? computeDefaultPhotovoltaicYearlyRecurringRevenueAmount(electricalPowerKWc)
       : undefined;
   },
 );
