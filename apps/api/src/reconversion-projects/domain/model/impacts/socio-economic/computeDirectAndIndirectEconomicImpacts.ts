@@ -1,3 +1,4 @@
+import { sumListWithKey } from "src/shared-kernel/sum-list/sumList";
 import { ReconversionProject } from "../../reconversionProject";
 
 const RENT_PURPOSE_KEY = "rent";
@@ -89,9 +90,7 @@ export const computeDirectAndIndirectEconomicImpacts = (
     FRICHE_COST_PURPOSES.includes(purpose as (typeof FRICHE_COST_PURPOSES)[number]),
   );
   if (currentFricheCosts.length) {
-    const fricheCostImpactAmount = currentFricheCosts
-      .map(({ amount }) => amount)
-      .reduce((sum, amount) => sum + amount, 0);
+    const fricheCostImpactAmount = sumListWithKey(currentFricheCosts, "amount");
     impacts.push({
       amount: fricheCostImpactAmount * input.evaluationPeriodInYears,
       actor: input.currentTenant ?? input.currentOwner,

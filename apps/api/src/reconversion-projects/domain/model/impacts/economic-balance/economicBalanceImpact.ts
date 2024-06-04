@@ -1,3 +1,4 @@
+import { sumListWithKey } from "src/shared-kernel/sum-list/sumList";
 import { ReconversionProject } from "../../reconversionProject";
 
 export type EconomicBalanceImpactResult = {
@@ -110,14 +111,8 @@ export const getEconomicResultsOfProjectExploitationForDuration = (
     amount: amount * durationInYear,
   }));
 
-  const totalExpensesForDuration = expensesForDuration.reduce(
-    (total, expense) => expense.amount + total,
-    0,
-  );
-  const totalRevenuesForDuration = revenuesForDuration.reduce(
-    (total, expense) => expense.amount + total,
-    0,
-  );
+  const totalExpensesForDuration = sumListWithKey(expensesForDuration, "amount");
+  const totalRevenuesForDuration = sumListWithKey(expensesForDuration, "amount");
   return {
     total: totalRevenuesForDuration + totalExpensesForDuration,
     operationsCosts: {
