@@ -1,5 +1,6 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
+import { ReconversionProject } from "src/reconversion-projects/domain/model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
   buildReconversionProject,
@@ -129,7 +130,6 @@ describe("SqlReconversionProjectRepository integration", () => {
           future_operations_full_time_jobs: null,
           reinstatement_contract_owner_name: null,
           reinstatement_contract_owner_structure_type: null,
-          reinstatement_cost: null,
           real_estate_transaction_selling_price: null,
           real_estate_transaction_property_transfer_duties: null,
           reinstatement_full_time_jobs_involved: null,
@@ -144,129 +144,182 @@ describe("SqlReconversionProjectRepository integration", () => {
       ]);
     });
 
-    it("Saves given reconversion project with exhaustive data in table reconversion_projects", async () => {
-      const siteId = await insertSiteInDb();
-      const reconversionProject = buildReconversionProject({
-        ...buildExhaustiveReconversionProjectProps(),
-        createdAt: now,
-        relatedSiteId: siteId,
+    describe("Given reconversion project with exhaustive data", () => {
+      it("Saves in table reconversion_projects", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = buildReconversionProject({
+          ...buildExhaustiveReconversionProjectProps(),
+          createdAt: now,
+          relatedSiteId: siteId,
+        });
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const result = await sqlConnection("reconversion_projects").select("*");
+        expect(result).toEqual([
+          {
+            id: reconversionProject.id,
+            created_by: reconversionProject.createdBy,
+            name: reconversionProject.name,
+            related_site_id: siteId,
+            created_at: now,
+            description: reconversionProject.description,
+            future_operator_name: reconversionProject.futureOperator?.name,
+            future_operator_structure_type: reconversionProject.futureOperator?.structureType,
+            future_site_owner_name: reconversionProject.futureSiteOwner?.name,
+            future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
+            future_operations_full_time_jobs: reconversionProject.operationsFullTimeJobsInvolved,
+            reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
+            reinstatement_contract_owner_structure_type:
+              reconversionProject.reinstatementContractOwner?.structureType,
+            real_estate_transaction_selling_price:
+              reconversionProject.realEstateTransactionSellingPrice,
+            real_estate_transaction_property_transfer_duties:
+              reconversionProject.realEstateTransactionPropertyTransferDuties,
+            reinstatement_full_time_jobs_involved:
+              reconversionProject.reinstatementFullTimeJobsInvolved,
+            conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
+            reinstatement_financial_assistance_amount:
+              reconversionProject.reinstatementFinancialAssistanceAmount,
+            reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
+            reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
+            operations_first_year: reconversionProject.operationsFirstYear,
+            project_phase: reconversionProject.projectPhase,
+            project_phase_details: reconversionProject.projectPhaseDetails,
+          },
+        ]);
       });
 
-      await reconversionProjectRepository.save(reconversionProject);
+      it("Saves right data in table reconversion_projects_soils_distributions", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = buildReconversionProject({
+          ...buildExhaustiveReconversionProjectProps(),
+          createdAt: now,
+          relatedSiteId: siteId,
+          soilsDistribution: { ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1200, PRAIRIE_GRASS: 5000 },
+        });
+        await reconversionProjectRepository.save(reconversionProject);
 
-      const result = await sqlConnection("reconversion_projects").select("*");
-      expect(result).toEqual([
-        {
-          id: reconversionProject.id,
-          created_by: reconversionProject.createdBy,
-          name: reconversionProject.name,
-          related_site_id: siteId,
-          created_at: now,
-          description: reconversionProject.description,
-          future_operator_name: reconversionProject.futureOperator?.name,
-          future_operator_structure_type: reconversionProject.futureOperator?.structureType,
-          future_site_owner_name: reconversionProject.futureSiteOwner?.name,
-          future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
-          future_operations_full_time_jobs: reconversionProject.operationsFullTimeJobsInvolved,
-          reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
-          reinstatement_contract_owner_structure_type:
-            reconversionProject.reinstatementContractOwner?.structureType,
-          reinstatement_cost: reconversionProject.reinstatementCost,
-          real_estate_transaction_selling_price:
-            reconversionProject.realEstateTransactionSellingPrice,
-          real_estate_transaction_property_transfer_duties:
-            reconversionProject.realEstateTransactionPropertyTransferDuties,
-          reinstatement_full_time_jobs_involved:
-            reconversionProject.reinstatementFullTimeJobsInvolved,
-          conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
-          reinstatement_financial_assistance_amount:
-            reconversionProject.reinstatementFinancialAssistanceAmount,
-          reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
-          reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
-          operations_first_year: reconversionProject.operationsFirstYear,
-          project_phase: reconversionProject.projectPhase,
-          project_phase_details: reconversionProject.projectPhaseDetails,
-        },
-      ]);
-    });
+        const soilsDistributionResult = await sqlConnection(
+          "reconversion_project_soils_distributions",
+        ).select("surface_area", "soil_type", "reconversion_project_id");
 
-    it("Saves given reconversion project in tables reconversion_projects_soils_distributions, reconversion_projects_development_plans, reconversion_project_yearly_expenses and reconversion_project_yearly_revenues", async () => {
-      const siteId = await insertSiteInDb();
-      const reconversionProject = buildReconversionProject({
-        ...buildExhaustiveReconversionProjectProps(),
-        relatedSiteId: siteId,
-        soilsDistribution: { ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1200, PRAIRIE_GRASS: 5000 },
+        expect(soilsDistributionResult).toEqual([
+          {
+            soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            surface_area: 1200.0,
+            reconversion_project_id: reconversionProject.id,
+          },
+          {
+            soil_type: "PRAIRIE_GRASS",
+            surface_area: 5000.0,
+            reconversion_project_id: reconversionProject.id,
+          },
+        ]);
+      });
+      it("Saves right data in table reconversion_projects_development_plans", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = buildReconversionProject({
+          ...buildExhaustiveReconversionProjectProps(),
+          relatedSiteId: siteId,
+        });
+
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const developmentPlansResult = await sqlConnection(
+          "reconversion_project_development_plans",
+        ).select(
+          "type",
+          "features",
+          "reconversion_project_id",
+          "cost",
+          "developer_structure_type",
+          "developer_name",
+          "schedule_start_date",
+          "schedule_end_date",
+        );
+        expect(developmentPlansResult).toEqual([
+          {
+            type: reconversionProject.developmentPlans[0].type,
+            cost: 1300,
+            features: reconversionProject.developmentPlans[0].features,
+            developer_name: reconversionProject.developmentPlans[0].developer.name,
+            developer_structure_type:
+              reconversionProject.developmentPlans[0].developer.structureType,
+            reconversion_project_id: reconversionProject.id,
+            schedule_start_date:
+              reconversionProject.developmentPlans[0].installationSchedule?.startDate,
+            schedule_end_date:
+              reconversionProject.developmentPlans[0].installationSchedule?.endDate,
+          },
+        ]);
       });
 
-      await reconversionProjectRepository.save(reconversionProject);
+      it("Saves right data in table reconversion_project_yearly_expenses", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = buildReconversionProject({
+          ...buildExhaustiveReconversionProjectProps(),
+          relatedSiteId: siteId,
+          soilsDistribution: { ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 1200, PRAIRIE_GRASS: 5000 },
+        });
 
-      const result = await sqlConnection("reconversion_projects").select("id");
-      expect(result).toEqual([{ id: reconversionProject.id }]);
+        await reconversionProjectRepository.save(reconversionProject);
 
-      const soilsDistributionResult = await sqlConnection(
-        "reconversion_project_soils_distributions",
-      ).select("surface_area", "soil_type", "reconversion_project_id");
+        const yearlyExpensesResult = await sqlConnection(
+          "reconversion_project_yearly_expenses",
+        ).select("amount", "purpose", "reconversion_project_id");
+        expect(yearlyExpensesResult).toEqual([
+          {
+            purpose: "rent",
+            amount: 12000.0,
+            reconversion_project_id: reconversionProject.id,
+          },
+        ]);
+      });
+      it("Saves right data in table reconversion_project_yearly_revenues", async () => {
+        const siteId = await insertSiteInDb();
+        const reconversionProject = buildReconversionProject({
+          ...buildExhaustiveReconversionProjectProps(),
+          relatedSiteId: siteId,
+        });
 
-      expect(soilsDistributionResult).toEqual([
-        {
-          soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-          surface_area: 1200.0,
-          reconversion_project_id: reconversionProject.id,
-        },
-        {
-          soil_type: "PRAIRIE_GRASS",
-          surface_area: 5000.0,
-          reconversion_project_id: reconversionProject.id,
-        },
-      ]);
+        await reconversionProjectRepository.save(reconversionProject);
 
-      const developmentPlansResult = await sqlConnection(
-        "reconversion_project_development_plans",
-      ).select(
-        "type",
-        "features",
-        "reconversion_project_id",
-        "cost",
-        "developer_structure_type",
-        "developer_name",
-        "schedule_start_date",
-        "schedule_end_date",
-      );
-      expect(developmentPlansResult).toEqual([
-        {
-          type: reconversionProject.developmentPlans[0].type,
-          cost: 1300,
-          features: reconversionProject.developmentPlans[0].features,
-          developer_name: reconversionProject.developmentPlans[0].developer.name,
-          developer_structure_type: reconversionProject.developmentPlans[0].developer.structureType,
-          reconversion_project_id: reconversionProject.id,
-          schedule_start_date:
-            reconversionProject.developmentPlans[0].installationSchedule?.startDate,
-          schedule_end_date: reconversionProject.developmentPlans[0].installationSchedule?.endDate,
-        },
-      ]);
+        const yearlyRevenuesResult = await sqlConnection(
+          "reconversion_project_yearly_revenues",
+        ).select("amount", "source", "reconversion_project_id");
+        expect(yearlyRevenuesResult).toEqual([
+          {
+            source: "operations",
+            amount: 13000.0,
+            reconversion_project_id: reconversionProject.id,
+          },
+        ]);
+      });
+      it("Saves right data in table reconversion_project_reinstatement_costs", async () => {
+        const siteId = await insertSiteInDb();
+        const reinstatementCosts: ReconversionProject["reinstatementCosts"] = [
+          { amount: 1000, purpose: "waste_collection" },
+          { amount: 2000, purpose: "other_reinstatement_costs" },
+        ] as const;
+        const reconversionProject = buildReconversionProject({
+          ...buildExhaustiveReconversionProjectProps(),
+          relatedSiteId: siteId,
+          reinstatementCosts,
+        });
 
-      const yearlyExpensesResult = await sqlConnection(
-        "reconversion_project_yearly_expenses",
-      ).select("amount", "purpose", "reconversion_project_id");
-      expect(yearlyExpensesResult).toEqual([
-        {
-          purpose: "rent",
-          amount: 12000.0,
-          reconversion_project_id: reconversionProject.id,
-        },
-      ]);
+        await reconversionProjectRepository.save(reconversionProject);
 
-      const yearlyRevenuesResult = await sqlConnection(
-        "reconversion_project_yearly_revenues",
-      ).select("amount", "source", "reconversion_project_id");
-      expect(yearlyRevenuesResult).toEqual([
-        {
-          source: "operations",
-          amount: 13000.0,
-          reconversion_project_id: reconversionProject.id,
-        },
-      ]);
+        const reinstatementCostsResult = await sqlConnection(
+          "reconversion_project_reinstatement_costs",
+        ).select("amount", "purpose", "reconversion_project_id");
+        expect(reinstatementCostsResult).toEqual(
+          reinstatementCosts.map(({ amount, purpose }) => ({
+            amount,
+            purpose,
+            reconversion_project_id: reconversionProject.id,
+          })),
+        );
+      });
     });
   });
 });

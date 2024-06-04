@@ -47,7 +47,6 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         future_operator_name: "Mairie de Blajan",
         future_site_owner_name: "Mairie de Blajan",
         reinstatement_contract_owner_name: "Mairie de Blajan",
-        reinstatement_cost: 15000,
         real_estate_transaction_selling_price: 100000,
         real_estate_transaction_property_transfer_duties: 8000,
         operations_first_year: 2025,
@@ -83,6 +82,20 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           },
         },
       ]);
+      await sqlConnection("reconversion_project_reinstatement_costs").insert([
+        {
+          id: uuid(),
+          reconversion_project_id: reconversionProjectId,
+          amount: 1000,
+          purpose: "waste_collection",
+        },
+        {
+          id: uuid(),
+          reconversion_project_id: reconversionProjectId,
+          amount: 500,
+          purpose: "deimpermeabilization",
+        },
+      ]);
 
       const result = await repository.getById(reconversionProjectId);
 
@@ -105,11 +118,14 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           startDate: new Date("2024-07-01"),
           endDate: new Date("2024-12-31"),
         },
+        reinstatementCosts: [
+          { purpose: "waste_collection", amount: 1000 },
+          { purpose: "deimpermeabilization", amount: 500 },
+        ],
         futureOperatorName: "Mairie de Blajan",
         futureSiteOwnerName: "Mairie de Blajan",
         reinstatementContractOwnerName: "Mairie de Blajan",
         realEstateTransactionTotalCost: 108000,
-        reinstatementCost: 15000,
         developmentPlanInstallationCost: 0,
         reinstatementFinancialAssistanceAmount: 0,
         yearlyProjectedCosts: [],
@@ -186,7 +202,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         operationsFullTimeJobs: undefined,
         realEstateTransactionTotalCost: undefined,
         reinstatementContractOwnerName: undefined,
-        reinstatementCost: 0,
+        reinstatementCosts: [],
         reinstatementFinancialAssistanceAmount: 0,
         reinstatementFullTimeJobs: undefined,
         reinstatementSchedule: undefined,

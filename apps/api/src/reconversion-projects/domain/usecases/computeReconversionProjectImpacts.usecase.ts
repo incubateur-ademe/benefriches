@@ -77,7 +77,7 @@ export type ReconversionProjectImpactsDataView = {
   reinstatementContractOwnerName?: string;
   realEstateTransactionTotalCost?: number;
   realEstateTransactionPropertyTransferDutiesAmount?: number;
-  reinstatementCost?: number;
+  reinstatementCosts: { amount: number; purpose: string }[];
   developmentPlanInstallationCost?: number;
   reinstatementFinancialAssistanceAmount?: number;
   yearlyProjectedCosts: { amount: number; purpose: string }[];
@@ -203,7 +203,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
             futureOperatorName: reconversionProject.futureOperatorName,
             futureSiteOwnerName: reconversionProject.futureSiteOwnerName,
             reinstatementContractOwnerName: reconversionProject.reinstatementContractOwnerName,
-            reinstatementCost: reconversionProject.reinstatementCost,
+            reinstatementCosts: reconversionProject.reinstatementCosts,
             yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
             yearlyProjectedRevenues: reconversionProject.yearlyProjectedRevenues,
             realEstateTransactionTotalCost: reconversionProject.realEstateTransactionTotalCost,

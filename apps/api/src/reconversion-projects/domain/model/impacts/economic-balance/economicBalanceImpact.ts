@@ -8,9 +8,12 @@ export type EconomicBalanceImpactResult = {
     total: number;
     operationsCosts?: {
       total: number;
-      expenses: { purpose: string; amount: number }[];
+      costs: { purpose: string; amount: number }[];
     };
-    siteReinstatement?: number;
+    siteReinstatement?: {
+      total: number;
+      costs: { purpose: string; amount: number }[];
+    };
     developmentPlanInstallation: number;
     realEstateTransaction?: number;
   };
@@ -26,7 +29,7 @@ export type EconomicBalanceImpactResult = {
 
 type ProjectProps = {
   reinstatementFinancialAssistanceAmount?: number;
-  reinstatementCost?: number;
+  reinstatementCosts: { amount: number; purpose: string }[];
   developmentPlanInstallationCost?: number;
   realEstateTransactionTotalCost?: number;
   developmentPlanDeveloperName?: string;
@@ -37,9 +40,9 @@ type ProjectProps = {
   yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"];
 };
 
-type ReconversionProjectInstallationCostResult = {
+type ReconversionProjectInstallationCostsInput = {
   reinstatementFinancialAssistanceAmount: number;
-  reinstatementCost: number;
+  reinstatementCosts: { amount: number; purpose: string }[];
   developmentPlanInstallationCost: number;
   realEstateTransactionTotalCost: number;
   developmentPlanDeveloperName?: string;
@@ -48,15 +51,36 @@ type ReconversionProjectInstallationCostResult = {
   reinstatementContractOwnerName?: string;
 };
 
+type ReconversionProjectInstallationEconomicResult = {
+  total: number;
+  costs: {
+    total: number;
+    developmentPlanInstallation: number;
+    siteReinstatement?: { total: number; costs: { amount: number; purpose: string }[] };
+    realEstateTransaction?: number;
+  };
+  revenues: {
+    total: number;
+    financialAssistance?: number;
+  };
+};
+
+const getReinstatementCostsWithTotalAmount = (
+  reinstatementCosts: { amount: number; purpose: string }[],
+): { total: number; costs: { amount: number; purpose: string }[] } => {
+  const total = sumListWithKey(reinstatementCosts, "amount");
+  return { total, costs: reinstatementCosts };
+};
+
 export const getEconomicResultsOfProjectInstallation = ({
   reinstatementFinancialAssistanceAmount,
-  reinstatementCost,
+  reinstatementCosts,
   developmentPlanInstallationCost,
   realEstateTransactionTotalCost,
   developmentPlanDeveloperName,
   futureSiteOwnerName,
   reinstatementContractOwnerName,
-}: ReconversionProjectInstallationCostResult) => {
+}: ReconversionProjectInstallationCostsInput): ReconversionProjectInstallationEconomicResult => {
   const isDeveloperOwnerOfReinstatement =
     developmentPlanDeveloperName === reinstatementContractOwnerName;
   const isDeveloperFutureSiteOwner = futureSiteOwnerName === developmentPlanDeveloperName;
@@ -68,30 +92,29 @@ export const getEconomicResultsOfProjectInstallation = ({
       }
     : { total: 0 };
 
-  const costsDetails = Object.fromEntries(
-    Object.entries({
-      developmentPlanInstallation: -developmentPlanInstallationCost,
-      siteReinstatement: isDeveloperOwnerOfReinstatement ? -reinstatementCost : undefined,
-      realEstateTransaction:
-        isDeveloperFutureSiteOwner && realEstateTransactionTotalCost
-          ? -realEstateTransactionTotalCost
-          : undefined,
-    }).filter(([, amount]) => amount !== undefined),
-  ) as {
-    siteReinstatement?: number;
-    developmentPlanInstallation: number;
-    realEstateTransaction?: number;
+  const costDetails: Omit<ReconversionProjectInstallationEconomicResult["costs"], "total"> = {
+    developmentPlanInstallation: developmentPlanInstallationCost,
   };
+
+  if (isDeveloperOwnerOfReinstatement) {
+    costDetails.siteReinstatement = getReinstatementCostsWithTotalAmount(reinstatementCosts);
+  }
+  if (isDeveloperFutureSiteOwner && realEstateTransactionTotalCost) {
+    costDetails.realEstateTransaction = realEstateTransactionTotalCost;
+  }
   const costs = {
-    total: Object.values(costsDetails).reduce((total, amount) => total + amount, 0),
-    ...costsDetails,
+    total:
+      costDetails.developmentPlanInstallation +
+      (costDetails.realEstateTransaction ?? 0) +
+      (costDetails.siteReinstatement?.total ?? 0),
+    ...costDetails,
   };
 
   const { total: projectInstallationTotalCost } = costs;
   const { total: projectInstallationTotalRevenue } = revenues;
 
   return {
-    total: projectInstallationTotalRevenue + projectInstallationTotalCost,
+    total: projectInstallationTotalRevenue - projectInstallationTotalCost,
     costs,
     revenues,
   };
@@ -102,22 +125,22 @@ export const getEconomicResultsOfProjectExploitationForDuration = (
   yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"],
   durationInYear: number,
 ) => {
-  const expensesForDuration = yearlyProjectedCosts.map(({ amount, purpose }) => ({
+  const costsForDuration = yearlyProjectedCosts.map(({ amount, purpose }) => ({
     purpose,
-    amount: -amount * durationInYear,
+    amount: amount * durationInYear,
   }));
   const revenuesForDuration = yearlyProjectedRevenues.map(({ amount, source }) => ({
     source,
     amount: amount * durationInYear,
   }));
 
-  const totalExpensesForDuration = sumListWithKey(expensesForDuration, "amount");
+  const totalCostsForDuration = sumListWithKey(costsForDuration, "amount");
   const totalRevenuesForDuration = sumListWithKey(revenuesForDuration, "amount");
   return {
-    total: totalRevenuesForDuration + totalExpensesForDuration,
+    total: totalRevenuesForDuration - totalCostsForDuration,
     operationsCosts: {
-      total: totalExpensesForDuration,
-      expenses: expensesForDuration,
+      total: totalCostsForDuration,
+      costs: costsForDuration,
     },
     operationsRevenues: {
       total: totalRevenuesForDuration,
@@ -129,7 +152,7 @@ export const getEconomicResultsOfProjectExploitationForDuration = (
 export const computeEconomicBalanceImpact = (
   {
     reinstatementFinancialAssistanceAmount = 0,
-    reinstatementCost = 0,
+    reinstatementCosts,
     developmentPlanInstallationCost = 0,
     realEstateTransactionTotalCost = 0,
     reinstatementContractOwnerName,
@@ -147,7 +170,7 @@ export const computeEconomicBalanceImpact = (
     revenues,
   } = getEconomicResultsOfProjectInstallation({
     reinstatementFinancialAssistanceAmount,
-    reinstatementCost,
+    reinstatementCosts,
     developmentPlanInstallationCost,
     realEstateTransactionTotalCost,
     developmentPlanDeveloperName,
