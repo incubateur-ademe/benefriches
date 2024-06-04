@@ -112,7 +112,7 @@ export const getEconomicResultsOfProjectExploitationForDuration = (
   }));
 
   const totalExpensesForDuration = sumListWithKey(expensesForDuration, "amount");
-  const totalRevenuesForDuration = sumListWithKey(expensesForDuration, "amount");
+  const totalRevenuesForDuration = sumListWithKey(revenuesForDuration, "amount");
   return {
     total: totalRevenuesForDuration + totalExpensesForDuration,
     operationsCosts: {
