@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { fr } from "@codegouvfr/react-dsfr";
+import { useState } from "react";
 import { Route } from "type-route";
 import { selectCurrentStep } from "../application/createProject.reducer";
 import { selectIsSiteLoaded } from "../application/createProject.selectors";
@@ -46,6 +46,7 @@ import ProjectionCreationDataSummaryContainer from "./summary";
 
 import { routes } from "@/app/views/router";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 type Props = {
   route: Route<typeof routes.createProject>;
@@ -144,13 +145,18 @@ function ProjectCreationWizard({ route }: Props) {
     }
   }, [isSiteLoaded, route.params.siteId]);
 
-  const shouldDisplayStepper = currentStep !== "CREATION_CONFIRMATION";
+  const [isOpen, setOpen] = useState(true);
 
   return (
-    <section className={fr.cx("fr-container", "fr-py-3w")}>
-      {shouldDisplayStepper && <Stepper step={currentStep} />}
-      {getStepComponent()}
-    </section>
+    <SidebarLayout
+      mainChildren={getStepComponent()}
+      title="Renseignement du projet"
+      isOpen={isOpen}
+      toggleIsOpen={() => {
+        setOpen((current) => !current);
+      }}
+      sidebarChildren={<Stepper step={currentStep} isExtended={isOpen} />}
+    />
   );
 }
 

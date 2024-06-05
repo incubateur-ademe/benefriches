@@ -1,7 +1,5 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
-
 import { ProjectCreationStep } from "@/features/create-project/application/createProject.reducer";
+import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 const stepCategories = [
   "Type de projet",
@@ -72,19 +70,20 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
 
 type Props = {
   step: ProjectCreationStep;
+  isExtended?: boolean;
 };
 
-function ProjectCreationStepper({ step }: Props) {
+function ProjectCreationStepper({ step, isExtended }: Props) {
   const currentStepCategory = getCategoryForStep(step);
+  const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
+  const isDone = step === "CREATION_CONFIRMATION";
 
   return (
-    <Stepper
-      title={currentStepCategory}
-      currentStep={
-        stepCategories.findIndex((stepCategory) => stepCategory === currentStepCategory) + 1
-      }
-      stepCount={stepCategories.length}
-      className={fr.cx("fr-mb-7w")}
+    <FormStepper
+      currentStepIndex={currentStepIndex}
+      steps={stepCategories.map((step) => step)}
+      isExtended={isExtended}
+      isDone={isDone}
     />
   );
 }

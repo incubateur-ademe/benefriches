@@ -1,4 +1,4 @@
-import { fr } from "@codegouvfr/react-dsfr";
+import { useState } from "react";
 import { selectCurrentStep } from "../application/createSite.reducer";
 import SiteExpensesIncomeSummary from "./site-management/expenses-income-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
@@ -28,6 +28,7 @@ import Stepper from "./Stepper";
 import SiteDataSummary from "./summary";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 function SiteCreationWizard() {
   const currentStep = useAppSelector(selectCurrentStep);
@@ -88,13 +89,20 @@ function SiteCreationWizard() {
     }
   };
 
-  const shouldDisplayStepper = currentStep !== "CREATION_CONFIRMATION";
+  const [isOpen, setOpen] = useState(true);
 
   return (
-    <section className={fr.cx("fr-container", "fr-py-3w")}>
-      {shouldDisplayStepper && <Stepper isFriche={siteData.isFriche} step={currentStep} />}
-      {getStepComponent()}
-    </section>
+    <SidebarLayout
+      mainChildren={getStepComponent()}
+      title="Renseignement du site"
+      isOpen={isOpen}
+      toggleIsOpen={() => {
+        setOpen((current) => !current);
+      }}
+      sidebarChildren={
+        <Stepper isFriche={siteData.isFriche} step={currentStep} isExtended={isOpen} />
+      }
+    />
   );
 }
 
