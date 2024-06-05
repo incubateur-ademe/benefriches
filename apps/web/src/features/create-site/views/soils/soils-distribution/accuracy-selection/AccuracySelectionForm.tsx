@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -25,9 +26,11 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, isFriche
     <WizardFormLayout
       title={`Connaissez-vous les superficies des différents sols ${isFriche ? "de la friche" : "du site"} ?`}
       instructions={
-        <p>
-          En cochant « Non », Bénéfriches affectera une superficie égale à tous les types de sols.
-        </p>
+        <FormInfo>
+          <p>
+            En cochant « Non », Bénéfriches affectera une superficie égale à tous les types de sols.
+          </p>
+        </FormInfo>
       }
     >
       <form onSubmit={_onSubmit}>

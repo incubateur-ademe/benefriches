@@ -10,6 +10,7 @@ import {
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -63,7 +64,7 @@ function NonSuitableSoilsSelection({
     <WizardFormLayout
       title="Quels espaces souhaitez-vous supprimer ?"
       instructions={
-        <>
+        <FormInfo>
           <p>
             Vous devez rendre compatible au moins{" "}
             <strong>{formatSurfaceArea(missingSuitableSurfaceArea)}</strong> de sol.
@@ -81,7 +82,7 @@ function NonSuitableSoilsSelection({
             Dans l'étape suivante, vous pourrez décider de la superficie de chaque espace à
             supprimer.
           </p>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

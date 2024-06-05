@@ -5,6 +5,7 @@ import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -115,10 +116,12 @@ const ReinstatementsCostsForm = ({
     <WizardFormLayout
       title="Coûts des travaux de remise en état de la friche"
       instructions={
-        <ReinstatementCostFormExplanation
-          hasContaminatedSoils={hasContaminatedSoils}
-          hasImpermeableSurface={hasImpermeableSurface}
-        />
+        <FormInfo>
+          <ReinstatementCostFormExplanation
+            hasContaminatedSoils={hasContaminatedSoils}
+            hasImpermeableSurface={hasImpermeableSurface}
+          />
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -34,7 +34,7 @@ const SiteSoilsCarbonStorage = ({
     <WizardFormLayout
       title="Stockage du carbone par les sols"
       instructions={
-        <FormDefinition>
+        <FormDefinition hideDivider>
           <p>
             Le sol est un milieu vivant composé de minéraux (ex&nbsp;: pierre, argile) mais
             également de matière organique, issue de la dégradation de végétaux (ex&nbsp;: l'humus

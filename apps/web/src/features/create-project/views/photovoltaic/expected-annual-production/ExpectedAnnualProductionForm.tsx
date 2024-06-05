@@ -4,6 +4,7 @@ import ExpectedAnnualProductionHint from "./ExpectedAnnualProductionHint";
 import { State } from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -31,9 +32,11 @@ function PhotovoltaicAnnualProductionForm({
     <WizardFormLayout
       title="Quelle est la production annuelle attendue de l'installation ?"
       instructions={
-        <ExpectedAnnualProductionHint
-          expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
-        />
+        <FormInfo>
+          <ExpectedAnnualProductionHint
+            expectedPerformanceMwhPerYear={expectedPerformanceMwhPerYear}
+          />
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

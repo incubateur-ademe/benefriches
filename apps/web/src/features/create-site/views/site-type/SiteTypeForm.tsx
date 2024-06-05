@@ -37,7 +37,7 @@ function SiteTypeForm({ onSubmit }: Props) {
       <WizardFormLayout
         title="Votre site est-il une friche ?"
         instructions={
-          <FormDefinition>
+          <FormDefinition hideDivider>
             <p>
               Une friche est un terrain, bâti ou non bâti, inutilisé et dont l'état, la
               configuration ou l'occupation totale ou partielle ne permet pas un réemploi sans un

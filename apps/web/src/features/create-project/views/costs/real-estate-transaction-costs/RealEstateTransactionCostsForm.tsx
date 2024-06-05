@@ -5,6 +5,7 @@ import { computeTransferTaxFromSellingPrice } from "@/features/create-project/do
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -36,23 +37,25 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
       title="Montant de la transaction foncière"
       instructions={
         <>
-          <p>
-            Les droits de mutation sont calculés automatiquement selon le prix de vente renseignés.
-            Vous pouvez modifier ces montants.
-          </p>
-          <p>
-            Si les démarches d'acquisition ne sont pas suffisamment avancées, il est possible
-            d'estimer le prix du terrain en consultant les transactions immobilières récentes à
-            proximité de votre site.
-          </p>
-          <a
-            title="Explorateur de données de valeurs foncières - ouvre une nouvelle fenêtre"
-            target="_blank"
-            rel="noopener noreferrer external"
-            href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous"
-          >
-            Explorateur de données de valeurs foncières
-          </a>
+          <FormInfo>
+            <p>
+              Les droits de mutation sont calculés automatiquement selon le prix de vente
+              renseignés. Vous pouvez modifier ces montants.
+            </p>
+            <p>
+              Si les démarches d'acquisition ne sont pas suffisamment avancées, il est possible
+              d'estimer le prix du terrain en consultant les transactions immobilières récentes à
+              proximité de votre site.
+            </p>
+            <a
+              title="Explorateur de données de valeurs foncières - ouvre une nouvelle fenêtre"
+              target="_blank"
+              rel="noopener noreferrer external"
+              href="https://explore.data.gouv.fr/fr/immobilier?onglet=carte&filtre=tous"
+            >
+              Explorateur de données de valeurs foncières
+            </a>
+          </FormInfo>
           <FormDefinition>
             <p>
               Les droits de mutation sont les taxes perçues par les collectivités et l’Etat lorsque

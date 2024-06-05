@@ -6,6 +6,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -48,24 +49,26 @@ function PhotovoltaicSurfaceFromPowerForm({
       title="Quelle superficie du site occuperont les panneaux photovoltaïques ?"
       instructions={
         <>
-          <p>
-            Le ratio superficie / puissance d'installation considéré est de{" "}
-            <strong>
-              {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m² pour 1 000 kWc.
-            </strong>
-          </p>
-          <p>
-            Pour la puissance que vous avez renseigné ({formatNumberFr(electricalPowerKWc)}
-            &nbsp;kWc), la superficie occupée par les panneaux devrait donc être de{" "}
-            {formatNumberFr(recommendedSurface)}
-            &nbsp;m².
-          </p>
-          <p>Vous pouvez modifier cette superficie.</p>
+          <FormInfo>
+            <p>
+              Le ratio superficie / puissance d'installation considéré est de{" "}
+              <strong>
+                {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m² pour 1 000 kWc.
+              </strong>
+            </p>
+            <p>
+              Pour la puissance que vous avez renseigné ({formatNumberFr(electricalPowerKWc)}
+              &nbsp;kWc), la superficie occupée par les panneaux devrait donc être de{" "}
+              {formatNumberFr(recommendedSurface)}
+              &nbsp;m².
+            </p>
+            <p>Vous pouvez modifier cette superficie.</p>
 
-          <p>
-            La superficie d'installation des panneaux ne peut être supérieure à la superficie totale
-            de la friche ({formatNumberFr(siteSurfaceArea)} m²).
-          </p>
+            <p>
+              La superficie d'installation des panneaux ne peut être supérieure à la superficie
+              totale de la friche ({formatNumberFr(siteSurfaceArea)} m²).
+            </p>
+          </FormInfo>
 
           <FormDefinition>
             <p>

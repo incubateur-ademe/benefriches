@@ -2,12 +2,13 @@ import { ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
+  hideDivider?: boolean;
 };
 
-function FormDefinition({ children }: Props) {
+function FormDefinition({ children, hideDivider = false }: Props) {
   return (
     <>
-      <div className="!tw-text-xl tw-py-2">💡</div>
+      {!hideDivider && <hr />}
       <div className={"*:tw-text-xs"}>{children}</div>
     </>
   );

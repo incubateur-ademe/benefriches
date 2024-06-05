@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS } from "@/features/create-project/domain/photovoltaic";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -25,12 +26,12 @@ function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
     <WizardFormLayout
       title="Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur ?"
       instructions={
-        <>
+        <FormInfo>
           <p>
             La durée de contrat moyen de l'utilisation de panneaux photovoltaïques est de 30 ans.
           </p>
           <p>Vous pouvez modifier cette durée.</p>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

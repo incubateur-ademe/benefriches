@@ -8,6 +8,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -55,7 +56,7 @@ function DeveloperForm({
     <WizardFormLayout
       title="Qui sera l'aménageur du site ?"
       instructions={
-        <>
+        <FormInfo>
           <p>
             L’aménageur est l’acteur qui va engager la reconversion du site. Le bilan économique de
             l’opération sera donc à sa charge.
@@ -64,7 +65,7 @@ function DeveloperForm({
             L’aménageur peut aussi être l’exploitant du site ; la question sera posée dans l’étape
             suivante.
           </p>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
