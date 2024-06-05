@@ -91,7 +91,7 @@ function App() {
         )}
         {route.name === routes.createProject.name && (
           <RequireRegisteredUser>
-            <CreateProjectPage />
+            <CreateProjectPage route={route} />
           </RequireRegisteredUser>
         )}
         {route.name === routes.compareProjects.name && (

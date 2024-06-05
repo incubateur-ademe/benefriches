@@ -1,5 +1,8 @@
+import { useEffect } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { Route } from "type-route";
 import { selectCurrentStep } from "../application/createProject.reducer";
+import { selectIsSiteLoaded } from "../application/createProject.selectors";
 import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
 import RealEstateTransactionCostsContainer from "./costs/real-estate-transaction-costs";
@@ -41,10 +44,16 @@ import RenewableEnergyTypesForm from "./renewable-energy-types";
 import Stepper from "./Stepper";
 import ProjectionCreationDataSummaryContainer from "./summary";
 
+import { routes } from "@/app/views/router";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-function ProjectCreationWizard() {
+type Props = {
+  route: Route<typeof routes.createProject>;
+};
+
+function ProjectCreationWizard({ route }: Props) {
   const currentStep = useAppSelector(selectCurrentStep);
+  const isSiteLoaded = useAppSelector(selectIsSiteLoaded);
 
   const getStepComponent = () => {
     switch (currentStep) {
@@ -128,6 +137,12 @@ function ProjectCreationWizard() {
         return <ProjectCreationConfirmation />;
     }
   };
+
+  useEffect(() => {
+    if (!isSiteLoaded) {
+      routes.createProjectIntro({ siteId: route.params.siteId }).replace();
+    }
+  }, [isSiteLoaded, route.params.siteId]);
 
   const shouldDisplayStepper = currentStep !== "CREATION_CONFIRMATION";
 
