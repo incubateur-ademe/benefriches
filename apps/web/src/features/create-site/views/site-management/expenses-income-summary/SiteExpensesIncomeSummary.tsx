@@ -49,7 +49,7 @@ function SiteExpensesIncomeSummary({
             "tw-justify-around",
             "tw-border",
             "tw-border-solid",
-            "tw-border-grey",
+            "tw-border-borderGrey",
             "tw-my-8",
             "tw-p-4",
             "tw-pt-6",

@@ -17,7 +17,7 @@ const ImpactItemRow = ({ children, onClick, isTotal }: ImpactItemRowProps) => {
         "tw-items-center",
         "tw-border-0",
         !isTotal && "tw-border-b",
-        "tw-border-grey",
+        "tw-border-borderGrey",
         "tw-border-solid",
         !!onClick && "tw-cursor-pointer hover:tw-underline",
       )}

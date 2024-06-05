@@ -15,7 +15,7 @@ function SelectableProjectCard({ children, isSelected, onSelect }: Props) {
       className={classNames(
         fr.cx("fr-grid-row", "fr-py-2w", "fr-px-3w"),
         "tw-border-solid",
-        "tw-border-grey",
+        "tw-border-borderGrey",
         "tw-border-2",
         "tw-cursor-pointer",
         "tw-relative",

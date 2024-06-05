@@ -23,7 +23,7 @@ function HowItWorksStep({ number, title, text }: HowItWorksStepProps) {
           "tw-font-bold",
           "tw-pr-[1px]",
           "tw-pt-[11px]",
-          "tw-bg-blue",
+          "tw-bg-blue-main",
         )}
       >
         {number}
@@ -36,7 +36,7 @@ function HowItWorksStep({ number, title, text }: HowItWorksStepProps) {
 
 export default function HowItWorksSection() {
   return (
-    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey", "dark:tw-bg-darkGrey")}>
+    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-grey-light", "dark:tw-bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
         <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mt-5w")}>

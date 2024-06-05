@@ -11,7 +11,7 @@ const ImpactItemGroup = ({ children, onClick }: Props) => {
   return (
     <div
       className={classNames(
-        "tw-border-grey",
+        "tw-border-borderGrey",
         "tw-border-0",
         "tw-border-b",
         "tw-border-solid",

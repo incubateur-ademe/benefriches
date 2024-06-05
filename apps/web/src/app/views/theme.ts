@@ -30,10 +30,20 @@ export default {
         contrastGrey: "var(--background-contrast-grey)",
         greyDisabled: "var(--text-disabled-grey)",
       },
-      blue: "#137FEB",
-      lightGrey: "#F6F6F6",
-      grey: "#DDDDDD",
-      darkGrey: "#333",
+      blue: {
+        light: "#D1EEFA",
+        main: "#137FEB",
+        dark: "#116E92",
+      },
+      green: {
+        main: "#32762E",
+      },
+      borderGrey: "#DDDDDD",
+      grey: {
+        main: "#B2B2B2",
+        light: "#F6F6F6",
+        dark: "#333",
+      },
       warning: "#B34000",
       impacts: {
         title: "var(--blue-ecume-sun-247-moon-675)",

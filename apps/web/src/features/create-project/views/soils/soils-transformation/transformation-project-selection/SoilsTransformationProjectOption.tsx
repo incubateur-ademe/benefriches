@@ -25,7 +25,7 @@ export default function SoilsTransformationProjectRadioOption({
     <div
       className={classNames(
         "tw-relative tw-border tw-border-solid",
-        checked ? "tw-border-dsfr-borderBlue" : "tw-border-grey",
+        checked ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
         className,
       )}
     >

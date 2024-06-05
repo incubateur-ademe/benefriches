@@ -21,7 +21,7 @@ function TargetItem({ title, text, imgUrl }: TargetItemProps) {
 
 export default function TargetsSection() {
   return (
-    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey", "dark:tw-bg-darkGrey")}>
+    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-grey-light", "dark:tw-bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
         <h2>Un service pour tous les projets d'aménagement</h2>
         <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mt-5w")}>

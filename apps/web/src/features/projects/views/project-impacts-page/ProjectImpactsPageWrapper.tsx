@@ -54,7 +54,7 @@ function ProjectImpactsPageWrapper({
   onCurrentCategoryFilterChange,
 }: Props) {
   return (
-    <div className="tw-bg-impacts-main dark:tw-bg-darkGrey">
+    <div className="tw-bg-impacts-main dark:tw-bg-grey-dark">
       <ProjectsImpactsPageHeader
         projectId={projectData?.id ?? ""}
         projectName={projectData?.name ?? "Centrale photovoltaïque"}
@@ -66,7 +66,7 @@ function ProjectImpactsPageWrapper({
         <div
           className={classNames(
             fr.cx("fr-tabs__panel", "fr-tabs__panel--selected"),
-            "tw-bg-dsfr-grey",
+            "tw-bg-dsfr-borderGrey",
           )}
           role="tabpanel"
         >
