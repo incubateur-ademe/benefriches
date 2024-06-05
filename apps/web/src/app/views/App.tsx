@@ -10,6 +10,7 @@ import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUs
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
+import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 
 /* Lazy-loaded pages */
 const CreateUserPage = lazy(() => import("@/features/users/views"));
@@ -52,8 +53,12 @@ function App() {
     trackPageView(route.href);
   }, [route]);
 
+  const useSidebarContainer =
+    route.name === routes.createSiteFoncier.name || route.name === routes.createProject.name;
+  const Layout = useSidebarContainer ? SidebarContainerLayout : HeaderFooterLayout;
+
   return (
-    <HeaderFooterLayout>
+    <Layout>
       <Suspense fallback={<LoadingSpinner />}>
         {route.name === routes.home.name && <HomePage />}
         {route.name === routes.onboarding.name && <OnboardingPage />}
@@ -120,7 +125,7 @@ function App() {
           matomoUrl={BENEFRICHES_ENV.matomoUrl}
         />
       )}
-    </HeaderFooterLayout>
+    </Layout>
   );
 }
 

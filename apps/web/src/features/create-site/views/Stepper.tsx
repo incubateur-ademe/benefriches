@@ -1,7 +1,5 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import { Stepper } from "@codegouvfr/react-dsfr/Stepper";
-
 import { SiteCreationStep } from "@/features/create-site/application/createSite.reducer";
+import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 const fricheStepsCategories = [
   "Type de site",
@@ -13,7 +11,7 @@ const fricheStepsCategories = [
   "Récapitulatif",
 ] as const;
 
-const siteStepsCategores = fricheStepsCategories.filter((step) => step !== "Pollution");
+const siteStepsCategories = fricheStepsCategories.filter((step) => step !== "Pollution");
 
 type StepCategory = (typeof fricheStepsCategories)[number];
 
@@ -56,20 +54,22 @@ const getCurrentStepCategory = (step: SiteCreationStep): StepCategory => {
 
 type Props = {
   step: SiteCreationStep;
+  isExtended?: boolean;
   isFriche?: boolean;
 };
 
-function SiteCreationStepper({ step, isFriche }: Props) {
+function SiteCreationStepper({ step, isFriche, isExtended }: Props) {
   const currentStepCategory = getCurrentStepCategory(step);
 
-  const stepsCategories = isFriche ? fricheStepsCategories : siteStepsCategores;
+  const stepsCategories = isFriche ? fricheStepsCategories : siteStepsCategories;
+  const currentStepIndex = stepsCategories.findIndex((step) => step === currentStepCategory);
 
   return (
-    <Stepper
-      title={currentStepCategory}
-      currentStep={stepsCategories.findIndex((step) => step === currentStepCategory) + 1}
-      stepCount={stepsCategories.length}
-      className={fr.cx("fr-mb-7w")}
+    <FormStepper
+      currentStepIndex={currentStepIndex}
+      steps={stepsCategories as string[]}
+      isExtended={isExtended}
+      isDone={step === "CREATION_CONFIRMATION"}
     />
   );
 }
