@@ -16,9 +16,16 @@ type Props = {
   projectId: string;
   siteName: string;
   loadingState: "idle" | "loading" | "success" | "error";
+  onBack: () => void;
 };
 
-function ProjectCreationConfirmation({ projectId, projectName, siteName, loadingState }: Props) {
+function ProjectCreationConfirmation({
+  projectId,
+  projectName,
+  siteName,
+  loadingState,
+  onBack,
+}: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -37,6 +44,9 @@ function ProjectCreationConfirmation({ projectId, projectName, siteName, loading
             title="Le projet n'a pas pu être enregistré"
             className="fr-my-7v"
           />
+          <Button onClick={onBack} priority="secondary">
+            Précédent
+          </Button>
         </WizardFormLayout>
       );
     case "success":

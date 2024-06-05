@@ -15,9 +15,10 @@ type Props = {
   siteId: string;
   siteName: string;
   loadingState: "idle" | "loading" | "success" | "error";
+  onBack: () => void;
 };
 
-function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
+function SiteCreationConfirmation({ siteId, siteName, loadingState, onBack }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -34,6 +35,9 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState }: Props) {
             title="Le site n'a pas pu être enregistré"
             className="fr-my-7v"
           />
+          <Button onClick={onBack} priority="secondary">
+            Précédent
+          </Button>
         </WizardFormLayout>
       );
     case "success":

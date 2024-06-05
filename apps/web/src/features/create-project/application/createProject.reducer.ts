@@ -558,6 +558,7 @@ export const revertScheduleStep = () =>
     ],
   });
 export const revertFinalSummaryStep = () => revertStep();
+export const revertConfirmationStep = () => revertStep();
 
 export const {
   resetState,
