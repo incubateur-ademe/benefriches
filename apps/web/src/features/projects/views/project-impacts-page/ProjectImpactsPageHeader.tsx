@@ -11,7 +11,7 @@ type Props = {
 
 const ProjectsImpactsPageHeader = ({ projectName, siteName }: Props) => {
   return (
-    <div className={classNames(fr.cx("fr-py-8v"), "tw-bg-impacts-main", "dark:tw-bg-darkGrey")}>
+    <div className={classNames(fr.cx("fr-py-8v"), "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
         <div
           className={classNames(

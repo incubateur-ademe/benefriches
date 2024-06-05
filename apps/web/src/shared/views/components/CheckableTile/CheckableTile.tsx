@@ -102,7 +102,7 @@ export default function CheckableTile({
         "tw-relative",
         "tw-h-full",
         disabled ? "tw-cursor-not-allowed" : "tw-cursor-pointer",
-        isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-grey",
+        isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
       )}
       onClick={onTileClick}
     >

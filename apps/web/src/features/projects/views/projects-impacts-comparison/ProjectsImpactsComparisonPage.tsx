@@ -65,7 +65,9 @@ type ImpactCardProps = {
 
 const ImpactCard = ({ children }: ImpactCardProps) => {
   return (
-    <div className={classNames(fr.cx("fr-py-2w", "fr-px-2w"), "tw-border-grey", "tw-rounded-lg")}>
+    <div
+      className={classNames(fr.cx("fr-py-2w", "fr-px-2w"), "tw-border-borderGrey", "tw-rounded-lg")}
+    >
       {children}
     </div>
   );

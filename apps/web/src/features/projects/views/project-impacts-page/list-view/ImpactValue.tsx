@@ -28,7 +28,7 @@ const ImpactValue = ({ value, type = "default", isTotal = false }: Props) => {
         "tw-p-2",
         "tw-text-center",
         "tw-bg-impacts-main",
-        "dark:tw-bg-darkGrey",
+        "dark:tw-bg-grey-dark",
         isTotal && "tw-font-bold",
         value === 0
           ? "tw-text-impacts-neutral-main dark:tw-text-impacts-neutral-light"

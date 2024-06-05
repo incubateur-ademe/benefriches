@@ -10,7 +10,7 @@ type Props = {
 
 function NewScenarioTile({ siteId }: Props) {
   return (
-    <div className="tw-border-dashed tw-border hover:tw-bg-lightGrey">
+    <div className="tw-border-dashed tw-border hover:tw-bg-grey-light">
       <a
         {...routes.createProjectIntro({ siteId }).link}
         className={classNames(

@@ -13,7 +13,7 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 export default function CallToActionSection() {
   return (
     <section
-      className={classNames(fr.cx("fr-py-10w"), "tw-bg-lightGrey", "dark:tw-bg-darkGrey")}
+      className={classNames(fr.cx("fr-py-10w"), "tw-bg-grey-light", "dark:tw-bg-grey-dark")}
       id="cta-section"
     >
       <div className={fr.cx("fr-container")}>
@@ -28,7 +28,7 @@ export default function CallToActionSection() {
               "md:tw-border-b-0",
               "md:tw-border-r",
               "tw-border-solid",
-              "tw-border-grey",
+              "tw-border-borderGrey",
               "fr-pb-12v",
               "fr-pb-md-0",
             )}

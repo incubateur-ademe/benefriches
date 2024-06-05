@@ -18,10 +18,10 @@ const ImpactChartCard = ({ title, children, onTitleClick }: Props) => {
         "tw-flex-col",
         "tw-border",
         "tw-border-solid",
-        "tw-border-grey",
+        "tw-border-borderGrey",
         "tw-h-full",
         "tw-bg-impacts-main",
-        "dark:tw-bg-darkGrey",
+        "dark:tw-bg-grey-dark",
       )}
     >
       <strong
