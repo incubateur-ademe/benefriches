@@ -19,6 +19,7 @@ import { saveReconversionProject, Schedule } from "./saveReconversionProject.act
 import { RootState } from "@/app/application/store";
 import {
   DevelopmentPlanCategory,
+  FinancialAssistanceRevenue,
   PhotovoltaicKeyParameter,
   ProjectPhase,
   ProjectPhaseDetails,
@@ -323,8 +324,11 @@ export const projectCreationSlice = createSlice({
     completeRevenuIntroductionStep: (state) => {
       state.stepsHistory.push("REVENUE_PROJECTED_YEARLY_REVENUE");
     },
-    completeReinstatementFinancialAssistance: (state, action: PayloadAction<number>) => {
-      state.projectData.reinstatementFinancialAssistanceAmount = action.payload;
+    completeFinancialAssistanceRevenues: (
+      state,
+      action: PayloadAction<FinancialAssistanceRevenue[]>,
+    ) => {
+      state.projectData.financialAssistanceRevenues = action.payload;
       state.stepsHistory.push(
         state.siteData?.isFriche ? "RECONVERSION_FULL_TIME_JOBS" : "OPERATIONS_FULL_TIMES_JOBS",
       );
@@ -525,8 +529,8 @@ export const revertPhotovoltaicPanelsInstallationCost = () =>
 export const revertYearlyProjectedCosts = () =>
   revertStep({ resetFields: ["yearlyProjectedCosts"] });
 export const revertRevenuIntroductionStep = () => revertStep();
-export const revertReinstatementFinancialAssistance = () =>
-  revertStep({ resetFields: ["reinstatementFinancialAssistanceAmount"] });
+export const revertFinancialAssistanceRevenues = () =>
+  revertStep({ resetFields: ["financialAssistanceRevenues"] });
 export const revertYearlyProjectedRevenue = () =>
   revertStep({ resetFields: ["yearlyProjectedRevenues"] });
 export const revertNaming = () => revertStep({ resetFields: ["name", "description"] });
@@ -578,7 +582,7 @@ export const {
   completeRevenuIntroductionStep,
   completePhotovoltaicPanelsInstallationCost,
   completeYearlyProjectedCosts,
-  completeReinstatementFinancialAssistance,
+  completeFinancialAssistanceRevenues,
   completeYearlyProjectedRevenue,
   completeNaming,
   completePhotovoltaicKeyParameter,

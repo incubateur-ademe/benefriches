@@ -2,6 +2,7 @@ import { soilTypeSchema } from "shared";
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { sumList } from "@/shared/services/sum/sum";
 
 const scheduleSchema = z.object({
   startDate: z.date(),
@@ -83,7 +84,9 @@ export const saveReconversionProject = createAppAsyncThunk(
       realEstateTransactionSellingPrice: projectData.realEstateTransactionSellingPrice,
       realEstateTransactionPropertyTransferDuties:
         projectData.realEstateTransactionPropertyTransferDuties,
-      reinstatementFinancialAssistanceAmount: projectData.reinstatementFinancialAssistanceAmount,
+      reinstatementFinancialAssistanceAmount: sumList(
+        projectData.financialAssistanceRevenues?.map(({ amount }) => amount) ?? [],
+      ),
       yearlyProjectedCosts: projectData.yearlyProjectedCosts,
       yearlyProjectedRevenues: projectData.yearlyProjectedRevenues,
       soilsDistribution: projectData.soilsDistribution,

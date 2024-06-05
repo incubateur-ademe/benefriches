@@ -1,9 +1,11 @@
 import {
+  FinancialAssistanceRevenue,
   ProjectPhase,
   ProjectPhaseDetails,
   ProjectStakeholder,
   RecurringCost,
   RecurringRevenue,
+  ReinstatementCosts,
 } from "../domain/project.types";
 
 export const projectSiteData = {
@@ -34,7 +36,6 @@ export const projectSiteData = {
 
 export const projectWithMinimalData = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",
-  createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
   relatedSiteId: "f590f643-cd9a-4187-8973-f90e9f1998c8",
   name: "Centrale photovoltaique",
   soilsDistribution: {
@@ -72,15 +73,22 @@ export const projectWithExhaustiveData = {
     name: "Reinstatement company",
     structureType: "company",
   } as ProjectStakeholder,
-  reinstatementCost: 90000,
+  reinstatementCosts: {
+    total: 34500,
+    costs: [{ amount: 34500, purpose: "demolition" }] as ReinstatementCosts["costs"],
+  },
   realEstateTransactionSellingPrice: 150000,
   realEstateTransactionPropertyTransferDuties: 12000,
-  reinstatementFinancialAssistanceAmount: 14999.99,
+  financialAssistanceRevenues: [
+    { source: "local_or_regional_authority_participation", amount: 10000 },
+    { source: "public_subsidies", amount: 4000 },
+    { source: "other", amount: 999.99 },
+  ] as FinancialAssistanceRevenue[],
   reinstatementSchedule: {
     startDate: new Date("2025-02-01"),
     endDate: new Date("2028-06-30"),
   },
-  operationsFirstYear: 2029,
+  firstYearOfOperation: 2029,
   projectPhase: "design" as ProjectPhase,
   projectPhaseDetails: "design_final_draft" as ProjectPhaseDetails,
-};
+} as const;

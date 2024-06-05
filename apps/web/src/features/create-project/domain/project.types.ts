@@ -55,6 +55,11 @@ export type ReinstatementCosts = {
   expenses: { purpose: ReinstatementCostsPurpose; amount: number }[];
 };
 
+export type FinancialAssistanceRevenue = {
+  amount: number;
+  source: "local_or_regional_authority_participation" | "public_subsidies" | "other";
+};
+
 export type ReconversionProjectCreationData = {
   id: string;
   name: string;
@@ -86,10 +91,10 @@ export type ReconversionProjectCreationData = {
   // costs
   reinstatementCosts?: ReinstatementCosts;
   photovoltaicPanelsInstallationCost: number;
-  reinstatementFinancialAssistanceAmount: number;
   yearlyProjectedCosts: RecurringCost[];
   // revenues
   yearlyProjectedRevenues: RecurringRevenue[];
+  financialAssistanceRevenues: FinancialAssistanceRevenue[];
   // schedules
   reinstatementSchedule?: Schedule;
   photovoltaicInstallationSchedule?: Schedule;
@@ -173,5 +178,18 @@ export const getLabelForRecurringRevenueSource = (
       return "Recettes d'exploitation";
     case "other":
       return "Autres recettes";
+  }
+};
+
+export const getLabelForFinancialAssistanceRevenueSource = (
+  financialAssitanceSource: FinancialAssistanceRevenue["source"],
+): string => {
+  switch (financialAssitanceSource) {
+    case "local_or_regional_authority_participation":
+      return "Participation des collectivités";
+    case "public_subsidies":
+      return "Subventions publiques";
+    case "other":
+      return "Autres ressources";
   }
 };

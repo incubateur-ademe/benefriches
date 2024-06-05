@@ -4,6 +4,8 @@ import { SoilsDistribution, SoilType } from "shared";
 import { Schedule } from "../../application/saveReconversionProject.action";
 import {
   DevelopmentPlanCategory,
+  FinancialAssistanceRevenue,
+  getLabelForFinancialAssistanceRevenueSource,
   getLabelForRecurringCostPurpose,
   getLabelForRecurringRevenueSource,
   RecurringCost,
@@ -41,7 +43,7 @@ type Props = {
     conversionFullTimeJobs?: number;
     operationsFullTimeJobs?: number;
     realEstateTransactionTotalCost?: number;
-    finanalAssistanceAmount?: number;
+    finanalAssistanceRevenues?: FinancialAssistanceRevenue[];
     reinstatementCost?: number;
     photovoltaicPanelsInstallationCost?: number;
     yearlyProjectedCosts: RecurringCost[];
@@ -195,10 +197,32 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               value={`${formatNumberFr(projectData.realEstateTransactionTotalCost)} €`}
             />
           ) : undefined}
-          <DataLine
-            label={<strong>Aides financières aux travaux</strong>}
-            value={`${formatNumberFr(projectData.finanalAssistanceAmount ?? 0)} €`}
-          />
+          {!!projectData.finanalAssistanceRevenues && (
+            <>
+              <DataLine
+                label={<strong>Aides financières aux travaux</strong>}
+                value={
+                  <strong>
+                    {formatNumberFr(
+                      sumList(projectData.finanalAssistanceRevenues.map((r) => r.amount)),
+                    )}{" "}
+                    €
+                  </strong>
+                }
+                className="fr-mb-1w fr-mt-2w"
+              />
+              {projectData.finanalAssistanceRevenues.map(({ amount, source }) => {
+                return (
+                  <DataLine
+                    label={getLabelForFinancialAssistanceRevenueSource(source)}
+                    value={`${formatNumberFr(amount)} €`}
+                    className="fr-ml-2w"
+                    key={source}
+                  />
+                );
+              })}
+            </>
+          )}
           {!!projectData.reinstatementCost && (
             <DataLine
               label={<strong>Coûts de remise en état de la friche</strong>}

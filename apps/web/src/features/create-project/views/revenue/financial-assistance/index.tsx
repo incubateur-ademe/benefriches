@@ -1,23 +1,47 @@
+import { typedObjectEntries } from "shared";
 import {
-  completeReinstatementFinancialAssistance,
-  revertReinstatementFinancialAssistance,
+  completeFinancialAssistanceRevenues,
+  revertFinancialAssistanceRevenues,
 } from "../../../application/createProject.reducer";
 import ProjectFinancialAssistanceRevenueForm, {
   FormValues,
 } from "./ProjectFinancialAssistanceRevenueForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { sumObjectValues } from "@/shared/services/sum/sum";
+import { FinancialAssistanceRevenue } from "@/features/create-project/domain/project.types";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+const mapFormValuesToFinancialAssistanceRevenues = (
+  formData: FormValues,
+): FinancialAssistanceRevenue[] => {
+  const revenues: FinancialAssistanceRevenue[] = [];
+  typedObjectEntries(formData).forEach(([source, amount]) => {
+    if (!amount) return;
+    switch (source) {
+      case "localOrRegionalAuthorityAmount":
+        revenues.push({ amount: amount, source: "local_or_regional_authority_participation" });
+        break;
+      case "publicSubsidiesAmount":
+        revenues.push({ amount: amount, source: "public_subsidies" });
+        break;
+      case "otherAmount":
+        revenues.push({ amount: amount, source: "other" });
+        break;
+      default:
+        break;
+    }
+  });
+  return revenues;
+};
 
 const mapProps = (dispatch: AppDispatch) => {
   return {
-    onSubmit: (revenue: FormValues) => {
-      const totalRevenue = sumObjectValues(revenue);
-      dispatch(completeReinstatementFinancialAssistance(totalRevenue));
+    onSubmit: (formData: FormValues) => {
+      const financialAssistanceRevenues = mapFormValuesToFinancialAssistanceRevenues(formData);
+      dispatch(completeFinancialAssistanceRevenues(financialAssistanceRevenues));
     },
     onBack: () => {
-      dispatch(revertReinstatementFinancialAssistance());
+      dispatch(revertFinancialAssistanceRevenues());
     },
   };
 };
