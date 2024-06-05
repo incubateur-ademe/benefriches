@@ -8,6 +8,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -61,10 +62,12 @@ function SiteReinstatementContractOwnerForm({
     <WizardFormLayout
       title="Qui sera le maître d'ouvrage des travaux de remise en état de la friche ?"
       instructions={
-        <p>
-          Les travaux de remise en état incluent la désimperméabilisation des sols, la dépollution,
-          l'enlèvement des déchets, la déconstruction, etc.
-        </p>
+        <FormInfo>
+          <p>
+            Les travaux de remise en état incluent la désimperméabilisation des sols, la
+            dépollution, l'enlèvement des déchets, la déconstruction, etc.
+          </p>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

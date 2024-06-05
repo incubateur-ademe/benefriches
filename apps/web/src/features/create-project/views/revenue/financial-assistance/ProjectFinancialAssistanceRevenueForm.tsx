@@ -27,7 +27,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
     <WizardFormLayout
       title="Aides financières aux travaux"
       instructions={
-        <FormDefinition>
+        <FormDefinition hideDivider>
           <p>Les aides financières peuvent avoir différentes origines&nbsp;:</p>
           <ul>
             <li>

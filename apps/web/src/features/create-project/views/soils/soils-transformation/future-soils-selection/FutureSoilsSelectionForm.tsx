@@ -11,6 +11,7 @@ import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -102,10 +103,13 @@ function FutureSoilsSelectionForm({
       title="Quels types de sols y aura-t-il sur ce site ?"
       instructions={
         <>
-          <p>
-            Un minimum de sol imperméabilisé et de sol perméable minéral est requis pour les
-            fondations des panneaux et les pistes d'accès.
-          </p>
+          <FormInfo>
+            <p>
+              Un minimum de sol imperméabilisé et de sol perméable minéral est requis pour les
+              fondations des panneaux et les pistes d'accès.
+            </p>
+          </FormInfo>
+
           <FormDefinition>
             Le sol est un milieu vivant, dont la création en conditions naturelles (pédogénèse)
             prend plusieurs centaines d'années. C'est pourquoi la création de surfaces naturelles

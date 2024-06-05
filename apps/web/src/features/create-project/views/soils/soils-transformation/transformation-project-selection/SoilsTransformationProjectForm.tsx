@@ -5,6 +5,7 @@ import SoilsTransformationProjectRadioInput from "./SoilsTransformationProjectOp
 import { SoilsTransformationProject } from "@/features/create-project/domain/soilsTransformation";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -77,7 +78,7 @@ function SoilsTransformationProjectForm({ onSubmit, onBack }: Props) {
     <WizardFormLayout
       title="Que souhaitez-vous faire des sols du site ?"
       instructions={
-        <>
+        <FormInfo>
           <p>
             Les sols qui accueilleront les panneaux photovoltaïques peuvent être transformés avant
             l'installation.
@@ -103,7 +104,7 @@ function SoilsTransformationProjectForm({ onSubmit, onBack }: Props) {
               plupart sont issus de déchets urbains (ex : compost)
             </li>
           </ul>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

@@ -40,7 +40,7 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
     <WizardFormLayout
       title="Les sols de la friche sont-ils pollués ?"
       instructions={
-        <FormDefinition>
+        <FormDefinition hideDivider>
           <p>
             Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
             activités passées, avec potentiellement 2 conséquences&nbsp;:

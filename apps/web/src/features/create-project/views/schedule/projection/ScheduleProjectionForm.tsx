@@ -5,6 +5,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -48,10 +49,10 @@ function ScheduleProjectionForm({
     <WizardFormLayout
       title="Calendrier"
       instructions={
-        <>
+        <FormInfo>
           <p>L'année de mise en service est proposée par défaut à l'année suivante.</p>
           <p>Vous pouvez modifier cette date.</p>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

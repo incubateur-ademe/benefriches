@@ -5,6 +5,7 @@ import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -38,7 +39,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
     <WizardFormLayout
       title="Coûts d'installation des panneaux photovoltaïques"
       instructions={
-        <>
+        <FormInfo>
           <p>
             Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
             renseigné (exprimée en kWc) et les coûts moyens observés.
@@ -51,7 +52,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
             </ExternalLink>
           </p>
           <p>Vous pouvez modifier ces montants.</p>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

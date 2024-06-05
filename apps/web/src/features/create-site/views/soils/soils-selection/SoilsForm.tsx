@@ -10,6 +10,7 @@ import {
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -113,13 +114,13 @@ function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
     <WizardFormLayout
       title={`Quels types de sols y a-t-il sur ${isFriche ? "cette friche" : "ce site"} ?`}
       instructions={
-        <>
+        <FormInfo>
           <p>Plusieurs réponses possibles.</p>
           <p>
             Il est important de définir la typologie des sols pour connaître la quantité de carbone
             stocké par le site.
           </p>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

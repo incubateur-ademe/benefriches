@@ -2,6 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -37,7 +38,7 @@ function ConversionFullTimeJobsInvolvedForm({
     <WizardFormLayout
       title="Emplois équivalent temps plein mobilisés pour la reconversion du site"
       instructions={
-        <>
+        <FormInfo>
           <p>
             Nombre d’emplois calculé d’après les dépenses que vous avez renseignées à l’étape
             précédente et le nombre d’emplois par € de chiffre d’affaires des secteurs d’activités
@@ -45,7 +46,7 @@ function ConversionFullTimeJobsInvolvedForm({
             France.
           </p>
           <p>Vous pouvez modifier ces valeurs.</p>
-        </>
+        </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>

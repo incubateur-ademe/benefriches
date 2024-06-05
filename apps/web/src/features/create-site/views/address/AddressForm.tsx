@@ -4,6 +4,7 @@ import SearchAddressAutocomplete from "./SearchAddressAutocompleteContainer";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -33,13 +34,13 @@ function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
       <WizardFormLayout
         title={title}
         instructions={
-          <>
+          <FormInfo>
             <p>Bénéfriches a besoin de connaître l'adresse du site.</p>
             <p>
               Si vous ne connaissez pas l'adresse exacte, entrez simplement le nom de la commune ou
               son code postal.
             </p>
-          </>
+          </FormInfo>
         }
       >
         <form
