@@ -128,7 +128,7 @@ export type ProjectStakeholderStructure =
 export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
 
 export type Address = {
-  id: string;
+  banId: string;
   value: string;
   city: string;
   cityCode: string;

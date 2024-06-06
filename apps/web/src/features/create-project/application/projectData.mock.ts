@@ -1,11 +1,8 @@
 import {
   FinancialAssistanceRevenue,
-  ProjectPhase,
-  ProjectPhaseDetails,
+  PhotovoltaicKeyParameter,
   ProjectStakeholder,
-  RecurringCost,
-  RecurringRevenue,
-  ReinstatementCosts,
+  ReconversionProjectCreationData,
 } from "../domain/project.types";
 
 export const projectSiteData = {
@@ -45,10 +42,26 @@ export const projectWithMinimalData = {
     MINERAL_SOIL: 5000,
     IMPERMEABLE_SOILS: 1300,
   },
-  yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }] as RecurringCost[],
-  yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }] as RecurringRevenue[],
+  yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
+  yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",
-} as const;
+  developmentPlanCategories: ["RENEWABLE_ENERGY"],
+  renewableEnergyTypes: ["PHOTOVOLTAIC_POWER_PLANT"],
+  photovoltaicKeyParameter: PhotovoltaicKeyParameter.POWER,
+  photovoltaicInstallationElectricalPowerKWc: 10000,
+  photovoltaicInstallationSurfaceSquareMeters: 40000,
+  photovoltaicExpectedAnnualProduction: 50000,
+  photovoltaicContractDuration: 20,
+  photovoltaicPanelsInstallationCost: 230000,
+  financialAssistanceRevenues: [],
+  projectDeveloper: { name: "SolarDev", structureType: "company" },
+  futureOperator: { name: "SolarDev", structureType: "company" },
+  futureSiteOwner: { name: "SolarDev", structureType: "company" },
+  baseSoilsDistributionForTransformation: {},
+  nonSuitableSoilsToTransform: [],
+  futureSoilsSelection: [],
+  hasRealEstateTransaction: false,
+} as const satisfies ReconversionProjectCreationData;
 
 export const projectWithExhaustiveData = {
   ...projectWithMinimalData,
@@ -75,7 +88,7 @@ export const projectWithExhaustiveData = {
   } as ProjectStakeholder,
   reinstatementCosts: {
     total: 34500,
-    costs: [{ amount: 34500, purpose: "demolition" }] as ReinstatementCosts["costs"],
+    costs: [{ amount: 34500, purpose: "demolition" }],
   },
   realEstateTransactionSellingPrice: 150000,
   realEstateTransactionPropertyTransferDuties: 12000,
@@ -88,7 +101,8 @@ export const projectWithExhaustiveData = {
     startDate: new Date("2025-02-01"),
     endDate: new Date("2028-06-30"),
   },
+  photovoltaicInstallationSchedule: { startDate: new Date(), endDate: new Date() },
   firstYearOfOperation: 2029,
-  projectPhase: "design" as ProjectPhase,
-  projectPhaseDetails: "design_final_draft" as ProjectPhaseDetails,
-} as const;
+  projectPhase: "design",
+  projectPhaseDetails: "design_final_draft",
+} as const satisfies Required<ReconversionProjectCreationData>;

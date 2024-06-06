@@ -53,7 +53,7 @@ const saveProjectSchema = z.object({
     .array(),
   soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
-  operationsFirstYear: z.number().optional(),
+  operationsFirstYear: z.number().nonnegative().optional(),
   projectPhase: z.string(),
   projectPhaseDetails: z.string().optional(),
 });
