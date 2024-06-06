@@ -40,7 +40,7 @@ const SITE_MOCKED_RESULT = {
     lat: 2.347,
     long: 48.859,
     city: "Paris",
-    id: "75110_7043",
+    banId: "75110_7043",
     cityCode: "75110",
     postCode: "75010",
     value: "Rue de Paradis 75010 Paris",

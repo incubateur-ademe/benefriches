@@ -1,6 +1,6 @@
 import { ProjectSite } from "../domain/project.types";
 
-export const relatedSiteData: ProjectSite = {
+export const relatedSiteData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   name: "My site name",
   isFriche: true,
@@ -23,4 +23,4 @@ export const relatedSiteData: ProjectSite = {
     long: 0.664699,
     lat: 43.260859,
   },
-} as const;
+} as const satisfies ProjectSite;

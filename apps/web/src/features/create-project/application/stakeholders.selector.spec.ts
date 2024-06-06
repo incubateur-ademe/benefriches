@@ -1,25 +1,36 @@
+import { ProjectSite } from "../domain/project.types";
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
-import {
-  projectSiteData,
-  projectWithExhaustiveData,
-  projectWithMinimalData,
-} from "./projectData.mock";
+import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
+import { relatedSiteData } from "./siteData.mock";
 import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
 } from "./stakeholders.selector";
 
+import { RootState } from "@/app/application/store";
 import { buildUser } from "@/features/users/domain/user.mock";
+
+const siteData = {
+  ...relatedSiteData,
+  owner: {
+    name: "Mairie de Grenoble",
+    structureType: "municipality",
+  },
+  tenant: {
+    name: "SARL Locataire",
+    structureType: "company",
+  },
+} as const satisfies ProjectSite;
 
 const USER = buildUser({ structureName: "My company" });
 const MOCK_STATES = {
   projectCreation: {
     projectData: projectWithExhaustiveData,
     stepsHistory: ["PROJECT_TYPES"] as ProjectCreationStep[],
-    siteData: projectSiteData,
+    siteData,
     siteDataLoadingState: "success",
     saveProjectLoadingState: "success",
-  } as ProjectCreationState,
+  } satisfies RootState["projectCreation"],
   currentUser: {
     currentUser: USER,
     currentUserLoaded: true,
@@ -90,17 +101,17 @@ describe("Project Stakeholders selector", () => {
 
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
-          name: projectSiteData.owner.name,
+          name: siteData.owner.name,
           role: "site_owner",
-          structureType: projectSiteData.owner.structureType,
+          structureType: siteData.owner.structureType,
         }),
       );
 
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
-          name: projectSiteData.tenant.name,
+          name: siteData.tenant.name,
           role: "site_tenant",
-          structureType: projectSiteData.tenant.structureType,
+          structureType: siteData.tenant.structureType,
         }),
       );
 
@@ -149,16 +160,16 @@ describe("Project Stakeholders selector", () => {
       );
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
-          name: projectSiteData.owner.name,
+          name: siteData.owner.name,
           role: "site_owner",
-          structureType: projectSiteData.owner.structureType,
+          structureType: siteData.owner.structureType,
         }),
       );
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
-          name: projectSiteData.tenant.name,
+          name: siteData.tenant.name,
           role: "site_tenant",
-          structureType: projectSiteData.tenant.structureType,
+          structureType: siteData.tenant.structureType,
         }),
       );
       expect(stakeholders).not.toContainEqual(
@@ -170,23 +181,30 @@ describe("Project Stakeholders selector", () => {
       );
     });
 
-    it("should return only future site owner and current user structure", () => {
+    it("should return only future site owner, project developer and current user structure", () => {
       const stakeholders = getProjectAvailableStakeholders.resultFunc(
         {
           ...MOCK_STATES.projectCreation,
           projectData: projectWithMinimalData,
-          siteData: { ...projectSiteData, tenant: undefined },
+          siteData: { ...siteData, tenant: undefined },
         } as ProjectCreationState,
         MOCK_STATES.currentUser,
       );
 
-      expect(stakeholders.length).toEqual(2);
+      expect(stakeholders.length).toEqual(3);
 
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
-          name: projectSiteData.owner.name,
+          name: siteData.owner.name,
           role: "site_owner",
-          structureType: projectSiteData.owner.structureType,
+          structureType: siteData.owner.structureType,
+        }),
+      );
+      expect(stakeholders).toContainEqual(
+        expect.objectContaining({
+          name: projectWithMinimalData.projectDeveloper.name,
+          structureType: projectWithMinimalData.projectDeveloper.structureType,
+          role: "project_developer",
         }),
       );
       expect(stakeholders).toContainEqual(
@@ -221,7 +239,7 @@ describe("Project Stakeholders selector", () => {
               structureType: "company",
             },
           },
-          siteData: { ...projectSiteData, tenant: undefined },
+          siteData: { ...siteData, tenant: undefined },
         } as ProjectCreationState,
         MOCK_STATES.currentUser,
       );
@@ -230,9 +248,9 @@ describe("Project Stakeholders selector", () => {
 
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
-          name: projectSiteData.owner.name,
+          name: siteData.owner.name,
           role: "site_owner",
-          structureType: projectSiteData.owner.structureType,
+          structureType: siteData.owner.structureType,
         }),
       );
       expect(stakeholders).toContainEqual(
@@ -291,7 +309,7 @@ describe("Project Stakeholders selector", () => {
         MOCK_STATES.projectSiteLocalAuthorities,
         {
           ...MOCK_STATES.projectCreation,
-          siteData: { ...projectSiteData, owner: { structureType: "company", name: "" } },
+          siteData: { ...siteData, owner: { structureType: "company", name: "" } },
         } as ProjectCreationState,
       );
 

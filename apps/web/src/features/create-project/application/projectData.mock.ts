@@ -5,32 +5,6 @@ import {
   ReconversionProjectCreationData,
 } from "../domain/project.types";
 
-export const projectSiteData = {
-  id: "site-uuid-123",
-  name: "Ma friche",
-  isFriche: false,
-  owner: {
-    name: "Mairie de Grenoble",
-    structureType: "municipality",
-  },
-  tenant: {
-    name: "SARL Locataire",
-    structureType: "company",
-  },
-  address: {
-    lat: 2,
-    long: 52,
-    city: "Paris",
-    id: "",
-    cityCode: "75112",
-    postCode: "75000",
-    value: "",
-  },
-  surfaceArea: 1200,
-  hasContaminatedSoils: false,
-  soilsDistribution: {},
-};
-
 export const projectWithMinimalData = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",
   relatedSiteId: "f590f643-cd9a-4187-8973-f90e9f1998c8",

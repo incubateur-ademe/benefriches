@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+import { Address } from "../domain/project.types";
 import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
+import { relatedSiteData } from "./siteData.mock";
 
 import { createStore, RootState } from "@/app/application/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
@@ -46,21 +48,21 @@ const API_MOCKED_RESULT = {
   },
 };
 
-const PARIS_ADDRESS_MOCK = {
+const PARIS_ADDRESS_MOCK: Address = {
   lat: 2.347,
   long: 48.859,
   city: "Paris",
-  id: "75110_7043",
+  banId: "75110_7043",
   cityCode: "75110",
   postCode: "75010",
   value: "Rue de Paradis 75010 Paris",
 };
 
-const GRENOBLE_ADDRESS_MOCK = {
+const GRENOBLE_ADDRESS_MOCK: Address = {
   lat: 5.7243,
   long: 45.182081,
   city: "Grenoble",
-  id: "38185",
+  banId: "38185",
   cityCode: "38185",
   postCode: "38100",
   value: "Grenoble",
@@ -68,13 +70,14 @@ const GRENOBLE_ADDRESS_MOCK = {
 
 const INITIAL_STATE = {
   siteData: {
+    ...relatedSiteData,
     address: PARIS_ADDRESS_MOCK,
   },
   stepsHistory: ["PROJECT_TYPES"],
   projectData: {},
   siteDataLoadingState: "success",
   saveProjectLoadingState: "idle",
-} as RootState["projectCreation"];
+} satisfies RootState["projectCreation"];
 
 describe("Site Local Authorities reducer", () => {
   it("should return error when there is no siteData in createSite store", async () => {
@@ -132,18 +135,18 @@ describe("Site Local Authorities reducer", () => {
   });
 
   it("should get all site local authorities for grenoble cityCode", async () => {
-    const initialState = {
-      ...INITIAL_STATE,
-      siteData: {
-        address: GRENOBLE_ADDRESS_MOCK,
-      },
-    } as RootState["projectCreation"];
     const store = createStore(
       getTestAppDependencies({
         municipalityDataService: new AdministrativeDivisionMock(API_MOCKED_RESULT["38185"]),
       }),
       {
-        projectCreation: initialState,
+        projectCreation: {
+          ...INITIAL_STATE,
+          siteData: {
+            ...relatedSiteData,
+            address: GRENOBLE_ADDRESS_MOCK,
+          },
+        },
       },
     );
 
