@@ -5,7 +5,7 @@ import {
   ProjectImpactsState,
   ViewMode,
 } from "../../application/projectImpacts.reducer";
-import ProjectsComparisonActionBar from "../shared/actions/ActionBar";
+import ProjectImpactsActionBar from "./ProjectImpactsActionBar";
 import ProjectImpactsPage from "./ProjectImpactsPage";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 
@@ -55,11 +55,12 @@ function ProjectImpactsPageWrapper({
 }: Props) {
   return (
     <div className="tw-bg-impacts-main dark:tw-bg-grey-dark">
-      <ProjectsImpactsPageHeader
-        projectId={projectData?.id ?? ""}
-        projectName={projectData?.name ?? "Centrale photovoltaïque"}
-        siteName={relatedSiteData?.name ?? ""}
-      />
+      <div className={classNames(fr.cx("fr-py-8v"), "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}>
+        <ProjectsImpactsPageHeader
+          projectName={projectData?.name ?? "Centrale photovoltaïque"}
+          siteName={relatedSiteData?.name ?? ""}
+        />
+      </div>
 
       <div className={fr.cx("fr-tabs")}>
         <ProjectImpactsPageTabs />
@@ -71,7 +72,9 @@ function ProjectImpactsPageWrapper({
           role="tabpanel"
         >
           <div className={fr.cx("fr-container")}>
-            <ProjectsComparisonActionBar
+            <ProjectImpactsActionBar
+              projectName={projectData?.name ?? "Centrale photovoltaïque"}
+              siteName={relatedSiteData?.name ?? ""}
               selectedFilter={currentCategoryFilter}
               selectedViewMode={currentViewMode}
               evaluationPeriod={evaluationPeriod}
