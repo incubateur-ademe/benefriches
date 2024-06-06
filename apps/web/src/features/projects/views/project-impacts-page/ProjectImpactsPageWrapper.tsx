@@ -66,7 +66,7 @@ function ProjectImpactsPageWrapper({
         <div
           className={classNames(
             fr.cx("fr-tabs__panel", "fr-tabs__panel--selected"),
-            "tw-bg-dsfr-borderGrey",
+            "tw-bg-dsfr-grey",
           )}
           role="tabpanel"
         >
