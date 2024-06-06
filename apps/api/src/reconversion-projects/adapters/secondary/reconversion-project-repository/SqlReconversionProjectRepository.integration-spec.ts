@@ -134,7 +134,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           real_estate_transaction_property_transfer_duties: null,
           reinstatement_full_time_jobs_involved: null,
           conversion_full_time_jobs_involved: null,
-          reinstatement_financial_assistance_amount: null,
+          financial_assistance_revenues: null,
           reinstatement_schedule_start_date: null,
           reinstatement_schedule_end_date: null,
           operations_first_year: null,
@@ -178,8 +178,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             reinstatement_full_time_jobs_involved:
               reconversionProject.reinstatementFullTimeJobsInvolved,
             conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
-            reinstatement_financial_assistance_amount:
-              reconversionProject.reinstatementFinancialAssistanceAmount,
+            financial_assistance_revenues: reconversionProject.financialAssistanceRevenues,
             reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
             reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
             operations_first_year: reconversionProject.operationsFirstYear,

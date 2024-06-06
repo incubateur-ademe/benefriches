@@ -127,7 +127,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         reinstatementContractOwnerName: "Mairie de Blajan",
         realEstateTransactionTotalCost: 108000,
         developmentPlanInstallationCost: 0,
-        reinstatementFinancialAssistanceAmount: 0,
+        financialAssistanceRevenues: 0,
         yearlyProjectedCosts: [],
         yearlyProjectedRevenues: [],
         developmentPlanExpectedAnnualEnergyProductionMWh: 10,
@@ -203,7 +203,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         realEstateTransactionTotalCost: undefined,
         reinstatementContractOwnerName: undefined,
         reinstatementCosts: [],
-        reinstatementFinancialAssistanceAmount: 0,
+        financialAssistanceRevenues: 0,
         reinstatementFullTimeJobs: undefined,
         reinstatementSchedule: undefined,
       });

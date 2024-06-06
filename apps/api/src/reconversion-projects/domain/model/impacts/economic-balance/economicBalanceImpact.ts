@@ -28,7 +28,7 @@ export type EconomicBalanceImpactResult = {
 };
 
 type ProjectProps = {
-  reinstatementFinancialAssistanceAmount?: number;
+  financialAssistanceRevenues?: number;
   reinstatementCosts: { amount: number; purpose: string }[];
   developmentPlanInstallationCost?: number;
   realEstateTransactionTotalCost?: number;
@@ -41,7 +41,7 @@ type ProjectProps = {
 };
 
 type ReconversionProjectInstallationCostsInput = {
-  reinstatementFinancialAssistanceAmount: number;
+  financialAssistanceRevenues: number;
   reinstatementCosts: { amount: number; purpose: string }[];
   developmentPlanInstallationCost: number;
   realEstateTransactionTotalCost: number;
@@ -73,7 +73,7 @@ const getReinstatementCostsWithTotalAmount = (
 };
 
 export const getEconomicResultsOfProjectInstallation = ({
-  reinstatementFinancialAssistanceAmount,
+  financialAssistanceRevenues,
   reinstatementCosts,
   developmentPlanInstallationCost,
   realEstateTransactionTotalCost,
@@ -87,8 +87,8 @@ export const getEconomicResultsOfProjectInstallation = ({
 
   const revenues = isDeveloperOwnerOfReinstatement
     ? {
-        total: reinstatementFinancialAssistanceAmount,
-        financialAssistance: reinstatementFinancialAssistanceAmount,
+        total: financialAssistanceRevenues,
+        financialAssistance: financialAssistanceRevenues,
       }
     : { total: 0 };
 
@@ -151,7 +151,7 @@ export const getEconomicResultsOfProjectExploitationForDuration = (
 
 export const computeEconomicBalanceImpact = (
   {
-    reinstatementFinancialAssistanceAmount = 0,
+    financialAssistanceRevenues = 0,
     reinstatementCosts,
     developmentPlanInstallationCost = 0,
     realEstateTransactionTotalCost = 0,
@@ -169,7 +169,7 @@ export const computeEconomicBalanceImpact = (
     costs,
     revenues,
   } = getEconomicResultsOfProjectInstallation({
-    reinstatementFinancialAssistanceAmount,
+    financialAssistanceRevenues,
     reinstatementCosts,
     developmentPlanInstallationCost,
     realEstateTransactionTotalCost,

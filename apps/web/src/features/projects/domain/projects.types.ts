@@ -94,7 +94,7 @@ export type Project = {
   reinstatementContractOwner?: ProjectStakeholder;
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
-  reinstatementFinancialAssistanceAmount: number;
+  financialAssistanceRevenues: number;
   yearlyProjectedCosts: Expense[];
   yearlyProjectedRevenues: Revenue[];
 };

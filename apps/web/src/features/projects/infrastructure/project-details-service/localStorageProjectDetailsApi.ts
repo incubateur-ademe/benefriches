@@ -25,7 +25,7 @@ type ProjectInLocalStorage = {
   reinstatementContractOwner?: Stakeholder;
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
-  reinstatementFinancialAssistanceAmount: number;
+  financialAssistanceRevenues: number;
   yearlyProjectedCosts: {
     amount: number;
   }[];

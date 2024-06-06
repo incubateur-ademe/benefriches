@@ -49,7 +49,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         soilsDistribution: {},
         realEstateTransactionTotalCost: 0,
         reinstatementCosts: [],
-        reinstatementFinancialAssistanceAmount: 0,
+        financialAssistanceRevenues: 0,
         yearlyProjectedCosts: [],
         yearlyProjectedRevenues: [],
       });
@@ -100,7 +100,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       developmentPlanElectricalPowerKWc: 258,
       developmentPlanSurfaceArea: 20000,
       developmentPlanDeveloperName: "Mairie de Blajan",
-      reinstatementFinancialAssistanceAmount: 150000,
+      financialAssistanceRevenues: 150000,
       yearlyProjectedCosts: [
         { amount: 1000, purpose: "taxes" },
         { amount: 10000, purpose: "maintenance" },

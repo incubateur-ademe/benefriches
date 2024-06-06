@@ -91,7 +91,7 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
     ],
     realEstateTransactionSellingPrice: 150000,
     realEstateTransactionPropertyTransferDuties: 12000,
-    reinstatementFinancialAssistanceAmount: 14999.99,
+    financialAssistanceRevenues: 14999.99,
     reinstatementSchedule: {
       startDate: new Date("2025-02-01"),
       endDate: new Date("2028-06-30"),

@@ -30,7 +30,7 @@ export class SqlReconversionProjectImpactsRepository
         "reinstatement_contract_owner_name",
         "real_estate_transaction_selling_price",
         "real_estate_transaction_property_transfer_duties",
-        "reinstatement_financial_assistance_amount",
+        "financial_assistance_revenues",
         "operations_first_year",
       )
       .where({ id: reconversionProjectId })
@@ -118,8 +118,7 @@ export class SqlReconversionProjectImpactsRepository
         reconversionProject.real_estate_transaction_property_transfer_duties ?? undefined,
       reinstatementCosts: sqlReinstatementCosts,
       developmentPlanInstallationCost: sqlDevelopmentPlan?.cost ?? 0,
-      reinstatementFinancialAssistanceAmount:
-        reconversionProject.reinstatement_financial_assistance_amount ?? 0,
+      financialAssistanceRevenues: reconversionProject.financial_assistance_revenues ?? 0,
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
       developmentPlanExpectedAnnualEnergyProductionMWh,

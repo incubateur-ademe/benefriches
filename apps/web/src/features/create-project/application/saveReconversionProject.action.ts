@@ -46,7 +46,7 @@ const saveProjectSchema = z.object({
   realEstateTransactionSellingPrice: z.number().nonnegative().optional(),
   realEstateTransactionPropertyTransferDuties: z.number().nonnegative().optional(),
   reinstatementCosts: costSchema.array().optional(),
-  reinstatementFinancialAssistanceAmount: z.number().nonnegative().optional(),
+  financialAssistanceRevenues: z.number().nonnegative().optional(),
   yearlyProjectedCosts: costSchema.array(),
   yearlyProjectedRevenues: z
     .object({ amount: z.number().nonnegative(), source: z.string() })
@@ -86,7 +86,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       realEstateTransactionSellingPrice: projectData.realEstateTransactionSellingPrice,
       realEstateTransactionPropertyTransferDuties:
         projectData.realEstateTransactionPropertyTransferDuties,
-      reinstatementFinancialAssistanceAmount: sumList(
+      financialAssistanceRevenues: sumList(
         projectData.financialAssistanceRevenues?.map(({ amount }) => amount) ?? [],
       ),
       yearlyProjectedCosts: projectData.yearlyProjectedCosts,

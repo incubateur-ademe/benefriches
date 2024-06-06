@@ -51,7 +51,7 @@ export const reconversionProjectSchema = z.object({
   realEstateTransactionSellingPrice: z.number().nonnegative().optional(),
   realEstateTransactionPropertyTransferDuties: z.number().nonnegative().optional(),
   reinstatementCosts: z.array(costSchema).optional(),
-  reinstatementFinancialAssistanceAmount: z.number().nonnegative().optional(),
+  financialAssistanceRevenues: z.number().nonnegative().optional(),
   yearlyProjectedCosts: z.array(costSchema),
   yearlyProjectedRevenues: z
     .object({ source: z.string(), amount: z.number().nonnegative() })

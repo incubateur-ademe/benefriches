@@ -29,11 +29,12 @@ type SqlReconversionProject = {
   future_operations_full_time_jobs?: number;
   conversion_full_time_jobs_involved?: number;
   operations_first_year?: number;
+  // revenues
+  financial_assistance_revenues?: number;
   // reinstatement
   reinstatement_contract_owner_name?: string;
   reinstatement_contract_owner_structure_type?: string;
   reinstatement_full_time_jobs_involved?: number;
-  reinstatement_financial_assistance_amount?: number;
   reinstatement_schedule_start_date?: Date;
   reinstatement_schedule_end_date?: Date;
   // real estate transaction
@@ -114,8 +115,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           reinstatement_full_time_jobs_involved:
             reconversionProject.reinstatementFullTimeJobsInvolved,
           conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
-          reinstatement_financial_assistance_amount:
-            reconversionProject.reinstatementFinancialAssistanceAmount,
+          financial_assistance_revenues: reconversionProject.financialAssistanceRevenues,
           reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
           reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
           operations_first_year: reconversionProject.operationsFirstYear,

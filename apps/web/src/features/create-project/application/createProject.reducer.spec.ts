@@ -113,6 +113,11 @@ describe("createProject reducer", () => {
         dataProp: "yearlyProjectedRevenues",
         invalidValue: [{ amount: -1, source: "operations" }],
       },
+      {
+        case: "negative amount in financialAssistanceRevenues",
+        dataProp: "financialAssistanceRevenues",
+        invalidValue: [{ amount: -1, source: "public_subsidies" }],
+      },
       { case: "no soilsDistribution", dataProp: "soilsDistribution", invalidValue: undefined },
       {
         case: "negative conversionFullTimeJobsInvolved",
