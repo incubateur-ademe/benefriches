@@ -26,6 +26,8 @@ function WizardFormLayout({ title, children, instructions = null }: Props) {
               "tw-shadow-md",
               "tw-rounded-lg",
               "tw-p-4",
+              "md:tw-sticky",
+              "md:tw-top-4",
               "*:tw-text-sm",
             )}
           >
