@@ -48,8 +48,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         relatedSiteId: siteId,
         soilsDistribution: {},
         realEstateTransactionTotalCost: 0,
-        reinstatementCost: 0,
-        developmentPlanInstallationCost: 0,
+        reinstatementCosts: [],
         reinstatementFinancialAssistanceAmount: 0,
         yearlyProjectedCosts: [],
         yearlyProjectedRevenues: [],
@@ -96,7 +95,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       futureSiteOwnerName: "Mairie de Blajan",
       reinstatementContractOwnerName: "Mairie de Blajan",
       realEstateTransactionTotalCost: 150000,
-      reinstatementCost: 500000,
+      reinstatementCosts: [{ amount: 500000, purpose: "demolition" }],
       developmentPlanInstallationCost: 200000,
       developmentPlanElectricalPowerKWc: 258,
       developmentPlanSurfaceArea: 20000,
@@ -261,17 +260,20 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             total: -500000,
             bearer: "Mairie de Blajan",
             costs: {
-              total: -960000,
+              total: 960000,
               operationsCosts: {
-                total: -110000,
-                expenses: [
-                  { amount: -10000, purpose: "taxes" },
-                  { amount: -100000, purpose: "maintenance" },
+                total: 110000,
+                costs: [
+                  { amount: 10000, purpose: "taxes" },
+                  { amount: 100000, purpose: "maintenance" },
                 ],
               },
-              siteReinstatement: -500000,
-              developmentPlanInstallation: -200000,
-              realEstateTransaction: -150000,
+              siteReinstatement: {
+                total: 500000,
+                costs: [{ amount: 500000, purpose: "demolition" }],
+              },
+              developmentPlanInstallation: 200000,
+              realEstateTransaction: 150000,
             },
             revenues: {
               total: 460000,

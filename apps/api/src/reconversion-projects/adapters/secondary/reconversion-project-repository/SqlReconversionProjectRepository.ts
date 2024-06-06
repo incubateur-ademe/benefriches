@@ -13,6 +13,7 @@ declare module "knex/types/tables" {
     reconversion_project_development_plans: SqlDevelopmentPlan;
     reconversion_project_yearly_expenses: SqlExpense;
     reconversion_project_yearly_revenues: SqlRevenue;
+    reconversion_project_reinstatement_costs: SqlReinstatementCost;
   }
 }
 type SqlReconversionProject = {
@@ -31,7 +32,6 @@ type SqlReconversionProject = {
   // reinstatement
   reinstatement_contract_owner_name?: string;
   reinstatement_contract_owner_structure_type?: string;
-  reinstatement_cost?: number;
   reinstatement_full_time_jobs_involved?: number;
   reinstatement_financial_assistance_amount?: number;
   reinstatement_schedule_start_date?: Date;
@@ -79,6 +79,13 @@ type SqlRevenue = {
   reconversion_project_id: string;
 };
 
+type SqlReinstatementCost = {
+  id: string;
+  purpose: string;
+  amount: number;
+  reconversion_project_id: string;
+};
+
 export class SqlReconversionProjectRepository implements ReconversionProjectRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
@@ -100,7 +107,6 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
           reinstatement_contract_owner_structure_type:
             reconversionProject.reinstatementContractOwner?.structureType,
-          reinstatement_cost: reconversionProject.reinstatementCost,
           real_estate_transaction_selling_price:
             reconversionProject.realEstateTransactionSellingPrice,
           real_estate_transaction_property_transfer_duties:
@@ -176,6 +182,22 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
             };
           });
         await trx("reconversion_project_yearly_revenues").insert(yearlyRevenuesToInsert);
+      }
+
+      if (
+        reconversionProject.reinstatementCosts &&
+        reconversionProject.reinstatementCosts.length > 0
+      ) {
+        const reinstatementCostsToInsert: SqlReinstatementCost[] =
+          reconversionProject.reinstatementCosts.map(({ amount, purpose }) => {
+            return {
+              id: uuid(),
+              amount,
+              purpose,
+              reconversion_project_id: insertedReconversionProject.id,
+            };
+          });
+        await trx("reconversion_project_reinstatement_costs").insert(reinstatementCostsToInsert);
       }
     });
   }

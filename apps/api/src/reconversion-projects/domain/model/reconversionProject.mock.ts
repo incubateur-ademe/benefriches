@@ -83,7 +83,12 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
       name: "Reinstatement company",
       structureType: "company",
     },
-    reinstatementCost: 90000,
+    reinstatementCosts: [
+      { amount: 120000, purpose: "waste_collection" },
+      { amount: 33333, purpose: "deimpermeabilization" },
+      { amount: 44444, purpose: "sustainable_soils_reinstatement" },
+      { amount: 1, purpose: "other_reinstatement_costs" },
+    ],
     realEstateTransactionSellingPrice: 150000,
     realEstateTransactionPropertyTransferDuties: 12000,
     reinstatementFinancialAssistanceAmount: 14999.99,

@@ -1,7 +1,14 @@
 import { SoilType } from "shared";
 
-type PurposeCost = "rent" | "maintenance" | "taxes" | "other";
 type SourceRevenue = "operations" | "other";
+
+type OperationsCost = { purpose: "rent" | "maintenance" | "taxes" | "other"; amount: number };
+type GenericCost = { purpose: string; amount: number };
+
+type CostsTotalAndDetails<TCost> = {
+  total: number;
+  costs: TCost[];
+};
 
 type BaseEconomicImpact = { actor: string; amount: number };
 type RentalIncomeImpact = BaseEconomicImpact & {
@@ -96,11 +103,8 @@ export type ReconversionProjectImpacts = {
     bearer?: string;
     costs: {
       total: number;
-      operationsCosts?: {
-        total: number;
-        expenses: { purpose: PurposeCost; amount: number }[];
-      };
-      siteReinstatement?: number;
+      operationsCosts?: CostsTotalAndDetails<OperationsCost>;
+      siteReinstatement?: CostsTotalAndDetails<GenericCost>;
       developmentPlanInstallation: number;
       realEstateTransaction?: number;
     };

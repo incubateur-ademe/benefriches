@@ -7,6 +7,7 @@ global.afterEach(async () => {
   const tablesToDelete = [
     "reconversion_project_yearly_expenses",
     "reconversion_project_yearly_revenues",
+    "reconversion_project_reinstatement_costs",
     "reconversion_project_soils_distributions",
     "reconversion_project_development_plans",
     "reconversion_projects",

@@ -32,6 +32,8 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
 
 export type DevelopmentPlan = z.infer<typeof developmentPlanSchema>;
 
+const costSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
+
 export const reconversionProjectSchema = z.object({
   id: z.string().uuid(),
   createdBy: z.string().uuid(),
@@ -48,9 +50,9 @@ export const reconversionProjectSchema = z.object({
   operationsFullTimeJobsInvolved: z.number().nonnegative().optional(),
   realEstateTransactionSellingPrice: z.number().nonnegative().optional(),
   realEstateTransactionPropertyTransferDuties: z.number().nonnegative().optional(),
-  reinstatementCost: z.number().nonnegative().optional(),
+  reinstatementCosts: z.array(costSchema).optional(),
   reinstatementFinancialAssistanceAmount: z.number().nonnegative().optional(),
-  yearlyProjectedCosts: z.object({ purpose: z.string(), amount: z.number().nonnegative() }).array(),
+  yearlyProjectedCosts: z.array(costSchema),
   yearlyProjectedRevenues: z
     .object({ source: z.string(), amount: z.number().nonnegative() })
     .array(),

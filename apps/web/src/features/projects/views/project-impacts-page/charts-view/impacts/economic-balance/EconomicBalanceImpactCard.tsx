@@ -49,6 +49,7 @@ const getCostsValues = ({
   realEstateTransaction: Props["costs"]["realEstateTransaction"];
   operationsCosts: Props["costs"]["operationsCosts"];
 }) => {
+  const operationsCostsDetailledList = operationsCosts?.costs ?? [];
   return [
     {
       name: "Installation des panneaux photovoltaïque",
@@ -56,13 +57,13 @@ const getCostsValues = ({
     },
     {
       name: "Remise en état de la friche",
-      value: siteReinstatement,
+      value: siteReinstatement?.total ?? 0,
     },
     {
       name: "Transaction immobilière",
       value: realEstateTransaction,
     },
-    ...(operationsCosts?.expenses ?? []).map(({ amount, purpose }) => ({
+    ...operationsCostsDetailledList.map(({ amount, purpose }) => ({
       name: getYearlyCostPurposeLabel(purpose),
       value: amount,
     })),
@@ -97,7 +98,7 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [
-        `<strong>Dépenses</strong><br>${formatMonetaryImpact(costs.total)}`,
+        `<strong>Dépenses</strong><br>${formatMonetaryImpact(-costs.total)}`,
         `<strong>Recettes</strong><br>${formatMonetaryImpact(revenues.total)}`,
       ],
       opposite: true,
@@ -126,7 +127,7 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
         siteReinstatement,
       }).map(({ name, value }) => ({
         name,
-        data: [roundTo2Digits(value), 0],
+        data: [-roundTo2Digits(value), 0],
         type: "column",
       })) as Array<Highcharts.SeriesOptionsType>),
     ],
