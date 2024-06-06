@@ -1,8 +1,8 @@
 import { BadRequestException, Controller, Get, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
-import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/domain/usecases/getPhotovoltaicExpectedPerformanceUseCase";
-import { GetTownPopulationDensityUseCase } from "src/location-features/domain/usecases/getTownPopulationDensity.usecase";
+import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
+import { GetTownPopulationDensityUseCase } from "src/location-features/core/usecases/getTownPopulationDensity.usecase";
 
 const GetPhotovoltaicExpectedPerformanceDtoSchema = z.object({
   lat: z.coerce.number().min(-90).max(90),

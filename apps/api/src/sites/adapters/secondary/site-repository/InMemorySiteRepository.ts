@@ -1,6 +1,6 @@
-import { SitesRepository } from "src/sites/domain/gateways/SitesRepository";
-import { Site } from "src/sites/domain/models/site";
-import { SiteViewModel } from "src/sites/domain/usecases/getSiteById.usecase";
+import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { Site } from "src/sites/core/models/site";
+import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 
 export class InMemorySitesRepository implements SitesRepository {
   private sites: Site[] = [];

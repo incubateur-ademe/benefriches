@@ -1,13 +1,13 @@
 import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
-import { photovoltaicPowerStationFeaturesSchema } from "src/reconversion-projects/domain/model/reconversionProject";
-import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
+import { photovoltaicPowerStationFeaturesSchema } from "src/reconversion-projects/core/model/reconversionProject";
+import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
   reconversionProjectPropsSchema,
-} from "src/reconversion-projects/domain/usecases/createReconversionProject.usecase";
-import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/domain/usecases/getUserReconversionProjectsBySite.usecase";
+} from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 
 const jsonScheduleSchema = z.object({
   startDate: z.string().pipe(z.coerce.date()),

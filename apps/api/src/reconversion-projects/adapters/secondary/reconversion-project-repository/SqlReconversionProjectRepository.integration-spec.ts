@@ -1,10 +1,10 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
-import { ReconversionProject } from "src/reconversion-projects/domain/model/reconversionProject";
+import { ReconversionProject } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   buildExhaustiveReconversionProjectProps,
   buildReconversionProject,
-} from "src/reconversion-projects/domain/model/reconversionProject.mock";
+} from "src/reconversion-projects/core/model/reconversionProject.mock";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { SqlReconversionProjectRepository } from "./SqlReconversionProjectRepository";
 

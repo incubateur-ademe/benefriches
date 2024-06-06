@@ -1,7 +1,7 @@
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { TownDataProvider } from "src/location-features/domain/gateways/TownDataProvider";
-import { Town } from "src/location-features/domain/models/town";
+import { TownDataProvider } from "src/location-features/core/gateways/TownDataProvider";
+import { Town } from "src/location-features/core/models/town";
 
 const SAMPLES = [
   {

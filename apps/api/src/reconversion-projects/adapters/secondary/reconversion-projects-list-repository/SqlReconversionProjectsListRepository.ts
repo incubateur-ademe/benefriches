@@ -3,7 +3,7 @@ import { Knex } from "knex";
 import {
   ReconversionProjectsGroupedBySite,
   ReconversionProjectsListRepository,
-} from "src/reconversion-projects/domain/usecases/getUserReconversionProjectsBySite.usecase";
+} from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 export class SqlReconversionProjectsListRepository implements ReconversionProjectsListRepository {

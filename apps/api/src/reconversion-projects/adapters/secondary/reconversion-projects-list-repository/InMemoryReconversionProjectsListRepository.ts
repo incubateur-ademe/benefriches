@@ -1,7 +1,7 @@
 import {
   ReconversionProjectsGroupedBySite,
   ReconversionProjectsListRepository,
-} from "src/reconversion-projects/domain/usecases/getUserReconversionProjectsBySite.usecase";
+} from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 
 export class InMemoryReconversionProjectsListRepository
   implements ReconversionProjectsListRepository

@@ -1,4 +1,4 @@
-import { Response as SoilsCarbonStorageResult } from "src/carbon-storage/domain/usecases/getCityCarbonStoragePerSoilsCategory";
+import { Response as SoilsCarbonStorageResult } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
 import { typedObjectEntries } from "src/shared-kernel/typedEntries";
 import { SoilsDistribution, SoilType } from "src/soils/domain/soils";
 

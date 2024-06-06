@@ -1,7 +1,7 @@
 import {
   SiteImpactsDataView,
   SiteImpactsRepository,
-} from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
+} from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 
 export class InMemorySiteImpactsRepository implements SiteImpactsRepository {
   data?: SiteImpactsDataView;

@@ -1,9 +1,9 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { FricheSite, NonFricheSite } from "src/sites/domain/models/site";
-import { buildMinimalSite } from "src/sites/domain/models/site.mock";
-import { SiteViewModel } from "src/sites/domain/usecases/getSiteById.usecase";
+import { FricheSite, NonFricheSite } from "src/sites/core/models/site";
+import { buildMinimalSite } from "src/sites/core/models/site.mock";
+import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 import { SqlSiteRepository } from "./SqlSiteRepository";
 
 describe("SqlSiteRepository integration", () => {

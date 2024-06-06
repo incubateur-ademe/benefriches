@@ -2,9 +2,9 @@ import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { SitesRepository } from "src/sites/domain/gateways/SitesRepository";
-import { Site } from "src/sites/domain/models/site";
-import { SiteViewModel } from "src/sites/domain/usecases/getSiteById.usecase";
+import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { Site } from "src/sites/core/models/site";
+import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 import { SoilType } from "src/soils/domain/soils";
 
 declare module "knex/types/tables" {

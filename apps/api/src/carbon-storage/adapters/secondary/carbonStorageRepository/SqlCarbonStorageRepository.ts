@@ -1,14 +1,14 @@
 import { BadRequestException, Inject, NotFoundException } from "@nestjs/common";
 import { Knex } from "knex";
-import { CarbonStorageRepository } from "src/carbon-storage/domain/gateways/CarbonStorageRepository";
+import { CarbonStorageRepository } from "src/carbon-storage/core/gateways/CarbonStorageRepository";
 import {
   CarbonStorage,
   CarbonStorageProps,
   LocalisationCategoryType,
   RepositorySoilCategoryType,
   ReservoirType,
-} from "src/carbon-storage/domain/models/carbonStorage";
-import { City, CityProps } from "src/carbon-storage/domain/models/city";
+} from "src/carbon-storage/core/models/carbonStorage";
+import { City, CityProps } from "src/carbon-storage/core/models/city";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 const FOREST_CATEGORIES = [

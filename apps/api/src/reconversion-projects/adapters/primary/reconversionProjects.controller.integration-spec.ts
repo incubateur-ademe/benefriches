@@ -10,7 +10,7 @@ import { AppModule } from "src/app.module";
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
-} from "src/reconversion-projects/domain/model/reconversionProject.mock";
+} from "src/reconversion-projects/core/model/reconversionProject.mock";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { createReconversionProjectInputSchema } from "./reconversionProjects.controller";
 

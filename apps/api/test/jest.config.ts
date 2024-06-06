@@ -6,7 +6,7 @@ import type { JestConfigWithTsJest } from "ts-jest";
 
 const config: JestConfigWithTsJest = {
   rootDir: "../",
-  // Allows jest to resolve relative paths in imports (import { User } from "src/users/domain/models/user")
+  // Allows jest to resolve relative paths in imports (import { User } from "src/users/core/models/user")
   modulePaths: ["<rootDir>"],
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.

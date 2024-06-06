@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { SayHelloUseCase } from "../../domain/usecases/sayHello.usecase";
+import { SayHelloUseCase } from "../../core/usecases/sayHello.usecase";
 import { HelloController } from "./hello.controller";
 
 @Module({

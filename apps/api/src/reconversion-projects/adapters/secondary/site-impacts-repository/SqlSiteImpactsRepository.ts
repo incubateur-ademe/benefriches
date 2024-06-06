@@ -3,7 +3,7 @@ import { Knex } from "knex";
 import {
   SiteImpactsDataView,
   SiteImpactsRepository,
-} from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
+} from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 export class SqlSiteImpactsRepository implements SiteImpactsRepository {

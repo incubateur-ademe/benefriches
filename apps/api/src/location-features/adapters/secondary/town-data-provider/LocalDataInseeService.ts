@@ -8,8 +8,8 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { AxiosError } from "axios";
 import { catchError, map } from "rxjs";
-import { TownDataProvider } from "src/location-features/domain/gateways/TownDataProvider";
-import { Town } from "src/location-features/domain/models/town";
+import { TownDataProvider } from "src/location-features/core/gateways/TownDataProvider";
+import { Town } from "src/location-features/core/models/town";
 
 /* 
 API documentation:

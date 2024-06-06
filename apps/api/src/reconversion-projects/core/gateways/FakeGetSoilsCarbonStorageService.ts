@@ -1,4 +1,4 @@
-import { Response as SoilsCarbonStorageResult } from "src/carbon-storage/domain/usecases/getCityCarbonStoragePerSoilsCategory";
+import { Response as SoilsCarbonStorageResult } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
 import { GetSoilsCarbonStoragePerSoilsService } from "../model/impacts/soils-carbon-storage/soilsCarbonStorageImpact";
 
 export const resultMock: SoilsCarbonStorageResult = {

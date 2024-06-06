@@ -1,17 +1,17 @@
 import { Module } from "@nestjs/common";
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
 import { SqlCarbonStorageRepository } from "src/carbon-storage/adapters/secondary/carbonStorageRepository/SqlCarbonStorageRepository";
-import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/domain/usecases/getCityCarbonStoragePerSoilsCategory";
-import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
+import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
+import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
   ReconversionProjectRepository,
   SiteRepository,
-} from "src/reconversion-projects/domain/usecases/createReconversionProject.usecase";
+} from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import {
   GetUserReconversionProjectsBySiteUseCase,
   ReconversionProjectsListRepository,
-} from "src/reconversion-projects/domain/usecases/getUserReconversionProjectsBySite.usecase";
+} from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";

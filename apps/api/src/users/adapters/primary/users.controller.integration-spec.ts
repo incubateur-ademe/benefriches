@@ -7,7 +7,7 @@ import { Server } from "net";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
-import { buildExhaustiveUserProps, buildMinimalUserProps } from "src/users/domain/model/user.mock";
+import { buildExhaustiveUserProps, buildMinimalUserProps } from "src/users/core/model/user.mock";
 import { createUserBodychema } from "./users.controller";
 
 type BadRequestResponseBody = {

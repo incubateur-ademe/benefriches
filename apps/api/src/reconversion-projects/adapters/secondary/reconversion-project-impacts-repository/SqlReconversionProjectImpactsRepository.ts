@@ -1,10 +1,10 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { DevelopmentPlan } from "src/reconversion-projects/domain/model/reconversionProject";
+import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   ReconversionProjectImpactsDataView,
   ReconversionProjectImpactsRepository,
-} from "src/reconversion-projects/domain/usecases/computeReconversionProjectImpacts.usecase";
+} from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 export class SqlReconversionProjectImpactsRepository

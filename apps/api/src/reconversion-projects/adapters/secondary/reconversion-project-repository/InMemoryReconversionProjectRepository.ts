@@ -1,5 +1,5 @@
-import { ReconversionProject } from "src/reconversion-projects/domain/model/reconversionProject";
-import { ReconversionProjectRepository } from "src/reconversion-projects/domain/usecases/createReconversionProject.usecase";
+import { ReconversionProject } from "src/reconversion-projects/core/model/reconversionProject";
+import { ReconversionProjectRepository } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 
 export class InMemoryReconversionProjectRepository implements ReconversionProjectRepository {
   private reconversionProjects: ReconversionProject[] = [];

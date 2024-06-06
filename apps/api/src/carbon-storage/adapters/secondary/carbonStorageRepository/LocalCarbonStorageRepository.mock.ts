@@ -1,9 +1,9 @@
 import { BadRequestException } from "@nestjs/common";
-import { CarbonStorageRepository } from "src/carbon-storage/domain/gateways/CarbonStorageRepository";
+import { CarbonStorageRepository } from "src/carbon-storage/core/gateways/CarbonStorageRepository";
 import {
   CarbonStorage,
   RepositorySoilCategoryType,
-} from "src/carbon-storage/domain/models/carbonStorage";
+} from "src/carbon-storage/core/models/carbonStorage";
 
 const SOILS_CS = [
   {

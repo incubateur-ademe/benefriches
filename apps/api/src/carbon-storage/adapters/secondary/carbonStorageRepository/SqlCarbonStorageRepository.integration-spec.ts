@@ -2,7 +2,7 @@ import knex, { Knex } from "knex";
 import {
   LocalisationCategoryType,
   ReservoirType,
-} from "src/carbon-storage/domain/models/carbonStorage";
+} from "src/carbon-storage/core/models/carbonStorage";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { SqlCarbonStorageRepository } from "./SqlCarbonStorageRepository";
 

@@ -5,7 +5,7 @@ import readline from "readline";
 import {
   CarbonStorage,
   CarbonStorageProps,
-} from "./../../../../carbon-storage/domain/models/carbonStorage";
+} from "./../../../../carbon-storage/core/models/carbonStorage";
 
 const dataPath = path.resolve(__dirname, "./../../../../../data/carbonStorage.csv");
 const HEADER = "reservoir,soil_category,stock_tC_by_ha,localisation_category,localisation_code";

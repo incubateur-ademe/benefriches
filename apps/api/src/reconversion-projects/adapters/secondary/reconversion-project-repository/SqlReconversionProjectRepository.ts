@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import { v4 as uuid } from "uuid";
-import { ReconversionProject } from "src/reconversion-projects/domain/model/reconversionProject";
-import { ReconversionProjectRepository } from "src/reconversion-projects/domain/usecases/createReconversionProject.usecase";
+import { ReconversionProject } from "src/reconversion-projects/core/model/reconversionProject";
+import { ReconversionProjectRepository } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SoilType } from "src/soils/domain/soils";
 

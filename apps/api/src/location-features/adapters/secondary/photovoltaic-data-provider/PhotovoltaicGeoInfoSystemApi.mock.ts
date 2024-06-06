@@ -2,7 +2,7 @@ import { Observable } from "rxjs";
 import {
   PerformanceResult,
   PhotovoltaicDataProvider,
-} from "src/location-features/domain/gateways/PhotovoltaicDataProvider";
+} from "src/location-features/core/gateways/PhotovoltaicDataProvider";
 
 export class MockPhotovoltaicGeoInfoSystemApi implements PhotovoltaicDataProvider {
   getPhotovoltaicPerformance(): Observable<PerformanceResult> {
