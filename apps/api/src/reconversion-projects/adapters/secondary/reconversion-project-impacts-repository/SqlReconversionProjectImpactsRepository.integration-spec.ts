@@ -112,6 +112,21 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           purpose: "deimpermeabilization",
         },
       ]);
+      await sqlConnection("reconversion_project_financial_assistance_revenues").insert([
+        {
+          id: uuid(),
+          reconversion_project_id: reconversionProjectId,
+          amount: 45000,
+          source: "public_subsidies",
+        },
+        {
+          id: uuid(),
+          reconversion_project_id: reconversionProjectId,
+          amount: 5000,
+          source: "other",
+        },
+      ]);
+
       const result = await repository.getById(reconversionProjectId);
 
       expect(result).toEqual<Required<ReconversionProjectImpactsDataView>>({
@@ -151,7 +166,10 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
             purpose: "installation_works",
           },
         ],
-        financialAssistanceRevenues: 0,
+        financialAssistanceRevenues: [
+          { amount: 45000, source: "public_subsidies" },
+          { amount: 5000, source: "other" },
+        ],
         yearlyProjectedCosts: [],
         yearlyProjectedRevenues: [],
         developmentPlanExpectedAnnualEnergyProductionMWh: 10,
@@ -227,7 +245,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         realEstateTransactionTotalCost: undefined,
         reinstatementContractOwnerName: undefined,
         reinstatementCosts: [],
-        financialAssistanceRevenues: 0,
+        financialAssistanceRevenues: [],
         reinstatementFullTimeJobs: undefined,
         reinstatementSchedule: undefined,
       });

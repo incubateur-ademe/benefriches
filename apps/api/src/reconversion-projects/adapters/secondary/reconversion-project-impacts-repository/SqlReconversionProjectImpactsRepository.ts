@@ -30,7 +30,6 @@ export class SqlReconversionProjectImpactsRepository
         "reinstatement_contract_owner_name",
         "real_estate_transaction_selling_price",
         "real_estate_transaction_property_transfer_duties",
-        "financial_assistance_revenues",
         "operations_first_year",
       )
       .where({ id: reconversionProjectId })
@@ -108,6 +107,12 @@ export class SqlReconversionProjectImpactsRepository
       .select("amount", "purpose")
       .where("reconversion_project_id", reconversionProjectId);
 
+    const sqlFinancialAssistanceRevenues = await this.sqlConnection(
+      "reconversion_project_financial_assistance_revenues",
+    )
+      .select("amount", "source")
+      .where("reconversion_project_id", reconversionProjectId);
+
     const developmentPlanFeatures = (sqlDevelopmentPlan?.features ?? {
       expectedAnnualProduction: undefined,
       surfaceArea: undefined,
@@ -147,7 +152,7 @@ export class SqlReconversionProjectImpactsRepository
       realEstateTransactionPropertyTransferDutiesAmount:
         reconversionProject.real_estate_transaction_property_transfer_duties ?? undefined,
       reinstatementCosts: sqlReinstatementCosts,
-      financialAssistanceRevenues: reconversionProject.financial_assistance_revenues ?? 0,
+      financialAssistanceRevenues: sqlFinancialAssistanceRevenues,
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
       developmentPlanExpectedAnnualEnergyProductionMWh,

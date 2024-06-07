@@ -134,7 +134,6 @@ describe("SqlReconversionProjectRepository integration", () => {
           real_estate_transaction_property_transfer_duties: null,
           reinstatement_full_time_jobs_involved: null,
           conversion_full_time_jobs_involved: null,
-          financial_assistance_revenues: null,
           reinstatement_schedule_start_date: null,
           reinstatement_schedule_end_date: null,
           operations_first_year: null,
@@ -178,7 +177,6 @@ describe("SqlReconversionProjectRepository integration", () => {
             reinstatement_full_time_jobs_involved:
               reconversionProject.reinstatementFullTimeJobsInvolved,
             conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
-            financial_assistance_revenues: reconversionProject.financialAssistanceRevenues,
             reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
             reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
             operations_first_year: reconversionProject.operationsFirstYear,
@@ -324,6 +322,32 @@ describe("SqlReconversionProjectRepository integration", () => {
           reinstatementCosts.map(({ amount, purpose }) => ({
             amount,
             purpose,
+            reconversion_project_id: reconversionProject.id,
+          })),
+        );
+      });
+
+      it("Saves right data in table reconversion_project_financial_assistance_revenues", async () => {
+        const siteId = await insertSiteInDb();
+        const financialAssistanceRevenues: ReconversionProject["financialAssistanceRevenues"] = [
+          { amount: 1000, source: "public_subsidies" },
+          { amount: 2000, source: "other" },
+        ] as const;
+        const reconversionProject = buildReconversionProject({
+          ...buildExhaustiveReconversionProjectProps(),
+          relatedSiteId: siteId,
+          financialAssistanceRevenues,
+        });
+
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const financialAssistanceRevenuesResult = await sqlConnection(
+          "reconversion_project_financial_assistance_revenues",
+        ).select("amount", "source", "reconversion_project_id");
+        expect(financialAssistanceRevenuesResult).toEqual(
+          financialAssistanceRevenues.map(({ amount, source }) => ({
+            amount,
+            source,
             reconversion_project_id: reconversionProject.id,
           })),
         );

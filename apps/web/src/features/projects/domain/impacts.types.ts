@@ -119,7 +119,10 @@ export type ReconversionProjectImpacts = {
         total: number;
         revenues: { source: SourceRevenue; amount: number }[];
       };
-      financialAssistance?: number;
+      financialAssistance?: {
+        total: number;
+        revenues: { source: string; amount: number }[];
+      };
     };
   };
   householdsPoweredByRenewableEnergy?: {

@@ -14,6 +14,7 @@ declare module "knex/types/tables" {
     reconversion_project_yearly_expenses: SqlExpense;
     reconversion_project_yearly_revenues: SqlRevenue;
     reconversion_project_reinstatement_costs: SqlReinstatementCost;
+    reconversion_project_financial_assistance_revenues: SqlRevenue;
   }
 }
 type SqlReconversionProject = {
@@ -29,8 +30,6 @@ type SqlReconversionProject = {
   future_operations_full_time_jobs?: number;
   conversion_full_time_jobs_involved?: number;
   operations_first_year?: number;
-  // revenues
-  financial_assistance_revenues?: number;
   // reinstatement
   reinstatement_contract_owner_name?: string;
   reinstatement_contract_owner_structure_type?: string;
@@ -93,6 +92,20 @@ type SqlReinstatementCost = {
   reconversion_project_id: string;
 };
 
+const mapRevenuesToSqlStruct = (
+  revenues: { amount: number; source: string }[],
+  reconversionProjectId: string,
+): SqlRevenue[] => {
+  return revenues.map(({ amount, source }) => {
+    return {
+      id: uuid(),
+      amount,
+      source,
+      reconversion_project_id: reconversionProjectId,
+    };
+  });
+};
+
 export class SqlReconversionProjectRepository implements ReconversionProjectRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
@@ -121,7 +134,6 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           reinstatement_full_time_jobs_involved:
             reconversionProject.reinstatementFullTimeJobsInvolved,
           conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
-          financial_assistance_revenues: reconversionProject.financialAssistanceRevenues,
           reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
           reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
           operations_first_year: reconversionProject.operationsFirstYear,
@@ -184,15 +196,10 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       }
 
       if (reconversionProject.yearlyProjectedRevenues.length > 0) {
-        const yearlyRevenuesToInsert: SqlRevenue[] =
-          reconversionProject.yearlyProjectedRevenues.map(({ amount, source }) => {
-            return {
-              id: uuid(),
-              amount,
-              source,
-              reconversion_project_id: insertedReconversionProject.id,
-            };
-          });
+        const yearlyRevenuesToInsert: SqlRevenue[] = mapRevenuesToSqlStruct(
+          reconversionProject.yearlyProjectedRevenues,
+          insertedReconversionProject.id,
+        );
         await trx("reconversion_project_yearly_revenues").insert(yearlyRevenuesToInsert);
       }
 
@@ -210,6 +217,16 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
             };
           });
         await trx("reconversion_project_reinstatement_costs").insert(reinstatementCostsToInsert);
+      }
+
+      if (reconversionProject.financialAssistanceRevenues?.length) {
+        const financialAssistanceRevenuesToInsert: SqlRevenue[] = mapRevenuesToSqlStruct(
+          reconversionProject.financialAssistanceRevenues,
+          insertedReconversionProject.id,
+        );
+        await trx("reconversion_project_financial_assistance_revenues").insert(
+          financialAssistanceRevenuesToInsert,
+        );
       }
     });
   }
