@@ -10,6 +10,7 @@ export const photovoltaicPowerStationFeaturesSchema = z.object({
 });
 
 export const costSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
+const revenueSchema = z.object({ source: z.string(), amount: z.number().nonnegative() });
 
 const scheduleSchema = z.object({
   startDate: z.date(),
@@ -51,11 +52,9 @@ export const reconversionProjectSchema = z.object({
   realEstateTransactionSellingPrice: z.number().nonnegative().optional(),
   realEstateTransactionPropertyTransferDuties: z.number().nonnegative().optional(),
   reinstatementCosts: z.array(costSchema).optional(),
-  financialAssistanceRevenues: z.number().nonnegative().optional(),
+  financialAssistanceRevenues: z.array(revenueSchema).optional(),
   yearlyProjectedCosts: z.array(costSchema),
-  yearlyProjectedRevenues: z
-    .object({ source: z.string(), amount: z.number().nonnegative() })
-    .array(),
+  yearlyProjectedRevenues: z.array(revenueSchema),
   soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
   operationsFirstYear: z.number().int().min(2000).optional(),

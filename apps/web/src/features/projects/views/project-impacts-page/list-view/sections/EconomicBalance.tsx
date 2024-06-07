@@ -14,6 +14,17 @@ import {
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
 
+const getLabelForFinancialAssistanceRevenueSource = (revenueSource: string): string => {
+  switch (revenueSource) {
+    case "local_or_regional_authority_participation":
+      return "🏛 Participation des collectivités";
+    case "public_subsidies":
+      return "🏫 Subventions publiques";
+    default:
+      return "🏦 Autres ressources";
+  }
+};
+
 type Props = {
   impact: ReconversionProjectImpacts["economicBalance"];
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
@@ -77,10 +88,25 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
         </ImpactItemGroup>
       )}
       {!!impact.revenues.financialAssistance && (
-        <ImpactItemRow>
+        <ImpactItemGroup>
           <ImpactLabel>🏦 Aides financières</ImpactLabel>
-          <ImpactValue value={impact.revenues.financialAssistance} type="monetary" />
-        </ImpactItemRow>
+          <ImpactDetailRow>
+            <ImpactDetailLabel>{impact.bearer ?? "Aménageur"}</ImpactDetailLabel>
+            <ImpactValue
+              isTotal
+              value={impact.revenues.financialAssistance.total}
+              type="monetary"
+            />
+          </ImpactDetailRow>
+          {impact.revenues.financialAssistance.revenues.map(({ amount, source }) => (
+            <ImpactDetailRow key={source}>
+              <ImpactDetailLabel>
+                {getLabelForFinancialAssistanceRevenueSource(source)}
+              </ImpactDetailLabel>
+              <ImpactValue value={amount} type="monetary" />
+            </ImpactDetailRow>
+          ))}
+        </ImpactItemGroup>
       )}
       {!!impact.costs.operationsCosts && (
         <ImpactItemRow>

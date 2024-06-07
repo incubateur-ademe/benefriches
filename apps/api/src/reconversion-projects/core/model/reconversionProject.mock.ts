@@ -1,7 +1,7 @@
 import { ReconversionProjectProps } from "../usecases/createReconversionProject.usecase";
 import { ReconversionProject } from "./reconversionProject";
 
-const baseReconversionProjectProps: ReconversionProjectProps = {
+const baseReconversionProjectProps = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",
   createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
   relatedSiteId: "f590f643-cd9a-4187-8973-f90e9f1998c8",
@@ -31,7 +31,7 @@ const baseReconversionProjectProps: ReconversionProjectProps = {
   yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",
-} as const;
+} as const satisfies ReconversionProjectProps;
 
 export const buildMinimalReconversionProjectProps = (
   propsOverride?: Partial<ReconversionProjectProps>,
@@ -91,7 +91,10 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
     ],
     realEstateTransactionSellingPrice: 150000,
     realEstateTransactionPropertyTransferDuties: 12000,
-    financialAssistanceRevenues: 14999.99,
+    financialAssistanceRevenues: [
+      { amount: 14000, source: "public_subsidies" },
+      { amount: 999.99, source: "other" },
+    ],
     reinstatementSchedule: {
       startDate: new Date("2025-02-01"),
       endDate: new Date("2028-06-30"),

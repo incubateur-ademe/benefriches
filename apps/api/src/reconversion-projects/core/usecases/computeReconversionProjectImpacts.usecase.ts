@@ -79,7 +79,7 @@ export type ReconversionProjectImpactsDataView = {
   realEstateTransactionPropertyTransferDutiesAmount?: number;
   reinstatementCosts: { amount: number; purpose: string }[];
   developmentPlanInstallationCosts: { amount: number; purpose: string }[];
-  financialAssistanceRevenues?: number;
+  financialAssistanceRevenues: { amount: number; source: string }[];
   yearlyProjectedCosts: { amount: number; purpose: string }[];
   yearlyProjectedRevenues: { amount: number; source: string }[];
   developmentPlanExpectedAnnualEnergyProductionMWh?: number;

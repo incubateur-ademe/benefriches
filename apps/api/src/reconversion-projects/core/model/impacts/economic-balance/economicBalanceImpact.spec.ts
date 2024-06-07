@@ -6,10 +6,10 @@ import {
 
 describe("EconomicBalance impact", () => {
   describe("getEconomicResultsOfProjectInstallation", () => {
-    it("should return zero costs in balance when none", () => {
+    it("should return zero costs and revenues in balance when none", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
-          financialAssistanceRevenues: 0,
+          financialAssistanceRevenues: [],
           reinstatementCosts: [],
           developmentPlanInstallationCosts: [],
           realEstateTransactionTotalCost: 0,
@@ -25,14 +25,16 @@ describe("EconomicBalance impact", () => {
         },
         revenues: {
           total: 0,
-          financialAssistance: 0,
         },
       });
     });
     it("should return all costs and revenues in balance if operator is new site owner and reinstatement cost owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
-          financialAssistanceRevenues: 50000,
+          financialAssistanceRevenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
           reinstatementCosts: [
             { amount: 10000, purpose: "waste_collection" },
             { amount: 39999, purpose: "deimpermebilization" },
@@ -69,7 +71,13 @@ describe("EconomicBalance impact", () => {
         },
         revenues: {
           total: 50000,
-          financialAssistance: 50000,
+          financialAssistance: {
+            total: 50000,
+            revenues: [
+              { amount: 45000, source: "public_subsidies" },
+              { amount: 5000, source: "other" },
+            ],
+          },
         },
       });
     });
@@ -77,7 +85,10 @@ describe("EconomicBalance impact", () => {
     it("should not use real estate transaction in balance if operator is not the new site owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
-          financialAssistanceRevenues: 50000,
+          financialAssistanceRevenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
           reinstatementCosts: [
             { amount: 10000, purpose: "waste_collection" },
             { amount: 39999, purpose: "deimpermebilization" },
@@ -113,7 +124,13 @@ describe("EconomicBalance impact", () => {
         },
         revenues: {
           total: 50000,
-          financialAssistance: 50000,
+          financialAssistance: {
+            total: 50000,
+            revenues: [
+              { amount: 45000, source: "public_subsidies" },
+              { amount: 5000, source: "other" },
+            ],
+          },
         },
       });
     });
@@ -121,7 +138,10 @@ describe("EconomicBalance impact", () => {
     it("should not use reinstatement cost in balance if operator is not the reinstatement cost owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
-          financialAssistanceRevenues: 50000,
+          financialAssistanceRevenues: [
+            { amount: 45000, source: "public_subsidies" },
+            { amount: 5000, source: "other" },
+          ],
           reinstatementCosts: [
             { amount: 10000, purpose: "waste_collection" },
             { amount: 39999, purpose: "deimpermebilization" },
@@ -137,7 +157,7 @@ describe("EconomicBalance impact", () => {
           reinstatementContractOwnerName: "Propriétaire",
         }),
       ).toEqual({
-        total: -95000,
+        total: 50000 - 95000,
         costs: {
           total: 95000,
           developmentPlanInstallation: {
@@ -149,7 +169,14 @@ describe("EconomicBalance impact", () => {
           },
         },
         revenues: {
-          total: 0,
+          total: 50000,
+          financialAssistance: {
+            total: 50000,
+            revenues: [
+              { amount: 45000, source: "public_subsidies" },
+              { amount: 5000, source: "other" },
+            ],
+          },
         },
       });
     });
@@ -233,7 +260,6 @@ describe("EconomicBalance impact", () => {
       expect(
         computeEconomicBalanceImpact(
           {
-            financialAssistanceRevenues: 50000,
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermebilization" },
@@ -281,7 +307,10 @@ describe("EconomicBalance impact", () => {
       expect(
         computeEconomicBalanceImpact(
           {
-            financialAssistanceRevenues: 50000,
+            financialAssistanceRevenues: [
+              { amount: 45000, source: "public_subsidies" },
+              { amount: 5000, source: "other" },
+            ],
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermebilization" },
@@ -344,7 +373,13 @@ describe("EconomicBalance impact", () => {
               { amount: 100000, source: "other" },
             ],
           },
-          financialAssistance: 50000,
+          financialAssistance: {
+            total: 50000,
+            revenues: [
+              { amount: 45000, source: "public_subsidies" },
+              { amount: 5000, source: "other" },
+            ],
+          },
         },
       });
     });
@@ -353,7 +388,6 @@ describe("EconomicBalance impact", () => {
       expect(
         computeEconomicBalanceImpact(
           {
-            financialAssistanceRevenues: 50000,
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermebilization" },
@@ -393,7 +427,10 @@ describe("EconomicBalance impact", () => {
       expect(
         computeEconomicBalanceImpact(
           {
-            financialAssistanceRevenues: 50000,
+            financialAssistanceRevenues: [
+              { amount: 45000, source: "public_subsidies" },
+              { amount: 5000, source: "other" },
+            ],
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermebilization" },
@@ -441,7 +478,13 @@ describe("EconomicBalance impact", () => {
         },
         revenues: {
           total: 50000,
-          financialAssistance: 50000,
+          financialAssistance: {
+            total: 50000,
+            revenues: [
+              { amount: 45000, source: "public_subsidies" },
+              { amount: 5000, source: "other" },
+            ],
+          },
         },
       });
     });
