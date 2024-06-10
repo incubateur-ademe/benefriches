@@ -13,7 +13,7 @@ type Props = {
 };
 
 type FormValues = {
-  developmentPlanCategories: DevelopmentPlanCategory[];
+  developmentPlanCategory: DevelopmentPlanCategory;
 };
 
 const options: Record<DevelopmentPlanCategory, { disabled: boolean }> = {
@@ -25,10 +25,8 @@ const options: Record<DevelopmentPlanCategory, { disabled: boolean }> = {
 };
 
 function ProjectTypesForm({ onSubmit }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: { developmentPlanCategories: [] },
-  });
-  const validationError = formState.errors.developmentPlanCategories;
+  const { control, handleSubmit, formState } = useForm<FormValues>();
+  const validationError = formState.errors.developmentPlanCategory;
 
   return (
     <>
@@ -42,21 +40,17 @@ function ProjectTypesForm({ onSubmit }: Props) {
                   <div className={fr.cx("fr-col-12", "fr-col-sm-6")} key={developmentPlanCategory}>
                     <Controller
                       control={control}
-                      name="developmentPlanCategories"
-                      rules={{ required: "Veuillez sélectionner au moins un type d'aménagement." }}
+                      name="developmentPlanCategory"
+                      rules={{ required: "Veuillez sélectionner un type d'aménagement." }}
                       render={({ field }) => {
-                        const isSelected = field.value.includes(developmentPlanCategory);
+                        const isSelected = field.value === developmentPlanCategory;
                         return (
                           <DevelopmentPlanCategoryTile
                             developmentPlanCategory={developmentPlanCategory}
                             disabled={options[developmentPlanCategory].disabled}
                             isSelected={isSelected}
                             onSelect={() => {
-                              field.onChange(
-                                isSelected
-                                  ? field.value.filter((v) => v !== developmentPlanCategory)
-                                  : [...field.value, developmentPlanCategory],
-                              );
+                              field.onChange(developmentPlanCategory);
                             }}
                           />
                         );

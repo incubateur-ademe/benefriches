@@ -70,8 +70,8 @@ export type ReconversionProjectCreationData = {
   name: string;
   description?: string;
   relatedSiteId: string;
-  developmentPlanCategories: DevelopmentPlanCategory[];
-  renewableEnergyTypes: RenewableEnergyDevelopmentPlanType[];
+  developmentPlanCategory: DevelopmentPlanCategory;
+  renewableEnergyType: RenewableEnergyDevelopmentPlanType;
   photovoltaicKeyParameter: PhotovoltaicKeyParameter;
   photovoltaicInstallationElectricalPowerKWc: number;
   photovoltaicInstallationSurfaceSquareMeters: number;

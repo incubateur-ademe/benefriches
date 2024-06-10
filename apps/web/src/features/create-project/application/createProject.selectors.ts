@@ -211,14 +211,11 @@ export const getDefaultValuesForFullTimeConversionJobsInvolved = createSelector(
   (projectData, siteData): { fullTimeJobs?: number; reinstatementFullTimeJobs?: number } => {
     const {
       photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc,
-      developmentPlanCategories,
-      renewableEnergyTypes,
+      renewableEnergyType,
       reinstatementCosts,
     } = projectData;
 
-    const isPhotovoltaicProject =
-      developmentPlanCategories?.includes("RENEWABLE_ENERGY") &&
-      renewableEnergyTypes?.includes("PHOTOVOLTAIC_POWER_PLANT");
+    const isPhotovoltaicProject = renewableEnergyType === "PHOTOVOLTAIC_POWER_PLANT";
 
     const fullTimeJobs =
       isPhotovoltaicProject && electricalPowerKWc

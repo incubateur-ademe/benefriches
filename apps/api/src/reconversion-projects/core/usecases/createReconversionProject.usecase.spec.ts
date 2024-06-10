@@ -40,7 +40,7 @@ describe("CreateReconversionProject Use Case", () => {
         "name",
         "createdBy",
         "relatedSiteId",
-        "developmentPlans",
+        "developmentPlan",
         "soilsDistribution",
         "yearlyProjectedCosts",
         "yearlyProjectedRevenues",
@@ -66,28 +66,6 @@ describe("CreateReconversionProject Use Case", () => {
           expect(zIssues[0].code).toEqual("invalid_type");
         }
       });
-    });
-
-    it("Cannot create a reconversion project with no development plan", async () => {
-      const reconversionProjectProps = buildMinimalReconversionProjectProps({
-        // @ts-expect-error developmentPlans is declared as a non-empty array
-        developmentPlans: [],
-      });
-
-      const usecase = new CreateReconversionProjectUseCase(
-        dateProvider,
-        siteRepository,
-        reconversionProjectRepository,
-      );
-
-      expect.assertions(2);
-      try {
-        await usecase.execute({ reconversionProjectProps });
-      } catch (err) {
-        const zIssues = getZodIssues(err);
-        expect(zIssues.length).toEqual(1);
-        expect(zIssues[0].path).toEqual(["developmentPlans"]);
-      }
     });
 
     it("Cannot create a reconversion project on a non-existing site", async () => {

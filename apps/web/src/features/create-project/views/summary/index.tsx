@@ -24,8 +24,8 @@ function ProjectionCreationDataSummaryContainer() {
       projectData={{
         name: projectData.name ?? "",
         description: projectData.description,
-        developmentPlanCategory: projectData.developmentPlanCategories![0]!,
-        renewableEnergy: projectData.renewableEnergyTypes![0]!,
+        developmentPlanCategory: projectData.developmentPlanCategory!,
+        renewableEnergy: projectData.renewableEnergyType!,
         photovoltaicElectricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
         photovoltaicSurfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters ?? 0,
         photovoltaicExpectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction ?? 0,
