@@ -1,3 +1,4 @@
+import { typedObjectEntries } from "shared";
 import {
   completePhotovoltaicPanelsInstallationCost,
   revertPhotovoltaicPanelsInstallationCost,
@@ -8,8 +9,31 @@ import PhotovoltaicPanelsInstallationCostsForm, {
 
 import { AppDispatch } from "@/app/application/store";
 import { getDefaultValuesForPhotovoltaicInstallationCosts } from "@/features/create-project/application/createProject.selectors";
-import { sumObjectValues } from "@/shared/services/sum/sum";
+import { PhotovoltaicInstallationCost } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+const mapFormValuesToPhotovoltaicInstallationCosts = (
+  formData: FormValues,
+): PhotovoltaicInstallationCost[] => {
+  const costs: PhotovoltaicInstallationCost[] = [];
+  typedObjectEntries(formData).forEach(([purpose, amount]) => {
+    if (!amount) return;
+    switch (purpose) {
+      case "technicalStudyAmount":
+        costs.push({ amount: amount, purpose: "technical_studies" });
+        break;
+      case "worksAmount":
+        costs.push({ amount: amount, purpose: "installation_work" });
+        break;
+      case "otherAmount":
+        costs.push({ amount: amount, purpose: "other" });
+        break;
+      default:
+        break;
+    }
+  });
+  return costs;
+};
 
 const mapProps = (
   dispatch: AppDispatch,
@@ -17,9 +41,9 @@ const mapProps = (
 ) => {
   return {
     defaultValues,
-    onSubmit: (amounts: FormValues) => {
-      const totalCost = sumObjectValues(amounts);
-      dispatch(completePhotovoltaicPanelsInstallationCost(totalCost));
+    onSubmit: (formData: FormValues) => {
+      const costs = mapFormValuesToPhotovoltaicInstallationCosts(formData);
+      dispatch(completePhotovoltaicPanelsInstallationCost(costs));
     },
     onBack: () => {
       dispatch(revertPhotovoltaicPanelsInstallationCost());

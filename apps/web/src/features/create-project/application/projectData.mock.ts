@@ -26,7 +26,10 @@ export const projectWithMinimalData = {
   photovoltaicInstallationSurfaceSquareMeters: 40000,
   photovoltaicExpectedAnnualProduction: 50000,
   photovoltaicContractDuration: 20,
-  photovoltaicPanelsInstallationCost: 230000,
+  photovoltaicPanelsInstallationCosts: [
+    { amount: 20000, purpose: "installation_work" },
+    { amount: 210000, purpose: "technical_studies" },
+  ],
   financialAssistanceRevenues: [],
   projectDeveloper: { name: "SolarDev", structureType: "company" },
   futureOperator: { name: "SolarDev", structureType: "company" },

@@ -6,8 +6,10 @@ import {
   DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
   getLabelForFinancialAssistanceRevenueSource,
+  getLabelForPhotovoltaicInstallationCostPurpose,
   getLabelForRecurringCostPurpose,
   getLabelForRecurringRevenueSource,
+  PhotovoltaicInstallationCost,
   RecurringCost,
   RecurringRevenue,
   RenewableEnergyDevelopmentPlanType,
@@ -45,7 +47,7 @@ type Props = {
     realEstateTransactionTotalCost?: number;
     finanalAssistanceRevenues?: FinancialAssistanceRevenue[];
     reinstatementCost?: number;
-    photovoltaicPanelsInstallationCost?: number;
+    photovoltaicPanelsInstallationCosts?: PhotovoltaicInstallationCost[];
     yearlyProjectedCosts: RecurringCost[];
     yearlyProjectedRevenues: RecurringRevenue[];
     reinstatementSchedule?: Partial<Schedule>;
@@ -229,11 +231,31 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               value={`${formatNumberFr(projectData.reinstatementCost)} €`}
             />
           )}
-          {!!projectData.photovoltaicPanelsInstallationCost && (
-            <DataLine
-              label={<strong>Coûts d'installation des panneaux photovoltaïques</strong>}
-              value={`${formatNumberFr(projectData.photovoltaicPanelsInstallationCost)} €`}
-            />
+          {!!projectData.photovoltaicPanelsInstallationCosts && (
+            <>
+              <DataLine
+                label={<strong>Coûts d'installation des panneaux photovoltaïques</strong>}
+                value={
+                  <strong>
+                    {formatNumberFr(
+                      sumList(projectData.photovoltaicPanelsInstallationCosts.map((r) => r.amount)),
+                    )}{" "}
+                    €
+                  </strong>
+                }
+                className="fr-mb-1w fr-mt-2w"
+              />
+              {projectData.photovoltaicPanelsInstallationCosts.map(({ amount, purpose }) => {
+                return (
+                  <DataLine
+                    label={getLabelForPhotovoltaicInstallationCostPurpose(purpose)}
+                    value={`${formatNumberFr(amount)} €`}
+                    className="fr-ml-2w"
+                    key={purpose}
+                  />
+                );
+              })}
+            </>
           )}
           <DataLine
             label={<strong>Dépenses annuelles</strong>}

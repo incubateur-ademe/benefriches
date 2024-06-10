@@ -69,9 +69,9 @@ describe("createProject reducer", () => {
         invalidValue: undefined,
       },
       {
-        case: "no development plan cost",
-        dataProp: "photovoltaicPanelsInstallationCost",
-        invalidValue: undefined,
+        case: "negative amount in photovoltaic installation costs",
+        dataProp: "photovoltaicPanelsInstallationCosts",
+        invalidValue: [{ amount: -1, purpose: "installation_work" }],
       },
       {
         case: "no development plan surface area",

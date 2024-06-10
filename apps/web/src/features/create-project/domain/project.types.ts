@@ -55,6 +55,11 @@ export type ReinstatementCosts = {
   costs: { purpose: ReinstatementCostsPurpose; amount: number }[];
 };
 
+export type PhotovoltaicInstallationCost = {
+  amount: number;
+  purpose: "technical_studies" | "installation_work" | "other";
+};
+
 export type FinancialAssistanceRevenue = {
   amount: number;
   source: "local_or_regional_authority_participation" | "public_subsidies" | "other";
@@ -90,7 +95,7 @@ export type ReconversionProjectCreationData = {
   realEstateTransactionPropertyTransferDuties?: number;
   // costs
   reinstatementCosts?: ReinstatementCosts;
-  photovoltaicPanelsInstallationCost: number;
+  photovoltaicPanelsInstallationCosts: PhotovoltaicInstallationCost[];
   yearlyProjectedCosts: RecurringCost[];
   // revenues
   yearlyProjectedRevenues: RecurringRevenue[];
@@ -191,5 +196,18 @@ export const getLabelForFinancialAssistanceRevenueSource = (
       return "Subventions publiques";
     case "other":
       return "Autres ressources";
+  }
+};
+
+export const getLabelForPhotovoltaicInstallationCostPurpose = (
+  photovoltaicCostPurpose: PhotovoltaicInstallationCost["purpose"],
+): string => {
+  switch (photovoltaicCostPurpose) {
+    case "technical_studies":
+      return "📋 Études et honoraires techniques";
+    case "installation_work":
+      return "🛠 Travaux d'installation des panneaux";
+    case "other":
+      return "⚡️ Autres frais d'installation des panneaux";
   }
 };

@@ -98,7 +98,9 @@ export const saveReconversionProject = createAppAsyncThunk(
         {
           type: "PHOTOVOLTAIC_POWER_PLANT",
           developer: projectData.projectDeveloper,
-          cost: projectData.photovoltaicPanelsInstallationCost,
+          cost: sumList(
+            projectData.photovoltaicPanelsInstallationCosts?.map(({ amount }) => amount) ?? [],
+          ),
           installationSchedule: projectData.photovoltaicInstallationSchedule,
           features: {
             surfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters,

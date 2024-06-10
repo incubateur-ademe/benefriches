@@ -20,6 +20,7 @@ import { RootState } from "@/app/application/store";
 import {
   DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
+  PhotovoltaicInstallationCost,
   PhotovoltaicKeyParameter,
   ProjectPhase,
   ProjectPhaseDetails,
@@ -310,8 +311,11 @@ export const projectCreationSlice = createSlice({
       state.projectData.reinstatementCosts = action.payload;
       state.stepsHistory.push("COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION");
     },
-    completePhotovoltaicPanelsInstallationCost: (state, action: PayloadAction<number>) => {
-      state.projectData.photovoltaicPanelsInstallationCost = action.payload;
+    completePhotovoltaicPanelsInstallationCost: (
+      state,
+      action: PayloadAction<PhotovoltaicInstallationCost[]>,
+    ) => {
+      state.projectData.photovoltaicPanelsInstallationCosts = action.payload;
       state.stepsHistory.push("COSTS_PROJECTED_YEARLY_COSTS");
     },
     completeYearlyProjectedCosts: (
@@ -525,7 +529,7 @@ export const revertRealEstateTransactionCost = () =>
   });
 export const revertReinstatementCost = () => revertStep({ resetFields: ["reinstatementCosts"] });
 export const revertPhotovoltaicPanelsInstallationCost = () =>
-  revertStep({ resetFields: ["photovoltaicPanelsInstallationCost"] });
+  revertStep({ resetFields: ["photovoltaicPanelsInstallationCosts"] });
 export const revertYearlyProjectedCosts = () =>
   revertStep({ resetFields: ["yearlyProjectedCosts"] });
 export const revertRevenuIntroductionStep = () => revertStep();
