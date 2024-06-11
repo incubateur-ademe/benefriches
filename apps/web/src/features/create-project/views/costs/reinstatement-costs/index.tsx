@@ -5,8 +5,7 @@ import {
 import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { ProjectSite, ReinstatementCosts } from "@/features/create-project/domain/project.types";
-import { sumList } from "@/shared/services/sum/sum";
+import { ProjectSite, ReinstatementCost } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
@@ -16,8 +15,8 @@ const hasImpermeableSoils = (soilsDistribution: ProjectSite["soilsDistribution"]
 const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
   soilsDistribution.MINERAL_SOIL ? soilsDistribution.MINERAL_SOIL > 0 : false;
 
-const convertFormValuesToCosts = (amounts: FormValues): ReinstatementCosts["costs"] => {
-  const reinstatementCosts: ReinstatementCosts["costs"] = [];
+const convertFormValuesToCosts = (amounts: FormValues): ReinstatementCost[] => {
+  const reinstatementCosts: ReinstatementCost[] = [];
   if (amounts.asbestosRemovalAmount) {
     reinstatementCosts.push({ purpose: "asbestos_removal", amount: amounts.asbestosRemovalAmount });
   }
@@ -66,8 +65,7 @@ const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
     hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
     onSubmit: (amounts: FormValues) => {
       const costs = convertFormValuesToCosts(amounts);
-      const total = sumList(costs.map(({ amount }) => amount));
-      dispatch(completeReinstatementCost({ costs, total }));
+      dispatch(completeReinstatementCost(costs));
     },
     onBack: () => {
       dispatch(revertReinstatementCost());

@@ -9,9 +9,11 @@ import {
   getLabelForPhotovoltaicInstallationCostPurpose,
   getLabelForRecurringCostPurpose,
   getLabelForRecurringRevenueSource,
+  getLabelForReinstatementCostPurpose,
   PhotovoltaicInstallationCost,
   RecurringCost,
   RecurringRevenue,
+  ReinstatementCost,
   RenewableEnergyDevelopmentPlanType,
 } from "../../domain/project.types";
 import {
@@ -46,7 +48,7 @@ type Props = {
     operationsFullTimeJobs?: number;
     realEstateTransactionTotalCost?: number;
     finanalAssistanceRevenues?: FinancialAssistanceRevenue[];
-    reinstatementCost?: number;
+    reinstatementCosts?: ReinstatementCost[];
     photovoltaicPanelsInstallationCosts?: PhotovoltaicInstallationCost[];
     yearlyProjectedCosts: RecurringCost[];
     yearlyProjectedRevenues: RecurringRevenue[];
@@ -225,11 +227,28 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               })}
             </>
           )}
-          {!!projectData.reinstatementCost && (
-            <DataLine
-              label={<strong>Coûts de remise en état de la friche</strong>}
-              value={`${formatNumberFr(projectData.reinstatementCost)} €`}
-            />
+          {!!projectData.reinstatementCosts && (
+            <>
+              <DataLine
+                label={<strong>Coûts de remise en état de la friche</strong>}
+                value={
+                  <strong>
+                    {formatNumberFr(sumList(projectData.reinstatementCosts.map((r) => r.amount)))} €
+                  </strong>
+                }
+                className="fr-mb-1w fr-mt-2w"
+              />
+              {projectData.reinstatementCosts.map(({ amount, purpose }) => {
+                return (
+                  <DataLine
+                    label={getLabelForReinstatementCostPurpose(purpose)}
+                    value={`${formatNumberFr(amount)} €`}
+                    className="fr-ml-2w"
+                    key={purpose}
+                  />
+                );
+              })}
+            </>
           )}
           {!!projectData.photovoltaicPanelsInstallationCosts && (
             <>

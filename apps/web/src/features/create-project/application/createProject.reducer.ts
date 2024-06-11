@@ -26,7 +26,7 @@ import {
   ProjectPhaseDetails,
   ProjectSite,
   ReconversionProjectCreationData,
-  ReinstatementCosts,
+  ReinstatementCost,
   RenewableEnergyDevelopmentPlanType,
 } from "@/features/create-project/domain/project.types";
 
@@ -302,7 +302,7 @@ export const projectCreationSlice = createSlice({
       }
       state.stepsHistory.push("COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION");
     },
-    completeReinstatementCost: (state, action: PayloadAction<ReinstatementCosts>) => {
+    completeReinstatementCost: (state, action: PayloadAction<ReinstatementCost[]>) => {
       state.projectData.reinstatementCosts = action.payload;
       state.stepsHistory.push("COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION");
     },

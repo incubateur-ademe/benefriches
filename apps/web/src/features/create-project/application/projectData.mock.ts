@@ -62,10 +62,7 @@ export const projectWithExhaustiveData = {
     name: "Reinstatement company",
     structureType: "company",
   },
-  reinstatementCosts: {
-    total: 34500,
-    costs: [{ amount: 34500, purpose: "demolition" }],
-  },
+  reinstatementCosts: [{ amount: 34500, purpose: "demolition" }],
   realEstateTransactionSellingPrice: 150000,
   realEstateTransactionPropertyTransferDuties: 12000,
   financialAssistanceRevenues: [

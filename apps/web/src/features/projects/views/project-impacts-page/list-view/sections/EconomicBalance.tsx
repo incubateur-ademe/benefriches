@@ -6,28 +6,13 @@ import ImpactLabel from "../ImpactLabel";
 import ImpactMainTitle from "../ImpactMainTitle";
 import ImpactValue from "../ImpactValue";
 
-import { getLabelForPhotovoltaicInstallationCostPurpose } from "@/features/create-project/domain/project.types";
+import {
+  getLabelForPhotovoltaicInstallationCostPurpose,
+  getLabelForReinstatementCostPurpose,
+  ReinstatementCostsPurpose,
+} from "@/features/create-project/domain/project.types";
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
-
-const getLabelForReinstatementCostPurpose = (costPurpose: string): string => {
-  switch (costPurpose) {
-    case "asbestos_removal":
-      return "☣️ Désamiantage";
-    case "sustainable_soils_reinstatement":
-      return "🌱 Restauration écologique";
-    case "deimpermeabilization":
-      return "🌧 Désimperméabilisation";
-    case "remediation":
-      return "✨ Dépollution des sols";
-    case "demolition":
-      return "🧱 Déconstruction";
-    case "waste_collection":
-      return "♻️ Évacuation et traitement des déchets";
-    default:
-      return "🏗 Autres dépenses de remise en état";
-  }
-};
 
 type Props = {
   impact: ReconversionProjectImpacts["economicBalance"];
@@ -62,7 +47,9 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
           </ImpactDetailRow>
           {impact.costs.siteReinstatement.costs.map(({ amount, purpose }) => (
             <ImpactDetailRow key={purpose}>
-              <ImpactDetailLabel>{getLabelForReinstatementCostPurpose(purpose)}</ImpactDetailLabel>
+              <ImpactDetailLabel>
+                {getLabelForReinstatementCostPurpose(purpose as ReinstatementCostsPurpose)}
+              </ImpactDetailLabel>
               <ImpactValue value={-amount} type="monetary" />
             </ImpactDetailRow>
           ))}

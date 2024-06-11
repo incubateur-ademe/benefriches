@@ -147,7 +147,7 @@ describe("createProject reducer", () => {
       {
         case: "negative amount in reinstatementCosts",
         dataProp: "reinstatementCosts",
-        invalidValue: { total: -1, costs: [{ amount: -1, purpose: "demolition" }] },
+        invalidValue: [{ amount: -1, purpose: "demolition" }],
       },
       {
         case: "invalid reinstatementSchedule",

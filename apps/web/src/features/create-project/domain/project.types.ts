@@ -50,10 +50,7 @@ export type ReinstatementCostsPurpose =
   | "sustainable_soils_reinstatement"
   | "waste_collection";
 
-export type ReinstatementCosts = {
-  total: number;
-  costs: { purpose: ReinstatementCostsPurpose; amount: number }[];
-};
+export type ReinstatementCost = { purpose: ReinstatementCostsPurpose; amount: number };
 
 export type PhotovoltaicInstallationCost = {
   amount: number;
@@ -94,7 +91,7 @@ export type ReconversionProjectCreationData = {
   realEstateTransactionSellingPrice?: number;
   realEstateTransactionPropertyTransferDuties?: number;
   // costs
-  reinstatementCosts?: ReinstatementCosts;
+  reinstatementCosts?: ReinstatementCost[];
   photovoltaicPanelsInstallationCosts: PhotovoltaicInstallationCost[];
   yearlyProjectedCosts: RecurringCost[];
   // revenues
@@ -209,5 +206,26 @@ export const getLabelForPhotovoltaicInstallationCostPurpose = (
       return "🛠 Travaux d'installation des panneaux";
     case "other":
       return "⚡️ Autres frais d'installation des panneaux";
+  }
+};
+
+export const getLabelForReinstatementCostPurpose = (
+  costPurpose: ReinstatementCostsPurpose,
+): string => {
+  switch (costPurpose) {
+    case "asbestos_removal":
+      return "☣️ Désamiantage";
+    case "sustainable_soils_reinstatement":
+      return "🌱 Restauration écologique";
+    case "deimpermeabilization":
+      return "🌧 Désimperméabilisation";
+    case "remediation":
+      return "✨ Dépollution des sols";
+    case "demolition":
+      return "🧱 Déconstruction";
+    case "waste_collection":
+      return "♻️ Évacuation et traitement des déchets";
+    default:
+      return "🏗 Autres dépenses de remise en état";
   }
 };
