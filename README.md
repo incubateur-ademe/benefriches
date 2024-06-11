@@ -31,7 +31,7 @@ pnpm install
 
 ### Lancement et initialisation de la base de données
 ```sh
-docker compose -f docker-compose.db.yml up -d # lancement de la base de données
+docker compose --env-file apps/api/.env -f docker-compose.db.yml up -d # lancement de la base de données
 pnpm --filter api knex:migrate-latest # lancement des migrations
 pnpm --filter api knex:seed-run # chargement des données nécessaires à l'application
 ```
