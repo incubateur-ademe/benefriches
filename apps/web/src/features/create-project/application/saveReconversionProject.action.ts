@@ -36,7 +36,7 @@ const saveProjectSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   relatedSiteId: z.string().uuid(),
-  developmentPlans: developmentPlanSchema.array().nonempty(),
+  developmentPlan: developmentPlanSchema,
   futureOperator: z.object({ name: z.string(), structureType: z.string() }).optional(),
   futureSiteOwner: z.object({ name: z.string(), structureType: z.string() }).optional(),
   conversionFullTimeJobsInvolved: z.number().nonnegative().optional(),
@@ -94,22 +94,20 @@ export const saveReconversionProject = createAppAsyncThunk(
       soilsDistribution: projectData.soilsDistribution,
       reinstatementSchedule: projectData.reinstatementSchedule,
       operationsFirstYear: projectData.firstYearOfOperation,
-      developmentPlans: [
-        {
-          type: "PHOTOVOLTAIC_POWER_PLANT",
-          developer: projectData.projectDeveloper,
-          cost: sumList(
-            projectData.photovoltaicPanelsInstallationCosts?.map(({ amount }) => amount) ?? [],
-          ),
-          installationSchedule: projectData.photovoltaicInstallationSchedule,
-          features: {
-            surfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters,
-            electricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc,
-            expectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction,
-            contractDuration: projectData.photovoltaicContractDuration,
-          },
+      developmentPlan: {
+        type: "PHOTOVOLTAIC_POWER_PLANT",
+        developer: projectData.projectDeveloper,
+        cost: sumList(
+          projectData.photovoltaicPanelsInstallationCosts?.map(({ amount }) => amount) ?? [],
+        ),
+        installationSchedule: projectData.photovoltaicInstallationSchedule,
+        features: {
+          surfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters,
+          electricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc,
+          expectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction,
+          contractDuration: projectData.photovoltaicContractDuration,
         },
-      ],
+      },
       projectPhase: projectData.projectPhase,
       projectPhaseDetails: projectData.projectPhaseDetails,
     };

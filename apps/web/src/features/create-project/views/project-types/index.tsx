@@ -7,8 +7,8 @@ function ProjectTypesFormContainer() {
   const dispatch = useAppDispatch();
   return (
     <ProjectTypeForm
-      onSubmit={({ developmentPlanCategories }) => {
-        dispatch(completeDevelopmentPlanCategories(developmentPlanCategories));
+      onSubmit={({ developmentPlanCategory }) => {
+        dispatch(completeDevelopmentPlanCategories(developmentPlanCategory));
       }}
     />
   );

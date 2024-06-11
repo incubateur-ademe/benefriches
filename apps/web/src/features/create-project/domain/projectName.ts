@@ -6,38 +6,26 @@ import { ReconversionProjectCreationData } from "./project.types";
 
 export type ProjectInfo = Pick<
   ReconversionProjectCreationData,
-  "developmentPlanCategories" | "renewableEnergyTypes"
+  "developmentPlanCategory" | "renewableEnergyType"
 >;
 
 const generateRenewableEnergyProjectName = (
-  renewableEnergyTypes: ProjectInfo["renewableEnergyTypes"],
+  renewableEnergyType: ProjectInfo["renewableEnergyType"],
 ): string => {
-  if (renewableEnergyTypes.length === 1) {
-    const [renewableEnergyType] = renewableEnergyTypes;
-    if (renewableEnergyType === "PHOTOVOLTAIC_POWER_PLANT") {
-      return "Centrale photovoltaïque";
-    }
-    return `Projet ${getLabelForRenewableEnergyProductionType(renewableEnergyType!).toLowerCase()}`;
+  if (renewableEnergyType === "PHOTOVOLTAIC_POWER_PLANT") {
+    return "Centrale photovoltaïque";
   }
-  return "Projet EnR mixte";
+  return `Projet ${getLabelForRenewableEnergyProductionType(renewableEnergyType).toLowerCase()}`;
 };
 
 export const generateProjectName = (projectData: ProjectInfo): string => {
-  if (
-    projectData.developmentPlanCategories.length === 0 ||
-    projectData.developmentPlanCategories.length > 1
-  )
-    return "Projet mixte";
-
-  const projectType = projectData.developmentPlanCategories[0]!;
-
-  switch (projectType) {
+  switch (projectData.developmentPlanCategory) {
     case "BUILDINGS":
     case "NATURAL_URBAN_SPACES":
     case "URBAN_AGRICULTURE":
     case "COMMERCIAL_ACTIVITY_AREA":
-      return `Projet ${getLabelForDevelopmentPlanCategory(projectData.developmentPlanCategories[0]!).toLowerCase()}`;
+      return `Projet ${getLabelForDevelopmentPlanCategory(projectData.developmentPlanCategory).toLowerCase()}`;
     case "RENEWABLE_ENERGY":
-      return generateRenewableEnergyProjectName(projectData.renewableEnergyTypes);
+      return generateRenewableEnergyProjectName(projectData.renewableEnergyType);
   }
 };

@@ -13,7 +13,7 @@ type Props = {
 };
 
 type FormValues = {
-  renewableEnergyTypes: RenewableEnergyDevelopmentPlanType[];
+  renewableEnergyType: RenewableEnergyDevelopmentPlanType;
 };
 
 const options: Record<RenewableEnergyDevelopmentPlanType, { disabled: boolean }> = {
@@ -24,10 +24,8 @@ const options: Record<RenewableEnergyDevelopmentPlanType, { disabled: boolean }>
 };
 
 function RenewableEnergyTypesForm({ onSubmit, onBack }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: { renewableEnergyTypes: [] },
-  });
-  const validationError = formState.errors.renewableEnergyTypes;
+  const { control, handleSubmit, formState } = useForm<FormValues>();
+  const validationError = formState.errors.renewableEnergyType;
 
   return (
     <WizardFormLayout title="Quel système d'EnR souhaitez-vous installer ?">
@@ -39,23 +37,19 @@ function RenewableEnergyTypesForm({ onSubmit, onBack }: Props) {
                 <div className={fr.cx("fr-col-12", "fr-col-sm-6")} key={renewableEnergy}>
                   <Controller
                     control={control}
-                    name="renewableEnergyTypes"
+                    name="renewableEnergyType"
                     rules={{
                       required: "Veuillez sélectionner au moins un type d'énergie renouvelable.",
                     }}
                     render={({ field }) => {
-                      const isSelected = field.value.includes(renewableEnergy);
+                      const isSelected = field.value === renewableEnergy;
                       return (
                         <RenewableEnergyTile
                           renewableEnergy={renewableEnergy}
                           disabled={options[renewableEnergy].disabled}
                           isSelected={isSelected}
                           onSelect={() => {
-                            field.onChange(
-                              isSelected
-                                ? field.value.filter((v) => v !== renewableEnergy)
-                                : [...field.value, renewableEnergy],
-                            );
+                            field.onChange(renewableEnergy);
                           }}
                         />
                       );

@@ -224,7 +224,7 @@ describe("SqlReconversionProjectRepository integration", () => {
 
         await reconversionProjectRepository.save(reconversionProject);
 
-        const developmentPlansResult = await sqlConnection(
+        const developmentPlanResult = await sqlConnection(
           "reconversion_project_development_plans",
         ).select(
           "type",
@@ -236,19 +236,17 @@ describe("SqlReconversionProjectRepository integration", () => {
           "schedule_start_date",
           "schedule_end_date",
         );
-        expect(developmentPlansResult).toEqual([
+        expect(developmentPlanResult).toEqual([
           {
-            type: reconversionProject.developmentPlans[0].type,
+            type: reconversionProject.developmentPlan.type,
             cost: 1300,
-            features: reconversionProject.developmentPlans[0].features,
-            developer_name: reconversionProject.developmentPlans[0].developer.name,
-            developer_structure_type:
-              reconversionProject.developmentPlans[0].developer.structureType,
+            features: reconversionProject.developmentPlan.features,
+            developer_name: reconversionProject.developmentPlan.developer.name,
+            developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
             reconversion_project_id: reconversionProject.id,
             schedule_start_date:
-              reconversionProject.developmentPlans[0].installationSchedule?.startDate,
-            schedule_end_date:
-              reconversionProject.developmentPlans[0].installationSchedule?.endDate,
+              reconversionProject.developmentPlan.installationSchedule?.startDate,
+            schedule_end_date: reconversionProject.developmentPlan.installationSchedule?.endDate,
           },
         ]);
       });

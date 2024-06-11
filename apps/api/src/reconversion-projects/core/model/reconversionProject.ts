@@ -41,7 +41,7 @@ export const reconversionProjectSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   relatedSiteId: z.string().uuid(),
-  developmentPlans: z.array(developmentPlanSchema).nonempty(),
+  developmentPlan: developmentPlanSchema,
   futureOperator: z.object({ name: z.string(), structureType: z.string() }).optional(),
   futureSiteOwner: z.object({ name: z.string(), structureType: z.string() }).optional(),
   conversionFullTimeJobsInvolved: z.number().nonnegative().optional(),

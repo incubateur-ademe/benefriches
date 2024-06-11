@@ -16,18 +16,15 @@ const jsonScheduleSchema = z.object({
 
 export const createReconversionProjectInputSchema = reconversionProjectPropsSchema.extend({
   reinstatementSchedule: jsonScheduleSchema.optional(),
-  developmentPlans: z
-    .discriminatedUnion("type", [
-      z.object({
-        type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
-        cost: z.number().nonnegative(),
-        developer: z.object({ name: z.string(), structureType: z.string() }),
-        features: photovoltaicPowerStationFeaturesSchema,
-        installationSchedule: jsonScheduleSchema.optional(),
-      }),
-    ])
-    .array()
-    .nonempty(),
+  developmentPlan: z.discriminatedUnion("type", [
+    z.object({
+      type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
+      cost: z.number().nonnegative(),
+      developer: z.object({ name: z.string(), structureType: z.string() }),
+      features: photovoltaicPowerStationFeaturesSchema,
+      installationSchedule: jsonScheduleSchema.optional(),
+    }),
+  ]),
 });
 
 class CreateReconversionProjectInputDto extends createZodDto(

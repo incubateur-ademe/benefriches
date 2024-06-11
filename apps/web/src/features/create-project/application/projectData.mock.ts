@@ -1,7 +1,6 @@
 import {
   FinancialAssistanceRevenue,
   PhotovoltaicKeyParameter,
-  ProjectStakeholder,
   ReconversionProjectCreationData,
 } from "../domain/project.types";
 
@@ -19,8 +18,8 @@ export const projectWithMinimalData = {
   yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",
-  developmentPlanCategories: ["RENEWABLE_ENERGY"],
-  renewableEnergyTypes: ["PHOTOVOLTAIC_POWER_PLANT"],
+  developmentPlanCategory: "RENEWABLE_ENERGY",
+  renewableEnergyType: "PHOTOVOLTAIC_POWER_PLANT",
   photovoltaicKeyParameter: PhotovoltaicKeyParameter.POWER,
   photovoltaicInstallationElectricalPowerKWc: 10000,
   photovoltaicInstallationSurfaceSquareMeters: 40000,
@@ -46,15 +45,15 @@ export const projectWithExhaustiveData = {
   projectDeveloper: {
     name: "developer company name",
     structureType: "company",
-  } as ProjectStakeholder,
+  },
   futureOperator: {
     name: "Future operating company name",
     structureType: "company",
-  } as ProjectStakeholder,
+  },
   futureSiteOwner: {
     name: "Future site owner company name",
     structureType: "company",
-  } as ProjectStakeholder,
+  },
   conversionFullTimeJobsInvolved: 0.3,
   operationsFullTimeJobsInvolved: 2,
   // reinstatement
@@ -62,7 +61,7 @@ export const projectWithExhaustiveData = {
   reinstatementContractOwner: {
     name: "Reinstatement company",
     structureType: "company",
-  } as ProjectStakeholder,
+  },
   reinstatementCosts: {
     total: 34500,
     costs: [{ amount: 34500, purpose: "demolition" }],

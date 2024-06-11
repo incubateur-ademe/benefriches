@@ -139,23 +139,18 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       await trx("reconversion_project_soils_distributions").insert(soilsDistributionToInsert);
 
       // development plans
-      const developmentPlansToInsert: SqlDevelopmentPlan[] =
-        reconversionProject.developmentPlans.map(
-          ({ features, type, cost, installationSchedule, developer }) => {
-            return {
-              id: uuid(),
-              type,
-              developer_name: developer.name,
-              developer_structure_type: developer.structureType,
-              cost,
-              features,
-              schedule_start_date: installationSchedule?.startDate,
-              schedule_end_date: installationSchedule?.endDate,
-              reconversion_project_id: insertedReconversionProject.id,
-            };
-          },
-        );
-      await trx("reconversion_project_development_plans").insert(developmentPlansToInsert);
+      const developmentPlanToInsert: SqlDevelopmentPlan = {
+        id: uuid(),
+        type: reconversionProject.developmentPlan.type,
+        developer_name: reconversionProject.developmentPlan.developer.name,
+        developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
+        cost: reconversionProject.developmentPlan.cost,
+        features: reconversionProject.developmentPlan.features,
+        schedule_start_date: reconversionProject.developmentPlan.installationSchedule?.startDate,
+        schedule_end_date: reconversionProject.developmentPlan.installationSchedule?.endDate,
+        reconversion_project_id: insertedReconversionProject.id,
+      };
+      await trx("reconversion_project_development_plans").insert(developmentPlanToInsert);
 
       if (reconversionProject.yearlyProjectedCosts.length > 0) {
         const yearlyExpensesToInsert: SqlExpense[] = reconversionProject.yearlyProjectedCosts.map(

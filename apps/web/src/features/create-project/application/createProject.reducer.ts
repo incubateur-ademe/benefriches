@@ -88,8 +88,6 @@ export const getInitialState = (): ProjectCreationState => {
       id: uuid(),
       yearlyProjectedCosts: [],
       yearlyProjectedRevenues: [],
-      developmentPlanCategories: [],
-      renewableEnergyTypes: [],
     },
     siteData: undefined,
     siteDataLoadingState: "idle",
@@ -119,18 +117,15 @@ export const projectCreationSlice = createSlice({
     resetState: () => {
       return getInitialState();
     },
-    completeDevelopmentPlanCategories: (
-      state,
-      action: PayloadAction<DevelopmentPlanCategory[]>,
-    ) => {
-      state.projectData.developmentPlanCategories = action.payload;
+    completeDevelopmentPlanCategories: (state, action: PayloadAction<DevelopmentPlanCategory>) => {
+      state.projectData.developmentPlanCategory = action.payload;
       state.stepsHistory.push("RENEWABLE_ENERGY_TYPES");
     },
     completeRenewableEnergyDevelopmentPlanType: (
       state,
-      action: PayloadAction<RenewableEnergyDevelopmentPlanType[]>,
+      action: PayloadAction<RenewableEnergyDevelopmentPlanType>,
     ) => {
-      state.projectData.renewableEnergyTypes = action.payload;
+      state.projectData.renewableEnergyType = action.payload;
       state.stepsHistory.push("PHOTOVOLTAIC_KEY_PARAMETER");
     },
     completeSoilsTransformationIntroductionStep: (state) => {
@@ -490,9 +485,9 @@ export const selectCurrentStep = createSelector(
 
 const { revertStep } = projectCreationSlice.actions;
 export const revertDevelopmentPlanCategories = () =>
-  revertStep({ resetFields: ["developmentPlanCategories"] });
+  revertStep({ resetFields: ["developmentPlanCategory"] });
 export const revertRenewableEnergyDevelopmentPlanType = () =>
-  revertStep({ resetFields: ["renewableEnergyTypes"] });
+  revertStep({ resetFields: ["renewableEnergyType"] });
 export const revertSoilsTransformationIntroductionStep = () => revertStep();
 export const revertNonSuitableSoilsNoticeStep = () => revertStep();
 export const revertNonSuitableSoilsSelectionStep = () =>

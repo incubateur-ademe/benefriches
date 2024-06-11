@@ -10,8 +10,8 @@ function ProjectRenewableEnergyTypesFormContainer() {
   const dispatch = useAppDispatch();
   return (
     <RenewableEnergyTypeForm
-      onSubmit={(data) => {
-        dispatch(completeRenewableEnergyDevelopmentPlanType(data.renewableEnergyTypes));
+      onSubmit={({ renewableEnergyType }) => {
+        dispatch(completeRenewableEnergyDevelopmentPlanType(renewableEnergyType));
       }}
       onBack={() => dispatch(revertRenewableEnergyDevelopmentPlanType())}
     />

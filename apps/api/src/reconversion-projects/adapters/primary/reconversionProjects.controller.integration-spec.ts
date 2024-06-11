@@ -46,7 +46,7 @@ describe("ReconversionProjects controller", () => {
       "name",
       "createdBy",
       "relatedSiteId",
-      "developmentPlans",
+      "developmentPlan",
       "soilsDistribution",
       "yearlyProjectedCosts",
       "yearlyProjectedRevenues",
