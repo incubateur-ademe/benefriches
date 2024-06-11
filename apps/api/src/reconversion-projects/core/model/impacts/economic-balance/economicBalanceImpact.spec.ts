@@ -135,7 +135,7 @@ describe("EconomicBalance impact", () => {
       });
     });
 
-    it("should not use reinstatement cost in balance if operator is not the reinstatement cost owner", () => {
+    it("should not use reinstatement cost and financial assistance revenues in balance if operator is not the reinstatement cost owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
           financialAssistanceRevenues: [
@@ -154,10 +154,10 @@ describe("EconomicBalance impact", () => {
           futureOperatorName: "Mairie de Blajan",
           developmentPlanDeveloperName: "Mairie de Blajan",
           futureSiteOwnerName: "Acheteur",
-          reinstatementContractOwnerName: "Propriétaire",
+          reinstatementContractOwnerName: "Un autre acteur",
         }),
       ).toEqual({
-        total: 50000 - 95000,
+        total: -95000,
         costs: {
           total: 95000,
           developmentPlanInstallation: {
@@ -169,14 +169,7 @@ describe("EconomicBalance impact", () => {
           },
         },
         revenues: {
-          total: 50000,
-          financialAssistance: {
-            total: 50000,
-            revenues: [
-              { amount: 45000, source: "public_subsidies" },
-              { amount: 5000, source: "other" },
-            ],
-          },
+          total: 0,
         },
       });
     });
