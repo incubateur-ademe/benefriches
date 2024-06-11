@@ -2,7 +2,6 @@ import { soilTypeSchema } from "shared";
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
-import { sumList } from "@/shared/services/sum/sum";
 
 const scheduleSchema = z.object({
   startDate: z.date(),
@@ -12,6 +11,7 @@ const scheduleSchema = z.object({
 export type Schedule = z.infer<typeof scheduleSchema>;
 
 const costSchema = z.object({ amount: z.number().nonnegative(), purpose: z.string() });
+const revenueSchema = z.object({ amount: z.number().nonnegative(), source: z.string() });
 
 const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),
@@ -46,11 +46,9 @@ const saveProjectSchema = z.object({
   realEstateTransactionSellingPrice: z.number().nonnegative().optional(),
   realEstateTransactionPropertyTransferDuties: z.number().nonnegative().optional(),
   reinstatementCosts: costSchema.array().optional(),
-  financialAssistanceRevenues: z.number().nonnegative().optional(),
+  financialAssistanceRevenues: revenueSchema.array(),
   yearlyProjectedCosts: costSchema.array(),
-  yearlyProjectedRevenues: z
-    .object({ amount: z.number().nonnegative(), source: z.string() })
-    .array(),
+  yearlyProjectedRevenues: revenueSchema.array(),
   soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
   operationsFirstYear: z.number().nonnegative().optional(),
@@ -86,9 +84,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       realEstateTransactionSellingPrice: projectData.realEstateTransactionSellingPrice,
       realEstateTransactionPropertyTransferDuties:
         projectData.realEstateTransactionPropertyTransferDuties,
-      financialAssistanceRevenues: sumList(
-        projectData.financialAssistanceRevenues?.map(({ amount }) => amount) ?? [],
-      ),
+      financialAssistanceRevenues: projectData.financialAssistanceRevenues,
       yearlyProjectedCosts: projectData.yearlyProjectedCosts,
       yearlyProjectedRevenues: projectData.yearlyProjectedRevenues,
       soilsDistribution: projectData.soilsDistribution,
