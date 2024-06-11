@@ -215,7 +215,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           },
         ]);
       });
-      it("Saves right data in table reconversion_projects_development_plans", async () => {
+      it("Saves right data in table reconversion_projects_development_plans and reconversion_project_development_plan_costs", async () => {
         const siteId = await insertSiteInDb();
         const reconversionProject = buildReconversionProject({
           ...buildExhaustiveReconversionProjectProps(),
@@ -224,22 +224,32 @@ describe("SqlReconversionProjectRepository integration", () => {
 
         await reconversionProjectRepository.save(reconversionProject);
 
-        const developmentPlanResult = await sqlConnection(
-          "reconversion_project_development_plans",
-        ).select(
-          "type",
-          "features",
-          "reconversion_project_id",
-          "cost",
-          "developer_structure_type",
-          "developer_name",
-          "schedule_start_date",
-          "schedule_end_date",
-        );
-        expect(developmentPlanResult).toEqual([
+        const result = await sqlConnection("reconversion_project_development_plans as dp")
+          .leftJoin(
+            "reconversion_project_development_plan_costs as cost",
+            "dp.id",
+            "=",
+            "cost.development_plan_id",
+          )
+          .select(
+            "dp.type",
+            "dp.features",
+            "dp.developer_structure_type",
+            "dp.developer_name",
+            "dp.schedule_start_date",
+            "dp.schedule_end_date",
+            "dp.reconversion_project_id",
+            sqlConnection.raw(`
+              CASE 
+                WHEN count(cost.id) = 0 THEN '[]'::json
+                ELSE json_agg(json_build_object('amount', cost.amount, 'purpose', cost.purpose)) 
+              END as "costs"
+            `),
+          )
+          .groupBy("dp.id");
+        expect(result).toEqual([
           {
             type: reconversionProject.developmentPlan.type,
-            cost: 1300,
             features: reconversionProject.developmentPlan.features,
             developer_name: reconversionProject.developmentPlan.developer.name,
             developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
@@ -247,6 +257,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             schedule_start_date:
               reconversionProject.developmentPlan.installationSchedule?.startDate,
             schedule_end_date: reconversionProject.developmentPlan.installationSchedule?.endDate,
+            costs: reconversionProject.developmentPlan.costs,
           },
         ]);
       });

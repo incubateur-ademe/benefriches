@@ -9,6 +9,8 @@ export const photovoltaicPowerStationFeaturesSchema = z.object({
   contractDuration: z.number().nonnegative(),
 });
 
+export const costSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
+
 const scheduleSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
@@ -19,7 +21,7 @@ export type Schedule = z.infer<typeof scheduleSchema>;
 const baseDevelopmentPlanSchema = z.object({
   type: z.string(),
   developer: z.object({ name: z.string(), structureType: z.string() }),
-  cost: z.number().nonnegative(),
+  costs: costSchema.array(),
   installationSchedule: scheduleSchema.optional(),
 });
 
@@ -31,8 +33,6 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
 ]);
 
 export type DevelopmentPlan = z.infer<typeof developmentPlanSchema>;
-
-const costSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
 
 export const reconversionProjectSchema = z.object({
   id: z.string().uuid(),

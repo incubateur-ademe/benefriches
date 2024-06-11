@@ -57,13 +57,19 @@ type SqlSoilsDistribution = {
 type SqlDevelopmentPlan = {
   id: string;
   type: string;
-  cost: number;
   developer_name: string;
   developer_structure_type: string;
   features: unknown;
   reconversion_project_id: string;
   schedule_start_date?: Date;
   schedule_end_date?: Date;
+};
+
+type SqlDevelopmentPlanCost = {
+  id: string;
+  purpose: string;
+  amount: number;
+  development_plan_id: string;
 };
 
 type SqlExpense = {
@@ -138,19 +144,30 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       });
       await trx("reconversion_project_soils_distributions").insert(soilsDistributionToInsert);
 
-      // development plans
+      // development plan
       const developmentPlanToInsert: SqlDevelopmentPlan = {
         id: uuid(),
         type: reconversionProject.developmentPlan.type,
         developer_name: reconversionProject.developmentPlan.developer.name,
         developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
-        cost: reconversionProject.developmentPlan.cost,
         features: reconversionProject.developmentPlan.features,
         schedule_start_date: reconversionProject.developmentPlan.installationSchedule?.startDate,
         schedule_end_date: reconversionProject.developmentPlan.installationSchedule?.endDate,
         reconversion_project_id: insertedReconversionProject.id,
       };
       await trx("reconversion_project_development_plans").insert(developmentPlanToInsert);
+      if (reconversionProject.developmentPlan.costs.length > 0) {
+        const costsToInsert: SqlDevelopmentPlanCost[] =
+          reconversionProject.developmentPlan.costs.map(({ amount, purpose }) => {
+            return {
+              id: uuid(),
+              amount,
+              purpose,
+              development_plan_id: developmentPlanToInsert.id,
+            };
+          });
+        await trx("reconversion_project_development_plan_costs").insert(costsToInsert);
+      }
 
       if (reconversionProject.yearlyProjectedCosts.length > 0) {
         const yearlyExpensesToInsert: SqlExpense[] = reconversionProject.yearlyProjectedCosts.map(

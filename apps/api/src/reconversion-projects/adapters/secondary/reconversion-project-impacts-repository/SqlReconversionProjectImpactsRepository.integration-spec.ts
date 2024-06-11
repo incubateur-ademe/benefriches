@@ -66,9 +66,10 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           surface_area: 30000,
         },
       ]);
+      const developmentPlanId = uuid();
       await sqlConnection("reconversion_project_development_plans").insert([
         {
-          id: uuid(),
+          id: developmentPlanId,
           reconversion_project_id: reconversionProjectId,
           schedule_start_date: new Date("2025-01-01"),
           schedule_end_date: new Date("2025-05-15"),
@@ -82,6 +83,21 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           },
         },
       ]);
+      await sqlConnection("reconversion_project_development_plan_costs").insert([
+        {
+          id: uuid(),
+          development_plan_id: developmentPlanId,
+          amount: 35000,
+          purpose: "technical_studies",
+        },
+        {
+          id: uuid(),
+          development_plan_id: developmentPlanId,
+          amount: 125000,
+          purpose: "installation_works",
+        },
+      ]);
+
       await sqlConnection("reconversion_project_reinstatement_costs").insert([
         {
           id: uuid(),
@@ -96,7 +112,6 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           purpose: "deimpermeabilization",
         },
       ]);
-
       const result = await repository.getById(reconversionProjectId);
 
       expect(result).toEqual<Required<ReconversionProjectImpactsDataView>>({
@@ -126,7 +141,16 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         futureSiteOwnerName: "Mairie de Blajan",
         reinstatementContractOwnerName: "Mairie de Blajan",
         realEstateTransactionTotalCost: 108000,
-        developmentPlanInstallationCost: 0,
+        developmentPlanInstallationCosts: [
+          {
+            amount: 35000,
+            purpose: "technical_studies",
+          },
+          {
+            amount: 125000,
+            purpose: "installation_works",
+          },
+        ],
         financialAssistanceRevenues: 0,
         yearlyProjectedCosts: [],
         yearlyProjectedRevenues: [],
@@ -195,7 +219,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         yearlyProjectedRevenues: [],
         conversionFullTimeJobs: undefined,
         conversionSchedule: undefined,
-        developmentPlanInstallationCost: 0,
+        developmentPlanInstallationCosts: [],
         developmentPlanDeveloperName: undefined,
         futureOperatorName: undefined,
         futureSiteOwnerName: undefined,

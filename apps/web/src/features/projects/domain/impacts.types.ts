@@ -3,6 +3,10 @@ import { SoilType } from "shared";
 type SourceRevenue = "operations" | "other";
 
 type OperationsCost = { purpose: "rent" | "maintenance" | "taxes" | "other"; amount: number };
+type DevelopmentPlanInstallationCost = {
+  purpose: "technical_studies" | "installation_works" | "other";
+  amount: number;
+};
 type GenericCost = { purpose: string; amount: number };
 
 type CostsTotalAndDetails<TCost> = {
@@ -105,7 +109,7 @@ export type ReconversionProjectImpacts = {
       total: number;
       operationsCosts?: CostsTotalAndDetails<OperationsCost>;
       siteReinstatement?: CostsTotalAndDetails<GenericCost>;
-      developmentPlanInstallation: number;
+      developmentPlanInstallation?: CostsTotalAndDetails<DevelopmentPlanInstallationCost>;
       realEstateTransaction?: number;
     };
     revenues: {

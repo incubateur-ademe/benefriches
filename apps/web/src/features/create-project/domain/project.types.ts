@@ -57,7 +57,7 @@ export type ReinstatementCosts = {
 
 export type PhotovoltaicInstallationCost = {
   amount: number;
-  purpose: "technical_studies" | "installation_work" | "other";
+  purpose: "technical_studies" | "installation_works" | "other";
 };
 
 export type FinancialAssistanceRevenue = {
@@ -205,7 +205,7 @@ export const getLabelForPhotovoltaicInstallationCostPurpose = (
   switch (photovoltaicCostPurpose) {
     case "technical_studies":
       return "📋 Études et honoraires techniques";
-    case "installation_work":
+    case "installation_works":
       return "🛠 Travaux d'installation des panneaux";
     case "other":
       return "⚡️ Autres frais d'installation des panneaux";

@@ -26,7 +26,7 @@ export const projectWithMinimalData = {
   photovoltaicExpectedAnnualProduction: 50000,
   photovoltaicContractDuration: 20,
   photovoltaicPanelsInstallationCosts: [
-    { amount: 20000, purpose: "installation_work" },
+    { amount: 20000, purpose: "installation_works" },
     { amount: 210000, purpose: "technical_studies" },
   ],
   financialAssistanceRevenues: [],

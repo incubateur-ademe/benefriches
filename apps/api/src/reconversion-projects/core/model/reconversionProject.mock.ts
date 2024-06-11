@@ -8,7 +8,7 @@ const baseReconversionProjectProps: ReconversionProjectProps = {
   name: "Centrale photovoltaique",
   developmentPlan: {
     type: "PHOTOVOLTAIC_POWER_PLANT",
-    cost: 1300,
+    costs: [{ amount: 130000, purpose: "installation_works" }],
     developer: {
       structureType: "company",
       name: "Terre cuite d’occitanie",
@@ -47,7 +47,10 @@ export const buildExhaustiveReconversionProjectProps = (): Required<Reconversion
     ...baseReconversionProjectProps,
     developmentPlan: {
       type: "PHOTOVOLTAIC_POWER_PLANT",
-      cost: 1300,
+      costs: [
+        { amount: 130000, purpose: "installation_works" },
+        { amount: 59999, purpose: "technical_studies" },
+      ],
       developer: {
         name: "developer company name",
         structureType: "company",
