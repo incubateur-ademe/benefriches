@@ -41,7 +41,7 @@ const readCsvData = async () => {
       reject(error);
     });
     rl.on("close", () => {
-      console.log(`Data parsing completed: ${data.length} lines found`);
+      console.log(`Carbon storage data parsing completed: ${data.length} lines found`);
       resolve(data);
     });
   });
@@ -60,7 +60,7 @@ exports.seed = async function (knex: Knex): Promise<void> {
         console.log(`${ids.length} lines inserted`);
       })
       .catch(function (error: unknown) {
-        console.warn(`Error while inserting cities`);
+        console.warn(`Error while inserting carbon storage`);
         console.error(error);
       });
   } catch (error) {

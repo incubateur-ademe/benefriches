@@ -34,7 +34,18 @@ const readCsvData = async () => {
         codeSerGroup,
         codeSer,
         codePoplarPool,
-      ] = line.split(";");
+      ] = line.split(";") as [
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+        string,
+      ];
       const city = City.create({
         insee,
         name,

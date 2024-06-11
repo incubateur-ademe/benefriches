@@ -34,11 +34,12 @@ const filterCarbonStorageByLocalisationPriority = (carbonStorage: CarbonStorage[
     const existingIndex = result.findIndex(
       (element) => element.soilCategory === entry.soilCategory,
     );
-    if (existingIndex === -1) {
+    const existingEntry = result[existingIndex];
+    if (!existingEntry) {
       return [...result, entry];
     }
 
-    const { localisationCategory } = result[existingIndex];
+    const { localisationCategory } = existingEntry;
     const currentPosition = localisationPriorityOrder.indexOf(localisationCategory);
     const elemPosition = localisationPriorityOrder.indexOf(entry.localisationCategory);
     if (elemPosition < currentPosition) {
@@ -46,7 +47,7 @@ const filterCarbonStorageByLocalisationPriority = (carbonStorage: CarbonStorage[
       newResult[existingIndex] = entry;
       return newResult;
     }
-    return [...result];
+    return result;
   }, []);
 };
 
