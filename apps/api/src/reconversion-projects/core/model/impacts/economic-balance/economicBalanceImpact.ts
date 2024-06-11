@@ -112,16 +112,18 @@ export const getEconomicResultsOfProjectInstallation = ({
     ...costDetails,
   };
 
-  const financialAssistanceRevenuesWithTotal = financialAssistanceRevenues?.length
-    ? getFinancialAssistanceRevenuesWithTotalAmount(financialAssistanceRevenues)
-    : null;
-  const revenues: ReconversionProjectInstallationEconomicResult["revenues"] =
-    financialAssistanceRevenuesWithTotal
-      ? {
-          total: financialAssistanceRevenuesWithTotal.total,
-          financialAssistance: financialAssistanceRevenuesWithTotal,
-        }
-      : { total: 0 };
+  const revenues: ReconversionProjectInstallationEconomicResult["revenues"] = {
+    total: 0,
+  };
+
+  // financial assistance is given for reinstatement works
+  if (financialAssistanceRevenues?.length && isDeveloperOwnerOfReinstatement) {
+    const financialAssistanceRevenuesWithTotal = getFinancialAssistanceRevenuesWithTotalAmount(
+      financialAssistanceRevenues,
+    );
+    revenues.total = financialAssistanceRevenuesWithTotal.total;
+    revenues.financialAssistance = financialAssistanceRevenuesWithTotal;
+  }
 
   const { total: projectInstallationTotalCost } = costs;
   const { total: projectInstallationTotalRevenue } = revenues;
