@@ -143,6 +143,8 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         "id",
       );
 
+      if (!insertedReconversionProject) throw new Error("Failed to insert reconversion project");
+
       // soils distribution
       const soilsDistributionToInsert: SqlSoilsDistribution[] = Object.entries(
         reconversionProject.soilsDistribution,

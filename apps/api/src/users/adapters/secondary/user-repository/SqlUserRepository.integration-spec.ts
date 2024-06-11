@@ -24,17 +24,20 @@ describe("SqlSiteRepository integration", () => {
 
     await userRepository.save(user);
 
-    const [result] = await sqlConnection("users").select().where({ id: user.id });
-    expect(result.id).toEqual(user.id);
-    expect(result.email).toEqual(user.email);
-    expect(result.personal_data_storage_consented_at).toEqual(user.personalDataStorageConsentedAt);
-    expect(result.firstname).toEqual(null);
-    expect(result.lastname).toEqual(null);
-    expect(result.structure_name).toEqual(null);
-    expect(result.structure_type).toEqual(user.structureType);
-    expect(result.structure_activity).toEqual(user.structureActivity);
-    expect(result.personal_data_analytics_use_consented_at).toEqual(null);
-    expect(result.personal_data_communication_use_consented_at).toEqual(null);
+    const result = await sqlConnection("users").select().where({ id: user.id });
+    expect(result).toHaveLength(1);
+    expect(result[0]?.id).toEqual(user.id);
+    expect(result[0]?.email).toEqual(user.email);
+    expect(result[0]?.personal_data_storage_consented_at).toEqual(
+      user.personalDataStorageConsentedAt,
+    );
+    expect(result[0]?.firstname).toEqual(null);
+    expect(result[0]?.lastname).toEqual(null);
+    expect(result[0]?.structure_name).toEqual(null);
+    expect(result[0]?.structure_type).toEqual(user.structureType);
+    expect(result[0]?.structure_activity).toEqual(user.structureActivity);
+    expect(result[0]?.personal_data_analytics_use_consented_at).toEqual(null);
+    expect(result[0]?.personal_data_communication_use_consented_at).toEqual(null);
   });
 
   it("Saves user with full props", async () => {

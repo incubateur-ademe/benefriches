@@ -67,7 +67,7 @@ describe("ReconversionProjects controller", () => {
 
         const responseErrors = (response.body as BadRequestResponseBody).errors;
         expect(responseErrors).toHaveLength(1);
-        expect(responseErrors[0].path).toContain(mandatoryField);
+        expect(responseErrors[0]?.path).toContain(mandatoryField);
       },
     );
 

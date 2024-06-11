@@ -62,8 +62,8 @@ describe("CreateReconversionProject Use Case", () => {
         } catch (err) {
           const zIssues = getZodIssues(err);
           expect(zIssues.length).toEqual(1);
-          expect(zIssues[0].path).toEqual([mandatoryField]);
-          expect(zIssues[0].code).toEqual("invalid_type");
+          expect(zIssues[0]?.path).toEqual([mandatoryField]);
+          expect(zIssues[0]?.code).toEqual("invalid_type");
         }
       });
     });

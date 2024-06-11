@@ -110,6 +110,8 @@ export class SqlSiteRepository implements SitesRepository {
         "id",
       );
 
+      if (!insertedSite) throw new Error("Failed to insert site");
+
       await trx<SqlAddress>("addresses").insert({
         id: uuid(),
         ban_id: site.address.banId,
