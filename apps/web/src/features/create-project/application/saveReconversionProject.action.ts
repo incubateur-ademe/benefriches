@@ -11,6 +11,8 @@ const scheduleSchema = z.object({
 
 export type Schedule = z.infer<typeof scheduleSchema>;
 
+const costSchema = z.object({ amount: z.number().nonnegative(), purpose: z.string() });
+
 const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),
   electricalPowerKWc: z.number().nonnegative(),
@@ -22,13 +24,11 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
   z.object({
     developer: z.object({ name: z.string(), structureType: z.string() }),
     type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
-    cost: z.number().nonnegative(),
+    costs: costSchema.array(),
     features: photovoltaicPowerStationFeaturesSchema,
     installationSchedule: scheduleSchema.optional(),
   }),
 ]);
-
-const costSchema = z.object({ amount: z.number().nonnegative(), purpose: z.string() });
 
 const saveProjectSchema = z.object({
   id: z.string().uuid(),
@@ -97,9 +97,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       developmentPlan: {
         type: "PHOTOVOLTAIC_POWER_PLANT",
         developer: projectData.projectDeveloper,
-        cost: sumList(
-          projectData.photovoltaicPanelsInstallationCosts?.map(({ amount }) => amount) ?? [],
-        ),
+        costs: projectData.photovoltaicPanelsInstallationCosts ?? [],
         installationSchedule: projectData.photovoltaicInstallationSchedule,
         features: {
           surfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters,

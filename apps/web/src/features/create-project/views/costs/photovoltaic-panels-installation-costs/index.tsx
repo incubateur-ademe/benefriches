@@ -23,7 +23,7 @@ const mapFormValuesToPhotovoltaicInstallationCosts = (
         costs.push({ amount: amount, purpose: "technical_studies" });
         break;
       case "worksAmount":
-        costs.push({ amount: amount, purpose: "installation_work" });
+        costs.push({ amount: amount, purpose: "installation_works" });
         break;
       case "otherAmount":
         costs.push({ amount: amount, purpose: "other" });

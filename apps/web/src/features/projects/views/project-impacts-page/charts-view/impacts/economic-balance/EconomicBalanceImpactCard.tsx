@@ -48,16 +48,16 @@ const getCostsValues = ({
   siteReinstatement: Props["costs"]["siteReinstatement"];
   realEstateTransaction: Props["costs"]["realEstateTransaction"];
   operationsCosts: Props["costs"]["operationsCosts"];
-}) => {
+}): { name: string; value: number }[] => {
   const operationsCostsDetailledList = operationsCosts?.costs ?? [];
-  return [
+  const allCosts: { name: string; value?: number }[] = [
     {
       name: "Installation des panneaux photovoltaïque",
-      value: developmentPlanInstallation,
+      value: developmentPlanInstallation?.total,
     },
     {
       name: "Remise en état de la friche",
-      value: siteReinstatement?.total ?? 0,
+      value: siteReinstatement?.total,
     },
     {
       name: "Transaction immobilière",
@@ -67,7 +67,8 @@ const getCostsValues = ({
       name: getYearlyCostPurposeLabel(purpose),
       value: amount,
     })),
-  ].filter((serie) => !!serie.value) as { name: string; value: number }[];
+  ];
+  return allCosts.filter((serie): serie is { name: string; value: number } => !!serie.value);
 };
 
 const getRevenuesValue = ({
@@ -76,7 +77,7 @@ const getRevenuesValue = ({
 }: {
   financialAssistance: Props["revenues"]["financialAssistance"];
   operationsRevenues: Props["revenues"]["operationsRevenues"];
-}) => {
+}): { name: string; value: number }[] => {
   return [
     {
       name: "Aides financières",

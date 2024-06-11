@@ -6,6 +6,7 @@ import ImpactLabel from "../ImpactLabel";
 import ImpactMainTitle from "../ImpactMainTitle";
 import ImpactValue from "../ImpactValue";
 
+import { getLabelForPhotovoltaicInstallationCostPurpose } from "@/features/create-project/domain/project.types";
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
 
@@ -68,10 +69,25 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
         </ImpactItemGroup>
       )}
       {!!impact.costs.developmentPlanInstallation && (
-        <ImpactItemRow>
+        <ImpactItemGroup>
           <ImpactLabel>⚡️ Installation des panneaux photovoltaïques</ImpactLabel>
-          <ImpactValue value={-impact.costs.developmentPlanInstallation} type="monetary" />
-        </ImpactItemRow>
+          <ImpactDetailRow>
+            <ImpactDetailLabel>{impact.bearer ?? "Aménageur"}</ImpactDetailLabel>
+            <ImpactValue
+              isTotal
+              value={-impact.costs.developmentPlanInstallation.total}
+              type="monetary"
+            />
+          </ImpactDetailRow>
+          {impact.costs.developmentPlanInstallation.costs.map(({ amount, purpose }) => (
+            <ImpactDetailRow key={purpose}>
+              <ImpactDetailLabel>
+                {getLabelForPhotovoltaicInstallationCostPurpose(purpose)}
+              </ImpactDetailLabel>
+              <ImpactValue value={-amount} type="monetary" />
+            </ImpactDetailRow>
+          ))}
+        </ImpactItemGroup>
       )}
       {!!impact.revenues.financialAssistance && (
         <ImpactItemRow>

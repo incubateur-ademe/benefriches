@@ -6,6 +6,29 @@ import {
 
 describe("EconomicBalance impact", () => {
   describe("getEconomicResultsOfProjectInstallation", () => {
+    it("should return zero costs in balance when none", () => {
+      expect(
+        getEconomicResultsOfProjectInstallation({
+          financialAssistanceRevenues: 0,
+          reinstatementCosts: [],
+          developmentPlanInstallationCosts: [],
+          realEstateTransactionTotalCost: 0,
+          futureOperatorName: "Mairie de Blajan",
+          developmentPlanDeveloperName: "Mairie de Blajan",
+          futureSiteOwnerName: "Mairie de Blajan",
+          reinstatementContractOwnerName: "Mairie de Blajan",
+        }),
+      ).toEqual({
+        total: 0,
+        costs: {
+          total: 0,
+        },
+        revenues: {
+          total: 0,
+          financialAssistance: 0,
+        },
+      });
+    });
     it("should return all costs and revenues in balance if operator is new site owner and reinstatement cost owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
@@ -14,7 +37,10 @@ describe("EconomicBalance impact", () => {
             { amount: 10000, purpose: "waste_collection" },
             { amount: 39999, purpose: "deimpermebilization" },
           ],
-          developmentPlanInstallationCost: 150000,
+          developmentPlanInstallationCosts: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
           realEstateTransactionTotalCost: 100000,
           futureOperatorName: "Mairie de Blajan",
           developmentPlanDeveloperName: "Mairie de Blajan",
@@ -22,9 +48,9 @@ describe("EconomicBalance impact", () => {
           reinstatementContractOwnerName: "Mairie de Blajan",
         }),
       ).toEqual({
-        total: 50000 - (49999 + 150000 + 100000),
+        total: 50000 - (49999 + 95000 + 100000),
         costs: {
-          total: 49999 + 150000 + 100000,
+          total: 49999 + 95000 + 100000,
           siteReinstatement: {
             total: 49999,
             costs: [
@@ -32,7 +58,13 @@ describe("EconomicBalance impact", () => {
               { amount: 39999, purpose: "deimpermebilization" },
             ],
           },
-          developmentPlanInstallation: 150000,
+          developmentPlanInstallation: {
+            total: 95000,
+            costs: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 45000, purpose: "technical_studies" },
+            ],
+          },
           realEstateTransaction: 100000,
         },
         revenues: {
@@ -50,7 +82,10 @@ describe("EconomicBalance impact", () => {
             { amount: 10000, purpose: "waste_collection" },
             { amount: 39999, purpose: "deimpermebilization" },
           ],
-          developmentPlanInstallationCost: 150000,
+          developmentPlanInstallationCosts: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
           realEstateTransactionTotalCost: 100000,
           futureOperatorName: "Mairie de Blajan",
           developmentPlanDeveloperName: "Mairie de Blajan",
@@ -58,9 +93,9 @@ describe("EconomicBalance impact", () => {
           reinstatementContractOwnerName: "Mairie de Blajan",
         }),
       ).toEqual({
-        total: 50000 - (49999 + 150000),
+        total: 50000 - (49999 + 95000),
         costs: {
-          total: 49999 + 150000,
+          total: 49999 + 95000,
           siteReinstatement: {
             total: 49999,
             costs: [
@@ -68,7 +103,13 @@ describe("EconomicBalance impact", () => {
               { amount: 39999, purpose: "deimpermebilization" },
             ],
           },
-          developmentPlanInstallation: 150000,
+          developmentPlanInstallation: {
+            total: 95000,
+            costs: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 45000, purpose: "technical_studies" },
+            ],
+          },
         },
         revenues: {
           total: 50000,
@@ -85,7 +126,10 @@ describe("EconomicBalance impact", () => {
             { amount: 10000, purpose: "waste_collection" },
             { amount: 39999, purpose: "deimpermebilization" },
           ],
-          developmentPlanInstallationCost: 150000,
+          developmentPlanInstallationCosts: [
+            { amount: 50000, purpose: "installation_works" },
+            { amount: 45000, purpose: "technical_studies" },
+          ],
           realEstateTransactionTotalCost: 100000,
           futureOperatorName: "Mairie de Blajan",
           developmentPlanDeveloperName: "Mairie de Blajan",
@@ -93,10 +137,16 @@ describe("EconomicBalance impact", () => {
           reinstatementContractOwnerName: "Propriétaire",
         }),
       ).toEqual({
-        total: -150000,
+        total: -95000,
         costs: {
-          total: 150000,
-          developmentPlanInstallation: 150000,
+          total: 95000,
+          developmentPlanInstallation: {
+            total: 95000,
+            costs: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 45000, purpose: "technical_studies" },
+            ],
+          },
         },
         revenues: {
           total: 0,
@@ -188,7 +238,10 @@ describe("EconomicBalance impact", () => {
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermebilization" },
             ],
-            developmentPlanInstallationCost: 150000,
+            developmentPlanInstallationCosts: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 45000, purpose: "technical_studies" },
+            ],
             realEstateTransactionTotalCost: 100000,
             futureOperatorName: "Mairie de Blajan",
             developmentPlanDeveloperName: "Mairie de Blajan",
@@ -200,15 +253,21 @@ describe("EconomicBalance impact", () => {
           1,
         ),
       ).toEqual({
-        total: -150000,
+        total: -95000,
         bearer: "Mairie de Blajan",
         costs: {
-          total: 150000,
+          total: 95000,
           operationsCosts: {
             total: 0,
             costs: [],
           },
-          developmentPlanInstallation: 150000,
+          developmentPlanInstallation: {
+            total: 95000,
+            costs: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 45000, purpose: "technical_studies" },
+            ],
+          },
         },
         revenues: {
           total: 0,
@@ -227,7 +286,10 @@ describe("EconomicBalance impact", () => {
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermebilization" },
             ],
-            developmentPlanInstallationCost: 150000,
+            developmentPlanInstallationCosts: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 100000, purpose: "technical_studies" },
+            ],
             realEstateTransactionTotalCost: 100000,
             futureOperatorName: "Mairie de Blajan",
             developmentPlanDeveloperName: "Mairie de Blajan",
@@ -264,7 +326,13 @@ describe("EconomicBalance impact", () => {
               { amount: 39999, purpose: "deimpermebilization" },
             ],
           },
-          developmentPlanInstallation: 150000,
+          developmentPlanInstallation: {
+            total: 150000,
+            costs: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 100000, purpose: "technical_studies" },
+            ],
+          },
         },
         revenues: {
           total: 750000,
@@ -290,7 +358,10 @@ describe("EconomicBalance impact", () => {
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermebilization" },
             ],
-            developmentPlanInstallationCost: 150000,
+            developmentPlanInstallationCosts: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 100000, purpose: "technical_studies" },
+            ],
             realEstateTransactionTotalCost: 100000,
             futureOperatorName: "Exploitant",
             developmentPlanDeveloperName: "Mairie de Blajan",
@@ -306,7 +377,13 @@ describe("EconomicBalance impact", () => {
         bearer: "Mairie de Blajan",
         costs: {
           total: 150000,
-          developmentPlanInstallation: 150000,
+          developmentPlanInstallation: {
+            total: 150000,
+            costs: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 100000, purpose: "technical_studies" },
+            ],
+          },
         },
         revenues: {
           total: 0,
@@ -321,7 +398,10 @@ describe("EconomicBalance impact", () => {
               { amount: 10000, purpose: "waste_collection" },
               { amount: 39999, purpose: "deimpermebilization" },
             ],
-            developmentPlanInstallationCost: 150000,
+            developmentPlanInstallationCosts: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 45000, purpose: "technical_studies" },
+            ],
             realEstateTransactionTotalCost: 100000,
             futureOperatorName: "Exploitant",
             developmentPlanDeveloperName: "Mairie de Blajan",
@@ -340,10 +420,10 @@ describe("EconomicBalance impact", () => {
           20,
         ),
       ).toEqual({
-        total: 50000 - (49999 + 150000),
+        total: 50000 - (49999 + 95000),
         bearer: "Mairie de Blajan",
         costs: {
-          total: 49999 + 150000,
+          total: 49999 + 95000,
           siteReinstatement: {
             total: 49999,
             costs: [
@@ -351,7 +431,13 @@ describe("EconomicBalance impact", () => {
               { amount: 39999, purpose: "deimpermebilization" },
             ],
           },
-          developmentPlanInstallation: 150000,
+          developmentPlanInstallation: {
+            total: 95000,
+            costs: [
+              { amount: 50000, purpose: "installation_works" },
+              { amount: 45000, purpose: "technical_studies" },
+            ],
+          },
         },
         revenues: {
           total: 50000,

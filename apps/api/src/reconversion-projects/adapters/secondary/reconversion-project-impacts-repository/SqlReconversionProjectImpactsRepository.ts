@@ -44,10 +44,40 @@ export class SqlReconversionProjectImpactsRepository
       .select("soil_type", "surface_area")
       .where("reconversion_project_id", reconversionProjectId);
 
-    const sqlDevelopmentPlan = await this.sqlConnection("reconversion_project_development_plans")
-      .select("schedule_start_date", "schedule_end_date", "cost", "features", "developer_name")
-      .where("reconversion_project_id", reconversionProjectId)
-      .first();
+    const sqlDevelopmentPlanResult: {
+      id: string;
+      developer_structure_type: string;
+      developer_name: string;
+      schedule_start_date?: Date;
+      schedule_end_date?: Date;
+      features: unknown;
+      costs: { amount: number; purpose: string }[];
+    }[] = await this.sqlConnection("reconversion_project_development_plans as dp")
+      .where("dp.reconversion_project_id", reconversionProjectId)
+      .leftJoin(
+        "reconversion_project_development_plan_costs as cost",
+        "dp.id",
+        "=",
+        "cost.development_plan_id",
+      )
+      .select(
+        "dp.id",
+        "dp.features",
+        "dp.developer_structure_type",
+        "dp.developer_name",
+        "dp.schedule_start_date",
+        "dp.schedule_end_date",
+        this.sqlConnection.raw(`
+        CASE 
+          WHEN count(cost.id) = 0 THEN '[]'::json
+          ELSE json_agg(json_build_object('amount', cost.amount, 'purpose', cost.purpose)) 
+        END as "costs"
+      `),
+      )
+      .groupBy("dp.id");
+    const sqlDevelopmentPlan = sqlDevelopmentPlanResult[0] as
+      | (typeof sqlDevelopmentPlanResult)[number]
+      | undefined;
     const conversionSchedule =
       sqlDevelopmentPlan?.schedule_start_date && sqlDevelopmentPlan.schedule_end_date
         ? {
@@ -117,7 +147,6 @@ export class SqlReconversionProjectImpactsRepository
       realEstateTransactionPropertyTransferDutiesAmount:
         reconversionProject.real_estate_transaction_property_transfer_duties ?? undefined,
       reinstatementCosts: sqlReinstatementCosts,
-      developmentPlanInstallationCost: sqlDevelopmentPlan?.cost ?? 0,
       financialAssistanceRevenues: reconversionProject.financial_assistance_revenues ?? 0,
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
@@ -125,6 +154,7 @@ export class SqlReconversionProjectImpactsRepository
       developmentPlanSurfaceArea,
       developmentPlanElectricalPowerKWc,
       developmentPlanDeveloperName: sqlDevelopmentPlan?.developer_name ?? undefined,
+      developmentPlanInstallationCosts: sqlDevelopmentPlan?.costs ?? [],
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
     };
   }

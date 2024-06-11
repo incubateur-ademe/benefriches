@@ -1,7 +1,10 @@
 import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
-import { photovoltaicPowerStationFeaturesSchema } from "src/reconversion-projects/core/model/reconversionProject";
+import {
+  costSchema,
+  photovoltaicPowerStationFeaturesSchema,
+} from "src/reconversion-projects/core/model/reconversionProject";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import {
   CreateReconversionProjectUseCase,
@@ -19,7 +22,7 @@ export const createReconversionProjectInputSchema = reconversionProjectPropsSche
   developmentPlan: z.discriminatedUnion("type", [
     z.object({
       type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
-      cost: z.number().nonnegative(),
+      costs: costSchema.array(),
       developer: z.object({ name: z.string(), structureType: z.string() }),
       features: photovoltaicPowerStationFeaturesSchema,
       installationSchedule: jsonScheduleSchema.optional(),
