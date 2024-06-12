@@ -77,20 +77,6 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
     const environmentalMonetary: SocioEconomicImpactByCategory = { total: 0, impacts: [] };
 
     if (allowedCategories.includes("economic_direct")) {
-      const rentalIncomeImpacts = socioEconomicImpacts.filter(
-        (impact) => impact.impact === "rental_income",
-      );
-      if (rentalIncomeImpacts.length > 0) {
-        economicDirect.impacts.push({
-          name: "rental_income",
-          actors: rentalIncomeImpacts.map(({ amount, actor }) => ({
-            value: amount,
-            name: actor,
-          })),
-        });
-        economicDirect.total += sumList(rentalIncomeImpacts.map(({ amount }) => amount));
-      }
-
       const avoidedFricheCostsImpacts = socioEconomicImpacts.filter(
         (impact) => impact.impact === "avoided_friche_costs",
       );
@@ -104,6 +90,20 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
           })),
         });
         economicDirect.total += sumList(avoidedFricheCostsImpacts.map(({ amount }) => amount));
+      }
+
+      const rentalIncomeImpacts = socioEconomicImpacts.filter(
+        (impact) => impact.impact === "rental_income",
+      );
+      if (rentalIncomeImpacts.length > 0) {
+        economicDirect.impacts.push({
+          name: "rental_income",
+          actors: rentalIncomeImpacts.map(({ amount, actor }) => ({
+            value: amount,
+            name: actor,
+          })),
+        });
+        economicDirect.total += sumList(rentalIncomeImpacts.map(({ amount }) => amount));
       }
     }
 
@@ -259,16 +259,19 @@ export const getSocioEconomicProjectImpactsByActorAndCategory = createSelector(
 
     const byCategory = (
       ["economic_direct", "economic_indirect", "environmental_monetary"] as ImpactCategory[]
-    ).map((category) => {
-      const impacts = impactsFiltered.filter((impact) => impact.impactCategory === category);
-      return {
-        name: category,
-        impacts: impacts.map(({ amount, impact }) => ({ value: amount, name: impact })),
-        total: sumList(impacts.map(({ amount }) => amount)),
-      };
-    });
+    )
+      .map((category) => {
+        const impacts = impactsFiltered.filter((impact) => impact.impactCategory === category);
+        return {
+          name: category,
+          impacts: impacts.map(({ amount, impact }) => ({ value: amount, name: impact })),
+          total: sumList(impacts.map(({ amount }) => amount)),
+        };
+      })
+      .filter(({ total }) => total !== 0);
+
     return {
-      total: sumList(socioEconomicImpacts.map(({ amount }) => amount)),
+      total: sumList(impactsFiltered.map(({ amount }) => amount)),
       byActor,
       byCategory,
     };

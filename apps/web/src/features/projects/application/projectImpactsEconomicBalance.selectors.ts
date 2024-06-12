@@ -101,6 +101,19 @@ export const getEconomicBalanceProjectImpacts = createSelector(
       });
     }
 
+    if (economicBalance.revenues.financialAssistance) {
+      impacts.push({
+        name: "financial_assistance",
+        value: economicBalance.revenues.financialAssistance.total,
+        details: economicBalance.revenues.financialAssistance.revenues.map(
+          ({ source, amount }) => ({
+            value: amount,
+            name: source,
+          }),
+        ),
+      });
+    }
+
     if (economicBalance.costs.operationsCosts?.total) {
       impacts.push({
         name: "operations_costs",
@@ -120,19 +133,6 @@ export const getEconomicBalanceProjectImpacts = createSelector(
           value: amount,
           name: source,
         })),
-      });
-    }
-
-    if (economicBalance.revenues.financialAssistance) {
-      impacts.push({
-        name: "financial_assistance",
-        value: economicBalance.revenues.financialAssistance.total,
-        details: economicBalance.revenues.financialAssistance.revenues.map(
-          ({ source, amount }) => ({
-            value: amount,
-            name: source,
-          }),
-        ),
       });
     }
 
