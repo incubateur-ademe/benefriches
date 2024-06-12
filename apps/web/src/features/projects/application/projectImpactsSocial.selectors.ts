@@ -79,19 +79,19 @@ export const getSocialProjectImpacts = createSelector(
           difference: forecast - current,
           details: [
             {
-              name: "operations_full_time_jobs",
-              impact: {
-                base: operations.current,
-                forecast: operations.forecast,
-                difference: operations.forecast - operations.current,
-              },
-            },
-            {
               name: "conversion_full_time_jobs",
               impact: {
                 base: conversion.current,
                 forecast: conversion.forecast,
                 difference: conversion.forecast - conversion.current,
+              },
+            },
+            {
+              name: "operations_full_time_jobs",
+              impact: {
+                base: operations.current,
+                forecast: operations.forecast,
+                difference: operations.forecast - operations.current,
               },
             },
           ],
@@ -111,19 +111,19 @@ export const getSocialProjectImpacts = createSelector(
           difference: current - forecast,
           details: [
             {
-              name: "avoided_severe_accidents",
-              impact: {
-                base: severeInjuries.forecast,
-                forecast: severeInjuries.current,
-                difference: severeInjuries.current - severeInjuries.forecast,
-              },
-            },
-            {
               name: "avoided_minor_accidents",
               impact: {
                 base: minorInjuries.forecast,
                 forecast: minorInjuries.current,
                 difference: minorInjuries.current - minorInjuries.forecast,
+              },
+            },
+            {
+              name: "avoided_severe_accidents",
+              impact: {
+                base: severeInjuries.forecast,
+                forecast: severeInjuries.current,
+                difference: severeInjuries.current - severeInjuries.forecast,
               },
             },
           ],
