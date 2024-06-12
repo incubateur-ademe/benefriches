@@ -21,7 +21,6 @@ function ProjectsImpacts({ projectId }: Props) {
   const {
     projectData,
     relatedSiteData,
-    impactsData,
     dataLoadingState,
     evaluationPeriod,
     currentCategoryFilter,
@@ -36,7 +35,6 @@ function ProjectsImpacts({ projectId }: Props) {
     <ProjectImpactsPageWrapper
       projectData={projectData}
       relatedSiteData={relatedSiteData}
-      impactsData={impactsData}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
       currentViewMode={currentViewMode}

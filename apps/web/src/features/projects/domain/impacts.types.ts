@@ -1,13 +1,25 @@
 import { SoilType } from "shared";
 
-type SourceRevenue = "operations" | "other";
-
-type OperationsCost = { purpose: "rent" | "maintenance" | "taxes" | "other"; amount: number };
-type DevelopmentPlanInstallationCost = {
+export type SourceRevenue = "operations" | "other";
+export type FinancialAssistance = "local_or_regional_authority_participation" | "public_subsidies";
+export type DevelopmentPlanInstallationCost = {
   purpose: "technical_studies" | "installation_works" | "other";
   amount: number;
 };
-type GenericCost = { purpose: string; amount: number };
+export type OperationsCost = {
+  purpose: "rent" | "maintenance" | "taxes" | "other";
+  amount: number;
+};
+export type ReinstatementCost = {
+  purpose:
+    | "asbestos_removal"
+    | "sustainable_soils_reinstatement"
+    | "deimpermeabilization"
+    | "remediation"
+    | "demolition"
+    | "waste_collection";
+  amount: number;
+};
 
 type CostsTotalAndDetails<TCost> = {
   total: number;
@@ -108,8 +120,8 @@ export type ReconversionProjectImpacts = {
     costs: {
       total: number;
       operationsCosts?: CostsTotalAndDetails<OperationsCost>;
-      siteReinstatement?: CostsTotalAndDetails<GenericCost>;
       developmentPlanInstallation?: CostsTotalAndDetails<DevelopmentPlanInstallationCost>;
+      siteReinstatement?: CostsTotalAndDetails<ReinstatementCost>;
       realEstateTransaction?: number;
     };
     revenues: {
@@ -121,7 +133,7 @@ export type ReconversionProjectImpacts = {
       };
       financialAssistance?: {
         total: number;
-        revenues: { source: string; amount: number }[];
+        revenues: { source: FinancialAssistance; amount: number }[];
       };
     };
   };

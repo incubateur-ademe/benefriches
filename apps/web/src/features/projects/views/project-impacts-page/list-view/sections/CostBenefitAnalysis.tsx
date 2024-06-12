@@ -1,19 +1,20 @@
-import ImpactItemRow from "../ImpactItemRow";
-import ImpactLabel from "../ImpactLabel";
+import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactMainTitle from "../ImpactMainTitle";
-import ImpactValue from "../ImpactValue";
 
-import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+import { SocioEconomicDetailedImpact } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
 
 type Props = {
-  socioEconomicImpactTotal: ReconversionProjectImpacts["socioeconomic"]["total"];
-  economicBalanceImpactTotal: ReconversionProjectImpacts["economicBalance"]["total"];
+  socioEconomicImpactTotal: SocioEconomicDetailedImpact["total"];
+  economicBalanceImpactTotal: EconomicBalance["total"];
+  economicBalanceBearer?: string;
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 const CostBenefitAnalysisListSection = ({
   socioEconomicImpactTotal,
+  economicBalanceBearer,
   economicBalanceImpactTotal,
   openImpactDescriptionModal,
 }: Props) => {
@@ -25,22 +26,35 @@ const CostBenefitAnalysisListSection = ({
           openImpactDescriptionModal("cost-benefit-analysis");
         }}
       />
-      <ImpactItemRow
-        onClick={() => {
-          openImpactDescriptionModal("economic-balance");
-        }}
-      >
-        <ImpactLabel>📉 Bilan de l'opération</ImpactLabel>
-        <ImpactValue isTotal value={economicBalanceImpactTotal} type="monetary" />
-      </ImpactItemRow>
-      <ImpactItemRow
+      {economicBalanceImpactTotal !== 0 && (
+        <ImpactActorsItem
+          label="📉 Bilan de l'opération"
+          onClick={() => {
+            openImpactDescriptionModal("economic-balance");
+          }}
+          actors={[
+            {
+              label: economicBalanceBearer ?? "Aménageur",
+              value: economicBalanceImpactTotal,
+            },
+          ]}
+          type="monetary"
+        />
+      )}
+
+      <ImpactActorsItem
+        label="🌎 Impacts socio-économiques"
         onClick={() => {
           openImpactDescriptionModal("socio-economic");
         }}
-      >
-        <ImpactLabel>🌎 Impacts socio-économiques</ImpactLabel>
-        <ImpactValue isTotal value={socioEconomicImpactTotal} type="monetary" />
-      </ImpactItemRow>
+        actors={[
+          {
+            label: "Bien commun",
+            value: socioEconomicImpactTotal,
+          },
+        ]}
+        type="monetary"
+      />
     </section>
   );
 };

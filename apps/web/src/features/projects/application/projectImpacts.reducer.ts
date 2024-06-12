@@ -1,9 +1,11 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SoilsDistribution } from "shared";
 import {
   fetchReconversionProjectImpacts,
   ReconversionProjectImpactsResult,
 } from "./fetchReconversionProjectImpacts.action";
+
+import { RootState } from "@/app/application/store";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -92,5 +94,12 @@ export const projectImpactsSlice = createSlice({
 });
 
 export const { setEvaluationPeriod, setCategoryFilter, setViewMode } = projectImpactsSlice.actions;
+
+const selectSelf = (state: RootState) => state.projectImpacts;
+
+export const getProjectName = createSelector(
+  selectSelf,
+  (state): string => state.projectData?.name ?? "Project",
+);
 
 export default projectImpactsSlice.reducer;

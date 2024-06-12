@@ -2,110 +2,36 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 
-import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-impacts-page/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
-
-type PurposeCost = "rent" | "maintenance" | "taxes" | "other";
-type SourceRevenue = "operations" | "other";
+import { sumList } from "@/shared/services/sum/sum";
 
 type Props = {
-  costs: ReconversionProjectImpacts["economicBalance"]["costs"];
-  revenues: ReconversionProjectImpacts["economicBalance"]["revenues"];
+  economicBalance: EconomicBalance["economicBalance"];
+  bearer?: string;
   onTitleClick: () => void;
 };
 
-const getYearlyCostPurposeLabel = (purpose: PurposeCost) => {
-  switch (purpose) {
-    case "rent":
-      return "Loyer";
-    case "maintenance":
-      return "Maintenance";
-    case "taxes":
-      return "Taxes et impôts";
-    case "other":
-      return "Autres dépenses";
-  }
-};
+function EconomicBalanceImpactCard({ economicBalance, onTitleClick, bearer = "Aménageur" }: Props) {
+  const totalValues = economicBalance.map(({ value }) => value);
 
-const getYearlyRevenueSourceLabel = (source: SourceRevenue) => {
-  switch (source) {
-    case "operations":
-      return "Recettes d'exploitation";
-    case "other":
-      return "Autres recettes";
-  }
-};
-
-const getCostsValues = ({
-  developmentPlanInstallation,
-  siteReinstatement,
-  realEstateTransaction,
-  operationsCosts,
-}: {
-  developmentPlanInstallation: Props["costs"]["developmentPlanInstallation"];
-  siteReinstatement: Props["costs"]["siteReinstatement"];
-  realEstateTransaction: Props["costs"]["realEstateTransaction"];
-  operationsCosts: Props["costs"]["operationsCosts"];
-}): { name: string; value: number }[] => {
-  const operationsCostsDetailledList = operationsCosts?.costs ?? [];
-  const allCosts: { name: string; value?: number }[] = [
-    {
-      name: "Installation des panneaux photovoltaïque",
-      value: developmentPlanInstallation?.total,
-    },
-    {
-      name: "Remise en état de la friche",
-      value: siteReinstatement?.total,
-    },
-    {
-      name: "Transaction immobilière",
-      value: realEstateTransaction,
-    },
-    ...operationsCostsDetailledList.map(({ amount, purpose }) => ({
-      name: getYearlyCostPurposeLabel(purpose),
-      value: amount,
-    })),
-  ];
-  return allCosts.filter((serie): serie is { name: string; value: number } => !!serie.value);
-};
-
-const getRevenuesValue = ({
-  financialAssistance,
-  operationsRevenues,
-}: {
-  financialAssistance: Props["revenues"]["financialAssistance"];
-  operationsRevenues: Props["revenues"]["operationsRevenues"];
-}): { name: string; value: number }[] => {
-  return [
-    {
-      name: "Aides financières",
-      value: financialAssistance,
-    },
-    ...(operationsRevenues?.revenues ?? []).map(({ amount, source }) => ({
-      name: getYearlyRevenueSourceLabel(source),
-      value: amount,
-    })),
-  ].filter((serie) => !!serie.value) as { name: string; value: number }[];
-};
-
-function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
-  const { financialAssistance, operationsRevenues } = revenues;
-  const { operationsCosts, developmentPlanInstallation, siteReinstatement, realEstateTransaction } =
-    costs;
+  const totalRevenues = sumList(totalValues.filter((value) => value > 0));
+  const totalCosts = sumList(totalValues.filter((value) => value < 0));
 
   const barChartOptions: Highcharts.Options = {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [
-        `<strong>Dépenses</strong><br>${formatMonetaryImpact(-costs.total)}`,
-        `<strong>Recettes</strong><br>${formatMonetaryImpact(revenues.total)}`,
+        `<strong>Dépenses</strong><br>${formatMonetaryImpact(totalCosts)}`,
+        `<strong>Recettes</strong><br>${formatMonetaryImpact(totalRevenues)}`,
       ],
       opposite: true,
     },
     tooltip: {
-      valueSuffix: ` €`,
+      format: "<strong>{series.name}</strong><br>{point.customTooltip}",
     },
     plotOptions: {
       column: {
@@ -115,28 +41,23 @@ function EconomicBalanceImpactCard({ revenues, costs, onTitleClick }: Props) {
     legend: {
       enabled: false,
     },
-    series: [
-      ...(getRevenuesValue({ operationsRevenues, financialAssistance }).map(({ name, value }) => ({
-        name,
-        data: [0, roundTo2Digits(value)],
+    series: economicBalance.map(({ value, name }) => {
+      const point = {
+        y: roundTo2Digits(value),
+        customTooltip: `${bearer} : ${formatMonetaryImpact(value)}`,
+      };
+
+      return {
+        name: getEconomicBalanceImpactLabel(name),
+        data: value > 0 ? [0, point] : [point, 0],
         type: "column",
-      })) as Array<Highcharts.SeriesOptionsType>),
-      ...(getCostsValues({
-        operationsCosts,
-        developmentPlanInstallation,
-        realEstateTransaction,
-        siteReinstatement,
-      }).map(({ name, value }) => ({
-        name,
-        data: [-roundTo2Digits(value), 0],
-        type: "column",
-      })) as Array<Highcharts.SeriesOptionsType>),
-    ],
+      };
+    }) as Array<Highcharts.SeriesOptionsType>,
   };
 
   return (
     <ImpactCard title="Bilan de l'opération" onTitleClick={onTitleClick}>
-      {revenues.total === 0 && costs.total === 0 ? (
+      {economicBalance.length === 0 ? (
         <div>Vous n'avez pas renseigné de coûts ni de dépenses pour ce projet.</div>
       ) : (
         <HighchartsReact

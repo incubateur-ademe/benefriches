@@ -48,6 +48,7 @@ export default {
       impacts: {
         title: "var(--blue-ecume-sun-247-moon-675)",
         main: "#ECF5FD",
+        dark: "#D9EBFC",
         positive: {
           main: "#18753C",
           light: "#51DB86",
