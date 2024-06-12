@@ -4,20 +4,34 @@ import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   economicBalanceTotal: number;
   socioEconomicImpactsTotal: number;
+  economicBalanceBearer?: string;
   onTitleClick: () => void;
 };
 
 function CostBenefitAnalysisCard({
   economicBalanceTotal,
   socioEconomicImpactsTotal,
+  economicBalanceBearer = "Aménageur",
   onTitleClick,
 }: Props) {
+  const highchartPoints = [
+    {
+      y: roundTo2Digits(economicBalanceTotal),
+      name: "Bilan de l'opération",
+      customTooltip: `<strong>${economicBalanceBearer}</strong> : ${formatMonetaryImpact(economicBalanceTotal)}`,
+    },
+    {
+      y: roundTo2Digits(socioEconomicImpactsTotal),
+      name: "Impacts socio-économiques",
+      customTooltip: `<strong>Bien commun</strong> : ${formatMonetaryImpact(socioEconomicImpactsTotal)}`,
+    },
+  ];
+
   const barChartOptions: Highcharts.Options = {
     ...baseColumnChartConfig,
     chart: {
@@ -35,17 +49,12 @@ function CostBenefitAnalysisCard({
       enabled: false,
     },
     tooltip: {
-      formatter: function () {
-        return `<span style="font-size: 0.8em;">${this.series.name}</span><br>${this.point.name} : <strong>${formatNumberFr(this.y ?? 0)} €</strong>`;
-      },
+      format: "{point.customTooltip}",
     },
     series: [
       {
         name: "Analyse coûts bénéfices",
-        data: [
-          { y: roundTo2Digits(economicBalanceTotal), name: "Bilan de l'opération" },
-          { y: roundTo2Digits(socioEconomicImpactsTotal), name: "Impacts socio-économiques" },
-        ],
+        data: highchartPoints,
         type: "column",
       },
     ],

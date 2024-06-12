@@ -1,36 +1,39 @@
-import ImpactDetailLabel from "../ImpactDetailLabel";
-import ImpactDetailRow from "../ImpactItemDetailRow";
-import ImpactItemGroup from "../ImpactItemGroup";
-import ImpactItemRow from "../ImpactItemRow";
-import ImpactLabel from "../ImpactLabel";
+import {
+  getEconomicBalanceDetailsImpactLabel,
+  getEconomicBalanceImpactLabel,
+} from "../../getImpactLabel";
+import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactMainTitle from "../ImpactMainTitle";
-import ImpactValue from "../ImpactValue";
+import ImpactRowValue from "../ImpactRowValue";
 
 import {
-  getLabelForPhotovoltaicInstallationCostPurpose,
-  getLabelForReinstatementCostPurpose,
-  ReinstatementCostsPurpose,
-} from "@/features/create-project/domain/project.types";
-import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+  EconomicBalance,
+  EconomicBalanceName,
+} from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
+import classNames from "@/shared/views/clsx";
 
-const getLabelForFinancialAssistanceRevenueSource = (revenueSource: string): string => {
-  switch (revenueSource) {
-    case "local_or_regional_authority_participation":
-      return "🏛 Participation des collectivités";
-    case "public_subsidies":
-      return "🏫 Subventions publiques";
+const getImpactItemOnClick = (
+  itemName: EconomicBalanceName,
+  openImpactDescriptionModal: Props["openImpactDescriptionModal"],
+) => {
+  switch (itemName) {
+    case "real_estate_transaction":
+      return () => {
+        openImpactDescriptionModal("economic-balance-real-estate-acquisition");
+      };
     default:
-      return "🏦 Autres ressources";
+      return undefined;
   }
 };
 
 type Props = {
-  impact: ReconversionProjectImpacts["economicBalance"];
+  impact: EconomicBalance;
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Props) => {
+  const { total, economicBalance, bearer } = impact;
   return (
     <section className="fr-mb-5w">
       <ImpactMainTitle
@@ -39,92 +42,44 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
           openImpactDescriptionModal("economic-balance");
         }}
       />
-      {!!impact.costs.realEstateTransaction && (
-        <ImpactItemRow
-          onClick={() => {
-            openImpactDescriptionModal("economic-balance-real-estate-acquisition");
-          }}
-        >
-          <ImpactLabel>🏠 Acquisition du site</ImpactLabel>
-          <ImpactValue value={-impact.costs.realEstateTransaction} type="monetary" />
-        </ImpactItemRow>
-      )}
-      {!!impact.costs.siteReinstatement && (
-        <ImpactItemGroup>
-          <ImpactLabel>🚧 Remise en état de la friche</ImpactLabel>
-          <ImpactDetailRow>
-            <ImpactDetailLabel>{impact.bearer ?? "Aménageur"}</ImpactDetailLabel>
-            <ImpactValue isTotal value={-impact.costs.siteReinstatement.total} type="monetary" />
-          </ImpactDetailRow>
-          {impact.costs.siteReinstatement.costs.map(({ amount, purpose }) => (
-            <ImpactDetailRow key={purpose}>
-              <ImpactDetailLabel>
-                {getLabelForReinstatementCostPurpose(purpose as ReinstatementCostsPurpose)}
-              </ImpactDetailLabel>
-              <ImpactValue value={-amount} type="monetary" />
-            </ImpactDetailRow>
-          ))}
-        </ImpactItemGroup>
-      )}
-      {!!impact.costs.developmentPlanInstallation && (
-        <ImpactItemGroup>
-          <ImpactLabel>⚡️ Installation des panneaux photovoltaïques</ImpactLabel>
-          <ImpactDetailRow>
-            <ImpactDetailLabel>{impact.bearer ?? "Aménageur"}</ImpactDetailLabel>
-            <ImpactValue
-              isTotal
-              value={-impact.costs.developmentPlanInstallation.total}
-              type="monetary"
-            />
-          </ImpactDetailRow>
-          {impact.costs.developmentPlanInstallation.costs.map(({ amount, purpose }) => (
-            <ImpactDetailRow key={purpose}>
-              <ImpactDetailLabel>
-                {getLabelForPhotovoltaicInstallationCostPurpose(purpose)}
-              </ImpactDetailLabel>
-              <ImpactValue value={-amount} type="monetary" />
-            </ImpactDetailRow>
-          ))}
-        </ImpactItemGroup>
-      )}
-      {!!impact.revenues.financialAssistance && (
-        <ImpactItemGroup>
-          <ImpactLabel>🏦 Aides financières</ImpactLabel>
-          <ImpactDetailRow>
-            <ImpactDetailLabel>{impact.bearer ?? "Aménageur"}</ImpactDetailLabel>
-            <ImpactValue
-              isTotal
-              value={impact.revenues.financialAssistance.total}
-              type="monetary"
-            />
-          </ImpactDetailRow>
-          {impact.revenues.financialAssistance.revenues.map(({ amount, source }) => (
-            <ImpactDetailRow key={source}>
-              <ImpactDetailLabel>
-                {getLabelForFinancialAssistanceRevenueSource(source)}
-              </ImpactDetailLabel>
-              <ImpactValue value={amount} type="monetary" />
-            </ImpactDetailRow>
-          ))}
-        </ImpactItemGroup>
-      )}
-      {!!impact.costs.operationsCosts && (
-        <ImpactItemRow>
-          <ImpactLabel>💸️ Charges d'exploitation</ImpactLabel>
-          <ImpactValue value={-impact.costs.operationsCosts.total} type="monetary" />
-        </ImpactItemRow>
-      )}
-      {!!impact.revenues.operationsRevenues && (
-        <ImpactItemRow>
-          <ImpactLabel>💰 Recettes d'exploitation</ImpactLabel>
-          <ImpactValue value={impact.revenues.operationsRevenues.total} type="monetary" />
-        </ImpactItemRow>
-      )}
+      {economicBalance.map(({ name, value, details = [] }) => (
+        <ImpactActorsItem
+          key={name}
+          label={getEconomicBalanceImpactLabel(name)}
+          onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
+          actors={[
+            {
+              label: bearer ?? "Aménageur",
+              value,
+              details: details.map(({ name: detailsName, value: detailsValue }) => ({
+                label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
+                value: detailsValue,
+                onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+              })),
+            },
+          ]}
+          type="monetary"
+        />
+      ))}
 
-      <ImpactItemRow>
-        <ImpactLabel>Total du bilan de l'opération</ImpactLabel>
-        <ImpactValue isTotal value={impact.total} type="monetary" />
-      </ImpactItemRow>
+      <div className="tw-my-4">
+        <ImpactRowValue value={total} type="monetary" isDark>
+          <span
+            className={classNames(
+              "tw-font-bold",
+              "tw-text-lg",
+              "tw-py-2",
+              "tw-px-4",
+              "tw-w-full",
+              "tw-bg-impacts-main",
+              "dark:tw-bg-grey-dark",
+              "tw-uppercase",
+            )}
+          >
+            📉 Total du bilan de l’opération
+          </span>
+        </ImpactRowValue>
+      </div>
     </section>
   );
 };

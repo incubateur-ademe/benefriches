@@ -24,11 +24,6 @@ const ImpactValue = ({ value, type = "default", isTotal = false }: Props) => {
   return (
     <div
       className={classNames(
-        "tw-w-48",
-        "tw-p-2",
-        "tw-text-center",
-        "tw-bg-impacts-main",
-        "dark:tw-bg-grey-dark",
         isTotal && "tw-font-bold",
         value === 0
           ? "tw-text-impacts-neutral-main dark:tw-text-impacts-neutral-light"

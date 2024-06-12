@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { SoilsDistribution } from "shared";
-import { ImpactCategoryFilter, ViewMode } from "../../application/projectImpacts.reducer";
-import { ReconversionProjectImpacts } from "../../domain/impacts.types";
-import ImpactsChartsView from "./charts-view/ImpactsChartsView";
-import ImpactsListView from "./list-view/ImpactsListView";
+import { ViewMode } from "../../application/projectImpacts.reducer";
 import {
   ImpactDescriptionModalCategory,
   ImpactDescriptionModalWizard,
 } from "./modals/ImpactDescriptionModalWizard";
 import AboutImpactsModal from "./AboutImpactsModal";
+import ImpactsChartsView from "./charts-view";
+import ImpactsListViewContainer from "./list-view";
 
 type Props = {
-  currentFilter: ImpactCategoryFilter;
   currentViewMode: ViewMode;
   evaluationPeriod: number;
   project: {
@@ -30,23 +28,11 @@ type Props = {
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: number;
   };
-  impacts: ReconversionProjectImpacts;
 };
 
-const ProjectImpactsPage = ({
-  project,
-  relatedSite,
-  impacts,
-  currentFilter,
-  currentViewMode,
-}: Props) => {
+const ProjectImpactsPage = ({ project, relatedSite, currentViewMode }: Props) => {
   const [modalCategoryOpened, setModalCategoryOpened] =
     useState<ImpactDescriptionModalCategory>(undefined);
-
-  const displayAll = currentFilter === "all";
-  const displayEconomicData = displayAll || currentFilter === "economic";
-  const displayEnvironmentData = displayAll || currentFilter === "environment";
-  const displaySocialData = displayAll || currentFilter === "social";
 
   return (
     <>
@@ -57,24 +43,10 @@ const ProjectImpactsPage = ({
         siteData={relatedSite}
       />
       {currentViewMode === "charts" && (
-        <ImpactsChartsView
-          project={project}
-          impacts={impacts}
-          displayEconomicData={displayEconomicData}
-          displayEnvironmentData={displayEnvironmentData}
-          displaySocialData={displaySocialData}
-          openImpactDescriptionModal={setModalCategoryOpened}
-        />
+        <ImpactsChartsView openImpactDescriptionModal={setModalCategoryOpened} />
       )}
       {currentViewMode === "list" && (
-        <ImpactsListView
-          displayEconomicData={displayEconomicData}
-          displayEnvironmentData={displayEnvironmentData}
-          displaySocialData={displaySocialData}
-          project={project}
-          impacts={impacts}
-          openImpactDescriptionModal={setModalCategoryOpened}
-        />
+        <ImpactsListViewContainer openImpactDescriptionModal={setModalCategoryOpened} />
       )}
       <AboutImpactsModal />
     </>

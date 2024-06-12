@@ -43,7 +43,6 @@ const ProjectImpactsPageTabs = () => {
 
 function ProjectImpactsPageWrapper({
   projectData,
-  impactsData,
   relatedSiteData,
   dataLoadingState,
   onEvaluationPeriodChange,
@@ -95,9 +94,7 @@ function ProjectImpactsPageWrapper({
               <ProjectImpactsPage
                 project={projectData!}
                 relatedSite={relatedSiteData!}
-                impacts={impactsData!}
                 evaluationPeriod={evaluationPeriod}
-                currentFilter={currentCategoryFilter}
                 currentViewMode={currentViewMode}
               />
             )}

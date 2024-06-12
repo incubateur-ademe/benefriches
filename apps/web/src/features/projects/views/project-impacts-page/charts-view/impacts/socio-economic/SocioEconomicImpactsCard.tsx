@@ -5,11 +5,11 @@ import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 import SocioEconomicImpactsByActorChart from "./SocioEconomicImpactsByActorChart";
 import SocioEconomicImpactsByCategoryChart from "./SocioEconomicImpactsByCategoryChart";
 
-import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { SocioEconomicImpactByActorAndCategory } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import classNames from "@/shared/views/clsx";
 
 type Props = {
-  socioEconomicImpacts: ReconversionProjectImpacts["socioeconomic"]["impacts"];
+  socioEconomicImpacts: SocioEconomicImpactByActorAndCategory;
   onTitleClick: () => void;
 };
 
@@ -73,9 +73,11 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, onTitleClick }: Props)
       }
     >
       {currentChartViewMode === "by_category" ? (
-        <SocioEconomicImpactsByCategoryChart socioEconomicImpacts={socioEconomicImpacts} />
+        <SocioEconomicImpactsByCategoryChart
+          socioEconomicImpacts={socioEconomicImpacts.byCategory}
+        />
       ) : (
-        <SocioEconomicImpactsByActorChart socioEconomicImpacts={socioEconomicImpacts} />
+        <SocioEconomicImpactsByActorChart socioEconomicImpacts={socioEconomicImpacts.byActor} />
       )}
       <div className="tw-flex tw-justify-center">
         <ChartViewModeControl
