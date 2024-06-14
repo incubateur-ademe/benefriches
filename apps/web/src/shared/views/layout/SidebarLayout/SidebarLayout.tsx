@@ -23,7 +23,7 @@ function SidebarLayout({
     <div className={classNames("tw-flex", "tw-w-full", "tw-h-full")}>
       <div
         className={classNames(
-          "tw-bg-grey-light",
+          "tw-bg-grey-light dark:tw-bg-dsfr-contrastGrey",
           "tw-border-r",
           "tw-h-full",
           "tw-z-10",
@@ -33,7 +33,7 @@ function SidebarLayout({
         <div
           className={classNames(
             "tw-flex",
-            "tw-py-4",
+            "tw-py-6",
             "tw-items-center",
             isOpen ? "tw-px-6 tw-justify-between" : "tw-justify-center",
           )}

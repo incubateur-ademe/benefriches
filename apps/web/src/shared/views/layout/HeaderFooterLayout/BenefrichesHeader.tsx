@@ -18,7 +18,7 @@ function BenefrichesHeader() {
       }}
       operatorLogo={{
         alt: "Logo de Bénéfriches",
-        imgUrl: "/img/logos/logo-benefriches.svg",
+        imgUrl: "/img/logos/logo-benefriches-simple.svg",
         orientation: "horizontal",
       }}
       quickAccessItems={[
