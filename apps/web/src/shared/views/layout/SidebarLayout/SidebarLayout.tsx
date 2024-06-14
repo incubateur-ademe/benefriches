@@ -38,11 +38,7 @@ function SidebarLayout({
             isOpen ? "tw-px-6 tw-justify-between" : "tw-justify-center",
           )}
         >
-          {isOpen && (
-            <a href={routes.home().href} className="tw-bg-none">
-              <img src="/img/logos/logo-benefriches-simple.svg" alt="Logo de Bénéfriches" />
-            </a>
-          )}
+          {isOpen && <img src="/img/logos/logo-benefriches-simple.svg" alt="Logo de Bénéfriches" />}
           <Button
             className="tw-text-grey-dark"
             iconId={
