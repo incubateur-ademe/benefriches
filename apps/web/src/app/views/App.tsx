@@ -60,64 +60,86 @@ function App() {
   return (
     <Layout>
       <Suspense fallback={<LoadingSpinner />}>
-        {route.name === routes.home.name && <HomePage />}
-        {route.name === routes.onboarding.name && <OnboardingPage />}
-        {route.name === routes.login.name && <LoginPage />}
-        {route.name === routes.budget.name && <BudgetPage />}
-        {route.name === routes.stats.name && <StatsPage />}
-        {route.name === routes.mentionsLegales.name && <MentionsLegalesPage />}
-        {route.name === routes.accessibilite.name && <AccessibilitePage />}
-        {route.name === routes.politiqueConfidentialite.name && <PolitiqueConfidentialitePage />}
-        {/* protected pages */}
-        {route.name === routes.createUser.name && (
-          <RequireRegisteredUser>
-            <CreateUserPage />
-          </RequireRegisteredUser>
-        )}
-        {route.name === routes.createSiteFoncierIntro.name && (
-          <RequireRegisteredUser>
-            <CreateSiteIntroductionPage />
-          </RequireRegisteredUser>
-        )}
-        {route.name === routes.createSiteFoncier.name && (
-          <RequireRegisteredUser>
-            <CreateSiteFoncierPage />
-          </RequireRegisteredUser>
-        )}
-        {route.name === routes.myProjects.name && (
-          <RequireRegisteredUser>
-            <MyProjectsPage />
-          </RequireRegisteredUser>
-        )}
-        {route.name === routes.createProjectIntro.name && (
-          <RequireRegisteredUser>
-            <CreateProjectIntroductionPage route={route} />
-          </RequireRegisteredUser>
-        )}
-        {route.name === routes.createProject.name && (
-          <RequireRegisteredUser>
-            <CreateProjectPage route={route} />
-          </RequireRegisteredUser>
-        )}
-        {route.name === routes.compareProjects.name && (
-          <RequireRegisteredUser>
-            <ProjectsImpactsComparisonPage route={route} />
-          </RequireRegisteredUser>
-        )}
-        {route.name === routes.selectProjectToCompare.name && (
-          <RequireRegisteredUser>
-            <ProjectsComparisonSelectionPage route={route} />
-          </RequireRegisteredUser>
-        )}
-        {route.name === routes.projectImpacts.name && (
-          <RequireRegisteredUser>
-            <ProjectImpactsPage projectId={route.params.projectId} />
-          </RequireRegisteredUser>
-        )}
-        {/* 404 */}
-        {route.name === false && (
-          <section className={fr.cx("fr-container", "fr-py-4w")}>Page non trouvée</section>
-        )}
+        {(() => {
+          switch (route.name) {
+            case routes.home.name:
+              return <HomePage />;
+            case routes.onboarding.name:
+              return <OnboardingPage />;
+            case routes.login.name:
+              return <LoginPage />;
+            case routes.budget.name:
+              return <BudgetPage />;
+            case routes.stats.name:
+              return <StatsPage />;
+            case routes.mentionsLegales.name:
+              return <MentionsLegalesPage />;
+            case routes.accessibilite.name:
+              return <AccessibilitePage />;
+            case routes.politiqueConfidentialite.name:
+              return <PolitiqueConfidentialitePage />;
+            // protected pages
+            case routes.createUser.name:
+              return (
+                <RequireRegisteredUser>
+                  <CreateUserPage />
+                </RequireRegisteredUser>
+              );
+            case routes.createSiteFoncierIntro.name:
+              return (
+                <RequireRegisteredUser>
+                  <CreateSiteIntroductionPage />
+                </RequireRegisteredUser>
+              );
+            case routes.createSiteFoncier.name:
+              return (
+                <RequireRegisteredUser>
+                  <CreateSiteFoncierPage />
+                </RequireRegisteredUser>
+              );
+            case routes.myProjects.name:
+              return (
+                <RequireRegisteredUser>
+                  <MyProjectsPage />
+                </RequireRegisteredUser>
+              );
+            case routes.createProjectIntro.name:
+              return (
+                <RequireRegisteredUser>
+                  <CreateProjectIntroductionPage route={route} />
+                </RequireRegisteredUser>
+              );
+            case routes.createProject.name:
+              return (
+                <RequireRegisteredUser>
+                  <CreateProjectPage route={route} />
+                </RequireRegisteredUser>
+              );
+            case routes.compareProjects.name:
+              return (
+                <RequireRegisteredUser>
+                  <ProjectsImpactsComparisonPage route={route} />
+                </RequireRegisteredUser>
+              );
+            case routes.selectProjectToCompare.name:
+              return (
+                <RequireRegisteredUser>
+                  <ProjectsComparisonSelectionPage route={route} />
+                </RequireRegisteredUser>
+              );
+            case routes.projectImpacts.name:
+              return (
+                <RequireRegisteredUser>
+                  <ProjectImpactsPage projectId={route.params.projectId} />
+                </RequireRegisteredUser>
+              );
+            // 404
+            default:
+              return (
+                <section className={fr.cx("fr-container", "fr-py-4w")}>Page non trouvée</section>
+              );
+          }
+        })()}
       </Suspense>
       {BENEFRICHES_ENV.matomoTrackingEnabled && (
         <MatomoContainer
