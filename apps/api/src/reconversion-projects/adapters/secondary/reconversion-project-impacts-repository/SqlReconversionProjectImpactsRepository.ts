@@ -47,6 +47,7 @@ export class SqlReconversionProjectImpactsRepository
       id: string;
       developer_structure_type: string;
       developer_name: string;
+      type: DevelopmentPlan["type"];
       schedule_start_date?: Date;
       schedule_end_date?: Date;
       features: unknown;
@@ -61,6 +62,7 @@ export class SqlReconversionProjectImpactsRepository
       )
       .select(
         "dp.id",
+        "dp.type",
         "dp.features",
         "dp.developer_structure_type",
         "dp.developer_name",
@@ -155,6 +157,7 @@ export class SqlReconversionProjectImpactsRepository
       financialAssistanceRevenues: sqlFinancialAssistanceRevenues,
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
+      developmentPlanType: sqlDevelopmentPlan?.type ?? undefined,
       developmentPlanExpectedAnnualEnergyProductionMWh,
       developmentPlanSurfaceArea,
       developmentPlanElectricalPowerKWc,

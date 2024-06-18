@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
 import {
+  getProjectContext,
   ImpactCategoryFilter,
   setCategoryFilter,
   setEvaluationPeriod,
@@ -18,14 +19,10 @@ type Props = {
 function ProjectsImpacts({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
-  const {
-    projectData,
-    relatedSiteData,
-    dataLoadingState,
-    evaluationPeriod,
-    currentCategoryFilter,
-    currentViewMode,
-  } = useAppSelector((state) => state.projectImpacts);
+  const { dataLoadingState, evaluationPeriod, currentCategoryFilter, currentViewMode } =
+    useAppSelector((state) => state.projectImpacts);
+
+  const projectContext = useAppSelector(getProjectContext);
 
   useEffect(() => {
     void dispatch(fetchReconversionProjectImpacts({ projectId, evaluationPeriod }));
@@ -33,8 +30,7 @@ function ProjectsImpacts({ projectId }: Props) {
 
   return (
     <ProjectImpactsPageWrapper
-      projectData={projectData}
-      relatedSiteData={relatedSiteData}
+      projectContext={projectContext}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
       currentViewMode={currentViewMode}

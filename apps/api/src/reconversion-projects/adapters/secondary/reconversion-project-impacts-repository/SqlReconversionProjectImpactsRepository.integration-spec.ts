@@ -73,7 +73,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
           reconversion_project_id: reconversionProjectId,
           schedule_start_date: new Date("2025-01-01"),
           schedule_end_date: new Date("2025-05-15"),
-          type: "any",
+          type: "PHOTOVOLTAIC_POWER_PLANT",
           developer_name: "Terre cuite d’occitanie",
           developer_structure_type: "company",
           features: {
@@ -178,6 +178,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         developmentPlanElectricalPowerKWc: 300,
         developmentPlanSurfaceArea: 2000,
         developmentPlanDeveloperName: "Terre cuite d’occitanie",
+        developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {
@@ -218,7 +219,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         {
           id: uuid(),
           reconversion_project_id: reconversionProjectId,
-          type: "any",
+          type: "PHOTOVOLTAIC_POWER_PLANT",
           features: {},
         },
       ]);
@@ -239,6 +240,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         conversionSchedule: undefined,
         developmentPlanInstallationCosts: [],
         developmentPlanDeveloperName: undefined,
+        developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
         futureOperatorName: undefined,
         futureSiteOwnerName: undefined,
         operationsFullTimeJobs: undefined,

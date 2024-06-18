@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Highcharts CSS override - pour les graphes avec le paramètre "styledMode": true */
+
 .highcharts-container {
   font-family: Marianne;
 }
@@ -32,52 +34,6 @@
   font-size: 0.875rem;
 }
 
-/* La librairie du DSFR ne va que jusqu’à 8 pour le Stepper */
-.fr-stepper__steps[data-fr-steps="9"] {
-  --steps: 9;
-  --step-width: calc(100% / 9);
-}
-
-.fr-stepper__steps[data-fr-steps="10"] {
-  --steps: 10;
-  --step-width: calc(100% / 10);
-}
-
-.fr-stepper__steps[data-fr-steps="11"] {
-  --steps: 11;
-  --step-width: calc(100% / 11);
-}
-
-.fr-stepper__steps[data-fr-steps="12"] {
-  --steps: 12;
-  --step-width: calc(100% / 12);
-}
-
-.fr-stepper__steps[data-fr-steps="13"] {
-  --steps: 13;
-  --step-width: calc(100% / 13);
-}
-
-.fr-stepper__steps[data-fr-current-step="9"] {
-  --current-step: 9;
-}
-
-.fr-stepper__steps[data-fr-current-step="10"] {
-  --current-step: 10;
-}
-
-.fr-stepper__steps[data-fr-current-step="11"] {
-  --current-step: 11;
-}
-
-.fr-stepper__steps[data-fr-current-step="12"] {
-  --current-step: 12;
-}
-
-.fr-stepper__steps[data-fr-current-step="13"] {
-  --current-step: 13;
-}
-
 /* Ajout d’un statut warning sur le même modèle que error et success pour les inputs */
 
 .fr-message--warning::before,
@@ -97,4 +53,31 @@
 
 .fr-input-group--warning::before {
   background-image: linear-gradient(0deg, var(--border-plain-warning), var(--border-plain-warning));
+}
+
+/* Page Impacts: couleurs par type de projet */
+
+#project-impacts-page.building {
+  --impacts-title-color: #931595;
+  --impacts-main-color: #fdedfd;
+  --impacts-dark-color: #ffe0ff;
+
+  --highcharts-color-0: #e221e5;
+  --highcharts-color-1: #eb64ed;
+  --highcharts-color-2: #ef85f1;
+  --highcharts-color-3: #f3a6f5;
+  --highcharts-color-4: #c01cc3;
+  --highcharts-color-5: #9e17a0;
+}
+#project-impacts-page.photovoltaic {
+  --impacts-title-color: #0c5399;
+  --impacts-main-color: #ecf5fd;
+  --impacts-dark-color: #d9ebfc;
+
+  --highcharts-color-0: #137feb;
+  --highcharts-color-1: #5aa5f1;
+  --highcharts-color-2: #7db9f4;
+  --highcharts-color-3: #a1ccf7;
+  --highcharts-color-4: #106cc8;
+  --highcharts-color-5: #0d59a5;
 }

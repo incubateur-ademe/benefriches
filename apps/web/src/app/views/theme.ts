@@ -46,9 +46,9 @@ export default {
       },
       warning: "#B34000",
       impacts: {
-        title: "var(--blue-ecume-sun-247-moon-675)",
-        main: "#ECF5FD",
-        dark: "#D9EBFC",
+        title: "var(--impacts-title-color)",
+        main: "var(--impacts-main-color)",
+        dark: "var(--impacts-dark-color)",
         positive: {
           main: "#18753C",
           light: "#51DB86",
