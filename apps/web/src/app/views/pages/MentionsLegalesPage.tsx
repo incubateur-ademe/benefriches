@@ -26,7 +26,7 @@ function MentionsLegalesPage() {
       </address>
       <h2 id="directeur-de-la-publication">Directeur de la publication</h2>
       <p>
-        Le directeur de publication est M. Boris RAVIGNON, agissant en qualité de
+        Le directeur de publication est M. Sylvain Waserman, agissant en qualité de
         Président-directeur général de l'ADEME.
       </p>
       <p>
