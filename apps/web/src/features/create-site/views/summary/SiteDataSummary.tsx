@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Accordion from "@codegouvfr/react-dsfr/Accordion";
-import { SoilsDistribution, SoilType } from "shared";
+import { FricheActivity, SoilsDistribution, SoilType } from "shared";
 import { getLabelForExpensePurpose } from "../../domain/expenses.functions";
-import { FricheActivity, getFricheActivityLabel } from "../../domain/friche.types";
+import { getFricheActivityLabel } from "../../domain/friche.types";
 import { Expense } from "../../domain/siteFoncier.types";
 
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
@@ -52,7 +52,6 @@ function DataLine({ label, value, className = "fr-my-2w" }: DataLineProps) {
 }
 
 function SiteDataSummary({ siteData, onNext, onBack }: Props) {
-  console.log(siteData.tenantName);
   return (
     <>
       <WizardFormLayout

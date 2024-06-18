@@ -1,49 +1,49 @@
 import { useForm } from "react-hook-form";
+import { FricheActivity } from "shared";
 
-import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-const FRICHE_ACTIVITY_OPTIONS = [
+const FRICHE_ACTIVITY_OPTIONS: { value: FricheActivity; label: string }[] = [
   {
-    value: FricheActivity.INDUSTRY,
+    value: "INDUSTRY",
     label: "Friche industrielle (usine, mine, carrière...)",
   },
   {
-    value: FricheActivity.MILITARY,
+    value: "MILITARY",
     label: "Friche militaire",
   },
   {
-    value: FricheActivity.RAILWAY,
+    value: "RAILWAY",
     label: "Friche ferroviaire (voies ferrées, gare...)",
   },
   {
-    value: FricheActivity.PORT,
+    value: "PORT",
     label: "Friche portuaire (ports, chantiers navals...)",
   },
   {
-    value: FricheActivity.AGRICULTURE,
+    value: "AGRICULTURE",
     label: "Friche agricole",
   },
   {
-    value: FricheActivity.HOSPITAL,
+    value: "HOSPITAL",
     label: "Friche hospitalière",
   },
   {
-    value: FricheActivity.ADMINISTRATION,
+    value: "ADMINISTRATION",
     label: "Friche administrative (école, mairie...)",
   },
   {
-    value: FricheActivity.BUSINESS,
+    value: "BUSINESS",
     label: "Friche commerciale (ZAC, hôtel, restaurant...)",
   },
   {
-    value: FricheActivity.HOUSING,
+    value: "HOUSING",
     label: "Friche d'habitat (immeuble, quartier résidentiel...)",
   },
   {
-    value: FricheActivity.OTHER,
+    value: "OTHER",
     label: "Autre",
   },
 ];

@@ -1,4 +1,3 @@
-import { FricheActivity } from "../domain/friche.types";
 import { SiteDraft } from "../domain/siteFoncier.types";
 
 export const siteWithExhaustiveData: SiteDraft = {
@@ -89,7 +88,7 @@ export const fricheWithExhaustiveData: SiteDraft = {
   accidentsSevereInjuries: 1,
   accidentsMinorInjuries: 2,
   accidentsDeaths: 0,
-  fricheActivity: FricheActivity.INDUSTRY,
+  fricheActivity: "INDUSTRY",
 } as const;
 
 export const siteWithMinimalData: SiteDraft = {
@@ -127,5 +126,5 @@ export const siteWithMinimalData: SiteDraft = {
 export const fricheWithMinimalData: SiteDraft = {
   ...siteWithMinimalData,
   isFriche: true,
-  fricheActivity: FricheActivity.RAILWAY,
+  fricheActivity: "RAILWAY",
 } as const;

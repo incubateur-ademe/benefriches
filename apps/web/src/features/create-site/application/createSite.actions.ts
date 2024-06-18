@@ -1,6 +1,5 @@
-import { soilTypeSchema } from "shared";
+import { fricheActivitySchema, soilTypeSchema } from "shared";
 import z from "zod";
-import { FricheActivity } from "../domain/friche.types";
 import { revertStep } from "./createSite.reducer";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
@@ -60,7 +59,7 @@ const createSiteSchema = z.object({
   // contamination
   hasContaminatedSoils: z.boolean().optional(),
   contaminatedSoilSurface: z.number().nonnegative().optional(),
-  fricheActivity: z.nativeEnum(FricheActivity).optional(),
+  fricheActivity: fricheActivitySchema.optional(),
   // management
   fullTimeJobsInvolved: z.number().nonnegative().optional(),
   owner: z.object({

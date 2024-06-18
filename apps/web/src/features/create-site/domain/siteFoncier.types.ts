@@ -1,5 +1,4 @@
-import { SoilsDistribution, SoilType } from "shared";
-import { FricheActivity } from "./friche.types";
+import { FricheActivity, SoilsDistribution, SoilType } from "shared";
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 

@@ -1,4 +1,3 @@
-import { FricheActivity } from "./friche.types";
 import { SiteDraft } from "./siteFoncier.types";
 import { generateSiteDesignation, generateSiteName } from "./siteName";
 
@@ -40,7 +39,7 @@ describe("siteName", () => {
     });
 
     it("should generate 'friche d'habitat'", () => {
-      const site = buildSiteDraft({ isFriche: true, fricheActivity: FricheActivity.HOUSING });
+      const site = buildSiteDraft({ isFriche: true, fricheActivity: "HOUSING" });
       expect(generateSiteDesignation(site)).toEqual("Friche d'habitat");
     });
 
@@ -137,7 +136,7 @@ describe("siteName", () => {
     it("should generate 'Friche industrielle de Blajan'", () => {
       const site = buildSiteDraft({
         isFriche: true,
-        fricheActivity: FricheActivity.INDUSTRY,
+        fricheActivity: "INDUSTRY",
         soils: ["BUILDINGS", "MINERAL_SOIL"],
       });
       expect(generateSiteName(site)).toEqual("Friche industrielle de Blajan");

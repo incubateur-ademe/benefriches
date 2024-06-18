@@ -1,10 +1,9 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SoilsDistribution, SoilType } from "shared";
+import { FricheActivity, SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 import { saveSiteAction } from "./createSite.actions";
 
 import { RootState } from "@/app/application/store";
-import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import {
   Address,
   Expense,

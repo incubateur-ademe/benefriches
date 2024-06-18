@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { FricheActivity } from "shared";
 import NewScenarioTile from "./ScenarioTile/NewScenarioTile";
 import ProjectScenarioTile from "./ScenarioTile/ProjectScenarioTile";
 import StatuQuoScenarioTile from "./ScenarioTile/StatuQuoScenarioTile";
 import { ReconversionProjectList } from ".";
 
-import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import classNames from "@/shared/views/clsx";
 
 type Props = {

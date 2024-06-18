@@ -47,8 +47,8 @@ function ProjectScenarioTile({
 
   return (
     <ScenarioTile
-      projectName={name}
-      impactLinkProps={projectImpactsLinkProps}
+      title={name}
+      linkProps={projectImpactsLinkProps}
       onChangeCheckbox={onChangeCheckbox}
       pictogramUrl={getScenarioPictoUrl(type)}
       isSelected={isSelected}

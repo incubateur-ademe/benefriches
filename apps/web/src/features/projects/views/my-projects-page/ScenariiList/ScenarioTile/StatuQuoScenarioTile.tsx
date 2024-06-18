@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { FricheActivity } from "shared";
 import ScenarioTile from "./ScenarioTile";
 
-import { FricheActivity, getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
+import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
 
 type Props = {
   siteId: string;
@@ -41,13 +42,13 @@ function StatuQuoScenarioTile({
   const shouldDisplayCheckbox = isSelected || ((hasSelectedValues || isHovered) && isSelectable);
 
   const scenarioTitle = isFriche
-    ? getFricheActivityLabel(fricheActivity ?? FricheActivity.OTHER)
+    ? getFricheActivityLabel(fricheActivity ?? "OTHER")
     : "Espace naturel ou agricole";
   const projectIcon = isFriche ? "/icons/friche.svg" : "/icons/agricole.svg";
 
   return (
     <ScenarioTile
-      projectName={scenarioTitle}
+      title={scenarioTitle}
       details="Pas de changement"
       onChangeCheckbox={onChangeCheckbox}
       pictogramUrl={projectIcon}

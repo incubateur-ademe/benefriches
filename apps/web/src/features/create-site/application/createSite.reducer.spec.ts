@@ -1,4 +1,3 @@
-import { FricheActivity } from "../domain/friche.types";
 import { InMemoryCreateSiteService } from "../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import {
   revertAddressStep,
@@ -1032,14 +1031,14 @@ describe("Create site reducer", () => {
           const store = initStoreWithState({ stepsHistory: ["FRICHE_ACTIVITY"] });
           const { siteCreation: initialState } = store.getState();
 
-          store.dispatch(completeFricheActivity(FricheActivity.BUSINESS));
+          store.dispatch(completeFricheActivity("BUSINESS"));
 
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
             siteData: {
               ...initialState.siteData,
-              fricheActivity: FricheActivity.BUSINESS,
+              fricheActivity: "BUSINESS",
             },
             stepsHistory: [...initialState.stepsHistory, "NAMING"],
           });

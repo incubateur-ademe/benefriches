@@ -1,37 +1,26 @@
-export enum FricheActivity {
-  AGRICULTURE = "AGRICULTURE",
-  INDUSTRY = "INDUSTRY",
-  MILITARY = "MILITARY",
-  RAILWAY = "RAILWAY",
-  PORT = "PORT",
-  HOSPITAL = "HOSPITAL",
-  ADMINISTRATION = "ADMINISTRATION",
-  BUSINESS = "BUSINESS",
-  HOUSING = "HOUSING",
-  OTHER = "OTHER",
-}
+import { FricheActivity } from "shared";
 
 export const getFricheActivityLabel = (fricheActivity: FricheActivity): string => {
   switch (fricheActivity) {
-    case FricheActivity.AGRICULTURE:
+    case "AGRICULTURE":
       return "Friche agricole";
-    case FricheActivity.INDUSTRY:
+    case "INDUSTRY":
       return "Friche industrielle";
-    case FricheActivity.MILITARY:
+    case "MILITARY":
       return "Friche militaire";
-    case FricheActivity.RAILWAY:
+    case "RAILWAY":
       return "Friche ferroviaire";
-    case FricheActivity.PORT:
+    case "PORT":
       return "Friche portuaire";
-    case FricheActivity.HOSPITAL:
+    case "HOSPITAL":
       return "Friche hospitalière";
-    case FricheActivity.ADMINISTRATION:
+    case "ADMINISTRATION":
       return "Friche administrative";
-    case FricheActivity.BUSINESS:
+    case "BUSINESS":
       return "Friche commerciale";
-    case FricheActivity.HOUSING:
+    case "HOUSING":
       return "Friche d'habitat";
-    case FricheActivity.OTHER:
+    case "OTHER":
       return "Friche";
   }
 };

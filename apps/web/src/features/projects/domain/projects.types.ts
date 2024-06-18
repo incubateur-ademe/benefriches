@@ -1,6 +1,5 @@
-import { SoilsDistribution } from "shared";
+import { FricheActivity, SoilsDistribution } from "shared";
 
-import { FricheActivity } from "@/features/create-site/domain/friche.types";
 import {
   LocalAutorityStructureType,
   OwnerStructureType,

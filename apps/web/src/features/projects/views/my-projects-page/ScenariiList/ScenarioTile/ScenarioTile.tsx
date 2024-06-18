@@ -4,10 +4,10 @@ import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import classNames from "@/shared/views/clsx";
 
 type Props = {
-  projectName: string;
+  title: string;
   pictogramUrl?: string;
   details?: string;
-  impactLinkProps?: { href: string };
+  linkProps?: { href: string };
   isHovered?: boolean;
   isSelected: boolean;
   shouldDisplayCheckbox: boolean;
@@ -18,10 +18,10 @@ type Props = {
 
 const ScenarioTileHeader = ({
   pictogramUrl,
-  projectName,
+  title,
 }: {
   pictogramUrl: Props["pictogramUrl"];
-  projectName: Props["projectName"];
+  title: Props["title"];
 }) => {
   return (
     <>
@@ -41,7 +41,7 @@ const ScenarioTileHeader = ({
       )}
 
       <h3 className={classNames(fr.cx("fr-tile__title"), "before:tw-content-none", "tw-text-lg")}>
-        {projectName}
+        {title}
       </h3>
     </>
   );
@@ -51,9 +51,9 @@ function ScenarioTile({
   onChangeCheckbox,
   isSelected,
   shouldDisplayCheckbox,
-  projectName,
+  title,
   details,
-  impactLinkProps,
+  linkProps,
   pictogramUrl,
   isHovered,
   ...rest
@@ -75,13 +75,13 @@ function ScenarioTile({
     >
       <div className="fr-tile__body">
         <div className="fr-tile__content">
-          {impactLinkProps ? (
-            <a {...impactLinkProps} className="tw-bg-none">
-              <ScenarioTileHeader projectName={projectName} pictogramUrl={pictogramUrl} />
+          {linkProps ? (
+            <a {...linkProps} className="tw-bg-none">
+              <ScenarioTileHeader title={title} pictogramUrl={pictogramUrl} />
             </a>
           ) : (
             <div>
-              <ScenarioTileHeader projectName={projectName} pictogramUrl={pictogramUrl} />
+              <ScenarioTileHeader title={title} pictogramUrl={pictogramUrl} />
             </div>
           )}
 
