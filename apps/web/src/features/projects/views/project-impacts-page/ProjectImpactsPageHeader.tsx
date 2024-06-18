@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
 
 import classNames from "@/shared/views/clsx";
@@ -6,10 +7,16 @@ import classNames from "@/shared/views/clsx";
 type Props = {
   projectName: string;
   siteName: string;
+  projectType?: ProjectDevelopmentPlanType;
   isSmall?: boolean;
 };
 
-const ProjectsImpactsPageHeader = ({ projectName, siteName, isSmall = false }: Props) => {
+const ProjectsImpactsPageHeader = ({
+  projectName,
+  siteName,
+  projectType,
+  isSmall = false,
+}: Props) => {
   return (
     <div className={fr.cx("fr-container")}>
       <div
@@ -21,14 +28,17 @@ const ProjectsImpactsPageHeader = ({ projectName, siteName, isSmall = false }: P
         )}
       >
         <div className="tw-flex tw-items-center">
-          <img
-            className={fr.cx("fr-mr-3v")}
-            src={getScenarioPictoUrl("PHOTOVOLTAIC_POWER_PLANT")}
-            aria-hidden={true}
-            alt="Icône du type de scénario"
-            width={isSmall ? 60 : 76}
-            height={isSmall ? 60 : 76}
-          />
+          {projectType && (
+            <img
+              className={fr.cx("fr-mr-3v")}
+              src={getScenarioPictoUrl(projectType)}
+              aria-hidden={true}
+              alt="Icône du type de scénario"
+              width={isSmall ? 60 : 76}
+              height={isSmall ? 60 : 76}
+            />
+          )}
+
           <div>
             <h2
               className={classNames(

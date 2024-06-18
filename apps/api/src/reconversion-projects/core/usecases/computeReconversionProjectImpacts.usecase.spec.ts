@@ -100,6 +100,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       developmentPlanInstallationCosts: [{ amount: 200000, purpose: "installation_works" }],
       developmentPlanElectricalPowerKWc: 258,
       developmentPlanSurfaceArea: 20000,
+      developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
       developmentPlanDeveloperName: "Mairie de Blajan",
       financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
       yearlyProjectedCosts: [
@@ -171,6 +172,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           developmentPlan: {
             electricalPowerKWc: 258,
             surfaceArea: 20000,
+            type: "PHOTOVOLTAIC_POWER_PLANT",
           },
         },
         siteData: {

@@ -1,5 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SoilsDistribution } from "shared";
+import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import {
   fetchReconversionProjectImpacts,
   ReconversionProjectImpactsResult,
@@ -27,6 +28,7 @@ export type ProjectImpactsState = {
     developmentPlan: {
       surfaceArea?: number;
       electricalPowerKWc?: number;
+      type?: ProjectDevelopmentPlanType;
     };
   };
   relatedSiteData?: {
@@ -100,6 +102,15 @@ const selectSelf = (state: RootState) => state.projectImpacts;
 export const getProjectName = createSelector(
   selectSelf,
   (state): string => state.projectData?.name ?? "Project",
+);
+
+export const getProjectContext = createSelector(
+  selectSelf,
+  (state): { name: string; siteName: string; type?: ProjectDevelopmentPlanType } => ({
+    name: state.projectData?.name ?? "Project",
+    siteName: state.relatedSiteData?.name ?? "",
+    type: state.projectData?.developmentPlan.type,
+  }),
 );
 
 export default projectImpactsSlice.reducer;

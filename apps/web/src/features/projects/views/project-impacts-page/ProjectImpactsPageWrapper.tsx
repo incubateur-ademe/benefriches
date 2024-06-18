@@ -5,6 +5,7 @@ import {
   ProjectImpactsState,
   ViewMode,
 } from "../../application/projectImpacts.reducer";
+import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import ProjectImpactsActionBar from "./ProjectImpactsActionBar";
 import ProjectImpactsPage from "./ProjectImpactsPage";
 import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
@@ -12,7 +13,13 @@ import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-type Props = ProjectImpactsState & {
+type Props = {
+  dataLoadingState: ProjectImpactsState["dataLoadingState"];
+  projectContext: {
+    name: string;
+    siteName: string;
+    type?: ProjectDevelopmentPlanType;
+  };
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number;
   onCurrentCategoryFilterChange: (n: ImpactCategoryFilter) => void;
@@ -41,9 +48,19 @@ const ProjectImpactsPageTabs = () => {
   );
 };
 
+const getProjectTypeClassName = (type?: ProjectDevelopmentPlanType) => {
+  switch (type) {
+    case "BUILDINGS":
+      return "building";
+    case "PHOTOVOLTAIC_POWER_PLANT":
+      return "photovoltaic";
+    default:
+      return "";
+  }
+};
+
 function ProjectImpactsPageWrapper({
-  projectData,
-  relatedSiteData,
+  projectContext,
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
@@ -53,11 +70,19 @@ function ProjectImpactsPageWrapper({
   onCurrentCategoryFilterChange,
 }: Props) {
   return (
-    <div className="tw-bg-impacts-main dark:tw-bg-grey-dark">
+    <div
+      id="project-impacts-page"
+      className={classNames(
+        getProjectTypeClassName(projectContext.type),
+        "tw-bg-impacts-main",
+        "dark:tw-bg-grey-dark",
+      )}
+    >
       <div className={classNames(fr.cx("fr-py-8v"), "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}>
         <ProjectsImpactsPageHeader
-          projectName={projectData?.name ?? "Centrale photovoltaïque"}
-          siteName={relatedSiteData?.name ?? ""}
+          projectType={projectContext.type}
+          projectName={projectContext.name}
+          siteName={projectContext.siteName}
         />
       </div>
 
@@ -72,8 +97,8 @@ function ProjectImpactsPageWrapper({
         >
           <div className={fr.cx("fr-container")}>
             <ProjectImpactsActionBar
-              projectName={projectData?.name ?? "Centrale photovoltaïque"}
-              siteName={relatedSiteData?.name ?? ""}
+              projectName={projectContext.name}
+              siteName={projectContext.siteName}
               selectedFilter={currentCategoryFilter}
               selectedViewMode={currentViewMode}
               evaluationPeriod={evaluationPeriod}
@@ -92,8 +117,6 @@ function ProjectImpactsPageWrapper({
             {dataLoadingState === "loading" && <LoadingSpinner />}
             {dataLoadingState === "success" && (
               <ProjectImpactsPage
-                project={projectData!}
-                relatedSite={relatedSiteData!}
                 evaluationPeriod={evaluationPeriod}
                 currentViewMode={currentViewMode}
               />

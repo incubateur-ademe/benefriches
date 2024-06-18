@@ -1,5 +1,6 @@
 import { SoilsDistribution } from "shared";
 import { ReconversionProjectImpacts } from "../domain/impacts.types";
+import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
@@ -21,6 +22,7 @@ export type ReconversionProjectImpactsResult = {
     developmentPlan: {
       surfaceArea?: number;
       electricalPowerKWc?: number;
+      type?: ProjectDevelopmentPlanType;
     };
   };
   siteData: {

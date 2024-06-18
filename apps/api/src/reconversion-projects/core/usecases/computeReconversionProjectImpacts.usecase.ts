@@ -38,7 +38,11 @@ import {
   GetSoilsCarbonStoragePerSoilsService,
   SoilsCarbonStorageImpactResult,
 } from "../model/impacts/soils-carbon-storage/soilsCarbonStorageImpact";
-import { getDurationFromScheduleInYears, Schedule } from "../model/reconversionProject";
+import {
+  DevelopmentPlan,
+  getDurationFromScheduleInYears,
+  Schedule,
+} from "../model/reconversionProject";
 
 export type SiteImpactsDataView = {
   id: string;
@@ -82,6 +86,7 @@ export type ReconversionProjectImpactsDataView = {
   financialAssistanceRevenues: { amount: number; source: string }[];
   yearlyProjectedCosts: { amount: number; purpose: string }[];
   yearlyProjectedRevenues: { amount: number; source: string }[];
+  developmentPlanType?: DevelopmentPlan["type"];
   developmentPlanExpectedAnnualEnergyProductionMWh?: number;
   developmentPlanSurfaceArea?: number;
   developmentPlanElectricalPowerKWc?: number;
@@ -109,6 +114,7 @@ export type Result = {
     developmentPlan: {
       surfaceArea?: number;
       electricalPowerKWc?: number;
+      type?: DevelopmentPlan["type"];
     };
   };
   siteData: {
@@ -189,6 +195,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         developmentPlan: {
           surfaceArea: reconversionProject.developmentPlanSurfaceArea,
           electricalPowerKWc: reconversionProject.developmentPlanElectricalPowerKWc,
+          type: reconversionProject.developmentPlanType,
         },
       },
       siteData: {
