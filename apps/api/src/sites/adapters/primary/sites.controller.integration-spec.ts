@@ -216,6 +216,10 @@ describe("Sites controller", () => {
         friche_activity: "INDUSTRY",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
+        friche_accidents_deaths: 1,
+        friche_accidents_minor_injuries: 2,
+        friche_accidents_severe_injuries: 3,
+        full_time_jobs_involved: 2.3,
       });
 
       await sqlConnection("addresses").insert({
@@ -235,6 +239,16 @@ describe("Sites controller", () => {
       await sqlConnection("site_soils_distributions").insert([
         { id: uuid(), site_id: siteId, soil_type: "FOREST_MIXED", surface_area: 1200 },
         { id: uuid(), site_id: siteId, soil_type: "PRAIRIE_GRASS", surface_area: 12800 },
+      ]);
+      await sqlConnection("site_expenses").insert([
+        {
+          id: uuid(),
+          site_id: siteId,
+          amount: 3300,
+          purpose: "security",
+          bearer: "owner",
+          purpose_category: "security",
+        },
       ]);
       const response = await supertest(app.getHttpServer()).get(`/sites/${siteId}`).send();
 
@@ -263,6 +277,13 @@ describe("Sites controller", () => {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
         },
+        description: "Description of site",
+        fricheActivity: "INDUSTRY",
+        yearlyExpenses: [{ amount: 3300, purpose: "security" }],
+        accidentsDeaths: 1,
+        accidentsMinorInjuries: 2,
+        accidentsSevereInjuries: 3,
+        fullTimeJobsInvolved: 2.3,
       });
     });
   });

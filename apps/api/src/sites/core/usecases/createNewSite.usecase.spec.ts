@@ -1,12 +1,12 @@
 /* eslint-disable jest/no-conditional-expect */
 import { z } from "zod";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
+import { InMemorySitesWriteRepository } from "src/sites/adapters/secondary/site-repository/write/InMemorySiteRepository";
 import { buildFricheProps, buildMinimalSiteProps } from "../models/site.mock";
 import { CreateNewSiteUseCase, DateProvider } from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {
-  let siteRepository: InMemorySitesRepository;
+  let siteRepository: InMemorySitesWriteRepository;
   let dateProvider: DateProvider;
   const fakeNow = new Date("2024-01-03T13:50:45");
 
@@ -18,7 +18,7 @@ describe("CreateNewSite Use Case", () => {
   };
 
   beforeEach(() => {
-    siteRepository = new InMemorySitesRepository();
+    siteRepository = new InMemorySitesWriteRepository();
     dateProvider = new DeterministicDateProvider(fakeNow);
   });
 

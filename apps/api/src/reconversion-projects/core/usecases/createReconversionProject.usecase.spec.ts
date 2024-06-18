@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/reconversion-project-repository/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
+import { InMemorySitesWriteRepository } from "src/sites/adapters/secondary/site-repository/write/InMemorySiteRepository";
 import { buildMinimalSite } from "src/sites/core/models/site.mock";
 import {
   buildExhaustiveReconversionProjectProps,
@@ -16,7 +16,7 @@ import {
 
 describe("CreateReconversionProject Use Case", () => {
   let dateProvider: DateProvider;
-  let siteRepository: InMemorySitesRepository;
+  let siteRepository: InMemorySitesWriteRepository;
   let reconversionProjectRepository: InMemoryReconversionProjectRepository;
   const fakeNow = new Date("2024-01-05T13:00:00");
 
@@ -29,7 +29,7 @@ describe("CreateReconversionProject Use Case", () => {
 
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
-    siteRepository = new InMemorySitesRepository();
+    siteRepository = new InMemorySitesWriteRepository();
     reconversionProjectRepository = new InMemoryReconversionProjectRepository();
   });
 
