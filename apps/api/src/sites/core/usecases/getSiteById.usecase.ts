@@ -1,6 +1,6 @@
 import { UseCase } from "src/shared-kernel/usecase";
 import { SoilType } from "src/soils/domain/soils";
-import { SitesRepository } from "../gateways/SitesRepository";
+import { SitesReadRepository } from "../gateways/SitesReadRepository";
 import { Address } from "../models/site";
 
 type Request = {
@@ -24,6 +24,13 @@ export type SiteViewModel = {
   soilsDistribution: Partial<Record<SoilType, number>>;
   surfaceArea: number;
   address: Address;
+  fullTimeJobsInvolved?: number;
+  accidentsMinorInjuries?: number;
+  accidentsSevereInjuries?: number;
+  accidentsDeaths?: number;
+  yearlyExpenses: { amount: number; purpose: string }[];
+  fricheActivity?: string;
+  description?: string;
 };
 
 export class SiteNotFoundError extends Error {
@@ -34,7 +41,7 @@ export class SiteNotFoundError extends Error {
 }
 
 export class GetSiteByIdUseCase implements UseCase<Request, SiteViewModel> {
-  constructor(private readonly sitesRepository: SitesRepository) {}
+  constructor(private readonly sitesRepository: SitesReadRepository) {}
 
   async execute({ siteId }: Request): Promise<SiteViewModel> {
     const site = await this.sitesRepository.getById(siteId);

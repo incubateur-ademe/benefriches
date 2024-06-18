@@ -14,7 +14,7 @@ import {
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
+import { SqlSiteWriteRepository } from "src/sites/adapters/secondary/site-repository/write/SqlSiteWriteRepository";
 import { SqlReconversionProjectImpactsRepository } from "../secondary/reconversion-project-impacts-repository/SqlReconversionProjectImpactsRepository";
 import { SqlReconversionProjectRepository } from "../secondary/reconversion-project-repository/SqlReconversionProjectRepository";
 import { SqlReconversionProjectsListRepository } from "../secondary/reconversion-projects-list-repository/SqlReconversionProjectsListRepository";
@@ -37,7 +37,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           siteRepository,
           reconversionProjectRepository,
         ),
-      inject: [DateProvider, SqlSiteRepository, SqlReconversionProjectRepository],
+      inject: [DateProvider, SqlSiteWriteRepository, SqlReconversionProjectRepository],
     },
     {
       provide: GetUserReconversionProjectsBySiteUseCase,
@@ -69,7 +69,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     },
     SqlReconversionProjectRepository,
     SqlReconversionProjectsListRepository,
-    SqlSiteRepository,
+    SqlSiteWriteRepository,
     SqlReconversionProjectImpactsRepository,
     SqlSiteImpactsRepository,
     DateProvider,

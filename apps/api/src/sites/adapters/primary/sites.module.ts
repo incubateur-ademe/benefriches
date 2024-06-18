@@ -1,10 +1,12 @@
 import { Module } from "@nestjs/common";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { SitesReadRepository } from "src/sites/core/gateways/SitesReadRepository";
+import { SitesWriteRepository } from "src/sites/core/gateways/SitesWriteRepository";
 import { CreateNewSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
-import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepository";
+import { SqlSitesReadRepository } from "../secondary/site-repository/read/SqlSiteReadRepository";
+import { SqlSiteWriteRepository } from "../secondary/site-repository/write/SqlSiteWriteRepository";
 import { SitesController } from "./sites.controller";
 
 @Module({
@@ -12,16 +14,17 @@ import { SitesController } from "./sites.controller";
   providers: [
     {
       provide: CreateNewSiteUseCase,
-      useFactory: (siteRepository: SitesRepository, dateProvider: IDateProvider) =>
+      useFactory: (siteRepository: SitesWriteRepository, dateProvider: IDateProvider) =>
         new CreateNewSiteUseCase(siteRepository, dateProvider),
-      inject: [SqlSiteRepository, DateProvider],
+      inject: [SqlSiteWriteRepository, DateProvider],
     },
     {
       provide: GetSiteByIdUseCase,
-      useFactory: (siteRepository: SitesRepository) => new GetSiteByIdUseCase(siteRepository),
-      inject: [SqlSiteRepository],
+      useFactory: (siteRepository: SitesReadRepository) => new GetSiteByIdUseCase(siteRepository),
+      inject: [SqlSitesReadRepository],
     },
-    SqlSiteRepository,
+    SqlSiteWriteRepository,
+    SqlSitesReadRepository,
     DateProvider,
   ],
 })

@@ -1,8 +1,7 @@
-import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
+import { SitesWriteRepository } from "src/sites/core/gateways/SitesWriteRepository";
 import { Site } from "src/sites/core/models/site";
-import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 
-export class InMemorySitesRepository implements SitesRepository {
+export class InMemorySitesWriteRepository implements SitesWriteRepository {
   private sites: Site[] = [];
 
   async save(site: Site) {
@@ -13,10 +12,6 @@ export class InMemorySitesRepository implements SitesRepository {
   existsWithId(siteId: string): Promise<boolean> {
     const foundSite = this.sites.find(({ id }) => id === siteId);
     return Promise.resolve(!!foundSite);
-  }
-
-  getById(siteId: string): Promise<SiteViewModel | undefined> {
-    return Promise.resolve(this.sites.find(({ id }) => id === siteId));
   }
 
   _getSites() {
