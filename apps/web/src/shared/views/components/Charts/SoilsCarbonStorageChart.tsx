@@ -4,8 +4,9 @@ import * as Highcharts from "highcharts";
 import highchartsVariablePie from "highcharts/modules/variable-pie";
 import HighchartsReact from "highcharts-react-official";
 import { SoilType } from "shared";
+import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
 
-import { getHighchartStyleForSoilTypes } from "@/shared/domain/soils";
+import { getColorForCarbonStorageSoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 highchartsVariablePie(Highcharts);
 
@@ -32,14 +33,11 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
     tooltip: {
       distance: 40,
       pointFormat:
-        "Stocke <strong>{point.options.custom.carbonStorage:,.0f} t de carbone </strong><br>" +
+        "Stocke <strong>{point.carbonStorage:,.0f} t de carbone </strong><br>" +
         "Superficie : {point.y:,.0f} m²<br>" +
         "Carbone stockable / m² : {point.z:.3f} t",
     },
     plotOptions: {
-      series: {
-        keys: ["name", "z", "y", "custom.carbonStorage"],
-      },
       variablepie: { cursor: "pointer" },
     },
     series: [
@@ -47,31 +45,27 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
         name: "",
         type: "variablepie",
         zMin: 0,
-        data: soilsData.map((soilData) => [
-          getLabelForSoilType(soilData.type),
-          soilData.carbonStorageInTonPerSquareMeters,
-          soilData.surfaceArea,
-          soilData.carbonStorage,
-        ]),
+        data: soilsData.map((soilData) => ({
+          name: getLabelForSoilType(soilData.type),
+          z: soilData.carbonStorageInTonPerSquareMeters,
+          y: soilData.surfaceArea,
+          carbonStorage: soilData.carbonStorage,
+        })),
       },
     ],
   };
 
   return (
-    <div
-      className={fr.cx("fr-container", "fr-py-4w")}
-      style={getHighchartStyleForSoilTypes(
-        soilsData.map(({ type }) => type),
-        {
-          WATER: fr.colors.decisions.background.default.grey.default,
-        },
-      )}
-    >
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={variablePieChartOptions}
-        ref={variablePieChartRef}
-      />
+    <div className={fr.cx("fr-container", "fr-py-4w")}>
+      <HighchartsCustomColorsWrapper
+        colors={soilsData.map((soilData) => getColorForCarbonStorageSoilType(soilData.type))}
+      >
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={variablePieChartOptions}
+          ref={variablePieChartRef}
+        />
+      </HighchartsCustomColorsWrapper>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import { SoilType } from "shared";
 
 import { soilColors } from "@/app/views/theme";
@@ -41,15 +42,9 @@ export const getColorForSoilType = (value: SoilType): string => {
   }
 };
 
-export const getHighchartStyleForSoilTypes = (
-  soilTypes: SoilType[],
-  override: Partial<Record<SoilType, string>> = {},
-): React.CSSProperties => {
-  return soilTypes.reduce(
-    (style, soilType, index) => ({
-      ...style,
-      [`--highcharts-color-${index}`]: override[soilType] ?? getColorForSoilType(soilType),
-    }),
-    {},
-  );
+export const getColorForCarbonStorageSoilType = (value: SoilType): string => {
+  if (value === "WATER") {
+    return fr.colors.decisions.background.default.grey.default;
+  }
+  return getColorForSoilType(value);
 };

@@ -8,10 +8,11 @@ import ImpactPercentageVariation from "../../ImpactChartCard/ImpactPercentageVar
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { getHighchartStyleForSoilTypes } from "@/shared/domain/soils";
+import { getColorForCarbonStorageSoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
+import HighchartsCustomColorsWrapper from "@/shared/views/components/Charts/HighchartsCustomColorsWrapper";
 
 type Props = {
   soilsCarbonStorageImpact: ReconversionProjectImpacts["soilsCarbonStorage"];
@@ -80,9 +81,11 @@ function SoilsCarbonStorageImpactCard({ soilsCarbonStorageImpact, onTitleClick }
       <ImpactAbsoluteVariation>
         {formatCO2Impact(soilsCarbonStorageVariation)}
       </ImpactAbsoluteVariation>
-      <div style={getHighchartStyleForSoilTypes(soilsTypes)}>
+      <HighchartsCustomColorsWrapper
+        colors={soilsTypes.map((soilType) => getColorForCarbonStorageSoilType(soilType))}
+      >
         <HighchartsReact highcharts={Highcharts} options={chartOptions} />
-      </div>
+      </HighchartsCustomColorsWrapper>
     </ImpactCard>
   );
 }

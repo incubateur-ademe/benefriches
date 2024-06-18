@@ -3,8 +3,10 @@ import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { SoilsDistribution, typedObjectEntries } from "shared";
+import classNames from "../../clsx";
+import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
 
-import { getHighchartStyleForSoilTypes } from "@/shared/domain/soils";
+import { getColorForSoilType } from "@/shared/domain/soils";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
@@ -22,6 +24,7 @@ const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
     return {
       name: getLabelForSoilType(soilType),
       y: surfaceArea,
+      color: getColorForSoilType(soilType),
     };
   });
 
@@ -45,15 +48,16 @@ const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
   };
 
   return (
-    <div
-      className={fr.cx("fr-container", "fr-py-4w")}
-      style={getHighchartStyleForSoilTypes(soilsEntries.map(([soilType]) => soilType))}
-    >
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={variablePieChartOptions}
-        ref={variablePieChartRef}
-      />
+    <div className={classNames(fr.cx("fr-container", "fr-py-4w"))}>
+      <HighchartsCustomColorsWrapper
+        colors={soilsEntries.map(([soilType]) => getColorForSoilType(soilType))}
+      >
+        <HighchartsReact
+          highcharts={Highcharts}
+          options={variablePieChartOptions}
+          ref={variablePieChartRef}
+        />
+      </HighchartsCustomColorsWrapper>
     </div>
   );
 };
