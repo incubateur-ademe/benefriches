@@ -11,7 +11,7 @@ import {
 export type DevelopmentPlanCategory =
   | "RENEWABLE_ENERGY"
   | "URBAN_AGRICULTURE"
-  | "BUILDINGS"
+  | "MIXED_USE_NEIGHBOURHOOD"
   | "NATURAL_URBAN_SPACES"
   | "COMMERCIAL_ACTIVITY_AREA";
 

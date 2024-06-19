@@ -98,4 +98,4 @@ export type Project = {
   yearlyProjectedRevenues: Revenue[];
 };
 
-export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "BUILDINGS";
+export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "MIXED_USE_NEIGHBOURHOOD";

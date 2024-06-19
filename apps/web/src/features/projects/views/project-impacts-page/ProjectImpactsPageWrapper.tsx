@@ -50,8 +50,8 @@ const ProjectImpactsPageTabs = () => {
 
 const getProjectTypeClassName = (type?: ProjectDevelopmentPlanType) => {
   switch (type) {
-    case "BUILDINGS":
-      return "building";
+    case "MIXED_USE_NEIGHBOURHOOD":
+      return "mixed-use-neighbourhood";
     case "PHOTOVOLTAIC_POWER_PLANT":
       return "photovoltaic";
     default:

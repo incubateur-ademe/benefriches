@@ -5,7 +5,7 @@ import {
 
 export const getLabelForDevelopmentPlanCategory = (value: DevelopmentPlanCategory): string => {
   switch (value) {
-    case "BUILDINGS":
+    case "MIXED_USE_NEIGHBOURHOOD":
       return "Quartier";
     case "NATURAL_URBAN_SPACES":
       return "Espace de nature en ville";
@@ -22,7 +22,7 @@ export const getDescriptionForDevelopmentPlanCategory = (
   value: DevelopmentPlanCategory,
 ): string => {
   switch (value) {
-    case "BUILDINGS":
+    case "MIXED_USE_NEIGHBOURHOOD":
       return "Logements, bureaux, commerces, espaces verts, petite centrale EnR…";
     case "NATURAL_URBAN_SPACES":
       return "Parc ou forêt urbaine";
@@ -66,7 +66,7 @@ export const getDescriptionForRenewableEnergyType = (
 };
 
 const developmentPlanCategoryPictogramMap: Record<DevelopmentPlanCategory, string> = {
-  BUILDINGS: "mixed-used-neighborhood.svg",
+  MIXED_USE_NEIGHBOURHOOD: "mixed-used-neighborhood.svg",
   NATURAL_URBAN_SPACES: "natural-urban-space.svg",
   COMMERCIAL_ACTIVITY_AREA: "commercial-activity-area.svg",
   URBAN_AGRICULTURE: "urban-agriculture.svg",

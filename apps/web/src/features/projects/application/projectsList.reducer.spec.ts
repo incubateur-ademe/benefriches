@@ -22,7 +22,11 @@ describe("Projects list reducer", () => {
           name: "Reconversion project A on site 2",
           type: "PHOTOVOLTAIC_POWER_PLANT",
         },
-        { id: reconversionProjectIdB, name: "Reconversion project B on site 2", type: "BUILDINGS" },
+        {
+          id: reconversionProjectIdB,
+          name: "Reconversion project B on site 2",
+          type: "MIXED_USE_NEIGHBOURHOOD",
+        },
       ],
     },
   ] as const;
@@ -81,7 +85,7 @@ describe("Projects list reducer", () => {
       expect(reconversionProject).toEqual({
         id: reconversionProjectIdB,
         name: "Reconversion project B on site 2",
-        type: "BUILDINGS",
+        type: "MIXED_USE_NEIGHBOURHOOD",
         site: { id: reconversionProjects[1]?.siteId, name: "Site 2" },
       });
     });
