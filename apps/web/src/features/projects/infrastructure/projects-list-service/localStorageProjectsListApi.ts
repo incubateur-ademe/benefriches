@@ -1,5 +1,8 @@
 import { ReconversionProjectsListGateway } from "../../application/projectsList.actions";
-import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
+import {
+  ProjectDevelopmentPlanType,
+  ReconversionProjectsGroupedBySite,
+} from "../../domain/projects.types";
 
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
@@ -10,6 +13,7 @@ export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 type ProjectInLocalStorage = {
   id: string;
   name: string;
+  type?: ProjectDevelopmentPlanType;
   relatedSiteId: string;
 };
 
@@ -35,7 +39,11 @@ export class LocalStorageProjectsListApi implements ReconversionProjectsListGate
         siteId: site.id,
         siteName: site.name,
         isFriche: site.isFriche,
-        reconversionProjects: projects.map(({ name, id }) => ({ name, id })),
+        reconversionProjects: projects.map(({ name, id, type = "PHOTOVOLTAIC_POWER_PLANT" }) => ({
+          name,
+          id,
+          type,
+        })),
       };
     });
   }

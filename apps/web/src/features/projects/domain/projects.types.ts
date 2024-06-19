@@ -25,7 +25,7 @@ export type ProjectsGroup = {
   siteName: string;
   isFriche: boolean;
   fricheActivity?: FricheActivity;
-  reconversionProjects: { id: string; name: string }[];
+  reconversionProjects: { id: string; name: string; type: ProjectDevelopmentPlanType }[];
 };
 
 export type ReconversionProjectsGroupedBySite = ProjectsGroup[];

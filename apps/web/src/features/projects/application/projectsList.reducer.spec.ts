@@ -17,8 +17,12 @@ describe("Projects list reducer", () => {
       siteName: "Site 2",
       isFriche: false,
       reconversionProjects: [
-        { id: reconversionProjectIdA, name: "Reconversion project A on site 2" },
-        { id: reconversionProjectIdB, name: "Reconversion project B on site 2" },
+        {
+          id: reconversionProjectIdA,
+          name: "Reconversion project A on site 2",
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+        },
+        { id: reconversionProjectIdB, name: "Reconversion project B on site 2", type: "BUILDINGS" },
       ],
     },
   ] as const;
@@ -77,6 +81,7 @@ describe("Projects list reducer", () => {
       expect(reconversionProject).toEqual({
         id: reconversionProjectIdB,
         name: "Reconversion project B on site 2",
+        type: "BUILDINGS",
         site: { id: reconversionProjects[1]?.siteId, name: "Site 2" },
       });
     });
@@ -103,7 +108,13 @@ describe("Projects list reducer", () => {
           siteId: uuid(),
           siteName: "Site 2",
           isFriche: false,
-          reconversionProjects: [{ id: rpId, name: "Reconversion project A on site 2" }],
+          reconversionProjects: [
+            {
+              id: rpId,
+              name: "Reconversion project A on site 2",
+              type: "PHOTOVOLTAIC_POWER_PLANT",
+            },
+          ],
         },
       ] as const;
       const store = createStore(getTestAppDependencies(), {
@@ -125,7 +136,11 @@ describe("Projects list reducer", () => {
       });
 
       expect(selectComparableProjects(store.getState(), reconversionProjectIdB)).toEqual([
-        { id: reconversionProjectIdA, name: "Reconversion project A on site 2" },
+        {
+          id: reconversionProjectIdA,
+          name: "Reconversion project A on site 2",
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+        },
       ]);
     });
   });

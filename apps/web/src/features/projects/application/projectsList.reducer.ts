@@ -1,5 +1,8 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { ReconversionProjectsGroupedBySite } from "../domain/projects.types";
+import {
+  ProjectDevelopmentPlanType,
+  ReconversionProjectsGroupedBySite,
+} from "../domain/projects.types";
 import { fetchReconversionProjects } from "./projectsList.actions";
 
 import { RootState } from "@/app/application/store";
@@ -39,6 +42,7 @@ const selectSelf = (state: RootState) => state.reconversionProjectsList;
 type ReconversionProjectWithSite = {
   id: string;
   name: string;
+  type: ProjectDevelopmentPlanType;
   site: {
     id: string;
     name: string;
@@ -57,6 +61,7 @@ export const selectReconversionProjectById = createSelector(
     return {
       id: project.id,
       name: project.name,
+      type: project.type,
       site: {
         id: projectsGroup.siteId,
         name: projectsGroup.siteName,

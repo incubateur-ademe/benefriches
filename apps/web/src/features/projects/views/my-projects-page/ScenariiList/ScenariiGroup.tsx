@@ -69,7 +69,7 @@ function ScenariiGroup({
                 selectedIds={selectedIds}
                 selectableIds={selectableIds}
                 onChangeSelectedProject={onChangeSelectedProject}
-                type="PHOTOVOLTAIC_POWER_PLANT"
+                type={project.type}
               />
             </GridColumn>
           );
