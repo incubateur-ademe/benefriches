@@ -1,11 +1,12 @@
 import { UseCase } from "src/shared-kernel/usecase";
+import { DevelopmentPlan } from "../model/reconversionProject";
 
 export type ReconversionProjectsGroupedBySite = {
   siteName: string;
   siteId: string;
   isFriche: boolean;
   fricheActivity?: string;
-  reconversionProjects: { id: string; name: string }[];
+  reconversionProjects: { id: string; name: string; type: DevelopmentPlan["type"] }[];
 }[];
 
 export interface ReconversionProjectsListRepository {

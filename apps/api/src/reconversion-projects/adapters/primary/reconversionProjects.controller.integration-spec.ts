@@ -179,6 +179,21 @@ describe("ReconversionProjects controller", () => {
 
       await sqlConnection("sites").insert([siteInDb1, siteInDb2, siteOfAnotherUser]);
       await sqlConnection("reconversion_projects").insert([projectInDb1, projectInDb2]);
+      await sqlConnection("reconversion_project_development_plans").insert([
+        {
+          id: uuid(),
+          reconversion_project_id: projectInDb1.id,
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          features: {},
+        },
+        {
+          id: uuid(),
+          reconversion_project_id: projectInDb2.id,
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          features: {},
+        },
+      ]);
+
       const response = await supertest(app.getHttpServer())
         .get("/reconversion-projects/list-by-site?userId=" + userId)
         .send();
@@ -190,8 +205,8 @@ describe("ReconversionProjects controller", () => {
           siteId: siteInDb1.id,
           isFriche: siteInDb1.is_friche,
           reconversionProjects: [
-            { id: projectInDb1.id, name: projectInDb1.name },
-            { id: projectInDb2.id, name: projectInDb2.name },
+            { id: projectInDb1.id, name: projectInDb1.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
+            { id: projectInDb2.id, name: projectInDb2.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
           ],
         },
         {

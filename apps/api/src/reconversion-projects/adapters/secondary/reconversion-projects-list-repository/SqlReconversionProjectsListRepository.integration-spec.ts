@@ -143,6 +143,27 @@ describe("ReconversionProjectsListRepository integration", () => {
         projectInDb3,
       ]);
 
+      await sqlConnection("reconversion_project_development_plans").insert([
+        {
+          id: uuid(),
+          reconversion_project_id: projectInDb1.id,
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          features: {},
+        },
+        {
+          id: uuid(),
+          reconversion_project_id: projectInDb2.id,
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          features: {},
+        },
+        {
+          id: uuid(),
+          reconversion_project_id: projectInDb3.id,
+          type: "PHOTOVOLTAIC_POWER_PLANT",
+          features: {},
+        },
+      ]);
+
       const result = await reconversionProjectsListRepository.getGroupedBySite({ userId });
 
       expect(result).toHaveLength(2);
@@ -152,15 +173,17 @@ describe("ReconversionProjectsListRepository integration", () => {
           siteId: siteInDb2.id,
           isFriche: siteInDb2.is_friche,
           reconversionProjects: [
-            { id: projectInDb2.id, name: projectInDb2.name },
-            { id: projectInDb3.id, name: projectInDb3.name },
+            { id: projectInDb2.id, name: projectInDb2.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
+            { id: projectInDb3.id, name: projectInDb3.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
           ],
         },
         {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
           isFriche: siteInDb1.is_friche,
-          reconversionProjects: [{ id: projectInDb1.id, name: projectInDb1.name }],
+          reconversionProjects: [
+            { id: projectInDb1.id, name: projectInDb1.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
+          ],
         },
       ]);
     });

@@ -4,7 +4,10 @@ import { getProjectsInfosList, getSelectionInfos, getSitesInfosList } from "./ge
 import ScenariiGroup from "./ScenariiGroup";
 import ScenariiSelectionBar from "./ScenariiSelectionBar";
 
-import { ReconversionProjectsGroupedBySite } from "@/features/projects/domain/projects.types";
+import {
+  ProjectDevelopmentPlanType,
+  ReconversionProjectsGroupedBySite,
+} from "@/features/projects/domain/projects.types";
 
 type Props = {
   projectsList: ReconversionProjectsGroupedBySite;
@@ -13,6 +16,7 @@ type Props = {
 export type ReconversionProjectList = {
   id: string;
   name: string;
+  type: ProjectDevelopmentPlanType;
 }[];
 
 function ScenariiListContainer({ projectsList }: Props) {
