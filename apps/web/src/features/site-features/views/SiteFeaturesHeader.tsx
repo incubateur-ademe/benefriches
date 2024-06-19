@@ -1,0 +1,40 @@
+import { fr } from "@codegouvfr/react-dsfr";
+
+import classNames from "@/shared/views/clsx";
+
+type Props = {
+  siteName: string;
+  address: string;
+  isFriche: boolean;
+};
+
+export default function SiteFeaturesHeader({ siteName, address, isFriche }: Props) {
+  return (
+    <section
+      className={classNames(fr.cx("fr-py-8v"), "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}
+    >
+      <div className={fr.cx("fr-container")}>
+        <div className="tw-flex tw-items-center">
+          <img
+            className="tw-mr-3"
+            src={isFriche ? "/icons/friche.svg" : "/icons/agricole.svg"}
+            aria-hidden={true}
+            alt="Icône friche"
+            width={76}
+            height={76}
+          />
+          <div>
+            <h2 className={classNames(fr.cx("fr-my-0"), "tw-text-impacts-title")}>{siteName}</h2>
+            <div>
+              <span
+                className={fr.cx("fr-icon-map-pin-2-line", "fr-icon--sm", "fr-mr-0-5v")}
+                aria-hidden="true"
+              />
+              <span className={fr.cx("fr-text--lg")}>{address}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

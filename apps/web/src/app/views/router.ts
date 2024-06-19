@@ -30,6 +30,12 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { baseProjectId: param.path.string, avecProjet: param.query.string },
     (params) => `/mes-projets/${params.baseProjectId}/comparaison`,
   ),
+  siteFeatures: defineRoute(
+    {
+      siteId: param.path.string,
+    },
+    (params) => `/sites/${params.siteId}/caracteristiques`,
+  ),
   budget: defineRoute("/budget"),
   stats: defineRoute("/statistiques"),
   mentionsLegales: defineRoute("/mentions-legales"),

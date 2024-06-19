@@ -9,6 +9,7 @@ import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { InMemoryReconversionProjectsListService } from "@/features/projects/infrastructure/projects-list-service/InMemoryProjectsListService";
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
+import { MockSiteFeaturesService } from "@/features/site-features/infra/site-features-service/MockSiteFeaturesService";
 import { InMemoryCreateUserService } from "@/features/users/infra/create-user-service/inMemoryCreateUserService";
 import { LocalStorageUserService } from "@/features/users/infra/current-user-service/LocalStorageUserService";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
@@ -52,6 +53,7 @@ export const getTestAppDependencies = (
     }),
     currentUserService: new LocalStorageUserService(),
     createUserService: new InMemoryCreateUserService(),
+    siteFeaturesService: new MockSiteFeaturesService(),
     ...depsOverride,
   };
 };

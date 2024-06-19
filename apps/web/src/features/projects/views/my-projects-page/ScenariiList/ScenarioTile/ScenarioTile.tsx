@@ -7,7 +7,7 @@ type Props = {
   title: string;
   pictogramUrl?: string;
   details?: string;
-  linkProps?: { href: string };
+  linkProps: { href: string };
   isHovered?: boolean;
   isSelected: boolean;
   shouldDisplayCheckbox: boolean;
@@ -75,16 +75,9 @@ function ScenarioTile({
     >
       <div className="fr-tile__body">
         <div className="fr-tile__content">
-          {linkProps ? (
-            <a {...linkProps} className="tw-bg-none">
-              <ScenarioTileHeader title={title} pictogramUrl={pictogramUrl} />
-            </a>
-          ) : (
-            <div>
-              <ScenarioTileHeader title={title} pictogramUrl={pictogramUrl} />
-            </div>
-          )}
-
+          <a {...linkProps} className="tw-bg-none">
+            <ScenarioTileHeader title={title} pictogramUrl={pictogramUrl} />
+          </a>
           <div className="fr-tile__details tw-grow">
             <p className="fr-tile__desc tw-text-sm">{details}</p>
           </div>
