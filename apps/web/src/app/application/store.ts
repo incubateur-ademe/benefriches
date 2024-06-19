@@ -21,6 +21,8 @@ import projectImpacts from "@/features/projects/application/projectImpacts.reduc
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
 import projectImpactsComparison from "@/features/projects/application/projectImpactsComparison.reducer";
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
+import { SiteFeaturesGateway } from "@/features/site-features/application/fetchSiteFeatures.action";
+import siteFeatures from "@/features/site-features/application/siteFeatures.reducer";
 import { CreateUserGateway } from "@/features/users/application/createUser.action";
 import { CurrentUserGateway } from "@/features/users/application/initCurrentUser.action";
 import currentUser from "@/features/users/application/user.reducer";
@@ -37,6 +39,7 @@ export type AppDependencies = {
   reconversionProjectImpacts: ReconversionProjectImpactsGateway;
   currentUserService: CurrentUserGateway;
   createUserService: CreateUserGateway;
+  siteFeaturesService: SiteFeaturesGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -46,6 +49,7 @@ type PreloadedStateFromReducer<R extends Reducer<any, any, any>> =
 
 const rootReducer = combineReducers({
   siteCreation,
+  siteFeatures,
   projectCreation,
   projectPvExpectedPerformancesStorage,
   siteCarbonStorage,

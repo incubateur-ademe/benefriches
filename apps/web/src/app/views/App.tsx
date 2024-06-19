@@ -40,6 +40,7 @@ const ProjectsImpactsComparisonPage = lazy(
 const ProjectsComparisonSelectionPage = lazy(
   () => import("@/features/projects/views/select-projects-comparison-page"),
 );
+const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
 
 function App() {
   const route = useRoute();
@@ -133,6 +134,8 @@ function App() {
                   <ProjectImpactsPage projectId={route.params.projectId} />
                 </RequireRegisteredUser>
               );
+            case routes.siteFeatures.name:
+              return <SiteFeaturesPage siteId={route.params.siteId} />;
             // 404
             default:
               return (
