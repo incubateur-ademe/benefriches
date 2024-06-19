@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { SiteFeatures } from "../domain/siteFeatures";
 import SiteFeaturesHeader from "./SiteFeaturesHeader";
 import SiteFeaturesList from "./SiteFeaturesList";
@@ -21,7 +22,16 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
   }
 
   if (loadingState === "error" || !siteData) {
-    return <div>Erreur de chargement des données</div>;
+    return (
+      <div className="fr-container">
+        <Alert
+          description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
+          severity="error"
+          title="Échec du chargement des caractéristiques du site"
+          className="fr-my-7v"
+        />
+      </div>
+    );
   }
 
   return (
