@@ -57,7 +57,13 @@
 
 /* Page Impacts: couleurs par type de projet */
 
-#project-impacts-page.building {
+:root {
+  --impacts-title-color: #0c5399;
+  --impacts-main-color: #ecf5fd;
+  --impacts-dark-color: #d9ebfc;
+}
+
+#project-impacts-page.mixed-use-neighbourhood {
   --impacts-title-color: #931595;
   --impacts-main-color: #fdedfd;
   --impacts-dark-color: #ffe0ff;
