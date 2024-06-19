@@ -248,10 +248,10 @@ export const getDefaultValuesForFullTimeOperationsJobsInvolved = createSelector(
 export const getDefaultValuesForYearlyProjectedRecurringRevenue = createSelector(
   selectProjectData,
   (projectData): number | undefined => {
-    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = projectData;
+    const { photovoltaicExpectedAnnualProduction } = projectData;
 
-    return electricalPowerKWc
-      ? computeDefaultPhotovoltaicYearlyRecurringRevenueAmount(electricalPowerKWc)
+    return photovoltaicExpectedAnnualProduction
+      ? computeDefaultPhotovoltaicYearlyRecurringRevenueAmount(photovoltaicExpectedAnnualProduction)
       : undefined;
   },
 );

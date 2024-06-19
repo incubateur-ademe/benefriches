@@ -64,11 +64,13 @@ export const computeDefaultPhotovoltaicYearlyMaintenanceAmount = (electricalPowe
   );
 };
 
-const ECONOMICAL_RATIO_OPERATIONS_INCOME_EURO_PER_KWC_PER_YEAR = 0.0065;
+const ECONOMICAL_RATIO_OPERATIONS_INCOME_EURO_PER_MWH_PER_YEAR = 65;
 export const computeDefaultPhotovoltaicYearlyRecurringRevenueAmount = (
-  electricalPowerKWc: number,
+  expectedProductionMWh: number,
 ) => {
-  return Math.round(electricalPowerKWc * ECONOMICAL_RATIO_OPERATIONS_INCOME_EURO_PER_KWC_PER_YEAR);
+  return Math.round(
+    expectedProductionMWh * ECONOMICAL_RATIO_OPERATIONS_INCOME_EURO_PER_MWH_PER_YEAR,
+  );
 };
 
 export const computeDefaultPhotovoltaicYearlyTaxesAmount = (electricalPowerKWc: number) => {
