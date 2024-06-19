@@ -23,6 +23,7 @@ import {
   willTransformationNoticeablyImpactBiodiversityAndClimate,
 } from "../domain/soilsTransformation";
 import { ProjectCreationState } from "./createProject.reducer";
+import { selectPhotovoltaicPlantElectricalPowerKWc } from "./pvFeatures.selectors";
 
 import { RootState } from "@/app/application/store";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -111,25 +112,20 @@ export const selectFutureSoils = createSelector(selectSelf, (state): SoilType[] 
   return state.projectData.futureSoilsSelection ?? [];
 });
 
-const selectPhotovoltaicInstallationElectricalPowerKWc = createSelector(
-  selectSelf,
-  (state): number => state.projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
-);
-
 export const selectRecommendedMineralSurfaceArea = createSelector(
-  selectPhotovoltaicInstallationElectricalPowerKWc,
-  (photovoltaicInstallationElectricalPowerKwC): number => {
+  selectPhotovoltaicPlantElectricalPowerKWc,
+  (photovoltaicPlantElectricalPowerKwC): number => {
     return getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea(
-      photovoltaicInstallationElectricalPowerKwC,
+      photovoltaicPlantElectricalPowerKwC,
     );
   },
 );
 
 export const selectRecommendedImpermeableSurfaceArea = createSelector(
-  selectPhotovoltaicInstallationElectricalPowerKWc,
-  (photovoltaicInstallationElectricalPowerKwC): number => {
+  selectPhotovoltaicPlantElectricalPowerKWc,
+  (photovoltaicPlantElectricalPowerKwC): number => {
     return getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea(
-      photovoltaicInstallationElectricalPowerKwC,
+      photovoltaicPlantElectricalPowerKwC,
     );
   },
 );

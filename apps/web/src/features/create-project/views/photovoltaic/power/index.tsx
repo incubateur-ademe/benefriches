@@ -5,31 +5,29 @@ import {
   completePhotovoltaicInstallationElectricalPower,
   revertPhotovoltaicInstallationElectricalPower,
 } from "@/features/create-project/application/createProject.reducer";
-import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
+import {
+  selectPhotovoltaicPanelsSurfaceArea,
+  selectSiteSurfaceArea,
+} from "@/features/create-project/application/createProject.selectors";
+import {
+  selectPhotovoltaicPlantFeaturesKeyParameter,
+  selectRecommendedPowerKWcFromPhotovoltaicPlantSurfaceArea,
+  selectRecommendedPowerKWcFromSiteSurfaceArea,
+} from "@/features/create-project/application/pvFeatures.selectors";
 import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const computePhotovoltaicElectricalPowerFromSurface = (surfaceSquareMeters: number) => {
-  return Math.round(surfaceSquareMeters / PHOTOVOLTAIC_RATIO_M2_PER_KWC);
-};
-
-const computeMaxPhotovoltaicElectricalPowerFromSiteSurface = (surfaceSquareMeters: number) => {
-  return Math.round(surfaceSquareMeters / PHOTOVOLTAIC_RATIO_M2_PER_KWC);
-};
-
 function PhotovoltaicPowerContainer() {
   const dispatch = useAppDispatch();
-  const siteSurfaceArea = useAppSelector(
-    (state) => state.projectCreation.siteData?.surfaceArea ?? 0,
+  const recommendedElectricalPowerKWc = useAppSelector(
+    selectRecommendedPowerKWcFromPhotovoltaicPlantSurfaceArea,
   );
-
-  const surfaceSquareMeters = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicInstallationSurfaceSquareMeters ?? 0,
+  const recommendedElectricalPowerKWcFromSiteSurfaceArea = useAppSelector(
+    selectRecommendedPowerKWcFromSiteSurfaceArea,
   );
-
-  const photovoltaicKeyParameter = useAppSelector(
-    (state) => state.projectCreation.projectData.photovoltaicKeyParameter,
-  );
+  const siteSurfaceArea = useAppSelector(selectSiteSurfaceArea);
+  const surfaceSquareMeters = useAppSelector(selectPhotovoltaicPanelsSurfaceArea);
+  const photovoltaicKeyParameter = useAppSelector(selectPhotovoltaicPlantFeaturesKeyParameter);
 
   const onSubmit = (data: { photovoltaicInstallationElectricalPowerKWc: number }) => {
     dispatch(
@@ -46,9 +44,7 @@ function PhotovoltaicPowerContainer() {
   if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.SURFACE) {
     return (
       <PhotovoltaicPowerFromSurfaceForm
-        recommendedElectricalPowerKWc={computePhotovoltaicElectricalPowerFromSurface(
-          surfaceSquareMeters,
-        )}
+        recommendedElectricalPowerKWc={recommendedElectricalPowerKWc}
         photovoltaicSurfaceArea={surfaceSquareMeters}
         onSubmit={onSubmit}
         onBack={onBack}
@@ -58,9 +54,7 @@ function PhotovoltaicPowerContainer() {
 
   return (
     <PhotovoltaicPowerForm
-      maxRecommendedElectricalPowerKWc={computeMaxPhotovoltaicElectricalPowerFromSiteSurface(
-        siteSurfaceArea,
-      )}
+      maxRecommendedElectricalPowerKWc={recommendedElectricalPowerKWcFromSiteSurfaceArea}
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={onSubmit}
       onBack={onBack}
