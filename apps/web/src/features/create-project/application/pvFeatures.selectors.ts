@@ -37,12 +37,15 @@ export const selectRecommendedPowerKWcFromSiteSurfaceArea = createSelector(
 );
 
 export const selectRecommendedPhotovoltaicPlantSurfaceFromElectricalPower = createSelector(
-  selectProjectCreationData,
-  (projectData): number => {
-    if (!projectData.photovoltaicInstallationElectricalPowerKWc) return 0;
-    return Math.round(
+  [selectProjectCreationData, selectProjectCreationSiteData],
+  (projectData, siteData): number => {
+    if (!projectData.photovoltaicInstallationElectricalPowerKWc || !siteData?.surfaceArea) return 0;
+
+    const computedFromElectricalPower = Math.round(
       projectData.photovoltaicInstallationElectricalPowerKWc * PHOTOVOLTAIC_RATIO_M2_PER_KWC,
     );
+    // photovoltaic plant can't be bigger than site
+    return Math.min(computedFromElectricalPower, siteData.surfaceArea);
   },
 );
 
