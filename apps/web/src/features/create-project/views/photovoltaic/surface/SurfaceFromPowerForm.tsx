@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -28,21 +28,17 @@ function PhotovoltaicSurfaceFromPowerForm({
   recommendedSurface,
   siteSurfaceArea,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       photovoltaicInstallationSurfaceSquareMeters: recommendedSurface,
     },
   });
 
-  const hintText = `en m² (maximum conseillé : ${formatNumberFr(siteSurfaceArea)} m²)`;
+  const hintText = `en m² (maximum : ${formatSurfaceArea(siteSurfaceArea)})`;
 
-  const maxErrorMessage = `La superficie des panneaux ne peut pas être supérieure à la superficie totale du site (${formatNumberFr(
+  const maxErrorMessage = `La superficie des panneaux ne peut pas être supérieure à la superficie totale du site (${formatSurfaceArea(
     siteSurfaceArea,
-  )} m²).`;
-
-  const surface = watch("photovoltaicInstallationSurfaceSquareMeters");
-
-  const displayTooHighValueWarning = surface > siteSurfaceArea;
+  )}).`;
 
   return (
     <WizardFormLayout
@@ -53,20 +49,19 @@ function PhotovoltaicSurfaceFromPowerForm({
             <p>
               Le ratio superficie / puissance d'installation considéré est de{" "}
               <strong>
-                {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m² pour 1 000 kWc.
+                {formatSurfaceArea(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)} pour 1 000 kWc.
               </strong>
             </p>
             <p>
               Pour la puissance que vous avez renseigné ({formatNumberFr(electricalPowerKWc)}
               &nbsp;kWc), la superficie occupée par les panneaux devrait donc être de{" "}
-              {formatNumberFr(recommendedSurface)}
-              &nbsp;m².
+              {formatSurfaceArea(recommendedSurface)}.
             </p>
             <p>Vous pouvez modifier cette superficie.</p>
 
             <p>
               La superficie d'installation des panneaux ne peut être supérieure à la superficie
-              totale de la friche ({formatNumberFr(siteSurfaceArea)} m²).
+              totale de la friche ({formatSurfaceArea(siteSurfaceArea)}).
             </p>
           </FormInfo>
 
@@ -94,13 +89,15 @@ function PhotovoltaicSurfaceFromPowerForm({
           rules={{
             min: 0,
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
+            max: {
+              value: siteSurfaceArea,
+              message: maxErrorMessage,
+            },
           }}
           render={(controller) => {
             return (
               <ControlledRowNumericInput
                 {...controller}
-                stateRelatedMessage={displayTooHighValueWarning ? maxErrorMessage : undefined}
-                state={displayTooHighValueWarning ? "warning" : "default"}
                 label={<RequiredLabel label="Superficie de l'installation" />}
                 hintText={hintText}
                 hintInputText="en m²"
