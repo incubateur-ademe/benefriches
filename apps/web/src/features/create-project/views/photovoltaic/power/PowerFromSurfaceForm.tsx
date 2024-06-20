@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -18,25 +18,19 @@ type Props = {
 type FormValues = {
   photovoltaicInstallationElectricalPowerKWc: number;
 };
-const TOO_HIGH_VALUE_WARNING =
-  "La puissance de l'installation est supérieure à la puissance calculée à partir de la surface d'occupation des panneaux.";
 function PhotovoltaicPowerFromSurfaceForm({
   onSubmit,
   onBack,
   photovoltaicSurfaceArea,
   recommendedElectricalPowerKWc,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       photovoltaicInstallationElectricalPowerKWc: recommendedElectricalPowerKWc,
     },
   });
 
   const hintText = `Maximum conseillé : ${formatNumberFr(recommendedElectricalPowerKWc)} kWh`;
-
-  const electricalPowerKwc = watch("photovoltaicInstallationElectricalPowerKWc");
-
-  const displayTooHighValueWarning = electricalPowerKwc > recommendedElectricalPowerKWc;
 
   return (
     <WizardFormLayout
@@ -51,8 +45,7 @@ function PhotovoltaicPowerFromSurfaceForm({
           </p>
           <p>
             La superficie qu'occuperont les panneaux étant de{" "}
-            {formatNumberFr(photovoltaicSurfaceArea)}
-            &nbsp;m², votre puissance devrait être de{" "}
+            {formatSurfaceArea(photovoltaicSurfaceArea)}, votre puissance devrait être de{" "}
             {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
           </p>
           <p>Vous pouvez modifier cette puissance.</p>
@@ -71,10 +64,6 @@ function PhotovoltaicPowerFromSurfaceForm({
             return (
               <ControlledRowNumericInput
                 {...controller}
-                stateRelatedMessage={
-                  displayTooHighValueWarning ? TOO_HIGH_VALUE_WARNING : undefined
-                }
-                state={displayTooHighValueWarning ? "warning" : "default"}
                 label={<RequiredLabel label="Puissance de l'installation" />}
                 hintText={hintText}
                 hintInputText="en kWc"

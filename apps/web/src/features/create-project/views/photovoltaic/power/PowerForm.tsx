@@ -1,7 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -11,7 +11,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  maxRecommendedElectricalPowerKWc: number;
+  recommendedElectricalPowerKWc: number;
   siteSurfaceArea: number;
 };
 
@@ -19,22 +19,15 @@ type FormValues = {
   photovoltaicInstallationElectricalPowerKWc: number;
 };
 
-const TOO_HIGH_VALUE_WARNING =
-  "La superficie induite par la puissance d'installation est supérieure à la superficie de la friche.";
-
 function PhotovoltaicPowerForm({
   onSubmit,
   onBack,
   siteSurfaceArea,
-  maxRecommendedElectricalPowerKWc,
+  recommendedElectricalPowerKWc,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const { control, handleSubmit } = useForm<FormValues>();
 
-  const hintText = `Maximum conseillé : ${formatNumberFr(maxRecommendedElectricalPowerKWc)} kWc`;
-
-  const electricalPowerKwc = watch("photovoltaicInstallationElectricalPowerKWc");
-
-  const displayTooHighValueWarning = electricalPowerKwc > maxRecommendedElectricalPowerKWc;
+  const hintText = `Maximum conseillé : ${formatNumberFr(recommendedElectricalPowerKWc)} kWc`;
 
   return (
     <WizardFormLayout
@@ -44,13 +37,13 @@ function PhotovoltaicPowerForm({
           <p>
             Le ratio superficie / puissance d'installation considéré est de{" "}
             <strong>
-              {formatNumberFr(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)}&nbsp;m² pour 1 000 kWc.
+              {formatSurfaceArea(PHOTOVOLTAIC_RATIO_M2_PER_KWC * 1000)} pour 1 000 kWc.
             </strong>
           </p>
           <p>
             La superficie du site étant de {formatNumberFr(siteSurfaceArea)}
             &nbsp;m², votre puissance devrait être de maximum{" "}
-            {formatNumberFr(maxRecommendedElectricalPowerKWc)}&nbsp;kWc.
+            {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
           </p>
         </FormInfo>
       }
@@ -67,10 +60,6 @@ function PhotovoltaicPowerForm({
             return (
               <ControlledRowNumericInput
                 {...controller}
-                stateRelatedMessage={
-                  displayTooHighValueWarning ? TOO_HIGH_VALUE_WARNING : undefined
-                }
-                state={displayTooHighValueWarning ? "warning" : "default"}
                 label={<RequiredLabel label="Puissance de l'installation" />}
                 hintText={hintText}
                 hintInputText="en kWc"
