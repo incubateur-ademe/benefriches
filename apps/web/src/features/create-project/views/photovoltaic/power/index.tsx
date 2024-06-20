@@ -54,7 +54,7 @@ function PhotovoltaicPowerContainer() {
 
   return (
     <PhotovoltaicPowerForm
-      maxRecommendedElectricalPowerKWc={recommendedElectricalPowerKWcFromSiteSurfaceArea}
+      recommendedElectricalPowerKWc={recommendedElectricalPowerKWcFromSiteSurfaceArea}
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={onSubmit}
       onBack={onBack}
