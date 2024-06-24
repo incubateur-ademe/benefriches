@@ -214,7 +214,7 @@ function SiteYearlyExpensesForm({
                           state={formState.errors[name]?.amount ? "error" : "default"}
                           stateRelatedMessage={
                             formState.errors[name]?.amount
-                              ? formState.errors[name]?.amount?.message
+                              ? formState.errors[name].amount.message
                               : undefined
                           }
                           nativeInputProps={{

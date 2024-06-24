@@ -31,7 +31,7 @@ export const getSiteManagementExpensesWithBearer = (
   isFriche: boolean,
   isWorked: boolean,
   hasTenant: boolean,
-) => {
+): { name: ExpensePurpose; bearer?: "tenant" | "owner" }[] => {
   const isFricheLeased = isFriche && hasTenant;
   const isSiteOperatedByTenant = !isFriche && isWorked && hasTenant;
   if (isFricheLeased || isSiteOperatedByTenant) {
@@ -41,7 +41,7 @@ export const getSiteManagementExpensesWithBearer = (
       { name: "maintenance", bearer: "tenant" },
       { name: "propertyTaxes", bearer: "owner" },
       { name: "otherManagementCosts", bearer: undefined },
-    ] as { name: ExpensePurpose; bearer?: "tenant" | "owner" }[];
+    ];
   }
 
   const isSiteOperatedByOwner = !isFriche && isWorked;
@@ -51,14 +51,14 @@ export const getSiteManagementExpensesWithBearer = (
       { name: "maintenance", bearer: "owner" },
       { name: "propertyTaxes", bearer: "owner" },
       { name: "otherManagementCosts", bearer: "owner" },
-    ] as { name: ExpensePurpose; bearer?: "tenant" | "owner" }[];
+    ];
   }
 
   return [
     { name: "maintenance", bearer: "owner" },
     { name: "propertyTaxes", bearer: "owner" },
     { name: "otherManagementCosts", bearer: "owner" },
-  ] as { name: ExpensePurpose; bearer?: "tenant" | "owner" }[];
+  ];
 };
 
 export const getSiteSecurityExpensesWithBearer = (
