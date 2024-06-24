@@ -13,6 +13,7 @@ import {
   getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
   getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
 } from "../domain/photovoltaic";
+import { DevelopmentPlanCategory } from "../domain/project.types";
 import { computeDefaultReinstatementFullTimeJobs } from "../domain/reinstatement";
 import {
   getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
@@ -29,6 +30,11 @@ import { RootState } from "@/app/application/store";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
 const selectSelf = (state: RootState) => state.projectCreation;
+
+export const selectProjectDevelopmentPlanCategory = createSelector(
+  selectSelf,
+  (state): DevelopmentPlanCategory | undefined => state.projectData.developmentPlanCategory,
+);
 
 export const selectBaseSoilsDistributionForTransformation = createSelector(
   selectSelf,

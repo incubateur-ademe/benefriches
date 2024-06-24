@@ -77,7 +77,11 @@ const INITIAL_STATE = {
   projectData: {},
   siteDataLoadingState: "success",
   saveProjectLoadingState: "idle",
-} satisfies RootState["projectCreation"];
+  mixedUseNeighbourhood: {
+    createMode: undefined,
+    stepsHistory: [],
+  },
+} as const satisfies RootState["projectCreation"];
 
 describe("Site Local Authorities reducer", () => {
   it("should return error when there is no siteData in createSite store", async () => {

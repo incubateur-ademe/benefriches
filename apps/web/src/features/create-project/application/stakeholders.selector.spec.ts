@@ -30,6 +30,10 @@ const MOCK_STATES = {
     siteData,
     siteDataLoadingState: "success",
     saveProjectLoadingState: "success",
+    mixedUseNeighbourhood: {
+      stepsHistory: [],
+      createMode: undefined,
+    },
   } satisfies RootState["projectCreation"],
   currentUser: {
     currentUser: USER,

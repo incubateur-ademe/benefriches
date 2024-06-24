@@ -2,7 +2,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Route } from "type-route";
 import { selectCurrentStep } from "../application/createProject.reducer";
-import { selectIsSiteLoaded } from "../application/createProject.selectors";
+import {
+  selectIsSiteLoaded,
+  selectProjectDevelopmentPlanCategory,
+} from "../application/createProject.selectors";
 import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
 import RealEstateTransactionCostsContainer from "./costs/real-estate-transaction-costs";
@@ -10,6 +13,7 @@ import ReinstatementsCostsForm from "./costs/reinstatement-costs";
 import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
 import ProjectFullTimeJobsInvolvedForm from "./jobs/conversion-full-time-jobs-involved";
 import OperationsFullTimeJobsInvolvedForm from "./jobs/operations-full-time-jobs-involved";
+import MixedUseNeighbourhoodWizard from "./mixed-use-neighbourhood/MixedUseNeighbourhoodWizard";
 import PhotovoltaicContractDurationContainer from "./photovoltaic/contract-duration";
 import PhotovoltaicExpectedAnnualProductionContainer from "./photovoltaic/expected-annual-production";
 import PhotovoltaicKeyParameter from "./photovoltaic/key-parameter";
@@ -54,6 +58,7 @@ type Props = {
 
 function ProjectCreationWizard({ route }: Props) {
   const currentStep = useAppSelector(selectCurrentStep);
+  const projectDevelopmentPlanCategory = useAppSelector(selectProjectDevelopmentPlanCategory);
   const isSiteLoaded = useAppSelector(selectIsSiteLoaded);
 
   const getStepComponent = () => {
@@ -146,6 +151,10 @@ function ProjectCreationWizard({ route }: Props) {
   }, [isSiteLoaded, route.params.siteId]);
 
   const [isOpen, setOpen] = useState(true);
+
+  if (projectDevelopmentPlanCategory === "MIXED_USE_NEIGHBOURHOOD") {
+    return <MixedUseNeighbourhoodWizard />;
+  }
 
   return (
     <SidebarLayout

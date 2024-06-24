@@ -1,4 +1,10 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSelector,
+  createSlice,
+  PayloadAction,
+  Reducer,
+  UnknownAction,
+} from "@reduxjs/toolkit";
 import { SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 import {
@@ -13,6 +19,14 @@ import {
   transformNonSuitableSoils,
   transformSoilsForRenaturation,
 } from "../domain/soilsTransformation";
+import {
+  createModeStepReverted,
+  MixedUseNeighbourhoodAction,
+} from "./mixed-use-neighbourhood/mixedUseNeighbourhoodProject.actions";
+import mixedUseNeighbourhoodReducer, {
+  getInitialState as getMixedUseNeighbourhoodInitialState,
+  MixedUseNeighbourhoodState,
+} from "./mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
 import { fetchRelatedSite } from "./fetchRelatedSite.action";
 import { saveReconversionProject, Schedule } from "./saveReconversionProject.action";
 
@@ -38,6 +52,7 @@ export type ProjectCreationState = {
   siteData?: ProjectSite;
   siteDataLoadingState: LoadingState;
   saveProjectLoadingState: LoadingState;
+  mixedUseNeighbourhood: MixedUseNeighbourhoodState;
 };
 
 export type ProjectCreationStep =
@@ -92,6 +107,7 @@ export const getInitialState = (): ProjectCreationState => {
     siteData: undefined,
     siteDataLoadingState: "idle",
     saveProjectLoadingState: "idle",
+    mixedUseNeighbourhood: getMixedUseNeighbourhoodInitialState(),
   };
 };
 
@@ -450,6 +466,9 @@ export const projectCreationSlice = createSlice({
     },
   },
   extraReducers(builder) {
+    builder.addCase(createModeStepReverted, (state) => {
+      state.projectData.developmentPlanCategory = undefined;
+    });
     /* fetch related site */
     builder.addCase(fetchRelatedSite.pending, (state) => {
       state.siteDataLoadingState = "loading";
@@ -600,4 +619,18 @@ export const {
   completeProjectPhaseStep,
 } = projectCreationSlice.actions;
 
-export default projectCreationSlice.reducer;
+export const projectCreationReducer: Reducer<ProjectCreationState> = (
+  state: ProjectCreationState = getInitialState(),
+  action: UnknownAction,
+) => {
+  const intermediateState = projectCreationSlice.reducer(state, action);
+  return {
+    ...intermediateState,
+    mixedUseNeighbourhood: mixedUseNeighbourhoodReducer(
+      intermediateState,
+      action as MixedUseNeighbourhoodAction,
+    ),
+  };
+};
+
+export default projectCreationReducer;
