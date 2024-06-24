@@ -24,7 +24,7 @@ const API_MOCKED_RESULT = {
       total: -20.05,
     },
   },
-} as PhotovoltaicPerformanceApiResult;
+} as const satisfies PhotovoltaicPerformanceApiResult;
 
 const SITE_MOCKED_RESULT = {
   id: "03a53ffd-4f71-419e-8d04-041311eefa23",

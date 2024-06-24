@@ -95,11 +95,12 @@ export const transformNonSuitableSoils = (
 
   typedObjectEntries(nonSuitableSoilsToTransform).forEach(
     ([soilTypeToTransform, surfaceAreaToTransform]) => {
+      if (surfaceAreaToTransform === undefined) return;
       const resultingSoilType = getSoilsTransformationResultingSoilType(soilTypeToTransform);
 
-      newSoilsDistribution[soilTypeToTransform]! -= surfaceAreaToTransform as number;
+      newSoilsDistribution[soilTypeToTransform]! -= surfaceAreaToTransform;
       newSoilsDistribution[resultingSoilType] =
-        (newSoilsDistribution[resultingSoilType] ?? 0) + (surfaceAreaToTransform as number);
+        (newSoilsDistribution[resultingSoilType] ?? 0) + surfaceAreaToTransform;
     },
   );
 
@@ -183,11 +184,12 @@ export const transformSoilsForRenaturation = (
 
   typedObjectEntries(baseSoilsDistribution).forEach(
     ([soilTypeToTransform, surfaceAreaToTransform]) => {
+      if (surfaceAreaToTransform === undefined) return;
       const resultingSoilType = getRenaturationTransformationResultingSoilType(soilTypeToTransform);
 
-      renaturedSoilsDistribution[soilTypeToTransform]! -= surfaceAreaToTransform as number;
+      renaturedSoilsDistribution[soilTypeToTransform]! -= surfaceAreaToTransform;
       renaturedSoilsDistribution[resultingSoilType] =
-        (renaturedSoilsDistribution[resultingSoilType] ?? 0) + (surfaceAreaToTransform as number);
+        (renaturedSoilsDistribution[resultingSoilType] ?? 0) + surfaceAreaToTransform;
     },
   );
 

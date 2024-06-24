@@ -29,14 +29,10 @@ function DataLine({ label, value, className = "fr-my-2w" }: DataLineProps) {
 
 export default function SiteFeaturesList(siteFeatures: Props) {
   const siteManagementExpenses = siteFeatures.expenses.filter((e) =>
-    ["rent", "propertyTaxes", "operationsTaxes", "otherManagementCosts"].includes(
-      e.purpose as string,
-    ),
+    ["rent", "propertyTaxes", "operationsTaxes", "otherManagementCosts"].includes(e.purpose),
   );
   const fricheSpecificExpenses = siteFeatures.expenses.filter((e) =>
-    ["security", "maintenance", "illegalDumpingCost", "otherSecuringCosts"].includes(
-      e.purpose as string,
-    ),
+    ["security", "maintenance", "illegalDumpingCost", "otherSecuringCosts"].includes(e.purpose),
   );
   return (
     <section className={classNames(fr.cx("fr-container"), "lg:tw-px-24", "tw-py-6")}>

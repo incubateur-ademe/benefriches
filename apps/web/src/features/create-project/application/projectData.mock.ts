@@ -1,8 +1,4 @@
-import {
-  FinancialAssistanceRevenue,
-  PhotovoltaicKeyParameter,
-  ReconversionProjectCreationData,
-} from "../domain/project.types";
+import { PhotovoltaicKeyParameter, ReconversionProjectCreationData } from "../domain/project.types";
 
 export const projectWithMinimalData = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",
@@ -69,7 +65,7 @@ export const projectWithExhaustiveData = {
     { source: "local_or_regional_authority_participation", amount: 10000 },
     { source: "public_subsidies", amount: 4000 },
     { source: "other", amount: 999.99 },
-  ] as FinancialAssistanceRevenue[],
+  ],
   reinstatementSchedule: {
     startDate: new Date("2025-02-01"),
     endDate: new Date("2028-06-30"),
