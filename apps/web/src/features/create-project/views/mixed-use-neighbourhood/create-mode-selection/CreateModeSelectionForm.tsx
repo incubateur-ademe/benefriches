@@ -36,7 +36,7 @@ const options: Option[] = [
     value: "custom",
     title: "Mode custom",
     description:
-      "Renseignez les informations font vous disposez : aménagement des espaces, bâtiments, coûts et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
+      "Renseignez les informations dont vous disposez : aménagement des espaces, bâtiments, coûts et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
     badgeText: "Bientôt disponible",
     disabled: true,
   },
