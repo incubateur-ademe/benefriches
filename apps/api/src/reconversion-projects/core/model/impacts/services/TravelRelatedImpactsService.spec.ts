@@ -1,0 +1,153 @@
+import { CO2eqMonetaryValueServiceMock } from "src/reconversion-projects/core/gateways/CO2eqMonetaryValueService.mock";
+import { GetInfluenceAreaValuesServiceMock } from "src/reconversion-projects/core/gateways/GetInfluenceAreaValuesService.mock";
+import { TravelRelatedImpactsService } from "./TravelRelatedImpactsService";
+
+describe("TravelRelatedImpactsService", () => {
+  let travelRelatedImpactsService: TravelRelatedImpactsService;
+  let cO2eqMonetaryValueService: CO2eqMonetaryValueServiceMock;
+
+  beforeAll(() => {
+    cO2eqMonetaryValueService = new CO2eqMonetaryValueServiceMock();
+    travelRelatedImpactsService = new TravelRelatedImpactsService(
+      new GetInfluenceAreaValuesServiceMock(),
+      cO2eqMonetaryValueService,
+      10000,
+      1500,
+      700,
+      10,
+      2025,
+    );
+  });
+
+  it("computes impacted inhabitants", () => {
+    expect(travelRelatedImpactsService.impactedInhabitants).toEqual(341.375);
+  });
+
+  it("computes impacted tertiary activity employees", () => {
+    expect(travelRelatedImpactsService.impactedTertiaryActivityEmployees).toEqual(100);
+  });
+
+  it("computes impacted other activity employees", () => {
+    expect(travelRelatedImpactsService.impactedOtherActivityEmployees).toEqual(10);
+  });
+
+  it("computes avoided kilometers per inhabitant", () => {
+    expect(travelRelatedImpactsService.avoidedKilometersPerInhabitantTraveler).toEqual(74761.125);
+  });
+
+  it("computes avoided kilometers per tertiary activity employee", () => {
+    expect(
+      travelRelatedImpactsService.avoidedKilometersPerTertiaryActivityEmployeeTraveler,
+    ).toEqual(13200);
+  });
+
+  it("computes avoided kilometers per other activity employee", () => {
+    expect(travelRelatedImpactsService.avoidedKilometersPerOtherActivityEmployeeTraveler).toEqual(
+      1320,
+    );
+  });
+
+  it("computes avoided kilometers per traveler", () => {
+    expect(travelRelatedImpactsService.avoidedKilometersPerTravelerPerYear).toEqual(89281.125);
+  });
+
+  it("computes avoided kilometers per vehicule", () => {
+    expect(travelRelatedImpactsService.avoidedKilometersPerVehiculePerYear).toBeCloseTo(61573.19);
+  });
+
+  it("computes time saved per inhabitant", () => {
+    expect(travelRelatedImpactsService.travelTimeSavedPerInhabitantTraveler).toBeCloseTo(2076.7);
+  });
+
+  it("computes time saved per tertiary activity employee", () => {
+    expect(travelRelatedImpactsService.travelTimeSavedPerOtherActivityEmployeeTraveler).toBeCloseTo(
+      366.67,
+    );
+  });
+
+  it("computes time saved per other activity employee", () => {
+    expect(
+      travelRelatedImpactsService.travelTimeSavedPerTertiaryActivityEmployeeTraveler,
+    ).toBeCloseTo(36.67);
+  });
+
+  it("computes time saved per traveler", () => {
+    expect(travelRelatedImpactsService.travelTimeSavedPerTravelerPerYear).toBeCloseTo(2480.0312);
+  });
+
+  it("computes avoided accidents per year for a hundred of vehicule", () => {
+    expect(
+      travelRelatedImpactsService.avoidedAccidentsPerYearForHundredMillionOfVehicule,
+    ).toBeCloseTo(0.002937041);
+  });
+
+  it("computes travel time saved per traveler for duration", () => {
+    expect(travelRelatedImpactsService.getTravelTimeSavedPerTraveler()).toBeCloseTo(24800.312);
+  });
+
+  it("computes avoided kilometer per vehicule for duration", () => {
+    expect(travelRelatedImpactsService.getAvoidedKilometersPerVehicule()).toBeCloseTo(615731.9);
+  });
+
+  it("computes avoided kilometer per vehicule monetary value for duration", () => {
+    expect(travelRelatedImpactsService.getAvoidedKilometersPerVehiculeMonetaryAmount()).toBeCloseTo(
+      61573.1897,
+    );
+  });
+
+  it("computes travel time saved per traveler monetary value for duration", () => {
+    expect(travelRelatedImpactsService.getTravelTimeSavedPerTravelerMonetaryAmount()).toBeCloseTo(
+      248003.125,
+    );
+  });
+
+  it("computes avoided co2eq emissions with avoided kilometers for duration", () => {
+    expect(
+      travelRelatedImpactsService.getAvoidedCO2EmissionsWithAvoidedKilometersGramPerCo2(),
+    ).toBeCloseTo(96793054.13793103);
+  });
+
+  it("computes avoided co2eq emissions with avoided kilometers monetary value for duration", () => {
+    const spy = jest.spyOn(cO2eqMonetaryValueService, "getAnnualizedCO2MonetaryValueForDuration");
+    travelRelatedImpactsService.getAvoidedCO2EmissionsWithAvoidedKilometersGramPerCo2MonetaryValue();
+    expect(spy).toHaveBeenCalledWith(
+      travelRelatedImpactsService.avoidedCO2EmissionsWithAvoidedKilometersGramPerCo2PerYear,
+      2025,
+      10,
+    );
+  });
+
+  it("computes avoided air pollution for duration", () => {
+    expect(travelRelatedImpactsService.getAvoidedAirPollution()).toBeCloseTo(9728.563965517);
+  });
+
+  it("computes avoided accidents minor injuries for duration", () => {
+    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries()).toBeCloseTo(0.036184347);
+  });
+
+  it("computes avoided accidents severe injuries for duration", () => {
+    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries()).toBeCloseTo(0.00226152);
+  });
+
+  it("computes avoided accidents deaths for duration", () => {
+    expect(travelRelatedImpactsService.getAvoidedAccidentsDeaths()).toBeCloseTo(0.000675519);
+  });
+
+  it("computes avoided accidents minor injuries monetary value for duration", () => {
+    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesMonetaryValue()).toBeCloseTo(
+      578.949550808,
+    );
+  });
+
+  it("computes avoided accidents severe injuries monetary value for duration", () => {
+    expect(
+      travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesMonetaryValue(),
+    ).toBeCloseTo(904.608673138);
+  });
+
+  it("computes avoided accidents deaths monetary valuefor duration", () => {
+    expect(travelRelatedImpactsService.getAvoidedAccidentsDeathsMonetaryValue()).toBeCloseTo(
+      2161.662283862,
+    );
+  });
+});
