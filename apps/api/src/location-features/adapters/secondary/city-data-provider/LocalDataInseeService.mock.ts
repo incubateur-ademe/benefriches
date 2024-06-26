@@ -1,7 +1,7 @@
 import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { Observable } from "rxjs";
-import { TownDataProvider } from "src/location-features/core/gateways/TownDataProvider";
-import { Town } from "src/location-features/core/models/town";
+import { CityDataProvider } from "src/location-features/core/gateways/CityDataProvider";
+import { City } from "src/location-features/core/models/city";
 
 const SAMPLES = [
   {
@@ -26,8 +26,8 @@ const SAMPLES = [
   },
 ];
 
-export class MockLocalDataInseeService implements TownDataProvider {
-  getTownAreaAndPopulation(cityCode: string): Observable<Town> {
+export class MockLocalDataInseeService implements CityDataProvider {
+  getCitySurfaceAreaAndPopulation(cityCode: string): Observable<City> {
     return new Observable((subscriber) => {
       if (cityCode.length === 0) {
         throw new BadRequestException();
@@ -42,7 +42,7 @@ export class MockLocalDataInseeService implements TownDataProvider {
         throw new NotFoundException("No data found for cityCode " + cityCode);
       }
 
-      subscriber.next(Town.create(result));
+      subscriber.next(City.create(result));
       subscriber.complete();
     });
   }

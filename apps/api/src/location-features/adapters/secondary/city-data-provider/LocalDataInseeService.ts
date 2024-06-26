@@ -8,8 +8,8 @@ import {
 import { ConfigService } from "@nestjs/config";
 import { AxiosError } from "axios";
 import { catchError, map } from "rxjs";
-import { TownDataProvider } from "src/location-features/core/gateways/TownDataProvider";
-import { Town } from "src/location-features/core/models/town";
+import { CityDataProvider } from "src/location-features/core/gateways/CityDataProvider";
+import { City } from "src/location-features/core/models/city";
 
 /* 
 API documentation:
@@ -43,13 +43,13 @@ interface InseeData {
   }[];
 }
 
-export class LocalDataInseeService implements TownDataProvider {
+export class LocalDataInseeService implements CityDataProvider {
   constructor(
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
   ) {}
 
-  getTownAreaAndPopulation(cityCode: string) {
+  getCitySurfaceAreaAndPopulation(cityCode: string) {
     const inseeApiToken = this.configService.getOrThrow<string>("INSEE_API_TOKEN");
     const config = {
       headers: {
@@ -72,7 +72,7 @@ export class LocalDataInseeService implements TownDataProvider {
           if (!population || !superficie) {
             throw new NotFoundException(`No data found for cityCode: ${cityCode}`);
           }
-          return Town.create({
+          return City.create({
             cityCode,
             area: +superficie.Valeur,
             population: +population.Valeur,

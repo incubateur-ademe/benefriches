@@ -1,6 +1,6 @@
 import { lastValueFrom } from "rxjs";
 import { UseCase } from "../../../shared-kernel/usecase";
-import { TownDataProvider } from "../gateways/TownDataProvider";
+import { CityDataProvider } from "../gateways/CityDataProvider";
 
 type Request = {
   cityCode: string;
@@ -15,21 +15,23 @@ type Response = {
   };
 };
 
-export class GetTownPopulationDensityUseCase implements UseCase<Request, Response> {
-  constructor(private readonly townDataProvider: TownDataProvider) {}
+export class GetCityPopulationDensityUseCase implements UseCase<Request, Response> {
+  constructor(private readonly cityDataProvider: CityDataProvider) {}
 
   async execute({ cityCode }: Request): Promise<Response> {
-    const town = await lastValueFrom(this.townDataProvider.getTownAreaAndPopulation(cityCode));
+    const city = await lastValueFrom(
+      this.cityDataProvider.getCitySurfaceAreaAndPopulation(cityCode),
+    );
 
-    const density = town.population / town.area;
+    const density = city.population / city.area;
     const rounded = Math.round(density * 100) / 100;
 
     return {
       value: rounded,
       unit: "hab/km2",
       sources: {
-        population: town.population,
-        area: town.area,
+        population: city.population,
+        area: city.area,
       },
     };
   }

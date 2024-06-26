@@ -2,7 +2,7 @@ import { LocalCarbonStorageRepository } from "src/carbon-storage/adapters/second
 import { CarbonStorageRepository } from "../gateways/CarbonStorageRepository";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "./getCityCarbonStoragePerSoilsCategory";
 
-describe("GetTownCarbonStocksPerSoilsCategoryUseCase", () => {
+describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
   let carbonStorageRepository: CarbonStorageRepository;
 
   beforeEach(() => {

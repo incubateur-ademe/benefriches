@@ -3,10 +3,10 @@ import { Test as NestTest } from "@nestjs/testing";
 import { Server } from "net";
 import supertest from "supertest";
 import { AppModule } from "src/app.module";
+import { GetCityPopulationDensityUseCase } from "src/location-features/core/usecases/getCityPopulationDensity.usecase";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
-import { GetTownPopulationDensityUseCase } from "src/location-features/core/usecases/getTownPopulationDensity.usecase";
+import { MockLocalDataInseeService } from "../secondary/city-data-provider/LocalDataInseeService.mock";
 import { MockPhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
-import { MockLocalDataInseeService } from "../secondary/town-data-provider/LocalDataInseeService.mock";
 import { LocationFeaturesController } from "./locationFeatures.controller";
 
 describe("LocationFeatures controller", () => {
@@ -19,14 +19,14 @@ describe("LocationFeatures controller", () => {
       controllers: [LocationFeaturesController],
       providers: [
         {
-          provide: "TownDataProvider",
+          provide: "CityDataProvider",
           useClass: MockLocalDataInseeService,
         },
         {
-          provide: GetTownPopulationDensityUseCase,
-          useFactory: (townDataProvider: MockLocalDataInseeService) =>
-            new GetTownPopulationDensityUseCase(townDataProvider),
-          inject: ["TownDataProvider"],
+          provide: GetCityPopulationDensityUseCase,
+          useFactory: (cityDataProvider: MockLocalDataInseeService) =>
+            new GetCityPopulationDensityUseCase(cityDataProvider),
+          inject: ["CityDataProvider"],
         },
         {
           provide: "PhotovoltaicDataProvider",
