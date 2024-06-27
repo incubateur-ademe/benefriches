@@ -1,6 +1,9 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
+import {
+  DevelopmentPlan,
+  PhotovoltaicPowerStationFeatures,
+} from "src/reconversion-projects/core/model/reconversionProject";
 import {
   ReconversionProjectImpactsDataView,
   ReconversionProjectImpactsRepository,
@@ -119,7 +122,7 @@ export class SqlReconversionProjectImpactsRepository
       expectedAnnualProduction: undefined,
       surfaceArea: undefined,
       electricalPowerKWc: undefined,
-    }) as DevelopmentPlan["features"];
+    }) as PhotovoltaicPowerStationFeatures;
     const developmentPlanExpectedAnnualEnergyProductionMWh =
       developmentPlanFeatures.expectedAnnualProduction;
     const developmentPlanSurfaceArea = developmentPlanFeatures.surfaceArea;

@@ -6,6 +6,7 @@ import {
   photovoltaicPowerStationFeaturesSchema,
 } from "src/reconversion-projects/core/model/reconversionProject";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
+import { CreateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
 import {
   CreateReconversionProjectUseCase,
   reconversionProjectPropsSchema,
@@ -30,8 +31,14 @@ export const createReconversionProjectInputSchema = reconversionProjectPropsSche
   ]),
 });
 
-class CreateReconversionProjectInputDto extends createZodDto(
-  createReconversionProjectInputSchema,
+class CreateReconversionProjectBodyDto extends createZodDto(createReconversionProjectInputSchema) {}
+
+class CreateExpressReconversionProjectBodyDto extends createZodDto(
+  z.object({
+    reconversionProjectId: z.string(),
+    siteId: z.string(),
+    createdBy: z.string(),
+  }),
 ) {}
 
 class GetListGroupedBySiteQueryDto extends createZodDto(
@@ -50,15 +57,23 @@ export class ReconversionProjectController {
     private readonly createReconversionProjectUseCase: CreateReconversionProjectUseCase,
     private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
     private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
+    private readonly createExpressReconversionProjectUseCase: CreateExpressReconversionProjectUseCase,
   ) {}
 
   @Post()
   async createReconversionProject(
-    @Body() createReconversionProjectDto: CreateReconversionProjectInputDto,
+    @Body() createReconversionProjectDto: CreateReconversionProjectBodyDto,
   ) {
     await this.createReconversionProjectUseCase.execute({
       reconversionProjectProps: createReconversionProjectDto,
     });
+  }
+
+  @Post("create-from-site")
+  async createExpressReconversionProject(
+    @Body() createReconversionProjectDto: CreateExpressReconversionProjectBodyDto,
+  ) {
+    await this.createExpressReconversionProjectUseCase.execute(createReconversionProjectDto);
   }
 
   @Get("list-by-site")
