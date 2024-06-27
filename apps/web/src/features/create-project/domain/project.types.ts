@@ -1,4 +1,5 @@
 import { SoilsDistribution, SoilType } from "shared";
+import { z } from "zod";
 import { Schedule } from "../application/saveReconversionProject.action";
 
 import { UserStructureType } from "@/features/users/domain/user";
@@ -8,12 +9,14 @@ import {
   TenantStructureType,
 } from "@/shared/domain/stakeholder";
 
-export type DevelopmentPlanCategory =
-  | "RENEWABLE_ENERGY"
-  | "URBAN_AGRICULTURE"
-  | "MIXED_USE_NEIGHBOURHOOD"
-  | "NATURAL_URBAN_SPACES"
-  | "COMMERCIAL_ACTIVITY_AREA";
+export const developmentPlanCategorySchema = z.enum([
+  "RENEWABLE_ENERGY",
+  "MIXED_USE_NEIGHBOURHOOD",
+  "URBAN_AGRICULTURE",
+  "NATURAL_URBAN_SPACES",
+  "COMMERCIAL_ACTIVITY_AREA",
+]);
+export type DevelopmentPlanCategory = z.infer<typeof developmentPlanCategorySchema>;
 
 export type RenewableEnergyDevelopmentPlanType =
   | "PHOTOVOLTAIC_POWER_PLANT"
