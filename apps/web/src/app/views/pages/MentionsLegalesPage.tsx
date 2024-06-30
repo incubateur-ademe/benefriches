@@ -1,42 +1,62 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import { routes } from "../router";
 
-function MentionsLegalesPage() {
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+export default function MentionsLegalesPage() {
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
       <h1>Mentions légales</h1>
-      <h2>Éditeur de la plateforme</h2>
       <p>
-        Bénéfriches est édité par l&#x27;accélérateur de la transition écologique de l&#x27;ADEME
-        situé :
+        <strong>Mis à jour le 01/07/2024.</strong>
       </p>
-      <address>
-        <p>
-          155 bis Av. Pierre Brossolette
-          <br />
-          92240 Montrouge
-          <br />
-          <a href="tel:+33147652000" target="_blank" rel="nofollow noopener noreferrer">
-            01 47 65 20 00
-          </a>
-          <br />
-          <a href="https://ademe.fr" target="_blank" rel="nofollow noopener noreferrer">
-            https://ademe.fr
-          </a>
-        </p>
+      <h2>1. Présentation du site</h2>
+      <p>
+        Il est précisé aux utilisateurs du site Bénéfriches l'identité des différents intervenants
+        dans le cadre de sa réalisation et de son suivi.
+      </p>
+      <h3>1.1. Propriétaire et éditeur</h3>
+      <p>
+        Conformément aux dispositions de l’article 6-I 1° de la loi n°2004-575 du 21 juin 2004
+        relative à la confiance dans l’économie numérique, le site{" "}
+        <a href="https://benefriches.ademe.fr">https://benefriches.ademe.fr</a> (et autres sites en
+        ademe.fr, ci-après les “Sites”) est édité par l’ADEME, ayant son siège social au :
+      </p>
+      <address className="fr-mb-2w">
+        20, avenue du Grésillé — BP 90406
+        <br />
+        49004 Angers Cedex 01
+        <br />
+        Tél :{" "}
+        <a target="_blank" href="tel:+33241204120" rel="noopener noreferrer">
+          02 41 20 41 20
+        </a>
       </address>
-      <h2 id="directeur-de-la-publication">Directeur de la publication</h2>
       <p>
-        Le directeur de publication est M. Sylvain Waserman, agissant en qualité de
-        Président-directeur général de l'ADEME.
+        inscrit au registre du commerce d'Angers sous le n° 385 290 309, représentée par Sylvain
+        Waserman, agissant en qualité de Président du conseil d'administration.
       </p>
+      <h3>1.2. Publication</h3>
+
+      <p>
+        Le directeur de la publication est Monsieur Sylvain Waserman, en qualité de représentant
+        légal de l’ADEME.
+      </p>
+
       <p>
         La personne responsable de l'accès aux documents administratifs et des questions relatives à
-        la réutilisation des informations est Monsieur Luc MORINIÈRE en qualité de Chef du service
-        des affaires juridiques.
+        la réutilisation des informations est Monsieur Luc Morinière en qualité de Chef du service
+        juridique.
       </p>
-      <h2 id="h-bergement-du-site">Hébergement du site</h2>
-      Ce site est hébergé par Scalingo SAS
-      <address>
+
+      <h3>1.3. Hébergement</h3>
+
+      <p>
+        Le prestataire assurant le stockage direct du site{" "}
+        <a href="https://benefriches.ademe.fr">https://benefriches.ademe.fr</a> est Scalingo SAS,,
+        dont le siège social est situé :
+      </p>
+      <address className="fr-mb-2w">
         <p>
           9 rue de la Krutenau
           <br />
@@ -47,26 +67,208 @@ function MentionsLegalesPage() {
           </a>
         </p>
       </address>
-      <h2 id="propri-t-intellectuelle">Propriété intellectuelle</h2>
+
+      <h3>1.4. Utilisateur</h3>
+
       <p>
-        Bénéfriches est une marque déposée par l&#x27;ADEME. Toute reproduction totale ou partielle
-        de cette marque sans autorisation préalable et écrite est prohibée.
+        L’utilisateur est l’internaute qui navigue, lit, visionne, et utilise le site{" "}
+        <a href="https://benefriches.ademe.fr">https://benefriches.ademe.fr</a> et ses services.
       </p>
-      <h2 id="accessibilit">Accessibilité</h2>
+
+      <h3>1.5. Attribution tierce</h3>
+
       <p>
-        La conformité aux normes d&#x27;accessibilité numérique est un objectif ultérieur mais
-        tâchons de rendre ce site accessible à toutes et tous, conformément à l&#x27;article 47 de
-        la loi n°2005-102 du 11 février 2005.
+        Le formulaire "Être tenu informé" est hébergé par{" "}
+        <ExternalLink href="https://tally.so">Tally</ExternalLink>. Les cartes intéractives sont
+        fournies par{" "}
+        <ExternalLink href="https://www.openstreetmap.org">OpenStreet Maps</ExternalLink>
       </p>
-      <h3 id="signaler-un-dysfonctionnement">Signaler un dysfonctionnement</h3>
+
+      <h2>2. Acceptation des conditions d’utilisation du site et des services proposés</h2>
+
       <p>
-        Si vous rencontrez un défaut d'accessibilité vous empêchant d'accéder à un contenu ou une
-        fonctionnalité du site, merci de nous en faire part. Si vous n'obtenez pas de réponse rapide
-        de notre part, vous êtes en droit de faire parvenir vos doléances ou une demande de saisine
-        au Défenseur des droits.
+        L’utilisation des Sites de l’ADEME implique l’acceptation pleine et entière des conditions
+        générales d’utilisation ci-après décrites. Ces conditions d’utilisation sont susceptibles
+        d’être modifiées ou complétées à tout moment, les utilisateurs des Sites de l’ADEME sont
+        donc invités à les consulter de manière régulière.
       </p>
+
       <p>
-        Pour en savoir plus sur la politique d'accessibilité numérique de l'État:{" "}
+        L’utilisateur reconnaît avoir pris connaissance des conditions d’utilisation, au moment de
+        sa connexion sur les sites de l’ADEME, et déclare expressément les accepter sans réserve.
+      </p>
+
+      <h2>3. Description des services fournis</h2>
+
+      <p>
+        Les Sites de l’ADEME ont pour objet de fournir des informations concernant l’ensemble des
+        éléments liés aux services de l’ADEME, en particulier une information sur l’actualité de la
+        transition écologique, l’expertise de l’ADEME, les actions mises en œuvre au sein des
+        territoires, l’action internationale de l’ADEME, les programmes de recherche et
+        d’innovation.
+      </p>
+
+      <p>
+        L’ADEME s’efforce de fournir sur les Sites des informations aussi précises que possible.
+      </p>
+
+      <p>
+        Toutefois, elle ne pourra être tenue responsable des omissions, des inexactitudes des
+        carences dans la mise à jour ou de tout autres manquements qu’ils soient de son fait ou du
+        fait des tiers partenaires qui lui fournissent ces informations.
+      </p>
+
+      <p>
+        Toutes les informations indiquées sur les Sites de l’ADEME sont données à titre indicatif,
+        et sont susceptibles d’évoluer. Par ailleurs, les renseignements figurant sur les Sites de
+        l’ADEME ne sont pas exhaustifs. Ils sont donnés sous réserve de modifications ayant été
+        apportées depuis leur mise en ligne.
+      </p>
+      <h2>4. Disponibilité du site</h2>
+
+      <p>
+        L’ADEME s’efforce de permettre l’accès au site 24 heures sur 24, 7 jours sur 7, sauf en cas
+        de force majeure ou d’un événement hors du contrôle de l’ADEME, et sous réserve des
+        éventuelles pannes et interventions de maintenance nécessaires au bon fonctionnement du site
+        et des services.
+      </p>
+
+      <p>
+        Par conséquent, l’ADEME ne peut garantir une disponibilité du site et/ou des services, une
+        fiabilité des transmissions et des performances en termes de temps de réponse ou de qualité.
+        Il n’est prévu aucune assistance technique vis-à-vis de l’utilisateur que ce soit par des
+        moyens électroniques ou téléphoniques.
+      </p>
+
+      <p>
+        La responsabilité de l’ADEME ne saurait être engagée en cas d’impossibilité d’accès à ce
+        site et/ou d’utilisation des services.
+      </p>
+
+      <p>
+        L’ADEME peut être amenée à interrompre le site ou une partie des services, à tout moment
+        sans préavis, le tout sans droit à indemnités. L’utilisateur reconnaît et accepte que
+        l’ADEME ne soit pas responsable des interruptions, et des conséquences qui peuvent en
+        découler pour l’utilisateur ou tout tiers.
+      </p>
+
+      <h2>5. Liens hypertextes</h2>
+
+      <p>L’ADEME décline toute responsabilité quant au contenu des sites proposés en liens.</p>
+
+      <p>
+        Tout site public ou privé est autorisé à établir, sans information ni autorisation
+        préalable, un lien vers les informations diffusées par l’ATE. En revanche et sauf mentions
+        contraires (ex. iframes), les pages des Sites ne doivent pas être imbriquées à l’intérieur
+        des pages d’un autre site.
+      </p>
+
+      <p>
+        La mise en place d’un lien est valable pour tout site à l’exception de ceux diffusant des
+        informations à caractère polémique, pornographique, xénophobe ou pouvant, dans une plus
+        large mesure, porter atteinte à la sensibilité du plus grand nombre.
+      </p>
+
+      <h2>6. Cookies de navigation</h2>
+
+      <p>Aucun cookies n'est utilisé sur le site Bénéfriches.</p>
+
+      <h2>7. Propriété intellectuelle</h2>
+
+      <p>
+        Sauf mention contraire précisée sur le fichier{" "}
+        <a
+          target="_blank"
+          rel="noreferrer noopener nofollow"
+          href="https://github.com/incubateur-ademe/benefriches/blob/main/LICENSE"
+        >
+          https://github.com/incubateur-ademe/benefriches/blob/main/LICENSE
+        </a>
+        , l’ADEME est propriétaire des droits de propriété intellectuelle ou détient les droits
+        d’usage sur tous les éléments accessibles sur le site, notamment les textes, images,
+        graphismes, logos, icônes, sons, logiciels et marques déposées.
+      </p>
+
+      <p>
+        Toute reproduction, représentation, modification, publication, adaptation de tout ou partie
+        des éléments du site ainsi que des logos de l’ADEME, quel que soit le moyen ou le procédé
+        utilisé, est interdite, sauf acceptation écrite et préalable de l’ADEME d’une demande
+        d’autorisation de reproduction et de représentation formulée à l’adresse suivante :
+        https://agirpourlatransition.ademe.fr/entreprises/form/contact.
+      </p>
+
+      <p>
+        Toute exploitation non autorisée du site ou de l’un quelconque des éléments qu’il contient
+        sera considérée comme constitutive d’une contrefaçon et poursuivie conformément aux
+        dispositions des articles L.335-2 et suivants du Code de Propriété Intellectuelle.
+      </p>
+
+      <p>
+        L’ADEME ne pourra en revanche interdire la réutilisation de discours, dossiers de presse et
+        communiqués, les circulaires, directives et autres documents règlementaires.
+      </p>
+
+      <p>
+        L’ADEME autorise la réutilisation non commerciale et pédagogique des informations
+        disponibles sur ses Sites, à la condition de respecter l’intégrité des informations et de
+        n’en altérer ni le sens, ni la portée, ni l’application et de faire mention du nom de
+        l’ADEME ou d’en préciser l’origine et la date de publication avec la mention du crédit photo
+        si tel est le cas.
+      </p>
+
+      <p>
+        L’ADEME pourra autoriser la réutilisation d’informations à des fins commerciales ou
+        promotionnelles par le biais d’une licence de réutilisation de ses informations. Est
+        considérée comme réutilisation à des fins commerciales ou promotionnelles, l’élaboration à
+        partir des informations publiques, d’un produit ou d’un service destiné à être mis à
+        disposition de tiers, à titre gratuit ou onéreux.
+      </p>
+
+      <h2>8. Gestion des données personnelles</h2>
+
+      <p>
+        Conformément à la Règlementation relative à la protection des données à caractère personnel,
+        l'utilisateur est informé que l’ADEME, en tant que responsable du traitement, met en œuvre
+        un traitement de données à caractère personnel.
+      </p>
+
+      <p>
+        L’ADEME est attachée au respect des règles de protection de la vie privée des utilisateurs
+        de son site internet et de ses services. L’ensemble des traitements de données personnelles
+        mis en œuvre dans le cadre des services accessibles respecte la réglementation applicable en
+        matière de protection des données personnelles et notamment les dispositions de la loi «
+        Informatique et libertés » du 6 janvier 1978 modifiée et le Règlement général sur la
+        Protection des données (Règlement UE 2016/679) désigné par « RGPD ».
+      </p>
+
+      <p>
+        Pour en savoir plus sur ce traitement de données à caractère personnel et sur l’étendue de
+        leurs droits, cliquez sur{" "}
+        <a href={routes.politiqueConfidentialite().href}>
+          {routes.politiqueConfidentialite().href}
+        </a>
+        .
+      </p>
+
+      <h2>9. Accessibilité</h2>
+
+      <p>
+        La conformité aux normes d'accessibilité numérique est un objectif ultérieur mais l’ADEME
+        tâche de rendre ce site accessible à toutes et tous, conformément à l'article 47 de la loi
+        n°2005-102 du 11 février 2005.
+      </p>
+      <h3>9.1. Signaler un dysfonctionnement</h3>
+
+      <p>
+        Si vous rencontrez un défaut d’accessibilité vous empêchant d’accéder à un contenu ou une
+        fonctionnalité du site, merci de nous en{" "}
+        <ExternalLink href="https://tally.so/r/wvAdk8">faire part</ExternalLink>. Si vous n’obtenez
+        pas de réponse rapide de notre part, vous êtes en droit de faire parvenir vos doléances ou
+        une demande de saisine au Défenseur des droits.
+      </p>
+
+      <p>
+        Pour en savoir plus sur la politique d’accessibilité numérique de l’État:{" "}
         <a
           href="http://references.modernisation.gouv.fr/accessibilite-numerique"
           target="_blank"
@@ -75,20 +277,40 @@ function MentionsLegalesPage() {
           http://references.modernisation.gouv.fr/accessibilite-numerique
         </a>
       </p>
-      <h3 id="s-curit">Sécurité</h3>
+
+      <h2>10. Sécurité</h2>
+
       <p>
         Le site est protégé par un certificat électronique, matérialisé pour la grande majorité des
         navigateurs par un cadenas. Cette protection participe à la confidentialité des échanges. En
-        aucun cas les services associés à la plateforme ne seront à l'origine d'envoi d&#x27;emails
-        pour demander la saisie d'informations personnelles.
+        aucun cas les services associés à la plateforme ne seront à l’origine d’envoi d'emails pour
+        demander la saisie d’informations personnelles.
       </p>
-      <h2 id="modification-des-mentions-l-gales">Modification des mentions légales</h2>
+
+      <h2>11. Votre attention</h2>
+
       <p>
-        L'ADEME se réserve le droit de modifier les présentes mentions légales à tout moment.
-        L'utilisateur est lié par les conditions en vigueur lors de sa visite.
+        Nous vous rappelons qu’il n’est pas possible de garantir la confidentialité des messages
+        transmis sur le réseau Internet. Aussi, si vous souhaitez transmettre un message dans de
+        meilleures conditions de sécurité, nous vous recommandons d’utiliser la voie postale.
+        L’ADEME dégage toute responsabilité quant aux difficultés techniques que vous pourriez
+        rencontrer sur les Sites qu’elles qu’en soient la cause et l’origine.
+      </p>
+
+      <h2>12. Modifications</h2>
+
+      <p>L’ADEME se réserve le droit d’adapter les présentes mentions légales.</p>
+
+      <p>
+        Si l’ADEME apporte une modification aux présentes mentions légales, elle publiera la
+        nouvelle version sur les supports concernés et actualisera la date de « dernière mise à jour
+        » figurant en haut des présentes mentions légales.
+      </p>
+
+      <p>
+        L’ADEME vous invite donc à consulter régulièrement les supports concernés où sont publiées
+        les mentions légales.
       </p>
     </section>
   );
 }
-
-export default MentionsLegalesPage;
