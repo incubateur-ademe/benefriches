@@ -80,6 +80,7 @@ const INITIAL_STATE = {
   mixedUseNeighbourhood: {
     createMode: undefined,
     stepsHistory: [],
+    saveState: "idle",
   },
 } as const satisfies RootState["projectCreation"];
 

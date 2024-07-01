@@ -3,6 +3,7 @@ import {
   ExpectedPhotovoltaicPerformanceMock,
   MOCK_RESULT,
 } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
+import { InMemorySaveExpressReconversionProjectService } from "@/features/create-project/infrastructure/save-express-project-service/InMemorySaveExpressReconversionProjectService";
 import { InMemorySaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
@@ -54,6 +55,7 @@ export const getTestAppDependencies = (
     currentUserService: new LocalStorageUserService(),
     createUserService: new InMemoryCreateUserService(),
     siteFeaturesService: new MockSiteFeaturesService(),
+    saveExpressReconversionProjectService: new InMemorySaveExpressReconversionProjectService(),
     ...depsOverride,
   };
 };

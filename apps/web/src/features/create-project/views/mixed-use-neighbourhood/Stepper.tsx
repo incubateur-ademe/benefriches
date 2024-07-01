@@ -10,7 +10,7 @@ const getCategoryForStep = (step: MixedUseNeighbourhoodCreationStep): StepCatego
   switch (step) {
     case "CREATE_MODE_SELECTION":
       return "Mode de création";
-    case "CREATION_CONFIRMATION":
+    case "CREATION_RESULT":
       return "Récapitulatif";
   }
 };
@@ -23,7 +23,7 @@ type Props = {
 function MixedUseNeighbourhoodCreationStepper({ step, isExtended }: Props) {
   const currentStepCategory = getCategoryForStep(step);
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
-  const isDone = step === "CREATION_CONFIRMATION";
+  const isDone = step === "CREATION_RESULT";
 
   return (
     <FormStepper

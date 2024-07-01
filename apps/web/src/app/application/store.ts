@@ -6,6 +6,7 @@ import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../.
 import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
+import { SaveExpressReconversionProjectGateway } from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.actions";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
 import projectSiteLocalAuthorities from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
@@ -31,6 +32,7 @@ export type AppDependencies = {
   soilsCarbonStorageService: SiteSoilsCarbonStorageGateway | ProjectSoilsCarbonStorageGateway;
   createSiteService: CreateSiteGateway;
   saveReconversionProjectService: SaveReconversionProjectGateway;
+  saveExpressReconversionProjectService: SaveExpressReconversionProjectGateway;
   reconversionProjectsListService: ReconversionProjectsListGateway;
   projectDetailsService: ProjectsDetailsGateway;
   getSiteByIdService: GetSitesByIdGateway;
