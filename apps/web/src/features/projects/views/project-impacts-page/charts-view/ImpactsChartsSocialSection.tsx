@@ -35,7 +35,8 @@ const getImpactOnClick = (
 
 const SOCIAL_IMPACTS: SocialImpactName[] = [
   "full_time_jobs",
-  "avoided_accidents",
+  "avoided_friche_accidents",
+  "avoided_traffic_accidents",
   "households_powered_by_renewable_energy",
 ];
 
@@ -71,7 +72,8 @@ const formatImpactForChartAreaCard = ({
 const getImpactUnitSuffix = (name: Props["impacts"][number]["name"], difference: number) => {
   const isPlural = Math.abs(difference) > 1;
   switch (name) {
-    case "avoided_accidents":
+    case "avoided_traffic_accidents":
+    case "avoided_friche_accidents":
       return isPlural ? "\u00A0accidents évités" : "\u00A0accident évité";
     case "full_time_jobs":
       return "\u00A0ETP";

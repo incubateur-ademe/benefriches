@@ -34,14 +34,20 @@ export type SocialImpactName = SocialMainImpactName | SocialImpactDetailsName;
 
 type SocialMainImpactName =
   | "full_time_jobs"
-  | "avoided_accidents"
+  | "avoided_friche_accidents"
+  | "avoided_traffic_accidents"
+  | "travel_time_saved"
+  | "avoided_vehicule_kilometers"
   | "households_powered_by_renewable_energy";
 
 type SocialImpactDetailsName =
   | "operations_full_time_jobs"
   | "conversion_full_time_jobs"
-  | "avoided_severe_accidents"
-  | "avoided_minor_accidents";
+  | "avoided_friche_severe_accidents"
+  | "avoided_friche_minor_accidents"
+  | "avoided_traffic_minor_injuries"
+  | "avoided_traffic_severe_injuries"
+  | "avoided_traffic_deaths";
 
 export type SocialImpact = {
   name: SocialMainImpactName;
@@ -58,7 +64,14 @@ export const getSocialProjectImpacts = createSelector(
   selectCurrentFilter,
   selectImpactsData,
   (currentFilter, impactsData): SocialImpact[] => {
-    const { fullTimeJobs, accidents, householdsPoweredByRenewableEnergy } = impactsData || {};
+    const {
+      fullTimeJobs,
+      accidents,
+      householdsPoweredByRenewableEnergy,
+      travelTimeSaved,
+      avoidedTrafficAccidents,
+      avoidedVehiculeKilometers,
+    } = impactsData || {};
 
     const impacts: SocialImpact[] = [];
     const displayAll = currentFilter === "all";
@@ -103,7 +116,7 @@ export const getSocialProjectImpacts = createSelector(
       const { current, forecast, minorInjuries, severeInjuries } = accidents;
 
       impacts.push({
-        name: "avoided_accidents",
+        name: "avoided_friche_accidents",
         type: "default",
         impact: {
           base: forecast,
@@ -111,7 +124,7 @@ export const getSocialProjectImpacts = createSelector(
           difference: current - forecast,
           details: [
             {
-              name: "avoided_minor_accidents",
+              name: "avoided_friche_minor_accidents",
               impact: {
                 base: minorInjuries.forecast,
                 forecast: minorInjuries.current,
@@ -119,11 +132,73 @@ export const getSocialProjectImpacts = createSelector(
               },
             },
             {
-              name: "avoided_severe_accidents",
+              name: "avoided_friche_severe_accidents",
               impact: {
                 base: severeInjuries.forecast,
                 forecast: severeInjuries.current,
                 difference: severeInjuries.current - severeInjuries.forecast,
+              },
+            },
+          ],
+        },
+      });
+    }
+
+    if (avoidedVehiculeKilometers) {
+      impacts.push({
+        name: "avoided_vehicule_kilometers",
+        type: "default",
+        impact: {
+          base: 0,
+          forecast: avoidedVehiculeKilometers.forecast,
+          difference: avoidedVehiculeKilometers.forecast,
+        },
+      });
+    }
+
+    if (travelTimeSaved) {
+      impacts.push({
+        name: "travel_time_saved",
+        type: "default",
+        impact: {
+          base: 0,
+          forecast: travelTimeSaved.forecast,
+          difference: travelTimeSaved.forecast,
+        },
+      });
+    }
+
+    if (avoidedTrafficAccidents) {
+      impacts.push({
+        name: "avoided_traffic_accidents",
+        type: "default",
+        impact: {
+          base: 0,
+          forecast: avoidedTrafficAccidents.total,
+          difference: avoidedTrafficAccidents.total,
+          details: [
+            {
+              name: "avoided_traffic_minor_injuries",
+              impact: {
+                base: 0,
+                forecast: avoidedTrafficAccidents.minorInjuries,
+                difference: avoidedTrafficAccidents.minorInjuries,
+              },
+            },
+            {
+              name: "avoided_traffic_severe_injuries",
+              impact: {
+                base: 0,
+                forecast: avoidedTrafficAccidents.severeInjuries,
+                difference: avoidedTrafficAccidents.severeInjuries,
+              },
+            },
+            {
+              name: "avoided_traffic_deaths",
+              impact: {
+                base: 0,
+                forecast: avoidedTrafficAccidents.deaths,
+                difference: avoidedTrafficAccidents.deaths,
               },
             },
           ],
