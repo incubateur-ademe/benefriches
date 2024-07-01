@@ -25,8 +25,9 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "types": ["vitest/globals"]
   },
-  "include": ["src", "jest.config.ts", "tailwind.config.js", "postcss.config.js"],
+  "include": ["src", "tailwind.config.js", "postcss.config.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

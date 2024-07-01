@@ -89,7 +89,7 @@ describe("Site carbon sequestration reducer", () => {
 
   it("should call soils carbon service with the right payload", async () => {
     const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT);
-    jest.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
+    vi.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
     const store = createStore(
       getTestAppDependencies({
         soilsCarbonStorageService: soilsCarbonStorageMockSpy,
