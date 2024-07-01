@@ -1,4 +1,4 @@
-import { projectImpactMock } from "./projectImpacts.mock";
+import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
 import { getEconomicBalanceProjectImpacts } from "./projectImpactsEconomicBalance.selectors";
 
 import { RootState } from "@/app/application/store";
@@ -30,6 +30,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
       ({ filter }) => {
         const economicBalance = getEconomicBalanceProjectImpacts.resultFunc(
           filter as "economic" | "all",
+          "PHOTOVOLTAIC_POWER_PLANT",
           MOCK_STATES.projectImpacts["impactsData"],
         );
 
@@ -56,9 +57,9 @@ describe("projectImpactsEconomicBalance selectors", () => {
 
         expect(economicBalance.economicBalance).toContainEqual(
           expect.objectContaining({
-            name: "development_plan_installation",
+            name: "photovoltaic_development_plan_installation",
             value: -200000,
-            details: [{ value: -200000, name: "installation_works" }],
+            details: [{ value: -200000, name: "photovoltaic_installation_works" }],
           }),
         );
 
@@ -95,6 +96,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
       ({ filter }) => {
         const economicBalance = getEconomicBalanceProjectImpacts.resultFunc(
           filter as "environment" | "social",
+          "PHOTOVOLTAIC_POWER_PLANT",
           MOCK_STATES.projectImpacts["impactsData"],
         );
 
@@ -102,5 +104,21 @@ describe("projectImpactsEconomicBalance selectors", () => {
         expect(economicBalance.economicBalance).toEqual([]);
       },
     );
+
+    it("should the right impact key for mixed use neighbourhood project for installation costs", () => {
+      const economicBalance = getEconomicBalanceProjectImpacts.resultFunc(
+        "all",
+        "MIXED_USE_NEIGHBOURHOOD",
+        MOCK_STATES.projectImpacts["impactsData"],
+      );
+
+      expect(economicBalance.economicBalance).toContainEqual(
+        expect.objectContaining({
+          name: "mixed_use_neighbourhood_development_plan_installation",
+          value: -200000,
+          details: [{ value: -200000, name: "mixed_use_neighbourhood_installation_works" }],
+        }),
+      );
+    });
   });
 });

@@ -6,6 +6,7 @@ import {
   ReinstatementCost,
   SourceRevenue,
 } from "../domain/impacts.types";
+import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 import { RootState } from "@/app/application/store";
@@ -22,22 +23,39 @@ const selectCurrentFilter = createSelector(
   (state): ProjectImpactsState["currentCategoryFilter"] => state.currentCategoryFilter,
 );
 
+export const selectProjectDevelopmentType = createSelector(
+  selectSelf,
+  (state): ProjectDevelopmentPlanType =>
+    state.projectData?.developmentPlan.type ?? "PHOTOVOLTAIC_POWER_PLANT",
+);
+
 export type EconomicBalanceName = EconomicBalanceMainName | EconomicBalanceDetailsName;
 
 export type EconomicBalanceMainName =
   | "site_reinstatement"
   | "real_estate_transaction"
-  | "development_plan_installation"
   | "operations_costs"
   | "operations_revenues"
-  | "financial_assistance";
+  | "financial_assistance"
+  | "development_plan_installation"
+  | "photovoltaic_development_plan_installation"
+  | "mixed_use_neighbourhood_development_plan_installation";
+
+export type DevelopmentPlanInstallationCostName =
+  | "photovoltaic_technical_studies"
+  | "photovoltaic_installation_works"
+  | "photovoltaic_other"
+  | "mixed_use_neighbourhood_technical_studies"
+  | "mixed_use_neighbourhood_installation_works"
+  | "mixed_use_neighbourhood_other"
+  | DevelopmentPlanInstallationCost["purpose"];
 
 type EconomicBalanceDetailsName =
   | OperationsCost["purpose"]
   | SourceRevenue
   | ReinstatementCost["purpose"]
   | FinancialAssistance
-  | DevelopmentPlanInstallationCost["purpose"];
+  | DevelopmentPlanInstallationCostName;
 
 export type EconomicBalance = {
   total: number;
@@ -52,10 +70,22 @@ export type EconomicBalance = {
   }[];
 };
 
+const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType) => {
+  switch (projectType) {
+    case "MIXED_USE_NEIGHBOURHOOD":
+      return "mixed_use_neighbourhood_";
+    case "PHOTOVOLTAIC_POWER_PLANT":
+      return "photovoltaic_";
+    default:
+      return "";
+  }
+};
+
 export const getEconomicBalanceProjectImpacts = createSelector(
   selectCurrentFilter,
+  selectProjectDevelopmentType,
   selectImpactsData,
-  (currentFilter, impactsData): EconomicBalance => {
+  (currentFilter, projectType, impactsData): EconomicBalance => {
     const { economicBalance } = impactsData || {};
 
     const displayAll = currentFilter === "all";
@@ -89,13 +119,14 @@ export const getEconomicBalanceProjectImpacts = createSelector(
     }
 
     if (economicBalance.costs.developmentPlanInstallation?.total) {
+      const namePrefix = getInstallationCostNamePrefix(projectType);
       impacts.push({
-        name: "development_plan_installation",
+        name: `${namePrefix}development_plan_installation`,
         value: -economicBalance.costs.developmentPlanInstallation.total,
         details: economicBalance.costs.developmentPlanInstallation.costs.map(
           ({ purpose, amount }) => ({
             value: -amount,
-            name: purpose,
+            name: `${namePrefix}${purpose}`,
           }),
         ),
       });

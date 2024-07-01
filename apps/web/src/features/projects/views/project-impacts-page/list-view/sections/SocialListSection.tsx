@@ -16,7 +16,12 @@ type Props = {
 
 const SOCIAL_SECTIONS = {
   jobs: ["full_time_jobs"],
-  residents: ["avoided_accidents"],
+  residents: [
+    "avoided_friche_accidents",
+    "avoided_vehicule_kilometers",
+    "travel_time_saved",
+    "avoided_traffic_accidents",
+  ],
   french_society: ["households_powered_by_renewable_energy"],
 };
 

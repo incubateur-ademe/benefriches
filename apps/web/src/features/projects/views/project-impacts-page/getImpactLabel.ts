@@ -1,4 +1,5 @@
 import {
+  DevelopmentPlanInstallationCostName,
   EconomicBalanceMainName,
   EconomicBalanceName,
 } from "../../application/projectImpactsEconomicBalance.selectors";
@@ -54,6 +55,10 @@ const getCO2BenefitDetailsImpactLabel = (name: CO2BenefitDetails) => {
       return "🍂 CO2-eq stocké dans les sols";
     case "avoided_co2_eq_emissions_with_production":
       return "⚡️ Émissions de CO2-eq évitées grâce à la production d'EnR";
+    case "avoided_car_traffic_co2_eq_emissions":
+      return "🚶‍♀️ Evitées grâce aux déplacements en voiture évités";
+    case "avoided_air_conditioning_co2_eq_emissions":
+      return "❄️ Evitées grâce à l'utilisation réduite de de la climatisation";
   }
 };
 
@@ -111,16 +116,29 @@ export const getSocialImpactLabel = (name: SocialImpactName) => {
       return "👷 Reconversion du site";
     case "operations_full_time_jobs":
       return "🧑‍🔧 Exploitation du site";
-    case "avoided_minor_accidents":
+    case "avoided_friche_accidents":
+      return "🤕 Accidents évités sur la friche";
+    case "avoided_friche_minor_accidents":
       return "💥 Blessés légers évités";
-    case "avoided_severe_accidents":
+    case "avoided_friche_severe_accidents":
       return "🚑 Blessés graves évités";
+
+    case "avoided_traffic_accidents":
+      return "🚘 Accidents de la route évités";
+    case "avoided_traffic_minor_injuries":
+      return "🤕 Blessés légers évités";
+    case "avoided_traffic_severe_injuries":
+      return "🚑 Blessés graves évités";
+    case "avoided_traffic_deaths":
+      return "🪦 Décès évités";
     case "households_powered_by_renewable_energy":
       return "🏠 Foyers alimentés par les EnR";
-    case "avoided_accidents":
-      return "🤕 Accidents évités sur la friche";
     case "full_time_jobs":
       return "🧑‍🔧 Emplois équivalent temps plein mobilisés";
+    case "avoided_vehicule_kilometers":
+      return "🚙 Kilomètres évités";
+    case "travel_time_saved":
+      return "⏱ Temps de déplacement économisé";
   }
 };
 
@@ -136,11 +154,34 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🏛 Recettes fiscales";
     case "property_transfer_duties_income":
       return "🏛 Droits de mutation sur la transaction foncière";
+    /// Quartier
+    case "avoided_car_related_expenses":
+      return "🚙 Dépenses automobiles évitées";
+    case "avoided_air_conditioning_expenses":
+      return "❄️ Dépenses de climatisation évitées";
+    // Sociaux monétarisés
+    /// Quartier
+    case "travel_time_saved":
+      return "⏱ Temps de déplacement économisé";
+    case "avoided_traffic_accidents":
+      return "🚘 Accidents de la route évités";
+    case "avoided_traffic_deaths":
+      return "🪦 Décès évités";
+    case "avoided_traffic_minor_injuries":
+      return "🤕 Blessés légers évités";
+    case "avoided_traffic_severe_injuries":
+      return "‍🚑 Blessés graves évités";
     // Environementaux monétarisés
     case "co2_benefit_monetary":
       return "☁️ Emissions de CO2-eq évitées";
     case "avoided_co2_eq_with_enr":
       return "⚡️️ Grâce à la production d'énergies renouvelables";
+    case "avoided_traffic_co2_eq_emissions":
+      return "🚶‍♀️ Evitées grâce aux déplacements en voiture évités";
+    case "avoided_air_conditioning_co2_eq_emissions":
+      return "❄️ Evitées grâce à l'utilisation réduite de de la climatisation";
+    case "avoided_air_pollution":
+      return "💨 Pollution de l'air évitée";
     case "water_regulation":
       return "🚰 Régulation de la qualité de l'eau";
     // Services écosystémiques
@@ -174,7 +215,11 @@ export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName) => 
     case "financial_assistance":
       return "🏦 Aides financières";
     case "development_plan_installation":
+      return "🏗 Aménagement du projet";
+    case "photovoltaic_development_plan_installation":
       return "⚡️ Installation des panneaux photovoltaïques";
+    case "mixed_use_neighbourhood_development_plan_installation":
+      return "🏘 Aménagement du site";
     case "operations_costs":
       return "💸️ Charges d'exploitation";
     case "operations_revenues":
@@ -195,8 +240,10 @@ export const getEconomicBalanceDetailsImpactLabel = (
       return getEconomicBalanceYearlyRevenueSourceLabel(name as SourceRevenue);
     case "financial_assistance":
       return getEconomicBalanceFinancialAssistanceLabel(name as FinancialAssistance);
+    case "photovoltaic_development_plan_installation":
+    case "mixed_use_neighbourhood_development_plan_installation":
     case "development_plan_installation":
-      return getEconomicBalancePhotovoltaicInstallationLabel(
+      return getEconomicBalanceInstallationLabel(
         name as DevelopmentPlanInstallationCost["purpose"],
       );
     default:
@@ -258,15 +305,25 @@ const getEconomicBalanceFinancialAssistanceLabel = (revenueSource: FinancialAssi
   }
 };
 
-const getEconomicBalancePhotovoltaicInstallationLabel = (
-  photovoltaicCostPurpose: DevelopmentPlanInstallationCost["purpose"],
+const getEconomicBalanceInstallationLabel = (
+  costPurpose: DevelopmentPlanInstallationCostName,
 ): string => {
-  switch (photovoltaicCostPurpose) {
+  switch (costPurpose) {
+    case "mixed_use_neighbourhood_technical_studies":
+    case "photovoltaic_technical_studies":
     case "technical_studies":
       return "📋 Études et honoraires techniques";
-    case "installation_works":
+    case "photovoltaic_installation_works":
       return "🛠 Travaux d'installation des panneaux";
-    case "other":
+    case "photovoltaic_other":
       return "⚡️ Autres frais d'installation des panneaux";
+    case "mixed_use_neighbourhood_installation_works":
+      return "🧱 Travaux de construction";
+    case "mixed_use_neighbourhood_other":
+      return " 🏘 Autres dépenses d'aménagement";
+    case "installation_works":
+      return "🛠 Travaux d'installation";
+    case "other":
+      return "🏗 Autres frais d'installation";
   }
 };

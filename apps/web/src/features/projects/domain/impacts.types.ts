@@ -26,7 +26,15 @@ type CostsTotalAndDetails<TCost> = {
   costs: TCost[];
 };
 
-type BaseEconomicImpact = { actor: string; amount: number };
+export type Actor =
+  | "community"
+  | "french_society"
+  | "human_society"
+  | "local_residents"
+  | "local_workers"
+  | "local_companies";
+
+type BaseEconomicImpact = { actor: Actor; amount: number };
 type RentalIncomeImpact = BaseEconomicImpact & {
   impact: "rental_income";
   impactCategory: "economic_direct";
@@ -46,10 +54,59 @@ type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
   actor: "community";
 };
 
+type AvoidedCarRelatedExpensesImpact = BaseEconomicImpact & {
+  impact: "avoided_car_related_expenses";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
+
+type AvoidedAirConditioningExpensesImpact = BaseEconomicImpact & {
+  impact: "avoided_air_conditioning_expenses";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
+
+type TravelTimeSavedImpact = BaseEconomicImpact & {
+  impact: "travel_time_saved";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
+
+export type AvoidedTrafficAccidentsImpact = BaseEconomicImpact & {
+  impact: "avoided_traffic_accidents";
+  impactCategory: "social_monetary";
+  actor: "community";
+  details: {
+    amount: number;
+    impact:
+      | "avoided_traffic_minor_injuries"
+      | "avoided_traffic_severe_injuries"
+      | "avoided_traffic_deaths";
+  }[];
+};
+
+type AvoidedTrafficCO2EqEmissions = BaseEconomicImpact & {
+  impact: "avoided_traffic_co2_eq_emissions";
+  impactCategory: "environmental_monetary";
+  actor: "community";
+};
+
+type AvoidedAirConditioningCO2EqEmissions = BaseEconomicImpact & {
+  impact: "avoided_air_conditioning_co2_eq_emissions";
+  impactCategory: "environmental_monetary";
+  actor: "community";
+};
+
 export type AvoidedCO2EqWithEnRImpact = BaseEconomicImpact & {
   actor: "human_society";
   impactCategory: "environmental_monetary";
   impact: "avoided_co2_eq_with_enr";
+};
+
+type AvoidedAirPollutionImpact = BaseEconomicImpact & {
+  actor: "community";
+  impactCategory: "environmental_monetary";
+  impact: "avoided_air_pollution";
 };
 
 export type WaterRegulationImpact = BaseEconomicImpact & {
@@ -173,6 +230,31 @@ export type ReconversionProjectImpacts = {
       | EcosystemServicesImpact
       | AvoidedCO2EqWithEnRImpact
       | WaterRegulationImpact
+      | AvoidedCarRelatedExpensesImpact
+      | AvoidedAirConditioningExpensesImpact
+      | TravelTimeSavedImpact
+      | AvoidedTrafficAccidentsImpact
+      | AvoidedTrafficCO2EqEmissions
+      | AvoidedAirConditioningCO2EqEmissions
+      | AvoidedAirPollutionImpact
     )[];
+  };
+  avoidedVehiculeKilometers?: {
+    forecast: number;
+  };
+  travelTimeSaved?: {
+    forecast: number;
+  };
+  avoidedTrafficAccidents?: {
+    total: number;
+    minorInjuries: number;
+    severeInjuries: number;
+    deaths: number;
+  };
+  avoidedCarTrafficCo2EqEmissions?: {
+    forecast: number;
+  };
+  avoidedAirConditioningCo2EqEmissions?: {
+    forecast: number;
   };
 };

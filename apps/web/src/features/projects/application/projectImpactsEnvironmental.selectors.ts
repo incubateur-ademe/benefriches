@@ -23,11 +23,7 @@ type ImpactValue = {
 };
 
 export type ImpactDetails = {
-  name:
-    | "stored_co2_eq"
-    | "avoided_co2_eq_emissions_with_production"
-    | "mineral_soil"
-    | "green_soil";
+  name: EnvironmentalImpactDetailsName;
   impact: ImpactValue;
 };
 
@@ -58,7 +54,11 @@ export type SoilsCarbonStorageDetails =
   | "wet_land"
   | "water";
 
-export type CO2BenefitDetails = "stored_co2_eq" | "avoided_co2_eq_emissions_with_production";
+export type CO2BenefitDetails =
+  | "stored_co2_eq"
+  | "avoided_co2_eq_emissions_with_production"
+  | "avoided_air_conditioning_co2_eq_emissions"
+  | "avoided_car_traffic_co2_eq_emissions";
 
 export type PermeableSoilsDetails = "mineral_soil" | "green_soil";
 
@@ -87,6 +87,8 @@ export const getEnvironmentalProjectImpacts = createSelector(
       avoidedCO2TonsWithEnergyProduction,
       soilsCarbonStorage,
       permeableSurfaceArea,
+      avoidedAirConditioningCo2EqEmissions,
+      avoidedCarTrafficCo2EqEmissions,
     } = impactsData || {};
 
     const impacts: EnvironmentalImpact[] = [];
@@ -139,7 +141,12 @@ export const getEnvironmentalProjectImpacts = createSelector(
       });
     }
 
-    if (avoidedCO2TonsWithEnergyProduction || soilsCarbonStorage) {
+    if (
+      avoidedCarTrafficCo2EqEmissions ||
+      avoidedAirConditioningCo2EqEmissions ||
+      avoidedCO2TonsWithEnergyProduction ||
+      soilsCarbonStorage
+    ) {
       const details: ImpactDetails[] = [];
 
       if (soilsCarbonStorage) {
@@ -162,6 +169,29 @@ export const getEnvironmentalProjectImpacts = createSelector(
           },
         });
       }
+
+      if (avoidedAirConditioningCo2EqEmissions) {
+        details.push({
+          name: "avoided_air_conditioning_co2_eq_emissions",
+          impact: {
+            base: 0,
+            forecast: avoidedAirConditioningCo2EqEmissions.forecast,
+            difference: avoidedAirConditioningCo2EqEmissions.forecast,
+          },
+        });
+      }
+
+      if (avoidedCarTrafficCo2EqEmissions) {
+        details.push({
+          name: "avoided_car_traffic_co2_eq_emissions",
+          impact: {
+            base: 0,
+            forecast: avoidedCarTrafficCo2EqEmissions.forecast,
+            difference: avoidedCarTrafficCo2EqEmissions.forecast,
+          },
+        });
+      }
+
       if (details.length > 0) {
         impacts.push({
           name: "co2_benefit",

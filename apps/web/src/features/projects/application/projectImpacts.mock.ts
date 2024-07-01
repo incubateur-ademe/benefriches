@@ -1,8 +1,7 @@
 import { ReconversionProjectImpactsResult } from "./fetchReconversionProjectImpacts.action";
 
-export const projectImpactMock = {
+export const baseProjectImpactMock = {
   id: "1b521325-ee61-40fb-8462-e01669ac767b",
-  name: "Project photovoltaïque",
   relatedSiteId: "68382abb-3a81-45e6-8af4-913767a28141",
   relatedSiteName: "Friche agricole de Blajan",
   projectData: {
@@ -14,10 +13,6 @@ export const projectImpactMock = {
       IMPERMEABLE_SOILS: 30000,
     },
     contaminatedSoilSurface: 0,
-    developmentPlan: {
-      electricalPowerKWc: 258,
-      surfaceArea: 20000,
-    },
   },
   siteData: {
     addressLabel: "Blajan",
@@ -57,12 +52,6 @@ export const projectImpactMock = {
           amount: 5432,
           impact: "property_transfer_duties_income",
           impactCategory: "economic_indirect",
-        },
-        {
-          actor: "human_society",
-          amount: 168444,
-          impact: "avoided_co2_eq_with_enr",
-          impactCategory: "environmental_monetary",
         },
         {
           actor: "community",
@@ -186,14 +175,6 @@ export const projectImpactMock = {
         forecast: 0,
       },
     },
-    householdsPoweredByRenewableEnergy: {
-      current: 0,
-      forecast: 1000,
-    },
-    avoidedCO2TonsWithEnergyProduction: {
-      current: 0,
-      forecast: 112.29599999999999,
-    },
     soilsCarbonStorage: {
       current: {
         total: 20,
@@ -235,6 +216,148 @@ export const projectImpactMock = {
           },
         ],
       },
+    },
+  },
+};
+
+export const photovoltaicProjectImpactMock = {
+  ...baseProjectImpactMock,
+  name: "Project photovoltaïque",
+  projectData: {
+    ...baseProjectImpactMock.projectData,
+    developmentPlan: {
+      type: "PHOTOVOLTAIC_POWER_PLANT",
+    },
+  },
+  impacts: {
+    ...baseProjectImpactMock.impacts,
+    socioeconomic: {
+      total: baseProjectImpactMock.impacts.socioeconomic.total + 168444,
+      impacts: [
+        ...baseProjectImpactMock.impacts.socioeconomic.impacts,
+
+        {
+          actor: "human_society",
+          amount: 168444,
+          impact: "avoided_co2_eq_with_enr",
+          impactCategory: "environmental_monetary",
+        },
+      ],
+    },
+    householdsPoweredByRenewableEnergy: {
+      current: 0,
+      forecast: 1000,
+    },
+    avoidedCO2TonsWithEnergyProduction: {
+      current: 0,
+      forecast: 112.29599999999999,
+    },
+  },
+} as ReconversionProjectImpactsResult;
+
+export const mixedUseNeighbourhoodProjectImpactMock = {
+  ...baseProjectImpactMock,
+  name: "Quartier Mixte",
+  projectData: {
+    ...baseProjectImpactMock.projectData,
+
+    developmentPlan: {
+      type: "MIXED_USE_NEIGHBOURHOOD",
+    },
+  },
+  impacts: {
+    ...baseProjectImpactMock.impacts,
+    socioeconomic: {
+      total: baseProjectImpactMock.impacts.socioeconomic.total + 168444,
+      impacts: [
+        ...baseProjectImpactMock.impacts.socioeconomic.impacts,
+        {
+          actor: "human_society",
+          amount: 150000,
+          impact: "avoided_traffic_co2_eq_emissions",
+          impactCategory: "environmental_monetary",
+        },
+        {
+          actor: "human_society",
+          amount: 200000,
+          impact: "avoided_air_conditioning_co2_eq_emissions",
+          impactCategory: "environmental_monetary",
+        },
+        {
+          actor: "human_society",
+          amount: 1500,
+          impact: "avoided_air_pollution",
+          impactCategory: "environmental_monetary",
+        },
+        {
+          actor: "local_workers",
+          amount: 155,
+          impact: "avoided_car_related_expenses",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "local_residents",
+          amount: 1000,
+          impact: "avoided_car_related_expenses",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "local_residents",
+          amount: 1000,
+          impact: "avoided_air_conditioning_expenses",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "local_companies",
+          amount: 2000,
+          impact: "avoided_air_conditioning_expenses",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "french_society",
+          amount: 10000,
+          impact: "travel_time_saved",
+          impactCategory: "social_monetary",
+        },
+        {
+          actor: "french_society",
+          amount: 10000,
+          impact: "avoided_traffic_accidents",
+          impactCategory: "social_monetary",
+          details: [
+            {
+              amount: 1420,
+              impact: "avoided_traffic_minor_injuries",
+            },
+            {
+              amount: 1840,
+              impact: "avoided_traffic_severe_injuries",
+            },
+            {
+              amount: 680,
+              impact: "avoided_traffic_deaths_injuries",
+            },
+          ],
+        },
+      ],
+    },
+    avoidedVehiculeKilometers: {
+      forecast: 150000,
+    },
+    travelTimeSaved: {
+      forecast: 555555,
+    },
+    avoidedTrafficAccidents: {
+      total: 1000,
+      minorInjuries: 500,
+      severeInjuries: 500,
+      deaths: 80,
+    },
+    avoidedCarTrafficCo2EqEmissions: {
+      forecast: 115,
+    },
+    avoidedAirConditioningCo2EqEmissions: {
+      forecast: 300,
     },
   },
 } as ReconversionProjectImpactsResult;

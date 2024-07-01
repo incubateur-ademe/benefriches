@@ -1,4 +1,4 @@
-import { projectImpactMock } from "./projectImpacts.mock";
+import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
 import { getSocialProjectImpacts } from "./projectImpactsSocial.selectors";
 
 import { RootState } from "@/app/application/store";
@@ -57,7 +57,7 @@ describe("projectImpactsSocial selectors", () => {
 
         expect(impacts).toContainEqual(
           expect.objectContaining({
-            name: "avoided_accidents",
+            name: "avoided_friche_accidents",
             type: "default",
             impact: {
               base: 0,
@@ -66,11 +66,11 @@ describe("projectImpactsSocial selectors", () => {
               details: [
                 {
                   impact: { base: 0, difference: 1, forecast: 1 },
-                  name: "avoided_minor_accidents",
+                  name: "avoided_friche_minor_accidents",
                 },
                 {
                   impact: { base: 0, difference: 2, forecast: 2 },
-                  name: "avoided_severe_accidents",
+                  name: "avoided_friche_severe_accidents",
                 },
               ],
             },
