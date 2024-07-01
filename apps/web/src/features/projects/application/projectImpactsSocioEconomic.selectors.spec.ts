@@ -1,4 +1,4 @@
-import { projectImpactMock } from "./projectImpacts.mock";
+import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
 import {
   getDetailedSocioEconomicProjectImpacts,
   getSocioEconomicProjectImpactsByActorAndCategory,
@@ -292,8 +292,8 @@ describe("projectImpactsSocioEconomic selectors", () => {
           name: "human_society",
           total: 198264,
           impacts: [
-            { name: "avoided_co2_eq_with_enr", value: 168444 },
             { name: "ecosystem_services", value: 29820 },
+            { name: "avoided_co2_eq_with_enr", value: 168444 },
           ],
         }),
       );
@@ -337,9 +337,9 @@ describe("projectImpactsSocioEconomic selectors", () => {
           name: "environmental_monetary",
           total: 202984,
           impacts: [
-            { name: "avoided_co2_eq_with_enr", value: 168444 },
             { name: "water_regulation", value: 4720 },
             { name: "ecosystem_services", value: 29820 },
+            { name: "avoided_co2_eq_with_enr", value: 168444 },
           ],
         }),
       );
@@ -421,8 +421,8 @@ describe("projectImpactsSocioEconomic selectors", () => {
           name: "human_society",
           total: 198264,
           impacts: [
-            { name: "avoided_co2_eq_with_enr", value: 168444 },
             { name: "ecosystem_services", value: 29820 },
+            { name: "avoided_co2_eq_with_enr", value: 168444 },
           ],
         }),
       );
@@ -440,9 +440,9 @@ describe("projectImpactsSocioEconomic selectors", () => {
           name: "environmental_monetary",
           total: 202984,
           impacts: [
-            { name: "avoided_co2_eq_with_enr", value: 168444 },
             { name: "water_regulation", value: 4720 },
             { name: "ecosystem_services", value: 29820 },
+            { name: "avoided_co2_eq_with_enr", value: 168444 },
           ],
         }),
       );
