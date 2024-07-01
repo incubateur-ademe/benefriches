@@ -224,7 +224,7 @@ describe("Project impacts comparison reducer", () => {
 
     it("should call soils carbon service with the right payload for statu_quo comparaison", async () => {
       const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT);
-      jest.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
+      vi.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
       const store = createStore(
         getTestAppDependencies({
           soilsCarbonStorageService: soilsCarbonStorageMockSpy,
@@ -263,7 +263,7 @@ describe("Project impacts comparison reducer", () => {
 
     it("should call soils carbon service with the right payload for projects comparaison", async () => {
       const soilsCarbonStorageMockSpy = new SoilsCarbonStorageMock(SOILS_STORAGE_API_MOCKED_RESULT);
-      jest.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
+      vi.spyOn(soilsCarbonStorageMockSpy, "getForCityCodeAndSoils");
       const store = createStore(
         getTestAppDependencies({
           soilsCarbonStorageService: soilsCarbonStorageMockSpy,

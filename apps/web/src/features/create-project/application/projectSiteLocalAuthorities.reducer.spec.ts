@@ -102,7 +102,7 @@ describe("Site Local Authorities reducer", () => {
 
   it("should call Local Authorities Service with the right payload", async () => {
     const localAuthoritiesMockSpy = new AdministrativeDivisionMock(API_MOCKED_RESULT["75110"]);
-    jest.spyOn(localAuthoritiesMockSpy, "getMunicipalityData");
+    vi.spyOn(localAuthoritiesMockSpy, "getMunicipalityData");
 
     const store = createStore(
       getTestAppDependencies({

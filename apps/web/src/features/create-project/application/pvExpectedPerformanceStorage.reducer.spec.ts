@@ -64,7 +64,7 @@ describe("Photovoltaic expected performance reducer", () => {
 
   it("should call ExpectedPhotovoltaicPerformanceMock with the right payload", async () => {
     const mockSpy = new ExpectedPhotovoltaicPerformanceMock(API_MOCKED_RESULT);
-    jest.spyOn(mockSpy, "getExpectedPhotovoltaicPerformance");
+    vi.spyOn(mockSpy, "getExpectedPhotovoltaicPerformance");
     const store = createStore(
       getTestAppDependencies({
         photovoltaicPerformanceService: mockSpy,

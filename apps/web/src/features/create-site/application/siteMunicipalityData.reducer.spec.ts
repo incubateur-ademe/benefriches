@@ -85,7 +85,7 @@ describe("Site Municipality data reducer", () => {
 
   it("should call Municipality data service with the right payload", async () => {
     const mockSpy = new AdministrativeDivisionMock(API_MOCKED_RESULT["75110"]);
-    jest.spyOn(mockSpy, "getMunicipalityData");
+    vi.spyOn(mockSpy, "getMunicipalityData");
 
     const initialState: RootState["siteCreation"] = {
       siteData: {
