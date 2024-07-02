@@ -150,8 +150,8 @@ export const getSocialProjectImpacts = createSelector(
         type: "default",
         impact: {
           base: 0,
-          forecast: avoidedVehiculeKilometers.forecast,
-          difference: avoidedVehiculeKilometers.forecast,
+          forecast: avoidedVehiculeKilometers,
+          difference: avoidedVehiculeKilometers,
         },
       });
     }
@@ -162,8 +162,8 @@ export const getSocialProjectImpacts = createSelector(
         type: "default",
         impact: {
           base: 0,
-          forecast: travelTimeSaved.forecast,
-          difference: travelTimeSaved.forecast,
+          forecast: travelTimeSaved,
+          difference: travelTimeSaved,
         },
       });
     }
