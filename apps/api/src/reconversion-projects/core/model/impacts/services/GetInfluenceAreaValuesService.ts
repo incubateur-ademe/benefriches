@@ -37,7 +37,7 @@ export class GetInfluenceAreaValuesService implements GetInfluenceAreaValuesServ
     );
   }
 
-  geInfluenceAreaSquareMetersHousingSurface() {
+  getInfluenceAreaSquareMetersHousingSurface() {
     return this.getInfluenceSquareMetersArea() * this.cityHousingPerSquareMeter;
   }
 

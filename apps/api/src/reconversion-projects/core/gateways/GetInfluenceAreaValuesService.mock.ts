@@ -10,7 +10,7 @@ export class GetInfluenceAreaValuesServiceMock implements GetInfluenceAreaValues
   getInfluenceSquareMetersArea() {
     return 577586;
   }
-  geInfluenceAreaSquareMetersHousingSurface() {
+  getInfluenceAreaSquareMetersHousingSurface() {
     return 924;
   }
   getInhabitantsFromHousingSurface(surface: number) {

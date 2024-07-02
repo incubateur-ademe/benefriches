@@ -102,16 +102,14 @@ describe("TravelRelatedImpactsService", () => {
   });
 
   it("computes avoided co2eq emissions with avoided kilometers for duration", () => {
-    expect(
-      travelRelatedImpactsService.getAvoidedCO2EmissionsWithAvoidedKilometersGramPerCo2(),
-    ).toBeCloseTo(96793054.13793103);
+    expect(travelRelatedImpactsService.getAvoidedTrafficCO2EmissionsInTons()).toBeCloseTo(96.793);
   });
 
   it("computes avoided co2eq emissions with avoided kilometers monetary value for duration", () => {
     const spy = jest.spyOn(cO2eqMonetaryValueService, "getAnnualizedCO2MonetaryValueForDuration");
-    travelRelatedImpactsService.getAvoidedCO2EmissionsWithAvoidedKilometersGramPerCo2MonetaryValue();
+    travelRelatedImpactsService.getAvoidedTrafficCO2EmissionsMonetaryValue();
     expect(spy).toHaveBeenCalledWith(
-      travelRelatedImpactsService.avoidedCO2EmissionsWithAvoidedKilometersGramPerCo2PerYear,
+      travelRelatedImpactsService.avoidedCO2EmissionsGramPerKilometerPerYear / 1000000,
       2025,
       10,
     );
@@ -121,33 +119,30 @@ describe("TravelRelatedImpactsService", () => {
     expect(travelRelatedImpactsService.getAvoidedAirPollution()).toBeCloseTo(9728.563965517);
   });
 
-  it("computes avoided accidents minor injuries for duration", () => {
-    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries()).toBeCloseTo(0.036184347);
+  it("computes avoided accidents injuries and deaths for duration with low avoided kilometers", () => {
+    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries()).toEqual(0);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries()).toEqual(0);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsDeaths()).toEqual(0);
+
+    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesMonetaryValue()).toEqual(0);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesMonetaryValue()).toEqual(0);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesMonetaryValue()).toEqual(0);
   });
 
-  it("computes avoided accidents severe injuries for duration", () => {
-    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries()).toBeCloseTo(0.00226152);
-  });
+  it("computes avoided accidents injuries and deaths for duration with high avoided kilometers", () => {
+    travelRelatedImpactsService.projectHousingSurfaceArea = 160000000;
+    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries()).toEqual(443);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries()).toEqual(27);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsDeaths()).toEqual(8);
 
-  it("computes avoided accidents deaths for duration", () => {
-    expect(travelRelatedImpactsService.getAvoidedAccidentsDeaths()).toBeCloseTo(0.000675519);
-  });
-
-  it("computes avoided accidents minor injuries monetary value for duration", () => {
-    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesMonetaryValue()).toBeCloseTo(
-      578.949550808,
+    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesMonetaryValue()).toEqual(
+      7088000,
     );
-  });
-
-  it("computes avoided accidents severe injuries monetary value for duration", () => {
     expect(
       travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesMonetaryValue(),
-    ).toBeCloseTo(904.608673138);
-  });
-
-  it("computes avoided accidents deaths monetary valuefor duration", () => {
+    ).toBeCloseTo(10800000);
     expect(travelRelatedImpactsService.getAvoidedAccidentsDeathsMonetaryValue()).toBeCloseTo(
-      2161.662283862,
+      25600000,
     );
   });
 });

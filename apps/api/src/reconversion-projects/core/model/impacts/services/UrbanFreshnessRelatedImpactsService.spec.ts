@@ -43,27 +43,27 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
 
   it("computes avoided air conditionning CO2 emissions for housing", () => {
     expect(
-      urbanFreshnessRelatedImpactsService.getHousingAvoidedAirConditioningCo2Emissions(),
-    ).toEqual(1638600);
+      urbanFreshnessRelatedImpactsService.getHousingAvoidedAirConditioningCo2EmissionsInTons(),
+    ).toEqual(1.6386);
   });
 
   it("computes avoided air conditionning CO2 emissions for business buildings", () => {
     expect(
-      urbanFreshnessRelatedImpactsService.getBusinessBuildingsAvoidedAirConditioningCo2Emissions(),
-    ).toEqual(580800);
+      urbanFreshnessRelatedImpactsService.getBusinessBuildingsAvoidedAirConditioningCo2EmissionsInTons(),
+    ).toEqual(0.5808);
   });
 
   it("computes total avoided air conditionning CO2 emissions", () => {
-    expect(urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions()).toEqual(
-      2219400,
-    );
+    expect(
+      urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2EmissionsInTons(),
+    ).toEqual(2.2194);
   });
 
   it("computes total avoided air conditionning CO2 emissions monetary value", () => {
     const spy = jest.spyOn(cO2eqMonetaryValueService, "getAnnualizedCO2MonetaryValueForDuration");
     urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2EmissionsMonetaryValue();
     expect(spy).toHaveBeenCalledWith(
-      urbanFreshnessRelatedImpactsService.avoidedAirConditioningCo2EmissionsPerYear,
+      urbanFreshnessRelatedImpactsService.avoidedAirConditioningCo2EmissionsPerYear / 1000000,
       2025,
       10,
     );

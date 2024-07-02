@@ -22,7 +22,7 @@ describe("GetInfluenceAreaValuesService", () => {
   });
 
   it("returns an housing surface of 1556 m² in influence area", () => {
-    expect(getInfluenceAreaValuesService.geInfluenceAreaSquareMetersHousingSurface()).toBeCloseTo(
+    expect(getInfluenceAreaValuesService.getInfluenceAreaSquareMetersHousingSurface()).toBeCloseTo(
       1540.23,
     );
   });
@@ -42,7 +42,7 @@ describe("GetInfluenceAreaValuesService", () => {
   it("computes influence area with influence radius", () => {
     getInfluenceAreaValuesService.influenceRadius = 100;
     expect(getInfluenceAreaValuesService.getInfluenceSquareMetersArea()).toBeCloseTo(66865);
-    expect(getInfluenceAreaValuesService.geInfluenceAreaSquareMetersHousingSurface()).toBeCloseTo(
+    expect(getInfluenceAreaValuesService.getInfluenceAreaSquareMetersHousingSurface()).toBeCloseTo(
       106.984,
     );
   });

@@ -34,7 +34,7 @@ export class TravelRelatedImpactsService {
   get impactedInhabitants() {
     return this.influenceAreaValuesService.getInhabitantsFromHousingSurface(
       this.projectHousingSurfaceArea +
-        this.influenceAreaValuesService.geInfluenceAreaSquareMetersHousingSurface(),
+        this.influenceAreaValuesService.getInfluenceAreaSquareMetersHousingSurface(),
     );
   }
 
@@ -79,6 +79,18 @@ export class TravelRelatedImpactsService {
       this.avoidedKilometersPerOtherActivityEmployeeTraveler +
       this.avoidedKilometersPerTertiaryActivityEmployeeTraveler
     );
+  }
+
+  get avoidedKilometersPerWorkerVehiculePerYear() {
+    return (
+      (this.avoidedKilometersPerOtherActivityEmployeeTraveler +
+        this.avoidedKilometersPerTertiaryActivityEmployeeTraveler) /
+      PEOPLE_PER_VEHICULE
+    );
+  }
+
+  get avoidedKilometersPerResidentVehiculePerYear() {
+    return this.avoidedKilometersPerInhabitantTraveler / PEOPLE_PER_VEHICULE;
   }
 
   get avoidedKilometersPerVehiculePerYear() {
@@ -183,7 +195,7 @@ export class TravelRelatedImpactsService {
     return (this.avoidedKilometersPerVehiculePerYear * 4.77) / 100000000;
   }
 
-  get avoidedCO2EmissionsWithAvoidedKilometersGramPerCo2PerYear() {
+  get avoidedCO2EmissionsGramPerKilometerPerYear() {
     return this.avoidedKilometersPerVehiculePerYear * 157.2;
   }
 
@@ -191,25 +203,46 @@ export class TravelRelatedImpactsService {
     return this.durationInYears * this.travelTimeSavedPerTravelerPerYear;
   }
 
+  getAvoidedKilometersPerWorkerVehicule() {
+    return this.durationInYears * this.avoidedKilometersPerWorkerVehiculePerYear;
+  }
+
+  getAvoidedKilometersPerResidentVehicule() {
+    return this.durationInYears * this.avoidedKilometersPerResidentVehiculePerYear;
+  }
+
   getAvoidedKilometersPerVehicule() {
-    return this.durationInYears * this.avoidedKilometersPerVehiculePerYear;
+    return (
+      this.getAvoidedKilometersPerResidentVehicule() + this.getAvoidedKilometersPerWorkerVehicule()
+    );
+  }
+
+  getAvoidedKilometersPerWorkerVehiculeMonetaryAmount() {
+    return this.getAvoidedKilometersPerWorkerVehicule() * 0.1;
+  }
+
+  getAvoidedKilometersPerResidentVehiculeMonetaryAmount() {
+    return this.getAvoidedKilometersPerResidentVehicule() * 0.1;
   }
 
   getAvoidedKilometersPerVehiculeMonetaryAmount() {
-    return this.getAvoidedKilometersPerVehicule() * 0.1;
+    return (
+      this.getAvoidedKilometersPerWorkerVehiculeMonetaryAmount() +
+      this.getAvoidedKilometersPerResidentVehiculeMonetaryAmount()
+    );
   }
 
   getTravelTimeSavedPerTravelerMonetaryAmount() {
     return this.getTravelTimeSavedPerTraveler() * 10;
   }
 
-  getAvoidedCO2EmissionsWithAvoidedKilometersGramPerCo2() {
-    return this.avoidedCO2EmissionsWithAvoidedKilometersGramPerCo2PerYear * this.durationInYears;
+  getAvoidedTrafficCO2EmissionsInTons() {
+    return (this.avoidedCO2EmissionsGramPerKilometerPerYear / 1000000) * this.durationInYears;
   }
 
-  getAvoidedCO2EmissionsWithAvoidedKilometersGramPerCo2MonetaryValue() {
+  getAvoidedTrafficCO2EmissionsMonetaryValue() {
     return this.co2eqMonetaryValueService.getAnnualizedCO2MonetaryValueForDuration(
-      this.avoidedCO2EmissionsWithAvoidedKilometersGramPerCo2PerYear,
+      this.avoidedCO2EmissionsGramPerKilometerPerYear / 1000000,
       this.operationFirstYear,
       this.durationInYears,
     );
@@ -220,26 +253,34 @@ export class TravelRelatedImpactsService {
   }
 
   getAvoidedAccidentsMinorInjuries() {
-    return (
+    return Math.floor(
       this.avoidedAccidentsPerYearForHundredMillionOfVehicule *
-      this.minorInjuriesRatioPerAccident *
-      this.durationInYears
+        this.minorInjuriesRatioPerAccident *
+        this.durationInYears,
     );
   }
 
   getAvoidedAccidentsSevereInjuries() {
-    return (
+    return Math.floor(
       this.avoidedAccidentsPerYearForHundredMillionOfVehicule *
-      this.severeInjuriesRatioPerAccident *
-      this.durationInYears
+        this.severeInjuriesRatioPerAccident *
+        this.durationInYears,
     );
   }
 
   getAvoidedAccidentsDeaths() {
-    return (
+    return Math.floor(
       this.avoidedAccidentsPerYearForHundredMillionOfVehicule *
-      this.deathsRatioPerAccident *
-      this.durationInYears
+        this.deathsRatioPerAccident *
+        this.durationInYears,
+    );
+  }
+
+  getAvoidedAccidentsInjuriesOrDeaths() {
+    return (
+      this.getAvoidedAccidentsDeaths() +
+      this.getAvoidedAccidentsMinorInjuries() +
+      this.getAvoidedAccidentsSevereInjuries()
     );
   }
 
@@ -253,5 +294,13 @@ export class TravelRelatedImpactsService {
 
   getAvoidedAccidentsDeathsMonetaryValue() {
     return this.getAvoidedAccidentsDeaths() * 3200000;
+  }
+
+  getAvoidedAccidentsInjuriesOrDeathsMonetaryValue() {
+    return (
+      this.getAvoidedAccidentsDeathsMonetaryValue() +
+      this.getAvoidedAccidentsMinorInjuriesMonetaryValue() +
+      this.getAvoidedAccidentsSevereInjuriesMonetaryValue()
+    );
   }
 }

@@ -33,7 +33,7 @@ export class UrbanFreshnessRelatedImpactsService {
   get impactedHousing() {
     return (
       this.projectHousingSurfaceArea +
-      this.influenceAreaValuesService.geInfluenceAreaSquareMetersHousingSurface()
+      this.influenceAreaValuesService.getInfluenceAreaSquareMetersHousingSurface()
     );
   }
 
@@ -85,21 +85,24 @@ export class UrbanFreshnessRelatedImpactsService {
     );
   }
 
-  getHousingAvoidedAirConditioningCo2Emissions() {
-    return this.housingAvoidedAirConditioningCo2EmissionsPerYear * this.durationInYears;
+  getHousingAvoidedAirConditioningCo2EmissionsInTons() {
+    return (this.housingAvoidedAirConditioningCo2EmissionsPerYear / 1000000) * this.durationInYears;
   }
 
-  getBusinessBuildingsAvoidedAirConditioningCo2Emissions() {
-    return this.businessBuildingsAvoidedAirConditioningCo2EmissionsPerYear * this.durationInYears;
+  getBusinessBuildingsAvoidedAirConditioningCo2EmissionsInTons() {
+    return (
+      (this.businessBuildingsAvoidedAirConditioningCo2EmissionsPerYear / 1000000) *
+      this.durationInYears
+    );
   }
 
-  getAvoidedAirConditioningCo2Emissions() {
-    return this.avoidedAirConditioningCo2EmissionsPerYear * this.durationInYears;
+  getAvoidedAirConditioningCo2EmissionsInTons() {
+    return (this.avoidedAirConditioningCo2EmissionsPerYear / 1000000) * this.durationInYears;
   }
 
   getAvoidedAirConditioningCo2EmissionsMonetaryValue() {
     return this.co2eqMonetaryValueService.getAnnualizedCO2MonetaryValueForDuration(
-      this.avoidedAirConditioningCo2EmissionsPerYear,
+      this.avoidedAirConditioningCo2EmissionsPerYear / 1000000,
       this.operationFirstYear,
       this.durationInYears,
     );

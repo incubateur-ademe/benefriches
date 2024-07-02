@@ -7,5 +7,5 @@ export interface GetInfluenceAreaValuesServiceInterface {
   getInhabitantsFromHousingSurface: (surface: number) => number;
   getHouseholdsFromHousingSurface: (surface: number) => number;
   getInfluenceSquareMetersArea: () => number;
-  geInfluenceAreaSquareMetersHousingSurface: () => number;
+  getInfluenceAreaSquareMetersHousingSurface: () => number;
 }
