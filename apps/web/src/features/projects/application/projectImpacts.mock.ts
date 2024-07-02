@@ -341,23 +341,15 @@ export const mixedUseNeighbourhoodProjectImpactMock = {
         },
       ],
     },
-    avoidedVehiculeKilometers: {
-      forecast: 150000,
-    },
-    travelTimeSaved: {
-      forecast: 555555,
-    },
+    avoidedVehiculeKilometers: 150000,
+    travelTimeSaved: 555555,
     avoidedTrafficAccidents: {
       total: 1000,
       minorInjuries: 500,
       severeInjuries: 500,
       deaths: 80,
     },
-    avoidedCarTrafficCo2EqEmissions: {
-      forecast: 115,
-    },
-    avoidedAirConditioningCo2EqEmissions: {
-      forecast: 300,
-    },
+    avoidedCarTrafficCo2EqEmissions: 115,
+    avoidedAirConditioningCo2EqEmissions: 300,
   },
 } as ReconversionProjectImpactsResult;
