@@ -1,4 +1,6 @@
 import { v4 as uuid } from "uuid";
+import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
+import { GetCityPopulationAndSurfaceAreaUseCase } from "src/location-features/core/usecases/getCityPopulationAndSurfaceArea.usecase";
 import { InMemoryReconversionProjectImpactsRepository } from "src/reconversion-projects/adapters/secondary/reconversion-project-impacts-repository/InMemoryReconversionProjectImpactsRepository";
 import { InMemorySiteImpactsRepository } from "src/reconversion-projects/adapters/secondary/site-impacts-repository/InMemorySiteImpactsRepository";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
@@ -29,6 +31,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
+        new GetCityPopulationAndSurfaceAreaUseCase(new MockLocalDataInseeService()),
       );
 
       const reconversionProjectId = uuid();
@@ -60,6 +63,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
+        new GetCityPopulationAndSurfaceAreaUseCase(new MockLocalDataInseeService()),
       );
 
       const evaluationPeriodInYears = 10;
@@ -98,8 +102,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       realEstateTransactionTotalCost: 150000,
       reinstatementCosts: [{ amount: 500000, purpose: "demolition" }],
       developmentPlanInstallationCosts: [{ amount: 200000, purpose: "installation_works" }],
-      developmentPlanElectricalPowerKWc: 258,
-      developmentPlanSurfaceArea: 20000,
+      developmentPlanFeatures: {
+        electricalPowerKWc: 258,
+        surfaceArea: 20000,
+        contractDuration: 30,
+        expectedAnnualProduction: 4679,
+      },
       developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
       developmentPlanDeveloperName: "Mairie de Blajan",
       financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
@@ -112,7 +120,6 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         { amount: 20000, source: "sell" },
         { amount: 1000, source: "other" },
       ],
-      developmentPlanExpectedAnnualEnergyProductionMWh: 4679,
       realEstateTransactionPropertyTransferDutiesAmount: 5432,
       operationsFirstYear: 2025,
     } as const;
@@ -156,6 +163,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
+        new GetCityPopulationAndSurfaceAreaUseCase(new MockLocalDataInseeService()),
       );
       const result = await usecase.execute({
         reconversionProjectId: reconversionProjectImpactDataView.id,
@@ -170,7 +178,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           soilsDistribution: reconversionProjectImpactDataView.soilsDistribution,
           contaminatedSoilSurface: 0,
           developmentPlan: {
+            contractDuration: 30,
             electricalPowerKWc: 258,
+            expectedAnnualProduction: 4679,
             surfaceArea: 20000,
             type: "PHOTOVOLTAIC_POWER_PLANT",
           },
@@ -187,7 +197,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         },
         impacts: {
           socioeconomic: {
-            total: -195584,
+            total: -85636.10999999999,
             impacts: [
               {
                 actor: "Current owner",
@@ -212,12 +222,6 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 amount: 5432,
                 impact: "property_transfer_duties_income",
                 impactCategory: "economic_indirect",
-              },
-              {
-                actor: "human_society",
-                amount: 168444,
-                impact: "avoided_co2_eq_with_enr",
-                impactCategory: "environmental_monetary",
               },
               {
                 actor: "community",
@@ -256,6 +260,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                     impact: "soil_erosion",
                   },
                 ],
+              },
+              {
+                actor: "human_society",
+                amount: 278391.89,
+                impact: "avoided_co2_eq_with_enr",
+                impactCategory: "environmental_monetary",
               },
             ],
           },

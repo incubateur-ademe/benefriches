@@ -17,21 +17,11 @@ type EnvironmentalMonetaryImpactInput = {
   baseSoilsCarbonStorage: number;
   forecastSoilsCarbonStorage: number;
   operationsFirstYear: number;
-  avoidedCO2TonsWithEnergyProduction?: number;
   decontaminatedSurface?: number;
 };
 
-export type EnvironmentalMonetaryImpact =
-  | EcosystemServicesImpact
-  | AvoidedCO2EqWithEnRImpact
-  | WaterRegulationImpact;
+export type EnvironmentalMonetaryImpact = EcosystemServicesImpact | WaterRegulationImpact;
 
-type AvoidedCO2EqWithEnRImpact = {
-  amount: number;
-  actor: "human_society";
-  impactCategory: "environmental_monetary";
-  impact: "avoided_co2_eq_with_enr";
-};
 type WaterRegulationImpact = {
   amount: number;
   actor: "community";
@@ -195,20 +185,6 @@ export const computeEnvironmentalMonetaryImpacts = (
   input: EnvironmentalMonetaryImpactInput,
 ): EnvironmentalMonetaryImpactResult => {
   const impacts: EnvironmentalMonetaryImpactResult = [];
-
-  if (input.avoidedCO2TonsWithEnergyProduction) {
-    impacts.push({
-      amount: Math.round(
-        computeAvoidedCO2eqMonetaryValue(
-          input.avoidedCO2TonsWithEnergyProduction,
-          input.operationsFirstYear,
-        ) * input.evaluationPeriodInYears,
-      ),
-      impact: "avoided_co2_eq_with_enr",
-      impactCategory: "environmental_monetary",
-      actor: "human_society",
-    });
-  }
 
   const soilsDifferential = computeSoilsDifferential(
     input.baseSoilsDistribution,

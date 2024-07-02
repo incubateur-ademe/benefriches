@@ -80,6 +80,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
             expectedAnnualProduction: 10,
             surfaceArea: 2000,
             electricalPowerKWc: 300,
+            contractDuration: 30,
           },
         },
       ]);
@@ -172,11 +173,14 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         ],
         yearlyProjectedCosts: [],
         yearlyProjectedRevenues: [],
-        developmentPlanExpectedAnnualEnergyProductionMWh: 10,
+        developmentPlanFeatures: {
+          expectedAnnualProduction: 10,
+          surfaceArea: 2000,
+          electricalPowerKWc: 300,
+          contractDuration: 30,
+        },
         realEstateTransactionPropertyTransferDutiesAmount: 8000,
         operationsFirstYear: 2025,
-        developmentPlanElectricalPowerKWc: 300,
-        developmentPlanSurfaceArea: 2000,
         developmentPlanDeveloperName: "Terre cuite d’occitanie",
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
       });
@@ -240,6 +244,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         conversionSchedule: undefined,
         developmentPlanInstallationCosts: [],
         developmentPlanDeveloperName: undefined,
+        developmentPlanFeatures: undefined,
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
         futureOperatorName: undefined,
         futureSiteOwnerName: undefined,
