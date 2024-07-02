@@ -8,6 +8,7 @@ type Props = {
   title: string;
   description: React.ReactNode;
   badgeText: string;
+  imgSrc: string;
   checked: boolean;
   onChange: () => void;
   className?: string;
@@ -17,6 +18,7 @@ type Props = {
 export default function CreateModeOption({
   title,
   description,
+  imgSrc,
   checked,
   onChange,
   className,
@@ -43,6 +45,13 @@ export default function CreateModeOption({
       <label htmlFor={id}>
         <div className={"sm:tw-inline-flex tw-align-top tw-p-6"}>
           <div className="tw-text-center">
+            <img
+              src={imgSrc}
+              width="80px"
+              height="80px"
+              alt={`Illustration pour l'option ${title}`}
+              className={disabled ? "tw-filter tw-grayscale tw-opacity-50 tw-mb-2" : "tw-mb-2"}
+            />
             <div className={classNames("tw-mb-2", fr.cx("fr-text--lg", "fr-text--bold"))}>
               {title}
             </div>
