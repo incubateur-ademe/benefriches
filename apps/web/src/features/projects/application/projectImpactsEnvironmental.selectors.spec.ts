@@ -1,4 +1,4 @@
-import { projectImpactMock } from "./projectImpacts.mock";
+import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
 import { getEnvironmentalProjectImpacts } from "./projectImpactsEnvironmental.selectors";
 
 import { RootState } from "@/app/application/store";

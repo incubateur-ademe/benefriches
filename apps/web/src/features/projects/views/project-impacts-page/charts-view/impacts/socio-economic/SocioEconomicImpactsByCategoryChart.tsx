@@ -20,6 +20,8 @@ const getLabelForSocioEconomicImpactCategory = (
       return "Économiques directs";
     case "economic_indirect":
       return "Économiques indirects";
+    case "social_monetary":
+      return "Sociaux monétarisés";
     case "environmental_monetary":
       return "Environnementaux monétarisés";
   }
