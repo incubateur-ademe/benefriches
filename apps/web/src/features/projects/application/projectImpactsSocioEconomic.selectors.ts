@@ -81,10 +81,12 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
     const displayAll = currentFilter === "all";
     const displayEconomicData = displayAll || currentFilter === "economic";
     const displayEnvironmentData = displayAll || currentFilter === "environment";
+    const displaySocialData = displayAll || currentFilter === "social";
 
     const allowedCategories = [
       ...(displayEconomicData ? ["economic_direct", "economic_indirect"] : []),
       ...(displayEnvironmentData ? ["environmental_monetary"] : []),
+      ...(displaySocialData ? ["social_monetary"] : []),
     ];
 
     const economicDirect: SocioEconomicImpactByCategory = { total: 0, impacts: [] };
@@ -347,7 +349,11 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
     }
 
     return {
-      total: economicDirect.total + economicIndirect.total + environmentalMonetary.total,
+      total:
+        economicDirect.total +
+        economicIndirect.total +
+        environmentalMonetary.total +
+        socialMonetary.total,
       economicDirect,
       economicIndirect,
       socialMonetary,

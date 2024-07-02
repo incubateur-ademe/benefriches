@@ -53,7 +53,8 @@ const SocioEconomicImpactsListSection = ({
   socioEconomicImpacts,
   openImpactDescriptionModal,
 }: Props) => {
-  const { economicDirect, economicIndirect, environmentalMonetary } = socioEconomicImpacts;
+  const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary } =
+    socioEconomicImpacts;
 
   return (
     <section className="fr-mb-5w">
@@ -98,6 +99,34 @@ const SocioEconomicImpactsListSection = ({
                 label: getActorLabel(actorLabel),
                 value: actorValue,
               }))}
+              onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
+              type="monetary"
+            />
+          ))}
+        </>
+      )}
+
+      {socialMonetary.impacts.length > 0 && (
+        <>
+          <ImpactSectionHeader title="Impacts sociaux monétarisés" total={socialMonetary.total} />
+
+          {socialMonetary.impacts.map(({ name, actors }) => (
+            <ImpactActorsItem
+              key={name}
+              label={getSocioEconomicImpactLabel(name)}
+              actors={actors.map(
+                ({ name: actorName, value: actorValue, details: actorDetails }) => ({
+                  label: getActorLabel(actorName),
+                  value: actorValue,
+                  details: actorDetails
+                    ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
+                        label: getSocioEconomicImpactLabel(detailsName),
+                        value: detailsValue,
+                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                      }))
+                    : undefined,
+                }),
+              )}
               onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
               type="monetary"
             />
