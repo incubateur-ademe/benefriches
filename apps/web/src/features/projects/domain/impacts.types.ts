@@ -239,22 +239,14 @@ export type ReconversionProjectImpacts = {
       | AvoidedAirPollutionImpact
     )[];
   };
-  avoidedVehiculeKilometers?: {
-    forecast: number;
-  };
-  travelTimeSaved?: {
-    forecast: number;
-  };
+  avoidedVehiculeKilometers?: number;
+  travelTimeSaved?: number;
   avoidedTrafficAccidents?: {
     total: number;
     minorInjuries: number;
     severeInjuries: number;
     deaths: number;
   };
-  avoidedCarTrafficCo2EqEmissions?: {
-    forecast: number;
-  };
-  avoidedAirConditioningCo2EqEmissions?: {
-    forecast: number;
-  };
+  avoidedCarTrafficCo2EqEmissions?: number;
+  avoidedAirConditioningCo2EqEmissions?: number;
 };

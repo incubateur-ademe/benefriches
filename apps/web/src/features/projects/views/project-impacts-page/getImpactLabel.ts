@@ -138,7 +138,7 @@ export const getSocialImpactLabel = (name: SocialImpactName) => {
     case "avoided_vehicule_kilometers":
       return "🚙 Kilomètres évités";
     case "travel_time_saved":
-      return "⏱ Temps de déplacement économisé";
+      return "⏱ Temps de déplacement économisé (en h)";
   }
 };
 

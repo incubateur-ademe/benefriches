@@ -175,8 +175,8 @@ export const getEnvironmentalProjectImpacts = createSelector(
           name: "avoided_air_conditioning_co2_eq_emissions",
           impact: {
             base: 0,
-            forecast: avoidedAirConditioningCo2EqEmissions.forecast,
-            difference: avoidedAirConditioningCo2EqEmissions.forecast,
+            forecast: avoidedAirConditioningCo2EqEmissions,
+            difference: avoidedAirConditioningCo2EqEmissions,
           },
         });
       }
@@ -186,8 +186,8 @@ export const getEnvironmentalProjectImpacts = createSelector(
           name: "avoided_car_traffic_co2_eq_emissions",
           impact: {
             base: 0,
-            forecast: avoidedCarTrafficCo2EqEmissions.forecast,
-            difference: avoidedCarTrafficCo2EqEmissions.forecast,
+            forecast: avoidedCarTrafficCo2EqEmissions,
+            difference: avoidedCarTrafficCo2EqEmissions,
           },
         });
       }
