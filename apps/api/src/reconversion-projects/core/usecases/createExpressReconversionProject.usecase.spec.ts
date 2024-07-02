@@ -256,9 +256,9 @@ describe("CreateReconversionProject Use Case", () => {
             surfaceArea: 100000,
             name: "Base site with polluted soils and buildings",
             soilsDistribution: {
-              BUILDINGS: 50000,
+              BUILDINGS: 1000,
               IMPERMEABLE_SOILS: 30000,
-              MINERAL_SOIL: 20000,
+              MINERAL_SOIL: 69000,
             },
             contaminatedSoilSurface: 50000,
           };
@@ -298,16 +298,60 @@ describe("CreateReconversionProject Use Case", () => {
             expect(createdReconversionProject?.reinstatementCosts).toHaveLength(3);
             expect(createdReconversionProject?.reinstatementCosts).toContainEqual({
               purpose: "absestos_removal",
-              amount: 3750000,
+              amount: 75000,
             });
             expect(createdReconversionProject?.reinstatementCosts).toContainEqual({
               purpose: "demolition",
-              amount: 3750000,
+              amount: 75000,
             });
             expect(createdReconversionProject?.reinstatementCosts).toContainEqual({
               purpose: "remediation",
               amount: 2475000,
             });
+          });
+        });
+        describe("with more impermeable soils than future project", () => {
+          const allImpermeableFriche = {
+            ...site,
+            soilsDistribution: {
+              BUILDINGS: 7000,
+              IMPERMEABLE_SOILS: 3000,
+            },
+          };
+
+          it("should create mixed-use neighbourhood with deimpermeabilization expense", async () => {
+            siteRepository._setSites([allImpermeableFriche]);
+
+            const usecase = new CreateExpressReconversionProjectUseCase(
+              dateProvider,
+              siteRepository,
+              reconversionProjectRepository,
+            );
+
+            const reconversionProjectId = uuid();
+            const creatorId = uuid();
+            await usecase.execute({
+              reconversionProjectId,
+              siteId: allImpermeableFriche.id,
+              createdBy: creatorId,
+            });
+
+            const createdReconversionProjects: ReconversionProject[] =
+              reconversionProjectRepository._getReconversionProjects();
+            expect(createdReconversionProjects).toHaveLength(1);
+            const createdReconversionProject = createdReconversionProjects[0];
+            // reinstatement costs
+            expect(createdReconversionProject?.reinstatementCosts).toHaveLength(3);
+            expect(createdReconversionProject?.reinstatementCosts?.at(0)).toEqual({
+              purpose: "deimpermeabilization",
+              amount: 66000,
+            });
+            expect(createdReconversionProject?.reinstatementCosts?.at(1)?.purpose).toEqual(
+              "demolition",
+            );
+            expect(createdReconversionProject?.reinstatementCosts?.at(2)?.purpose).toEqual(
+              "absestos_removal",
+            );
           });
         });
       });

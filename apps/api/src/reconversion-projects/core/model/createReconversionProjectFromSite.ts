@@ -2,7 +2,11 @@ import { addYears } from "date-fns";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { typedObjectEntries } from "src/shared-kernel/typedEntries";
 import { Address } from "src/sites/core/models/site";
-import { SoilsDistribution } from "src/soils/domain/soils";
+import {
+  isImpermeableSoil,
+  SoilsDistribution,
+  sumSoilsSurfaceAreasWhere,
+} from "src/soils/domain/soils";
 import { getSoilTypeForSpace, SpacesDistribution } from "./mixedUseNeighbourhood";
 import { ReconversionProject, reconversionProjectSchema, Schedule } from "./reconversionProject";
 
@@ -38,11 +42,24 @@ const computeInstallationCostsFromSiteSurfaceArea = (
   return { technicalStudies, developmentWorks, other };
 };
 
+const getImpermeableSurfaceArea = (soilsDistribution: SoilsDistribution): number => {
+  return sumSoilsSurfaceAreasWhere(soilsDistribution, (soilType) => isImpermeableSoil(soilType));
+};
+
 const computeReinstatementCostsFromSiteSoils = (
   siteSoilsDistribution: SoilsDistribution,
+  projectSoilsDistribution: SoilsDistribution,
   contaminatedSoilSurface: number,
 ) => {
   const costs = [];
+
+  const impermeableSoilsDelta =
+    getImpermeableSurfaceArea(siteSoilsDistribution) -
+    getImpermeableSurfaceArea(projectSoilsDistribution);
+
+  if (impermeableSoilsDelta > 0) {
+    costs.push({ amount: impermeableSoilsDelta * 10, purpose: "deimpermeabilization" });
+  }
 
   if (contaminatedSoilSurface > 0) {
     costs.push({ amount: contaminatedSoilSurface * 0.75 * 66, purpose: "remediation" });
@@ -107,21 +124,27 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
   constructor(private readonly dateProvider: IDateProvider) {}
 
   fromSiteData({ siteData, reconversionProjectId, createdBy }: Input): ReconversionProject {
+    // spaces and soils
+    const spacesDistribution = computeSpacesDistribution(siteData.surfaceArea);
+    const soilsDistribution = computeSoilsDistributionFromSpaces(spacesDistribution);
+
+    // expenses and incomes
     const { sellingPrice, propertyTransactionDuties } =
       computeRealEstateTransactionFromSiteSurfaceArea(siteData.surfaceArea);
     const installationCosts = computeInstallationCostsFromSiteSurfaceArea(siteData.surfaceArea);
     const reinstatementCosts = siteData.isFriche
       ? computeReinstatementCostsFromSiteSoils(
           siteData.soilsDistribution,
+          soilsDistribution,
           siteData.contaminatedSoilSurface ?? 0,
         )
       : undefined;
+
+    // schedules
     const reinstatementSchedule = computeReinstatementSchedule(this.dateProvider);
     const installationSchedule = computeInstallationSchedule(this.dateProvider)(
       reinstatementSchedule.endDate,
     );
-    const spacesDistribution = computeSpacesDistribution(siteData.surfaceArea);
-    const soilsDistribution = computeSoilsDistributionFromSpaces(spacesDistribution);
 
     const reconversionProject: ReconversionProject = {
       id: reconversionProjectId,
