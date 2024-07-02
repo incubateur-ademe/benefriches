@@ -1,9 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import {
-  DevelopmentPlan,
-  PhotovoltaicPowerStationFeatures,
-} from "src/reconversion-projects/core/model/reconversionProject";
+import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   ReconversionProjectImpactsDataView,
   ReconversionProjectImpactsRepository,
@@ -53,7 +50,7 @@ export class SqlReconversionProjectImpactsRepository
       type: DevelopmentPlan["type"];
       schedule_start_date?: Date;
       schedule_end_date?: Date;
-      features: unknown;
+      features: Partial<DevelopmentPlan["features"]>;
       costs: { amount: number; purpose: string }[];
     }[] = await this.sqlConnection("reconversion_project_development_plans as dp")
       .where("dp.reconversion_project_id", reconversionProjectId)
@@ -82,6 +79,12 @@ export class SqlReconversionProjectImpactsRepository
     const sqlDevelopmentPlan = sqlDevelopmentPlanResult[0] as
       | (typeof sqlDevelopmentPlanResult)[number]
       | undefined;
+
+    const sqlDevelopmentPlanFeatures =
+      !sqlDevelopmentPlan || Object.keys(sqlDevelopmentPlan.features).length === 0
+        ? undefined
+        : sqlDevelopmentPlan.features;
+
     const conversionSchedule =
       sqlDevelopmentPlan?.schedule_start_date && sqlDevelopmentPlan.schedule_end_date
         ? {
@@ -118,16 +121,6 @@ export class SqlReconversionProjectImpactsRepository
       .select("amount", "source")
       .where("reconversion_project_id", reconversionProjectId);
 
-    const developmentPlanFeatures = (sqlDevelopmentPlan?.features ?? {
-      expectedAnnualProduction: undefined,
-      surfaceArea: undefined,
-      electricalPowerKWc: undefined,
-    }) as PhotovoltaicPowerStationFeatures;
-    const developmentPlanExpectedAnnualEnergyProductionMWh =
-      developmentPlanFeatures.expectedAnnualProduction;
-    const developmentPlanSurfaceArea = developmentPlanFeatures.surfaceArea;
-    const developmentPlanElectricalPowerKWc = developmentPlanFeatures.electricalPowerKWc;
-
     const realEstateTransactionTotalCost = reconversionProject.real_estate_transaction_selling_price
       ? reconversionProject.real_estate_transaction_selling_price +
         (reconversionProject.real_estate_transaction_property_transfer_duties ?? 0)
@@ -161,9 +154,7 @@ export class SqlReconversionProjectImpactsRepository
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
       developmentPlanType: sqlDevelopmentPlan?.type ?? undefined,
-      developmentPlanExpectedAnnualEnergyProductionMWh,
-      developmentPlanSurfaceArea,
-      developmentPlanElectricalPowerKWc,
+      developmentPlanFeatures: sqlDevelopmentPlanFeatures as DevelopmentPlan["features"],
       developmentPlanDeveloperName: sqlDevelopmentPlan?.developer_name ?? undefined,
       developmentPlanInstallationCosts: sqlDevelopmentPlan?.costs ?? [],
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,

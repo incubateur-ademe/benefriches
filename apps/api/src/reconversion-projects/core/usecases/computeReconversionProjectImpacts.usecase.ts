@@ -1,3 +1,4 @@
+import { GetCityPopulationAndSurfaceAreaUseCase } from "src/location-features/core/usecases/getCityPopulationAndSurfaceArea.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 import { SoilsDistribution } from "src/soils/domain/soils";
@@ -5,10 +6,11 @@ import {
   AccidentsImpactResult,
   computeAccidentsImpact,
 } from "../model/impacts/accidents/accidentsImpact";
+import { AvoidedCO2WithEnergyProductionImpact } from "../model/impacts/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import {
-  AvoidedCO2WithEnergyProductionImpact,
-  computeAvoidedCO2TonsWithEnergyProductionImpact,
-} from "../model/impacts/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
+  getDevelopmentPlanRelatedImpacts,
+  SocioEconomicSpecificImpact,
+} from "../model/impacts/development-plans-related/developmentPlanFeaturesImpacts";
 import {
   computeEconomicBalanceImpact,
   EconomicBalanceImpactResult,
@@ -17,10 +19,7 @@ import {
   computeFullTimeJobsImpact,
   FullTimeJobsImpactResult,
 } from "../model/impacts/full-time-jobs/fullTimeJobsImpact";
-import {
-  computeHouseholdsPoweredByRenewableEnergyImpact,
-  HouseholdsPoweredByRenewableEnergyImpact,
-} from "../model/impacts/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
+import { HouseholdsPoweredByRenewableEnergyImpact } from "../model/impacts/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
 import {
   computeNonContaminatedSurfaceAreaImpact,
   NonContaminatedSurfaceAreaImpact,
@@ -30,9 +29,13 @@ import {
   PermeableSurfaceAreaImpactResult,
 } from "../model/impacts/permeable-surface/permeableSurfaceAreaImpact";
 import {
-  computeSocioEconomicImpacts,
-  SocioEconomicImpactsResult,
-} from "../model/impacts/socio-economic/computeSocioEconomicImpacts";
+  computeDirectAndIndirectEconomicImpacts,
+  DirectAndIndirectEconomicImpact,
+} from "../model/impacts/socio-economic/computeDirectAndIndirectEconomicImpacts";
+import {
+  computeEnvironmentalMonetaryImpacts,
+  EnvironmentalMonetaryImpact,
+} from "../model/impacts/socio-economic/computeEnvironmentalMonetaryImpacts";
 import {
   computeSoilsCarbonStorageImpact,
   GetSoilsCarbonStoragePerSoilsService,
@@ -87,10 +90,8 @@ export type ReconversionProjectImpactsDataView = {
   yearlyProjectedCosts: { amount: number; purpose: string }[];
   yearlyProjectedRevenues: { amount: number; source: string }[];
   developmentPlanType?: DevelopmentPlan["type"];
-  developmentPlanExpectedAnnualEnergyProductionMWh?: number;
-  developmentPlanSurfaceArea?: number;
-  developmentPlanElectricalPowerKWc?: number;
   developmentPlanDeveloperName?: string;
+  developmentPlanFeatures?: DevelopmentPlan["features"];
   operationsFirstYear?: number;
 };
 
@@ -112,10 +113,8 @@ export type Result = {
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
     developmentPlan: {
-      surfaceArea?: number;
-      electricalPowerKWc?: number;
       type?: DevelopmentPlan["type"];
-    };
+    } & Partial<DevelopmentPlan["features"]>;
   };
   siteData: {
     addressLabel: string;
@@ -128,10 +127,27 @@ export type Result = {
     fullTimeJobs: FullTimeJobsImpactResult;
     accidents: AccidentsImpactResult | undefined;
     economicBalance: EconomicBalanceImpactResult;
-    householdsPoweredByRenewableEnergy: HouseholdsPoweredByRenewableEnergyImpact | undefined;
-    avoidedCO2TonsWithEnergyProduction: AvoidedCO2WithEnergyProductionImpact | undefined;
+    householdsPoweredByRenewableEnergy?: HouseholdsPoweredByRenewableEnergyImpact | undefined;
+    avoidedCO2TonsWithEnergyProduction?: AvoidedCO2WithEnergyProductionImpact | undefined;
     soilsCarbonStorage: SoilsCarbonStorageImpactResult;
-    socioeconomic: SocioEconomicImpactsResult;
+    socioeconomic: {
+      impacts: (
+        | DirectAndIndirectEconomicImpact
+        | EnvironmentalMonetaryImpact
+        | SocioEconomicSpecificImpact
+      )[];
+      total: number;
+    };
+    avoidedVehiculeKilometers?: number;
+    travelTimeSaved?: number;
+    avoidedTrafficAccidents?: {
+      total: number;
+      minorInjuries: number;
+      severeInjuries: number;
+      deaths: number;
+    };
+    avoidedCarTrafficCo2EqEmissions?: number;
+    avoidedAirConditioningCo2EqEmissions?: number;
   };
 };
 
@@ -157,6 +173,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     private readonly siteRepository: SiteImpactsRepository,
     private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
     private readonly dateProvider: DateProvider,
+    private readonly getCityPopulationAndSurfaceAreaUseCase: GetCityPopulationAndSurfaceAreaUseCase,
   ) {}
 
   async execute({ reconversionProjectId, evaluationPeriodInYears }: Request): Promise<Result> {
@@ -169,6 +186,9 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
 
     if (!relatedSite) throw new SiteNotFound(reconversionProject.relatedSiteId);
 
+    const operationsFirstYear =
+      reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear();
+
     const soilsCarbonStorage = await computeSoilsCarbonStorageImpact({
       currentSoilsDistribution: relatedSite.soilsDistribution,
       forecastSoilsDistribution: reconversionProject.soilsDistribution,
@@ -176,13 +196,43 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
     });
 
-    const avoidedCO2TonsWithEnergyProduction =
-      reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh
-        ? computeAvoidedCO2TonsWithEnergyProductionImpact({
-            forecastAnnualEnergyProductionMWh:
-              reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
-          })
-        : undefined;
+    const {
+      socioeconomic: developmentPlanRelatedSocioEconomicImpacts = [],
+      ...developmentPlanRelatedImpacts
+    } = await getDevelopmentPlanRelatedImpacts({
+      developmentPlanType: reconversionProject.developmentPlanType,
+      developmentPlanFeatures: reconversionProject.developmentPlanFeatures,
+      evaluationPeriodInYears,
+      operationsFirstYear,
+      siteSurfaceArea: relatedSite.surfaceArea,
+      siteCityCode: relatedSite.addressCityCode,
+      getCityPopulationAndSurfaceAreaUseCase: this.getCityPopulationAndSurfaceAreaUseCase,
+    });
+
+    const socioeconomic = [
+      ...computeDirectAndIndirectEconomicImpacts({
+        evaluationPeriodInYears: evaluationPeriodInYears,
+        currentOwner: relatedSite.ownerName,
+        currentTenant: relatedSite.tenantName,
+        futureSiteOwner: reconversionProject.futureSiteOwnerName,
+        yearlyCurrentCosts: relatedSite.yearlyCosts,
+        yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
+        propertyTransferDutiesAmount:
+          reconversionProject.realEstateTransactionPropertyTransferDutiesAmount,
+      }),
+      ...computeEnvironmentalMonetaryImpacts({
+        baseSoilsDistribution: relatedSite.soilsDistribution,
+        forecastSoilsDistribution: reconversionProject.soilsDistribution,
+        evaluationPeriodInYears,
+        baseSoilsCarbonStorage: soilsCarbonStorage.current.total,
+        forecastSoilsCarbonStorage: soilsCarbonStorage.forecast.total,
+        operationsFirstYear: operationsFirstYear,
+        decontaminatedSurface: relatedSite.contaminatedSoilSurface,
+      }),
+      ...developmentPlanRelatedSocioEconomicImpacts,
+    ];
+
+    const { developmentPlanFeatures, developmentPlanType } = reconversionProject;
 
     return {
       id: reconversionProjectId,
@@ -193,9 +243,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         soilsDistribution: reconversionProject.soilsDistribution,
         contaminatedSoilSurface: 0,
         developmentPlan: {
-          surfaceArea: reconversionProject.developmentPlanSurfaceArea,
-          electricalPowerKWc: reconversionProject.developmentPlanElectricalPowerKWc,
-          type: reconversionProject.developmentPlanType,
+          ...developmentPlanFeatures,
+          type: developmentPlanType,
         },
       },
       siteData: {
@@ -219,24 +268,12 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           },
           evaluationPeriodInYears,
         ),
-        socioeconomic: computeSocioEconomicImpacts({
-          currentOwner: relatedSite.ownerName,
-          currentTenant: relatedSite.tenantName,
-          yearlyCurrentCosts: relatedSite.yearlyCosts,
-          yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
-          futureSiteOwner: reconversionProject.futureSiteOwnerName,
-          propertyTransferDutiesAmount:
-            reconversionProject.realEstateTransactionPropertyTransferDutiesAmount,
-          evaluationPeriodInYears,
-          baseSoilsDistribution: relatedSite.soilsDistribution,
-          forecastSoilsDistribution: reconversionProject.soilsDistribution,
-          baseSoilsCarbonStorage: soilsCarbonStorage.current.total,
-          forecastSoilsCarbonStorage: soilsCarbonStorage.forecast.total,
-          operationsFirstYear:
-            reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear(),
-          avoidedCO2TonsWithEnergyProduction: avoidedCO2TonsWithEnergyProduction?.forecast,
-          decontaminatedSurface: relatedSite.contaminatedSoilSurface,
-        }),
+        socioeconomic: {
+          impacts: socioeconomic,
+          total: socioeconomic
+            .map(({ amount }) => amount)
+            .reduce((total, amount) => total + amount, 0),
+        },
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,
           forecastSoilsDistribution: reconversionProject.soilsDistribution,
@@ -269,16 +306,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
               deaths: relatedSite.accidentsDeaths,
             })
           : undefined,
-
-        householdsPoweredByRenewableEnergy:
-          reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh
-            ? computeHouseholdsPoweredByRenewableEnergyImpact({
-                forecastRenewableEnergyAnnualProductionMWh:
-                  reconversionProject.developmentPlanExpectedAnnualEnergyProductionMWh,
-              })
-            : undefined,
-        avoidedCO2TonsWithEnergyProduction,
         soilsCarbonStorage,
+        ...developmentPlanRelatedImpacts,
       },
     };
   }
