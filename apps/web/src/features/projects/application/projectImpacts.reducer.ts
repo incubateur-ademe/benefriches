@@ -10,7 +10,7 @@ import { RootState } from "@/app/application/store";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 10;
+const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 20;
 const DEFAULT_VIEW_MODE = "charts";
 const DEFAULT_CATEGORY_FILTER = "all";
 

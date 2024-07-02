@@ -28,7 +28,7 @@ function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
       instructions={
         <FormInfo>
           <p>
-            La durée de contrat moyen de l'utilisation de panneaux photovoltaïques est de 30 ans.
+            La durée de contrat moyen de l'utilisation de panneaux photovoltaïques est de 20 ans.
           </p>
           <p>Vous pouvez modifier cette durée.</p>
         </FormInfo>
