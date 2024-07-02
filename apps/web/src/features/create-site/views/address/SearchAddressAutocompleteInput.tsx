@@ -3,7 +3,6 @@ import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { AutoComplete } from "antd";
 
 import { Address } from "@/features/create-site/domain/siteFoncier.types";
-import MarkerLeafletMap from "@/shared/views/components/MarkerLeafletMap/MarkerLeafletMap";
 
 export interface AddressService {
   search(searchText: string): Promise<Address[]>;
@@ -33,7 +32,6 @@ const SearchAddressAutocompleteInput = ({
   addressService,
 }: PropTypes) => {
   const autocompleteValue = selectedAddress?.banId;
-  const { long, lat } = selectedAddress ?? {};
 
   const [suggestions, setSuggestions] = useState<Option[]>([]);
 
@@ -75,7 +73,6 @@ const SearchAddressAutocompleteInput = ({
           }}
         />
       </AutoComplete>
-      <MarkerLeafletMap lat={lat} long={long} popup={searchInputValue} />
     </div>
   );
 };
