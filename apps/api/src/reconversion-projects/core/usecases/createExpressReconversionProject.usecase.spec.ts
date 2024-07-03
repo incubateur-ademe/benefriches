@@ -89,7 +89,7 @@ describe("CreateReconversionProject Use Case", () => {
             reconversionProjectRepository._getReconversionProjects();
           expect(createdReconversionProjects).toHaveLength(1);
           const createdReconversionProject = createdReconversionProjects[0];
-          expect(createdReconversionProject?.name).toEqual("Quartir mixte");
+          expect(createdReconversionProject?.name).toEqual("Quartier mixte");
           expect(createdReconversionProject?.relatedSiteId).toEqual(site.id);
           expect(createdReconversionProject?.createdBy).toEqual(creatorId);
           expect(createdReconversionProject?.createdAt).toEqual(dateProvider.now());

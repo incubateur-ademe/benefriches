@@ -154,7 +154,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       soilsDistribution,
       yearlyProjectedCosts: [],
       yearlyProjectedRevenues: [],
-      name: "Quartir mixte",
+      name: "Quartier mixte",
       relatedSiteId: siteData.id,
       reinstatementCosts,
       reinstatementSchedule,
