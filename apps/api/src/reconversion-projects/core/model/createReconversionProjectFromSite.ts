@@ -7,8 +7,17 @@ import {
   SoilsDistribution,
   sumSoilsSurfaceAreasWhere,
 } from "src/soils/domain/soils";
-import { getSoilTypeForSpace, SpacesDistribution } from "./mixedUseNeighbourhood";
-import { ReconversionProject, reconversionProjectSchema, Schedule } from "./reconversionProject";
+import {
+  getSoilTypeForSpace,
+  MixedUseNeighbourhoodFeatures,
+  SpacesDistribution,
+} from "./mixedUseNeighbourhood";
+import {
+  ReconversionProject,
+  reconversionProjectSchema,
+  ReinstatementCostsPurpose,
+  Schedule,
+} from "./reconversionProject";
 
 type SiteData = {
   id: string;
@@ -67,7 +76,7 @@ const computeReinstatementCostsFromSiteSoils = (
 
   if (siteSoilsDistribution.BUILDINGS) {
     costs.push({ amount: siteSoilsDistribution.BUILDINGS * 75, purpose: "demolition" });
-    costs.push({ amount: siteSoilsDistribution.BUILDINGS * 75, purpose: "absestos_removal" });
+    costs.push({ amount: siteSoilsDistribution.BUILDINGS * 75, purpose: "asbestos_removal" });
   }
 
   return costs;
@@ -77,6 +86,37 @@ const computeReinstatementSchedule = (dateProvider: IDateProvider): Schedule => 
   const startDate = addYears(dateProvider.now(), 1);
   const endDate = addYears(startDate, 1);
   return { startDate, endDate };
+};
+
+const REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR: Partial<
+  Record<ReinstatementCostsPurpose, number>
+> = {
+  sustainable_soils_reinstatement: 14 / 1000000,
+  deimpermeabilization: 5.45 / 1000000,
+  asbestos_removal: 6 / 1000000,
+  demolition: 6 / 1000000,
+  waste_collection: 5.7 / 1000000,
+  remediation: 5 / 1000000,
+};
+
+export const computeReinstatementFullTimeJobs = (
+  reinstatementCosts: ReconversionProject["reinstatementCosts"] = [],
+) => {
+  const reinstatementFullTimeJobs = reinstatementCosts.map(({ purpose, amount }) => {
+    const ratio = REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR[purpose as ReinstatementCostsPurpose];
+    return ratio ? amount * ratio : 0;
+  }, 0);
+  return Math.round(reinstatementFullTimeJobs.reduce((total, jobs) => total + jobs, 0) * 10) / 10;
+};
+
+const JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR = 0.04;
+const computeOperationsFullTimeJobs = (
+  buildingsFloorAreaDistribution: MixedUseNeighbourhoodFeatures["buildingsFloorAreaDistribution"],
+) => {
+  return (
+    JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR *
+    (buildingsFloorAreaDistribution.GROUND_FLOOR_RETAIL ?? 0)
+  );
 };
 
 const computeInstallationSchedule =
@@ -136,6 +176,11 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
     const spacesDistribution = computeSpacesDistribution(siteData.surfaceArea);
     const soilsDistribution = computeSoilsDistributionFromSpaces(spacesDistribution);
 
+    const buildingsFloorAreaDistribution = {
+      RESIDENTIAL: 0.92 * 0.2 * siteData.surfaceArea,
+      GROUND_FLOOR_RETAIL: 0.08 * 0.2 * siteData.surfaceArea,
+    };
+
     // expenses and incomes
     const { sellingPrice, propertyTransactionDuties } = computesitePurchaseFromSiteSurfaceArea(
       siteData.surfaceArea,
@@ -178,6 +223,8 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       relatedSiteId: siteData.id,
       reinstatementCosts,
       reinstatementSchedule,
+      reinstatementFullTimeJobsInvolved: computeReinstatementFullTimeJobs(reinstatementCosts),
+      operationsFullTimeJobsInvolved: computeOperationsFullTimeJobs(buildingsFloorAreaDistribution),
       operationsFirstYear: computeOperationsFirstYear(installationSchedule.endDate),
       futureSiteOwner: developer,
       reinstatementContractOwner,
@@ -185,10 +232,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
         developer,
         features: {
           spacesDistribution,
-          buildingsFloorAreaDistribution: {
-            RESIDENTIAL: 0.92 * 0.2 * siteData.surfaceArea,
-            GROUND_FLOOR_RETAIL: 0.08 * 0.2 * siteData.surfaceArea,
-          },
+          buildingsFloorAreaDistribution,
         },
         installationSchedule,
         type: "MIXED_USE_NEIGHBOURHOOD",
