@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { fr } from "@codegouvfr/react-dsfr";
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 import SocioEconomicImpactsByActorChart from "./SocioEconomicImpactsByActorChart";
 import SocioEconomicImpactsByCategoryChart from "./SocioEconomicImpactsByCategoryChart";
 
 import { SocioEconomicImpactByActorAndCategory } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
-import classNames from "@/shared/views/clsx";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicImpactByActorAndCategory;
-  onTitleClick: () => void;
+  onClick: () => void;
 };
 
 type ChartViewMode = "by_actor" | "by_category";
@@ -52,26 +50,11 @@ const ChartViewModeControl = ({
   );
 };
 
-function SocioEconomicImpactsCard({ socioEconomicImpacts, onTitleClick }: Props) {
+function SocioEconomicImpactsCard({ socioEconomicImpacts, onClick }: Props) {
   const [currentChartViewMode, setChartViewMode] = useState<ChartViewMode>("by_category");
 
   return (
-    <ImpactCard
-      title={
-        <div
-          className={classNames(
-            fr.cx("fr-mb-2w"),
-            "tw-flex",
-            "tw-justify-between",
-            "tw-items-center",
-          )}
-        >
-          <strong className="tw-cursor-pointer hover:tw-underline" onClick={onTitleClick}>
-            Impacts socio-économiques
-          </strong>
-        </div>
-      }
-    >
+    <ImpactCard onClick={onClick} title="Impacts socio-économiques">
       {currentChartViewMode === "by_category" ? (
         <SocioEconomicImpactsByCategoryChart
           socioEconomicImpacts={socioEconomicImpacts.byCategory}
@@ -79,7 +62,12 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, onTitleClick }: Props)
       ) : (
         <SocioEconomicImpactsByActorChart socioEconomicImpacts={socioEconomicImpacts.byActor} />
       )}
-      <div className="tw-flex tw-justify-center">
+      <div
+        className="tw-flex tw-justify-center"
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <ChartViewModeControl
           currentChartViewMode={currentChartViewMode}
           setChartViewMode={setChartViewMode}

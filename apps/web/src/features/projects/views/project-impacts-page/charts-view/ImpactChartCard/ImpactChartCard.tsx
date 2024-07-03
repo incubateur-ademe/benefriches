@@ -6,10 +6,10 @@ import classNames from "@/shared/views/clsx";
 type Props = {
   title: ReactNode;
   children?: ReactNode;
-  onTitleClick?: () => void;
+  onClick?: () => void;
 };
 
-const ImpactChartCard = ({ title, children, onTitleClick }: Props) => {
+const ImpactChartCard = ({ title, children, onClick }: Props) => {
   return (
     <figure
       className={classNames(
@@ -22,14 +22,16 @@ const ImpactChartCard = ({ title, children, onTitleClick }: Props) => {
         "tw-h-full",
         "tw-bg-impacts-main",
         "dark:tw-bg-grey-dark",
+        onClick && [
+          "tw-cursor-pointer",
+          "hover:tw-underline",
+          "hover:tw-bg-impacts-dark",
+          "dark:hover:tw-bg-dsfr-contrastGrey",
+        ],
       )}
+      onClick={onClick}
     >
-      <strong
-        className={classNames("tw-text-lg", onTitleClick && "tw-cursor-pointer hover:tw-underline")}
-        onClick={onTitleClick}
-      >
-        {title}
-      </strong>
+      <strong className={classNames("tw-text-lg")}>{title}</strong>
       <div className="tw-flex tw-flex-col tw-grow tw-justify-center">{children}</div>
     </figure>
   );

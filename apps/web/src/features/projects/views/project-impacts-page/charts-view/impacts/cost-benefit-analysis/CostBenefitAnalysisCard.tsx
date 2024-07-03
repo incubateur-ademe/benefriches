@@ -10,14 +10,14 @@ type Props = {
   economicBalanceTotal: number;
   socioEconomicImpactsTotal: number;
   economicBalanceBearer?: string;
-  onTitleClick: () => void;
+  onClick: () => void;
 };
 
 function CostBenefitAnalysisCard({
   economicBalanceTotal,
   socioEconomicImpactsTotal,
   economicBalanceBearer = "Aménageur",
-  onTitleClick,
+  onClick,
 }: Props) {
   const highchartPoints = [
     {
@@ -61,7 +61,7 @@ function CostBenefitAnalysisCard({
   };
 
   return (
-    <ImpactCard title="Analyse coûts bénéfices" onTitleClick={onTitleClick}>
+    <ImpactCard title="Analyse coûts bénéfices" onClick={onClick}>
       <HighchartsReact
         containerProps={{ className: "highcharts-no-xaxis" }}
         highcharts={Highcharts}

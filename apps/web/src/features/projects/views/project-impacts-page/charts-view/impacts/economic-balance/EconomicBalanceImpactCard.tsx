@@ -12,10 +12,10 @@ import { sumList } from "@/shared/services/sum/sum";
 type Props = {
   economicBalance: EconomicBalance["economicBalance"];
   bearer?: string;
-  onTitleClick: () => void;
+  onClick: () => void;
 };
 
-function EconomicBalanceImpactCard({ economicBalance, onTitleClick, bearer = "Aménageur" }: Props) {
+function EconomicBalanceImpactCard({ economicBalance, onClick, bearer = "Aménageur" }: Props) {
   const totalValues = economicBalance.map(({ value }) => value);
 
   const totalRevenues = sumList(totalValues.filter((value) => value > 0));
@@ -56,7 +56,7 @@ function EconomicBalanceImpactCard({ economicBalance, onTitleClick, bearer = "Am
   };
 
   return (
-    <ImpactCard title="Bilan de l'opération" onTitleClick={onTitleClick}>
+    <ImpactCard title="Bilan de l'opération" onClick={onClick}>
       {economicBalance.length === 0 ? (
         <div>Vous n'avez pas renseigné de coûts ni de dépenses pour ce projet.</div>
       ) : (

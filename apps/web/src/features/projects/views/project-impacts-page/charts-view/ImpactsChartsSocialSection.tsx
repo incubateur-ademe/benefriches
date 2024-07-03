@@ -19,7 +19,7 @@ const Row = ({ children }: { children: ReactNode }) => {
   return <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>{children}</div>;
 };
 
-const getImpactOnTitleClick = (
+const getImpactOnClick = (
   itemName: SocialImpactName,
   openImpactDescriptionModal: Props["openImpactDescriptionModal"],
 ) => {
@@ -112,7 +112,7 @@ const ImpactsChartsSocialSection = ({
               baseLabel="Pas de changement"
               forecastLabel={projectName}
               impact={formatImpactForChartAreaCard({ impact, name })}
-              onTitleClick={getImpactOnTitleClick(name, openImpactDescriptionModal)}
+              onClick={getImpactOnClick(name, openImpactDescriptionModal)}
             />
           </div>
         ))}

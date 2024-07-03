@@ -37,7 +37,7 @@ const ImpactsChartsEconomicSection = ({
                 economicBalanceTotal={economicBalance.total}
                 socioEconomicImpactsTotal={socioEconomicImpacts.total}
                 economicBalanceBearer={economicBalance.bearer}
-                onTitleClick={() => {
+                onClick={() => {
                   openImpactDescriptionModal("cost-benefit-analysis");
                 }}
               />
@@ -46,7 +46,7 @@ const ImpactsChartsEconomicSection = ({
               <EconomicBalanceImpactCard
                 economicBalance={economicBalance["economicBalance"]}
                 bearer={economicBalance["bearer"]}
-                onTitleClick={() => {
+                onClick={() => {
                   openImpactDescriptionModal("economic-balance");
                 }}
               />
@@ -57,7 +57,7 @@ const ImpactsChartsEconomicSection = ({
         <div className={displayEconomicBalance ? "lg:tw-row-start-2" : "lg: tw-row-start-1"}>
           <SocioEconomicImpactsCard
             socioEconomicImpacts={socioEconomicImpacts}
-            onTitleClick={() => {
+            onClick={() => {
               openImpactDescriptionModal("socio-economic");
             }}
           />

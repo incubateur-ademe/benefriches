@@ -32,7 +32,7 @@ const ENVIRONMENTAL_IMPACTS: EnvironmentalImpactName[] = [
   "non_contaminated_surface_area",
 ];
 
-const getImpactOnClickTitle = (
+const getImpactOnClick = (
   itemName: EnvironmentalImpactName,
   openImpactDescriptionModal: Props["openImpactDescriptionModal"],
 ) => {
@@ -117,7 +117,7 @@ const ImpactsChartsEnvironmentSection = ({
               )}
             >
               <ImpactAreaChartCard
-                onTitleClick={() => {
+                onClick={() => {
                   openImpactDescriptionModal("environmental-carbon-storage");
                 }}
                 type="co2"
@@ -139,7 +139,7 @@ const ImpactsChartsEnvironmentSection = ({
               baseLabel="Pas de changement"
               forecastLabel={projectName}
               impact={formatImpactForChartAreaCard({ impact, name })}
-              onTitleClick={getImpactOnClickTitle(name, openImpactDescriptionModal)}
+              onClick={getImpactOnClick(name, openImpactDescriptionModal)}
             />
           </div>
         ))}

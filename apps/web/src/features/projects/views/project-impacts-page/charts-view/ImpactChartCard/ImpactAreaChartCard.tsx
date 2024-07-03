@@ -27,7 +27,7 @@ const impactTypeFormatterMap = {
 type Props = {
   baseLabel: string;
   forecastLabel: string;
-  onTitleClick?: () => void;
+  onClick?: () => void;
   impact: {
     impactLabel: string;
     base: number;
@@ -44,7 +44,7 @@ function ImpactAreaChartCard({
   baseLabel,
   forecastLabel,
   impact,
-  onTitleClick,
+  onClick,
   unitSuffix,
 }: Props) {
   const { data, base, forecast, difference, impactLabel } = impact;
@@ -78,7 +78,7 @@ function ImpactAreaChartCard({
   const percentageVariation = getPercentageDifference(base, forecast);
 
   return (
-    <ImpactChartCard title={impactLabel} onTitleClick={onTitleClick}>
+    <ImpactChartCard title={impactLabel} onClick={onClick}>
       <ImpactPercentageVariation percentage={percentageVariation} />
       <ImpactAbsoluteVariation>
         {impactTypeFormatterMap[type].formatFn(difference)}
