@@ -43,10 +43,10 @@ export type EconomicBalanceMainName =
 
 export type DevelopmentPlanInstallationCostName =
   | "photovoltaic_technical_studies"
-  | "photovoltaic_installation_works"
+  | "photovoltaic_works"
   | "photovoltaic_other"
   | "mixed_use_neighbourhood_technical_studies"
-  | "mixed_use_neighbourhood_installation_works"
+  | "mixed_use_neighbourhood_works"
   | "mixed_use_neighbourhood_other"
   | DevelopmentPlanInstallationCost["purpose"];
 
@@ -73,11 +73,31 @@ export type EconomicBalance = {
 const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType) => {
   switch (projectType) {
     case "MIXED_USE_NEIGHBOURHOOD":
-      return "mixed_use_neighbourhood_";
+      return "mixed_use_neighbourhood";
     case "PHOTOVOLTAIC_POWER_PLANT":
-      return "photovoltaic_";
+      return "photovoltaic";
     default:
-      return "";
+      return undefined;
+  }
+};
+
+const getDevelopmentPlanDetailsName = (
+  costName: DevelopmentPlanInstallationCost["purpose"],
+  projectType?: ProjectDevelopmentPlanType,
+) => {
+  const prefix = getInstallationCostNamePrefix(projectType);
+  if (!prefix) {
+    return costName;
+  }
+  switch (costName) {
+    case "development_works":
+    case "installation_works":
+      return `${prefix}_works`;
+    case "other":
+      return `${prefix}_other`;
+
+    default:
+      return costName;
   }
 };
 
@@ -121,12 +141,14 @@ export const getEconomicBalanceProjectImpacts = createSelector(
     if (economicBalance.costs.developmentPlanInstallation?.total) {
       const namePrefix = getInstallationCostNamePrefix(projectType);
       impacts.push({
-        name: `${namePrefix}development_plan_installation`,
+        name: namePrefix
+          ? `${namePrefix}_development_plan_installation`
+          : "development_plan_installation",
         value: -economicBalance.costs.developmentPlanInstallation.total,
         details: economicBalance.costs.developmentPlanInstallation.costs.map(
           ({ purpose, amount }) => ({
             value: -amount,
-            name: `${namePrefix}${purpose}`,
+            name: getDevelopmentPlanDetailsName(purpose, projectType) as EconomicBalanceDetailsName,
           }),
         ),
       });

@@ -169,6 +169,40 @@ export const getSocialProjectImpacts = createSelector(
     }
 
     if (avoidedTrafficAccidents) {
+      const details: SocialImpact["impact"]["details"] = [];
+      if (avoidedTrafficAccidents.minorInjuries) {
+        details.push({
+          name: "avoided_traffic_minor_injuries",
+          impact: {
+            base: 0,
+            forecast: avoidedTrafficAccidents.minorInjuries,
+            difference: avoidedTrafficAccidents.minorInjuries,
+          },
+        });
+      }
+
+      if (avoidedTrafficAccidents.severeInjuries) {
+        details.push({
+          name: "avoided_traffic_severe_injuries",
+          impact: {
+            base: 0,
+            forecast: avoidedTrafficAccidents.severeInjuries,
+            difference: avoidedTrafficAccidents.severeInjuries,
+          },
+        });
+      }
+
+      if (avoidedTrafficAccidents.deaths) {
+        details.push({
+          name: "avoided_traffic_deaths",
+          impact: {
+            base: 0,
+            forecast: avoidedTrafficAccidents.deaths,
+            difference: avoidedTrafficAccidents.deaths,
+          },
+        });
+      }
+
       impacts.push({
         name: "avoided_traffic_accidents",
         type: "default",
@@ -176,32 +210,7 @@ export const getSocialProjectImpacts = createSelector(
           base: 0,
           forecast: avoidedTrafficAccidents.total,
           difference: avoidedTrafficAccidents.total,
-          details: [
-            {
-              name: "avoided_traffic_minor_injuries",
-              impact: {
-                base: 0,
-                forecast: avoidedTrafficAccidents.minorInjuries,
-                difference: avoidedTrafficAccidents.minorInjuries,
-              },
-            },
-            {
-              name: "avoided_traffic_severe_injuries",
-              impact: {
-                base: 0,
-                forecast: avoidedTrafficAccidents.severeInjuries,
-                difference: avoidedTrafficAccidents.severeInjuries,
-              },
-            },
-            {
-              name: "avoided_traffic_deaths",
-              impact: {
-                base: 0,
-                forecast: avoidedTrafficAccidents.deaths,
-                difference: avoidedTrafficAccidents.deaths,
-              },
-            },
-          ],
+          details,
         },
       });
     }

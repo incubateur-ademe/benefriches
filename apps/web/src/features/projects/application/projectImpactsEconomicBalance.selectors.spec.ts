@@ -59,7 +59,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
           expect.objectContaining({
             name: "photovoltaic_development_plan_installation",
             value: -200000,
-            details: [{ value: -200000, name: "photovoltaic_installation_works" }],
+            details: [{ value: -200000, name: "photovoltaic_works" }],
           }),
         );
 
@@ -76,7 +76,6 @@ describe("projectImpactsEconomicBalance selectors", () => {
             value: 310000,
             details: [
               { value: 100000, name: "rent" },
-              { value: 200000, name: "sell" },
               { value: 10000, name: "other" },
             ],
           }),
@@ -116,7 +115,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
         expect.objectContaining({
           name: "mixed_use_neighbourhood_development_plan_installation",
           value: -200000,
-          details: [{ value: -200000, name: "mixed_use_neighbourhood_installation_works" }],
+          details: [{ value: -200000, name: "mixed_use_neighbourhood_works" }],
         }),
       );
     });

@@ -220,10 +220,12 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
             {
               value: avoidedTrafficAccidents.amount,
               name: "french_society",
-              details: avoidedTrafficAccidents.details.map(({ amount, impact }) => ({
-                value: amount,
-                name: impact,
-              })),
+              details: avoidedTrafficAccidents.details
+                .filter(({ amount }) => amount !== 0)
+                .map(({ amount, impact }) => ({
+                  value: amount,
+                  name: impact,
+                })),
             },
           ],
         });
