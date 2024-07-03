@@ -109,10 +109,6 @@ export const baseProjectImpactMock = {
           total: 500000,
           costs: [{ amount: 500000, purpose: "demolition" }],
         },
-        developmentPlanInstallation: {
-          total: 200000,
-          costs: [{ amount: 200000, purpose: "installation_works" }],
-        },
         realEstateTransaction: 150000,
       },
       revenues: {
@@ -121,7 +117,6 @@ export const baseProjectImpactMock = {
           total: 310000,
           revenues: [
             { amount: 100000, source: "rent" },
-            { amount: 200000, source: "sell" },
             { amount: 10000, source: "other" },
           ],
         },
@@ -231,6 +226,16 @@ export const photovoltaicProjectImpactMock = {
   },
   impacts: {
     ...baseProjectImpactMock.impacts,
+    economicBalance: {
+      ...baseProjectImpactMock.impacts.economicBalance,
+      costs: {
+        ...baseProjectImpactMock.impacts.economicBalance.costs,
+        developmentPlanInstallation: {
+          total: 200000,
+          costs: [{ amount: 200000, purpose: "installation_works" }],
+        },
+      },
+    },
     socioeconomic: {
       total: baseProjectImpactMock.impacts.socioeconomic.total + 168444,
       impacts: [
@@ -267,6 +272,16 @@ export const mixedUseNeighbourhoodProjectImpactMock = {
   },
   impacts: {
     ...baseProjectImpactMock.impacts,
+    economicBalance: {
+      ...baseProjectImpactMock.impacts.economicBalance,
+      costs: {
+        ...baseProjectImpactMock.impacts.economicBalance.costs,
+        developmentPlanInstallation: {
+          total: 200000,
+          costs: [{ amount: 200000, purpose: "development_works" }],
+        },
+      },
+    },
     socioeconomic: {
       total: baseProjectImpactMock.impacts.socioeconomic.total + 168444,
       impacts: [
@@ -335,7 +350,7 @@ export const mixedUseNeighbourhoodProjectImpactMock = {
             },
             {
               amount: 680,
-              impact: "avoided_traffic_deaths_injuries",
+              impact: "avoided_traffic_deaths",
             },
           ],
         },

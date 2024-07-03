@@ -1,9 +1,9 @@
 import { SoilType } from "shared";
 
-export type SourceRevenue = "operations" | "other";
+export type SourceRevenue = "rent" | "operations" | "other";
 export type FinancialAssistance = "local_or_regional_authority_participation" | "public_subsidies";
 export type DevelopmentPlanInstallationCost = {
-  purpose: "technical_studies" | "installation_works" | "other";
+  purpose: "technical_studies" | "installation_works" | "development_works" | "other";
   amount: number;
 };
 export type OperationsCost = {

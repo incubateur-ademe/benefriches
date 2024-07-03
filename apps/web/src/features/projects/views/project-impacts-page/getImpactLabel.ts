@@ -13,7 +13,6 @@ import {
 import { SocialImpactName } from "../../application/projectImpactsSocial.selectors";
 import { SocioEconomicImpactName } from "../../application/projectImpactsSocioEconomic.selectors";
 import {
-  DevelopmentPlanInstallationCost,
   FinancialAssistance,
   OperationsCost,
   ReinstatementCost,
@@ -243,9 +242,7 @@ export const getEconomicBalanceDetailsImpactLabel = (
     case "photovoltaic_development_plan_installation":
     case "mixed_use_neighbourhood_development_plan_installation":
     case "development_plan_installation":
-      return getEconomicBalanceInstallationLabel(
-        name as DevelopmentPlanInstallationCost["purpose"],
-      );
+      return getEconomicBalanceInstallationLabel(name as DevelopmentPlanInstallationCostName);
     default:
       return "Autre";
   }
@@ -270,6 +267,8 @@ const getEconomicBalanceYearlyRevenueSourceLabel = (source: SourceRevenue) => {
       return "💰 Recettes principales";
     case "other":
       return "💶 Recettes secondaires";
+    case "rent":
+      return "🔑 Loyer";
   }
 };
 
@@ -313,15 +312,16 @@ const getEconomicBalanceInstallationLabel = (
     case "photovoltaic_technical_studies":
     case "technical_studies":
       return "📋 Études et honoraires techniques";
-    case "photovoltaic_installation_works":
+    case "photovoltaic_works":
       return "🛠 Travaux d'installation des panneaux";
     case "photovoltaic_other":
       return "⚡️ Autres frais d'installation des panneaux";
-    case "mixed_use_neighbourhood_installation_works":
+    case "mixed_use_neighbourhood_works":
       return "🧱 Travaux de construction";
     case "mixed_use_neighbourhood_other":
       return " 🏘 Autres dépenses d'aménagement";
     case "installation_works":
+    case "development_works":
       return "🛠 Travaux d'installation";
     case "other":
       return "🏗 Autres frais d'installation";
