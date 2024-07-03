@@ -232,7 +232,7 @@ export const getTravelRelatedImpacts = ({
         },
         {
           amount: travelRelatedImpactsService.getAvoidedAccidentsDeathsMonetaryValue(),
-          impact: "avoided_traffic_deaths_injuries",
+          impact: "avoided_traffic_deaths",
         },
       ],
     },
