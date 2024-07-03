@@ -321,7 +321,7 @@ describe("CreateReconversionProject Use Case", () => {
             // reinstatement costs
             expect(createdReconversionProject?.reinstatementCosts).toHaveLength(3);
             expect(createdReconversionProject?.reinstatementCosts).toContainEqual({
-              purpose: "absestos_removal",
+              purpose: "asbestos_removal",
               amount: 75000,
             });
             expect(createdReconversionProject?.reinstatementCosts).toContainEqual({
@@ -374,7 +374,7 @@ describe("CreateReconversionProject Use Case", () => {
               "demolition",
             );
             expect(createdReconversionProject?.reinstatementCosts?.at(2)?.purpose).toEqual(
-              "absestos_removal",
+              "asbestos_removal",
             );
           });
         });

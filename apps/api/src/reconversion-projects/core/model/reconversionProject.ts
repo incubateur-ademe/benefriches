@@ -82,3 +82,12 @@ export const getDurationFromScheduleInYears = ({ startDate, endDate }: Schedule)
 
   return durationInDays / 365;
 };
+
+export type ReinstatementCostsPurpose =
+  | "asbestos_removal"
+  | "deimpermeabilization"
+  | "demolition"
+  | "other_reinstatement"
+  | "remediation"
+  | "sustainable_soils_reinstatement"
+  | "waste_collection";

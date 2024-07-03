@@ -81,7 +81,7 @@ export const getSocialProjectImpacts = createSelector(
       return [];
     }
 
-    if (fullTimeJobs) {
+    if (fullTimeJobs && (fullTimeJobs.current !== 0 || fullTimeJobs.forecast !== 0)) {
       const { current, forecast, conversion, operations } = fullTimeJobs;
       impacts.push({
         name: "full_time_jobs",
