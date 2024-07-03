@@ -1,9 +1,8 @@
 {
   "compilerOptions": {
     /* Language and Environment */
-    "module": "CommonJS",
     "moduleResolution": "Node",
-    "target": "ESNext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "target": "ES2022" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
 
     /* Modules */
     "composite": true,
