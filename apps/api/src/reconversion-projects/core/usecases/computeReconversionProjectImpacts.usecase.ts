@@ -1,5 +1,6 @@
 import { GetCityPopulationAndSurfaceAreaUseCase } from "src/location-features/core/usecases/getCityPopulationAndSurfaceArea.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
+import { sumListWithKey } from "src/shared-kernel/sum-list/sumList";
 import { UseCase } from "src/shared-kernel/usecase";
 import { SoilsDistribution } from "src/soils/domain/soils";
 import {
@@ -270,9 +271,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         ),
         socioeconomic: {
           impacts: socioeconomic,
-          total: socioeconomic
-            .map(({ amount }) => amount)
-            .reduce((total, amount) => total + amount, 0),
+          total: sumListWithKey(socioeconomic, "amount"),
         },
         permeableSurfaceArea: computePermeableSurfaceAreaImpact({
           baseSoilsDistribution: relatedSite.soilsDistribution,

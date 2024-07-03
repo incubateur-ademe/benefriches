@@ -50,7 +50,7 @@ export class SqlReconversionProjectImpactsRepository
       type: DevelopmentPlan["type"];
       schedule_start_date?: Date;
       schedule_end_date?: Date;
-      features: Partial<DevelopmentPlan["features"]>;
+      features: DevelopmentPlan["features"];
       costs: { amount: number; purpose: string }[];
     }[] = await this.sqlConnection("reconversion_project_development_plans as dp")
       .where("dp.reconversion_project_id", reconversionProjectId)
@@ -154,7 +154,7 @@ export class SqlReconversionProjectImpactsRepository
       yearlyProjectedCosts: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
       developmentPlanType: sqlDevelopmentPlan?.type ?? undefined,
-      developmentPlanFeatures: sqlDevelopmentPlanFeatures as DevelopmentPlan["features"],
+      developmentPlanFeatures: sqlDevelopmentPlanFeatures,
       developmentPlanDeveloperName: sqlDevelopmentPlan?.developer_name ?? undefined,
       developmentPlanInstallationCosts: sqlDevelopmentPlan?.costs ?? [],
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
