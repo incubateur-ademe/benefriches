@@ -11,12 +11,12 @@ type Props = {
 };
 
 export type FormValues = {
-  hasRealEstateTransaction: "yes" | "no";
+  willSiteBePurchased: "yes" | "no";
 };
 
-function HasRealEstateTransactionForm({ onSubmit, onBack, currentOwnerName }: Props) {
+function SitePurchasedForm({ onSubmit, onBack, currentOwnerName }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: { hasRealEstateTransaction: "no" },
+    defaultValues: { willSiteBePurchased: "no" },
   });
 
   return (
@@ -25,7 +25,7 @@ function HasRealEstateTransactionForm({ onSubmit, onBack, currentOwnerName }: Pr
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
-          {...register("hasRealEstateTransaction")}
+          {...register("willSiteBePurchased")}
           options={[
             {
               label: "Oui",
@@ -36,7 +36,7 @@ function HasRealEstateTransactionForm({ onSubmit, onBack, currentOwnerName }: Pr
               value: "no",
             },
           ]}
-          error={formState.errors.hasRealEstateTransaction}
+          error={formState.errors.willSiteBePurchased}
         />
         <BackNextButtonsGroup onBack={onBack} />
       </form>
@@ -44,4 +44,4 @@ function HasRealEstateTransactionForm({ onSubmit, onBack, currentOwnerName }: Pr
   );
 }
 
-export default HasRealEstateTransactionForm;
+export default SitePurchasedForm;

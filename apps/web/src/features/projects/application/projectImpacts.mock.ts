@@ -109,7 +109,7 @@ export const baseProjectImpactMock = {
           total: 500000,
           costs: [{ amount: 500000, purpose: "demolition" }],
         },
-        realEstateTransaction: 150000,
+        sitePurchase: 150000,
       },
       revenues: {
         total: 460000,

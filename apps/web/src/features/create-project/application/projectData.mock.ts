@@ -32,7 +32,7 @@ export const projectWithMinimalData = {
   baseSoilsDistributionForTransformation: {},
   nonSuitableSoilsToTransform: [],
   futureSoilsSelection: [],
-  hasRealEstateTransaction: false,
+  willSiteBePurchased: false,
 } as const satisfies ReconversionProjectCreationData;
 
 export const projectWithExhaustiveData = {
@@ -59,8 +59,8 @@ export const projectWithExhaustiveData = {
     structureType: "company",
   },
   reinstatementCosts: [{ amount: 34500, purpose: "demolition" }],
-  realEstateTransactionSellingPrice: 150000,
-  realEstateTransactionPropertyTransferDuties: 12000,
+  sitePurchaseSellingPrice: 150000,
+  sitePurchasePropertyTransferDuties: 12000,
   financialAssistanceRevenues: [
     { source: "local_or_regional_authority_participation", amount: 10000 },
     { source: "public_subsidies", amount: 4000 },

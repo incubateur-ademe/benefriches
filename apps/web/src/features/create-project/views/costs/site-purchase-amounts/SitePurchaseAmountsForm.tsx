@@ -18,7 +18,7 @@ export type FormValues = {
   propertyTransferDuties?: number;
 };
 
-const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
+const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
   const { handleSubmit, control, watch, setValue } = useForm<FormValues>();
 
   const sellingPrice = watch("sellingPrice");
@@ -113,4 +113,4 @@ const RealEstateTransactionCostsForm = ({ onSubmit, onBack }: Props) => {
   );
 };
 
-export default RealEstateTransactionCostsForm;
+export default SitePurchaseAmountsForm;

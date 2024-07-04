@@ -135,13 +135,13 @@ describe("createProject reducer", () => {
         invalidValue: -1,
       },
       {
-        case: "negative realEstateTransactionSellingPrice",
-        dataProp: "realEstateTransactionSellingPrice",
+        case: "negative sitePurchaseSellingPrice",
+        dataProp: "sitePurchaseSellingPrice",
         invalidValue: -1,
       },
       {
-        case: "negative realEstateTransactionPropertyTransferDuties",
-        dataProp: "realEstateTransactionPropertyTransferDuties",
+        case: "negative sitePurchasePropertyTransferDuties",
+        dataProp: "sitePurchasePropertyTransferDuties",
         invalidValue: -1,
       },
       {

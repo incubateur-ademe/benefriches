@@ -33,7 +33,7 @@ export type EconomicBalanceName = EconomicBalanceMainName | EconomicBalanceDetai
 
 export type EconomicBalanceMainName =
   | "site_reinstatement"
-  | "real_estate_transaction"
+  | "site_purchase"
   | "operations_costs"
   | "operations_revenues"
   | "financial_assistance"
@@ -131,10 +131,10 @@ export const getEconomicBalanceProjectImpacts = createSelector(
       });
     }
 
-    if (economicBalance.costs.realEstateTransaction) {
+    if (economicBalance.costs.sitePurchase) {
       impacts.push({
-        name: "real_estate_transaction",
-        value: -economicBalance.costs.realEstateTransaction,
+        name: "site_purchase",
+        value: -economicBalance.costs.sitePurchase,
       });
     }
 

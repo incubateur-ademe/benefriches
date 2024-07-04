@@ -46,7 +46,7 @@ type Props = {
     reinstatementFullTimeJobs?: number;
     conversionFullTimeJobs?: number;
     operationsFullTimeJobs?: number;
-    realEstateTransactionTotalCost?: number;
+    sitePurchaseTotalCost?: number;
     finanalAssistanceRevenues?: FinancialAssistanceRevenue[];
     reinstatementCosts?: ReinstatementCost[];
     photovoltaicPanelsInstallationCosts?: PhotovoltaicInstallationCost[];
@@ -195,10 +195,10 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           />
         </Accordion>
         <Accordion label="Coûts et recettes du projet" defaultExpanded>
-          {projectData.realEstateTransactionTotalCost ? (
+          {projectData.sitePurchaseTotalCost ? (
             <DataLine
               label={<strong>Prix de vente du site et droits de mutation</strong>}
-              value={`${formatNumberFr(projectData.realEstateTransactionTotalCost)} €`}
+              value={`${formatNumberFr(projectData.sitePurchaseTotalCost)} €`}
             />
           ) : undefined}
           {!!projectData.finanalAssistanceRevenues && (

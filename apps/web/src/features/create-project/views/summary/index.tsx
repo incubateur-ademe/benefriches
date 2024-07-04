@@ -38,9 +38,9 @@ function ProjectionCreationDataSummaryContainer() {
         reinstatementFullTimeJobs: projectData.reinstatementFullTimeJobsInvolved,
         conversionFullTimeJobs: projectData.conversionFullTimeJobsInvolved,
         operationsFullTimeJobs: projectData.operationsFullTimeJobsInvolved,
-        realEstateTransactionTotalCost: projectData.realEstateTransactionSellingPrice
-          ? projectData.realEstateTransactionSellingPrice +
-            (projectData.realEstateTransactionPropertyTransferDuties ?? 0)
+        sitePurchaseTotalCost: projectData.sitePurchaseSellingPrice
+          ? projectData.sitePurchaseSellingPrice +
+            (projectData.sitePurchasePropertyTransferDuties ?? 0)
           : 0,
         finanalAssistanceRevenues: projectData.financialAssistanceRevenues,
         reinstatementCosts: projectData.reinstatementCosts ?? [],

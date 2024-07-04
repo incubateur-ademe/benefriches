@@ -50,7 +50,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         name: "Test reconversion project",
         relatedSiteId: siteId,
         soilsDistribution: {},
-        realEstateTransactionTotalCost: 0,
+        sitePurchaseTotalAmount: 0,
         reinstatementCosts: [],
         developmentPlanInstallationCosts: [],
         financialAssistanceRevenues: [],
@@ -99,7 +99,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       futureOperatorName: "Mairie de Blajan",
       futureSiteOwnerName: "Mairie de Blajan",
       reinstatementContractOwnerName: "Mairie de Blajan",
-      realEstateTransactionTotalCost: 150000,
+      sitePurchaseTotalAmount: 150000,
       reinstatementCosts: [{ amount: 500000, purpose: "demolition" }],
       developmentPlanInstallationCosts: [{ amount: 200000, purpose: "installation_works" }],
       developmentPlanFeatures: {
@@ -120,7 +120,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         { amount: 20000, source: "sell" },
         { amount: 1000, source: "other" },
       ],
-      realEstateTransactionPropertyTransferDutiesAmount: 5432,
+      sitePurchasePropertyTransferDutiesAmount: 5432,
       operationsFirstYear: 2025,
     } as const;
     const site: Required<SiteImpactsDataView> = {
@@ -289,7 +289,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 total: 200000,
                 costs: [{ amount: 200000, purpose: "installation_works" }],
               },
-              realEstateTransaction: 150000,
+              sitePurchase: 150000,
             },
             revenues: {
               total: 460000,

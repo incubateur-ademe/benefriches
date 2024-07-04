@@ -89,8 +89,8 @@ export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectPr
       { amount: 44444, purpose: "sustainable_soils_reinstatement" },
       { amount: 1, purpose: "other_reinstatement_costs" },
     ],
-    realEstateTransactionSellingPrice: 150000,
-    realEstateTransactionPropertyTransferDuties: 12000,
+    sitePurchaseSellingPrice: 150000,
+    sitePurchasePropertyTransferDuties: 12000,
     financialAssistanceRevenues: [
       { amount: 14000, source: "public_subsidies" },
       { amount: 999.99, source: "other" },

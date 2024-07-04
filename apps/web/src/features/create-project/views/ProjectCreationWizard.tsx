@@ -8,8 +8,8 @@ import {
 } from "../application/createProject.selectors";
 import ProjectCostsIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
-import RealEstateTransactionCostsContainer from "./costs/real-estate-transaction-costs";
 import ReinstatementsCostsForm from "./costs/reinstatement-costs";
+import SitePurchaseAmountsContainer from "./costs/site-purchase-amounts";
 import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
 import ProjectFullTimeJobsInvolvedForm from "./jobs/conversion-full-time-jobs-involved";
 import OperationsFullTimeJobsInvolvedForm from "./jobs/operations-full-time-jobs-involved";
@@ -36,10 +36,10 @@ import NonSuitableSoilsSurfaceToTransformForm from "./soils/soils-transformation
 import SoilsTransformationProjectSelection from "./soils/soils-transformation/transformation-project-selection";
 import DeveloperForm from "./stakeholders/developer";
 import FutureOwnerFormContainer from "./stakeholders/future-site-owner";
-import HasRealEstateTransactionFormContainer from "./stakeholders/has-real-estate-transaction";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
+import SitePurchasedFormContainer from "./stakeholders/site-purchased";
 import ProjectCreationConfirmation from "./confirmation";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectPhaseForm from "./project-phase";
@@ -79,16 +79,16 @@ function ProjectCreationWizard({ route }: Props) {
         return <ProjectFullTimeJobsInvolvedForm />;
       case "OPERATIONS_FULL_TIMES_JOBS":
         return <OperationsFullTimeJobsInvolvedForm />;
-      case "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION":
-        return <HasRealEstateTransactionFormContainer />;
+      case "STAKEHOLDERS_SITE_PURCHASE":
+        return <SitePurchasedFormContainer />;
       case "STAKEHOLDERS_FUTURE_SITE_OWNER":
         return <FutureOwnerFormContainer />;
       case "COSTS_INTRODUCTION":
         return <ProjectCostsIntroduction />;
       case "COSTS_REINSTATEMENT":
         return <ReinstatementsCostsForm />;
-      case "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT":
-        return <RealEstateTransactionCostsContainer />;
+      case "COSTS_SITE_PURCHASE_AMOUNTS":
+        return <SitePurchaseAmountsContainer />;
       case "COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION":
         return <PhotovoltaicPanelsInstallationCostsForm />;
       case "COSTS_PROJECTED_YEARLY_COSTS":

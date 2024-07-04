@@ -89,10 +89,10 @@ export type ReconversionProjectCreationData = {
   soilsDistribution: SoilsDistribution;
   nonSuitableSoilsToTransform: SoilType[];
   futureSoilsSelection: SoilType[];
-  // real estate transaction
-  hasRealEstateTransaction: boolean;
-  realEstateTransactionSellingPrice?: number;
-  realEstateTransactionPropertyTransferDuties?: number;
+  // site purchase
+  willSiteBePurchased: boolean;
+  sitePurchaseSellingPrice?: number;
+  sitePurchasePropertyTransferDuties?: number;
   // costs
   reinstatementCosts?: ReinstatementCost[];
   photovoltaicPanelsInstallationCosts: PhotovoltaicInstallationCost[];

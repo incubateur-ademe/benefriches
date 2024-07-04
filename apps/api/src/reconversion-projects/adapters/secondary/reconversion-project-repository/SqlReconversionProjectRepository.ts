@@ -36,9 +36,9 @@ type SqlReconversionProject = {
   reinstatement_full_time_jobs_involved?: number;
   reinstatement_schedule_start_date?: Date;
   reinstatement_schedule_end_date?: Date;
-  // real estate transaction
-  real_estate_transaction_selling_price?: number;
-  real_estate_transaction_property_transfer_duties?: number;
+  // site purchase
+  site_purchase_selling_price?: number;
+  site_purchase_property_transfer_duties?: number;
   // site resale
   site_resale_expected_selling_price?: number;
   site_resale_expected_property_transfer_duties?: number;
@@ -130,10 +130,9 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
           reinstatement_contract_owner_structure_type:
             reconversionProject.reinstatementContractOwner?.structureType,
-          real_estate_transaction_selling_price:
-            reconversionProject.realEstateTransactionSellingPrice,
-          real_estate_transaction_property_transfer_duties:
-            reconversionProject.realEstateTransactionPropertyTransferDuties,
+          site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
+          site_purchase_property_transfer_duties:
+            reconversionProject.sitePurchasePropertyTransferDuties,
           reinstatement_full_time_jobs_involved:
             reconversionProject.reinstatementFullTimeJobsInvolved,
           conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,

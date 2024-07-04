@@ -83,8 +83,8 @@ export type ReconversionProjectImpactsDataView = {
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
   reinstatementContractOwnerName?: string;
-  realEstateTransactionTotalCost?: number;
-  realEstateTransactionPropertyTransferDutiesAmount?: number;
+  sitePurchaseTotalAmount?: number;
+  sitePurchasePropertyTransferDutiesAmount?: number;
   reinstatementCosts: { amount: number; purpose: string }[];
   developmentPlanInstallationCosts: { amount: number; purpose: string }[];
   financialAssistanceRevenues: { amount: number; source: string }[];
@@ -220,8 +220,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         futureSiteOwner: reconversionProject.futureSiteOwnerName,
         yearlyCurrentCosts: relatedSite.yearlyCosts,
         yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
-        propertyTransferDutiesAmount:
-          reconversionProject.realEstateTransactionPropertyTransferDutiesAmount,
+        propertyTransferDutiesAmount: reconversionProject.sitePurchasePropertyTransferDutiesAmount,
       }),
       ...computeEnvironmentalMonetaryImpacts({
         baseSoilsDistribution: relatedSite.soilsDistribution,
@@ -265,7 +264,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
             reinstatementCosts: reconversionProject.reinstatementCosts,
             yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
             yearlyProjectedRevenues: reconversionProject.yearlyProjectedRevenues,
-            realEstateTransactionTotalCost: reconversionProject.realEstateTransactionTotalCost,
+            sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
             financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,
             developmentPlanInstallationCosts: reconversionProject.developmentPlanInstallationCosts,
           },

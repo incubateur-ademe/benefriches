@@ -1,8 +1,8 @@
 import {
-  completeRealEstateTransactionCost,
-  revertRealEstateTransactionCost,
+  completeSitePurchaseAmounts,
+  revertSitePurchaseAmounts,
 } from "../../../application/createProject.reducer";
-import RealEstateTransactionCostsForm, { FormValues } from "./RealEstateTransactionCostsForm";
+import SitePurchaseAmountsForm, { FormValues } from "./SitePurchaseAmountsForm";
 
 import { AppDispatch } from "@/app/application/store";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
@@ -11,21 +11,21 @@ const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (data: FormValues) => {
       dispatch(
-        completeRealEstateTransactionCost({
+        completeSitePurchaseAmounts({
           sellingPrice: data.sellingPrice ?? 0,
           propertyTransferDuties: data.propertyTransferDuties,
         }),
       );
     },
     onBack: () => {
-      dispatch(revertRealEstateTransactionCost());
+      dispatch(revertSitePurchaseAmounts());
     },
   };
 };
 
-function RealEstateTransactionCostsContainer() {
+function SitePurchaseAmountsContainer() {
   const dispatch = useAppDispatch();
-  return <RealEstateTransactionCostsForm {...mapProps(dispatch)} />;
+  return <SitePurchaseAmountsForm {...mapProps(dispatch)} />;
 }
 
-export default RealEstateTransactionCostsContainer;
+export default SitePurchaseAmountsContainer;

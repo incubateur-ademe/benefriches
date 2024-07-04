@@ -18,7 +18,7 @@ export type EconomicBalanceImpactResult = {
     operationsCosts?: { total: number; costs: Cost[] };
     siteReinstatement?: { total: number; costs: Cost[] };
     developmentPlanInstallation?: { total: number; costs: Cost[] };
-    realEstateTransaction?: number;
+    sitePurchase?: number;
   };
   revenues: {
     total: number;
@@ -31,7 +31,7 @@ type ProjectProps = {
   financialAssistanceRevenues?: Revenue[];
   reinstatementCosts: Cost[];
   developmentPlanInstallationCosts: Cost[];
-  realEstateTransactionTotalCost?: number;
+  sitePurchaseTotalAmount?: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
@@ -44,7 +44,7 @@ type ReconversionProjectInstallationCostsInput = {
   financialAssistanceRevenues?: Revenue[];
   reinstatementCosts: Cost[];
   developmentPlanInstallationCosts: Cost[];
-  realEstateTransactionTotalCost: number;
+  sitePurchaseTotalAmount: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
@@ -57,7 +57,7 @@ type ReconversionProjectInstallationEconomicResult = {
     total: number;
     developmentPlanInstallation?: { total: number; costs: Cost[] };
     siteReinstatement?: { total: number; costs: Cost[] };
-    realEstateTransaction?: number;
+    sitePurchase?: number;
   };
   revenues: {
     total: number;
@@ -81,7 +81,7 @@ export const getEconomicResultsOfProjectInstallation = ({
   financialAssistanceRevenues,
   reinstatementCosts,
   developmentPlanInstallationCosts,
-  realEstateTransactionTotalCost,
+  sitePurchaseTotalAmount,
   developmentPlanDeveloperName,
   futureSiteOwnerName,
   reinstatementContractOwnerName,
@@ -101,13 +101,13 @@ export const getEconomicResultsOfProjectInstallation = ({
     costDetails.siteReinstatement = getCostsWithTotalAmount(reinstatementCosts);
   }
 
-  if (isDeveloperFutureSiteOwner && realEstateTransactionTotalCost) {
-    costDetails.realEstateTransaction = realEstateTransactionTotalCost;
+  if (isDeveloperFutureSiteOwner && sitePurchaseTotalAmount) {
+    costDetails.sitePurchase = sitePurchaseTotalAmount;
   }
   const costs = {
     total:
       (costDetails.developmentPlanInstallation?.total ?? 0) +
-      (costDetails.realEstateTransaction ?? 0) +
+      (costDetails.sitePurchase ?? 0) +
       (costDetails.siteReinstatement?.total ?? 0),
     ...costDetails,
   };
@@ -169,7 +169,7 @@ export const computeEconomicBalanceImpact = (
     financialAssistanceRevenues,
     reinstatementCosts,
     developmentPlanInstallationCosts,
-    realEstateTransactionTotalCost = 0,
+    sitePurchaseTotalAmount = 0,
     reinstatementContractOwnerName,
     futureSiteOwnerName,
     futureOperatorName,
@@ -187,7 +187,7 @@ export const computeEconomicBalanceImpact = (
     financialAssistanceRevenues,
     reinstatementCosts,
     developmentPlanInstallationCosts,
-    realEstateTransactionTotalCost,
+    sitePurchaseTotalAmount,
     developmentPlanDeveloperName,
     futureSiteOwnerName,
     reinstatementContractOwnerName,

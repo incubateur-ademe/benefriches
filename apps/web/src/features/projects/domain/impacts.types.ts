@@ -179,7 +179,7 @@ export type ReconversionProjectImpacts = {
       operationsCosts?: CostsTotalAndDetails<OperationsCost>;
       developmentPlanInstallation?: CostsTotalAndDetails<DevelopmentPlanInstallationCost>;
       siteReinstatement?: CostsTotalAndDetails<ReinstatementCost>;
-      realEstateTransaction?: number;
+      sitePurchase?: number;
     };
     revenues: {
       total: number;

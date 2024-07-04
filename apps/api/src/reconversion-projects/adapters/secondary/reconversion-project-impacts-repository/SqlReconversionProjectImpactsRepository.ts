@@ -28,8 +28,8 @@ export class SqlReconversionProjectImpactsRepository
         "future_operator_name",
         "future_site_owner_name",
         "reinstatement_contract_owner_name",
-        "real_estate_transaction_selling_price",
-        "real_estate_transaction_property_transfer_duties",
+        "site_purchase_selling_price",
+        "site_purchase_property_transfer_duties",
         "operations_first_year",
         "site_resale_expected_selling_price",
         "site_resale_expected_property_transfer_duties",
@@ -123,9 +123,9 @@ export class SqlReconversionProjectImpactsRepository
       .select("amount", "source")
       .where("reconversion_project_id", reconversionProjectId);
 
-    const realEstateTransactionTotalCost = reconversionProject.real_estate_transaction_selling_price
-      ? reconversionProject.real_estate_transaction_selling_price +
-        (reconversionProject.real_estate_transaction_property_transfer_duties ?? 0)
+    const sitePurchaseTotalAmount = reconversionProject.site_purchase_selling_price
+      ? reconversionProject.site_purchase_selling_price +
+        (reconversionProject.site_purchase_property_transfer_duties ?? 0)
       : undefined;
 
     return {
@@ -148,9 +148,9 @@ export class SqlReconversionProjectImpactsRepository
       futureSiteOwnerName: reconversionProject.future_site_owner_name ?? undefined,
       reinstatementContractOwnerName:
         reconversionProject.reinstatement_contract_owner_name ?? undefined,
-      realEstateTransactionTotalCost,
-      realEstateTransactionPropertyTransferDutiesAmount:
-        reconversionProject.real_estate_transaction_property_transfer_duties ?? undefined,
+      sitePurchaseTotalAmount,
+      sitePurchasePropertyTransferDutiesAmount:
+        reconversionProject.site_purchase_property_transfer_duties ?? undefined,
       reinstatementCosts: sqlReinstatementCosts,
       financialAssistanceRevenues: sqlFinancialAssistanceRevenues,
       yearlyProjectedCosts: sqlExpenses,

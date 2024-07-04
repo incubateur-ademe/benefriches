@@ -65,7 +65,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
 
         expect(economicBalance.economicBalance).toContainEqual(
           expect.objectContaining({
-            name: "real_estate_transaction",
+            name: "site_purchase",
             value: -150000,
           }),
         );

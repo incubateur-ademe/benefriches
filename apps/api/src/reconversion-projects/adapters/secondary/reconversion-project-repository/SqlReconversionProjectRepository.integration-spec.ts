@@ -131,8 +131,8 @@ describe("SqlReconversionProjectRepository integration", () => {
             future_operations_full_time_jobs: null,
             reinstatement_contract_owner_name: null,
             reinstatement_contract_owner_structure_type: null,
-            real_estate_transaction_selling_price: null,
-            real_estate_transaction_property_transfer_duties: null,
+            site_purchase_selling_price: null,
+            site_purchase_property_transfer_duties: null,
             reinstatement_full_time_jobs_involved: null,
             conversion_full_time_jobs_involved: null,
             reinstatement_schedule_start_date: null,
@@ -174,10 +174,9 @@ describe("SqlReconversionProjectRepository integration", () => {
                 reconversionProject.reinstatementContractOwner?.name,
               reinstatement_contract_owner_structure_type:
                 reconversionProject.reinstatementContractOwner?.structureType,
-              real_estate_transaction_selling_price:
-                reconversionProject.realEstateTransactionSellingPrice,
-              real_estate_transaction_property_transfer_duties:
-                reconversionProject.realEstateTransactionPropertyTransferDuties,
+              site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
+              site_purchase_property_transfer_duties:
+                reconversionProject.sitePurchasePropertyTransferDuties,
               reinstatement_full_time_jobs_involved:
                 reconversionProject.reinstatementFullTimeJobsInvolved,
               conversion_full_time_jobs_involved:
@@ -395,8 +394,8 @@ describe("SqlReconversionProjectRepository integration", () => {
             },
           },
           futureSiteOwner: { name: "Montrouge", structureType: "local_or_regional_authority" },
-          realEstateTransactionSellingPrice: 3600000,
-          realEstateTransactionPropertyTransferDuties: 209160,
+          sitePurchaseSellingPrice: 3600000,
+          sitePurchasePropertyTransferDuties: 209160,
           reinstatementCosts: undefined,
           yearlyProjectedCosts: [],
           yearlyProjectedRevenues: [],
@@ -440,10 +439,9 @@ describe("SqlReconversionProjectRepository integration", () => {
             future_operations_full_time_jobs: null,
             reinstatement_contract_owner_name: null,
             reinstatement_contract_owner_structure_type: null,
-            real_estate_transaction_selling_price:
-              reconversionProject.realEstateTransactionSellingPrice,
-            real_estate_transaction_property_transfer_duties:
-              reconversionProject.realEstateTransactionPropertyTransferDuties,
+            site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
+            site_purchase_property_transfer_duties:
+              reconversionProject.sitePurchasePropertyTransferDuties,
             reinstatement_full_time_jobs_involved: null,
             conversion_full_time_jobs_involved: null,
             reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,

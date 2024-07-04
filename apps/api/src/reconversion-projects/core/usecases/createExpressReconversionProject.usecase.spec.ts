@@ -260,10 +260,8 @@ describe("CreateReconversionProject Use Case", () => {
             expect(createdReconversionProjects).toHaveLength(1);
             const createdReconversionProject = createdReconversionProjects[0];
             // real estate sale transaction
-            expect(createdReconversionProject?.realEstateTransactionSellingPrice).toEqual(720000);
-            expect(createdReconversionProject?.realEstateTransactionPropertyTransferDuties).toEqual(
-              41832,
-            );
+            expect(createdReconversionProject?.sitePurchaseSellingPrice).toEqual(720000);
+            expect(createdReconversionProject?.sitePurchasePropertyTransferDuties).toEqual(41832);
             // development installation cost
             expect(createdReconversionProject?.developmentPlan.costs).toEqual([
               { purpose: "technical_studies", amount: 60000 },
@@ -308,10 +306,8 @@ describe("CreateReconversionProject Use Case", () => {
             expect(createdReconversionProjects).toHaveLength(1);
             const createdReconversionProject = createdReconversionProjects[0];
             // real estate sale transaction
-            expect(createdReconversionProject?.realEstateTransactionSellingPrice).toEqual(7200000);
-            expect(createdReconversionProject?.realEstateTransactionPropertyTransferDuties).toEqual(
-              418320,
-            );
+            expect(createdReconversionProject?.sitePurchaseSellingPrice).toEqual(7200000);
+            expect(createdReconversionProject?.sitePurchasePropertyTransferDuties).toEqual(418320);
             // development installation cost
             expect(createdReconversionProject?.developmentPlan.costs).toEqual([
               { purpose: "technical_studies", amount: 600000 },
@@ -433,10 +429,8 @@ describe("CreateReconversionProject Use Case", () => {
             expect(createdReconversionProjects).toHaveLength(1);
             const createdReconversionProject = createdReconversionProjects[0];
             // real estate sale transaction
-            expect(createdReconversionProject?.realEstateTransactionSellingPrice).toEqual(3600000);
-            expect(createdReconversionProject?.realEstateTransactionPropertyTransferDuties).toEqual(
-              209160,
-            );
+            expect(createdReconversionProject?.sitePurchaseSellingPrice).toEqual(3600000);
+            expect(createdReconversionProject?.sitePurchasePropertyTransferDuties).toEqual(209160);
             // development installation cost
             expect(createdReconversionProject?.developmentPlan.costs).toEqual([
               { purpose: "technical_studies", amount: 300000 },

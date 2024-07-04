@@ -69,11 +69,11 @@ export type ProjectCreationStep =
   | "STAKEHOLDERS_FUTURE_OPERATOR"
   | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
   | "STAKEHOLDERS_FUTURE_SITE_OWNER"
-  | "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION"
+  | "STAKEHOLDERS_SITE_PURCHASE"
   | "RECONVERSION_FULL_TIME_JOBS"
   | "OPERATIONS_FULL_TIMES_JOBS"
   | "COSTS_INTRODUCTION"
-  | "COSTS_REAL_ESTATE_TRANSACTION_AMOUNT"
+  | "COSTS_SITE_PURCHASE_AMOUNTS"
   | "COSTS_REINSTATEMENT"
   | "COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION"
   | "COSTS_PROJECTED_YEARLY_COSTS"
@@ -242,7 +242,7 @@ export const projectCreationSlice = createSlice({
       state.projectData.futureOperator = action.payload;
       const nextStep = state.siteData?.isFriche
         ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
-        : "STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION";
+        : "STAKEHOLDERS_SITE_PURCHASE";
       state.stepsHistory.push(nextStep);
     },
     completeConversionFullTimeJobsInvolved: (
@@ -270,12 +270,12 @@ export const projectCreationSlice = createSlice({
       action: PayloadAction<ReconversionProjectCreationData["reinstatementContractOwner"]>,
     ) => {
       state.projectData.reinstatementContractOwner = action.payload;
-      state.stepsHistory.push("STAKEHOLDERS_HAS_REAL_ESTATE_TRANSACTION");
+      state.stepsHistory.push("STAKEHOLDERS_SITE_PURCHASE");
     },
-    completeHasRealEstateTransaction: (state, action: PayloadAction<boolean>) => {
-      const hasRealEstateTransaction = action.payload;
-      state.projectData.hasRealEstateTransaction = hasRealEstateTransaction;
-      const nextStep = hasRealEstateTransaction
+    completeSitePurchase: (state, action: PayloadAction<boolean>) => {
+      const willSiteBePurchased = action.payload;
+      state.projectData.willSiteBePurchased = willSiteBePurchased;
+      const nextStep = willSiteBePurchased
         ? "STAKEHOLDERS_FUTURE_SITE_OWNER"
         : "COSTS_INTRODUCTION";
       state.stepsHistory.push(nextStep);
@@ -288,8 +288,8 @@ export const projectCreationSlice = createSlice({
       state.stepsHistory.push("COSTS_INTRODUCTION");
     },
     completeCostsIntroductionStep: (state) => {
-      if (state.projectData.hasRealEstateTransaction) {
-        state.stepsHistory.push("COSTS_REAL_ESTATE_TRANSACTION_AMOUNT");
+      if (state.projectData.willSiteBePurchased) {
+        state.stepsHistory.push("COSTS_SITE_PURCHASE_AMOUNTS");
         return;
       }
       if (state.siteData?.isFriche) {
@@ -298,13 +298,13 @@ export const projectCreationSlice = createSlice({
       }
       state.stepsHistory.push("COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION");
     },
-    completeRealEstateTransactionCost: (
+    completeSitePurchaseAmounts: (
       state,
       action: PayloadAction<{ sellingPrice: number; propertyTransferDuties?: number }>,
     ) => {
-      state.projectData.realEstateTransactionSellingPrice = action.payload.sellingPrice;
+      state.projectData.sitePurchaseSellingPrice = action.payload.sellingPrice;
       if (action.payload.propertyTransferDuties) {
-        state.projectData.realEstateTransactionPropertyTransferDuties =
+        state.projectData.sitePurchasePropertyTransferDuties =
           action.payload.propertyTransferDuties;
       }
       if (state.siteData?.isFriche) {
@@ -525,16 +525,12 @@ export const revertOperationsFullTimeJobsInvolved = () =>
   revertStep({ resetFields: ["operationsFullTimeJobsInvolved"] });
 export const revertReinstatementContractOwner = () =>
   revertStep({ resetFields: ["reinstatementContractOwner"] });
-export const revertHasRealEstateTransaction = () =>
-  revertStep({ resetFields: ["hasRealEstateTransaction"] });
+export const revertwillSiteBePurchased = () => revertStep({ resetFields: ["willSiteBePurchased"] });
 export const revertFutureSiteOwner = () => revertStep({ resetFields: ["futureSiteOwner"] });
 export const revertCostsIntroductionStep = () => revertStep();
-export const revertRealEstateTransactionCost = () =>
+export const revertSitePurchaseAmounts = () =>
   revertStep({
-    resetFields: [
-      "realEstateTransactionSellingPrice",
-      "realEstateTransactionPropertyTransferDuties",
-    ],
+    resetFields: ["sitePurchaseSellingPrice", "sitePurchasePropertyTransferDuties"],
   });
 export const revertReinstatementCost = () => revertStep({ resetFields: ["reinstatementCosts"] });
 export const revertPhotovoltaicPanelsInstallationCost = () =>
@@ -608,9 +604,9 @@ export const {
   completeSoilsCarbonStorageStep,
   completeScheduleIntroductionStep,
   completeScheduleStep,
-  completeHasRealEstateTransaction,
+  completeSitePurchase,
   completeFutureSiteOwner,
-  completeRealEstateTransactionCost,
+  completeSitePurchaseAmounts,
   completeProjectPhaseStep,
 } = projectCreationSlice.actions;
 

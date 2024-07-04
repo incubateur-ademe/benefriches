@@ -18,7 +18,7 @@ const getImpactItemOnClick = (
   openImpactDescriptionModal: Props["openImpactDescriptionModal"],
 ) => {
   switch (itemName) {
-    case "real_estate_transaction":
+    case "site_purchase":
       return () => {
         openImpactDescriptionModal("economic-balance-real-estate-acquisition");
       };

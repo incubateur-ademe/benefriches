@@ -25,7 +25,7 @@ type Input = {
   createdBy: string;
 };
 
-const computeRealEstateTransactionFromSiteSurfaceArea = (
+const computesitePurchaseFromSiteSurfaceArea = (
   surfaceArea: number,
 ): { sellingPrice: number; propertyTransactionDuties: number } => {
   const sellingPrice = surfaceArea * 72;
@@ -137,8 +137,9 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
     const soilsDistribution = computeSoilsDistributionFromSpaces(spacesDistribution);
 
     // expenses and incomes
-    const { sellingPrice, propertyTransactionDuties } =
-      computeRealEstateTransactionFromSiteSurfaceArea(siteData.surfaceArea);
+    const { sellingPrice, propertyTransactionDuties } = computesitePurchaseFromSiteSurfaceArea(
+      siteData.surfaceArea,
+    );
     const installationCosts = computeInstallationCostsFromSiteSurfaceArea(siteData.surfaceArea);
     const reinstatementCosts = siteData.isFriche
       ? computeReinstatementCostsFromSiteSoils(
@@ -196,8 +197,8 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
           { amount: installationCosts.other, purpose: "other" },
         ],
       },
-      realEstateTransactionSellingPrice: sellingPrice,
-      realEstateTransactionPropertyTransferDuties: propertyTransactionDuties,
+      sitePurchaseSellingPrice: sellingPrice,
+      sitePurchasePropertyTransferDuties: propertyTransactionDuties,
       siteResaleExpectedSellingPrice: siteResaleExpectedTransaction.sellingPrice,
       siteResaleExpectedPropertyTransferDuties:
         siteResaleExpectedTransaction.propertyTransferDuties,
