@@ -31,6 +31,8 @@ export class SqlReconversionProjectImpactsRepository
         "real_estate_transaction_selling_price",
         "real_estate_transaction_property_transfer_duties",
         "operations_first_year",
+        "site_resale_expected_selling_price",
+        "site_resale_expected_property_transfer_duties",
       )
       .where({ id: reconversionProjectId })
       .first();
@@ -158,6 +160,10 @@ export class SqlReconversionProjectImpactsRepository
       developmentPlanDeveloperName: sqlDevelopmentPlan?.developer_name ?? undefined,
       developmentPlanInstallationCosts: sqlDevelopmentPlan?.costs ?? [],
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
+      siteResaleExpectedSellingPrice:
+        reconversionProject.site_resale_expected_selling_price ?? undefined,
+      siteResaleExpectedPropertyTransferDuties:
+        reconversionProject.site_resale_expected_property_transfer_duties ?? undefined,
     };
   }
 }

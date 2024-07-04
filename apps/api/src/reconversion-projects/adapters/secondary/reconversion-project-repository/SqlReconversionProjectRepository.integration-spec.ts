@@ -140,6 +140,8 @@ describe("SqlReconversionProjectRepository integration", () => {
             operations_first_year: null,
             project_phase: reconversionProject.projectPhase,
             project_phase_details: null,
+            site_resale_expected_selling_price: null,
+            site_resale_expected_property_transfer_duties: null,
           },
         ]);
       });
@@ -186,6 +188,8 @@ describe("SqlReconversionProjectRepository integration", () => {
               operations_first_year: reconversionProject.operationsFirstYear,
               project_phase: reconversionProject.projectPhase,
               project_phase_details: reconversionProject.projectPhaseDetails,
+              site_resale_expected_selling_price: null,
+              site_resale_expected_property_transfer_duties: null,
             },
           ]);
         });
@@ -356,6 +360,122 @@ describe("SqlReconversionProjectRepository integration", () => {
             })),
           );
         });
+      });
+    });
+    describe("Mixed-use neighbourhood development plan", () => {
+      let reconversionProject: ReconversionProject;
+
+      beforeEach(async () => {
+        const siteId = await insertSiteInDb();
+        reconversionProject = {
+          id: uuid(),
+          createdBy: uuid(),
+          name: "Quartier mixte",
+          developmentPlan: {
+            type: "MIXED_USE_NEIGHBOURHOOD",
+            developer: { name: "Montrouge", structureType: "local_or_regional_authority" },
+            costs: [],
+            installationSchedule: {
+              startDate: new Date("2026-01-05T12:00:00.000Z"),
+              endDate: new Date("2027-01-05T12:00:00.000Z"),
+            },
+            features: {
+              spacesDistribution: {
+                BUILDINGS_FOOTPRINT: 2000,
+                PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 500,
+                PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 200,
+                PRIVATE_GARDEN_AND_GRASS_ALLEYS: 3700,
+                PUBLIC_GREEN_SPACES: 1900,
+                PUBLIC_PARKING_LOT: 500,
+                PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 400,
+                PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 700,
+                PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 100,
+              },
+              buildingsFloorAreaDistribution: { RESIDENTIAL: 1840, GROUND_FLOOR_RETAIL: 160 },
+            },
+          },
+          futureSiteOwner: { name: "Montrouge", structureType: "local_or_regional_authority" },
+          realEstateTransactionSellingPrice: 3600000,
+          realEstateTransactionPropertyTransferDuties: 209160,
+          reinstatementCosts: undefined,
+          yearlyProjectedCosts: [],
+          yearlyProjectedRevenues: [],
+          soilsDistribution: {
+            BUILDINGS: 10000,
+            IMPERMEABLE_SOILS: 7000,
+            MINERAL_SOIL: 4500,
+            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 19000,
+            ARTIFICIAL_TREE_FILLED: 9500,
+          },
+          reinstatementSchedule: {
+            startDate: new Date("2025-01-05T12:00:00.000Z"),
+            endDate: new Date("2026-01-05T12:00:00.000Z"),
+          },
+          operationsFirstYear: 2027,
+          projectPhase: "planning",
+          siteResaleExpectedSellingPrice: 2850000,
+          siteResaleExpectedPropertyTransferDuties: 165585,
+          createdAt: now,
+          relatedSiteId: siteId,
+        };
+      });
+
+      it("Saves in table reconversion_projects", async () => {
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const result = await sqlConnection("reconversion_projects").select("*");
+        expect(result).toHaveLength(1);
+        expect(result).toEqual([
+          {
+            id: reconversionProject.id,
+            created_by: reconversionProject.createdBy,
+            name: reconversionProject.name,
+            related_site_id: reconversionProject.relatedSiteId,
+            created_at: now,
+            description: null,
+            future_operator_name: null,
+            future_operator_structure_type: null,
+            future_site_owner_name: reconversionProject.futureSiteOwner?.name,
+            future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
+            future_operations_full_time_jobs: null,
+            reinstatement_contract_owner_name: null,
+            reinstatement_contract_owner_structure_type: null,
+            real_estate_transaction_selling_price:
+              reconversionProject.realEstateTransactionSellingPrice,
+            real_estate_transaction_property_transfer_duties:
+              reconversionProject.realEstateTransactionPropertyTransferDuties,
+            reinstatement_full_time_jobs_involved: null,
+            conversion_full_time_jobs_involved: null,
+            reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
+            reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
+            operations_first_year: reconversionProject.operationsFirstYear,
+            project_phase: reconversionProject.projectPhase,
+            project_phase_details: null,
+            site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
+            site_resale_expected_property_transfer_duties:
+              reconversionProject.siteResaleExpectedPropertyTransferDuties,
+          },
+        ]);
+      });
+      it("Saves in table reconversion_project_development_plans", async () => {
+        await reconversionProjectRepository.save(reconversionProject);
+
+        const result = await sqlConnection("reconversion_project_development_plans").select("*");
+        expect(result).toHaveLength(1);
+        expect(result).toEqual([
+          {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            id: expect.any(String),
+            type: reconversionProject.developmentPlan.type,
+            features: reconversionProject.developmentPlan.features,
+            developer_name: reconversionProject.developmentPlan.developer.name,
+            developer_structure_type: reconversionProject.developmentPlan.developer.structureType,
+            reconversion_project_id: reconversionProject.id,
+            schedule_start_date:
+              reconversionProject.developmentPlan.installationSchedule?.startDate,
+            schedule_end_date: reconversionProject.developmentPlan.installationSchedule?.endDate,
+          },
+        ]);
       });
     });
   });

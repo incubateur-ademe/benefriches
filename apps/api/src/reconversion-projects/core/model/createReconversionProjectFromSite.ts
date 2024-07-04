@@ -120,6 +120,14 @@ const computeSoilsDistributionFromSpaces = (
   return soilsDistribution;
 };
 
+const computeExpectedPostDevelopmentResaleFromSiteSurfaceArea = (
+  surfaceArea: number,
+): { sellingPrice: number; propertyTransferDuties: number } => {
+  const sellingPrice = surfaceArea * 150 * 0.38;
+  const propertyTransferDuties = sellingPrice * 0.0581;
+  return { sellingPrice, propertyTransferDuties };
+};
+
 export class MixedUseNeighbourHoodReconversionProjectCreationService {
   constructor(private readonly dateProvider: IDateProvider) {}
 
@@ -144,6 +152,11 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
     const reinstatementSchedule = computeReinstatementSchedule(this.dateProvider);
     const installationSchedule = computeInstallationSchedule(this.dateProvider)(
       reinstatementSchedule.endDate,
+    );
+
+    // expected resale
+    const siteResaleExpectedTransaction = computeExpectedPostDevelopmentResaleFromSiteSurfaceArea(
+      siteData.surfaceArea,
     );
 
     const reconversionProject: ReconversionProject = {
@@ -185,6 +198,9 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       },
       realEstateTransactionSellingPrice: sellingPrice,
       realEstateTransactionPropertyTransferDuties: propertyTransactionDuties,
+      siteResaleExpectedSellingPrice: siteResaleExpectedTransaction.sellingPrice,
+      siteResaleExpectedPropertyTransferDuties:
+        siteResaleExpectedTransaction.propertyTransferDuties,
     };
     const parsed = reconversionProjectSchema.parse(reconversionProject);
 

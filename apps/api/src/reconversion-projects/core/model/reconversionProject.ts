@@ -71,6 +71,8 @@ export const reconversionProjectSchema = z.object({
   operationsFirstYear: z.number().int().min(2000).optional(),
   projectPhase: z.string(),
   projectPhaseDetails: z.string().optional(),
+  siteResaleExpectedSellingPrice: z.number().nonnegative().optional(),
+  siteResaleExpectedPropertyTransferDuties: z.number().nonnegative().optional(),
 });
 
 export type ReconversionProject = z.infer<typeof reconversionProjectSchema>;

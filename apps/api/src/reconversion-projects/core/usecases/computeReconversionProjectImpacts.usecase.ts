@@ -94,6 +94,8 @@ export type ReconversionProjectImpactsDataView = {
   developmentPlanDeveloperName?: string;
   developmentPlanFeatures?: DevelopmentPlan["features"];
   operationsFirstYear?: number;
+  siteResaleExpectedSellingPrice?: number;
+  siteResaleExpectedPropertyTransferDuties?: number;
 };
 
 export interface ReconversionProjectImpactsRepository {

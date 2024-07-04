@@ -42,7 +42,7 @@ export const buildMinimalReconversionProjectProps = (
   };
 };
 
-export const buildExhaustiveReconversionProjectProps = (): Required<ReconversionProjectProps> => {
+export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectProps => {
   return {
     ...baseReconversionProjectProps,
     developmentPlan: {

@@ -39,6 +39,9 @@ type SqlReconversionProject = {
   // real estate transaction
   real_estate_transaction_selling_price?: number;
   real_estate_transaction_property_transfer_duties?: number;
+  // site resale
+  site_resale_expected_selling_price?: number;
+  site_resale_expected_property_transfer_duties?: number;
   // project phase
   project_phase: string;
   project_phase_details?: string;
@@ -139,6 +142,9 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           operations_first_year: reconversionProject.operationsFirstYear,
           project_phase: reconversionProject.projectPhase,
           project_phase_details: reconversionProject.projectPhaseDetails,
+          site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
+          site_resale_expected_property_transfer_duties:
+            reconversionProject.siteResaleExpectedPropertyTransferDuties,
         },
         "id",
       );

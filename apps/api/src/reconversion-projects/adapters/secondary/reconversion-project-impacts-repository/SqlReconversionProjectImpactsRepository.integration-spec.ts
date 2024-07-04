@@ -49,6 +49,8 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         reinstatement_contract_owner_name: "Mairie de Blajan",
         real_estate_transaction_selling_price: 100000,
         real_estate_transaction_property_transfer_duties: 8000,
+        site_resale_expected_selling_price: 150000,
+        site_resale_expected_property_transfer_duties: 8715,
         operations_first_year: 2025,
       });
 
@@ -183,6 +185,8 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         operationsFirstYear: 2025,
         developmentPlanDeveloperName: "Terre cuite d’occitanie",
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
+        siteResaleExpectedSellingPrice: 150000,
+        siteResaleExpectedPropertyTransferDuties: 8715,
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {

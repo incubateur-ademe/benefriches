@@ -209,6 +209,30 @@ describe("CreateReconversionProject Use Case", () => {
           expect(createdReconversionProject?.soilsDistribution).toEqual(expectedSoilsDistribution);
         });
 
+        it("should create a mixed-use neighbourhood project with expected sale after development relative to buildings floor surface area", async () => {
+          const usecase = new CreateExpressReconversionProjectUseCase(
+            dateProvider,
+            siteRepository,
+            reconversionProjectRepository,
+          );
+
+          const reconversionProjectId = uuid();
+          const creatorId = uuid();
+          await usecase.execute({ reconversionProjectId, siteId: site.id, createdBy: creatorId });
+
+          const createdReconversionProjects: ReconversionProject[] =
+            reconversionProjectRepository._getReconversionProjects();
+          expect(createdReconversionProjects).toHaveLength(1);
+          const createdReconversionProject = createdReconversionProjects[0];
+          const buildingsFloorSurfaceArea = 0.38 * site.surfaceArea;
+          expect(createdReconversionProject?.siteResaleExpectedSellingPrice).toEqual(
+            buildingsFloorSurfaceArea * 150,
+          );
+          expect(createdReconversionProject?.siteResaleExpectedPropertyTransferDuties).toEqual(
+            buildingsFloorSurfaceArea * 150 * 0.0581,
+          );
+        });
+
         describe("with non-polluted soils and no buildings", () => {
           const nonPollutedFricheWithNoBuildings = {
             ...site,

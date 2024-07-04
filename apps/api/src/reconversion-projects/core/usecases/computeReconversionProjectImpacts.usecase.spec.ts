@@ -74,7 +74,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
   });
 
   describe("Success cases", () => {
-    const reconversionProjectImpactDataView: Required<ReconversionProjectImpactsDataView> = {
+    const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
       id: uuid(),
       name: "Project with big impacts",
       relatedSiteId: uuid(),
