@@ -185,8 +185,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         operationsFirstYear: 2025,
         developmentPlanDeveloperName: "Terre cuite d’occitanie",
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
-        siteResaleExpectedSellingPrice: 150000,
-        siteResaleExpectedPropertyTransferDuties: 8715,
+        siteResaleTotalAmount: 158715,
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {

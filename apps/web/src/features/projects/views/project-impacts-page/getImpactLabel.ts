@@ -209,6 +209,8 @@ export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName) => 
   switch (name) {
     case "site_purchase":
       return "🏠 Acquisition du site";
+    case "site_resale":
+      return "🏠 Cession du site";
     case "site_reinstatement":
       return "🚧 Remise en état de la friche";
     case "financial_assistance":

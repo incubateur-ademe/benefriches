@@ -183,6 +183,7 @@ export type ReconversionProjectImpacts = {
     };
     revenues: {
       total: number;
+      siteResale?: number;
       operationsRevenues?: {
         bearer?: string;
         total: number;

@@ -24,6 +24,7 @@ export type EconomicBalanceImpactResult = {
     total: number;
     operationsRevenues?: { total: number; revenues: Revenue[] };
     financialAssistance?: { total: number; revenues: Revenue[] };
+    siteResale?: number;
   };
 };
 
@@ -38,6 +39,7 @@ type ProjectProps = {
   reinstatementContractOwnerName?: string;
   yearlyProjectedRevenues: Revenue[];
   yearlyProjectedCosts: Cost[];
+  siteResaleTotalAmount?: number;
 };
 
 type ReconversionProjectInstallationCostsInput = {
@@ -76,6 +78,20 @@ const getFinancialAssistanceRevenuesWithTotalAmount = (
   const total = sumListWithKey(financialAssistanceRevenues, "amount");
   return { total, revenues: financialAssistanceRevenues };
 };
+
+const withSiteResaleRevenues =
+  (siteResaleTotalAmount?: number) => (economicBalance: EconomicBalanceImpactResult) => {
+    if (!siteResaleTotalAmount) return economicBalance;
+    return {
+      ...economicBalance,
+      total: economicBalance.total + siteResaleTotalAmount,
+      revenues: {
+        ...economicBalance.revenues,
+        siteResale: siteResaleTotalAmount,
+        total: economicBalance.revenues.total + siteResaleTotalAmount,
+      },
+    };
+  };
 
 export const getEconomicResultsOfProjectInstallation = ({
   financialAssistanceRevenues,
@@ -176,9 +192,10 @@ export const computeEconomicBalanceImpact = (
     developmentPlanDeveloperName,
     yearlyProjectedCosts,
     yearlyProjectedRevenues,
+    siteResaleTotalAmount,
   }: ProjectProps,
   durationInYear: number,
-) => {
+): EconomicBalanceImpactResult => {
   const {
     total: totalInstallation,
     costs,
@@ -209,7 +226,7 @@ export const computeEconomicBalanceImpact = (
       durationInYear,
     );
 
-    return {
+    return withSiteResaleRevenues(siteResaleTotalAmount)({
       total: Math.round(totalInstallation + totalExploitation),
       bearer: developmentPlanDeveloperName,
       costs: {
@@ -222,10 +239,10 @@ export const computeEconomicBalanceImpact = (
         ...installationRevenuesDetails,
         operationsRevenues,
       },
-    };
+    });
   }
 
-  return {
+  return withSiteResaleRevenues(siteResaleTotalAmount)({
     total: Math.round(totalInstallation),
     bearer: developmentPlanDeveloperName,
     costs: {
@@ -236,5 +253,5 @@ export const computeEconomicBalanceImpact = (
       total: totalInstallationRevenues,
       ...installationRevenuesDetails,
     },
-  };
+  });
 };

@@ -273,13 +273,17 @@ export const mixedUseNeighbourhoodProjectImpactMock = {
   impacts: {
     ...baseProjectImpactMock.impacts,
     economicBalance: {
-      ...baseProjectImpactMock.impacts.economicBalance,
+      total: -500000,
       costs: {
         ...baseProjectImpactMock.impacts.economicBalance.costs,
         developmentPlanInstallation: {
           total: 200000,
           costs: [{ amount: 200000, purpose: "development_works" }],
         },
+      },
+      revenues: {
+        total: 1000000,
+        siteResale: 1000000,
       },
     },
     socioeconomic: {

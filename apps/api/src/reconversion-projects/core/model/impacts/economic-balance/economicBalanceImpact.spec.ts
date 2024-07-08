@@ -268,11 +268,12 @@ describe("EconomicBalance impact", () => {
             reinstatementContractOwnerName: "Propriétaire",
             yearlyProjectedCosts: [],
             yearlyProjectedRevenues: [],
+            siteResaleTotalAmount: 150000,
           },
           1,
         ),
       ).toEqual({
-        total: -95000,
+        total: 55000,
         bearer: "Mairie de Blajan",
         costs: {
           total: 95000,
@@ -289,7 +290,8 @@ describe("EconomicBalance impact", () => {
           },
         },
         revenues: {
-          total: 0,
+          total: 150000,
+          siteResale: 150000,
           operationsRevenues: {
             total: 0,
             revenues: [],
@@ -326,11 +328,12 @@ describe("EconomicBalance impact", () => {
               { amount: 20000, source: "sell" },
               { amount: 5000, source: "other" },
             ],
+            siteResaleTotalAmount: 150000,
           },
           20,
         ),
       ).toEqual({
-        total: 750000 - (1210000 + 49999 + 150000),
+        total: 900000 - (1210000 + 49999 + 150000),
         bearer: "Mairie de Blajan",
         costs: {
           total: 1210000 + 49999 + 150000,
@@ -357,7 +360,8 @@ describe("EconomicBalance impact", () => {
           },
         },
         revenues: {
-          total: 750000,
+          total: 900000,
+          siteResale: 150000,
           operationsRevenues: {
             total: 700000,
             revenues: [

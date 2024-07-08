@@ -94,8 +94,7 @@ export type ReconversionProjectImpactsDataView = {
   developmentPlanDeveloperName?: string;
   developmentPlanFeatures?: DevelopmentPlan["features"];
   operationsFirstYear?: number;
-  siteResaleExpectedSellingPrice?: number;
-  siteResaleExpectedPropertyTransferDuties?: number;
+  siteResaleTotalAmount?: number;
 };
 
 export interface ReconversionProjectImpactsRepository {
@@ -267,6 +266,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
             sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
             financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,
             developmentPlanInstallationCosts: reconversionProject.developmentPlanInstallationCosts,
+            siteResaleTotalAmount: reconversionProject.siteResaleTotalAmount,
           },
           evaluationPeriodInYears,
         ),

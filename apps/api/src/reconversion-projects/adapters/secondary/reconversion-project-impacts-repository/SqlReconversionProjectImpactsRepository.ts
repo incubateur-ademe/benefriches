@@ -127,6 +127,10 @@ export class SqlReconversionProjectImpactsRepository
       ? reconversionProject.site_purchase_selling_price +
         (reconversionProject.site_purchase_property_transfer_duties ?? 0)
       : undefined;
+    const siteResaleTotalAmount = reconversionProject.site_resale_expected_selling_price
+      ? reconversionProject.site_resale_expected_selling_price +
+        (reconversionProject.site_resale_expected_property_transfer_duties ?? 0)
+      : undefined;
 
     return {
       id: reconversionProject.id,
@@ -160,10 +164,7 @@ export class SqlReconversionProjectImpactsRepository
       developmentPlanDeveloperName: sqlDevelopmentPlan?.developer_name ?? undefined,
       developmentPlanInstallationCosts: sqlDevelopmentPlan?.costs ?? [],
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
-      siteResaleExpectedSellingPrice:
-        reconversionProject.site_resale_expected_selling_price ?? undefined,
-      siteResaleExpectedPropertyTransferDuties:
-        reconversionProject.site_resale_expected_property_transfer_duties ?? undefined,
+      siteResaleTotalAmount,
     };
   }
 }
