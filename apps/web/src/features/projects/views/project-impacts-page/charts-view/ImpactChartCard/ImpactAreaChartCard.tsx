@@ -79,7 +79,9 @@ function ImpactAreaChartCard({
 
   return (
     <ImpactChartCard title={impactLabel} onClick={onClick}>
-      <ImpactPercentageVariation percentage={percentageVariation} />
+      <ImpactPercentageVariation
+        percentage={percentageVariation > 10000 ? 9999 : percentageVariation}
+      />
       <ImpactAbsoluteVariation>
         {impactTypeFormatterMap[type].formatFn(difference)}
         {unitSuffix}
