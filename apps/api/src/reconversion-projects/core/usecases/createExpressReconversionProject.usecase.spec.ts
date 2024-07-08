@@ -123,7 +123,7 @@ describe("CreateReconversionProject Use Case", () => {
           expect(createdReconversionProject?.operationsFirstYear).toEqual(2027);
         });
 
-        it("should create a mixed-use neighbourhood project with site city as developer and owner", async () => {
+        it("should create a mixed-use neighbourhood project with site city as developer, reinstatement contract owner and site owner", async () => {
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
             siteRepository,
@@ -143,6 +143,10 @@ describe("CreateReconversionProject Use Case", () => {
             name: "Montrouge",
           });
           expect(createdReconversionProject?.developmentPlan.developer).toEqual({
+            structureType: "local_or_regional_authority",
+            name: "Montrouge",
+          });
+          expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
             structureType: "local_or_regional_authority",
             name: "Montrouge",
           });

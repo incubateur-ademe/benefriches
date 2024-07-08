@@ -160,6 +160,12 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       siteData.surfaceArea,
     );
 
+    const developer = {
+      name: siteData.address.city,
+      structureType: "local_or_regional_authority",
+    };
+    const reinstatementContractOwner = siteData.isFriche ? developer : undefined;
+
     const reconversionProject: ReconversionProject = {
       id: reconversionProjectId,
       createdBy,
@@ -173,15 +179,10 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       reinstatementCosts,
       reinstatementSchedule,
       operationsFirstYear: computeOperationsFirstYear(installationSchedule.endDate),
-      futureSiteOwner: {
-        name: siteData.address.city,
-        structureType: "local_or_regional_authority",
-      },
+      futureSiteOwner: developer,
+      reinstatementContractOwner,
       developmentPlan: {
-        developer: {
-          name: siteData.address.city,
-          structureType: "local_or_regional_authority",
-        },
+        developer,
         features: {
           spacesDistribution,
           buildingsFloorAreaDistribution: {
