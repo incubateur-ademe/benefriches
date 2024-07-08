@@ -36,14 +36,17 @@ function ConversionFullTimeJobsInvolvedForm({
 
   return (
     <WizardFormLayout
-      title="Emplois équivalent temps plein mobilisés pour la reconversion du site"
+      title="ETP mobilisés pour la reconversion du site"
       instructions={
         <FormInfo>
           <p>
-            Nombre d’emplois calculé d’après les dépenses que vous avez renseignées à l’étape
-            précédente et le nombre d’emplois par € de chiffre d’affaires des secteurs d’activités
-            concernés (ex : dépollution, déconstruction, gestion de déchets, photovoltaïque) en
-            France.
+            Nombre d’emplois équivalent temps plein calculé d’après les dépenses que vous avez
+            renseignées à l’étape précédente et le nombre d’emplois par € de chiffre d’affaires des
+            secteurs d’activités concernés (ex : dépollution, déconstruction, gestion de déchets,
+            photovoltaïque) en France.
+          </p>
+          <p>
+            Il s’agit des emplois mobilisés pendant la durée de la reconversion (étude et travaux).
           </p>
           <p>Vous pouvez modifier ces valeurs.</p>
         </FormInfo>

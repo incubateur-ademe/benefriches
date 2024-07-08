@@ -24,14 +24,13 @@ function OperationsFullTimeJobsInvolvedForm({ defaultValue, onSubmit, onBack }: 
 
   return (
     <WizardFormLayout
-      title="Emplois équivalent temps plein mobilisés pour l'exploitation du site
-    reconverti"
+      title="ETP mobilisés pour l’exploitation de la centrale photovoltaïque"
       instructions={
         <FormInfo>
           <p>
-            Nombre d’emplois calculé d’après les dépenses que vous avez renseignées à l’étape
-            précédente et le nombre d’emplois par € de chiffre d’affaires du secteur d’activités du
-            photovoltaïque en France.
+            Nombre d’emplois équivalent temps plein calculé d’après les dépenses que vous avez
+            renseignées à l’étape précédente et le nombre d’emplois par € de chiffre d’affaires du
+            secteur d’activités du photovoltaïque en France.
           </p>
           <p>Vous pouvez modifier cette valeur.</p>
         </FormInfo>

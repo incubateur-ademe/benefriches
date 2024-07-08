@@ -1,6 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -19,13 +20,15 @@ type FormValues = {
 };
 
 function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>();
+  const { control, handleSubmit, watch } = useForm<FormValues>();
 
   const hintText = `Maximum : ${formatSurfaceArea(siteSurfaceArea)}`;
 
   const maxErrorMessage = `La superficie des panneaux ne peut pas être supérieure à la superficie total du site (${formatSurfaceArea(
     siteSurfaceArea,
   )}).`;
+
+  const surface = watch("photovoltaicInstallationSurfaceSquareMeters");
 
   return (
     <WizardFormLayout
@@ -75,11 +78,16 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
                 label={<RequiredLabel label="Superficie de l'installation" />}
                 hintText={hintText}
                 hintInputText="en m²"
-                className="!tw-pt-4 tw-pb-6"
+                className="!tw-pt-4"
               />
             );
           }}
         />
+        {!isNaN(surface) && (
+          <p>
+            💡 Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
+          </p>
+        )}
         <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>

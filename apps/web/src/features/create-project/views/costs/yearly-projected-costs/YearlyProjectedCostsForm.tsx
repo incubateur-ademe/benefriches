@@ -71,7 +71,7 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
               <ControlledRowNumericInput
                 {...controller}
                 label="Loyer"
-                hintInputText="€"
+                hintInputText="€ / an"
                 className="!tw-pt-4 !tw-mb-3"
               />
             );
@@ -91,7 +91,7 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
               <ControlledRowNumericInput
                 {...controller}
                 label="Maintenance"
-                hintInputText="€"
+                hintInputText="€ / an"
                 className="!tw-pt-4 !tw-mb-3"
               />
             );
@@ -111,7 +111,7 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
               <ControlledRowNumericInput
                 {...controller}
                 label="Taxes et impôts"
-                hintInputText="€"
+                hintInputText="€ / an"
                 className="!tw-pt-4 !tw-mb-3"
               />
             );
@@ -132,7 +132,7 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
               <ControlledRowNumericInput
                 {...controller}
                 label="Autres dépenses"
-                hintInputText="€"
+                hintInputText="€ / an"
                 className="!tw-pt-4 !tw-mb-3"
               />
             );

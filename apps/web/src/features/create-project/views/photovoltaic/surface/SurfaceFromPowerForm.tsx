@@ -2,6 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -28,7 +29,7 @@ function PhotovoltaicSurfaceFromPowerForm({
   recommendedSurface,
   siteSurfaceArea,
 }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit, watch } = useForm<FormValues>({
     defaultValues: {
       photovoltaicInstallationSurfaceSquareMeters: recommendedSurface,
     },
@@ -39,6 +40,8 @@ function PhotovoltaicSurfaceFromPowerForm({
   const maxErrorMessage = `La superficie des panneaux ne peut pas être supérieure à la superficie totale du site (${formatSurfaceArea(
     siteSurfaceArea,
   )}).`;
+
+  const surface = watch("photovoltaicInstallationSurfaceSquareMeters");
 
   return (
     <WizardFormLayout
@@ -101,11 +104,16 @@ function PhotovoltaicSurfaceFromPowerForm({
                 label={<RequiredLabel label="Superficie de l'installation" />}
                 hintText={hintText}
                 hintInputText="en m²"
-                className="!tw-pt-4 tw-pb-6"
+                className="!tw-pt-4"
               />
             );
           }}
         />
+        {!isNaN(surface) && (
+          <p>
+            💡 Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
+          </p>
+        )}
         <BackNextButtonsGroup onBack={onBack} />
       </form>
     </WizardFormLayout>

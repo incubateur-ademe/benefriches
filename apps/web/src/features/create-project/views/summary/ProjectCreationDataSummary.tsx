@@ -96,7 +96,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
   return (
     <>
       <WizardFormLayout
-        title="Récapitulatif des données"
+        title="Récapitulatif du projet"
         instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
       >
         <Accordion label="Type de projet" defaultExpanded>
@@ -123,7 +123,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             value={`${formatNumberFr(projectData.photovoltaicExpectedAnnualProduction)} MWh / an`}
           />
           <DataLine
-            label={<strong>Superficie occupée par les panneaux</strong>}
+            label={<strong>Durée du contrat de revente de l’électricité photovoltaïque</strong>}
             value={`${formatNumberFr(projectData.photovoltaicContractDuration)} ans`}
           />
         </Accordion>

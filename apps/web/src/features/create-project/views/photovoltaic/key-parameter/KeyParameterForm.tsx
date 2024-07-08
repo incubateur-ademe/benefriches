@@ -47,6 +47,11 @@ function KeyParameterForm({ onSubmit, onBack }: Props) {
             sol, sélectionnez «&nbsp;La superficie de l'installation&nbsp;». Bénéfriches calculera
             alors la puissance que pourra faire l'installation.
           </p>
+
+          <p>
+            Si vous ne savez pas quel est le paramètre déterminant, le plus simple est de
+            sélectionner «&nbsp;La superficie de l'installation&nbsp;».
+          </p>
         </FormInfo>
       }
     >
