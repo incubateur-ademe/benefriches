@@ -334,7 +334,7 @@ describe("CreateReconversionProject Use Case", () => {
             });
           });
         });
-        describe("with more impermeable soils than future project", () => {
+        describe("with less impermeable soils once developed", () => {
           const allImpermeableFriche = {
             ...site,
             soilsDistribution: {
@@ -343,7 +343,7 @@ describe("CreateReconversionProject Use Case", () => {
             },
           };
 
-          it("should create mixed-use neighbourhood with deimpermeabilization expense", async () => {
+          it("should create mixed-use neighbourhood with deimpermeabilization and sustainable soils reinstatement expenses", async () => {
             siteRepository._setSites([allImpermeableFriche]);
 
             const usecase = new CreateExpressReconversionProjectUseCase(
@@ -365,15 +365,19 @@ describe("CreateReconversionProject Use Case", () => {
             expect(createdReconversionProjects).toHaveLength(1);
             const createdReconversionProject = createdReconversionProjects[0];
             // reinstatement costs
-            expect(createdReconversionProject?.reinstatementCosts).toHaveLength(3);
+            expect(createdReconversionProject?.reinstatementCosts).toHaveLength(4);
             expect(createdReconversionProject?.reinstatementCosts?.at(0)).toEqual({
               purpose: "deimpermeabilization",
               amount: 66000,
             });
-            expect(createdReconversionProject?.reinstatementCosts?.at(1)?.purpose).toEqual(
+            expect(createdReconversionProject?.reinstatementCosts?.at(1)).toEqual({
+              purpose: "sustainable_soils_reinstatement",
+              amount: 256500,
+            });
+            expect(createdReconversionProject?.reinstatementCosts?.at(2)?.purpose).toEqual(
               "demolition",
             );
-            expect(createdReconversionProject?.reinstatementCosts?.at(2)?.purpose).toEqual(
+            expect(createdReconversionProject?.reinstatementCosts?.at(3)?.purpose).toEqual(
               "asbestos_removal",
             );
           });

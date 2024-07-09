@@ -55,6 +55,14 @@ const getImpermeableSurfaceArea = (soilsDistribution: SoilsDistribution): number
   return sumSoilsSurfaceAreasWhere(soilsDistribution, (soilType) => isImpermeableSoil(soilType));
 };
 
+const getGreenArtificalSurfaceArea = (soilsDistribution: SoilsDistribution): number => {
+  return sumSoilsSurfaceAreasWhere(
+    soilsDistribution,
+    (soilType) =>
+      soilType === "ARTIFICIAL_GRASS_OR_BUSHES_FILLED" || soilType === "ARTIFICIAL_TREE_FILLED",
+  );
+};
+
 const computeReinstatementCostsFromSiteSoils = (
   siteSoilsDistribution: SoilsDistribution,
   projectSoilsDistribution: SoilsDistribution,
@@ -63,11 +71,21 @@ const computeReinstatementCostsFromSiteSoils = (
   const costs = [];
 
   const impermeableSoilsDelta =
-    getImpermeableSurfaceArea(siteSoilsDistribution) -
-    getImpermeableSurfaceArea(projectSoilsDistribution);
+    getImpermeableSurfaceArea(projectSoilsDistribution) -
+    getImpermeableSurfaceArea(siteSoilsDistribution);
 
-  if (impermeableSoilsDelta > 0) {
-    costs.push({ amount: impermeableSoilsDelta * 10, purpose: "deimpermeabilization" });
+  if (impermeableSoilsDelta < 0) {
+    costs.push({ amount: Math.abs(impermeableSoilsDelta) * 10, purpose: "deimpermeabilization" });
+  }
+
+  const artificialGreenSoilsDelta =
+    getGreenArtificalSurfaceArea(projectSoilsDistribution) -
+    getGreenArtificalSurfaceArea(siteSoilsDistribution);
+  if (impermeableSoilsDelta < 0 && artificialGreenSoilsDelta > 0) {
+    costs.push({
+      amount: artificialGreenSoilsDelta * 45,
+      purpose: "sustainable_soils_reinstatement",
+    });
   }
 
   if (contaminatedSoilSurface > 0) {
