@@ -25,6 +25,7 @@ export type ProjectImpactsState = {
     name: string;
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
+    isExpressProject: boolean;
     developmentPlan: {
       surfaceArea?: number;
       electricalPowerKWc?: number;
@@ -104,12 +105,19 @@ export const getProjectName = createSelector(
   (state): string => state.projectData?.name ?? "Project",
 );
 
+type ProjectContext = {
+  name: string;
+  siteName: string;
+  type?: ProjectDevelopmentPlanType;
+  isExpressProject: boolean;
+};
 export const getProjectContext = createSelector(
   selectSelf,
-  (state): { name: string; siteName: string; type?: ProjectDevelopmentPlanType } => ({
+  (state): ProjectContext => ({
     name: state.projectData?.name ?? "Project",
     siteName: state.relatedSiteData?.name ?? "",
     type: state.projectData?.developmentPlan.type,
+    isExpressProject: !!state.projectData?.isExpressProject,
   }),
 );
 

@@ -66,6 +66,7 @@ function ScenariiGroup({
               <ProjectScenarioTile
                 name={project.name}
                 id={project.id}
+                isExpressProject={project.isExpressProject}
                 selectedIds={selectedIds}
                 selectableIds={selectableIds}
                 onChangeSelectedProject={onChangeSelectedProject}

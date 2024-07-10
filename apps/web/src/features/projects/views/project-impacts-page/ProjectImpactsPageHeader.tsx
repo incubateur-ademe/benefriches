@@ -1,6 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
+import ExpressProjectTooltipBadge from "./ExpressProjectBadge";
 
 import classNames from "@/shared/views/clsx";
 
@@ -8,6 +9,7 @@ type Props = {
   projectName: string;
   siteName: string;
   projectType?: ProjectDevelopmentPlanType;
+  isExpressProject: boolean;
   isSmall?: boolean;
 };
 
@@ -15,6 +17,7 @@ const ProjectsImpactsPageHeader = ({
   projectName,
   siteName,
   projectType,
+  isExpressProject,
   isSmall = false,
 }: Props) => {
   return (
@@ -40,15 +43,22 @@ const ProjectsImpactsPageHeader = ({
           )}
 
           <div>
-            <h2
-              className={classNames(
-                fr.cx("fr-my-0"),
-                "tw-text-impacts-title",
-                isSmall && "tw-text-2xl",
+            <div className="tw-inline-flex tw-items-center">
+              <h2
+                className={classNames(
+                  fr.cx("fr-my-0"),
+                  "tw-text-impacts-title",
+                  isSmall && "tw-text-2xl",
+                )}
+              >
+                {projectName}
+              </h2>
+              {isExpressProject && (
+                <div>
+                  <ExpressProjectTooltipBadge siteName={siteName} />
+                </div>
               )}
-            >
-              {projectName}
-            </h2>
+            </div>
             <div className={classNames(!isSmall && fr.cx("fr-mt-1v"))}>
               <span
                 className={classNames(
@@ -66,24 +76,6 @@ const ProjectsImpactsPageHeader = ({
             </div>
           </div>
         </div>
-
-        {/* <ButtonsGroup
-            inlineLayoutWhen="always"
-            buttons={[
-              {
-                priority: "secondary",
-                disabled: true,
-                children: "Exporter",
-                iconId: "fr-icon-external-link-line",
-              },
-              {
-                priority: "secondary",
-                disabled: true,
-                iconId: "fr-icon-more-fill",
-                title: "Options",
-              },
-            ]}
-          /> */}
       </div>
     </div>
   );

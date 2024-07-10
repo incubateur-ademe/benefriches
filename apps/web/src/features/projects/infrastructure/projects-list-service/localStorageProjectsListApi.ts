@@ -43,6 +43,7 @@ export class LocalStorageProjectsListApi implements ReconversionProjectsListGate
           name,
           id,
           type,
+          isExpressProject: false,
         })),
       };
     });
