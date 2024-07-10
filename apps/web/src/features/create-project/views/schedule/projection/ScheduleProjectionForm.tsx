@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import Input from "@codegouvfr/react-dsfr/Input";
+import { formatDuration, interval, intervalToDuration } from "date-fns";
+import { fr } from "date-fns/locale";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
@@ -27,19 +29,38 @@ export type FormValues = {
   firstYearOfOperation?: number;
 };
 
+const getFormattedDuration = (startDate: Date, endDate: Date) => {
+  const duration = intervalToDuration(interval(new Date(startDate), new Date(endDate)));
+  console.log(startDate, endDate, duration);
+  return formatDuration(duration, {
+    format: ["years", "months"],
+    locale: fr,
+    delimiter: " et ",
+  });
+};
+
+const FormattedDuration = ({ startDate, endDate }: { startDate: string; endDate: string }) => {
+  return (
+    <p>
+      Soit <strong>{getFormattedDuration(new Date(startDate), new Date(endDate))}</strong>.
+    </p>
+  );
+};
+
 function ScheduleProjectionForm({
   defaultFirstYearOfOperation,
   askForReinstatementSchedule,
   onSubmit,
   onBack,
 }: Props) {
-  const { handleSubmit, register, control, formState } = useForm<FormValues>({
+  const { handleSubmit, register, control, formState, watch } = useForm<FormValues>({
     defaultValues: {
       firstYearOfOperation: defaultFirstYearOfOperation,
     },
   });
 
   const { errors } = formState;
+  const formValues = watch();
   const {
     reinstatementSchedule: reinstatementError,
     photovoltaicInstallationSchedule: photovoltaicError,
@@ -91,6 +112,13 @@ function ScheduleProjectionForm({
                 }}
               />
             </div>
+            {formValues.reinstatementSchedule?.startDate &&
+            formValues.reinstatementSchedule.endDate ? (
+              <FormattedDuration
+                startDate={formValues.reinstatementSchedule.startDate}
+                endDate={formValues.reinstatementSchedule.endDate}
+              />
+            ) : null}
           </Fieldset>
         )}
         <Fieldset
@@ -126,6 +154,13 @@ function ScheduleProjectionForm({
               }}
             />
           </div>
+          {formValues.photovoltaicInstallationSchedule.startDate &&
+          formValues.photovoltaicInstallationSchedule.endDate ? (
+            <FormattedDuration
+              startDate={formValues.photovoltaicInstallationSchedule.startDate}
+              endDate={formValues.photovoltaicInstallationSchedule.endDate}
+            />
+          ) : null}
         </Fieldset>
 
         <NumericInput

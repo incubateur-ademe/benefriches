@@ -31,6 +31,7 @@
     "@reduxjs/toolkit": "^2.2.5",
     "antd": "^5.18.1",
     "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "highcharts": "^11.4.3",
     "highcharts-react-official": "^3.2.1",
     "react": "^18.3.1",
