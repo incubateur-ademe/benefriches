@@ -39,8 +39,8 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
           </EditorialPageTitle>
           <EditorialPageText>
             Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du
-            projet, la transformation des sols du site, les acteurs associés, les coûts et recettes
-            prévisionnels, le calendrier des travaux, etc.
+            projet, l'aménagement des espaces et la typologie des sols associée, les acteurs du
+            projet, les coûts et recettes prévisionnels, le calendrier des travaux, etc.
           </EditorialPageText>
           <Button size="large" linkProps={routes.createProject({ siteId }).link}>
             Commencer

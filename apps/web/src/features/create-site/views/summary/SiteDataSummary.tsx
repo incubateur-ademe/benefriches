@@ -55,7 +55,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
   return (
     <>
       <WizardFormLayout
-        title="Récapitulatif des données"
+        title="Récapitulatif du site"
         instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
       >
         <Accordion label="Adresse" defaultExpanded>
@@ -156,7 +156,9 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
             <DataLine
               label={<strong>Coûts annuels du site</strong>}
               value={
-                <strong>{formatNumberFr(sumList(siteData.expenses.map((e) => e.amount)))} €</strong>
+                <strong>
+                  {formatNumberFr(sumList(siteData.expenses.map((e) => e.amount)))} € / an
+                </strong>
               }
               className="fr-mb-1w fr-mt-2w"
             />
@@ -169,7 +171,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
                   return (
                     <DataLine
                       label={getLabelForExpensePurpose(purpose)}
-                      value={`${formatNumberFr(amount)} €`}
+                      value={`${formatNumberFr(amount)} € / an`}
                       className="fr-ml-4w fr-ml-3v"
                       key={purpose}
                     />
@@ -191,7 +193,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
                     return (
                       <DataLine
                         label={getLabelForExpensePurpose(purpose)}
-                        value={`${formatNumberFr(amount)} €`}
+                        value={`${formatNumberFr(amount)} € / an`}
                         className="fr-ml-4w fr-my-1w"
                         key={purpose}
                       />

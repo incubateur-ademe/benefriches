@@ -253,7 +253,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           {!!projectData.photovoltaicPanelsInstallationCosts && (
             <>
               <DataLine
-                label={<strong>Coûts d'installation des panneaux photovoltaïques</strong>}
+                label={<strong>Dépenses d’installation de la centrale photovoltaïque</strong>}
                 value={
                   <strong>
                     {formatNumberFr(

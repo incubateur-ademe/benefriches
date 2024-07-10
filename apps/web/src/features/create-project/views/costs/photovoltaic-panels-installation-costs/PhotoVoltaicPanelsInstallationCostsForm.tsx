@@ -37,7 +37,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
 
   return (
     <WizardFormLayout
-      title="Coûts d'installation des panneaux photovoltaïques"
+      title="Dépenses d’installation de la centrale photovoltaïque"
       instructions={
         <FormInfo>
           <p>
