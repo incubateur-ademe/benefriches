@@ -1,8 +1,8 @@
 import React, { useId } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import Badge from "@codegouvfr/react-dsfr/Badge";
 
 import classNames from "@/shared/views/clsx";
+import Badge from "@/shared/views/components/Badge/Badge";
 
 type Props = {
   title: string;
@@ -56,12 +56,7 @@ export default function CreateModeOption({
               {title}
             </div>
             <legend className={fr.cx("fr-text--sm", "fr-mb-0")}>{description}</legend>
-            <Badge
-              as="span"
-              className="tw-text-sm tw-mt-3 tw-rounded-3xl tw-px-3 tw-normal-case tw-font-normal tw-text-[#297254] tw-bg-[#E3FDEB]"
-            >
-              {badgeText}
-            </Badge>
+            <Badge className="tw-mt-3 tw-text-[#297254] tw-bg-[#E3FDEB]">{badgeText}</Badge>
           </div>
         </div>
         <div

@@ -1,9 +1,9 @@
 import { Controller, useForm } from "react-hook-form";
-import Badge from "@codegouvfr/react-dsfr/Badge";
 import SoilsTransformationProjectRadioInput from "./SoilsTransformationProjectOption";
 
 import { SoilsTransformationProject } from "@/features/create-project/domain/soilsTransformation";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import Badge from "@/shared/views/components/Badge/Badge";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -29,10 +29,7 @@ const options = [
         les sols perméables minéraux enherbés au maximum. S'il reste un espace enherbé en-dehors de
         la zone des panneaux, vous pourrez choisir d'y planter des arbres.
         <br />
-        <Badge
-          as="span"
-          className="tw-text-xs tw-rounded-3xl fr-mt-1w tw-normal-case tw-font-normal tw-text-[#297254] tw-bg-[#E3FDEB]"
-        >
+        <Badge small className="tw-mt-2 tw-text-[#297254] tw-bg-[#E3FDEB]">
           🌱 Le plus écologique
         </Badge>
       </>
@@ -49,10 +46,7 @@ const options = [
         remplacement des espaces de nature non-arborés existant. Si des bâtiments existent sur le
         site, ceux-ci seront rémployés.
         <br />
-        <Badge
-          as="span"
-          className="tw-text-xs tw-rounded-3xl fr-mt-1w tw-normal-case tw-font-normal tw-text-[#66673D] tw-bg-[#FEF7DA]"
-        >
+        <Badge small className="tw-mt-2 tw-text-[#66673D] tw-bg-[#FEF7DA]">
           💰 Le plus économique
         </Badge>
       </>

@@ -1,5 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import Badge from "@codegouvfr/react-dsfr/Badge";
 import { RenewableEnergyDevelopmentPlanType } from "../../domain/project.types";
 import {
   getDescriptionForRenewableEnergyType,
@@ -7,7 +5,7 @@ import {
   getPictogramForRenewableEnergy,
 } from "../projectTypeLabelMapping";
 
-import classNames from "@/shared/views/clsx";
+import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 
 type Props = {
@@ -33,11 +31,7 @@ export default function RenewableEnergyTile({
         disabled ? (
           <div>
             <div>{description}</div>
-            <Badge
-              small
-              as="span"
-              className={classNames(fr.cx("fr-mt-1w"), "tw-normal-case", "tw-font-normal")}
-            >
+            <Badge small className="tw-mt-2">
               Bientôt disponible
             </Badge>
           </div>

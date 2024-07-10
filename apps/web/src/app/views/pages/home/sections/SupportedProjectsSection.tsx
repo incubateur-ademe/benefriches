@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import Badge from "@codegouvfr/react-dsfr/Badge";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Card } from "@codegouvfr/react-dsfr/Card";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
+import Badge from "@/shared/views/components/Badge/Badge";
 
 type SupportedProjectCardProps = {
   formerActivity: string;
@@ -31,7 +31,11 @@ function SupportedProjectCard({
       <Card
         background
         classes={{ root: "tw-w-96" }}
-        badge={<Badge>{formerActivity}</Badge>}
+        badge={
+          <Badge small className="tw-bg-white">
+            {formerActivity}
+          </Badge>
+        }
         border
         footer={
           <Button
