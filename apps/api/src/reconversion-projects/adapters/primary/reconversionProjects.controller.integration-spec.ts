@@ -94,6 +94,7 @@ describe("ReconversionProjects controller", () => {
         "name",
         "project_phase",
         "project_phase_details",
+        "creation_mode",
       );
       expect(reconversionProjectsInDb.length).toEqual(1);
       expect(reconversionProjectsInDb[0]).toEqual({
@@ -101,6 +102,7 @@ describe("ReconversionProjects controller", () => {
         name: requestBody.name,
         project_phase: requestBody.projectPhase,
         project_phase_details: requestBody.projectPhaseDetails ?? null,
+        creation_mode: "custom",
       });
     });
   });
@@ -155,6 +157,7 @@ describe("ReconversionProjects controller", () => {
         name: "Centrale pv",
         related_site_id: siteInDb1.id,
         created_at: new Date(),
+        creation_mode: "custom",
       };
       const projectInDb2 = {
         id: uuid(),
@@ -162,6 +165,7 @@ describe("ReconversionProjects controller", () => {
         name: "Centrale pv",
         related_site_id: siteInDb1.id,
         created_at: new Date(),
+        creation_mode: "express",
       };
       const siteOfAnotherUser = {
         id: uuid(),
@@ -189,7 +193,7 @@ describe("ReconversionProjects controller", () => {
         {
           id: uuid(),
           reconversion_project_id: projectInDb2.id,
-          type: "PHOTOVOLTAIC_POWER_PLANT",
+          type: "MIXED_USE_NEIGHBOURHOOD",
           features: {},
         },
       ]);
@@ -205,8 +209,18 @@ describe("ReconversionProjects controller", () => {
           siteId: siteInDb1.id,
           isFriche: siteInDb1.is_friche,
           reconversionProjects: [
-            { id: projectInDb1.id, name: projectInDb1.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
-            { id: projectInDb2.id, name: projectInDb2.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
+            {
+              id: projectInDb1.id,
+              name: projectInDb1.name,
+              type: "PHOTOVOLTAIC_POWER_PLANT",
+              isExpressProject: false,
+            },
+            {
+              id: projectInDb2.id,
+              name: projectInDb2.name,
+              type: "MIXED_USE_NEIGHBOURHOOD",
+              isExpressProject: true,
+            },
           ],
         },
         {

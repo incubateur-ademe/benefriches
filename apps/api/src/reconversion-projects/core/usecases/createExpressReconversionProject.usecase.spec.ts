@@ -74,7 +74,7 @@ describe("CreateReconversionProject Use Case", () => {
           siteRepository._setSites([site]);
         });
 
-        it("should create a mixed-use neighbourhood project with default name, given related site id, createdBy and createdAt", async () => {
+        it("should create a mixed-use neighbourhood project with default name, given related site id, createdBy, createdAt and creationMode", async () => {
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
             siteRepository,
@@ -93,6 +93,7 @@ describe("CreateReconversionProject Use Case", () => {
           expect(createdReconversionProject?.relatedSiteId).toEqual(site.id);
           expect(createdReconversionProject?.createdBy).toEqual(creatorId);
           expect(createdReconversionProject?.createdAt).toEqual(dateProvider.now());
+          expect(createdReconversionProject?.creationMode).toEqual("express");
         });
 
         it("should create a mixed-use neighbourhood project with reinstatement scheduled 1 year after current date, installation works 1 year after reinstatement and first operations 1 year after", async () => {

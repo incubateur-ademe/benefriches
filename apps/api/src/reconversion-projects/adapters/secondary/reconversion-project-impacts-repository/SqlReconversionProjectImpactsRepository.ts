@@ -19,6 +19,7 @@ export class SqlReconversionProjectImpactsRepository
       .select(
         "id",
         "name",
+        "creation_mode",
         "related_site_id",
         "conversion_full_time_jobs_involved",
         "future_operations_full_time_jobs",
@@ -135,6 +136,7 @@ export class SqlReconversionProjectImpactsRepository
     return {
       id: reconversionProject.id,
       name: reconversionProject.name,
+      isExpressProject: reconversionProject.creation_mode === "express",
       relatedSiteId: reconversionProject.related_site_id,
       soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
         return {

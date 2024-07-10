@@ -111,6 +111,7 @@ export const buildReconversionProject = (
   return {
     ...buildMinimalReconversionProjectProps(),
     createdAt: new Date(),
+    creationMode: "custom",
     ...props,
   };
 };

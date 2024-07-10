@@ -6,7 +6,12 @@ export type ReconversionProjectsGroupedBySite = {
   siteId: string;
   isFriche: boolean;
   fricheActivity?: string;
-  reconversionProjects: { id: string; name: string; type: DevelopmentPlan["type"] }[];
+  reconversionProjects: {
+    id: string;
+    name: string;
+    type: DevelopmentPlan["type"];
+    isExpressProject: boolean;
+  }[];
 }[];
 
 export interface ReconversionProjectsListRepository {

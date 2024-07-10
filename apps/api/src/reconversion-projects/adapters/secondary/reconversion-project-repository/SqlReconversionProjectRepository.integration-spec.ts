@@ -69,6 +69,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         name: "Centrale pv",
         related_site_id: siteId,
         created_at: now,
+        creation_mode: "custom",
       });
       await sqlConnection("reconversion_project_soils_distributions").insert([
         {
@@ -120,6 +121,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           {
             id: reconversionProject.id,
             created_by: reconversionProject.createdBy,
+            creation_mode: reconversionProject.creationMode,
             name: reconversionProject.name,
             related_site_id: siteId,
             created_at: now,
@@ -164,6 +166,7 @@ describe("SqlReconversionProjectRepository integration", () => {
               name: reconversionProject.name,
               related_site_id: siteId,
               created_at: now,
+              creation_mode: reconversionProject.creationMode,
               description: reconversionProject.description,
               future_operator_name: reconversionProject.futureOperator?.name,
               future_operator_structure_type: reconversionProject.futureOperator?.structureType,
@@ -369,6 +372,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         reconversionProject = {
           id: uuid(),
           createdBy: uuid(),
+          creationMode: "express",
           name: "Quartier mixte",
           developmentPlan: {
             type: "MIXED_USE_NEIGHBOURHOOD",
@@ -428,6 +432,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           {
             id: reconversionProject.id,
             created_by: reconversionProject.createdBy,
+            creation_mode: reconversionProject.creationMode,
             name: reconversionProject.name,
             related_site_id: reconversionProject.relatedSiteId,
             created_at: now,

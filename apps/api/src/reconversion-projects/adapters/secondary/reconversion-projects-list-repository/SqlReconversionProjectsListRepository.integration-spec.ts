@@ -120,6 +120,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         name: "Centrale pv",
         related_site_id: siteInDb1.id,
         created_at: new Date(),
+        creation_mode: "custom",
       };
       const projectInDb2 = {
         id: uuid(),
@@ -127,6 +128,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         name: "Centrale pv",
         related_site_id: siteInDb2.id,
         created_at: new Date(),
+        creation_mode: "custom",
       };
       const projectInDb3 = {
         id: uuid(),
@@ -134,6 +136,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         name: "Centrale pv",
         related_site_id: siteInDb2.id,
         created_at: new Date(),
+        creation_mode: "custom",
       };
 
       await sqlConnection("sites").insert([siteInDb1, siteInDb2]);
@@ -173,8 +176,18 @@ describe("ReconversionProjectsListRepository integration", () => {
           siteId: siteInDb2.id,
           isFriche: siteInDb2.is_friche,
           reconversionProjects: [
-            { id: projectInDb2.id, name: projectInDb2.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
-            { id: projectInDb3.id, name: projectInDb3.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
+            {
+              id: projectInDb2.id,
+              name: projectInDb2.name,
+              type: "PHOTOVOLTAIC_POWER_PLANT",
+              isExpressProject: false,
+            },
+            {
+              id: projectInDb3.id,
+              name: projectInDb3.name,
+              type: "PHOTOVOLTAIC_POWER_PLANT",
+              isExpressProject: false,
+            },
           ],
         },
         {
@@ -182,7 +195,12 @@ describe("ReconversionProjectsListRepository integration", () => {
           siteId: siteInDb1.id,
           isFriche: siteInDb1.is_friche,
           reconversionProjects: [
-            { id: projectInDb1.id, name: projectInDb1.name, type: "PHOTOVOLTAIC_POWER_PLANT" },
+            {
+              id: projectInDb1.id,
+              name: projectInDb1.name,
+              type: "PHOTOVOLTAIC_POWER_PLANT",
+              isExpressProject: false,
+            },
           ],
         },
       ]);

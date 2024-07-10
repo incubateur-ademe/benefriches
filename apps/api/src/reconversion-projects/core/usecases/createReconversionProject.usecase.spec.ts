@@ -123,7 +123,9 @@ describe("CreateReconversionProject Use Case", () => {
 
       const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
-      expect(savedReconversionProjects).toEqual([{ ...props, createdAt: fakeNow }]);
+      expect(savedReconversionProjects).toEqual([
+        { ...props, createdAt: fakeNow, creationMode: "custom" },
+      ]);
     });
   });
 });
