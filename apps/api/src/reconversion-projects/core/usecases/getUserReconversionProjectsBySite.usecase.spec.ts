@@ -31,12 +31,14 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
           {
             id: "78330779-017d-49b3-bb3e-8b5724aaf56f",
             name: "ReconversionProject 1",
-            type: "PHOTOVOLTAIC_POWER_PLANT",
+            type: "MIXED_USE_NEIGHBOURHOOD",
+            isExpressProject: true,
           },
           {
             id: "b0f734d3-27f0-4876-a73a-637be27d12d2",
             name: "ReconversionProject 2",
             type: "PHOTOVOLTAIC_POWER_PLANT",
+            isExpressProject: false,
           },
         ],
       },

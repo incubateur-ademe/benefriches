@@ -14,7 +14,10 @@ export interface DateProvider {
   now(): Date;
 }
 
-export const reconversionProjectPropsSchema = reconversionProjectSchema.omit({ createdAt: true });
+export const reconversionProjectPropsSchema = reconversionProjectSchema.omit({
+  createdAt: true,
+  creationMode: true,
+});
 export type ReconversionProjectProps = z.infer<typeof reconversionProjectPropsSchema>;
 
 type Request = {
@@ -49,6 +52,7 @@ export class CreateReconversionProjectUseCase implements UseCase<Request, void> 
     await this.reconversionProjectRepository.save({
       ...parsedReconversionProject,
       createdAt: this.dateProvider.now(),
+      creationMode: "custom",
     });
   }
 }

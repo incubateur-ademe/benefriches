@@ -20,6 +20,7 @@ declare module "knex/types/tables" {
 type SqlReconversionProject = {
   id: string;
   created_by: string;
+  creation_mode: string;
   name: string;
   description?: string;
   related_site_id: string;
@@ -118,6 +119,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
         {
           id: reconversionProject.id,
           created_by: reconversionProject.createdBy,
+          creation_mode: reconversionProject.creationMode,
           name: reconversionProject.name,
           description: reconversionProject.description,
           created_at: reconversionProject.createdAt,

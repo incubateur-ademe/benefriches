@@ -75,6 +75,7 @@ export type ReconversionProjectImpactsDataView = {
   name: string;
   relatedSiteId: string;
   soilsDistribution: SoilsDistribution;
+  isExpressProject: boolean;
   conversionFullTimeJobs?: number;
   reinstatementFullTimeJobs?: number;
   operationsFullTimeJobs?: number;
@@ -114,6 +115,7 @@ export type Result = {
   projectData: {
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
+    isExpressProject: boolean;
     developmentPlan: {
       type?: DevelopmentPlan["type"];
     } & Partial<DevelopmentPlan["features"]>;
@@ -243,6 +245,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       projectData: {
         soilsDistribution: reconversionProject.soilsDistribution,
         contaminatedSoilSurface: 0,
+        isExpressProject: reconversionProject.isExpressProject,
         developmentPlan: {
           ...developmentPlanFeatures,
           type: developmentPlanType,

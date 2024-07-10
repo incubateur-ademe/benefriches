@@ -31,7 +31,7 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
         this.sqlConnection.raw(`
         CASE 
           WHEN count(rp.id) = 0 THEN '[]'::json
-          ELSE json_agg(json_build_object('id', rp.id, 'name', rp.name, 'type', rpdp.type)) 
+          ELSE json_agg(json_build_object('id', rp.id, 'name', rp.name, 'type', rpdp.type, 'creationMode', rp.creation_mode)) 
         END as "reconversionProjects"`),
       )
       .groupBy("sites.id")
@@ -40,12 +40,23 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
       siteName: string;
       isFriche: boolean;
       fricheActivity: string | null;
-      reconversionProjects: { id: string; name: string; type: DevelopmentPlan["type"] }[];
+      reconversionProjects: {
+        id: string;
+        name: string;
+        type: DevelopmentPlan["type"];
+        creationMode: "express" | "custom";
+      }[];
     }[];
 
     return result.map((reconversionProjectsBySite) => {
       return {
         ...reconversionProjectsBySite,
+        reconversionProjects: reconversionProjectsBySite.reconversionProjects.map((rp) => ({
+          id: rp.id,
+          name: rp.name,
+          type: rp.type,
+          isExpressProject: rp.creationMode === "express",
+        })),
         fricheActivity: reconversionProjectsBySite.fricheActivity ?? undefined,
       };
     });

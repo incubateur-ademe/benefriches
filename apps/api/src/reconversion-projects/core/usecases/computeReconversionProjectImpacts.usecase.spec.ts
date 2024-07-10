@@ -47,6 +47,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       const projectRepository = new InMemoryReconversionProjectImpactsRepository();
       projectRepository._setData({
         id: reconversionProjectId,
+        isExpressProject: false,
         name: "Test reconversion project",
         relatedSiteId: siteId,
         soilsDistribution: {},
@@ -78,6 +79,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       id: uuid(),
       name: "Project with big impacts",
       relatedSiteId: uuid(),
+      isExpressProject: false,
       soilsDistribution: {
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
         PRAIRIE_TREES: 20000,
@@ -176,6 +178,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         relatedSiteName: site.name,
         projectData: {
           soilsDistribution: reconversionProjectImpactDataView.soilsDistribution,
+          isExpressProject: reconversionProjectImpactDataView.isExpressProject,
           contaminatedSoilSurface: 0,
           developmentPlan: {
             contractDuration: 30,

@@ -233,6 +233,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       id: reconversionProjectId,
       createdBy,
       createdAt: this.dateProvider.now(),
+      creationMode: "express",
       projectPhase: "planning",
       soilsDistribution,
       yearlyProjectedCosts: [],

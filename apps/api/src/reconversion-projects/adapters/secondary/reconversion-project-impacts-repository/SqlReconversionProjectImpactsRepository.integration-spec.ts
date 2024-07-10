@@ -37,6 +37,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
         id: reconversionProjectId,
         name: "Big project",
         created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
+        creation_mode: "express",
         related_site_id: siteId,
         created_at: new Date(),
         conversion_full_time_jobs_involved: 20,
@@ -135,6 +136,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
       expect(result).toEqual<Required<ReconversionProjectImpactsDataView>>({
         id: reconversionProjectId,
         name: "Big project",
+        isExpressProject: true,
         relatedSiteId: siteId,
         soilsDistribution: {
           BUILDINGS: 1200,
@@ -236,6 +238,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
       expect(result).toEqual<ReconversionProjectImpactsDataView>({
         id: reconversionProjectId,
         name: "Big project",
+        isExpressProject: false,
         relatedSiteId: siteId,
         soilsDistribution: {
           BUILDINGS: 1200,
