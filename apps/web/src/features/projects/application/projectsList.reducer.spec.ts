@@ -21,11 +21,13 @@ describe("Projects list reducer", () => {
           id: reconversionProjectIdA,
           name: "Reconversion project A on site 2",
           type: "PHOTOVOLTAIC_POWER_PLANT",
+          isExpressProject: false,
         },
         {
           id: reconversionProjectIdB,
           name: "Reconversion project B on site 2",
           type: "MIXED_USE_NEIGHBOURHOOD",
+          isExpressProject: true,
         },
       ],
     },
@@ -117,6 +119,7 @@ describe("Projects list reducer", () => {
               id: rpId,
               name: "Reconversion project A on site 2",
               type: "PHOTOVOLTAIC_POWER_PLANT",
+              isExpressProject: false,
             },
           ],
         },
@@ -144,6 +147,7 @@ describe("Projects list reducer", () => {
           id: reconversionProjectIdA,
           name: "Reconversion project A on site 2",
           type: "PHOTOVOLTAIC_POWER_PLANT",
+          isExpressProject: false,
         },
       ]);
     });

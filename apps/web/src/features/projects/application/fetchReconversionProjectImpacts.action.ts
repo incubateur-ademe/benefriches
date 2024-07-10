@@ -17,6 +17,7 @@ export type ReconversionProjectImpactsResult = {
   relatedSiteId: string;
   relatedSiteName: string;
   projectData: {
+    isExpressProject: boolean;
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
     developmentPlan: {

@@ -19,6 +19,7 @@ type Props = {
     name: string;
     siteName: string;
     type?: ProjectDevelopmentPlanType;
+    isExpressProject: boolean;
   };
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number;
@@ -83,6 +84,7 @@ function ProjectImpactsPageWrapper({
           projectType={projectContext.type}
           projectName={projectContext.name}
           siteName={projectContext.siteName}
+          isExpressProject={projectContext.isExpressProject}
         />
       </div>
 
@@ -99,6 +101,7 @@ function ProjectImpactsPageWrapper({
             <ProjectImpactsActionBar
               projectName={projectContext.name}
               siteName={projectContext.siteName}
+              isExpressProject={projectContext.isExpressProject}
               selectedFilter={currentCategoryFilter}
               selectedViewMode={currentViewMode}
               evaluationPeriod={evaluationPeriod}

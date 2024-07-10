@@ -17,6 +17,7 @@ export type ReconversionProjectList = {
   id: string;
   name: string;
   type: ProjectDevelopmentPlanType;
+  isExpressProject: boolean;
 }[];
 
 function ScenariiListContainer({ projectsList }: Props) {

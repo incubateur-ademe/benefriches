@@ -7,6 +7,7 @@ import { routes } from "@/app/views/router";
 type Props = {
   id: string;
   name: string;
+  isExpressProject: boolean;
   selectedIds: string[];
   selectableIds: string[];
   type: string;
@@ -17,6 +18,7 @@ function ProjectScenarioTile({
   id,
   name,
   type,
+  isExpressProject,
   onChangeSelectedProject,
   selectedIds,
   selectableIds,
@@ -44,6 +46,7 @@ function ProjectScenarioTile({
   const hasSelectedValues = selectedIds.length > 0;
 
   const shouldDisplayCheckbox = isSelected || ((hasSelectedValues || isHovered) && isSelectable);
+  const badgeText = isExpressProject ? "Projet express" : undefined;
 
   return (
     <ScenarioTile
@@ -56,6 +59,7 @@ function ProjectScenarioTile({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       isHovered={isHovered}
+      badgeText={badgeText}
     />
   );
 }

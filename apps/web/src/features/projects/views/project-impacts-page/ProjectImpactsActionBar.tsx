@@ -19,6 +19,7 @@ type Props = {
   onEvaluationPeriodChange: (n: number) => void;
   projectName: string;
   siteName: string;
+  isExpressProject: boolean;
 };
 
 function ProjectImpactsActionBar({
@@ -30,6 +31,7 @@ function ProjectImpactsActionBar({
   onEvaluationPeriodChange,
   projectName,
   siteName,
+  isExpressProject,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [isIntersecting, setIntersecting] = useState(false);
@@ -74,7 +76,12 @@ function ProjectImpactsActionBar({
             "tw-items-center",
           )}
         >
-          <ProjectsImpactsPageHeader projectName={projectName} siteName={siteName} isSmall />
+          <ProjectsImpactsPageHeader
+            projectName={projectName}
+            siteName={siteName}
+            isExpressProject={isExpressProject}
+            isSmall
+          />
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}
             value={evaluationPeriod}

@@ -2,10 +2,12 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 
 import classNames from "@/shared/views/clsx";
+import Badge from "@/shared/views/components/Badge/Badge";
 
 type Props = {
   title: string;
   pictogramUrl?: string;
+  badgeText?: string;
   details?: string;
   linkProps: { href: string };
   isHovered?: boolean;
@@ -56,6 +58,7 @@ function ScenarioTile({
   linkProps,
   pictogramUrl,
   isHovered,
+  badgeText,
   ...rest
 }: Props) {
   const onChange = () => {
@@ -77,10 +80,15 @@ function ScenarioTile({
         <div className="fr-tile__content">
           <a {...linkProps} className="tw-bg-none">
             <ScenarioTileHeader title={title} pictogramUrl={pictogramUrl} />
+            <div className="fr-tile__details tw-grow">
+              <p className="fr-tile__desc tw-text-sm">{details}</p>
+            </div>
+            {badgeText && (
+              <Badge small className="tw-mt-2">
+                {badgeText}
+              </Badge>
+            )}
           </a>
-          <div className="fr-tile__details tw-grow">
-            <p className="fr-tile__desc tw-text-sm">{details}</p>
-          </div>
           <Checkbox
             className={classNames(
               fr.cx("fr-mt-3v"),
