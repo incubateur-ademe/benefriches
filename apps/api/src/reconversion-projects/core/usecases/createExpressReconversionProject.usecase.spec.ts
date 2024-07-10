@@ -176,8 +176,8 @@ describe("CreateReconversionProject Use Case", () => {
           } as const satisfies SpacesDistribution;
 
           const expectedBuildingsFloorAreaDistribution = {
-            RESIDENTIAL: 0.92 * 0.2 * site.surfaceArea,
-            GROUND_FLOOR_RETAIL: 0.08 * 0.2 * site.surfaceArea,
+            RESIDENTIAL: 0.35 * site.surfaceArea,
+            GROUND_FLOOR_RETAIL: 0.03 * site.surfaceArea,
           };
 
           const expectedSoilsDistribution: SoilsDistribution = {

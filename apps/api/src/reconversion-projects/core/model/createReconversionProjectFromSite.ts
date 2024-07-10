@@ -195,8 +195,8 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
     const soilsDistribution = computeSoilsDistributionFromSpaces(spacesDistribution);
 
     const buildingsFloorAreaDistribution = {
-      RESIDENTIAL: 0.92 * 0.2 * siteData.surfaceArea,
-      GROUND_FLOOR_RETAIL: 0.08 * 0.2 * siteData.surfaceArea,
+      RESIDENTIAL: 0.35 * siteData.surfaceArea,
+      GROUND_FLOOR_RETAIL: 0.03 * siteData.surfaceArea,
     };
 
     // expenses and incomes
