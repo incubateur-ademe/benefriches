@@ -127,7 +127,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             value={`${formatNumberFr(projectData.photovoltaicContractDuration)} ans`}
           />
         </Accordion>
-        <Accordion label="Répartition des sols" defaultExpanded>
+        <Accordion label="Transformation des sols" defaultExpanded>
           <DataLine
             label={<strong>Superficie totale du site</strong>}
             value={<strong>{formatSurfaceArea(siteData.surfaceArea)}</strong>}
@@ -146,7 +146,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               );
             })}
         </Accordion>
-        <Accordion label="Acteurs du projet" defaultExpanded>
+        <Accordion label="Acteurs" defaultExpanded>
           <DataLine
             label={<strong>Aménageur du site</strong>}
             value={projectData.projectDeveloper}
@@ -155,10 +155,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             label={<strong>Futur propriétaire du site</strong>}
             value={projectData.futureOwner ?? "Pas de changement de propriétaire"}
           />
-          <DataLine
-            label={<strong>Futur exploitant du site</strong>}
-            value={projectData.futureOperator}
-          />
+          <DataLine label={<strong>Futur exploitant</strong>} value={projectData.futureOperator} />
           {projectData.reinstatementContractOwner && (
             <DataLine
               label={<strong>Maître d'ouvrage des travaux de remise en état de la friche</strong>}
