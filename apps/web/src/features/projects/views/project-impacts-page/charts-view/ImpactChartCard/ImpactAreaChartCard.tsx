@@ -57,6 +57,8 @@ function ImpactAreaChartCard({
     },
     tooltip: {
       valueSuffix: `&nbsp;${unitSuffix ?? impactTypeFormatterMap[type].unitSuffix}`,
+      pointFormat: "{series.name}: <b>{point.y}</b><br/>",
+      outside: true,
     },
     plotOptions: {
       area: {
