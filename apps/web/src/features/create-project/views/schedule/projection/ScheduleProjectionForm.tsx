@@ -22,7 +22,7 @@ export type FormValues = {
     startDate: string;
     endDate: string;
   };
-  photovoltaicInstallationSchedule: {
+  photovoltaicInstallationSchedule?: {
     startDate: string;
     endDate: string;
   };
@@ -154,7 +154,7 @@ function ScheduleProjectionForm({
               }}
             />
           </div>
-          {formValues.photovoltaicInstallationSchedule.startDate &&
+          {formValues.photovoltaicInstallationSchedule?.startDate &&
           formValues.photovoltaicInstallationSchedule.endDate ? (
             <FormattedDuration
               startDate={formValues.photovoltaicInstallationSchedule.startDate}

@@ -25,7 +25,7 @@ const mapProps = (dispatch: AppDispatch, projectSite?: ProjectSite) => {
             }
           : undefined;
       const photovoltaicInstallationSchedule =
-        formData.photovoltaicInstallationSchedule.startDate &&
+        formData.photovoltaicInstallationSchedule?.startDate &&
         formData.photovoltaicInstallationSchedule.endDate
           ? {
               startDate: formData.photovoltaicInstallationSchedule.startDate,
