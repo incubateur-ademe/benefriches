@@ -166,14 +166,14 @@ describe("CreateReconversionProject Use Case", () => {
 
           const expectedSpacesDistribution = {
             BUILDINGS_FOOTPRINT: 0.2 * site.surfaceArea,
-            PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 0.05 * site.surfaceArea,
+            PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 0.07 * site.surfaceArea,
             PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 0.02 * site.surfaceArea,
             PRIVATE_GARDEN_AND_GRASS_ALLEYS: 0.37 * site.surfaceArea,
             PUBLIC_GREEN_SPACES: 0.19 * site.surfaceArea,
             PUBLIC_PARKING_LOT: 0.05 * site.surfaceArea,
             PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 0.04 * site.surfaceArea,
-            PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 0.07 * site.surfaceArea,
-            PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 0.01 * site.surfaceArea,
+            PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 0.06 * site.surfaceArea,
+            PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 0,
           } as const satisfies SpacesDistribution;
 
           const expectedBuildingsFloorAreaDistribution = {
@@ -369,11 +369,11 @@ describe("CreateReconversionProject Use Case", () => {
             expect(createdReconversionProject?.reinstatementCosts).toHaveLength(4);
             expect(createdReconversionProject?.reinstatementCosts?.at(0)).toEqual({
               purpose: "deimpermeabilization",
-              amount: 66000,
+              amount: 64000,
             });
             expect(createdReconversionProject?.reinstatementCosts?.at(1)).toEqual({
               purpose: "sustainable_soils_reinstatement",
-              amount: 256500,
+              amount: 252000,
             });
             expect(createdReconversionProject?.reinstatementCosts?.at(2)?.purpose).toEqual(
               "demolition",

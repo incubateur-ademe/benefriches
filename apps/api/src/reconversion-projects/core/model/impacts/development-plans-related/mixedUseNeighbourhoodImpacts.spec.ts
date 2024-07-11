@@ -52,13 +52,13 @@ describe("Mixed use neighbourhood specific impacts", () => {
           },
           {
             actor: "local_residents",
-            amount: 745.7386363636363,
+            amount: 894.8863636363636,
             impact: "avoided_air_conditioning_expenses",
             impactCategory: "economic_indirect",
           },
           {
             actor: "local_companies",
-            amount: 600,
+            amount: 700,
             impact: "avoided_air_conditioning_expenses",
             impactCategory: "economic_indirect",
           },
@@ -96,13 +96,13 @@ describe("Mixed use neighbourhood specific impacts", () => {
           },
           {
             actor: "local_residents",
-            amount: 19883.965304603178,
+            amount: 23860.758365523816,
             impact: "avoided_air_conditioning_expenses",
             impactCategory: "economic_indirect",
           },
           {
             actor: "local_companies",
-            amount: 600,
+            amount: 700,
             impact: "avoided_air_conditioning_expenses",
             impactCategory: "economic_indirect",
           },

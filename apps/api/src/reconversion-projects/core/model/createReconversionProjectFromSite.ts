@@ -127,7 +127,7 @@ export const computeReinstatementFullTimeJobs = (
   return Math.round(reinstatementFullTimeJobs.reduce((total, jobs) => total + jobs, 0) * 10) / 10;
 };
 
-const JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR = 0.04;
+const JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR = 0.05;
 const computeOperationsFullTimeJobs = (
   buildingsFloorAreaDistribution: MixedUseNeighbourhoodFeatures["buildingsFloorAreaDistribution"],
 ) => {
@@ -152,14 +152,14 @@ const computeOperationsFirstYear = (installationEndDate: Date): number => {
 const computeSpacesDistribution = (siteSurfaceArea: number): SpacesDistribution => {
   return {
     BUILDINGS_FOOTPRINT: 0.2 * siteSurfaceArea,
-    PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 0.05 * siteSurfaceArea,
+    PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: 0.07 * siteSurfaceArea,
     PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: 0.02 * siteSurfaceArea,
     PRIVATE_GARDEN_AND_GRASS_ALLEYS: 0.37 * siteSurfaceArea,
     PUBLIC_GREEN_SPACES: 0.19 * siteSurfaceArea,
     PUBLIC_PARKING_LOT: 0.05 * siteSurfaceArea,
     PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: 0.04 * siteSurfaceArea,
-    PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 0.07 * siteSurfaceArea,
-    PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 0.01 * siteSurfaceArea,
+    PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 0.06 * siteSurfaceArea,
+    PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 0,
   };
 };
 

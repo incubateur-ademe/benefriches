@@ -26,18 +26,18 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
   it("computes avoided air conditioning expenses for inhabitants", () => {
     expect(
       urbanFreshnessRelatedImpactsService.getAvoidedInhabitantsAirConditioningExpenses(),
-    ).toBeCloseTo(5430.966);
+    ).toBeCloseTo(6517.16);
   });
 
   it("computes avoided air conditioning expenses for business buildings", () => {
     expect(
       urbanFreshnessRelatedImpactsService.getAvoidedBusinessBuildingsAirConditioningExpenses(),
-    ).toEqual(1320);
+    ).toBeCloseTo(1540);
   });
 
   it("computes total avoided air conditioning expenses", () => {
     expect(urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningExpenses()).toBeCloseTo(
-      6750.966,
+      8057.16,
     );
   });
 
