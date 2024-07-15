@@ -31,12 +31,11 @@ export const getSoilTypeForSpace = (space: Space): SoilType => {
       return "IMPERMEABLE_SOILS";
     case "PRIVATE_GARDEN_AND_GRASS_ALLEYS":
     case "PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS":
+    case "PUBLIC_GREEN_SPACES":
       return "ARTIFICIAL_GRASS_OR_BUSHES_FILLED";
     case "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT":
     case "PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS":
       return "MINERAL_SOIL";
-    case "PUBLIC_GREEN_SPACES":
-      return "ARTIFICIAL_TREE_FILLED";
   }
 };
 

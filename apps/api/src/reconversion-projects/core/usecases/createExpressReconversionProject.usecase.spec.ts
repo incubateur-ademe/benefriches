@@ -183,10 +183,10 @@ describe("CreateReconversionProject Use Case", () => {
 
           const expectedSoilsDistribution: SoilsDistribution = {
             BUILDINGS: expectedSpacesDistribution.BUILDINGS_FOOTPRINT,
-            ARTIFICIAL_TREE_FILLED: expectedSpacesDistribution.PUBLIC_GREEN_SPACES,
             ARTIFICIAL_GRASS_OR_BUSHES_FILLED:
               expectedSpacesDistribution.PRIVATE_GARDEN_AND_GRASS_ALLEYS +
-              expectedSpacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS,
+              expectedSpacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS +
+              expectedSpacesDistribution.PUBLIC_GREEN_SPACES,
             IMPERMEABLE_SOILS:
               expectedSpacesDistribution.PUBLIC_PARKING_LOT +
               expectedSpacesDistribution.PRIVATE_PAVED_ALLEY_OR_PARKING_LOT +
