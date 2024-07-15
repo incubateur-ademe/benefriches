@@ -11,7 +11,7 @@ import {
 import {
   getEnvironmentalDetailsImpactLabel,
   getEnvironmentalImpactLabel,
-} from "@/features/projects/views/project-impacts-page/getImpactLabel";
+} from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { getColorForCarbonStorageSoilType } from "@/shared/domain/soils";
 import HighchartsCustomColorsWrapper from "@/shared/views/components/Charts/HighchartsCustomColorsWrapper";
 

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import ImpactsActionBar from "../shared/actions/ActionBar";
 import ImpactEvaluationPeriodSelect from "../shared/actions/ImpactEvaluationPeriodSelect";
-import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
+import ProjectsImpactsPageHeader from "./ProjectPageHeader";
 
 import {
   ImpactCategoryFilter,

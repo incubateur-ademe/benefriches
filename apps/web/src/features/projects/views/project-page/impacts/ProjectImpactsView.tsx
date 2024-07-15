@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ViewMode } from "../../application/projectImpacts.reducer";
+import { ViewMode } from "../../../application/projectImpacts.reducer";
 import { ImpactDescriptionModalCategory } from "./modals/ImpactDescriptionModalWizard";
 import AboutImpactsModal from "./AboutImpactsModal";
 import ImpactsChartsView from "./charts-view";
@@ -11,7 +11,7 @@ type Props = {
   evaluationPeriod: number;
 };
 
-const ProjectImpactsPage = ({ currentViewMode }: Props) => {
+const ProjectImpactsView = ({ currentViewMode }: Props) => {
   const [modalCategoryOpened, setModalCategoryOpened] =
     useState<ImpactDescriptionModalCategory>(undefined);
 
@@ -32,4 +32,4 @@ const ProjectImpactsPage = ({ currentViewMode }: Props) => {
   );
 };
 
-export default ProjectImpactsPage;
+export default ProjectImpactsView;

@@ -6,7 +6,7 @@ import {
   formatMonetaryImpact,
   formatSurfaceAreaImpact,
   impactFormatConfig,
-} from "../../../shared/formatImpactValue";
+} from "../../../../shared/formatImpactValue";
 import ImpactAbsoluteVariation from "./ImpactAbsoluteVariation";
 import ImpactChartCard from "./ImpactChartCard";
 import ImpactPercentageVariation from "./ImpactPercentageVariation";

@@ -10,7 +10,7 @@ import {
   EnvironmentalImpact,
   EnvironmentalImpactName,
 } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/modals/ImpactDescriptionModalWizard";
 
 type Props = {
   impacts: EnvironmentalImpact[];

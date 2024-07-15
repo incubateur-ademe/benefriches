@@ -6,9 +6,10 @@ import {
   ViewMode,
 } from "../../application/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
+import ProjectFeaturesView from "./features/ProjectFeaturesView";
+import ProjectImpactsPage from "./impacts/ProjectImpactsView";
 import ProjectImpactsActionBar from "./ProjectImpactsActionBar";
-import ProjectImpactsPage from "./ProjectImpactsPage";
-import ProjectsImpactsPageHeader from "./ProjectImpactsPageHeader";
+import ProjectsImpactsPageHeader from "./ProjectPageHeader";
 
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -29,26 +30,6 @@ type Props = {
   currentViewMode: ViewMode;
 };
 
-const ProjectImpactsPageTabs = () => {
-  return (
-    <ul
-      className={classNames(fr.cx("fr-tabs__list", "fr-container", "fr-mx-auto"), "tw-mx-auto")}
-      role="tablist"
-    >
-      <li role="presentation">
-        <button className="fr-tabs__tab" tabIndex={0} role="tab" aria-selected="true">
-          Impacts
-        </button>
-      </li>
-      {/* <li role="presentation">
-        <button className="fr-tabs__tab" tabIndex={1} role="tab" disabled>
-          Caractéristiques
-        </button>
-      </li> */}
-    </ul>
-  );
-};
-
 const getProjectTypeClassName = (type?: ProjectDevelopmentPlanType) => {
   switch (type) {
     case "MIXED_USE_NEIGHBOURHOOD":
@@ -60,7 +41,7 @@ const getProjectTypeClassName = (type?: ProjectDevelopmentPlanType) => {
   }
 };
 
-function ProjectImpactsPageWrapper({
+function ProjectPage({
   projectContext,
   dataLoadingState,
   onEvaluationPeriodChange,
@@ -87,17 +68,48 @@ function ProjectImpactsPageWrapper({
           isExpressProject={projectContext.isExpressProject}
         />
       </div>
-
       <div className={fr.cx("fr-tabs")}>
-        <ProjectImpactsPageTabs />
+        <div className="fr-container">
+          <ul
+            className={classNames(fr.cx("fr-tabs__list", "fr-mx-auto"))}
+            role="tablist"
+            aria-label="Onglets de la page projet"
+          >
+            <li role="presentation">
+              <button
+                id="tabpanel-impacts"
+                className="fr-tabs__tab"
+                tabIndex={0}
+                role="tab"
+                aria-selected="true"
+                aria-controls="tabpanel-impacts-panel"
+              >
+                Impacts
+              </button>
+            </li>
+            <li role="presentation">
+              <button
+                id="tabpanel-caracteristiques"
+                className="fr-tabs__tab"
+                tabIndex={1}
+                role="tab"
+                aria-selected="false"
+                aria-controls="tabpanel-caracteristiques-panel"
+                disabled
+              >
+                Caractéristiques
+              </button>
+            </li>
+          </ul>
+        </div>
         <div
-          className={classNames(
-            fr.cx("fr-tabs__panel", "fr-tabs__panel--selected"),
-            "tw-bg-dsfr-grey",
-          )}
+          id="tabpanel-impacts-panel"
+          className="fr-tabs__panel fr-tabs__panel--selected tw-bg-dsfr-grey"
           role="tabpanel"
+          aria-labelledby="tabpanel-impacts"
+          tabIndex={0}
         >
-          <div className={fr.cx("fr-container")}>
+          <div className="fr-container">
             <ProjectImpactsActionBar
               projectName={projectContext.name}
               siteName={projectContext.siteName}
@@ -111,9 +123,9 @@ function ProjectImpactsPageWrapper({
             />
             {dataLoadingState === "error" && (
               <Alert
-                description="Une erreur s'est produite lors du chargement des données."
+                description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
                 severity="error"
-                title="Impossible de charger les impacts du projet"
+                title="Impossible de charger les impacts et caractéristiques du projet"
                 className="fr-my-7v"
               />
             )}
@@ -126,9 +138,18 @@ function ProjectImpactsPageWrapper({
             )}
           </div>
         </div>
+        <div
+          id="tabpanel-caracteristiques-panel"
+          className="fr-tabs__panel tw-bg-dsfr-grey"
+          role="tabpanel"
+          aria-labelledby="tabpanel-caracteristiques"
+          tabIndex={1}
+        >
+          <ProjectFeaturesView />
+        </div>
       </div>
     </div>
   );
 }
 
-export default ProjectImpactsPageWrapper;
+export default ProjectPage;

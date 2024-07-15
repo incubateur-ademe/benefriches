@@ -1,23 +1,24 @@
 import {
+  FinancialAssistance,
+  OperationsCost,
+  ReinstatementCost,
+  SourceRevenue,
+} from "../../../domain/impacts.types";
+
+import {
   DevelopmentPlanInstallationCostName,
   EconomicBalanceMainName,
   EconomicBalanceName,
-} from "../../application/projectImpactsEconomicBalance.selectors";
+} from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import {
   CO2BenefitDetails,
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
   PermeableSoilsDetails,
   SoilsCarbonStorageDetails,
-} from "../../application/projectImpactsEnvironmental.selectors";
-import { SocialImpactName } from "../../application/projectImpactsSocial.selectors";
-import { SocioEconomicImpactName } from "../../application/projectImpactsSocioEconomic.selectors";
-import {
-  FinancialAssistance,
-  OperationsCost,
-  ReinstatementCost,
-  SourceRevenue,
-} from "../../domain/impacts.types";
+} from "@/features/projects/application/projectImpactsEnvironmental.selectors";
+import { SocialImpactName } from "@/features/projects/application/projectImpactsSocial.selectors";
+import { SocioEconomicImpactName } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {

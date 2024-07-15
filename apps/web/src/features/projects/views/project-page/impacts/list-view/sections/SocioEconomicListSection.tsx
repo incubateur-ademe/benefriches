@@ -5,9 +5,9 @@ import {
   SocioEconomicDetailedImpact,
   SocioEconomicImpactName,
 } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
-import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-impacts-page/getImpactLabel";
-import ImpactMainTitle from "@/features/projects/views/project-impacts-page/list-view/ImpactMainTitle";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
+import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
+import ImpactMainTitle from "@/features/projects/views/project-page/impacts/list-view/ImpactMainTitle";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/modals/ImpactDescriptionModalWizard";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 type Props = {

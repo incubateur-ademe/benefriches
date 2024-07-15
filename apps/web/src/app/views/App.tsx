@@ -33,7 +33,7 @@ const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/Si
 const LoginPage = lazy(() => import("@/features/login"));
 const OnboardingPage = lazy(() => import("@/features/onboarding"));
 const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
-const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-impacts-page"));
+const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
 const ProjectsImpactsComparisonPage = lazy(
   () => import("@/features/projects/views/projects-impacts-comparison"),
 );
@@ -129,6 +129,7 @@ function App() {
                 </RequireRegisteredUser>
               );
             case routes.projectImpacts.name:
+            case routes.projectFeatures.name:
               return (
                 <RequireRegisteredUser>
                   <ProjectImpactsPage projectId={route.params.projectId} />

@@ -3,7 +3,7 @@ import {
   formatDefaultImpact,
   formatMonetaryImpact,
   formatSurfaceAreaImpact,
-} from "../../shared/formatImpactValue";
+} from "../../../shared/formatImpactValue";
 
 import classNames from "@/shared/views/clsx";
 

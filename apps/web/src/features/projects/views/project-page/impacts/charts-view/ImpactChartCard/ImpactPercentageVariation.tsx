@@ -1,5 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { formatEvolutionPercentage } from "../../../shared/formatImpactValue";
+import { formatEvolutionPercentage } from "../../../../shared/formatImpactValue";
 
 import classNames from "@/shared/views/clsx";
 

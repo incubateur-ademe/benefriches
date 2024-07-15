@@ -7,7 +7,7 @@ import {
   SocialImpact,
   SocialImpactName,
 } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { getSocialImpactLabel } from "@/features/projects/views/project-impacts-page/getImpactLabel";
+import { getSocialImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 
 type Props = {
   projectName: string;

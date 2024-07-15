@@ -17,6 +17,10 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     () => "/creer-projet",
   ),
+  projectFeatures: defineRoute(
+    { projectId: param.path.string },
+    (params) => `/mes-projets/${params.projectId}/caracteristiques`,
+  ),
   projectImpacts: defineRoute(
     { projectId: param.path.string },
     (params) => `/mes-projets/${params.projectId}/impacts`,

@@ -8,7 +8,7 @@ import {
   setViewMode,
   ViewMode,
 } from "../../application/projectImpacts.reducer";
-import ProjectImpactsPageWrapper from "./ProjectImpactsPageWrapper";
+import ProjectPage from "./ProjectImpactsPage";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -16,7 +16,7 @@ type Props = {
   projectId: string;
 };
 
-function ProjectsImpacts({ projectId }: Props) {
+function ProjectPageContainer({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
   const { dataLoadingState, evaluationPeriod, currentCategoryFilter, currentViewMode } =
@@ -29,7 +29,7 @@ function ProjectsImpacts({ projectId }: Props) {
   }, [projectId, evaluationPeriod, dispatch]);
 
   return (
-    <ProjectImpactsPageWrapper
+    <ProjectPage
       projectContext={projectContext}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
@@ -46,4 +46,4 @@ function ProjectsImpacts({ projectId }: Props) {
   );
 }
 
-export default ProjectsImpacts;
+export default ProjectPageContainer;

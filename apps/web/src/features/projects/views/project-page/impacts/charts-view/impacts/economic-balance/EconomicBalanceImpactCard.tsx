@@ -3,7 +3,7 @@ import HighchartsReact from "highcharts-react-official";
 import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
 
 import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-impacts-page/getImpactLabel";
+import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";

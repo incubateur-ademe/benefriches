@@ -7,7 +7,7 @@ import {
   SocialImpact,
   SocialImpactName,
 } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-impacts-page/modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/modals/ImpactDescriptionModalWizard";
 
 type Props = {
   impacts: SocialImpact[];

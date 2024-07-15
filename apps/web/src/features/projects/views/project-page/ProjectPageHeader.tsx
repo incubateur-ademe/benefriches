@@ -13,7 +13,7 @@ type Props = {
   isSmall?: boolean;
 };
 
-const ProjectsImpactsPageHeader = ({
+const ProjectPageHeader = ({
   projectName,
   siteName,
   projectType,
@@ -81,4 +81,4 @@ const ProjectsImpactsPageHeader = ({
   );
 };
 
-export default ProjectsImpactsPageHeader;
+export default ProjectPageHeader;
