@@ -1,8 +1,8 @@
 import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
-import { RenewableEnergyDevelopmentPlanType } from "../../domain/project.types";
 import RenewableEnergyTile from "./RenewableEnergyTile";
 
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";

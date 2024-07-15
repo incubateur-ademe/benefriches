@@ -5,7 +5,8 @@ import {
 import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { ProjectSite, ReinstatementCost } from "@/features/create-project/domain/project.types";
+import { ProjectSite } from "@/features/create-project/domain/project.types";
+import { ReinstatementCost } from "@/shared/domain/reconversionProject";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>

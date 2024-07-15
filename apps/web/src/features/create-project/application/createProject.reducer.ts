@@ -23,17 +23,20 @@ import { saveReconversionProject, Schedule } from "./saveReconversionProject.act
 
 import { RootState } from "@/app/application/store";
 import {
+  PhotovoltaicKeyParameter,
+  ProjectSite,
+  ReconversionProjectCreationData,
+} from "@/features/create-project/domain/project.types";
+import {
   DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationCost,
-  PhotovoltaicKeyParameter,
   ProjectPhase,
   ProjectPhaseDetails,
-  ProjectSite,
-  ReconversionProjectCreationData,
   ReinstatementCost,
   RenewableEnergyDevelopmentPlanType,
-} from "@/features/create-project/domain/project.types";
+} from "@/shared/domain/reconversionProject";
+import { WorksSchedule } from "@/shared/domain/reconversionProject";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -106,15 +109,7 @@ export const getInitialState = (): ProjectCreationState => {
   };
 };
 
-type ScheduleStrings = {
-  startDate: string;
-  endDate: string;
-};
-
-const scheduleStringToDates = (scheduleStrings: {
-  startDate: string;
-  endDate: string;
-}): Schedule => {
+const scheduleStringToDates = (scheduleStrings: WorksSchedule): Schedule => {
   return {
     startDate: new Date(scheduleStrings.startDate),
     endDate: new Date(scheduleStrings.endDate),
@@ -413,8 +408,8 @@ export const projectCreationSlice = createSlice({
       state,
       action: PayloadAction<{
         firstYearOfOperation?: number;
-        photovoltaicInstallationSchedule?: ScheduleStrings;
-        reinstatementSchedule?: ScheduleStrings;
+        photovoltaicInstallationSchedule?: WorksSchedule;
+        reinstatementSchedule?: WorksSchedule;
       }>,
     ) => {
       const { firstYearOfOperation, photovoltaicInstallationSchedule, reinstatementSchedule } =

@@ -1,5 +1,7 @@
 import { SoilType } from "shared";
 
+import { ReinstatementCost } from "@/shared/domain/reconversionProject";
+
 export type SourceRevenue = "rent" | "operations" | "other";
 export type FinancialAssistance = "local_or_regional_authority_participation" | "public_subsidies";
 export type DevelopmentPlanInstallationCost = {
@@ -8,16 +10,6 @@ export type DevelopmentPlanInstallationCost = {
 };
 export type OperationsCost = {
   purpose: "rent" | "maintenance" | "taxes" | "other";
-  amount: number;
-};
-export type ReinstatementCost = {
-  purpose:
-    | "asbestos_removal"
-    | "sustainable_soils_reinstatement"
-    | "deimpermeabilization"
-    | "remediation"
-    | "demolition"
-    | "waste_collection";
   amount: number;
 };
 

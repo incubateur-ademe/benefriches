@@ -3,13 +3,13 @@ import {
   DevelopmentPlanInstallationCost,
   FinancialAssistance,
   OperationsCost,
-  ReinstatementCost,
   SourceRevenue,
 } from "../domain/impacts.types";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 import { RootState } from "@/app/application/store";
+import { ReinstatementCostsPurpose } from "@/shared/domain/reconversionProject";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
@@ -54,7 +54,7 @@ export type DevelopmentPlanInstallationCostName =
 type EconomicBalanceDetailsName =
   | OperationsCost["purpose"]
   | SourceRevenue
-  | ReinstatementCost["purpose"]
+  | ReinstatementCostsPurpose
   | FinancialAssistance
   | DevelopmentPlanInstallationCostName;
 

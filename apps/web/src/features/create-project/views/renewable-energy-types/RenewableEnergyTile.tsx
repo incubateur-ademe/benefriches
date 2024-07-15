@@ -1,10 +1,10 @@
-import { RenewableEnergyDevelopmentPlanType } from "../../domain/project.types";
 import {
   getDescriptionForRenewableEnergyType,
   getLabelForRenewableEnergyProductionType,
   getPictogramForRenewableEnergy,
 } from "../projectTypeLabelMapping";
 
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 

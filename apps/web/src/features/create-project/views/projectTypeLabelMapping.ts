@@ -1,7 +1,7 @@
 import {
   DevelopmentPlanCategory,
   RenewableEnergyDevelopmentPlanType,
-} from "../domain/project.types";
+} from "@/shared/domain/reconversionProject";
 
 export const getLabelForDevelopmentPlanCategory = (value: DevelopmentPlanCategory): string => {
   switch (value) {

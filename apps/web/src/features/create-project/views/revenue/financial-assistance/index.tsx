@@ -8,7 +8,7 @@ import ProjectFinancialAssistanceRevenueForm, {
 } from "./ProjectFinancialAssistanceRevenueForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { FinancialAssistanceRevenue } from "@/features/create-project/domain/project.types";
+import { FinancialAssistanceRevenue } from "@/shared/domain/reconversionProject";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 const mapFormValuesToFinancialAssistanceRevenues = (

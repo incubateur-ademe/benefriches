@@ -3,6 +3,11 @@ import Accordion from "@codegouvfr/react-dsfr/Accordion";
 import { SoilsDistribution, SoilType } from "shared";
 import { Schedule } from "../../application/saveReconversionProject.action";
 import {
+  getLabelForDevelopmentPlanCategory,
+  getLabelForRenewableEnergyProductionType,
+} from "../projectTypeLabelMapping";
+
+import {
   DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
   getLabelForFinancialAssistanceRevenueSource,
@@ -15,12 +20,7 @@ import {
   RecurringRevenue,
   ReinstatementCost,
   RenewableEnergyDevelopmentPlanType,
-} from "../../domain/project.types";
-import {
-  getLabelForDevelopmentPlanCategory,
-  getLabelForRenewableEnergyProductionType,
-} from "../projectTypeLabelMapping";
-
+} from "@/shared/domain/reconversionProject";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { sumList } from "@/shared/services/sum/sum";

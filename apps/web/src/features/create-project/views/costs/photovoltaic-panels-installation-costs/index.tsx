@@ -9,7 +9,7 @@ import PhotovoltaicPanelsInstallationCostsForm, {
 
 import { AppDispatch } from "@/app/application/store";
 import { getDefaultValuesForPhotovoltaicInstallationCosts } from "@/features/create-project/application/createProject.selectors";
-import { PhotovoltaicInstallationCost } from "@/features/create-project/domain/project.types";
+import { PhotovoltaicInstallationCost } from "@/shared/domain/reconversionProject";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapFormValuesToPhotovoltaicInstallationCosts = (

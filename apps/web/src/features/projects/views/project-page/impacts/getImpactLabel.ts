@@ -1,9 +1,4 @@
-import {
-  FinancialAssistance,
-  OperationsCost,
-  ReinstatementCost,
-  SourceRevenue,
-} from "../../../domain/impacts.types";
+import { FinancialAssistance, OperationsCost, SourceRevenue } from "../../../domain/impacts.types";
 
 import {
   DevelopmentPlanInstallationCostName,
@@ -19,6 +14,7 @@ import {
 } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
 import { SocialImpactName } from "@/features/projects/application/projectImpactsSocial.selectors";
 import { SocioEconomicImpactName } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { ReinstatementCost } from "@/shared/domain/reconversionProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {

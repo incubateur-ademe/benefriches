@@ -3,6 +3,7 @@ import Input from "@codegouvfr/react-dsfr/Input";
 import { formatDuration, interval, intervalToDuration } from "date-fns";
 import { fr } from "date-fns/locale";
 
+import { WorksSchedule } from "@/shared/domain/reconversionProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
@@ -18,14 +19,8 @@ type Props = {
 };
 
 export type FormValues = {
-  reinstatementSchedule?: {
-    startDate: string;
-    endDate: string;
-  };
-  photovoltaicInstallationSchedule?: {
-    startDate: string;
-    endDate: string;
-  };
+  reinstatementSchedule?: WorksSchedule;
+  photovoltaicInstallationSchedule?: WorksSchedule;
   firstYearOfOperation?: number;
 };
 
@@ -39,7 +34,7 @@ const getFormattedDuration = (startDate: Date, endDate: Date) => {
   });
 };
 
-const FormattedDuration = ({ startDate, endDate }: { startDate: string; endDate: string }) => {
+const FormattedDuration = ({ startDate, endDate }: WorksSchedule) => {
   return (
     <p>
       Soit <strong>{getFormattedDuration(new Date(startDate), new Date(endDate))}</strong>.

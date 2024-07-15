@@ -1,5 +1,4 @@
-import { ReinstatementCost, ReinstatementCostsPurpose } from "./project.types";
-
+import { ReinstatementCost, ReinstatementCostsPurpose } from "@/shared/domain/reconversionProject";
 import { roundTo1Digit } from "@/shared/services/round-numbers/roundNumbers";
 
 const FULL_TIME_JOBS_RATIO_FOR_BUDGET_PER_EURO_PER_YEAR: Record<

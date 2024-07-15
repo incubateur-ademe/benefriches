@@ -1,10 +1,13 @@
 import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { DevelopmentPlanCategory, developmentPlanCategorySchema } from "../../domain/project.types";
 import DevelopmentPlanCategoryTile from "./DevelopmentPlanCategoryTile";
 
 import AboutFormsModal from "@/shared/app-settings/views/AboutFormsModal";
+import {
+  DevelopmentPlanCategory,
+  developmentPlanCategorySchema,
+} from "@/shared/domain/reconversionProject";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
