@@ -4,25 +4,6 @@ import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection
 import { User } from "src/users/core/model/user";
 import { UserRepository } from "src/users/core/usecases/createUser.usecase";
 
-declare module "knex/types/tables" {
-  interface Tables {
-    users: SqlUser;
-  }
-}
-type SqlUser = {
-  id: string;
-  email: string;
-  firstname?: string;
-  lastname?: string;
-  structure_name?: string;
-  structure_type?: string;
-  structure_activity?: string;
-  created_at: Date;
-  personal_data_storage_consented_at: Date;
-  personal_data_analytics_use_consented_at?: Date;
-  personal_data_communication_use_consented_at?: Date;
-};
-
 export class SqlUserRepository implements UserRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 

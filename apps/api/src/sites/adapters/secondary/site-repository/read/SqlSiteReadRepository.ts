@@ -1,79 +1,14 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import {
+  SqlAddress,
+  SqlSite,
+  SqlSiteExpense,
+  SqlSiteSoilsDistribution,
+} from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { SitesReadRepository } from "src/sites/core/gateways/SitesReadRepository";
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
-import { SoilType } from "src/soils/domain/soils";
-
-declare module "knex/types/tables" {
-  interface Tables {
-    sites: SqlSite;
-    addresses: SqlAddress;
-    site_soils_distributions: SqlSoilsDistribution;
-    site_expenses: SqlSiteExpense;
-    site_incomes: SqlSiteIncome;
-  }
-}
-
-type SqlSite = {
-  id: string;
-  name: string;
-  created_by: string;
-  description: string | null;
-  surface_area: number;
-  is_friche: boolean;
-  full_time_jobs_involved: number | null;
-  owner_structure_type: string;
-  owner_name: string | null;
-  tenant_structure_type: string | null;
-  tenant_name: string | null;
-  // friche related
-  friche_activity: string | null;
-  friche_has_contaminated_soils: boolean | null;
-  friche_contaminated_soil_surface_area: number | null;
-  friche_accidents_minor_injuries: number | null;
-  friche_accidents_severe_injuries: number | null;
-  friche_accidents_deaths: number | null;
-  // dates
-  created_at: Date;
-};
-
-type SqlAddress = {
-  id: string;
-  ban_id: string;
-  value: string;
-  city: string;
-  city_code: string;
-  post_code: string;
-  lat: number;
-  long: number;
-  street_name: string | null;
-  street_number: string | null;
-  site_id: string;
-};
-
-type SqlSoilsDistribution = {
-  id: string;
-  soil_type: SoilType;
-  surface_area: number;
-  site_id: string;
-};
-
-type SqlSiteExpense = {
-  id: string;
-  site_id: string;
-  purpose: string;
-  bearer: string;
-  purpose_category: string;
-  amount: number;
-};
-
-type SqlSiteIncome = {
-  id: string;
-  site_id: string;
-  source: string;
-  amount: number;
-};
 
 export class SqlSitesReadRepository implements SitesReadRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
@@ -159,7 +94,7 @@ export class SqlSitesReadRepository implements SitesReadRepository {
           address_long: SqlAddress["long"];
           address_street_name: SqlAddress["street_name"];
           address_street_number: SqlAddress["street_number"];
-          soils_distribution: Pick<SqlSoilsDistribution, "soil_type" | "surface_area">[] | null;
+          soils_distribution: Pick<SqlSiteSoilsDistribution, "soil_type" | "surface_area">[] | null;
           yearly_expenses: Pick<SqlSiteExpense, "amount" | "purpose">[] | null;
         }[];
 

@@ -4,97 +4,16 @@ import { v4 as uuid } from "uuid";
 import { ReconversionProject } from "src/reconversion-projects/core/model/reconversionProject";
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import {
+  SqlDevelopmentPlan,
+  SqlDevelopmentPlanCost,
+  SqlReconversionProject,
+  SqlReconversionProjectExpense,
+  SqlReconversionProjectSoilsDistribution,
+  SqlReinstatementCost,
+  SqlRevenue,
+} from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { SoilType } from "src/soils/domain/soils";
-
-declare module "knex/types/tables" {
-  interface Tables {
-    reconversion_projects: SqlReconversionProject;
-    reconversion_project_soils_distributions: SqlSoilsDistribution;
-    reconversion_project_development_plans: SqlDevelopmentPlan;
-    reconversion_project_yearly_expenses: SqlExpense;
-    reconversion_project_yearly_revenues: SqlRevenue;
-    reconversion_project_reinstatement_costs: SqlReinstatementCost;
-    reconversion_project_financial_assistance_revenues: SqlRevenue;
-  }
-}
-type SqlReconversionProject = {
-  id: string;
-  created_by: string;
-  creation_mode: string;
-  name: string;
-  description?: string;
-  related_site_id: string;
-  future_operator_name?: string;
-  future_operator_structure_type?: string;
-  future_site_owner_name?: string;
-  future_site_owner_structure_type?: string;
-  future_operations_full_time_jobs?: number;
-  conversion_full_time_jobs_involved?: number;
-  operations_first_year?: number;
-  // reinstatement
-  reinstatement_contract_owner_name?: string;
-  reinstatement_contract_owner_structure_type?: string;
-  reinstatement_full_time_jobs_involved?: number;
-  reinstatement_schedule_start_date?: Date;
-  reinstatement_schedule_end_date?: Date;
-  // site purchase
-  site_purchase_selling_price?: number;
-  site_purchase_property_transfer_duties?: number;
-  // site resale
-  site_resale_expected_selling_price?: number;
-  site_resale_expected_property_transfer_duties?: number;
-  // project phase
-  project_phase: string;
-  project_phase_details?: string;
-  // dates
-  created_at: Date;
-};
-
-type SqlSoilsDistribution = {
-  id: string;
-  soil_type: SoilType;
-  surface_area: number;
-  reconversion_project_id: string;
-};
-
-type SqlDevelopmentPlan = {
-  id: string;
-  type: string;
-  developer_name: string;
-  developer_structure_type: string;
-  features: unknown;
-  reconversion_project_id: string;
-  schedule_start_date?: Date;
-  schedule_end_date?: Date;
-};
-
-type SqlDevelopmentPlanCost = {
-  id: string;
-  purpose: string;
-  amount: number;
-  development_plan_id: string;
-};
-
-type SqlExpense = {
-  id: string;
-  purpose: string;
-  amount: number;
-  reconversion_project_id: string;
-};
-
-type SqlRevenue = {
-  id: string;
-  source: string;
-  amount: number;
-  reconversion_project_id: string;
-};
-
-type SqlReinstatementCost = {
-  id: string;
-  purpose: string;
-  amount: number;
-  reconversion_project_id: string;
-};
 
 const mapRevenuesToSqlStruct = (
   revenues: { amount: number; source: string }[],
@@ -153,7 +72,7 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       if (!insertedReconversionProject) throw new Error("Failed to insert reconversion project");
 
       // soils distribution
-      const soilsDistributionToInsert: SqlSoilsDistribution[] = Object.entries(
+      const soilsDistributionToInsert: SqlReconversionProjectSoilsDistribution[] = Object.entries(
         reconversionProject.soilsDistribution,
       ).map(([soilType, surfaceArea]) => {
         return {
@@ -191,16 +110,15 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       }
 
       if (reconversionProject.yearlyProjectedCosts.length > 0) {
-        const yearlyExpensesToInsert: SqlExpense[] = reconversionProject.yearlyProjectedCosts.map(
-          ({ amount, purpose }) => {
+        const yearlyExpensesToInsert: SqlReconversionProjectExpense[] =
+          reconversionProject.yearlyProjectedCosts.map(({ amount, purpose }) => {
             return {
               id: uuid(),
               amount,
               purpose,
               reconversion_project_id: insertedReconversionProject.id,
             };
-          },
-        );
+          });
         await trx("reconversion_project_yearly_expenses").insert(yearlyExpensesToInsert);
       }
 
