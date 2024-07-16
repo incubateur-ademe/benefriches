@@ -15,7 +15,7 @@
     "build": "tsc && vite build",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",
     "format:check": "prettier --check --cache  \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/",
-    "lint": "eslint --max-warnings 0 .",
+    "lint": "eslint --report-unused-disable-directives --max-warnings 0 .",
     "test:unit": "vitest --globals=true",
     "test": "pnpm test:unit",
     "typecheck": "tsc --noEmit",
