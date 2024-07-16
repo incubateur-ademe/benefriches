@@ -9,6 +9,7 @@ const FRICHE_COST_PURPOSES = [
   "illegalDumpingCost",
   "accidentsCost",
   "otherSecuringCosts",
+  "maintenance",
 ] as const;
 
 type DirectAndIndirectEconomicImpactsInput = {

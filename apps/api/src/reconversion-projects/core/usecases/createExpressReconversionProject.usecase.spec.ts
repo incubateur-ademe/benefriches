@@ -121,7 +121,7 @@ describe("CreateReconversionProject Use Case", () => {
             startDate: new Date("2026-09-01T13:00:00"),
             endDate: new Date("2027-09-01T13:00:00"),
           });
-          expect(createdReconversionProject?.operationsFirstYear).toEqual(2027);
+          expect(createdReconversionProject?.operationsFirstYear).toEqual(2028);
         });
 
         it("should create a mixed-use neighbourhood project with site city as developer, reinstatement contract owner and site owner", async () => {

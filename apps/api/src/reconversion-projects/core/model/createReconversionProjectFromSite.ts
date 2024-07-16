@@ -127,7 +127,7 @@ export const computeReinstatementFullTimeJobs = (
   return Math.round(reinstatementFullTimeJobs.reduce((total, jobs) => total + jobs, 0) * 10) / 10;
 };
 
-const JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR = 0.05;
+const JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR = 0.044;
 const computeOperationsFullTimeJobs = (
   buildingsFloorAreaDistribution: MixedUseNeighbourhoodFeatures["buildingsFloorAreaDistribution"],
 ) => {
@@ -146,7 +146,7 @@ const computeInstallationSchedule =
   };
 
 const computeOperationsFirstYear = (installationEndDate: Date): number => {
-  return installationEndDate.getFullYear();
+  return installationEndDate.getFullYear() + 1;
 };
 
 const computeSpacesDistribution = (siteSurfaceArea: number): SpacesDistribution => {

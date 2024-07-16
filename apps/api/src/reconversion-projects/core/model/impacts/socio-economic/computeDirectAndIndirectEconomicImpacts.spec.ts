@@ -112,6 +112,10 @@ describe("Socio-economic impacts", () => {
             purpose: "security",
           },
           {
+            amount: 1000,
+            purpose: "maintenance",
+          },
+          {
             amount: 1500,
             purpose: "illegalDumpingCost",
           },
@@ -133,7 +137,7 @@ describe("Socio-economic impacts", () => {
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
           actor: "Current tenant",
-          amount: 220000,
+          amount: 230000,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
         },
