@@ -4,10 +4,13 @@ const structureActivitySchema = z.enum([
   "urban_planner",
   "real_estate_developer",
   "local_authority_landlord",
-  "local_authority",
   "photovoltaic_plants_developer",
   "industrialist",
   "other",
+  "municipality",
+  "epci",
+  "department",
+  "region",
 ]);
 
 export type UserStructureActivity = z.infer<typeof structureActivitySchema>;
