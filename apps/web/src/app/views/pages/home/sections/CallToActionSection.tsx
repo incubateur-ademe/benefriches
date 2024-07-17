@@ -34,16 +34,24 @@ export default function CallToActionSection() {
             )}
           >
             <img
+              src="/img/pictograms/development-plans/mixed-used-neighborhood.svg"
+              width="100px"
+              aria-hidden="true"
+              alt="icône projet d’aménagement urbain"
+              className={fr.cx("fr-mb-3w")}
+            />
+            <img
               src="/img/pictograms/renewable-energy/photovoltaic.svg"
               width="100px"
               aria-hidden="true"
               alt="icône projet d’aménagement photovoltaïque"
               className={fr.cx("fr-mb-3w")}
             />
-            <h2>Vous êtes porteur de projet photovoltaïque ?</h2>
+
+            <h2>Vous êtes aménageur urbain ou porteur de projet photovoltaïque&nbsp;?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>
-              Calculez les impacts d'un projet photovoltaïque sur une friche ou sur un autre site
-              grâce à Bénéfriches !
+              Calculez les impacts d'un projet d’aménagement urbain (logements, quartier mixte) ou
+              photovoltaïque sur une friche ou sur un autre site grâce à Bénéfriches&nbsp;!
             </p>
             <Button priority="primary" linkProps={routes.createSiteFoncierIntro().link}>
               Accéder à Bénéfriches
@@ -54,19 +62,26 @@ export default function CallToActionSection() {
             className={fr.cx("fr-col-12", "fr-col-md-7", "fr-pl-md-8w", "fr-pt-6v", "fr-pt-md-0")}
           >
             <img
-              src="/img/pictograms/development-plans/mixed-used-neighborhood.svg"
+              src="/img/pictograms/development-plans/commercial-activity-area.svg"
               width="100px"
               aria-hidden="true"
-              alt="icône projet d’aménagement urbain"
+              alt="icône projet zone d’activités économiques"
               className={fr.cx("fr-mb-3w")}
             />
-            <h2>Vous êtes aménageur urbain ?</h2>
+            <img
+              src="/img/pictograms/development-plans/natural-urban-space.svg"
+              width="100px"
+              aria-hidden="true"
+              alt="icône projet de renaturation"
+              className={fr.cx("fr-mb-3w")}
+            />
+            <h2>Vous êtes porteur d’un autre type de projet&nbsp;?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>
-              Les projets d'aménagement (logements, lieux d'activités, espace vert...) ne sont pas
-              encore disponibles sur la solution numérique.
+              Les projets d'aménagement de type zones d’activités économiques ou renaturation ne
+              sont pas encore disponibles sur la solution numérique.
             </p>
             <p className={fr.cx("fr-text--sm")}>
-              Ils le seront à partir de l'été 2024. En attendant, il est toujours possible
+              Ils le seront à partir de décembre 2024. En attendant, il est toujours possible
               d'utiliser le{" "}
               <ExternalLink href={BENEFRICHES_SPREADSHEET_URL}>tableur de calcul</ExternalLink>{" "}
               (téléchargement libre). Pour vous aider dans son utilisation, consultez le{" "}
@@ -83,7 +98,7 @@ export default function CallToActionSection() {
               questionnaire :
             </p>
             <Button priority="primary" data-tally-open="npKkaE" data-tally-width="450">
-              Être tenu informé
+              Être tenu informé·e
             </Button>
           </div>
         </div>
