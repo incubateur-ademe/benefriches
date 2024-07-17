@@ -123,7 +123,7 @@ describe("Project Stakeholders selector", () => {
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
           name: USER.structureName,
-          role: "user_company",
+          role: "user_structure",
           structureType: USER.structureType,
         }),
       );
@@ -180,7 +180,7 @@ describe("Project Stakeholders selector", () => {
       expect(stakeholders).not.toContainEqual(
         expect.objectContaining({
           name: USER.structureName,
-          role: "user_company",
+          role: "user_structure",
           structureType: USER.structureType,
         }),
       );
@@ -215,7 +215,7 @@ describe("Project Stakeholders selector", () => {
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
           name: USER.structureName,
-          role: "user_company",
+          role: "user_structure",
           structureType: USER.structureType,
         }),
       );
@@ -261,7 +261,7 @@ describe("Project Stakeholders selector", () => {
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
           name: USER.structureName,
-          role: "user_company",
+          role: "user_structure",
           structureType: USER.structureType,
         }),
       );
@@ -291,19 +291,20 @@ describe("Project Stakeholders selector", () => {
           projectData: {
             ...projectWithMinimalData,
             projectDeveloper: {
-              name: "Métropole",
+              name: "Grenoble-Alpes-Métropole",
               structureType: "epci",
             },
             futureOperator: {
-              name: "Région",
+              name: "Région Auvergne-Rhône-Alpes",
               structureType: "region",
             },
             futureSiteOwner: {
-              name: "Future site owner",
+              name: "Département Isère",
               structureType: "department",
             },
           },
         },
+        MOCK_STATES.currentUser,
       );
 
       expect(localAuthorities).toEqual([]);
@@ -316,6 +317,7 @@ describe("Project Stakeholders selector", () => {
           ...MOCK_STATES.projectCreation,
           siteData: { ...siteData, owner: { structureType: "company", name: "" } },
         } as ProjectCreationState,
+        MOCK_STATES.currentUser,
       );
 
       expect(localAuthorities).toEqual([
@@ -333,9 +335,11 @@ describe("Project Stakeholders selector", () => {
           localAuthorities: undefined,
         },
         MOCK_STATES.projectCreation,
+        MOCK_STATES.currentUser,
       );
 
       expect(localAuthorities).toEqual([
+        { type: "municipality", name: "Mairie" },
         { type: "epci", name: "Établissement public de coopération intercommunale" },
         { type: "department", name: "Département" },
         { type: "region", name: "Région" },
@@ -360,10 +364,54 @@ describe("Project Stakeholders selector", () => {
           },
         },
         MOCK_STATES.projectCreation,
+        MOCK_STATES.currentUser,
       );
 
       expect(localAuthoritiesWithNoEpci).toEqual([
         { type: "epci", name: "Établissement public de coopération intercommunale" },
+        { type: "department", name: "Département Isère" },
+        { type: "region", name: "Région Auvergne-Rhône-Alpes" },
+      ]);
+    });
+
+    it("should return local authorities without current user if it is local_authority", () => {
+      const localAuthorities = getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        MOCK_STATES.projectSiteLocalAuthorities,
+        MOCK_STATES.projectCreation,
+        {
+          ...MOCK_STATES.currentUser,
+          currentUser: {
+            ...MOCK_STATES.currentUser.currentUser,
+            structureActivity: "department",
+            structureType: "local_authority",
+            structureName: "Département Isère",
+          },
+        },
+      );
+
+      expect(localAuthorities).toEqual([
+        { type: "epci", name: "Grenoble-Alpes-Métropole" },
+        { type: "region", name: "Région Auvergne-Rhône-Alpes" },
+      ]);
+    });
+
+    it("should return local authorities with current user if it is local_authority but not related to the site address", () => {
+      const localAuthorities = getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        MOCK_STATES.projectSiteLocalAuthorities,
+        MOCK_STATES.projectCreation,
+        {
+          ...MOCK_STATES.currentUser,
+          currentUser: {
+            ...MOCK_STATES.currentUser.currentUser,
+            structureActivity: "department",
+            structureType: "local_authority",
+            structureName: "Département Rhône",
+          },
+        },
+      );
+
+      expect(localAuthorities).toEqual([
+        { type: "epci", name: "Grenoble-Alpes-Métropole" },
         { type: "department", name: "Département Isère" },
         { type: "region", name: "Région Auvergne-Rhône-Alpes" },
       ]);

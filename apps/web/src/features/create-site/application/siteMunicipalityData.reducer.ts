@@ -2,6 +2,7 @@ import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 
 import { RootState } from "@/app/application/store";
+import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -36,7 +37,7 @@ const initialState: SiteMunicipalityDataState = {
   population: undefined,
 };
 
-export type LocalAuthority = {
+export type AvailableLocalAuthority = {
   type: "municipality" | "epci" | "region" | "department";
   name: string;
 };
@@ -44,43 +45,58 @@ export type LocalAuthority = {
 export const getAvailableLocalAuthorities = createSelector(
   [(state: RootState) => state.siteMunicipalityData, (state: RootState) => state.siteCreation],
   (siteMunicipalityData, siteCreation) => {
-    const localAuthorities: LocalAuthority[] = [];
-
     const { owner: siteOwner } = siteCreation.siteData;
-    const siteOwnerStructureType = siteOwner?.structureType;
 
-    const { city, department, region, epci } = siteMunicipalityData.localAuthorities ?? {
-      city: { name: "Mairie" },
-      department: { name: "Département" },
-      region: { name: "Région" },
-      epci: { name: "Établissement public de coopération intercommunale" },
-    };
+    const { city, department, region, epci } = siteMunicipalityData.localAuthorities ?? {};
 
-    if (siteOwnerStructureType !== "municipality") {
-      localAuthorities.push({
+    const addressLocalAuthorities = [
+      {
         type: "municipality",
-        name: city.name,
-      });
-    }
-    if (siteOwnerStructureType !== "epci") {
-      localAuthorities.push({
+        name: city ? formatLocalAuthorityName("municipality", city.name) : "Mairie",
+      },
+      {
         type: "epci",
-        name: epci?.name ?? "Établissement public de coopération intercommunale",
-      });
-    }
-    if (siteOwnerStructureType !== "department") {
-      localAuthorities.push({
+        name: epci
+          ? formatLocalAuthorityName("epci", epci.name)
+          : "Établissement public de coopération intercommunale",
+      },
+      {
         type: "department",
-        name: department.name,
-      });
-    }
-    if (siteOwnerStructureType !== "region") {
-      localAuthorities.push({
+        name: department ? formatLocalAuthorityName("department", department.name) : "Département",
+      },
+      {
         type: "region",
-        name: region.name,
-      });
+        name: region ? formatLocalAuthorityName("region", region.name) : "Région",
+      },
+    ];
+
+    return addressLocalAuthorities.filter(
+      (addressLocalAuthority) =>
+        !(
+          addressLocalAuthority.name === siteOwner?.name &&
+          addressLocalAuthority.type === siteOwner.structureType
+        ),
+    ) as AvailableLocalAuthority[];
+  },
+);
+
+export const getAvailableLocalAuthoritiesWithoutCurrentUser = createSelector(
+  [
+    (state: RootState) => getAvailableLocalAuthorities(state),
+    (state: RootState) => state.currentUser,
+  ],
+  (availableLocalAuthorities, currentUserState) => {
+    const currentUser = currentUserState.currentUser;
+    if (currentUser?.structureType !== "local_authority") {
+      return availableLocalAuthorities;
     }
-    return localAuthorities;
+    return availableLocalAuthorities.filter(
+      (addressLocalAuthority) =>
+        !(
+          addressLocalAuthority.name === currentUser.structureName &&
+          addressLocalAuthority.type === currentUser.structureActivity
+        ),
+    );
   },
 );
 

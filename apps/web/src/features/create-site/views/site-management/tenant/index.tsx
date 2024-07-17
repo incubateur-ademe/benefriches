@@ -5,20 +5,20 @@ import { revertTenantStep } from "@/features/create-site/application/createSite.
 import { completeTenant } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
+  AvailableLocalAuthority,
   getAvailableLocalAuthorities,
-  LocalAuthority,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const convertFormValuesForStore = (
   data: FormValues,
-  localAuthorities: LocalAuthority[],
+  localAuthorities: AvailableLocalAuthority[],
 ): Tenant | undefined => {
   if (data.tenantType === "local_or_regional_authority") {
     const localAuthority = localAuthorities.find(
       ({ type }) => type === data.localAuthority,
-    ) as LocalAuthority;
+    ) as AvailableLocalAuthority;
     return {
       name: localAuthority.name,
       structureType: data.localAuthority,
