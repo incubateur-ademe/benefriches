@@ -15,24 +15,28 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   eslintConfigPrettier,
+  { files: ["**/*.{js,ts,jsx,tsx,mjs,cjs}"] },
+  {
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: ["./tsconfig.json", "./tsconfig.node.json"],
+        ecmaFeatures: { jsx: true },
+        globals: { ...globals.browser },
+      },
+    },
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
+    },
+  },
   {
     plugins: {
       ["@typescript-eslint"]: tseslint.plugin,
       ["simple-import-sort"]: simpleImportSortPlugin,
       ["react-refresh"]: reactRefreshPlugin,
     },
-    linterOptions: {
-      reportUnusedDisableDirectives: "error",
-    },
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        project: ["./tsconfig.json", "./tsconfig.node.json"],
-      },
-    },
   },
   {
-    files: ["**/*.tsx"],
     plugins: {
       react: reactPlugin,
       "react-hooks": fixupPluginRules(reactHooksPlugin),
@@ -45,14 +49,7 @@ export default tseslint.config(
       "react/no-unescaped-entities": ["error", { forbid: [">", "}"] }],
     },
     settings: {
-      react: {
-        version: "detect",
-      },
-    },
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
+      react: { version: "detect" },
     },
   },
   {
