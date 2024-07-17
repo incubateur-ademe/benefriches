@@ -30,6 +30,7 @@ function ProjectPageContainer({ projectId }: Props) {
 
   return (
     <ProjectPage
+      projectId={projectId}
       projectContext={projectContext}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}

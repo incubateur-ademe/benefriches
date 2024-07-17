@@ -14,6 +14,7 @@ import {
   ReconversionProjectRepository,
   SiteRepository,
 } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import {
   GetUserReconversionProjectsBySiteUseCase,
   ReconversionProjectsListRepository,
@@ -23,6 +24,7 @@ import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SqlSitesReadRepository } from "src/sites/adapters/secondary/site-repository/read/SqlSiteReadRepository";
 import { SqlSiteWriteRepository } from "src/sites/adapters/secondary/site-repository/write/SqlSiteWriteRepository";
 import { SitesReadRepository } from "src/sites/core/gateways/SitesReadRepository";
+import { SqlReconversionProjectQuery } from "../secondary/queries/SqlReconversionProjectQuery";
 import { SqlReconversionProjectImpactsRepository } from "../secondary/reconversion-project-impacts-repository/SqlReconversionProjectImpactsRepository";
 import { SqlReconversionProjectRepository } from "../secondary/reconversion-project-repository/SqlReconversionProjectRepository";
 import { SqlReconversionProjectsListRepository } from "../secondary/reconversion-projects-list-repository/SqlReconversionProjectsListRepository";
@@ -98,7 +100,15 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         GetCityPopulationAndSurfaceAreaUseCase,
       ],
     },
+    {
+      provide: GetReconversionProjectFeaturesUseCase,
+      useFactory(reconversionProjectQuery: SqlReconversionProjectQuery) {
+        return new GetReconversionProjectFeaturesUseCase(reconversionProjectQuery);
+      },
+      inject: [SqlReconversionProjectQuery],
+    },
     SqlReconversionProjectRepository,
+    SqlReconversionProjectQuery,
     SqlReconversionProjectsListRepository,
     SqlSiteWriteRepository,
     SqlSitesReadRepository,

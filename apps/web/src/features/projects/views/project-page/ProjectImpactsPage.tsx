@@ -6,8 +6,8 @@ import {
   ViewMode,
 } from "../../application/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
-import ProjectFeaturesView from "./features/ProjectFeaturesView";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
+import ProjectFeaturesView from "./features";
 import ProjectImpactsActionBar from "./ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./ProjectPageHeader";
 
@@ -15,6 +15,7 @@ import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 type Props = {
+  projectId: string;
   dataLoadingState: ProjectImpactsState["dataLoadingState"];
   projectContext: {
     name: string;
@@ -42,6 +43,7 @@ const getProjectTypeClassName = (type?: ProjectDevelopmentPlanType) => {
 };
 
 function ProjectPage({
+  projectId,
   projectContext,
   dataLoadingState,
   onEvaluationPeriodChange,
@@ -95,7 +97,6 @@ function ProjectPage({
                 role="tab"
                 aria-selected="false"
                 aria-controls="tabpanel-caracteristiques-panel"
-                disabled
               >
                 Caractéristiques
               </button>
@@ -145,7 +146,7 @@ function ProjectPage({
           aria-labelledby="tabpanel-caracteristiques"
           tabIndex={1}
         >
-          <ProjectFeaturesView />
+          <ProjectFeaturesView projectId={projectId} />
         </div>
       </div>
     </div>

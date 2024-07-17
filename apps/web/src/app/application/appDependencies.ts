@@ -6,6 +6,7 @@ import { HttpSaveReconversionProjectService } from "@/features/create-project/in
 import { HttpSitesService } from "@/features/create-project/infrastructure/sites-service/HttpSiteService";
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
 import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
+import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/HttpProjectFeaturesService";
 import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
 import { HttpSiteFeaturesService } from "@/features/site-features/infra/site-features-service/HttpSiteFeaturesService";
@@ -28,4 +29,5 @@ export const appDependencies: AppDependencies = {
   currentUserService: new LocalStorageUserService(),
   createUserService: new HttpCreateUserService(),
   siteFeaturesService: new HttpSiteFeaturesService(),
+  projectFeaturesService: new HttpProjectFeaturesService(),
 };

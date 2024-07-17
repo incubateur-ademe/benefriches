@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SoilType } from "shared";
-import { Project, ProjectSite } from "../domain/projects.types";
+import { ProjectForComparison, ProjectSite } from "../domain/projects.types";
 import {
   fetchBaseProjectAndWithProjectData,
   fetchCurrentAndProjectedSoilsCarbonStorage,
@@ -22,14 +22,14 @@ export type ProjectImpactsComparisonState = {
   baseScenario: {
     type?: "STATU_QUO" | "PROJECT";
     id?: string;
-    projectData?: Project;
+    projectData?: ProjectForComparison;
     siteData?: ProjectSite;
     soilsCarbonStorage?: SoilsCarbonStorage;
   };
   withScenario: {
     type?: "PROJECT";
     id?: string;
-    projectData?: Project;
+    projectData?: ProjectForComparison;
     siteData?: ProjectSite;
     soilsCarbonStorage?: SoilsCarbonStorage;
   };
