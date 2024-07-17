@@ -42,7 +42,7 @@ function ProjectionCreationDataSummaryContainer() {
           ? projectData.sitePurchaseSellingPrice +
             (projectData.sitePurchasePropertyTransferDuties ?? 0)
           : 0,
-        finanalAssistanceRevenues: projectData.financialAssistanceRevenues,
+        financialAssistanceRevenues: projectData.financialAssistanceRevenues,
         reinstatementCosts: projectData.reinstatementCosts ?? [],
         photovoltaicPanelsInstallationCosts: projectData.photovoltaicPanelsInstallationCosts,
         yearlyProjectedCosts: projectData.yearlyProjectedCosts ?? [],

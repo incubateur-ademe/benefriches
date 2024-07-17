@@ -47,7 +47,7 @@ type Props = {
     conversionFullTimeJobs?: number;
     operationsFullTimeJobs?: number;
     sitePurchaseTotalCost?: number;
-    finanalAssistanceRevenues?: FinancialAssistanceRevenue[];
+    financialAssistanceRevenues?: FinancialAssistanceRevenue[];
     reinstatementCosts?: ReinstatementCost[];
     photovoltaicPanelsInstallationCosts?: PhotovoltaicInstallationCost[];
     yearlyProjectedCosts: RecurringCost[];
@@ -123,7 +123,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             value={`${formatNumberFr(projectData.photovoltaicExpectedAnnualProduction)} MWh / an`}
           />
           <DataLine
-            label={<strong>Durée du contrat de revente de l’électricité photovoltaïque</strong>}
+            label={<strong>Durée du contrat de revente de l'énergie</strong>}
             value={`${formatNumberFr(projectData.photovoltaicContractDuration)} ans`}
           />
         </Accordion>
@@ -198,21 +198,21 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               value={`${formatNumberFr(projectData.sitePurchaseTotalCost)} €`}
             />
           ) : undefined}
-          {!!projectData.finanalAssistanceRevenues && (
+          {!!projectData.financialAssistanceRevenues && (
             <>
               <DataLine
                 label={<strong>Aides financières aux travaux</strong>}
                 value={
                   <strong>
                     {formatNumberFr(
-                      sumList(projectData.finanalAssistanceRevenues.map((r) => r.amount)),
+                      sumList(projectData.financialAssistanceRevenues.map((r) => r.amount)),
                     )}{" "}
                     €
                   </strong>
                 }
                 className="fr-mb-1w fr-mt-2w"
               />
-              {projectData.finanalAssistanceRevenues.map(({ amount, source }) => {
+              {projectData.financialAssistanceRevenues.map(({ amount, source }) => {
                 return (
                   <DataLine
                     label={getLabelForFinancialAssistanceRevenueSource(source)}
