@@ -1,6 +1,6 @@
 import { SoilType } from "shared";
 import { validate as uuidValidate } from "uuid";
-import { Project, ProjectSite } from "../domain/projects.types";
+import { ProjectForComparison, ProjectSite } from "../domain/projects.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
@@ -79,7 +79,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
   );
 
 export type ProjectDetailsResult = {
-  projectData?: Project;
+  projectData?: ProjectForComparison;
   siteData?: ProjectSite;
 };
 
@@ -87,13 +87,13 @@ type FetchDataResult = {
   baseScenario: {
     type: "STATU_QUO" | "PROJECT";
     id: string;
-    projectData?: Project;
+    projectData?: ProjectForComparison;
     siteData: ProjectSite;
   };
   withScenario: {
     type: "PROJECT";
     id: string;
-    projectData: Project;
+    projectData: ProjectForComparison;
     siteData: ProjectSite;
   };
 };

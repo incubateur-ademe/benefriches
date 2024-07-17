@@ -1,6 +1,6 @@
 import ImpactsComparisonPageHeader from "./ImpactsComparisonHeader";
 
-import { Project, ProjectSite } from "@/features/projects/domain/projects.types";
+import { ProjectForComparison, ProjectSite } from "@/features/projects/domain/projects.types";
 
 type Props = {
   baseScenario:
@@ -12,13 +12,13 @@ type Props = {
     | {
         type: "PROJECT";
         id: string;
-        projectData: Project;
+        projectData: ProjectForComparison;
         siteData: ProjectSite;
       };
   withScenario: {
     type: "PROJECT";
     id: string;
-    projectData: Project;
+    projectData: ProjectForComparison;
     siteData: ProjectSite;
   };
 };

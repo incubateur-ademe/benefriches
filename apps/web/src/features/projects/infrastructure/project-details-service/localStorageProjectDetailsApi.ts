@@ -3,7 +3,7 @@ import {
   ProjectDetailsResult as ProjectImpactsComparisonResult,
   ProjectsDetailsGateway as ProjectImpactsComparisonGateway,
 } from "../../application/projectImpactsComparison.actions";
-import { ProjectSite } from "../../domain/projects.types";
+import { ProjectForComparison, ProjectSite } from "../../domain/projects.types";
 
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
@@ -57,6 +57,6 @@ export class LocalStorageProjectDetailsApi implements ProjectImpactsComparisonGa
     const relatedSite = sitesList.find((site) => site.id === project.relatedSiteId);
     if (!relatedSite) throw new Error(`Could not find Site with id ${project.relatedSiteId}`);
 
-    return { siteData: relatedSite, projectData: project };
+    return { siteData: relatedSite, projectData: project as ProjectForComparison };
   }
 }

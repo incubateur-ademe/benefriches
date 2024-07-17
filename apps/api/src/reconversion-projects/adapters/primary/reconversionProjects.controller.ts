@@ -11,6 +11,7 @@ import {
   CreateReconversionProjectUseCase,
   reconversionProjectPropsSchema,
 } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 
 const jsonScheduleSchema = z.object({
@@ -58,6 +59,7 @@ export class ReconversionProjectController {
     private readonly getReconversionProjectsBySite: GetUserReconversionProjectsBySiteUseCase,
     private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
     private readonly createExpressReconversionProjectUseCase: CreateExpressReconversionProjectUseCase,
+    private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
   ) {}
 
   @Post()
@@ -90,6 +92,17 @@ export class ReconversionProjectController {
     const result = await this.getReconversionProjectImpactsUseCase.execute({
       reconversionProjectId,
       evaluationPeriodInYears,
+    });
+
+    return result;
+  }
+
+  @Get(":reconversionProjectId/features")
+  async getReconversionProjectFeatures(
+    @Param("reconversionProjectId") reconversionProjectId: string,
+  ) {
+    const result = await this.getReconversionProjectFeaturesUseCase.execute({
+      reconversionProjectId,
     });
 
     return result;

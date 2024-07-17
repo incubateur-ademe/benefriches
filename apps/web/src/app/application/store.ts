@@ -18,6 +18,8 @@ import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from
 import siteMunicipalityData from "@/features/create-site/application/siteMunicipalityData.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
+import { projectFeaturesReducer } from "@/features/projects/application/project-features/projectFeatures.reducer";
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
 import projectImpactsComparison from "@/features/projects/application/projectImpactsComparison.reducer";
@@ -42,6 +44,7 @@ export type AppDependencies = {
   currentUserService: CurrentUserGateway;
   createUserService: CreateUserGateway;
   siteFeaturesService: SiteFeaturesGateway;
+  projectFeaturesService: ProjectFeaturesGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,6 +61,7 @@ const rootReducer = combineReducers({
   reconversionProjectsList,
   currentUser,
   projectImpacts,
+  projectFeatures: projectFeaturesReducer,
   projectImpactsComparison,
   projectSoilsCarbonStorage,
   siteMunicipalityData,

@@ -1,6 +1,18 @@
 import { FricheActivity, SoilsDistribution } from "shared";
 
 import {
+  MixedUseNeighbourhoodDevelopmentExpense,
+  MixedUseNeighbourhoodSpace,
+} from "@/shared/domain/mixedUseNeighbourhood";
+import {
+  FinancialAssistanceRevenue,
+  PhotovoltaicInstallationCost,
+  RecurringCost,
+  RecurringRevenue,
+  ReinstatementCost,
+  WorksSchedule,
+} from "@/shared/domain/reconversionProject";
+import {
   LocalAutorityStructureType,
   OwnerStructureType,
   TenantStructureType,
@@ -71,14 +83,6 @@ export type ProjectSite = {
   owner: Owner;
 };
 
-type Expense = {
-  amount: number;
-};
-
-type Revenue = {
-  amount: number;
-};
-
 type ProjectStakeholderStructure =
   | OwnerStructureType
   | TenantStructureType
@@ -89,7 +93,48 @@ type ProjectStakeholderStructure =
 
 export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
 
-export type Project = {
+export type ProjectFeatures = {
+  id: string;
+  name: string;
+  description?: string;
+  developmentPlan:
+    | {
+        type: "PHOTOVOLTAIC_POWER_PLANT";
+        developerName?: string;
+        installationCosts: PhotovoltaicInstallationCost[];
+        installationSchedule?: WorksSchedule;
+        electricalPowerKWc: number;
+        surfaceArea: number;
+        expectedAnnualProduction: number;
+        contractDuration: number;
+      }
+    | {
+        type: "MIXED_USE_NEIGHBOURHOOD";
+        developerName?: string;
+        installationCosts: MixedUseNeighbourhoodDevelopmentExpense[];
+        installationSchedule?: WorksSchedule;
+        spaces: Record<MixedUseNeighbourhoodSpace, number>;
+      };
+  soilsDistribution: SoilsDistribution;
+  futureOwner?: string;
+  futureOperator?: string;
+  reinstatementContractOwner?: string;
+  reinstatementFullTimeJobs?: number;
+  conversionFullTimeJobs?: number;
+  operationsFullTimeJobs?: number;
+  financialAssistanceRevenues?: FinancialAssistanceRevenue[];
+  reinstatementCosts?: ReinstatementCost[];
+  yearlyProjectedExpenses: RecurringCost[];
+  yearlyProjectedRevenues: RecurringRevenue[];
+  reinstatementSchedule?: WorksSchedule;
+  firstYearOfOperation?: number;
+  sitePurchaseTotalAmount?: number;
+  siteResaleTotalAmount?: number;
+};
+
+export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "MIXED_USE_NEIGHBOURHOOD";
+
+export type ProjectForComparison = {
   id: string;
   name: string;
   relatedSiteId: string;
@@ -99,8 +144,6 @@ export type Project = {
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
   financialAssistanceRevenues: number;
-  yearlyProjectedCosts: Expense[];
-  yearlyProjectedRevenues: Revenue[];
+  yearlyProjectedCosts: RecurringCost[];
+  yearlyProjectedRevenues: RecurringRevenue[];
 };
-
-export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "MIXED_USE_NEIGHBOURHOOD";
