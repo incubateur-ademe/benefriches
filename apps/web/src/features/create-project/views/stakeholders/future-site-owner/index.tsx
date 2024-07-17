@@ -26,7 +26,7 @@ const convertFormValuesForStore = (
     case "project_developer":
     case "future_site_operator":
     case "reinstatement_contract_owner":
-    case "user_company": {
+    case "user_structure": {
       const stakeholder = stakeholdersList.find(
         ({ role }) => role === data.stakeholder,
       ) as AvailableProjectStakeholder;

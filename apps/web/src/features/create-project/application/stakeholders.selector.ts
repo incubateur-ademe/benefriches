@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { ProjectStakeholderStructure } from "../domain/project.types";
+import { ProjectStakeholder, ProjectStakeholderStructure } from "../domain/project.types";
 
 import { RootState } from "@/app/application/store";
 import { UserStructure } from "@/features/users/domain/user";
@@ -11,7 +11,7 @@ export type AvailableProjectStakeholder = {
     | "site_owner"
     | "site_tenant"
     | "project_developer"
-    | "user_company"
+    | "user_structure"
     | "future_operator"
     | "reinstatement_contract_owner"
     | "future_site_owner";
@@ -37,7 +37,7 @@ export const getProjectAvailableStakeholders = createSelector(
       ? [
           {
             structureType: currentUser.structureType,
-            role: "user_company",
+            role: "user_structure",
             name: currentUser.structureName,
           },
         ]
@@ -110,53 +110,68 @@ export const getAvailableLocalAuthoritiesStakeholders = createSelector(
   [
     (state: RootState) => state.projectSiteLocalAuthorities,
     (state: RootState) => state.projectCreation,
+    (state: RootState) => state.currentUser,
   ],
-  (siteLocalAuthorities, projectCreation) => {
-    const localAuthorities: AvailableLocalAuthorityStakeholder[] = [];
-
+  (siteLocalAuthorities, projectCreation, currentUserState) => {
+    const currentUser = currentUserState.currentUser;
     const { owner: siteOwner, tenant: siteTenant } = projectCreation.siteData ?? {};
     const { projectDeveloper, futureOperator, reinstatementContractOwner, futureSiteOwner } =
       projectCreation.projectData;
 
     const projectLocalAuthorities = [
-      siteOwner?.structureType,
-      siteTenant?.structureType,
-      projectDeveloper?.structureType,
-      futureOperator?.structureType,
-      reinstatementContractOwner?.structureType,
-      futureSiteOwner?.structureType,
+      siteOwner,
+      siteTenant,
+      projectDeveloper,
+      futureOperator,
+      reinstatementContractOwner,
+      futureSiteOwner,
     ].filter(
-      (element) => element && ["municipality", "epci", "department", "region"].includes(element),
-    ) as ("municipality" | "epci" | "region" | "department")[];
+      (element) =>
+        element && ["municipality", "epci", "department", "region"].includes(element.structureType),
+    ) as ProjectStakeholder[];
+
+    const currentLocalAuthorities = projectLocalAuthorities.map((element) => ({
+      type: element.structureType,
+      name: element.name,
+    }));
+
+    if (currentUser?.structureType === "local_authority" && currentUser.structureName) {
+      currentLocalAuthorities.push({
+        type: currentUser.structureActivity as AvailableLocalAuthorityStakeholder["type"],
+        name: currentUser.structureName,
+      });
+    }
 
     const { city, department, region, epci } = siteLocalAuthorities.localAuthorities ?? {};
 
-    if (!projectLocalAuthorities.includes("municipality")) {
-      localAuthorities.push({
+    const addressLocalAuthorities = [
+      {
         type: "municipality",
         name: city ? formatLocalAuthorityName("municipality", city.name) : "Mairie",
-      });
-    }
-    if (!projectLocalAuthorities.includes("epci")) {
-      localAuthorities.push({
+      },
+      {
         type: "epci",
         name: epci
           ? formatLocalAuthorityName("epci", epci.name)
           : "Établissement public de coopération intercommunale",
-      });
-    }
-    if (!projectLocalAuthorities.includes("department")) {
-      localAuthorities.push({
+      },
+      {
         type: "department",
         name: department ? formatLocalAuthorityName("department", department.name) : "Département",
-      });
-    }
-    if (!projectLocalAuthorities.includes("region")) {
-      localAuthorities.push({
+      },
+      {
         type: "region",
         name: region ? formatLocalAuthorityName("region", region.name) : "Région",
-      });
-    }
-    return localAuthorities;
+      },
+    ];
+
+    return addressLocalAuthorities.filter(
+      (addressLocalAuthority) =>
+        !currentLocalAuthorities.some(
+          (currentLocalAuthority) =>
+            currentLocalAuthority.type === addressLocalAuthority.type &&
+            currentLocalAuthority.name === addressLocalAuthority.name,
+        ),
+    ) as AvailableLocalAuthorityStakeholder[];
   },
 );

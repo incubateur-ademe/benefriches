@@ -5,13 +5,16 @@ import { revertOperatorStep } from "@/features/create-site/application/createSit
 import { completeOperator } from "@/features/create-site/application/createSite.reducer";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
+  AvailableLocalAuthority,
   getAvailableLocalAuthorities,
-  LocalAuthority,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const getTenant = (data: FormValues, localAuthorities: LocalAuthority[]): Tenant | undefined => {
+const getTenant = (
+  data: FormValues,
+  localAuthorities: AvailableLocalAuthority[],
+): Tenant | undefined => {
   switch (data.operator) {
     case "company":
       return {
@@ -26,7 +29,7 @@ const getTenant = (data: FormValues, localAuthorities: LocalAuthority[]): Tenant
     case "local_or_regional_authority": {
       const localAuthority = localAuthorities.find(
         ({ type }) => type === data.localAuthority,
-      ) as LocalAuthority;
+      ) as AvailableLocalAuthority;
       return {
         name: localAuthority.name,
         structureType: data.localAuthority,

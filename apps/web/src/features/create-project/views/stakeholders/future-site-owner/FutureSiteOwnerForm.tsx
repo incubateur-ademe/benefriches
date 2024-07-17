@@ -33,7 +33,7 @@ export type FormValues =
     }
   | {
       stakeholder:
-        | "user_company"
+        | "user_structure"
         | "site_tenant"
         | "site_owner"
         | "project_developer"
@@ -69,7 +69,7 @@ function FutureSiteOwnerForm({
         >
           {availableStakeholdersList.map(({ name, role }) => (
             <RadioButton
-              label={role === "user_company" ? `Ma structure, ${name}` : name}
+              label={role === "user_structure" ? `Ma structure, ${name}` : name}
               value={role}
               key={role}
               {...register("stakeholder", { required: requiredMessage })}

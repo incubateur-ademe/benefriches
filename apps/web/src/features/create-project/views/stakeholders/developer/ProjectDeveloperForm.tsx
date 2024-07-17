@@ -33,7 +33,7 @@ export type FormValues =
       localAuthority: undefined;
     }
   | {
-      stakeholder: "user_company" | "site_tenant" | "site_owner" | "unknown";
+      stakeholder: "user_structure" | "site_tenant" | "site_owner" | "unknown";
       localAuthority: undefined;
       otherStructureName: undefined;
     };
@@ -77,7 +77,7 @@ function DeveloperForm({
         >
           {availableStakeholdersList.map(({ name, role }) => (
             <RadioButton
-              label={role === "user_company" ? `Ma structure, ${name}` : name}
+              label={role === "user_structure" ? `Ma structure, ${name}` : name}
               value={role}
               key={role}
               {...register("stakeholder", { required: requiredMessage })}
