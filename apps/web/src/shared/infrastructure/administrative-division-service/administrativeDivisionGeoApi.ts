@@ -1,5 +1,6 @@
 type Response = {
   nom: string;
+  code: string;
   epci?: {
     code: string;
     nom: string;
@@ -53,5 +54,50 @@ export class AdministrativeDivisionGeoApi {
       },
       population: jsonResult.population,
     };
+  }
+
+  async searchMunicipality(text: string) {
+    const regexPostalCode = /^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/;
+
+    const searchParams = text.match(regexPostalCode) ? `codePostal=${text}` : `nom=${text}`;
+
+    const response = await fetch(
+      `${GEO_API_HOSTNAME}${MUNICIPALITY_URL}?${searchParams}&${FIELDS}`,
+    );
+
+    if (!response.ok) throw new Error("Error while fetching geo api gouv");
+
+    const jsonResult = (await response.json()) as Response[];
+
+    return jsonResult.map(({ code, nom, epci, departement, region }) => ({
+      code,
+      name: nom,
+      localAuthorities: [
+        {
+          type: "municipality",
+          name: nom,
+          code,
+        },
+        {
+          type: "epci",
+          name: epci?.nom ?? "Établissement public de coopération intercommunale",
+          code: epci?.code ?? "",
+        },
+        {
+          type: "department",
+          name: departement.nom,
+          code: departement.code,
+        },
+        {
+          type: "region",
+          name: region.nom,
+          code: region.code,
+        },
+      ] as {
+        type: "municipality" | "region" | "department" | "epci";
+        name: string;
+        code: string;
+      }[],
+    }));
   }
 }

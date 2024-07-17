@@ -5,8 +5,8 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
-import Select from "@codegouvfr/react-dsfr/SelectNext";
-import { UserStructureActivity } from "../../domain/user";
+import UserStructureForm, { StructureFormValues } from "./CreateUserStructureForm";
+import { AdministrativeDivisionService } from ".";
 
 import PolitiqueConfidentialiteContent from "@/shared/app-settings/views/PolitiqueConfidentialiteContent/PolitiqueConfidentialiteContent";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -21,33 +21,22 @@ export type FormValues = {
   lastname: string;
   firstname: string;
   email: string;
-  structureActivity: UserStructureActivity;
-  structureName?: string;
   personnalDataUseConsentment: "agreed";
-};
+} & StructureFormValues;
 
 type Props = {
   createUserLoadingState: "idle" | "loading" | "success" | "error";
   onSubmit: (data: FormValues) => void;
+  administrativeDivisionService: AdministrativeDivisionService;
 };
 
-const structureActivityLabelMap = new Map<UserStructureActivity, string>([
-  ["urban_planner", "Aménageur urbain"],
-  ["real_estate_developer", "Promoteur"],
-  ["local_authority_landlord", "Bailleur social"],
-  ["local_authority", "Collectivité"],
-  ["photovoltaic_plants_developer", "Développeur de centrale photovoltaïque"],
-  ["industrialist", "Industriel"],
-  ["other", "Autre"],
-]);
-
-const structureActivityOptions = Array.from(structureActivityLabelMap).map(([value, label]) => ({
-  value,
-  label,
-}));
-
-function CreateUserForm({ onSubmit, createUserLoadingState }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+function CreateUserForm({
+  onSubmit,
+  createUserLoadingState,
+  administrativeDivisionService,
+}: Props) {
+  const formContext = useForm<FormValues>();
+  const { register, handleSubmit, formState } = formContext;
 
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
@@ -73,39 +62,19 @@ function CreateUserForm({ onSubmit, createUserLoadingState }: Props) {
             }}
           />
           <Input
-            label="Nom"
-            nativeInputProps={{ ...register("lastname"), placeholder: "Chateau" }}
-          />
-          <Input
             label="Prénom"
             nativeInputProps={{ ...register("firstname"), placeholder: "Laurent" }}
           />
-          <h4>Votre structure</h4>
-          <Select
-            className={fr.cx("fr-col-6")}
-            label={<RequiredLabel label="Profil" />}
-            placeholder="Collectivité, aménageur urbain..."
-            state={formState.errors.structureActivity ? "error" : "default"}
-            stateRelatedMessage={
-              formState.errors.structureActivity
-                ? formState.errors.structureActivity.message
-                : undefined
-            }
-            nativeSelectProps={{
-              ...register("structureActivity", {
-                required: "Vous devez sélectionner un type de profil pour continuer",
-              }),
-            }}
-            options={structureActivityOptions}
-          />
           <Input
-            label="Nom de la structure"
-            nativeInputProps={{
-              placeholder: "La région Auvergne-Rhône-Alpes",
-              ...register("structureName"),
-            }}
+            label="Nom"
+            nativeInputProps={{ ...register("lastname"), placeholder: "Chateau" }}
+          />
+          <UserStructureForm
+            administrativeDivisionService={administrativeDivisionService}
+            formContext={formContext}
           />
           <Checkbox
+            className="tw-mt-5"
             state={formState.errors.personnalDataUseConsentment ? "error" : "default"}
             stateRelatedMessage={
               formState.errors.personnalDataUseConsentment
