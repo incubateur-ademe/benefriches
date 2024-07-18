@@ -48,7 +48,7 @@ export default function HowItWorksSection() {
           <HowItWorksStep
             number={2}
             title="Renseignez le projet"
-            text="Type de projet, usage des sols, caractéristiques des bâtiments ou équipements, acteurs, coûts et recettes, calendrier, etc. Là aussi, si vous n'avez pas l'info, Bénéfriches vous propose des valeurs par défaut."
+            text="Type de projet, usage des sols, caractéristiques des bâtiments ou équipements, acteurs, dépenses et recettes, calendrier, etc. Là aussi, si vous n'avez pas l'info, Bénéfriches vous propose des valeurs par défaut."
           />
           <HowItWorksStep
             number={3}

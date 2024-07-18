@@ -154,7 +154,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
 
           <dl>
             <DataLine
-              label={<strong>Coûts annuels du site</strong>}
+              label={<strong>Dépenses annuelles du site</strong>}
               value={
                 <strong>
                   {formatNumberFr(sumList(siteData.expenses.map((e) => e.amount)))} € / an

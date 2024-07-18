@@ -33,8 +33,8 @@ function SiteExpensesIncomeSummary({
   const tenantLabel = isFriche ? "Locataire" : "Exploitant";
 
   const title = isFriche
-    ? "Récapitulatif des coûts annuels liés à la friche"
-    : "Récapitulatif des coûts et recettes liés au site";
+    ? "Récapitulatif des dépenses annuelles liées à la friche"
+    : "Récapitulatif des dépenses et recettes liées au site";
 
   return (
     <>

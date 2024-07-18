@@ -6,7 +6,7 @@ const stepCategories = [
   "Paramètres du projet",
   "Transformation des sols",
   "Acteurs",
-  "Coûts et recettes",
+  "Dépenses et recettes",
   "Emploi",
   "Calendrier et avancement",
   "Dénomination",
@@ -55,7 +55,7 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
     case "REVENUE_INTRODUCTION":
     case "REVENUE_PROJECTED_YEARLY_REVENUE":
     case "REVENUE_FINANCIAL_ASSISTANCE":
-      return "Coûts et recettes";
+      return "Dépenses et recettes";
     case "SCHEDULE_INTRODUCTION":
     case "SCHEDULE_PROJECTION":
     case "PROJECT_PHASE":

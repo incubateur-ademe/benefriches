@@ -15,7 +15,7 @@ const ProjectCostsIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>💸</EditorialPageIcon>
-      <EditorialPageTitle>Votre projet va engendrer des coûts.</EditorialPageTitle>
+      <EditorialPageTitle>Votre projet va engendrer des dépenses.</EditorialPageTitle>
       <EditorialPageText>
         Notamment pour la remise en état de la friche, l’installation des panneaux photovoltaïques
         et son exploitation.

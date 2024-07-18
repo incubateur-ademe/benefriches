@@ -42,7 +42,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
         <FormInfo>
           <p>
             Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
-            renseigné (exprimée en kWc) et les coûts moyens observés.
+            renseignée (exprimée en kWc) et les dépenses moyennes observés.
           </p>
           <p>
             <strong>Source&nbsp;: </strong>
@@ -120,7 +120,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
 
         <p>
           <strong>
-            Total des coûts d'installation : {formatNumberFr(sumObjectValues(allCosts))} €
+            Total des dépenses d'installation : {formatNumberFr(sumObjectValues(allCosts))} €
           </strong>
         </p>
         <BackNextButtonsGroup onBack={onBack} />

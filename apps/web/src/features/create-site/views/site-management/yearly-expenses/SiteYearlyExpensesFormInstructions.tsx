@@ -8,7 +8,7 @@ function SiteYearlyExpensesFormInstructions() {
       <FormInfo>
         <p>
           Les montants pré-remplis (exprimés en € HT) le sont d'après les informations de surface
-          que vous avez renseigné et les coûts moyens observés.
+          que vous avez renseigné et les dépenses moyennes observés.
         </p>
         <span>Sources&nbsp;:</span>
         <ul>

@@ -85,7 +85,7 @@ const getLabelForExpense = (purpose: ExpensePurpose) => {
               <span>
                 L'enquête menée en 2019 par l'ADEME indique un ratio moyen de 4,7 kg/hab/an et un
                 coût moyen de 900 €/tonne (Nb&nbsp;: bien qu'on relève une occurrence non
-                négligeable de coûts plus élevés (500 à 1000 €/tonne voire supérieurs à 1000
+                négligeable de dépenses plus élevées (500 à 1000 €/tonne voire supérieurs à 1000
                 €/tonne), qui peuvent être liés à des typologies de déchets particulières (déchets
                 dangereux, encombrants) ou à des besoins de gestion (évacuation ou traitement)
                 spécifiques, une majorité des valeurs répertoriées sont comprises entre 100 et 500
@@ -143,7 +143,7 @@ function SiteYearlyExpensesForm({
     { label: getBearerLabel("owner", isFriche), value: "owner" },
   ];
 
-  const title = `Coûts annuels ${isFriche ? "de la friche" : "du site"}`;
+  const title = `Dépenses annuelles ${isFriche ? "de la friche" : "du site"}`;
 
   return (
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>

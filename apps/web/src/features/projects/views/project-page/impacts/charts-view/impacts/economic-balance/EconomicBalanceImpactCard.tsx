@@ -58,7 +58,7 @@ function EconomicBalanceImpactCard({ economicBalance, onClick, bearer = "Aménag
   return (
     <ImpactCard title="Bilan de l'opération" onClick={onClick}>
       {economicBalance.length === 0 ? (
-        <div>Vous n'avez pas renseigné de coûts ni de dépenses pour ce projet.</div>
+        <div>Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet.</div>
       ) : (
         <HighchartsReact
           containerProps={{ className: "highcharts-no-xaxis" }}

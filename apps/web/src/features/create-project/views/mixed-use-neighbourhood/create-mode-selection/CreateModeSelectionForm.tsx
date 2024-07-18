@@ -29,7 +29,7 @@ const options: Option[] = [
     value: "express",
     title: "Mode express",
     description:
-      "Un projet d'aménagement de quartier sera créé automatiquement. Bénéfriches affectera des données par défaut sur l'aménagement des espaces, les bâtiments, les coûts et recettes, les emplois mobilisés, etc.",
+      "Un projet d'aménagement de quartier sera créé automatiquement. Bénéfriches affectera des données par défaut sur l'aménagement des espaces, les bâtiments, les dépenses et recettes, les emplois mobilisés, etc.",
     badgeText: "Le plus rapide",
     disabled: false,
     imgSrc: "/img/pictograms/creation-mode/express-creation.svg",
@@ -38,7 +38,7 @@ const options: Option[] = [
     value: "custom",
     title: "Mode custom",
     description:
-      "Renseignez les informations dont vous disposez : aménagement des espaces, bâtiments, coûts et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
+      "Renseignez les informations dont vous disposez : aménagement des espaces, bâtiments, dépenses et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
     badgeText: "Bientôt disponible",
     disabled: true,
     imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",

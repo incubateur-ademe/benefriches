@@ -22,7 +22,7 @@ const EconomicBalanceDescription = () => {
         </li>
         <li>
           <ExternalLink href="https://www.reseaunationalamenageurs.logement.gouv.fr/IMG/pdf/2016-02-22_-_ApprocheSCET-OptimisationEconomiqueOperationsAmenagement.pdf">
-            L'optimisation des coûts des opérations d'aménagement
+            L'optimisation des dépenses des opérations d'aménagement
           </ExternalLink>
         </li>
       </ul>

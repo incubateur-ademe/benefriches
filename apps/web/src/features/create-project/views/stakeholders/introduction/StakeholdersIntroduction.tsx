@@ -17,8 +17,8 @@ const ProjectStakeholdersIntroduction = ({ onNext, onBack }: Props) => {
       <EditorialPageIcon>🧑‍💼</EditorialPageIcon>
       <EditorialPageTitle> Différents acteurs vont prendre part à votre projet</EditorialPageTitle>
       <EditorialPageText>
-        Nous avons besoin de les connaître pour savoir à qui seront imputables les différents coûts,
-        recettes et impacts.
+        Nous avons besoin de les connaître pour savoir à qui seront imputables les différentes
+        dépenses, recettes et impacts.
       </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </EditorialPageLayout>

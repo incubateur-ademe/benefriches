@@ -114,7 +114,7 @@ const ReinstatementsCostsForm = ({
 
   return (
     <WizardFormLayout
-      title="Coûts des travaux de remise en état de la friche"
+      title="Dépenses de travaux de remise en état de la friche"
       instructions={
         <FormInfo>
           <ReinstatementCostFormExplanation
@@ -151,7 +151,7 @@ const ReinstatementsCostsForm = ({
 
         <p>
           <strong>
-            Total des coûts des travaux de remise en état :{" "}
+            Total des dépenses des travaux de remise en état :{" "}
             {formatNumberFr(sumObjectValues(allCosts))} €
           </strong>
         </p>

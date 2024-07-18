@@ -191,7 +191,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             className="fr-ml-2w"
           />
         </Accordion>
-        <Accordion label="Coûts et recettes du projet" defaultExpanded>
+        <Accordion label="Dépenses et recettes du projet" defaultExpanded>
           {projectData.sitePurchaseTotalCost ? (
             <DataLine
               label={<strong>Prix de vente du site et droits de mutation</strong>}
@@ -227,7 +227,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           {!!projectData.reinstatementCosts && (
             <>
               <DataLine
-                label={<strong>Coûts de remise en état de la friche</strong>}
+                label={<strong>Dépenses de remise en état de la friche</strong>}
                 value={
                   <strong>
                     {formatNumberFr(sumList(projectData.reinstatementCosts.map((r) => r.amount)))} €
