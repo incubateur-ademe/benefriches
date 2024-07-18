@@ -69,8 +69,8 @@ describe("createProject reducer", () => {
         invalidValue: undefined,
       },
       {
-        case: "negative amount in photovoltaic installation costs",
-        dataProp: "photovoltaicPanelsInstallationCosts",
+        case: "negative amount in photovoltaic installation expenses",
+        dataProp: "photovoltaicPanelsInstallationExpenses",
         invalidValue: [{ amount: -1, purpose: "installation_works" }],
       },
       {
@@ -94,13 +94,13 @@ describe("createProject reducer", () => {
         invalidValue: undefined,
       },
       {
-        case: "no yearlyProjectedCosts",
-        dataProp: "yearlyProjectedCosts",
+        case: "no yearlyProjectedExpenses",
+        dataProp: "yearlyProjectedExpenses",
         invalidValue: undefined,
       },
       {
-        case: "negative amount in yearlyProjectedCosts",
-        dataProp: "yearlyProjectedCosts",
+        case: "negative amount in yearlyProjectedExpenses",
+        dataProp: "yearlyProjectedExpenses",
         invalidValue: [{ amount: -1, purpose: "rent" }],
       },
       {
@@ -145,8 +145,8 @@ describe("createProject reducer", () => {
         invalidValue: -1,
       },
       {
-        case: "negative amount in reinstatementCosts",
-        dataProp: "reinstatementCosts",
+        case: "negative amount in reinstatementExpenses",
+        dataProp: "reinstatementExpenses",
         invalidValue: [{ amount: -1, purpose: "demolition" }],
       },
       {

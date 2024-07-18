@@ -1,38 +1,38 @@
 import { typedObjectEntries } from "shared";
 import {
-  completePhotovoltaicPanelsInstallationCost,
-  revertPhotovoltaicPanelsInstallationCost,
+  completePhotovoltaicPanelsInstallationExpenses,
+  revertPhotovoltaicPanelsInstallationExpenses,
 } from "../../../application/createProject.reducer";
-import PhotovoltaicPanelsInstallationCostsForm, {
+import PhotovoltaicPanelsInstallationExpensesForm, {
   FormValues,
 } from "./PhotoVoltaicPanelsInstallationCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { getDefaultValuesForPhotovoltaicInstallationCosts } from "@/features/create-project/application/createProject.selectors";
-import { PhotovoltaicInstallationCost } from "@/shared/domain/reconversionProject";
+import { getDefaultValuesForPhotovoltaicInstallationExpenses } from "@/features/create-project/application/createProject.selectors";
+import { PhotovoltaicInstallationExpense } from "@/shared/domain/reconversionProject";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const mapFormValuesToPhotovoltaicInstallationCosts = (
+const mapFormValuesToPhotovoltaicInstallationExpenses = (
   formData: FormValues,
-): PhotovoltaicInstallationCost[] => {
-  const costs: PhotovoltaicInstallationCost[] = [];
+): PhotovoltaicInstallationExpense[] => {
+  const expenses: PhotovoltaicInstallationExpense[] = [];
   typedObjectEntries(formData).forEach(([purpose, amount]) => {
     if (!amount) return;
     switch (purpose) {
       case "technicalStudyAmount":
-        costs.push({ amount: amount, purpose: "technical_studies" });
+        expenses.push({ amount: amount, purpose: "technical_studies" });
         break;
       case "worksAmount":
-        costs.push({ amount: amount, purpose: "installation_works" });
+        expenses.push({ amount: amount, purpose: "installation_works" });
         break;
       case "otherAmount":
-        costs.push({ amount: amount, purpose: "other" });
+        expenses.push({ amount: amount, purpose: "other" });
         break;
       default:
         break;
     }
   });
-  return costs;
+  return expenses;
 };
 
 const mapProps = (
@@ -42,20 +42,20 @@ const mapProps = (
   return {
     defaultValues,
     onSubmit: (formData: FormValues) => {
-      const costs = mapFormValuesToPhotovoltaicInstallationCosts(formData);
-      dispatch(completePhotovoltaicPanelsInstallationCost(costs));
+      const expenses = mapFormValuesToPhotovoltaicInstallationExpenses(formData);
+      dispatch(completePhotovoltaicPanelsInstallationExpenses(expenses));
     },
     onBack: () => {
-      dispatch(revertPhotovoltaicPanelsInstallationCost());
+      dispatch(revertPhotovoltaicPanelsInstallationExpenses());
     },
   };
 };
 
-function PhotovoltaicPanelsInstallationCostsFormContainer() {
+function PhotovoltaicPanelsInstallationExpensesFormContainer() {
   const dispatch = useAppDispatch();
-  const defaultValues = useAppSelector(getDefaultValuesForPhotovoltaicInstallationCosts);
+  const defaultValues = useAppSelector(getDefaultValuesForPhotovoltaicInstallationExpenses);
 
-  return <PhotovoltaicPanelsInstallationCostsForm {...mapProps(dispatch, defaultValues)} />;
+  return <PhotovoltaicPanelsInstallationExpensesForm {...mapProps(dispatch, defaultValues)} />;
 }
 
-export default PhotovoltaicPanelsInstallationCostsFormContainer;
+export default PhotovoltaicPanelsInstallationExpensesFormContainer;

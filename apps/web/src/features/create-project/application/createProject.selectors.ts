@@ -3,9 +3,9 @@ import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere } from "shared";
 import {
   computeDefaultPhotovoltaicConversionFullTimeJobs,
   computeDefaultPhotovoltaicOperationsFullTimeJobs,
-  computeDefaultPhotovoltaicOtherAmountCost,
-  computeDefaultPhotovoltaicTechnicalStudiesAmountCost,
-  computeDefaultPhotovoltaicWorksAmountCost,
+  computeDefaultPhotovoltaicOtherAmountExpenses,
+  computeDefaultPhotovoltaicTechnicalStudiesAmountExpenses,
+  computeDefaultPhotovoltaicWorksAmountExpenses,
   computeDefaultPhotovoltaicYearlyMaintenanceAmount,
   computeDefaultPhotovoltaicYearlyRecurringRevenueAmount,
   computeDefaultPhotovoltaicYearlyRentAmount,
@@ -179,7 +179,7 @@ const selectSiteData = createSelector(
   (state): ProjectCreationState["siteData"] => state.siteData,
 );
 
-export const getDefaultValuesForYearlyProjectedCosts = createSelector(
+export const getDefaultValuesForYearlyProjectedExpenses = createSelector(
   selectProjectData,
   (projectData): { rent: number; maintenance: number; taxes: number } | undefined => {
     const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = projectData;
@@ -193,15 +193,16 @@ export const getDefaultValuesForYearlyProjectedCosts = createSelector(
   },
 );
 
-export const getDefaultValuesForPhotovoltaicInstallationCosts = createSelector(
+export const getDefaultValuesForPhotovoltaicInstallationExpenses = createSelector(
   selectProjectData,
   (projectData): { works: number; technicalStudy: number; other: number } | undefined => {
     const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = projectData;
     return electricalPowerKWc
       ? {
-          works: computeDefaultPhotovoltaicWorksAmountCost(electricalPowerKWc),
-          technicalStudy: computeDefaultPhotovoltaicTechnicalStudiesAmountCost(electricalPowerKWc),
-          other: computeDefaultPhotovoltaicOtherAmountCost(electricalPowerKWc),
+          works: computeDefaultPhotovoltaicWorksAmountExpenses(electricalPowerKWc),
+          technicalStudy:
+            computeDefaultPhotovoltaicTechnicalStudiesAmountExpenses(electricalPowerKWc),
+          other: computeDefaultPhotovoltaicOtherAmountExpenses(electricalPowerKWc),
         }
       : undefined;
   },
@@ -214,7 +215,7 @@ export const getDefaultValuesForFullTimeConversionJobsInvolved = createSelector(
     const {
       photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc,
       renewableEnergyType,
-      reinstatementCosts,
+      reinstatementExpenses,
     } = projectData;
 
     const isPhotovoltaicProject = renewableEnergyType === "PHOTOVOLTAIC_POWER_PLANT";
@@ -225,8 +226,8 @@ export const getDefaultValuesForFullTimeConversionJobsInvolved = createSelector(
         : undefined;
 
     const reinstatementFullTimeJobs =
-      siteData?.isFriche && reinstatementCosts
-        ? computeDefaultReinstatementFullTimeJobs(reinstatementCosts)
+      siteData?.isFriche && reinstatementExpenses
+        ? computeDefaultReinstatementFullTimeJobs(reinstatementExpenses)
         : undefined;
 
     return {

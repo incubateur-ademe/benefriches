@@ -1,4 +1,4 @@
-const AvoidedFricheCostsDescription = () => {
+const AvoidedFricheExpensesDescription = () => {
   return (
     <>
       <p>
@@ -27,4 +27,4 @@ const AvoidedFricheCostsDescription = () => {
   );
 };
 
-export default AvoidedFricheCostsDescription;
+export default AvoidedFricheExpensesDescription;

@@ -11,7 +11,7 @@ export const projectWithMinimalData = {
     MINERAL_SOIL: 5000,
     IMPERMEABLE_SOILS: 1300,
   },
-  yearlyProjectedCosts: [{ purpose: "rent", amount: 12000 }],
+  yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",
   developmentPlanCategory: "RENEWABLE_ENERGY",
@@ -21,7 +21,7 @@ export const projectWithMinimalData = {
   photovoltaicInstallationSurfaceSquareMeters: 40000,
   photovoltaicExpectedAnnualProduction: 50000,
   photovoltaicContractDuration: 20,
-  photovoltaicPanelsInstallationCosts: [
+  photovoltaicPanelsInstallationExpenses: [
     { amount: 20000, purpose: "installation_works" },
     { amount: 210000, purpose: "technical_studies" },
   ],
@@ -58,7 +58,7 @@ export const projectWithExhaustiveData = {
     name: "Reinstatement company",
     structureType: "company",
   },
-  reinstatementCosts: [{ amount: 34500, purpose: "demolition" }],
+  reinstatementExpenses: [{ amount: 34500, purpose: "demolition" }],
   sitePurchaseSellingPrice: 150000,
   sitePurchasePropertyTransferDuties: 12000,
   financialAssistanceRevenues: [

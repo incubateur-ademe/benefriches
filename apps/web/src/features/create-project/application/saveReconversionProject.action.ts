@@ -10,7 +10,7 @@ const scheduleSchema = z.object({
 
 export type Schedule = z.infer<typeof scheduleSchema>;
 
-const costSchema = z.object({ amount: z.number().nonnegative(), purpose: z.string() });
+const expenseSchema = z.object({ amount: z.number().nonnegative(), purpose: z.string() });
 const revenueSchema = z.object({ amount: z.number().nonnegative(), source: z.string() });
 
 const photovoltaicPowerStationFeaturesSchema = z.object({
@@ -24,7 +24,7 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
   z.object({
     developer: z.object({ name: z.string(), structureType: z.string() }),
     type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
-    costs: costSchema.array(),
+    costs: expenseSchema.array(),
     features: photovoltaicPowerStationFeaturesSchema,
     installationSchedule: scheduleSchema.optional(),
   }),
@@ -45,9 +45,9 @@ const saveProjectSchema = z.object({
   operationsFullTimeJobsInvolved: z.number().nonnegative().optional(),
   sitePurchaseSellingPrice: z.number().nonnegative().optional(),
   sitePurchasePropertyTransferDuties: z.number().nonnegative().optional(),
-  reinstatementCosts: costSchema.array().optional(),
+  reinstatementCosts: expenseSchema.array().optional(),
   financialAssistanceRevenues: revenueSchema.array(),
-  yearlyProjectedCosts: costSchema.array(),
+  yearlyProjectedCosts: expenseSchema.array(),
   yearlyProjectedRevenues: revenueSchema.array(),
   soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),
@@ -80,11 +80,11 @@ export const saveReconversionProject = createAppAsyncThunk(
       reinstatementFullTimeJobsInvolved: projectData.reinstatementFullTimeJobsInvolved,
       reinstatementContractOwner: projectData.reinstatementContractOwner,
       operationsFullTimeJobsInvolved: projectData.operationsFullTimeJobsInvolved,
-      reinstatementCosts: projectData.reinstatementCosts,
+      reinstatementCosts: projectData.reinstatementExpenses,
       sitePurchaseSellingPrice: projectData.sitePurchaseSellingPrice,
       sitePurchasePropertyTransferDuties: projectData.sitePurchasePropertyTransferDuties,
       financialAssistanceRevenues: projectData.financialAssistanceRevenues,
-      yearlyProjectedCosts: projectData.yearlyProjectedCosts,
+      yearlyProjectedCosts: projectData.yearlyProjectedExpenses,
       yearlyProjectedRevenues: projectData.yearlyProjectedRevenues,
       soilsDistribution: projectData.soilsDistribution,
       reinstatementSchedule: projectData.reinstatementSchedule,
@@ -92,7 +92,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       developmentPlan: {
         type: "PHOTOVOLTAIC_POWER_PLANT",
         developer: projectData.projectDeveloper,
-        costs: projectData.photovoltaicPanelsInstallationCosts ?? [],
+        costs: projectData.photovoltaicPanelsInstallationExpenses ?? [],
         installationSchedule: projectData.photovoltaicInstallationSchedule,
         features: {
           surfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters,

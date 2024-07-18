@@ -5,12 +5,12 @@ import { UserStructureType } from "@/features/users/domain/user";
 import {
   DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
-  PhotovoltaicInstallationCost,
+  PhotovoltaicInstallationExpense,
   ProjectPhase,
   ProjectPhaseDetails,
-  RecurringCost,
+  RecurringExpense,
   RecurringRevenue,
-  ReinstatementCost,
+  ReinstatementExpense,
   RenewableEnergyDevelopmentPlanType,
 } from "@/shared/domain/reconversionProject";
 import {
@@ -52,10 +52,10 @@ export type ReconversionProjectCreationData = {
   willSiteBePurchased: boolean;
   sitePurchaseSellingPrice?: number;
   sitePurchasePropertyTransferDuties?: number;
-  // costs
-  reinstatementCosts?: ReinstatementCost[];
-  photovoltaicPanelsInstallationCosts: PhotovoltaicInstallationCost[];
-  yearlyProjectedCosts: RecurringCost[];
+  // expenses
+  reinstatementExpenses?: ReinstatementExpense[];
+  photovoltaicPanelsInstallationExpenses: PhotovoltaicInstallationExpense[];
+  yearlyProjectedExpenses: RecurringExpense[];
   // revenues
   yearlyProjectedRevenues: RecurringRevenue[];
   financialAssistanceRevenues: FinancialAssistanceRevenue[];

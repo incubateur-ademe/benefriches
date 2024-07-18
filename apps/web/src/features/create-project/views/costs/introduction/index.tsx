@@ -1,8 +1,8 @@
 import {
-  completeCostsIntroductionStep,
-  revertCostsIntroductionStep,
+  completeExpensesIntroductionStep,
+  revertExpensesIntroductionStep,
 } from "../../../application/createProject.reducer";
-import ProjectCostsIntroduction from "./ProjectCostsIntroduction";
+import ProjectExpensesIntroduction from "./ProjectCostsIntroduction";
 
 import { AppDispatch } from "@/app/application/store";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
@@ -10,18 +10,18 @@ import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onNext: () => {
-      dispatch(completeCostsIntroductionStep());
+      dispatch(completeExpensesIntroductionStep());
     },
     onBack: () => {
-      dispatch(revertCostsIntroductionStep());
+      dispatch(revertExpensesIntroductionStep());
     },
   };
 };
 
-function ProjectCostsIntroductionContainer() {
+function ProjectExpensesIntroductionContainer() {
   const dispatch = useAppDispatch();
 
-  return <ProjectCostsIntroduction {...mapProps(dispatch)} />;
+  return <ProjectExpensesIntroduction {...mapProps(dispatch)} />;
 }
 
-export default ProjectCostsIntroductionContainer;
+export default ProjectExpensesIntroductionContainer;

@@ -6,10 +6,10 @@ import {
 } from "@/shared/domain/mixedUseNeighbourhood";
 import {
   FinancialAssistanceRevenue,
-  PhotovoltaicInstallationCost,
-  RecurringCost,
+  PhotovoltaicInstallationExpense,
+  RecurringExpense,
   RecurringRevenue,
-  ReinstatementCost,
+  ReinstatementExpense,
   WorksSchedule,
 } from "@/shared/domain/reconversionProject";
 import {
@@ -101,7 +101,7 @@ export type ProjectFeatures = {
     | {
         type: "PHOTOVOLTAIC_POWER_PLANT";
         developerName?: string;
-        installationCosts: PhotovoltaicInstallationCost[];
+        installationCosts: PhotovoltaicInstallationExpense[];
         installationSchedule?: WorksSchedule;
         electricalPowerKWc: number;
         surfaceArea: number;
@@ -123,8 +123,8 @@ export type ProjectFeatures = {
   conversionFullTimeJobs?: number;
   operationsFullTimeJobs?: number;
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
-  reinstatementCosts?: ReinstatementCost[];
-  yearlyProjectedExpenses: RecurringCost[];
+  reinstatementCosts?: ReinstatementExpense[];
+  yearlyProjectedExpenses: RecurringExpense[];
   yearlyProjectedRevenues: RecurringRevenue[];
   reinstatementSchedule?: WorksSchedule;
   firstYearOfOperation?: number;
@@ -144,6 +144,6 @@ export type ProjectForComparison = {
   reinstatementCost?: number;
   photovoltaicPanelsInstallationCost: number;
   financialAssistanceRevenues: number;
-  yearlyProjectedCosts: RecurringCost[];
+  yearlyProjectedCosts: RecurringExpense[];
   yearlyProjectedRevenues: RecurringRevenue[];
 };

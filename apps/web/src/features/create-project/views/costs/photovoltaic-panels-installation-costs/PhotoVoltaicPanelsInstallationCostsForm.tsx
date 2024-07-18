@@ -24,7 +24,7 @@ export type FormValues = {
   otherAmount?: number;
 };
 
-const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValues }: Props) => {
+const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultValues }: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: {
       worksAmount: defaultValues?.works,
@@ -33,7 +33,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
     },
   });
 
-  const allCosts = watch();
+  const allExpenses = watch();
 
   return (
     <WizardFormLayout
@@ -120,7 +120,7 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
 
         <p>
           <strong>
-            Total des dépenses d'installation : {formatNumberFr(sumObjectValues(allCosts))} €
+            Total des dépenses d'installation : {formatNumberFr(sumObjectValues(allExpenses))} €
           </strong>
         </p>
         <BackNextButtonsGroup onBack={onBack} />
@@ -129,4 +129,4 @@ const PhotovoltaicPanelsInstallationCostsForm = ({ onSubmit, onBack, defaultValu
   );
 };
 
-export default PhotovoltaicPanelsInstallationCostsForm;
+export default PhotovoltaicPanelsInstallationExpensesForm;
