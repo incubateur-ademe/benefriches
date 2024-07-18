@@ -108,14 +108,14 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         <div className="tw-py-2">
           <strong> Emplois équivalent temps plein mobilisés</strong>
         </div>
-        {projectData.reinstatementFullTimeJobs && (
+        {projectData.reinstatementFullTimeJobs ? (
           <DataLine
             label="Remise en état de la friche"
             value={formatNumberFr(projectData.reinstatementFullTimeJobs)}
             className="fr-pl-2w"
           />
-        )}
-        {projectData.conversionFullTimeJobs && (
+        ) : null}
+        {projectData.conversionFullTimeJobs ? (
           <DataLine
             label="Installation des panneaux photovoltaïques"
             value={
@@ -125,7 +125,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             }
             className="fr-pl-2w"
           />
-        )}
+        ) : null}
         <DataLine
           label="Exploitation du site reconverti"
           value={
