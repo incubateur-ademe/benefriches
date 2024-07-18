@@ -2,7 +2,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 
-function SecuringCostComparisonChart() {
+function SecuringExpenseComparisonChart() {
   const barChartOptions: Highcharts.Options = {
     ...baseColumnChartConfig,
     xAxis: {
@@ -42,4 +42,4 @@ function SecuringCostComparisonChart() {
   );
 }
 
-export default SecuringCostComparisonChart;
+export default SecuringExpenseComparisonChart;

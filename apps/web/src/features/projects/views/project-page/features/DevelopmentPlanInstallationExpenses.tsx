@@ -9,8 +9,8 @@ import {
   MixedUseNeighbourhoodDevelopmentExpense,
 } from "@/shared/domain/mixedUseNeighbourhood";
 import {
-  getLabelForPhotovoltaicInstallationCostPurpose,
-  PhotovoltaicInstallationCost,
+  getLabelForPhotovoltaicInstallationExpensePurpose,
+  PhotovoltaicInstallationExpense,
 } from "@/shared/domain/reconversionProject";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumList } from "@/shared/services/sum/sum";
@@ -37,8 +37,8 @@ export default function DevelopmentPlanInstallationExpenses({
           {installationCosts.map(({ amount, purpose }) => {
             return (
               <DataLine
-                label={getLabelForPhotovoltaicInstallationCostPurpose(
-                  purpose as PhotovoltaicInstallationCost["purpose"],
+                label={getLabelForPhotovoltaicInstallationExpensePurpose(
+                  purpose as PhotovoltaicInstallationExpense["purpose"],
                 )}
                 value={`${formatNumberFr(amount)} €`}
                 className="fr-pl-2w"

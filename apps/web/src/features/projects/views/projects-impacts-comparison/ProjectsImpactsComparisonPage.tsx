@@ -8,7 +8,7 @@ import CarbonEmissionComparisonChart from "./charts/carbon-emission/CarbonEmissi
 import CarbonStorageComparisonChart from "./charts/carbon-storage";
 import EconomicEvaluationComparisonChart from "./charts/economic-evaluation/EconomicEvaluationComparisonChart";
 import RentIncomeComparisonChart from "./charts/economic-impacts/RentIncomeComparisonChart";
-import SecuringCostComparisonChart from "./charts/economic-impacts/SecuringCostComparisonChart";
+import SecuringExpenseComparisonChart from "./charts/economic-impacts/SecuringCostComparisonChart";
 import TaxRevenueComparisonChart from "./charts/economic-impacts/TaxRevenueComparisonChart";
 import CarbonStorageEmissionFinancialImpactComparisonChart from "./charts/ecosystem-financial-impacts/CarbonStorageEmissionFinancialImpactComparisonChart";
 import EnergyProductionCarbonEmissionFinancialImpactComparisonChart from "./charts/ecosystem-financial-impacts/EnergyProductionCarbonEmissionFinancialImpactComparisonChart";
@@ -181,7 +181,7 @@ function ProjectsImpactsComparisonPage({ baseScenario, withScenario, loadingStat
           </div>
           <div className={fr.cx("fr-col-3")}>
             <ImpactCard>
-              <SecuringCostComparisonChart />
+              <SecuringExpenseComparisonChart />
             </ImpactCard>
           </div>
         </div>

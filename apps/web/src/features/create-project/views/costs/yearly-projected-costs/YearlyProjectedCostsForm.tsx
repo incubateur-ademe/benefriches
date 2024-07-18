@@ -25,7 +25,7 @@ export type FormValues = {
   otherAmount?: number;
 };
 
-const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) => {
+const YearlyProjectedExpensesForm = ({ onSubmit, onBack, defaultValues }: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: {
       rentAmount: defaultValues?.rent,
@@ -34,7 +34,7 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
     },
   });
 
-  const allCosts = watch();
+  const allExpenses = watch();
 
   return (
     <WizardFormLayout
@@ -141,7 +141,7 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
 
         <p>
           <strong>
-            Total des dépenses annuelles : {formatNumberFr(sumObjectValues(allCosts))} €
+            Total des dépenses annuelles : {formatNumberFr(sumObjectValues(allExpenses))} €
           </strong>
         </p>
         <BackNextButtonsGroup onBack={onBack} />
@@ -150,4 +150,4 @@ const YearlyProjectedCostsForm = ({ onSubmit, onBack, defaultValues }: Props) =>
   );
 };
 
-export default YearlyProjectedCostsForm;
+export default YearlyProjectedExpensesForm;

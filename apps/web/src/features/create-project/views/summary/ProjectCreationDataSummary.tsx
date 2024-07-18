@@ -11,14 +11,14 @@ import {
   DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
   getLabelForFinancialAssistanceRevenueSource,
-  getLabelForPhotovoltaicInstallationCostPurpose,
-  getLabelForRecurringCostPurpose,
+  getLabelForPhotovoltaicInstallationExpensePurpose,
+  getLabelForRecurringExpense,
   getLabelForRecurringRevenueSource,
-  getLabelForReinstatementCostPurpose,
-  PhotovoltaicInstallationCost,
-  RecurringCost,
+  getLabelForReinstatementExpensePurpose,
+  PhotovoltaicInstallationExpense,
+  RecurringExpense,
   RecurringRevenue,
-  ReinstatementCost,
+  ReinstatementExpense,
   RenewableEnergyDevelopmentPlanType,
 } from "@/shared/domain/reconversionProject";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
@@ -48,9 +48,9 @@ type Props = {
     operationsFullTimeJobs?: number;
     sitePurchaseTotalCost?: number;
     financialAssistanceRevenues?: FinancialAssistanceRevenue[];
-    reinstatementCosts?: ReinstatementCost[];
-    photovoltaicPanelsInstallationCosts?: PhotovoltaicInstallationCost[];
-    yearlyProjectedCosts: RecurringCost[];
+    reinstatementExpenses?: ReinstatementExpense[];
+    photovoltaicPanelsInstallationExpenses?: PhotovoltaicInstallationExpense[];
+    yearlyProjectedExpenses: RecurringExpense[];
     yearlyProjectedRevenues: RecurringRevenue[];
     reinstatementSchedule?: Schedule;
     photovoltaticInstallationSchedule?: Schedule;
@@ -225,21 +225,24 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               })}
             </>
           )}
-          {!!projectData.reinstatementCosts && (
+          {!!projectData.reinstatementExpenses && (
             <>
               <DataLine
                 label={<strong>Dépenses de remise en état de la friche</strong>}
                 value={
                   <strong>
-                    {formatNumberFr(sumList(projectData.reinstatementCosts.map((r) => r.amount)))} €
+                    {formatNumberFr(
+                      sumList(projectData.reinstatementExpenses.map((r) => r.amount)),
+                    )}{" "}
+                    €
                   </strong>
                 }
                 className="fr-mb-1w fr-mt-2w"
               />
-              {projectData.reinstatementCosts.map(({ amount, purpose }) => {
+              {projectData.reinstatementExpenses.map(({ amount, purpose }) => {
                 return (
                   <DataLine
-                    label={getLabelForReinstatementCostPurpose(purpose)}
+                    label={getLabelForReinstatementExpensePurpose(purpose)}
                     value={`${formatNumberFr(amount)} €`}
                     className="fr-ml-2w"
                     key={purpose}
@@ -248,24 +251,26 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               })}
             </>
           )}
-          {!!projectData.photovoltaicPanelsInstallationCosts && (
+          {!!projectData.photovoltaicPanelsInstallationExpenses && (
             <>
               <DataLine
                 label={<strong>Dépenses d’installation de la centrale photovoltaïque</strong>}
                 value={
                   <strong>
                     {formatNumberFr(
-                      sumList(projectData.photovoltaicPanelsInstallationCosts.map((r) => r.amount)),
+                      sumList(
+                        projectData.photovoltaicPanelsInstallationExpenses.map((r) => r.amount),
+                      ),
                     )}{" "}
                     €
                   </strong>
                 }
                 className="fr-mb-1w fr-mt-2w"
               />
-              {projectData.photovoltaicPanelsInstallationCosts.map(({ amount, purpose }) => {
+              {projectData.photovoltaicPanelsInstallationExpenses.map(({ amount, purpose }) => {
                 return (
                   <DataLine
-                    label={getLabelForPhotovoltaicInstallationCostPurpose(purpose)}
+                    label={getLabelForPhotovoltaicInstallationExpensePurpose(purpose)}
                     value={`${formatNumberFr(amount)} €`}
                     className="fr-ml-2w"
                     key={purpose}
@@ -278,15 +283,16 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             label={<strong>Dépenses annuelles</strong>}
             value={
               <strong>
-                {formatNumberFr(sumList(projectData.yearlyProjectedCosts.map((e) => e.amount)))} €
+                {formatNumberFr(sumList(projectData.yearlyProjectedExpenses.map((e) => e.amount)))}{" "}
+                €
               </strong>
             }
             className="fr-mb-1w fr-mt-2w"
           />
-          {projectData.yearlyProjectedCosts.map(({ amount, purpose }) => {
+          {projectData.yearlyProjectedExpenses.map(({ amount, purpose }) => {
             return (
               <DataLine
-                label={getLabelForRecurringCostPurpose(purpose)}
+                label={getLabelForRecurringExpense(purpose)}
                 value={`${formatNumberFr(amount)} €`}
                 className="fr-ml-2w"
                 key={purpose}

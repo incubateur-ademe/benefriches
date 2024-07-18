@@ -12,9 +12,9 @@ import {
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import {
   getLabelForFinancialAssistanceRevenueSource,
-  getLabelForRecurringCostPurpose,
+  getLabelForRecurringExpense,
   getLabelForRecurringRevenueSource,
-  getLabelForReinstatementCostPurpose,
+  getLabelForReinstatementExpensePurpose,
 } from "@/shared/domain/reconversionProject";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
@@ -157,7 +157,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             {projectData.reinstatementCosts.map(({ amount, purpose }) => {
               return (
                 <DataLine
-                  label={getLabelForReinstatementCostPurpose(purpose)}
+                  label={getLabelForReinstatementExpensePurpose(purpose)}
                   value={`${formatNumberFr(amount)} €`}
                   className="fr-pl-2w"
                   key={purpose}
@@ -186,7 +186,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         {projectData.yearlyProjectedExpenses.map(({ amount, purpose }) => {
           return (
             <DataLine
-              label={getLabelForRecurringCostPurpose(purpose)}
+              label={getLabelForRecurringExpense(purpose)}
               value={`${formatNumberFr(amount)} €`}
               className="fr-pl-2w"
               key={purpose}

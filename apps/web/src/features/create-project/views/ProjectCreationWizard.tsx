@@ -6,11 +6,11 @@ import {
   selectIsSiteLoaded,
   selectProjectDevelopmentPlanCategory,
 } from "../application/createProject.selectors";
-import ProjectCostsIntroduction from "./costs/introduction";
-import PhotovoltaicPanelsInstallationCostsForm from "./costs/photovoltaic-panels-installation-costs";
-import ReinstatementsCostsForm from "./costs/reinstatement-costs";
+import ProjectExpensesIntroduction from "./costs/introduction";
+import PhotovoltaicPanelsInstallationExpensesForm from "./costs/photovoltaic-panels-installation-costs";
+import ReinstatementsExpensesForm from "./costs/reinstatement-costs";
 import SitePurchaseAmountsContainer from "./costs/site-purchase-amounts";
-import YearlyProjectedCostsForm from "./costs/yearly-projected-costs";
+import YearlyProjectedExpensesForm from "./costs/yearly-projected-costs";
 import ProjectFullTimeJobsInvolvedForm from "./jobs/conversion-full-time-jobs-involved";
 import OperationsFullTimeJobsInvolvedForm from "./jobs/operations-full-time-jobs-involved";
 import MixedUseNeighbourhoodWizard from "./mixed-use-neighbourhood/MixedUseNeighbourhoodWizard";
@@ -83,16 +83,16 @@ function ProjectCreationWizard({ route }: Props) {
         return <SitePurchasedFormContainer />;
       case "STAKEHOLDERS_FUTURE_SITE_OWNER":
         return <FutureOwnerFormContainer />;
-      case "COSTS_INTRODUCTION":
-        return <ProjectCostsIntroduction />;
-      case "COSTS_REINSTATEMENT":
-        return <ReinstatementsCostsForm />;
-      case "COSTS_SITE_PURCHASE_AMOUNTS":
+      case "EXPENSES_INTRODUCTION":
+        return <ProjectExpensesIntroduction />;
+      case "EXPENSES_REINSTATEMENT":
+        return <ReinstatementsExpensesForm />;
+      case "EXPENSES_SITE_PURCHASE_AMOUNTS":
         return <SitePurchaseAmountsContainer />;
-      case "COSTS_PHOTOVOLTAIC_PANELS_INSTALLATION":
-        return <PhotovoltaicPanelsInstallationCostsForm />;
-      case "COSTS_PROJECTED_YEARLY_COSTS":
-        return <YearlyProjectedCostsForm />;
+      case "EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION":
+        return <PhotovoltaicPanelsInstallationExpensesForm />;
+      case "EXPENSES_PROJECTED_YEARLY_EXPENSES":
+        return <YearlyProjectedExpensesForm />;
       case "REVENUE_INTRODUCTION":
         return <ProjectRevenueIntroduction />;
       case "REVENUE_PROJECTED_YEARLY_REVENUE":

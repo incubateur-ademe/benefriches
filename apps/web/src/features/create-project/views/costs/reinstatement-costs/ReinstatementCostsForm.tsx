@@ -23,10 +23,10 @@ export type FormValues = {
   remediationAmount?: number;
   deimpermeabilizationAmount?: number;
   sustainableSoilsReinstatementAmount?: number;
-  otherReinstatementCostAmount?: number;
+  otherReinstatementExpenseAmount?: number;
 };
 
-const ReinstatementCostFormExplanation = ({
+const ReinstatementExpensesFormExplanation = ({
   hasContaminatedSoils,
   hasImpermeableSurface,
 }: {
@@ -78,8 +78,8 @@ const ReinstatementCostFormExplanation = ({
   }
 };
 
-const getCostsInputs = (hasContaminatedSoils: boolean) => {
-  const costs = [
+const getExpensesInputs = (hasContaminatedSoils: boolean) => {
+  const expenses = [
     { name: "asbestosRemovalAmount", label: "Désamiantage" },
     { name: "remediationAmount", label: "Dépollution des sols" },
     { name: "demolitionAmount", label: "Déconstruction" },
@@ -94,12 +94,14 @@ const getCostsInputs = (hasContaminatedSoils: boolean) => {
         </>
       ),
     },
-    { name: "otherReinstatementCostAmount", label: "Autres dépenses de remise en état" },
+    { name: "otherReinstatementExpenseAmount", label: "Autres dépenses de remise en état" },
   ] as const;
-  return hasContaminatedSoils ? costs.filter(({ name }) => name !== "remediationAmount") : costs;
+  return hasContaminatedSoils
+    ? expenses.filter(({ name }) => name !== "remediationAmount")
+    : expenses;
 };
 
-const ReinstatementsCostsForm = ({
+const ReinstatementsExpensesForm = ({
   onSubmit,
   onBack,
   hasContaminatedSoils,
@@ -108,7 +110,7 @@ const ReinstatementsCostsForm = ({
 }: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>();
 
-  const allCosts = watch();
+  const allExpenses = watch();
 
   const hasImpermeableSurface = hasBuildings || hasImpermeableSoils;
 
@@ -117,7 +119,7 @@ const ReinstatementsCostsForm = ({
       title="Dépenses de travaux de remise en état de la friche"
       instructions={
         <FormInfo>
-          <ReinstatementCostFormExplanation
+          <ReinstatementExpensesFormExplanation
             hasContaminatedSoils={hasContaminatedSoils}
             hasImpermeableSurface={hasImpermeableSurface}
           />
@@ -125,7 +127,7 @@ const ReinstatementsCostsForm = ({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {getCostsInputs(hasContaminatedSoils).map(({ label, name }) => (
+        {getExpensesInputs(hasContaminatedSoils).map(({ label, name }) => (
           <Controller
             key={name}
             control={control}
@@ -152,7 +154,7 @@ const ReinstatementsCostsForm = ({
         <p>
           <strong>
             Total des dépenses des travaux de remise en état :{" "}
-            {formatNumberFr(sumObjectValues(allCosts))} €
+            {formatNumberFr(sumObjectValues(allExpenses))} €
           </strong>
         </p>
         <BackNextButtonsGroup onBack={onBack} />
@@ -161,4 +163,4 @@ const ReinstatementsCostsForm = ({
   );
 };
 
-export default ReinstatementsCostsForm;
+export default ReinstatementsExpensesForm;

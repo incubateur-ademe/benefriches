@@ -1,7 +1,11 @@
-import { FinancialAssistance, OperationsCost, SourceRevenue } from "../../../domain/impacts.types";
+import {
+  FinancialAssistance,
+  OperationsExpense,
+  SourceRevenue,
+} from "../../../domain/impacts.types";
 
 import {
-  DevelopmentPlanInstallationCostName,
+  DevelopmentPlanInstallationExpenseName,
   EconomicBalanceMainName,
   EconomicBalanceName,
 } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
@@ -14,7 +18,7 @@ import {
 } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
 import { SocialImpactName } from "@/features/projects/application/projectImpactsSocial.selectors";
 import { SocioEconomicImpactName } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
-import { ReinstatementCost } from "@/shared/domain/reconversionProject";
+import { ReinstatementExpense } from "@/shared/domain/reconversionProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {
@@ -231,9 +235,11 @@ export const getEconomicBalanceDetailsImpactLabel = (
 ) => {
   switch (mainCategory) {
     case "site_reinstatement":
-      return getEconomicBalanceReinstatementCostPurposeLabel(name as ReinstatementCost["purpose"]);
+      return getEconomicBalanceReinstatementExpensePurposeLabel(
+        name as ReinstatementExpense["purpose"],
+      );
     case "operations_costs":
-      return getEconomicBalanceYearlyCostPurposeLabel(name as OperationsCost["purpose"]);
+      return getEconomicBalanceYearlyExpensePurposeLabel(name as OperationsExpense["purpose"]);
     case "operations_revenues":
       return getEconomicBalanceYearlyRevenueSourceLabel(name as SourceRevenue);
     case "financial_assistance":
@@ -241,13 +247,13 @@ export const getEconomicBalanceDetailsImpactLabel = (
     case "photovoltaic_development_plan_installation":
     case "mixed_use_neighbourhood_development_plan_installation":
     case "development_plan_installation":
-      return getEconomicBalanceInstallationLabel(name as DevelopmentPlanInstallationCostName);
+      return getEconomicBalanceInstallationLabel(name as DevelopmentPlanInstallationExpenseName);
     default:
       return "Autre";
   }
 };
 
-const getEconomicBalanceYearlyCostPurposeLabel = (purpose: OperationsCost["purpose"]) => {
+const getEconomicBalanceYearlyExpensePurposeLabel = (purpose: OperationsExpense["purpose"]) => {
   switch (purpose) {
     case "rent":
       return "🔑 Loyer";
@@ -271,10 +277,10 @@ const getEconomicBalanceYearlyRevenueSourceLabel = (source: SourceRevenue) => {
   }
 };
 
-const getEconomicBalanceReinstatementCostPurposeLabel = (
-  costPurpose: ReinstatementCost["purpose"],
+const getEconomicBalanceReinstatementExpensePurposeLabel = (
+  purpose: ReinstatementExpense["purpose"],
 ): string => {
-  switch (costPurpose) {
+  switch (purpose) {
     case "asbestos_removal":
       return "☣️ Désamiantage";
     case "sustainable_soils_reinstatement":
@@ -304,9 +310,9 @@ const getEconomicBalanceFinancialAssistanceLabel = (revenueSource: FinancialAssi
 };
 
 const getEconomicBalanceInstallationLabel = (
-  costPurpose: DevelopmentPlanInstallationCostName,
+  purpose: DevelopmentPlanInstallationExpenseName,
 ): string => {
-  switch (costPurpose) {
+  switch (purpose) {
     case "mixed_use_neighbourhood_technical_studies":
     case "photovoltaic_technical_studies":
     case "technical_studies":

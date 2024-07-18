@@ -95,19 +95,19 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
     const environmentalMonetary: SocioEconomicImpactByCategory = { total: 0, impacts: [] };
 
     if (allowedCategories.includes("economic_direct")) {
-      const avoidedFricheCostsImpacts = socioEconomicImpacts.filter(
+      const avoidedFricheExpensesImpacts = socioEconomicImpacts.filter(
         (impact) => impact.impact === "avoided_friche_costs",
       );
 
-      if (avoidedFricheCostsImpacts.length > 0) {
+      if (avoidedFricheExpensesImpacts.length > 0) {
         economicDirect.impacts.push({
           name: "avoided_friche_costs",
-          actors: avoidedFricheCostsImpacts.map(({ amount, actor }) => ({
+          actors: avoidedFricheExpensesImpacts.map(({ amount, actor }) => ({
             value: amount,
             name: actor,
           })),
         });
-        economicDirect.total += sumList(avoidedFricheCostsImpacts.map(({ amount }) => amount));
+        economicDirect.total += sumList(avoidedFricheExpensesImpacts.map(({ amount }) => amount));
       }
 
       const rentalIncomeImpacts = socioEconomicImpacts.filter(

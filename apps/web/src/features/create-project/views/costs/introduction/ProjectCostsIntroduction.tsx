@@ -11,7 +11,7 @@ type Props = {
   onBack: () => void;
 };
 
-const ProjectCostsIntroduction = ({ onNext, onBack }: Props) => {
+const ProjectExpensesIntroduction = ({ onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>💸</EditorialPageIcon>
@@ -25,4 +25,4 @@ const ProjectCostsIntroduction = ({ onNext, onBack }: Props) => {
   );
 };
 
-export default ProjectCostsIntroduction;
+export default ProjectExpensesIntroduction;

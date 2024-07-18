@@ -24,7 +24,7 @@ export type FormValues = {
 const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>({ defaultValues });
 
-  const allCosts = watch();
+  const allRevenues = watch();
 
   return (
     <WizardFormLayout
@@ -91,7 +91,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
 
         <p>
           <strong>
-            Total des recettes annuelles : {formatNumberFr(sumObjectValues(allCosts))} €
+            Total des recettes annuelles : {formatNumberFr(sumObjectValues(allRevenues))} €
           </strong>
         </p>
         <BackNextButtonsGroup onBack={onBack} />

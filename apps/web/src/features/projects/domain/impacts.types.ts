@@ -1,21 +1,21 @@
 import { SoilType } from "shared";
 
-import { ReinstatementCost } from "@/shared/domain/reconversionProject";
+import { ReinstatementExpense } from "@/shared/domain/reconversionProject";
 
 export type SourceRevenue = "rent" | "operations" | "other";
 export type FinancialAssistance = "local_or_regional_authority_participation" | "public_subsidies";
-export type DevelopmentPlanInstallationCost = {
+export type DevelopmentPlanInstallationExpense = {
   purpose: "technical_studies" | "installation_works" | "development_works" | "other";
   amount: number;
 };
-export type OperationsCost = {
+export type OperationsExpense = {
   purpose: "rent" | "maintenance" | "taxes" | "other";
   amount: number;
 };
 
-type CostsTotalAndDetails<TCost> = {
+type ExpensesTotalAndDetails<TExpense> = {
   total: number;
-  costs: TCost[];
+  costs: TExpense[];
 };
 
 export type Actor =
@@ -31,7 +31,7 @@ type RentalIncomeImpact = BaseEconomicImpact & {
   impact: "rental_income";
   impactCategory: "economic_direct";
 };
-type AvoidedFricheCostsImpact = BaseEconomicImpact & {
+type AvoidedFricheExpensesImpact = BaseEconomicImpact & {
   impact: "avoided_friche_costs";
   impactCategory: "economic_direct";
 };
@@ -168,9 +168,9 @@ export type ReconversionProjectImpacts = {
     bearer?: string;
     costs: {
       total: number;
-      operationsCosts?: CostsTotalAndDetails<OperationsCost>;
-      developmentPlanInstallation?: CostsTotalAndDetails<DevelopmentPlanInstallationCost>;
-      siteReinstatement?: CostsTotalAndDetails<ReinstatementCost>;
+      operationsCosts?: ExpensesTotalAndDetails<OperationsExpense>;
+      developmentPlanInstallation?: ExpensesTotalAndDetails<DevelopmentPlanInstallationExpense>;
+      siteReinstatement?: ExpensesTotalAndDetails<ReinstatementExpense>;
       sitePurchase?: number;
     };
     revenues: {
@@ -217,7 +217,7 @@ export type ReconversionProjectImpacts = {
     total: number;
     impacts: (
       | RentalIncomeImpact
-      | AvoidedFricheCostsImpact
+      | AvoidedFricheExpensesImpact
       | TaxesIncomeImpact
       | PropertyTransferDutiesIncomeImpact
       | EcosystemServicesImpact

@@ -1,15 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
-  DevelopmentPlanInstallationCost,
+  DevelopmentPlanInstallationExpense,
   FinancialAssistance,
-  OperationsCost,
+  OperationsExpense,
   SourceRevenue,
 } from "../domain/impacts.types";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 import { RootState } from "@/app/application/store";
-import { ReinstatementCostsPurpose } from "@/shared/domain/reconversionProject";
+import { ReinstatementExpensePurpose } from "@/shared/domain/reconversionProject";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
@@ -42,21 +42,21 @@ export type EconomicBalanceMainName =
   | "mixed_use_neighbourhood_development_plan_installation"
   | "site_resale";
 
-export type DevelopmentPlanInstallationCostName =
+export type DevelopmentPlanInstallationExpenseName =
   | "photovoltaic_technical_studies"
   | "photovoltaic_works"
   | "photovoltaic_other"
   | "mixed_use_neighbourhood_technical_studies"
   | "mixed_use_neighbourhood_works"
   | "mixed_use_neighbourhood_other"
-  | DevelopmentPlanInstallationCost["purpose"];
+  | DevelopmentPlanInstallationExpense["purpose"];
 
 type EconomicBalanceDetailsName =
-  | OperationsCost["purpose"]
+  | OperationsExpense["purpose"]
   | SourceRevenue
-  | ReinstatementCostsPurpose
+  | ReinstatementExpensePurpose
   | FinancialAssistance
-  | DevelopmentPlanInstallationCostName;
+  | DevelopmentPlanInstallationExpenseName;
 
 export type EconomicBalance = {
   total: number;
@@ -83,7 +83,7 @@ const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType)
 };
 
 const getDevelopmentPlanDetailsName = (
-  costName: DevelopmentPlanInstallationCost["purpose"],
+  costName: DevelopmentPlanInstallationExpense["purpose"],
   projectType?: ProjectDevelopmentPlanType,
 ) => {
   const prefix = getInstallationCostNamePrefix(projectType);

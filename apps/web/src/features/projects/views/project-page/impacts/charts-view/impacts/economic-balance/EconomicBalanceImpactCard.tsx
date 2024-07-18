@@ -19,13 +19,13 @@ function EconomicBalanceImpactCard({ economicBalance, onClick, bearer = "Aménag
   const totalValues = economicBalance.map(({ value }) => value);
 
   const totalRevenues = sumList(totalValues.filter((value) => value > 0));
-  const totalCosts = sumList(totalValues.filter((value) => value < 0));
+  const totalExpenses = sumList(totalValues.filter((value) => value < 0));
 
   const barChartOptions: Highcharts.Options = {
     ...baseColumnChartConfig,
     xAxis: {
       categories: [
-        `<strong>Dépenses</strong><br>${formatMonetaryImpact(totalCosts)}`,
+        `<strong>Dépenses</strong><br>${formatMonetaryImpact(totalExpenses)}`,
         `<strong>Recettes</strong><br>${formatMonetaryImpact(totalRevenues)}`,
       ],
       opposite: true,

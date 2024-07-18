@@ -30,7 +30,7 @@ export type ProjectPhaseDetails =
   | "design_final_draft"
   | "design_pro_or_permit_filing_or_contract_awarding";
 
-export type ReinstatementCostsPurpose =
+export type ReinstatementExpensePurpose =
   | "asbestos_removal"
   | "deimpermeabilization"
   | "demolition"
@@ -39,9 +39,9 @@ export type ReinstatementCostsPurpose =
   | "sustainable_soils_reinstatement"
   | "waste_collection";
 
-export type ReinstatementCost = { purpose: ReinstatementCostsPurpose; amount: number };
+export type ReinstatementExpense = { purpose: ReinstatementExpensePurpose; amount: number };
 
-export type PhotovoltaicInstallationCost = {
+export type PhotovoltaicInstallationExpense = {
   amount: number;
   purpose: "technical_studies" | "installation_works" | "other";
 };
@@ -51,7 +51,7 @@ export type FinancialAssistanceRevenue = {
   source: "local_or_regional_authority_participation" | "public_subsidies" | "other";
 };
 
-export type RecurringCost = {
+export type RecurringExpense = {
   amount: number;
   purpose: "rent" | "maintenance" | "taxes" | "other";
 };
@@ -66,8 +66,10 @@ export type WorksSchedule = {
   endDate: string;
 };
 
-export const getLabelForRecurringCostPurpose = (costPurpose: RecurringCost["purpose"]): string => {
-  switch (costPurpose) {
+export const getLabelForRecurringExpense = (
+  expensePurpose: RecurringExpense["purpose"],
+): string => {
+  switch (expensePurpose) {
     case "taxes":
       return "Impôts et taxes";
     case "other":
@@ -102,10 +104,10 @@ export const getLabelForFinancialAssistanceRevenueSource = (
   }
 };
 
-export const getLabelForPhotovoltaicInstallationCostPurpose = (
-  photovoltaicCostPurpose: PhotovoltaicInstallationCost["purpose"],
+export const getLabelForPhotovoltaicInstallationExpensePurpose = (
+  expensePurpose: PhotovoltaicInstallationExpense["purpose"],
 ): string => {
-  switch (photovoltaicCostPurpose) {
+  switch (expensePurpose) {
     case "technical_studies":
       return "📋 Études et honoraires techniques";
     case "installation_works":
@@ -115,10 +117,10 @@ export const getLabelForPhotovoltaicInstallationCostPurpose = (
   }
 };
 
-export const getLabelForReinstatementCostPurpose = (
-  costPurpose: ReinstatementCostsPurpose,
+export const getLabelForReinstatementExpensePurpose = (
+  expensePurpose: ReinstatementExpensePurpose,
 ): string => {
-  switch (costPurpose) {
+  switch (expensePurpose) {
     case "asbestos_removal":
       return "☣️ Désamiantage";
     case "sustainable_soils_reinstatement":

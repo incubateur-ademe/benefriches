@@ -1,12 +1,12 @@
 import {
-  completeReinstatementCost,
-  revertReinstatementCost,
+  completeReinstatementExpenses,
+  revertReinstatementExpenses,
 } from "../../../application/createProject.reducer";
-import ReinstatementsCostsForm, { FormValues } from "./ReinstatementCostsForm";
+import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
 import { ProjectSite } from "@/features/create-project/domain/project.types";
-import { ReinstatementCost } from "@/shared/domain/reconversionProject";
+import { ReinstatementExpense } from "@/shared/domain/reconversionProject";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
@@ -16,45 +16,51 @@ const hasImpermeableSoils = (soilsDistribution: ProjectSite["soilsDistribution"]
 const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
   soilsDistribution.MINERAL_SOIL ? soilsDistribution.MINERAL_SOIL > 0 : false;
 
-const convertFormValuesToCosts = (amounts: FormValues): ReinstatementCost[] => {
-  const reinstatementCosts: ReinstatementCost[] = [];
+const convertFormValuesToExpenses = (amounts: FormValues): ReinstatementExpense[] => {
+  const reinstatementExpenses: ReinstatementExpense[] = [];
   if (amounts.asbestosRemovalAmount) {
-    reinstatementCosts.push({ purpose: "asbestos_removal", amount: amounts.asbestosRemovalAmount });
+    reinstatementExpenses.push({
+      purpose: "asbestos_removal",
+      amount: amounts.asbestosRemovalAmount,
+    });
   }
 
   if (amounts.deimpermeabilizationAmount) {
-    reinstatementCosts.push({
+    reinstatementExpenses.push({
       purpose: "deimpermeabilization",
       amount: amounts.deimpermeabilizationAmount,
     });
   }
 
   if (amounts.demolitionAmount) {
-    reinstatementCosts.push({ purpose: "demolition", amount: amounts.demolitionAmount });
+    reinstatementExpenses.push({ purpose: "demolition", amount: amounts.demolitionAmount });
   }
 
-  if (amounts.otherReinstatementCostAmount) {
-    reinstatementCosts.push({
+  if (amounts.otherReinstatementExpenseAmount) {
+    reinstatementExpenses.push({
       purpose: "other_reinstatement",
-      amount: amounts.otherReinstatementCostAmount,
+      amount: amounts.otherReinstatementExpenseAmount,
     });
   }
 
   if (amounts.remediationAmount) {
-    reinstatementCosts.push({ purpose: "remediation", amount: amounts.remediationAmount });
+    reinstatementExpenses.push({ purpose: "remediation", amount: amounts.remediationAmount });
   }
 
   if (amounts.sustainableSoilsReinstatementAmount) {
-    reinstatementCosts.push({
+    reinstatementExpenses.push({
       purpose: "sustainable_soils_reinstatement",
       amount: amounts.sustainableSoilsReinstatementAmount,
     });
   }
 
   if (amounts.wasteCollectionAmount) {
-    reinstatementCosts.push({ purpose: "waste_collection", amount: amounts.wasteCollectionAmount });
+    reinstatementExpenses.push({
+      purpose: "waste_collection",
+      amount: amounts.wasteCollectionAmount,
+    });
   }
-  return reinstatementCosts;
+  return reinstatementExpenses;
 };
 
 const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
@@ -65,21 +71,21 @@ const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
       hasImpermeableSoils(soilsDistribution) || hasMineralSoils(soilsDistribution),
     hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
     onSubmit: (amounts: FormValues) => {
-      const costs = convertFormValuesToCosts(amounts);
-      dispatch(completeReinstatementCost(costs));
+      const expenses = convertFormValuesToExpenses(amounts);
+      dispatch(completeReinstatementExpenses(expenses));
     },
     onBack: () => {
-      dispatch(revertReinstatementCost());
+      dispatch(revertReinstatementExpenses());
     },
   };
 };
 
-function ReinstatementCostsFormContainer() {
+function ReinstatementExpensesFormContainer() {
   const dispatch = useAppDispatch();
 
   const siteData = useAppSelector((state) => state.projectCreation.siteData);
 
-  return <ReinstatementsCostsForm {...mapProps(dispatch, siteData)} />;
+  return <ReinstatementExpensesForm {...mapProps(dispatch, siteData)} />;
 }
 
-export default ReinstatementCostsFormContainer;
+export default ReinstatementExpensesFormContainer;

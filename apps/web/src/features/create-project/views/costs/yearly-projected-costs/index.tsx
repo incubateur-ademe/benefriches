@@ -1,15 +1,15 @@
 import {
-  completeYearlyProjectedCosts,
-  revertYearlyProjectedCosts,
+  completeYearlyProjectedExpenses,
+  revertYearlyProjectedExpenses,
 } from "../../../application/createProject.reducer";
-import YearlyProjectedsCostsForm, { FormValues } from "./YearlyProjectedCostsForm";
+import YearlyProjectedsExpensesForm, { FormValues } from "./YearlyProjectedCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { getDefaultValuesForYearlyProjectedCosts } from "@/features/create-project/application/createProject.selectors";
+import { getDefaultValuesForYearlyProjectedExpenses } from "@/features/create-project/application/createProject.selectors";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const costsFormMap = {
+const expensesFormMap = {
   rentAmount: "rent",
   maintenanceAmount: "maintenance",
   taxesAmount: "taxes",
@@ -22,26 +22,26 @@ const mapProps = (
 ) => {
   return {
     defaultValues,
-    onSubmit: (costs: FormValues) => {
-      const yearlyProjectedCosts = typedObjectKeys(costs)
-        .filter((sourceKey) => !!costs[sourceKey])
+    onSubmit: (expenses: FormValues) => {
+      const yearlyProjectedExpenses = typedObjectKeys(expenses)
+        .filter((sourceKey) => !!expenses[sourceKey])
         .map((sourceKey) => ({
-          purpose: costsFormMap[sourceKey],
-          amount: costs[sourceKey] as number,
+          purpose: expensesFormMap[sourceKey],
+          amount: expenses[sourceKey] as number,
         }));
-      dispatch(completeYearlyProjectedCosts(yearlyProjectedCosts));
+      dispatch(completeYearlyProjectedExpenses(yearlyProjectedExpenses));
     },
     onBack: () => {
-      dispatch(revertYearlyProjectedCosts());
+      dispatch(revertYearlyProjectedExpenses());
     },
   };
 };
 
-function YearlyProjectedCostsFormContainer() {
+function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();
-  const defaultValues = useAppSelector(getDefaultValuesForYearlyProjectedCosts);
+  const defaultValues = useAppSelector(getDefaultValuesForYearlyProjectedExpenses);
 
-  return <YearlyProjectedsCostsForm {...mapProps(dispatch, defaultValues)} />;
+  return <YearlyProjectedsExpensesForm {...mapProps(dispatch, defaultValues)} />;
 }
 
-export default YearlyProjectedCostsFormContainer;
+export default YearlyProjectedExpensesFormContainer;

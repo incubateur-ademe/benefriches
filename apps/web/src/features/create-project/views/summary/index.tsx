@@ -43,9 +43,9 @@ function ProjectionCreationDataSummaryContainer() {
             (projectData.sitePurchasePropertyTransferDuties ?? 0)
           : 0,
         financialAssistanceRevenues: projectData.financialAssistanceRevenues,
-        reinstatementCosts: projectData.reinstatementCosts ?? [],
-        photovoltaicPanelsInstallationCosts: projectData.photovoltaicPanelsInstallationCosts,
-        yearlyProjectedCosts: projectData.yearlyProjectedCosts ?? [],
+        reinstatementExpenses: projectData.reinstatementExpenses ?? [],
+        photovoltaicPanelsInstallationExpenses: projectData.photovoltaicPanelsInstallationExpenses,
+        yearlyProjectedExpenses: projectData.yearlyProjectedExpenses ?? [],
         yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
         reinstatementSchedule: projectData.reinstatementSchedule,
         photovoltaticInstallationSchedule: projectData.photovoltaicInstallationSchedule,
