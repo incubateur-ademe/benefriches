@@ -4,8 +4,8 @@ import { z } from "zod";
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 const scheduleSchema = z.object({
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.string().date(),
+  endDate: z.string().date(),
 });
 
 export type Schedule = z.infer<typeof scheduleSchema>;

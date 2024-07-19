@@ -19,7 +19,7 @@ import mixedUseNeighbourhoodReducer, {
   MixedUseNeighbourhoodState,
 } from "./mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
 import { fetchRelatedSite } from "./fetchRelatedSite.action";
-import { saveReconversionProject, Schedule } from "./saveReconversionProject.action";
+import { saveReconversionProject } from "./saveReconversionProject.action";
 
 import { RootState } from "@/app/application/store";
 import {
@@ -106,13 +106,6 @@ export const getInitialState = (): ProjectCreationState => {
       saveState: "idle",
       stepsHistory: ["CREATE_MODE_SELECTION"],
     },
-  };
-};
-
-const scheduleStringToDates = (scheduleStrings: WorksSchedule): Schedule => {
-  return {
-    startDate: new Date(scheduleStrings.startDate),
-    endDate: new Date(scheduleStrings.endDate),
   };
 };
 
@@ -415,12 +408,10 @@ export const projectCreationSlice = createSlice({
       const { firstYearOfOperation, photovoltaicInstallationSchedule, reinstatementSchedule } =
         action.payload;
       if (firstYearOfOperation) state.projectData.firstYearOfOperation = firstYearOfOperation;
-      if (reinstatementSchedule)
-        state.projectData.reinstatementSchedule = scheduleStringToDates(reinstatementSchedule);
-      if (photovoltaicInstallationSchedule)
-        state.projectData.photovoltaicInstallationSchedule = scheduleStringToDates(
-          photovoltaicInstallationSchedule,
-        );
+      if (reinstatementSchedule) state.projectData.reinstatementSchedule = reinstatementSchedule;
+      if (photovoltaicInstallationSchedule) {
+        state.projectData.photovoltaicInstallationSchedule = photovoltaicInstallationSchedule;
+      }
       state.stepsHistory.push("PROJECT_PHASE");
     },
     completeProjectPhaseStep: (

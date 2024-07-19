@@ -67,10 +67,13 @@ export const projectWithExhaustiveData = {
     { source: "other", amount: 999.99 },
   ],
   reinstatementSchedule: {
-    startDate: new Date("2025-02-01"),
-    endDate: new Date("2028-06-30"),
+    startDate: "2025-02-01T00:00:00.000Z",
+    endDate: "2028-06-30T00:00:00.000Z",
   },
-  photovoltaicInstallationSchedule: { startDate: new Date(), endDate: new Date() },
+  photovoltaicInstallationSchedule: {
+    startDate: new Date().toISOString(),
+    endDate: new Date().toISOString(),
+  },
   firstYearOfOperation: 2029,
   projectPhase: "design",
   projectPhaseDetails: "design_final_draft",

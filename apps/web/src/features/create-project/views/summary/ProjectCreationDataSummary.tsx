@@ -52,8 +52,8 @@ type Props = {
     photovoltaicPanelsInstallationCosts?: PhotovoltaicInstallationCost[];
     yearlyProjectedCosts: RecurringCost[];
     yearlyProjectedRevenues: RecurringRevenue[];
-    reinstatementSchedule?: Partial<Schedule>;
-    photovoltaticInstallationSchedule?: Partial<Schedule>;
+    reinstatementSchedule?: Schedule;
+    photovoltaticInstallationSchedule?: Schedule;
     firstYearOfOperation?: number;
   };
   siteData: {
@@ -80,14 +80,15 @@ function DataLine({ label, value, className = "" }: DataLineProps) {
 }
 
 type ScheduleDatesProps = {
-  startDate?: Date;
-  endDate?: Date;
+  startDateString: string;
+  endDateString: string;
 };
-function ScheduleDates({ startDate, endDate }: ScheduleDatesProps) {
+function ScheduleDates({ startDateString, endDateString }: ScheduleDatesProps) {
+  const startDate = new Date(startDateString);
+  const endDate = new Date(endDateString);
   return (
     <span>
-      {startDate?.toLocaleDateString() ?? "Non renseigné"} ➡️{" "}
-      {endDate?.toLocaleDateString() ?? "Non renseigné"}
+      {startDate.toLocaleDateString()} ➡️ {endDate.toLocaleDateString()}
     </span>
   );
 }
@@ -314,13 +315,13 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           })}
         </Accordion>
         <Accordion label="Calendrier" defaultExpanded>
-          {siteData.isFriche && (
+          {projectData.reinstatementSchedule && (
             <DataLine
               label={<strong>Travaux de remise en état de la friche</strong>}
               value={
                 <ScheduleDates
-                  startDate={projectData.reinstatementSchedule?.startDate}
-                  endDate={projectData.reinstatementSchedule?.endDate}
+                  startDateString={projectData.reinstatementSchedule.startDate}
+                  endDateString={projectData.reinstatementSchedule.endDate}
                 />
               }
             />
@@ -330,8 +331,8 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               label={<strong>Travaux d'installation des panneaux</strong>}
               value={
                 <ScheduleDates
-                  startDate={projectData.photovoltaticInstallationSchedule.startDate}
-                  endDate={projectData.photovoltaticInstallationSchedule.endDate}
+                  startDateString={projectData.photovoltaticInstallationSchedule.startDate}
+                  endDateString={projectData.photovoltaticInstallationSchedule.endDate}
                 />
               }
             />
