@@ -62,7 +62,7 @@ export class AdministrativeDivisionGeoApi {
     const searchParams = text.match(regexPostalCode) ? `codePostal=${text}` : `nom=${text}`;
 
     const response = await fetch(
-      `${GEO_API_HOSTNAME}${MUNICIPALITY_URL}?${searchParams}&${FIELDS}`,
+      `${GEO_API_HOSTNAME}${MUNICIPALITY_URL}/?${searchParams}&${FIELDS}`,
     );
 
     if (!response.ok) throw new Error("Error while fetching geo api gouv");
