@@ -67,4 +67,11 @@ export const selectCurrentUserId = createSelector(
   },
 );
 
+export const selectCurrentUserFirstname = createSelector(
+  [(state: RootState) => state.currentUser],
+  (state) => {
+    return state.currentUser?.firstname;
+  },
+);
+
 export default userSlice.reducer;

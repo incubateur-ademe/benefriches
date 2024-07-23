@@ -8,7 +8,7 @@ function MyProjectsPageHeader() {
   return (
     <div className={classNames(fr.cx("fr-grid-row"), "tw-justify-between", "tw-items-center")}>
       <h2>Mes projets</h2>
-      <div>
+      <div className="tour-guide-step-create-new-site">
         <Button
           priority="primary"
           linkProps={routes.createSiteFoncierIntro().link}

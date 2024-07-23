@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 
-import classNames from "@/shared/views/clsx";
+import classNames, { ClassValue } from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
   isHovered?: boolean;
   isSelected: boolean;
   shouldDisplayCheckbox: boolean;
+  className?: ClassValue;
   onChangeCheckbox: (selected: boolean) => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
@@ -59,6 +60,7 @@ function ScenarioTile({
   pictogramUrl,
   isHovered,
   badgeText,
+  className,
   ...rest
 }: Props) {
   const onChange = () => {
@@ -73,6 +75,7 @@ function ScenarioTile({
         "tw-border-solid",
         isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
         isHovered ? "tw-bg-[#F6F6F6]" : "tw-bg-none",
+        className,
       )}
       {...rest}
     >
