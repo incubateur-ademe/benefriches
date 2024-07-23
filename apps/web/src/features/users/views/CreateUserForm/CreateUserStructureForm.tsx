@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { AutoComplete } from "antd";
@@ -51,6 +52,25 @@ const structureActivityLabelMap = new Map<StructureCategory, string>([
   ["other", "Autre"],
 ]);
 
+const DEFAULT_LOCAL_AUTHORITIES = [
+  {
+    type: "municipality",
+    name: "Mairie",
+  },
+  {
+    type: "epci",
+    name: "Établissement public de coopération intercommunale",
+  },
+  {
+    type: "department",
+    name: "Département",
+  },
+  {
+    type: "region",
+    name: "Région",
+  },
+];
+
 const structureActivityOptions = Array.from(structureActivityLabelMap).map(([value, label]) => ({
   value,
   label,
@@ -64,25 +84,33 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
   const selectedStructureLocalAuthorityType = watch("selectedStructureLocalAuthorityType");
 
   const [suggestions, setSuggestions] = useState<Municipality[]>([]);
+  const [externalServiceError, setExternalServiceError] = useState<boolean>(false);
 
   const onSearch = async (text: string) => {
     if (text.length <= 3) {
       return;
     }
-    const options = await administrativeDivisionService.searchMunicipality(text);
-    setSuggestions(
-      options.map((municipality) => ({
-        value: municipality.code,
-        label: municipality.name,
-        localAuthorities: municipality.localAuthorities,
-      })),
-    );
+    try {
+      const options = await administrativeDivisionService.searchMunicipality(text);
+      setSuggestions(
+        options.map((municipality) => ({
+          value: municipality.code,
+          label: municipality.name,
+          localAuthorities: municipality.localAuthorities,
+        })),
+      );
+      setExternalServiceError(false);
+    } catch (error) {
+      setExternalServiceError(true);
+    }
   };
 
   useEffect(() => {
     if (structureCategory === "local_authority") {
       register("selectedStructureMunicipality", {
-        required: "La communue est nécessaire pour déterminer le nom de votre collectivité",
+        required: externalServiceError
+          ? false
+          : "La commune est nécessaire pour déterminer le nom de votre collectivité",
       });
       return;
     }
@@ -93,7 +121,7 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
       "structureMunicipalityText",
     ]);
     setValue("structureName", "");
-  }, [register, setValue, structureCategory, unregister]);
+  }, [externalServiceError, register, setValue, structureCategory, unregister]);
 
   useEffect(() => {
     if (!selectedStructureMunicipality) {
@@ -165,7 +193,6 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
               }}
             />
           </AutoComplete>
-
           {selectedStructureMunicipality && (
             <Select
               options={selectedStructureMunicipality.localAuthorities.map(({ type, name }) => ({
@@ -180,6 +207,44 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
                 required: "Ce champ est requis",
               })}
             />
+          )}
+
+          {externalServiceError && (
+            <>
+              <Alert
+                className="tw-mb-4"
+                small
+                severity="warning"
+                title="Erreur de récupération des données"
+                description="Nous n’avons pas pu récupérer automatiquement les collectivités associées à votre commune. Veuillez entrer manuellement le nom de votre collectivité."
+              />
+
+              <Select
+                options={DEFAULT_LOCAL_AUTHORITIES.map(({ type, name }) => ({
+                  label: name,
+                  value: type,
+                }))}
+                label={<RequiredLabel label="Type de collectivité" />}
+                placeholder="Sélectionnez le type de collectivité"
+                state={formState.errors.selectedStructureLocalAuthorityType ? "error" : "default"}
+                stateRelatedMessage={formState.errors.selectedStructureLocalAuthorityType?.message}
+                nativeSelectProps={register("selectedStructureLocalAuthorityType", {
+                  required: "Ce champ est requis",
+                })}
+              />
+              <Input
+                label={<RequiredLabel label="Nom de la structure" />}
+                state={formState.errors.structureName ? "error" : "default"}
+                stateRelatedMessage={formState.errors.structureName?.message}
+                nativeInputProps={{
+                  placeholder:
+                    "Mairie de Blajan, Communauté de Communes Coeur et Coteaux du Comminges...",
+                  ...register("structureName", {
+                    required: "Le nom de votre structure est requis.",
+                  }),
+                }}
+              />
+            </>
           )}
         </>
       ) : (
