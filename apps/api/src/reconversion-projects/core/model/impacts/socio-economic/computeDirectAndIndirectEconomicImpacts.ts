@@ -38,7 +38,7 @@ type TaxesIncomeImpact = BaseEconomicImpact & {
 };
 type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
   impact: "property_transfer_duties_income";
-  impactCategory: "economic_indirect";
+  impactCategory: "economic_direct";
   actor: "community";
 };
 
@@ -118,7 +118,7 @@ export const computeDirectAndIndirectEconomicImpacts = (
       amount: input.propertyTransferDutiesAmount,
       impact: "property_transfer_duties_income",
       actor: "community",
-      impactCategory: "economic_indirect",
+      impactCategory: "economic_direct",
     });
   }
 

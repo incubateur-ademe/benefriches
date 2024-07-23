@@ -42,7 +42,7 @@ type TaxesIncomeImpact = BaseEconomicImpact & {
 };
 type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
   impact: "property_transfer_duties_income";
-  impactCategory: "economic_indirect";
+  impactCategory: "economic_direct";
   actor: "community";
 };
 

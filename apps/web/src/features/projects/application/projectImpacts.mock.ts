@@ -51,7 +51,7 @@ export const baseProjectImpactMock = {
           actor: "community",
           amount: 5432,
           impact: "property_transfer_duties_income",
-          impactCategory: "economic_indirect",
+          impactCategory: "economic_direct",
         },
         {
           actor: "community",

@@ -35,12 +35,12 @@ describe("projectImpactsSocioEconomic selectors", () => {
           MOCK_STATES.projectImpacts["impactsData"],
         );
 
-      expect(economicDirect.impacts.length).toEqual(2);
-      expect(economicIndirect.impacts.length).toEqual(2);
+      expect(economicDirect.impacts.length).toEqual(3);
+      expect(economicIndirect.impacts.length).toEqual(1);
       expect(environmentalMonetary.impacts.length).toEqual(3);
 
-      expect(economicDirect.total).toEqual(-409000);
-      expect(economicIndirect.total).toEqual(10432);
+      expect(economicDirect.total).toEqual(-403568);
+      expect(economicIndirect.total).toEqual(5000);
       expect(environmentalMonetary.total).toEqual(202984);
 
       expect(economicDirect.impacts).toContainEqual(
@@ -57,17 +57,17 @@ describe("projectImpactsSocioEconomic selectors", () => {
         }),
       );
 
-      expect(economicIndirect.impacts).toContainEqual(
+      expect(economicDirect.impacts).toContainEqual(
         expect.objectContaining({
-          name: "taxes_income",
-          actors: [{ name: "community", value: 5000 }],
+          name: "property_transfer_duties_income",
+          actors: [{ name: "community", value: 5432 }],
         }),
       );
 
       expect(economicIndirect.impacts).toContainEqual(
         expect.objectContaining({
-          name: "property_transfer_duties_income",
-          actors: [{ name: "community", value: 5432 }],
+          name: "taxes_income",
+          actors: [{ name: "community", value: 5000 }],
         }),
       );
 
@@ -138,11 +138,11 @@ describe("projectImpactsSocioEconomic selectors", () => {
         );
 
       expect(environmentalMonetary.impacts.length).toEqual(0);
-      expect(economicDirect.impacts.length).toEqual(2);
-      expect(economicIndirect.impacts.length).toEqual(2);
+      expect(economicDirect.impacts.length).toEqual(3);
+      expect(economicIndirect.impacts.length).toEqual(1);
 
-      expect(economicDirect.total).toEqual(-409000);
-      expect(economicIndirect.total).toEqual(10432);
+      expect(economicDirect.total).toEqual(-403568);
+      expect(economicIndirect.total).toEqual(5000);
 
       expect(economicDirect.impacts).toContainEqual(
         expect.objectContaining({
@@ -158,17 +158,17 @@ describe("projectImpactsSocioEconomic selectors", () => {
         }),
       );
 
-      expect(economicIndirect.impacts).toContainEqual(
+      expect(economicDirect.impacts).toContainEqual(
         expect.objectContaining({
-          name: "taxes_income",
-          actors: [{ name: "community", value: 5000 }],
+          name: "property_transfer_duties_income",
+          actors: [{ name: "community", value: 5432 }],
         }),
       );
 
       expect(economicIndirect.impacts).toContainEqual(
         expect.objectContaining({
-          name: "property_transfer_duties_income",
-          actors: [{ name: "community", value: 5432 }],
+          name: "taxes_income",
+          actors: [{ name: "community", value: 5000 }],
         }),
       );
     });
@@ -313,10 +313,11 @@ describe("projectImpactsSocioEconomic selectors", () => {
       expect(byCategory).toContainEqual(
         expect.objectContaining({
           name: "economic_direct",
-          total: -409000,
+          total: -403568,
           impacts: [
             { name: "rental_income", value: -540000 },
             { name: "avoided_friche_costs", value: 131000 },
+            { name: "property_transfer_duties_income", value: 5432 },
           ],
         }),
       );
@@ -324,11 +325,8 @@ describe("projectImpactsSocioEconomic selectors", () => {
       expect(byCategory).toContainEqual(
         expect.objectContaining({
           name: "economic_indirect",
-          total: 10432,
-          impacts: [
-            { name: "taxes_income", value: 5000 },
-            { name: "property_transfer_duties_income", value: 5432 },
-          ],
+          total: 5000,
+          impacts: [{ name: "taxes_income", value: 5000 }],
         }),
       );
 
@@ -386,10 +384,11 @@ describe("projectImpactsSocioEconomic selectors", () => {
       expect(byCategory).toContainEqual(
         expect.objectContaining({
           name: "economic_direct",
-          total: -409000,
+          total: -403568,
           impacts: [
             { name: "rental_income", value: -540000 },
             { name: "avoided_friche_costs", value: 131000 },
+            { name: "property_transfer_duties_income", value: 5432 },
           ],
         }),
       );
@@ -397,11 +396,8 @@ describe("projectImpactsSocioEconomic selectors", () => {
       expect(byCategory).toContainEqual(
         expect.objectContaining({
           name: "economic_indirect",
-          total: 10432,
-          impacts: [
-            { name: "taxes_income", value: 5000 },
-            { name: "property_transfer_duties_income", value: 5432 },
-          ],
+          total: 5000,
+          impacts: [{ name: "taxes_income", value: 5000 }],
         }),
       );
     });

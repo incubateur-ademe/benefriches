@@ -123,6 +123,23 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
         });
         economicDirect.total += sumList(rentalIncomeImpacts.map(({ amount }) => amount));
       }
+
+      const propertyTransferDutiesIncomeImpact = socioEconomicImpacts.find(
+        (impact) => impact.impact === "property_transfer_duties_income",
+      );
+
+      if (propertyTransferDutiesIncomeImpact) {
+        economicDirect.impacts.push({
+          name: "property_transfer_duties_income",
+          actors: [
+            {
+              value: propertyTransferDutiesIncomeImpact.amount,
+              name: propertyTransferDutiesIncomeImpact.actor,
+            },
+          ],
+        });
+        economicDirect.total += propertyTransferDutiesIncomeImpact.amount;
+      }
     }
 
     if (allowedCategories.includes("economic_indirect")) {
@@ -138,23 +155,6 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
           })),
         });
         economicIndirect.total += sumList(taxesIncomeImpacts.map(({ amount }) => amount));
-      }
-
-      const propertyTransferDutiesIncomeImpact = socioEconomicImpacts.find(
-        (impact) => impact.impact === "property_transfer_duties_income",
-      );
-
-      if (propertyTransferDutiesIncomeImpact) {
-        economicIndirect.impacts.push({
-          name: "property_transfer_duties_income",
-          actors: [
-            {
-              value: propertyTransferDutiesIncomeImpact.amount,
-              name: propertyTransferDutiesIncomeImpact.actor,
-            },
-          ],
-        });
-        economicIndirect.total += propertyTransferDutiesIncomeImpact.amount;
       }
 
       const avoidedCarRelatedExpenses = socioEconomicImpacts.filter(
