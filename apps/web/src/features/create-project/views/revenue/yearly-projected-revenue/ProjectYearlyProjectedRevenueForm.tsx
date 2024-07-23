@@ -33,7 +33,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
         <FormInfo>
           <p>
             Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
-            renseigné (exprimée en kWc) et les dépenses moyennes observés.
+            renseigné (exprimée en kWc) et les dépenses moyennes observées.
           </p>
           <p>
             <strong>Source&nbsp;: </strong>

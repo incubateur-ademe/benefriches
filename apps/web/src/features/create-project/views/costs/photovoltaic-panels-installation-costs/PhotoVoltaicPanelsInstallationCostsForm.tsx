@@ -42,7 +42,7 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
         <FormInfo>
           <p>
             Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
-            renseignée (exprimée en kWc) et les dépenses moyennes observés.
+            renseignée (exprimée en kWc) et les dépenses moyennes observées.
           </p>
           <p>
             <strong>Source&nbsp;: </strong>
