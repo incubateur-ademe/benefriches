@@ -50,6 +50,7 @@ function ProjectScenarioTile({
 
   return (
     <ScenarioTile
+      className="tour-guide-step-created-project"
       title={name}
       linkProps={projectImpactsLinkProps}
       onChangeCheckbox={onChangeCheckbox}

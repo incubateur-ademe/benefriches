@@ -2,6 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 import MyProjectsPageHeader from "./MyProjectsPageHeader";
+import MyProjectsTourGuide from "./MyProjectTourGuide";
 import ScenariiList from "./ScenariiList";
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -34,7 +35,13 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
           </>
         );
       }
-      return <ScenariiList projectsList={projectsList} />;
+
+      return (
+        <>
+          <MyProjectsTourGuide projectsList={projectsList} />
+          <ScenariiList projectsList={projectsList} />
+        </>
+      );
     }
     return null;
   };
