@@ -12,14 +12,15 @@ import { generateSiteName } from "./siteName";
 
 import { formatMunicipalityName } from "@/shared/services/strings/formatLocalAuthorityName";
 
+const FRANCE_AVERAGE_CITY_POPULATION = 1800;
+
 const getExpressSiteData = (
   siteData: SiteExpressDraft,
-  cityPopulation: number,
   currentUserId?: string,
 ): CreateSiteGatewayPayload => {
   const surfaceArea = siteData.surfaceArea;
 
-  const cityName = siteData.address.city;
+  const { municipality, population = FRANCE_AVERAGE_CITY_POPULATION } = siteData.address;
 
   const soilsDistribution = {
     BUILDINGS: 0.3 * surfaceArea,
@@ -47,7 +48,7 @@ const getExpressSiteData = (
   if (siteData.isFriche) {
     yearlyExpenses.push(
       {
-        amount: computeIllegalDumpingDefaultCost(cityPopulation),
+        amount: computeIllegalDumpingDefaultCost(population),
         purpose: "illegalDumpingCost",
         bearer: "owner",
         purposeCategory: "safety",
@@ -68,7 +69,7 @@ const getExpressSiteData = (
     contaminatedSoilSurface: siteData.isFriche ? 0.5 * surfaceArea : undefined,
     owner: {
       structureType: "municipality",
-      name: cityName ? formatMunicipalityName(cityName) : "Mairie",
+      name: formatMunicipalityName(municipality),
     },
     yearlyExpenses: yearlyExpenses as Expense[],
     yearlyIncomes: [],

@@ -7,16 +7,29 @@ export enum SiteFoncierType {
   NATURAL_AREA = "NATURAL_AREA",
 }
 
-export type Address = {
+export type Address = StreetAddress | HouseNumberAddress | MunicipalityAddress | BaseAddress;
+
+type BaseAddress = {
   banId: string;
   value: string;
   city: string;
   cityCode: string;
   postCode: string;
-  streetNumber?: string;
-  streetName?: string;
   long: number;
   lat: number;
+};
+type StreetAddress = BaseAddress & {
+  streetName: string;
+};
+
+type HouseNumberAddress = BaseAddress &
+  StreetAddress & {
+    streetNumber: string;
+  };
+
+export type MunicipalityAddress = BaseAddress & {
+  population: number;
+  municipality: string;
 };
 
 export type SiteDraft = {
@@ -51,7 +64,7 @@ export type SiteDraft = {
 export type SiteExpressDraft = {
   id: string;
   isFriche: boolean;
-  address: Address;
+  address: MunicipalityAddress;
   surfaceArea: number;
 };
 

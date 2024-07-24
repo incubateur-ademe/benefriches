@@ -114,27 +114,14 @@ export const saveSiteAction = createAppAsyncThunk("site/create", async (_, { get
   await extra.createSiteService.save(siteToCreate);
 });
 
-const FRANCE_AVERAGE_CITY_POPULATION = 1800;
 export const saveExpressSiteAction = createAppAsyncThunk(
   "site/createExpressSite",
   async (_, { getState, extra }) => {
     const { siteCreation, currentUser } = getState();
     const { siteData } = siteCreation;
 
-    const cityCode = siteData.address?.cityCode;
-    let population = FRANCE_AVERAGE_CITY_POPULATION;
-
-    if (cityCode) {
-      try {
-        const result = await extra.municipalityDataService.getMunicipalityData(cityCode);
-        population = result.population;
-      } catch (err) {
-        console.warn(`Fail to retrieve population of city: ${cityCode} - `, err);
-      }
-    }
-
     const siteToCreate = createSiteSchema.parse(
-      getExpressSiteData(siteData as SiteExpressDraft, population, currentUser.currentUser?.id),
+      getExpressSiteData(siteData as SiteExpressDraft, currentUser.currentUser?.id),
     );
 
     await extra.createSiteService.save(siteToCreate);

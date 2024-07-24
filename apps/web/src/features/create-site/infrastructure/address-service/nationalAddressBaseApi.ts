@@ -7,18 +7,23 @@ const BAN_API_URL = "https://api-adresse.data.gouv.fr/search/?";
 
 // https://adresse.data.gouv.fr/api-doc/adresse
 
-type GeoJsonProperties = {
-  [name in
-    | "label"
-    | "id"
-    | "housenumber"
-    | "name"
-    | "postcode"
-    | "citycode"
-    | "city"
-    | "context"
-    | "street"]: string;
-};
+type DefaultProperties = "label" | "id" | "name" | "postcode" | "citycode" | "city" | "context";
+
+type StreetProperties = "street";
+
+type HouseNumberProperties = "housenumber";
+
+type GeoJsonProperties =
+  | ({ type: "street" } & {
+      [name in DefaultProperties | StreetProperties]: string;
+    })
+  | ({ type: "housenumber" } & {
+      [name in DefaultProperties | StreetProperties | HouseNumberProperties]: string;
+    })
+  | ({ type: "municipality" } & ({
+      [name in DefaultProperties]: string;
+    } & { population: number; municipality: string }))
+  | ({ type: "locality" } & { [name in DefaultProperties]: string });
 
 type ErrorResponse = { code: number; message: string };
 type BanFeatureCollection = FeatureCollection<Point, GeoJsonProperties>;
@@ -27,7 +32,7 @@ type APIResponse = BanFeatureCollection | ErrorResponse;
 const mapNationalBaseAddressToAddress = (
   nationalBaseAddress: Feature<Point, GeoJsonProperties>,
 ): Address => {
-  return {
+  const address = {
     banId: nationalBaseAddress.properties.id,
     value: nationalBaseAddress.properties.label,
     city: nationalBaseAddress.properties.city,
@@ -35,9 +40,28 @@ const mapNationalBaseAddressToAddress = (
     postCode: nationalBaseAddress.properties.postcode,
     long: nationalBaseAddress.geometry.coordinates[0]!,
     lat: nationalBaseAddress.geometry.coordinates[1]!,
-    streetName: nationalBaseAddress.properties.street,
-    streetNumber: nationalBaseAddress.properties.housenumber,
   };
+  switch (nationalBaseAddress.properties.type) {
+    case "housenumber":
+      return {
+        ...address,
+        streetName: nationalBaseAddress.properties.street,
+        streetNumber: nationalBaseAddress.properties.housenumber,
+      };
+    case "street":
+      return {
+        ...address,
+        streetName: nationalBaseAddress.properties.street,
+      };
+    case "municipality":
+      return {
+        ...address,
+        municipality: nationalBaseAddress.properties.municipality,
+        population: nationalBaseAddress.properties.population,
+      };
+    default:
+      return address;
+  }
 };
 
 type Options = {
