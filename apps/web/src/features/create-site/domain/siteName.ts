@@ -17,7 +17,9 @@ const isSoilTypeNatural = (soilType: SoilType) => {
   );
 };
 
-export const generateSiteDesignation = (siteData: SiteDraft) => {
+type SiteData = Pick<SiteDraft, "isFriche" | "address" | "fricheActivity" | "soils">;
+
+export const generateSiteDesignation = (siteData: SiteData) => {
   if (siteData.isFriche)
     return siteData.fricheActivity ? getFricheActivityLabel(siteData.fricheActivity) : "friche";
 
@@ -32,7 +34,7 @@ export const generateSiteDesignation = (siteData: SiteDraft) => {
   return "espace naturel et agricole";
 };
 
-export const generateSiteName = (siteData: SiteDraft): string => {
+export const generateSiteName = (siteData: SiteData): string => {
   const designation = generateSiteDesignation(siteData);
 
   const { city } = siteData.address;

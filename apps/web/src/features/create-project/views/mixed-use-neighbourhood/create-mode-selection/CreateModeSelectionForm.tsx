@@ -1,9 +1,8 @@
 import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
-import CreateModeOption from "./CreateModeOption";
 
-import AboutFormsModal from "@/shared/app-settings/views/AboutFormsModal";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import CreateModeOption from "@/shared/views/components/form/CreateModeOption/CreateModeOption";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -50,46 +49,43 @@ function CreateModeSelectionForm({ onSubmit, onBack }: Props) {
   const validationError = formState.errors.createMode;
 
   return (
-    <>
-      <AboutFormsModal />
-      <WizardFormLayout title="Comment souhaitez-vous créer votre projet ?">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={fr.cx("fr-mb-5w")}>
-            <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-              {options.map((option) => {
-                return (
-                  <div className={fr.cx("fr-col-12", "fr-col-md-6")} key={option.value}>
-                    <Controller
-                      control={control}
-                      name="createMode"
-                      rules={{ required: "Veuillez sélectionner un mode de création." }}
-                      render={({ field }) => {
-                        const isSelected = field.value === option.value;
-                        return (
-                          <CreateModeOption
-                            checked={isSelected}
-                            onChange={() => {
-                              field.onChange(option.value);
-                            }}
-                            title={option.title}
-                            description={option.description}
-                            badgeText={option.badgeText}
-                            disabled={option.disabled}
-                            imgSrc={option.imgSrc}
-                          />
-                        );
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-            {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
+    <WizardFormLayout title="Comment souhaitez-vous créer votre projet ?">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={fr.cx("fr-mb-5w")}>
+          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+            {options.map((option) => {
+              return (
+                <div className={fr.cx("fr-col-12", "fr-col-md-6")} key={option.value}>
+                  <Controller
+                    control={control}
+                    name="createMode"
+                    rules={{ required: "Veuillez sélectionner un mode de création." }}
+                    render={({ field }) => {
+                      const isSelected = field.value === option.value;
+                      return (
+                        <CreateModeOption
+                          checked={isSelected}
+                          onChange={() => {
+                            field.onChange(option.value);
+                          }}
+                          title={option.title}
+                          description={option.description}
+                          badgeText={option.badgeText}
+                          disabled={option.disabled}
+                          imgSrc={option.imgSrc}
+                        />
+                      );
+                    }}
+                  />
+                </div>
+              );
+            })}
           </div>
-          <BackNextButtonsGroup onBack={onBack} />
-        </form>
-      </WizardFormLayout>
-    </>
+          {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
+        </div>
+        <BackNextButtonsGroup onBack={onBack} />
+      </form>
+    </WizardFormLayout>
   );
 }
 

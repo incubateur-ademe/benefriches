@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
-import { saveSiteAction } from "./createSite.actions";
+import { saveExpressSiteAction, saveSiteAction } from "./createSite.actions";
 
 import { RootState } from "@/app/application/store";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@/features/create-site/domain/siteFoncier.types";
 import { splitEvenly } from "@/shared/services/split-number/splitNumber";
 
-export type SiteCreationStep =
+export type SiteCreationCustomStep =
   | "SITE_TYPE"
   | "ADDRESS"
   // soils
@@ -46,16 +46,29 @@ export type SiteCreationStep =
   | "FINAL_SUMMARY"
   | "CREATION_CONFIRMATION";
 
+export type SiteCreationExpressStep =
+  | "SITE_TYPE"
+  | "ADDRESS"
+  | "SURFACE_AREA"
+  | "CREATION_CONFIRMATION";
+
+export type SiteCreationStep =
+  | "CREATE_MODE_SELECTION"
+  | SiteCreationExpressStep
+  | SiteCreationCustomStep;
+
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
   siteData: Partial<SiteDraft>;
+  createMode?: "express" | "custom";
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
 
 export const getInitialState = (): SiteCreationState => {
   return {
-    stepsHistory: ["SITE_TYPE"],
+    stepsHistory: ["CREATE_MODE_SELECTION"],
     saveLoadingState: "idle",
+    createMode: undefined,
     siteData: {
       id: uuid(),
       soils: [],
@@ -72,20 +85,31 @@ export const siteCreationSlice = createSlice({
     resetState: () => {
       return getInitialState();
     },
+    completeCreateModeSelectionStep: (
+      state,
+      action: PayloadAction<{ createMode: "express" | "custom" }>,
+    ) => {
+      state.createMode = action.payload.createMode;
+      state.stepsHistory.push("SITE_TYPE");
+    },
     completeSiteTypeStep: (state, action: PayloadAction<{ isFriche: boolean }>) => {
       state.siteData.isFriche = action.payload.isFriche;
       state.stepsHistory.push("ADDRESS");
     },
     completeAddressStep: (state, action: PayloadAction<{ address: Address }>) => {
       state.siteData.address = action.payload.address;
-      state.stepsHistory.push("SOILS_INTRODUCTION");
+      state.stepsHistory.push(
+        state.createMode === "express" ? "SURFACE_AREA" : "SOILS_INTRODUCTION",
+      );
     },
     completeSoilsIntroduction: (state) => {
       state.stepsHistory.push("SURFACE_AREA");
     },
     completeSiteSurfaceArea: (state, action: PayloadAction<{ surfaceArea: number }>) => {
       state.siteData.surfaceArea = action.payload.surfaceArea;
-      state.stepsHistory.push("SOILS_SELECTION");
+      state.stepsHistory.push(
+        state.createMode === "express" ? "CREATION_CONFIRMATION" : "SOILS_SELECTION",
+      );
     },
     completeSoils: (state, action: PayloadAction<{ soils: SoilType[] }>) => {
       state.siteData.soils = action.payload.soils;
@@ -260,6 +284,16 @@ export const siteCreationSlice = createSlice({
     builder.addCase(saveSiteAction.rejected, (state) => {
       state.saveLoadingState = "error";
     });
+    builder.addCase(saveExpressSiteAction.pending, (state) => {
+      state.saveLoadingState = "loading";
+    });
+    builder.addCase(saveExpressSiteAction.fulfilled, (state, action) => {
+      state.saveLoadingState = "success";
+      state.siteData.name = action.payload.name;
+    });
+    builder.addCase(saveExpressSiteAction.rejected, (state) => {
+      state.saveLoadingState = "error";
+    });
   },
 });
 
@@ -272,6 +306,7 @@ export const selectCurrentStep = createSelector(
 
 export const {
   resetState,
+  completeCreateModeSelectionStep,
   completeSiteTypeStep,
   completeAddressStep,
   completeSoilsIntroduction,

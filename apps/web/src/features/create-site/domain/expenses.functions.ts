@@ -57,3 +57,31 @@ export const getLabelForExpensePurpose = (expensePurpose: ExpensePurpose): strin
       return "Autres frais de sécurisation";
   }
 };
+
+const SECURITY_COST_BY_HECTARE_PER_YEAR = 22000;
+const MAINTENANCE_COST_BY_BUILDING_SQUARE_METER_PER_YEAR = 7;
+const ILLEGAL_DUMPING_COST_PER_TON = 900;
+const ILLEGAL_DUMPING_TON_PER_INHABITANT_PER_YEAR = 0.0047;
+const ILLEGAL_DUMPING_ESTIMATED_RATIO = 1 / 100;
+
+export const computeIllegalDumpingDefaultCost = (population: number) => {
+  return Math.round(
+    ILLEGAL_DUMPING_TON_PER_INHABITANT_PER_YEAR *
+      population *
+      ILLEGAL_DUMPING_ESTIMATED_RATIO *
+      ILLEGAL_DUMPING_COST_PER_TON,
+  );
+};
+
+export const computeMaintenanceDefaultCost = (buildingsSurface: number) => {
+  return Math.round(MAINTENANCE_COST_BY_BUILDING_SQUARE_METER_PER_YEAR * buildingsSurface);
+};
+
+export const computeSecurityDefaultCost = (surfaceArea: number) => {
+  return Math.round(SECURITY_COST_BY_HECTARE_PER_YEAR * (surfaceArea / 10000));
+};
+
+const PROPERTY_TAXES_EURO_PER_SQUARE_METERS_ESTIMATED_RATIO = 1.5;
+export const computePropertyTaxesDefaultCost = (surfaceArea: number) => {
+  return Math.round(PROPERTY_TAXES_EURO_PER_SQUARE_METERS_ESTIMATED_RATIO * surfaceArea);
+};

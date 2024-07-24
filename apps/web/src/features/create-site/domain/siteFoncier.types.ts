@@ -48,6 +48,13 @@ export type SiteDraft = {
   yearlyIncomes: Income[];
 };
 
+export type SiteExpressDraft = {
+  id: string;
+  isFriche: boolean;
+  address: Address;
+  surfaceArea: number;
+};
+
 export type Tenant = { structureType: TenantStructureType; name: string };
 export type Owner = { structureType: OwnerStructureType; name: string };
 
