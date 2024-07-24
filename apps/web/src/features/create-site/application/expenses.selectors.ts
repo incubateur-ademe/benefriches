@@ -3,7 +3,7 @@ import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
-} from "../domain/defaultValues";
+} from "../domain/expenses.functions";
 import { SiteDraft } from "../domain/siteFoncier.types";
 
 import { RootState } from "@/app/application/store";
