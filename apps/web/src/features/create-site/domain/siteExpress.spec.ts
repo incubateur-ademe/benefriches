@@ -54,17 +54,21 @@ describe("Site Express data creation", () => {
           structureType: "municipality",
           name: "Mairie de Paris",
         },
+        tenant: {
+          name: "Actuel locataire",
+          structureType: "company",
+        },
         yearlyExpenses: [
           {
             amount: 42000,
             purpose: "maintenance",
-            bearer: "tenant",
+            bearer: "owner",
             purposeCategory: "site_management",
           },
           {
             amount: 30000,
             purpose: "propertyTaxes",
-            bearer: "tenant",
+            bearer: "owner",
             purposeCategory: "taxes",
           },
 
@@ -102,17 +106,21 @@ describe("Site Express data creation", () => {
           structureType: "municipality",
           name: "Mairie de Blajan",
         },
+        tenant: {
+          name: "Actuel locataire",
+          structureType: "company",
+        },
         yearlyExpenses: [
           {
             amount: 42000,
             purpose: "maintenance",
-            bearer: "tenant",
+            bearer: "owner",
             purposeCategory: "site_management",
           },
           {
             amount: 30000,
             purpose: "propertyTaxes",
-            bearer: "tenant",
+            bearer: "owner",
             purposeCategory: "taxes",
           },
         ],
