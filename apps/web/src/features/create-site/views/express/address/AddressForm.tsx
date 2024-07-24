@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { Address } from "../../../domain/siteFoncier.types";
+import { MunicipalityAddress } from "../../../domain/siteFoncier.types";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SearchAddressAutocompleteContainer from "@/shared/views/components/form/Address/SearchAddressAutocompleteContainer";
@@ -7,13 +7,13 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
-  onSubmit: (address: Address) => void;
+  onSubmit: (address: MunicipalityAddress) => void;
   onBack: () => void;
   isFriche: boolean;
 };
 
 type FormValues = {
-  selectedAddress?: Address;
+  selectedAddress?: MunicipalityAddress;
   searchText: string;
 };
 
@@ -50,7 +50,7 @@ function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
                 }}
                 selectedAddress={watch("selectedAddress")}
                 onSelect={(v) => {
-                  setValue("selectedAddress", v);
+                  setValue("selectedAddress", v as MunicipalityAddress);
                   setValue("searchText", v.value);
                 }}
                 searchInputProps={{

@@ -14,6 +14,8 @@ const expressFricheDraft = {
     long: 2.330785,
     value: "1 rue de Londres, 75009 Paris",
     streetName: "rue de Londres",
+    municipality: "Paris",
+    population: 2133111,
   },
 };
 
@@ -29,13 +31,15 @@ const expressSiteDraft = {
     lat: 43.260128,
     long: 0.652416,
     value: "Blajan",
+    municipality: "Blajan",
+    population: 439,
   },
 };
 
 describe("Site Express data creation", () => {
   describe("getExpressSiteData", () => {
     it("returns friche express data", () => {
-      expect(getExpressSiteData(expressFricheDraft, 1800, currentUserId)).toEqual({
+      expect(getExpressSiteData(expressFricheDraft, currentUserId)).toEqual({
         ...expressFricheDraft,
         createdBy: currentUserId,
         soilsDistribution: {
@@ -65,7 +69,7 @@ describe("Site Express data creation", () => {
           },
 
           {
-            amount: 76,
+            amount: 90231,
             purpose: "illegalDumpingCost",
             bearer: "owner",
             purposeCategory: "safety",
@@ -83,7 +87,7 @@ describe("Site Express data creation", () => {
     });
 
     it("returns site express data", () => {
-      expect(getExpressSiteData(expressSiteDraft, 1800, currentUserId)).toEqual({
+      expect(getExpressSiteData(expressSiteDraft, currentUserId)).toEqual({
         ...expressSiteDraft,
         createdBy: currentUserId,
         soilsDistribution: {
