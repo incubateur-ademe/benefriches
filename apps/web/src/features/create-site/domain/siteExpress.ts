@@ -34,13 +34,13 @@ const getExpressSiteData = (
     {
       amount: computeMaintenanceDefaultCost(soilsDistribution.BUILDINGS),
       purpose: "maintenance",
-      bearer: "tenant",
+      bearer: "owner",
       purposeCategory: "site_management",
     },
     {
       amount: computePropertyTaxesDefaultCost(surfaceArea),
       purpose: "propertyTaxes",
-      bearer: "tenant",
+      bearer: "owner",
       purposeCategory: "taxes",
     },
   ];
@@ -70,6 +70,10 @@ const getExpressSiteData = (
     owner: {
       structureType: "municipality",
       name: formatMunicipalityName(municipality),
+    },
+    tenant: {
+      structureType: "company",
+      name: "Actuel locataire",
     },
     yearlyExpenses: yearlyExpenses as Expense[],
     yearlyIncomes: [],
