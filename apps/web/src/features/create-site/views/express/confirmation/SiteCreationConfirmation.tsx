@@ -52,7 +52,7 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState, onBack }: Pr
           </EditorialPageText>
           <EditorialPageText>
             Vous pouvez maintenant renseigner un projet sur ce site, en mode express ou en mode
-            custom.
+            personnalisé.
           </EditorialPageText>
           <Button size="large" linkProps={routes.createProjectIntro({ siteId }).link}>
             Suivant

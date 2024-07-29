@@ -32,7 +32,7 @@ const options: Option[] = [
   },
   {
     value: "custom",
-    title: "Mode custom",
+    title: "Mode personnalisé",
     description:
       "Renseignez les infos dont vous disposez : type de site, superficie, adresse, typologie des sols, acteurs, dépenses de gestion, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
     badgeText: "Le plus précis",

@@ -68,12 +68,12 @@ function MyProjectsTourGuide({ projectsList }: Props) {
   steps.push(
     {
       title:
-        "Pour renseigner un nouveau projet, en mode express ou custom, cliquez sur “Nouveau scénario”",
+        "Pour renseigner un nouveau projet, en mode express ou personnalisé, cliquez sur “Nouveau scénario”",
       selector: ".tour-guide-step-create-new-project",
     },
     {
       title:
-        "Pour renseigner un nouveau site, en mode express ou custom, cliquez sur “Nouveau site”",
+        "Pour renseigner un nouveau site, en mode express ou personnalisé, cliquez sur “Nouveau site”",
       selector: ".tour-guide-step-create-new-site",
     },
   );

@@ -35,7 +35,7 @@ const options: Option[] = [
   },
   {
     value: "custom",
-    title: "Mode custom",
+    title: "Mode personnalisé",
     description:
       "Renseignez les informations dont vous disposez : aménagement des espaces, bâtiments, dépenses et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
     badgeText: "Bientôt disponible",
