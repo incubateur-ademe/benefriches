@@ -93,7 +93,7 @@ type ExpensePurposeCategory =
 export type Expense = {
   purpose: ExpensePurpose;
   purposeCategory: ExpensePurposeCategory;
-  bearer: "owner" | "tenant" | "local_or_regional_authority" | "society";
+  bearer: "owner" | "tenant";
   amount: number;
 };
 

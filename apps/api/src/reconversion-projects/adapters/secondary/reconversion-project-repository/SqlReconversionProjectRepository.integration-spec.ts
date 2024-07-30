@@ -376,7 +376,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           name: "Quartier mixte",
           developmentPlan: {
             type: "MIXED_USE_NEIGHBOURHOOD",
-            developer: { name: "Montrouge", structureType: "local_or_regional_authority" },
+            developer: { name: "Montrouge", structureType: "municipality" },
             costs: [],
             installationSchedule: {
               startDate: new Date("2026-01-05T12:00:00.000Z"),
@@ -397,7 +397,7 @@ describe("SqlReconversionProjectRepository integration", () => {
               buildingsFloorAreaDistribution: { RESIDENTIAL: 1840, GROUND_FLOOR_RETAIL: 160 },
             },
           },
-          futureSiteOwner: { name: "Montrouge", structureType: "local_or_regional_authority" },
+          futureSiteOwner: { name: "Montrouge", structureType: "municipality" },
           sitePurchaseSellingPrice: 3600000,
           sitePurchasePropertyTransferDuties: 209160,
           reinstatementCosts: undefined,

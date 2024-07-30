@@ -1,5 +1,7 @@
 import { addYears } from "date-fns";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { capitalize } from "src/shared-kernel/strings/capitalize";
+import { startsByVowel } from "src/shared-kernel/strings/startsByVowel";
 import { typedObjectEntries } from "src/shared-kernel/typedEntries";
 import { Address } from "src/sites/core/models/site";
 import {
@@ -186,6 +188,13 @@ const computeExpectedPostDevelopmentResaleFromSiteSurfaceArea = (
   return { sellingPrice, propertyTransferDuties };
 };
 
+const formatMunicipalityName = (name: string) => {
+  if (startsByVowel(name) || name.toLowerCase().startsWith("h")) {
+    return `Mairie d'${capitalize(name)}`;
+  }
+  return `Mairie de ${capitalize(name)}`;
+};
+
 export class MixedUseNeighbourHoodReconversionProjectCreationService {
   constructor(private readonly dateProvider: IDateProvider) {}
 
@@ -224,8 +233,8 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
     );
 
     const developer = {
-      name: siteData.address.city,
-      structureType: "local_or_regional_authority",
+      name: formatMunicipalityName(siteData.address.city),
+      structureType: "municipality",
     };
     const reinstatementContractOwner = siteData.isFriche ? developer : undefined;
 

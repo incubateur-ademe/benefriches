@@ -33,13 +33,12 @@ describe("Expenses functions", () => {
         buildExpense({ amount: 1400, bearer: "owner" }),
         buildExpense({ amount: 100, bearer: "owner" }),
         buildExpense({ amount: 1100, bearer: "tenant" }),
-        buildExpense({ amount: 9000, bearer: "local_or_regional_authority" }),
+        buildExpense({ amount: 9000, bearer: "owner" }),
         buildExpense({ amount: 2100, bearer: "tenant" }),
       ];
       expect(groupExpensesByBearer(expenses)).toEqual([
-        { amount: 3000, bearer: "owner" },
+        { amount: 12000, bearer: "owner" },
         { amount: 3200, bearer: "tenant" },
-        { amount: 9000, bearer: "local_or_regional_authority" },
       ]);
     });
   });

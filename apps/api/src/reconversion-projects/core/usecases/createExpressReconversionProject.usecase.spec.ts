@@ -141,16 +141,16 @@ describe("CreateReconversionProject Use Case", () => {
           expect(createdReconversionProjects).toHaveLength(1);
           const createdReconversionProject = createdReconversionProjects[0];
           expect(createdReconversionProject?.futureSiteOwner).toEqual({
-            structureType: "local_or_regional_authority",
-            name: "Montrouge",
+            structureType: "municipality",
+            name: "Mairie de Montrouge",
           });
           expect(createdReconversionProject?.developmentPlan.developer).toEqual({
-            structureType: "local_or_regional_authority",
-            name: "Montrouge",
+            structureType: "municipality",
+            name: "Mairie de Montrouge",
           });
           expect(createdReconversionProject?.reinstatementContractOwner).toEqual({
-            structureType: "local_or_regional_authority",
-            name: "Montrouge",
+            structureType: "municipality",
+            name: "Mairie de Montrouge",
           });
         });
 
