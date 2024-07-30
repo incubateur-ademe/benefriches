@@ -22,6 +22,7 @@ export class SqlSiteWriteRepository implements SitesWriteRepository {
         {
           id: site.id,
           created_by: site.createdBy,
+          creation_mode: site.creationMode,
           name: site.name,
           description: site.description,
           surface_area: site.surfaceArea,

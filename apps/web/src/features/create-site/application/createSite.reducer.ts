@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
-import { saveExpressSiteAction, saveSiteAction } from "./createSite.actions";
+import { saveCustomSiteAction, saveExpressSiteAction } from "./createSite.actions";
 
 import { RootState } from "@/app/application/store";
 import {
@@ -275,13 +275,13 @@ export const siteCreationSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(saveSiteAction.pending, (state) => {
+    builder.addCase(saveCustomSiteAction.pending, (state) => {
       state.saveLoadingState = "loading";
     });
-    builder.addCase(saveSiteAction.fulfilled, (state) => {
+    builder.addCase(saveCustomSiteAction.fulfilled, (state) => {
       state.saveLoadingState = "success";
     });
-    builder.addCase(saveSiteAction.rejected, (state) => {
+    builder.addCase(saveCustomSiteAction.rejected, (state) => {
       state.saveLoadingState = "error";
     });
     builder.addCase(saveExpressSiteAction.pending, (state) => {

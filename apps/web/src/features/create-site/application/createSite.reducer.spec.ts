@@ -1,3 +1,4 @@
+import getExpressSiteData from "../domain/siteExpress";
 import { InMemoryCreateSiteService } from "../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import {
   revertAddressStep,
@@ -17,7 +18,8 @@ import {
   revertTenantStep,
   revertYearlyExpensesStep,
   revertYearlyIncomeStep,
-  saveSiteAction,
+  saveCustomSiteAction,
+  saveExpressSiteAction,
 } from "./createSite.actions";
 import {
   completeAddressStep,
@@ -47,6 +49,7 @@ import {
   getInitialState,
 } from "./createSite.reducer";
 import {
+  expressSiteDraft,
   fricheWithExhaustiveData,
   fricheWithMinimalData,
   siteWithExhaustiveData,
@@ -1126,7 +1129,7 @@ describe("Create site reducer", () => {
     });
   });
 
-  describe("saveSite action", () => {
+  describe("saveCustomSiteAction action", () => {
     it("should be in error state when site data in store is not valid (missing name)", async () => {
       const siteData = { ...siteWithMinimalData, name: undefined };
       const initialState: RootState["siteCreation"] = {
@@ -1143,7 +1146,7 @@ describe("Create site reducer", () => {
           currentUserLoaded: true,
         },
       });
-      await store.dispatch(saveSiteAction());
+      await store.dispatch(saveCustomSiteAction());
 
       const state = store.getState();
       expect(state.siteCreation).toEqual({
@@ -1162,7 +1165,7 @@ describe("Create site reducer", () => {
       const store = createStore(getTestAppDependencies(), {
         siteCreation: initialState,
       });
-      await store.dispatch(saveSiteAction());
+      await store.dispatch(saveCustomSiteAction());
 
       const state = store.getState();
       expect(state.siteCreation).toEqual({
@@ -1190,12 +1193,52 @@ describe("Create site reducer", () => {
           },
         },
       );
-      await store.dispatch(saveSiteAction());
+      await store.dispatch(saveCustomSiteAction());
 
       const state = store.getState();
       expect(state.siteCreation).toEqual({
         ...initialState,
         saveLoadingState: "error",
+      });
+    });
+
+    it("should call createSiteService with creationMode = 'custom'", async () => {
+      const createSiteService = new InMemoryCreateSiteService();
+
+      const spy = vi.spyOn(createSiteService, "save");
+      const user = buildUser();
+
+      const initialState: RootState["siteCreation"] = {
+        saveLoadingState: "idle",
+        stepsHistory: ["CREATION_CONFIRMATION"],
+        siteData: siteWithMinimalData,
+      };
+
+      const store = createStore(getTestAppDependencies({ createSiteService }), {
+        siteCreation: initialState,
+        currentUser: {
+          currentUser: user,
+          createUserState: "idle",
+          currentUserLoaded: true,
+        },
+      });
+      await store.dispatch(saveCustomSiteAction());
+
+      expect(spy).toHaveBeenCalledWith({
+        address: siteWithMinimalData.address,
+        fullTimeJobsInvolved: siteWithMinimalData.fullTimeJobsInvolved,
+        hasContaminatedSoils: siteWithMinimalData.hasContaminatedSoils,
+        hasRecentAccidents: siteWithMinimalData.hasRecentAccidents,
+        id: siteWithMinimalData.id,
+        isFriche: siteWithMinimalData.isFriche,
+        name: siteWithMinimalData.name,
+        owner: siteWithMinimalData.owner,
+        soilsDistribution: siteWithMinimalData.soilsDistribution,
+        surfaceArea: siteWithMinimalData.surfaceArea,
+        yearlyExpenses: siteWithMinimalData.yearlyExpenses,
+        yearlyIncomes: siteWithMinimalData.yearlyIncomes,
+        creationMode: "custom",
+        createdBy: user.id,
       });
     });
 
@@ -1220,11 +1263,141 @@ describe("Create site reducer", () => {
         },
       });
 
-      await store.dispatch(saveSiteAction());
+      await store.dispatch(saveCustomSiteAction());
 
       const state = store.getState();
       expect(state.siteCreation).toEqual({
         ...initialState,
+        saveLoadingState: "success",
+      });
+    });
+  });
+
+  describe("saveExpressSiteAction action", () => {
+    it("should be in error state when site data in store is not valid (missing surfaceArea)", async () => {
+      const initialState: RootState["siteCreation"] = {
+        saveLoadingState: "idle",
+        stepsHistory: ["CREATION_CONFIRMATION"],
+        siteData: { ...expressSiteDraft, surfaceArea: undefined },
+      };
+
+      const store = createStore(getTestAppDependencies(), {
+        siteCreation: initialState,
+        currentUser: {
+          currentUser: buildUser(),
+          createUserState: "idle",
+          currentUserLoaded: true,
+        },
+      });
+      await store.dispatch(saveExpressSiteAction());
+
+      const state = store.getState();
+      expect(state.siteCreation).toEqual({
+        ...initialState,
+        saveLoadingState: "error",
+      });
+    });
+
+    it("should be in error state when no user id in store", async () => {
+      const initialState: RootState["siteCreation"] = {
+        saveLoadingState: "idle",
+        stepsHistory: ["CREATION_CONFIRMATION"],
+        siteData: expressSiteDraft,
+      };
+
+      const store = createStore(getTestAppDependencies(), {
+        siteCreation: initialState,
+      });
+      await store.dispatch(saveExpressSiteAction());
+
+      const state = store.getState();
+      expect(state.siteCreation).toEqual({
+        ...initialState,
+        saveLoadingState: "error",
+      });
+    });
+
+    it("should be in error state when createSiteService fails", async () => {
+      const initialState: RootState["siteCreation"] = {
+        saveLoadingState: "idle",
+        stepsHistory: ["CREATION_CONFIRMATION"],
+        siteData: expressSiteDraft,
+      };
+
+      const shouldFail = true;
+      const store = createStore(
+        getTestAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) }),
+        {
+          siteCreation: initialState,
+          currentUser: {
+            currentUser: buildUser(),
+            createUserState: "idle",
+            currentUserLoaded: true,
+          },
+        },
+      );
+      await store.dispatch(saveCustomSiteAction());
+
+      const state = store.getState();
+      expect(state.siteCreation).toEqual({
+        ...initialState,
+        saveLoadingState: "error",
+      });
+    });
+
+    it("should call createSiteService with the right payload", async () => {
+      const createSiteService = new InMemoryCreateSiteService();
+
+      const spy = vi.spyOn(createSiteService, "save");
+      const user = buildUser();
+
+      const initialState: RootState["siteCreation"] = {
+        saveLoadingState: "idle",
+        stepsHistory: ["CREATION_CONFIRMATION"],
+        siteData: expressSiteDraft,
+      };
+
+      const store = createStore(getTestAppDependencies({ createSiteService }), {
+        siteCreation: initialState,
+        currentUser: {
+          currentUser: user,
+          createUserState: "idle",
+          currentUserLoaded: true,
+        },
+      });
+      await store.dispatch(saveExpressSiteAction());
+
+      expect(spy).toHaveBeenCalledWith(getExpressSiteData(expressSiteDraft, user.id));
+    });
+
+    it.each([
+      { siteData: expressSiteDraft, dataType: "express friche" },
+      { siteData: { ...expressSiteDraft, isFriche: false }, dataType: "express non friche" },
+    ])("should be in success state when saving $dataType", async ({ siteData }) => {
+      const initialState: RootState["siteCreation"] = {
+        saveLoadingState: "idle",
+        stepsHistory: ["CREATION_CONFIRMATION"],
+        siteData,
+      };
+
+      const store = createStore(getTestAppDependencies(), {
+        siteCreation: initialState,
+        currentUser: {
+          currentUser: buildUser(),
+          createUserState: "idle",
+          currentUserLoaded: true,
+        },
+      });
+
+      await store.dispatch(saveExpressSiteAction());
+
+      const state = store.getState();
+      expect(state.siteCreation).toEqual({
+        ...initialState,
+        siteData: {
+          ...initialState.siteData,
+          name: expect.any(String) as string,
+        },
         saveLoadingState: "success",
       });
     });

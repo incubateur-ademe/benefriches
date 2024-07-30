@@ -39,6 +39,7 @@ describe("Sites controller", () => {
     const validSiteBody: CreateSiteBodyDto = {
       id: "03a53ffd-4f71-419e-8d04-041311eefa23",
       createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
+      creationMode: "custom",
       isFriche: false,
       owner: { name: "Owner name", structureType: "company" },
       name: "Friche industrielle",
@@ -66,6 +67,7 @@ describe("Sites controller", () => {
     it.each([
       "id",
       "isFriche",
+      "creationMode",
       "name",
       "address",
       "surfaceArea",
@@ -95,6 +97,7 @@ describe("Sites controller", () => {
       const validSite = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        creationMode: "custom",
         isFriche: false,
         owner: { name: "Owner name", structureType: "company" },
         name: "Friche industrielle",
@@ -119,12 +122,18 @@ describe("Sites controller", () => {
 
       expect(response.status).toEqual(201);
 
-      const sitesInDb = await sqlConnection("sites").select("id", "name", "surface_area");
+      const sitesInDb = await sqlConnection("sites").select(
+        "id",
+        "name",
+        "surface_area",
+        "creation_mode",
+      );
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         name: "Friche industrielle",
         surface_area: 2900.0,
+        creation_mode: "custom",
       });
     });
 
@@ -134,6 +143,7 @@ describe("Sites controller", () => {
         .send({
           id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
           createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+          creationMode: "express",
           name: "Ancienne gare de Bercy",
           isFriche: true,
           fricheActivity: "RAILWAY",
@@ -177,10 +187,12 @@ describe("Sites controller", () => {
         "friche_accidents_deaths",
         "friche_accidents_severe_injuries",
         "friche_accidents_minor_injuries",
+        "creation_mode",
       );
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
+        creation_mode: "express",
         name: "Ancienne gare de Bercy",
         surface_area: 15000.0,
         friche_activity: "RAILWAY",
@@ -256,6 +268,7 @@ describe("Sites controller", () => {
       expect(response.body).toEqual({
         id: siteId,
         name: "Friche Amiens",
+        isExpressSite: false,
         surfaceArea: 14000,
         owner: { name: "Owner name", structureType: "company" },
         tenant: { structureType: "company" },

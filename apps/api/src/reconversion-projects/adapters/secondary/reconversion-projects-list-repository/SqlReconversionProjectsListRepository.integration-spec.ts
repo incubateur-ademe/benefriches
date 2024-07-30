@@ -80,6 +80,7 @@ describe("ReconversionProjectsListRepository integration", () => {
           siteName: siteInDb.name,
           siteId: siteInDb.id,
           isFriche: siteInDb.is_friche,
+          isExpressSite: false,
           fricheActivity: "HOUSING",
           reconversionProjects: [],
         },
@@ -113,6 +114,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         tenant_structure_type: "company",
         created_at: new Date("2024-02-20"),
         is_friche: false,
+        creation_mode: "express",
       };
       const projectInDb1 = {
         id: uuid(),
@@ -175,6 +177,7 @@ describe("ReconversionProjectsListRepository integration", () => {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
           isFriche: siteInDb2.is_friche,
+          isExpressSite: true,
           reconversionProjects: [
             {
               id: projectInDb2.id,
@@ -194,6 +197,7 @@ describe("ReconversionProjectsListRepository integration", () => {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
           isFriche: siteInDb1.is_friche,
+          isExpressSite: false,
           reconversionProjects: [
             {
               id: projectInDb1.id,

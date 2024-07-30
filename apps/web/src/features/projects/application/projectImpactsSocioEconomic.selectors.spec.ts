@@ -21,6 +21,7 @@ const MOCK_STATES = {
     relatedSiteData: {
       id: projectImpactMock.relatedSiteId,
       name: projectImpactMock.relatedSiteName,
+      isExpressSite: projectImpactMock.isExpressSite,
       ...projectImpactMock.siteData,
     },
   } satisfies RootState["projectImpacts"],

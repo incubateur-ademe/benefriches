@@ -11,11 +11,18 @@ describe("Projects list reducer", () => {
   const reconversionProjectIdA = uuid();
   const reconversionProjectIdB = uuid();
   const reconversionProjects: ReconversionProjectsGroupedBySite = [
-    { siteId: uuid(), siteName: "Site 1", isFriche: true, reconversionProjects: [] },
+    {
+      siteId: uuid(),
+      siteName: "Site 1",
+      isFriche: true,
+      isExpressSite: true,
+      reconversionProjects: [],
+    },
     {
       siteId: uuid(),
       siteName: "Site 2",
       isFriche: false,
+      isExpressSite: false,
       reconversionProjects: [
         {
           id: reconversionProjectIdA,
@@ -109,11 +116,18 @@ describe("Projects list reducer", () => {
     it("should get empty array when no other projects on site", () => {
       const rpId = uuid();
       const reconversionProjects: ReconversionProjectsGroupedBySite = [
-        { siteId: uuid(), siteName: "Site 1", isFriche: true, reconversionProjects: [] },
+        {
+          siteId: uuid(),
+          siteName: "Site 1",
+          isFriche: true,
+          isExpressSite: false,
+          reconversionProjects: [],
+        },
         {
           siteId: uuid(),
           siteName: "Site 2",
           isFriche: false,
+          isExpressSite: true,
           reconversionProjects: [
             {
               id: rpId,

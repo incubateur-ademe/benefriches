@@ -19,6 +19,7 @@ type SqlSite = {
   id: string;
   name: string;
   created_by: string;
+  creation_mode: string;
   description: string | null;
   surface_area: number;
   is_friche: boolean;

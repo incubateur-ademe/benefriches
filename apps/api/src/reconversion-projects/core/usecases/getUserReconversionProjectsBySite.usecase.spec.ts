@@ -20,12 +20,14 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
         siteId: "a8fd7736-5836-4172-9811-ca71555dbbcc",
         siteName: "Site 1",
         isFriche: false,
+        isExpressSite: false,
         reconversionProjects: [],
       },
       {
         siteId: "7915a3dc-6928-46c8-81f0-41c5c6dde8f3",
         siteName: "Site 2",
         isFriche: true,
+        isExpressSite: false,
         fricheActivity: "INDUSTRY",
         reconversionProjects: [
           {

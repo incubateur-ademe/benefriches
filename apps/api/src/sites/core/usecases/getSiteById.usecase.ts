@@ -11,6 +11,7 @@ export type SiteViewModel = {
   id: string;
   name: string;
   isFriche: boolean;
+  isExpressSite: boolean;
   owner: {
     name?: string;
     structureType: string;

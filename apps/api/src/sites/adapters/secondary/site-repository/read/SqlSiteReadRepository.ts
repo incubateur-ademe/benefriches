@@ -26,6 +26,7 @@ export class SqlSitesReadRepository implements SitesReadRepository {
       .select(
         "sites.id",
         "sites.name",
+        "sites.creation_mode",
         "sites.friche_activity",
         "sites.full_time_jobs_involved",
         "sites.description",
@@ -71,6 +72,7 @@ export class SqlSitesReadRepository implements SitesReadRepository {
       | {
           id: SqlSite["id"];
           name: SqlSite["name"];
+          creation_mode: SqlSite["creation_mode"];
           description: SqlSite["description"];
           friche_activity: SqlSite["friche_activity"];
           full_time_jobs_involved: SqlSite["full_time_jobs_involved"];
@@ -104,6 +106,7 @@ export class SqlSitesReadRepository implements SitesReadRepository {
     return {
       id: sqlSite.id,
       name: sqlSite.name,
+      isExpressSite: sqlSite.creation_mode === "express",
       description: sqlSite.description ?? undefined,
       fricheActivity: sqlSite.friche_activity ?? undefined,
       fullTimeJobsInvolved: sqlSite.full_time_jobs_involved ?? undefined,

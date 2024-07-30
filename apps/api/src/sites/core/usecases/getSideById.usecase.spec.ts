@@ -18,6 +18,7 @@ describe("GetSiteById Use Case", () => {
     const site: SiteViewModel = {
       id: "4550d9f0-ce28-43ae-a319-94851ae033db",
       name: "My existing site",
+      isExpressSite: true,
       isFriche: true,
       surfaceArea: 140000,
       fricheActivity: "ADMINISTRATION",
@@ -63,6 +64,7 @@ describe("GetSiteById Use Case", () => {
     expect(result).toEqual({
       id: site.id,
       name: site.name,
+      isExpressSite: site.isExpressSite,
       description: site.description,
       isFriche: site.isFriche,
       owner: site.owner,

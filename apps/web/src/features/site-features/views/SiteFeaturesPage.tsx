@@ -38,6 +38,7 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
     <div>
       <SiteFeaturesHeader
         siteName={siteData.name}
+        isExpressSite={siteData.isExpressSite}
         address={siteData.address}
         isFriche={siteData.isFriche}
       />

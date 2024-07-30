@@ -8,6 +8,7 @@ export const buildMinimalSiteProps = (
     id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
     name: "My site",
     createdBy: "841aaa8c-39c1-4953-8459-1f6fab6dd948",
+    creationMode: "custom",
     isFriche: false,
     surfaceArea: 15000,
     owner: {
@@ -57,6 +58,15 @@ export const buildFricheProps = (propsOverride?: Partial<FricheSiteProps>): Fric
 export const buildMinimalFriche = (propsOverride?: Partial<FricheSite>): FricheSite => {
   return {
     ...buildFricheProps(),
+    createdAt: new Date(),
+    ...propsOverride,
+  };
+};
+
+export const buildExpressSite = (propsOverride?: Partial<NonFricheSite>): NonFricheSite => {
+  return {
+    ...buildMinimalSiteProps(),
+    creationMode: "express",
     createdAt: new Date(),
     ...propsOverride,
   };

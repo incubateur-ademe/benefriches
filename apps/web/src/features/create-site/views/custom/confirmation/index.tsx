@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { saveSiteAction } from "../../../application/createSite.actions";
+import { saveCustomSiteAction } from "../../../application/createSite.actions";
 import { revertStep } from "../../../application/createSite.reducer";
 import SiteCreationConfirmation from "./SiteCreationConfirmation";
 
@@ -12,7 +12,7 @@ function SiteCreationConfirmationContainer() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    void dispatch(saveSiteAction());
+    void dispatch(saveCustomSiteAction());
   }, [dispatch]);
 
   const onBack = () => {

@@ -11,6 +11,7 @@ import classNames from "@/shared/views/clsx";
 type Props = {
   siteId: string;
   siteName: string;
+  isExpressSite: boolean;
   reconversionProjects: ReconversionProjectList;
   selectedIds: string[];
   selectableIds: string[];
@@ -33,6 +34,7 @@ function GridColumn({ children }: { children: ReactNode }) {
 function ScenariiGroup({
   siteId,
   siteName,
+  isExpressSite,
   isFriche,
   fricheActivity,
   reconversionProjects,
@@ -53,6 +55,7 @@ function ScenariiGroup({
         <GridColumn>
           <StatuQuoScenarioTile
             isFriche={isFriche}
+            isExpressSite={isExpressSite}
             fricheActivity={fricheActivity}
             siteId={siteId}
             onChangeSelectedSite={onChangeSelectedSite}

@@ -6,6 +6,7 @@ type SiteFromApi = {
   id: string;
   name: string;
   isFriche: boolean;
+  isExpressSite: boolean;
   owner: {
     name?: string;
     structureType: string;
@@ -44,6 +45,7 @@ export class HttpSiteFeaturesService implements SiteFeaturesGateway {
     const jsonResponse = (await response.json()) as SiteFromApi;
     return {
       id: jsonResponse.id,
+      isExpressSite: jsonResponse.isExpressSite,
       address: jsonResponse.address.value,
       ownerName: jsonResponse.owner.name || "",
       tenantName: jsonResponse.tenant?.name || "",

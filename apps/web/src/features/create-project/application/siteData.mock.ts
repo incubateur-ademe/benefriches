@@ -4,6 +4,7 @@ export const relatedSiteData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   name: "My site name",
   isFriche: true,
+  isExpressSite: false,
   owner: { structureType: "company", name: "SAS Owner" },
   soilsDistribution: {
     ["BUILDINGS"]: 3000,

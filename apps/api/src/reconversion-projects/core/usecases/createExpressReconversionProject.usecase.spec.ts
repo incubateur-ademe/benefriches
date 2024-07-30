@@ -43,6 +43,7 @@ describe("CreateReconversionProject Use Case", () => {
         const site = {
           id: uuid(),
           name: "Base site",
+          isExpressSite: false,
           isFriche: true,
           surfaceArea: 10000,
           soilsDistribution: {
@@ -388,6 +389,7 @@ describe("CreateReconversionProject Use Case", () => {
         describe("with polluted soils and buildings", () => {
           const site = {
             id: uuid(),
+            isExpressSite: true,
             name: "Base site",
             isFriche: false,
             surfaceArea: 50000,

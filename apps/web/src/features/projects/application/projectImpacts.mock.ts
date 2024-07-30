@@ -4,6 +4,7 @@ export const baseProjectImpactMock = {
   id: "1b521325-ee61-40fb-8462-e01669ac767b",
   relatedSiteId: "68382abb-3a81-45e6-8af4-913767a28141",
   relatedSiteName: "Friche agricole de Blajan",
+  isExpressSite: false,
   projectData: {
     soilsDistribution: {
       ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
