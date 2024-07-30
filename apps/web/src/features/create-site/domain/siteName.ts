@@ -2,6 +2,8 @@ import { isForest, isPrairie, isSoilAgricultural, SoilType } from "shared";
 import { getFricheActivityLabel } from "./friche.types";
 import { SiteDraft } from "./siteFoncier.types";
 
+import { startsByVowel } from "@/shared/services/strings/startsByVowel";
+
 const isSoilTypeArtificial = (soilType: SoilType) => {
   return [
     "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
@@ -39,7 +41,9 @@ export const generateSiteName = (siteData: SiteData): string => {
 
   const { city } = siteData.address;
 
-  const name = `${designation} de ${city}`;
+  const hasElision = startsByVowel(city) || city.toLowerCase().startsWith("h");
+
+  const name = `${designation} ${hasElision ? "d'" : "de "}${city}`;
 
   return name.charAt(0).toUpperCase() + name.slice(1);
 };
