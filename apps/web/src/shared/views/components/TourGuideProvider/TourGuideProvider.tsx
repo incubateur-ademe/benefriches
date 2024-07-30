@@ -50,6 +50,12 @@ function TourGuideProvider({ children, steps, onCloseTutorial }: Props) {
       className="tw-rounded-lg tw-p-4 !tw-max-w-96"
       afterOpen={preventBodyOverflow}
       beforeClose={allowBodyOverflow}
+      onClickMask={({ setIsOpen }) => {
+        setIsOpen(false);
+        if (onCloseTutorial) {
+          onCloseTutorial();
+        }
+      }}
       steps={steps.map(mapStep)}
       ContentComponent={(props: PopoverContentProps) => {
         const { steps, currentStep: currentStepIndex, setIsOpen, setCurrentStep } = props;
