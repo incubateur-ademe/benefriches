@@ -12,6 +12,7 @@ export const BENEFRICHES_ENV = {
   matomoTrackingEnabled: Boolean(windowEnv.WEBAPP_MATOMO_SITE_ID),
   matomoSiteId: windowEnv.WEBAPP_MATOMO_SITE_ID ?? "",
   matomoUrl: windowEnv.WEBAPP_MATOMO_URL ?? "",
+  isSiteExpressAllowed: windowEnv.WEBAPP_IS_SITE_EXPRESS_ALLOWED === "YES",
   allowedDevelopmentPlanCategories:
     windowEnv.WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
 };

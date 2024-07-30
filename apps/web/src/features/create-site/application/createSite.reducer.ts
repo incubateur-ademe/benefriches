@@ -3,6 +3,7 @@ import { FricheActivity, SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 import { saveCustomSiteAction, saveExpressSiteAction } from "./createSite.actions";
 
+import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import { RootState } from "@/app/application/store";
 import {
   Address,
@@ -64,9 +65,11 @@ export type SiteCreationState = {
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
 
+const INITIAL_STEP = BENEFRICHES_ENV.isSiteExpressAllowed ? "CREATE_MODE_SELECTION" : "SITE_TYPE";
+
 export const getInitialState = (): SiteCreationState => {
   return {
-    stepsHistory: ["CREATE_MODE_SELECTION"],
+    stepsHistory: [INITIAL_STEP],
     saveLoadingState: "idle",
     createMode: undefined,
     siteData: {
