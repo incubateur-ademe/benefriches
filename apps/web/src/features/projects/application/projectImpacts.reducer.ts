@@ -35,6 +35,7 @@ export type ProjectImpactsState = {
   relatedSiteData?: {
     id: string;
     name: string;
+    isExpressSite: boolean;
     addressLabel: string;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
@@ -87,6 +88,7 @@ export const projectImpactsSlice = createSlice({
       state.relatedSiteData = {
         id: action.payload.relatedSiteId,
         name: action.payload.relatedSiteName,
+        isExpressSite: action.payload.isExpressSite,
         ...action.payload.siteData,
       };
     });

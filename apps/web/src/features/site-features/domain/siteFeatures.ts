@@ -2,6 +2,7 @@ import { FricheActivity, SiteYearlyExpensePurpose, SoilsDistribution } from "sha
 
 export type SiteFeatures = {
   id: string;
+  isExpressSite: boolean;
   address: string;
   ownerName: string;
   tenantName?: string;

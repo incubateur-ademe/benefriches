@@ -11,6 +11,7 @@ type Props = {
   selectableIds: string[];
   onChangeSelectedSite: (value?: string) => void;
   isFriche: boolean;
+  isExpressSite: boolean;
   fricheActivity?: FricheActivity;
 };
 
@@ -20,6 +21,7 @@ function StatuQuoScenarioTile({
   selectedIds,
   selectableIds,
   isFriche,
+  isExpressSite,
   fricheActivity,
 }: Props) {
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -50,6 +52,7 @@ function StatuQuoScenarioTile({
   return (
     <ScenarioTile
       title={scenarioTitle}
+      badgeText={isExpressSite ? "Site express" : undefined}
       details="Pas de changement"
       onChangeCheckbox={onChangeCheckbox}
       pictogramUrl={pictogramUrl}

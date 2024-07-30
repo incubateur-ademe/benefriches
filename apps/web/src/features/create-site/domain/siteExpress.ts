@@ -1,5 +1,4 @@
 import { SoilType } from "shared";
-import { v4 as uuid } from "uuid";
 import { CreateSiteGatewayPayload } from "../application/createSite.actions";
 import {
   computeIllegalDumpingDefaultCost,
@@ -16,11 +15,15 @@ const FRANCE_AVERAGE_CITY_POPULATION = 1800;
 
 const getExpressSiteData = (
   siteData: SiteExpressDraft,
-  currentUserId?: string,
+  currentUserId: string,
 ): CreateSiteGatewayPayload => {
   const surfaceArea = siteData.surfaceArea;
 
-  const { municipality, population = FRANCE_AVERAGE_CITY_POPULATION } = siteData.address;
+  const {
+    municipality,
+    population = FRANCE_AVERAGE_CITY_POPULATION,
+    ...address
+  } = siteData.address;
 
   const soilsDistribution = {
     BUILDINGS: 0.3 * surfaceArea,
@@ -64,7 +67,9 @@ const getExpressSiteData = (
 
   return {
     ...siteData,
-    createdBy: currentUserId ?? uuid(),
+    address,
+    createdBy: currentUserId,
+    creationMode: "express",
     soilsDistribution,
     contaminatedSoilSurface: siteData.isFriche ? 0.5 * surfaceArea : undefined,
     owner: {

@@ -1,4 +1,4 @@
-import { SiteDraft } from "../domain/siteFoncier.types";
+import { SiteDraft, SiteExpressDraft } from "../domain/siteFoncier.types";
 
 export const siteWithExhaustiveData: SiteDraft = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
@@ -127,4 +127,21 @@ export const fricheWithMinimalData: SiteDraft = {
   ...siteWithMinimalData,
   isFriche: true,
   fricheActivity: "RAILWAY",
+} as const;
+
+export const expressSiteDraft: SiteExpressDraft = {
+  isFriche: true,
+  id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
+  address: {
+    banId: "31070_p4ur8e",
+    value: "Blajan",
+    city: "Blajan",
+    cityCode: "31070",
+    postCode: "31350",
+    municipality: "Blajan",
+    population: 600,
+    long: 0.664699,
+    lat: 43.260859,
+  },
+  surfaceArea: 15000,
 } as const;

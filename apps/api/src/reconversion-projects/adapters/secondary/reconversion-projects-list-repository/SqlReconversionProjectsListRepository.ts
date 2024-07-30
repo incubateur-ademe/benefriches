@@ -6,6 +6,7 @@ import {
   ReconversionProjectsListRepository,
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
+import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
 export class SqlReconversionProjectsListRepository implements ReconversionProjectsListRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
@@ -27,6 +28,7 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
         "sites.id as siteId",
         "sites.name as siteName",
         "sites.is_friche as isFriche",
+        "sites.creation_mode as creationMode",
         "sites.friche_activity as fricheActivity",
         this.sqlConnection.raw(`
         CASE 
@@ -39,6 +41,7 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
       siteId: string;
       siteName: string;
       isFriche: boolean;
+      creationMode: SqlSite["creation_mode"];
       fricheActivity: string | null;
       reconversionProjects: {
         id: string;
@@ -48,9 +51,10 @@ export class SqlReconversionProjectsListRepository implements ReconversionProjec
       }[];
     }[];
 
-    return result.map((reconversionProjectsBySite) => {
+    return result.map(({ creationMode, ...reconversionProjectsBySite }) => {
       return {
         ...reconversionProjectsBySite,
+        isExpressSite: creationMode === "express",
         reconversionProjects: reconversionProjectsBySite.reconversionProjects.map((rp) => ({
           id: rp.id,
           name: rp.name,

@@ -2,7 +2,7 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { FricheSite, NonFricheSite } from "src/sites/core/models/site";
-import { buildMinimalSite } from "src/sites/core/models/site.mock";
+import { buildExpressSite, buildMinimalSite } from "src/sites/core/models/site.mock";
 import { SqlSiteWriteRepository } from "./SqlSiteWriteRepository";
 
 describe("SqlSiteWriteRepository integration", () => {
@@ -45,6 +45,37 @@ describe("SqlSiteWriteRepository integration", () => {
   });
 
   describe("save", () => {
+    it("Saves given site with minimal data and express mode in sites", async () => {
+      const site: NonFricheSite = buildExpressSite({ createdAt: now, creationMode: "express" });
+
+      await siteRepository.save(site);
+
+      const sitesResult = await sqlConnection("sites").select("*");
+      expect(sitesResult).toEqual([
+        {
+          id: site.id,
+          created_by: site.createdBy,
+          creation_mode: "express",
+          description: null,
+          friche_accidents_deaths: null,
+          friche_accidents_severe_injuries: null,
+          friche_accidents_minor_injuries: null,
+          friche_activity: null,
+          friche_contaminated_soil_surface_area: null,
+          friche_has_contaminated_soils: null,
+          full_time_jobs_involved: null,
+          is_friche: false,
+          name: "My site",
+          owner_name: "Le département Paris",
+          owner_structure_type: "department",
+          surface_area: 15000.0,
+          tenant_name: null,
+          tenant_structure_type: null,
+          created_at: now,
+        },
+      ]);
+    });
+
     it("Saves given site with minimal data in sites", async () => {
       const site: NonFricheSite = buildMinimalSite({ createdAt: now });
 
@@ -55,6 +86,7 @@ describe("SqlSiteWriteRepository integration", () => {
         {
           id: site.id,
           created_by: site.createdBy,
+          creation_mode: "custom",
           description: null,
           friche_accidents_deaths: null,
           friche_accidents_severe_injuries: null,
@@ -93,6 +125,7 @@ describe("SqlSiteWriteRepository integration", () => {
         {
           id: site.id,
           created_by: site.createdBy,
+          creation_mode: "custom",
           description: "Description of site",
           friche_accidents_deaths: null,
           friche_accidents_severe_injuries: null,
@@ -150,6 +183,7 @@ describe("SqlSiteWriteRepository integration", () => {
           tenant_structure_type: null,
           full_time_jobs_involved: null,
           created_at: now,
+          creation_mode: "custom",
         },
       ]);
     });

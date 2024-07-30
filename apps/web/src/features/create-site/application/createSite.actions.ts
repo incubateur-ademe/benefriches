@@ -43,6 +43,7 @@ export const revertNamingStep = () => revertStep({ resetFields: ["name", "descri
 const createSiteSchema = z.object({
   id: z.string().uuid(),
   createdBy: z.string().uuid(),
+  creationMode: z.enum(["express", "custom"]),
   name: z.string(),
   description: z.string().optional(),
   isFriche: z.boolean(),
@@ -103,16 +104,20 @@ export interface CreateSiteGateway {
   save(siteData: CreateSiteGatewayPayload): Promise<void>;
 }
 
-export const saveSiteAction = createAppAsyncThunk("site/create", async (_, { getState, extra }) => {
-  const { siteCreation, currentUser } = getState();
+export const saveCustomSiteAction = createAppAsyncThunk(
+  "site/create",
+  async (_, { getState, extra }) => {
+    const { siteCreation, currentUser } = getState();
 
-  const siteToCreate = createSiteSchema.parse({
-    ...siteCreation.siteData,
-    createdBy: currentUser.currentUser?.id,
-  });
+    const siteToCreate = createSiteSchema.parse({
+      ...siteCreation.siteData,
+      creationMode: siteCreation.createMode ?? "custom",
+      createdBy: currentUser.currentUser?.id,
+    });
 
-  await extra.createSiteService.save(siteToCreate);
-});
+    await extra.createSiteService.save(siteToCreate);
+  },
+);
 
 export const saveExpressSiteAction = createAppAsyncThunk(
   "site/createExpressSite",
@@ -120,8 +125,12 @@ export const saveExpressSiteAction = createAppAsyncThunk(
     const { siteCreation, currentUser } = getState();
     const { siteData } = siteCreation;
 
+    if (!currentUser.currentUser) {
+      throw new Error("Current user is missing");
+    }
+
     const siteToCreate = createSiteSchema.parse(
-      getExpressSiteData(siteData as SiteExpressDraft, currentUser.currentUser?.id),
+      getExpressSiteData(siteData as SiteExpressDraft, currentUser.currentUser.id),
     );
 
     await extra.createSiteService.save(siteToCreate);

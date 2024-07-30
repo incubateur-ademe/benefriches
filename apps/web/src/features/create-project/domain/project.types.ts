@@ -95,6 +95,7 @@ export type ProjectSite = {
   id: string;
   name: string;
   isFriche: boolean;
+  isExpressSite: boolean;
   owner: {
     name: string;
     structureType: OwnerStructureType;

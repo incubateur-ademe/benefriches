@@ -137,6 +137,7 @@ describe("ReconversionProjects controller", () => {
         tenant_structure_type: "company",
         created_at: new Date("2024-02-10"),
         is_friche: false,
+        creation_mode: "express",
       };
       const siteInDb2 = {
         id: uuid(),
@@ -208,6 +209,7 @@ describe("ReconversionProjects controller", () => {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
           isFriche: siteInDb1.is_friche,
+          isExpressSite: true,
           reconversionProjects: [
             {
               id: projectInDb1.id,
@@ -227,6 +229,7 @@ describe("ReconversionProjects controller", () => {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
           isFriche: siteInDb2.is_friche,
+          isExpressSite: false,
           reconversionProjects: [],
         },
       ]);

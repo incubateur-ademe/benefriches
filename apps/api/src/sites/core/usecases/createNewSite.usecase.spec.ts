@@ -26,6 +26,7 @@ describe("CreateNewSite Use Case", () => {
     it.each([
       "id",
       "createdBy",
+      "creationMode",
       "address",
       "surfaceArea",
       "isFriche",
@@ -68,6 +69,18 @@ describe("CreateNewSite Use Case", () => {
 
   it("Can create a new site with minimal data", async () => {
     const siteProps = buildMinimalSiteProps();
+
+    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+
+    await usecase.execute({ siteProps });
+
+    const savedSites = siteRepository._getSites();
+
+    expect(savedSites).toEqual([{ ...siteProps, createdAt: fakeNow }]);
+  });
+
+  it("Can create a new site with creationMode = 'express'", async () => {
+    const siteProps = buildMinimalSiteProps({ creationMode: "express" });
 
     const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 

@@ -88,6 +88,7 @@ describe("SqlSitesReadRepository integration", () => {
       const expectedResult: Required<SiteViewModel> = {
         id: siteId,
         name: "Site 123",
+        isExpressSite: false,
         description: "Description of site",
         surfaceArea: 14000,
         owner: { name: "Owner name", structureType: "company" },
@@ -134,6 +135,7 @@ describe("SqlSitesReadRepository integration", () => {
         owner_structure_type: "company",
         created_at: now,
         is_friche: false,
+        creation_mode: "express",
       });
 
       await sqlConnection("addresses").insert({
@@ -170,6 +172,7 @@ describe("SqlSitesReadRepository integration", () => {
         id: siteId,
         name: "Site 456",
         surfaceArea: 14000,
+        isExpressSite: true,
         owner: { structureType: "company" },
         isFriche: false,
         yearlyExpenses: [{ amount: 3300, purpose: "security" }],

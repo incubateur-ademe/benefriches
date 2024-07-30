@@ -7,6 +7,7 @@ export class MockSiteFeaturesService implements SiteFeaturesGateway {
     name: "Mocked site name",
     address: "155 bis Av. Pierre Brossolette, 92120 Montrouge",
     isFriche: true,
+    isExpressSite: false,
     expenses: [
       { amount: 15432, purpose: "maintenance" },
       { amount: 10300, purpose: "security" },

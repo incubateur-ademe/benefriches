@@ -36,6 +36,7 @@ export type ProjectsGroup = {
   siteId: string;
   siteName: string;
   isFriche: boolean;
+  isExpressSite: boolean;
   fricheActivity?: FricheActivity;
   reconversionProjects: {
     id: string;

@@ -5,6 +5,7 @@ export type ReconversionProjectsGroupedBySite = {
   siteName: string;
   siteId: string;
   isFriche: boolean;
+  isExpressSite: boolean;
   fricheActivity?: string;
   reconversionProjects: {
     id: string;

@@ -1,14 +1,16 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
 import classNames from "@/shared/views/clsx";
+import Badge from "@/shared/views/components/Badge/Badge";
 
 type Props = {
   siteName: string;
   address: string;
   isFriche: boolean;
+  isExpressSite: boolean;
 };
 
-export default function SiteFeaturesHeader({ siteName, address, isFriche }: Props) {
+export default function SiteFeaturesHeader({ siteName, address, isFriche, isExpressSite }: Props) {
   return (
     <section
       className={classNames(fr.cx("fr-py-8v"), "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}
@@ -24,7 +26,15 @@ export default function SiteFeaturesHeader({ siteName, address, isFriche }: Prop
             height={76}
           />
           <div>
-            <h2 className={classNames(fr.cx("fr-my-0"), "tw-text-impacts-title")}>{siteName}</h2>
+            <div className="tw-inline-flex tw-items-center">
+              <h2 className={classNames(fr.cx("fr-my-0"), "tw-text-impacts-title")}>{siteName}</h2>
+              {isExpressSite && (
+                <Badge small className="tw-ml-3">
+                  Site express
+                </Badge>
+              )}
+            </div>
+
             <div>
               <span
                 className={fr.cx("fr-icon-map-pin-2-line", "fr-icon--sm", "fr-mr-0-5v")}

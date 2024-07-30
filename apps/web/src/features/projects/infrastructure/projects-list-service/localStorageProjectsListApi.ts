@@ -39,6 +39,7 @@ export class LocalStorageProjectsListApi implements ReconversionProjectsListGate
         siteId: site.id,
         siteName: site.name,
         isFriche: site.isFriche,
+        isExpressSite: site.isExpressSite,
         reconversionProjects: projects.map(({ name, id, type = "PHOTOVOLTAIC_POWER_PLANT" }) => ({
           name,
           id,

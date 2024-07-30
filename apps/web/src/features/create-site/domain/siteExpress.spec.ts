@@ -12,8 +12,7 @@ const expressFricheDraft = {
     banId: "123abc",
     lat: 48.876517,
     long: 2.330785,
-    value: "1 rue de Londres, 75009 Paris",
-    streetName: "rue de Londres",
+    value: "Paris",
     municipality: "Paris",
     population: 2133111,
   },
@@ -41,7 +40,17 @@ describe("Site Express data creation", () => {
     it("returns friche express data", () => {
       expect(getExpressSiteData(expressFricheDraft, currentUserId)).toEqual({
         ...expressFricheDraft,
+        address: {
+          city: "Paris",
+          cityCode: "75109",
+          postCode: "75009",
+          banId: "123abc",
+          lat: 48.876517,
+          long: 2.330785,
+          value: "Paris",
+        },
         createdBy: currentUserId,
+        creationMode: "express",
         soilsDistribution: {
           BUILDINGS: 6000,
           IMPERMEABLE_SOILS: 4000,
@@ -93,7 +102,17 @@ describe("Site Express data creation", () => {
     it("returns site express data", () => {
       expect(getExpressSiteData(expressSiteDraft, currentUserId)).toEqual({
         ...expressSiteDraft,
+        address: {
+          city: "Blajan",
+          cityCode: "31070",
+          postCode: "31350",
+          banId: "31070",
+          lat: 43.260128,
+          long: 0.652416,
+          value: "Blajan",
+        },
         createdBy: currentUserId,
+        creationMode: "express",
         soilsDistribution: {
           BUILDINGS: 6000,
           IMPERMEABLE_SOILS: 4000,
