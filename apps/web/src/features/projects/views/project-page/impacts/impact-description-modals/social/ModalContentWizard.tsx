@@ -1,6 +1,8 @@
 import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
+import AvoidedVehiculeKilometersDescription from "./avoided-vehicule-kilometers/AvoidedVehiculeKilometersDescription";
 import HouseholdsPoweredByRenewableEnergyDescription from "./householdsPoweredByEnR/householdsPoweredByEnR";
+import TimeTravelSavedDescription from "./time-travel-saved/TimeTravelSavedDescription";
 import SocialMainDescription from "./SocialMainDescription";
 import { SocialImpactDescriptionModalId } from "./types";
 
@@ -40,6 +42,40 @@ const SocialSectionModalContentWizard = ({
             developmentPlanElectricalPowerKWc={projectData.developmentPlan.electricalPowerKWc}
             developmentPlanSurfaceArea={projectData.developmentPlan.surfaceArea}
           />
+        </>
+      );
+    case "social.avoided-vehicule-kilometers":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts sociaux",
+                onClick: () => {
+                  onChangeModalCategoryOpened("social");
+                },
+              },
+              { label: "Kilomètres évités", isCurrent: true },
+            ]}
+          />
+          <AvoidedVehiculeKilometersDescription />
+        </>
+      );
+    case "social.time-travel-saved":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts sociaux",
+                onClick: () => {
+                  onChangeModalCategoryOpened("social");
+                },
+              },
+              { label: "Temps de déplacement économisé", isCurrent: true },
+            ]}
+          />
+          <TimeTravelSavedDescription />
         </>
       );
   }

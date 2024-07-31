@@ -1,4 +1,5 @@
 import { getSocialImpactLabel } from "../../getImpactLabel";
+import { ImpactDescriptionModalCategory } from "../../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactItem from "../ImpactItem";
 import ImpactMainTitle from "../ImpactMainTitle";
 import ImpactSectionHeader from "../ImpactSectionHeader";
@@ -7,7 +8,6 @@ import {
   SocialImpact,
   SocialImpactName,
 } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 
 type Props = {
   impacts: SocialImpact[];
@@ -33,6 +33,14 @@ const getImpactItemOnClick = (
     case "households_powered_by_renewable_energy":
       return () => {
         openImpactDescriptionModal("social.households-powered-by-renewable-energy");
+      };
+    case "travel_time_saved":
+      return () => {
+        openImpactDescriptionModal("social.time-travel-saved");
+      };
+    case "avoided_vehicule_kilometers":
+      return () => {
+        openImpactDescriptionModal("social.avoided-vehicule-kilometers");
       };
     default:
       return undefined;
