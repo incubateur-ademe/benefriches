@@ -37,7 +37,7 @@ describe("projectImpactsSocial selectors", () => {
         expect(impacts).toContainEqual(
           expect.objectContaining({
             name: "full_time_jobs",
-            type: "default",
+            type: "etp",
             impact: {
               base: 1,
               forecast: 3.5,
