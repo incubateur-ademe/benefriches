@@ -10,7 +10,7 @@ type Props = {
   isTotal?: boolean;
   onClick?: () => void;
   data?: { label: string; value: number; onClick?: () => void }[];
-  type: "surfaceArea" | "monetary" | "co2" | "default" | undefined;
+  type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
 };
 
 const ImpactItem = ({ label, value, data, type, onClick, isTotal }: Props) => {

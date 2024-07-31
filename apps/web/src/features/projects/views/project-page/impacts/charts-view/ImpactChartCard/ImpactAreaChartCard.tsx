@@ -3,8 +3,10 @@ import HighchartsReact from "highcharts-react-official";
 import {
   formatCO2Impact,
   formatDefaultImpact,
+  formatETPImpact,
   formatMonetaryImpact,
   formatSurfaceAreaImpact,
+  formatTimeImpact,
   impactFormatConfig,
 } from "../../../../shared/formatImpactValue";
 import ImpactAbsoluteVariation from "./ImpactAbsoluteVariation";
@@ -21,6 +23,14 @@ const impactTypeFormatterMap = {
     formatFn: formatSurfaceAreaImpact,
     ...impactFormatConfig["surface_area"],
   },
+  etp: {
+    formatFn: formatETPImpact,
+    ...impactFormatConfig["etp"],
+  },
+  time: {
+    formatFn: formatTimeImpact,
+    ...impactFormatConfig["time"],
+  },
   default: { formatFn: formatDefaultImpact, ...impactFormatConfig["default"] },
 } as const;
 
@@ -35,7 +45,7 @@ type Props = {
     difference: number;
     data: { impactLabel: string; base: number; forecast: number }[];
   };
-  type: "surfaceArea" | "monetary" | "co2" | "default" | undefined;
+  type: "surfaceArea" | "monetary" | "co2" | "etp" | "time" | "default" | undefined;
   unitSuffix?: string;
 };
 

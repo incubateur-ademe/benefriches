@@ -7,22 +7,22 @@ import {
 
 describe("Impact value formatting", () => {
   describe("formatDefaultImpact", () => {
-    it("returns 123000.456 as +123 000,5", () => {
-      expect(formatDefaultImpact(123000.456)).toEqual("+123 000,5");
+    it("returns 123000.456 as +123 000", () => {
+      expect(formatDefaultImpact(123000.456)).toEqual("+123 000");
     });
-    it("returns -345.678 as -345.68", () => {
-      expect(formatDefaultImpact(-345.67)).toEqual("-345,7");
+    it("returns -345.678 as -346", () => {
+      expect(formatDefaultImpact(-345.67)).toEqual("-346");
     });
     it("returns 789 as 789 when no sign prefix", () => {
       expect(formatDefaultImpact(789, { withSignPrefix: false })).toEqual("789");
     });
   });
   describe("formatMonetaryImpact", () => {
-    it("returns 123000.456 as +123 000,46 €", () => {
-      expect(formatMonetaryImpact(123000.456)).toEqual("+123 000,46 €");
+    it("returns 123000.456 as +123 000 €", () => {
+      expect(formatMonetaryImpact(123000.456)).toEqual("+123 000 €");
     });
-    it("returns -345.678 as -345.67 €", () => {
-      expect(formatMonetaryImpact(-345.67)).toEqual("-345,67 €");
+    it("returns -345.678 as -346 €", () => {
+      expect(formatMonetaryImpact(-345.67)).toEqual("-346 €");
     });
     it("returns 789 as 789 when no sign prefix", () => {
       expect(formatMonetaryImpact(789, { withSignPrefix: false })).toEqual("789 €");
@@ -40,11 +40,11 @@ describe("Impact value formatting", () => {
     });
   });
   describe("formatCO2Impact", () => {
-    it("returns 123000.456 as +123 000,5 t", () => {
-      expect(formatCO2Impact(123000.456)).toEqual("+123 000,5 t");
+    it("returns 123000.456 as +123 000 t", () => {
+      expect(formatCO2Impact(123000.456)).toEqual("+123 000 t");
     });
-    it("returns -345.678 as -345.7 t", () => {
-      expect(formatCO2Impact(-345.67)).toEqual("-345,7 t");
+    it("returns -345.678 as -345 t", () => {
+      expect(formatCO2Impact(-345.67)).toEqual("-346 t");
     });
     it("returns 789 as 789 when no sign prefix", () => {
       expect(formatCO2Impact(789, { withSignPrefix: false })).toEqual("789 t");

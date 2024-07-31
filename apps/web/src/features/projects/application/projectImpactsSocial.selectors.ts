@@ -51,7 +51,7 @@ type SocialImpactDetailsName =
 
 export type SocialImpact = {
   name: SocialMainImpactName;
-  type: "default";
+  type: "default" | "etp" | "time";
   impact: ImpactValue & {
     details?: {
       name: SocialImpactDetailsName;
@@ -85,7 +85,7 @@ export const getSocialProjectImpacts = createSelector(
       const { current, forecast, conversion, operations } = fullTimeJobs;
       impacts.push({
         name: "full_time_jobs",
-        type: "default",
+        type: "etp",
         impact: {
           base: current,
           forecast,
@@ -159,7 +159,7 @@ export const getSocialProjectImpacts = createSelector(
     if (travelTimeSaved) {
       impacts.push({
         name: "travel_time_saved",
-        type: "default",
+        type: "time",
         impact: {
           base: 0,
           forecast: travelTimeSaved,

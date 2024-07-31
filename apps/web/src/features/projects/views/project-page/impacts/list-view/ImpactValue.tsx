@@ -1,8 +1,10 @@
 import {
   formatCO2Impact,
   formatDefaultImpact,
+  formatETPImpact,
   formatMonetaryImpact,
   formatSurfaceAreaImpact,
+  formatTimeImpact,
 } from "../../../shared/formatImpactValue";
 
 import classNames from "@/shared/views/clsx";
@@ -11,6 +13,8 @@ const impactTypeFormatterMap = {
   co2: formatCO2Impact,
   monetary: formatMonetaryImpact,
   surfaceArea: formatSurfaceAreaImpact,
+  etp: formatETPImpact,
+  time: formatTimeImpact,
   default: formatDefaultImpact,
 } as const;
 

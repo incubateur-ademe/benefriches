@@ -10,7 +10,7 @@ import {
 
 const NO_BREAK_SPACE = "\u00A0";
 
-type ImpactFormatType = "monetary" | "co2" | "surface_area" | "default";
+type ImpactFormatType = "monetary" | "co2" | "surface_area" | "etp" | "time" | "default";
 
 type ImpactFormatConfig = Record<
   ImpactFormatType,
@@ -22,19 +22,27 @@ type ImpactFormatConfig = Record<
 
 export const impactFormatConfig: ImpactFormatConfig = {
   monetary: {
-    roundFn: roundTo2Digits,
+    roundFn: roundToInteger,
     unitSuffix: `${NO_BREAK_SPACE}€`,
   },
   co2: {
-    roundFn: roundTo1Digit,
+    roundFn: roundToInteger,
     unitSuffix: `${NO_BREAK_SPACE}t`,
   },
   surface_area: {
     roundFn: roundTo1Digit,
     unitSuffix: `${NO_BREAK_SPACE}${SQUARE_METERS_HTML_SYMBOL}`,
   },
-  default: {
+  etp: {
     roundFn: roundTo1Digit,
+    unitSuffix: "",
+  },
+  time: {
+    roundFn: roundToInteger,
+    unitSuffix: `${NO_BREAK_SPACE}h`,
+  },
+  default: {
+    roundFn: roundToInteger,
     unitSuffix: "",
   },
 } as const;
@@ -58,6 +66,8 @@ export const formatDefaultImpact = formatImpactValue("default");
 export const formatMonetaryImpact = formatImpactValue("monetary");
 export const formatSurfaceAreaImpact = formatImpactValue("surface_area");
 export const formatCO2Impact = formatImpactValue("co2");
+export const formatETPImpact = formatImpactValue("etp");
+export const formatTimeImpact = formatImpactValue("time");
 
 export const formatEvolutionPercentage = (evolutionInPercentage: number) => {
   const roundedValue = roundToInteger(evolutionInPercentage);

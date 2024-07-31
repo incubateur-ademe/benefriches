@@ -12,7 +12,7 @@ type Props = {
     value: number;
     details?: { label: string; value: number; onClick?: () => void }[];
   }[];
-  type: "surfaceArea" | "monetary" | "co2" | "default" | undefined;
+  type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
 };
 
 const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => (

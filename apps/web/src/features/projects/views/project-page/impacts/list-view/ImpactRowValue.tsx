@@ -8,7 +8,7 @@ type Props = {
   isDark?: boolean;
   onClick?: () => void;
   children: ReactNode;
-  type?: "surfaceArea" | "monetary" | "co2" | "default" | undefined;
+  type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
 };
 
 const ImpactRowValue = ({ value, children, type, onClick, isDark }: Props) => {
