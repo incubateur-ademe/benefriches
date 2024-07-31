@@ -203,6 +203,18 @@ export class TravelRelatedImpactsService {
     return this.durationInYears * this.travelTimeSavedPerTravelerPerYear;
   }
 
+  getTravelTimeSavedPerInhabitantTraveler() {
+    return this.durationInYears * this.travelTimeSavedPerInhabitantTraveler;
+  }
+
+  getTravelTimeSavedPerWorkerTraveler() {
+    return (
+      (this.travelTimeSavedPerTertiaryActivityEmployeeTraveler +
+        this.travelTimeSavedPerOtherActivityEmployeeTraveler) *
+      this.durationInYears
+    );
+  }
+
   getAvoidedKilometersPerWorkerVehicule() {
     return this.durationInYears * this.avoidedKilometersPerWorkerVehiculePerYear;
   }
@@ -232,8 +244,12 @@ export class TravelRelatedImpactsService {
     );
   }
 
-  getTravelTimeSavedPerTravelerMonetaryAmount() {
-    return this.getTravelTimeSavedPerTraveler() * 10;
+  getTravelTimeSavedPerInhabitantTravelerMonetaryAmount() {
+    return this.getTravelTimeSavedPerInhabitantTraveler() * 10;
+  }
+
+  getTravelTimeSavedPerWorkerTravelerMonetaryAmount() {
+    return this.getTravelTimeSavedPerWorkerTraveler() * 10;
   }
 
   getAvoidedTrafficCO2EmissionsInTons() {

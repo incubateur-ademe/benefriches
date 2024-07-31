@@ -264,8 +264,14 @@ export const getTravelRelatedImpacts = ({
       impactCategory: "economic_indirect",
     },
     {
-      actor: "french_society",
-      amount: travelRelatedImpactsService.getTravelTimeSavedPerTravelerMonetaryAmount(),
+      actor: "local_residents",
+      amount: travelRelatedImpactsService.getTravelTimeSavedPerInhabitantTravelerMonetaryAmount(),
+      impact: "travel_time_saved",
+      impactCategory: "social_monetary",
+    },
+    {
+      actor: "local_workers",
+      amount: travelRelatedImpactsService.getTravelTimeSavedPerWorkerTravelerMonetaryAmount(),
       impact: "travel_time_saved",
       impactCategory: "social_monetary",
     },
