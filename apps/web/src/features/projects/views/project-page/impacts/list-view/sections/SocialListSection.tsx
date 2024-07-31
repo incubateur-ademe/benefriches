@@ -32,7 +32,7 @@ const getImpactItemOnClick = (
   switch (itemName) {
     case "households_powered_by_renewable_energy":
       return () => {
-        openImpactDescriptionModal("social-households-powered-by-renewable-energy");
+        openImpactDescriptionModal("social.households-powered-by-renewable-energy");
       };
     default:
       return undefined;

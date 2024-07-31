@@ -1,5 +1,5 @@
-import ModalTitleThree from "../shared/ModalTitleThree";
-import ModalTitleTwo from "../shared/ModalTitleTwo";
+import ModalTitleThree from "../../shared/ModalTitleThree";
+import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";

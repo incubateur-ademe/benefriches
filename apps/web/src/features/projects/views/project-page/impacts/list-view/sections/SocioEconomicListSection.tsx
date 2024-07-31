@@ -22,27 +22,27 @@ const getImpactItemOnClick = (
   switch (itemName) {
     case "avoided_co2_eq_with_enr":
       return () => {
-        openImpactDescriptionModal("socio-economic-avoided-co2-renewable-energy");
+        openImpactDescriptionModal("socio-economic.avoided-co2-renewable-energy");
       };
     case "avoided_friche_costs":
       return () => {
-        openImpactDescriptionModal("socio-economic-avoided-friche-costs");
+        openImpactDescriptionModal("socio-economic.avoided-friche-costs");
       };
     case "ecosystem_services":
       return () => {
-        openImpactDescriptionModal("socio-economic-ecosystem-services");
+        openImpactDescriptionModal("socio-economic.ecosystem-services");
       };
     case "nature_related_wellness_and_leisure":
       return () => {
-        openImpactDescriptionModal("socio-economic-nature-related-wellness-and-leisure");
+        openImpactDescriptionModal("socio-economic.nature-related-wellness-and-leisure");
       };
     case "carbon_storage":
       return () => {
-        openImpactDescriptionModal("socio-economic-carbon-storage");
+        openImpactDescriptionModal("socio-economic.carbon-storage");
       };
     case "water_regulation":
       return () => {
-        openImpactDescriptionModal("socio-economic-water-regulation");
+        openImpactDescriptionModal("socio-economic.water-regulation");
       };
     default:
       return undefined;

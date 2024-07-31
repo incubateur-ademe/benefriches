@@ -39,15 +39,15 @@ const getImpactOnClick = (
   switch (itemName) {
     case "non_contaminated_surface_area":
       return () => {
-        openImpactDescriptionModal("environmental-non-contamined-surface");
+        openImpactDescriptionModal("environmental.non-contamined-surface");
       };
     case "permeable_surface_area":
       return () => {
-        openImpactDescriptionModal("environmental-permeable-surface");
+        openImpactDescriptionModal("environmental.permeable-surface");
       };
     case "stored_co2_eq":
       return () => {
-        openImpactDescriptionModal("environmental-carbon-storage");
+        openImpactDescriptionModal("environmental.carbon-storage");
       };
     default:
       return undefined;
@@ -118,7 +118,7 @@ const ImpactsChartsEnvironmentSection = ({
             >
               <ImpactAreaChartCard
                 onClick={() => {
-                  openImpactDescriptionModal("environmental-carbon-storage");
+                  openImpactDescriptionModal("environmental.carbon-storage");
                 }}
                 type="co2"
                 baseLabel="Pas de changement"

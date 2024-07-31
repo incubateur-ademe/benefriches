@@ -20,7 +20,7 @@ const getImpactItemOnClick = (
   switch (itemName) {
     case "site_purchase":
       return () => {
-        openImpactDescriptionModal("economic-balance-real-estate-acquisition");
+        openImpactDescriptionModal("economic-balance.real-estate-acquisition");
       };
     default:
       return undefined;
