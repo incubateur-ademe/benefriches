@@ -386,7 +386,13 @@ describe("Mixed use neighbourhood specific impacts", () => {
             impactCategory: "economic_indirect",
           },
           {
-            actor: "french_society",
+            actor: "local_residents",
+            amount: expect.any(Number) as number,
+            impact: "travel_time_saved",
+            impactCategory: "social_monetary",
+          },
+          {
+            actor: "local_workers",
             amount: expect.any(Number) as number,
             impact: "travel_time_saved",
             impactCategory: "social_monetary",

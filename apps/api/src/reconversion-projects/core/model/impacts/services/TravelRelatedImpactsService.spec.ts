@@ -95,10 +95,16 @@ describe("TravelRelatedImpactsService", () => {
     );
   });
 
-  it("computes travel time saved per traveler monetary value for duration", () => {
-    expect(travelRelatedImpactsService.getTravelTimeSavedPerTravelerMonetaryAmount()).toBeCloseTo(
-      248003.125,
-    );
+  it("computes travel time saved per inhabitant traveler monetary value for duration", () => {
+    expect(
+      travelRelatedImpactsService.getTravelTimeSavedPerInhabitantTravelerMonetaryAmount(),
+    ).toBeCloseTo(207669.792);
+  });
+
+  it("computes travel time saved per worker traveler monetary value for duration", () => {
+    expect(
+      travelRelatedImpactsService.getTravelTimeSavedPerWorkerTravelerMonetaryAmount(),
+    ).toBeCloseTo(40333.33);
   });
 
   it("computes avoided co2eq emissions with avoided kilometers for duration", () => {

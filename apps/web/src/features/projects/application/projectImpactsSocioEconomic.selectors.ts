@@ -191,21 +191,19 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
     }
 
     if (allowedCategories.includes("social_monetary")) {
-      const travelTimeSaved = socioEconomicImpacts.find(
+      const travelTimeSaved = socioEconomicImpacts.filter(
         (impact) => impact.impact === "travel_time_saved",
       );
 
-      if (travelTimeSaved) {
+      if (travelTimeSaved.length > 0) {
         socialMonetary.impacts.push({
           name: "travel_time_saved",
-          actors: [
-            {
-              value: travelTimeSaved.amount,
-              name: "french_society",
-            },
-          ],
+          actors: travelTimeSaved.map(({ amount, actor }) => ({
+            value: amount,
+            name: actor,
+          })),
         });
-        socialMonetary.total += travelTimeSaved.amount;
+        socialMonetary.total += sumList(travelTimeSaved.map(({ amount }) => amount));
       }
 
       const avoidedTrafficAccidents = socioEconomicImpacts.find(
