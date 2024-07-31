@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { ViewMode } from "../../../application/projectImpacts.reducer";
-import { ImpactDescriptionModalCategory } from "./modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "./impact-description-modals/ImpactDescriptionModalWizard";
 import AboutImpactsModal from "./AboutImpactsModal";
 import ImpactsChartsView from "./charts-view";
+import ImpactDescriptionModalWizard from "./impact-description-modals";
 import ImpactsListViewContainer from "./list-view";
-import ImpactDescriptionModalWizard from "./modals";
 
 type Props = {
   currentViewMode: ViewMode;

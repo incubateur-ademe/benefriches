@@ -6,8 +6,8 @@ import {
   SocioEconomicImpactName,
 } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactMainTitle from "@/features/projects/views/project-page/impacts/list-view/ImpactMainTitle";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/modals/ImpactDescriptionModalWizard";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 type Props = {

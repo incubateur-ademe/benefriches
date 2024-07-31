@@ -1,5 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { ImpactDescriptionModalCategory } from "./../modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import CostBenefitAnalysisCard from "./impacts/cost-benefit-analysis/CostBenefitAnalysisCard";
 import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanceImpactCard";
 import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";

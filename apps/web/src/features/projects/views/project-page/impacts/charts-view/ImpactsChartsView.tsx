@@ -1,4 +1,4 @@
-import { ImpactDescriptionModalCategory } from "./../modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactsChartsEconomicSection from "./ImpactsChartsEconomicSection";
 import ImpactsChartsEnvironmentSection from "./ImpactsChartsEnvironmentSection";
 import ImpactsChartsSocialSection from "./ImpactsChartsSocialSection";

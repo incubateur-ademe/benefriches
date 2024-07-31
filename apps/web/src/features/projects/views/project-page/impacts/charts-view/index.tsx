@@ -1,4 +1,4 @@
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactsChartsView from "./ImpactsChartsView";
 
 import { getProjectName } from "@/features/projects/application/projectImpacts.reducer";

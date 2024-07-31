@@ -3,7 +3,7 @@ import ImpactMainTitle from "../ImpactMainTitle";
 
 import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import { SocioEconomicDetailedImpact } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 
 type Props = {
   socioEconomicImpactTotal: SocioEconomicDetailedImpact["total"];

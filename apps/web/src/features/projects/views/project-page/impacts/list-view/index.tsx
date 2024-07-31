@@ -1,4 +1,4 @@
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactsListView from "./ImpactsListView";
 
 import { getEconomicBalanceProjectImpacts } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
