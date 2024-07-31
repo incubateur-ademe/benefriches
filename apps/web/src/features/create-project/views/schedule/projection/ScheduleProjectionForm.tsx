@@ -26,7 +26,6 @@ export type FormValues = {
 
 const getFormattedDuration = (startDate: Date, endDate: Date) => {
   const duration = intervalToDuration(interval(new Date(startDate), new Date(endDate)));
-  console.log(startDate, endDate, duration);
   return formatDuration(duration, {
     format: ["years", "months"],
     locale: fr,

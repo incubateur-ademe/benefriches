@@ -73,20 +73,22 @@ type Input = {
 };
 
 const getUrbanFreshnessInfluenceRadius = (
-  siteSurfaceArea: number,
+  publicGreenSpaceSurfaceRatio: number,
   publicGreenSpaceSurface: number,
 ) => {
-  const publicGreenSpaceSurfaceRatio = publicGreenSpaceSurface / siteSurfaceArea;
+  if (publicGreenSpaceSurface < 5000) {
+    return publicGreenSpaceSurfaceRatio < 95 ? 0 : 25;
+  }
 
-  const highRatio = siteSurfaceArea > 10000 ? 0.8 : 0.95;
-  const lowRatio = siteSurfaceArea > 10000 ? 0.3 : 0.5;
-  if (publicGreenSpaceSurfaceRatio > highRatio) {
-    return 500;
+  if (publicGreenSpaceSurface < 10000) {
+    return publicGreenSpaceSurfaceRatio < 50 ? 25 : 50;
   }
-  if (publicGreenSpaceSurfaceRatio > lowRatio) {
-    return 200;
+
+  if (publicGreenSpaceSurfaceRatio < 10) {
+    return 0;
   }
-  return 0;
+
+  return publicGreenSpaceSurfaceRatio < 75 ? 50 : 75;
 };
 
 export const getUrbanFreshnessRelatedImpacts = ({
@@ -96,16 +98,30 @@ export const getUrbanFreshnessRelatedImpacts = ({
   siteSurfaceArea,
   citySurfaceArea,
   cityPopulation,
-}: Input) => {
+}: Input): {
+  socioeconomic: MixedUseNeighbourhoodSocioEconomicSpecificImpact[];
+  avoidedAirConditioningCo2EqEmissions?: number;
+} => {
   const { buildingsFloorAreaDistribution, spacesDistribution } = features;
+  const publicGreenSpaceSurface = spacesDistribution.PUBLIC_GREEN_SPACES;
 
-  if (!spacesDistribution.PUBLIC_GREEN_SPACES || spacesDistribution.PUBLIC_GREEN_SPACES === 0) {
+  const hasPublicGreenSpaces = publicGreenSpaceSurface && publicGreenSpaceSurface !== 0;
+  if (!hasPublicGreenSpaces) {
+    return { socioeconomic: [] };
+  }
+
+  const publicGreenSpaceSurfaceRatio = (publicGreenSpaceSurface / siteSurfaceArea) * 100;
+
+  const minRatio = publicGreenSpaceSurface < 5000 ? 50 : publicGreenSpaceSurface < 10000 ? 10 : 0;
+  const noUrbanFreshnessImpact = publicGreenSpaceSurfaceRatio < minRatio;
+
+  if (noUrbanFreshnessImpact) {
     return { socioeconomic: [] };
   }
 
   const influenceRadius = getUrbanFreshnessInfluenceRadius(
-    siteSurfaceArea,
-    spacesDistribution.PUBLIC_GREEN_SPACES,
+    publicGreenSpaceSurfaceRatio,
+    publicGreenSpaceSurface,
   );
 
   const influenceAreaService = new GetInfluenceAreaValuesService(
@@ -157,6 +173,28 @@ export const getUrbanFreshnessRelatedImpacts = ({
   };
 };
 
+const getTravelRelatedImpactInfluenceRadius = (
+  tertiaryActivitySurface: number,
+  groundFloorRetailSurface: number,
+  publicCulturalAndSportsFacilitiesSurface: number,
+) => {
+  const economicActivitySurface = tertiaryActivitySurface + groundFloorRetailSurface;
+
+  if (economicActivitySurface === 0 && publicCulturalAndSportsFacilitiesSurface === 0) {
+    return 0;
+  }
+
+  if (economicActivitySurface < 151 && publicCulturalAndSportsFacilitiesSurface === 0) {
+    return 100;
+  }
+
+  if (economicActivitySurface < 300) {
+    return 200;
+  }
+
+  return publicCulturalAndSportsFacilitiesSurface === 0 ? 300 : 500;
+};
+
 export const getTravelRelatedImpacts = ({
   evaluationPeriodInYears,
   operationsFirstYear,
@@ -165,12 +203,27 @@ export const getTravelRelatedImpacts = ({
   citySurfaceArea,
   cityPopulation,
 }: Input) => {
-  const { buildingsFloorAreaDistribution } = features;
+  const { buildingsFloorAreaDistribution, spacesDistribution } = features;
+
+  const publicCulturalAndSportsFacilitiesSurface = [
+    spacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
+    spacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
+    spacesDistribution.PUBLIC_GREEN_SPACES ?? 0,
+    spacesDistribution.PUBLIC_PARKING_LOT ?? 0,
+    spacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
+  ].reduce((sum, value) => sum + value, 0);
+
+  const influenceRadius = getTravelRelatedImpactInfluenceRadius(
+    0,
+    buildingsFloorAreaDistribution.GROUND_FLOOR_RETAIL ?? 0,
+    publicCulturalAndSportsFacilitiesSurface,
+  );
 
   const influenceAreaService = new GetInfluenceAreaValuesService(
     siteSurfaceArea,
     citySurfaceArea,
     cityPopulation,
+    influenceRadius,
   );
 
   const co2eqMonetaryValueService = new CO2eqMonetaryValueService();
