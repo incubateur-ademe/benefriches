@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { useTour } from "@reactour/tour";
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 
@@ -10,6 +10,7 @@ import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   projectsList: ReconversionProjectsGroupedBySite;
+  children: ReactNode;
 };
 
 const MyProjectsTourGuideLauncher = () => {
@@ -22,7 +23,7 @@ const MyProjectsTourGuideLauncher = () => {
   return null;
 };
 
-function MyProjectsTourGuide({ projectsList }: Props) {
+function MyProjectsTourGuide({ projectsList, children }: Props) {
   const localStorageAppSettings = new LocalStorageAppSettings();
 
   const userFirstname = useAppSelector(selectCurrentUserFirstname);
@@ -39,7 +40,7 @@ function MyProjectsTourGuide({ projectsList }: Props) {
 
   const hasReconversionProjects = firstProjectGroup?.reconversionProjects.length;
 
-  const displayTour = firstProjectGroup && shouldDisplayMyProjectTourGuide;
+  const autoDisplayTour = firstProjectGroup && shouldDisplayMyProjectTourGuide;
 
   const steps: {
     selector?: string | Element;
@@ -78,14 +79,12 @@ function MyProjectsTourGuide({ projectsList }: Props) {
     },
   );
 
-  if (displayTour) {
-    return (
-      <TourGuideProvider steps={steps} onCloseTutorial={onCloseTutorial}>
-        <MyProjectsTourGuideLauncher />
-      </TourGuideProvider>
-    );
-  }
-  return null;
+  return (
+    <TourGuideProvider steps={steps} onCloseTutorial={onCloseTutorial}>
+      {autoDisplayTour && <MyProjectsTourGuideLauncher />}
+      {children}
+    </TourGuideProvider>
+  );
 }
 
 export default MyProjectsTourGuide;

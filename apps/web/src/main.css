@@ -34,6 +34,12 @@
   font-size: 0.875rem;
 }
 
+/* DSFR Customisation */
+
+.fr-btn {
+  border-radius: 4px;
+}
+
 /* Ajout d’un statut warning sur le même modèle que error et success pour les inputs */
 
 .fr-message--warning::before,

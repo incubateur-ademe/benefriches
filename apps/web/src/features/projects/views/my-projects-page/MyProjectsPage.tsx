@@ -36,20 +36,17 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
         );
       }
 
-      return (
-        <>
-          <MyProjectsTourGuide projectsList={projectsList} />
-          <ScenariiList projectsList={projectsList} />
-        </>
-      );
+      return <ScenariiList projectsList={projectsList} />;
     }
     return null;
   };
 
   return (
     <section className={fr.cx("fr-container", "fr-py-4w")}>
-      <MyProjectsPageHeader />
-      {getProjectListsPageContent()}
+      <MyProjectsTourGuide projectsList={projectsList}>
+        <MyProjectsPageHeader />
+        {getProjectListsPageContent()}
+      </MyProjectsTourGuide>
     </section>
   );
 }
