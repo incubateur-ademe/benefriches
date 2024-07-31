@@ -1,4 +1,4 @@
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import CostBenefitAnalysisListSection from "./sections/CostBenefitAnalysis";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";

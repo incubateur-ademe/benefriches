@@ -10,7 +10,7 @@ import {
   EconomicBalance,
   EconomicBalanceName,
 } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 import classNames from "@/shared/views/clsx";
 
 const getImpactItemOnClick = (

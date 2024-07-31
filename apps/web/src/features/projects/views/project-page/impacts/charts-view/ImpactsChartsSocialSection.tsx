@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import { ImpactDescriptionModalCategory } from "../modals/ImpactDescriptionModalWizard";
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactAreaChartCard from "./ImpactChartCard/ImpactAreaChartCard";
 
 import {
