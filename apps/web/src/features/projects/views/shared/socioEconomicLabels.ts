@@ -16,7 +16,7 @@ export const getActorLabel = (
     case "human_society":
       return "Société humaine";
     case "local_residents":
-      return "Habitants actuels";
+      return "Habitants";
     case "local_workers":
       return "Actifs";
     case "local_companies":
