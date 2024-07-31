@@ -322,7 +322,7 @@ const getEconomicBalanceInstallationLabel = (
     case "photovoltaic_other":
       return "⚡️ Autres frais d'installation des panneaux";
     case "mixed_use_neighbourhood_works":
-      return "🧱 Travaux de construction";
+      return "🏗 Travaux d'aménagement";
     case "mixed_use_neighbourhood_other":
       return " 🏘 Autres dépenses d'aménagement";
     case "installation_works":

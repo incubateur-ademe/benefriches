@@ -48,8 +48,8 @@ export const getLabelForMixedUseNeighbourhoodDevelopmentExpense = (
     case "technical_studies":
       return "📋 Études et honoraires techniques";
     case "development_works":
-      return "🛠 Travaux d'aménagement";
+      return "🏗 Travaux d'aménagement";
     case "other":
-      return "🚧 Autres dépenses d'aménagement";
+      return " 🏘 Autres dépenses d'aménagement";
   }
 };
