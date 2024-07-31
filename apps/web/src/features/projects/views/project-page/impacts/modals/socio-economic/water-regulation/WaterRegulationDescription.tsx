@@ -1,7 +1,7 @@
 import { typedObjectEntries } from "shared";
 import { isForest, isPrairie, isWetLand, SoilsDistribution } from "shared";
-import ModalTitleThree from "../shared/ModalTitleThree";
-import ModalTitleTwo from "../shared/ModalTitleTwo";
+import ModalTitleThree from "../../shared/ModalTitleThree";
+import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";

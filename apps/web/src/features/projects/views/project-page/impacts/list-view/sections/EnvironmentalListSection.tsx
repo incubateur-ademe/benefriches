@@ -24,27 +24,27 @@ const getImpactItemOnClick = (
   switch (itemName) {
     case "non_contaminated_surface_area":
       return () => {
-        openImpactDescriptionModal("environmental-non-contamined-surface");
+        openImpactDescriptionModal("environmental.non-contamined-surface");
       };
     case "permeable_surface_area":
       return () => {
-        openImpactDescriptionModal("environmental-permeable-surface");
+        openImpactDescriptionModal("environmental.permeable-surface");
       };
     case "mineral_soil":
       return () => {
-        openImpactDescriptionModal("environmental-minerale-surface");
+        openImpactDescriptionModal("environmental.minerale-surface");
       };
     case "green_soil":
       return () => {
-        openImpactDescriptionModal("environmental-green-surface");
+        openImpactDescriptionModal("environmental.green-surface");
       };
     case "avoided_co2_eq_emissions_with_production":
       return () => {
-        openImpactDescriptionModal("environmental-avoided-co2-renewable-energy");
+        openImpactDescriptionModal("environmental.avoided-co2-renewable-energy");
       };
     case "stored_co2_eq":
       return () => {
-        openImpactDescriptionModal("environmental-carbon-storage");
+        openImpactDescriptionModal("environmental.carbon-storage");
       };
     default:
       return undefined;

@@ -1,8 +1,8 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { ImpactDescriptionModalCategory } from "../../ImpactDescriptionModalWizard";
+import { EnvironmentalImpactDescriptionModalId } from "../types";
 
 type Props = {
-  onChangeModalCategoryOpened: (modalCategory: ImpactDescriptionModalCategory) => void;
+  onChangeModalCategoryOpened: (modalCategory: EnvironmentalImpactDescriptionModalId) => void;
 };
 
 const PermeableSurfaceDescription = ({ onChangeModalCategoryOpened }: Props) => {
@@ -13,7 +13,7 @@ const PermeableSurfaceDescription = ({ onChangeModalCategoryOpened }: Props) => 
         l'eau de pluie sur la parcelle. La surface perméable peut être{" "}
         <Button
           onClick={() => {
-            onChangeModalCategoryOpened("environmental-minerale-surface");
+            onChangeModalCategoryOpened("environmental.minerale-surface");
           }}
           priority="tertiary no outline"
         >
@@ -22,7 +22,7 @@ const PermeableSurfaceDescription = ({ onChangeModalCategoryOpened }: Props) => 
         ou{" "}
         <Button
           onClick={() => {
-            onChangeModalCategoryOpened("environmental-green-surface");
+            onChangeModalCategoryOpened("environmental.green-surface");
           }}
           priority="tertiary no outline"
         >
