@@ -188,11 +188,11 @@ const getTravelRelatedImpactInfluenceRadius = (
     return 100;
   }
 
-  if (economicActivitySurface < 300) {
+  if (economicActivitySurface < 300 && publicCulturalAndSportsFacilitiesSurface === 0) {
     return 200;
   }
 
-  return publicCulturalAndSportsFacilitiesSurface === 0 ? 300 : 500;
+  return 500;
 };
 
 export const getTravelRelatedImpacts = ({

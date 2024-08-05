@@ -457,15 +457,15 @@ describe("Mixed use neighbourhood specific impacts", () => {
         },
       });
 
-      const fourthLevelInfluenceRadiusImpact = getTravelRelatedImpacts({
+      const withPublicCulturalAndSportsFacilitiesSurface = getTravelRelatedImpacts({
         ...params,
         features: {
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
-            GROUND_FLOOR_RETAIL: 350,
+            GROUND_FLOOR_RETAIL: 250,
           },
           spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 150,
+            PUBLIC_GREEN_SPACES: 200,
           },
         },
       });
@@ -498,8 +498,8 @@ describe("Mixed use neighbourhood specific impacts", () => {
       ).toBe(true);
 
       expect(
-        thirdLevelInfluenceRadiusImpact.socioeconomic.every(({ amount, impact: smallImpact }) => {
-          const bigImpact = fourthLevelInfluenceRadiusImpact.socioeconomic.find(
+        secondLevelInfluenceRadiusImpact.socioeconomic.every(({ amount, impact: smallImpact }) => {
+          const bigImpact = withPublicCulturalAndSportsFacilitiesSurface.socioeconomic.find(
             ({ impact: bigImpactName }) => bigImpactName === smallImpact,
           );
           return bigImpact && bigImpact.amount > amount;
