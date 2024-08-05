@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "license": "MIT",
   "type": "module",
-  "packageManager": "pnpm@9.1.1",
+  "packageManager": "pnpm@9.6.0",
   "engines": {
     "node": "20",
-    "pnpm": "9.1.1"
+    "pnpm": "9.6.0"
   },
   "scripts": {
     "setup-env-vars": "export $(cat .env | grep 'WEBAPP_' | xargs) && chmod +x scripts/generateEnvVarsJsFile.sh && bash scripts/generateEnvVarsJsFile.sh public/js/env-vars.js",
