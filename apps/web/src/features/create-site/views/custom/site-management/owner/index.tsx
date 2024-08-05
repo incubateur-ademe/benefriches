@@ -31,7 +31,7 @@ const convertFormValuesForStore = (
         structureType:
           currentUserStructure?.type === "local_authority"
             ? (currentUserStructure.activity as LocalAutorityStructureType)
-            : currentUserStructure?.type ?? "company",
+            : (currentUserStructure?.type ?? "company"),
       };
     case "local_or_regional_authority": {
       const localAuthority = siteLocalAuthorities.find(
