@@ -1,4 +1,4 @@
-import { GetCityPopulationAndSurfaceAreaUseCase } from "src/location-features/core/usecases/getCityPopulationAndSurfaceArea.usecase";
+import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { sumListWithKey } from "src/shared-kernel/sum-list/sumList";
 import { UseCase } from "src/shared-kernel/usecase";
@@ -51,6 +51,7 @@ import {
 export type SiteImpactsDataView = {
   id: string;
   name: string;
+  isFriche: boolean;
   addressCityCode: string;
   addressLabel: string;
   contaminatedSoilSurface?: number;
@@ -177,7 +178,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     private readonly siteRepository: SiteImpactsRepository,
     private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
     private readonly dateProvider: DateProvider,
-    private readonly getCityPopulationAndSurfaceAreaUseCase: GetCityPopulationAndSurfaceAreaUseCase,
+    private readonly getCityRelatedDataService: GetCityRelatedDataService,
   ) {}
 
   async execute({ reconversionProjectId, evaluationPeriodInYears }: Request): Promise<Result> {
@@ -210,7 +211,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       operationsFirstYear,
       siteSurfaceArea: relatedSite.surfaceArea,
       siteCityCode: relatedSite.addressCityCode,
-      getCityPopulationAndSurfaceAreaUseCase: this.getCityPopulationAndSurfaceAreaUseCase,
+      siteIsFriche: relatedSite.isFriche,
+      getCityRelatedDataService: this.getCityRelatedDataService,
     });
 
     const socioeconomic = [

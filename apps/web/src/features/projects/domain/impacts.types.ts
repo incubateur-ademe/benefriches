@@ -101,6 +101,18 @@ type AvoidedAirPollutionImpact = BaseEconomicImpact & {
   impact: "avoided_air_pollution";
 };
 
+type LocalHousingPropertyValueIncreaseImpact = BaseEconomicImpact & {
+  impact: "local_property_value_increase";
+  impactCategory: "economic_indirect";
+  actor: "local_residents";
+};
+
+type LocalTransferDutiesIncreaseImpact = BaseEconomicImpact & {
+  impact: "local_transfer_duties_increase";
+  impactCategory: "economic_indirect";
+  actor: "community";
+};
+
 export type WaterRegulationImpact = BaseEconomicImpact & {
   actor: "community";
   impactCategory: "environmental_monetary";
@@ -230,6 +242,8 @@ export type ReconversionProjectImpacts = {
       | AvoidedTrafficCO2EqEmissions
       | AvoidedAirConditioningCO2EqEmissions
       | AvoidedAirPollutionImpact
+      | LocalHousingPropertyValueIncreaseImpact
+      | LocalTransferDutiesIncreaseImpact
     )[];
   };
   avoidedVehiculeKilometers?: number;

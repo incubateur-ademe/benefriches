@@ -359,6 +359,18 @@ export const mixedUseNeighbourhoodProjectImpactMock = {
             },
           ],
         },
+        {
+          amount: 150000,
+          impact: "local_property_value_increase",
+          impactCategory: "economic_indirect",
+          actor: "local_residents",
+        },
+        {
+          amount: 5000,
+          impact: "local_transfer_duties_increase",
+          impactCategory: "economic_indirect",
+          actor: "community",
+        },
       ],
     },
     avoidedVehiculeKilometers: 150000,
