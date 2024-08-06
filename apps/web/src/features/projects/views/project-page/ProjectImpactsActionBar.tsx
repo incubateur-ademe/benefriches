@@ -18,6 +18,7 @@ type Props = {
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
   projectName: string;
+  projectId: string;
   siteName: string;
   isExpressProject: boolean;
 };
@@ -30,6 +31,7 @@ function ProjectImpactsActionBar({
   evaluationPeriod,
   onEvaluationPeriodChange,
   projectName,
+  projectId,
   siteName,
   isExpressProject,
 }: Props) {
@@ -78,6 +80,7 @@ function ProjectImpactsActionBar({
         >
           <ProjectsImpactsPageHeader
             projectName={projectName}
+            projectId={projectId}
             siteName={siteName}
             isExpressProject={isExpressProject}
             isSmall

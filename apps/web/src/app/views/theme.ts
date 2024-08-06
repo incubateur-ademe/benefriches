@@ -46,12 +46,11 @@ export default {
       },
       warning: "#B34000",
       impacts: {
-        title: "var(--impacts-title-color)",
-        main: "var(--impacts-main-color)",
-        dark: "var(--impacts-dark-color)",
+        main: "#EEEEEE",
+        dark: "#E5E5E5",
         positive: {
           main: "#18753C",
-          light: "#51DB86",
+          light: "#B8FEC9",
         },
         neutral: {
           main: "#161616",
@@ -59,7 +58,7 @@ export default {
         },
         negative: {
           main: "#CE0500",
-          light: "#FF918F",
+          light: "#FFE9E9",
         },
       },
       // can be used with classes tw-soils-buildings, tw-soils-impermeable-soils...

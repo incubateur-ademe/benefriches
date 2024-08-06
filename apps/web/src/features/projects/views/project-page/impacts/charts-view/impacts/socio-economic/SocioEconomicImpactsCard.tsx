@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
-import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
+import ImpactsChartsSection from "../../ImpactsChartsSection";
 import SocioEconomicImpactsByActorChart from "./SocioEconomicImpactsByActorChart";
 import SocioEconomicImpactsByCategoryChart from "./SocioEconomicImpactsByCategoryChart";
 
@@ -54,7 +54,7 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, onClick }: Props) {
   const [currentChartViewMode, setChartViewMode] = useState<ChartViewMode>("by_category");
 
   return (
-    <ImpactCard onClick={onClick} title="Impacts socio-économiques">
+    <ImpactsChartsSection onClick={onClick} title="Impacts socio-économiques">
       {currentChartViewMode === "by_category" ? (
         <SocioEconomicImpactsByCategoryChart
           socioEconomicImpacts={socioEconomicImpacts.byCategory}
@@ -73,7 +73,7 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, onClick }: Props) {
           setChartViewMode={setChartViewMode}
         />
       </div>
-    </ImpactCard>
+    </ImpactsChartsSection>
   );
 }
 

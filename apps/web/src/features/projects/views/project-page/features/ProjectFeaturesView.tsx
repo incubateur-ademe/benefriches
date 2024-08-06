@@ -45,8 +45,7 @@ function Section({ children }: { children: ReactNode }) {
 
 export default function ProjectFeaturesView({ projectData }: Props) {
   return (
-    <section className="fr-container tw-max-w-4xl">
-      <h2>Caractéristiques du projet</h2>
+    <>
       <Section>
         <SectionTitle>🏗 Type de projet</SectionTitle>
         <DataLine
@@ -287,6 +286,6 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           value={projectData.description || "Pas de description"}
         />
       </Section>
-    </section>
+    </>
   );
 }

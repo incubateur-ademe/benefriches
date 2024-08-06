@@ -3,6 +3,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { SoilType } from "shared";
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactAreaChartCard from "./ImpactChartCard/ImpactAreaChartCard";
+import ImpactsChartsSection from "./ImpactsChartsSection";
 
 import {
   EnvironmentalImpact,
@@ -99,15 +100,12 @@ const ImpactsChartsEnvironmentSection = ({
   const soilsCarbonStorage = impacts.find(({ name }) => name === "soils_carbon_storage");
 
   return (
-    <section className={fr.cx("fr-pb-8v")}>
-      <h3
-        className="tw-cursor-pointer hover:tw-underline"
-        onClick={() => {
-          openImpactDescriptionModal("environmental");
-        }}
-      >
-        Impacts environnementaux
-      </h3>
+    <ImpactsChartsSection
+      onClick={() => {
+        openImpactDescriptionModal("environmental");
+      }}
+      title="Impacts environnementaux"
+    >
       <Row>
         {soilsCarbonStorage && (
           <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
@@ -144,7 +142,7 @@ const ImpactsChartsEnvironmentSection = ({
           </div>
         ))}
       </Row>
-    </section>
+    </ImpactsChartsSection>
   );
 };
 

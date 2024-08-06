@@ -40,6 +40,10 @@
   border-radius: 4px;
 }
 
+.fr-modal__body {
+  border-radius: 16px;
+}
+
 /* Ajout d’un statut warning sur le même modèle que error et success pour les inputs */
 
 .fr-message--warning::before,
@@ -63,29 +67,7 @@
 
 /* Page Impacts: couleurs par type de projet */
 
-:root {
-  --impacts-title-color: #0c5399;
-  --impacts-main-color: #ecf5fd;
-  --impacts-dark-color: #d9ebfc;
-}
-
-#project-impacts-page.mixed-use-neighbourhood {
-  --impacts-title-color: #931595;
-  --impacts-main-color: #fdedfd;
-  --impacts-dark-color: #ffe0ff;
-
-  --highcharts-color-0: #e221e5;
-  --highcharts-color-1: #eb64ed;
-  --highcharts-color-2: #ef85f1;
-  --highcharts-color-3: #f3a6f5;
-  --highcharts-color-4: #c01cc3;
-  --highcharts-color-5: #9e17a0;
-}
-#project-impacts-page.photovoltaic {
-  --impacts-title-color: #0c5399;
-  --impacts-main-color: #ecf5fd;
-  --impacts-dark-color: #d9ebfc;
-
+#project-impacts-page {
   --highcharts-color-0: #137feb;
   --highcharts-color-1: #5aa5f1;
   --highcharts-color-2: #7db9f4;
