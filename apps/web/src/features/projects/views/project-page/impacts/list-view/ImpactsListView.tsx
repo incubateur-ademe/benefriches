@@ -1,5 +1,4 @@
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
-import CostBenefitAnalysisListSection from "./sections/CostBenefitAnalysis";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";
 import SocialListSection from "./sections/SocialListSection";
@@ -26,22 +25,12 @@ const ImpactsListView = ({
   openImpactDescriptionModal,
 }: Props) => {
   return (
-    <div className="tw-max-w-4xl tw-mx-auto">
-      {(economicBalance.economicBalance.length !== 0 || socioEconomicImpacts.total !== 0) && (
-        <>
-          <CostBenefitAnalysisListSection
-            openImpactDescriptionModal={openImpactDescriptionModal}
-            economicBalanceImpactTotal={economicBalance.total}
-            socioEconomicImpactTotal={socioEconomicImpacts.total}
-            economicBalanceBearer={economicBalance.bearer}
-          />
-          {economicBalance.total !== 0 && (
-            <EconomicBalanceListSection
-              openImpactDescriptionModal={openImpactDescriptionModal}
-              impact={economicBalance}
-            />
-          )}
-        </>
+    <div className="tw-max-w-4xl tw-mx-auto tw-pb-8">
+      {economicBalance.economicBalance.length !== 0 && (
+        <EconomicBalanceListSection
+          openImpactDescriptionModal={openImpactDescriptionModal}
+          impact={economicBalance}
+        />
       )}
 
       {socioEconomicImpacts.total !== 0 && (

@@ -2,9 +2,9 @@ import {
   getEnvironmentalDetailsImpactLabel,
   getEnvironmentalImpactLabel,
 } from "../../getImpactLabel";
-import ImpactItem from "../ImpactItem";
-import ImpactMainTitle from "../ImpactMainTitle";
-import ImpactSectionHeader from "../ImpactSectionHeader";
+import ImpactItemDetails from "../ImpactItemDetails";
+import ImpactItemGroup from "../ImpactItemGroup";
+import ImpactSection from "../ImpactSection";
 
 import {
   EnvironmentalImpact,
@@ -61,59 +61,63 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
   const soilsImpacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.soils.includes(name));
 
   return (
-    <section className="fr-mb-5w">
-      <ImpactMainTitle title="Impacts environnementaux" />
+    <ImpactSection isMain title="Impacts environnementaux">
       {co2Impacts.length > 0 && (
-        <>
-          <ImpactSectionHeader title="Impacts sur le CO2-eq" />
+        <ImpactSection title="Impacts sur le CO2-eq">
           {co2Impacts.map(({ name, impact, type }) => (
-            <ImpactItem
+            <ImpactItemGroup
               key={name}
-              label={getEnvironmentalImpactLabel(name)}
-              value={impact.difference}
-              isTotal
               onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              data={
-                impact.details
-                  ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                      label: getEnvironmentalDetailsImpactLabel(name, detailsName),
-                      value: detailsImpact.difference,
-                      onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
-                    }))
-                  : undefined
-              }
-              type={type}
-            />
+            >
+              <ImpactItemDetails
+                key={name}
+                label={getEnvironmentalImpactLabel(name)}
+                value={impact.difference}
+                isTotal
+                onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
+                data={
+                  impact.details
+                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
+                        label: getEnvironmentalDetailsImpactLabel(name, detailsName),
+                        value: detailsImpact.difference,
+                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                      }))
+                    : undefined
+                }
+                type={type}
+              />
+            </ImpactItemGroup>
           ))}
-        </>
+        </ImpactSection>
       )}
 
       {soilsImpacts.length > 0 && (
-        <>
-          <ImpactSectionHeader title="Impacts sur  les sols" />
-
+        <ImpactSection title="Impacts sur  les sols">
           {soilsImpacts.map(({ name, impact, type }) => (
-            <ImpactItem
+            <ImpactItemGroup
               key={name}
-              isTotal
-              label={getEnvironmentalImpactLabel(name)}
-              value={impact.difference}
               onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              data={
-                impact.details
-                  ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                      label: getEnvironmentalDetailsImpactLabel(name, detailsName),
-                      value: detailsImpact.difference,
-                      onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
-                    }))
-                  : undefined
-              }
-              type={type}
-            />
+            >
+              <ImpactItemDetails
+                isTotal
+                label={getEnvironmentalImpactLabel(name)}
+                value={impact.difference}
+                data={
+                  impact.details
+                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
+                        label: getEnvironmentalDetailsImpactLabel(name, detailsName),
+                        value: detailsImpact.difference,
+                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                      }))
+                    : undefined
+                }
+                type={type}
+              />
+            </ImpactItemGroup>
           ))}
-        </>
+        </ImpactSection>
       )}
-    </section>
+    </ImpactSection>
   );
 };
 
