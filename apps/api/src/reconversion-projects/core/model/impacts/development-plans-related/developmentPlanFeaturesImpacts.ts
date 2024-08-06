@@ -1,4 +1,4 @@
-import { GetCityPopulationAndSurfaceAreaUseCase } from "src/location-features/core/usecases/getCityPopulationAndSurfaceArea.usecase";
+import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DevelopmentPlan } from "../../reconversionProject";
 import {
   getMixedUseNeighbourhoodSpecificImpacts,
@@ -29,8 +29,9 @@ type Input = {
   evaluationPeriodInYears: number;
   operationsFirstYear: number;
   siteSurfaceArea: number;
+  siteIsFriche: boolean;
   siteCityCode: string;
-  getCityPopulationAndSurfaceAreaUseCase: GetCityPopulationAndSurfaceAreaUseCase;
+  getCityRelatedDataService: GetCityRelatedDataService;
 };
 
 export const getDevelopmentPlanRelatedImpacts = async ({
@@ -40,7 +41,8 @@ export const getDevelopmentPlanRelatedImpacts = async ({
   operationsFirstYear,
   siteSurfaceArea,
   siteCityCode,
-  getCityPopulationAndSurfaceAreaUseCase,
+  siteIsFriche,
+  getCityRelatedDataService,
 }: Input) => {
   switch (developmentPlanType) {
     case "PHOTOVOLTAIC_POWER_PLANT": {
@@ -54,15 +56,14 @@ export const getDevelopmentPlanRelatedImpacts = async ({
     case "MIXED_USE_NEIGHBOURHOOD": {
       const features = developmentPlanFeatures as MixedUseNeighbourhoodFeatures;
 
-      const city = await getCityPopulationAndSurfaceAreaUseCase.execute({ cityCode: siteCityCode });
-
-      return getMixedUseNeighbourhoodSpecificImpacts({
+      return await getMixedUseNeighbourhoodSpecificImpacts({
         evaluationPeriodInYears,
         operationsFirstYear,
         features,
         siteSurfaceArea,
-        citySurfaceArea: city.squareMetersSurfaceArea,
-        cityPopulation: city.population,
+        siteIsFriche,
+        siteCityCode,
+        getCityRelatedDataService,
       });
     }
     default:

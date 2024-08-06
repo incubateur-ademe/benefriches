@@ -1,6 +1,7 @@
 import { v4 as uuid } from "uuid";
 import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
-import { GetCityPopulationAndSurfaceAreaUseCase } from "src/location-features/core/usecases/getCityPopulationAndSurfaceArea.usecase";
+import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
+import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { InMemoryReconversionProjectImpactsRepository } from "src/reconversion-projects/adapters/secondary/reconversion-project-impacts-repository/InMemoryReconversionProjectImpactsRepository";
 import { InMemorySiteImpactsRepository } from "src/reconversion-projects/adapters/secondary/site-impacts-repository/InMemorySiteImpactsRepository";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
@@ -31,7 +32,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
-        new GetCityPopulationAndSurfaceAreaUseCase(new MockLocalDataInseeService()),
+        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
       );
 
       const reconversionProjectId = uuid();
@@ -64,7 +65,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
-        new GetCityPopulationAndSurfaceAreaUseCase(new MockLocalDataInseeService()),
+        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
       );
 
       const evaluationPeriodInYears = 10;
@@ -129,6 +130,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       id: reconversionProjectImpactDataView.relatedSiteId,
       contaminatedSoilSurface: 20000,
       name: "My base site",
+      isFriche: true,
       surfaceArea: 50000,
       soilsDistribution: {
         ...reconversionProjectImpactDataView.soilsDistribution,
@@ -165,7 +167,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteRepository,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
-        new GetCityPopulationAndSurfaceAreaUseCase(new MockLocalDataInseeService()),
+        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
       );
       const result = await usecase.execute({
         reconversionProjectId: reconversionProjectImpactDataView.id,

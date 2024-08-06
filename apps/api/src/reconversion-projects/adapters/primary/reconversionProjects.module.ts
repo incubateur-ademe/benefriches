@@ -5,8 +5,10 @@ import { SqlCarbonStorageRepository } from "src/carbon-storage/adapters/secondar
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
 import { LocationFeaturesModule } from "src/location-features/adapters/primary/locationFeatures.module";
 import { GeoApiGouvService } from "src/location-features/adapters/secondary/city-data-provider/GeoApiGouvService";
+import { DV3FApiGouvService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService";
 import { CityDataProvider } from "src/location-features/core/gateways/CityDataProvider";
-import { GetCityPopulationAndSurfaceAreaUseCase } from "src/location-features/core/usecases/getCityPopulationAndSurfaceArea.usecase";
+import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
+import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { CreateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
 import {
@@ -70,10 +72,12 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       inject: [SqlReconversionProjectsListRepository],
     },
     {
-      provide: GetCityPopulationAndSurfaceAreaUseCase,
-      useFactory: (cityDataProvider: CityDataProvider) =>
-        new GetCityPopulationAndSurfaceAreaUseCase(cityDataProvider),
-      inject: [GeoApiGouvService],
+      provide: GetCityRelatedDataService,
+      useFactory: (
+        cityDataProvider: CityDataProvider,
+        cityPropertyValueProvider: CityPropertyValueProvider,
+      ) => new GetCityRelatedDataService(cityDataProvider, cityPropertyValueProvider),
+      inject: [GeoApiGouvService, DV3FApiGouvService],
     },
     {
       provide: ComputeReconversionProjectImpactsUseCase,
@@ -82,14 +86,14 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         siteRepo: SqlSiteImpactsRepository,
         getCityCarbonStoragePerSoilsCategoryUseCase: GetCityCarbonStoragePerSoilsCategoryUseCase,
         dateProvider: IDateProvider,
-        getCityPopulationAndSurfaceAreaUseCase: GetCityPopulationAndSurfaceAreaUseCase,
+        getCityRelatedDataService: GetCityRelatedDataService,
       ) {
         return new ComputeReconversionProjectImpactsUseCase(
           reconversionProjectRepo,
           siteRepo,
           getCityCarbonStoragePerSoilsCategoryUseCase,
           dateProvider,
-          getCityPopulationAndSurfaceAreaUseCase,
+          getCityRelatedDataService,
         );
       },
       inject: [
@@ -97,7 +101,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         SqlSiteImpactsRepository,
         GetCityCarbonStoragePerSoilsCategoryUseCase,
         DateProvider,
-        GetCityPopulationAndSurfaceAreaUseCase,
+        GetCityRelatedDataService,
       ],
     },
     {
@@ -117,6 +121,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     DateProvider,
     SqlCarbonStorageRepository,
     GeoApiGouvService,
+    DV3FApiGouvService,
   ],
 })
 export class ReconversionProjectsModule {}

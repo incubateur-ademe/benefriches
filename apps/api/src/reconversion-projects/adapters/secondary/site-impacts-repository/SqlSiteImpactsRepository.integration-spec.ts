@@ -75,6 +75,7 @@ describe("SqlSiteRepository integration", () => {
       expect(result).toEqual<Required<SiteImpactsDataView>>({
         id: siteId,
         name: "Site 123",
+        isFriche: true,
         addressCityCode: "01234",
         addressLabel: "1 rue de la paix",
         contaminatedSoilSurface: 230,
@@ -104,7 +105,7 @@ describe("SqlSiteRepository integration", () => {
         owner_name: "Owner name",
         owner_structure_type: "company",
         created_at: new Date(),
-        is_friche: true,
+        is_friche: false,
       });
 
       await sqlConnection("site_soils_distributions").insert([
@@ -127,6 +128,7 @@ describe("SqlSiteRepository integration", () => {
       expect(result).toEqual<SiteImpactsDataView>({
         id: siteId,
         name: "Site 123",
+        isFriche: false,
         addressCityCode: "01234",
         addressLabel: "1 rue de la paix",
         surfaceArea: 14000,

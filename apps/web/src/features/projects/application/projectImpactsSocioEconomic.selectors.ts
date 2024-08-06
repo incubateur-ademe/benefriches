@@ -57,7 +57,9 @@ type SocioEconomicMainImpactName =
   | "avoided_air_conditioning_co2_eq_emissions"
   | "avoided_air_pollution"
   | "taxes_income"
+  | "local_property_value_increase"
   | "property_transfer_duties_income"
+  | "local_transfer_duties_increase"
   | "co2_benefit_monetary"
   | "ecosystem_services"
   | "water_regulation";
@@ -155,6 +157,36 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
           })),
         });
         economicIndirect.total += sumList(taxesIncomeImpacts.map(({ amount }) => amount));
+      }
+
+      const localPropertyValueIncrease = socioEconomicImpacts.filter(
+        (impact) => impact.impact === "local_property_value_increase",
+      );
+      if (localPropertyValueIncrease.length > 0) {
+        economicIndirect.impacts.push({
+          name: "local_property_value_increase",
+          actors: localPropertyValueIncrease.map(({ amount, actor }) => ({
+            value: amount,
+            name: actor,
+          })),
+        });
+        economicIndirect.total += sumList(localPropertyValueIncrease.map(({ amount }) => amount));
+      }
+
+      const localPropertyTransferDutiesIncrease = socioEconomicImpacts.filter(
+        (impact) => impact.impact === "local_transfer_duties_increase",
+      );
+      if (localPropertyTransferDutiesIncrease.length > 0) {
+        economicIndirect.impacts.push({
+          name: "local_transfer_duties_increase",
+          actors: localPropertyTransferDutiesIncrease.map(({ amount, actor }) => ({
+            value: amount,
+            name: actor,
+          })),
+        });
+        economicIndirect.total += sumList(
+          localPropertyTransferDutiesIncrease.map(({ amount }) => amount),
+        );
       }
 
       const avoidedCarRelatedExpenses = socioEconomicImpacts.filter(

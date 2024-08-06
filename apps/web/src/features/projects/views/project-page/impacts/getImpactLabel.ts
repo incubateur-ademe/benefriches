@@ -154,6 +154,10 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🏛 Recettes fiscales";
     case "property_transfer_duties_income":
       return "🏛 Droits de mutation sur la transaction foncière";
+    case "local_property_value_increase":
+      return "🏡 Valeur patrimoniale des bâtiments alentour";
+    case "local_transfer_duties_increase":
+      return "🏛 Droits de mutation sur les ventes immobilières alentour";
     /// Quartier
     case "avoided_car_related_expenses":
       return "🚙 Dépenses automobiles évitées";

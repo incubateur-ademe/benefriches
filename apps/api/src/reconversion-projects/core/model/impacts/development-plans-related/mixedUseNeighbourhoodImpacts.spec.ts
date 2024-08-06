@@ -1,4 +1,8 @@
+import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
+import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
+import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import {
+  getLocalPropertyValueIncreaseRelatedImpacts,
   getTravelRelatedImpacts,
   getUrbanFreshnessRelatedImpacts,
 } from "./mixedUseNeighbourhoodImpacts";
@@ -505,6 +509,56 @@ describe("Mixed use neighbourhood specific impacts", () => {
           return bigImpact && bigImpact.amount > amount;
         }),
       ).toBe(true);
+    });
+  });
+
+  describe("Local property value increase related impacts", () => {
+    it("returns socioeconomic impacts related to local property value increase for friche", async () => {
+      const result = await getLocalPropertyValueIncreaseRelatedImpacts({
+        evaluationPeriodInYears: 10,
+        siteSurfaceArea: 15000,
+        cityPopulation: 18000,
+        citySurfaceArea: 15000000,
+        siteIsFriche: true,
+        siteCityCode: "38522",
+        getCityRelatedDataService: new GetCityRelatedDataService(
+          new MockLocalDataInseeService(),
+          new MockDV3FApiService(),
+        ),
+      });
+
+      const expected = [
+        {
+          actor: "local_residents",
+          amount: expect.any(Number) as number,
+          impact: "local_property_value_increase",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "community",
+          amount: expect.any(Number) as number,
+          impact: "local_transfer_duties_increase",
+          impactCategory: "economic_indirect",
+        },
+      ];
+      expect(result).toEqual(expected);
+    });
+
+    it("returns no impacts related to local property value increase for non friche", async () => {
+      const result = await getLocalPropertyValueIncreaseRelatedImpacts({
+        evaluationPeriodInYears: 10,
+        siteSurfaceArea: 15000,
+        cityPopulation: 18000,
+        citySurfaceArea: 15000000,
+        siteIsFriche: false,
+        siteCityCode: "38522",
+        getCityRelatedDataService: new GetCityRelatedDataService(
+          new MockLocalDataInseeService(),
+          new MockDV3FApiService(),
+        ),
+      });
+
+      expect(result).toEqual([]);
     });
   });
 });
