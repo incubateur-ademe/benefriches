@@ -21,12 +21,7 @@ const ImpactsChartsSection = ({ title, children, onClick }: Props) => {
         "tw-h-full",
         "tw-bg-white",
         "dark:tw-bg-black",
-        onClick && [
-          "tw-cursor-pointer",
-          "hover:tw-underline",
-          "hover:tw-bg-impacts-main",
-          "dark:hover:tw-bg-dsfr-contrastGrey",
-        ],
+        onClick && ["tw-cursor-pointer", "hover:tw-border-solid", "hover:tw-border"],
       )}
       onClick={onClick}
     >
