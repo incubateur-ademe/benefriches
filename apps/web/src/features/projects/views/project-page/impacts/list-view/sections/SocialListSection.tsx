@@ -1,8 +1,8 @@
 import { getSocialImpactLabel } from "../../getImpactLabel";
 import { ImpactDescriptionModalCategory } from "../../impact-description-modals/ImpactDescriptionModalWizard";
-import ImpactItem from "../ImpactItem";
-import ImpactMainTitle from "../ImpactMainTitle";
-import ImpactSectionHeader from "../ImpactSectionHeader";
+import ImpactItemDetails from "../ImpactItemDetails";
+import ImpactItemGroup from "../ImpactItemGroup";
+import ImpactSection from "../ImpactSection";
 
 import {
   SocialImpact,
@@ -55,91 +55,94 @@ const SocialListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
   );
 
   return (
-    <section>
-      <ImpactMainTitle
-        title="Impacts sociaux"
-        onClick={() => {
-          openImpactDescriptionModal("social");
-        }}
-      />
+    <ImpactSection
+      title="Impacts sociaux"
+      isMain
+      onClick={() => {
+        openImpactDescriptionModal("social");
+      }}
+    >
       {jobsImpacts.length > 0 && (
-        <>
-          <ImpactSectionHeader title="Impacts sur l'emploi" />
-
+        <ImpactSection title="Impacts sur l'emploi">
           {jobsImpacts.map(({ name, impact, type }) => (
-            <ImpactItem
+            <ImpactItemGroup
               key={name}
-              isTotal
-              label={getSocialImpactLabel(name)}
-              value={impact.difference}
               onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              data={
-                impact.details
-                  ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                      label: getSocialImpactLabel(detailsName),
-                      value: detailsImpact.difference,
-                      onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
-                    }))
-                  : undefined
-              }
-              type={type}
-            />
+            >
+              <ImpactItemDetails
+                isTotal
+                label={getSocialImpactLabel(name)}
+                value={impact.difference}
+                data={
+                  impact.details
+                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
+                        label: getSocialImpactLabel(detailsName),
+                        value: detailsImpact.difference,
+                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                      }))
+                    : undefined
+                }
+                type={type}
+              />
+            </ImpactItemGroup>
           ))}
-        </>
+        </ImpactSection>
       )}
 
       {residentsImpacts.length > 0 && (
-        <>
-          <ImpactSectionHeader title="Impacts sur les riverains" />
-
+        <ImpactSection title="Impacts sur les riverains">
           {residentsImpacts.map(({ name, impact, type }) => (
-            <ImpactItem
+            <ImpactItemGroup
               key={name}
-              isTotal
-              label={getSocialImpactLabel(name)}
-              value={impact.difference}
               onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              data={
-                impact.details
-                  ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                      label: getSocialImpactLabel(detailsName),
-                      value: detailsImpact.difference,
-                      onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
-                    }))
-                  : undefined
-              }
-              type={type}
-            />
+            >
+              <ImpactItemDetails
+                isTotal
+                label={getSocialImpactLabel(name)}
+                value={impact.difference}
+                data={
+                  impact.details
+                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
+                        label: getSocialImpactLabel(detailsName),
+                        value: detailsImpact.difference,
+                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                      }))
+                    : undefined
+                }
+                type={type}
+              />
+            </ImpactItemGroup>
           ))}
-        </>
+        </ImpactSection>
       )}
 
       {frenchSocietyImpacts.length > 0 && (
-        <>
-          <ImpactSectionHeader title="Impacts sur la société française" />
-
+        <ImpactSection title="Impacts sur la société française">
           {frenchSocietyImpacts.map(({ name, impact, type }) => (
-            <ImpactItem
+            <ImpactItemGroup
               key={name}
-              isTotal
-              label={getSocialImpactLabel(name)}
-              value={impact.difference}
               onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              data={
-                impact.details
-                  ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
-                      label: getSocialImpactLabel(detailsName),
-                      value: detailsImpact.difference,
-                      onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
-                    }))
-                  : undefined
-              }
-              type={type}
-            />
+            >
+              <ImpactItemDetails
+                isTotal
+                label={getSocialImpactLabel(name)}
+                value={impact.difference}
+                data={
+                  impact.details
+                    ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
+                        label: getSocialImpactLabel(detailsName),
+                        value: detailsImpact.difference,
+                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                      }))
+                    : undefined
+                }
+                type={type}
+              />
+            </ImpactItemGroup>
           ))}
-        </>
+        </ImpactSection>
       )}
-    </section>
+    </ImpactSection>
   );
 };
 

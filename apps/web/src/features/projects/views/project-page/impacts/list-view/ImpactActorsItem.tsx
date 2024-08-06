@@ -1,8 +1,5 @@
-import ImpactItem from "./ImpactItem";
+import ImpactItem from "./ImpactItemDetails";
 import ImpactItemGroup from "./ImpactItemGroup";
-import ImpactRowValue from "./ImpactRowValue";
-
-import classNames from "@/shared/views/clsx";
 
 type Props = {
   label: string;
@@ -15,16 +12,26 @@ type Props = {
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
 };
 
-const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => (
-  <ImpactItemGroup>
-    <ImpactRowValue onClick={onClick}>
-      <span className={classNames("tw-pt-4", "tw-font-bold")}>{label}</span>
-    </ImpactRowValue>
+const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
+  const [firstActor, ...othersActors] = actors;
+  return (
+    <ImpactItemGroup onClick={onClick}>
+      {firstActor && (
+        <ImpactItem
+          value={firstActor.value}
+          label={label}
+          actor={firstActor.label}
+          data={firstActor.details}
+          type={type}
+          isTotal
+        />
+      )}
 
-    {actors.map(({ label: actor, value, details = [] }) => (
-      <ImpactItem label={actor} value={value} data={details} type={type} key={actor} />
-    ))}
-  </ImpactItemGroup>
-);
+      {othersActors.map(({ label: actor, value, details = [] }) => (
+        <ImpactItem type={type} key={actor} value={value} actor={actor} data={details} isTotal />
+      ))}
+    </ImpactItemGroup>
+  );
+};
 
 export default ImpactActorsItem;

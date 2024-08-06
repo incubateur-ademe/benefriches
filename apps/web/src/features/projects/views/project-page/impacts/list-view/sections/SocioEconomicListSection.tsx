@@ -1,5 +1,5 @@
 import ImpactActorsItem from "../ImpactActorsItem";
-import ImpactSectionHeader from "../ImpactSectionHeader";
+import ImpactSection from "../ImpactSection";
 
 import {
   SocioEconomicDetailedImpact,
@@ -7,7 +7,6 @@ import {
 } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
-import ImpactMainTitle from "@/features/projects/views/project-page/impacts/list-view/ImpactMainTitle";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 type Props = {
@@ -53,22 +52,20 @@ const SocioEconomicImpactsListSection = ({
   socioEconomicImpacts,
   openImpactDescriptionModal,
 }: Props) => {
-  const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary } =
+  const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary, total } =
     socioEconomicImpacts;
 
   return (
-    <section className="fr-mb-5w">
-      <ImpactMainTitle
-        title="Impacts socio-économiques"
-        onClick={() => {
-          openImpactDescriptionModal("socio-economic");
-        }}
-      />
-
+    <ImpactSection
+      title="Impacts socio-économiques"
+      isMain
+      total={total}
+      onClick={() => {
+        openImpactDescriptionModal("socio-economic");
+      }}
+    >
       {economicDirect.impacts.length > 0 && (
-        <>
-          <ImpactSectionHeader title="Impacts économiques directs" total={economicDirect.total} />
-
+        <ImpactSection title="Impacts économiques directs" total={economicDirect.total}>
           {economicDirect.impacts.map(({ name, actors }) => (
             <ImpactActorsItem
               key={name}
@@ -81,16 +78,11 @@ const SocioEconomicImpactsListSection = ({
               type="monetary"
             />
           ))}
-        </>
+        </ImpactSection>
       )}
 
       {economicIndirect.impacts.length > 0 && (
-        <>
-          <ImpactSectionHeader
-            title="Impacts économiques indirects"
-            total={economicIndirect.total}
-          />
-
+        <ImpactSection title="Impacts économiques indirects" total={economicIndirect.total}>
           {economicIndirect.impacts.map(({ name, actors }) => (
             <ImpactActorsItem
               key={name}
@@ -103,13 +95,11 @@ const SocioEconomicImpactsListSection = ({
               type="monetary"
             />
           ))}
-        </>
+        </ImpactSection>
       )}
 
       {socialMonetary.impacts.length > 0 && (
-        <>
-          <ImpactSectionHeader title="Impacts sociaux monétarisés" total={socialMonetary.total} />
-
+        <ImpactSection title="Impacts sociaux monétarisés" total={socialMonetary.total}>
           {socialMonetary.impacts.map(({ name, actors }) => (
             <ImpactActorsItem
               key={name}
@@ -131,16 +121,14 @@ const SocioEconomicImpactsListSection = ({
               type="monetary"
             />
           ))}
-        </>
+        </ImpactSection>
       )}
 
       {environmentalMonetary.impacts.length > 0 && (
-        <>
-          <ImpactSectionHeader
-            title="Impacts environnementaux monétarisés"
-            total={environmentalMonetary.total}
-          />
-
+        <ImpactSection
+          title="Impacts environnementaux monétarisés"
+          total={environmentalMonetary.total}
+        >
           {environmentalMonetary.impacts.map(({ name, actors }) => (
             <ImpactActorsItem
               key={name}
@@ -162,9 +150,9 @@ const SocioEconomicImpactsListSection = ({
               type="monetary"
             />
           ))}
-        </>
+        </ImpactSection>
       )}
-    </section>
+    </ImpactSection>
   );
 };
 

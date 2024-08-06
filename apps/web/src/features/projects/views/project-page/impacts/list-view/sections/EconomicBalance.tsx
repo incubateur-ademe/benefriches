@@ -3,15 +3,13 @@ import {
   getEconomicBalanceImpactLabel,
 } from "../../getImpactLabel";
 import ImpactActorsItem from "../ImpactActorsItem";
-import ImpactMainTitle from "../ImpactMainTitle";
-import ImpactRowValue from "../ImpactRowValue";
+import ImpactSection from "../ImpactSection";
 
 import {
   EconomicBalance,
   EconomicBalanceName,
 } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
-import classNames from "@/shared/views/clsx";
 
 const getImpactItemOnClick = (
   itemName: EconomicBalanceName,
@@ -35,13 +33,14 @@ type Props = {
 const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Props) => {
   const { total, economicBalance, bearer } = impact;
   return (
-    <section className="fr-mb-5w">
-      <ImpactMainTitle
-        title="Bilan de l'opération"
-        onClick={() => {
-          openImpactDescriptionModal("economic-balance");
-        }}
-      />
+    <ImpactSection
+      title="Bilan de l'opération"
+      isMain
+      total={total}
+      onClick={() => {
+        openImpactDescriptionModal("economic-balance");
+      }}
+    >
       {economicBalance.map(({ name, value, details = [] }) => (
         <ImpactActorsItem
           key={name}
@@ -61,26 +60,7 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
           type="monetary"
         />
       ))}
-
-      <div className="tw-my-4">
-        <ImpactRowValue value={total} type="monetary" isDark>
-          <span
-            className={classNames(
-              "tw-font-bold",
-              "tw-text-lg",
-              "tw-py-2",
-              "tw-px-4",
-              "tw-w-full",
-              "tw-bg-impacts-main",
-              "dark:tw-bg-grey-dark",
-              "tw-uppercase",
-            )}
-          >
-            📉 Total du bilan de l’opération
-          </span>
-        </ImpactRowValue>
-      </div>
-    </section>
+    </ImpactSection>
   );
 };
 
