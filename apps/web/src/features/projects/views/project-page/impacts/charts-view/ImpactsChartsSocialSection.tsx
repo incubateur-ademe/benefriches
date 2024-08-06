@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactAreaChartCard from "./ImpactChartCard/ImpactAreaChartCard";
+import ImpactsChartsSection from "./ImpactsChartsSection";
 
 import {
   SocialImpact,
@@ -96,15 +97,12 @@ const ImpactsChartsSocialSection = ({
   );
 
   return (
-    <section className={fr.cx("fr-pb-8v")}>
-      <h3
-        className="tw-cursor-pointer hover:tw-underline"
-        onClick={() => {
-          openImpactDescriptionModal("social");
-        }}
-      >
-        Impacts sociaux
-      </h3>
+    <ImpactsChartsSection
+      title="Impacts sociaux"
+      onClick={() => {
+        openImpactDescriptionModal("social");
+      }}
+    >
       <Row>
         {impactsList.map(({ name, impact, type }) => (
           <div className={fr.cx("fr-col-lg-3", "fr-col-6")} key={name}>
@@ -119,7 +117,7 @@ const ImpactsChartsSocialSection = ({
           </div>
         ))}
       </Row>
-    </section>
+    </ImpactsChartsSection>
   );
 };
 

@@ -36,19 +36,17 @@ const ImpactsChartsView = ({
           socioEconomicImpacts={socioEconomicImpacts}
         />
       )}
-
-      {environmentImpacts.length > 0 && (
-        <ImpactsChartsEnvironmentSection
-          openImpactDescriptionModal={openImpactDescriptionModal}
-          impacts={environmentImpacts}
-          projectName={projectName}
-        />
-      )}
-
       {socialImpacts.length > 0 && (
         <ImpactsChartsSocialSection
           openImpactDescriptionModal={openImpactDescriptionModal}
           impacts={socialImpacts}
+          projectName={projectName}
+        />
+      )}
+      {environmentImpacts.length > 0 && (
+        <ImpactsChartsEnvironmentSection
+          openImpactDescriptionModal={openImpactDescriptionModal}
+          impacts={environmentImpacts}
           projectName={projectName}
         />
       )}

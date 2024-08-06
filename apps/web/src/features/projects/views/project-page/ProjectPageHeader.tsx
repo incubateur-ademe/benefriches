@@ -1,20 +1,37 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import Button from "@codegouvfr/react-dsfr/Button";
+import { createModal } from "@codegouvfr/react-dsfr/Modal";
+import Dropdown from "antd/es/dropdown/dropdown";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import { getScenarioPictoUrl } from "../shared/scenarioType";
+import AboutImpactsModalContent from "./impacts/AboutImpactsModalContent";
 import ExpressProjectTooltipBadge from "./ExpressProjectBadge";
+import ProjectFeaturesView from "./features";
 
 import classNames from "@/shared/views/clsx";
 
 type Props = {
   projectName: string;
+  projectId: string;
   siteName: string;
   projectType?: ProjectDevelopmentPlanType;
   isExpressProject: boolean;
   isSmall?: boolean;
 };
 
+const aboutImpactsModal = createModal({
+  id: "about-benefriches-impacts-modal",
+  isOpenedByDefault: false,
+});
+
+const featuresModal = createModal({
+  id: "project-features-modal",
+  isOpenedByDefault: false,
+});
+
 const ProjectPageHeader = ({
   projectName,
+  projectId,
   siteName,
   projectType,
   isExpressProject,
@@ -44,20 +61,10 @@ const ProjectPageHeader = ({
 
           <div>
             <div className="tw-inline-flex tw-items-center">
-              <h2
-                className={classNames(
-                  fr.cx("fr-my-0"),
-                  "tw-text-impacts-title",
-                  isSmall && "tw-text-2xl",
-                )}
-              >
+              <h2 className={classNames(fr.cx("fr-my-0"), isSmall && "tw-text-2xl")}>
                 {projectName}
               </h2>
-              {isExpressProject && (
-                <div>
-                  <ExpressProjectTooltipBadge siteName={siteName} />
-                </div>
-              )}
+              {isExpressProject && <ExpressProjectTooltipBadge siteName={siteName} />}
             </div>
             <div className={classNames(!isSmall && fr.cx("fr-mt-1v"))}>
               <span
@@ -76,6 +83,48 @@ const ProjectPageHeader = ({
             </div>
           </div>
         </div>
+        <Dropdown
+          trigger={["click"]}
+          menu={{
+            items: [
+              {
+                label: "Consulter les caractéristiques du projet",
+                icon: (
+                  <span className="fr-icon--sm fr-icon-file-text-line" aria-hidden="true"></span>
+                ),
+                key: "project-features",
+              },
+              {
+                label: "À propos des indicateurs d’impact",
+                icon: (
+                  <span className="fr-icon--sm fr-icon-information-line" aria-hidden="true"></span>
+                ),
+                key: "about-impacts",
+              },
+            ],
+
+            onClick: ({ key }) => {
+              if (key === "about-impacts") {
+                aboutImpactsModal.open();
+              }
+              if (key === "project-features") {
+                featuresModal.open();
+              }
+            },
+          }}
+        >
+          <Button
+            priority="secondary"
+            iconId="fr-icon-more-fill"
+            title="Voir plus de fonctionnalités"
+          />
+        </Dropdown>
+        <aboutImpactsModal.Component title="À propos des indicateurs d’impact" size="large">
+          <AboutImpactsModalContent />
+        </aboutImpactsModal.Component>
+        <featuresModal.Component title="Caractéristiques du projet" size="large">
+          <ProjectFeaturesView projectId={projectId} />
+        </featuresModal.Component>
       </div>
     </div>
   );

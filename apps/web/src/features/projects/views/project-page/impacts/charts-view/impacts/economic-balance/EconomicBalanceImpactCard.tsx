@@ -1,6 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import ImpactCard from "../../ImpactChartCard/ImpactChartCard";
+import ImpactsChartsSection from "../../ImpactsChartsSection";
 
 import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
@@ -56,7 +56,7 @@ function EconomicBalanceImpactCard({ economicBalance, onClick, bearer = "Aménag
   };
 
   return (
-    <ImpactCard title="Bilan de l'opération" onClick={onClick}>
+    <ImpactsChartsSection title="Bilan de l'opération" onClick={onClick}>
       {economicBalance.length === 0 ? (
         <div>Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet.</div>
       ) : (
@@ -66,7 +66,7 @@ function EconomicBalanceImpactCard({ economicBalance, onClick, bearer = "Aménag
           options={barChartOptions}
         />
       )}
-    </ImpactCard>
+    </ImpactsChartsSection>
   );
 }
 

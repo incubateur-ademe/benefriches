@@ -27,7 +27,7 @@ export default function SiteFeaturesHeader({ siteName, address, isFriche, isExpr
           />
           <div>
             <div className="tw-inline-flex tw-items-center">
-              <h2 className={classNames(fr.cx("fr-my-0"), "tw-text-impacts-title")}>{siteName}</h2>
+              <h2 className={classNames(fr.cx("fr-my-0"))}>{siteName}</h2>
               {isExpressSite && (
                 <Badge small className="tw-ml-3">
                   Site express

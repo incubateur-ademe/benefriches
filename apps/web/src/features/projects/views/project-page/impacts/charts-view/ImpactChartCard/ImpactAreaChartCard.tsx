@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import {
@@ -9,12 +10,11 @@ import {
   formatTimeImpact,
   impactFormatConfig,
 } from "../../../../shared/formatImpactValue";
-import ImpactAbsoluteVariation from "./ImpactAbsoluteVariation";
-import ImpactChartCard from "./ImpactChartCard";
 import ImpactPercentageVariation from "./ImpactPercentageVariation";
 
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
+import classNames from "@/shared/views/clsx";
 
 const impactTypeFormatterMap = {
   co2: { ...impactFormatConfig["co2"], formatFn: formatCO2Impact },
@@ -90,16 +90,26 @@ function ImpactAreaChartCard({
   const percentageVariation = getPercentageDifference(base, forecast);
 
   return (
-    <ImpactChartCard title={impactLabel} onClick={onClick}>
-      <ImpactPercentageVariation
-        percentage={percentageVariation > 10000 ? 9999 : percentageVariation}
-      />
-      <ImpactAbsoluteVariation>
+    <div
+      onClick={(e) => {
+        if (onClick) {
+          e.stopPropagation();
+          onClick();
+        }
+      }}
+    >
+      <div className={classNames(fr.cx("fr-text--sm", "fr-m-0"), "tw-text-center")}>
         {impactTypeFormatterMap[type].formatFn(difference)}
         {unitSuffix}
-      </ImpactAbsoluteVariation>
+
+        <ImpactPercentageVariation
+          percentage={percentageVariation > 10000 ? 9999 : percentageVariation}
+        />
+      </div>
+
       <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
-    </ImpactChartCard>
+      <h4 className="tw-text-sm tw-text-center">{impactLabel}</h4>
+    </div>
   );
 }
 

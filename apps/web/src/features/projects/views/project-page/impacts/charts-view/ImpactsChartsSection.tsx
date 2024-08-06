@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { fr } from "@codegouvfr/react-dsfr";
 
 import classNames from "@/shared/views/clsx";
 
@@ -9,32 +8,32 @@ type Props = {
   onClick?: () => void;
 };
 
-const ImpactChartCard = ({ title, children, onClick }: Props) => {
+const ImpactsChartsSection = ({ title, children, onClick }: Props) => {
   return (
-    <figure
+    <section
       className={classNames(
-        fr.cx("fr-py-2w", "fr-px-3w", "fr-m-0"),
+        "tw-p-6",
+        "tw-m-0",
+        "tw-mb-8",
+        "tw-rounded-2xl",
         "tw-flex",
         "tw-flex-col",
-        "tw-border",
-        "tw-border-solid",
-        "tw-border-borderGrey",
         "tw-h-full",
-        "tw-bg-impacts-main",
-        "dark:tw-bg-grey-dark",
+        "tw-bg-white",
+        "dark:tw-bg-black",
         onClick && [
           "tw-cursor-pointer",
           "hover:tw-underline",
-          "hover:tw-bg-impacts-dark",
+          "hover:tw-bg-impacts-main",
           "dark:hover:tw-bg-dsfr-contrastGrey",
         ],
       )}
       onClick={onClick}
     >
-      <strong className={classNames("tw-text-lg")}>{title}</strong>
+      <h3 className={classNames("tw-text-2xl")}>{title}</h3>
       <div className="tw-flex tw-flex-col tw-grow tw-justify-center">{children}</div>
-    </figure>
+    </section>
   );
 };
 
-export default ImpactChartCard;
+export default ImpactsChartsSection;
