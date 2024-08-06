@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
+import Select from "@codegouvfr/react-dsfr/SelectNext";
 import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
 
 import {
@@ -32,15 +33,6 @@ const ImpactsActionBar = forwardRef<Ref, Props>(
     },
     ref,
   ) => {
-    const getFilterSegmentInputProps = (value: ImpactCategoryFilter) => {
-      return {
-        checked: selectedFilter === value,
-        onClick: () => {
-          onFilterClick(value);
-        },
-      };
-    };
-
     const getViewSegmentInputProps = (value: ViewMode) => {
       return {
         checked: selectedViewMode === value,
@@ -62,42 +54,48 @@ const ImpactsActionBar = forwardRef<Ref, Props>(
         <div className={classNames(fr.cx("fr-grid-row"), "tw-items-center")}>
           <SegmentedControl
             legend="Filtres"
-            hideLegend
-            segments={[
-              {
-                label: "Tous",
-                nativeInputProps: getFilterSegmentInputProps("all"),
-              },
-              {
-                label: "Économie",
-                nativeInputProps: getFilterSegmentInputProps("economic"),
-              },
-              {
-                label: "Social",
-                nativeInputProps: getFilterSegmentInputProps("social"),
-              },
-              {
-                label: "Environnement",
-                nativeInputProps: getFilterSegmentInputProps("environment"),
-              },
-            ]}
-          />
-        </div>
-        <div className={fr.cx("fr-grid-row", "fr-btns-group--between")}>
-          <SegmentedControl
-            legend="Filtres"
             className="fr-mr-3w"
             hideLegend
             segments={[
               {
-                label: "Vue graphique",
+                label: "Graphique",
                 nativeInputProps: getViewSegmentInputProps("charts"),
                 iconId: "fr-icon-line-chart-fill",
               },
               {
-                label: "Vue liste",
+                label: "Liste",
                 nativeInputProps: getViewSegmentInputProps("list"),
                 iconId: "fr-icon-list-unordered",
+              },
+            ]}
+          />
+        </div>
+        <div className="tw-flex tw-gap-4">
+          <Select
+            label=""
+            className="!tw-mb-0"
+            nativeSelectProps={{
+              value: selectedFilter,
+              onChange: (e) => {
+                onFilterClick(e.currentTarget.value as ImpactCategoryFilter);
+              },
+            }}
+            options={[
+              {
+                label: "Tous les indicateurs",
+                value: "all",
+              },
+              {
+                label: "Économiques",
+                value: "economic",
+              },
+              {
+                label: "Sociaux",
+                value: "social",
+              },
+              {
+                label: "Environnementaux",
+                value: "environment",
               },
             ]}
           />

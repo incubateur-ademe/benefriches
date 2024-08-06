@@ -10,6 +10,7 @@ type Props = {
 function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
   return (
     <Select
+      className="!tw-mb-0"
       label=""
       nativeSelectProps={{
         value: value.toString() as (typeof values)[number],
