@@ -1,9 +1,50 @@
+import Button from "@codegouvfr/react-dsfr/Button";
+import { ImpactsData } from "../../ImpactDescriptionModalWizard";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { getSocioEconomicSectionModalTitle } from "../getTitle";
+import { SocioEconomicImpactDescriptionModalId } from "../types";
 
+import { EcosystemServicesImpact } from "@/features/projects/domain/impacts.types";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-const EcosystemServicesDescription = () => {
+type Props = {
+  onChangeModalCategoryOpened: (modalCategory: SocioEconomicImpactDescriptionModalId) => void;
+  impactsData: ImpactsData;
+};
+
+const getDescriptionModalKey = (
+  impactName: EcosystemServicesImpact["details"][number]["impact"],
+) => {
+  switch (impactName) {
+    case "nature_related_wellness_and_leisure":
+      return "socio-economic.ecosystem-services.nature-related-wellness-and-leisure";
+    case "carbon_storage":
+      return "socio-economic.ecosystem-services.carbon-storage";
+    case "forest_related_product":
+      return "socio-economic.ecosystem-services.forest-related-product";
+    case "invasive_species_regulation":
+      return "socio-economic.ecosystem-services.invasive-species-regulation";
+    case "nitrogen_cycle":
+      return "socio-economic.ecosystem-services.nitrogen-cycle";
+    case "pollination":
+      return "socio-economic.ecosystem-services.pollinisation";
+    case "soil_erosion":
+      return "socio-economic.ecosystem-services.soil-erosion";
+    case "water_cycle":
+      return "socio-economic.ecosystem-services.water-cycle";
+  }
+};
+
+const EcosystemServicesDescription = ({ onChangeModalCategoryOpened, impactsData }: Props) => {
+  const ecosystemServicesImpact = impactsData.socioeconomic.impacts.find(
+    (impact): impact is EcosystemServicesImpact => impact.impact === "ecosystem_services",
+  );
+
+  const ecosystemServicesDetailsKeys = (ecosystemServicesImpact?.details ?? []).map(({ impact }) =>
+    getDescriptionModalKey(impact),
+  );
+
   return (
     <>
       <p>
@@ -19,7 +60,6 @@ const EcosystemServicesDescription = () => {
           alt="Schéma illustratif des services écosystémiques"
         />
       </div>
-
       <ModalTitleTwo>Le principe de monétarisation</ModalTitleTwo>
       <p>
         Lorsqu'on est en présence de biens marchands ou de services, les statistiques peuvent
@@ -36,7 +76,6 @@ const EcosystemServicesDescription = () => {
           alt="Valeurs d'usage direct, valeurs d'usage indirect, valeur d'option, valeur de legs, valeur d'existence"
         />
       </div>
-
       <p>
         La monétarisation constitue ainsi un moyen d'orienter l'ensemble des politiques publiques
         mais aussi les comportements des acteurs privés vers une meilleure prise en compte de
@@ -79,6 +118,21 @@ const EcosystemServicesDescription = () => {
       <p>
         <strong>Bénéficiaires</strong> : société humaine
       </p>
+
+      <div className="tw-flex tw-flex-col">
+        {ecosystemServicesDetailsKeys.map((key) => (
+          <Button
+            key={key}
+            onClick={() => {
+              onChangeModalCategoryOpened(key);
+            }}
+            priority="tertiary no outline"
+          >
+            {getSocioEconomicSectionModalTitle(key)}
+          </Button>
+        ))}
+      </div>
+
       <ModalTitleTwo>Aller plus loin</ModalTitleTwo>
       <ul>
         <li>

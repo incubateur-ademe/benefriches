@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useMemo } from "react";
+import { ReactElement, useEffect, useLayoutEffect, useMemo } from "react";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { SoilsDistribution } from "shared";
@@ -14,6 +14,8 @@ import { SocialImpactDescriptionModalId } from "./social/types";
 import { getSocioEconomicSectionModalTitle } from "./socio-economic/getTitle";
 import SocioEconomicModalContentWizard from "./socio-economic/ModalContentWizard";
 import { SocioEconomicImpactDescriptionModalId } from "./socio-economic/types";
+
+import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
 
 export type ImpactSectionName = "economic-balance" | "socio-economic" | "social" | "environmental";
 
@@ -40,11 +42,14 @@ export type SiteData = {
   surfaceArea: number;
 };
 
+export type ImpactsData = ReconversionProjectImpacts;
+
 type Props = {
   modalCategory: ImpactDescriptionModalCategory;
   onChangeModalCategoryOpened: (modalCategory: ImpactDescriptionModalCategory) => void;
   projectData: ProjectData;
   siteData: SiteData;
+  impactsData: ReconversionProjectImpacts;
 };
 
 const getModalTitleAndContent = (
@@ -52,6 +57,7 @@ const getModalTitleAndContent = (
   onChangeModalCategoryOpened: Props["onChangeModalCategoryOpened"],
   projectData: Props["projectData"],
   siteData: Props["siteData"],
+  impactsData: Props["impactsData"],
 ): { title: string; content?: ReactElement } => {
   if (!modalId) {
     return { title: "", content: undefined };
@@ -81,6 +87,7 @@ const getModalTitleAndContent = (
             modalId={modalId as SocioEconomicImpactDescriptionModalId}
             projectData={projectData}
             siteData={siteData}
+            impactsData={impactsData}
             onChangeModalCategoryOpened={onChangeModalCategoryOpened}
           />
         ),
@@ -124,11 +131,18 @@ export function ImpactDescriptionModalWizard({
   onChangeModalCategoryOpened,
   projectData,
   siteData,
+  impactsData,
 }: Props) {
   const { title, content } = useMemo(
     () =>
-      getModalTitleAndContent(modalCategory, onChangeModalCategoryOpened, projectData, siteData),
-    [modalCategory, onChangeModalCategoryOpened, projectData, siteData],
+      getModalTitleAndContent(
+        modalCategory,
+        onChangeModalCategoryOpened,
+        projectData,
+        siteData,
+        impactsData,
+      ),
+    [impactsData, modalCategory, onChangeModalCategoryOpened, projectData, siteData],
   );
 
   useIsModalOpen(modal, {
@@ -142,6 +156,13 @@ export function ImpactDescriptionModalWizard({
       modal.open();
     }
   }, [modalCategory]);
+
+  useLayoutEffect(() => {
+    const domModalBody = document.querySelector(`#${modal.id} .fr-modal__body`);
+    if (domModalBody) {
+      domModalBody.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  }, [title]);
 
   return (
     <modal.Component

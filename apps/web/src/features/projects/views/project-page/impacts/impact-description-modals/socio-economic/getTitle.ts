@@ -20,9 +20,21 @@ export const getSocioEconomicSectionModalTitle = (
       return "🚰 Régulation de la qualité de l'eau";
     case "socio-economic.ecosystem-services":
       return "🌻 Services écosystémiques";
-    case "socio-economic.carbon-storage":
+    case "socio-economic.ecosystem-services.carbon-storage":
       return "🍂️ Carbone stocké dans les sols";
-    case "socio-economic.nature-related-wellness-and-leisure":
+    case "socio-economic.ecosystem-services.nature-related-wellness-and-leisure":
       return "🚵‍♂️ Loisirs et bien-être liés à la nature";
+    case "socio-economic.ecosystem-services.forest-related-product":
+      return "🪵 Produits issus de la forêt";
+    case "socio-economic.ecosystem-services.invasive-species-regulation":
+      return "🦔 Régulation des espèces invasives";
+    case "socio-economic.ecosystem-services.nitrogen-cycle":
+      return "🍄 Cycle de l'azote";
+    case "socio-economic.ecosystem-services.pollinisation":
+      return "🐝 Pollinisation";
+    case "socio-economic.ecosystem-services.soil-erosion":
+      return "🌾 Régulation de l'érosion des sols";
+    case "socio-economic.ecosystem-services.water-cycle":
+      return "💧 Cycle de l'eau";
   }
 };

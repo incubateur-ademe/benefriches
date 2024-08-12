@@ -1,4 +1,4 @@
-import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
+import { ImpactsData, ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
 import AvoidedCO2WithEnRMonetaryValueDescription from "./avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";
 import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheCostsDescription";
@@ -7,7 +7,12 @@ import AvoidedOtherSecuringCostsDescription from "./avoided-friche-costs/Avoided
 import AvoidedSecurityCostsDescription from "./avoided-friche-costs/AvoidedSecurityCostsDescription";
 import CarbonSoilsStorageMonetaryValueDescription from "./ecosystem-services/CarbonStorageMonetaryValueDescription";
 import EcosystemServicesDescription from "./ecosystem-services/EcosystemServicesDescription";
+import InvasiveSpeciesRegulationDescription from "./ecosystem-services/InvasiveSpeciesRegulationDescription";
 import NatureRelatedWellnessAndLeisureDescription from "./ecosystem-services/NatureRelatedWellnessAndLeisureDescription";
+import NitrogenCycleDescription from "./ecosystem-services/NitrogenCycleDescription";
+import PollinationDescription from "./ecosystem-services/PollinationDescription";
+import SoilErosionDescription from "./ecosystem-services/SoilErosionDescription";
+import WaterCycle from "./ecosystem-services/WaterCycle";
 import WaterRegulationDescription from "./water-regulation/WaterRegulationDescription";
 import SocioEconomicDescription from "./SocioEconomicDescription";
 import { SocioEconomicImpactDescriptionModalId } from "./types";
@@ -17,6 +22,164 @@ type Props = {
   onChangeModalCategoryOpened: (modalCategory: SocioEconomicImpactDescriptionModalId) => void;
   projectData: ProjectData;
   siteData: SiteData;
+  impactsData: ImpactsData;
+};
+
+const SocioEconomicEcosystemServicesContentWizard = ({
+  modalId,
+  onChangeModalCategoryOpened,
+  projectData,
+  siteData,
+  impactsData,
+}: Props) => {
+  const modalSegments = [
+    {
+      label: "Impacts socio-économiques",
+      onClick: () => {
+        onChangeModalCategoryOpened("socio-economic");
+      },
+    },
+    {
+      label: "Services écosystémiques",
+      onClick: () => {
+        onChangeModalCategoryOpened("socio-economic.ecosystem-services");
+      },
+    },
+  ];
+
+  switch (modalId) {
+    case "socio-economic.ecosystem-services":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              { label: "Services écosystémiques", isCurrent: true },
+            ]}
+          />
+          <EcosystemServicesDescription
+            onChangeModalCategoryOpened={onChangeModalCategoryOpened}
+            impactsData={impactsData}
+          />
+        </>
+      );
+
+    case "socio-economic.ecosystem-services.carbon-storage":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              ...modalSegments,
+              { label: "Carbone stocké dans les sols", isCurrent: true },
+            ]}
+          />
+          <CarbonSoilsStorageMonetaryValueDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        </>
+      );
+
+    case "socio-economic.ecosystem-services.nature-related-wellness-and-leisure":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              ...modalSegments,
+              { label: "Loisirs et bien-être liés à la nature", isCurrent: true },
+            ]}
+          />
+          <NatureRelatedWellnessAndLeisureDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        </>
+      );
+    case "socio-economic.ecosystem-services.forest-related-product":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[...modalSegments, { label: "Produits issus de la forêt", isCurrent: true }]}
+          />
+          <NatureRelatedWellnessAndLeisureDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        </>
+      );
+
+    case "socio-economic.ecosystem-services.invasive-species-regulation":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              ...modalSegments,
+              { label: "Régulation des espèces invasives", isCurrent: true },
+            ]}
+          />
+          <InvasiveSpeciesRegulationDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        </>
+      );
+    case "socio-economic.ecosystem-services.nitrogen-cycle":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[...modalSegments, { label: "Cycle de l'azote", isCurrent: true }]}
+          />
+          <NitrogenCycleDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        </>
+      );
+    case "socio-economic.ecosystem-services.pollinisation":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[...modalSegments, { label: "Pollinisation", isCurrent: true }]}
+          />
+          <PollinationDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        </>
+      );
+    case "socio-economic.ecosystem-services.soil-erosion":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              ...modalSegments,
+              { label: "Régulation de l'érosion des sols", isCurrent: true },
+            ]}
+          />
+          <SoilErosionDescription
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        </>
+      );
+    case "socio-economic.ecosystem-services.water-cycle":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[...modalSegments, { label: "Cycle de l'eau", isCurrent: true }]}
+          />
+          <WaterCycle
+            baseSoilsDistribution={siteData.soilsDistribution}
+            forecastSoilsDistribution={projectData.soilsDistribution}
+          />
+        </>
+      );
+  }
 };
 
 const SocioEconomicModalContentWizard = ({
@@ -24,6 +187,7 @@ const SocioEconomicModalContentWizard = ({
   onChangeModalCategoryOpened,
   projectData,
   siteData,
+  impactsData,
 }: Props) => {
   switch (modalId) {
     case "socio-economic":
@@ -186,75 +350,22 @@ const SocioEconomicModalContentWizard = ({
       );
 
     case "socio-economic.ecosystem-services":
+    case "socio-economic.ecosystem-services.carbon-storage":
+    case "socio-economic.ecosystem-services.nature-related-wellness-and-leisure":
+    case "socio-economic.ecosystem-services.forest-related-product":
+    case "socio-economic.ecosystem-services.invasive-species-regulation":
+    case "socio-economic.ecosystem-services.nitrogen-cycle":
+    case "socio-economic.ecosystem-services.pollinisation":
+    case "socio-economic.ecosystem-services.soil-erosion":
+    case "socio-economic.ecosystem-services.water-cycle":
       return (
-        <>
-          <ModalBreadcrumb
-            segments={[
-              {
-                label: "Impacts socio-économiques",
-                onClick: () => {
-                  onChangeModalCategoryOpened("socio-economic");
-                },
-              },
-              { label: "Services écosystémiques", isCurrent: true },
-            ]}
-          />
-          <EcosystemServicesDescription />
-        </>
-      );
-
-    case "socio-economic.carbon-storage":
-      return (
-        <>
-          <ModalBreadcrumb
-            segments={[
-              {
-                label: "Impacts socio-économiques",
-                onClick: () => {
-                  onChangeModalCategoryOpened("socio-economic");
-                },
-              },
-              {
-                label: "Services écosystémiques",
-                onClick: () => {
-                  onChangeModalCategoryOpened("socio-economic.ecosystem-services");
-                },
-              },
-              { label: "Carbone stocké dans les sols", isCurrent: true },
-            ]}
-          />
-          <CarbonSoilsStorageMonetaryValueDescription
-            baseSoilsDistribution={siteData.soilsDistribution}
-            forecastSoilsDistribution={projectData.soilsDistribution}
-          />
-        </>
-      );
-
-    case "socio-economic.nature-related-wellness-and-leisure":
-      return (
-        <>
-          <ModalBreadcrumb
-            segments={[
-              {
-                label: "Impacts socio-économiques",
-                onClick: () => {
-                  onChangeModalCategoryOpened("socio-economic");
-                },
-              },
-              {
-                label: "Services écosystémiques",
-                onClick: () => {
-                  onChangeModalCategoryOpened("socio-economic.ecosystem-services");
-                },
-              },
-              { label: "Loisirs et bien-être liés à la nature", isCurrent: true },
-            ]}
-          />
-          <NatureRelatedWellnessAndLeisureDescription
-            baseSoilsDistribution={siteData.soilsDistribution}
-            forecastSoilsDistribution={projectData.soilsDistribution}
-          />
-        </>
+        <SocioEconomicEcosystemServicesContentWizard
+          modalId={modalId as SocioEconomicImpactDescriptionModalId}
+          projectData={projectData}
+          siteData={siteData}
+          impactsData={impactsData}
+          onChangeModalCategoryOpened={onChangeModalCategoryOpened}
+        />
       );
   }
 };

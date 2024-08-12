@@ -14,7 +14,9 @@ function ImpactDescriptionModalWizardWrapper({
   modalCategory,
   onChangeModalCategoryOpened,
 }: Props) {
-  const { projectData, relatedSiteData } = useAppSelector((state) => state.projectImpacts);
+  const { projectData, relatedSiteData, impactsData } = useAppSelector(
+    (state) => state.projectImpacts,
+  );
 
   return (
     <ImpactDescriptionModalWizard
@@ -22,6 +24,7 @@ function ImpactDescriptionModalWizardWrapper({
       onChangeModalCategoryOpened={onChangeModalCategoryOpened}
       projectData={projectData!}
       siteData={relatedSiteData!}
+      impactsData={impactsData!}
     />
   );
 }

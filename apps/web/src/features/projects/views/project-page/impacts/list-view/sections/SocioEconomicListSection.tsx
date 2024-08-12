@@ -45,11 +45,40 @@ const getImpactItemOnClick = (
       };
     case "nature_related_wellness_and_leisure":
       return () => {
-        openImpactDescriptionModal("socio-economic.nature-related-wellness-and-leisure");
+        openImpactDescriptionModal(
+          "socio-economic.ecosystem-services.nature-related-wellness-and-leisure",
+        );
       };
     case "carbon_storage":
       return () => {
-        openImpactDescriptionModal("socio-economic.carbon-storage");
+        openImpactDescriptionModal("socio-economic.ecosystem-services.carbon-storage");
+      };
+
+    case "forest_related_product":
+      return () => {
+        openImpactDescriptionModal("socio-economic.ecosystem-services.forest-related-product");
+      };
+
+    case "nitrogen_cycle":
+      return () => {
+        openImpactDescriptionModal("socio-economic.ecosystem-services.nitrogen-cycle");
+      };
+
+    case "water_cycle":
+      return () => {
+        openImpactDescriptionModal("socio-economic.ecosystem-services.water-cycle");
+      };
+    case "pollination":
+      return () => {
+        openImpactDescriptionModal("socio-economic.ecosystem-services.pollinisation");
+      };
+    case "soil_erosion":
+      return () => {
+        openImpactDescriptionModal("socio-economic.ecosystem-services.soil-erosion");
+      };
+    case "invasive_species_regulation":
+      return () => {
+        openImpactDescriptionModal("socio-economic.ecosystem-services.invasive-species-regulation");
       };
     case "water_regulation":
       return () => {
