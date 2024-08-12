@@ -31,9 +31,18 @@ type RentalIncomeImpact = BaseEconomicImpact & {
   impact: "rental_income";
   impactCategory: "economic_direct";
 };
-type AvoidedFricheExpensesImpact = BaseEconomicImpact & {
+export type AvoidedFricheExpensesImpact = BaseEconomicImpact & {
   impact: "avoided_friche_costs";
   impactCategory: "economic_direct";
+  details: {
+    amount: number;
+    impact:
+      | "avoided_security_costs"
+      | "avoided_illegal_dumping_costs"
+      | "avoided_accidents_costs"
+      | "avoided_other_securing_costs"
+      | "avoided_maintenance_costs";
+  }[];
 };
 type TaxesIncomeImpact = BaseEconomicImpact & {
   impact: "taxes_income";

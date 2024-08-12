@@ -41,6 +41,13 @@ export const baseProjectImpactMock = {
           amount: 131000,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
+          details: [
+            { amount: 100000, impact: "avoided_accidents_costs" },
+            { amount: 10000, impact: "avoided_illegal_dumping_costs" },
+            { amount: 10000, impact: "avoided_other_securing_costs" },
+            { amount: 1000, impact: "avoided_maintenance_costs" },
+            { amount: 10000, impact: "avoided_security_costs" },
+          ],
         },
         {
           actor: "community",

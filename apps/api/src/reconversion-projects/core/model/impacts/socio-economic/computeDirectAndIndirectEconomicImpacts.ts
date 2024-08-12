@@ -11,6 +11,7 @@ const FRICHE_COST_PURPOSES = [
   "otherSecuringCosts",
   "maintenance",
 ] as const;
+type FricheCostPurpose = (typeof FRICHE_COST_PURPOSES)[number];
 
 type DirectAndIndirectEconomicImpactsInput = {
   evaluationPeriodInYears: number;
@@ -30,7 +31,17 @@ type RentalIncomeImpact = BaseEconomicImpact & {
 type AvoidedFricheCostsImpact = BaseEconomicImpact & {
   impact: "avoided_friche_costs";
   impactCategory: "economic_direct";
+  details: {
+    amount: number;
+    impact:
+      | "avoided_security_costs"
+      | "avoided_illegal_dumping_costs"
+      | "avoided_accidents_costs"
+      | "avoided_other_securing_costs"
+      | "avoided_maintenance_costs";
+  }[];
 };
+
 type TaxesIncomeImpact = BaseEconomicImpact & {
   impact: "taxes_income";
   impactCategory: "economic_indirect";
@@ -88,8 +99,9 @@ export const computeDirectAndIndirectEconomicImpacts = (
   }
 
   const currentFricheCosts = input.yearlyCurrentCosts.filter(({ purpose }) =>
-    FRICHE_COST_PURPOSES.includes(purpose as (typeof FRICHE_COST_PURPOSES)[number]),
-  );
+    FRICHE_COST_PURPOSES.includes(purpose as FricheCostPurpose),
+  ) as { purpose: FricheCostPurpose; amount: number }[];
+
   if (currentFricheCosts.length) {
     const fricheCostImpactAmount = sumListWithKey(currentFricheCosts, "amount");
     impacts.push({
@@ -97,6 +109,21 @@ export const computeDirectAndIndirectEconomicImpacts = (
       actor: input.currentTenant ?? input.currentOwner,
       impact: "avoided_friche_costs",
       impactCategory: "economic_direct",
+      details: currentFricheCosts.map(({ amount, purpose }) => {
+        const totalAmount = amount * input.evaluationPeriodInYears;
+        switch (purpose) {
+          case "maintenance":
+            return { amount: totalAmount, impact: "avoided_maintenance_costs" };
+          case "security":
+            return { amount: totalAmount, impact: "avoided_security_costs" };
+          case "accidentsCost":
+            return { amount: totalAmount, impact: "avoided_accidents_costs" };
+          case "illegalDumpingCost":
+            return { amount: totalAmount, impact: "avoided_illegal_dumping_costs" };
+          case "otherSecuringCosts":
+            return { amount: totalAmount, impact: "avoided_other_securing_costs" };
+        }
+      }),
     });
   }
 

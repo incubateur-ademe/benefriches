@@ -215,6 +215,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 amount: 131000,
                 impact: "avoided_friche_costs",
                 impactCategory: "economic_direct",
+                details: [
+                  { amount: 116000, impact: "avoided_security_costs" },
+                  { amount: 15000, impact: "avoided_illegal_dumping_costs" },
+                ],
               },
               {
                 actor: "community",

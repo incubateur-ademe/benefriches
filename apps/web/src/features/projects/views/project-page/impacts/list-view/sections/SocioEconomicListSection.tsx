@@ -70,10 +70,19 @@ const SocioEconomicImpactsListSection = ({
             <ImpactActorsItem
               key={name}
               label={getSocioEconomicImpactLabel(name)}
-              actors={actors.map(({ name: actorLabel, value: actorValue }) => ({
-                label: getActorLabel(actorLabel),
-                value: actorValue,
-              }))}
+              actors={actors.map(
+                ({ name: actorLabel, value: actorValue, details: actorDetails }) => ({
+                  label: getActorLabel(actorLabel),
+                  value: actorValue,
+                  details: actorDetails
+                    ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
+                        label: getSocioEconomicImpactLabel(detailsName),
+                        value: detailsValue,
+                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                      }))
+                    : undefined,
+                }),
+              )}
               onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
               type="monetary"
             />

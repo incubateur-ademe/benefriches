@@ -147,8 +147,19 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     // Économique directs
     case "rental_income":
       return "🔑 Revenu locatif";
+    // Arrêt de la sécurisation de la friche
     case "avoided_friche_costs":
       return "🏚 Dépenses de gestion et sécurisation de la friche évitées";
+    case "avoided_accidents_costs":
+      return "💥 Accidents évités";
+    case "avoided_illegal_dumping_costs":
+      return "🚮 Débarras de dépôt sauvage";
+    case "avoided_maintenance_costs":
+      return "🔧 Entretien";
+    case "avoided_other_securing_costs":
+      return "🛡 Autres dépenses de sécurisation";
+    case "avoided_security_costs":
+      return "👮‍♀️ Gardiennage";
     // Économique indirects
     case "taxes_income":
       return "🏛 Recettes fiscales";

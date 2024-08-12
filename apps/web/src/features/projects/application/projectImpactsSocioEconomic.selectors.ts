@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
   Actor,
+  AvoidedFricheExpensesImpact,
   AvoidedTrafficAccidentsImpact,
   EcosystemServicesImpact,
   ReconversionProjectImpacts,
@@ -69,7 +70,8 @@ type SocioEconomicDetailsName =
   | "avoided_traffic_co2_eq_emissions"
   | "avoided_air_conditioning_co2_eq_emissions"
   | EcosystemServicesImpact["details"][number]["impact"]
-  | AvoidedTrafficAccidentsImpact["details"][number]["impact"];
+  | AvoidedTrafficAccidentsImpact["details"][number]["impact"]
+  | AvoidedFricheExpensesImpact["details"][number]["impact"];
 
 export const getDetailedSocioEconomicProjectImpacts = createSelector(
   selectCurrentFilter,
@@ -104,9 +106,10 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
       if (avoidedFricheExpensesImpacts.length > 0) {
         economicDirect.impacts.push({
           name: "avoided_friche_costs",
-          actors: avoidedFricheExpensesImpacts.map(({ amount, actor }) => ({
+          actors: avoidedFricheExpensesImpacts.map(({ amount, actor, details }) => ({
             value: amount,
             name: actor,
+            details: details.map(({ amount, impact }) => ({ name: impact, value: amount })),
           })),
         });
         economicDirect.total += sumList(avoidedFricheExpensesImpacts.map(({ amount }) => amount));

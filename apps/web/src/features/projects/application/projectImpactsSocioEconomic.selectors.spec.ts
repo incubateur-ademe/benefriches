@@ -47,7 +47,19 @@ describe("projectImpactsSocioEconomic selectors", () => {
       expect(economicDirect.impacts).toContainEqual(
         expect.objectContaining({
           name: "avoided_friche_costs",
-          actors: [{ name: "Current tenant", value: 131000 }],
+          actors: [
+            {
+              name: "Current tenant",
+              value: 131000,
+              details: [
+                { value: 100000, name: "avoided_accidents_costs" },
+                { value: 10000, name: "avoided_illegal_dumping_costs" },
+                { value: 10000, name: "avoided_other_securing_costs" },
+                { value: 1000, name: "avoided_maintenance_costs" },
+                { value: 10000, name: "avoided_security_costs" },
+              ],
+            },
+          ],
         }),
       );
 
@@ -148,7 +160,19 @@ describe("projectImpactsSocioEconomic selectors", () => {
       expect(economicDirect.impacts).toContainEqual(
         expect.objectContaining({
           name: "avoided_friche_costs",
-          actors: [{ name: "Current tenant", value: 131000 }],
+          actors: [
+            {
+              name: "Current tenant",
+              value: 131000,
+              details: [
+                { value: 100000, name: "avoided_accidents_costs" },
+                { value: 10000, name: "avoided_illegal_dumping_costs" },
+                { value: 10000, name: "avoided_other_securing_costs" },
+                { value: 1000, name: "avoided_maintenance_costs" },
+                { value: 10000, name: "avoided_security_costs" },
+              ],
+            },
+          ],
         }),
       );
 

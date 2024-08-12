@@ -140,6 +140,13 @@ describe("Socio-economic impacts", () => {
           amount: 230000,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
+          details: [
+            { amount: 140000, impact: "avoided_security_costs" },
+            { amount: 10000, impact: "avoided_maintenance_costs" },
+            { amount: 15000, impact: "avoided_illegal_dumping_costs" },
+            { amount: 15000, impact: "avoided_accidents_costs" },
+            { amount: 50000, impact: "avoided_other_securing_costs" },
+          ],
         },
       ]);
     });
@@ -171,6 +178,10 @@ describe("Socio-economic impacts", () => {
           amount: 155000,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
+          details: [
+            { amount: 140000, impact: "avoided_security_costs" },
+            { amount: 15000, impact: "avoided_illegal_dumping_costs" },
+          ],
         },
       ]);
     });
