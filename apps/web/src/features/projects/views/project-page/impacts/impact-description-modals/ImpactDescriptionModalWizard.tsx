@@ -2,7 +2,6 @@ import { ReactElement, useEffect, useMemo } from "react";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { SoilsDistribution } from "shared";
-import CostBenefitAnalysisDescription from "./cost-benefit-analysis/CostBenefitAnalysisDescription";
 import { getEconomicBalanceSectionModalTitle } from "./economic-balance/getTitle";
 import EconomicBalanceSectionModalContentWizard from "./economic-balance/ModalContentWizard";
 import { EconomicBalanceImpactDescriptionModalId } from "./economic-balance/types";
@@ -16,15 +15,9 @@ import { getSocioEconomicSectionModalTitle } from "./socio-economic/getTitle";
 import SocioEconomicModalContentWizard from "./socio-economic/ModalContentWizard";
 import { SocioEconomicImpactDescriptionModalId } from "./socio-economic/types";
 
-export type ImpactSectionName =
-  | "cost-benefit-analysis"
-  | "economic-balance"
-  | "socio-economic"
-  | "social"
-  | "environmental";
+export type ImpactSectionName = "economic-balance" | "socio-economic" | "social" | "environmental";
 
 export type ImpactDescriptionModalCategory =
-  | "cost-benefit-analysis"
   | EconomicBalanceImpactDescriptionModalId
   | SocioEconomicImpactDescriptionModalId
   | SocialImpactDescriptionModalId
@@ -65,15 +58,6 @@ const getModalTitleAndContent = (
   const section = modalId.split(".")[0] as ImpactSectionName;
 
   switch (section) {
-    case "cost-benefit-analysis":
-      return {
-        title: "⚖️ Analyse coûts bénéfices",
-        content: (
-          <CostBenefitAnalysisDescription
-            onChangeModalCategoryOpened={onChangeModalCategoryOpened}
-          />
-        ),
-      };
     case "economic-balance":
       return {
         title: getEconomicBalanceSectionModalTitle(
