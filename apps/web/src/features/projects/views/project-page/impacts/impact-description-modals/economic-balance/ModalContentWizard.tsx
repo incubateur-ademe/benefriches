@@ -1,6 +1,7 @@
 import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
 import RealEstateAcquisitionDescription from "./real-estate-acquisition/RealEstateAcquisition";
+import SiteReinstatementDescription from "./site-reinstatement/SiteReinstatementDescription";
 import EconomicBalanceDescription from "./EconomicBalanceDescription";
 import { EconomicBalanceImpactDescriptionModalId } from "./types";
 
@@ -21,6 +22,24 @@ const EconomicBalanceSectionModalContentWizard = ({
         <>
           <ModalBreadcrumb segments={[{ label: "Bilan de l'opération", isCurrent: true }]} />
           <EconomicBalanceDescription />
+        </>
+      );
+
+    case "economic-balance.site-reinstatement":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Bilan de l'opération",
+                onClick: () => {
+                  onChangeModalCategoryOpened("economic-balance");
+                },
+              },
+              { label: "Remise en état de la friche", isCurrent: true },
+            ]}
+          />
+          <SiteReinstatementDescription />
         </>
       );
 

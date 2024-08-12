@@ -20,6 +20,10 @@ const getImpactItemOnClick = (
       return () => {
         openImpactDescriptionModal("economic-balance.real-estate-acquisition");
       };
+    case "site_reinstatement":
+      return () => {
+        openImpactDescriptionModal("economic-balance.site-reinstatement");
+      };
     default:
       return undefined;
   }
