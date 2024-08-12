@@ -2,6 +2,9 @@ import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
 import AvoidedCO2WithEnRMonetaryValueDescription from "./avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";
 import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheCostsDescription";
+import AvoidedIllegalDumpingCostsDescription from "./avoided-friche-costs/AvoidedIllegalDumpingCostsDescription";
+import AvoidedOtherSecuringCostsDescription from "./avoided-friche-costs/AvoidedOtherSecuringCostsDescription";
+import AvoidedSecurityCostsDescription from "./avoided-friche-costs/AvoidedSecurityCostsDescription";
 import CarbonSoilsStorageMonetaryValueDescription from "./ecosystem-services/CarbonStorageMonetaryValueDescription";
 import EcosystemServicesDescription from "./ecosystem-services/EcosystemServicesDescription";
 import NatureRelatedWellnessAndLeisureDescription from "./ecosystem-services/NatureRelatedWellnessAndLeisureDescription";
@@ -52,6 +55,88 @@ const SocioEconomicModalContentWizard = ({
         </>
       );
 
+    case "socio-economic.avoided-illegal-dumping-costs":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              {
+                label: "Impacts économiques directs",
+              },
+              {
+                label: "Dépenses friche évitées",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic.avoided-friche-costs");
+                },
+              },
+
+              { label: "Débarras de dépôt sauvage", isCurrent: true },
+            ]}
+          />
+          <AvoidedIllegalDumpingCostsDescription addressLabel={siteData.addressLabel} />
+        </>
+      );
+    case "socio-economic.avoided-security-costs":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              {
+                label: "Impacts économiques directs",
+              },
+              {
+                label: "Dépenses friche évitées",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic.avoided-friche-costs");
+                },
+              },
+
+              { label: "Gardiennage", isCurrent: true },
+            ]}
+          />
+          <AvoidedSecurityCostsDescription siteSurfaceArea={siteData.surfaceArea} />
+        </>
+      );
+
+    case "socio-economic.avoided-other-securing-costs":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              {
+                label: "Impacts économiques directs",
+              },
+              {
+                label: "Dépenses friche évitées",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic.avoided-friche-costs");
+                },
+              },
+
+              { label: "Autres coûts", isCurrent: true },
+            ]}
+          />
+          <AvoidedOtherSecuringCostsDescription />
+        </>
+      );
     case "socio-economic.avoided-co2-renewable-energy":
       return (
         <>

@@ -27,6 +27,18 @@ const getImpactItemOnClick = (
       return () => {
         openImpactDescriptionModal("socio-economic.avoided-friche-costs");
       };
+    case "avoided_illegal_dumping_costs":
+      return () => {
+        openImpactDescriptionModal("socio-economic.avoided-illegal-dumping-costs");
+      };
+    case "avoided_security_costs":
+      return () => {
+        openImpactDescriptionModal("socio-economic.avoided-security-costs");
+      };
+    case "avoided_other_securing_costs":
+      return () => {
+        openImpactDescriptionModal("socio-economic.avoided-other-securing-costs");
+      };
     case "ecosystem_services":
       return () => {
         openImpactDescriptionModal("socio-economic.ecosystem-services");

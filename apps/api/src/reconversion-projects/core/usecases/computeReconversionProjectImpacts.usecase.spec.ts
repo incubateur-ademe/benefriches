@@ -199,6 +199,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             IMPERMEABLE_SOILS: 10000,
             ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
           },
+          surfaceArea: 50000,
         },
         impacts: {
           socioeconomic: {

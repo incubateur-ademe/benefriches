@@ -31,6 +31,7 @@ export type ReconversionProjectImpactsResult = {
     addressLabel: string;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
+    surfaceArea: number;
   };
   impacts: ReconversionProjectImpacts;
 };

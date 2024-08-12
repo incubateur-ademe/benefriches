@@ -125,6 +125,7 @@ export type Result = {
     addressLabel: string;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
+    surfaceArea: number;
   };
   impacts: {
     nonContaminatedSurfaceArea: NonContaminatedSurfaceAreaImpact | undefined;
@@ -257,6 +258,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         addressLabel: relatedSite.addressLabel,
         contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
         soilsDistribution: relatedSite.soilsDistribution,
+        surfaceArea: relatedSite.surfaceArea,
       },
       impacts: {
         economicBalance: computeEconomicBalanceImpact(

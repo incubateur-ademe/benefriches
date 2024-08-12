@@ -39,6 +39,7 @@ export type ProjectImpactsState = {
     addressLabel: string;
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
+    surfaceArea: number;
   };
   impactsData?: ReconversionProjectImpactsResult["impacts"];
   evaluationPeriod: number;

@@ -37,6 +37,7 @@ export type SiteData = {
   soilsDistribution: SoilsDistribution;
   contaminatedSoilSurface: number;
   addressLabel: string;
+  surfaceArea: number;
 };
 
 type Props = {
@@ -143,7 +144,12 @@ export function ImpactDescriptionModalWizard({
   }, [modalCategory]);
 
   return (
-    <modal.Component title={title} concealingBackdrop={true} size="large">
+    <modal.Component
+      className="modal-with-breadcrumb"
+      title={title}
+      concealingBackdrop={true}
+      size="large"
+    >
       {content}
     </modal.Component>
   );

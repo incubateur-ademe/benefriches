@@ -44,6 +44,10 @@
   border-radius: 16px;
 }
 
+.fr-modal.modal-with-breadcrumb .fr-modal__content {
+  padding-top: 1rem;
+}
+
 /* Ajout d’un statut warning sur le même modèle que error et success pour les inputs */
 
 .fr-message--warning::before,
