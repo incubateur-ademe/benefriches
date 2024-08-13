@@ -27,9 +27,7 @@ function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
       title="Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur ?"
       instructions={
         <FormInfo>
-          <p>
-            La durée de contrat moyen de l'utilisation de panneaux photovoltaïques est de 20 ans.
-          </p>
+          <p>La durée moyenne des contrats de rachat d'électricité photovoltaïque est de 20 ans.</p>
           <p>Vous pouvez modifier cette durée.</p>
         </FormInfo>
       }
