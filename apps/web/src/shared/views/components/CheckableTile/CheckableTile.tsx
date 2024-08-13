@@ -101,6 +101,7 @@ export default function CheckableTile({
         "tw-min-h-56",
         "tw-relative",
         "tw-h-full",
+        "tw-rounded-lg",
         disabled ? "tw-cursor-not-allowed" : "tw-cursor-pointer",
         isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
       )}

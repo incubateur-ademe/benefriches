@@ -15,6 +15,7 @@ function NewScenarioTile({ siteId }: Props) {
         "tour-guide-step-create-new-project",
         "tw-border-dashed",
         "tw-border",
+        "tw-rounded-lg",
         "hover:tw-bg-grey-light",
       )}
     >

@@ -21,6 +21,7 @@ function SelectableProjectCard({ children, isSelected, onSelect }: Props) {
         "tw-relative",
         "tw-items-center",
         "tw-min-h-40",
+        "tw-rounded-lg",
       )}
       onClick={onSelect}
     >
