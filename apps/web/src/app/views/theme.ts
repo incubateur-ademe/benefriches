@@ -31,9 +31,11 @@ export default {
         greyDisabled: "var(--text-disabled-grey)",
       },
       blue: {
+        ultralight: "#DAF2FB",
         light: "#D1EEFA",
-        main: "#137FEB",
+        main: "#22AFE5",
         dark: "#116E92",
+        ultradark: "#0D536E",
       },
       green: {
         main: "#32762E",

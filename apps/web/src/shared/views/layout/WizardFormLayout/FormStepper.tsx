@@ -31,7 +31,10 @@ const Step = ({ title, index, currentStepIndex, isDone, isExtended }: StepProps)
         !isExtended && "tw-justify-center",
         isCompleted && "tw-text-green-main",
         isCurrent
-          ? ["tw-bg-blue-light dark:tw-bg-blue-dark", "tw-text-blue-dark dark:tw-text-blue-light"]
+          ? [
+              "tw-bg-blue-ultralight dark:tw-bg-blue-ultradark",
+              "tw-text-blue-ultradark dark:tw-text-blue-ultralight",
+            ]
           : "tw-text-dsfr-greyDisabled",
       )}
       key={title}
@@ -55,10 +58,10 @@ const Step = ({ title, index, currentStepIndex, isDone, isExtended }: StepProps)
               ],
         )}
         aria-hidden="true"
-      ></span>
+      />
       {isExtended && (
         <>
-          {title}
+          <span className={isCurrent ? "tw-font-medium" : ""}>{title}</span>
           {isCurrent && (
             <span className="fr-icon-arrow-right-s-line tw-ml-auto" aria-hidden="true"></span>
           )}
