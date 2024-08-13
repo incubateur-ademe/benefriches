@@ -135,7 +135,11 @@ export default function SiteFeaturesList(siteFeatures: Props) {
         )}
         <dl>
           <DataLine
-            label={<strong>Dépenses annuelles du site</strong>}
+            label={
+              <strong>
+                💸 Dépenses annuelles {siteFeatures.isFriche ? "de la friche" : "du site"}
+              </strong>
+            }
             value={
               siteFeatures.expenses.length > 0 ? (
                 <strong>

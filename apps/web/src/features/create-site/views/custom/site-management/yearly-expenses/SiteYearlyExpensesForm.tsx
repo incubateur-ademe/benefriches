@@ -143,7 +143,7 @@ function SiteYearlyExpensesForm({
     { label: getBearerLabel("owner", isFriche), value: "owner" },
   ];
 
-  const title = `Dépenses annuelles ${isFriche ? "de la friche" : "du site"}`;
+  const title = `💸 Dépenses annuelles ${isFriche ? "de la friche" : "du site"}`;
 
   return (
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>

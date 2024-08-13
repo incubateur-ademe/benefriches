@@ -317,7 +317,7 @@ const SocioEconomicModalContentWizard = ({
                 },
               },
 
-              { label: "Autres coûts", isCurrent: true },
+              { label: "Autres dépenses", isCurrent: true },
             ]}
           />
           <AvoidedOtherSecuringCostsDescription />
