@@ -8,12 +8,14 @@ import AboutImpactsModalContent from "./impacts/AboutImpactsModalContent";
 import ExpressProjectTooltipBadge from "./ExpressProjectBadge";
 import ProjectFeaturesView from "./features";
 
+import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 
 type Props = {
   projectName: string;
   projectId: string;
   siteName: string;
+  siteId: string;
   projectType?: ProjectDevelopmentPlanType;
   isExpressProject: boolean;
   isSmall?: boolean;
@@ -33,6 +35,7 @@ const ProjectPageHeader = ({
   projectName,
   projectId,
   siteName,
+  siteId,
   projectType,
   isExpressProject,
   isSmall = false,
@@ -77,9 +80,12 @@ const ProjectPageHeader = ({
                 )}
                 aria-hidden="true"
               ></span>
-              <span className={classNames(fr.cx("fr-text--lg"), isSmall && "tw-text-lg tw-mb-0")}>
+              <a
+                href={routes.siteFeatures({ siteId }).href}
+                className={classNames(fr.cx("fr-text--lg"), isSmall && "tw-text-lg tw-mb-0")}
+              >
                 {siteName}
-              </span>
+              </a>
             </div>
           </div>
         </div>

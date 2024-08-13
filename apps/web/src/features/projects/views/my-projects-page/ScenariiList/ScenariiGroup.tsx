@@ -7,6 +7,7 @@ import StatuQuoScenarioTile from "./ScenarioTile/StatuQuoScenarioTile";
 import { ReconversionProjectList } from ".";
 
 import classNames from "@/shared/views/clsx";
+import Badge from "@/shared/views/components/Badge/Badge";
 
 type Props = {
   siteId: string;
@@ -22,7 +23,7 @@ type Props = {
 };
 
 function SiteName({ children }: { children: ReactNode }) {
-  return <h4 className="tour-guide-step-created-site">{children}</h4>;
+  return <h4 className="tour-guide-step-created-site tw-flex tw-items-center">{children}</h4>;
 }
 
 function GridColumn({ children }: { children: ReactNode }) {
@@ -45,7 +46,15 @@ function ScenariiGroup({
 }: Props) {
   return (
     <div className="fr-mb-5w" key={siteId}>
-      <SiteName key={siteId}>{siteName}</SiteName>
+      <SiteName key={siteId}>
+        {siteName}
+        {isExpressSite && (
+          <Badge small className="tw-ml-3">
+            Site express
+          </Badge>
+        )}
+      </SiteName>
+
       {reconversionProjects.length > 0 ? (
         <p>{reconversionProjects.length + 1} scenarii possibles pour ce site :</p>
       ) : (
@@ -55,7 +64,6 @@ function ScenariiGroup({
         <GridColumn>
           <StatuQuoScenarioTile
             isFriche={isFriche}
-            isExpressSite={isExpressSite}
             fricheActivity={fricheActivity}
             siteId={siteId}
             onChangeSelectedSite={onChangeSelectedSite}

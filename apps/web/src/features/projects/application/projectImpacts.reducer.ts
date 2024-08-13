@@ -111,6 +111,7 @@ export const getProjectName = createSelector(
 type ProjectContext = {
   name: string;
   siteName: string;
+  siteId: string;
   type?: ProjectDevelopmentPlanType;
   isExpressProject: boolean;
 };
@@ -119,6 +120,7 @@ export const getProjectContext = createSelector(
   (state): ProjectContext => ({
     name: state.projectData?.name ?? "Project",
     siteName: state.relatedSiteData?.name ?? "",
+    siteId: state.relatedSiteData?.id ?? "",
     type: state.projectData?.developmentPlan.type,
     isExpressProject: !!state.projectData?.isExpressProject,
   }),

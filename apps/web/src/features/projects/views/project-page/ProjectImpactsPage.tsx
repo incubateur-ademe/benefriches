@@ -19,6 +19,7 @@ type Props = {
   projectContext: {
     name: string;
     siteName: string;
+    siteId: string;
     type?: ProjectDevelopmentPlanType;
     isExpressProject: boolean;
   };
@@ -50,6 +51,7 @@ function ProjectPage({
         <ProjectsImpactsPageHeader
           projectType={projectContext.type}
           projectId={projectId}
+          siteId={projectContext.siteId}
           projectName={projectContext.name}
           siteName={projectContext.siteName}
           isExpressProject={projectContext.isExpressProject}
@@ -61,6 +63,7 @@ function ProjectPage({
           projectName={projectContext.name}
           projectId={projectId}
           siteName={projectContext.siteName}
+          siteId={projectContext.siteId}
           isExpressProject={projectContext.isExpressProject}
           selectedFilter={currentCategoryFilter}
           selectedViewMode={currentViewMode}

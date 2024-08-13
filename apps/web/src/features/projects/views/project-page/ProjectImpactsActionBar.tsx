@@ -20,6 +20,7 @@ type Props = {
   projectName: string;
   projectId: string;
   siteName: string;
+  siteId: string;
   isExpressProject: boolean;
 };
 
@@ -33,6 +34,7 @@ function ProjectImpactsActionBar({
   projectName,
   projectId,
   siteName,
+  siteId,
   isExpressProject,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
@@ -82,6 +84,7 @@ function ProjectImpactsActionBar({
             projectName={projectName}
             projectId={projectId}
             siteName={siteName}
+            siteId={siteId}
             isExpressProject={isExpressProject}
             isSmall
           />
