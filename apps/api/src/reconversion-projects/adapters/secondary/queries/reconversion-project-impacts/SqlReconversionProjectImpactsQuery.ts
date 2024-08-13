@@ -3,13 +3,11 @@ import { Knex } from "knex";
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   ReconversionProjectImpactsDataView,
-  ReconversionProjectImpactsRepository,
+  ReconversionProjectImpactsQuery,
 } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
-export class SqlReconversionProjectImpactsRepository
-  implements ReconversionProjectImpactsRepository
-{
+export class SqlReconversionProjectImpactsQuery implements ReconversionProjectImpactsQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async getById(

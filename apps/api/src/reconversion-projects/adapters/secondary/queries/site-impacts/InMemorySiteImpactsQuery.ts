@@ -1,9 +1,9 @@
 import {
   SiteImpactsDataView,
-  SiteImpactsRepository,
+  SiteImpactsQuery,
 } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 
-export class InMemorySiteImpactsRepository implements SiteImpactsRepository {
+export class InMemorySiteImpactsQuery implements SiteImpactsQuery {
   data?: SiteImpactsDataView;
 
   getById() {

@@ -2,11 +2,11 @@ import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import {
   SiteImpactsDataView,
-  SiteImpactsRepository,
+  SiteImpactsQuery,
 } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
-export class SqlSiteImpactsRepository implements SiteImpactsRepository {
+export class SqlSiteImpactsQuery implements SiteImpactsQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async getById(siteId: string): Promise<SiteImpactsDataView | undefined> {

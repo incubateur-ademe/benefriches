@@ -2,11 +2,11 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import { ReconversionProjectImpactsDataView } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { SqlReconversionProjectImpactsRepository } from "./SqlReconversionProjectImpactsRepository";
+import { SqlReconversionProjectImpactsQuery } from "./SqlReconversionProjectImpactsQuery";
 
-describe("SqlReconversionProjectImpactsRepository integration", () => {
+describe("SqlReconversionProjectImpactsQuery integration", () => {
   let sqlConnection: Knex;
-  let repository: SqlReconversionProjectImpactsRepository;
+  let repository: SqlReconversionProjectImpactsQuery;
 
   beforeAll(() => {
     sqlConnection = knex(knexConfig);
@@ -17,7 +17,7 @@ describe("SqlReconversionProjectImpactsRepository integration", () => {
   });
 
   beforeEach(() => {
-    repository = new SqlReconversionProjectImpactsRepository(sqlConnection);
+    repository = new SqlReconversionProjectImpactsQuery(sqlConnection);
   });
 
   describe("getById", () => {

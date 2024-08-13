@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/reconversion-project-repository/InMemoryReconversionProjectRepository";
+import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemorySiteReadRepository } from "src/sites/adapters/secondary/site-repository/read/InMemorySiteReadRepository";
 import { SoilsDistribution } from "src/soils/domain/soils";

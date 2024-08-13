@@ -1,11 +1,9 @@
 import {
   ReconversionProjectImpactsDataView,
-  ReconversionProjectImpactsRepository,
+  ReconversionProjectImpactsQuery,
 } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 
-export class InMemoryReconversionProjectImpactsRepository
-  implements ReconversionProjectImpactsRepository
-{
+export class InMemoryReconversionProjectImpactsQuery implements ReconversionProjectImpactsQuery {
   data?: ReconversionProjectImpactsDataView = undefined;
 
   getById() {

@@ -165,35 +165,4 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
       .first();
     return !!exists;
   }
-
-  async getById(
-    reconversionProjectId: string,
-  ): Promise<
-    Pick<ReconversionProject, "id" | "name" | "relatedSiteId" | "soilsDistribution"> | undefined
-  > {
-    const reconversionProject = await this.sqlConnection("reconversion_projects")
-      .select("id", "name", "related_site_id")
-      .where({ id: reconversionProjectId })
-      .first();
-
-    const sqlSoilDistributions = await this.sqlConnection(
-      "reconversion_project_soils_distributions",
-    )
-      .select("soil_type", "surface_area")
-      .where("reconversion_project_id", reconversionProjectId);
-
-    return (
-      reconversionProject && {
-        id: reconversionProject.id,
-        name: reconversionProject.name,
-        relatedSiteId: reconversionProject.related_site_id,
-        soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
-          return {
-            ...acc,
-            [soil_type]: surface_area,
-          };
-        }, {}),
-      }
-    );
-  }
 }

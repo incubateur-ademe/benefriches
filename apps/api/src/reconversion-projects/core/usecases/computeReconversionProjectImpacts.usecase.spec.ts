@@ -2,8 +2,8 @@ import { v4 as uuid } from "uuid";
 import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
 import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
-import { InMemoryReconversionProjectImpactsRepository } from "src/reconversion-projects/adapters/secondary/reconversion-project-impacts-repository/InMemoryReconversionProjectImpactsRepository";
-import { InMemorySiteImpactsRepository } from "src/reconversion-projects/adapters/secondary/site-impacts-repository/InMemorySiteImpactsRepository";
+import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-impacts/InMemoryReconversionProjectImpactsQuery";
+import { InMemorySiteImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/site-impacts/InMemorySiteImpactsQuery";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
@@ -24,12 +24,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
 
   describe("Error cases", () => {
     it("throws error when reconversion project does not exist", async () => {
-      const projectRepository = new InMemoryReconversionProjectImpactsRepository();
-      const siteRepository = new InMemorySiteImpactsRepository();
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      const siteQuery = new InMemorySiteImpactsQuery();
 
       const usecase = new ComputeReconversionProjectImpactsUseCase(
-        projectRepository,
-        siteRepository,
+        projectQuery,
+        siteQuery,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
         new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
@@ -45,8 +45,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
     it("throws error when reconversion project related site does not exist", async () => {
       const reconversionProjectId = uuid();
       const siteId = uuid();
-      const projectRepository = new InMemoryReconversionProjectImpactsRepository();
-      projectRepository._setData({
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData({
         id: reconversionProjectId,
         isExpressProject: false,
         name: "Test reconversion project",
@@ -59,10 +59,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         yearlyProjectedCosts: [],
         yearlyProjectedRevenues: [],
       });
-      const siteRepository = new InMemorySiteImpactsRepository();
+      const siteQuery = new InMemorySiteImpactsQuery();
       const usecase = new ComputeReconversionProjectImpactsUseCase(
-        projectRepository,
-        siteRepository,
+        projectQuery,
+        siteQuery,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
         new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
@@ -157,14 +157,14 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
 
     it("returns impacts over 10 years for a reconversion project dedicated to renewable energy production on friche with contaminated soil", async () => {
       const evaluationPeriodInYears = 10;
-      const projectRepository = new InMemoryReconversionProjectImpactsRepository();
-      projectRepository._setData(reconversionProjectImpactDataView);
-      const siteRepository = new InMemorySiteImpactsRepository();
-      siteRepository._setData(site);
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData(reconversionProjectImpactDataView);
+      const siteQuery = new InMemorySiteImpactsQuery();
+      siteQuery._setData(site);
 
       const usecase = new ComputeReconversionProjectImpactsUseCase(
-        projectRepository,
-        siteRepository,
+        projectQuery,
+        siteQuery,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
         new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),

@@ -19,18 +19,18 @@ import {
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import {
   GetUserReconversionProjectsBySiteUseCase,
-  ReconversionProjectsListRepository,
+  ReconversionProjectsListQuery,
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { SqlSitesReadRepository } from "src/sites/adapters/secondary/site-repository/read/SqlSiteReadRepository";
 import { SqlSiteWriteRepository } from "src/sites/adapters/secondary/site-repository/write/SqlSiteWriteRepository";
 import { SitesReadRepository } from "src/sites/core/gateways/SitesReadRepository";
+import { SqlReconversionProjectImpactsQuery } from "../secondary/queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
+import { SqlReconversionProjectsListQuery } from "../secondary/queries/reconversion-project-list/SqlReconversionProjectsListQuery";
+import { SqlSiteImpactsQuery } from "../secondary/queries/site-impacts/SqlSiteImpactsQuery";
 import { SqlReconversionProjectQuery } from "../secondary/queries/SqlReconversionProjectQuery";
-import { SqlReconversionProjectImpactsRepository } from "../secondary/reconversion-project-impacts-repository/SqlReconversionProjectImpactsRepository";
-import { SqlReconversionProjectRepository } from "../secondary/reconversion-project-repository/SqlReconversionProjectRepository";
-import { SqlReconversionProjectsListRepository } from "../secondary/reconversion-projects-list-repository/SqlReconversionProjectsListRepository";
-import { SqlSiteImpactsRepository } from "../secondary/site-impacts-repository/SqlSiteImpactsRepository";
+import { SqlReconversionProjectRepository } from "../secondary/repositories/reconversion-project/SqlReconversionProjectRepository";
 import { ReconversionProjectController } from "./reconversionProjects.controller";
 
 @Module({
@@ -67,9 +67,9 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     },
     {
       provide: GetUserReconversionProjectsBySiteUseCase,
-      useFactory: (reconversionProjectsListRepository: ReconversionProjectsListRepository) =>
-        new GetUserReconversionProjectsBySiteUseCase(reconversionProjectsListRepository),
-      inject: [SqlReconversionProjectsListRepository],
+      useFactory: (reconversionProjectsListQuery: ReconversionProjectsListQuery) =>
+        new GetUserReconversionProjectsBySiteUseCase(reconversionProjectsListQuery),
+      inject: [SqlReconversionProjectsListQuery],
     },
     {
       provide: GetCityRelatedDataService,
@@ -82,8 +82,8 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     {
       provide: ComputeReconversionProjectImpactsUseCase,
       useFactory(
-        reconversionProjectRepo: SqlReconversionProjectImpactsRepository,
-        siteRepo: SqlSiteImpactsRepository,
+        reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
+        siteRepo: SqlSiteImpactsQuery,
         getCityCarbonStoragePerSoilsCategoryUseCase: GetCityCarbonStoragePerSoilsCategoryUseCase,
         dateProvider: IDateProvider,
         getCityRelatedDataService: GetCityRelatedDataService,
@@ -97,8 +97,8 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         );
       },
       inject: [
-        SqlReconversionProjectImpactsRepository,
-        SqlSiteImpactsRepository,
+        SqlReconversionProjectImpactsQuery,
+        SqlSiteImpactsQuery,
         GetCityCarbonStoragePerSoilsCategoryUseCase,
         DateProvider,
         GetCityRelatedDataService,
@@ -113,11 +113,11 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     },
     SqlReconversionProjectRepository,
     SqlReconversionProjectQuery,
-    SqlReconversionProjectsListRepository,
+    SqlReconversionProjectsListQuery,
     SqlSiteWriteRepository,
     SqlSitesReadRepository,
-    SqlReconversionProjectImpactsRepository,
-    SqlSiteImpactsRepository,
+    SqlReconversionProjectImpactsQuery,
+    SqlSiteImpactsQuery,
     DateProvider,
     SqlCarbonStorageRepository,
     GeoApiGouvService,

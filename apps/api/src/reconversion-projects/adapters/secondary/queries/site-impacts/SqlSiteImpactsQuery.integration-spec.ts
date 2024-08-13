@@ -2,11 +2,11 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import { SiteImpactsDataView } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { SqlSiteImpactsRepository } from "./SqlSiteImpactsRepository";
+import { SqlSiteImpactsQuery } from "./SqlSiteImpactsQuery";
 
-describe("SqlSiteRepository integration", () => {
+describe("SqlSiteImpactsQuery integration", () => {
   let sqlConnection: Knex;
-  let siteRepository: SqlSiteImpactsRepository;
+  let siteQuery: SqlSiteImpactsQuery;
 
   beforeAll(() => {
     sqlConnection = knex(knexConfig);
@@ -17,7 +17,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   beforeEach(() => {
-    siteRepository = new SqlSiteImpactsRepository(sqlConnection);
+    siteQuery = new SqlSiteImpactsQuery(sqlConnection);
   });
 
   describe("getById", () => {
@@ -70,7 +70,7 @@ describe("SqlSiteRepository integration", () => {
         city_code: "01234",
       });
 
-      const result = await siteRepository.getById(siteId);
+      const result = await siteQuery.getById(siteId);
 
       expect(result).toEqual<Required<SiteImpactsDataView>>({
         id: siteId,
@@ -123,7 +123,7 @@ describe("SqlSiteRepository integration", () => {
         city_code: "01234",
       });
 
-      const result = await siteRepository.getById(siteId);
+      const result = await siteQuery.getById(siteId);
 
       expect(result).toEqual<SiteImpactsDataView>({
         id: siteId,

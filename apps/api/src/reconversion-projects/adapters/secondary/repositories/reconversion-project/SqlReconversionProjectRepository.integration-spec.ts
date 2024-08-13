@@ -60,51 +60,6 @@ describe("SqlReconversionProjectRepository integration", () => {
     });
   });
 
-  describe("getById", () => {
-    it("gets reconversion project by id", async () => {
-      const siteId = await insertSiteInDb();
-      const reconversionProjectId = uuid();
-      await sqlConnection("reconversion_projects").insert({
-        id: reconversionProjectId,
-        name: "Centrale pv",
-        related_site_id: siteId,
-        created_at: now,
-        creation_mode: "custom",
-      });
-      await sqlConnection("reconversion_project_soils_distributions").insert([
-        {
-          id: uuid(),
-          reconversion_project_id: reconversionProjectId,
-          soil_type: "BUILDINGS",
-          surface_area: 50,
-        },
-        {
-          id: uuid(),
-          reconversion_project_id: reconversionProjectId,
-          soil_type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-          surface_area: 230,
-        },
-        {
-          id: uuid(),
-          reconversion_project_id: reconversionProjectId,
-          soil_type: "IMPERMEABLE_SOILS",
-          surface_area: 100,
-        },
-      ]);
-      const result = await reconversionProjectRepository.getById(reconversionProjectId);
-      expect(result).toEqual({
-        id: reconversionProjectId,
-        name: "Centrale pv",
-        relatedSiteId: siteId,
-        soilsDistribution: {
-          BUILDINGS: 50,
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 230,
-          IMPERMEABLE_SOILS: 100,
-        },
-      });
-    });
-  });
-
   describe("save", () => {
     describe("Photovoltaic power plant development plan", () => {
       it("Saves given reconversion project with minimal data in table reconversion_projects", async () => {

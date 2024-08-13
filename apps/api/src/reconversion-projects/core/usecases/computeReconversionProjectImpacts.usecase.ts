@@ -67,7 +67,7 @@ export type SiteImpactsDataView = {
   yearlyCosts: { bearer: string; amount: number; purpose: string }[];
 };
 
-export interface SiteImpactsRepository {
+export interface SiteImpactsQuery {
   getById(siteId: string): Promise<SiteImpactsDataView | undefined>;
 }
 
@@ -99,7 +99,7 @@ export type ReconversionProjectImpactsDataView = {
   siteResaleTotalAmount?: number;
 };
 
-export interface ReconversionProjectImpactsRepository {
+export interface ReconversionProjectImpactsQuery {
   getById(reconversionProjectId: string): Promise<ReconversionProjectImpactsDataView | undefined>;
 }
 
@@ -175,16 +175,15 @@ class SiteNotFound extends Error {
 
 export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request, Result> {
   constructor(
-    private readonly reconversionProjectRepository: ReconversionProjectImpactsRepository,
-    private readonly siteRepository: SiteImpactsRepository,
+    private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
+    private readonly siteRepository: SiteImpactsQuery,
     private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
     private readonly dateProvider: DateProvider,
     private readonly getCityRelatedDataService: GetCityRelatedDataService,
   ) {}
 
   async execute({ reconversionProjectId, evaluationPeriodInYears }: Request): Promise<Result> {
-    const reconversionProject =
-      await this.reconversionProjectRepository.getById(reconversionProjectId);
+    const reconversionProject = await this.reconversionProjectQuery.getById(reconversionProjectId);
 
     if (!reconversionProject) throw new ReconversionProjectNotFound(reconversionProjectId);
 

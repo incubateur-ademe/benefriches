@@ -3,12 +3,12 @@ import { Knex } from "knex";
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import {
   ReconversionProjectsGroupedBySite,
-  ReconversionProjectsListRepository,
+  ReconversionProjectsListQuery,
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
-export class SqlReconversionProjectsListRepository implements ReconversionProjectsListRepository {
+export class SqlReconversionProjectsListQuery implements ReconversionProjectsListQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
   async getGroupedBySite({
     userId,

@@ -2,11 +2,11 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import { ReconversionProjectsGroupedBySite } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { SqlReconversionProjectsListRepository } from "./SqlReconversionProjectsListRepository";
+import { SqlReconversionProjectsListQuery } from "./SqlReconversionProjectsListQuery";
 
-describe("ReconversionProjectsListRepository integration", () => {
+describe("ReconversionProjectsListQuery integration", () => {
   let sqlConnection: Knex;
-  let reconversionProjectsListRepository: SqlReconversionProjectsListRepository;
+  let reconversionProjectsListQuery: SqlReconversionProjectsListQuery;
 
   beforeAll(() => {
     sqlConnection = knex(knexConfig);
@@ -17,12 +17,12 @@ describe("ReconversionProjectsListRepository integration", () => {
   });
 
   beforeEach(() => {
-    reconversionProjectsListRepository = new SqlReconversionProjectsListRepository(sqlConnection);
+    reconversionProjectsListQuery = new SqlReconversionProjectsListQuery(sqlConnection);
   });
 
   describe("getGroupedBySite", () => {
     it("returns empty list when no sites", async () => {
-      const result = await reconversionProjectsListRepository.getGroupedBySite({
+      const result = await reconversionProjectsListQuery.getGroupedBySite({
         userId: uuid(),
       });
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([]);
@@ -47,7 +47,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         friche_contaminated_soil_surface_area: 230,
       };
       await sqlConnection("sites").insert(siteInDb);
-      const result = await reconversionProjectsListRepository.getGroupedBySite({
+      const result = await reconversionProjectsListQuery.getGroupedBySite({
         userId: uuid(),
       });
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([]);
@@ -73,7 +73,7 @@ describe("ReconversionProjectsListRepository integration", () => {
       };
       await sqlConnection("sites").insert(siteInDb);
 
-      const result = await reconversionProjectsListRepository.getGroupedBySite({ userId });
+      const result = await reconversionProjectsListQuery.getGroupedBySite({ userId });
 
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([
         {
@@ -169,7 +169,7 @@ describe("ReconversionProjectsListRepository integration", () => {
         },
       ]);
 
-      const result = await reconversionProjectsListRepository.getGroupedBySite({ userId });
+      const result = await reconversionProjectsListQuery.getGroupedBySite({ userId });
 
       expect(result).toHaveLength(2);
       expect(result).toEqual<ReconversionProjectsGroupedBySite>([

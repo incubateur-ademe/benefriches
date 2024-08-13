@@ -1,11 +1,9 @@
 import {
   ReconversionProjectsGroupedBySite,
-  ReconversionProjectsListRepository,
+  ReconversionProjectsListQuery,
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 
-export class InMemoryReconversionProjectsListRepository
-  implements ReconversionProjectsListRepository
-{
+export class InMemoryReconversionProjectsListQuery implements ReconversionProjectsListQuery {
   constructor(
     private readonly reconversionProjectsBySite: ReconversionProjectsGroupedBySite = [],
   ) {}

@@ -1,4 +1,4 @@
-import { InMemoryReconversionProjectsListRepository } from "src/reconversion-projects/adapters/secondary/reconversion-projects-list-repository/InMemoryReconversionProjectsListRepository";
+import { InMemoryReconversionProjectsListQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-list/InMemoryReconversionProjectsListQuery";
 import {
   GetUserReconversionProjectsBySiteUseCase,
   ReconversionProjectsGroupedBySite,
@@ -7,7 +7,7 @@ import {
 describe("GetUserReconversionProjectsBySite Use Case", () => {
   it("Fails when userId is not provided", async () => {
     const usecase = new GetUserReconversionProjectsBySiteUseCase(
-      new InMemoryReconversionProjectsListRepository(),
+      new InMemoryReconversionProjectsListQuery(),
     );
 
     // @ts-expect-error userId is required
@@ -46,13 +46,13 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
       },
     ];
     const userId = "0918223a-4d05-43a3-ad15-ccac704f7998";
-    const repo = new InMemoryReconversionProjectsListRepository(reconversionProjects);
-    jest.spyOn(repo, "getGroupedBySite");
+    const query = new InMemoryReconversionProjectsListQuery(reconversionProjects);
+    jest.spyOn(query, "getGroupedBySite");
 
-    const usecase = new GetUserReconversionProjectsBySiteUseCase(repo);
+    const usecase = new GetUserReconversionProjectsBySiteUseCase(query);
     const result = await usecase.execute({ userId });
     expect(result).toEqual(reconversionProjects);
     /* eslint-disable-next-line @typescript-eslint/unbound-method */
-    expect(repo.getGroupedBySite).toHaveBeenCalledWith({ userId });
+    expect(query.getGroupedBySite).toHaveBeenCalledWith({ userId });
   });
 });

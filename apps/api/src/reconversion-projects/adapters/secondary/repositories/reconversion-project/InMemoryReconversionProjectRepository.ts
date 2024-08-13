@@ -16,12 +16,6 @@ export class InMemoryReconversionProjectRepository implements ReconversionProjec
     return Promise.resolve(!!foundReconversionProject);
   }
 
-  getById(reconversionProjectId: string): Promise<ReconversionProject | undefined> {
-    return Promise.resolve(
-      this.reconversionProjects.find(({ id }) => id === reconversionProjectId),
-    );
-  }
-
   _getReconversionProjects() {
     return this.reconversionProjects;
   }
