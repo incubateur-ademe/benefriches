@@ -1,16 +1,16 @@
-import { InMemorySiteReadRepository } from "src/sites/adapters/secondary/site-repository/read/InMemorySiteReadRepository";
+import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { GetSiteByIdUseCase, SiteViewModel } from "./getSiteById.usecase";
 
 describe("GetSiteById Use Case", () => {
-  let siteRepository: InMemorySiteReadRepository;
+  let sitesQuery: InMemorySitesQuery;
 
   beforeEach(() => {
-    siteRepository = new InMemorySiteReadRepository();
+    sitesQuery = new InMemorySitesQuery();
   });
 
   it("cannot get a non-existing site", async () => {
     const siteId = "fdc94bb2-ec2c-49f8-92ea-19bd91160027";
-    const usecase = new GetSiteByIdUseCase(siteRepository);
+    const usecase = new GetSiteByIdUseCase(sitesQuery);
     await expect(usecase.execute({ siteId })).rejects.toThrow(`Site with ID ${siteId} not found`);
   });
 
@@ -55,9 +55,9 @@ describe("GetSiteById Use Case", () => {
       accidentsMinorInjuries: 2,
       accidentsSevereInjuries: 1,
     };
-    siteRepository._setSites([site]);
+    sitesQuery._setSites([site]);
 
-    const usecase = new GetSiteByIdUseCase(siteRepository);
+    const usecase = new GetSiteByIdUseCase(sitesQuery);
 
     const result = await usecase.execute({ siteId: site.id });
 

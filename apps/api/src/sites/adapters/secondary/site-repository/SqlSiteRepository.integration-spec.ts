@@ -3,11 +3,11 @@ import { v4 as uuid } from "uuid";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { FricheSite, NonFricheSite } from "src/sites/core/models/site";
 import { buildExpressSite, buildMinimalSite } from "src/sites/core/models/site.mock";
-import { SqlSiteWriteRepository } from "./SqlSiteWriteRepository";
+import { SqlSiteRepository } from "./SqlSiteRepository";
 
-describe("SqlSiteWriteRepository integration", () => {
+describe("SqlSiteRepository integration", () => {
   let sqlConnection: Knex;
-  let siteRepository: SqlSiteWriteRepository;
+  let siteRepository: SqlSiteRepository;
   const now = new Date();
 
   beforeAll(() => {
@@ -19,7 +19,7 @@ describe("SqlSiteWriteRepository integration", () => {
   });
 
   beforeEach(() => {
-    siteRepository = new SqlSiteWriteRepository(sqlConnection);
+    siteRepository = new SqlSiteRepository(sqlConnection);
   });
 
   describe("existsWithId", () => {

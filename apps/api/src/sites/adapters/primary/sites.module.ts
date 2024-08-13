@@ -1,12 +1,12 @@
 import { Module } from "@nestjs/common";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { SitesReadRepository } from "src/sites/core/gateways/SitesReadRepository";
-import { SitesWriteRepository } from "src/sites/core/gateways/SitesWriteRepository";
+import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
+import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { CreateNewSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase } from "src/sites/core/usecases/getSiteById.usecase";
-import { SqlSitesReadRepository } from "../secondary/site-repository/read/SqlSiteReadRepository";
-import { SqlSiteWriteRepository } from "../secondary/site-repository/write/SqlSiteWriteRepository";
+import { SqlSitesQuery } from "../secondary/site-query/SqlSitesQuery";
+import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepository";
 import { SitesController } from "./sites.controller";
 
 @Module({
@@ -14,17 +14,17 @@ import { SitesController } from "./sites.controller";
   providers: [
     {
       provide: CreateNewSiteUseCase,
-      useFactory: (siteRepository: SitesWriteRepository, dateProvider: IDateProvider) =>
+      useFactory: (siteRepository: SitesRepository, dateProvider: IDateProvider) =>
         new CreateNewSiteUseCase(siteRepository, dateProvider),
-      inject: [SqlSiteWriteRepository, DateProvider],
+      inject: [SqlSiteRepository, DateProvider],
     },
     {
       provide: GetSiteByIdUseCase,
-      useFactory: (siteRepository: SitesReadRepository) => new GetSiteByIdUseCase(siteRepository),
-      inject: [SqlSitesReadRepository],
+      useFactory: (siteRepository: SitesQuery) => new GetSiteByIdUseCase(siteRepository),
+      inject: [SqlSitesQuery],
     },
-    SqlSiteWriteRepository,
-    SqlSitesReadRepository,
+    SqlSiteRepository,
+    SqlSitesQuery,
     DateProvider,
   ],
 })

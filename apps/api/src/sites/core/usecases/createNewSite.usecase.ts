@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { UseCase } from "src/shared-kernel/usecase";
-import { SitesWriteRepository } from "../gateways/SitesWriteRepository";
+import { SitesRepository } from "../gateways/SitesRepository";
 import { fricheSchema, nonFricheSiteSchema, Site } from "../models/site";
 
 // we can't use .omit method on siteSchema because zod doesn not allow it on discrimnated union
@@ -26,14 +26,14 @@ export interface DateProvider {
 
 export class CreateNewSiteUseCase implements UseCase<Request, void> {
   constructor(
-    private readonly siteWriteRepository: SitesWriteRepository,
+    private readonly sitesRepository: SitesRepository,
     private readonly dateProvider: DateProvider,
   ) {}
 
   async execute({ siteProps }: Request): Promise<void> {
     const parsedSite = await sitePropsSchema.parseAsync(siteProps);
 
-    if (await this.siteWriteRepository.existsWithId(parsedSite.id)) {
+    if (await this.sitesRepository.existsWithId(parsedSite.id)) {
       throw new Error(`Site with id ${parsedSite.id} already exists`);
     }
 
@@ -42,6 +42,6 @@ export class CreateNewSiteUseCase implements UseCase<Request, void> {
       createdAt: this.dateProvider.now(),
     };
 
-    await this.siteWriteRepository.save(site);
+    await this.sitesRepository.save(site);
   }
 }

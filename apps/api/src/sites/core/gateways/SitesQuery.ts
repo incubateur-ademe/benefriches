@@ -1,5 +1,5 @@
 import { SiteViewModel } from "../usecases/getSiteById.usecase";
 
-export interface SitesReadRepository {
+export interface SitesQuery {
   getById(siteId: SiteViewModel["id"]): Promise<SiteViewModel | undefined>;
 }

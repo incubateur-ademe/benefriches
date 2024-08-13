@@ -9,11 +9,11 @@ import {
   SqlSiteIncome,
   SqlSiteSoilsDistribution,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import { SitesWriteRepository } from "src/sites/core/gateways/SitesWriteRepository";
+import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { Site } from "src/sites/core/models/site";
 import { SoilType } from "src/soils/domain/soils";
 
-export class SqlSiteWriteRepository implements SitesWriteRepository {
+export class SqlSiteRepository implements SitesRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async save(site: Site): Promise<void> {

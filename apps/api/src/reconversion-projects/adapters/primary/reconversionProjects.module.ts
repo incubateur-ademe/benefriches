@@ -10,7 +10,10 @@ import { CityDataProvider } from "src/location-features/core/gateways/CityDataPr
 import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
-import { CreateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
+import {
+  CreateExpressReconversionProjectUseCase,
+  SiteQuery,
+} from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
 import {
   CreateReconversionProjectUseCase,
   ReconversionProjectRepository,
@@ -23,9 +26,8 @@ import {
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { SqlSitesReadRepository } from "src/sites/adapters/secondary/site-repository/read/SqlSiteReadRepository";
-import { SqlSiteWriteRepository } from "src/sites/adapters/secondary/site-repository/write/SqlSiteWriteRepository";
-import { SitesReadRepository } from "src/sites/core/gateways/SitesReadRepository";
+import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
+import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 import { SqlReconversionProjectImpactsQuery } from "../secondary/queries/reconversion-project-impacts/SqlReconversionProjectImpactsQuery";
 import { SqlReconversionProjectsListQuery } from "../secondary/queries/reconversion-project-list/SqlReconversionProjectsListQuery";
 import { SqlSiteImpactsQuery } from "../secondary/queries/site-impacts/SqlSiteImpactsQuery";
@@ -49,13 +51,13 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           siteRepository,
           reconversionProjectRepository,
         ),
-      inject: [DateProvider, SqlSiteWriteRepository, SqlReconversionProjectRepository],
+      inject: [DateProvider, SqlSiteRepository, SqlReconversionProjectRepository],
     },
     {
       provide: CreateExpressReconversionProjectUseCase,
       useFactory: (
         dateProvider: IDateProvider,
-        siteRepository: SitesReadRepository,
+        siteRepository: SiteQuery,
         reconversionProjectRepository: ReconversionProjectRepository,
       ) =>
         new CreateExpressReconversionProjectUseCase(
@@ -63,7 +65,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           siteRepository,
           reconversionProjectRepository,
         ),
-      inject: [DateProvider, SqlSitesReadRepository, SqlReconversionProjectRepository],
+      inject: [DateProvider, SqlSitesQuery, SqlReconversionProjectRepository],
     },
     {
       provide: GetUserReconversionProjectsBySiteUseCase,
@@ -114,8 +116,8 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     SqlReconversionProjectRepository,
     SqlReconversionProjectQuery,
     SqlReconversionProjectsListQuery,
-    SqlSiteWriteRepository,
-    SqlSitesReadRepository,
+    SqlSiteRepository,
+    SqlSitesQuery,
     SqlReconversionProjectImpactsQuery,
     SqlSiteImpactsQuery,
     DateProvider,

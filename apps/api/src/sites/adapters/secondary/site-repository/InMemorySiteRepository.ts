@@ -1,7 +1,7 @@
-import { SitesWriteRepository } from "src/sites/core/gateways/SitesWriteRepository";
+import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { Site } from "src/sites/core/models/site";
 
-export class InMemorySitesWriteRepository implements SitesWriteRepository {
+export class InMemorySitesRepository implements SitesRepository {
   private sites: Site[] = [];
 
   async save(site: Site) {

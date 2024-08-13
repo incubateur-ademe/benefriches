@@ -14,7 +14,7 @@ export type SiteView = {
   address: Address;
 };
 
-export interface SiteRepository {
+export interface SiteQuery {
   getById(id: string): Promise<SiteView | undefined>;
 }
 export interface ReconversionProjectRepository {
@@ -38,12 +38,12 @@ type Request = {
 export class CreateExpressReconversionProjectUseCase implements UseCase<Request, void> {
   constructor(
     private readonly dateProvider: DateProvider,
-    private readonly siteRepository: SiteRepository,
+    private readonly siteQuery: SiteQuery,
     private readonly reconversionProjectRepository: ReconversionProjectRepository,
   ) {}
 
   async execute(props: Request): Promise<void> {
-    const siteData = await this.siteRepository.getById(props.siteId);
+    const siteData = await this.siteQuery.getById(props.siteId);
     if (!siteData) {
       throw new Error(`Site with id ${props.siteId} does not exist`);
     }

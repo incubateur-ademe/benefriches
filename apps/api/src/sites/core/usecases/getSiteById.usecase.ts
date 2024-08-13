@@ -1,6 +1,6 @@
 import { UseCase } from "src/shared-kernel/usecase";
 import { SoilType } from "src/soils/domain/soils";
-import { SitesReadRepository } from "../gateways/SitesReadRepository";
+import { SitesQuery } from "../gateways/SitesQuery";
 import { Address } from "../models/site";
 
 type Request = {
@@ -42,10 +42,10 @@ export class SiteNotFoundError extends Error {
 }
 
 export class GetSiteByIdUseCase implements UseCase<Request, SiteViewModel> {
-  constructor(private readonly sitesRepository: SitesReadRepository) {}
+  constructor(private readonly sitesQuery: SitesQuery) {}
 
   async execute({ siteId }: Request): Promise<SiteViewModel> {
-    const site = await this.sitesRepository.getById(siteId);
+    const site = await this.sitesQuery.getById(siteId);
 
     if (!site) throw new SiteNotFoundError(siteId);
 

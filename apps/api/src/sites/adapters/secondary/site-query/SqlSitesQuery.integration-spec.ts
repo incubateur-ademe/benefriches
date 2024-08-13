@@ -2,11 +2,11 @@ import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
-import { SqlSitesReadRepository } from "./SqlSiteReadRepository";
+import { SqlSitesQuery } from "./SqlSitesQuery";
 
-describe("SqlSitesReadRepository integration", () => {
+describe("SqlSitesQuery integration", () => {
   let sqlConnection: Knex;
-  let siteRepository: SqlSitesReadRepository;
+  let sitesQuery: SqlSitesQuery;
   const now = new Date();
 
   beforeAll(() => {
@@ -18,7 +18,7 @@ describe("SqlSitesReadRepository integration", () => {
   });
 
   beforeEach(() => {
-    siteRepository = new SqlSitesReadRepository(sqlConnection);
+    sitesQuery = new SqlSitesQuery(sqlConnection);
   });
 
   describe("getById", () => {
@@ -83,7 +83,7 @@ describe("SqlSitesReadRepository integration", () => {
         },
       ]);
 
-      const result = await siteRepository.getById(siteId);
+      const result = await sitesQuery.getById(siteId);
 
       const expectedResult: Required<SiteViewModel> = {
         id: siteId,
@@ -166,7 +166,7 @@ describe("SqlSitesReadRepository integration", () => {
         },
       ]);
 
-      const result = await siteRepository.getById(siteId);
+      const result = await sitesQuery.getById(siteId);
 
       const expectedResult: SiteViewModel = {
         id: siteId,
@@ -206,7 +206,7 @@ describe("SqlSitesReadRepository integration", () => {
         is_friche: false,
       });
 
-      const result = await siteRepository.getById(siteId);
+      const result = await sitesQuery.getById(siteId);
 
       expect(result?.id).toEqual(siteId);
       expect(result?.yearlyExpenses).toEqual([]);
@@ -233,7 +233,7 @@ describe("SqlSitesReadRepository integration", () => {
         friche_contaminated_soil_surface_area: 230,
       });
 
-      const result = await siteRepository.getById(nonExistingSiteId);
+      const result = await sitesQuery.getById(nonExistingSiteId);
 
       expect(result).toEqual(undefined);
     });

@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
-import { InMemorySiteReadRepository } from "src/sites/adapters/secondary/site-repository/read/InMemorySiteReadRepository";
+import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 import { SoilsDistribution } from "src/soils/domain/soils";
 import { MixedUseNeighbourhoodFeatures, SpacesDistribution } from "../model/mixedUseNeighbourhood";
 import { ReconversionProject } from "../model/reconversionProject";
@@ -12,13 +12,13 @@ import {
 
 describe("CreateReconversionProject Use Case", () => {
   let dateProvider: DateProvider;
-  let siteRepository: InMemorySiteReadRepository;
+  let sitesQuery: InMemorySitesQuery;
   let reconversionProjectRepository: InMemoryReconversionProjectRepository;
   const fakeNow = new Date("2024-01-05T13:00:00");
 
   beforeEach(() => {
     dateProvider = new DeterministicDateProvider(fakeNow);
-    siteRepository = new InMemorySiteReadRepository();
+    sitesQuery = new InMemorySitesQuery();
     reconversionProjectRepository = new InMemoryReconversionProjectRepository();
   });
 
@@ -26,7 +26,7 @@ describe("CreateReconversionProject Use Case", () => {
     it("cannot create an express reconversion project with a non-existing site", async () => {
       const usecase = new CreateExpressReconversionProjectUseCase(
         dateProvider,
-        siteRepository,
+        sitesQuery,
         reconversionProjectRepository,
       );
 
@@ -72,13 +72,13 @@ describe("CreateReconversionProject Use Case", () => {
         };
 
         beforeEach(() => {
-          siteRepository._setSites([site]);
+          sitesQuery._setSites([site]);
         });
 
         it("should create a mixed-use neighbourhood project with default name, given related site id, createdBy, createdAt and creationMode", async () => {
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
-            siteRepository,
+            sitesQuery,
             reconversionProjectRepository,
           );
 
@@ -102,7 +102,7 @@ describe("CreateReconversionProject Use Case", () => {
 
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
-            siteRepository,
+            sitesQuery,
             reconversionProjectRepository,
           );
 
@@ -128,7 +128,7 @@ describe("CreateReconversionProject Use Case", () => {
         it("should create a mixed-use neighbourhood project with site city as developer, reinstatement contract owner and site owner", async () => {
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
-            siteRepository,
+            sitesQuery,
             reconversionProjectRepository,
           );
 
@@ -157,7 +157,7 @@ describe("CreateReconversionProject Use Case", () => {
         it("should create a mixed-use neighbourhood project with right spaces, buildings floor area and soils distribution", async () => {
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
-            siteRepository,
+            sitesQuery,
             reconversionProjectRepository,
           );
 
@@ -218,7 +218,7 @@ describe("CreateReconversionProject Use Case", () => {
         it("should create a mixed-use neighbourhood project with expected sale after development relative to buildings floor surface area", async () => {
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
-            siteRepository,
+            sitesQuery,
             reconversionProjectRepository,
           );
 
@@ -245,11 +245,11 @@ describe("CreateReconversionProject Use Case", () => {
             contaminatedSoilSurface: 0,
           };
           it("should create a mixed-use neighbourhood with reinstatement costs, real estate sale transaction and development installation costs", async () => {
-            siteRepository._setSites([nonPollutedFricheWithNoBuildings]);
+            sitesQuery._setSites([nonPollutedFricheWithNoBuildings]);
 
             const usecase = new CreateExpressReconversionProjectUseCase(
               dateProvider,
-              siteRepository,
+              sitesQuery,
               reconversionProjectRepository,
             );
 
@@ -291,11 +291,11 @@ describe("CreateReconversionProject Use Case", () => {
             contaminatedSoilSurface: 50000,
           };
           it("should create a mixed-use neighbourhood with reinstatement costs, real estate sale transaction and development installation costs based on site data", async () => {
-            siteRepository._setSites([pollutedFricheWithBuildings]);
+            sitesQuery._setSites([pollutedFricheWithBuildings]);
 
             const usecase = new CreateExpressReconversionProjectUseCase(
               dateProvider,
-              siteRepository,
+              sitesQuery,
               reconversionProjectRepository,
             );
 
@@ -346,11 +346,11 @@ describe("CreateReconversionProject Use Case", () => {
           };
 
           it("should create mixed-use neighbourhood with deimpermeabilization and sustainable soils reinstatement expenses", async () => {
-            siteRepository._setSites([allImpermeableFriche]);
+            sitesQuery._setSites([allImpermeableFriche]);
 
             const usecase = new CreateExpressReconversionProjectUseCase(
               dateProvider,
-              siteRepository,
+              sitesQuery,
               reconversionProjectRepository,
             );
 
@@ -419,11 +419,11 @@ describe("CreateReconversionProject Use Case", () => {
             yearlyExpenses: [],
           };
           it("should create a mixed-use neighbourhood with real estate sale transaction and development installation costs based on site", async () => {
-            siteRepository._setSites([site]);
+            sitesQuery._setSites([site]);
 
             const usecase = new CreateExpressReconversionProjectUseCase(
               dateProvider,
-              siteRepository,
+              sitesQuery,
               reconversionProjectRepository,
             );
 

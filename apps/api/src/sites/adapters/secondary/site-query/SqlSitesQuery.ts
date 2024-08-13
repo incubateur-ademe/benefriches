@@ -7,10 +7,10 @@ import {
   SqlSiteExpense,
   SqlSiteSoilsDistribution,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import { SitesReadRepository } from "src/sites/core/gateways/SitesReadRepository";
+import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 
-export class SqlSitesReadRepository implements SitesReadRepository {
+export class SqlSitesQuery implements SitesQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async getById(siteId: string): Promise<SiteViewModel | undefined> {

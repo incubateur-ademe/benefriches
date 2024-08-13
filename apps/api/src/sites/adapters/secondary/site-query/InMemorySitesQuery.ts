@@ -1,7 +1,7 @@
-import { SitesReadRepository } from "src/sites/core/gateways/SitesReadRepository";
+import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 
-export class InMemorySiteReadRepository implements SitesReadRepository {
+export class InMemorySitesQuery implements SitesQuery {
   sites: SiteViewModel[] = [];
 
   _setSites(sites: SiteViewModel[]) {
