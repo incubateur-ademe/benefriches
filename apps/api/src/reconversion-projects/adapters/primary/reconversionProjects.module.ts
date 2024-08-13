@@ -1,7 +1,7 @@
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
-import { SqlCarbonStorageRepository } from "src/carbon-storage/adapters/secondary/carbonStorageRepository/SqlCarbonStorageRepository";
+import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
 import { LocationFeaturesModule } from "src/location-features/adapters/primary/locationFeatures.module";
 import { GeoApiGouvService } from "src/location-features/adapters/secondary/city-data-provider/GeoApiGouvService";
@@ -119,7 +119,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     SqlReconversionProjectImpactsQuery,
     SqlSiteImpactsQuery,
     DateProvider,
-    SqlCarbonStorageRepository,
+    SqlCarbonStorageQuery,
     GeoApiGouvService,
     DV3FApiGouvService,
   ],

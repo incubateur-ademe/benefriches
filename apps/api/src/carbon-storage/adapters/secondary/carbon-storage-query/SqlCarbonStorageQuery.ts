@@ -1,6 +1,6 @@
 import { BadRequestException, Inject, NotFoundException } from "@nestjs/common";
 import { Knex } from "knex";
-import { CarbonStorageRepository } from "src/carbon-storage/core/gateways/CarbonStorageRepository";
+import { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
 import {
   CarbonStorage,
   CarbonStorageProps,
@@ -68,7 +68,7 @@ const getForestLitterCarbonStorage = (soilCategories: RepositorySoilCategoryType
   );
 };
 
-export class SqlCarbonStorageRepository implements CarbonStorageRepository {
+export class SqlCarbonStorageQuery implements CarbonStorageQuery {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
   async getCarbonStorageForCity(

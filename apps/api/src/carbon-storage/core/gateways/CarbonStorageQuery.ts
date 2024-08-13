@@ -1,6 +1,6 @@
 import { CarbonStorage, RepositorySoilCategoryType } from "../models/carbonStorage";
 
-export interface CarbonStorageRepository {
+export interface CarbonStorageQuery {
   getCarbonStorageForCity(
     cityCode: string,
     soilCategories: RepositorySoilCategoryType[],

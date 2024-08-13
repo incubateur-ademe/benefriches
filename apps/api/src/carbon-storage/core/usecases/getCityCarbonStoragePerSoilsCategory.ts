@@ -1,6 +1,6 @@
 import { SoilType } from "src/soils/domain/soils";
 import { UseCase } from "../../../shared-kernel/usecase";
-import { CarbonStorageRepository } from "../gateways/CarbonStorageRepository";
+import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { mapSoilTypeToRepositorySoilCategory } from "../models/soilCategory";
 
 type Request = {
@@ -22,10 +22,10 @@ export type Response = {
 };
 
 export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<Request, Response> {
-  constructor(private readonly carbonStorageRepository: CarbonStorageRepository) {}
+  constructor(private readonly carbonStorageQuery: CarbonStorageQuery) {}
 
   async execute({ cityCode, soils = [] }: Request): Promise<Response> {
-    const carbonStorage = await this.carbonStorageRepository.getCarbonStorageForCity(
+    const carbonStorage = await this.carbonStorageQuery.getCarbonStorageForCity(
       cityCode,
       soils.map(({ type }) => mapSoilTypeToRepositorySoilCategory(type)),
     );

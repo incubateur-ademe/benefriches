@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
-import { SqlCarbonStorageRepository } from "../secondary/carbonStorageRepository/SqlCarbonStorageRepository";
+import { SqlCarbonStorageQuery } from "../secondary/carbon-storage-query/SqlCarbonStorageQuery";
 import { CarbonStorageController } from "./carbonStorage.controller";
 
 @Module({
@@ -8,11 +8,11 @@ import { CarbonStorageController } from "./carbonStorage.controller";
   providers: [
     {
       provide: GetCityCarbonStoragePerSoilsCategoryUseCase,
-      useFactory: (dataProvider: SqlCarbonStorageRepository) =>
+      useFactory: (dataProvider: SqlCarbonStorageQuery) =>
         new GetCityCarbonStoragePerSoilsCategoryUseCase(dataProvider),
-      inject: [SqlCarbonStorageRepository],
+      inject: [SqlCarbonStorageQuery],
     },
-    SqlCarbonStorageRepository,
+    SqlCarbonStorageQuery,
   ],
   exports: [GetCityCarbonStoragePerSoilsCategoryUseCase],
 })

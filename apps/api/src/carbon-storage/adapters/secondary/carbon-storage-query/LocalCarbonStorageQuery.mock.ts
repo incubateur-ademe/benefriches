@@ -1,5 +1,5 @@
 import { BadRequestException } from "@nestjs/common";
-import { CarbonStorageRepository } from "src/carbon-storage/core/gateways/CarbonStorageRepository";
+import { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
 import {
   CarbonStorage,
   RepositorySoilCategoryType,
@@ -273,7 +273,7 @@ const CITIES = {
   ],
 };
 
-export class LocalCarbonStorageRepository implements CarbonStorageRepository {
+export class LocalCarbonStorageQuery implements CarbonStorageQuery {
   async getCarbonStorageForCity(
     cityCode: "01026" | "01027",
     soils: RepositorySoilCategoryType[],

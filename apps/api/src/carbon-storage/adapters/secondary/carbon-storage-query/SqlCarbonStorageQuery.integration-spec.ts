@@ -4,15 +4,15 @@ import {
   ReservoirType,
 } from "src/carbon-storage/core/models/carbonStorage";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { SqlCarbonStorageRepository } from "./SqlCarbonStorageRepository";
+import { SqlCarbonStorageQuery } from "./SqlCarbonStorageQuery";
 
-describe("SqlCarbonStorageRepository integration", () => {
+describe("SqlCarbonStorageQuery integration", () => {
   let sqlConnection: Knex;
-  let sqlCarbonStorageRepository: SqlCarbonStorageRepository;
+  let sqlCarbonStorageQuery: SqlCarbonStorageQuery;
 
   beforeAll(() => {
     sqlConnection = knex(knexConfig);
-    sqlCarbonStorageRepository = new SqlCarbonStorageRepository(sqlConnection);
+    sqlCarbonStorageQuery = new SqlCarbonStorageQuery(sqlConnection);
   });
 
   afterAll(async () => {
@@ -20,13 +20,11 @@ describe("SqlCarbonStorageRepository integration", () => {
   });
 
   test("returns error if no city code is provided", async () => {
-    await expect(() =>
-      sqlCarbonStorageRepository.getCarbonStorageForCity("", []),
-    ).rejects.toThrow();
+    await expect(() => sqlCarbonStorageQuery.getCarbonStorageForCity("", [])).rejects.toThrow();
   });
 
   test("returns values for all soil categories if no category is provided", async () => {
-    const result = await sqlCarbonStorageRepository.getCarbonStorageForCity("01027", []);
+    const result = await sqlCarbonStorageQuery.getCarbonStorageForCity("01027", []);
     const soilStorageValues = result.filter(({ reservoir }) => reservoir === ReservoirType.SOIL);
     expect(soilStorageValues.length).toEqual(15);
 
@@ -54,7 +52,7 @@ describe("SqlCarbonStorageRepository integration", () => {
   test("Gets carbon storage entries for a city and specific soils for a simple case", async () => {
     const soilCategories = ["artificial_tree_filled", "forest_deciduous"] as const;
 
-    const result = await sqlCarbonStorageRepository.getCarbonStorageForCity("01027", [
+    const result = await sqlCarbonStorageQuery.getCarbonStorageForCity("01027", [
       ...soilCategories,
     ]);
 
@@ -116,7 +114,7 @@ describe("SqlCarbonStorageRepository integration", () => {
       "wet_land",
     ] as const;
 
-    const result = await sqlCarbonStorageRepository.getCarbonStorageForCity("01026", [
+    const result = await sqlCarbonStorageQuery.getCarbonStorageForCity("01026", [
       ...soilCategories,
     ]);
 
@@ -196,7 +194,7 @@ describe("SqlCarbonStorageRepository integration", () => {
   test("Gets carbon storage entries for a city and specific soils for a city with unprecise information on forest", async () => {
     const soilCategories = ["artificial_tree_filled", "forest_mixed", "prairie_bushes"] as const;
 
-    const result = await sqlCarbonStorageRepository.getCarbonStorageForCity("01033", [
+    const result = await sqlCarbonStorageQuery.getCarbonStorageForCity("01033", [
       ...soilCategories,
     ]);
 

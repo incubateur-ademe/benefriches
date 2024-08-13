@@ -1,16 +1,16 @@
-import { LocalCarbonStorageRepository } from "src/carbon-storage/adapters/secondary/carbonStorageRepository/LocalCarbonStorageRepository.mock";
-import { CarbonStorageRepository } from "../gateways/CarbonStorageRepository";
+import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/LocalCarbonStorageQuery.mock";
+import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "./getCityCarbonStoragePerSoilsCategory";
 
 describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
-  let carbonStorageRepository: CarbonStorageRepository;
+  let carbonStorageQuery: CarbonStorageQuery;
 
   beforeEach(() => {
-    carbonStorageRepository = new LocalCarbonStorageRepository();
+    carbonStorageQuery = new LocalCarbonStorageQuery();
   });
 
   test("it should compute the right total: simple example without forest", async () => {
-    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageRepository);
+    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01026",
       soils: [
@@ -33,7 +33,7 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
   });
 
   test("it should compute the right total: example with forest", async () => {
-    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageRepository);
+    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01027",
       soils: [
@@ -74,7 +74,7 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
   });
 
   test("it should return the right object format with forest value", async () => {
-    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageRepository);
+    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01027",
       soils: [
@@ -109,7 +109,7 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
   });
 
   test("it should return the right total for all kinds of impermeable soils", async () => {
-    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageRepository);
+    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01027",
       soils: [
@@ -156,7 +156,7 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
   });
 
   test("it should find no carbon for soils water", async () => {
-    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageRepository);
+    const usecase = new GetCityCarbonStoragePerSoilsCategoryUseCase(carbonStorageQuery);
     const result = await usecase.execute({
       cityCode: "01027",
       soils: [
