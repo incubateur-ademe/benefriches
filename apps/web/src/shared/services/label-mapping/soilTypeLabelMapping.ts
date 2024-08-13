@@ -7,9 +7,9 @@ export const getLabelForSoilType = (value: SoilType): string => {
     case "IMPERMEABLE_SOILS":
       return "Sols imperméabilisés";
     case "MINERAL_SOIL":
-      return "Sol perméable minéral";
+      return "Sols perméables minéraux";
     case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
-      return "Sol enherbé et arbustif";
+      return "Sols enherbés et arbustifs";
     case "ARTIFICIAL_TREE_FILLED":
       return "Sol arboré";
     case "FOREST_CONIFER":
@@ -42,13 +42,13 @@ export const getLabelForSoilType = (value: SoilType): string => {
 export const getDescriptionForSoilType = (value: SoilType): string => {
   switch (value) {
     case "BUILDINGS":
-      return "Sites de production, de stockage, de vente…";
+      return "Bâtiments à usages industriels, logistiques, commerciaux, administratifs, d'habitation, etc.";
     case "IMPERMEABLE_SOILS":
       return "Parking ou voirie bitumée, dalle en béton…";
     case "MINERAL_SOIL":
-      return "Parking ou voirie en gravier, sols semi-perméables…";
+      return "Parking ou voiries en gravier, pistes, sols nus (sans végétation) qu'ils soient naturels, artificiels ou remaniés (ex : sites miniers)";
     case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
-      return "Parc ou jardin en pelouse…";
+      return "Parcs et jardins en pelouse, sols artificiels ou remaniés avec de la végétation au sol ou arbustive (spontanée ou non), couvertures d'anciennes décharges";
     case "ARTIFICIAL_TREE_FILLED":
       return "Parc ou jardin avec des arbres plantés…";
     case "PRAIRIE_GRASS":
