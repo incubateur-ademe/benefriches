@@ -13,6 +13,7 @@ import NitrogenCycleDescription from "./ecosystem-services/NitrogenCycleDescript
 import PollinationDescription from "./ecosystem-services/PollinationDescription";
 import SoilErosionDescription from "./ecosystem-services/SoilErosionDescription";
 import WaterCycle from "./ecosystem-services/WaterCycle";
+import RentalIncomeDescription from "./rental-income/RentalIncomeDescription";
 import WaterRegulationDescription from "./water-regulation/WaterRegulationDescription";
 import SocioEconomicDescription from "./SocioEconomicDescription";
 import { SocioEconomicImpactDescriptionModalId } from "./types";
@@ -195,6 +196,27 @@ const SocioEconomicModalContentWizard = ({
         <>
           <ModalBreadcrumb segments={[{ label: "Impacts socio-économiques", isCurrent: true }]} />
           <SocioEconomicDescription />
+        </>
+      );
+
+    case "socio-economic.rental-income":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              {
+                label: "Impacts économiques directs",
+              },
+              { label: "Dépenses friche évitées", isCurrent: true },
+            ]}
+          />
+          <RentalIncomeDescription developmentPlan={projectData.developmentPlan} />
         </>
       );
 

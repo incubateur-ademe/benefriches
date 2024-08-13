@@ -6,6 +6,8 @@ export const getSocioEconomicSectionModalTitle = (
   switch (modalId) {
     case "socio-economic":
       return "🌍 Impacts socio-économiques";
+    case "socio-economic.rental-income":
+      return "🔑 Revenu locatif";
     case "socio-economic.avoided-friche-costs":
       return "🏚 Dépenses de gestion et de sécurisation de la friche évitées";
     case "socio-economic.avoided-illegal-dumping-costs":

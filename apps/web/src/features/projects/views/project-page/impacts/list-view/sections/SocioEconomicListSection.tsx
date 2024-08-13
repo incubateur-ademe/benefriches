@@ -23,6 +23,10 @@ const getImpactItemOnClick = (
       return () => {
         openImpactDescriptionModal("socio-economic.avoided-co2-renewable-energy");
       };
+    case "rental_income":
+      return () => {
+        openImpactDescriptionModal("socio-economic.rental-income");
+      };
     case "avoided_friche_costs":
       return () => {
         openImpactDescriptionModal("socio-economic.avoided-friche-costs");
