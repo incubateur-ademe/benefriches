@@ -23,9 +23,9 @@ function SiteFullTimeJobsInvolvedForm({ onSubmit, onBack }: Props) {
       instructions={
         <FormDefinition hideDivider>
           <p>
-            Le site peut nécessiter la mobilisation de personnel (interne ou via des prestations)
-            pour empêcher des intrusions (ex : gardiennage) ou maintenir les bâtiments ou les accès
-            en état (intervention sur des clôtures, portails, ouvertures, etc.).
+            Il s'agit des emplois liés au gardiennage, à l'entretien de bâtiments (ex : maintien
+            hors gel) ou des accès (ex : portail, clôture) voire à la réparation de dégradation
+            volontaire ou de vandalisme.
           </p>
         </FormDefinition>
       }
@@ -37,7 +37,7 @@ function SiteFullTimeJobsInvolvedForm({ onSubmit, onBack }: Props) {
           rules={{
             min: {
               value: 0,
-              message: "Veuillez sélectionner un montant valide",
+              message: "Veuillez sélectionner un nombre valide",
             },
           }}
           control={control}
