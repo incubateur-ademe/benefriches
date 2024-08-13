@@ -105,10 +105,8 @@ function TourGuideProvider({ children, steps, onCloseTutorial }: Props) {
         );
       }}
       styles={{
-        popover: (base) => ({
-          ...base,
-          padding: "1rem",
-        }),
+        popover: (base) => ({ ...base, padding: "1rem" }),
+        maskArea: (base) => ({ ...base, rx: 8 }),
       }}
     >
       {children}
