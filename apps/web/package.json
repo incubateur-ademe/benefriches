@@ -23,8 +23,8 @@
     "preinstall": "npx only-allow pnpm",
     "## needed by @codegouvfr/react-dsfr": "//",
     "postinstall": "copy-dsfr-to-public",
-    "predev": "only-include-used-icons",
-    "prebuild": "only-include-used-icons"
+    "predev": "react-dsfr update-icons",
+    "prebuild": "react-dsfr update-icons"
   },
   "dependencies": {
     "@codegouvfr/react-dsfr": "^1.10.11",
