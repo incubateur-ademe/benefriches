@@ -42,6 +42,18 @@ const getImpactItemOnClick = (
       return () => {
         openImpactDescriptionModal("social.avoided-vehicule-kilometers");
       };
+    case "full_time_jobs":
+      return () => {
+        openImpactDescriptionModal("social.full-time-jobs");
+      };
+    case "conversion_full_time_jobs":
+      return () => {
+        openImpactDescriptionModal("social.full-time-reconversion-jobs");
+      };
+    case "operations_full_time_jobs":
+      return () => {
+        openImpactDescriptionModal("social.full-time-operation-jobs");
+      };
     default:
       return undefined;
   }

@@ -29,6 +29,10 @@ const getImpactOnClick = (
       return () => {
         openImpactDescriptionModal("social.households-powered-by-renewable-energy");
       };
+    case "full_time_jobs":
+      return () => {
+        openImpactDescriptionModal("social.full-time-jobs");
+      };
     default:
       return undefined;
   }

@@ -26,7 +26,15 @@ const EnvironmentalSectionModalContentWizard = ({
     case "environmental":
       return <EnvironmentalMainDescription />;
 
-    case "environmental.avoided-co2-renewable-energy":
+    case "environmental.avoided-co2-renewable-energy": {
+      const surfaceArea =
+        projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+          ? projectData.developmentPlan.surfaceArea
+          : undefined;
+      const electricalPowerKWc =
+        projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+          ? projectData.developmentPlan.electricalPowerKWc
+          : undefined;
       return (
         <>
           <ModalBreadcrumb
@@ -45,11 +53,13 @@ const EnvironmentalSectionModalContentWizard = ({
           />
           <AvoidedCO2WithEnREnvironmentalDescription
             address={siteData.addressLabel}
-            developmentPlanElectricalPowerKWc={projectData.developmentPlan.electricalPowerKWc}
-            developmentPlanSurfaceArea={projectData.developmentPlan.surfaceArea}
+            developmentPlanElectricalPowerKWc={electricalPowerKWc}
+            developmentPlanSurfaceArea={surfaceArea}
           />
         </>
       );
+    }
+
     case "environmental.carbon-storage":
       return (
         <>

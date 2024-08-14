@@ -10,6 +10,14 @@ type Props = {
 };
 
 const RentalIncomeDescription = ({ developmentPlan }: Props) => {
+  const { surfaceArea, electricalPowerKWc } =
+    developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+      ? {
+          surfaceArea: developmentPlan.surfaceArea,
+          electricalPowerKWc: developmentPlan.electricalPowerKWc,
+        }
+      : { surfaceArea: undefined, electricalPowerKWc: undefined };
+
   return (
     <>
       <p>
@@ -37,20 +45,14 @@ const RentalIncomeDescription = ({ developmentPlan }: Props) => {
         Les données du projet peuvent avoir été saisies par l’utilisateur·ice ou avoir été suggérées
         par Bénéfriches sur la base d’une moyenne ou d’une hypothèse.
       </p>
-      {(developmentPlan.surfaceArea || developmentPlan.electricalPowerKWc) && (
+      {(surfaceArea || electricalPowerKWc) && (
         <ul>
-          {developmentPlan.surfaceArea && (
-            <li>
-              Surface au sol occupée par les panneaux :{" "}
-              {formatSurfaceArea(developmentPlan.surfaceArea)}
-            </li>
+          {surfaceArea && (
+            <li>Surface au sol occupée par les panneaux : {formatSurfaceArea(surfaceArea)}</li>
           )}
 
-          {developmentPlan.electricalPowerKWc && (
-            <li>
-              Puissance installée exprimée en kWc :{" "}
-              {formatNumberFr(developmentPlan.electricalPowerKWc)} KWc
-            </li>
+          {electricalPowerKWc && (
+            <li>Puissance installée exprimée en kWc : {formatNumberFr(electricalPowerKWc)} KWc</li>
           )}
         </ul>
       )}

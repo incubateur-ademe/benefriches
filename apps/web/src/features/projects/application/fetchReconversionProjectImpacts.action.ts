@@ -1,6 +1,5 @@
 import { SoilsDistribution } from "shared";
 import { ReconversionProjectImpacts } from "../domain/impacts.types";
-import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
@@ -21,11 +20,19 @@ export type ReconversionProjectImpactsResult = {
     isExpressProject: boolean;
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
-    developmentPlan: {
-      surfaceArea?: number;
-      electricalPowerKWc?: number;
-      type?: ProjectDevelopmentPlanType;
-    };
+    developmentPlan:
+      | {
+          type: "PHOTOVOLTAIC_POWER_PLANT";
+          electricalPowerKWc: number;
+          surfaceArea: number;
+        }
+      | {
+          type: "MIXED_USE_NEIGHBOURHOOD";
+          buildingsFloorAreaDistribution: {
+            GROUND_FLOOR_RETAIL?: number;
+            RESIDENTIAL?: number;
+          };
+        };
   };
   siteData: {
     addressLabel: string;

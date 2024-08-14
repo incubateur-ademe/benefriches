@@ -26,11 +26,19 @@ export type ProjectImpactsState = {
     soilsDistribution: SoilsDistribution;
     contaminatedSoilSurface: 0;
     isExpressProject: boolean;
-    developmentPlan: {
-      surfaceArea?: number;
-      electricalPowerKWc?: number;
-      type?: ProjectDevelopmentPlanType;
-    };
+    developmentPlan:
+      | {
+          type: "PHOTOVOLTAIC_POWER_PLANT";
+          electricalPowerKWc: number;
+          surfaceArea: number;
+        }
+      | {
+          type: "MIXED_USE_NEIGHBOURHOOD";
+          buildingsFloorAreaDistribution: {
+            GROUND_FLOOR_RETAIL?: number;
+            RESIDENTIAL?: number;
+          };
+        };
   };
   relatedSiteData?: {
     id: string;

@@ -372,7 +372,15 @@ const SocioEconomicModalContentWizard = ({
           <PropertyTransferDutiesIncreaseDescription />
         </>
       );
-    case "socio-economic.avoided-co2-renewable-energy":
+    case "socio-economic.avoided-co2-renewable-energy": {
+      const { surfaceArea, electricalPowerKWc } =
+        projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+          ? {
+              surfaceArea: projectData.developmentPlan.surfaceArea,
+              electricalPowerKWc: projectData.developmentPlan.electricalPowerKWc,
+            }
+          : { surfaceArea: undefined, electricalPowerKWc: undefined };
+
       return (
         <>
           <ModalBreadcrumb
@@ -394,11 +402,12 @@ const SocioEconomicModalContentWizard = ({
           />
           <AvoidedCO2WithEnRMonetaryValueDescription
             address={siteData.addressLabel}
-            developmentPlanElectricalPowerKWc={projectData.developmentPlan.electricalPowerKWc}
-            developmentPlanSurfaceArea={projectData.developmentPlan.surfaceArea}
+            developmentPlanElectricalPowerKWc={electricalPowerKWc}
+            developmentPlanSurfaceArea={surfaceArea}
           />
         </>
       );
+    }
 
     case "socio-economic.water-regulation":
       return (

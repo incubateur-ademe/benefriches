@@ -56,10 +56,10 @@ const ImpactRowValue = ({
       <div className={classNames("tw-flex", "tw-items-center")}>{children}</div>
 
       <div
-        aria-hidden={!value}
+        aria-hidden={value === undefined}
         className={classNames("tw-flex", "tw-items-center", "tw-justify-end")}
       >
-        {value && (
+        {value !== undefined && (
           <div
             className={classNames(
               "tw-py-1",
