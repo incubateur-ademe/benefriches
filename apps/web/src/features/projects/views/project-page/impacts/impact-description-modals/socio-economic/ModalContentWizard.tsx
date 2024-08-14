@@ -13,6 +13,8 @@ import NitrogenCycleDescription from "./ecosystem-services/NitrogenCycleDescript
 import PollinationDescription from "./ecosystem-services/PollinationDescription";
 import SoilErosionDescription from "./ecosystem-services/SoilErosionDescription";
 import WaterCycle from "./ecosystem-services/WaterCycle";
+import PropertyTransferDutiesIncreaseDescription from "./property-value-increase/PropertyTransferDutiesIncreaseDescription";
+import PropertyValueIncreaseDescription from "./property-value-increase/PropertyValueIncreaseDescription";
 import RentalIncomeDescription from "./rental-income/RentalIncomeDescription";
 import WaterRegulationDescription from "./water-regulation/WaterRegulationDescription";
 import SocioEconomicDescription from "./SocioEconomicDescription";
@@ -41,6 +43,9 @@ const SocioEconomicEcosystemServicesContentWizard = ({
       },
     },
     {
+      label: "Impacts environnementaux monétarisés",
+    },
+    {
       label: "Services écosystémiques",
       onClick: () => {
         onChangeModalCategoryOpened("socio-economic.ecosystem-services");
@@ -59,6 +64,9 @@ const SocioEconomicEcosystemServicesContentWizard = ({
                 onClick: () => {
                   onChangeModalCategoryOpened("socio-economic");
                 },
+              },
+              {
+                label: "Impacts environnementaux monétarisés",
               },
               { label: "Services écosystémiques", isCurrent: true },
             ]}
@@ -323,6 +331,47 @@ const SocioEconomicModalContentWizard = ({
           <AvoidedOtherSecuringCostsDescription />
         </>
       );
+
+    case "socio-economic.property-value-increase":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              {
+                label: "Impacts économiques indirects",
+              },
+              { label: "Valeur patrimoniale des bâtiments alentour", isCurrent: true },
+            ]}
+          />
+          <PropertyValueIncreaseDescription siteSurfaceArea={siteData.surfaceArea} />
+        </>
+      );
+    case "socio-economic.property-transfer-duties-increase":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              {
+                label: "Impacts économiques indirects",
+              },
+              { label: "Droits de mutation sur les ventes immobilières alentour", isCurrent: true },
+            ]}
+          />
+          <PropertyTransferDutiesIncreaseDescription />
+        </>
+      );
     case "socio-economic.avoided-co2-renewable-energy":
       return (
         <>
@@ -333,6 +382,9 @@ const SocioEconomicModalContentWizard = ({
                 onClick: () => {
                   onChangeModalCategoryOpened("socio-economic");
                 },
+              },
+              {
+                label: "Impacts environnementaux monétarisés",
               },
               {
                 label: "CO2-eq évité grâce aux énergies renouvelables",
@@ -358,6 +410,9 @@ const SocioEconomicModalContentWizard = ({
                 onClick: () => {
                   onChangeModalCategoryOpened("socio-economic");
                 },
+              },
+              {
+                label: "Impacts environnementaux monétarisés",
               },
               { label: "Régulation de la qualité de l'eau", isCurrent: true },
             ]}

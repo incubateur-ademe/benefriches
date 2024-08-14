@@ -14,83 +14,41 @@ type Props = {
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
+const itemDescriptionModalIds: Partial<
+  Record<SocioEconomicImpactName, ImpactDescriptionModalCategory>
+> = {
+  avoided_co2_eq_with_enr: "socio-economic.avoided-co2-renewable-energy",
+  rental_income: "socio-economic.rental-income",
+  avoided_friche_costs: "socio-economic.avoided-friche-costs",
+  avoided_illegal_dumping_costs: "socio-economic.avoided-illegal-dumping-costs",
+  avoided_security_costs: "socio-economic.avoided-security-costs",
+  avoided_other_securing_costs: "socio-economic.avoided-other-securing-costs",
+  local_transfer_duties_increase: "socio-economic.property-transfer-duties-increase",
+  local_property_value_increase: "socio-economic.property-value-increase",
+  ecosystem_services: "socio-economic.ecosystem-services",
+  nature_related_wellness_and_leisure:
+    "socio-economic.ecosystem-services.nature-related-wellness-and-leisure",
+  carbon_storage: "socio-economic.ecosystem-services.carbon-storage",
+  forest_related_product: "socio-economic.ecosystem-services.forest-related-product",
+  nitrogen_cycle: "socio-economic.ecosystem-services.nitrogen-cycle",
+  water_cycle: "socio-economic.ecosystem-services.water-cycle",
+  pollination: "socio-economic.ecosystem-services.pollinisation",
+  soil_erosion: "socio-economic.ecosystem-services.soil-erosion",
+  invasive_species_regulation: "socio-economic.ecosystem-services.invasive-species-regulation",
+  water_regulation: "socio-economic.water-regulation",
+};
+
 const getImpactItemOnClick = (
   itemName: SocioEconomicImpactName,
   openImpactDescriptionModal: Props["openImpactDescriptionModal"],
 ) => {
-  switch (itemName) {
-    case "avoided_co2_eq_with_enr":
-      return () => {
-        openImpactDescriptionModal("socio-economic.avoided-co2-renewable-energy");
-      };
-    case "rental_income":
-      return () => {
-        openImpactDescriptionModal("socio-economic.rental-income");
-      };
-    case "avoided_friche_costs":
-      return () => {
-        openImpactDescriptionModal("socio-economic.avoided-friche-costs");
-      };
-    case "avoided_illegal_dumping_costs":
-      return () => {
-        openImpactDescriptionModal("socio-economic.avoided-illegal-dumping-costs");
-      };
-    case "avoided_security_costs":
-      return () => {
-        openImpactDescriptionModal("socio-economic.avoided-security-costs");
-      };
-    case "avoided_other_securing_costs":
-      return () => {
-        openImpactDescriptionModal("socio-economic.avoided-other-securing-costs");
-      };
-    case "ecosystem_services":
-      return () => {
-        openImpactDescriptionModal("socio-economic.ecosystem-services");
-      };
-    case "nature_related_wellness_and_leisure":
-      return () => {
-        openImpactDescriptionModal(
-          "socio-economic.ecosystem-services.nature-related-wellness-and-leisure",
-        );
-      };
-    case "carbon_storage":
-      return () => {
-        openImpactDescriptionModal("socio-economic.ecosystem-services.carbon-storage");
-      };
+  const modalId = itemDescriptionModalIds[itemName];
 
-    case "forest_related_product":
-      return () => {
-        openImpactDescriptionModal("socio-economic.ecosystem-services.forest-related-product");
-      };
-
-    case "nitrogen_cycle":
-      return () => {
-        openImpactDescriptionModal("socio-economic.ecosystem-services.nitrogen-cycle");
-      };
-
-    case "water_cycle":
-      return () => {
-        openImpactDescriptionModal("socio-economic.ecosystem-services.water-cycle");
-      };
-    case "pollination":
-      return () => {
-        openImpactDescriptionModal("socio-economic.ecosystem-services.pollinisation");
-      };
-    case "soil_erosion":
-      return () => {
-        openImpactDescriptionModal("socio-economic.ecosystem-services.soil-erosion");
-      };
-    case "invasive_species_regulation":
-      return () => {
-        openImpactDescriptionModal("socio-economic.ecosystem-services.invasive-species-regulation");
-      };
-    case "water_regulation":
-      return () => {
-        openImpactDescriptionModal("socio-economic.water-regulation");
-      };
-    default:
-      return undefined;
-  }
+  return modalId
+    ? () => {
+        openImpactDescriptionModal(modalId);
+      }
+    : undefined;
 };
 
 const SocioEconomicImpactsListSection = ({
