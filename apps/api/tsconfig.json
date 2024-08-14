@@ -10,7 +10,7 @@
     "emitDecoratorMetadata": true /* Emit design-type metadata for decorated declarations in source files. */,
 
     /* Modules */
-    "module": "Node16" /* Specify what module code is generated. */,
+    "module": "NodeNext" /* Specify what module code is generated. */,
     "rootDir": "./" /* Specify the root folder within your source files. */,
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     "typeRoots": [
