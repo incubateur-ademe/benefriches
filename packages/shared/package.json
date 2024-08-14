@@ -2,10 +2,9 @@
   "name": "shared",
   "private": true,
   "version": "1.0.0",
-  "main": "src/index.ts",
-  "type": "module",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "rimraf dist && tsc",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --max-warnings 0 .",
     "format": "prettier --write --cache \"./**/*.{js,ts,md,json}\" src/",
@@ -23,6 +22,7 @@
     "eslint-plugin-jest": "^28.6.0",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
     "typescript": "^5.5.3",
     "typescript-eslint": "^7.16.0"
   }

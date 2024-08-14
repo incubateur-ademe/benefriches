@@ -14,6 +14,16 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    // Vite expects local dependencies to be exported as ES Modules but shared is built as CommonJS
+    // https://vitejs.dev/guide/dep-pre-bundling#monorepos-and-linked-dependencies
+    optimizeDeps: {
+      include: ["shared"],
+    },
+    build: {
+      commonjsOptions: {
+        include: [/shared/, /node_modules/],
+      },
+    },
     server: {
       watch: {
         usePolling: true,
