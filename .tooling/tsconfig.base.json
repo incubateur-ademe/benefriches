@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      /* Type Checking */
+      "strict": true /* Enable all strict type-checking options. */,
+      "noImplicitAny": true /* Enable error reporting for expressions and declarations with an implied 'any' type. */,
+      "strictNullChecks": true /* When type checking, take into account 'null' and 'undefined'. */,
+      "noImplicitOverride": true /* Ensure overriding members in derived classes are marked with an override modifier. */,
+      "noUncheckedIndexedAccess": true,
+      "noFallthroughCasesInSwitch": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+  
+      /* Completeness */
+      "skipLibCheck": true /* Skip type checking all .d.ts files. */
+    }
+  }
+  

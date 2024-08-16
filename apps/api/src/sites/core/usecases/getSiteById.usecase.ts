@@ -35,7 +35,7 @@ export type SiteViewModel = {
 };
 
 export class SiteNotFoundError extends Error {
-  constructor(private readonly siteId: string) {
+  constructor(readonly siteId: string) {
     super(`Site with ID ${siteId} not found`);
     this.name = "SiteNotFoundError";
   }
