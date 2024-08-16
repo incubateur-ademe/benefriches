@@ -61,7 +61,6 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
           operations_first_year: reconversionProject.operationsFirstYear,
           project_phase: reconversionProject.projectPhase,
-          project_phase_details: reconversionProject.projectPhaseDetails,
           site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
           site_resale_expected_property_transfer_duties:
             reconversionProject.siteResaleExpectedPropertyTransferDuties,

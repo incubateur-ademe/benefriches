@@ -12,10 +12,7 @@ import {
 import { Schedule } from "../application/saveReconversionProject.action";
 
 import { UserStructureType } from "@/features/users/domain/user";
-import {
-  ProjectPhaseDetails,
-  RenewableEnergyDevelopmentPlanType,
-} from "@/shared/domain/reconversionProject";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 import {
   LocalAutorityStructureType,
   OwnerStructureType,
@@ -65,7 +62,6 @@ export type ReconversionProjectCreationData = {
   firstYearOfOperation?: number;
   // project phase
   projectPhase: ProjectPhase;
-  projectPhaseDetails?: ProjectPhaseDetails;
 };
 
 export type ProjectStakeholderStructure =

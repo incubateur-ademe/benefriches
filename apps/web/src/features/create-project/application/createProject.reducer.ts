@@ -36,10 +36,7 @@ import {
   ProjectSite,
   ReconversionProjectCreationData,
 } from "@/features/create-project/domain/project.types";
-import {
-  ProjectPhaseDetails,
-  RenewableEnergyDevelopmentPlanType,
-} from "@/shared/domain/reconversionProject";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 import { WorksSchedule } from "@/shared/domain/reconversionProject";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
@@ -405,14 +402,8 @@ export const projectCreationSlice = createSlice({
       }
       state.stepsHistory.push("PROJECT_PHASE");
     },
-    completeProjectPhaseStep: (
-      state,
-      action: PayloadAction<{ phase: ProjectPhase; phaseDetails?: ProjectPhaseDetails }>,
-    ) => {
+    completeProjectPhaseStep: (state, action: PayloadAction<{ phase: ProjectPhase }>) => {
       state.projectData.projectPhase = action.payload.phase;
-      if (action.payload.phaseDetails) {
-        state.projectData.projectPhaseDetails = action.payload.phaseDetails;
-      }
       state.stepsHistory.push("NAMING");
     },
     revertStep: (
@@ -533,8 +524,7 @@ export const revertPhotovoltaicContractDuration = () =>
 export const revertSoilsSummaryStep = () => revertStep();
 export const revertSoilsCarbonStorageStep = () => revertStep();
 export const revertScheduleIntroductionStep = () => revertStep();
-export const revertProjectPhaseStep = () =>
-  revertStep({ resetFields: ["projectPhase", "projectPhaseDetails"] });
+export const revertProjectPhaseStep = () => revertStep({ resetFields: ["projectPhase"] });
 export const revertScheduleStep = () =>
   revertStep({
     resetFields: [

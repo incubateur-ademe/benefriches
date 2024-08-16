@@ -76,5 +76,4 @@ export const projectWithExhaustiveData = {
   },
   firstYearOfOperation: 2029,
   projectPhase: "design",
-  projectPhaseDetails: "design_final_draft",
 } as const satisfies Required<ReconversionProjectCreationData>;
