@@ -1,3 +1,11 @@
+export type ProjectPhase =
+  | "setup"
+  | "planning"
+  | "design"
+  | "construction"
+  | "completed"
+  | "unknown";
+
 export type MixedUseNeighbourhoodSpace =
   // private spaces
   | "BUILDINGS_FOOTPRINT" // emprise au sol bâti = surface occupée au sol par les bâtiments
