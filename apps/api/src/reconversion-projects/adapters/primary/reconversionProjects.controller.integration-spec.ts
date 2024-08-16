@@ -93,7 +93,6 @@ describe("ReconversionProjects controller", () => {
         "id",
         "name",
         "project_phase",
-        "project_phase_details",
         "creation_mode",
       );
       expect(reconversionProjectsInDb.length).toEqual(1);
@@ -101,7 +100,6 @@ describe("ReconversionProjects controller", () => {
         id: requestBody.id,
         name: requestBody.name,
         project_phase: requestBody.projectPhase,
-        project_phase_details: requestBody.projectPhaseDetails ?? null,
         creation_mode: "custom",
       });
     });

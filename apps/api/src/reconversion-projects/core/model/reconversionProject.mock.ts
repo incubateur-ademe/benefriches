@@ -101,7 +101,6 @@ export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectPr
     },
     operationsFirstYear: 2029,
     projectPhase: "design",
-    projectPhaseDetails: "design_final_draft",
   };
 };
 

@@ -12,13 +12,6 @@ export type RenewableEnergyDevelopmentPlanType =
   | "GEOTHERMAL"
   | "BIOMASS";
 
-export type ProjectPhaseDetails =
-  | "setup_opportunity_and_feasibility_analysis"
-  | "setup_scenario_selection_and_implementation"
-  | "design_preliminary_draft"
-  | "design_final_draft"
-  | "design_pro_or_permit_filing_or_contract_awarding";
-
 export type WorksSchedule = {
   startDate: string;
   endDate: string;

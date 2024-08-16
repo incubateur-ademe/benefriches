@@ -96,7 +96,6 @@ describe("SqlReconversionProjectRepository integration", () => {
             reinstatement_schedule_end_date: null,
             operations_first_year: null,
             project_phase: reconversionProject.projectPhase,
-            project_phase_details: null,
             site_resale_expected_selling_price: null,
             site_resale_expected_property_transfer_duties: null,
           },
@@ -144,7 +143,6 @@ describe("SqlReconversionProjectRepository integration", () => {
               reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
               operations_first_year: reconversionProject.operationsFirstYear,
               project_phase: reconversionProject.projectPhase,
-              project_phase_details: reconversionProject.projectPhaseDetails,
               site_resale_expected_selling_price: null,
               site_resale_expected_property_transfer_duties: null,
             },
@@ -408,7 +406,6 @@ describe("SqlReconversionProjectRepository integration", () => {
             reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
             operations_first_year: reconversionProject.operationsFirstYear,
             project_phase: reconversionProject.projectPhase,
-            project_phase_details: null,
             site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
             site_resale_expected_property_transfer_duties:
               reconversionProject.siteResaleExpectedPropertyTransferDuties,

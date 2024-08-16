@@ -107,7 +107,6 @@ export type SqlReconversionProject = {
   site_resale_expected_property_transfer_duties?: number;
   // project phase
   project_phase: string;
-  project_phase_details?: string;
   // dates
   created_at: Date;
 };
