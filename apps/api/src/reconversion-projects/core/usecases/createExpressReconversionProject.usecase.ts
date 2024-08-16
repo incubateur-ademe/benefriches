@@ -1,7 +1,7 @@
+import { SoilsDistribution } from "shared";
 import { z } from "zod";
 import { UseCase } from "src/shared-kernel/usecase";
 import { Address } from "src/sites/core/models/site";
-import { SoilsDistribution } from "src/soils/domain/soils";
 import { MixedUseNeighbourHoodReconversionProjectCreationService } from "../model/createReconversionProjectFromSite";
 import { ReconversionProject, reconversionProjectSchema } from "../model/reconversionProject";
 

@@ -1,5 +1,5 @@
+import { SoilsDistribution } from "shared";
 import { UseCase } from "src/shared-kernel/usecase";
-import { SoilsDistribution } from "src/soils/domain/soils";
 import { SpacesDistribution } from "../model/mixedUseNeighbourhood";
 import { Schedule } from "../model/reconversionProject";
 

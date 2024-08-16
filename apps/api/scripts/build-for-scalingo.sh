@@ -9,6 +9,10 @@ pnpm --filter=api build
 # Copy monorepo root files
 cp -v pnpm-lock.yaml package.json pnpm-workspace.yaml .tmp-build/
 
+# Copy shared packages
+pnpm --filter=shared build
+cp -vr packages/ ./.tmp-build/packages/
+
 # Create folder to copy api/ production files
 mkdir -pv .tmp-build/apps/api/dist
 

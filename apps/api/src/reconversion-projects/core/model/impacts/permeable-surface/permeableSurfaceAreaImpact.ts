@@ -4,7 +4,7 @@ import {
   isPermeableSoil,
   SoilsDistribution,
   sumSoilsSurfaceAreasWhere,
-} from "src/soils/domain/soils";
+} from "shared";
 
 export type PermeableSurfaceAreaImpactResult = {
   base: number;

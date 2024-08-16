@@ -1,5 +1,5 @@
+import { SoilType } from "shared";
 import { UseCase } from "src/shared-kernel/usecase";
-import { SoilType } from "src/soils/domain/soils";
 import { SitesQuery } from "../gateways/SitesQuery";
 import { Address } from "../models/site";
 

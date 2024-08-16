@@ -1,4 +1,4 @@
-import { SoilType } from "src/soils/domain/soils";
+import { SoilType } from "shared";
 import { UseCase } from "../../../shared-kernel/usecase";
 import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
 import { mapSoilTypeToRepositorySoilCategory } from "../models/soilCategory";

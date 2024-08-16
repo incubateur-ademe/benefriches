@@ -8,7 +8,7 @@ import {
   SoilsDistribution,
   SoilType,
   sumSoilsSurfaceAreasWhere,
-} from "src/soils/domain/soils";
+} from "shared";
 
 type EnvironmentalMonetaryImpactInput = {
   evaluationPeriodInYears: number;

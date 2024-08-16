@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+import { SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 import { ReconversionProject } from "src/reconversion-projects/core/model/reconversionProject";
 import { ReconversionProjectRepository } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
@@ -13,7 +14,6 @@ import {
   SqlReinstatementCost,
   SqlRevenue,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
-import { SoilType } from "src/soils/domain/soils";
 
 const mapRevenuesToSqlStruct = (
   revenues: { amount: number; source: string }[],

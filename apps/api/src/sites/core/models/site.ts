@@ -1,5 +1,5 @@
+import { soilTypeSchema } from "shared";
 import { z } from "zod";
-import { soilTypeSchema } from "src/soils/domain/soils";
 
 const fricheActivitySchema = z.enum([
   "AGRICULTURE",

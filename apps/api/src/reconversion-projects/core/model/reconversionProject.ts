@@ -1,6 +1,6 @@
 import { differenceInDays } from "date-fns";
+import { soilTypeSchema } from "shared";
 import { z } from "zod";
-import { soilTypeSchema } from "src/soils/domain/soils";
 import { mixedUseNeighbourhoodFeaturesSchema } from "./mixedUseNeighbourhood";
 
 export const photovoltaicPowerStationFeaturesSchema = z.object({

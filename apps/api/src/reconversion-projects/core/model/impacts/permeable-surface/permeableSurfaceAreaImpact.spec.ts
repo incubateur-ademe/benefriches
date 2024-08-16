@@ -1,4 +1,4 @@
-import { SoilsDistribution } from "src/soils/domain/soils";
+import { SoilsDistribution } from "shared";
 import { computePermeableSurfaceAreaImpact } from "./permeableSurfaceAreaImpact";
 
 describe("PermeableSurfaceArea impact", () => {

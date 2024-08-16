@@ -1,6 +1,6 @@
+import { typedObjectEntries } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 import { Response as SoilsCarbonStorageResult } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
-import { typedObjectEntries } from "src/shared-kernel/typedEntries";
-import { SoilsDistribution, SoilType } from "src/soils/domain/soils";
 
 const soilsDistributionObjToArray = (
   soilsDistribution: SoilsDistribution,

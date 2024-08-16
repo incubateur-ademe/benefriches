@@ -1,5 +1,5 @@
+import { SoilType } from "shared";
 import { z } from "zod";
-import { SoilType } from "src/soils/domain/soils";
 
 const mixedUseNeighbourHoodSpaceSchema = z.record(
   z.enum([

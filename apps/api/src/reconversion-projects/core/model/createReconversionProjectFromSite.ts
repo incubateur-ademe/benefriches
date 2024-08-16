@@ -1,14 +1,10 @@
 import { addYears } from "date-fns";
+import { typedObjectEntries } from "shared";
+import { isImpermeableSoil, SoilsDistribution, sumSoilsSurfaceAreasWhere } from "shared";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { capitalize } from "src/shared-kernel/strings/capitalize";
 import { startsByVowel } from "src/shared-kernel/strings/startsByVowel";
-import { typedObjectEntries } from "src/shared-kernel/typedEntries";
 import { Address } from "src/sites/core/models/site";
-import {
-  isImpermeableSoil,
-  SoilsDistribution,
-  sumSoilsSurfaceAreasWhere,
-} from "src/soils/domain/soils";
 import {
   getSoilTypeForSpace,
   MixedUseNeighbourhoodFeatures,
