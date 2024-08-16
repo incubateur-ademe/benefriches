@@ -1,4 +1,4 @@
-import { typedObjectEntries } from "shared";
+import { FinancialAssistanceRevenue, typedObjectEntries } from "shared";
 import {
   completeFinancialAssistanceRevenues,
   revertFinancialAssistanceRevenues,
@@ -8,7 +8,6 @@ import ProjectFinancialAssistanceRevenueForm, {
 } from "./ProjectFinancialAssistanceRevenueForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { FinancialAssistanceRevenue } from "@/shared/domain/reconversionProject";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 const mapFormValuesToFinancialAssistanceRevenues = (

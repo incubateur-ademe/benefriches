@@ -1,15 +1,14 @@
-import { SoilType } from "shared";
+import {
+  FinancialAssistanceRevenue,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpense,
+  SoilType,
+} from "shared";
 
-import { ReinstatementExpense } from "@/shared/domain/reconversionProject";
-
-export type SourceRevenue = "rent" | "operations" | "other";
 export type FinancialAssistance = "local_or_regional_authority_participation" | "public_subsidies";
 export type DevelopmentPlanInstallationExpense = {
   purpose: "technical_studies" | "installation_works" | "development_works" | "other";
-  amount: number;
-};
-export type OperationsExpense = {
-  purpose: "rent" | "maintenance" | "taxes" | "other";
   amount: number;
 };
 
@@ -189,7 +188,7 @@ export type ReconversionProjectImpacts = {
     bearer?: string;
     costs: {
       total: number;
-      operationsCosts?: ExpensesTotalAndDetails<OperationsExpense>;
+      operationsCosts?: ExpensesTotalAndDetails<RecurringExpense>;
       developmentPlanInstallation?: ExpensesTotalAndDetails<DevelopmentPlanInstallationExpense>;
       siteReinstatement?: ExpensesTotalAndDetails<ReinstatementExpense>;
       sitePurchase?: number;
@@ -200,11 +199,11 @@ export type ReconversionProjectImpacts = {
       operationsRevenues?: {
         bearer?: string;
         total: number;
-        revenues: { source: SourceRevenue; amount: number }[];
+        revenues: RecurringRevenue[];
       };
       financialAssistance?: {
         total: number;
-        revenues: { source: FinancialAssistance; amount: number }[];
+        revenues: FinancialAssistanceRevenue[];
       };
     };
   };

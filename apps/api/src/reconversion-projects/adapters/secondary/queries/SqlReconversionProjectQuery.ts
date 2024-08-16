@@ -1,10 +1,10 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+import { Schedule } from "shared";
 import { MixedUseNeighbourhoodFeatures } from "src/reconversion-projects/core/model/mixedUseNeighbourhood";
 import {
   DevelopmentPlan,
   PhotovoltaicPowerStationFeatures,
-  Schedule,
 } from "src/reconversion-projects/core/model/reconversionProject";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {

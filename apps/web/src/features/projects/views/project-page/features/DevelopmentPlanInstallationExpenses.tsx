@@ -1,17 +1,12 @@
+import { MixedUseNeighbourhoodDevelopmentExpense, PhotovoltaicInstallationExpense } from "shared";
 import DataLine from "./DataLine";
 
 import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
 } from "@/features/projects/domain/projects.types";
-import {
-  getLabelForMixedUseNeighbourhoodDevelopmentExpense,
-  MixedUseNeighbourhoodDevelopmentExpense,
-} from "@/shared/domain/mixedUseNeighbourhood";
-import {
-  getLabelForPhotovoltaicInstallationExpensePurpose,
-  PhotovoltaicInstallationExpense,
-} from "@/shared/domain/reconversionProject";
+import { getLabelForMixedUseNeighbourhoodDevelopmentExpense } from "@/shared/domain/mixedUseNeighbourhood";
+import { getLabelForPhotovoltaicInstallationExpensePurpose } from "@/shared/domain/reconversionProject";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumList } from "@/shared/services/sum/sum";
 

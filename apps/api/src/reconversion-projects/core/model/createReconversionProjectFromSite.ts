@@ -1,21 +1,18 @@
 import { addYears } from "date-fns";
-import { typedObjectEntries } from "shared";
+import {
+  getSoilTypeForSpace,
+  ReinstatementExpensePurpose,
+  Schedule,
+  SpacesDistribution,
+  typedObjectEntries,
+} from "shared";
 import { isImpermeableSoil, SoilsDistribution, sumSoilsSurfaceAreasWhere } from "shared";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { capitalize } from "src/shared-kernel/strings/capitalize";
 import { startsByVowel } from "src/shared-kernel/strings/startsByVowel";
 import { Address } from "src/sites/core/models/site";
-import {
-  getSoilTypeForSpace,
-  MixedUseNeighbourhoodFeatures,
-  SpacesDistribution,
-} from "./mixedUseNeighbourhood";
-import {
-  ReconversionProject,
-  reconversionProjectSchema,
-  ReinstatementCostsPurpose,
-  Schedule,
-} from "./reconversionProject";
+import { MixedUseNeighbourhoodFeatures } from "./mixedUseNeighbourhood";
+import { ReconversionProject, reconversionProjectSchema } from "./reconversionProject";
 
 type SiteData = {
   id: string;
@@ -105,7 +102,7 @@ const computeReinstatementSchedule = (dateProvider: IDateProvider): Schedule => 
 };
 
 const REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR: Partial<
-  Record<ReinstatementCostsPurpose, number>
+  Record<ReinstatementExpensePurpose, number>
 > = {
   sustainable_soils_reinstatement: 14 / 1000000,
   deimpermeabilization: 5.45 / 1000000,
@@ -119,7 +116,8 @@ export const computeReinstatementFullTimeJobs = (
   reinstatementCosts: ReconversionProject["reinstatementCosts"] = [],
 ) => {
   const reinstatementFullTimeJobs = reinstatementCosts.map(({ purpose, amount }) => {
-    const ratio = REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR[purpose as ReinstatementCostsPurpose];
+    const ratio =
+      REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR[purpose as ReinstatementExpensePurpose];
     return ratio ? amount * ratio : 0;
   }, 0);
   return Math.round(reinstatementFullTimeJobs.reduce((total, jobs) => total + jobs, 0) * 10) / 10;

@@ -1,10 +1,10 @@
+import { DevelopmentPlanCategory } from "shared";
 import {
   getDescriptionForDevelopmentPlanCategory,
   getLabelForDevelopmentPlanCategory,
   getPictogramForDevelopmentPlanCategory,
 } from "../projectTypeLabelMapping";
 
-import { DevelopmentPlanCategory } from "@/shared/domain/reconversionProject";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 

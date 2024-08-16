@@ -1,9 +1,9 @@
-import { SoilsDistribution } from "shared";
+import { SoilsDistribution, SpacesDistribution } from "shared";
 import { v4 as uuid } from "uuid";
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
-import { MixedUseNeighbourhoodFeatures, SpacesDistribution } from "../model/mixedUseNeighbourhood";
+import { MixedUseNeighbourhoodFeatures } from "../model/mixedUseNeighbourhood";
 import { ReconversionProject } from "../model/reconversionProject";
 import {
   CreateExpressReconversionProjectUseCase,

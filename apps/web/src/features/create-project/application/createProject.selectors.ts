@@ -1,5 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere } from "shared";
+import {
+  DevelopmentPlanCategory,
+  SoilsDistribution,
+  SoilType,
+  sumSoilsSurfaceAreasWhere,
+} from "shared";
 import {
   computeDefaultPhotovoltaicConversionFullTimeJobs,
   computeDefaultPhotovoltaicOperationsFullTimeJobs,
@@ -26,7 +31,6 @@ import { ProjectCreationState } from "./createProject.reducer";
 import { selectPhotovoltaicPlantElectricalPowerKWc } from "./pvFeatures.selectors";
 
 import { RootState } from "@/app/application/store";
-import { DevelopmentPlanCategory } from "@/shared/domain/reconversionProject";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
 const selectSelf = (state: RootState) => state.projectCreation;

@@ -1,13 +1,10 @@
-import { z } from "zod";
-
-export const developmentPlanCategorySchema = z.enum([
-  "RENEWABLE_ENERGY",
-  "MIXED_USE_NEIGHBOURHOOD",
-  "URBAN_AGRICULTURE",
-  "NATURAL_URBAN_SPACES",
-  "COMMERCIAL_ACTIVITY_AREA",
-]);
-export type DevelopmentPlanCategory = z.infer<typeof developmentPlanCategorySchema>;
+import {
+  FinancialAssistanceRevenue,
+  PhotovoltaicInstallationExpense,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpensePurpose,
+} from "shared";
 
 export type RenewableEnergyDevelopmentPlanType =
   | "PHOTOVOLTAIC_POWER_PLANT"
@@ -15,51 +12,12 @@ export type RenewableEnergyDevelopmentPlanType =
   | "GEOTHERMAL"
   | "BIOMASS";
 
-export type ProjectPhase =
-  | "setup"
-  | "planning"
-  | "design"
-  | "construction"
-  | "completed"
-  | "unknown";
-
 export type ProjectPhaseDetails =
   | "setup_opportunity_and_feasibility_analysis"
   | "setup_scenario_selection_and_implementation"
   | "design_preliminary_draft"
   | "design_final_draft"
   | "design_pro_or_permit_filing_or_contract_awarding";
-
-export type ReinstatementExpensePurpose =
-  | "asbestos_removal"
-  | "deimpermeabilization"
-  | "demolition"
-  | "other_reinstatement"
-  | "remediation"
-  | "sustainable_soils_reinstatement"
-  | "waste_collection";
-
-export type ReinstatementExpense = { purpose: ReinstatementExpensePurpose; amount: number };
-
-export type PhotovoltaicInstallationExpense = {
-  amount: number;
-  purpose: "technical_studies" | "installation_works" | "other";
-};
-
-export type FinancialAssistanceRevenue = {
-  amount: number;
-  source: "local_or_regional_authority_participation" | "public_subsidies" | "other";
-};
-
-export type RecurringExpense = {
-  amount: number;
-  purpose: "rent" | "maintenance" | "taxes" | "other";
-};
-
-export type RecurringRevenue = {
-  amount: number;
-  source: "operations" | "other";
-};
 
 export type WorksSchedule = {
   startDate: string;
@@ -88,6 +46,8 @@ export const getLabelForRecurringRevenueSource = (
       return "Recettes d'exploitation";
     case "other":
       return "Autres recettes";
+    case "rent":
+      return "Loyer";
   }
 };
 

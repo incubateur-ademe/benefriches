@@ -1,6 +1,15 @@
 import { ReactNode } from "react";
 import Accordion from "@codegouvfr/react-dsfr/Accordion";
-import { SoilsDistribution, SoilType } from "shared";
+import {
+  DevelopmentPlanCategory,
+  FinancialAssistanceRevenue,
+  PhotovoltaicInstallationExpense,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpense,
+  SoilsDistribution,
+  SoilType,
+} from "shared";
 import { Schedule } from "../../application/saveReconversionProject.action";
 import {
   getLabelForDevelopmentPlanCategory,
@@ -8,17 +17,11 @@ import {
 } from "../projectTypeLabelMapping";
 
 import {
-  DevelopmentPlanCategory,
-  FinancialAssistanceRevenue,
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForPhotovoltaicInstallationExpensePurpose,
   getLabelForRecurringExpense,
   getLabelForRecurringRevenueSource,
   getLabelForReinstatementExpensePurpose,
-  PhotovoltaicInstallationExpense,
-  RecurringExpense,
-  RecurringRevenue,
-  ReinstatementExpense,
   RenewableEnergyDevelopmentPlanType,
 } from "@/shared/domain/reconversionProject";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";

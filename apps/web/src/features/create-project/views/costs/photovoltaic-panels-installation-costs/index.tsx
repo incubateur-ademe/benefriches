@@ -1,4 +1,4 @@
-import { typedObjectEntries } from "shared";
+import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 import {
   completePhotovoltaicPanelsInstallationExpenses,
   revertPhotovoltaicPanelsInstallationExpenses,
@@ -9,7 +9,6 @@ import PhotovoltaicPanelsInstallationExpensesForm, {
 
 import { AppDispatch } from "@/app/application/store";
 import { getDefaultValuesForPhotovoltaicInstallationExpenses } from "@/features/create-project/application/createProject.selectors";
-import { PhotovoltaicInstallationExpense } from "@/shared/domain/reconversionProject";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapFormValuesToPhotovoltaicInstallationExpenses = (

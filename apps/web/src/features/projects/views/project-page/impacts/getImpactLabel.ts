@@ -1,8 +1,5 @@
-import {
-  FinancialAssistance,
-  OperationsExpense,
-  SourceRevenue,
-} from "../../../domain/impacts.types";
+import { RecurringExpense, RecurringRevenue, ReinstatementExpense } from "shared";
+import { FinancialAssistance } from "../../../domain/impacts.types";
 
 import {
   DevelopmentPlanInstallationExpenseName,
@@ -18,7 +15,6 @@ import {
 } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
 import { SocialImpactName } from "@/features/projects/application/projectImpactsSocial.selectors";
 import { SocioEconomicImpactName } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
-import { ReinstatementExpense } from "@/shared/domain/reconversionProject";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {
@@ -254,9 +250,9 @@ export const getEconomicBalanceDetailsImpactLabel = (
         name as ReinstatementExpense["purpose"],
       );
     case "operations_costs":
-      return getEconomicBalanceYearlyExpensePurposeLabel(name as OperationsExpense["purpose"]);
+      return getEconomicBalanceYearlyExpensePurposeLabel(name as RecurringExpense["purpose"]);
     case "operations_revenues":
-      return getEconomicBalanceYearlyRevenueSourceLabel(name as SourceRevenue);
+      return getEconomicBalanceYearlyRevenueSourceLabel(name as RecurringRevenue["source"]);
     case "financial_assistance":
       return getEconomicBalanceFinancialAssistanceLabel(name as FinancialAssistance);
     case "photovoltaic_development_plan_installation":
@@ -268,7 +264,7 @@ export const getEconomicBalanceDetailsImpactLabel = (
   }
 };
 
-const getEconomicBalanceYearlyExpensePurposeLabel = (purpose: OperationsExpense["purpose"]) => {
+const getEconomicBalanceYearlyExpensePurposeLabel = (purpose: RecurringExpense["purpose"]) => {
   switch (purpose) {
     case "rent":
       return "🔑 Loyer";
@@ -281,7 +277,7 @@ const getEconomicBalanceYearlyExpensePurposeLabel = (purpose: OperationsExpense[
   }
 };
 
-const getEconomicBalanceYearlyRevenueSourceLabel = (source: SourceRevenue) => {
+const getEconomicBalanceYearlyRevenueSourceLabel = (source: RecurringRevenue["source"]) => {
   switch (source) {
     case "operations":
       return "💰 Recettes principales";

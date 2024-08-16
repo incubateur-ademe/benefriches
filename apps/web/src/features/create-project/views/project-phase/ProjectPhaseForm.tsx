@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
+import { ProjectPhase } from "shared";
 
-import { ProjectPhase, ProjectPhaseDetails } from "@/shared/domain/reconversionProject";
+import { ProjectPhaseDetails } from "@/shared/domain/reconversionProject";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";

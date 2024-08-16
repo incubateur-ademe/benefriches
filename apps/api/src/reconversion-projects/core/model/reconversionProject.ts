@@ -1,5 +1,5 @@
 import { differenceInDays } from "date-fns";
-import { soilTypeSchema } from "shared";
+import { Schedule, scheduleSchema, soilTypeSchema } from "shared";
 import { z } from "zod";
 import { mixedUseNeighbourhoodFeaturesSchema } from "./mixedUseNeighbourhood";
 
@@ -16,13 +16,6 @@ export type PhotovoltaicPowerStationFeatures = z.infer<
 
 export const costSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
 const revenueSchema = z.object({ source: z.string(), amount: z.number().nonnegative() });
-
-const scheduleSchema = z.object({
-  startDate: z.date(),
-  endDate: z.date(),
-});
-
-export type Schedule = z.infer<typeof scheduleSchema>;
 
 const developmentPlanType = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "MIXED_USE_NEIGHBOURHOOD"]);
 
@@ -83,12 +76,3 @@ export const getDurationFromScheduleInYears = ({ startDate, endDate }: Schedule)
 
   return durationInDays / 365;
 };
-
-export type ReinstatementCostsPurpose =
-  | "asbestos_removal"
-  | "deimpermeabilization"
-  | "demolition"
-  | "other_reinstatement"
-  | "remediation"
-  | "sustainable_soils_reinstatement"
-  | "waste_collection";

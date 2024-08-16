@@ -1,16 +1,19 @@
-import { SoilsDistribution, SoilType } from "shared";
-import { Schedule } from "../application/saveReconversionProject.action";
-
-import { UserStructureType } from "@/features/users/domain/user";
 import {
   DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
   ProjectPhase,
-  ProjectPhaseDetails,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
+  SoilsDistribution,
+  SoilType,
+} from "shared";
+import { Schedule } from "../application/saveReconversionProject.action";
+
+import { UserStructureType } from "@/features/users/domain/user";
+import {
+  ProjectPhaseDetails,
   RenewableEnergyDevelopmentPlanType,
 } from "@/shared/domain/reconversionProject";
 import {

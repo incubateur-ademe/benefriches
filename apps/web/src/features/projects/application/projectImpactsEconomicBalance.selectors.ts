@@ -1,15 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  DevelopmentPlanInstallationExpense,
-  FinancialAssistance,
-  OperationsExpense,
-  SourceRevenue,
-} from "../domain/impacts.types";
+import { RecurringExpense, RecurringRevenue, ReinstatementExpensePurpose } from "shared";
+import { DevelopmentPlanInstallationExpense, FinancialAssistance } from "../domain/impacts.types";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 import { RootState } from "@/app/application/store";
-import { ReinstatementExpensePurpose } from "@/shared/domain/reconversionProject";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
@@ -52,8 +47,8 @@ export type DevelopmentPlanInstallationExpenseName =
   | DevelopmentPlanInstallationExpense["purpose"];
 
 type EconomicBalanceDetailsName =
-  | OperationsExpense["purpose"]
-  | SourceRevenue
+  | RecurringExpense["purpose"]
+  | RecurringRevenue["source"]
   | ReinstatementExpensePurpose
   | FinancialAssistance
   | DevelopmentPlanInstallationExpenseName;

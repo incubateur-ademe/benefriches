@@ -1,4 +1,4 @@
-import { SoilsDistribution } from "shared";
+import { Schedule, SoilsDistribution } from "shared";
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { sumListWithKey } from "src/shared-kernel/sum-list/sumList";
@@ -42,11 +42,7 @@ import {
   GetSoilsCarbonStoragePerSoilsService,
   SoilsCarbonStorageImpactResult,
 } from "../model/impacts/soils-carbon-storage/soilsCarbonStorageImpact";
-import {
-  DevelopmentPlan,
-  getDurationFromScheduleInYears,
-  Schedule,
-} from "../model/reconversionProject";
+import { DevelopmentPlan, getDurationFromScheduleInYears } from "../model/reconversionProject";
 
 export type SiteImpactsDataView = {
   id: string;

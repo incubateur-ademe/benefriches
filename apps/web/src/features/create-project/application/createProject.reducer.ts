@@ -1,6 +1,14 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
-import { SoilsDistribution, SoilType } from "shared";
+import {
+  DevelopmentPlanCategory,
+  FinancialAssistanceRevenue,
+  PhotovoltaicInstallationExpense,
+  ProjectPhase,
+  ReinstatementExpense,
+  SoilsDistribution,
+  SoilType,
+} from "shared";
 import { v4 as uuid } from "uuid";
 import {
   getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
@@ -28,12 +36,7 @@ import {
   ReconversionProjectCreationData,
 } from "@/features/create-project/domain/project.types";
 import {
-  DevelopmentPlanCategory,
-  FinancialAssistanceRevenue,
-  PhotovoltaicInstallationExpense,
-  ProjectPhase,
   ProjectPhaseDetails,
-  ReinstatementExpense,
   RenewableEnergyDevelopmentPlanType,
 } from "@/shared/domain/reconversionProject";
 import { WorksSchedule } from "@/shared/domain/reconversionProject";

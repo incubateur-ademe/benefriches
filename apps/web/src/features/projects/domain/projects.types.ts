@@ -1,17 +1,16 @@
-import { FricheActivity, SoilsDistribution } from "shared";
-
-import {
-  MixedUseNeighbourhoodDevelopmentExpense,
-  MixedUseNeighbourhoodSpace,
-} from "@/shared/domain/mixedUseNeighbourhood";
 import {
   FinancialAssistanceRevenue,
+  FricheActivity,
+  MixedUseNeighbourhoodDevelopmentExpense,
+  MixedUseNeighbourhoodSpace,
   PhotovoltaicInstallationExpense,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
-  WorksSchedule,
-} from "@/shared/domain/reconversionProject";
+  SoilsDistribution,
+} from "shared";
+
+import { WorksSchedule } from "@/shared/domain/reconversionProject";
 import {
   LocalAutorityStructureType,
   OwnerStructureType,

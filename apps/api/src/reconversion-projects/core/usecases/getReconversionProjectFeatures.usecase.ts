@@ -1,7 +1,5 @@
-import { SoilsDistribution } from "shared";
+import { Schedule, SoilsDistribution, SpacesDistribution } from "shared";
 import { UseCase } from "src/shared-kernel/usecase";
-import { SpacesDistribution } from "../model/mixedUseNeighbourhood";
-import { Schedule } from "../model/reconversionProject";
 
 export type ReconversionProjectFeaturesView = {
   id: string;
