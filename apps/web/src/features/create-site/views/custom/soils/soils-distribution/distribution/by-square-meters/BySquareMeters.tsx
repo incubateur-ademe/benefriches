@@ -14,7 +14,6 @@ import {
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
-import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -48,18 +47,7 @@ function SiteSoilsDistributionBySquareMetersForm({
   const isValid = remainder === 0;
 
   return (
-    <WizardFormLayout
-      title="Quelles sont les superficies des différents sols ?"
-      instructions={
-        <FormWarning>
-          <p>
-            La somme des superficies des différents sols doit être égale à la superficie totale du
-            site (<strong>{formatSurfaceArea(totalSurfaceArea)}</strong>
-            ).
-          </p>
-        </FormWarning>
-      }
-    >
+    <WizardFormLayout title="Quelles sont les superficies des différents sols ?">
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
           <Controller

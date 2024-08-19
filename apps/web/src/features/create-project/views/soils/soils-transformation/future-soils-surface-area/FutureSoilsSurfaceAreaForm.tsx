@@ -18,8 +18,6 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   selectedSoils: SoilType[];
   siteSurfaceArea: number;
-  minimumRecommendedMineralSurfaceArea: number;
-  minimumRecommendedImpermeableSurfaceArea: number;
   photovoltaicPanelsSurfaceArea: number;
   currentSoilsDistribution: SoilsDistribution;
   onSubmit: (data: FormValues) => void;
@@ -31,8 +29,6 @@ export type FormValues = SoilsDistribution;
 function FutureSoilsSurfaceAreaForm({
   selectedSoils,
   siteSurfaceArea,
-  minimumRecommendedMineralSurfaceArea,
-  minimumRecommendedImpermeableSurfaceArea,
   photovoltaicPanelsSurfaceArea,
   currentSoilsDistribution,
   onSubmit,
@@ -55,14 +51,7 @@ function FutureSoilsSurfaceAreaForm({
   return (
     <WizardFormLayout
       title="Quelles seront les superficies des sols ?"
-      instructions={
-        <FutureSoilsSurfaceAreaInstructions
-          availableSurfaceArea={siteSurfaceArea}
-          minimumRecommendedImpermeableSurfaceArea={minimumRecommendedImpermeableSurfaceArea}
-          minimumRecommendedMineralSurfaceArea={minimumRecommendedMineralSurfaceArea}
-          photovoltaicPanelsSurfaceArea={photovoltaicPanelsSurfaceArea}
-        />
-      }
+      instructions={<FutureSoilsSurfaceAreaInstructions />}
     >
       <form onSubmit={handleSubmit(_onSubmit)}>
         {selectedSoils.map((soilType) => {

@@ -15,8 +15,6 @@ import {
   computeDefaultPhotovoltaicYearlyRecurringRevenueAmount,
   computeDefaultPhotovoltaicYearlyRentAmount,
   computeDefaultPhotovoltaicYearlyTaxesAmount,
-  getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
-  getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
 } from "../domain/photovoltaic";
 import { computeDefaultReinstatementFullTimeJobs } from "../domain/reinstatement";
 import {
@@ -28,7 +26,6 @@ import {
   willTransformationNoticeablyImpactBiodiversityAndClimate,
 } from "../domain/soilsTransformation";
 import { ProjectCreationState } from "./createProject.reducer";
-import { selectPhotovoltaicPlantElectricalPowerKWc } from "./pvFeatures.selectors";
 
 import { RootState } from "@/app/application/store";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -121,24 +118,6 @@ export const selectTransformableSoils = createSelector(
 export const selectFutureSoils = createSelector(selectSelf, (state): SoilType[] => {
   return state.projectData.futureSoilsSelection ?? [];
 });
-
-export const selectRecommendedMineralSurfaceArea = createSelector(
-  selectPhotovoltaicPlantElectricalPowerKWc,
-  (photovoltaicPlantElectricalPowerKwC): number => {
-    return getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea(
-      photovoltaicPlantElectricalPowerKwC,
-    );
-  },
-);
-
-export const selectRecommendedImpermeableSurfaceArea = createSelector(
-  selectPhotovoltaicPlantElectricalPowerKWc,
-  (photovoltaicPlantElectricalPowerKwC): number => {
-    return getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea(
-      photovoltaicPlantElectricalPowerKwC,
-    );
-  },
-);
 
 export const selectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed = createSelector(
   [selectSiteSoilsDistribution, selectProjectSoilsDistribution],

@@ -12,7 +12,6 @@ import {
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
-import FormWarning from "@/shared/views/layout/WizardFormLayout/FormWarning";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -45,16 +44,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
   const remainder = 100 - totalAllocated;
 
   return (
-    <WizardFormLayout
-      title="Quelle est la répartition des différents sols ?"
-      instructions={
-        <FormWarning>
-          <p>
-            Le total des surfaces doit être égal à <strong>100%</strong>.
-          </p>
-        </FormWarning>
-      }
-    >
+    <WizardFormLayout title="Quelle est la répartition des différents sols ?">
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
           <SliderNumericInput
