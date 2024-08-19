@@ -15,6 +15,7 @@ export const revertSoilsSurfaceAreaDistributionEntryModeStep = () =>
     resetFields: ["soilsDistributionEntryMode", "soilsDistribution"],
   });
 export const revertSoilsDistributionStep = () => revertStep({ resetFields: ["soilsDistribution"] });
+export const revertSoilContaminationIntroductionStep = () => revertStep();
 export const revertSoilsContaminationStep = () =>
   revertStep({
     resetFields: ["hasContaminatedSoils", "contaminatedSoilSurface"],

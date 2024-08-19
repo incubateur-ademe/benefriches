@@ -11,6 +11,7 @@ import SiteOperatorForm from "./site-management/site-operator";
 import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/yearly-income";
+import SoilContaminationIntroduction from "./soil-contamination/introduction";
 import SiteSoilsCarbonStorage from "./soils/soils-carbon-storage";
 import SiteSoilsDistributionAccuracySelection from "./soils/soils-distribution/accuracy-selection";
 import SiteSoilsDistribution from "./soils/soils-distribution/distribution";
@@ -50,6 +51,8 @@ function SiteCreationCustomStepContent() {
       return <SiteSoilsSummary />;
     case "SOILS_CARBON_STORAGE":
       return <SiteSoilsCarbonStorage />;
+    case "SOILS_CONTAMINATION_INTRODUCTION":
+      return <SoilContaminationIntroduction />;
     case "SOILS_CONTAMINATION":
       return <SoilContaminationForm />;
     case "FRICHE_ACCIDENTS_INTRODUCTION":

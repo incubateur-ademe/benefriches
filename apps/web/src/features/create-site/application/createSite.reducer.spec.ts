@@ -38,6 +38,7 @@ import {
   completeSoils,
   completeSoilsCarbonStorage,
   completeSoilsContamination,
+  completeSoilsContaminationIntroductionStep,
   completeSoilsDistribution,
   completeSoilsIntroduction,
   completeSoilsSummary,
@@ -366,7 +367,7 @@ describe("Create site reducer", () => {
     });
     describe("SOILS_CARBON_STORAGE", () => {
       describe("complete", () => {
-        it("goes to SOILS_CONTAMINATION step when step is completed and site is a friche", () => {
+        it("goes to SOILS_CONTAMINATION_INTRODUCTION step when step is completed and site is a friche", () => {
           const store = initStoreWithState({
             stepsHistory: ["SOILS_CARBON_STORAGE"],
             siteData: { isFriche: true },
@@ -378,7 +379,7 @@ describe("Create site reducer", () => {
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "SOILS_CONTAMINATION"],
+            stepsHistory: [...initialState.stepsHistory, "SOILS_CONTAMINATION_INTRODUCTION"],
           });
         });
         it("goes to MANAGEMENT_INTRODUCTION step when step is completed and site is not a friche", () => {
@@ -395,6 +396,22 @@ describe("Create site reducer", () => {
             ...initialState,
             siteData: initialState.siteData,
             stepsHistory: [...initialState.stepsHistory, "MANAGEMENT_INTRODUCTION"],
+          });
+        });
+      });
+    });
+    describe("SOILS_CONTAMINATION_INTRODUCTION", () => {
+      describe("complete", () => {
+        it("goes to SOILS_CONTAMINATION step when step is completed", () => {
+          const store = initStoreWithState({ stepsHistory: ["SOILS_CONTAMINATION_INTRODUCTION"] });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(completeSoilsContaminationIntroductionStep());
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            stepsHistory: [...initialState.stepsHistory, "SOILS_CONTAMINATION"],
           });
         });
       });

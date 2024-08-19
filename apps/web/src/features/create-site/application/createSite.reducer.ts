@@ -26,8 +26,11 @@ export type SiteCreationCustomStep =
   | "SOILS_SURFACE_AREAS_DISTRIBUTION"
   | "SOILS_SUMMARY"
   | "SOILS_CARBON_STORAGE"
-  // contamination
+  // soils contamination and accidents
+  | "SOILS_CONTAMINATION_INTRODUCTION"
   | "SOILS_CONTAMINATION"
+  | "FRICHE_ACCIDENTS_INTRODUCTION"
+  | "FRICHE_ACCIDENTS"
   // site management
   | "MANAGEMENT_INTRODUCTION"
   | "OWNER"
@@ -36,8 +39,6 @@ export type SiteCreationCustomStep =
   | "TENANT"
   | "OPERATOR"
   | "FULL_TIME_JOBS_INVOLVED"
-  | "FRICHE_ACCIDENTS_INTRODUCTION"
-  | "FRICHE_ACCIDENTS"
   | "YEARLY_EXPENSES"
   | "YEARLY_INCOME"
   | "YEARLY_EXPENSES_SUMMARY"
@@ -154,8 +155,13 @@ export const siteCreationSlice = createSlice({
       state.stepsHistory.push("SOILS_CARBON_STORAGE");
     },
     completeSoilsCarbonStorage: (state) => {
-      const nextStep = state.siteData.isFriche ? "SOILS_CONTAMINATION" : "MANAGEMENT_INTRODUCTION";
+      const nextStep = state.siteData.isFriche
+        ? "SOILS_CONTAMINATION_INTRODUCTION"
+        : "MANAGEMENT_INTRODUCTION";
       state.stepsHistory.push(nextStep);
+    },
+    completeSoilsContaminationIntroductionStep: (state) => {
+      state.stepsHistory.push("SOILS_CONTAMINATION");
     },
     completeSoilsContamination: (
       state,
@@ -322,7 +328,10 @@ export const {
   completeSoilsDistribution,
   completeSoilsSummary,
   completeSoilsCarbonStorage,
+  completeSoilsContaminationIntroductionStep,
   completeSoilsContamination,
+  completeFricheAccidentsIntroduction,
+  completeFricheAccidents,
   completeManagementIntroduction,
   completeFullTimeJobsInvolved,
   completeOwner,
@@ -330,8 +339,6 @@ export const {
   completeIsSiteOperated,
   completeTenant,
   completeOperator,
-  completeFricheAccidentsIntroduction,
-  completeFricheAccidents,
   completeYearlyExpenses,
   completeYearlyExpensesSummary,
   completeYearlyIncome,

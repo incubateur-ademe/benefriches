@@ -31,6 +31,7 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "SOILS_SUMMARY":
     case "SOILS_CARBON_STORAGE":
       return "Sols";
+    case "SOILS_CONTAMINATION_INTRODUCTION":
     case "SOILS_CONTAMINATION":
     case "FRICHE_ACCIDENTS_INTRODUCTION":
     case "FRICHE_ACCIDENTS":
