@@ -35,7 +35,7 @@ type RecurringExpensePurpose = "rent" | "maintenance" | "taxes" | "other";
 export type ReinstatementExpense = TExpense<ReinstatementExpensePurpose>;
 export type RecurringExpense = TExpense<RecurringExpensePurpose>;
 
-export type RecurringRevenue = TRevenue<"operations" | "other">;
+export type RecurringRevenue = TRevenue<"operations" | "other" | "rent">;
 export type FinancialAssistanceRevenue = TRevenue<
   "local_or_regional_authority_participation" | "public_subsidies" | "other"
 >;
