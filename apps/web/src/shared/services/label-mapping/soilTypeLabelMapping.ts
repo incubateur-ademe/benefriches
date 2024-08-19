@@ -46,19 +46,21 @@ export const getDescriptionForSoilType = (value: SoilType): string => {
     case "IMPERMEABLE_SOILS":
       return "Parking ou voirie bitumée, dalle en béton…";
     case "MINERAL_SOIL":
-      return "Parking ou voiries en gravier, pistes, sols nus (sans végétation) qu'ils soient naturels, artificiels ou remaniés (ex : sites miniers)";
+      return "Parking ou voirie en gravier, sol semi-perméable, sol nu...";
     case "ARTIFICIAL_GRASS_OR_BUSHES_FILLED":
-      return "Parcs et jardins en pelouse, sols artificiels ou remaniés avec de la végétation au sol ou arbustive (spontanée ou non), couvertures d'anciennes décharges";
+      return "Pelouse, haies ou arbustes plantés";
     case "ARTIFICIAL_TREE_FILLED":
-      return "Parc ou jardin avec des arbres plantés…";
+      return "Arbres plantés";
     case "PRAIRIE_GRASS":
-      return "Composée uniquement d'herbes et de fleurs";
+      return "Herbes et fleurs";
     case "PRAIRIE_BUSHES":
-      return "Composée d'herbe et de buissons";
+      return "Herbe et arbustes";
     case "PRAIRIE_TREES":
-      return "Parsemée d'arbres";
+      return "Herbe et arbres";
     case "CULTIVATION":
       return "Céréalières, légumières…";
+    case "WATER":
+      return "Mare, étang, gravière...";
     case "WET_LAND":
       return "Marais, tourbières, prairies humides, mangrove, lagune...";
     default:

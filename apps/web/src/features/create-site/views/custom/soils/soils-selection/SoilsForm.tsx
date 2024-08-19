@@ -41,22 +41,22 @@ const siteSoilTypeTilesCategories: readonly { category: string; options: SoilTyp
     options: ["WATER", "WET_LAND"],
   },
   {
-    category: "Sols artificiels végétalisés",
+    category: "Sols végétalisés végétalisés",
     options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
   },
   {
-    category: "Sols artificiels minéraux",
+    category: "Sols minéraux",
     options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
   },
 ];
 
 const fricheSoilTypeTilesCategories = [
   {
-    category: "Sols artificiels minéraux",
+    category: "Sols minéraux",
     options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
   },
   {
-    category: "Sols artificiels végétalisés",
+    category: "Sols végétalisés artificiels",
     options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
   },
   {
