@@ -36,7 +36,8 @@ export type SiteCreationCustomStep =
   | "TENANT"
   | "OPERATOR"
   | "FULL_TIME_JOBS_INVOLVED"
-  | "FRICHE_RECENT_ACCIDENTS"
+  | "FRICHE_ACCIDENTS_INTRODUCTION"
+  | "FRICHE_ACCIDENTS"
   | "YEARLY_EXPENSES"
   | "YEARLY_INCOME"
   | "YEARLY_EXPENSES_SUMMARY"
@@ -170,7 +171,7 @@ export const siteCreationSlice = createSlice({
         state.siteData.contaminatedSoilSurface = contaminatedSoilSurface;
       }
 
-      state.stepsHistory.push("MANAGEMENT_INTRODUCTION");
+      state.stepsHistory.push("FRICHE_ACCIDENTS_INTRODUCTION");
     },
     completeManagementIntroduction: (state) => {
       state.stepsHistory.push("OWNER");
@@ -204,10 +205,12 @@ export const siteCreationSlice = createSlice({
       if (action.payload.jobs) {
         state.siteData.fullTimeJobsInvolved = action.payload.jobs;
       }
-      const nextStep = state.siteData.isFriche ? "FRICHE_RECENT_ACCIDENTS" : "YEARLY_EXPENSES";
-      state.stepsHistory.push(nextStep);
+      state.stepsHistory.push("YEARLY_EXPENSES");
     },
-    completeFricheRecentAccidents: (
+    completeFricheAccidentsIntroduction: (state) => {
+      state.stepsHistory.push("FRICHE_ACCIDENTS");
+    },
+    completeFricheAccidents: (
       state,
       action: PayloadAction<
         | {
@@ -230,7 +233,7 @@ export const siteCreationSlice = createSlice({
         state.siteData.accidentsDeaths = action.payload.accidentsDeaths ?? 0;
       }
 
-      state.stepsHistory.push("YEARLY_EXPENSES");
+      state.stepsHistory.push("MANAGEMENT_INTRODUCTION");
     },
     completeYearlyExpenses: (state, action: PayloadAction<Expense[]>) => {
       state.siteData.yearlyExpenses = action.payload;
@@ -327,7 +330,8 @@ export const {
   completeIsSiteOperated,
   completeTenant,
   completeOperator,
-  completeFricheRecentAccidents,
+  completeFricheAccidentsIntroduction,
+  completeFricheAccidents,
   completeYearlyExpenses,
   completeYearlyExpensesSummary,
   completeYearlyIncome,

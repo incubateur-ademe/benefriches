@@ -26,7 +26,8 @@ export const revertTenantStep = () => revertStep({ resetFields: ["tenant"] });
 export const revertOperatorStep = () => revertStep({ resetFields: ["tenant"] });
 export const revertFullTimeJobsInvolvedStep = () =>
   revertStep({ resetFields: ["fullTimeJobsInvolved"] });
-export const revertFricheRecentAccidentsStep = () =>
+export const revertFricheAccidentsIntroductionStep = () => revertStep();
+export const revertFricheAccidentsStep = () =>
   revertStep({
     resetFields: [
       "hasRecentAccidents",

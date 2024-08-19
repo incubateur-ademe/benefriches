@@ -5,13 +5,15 @@ const fricheStepsCategories = [
   "Type de site",
   "Adresse",
   "Sols",
-  "Pollution",
+  "Pollution et accidents",
   "Gestion du site",
   "Dénomination",
   "Récapitulatif",
 ] as const;
 
-const siteStepsCategories = fricheStepsCategories.filter((step) => step !== "Pollution");
+const siteStepsCategories = fricheStepsCategories.filter(
+  (step) => step !== "Pollution et accidents",
+);
 
 type StepCategory = (typeof fricheStepsCategories)[number];
 
@@ -30,14 +32,15 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "SOILS_CARBON_STORAGE":
       return "Sols";
     case "SOILS_CONTAMINATION":
-      return "Pollution";
+    case "FRICHE_ACCIDENTS_INTRODUCTION":
+    case "FRICHE_ACCIDENTS":
+      return "Pollution et accidents";
     case "MANAGEMENT_INTRODUCTION":
     case "OWNER":
     case "IS_FRICHE_LEASED":
     case "IS_SITE_OPERATED":
     case "OPERATOR":
     case "TENANT":
-    case "FRICHE_RECENT_ACCIDENTS":
     case "FULL_TIME_JOBS_INVOLVED":
     case "YEARLY_EXPENSES":
     case "YEARLY_INCOME":

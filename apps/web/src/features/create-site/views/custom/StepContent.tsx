@@ -1,11 +1,12 @@
 import { selectCurrentStep } from "../../application/createSite.reducer";
+import FricheAccidentsForm from "./accidents/accidents-count";
+import FricheAccidentsIntroduction from "./accidents/introduction";
 import SiteExpensesIncomeSummary from "./site-management/expenses-income-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
 import IsFricheLeasedForm from "./site-management/is-friche-leased";
 import IsSiteOperatedForm from "./site-management/is-site-operated";
 import SiteOwnerForm from "./site-management/owner";
-import FricheRecentAccidentsForm from "./site-management/recent-accidents";
 import SiteOperatorForm from "./site-management/site-operator";
 import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
@@ -51,6 +52,10 @@ function SiteCreationCustomStepContent() {
       return <SiteSoilsCarbonStorage />;
     case "SOILS_CONTAMINATION":
       return <SoilContaminationForm />;
+    case "FRICHE_ACCIDENTS_INTRODUCTION":
+      return <FricheAccidentsIntroduction />;
+    case "FRICHE_ACCIDENTS":
+      return <FricheAccidentsForm />;
     case "MANAGEMENT_INTRODUCTION":
       return <SiteManagementIntroduction />;
     case "OWNER":
@@ -65,8 +70,6 @@ function SiteCreationCustomStepContent() {
       return <SiteTenantForm />;
     case "FULL_TIME_JOBS_INVOLVED":
       return <SiteFullTimeJobsInvolvedForm />;
-    case "FRICHE_RECENT_ACCIDENTS":
-      return <FricheRecentAccidentsForm />;
     case "YEARLY_EXPENSES":
       return <SiteYearlyExpensesForm />;
     case "YEARLY_INCOME":

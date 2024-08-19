@@ -2,8 +2,8 @@ import getExpressSiteData from "../domain/siteExpress";
 import { InMemoryCreateSiteService } from "../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import {
   revertAddressStep,
+  revertFricheAccidentsStep,
   revertFricheActivityStep,
-  revertFricheRecentAccidentsStep,
   revertFullTimeJobsInvolvedStep,
   revertIsFricheLeasedStep,
   revertIsSiteOperatedStep,
@@ -23,8 +23,9 @@ import {
 } from "./createSite.actions";
 import {
   completeAddressStep,
+  completeFricheAccidents,
+  completeFricheAccidentsIntroduction,
   completeFricheActivity,
-  completeFricheRecentAccidents,
   completeFullTimeJobsInvolved,
   completeIsFricheLeased,
   completeIsSiteOperated,
@@ -400,7 +401,7 @@ describe("Create site reducer", () => {
     });
     describe("SOILS_CONTAMINATION", () => {
       describe("complete", () => {
-        it("goes to MANAGEMENT_INTRODUCTION step and sets contamination data when step is completed", () => {
+        it("goes to FRICHE_ACCIDENTS_INTRODUCTION step and sets contamination data when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["SOILS_CONTAMINATION"] });
           const { siteCreation: initialState } = store.getState();
 
@@ -419,7 +420,7 @@ describe("Create site reducer", () => {
               hasContaminatedSoils: true,
               contaminatedSoilSurface: 2500,
             },
-            stepsHistory: [...initialState.stepsHistory, "MANAGEMENT_INTRODUCTION"],
+            stepsHistory: [...initialState.stepsHistory, "FRICHE_ACCIDENTS_INTRODUCTION"],
           });
         });
       });
@@ -452,6 +453,95 @@ describe("Create site reducer", () => {
               ...initialState.siteData,
               hasContaminatedSoils: undefined,
               contaminatedSoilSurface: undefined,
+            },
+            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          });
+        });
+      });
+    });
+    describe("FRICHE_ACCIDENTS_INTRODUCTION", () => {
+      describe("complete", () => {
+        it("goes to FRICHE_ACCIDENTS step when step is completed", () => {
+          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS_INTRODUCTION"] });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(completeFricheAccidentsIntroduction());
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            stepsHistory: [...initialState.stepsHistory, "FRICHE_ACCIDENTS"],
+          });
+        });
+      });
+    });
+    describe("FRICHE_ACCIDENTS", () => {
+      describe("complete", () => {
+        it("goes to MANAGEMENT_INTRODUCTION step and sets accidents data when step is completed and friche has accidents", () => {
+          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS"] });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(
+            completeFricheAccidents({
+              hasRecentAccidents: true,
+              accidentsDeaths: 1,
+              accidentsSevereInjuries: 2,
+              accidentsMinorInjuries: 3,
+            }),
+          );
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: {
+              ...initialState.siteData,
+              hasRecentAccidents: true,
+              accidentsDeaths: 1,
+              accidentsSevereInjuries: 2,
+              accidentsMinorInjuries: 3,
+            },
+            stepsHistory: [...initialState.stepsHistory, "MANAGEMENT_INTRODUCTION"],
+          });
+        });
+        it("goes to MANAGEMENT_INTRODUCTION step and sets accidents data when step is completed and friche has no accident", () => {
+          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS"] });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(completeFricheAccidents({ hasRecentAccidents: false }));
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: { ...initialState.siteData, hasRecentAccidents: false },
+            stepsHistory: [...initialState.stepsHistory, "MANAGEMENT_INTRODUCTION"],
+          });
+        });
+      });
+      describe("revert", () => {
+        it("goes to previous step and unset friche accidents", () => {
+          const store = initStoreWithState({
+            stepsHistory: ["SITE_TYPE", "ADDRESS", "FRICHE_ACCIDENTS"],
+            siteData: {
+              isFriche: true,
+              hasRecentAccidents: true,
+              accidentsDeaths: 1,
+              accidentsSevereInjuries: 2,
+              accidentsMinorInjuries: 0,
+            },
+          });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(revertFricheAccidentsStep());
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            siteData: {
+              ...initialState.siteData,
+              hasRecentAccidents: undefined,
+              accidentsDeaths: undefined,
+              accidentsSevereInjuries: undefined,
+              accidentsMinorInjuries: undefined,
             },
             stepsHistory: initialState.stepsHistory.slice(0, -1),
           });
@@ -546,7 +636,7 @@ describe("Create site reducer", () => {
             stepsHistory: [...initialState.stepsHistory, "TENANT"],
           });
         });
-        it("goes to FRICHE_RECENT_ACCIDENTS step when step is completed and not leased", () => {
+        it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and not leased", () => {
           const store = initStoreWithState({ stepsHistory: ["IS_FRICHE_LEASED"] });
           const { siteCreation: initialState } = store.getState();
 
@@ -751,31 +841,10 @@ describe("Create site reducer", () => {
     });
     describe("FULL_TIME_JOBS_INVOLVED", () => {
       describe("complete", () => {
-        it("goes to FRICHE_RECENT_ACCIDENTS step and sets owner when step is completed and site is a friche", () => {
+        it("goes to YEARLY_EXPENSES step and sets full time jobs when step is completed", () => {
           const store = initStoreWithState({
             stepsHistory: ["FULL_TIME_JOBS_INVOLVED"],
             siteData: { isFriche: true },
-          });
-          const { siteCreation: initialState } = store.getState();
-
-          store.dispatch(
-            completeFullTimeJobsInvolved({ jobs: siteWithExhaustiveData.fullTimeJobsInvolved }),
-          );
-
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              fullTimeJobsInvolved: siteWithExhaustiveData.fullTimeJobsInvolved,
-            },
-            stepsHistory: [...initialState.stepsHistory, "FRICHE_RECENT_ACCIDENTS"],
-          });
-        });
-        it("goes to YEARLY_EXPENSES step and sets owner when step is completed and site is not a friche", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["FULL_TIME_JOBS_INVOLVED"],
-            siteData: { isFriche: false },
           });
           const { siteCreation: initialState } = store.getState();
 
@@ -813,79 +882,6 @@ describe("Create site reducer", () => {
             siteData: {
               ...initialState.siteData,
               fullTimeJobsInvolved: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
-          });
-        });
-      });
-    });
-    describe("FRICHE_RECENT_ACCIDENTS", () => {
-      describe("complete", () => {
-        it("goes to YEARLY_EXPENSES step and sets accidents data when step is completed and friche has accidents", () => {
-          const store = initStoreWithState({ stepsHistory: ["FRICHE_RECENT_ACCIDENTS"] });
-          const { siteCreation: initialState } = store.getState();
-
-          store.dispatch(
-            completeFricheRecentAccidents({
-              hasRecentAccidents: true,
-              accidentsDeaths: 1,
-              accidentsSevereInjuries: 2,
-              accidentsMinorInjuries: 3,
-            }),
-          );
-
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              hasRecentAccidents: true,
-              accidentsDeaths: 1,
-              accidentsSevereInjuries: 2,
-              accidentsMinorInjuries: 3,
-            },
-            stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES"],
-          });
-        });
-        it("goes to YEARLY_EXPENSES step and sets accidents data when step is completed and friche has no accident", () => {
-          const store = initStoreWithState({ stepsHistory: ["FRICHE_RECENT_ACCIDENTS"] });
-          const { siteCreation: initialState } = store.getState();
-
-          store.dispatch(completeFricheRecentAccidents({ hasRecentAccidents: false }));
-
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, hasRecentAccidents: false },
-            stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES"],
-          });
-        });
-      });
-      describe("revert", () => {
-        it("goes to previous step and unset friche accidents", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "FRICHE_RECENT_ACCIDENTS"],
-            siteData: {
-              isFriche: true,
-              hasRecentAccidents: true,
-              accidentsDeaths: 1,
-              accidentsSevereInjuries: 2,
-              accidentsMinorInjuries: 0,
-            },
-          });
-          const { siteCreation: initialState } = store.getState();
-
-          store.dispatch(revertFricheRecentAccidentsStep());
-
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              hasRecentAccidents: undefined,
-              accidentsDeaths: undefined,
-              accidentsSevereInjuries: undefined,
-              accidentsMinorInjuries: undefined,
             },
             stepsHistory: initialState.stepsHistory.slice(0, -1),
           });

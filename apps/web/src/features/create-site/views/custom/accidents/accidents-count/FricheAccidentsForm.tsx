@@ -21,7 +21,7 @@ export type FormValues = {
   accidentsDeaths?: number;
 };
 
-function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
+function FricheAccidentsForm({ onSubmit, onBack }: Props) {
   const { register, control, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
@@ -93,4 +93,4 @@ function FricheRecentAccidentsForm({ onSubmit, onBack }: Props) {
   );
 }
 
-export default FricheRecentAccidentsForm;
+export default FricheAccidentsForm;
