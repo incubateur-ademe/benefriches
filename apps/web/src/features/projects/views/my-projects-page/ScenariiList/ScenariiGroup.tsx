@@ -6,6 +6,7 @@ import ProjectScenarioTile from "./ScenarioTile/ProjectScenarioTile";
 import StatuQuoScenarioTile from "./ScenarioTile/StatuQuoScenarioTile";
 import { ReconversionProjectList } from ".";
 
+import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 
@@ -22,8 +23,25 @@ type Props = {
   fricheActivity?: FricheActivity;
 };
 
-function SiteName({ children }: { children: ReactNode }) {
-  return <h4 className="tour-guide-step-created-site tw-flex tw-items-center">{children}</h4>;
+function ScenarioGroupTitle({
+  siteId,
+  siteName,
+  isExpressSite,
+}: {
+  siteId: string;
+  siteName: string;
+  isExpressSite: boolean;
+}) {
+  return (
+    <h4 className="tour-guide-step-created-site tw-flex tw-items-center">
+      <a {...routes.siteFeatures({ siteId }).link}>{siteName}</a>
+      {isExpressSite && (
+        <Badge small className="tw-ml-3">
+          Site express
+        </Badge>
+      )}
+    </h4>
+  );
 }
 
 function GridColumn({ children }: { children: ReactNode }) {
@@ -46,15 +64,7 @@ function ScenariiGroup({
 }: Props) {
   return (
     <div className="fr-mb-5w" key={siteId}>
-      <SiteName key={siteId}>
-        {siteName}
-        {isExpressSite && (
-          <Badge small className="tw-ml-3">
-            Site express
-          </Badge>
-        )}
-      </SiteName>
-
+      <ScenarioGroupTitle siteName={siteName} siteId={siteId} isExpressSite={isExpressSite} />
       {reconversionProjects.length > 0 ? (
         <p>{reconversionProjects.length + 1} scenarii possibles pour ce site :</p>
       ) : (

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FricheActivity } from "shared";
 import ScenarioTile from "./ScenarioTile";
 
-import { routes } from "@/app/views/router";
 import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
 
 type Props = {
@@ -57,7 +56,6 @@ function StatuQuoScenarioTile({
       shouldDisplayCheckbox={shouldDisplayCheckbox}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      linkProps={routes.siteFeatures({ siteId }).link}
       isHovered={isHovered}
     />
   );

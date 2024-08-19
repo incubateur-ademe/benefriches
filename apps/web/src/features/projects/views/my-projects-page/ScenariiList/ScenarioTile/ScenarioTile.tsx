@@ -9,7 +9,7 @@ type Props = {
   pictogramUrl?: string;
   badgeText?: string;
   details?: string;
-  linkProps: { href: string };
+  linkProps?: { href: string };
   isHovered?: boolean;
   isSelected: boolean;
   shouldDisplayCheckbox: boolean;
