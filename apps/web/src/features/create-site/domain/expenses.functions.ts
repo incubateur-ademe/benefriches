@@ -1,4 +1,4 @@
-import { Expense, ExpensePurpose } from "./siteFoncier.types";
+import { Expense } from "./siteFoncier.types";
 
 type GroupedByExpensesKey = "bearer" | "purposeCategory";
 
@@ -35,7 +35,7 @@ export const groupExpensesByCategory = (expenses: Expense[]) => {
   }));
 };
 
-export const getLabelForExpensePurpose = (expensePurpose: ExpensePurpose): string => {
+export const getLabelForExpensePurpose = (expensePurpose: Expense["purpose"]): string => {
   switch (expensePurpose) {
     case "propertyTaxes":
       return "Taxe foncière";

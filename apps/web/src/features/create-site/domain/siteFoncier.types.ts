@@ -1,11 +1,6 @@
-import { FricheActivity, SoilsDistribution, SoilType } from "shared";
+import { FricheActivity, SiteYearlyExpensePurpose, SoilsDistribution, SoilType } from "shared";
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
-
-export enum SiteFoncierType {
-  FRICHE = "FRICHE",
-  NATURAL_AREA = "NATURAL_AREA",
-}
 
 export type Address = StreetAddress | HouseNumberAddress | MunicipalityAddress | BaseAddress;
 
@@ -22,10 +17,9 @@ type StreetAddress = BaseAddress & {
   streetName: string;
 };
 
-type HouseNumberAddress = BaseAddress &
-  StreetAddress & {
-    streetNumber: string;
-  };
+type HouseNumberAddress = StreetAddress & {
+  streetNumber: string;
+};
 
 export type MunicipalityAddress = BaseAddress & {
   population: number;
@@ -71,17 +65,6 @@ export type SiteExpressDraft = {
 export type Tenant = { structureType: TenantStructureType; name: string };
 export type Owner = { structureType: OwnerStructureType; name: string };
 
-export type ExpensePurpose =
-  | "rent"
-  | "propertyTaxes"
-  | "operationsTaxes"
-  | "maintenance"
-  | "otherManagementCosts"
-  | "security"
-  | "illegalDumpingCost"
-  | "accidentsCost"
-  | "otherSecuringCosts";
-
 type ExpensePurposeCategory =
   | "rent"
   | "safety"
@@ -91,7 +74,7 @@ type ExpensePurposeCategory =
   | "other";
 
 export type Expense = {
-  purpose: ExpensePurpose;
+  purpose: SiteYearlyExpensePurpose;
   purposeCategory: ExpensePurposeCategory;
   bearer: "owner" | "tenant";
   amount: number;

@@ -1,6 +1,6 @@
 import { FormValues } from "./SiteYearlyExpensesForm";
 
-import { Expense, ExpensePurpose } from "@/features/create-site/domain/siteFoncier.types";
+import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 
 const PURPOSE_CATEGORIES = {
   rent: "rent",
@@ -16,7 +16,7 @@ const PURPOSE_CATEGORIES = {
 
 export const mapFormDataToExpenses = (
   formData: FormValues,
-  expectedExpenses: { name: ExpensePurpose; bearer?: "tenant" | "owner" }[],
+  expectedExpenses: { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[],
 ): Expense[] =>
   expectedExpenses
     .map(({ name, bearer }) => ({
@@ -31,7 +31,7 @@ export const getSiteManagementExpensesWithBearer = (
   isFriche: boolean,
   isWorked: boolean,
   hasTenant: boolean,
-): { name: ExpensePurpose; bearer?: "tenant" | "owner" }[] => {
+): { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[] => {
   const isFricheLeased = isFriche && hasTenant;
   const isSiteOperatedByTenant = !isFriche && isWorked && hasTenant;
   if (isFricheLeased || isSiteOperatedByTenant) {
@@ -74,5 +74,5 @@ export const getSiteSecurityExpensesWithBearer = (
   if (hasRecentAccidents) {
     expenses.push({ name: "accidentsCost", bearer: expensesOwner });
   }
-  return expenses as { name: ExpensePurpose; bearer?: "tenant" | "owner" }[];
+  return expenses as { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[];
 };

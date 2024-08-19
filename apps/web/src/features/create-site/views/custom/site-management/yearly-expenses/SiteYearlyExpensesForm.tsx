@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
-import { ExpensePurpose } from "@/features/create-site/domain/siteFoncier.types";
+import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 import {
   numberToString,
   stringToNumber,
@@ -19,13 +19,13 @@ type YearlyExpenseBearer = "owner" | "tenant";
 type FormExpense =
   | { amount?: undefined; bearer?: undefined }
   | { amount: number; bearer?: YearlyExpenseBearer };
-export type FormValues = Partial<Record<ExpensePurpose, FormExpense>>;
+export type FormValues = Partial<Record<Expense["purpose"], FormExpense>>;
 
 type Props = {
   hasTenant: boolean;
   isFriche: boolean;
-  siteManagementExpensesWithBearer: { name: ExpensePurpose; bearer?: "tenant" | "owner" }[];
-  siteSecurityExpensesWithBearer: { name: ExpensePurpose; bearer?: "tenant" | "owner" }[];
+  siteManagementExpensesWithBearer: { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[];
+  siteSecurityExpensesWithBearer: { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[];
   defaultValues: {
     illegalDumpingCost?: { amount?: number };
     security?: { amount?: number };
@@ -35,7 +35,7 @@ type Props = {
   onBack: () => void;
 };
 
-const getLabelForExpense = (purpose: ExpensePurpose) => {
+const getLabelForExpense = (purpose: Expense["purpose"]) => {
   switch (purpose) {
     case "propertyTaxes":
     case "operationsTaxes":
