@@ -40,7 +40,7 @@ describe("siteName", () => {
 
     it("should generate 'friche d'habitat'", () => {
       const site = buildSiteDraft({ isFriche: true, fricheActivity: "HOUSING" });
-      expect(generateSiteDesignation(site)).toEqual("Friche d'habitat");
+      expect(generateSiteDesignation(site)).toEqual("Ancienne zone d'habitation");
     });
 
     it("should generate 'prairie' when no friche and all soils are of type prairie", () => {
