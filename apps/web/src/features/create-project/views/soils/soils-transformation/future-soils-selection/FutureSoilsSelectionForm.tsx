@@ -111,10 +111,11 @@ function FutureSoilsSelectionForm({
           </FormInfo>
 
           <FormDefinition>
-            Le sol est un milieu vivant, dont la création en conditions naturelles (pédogénèse)
-            prend plusieurs centaines d'années. C'est pourquoi la création de surfaces naturelles
-            est illusoire sur le temps de vie du projet. Ainsi, il n'est possible d'ajouter que les
-            surfaces végétalisées suivantes : enherbées, arbustives ou arborées.
+            Le sol, quand il n'a pas été artificialisé, est un milieu vivant, dont la création en
+            conditions naturelles (pédogénèse) prend plusieurs centaines d'années. C'est pourquoi la
+            création de surfaces naturelles est illusoire sur le temps de vie du projet. Ainsi, il
+            n'est possible d'ajouter que les surfaces végétalisées suivantes : enherbées, arbustives
+            ou arborées.
           </FormDefinition>
         </>
       }

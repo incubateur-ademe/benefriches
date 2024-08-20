@@ -26,9 +26,10 @@ const CarbonSoilsStorageDescription = ({
   return (
     <>
       <p>
-        Le sol est un milieu vivant, en perpétuel renouvellement. Sa création prend plusieurs
-        centaines d'année (pour quelques centimètres de sol en conditions naturelles), mais il peut
-        être détruit en quelques secondes (ex : décapage de la terre végétale sur 30cm).
+        Le sol, quand il n'a pas été artificialisé, est un milieu vivant, en perpétuel
+        renouvellement. Sa création prend plusieurs centaines d'année (pour quelques centimètres de
+        sol en conditions naturelles), mais il peut être détruit en quelques secondes (ex : décapage
+        de la terre végétale sur 30cm).
       </p>
       <p>
         Les sols et les végétaux stockent une grande quantité de carbone. A l'échelle globale, ces

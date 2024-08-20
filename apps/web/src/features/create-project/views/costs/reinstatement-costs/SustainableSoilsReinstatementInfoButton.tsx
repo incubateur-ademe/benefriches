@@ -17,7 +17,10 @@ const SustainableSoilsReinstatementInfoButton = () => {
         nativeButtonProps={{ type: "button", ...modal.buttonProps }}
       />
       <modal.Component title="À propos de la restauration écologique des sols" size="large">
-        <p>Le sol est un milieu vivant, en perpétuel renouvellement.</p>
+        <p>
+          Le sol, quand il n'a pas été artificialisé, est un milieu vivant, en perpétuel
+          renouvellement.
+        </p>
         <p>
           Bien que les sols occupent une place centrale dans les différents enjeux globaux que sont
           la sécurité alimentaire, l'accès à l'eau potable, la régulation du climat et la

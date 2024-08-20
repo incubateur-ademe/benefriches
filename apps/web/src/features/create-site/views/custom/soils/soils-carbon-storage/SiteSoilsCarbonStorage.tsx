@@ -36,15 +36,15 @@ const SiteSoilsCarbonStorage = ({
       instructions={
         <FormDefinition hideDivider>
           <p>
-            Le sol est un milieu vivant composé de minéraux (ex&nbsp;: pierre, argile) mais
-            également de matière organique, issue de la dégradation de végétaux (ex&nbsp;: l'humus
-            des forêts) mais également des organismes vivants qu'il contient&nbsp;: faune, flore,
-            champignons, micro-organismes.
+            Le sol est un milieu composé de minéraux (ex : pierre, argile, calcaire) mais également,
+            lorsque sa partie supérieure (”terre végétale”) est présente, de matière organique,
+            issue de la dégradation de végétaux (ex : l'humus des forêts) et d'organismes vivants :
+            faune, flore, champignons, micro-organismes.
           </p>
           <p>
-            Le sol est ainsi un milieu vivant qui contient une certaine quantité de carbone à un
-            moment donné (notion de stock) et qui varie dans le temps (notion de flux). Flux et
-            stock dépendent notamment du type de sol mais également du climat.
+            Le sol est ainsi un milieu qui contient une certaine quantité de carbone à un moment
+            donné (notion de stock) et qui varie dans le temps (notion de flux). Flux et stock
+            dépendent notamment du type de sol mais également du climat.
           </p>
           <p>
             Les calculs sont réalisés à partir des données de référence, exprimées en tonne
