@@ -45,44 +45,42 @@ function CreateModeSelectionForm({ onSubmit }: Props) {
   const validationError = formState.errors.createMode;
 
   return (
-    <>
-      <WizardFormLayout title="Comment souhaitez-vous renseigner le site ?">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className={fr.cx("fr-mb-5w")}>
-            <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-              {options.map((option) => {
-                return (
-                  <div className={fr.cx("fr-col-12", "fr-col-md-6")} key={option.value}>
-                    <Controller
-                      control={control}
-                      name="createMode"
-                      rules={{ required: "Veuillez sélectionner un mode de création." }}
-                      render={({ field }) => {
-                        const isSelected = field.value === option.value;
-                        return (
-                          <CreateModeOption
-                            checked={isSelected}
-                            onChange={() => {
-                              field.onChange(option.value);
-                            }}
-                            title={option.title}
-                            description={option.description}
-                            badgeText={option.badgeText}
-                            imgSrc={option.imgSrc}
-                          />
-                        );
-                      }}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-            {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
+    <WizardFormLayout title="Comment souhaitez-vous renseigner le site ?">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={fr.cx("fr-mb-5w")}>
+          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+            {options.map((option) => {
+              return (
+                <div className={fr.cx("fr-col-12", "fr-col-md-6")} key={option.value}>
+                  <Controller
+                    control={control}
+                    name="createMode"
+                    rules={{ required: "Veuillez sélectionner un mode de création." }}
+                    render={({ field }) => {
+                      const isSelected = field.value === option.value;
+                      return (
+                        <CreateModeOption
+                          checked={isSelected}
+                          onChange={() => {
+                            field.onChange(option.value);
+                          }}
+                          title={option.title}
+                          description={option.description}
+                          badgeText={option.badgeText}
+                          imgSrc={option.imgSrc}
+                        />
+                      );
+                    }}
+                  />
+                </div>
+              );
+            })}
           </div>
-          <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
-        </form>
-      </WizardFormLayout>
-    </>
+          {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
+        </div>
+        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+      </form>
+    </WizardFormLayout>
   );
 }
 
