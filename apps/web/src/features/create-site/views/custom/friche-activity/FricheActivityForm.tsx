@@ -5,7 +5,7 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-const FRICHE_ACTIVITY_OPTIONS: { value: FricheActivity; label: string }[] = [
+const FRICHE_ACTIVITY_OPTIONS = [
   {
     value: "INDUSTRY",
     label: "Friche industrielle (usine, mine, carrière...)",
@@ -27,26 +27,26 @@ const FRICHE_ACTIVITY_OPTIONS: { value: FricheActivity; label: string }[] = [
     label: "Friche agricole",
   },
   {
-    value: "HOSPITAL",
-    label: "Friche hospitalière",
+    value: "TIP_OR_RECYCLING_SITE",
+    label: "Ancienne décharge ou site de recyclage",
   },
   {
-    value: "ADMINISTRATION",
-    label: "Friche administrative (école, mairie...)",
+    value: "PUBLIC_FACILITY",
+    label: "Ancien bâtiment public (hôpital, école, mairie...)",
   },
   {
     value: "BUSINESS",
-    label: "Friche commerciale (ZAC, hôtel, restaurant...)",
+    label: "Ancienne zone commerciale (commerce, hôtel, restaurant...)",
   },
   {
     value: "HOUSING",
-    label: "Friche d'habitat (immeuble, quartier résidentiel...)",
+    label: "Ancienne zone d'habitation (immeuble, quartier résidentiel...)",
   },
   {
     value: "OTHER",
     label: "Autre",
   },
-];
+] satisfies { value: FricheActivity; label: string }[];
 
 export type FormValues = {
   activity: FricheActivity;

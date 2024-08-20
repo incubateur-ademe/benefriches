@@ -12,15 +12,15 @@ export const getFricheActivityLabel = (fricheActivity: FricheActivity): string =
       return "Friche ferroviaire";
     case "PORT":
       return "Friche portuaire";
-    case "HOSPITAL":
-      return "Friche hospitalière";
-    case "ADMINISTRATION":
-      return "Friche administrative";
+    case "TIP_OR_RECYCLING_SITE":
+      return "Ancienne décharge ou site de recyclage";
+    case "PUBLIC_FACILITY":
+      return "Ancien bâtiment public";
     case "BUSINESS":
-      return "Friche commerciale";
+      return "Ancienne zone commerciale";
     case "HOUSING":
-      return "Friche d'habitat";
+      return "Ancienne zone d'habitation";
     case "OTHER":
-      return "Friche";
+      return "Autre";
   }
 };

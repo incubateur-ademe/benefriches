@@ -1,19 +1,5 @@
-import { soilTypeSchema } from "shared";
+import { fricheActivitySchema, soilTypeSchema } from "shared";
 import { z } from "zod";
-
-const fricheActivitySchema = z.enum([
-  "AGRICULTURE",
-  "INDUSTRY",
-  "MILITARY",
-  "RAILWAY",
-  "PORT",
-  "HOSPITAL",
-  "ADMINISTRATION",
-  "BUSINESS",
-  "HOUSING",
-]);
-
-export type FricheActivity = z.infer<typeof fricheActivitySchema>;
 
 const expenseSchema = z.object({
   purpose: z.string(),
