@@ -20,7 +20,7 @@ function ImpactEvaluationPeriodSelect({ value, onChange }: Props) {
       }}
       options={values.map((value) => ({
         value,
-        label: `Durée ${value} ans`,
+        label: `Durée : ${value} ans`,
       }))}
     />
   );

@@ -51,26 +51,11 @@ const ImpactsActionBar = forwardRef<Ref, Props>(
           "tw-items-center",
         )}
       >
-        <div className={classNames(fr.cx("fr-grid-row"), "tw-items-center")}>
-          <SegmentedControl
-            legend="Filtres"
-            className="fr-mr-3w"
-            hideLegend
-            segments={[
-              {
-                label: "Graphique",
-                nativeInputProps: getViewSegmentInputProps("charts"),
-                iconId: "fr-icon-line-chart-fill",
-              },
-              {
-                label: "Liste",
-                nativeInputProps: getViewSegmentInputProps("list"),
-                iconId: "fr-icon-list-unordered",
-              },
-            ]}
-          />
-        </div>
         <div className="tw-flex tw-gap-4">
+          <ImpactEvaluationPeriodSelect
+            onChange={onEvaluationPeriodChange}
+            value={evaluationPeriod}
+          />
           <Select
             label=""
             className="!tw-mb-0"
@@ -99,9 +84,24 @@ const ImpactsActionBar = forwardRef<Ref, Props>(
               },
             ]}
           />
-          <ImpactEvaluationPeriodSelect
-            onChange={onEvaluationPeriodChange}
-            value={evaluationPeriod}
+        </div>
+        <div className={classNames(fr.cx("fr-grid-row"), "tw-items-center")}>
+          <SegmentedControl
+            legend="Filtres"
+            className="fr-mr-3w"
+            hideLegend
+            segments={[
+              {
+                label: "Graphique",
+                nativeInputProps: getViewSegmentInputProps("charts"),
+                iconId: "fr-icon-line-chart-fill",
+              },
+              {
+                label: "Liste",
+                nativeInputProps: getViewSegmentInputProps("list"),
+                iconId: "fr-icon-list-unordered",
+              },
+            ]}
           />
         </div>
       </section>
