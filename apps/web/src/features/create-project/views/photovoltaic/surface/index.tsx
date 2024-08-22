@@ -11,7 +11,6 @@ import {
   selectPhotovoltaicPlantFeaturesKeyParameter,
   selectRecommendedPhotovoltaicPlantSurfaceFromElectricalPower,
 } from "@/features/create-project/application/pvFeatures.selectors";
-import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function PhotovoltaicSurfaceContainer() {
@@ -31,7 +30,7 @@ function PhotovoltaicSurfaceContainer() {
 
   const onBack = () => dispatch(revertPhotovoltaicInstallationSurface());
 
-  if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.POWER) {
+  if (photovoltaicKeyParameter === "POWER") {
     return (
       <PhotovoltaicSurfaceFromPowerForm
         recommendedSurface={recommendedSurface}

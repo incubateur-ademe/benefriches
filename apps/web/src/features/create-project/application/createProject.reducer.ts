@@ -354,16 +354,13 @@ export const projectCreationSlice = createSlice({
     completePhotovoltaicKeyParameter: (state, action: PayloadAction<PhotovoltaicKeyParameter>) => {
       state.projectData.photovoltaicKeyParameter = action.payload;
 
-      const nextStep =
-        action.payload === PhotovoltaicKeyParameter.POWER
-          ? "PHOTOVOLTAIC_POWER"
-          : "PHOTOVOLTAIC_SURFACE";
+      const nextStep = action.payload === "POWER" ? "PHOTOVOLTAIC_POWER" : "PHOTOVOLTAIC_SURFACE";
       state.stepsHistory.push(nextStep);
     },
     completePhotovoltaicInstallationElectricalPower: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicInstallationElectricalPowerKWc = action.payload;
       const nextStep =
-        state.projectData.photovoltaicKeyParameter === PhotovoltaicKeyParameter.POWER
+        state.projectData.photovoltaicKeyParameter === "POWER"
           ? "PHOTOVOLTAIC_SURFACE"
           : "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION";
       state.stepsHistory.push(nextStep);
@@ -371,7 +368,7 @@ export const projectCreationSlice = createSlice({
     completePhotovoltaicInstallationSurface: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicInstallationSurfaceSquareMeters = action.payload;
       const nextStep =
-        state.projectData.photovoltaicKeyParameter === PhotovoltaicKeyParameter.POWER
+        state.projectData.photovoltaicKeyParameter === "POWER"
           ? "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION"
           : "PHOTOVOLTAIC_POWER";
       state.stepsHistory.push(nextStep);

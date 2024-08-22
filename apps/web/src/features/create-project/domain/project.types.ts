@@ -22,10 +22,7 @@ import {
   TenantStructureType,
 } from "@/shared/domain/stakeholder";
 
-export enum PhotovoltaicKeyParameter {
-  POWER = "POWER",
-  SURFACE = "SURFACE",
-}
+export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 
 export type ReconversionProjectCreationData = {
   id: string;

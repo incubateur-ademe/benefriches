@@ -1,4 +1,4 @@
-import { PhotovoltaicKeyParameter, ReconversionProjectCreationData } from "../domain/project.types";
+import { ReconversionProjectCreationData } from "../domain/project.types";
 
 export const projectWithMinimalData = {
   id: "64789135-afad-46ea-97a2-f14ba460d485",
@@ -16,7 +16,7 @@ export const projectWithMinimalData = {
   projectPhase: "planning",
   developmentPlanCategory: "RENEWABLE_ENERGY",
   renewableEnergyType: "PHOTOVOLTAIC_POWER_PLANT",
-  photovoltaicKeyParameter: PhotovoltaicKeyParameter.POWER,
+  photovoltaicKeyParameter: "POWER",
   photovoltaicInstallationElectricalPowerKWc: 10000,
   photovoltaicInstallationSurfaceSquareMeters: 40000,
   photovoltaicExpectedAnnualProduction: 50000,

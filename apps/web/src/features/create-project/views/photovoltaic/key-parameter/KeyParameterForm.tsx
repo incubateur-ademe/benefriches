@@ -24,11 +24,11 @@ function KeyParameterForm({ onSubmit, onBack }: Props) {
   const options = [
     {
       label: "La puissance de l'installation",
-      value: PhotovoltaicKeyParameter.POWER,
+      value: "POWER",
     },
     {
       label: "La superficie de l'installation",
-      value: PhotovoltaicKeyParameter.SURFACE,
+      value: "SURFACE",
     },
   ];
 

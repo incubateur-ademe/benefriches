@@ -14,7 +14,6 @@ import {
   selectRecommendedPowerKWcFromPhotovoltaicPlantSurfaceArea,
   selectRecommendedPowerKWcFromSiteSurfaceArea,
 } from "@/features/create-project/application/pvFeatures.selectors";
-import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function PhotovoltaicPowerContainer() {
@@ -41,7 +40,7 @@ function PhotovoltaicPowerContainer() {
     dispatch(revertPhotovoltaicInstallationElectricalPower());
   };
 
-  if (photovoltaicKeyParameter === PhotovoltaicKeyParameter.SURFACE) {
+  if (photovoltaicKeyParameter === "SURFACE") {
     return (
       <PhotovoltaicPowerFromSurfaceForm
         recommendedElectricalPowerKWc={recommendedElectricalPowerKWc}
