@@ -3,11 +3,10 @@ import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
-const createAction = <TPayload>(actionName: string) =>
-  _createAction<TPayload>(`projectCreation/mixedUseNeighbourhood/${actionName}`);
+const createAction = (actionName: string) =>
+  _createAction(`projectCreation/mixedUseNeighbourhood/${actionName}`);
 
-// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-export const createModeStepReverted = createAction<void>("createModeStepReverted");
+export const createModeStepReverted = createAction("createModeStepReverted");
 
 const schema = z.object({
   reconversionProjectId: z.string(),
@@ -32,5 +31,4 @@ export const expressCreateModeSelected = createAppAsyncThunk(
   },
 );
 
-// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-export const confirmationStepReverted = createAction<void>("confirmationStepReverted");
+export const confirmationStepReverted = createAction("confirmationStepReverted");

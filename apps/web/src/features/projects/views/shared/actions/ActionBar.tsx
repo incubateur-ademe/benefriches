@@ -21,94 +21,91 @@ type Props = {
 
 type Ref = HTMLDivElement;
 
-const ImpactsActionBar = forwardRef<Ref, Props>(
-  (
-    {
-      onFilterClick,
-      onViewModeClick,
-      selectedFilter,
-      selectedViewMode,
-      evaluationPeriod,
-      onEvaluationPeriodChange,
-    },
-    ref,
-  ) => {
-    const getViewSegmentInputProps = (value: ViewMode) => {
-      return {
-        checked: selectedViewMode === value,
-        onClick: () => {
-          onViewModeClick(value);
-        },
-      };
+const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(baseProps, ref) {
+  // props are not destructured nor named 'props' here because of an issue with eslint-plugin-react when using forwardRef
+  // see https://github.com/jsx-eslint/eslint-plugin-react/issues/3796
+  const {
+    onFilterClick,
+    onViewModeClick,
+    selectedFilter,
+    selectedViewMode,
+    evaluationPeriod,
+    onEvaluationPeriodChange,
+  } = baseProps;
+
+  const getViewSegmentInputProps = (value: ViewMode) => {
+    return {
+      checked: selectedViewMode === value,
+      onClick: () => {
+        onViewModeClick(value);
+      },
     };
+  };
 
-    return (
-      <section
-        ref={ref}
-        className={classNames(
-          fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w"),
-          "tw-justify-between",
-          "tw-items-center",
-        )}
-      >
-        <div className="tw-flex tw-gap-4">
-          <ImpactEvaluationPeriodSelect
-            onChange={onEvaluationPeriodChange}
-            value={evaluationPeriod}
-          />
-          <Select
-            label=""
-            className="!tw-mb-0"
-            nativeSelectProps={{
-              value: selectedFilter,
-              onChange: (e) => {
-                onFilterClick(e.currentTarget.value as ImpactCategoryFilter);
-              },
-            }}
-            options={[
-              {
-                label: "Tous les indicateurs",
-                value: "all",
-              },
-              {
-                label: "Économiques",
-                value: "economic",
-              },
-              {
-                label: "Sociaux",
-                value: "social",
-              },
-              {
-                label: "Environnementaux",
-                value: "environment",
-              },
-            ]}
-          />
-        </div>
-        <div className={classNames(fr.cx("fr-grid-row"), "tw-items-center")}>
-          <SegmentedControl
-            legend="Filtres"
-            className="fr-mr-3w"
-            hideLegend
-            segments={[
-              {
-                label: "Graphique",
-                nativeInputProps: getViewSegmentInputProps("charts"),
-                iconId: "fr-icon-line-chart-fill",
-              },
-              {
-                label: "Liste",
-                nativeInputProps: getViewSegmentInputProps("list"),
-                iconId: "fr-icon-list-unordered",
-              },
-            ]}
-          />
-        </div>
-      </section>
-    );
-  },
-);
-
-ImpactsActionBar.displayName = "ImpactsActionBar";
+  return (
+    <section
+      ref={ref}
+      className={classNames(
+        fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w"),
+        "tw-justify-between",
+        "tw-items-center",
+      )}
+    >
+      <div className="tw-flex tw-gap-4">
+        <ImpactEvaluationPeriodSelect
+          onChange={onEvaluationPeriodChange}
+          value={evaluationPeriod}
+        />
+        <Select
+          label=""
+          className="!tw-mb-0"
+          nativeSelectProps={{
+            value: selectedFilter,
+            onChange: (e) => {
+              onFilterClick(e.currentTarget.value as ImpactCategoryFilter);
+            },
+          }}
+          options={[
+            {
+              label: "Tous les indicateurs",
+              value: "all",
+            },
+            {
+              label: "Économiques",
+              value: "economic",
+            },
+            {
+              label: "Sociaux",
+              value: "social",
+            },
+            {
+              label: "Environnementaux",
+              value: "environment",
+            },
+          ]}
+        />
+      </div>
+      <div className={classNames(fr.cx("fr-grid-row"), "tw-items-center")}>
+        <SegmentedControl
+          legend="Filtres"
+          className="fr-mr-3w"
+          hideLegend
+          segments={[
+            {
+              label: "Graphique",
+              nativeInputProps: getViewSegmentInputProps("charts"),
+              iconId: "fr-icon-line-chart-fill",
+            },
+            {
+              label: "Liste",
+              nativeInputProps: getViewSegmentInputProps("list"),
+              iconId: "fr-icon-list-unordered",
+            },
+          ]}
+        />
+      </div>
+    </section>
+  );
+});
 
 export default ImpactsActionBar;

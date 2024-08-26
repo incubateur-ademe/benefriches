@@ -87,8 +87,6 @@ export const transformNonSuitableSoils = (
   currentSoilsDistribution: SoilsDistribution,
   nonSuitableSoilsToTransform: SoilsDistribution,
 ): SoilsDistribution => {
-  currentSoilsDistribution;
-  nonSuitableSoilsToTransform;
   if (!Object.keys(nonSuitableSoilsToTransform).length) return currentSoilsDistribution;
 
   const newSoilsDistribution = { ...currentSoilsDistribution };

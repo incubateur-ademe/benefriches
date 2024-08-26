@@ -5,7 +5,7 @@ const teardown = async () => {
   try {
     console.log("Stopping Postgres Docker testcontainer");
     await stopPostresDb();
-  } catch (e) {
+  } catch {
     console.log("Failed to stop Postgres Docker testcontainer");
   }
 };

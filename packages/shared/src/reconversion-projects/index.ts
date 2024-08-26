@@ -10,7 +10,10 @@ export const developmentPlanCategorySchema = z.enum([
 ]);
 export type DevelopmentPlanCategory = z.infer<typeof developmentPlanCategorySchema>;
 
-const developmentPlanTypeSchema = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "MIXED_USE_NEIGHBOURHOOD"]);
+export const developmentPlanTypeSchema = z.enum([
+  "PHOTOVOLTAIC_POWER_PLANT",
+  "MIXED_USE_NEIGHBOURHOOD",
+]);
 export type DevelopmentPlanType = z.infer<typeof developmentPlanTypeSchema>;
 
 export type ProjectPhase =

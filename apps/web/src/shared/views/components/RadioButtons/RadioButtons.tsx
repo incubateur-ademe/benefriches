@@ -9,10 +9,10 @@ type Props = {
   error?: { message?: string };
 };
 
-const RadioButtons = forwardRef<HTMLInputElement, Props>(function _RadioButtons(
-  { name, onChange, onBlur, options, error },
-  ref,
-) {
+const RadioButtons = forwardRef<HTMLInputElement, Props>(function BaseRadioButtons(baseProps, ref) {
+  // props are not destructured nor named 'props' here because of an issue with eslint-plugin-react when using forwardRef
+  // see https://github.com/jsx-eslint/eslint-plugin-react/issues/3796
+  const { name, onChange, onBlur, options, error } = baseProps;
   const mappedOptions = options.map(({ value, label, hintText }) => ({
     label,
     hintText,

@@ -285,10 +285,11 @@ export class LocalCarbonStorageQuery implements CarbonStorageQuery {
     const city = CITIES[cityCode] as CarbonStorage[];
 
     try {
-      return new Promise((resolve) => {
-        resolve(city.filter((entry) => soils.includes(entry.soilCategory)));
-      });
-    } catch (error) {
+      const result = await Promise.resolve(
+        city.filter((entry) => soils.includes(entry.soilCategory)),
+      );
+      return result;
+    } catch {
       throw new BadRequestException();
     }
   }

@@ -432,11 +432,10 @@ export const projectCreationSlice = createSlice({
 
       if (action.payload) {
         action.payload.resetFields.forEach(
+          /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
+          /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
           <K extends keyof ReconversionProjectCreationData>(field: K) => {
-            state.projectData[field] =
-              field in initialData
-                ? (initialData[field] as ReconversionProjectCreationData[K])
-                : undefined;
+            state.projectData[field] = field in initialData ? initialData[field] : undefined;
           },
         );
       }

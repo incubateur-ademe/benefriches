@@ -100,7 +100,7 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
         })),
       );
       setExternalServiceError(false);
-    } catch (error) {
+    } catch {
       setExternalServiceError(true);
     }
   };

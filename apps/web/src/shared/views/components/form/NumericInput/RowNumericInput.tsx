@@ -26,8 +26,10 @@ export type RowNumericInputInputProps = {
 
 const RowNumericInput = memo(
   forwardRef<HTMLDivElement, RowNumericInputInputProps>(
-    (
-      {
+    function BaseRowNumericInput(baseProps, ref) {
+      // props are not destructured nor named 'props' here because of an issue with eslint-plugin-react when using forwardRef
+      // see https://github.com/jsx-eslint/eslint-plugin-react/issues/3796
+      const {
         className,
         id,
         label,
@@ -40,9 +42,7 @@ const RowNumericInput = memo(
         stateRelatedMessage,
         nativeInputProps = {},
         ...rest
-      },
-      ref,
-    ) => {
+      } = baseProps;
       const domId = useId();
       const inputId = `input-${id ?? domId}`;
       const messageId = `${inputId}-desc-error`;
@@ -128,7 +128,5 @@ const RowNumericInput = memo(
     },
   ),
 );
-
-RowNumericInput.displayName = "RowNumericInput";
 
 export default RowNumericInput;
