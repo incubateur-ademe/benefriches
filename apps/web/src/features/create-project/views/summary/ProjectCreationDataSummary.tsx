@@ -205,7 +205,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           {!!projectData.financialAssistanceRevenues && (
             <>
               <DataLine
-                label={<strong>Aides financières aux travaux</strong>}
+                label={<strong>Aides financières</strong>}
                 value={
                   <strong>
                     {formatNumberFr(

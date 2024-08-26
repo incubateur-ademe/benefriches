@@ -201,7 +201,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         {!!projectData.financialAssistanceRevenues && (
           <>
             <DataLine
-              label={<strong>Aides financières aux travaux</strong>}
+              label={<strong>Aides financières</strong>}
               value={
                 <strong>
                   {formatNumberFr(
