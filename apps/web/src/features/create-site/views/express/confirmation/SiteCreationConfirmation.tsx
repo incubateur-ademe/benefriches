@@ -1,5 +1,7 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { createModal } from "@codegouvfr/react-dsfr/Modal";
+import SiteFeaturesModalView from "./SiteFeaturesModalView";
 
 import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -18,12 +20,17 @@ type Props = {
   onBack: () => void;
 };
 
+const siteFeaturesModal = createModal({
+  id: "site-features-modal",
+  isOpenedByDefault: false,
+});
+
 function SiteCreationConfirmation({ siteId, siteName, loadingState, onBack }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
     case "loading":
-      return <LoadingSpinner loadingText={`Création du site, veuillez patienter...`} />;
+      return <LoadingSpinner loadingText="Création du site, veuillez patienter..." />;
     case "error":
       return (
         <WizardFormLayout title="Échec de la création du site">
@@ -45,10 +52,20 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState, onBack }: Pr
           <EditorialPageTitle>Le site « {siteName} » est créé !</EditorialPageTitle>
           <EditorialPageText>
             Bénéfriches a affecté des données par défaut, notamment pour la typologie des sols et
-            les dépenses de gestion.{" "}
-            <a href={routes.siteFeatures({ siteId }).href}>
+            les dépenses de gestion.
+            <br />
+            <a
+              onClick={() => {
+                siteFeaturesModal.open();
+              }}
+              role="button"
+              href="#"
+            >
               Consulter les données du site utilisées par Bénéfriches
             </a>
+            <siteFeaturesModal.Component title="Caractéristiques du site" size="large">
+              <SiteFeaturesModalView siteId={siteId} />
+            </siteFeaturesModal.Component>
           </EditorialPageText>
           <EditorialPageText>
             Vous pouvez maintenant renseigner un projet sur ce site, en mode express ou en mode
