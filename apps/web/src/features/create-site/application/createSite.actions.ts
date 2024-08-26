@@ -40,6 +40,7 @@ export const revertFricheAccidentsStep = () =>
 export const revertYearlyExpensesStep = () => revertStep({ resetFields: ["yearlyExpenses"] });
 export const revertYearlyIncomeStep = () => revertStep({ resetFields: ["yearlyIncomes"] });
 export const revertFricheActivityStep = () => revertStep({ resetFields: ["fricheActivity"] });
+export const namingIntroductionStepReverted = () => revertStep();
 export const revertNamingStep = () => revertStep({ resetFields: ["name", "description"] });
 
 const createSiteSchema = z.object({

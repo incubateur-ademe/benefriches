@@ -48,6 +48,7 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "YEARLY_EXPENSES_SUMMARY":
       return "Gestion du site";
     case "FRICHE_ACTIVITY":
+    case "NAMING_INTRODUCTION":
     case "NAMING":
       return "Dénomination";
     case "FINAL_SUMMARY":

@@ -44,6 +44,7 @@ export type SiteCreationCustomStep =
   | "YEARLY_EXPENSES_SUMMARY"
   // NAMING
   | "FRICHE_ACTIVITY"
+  | "NAMING_INTRODUCTION"
   | "NAMING"
   // SUMARRY
   | "FINAL_SUMMARY"
@@ -248,7 +249,7 @@ export const siteCreationSlice = createSlice({
       );
     },
     completeYearlyExpensesSummary: (state) => {
-      const nextStep = state.siteData.isFriche ? "FRICHE_ACTIVITY" : "NAMING";
+      const nextStep = state.siteData.isFriche ? "FRICHE_ACTIVITY" : "NAMING_INTRODUCTION";
       state.stepsHistory.push(nextStep);
     },
     completeYearlyIncome: (state, action: PayloadAction<Income[]>) => {
@@ -257,6 +258,9 @@ export const siteCreationSlice = createSlice({
     },
     completeFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
       state.siteData.fricheActivity = action.payload;
+      state.stepsHistory.push("NAMING_INTRODUCTION");
+    },
+    namingIntroductionStepCompleted: (state) => {
       state.stepsHistory.push("NAMING");
     },
     completeNaming: (state, action: PayloadAction<{ name: string; description?: string }>) => {
@@ -344,6 +348,7 @@ export const {
   completeYearlyExpensesSummary,
   completeYearlyIncome,
   completeFricheActivity,
+  namingIntroductionStepCompleted,
   completeNaming,
   completeSummary,
   revertStep,

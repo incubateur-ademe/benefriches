@@ -49,6 +49,7 @@ import {
   completeYearlyExpensesSummary,
   completeYearlyIncome,
   getInitialState,
+  namingIntroductionStepCompleted,
 } from "./createSite.reducer";
 import {
   expressSiteDraft,
@@ -985,7 +986,7 @@ describe("Create site reducer", () => {
             stepsHistory: [...initialState.stepsHistory, "FRICHE_ACTIVITY"],
           });
         });
-        it("goes to NAMING step when step is completed and site is not a friche", () => {
+        it("goes to NAMING_INTRODUCTION step when step is completed and site is not a friche", () => {
           const store = initStoreWithState({
             stepsHistory: ["YEARLY_EXPENSES_SUMMARY"],
             siteData: { isFriche: false },
@@ -997,7 +998,7 @@ describe("Create site reducer", () => {
           const newState = store.getState().siteCreation;
           expect(newState).toEqual<RootState["siteCreation"]>({
             ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "NAMING"],
+            stepsHistory: [...initialState.stepsHistory, "NAMING_INTRODUCTION"],
           });
         });
       });
@@ -1043,7 +1044,7 @@ describe("Create site reducer", () => {
     });
     describe("FRICHE_ACTIVITY", () => {
       describe("complete", () => {
-        it("goes to NAMING step and sets friche activity when step is completed", () => {
+        it("goes to NAMING_INTRODUCTION step and sets friche activity when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["FRICHE_ACTIVITY"] });
           const { siteCreation: initialState } = store.getState();
 
@@ -1056,7 +1057,7 @@ describe("Create site reducer", () => {
               ...initialState.siteData,
               fricheActivity: "BUSINESS",
             },
-            stepsHistory: [...initialState.stepsHistory, "NAMING"],
+            stepsHistory: [...initialState.stepsHistory, "NAMING_INTRODUCTION"],
           });
         });
       });
@@ -1078,6 +1079,22 @@ describe("Create site reducer", () => {
               fricheActivity: undefined,
             },
             stepsHistory: initialState.stepsHistory.slice(0, -1),
+          });
+        });
+      });
+    });
+    describe("NAMING_INTRODUCTION", () => {
+      describe("complete", () => {
+        it("goes to NAMING step when completed", () => {
+          const store = initStoreWithState({ stepsHistory: ["NAMING_INTRODUCTION"] });
+          const { siteCreation: initialState } = store.getState();
+
+          store.dispatch(namingIntroductionStepCompleted());
+
+          const newState = store.getState().siteCreation;
+          expect(newState).toEqual<RootState["siteCreation"]>({
+            ...initialState,
+            stepsHistory: [...initialState.stepsHistory, "NAMING"],
           });
         });
       });

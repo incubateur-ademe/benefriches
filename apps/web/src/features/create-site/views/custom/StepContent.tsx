@@ -1,6 +1,7 @@
 import { selectCurrentStep } from "../../application/createSite.reducer";
 import FricheAccidentsForm from "./accidents/accidents-count";
 import FricheAccidentsIntroduction from "./accidents/introduction";
+import SiteNamingIntroduction from "./naming/introduction";
 import SiteExpensesIncomeSummary from "./site-management/expenses-income-summary";
 import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
@@ -21,8 +22,8 @@ import SiteSoilsSummary from "./soils/soils-summary";
 import SiteSurfaceAreaForm from "./soils/surface-area";
 import AddressForm from "./address";
 import SiteCreationConfirmation from "./confirmation";
-import SiteNameAndDescriptionForm from "./denomination";
 import FricheActivityForm from "./friche-activity";
+import SiteNameAndDescriptionForm from "./naming";
 import SiteTypeForm from "./site-type";
 import SoilContaminationForm from "./soil-contamination";
 import SiteDataSummary from "./summary";
@@ -81,6 +82,8 @@ function SiteCreationCustomStepContent() {
       return <SiteExpensesIncomeSummary />;
     case "FRICHE_ACTIVITY":
       return <FricheActivityForm />;
+    case "NAMING_INTRODUCTION":
+      return <SiteNamingIntroduction />;
     case "NAMING":
       return <SiteNameAndDescriptionForm />;
     case "FINAL_SUMMARY":
