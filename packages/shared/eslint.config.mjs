@@ -24,6 +24,9 @@ export default tseslint.config(
         project: true,
       },
     },
+    linterOptions: {
+      reportUnusedDisableDirectives: "error",
+    },
     rules: {
       "@typescript-eslint/prefer-ts-expect-error": "error",
       "@typescript-eslint/prefer-readonly": "error",
