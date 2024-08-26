@@ -1,12 +1,13 @@
 import { addYears } from "date-fns";
 import {
+  computeProjectReinstatementCosts,
   getSoilTypeForSpace,
   ReinstatementExpensePurpose,
   Schedule,
+  SoilsDistribution,
   SpacesDistribution,
   typedObjectEntries,
 } from "shared";
-import { isImpermeableSoil, SoilsDistribution, sumSoilsSurfaceAreasWhere } from "shared";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { capitalize } from "src/shared-kernel/strings/capitalize";
 import { startsByVowel } from "src/shared-kernel/strings/startsByVowel";
@@ -46,50 +47,46 @@ const computeInstallationCostsFromSiteSurfaceArea = (
   return { technicalStudies, developmentWorks, other };
 };
 
-const getImpermeableSurfaceArea = (soilsDistribution: SoilsDistribution): number => {
-  return sumSoilsSurfaceAreasWhere(soilsDistribution, (soilType) => isImpermeableSoil(soilType));
-};
-
-const getGreenArtificalSurfaceArea = (soilsDistribution: SoilsDistribution): number => {
-  return sumSoilsSurfaceAreasWhere(
-    soilsDistribution,
-    (soilType) =>
-      soilType === "ARTIFICIAL_GRASS_OR_BUSHES_FILLED" || soilType === "ARTIFICIAL_TREE_FILLED",
-  );
-};
-
-const computeReinstatementCostsFromSiteSoils = (
+const getReinstatementCostsFromSiteSoils = (
   siteSoilsDistribution: SoilsDistribution,
   projectSoilsDistribution: SoilsDistribution,
   contaminatedSoilSurface: number,
 ) => {
   const costs = [];
 
-  const impermeableSoilsDelta =
-    getImpermeableSurfaceArea(projectSoilsDistribution) -
-    getImpermeableSurfaceArea(siteSoilsDistribution);
+  const {
+    deimpermeabilization,
+    remediation,
+    sustainableSoilsReinstatement,
+    demolition,
+    asbestosRemoval,
+  } = computeProjectReinstatementCosts(
+    siteSoilsDistribution,
+    projectSoilsDistribution,
+    contaminatedSoilSurface,
+  );
 
-  if (impermeableSoilsDelta < 0) {
-    costs.push({ amount: Math.abs(impermeableSoilsDelta) * 10, purpose: "deimpermeabilization" });
+  if (deimpermeabilization) {
+    costs.push({ amount: deimpermeabilization, purpose: "deimpermeabilization" });
   }
 
-  const artificialGreenSoilsDelta =
-    getGreenArtificalSurfaceArea(projectSoilsDistribution) -
-    getGreenArtificalSurfaceArea(siteSoilsDistribution);
-  if (impermeableSoilsDelta < 0 && artificialGreenSoilsDelta > 0) {
+  if (sustainableSoilsReinstatement) {
     costs.push({
-      amount: artificialGreenSoilsDelta * 45,
+      amount: sustainableSoilsReinstatement,
       purpose: "sustainable_soils_reinstatement",
     });
   }
 
-  if (contaminatedSoilSurface > 0) {
-    costs.push({ amount: contaminatedSoilSurface * 0.75 * 66, purpose: "remediation" });
+  if (remediation) {
+    costs.push({ amount: remediation, purpose: "remediation" });
   }
 
-  if (siteSoilsDistribution.BUILDINGS) {
-    costs.push({ amount: siteSoilsDistribution.BUILDINGS * 75, purpose: "demolition" });
-    costs.push({ amount: siteSoilsDistribution.BUILDINGS * 75, purpose: "asbestos_removal" });
+  if (demolition) {
+    costs.push({ amount: demolition, purpose: "demolition" });
+  }
+
+  if (asbestosRemoval) {
+    costs.push({ amount: asbestosRemoval, purpose: "asbestos_removal" });
   }
 
   return costs;
@@ -208,7 +205,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
     );
     const installationCosts = computeInstallationCostsFromSiteSurfaceArea(siteData.surfaceArea);
     const reinstatementCosts = siteData.isFriche
-      ? computeReinstatementCostsFromSiteSoils(
+      ? getReinstatementCostsFromSiteSoils(
           siteData.soilsDistribution,
           soilsDistribution,
           siteData.contaminatedSoilSurface ?? 0,

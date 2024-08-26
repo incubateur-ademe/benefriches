@@ -1,4 +1,4 @@
-import { ReinstatementExpense } from "shared";
+import { computeProjectReinstatementCosts, ReinstatementExpense } from "shared";
 import {
   completeReinstatementExpenses,
   revertReinstatementExpenses,
@@ -6,7 +6,10 @@ import {
 import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
-import { ProjectSite } from "@/features/create-project/domain/project.types";
+import {
+  ProjectSite,
+  ReconversionProjectCreationData,
+} from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
@@ -63,13 +66,38 @@ const convertFormValuesToExpenses = (amounts: FormValues): ReinstatementExpense[
   return reinstatementExpenses;
 };
 
-const mapProps = (dispatch: AppDispatch, siteData?: ProjectSite) => {
-  const soilsDistribution = siteData?.soilsDistribution ?? {};
+const mapProps = (
+  dispatch: AppDispatch,
+  projectData: Partial<ReconversionProjectCreationData>,
+  siteData?: ProjectSite,
+) => {
+  const siteSoilsDistribution = siteData?.soilsDistribution ?? {};
+  const projectSoilsDistribution = projectData.soilsDistribution ?? {};
+
+  const {
+    deimpermeabilization,
+    sustainableSoilsReinstatement,
+    remediation,
+    demolition,
+    asbestosRemoval,
+  } = computeProjectReinstatementCosts(
+    siteSoilsDistribution,
+    projectSoilsDistribution,
+    siteData?.contaminatedSoilSurface ?? 0,
+  );
   return {
-    hasBuildings: hasBuildings(soilsDistribution),
+    hasBuildings: hasBuildings(siteSoilsDistribution),
     hasImpermeableSoils:
-      hasImpermeableSoils(soilsDistribution) || hasMineralSoils(soilsDistribution),
+      hasImpermeableSoils(siteSoilsDistribution) || hasMineralSoils(siteSoilsDistribution),
     hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
+    defaultValues: {
+      deimpermeabilizationAmount: deimpermeabilization && Math.round(deimpermeabilization),
+      sustainableSoilsReinstatementAmount:
+        sustainableSoilsReinstatement && Math.round(sustainableSoilsReinstatement),
+      remediationAmount: remediation && Math.round(remediation),
+      demolitionAmount: demolition && Math.round(demolition),
+      asbestosRemovalAmount: asbestosRemoval && Math.round(asbestosRemoval),
+    },
     onSubmit: (amounts: FormValues) => {
       const expenses = convertFormValuesToExpenses(amounts);
       dispatch(completeReinstatementExpenses(expenses));
@@ -84,8 +112,9 @@ function ReinstatementExpensesFormContainer() {
   const dispatch = useAppDispatch();
 
   const siteData = useAppSelector((state) => state.projectCreation.siteData);
+  const projectData = useAppSelector((state) => state.projectCreation.projectData);
 
-  return <ReinstatementExpensesForm {...mapProps(dispatch, siteData)} />;
+  return <ReinstatementExpensesForm {...mapProps(dispatch, projectData, siteData)} />;
 }
 
 export default ReinstatementExpensesFormContainer;

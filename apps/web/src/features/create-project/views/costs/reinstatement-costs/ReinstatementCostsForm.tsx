@@ -14,6 +14,15 @@ type Props = {
   hasBuildings: boolean;
   hasContaminatedSoils: boolean;
   hasImpermeableSoils: boolean;
+  defaultValues: {
+    wasteCollectionAmount?: number;
+    asbestosRemovalAmount?: number;
+    demolitionAmount?: number;
+    remediationAmount?: number;
+    deimpermeabilizationAmount?: number;
+    sustainableSoilsReinstatementAmount?: number;
+    otherReinstatementExpenseAmount?: number;
+  };
 };
 
 export type FormValues = {
@@ -107,8 +116,11 @@ const ReinstatementsExpensesForm = ({
   hasContaminatedSoils,
   hasBuildings,
   hasImpermeableSoils,
+  defaultValues,
 }: Props) => {
-  const { handleSubmit, control, watch } = useForm<FormValues>();
+  const { handleSubmit, control, watch } = useForm<FormValues>({
+    defaultValues,
+  });
 
   const allExpenses = watch();
 
@@ -119,6 +131,11 @@ const ReinstatementsExpensesForm = ({
       title="Dépenses de travaux de remise en état de la friche"
       instructions={
         <FormInfo>
+          <p>
+            Les montants pré-remplis le sont d’après les informations de surface que vous avez
+            renseigné et les coûts moyens observés.
+          </p>
+          <p>Ils sont exprimés en € HT. Vous pouvez modifier ces montants.</p>
           <ReinstatementExpensesFormExplanation
             hasContaminatedSoils={hasContaminatedSoils}
             hasImpermeableSurface={hasImpermeableSurface}
