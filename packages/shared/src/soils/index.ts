@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { typedObjectEntries } from "../object-entries";
 
 export const soilTypeSchema = z.enum([
   "BUILDINGS",
@@ -25,14 +24,6 @@ export const soilTypes = soilTypeSchema.options;
 
 export type SoilType = z.infer<typeof soilTypeSchema>;
 
-export type SoilsDistribution = Partial<Record<SoilType, number>>;
-
-export const stripEmptySurfaces = (soilsDistribution: SoilsDistribution): SoilsDistribution => {
-  return typedObjectEntries(soilsDistribution).reduce((acc, [soilType, surfaceArea]) => {
-    return surfaceArea ? { ...acc, [soilType]: surfaceArea } : acc;
-  }, {});
-};
-
 export const isImpermeableSoil = (soilType: SoilType) => {
   return ["BUILDINGS", "IMPERMEABLE_SOILS"].includes(soilType);
 };
@@ -43,19 +34,6 @@ export const isPermeableSoil = (soilType: SoilType) => {
 
 export const isMineralSoil = (soilType: SoilType) => {
   return soilType === "MINERAL_SOIL";
-};
-
-export const getTotalSurfaceArea = (soilsDistribution: SoilsDistribution): number => {
-  return typedObjectEntries(soilsDistribution).reduce((sum, [, area]) => sum + (area ?? 0), 0);
-};
-
-export const sumSoilsSurfaceAreasWhere = (
-  soilsDistribution: SoilsDistribution,
-  cb: (s: SoilType) => boolean,
-) => {
-  return typedObjectEntries(soilsDistribution)
-    .filter(([soilType]) => cb(soilType))
-    .reduce((sum, [, area]) => sum + (area ?? 0), 0);
 };
 
 const GREEN_SOILS: readonly SoilType[] = [
@@ -120,3 +98,5 @@ export const isPermeableSurfaceWithoutPermanentVegetation = (soilType: SoilType)
 export const isSoilAgricultural = (soilType: SoilType): boolean => {
   return ["VINEYARD", "ORCHARD", "CULTIVATION"].includes(soilType);
 };
+
+export * from "./soilDistribution";
