@@ -107,9 +107,9 @@ describe("Create site reducer", () => {
         },
       });
     };
-    describe("SITE_TYPE", () => {
+    describe("SITE_NATURE", () => {
       it("goes to ADDRESS step and sets type when step is completed", () => {
-        const store = initStoreWithState({ stepsHistory: ["SITE_TYPE"] });
+        const store = initStoreWithState({ stepsHistory: ["SITE_NATURE"] });
         const initialRootState = store.getState();
 
         store.dispatch(completeSiteTypeStep({ isFriche: true }));
@@ -137,7 +137,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset address data", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS"],
             siteData: { isFriche: true, address: siteWithExhaustiveData.address },
           });
           const initialRootState = store.getState();
@@ -180,7 +180,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset surface area", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "SOILS_SELECTION"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "SOILS_SELECTION"],
             siteData: { isFriche: true, surfaceArea: 12000 },
           });
           const initialRootState = store.getState();
@@ -213,7 +213,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset soils data", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "SOILS_SELECTION"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "SOILS_SELECTION"],
             siteData: { isFriche: true, soils: siteWithExhaustiveData.soils },
           });
           const initialRootState = store.getState();
@@ -277,7 +277,7 @@ describe("Create site reducer", () => {
         it("goes to previous step and unset soils distribution entry mode and surface areas", () => {
           const store = initStoreWithState({
             stepsHistory: [
-              "SITE_TYPE",
+              "SITE_NATURE",
               "ADDRESS",
               "SOILS_SELECTION",
               "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
@@ -323,7 +323,7 @@ describe("Create site reducer", () => {
         it("goes to previous step and unset soils distribution surface areas", () => {
           const store = initStoreWithState({
             stepsHistory: [
-              "SITE_TYPE",
+              "SITE_NATURE",
               "ADDRESS",
               "SOILS_SELECTION",
               "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
@@ -428,7 +428,7 @@ describe("Create site reducer", () => {
         it("goes to previous step and unset soils contamination", () => {
           const store = initStoreWithState({
             stepsHistory: [
-              "SITE_TYPE",
+              "SITE_NATURE",
               "ADDRESS",
               "SOILS_SELECTION",
               "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
@@ -507,7 +507,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset friche accidents", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "FRICHE_ACCIDENTS"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "FRICHE_ACCIDENTS"],
             siteData: {
               isFriche: true,
               hasRecentAccidents: true,
@@ -574,7 +574,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset owner", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "OWNER"],
             siteData: {
               isFriche: true,
               owner: siteWithExhaustiveData.owner,
@@ -616,7 +616,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset isFricheLeased", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "IS_FRICHE_LEASED"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "OWNER", "IS_FRICHE_LEASED"],
             siteData: {
               isFriche: true,
               tenant: siteWithExhaustiveData.tenant,
@@ -662,7 +662,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset isSiteOperated", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "IS_SITE_OPERATED"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "OWNER", "IS_SITE_OPERATED"],
             siteData: {
               tenant: siteWithExhaustiveData.tenant,
             },
@@ -705,7 +705,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset tenant", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "IS_SITE_OPERATED", "OPERATOR"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "OWNER", "IS_SITE_OPERATED", "OPERATOR"],
             siteData: {
               tenant: siteWithExhaustiveData.tenant,
             },
@@ -749,7 +749,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset tenant", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "OWNER", "TENANT"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "OWNER", "TENANT"],
             siteData: {
               isFriche: true,
               tenant: siteWithExhaustiveData.tenant,
@@ -790,7 +790,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset full time jobs", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "FULL_TIME_JOBS_INVOLVED"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "FULL_TIME_JOBS_INVOLVED"],
             siteData: {
               isFriche: true,
               fullTimeJobsInvolved: 1.2,
@@ -844,7 +844,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset yearly expenses", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "YEARLY_EXPENSES"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "YEARLY_EXPENSES"],
             siteData: { isFriche: true, yearlyExpenses: siteWithExhaustiveData.yearlyExpenses },
           });
           const initialRootState = store.getState();
@@ -905,7 +905,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset yearly income", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "YEARLY_INCOME"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "YEARLY_INCOME"],
             siteData: { isFriche: true, yearlyIncomes: siteWithExhaustiveData.yearlyIncomes },
           });
           const initialRootState = store.getState();
@@ -938,7 +938,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset friche activity", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "FRICHE_ACTIVITY"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "FRICHE_ACTIVITY"],
             siteData: { isFriche: true, fricheActivity: siteWithExhaustiveData.fricheActivity },
           });
           const initialRootState = store.getState();
@@ -987,7 +987,7 @@ describe("Create site reducer", () => {
       describe("revert", () => {
         it("goes to previous step and unset naming", () => {
           const store = initStoreWithState({
-            stepsHistory: ["SITE_TYPE", "ADDRESS", "NAMING"],
+            stepsHistory: ["SITE_NATURE", "ADDRESS", "NAMING"],
             siteData: { isFriche: true, name: "site 1", description: "blabla" },
           });
           const initialRootState = store.getState();

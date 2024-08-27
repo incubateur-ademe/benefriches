@@ -16,7 +16,7 @@ import {
 import { splitEvenly } from "@/shared/services/split-number/splitNumber";
 
 export type SiteCreationCustomStep =
-  | "SITE_TYPE"
+  | "SITE_NATURE"
   | "ADDRESS"
   // soils
   | "SOILS_INTRODUCTION"
@@ -51,7 +51,7 @@ export type SiteCreationCustomStep =
   | "CREATION_CONFIRMATION";
 
 export type SiteCreationExpressStep =
-  | "SITE_TYPE"
+  | "SITE_NATURE"
   | "ADDRESS"
   | "SURFACE_AREA"
   | "CREATION_CONFIRMATION";
@@ -68,7 +68,7 @@ export type SiteCreationState = {
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
 
-const INITIAL_STEP = BENEFRICHES_ENV.isSiteExpressAllowed ? "CREATE_MODE_SELECTION" : "SITE_TYPE";
+const INITIAL_STEP = BENEFRICHES_ENV.isSiteExpressAllowed ? "CREATE_MODE_SELECTION" : "SITE_NATURE";
 
 export const getInitialState = (): SiteCreationState => {
   return {
@@ -96,7 +96,7 @@ export const siteCreationSlice = createSlice({
       action: PayloadAction<{ createMode: "express" | "custom" }>,
     ) => {
       state.createMode = action.payload.createMode;
-      state.stepsHistory.push("SITE_TYPE");
+      state.stepsHistory.push("SITE_NATURE");
     },
     completeSiteTypeStep: (state, action: PayloadAction<{ isFriche: boolean }>) => {
       state.siteData.isFriche = action.payload.isFriche;
@@ -317,7 +317,7 @@ export const siteCreationSlice = createSlice({
 export const selectCurrentStep = createSelector(
   [(state: RootState) => state.siteCreation],
   (state): SiteCreationStep => {
-    return state.stepsHistory.at(-1) || "SITE_TYPE";
+    return state.stepsHistory.at(-1) || "SITE_NATURE";
   },
 );
 

@@ -10,7 +10,7 @@ function SiteCreationExpressStepContent() {
   const currentStep = useAppSelector(selectCurrentStep);
 
   switch (currentStep) {
-    case "SITE_TYPE":
+    case "SITE_NATURE":
       return <SiteTypeForm />;
     case "ADDRESS":
       return <AddressForm />;
