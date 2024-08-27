@@ -113,14 +113,14 @@ export const getSocialImpactLabel = (name: SocialImpactName) => {
     case "operations_full_time_jobs":
       return "🧑‍🔧 Exploitation du site";
     case "avoided_friche_accidents":
-      return "🤕 Accidents évités sur la friche";
+      return "🤕 Personnes préservées des accidents sur la friche";
     case "avoided_friche_minor_accidents":
       return "💥 Blessés légers évités";
     case "avoided_friche_severe_accidents":
       return "🚑 Blessés graves évités";
 
     case "avoided_traffic_accidents":
-      return "🚘 Accidents de la route évités";
+      return "🚘 Personnes préservées des accidents de la route";
     case "avoided_traffic_minor_injuries":
       return "🤕 Blessés légers évités";
     case "avoided_traffic_severe_injuries":
@@ -175,7 +175,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     case "travel_time_saved":
       return "⏱ Temps de déplacement économisé";
     case "avoided_traffic_accidents":
-      return "🚘 Accidents de la route évités";
+      return "🚘 Personnes préservées des accidents de la route";
     case "avoided_traffic_deaths":
       return "🪦 Décès évités";
     case "avoided_traffic_minor_injuries":
