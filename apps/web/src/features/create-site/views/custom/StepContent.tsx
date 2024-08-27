@@ -36,6 +36,8 @@ function SiteCreationCustomStepContent() {
   switch (currentStep) {
     case "SITE_NATURE":
       return <SiteTypeForm />;
+    case "FRICHE_ACTIVITY":
+      return <FricheActivityForm />;
     case "ADDRESS":
       return <AddressForm />;
     case "SOILS_INTRODUCTION":
@@ -80,8 +82,6 @@ function SiteCreationCustomStepContent() {
       return <SiteYearlyIncomeForm />;
     case "YEARLY_EXPENSES_SUMMARY":
       return <SiteExpensesIncomeSummary />;
-    case "FRICHE_ACTIVITY":
-      return <FricheActivityForm />;
     case "NAMING_INTRODUCTION":
       return <SiteNamingIntroduction />;
     case "NAMING":

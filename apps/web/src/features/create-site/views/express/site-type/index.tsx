@@ -1,7 +1,7 @@
 import SiteTypeForm from "./SiteTypeForm";
 
 import { revertSiteTypeStep } from "@/features/create-site/application/createSite.actions";
-import { completeSiteTypeStep } from "@/features/create-site/application/createSite.reducer";
+import { siteNatureStepCompleted } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 function SiteTypeFormContainer() {
@@ -9,7 +9,7 @@ function SiteTypeFormContainer() {
   return (
     <SiteTypeForm
       onSubmit={(data) => {
-        dispatch(completeSiteTypeStep({ isFriche: data.isFriche === "yes" }));
+        dispatch(siteNatureStepCompleted({ isFriche: data.isFriche === "yes" }));
       }}
       onBack={() => dispatch(revertSiteTypeStep())}
     />

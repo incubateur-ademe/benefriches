@@ -35,7 +35,6 @@ import {
   completeOperator,
   completeOwner,
   completeSiteSurfaceArea,
-  completeSiteTypeStep,
   completeSoils,
   completeSoilsCarbonStorage,
   completeSoilsContamination,
@@ -52,6 +51,7 @@ import {
   getInitialState,
   namingIntroductionStepCompleted,
   SiteCreationStep,
+  siteNatureStepCompleted,
 } from "./createSite.reducer";
 import {
   expressSiteDraft,
@@ -108,15 +108,58 @@ describe("Create site reducer", () => {
       });
     };
     describe("SITE_NATURE", () => {
-      it("goes to ADDRESS step and sets type when step is completed", () => {
+      it("goes to ADDRESS step and sets type when step is completed and site is not a friche", () => {
         const store = initStoreWithState({ stepsHistory: ["SITE_NATURE"] });
         const initialRootState = store.getState();
 
-        store.dispatch(completeSiteTypeStep({ isFriche: true }));
+        store.dispatch(siteNatureStepCompleted({ isFriche: false }));
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { isFriche: false });
+        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+      });
+      it("goes to FRICHE_ACTIVITY step and sets type when step is completed and site is a friche", () => {
+        const store = initStoreWithState({ stepsHistory: ["SITE_NATURE"] });
+        const initialRootState = store.getState();
+
+        store.dispatch(siteNatureStepCompleted({ isFriche: true }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { isFriche: true });
-        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+        expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
+      });
+    });
+    describe("FRICHE_ACTIVITY", () => {
+      describe("complete", () => {
+        it("goes to ADDRESS step and sets friche activity when step is completed", () => {
+          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACTIVITY"] });
+          const initialRootState = store.getState();
+
+          store.dispatch(completeFricheActivity("BUSINESS"));
+
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            fricheActivity: "BUSINESS",
+          });
+          expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+        });
+      });
+      describe("revert", () => {
+        it("goes to previous step and unset friche activity", () => {
+          const store = initStoreWithState({
+            stepsHistory: ["SITE_NATURE", "FRICHE_ACTIVITY"],
+            siteData: { isFriche: true, fricheActivity: siteWithExhaustiveData.fricheActivity },
+          });
+          const initialRootState = store.getState();
+
+          store.dispatch(revertFricheActivityStep());
+
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            fricheActivity: undefined,
+          });
+          expectStepReverted(initialRootState, newState);
+        });
       });
     });
     describe("ADDRESS", () => {
@@ -861,23 +904,10 @@ describe("Create site reducer", () => {
     });
     describe("YEARLY_EXPENSES_SUMMARY", () => {
       describe("complete", () => {
-        it("goes to FRICHE_ACTIVITY step when step is completed and site is a friche", () => {
+        it("goes to NAMING_INTRODUCTION step when step is completed and site is a friche", () => {
           const store = initStoreWithState({
             stepsHistory: ["YEARLY_EXPENSES_SUMMARY"],
             siteData: { isFriche: true },
-          });
-          const initialRootState = store.getState();
-
-          store.dispatch(completeYearlyExpensesSummary());
-
-          const newState = store.getState();
-          expectSiteDataUnchanged(initialRootState, newState);
-          expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
-        });
-        it("goes to NAMING_INTRODUCTION step when step is completed and site is not a friche", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["YEARLY_EXPENSES_SUMMARY"],
-            siteData: { isFriche: false },
           });
           const initialRootState = store.getState();
 
@@ -915,39 +945,6 @@ describe("Create site reducer", () => {
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, {
             yearlyIncomes: [],
-          });
-          expectStepReverted(initialRootState, newState);
-        });
-      });
-    });
-    describe("FRICHE_ACTIVITY", () => {
-      describe("complete", () => {
-        it("goes to NAMING_INTRODUCTION step and sets friche activity when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACTIVITY"] });
-          const initialRootState = store.getState();
-
-          store.dispatch(completeFricheActivity("BUSINESS"));
-
-          const newState = store.getState();
-          expectSiteDataDiff(initialRootState, newState, {
-            fricheActivity: "BUSINESS",
-          });
-          expectNewCurrentStep(initialRootState, newState, "NAMING_INTRODUCTION");
-        });
-      });
-      describe("revert", () => {
-        it("goes to previous step and unset friche activity", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SITE_NATURE", "ADDRESS", "FRICHE_ACTIVITY"],
-            siteData: { isFriche: true, fricheActivity: siteWithExhaustiveData.fricheActivity },
-          });
-          const initialRootState = store.getState();
-
-          store.dispatch(revertFricheActivityStep());
-
-          const newState = store.getState();
-          expectSiteDataDiff(initialRootState, newState, {
-            fricheActivity: undefined,
           });
           expectStepReverted(initialRootState, newState);
         });

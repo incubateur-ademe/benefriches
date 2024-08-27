@@ -17,6 +17,7 @@ import { splitEvenly } from "@/shared/services/split-number/splitNumber";
 
 export type SiteCreationCustomStep =
   | "SITE_NATURE"
+  | "FRICHE_ACTIVITY"
   | "ADDRESS"
   // soils
   | "SOILS_INTRODUCTION"
@@ -43,7 +44,6 @@ export type SiteCreationCustomStep =
   | "YEARLY_INCOME"
   | "YEARLY_EXPENSES_SUMMARY"
   // NAMING
-  | "FRICHE_ACTIVITY"
   | "NAMING_INTRODUCTION"
   | "NAMING"
   // SUMARRY
@@ -98,8 +98,14 @@ export const siteCreationSlice = createSlice({
       state.createMode = action.payload.createMode;
       state.stepsHistory.push("SITE_NATURE");
     },
-    completeSiteTypeStep: (state, action: PayloadAction<{ isFriche: boolean }>) => {
-      state.siteData.isFriche = action.payload.isFriche;
+    siteNatureStepCompleted: (state, action: PayloadAction<{ isFriche: boolean }>) => {
+      const { isFriche } = action.payload;
+      state.siteData.isFriche = isFriche;
+      const nextStep = isFriche ? "FRICHE_ACTIVITY" : "ADDRESS";
+      state.stepsHistory.push(nextStep);
+    },
+    completeFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
+      state.siteData.fricheActivity = action.payload;
       state.stepsHistory.push("ADDRESS");
     },
     completeAddressStep: (state, action: PayloadAction<{ address: Address }>) => {
@@ -249,16 +255,11 @@ export const siteCreationSlice = createSlice({
       );
     },
     completeYearlyExpensesSummary: (state) => {
-      const nextStep = state.siteData.isFriche ? "FRICHE_ACTIVITY" : "NAMING_INTRODUCTION";
-      state.stepsHistory.push(nextStep);
+      state.stepsHistory.push("NAMING_INTRODUCTION");
     },
     completeYearlyIncome: (state, action: PayloadAction<Income[]>) => {
       state.siteData.yearlyIncomes = action.payload;
       state.stepsHistory.push("YEARLY_EXPENSES_SUMMARY");
-    },
-    completeFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
-      state.siteData.fricheActivity = action.payload;
-      state.stepsHistory.push("NAMING_INTRODUCTION");
     },
     namingIntroductionStepCompleted: (state) => {
       state.stepsHistory.push("NAMING");
@@ -324,7 +325,7 @@ export const selectCurrentStep = createSelector(
 export const {
   resetState,
   completeCreateModeSelectionStep,
-  completeSiteTypeStep,
+  siteNatureStepCompleted,
   completeAddressStep,
   completeSoilsIntroduction,
   completeSiteSurfaceArea,
