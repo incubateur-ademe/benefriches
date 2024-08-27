@@ -1,3 +1,4 @@
+/* eslint-disable jest/expect-expect */
 import getExpressSiteData from "../domain/siteExpress";
 import { InMemoryCreateSiteService } from "../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import {
@@ -50,6 +51,7 @@ import {
   completeYearlyIncome,
   getInitialState,
   namingIntroductionStepCompleted,
+  SiteCreationStep,
 } from "./createSite.reducer";
 import {
   expressSiteDraft,
@@ -62,6 +64,38 @@ import {
 import { createStore, RootState } from "@/app/application/store";
 import { buildUser } from "@/features/users/domain/user.mock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
+
+const expectNewCurrentStep = (
+  initialState: RootState,
+  newState: RootState,
+  expectedNewCurrentStep: SiteCreationStep,
+) => {
+  expect(newState.siteCreation.stepsHistory).toEqual([
+    ...initialState.siteCreation.stepsHistory,
+    expectedNewCurrentStep,
+  ]);
+};
+
+const expectStepReverted = (initialState: RootState, newState: RootState) => {
+  expect(newState.siteCreation.stepsHistory).toEqual(
+    initialState.siteCreation.stepsHistory.slice(0, -1),
+  );
+};
+
+const expectSiteDataDiff = (
+  initialState: RootState,
+  newState: RootState,
+  siteDataDiff: Partial<RootState["siteCreation"]["siteData"]>,
+) => {
+  expect(newState.siteCreation.siteData).toEqual({
+    ...initialState.siteCreation.siteData,
+    ...siteDataDiff,
+  });
+};
+
+const expectSiteDataUnchanged = (initialState: RootState, newState: RootState) => {
+  expect(newState.siteCreation.siteData).toEqual(initialState.siteCreation.siteData);
+};
 
 describe("Create site reducer", () => {
   describe("Data creation steps", () => {
@@ -76,32 +110,28 @@ describe("Create site reducer", () => {
     describe("SITE_TYPE", () => {
       it("goes to ADDRESS step and sets type when step is completed", () => {
         const store = initStoreWithState({ stepsHistory: ["SITE_TYPE"] });
-        const { siteCreation: initialState } = store.getState();
+        const initialRootState = store.getState();
 
         store.dispatch(completeSiteTypeStep({ isFriche: true }));
 
-        const newState = store.getState().siteCreation;
-        expect(newState).toEqual<RootState["siteCreation"]>({
-          ...initialState,
-          siteData: { ...initialState.siteData, isFriche: true },
-          stepsHistory: [...initialState.stepsHistory, "ADDRESS"],
-        });
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { isFriche: true });
+        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
       });
     });
     describe("ADDRESS", () => {
       describe("complete", () => {
         it("goes to SOILS_INTRODUCTION step and sets address when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["ADDRESS"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeAddressStep({ address: siteWithExhaustiveData.address }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, address: siteWithExhaustiveData.address },
-            stepsHistory: [...initialState.stepsHistory, "SOILS_INTRODUCTION"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            address: siteWithExhaustiveData.address,
           });
+          expectNewCurrentStep(initialRootState, newState, "SOILS_INTRODUCTION");
         });
       });
       describe("revert", () => {
@@ -110,16 +140,13 @@ describe("Create site reducer", () => {
             stepsHistory: ["SITE_TYPE", "ADDRESS"],
             siteData: { isFriche: true, address: siteWithExhaustiveData.address },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertAddressStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, address: undefined },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { address: undefined });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -127,15 +154,13 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to SURFACE_AREA step when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["SOILS_INTRODUCTION"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeSoilsIntroduction());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "SURFACE_AREA"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "SURFACE_AREA");
         });
       });
     });
@@ -143,16 +168,13 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to SOILS_SELECTION step and sets surface area when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["SURFACE_AREA"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeSiteSurfaceArea({ surfaceArea: 143000 }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, surfaceArea: 143000 },
-            stepsHistory: [...initialState.stepsHistory, "SOILS_SELECTION"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { surfaceArea: 143000 });
+          expectNewCurrentStep(initialRootState, newState, "SOILS_SELECTION");
         });
       });
       describe("revert", () => {
@@ -161,16 +183,13 @@ describe("Create site reducer", () => {
             stepsHistory: ["SITE_TYPE", "ADDRESS", "SOILS_SELECTION"],
             siteData: { isFriche: true, surfaceArea: 12000 },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertSurfaceAreaStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, surfaceArea: undefined },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { surfaceArea: undefined });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -178,19 +197,17 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE step and sets soils when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["SOILS_SELECTION"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeSoils({ soils: siteWithExhaustiveData.soils }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, soils: siteWithExhaustiveData.soils },
-            stepsHistory: [
-              ...initialState.stepsHistory,
-              "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
-            ],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { soils: siteWithExhaustiveData.soils });
+          expectNewCurrentStep(
+            initialRootState,
+            newState,
+            "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
+          );
         });
       });
       describe("revert", () => {
@@ -199,16 +216,13 @@ describe("Create site reducer", () => {
             stepsHistory: ["SITE_TYPE", "ADDRESS", "SOILS_SELECTION"],
             siteData: { isFriche: true, soils: siteWithExhaustiveData.soils },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertSoilsSelectionStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, soils: [] },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { soils: [] });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -223,49 +237,41 @@ describe("Create site reducer", () => {
             },
           });
 
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeSoilsSurfaceAreaDistributionEntryMode("default_even_split"));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              soilsDistributionEntryMode: "default_even_split",
-              soilsDistribution: {
-                ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED"]: 33333.33,
-                ["BUILDINGS"]: 33333.33,
-                ["FOREST_CONIFER"]: 33333.34,
-              },
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            soilsDistributionEntryMode: "default_even_split",
+            soilsDistribution: {
+              ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED"]: 33333.33,
+              ["BUILDINGS"]: 33333.33,
+              ["FOREST_CONIFER"]: 33333.34,
             },
-            stepsHistory: [...initialState.stepsHistory, "SOILS_SUMMARY"],
           });
+          expectNewCurrentStep(initialRootState, newState, "SOILS_SUMMARY");
+        });
+      });
+
+      it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION step when step is completed with square_meters", () => {
+        const store = initStoreWithState({
+          stepsHistory: ["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"],
+          siteData: {
+            surfaceArea: 100000,
+            soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "BUILDINGS", "FOREST_CONIFER"],
+          },
         });
 
-        it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION step when step is completed with square_meters", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"],
-            siteData: {
-              surfaceArea: 100000,
-              soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "BUILDINGS", "FOREST_CONIFER"],
-            },
-          });
+        const initialRootState = store.getState();
 
-          const { siteCreation: initialState } = store.getState();
+        store.dispatch(completeSoilsSurfaceAreaDistributionEntryMode("square_meters"));
 
-          store.dispatch(completeSoilsSurfaceAreaDistributionEntryMode("square_meters"));
-
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              soilsDistributionEntryMode: "square_meters",
-            },
-            stepsHistory: [...initialState.stepsHistory, "SOILS_SURFACE_AREAS_DISTRIBUTION"],
-          });
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, {
+          soilsDistributionEntryMode: "square_meters",
         });
+        expectNewCurrentStep(initialRootState, newState, "SOILS_SURFACE_AREAS_DISTRIBUTION");
       });
       describe("revert", () => {
         it("goes to previous step and unset soils distribution entry mode and surface areas", () => {
@@ -283,20 +289,16 @@ describe("Create site reducer", () => {
               soilsDistributionEntryMode: siteWithExhaustiveData.soilsDistributionEntryMode,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertSoilsSurfaceAreaDistributionEntryModeStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              soilsDistribution: undefined,
-              soilsDistributionEntryMode: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            soilsDistribution: undefined,
+            soilsDistributionEntryMode: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -304,21 +306,17 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to SOILS_SUMMARY step and sets soils distribution when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["SOILS_SURFACE_AREAS_DISTRIBUTION"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(
             completeSoilsDistribution({ distribution: siteWithExhaustiveData.soilsDistribution }),
           );
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              soilsDistribution: siteWithExhaustiveData.soilsDistribution,
-            },
-            stepsHistory: [...initialState.stepsHistory, "SOILS_SUMMARY"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            soilsDistribution: siteWithExhaustiveData.soilsDistribution,
           });
+          expectNewCurrentStep(initialRootState, newState, "SOILS_SUMMARY");
         });
       });
       describe("revert", () => {
@@ -337,16 +335,13 @@ describe("Create site reducer", () => {
               soilsDistribution: siteWithExhaustiveData.soilsDistribution,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertSoilsDistributionStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, soilsDistribution: undefined },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { soilsDistribution: undefined });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -354,15 +349,13 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to SOILS_CARBON_STORAGE step when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["SOILS_SUMMARY"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeSoilsSummary());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "SOILS_CARBON_STORAGE"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "SOILS_CARBON_STORAGE");
         });
       });
     });
@@ -373,31 +366,26 @@ describe("Create site reducer", () => {
             stepsHistory: ["SOILS_CARBON_STORAGE"],
             siteData: { isFriche: true },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeSoilsCarbonStorage());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "SOILS_CONTAMINATION_INTRODUCTION"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "SOILS_CONTAMINATION_INTRODUCTION");
         });
         it("goes to MANAGEMENT_INTRODUCTION step when step is completed and site is not a friche", () => {
           const store = initStoreWithState({
             stepsHistory: ["SOILS_CARBON_STORAGE"],
             siteData: { isFriche: false },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeSoilsCarbonStorage());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: initialState.siteData,
-            stepsHistory: [...initialState.stepsHistory, "MANAGEMENT_INTRODUCTION"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "MANAGEMENT_INTRODUCTION");
         });
       });
     });
@@ -405,15 +393,13 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to SOILS_CONTAMINATION step when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["SOILS_CONTAMINATION_INTRODUCTION"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeSoilsContaminationIntroductionStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "SOILS_CONTAMINATION"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "SOILS_CONTAMINATION");
         });
       });
     });
@@ -421,7 +407,7 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to FRICHE_ACCIDENTS_INTRODUCTION step and sets contamination data when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["SOILS_CONTAMINATION"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(
             completeSoilsContamination({
@@ -430,16 +416,12 @@ describe("Create site reducer", () => {
             }),
           );
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              hasContaminatedSoils: true,
-              contaminatedSoilSurface: 2500,
-            },
-            stepsHistory: [...initialState.stepsHistory, "FRICHE_ACCIDENTS_INTRODUCTION"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            hasContaminatedSoils: true,
+            contaminatedSoilSurface: 2500,
           });
+          expectNewCurrentStep(initialRootState, newState, "FRICHE_ACCIDENTS_INTRODUCTION");
         });
       });
       describe("revert", () => {
@@ -460,20 +442,16 @@ describe("Create site reducer", () => {
               contaminatedSoilSurface: 12000,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertSoilsContaminationStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              hasContaminatedSoils: undefined,
-              contaminatedSoilSurface: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            hasContaminatedSoils: undefined,
+            contaminatedSoilSurface: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -481,15 +459,13 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to FRICHE_ACCIDENTS step when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS_INTRODUCTION"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeFricheAccidentsIntroduction());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "FRICHE_ACCIDENTS"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "FRICHE_ACCIDENTS");
         });
       });
     });
@@ -497,7 +473,7 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to MANAGEMENT_INTRODUCTION step and sets accidents data when step is completed and friche has accidents", () => {
           const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(
             completeFricheAccidents({
@@ -508,31 +484,24 @@ describe("Create site reducer", () => {
             }),
           );
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              hasRecentAccidents: true,
-              accidentsDeaths: 1,
-              accidentsSevereInjuries: 2,
-              accidentsMinorInjuries: 3,
-            },
-            stepsHistory: [...initialState.stepsHistory, "MANAGEMENT_INTRODUCTION"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            hasRecentAccidents: true,
+            accidentsDeaths: 1,
+            accidentsSevereInjuries: 2,
+            accidentsMinorInjuries: 3,
           });
+          expectNewCurrentStep(initialRootState, newState, "MANAGEMENT_INTRODUCTION");
         });
         it("goes to MANAGEMENT_INTRODUCTION step and sets accidents data when step is completed and friche has no accident", () => {
           const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeFricheAccidents({ hasRecentAccidents: false }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, hasRecentAccidents: false },
-            stepsHistory: [...initialState.stepsHistory, "MANAGEMENT_INTRODUCTION"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { hasRecentAccidents: false });
+          expectNewCurrentStep(initialRootState, newState, "MANAGEMENT_INTRODUCTION");
         });
       });
       describe("revert", () => {
@@ -547,22 +516,18 @@ describe("Create site reducer", () => {
               accidentsMinorInjuries: 0,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertFricheAccidentsStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              hasRecentAccidents: undefined,
-              accidentsDeaths: undefined,
-              accidentsSevereInjuries: undefined,
-              accidentsMinorInjuries: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            hasRecentAccidents: undefined,
+            accidentsDeaths: undefined,
+            accidentsSevereInjuries: undefined,
+            accidentsMinorInjuries: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -570,15 +535,13 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to OWNER step when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["MANAGEMENT_INTRODUCTION"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeManagementIntroduction());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "OWNER"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "OWNER");
         });
       });
     });
@@ -589,29 +552,23 @@ describe("Create site reducer", () => {
             stepsHistory: ["OWNER"],
             siteData: { isFriche: true },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, owner: siteWithExhaustiveData.owner },
-            stepsHistory: [...initialState.stepsHistory, "IS_FRICHE_LEASED"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { owner: siteWithExhaustiveData.owner });
+          expectNewCurrentStep(initialRootState, newState, "IS_FRICHE_LEASED");
         });
         it("goes to IS_SITE_OPERATED step and sets owner when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["OWNER"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, owner: siteWithExhaustiveData.owner },
-            stepsHistory: [...initialState.stepsHistory, "IS_SITE_OPERATED"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { owner: siteWithExhaustiveData.owner });
+          expectNewCurrentStep(initialRootState, newState, "IS_SITE_OPERATED");
         });
       });
       describe("revert", () => {
@@ -623,19 +580,13 @@ describe("Create site reducer", () => {
               owner: siteWithExhaustiveData.owner,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertOwnerStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              owner: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { owner: undefined });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -643,29 +594,23 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to TENANT step and sets isFricheLeased when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["IS_FRICHE_LEASED"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeIsFricheLeased({ isFricheLeased: true }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, isFricheLeased: true },
-            stepsHistory: [...initialState.stepsHistory, "TENANT"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { isFricheLeased: true });
+          expectNewCurrentStep(initialRootState, newState, "TENANT");
         });
         it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and not leased", () => {
           const store = initStoreWithState({ stepsHistory: ["IS_FRICHE_LEASED"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeIsFricheLeased({ isFricheLeased: false }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, isFricheLeased: false },
-            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { isFricheLeased: false });
+          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
         });
       });
       describe("revert", () => {
@@ -677,19 +622,15 @@ describe("Create site reducer", () => {
               tenant: siteWithExhaustiveData.tenant,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertIsFricheLeasedStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              isFricheLeased: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            isFricheLeased: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -697,32 +638,25 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to OPERATOR step and sets isSiteOperated when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["IS_SITE_OPERATED"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeIsSiteOperated({ isSiteOperated: true }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, isSiteOperated: true },
-            stepsHistory: [...initialState.stepsHistory, "OPERATOR"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { isSiteOperated: true });
+          expectNewCurrentStep(initialRootState, newState, "OPERATOR");
         });
         it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and no tenant", () => {
           const store = initStoreWithState({ stepsHistory: ["IS_SITE_OPERATED"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeIsSiteOperated({ isSiteOperated: false }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              isSiteOperated: false,
-            },
-            stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            isSiteOperated: false,
           });
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
       });
       describe("revert", () => {
@@ -733,19 +667,15 @@ describe("Create site reducer", () => {
               tenant: siteWithExhaustiveData.tenant,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertIsSiteOperatedStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              isSiteOperated: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            isSiteOperated: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -753,29 +683,23 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to FULL_TIME_JOBS_INVOLVED step and sets tenant when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["OPERATOR"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeOperator({ tenant: siteWithExhaustiveData.tenant }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, tenant: siteWithExhaustiveData.tenant },
-            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
+          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
         });
         it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed with tenant", () => {
           const store = initStoreWithState({ stepsHistory: ["OPERATOR"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeOperator({ tenant: undefined }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: initialState.siteData,
-            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { tenant: undefined });
+          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
         });
       });
       describe("revert", () => {
@@ -786,19 +710,15 @@ describe("Create site reducer", () => {
               tenant: siteWithExhaustiveData.tenant,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertOperatorStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              tenant: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            tenant: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -807,29 +727,23 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to FULL_TIME_JOBS_INVOLVED step and sets tenant when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["TENANT"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeTenant({ tenant: siteWithExhaustiveData.tenant }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: { ...initialState.siteData, tenant: siteWithExhaustiveData.tenant },
-            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
-          });
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
+          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
         });
         it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and no tenant", () => {
           const store = initStoreWithState({ stepsHistory: ["TENANT"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeTenant({ tenant: undefined }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: initialState.siteData,
-            stepsHistory: [...initialState.stepsHistory, "FULL_TIME_JOBS_INVOLVED"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
         });
       });
       describe("revert", () => {
@@ -841,19 +755,15 @@ describe("Create site reducer", () => {
               tenant: siteWithExhaustiveData.tenant,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertTenantStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              tenant: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            tenant: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -864,21 +774,17 @@ describe("Create site reducer", () => {
             stepsHistory: ["FULL_TIME_JOBS_INVOLVED"],
             siteData: { isFriche: true },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(
             completeFullTimeJobsInvolved({ jobs: siteWithExhaustiveData.fullTimeJobsInvolved }),
           );
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              fullTimeJobsInvolved: siteWithExhaustiveData.fullTimeJobsInvolved,
-            },
-            stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            fullTimeJobsInvolved: siteWithExhaustiveData.fullTimeJobsInvolved,
           });
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
       });
       describe("revert", () => {
@@ -890,19 +796,15 @@ describe("Create site reducer", () => {
               fullTimeJobsInvolved: 1.2,
             },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertFullTimeJobsInvolvedStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              fullTimeJobsInvolved: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            fullTimeJobsInvolved: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -913,38 +815,30 @@ describe("Create site reducer", () => {
             stepsHistory: ["YEARLY_EXPENSES"],
             siteData: { isFriche: true },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeYearlyExpenses(siteWithExhaustiveData.yearlyExpenses));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              yearlyExpenses: siteWithExhaustiveData.yearlyExpenses,
-            },
-            stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES_SUMMARY"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            yearlyExpenses: siteWithExhaustiveData.yearlyExpenses,
           });
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES_SUMMARY");
         });
         it("goes to YEARLY_INCOME step if site is worked and sets yearly expenses when step is completed", () => {
           const store = initStoreWithState({
             stepsHistory: ["YEARLY_EXPENSES"],
             siteData: { isSiteOperated: true },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeYearlyExpenses(siteWithExhaustiveData.yearlyExpenses));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              yearlyExpenses: siteWithExhaustiveData.yearlyExpenses,
-            },
-            stepsHistory: [...initialState.stepsHistory, "YEARLY_INCOME"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            yearlyExpenses: siteWithExhaustiveData.yearlyExpenses,
           });
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_INCOME");
         });
       });
       describe("revert", () => {
@@ -953,19 +847,15 @@ describe("Create site reducer", () => {
             stepsHistory: ["SITE_TYPE", "ADDRESS", "YEARLY_EXPENSES"],
             siteData: { isFriche: true, yearlyExpenses: siteWithExhaustiveData.yearlyExpenses },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertYearlyExpensesStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              yearlyExpenses: [],
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            yearlyExpenses: [],
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -976,49 +866,41 @@ describe("Create site reducer", () => {
             stepsHistory: ["YEARLY_EXPENSES_SUMMARY"],
             siteData: { isFriche: true },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeYearlyExpensesSummary());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "FRICHE_ACTIVITY"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
         });
         it("goes to NAMING_INTRODUCTION step when step is completed and site is not a friche", () => {
           const store = initStoreWithState({
             stepsHistory: ["YEARLY_EXPENSES_SUMMARY"],
             siteData: { isFriche: false },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeYearlyExpensesSummary());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "NAMING_INTRODUCTION"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "NAMING_INTRODUCTION");
         });
       });
     });
     describe("YEARLY_INCOME", () => {
       it("goes to YEARLY_EXPENSES_SUMMARY step and sets yearly income when step is completed", () => {
         const store = initStoreWithState({ stepsHistory: ["YEARLY_INCOME"] });
-        const { siteCreation: initialState } = store.getState();
+        const initialRootState = store.getState();
 
         store.dispatch(completeYearlyIncome(siteWithExhaustiveData.yearlyIncomes));
 
-        const newState = store.getState().siteCreation;
-        expect(newState).toEqual<RootState["siteCreation"]>({
-          ...initialState,
-          siteData: {
-            ...initialState.siteData,
-            yearlyIncomes: siteWithExhaustiveData.yearlyIncomes,
-          },
-          stepsHistory: [...initialState.stepsHistory, "YEARLY_EXPENSES_SUMMARY"],
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, {
+          yearlyIncomes: siteWithExhaustiveData.yearlyIncomes,
         });
+        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES_SUMMARY");
       });
       describe("revert", () => {
         it("goes to previous step and unset yearly income", () => {
@@ -1026,19 +908,15 @@ describe("Create site reducer", () => {
             stepsHistory: ["SITE_TYPE", "ADDRESS", "YEARLY_INCOME"],
             siteData: { isFriche: true, yearlyIncomes: siteWithExhaustiveData.yearlyIncomes },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertYearlyIncomeStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              yearlyIncomes: [],
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            yearlyIncomes: [],
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -1046,19 +924,15 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to NAMING_INTRODUCTION step and sets friche activity when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["FRICHE_ACTIVITY"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(completeFricheActivity("BUSINESS"));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              fricheActivity: "BUSINESS",
-            },
-            stepsHistory: [...initialState.stepsHistory, "NAMING_INTRODUCTION"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            fricheActivity: "BUSINESS",
           });
+          expectNewCurrentStep(initialRootState, newState, "NAMING_INTRODUCTION");
         });
       });
       describe("revert", () => {
@@ -1067,19 +941,15 @@ describe("Create site reducer", () => {
             stepsHistory: ["SITE_TYPE", "ADDRESS", "FRICHE_ACTIVITY"],
             siteData: { isFriche: true, fricheActivity: siteWithExhaustiveData.fricheActivity },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertFricheActivityStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              fricheActivity: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            fricheActivity: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
@@ -1087,15 +957,13 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to NAMING step when completed", () => {
           const store = initStoreWithState({ stepsHistory: ["NAMING_INTRODUCTION"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(namingIntroductionStepCompleted());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            stepsHistory: [...initialState.stepsHistory, "NAMING"],
-          });
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(initialRootState, newState, "NAMING");
         });
       });
     });
@@ -1103,21 +971,17 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         it("goes to FINAL_SUMMARY step and sets name and description when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["NAMING"] });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           const { name, description } = siteWithExhaustiveData;
           store.dispatch(completeNaming({ name, description }));
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              name,
-              description,
-            },
-            stepsHistory: [...initialState.stepsHistory, "FINAL_SUMMARY"],
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            name,
+            description,
           });
+          expectNewCurrentStep(initialRootState, newState, "FINAL_SUMMARY");
         });
       });
       describe("revert", () => {
@@ -1126,35 +990,29 @@ describe("Create site reducer", () => {
             stepsHistory: ["SITE_TYPE", "ADDRESS", "NAMING"],
             siteData: { isFriche: true, name: "site 1", description: "blabla" },
           });
-          const { siteCreation: initialState } = store.getState();
+          const initialRootState = store.getState();
 
           store.dispatch(revertNamingStep());
 
-          const newState = store.getState().siteCreation;
-          expect(newState).toEqual<RootState["siteCreation"]>({
-            ...initialState,
-            siteData: {
-              ...initialState.siteData,
-              name: undefined,
-              description: undefined,
-            },
-            stepsHistory: initialState.stepsHistory.slice(0, -1),
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, {
+            name: undefined,
+            description: undefined,
           });
+          expectStepReverted(initialRootState, newState);
         });
       });
     });
     describe("FINAL_SUMMARY", () => {
       it("goes to CREATION_CONFIRMATION step when step is completed", () => {
         const store = initStoreWithState({ stepsHistory: ["FINAL_SUMMARY"] });
-        const { siteCreation: initialState } = store.getState();
+        const initialRootState = store.getState();
 
         store.dispatch(completeSummary());
 
-        const newState = store.getState().siteCreation;
-        expect(newState).toEqual<RootState["siteCreation"]>({
-          ...initialState,
-          stepsHistory: [...initialState.stepsHistory, "CREATION_CONFIRMATION"],
-        });
+        const newState = store.getState();
+        expectSiteDataUnchanged(initialRootState, newState);
+        expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
       });
     });
   });
