@@ -8,6 +8,11 @@ export class MockSiteFeaturesService implements SiteFeaturesGateway {
     address: "155 bis Av. Pierre Brossolette, 92120 Montrouge",
     isFriche: true,
     isExpressSite: false,
+    accidents: {
+      accidentsDeaths: 0,
+      minorInjuries: 0,
+      severyInjuries: 0,
+    },
     expenses: [
       { amount: 15432, purpose: "maintenance" },
       { amount: 10300, purpose: "security" },
