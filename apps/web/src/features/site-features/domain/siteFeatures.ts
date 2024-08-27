@@ -7,7 +7,7 @@ export type SiteFeatures = {
   ownerName: string;
   tenantName?: string;
   fullTimeJobsInvolved?: number;
-  accidents?: {
+  accidents: {
     minorInjuries?: number;
     severyInjuries?: number;
     accidentsDeaths?: number;

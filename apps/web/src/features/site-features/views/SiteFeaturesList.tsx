@@ -103,16 +103,10 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           <dl>
             <DataLine
               label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
-              value={
-                siteFeatures.accidents ? (
-                  <strong>{sumObjectValues(siteFeatures.accidents)}</strong>
-                ) : (
-                  "Aucun"
-                )
-              }
+              value={<strong>{sumObjectValues(siteFeatures.accidents) || "Aucun"}</strong>}
               className="fr-mt-2w fr-mb-1w"
             />
-            {siteFeatures.accidents && (
+            {sumObjectValues(siteFeatures.accidents) > 0 && (
               <div className="fr-ml-2w">
                 <DataLine
                   label="Blessés légers"
