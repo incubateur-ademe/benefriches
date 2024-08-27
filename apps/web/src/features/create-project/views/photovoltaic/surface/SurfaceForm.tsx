@@ -32,7 +32,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
 
   return (
     <WizardFormLayout
-      title="Quelle superficie du site occuperont les panneaux photovoltaïques ?"
+      title="Quelle superficie fera l'installation ?"
       instructions={
         <>
           <FormInfo>
