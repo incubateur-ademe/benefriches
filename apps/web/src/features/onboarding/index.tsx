@@ -10,7 +10,7 @@ function OnboardingPage() {
 
   useEffect(() => {
     if (currentUserId) {
-      routes.createSiteFoncierIntro().push();
+      routes.createSiteFoncier().push();
     }
   }, [currentUserId]);
 

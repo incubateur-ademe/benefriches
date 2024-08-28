@@ -51,7 +51,7 @@ function CreateUserFormContainer() {
 
   useEffect(() => {
     if (createUserLoadingState === "success") {
-      routes.createSiteFoncierIntro().push();
+      routes.createSiteFoncier().push();
     }
   }, [createUserLoadingState]);
 

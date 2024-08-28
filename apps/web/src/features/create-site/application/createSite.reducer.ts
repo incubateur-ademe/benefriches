@@ -57,6 +57,7 @@ export type SiteCreationExpressStep =
   | "CREATION_RESULT";
 
 export type SiteCreationStep =
+  | "INTRODUCTION"
   | "CREATE_MODE_SELECTION"
   | SiteCreationExpressStep
   | SiteCreationCustomStep;
@@ -68,11 +69,9 @@ export type SiteCreationState = {
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
 
-const INITIAL_STEP = BENEFRICHES_ENV.isSiteExpressAllowed ? "CREATE_MODE_SELECTION" : "SITE_NATURE";
-
 export const getInitialState = (): SiteCreationState => {
   return {
-    stepsHistory: [INITIAL_STEP],
+    stepsHistory: ["INTRODUCTION"],
     saveLoadingState: "idle",
     createMode: undefined,
     siteData: {
@@ -90,6 +89,12 @@ export const siteCreationSlice = createSlice({
   reducers: {
     resetState: () => {
       return getInitialState();
+    },
+    introductionStepCompleted: (state) => {
+      const nextStep = BENEFRICHES_ENV.isSiteExpressAllowed
+        ? "CREATE_MODE_SELECTION"
+        : "SITE_NATURE";
+      state.stepsHistory.push(nextStep);
     },
     completeCreateModeSelectionStep: (
       state,
@@ -323,6 +328,7 @@ export const selectCurrentStep = createSelector(
 
 export const {
   resetState,
+  introductionStepCompleted,
   completeCreateModeSelectionStep,
   siteNatureStepCompleted,
   completeAddressStep,

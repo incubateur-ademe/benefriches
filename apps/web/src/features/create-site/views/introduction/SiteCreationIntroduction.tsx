@@ -1,9 +1,5 @@
-import { useEffect } from "react";
 import { Button } from "@codegouvfr/react-dsfr/Button";
-import { resetState } from "../../application/createSite.reducer";
 
-import { routes } from "@/app/views/router";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import {
   EditorialPageIcon,
   EditorialPageLayout,
@@ -11,13 +7,11 @@ import {
   EditorialPageTitle,
 } from "@/shared/views/layout/EditorialPageLayout";
 
-function CreateSiteIntroductionPage() {
-  const dispatch = useAppDispatch();
+type Props = {
+  onNext: () => void;
+};
 
-  useEffect(() => {
-    dispatch(resetState());
-  }, [dispatch]);
-
+function CreateSiteIntroductionPage({ onNext }: Props) {
   return (
     <section className="fr-container fr-py-4w">
       <EditorialPageLayout>
@@ -33,7 +27,7 @@ function CreateSiteIntroductionPage() {
           Une fois que ce site sera décrit, vous pourrez alors créer un ou plusieurs{" "}
           <strong>projets d'aménagement</strong> sur ce site.
         </EditorialPageText>
-        <Button size="large" linkProps={routes.createSiteFoncier().link}>
+        <Button size="large" onClick={onNext}>
           Commencer
         </Button>
       </EditorialPageLayout>
