@@ -27,6 +27,12 @@ export type SoilType = z.infer<typeof soilTypeSchema>;
 
 export type SoilsDistribution = Partial<Record<SoilType, number>>;
 
+export const stripEmptySurfaces = (soilsDistribution: SoilsDistribution): SoilsDistribution => {
+  return typedObjectEntries(soilsDistribution).reduce((acc, [soilType, surfaceArea]) => {
+    return surfaceArea ? { ...acc, [soilType]: surfaceArea } : acc;
+  }, {});
+};
+
 export const isImpermeableSoil = (soilType: SoilType) => {
   return ["BUILDINGS", "IMPERMEABLE_SOILS"].includes(soilType);
 };

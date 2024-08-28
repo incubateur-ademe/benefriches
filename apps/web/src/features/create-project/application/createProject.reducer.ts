@@ -8,6 +8,7 @@ import {
   ReinstatementExpense,
   SoilsDistribution,
   SoilType,
+  stripEmptySurfaces,
 } from "shared";
 import { v4 as uuid } from "uuid";
 import {
@@ -204,7 +205,7 @@ export const projectCreationSlice = createSlice({
       state,
       action: PayloadAction<SoilsDistribution>,
     ) => {
-      state.projectData.soilsDistribution = action.payload;
+      state.projectData.soilsDistribution = stripEmptySurfaces(action.payload);
 
       const nextStep = hasSiteSignificantBiodiversityAndClimateSensibleSoils(
         state.siteData?.soilsDistribution ?? {},
@@ -348,9 +349,6 @@ export const projectCreationSlice = createSlice({
 
       state.stepsHistory.push("FINAL_SUMMARY");
     },
-    completeFinalSummaryStep: (state) => {
-      state.stepsHistory.push("CREATION_CONFIRMATION");
-    },
     completePhotovoltaicKeyParameter: (state, action: PayloadAction<PhotovoltaicKeyParameter>) => {
       state.projectData.photovoltaicKeyParameter = action.payload;
 
@@ -380,13 +378,6 @@ export const projectCreationSlice = createSlice({
     completePhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicContractDuration = action.payload;
       state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
-    },
-    completeSoilsDistribution: (
-      state,
-      action: PayloadAction<ReconversionProjectCreationData["soilsDistribution"]>,
-    ) => {
-      state.projectData.soilsDistribution = action.payload;
-      state.stepsHistory.push("SOILS_SUMMARY");
     },
     completeSoilsSummaryStep: (state) => {
       state.stepsHistory.push("SOILS_CARBON_STORAGE");
