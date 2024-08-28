@@ -26,9 +26,6 @@ const StatsPage = lazy(() => import("./pages/StatsPage"));
 const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
 );
-const CreateSiteIntroductionPage = lazy(
-  () => import("@/features/create-site/views/introduction/CreateSiteIntroductionPage"),
-);
 const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
 const LoginPage = lazy(() => import("@/features/login"));
 const OnboardingPage = lazy(() => import("@/features/onboarding"));
@@ -84,12 +81,6 @@ function App() {
               return (
                 <RequireRegisteredUser>
                   <CreateUserPage />
-                </RequireRegisteredUser>
-              );
-            case routes.createSiteFoncierIntro.name:
-              return (
-                <RequireRegisteredUser>
-                  <CreateSiteIntroductionPage />
                 </RequireRegisteredUser>
               );
             case routes.createSiteFoncier.name:

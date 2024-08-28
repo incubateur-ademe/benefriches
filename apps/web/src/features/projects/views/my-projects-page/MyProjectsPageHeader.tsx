@@ -15,7 +15,7 @@ function MyProjectsPageHeader() {
         <div className="tour-guide-step-create-new-site">
           <Button
             priority="primary"
-            linkProps={routes.createSiteFoncierIntro().link}
+            linkProps={routes.createSiteFoncier().link}
             iconId="fr-icon-add-line"
           >
             Nouveau site

@@ -5,7 +5,6 @@ const { RouteProvider, useRoute, routes } = createRouter({
   onboarding: defineRoute("/premiers-pas"),
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
-  createSiteFoncierIntro: defineRoute("/creer-site-foncier/introduction"),
   createSiteFoncier: defineRoute("/creer-site-foncier"),
   createProjectIntro: defineRoute(
     { siteId: param.query.string },
