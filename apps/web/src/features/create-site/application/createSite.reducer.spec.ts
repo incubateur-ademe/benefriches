@@ -128,6 +128,26 @@ describe("Create site reducer", () => {
         expectSiteDataDiff(initialRootState, newState, { isFriche: true });
         expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
       });
+      it("goes to ADDRESS step and sets type when step is completed and site is a friche and createMode is express", () => {
+        const store = initStoreWithState({ stepsHistory: ["SITE_NATURE"], createMode: "express" });
+        const initialRootState = store.getState();
+
+        store.dispatch(siteNatureStepCompleted({ isFriche: true }));
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { isFriche: true });
+        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+      });
+      it("goes to ADDRESS step and sets type when step is completed and site is not a friche and createMode is express", () => {
+        const store = initStoreWithState({ stepsHistory: ["SITE_NATURE"], createMode: "express" });
+        const initialRootState = store.getState();
+
+        store.dispatch(siteNatureStepCompleted({ isFriche: false }));
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { isFriche: false });
+        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+      });
     });
     describe("FRICHE_ACTIVITY", () => {
       describe("complete", () => {

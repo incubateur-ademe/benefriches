@@ -101,7 +101,7 @@ export const siteCreationSlice = createSlice({
     siteNatureStepCompleted: (state, action: PayloadAction<{ isFriche: boolean }>) => {
       const { isFriche } = action.payload;
       state.siteData.isFriche = isFriche;
-      const nextStep = isFriche ? "FRICHE_ACTIVITY" : "ADDRESS";
+      const nextStep = isFriche && state.createMode !== "express" ? "FRICHE_ACTIVITY" : "ADDRESS";
       state.stepsHistory.push(nextStep);
     },
     completeFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
