@@ -1,7 +1,9 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { createModal } from "@codegouvfr/react-dsfr/Modal";
 
 import { routes } from "@/app/views/router";
+import ProjectFeaturesView from "@/features/projects/views/project-page/features";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import {
   EditorialPageIcon,
@@ -17,6 +19,11 @@ type Props = {
   loadingState: "idle" | "loading" | "success" | "error";
   onBack: () => void;
 };
+
+const projectFeaturesModal = createModal({
+  id: "project-features-modal",
+  isOpenedByDefault: false,
+});
 
 function MixedUseNeighbourhoodCreationResult({ projectId, siteName, loadingState, onBack }: Props) {
   switch (loadingState) {
@@ -46,6 +53,20 @@ function MixedUseNeighbourhoodCreationResult({ projectId, siteName, loadingState
           <EditorialPageText>
             Bénéfriches a généré, au sein du site "{siteName}", un projet de quartier comprenant des
             habitations, des espaces verts et des espaces publics.
+            <br />
+            <br />
+            <a
+              onClick={() => {
+                projectFeaturesModal.open();
+              }}
+              role="button"
+              href="#"
+            >
+              Consulter les données créées par Bénéfriches
+            </a>
+            <projectFeaturesModal.Component title="Caractéristiques du projet" size="large">
+              <ProjectFeaturesView projectId={projectId} />
+            </projectFeaturesModal.Component>
           </EditorialPageText>
           <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
             Calculer les impacts
