@@ -20,11 +20,11 @@ const ProjectImpactsView = ({ currentViewMode }: Props) => {
         modalCategory={modalCategoryOpened}
         onChangeModalCategoryOpened={setModalCategoryOpened}
       />
-      {currentViewMode === "charts" && (
-        <ImpactsChartsView openImpactDescriptionModal={setModalCategoryOpened} />
-      )}
       {currentViewMode === "list" && (
         <ImpactsListViewContainer openImpactDescriptionModal={setModalCategoryOpened} />
+      )}
+      {currentViewMode === "charts" && (
+        <ImpactsChartsView openImpactDescriptionModal={setModalCategoryOpened} />
       )}
     </>
   );

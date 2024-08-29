@@ -92,14 +92,14 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
           hideLegend
           segments={[
             {
-              label: "Graphique",
-              nativeInputProps: getViewSegmentInputProps("charts"),
-              iconId: "fr-icon-line-chart-fill",
-            },
-            {
               label: "Liste",
               nativeInputProps: getViewSegmentInputProps("list"),
               iconId: "fr-icon-list-unordered",
+            },
+            {
+              label: "Graphique",
+              nativeInputProps: getViewSegmentInputProps("charts"),
+              iconId: "fr-icon-line-chart-fill",
             },
           ]}
         />
