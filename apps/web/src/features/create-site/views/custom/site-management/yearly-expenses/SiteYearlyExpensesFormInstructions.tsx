@@ -27,6 +27,10 @@ function SiteYearlyExpensesFormInstructions() {
           </li>
         </ul>
         <p>Vous pouvez modifier ces montants.</p>
+        <p>
+          Si vous ne connaissez pas le détail des dépenses mais seulement le coût total, vous pouvez
+          le saisir dans "Autres dépenses de gestion" ou "Autres dépenses de sécurisation".
+        </p>
       </FormInfo>
 
       <FormDefinition>
