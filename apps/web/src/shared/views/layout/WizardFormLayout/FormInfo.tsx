@@ -7,8 +7,8 @@ type Props = {
 function FormInfo({ children }: Props) {
   return (
     <>
-      <div className="!tw-text-xl tw-py-2">💡</div>
-      <div>{children}</div>
+      <div className="tw-text-xl tw-py-2">💡</div>
+      <div className="*:tw-text-sm *:tw-mb-4">{children}</div>
     </>
   );
 }

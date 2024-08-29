@@ -30,6 +30,10 @@ export default {
         contrastGrey: "var(--background-contrast-grey)",
         greyDisabled: "var(--text-disabled-grey)",
       },
+      text: {
+        dark: "#161616", // not used, need color scheme for dark mode
+        light: "#757575",
+      },
       blue: {
         ultralight: "#DAF2FB",
         light: "#D1EEFA",
