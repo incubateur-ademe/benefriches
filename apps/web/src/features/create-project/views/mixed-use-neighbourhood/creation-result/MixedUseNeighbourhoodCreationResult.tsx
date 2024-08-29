@@ -18,12 +18,7 @@ type Props = {
   onBack: () => void;
 };
 
-function MixedUseNeighbourhoodCreationConfirmation({
-  projectId,
-  siteName,
-  loadingState,
-  onBack,
-}: Props) {
+function MixedUseNeighbourhoodCreationResult({ projectId, siteName, loadingState, onBack }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -60,4 +55,4 @@ function MixedUseNeighbourhoodCreationConfirmation({
   }
 }
 
-export default MixedUseNeighbourhoodCreationConfirmation;
+export default MixedUseNeighbourhoodCreationResult;

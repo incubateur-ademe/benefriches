@@ -13,7 +13,7 @@ const getCurrentStepCategory = (step: SiteCreationExpressStep): StepCategory => 
       return "Adresse";
     case "SURFACE_AREA":
       return "Sols";
-    case "CREATION_CONFIRMATION":
+    case "CREATION_RESULT":
       return "Récapitulatif";
   }
 };
@@ -33,7 +33,7 @@ function SiteCreationExpressStepper({ step, isExtended }: Props) {
       currentStepIndex={currentStepIndex}
       steps={[...STEPS_CATEGORIES]}
       isExtended={isExtended}
-      isDone={step === "CREATION_CONFIRMATION"}
+      isDone={step === "CREATION_RESULT"}
     />
   );
 }

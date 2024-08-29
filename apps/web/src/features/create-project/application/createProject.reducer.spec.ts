@@ -29,7 +29,7 @@ describe("createProject reducer", () => {
       const state = store.getState();
       expect(state.projectCreation).toEqual({
         ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_CONFIRMATION"],
+        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
         saveProjectLoadingState: "error",
       });
     });
@@ -54,7 +54,7 @@ describe("createProject reducer", () => {
       const state = store.getState();
       expect(state.projectCreation).toEqual({
         ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_CONFIRMATION"],
+        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
         saveProjectLoadingState: "error",
       });
     });
@@ -188,7 +188,7 @@ describe("createProject reducer", () => {
         const state = store.getState();
         expect(state.projectCreation).toEqual({
           ...initialState,
-          stepsHistory: [...initialState.stepsHistory, "CREATION_CONFIRMATION"],
+          stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
           saveProjectLoadingState: "error",
         });
         expect(
@@ -223,7 +223,7 @@ describe("createProject reducer", () => {
       const state = store.getState();
       expect(state.projectCreation).toEqual({
         ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_CONFIRMATION"],
+        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
         saveProjectLoadingState: "error",
       });
     });
@@ -251,7 +251,7 @@ describe("createProject reducer", () => {
       const state = store.getState();
       expect(state.projectCreation).toEqual({
         ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_CONFIRMATION"],
+        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
         saveProjectLoadingState: "success",
       });
     });

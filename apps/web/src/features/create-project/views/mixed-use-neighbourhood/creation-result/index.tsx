@@ -1,17 +1,17 @@
 import { useDispatch } from "react-redux";
 import MixedUseNeighbourhoodCreationResult from "./MixedUseNeighbourhoodCreationResult";
 
-import { confirmationStepReverted } from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.actions";
+import { resultStepReverted } from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.actions";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-function MixedUseNeighbourhoodCreationConfirmationContainer() {
+function MixedUseNeighbourhoodCreationResultContainer() {
   const dispatch = useDispatch();
   const { mixedUseNeighbourhood, projectData, siteData } = useAppSelector(
     (state) => state.projectCreation,
   );
 
   const onBack = () => {
-    dispatch(confirmationStepReverted());
+    dispatch(resultStepReverted());
   };
 
   return (
@@ -24,4 +24,4 @@ function MixedUseNeighbourhoodCreationConfirmationContainer() {
   );
 }
 
-export default MixedUseNeighbourhoodCreationConfirmationContainer;
+export default MixedUseNeighbourhoodCreationResultContainer;

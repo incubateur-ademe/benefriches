@@ -1065,7 +1065,7 @@ describe("Create site reducer", () => {
 
       const newState = store.getState();
       expectSiteDataUnchanged(initialRootState, newState);
-      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
     });
 
@@ -1082,7 +1082,7 @@ describe("Create site reducer", () => {
 
       const newState = store.getState();
       expectSiteDataUnchanged(initialRootState, newState);
-      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
     });
 
@@ -1108,7 +1108,7 @@ describe("Create site reducer", () => {
 
       const newState = store.getState();
       expectSiteDataUnchanged(initialRootState, newState);
-      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
     });
 
@@ -1177,7 +1177,7 @@ describe("Create site reducer", () => {
       await store.dispatch(saveCustomSiteAction());
 
       const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
       expect(newState.siteCreation.saveLoadingState).toEqual("success");
     });
   });
@@ -1204,13 +1204,13 @@ describe("Create site reducer", () => {
 
       const newState = store.getState();
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
-      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
     });
 
     it("should be in error state when no user id in store", async () => {
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
+        stepsHistory: ["CREATION_RESULT"],
         siteData: expressSiteDraft,
       };
 
@@ -1223,13 +1223,13 @@ describe("Create site reducer", () => {
 
       const newState = store.getState();
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
-      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
     });
 
     it("should be in error state when createSiteService fails", async () => {
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
+        stepsHistory: ["CREATION_RESULT"],
         siteData: expressSiteDraft,
       };
 
@@ -1251,7 +1251,7 @@ describe("Create site reducer", () => {
 
       const newState = store.getState();
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
-      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
     });
 
     it("should call createSiteService with the right payload", async () => {
@@ -1262,7 +1262,7 @@ describe("Create site reducer", () => {
 
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
+        stepsHistory: ["CREATION_RESULT"],
         siteData: expressSiteDraft,
       };
 
@@ -1285,7 +1285,7 @@ describe("Create site reducer", () => {
     ])("should be in success state when saving $dataType", async ({ siteData }) => {
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
+        stepsHistory: ["CREATION_RESULT"],
         siteData,
       };
 
@@ -1303,7 +1303,7 @@ describe("Create site reducer", () => {
       const state = store.getState();
       expect(state.siteCreation).toEqual({
         ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_CONFIRMATION"],
+        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
         siteData: {
           ...initialState.siteData,
           name: expect.any(String) as string,

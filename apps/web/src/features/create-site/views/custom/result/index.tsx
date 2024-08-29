@@ -1,9 +1,9 @@
 import { revertStep } from "../../../application/createSite.reducer";
-import SiteCreationConfirmation from "./SiteCreationConfirmation";
+import SiteCreationResult from "./SiteCreationResult";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-function SiteCreationConfirmationContainer() {
+function SiteCreationResultContainer() {
   const { siteData, saveLoadingState: creationLoadingState } = useAppSelector(
     (state) => state.siteCreation,
   );
@@ -14,7 +14,7 @@ function SiteCreationConfirmationContainer() {
   };
 
   return (
-    <SiteCreationConfirmation
+    <SiteCreationResult
       siteId={siteData.id ?? ""}
       siteName={siteData.name ?? ""}
       loadingState={creationLoadingState}
@@ -23,4 +23,4 @@ function SiteCreationConfirmationContainer() {
   );
 }
 
-export default SiteCreationConfirmationContainer;
+export default SiteCreationResultContainer;

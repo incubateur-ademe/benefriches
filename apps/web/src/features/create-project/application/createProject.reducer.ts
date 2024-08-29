@@ -89,7 +89,7 @@ export type ProjectCreationStep =
   | "NAMING"
   | "PROJECT_PHASE"
   | "FINAL_SUMMARY"
-  | "CREATION_CONFIRMATION";
+  | "CREATION_RESULT";
 
 export const getInitialState = (): ProjectCreationState => {
   return {
@@ -448,11 +448,11 @@ export const projectCreationSlice = createSlice({
     });
     builder.addCase(saveReconversionProject.fulfilled, (state) => {
       state.saveProjectLoadingState = "success";
-      state.stepsHistory.push("CREATION_CONFIRMATION");
+      state.stepsHistory.push("CREATION_RESULT");
     });
     builder.addCase(saveReconversionProject.rejected, (state) => {
       state.saveProjectLoadingState = "error";
-      state.stepsHistory.push("CREATION_CONFIRMATION");
+      state.stepsHistory.push("CREATION_RESULT");
     });
   },
 });
@@ -534,7 +534,7 @@ export const revertScheduleStep = () =>
     ],
   });
 export const revertFinalSummaryStep = () => revertStep();
-export const revertConfirmationStep = () => revertStep();
+export const revertResultStep = () => revertStep();
 
 export const {
   resetState,

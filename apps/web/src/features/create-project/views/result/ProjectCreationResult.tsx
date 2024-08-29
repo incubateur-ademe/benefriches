@@ -12,27 +12,30 @@ import {
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
-  siteId: string;
+  projectName: string;
+  projectId: string;
   siteName: string;
   loadingState: "idle" | "loading" | "success" | "error";
   onBack: () => void;
 };
 
-function SiteCreationConfirmation({ siteId, siteName, loadingState, onBack }: Props) {
+function ProjectCreationResult({ projectId, projectName, siteName, loadingState, onBack }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
     case "loading":
       return (
-        <LoadingSpinner loadingText={`Création du site « ${siteName} », veuillez patienter...`} />
+        <LoadingSpinner
+          loadingText={`Création du projet « ${projectName} », veuillez patienter...`}
+        />
       );
     case "error":
       return (
-        <WizardFormLayout title="Échec de la création du site">
+        <WizardFormLayout title="Échec de la création du projet">
           <Alert
-            description={`Une erreur est survenue lors de la création du site « ${siteName} », veuillez réessayer.`}
+            description={`Une erreur est survenue lors de la création du projet « ${projectName} », veuillez réessayer.`}
             severity="error"
-            title="Le site n'a pas pu être enregistré"
+            title="Le projet n'a pas pu être enregistré"
             className="fr-my-7v"
           />
           <Button onClick={onBack} priority="secondary">
@@ -44,17 +47,17 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState, onBack }: Pr
       return (
         <EditorialPageLayout>
           <EditorialPageIcon>✅</EditorialPageIcon>
-          <EditorialPageTitle>Le site « {siteName} » est créé !</EditorialPageTitle>
+          <EditorialPageTitle>Le projet « {projectName} » est créé !</EditorialPageTitle>
           <EditorialPageText>
-            Vous pouvez maintenant renseigner un projet sur ce site avant de pouvoir calculer les
-            impacts qui lui sont associés.
+            Bénéfriches peut maintenant calculer les impacts sociaux, économiques et
+            environnementaux de ce projet sur le site « {siteName} ».
           </EditorialPageText>
-          <Button size="large" linkProps={routes.createProjectIntro({ siteId }).link}>
-            Renseigner mon projet sur ce site
+          <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
+            Calculer les impacts
           </Button>
         </EditorialPageLayout>
       );
   }
 }
 
-export default SiteCreationConfirmation;
+export default ProjectCreationResult;

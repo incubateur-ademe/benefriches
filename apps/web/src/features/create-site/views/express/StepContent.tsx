@@ -1,6 +1,6 @@
 import { selectCurrentStep } from "../../application/createSite.reducer";
 import AddressForm from "./address";
-import SiteCreationConfirmation from "./confirmation";
+import SiteCreationResult from "./result";
 import SiteTypeForm from "./site-type";
 import SiteSurfaceAreaForm from "./surface-area";
 
@@ -16,8 +16,8 @@ function SiteCreationExpressStepContent() {
       return <AddressForm />;
     case "SURFACE_AREA":
       return <SiteSurfaceAreaForm />;
-    case "CREATION_CONFIRMATION":
-      return <SiteCreationConfirmation />;
+    case "CREATION_RESULT":
+      return <SiteCreationResult />;
   }
 }
 

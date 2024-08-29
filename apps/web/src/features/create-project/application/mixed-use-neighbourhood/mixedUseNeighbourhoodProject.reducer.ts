@@ -1,9 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { ProjectCreationState } from "../createProject.reducer";
 import {
-  confirmationStepReverted,
   createModeStepReverted,
   expressCreateModeSelected,
+  resultStepReverted,
 } from "./mixedUseNeighbourhoodProject.actions";
 
 export type MixedUseNeighbourhoodCreationStep = "CREATE_MODE_SELECTION" | "CREATION_RESULT";
@@ -29,7 +29,7 @@ const mixedUseNeighbourhoodReducer = createReducer({} as ProjectCreationState, (
   builder.addCase(expressCreateModeSelected.fulfilled, (state) => {
     state.mixedUseNeighbourhood.saveState = "success";
   });
-  builder.addCase(confirmationStepReverted, (state) => {
+  builder.addCase(resultStepReverted, (state) => {
     state.mixedUseNeighbourhood.stepsHistory = state.mixedUseNeighbourhood.stepsHistory.slice(
       0,
       -1,

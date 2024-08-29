@@ -48,13 +48,13 @@ export type SiteCreationCustomStep =
   | "NAMING"
   // SUMARRY
   | "FINAL_SUMMARY"
-  | "CREATION_CONFIRMATION";
+  | "CREATION_RESULT";
 
 export type SiteCreationExpressStep =
   | "SITE_NATURE"
   | "ADDRESS"
   | "SURFACE_AREA"
-  | "CREATION_CONFIRMATION";
+  | "CREATION_RESULT";
 
 export type SiteCreationStep =
   | "CREATE_MODE_SELECTION"
@@ -291,7 +291,7 @@ export const siteCreationSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(saveCustomSiteAction.pending, (state) => {
-      state.stepsHistory.push("CREATION_CONFIRMATION");
+      state.stepsHistory.push("CREATION_RESULT");
       state.saveLoadingState = "loading";
     });
     builder.addCase(saveCustomSiteAction.fulfilled, (state) => {
@@ -301,7 +301,7 @@ export const siteCreationSlice = createSlice({
       state.saveLoadingState = "error";
     });
     builder.addCase(saveExpressSiteAction.pending, (state) => {
-      state.stepsHistory.push("CREATION_CONFIRMATION");
+      state.stepsHistory.push("CREATION_RESULT");
       state.saveLoadingState = "loading";
     });
     builder.addCase(saveExpressSiteAction.fulfilled, (state, action) => {

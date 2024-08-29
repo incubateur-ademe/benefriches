@@ -31,4 +31,4 @@ export const expressCreateModeSelected = createAppAsyncThunk(
   },
 );
 
-export const confirmationStepReverted = createAction("confirmationStepReverted");
+export const resultStepReverted = createAction("resultStepReverted");

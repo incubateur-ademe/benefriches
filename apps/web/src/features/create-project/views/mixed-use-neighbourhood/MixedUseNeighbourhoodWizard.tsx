@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { selectCurrentStep } from "../../application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.selectors";
 import CreateModeSelectionForm from "./create-mode-selection";
-import MixedUseNeighbourhoodCreationConfirmation from "./creation-result";
+import MixedUseNeighbourhoodCreationResult from "./creation-result";
 import MixedUseNeighbourhoodCreationStepper from "./Stepper";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -16,7 +16,7 @@ function MixedUseNeighbourhoodWizard() {
       case "CREATE_MODE_SELECTION":
         return <CreateModeSelectionForm />;
       case "CREATION_RESULT":
-        return <MixedUseNeighbourhoodCreationConfirmation />;
+        return <MixedUseNeighbourhoodCreationResult />;
     }
   };
 

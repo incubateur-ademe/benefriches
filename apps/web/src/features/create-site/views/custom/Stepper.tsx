@@ -52,7 +52,7 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "NAMING":
       return "Dénomination";
     case "FINAL_SUMMARY":
-    case "CREATION_CONFIRMATION":
+    case "CREATION_RESULT":
       return "Récapitulatif";
   }
 };
@@ -74,7 +74,7 @@ function SiteCreationCustomStepper({ step, isFriche, isExtended }: Props) {
       currentStepIndex={currentStepIndex}
       steps={stepsCategories as string[]}
       isExtended={isExtended}
-      isDone={step === "CREATION_CONFIRMATION"}
+      isDone={step === "CREATION_RESULT"}
     />
   );
 }

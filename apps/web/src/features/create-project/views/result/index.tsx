@@ -1,10 +1,10 @@
 import { useDispatch } from "react-redux";
-import { revertConfirmationStep } from "../../application/createProject.reducer";
-import ProjectCreationConfirmation from "./ProjectCreationConfirmation";
+import { revertResultStep } from "../../application/createProject.reducer";
+import ProjectCreationResult from "./ProjectCreationResult";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-function ProjectCreationConfirmationContainer() {
+function ProjectCreationResultContainer() {
   const { projectData, saveProjectLoadingState, siteData } = useAppSelector(
     (state) => state.projectCreation,
   );
@@ -12,11 +12,11 @@ function ProjectCreationConfirmationContainer() {
   const dispatch = useDispatch();
 
   const onBack = () => {
-    dispatch(revertConfirmationStep());
+    dispatch(revertResultStep());
   };
 
   return (
-    <ProjectCreationConfirmation
+    <ProjectCreationResult
       projectId={projectData.id ?? ""}
       projectName={projectData.name ?? ""}
       siteName={siteData?.name ?? ""}
@@ -26,4 +26,4 @@ function ProjectCreationConfirmationContainer() {
   );
 }
 
-export default ProjectCreationConfirmationContainer;
+export default ProjectCreationResultContainer;

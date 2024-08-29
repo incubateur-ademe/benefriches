@@ -25,7 +25,7 @@ const siteFeaturesModal = createModal({
   isOpenedByDefault: false,
 });
 
-function SiteCreationConfirmation({ siteId, siteName, loadingState, onBack }: Props) {
+function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -79,4 +79,4 @@ function SiteCreationConfirmation({ siteId, siteName, loadingState, onBack }: Pr
   }
 }
 
-export default SiteCreationConfirmation;
+export default SiteCreationResult;

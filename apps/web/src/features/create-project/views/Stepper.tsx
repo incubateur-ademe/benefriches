@@ -62,7 +62,7 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
       return "Calendrier et avancement";
     case "NAMING":
       return "Dénomination";
-    case "CREATION_CONFIRMATION":
+    case "CREATION_RESULT":
     case "FINAL_SUMMARY":
       return "Récapitulatif";
   }
@@ -76,7 +76,7 @@ type Props = {
 function ProjectCreationStepper({ step, isExtended }: Props) {
   const currentStepCategory = getCategoryForStep(step);
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
-  const isDone = step === "CREATION_CONFIRMATION";
+  const isDone = step === "CREATION_RESULT";
 
   return (
     <FormStepper

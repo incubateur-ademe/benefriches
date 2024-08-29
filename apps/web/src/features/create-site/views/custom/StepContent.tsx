@@ -21,9 +21,9 @@ import SiteSoilsForm from "./soils/soils-selection";
 import SiteSoilsSummary from "./soils/soils-summary";
 import SiteSurfaceAreaForm from "./soils/surface-area";
 import AddressForm from "./address";
-import SiteCreationConfirmation from "./confirmation";
 import FricheActivityForm from "./friche-activity";
 import SiteNameAndDescriptionForm from "./naming";
+import SiteCreationResult from "./result";
 import SiteTypeForm from "./site-type";
 import SoilContaminationForm from "./soil-contamination";
 import SiteDataSummary from "./summary";
@@ -88,8 +88,8 @@ function SiteCreationCustomStepContent() {
       return <SiteNameAndDescriptionForm />;
     case "FINAL_SUMMARY":
       return <SiteDataSummary />;
-    case "CREATION_CONFIRMATION":
-      return <SiteCreationConfirmation />;
+    case "CREATION_RESULT":
+      return <SiteCreationResult />;
   }
 }
 
