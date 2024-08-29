@@ -119,9 +119,9 @@ export const siteCreationSlice = createSlice({
     },
     completeSiteSurfaceArea: (state, action: PayloadAction<{ surfaceArea: number }>) => {
       state.siteData.surfaceArea = action.payload.surfaceArea;
-      state.stepsHistory.push(
-        state.createMode === "express" ? "CREATION_CONFIRMATION" : "SOILS_SELECTION",
-      );
+      if (state.createMode === "custom") {
+        state.stepsHistory.push("SOILS_SELECTION");
+      }
     },
     completeSoils: (state, action: PayloadAction<{ soils: SoilType[] }>) => {
       state.siteData.soils = action.payload.soils;
@@ -270,9 +270,6 @@ export const siteCreationSlice = createSlice({
 
       state.stepsHistory.push("FINAL_SUMMARY");
     },
-    completeSummary: (state) => {
-      state.stepsHistory.push("CREATION_CONFIRMATION");
-    },
     revertStep: (
       state,
       action: PayloadAction<{ resetFields: (keyof SiteDraft)[] } | undefined>,
@@ -294,6 +291,7 @@ export const siteCreationSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(saveCustomSiteAction.pending, (state) => {
+      state.stepsHistory.push("CREATION_CONFIRMATION");
       state.saveLoadingState = "loading";
     });
     builder.addCase(saveCustomSiteAction.fulfilled, (state) => {
@@ -303,6 +301,7 @@ export const siteCreationSlice = createSlice({
       state.saveLoadingState = "error";
     });
     builder.addCase(saveExpressSiteAction.pending, (state) => {
+      state.stepsHistory.push("CREATION_CONFIRMATION");
       state.saveLoadingState = "loading";
     });
     builder.addCase(saveExpressSiteAction.fulfilled, (state, action) => {
@@ -351,7 +350,6 @@ export const {
   completeFricheActivity,
   namingIntroductionStepCompleted,
   completeNaming,
-  completeSummary,
   revertStep,
 } = siteCreationSlice.actions;
 

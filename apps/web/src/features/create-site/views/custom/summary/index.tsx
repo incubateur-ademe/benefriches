@@ -1,6 +1,7 @@
-import { completeSummary, revertStep } from "../../../application/createSite.reducer";
+import { revertStep } from "../../../application/createSite.reducer";
 import SiteDataSummary from "./SiteDataSummary";
 
+import { saveCustomSiteAction } from "@/features/create-site/application/createSite.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function SiteDataSummaryContainer() {
@@ -8,7 +9,7 @@ function SiteDataSummaryContainer() {
   const dispatch = useAppDispatch();
 
   const onNext = () => {
-    dispatch(completeSummary());
+    void dispatch(saveCustomSiteAction());
   };
 
   const onBack = () => {

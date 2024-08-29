@@ -43,7 +43,6 @@ import {
   completeSoilsIntroduction,
   completeSoilsSummary,
   completeSoilsSurfaceAreaDistributionEntryMode,
-  completeSummary,
   completeTenant,
   completeYearlyExpenses,
   completeYearlyExpensesSummary,
@@ -229,30 +228,52 @@ describe("Create site reducer", () => {
     });
     describe("SURFACE_AREA", () => {
       describe("complete", () => {
-        it("goes to SOILS_SELECTION step and sets surface area when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["SURFACE_AREA"] });
-          const initialRootState = store.getState();
+        describe("custom mode", () => {
+          it("goes to SOILS_SELECTION step and sets surface area when step is completed", () => {
+            const store = initStoreWithState({
+              createMode: "custom",
+              stepsHistory: ["SURFACE_AREA"],
+            });
+            const initialRootState = store.getState();
 
-          store.dispatch(completeSiteSurfaceArea({ surfaceArea: 143000 }));
+            store.dispatch(completeSiteSurfaceArea({ surfaceArea: 143000 }));
 
-          const newState = store.getState();
-          expectSiteDataDiff(initialRootState, newState, { surfaceArea: 143000 });
-          expectNewCurrentStep(initialRootState, newState, "SOILS_SELECTION");
-        });
-      });
-      describe("revert", () => {
-        it("goes to previous step and unset surface area", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SITE_NATURE", "ADDRESS", "SOILS_SELECTION"],
-            siteData: { isFriche: true, surfaceArea: 12000 },
+            const newState = store.getState();
+            expectSiteDataDiff(initialRootState, newState, { surfaceArea: 143000 });
+            expectNewCurrentStep(initialRootState, newState, "SOILS_SELECTION");
           });
-          const initialRootState = store.getState();
+          describe("revert", () => {
+            it("goes to previous step and unset surface area", () => {
+              const store = initStoreWithState({
+                stepsHistory: ["SITE_NATURE", "ADDRESS", "SOILS_SELECTION"],
+                siteData: { isFriche: true, surfaceArea: 12000 },
+              });
+              const initialRootState = store.getState();
 
-          store.dispatch(revertSurfaceAreaStep());
+              store.dispatch(revertSurfaceAreaStep());
 
-          const newState = store.getState();
-          expectSiteDataDiff(initialRootState, newState, { surfaceArea: undefined });
-          expectStepReverted(initialRootState, newState);
+              const newState = store.getState();
+              expectSiteDataDiff(initialRootState, newState, { surfaceArea: undefined });
+              expectStepReverted(initialRootState, newState);
+            });
+          });
+        });
+        describe("express mode", () => {
+          it("sets surface area when step is completed", () => {
+            const store = initStoreWithState({
+              createMode: "express",
+              stepsHistory: ["SURFACE_AREA"],
+            });
+            const initialRootState = store.getState();
+
+            store.dispatch(completeSiteSurfaceArea({ surfaceArea: 143000 }));
+
+            const newState = store.getState();
+            expectSiteDataDiff(initialRootState, newState, { surfaceArea: 143000 });
+            expect(newState.siteCreation.stepsHistory).toEqual(
+              initialRootState.siteCreation.stepsHistory,
+            );
+          });
         });
       });
     });
@@ -1020,18 +1041,6 @@ describe("Create site reducer", () => {
         });
       });
     });
-    describe("FINAL_SUMMARY", () => {
-      it("goes to CREATION_CONFIRMATION step when step is completed", () => {
-        const store = initStoreWithState({ stepsHistory: ["FINAL_SUMMARY"] });
-        const initialRootState = store.getState();
-
-        store.dispatch(completeSummary());
-
-        const newState = store.getState();
-        expectSiteDataUnchanged(initialRootState, newState);
-        expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
-      });
-    });
   });
 
   describe("saveCustomSiteAction action", () => {
@@ -1039,7 +1048,7 @@ describe("Create site reducer", () => {
       const siteData = { ...siteWithMinimalData, name: undefined };
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
+        stepsHistory: ["FINAL_SUMMARY"],
         siteData,
       };
 
@@ -1051,46 +1060,42 @@ describe("Create site reducer", () => {
           currentUserLoaded: true,
         },
       });
+      const initialRootState = store.getState();
       await store.dispatch(saveCustomSiteAction());
 
-      const state = store.getState();
-      expect(state.siteCreation).toEqual({
-        ...initialState,
-        saveLoadingState: "error",
-      });
+      const newState = store.getState();
+      expectSiteDataUnchanged(initialRootState, newState);
+      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expect(newState.siteCreation.saveLoadingState).toEqual("error");
     });
 
     it("should be in error state when no user id in store", async () => {
-      const initialState: RootState["siteCreation"] = {
-        saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
-        siteData: siteWithMinimalData,
-      };
-
       const store = createStore(getTestAppDependencies(), {
-        siteCreation: initialState,
+        siteCreation: {
+          saveLoadingState: "idle",
+          stepsHistory: ["FINAL_SUMMARY"],
+          siteData: siteWithMinimalData,
+        },
       });
+      const initialRootState = store.getState();
       await store.dispatch(saveCustomSiteAction());
 
-      const state = store.getState();
-      expect(state.siteCreation).toEqual({
-        ...initialState,
-        saveLoadingState: "error",
-      });
+      const newState = store.getState();
+      expectSiteDataUnchanged(initialRootState, newState);
+      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expect(newState.siteCreation.saveLoadingState).toEqual("error");
     });
 
     it("should be in error state when createSiteService fails", async () => {
-      const initialState: RootState["siteCreation"] = {
-        saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
-        siteData: siteWithMinimalData,
-      };
-
       const shouldFail = true;
       const store = createStore(
         getTestAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) }),
         {
-          siteCreation: initialState,
+          siteCreation: {
+            saveLoadingState: "idle",
+            stepsHistory: ["FINAL_SUMMARY"],
+            siteData: siteWithMinimalData,
+          },
           currentUser: {
             currentUser: buildUser(),
             createUserState: "idle",
@@ -1098,13 +1103,13 @@ describe("Create site reducer", () => {
           },
         },
       );
+      const initialRootState = store.getState();
       await store.dispatch(saveCustomSiteAction());
 
-      const state = store.getState();
-      expect(state.siteCreation).toEqual({
-        ...initialState,
-        saveLoadingState: "error",
-      });
+      const newState = store.getState();
+      expectSiteDataUnchanged(initialRootState, newState);
+      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expect(newState.siteCreation.saveLoadingState).toEqual("error");
     });
 
     it("should call createSiteService with creationMode = 'custom'", async () => {
@@ -1115,7 +1120,7 @@ describe("Create site reducer", () => {
 
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
+        stepsHistory: ["FINAL_SUMMARY"],
         siteData: siteWithMinimalData,
       };
 
@@ -1155,7 +1160,7 @@ describe("Create site reducer", () => {
     ])("should be in success state when saving $dataType", async ({ siteData }) => {
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
+        stepsHistory: ["FINAL_SUMMARY"],
         siteData,
       };
 
@@ -1167,14 +1172,13 @@ describe("Create site reducer", () => {
           currentUserLoaded: true,
         },
       });
+      const initialRootState = store.getState();
 
       await store.dispatch(saveCustomSiteAction());
 
-      const state = store.getState();
-      expect(state.siteCreation).toEqual({
-        ...initialState,
-        saveLoadingState: "success",
-      });
+      const newState = store.getState();
+      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
+      expect(newState.siteCreation.saveLoadingState).toEqual("success");
     });
   });
 
@@ -1182,7 +1186,7 @@ describe("Create site reducer", () => {
     it("should be in error state when site data in store is not valid (missing surfaceArea)", async () => {
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
-        stepsHistory: ["CREATION_CONFIRMATION"],
+        stepsHistory: ["SURFACE_AREA"],
         siteData: { ...expressSiteDraft, surfaceArea: undefined },
       };
 
@@ -1194,13 +1198,13 @@ describe("Create site reducer", () => {
           currentUserLoaded: true,
         },
       });
+      const initialRootState = store.getState();
+
       await store.dispatch(saveExpressSiteAction());
 
-      const state = store.getState();
-      expect(state.siteCreation).toEqual({
-        ...initialState,
-        saveLoadingState: "error",
-      });
+      const newState = store.getState();
+      expect(newState.siteCreation.saveLoadingState).toEqual("error");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
     });
 
     it("should be in error state when no user id in store", async () => {
@@ -1213,13 +1217,13 @@ describe("Create site reducer", () => {
       const store = createStore(getTestAppDependencies(), {
         siteCreation: initialState,
       });
+      const initialRootState = store.getState();
+
       await store.dispatch(saveExpressSiteAction());
 
-      const state = store.getState();
-      expect(state.siteCreation).toEqual({
-        ...initialState,
-        saveLoadingState: "error",
-      });
+      const newState = store.getState();
+      expect(newState.siteCreation.saveLoadingState).toEqual("error");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
     });
 
     it("should be in error state when createSiteService fails", async () => {
@@ -1241,13 +1245,13 @@ describe("Create site reducer", () => {
           },
         },
       );
-      await store.dispatch(saveCustomSiteAction());
+      const initialRootState = store.getState();
 
-      const state = store.getState();
-      expect(state.siteCreation).toEqual({
-        ...initialState,
-        saveLoadingState: "error",
-      });
+      await store.dispatch(saveExpressSiteAction());
+
+      const newState = store.getState();
+      expect(newState.siteCreation.saveLoadingState).toEqual("error");
+      expectNewCurrentStep(initialRootState, newState, "CREATION_CONFIRMATION");
     });
 
     it("should call createSiteService with the right payload", async () => {
@@ -1299,6 +1303,7 @@ describe("Create site reducer", () => {
       const state = store.getState();
       expect(state.siteCreation).toEqual({
         ...initialState,
+        stepsHistory: [...initialState.stepsHistory, "CREATION_CONFIRMATION"],
         siteData: {
           ...initialState.siteData,
           name: expect.any(String) as string,
