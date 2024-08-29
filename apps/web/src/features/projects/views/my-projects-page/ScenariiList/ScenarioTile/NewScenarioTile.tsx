@@ -20,7 +20,7 @@ function NewScenarioTile({ siteId }: Props) {
       )}
     >
       <a
-        {...routes.createProjectIntro({ siteId }).link}
+        {...routes.createProject({ siteId }).link}
         className={classNames(
           "tw-w-full",
           "tw-h-full",

@@ -1,4 +1,4 @@
-import { GetSitesByIdGateway } from "../../application/fetchRelatedSite.action";
+import { GetSitesByIdGateway } from "../../application/createProject.actions";
 import { ProjectSite } from "../../domain/project.types";
 
 export class SitesServiceMock implements GetSitesByIdGateway {

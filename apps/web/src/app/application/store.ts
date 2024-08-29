@@ -1,5 +1,5 @@
 import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
-import { GetSitesByIdGateway } from "../../features/create-project/application/fetchRelatedSite.action";
+import { GetSitesByIdGateway } from "../../features/create-project/application/createProject.actions";
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.actions";
 import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";

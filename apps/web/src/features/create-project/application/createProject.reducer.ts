@@ -27,7 +27,7 @@ import { createModeStepReverted } from "./mixed-use-neighbourhood/mixedUseNeighb
 import mixedUseNeighbourhoodReducer, {
   MixedUseNeighbourhoodState,
 } from "./mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
-import { fetchRelatedSite } from "./fetchRelatedSite.action";
+import { projectCreationInitiated } from "./createProject.actions";
 import { saveReconversionProject } from "./saveReconversionProject.action";
 
 import { RootState } from "@/app/application/store";
@@ -51,6 +51,7 @@ export type ProjectCreationState = {
 };
 
 export type ProjectCreationStep =
+  | "INTRODUCTION"
   | "PROJECT_TYPES"
   | "RENEWABLE_ENERGY_TYPES"
   | "PHOTOVOLTAIC_KEY_PARAMETER"
@@ -93,7 +94,7 @@ export type ProjectCreationStep =
 
 export const getInitialState = (): ProjectCreationState => {
   return {
-    stepsHistory: ["PROJECT_TYPES"],
+    stepsHistory: ["INTRODUCTION"],
     projectData: {
       id: uuid(),
       yearlyProjectedExpenses: [],
@@ -114,8 +115,8 @@ export const projectCreationSlice = createSlice({
   name: "projectCreation",
   initialState: getInitialState(),
   reducers: {
-    resetState: () => {
-      return getInitialState();
+    introductionStepCompleted: (state) => {
+      state.stepsHistory.push("PROJECT_TYPES");
     },
     completeDevelopmentPlanCategories: (state, action: PayloadAction<DevelopmentPlanCategory>) => {
       state.projectData.developmentPlanCategory = action.payload;
@@ -430,14 +431,17 @@ export const projectCreationSlice = createSlice({
       state.projectData.developmentPlanCategory = undefined;
     });
     /* fetch related site */
-    builder.addCase(fetchRelatedSite.pending, (state) => {
-      state.siteDataLoadingState = "loading";
+    builder.addCase(projectCreationInitiated.pending, () => {
+      return {
+        ...getInitialState(),
+        siteDataLoadingState: "loading",
+      };
     });
-    builder.addCase(fetchRelatedSite.fulfilled, (state, action) => {
+    builder.addCase(projectCreationInitiated.fulfilled, (state, action) => {
       state.siteDataLoadingState = "success";
       state.siteData = action.payload;
     });
-    builder.addCase(fetchRelatedSite.rejected, (state) => {
+    builder.addCase(projectCreationInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
     });
     /* save project */
@@ -535,7 +539,7 @@ export const revertFinalSummaryStep = () => revertStep();
 export const revertResultStep = () => revertStep();
 
 export const {
-  resetState,
+  introductionStepCompleted,
   completeDevelopmentPlanCategories,
   completeRenewableEnergyDevelopmentPlanType,
   completeSoilsTransformationIntroductionStep,

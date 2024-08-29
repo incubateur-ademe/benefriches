@@ -19,9 +19,6 @@ const BudgetPage = lazy(() => import("./pages/BudgetPage"));
 const HomePage = lazy(() => import("./pages/home/HomePage"));
 const MentionsLegalesPage = lazy(() => import("./pages/MentionsLegalesPage"));
 const PolitiqueConfidentialitePage = lazy(() => import("./pages/PolitiqueConfidentialitePage"));
-const CreateProjectIntroductionPage = lazy(
-  () => import("@/features/create-project/views/introduction"),
-);
 const StatsPage = lazy(() => import("./pages/StatsPage"));
 const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
@@ -93,12 +90,6 @@ function App() {
               return (
                 <RequireRegisteredUser>
                   <MyProjectsPage />
-                </RequireRegisteredUser>
-              );
-            case routes.createProjectIntro.name:
-              return (
-                <RequireRegisteredUser>
-                  <CreateProjectIntroductionPage route={route} />
                 </RequireRegisteredUser>
               );
             case routes.createProject.name:

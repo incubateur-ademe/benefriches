@@ -1,6 +1,5 @@
 import { Button } from "@codegouvfr/react-dsfr/Button";
 
-import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import {
   EditorialPageIcon,
@@ -11,12 +10,12 @@ import {
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
-  siteId: string;
+  onNext: () => void;
   siteName: string;
   siteLoadingState: "idle" | "loading" | "success" | "error";
 };
 
-function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: Props) {
+function CreateProjectIntroductionPage({ onNext, siteName, siteLoadingState }: Props) {
   switch (siteLoadingState) {
     case "idle":
       return null;
@@ -35,14 +34,14 @@ function CreateProjectIntroductionPage({ siteId, siteName, siteLoadingState }: P
         <EditorialPageLayout>
           <EditorialPageIcon>🏗</EditorialPageIcon>
           <EditorialPageTitle>
-            Vous avez un projet d'aménagement sur le site « {siteName} ».
+            Vous avez un projet d'aménagement sur le site "{siteName}".
           </EditorialPageTitle>
           <EditorialPageText>
             Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du
             projet, l'aménagement des espaces et la typologie des sols associée, les acteurs du
             projet, les dépenses et recettes prévisionnelles, le calendrier des travaux, etc.
           </EditorialPageText>
-          <Button size="large" linkProps={routes.createProject({ siteId }).link}>
+          <Button size="large" onClick={onNext}>
             Commencer
           </Button>
         </EditorialPageLayout>

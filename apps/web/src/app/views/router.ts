@@ -6,10 +6,6 @@ const { RouteProvider, useRoute, routes } = createRouter({
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
   createSiteFoncier: defineRoute("/creer-site-foncier"),
-  createProjectIntro: defineRoute(
-    { siteId: param.query.string },
-    () => "/creer-projet/introduction",
-  ),
   createProject: defineRoute(
     {
       siteId: param.query.string,

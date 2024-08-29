@@ -71,7 +71,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
             Vous pouvez maintenant renseigner un projet sur ce site, en mode express ou en mode
             personnalisé.
           </EditorialPageText>
-          <Button size="large" linkProps={routes.createProjectIntro({ siteId }).link}>
+          <Button size="large" linkProps={routes.createProject({ siteId }).link}>
             Suivant
           </Button>
         </EditorialPageLayout>

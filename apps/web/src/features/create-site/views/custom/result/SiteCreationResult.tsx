@@ -49,7 +49,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
             Vous pouvez maintenant renseigner un projet sur ce site avant de pouvoir calculer les
             impacts qui lui sont associés.
           </EditorialPageText>
-          <Button size="large" linkProps={routes.createProjectIntro({ siteId }).link}>
+          <Button size="large" linkProps={routes.createProject({ siteId }).link}>
             Renseigner mon projet sur ce site
           </Button>
         </EditorialPageLayout>

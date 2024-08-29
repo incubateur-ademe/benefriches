@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { Route } from "type-route";
+import { projectCreationInitiated } from "../application/createProject.actions";
 import { selectCurrentStep } from "../application/createProject.reducer";
-import {
-  selectIsSiteLoaded,
-  selectProjectDevelopmentPlanCategory,
-} from "../application/createProject.selectors";
+import { selectProjectDevelopmentPlanCategory } from "../application/createProject.selectors";
 import ProjectExpensesIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationExpensesForm from "./costs/photovoltaic-panels-installation-costs";
 import ReinstatementsExpensesForm from "./costs/reinstatement-costs";
@@ -40,6 +38,7 @@ import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 import SitePurchasedFormContainer from "./stakeholders/site-purchased";
+import ProjectCreationIntroduction from "./introduction";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectPhaseForm from "./project-phase";
 import ProjectTypesForm from "./project-types";
@@ -49,7 +48,7 @@ import Stepper from "./Stepper";
 import ProjectionCreationDataSummaryContainer from "./summary";
 
 import { routes } from "@/app/views/router";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 type Props = {
@@ -59,10 +58,18 @@ type Props = {
 function ProjectCreationWizard({ route }: Props) {
   const currentStep = useAppSelector(selectCurrentStep);
   const projectDevelopmentPlanCategory = useAppSelector(selectProjectDevelopmentPlanCategory);
-  const isSiteLoaded = useAppSelector(selectIsSiteLoaded);
+  const [isOpen, setOpen] = useState(true);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const relatedSiteId = route.params.siteId;
+    void dispatch(projectCreationInitiated({ relatedSiteId }));
+  }, [dispatch, route.params.siteId]);
 
   const getStepComponent = () => {
     switch (currentStep) {
+      case "INTRODUCTION":
+        return <ProjectCreationIntroduction />;
       case "PROJECT_TYPES":
         return <ProjectTypesForm />;
       case "RENEWABLE_ENERGY_TYPES":
@@ -144,13 +151,12 @@ function ProjectCreationWizard({ route }: Props) {
     }
   };
 
-  useEffect(() => {
-    if (!isSiteLoaded) {
-      routes.createProjectIntro({ siteId: route.params.siteId }).replace();
+  const getSidebarChildren = () => {
+    if (currentStep === "INTRODUCTION") {
+      return null;
     }
-  }, [isSiteLoaded, route.params.siteId]);
-
-  const [isOpen, setOpen] = useState(true);
+    return <Stepper step={currentStep} isExtended={isOpen} />;
+  };
 
   if (projectDevelopmentPlanCategory === "MIXED_USE_NEIGHBOURHOOD") {
     return <MixedUseNeighbourhoodWizard />;
@@ -164,7 +170,7 @@ function ProjectCreationWizard({ route }: Props) {
       toggleIsOpen={() => {
         setOpen((current) => !current);
       }}
-      sidebarChildren={<Stepper step={currentStep} isExtended={isOpen} />}
+      sidebarChildren={getSidebarChildren()}
     />
   );
 }

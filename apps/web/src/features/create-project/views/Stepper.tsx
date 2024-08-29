@@ -15,7 +15,7 @@ const stepCategories = [
 
 type StepCategory = (typeof stepCategories)[number];
 
-const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
+const getCategoryForStep = (step: Exclude<ProjectCreationStep, "INTRODUCTION">): StepCategory => {
   switch (step) {
     case "PROJECT_TYPES":
     case "RENEWABLE_ENERGY_TYPES":
@@ -69,7 +69,7 @@ const getCategoryForStep = (step: ProjectCreationStep): StepCategory => {
 };
 
 type Props = {
-  step: ProjectCreationStep;
+  step: Exclude<ProjectCreationStep, "INTRODUCTION">;
   isExtended?: boolean;
 };
 

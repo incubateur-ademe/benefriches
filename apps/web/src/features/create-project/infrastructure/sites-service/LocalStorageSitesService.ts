@@ -1,5 +1,5 @@
 import { delay } from "../../../../shared/services/delay/delay";
-import { GetSitesByIdGateway } from "../../application/fetchRelatedSite.action";
+import { GetSitesByIdGateway } from "../../application/createProject.actions";
 import { ProjectSite } from "../../domain/project.types";
 
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
