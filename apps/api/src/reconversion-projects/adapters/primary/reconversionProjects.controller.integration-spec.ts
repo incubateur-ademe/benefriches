@@ -51,7 +51,7 @@ describe("ReconversionProjects controller", () => {
       "yearlyProjectedCosts",
       "yearlyProjectedRevenues",
       "projectPhase",
-    ] as (keyof z.infer<typeof createReconversionProjectInputSchema>)[])(
+    ] satisfies (keyof z.infer<typeof createReconversionProjectInputSchema>)[])(
       "can't create a reconversion project without mandatory field %s",
       async (mandatoryField) => {
         const requestBody = buildMinimalReconversionProjectProps();
