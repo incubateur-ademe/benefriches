@@ -1,12 +1,12 @@
 import { startsByVowel } from "./startsByVowel";
 
-import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
+type LocalAutorityStructureType = "municipality" | "epci" | "department" | "region";
 
-const capitalize = (text: string) => {
+const capitalize = (text: string): string => {
   return text.charAt(0).toUpperCase() + text.slice(1);
 };
 
-export const formatEpciName = (name: string) => {
+export const formatEpciName = (name: string): string => {
   if (name.startsWith("CC")) {
     return name.replace("CC", "Communauté de Communes");
   }
@@ -19,14 +19,17 @@ export const formatEpciName = (name: string) => {
   return name;
 };
 
-export const formatMunicipalityName = (name: string) => {
+export const formatMunicipalityName = (name: string): string => {
   if (startsByVowel(name) || name.toLowerCase().startsWith("h")) {
     return `Mairie d'${capitalize(name)}`;
   }
   return `Mairie de ${capitalize(name)}`;
 };
 
-export default (type: LocalAutorityStructureType, localAuthorityName: string) => {
+export const formatLocalAuthorityName = (
+  type: LocalAutorityStructureType,
+  localAuthorityName: string,
+): string => {
   switch (type) {
     case "municipality":
       return formatMunicipalityName(localAuthorityName);

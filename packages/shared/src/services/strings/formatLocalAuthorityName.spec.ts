@@ -1,5 +1,6 @@
-import formatLocalAuthorityName, {
+import {
   formatEpciName,
+  formatLocalAuthorityName,
   formatMunicipalityName,
 } from "./formatLocalAuthorityName";
 

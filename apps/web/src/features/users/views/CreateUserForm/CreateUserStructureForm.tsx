@@ -4,12 +4,12 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { AutoComplete } from "antd";
+import { formatLocalAuthorityName } from "shared";
 import { UserStructureActivity } from "../../domain/user";
 import { FormValues } from "./CreateUserForm";
 import { AdministrativeDivision, AdministrativeDivisionService } from ".";
 
 import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
-import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
 type StructureCategory =

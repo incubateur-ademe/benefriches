@@ -1,8 +1,8 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+import { formatLocalAuthorityName } from "shared";
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 
 import { RootState } from "@/app/application/store";
-import formatLocalAuthorityName from "@/shared/services/strings/formatLocalAuthorityName";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
 

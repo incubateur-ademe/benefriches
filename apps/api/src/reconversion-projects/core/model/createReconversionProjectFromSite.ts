@@ -2,6 +2,7 @@ import { addYears } from "date-fns";
 import {
   computeProjectReinstatementCosts,
   computeReinstatementFullTimeJobs,
+  formatMunicipalityName,
   getSoilTypeForSpace,
   ReinstatementExpensePurpose,
   Schedule,
@@ -10,8 +11,6 @@ import {
   typedObjectEntries,
 } from "shared";
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { capitalize } from "src/shared-kernel/strings/capitalize";
-import { startsByVowel } from "src/shared-kernel/strings/startsByVowel";
 import { Address } from "src/sites/core/models/site";
 import { MixedUseNeighbourhoodFeatures } from "./mixedUseNeighbourhood";
 import { ReconversionProject, reconversionProjectSchema } from "./reconversionProject";
@@ -156,13 +155,6 @@ const computeExpectedPostDevelopmentResaleFromSiteSurfaceArea = (
   const sellingPrice = surfaceArea * 150 * 0.38;
   const propertyTransferDuties = sellingPrice * 0.0581;
   return { sellingPrice, propertyTransferDuties };
-};
-
-const formatMunicipalityName = (name: string) => {
-  if (startsByVowel(name) || name.toLowerCase().startsWith("h")) {
-    return `Mairie d'${capitalize(name)}`;
-  }
-  return `Mairie de ${capitalize(name)}`;
 };
 
 export class MixedUseNeighbourHoodReconversionProjectCreationService {

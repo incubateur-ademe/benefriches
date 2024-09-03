@@ -1,8 +1,7 @@
 import { isForest, isPrairie, isSoilAgricultural, SoilType } from "shared";
+import { startsByVowel } from "shared";
 import { getFricheActivityLabel } from "./friche.types";
 import { SiteDraft } from "./siteFoncier.types";
-
-import { startsByVowel } from "@/shared/services/strings/startsByVowel";
 
 const isSoilTypeArtificial = (soilType: SoilType) => {
   return [
