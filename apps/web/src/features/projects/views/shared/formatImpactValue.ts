@@ -1,12 +1,9 @@
+import { roundTo1Digit, roundTo2Digits, roundToInteger } from "shared";
+
 import {
   formatNumberFr,
   SQUARE_METERS_HTML_SYMBOL,
 } from "@/shared/services/format-number/formatNumber";
-import {
-  roundTo1Digit,
-  roundTo2Digits,
-  roundToInteger,
-} from "@/shared/services/round-numbers/roundNumbers";
 
 const NO_BREAK_SPACE = "\u00A0";
 

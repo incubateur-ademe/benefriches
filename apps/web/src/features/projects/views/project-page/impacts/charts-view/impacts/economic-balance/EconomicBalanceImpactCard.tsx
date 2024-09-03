@@ -1,5 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { roundTo2Digits } from "shared";
 import ImpactChartTooltip from "../../ImpactChartCard/ImpactChartTooltip";
 import ImpactsChartsSection from "../../ImpactsChartsSection";
 
@@ -10,7 +11,6 @@ import {
 import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 import { sumList } from "@/shared/services/sum/sum";
 import HighchartsCustomColorsWrapper from "@/shared/views/components/Charts/HighchartsCustomColorsWrapper";
 import HighchartsMainColorsBehoreHover from "@/shared/views/components/Charts/HighchartsMainColorsBehoreHover";

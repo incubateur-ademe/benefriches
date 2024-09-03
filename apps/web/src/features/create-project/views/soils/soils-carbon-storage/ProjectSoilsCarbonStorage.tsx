@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
+import { roundToInteger } from "shared";
 import CarbonStorageDifferenceSection from "./CarbonStorageDifferenceSection";
 import { formatCarbonStorage } from "./formatCarbonStorage";
 
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
-import { roundToInteger } from "@/shared/services/round-numbers/roundNumbers";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";

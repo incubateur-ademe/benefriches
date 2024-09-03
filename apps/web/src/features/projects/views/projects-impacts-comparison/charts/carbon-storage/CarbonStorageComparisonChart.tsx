@@ -2,12 +2,12 @@ import { useMemo } from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { SoilType } from "shared";
+import { roundTo2Digits } from "shared";
 import { baseColumnChartConfig } from "../../../shared/sharedChartConfig";
 
 import { SoilsCarbonStorage } from "@/features/projects/application/projectImpactsComparison.reducer";
 import { getColorForSoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
-import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   currentCarbonStorage: SoilsCarbonStorage;

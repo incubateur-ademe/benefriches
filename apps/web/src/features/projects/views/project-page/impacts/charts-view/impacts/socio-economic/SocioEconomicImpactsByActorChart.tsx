@@ -1,12 +1,12 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { roundTo2Digits } from "shared";
 
 import { SocioEconomicImpactByActorAndCategory } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
-import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicImpactByActorAndCategory["byActor"];
