@@ -1,0 +1,4 @@
+{
+  "*.(ts)": "pnpm lint",
+  "*.(ts|md|json)": "pnpm format:check"
+}

@@ -1,7 +1,6 @@
 import { roundTo1Digit } from "../services";
 import { ReinstatementExpense } from ".";
 
-
 export const REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR: Partial<
   Record<ReinstatementExpense["purpose"], number>
 > = {
@@ -17,8 +16,7 @@ export const computeReinstatementFullTimeJobs = (
   reinstatementCosts: ReinstatementExpense[] = [],
 ): number => {
   const reinstatementFullTimeJobs = reinstatementCosts.map(({ purpose, amount }) => {
-    const ratio =
-      REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR[purpose];
+    const ratio = REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR[purpose];
     return ratio ? amount * ratio : 0;
   }, 0);
   return roundTo1Digit(reinstatementFullTimeJobs.reduce((total, jobs) => total + jobs, 0));
