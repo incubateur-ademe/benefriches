@@ -10,11 +10,13 @@ import {
   formatTimeImpact,
   impactFormatConfig,
 } from "../../../../shared/formatImpactValue";
+import ImpactChartTooltip from "./ImpactChartTooltip";
 import ImpactPercentageVariation from "./ImpactPercentageVariation";
 
 import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import classNames from "@/shared/views/clsx";
+import HighchartsMainColorsBehoreHover from "@/shared/views/components/Charts/HighchartsMainColorsBehoreHover";
 
 const impactTypeFormatterMap = {
   co2: { ...impactFormatConfig["co2"], formatFn: formatCO2Impact },
@@ -49,6 +51,14 @@ type Props = {
   unitSuffix?: string;
 };
 
+const getMaxDetailsDifferenceIndex = (
+  data: { impactLabel: string; base: number; forecast: number }[],
+) => {
+  const differences = data.map(({ base, forecast }) => forecast - base);
+
+  return differences.indexOf(Math.max(...differences));
+};
+
 function ImpactAreaChartCard({
   type = "default",
   baseLabel,
@@ -58,6 +68,7 @@ function ImpactAreaChartCard({
   unitSuffix,
 }: Props) {
   const { data, base, forecast, difference, impactLabel } = impact;
+  const percentageVariation = getPercentageDifference(base, forecast);
 
   const barChartOptions: Highcharts.Options = {
     ...baseAreaChartConfig,
@@ -66,14 +77,16 @@ function ImpactAreaChartCard({
       categories: [baseLabel, forecastLabel],
     },
     tooltip: {
-      valueSuffix: `&nbsp;${unitSuffix ?? impactTypeFormatterMap[type].unitSuffix}`,
-      pointFormat: "{series.name}: <b>{point.y}</b><br/>",
-      outside: true,
+      enabled: false,
     },
     plotOptions: {
       area: {
         ...baseAreaChartConfig.plotOptions?.area,
         stacking: "normal",
+        marker: { enabled: false, states: { hover: { enabled: false } } },
+      },
+      series: {
+        enableMouseTracking: false,
       },
     },
     legend: { enabled: false },
@@ -87,10 +100,10 @@ function ImpactAreaChartCard({
     })) as Array<Highcharts.SeriesOptionsType>,
   };
 
-  const percentageVariation = getPercentageDifference(base, forecast);
-
   return (
-    <div
+    <HighchartsMainColorsBehoreHover
+      colors={data.map(() => getMaxDetailsDifferenceIndex(data))}
+      aria-describedby={`tooltip-${impactLabel}`}
       onClick={(e) => {
         if (onClick) {
           e.stopPropagation();
@@ -98,6 +111,8 @@ function ImpactAreaChartCard({
         }
       }}
     >
+      <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
+      <h4 className="tw-text-sm tw-text-center tw-mb-1">{impactLabel}</h4>
       <div className={classNames(fr.cx("fr-text--sm", "fr-m-0"), "tw-text-center")}>
         {impactTypeFormatterMap[type].formatFn(difference)}
         {unitSuffix}
@@ -106,10 +121,15 @@ function ImpactAreaChartCard({
           percentage={percentageVariation > 10000 ? 9999 : percentageVariation}
         />
       </div>
-
-      <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
-      <h4 className="tw-text-sm tw-text-center">{impactLabel}</h4>
-    </div>
+      <ImpactChartTooltip
+        tooltipId={`tooltip-${impactLabel}`}
+        rows={data.map(({ impactLabel, base, forecast }) => ({
+          label: impactLabel,
+          value: forecast - base,
+          valueText: impactTypeFormatterMap[type].formatFn(forecast - base),
+        }))}
+      />
+    </HighchartsMainColorsBehoreHover>
   );
 }
 

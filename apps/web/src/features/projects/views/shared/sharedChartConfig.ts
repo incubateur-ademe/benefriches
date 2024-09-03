@@ -18,6 +18,7 @@ export const baseColumnChartConfig: Highcharts.Options = {
     title: {
       text: null,
     },
+    maxPadding: 0.1,
   },
   credits: { enabled: false },
 } as const;
@@ -36,6 +37,7 @@ export const baseAreaChartConfig: Highcharts.Options = {
   yAxis: {
     visible: false,
     tickLength: 0,
+    maxPadding: 0,
   },
   credits: { enabled: false },
   plotOptions: {

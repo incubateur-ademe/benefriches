@@ -6,7 +6,6 @@ import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-p
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { roundTo2Digits } from "@/shared/services/round-numbers/roundNumbers";
 
 type Props = {
@@ -17,17 +16,27 @@ function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
   const barChartOptions: Highcharts.Options = {
     ...baseColumnChartConfig,
     xAxis: {
-      categories: socioEconomicImpacts.map(({ name, total }) => {
-        const amountPrefix = total > 0 ? "+" : "";
-        return `<strong>${getActorLabel(name)}</strong><br><span>${amountPrefix}${formatNumberFr(total)} €</span>`;
-      }),
-      opposite: true,
+      categories: socioEconomicImpacts.map(({ name }) => `<strong>${getActorLabel(name)}</strong>`),
     },
     legend: {
       enabled: false,
     },
+    plotOptions: {
+      series: {
+        dataLabels: {
+          enabled: true,
+          formatter: function () {
+            return this.y ? formatMonetaryImpact(this.y) : "";
+          },
+          crop: false,
+          overflow: "allow",
+        },
+      },
+    },
     tooltip: {
       format: "{point.impactsList}",
+
+      useHTML: true,
     },
     series: [
       {
@@ -39,11 +48,29 @@ function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
           type: "column",
           impactsList: impacts
             .map(({ name, value }) => {
-              const label = getSocioEconomicImpactLabel(name);
-              const monetaryValue = formatMonetaryImpact(value);
-              return `${label} : ${monetaryValue}`;
+              const classes =
+                value === 0
+                  ? "tw-text-impacts-neutral-main dark:tw-text-impacts-neutral-light"
+                  : value > 0
+                    ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
+                    : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light";
+
+              return `<div
+                key="${name}"
+                class="tw-flex tw-justify-between tw-items-center tw-max-w-[200] tw-gap-2"
+              >
+                <div class="tw-flex tw-items-center tw-gap-2">
+                  <span>${getSocioEconomicImpactLabel(name)}</span>
+                </div>
+
+                <span
+                  class="tw-py-1 tw-pr-4 ${classes}"
+                >
+                  ${formatMonetaryImpact(value)}
+                </span>
+              </div>`;
             })
-            .join("<br>"),
+            .join(""),
         })),
       },
     ],
