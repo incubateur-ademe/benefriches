@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
+  computeReinstatementFullTimeJobs,
   DevelopmentPlanCategory,
   SoilsDistribution,
   SoilType,
@@ -16,7 +17,6 @@ import {
   computeDefaultPhotovoltaicYearlyRentAmount,
   computeDefaultPhotovoltaicYearlyTaxesAmount,
 } from "../domain/photovoltaic";
-import { computeDefaultReinstatementFullTimeJobs } from "../domain/reinstatement";
 import {
   getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
   getNonSuitableSoilsForPhotovoltaicPanels,
@@ -210,7 +210,7 @@ export const getDefaultValuesForFullTimeConversionJobsInvolved = createSelector(
 
     const reinstatementFullTimeJobs =
       siteData?.isFriche && reinstatementExpenses
-        ? computeDefaultReinstatementFullTimeJobs(reinstatementExpenses)
+        ? computeReinstatementFullTimeJobs(reinstatementExpenses)
         : undefined;
 
     return {

@@ -1,6 +1,7 @@
 import { addYears } from "date-fns";
 import {
   computeProjectReinstatementCosts,
+  computeReinstatementFullTimeJobs,
   getSoilTypeForSpace,
   ReinstatementExpensePurpose,
   Schedule,
@@ -52,7 +53,7 @@ const getReinstatementCostsFromSiteSoils = (
   projectSoilsDistribution: SoilsDistribution,
   contaminatedSoilSurface: number,
 ) => {
-  const costs = [];
+  const costs: { amount: number; purpose: ReinstatementExpensePurpose }[] = [];
 
   const {
     deimpermeabilization,
@@ -96,28 +97,6 @@ const computeReinstatementSchedule = (dateProvider: IDateProvider): Schedule => 
   const startDate = addYears(dateProvider.now(), 1);
   const endDate = addYears(startDate, 1);
   return { startDate, endDate };
-};
-
-const REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR: Partial<
-  Record<ReinstatementExpensePurpose, number>
-> = {
-  sustainable_soils_reinstatement: 14 / 1000000,
-  deimpermeabilization: 5.45 / 1000000,
-  asbestos_removal: 6 / 1000000,
-  demolition: 6 / 1000000,
-  waste_collection: 5.7 / 1000000,
-  remediation: 5 / 1000000,
-};
-
-export const computeReinstatementFullTimeJobs = (
-  reinstatementCosts: ReconversionProject["reinstatementCosts"] = [],
-) => {
-  const reinstatementFullTimeJobs = reinstatementCosts.map(({ purpose, amount }) => {
-    const ratio =
-      REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR[purpose as ReinstatementExpensePurpose];
-    return ratio ? amount * ratio : 0;
-  }, 0);
-  return Math.round(reinstatementFullTimeJobs.reduce((total, jobs) => total + jobs, 0) * 10) / 10;
 };
 
 const JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR = 0.044;
