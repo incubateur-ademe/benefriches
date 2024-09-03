@@ -328,9 +328,7 @@ export const projectCreationSlice = createSlice({
       action: PayloadAction<FinancialAssistanceRevenue[]>,
     ) => {
       state.projectData.financialAssistanceRevenues = action.payload;
-      state.stepsHistory.push(
-        state.siteData?.isFriche ? "RECONVERSION_FULL_TIME_JOBS" : "OPERATIONS_FULL_TIMES_JOBS",
-      );
+      state.stepsHistory.push("RECONVERSION_FULL_TIME_JOBS");
     },
     completeYearlyProjectedRevenue: (
       state,

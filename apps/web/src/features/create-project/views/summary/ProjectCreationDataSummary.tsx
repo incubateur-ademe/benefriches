@@ -167,24 +167,26 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             />
           )}
           <strong className="fr-ml-2w">Emplois équivalent temps plein mobilisés</strong>
-          {projectData.reinstatementFullTimeJobs && (
+          {siteData.isFriche ? (
             <DataLine
               label="Remise en état de la friche"
-              value={formatNumberFr(projectData.reinstatementFullTimeJobs)}
-              className="fr-ml-2w"
-            />
-          )}
-          {projectData.conversionFullTimeJobs && (
-            <DataLine
-              label="Installation des panneaux photovoltaïques"
               value={
-                projectData.conversionFullTimeJobs
-                  ? formatNumberFr(projectData.conversionFullTimeJobs)
+                projectData.reinstatementFullTimeJobs
+                  ? formatNumberFr(projectData.reinstatementFullTimeJobs)
                   : "Non renseigné"
               }
               className="fr-ml-2w"
             />
-          )}
+          ) : null}
+          <DataLine
+            label="Reconversion du site"
+            value={
+              projectData.conversionFullTimeJobs
+                ? formatNumberFr(projectData.conversionFullTimeJobs)
+                : "Non renseigné"
+            }
+            className="fr-ml-2w"
+          />
           <DataLine
             label="Exploitation du site reconverti"
             value={
