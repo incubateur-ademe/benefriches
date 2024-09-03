@@ -15,6 +15,7 @@
     "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
+    "declarationMap": true,
     "removeComments": true /* Disable emitting comments. */,
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
