@@ -1,4 +1,5 @@
 import { SoilType } from "shared";
+import { formatMunicipalityName } from "shared";
 import { CreateSiteGatewayPayload } from "../application/createSite.actions";
 import {
   computeIllegalDumpingDefaultCost,
@@ -8,8 +9,6 @@ import {
 } from "./expenses.functions";
 import { Expense, SiteExpressDraft } from "./siteFoncier.types";
 import { generateSiteName } from "./siteName";
-
-import { formatMunicipalityName } from "@/shared/services/strings/formatLocalAuthorityName";
 
 const FRANCE_AVERAGE_CITY_POPULATION = 1800;
 

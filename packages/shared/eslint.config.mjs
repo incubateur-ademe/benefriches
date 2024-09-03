@@ -16,7 +16,7 @@ export default tseslint.config(
       ["simple-import-sort"]: simpleImportSortPlugin,
     },
   },
-  { ignores: ["node_modules/", "dist/"] },
+  { ignores: ["node_modules/", "dist/", "jest.config.ts"] },
   {
     languageOptions: {
       parser: tseslint.parser,

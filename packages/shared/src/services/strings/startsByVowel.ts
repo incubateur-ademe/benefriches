@@ -1,4 +1,4 @@
-export const startsByVowel = (value: string) =>
+export const startsByVowel = (value: string): boolean =>
   [
     "a",
     "i",

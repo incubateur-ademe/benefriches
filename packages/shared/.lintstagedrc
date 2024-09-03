@@ -1,4 +1,4 @@
 {
-  "*.(ts)": "pnpm lint",
+  "*.(ts)": "pnpm lint --no-warn-ignored",
   "*.(ts|md|json)": "pnpm format:check"
 }
