@@ -106,7 +106,7 @@ export const getEnvironmentalProjectImpacts = createSelector(
         impact: {
           base: nonContaminatedSurfaceArea.current,
           forecast: nonContaminatedSurfaceArea.forecast,
-          difference: nonContaminatedSurfaceArea.forecast - nonContaminatedSurfaceArea.current,
+          difference: nonContaminatedSurfaceArea.difference,
         },
       });
     }

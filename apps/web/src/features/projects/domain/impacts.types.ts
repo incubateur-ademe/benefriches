@@ -160,7 +160,7 @@ export type ReconversionProjectImpacts = {
       difference: number;
     };
   };
-  nonContaminatedSurfaceArea?: { current: number; forecast: number };
+  nonContaminatedSurfaceArea?: { current: number; forecast: number; difference: number };
   fullTimeJobs: {
     current: number;
     forecast: number;

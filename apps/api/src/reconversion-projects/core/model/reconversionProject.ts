@@ -48,6 +48,7 @@ export const reconversionProjectSchema = z.object({
   description: z.string().optional(),
   relatedSiteId: z.string().uuid(),
   developmentPlan: developmentPlanSchema,
+  decontaminatedSoilSurface: z.number().nonnegative().optional(),
   futureOperator: z.object({ name: z.string(), structureType: z.string() }).optional(),
   futureSiteOwner: z.object({ name: z.string(), structureType: z.string() }).optional(),
   conversionFullTimeJobsInvolved: z.number().nonnegative().optional(),

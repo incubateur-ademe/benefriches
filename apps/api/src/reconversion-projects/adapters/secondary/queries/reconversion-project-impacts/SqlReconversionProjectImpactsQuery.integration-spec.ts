@@ -53,6 +53,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         site_resale_expected_selling_price: 150000,
         site_resale_expected_property_transfer_duties: 8715,
         operations_first_year: 2025,
+        friche_decontaminated_soil_surface_area: 1000,
       });
 
       await sqlConnection("reconversion_project_soils_distributions").insert([
@@ -188,6 +189,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         developmentPlanDeveloperName: "Terre cuite d’occitanie",
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
         siteResaleTotalAmount: 158715,
+        decontaminatedSoilSurface: 1000,
       });
     });
     it("gets reconversion project when optional data does not exist", async () => {

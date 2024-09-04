@@ -5,11 +5,13 @@ describe("ContaminatedSurfaceArea impact", () => {
     expect(
       computeNonContaminatedSurfaceAreaImpact({
         currentContaminatedSurfaceArea: 0,
+        forecastDecontaminedSurfaceArea: 0,
         totalSurfaceArea: 1000,
       }),
     ).toEqual({
       current: 1000,
       forecast: 1000,
+      difference: 0,
     });
   });
 
@@ -17,11 +19,27 @@ describe("ContaminatedSurfaceArea impact", () => {
     expect(
       computeNonContaminatedSurfaceAreaImpact({
         currentContaminatedSurfaceArea: 250,
+        forecastDecontaminedSurfaceArea: 250,
         totalSurfaceArea: 1000,
       }),
     ).toEqual({
       current: 750,
       forecast: 1000,
+      difference: 250,
+    });
+  });
+
+  it("returns 750 for current and 850 for forecast impact when 100 m² will be decontaminated", () => {
+    expect(
+      computeNonContaminatedSurfaceAreaImpact({
+        currentContaminatedSurfaceArea: 250,
+        forecastDecontaminedSurfaceArea: 100,
+        totalSurfaceArea: 1000,
+      }),
+    ).toEqual({
+      current: 750,
+      forecast: 850,
+      difference: 100,
     });
   });
 });

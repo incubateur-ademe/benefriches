@@ -137,6 +137,7 @@ export const baseProjectImpactMock = {
     nonContaminatedSurfaceArea: {
       current: 30000,
       forecast: 50000,
+      difference: 20000,
     },
     permeableSurfaceArea: {
       base: 60000,

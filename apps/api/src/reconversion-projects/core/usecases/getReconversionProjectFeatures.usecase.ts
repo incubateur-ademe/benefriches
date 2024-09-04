@@ -38,6 +38,7 @@ export type ReconversionProjectFeaturesView = {
   firstYearOfOperation?: number;
   sitePurchaseTotalAmount?: number;
   siteResaleTotalAmount?: number;
+  decontaminatedSoilSurface?: number;
 };
 
 export interface ReconversionProjectQueryGateway {

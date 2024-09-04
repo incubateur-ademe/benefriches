@@ -130,6 +130,7 @@ export type ProjectFeatures = {
   firstYearOfOperation?: number;
   sitePurchaseTotalAmount?: number;
   siteResaleTotalAmount?: number;
+  decontaminatedSoilSurface?: number;
 };
 
 export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "MIXED_USE_NEIGHBOURHOOD";

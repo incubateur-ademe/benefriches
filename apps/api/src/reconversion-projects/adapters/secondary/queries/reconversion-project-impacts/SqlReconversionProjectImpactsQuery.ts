@@ -32,6 +32,7 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
         "operations_first_year",
         "site_resale_expected_selling_price",
         "site_resale_expected_property_transfer_duties",
+        "friche_decontaminated_soil_surface_area",
       )
       .where({ id: reconversionProjectId })
       .first();
@@ -165,6 +166,8 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       developmentPlanInstallationCosts: sqlDevelopmentPlan?.costs ?? [],
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
       siteResaleTotalAmount,
+      decontaminatedSoilSurface:
+        reconversionProject.friche_decontaminated_soil_surface_area ?? undefined,
     };
   }
 }
