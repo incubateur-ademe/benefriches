@@ -15,7 +15,7 @@ type ProjectReinstatementCosts = {
 export const computeProjectReinstatementCosts = (
   siteSoilsDistribution: SoilsDistribution,
   projectSoilsDistribution: SoilsDistribution,
-  contaminatedSoilSurface: number,
+  decontaminatedSoilSurface: number,
 ): ProjectReinstatementCosts => {
   const impermeableSoilsDelta =
     getImpermeableSurfaceArea(projectSoilsDistribution) -
@@ -32,7 +32,7 @@ export const computeProjectReinstatementCosts = (
       impermeableSoilsDelta < 0 && artificialGreenSoilsDelta > 0
         ? artificialGreenSoilsDelta * 45
         : undefined,
-    remediation: contaminatedSoilSurface > 0 ? contaminatedSoilSurface * 0.75 * 66 : undefined,
+    remediation: decontaminatedSoilSurface > 0 ? decontaminatedSoilSurface * 66 : undefined,
     demolition: siteSoilsDistribution.BUILDINGS ? siteSoilsDistribution.BUILDINGS * 75 : undefined,
     asbestosRemoval: siteSoilsDistribution.BUILDINGS
       ? siteSoilsDistribution.BUILDINGS * 75

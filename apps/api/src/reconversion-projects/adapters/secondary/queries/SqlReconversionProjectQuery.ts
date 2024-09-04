@@ -36,6 +36,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         "id",
         "name",
         "description",
+        "friche_decontaminated_soil_surface_area",
         "operations_first_year",
         "future_site_owner_name",
         "future_operator_name",
@@ -114,6 +115,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           id: string;
           name: string;
           description: string | null;
+          friche_decontaminated_soil_surface_area: number | null;
           operations_first_year: number | null;
           future_site_owner_name: string | null;
           future_operator_name: string | null;
@@ -185,6 +187,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
       id: sqlResult.id,
       name: sqlResult.name,
       description: sqlResult.description ?? undefined,
+      decontaminatedSoilSurface: sqlResult.friche_decontaminated_soil_surface_area ?? undefined,
       firstYearOfOperation: sqlResult.operations_first_year ?? undefined,
       futureOwner: sqlResult.future_site_owner_name ?? undefined,
       futureOperator: sqlResult.future_operator_name ?? undefined,

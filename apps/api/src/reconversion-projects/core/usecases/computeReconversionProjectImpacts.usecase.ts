@@ -93,6 +93,7 @@ export type ReconversionProjectImpactsDataView = {
   developmentPlanFeatures?: DevelopmentPlan["features"];
   operationsFirstYear?: number;
   siteResaleTotalAmount?: number;
+  decontaminatedSoilSurface?: number;
 };
 
 export interface ReconversionProjectImpactsQuery {
@@ -111,7 +112,7 @@ export type Result = {
   relatedSiteName: string;
   projectData: {
     soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: 0;
+    contaminatedSoilSurface: number;
     isExpressProject: boolean;
     developmentPlan: {
       type?: DevelopmentPlan["type"];
@@ -228,7 +229,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         baseSoilsCarbonStorage: soilsCarbonStorage.current.total,
         forecastSoilsCarbonStorage: soilsCarbonStorage.forecast.total,
         operationsFirstYear: operationsFirstYear,
-        decontaminatedSurface: relatedSite.contaminatedSoilSurface,
+        decontaminatedSurface: reconversionProject.decontaminatedSoilSurface,
       }),
       ...developmentPlanRelatedSocioEconomicImpacts,
     ];
@@ -242,7 +243,9 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       relatedSiteName: relatedSite.name,
       projectData: {
         soilsDistribution: reconversionProject.soilsDistribution,
-        contaminatedSoilSurface: 0,
+        contaminatedSoilSurface:
+          (relatedSite.contaminatedSoilSurface ?? 0) -
+          (reconversionProject.decontaminatedSoilSurface ?? 0),
         isExpressProject: reconversionProject.isExpressProject,
         developmentPlan: {
           ...developmentPlanFeatures,
@@ -283,6 +286,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         nonContaminatedSurfaceArea: relatedSite.contaminatedSoilSurface
           ? computeNonContaminatedSurfaceAreaImpact({
               currentContaminatedSurfaceArea: relatedSite.contaminatedSoilSurface,
+              forecastDecontaminedSurfaceArea: reconversionProject.decontaminatedSoilSurface ?? 0,
               totalSurfaceArea: relatedSite.surfaceArea,
             })
           : undefined,

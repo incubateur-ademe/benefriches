@@ -101,6 +101,7 @@ export const buildExhaustiveReconversionProjectProps = (): ReconversionProjectPr
     },
     operationsFirstYear: 2029,
     projectPhase: "design",
+    decontaminatedSoilSurface: 3000,
   };
 };
 

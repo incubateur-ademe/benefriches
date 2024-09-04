@@ -50,7 +50,7 @@ const computeInstallationCostsFromSiteSurfaceArea = (
 const getReinstatementCostsFromSiteSoils = (
   siteSoilsDistribution: SoilsDistribution,
   projectSoilsDistribution: SoilsDistribution,
-  contaminatedSoilSurface: number,
+  decontaminatedSoilSurface: number,
 ) => {
   const costs: { amount: number; purpose: ReinstatementExpensePurpose }[] = [];
 
@@ -63,7 +63,7 @@ const getReinstatementCostsFromSiteSoils = (
   } = computeProjectReinstatementCosts(
     siteSoilsDistribution,
     projectSoilsDistribution,
-    contaminatedSoilSurface,
+    decontaminatedSoilSurface,
   );
 
   if (deimpermeabilization) {
@@ -170,6 +170,8 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       GROUND_FLOOR_RETAIL: 0.03 * siteData.surfaceArea,
     };
 
+    const decontaminatedSoilSurface = 0.75 * (siteData.contaminatedSoilSurface ?? 0);
+
     // expenses and incomes
     const { sellingPrice, propertyTransactionDuties } = computesitePurchaseFromSiteSurfaceArea(
       siteData.surfaceArea,
@@ -179,7 +181,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       ? getReinstatementCostsFromSiteSoils(
           siteData.soilsDistribution,
           soilsDistribution,
-          siteData.contaminatedSoilSurface ?? 0,
+          decontaminatedSoilSurface,
         )
       : undefined;
 
@@ -207,6 +209,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       creationMode: "express",
       projectPhase: "planning",
       soilsDistribution,
+      decontaminatedSoilSurface,
       yearlyProjectedCosts: [],
       yearlyProjectedRevenues: [],
       name: "Quartier mixte",

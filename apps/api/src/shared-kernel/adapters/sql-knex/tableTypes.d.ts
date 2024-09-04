@@ -109,6 +109,7 @@ export type SqlReconversionProject = {
   project_phase: string;
   // dates
   created_at: Date;
+  friche_decontaminated_soil_surface_area?: number;
 };
 
 type SqlReconversionProjectSoilsDistribution = {

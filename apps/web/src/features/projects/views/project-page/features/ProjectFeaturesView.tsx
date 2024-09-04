@@ -66,6 +66,12 @@ export default function ProjectFeaturesView({ projectData }: Props) {
       <DevelopmentPlanFeatures {...projectData.developmentPlan} />
       <Section>
         <SectionTitle>🌾 Transformation des sols</SectionTitle>
+        {projectData.decontaminatedSoilSurface ? (
+          <DataLine
+            label="Surface dépolluée"
+            value={formatSurfaceArea(projectData.decontaminatedSoilSurface)}
+          />
+        ) : null}
         <DataLine
           label={<strong>Superficie totale</strong>}
           value={

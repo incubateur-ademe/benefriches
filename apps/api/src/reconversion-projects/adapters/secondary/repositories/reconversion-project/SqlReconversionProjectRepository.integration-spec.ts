@@ -98,6 +98,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             project_phase: reconversionProject.projectPhase,
             site_resale_expected_selling_price: null,
             site_resale_expected_property_transfer_duties: null,
+            friche_decontaminated_soil_surface_area: null,
           },
         ]);
       });
@@ -127,6 +128,8 @@ describe("SqlReconversionProjectRepository integration", () => {
               future_site_owner_name: reconversionProject.futureSiteOwner?.name,
               future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
               future_operations_full_time_jobs: reconversionProject.operationsFullTimeJobsInvolved,
+              friche_decontaminated_soil_surface_area:
+                reconversionProject.decontaminatedSoilSurface,
               reinstatement_contract_owner_name:
                 reconversionProject.reinstatementContractOwner?.name,
               reinstatement_contract_owner_structure_type:
@@ -395,6 +398,7 @@ describe("SqlReconversionProjectRepository integration", () => {
             future_site_owner_name: reconversionProject.futureSiteOwner?.name,
             future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
             future_operations_full_time_jobs: null,
+            friche_decontaminated_soil_surface_area: null,
             reinstatement_contract_owner_name: null,
             reinstatement_contract_owner_structure_type: null,
             site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
