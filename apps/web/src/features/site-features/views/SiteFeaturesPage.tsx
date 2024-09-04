@@ -1,9 +1,11 @@
 import { useEffect } from "react";
+import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { SiteFeatures } from "../domain/siteFeatures";
 import SiteFeaturesHeader from "./SiteFeaturesHeader";
 import SiteFeaturesList from "./SiteFeaturesList";
 
+import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 type Props = {
@@ -35,15 +37,17 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
   }
 
   return (
-    <div>
+    <>
       <SiteFeaturesHeader
         siteName={siteData.name}
         isExpressSite={siteData.isExpressSite}
         address={siteData.address}
         isFriche={siteData.isFriche}
       />
-      <SiteFeaturesList {...siteData} />
-    </div>
+      <section className={classNames(fr.cx("fr-container"), "lg:tw-px-24", "tw-py-6")}>
+        <SiteFeaturesList {...siteData} />
+      </section>
+    </>
   );
 }
 

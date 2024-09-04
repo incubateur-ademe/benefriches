@@ -35,7 +35,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
     ["security", "maintenance", "illegalDumpingCost", "otherSecuringCosts"].includes(e.purpose),
   );
   return (
-    <section className={classNames(fr.cx("fr-container"), "lg:tw-px-24", "tw-py-6")}>
+    <>
       <Accordion label="Adresse" defaultExpanded>
         <dl>
           <DataLine label={<strong>Adresse du site</strong>} value={siteFeatures.address} />
@@ -196,6 +196,6 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           />
         </dl>
       </Accordion>
-    </section>
+    </>
   );
 }

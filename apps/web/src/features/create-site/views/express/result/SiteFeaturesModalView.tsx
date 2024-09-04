@@ -29,14 +29,12 @@ export default function SiteFeaturesModalView({ siteId }: Props) {
 
   if (loadingState === "error" || !siteFeatures) {
     return (
-      <div className="fr-container">
-        <Alert
-          description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
-          severity="error"
-          title="Échec du chargement des caractéristiques du site"
-          className="fr-my-7v"
-        />
-      </div>
+      <Alert
+        description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
+        severity="error"
+        title="Échec du chargement des caractéristiques du site"
+        className="fr-my-7v"
+      />
     );
   }
 
