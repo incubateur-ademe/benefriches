@@ -27,7 +27,7 @@ jobs:
       - name: Create Archive
         run: ./apps/api/scripts/build-for-scalingo.sh
       - name: Archive dist
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: api-scalingo-${{ inputs.tag }}
           path: api-scalingo.tar.gz
