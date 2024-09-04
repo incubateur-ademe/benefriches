@@ -35,6 +35,7 @@ type Props = {
   projectData: {
     name: string;
     description?: string;
+    decontaminatedSurfaceArea?: number;
     developmentPlanCategory: DevelopmentPlanCategory;
     renewableEnergy: RenewableEnergyDevelopmentPlanType;
     photovoltaicElectricalPowerKWc: number;
@@ -132,6 +133,12 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           />
         </Accordion>
         <Accordion label="Transformation des sols" defaultExpanded>
+          {projectData.decontaminatedSurfaceArea ? (
+            <DataLine
+              label={<strong>Surface dépolluée</strong>}
+              value={<strong>{formatSurfaceArea(projectData.decontaminatedSurfaceArea)}</strong>}
+            />
+          ) : null}
           <DataLine
             label={<strong>Superficie totale du site</strong>}
             value={<strong>{formatSurfaceArea(siteData.surfaceArea)}</strong>}

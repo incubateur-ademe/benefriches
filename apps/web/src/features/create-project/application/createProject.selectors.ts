@@ -157,7 +157,7 @@ export const selectIsSiteLoaded = createSelector(
   (state): boolean => state.siteDataLoadingState === "success" && !!state.siteData,
 );
 
-const selectSiteData = createSelector(
+export const selectSiteData = createSelector(
   selectSelf,
   (state): ProjectCreationState["siteData"] => state.siteData,
 );

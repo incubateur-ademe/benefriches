@@ -59,6 +59,9 @@ export type ProjectCreationStep =
   | "PHOTOVOLTAIC_SURFACE"
   | "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION"
   | "PHOTOVOLTAIC_CONTRACT_DURATION"
+  | "SOILS_DECONTAMINATION_INTRODUCTION"
+  | "SOILS_DECONTAMINATION_SELECTION"
+  | "SOILS_DECONTAMINATION_SURFACE_AREA"
   | "SOILS_TRANSFORMATION_INTRODUCTION"
   | "NON_SUITABLE_SOILS_NOTICE"
   | "NON_SUITABLE_SOILS_SELECTION"
@@ -128,6 +131,35 @@ export const projectCreationSlice = createSlice({
     ) => {
       state.projectData.renewableEnergyType = action.payload;
       state.stepsHistory.push("PHOTOVOLTAIC_KEY_PARAMETER");
+    },
+    completeSoilsDecontaminationIntroduction: (state) => {
+      state.stepsHistory.push("SOILS_DECONTAMINATION_SELECTION");
+    },
+    completeSoilsDecontaminationSelection: (
+      state,
+      action: PayloadAction<"all" | "partial" | "none" | "unknown">,
+    ) => {
+      switch (action.payload) {
+        case "all":
+          state.projectData.decontaminatedSurfaceArea = state.siteData?.contaminatedSoilSurface;
+          state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
+          break;
+        case "none":
+          state.projectData.decontaminatedSurfaceArea = 0;
+          state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
+          break;
+        case "unknown":
+          state.projectData.decontaminatedSurfaceArea = undefined;
+          state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
+          break;
+        case "partial":
+          state.stepsHistory.push("SOILS_DECONTAMINATION_SURFACE_AREA");
+          break;
+      }
+    },
+    completeSoilsDecontaminationSurfaceArea: (state, action: PayloadAction<number>) => {
+      state.projectData.decontaminatedSurfaceArea = action.payload;
+      state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
     },
     completeSoilsTransformationIntroductionStep: (state) => {
       const nextStep = canSiteAccomodatePhotovoltaicPanels(
@@ -373,7 +405,11 @@ export const projectCreationSlice = createSlice({
     },
     completePhotovoltaicContractDuration: (state, action: PayloadAction<number>) => {
       state.projectData.photovoltaicContractDuration = action.payload;
-      state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
+      state.stepsHistory.push(
+        state.siteData?.isFriche && state.siteData.contaminatedSoilSurface
+          ? "SOILS_DECONTAMINATION_INTRODUCTION"
+          : "SOILS_TRANSFORMATION_INTRODUCTION",
+      );
     },
     completeSoilsSummaryStep: (state) => {
       state.stepsHistory.push("SOILS_CARBON_STORAGE");
@@ -471,6 +507,11 @@ export const revertDevelopmentPlanCategories = () =>
   revertStep({ resetFields: ["developmentPlanCategory"] });
 export const revertRenewableEnergyDevelopmentPlanType = () =>
   revertStep({ resetFields: ["renewableEnergyType"] });
+export const revertSoilsDecontaminationIntroductionStep = () => revertStep();
+export const revertSoilsDecontaminationSelectionStep = () =>
+  revertStep({ resetFields: ["decontaminatedSurfaceArea"] });
+export const revertSoilsDecontaminationSurfaceAreaStep = () =>
+  revertStep({ resetFields: ["decontaminatedSurfaceArea"] });
 export const revertSoilsTransformationIntroductionStep = () => revertStep();
 export const revertNonSuitableSoilsNoticeStep = () => revertStep();
 export const revertNonSuitableSoilsSelectionStep = () =>
@@ -577,6 +618,9 @@ export const {
   completeFutureSiteOwner,
   completeSitePurchaseAmounts,
   completeProjectPhaseStep,
+  completeSoilsDecontaminationIntroduction,
+  completeSoilsDecontaminationSelection,
+  completeSoilsDecontaminationSurfaceArea,
 } = projectCreationSlice.actions;
 
 const projectCreationReducer = reduceReducers<ProjectCreationState>(

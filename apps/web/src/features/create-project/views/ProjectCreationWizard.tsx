@@ -32,6 +32,9 @@ import NonSuitableSoilsNotice from "./soils/soils-transformation/non-suitable-so
 import NonSuitableSoilsSelection from "./soils/soils-transformation/non-suitable-soils-selection";
 import NonSuitableSoilsSurfaceToTransformForm from "./soils/soils-transformation/non-suitable-soils-surface-to-transform";
 import SoilsTransformationProjectSelection from "./soils/soils-transformation/transformation-project-selection";
+import SoilsDecontaminationIntroduction from "./soils-decontamination/introduction";
+import SoilsDecontaminationSelection from "./soils-decontamination/selection";
+import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
 import DeveloperForm from "./stakeholders/developer";
 import FutureOwnerFormContainer from "./stakeholders/future-site-owner";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
@@ -126,6 +129,12 @@ function ProjectCreationWizard({ route }: Props) {
         return <NonSuitableSoilsSelection />;
       case "NON_SUITABLE_SOILS_SURFACE":
         return <NonSuitableSoilsSurfaceToTransformForm />;
+      case "SOILS_DECONTAMINATION_INTRODUCTION":
+        return <SoilsDecontaminationIntroduction />;
+      case "SOILS_DECONTAMINATION_SELECTION":
+        return <SoilsDecontaminationSelection />;
+      case "SOILS_DECONTAMINATION_SURFACE_AREA":
+        return <SoilsDecontaminationSurfaceArea />;
       case "SOILS_TRANSFORMATION_PROJECT_SELECTION":
         return <SoilsTransformationProjectSelection />;
       case "SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION":
