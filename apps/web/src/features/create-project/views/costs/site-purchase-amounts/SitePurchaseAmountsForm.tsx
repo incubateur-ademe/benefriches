@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 
-import { computeTransferTaxFromSellingPrice } from "@/features/create-project/domain/transferTax";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
@@ -27,7 +27,7 @@ const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
     setValue(
       "propertyTransferDuties",
       sellingPrice && !isNaN(sellingPrice)
-        ? computeTransferTaxFromSellingPrice(sellingPrice)
+        ? computePropertyTransferDutiesFromSellingPrice(sellingPrice)
         : undefined,
     );
   }, [sellingPrice, setValue]);

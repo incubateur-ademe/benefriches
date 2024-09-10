@@ -12,6 +12,10 @@ export type SiteView = {
   soilsDistribution: SoilsDistribution;
   contaminatedSoilSurface?: number;
   address: Address;
+  owner: {
+    structureType: string;
+    name?: string;
+  };
 };
 
 export interface SiteQuery {

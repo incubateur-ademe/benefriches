@@ -1,6 +1,7 @@
 import { addYears } from "date-fns";
 import {
   computeProjectReinstatementCosts,
+  computePropertyTransferDutiesFromSellingPrice,
   computeReinstatementFullTimeJobs,
   formatMunicipalityName,
   getSoilTypeForSpace,
@@ -22,6 +23,10 @@ type SiteData = {
   soilsDistribution: SoilsDistribution;
   contaminatedSoilSurface?: number;
   address: Address;
+  owner: {
+    structureType: string;
+    name?: string;
+  };
 };
 
 type Input = {
@@ -34,7 +39,7 @@ const computesitePurchaseFromSiteSurfaceArea = (
   surfaceArea: number,
 ): { sellingPrice: number; propertyTransactionDuties: number } => {
   const sellingPrice = surfaceArea * 72;
-  const propertyTransactionDuties = sellingPrice * 0.0581;
+  const propertyTransactionDuties = computePropertyTransferDutiesFromSellingPrice(sellingPrice);
   return { sellingPrice, propertyTransactionDuties };
 };
 
@@ -153,14 +158,41 @@ const computeExpectedPostDevelopmentResaleFromSiteSurfaceArea = (
   surfaceArea: number,
 ): { sellingPrice: number; propertyTransferDuties: number } => {
   const sellingPrice = surfaceArea * 150 * 0.38;
-  const propertyTransferDuties = sellingPrice * 0.0581;
+  const propertyTransferDuties = computePropertyTransferDutiesFromSellingPrice(sellingPrice);
   return { sellingPrice, propertyTransferDuties };
 };
+
+const computeSitePurchaseValues = (
+  siteSurfaceArea: number,
+  developer: { structureType: string; name: string },
+) => {
+  const { sellingPrice, propertyTransactionDuties } =
+    computesitePurchaseFromSiteSurfaceArea(siteSurfaceArea);
+
+  return {
+    futureSiteOwner: developer,
+    sitePurchaseSellingPrice: sellingPrice,
+    sitePurchasePropertyTransferDuties: propertyTransactionDuties,
+  };
+};
+
+type Stakeholder = {
+  structureType: string;
+  name?: string;
+};
+const isFutureProjectDeveloperSiteOwner = (projectDeveloper: Stakeholder, siteOwner: Stakeholder) =>
+  siteOwner.structureType === projectDeveloper.structureType &&
+  siteOwner.name === projectDeveloper.name;
 
 export class MixedUseNeighbourHoodReconversionProjectCreationService {
   constructor(private readonly dateProvider: IDateProvider) {}
 
   fromSiteData({ siteData, reconversionProjectId, createdBy }: Input): ReconversionProject {
+    const developer = {
+      name: formatMunicipalityName(siteData.address.city),
+      structureType: "municipality",
+    };
+
     // spaces and soils
     const spacesDistribution = computeSpacesDistribution(siteData.surfaceArea);
     const soilsDistribution = computeSoilsDistributionFromSpaces(spacesDistribution);
@@ -173,9 +205,6 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
     const decontaminatedSoilSurface = 0.75 * (siteData.contaminatedSoilSurface ?? 0);
 
     // expenses and incomes
-    const { sellingPrice, propertyTransactionDuties } = computesitePurchaseFromSiteSurfaceArea(
-      siteData.surfaceArea,
-    );
     const installationCosts = computeInstallationCostsFromSiteSurfaceArea(siteData.surfaceArea);
     const reinstatementCosts = siteData.isFriche
       ? getReinstatementCostsFromSiteSoils(
@@ -184,6 +213,12 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
           decontaminatedSoilSurface,
         )
       : undefined;
+
+    const hasPurchaseTransaction = !isFutureProjectDeveloperSiteOwner(developer, siteData.owner);
+
+    const sitePurchaseValues = hasPurchaseTransaction
+      ? computeSitePurchaseValues(siteData.surfaceArea, developer)
+      : {};
 
     // schedules
     const reinstatementSchedule = computeReinstatementSchedule(this.dateProvider);
@@ -195,11 +230,6 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
     const siteResaleExpectedTransaction = computeExpectedPostDevelopmentResaleFromSiteSurfaceArea(
       siteData.surfaceArea,
     );
-
-    const developer = {
-      name: formatMunicipalityName(siteData.address.city),
-      structureType: "municipality",
-    };
     const reinstatementContractOwner = siteData.isFriche ? developer : undefined;
 
     const reconversionProject: ReconversionProject = {
@@ -219,7 +249,6 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
       reinstatementFullTimeJobsInvolved: computeReinstatementFullTimeJobs(reinstatementCosts),
       operationsFullTimeJobsInvolved: computeOperationsFullTimeJobs(buildingsFloorAreaDistribution),
       operationsFirstYear: computeOperationsFirstYear(installationSchedule.endDate),
-      futureSiteOwner: developer,
       reinstatementContractOwner,
       developmentPlan: {
         developer,
@@ -235,8 +264,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
           { amount: installationCosts.other, purpose: "other" },
         ],
       },
-      sitePurchaseSellingPrice: sellingPrice,
-      sitePurchasePropertyTransferDuties: propertyTransactionDuties,
+      ...sitePurchaseValues,
       siteResaleExpectedSellingPrice: siteResaleExpectedTransaction.sellingPrice,
       siteResaleExpectedPropertyTransferDuties:
         siteResaleExpectedTransaction.propertyTransferDuties,

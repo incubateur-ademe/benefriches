@@ -1,3 +1,4 @@
+import { TRANSFER_TAX_PERCENT_PER_TRANSACTION } from "shared";
 import { GetInfluenceAreaValuesService } from "../../services/GetInfluenceAreaValuesService";
 
 const FRICHE_REMOVAL_PRICE_RISES = [
@@ -36,7 +37,6 @@ const FRICHE_REMOVAL_AND_RENATURATION_PRICE_RISES = [
 
 const SOCIAL_HOUSING_SHARE = 0.2;
 const AVERAGE_HOUSE_HOLDING_PERIOD = 33;
-const TRANSFER_TAX_PERCENT_PER_TRANSACTION = 0.0581;
 
 export const computePropertyValueImpact = (
   siteSurfaceArea: number,
