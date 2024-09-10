@@ -6,6 +6,12 @@ location / {
   try_files $uri $uri/ /index.html =404;
 }
 
+# serve embed.html on /embed/* route
+location /embed/ {
+  root /app/dist;
+  try_files $uri $uri/ /embed.html =404;
+}
+
 location /api {
   proxy_pass <%= ENV['API_HOST_URL'] %>;
   real_ip_header X-Forwarded-For;
