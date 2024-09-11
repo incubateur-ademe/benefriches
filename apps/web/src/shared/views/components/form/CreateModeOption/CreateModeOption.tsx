@@ -56,7 +56,9 @@ export default function CreateModeOption({
               {title}
             </div>
             <legend className={fr.cx("fr-text--sm", "fr-mb-0")}>{description}</legend>
-            <Badge className="tw-mt-3 tw-text-[#297254] tw-bg-[#E3FDEB]">{badgeText}</Badge>
+            <Badge className="tw-mt-3" style={disabled ? "disabled" : "green-tilleul"}>
+              {badgeText}
+            </Badge>
           </div>
         </div>
         <div

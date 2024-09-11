@@ -29,7 +29,7 @@ const options = [
         les sols perméables minéraux enherbés au maximum. S'il reste un espace enherbé en-dehors de
         la zone des panneaux, vous pourrez choisir d'y planter des arbres.
         <br />
-        <Badge small className="tw-mt-2 tw-text-[#297254] tw-bg-[#E3FDEB]">
+        <Badge small className="tw-mt-2" style="green-emeraude">
           🌱 Le plus écologique
         </Badge>
       </>
@@ -46,7 +46,7 @@ const options = [
         remplacement des espaces de nature non-arborés existant. Si des bâtiments existent sur le
         site, ceux-ci seront rémployés.
         <br />
-        <Badge small className="tw-mt-2 tw-text-[#66673D] tw-bg-[#FEF7DA]">
+        <Badge small className="tw-mt-2" style="green-tilleul">
           💰 Le plus économique
         </Badge>
       </>

@@ -49,6 +49,7 @@ export default {
         main: "#B2B2B2",
         light: "#F6F6F6",
         dark: "#333",
+        disabled: "#E5E5E5",
       },
       warning: "#B34000",
       impacts: {

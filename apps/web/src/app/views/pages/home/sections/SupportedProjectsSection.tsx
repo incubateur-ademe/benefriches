@@ -32,7 +32,7 @@ function SupportedProjectCard({
         background
         classes={{ root: "tw-w-96" }}
         badge={
-          <Badge small className="tw-bg-white">
+          <Badge small style="default">
             {formerActivity}
           </Badge>
         }
