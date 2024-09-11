@@ -53,7 +53,7 @@ function ProjectCreationResult({ projectId, projectName, siteName, loadingState,
             environnementaux de ce projet sur le site « {siteName} ».
           </EditorialPageText>
           <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
-            Calculer les impacts
+            Consulter les impacts
           </Button>
         </EditorialPageLayout>
       );
