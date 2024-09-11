@@ -42,7 +42,7 @@ export const getLabelForSoilType = (value: SoilType): string => {
 export const getDescriptionForSoilType = (value: SoilType): string => {
   switch (value) {
     case "BUILDINGS":
-      return "Bâtiments à usages industriels, logistiques, commerciaux, administratifs, d'habitation, etc.";
+      return "Bâtiments à usage industriel, commercial, d'habitation...";
     case "IMPERMEABLE_SOILS":
       return "Parking ou voirie bitumée, dalle en béton…";
     case "MINERAL_SOIL":
