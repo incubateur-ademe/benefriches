@@ -16,3 +16,9 @@ export const getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson = (
 
   return carbonTons / (AVERAGE_FRENCH_ANNUAL_EMISSIONS_TON_CO2_EQ_PER_PERSON * RATIO_CO2_TO_CARBON);
 };
+
+export const getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson = (
+  co2EqEmissions: number,
+): number => {
+  return co2EqEmissions / AVERAGE_FRENCH_ANNUAL_EMISSIONS_TON_CO2_EQ_PER_PERSON;
+};

@@ -48,9 +48,11 @@ export type SiteImpactsDataView = {
   id: string;
   name: string;
   isFriche: boolean;
+  fricheActivity?: string;
   addressCityCode: string;
   addressLabel: string;
   contaminatedSoilSurface?: number;
+  ownerStructureType: string;
   ownerName: string;
   tenantName?: string;
   surfaceArea: number;
@@ -123,6 +125,12 @@ export type Result = {
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
     surfaceArea: number;
+    isFriche: boolean;
+    fricheActivity?: string;
+    owner: {
+      structureType: string;
+      name: string;
+    };
   };
   impacts: {
     nonContaminatedSurfaceArea: NonContaminatedSurfaceAreaImpact | undefined;
@@ -258,6 +266,12 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         contaminatedSoilSurface: relatedSite.contaminatedSoilSurface ?? 0,
         soilsDistribution: relatedSite.soilsDistribution,
         surfaceArea: relatedSite.surfaceArea,
+        isFriche: relatedSite.isFriche,
+        fricheActivity: relatedSite.fricheActivity,
+        owner: {
+          name: relatedSite.ownerName,
+          structureType: relatedSite.ownerStructureType,
+        },
       },
       impacts: {
         economicBalance: computeEconomicBalanceImpact(

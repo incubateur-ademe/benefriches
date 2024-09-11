@@ -76,6 +76,7 @@ describe("SqlSiteImpactsQuery integration", () => {
         id: siteId,
         name: "Site 123",
         isFriche: true,
+        fricheActivity: "HOUSING",
         addressCityCode: "01234",
         addressLabel: "1 rue de la paix",
         contaminatedSoilSurface: 230,
@@ -89,6 +90,7 @@ describe("SqlSiteImpactsQuery integration", () => {
         accidentsDeaths: 1,
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 0,
+        ownerStructureType: "company",
         ownerName: "Current site owner",
         tenantName: "Current tenant",
         yearlyCosts: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
@@ -137,6 +139,7 @@ describe("SqlSiteImpactsQuery integration", () => {
           PRAIRIE_GRASS: 12800,
         },
         ownerName: "Owner name",
+        ownerStructureType: "company",
         hasAccidents: false,
         yearlyCosts: [],
       });

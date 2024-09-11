@@ -132,6 +132,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       contaminatedSoilSurface: 20000,
       name: "My base site",
       isFriche: true,
+      fricheActivity: "AGRICULTURAL",
       surfaceArea: 50000,
       soilsDistribution: {
         ...reconversionProjectImpactDataView.soilsDistribution,
@@ -142,6 +143,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       addressCityCode: "23456",
       addressLabel: "Blajan",
       ownerName: "Current owner",
+      ownerStructureType: "company",
       tenantName: "Current tenant",
       fullTimeJobs: 1,
       hasAccidents: true,
@@ -201,6 +203,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 40000,
           },
           surfaceArea: 50000,
+          isFriche: true,
+          fricheActivity: "AGRICULTURAL",
+          owner: {
+            structureType: "company",
+            name: "Current owner",
+          },
         },
         impacts: {
           socioeconomic: {

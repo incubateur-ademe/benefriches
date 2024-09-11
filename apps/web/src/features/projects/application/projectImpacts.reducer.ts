@@ -1,5 +1,5 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SoilsDistribution } from "shared";
+import { FricheActivity, SoilsDistribution } from "shared";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import {
   fetchReconversionProjectImpacts,
@@ -11,12 +11,12 @@ import { RootState } from "@/app/application/store";
 type LoadingState = "idle" | "loading" | "success" | "error";
 
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 20;
-const DEFAULT_VIEW_MODE = "list";
+const DEFAULT_VIEW_MODE = "synthesis";
 const DEFAULT_CATEGORY_FILTER = "all";
 
 type ImpactCategory = "economic" | "environment" | "social";
 export type ImpactCategoryFilter = ImpactCategory | "all";
-export type ViewMode = "charts" | "list";
+export type ViewMode = "charts" | "list" | "synthesis";
 
 export type ProjectImpactsState = {
   dataLoadingState: LoadingState;
@@ -48,6 +48,12 @@ export type ProjectImpactsState = {
     contaminatedSoilSurface: number;
     soilsDistribution: SoilsDistribution;
     surfaceArea: number;
+    isFriche: boolean;
+    fricheActivity: FricheActivity;
+    owner: {
+      structureType: string;
+      name: string;
+    };
   };
   impactsData?: ReconversionProjectImpactsResult["impacts"];
   evaluationPeriod: number;
