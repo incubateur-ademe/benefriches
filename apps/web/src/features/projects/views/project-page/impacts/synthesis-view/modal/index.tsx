@@ -1,21 +1,21 @@
-import ImpactSynthesisView from "./ImpactSynthesisView";
+import ImpactSynthesisModal from "./ImpactSynthesisModal";
 
 import {
-  getCategoryFilter,
+  getEvaluationPeriod,
   getSyntheticImpactsList,
 } from "@/features/projects/application/projectImpactsSynthetics.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-const ImpactsSynthesisViewContainer = () => {
-  const categoryFilter = useAppSelector(getCategoryFilter);
+const ImpactSynthesisModalContainer = () => {
   const syntheticImpactsList = useAppSelector(getSyntheticImpactsList);
+  const evaluationPeriod = useAppSelector(getEvaluationPeriod);
 
   return (
-    <ImpactSynthesisView
-      categoryFilter={categoryFilter}
+    <ImpactSynthesisModal
       syntheticImpactsList={syntheticImpactsList}
+      evaluationPeriod={evaluationPeriod}
     />
   );
 };
 
-export default ImpactsSynthesisViewContainer;
+export default ImpactSynthesisModalContainer;
