@@ -3,18 +3,25 @@ import { fr } from "@codegouvfr/react-dsfr";
 
 import classNames from "@/shared/views/clsx";
 
-type Props = {
+export type ImpactSyntheticCardProps = {
   text: string;
   type: "success" | "error";
   tooltipText?: string;
+  small?: boolean;
 };
 
-const ImpactSyntheticCard = ({ text, type, tooltipText }: Props) => {
+const ImpactSyntheticCard = ({
+  text,
+  type,
+  tooltipText,
+  small = false,
+}: ImpactSyntheticCardProps) => {
   const id = useId();
+  const displayTooltip = tooltipText && !small;
   return (
     <>
       <div
-        aria-describedby={`tooltip-${id}`}
+        aria-describedby={displayTooltip ? `tooltip-${id}` : undefined}
         className={classNames(
           "tw-flex",
           "tw-justify-start",
@@ -24,9 +31,7 @@ const ImpactSyntheticCard = ({ text, type, tooltipText }: Props) => {
           "tw-rounded-md",
           "tw-text-lg",
           "tw-font-bold",
-          "hover:tw-scale-105",
-          "hover:tw-border",
-          "hover:tw-border-solid",
+          displayTooltip && ["hover:tw-scale-105", "hover:tw-border", "hover:tw-border-solid"],
           type === "success"
             ? ["tw-bg-impacts-positive-light", "tw-border-impacts-positive-border"]
             : ["tw-bg-impacts-negative-light", " tw-border-impacts-negative-border"],
@@ -34,7 +39,7 @@ const ImpactSyntheticCard = ({ text, type, tooltipText }: Props) => {
       >
         <span
           className={classNames(
-            "fr-icon--xl",
+            small ? "fr-icon--lg" : "fr-icon--xl",
             type === "success"
               ? [fr.cx("fr-icon-checkbox-circle-fill"), "tw-text-impacts-positive-border"]
               : [fr.cx("fr-icon-warning-fill"), "tw-text-impacts-negative-border"],
@@ -44,14 +49,16 @@ const ImpactSyntheticCard = ({ text, type, tooltipText }: Props) => {
 
         {text}
       </div>
-      <span
-        className={fr.cx("fr-tooltip", "fr-placement")}
-        id={`tooltip-${id}`}
-        role="tooltip"
-        aria-hidden="true"
-      >
-        {tooltipText}
-      </span>
+      {displayTooltip && (
+        <span
+          className={fr.cx("fr-tooltip", "fr-placement")}
+          id={`tooltip-${id}`}
+          role="tooltip"
+          aria-hidden="true"
+        >
+          {tooltipText}
+        </span>
+      )}
     </>
   );
 };
