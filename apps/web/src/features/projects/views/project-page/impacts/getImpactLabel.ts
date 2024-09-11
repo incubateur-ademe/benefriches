@@ -184,7 +184,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "‍🚑 Blessés graves évités";
     // Environementaux monétarisés
     case "co2_benefit_monetary":
-      return "☁️ Emissions de CO2-eq évitées";
+      return "☁️ Emissions de CO2-eq";
     case "avoided_co2_eq_with_enr":
       return "⚡️️ Grâce à la production d'énergies renouvelables";
     case "avoided_traffic_co2_eq_emissions":
