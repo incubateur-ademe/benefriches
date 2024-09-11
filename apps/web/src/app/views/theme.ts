@@ -55,6 +55,7 @@ export default {
         main: "#EEEEEE",
         dark: "#E5E5E5",
         positive: {
+          border: "#34EB7B",
           main: "#18753C",
           light: "#B8FEC9",
         },
@@ -63,6 +64,7 @@ export default {
           light: "#F6F6F6",
         },
         negative: {
+          border: "#FFAFAF",
           main: "#CE0500",
           light: "#FFE9E9",
         },

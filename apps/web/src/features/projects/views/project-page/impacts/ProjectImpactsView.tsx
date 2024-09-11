@@ -4,6 +4,7 @@ import { ImpactDescriptionModalCategory } from "./impact-description-modals/Impa
 import ImpactsChartsView from "./charts-view";
 import ImpactDescriptionModalWizard from "./impact-description-modals";
 import ImpactsListViewContainer from "./list-view";
+import ImpactsSynthesisViewContainer from "./synthesis-view";
 
 type Props = {
   currentViewMode: ViewMode;
@@ -20,6 +21,7 @@ const ProjectImpactsView = ({ currentViewMode }: Props) => {
         modalCategory={modalCategoryOpened}
         onChangeModalCategoryOpened={setModalCategoryOpened}
       />
+      {currentViewMode === "synthesis" && <ImpactsSynthesisViewContainer />}
       {currentViewMode === "list" && (
         <ImpactsListViewContainer openImpactDescriptionModal={setModalCategoryOpened} />
       )}

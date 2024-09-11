@@ -90,6 +90,10 @@ text.highcharts-data-label {
   padding-top: 1rem;
 }
 
+.fr-icon--xl::before {
+  --icon-size: 3.5rem;
+}
+
 /* Ajout d’un statut warning sur le même modèle que error et success pour les inputs */
 
 .fr-message--warning::before,

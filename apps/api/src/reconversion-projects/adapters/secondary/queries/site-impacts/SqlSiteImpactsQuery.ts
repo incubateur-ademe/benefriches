@@ -15,6 +15,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
         "id",
         "name",
         "is_friche",
+        "friche_activity",
         "surface_area",
         "friche_contaminated_soil_surface_area",
         "full_time_jobs_involved",
@@ -22,6 +23,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
         "friche_accidents_severe_injuries",
         "friche_accidents_deaths",
         "owner_name",
+        "owner_structure_type",
         "tenant_name",
       )
       .where("id", siteId)
@@ -46,6 +48,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       id: sqlSite.id,
       name: sqlSite.name,
       isFriche: sqlSite.is_friche,
+      fricheActivity: sqlSite.friche_activity ?? undefined,
       addressCityCode: sqlAddress?.city_code ?? "",
       addressLabel: sqlAddress?.value ?? "",
       surfaceArea: sqlSite.surface_area,
@@ -65,6 +68,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
       accidentsMinorInjuries: sqlSite.friche_accidents_minor_injuries ?? undefined,
       ownerName: sqlSite.owner_name ?? "",
+      ownerStructureType: sqlSite.owner_structure_type,
       tenantName: sqlSite.tenant_name ?? undefined,
       yearlyCosts: sqlYearlyExpenses,
     };

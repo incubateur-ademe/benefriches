@@ -92,6 +92,11 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
           hideLegend
           segments={[
             {
+              label: "Synthèse",
+              nativeInputProps: getViewSegmentInputProps("synthesis"),
+              iconId: "fr-icon-lightbulb-line",
+            },
+            {
               label: "Liste",
               nativeInputProps: getViewSegmentInputProps("list"),
               iconId: "fr-icon-list-unordered",
