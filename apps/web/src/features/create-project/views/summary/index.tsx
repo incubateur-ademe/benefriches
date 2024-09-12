@@ -49,7 +49,7 @@ function ProjectionCreationDataSummaryContainer() {
         yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
         reinstatementSchedule: projectData.reinstatementSchedule,
         photovoltaticInstallationSchedule: projectData.photovoltaicInstallationSchedule,
-
+        decontaminatedSurfaceArea: projectData.decontaminatedSurfaceArea,
         firstYearOfOperation: projectData.firstYearOfOperation,
       }}
       siteData={{
