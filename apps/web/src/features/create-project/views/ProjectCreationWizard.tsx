@@ -49,6 +49,7 @@ import RenewableEnergyTypesForm from "./renewable-energy-types";
 import ProjectCreationResult from "./result";
 import Stepper from "./Stepper";
 import ProjectionCreationDataSummaryContainer from "./summary";
+import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 import { routes } from "@/app/views/router";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -68,6 +69,8 @@ function ProjectCreationWizard({ route }: Props) {
     const relatedSiteId = route.params.siteId;
     void dispatch(projectCreationInitiated({ relatedSiteId }));
   }, [dispatch, route.params.siteId]);
+
+  useSyncCreationStepWithRouteQuery();
 
   const getStepComponent = () => {
     switch (currentStep) {

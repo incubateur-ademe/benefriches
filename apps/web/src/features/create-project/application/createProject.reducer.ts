@@ -50,7 +50,7 @@ export type ProjectCreationState = {
   mixedUseNeighbourhood: MixedUseNeighbourhoodState;
 };
 
-export type ProjectCreationStep =
+export type PhotovoltaicProjectCreationStep =
   | "INTRODUCTION"
   | "PROJECT_TYPES"
   | "RENEWABLE_ENERGY_TYPES"
@@ -94,6 +94,8 @@ export type ProjectCreationStep =
   | "PROJECT_PHASE"
   | "FINAL_SUMMARY"
   | "CREATION_RESULT";
+
+export type ProjectCreationStep = PhotovoltaicProjectCreationStep;
 
 export const getInitialState = (): ProjectCreationState => {
   return {
@@ -498,7 +500,7 @@ export const projectCreationSlice = createSlice({
 export const selectCurrentStep = createSelector(
   [(state: RootState) => state.projectCreation],
   (state): ProjectCreationStep => {
-    return state.stepsHistory.at(-1) ?? "PROJECT_TYPES";
+    return state.stepsHistory.at(-1) ?? "INTRODUCTION";
   },
 );
 

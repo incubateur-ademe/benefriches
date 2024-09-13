@@ -9,7 +9,10 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { etape: param.query.optional.string },
     () => "/creer-site-foncier",
   ),
-  createProject: defineRoute({ siteId: param.query.string }, () => "/creer-projet"),
+  createProject: defineRoute(
+    { etape: param.query.optional.string, siteId: param.query.string },
+    () => "/creer-projet",
+  ),
   projectFeatures: defineRoute(
     { projectId: param.path.string },
     (params) => `/mes-projets/${params.projectId}/caracteristiques`,

@@ -32,7 +32,7 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   YEARLY_EXPENSES_SUMMARY: "recapitulatif-depenses-annuelles",
   NAMING_INTRODUCTION: "denomination-introduction",
   NAMING: "denomination",
-  FINAL_SUMMARY: "recapitulatif",
+  FINAL_SUMMARY: "recapitulatif-final",
   CREATION_RESULT: "fin",
 } as const satisfies Record<SiteCreationStep, string>;
 
