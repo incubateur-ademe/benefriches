@@ -5,13 +5,11 @@ const { RouteProvider, useRoute, routes } = createRouter({
   onboarding: defineRoute("/premiers-pas"),
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
-  createSiteFoncier: defineRoute("/creer-site-foncier"),
-  createProject: defineRoute(
-    {
-      siteId: param.query.string,
-    },
-    () => "/creer-projet",
+  createSiteFoncier: defineRoute(
+    { etape: param.query.optional.string },
+    () => "/creer-site-foncier",
   ),
+  createProject: defineRoute({ siteId: param.query.string }, () => "/creer-projet"),
   projectFeatures: defineRoute(
     { projectId: param.path.string },
     (params) => `/mes-projets/${params.projectId}/caracteristiques`,

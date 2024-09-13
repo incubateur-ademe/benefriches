@@ -13,6 +13,7 @@ import SiteCreationExpressStepContent from "./express/StepContent";
 import SiteCreationExpressStepper from "./express/Stepper";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationIntroduction from "./introduction";
+import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 import AboutFormsModal from "@/shared/app-settings/views/AboutFormsModal";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -54,6 +55,8 @@ function SiteCreationWizard() {
   useEffect(() => {
     dispatch(resetState());
   }, [dispatch]);
+
+  useSyncCreationStepWithRouteQuery();
 
   return (
     <SidebarLayout
