@@ -7,8 +7,8 @@ type Props = {
 
 export default function MatomoContainer({ siteId, matomoUrl }: Props) {
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-    const _paq: any[] = ((window as any)._paq = (window as any)._paq || []);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const _paq: any[] = (window._paq = window._paq || []);
     /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
     _paq.push(["enableLinkTracking"]);
     (function () {

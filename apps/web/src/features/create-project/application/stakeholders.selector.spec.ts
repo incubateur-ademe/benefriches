@@ -1,5 +1,5 @@
 import { ProjectSite } from "../domain/project.types";
-import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
+import { ProjectCreationState } from "./createProject.reducer";
 import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
 import { relatedSiteData } from "./siteData.mock";
 import {
@@ -26,7 +26,7 @@ const USER = buildUser({ structureName: "My company" });
 const MOCK_STATES = {
   projectCreation: {
     projectData: projectWithExhaustiveData,
-    stepsHistory: ["PROJECT_TYPES"] as ProjectCreationStep[],
+    stepsHistory: ["PROJECT_TYPES"],
     siteData,
     siteDataLoadingState: "success",
     saveProjectLoadingState: "success",
