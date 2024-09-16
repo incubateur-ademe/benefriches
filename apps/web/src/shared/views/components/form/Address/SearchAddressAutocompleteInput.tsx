@@ -27,6 +27,18 @@ type Option = {
   properties: Address;
 };
 
+const formatAddressOptionLabel = (
+  address: Address,
+  addressType: PropTypes["addressType"],
+): string => {
+  switch (addressType) {
+    case "municipality":
+      return `${address.value} (${address.postCode})`;
+    default:
+      return address.value;
+  }
+};
+
 const SearchAddressAutocompleteInput = ({
   searchInputValue,
   onSearchInputChange,
@@ -49,7 +61,7 @@ const SearchAddressAutocompleteInput = ({
     setSuggestions(
       options.map((address) => ({
         value: address.banId,
-        label: address.value,
+        label: formatAddressOptionLabel(address, addressType),
         properties: address,
       })),
     );
@@ -72,6 +84,7 @@ const SearchAddressAutocompleteInput = ({
           {...searchInputProps}
           nativeInputProps={{
             value: searchInputValue ?? "",
+            type: "search",
             onChange: (e: ChangeEvent<HTMLInputElement>) => {
               onSearchInputChange(e.target.value);
             },
