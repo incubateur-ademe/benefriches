@@ -4,8 +4,7 @@
   "compilerOptions": {
     /* Language and Environment */
     "target": "ES2022",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "NodeNext",
 
     /* Modules */
     "typeRoots": [
