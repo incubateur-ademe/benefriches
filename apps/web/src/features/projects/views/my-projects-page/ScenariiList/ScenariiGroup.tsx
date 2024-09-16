@@ -1,9 +1,9 @@
 import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import { FricheActivity } from "shared";
-import NewScenarioTile from "./ScenarioTile/NewScenarioTile";
-import ProjectScenarioTile from "./ScenarioTile/ProjectScenarioTile";
-import StatuQuoScenarioTile from "./ScenarioTile/StatuQuoScenarioTile";
+import NewScenarioTile from "./NewScenarioTile";
+import ProjectScenarioTile from "./ProjectScenarioTile";
+import StatuQuoScenarioTile from "./StatuQuoScenarioTile";
 import { ReconversionProjectList } from ".";
 
 import { routes } from "@/app/views/router";

@@ -1,5 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
+import ScenarioTileImage from "./ScenarioTileImage";
+import ScenarioTileTitle from "./ScenarioTileTitle";
+import WithTooltip from "./ScenarioTileTooltip";
 
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
@@ -14,40 +17,10 @@ type Props = {
   isSelected: boolean;
   shouldDisplayCheckbox: boolean;
   className?: ClassValue;
+  tooltipText?: string;
   onChangeCheckbox: (selected: boolean) => void;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
-};
-
-const ScenarioTileHeader = ({
-  pictogramUrl,
-  title,
-}: {
-  pictogramUrl: Props["pictogramUrl"];
-  title: Props["title"];
-}) => {
-  return (
-    <>
-      {pictogramUrl && (
-        <div className="fr-tile__header">
-          <div className="fr-tile__pictogram">
-            <img
-              className="fr-responsive-img"
-              src={pictogramUrl}
-              aria-hidden={true}
-              alt="Icône du type de scénario"
-              width="80px"
-              height="80px"
-            />
-          </div>
-        </div>
-      )}
-
-      <h3 className={classNames(fr.cx("fr-tile__title"), "before:tw-content-none", "tw-text-lg")}>
-        {title}
-      </h3>
-    </>
-  );
 };
 
 function ScenarioTile({
@@ -60,6 +33,7 @@ function ScenarioTile({
   pictogramUrl,
   isHovered,
   badgeText,
+  tooltipText,
   className,
   ...rest
 }: Props) {
@@ -80,38 +54,41 @@ function ScenarioTile({
       )}
       {...rest}
     >
-      <div className="fr-tile__body">
-        <div className="fr-tile__content">
-          <a {...linkProps} className="tw-bg-none">
-            <ScenarioTileHeader title={title} pictogramUrl={pictogramUrl} />
-            <div className="fr-tile__details tw-grow">
-              <p className="fr-tile__desc tw-text-sm">{details}</p>
-            </div>
-            {badgeText && (
-              <Badge small className="tw-mt-2" style="green-tilleul">
-                {badgeText}
-              </Badge>
-            )}
-          </a>
-          <Checkbox
-            className={classNames(
-              fr.cx("fr-mt-3v"),
-              shouldDisplayCheckbox ? "tw-visible" : "tw-invisible",
-            )}
-            // Scenarii comparison is not released yet
-            style={{ display: "none" }}
-            options={[
-              {
-                label: "Comparer",
-                nativeInputProps: {
-                  checked: isSelected,
-                  onChange: onChange,
+      <WithTooltip tooltipText={tooltipText}>
+        <div className="fr-tile__body">
+          <div className="fr-tile__content">
+            <a {...linkProps} className="tw-bg-none">
+              {pictogramUrl && <ScenarioTileImage imageUrl={pictogramUrl} />}
+              <ScenarioTileTitle>{title}</ScenarioTileTitle>
+              <div className="fr-tile__details tw-grow">
+                <p className="fr-tile__desc tw-text-sm">{details}</p>
+              </div>
+              {badgeText && (
+                <Badge small className="tw-mt-2" style="green-tilleul">
+                  {badgeText}
+                </Badge>
+              )}
+            </a>
+            <Checkbox
+              className={classNames(
+                fr.cx("fr-mt-3v"),
+                shouldDisplayCheckbox ? "tw-visible" : "tw-invisible",
+              )}
+              // Scenarii comparison is not released yet
+              style={{ display: "none" }}
+              options={[
+                {
+                  label: "Comparer",
+                  nativeInputProps: {
+                    checked: isSelected,
+                    onChange: onChange,
+                  },
                 },
-              },
-            ]}
-          />
+              ]}
+            />
+          </div>
         </div>
-      </div>
+      </WithTooltip>
     </div>
   );
 }

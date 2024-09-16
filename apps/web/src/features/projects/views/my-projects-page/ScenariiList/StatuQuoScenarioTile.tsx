@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FricheActivity } from "shared";
-import ScenarioTile from "./ScenarioTile";
+import ScenarioTile from "./ScenarioTile/ScenarioTile";
 
 import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
 
@@ -57,6 +57,7 @@ function StatuQuoScenarioTile({
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       isHovered={isHovered}
+      tooltipText={`Les impacts du scénario "Pas de changement" seront accessibles dans une version ultérieure de l'outil.`}
     />
   );
 }
