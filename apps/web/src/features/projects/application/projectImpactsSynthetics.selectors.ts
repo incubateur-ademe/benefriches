@@ -57,7 +57,10 @@ const getAvoidedFricheCostsForLocalAuthority = (state: RootState["projectImpacts
 
 const getTaxesIncomeImpact = (state: RootState["projectImpacts"]) => {
   const taxesIncomes = state.impactsData?.socioeconomic.impacts.filter(
-    ({ impact }) => impact === "taxes_income" || impact === "property_transfer_duties_income",
+    ({ impact }) =>
+      impact === "taxes_income" ||
+      impact === "property_transfer_duties_income" ||
+      impact === "local_transfer_duties_increase",
   );
 
   if (!taxesIncomes || taxesIncomes.length > 0) {
@@ -68,7 +71,10 @@ const getTaxesIncomeImpact = (state: RootState["projectImpacts"]) => {
 };
 
 const getFullTimeJobsImpact = (state: RootState["projectImpacts"]) => {
-  const { forecast = 0, current = 0 } = state.impactsData?.fullTimeJobs ?? {};
+  if (!state.impactsData?.fullTimeJobs) {
+    return undefined;
+  }
+  const { forecast, current } = state.impactsData.fullTimeJobs;
   const difference = forecast - current;
 
   return {
@@ -233,11 +239,13 @@ export const getSyntheticImpactsList = createSelector(selectSelf, (state) => {
     });
   }
 
-  impacts.push({
-    name: "fullTimeJobs",
-    isSuccess: fullTimeJobs.value > 0,
-    value: fullTimeJobs,
-  });
+  if (fullTimeJobs && fullTimeJobs.value !== 0) {
+    impacts.push({
+      name: "fullTimeJobs",
+      isSuccess: fullTimeJobs.value > 0,
+      value: fullTimeJobs,
+    });
+  }
 
   if (householdsPoweredByRenewableEnergy && householdsPoweredByRenewableEnergy > 0) {
     impacts.push({
