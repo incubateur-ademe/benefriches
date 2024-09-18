@@ -1,7 +1,12 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
+import {
+  getAvailableLocalAuthorities,
+  getAvailableLocalAuthoritiesWithoutCurrentUser,
+} from "./siteMunicipalityData.reducer";
 
 import { createStore, RootState } from "@/app/application/store";
+import { buildUser } from "@/features/users/domain/user.mock";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
@@ -193,6 +198,190 @@ describe("Site Municipality data reducer", () => {
     expect(state.siteMunicipalityData).toEqual({
       loadingState: "error",
       localAuthorities: undefined,
+    });
+  });
+});
+
+describe("Site public authorities selectors", () => {
+  describe("getAvailablePublicLocalAuthorities", () => {
+    it("should get all public authorities options related to municipality from store with along french state", () => {
+      const state = {
+        ...createStore(getTestAppDependencies()).getState(),
+        siteMunicipalityData: {
+          loadingState: "success",
+          localAuthorities: API_MOCKED_RESULT["75110"].localAuthorities,
+          population: 83459,
+        },
+      } satisfies RootState;
+
+      const result = getAvailableLocalAuthorities(state);
+
+      expect(result).toEqual([
+        {
+          type: "municipality",
+          name: "Mairie de Paris 10e Arrondissement",
+        },
+        {
+          type: "epci",
+          name: "Établissement public de coopération intercommunale",
+        },
+        {
+          type: "department",
+          name: "Département Paris",
+        },
+        {
+          type: "region",
+          name: "Région Île-de-France",
+        },
+      ]);
+    });
+
+    it("should get default public authorities options related to municipality when no data in store", () => {
+      const state = createStore(getTestAppDependencies()).getState();
+
+      const result = getAvailableLocalAuthorities(state);
+
+      expect(result).toEqual([
+        {
+          type: "municipality",
+          name: "Mairie",
+        },
+        {
+          type: "epci",
+          name: "Établissement public de coopération intercommunale",
+        },
+        {
+          type: "department",
+          name: "Département",
+        },
+        {
+          type: "region",
+          name: "Région",
+        },
+      ]);
+    });
+
+    it("should exclude site owner from available options", () => {
+      const defaultState = createStore(getTestAppDependencies()).getState();
+      const grenobleLocalAuthorities = API_MOCKED_RESULT["38185"].localAuthorities;
+
+      const state = {
+        ...defaultState,
+        siteCreation: {
+          ...defaultState.siteCreation,
+          siteData: {
+            ...defaultState.siteCreation.siteData,
+            owner: {
+              name: grenobleLocalAuthorities.epci.name,
+              structureType: "epci",
+            },
+          },
+        },
+        siteMunicipalityData: {
+          loadingState: "success",
+          localAuthorities: grenobleLocalAuthorities,
+          population: 83459,
+        },
+      } satisfies RootState;
+      const result = getAvailableLocalAuthorities(state);
+
+      expect(result).toEqual([
+        {
+          type: "municipality",
+          name: "Mairie de Grenoble",
+        },
+        {
+          type: "department",
+          name: "Département Isère",
+        },
+        {
+          type: "region",
+          name: "Région Auvergne-Rhône-Alpes",
+        },
+      ]);
+    });
+  });
+
+  describe("getAvailablePublicLocalAuthoritiesWithoutCurrentUser", () => {
+    it("should exclude user structure from available options", () => {
+      const defaultState = createStore(getTestAppDependencies()).getState();
+      const grenobleLocalAuthorities = API_MOCKED_RESULT["38185"].localAuthorities;
+
+      const state = {
+        ...defaultState,
+        currentUser: {
+          ...defaultState.currentUser,
+          currentUser: {
+            ...buildUser(),
+            structureType: "local_authority",
+            structureActivity: "municipality",
+            structureName: "Mairie de Grenoble",
+          },
+        },
+        siteMunicipalityData: {
+          loadingState: "success",
+          localAuthorities: grenobleLocalAuthorities,
+          population: 83459,
+        },
+      } satisfies RootState;
+      const result = getAvailableLocalAuthoritiesWithoutCurrentUser(state);
+
+      expect(result).toEqual([
+        {
+          type: "epci",
+          name: "Grenoble-Alpes-Métropole",
+        },
+        {
+          type: "department",
+          name: "Département Isère",
+        },
+        {
+          type: "region",
+          name: "Région Auvergne-Rhône-Alpes",
+        },
+      ]);
+    });
+    it("should not exclude user structure when not part of available options", () => {
+      const defaultState = createStore(getTestAppDependencies()).getState();
+      const grenobleLocalAuthorities = API_MOCKED_RESULT["38185"].localAuthorities;
+
+      const state = {
+        ...defaultState,
+        currentUser: {
+          ...defaultState.currentUser,
+          currentUser: {
+            ...buildUser(),
+            structureType: "local_authority",
+            structureActivity: "municipality",
+            structureName: "Mairie de Marseille",
+          },
+        },
+        siteMunicipalityData: {
+          loadingState: "success",
+          localAuthorities: grenobleLocalAuthorities,
+          population: 83459,
+        },
+      } satisfies RootState;
+      const result = getAvailableLocalAuthoritiesWithoutCurrentUser(state);
+
+      expect(result).toEqual([
+        {
+          type: "municipality",
+          name: "Mairie de Grenoble",
+        },
+        {
+          type: "epci",
+          name: "Grenoble-Alpes-Métropole",
+        },
+        {
+          type: "department",
+          name: "Département Isère",
+        },
+        {
+          type: "region",
+          name: "Région Auvergne-Rhône-Alpes",
+        },
+      ]);
     });
   });
 });
