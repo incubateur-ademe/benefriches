@@ -21,6 +21,7 @@ type DirectAndIndirectEconomicImpactsInput = {
   yearlyCurrentCosts: { purpose: string; amount: number }[];
   yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"];
   propertyTransferDutiesAmount?: number;
+  isFriche: boolean;
 };
 
 type BaseEconomicImpact = { actor: string; amount: number };
@@ -102,7 +103,7 @@ export const computeDirectAndIndirectEconomicImpacts = (
     FRICHE_COST_PURPOSES.includes(purpose as FricheCostPurpose),
   ) as { purpose: FricheCostPurpose; amount: number }[];
 
-  if (currentFricheCosts.length) {
+  if (currentFricheCosts.length && input.isFriche) {
     const fricheCostImpactAmount = sumListWithKey(currentFricheCosts, "amount");
     impacts.push({
       amount: fricheCostImpactAmount * input.evaluationPeriodInYears,
