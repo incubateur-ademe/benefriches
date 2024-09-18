@@ -84,20 +84,15 @@ export const getHouseholdsPoweredByRenewableEnergy = createSelector(selectSelf, 
 });
 
 export const getAvoidedCo2eqEmissions = createSelector(selectSelf, (state) => {
-  const avoidedCo2eqEmissions =
-    state.impactsData?.socioeconomic.impacts.filter(
-      ({ impact }) =>
-        impact === "avoided_co2_eq_with_enr" ||
-        impact === "avoided_traffic_co2_eq_emissions" ||
-        impact === "avoided_air_conditioning_co2_eq_emissions",
-    ) ?? [];
-
-  const total = avoidedCo2eqEmissions.reduce((total, { amount }) => total + amount, 0);
+  const total = [
+    state.impactsData?.avoidedAirConditioningCo2EqEmissions ?? 0,
+    state.impactsData?.avoidedCarTrafficCo2EqEmissions ?? 0,
+    state.impactsData?.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0,
+  ].reduce((total, amount) => total + amount, 0);
 
   if (state.impactsData?.soilsCarbonStorage) {
     const base = convertCarbonToCO2eq(state.impactsData.soilsCarbonStorage.current.total);
     const forecast = convertCarbonToCO2eq(state.impactsData.soilsCarbonStorage.forecast.total);
-
     return total + (forecast - base);
   }
 
