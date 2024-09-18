@@ -11,15 +11,21 @@ type Props = {
 };
 
 const ImpactSynthesisAvoidedCo2eqEmissions = ({ value, isSuccess, ...props }: Props) => {
-  const frenchPersonAnnualEquivalent = formatPerFrenchPersonAnnualEquivalent(
-    getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson(value),
+  const co2eqValue = Math.abs(value);
+  const co2eqValueText = formatCO2Impact(co2eqValue, { withSignPrefix: false });
+  const frenchPersonAnnualEquivalent =
+    getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson(co2eqValue);
+
+  const frenchPersonAnnualEquivalentText = formatPerFrenchPersonAnnualEquivalent(
+    frenchPersonAnnualEquivalent,
   );
+
   if (isSuccess) {
     return (
       <ImpactSyntheticCard
         {...props}
         type="success"
-        tooltipText={`${formatCO2Impact(value)} de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalent} français pendant 1 an`}
+        tooltipText={`${co2eqValueText} de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`}
         text="- d’émissions de CO2&nbsp;☁️"
       />
     );
@@ -29,7 +35,7 @@ const ImpactSynthesisAvoidedCo2eqEmissions = ({ value, isSuccess, ...props }: Pr
     <ImpactSyntheticCard
       {...props}
       type="error"
-      tooltipText={`${formatCO2Impact(value)} de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalent} français pendant 1 an`}
+      tooltipText={`${co2eqValueText} de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`}
       text="+ d’émissions de CO2&nbsp;☁️"
     />
   );
