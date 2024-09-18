@@ -3,11 +3,11 @@ import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanc
 import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";
 
 import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { SocioEconomicImpactByActorAndCategory } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 
 type Props = {
   economicBalance: EconomicBalance;
-  socioEconomicImpacts: SocioEconomicImpactByActorAndCategory;
+  socioEconomicImpacts: SocioEconomicImpactByActor;
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 

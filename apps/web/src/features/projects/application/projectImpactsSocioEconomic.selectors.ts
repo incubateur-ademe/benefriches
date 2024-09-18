@@ -397,8 +397,6 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
   },
 );
 
-type ImpactCategory =
-  ReconversionProjectImpacts["socioeconomic"]["impacts"][number]["impactCategory"];
 type ImpactName = ReconversionProjectImpacts["socioeconomic"]["impacts"][number]["impact"];
 
 const getGroupedByImpactName = (impacts: { amount: number; impact: ImpactName }[]) => {
@@ -418,26 +416,18 @@ const getGroupedByImpactName = (impacts: { amount: number; impact: ImpactName }[
   };
 };
 
-type ByActor = {
-  name:
-    | Exclude<Actor, "local_residents" | "local_workers" | "local_companies">
-    | "local_people_or_companies";
+type ActorName =
+  | Exclude<Actor, "local_residents" | "local_workers" | "local_companies">
+  | "local_people_or_companies";
+export type SocioEconomicImpactByActor = {
+  name: ActorName;
   total: number;
   impacts: { name: SocioEconomicImpactName; value: number }[];
-};
-export type SocioEconomicImpactByActorAndCategory = {
-  total: number;
-  byActor: ByActor[];
-  byCategory: {
-    name: ImpactCategory;
-    total: number;
-    impacts: { name: SocioEconomicImpactName; value: number }[];
-  }[];
-};
-export const getSocioEconomicProjectImpactsByActorAndCategory = createSelector(
+}[];
+export const getSocioEconomicProjectImpactsByActor = createSelector(
   selectCurrentFilter,
   selectImpactsData,
-  (currentFilter, impactsData): SocioEconomicImpactByActorAndCategory => {
+  (currentFilter, impactsData): SocioEconomicImpactByActor => {
     const { impacts: socioEconomicImpacts } = impactsData?.socioeconomic ?? {
       total: 0,
       impacts: [],
@@ -467,7 +457,7 @@ export const getSocioEconomicProjectImpactsByActorAndCategory = createSelector(
 
     const distinctActors = Array.from(
       new Set(mergedActors.map(({ actor }) => actor)),
-    ) as ByActor["name"][];
+    ) as ActorName[];
 
     const byActor = distinctActors.map((actor) => {
       const impacts = mergedActors.filter((impact) => impact.actor === actor);
@@ -477,27 +467,6 @@ export const getSocioEconomicProjectImpactsByActorAndCategory = createSelector(
       };
     });
 
-    const byCategory = (
-      [
-        "economic_direct",
-        "economic_indirect",
-        "social_monetary",
-        "environmental_monetary",
-      ] as ImpactCategory[]
-    )
-      .map((category) => {
-        const impacts = impactsFiltered.filter((impact) => impact.impactCategory === category);
-        return {
-          name: category,
-          ...getGroupedByImpactName(impacts),
-        };
-      })
-      .filter(({ total }) => total !== 0);
-
-    return {
-      total: sumList(impactsFiltered.map(({ amount }) => amount)),
-      byActor,
-      byCategory,
-    };
+    return byActor;
   },
 );

@@ -6,12 +6,12 @@ import ImpactsChartsSocialSection from "./ImpactsChartsSocialSection";
 import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import { EnvironmentalImpact } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
 import { SocialImpact } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { SocioEconomicImpactByActorAndCategory } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 
 type Props = {
   projectName: string;
   economicBalance: EconomicBalance;
-  socioEconomicImpacts: SocioEconomicImpactByActorAndCategory;
+  socioEconomicImpacts: SocioEconomicImpactByActor;
   environmentImpacts: EnvironmentalImpact[];
   socialImpacts: SocialImpact[];
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
@@ -29,7 +29,7 @@ const ImpactsChartsView = ({
 
   return (
     <div>
-      {(displayEconomicBalance || socioEconomicImpacts.total !== 0) && (
+      {(displayEconomicBalance || socioEconomicImpacts.length > 0) && (
         <ImpactsChartsEconomicSection
           openImpactDescriptionModal={openImpactDescriptionModal}
           economicBalance={economicBalance}

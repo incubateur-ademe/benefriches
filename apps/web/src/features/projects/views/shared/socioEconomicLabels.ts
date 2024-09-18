@@ -1,11 +1,11 @@
 import {
-  SocioEconomicImpactByActorAndCategory,
+  SocioEconomicImpactByActor,
   SocioEconomicImpactByCategory,
 } from "../../application/projectImpactsSocioEconomic.selectors";
 
 export const getActorLabel = (
   label:
-    | SocioEconomicImpactByActorAndCategory["byActor"][number]["name"]
+    | SocioEconomicImpactByActor[number]["name"]
     | SocioEconomicImpactByCategory["impacts"][number]["actors"][number]["name"],
 ) => {
   switch (label) {

@@ -1,7 +1,7 @@
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
 import {
   getDetailedSocioEconomicProjectImpacts,
-  getSocioEconomicProjectImpactsByActorAndCategory,
+  getSocioEconomicProjectImpactsByActor,
 } from "./projectImpactsSocioEconomic.selectors";
 
 import { RootState } from "@/app/application/store";
@@ -284,17 +284,14 @@ describe("projectImpactsSocioEconomic selectors", () => {
     });
   });
 
-  describe("getSocioEconomicProjectImpactsByActorAndCategory", () => {
-    it("should return socio economic impacts formatted by actor and category for filter `all`", () => {
-      const { byActor, byCategory, total } =
-        getSocioEconomicProjectImpactsByActorAndCategory.resultFunc(
-          "all",
-          MOCK_STATES.projectImpacts["impactsData"],
-        );
+  describe("getSocioEconomicProjectImpactsByActor", () => {
+    it("should return socio economic impacts formatted by actor for filter `all`", () => {
+      const byActor = getSocioEconomicProjectImpactsByActor.resultFunc(
+        "all",
+        MOCK_STATES.projectImpacts["impactsData"],
+      );
 
-      expect(total).toEqual(-195584);
       expect(byActor.length).toEqual(4);
-      expect(byCategory.length).toEqual(3);
 
       expect(byActor).toContainEqual(
         expect.objectContaining({
@@ -334,50 +331,15 @@ describe("projectImpactsSocioEconomic selectors", () => {
           ],
         }),
       );
-
-      expect(byCategory).toContainEqual(
-        expect.objectContaining({
-          name: "economic_direct",
-          total: -403568,
-          impacts: [
-            { name: "rental_income", value: -540000 },
-            { name: "avoided_friche_costs", value: 131000 },
-            { name: "property_transfer_duties_income", value: 5432 },
-          ],
-        }),
-      );
-
-      expect(byCategory).toContainEqual(
-        expect.objectContaining({
-          name: "economic_indirect",
-          total: 5000,
-          impacts: [{ name: "taxes_income", value: 5000 }],
-        }),
-      );
-
-      expect(byCategory).toContainEqual(
-        expect.objectContaining({
-          name: "environmental_monetary",
-          total: 202984,
-          impacts: [
-            { name: "water_regulation", value: 4720 },
-            { name: "ecosystem_services", value: 29820 },
-            { name: "avoided_co2_eq_with_enr", value: 168444 },
-          ],
-        }),
-      );
     });
 
-    it("should return socio economic impacts formatted by actor and category for filter `economic`", () => {
-      const { byActor, byCategory, total } =
-        getSocioEconomicProjectImpactsByActorAndCategory.resultFunc(
-          "economic",
-          MOCK_STATES.projectImpacts["impactsData"],
-        );
+    it("should return socio economic impacts formatted by actor for filter `economic`", () => {
+      const byActor = getSocioEconomicProjectImpactsByActor.resultFunc(
+        "economic",
+        MOCK_STATES.projectImpacts["impactsData"],
+      );
 
-      expect(total).toEqual(-398568);
       expect(byActor.length).toEqual(3);
-      expect(byCategory.length).toEqual(2);
 
       expect(byActor).toContainEqual(
         expect.objectContaining({
@@ -405,38 +367,15 @@ describe("projectImpactsSocioEconomic selectors", () => {
           ],
         }),
       );
-
-      expect(byCategory).toContainEqual(
-        expect.objectContaining({
-          name: "economic_direct",
-          total: -403568,
-          impacts: [
-            { name: "rental_income", value: -540000 },
-            { name: "avoided_friche_costs", value: 131000 },
-            { name: "property_transfer_duties_income", value: 5432 },
-          ],
-        }),
-      );
-
-      expect(byCategory).toContainEqual(
-        expect.objectContaining({
-          name: "economic_indirect",
-          total: 5000,
-          impacts: [{ name: "taxes_income", value: 5000 }],
-        }),
-      );
     });
 
-    it("should return socio economic impacts formatted by actor and category for filter `environment`", () => {
-      const { byActor, byCategory, total } =
-        getSocioEconomicProjectImpactsByActorAndCategory.resultFunc(
-          "environment",
-          MOCK_STATES.projectImpacts["impactsData"],
-        );
+    it("should return socio economic impacts formatted by actor for filter `environment`", () => {
+      const byActor = getSocioEconomicProjectImpactsByActor.resultFunc(
+        "environment",
+        MOCK_STATES.projectImpacts["impactsData"],
+      );
 
-      expect(total).toEqual(202984);
       expect(byActor.length).toEqual(2);
-      expect(byCategory.length).toEqual(1);
       expect(byActor).toContainEqual(
         expect.objectContaining({
           name: "human_society",
@@ -455,30 +394,15 @@ describe("projectImpactsSocioEconomic selectors", () => {
           impacts: [{ name: "water_regulation", value: 4720 }],
         }),
       );
-
-      expect(byCategory).toContainEqual(
-        expect.objectContaining({
-          name: "environmental_monetary",
-          total: 202984,
-          impacts: [
-            { name: "water_regulation", value: 4720 },
-            { name: "ecosystem_services", value: 29820 },
-            { name: "avoided_co2_eq_with_enr", value: 168444 },
-          ],
-        }),
-      );
     });
 
-    it("should return socio economic impacts formatted by actor and category for filter `social`", () => {
-      const { byActor, byCategory, total } =
-        getSocioEconomicProjectImpactsByActorAndCategory.resultFunc(
-          "social",
-          MOCK_STATES.projectImpacts["impactsData"],
-        );
+    it("should return socio economic impacts formatted by actor for filter `social`", () => {
+      const byActor = getSocioEconomicProjectImpactsByActor.resultFunc(
+        "social",
+        MOCK_STATES.projectImpacts["impactsData"],
+      );
 
-      expect(total).toEqual(0);
       expect(byActor.length).toEqual(0);
-      expect(byCategory.length).toEqual(0);
     });
   });
 });
