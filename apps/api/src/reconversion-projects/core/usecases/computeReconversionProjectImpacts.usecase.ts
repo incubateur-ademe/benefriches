@@ -221,6 +221,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         yearlyCurrentCosts: relatedSite.yearlyCosts,
         yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
         propertyTransferDutiesAmount: reconversionProject.sitePurchasePropertyTransferDutiesAmount,
+        isFriche: relatedSite.isFriche,
       }),
       ...computeEnvironmentalMonetaryImpacts({
         baseSoilsDistribution: relatedSite.soilsDistribution,

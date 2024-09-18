@@ -11,6 +11,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [],
         yearlyProjectedCosts: [],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([]);
     });
@@ -21,6 +22,7 @@ describe("Socio-economic impacts", () => {
         futureSiteOwner: "Mairie de Paris",
         yearlyCurrentCosts: [],
         yearlyProjectedCosts: [{ amount: 30000, purpose: "rent" }],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -38,6 +40,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [{ amount: 20000, purpose: "rent" }],
         yearlyProjectedCosts: [],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -54,6 +57,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [{ amount: 5000, purpose: "rent" }],
         yearlyProjectedCosts: [{ amount: 10000, purpose: "rent" }],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -72,6 +76,7 @@ describe("Socio-economic impacts", () => {
         futureSiteOwner: "New owner",
         yearlyCurrentCosts: [{ amount: 5000, purpose: "rent" }],
         yearlyProjectedCosts: [{ amount: 10000, purpose: "rent" }],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -97,6 +102,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [],
         yearlyProjectedCosts: [],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([]);
     });
@@ -133,6 +139,7 @@ describe("Socio-economic impacts", () => {
           },
         ],
         yearlyProjectedCosts: [],
+        isFriche: true,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -171,6 +178,7 @@ describe("Socio-economic impacts", () => {
           },
         ],
         yearlyProjectedCosts: [],
+        isFriche: true,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -185,6 +193,23 @@ describe("Socio-economic impacts", () => {
         },
       ]);
     });
+
+    it("returns no avoided friche costs if site is not friche", () => {
+      const result = computeDirectAndIndirectEconomicImpacts({
+        evaluationPeriodInYears: 10,
+        currentOwner: "Current owner",
+        currentTenant: undefined,
+        yearlyCurrentCosts: [
+          {
+            amount: 14000,
+            purpose: "maintenance",
+          },
+        ],
+        yearlyProjectedCosts: [],
+        isFriche: false,
+      });
+      expect(result).toEqual<SocioEconomicImpactsResult>([]);
+    });
   });
 
   describe("Taxes income", () => {
@@ -194,6 +219,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [],
         yearlyProjectedCosts: [],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([]);
     });
@@ -204,6 +230,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [{ amount: 12000, purpose: "taxes" }],
         yearlyProjectedCosts: [{ amount: 20000, purpose: "taxes" }],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -221,6 +248,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [{ amount: 12000, purpose: "taxes" }],
         yearlyProjectedCosts: [],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -238,6 +266,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [],
         yearlyProjectedCosts: [{ amount: 1234, purpose: "taxes" }],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
@@ -257,6 +286,7 @@ describe("Socio-economic impacts", () => {
         currentOwner: "Current owner",
         yearlyCurrentCosts: [],
         yearlyProjectedCosts: [],
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([]);
     });
@@ -269,6 +299,7 @@ describe("Socio-economic impacts", () => {
         yearlyCurrentCosts: [],
         yearlyProjectedCosts: [],
         propertyTransferDutiesAmount: 5000,
+        isFriche: false,
       });
       expect(result).toEqual<SocioEconomicImpactsResult>([
         {
