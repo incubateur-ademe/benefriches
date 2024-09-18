@@ -166,8 +166,10 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     case "local_transfer_duties_increase":
       return "🏛 Droits de mutation sur les ventes immobilières alentour";
     /// Quartier
+    case "avoided_property_damages_expenses":
+      return "🚙 Dépenses de réparation évitées";
     case "avoided_car_related_expenses":
-      return "🚙 Dépenses automobiles évitées";
+      return "🚗 Dépenses automobiles évitées";
     case "avoided_air_conditioning_expenses":
       return "❄️ Dépenses de climatisation évitées";
     // Sociaux monétarisés

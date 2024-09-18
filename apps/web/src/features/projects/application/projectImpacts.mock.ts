@@ -330,6 +330,12 @@ export const mixedUseNeighbourhoodProjectImpactMock = {
           impactCategory: "economic_indirect",
         },
         {
+          impact: "avoided_property_damages_expenses",
+          amount: 600,
+          impactCategory: "economic_indirect",
+          actor: "french_society",
+        },
+        {
           actor: "local_residents",
           amount: 1000,
           impact: "avoided_air_conditioning_expenses",

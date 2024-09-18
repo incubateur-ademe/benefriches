@@ -60,6 +60,12 @@ type AvoidedCarRelatedExpensesImpact = BaseEconomicImpact & {
   actor: "local_workers" | "local_residents";
 };
 
+type AvoidedPropertyDamagesExpensesImpact = BaseEconomicImpact & {
+  impact: "avoided_property_damages_expenses";
+  impactCategory: "economic_indirect";
+  actor: "french_society";
+};
+
 type AvoidedAirConditioningExpensesImpact = BaseEconomicImpact & {
   impact: "avoided_air_conditioning_expenses";
   impactCategory: "economic_indirect";
@@ -244,6 +250,7 @@ export type ReconversionProjectImpacts = {
       | AvoidedCO2EqWithEnRImpact
       | WaterRegulationImpact
       | AvoidedCarRelatedExpensesImpact
+      | AvoidedPropertyDamagesExpensesImpact
       | AvoidedAirConditioningExpensesImpact
       | TravelTimeSavedImpact
       | AvoidedTrafficAccidentsImpact

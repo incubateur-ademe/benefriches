@@ -51,6 +51,7 @@ type SocioEconomicMainImpactName =
   | "rental_income"
   | "avoided_friche_costs"
   | "avoided_car_related_expenses"
+  | "avoided_property_damages_expenses"
   | "avoided_air_conditioning_expenses"
   | "travel_time_saved"
   | "avoided_traffic_accidents"
@@ -205,6 +206,23 @@ export const getDetailedSocioEconomicProjectImpacts = createSelector(
           })),
         });
         economicIndirect.total += sumList(avoidedCarRelatedExpenses.map(({ amount }) => amount));
+      }
+
+      const avoidedPropertyDamagesExpenses = socioEconomicImpacts.filter(
+        (impact) => impact.impact === "avoided_property_damages_expenses",
+      );
+
+      if (avoidedPropertyDamagesExpenses.length > 0) {
+        economicIndirect.impacts.push({
+          name: "avoided_property_damages_expenses",
+          actors: avoidedPropertyDamagesExpenses.map(({ amount, actor }) => ({
+            value: amount,
+            name: actor,
+          })),
+        });
+        economicIndirect.total += sumList(
+          avoidedPropertyDamagesExpenses.map(({ amount }) => amount),
+        );
       }
 
       const avoidedAirConditioningExpenses = socioEconomicImpacts.filter(

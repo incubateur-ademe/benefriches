@@ -76,9 +76,7 @@ describe("TravelRelatedImpactsService", () => {
   });
 
   it("computes avoided accidents per year for a hundred of vehicule", () => {
-    expect(
-      travelRelatedImpactsService.avoidedAccidentsPerYearForHundredMillionOfVehicule,
-    ).toBeCloseTo(0.002937041);
+    expect(travelRelatedImpactsService.avoidedAccidentsPerYear).toBeCloseTo(0.002937041);
   });
 
   it("computes travel time saved per traveler for duration", () => {
@@ -150,5 +148,10 @@ describe("TravelRelatedImpactsService", () => {
     expect(travelRelatedImpactsService.getAvoidedAccidentsDeathsMonetaryValue()).toBeCloseTo(
       25600000,
     );
+  });
+
+  it("computes avoided property damages expenses for duration with high avoided kilometers", () => {
+    travelRelatedImpactsService.projectHousingSurfaceArea = 160000000;
+    expect(travelRelatedImpactsService.getAvoidedPropertyDamageCosts()).toBeCloseTo(2256443.75);
   });
 });

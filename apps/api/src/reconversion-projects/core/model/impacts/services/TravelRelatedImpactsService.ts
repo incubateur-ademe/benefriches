@@ -192,11 +192,19 @@ export class TravelRelatedImpactsService {
   }
 
   get avoidedAccidentsPerYearForHundredMillionOfVehicule() {
-    return (this.avoidedKilometersPerVehiculePerYear * 4.77) / 100000000;
+    return this.avoidedKilometersPerVehiculePerYear * 4.77;
+  }
+
+  get avoidedAccidentsPerYear() {
+    return this.avoidedAccidentsPerYearForHundredMillionOfVehicule / 100000000;
   }
 
   get avoidedCO2EmissionsGramPerKilometerPerYear() {
     return this.avoidedKilometersPerVehiculePerYear * 157.2;
+  }
+
+  getAvoidedPropertyDamageCosts() {
+    return this.avoidedAccidentsPerYear * 6264 * this.durationInYears;
   }
 
   getTravelTimeSavedPerTraveler() {
@@ -270,25 +278,19 @@ export class TravelRelatedImpactsService {
 
   getAvoidedAccidentsMinorInjuries() {
     return Math.floor(
-      this.avoidedAccidentsPerYearForHundredMillionOfVehicule *
-        this.minorInjuriesRatioPerAccident *
-        this.durationInYears,
+      this.avoidedAccidentsPerYear * this.minorInjuriesRatioPerAccident * this.durationInYears,
     );
   }
 
   getAvoidedAccidentsSevereInjuries() {
     return Math.floor(
-      this.avoidedAccidentsPerYearForHundredMillionOfVehicule *
-        this.severeInjuriesRatioPerAccident *
-        this.durationInYears,
+      this.avoidedAccidentsPerYear * this.severeInjuriesRatioPerAccident * this.durationInYears,
     );
   }
 
   getAvoidedAccidentsDeaths() {
     return Math.floor(
-      this.avoidedAccidentsPerYearForHundredMillionOfVehicule *
-        this.deathsRatioPerAccident *
-        this.durationInYears,
+      this.avoidedAccidentsPerYear * this.deathsRatioPerAccident * this.durationInYears,
     );
   }
 
