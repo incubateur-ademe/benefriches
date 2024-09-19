@@ -126,7 +126,7 @@ function NonSuitableSoilsSelection({
           })}
         </div>
         {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

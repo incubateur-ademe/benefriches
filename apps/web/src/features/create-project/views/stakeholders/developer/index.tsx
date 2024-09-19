@@ -49,8 +49,9 @@ const convertFormValuesForStore = (
         structureType: "other",
       };
     case "unknown":
+    case null:
       return {
-        name: "Inconnu",
+        name: "Aménageur",
         structureType: "unknown",
       };
   }

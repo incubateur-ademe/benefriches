@@ -176,7 +176,7 @@ function ScheduleProjectionForm({
             },
           }}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

@@ -43,7 +43,7 @@ function ProjectNameAndDescriptionForm({ onSubmit, onBack, defaultProjectName }:
           textArea
           nativeTextAreaProps={register("description")}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!formState.isValid} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

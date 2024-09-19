@@ -16,7 +16,7 @@ type FormValues = {
 };
 
 function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: {
       photovoltaicContractDuration: AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS,
     },
@@ -43,7 +43,7 @@ function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
           }}
           control={control}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

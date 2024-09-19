@@ -139,7 +139,7 @@ export const projectCreationSlice = createSlice({
     },
     completeSoilsDecontaminationSelection: (
       state,
-      action: PayloadAction<"all" | "partial" | "none" | "unknown">,
+      action: PayloadAction<"all" | "partial" | "none" | "unknown" | null>,
     ) => {
       switch (action.payload) {
         case "all":
@@ -151,6 +151,7 @@ export const projectCreationSlice = createSlice({
           state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
           break;
         case "unknown":
+        case null:
           state.projectData.decontaminatedSurfaceArea = undefined;
           state.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
           break;

@@ -1,4 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
+import { typedObjectEntries } from "shared";
 import SustainableSoilsReinstatementInfoButton from "./SustainableSoilsReinstatementInfoButton";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -12,7 +13,7 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   hasBuildings: boolean;
-  hasContaminatedSoils: boolean;
+  hasProjectedDecontamination: boolean;
   hasImpermeableSoils: boolean;
   defaultValues: {
     wasteCollectionAmount?: number;
@@ -36,13 +37,13 @@ export type FormValues = {
 };
 
 const ReinstatementExpensesFormExplanation = ({
-  hasContaminatedSoils,
+  hasProjectedDecontamination,
   hasImpermeableSurface,
 }: {
-  hasContaminatedSoils: boolean;
+  hasProjectedDecontamination: boolean;
   hasImpermeableSurface: boolean;
 }) => {
-  if (hasContaminatedSoils) {
+  if (hasProjectedDecontamination) {
     if (hasImpermeableSurface) {
       return (
         <section>
@@ -61,7 +62,7 @@ const ReinstatementExpensesFormExplanation = ({
     return (
       <section>
         <p>Le site que vous allez aménager est une friche partiellement polluée.</p>
-        <p>Vous allez donc potentiellement engager des travaux de dépollution.</p>
+        <p>Vous allez engager des travaux de dépollution.</p>
       </section>
     );
   } else {
@@ -87,7 +88,7 @@ const ReinstatementExpensesFormExplanation = ({
   }
 };
 
-const getExpensesInputs = (hasContaminatedSoils: boolean) => {
+const getExpensesInputs = (hasProjectedDecontamination: boolean) => {
   const expenses = [
     { name: "asbestosRemovalAmount", label: "Désamiantage" },
     { name: "remediationAmount", label: "Dépollution des sols" },
@@ -105,7 +106,7 @@ const getExpensesInputs = (hasContaminatedSoils: boolean) => {
     },
     { name: "otherReinstatementExpenseAmount", label: "Autres dépenses de remise en état" },
   ] as const;
-  return hasContaminatedSoils
+  return !hasProjectedDecontamination
     ? expenses.filter(({ name }) => name !== "remediationAmount")
     : expenses;
 };
@@ -113,7 +114,7 @@ const getExpensesInputs = (hasContaminatedSoils: boolean) => {
 const ReinstatementsExpensesForm = ({
   onSubmit,
   onBack,
-  hasContaminatedSoils,
+  hasProjectedDecontamination,
   hasBuildings,
   hasImpermeableSoils,
   defaultValues,
@@ -126,6 +127,9 @@ const ReinstatementsExpensesForm = ({
 
   const hasImpermeableSurface = hasBuildings || hasImpermeableSoils;
 
+  const hasNoValuesFilled =
+    typedObjectEntries(allExpenses).filter(([, value]) => typeof value === "number").length === 0;
+
   return (
     <WizardFormLayout
       title="Dépenses de travaux de remise en état de la friche"
@@ -137,14 +141,14 @@ const ReinstatementsExpensesForm = ({
           </p>
           <p>Ils sont exprimés en € HT. Vous pouvez modifier ces montants.</p>
           <ReinstatementExpensesFormExplanation
-            hasContaminatedSoils={hasContaminatedSoils}
+            hasProjectedDecontamination={hasProjectedDecontamination}
             hasImpermeableSurface={hasImpermeableSurface}
           />
         </FormInfo>
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {getExpensesInputs(hasContaminatedSoils).map(({ label, name }) => (
+        {getExpensesInputs(hasProjectedDecontamination).map(({ label, name }) => (
           <Controller
             key={name}
             control={control}
@@ -168,13 +172,19 @@ const ReinstatementsExpensesForm = ({
           />
         ))}
 
-        <p>
-          <strong>
-            Total des dépenses des travaux de remise en état :{" "}
-            {formatNumberFr(sumObjectValues(allExpenses))} €
-          </strong>
-        </p>
-        <BackNextButtonsGroup onBack={onBack} />
+        {!hasNoValuesFilled && (
+          <p>
+            <strong>
+              Total des dépenses des travaux de remise en état :{" "}
+              {formatNumberFr(sumObjectValues(allExpenses))} €
+            </strong>
+          </p>
+        )}
+
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={hasNoValuesFilled ? "Passer" : "Valider"}
+        />
       </form>
     </WizardFormLayout>
   );

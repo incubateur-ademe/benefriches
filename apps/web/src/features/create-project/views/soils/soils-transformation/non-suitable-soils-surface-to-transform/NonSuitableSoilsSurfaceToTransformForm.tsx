@@ -36,7 +36,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>({
+  const { control, handleSubmit, watch, formState } = useForm<FormValues>({
     defaultValues: {
       soilsTransformation: getSoilsTransformationDefaultValue(soilsToTransform),
     },
@@ -100,7 +100,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
           state={missesSuitableSurfaceArea ? "error" : "default"}
           stateRelatedMessage={`Vous devez aplanir ou remblayer au moins ${formatSurfaceArea(missingSuitableSurfaceArea)}`}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

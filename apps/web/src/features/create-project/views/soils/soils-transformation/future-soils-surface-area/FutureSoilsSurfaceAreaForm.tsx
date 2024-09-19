@@ -34,7 +34,7 @@ function FutureSoilsSurfaceAreaForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const { control, handleSubmit, watch, formState } = useForm<FormValues>();
 
   const allocatedSoilsDistribution = watch();
 
@@ -42,18 +42,12 @@ function FutureSoilsSurfaceAreaForm({
   const allocatedSuitableSurfaceAreaForPhotovoltaicPanels =
     getSuitableSurfaceAreaForPhotovoltaicPanels(allocatedSoilsDistribution);
 
-  const _onSubmit = (data: FormValues) => {
-    const allocatedSurfaceArea = getTotalSurfaceArea(data);
-    if (allocatedSurfaceArea !== siteSurfaceArea) return;
-    onSubmit(data);
-  };
-
   return (
     <WizardFormLayout
       title="Quelles seront les superficies des sols ?"
       instructions={<FutureSoilsSurfaceAreaInstructions />}
     >
-      <form onSubmit={handleSubmit(_onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         {selectedSoils.map((soilType) => {
           const existingSoilSurfaceArea = currentSoilsDistribution[soilType];
           const soilTypeDescription = getDescriptionForSoilType(soilType);
@@ -106,7 +100,11 @@ function FutureSoilsSurfaceAreaForm({
             availableSurfaceArea={siteSurfaceArea}
           />
         </div>
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel="Valider"
+          disabled={!formState.isValid || totalAllocatedSurface !== siteSurfaceArea}
+        />
       </form>
     </WizardFormLayout>
   );

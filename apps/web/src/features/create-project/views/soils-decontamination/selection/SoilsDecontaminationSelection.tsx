@@ -10,21 +10,17 @@ type Props = {
 };
 
 export type FormValues = {
-  decontaminationSelection: "all" | "partial" | "none" | "unknown";
+  decontaminationSelection: "all" | "partial" | "none" | "unknown" | null;
 };
 
-const requiredMessage = "Ce champ est requis";
-
 function SoilsDecontaminationSelection({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>();
 
   return (
     <WizardFormLayout title="Les sols pollués seront-ils dépollués ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
-          {...register("decontaminationSelection", {
-            required: requiredMessage,
-          })}
+          {...register("decontaminationSelection")}
           options={[
             {
               label: "Oui, totalement dépollués",
@@ -45,7 +41,10 @@ function SoilsDecontaminationSelection({ onSubmit, onBack }: Props) {
           ]}
           error={formState.errors.decontaminationSelection}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={watch("decontaminationSelection") !== null ? "Valider" : "Passer"}
+        />
       </form>
     </WizardFormLayout>
   );

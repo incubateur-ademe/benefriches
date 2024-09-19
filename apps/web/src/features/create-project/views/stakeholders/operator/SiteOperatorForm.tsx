@@ -40,9 +40,12 @@ export type FormValues =
         | "unknown";
       localAuthority: undefined;
       otherStructureName: undefined;
+    }
+  | {
+      stakeholder: null;
+      localAuthority: undefined;
+      otherStructureName: undefined;
     };
-
-const requiredMessage = "Ce champ est requis";
 
 function SiteOperatorForm({
   onSubmit,
@@ -70,14 +73,14 @@ function SiteOperatorForm({
               label={role === "user_structure" ? `Ma structure, ${name}` : name}
               value={role}
               key={role}
-              {...register("stakeholder", { required: requiredMessage })}
+              {...register("stakeholder")}
             />
           ))}
           {availableLocalAuthoritiesStakeholders.length > 0 && (
             <RadioButton
               label="Une collectivité"
               value="local_or_regional_authority"
-              {...register("stakeholder", { required: requiredMessage })}
+              {...register("stakeholder")}
             />
           )}
 
@@ -100,11 +103,11 @@ function SiteOperatorForm({
           <RadioButton
             label="Une autre structure"
             value="other_structure"
-            {...register("stakeholder", { required: requiredMessage })}
+            {...register("stakeholder")}
           />
           {selectedStakeholder === "other_structure" && (
             <Input
-              label="Nom de la structure"
+              label={<RequiredLabel label="Nom de la structure" />}
               state={formState.errors.otherStructureName ? "error" : "default"}
               stateRelatedMessage={formState.errors.otherStructureName?.message}
               nativeInputProps={register("otherStructureName", {
@@ -112,13 +115,13 @@ function SiteOperatorForm({
               })}
             />
           )}
-          <RadioButton
-            label="Ne sait pas"
-            value="unknown"
-            {...register("stakeholder", { required: requiredMessage })}
-          />
+          <RadioButton label="Ne sait pas" value="unknown" {...register("stakeholder")} />
         </Fieldset>
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          disabled={!formState.isValid}
+          nextLabel={selectedStakeholder !== null ? "Valider" : "Passer"}
+        />
       </form>
     </WizardFormLayout>
   );

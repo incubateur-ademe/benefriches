@@ -61,8 +61,11 @@ function ProjectTypesForm({ onSubmit, allowedDevelopmentPlanCategories }: Props)
             </div>
             {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
           </div>
-          <Button className="tw-float-right" nativeButtonProps={{ type: "submit" }}>
-            Suivant
+          <Button
+            className="tw-float-right"
+            nativeButtonProps={{ type: "submit", disabled: !formState.isValid }}
+          >
+            Valider
           </Button>
         </form>
       </WizardFormLayout>

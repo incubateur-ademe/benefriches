@@ -41,7 +41,6 @@ function SiteSoilsDistributionBySquareMetersForm({
   const _onSubmit = handleSubmit(onSubmit);
 
   const soilsValues = watch();
-  console.log(soilsValues);
 
   const totalAllocatedSurface = useMemo(() => getTotalSurface(soilsValues), [soilsValues]);
 

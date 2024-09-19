@@ -12,7 +12,7 @@ function ProjectPhaseFormContainer() {
   return (
     <ProjectPhaseForm
       onSubmit={(formData: FormValues) => {
-        dispatch(completeProjectPhaseStep(formData));
+        dispatch(completeProjectPhaseStep({ phase: formData.phase ?? "unknown" }));
       }}
       onBack={() => {
         dispatch(revertProjectPhaseStep());
