@@ -126,7 +126,7 @@ function SiteOperatorForm({
             />
           )}
         </Fieldset>
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!formState.isValid} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

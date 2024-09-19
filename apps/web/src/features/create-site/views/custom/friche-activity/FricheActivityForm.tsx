@@ -64,7 +64,7 @@ function FricheActivityForm({ onSubmit, onBack }: Props) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<FormValues>();
 
   const error = errors.activity;
@@ -79,7 +79,7 @@ function FricheActivityForm({ onSubmit, onBack }: Props) {
           options={FRICHE_ACTIVITY_OPTIONS}
           error={error}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!isValid} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

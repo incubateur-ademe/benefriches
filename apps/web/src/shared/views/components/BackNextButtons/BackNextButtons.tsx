@@ -4,16 +4,22 @@ type Props = {
   onBack: () => void;
   onNext?: () => void;
   disabled?: boolean;
+  nextLabel?: string;
 };
 
-const BackNextButtonsGroup = ({ onBack, onNext, disabled = false }: Props) => {
+const BackNextButtonsGroup = ({
+  onBack,
+  onNext,
+  disabled = false,
+  nextLabel = "Suivant",
+}: Props) => {
   const backButtonProps = {
     children: "Précédent",
     priority: "secondary",
     nativeButtonProps: { type: "button", onClick: onBack },
   } as const;
   const nextButtonProps = {
-    children: "Suivant",
+    children: nextLabel,
     nativeButtonProps: { type: "submit", onClick: onNext, disabled },
   } as const;
   return (

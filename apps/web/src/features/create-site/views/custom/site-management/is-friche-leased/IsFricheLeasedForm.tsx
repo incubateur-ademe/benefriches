@@ -10,19 +10,17 @@ type Props = {
 };
 
 export type FormValues = {
-  isFricheLeased: "yes" | "no";
+  isFricheLeased: "yes" | "no" | null;
 };
 
-const requiredMessage = "Ce champ est requis";
-
 function IsFricheLeasedForm({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>();
 
   return (
     <WizardFormLayout title="La friche est-elle encore louée ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
-          {...register("isFricheLeased", { required: requiredMessage })}
+          {...register("isFricheLeased")}
           options={[
             {
               label: `Oui`,
@@ -35,7 +33,10 @@ function IsFricheLeasedForm({ onSubmit, onBack }: Props) {
           ]}
           error={formState.errors.isFricheLeased}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={watch("isFricheLeased") !== null ? "Valider" : "Passer"}
+        />
       </form>
     </WizardFormLayout>
   );

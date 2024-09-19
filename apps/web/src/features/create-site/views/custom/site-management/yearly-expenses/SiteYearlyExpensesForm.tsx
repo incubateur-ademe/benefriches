@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { typedObjectEntries } from "shared";
 import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
@@ -145,6 +146,12 @@ function SiteYearlyExpensesForm({
 
   const title = `💸 Dépenses annuelles ${isFriche ? "de la friche" : "du site"}`;
 
+  const formValues = watch();
+
+  const hasNoValuesFilled =
+    typedObjectEntries(formValues).filter(([, value]) => typeof value?.amount === "number")
+      .length === 0;
+
   return (
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -253,7 +260,10 @@ function SiteYearlyExpensesForm({
           </>
         )}
 
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={hasNoValuesFilled ? "Passer" : "Valider"}
+        />
       </form>
     </WizardFormLayout>
   );

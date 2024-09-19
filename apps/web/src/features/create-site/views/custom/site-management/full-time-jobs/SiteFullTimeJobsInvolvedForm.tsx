@@ -15,7 +15,7 @@ export type FormValues = {
 };
 
 function SiteFullTimeJobsInvolvedForm({ onSubmit, onBack }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>();
+  const { control, handleSubmit, watch } = useForm<FormValues>();
 
   return (
     <WizardFormLayout
@@ -42,7 +42,10 @@ function SiteFullTimeJobsInvolvedForm({ onSubmit, onBack }: Props) {
           }}
           control={control}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={watch("fullTimeJobsInvolved") ? "Valider" : "Passer"}
+        />
       </form>
     </WizardFormLayout>
   );

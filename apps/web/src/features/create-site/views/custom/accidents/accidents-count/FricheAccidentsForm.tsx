@@ -12,7 +12,7 @@ type Props = {
   onBack: () => void;
 };
 
-type HasRecentAccidentsStringOption = "yes" | "no";
+type HasRecentAccidentsStringOption = "yes" | "no" | null;
 
 export type FormValues = {
   hasRecentAccidents: HasRecentAccidentsStringOption;
@@ -27,6 +27,18 @@ function FricheAccidentsForm({ onSubmit, onBack }: Props) {
   });
 
   const { hasRecentAccidents: hasRecentAccidentsError } = formState.errors;
+
+  const {
+    hasRecentAccidents: hasRecentAccidentsValue,
+    accidentsMinorInjuries,
+    accidentsSevereInjuries,
+    accidentsDeaths,
+  } = watch();
+  const hasRecentAccidents = watch("hasRecentAccidents") === "yes";
+
+  const isValid = hasRecentAccidents
+    ? accidentsMinorInjuries || accidentsSevereInjuries || accidentsDeaths
+    : true;
 
   return (
     <WizardFormLayout
@@ -45,7 +57,7 @@ function FricheAccidentsForm({ onSubmit, onBack }: Props) {
           }
         >
           <RadioButton label="Oui" value="yes" {...register("hasRecentAccidents")} />
-          {watch("hasRecentAccidents") === "yes" && (
+          {hasRecentAccidents && (
             <>
               <NumericInput
                 name="accidentsMinorInjuries"
@@ -87,7 +99,11 @@ function FricheAccidentsForm({ onSubmit, onBack }: Props) {
           )}
           <RadioButton label="Non / Ne sait pas" value="no" {...register("hasRecentAccidents")} />
         </Fieldset>
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          disabled={!isValid}
+          nextLabel={hasRecentAccidentsValue !== null ? "Valider" : "Passer"}
+        />
       </form>
     </WizardFormLayout>
   );

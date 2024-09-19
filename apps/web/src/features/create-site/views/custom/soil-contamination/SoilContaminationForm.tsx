@@ -16,7 +16,7 @@ type Props = {
   siteSurfaceArea: number;
 };
 
-type HasContaminatedSoilsString = "yes" | "no";
+type HasContaminatedSoilsString = "yes" | "no" | null;
 
 export type FormValues = {
   hasContaminatedSoils: HasContaminatedSoilsString;
@@ -94,7 +94,11 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
           <RadioButton {...register("hasContaminatedSoils")} label="Non" value="no" />
         </Fieldset>
 
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          disabled={!formState.isValid}
+          nextLabel={hasContaminatedSoilsValue !== null ? "Valider" : "Passer"}
+        />
       </form>
     </WizardFormLayout>
   );

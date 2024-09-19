@@ -47,7 +47,7 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, isFriche
             },
           ]}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!formState.isValid} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

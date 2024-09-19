@@ -1,4 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
+import { typedObjectEntries } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
@@ -15,7 +16,12 @@ export type FormValues = {
 };
 
 function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>();
+  const { control, handleSubmit, watch } = useForm<FormValues>();
+
+  const formValues = watch();
+
+  const hasNoValuesFilled =
+    typedObjectEntries(formValues).filter(([, value]) => typeof value === "number").length === 0;
 
   return (
     <WizardFormLayout title="Recettes annuelles liées à l'exploitation du site">
@@ -60,7 +66,10 @@ function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
             );
           }}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={hasNoValuesFilled ? "Passer" : "Valider"}
+        />
       </form>
     </WizardFormLayout>
   );

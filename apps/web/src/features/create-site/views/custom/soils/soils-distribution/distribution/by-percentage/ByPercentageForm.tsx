@@ -10,6 +10,7 @@ import {
   getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -44,7 +45,12 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
   const remainder = 100 - totalAllocated;
 
   return (
-    <WizardFormLayout title="Quelle est la répartition des différents sols ?">
+    <WizardFormLayout
+      title="Quelle est la répartition des différents sols ?"
+      instructions={
+        <SurfaceAreaPieChart soilsDistribution={soilsValues} remainderSurfaceArea={remainder} />
+      }
+    >
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
           <SliderNumericInput
@@ -86,7 +92,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
               : `${formatNumberFr(Math.abs(remainder))}% ${remainder > 0 ? "manquants" : "en trop"}`
           }
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={remainder !== 0} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );
