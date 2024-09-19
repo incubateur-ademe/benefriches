@@ -65,7 +65,7 @@ const SocialListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
     <ImpactSection
       title="Impacts sociaux"
       isMain
-      onClick={() => {
+      onTitleClick={() => {
         openImpactDescriptionModal("social");
       }}
     >

@@ -63,7 +63,7 @@ const SocioEconomicImpactsListSection = ({
       title="Impacts socio-économiques"
       isMain
       total={total}
-      onClick={() => {
+      onTitleClick={() => {
         openImpactDescriptionModal("socio-economic");
       }}
     >

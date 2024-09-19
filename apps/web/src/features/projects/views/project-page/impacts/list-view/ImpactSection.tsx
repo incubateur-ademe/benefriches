@@ -7,47 +7,43 @@ type Props = {
   title: ReactNode;
   isMain?: boolean;
   total?: number;
-  onClick?: () => void;
+  onTitleClick?: () => void;
   children: ReactNode;
 };
 
-const ImpactSection = ({ title, total, isMain = false, onClick, children }: Props) => {
-  const [displaySection, setDisplaySection] = useState(true);
+const ImpactSection = ({ title, total, isMain = false, onTitleClick, children }: Props) => {
+  const [displaySectionContent, setDisplaySectionContent] = useState(true);
+  const toggleDisplaySectionContent = () => {
+    setDisplaySectionContent((displaySectionContent) => !displaySectionContent);
+  };
 
   return (
     <section className="fr-mb-5w">
       <div
         className={classNames(
-          "tw-py-2",
-          "tw-px-4",
+          "tw-py-2 tw-px-4",
           "tw-w-full",
+          "tw-rounded",
           isMain
-            ? ["tw-bg-impacts-dark", "dark:tw-bg-black"]
-            : ["tw-bg-impacts-main", "dark:tw-bg-black"],
-          "tw-transition",
-          onClick && [
+            ? ["tw-bg-impacts-dark", "dark:tw-bg-black", "tw-mb-6"]
+            : ["tw-bg-impacts-main", "dark:tw-bg-black", "tw-mb-2"],
+          onTitleClick && [
             "tw-cursor-pointer",
-            "hover:tw-border",
-            "hover:tw-border-solid",
+            "tw-transition",
+            "hover:tw-border hover:tw-border-solid",
             "hover:tw-scale-[1.02]",
           ],
-          isMain ? "tw-mb-6" : "tw-mb-2",
-          "tw-bg-impacts-dark",
-          "tw-rounded",
         )}
-        onClick={onClick}
       >
         <ImpactRowValue
           value={total}
           type="monetary"
           isTotal
-          isAccordionOpened={displaySection}
-          onToggleAccordion={() => {
-            setDisplaySection((current) => !current);
-          }}
+          isAccordionOpened={displaySectionContent}
+          onToggleAccordion={toggleDisplaySectionContent}
         >
           {isMain ? (
-            <h3 className={classNames("tw-text-xl", "tw-mb-0")} onClick={onClick}>
+            <h3 className={classNames("tw-text-xl", "tw-mb-0")} onClick={onTitleClick}>
               {title}
             </h3>
           ) : (
@@ -55,7 +51,7 @@ const ImpactSection = ({ title, total, isMain = false, onClick, children }: Prop
           )}
         </ImpactRowValue>
       </div>
-      {displaySection && children}
+      {displaySectionContent && children}
     </section>
   );
 };

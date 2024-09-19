@@ -70,7 +70,6 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
               onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
             >
               <ImpactItemDetails
-                key={name}
                 label={getEnvironmentalImpactLabel(name)}
                 value={impact.difference}
                 isTotal

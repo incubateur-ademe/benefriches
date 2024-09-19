@@ -1,4 +1,4 @@
-import ImpactItem from "./ImpactItemDetails";
+import ImpactItemDetails from "./ImpactItemDetails";
 import ImpactItemGroup from "./ImpactItemGroup";
 
 type Props = {
@@ -17,7 +17,7 @@ const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
   return (
     <ImpactItemGroup onClick={onClick}>
       {firstActor && (
-        <ImpactItem
+        <ImpactItemDetails
           value={firstActor.value}
           label={label}
           actor={firstActor.label}
@@ -26,9 +26,15 @@ const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
           isTotal
         />
       )}
-
       {othersActors.map(({ label: actor, value, details = [] }) => (
-        <ImpactItem type={type} key={actor} value={value} actor={actor} data={details} isTotal />
+        <ImpactItemDetails
+          type={type}
+          key={actor}
+          value={value}
+          actor={actor}
+          data={details}
+          isTotal
+        />
       ))}
     </ImpactItemGroup>
   );

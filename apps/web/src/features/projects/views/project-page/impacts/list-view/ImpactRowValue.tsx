@@ -18,7 +18,7 @@ type Props = {
   onToggleAccordion?: () => void;
   isAccordionOpened?: boolean;
   children: ReactNode;
-  type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
+  type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time";
 };
 
 const impactTypeFormatterMap = {
@@ -44,7 +44,7 @@ const ImpactRowValue = ({
       className={classNames(
         "tw-grid",
         "tw-grid-cols-[1fr_8rem_2rem]",
-        !!onClick && ["tw-cursor-pointer", "hover:tw-scale-[1.02]", "hover:tw-font-bold"],
+        onClick && ["tw-cursor-pointer", "hover:tw-scale-[1.02]", "hover:tw-font-bold"],
       )}
       onClick={(e) => {
         if (onClick) {
@@ -62,14 +62,11 @@ const ImpactRowValue = ({
         {value !== undefined && (
           <div
             className={classNames(
-              "tw-py-1",
-              "tw-pr-4",
+              "tw-py-1 tw-pr-4",
               isTotal && "tw-font-bold",
-              value === 0
-                ? "tw-text-impacts-neutral-main dark:tw-text-impacts-neutral-light"
-                : value > 0
-                  ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
-                  : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
+              value === 0 && "tw-text-impacts-neutral-main dark:tw-text-impacts-neutral-light",
+              value > 0 && "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light",
+              value < 0 && "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
             )}
           >
             {impactTypeFormatterMap[type](value)}
@@ -79,14 +76,12 @@ const ImpactRowValue = ({
       {onToggleAccordion && (
         <Button
           className={classNames(
-            "tw-border-borderGrey",
-            "tw-border",
-            "tw-border-solid",
+            "tw-border tw-border-solid tw-border-borderGrey",
             "tw-bg-white",
-            "dark:tw-bg-grey-dark",
-            "tw-shadow-none",
-            "tw-rounded-sm",
             "tw-text-black",
+            "tw-rounded-sm",
+            "tw-shadow-none",
+            "dark:tw-bg-grey-dark",
             "dark:tw-text-white",
           )}
           size="small"
