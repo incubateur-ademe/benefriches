@@ -168,8 +168,10 @@ function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
             </section>
           );
         })}
-        {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
-        <BackNextButtonsGroup onBack={onBack} />
+        {validationError && (
+          <p className={fr.cx("fr-error-text", "fr-mb-1-5v")}>{validationError.message}</p>
+        )}
+        <BackNextButtonsGroup onBack={onBack} disabled={!formState.isValid} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

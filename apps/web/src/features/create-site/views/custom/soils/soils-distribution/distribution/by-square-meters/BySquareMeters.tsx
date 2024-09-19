@@ -12,6 +12,7 @@ import {
   getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -40,6 +41,7 @@ function SiteSoilsDistributionBySquareMetersForm({
   const _onSubmit = handleSubmit(onSubmit);
 
   const soilsValues = watch();
+  console.log(soilsValues);
 
   const totalAllocatedSurface = useMemo(() => getTotalSurface(soilsValues), [soilsValues]);
 
@@ -47,7 +49,12 @@ function SiteSoilsDistributionBySquareMetersForm({
   const isValid = remainder === 0;
 
   return (
-    <WizardFormLayout title="Quelles sont les superficies des différents sols ?">
+    <WizardFormLayout
+      title="Quelles sont les superficies des différents sols ?"
+      instructions={
+        <SurfaceAreaPieChart soilsDistribution={soilsValues} remainderSurfaceArea={remainder} />
+      }
+    >
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
           <Controller
@@ -97,7 +104,7 @@ function SiteSoilsDistributionBySquareMetersForm({
               : `${formatSurfaceArea(Math.abs(remainder))} ${remainder > 0 ? "manquants" : "en trop"}`
           }
         />
-        <BackNextButtonsGroup onBack={onBack} disabled={!isValid} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!isValid} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

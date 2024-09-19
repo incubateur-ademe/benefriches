@@ -12,9 +12,10 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 
 type Props = {
   soilsDistribution: SoilsDistribution;
+  remainderSurfaceArea?: number;
 };
 
-const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
+const SurfaceAreaPieChart = ({ soilsDistribution, remainderSurfaceArea }: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
   const soilsEntries = typedObjectEntries(soilsDistribution).filter(
     ([, surfaceArea]) => (surfaceArea as number) > 0,
@@ -27,6 +28,14 @@ const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
       color: getColorForSoilType(soilType),
     };
   });
+
+  if (remainderSurfaceArea) {
+    data.push({
+      name: "Non assigné",
+      y: remainderSurfaceArea,
+      color: fr.colors.decisions.border.disabled.grey.default,
+    });
+  }
 
   const variablePieChartOptions: Highcharts.Options = {
     title: { text: "" },
@@ -49,9 +58,7 @@ const SurfaceAreaPieChart = ({ soilsDistribution }: Props) => {
 
   return (
     <div className={classNames(fr.cx("fr-container", "fr-py-4w"))}>
-      <HighchartsCustomColorsWrapper
-        colors={soilsEntries.map(([soilType]) => getColorForSoilType(soilType))}
-      >
+      <HighchartsCustomColorsWrapper colors={data.map(({ color }) => color)}>
         <HighchartsReact
           highcharts={Highcharts}
           options={variablePieChartOptions}

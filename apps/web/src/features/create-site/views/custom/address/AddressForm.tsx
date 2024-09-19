@@ -29,6 +29,8 @@ function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
     required: "L'adresse est nécessaire pour les étapes suivantes",
   });
 
+  const selectedAddress = watch("selectedAddress");
+
   return (
     <>
       <WizardFormLayout
@@ -77,7 +79,7 @@ function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
                   field.onChange(searchText);
                   setValue("selectedAddress", undefined);
                 }}
-                selectedAddress={watch("selectedAddress")}
+                selectedAddress={selectedAddress}
                 onSelect={(v) => {
                   setValue("selectedAddress", v);
                   setValue("searchText", v.value);
@@ -90,7 +92,7 @@ function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
               />
             )}
           />
-          <BackNextButtonsGroup onBack={onBack} />
+          <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
         </form>
       </WizardFormLayout>
     </>

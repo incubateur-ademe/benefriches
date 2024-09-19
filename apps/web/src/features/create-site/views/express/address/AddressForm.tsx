@@ -29,6 +29,8 @@ function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
       "La commune est utilisée par Bénéfriches pour calculer les impacts à partir de données locales.",
   });
 
+  const selectedAddress = watch("selectedAddress");
+
   return (
     <>
       <WizardFormLayout title={title}>
@@ -48,7 +50,7 @@ function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
                   field.onChange(searchText);
                   setValue("selectedAddress", undefined);
                 }}
-                selectedAddress={watch("selectedAddress")}
+                selectedAddress={selectedAddress}
                 onSelect={(v) => {
                   setValue("selectedAddress", v as MunicipalityAddress);
                   setValue("searchText", v.value);
@@ -61,7 +63,7 @@ function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
               />
             )}
           />
-          <BackNextButtonsGroup onBack={onBack} />
+          <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
         </form>
       </WizardFormLayout>
     </>

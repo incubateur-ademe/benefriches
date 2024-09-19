@@ -53,7 +53,7 @@ function SurfaceAreaForm({ onSubmit, onBack }: Props) {
           </p>
         )}
 
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!surface} />
       </form>
     </WizardFormLayout>
   );

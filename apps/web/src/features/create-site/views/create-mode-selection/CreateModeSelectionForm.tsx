@@ -78,7 +78,9 @@ function CreateModeSelectionForm({ onSubmit }: Props) {
           </div>
           {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
         </div>
-        <Button nativeButtonProps={{ type: "submit" }}>Suivant</Button>
+        <Button nativeButtonProps={{ type: "submit", disabled: !formState.isValid }}>
+          Valider
+        </Button>
       </form>
     </WizardFormLayout>
   );
