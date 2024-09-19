@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 
+import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -15,14 +17,15 @@ export type FormValues = {
 };
 
 function SoilsDecontaminationSurfaceArea({ onSubmit, onBack, contaminatedSoilSurface }: Props) {
-  const { handleSubmit, control } = useForm<FormValues>();
+  const { handleSubmit, control, formState } = useForm<FormValues>();
 
   return (
     <WizardFormLayout title="Quelle part des sols pollués sera dépolluée ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
-          label="Superficie à dépolluer"
+          hintText={`Surface contaminée : ${formatSurfaceArea(contaminatedSoilSurface)}`}
+          label={<RequiredLabel label="Superficie à dépolluer" />}
           name="surfaceArea"
           rules={{
             required: "Ce champ est requis",
@@ -37,7 +40,7 @@ function SoilsDecontaminationSurfaceArea({ onSubmit, onBack, contaminatedSoilSur
             },
           }}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!formState.isValid} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

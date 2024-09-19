@@ -83,13 +83,15 @@ const mapProps = (
   } = computeProjectReinstatementCosts(
     siteSoilsDistribution,
     projectSoilsDistribution,
-    siteData?.contaminatedSoilSurface ?? 0,
+    projectData.decontaminatedSurfaceArea ?? 0,
   );
   return {
     hasBuildings: hasBuildings(siteSoilsDistribution),
     hasImpermeableSoils:
       hasImpermeableSoils(siteSoilsDistribution) || hasMineralSoils(siteSoilsDistribution),
-    hasContaminatedSoils: siteData?.hasContaminatedSoils ?? false,
+    hasProjectedDecontamination: !!(
+      projectData.decontaminatedSurfaceArea && projectData.decontaminatedSurfaceArea > 0
+    ),
     defaultValues: {
       deimpermeabilizationAmount: deimpermeabilization && Math.round(deimpermeabilization),
       sustainableSoilsReinstatementAmount:

@@ -107,7 +107,7 @@ const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
             );
           }}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel={!sellingPrice ? "Passer" : "Valider"} />
       </form>
     </WizardFormLayout>
   );

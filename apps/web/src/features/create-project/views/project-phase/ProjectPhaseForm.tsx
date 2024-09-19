@@ -15,10 +15,8 @@ type Props = {
 };
 
 export type FormValues = {
-  phase: ProjectPhase;
+  phase?: ProjectPhase;
 };
-
-const requiredMessage = "Veuillez sélectionner l'avancement du projet.";
 
 const options = (["setup", "design", "construction", "completed", "unknown"] as const).map(
   (phase) => ({
@@ -33,21 +31,15 @@ const options = (["setup", "design", "construction", "completed", "unknown"] as 
 }[];
 
 function ProjectPhaseForm({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>({
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
 
   return (
     <WizardFormLayout title="A quelle phase de votre projet êtes-vous ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RadioButtons
-          {...register("phase", {
-            required: requiredMessage,
-          })}
-          options={options}
-          error={formState.errors.phase}
-        />
-        <BackNextButtonsGroup onBack={onBack} />
+        <RadioButtons {...register("phase")} options={options} error={formState.errors.phase} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel={watch("phase") ? "Valider" : "Passer"} />
       </form>
     </WizardFormLayout>
   );

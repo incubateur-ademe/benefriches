@@ -26,13 +26,15 @@ function ConversionFullTimeJobsInvolvedForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { handleSubmit, control } = useForm<FormValues>({
+  const { handleSubmit, control, watch } = useForm<FormValues>({
     shouldUnregister: true,
     defaultValues: {
       fullTimeJobs: defaultValues.fullTimeJobs,
       reinstatementFullTimeJobs: defaultValues.reinstatementFullTimeJobs,
     },
   });
+
+  const { fullTimeJobs, reinstatementFullTimeJobs } = watch();
 
   return (
     <WizardFormLayout
@@ -93,7 +95,10 @@ function ConversionFullTimeJobsInvolvedForm({
             );
           }}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={!fullTimeJobs && !reinstatementFullTimeJobs ? "Passer" : "Valider"}
+        />
       </form>
     </WizardFormLayout>
   );

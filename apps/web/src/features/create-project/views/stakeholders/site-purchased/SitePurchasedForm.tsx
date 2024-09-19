@@ -11,13 +11,11 @@ type Props = {
 };
 
 export type FormValues = {
-  willSiteBePurchased: "yes" | "no";
+  willSiteBePurchased: "yes" | "no" | null;
 };
 
 function SitePurchasedForm({ onSubmit, onBack, currentOwnerName }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: { willSiteBePurchased: "no" },
-  });
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>();
 
   return (
     <WizardFormLayout
@@ -32,13 +30,16 @@ function SitePurchasedForm({ onSubmit, onBack, currentOwnerName }: Props) {
               value: "yes",
             },
             {
-              label: "Non",
+              label: "Non / Ne sait pas",
               value: "no",
             },
           ]}
           error={formState.errors.willSiteBePurchased}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={watch("willSiteBePurchased") !== null ? "Valider" : "Passer"}
+        />
       </form>
     </WizardFormLayout>
   );

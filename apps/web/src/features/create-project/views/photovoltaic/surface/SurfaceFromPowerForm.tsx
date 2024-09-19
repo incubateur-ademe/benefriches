@@ -29,7 +29,7 @@ function PhotovoltaicSurfaceFromPowerForm({
   recommendedSurface,
   siteSurfaceArea,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>({
+  const { control, handleSubmit, watch, formState } = useForm<FormValues>({
     defaultValues: {
       photovoltaicInstallationSurfaceSquareMeters: recommendedSurface,
     },
@@ -90,7 +90,7 @@ function PhotovoltaicSurfaceFromPowerForm({
           control={control}
           name="photovoltaicInstallationSurfaceSquareMeters"
           rules={{
-            min: 0,
+            min: 1,
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
             max: {
               value: siteSurfaceArea,
@@ -114,7 +114,7 @@ function PhotovoltaicSurfaceFromPowerForm({
             💡 Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
           </p>
         )}
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

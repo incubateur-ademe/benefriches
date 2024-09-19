@@ -1,4 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
+import { typedObjectEntries } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
@@ -25,6 +26,9 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
   const { handleSubmit, control, watch } = useForm<FormValues>({ defaultValues });
 
   const allRevenues = watch();
+
+  const hasNoValuesFilled =
+    typedObjectEntries(allRevenues).filter(([, value]) => typeof value === "number").length === 0;
 
   return (
     <WizardFormLayout
@@ -89,12 +93,18 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
           }}
         />
 
-        <p>
-          <strong>
-            Total des recettes annuelles : {formatNumberFr(sumObjectValues(allRevenues))} €
-          </strong>
-        </p>
-        <BackNextButtonsGroup onBack={onBack} />
+        {!hasNoValuesFilled && (
+          <p>
+            <strong>
+              Total des recettes annuelles : {formatNumberFr(sumObjectValues(allRevenues))} €
+            </strong>
+          </p>
+        )}
+
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={hasNoValuesFilled ? "Passer" : "Valider"}
+        />
       </form>
     </WizardFormLayout>
   );

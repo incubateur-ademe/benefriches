@@ -20,7 +20,7 @@ type FormValues = {
 };
 
 function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const { control, handleSubmit, watch, formState } = useForm<FormValues>();
 
   const hintText = `Maximum : ${formatSurfaceArea(siteSurfaceArea)}`;
 
@@ -64,7 +64,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
           control={control}
           name="photovoltaicInstallationSurfaceSquareMeters"
           rules={{
-            min: 0,
+            min: 1,
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
             max: {
               value: siteSurfaceArea,
@@ -88,7 +88,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
             💡 Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
           </p>
         )}
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

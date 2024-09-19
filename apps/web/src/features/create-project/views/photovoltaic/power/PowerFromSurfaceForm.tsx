@@ -24,7 +24,7 @@ function PhotovoltaicPowerFromSurfaceForm({
   photovoltaicSurfaceArea,
   recommendedElectricalPowerKWc,
 }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: {
       photovoltaicInstallationElectricalPowerKWc: recommendedElectricalPowerKWc,
     },
@@ -57,7 +57,7 @@ function PhotovoltaicPowerFromSurfaceForm({
           control={control}
           name="photovoltaicInstallationElectricalPowerKWc"
           rules={{
-            min: 0,
+            min: 1,
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           render={(controller) => {
@@ -72,7 +72,7 @@ function PhotovoltaicPowerFromSurfaceForm({
             );
           }}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

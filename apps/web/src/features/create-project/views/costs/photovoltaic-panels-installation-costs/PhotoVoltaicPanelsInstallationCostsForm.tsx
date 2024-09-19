@@ -1,4 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
+import { typedObjectEntries } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
@@ -34,6 +35,9 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
   });
 
   const allExpenses = watch();
+
+  const hasNoValuesFilled =
+    typedObjectEntries(allExpenses).filter(([, value]) => typeof value === "number").length === 0;
 
   return (
     <WizardFormLayout
@@ -118,12 +122,18 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
           }}
         />
 
-        <p>
-          <strong>
-            Total des dépenses d'installation : {formatNumberFr(sumObjectValues(allExpenses))} €
-          </strong>
-        </p>
-        <BackNextButtonsGroup onBack={onBack} />
+        {!hasNoValuesFilled && (
+          <p>
+            <strong>
+              Total des dépenses d'installation : {formatNumberFr(sumObjectValues(allExpenses))} €
+            </strong>
+          </p>
+        )}
+
+        <BackNextButtonsGroup
+          onBack={onBack}
+          nextLabel={hasNoValuesFilled ? "Passer" : "Valider"}
+        />
       </form>
     </WizardFormLayout>
   );

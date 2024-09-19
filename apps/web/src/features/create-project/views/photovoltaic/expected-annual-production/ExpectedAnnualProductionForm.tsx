@@ -22,7 +22,7 @@ function PhotovoltaicAnnualProductionForm({
   onBack,
   expectedPerformanceMwhPerYear,
 }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>({
+  const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: {
       photovoltaicExpectedAnnualProduction: expectedPerformanceMwhPerYear,
     },
@@ -51,7 +51,7 @@ function PhotovoltaicAnnualProductionForm({
           control={control}
           allowDecimals={false}
         />
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

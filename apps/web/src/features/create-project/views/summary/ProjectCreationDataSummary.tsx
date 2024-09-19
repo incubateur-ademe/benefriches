@@ -368,7 +368,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           />
         </Accordion>
         <div className="fr-mt-4w">
-          <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+          <BackNextButtonsGroup onBack={onBack} onNext={onNext} nextLabel="Valider" />
         </div>
       </WizardFormLayout>
     </>

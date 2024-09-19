@@ -83,7 +83,7 @@ function CreateModeSelectionForm({ onSubmit, onBack }: Props) {
           </div>
           {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
         </div>
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} disabled={!formState.isValid} nextLabel="Valider" />
       </form>
     </WizardFormLayout>
   );

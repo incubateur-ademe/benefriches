@@ -25,7 +25,7 @@ function PhotovoltaicPowerForm({
   siteSurfaceArea,
   recommendedElectricalPowerKWc,
 }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>();
+  const { control, handleSubmit, formState } = useForm<FormValues>();
 
   const hintText = `Maximum conseillé : ${formatNumberFr(recommendedElectricalPowerKWc)} kWc`;
 
@@ -53,7 +53,7 @@ function PhotovoltaicPowerForm({
           control={control}
           name="photovoltaicInstallationElectricalPowerKWc"
           rules={{
-            min: 0,
+            min: 1,
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",
           }}
           render={(controller) => {
@@ -69,7 +69,7 @@ function PhotovoltaicPowerForm({
           }}
         />
 
-        <BackNextButtonsGroup onBack={onBack} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );
