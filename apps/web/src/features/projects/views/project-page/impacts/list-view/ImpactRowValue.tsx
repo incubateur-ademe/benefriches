@@ -14,7 +14,6 @@ import classNames from "@/shared/views/clsx";
 type Props = {
   value?: number;
   isTotal?: boolean;
-  onClick?: () => void;
   onToggleAccordion?: () => void;
   isAccordionOpened?: boolean;
   children: ReactNode;
@@ -35,24 +34,11 @@ const ImpactRowValue = ({
   children,
   type = "default",
   isTotal = false,
-  onClick,
   onToggleAccordion,
   isAccordionOpened,
 }: Props) => {
   return (
-    <div
-      className={classNames(
-        "tw-grid",
-        "tw-grid-cols-[1fr_8rem_2rem]",
-        onClick && ["tw-cursor-pointer", "hover:tw-scale-[1.02]", "hover:tw-font-bold"],
-      )}
-      onClick={(e) => {
-        if (onClick) {
-          e.stopPropagation();
-          onClick();
-        }
-      }}
-    >
+    <div className={classNames("tw-grid", "tw-grid-cols-[1fr_8rem_2rem]")}>
       <div className={classNames("tw-flex", "tw-items-center")}>{children}</div>
 
       <div
@@ -86,8 +72,7 @@ const ImpactRowValue = ({
           )}
           size="small"
           iconId={isAccordionOpened ? "fr-icon-arrow-up-s-line" : "fr-icon-arrow-down-s-line"}
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={() => {
             onToggleAccordion();
           }}
           priority="secondary"

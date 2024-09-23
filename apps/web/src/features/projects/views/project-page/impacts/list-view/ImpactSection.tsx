@@ -1,4 +1,5 @@
 import { ReactNode, useState } from "react";
+import ImpactRowLabel from "./ImpactRowLabel";
 import ImpactRowValue from "./ImpactRowValue";
 
 import classNames from "@/shared/views/clsx";
@@ -31,7 +32,6 @@ const ImpactSection = ({ title, total, isMain = false, onTitleClick, children }:
             "tw-cursor-pointer",
             "tw-transition",
             "hover:tw-border hover:tw-border-solid",
-            "hover:tw-scale-[1.02]",
           ],
         )}
       >
@@ -42,13 +42,15 @@ const ImpactSection = ({ title, total, isMain = false, onTitleClick, children }:
           isAccordionOpened={displaySectionContent}
           onToggleAccordion={toggleDisplaySectionContent}
         >
-          {isMain ? (
-            <h3 className={classNames("tw-text-xl", "tw-mb-0")} onClick={onTitleClick}>
-              {title}
-            </h3>
-          ) : (
-            <h4 className={classNames("tw-font-bold", "tw-text-lg", "tw-mb-0")}>{title}</h4>
-          )}
+          <ImpactRowLabel onLabelClick={onTitleClick}>
+            {isMain ? (
+              <h3 className="tw-text-xl tw-mb-0" onClick={onTitleClick}>
+                {title}
+              </h3>
+            ) : (
+              <h4 className={classNames("tw-font-bold", "tw-text-lg", "tw-mb-0")}>{title}</h4>
+            )}
+          </ImpactRowLabel>
         </ImpactRowValue>
       </div>
       {displaySectionContent && children}

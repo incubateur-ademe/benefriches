@@ -7,7 +7,7 @@ type Props = {
   onClick?: () => void;
 };
 
-const ImpactItemGroup = ({ children, onClick }: Props) => {
+const ImpactItemGroup = ({ children }: Props) => {
   return (
     <div
       className={classNames(
@@ -17,9 +17,7 @@ const ImpactItemGroup = ({ children, onClick }: Props) => {
         "tw-mb-2",
         "tw-rounded",
         "tw-transition",
-        onClick && ["hover:tw-border-black", "hover:tw-scale-x-[1.02]", "hover:tw-cursor-pointer"],
       )}
-      onClick={onClick}
     >
       {children}
     </div>

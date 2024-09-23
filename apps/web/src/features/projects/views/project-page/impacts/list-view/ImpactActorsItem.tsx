@@ -15,7 +15,7 @@ type Props = {
 const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
   const [firstActor, ...othersActors] = actors;
   return (
-    <ImpactItemGroup onClick={onClick}>
+    <ImpactItemGroup>
       {firstActor && (
         <ImpactItemDetails
           value={firstActor.value}
@@ -23,18 +23,11 @@ const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
           actor={firstActor.label}
           data={firstActor.details}
           type={type}
-          isTotal
+          onClick={onClick}
         />
       )}
       {othersActors.map(({ label: actor, value, details = [] }) => (
-        <ImpactItemDetails
-          type={type}
-          key={actor}
-          value={value}
-          actor={actor}
-          data={details}
-          isTotal
-        />
+        <ImpactItemDetails type={type} key={actor} value={value} actor={actor} data={details} />
       ))}
     </ImpactItemGroup>
   );

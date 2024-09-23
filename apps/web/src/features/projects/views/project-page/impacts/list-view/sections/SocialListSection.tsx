@@ -72,14 +72,11 @@ const SocialListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
       {jobsImpacts.length > 0 && (
         <ImpactSection title="Impacts sur l'emploi">
           {jobsImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup
-              key={name}
-              onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-            >
+            <ImpactItemGroup key={name}>
               <ImpactItemDetails
-                isTotal
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
+                onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
                 data={
                   impact.details
                     ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
@@ -99,14 +96,11 @@ const SocialListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
       {residentsImpacts.length > 0 && (
         <ImpactSection title="Impacts sur les riverains">
           {residentsImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup
-              key={name}
-              onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-            >
+            <ImpactItemGroup key={name}>
               <ImpactItemDetails
-                isTotal
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
+                onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
                 data={
                   impact.details
                     ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
@@ -126,14 +120,11 @@ const SocialListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
       {frenchSocietyImpacts.length > 0 && (
         <ImpactSection title="Impacts sur la société française">
           {frenchSocietyImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup
-              key={name}
-              onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-            >
+            <ImpactItemGroup key={name}>
               <ImpactItemDetails
-                isTotal
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
+                onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
                 data={
                   impact.details
                     ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
