@@ -45,13 +45,30 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
   return (
     <section
       ref={ref}
-      className={classNames(
-        fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w"),
-        "tw-justify-between",
-        "tw-items-center",
-      )}
+      className={classNames(fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w"), "tw-justify-between")}
     >
-      <div className="tw-flex tw-gap-4">
+      <SegmentedControl
+        legend="Filtres"
+        hideLegend
+        segments={[
+          {
+            label: "Synthèse",
+            nativeInputProps: getViewSegmentInputProps("synthesis"),
+            iconId: "fr-icon-lightbulb-line",
+          },
+          {
+            label: "Liste",
+            nativeInputProps: getViewSegmentInputProps("list"),
+            iconId: "fr-icon-list-unordered",
+          },
+          {
+            label: "Graphique",
+            nativeInputProps: getViewSegmentInputProps("charts"),
+            iconId: "fr-icon-line-chart-fill",
+          },
+        ]}
+      />
+      <div className="tw-flex tw-flex-col tw-mt-4 tw-w-full sm:tw-mt-0 sm:tw-w-auto sm:tw-flex-row tw-gap-4">
         <ImpactEvaluationPeriodSelect
           onChange={onEvaluationPeriodChange}
           value={evaluationPeriod}
@@ -81,30 +98,6 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
             {
               label: "Environnementaux",
               value: "environment",
-            },
-          ]}
-        />
-      </div>
-      <div className={classNames(fr.cx("fr-grid-row"), "tw-items-center")}>
-        <SegmentedControl
-          legend="Filtres"
-          className="fr-mr-3w"
-          hideLegend
-          segments={[
-            {
-              label: "Synthèse",
-              nativeInputProps: getViewSegmentInputProps("synthesis"),
-              iconId: "fr-icon-lightbulb-line",
-            },
-            {
-              label: "Liste",
-              nativeInputProps: getViewSegmentInputProps("list"),
-              iconId: "fr-icon-list-unordered",
-            },
-            {
-              label: "Graphique",
-              nativeInputProps: getViewSegmentInputProps("charts"),
-              iconId: "fr-icon-line-chart-fill",
             },
           ]}
         />
