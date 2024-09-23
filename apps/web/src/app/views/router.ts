@@ -13,13 +13,13 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { etape: param.query.optional.string, siteId: param.query.string },
     () => "/creer-projet",
   ),
-  projectFeatures: defineRoute(
-    { projectId: param.path.string },
-    (params) => `/mes-projets/${params.projectId}/caracteristiques`,
-  ),
   projectImpacts: defineRoute(
     { projectId: param.path.string },
     (params) => `/mes-projets/${params.projectId}/impacts`,
+  ),
+  projectImpactsOnboarding: defineRoute(
+    { projectId: param.path.string },
+    (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
   ),
   myProjects: defineRoute("/mes-projets"),
   selectProjectToCompare: defineRoute(

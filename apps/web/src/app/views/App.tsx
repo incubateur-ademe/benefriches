@@ -111,7 +111,6 @@ function App() {
                 </RequireRegisteredUser>
               );
             case routes.projectImpacts.name:
-            case routes.projectFeatures.name:
               return (
                 <RequireRegisteredUser>
                   <ProjectImpactsPage projectId={route.params.projectId} />
