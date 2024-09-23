@@ -171,7 +171,7 @@ const ImpactSynthesisView = ({
           ) : (
             <ImpactSyntheticCard
               type="error"
-              tooltipText={`${formatCO2Impact(avoidedCo2eqEmissions)} de CO2-éq émises, soit les émissions de ${formatPerFrenchPersonAnnualEquivalent(getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson(avoidedCo2eqEmissions))}   français pendant 1 an`}
+              tooltipText={`${formatCO2Impact(avoidedCo2eqEmissions)} de CO2-éq émises, soit les émissions de ${formatPerFrenchPersonAnnualEquivalent(getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson(avoidedCo2eqEmissions))} français pendant 1 an`}
               text="+ d’émissions de CO2&nbsp;☁️"
             />
           )}
