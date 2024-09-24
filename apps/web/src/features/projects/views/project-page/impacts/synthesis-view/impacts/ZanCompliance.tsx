@@ -26,7 +26,7 @@ const ImpactSynthesisZanCompliance = ({ isAgriculturalFriche, isSuccess, ...prop
           ? "Projet consommant des espaces agricoles"
           : "Projet consommant des espaces naturels, agricoles ou forestiers et imperméabilisant les sols"
       }
-      text={`Projet défavorable favorable au ZAN\u00a0🌾`}
+      text={`Projet défavorable au ZAN\u00a0🌾`}
     />
   );
 };
