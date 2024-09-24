@@ -5,6 +5,7 @@ import { BENEFRICHES_ENV } from "../application/envVars";
 import MatomoContainer from "./MatomoContainer";
 import { routes, useRoute } from "./router";
 
+import ProjectImpactsOnboardingPage from "@/features/projects/views/project-impacts-onboarding";
 import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
 import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -114,6 +115,13 @@ function App() {
               return (
                 <RequireRegisteredUser>
                   <ProjectImpactsPage projectId={route.params.projectId} />
+                </RequireRegisteredUser>
+              );
+
+            case routes.projectImpactsOnboarding.name:
+              return (
+                <RequireRegisteredUser>
+                  <ProjectImpactsOnboardingPage projectId={route.params.projectId} />
                 </RequireRegisteredUser>
               );
             case routes.siteFeatures.name:
