@@ -11,11 +11,7 @@ import {
 } from "shared";
 
 import { WorksSchedule } from "@/shared/domain/reconversionProject";
-import {
-  LocalAutorityStructureType,
-  OwnerStructureType,
-  TenantStructureType,
-} from "@/shared/domain/stakeholder";
+import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 
 export type ProjectsList = {
   id: string;
@@ -87,7 +83,6 @@ type ProjectStakeholderStructure =
   | OwnerStructureType
   | TenantStructureType
   | "company"
-  | LocalAutorityStructureType
   | "other"
   | "unknown";
 

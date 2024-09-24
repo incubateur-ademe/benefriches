@@ -1,6 +1,5 @@
-import { startsByVowel } from "./startsByVowel";
-
-type LocalAutorityStructureType = "municipality" | "epci" | "department" | "region";
+import { startsByVowel } from "../services/strings/startsByVowel";
+import { LocalAuthority } from ".";
 
 const capitalize = (text: string): string => {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -27,7 +26,7 @@ export const formatMunicipalityName = (name: string): string => {
 };
 
 export const formatLocalAuthorityName = (
-  type: LocalAutorityStructureType,
+  type: LocalAuthority,
   localAuthorityName: string,
 ): string => {
   switch (type) {

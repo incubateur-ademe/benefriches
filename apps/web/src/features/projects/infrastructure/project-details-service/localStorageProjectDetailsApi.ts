@@ -1,4 +1,4 @@
-import { SoilsDistribution } from "shared";
+import { LocalAuthority, SoilsDistribution } from "shared";
 import {
   ProjectDetailsResult as ProjectImpactsComparisonResult,
   ProjectsDetailsGateway as ProjectImpactsComparisonGateway,
@@ -6,14 +6,13 @@ import {
 import { ProjectForComparison, ProjectSite } from "../../domain/projects.types";
 
 import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
-import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import { delay } from "@/shared/services/delay/delay";
 
 export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 
 export type Stakeholder = {
   name: string;
-  structureType: "company" | LocalAutorityStructureType | "other" | "unknown";
+  structureType: "company" | LocalAuthority | "other" | "unknown";
 };
 
 type ProjectInLocalStorage = {

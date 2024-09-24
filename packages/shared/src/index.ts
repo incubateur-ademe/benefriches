@@ -4,3 +4,4 @@ export * from "./site";
 export * from "./reconversion-projects";
 export * from "./services";
 export * from "./financial";
+export * from "./local-authority";
