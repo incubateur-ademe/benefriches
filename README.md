@@ -18,9 +18,11 @@ Les données sont stockées dans une base PostgreSQL.
 
 Le projet est organisé en monorepo et géré avec le gestionnaire de packages `pnpm`.
 
+Le code commun au front-end et au back-end (types, fonctions de calculs, etc.) est placé dans le package `shared`.
+
 ### Pré-requis
 * node (version 20 ou supérieure)
-* pnpm (version 8.6 ou supérieur)
+* pnpm (version 9.0.6 ou supérieure)
 * docker (optionnel)
 * postgresql (si docker non installé)
 
@@ -29,18 +31,37 @@ Le projet est organisé en monorepo et géré avec le gestionnaire de packages `
 pnpm install
 ```
 
-### Lancement et initialisation de la base de données
-```sh
-docker compose --env-file apps/api/.env -f docker-compose.db.yml up -d # lancement de la base de données
-pnpm --filter api knex:migrate-latest # lancement des migrations
-pnpm --filter api knex:seed-run # chargement des données nécessaires à l'application
-```
-
 ### Création des variables d'environnement
-Utilisation des valeurs exposées dans `apps/web/.env.example` et `apps/api/.env.example`.
+- Utilisation des valeurs exposées dans `apps/web/.env.example` et `apps/api/.env.example`.
 ```sh
 cp apps/web/.env.example apps/web/.env
 cp apps/api/.env.example apps/api/.env
+```
+
+- Modifier les valeurs de `DATABASE_USER` et `DATABASE_PASSWORD` en fonction de la méthode choisie pour lancer la base de données.
+Pour docker, utiliser `DATABASE_USER`=`postgres` et `DATABASE_PASSWORD`=`secret`.
+
+### Lancement de la base de données
+
+#### avec Docker
+```sh
+# à la racine du projet
+$ docker compose --env-file apps/api/.env -f docker-compose.db.yml up -d
+```
+
+#### avec PostgreSQL
+
+Lancer PostgreSQL et créer l’utilisateur et la base de données :
+```sh
+postgres=\# CREATE USER <USERNAME> WITH ENCRYPTED PASSWORD '<YOUR_PASSWORD>';
+postgres=\# CREATE DATABASE benefriches_db WITH OWNER = claire;
+```
+
+### Initialisation de la base de données
+
+```sh
+pnpm --filter api knex:migrate-latest # lancement des migrations
+pnpm --filter api knex:seed-run # chargement des données nécessaires à l'application
 ```
 
 ### Lancement de l'application en mode développement
