@@ -74,7 +74,7 @@ export default function Step1({
 }: Props) {
   return (
     <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6">
-      <div className="tw-m-auto md:tw-m-0 tw-p-6">
+      <div className="tw-m-auto md:tw-m-0">
         <img
           src={getOverallImpactIllustrationUrl(projectOverallImpact)}
           aria-hidden="true"
@@ -85,7 +85,7 @@ export default function Step1({
       <div>
         <h1 className="tw-text-[32px]">{getTitle(projectOverallImpact)}</h1>
         <p className="tw-text-lg tw-font-bold">
-          En {evaluationPeriod} {evaluationPeriod <= 1 ? "an" : "ans"}, il génèrera notamment :
+          En {evaluationPeriod} {evaluationPeriod <= 1 ? "an" : "ans"}, il générera notamment :
         </p>
         <section className="tw-flex tw-flex-col tw-space-y-6">
           {mainKeyImpactIndicators.map(({ name, value, isSuccess }) => {

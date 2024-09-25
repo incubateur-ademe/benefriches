@@ -26,7 +26,7 @@ export default function ProjectImpactsOnboardingPage({
   };
 
   return (
-    <div className="fr-container tw-my-20">
+    <div className="fr-container tw-my-8 md:tw-my-20">
       {(() => {
         switch (currentStep) {
           case 1:
