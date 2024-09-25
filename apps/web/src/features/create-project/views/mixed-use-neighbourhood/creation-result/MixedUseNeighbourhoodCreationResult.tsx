@@ -68,7 +68,7 @@ function MixedUseNeighbourhoodCreationResult({ projectId, siteName, loadingState
               <ProjectFeaturesView projectId={projectId} />
             </projectFeaturesModal.Component>
           </EditorialPageText>
-          <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
+          <Button size="large" linkProps={routes.projectImpactsOnboarding({ projectId }).link}>
             Consulter les impacts
           </Button>
         </EditorialPageLayout>

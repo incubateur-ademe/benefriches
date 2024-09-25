@@ -107,6 +107,16 @@ const ProjectPageHeader = ({
                 ),
                 key: "about-impacts",
               },
+              {
+                label: "Revoir l'introduction",
+                icon: (
+                  <span
+                    className="fr-icon--sm fr-icon-arrow-go-back-line"
+                    aria-hidden="true"
+                  ></span>
+                ),
+                key: "go-to-impacts-onboarding",
+              },
             ],
 
             onClick: ({ key }) => {
@@ -115,6 +125,9 @@ const ProjectPageHeader = ({
               }
               if (key === "project-features") {
                 featuresModal.open();
+              }
+              if (key === "go-to-impacts-onboarding") {
+                routes.projectImpactsOnboarding({ projectId }).push();
               }
             },
           }}

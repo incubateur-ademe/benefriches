@@ -7,7 +7,6 @@ import {
 } from "../../application/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
-import ImpactSynthesisModal from "./impacts/synthesis-view/modal";
 import ProjectImpactsActionBar from "./ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./ProjectPageHeader";
 
@@ -73,7 +72,6 @@ function ProjectPage({
           onViewModeClick={onCurrentViewModeChange}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
         />
-        {dataLoadingState !== "error" && <ImpactSynthesisModal />}
         {dataLoadingState === "error" && (
           <Alert
             description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
