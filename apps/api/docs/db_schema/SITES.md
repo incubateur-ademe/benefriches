@@ -23,7 +23,6 @@ erDiagram
         related_site_id uuid FK "not null"
         name character_varying "not null"
         created_at timestamp_with_time_zone "not null"
-        id uuid "not null"
         creation_mode character_varying "null"
         future_operator_name character_varying "null"
         future_operator_structure_type character_varying "null"
@@ -54,7 +53,6 @@ erDiagram
         purpose character_varying "not null"
         purpose_category character_varying "not null"
         amount numeric "not null"
-        id uuid "not null"
     }
 
     site_incomes {
@@ -62,7 +60,6 @@ erDiagram
         site_id uuid FK "null"
         source character_varying "not null"
         amount numeric "not null"
-        id uuid "not null"
     }
 
     site_soils_distributions {
@@ -70,7 +67,6 @@ erDiagram
         site_id uuid FK "null"
         soil_type character_varying "not null"
         surface_area numeric "not null"
-        id uuid "not null"
     }
 
     sites {
@@ -80,7 +76,6 @@ erDiagram
         owner_structure_type character_varying "not null"
         surface_area numeric "not null"
         created_at timestamp_with_time_zone "not null"
-        id uuid "not null"
         friche_has_contaminated_soils boolean "null"
         creation_mode character_varying "null"
         friche_activity character_varying "null"
