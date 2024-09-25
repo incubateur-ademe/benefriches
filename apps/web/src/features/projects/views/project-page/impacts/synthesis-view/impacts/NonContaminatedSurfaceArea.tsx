@@ -1,4 +1,4 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import {
   formatEvolutionPercentage,
@@ -9,28 +9,28 @@ type Props = {
   percentageEvolution: number;
   value: number;
   isSuccess: boolean;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
 const ImpactSynthesisNonContaminatedSurfaceArea = ({
   percentageEvolution,
   value,
   isSuccess,
-  ...props
+  descriptionDisplayMode,
 }: Props) => {
   return isSuccess ? (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="success"
-      tooltipText={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols non dépollués`}
-      text="Des risques sanitaires réduits&nbsp;☢️"
+      description={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols non dépollués`}
+      title="Des risques sanitaires réduits&nbsp;☢️"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   ) : (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="error"
-      tooltipText={`${formatSurfaceAreaImpact(value)} de sols non dépollués`}
-      text="des sols encore pollués&nbsp;☢️"
+      description={`${formatSurfaceAreaImpact(value)} de sols non dépollués`}
+      title="des sols encore pollués&nbsp;☢️"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };

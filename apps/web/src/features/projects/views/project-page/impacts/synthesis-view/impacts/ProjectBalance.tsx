@@ -1,4 +1,4 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
@@ -6,25 +6,25 @@ type Props = {
   economicBalanceTotal: number;
   socioEconomicMonetaryImpactsTotal: number;
   isSuccess: boolean;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
 const ImpactSynthesisProjectBalance = ({
   socioEconomicMonetaryImpactsTotal,
   economicBalanceTotal,
   isSuccess,
-  ...props
+  descriptionDisplayMode,
 }: Props) => {
   return (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type={isSuccess ? "success" : "error"}
-      tooltipText={`${formatMonetaryImpact(socioEconomicMonetaryImpactsTotal)} d’impacts socio-économiques contre ${formatMonetaryImpact(economicBalanceTotal)} de bilan de l’opération`}
-      text={
+      description={`${formatMonetaryImpact(socioEconomicMonetaryImpactsTotal)} d’impacts socio-économiques contre ${formatMonetaryImpact(economicBalanceTotal)} de bilan de l’opération`}
+      title={
         isSuccess
           ? "Impacts avec une valeur qui compense le déficit\u00a0💰"
           : "Impacts avec une valeur plus faible que le déficit\u00a0💸"
       }
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };

@@ -1,31 +1,31 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   value: number;
   isSuccess: boolean;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisTaxesIncome = ({ value, isSuccess, ...props }: Props) => {
+const ImpactSynthesisTaxesIncome = ({ value, isSuccess, descriptionDisplayMode }: Props) => {
   if (isSuccess) {
     return (
-      <ImpactSyntheticCard
-        {...props}
+      <KeyImpactIndicatorCard
         type="success"
-        tooltipText={`${formatMonetaryImpact(value)} à venir au profit notamment de la collectivité`}
-        text="+ de recettes fiscales&nbsp;💰"
+        description={`${formatMonetaryImpact(value)} à venir au profit notamment de la collectivité`}
+        title="+ de recettes fiscales&nbsp;💰"
+        descriptionDisplayMode={descriptionDisplayMode}
       />
     );
   }
 
   return (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="error"
-      tooltipText={`${formatMonetaryImpact(value)} en moins pour, notamment, la collectivité`}
-      text="- de recettes fiscales&nbsp;💸"
+      description={`${formatMonetaryImpact(value)} en moins pour, notamment, la collectivité`}
+      title="- de recettes fiscales&nbsp;💸"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };

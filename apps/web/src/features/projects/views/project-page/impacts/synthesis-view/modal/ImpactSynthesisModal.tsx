@@ -109,46 +109,36 @@ const ImpactSynthesisModal = ({ syntheticImpactsList, evaluationPeriod }: Props)
               case "zanCompliance":
                 return (
                   <ImpactSynthesisZanCompliance
-                    small
                     isAgriculturalFriche={value.isAgriculturalFriche}
                     isSuccess={isSuccess}
                   />
                 );
               case "projectImpactBalance":
-                return <ImpactSynthesisProjectBalance isSuccess={isSuccess} small {...value} />;
+                return <ImpactSynthesisProjectBalance isSuccess={isSuccess} {...value} />;
 
               case "avoidedFricheCostsForLocalAuthority":
                 return (
                   <ImpactSynthesisAvoidedFricheCostsForLocalAuthority
-                    small
                     isSuccess={isSuccess}
                     {...value}
                   />
                 );
               case "taxesIncomesImpact":
-                return <ImpactSynthesisTaxesIncome isSuccess={isSuccess} small value={value} />;
+                return <ImpactSynthesisTaxesIncome isSuccess={isSuccess} value={value} />;
               case "fullTimeJobs":
-                return <ImpactSynthesisFullTimeJobs isSuccess={isSuccess} small {...value} />;
+                return <ImpactSynthesisFullTimeJobs isSuccess={isSuccess} {...value} />;
               case "avoidedCo2eqEmissions":
-                return (
-                  <ImpactSynthesisAvoidedCo2eqEmissions small isSuccess={isSuccess} value={value} />
-                );
+                return <ImpactSynthesisAvoidedCo2eqEmissions isSuccess={isSuccess} value={value} />;
               case "nonContaminatedSurfaceArea":
                 return (
-                  <ImpactSynthesisNonContaminatedSurfaceArea
-                    isSuccess={isSuccess}
-                    small
-                    {...value}
-                  />
+                  <ImpactSynthesisNonContaminatedSurfaceArea isSuccess={isSuccess} {...value} />
                 );
               case "permeableSurfaceArea":
-                return (
-                  <ImpactSynthesisPermeableSurfaceArea small isSuccess={isSuccess} {...value} />
-                );
+                return <ImpactSynthesisPermeableSurfaceArea isSuccess={isSuccess} {...value} />;
               case "householdsPoweredByRenewableEnergy":
-                return <ImpactSynthesisHouseholdsPoweredByRenewableEnergy small value={value} />;
+                return <ImpactSynthesisHouseholdsPoweredByRenewableEnergy value={value} />;
               case "localPropertyValueIncrease":
-                return <ImpactSynthesisLocalPropertyValueIncrease small value={value} />;
+                return <ImpactSynthesisLocalPropertyValueIncrease value={value} />;
             }
           })}
       </div>

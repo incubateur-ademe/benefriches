@@ -1,32 +1,36 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   isSuccess: boolean;
   isAgriculturalFriche: boolean;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisZanCompliance = ({ isAgriculturalFriche, isSuccess, ...props }: Props) => {
+const ImpactSynthesisZanCompliance = ({
+  isAgriculturalFriche,
+  isSuccess,
+  descriptionDisplayMode,
+}: Props) => {
   if (isSuccess) {
     return (
-      <ImpactSyntheticCard
-        {...props}
+      <KeyImpactIndicatorCard
         type="success"
-        tooltipText="Reconversion d’un site en friche limitant la consommation d’espaces naturels, agricoles ou forestiers"
-        text={`Projet favorable au ZAN\u00a0🌾`}
+        description="Reconversion d’un site en friche limitant la consommation d’espaces naturels, agricoles ou forestiers"
+        title={`Projet favorable au ZAN\u00a0🌾`}
+        descriptionDisplayMode={descriptionDisplayMode}
       />
     );
   }
   return (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="error"
-      tooltipText={
+      description={
         isAgriculturalFriche
           ? "Projet consommant des espaces agricoles"
           : "Projet consommant des espaces naturels, agricoles ou forestiers et imperméabilisant les sols"
       }
-      text={`Projet défavorable au ZAN\u00a0🌾`}
+      title={`Projet défavorable au ZAN\u00a0🌾`}
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };

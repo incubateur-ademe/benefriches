@@ -1,4 +1,4 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import { formatEvolutionPercentage } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -7,32 +7,32 @@ type Props = {
   percentageEvolution: number;
   value: number;
   isSuccess: boolean;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
 const ImpactSynthesisFullTimeJobs = ({
   percentageEvolution,
   value,
   isSuccess,
-  ...props
+  descriptionDisplayMode,
 }: Props) => {
   if (isSuccess) {
     return (
-      <ImpactSyntheticCard
-        {...props}
+      <KeyImpactIndicatorCard
         type="success"
-        tooltipText={`${formatNumberFr(value)} emploi équivalent temps plein créé ou maintenu (soit ${formatEvolutionPercentage(percentageEvolution)})`}
-        text="+ d’emplois&nbsp;👷"
+        description={`${formatNumberFr(value)} emploi équivalent temps plein créé ou maintenu (soit ${formatEvolutionPercentage(percentageEvolution)})`}
+        title="+ d’emplois&nbsp;👷"
+        descriptionDisplayMode={descriptionDisplayMode}
       />
     );
   }
 
   return (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="error"
-      tooltipText={`${formatNumberFr(value)} emploi équivalent temps plein perdu (soit ${formatEvolutionPercentage(percentageEvolution)})`}
-      text="- d’emplois&nbsp;👷"
+      description={`${formatNumberFr(value)} emploi équivalent temps plein perdu (soit ${formatEvolutionPercentage(percentageEvolution)})`}
+      title="- d’emplois&nbsp;👷"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };
