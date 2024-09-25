@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { isLocalAuthority } from "shared";
 import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
 import { ImpactCategoryFilter } from "./projectImpacts.reducer";
 
@@ -41,9 +42,7 @@ const getAvoidedFricheCostsForLocalAuthority = (state: RootState["projectImpacts
   );
 
   const siteOwner = state.relatedSiteData?.owner.structureType ?? "";
-  const isOwnerLocalAuthority = ["municipality", "epci", "region", "department"].includes(
-    siteOwner,
-  );
+  const isOwnerLocalAuthority = isLocalAuthority(siteOwner);
 
   if (!avoidedFricheCosts || !isOwnerLocalAuthority) {
     return undefined;

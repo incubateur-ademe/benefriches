@@ -1,9 +1,8 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { formatLocalAuthorityName } from "shared";
+import { formatLocalAuthorityName, LocalAuthority } from "shared";
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 
 import { RootState } from "@/app/application/store";
-import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -39,7 +38,7 @@ const initialState: SiteMunicipalityDataState = {
 };
 
 export type AvailableLocalAuthority = {
-  type: LocalAutorityStructureType;
+  type: LocalAuthority;
   name: string;
 };
 

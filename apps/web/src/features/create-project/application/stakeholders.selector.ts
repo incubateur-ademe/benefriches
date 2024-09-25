@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { formatLocalAuthorityName } from "shared";
+import { LocalAuthority } from "shared/dist/local-authority";
 import { ProjectStakeholder, ProjectStakeholderStructure } from "../domain/project.types";
 
 import { RootState } from "@/app/application/store";
@@ -102,7 +103,7 @@ export const getProjectAvailableStakeholders = createSelector(
 );
 
 export type AvailableLocalAuthorityStakeholder = {
-  type: "municipality" | "epci" | "region" | "department";
+  type: LocalAuthority;
   name: string;
 };
 

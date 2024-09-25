@@ -1,3 +1,4 @@
-export type LocalAutorityStructureType = "municipality" | "region" | "department" | "epci";
-export type OwnerStructureType = LocalAutorityStructureType | "company" | "private_individual";
-export type TenantStructureType = LocalAutorityStructureType | "company" | "private_individual";
+import { LocalAuthority } from "shared";
+
+export type OwnerStructureType = LocalAuthority | "company" | "private_individual";
+export type TenantStructureType = LocalAuthority | "company" | "private_individual";

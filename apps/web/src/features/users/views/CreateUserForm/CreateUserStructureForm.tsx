@@ -4,17 +4,14 @@ import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { AutoComplete } from "antd";
-import { formatLocalAuthorityName } from "shared";
+import { formatLocalAuthorityName, LocalAuthority } from "shared";
 import { UserStructureActivity } from "../../domain/user";
 import { FormValues } from "./CreateUserForm";
 import { AdministrativeDivision, AdministrativeDivisionService } from ".";
 
-import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
-type StructureCategory =
-  | Exclude<UserStructureActivity, LocalAutorityStructureType>
-  | "local_authority";
+type StructureCategory = Exclude<UserStructureActivity, LocalAuthority> | "local_authority";
 
 export type Municipality = {
   label: AdministrativeDivision["name"];
@@ -24,7 +21,7 @@ export type Municipality = {
 
 export type StructureFormValues =
   | {
-      structureCategory: Exclude<UserStructureActivity, LocalAutorityStructureType>;
+      structureCategory: Exclude<UserStructureActivity, LocalAuthority>;
       structureName: string;
       structureMunicipalityText: undefined;
       selectedStructureMunicipality: undefined;
@@ -34,7 +31,7 @@ export type StructureFormValues =
       structureCategory: "local_authority";
       structureMunicipalityText?: string;
       selectedStructureMunicipality?: Municipality;
-      selectedStructureLocalAuthorityType: LocalAutorityStructureType;
+      selectedStructureLocalAuthorityType: LocalAuthority;
       structureName: string;
     };
 

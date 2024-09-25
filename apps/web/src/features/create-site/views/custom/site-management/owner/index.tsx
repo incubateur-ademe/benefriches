@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { LocalAuthority } from "shared";
 import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 
 import { revertOwnerStep } from "@/features/create-site/application/createSite.actions";
@@ -11,11 +12,10 @@ import {
 import { Owner } from "@/features/create-site/domain/siteFoncier.types";
 import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
 import { UserStructure } from "@/features/users/domain/user";
-import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type LocalAuthoritiesList = {
-  type: "municipality" | "epci" | "region" | "department";
+  type: LocalAuthority;
   name: string;
 }[];
 
@@ -30,7 +30,7 @@ const convertFormValuesForStore = (
         name: currentUserStructure?.name ?? "",
         structureType:
           currentUserStructure?.type === "local_authority"
-            ? (currentUserStructure.activity as LocalAutorityStructureType)
+            ? (currentUserStructure.activity as LocalAuthority)
             : (currentUserStructure?.type ?? "company"),
       };
     case "local_or_regional_authority": {

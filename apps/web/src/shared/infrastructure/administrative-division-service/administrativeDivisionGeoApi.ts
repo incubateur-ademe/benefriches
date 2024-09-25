@@ -1,3 +1,5 @@
+import { LocalAuthority } from "shared";
+
 type Response = {
   nom: string;
   code: string;
@@ -22,6 +24,16 @@ const GEO_API_HOSTNAME = "https://geo.api.gouv.fr";
 const MUNICIPALITY_URL = "/communes";
 const FIELDS =
   "fields=nom,code,codeEpci,epci,codeDepartement,departement,codeRegion,region,population,surface";
+
+type SearchMunicipalityResult = {
+  code: string;
+  name: string;
+  localAuthorities: {
+    type: LocalAuthority;
+    name: string;
+    code: string;
+  }[];
+};
 
 export class AdministrativeDivisionGeoApi {
   async getMunicipalityData(cityCode: string) {
@@ -56,7 +68,7 @@ export class AdministrativeDivisionGeoApi {
     };
   }
 
-  async searchMunicipality(text: string) {
+  async searchMunicipality(text: string): Promise<SearchMunicipalityResult[]> {
     const regexPostalCode = /^(?:0[1-9]|[1-8]\d|9[0-8])\d{3}$/;
 
     const searchParams = text.match(regexPostalCode) ? `codePostal=${text}` : `nom=${text}`;
@@ -93,11 +105,7 @@ export class AdministrativeDivisionGeoApi {
           name: region.nom,
           code: region.code,
         },
-      ] as {
-        type: "municipality" | "region" | "department" | "epci";
-        name: string;
-        code: string;
-      }[],
+      ],
     }));
   }
 }

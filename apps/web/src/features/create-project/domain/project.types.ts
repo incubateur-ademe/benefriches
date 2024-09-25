@@ -13,11 +13,7 @@ import { Schedule } from "../application/saveReconversionProject.action";
 
 import { UserStructureType } from "@/features/users/domain/user";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
-import {
-  LocalAutorityStructureType,
-  OwnerStructureType,
-  TenantStructureType,
-} from "@/shared/domain/stakeholder";
+import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 
 export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 
@@ -69,7 +65,6 @@ export type ProjectStakeholderStructure =
   | OwnerStructureType
   | TenantStructureType
   | "company"
-  | LocalAutorityStructureType
   | "other"
   | UserStructureType
   | "unknown";

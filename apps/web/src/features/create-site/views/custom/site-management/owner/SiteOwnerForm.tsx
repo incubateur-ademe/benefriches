@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
+import { LocalAuthority } from "shared";
 
 import { UserStructure } from "@/features/users/domain/user";
-import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -15,7 +15,7 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   currentUserStructure?: UserStructure;
-  localAuthoritiesList: { type: "municipality" | "epci" | "region" | "department"; name: string }[];
+  localAuthoritiesList: { type: LocalAuthority; name: string }[];
   isFriche: boolean;
 };
 
@@ -27,7 +27,7 @@ export type FormValues =
     }
   | {
       ownerType: "local_or_regional_authority";
-      localAuthority: LocalAutorityStructureType;
+      localAuthority: LocalAuthority;
       ownerName: undefined;
     }
   | {

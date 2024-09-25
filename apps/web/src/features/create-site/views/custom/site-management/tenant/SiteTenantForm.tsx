@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import Input from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
+import { LocalAuthority } from "shared";
 
-import { LocalAutorityStructureType } from "@/shared/domain/stakeholder";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -12,13 +12,13 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  localAuthoritiesList: { type: "municipality" | "epci" | "region" | "department"; name: string }[];
+  localAuthoritiesList: { type: LocalAuthority; name: string }[];
 };
 
 export type FormValues =
   | {
       tenantType: "local_or_regional_authority";
-      localAuthority: LocalAutorityStructureType;
+      localAuthority: LocalAuthority;
       companyName: undefined;
       tenantName: undefined;
     }
