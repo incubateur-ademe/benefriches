@@ -28,10 +28,14 @@ const KeyImpactIndicatorCard = ({
           "tw-p-4",
           "tw-rounded-md",
           "tw-border tw-border-solid tw-border-transparent",
-          displayTooltip && ["hover:tw-scale-105", "tw-transition tw-ease-in-out tw-duration-500"],
-          type === "success"
-            ? ["tw-bg-impacts-positive-light", "hover:tw-border-impacts-positive-border"]
-            : ["tw-bg-impacts-negative-light", " hover:tw-border-impacts-negative-border"],
+          type === "success" ? "tw-bg-impacts-positive-light" : "tw-bg-impacts-negative-light",
+          displayTooltip && [
+            "hover:tw-scale-105",
+            "tw-transition tw-ease-in-out tw-duration-500",
+            type === "success"
+              ? "hover:tw-border-impacts-positive-border"
+              : "hover:tw-border-impacts-negative-border",
+          ],
         )}
       >
         <span
