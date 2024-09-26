@@ -20,8 +20,8 @@ const KeyImpactIndicatorCard = ({
   const displayTooltip = !!description && descriptionDisplayMode === "tooltip";
   const displayDescriptionInline = !!description && descriptionDisplayMode === "inline";
   return (
-    <div>
-      <div
+    <>
+      <article
         aria-describedby={displayTooltip ? `tooltip-${id}` : undefined}
         className={classNames(
           "tw-flex tw-justify-start tw-items-center tw-gap-4",
@@ -48,10 +48,10 @@ const KeyImpactIndicatorCard = ({
           aria-hidden="true"
         ></span>
         <div>
-          <div className="tw-text-lg tw-font-bold">{title}</div>
-          {displayDescriptionInline && <div className="tw-pt-2">{description}</div>}
+          <h3 className="tw-text-lg tw-font-bold tw-mb-0">{title}</h3>
+          {displayDescriptionInline && <p className="tw-pt-2 tw-m-0">{description}</p>}
         </div>
-      </div>
+      </article>
       {displayTooltip && (
         <span
           className={fr.cx("fr-tooltip", "fr-placement")}
@@ -62,7 +62,7 @@ const KeyImpactIndicatorCard = ({
           {description}
         </span>
       )}
-    </div>
+    </>
   );
 };
 
