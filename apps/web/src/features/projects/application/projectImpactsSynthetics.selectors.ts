@@ -1,5 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { isLocalAuthority } from "shared";
+import {
+  getMainKeyImpactIndicators,
+  getProjectOverallImpact,
+  ProjectOverallImpact,
+} from "../domain/projectKeyImpactIndicators";
 import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
 import { ImpactCategoryFilter } from "./projectImpacts.reducer";
 
@@ -280,3 +285,17 @@ export const getSyntheticImpactsList = createSelector(selectSelf, (state) => {
 
   return impacts;
 });
+
+export const selectMainKeyImpactIndicators = createSelector(
+  getSyntheticImpactsList,
+  (keyImpactIndicators) => {
+    return getMainKeyImpactIndicators(keyImpactIndicators);
+  },
+);
+
+export const selectProjectOverallImpact = createSelector(
+  getSyntheticImpactsList,
+  (keyImpactIndicators): ProjectOverallImpact => {
+    return getProjectOverallImpact(keyImpactIndicators);
+  },
+);

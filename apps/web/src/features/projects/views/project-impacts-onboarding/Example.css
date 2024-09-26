@@ -1,0 +1,21 @@
+.projectImpactsOnboardingExample {
+  position: relative;
+}
+
+.projectImpactsOnboardingExample__arrow::before {
+  content: "";
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  top: 60px;
+  left: 70px;
+  background-image: url("/img/pictograms/project-impacts-onboarding/designation-arrow.svg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.projectImpactsOnboardingExample__arrow--flipped::before {
+  left: auto;
+  right: 110px;
+  transform: scaleX(-1);
+}
