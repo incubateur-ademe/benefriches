@@ -46,44 +46,83 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
         .map(({ name, value, isSuccess }) => {
           switch (name) {
             case "zanCompliance":
-              return <ImpactSynthesisZanCompliance {...value} isSuccess={isSuccess} />;
+              return (
+                <ImpactSynthesisZanCompliance
+                  {...value}
+                  isSuccess={isSuccess}
+                  descriptionDisplayMode="tooltip"
+                />
+              );
             case "projectImpactBalance":
-              return <ImpactSynthesisProjectBalance isSuccess={isSuccess} {...value} />;
+              return (
+                <ImpactSynthesisProjectBalance
+                  isSuccess={isSuccess}
+                  {...value}
+                  descriptionDisplayMode="tooltip"
+                />
+              );
 
             case "avoidedFricheCostsForLocalAuthority":
               return displayEconomicCards ? (
                 <ImpactSynthesisAvoidedFricheCostsForLocalAuthority
                   isSuccess={isSuccess}
                   {...value}
+                  descriptionDisplayMode="tooltip"
                 />
               ) : null;
             case "taxesIncomesImpact":
               return displayEconomicCards ? (
-                <ImpactSynthesisTaxesIncome isSuccess={isSuccess} value={value} />
+                <ImpactSynthesisTaxesIncome
+                  isSuccess={isSuccess}
+                  value={value}
+                  descriptionDisplayMode="tooltip"
+                />
               ) : null;
             case "fullTimeJobs":
               return displaySocialCards ? (
-                <ImpactSynthesisFullTimeJobs isSuccess={isSuccess} {...value} />
+                <ImpactSynthesisFullTimeJobs
+                  isSuccess={isSuccess}
+                  {...value}
+                  descriptionDisplayMode="tooltip"
+                />
               ) : null;
             case "avoidedCo2eqEmissions":
               return displayEnvironmentCards ? (
-                <ImpactSynthesisAvoidedCo2eqEmissions isSuccess={isSuccess} value={value} />
+                <ImpactSynthesisAvoidedCo2eqEmissions
+                  isSuccess={isSuccess}
+                  value={value}
+                  descriptionDisplayMode="tooltip"
+                />
               ) : null;
             case "nonContaminatedSurfaceArea":
               return displayEnvironmentCards ? (
-                <ImpactSynthesisNonContaminatedSurfaceArea isSuccess={isSuccess} {...value} />
+                <ImpactSynthesisNonContaminatedSurfaceArea
+                  isSuccess={isSuccess}
+                  {...value}
+                  descriptionDisplayMode="tooltip"
+                />
               ) : null;
             case "permeableSurfaceArea":
               return displayEnvironmentCards ? (
-                <ImpactSynthesisPermeableSurfaceArea isSuccess={isSuccess} {...value} />
+                <ImpactSynthesisPermeableSurfaceArea
+                  isSuccess={isSuccess}
+                  {...value}
+                  descriptionDisplayMode="tooltip"
+                />
               ) : null;
             case "householdsPoweredByRenewableEnergy":
               return displayEnvironmentCards ? (
-                <ImpactSynthesisHouseholdsPoweredByRenewableEnergy value={value} />
+                <ImpactSynthesisHouseholdsPoweredByRenewableEnergy
+                  value={value}
+                  descriptionDisplayMode="tooltip"
+                />
               ) : null;
             case "localPropertyValueIncrease":
               return displayEconomicCards ? (
-                <ImpactSynthesisLocalPropertyValueIncrease value={value} />
+                <ImpactSynthesisLocalPropertyValueIncrease
+                  value={value}
+                  descriptionDisplayMode="tooltip"
+                />
               ) : null;
           }
         })}

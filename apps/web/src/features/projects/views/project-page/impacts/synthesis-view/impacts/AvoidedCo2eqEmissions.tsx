@@ -1,4 +1,4 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import { formatPerFrenchPersonAnnualEquivalent } from "@/features/create-project/views/soils/soils-carbon-storage/formatCarbonStorage";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
@@ -7,10 +7,14 @@ import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/
 type Props = {
   value: number;
   isSuccess: boolean;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisAvoidedCo2eqEmissions = ({ value, isSuccess, ...props }: Props) => {
+const ImpactSynthesisAvoidedCo2eqEmissions = ({
+  value,
+  isSuccess,
+  descriptionDisplayMode,
+}: Props) => {
   const co2eqValue = Math.abs(value);
   const co2eqValueText = formatCO2Impact(co2eqValue, { withSignPrefix: false });
   const frenchPersonAnnualEquivalent =
@@ -22,21 +26,21 @@ const ImpactSynthesisAvoidedCo2eqEmissions = ({ value, isSuccess, ...props }: Pr
 
   if (isSuccess) {
     return (
-      <ImpactSyntheticCard
-        {...props}
+      <KeyImpactIndicatorCard
         type="success"
-        tooltipText={`${co2eqValueText} de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`}
-        text="- d’émissions de CO2&nbsp;☁️"
+        description={`${co2eqValueText} de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`}
+        title="- d’émissions de CO2&nbsp;☁️"
+        descriptionDisplayMode={descriptionDisplayMode}
       />
     );
   }
 
   return (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="error"
-      tooltipText={`${co2eqValueText} de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`}
-      text="+ d’émissions de CO2&nbsp;☁️"
+      description={`${co2eqValueText} de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`}
+      title="+ d’émissions de CO2&nbsp;☁️"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };

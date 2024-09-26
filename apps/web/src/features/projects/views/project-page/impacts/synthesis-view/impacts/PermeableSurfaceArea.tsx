@@ -1,4 +1,4 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import {
   formatEvolutionPercentage,
@@ -8,29 +8,29 @@ import {
 type Props = {
   percentageEvolution: number;
   value: number;
-  small?: boolean;
   isSuccess: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
 const ImpactSynthesisPermeableSurfaceArea = ({
   value,
   percentageEvolution,
   isSuccess,
-  ...props
+  descriptionDisplayMode,
 }: Props) => {
   return isSuccess ? (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="success"
-      tooltipText={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols désimperméabilisés`}
-      text="+ de sols perméables&nbsp;☔️"
+      description={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols désimperméabilisés`}
+      title="+ de sols perméables&nbsp;☔️"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   ) : (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="error"
-      tooltipText={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols imperméabilisés`}
-      text="- de sols perméables&nbsp;☔️"
+      description={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols imperméabilisés`}
+      title="- de sols perméables&nbsp;☔️"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };

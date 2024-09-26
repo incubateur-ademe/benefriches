@@ -1,19 +1,19 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 type Props = {
   value: number;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisLocalPropertyValueIncrease = ({ value, ...props }: Props) => {
+const ImpactSynthesisLocalPropertyValueIncrease = ({ value, descriptionDisplayMode }: Props) => {
   return (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="success"
-      tooltipText={`${formatMonetaryImpact(value)} de valeur patrimoniale attendue par la reconversion de la friche`}
-      text="+ d’attractivité&nbsp;🏡"
+      description={`${formatMonetaryImpact(value)} de valeur patrimoniale attendue par la reconversion de la friche`}
+      title="+ d’attractivité&nbsp;🏡"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };

@@ -1,4 +1,4 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
@@ -6,32 +6,32 @@ type Props = {
   actorName: string;
   amount: number;
   isSuccess: boolean;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
 const ImpactSynthesisAvoidedFricheCostsForLocalAuthority = ({
   actorName,
   amount,
   isSuccess,
-  ...props
+  descriptionDisplayMode,
 }: Props) => {
   if (isSuccess) {
     return (
-      <ImpactSyntheticCard
-        {...props}
+      <KeyImpactIndicatorCard
         type="success"
-        tooltipText={`${formatMonetaryImpact(amount)} économisés par ${actorName} grâce à la reconversion de la friche`}
-        text="- de dépenses de sécurisation&nbsp;💰"
+        description={`${formatMonetaryImpact(amount)} économisés par ${actorName} grâce à la reconversion de la friche`}
+        title="- de dépenses de sécurisation&nbsp;💰"
+        descriptionDisplayMode={descriptionDisplayMode}
       />
     );
   }
 
   return (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="error"
-      tooltipText={`${formatMonetaryImpact(amount)} toujours à la charge de ${actorName}`}
-      text="Des dépenses de sécurisation demeurent&nbsp;💸"
+      description={`${formatMonetaryImpact(amount)} toujours à la charge de ${actorName}`}
+      title="Des dépenses de sécurisation demeurent&nbsp;💸"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };

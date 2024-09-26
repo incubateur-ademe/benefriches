@@ -1,19 +1,22 @@
-import ImpactSyntheticCard from "../ImpactSyntheticCard";
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
 type Props = {
   value: number;
-  small?: boolean;
+  descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisHouseholdsPoweredByRenewableEnergy = ({ value, ...props }: Props) => {
+const ImpactSynthesisHouseholdsPoweredByRenewableEnergy = ({
+  value,
+  descriptionDisplayMode,
+}: Props) => {
   return (
-    <ImpactSyntheticCard
-      {...props}
+    <KeyImpactIndicatorCard
       type="success"
-      tooltipText={`${formatNumberFr(value)} nouveaux foyers alimentés en EnR`}
-      text="+ d’énergies renouvelables&nbsp;⚡"
+      description={`${formatNumberFr(value)} nouveaux foyers alimentés en EnR`}
+      title="+ d’énergies renouvelables&nbsp;⚡"
+      descriptionDisplayMode={descriptionDisplayMode}
     />
   );
 };
