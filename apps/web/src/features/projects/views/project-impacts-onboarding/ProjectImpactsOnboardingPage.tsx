@@ -39,13 +39,14 @@ export default function ProjectImpactsOnboardingPage({
               />
             );
           case 2:
-            return <Step2 onNextClick={goToStep(3)} />;
+            return <Step2 onNextClick={goToStep(3)} onBackClick={goToStep(1)} />;
           case 3:
             return (
               <Step3
                 onNextClick={() => {
                   routes.projectImpacts({ projectId }).push();
                 }}
+                onBackClick={goToStep(2)}
               />
             );
         }

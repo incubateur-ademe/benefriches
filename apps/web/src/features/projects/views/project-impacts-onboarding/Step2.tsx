@@ -1,11 +1,13 @@
-import Button from "@codegouvfr/react-dsfr/Button";
 import ExampleArticle from "./Example";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+
 type Props = {
+  onBackClick: () => void;
   onNextClick: () => void;
 };
 
-export default function Step2({ onNextClick }: Props) {
+export default function Step2({ onNextClick, onBackClick }: Props) {
   return (
     <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6">
       <div className="tw-m-auto md:tw-m-0">
@@ -44,8 +46,12 @@ export default function Step2({ onNextClick }: Props) {
         <p>
           Mais aussi la collectivité, les riverains, les structures locales, les futurs habitants...
         </p>
-        <div className="tw-flex tw-flex-row-reverse tw-mt-5">
-          <Button onClick={onNextClick}>Suivant (2/3)</Button>
+        <div className="tw-mt-5">
+          <BackNextButtonsGroup
+            onBack={onBackClick}
+            onNext={onNextClick}
+            nextLabel="Suivant (2/3)"
+          />
         </div>
       </div>
     </div>
