@@ -52,7 +52,7 @@ function ProjectCreationResult({ projectId, projectName, siteName, loadingState,
             Bénéfriches peut maintenant calculer les impacts sociaux, économiques et
             environnementaux de ce projet sur le site « {siteName} ».
           </EditorialPageText>
-          <Button size="large" linkProps={routes.projectImpacts({ projectId }).link}>
+          <Button size="large" linkProps={routes.projectImpactsOnboarding({ projectId }).link}>
             Consulter les impacts
           </Button>
         </EditorialPageLayout>
