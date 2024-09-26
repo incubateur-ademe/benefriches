@@ -49,7 +49,7 @@ function ScenarioTile({
         "tw-border-solid",
         "tw-rounded-lg",
         isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
-        isHovered ? "tw-bg-[#F6F6F6]" : "tw-bg-none",
+        isHovered ? "tw-bg-grey-light" : "tw-bg-none",
         className,
       )}
       {...rest}

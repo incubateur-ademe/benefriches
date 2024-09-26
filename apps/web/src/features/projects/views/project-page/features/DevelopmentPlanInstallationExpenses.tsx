@@ -1,5 +1,4 @@
 import { MixedUseNeighbourhoodDevelopmentExpense, PhotovoltaicInstallationExpense } from "shared";
-import DataLine from "./DataLine";
 
 import {
   ProjectDevelopmentPlanType,
@@ -9,6 +8,7 @@ import { getLabelForMixedUseNeighbourhoodDevelopmentExpense } from "@/shared/dom
 import { getLabelForPhotovoltaicInstallationExpensePurpose } from "@/shared/domain/reconversionProject";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumList } from "@/shared/services/sum/sum";
+import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 
 type Props = {
   developmentPlanType: ProjectDevelopmentPlanType;

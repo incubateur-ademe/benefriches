@@ -19,6 +19,7 @@ function SiteDataSummaryContainer() {
   return (
     <SiteDataSummary
       siteData={{
+        id: siteData.id ?? "",
         address: siteData.address?.value ?? "",
         ownerName: siteData.owner?.name ?? "",
         tenantName: siteData.tenant?.name,

@@ -1,9 +1,6 @@
-import { ReactNode } from "react";
 import { getTotalSurfaceArea, SoilType } from "shared";
-import DataLine from "./DataLine";
 import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
 import DevelopmentPlanInstallationExpenses from "./DevelopmentPlanInstallationExpenses";
-import SectionTitle from "./SectionTitle";
 
 import {
   getLabelForDevelopmentPlanCategory,
@@ -19,35 +16,18 @@ import {
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { sumList } from "@/shared/services/sum/sum";
+import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
+import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
+import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
 type Props = {
   projectData: ProjectFeatures;
 };
 
-type ScheduleDatesProps = {
-  startDateString: string;
-  endDateString: string;
-};
-
-function ScheduleDates({ startDateString, endDateString }: ScheduleDatesProps) {
-  const startDate = new Date(startDateString);
-  const endDate = new Date(endDateString);
-  return (
-    <span>
-      {startDate.toLocaleDateString()} ➡️ {endDate.toLocaleDateString()}
-    </span>
-  );
-}
-
-function Section({ children }: { children: ReactNode }) {
-  return <section className="tw-mb-10">{children}</section>;
-}
-
 export default function ProjectFeaturesView({ projectData }: Props) {
   return (
     <>
-      <Section>
-        <SectionTitle>🏗 Type de projet</SectionTitle>
+      <Section title="🏗 Type de projet">
         <DataLine
           label={<strong>Type d'aménagement</strong>}
           value={
@@ -64,8 +44,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         )}
       </Section>
       <DevelopmentPlanFeatures {...projectData.developmentPlan} />
-      <Section>
-        <SectionTitle>🌾 Transformation des sols</SectionTitle>
+      <Section title="🌾 Transformation des sols">
         {projectData.decontaminatedSoilSurface ? (
           <DataLine
             label="Surface dépolluée"
@@ -91,8 +70,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             );
           })}
       </Section>
-      <Section>
-        <SectionTitle>👱 Acteurs</SectionTitle>
+      <Section title="👱 Acteurs">
         <DataLine
           label={<strong>Aménageur du site</strong>}
           value={projectData.developmentPlan.developerName ?? "Non renseigné"}
@@ -141,8 +119,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           className="fr-pl-2w"
         />
       </Section>
-      <Section>
-        <SectionTitle>💰 Dépenses et recettes du projet</SectionTitle>
+      <Section title="💰 Dépenses et recettes du projet">
         {projectData.sitePurchaseTotalAmount ? (
           <DataLine
             label={<strong>Prix d'achat du site et droits de mutation</strong>}
@@ -255,8 +232,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           );
         })}
       </Section>
-      <Section>
-        <SectionTitle>📆 Calendrier</SectionTitle>
+      <Section title="📆 Calendrier">
         {projectData.reinstatementSchedule && (
           <DataLine
             label={<strong>Travaux de remise en état de la friche</strong>}
@@ -284,8 +260,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           value={projectData.firstYearOfOperation ?? "Non renseigné"}
         />
       </Section>
-      <Section>
-        <SectionTitle>✍️ Dénomination</SectionTitle>
+      <Section title="✍️ Dénomination">
         <DataLine label={<strong>Nom du projet</strong>} value={projectData.name} />
         <DataLine
           label={<strong>Description</strong>}
