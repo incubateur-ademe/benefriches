@@ -11,12 +11,12 @@ import { RootState } from "@/app/application/store";
 type LoadingState = "idle" | "loading" | "success" | "error";
 
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 20;
-const DEFAULT_VIEW_MODE = "synthesis";
+const DEFAULT_VIEW_MODE = "summary";
 const DEFAULT_CATEGORY_FILTER = "all";
 
 type ImpactCategory = "economic" | "environment" | "social";
 export type ImpactCategoryFilter = ImpactCategory | "all";
-export type ViewMode = "charts" | "list" | "synthesis";
+export type ViewMode = "charts" | "list" | "summary";
 
 export type ProjectImpactsState = {
   dataLoadingState: LoadingState;

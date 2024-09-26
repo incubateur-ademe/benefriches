@@ -9,7 +9,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisAvoidedFricheCostsForLocalAuthority = ({
+const ImpactSummaryAvoidedFricheCostsForLocalAuthority = ({
   actorName,
   amount,
   isSuccess,
@@ -36,4 +36,4 @@ const ImpactSynthesisAvoidedFricheCostsForLocalAuthority = ({
   );
 };
 
-export default ImpactSynthesisAvoidedFricheCostsForLocalAuthority;
+export default ImpactSummaryAvoidedFricheCostsForLocalAuthority;

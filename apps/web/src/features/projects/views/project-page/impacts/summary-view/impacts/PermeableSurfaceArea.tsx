@@ -12,7 +12,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisPermeableSurfaceArea = ({
+const ImpactSummaryPermeableSurfaceArea = ({
   value,
   percentageEvolution,
   isSuccess,
@@ -35,4 +35,4 @@ const ImpactSynthesisPermeableSurfaceArea = ({
   );
 };
 
-export default ImpactSynthesisPermeableSurfaceArea;
+export default ImpactSummaryPermeableSurfaceArea;

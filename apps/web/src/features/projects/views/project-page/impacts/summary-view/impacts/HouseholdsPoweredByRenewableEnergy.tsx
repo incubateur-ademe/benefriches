@@ -7,7 +7,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisHouseholdsPoweredByRenewableEnergy = ({
+const ImpactSummaryHouseholdsPoweredByRenewableEnergy = ({
   value,
   descriptionDisplayMode,
 }: Props) => {
@@ -21,4 +21,4 @@ const ImpactSynthesisHouseholdsPoweredByRenewableEnergy = ({
   );
 };
 
-export default ImpactSynthesisHouseholdsPoweredByRenewableEnergy;
+export default ImpactSummaryHouseholdsPoweredByRenewableEnergy;

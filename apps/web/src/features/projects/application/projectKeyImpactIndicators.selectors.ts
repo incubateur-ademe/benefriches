@@ -144,7 +144,7 @@ const getLocalPropertyValueIncrease = (state: RootState["projectImpacts"]) => {
   return localPropertyValueIncrease?.amount;
 };
 
-export type SyntheticImpact =
+export type KeyImpactIndicatorData =
   | {
       name:
         | "taxesIncomesImpact"
@@ -181,7 +181,7 @@ export type SyntheticImpact =
       };
     };
 
-export const getSyntheticImpactsList = createSelector(selectSelf, (state) => {
+export const getKeyImpactIndicatorsList = createSelector(selectSelf, (state) => {
   const { isFriche, isAgriculturalFriche } = getRelatedSiteInfos(state);
   const projectImpactBalance = getProjectImpactBalance(state);
   const avoidedFricheCostsForLocalAuthority = getAvoidedFricheCostsForLocalAuthority(state);
@@ -193,7 +193,7 @@ export const getSyntheticImpactsList = createSelector(selectSelf, (state) => {
   const nonContaminatedSurfaceArea = getNonContaminatedSurfaceArea(state);
   const localPropertyValueIncrease = getLocalPropertyValueIncrease(state);
 
-  const impacts: SyntheticImpact[] = [];
+  const impacts: KeyImpactIndicatorData[] = [];
 
   if (isFriche) {
     impacts.push({
@@ -287,14 +287,14 @@ export const getSyntheticImpactsList = createSelector(selectSelf, (state) => {
 });
 
 export const selectMainKeyImpactIndicators = createSelector(
-  getSyntheticImpactsList,
+  getKeyImpactIndicatorsList,
   (keyImpactIndicators) => {
     return getMainKeyImpactIndicators(keyImpactIndicators);
   },
 );
 
 export const selectProjectOverallImpact = createSelector(
-  getSyntheticImpactsList,
+  getKeyImpactIndicatorsList,
   (keyImpactIndicators): ProjectOverallImpact => {
     return getProjectOverallImpact(keyImpactIndicators);
   },

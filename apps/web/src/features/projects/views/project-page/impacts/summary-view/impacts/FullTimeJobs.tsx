@@ -10,7 +10,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisFullTimeJobs = ({
+const ImpactSummaryFullTimeJobs = ({
   percentageEvolution,
   value,
   isSuccess,
@@ -37,4 +37,4 @@ const ImpactSynthesisFullTimeJobs = ({
   );
 };
 
-export default ImpactSynthesisFullTimeJobs;
+export default ImpactSummaryFullTimeJobs;

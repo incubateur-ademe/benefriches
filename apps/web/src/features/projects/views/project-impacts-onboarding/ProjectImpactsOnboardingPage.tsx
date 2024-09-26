@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SyntheticImpact } from "../../application/projectImpactsSynthetics.selectors";
+import { KeyImpactIndicatorData } from "../../application/projectKeyImpactIndicators.selectors";
 import { ProjectOverallImpact } from "../../domain/projectKeyImpactIndicators";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
@@ -11,7 +11,7 @@ type Props = {
   projectId: string;
   evaluationPeriod: number;
   projectOverallImpact: ProjectOverallImpact;
-  mainKeyImpactIndicators: SyntheticImpact[];
+  mainKeyImpactIndicators: KeyImpactIndicatorData[];
 };
 
 export default function ProjectImpactsOnboardingPage({

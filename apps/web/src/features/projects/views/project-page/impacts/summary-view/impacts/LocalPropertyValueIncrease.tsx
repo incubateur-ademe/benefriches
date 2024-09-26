@@ -7,7 +7,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisLocalPropertyValueIncrease = ({ value, descriptionDisplayMode }: Props) => {
+const ImpactSummaryLocalPropertyValueIncrease = ({ value, descriptionDisplayMode }: Props) => {
   return (
     <KeyImpactIndicatorCard
       type="success"
@@ -18,4 +18,4 @@ const ImpactSynthesisLocalPropertyValueIncrease = ({ value, descriptionDisplayMo
   );
 };
 
-export default ImpactSynthesisLocalPropertyValueIncrease;
+export default ImpactSummaryLocalPropertyValueIncrease;

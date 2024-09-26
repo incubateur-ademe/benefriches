@@ -6,7 +6,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisZanCompliance = ({
+const ImpactSummaryZanCompliance = ({
   isAgriculturalFriche,
   isSuccess,
   descriptionDisplayMode,
@@ -35,4 +35,4 @@ const ImpactSynthesisZanCompliance = ({
   );
 };
 
-export default ImpactSynthesisZanCompliance;
+export default ImpactSummaryZanCompliance;

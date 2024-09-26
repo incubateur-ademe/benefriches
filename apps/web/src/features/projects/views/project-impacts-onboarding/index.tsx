@@ -3,7 +3,7 @@ import { fetchReconversionProjectImpacts } from "../../application/fetchReconver
 import {
   selectMainKeyImpactIndicators,
   selectProjectOverallImpact,
-} from "../../application/projectImpactsSynthetics.selectors";
+} from "../../application/projectKeyImpactIndicators.selectors";
 import ProjectImpactsOnboardingPage from "./ProjectImpactsOnboardingPage";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";

@@ -53,7 +53,7 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
         segments={[
           {
             label: "Synthèse",
-            nativeInputProps: getViewSegmentInputProps("synthesis"),
+            nativeInputProps: getViewSegmentInputProps("summary"),
             iconId: "fr-icon-lightbulb-line",
           },
           {

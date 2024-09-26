@@ -1,22 +1,22 @@
 import { ReactNode } from "react";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { SyntheticImpact } from "../../application/projectImpactsSynthetics.selectors";
+import { KeyImpactIndicatorData } from "../../application/projectKeyImpactIndicators.selectors";
 import { ProjectOverallImpact } from "../../domain/projectKeyImpactIndicators";
-import ImpactSynthesisAvoidedCo2eqEmissions from "../project-page/impacts/synthesis-view/impacts/AvoidedCo2eqEmissions";
-import ImpactSynthesisAvoidedFricheCostsForLocalAuthority from "../project-page/impacts/synthesis-view/impacts/AvoidedFricheCostsForLocalAuthority";
-import ImpactSynthesisFullTimeJobs from "../project-page/impacts/synthesis-view/impacts/FullTimeJobs";
-import ImpactSynthesisHouseholdsPoweredByRenewableEnergy from "../project-page/impacts/synthesis-view/impacts/HouseholdsPoweredByRenewableEnergy";
-import ImpactSynthesisLocalPropertyValueIncrease from "../project-page/impacts/synthesis-view/impacts/LocalPropertyValueIncrease";
-import ImpactSynthesisNonContaminatedSurfaceArea from "../project-page/impacts/synthesis-view/impacts/NonContaminatedSurfaceArea";
-import ImpactSynthesisPermeableSurfaceArea from "../project-page/impacts/synthesis-view/impacts/PermeableSurfaceArea";
-import ImpactSynthesisProjectBalance from "../project-page/impacts/synthesis-view/impacts/ProjectBalance";
-import ImpactSynthesisTaxesIncome from "../project-page/impacts/synthesis-view/impacts/TaxesIncome";
-import ImpactSynthesisZanCompliance from "../project-page/impacts/synthesis-view/impacts/ZanCompliance";
+import ImpactSummaryAvoidedCo2eqEmissions from "../project-page/impacts/summary-view/impacts/AvoidedCo2eqEmissions";
+import ImpactSummaryAvoidedFricheCostsForLocalAuthority from "../project-page/impacts/summary-view/impacts/AvoidedFricheCostsForLocalAuthority";
+import ImpactSummaryFullTimeJobs from "../project-page/impacts/summary-view/impacts/FullTimeJobs";
+import ImpactSummaryHouseholdsPoweredByRenewableEnergy from "../project-page/impacts/summary-view/impacts/HouseholdsPoweredByRenewableEnergy";
+import ImpactSummaryLocalPropertyValueIncrease from "../project-page/impacts/summary-view/impacts/LocalPropertyValueIncrease";
+import ImpactSummaryNonContaminatedSurfaceArea from "../project-page/impacts/summary-view/impacts/NonContaminatedSurfaceArea";
+import ImpactSummaryPermeableSurfaceArea from "../project-page/impacts/summary-view/impacts/PermeableSurfaceArea";
+import ImpactSummaryProjectBalance from "../project-page/impacts/summary-view/impacts/ProjectBalance";
+import ImpactSummaryTaxesIncome from "../project-page/impacts/summary-view/impacts/TaxesIncome";
+import ImpactSummaryZanCompliance from "../project-page/impacts/summary-view/impacts/ZanCompliance";
 
 type Props = {
   evaluationPeriod: number;
   projectOverallImpact: ProjectOverallImpact;
-  mainKeyImpactIndicators: SyntheticImpact[];
+  mainKeyImpactIndicators: KeyImpactIndicatorData[];
   onNextClick: () => void;
 };
 
@@ -92,37 +92,35 @@ export default function Step1({
             switch (name) {
               case "zanCompliance":
                 return (
-                  <ImpactSynthesisZanCompliance
+                  <ImpactSummaryZanCompliance
                     isAgriculturalFriche={value.isAgriculturalFriche}
                     isSuccess={isSuccess}
                   />
                 );
               case "projectImpactBalance":
-                return <ImpactSynthesisProjectBalance isSuccess={isSuccess} {...value} />;
+                return <ImpactSummaryProjectBalance isSuccess={isSuccess} {...value} />;
 
               case "avoidedFricheCostsForLocalAuthority":
                 return (
-                  <ImpactSynthesisAvoidedFricheCostsForLocalAuthority
+                  <ImpactSummaryAvoidedFricheCostsForLocalAuthority
                     isSuccess={isSuccess}
                     {...value}
                   />
                 );
               case "taxesIncomesImpact":
-                return <ImpactSynthesisTaxesIncome isSuccess={isSuccess} value={value} />;
+                return <ImpactSummaryTaxesIncome isSuccess={isSuccess} value={value} />;
               case "fullTimeJobs":
-                return <ImpactSynthesisFullTimeJobs isSuccess={isSuccess} {...value} />;
+                return <ImpactSummaryFullTimeJobs isSuccess={isSuccess} {...value} />;
               case "avoidedCo2eqEmissions":
-                return <ImpactSynthesisAvoidedCo2eqEmissions isSuccess={isSuccess} value={value} />;
+                return <ImpactSummaryAvoidedCo2eqEmissions isSuccess={isSuccess} value={value} />;
               case "nonContaminatedSurfaceArea":
-                return (
-                  <ImpactSynthesisNonContaminatedSurfaceArea isSuccess={isSuccess} {...value} />
-                );
+                return <ImpactSummaryNonContaminatedSurfaceArea isSuccess={isSuccess} {...value} />;
               case "permeableSurfaceArea":
-                return <ImpactSynthesisPermeableSurfaceArea isSuccess={isSuccess} {...value} />;
+                return <ImpactSummaryPermeableSurfaceArea isSuccess={isSuccess} {...value} />;
               case "householdsPoweredByRenewableEnergy":
-                return <ImpactSynthesisHouseholdsPoweredByRenewableEnergy value={value} />;
+                return <ImpactSummaryHouseholdsPoweredByRenewableEnergy value={value} />;
               case "localPropertyValueIncrease":
-                return <ImpactSynthesisLocalPropertyValueIncrease value={value} />;
+                return <ImpactSummaryLocalPropertyValueIncrease value={value} />;
             }
           })}
         </section>

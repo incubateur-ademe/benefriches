@@ -12,7 +12,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisNonContaminatedSurfaceArea = ({
+const ImpactSummaryNonContaminatedSurfaceArea = ({
   percentageEvolution,
   value,
   isSuccess,
@@ -35,4 +35,4 @@ const ImpactSynthesisNonContaminatedSurfaceArea = ({
   );
 };
 
-export default ImpactSynthesisNonContaminatedSurfaceArea;
+export default ImpactSummaryNonContaminatedSurfaceArea;

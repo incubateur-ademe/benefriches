@@ -9,7 +9,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisProjectBalance = ({
+const ImpactSummaryProjectBalance = ({
   socioEconomicMonetaryImpactsTotal,
   economicBalanceTotal,
   isSuccess,
@@ -29,4 +29,4 @@ const ImpactSynthesisProjectBalance = ({
   );
 };
 
-export default ImpactSynthesisProjectBalance;
+export default ImpactSummaryProjectBalance;

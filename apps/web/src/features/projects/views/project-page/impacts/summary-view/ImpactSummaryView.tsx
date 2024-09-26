@@ -1,20 +1,20 @@
-import ImpactSynthesisAvoidedCo2eqEmissions from "./impacts/AvoidedCo2eqEmissions";
-import ImpactSynthesisAvoidedFricheCostsForLocalAuthority from "./impacts/AvoidedFricheCostsForLocalAuthority";
-import ImpactSynthesisFullTimeJobs from "./impacts/FullTimeJobs";
-import ImpactSynthesisHouseholdsPoweredByRenewableEnergy from "./impacts/HouseholdsPoweredByRenewableEnergy";
-import ImpactSynthesisLocalPropertyValueIncrease from "./impacts/LocalPropertyValueIncrease";
-import ImpactSynthesisNonContaminatedSurfaceArea from "./impacts/NonContaminatedSurfaceArea";
-import ImpactSynthesisPermeableSurfaceArea from "./impacts/PermeableSurfaceArea";
-import ImpactSynthesisProjectBalance from "./impacts/ProjectBalance";
-import ImpactSynthesisTaxesIncome from "./impacts/TaxesIncome";
-import ImpactSynthesisZanCompliance from "./impacts/ZanCompliance";
+import ImpactSummaryAvoidedCo2eqEmissions from "./impacts/AvoidedCo2eqEmissions";
+import ImpactSummaryAvoidedFricheCostsForLocalAuthority from "./impacts/AvoidedFricheCostsForLocalAuthority";
+import ImpactSummaryFullTimeJobs from "./impacts/FullTimeJobs";
+import ImpactSummaryHouseholdsPoweredByRenewableEnergy from "./impacts/HouseholdsPoweredByRenewableEnergy";
+import ImpactSummaryLocalPropertyValueIncrease from "./impacts/LocalPropertyValueIncrease";
+import ImpactSummaryNonContaminatedSurfaceArea from "./impacts/NonContaminatedSurfaceArea";
+import ImpactSummaryPermeableSurfaceArea from "./impacts/PermeableSurfaceArea";
+import ImpactSummaryProjectBalance from "./impacts/ProjectBalance";
+import ImpactSummaryTaxesIncome from "./impacts/TaxesIncome";
+import ImpactSummaryZanCompliance from "./impacts/ZanCompliance";
 
 import { ImpactCategoryFilter } from "@/features/projects/application/projectImpacts.reducer";
-import { SyntheticImpact } from "@/features/projects/application/projectImpactsSynthetics.selectors";
+import { KeyImpactIndicatorData } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
 
 type Props = {
   categoryFilter: ImpactCategoryFilter;
-  syntheticImpactsList: SyntheticImpact[];
+  keyImpactIndicatorsList: KeyImpactIndicatorData[];
 };
 
 const PRIORITY_ORDER = [
@@ -30,7 +30,7 @@ const PRIORITY_ORDER = [
   "nonContaminatedSurfaceArea",
 ];
 
-const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) => {
+const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) => {
   const displayAll = categoryFilter === "all";
   const displayEconomicCards = displayAll || categoryFilter === "economic";
   const displayEnvironmentCards = displayAll || categoryFilter === "environment";
@@ -38,7 +38,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
 
   return (
     <div className="tw-grid tw-grid-rows-1 lg:tw-grid-cols-3 tw-gap-6 tw-mb-8">
-      {syntheticImpactsList
+      {keyImpactIndicatorsList
         .sort(
           ({ name: aName }, { name: bName }) =>
             PRIORITY_ORDER.indexOf(aName) - PRIORITY_ORDER.indexOf(bName),
@@ -47,7 +47,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
           switch (name) {
             case "zanCompliance":
               return (
-                <ImpactSynthesisZanCompliance
+                <ImpactSummaryZanCompliance
                   {...value}
                   isSuccess={isSuccess}
                   descriptionDisplayMode="tooltip"
@@ -55,7 +55,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
               );
             case "projectImpactBalance":
               return (
-                <ImpactSynthesisProjectBalance
+                <ImpactSummaryProjectBalance
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -64,7 +64,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
 
             case "avoidedFricheCostsForLocalAuthority":
               return displayEconomicCards ? (
-                <ImpactSynthesisAvoidedFricheCostsForLocalAuthority
+                <ImpactSummaryAvoidedFricheCostsForLocalAuthority
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -72,7 +72,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
               ) : null;
             case "taxesIncomesImpact":
               return displayEconomicCards ? (
-                <ImpactSynthesisTaxesIncome
+                <ImpactSummaryTaxesIncome
                   isSuccess={isSuccess}
                   value={value}
                   descriptionDisplayMode="tooltip"
@@ -80,7 +80,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
               ) : null;
             case "fullTimeJobs":
               return displaySocialCards ? (
-                <ImpactSynthesisFullTimeJobs
+                <ImpactSummaryFullTimeJobs
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -88,7 +88,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
               ) : null;
             case "avoidedCo2eqEmissions":
               return displayEnvironmentCards ? (
-                <ImpactSynthesisAvoidedCo2eqEmissions
+                <ImpactSummaryAvoidedCo2eqEmissions
                   isSuccess={isSuccess}
                   value={value}
                   descriptionDisplayMode="tooltip"
@@ -96,7 +96,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
               ) : null;
             case "nonContaminatedSurfaceArea":
               return displayEnvironmentCards ? (
-                <ImpactSynthesisNonContaminatedSurfaceArea
+                <ImpactSummaryNonContaminatedSurfaceArea
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -104,7 +104,7 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
               ) : null;
             case "permeableSurfaceArea":
               return displayEnvironmentCards ? (
-                <ImpactSynthesisPermeableSurfaceArea
+                <ImpactSummaryPermeableSurfaceArea
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -112,14 +112,14 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
               ) : null;
             case "householdsPoweredByRenewableEnergy":
               return displayEnvironmentCards ? (
-                <ImpactSynthesisHouseholdsPoweredByRenewableEnergy
+                <ImpactSummaryHouseholdsPoweredByRenewableEnergy
                   value={value}
                   descriptionDisplayMode="tooltip"
                 />
               ) : null;
             case "localPropertyValueIncrease":
               return displayEconomicCards ? (
-                <ImpactSynthesisLocalPropertyValueIncrease
+                <ImpactSummaryLocalPropertyValueIncrease
                   value={value}
                   descriptionDisplayMode="tooltip"
                 />
@@ -130,4 +130,4 @@ const ImpactSynthesisView = ({ categoryFilter, syntheticImpactsList }: Props) =>
   );
 };
 
-export default ImpactSynthesisView;
+export default ImpactSummaryView;

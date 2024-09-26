@@ -8,7 +8,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisTaxesIncome = ({ value, isSuccess, descriptionDisplayMode }: Props) => {
+const ImpactSummaryTaxesIncome = ({ value, isSuccess, descriptionDisplayMode }: Props) => {
   if (isSuccess) {
     return (
       <KeyImpactIndicatorCard
@@ -30,4 +30,4 @@ const ImpactSynthesisTaxesIncome = ({ value, isSuccess, descriptionDisplayMode }
   );
 };
 
-export default ImpactSynthesisTaxesIncome;
+export default ImpactSummaryTaxesIncome;

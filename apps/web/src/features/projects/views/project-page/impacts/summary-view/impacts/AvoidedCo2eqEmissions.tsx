@@ -10,7 +10,7 @@ type Props = {
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
-const ImpactSynthesisAvoidedCo2eqEmissions = ({
+const ImpactSummaryAvoidedCo2eqEmissions = ({
   value,
   isSuccess,
   descriptionDisplayMode,
@@ -45,4 +45,4 @@ const ImpactSynthesisAvoidedCo2eqEmissions = ({
   );
 };
 
-export default ImpactSynthesisAvoidedCo2eqEmissions;
+export default ImpactSummaryAvoidedCo2eqEmissions;

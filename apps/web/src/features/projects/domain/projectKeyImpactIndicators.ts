@@ -1,8 +1,6 @@
-import { SyntheticImpact } from "../application/projectImpactsSynthetics.selectors";
+import { KeyImpactIndicatorData } from "../application/projectKeyImpactIndicators.selectors";
 
 export type ProjectOverallImpact = "strong_negative" | "negative" | "positive" | "strong_positive";
-
-type ProjectKeyImpactIndicators = SyntheticImpact;
 
 export const isProjectOverallImpactPositive = (
   projectOverallImpact: ProjectOverallImpact,
@@ -10,11 +8,11 @@ export const isProjectOverallImpactPositive = (
   return projectOverallImpact === "positive" || projectOverallImpact === "strong_positive";
 };
 
-const isKeyIndicatorPositive = (keyIndicator: ProjectKeyImpactIndicators): boolean =>
+const isKeyIndicatorPositive = (keyIndicator: KeyImpactIndicatorData): boolean =>
   keyIndicator.isSuccess;
 
 export const getProjectOverallImpact = (
-  projectKeyImpactIndicators: ProjectKeyImpactIndicators[],
+  projectKeyImpactIndicators: KeyImpactIndicatorData[],
 ): ProjectOverallImpact => {
   const projectOverallMonetaryBalance = projectKeyImpactIndicators.find((keyIndicator) => {
     return keyIndicator.name === "projectImpactBalance";
@@ -62,8 +60,8 @@ const STRONG_POSITIVE_ORDER_PRIORITY = [
   "localPropertyValueIncrease",
 ] as const;
 export const getMainKeyImpactIndicators = (
-  projectKeyImpactIndicators: ProjectKeyImpactIndicators[],
-): ProjectKeyImpactIndicators[] => {
+  projectKeyImpactIndicators: KeyImpactIndicatorData[],
+): KeyImpactIndicatorData[] => {
   const overallImpact = getProjectOverallImpact(projectKeyImpactIndicators);
   const keyIndicatorsToSort = isProjectOverallImpactPositive(overallImpact)
     ? projectKeyImpactIndicators.filter(isKeyIndicatorPositive)
