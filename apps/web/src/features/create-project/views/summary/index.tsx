@@ -1,5 +1,6 @@
 import { revertFinalSummaryStep } from "../../application/createProject.reducer";
 import { saveReconversionProject } from "../../application/saveReconversionProject.action";
+import { SoilsCarbonStorageResult } from "../../application/soilsCarbonStorage.actions";
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -7,6 +8,11 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 function ProjectionCreationDataSummaryContainer() {
   const projectData = useAppSelector((state) => state.projectCreation.projectData);
   const siteData = useAppSelector((state) => state.projectCreation.siteData);
+
+  const { current: siteSoilsCarbonStorage, projected: projectSoilsCarbonStorage } = useAppSelector(
+    (state) => state.projectSoilsCarbonStorage,
+  ) as { current?: SoilsCarbonStorageResult; projected?: SoilsCarbonStorageResult };
+
   const dispatch = useAppDispatch();
 
   const onNext = () => {
@@ -31,6 +37,7 @@ function ProjectionCreationDataSummaryContainer() {
         photovoltaicExpectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction ?? 0,
         photovoltaicContractDuration: projectData.photovoltaicContractDuration ?? 0,
         soilsDistribution: projectData.soilsDistribution ?? {},
+        soilsCarbonStorage: projectSoilsCarbonStorage,
         projectDeveloper: projectData.projectDeveloper?.name,
         futureOwner: projectData.futureSiteOwner?.name,
         futureOperator: projectData.futureOperator?.name,
@@ -55,6 +62,8 @@ function ProjectionCreationDataSummaryContainer() {
       siteData={{
         surfaceArea: siteData?.surfaceArea ?? 0,
         isFriche: siteData?.isFriche ?? false,
+        soilsDistribution: siteData?.soilsDistribution ?? {},
+        soilsCarbonStorage: siteSoilsCarbonStorage,
       }}
     />
   );

@@ -1,31 +1,16 @@
-import { ReactNode } from "react";
-import { fr } from "@codegouvfr/react-dsfr";
-import Accordion from "@codegouvfr/react-dsfr/Accordion";
 import { typedObjectEntries } from "shared";
 import { SiteFeatures } from "../domain/siteFeatures";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
 import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { sumList, sumObjectValues } from "@/shared/services/sum/sum";
-import classNames from "@/shared/views/clsx";
+import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
+import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
+import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
+import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 
 type Props = SiteFeatures;
-
-type DataLineProps = {
-  label: ReactNode;
-  value: ReactNode;
-  className?: string;
-};
-function DataLine({ label, value, className = "fr-my-2w" }: DataLineProps) {
-  return (
-    <div className={classNames(className, "tw-flex", "tw-justify-between")}>
-      <dd className="fr-p-0">{label}</dd>
-      <dt className="tw-text-right">{value}</dt>
-    </div>
-  );
-}
 
 export default function SiteFeaturesList(siteFeatures: Props) {
   const siteManagementExpenses = siteFeatures.expenses.filter((e) =>
@@ -36,35 +21,39 @@ export default function SiteFeaturesList(siteFeatures: Props) {
   );
   return (
     <>
-      <Accordion label="Adresse" defaultExpanded>
-        <dl>
-          <DataLine label={<strong>Adresse du site</strong>} value={siteFeatures.address} />
-        </dl>
-      </Accordion>
-      <Accordion label="Sols" defaultExpanded>
-        <dl>
-          <DataLine
-            label={<strong>Superficie totale du site</strong>}
-            value={<strong>{formatSurfaceArea(siteFeatures.surfaceArea)}</strong>}
-            className="fr-mt-2w fr-mb-1w"
-          />
-        </dl>
-        <dl className="fr-ml-2w">
-          {typedObjectEntries(siteFeatures.soilsDistribution).map(([soilType, surfaceArea]) => {
-            return (
-              <DataLine
-                label={getLabelForSoilType(soilType)}
-                value={formatSurfaceArea(surfaceArea ?? 0)}
-                key={soilType}
-                className="fr-my-1w"
-              />
-            );
-          })}
-        </dl>
-      </Accordion>
+      <Section title="📍 Localisation">
+        <DataLine label={<strong>Adresse du site</strong>} value={siteFeatures.address} />
+      </Section>
+      <Section title="🌾️ Sols">
+        <DataLine
+          label={<strong>Superficie totale du site</strong>}
+          value={<strong>{formatSurfaceArea(siteFeatures.surfaceArea)}</strong>}
+        />
+        <div className="tw-flex tw-flex-col tw-items-center md:tw-items-start md:tw-flex-row md:tw-justify-between">
+          <div className="md:tw-w-1/3">
+            <SurfaceAreaPieChart
+              soilsDistribution={siteFeatures.soilsDistribution}
+              customHeight="200px"
+              noLabels
+            />
+          </div>
+
+          <div className="tw-w-full">
+            {typedObjectEntries(siteFeatures.soilsDistribution).map(([soilType, surfaceArea]) => {
+              return (
+                <DataLine
+                  label={<SoilTypeLabelWithColorSquare soilType={soilType} />}
+                  value={formatSurfaceArea(surfaceArea ?? 0)}
+                  key={soilType}
+                />
+              );
+            })}
+          </div>
+        </div>
+      </Section>
       {siteFeatures.isFriche && (
-        <Accordion label="Pollution" defaultExpanded>
-          <dl>
+        <>
+          <Section title="☣️ Pollution">
             <DataLine
               label={<strong>Superficie polluée</strong>}
               value={
@@ -73,14 +62,35 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                   : "Pas de pollution"
               }
             />
-          </dl>
-        </Accordion>
+          </Section>
+          <Section title="💥 Accidents">
+            <>
+              <DataLine
+                label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
+                value={<strong>{sumObjectValues(siteFeatures.accidents) || "Aucun"}</strong>}
+              />
+              {sumObjectValues(siteFeatures.accidents) > 0 && (
+                <div className="fr-ml-2w">
+                  <DataLine
+                    label="Blessés légers"
+                    value={siteFeatures.accidents.minorInjuries ?? "Non renseigné"}
+                  />
+                  <DataLine
+                    label="Blessés graves"
+                    value={siteFeatures.accidents.severyInjuries ?? "Non renseigné"}
+                  />
+                  <DataLine
+                    label="Tués"
+                    value={siteFeatures.accidents.accidentsDeaths ?? "Non renseigné"}
+                  />
+                </div>
+              )}
+            </>
+          </Section>
+        </>
       )}
-      <Accordion
-        label={siteFeatures.isFriche ? "Gestion de la friche" : "Gestion du site"}
-        defaultExpanded
-      >
-        <dl>
+      <Section title={siteFeatures.isFriche ? "⚙️ Gestion de la friche" : "⚙️ Gestion du site"}>
+        <>
           <DataLine label={<strong>Propriétaire actuel</strong>} value={siteFeatures.ownerName} />
           {siteFeatures.tenantName && (
             <DataLine
@@ -98,40 +108,12 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                 : "Non renseigné"
             }
           />
-        </dl>
-        {siteFeatures.isFriche && (
-          <dl>
-            <DataLine
-              label={<strong>Accidents survenus sur le site depuis 5 ans</strong>}
-              value={<strong>{sumObjectValues(siteFeatures.accidents) || "Aucun"}</strong>}
-              className="fr-mt-2w fr-mb-1w"
-            />
-            {sumObjectValues(siteFeatures.accidents) > 0 && (
-              <div className="fr-ml-2w">
-                <DataLine
-                  label="Blessés légers"
-                  value={siteFeatures.accidents.minorInjuries ?? "Non renseigné"}
-                  className="fr-my-1w"
-                />
-                <DataLine
-                  label="Blessés graves"
-                  value={siteFeatures.accidents.severyInjuries ?? "Non renseigné"}
-                  className="fr-my-1w"
-                />
-                <DataLine
-                  label="Tués"
-                  value={siteFeatures.accidents.accidentsDeaths ?? "Non renseigné"}
-                  className="fr-my-1w"
-                />
-              </div>
-            )}
-          </dl>
-        )}
-        <dl>
+        </>
+        <>
           <DataLine
             label={
               <strong>
-                💸 Dépenses annuelles {siteFeatures.isFriche ? "de la friche" : "du site"}
+                Dépenses annuelles {siteFeatures.isFriche ? "de la friche" : "du site"}
               </strong>
             }
             value={
@@ -143,11 +125,14 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                 "Aucun"
               )
             }
-            className="fr-mb-1w fr-mt-2w"
           />
           {siteManagementExpenses.length > 0 && (
             <>
-              <p className={fr.cx("fr-ml-2w", "fr-my-1w", "fr-text--bold")}>Gestion du site</p>
+              <DataLine
+                className="fr-ml-2w"
+                label={<strong>Gestion du site</strong>}
+                value={`${sumList(siteManagementExpenses.map(({ amount }) => amount))} €`}
+              />
               {siteManagementExpenses.map(({ purpose, amount }) => {
                 return (
                   <DataLine
@@ -162,40 +147,38 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           )}
           {fricheSpecificExpenses.length > 0 && (
             <>
-              <p className={fr.cx("fr-ml-2w", "fr-my-1w", "fr-text--bold")}>Sécurisation du site</p>
+              <DataLine
+                className="fr-ml-2w"
+                label={<strong>Sécurisation du site</strong>}
+                value={`${sumList(fricheSpecificExpenses.map(({ amount }) => amount))} €`}
+              />
               {fricheSpecificExpenses.map(({ amount, purpose }) => {
                 return (
                   <DataLine
                     label={getLabelForExpensePurpose(purpose)}
                     value={`${formatNumberFr(amount)} €`}
-                    className="fr-ml-4w fr-my-1w"
+                    className="fr-ml-4w "
                     key={purpose}
                   />
                 );
               })}
             </>
           )}
-        </dl>
-      </Accordion>
-      <Accordion label="Dénomination" defaultExpanded>
+        </>
+      </Section>
+      <Section title="✍ Dénomination">
         {siteFeatures.fricheActivity ? (
-          <dl>
-            <DataLine
-              label={<strong>Type de friche</strong>}
-              value={getFricheActivityLabel(siteFeatures.fricheActivity)}
-            />
-          </dl>
-        ) : null}
-        <dl>
-          <DataLine label={<strong>Nom du site</strong>} value={siteFeatures.name} />
-        </dl>
-        <dl>
           <DataLine
-            label={<strong>Description</strong>}
-            value={siteFeatures.description || "Pas de description"}
+            label={<strong>Type de friche</strong>}
+            value={getFricheActivityLabel(siteFeatures.fricheActivity)}
           />
-        </dl>
-      </Accordion>
+        ) : null}
+        <DataLine label={<strong>Nom du site</strong>} value={siteFeatures.name} />
+        <DataLine
+          label={<strong>Description</strong>}
+          value={siteFeatures.description || "Pas de description"}
+        />
+      </Section>
     </>
   );
 }

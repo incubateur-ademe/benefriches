@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import highchartsVariablePie from "highcharts/modules/variable-pie";
 import HighchartsReact from "highcharts-react-official";
@@ -17,9 +16,15 @@ type Props = {
     carbonStorage: number;
     carbonStorageInTonPerSquareMeters: number;
   }[];
+  customHeight?: number | string;
+  noLabels?: boolean;
 };
 
-const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
+const SoilsCarbonStorageChart = ({
+  soilsCarbonStorage,
+  customHeight = "300px",
+  noLabels,
+}: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
 
   const soilsData = soilsCarbonStorage.filter(({ surfaceArea }) => surfaceArea > 0);
@@ -28,6 +33,7 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
     title: { text: "" },
     chart: {
       styledMode: true,
+      height: customHeight,
     },
     credits: { enabled: false },
     tooltip: {
@@ -38,7 +44,7 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
         "Carbone stockable / m² : {point.z:.3f} t",
     },
     plotOptions: {
-      variablepie: { cursor: "pointer" },
+      variablepie: { cursor: "pointer", dataLabels: { enabled: !noLabels } },
     },
     series: [
       {
@@ -56,17 +62,15 @@ const SoilsCarbonStorageChart = ({ soilsCarbonStorage }: Props) => {
   };
 
   return (
-    <div className={fr.cx("fr-container", "fr-py-4w")}>
-      <HighchartsCustomColorsWrapper
-        colors={soilsData.map((soilData) => getColorForCarbonStorageSoilType(soilData.type))}
-      >
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={variablePieChartOptions}
-          ref={variablePieChartRef}
-        />
-      </HighchartsCustomColorsWrapper>
-    </div>
+    <HighchartsCustomColorsWrapper
+      colors={soilsData.map((soilData) => getColorForCarbonStorageSoilType(soilData.type))}
+    >
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={variablePieChartOptions}
+        ref={variablePieChartRef}
+      />
+    </HighchartsCustomColorsWrapper>
   );
 };
 

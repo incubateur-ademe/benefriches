@@ -3,7 +3,6 @@ import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { SoilsDistribution, typedObjectEntries } from "shared";
-import classNames from "../../clsx";
 import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
 
 import { getColorForSoilType } from "@/shared/domain/soils";
@@ -13,9 +12,16 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 type Props = {
   soilsDistribution: SoilsDistribution;
   remainderSurfaceArea?: number;
+  customHeight?: number | string;
+  noLabels?: boolean;
 };
 
-const SurfaceAreaPieChart = ({ soilsDistribution, remainderSurfaceArea }: Props) => {
+const SurfaceAreaPieChart = ({
+  soilsDistribution,
+  remainderSurfaceArea,
+  customHeight = "300px",
+  noLabels = false,
+}: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
   const soilsEntries = typedObjectEntries(soilsDistribution).filter(
     ([, surfaceArea]) => (surfaceArea as number) > 0,
@@ -41,12 +47,13 @@ const SurfaceAreaPieChart = ({ soilsDistribution, remainderSurfaceArea }: Props)
     title: { text: "" },
     chart: {
       styledMode: true,
+      height: customHeight,
     },
     credits: { enabled: false },
     tooltip: {
       pointFormat: `Superficie : <strong>{point.y} ${SQUARE_METERS_HTML_SYMBOL}</strong> ({point.percentage:.2f}%)`,
     },
-    plotOptions: { pie: { cursor: "pointer" } },
+    plotOptions: { pie: { cursor: "pointer", dataLabels: { enabled: !noLabels } } },
     series: [
       {
         name: "Superficie",
@@ -57,15 +64,13 @@ const SurfaceAreaPieChart = ({ soilsDistribution, remainderSurfaceArea }: Props)
   };
 
   return (
-    <div className={classNames(fr.cx("fr-container", "fr-py-4w"))}>
-      <HighchartsCustomColorsWrapper colors={data.map(({ color }) => color)}>
-        <HighchartsReact
-          highcharts={Highcharts}
-          options={variablePieChartOptions}
-          ref={variablePieChartRef}
-        />
-      </HighchartsCustomColorsWrapper>
-    </div>
+    <HighchartsCustomColorsWrapper colors={data.map(({ color }) => color)}>
+      <HighchartsReact
+        highcharts={Highcharts}
+        options={variablePieChartOptions}
+        ref={variablePieChartRef}
+      />
+    </HighchartsCustomColorsWrapper>
   );
 };
 

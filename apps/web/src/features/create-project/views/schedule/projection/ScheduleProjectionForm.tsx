@@ -1,9 +1,8 @@
 import { useForm } from "react-hook-form";
 import Input from "@codegouvfr/react-dsfr/Input";
-import { formatDuration, interval, intervalToDuration } from "date-fns";
-import { fr } from "date-fns/locale";
 
 import { WorksSchedule } from "@/shared/domain/reconversionProject";
+import { getFormattedDuration } from "@/shared/services/dates";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
@@ -22,15 +21,6 @@ export type FormValues = {
   reinstatementSchedule?: WorksSchedule;
   photovoltaicInstallationSchedule?: WorksSchedule;
   firstYearOfOperation?: number;
-};
-
-const getFormattedDuration = (startDate: Date, endDate: Date) => {
-  const duration = intervalToDuration(interval(new Date(startDate), new Date(endDate)));
-  return formatDuration(duration, {
-    format: ["years", "months"],
-    locale: fr,
-    delimiter: " et ",
-  });
 };
 
 const FormattedDuration = ({ startDate, endDate }: WorksSchedule) => {

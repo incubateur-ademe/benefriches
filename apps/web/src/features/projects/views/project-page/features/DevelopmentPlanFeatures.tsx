@@ -1,11 +1,11 @@
 import { typedObjectEntries } from "shared";
-import DataLine from "./DataLine";
-import SectionTitle from "./SectionTitle";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { getLabelForMixedUseNeighbourhoodSpace } from "@/shared/domain/mixedUseNeighbourhood";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { sumList } from "@/shared/services/sum/sum";
+import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
+import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
 type Props = ProjectFeatures["developmentPlan"];
 
@@ -13,8 +13,7 @@ export default function DevelopmentPlanFeatures(props: Props) {
   switch (props.type) {
     case "PHOTOVOLTAIC_POWER_PLANT":
       return (
-        <section className="tw-mb-10">
-          <SectionTitle>⚙️ Paramètres du projet</SectionTitle>
+        <Section title="⚙️ Paramètres du projet">
           <DataLine
             label={<strong>Puissance d'installation</strong>}
             value={`${formatNumberFr(props.electricalPowerKWc)} kWc`}
@@ -31,12 +30,11 @@ export default function DevelopmentPlanFeatures(props: Props) {
             label={<strong>Durée du contrat de revente d'énergie</strong>}
             value={`${formatNumberFr(props.contractDuration)} ans`}
           />
-        </section>
+        </Section>
       );
     case "MIXED_USE_NEIGHBOURHOOD":
       return (
-        <section className="tw-mb-10">
-          <SectionTitle>🏘 Espaces du quartier</SectionTitle>
+        <Section title="🏘 Espaces du quartier">
           <DataLine
             label={<strong>Superficie totale</strong>}
             value={formatSurfaceArea(sumList(Object.values(props.spaces)))}
@@ -51,7 +49,7 @@ export default function DevelopmentPlanFeatures(props: Props) {
               />
             );
           })}
-        </section>
+        </Section>
       );
   }
 }
