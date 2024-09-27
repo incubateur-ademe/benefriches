@@ -1,6 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
-  Actor,
   AvoidedFricheExpensesImpact,
   AvoidedTrafficAccidentsImpact,
   EcosystemServicesImpact,
@@ -28,7 +27,7 @@ export type SocioEconomicImpactByCategory = {
   impacts: {
     name: SocioEconomicMainImpactName;
     actors: {
-      name: Actor;
+      name: string;
       value: number;
       details?: {
         name: SocioEconomicDetailsName;
@@ -434,11 +433,8 @@ const getGroupedByImpactName = (impacts: { amount: number; impact: ImpactName }[
   };
 };
 
-type ActorName =
-  | Exclude<Actor, "local_residents" | "local_workers" | "local_companies">
-  | "local_people_or_companies";
 export type SocioEconomicImpactByActor = {
-  name: ActorName;
+  name: string;
   total: number;
   impacts: { name: SocioEconomicImpactName; value: number }[];
 }[];
@@ -473,9 +469,7 @@ export const getSocioEconomicProjectImpactsByActor = createSelector(
         : impact.actor,
     }));
 
-    const distinctActors = Array.from(
-      new Set(mergedActors.map(({ actor }) => actor)),
-    ) as ActorName[];
+    const distinctActors = Array.from(new Set(mergedActors.map(({ actor }) => actor)));
 
     const byActor = distinctActors.map((actor) => {
       const impacts = mergedActors.filter((impact) => impact.actor === actor);

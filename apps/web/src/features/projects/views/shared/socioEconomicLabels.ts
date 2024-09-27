@@ -1,13 +1,4 @@
-import {
-  SocioEconomicImpactByActor,
-  SocioEconomicImpactByCategory,
-} from "../../application/projectImpactsSocioEconomic.selectors";
-
-export const getActorLabel = (
-  label:
-    | SocioEconomicImpactByActor[number]["name"]
-    | SocioEconomicImpactByCategory["impacts"][number]["actors"][number]["name"],
-) => {
+export const getActorLabel = (label: string) => {
   switch (label) {
     case "community":
       return "Collectivité";
