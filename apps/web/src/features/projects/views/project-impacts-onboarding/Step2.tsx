@@ -15,7 +15,7 @@ export default function Step2({ onNextClick, onBackClick }: Props) {
           src="/img/pictograms/project-impacts-onboarding/beneficiaries.svg"
           aria-hidden="true"
           alt="pictogramme bénéficiaires des impacts"
-          width="384px"
+          width="100%"
         />
       </div>
       <div>

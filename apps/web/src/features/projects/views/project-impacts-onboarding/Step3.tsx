@@ -15,7 +15,7 @@ export default function Step2({ onNextClick, onBackClick }: Props) {
           src="/img/pictograms/project-impacts-onboarding/monetary-gains.svg"
           aria-hidden="true"
           alt="pictogramme gains en nature monétarisés"
-          width="384px"
+          width="100%"
         />
       </div>
       <div>

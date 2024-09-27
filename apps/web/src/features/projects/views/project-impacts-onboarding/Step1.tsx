@@ -79,7 +79,7 @@ export default function Step1({
           src={getOverallImpactIllustrationUrl(projectOverallImpact)}
           aria-hidden="true"
           alt="pictogramme curseur des impacts"
-          width="384px"
+          width="100%"
         />
       </div>
       <div>
