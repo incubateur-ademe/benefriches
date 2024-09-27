@@ -1,4 +1,12 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from "@nestjs/common";
+import {
+  Body,
+  Controller,
+  Get,
+  InternalServerErrorException,
+  NotFoundException,
+  Param,
+  Post,
+} from "@nestjs/common";
 import { ZodValidationPipe } from "nestjs-zod";
 import { z } from "zod";
 import {
@@ -32,9 +40,9 @@ export class SitesController {
       return site;
     } catch (err) {
       if (err instanceof SiteNotFoundError) {
-        throw new HttpException(err.message, HttpStatus.NOT_FOUND);
+        throw new NotFoundException(err.message);
       }
-      throw new HttpException("Internal unknown server error", HttpStatus.INTERNAL_SERVER_ERROR);
+      throw new InternalServerErrorException(err);
     }
   }
 }

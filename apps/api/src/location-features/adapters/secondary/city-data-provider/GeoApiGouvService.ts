@@ -1,11 +1,5 @@
 import { HttpService } from "@nestjs/axios";
-import {
-  BadRequestException,
-  ForbiddenException,
-  HttpException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { AxiosError } from "axios";
 import { catchError, map } from "rxjs";
 import { CityDataProvider } from "src/location-features/core/gateways/CityDataProvider";
@@ -35,7 +29,7 @@ export class GeoApiGouvService implements CityDataProvider {
           const superficie = result.surface;
           const population = result.population;
           if (!population || !superficie) {
-            throw new NotFoundException(`No data found for cityCode: ${cityCode}`);
+            throw new Error(`No data found for cityCode: ${cityCode}`);
           }
           return City.create({
             cityCode,
@@ -45,20 +39,12 @@ export class GeoApiGouvService implements CityDataProvider {
         }),
       )
       .pipe(
-        catchError((error: AxiosError) => {
-          if (!error.response) {
-            throw new HttpException("Something went wrong while setting up the request", 500);
+        catchError((axiosError: AxiosError) => {
+          const err = new Error(`Error response from GeoApiGouv API: ${axiosError.message}`);
+          if (axiosError.response?.data) {
+            err.message.concat(` - ${axiosError.response.data as string}`);
           }
-          switch (error.response.status) {
-            case 400:
-              throw new BadRequestException(error.response.data);
-            case 403:
-              throw new ForbiddenException(error.response.data);
-            case 404:
-              throw new NotFoundException(error.response.data);
-            default:
-              throw new HttpException(error.response.data as string, error.response.status);
-          }
+          throw err;
         }),
       );
   }

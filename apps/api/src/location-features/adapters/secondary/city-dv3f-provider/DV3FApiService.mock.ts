@@ -1,4 +1,3 @@
-import { NotFoundException } from "@nestjs/common";
 import { Observable } from "rxjs";
 import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
 
@@ -8,7 +7,7 @@ export class MockDV3FApiService implements CityPropertyValueProvider {
   ): Observable<{ medianPricePerSquareMeters: number; referenceYear: string }> {
     return new Observable((subscriber) => {
       if (cityCode === "wrong") {
-        throw new NotFoundException();
+        throw new Error();
       }
 
       subscriber.next({

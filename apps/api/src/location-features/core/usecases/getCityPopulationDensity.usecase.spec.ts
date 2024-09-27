@@ -1,4 +1,3 @@
-import { BadRequestException, NotFoundException } from "@nestjs/common";
 import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
 import { GetCityPopulationDensityUseCase } from "./getCityPopulationDensity.usecase";
 
@@ -9,17 +8,10 @@ describe("GetCityPopulationDensity use case", () => {
     cityDataProvider = new MockLocalDataInseeService();
   });
 
-  test("it should throw BadRequestException if no cityCode is provided", async () => {
-    const usecase = new GetCityPopulationDensityUseCase(cityDataProvider);
-    await expect(() => usecase.execute({ cityCode: "" })).rejects.toThrow(BadRequestException);
-  });
-
-  test("it should throw NotFoundException if a wrong cityCode is provided", async () => {
+  test("it should throw Error if a wrong cityCode is provided", async () => {
     const usecase = new GetCityPopulationDensityUseCase(cityDataProvider);
 
-    await expect(() => usecase.execute({ cityCode: "Wrong cityCode" })).rejects.toThrow(
-      NotFoundException,
-    );
+    await expect(() => usecase.execute({ cityCode: "Wrong cityCode" })).rejects.toThrow(Error);
   });
 
   test("it should compute population density for Toulouse", async () => {
@@ -47,6 +39,6 @@ describe("GetCityPopulationDensity use case", () => {
 
   test("it should throw error if density is not computable", async () => {
     const usecase = new GetCityPopulationDensityUseCase(cityDataProvider);
-    await expect(() => usecase.execute({ cityCode: "01039" })).rejects.toThrow(NotFoundException);
+    await expect(() => usecase.execute({ cityCode: "01039" })).rejects.toThrow(Error);
   });
 });

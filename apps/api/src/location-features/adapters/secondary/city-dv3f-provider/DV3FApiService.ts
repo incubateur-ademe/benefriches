@@ -1,11 +1,5 @@
 import { HttpService } from "@nestjs/axios";
-import {
-  BadRequestException,
-  ForbiddenException,
-  HttpException,
-  Injectable,
-  NotFoundException,
-} from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { AxiosError } from "axios";
 import { catchError, map } from "rxjs";
 import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
@@ -39,9 +33,6 @@ export class DV3FApiGouvService implements CityPropertyValueProvider {
       .pipe(
         map((res) => {
           const { results } = res.data as Response;
-          if (results.length === 0) {
-            throw new NotFoundException(`No data found for cityCode: ${cityCode}`);
-          }
 
           const lastData = results
             .reverse()
@@ -51,7 +42,7 @@ export class DV3FApiGouvService implements CityPropertyValueProvider {
             );
 
           if (!lastData) {
-            throw new NotFoundException(`No data found for cityCode: ${cityCode}`);
+            throw new Error(`No data found for cityCode: ${cityCode}`);
           }
 
           const {
@@ -76,7 +67,7 @@ export class DV3FApiGouvService implements CityPropertyValueProvider {
           }
 
           if (medianPricePerSquareMeters === 0) {
-            throw new NotFoundException(`No data found for cityCode: ${cityCode}`);
+            throw new Error(`No data found for cityCode: ${cityCode}`);
           }
 
           return {
@@ -86,20 +77,12 @@ export class DV3FApiGouvService implements CityPropertyValueProvider {
         }),
       )
       .pipe(
-        catchError((error: AxiosError) => {
-          if (!error.response) {
-            throw new HttpException("Something went wrong while setting up the request", 500);
+        catchError((axiosError: AxiosError) => {
+          const err = new Error(`Error response from GeoApiGouv API: ${axiosError.message}`);
+          if (axiosError.response?.data) {
+            err.message.concat(` - ${axiosError.response.data as string}`);
           }
-          switch (error.response.status) {
-            case 400:
-              throw new BadRequestException(error.response.data);
-            case 403:
-              throw new ForbiddenException(error.response.data);
-            case 404:
-              throw new NotFoundException(error.response.data);
-            default:
-              throw new HttpException(error.response.data as string, error.response.status);
-          }
+          throw err;
         }),
       );
   }

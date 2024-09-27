@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, NotFoundException } from "@nestjs/common";
+import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
 import {
@@ -75,10 +75,6 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
     cityCode: string,
     soilCategories: RepositorySoilCategoryType[],
   ): Promise<CarbonStorage[]> {
-    if (cityCode.length === 0) {
-      throw new BadRequestException();
-    }
-
     // Get zpc, region, code_groupeser...
     const sqlCity = await this.sqlConnection<CityProps>("cities")
       .select()
@@ -86,7 +82,7 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
       .first();
 
     if (!sqlCity) {
-      throw new NotFoundException();
+      throw new Error(`City with code ${cityCode} not found in INSEE data`);
     }
 
     const city = City.create(sqlCity);

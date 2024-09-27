@@ -1,10 +1,4 @@
 import { HttpService } from "@nestjs/axios";
-import {
-  BadRequestException,
-  ForbiddenException,
-  HttpException,
-  NotFoundException,
-} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { AxiosError } from "axios";
 import { catchError, map } from "rxjs";
@@ -70,7 +64,7 @@ export class LocalDataInseeService implements CityDataProvider {
           );
           const population = result.Cellule.find((cellule) => cellule.Mesure["@code"] === "PMUN20");
           if (!population || !superficie) {
-            throw new NotFoundException(`No data found for cityCode: ${cityCode}`);
+            throw new Error(`No data found for cityCode: ${cityCode}`);
           }
           return City.create({
             cityCode,
@@ -80,20 +74,14 @@ export class LocalDataInseeService implements CityDataProvider {
         }),
       )
       .pipe(
-        catchError((error: AxiosError) => {
-          if (!error.response) {
-            throw new HttpException("Something went wrong while setting up the request", 500);
+        catchError((axiosError: AxiosError) => {
+          const err = new Error(
+            `Error response from INSEE Données Locales API: ${axiosError.message}`,
+          );
+          if (axiosError.response?.data) {
+            err.message.concat(` - ${axiosError.response.data as string}`);
           }
-          switch (error.response.status) {
-            case 400:
-              throw new BadRequestException(error.response.data);
-            case 403:
-              throw new ForbiddenException(error.response.data);
-            case 404:
-              throw new NotFoundException(error.response.data);
-            default:
-              throw new HttpException(error.response.data as string, error.response.status);
-          }
+          throw err;
         }),
       );
   }

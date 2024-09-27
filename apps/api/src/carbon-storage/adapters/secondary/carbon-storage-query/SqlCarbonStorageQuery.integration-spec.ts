@@ -19,8 +19,8 @@ describe("SqlCarbonStorageQuery integration", () => {
     await sqlConnection.destroy();
   });
 
-  test("returns error if no city code is provided", async () => {
-    await expect(() => sqlCarbonStorageQuery.getCarbonStorageForCity("", [])).rejects.toThrow();
+  test("throws error if no city code is provided", async () => {
+    await expect(() => sqlCarbonStorageQuery.getCarbonStorageForCity("1234", [])).rejects.toThrow();
   });
 
   test("returns values for all soil categories if no category is provided", async () => {

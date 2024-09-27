@@ -1,4 +1,3 @@
-import { BadRequestException } from "@nestjs/common";
 import { CarbonStorageQuery } from "src/carbon-storage/core/gateways/CarbonStorageQuery";
 import {
   CarbonStorage,
@@ -278,19 +277,11 @@ export class LocalCarbonStorageQuery implements CarbonStorageQuery {
     cityCode: "01026" | "01027",
     soils: RepositorySoilCategoryType[],
   ): Promise<CarbonStorage[]> {
-    if (cityCode.length === 0) {
-      throw new BadRequestException();
-    }
-
     const city = CITIES[cityCode] as CarbonStorage[];
 
-    try {
-      const result = await Promise.resolve(
-        city.filter((entry) => soils.includes(entry.soilCategory)),
-      );
-      return result;
-    } catch {
-      throw new BadRequestException();
-    }
+    const result = await Promise.resolve(
+      city.filter((entry) => soils.includes(entry.soilCategory)),
+    );
+    return result;
   }
 }
