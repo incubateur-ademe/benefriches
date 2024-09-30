@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+
 import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
 import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
@@ -6,6 +7,7 @@ import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projec
 import { InMemorySiteImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/site-impacts/InMemorySiteImpactsQuery";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
   ComputeReconversionProjectImpactsUseCase,

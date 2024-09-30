@@ -1,4 +1,5 @@
 import { SoilType } from "shared";
+
 import { RepositorySoilCategoryType } from "./carbonStorage";
 
 export const mapSoilTypeToRepositorySoilCategory = (

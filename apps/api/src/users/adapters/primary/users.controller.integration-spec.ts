@@ -5,9 +5,11 @@ import { Knex } from "knex";
 import { z } from "nestjs-zod/z";
 import { Server } from "net";
 import supertest from "supertest";
+
 import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { buildExhaustiveUserProps, buildMinimalUserProps } from "src/users/core/model/user.mock";
+
 import { createUserBodychema } from "./users.controller";
 
 type BadRequestResponseBody = {

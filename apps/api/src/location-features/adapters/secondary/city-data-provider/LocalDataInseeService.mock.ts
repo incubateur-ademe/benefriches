@@ -1,4 +1,5 @@
 import { Observable } from "rxjs";
+
 import { CityDataProvider } from "src/location-features/core/gateways/CityDataProvider";
 import { City } from "src/location-features/core/models/city";
 

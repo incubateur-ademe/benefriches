@@ -1,4 +1,5 @@
 import { sumListWithKey } from "src/shared-kernel/sum-list/sumList";
+
 import { ReconversionProject } from "../../reconversionProject";
 
 const RENT_PURPOSE_KEY = "rent";

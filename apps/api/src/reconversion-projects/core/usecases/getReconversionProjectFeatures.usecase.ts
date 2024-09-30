@@ -1,4 +1,5 @@
 import { Schedule, SoilsDistribution, SpacesDistribution } from "shared";
+
 import { UseCase } from "src/shared-kernel/usecase";
 
 export type ReconversionProjectFeaturesView = {

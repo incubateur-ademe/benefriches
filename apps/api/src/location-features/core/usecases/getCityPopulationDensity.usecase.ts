@@ -1,4 +1,5 @@
 import { lastValueFrom } from "rxjs";
+
 import { UseCase } from "../../../shared-kernel/usecase";
 import { CityDataProvider } from "../gateways/CityDataProvider";
 

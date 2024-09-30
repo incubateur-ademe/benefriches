@@ -1,4 +1,5 @@
 import { lastValueFrom } from "rxjs";
+
 import { CityDataProvider } from "../gateways/CityDataProvider";
 import { CityPropertyValueProvider } from "../gateways/CityPropertyValueProvider";
 

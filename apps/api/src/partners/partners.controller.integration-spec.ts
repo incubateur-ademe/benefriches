@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { Test } from "@nestjs/testing";
 import { Server } from "net";
 import supertest from "supertest";
+
 import { AppModule } from "src/app.module";
 
 describe("Partners controller", () => {

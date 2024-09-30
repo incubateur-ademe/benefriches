@@ -2,6 +2,7 @@ import fs from "fs";
 import { Knex } from "knex";
 import path from "path";
 import readline from "readline";
+
 import { City, CityProps } from "./../../../../carbon-storage/core/models/city";
 
 /**

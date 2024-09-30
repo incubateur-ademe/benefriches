@@ -1,6 +1,8 @@
 import knex, { Knex } from "knex";
+
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
 import { buildExhaustiveUserProps, buildUser } from "src/users/core/model/user.mock";
+
 import { SqlUserRepository } from "./SqlUserRepository";
 
 describe("SqlSiteRepository integration", () => {

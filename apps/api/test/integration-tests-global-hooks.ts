@@ -1,4 +1,5 @@
 import knex, { Knex } from "knex";
+
 import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexConfig";
 
 global.afterEach(async () => {

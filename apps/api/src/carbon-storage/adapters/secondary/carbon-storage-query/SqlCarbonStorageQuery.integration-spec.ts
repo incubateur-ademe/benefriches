@@ -1,9 +1,11 @@
 import knex, { Knex } from "knex";
+
 import {
   LocalisationCategoryType,
   ReservoirType,
 } from "src/carbon-storage/core/models/carbonStorage";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
+
 import { SqlCarbonStorageQuery } from "./SqlCarbonStorageQuery";
 
 describe("SqlCarbonStorageQuery integration", () => {

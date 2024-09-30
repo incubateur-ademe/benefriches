@@ -1,7 +1,9 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
+
 import { ReconversionProjectsGroupedBySite } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
+
 import { SqlReconversionProjectsListQuery } from "./SqlReconversionProjectsListQuery";
 
 describe("ReconversionProjectsListQuery integration", () => {

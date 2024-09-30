@@ -1,4 +1,5 @@
 import { roundTo2Digits } from "shared";
+
 import { CO2eqMonetaryValueServiceInterface } from "src/reconversion-projects/core/gateways/CO2eqMonetaryValueService";
 
 const CO2_EQ_MONETARY_VALUE_EURO_2020 = 90;

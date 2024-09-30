@@ -1,7 +1,9 @@
 import knex, { Knex } from "knex";
 import { v4 as uuid } from "uuid";
+
 import { SiteImpactsDataView } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
+
 import { SqlSiteImpactsQuery } from "./SqlSiteImpactsQuery";
 
 describe("SqlSiteImpactsQuery integration", () => {

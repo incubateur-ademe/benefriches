@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { User } from "src/users/core/model/user";
 import { UserRepository } from "src/users/core/usecases/createUser.usecase";

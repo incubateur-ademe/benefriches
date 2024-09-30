@@ -1,4 +1,5 @@
 import { Observable } from "rxjs";
+
 import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
 
 export class MockDV3FApiService implements CityPropertyValueProvider {

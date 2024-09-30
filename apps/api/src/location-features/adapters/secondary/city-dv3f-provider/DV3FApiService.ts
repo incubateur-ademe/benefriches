@@ -2,6 +2,7 @@ import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { AxiosError } from "axios";
 import { catchError, map } from "rxjs";
+
 import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
 
 // API Données foncières : https://api.gouv.fr/documentation/api-donnees-foncieres

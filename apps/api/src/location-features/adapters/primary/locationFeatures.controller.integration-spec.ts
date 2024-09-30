@@ -2,9 +2,11 @@ import { INestApplication } from "@nestjs/common";
 import { Test as NestTest } from "@nestjs/testing";
 import { Server } from "net";
 import supertest from "supertest";
+
 import { AppModule } from "src/app.module";
 import { GetCityPopulationDensityUseCase } from "src/location-features/core/usecases/getCityPopulationDensity.usecase";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
+
 import { MockLocalDataInseeService } from "../secondary/city-data-provider/LocalDataInseeService.mock";
 import { MockPhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 import { LocationFeaturesController } from "./locationFeatures.controller";

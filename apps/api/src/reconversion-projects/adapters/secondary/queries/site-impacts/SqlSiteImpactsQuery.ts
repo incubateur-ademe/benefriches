@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+
 import {
   SiteImpactsDataView,
   SiteImpactsQuery,

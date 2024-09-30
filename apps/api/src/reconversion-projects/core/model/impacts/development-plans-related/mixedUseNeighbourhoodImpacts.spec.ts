@@ -1,6 +1,7 @@
 import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
 import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
+
 import {
   getLocalPropertyValueIncreaseRelatedImpacts,
   getTravelRelatedImpacts,

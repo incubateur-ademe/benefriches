@@ -1,4 +1,5 @@
 import { TRANSFER_TAX_PERCENT_PER_TRANSACTION } from "shared";
+
 import { GetInfluenceAreaValuesService } from "../../services/GetInfluenceAreaValuesService";
 
 const FRICHE_REMOVAL_PRICE_RISES = [

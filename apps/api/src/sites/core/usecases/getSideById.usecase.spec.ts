@@ -1,4 +1,5 @@
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
+
 import { GetSiteByIdUseCase, SiteViewModel } from "./getSiteById.usecase";
 
 describe("GetSiteById Use Case", () => {

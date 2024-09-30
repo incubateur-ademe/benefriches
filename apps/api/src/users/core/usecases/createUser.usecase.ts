@@ -1,5 +1,7 @@
 import { z } from "zod";
+
 import { UseCase } from "src/shared-kernel/usecase";
+
 import { User, userSchema } from "../model/user";
 
 export interface UserRepository {

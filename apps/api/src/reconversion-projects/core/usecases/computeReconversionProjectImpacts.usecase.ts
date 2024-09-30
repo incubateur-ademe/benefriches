@@ -1,8 +1,10 @@
 import { Schedule, SoilsDistribution } from "shared";
+
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { sumListWithKey } from "src/shared-kernel/sum-list/sumList";
 import { UseCase } from "src/shared-kernel/usecase";
+
 import {
   AccidentsImpactResult,
   computeAccidentsImpact,

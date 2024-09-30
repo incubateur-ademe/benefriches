@@ -1,5 +1,6 @@
 import { CO2eqMonetaryValueServiceMock } from "src/reconversion-projects/core/gateways/CO2eqMonetaryValueService.mock";
 import { GetInfluenceAreaValuesServiceMock } from "src/reconversion-projects/core/gateways/GetInfluenceAreaValuesService.mock";
+
 import { TravelRelatedImpactsService } from "./TravelRelatedImpactsService";
 
 describe("TravelRelatedImpactsService", () => {

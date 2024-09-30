@@ -1,4 +1,5 @@
 import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
+
 import { GetCityPopulationDensityUseCase } from "./getCityPopulationDensity.usecase";
 
 describe("GetCityPopulationDensity use case", () => {

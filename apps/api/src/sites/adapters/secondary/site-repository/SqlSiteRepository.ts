@@ -2,6 +2,7 @@ import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import { SoilType } from "shared";
 import { v4 as uuid } from "uuid";
+
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
   SqlAddress,

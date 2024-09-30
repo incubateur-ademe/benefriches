@@ -1,4 +1,5 @@
 import { CO2eqMonetaryValueServiceMock } from "src/reconversion-projects/core/gateways/CO2eqMonetaryValueService.mock";
+
 import { getPhotovoltaicProjectSpecificImpacts } from "./photovoltaicPowerPlantImpacts";
 
 describe("Photovoltaic power plant specific impacts", () => {

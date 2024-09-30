@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import knex, { Knex } from "knex";
 import path from "path";
 import { DockerComposeEnvironment, StartedDockerComposeEnvironment } from "testcontainers";
+
 import knexConfig from "../src/shared-kernel/adapters/sql-knex/knexConfig";
 
 const composeFilePath = path.resolve(process.cwd(), "../..");
