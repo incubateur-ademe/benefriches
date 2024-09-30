@@ -1,5 +1,5 @@
-import { typedObjectEntries } from "../object-entries";
 import { isImpermeableSoil, SoilType } from ".";
+import { typedObjectEntries } from "../object-entries";
 
 export type SoilsDistribution = Partial<Record<SoilType, number>>;
 

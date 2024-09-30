@@ -1,7 +1,6 @@
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import jestPlugin from "eslint-plugin-jest";
-import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
@@ -13,7 +12,6 @@ export default tseslint.config(
     plugins: {
       ["@typescript-eslint"]: tseslint.plugin,
       ["jest"]: jestPlugin,
-      ["simple-import-sort"]: simpleImportSortPlugin,
     },
   },
   { ignores: ["node_modules/", "dist/", "jest.config.ts"] },
@@ -33,24 +31,6 @@ export default tseslint.config(
       "@typescript-eslint/member-ordering": "error",
       "@typescript-eslint/consistent-type-definitions": "off",
       "@typescript-eslint/restrict-template-expressions": [2, { allowNumber: true }],
-      // sorting
-      "simple-import-sort/imports": [
-        "error",
-        {
-          groups: [
-            [
-              "^@?\\w",
-              "^src/",
-              "^\\u0000",
-              "^\\.\\.(?!/?$)",
-              "^\\.\\./?$",
-              "^\\./(?=.*/)(?!/?$)",
-              "^\\.(?!/?$)",
-              "^\\./?$",
-            ],
-          ],
-        },
-      ],
     },
   },
   // ignore typechecking for non-ts files

@@ -1,5 +1,5 @@
-import { roundTo1Digit } from "../services";
 import { ReinstatementExpense } from ".";
+import { roundTo1Digit } from "../services";
 
 export const REINSTATEMENT_JOBS_RATIOS_PER_EURO_PER_YEAR: Partial<
   Record<ReinstatementExpense["purpose"], number>

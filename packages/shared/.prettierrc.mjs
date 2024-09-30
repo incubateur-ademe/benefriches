@@ -1,3 +1,10 @@
 import commonConfig from "../../.tooling/prettierrc.js";
 
-export default commonConfig;
+const config = {
+  ...commonConfig,
+  plugins: ["@trivago/prettier-plugin-sort-imports"],
+  importOrder: ["<THIRD_PARTY_MODULES>", "^[./]"],
+  importOrderSeparation: true,
+};
+
+export default config;

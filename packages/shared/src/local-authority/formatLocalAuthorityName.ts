@@ -1,5 +1,5 @@
-import { startsByVowel } from "../services/strings/startsByVowel";
 import { LocalAuthority } from ".";
+import { startsByVowel } from "../services/strings/startsByVowel";
 
 const capitalize = (text: string): string => {
   return text.charAt(0).toUpperCase() + text.slice(1);
