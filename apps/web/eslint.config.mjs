@@ -37,6 +37,7 @@ export default tseslint.config(
     },
   },
   {
+    files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
       react: reactPlugin,
       "react-hooks": fixupPluginRules(reactHooksPlugin),
