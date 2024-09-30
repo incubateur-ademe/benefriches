@@ -2,7 +2,6 @@ import { fr } from "@codegouvfr/react-dsfr";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import clsx from "clsx/lite";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 type Props = {
   baseScenario?: {
@@ -43,22 +42,22 @@ const getCompareButtonProps = (
       disabled: true,
     };
   }
-  if (baseScenario.type === "STATU_QUO") {
-    const { link } = routes.compareProjects({
-      baseProjectId: withScenario.id,
-      avecProjet: "STATU_QUO",
-    });
-    return {
-      linkProps: link,
-    };
-  }
-  const { link } = routes.compareProjects({
-    baseProjectId: baseScenario.id,
-    avecProjet: withScenario.id,
-  });
-  return {
-    linkProps: link,
-  };
+  // if (baseScenario.type === "STATU_QUO") {
+  // const { link } = routes.compareProjects({
+  //   baseProjectId: withScenario.id,
+  //   avecProjet: "STATU_QUO",
+  // });
+  // return {
+  //   linkProps: link,
+  // };
+  // }
+  // const { link } = routes.compareProjects({
+  //   baseProjectId: baseScenario.id,
+  //   avecProjet: withScenario.id,
+  // });
+  // return {
+  //   linkProps: link,
+  // };
 };
 
 function ScenariiSelectionBar({ baseScenario, withScenario, onCancel }: Props) {

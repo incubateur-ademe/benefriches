@@ -29,12 +29,6 @@ const LoginPage = lazy(() => import("@/features/login"));
 const OnboardingPage = lazy(() => import("@/features/onboarding"));
 const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
 const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
-const ProjectsImpactsComparisonPage = lazy(
-  () => import("@/features/projects/views/projects-impacts-comparison"),
-);
-const ProjectsComparisonSelectionPage = lazy(
-  () => import("@/features/projects/views/select-projects-comparison-page"),
-);
 const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
 
 function App() {
@@ -97,18 +91,6 @@ function App() {
               return (
                 <RequireRegisteredUser>
                   <CreateProjectPage route={route} />
-                </RequireRegisteredUser>
-              );
-            case routes.compareProjects.name:
-              return (
-                <RequireRegisteredUser>
-                  <ProjectsImpactsComparisonPage route={route} />
-                </RequireRegisteredUser>
-              );
-            case routes.selectProjectToCompare.name:
-              return (
-                <RequireRegisteredUser>
-                  <ProjectsComparisonSelectionPage route={route} />
                 </RequireRegisteredUser>
               );
             case routes.projectImpacts.name:

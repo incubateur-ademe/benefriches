@@ -22,14 +22,6 @@ const { RouteProvider, useRoute, routes } = createRouter({
     (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
   ),
   myProjects: defineRoute("/mes-projets"),
-  selectProjectToCompare: defineRoute(
-    { baseProjectId: param.path.string },
-    (params) => `/mes-projets/${params.baseProjectId}/comparaison`,
-  ),
-  compareProjects: defineRoute(
-    { baseProjectId: param.path.string, avecProjet: param.query.string },
-    (params) => `/mes-projets/${params.baseProjectId}/comparaison`,
-  ),
   siteFeatures: defineRoute(
     {
       siteId: param.path.string,
