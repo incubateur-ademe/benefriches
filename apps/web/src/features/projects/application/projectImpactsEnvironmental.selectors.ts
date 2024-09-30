@@ -82,6 +82,7 @@ export const getEnvironmentalProjectImpacts = createSelector(
   selectCurrentFilter,
   selectImpactsData,
   (currentFilter, impactsData): EnvironmentalImpact[] => {
+    if (!impactsData) return [];
     const {
       nonContaminatedSurfaceArea,
       avoidedCO2TonsWithEnergyProduction,
@@ -89,7 +90,7 @@ export const getEnvironmentalProjectImpacts = createSelector(
       permeableSurfaceArea,
       avoidedAirConditioningCo2EqEmissions,
       avoidedCarTrafficCo2EqEmissions,
-    } = impactsData || {};
+    } = impactsData;
 
     const impacts: EnvironmentalImpact[] = [];
     const displayAll = currentFilter === "all";
@@ -111,7 +112,7 @@ export const getEnvironmentalProjectImpacts = createSelector(
       });
     }
 
-    if (soilsCarbonStorage) {
+    if (soilsCarbonStorage.isSuccess) {
       const current = soilsCarbonStorage.current.soils;
       const forecast = soilsCarbonStorage.forecast.soils;
       const soilsTypes = Array.from(new Set([...current, ...forecast].map(({ type }) => type)));
@@ -144,12 +145,11 @@ export const getEnvironmentalProjectImpacts = createSelector(
     if (
       avoidedCarTrafficCo2EqEmissions ||
       avoidedAirConditioningCo2EqEmissions ||
-      avoidedCO2TonsWithEnergyProduction ||
-      soilsCarbonStorage
+      avoidedCO2TonsWithEnergyProduction
     ) {
       const details: ImpactDetails[] = [];
 
-      if (soilsCarbonStorage) {
+      if (soilsCarbonStorage.isSuccess) {
         const base = convertCarbonToCO2eq(soilsCarbonStorage.current.total);
         const forecast = convertCarbonToCO2eq(soilsCarbonStorage.forecast.total);
 
@@ -211,37 +211,35 @@ export const getEnvironmentalProjectImpacts = createSelector(
       }
     }
 
-    if (permeableSurfaceArea) {
-      const { base, forecast, mineralSoil, greenSoil } = permeableSurfaceArea;
+    const { base, forecast, mineralSoil, greenSoil } = permeableSurfaceArea;
 
-      impacts.push({
-        name: "permeable_surface_area",
-        type: "surfaceArea",
-        impact: {
-          base,
-          forecast,
-          difference: forecast - base,
-          details: [
-            {
-              name: "mineral_soil",
-              impact: {
-                base: mineralSoil.base,
-                forecast: mineralSoil.forecast,
-                difference: mineralSoil.forecast - mineralSoil.base,
-              },
+    impacts.push({
+      name: "permeable_surface_area",
+      type: "surfaceArea",
+      impact: {
+        base,
+        forecast,
+        difference: forecast - base,
+        details: [
+          {
+            name: "mineral_soil",
+            impact: {
+              base: mineralSoil.base,
+              forecast: mineralSoil.forecast,
+              difference: mineralSoil.forecast - mineralSoil.base,
             },
-            {
-              name: "green_soil",
-              impact: {
-                base: greenSoil.base,
-                forecast: greenSoil.forecast,
-                difference: greenSoil.forecast - greenSoil.base,
-              },
+          },
+          {
+            name: "green_soil",
+            impact: {
+              base: greenSoil.base,
+              forecast: greenSoil.forecast,
+              difference: greenSoil.forecast - greenSoil.base,
             },
-          ],
-        },
-      });
-    }
+          },
+        ],
+      },
+    });
 
     return impacts;
   },

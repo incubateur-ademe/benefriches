@@ -11,24 +11,27 @@ const soilsDistributionObjToArray = (
   }));
 };
 
-export type SoilsCarbonStorageImpactResult = {
-  current: {
-    total: number;
-    soils: {
-      type: SoilType;
-      surfaceArea: number;
-      carbonStorage: number;
-    }[];
-  };
-  forecast: {
-    total: number;
-    soils: {
-      type: SoilType;
-      surfaceArea: number;
-      carbonStorage: number;
-    }[];
-  };
-};
+export type SoilsCarbonStorageImpactResult =
+  | {
+      isSuccess: true;
+      current: {
+        total: number;
+        soils: {
+          type: SoilType;
+          surfaceArea: number;
+          carbonStorage: number;
+        }[];
+      };
+      forecast: {
+        total: number;
+        soils: {
+          type: SoilType;
+          surfaceArea: number;
+          carbonStorage: number;
+        }[];
+      };
+    }
+  | { isSuccess: false };
 
 export interface GetSoilsCarbonStoragePerSoilsService {
   execute(input: {
@@ -50,31 +53,37 @@ type SoilsCarbonStorageImpactInput = {
 export const computeSoilsCarbonStorageImpact = async (
   input: SoilsCarbonStorageImpactInput,
 ): Promise<SoilsCarbonStorageImpactResult> => {
-  const currentSoilsCarbonStorage = await input.getSoilsCarbonStorageService.execute({
-    cityCode: input.siteCityCode,
-    soils: soilsDistributionObjToArray(input.currentSoilsDistribution),
-  });
-  const forecastSoilsCarbonStorage = await input.getSoilsCarbonStorageService.execute({
-    cityCode: input.siteCityCode,
-    soils: soilsDistributionObjToArray(input.forecastSoilsDistribution),
-  });
+  try {
+    const currentSoilsCarbonStorage = await input.getSoilsCarbonStorageService.execute({
+      cityCode: input.siteCityCode,
+      soils: soilsDistributionObjToArray(input.currentSoilsDistribution),
+    });
+    const forecastSoilsCarbonStorage = await input.getSoilsCarbonStorageService.execute({
+      cityCode: input.siteCityCode,
+      soils: soilsDistributionObjToArray(input.forecastSoilsDistribution),
+    });
 
-  return {
-    current: {
-      total: currentSoilsCarbonStorage.totalCarbonStorage,
-      soils: currentSoilsCarbonStorage.soilsCarbonStorage.map((soil) => ({
-        type: soil.type,
-        surfaceArea: soil.surfaceArea,
-        carbonStorage: soil.carbonStorage,
-      })),
-    },
-    forecast: {
-      total: forecastSoilsCarbonStorage.totalCarbonStorage,
-      soils: forecastSoilsCarbonStorage.soilsCarbonStorage.map((soil) => ({
-        type: soil.type,
-        surfaceArea: soil.surfaceArea,
-        carbonStorage: soil.carbonStorage,
-      })),
-    },
-  };
+    return {
+      isSuccess: true,
+      current: {
+        total: currentSoilsCarbonStorage.totalCarbonStorage,
+        soils: currentSoilsCarbonStorage.soilsCarbonStorage.map((soil) => ({
+          type: soil.type,
+          surfaceArea: soil.surfaceArea,
+          carbonStorage: soil.carbonStorage,
+        })),
+      },
+      forecast: {
+        total: forecastSoilsCarbonStorage.totalCarbonStorage,
+        soils: forecastSoilsCarbonStorage.soilsCarbonStorage.map((soil) => ({
+          type: soil.type,
+          surfaceArea: soil.surfaceArea,
+          carbonStorage: soil.carbonStorage,
+        })),
+      },
+    };
+  } catch (err) {
+    console.error("Failed to compute soils carbon storage impact", err);
+    return { isSuccess: false };
+  }
 };

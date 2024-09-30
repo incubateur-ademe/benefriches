@@ -27,12 +27,20 @@ export const resultMock: SoilsCarbonStorageResult = {
 
 export class FakeGetSoilsCarbonStorageService implements GetSoilsCarbonStoragePerSoilsService {
   result: SoilsCarbonStorageResult | null = null;
+  _isShouldFailOnExecute = false;
 
   _setResult(result: SoilsCarbonStorageResult) {
     this.result = result;
   }
 
+  shouldFailOnExecute() {
+    this._isShouldFailOnExecute = true;
+  }
+
   execute(): Promise<SoilsCarbonStorageResult> {
+    if (this._isShouldFailOnExecute) {
+      throw new Error("FakeGetSoilsCarbonStorageService.execute failed");
+    }
     return Promise.resolve(this.result ?? resultMock);
   }
 }

@@ -380,6 +380,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             forecast: 112.29599999999999,
           },
           soilsCarbonStorage: {
+            isSuccess: true,
             current: {
               total: 20,
               soils: [
@@ -422,6 +423,32 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             },
           },
         },
+      });
+    });
+
+    it("returns impacts when soils carbon storage cannbot be computed", async () => {
+      const evaluationPeriodInYears = 10;
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData(reconversionProjectImpactDataView);
+      const siteQuery = new InMemorySiteImpactsQuery();
+      siteQuery._setData(site);
+      const soilsCarbonStorageService = new FakeGetSoilsCarbonStorageService();
+      soilsCarbonStorageService.shouldFailOnExecute();
+
+      const usecase = new ComputeReconversionProjectImpactsUseCase(
+        projectQuery,
+        siteQuery,
+        soilsCarbonStorageService,
+        dateProvider,
+        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
+      );
+      const result = await usecase.execute({
+        reconversionProjectId: reconversionProjectImpactDataView.id,
+        evaluationPeriodInYears,
+      });
+      expect(result.id).toEqual(reconversionProjectImpactDataView.id);
+      expect(result.impacts.soilsCarbonStorage).toEqual({
+        isSuccess: false,
       });
     });
   });

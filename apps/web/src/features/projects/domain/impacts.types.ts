@@ -142,6 +142,28 @@ export type EcosystemServicesImpact = BaseEconomicImpact & {
   }[];
 };
 
+export type SoilsCarbonStorageImpactIndicator =
+  | {
+      isSuccess: true;
+      current: {
+        total: number;
+        soils: {
+          type: SoilType;
+          surfaceArea: number;
+          carbonStorage: number;
+        }[];
+      };
+      forecast: {
+        total: number;
+        soils: {
+          type: SoilType;
+          surfaceArea: number;
+          carbonStorage: number;
+        }[];
+      };
+    }
+  | { isSuccess: false };
+
 export type ReconversionProjectImpacts = {
   permeableSurfaceArea: {
     base: number;
@@ -213,24 +235,7 @@ export type ReconversionProjectImpacts = {
     current: 0;
     forecast: number;
   };
-  soilsCarbonStorage: {
-    current: {
-      total: number;
-      soils: {
-        type: SoilType;
-        surfaceArea: number;
-        carbonStorage: number;
-      }[];
-    };
-    forecast: {
-      total: number;
-      soils: {
-        type: SoilType;
-        surfaceArea: number;
-        carbonStorage: number;
-      }[];
-    };
-  };
+  soilsCarbonStorage: SoilsCarbonStorageImpactIndicator;
   socioeconomic: {
     total: number;
     impacts: (

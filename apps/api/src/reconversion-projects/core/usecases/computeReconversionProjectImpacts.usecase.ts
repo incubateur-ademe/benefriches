@@ -199,7 +199,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     const operationsFirstYear =
       reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear();
 
-    const soilsCarbonStorage = await computeSoilsCarbonStorageImpact({
+    const soilsCarbonStorageImpactResult = await computeSoilsCarbonStorageImpact({
       currentSoilsDistribution: relatedSite.soilsDistribution,
       forecastSoilsDistribution: reconversionProject.soilsDistribution,
       siteCityCode: relatedSite.addressCityCode,
@@ -235,8 +235,12 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
         baseSoilsDistribution: relatedSite.soilsDistribution,
         forecastSoilsDistribution: reconversionProject.soilsDistribution,
         evaluationPeriodInYears,
-        baseSoilsCarbonStorage: soilsCarbonStorage.current.total,
-        forecastSoilsCarbonStorage: soilsCarbonStorage.forecast.total,
+        baseSoilsCarbonStorage: soilsCarbonStorageImpactResult.isSuccess
+          ? soilsCarbonStorageImpactResult.current.total
+          : null,
+        forecastSoilsCarbonStorage: soilsCarbonStorageImpactResult.isSuccess
+          ? soilsCarbonStorageImpactResult.forecast.total
+          : null,
         operationsFirstYear: operationsFirstYear,
         decontaminatedSurface: reconversionProject.decontaminatedSoilSurface,
       }),
@@ -327,7 +331,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
               deaths: relatedSite.accidentsDeaths,
             })
           : undefined,
-        soilsCarbonStorage,
+        soilsCarbonStorage: soilsCarbonStorageImpactResult,
         ...developmentPlanRelatedImpacts,
       },
     };
