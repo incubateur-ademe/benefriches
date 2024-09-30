@@ -220,9 +220,6 @@ importers:
       '@types/geojson':
         specifier: ~7946.0.14
         version: 7946.0.14
-      '@types/leaflet':
-        specifier: ~1.9.12
-        version: 1.9.12
       '@types/react':
         specifier: ~18.3.4
         version: 18.3.5
@@ -1257,9 +1254,6 @@ packages:
 
   '@types/jsonwebtoken@9.0.6':
     resolution: {integrity: sha512-/5hndP5dCjloafCXns6SZyESp3Ldq7YjH3zwzwczYnjxIT0Fqzk5ROSYVGfFyczIue7IUEj8hkvLbPoLQ18vQw==}
-
-  '@types/leaflet@1.9.12':
-    resolution: {integrity: sha512-BK7XS+NyRI291HIo0HCfE18Lp8oA30H1gpi1tf0mF3TgiCEzanQjOqNZ4x126SXzzi2oNSZhZ5axJp1k0iM6jg==}
 
   '@types/methods@1.1.4':
     resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
@@ -6494,10 +6488,6 @@ snapshots:
   '@types/jsonwebtoken@9.0.6':
     dependencies:
       '@types/node': 22.5.2
-
-  '@types/leaflet@1.9.12':
-    dependencies:
-      '@types/geojson': 7946.0.14
 
   '@types/methods@1.1.4': {}
 
