@@ -62,9 +62,7 @@ export default function MentionsLegalesPage() {
           <br />
           67100 Strasbourg
           <br />
-          <a href="https://scalingo.com/fr" target="_blank" rel="nofollow noopener noreferrer">
-            https://scalingo.com/fr
-          </a>
+          <ExternalLink href="https://scalingo.com/fr">https://scalingo.com/fr</ExternalLink>
         </p>
       </address>
 

@@ -1,3 +1,5 @@
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
 export default function PolitiqueConfidentialiteContent() {
   return (
     <>
@@ -506,14 +508,14 @@ export default function PolitiqueConfidentialiteContent() {
       </p>
       <ul>
         <li>
-          <a href="https://www.cnil.fr/fr/cookies-et-traceurs-que-dit-la-loi">
+          <ExternalLink href="https://www.cnil.fr/fr/cookies-et-traceurs-que-dit-la-loi">
             Cookies et traceurs : que dit la loi ?
-          </a>
+          </ExternalLink>
         </li>
         <li>
-          <a href="https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser">
+          <ExternalLink href="https://www.cnil.fr/fr/cookies-les-outils-pour-les-maitriser">
             Cookies : les outils pour les maîtriser
-          </a>
+          </ExternalLink>
         </li>
       </ul>
       <h2 id="8-comment-sont-exerc-s-les-droits-reconnus-aux-personnes-concern-es-">
@@ -616,9 +618,9 @@ export default function PolitiqueConfidentialiteContent() {
 
       <p>
         ou à
-        <a href="https://www.cnil.fr/fr/cnil-direct/question/adresser-une-reclamation-plainte-la-cnil-quelles-conditions-et-comment">
+        <ExternalLink href="https://www.cnil.fr/fr/cnil-direct/question/adresser-une-reclamation-plainte-la-cnil-quelles-conditions-et-comment">
           l’adresse suivante
-        </a>
+        </ExternalLink>
         , et ce sans préjudice de tout autre recours administratif ou juridictionnel.
       </p>
       <h2 id="9-s-curit-information-s-curisation-des-transactions">
