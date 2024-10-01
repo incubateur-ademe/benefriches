@@ -13,7 +13,7 @@ export default function ScheduleDates({ startDateString, endDateString }: Schedu
       <strong>
         {startDate.toLocaleDateString()} ➔ {endDate.toLocaleDateString()}
       </strong>{" "}
-      ({getFormattedDuration(startDate, endDate)})
+      <span className="tw-text-nowrap">({getFormattedDuration(startDate, endDate)})</span>
     </span>
   );
 }
