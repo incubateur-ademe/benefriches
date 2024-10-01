@@ -32,33 +32,31 @@ type Props = {
 
 function SiteDataSummary({ siteData, onNext, onBack }: Props) {
   return (
-    <>
-      <WizardFormLayout
-        title="Récapitulatif du site"
-        instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
-      >
-        <SiteFeaturesList
-          id={siteData.id}
-          isExpressSite={false}
-          address={siteData.address}
-          ownerName={siteData.ownerName}
-          tenantName={siteData.tenantName}
-          fullTimeJobsInvolved={siteData.fullTimeJobsInvolved}
-          accidents={siteData.accidents ?? {}}
-          expenses={siteData.expenses}
-          surfaceArea={siteData.totalSurfaceArea}
-          soilsDistribution={siteData.soilsDistribution}
-          contaminatedSurfaceArea={siteData.contaminatedSurfaceArea}
-          fricheActivity={siteData.fricheActivity}
-          name={siteData.name}
-          description={siteData.description}
-          isFriche={siteData.isFriche}
-        />
-        <div className="fr-mt-4w">
-          <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
-        </div>
-      </WizardFormLayout>
-    </>
+    <WizardFormLayout
+      title="Récapitulatif du site"
+      instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
+    >
+      <SiteFeaturesList
+        id={siteData.id}
+        isExpressSite={false}
+        address={siteData.address}
+        ownerName={siteData.ownerName}
+        tenantName={siteData.tenantName}
+        fullTimeJobsInvolved={siteData.fullTimeJobsInvolved}
+        accidents={siteData.accidents ?? {}}
+        expenses={siteData.expenses}
+        surfaceArea={siteData.totalSurfaceArea}
+        soilsDistribution={siteData.soilsDistribution}
+        contaminatedSurfaceArea={siteData.contaminatedSurfaceArea}
+        fricheActivity={siteData.fricheActivity}
+        name={siteData.name}
+        description={siteData.description}
+        isFriche={siteData.isFriche}
+      />
+      <div className="fr-mt-4w">
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
+      </div>
+    </WizardFormLayout>
   );
 }
 
