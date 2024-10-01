@@ -38,7 +38,15 @@ function SidebarLayout({
             isOpen ? "tw-px-6 tw-justify-between" : "tw-justify-center",
           )}
         >
-          {isOpen && <img src="/img/logos/logo-benefriches-simple.svg" alt="Logo de Bénéfriches" />}
+          {isOpen && (
+            <a
+              {...routes.myProjects().link}
+              className="tw-no-underline"
+              aria-description="Retour à mes projets"
+            >
+              <img src="/img/logos/logo-benefriches-simple.svg" alt="Logo de Bénéfriches" />
+            </a>
+          )}
           <Button
             className="tw-text-grey-dark"
             iconId={
