@@ -9,7 +9,7 @@ type DataLineProps = {
 
 export default function DataLine({ label, value, className = "" }: DataLineProps) {
   const classes = classNames(
-    "tw-flex",
+    "sm:tw-flex",
     "tw-justify-between",
     "tw-items-center",
     "tw-px-0",
@@ -21,23 +21,12 @@ export default function DataLine({ label, value, className = "" }: DataLineProps
   );
   return (
     <dl className={classes}>
-      <dd
-        className={classNames(
-          "tw-w-[calc(100%-270px)]",
-          "tw-ml-0",
-          "tw-px-0",
-          "tw-py-2",
-          "tw-truncate",
-        )}
-      >
-        {label}
-      </dd>
+      <dd className={classNames("tw-ml-0", "tw-px-0", "tw-py-2")}>{label}</dd>
       <dt
         className={classNames(
-          "tw-w-[270px]",
-          "tw-text-right",
+          "sm:tw-w-[270px]",
+          "sm:tw-text-right",
           "tw-p-2",
-          "tw-self-center",
           "tw-bg-grey-light",
           "dark:tw-bg-grey-dark",
         )}
