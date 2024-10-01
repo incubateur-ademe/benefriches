@@ -24,6 +24,7 @@ export default function DevelopmentPlanInstallationExpenses({
       return (
         <>
           <DataLine
+            noBorder
             label={<strong>Dépenses d'installation de la centrale photovoltaïque</strong>}
             value={
               <strong>{formatNumberFr(sumList(installationCosts.map((r) => r.amount)))} €</strong>
@@ -36,7 +37,7 @@ export default function DevelopmentPlanInstallationExpenses({
                   purpose as PhotovoltaicInstallationExpense["purpose"],
                 )}
                 value={`${formatNumberFr(amount)} €`}
-                className="fr-pl-2w"
+                isDetails
                 key={purpose}
               />
             );
@@ -47,6 +48,7 @@ export default function DevelopmentPlanInstallationExpenses({
       return (
         <>
           <DataLine
+            noBorder
             label={<strong>Dépenses d'aménagement du quartier</strong>}
             value={
               <strong>{formatNumberFr(sumList(installationCosts.map((r) => r.amount)))} €</strong>
@@ -59,7 +61,7 @@ export default function DevelopmentPlanInstallationExpenses({
                   purpose as MixedUseNeighbourhoodDevelopmentExpense["purpose"],
                 )}
                 value={`${formatNumberFr(amount)} €`}
-                className="fr-pl-2w"
+                isDetails
                 key={purpose}
               />
             );

@@ -5,6 +5,7 @@ import { getLabelForExpensePurpose } from "@/features/create-site/domain/expense
 import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { sumList, sumObjectValues } from "@/shared/services/sum/sum";
+import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
@@ -26,11 +27,22 @@ export default function SiteFeaturesList(siteFeatures: Props) {
       </Section>
       <Section title="🌾️ Sols">
         <DataLine
+          noBorder
           label={<strong>Superficie totale du site</strong>}
           value={<strong>{formatSurfaceArea(siteFeatures.surfaceArea)}</strong>}
         />
-        <div className="tw-flex tw-flex-col tw-items-center md:tw-items-start md:tw-flex-row md:tw-justify-between">
-          <div className="md:tw-w-1/3">
+
+        <div className="tw-grid tw-grid-cols-12">
+          <div
+            className={classNames(
+              "tw-col-span-12",
+              "md:tw-col-span-3",
+              "tw-border-0",
+              "tw-border-solid",
+              "tw-border-l-black",
+              "tw-border-l",
+            )}
+          >
             <SurfaceAreaPieChart
               soilsDistribution={siteFeatures.soilsDistribution}
               customHeight="200px"
@@ -38,13 +50,27 @@ export default function SiteFeaturesList(siteFeatures: Props) {
             />
           </div>
 
-          <div className="tw-w-full">
+          <div
+            className={classNames(
+              "tw-col-span-12",
+              "md:tw-col-span-9",
+              "tw-border-0",
+              "tw-border-solid",
+              "tw-border-l-black",
+              "tw-border-l",
+              "md:tw-border-0",
+              "tw-pl-2",
+              "md:tw-pl-0",
+            )}
+          >
             {typedObjectEntries(siteFeatures.soilsDistribution).map(([soilType, surfaceArea]) => {
               return (
                 <DataLine
+                  noBorder
                   label={<SoilTypeLabelWithColorSquare soilType={soilType} />}
                   value={formatSurfaceArea(surfaceArea ?? 0)}
                   key={soilType}
+                  className="md:tw-grid-cols-[5fr_4fr]"
                 />
               );
             })}
@@ -111,6 +137,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
         </>
         <>
           <DataLine
+            noBorder
             label={
               <strong>
                 Dépenses annuelles {siteFeatures.isFriche ? "de la friche" : "du site"}
@@ -129,7 +156,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           {siteManagementExpenses.length > 0 && (
             <>
               <DataLine
-                className="fr-ml-2w"
+                isDetails
                 label={<strong>Gestion du site</strong>}
                 value={`${sumList(siteManagementExpenses.map(({ amount }) => amount))} €`}
               />
@@ -138,7 +165,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                   <DataLine
                     label={getLabelForExpensePurpose(purpose)}
                     value={`${formatNumberFr(amount)} €`}
-                    className="fr-ml-4w fr-ml-3v"
+                    isDetails
                     key={purpose}
                   />
                 );
@@ -148,7 +175,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           {fricheSpecificExpenses.length > 0 && (
             <>
               <DataLine
-                className="fr-ml-2w"
+                isDetails
                 label={<strong>Sécurisation du site</strong>}
                 value={`${sumList(fricheSpecificExpenses.map(({ amount }) => amount))} €`}
               />
@@ -157,7 +184,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                   <DataLine
                     label={getLabelForExpensePurpose(purpose)}
                     value={`${formatNumberFr(amount)} €`}
-                    className="fr-ml-4w "
+                    isDetails
                     key={purpose}
                   />
                 );

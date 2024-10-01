@@ -119,6 +119,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               />
             ) : null}
             <DataLine
+              noBorder
               label={<strong>Nouvelle répartition des superficies</strong>}
               value={<strong>{formatSurfaceArea(siteData.surfaceArea)} de surface totale</strong>}
             />
@@ -127,6 +128,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               .map(([soilType, surfaceArea]) => {
                 return (
                   <DataLine
+                    isDetails
                     label={<SoilTypeLabelWithColorSquare soilType={soilType as SoilType} />}
                     value={formatSurfaceArea(surfaceArea)}
                     key={soilType}
@@ -219,9 +221,15 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 value={projectData.reinstatementContractOwner}
               />
             )}
-            <div className="tw-py-2">
-              <strong> Emplois équivalent temps plein mobilisés</strong>
-            </div>
+            <DataLine
+              noBorder
+              label={<strong>Emplois équivalent temps plein mobilisés</strong>}
+              value={formatNumberFr(
+                (projectData.reinstatementFullTimeJobs ?? 0) +
+                  (projectData.conversionFullTimeJobs ?? 0) +
+                  (projectData.operationsFullTimeJobs ?? 0),
+              )}
+            />
             {siteData.isFriche ? (
               <DataLine
                 label="Remise en état de la friche"
@@ -230,7 +238,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                     ? formatNumberFr(projectData.reinstatementFullTimeJobs)
                     : "Non renseigné"
                 }
-                className="fr-pl-2w"
+                isDetails
               />
             ) : null}
             <DataLine
@@ -240,7 +248,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                   ? formatNumberFr(projectData.conversionFullTimeJobs)
                   : "Non renseigné"
               }
-              className="fr-pl-2w"
+              isDetails
             />
             <DataLine
               label="Exploitation du site reconverti"
@@ -249,7 +257,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                   ? formatNumberFr(projectData.operationsFullTimeJobs)
                   : "Non renseigné"
               }
-              className="fr-pl-2w"
+              isDetails
             />
           </Section>
           <Section title="💰 Dépenses et recettes du projet">
@@ -262,6 +270,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             {!!projectData.reinstatementExpenses && (
               <>
                 <DataLine
+                  noBorder
                   label={<strong>Dépenses de remise en état de la friche</strong>}
                   value={
                     <strong>
@@ -277,7 +286,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                     <DataLine
                       label={getLabelForReinstatementExpensePurpose(purpose)}
                       value={`${formatNumberFr(amount)} €`}
-                      className="fr-pl-2w"
+                      isDetails
                       key={purpose}
                     />
                   );
@@ -288,6 +297,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               projectData.photovoltaicPanelsInstallationExpenses.length > 0 && (
                 <>
                   <DataLine
+                    noBorder
                     label={<strong>Dépenses d'installation de la centrale photovoltaïque</strong>}
                     value={
                       <strong>
@@ -304,13 +314,14 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                     <DataLine
                       label={getLabelForPhotovoltaicInstallationExpensePurpose(purpose)}
                       value={`${formatNumberFr(amount)} €`}
-                      className="fr-pl-2w"
+                      isDetails
                       key={purpose}
                     />
                   ))}
                 </>
               )}
             <DataLine
+              noBorder
               label={<strong>Dépenses annuelles</strong>}
               value={
                 <strong>
@@ -326,7 +337,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 <DataLine
                   label={getLabelForRecurringExpense(purpose)}
                   value={`${formatNumberFr(amount)} €`}
-                  className="fr-pl-2w"
+                  isDetails
                   key={purpose}
                 />
               );
@@ -334,6 +345,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
             {!!projectData.financialAssistanceRevenues && (
               <>
                 <DataLine
+                  noBorder
                   label={<strong>Aides financières</strong>}
                   value={
                     <strong>
@@ -349,7 +361,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                     <DataLine
                       label={getLabelForFinancialAssistanceRevenueSource(source)}
                       value={`${formatNumberFr(amount)} €`}
-                      className="fr-pl-2w"
+                      isDetails
                       key={source}
                     />
                   );
@@ -357,6 +369,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               </>
             )}
             <DataLine
+              noBorder
               label={
                 <div>
                   <strong>Recettes annuelles</strong>
@@ -378,7 +391,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 <DataLine
                   label={getLabelForRecurringRevenueSource(source)}
                   value={`${formatNumberFr(amount)} €`}
-                  className="fr-pl-2w"
+                  isDetails
                   key={source}
                 />
               );
