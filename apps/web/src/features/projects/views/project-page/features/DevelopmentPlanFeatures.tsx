@@ -36,6 +36,7 @@ export default function DevelopmentPlanFeatures(props: Props) {
       return (
         <Section title="🏘 Espaces du quartier">
           <DataLine
+            noBorder
             label={<strong>Superficie totale</strong>}
             value={formatSurfaceArea(sumList(Object.values(props.spaces)))}
           />
@@ -45,7 +46,7 @@ export default function DevelopmentPlanFeatures(props: Props) {
                 label={getLabelForMixedUseNeighbourhoodSpace(space)}
                 value={formatSurfaceArea(surfaceArea)}
                 key={space}
-                className="fr-pl-2w"
+                isDetails
               />
             );
           })}

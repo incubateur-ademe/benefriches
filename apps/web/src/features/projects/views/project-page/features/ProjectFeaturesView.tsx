@@ -52,6 +52,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           />
         ) : null}
         <DataLine
+          noBorder
           label={<strong>Superficie totale</strong>}
           value={
             <strong>{formatSurfaceArea(getTotalSurfaceArea(projectData.soilsDistribution))}</strong>
@@ -65,7 +66,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
                 label={getLabelForSoilType(soilType as SoilType)}
                 value={formatSurfaceArea(surfaceArea)}
                 key={soilType}
-                className="fr-pl-2w"
+                isDetails
               />
             );
           })}
@@ -88,14 +89,20 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             value={projectData.reinstatementContractOwner}
           />
         )}
-        <div className="tw-py-2">
-          <strong> Emplois équivalent temps plein mobilisés</strong>
-        </div>
+        <DataLine
+          noBorder
+          label={<strong>Emplois équivalent temps plein mobilisés</strong>}
+          value={formatNumberFr(
+            (projectData.reinstatementFullTimeJobs ?? 0) +
+              (projectData.conversionFullTimeJobs ?? 0) +
+              (projectData.operationsFullTimeJobs ?? 0),
+          )}
+        />
         {projectData.reinstatementFullTimeJobs ? (
           <DataLine
             label="Remise en état de la friche"
             value={formatNumberFr(projectData.reinstatementFullTimeJobs)}
-            className="fr-pl-2w"
+            isDetails
           />
         ) : null}
         {projectData.conversionFullTimeJobs ? (
@@ -106,7 +113,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
                 ? formatNumberFr(projectData.conversionFullTimeJobs)
                 : "Non renseigné"
             }
-            className="fr-pl-2w"
+            isDetails
           />
         ) : null}
         <DataLine
@@ -116,7 +123,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
               ? formatNumberFr(projectData.operationsFullTimeJobs)
               : "Non renseigné"
           }
-          className="fr-pl-2w"
+          isDetails
         />
       </Section>
       <Section title="💰 Dépenses et recettes du projet">
@@ -129,6 +136,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         {!!projectData.reinstatementCosts && (
           <>
             <DataLine
+              noBorder
               label={<strong>Dépenses de remise en état de la friche</strong>}
               value={
                 <strong>
@@ -141,7 +149,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
                 <DataLine
                   label={getLabelForReinstatementExpensePurpose(purpose)}
                   value={`${formatNumberFr(amount)} €`}
-                  className="fr-pl-2w"
+                  isDetails
                   key={purpose}
                 />
               );
@@ -155,6 +163,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           />
         )}
         <DataLine
+          noBorder
           label={<strong>Dépenses annuelles</strong>}
           value={
             <div>
@@ -170,7 +179,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             <DataLine
               label={getLabelForRecurringExpense(purpose)}
               value={`${formatNumberFr(amount)} €`}
-              className="fr-pl-2w"
+              isDetails
               key={purpose}
             />
           );
@@ -184,6 +193,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         {!!projectData.financialAssistanceRevenues && (
           <>
             <DataLine
+              noBorder
               label={<strong>Aides financières</strong>}
               value={
                 <strong>
@@ -199,7 +209,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
                 <DataLine
                   label={getLabelForFinancialAssistanceRevenueSource(source)}
                   value={`${formatNumberFr(amount)} €`}
-                  className="fr-pl-2w"
+                  isDetails
                   key={source}
                 />
               );
@@ -207,6 +217,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           </>
         )}
         <DataLine
+          noBorder
           label={
             <div>
               <strong>Recettes annuelles</strong>
@@ -226,7 +237,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             <DataLine
               label={getLabelForRecurringRevenueSource(source)}
               value={`${formatNumberFr(amount)} €`}
-              className="fr-pl-2w"
+              isDetails
               key={source}
             />
           );
