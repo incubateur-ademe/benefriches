@@ -14,8 +14,8 @@ type EnvironmentalMonetaryImpactInput = {
   evaluationPeriodInYears: number;
   baseSoilsDistribution: SoilsDistribution;
   forecastSoilsDistribution: SoilsDistribution;
-  baseSoilsCarbonStorage: number;
-  forecastSoilsCarbonStorage: number;
+  baseSoilsCarbonStorage: number | null;
+  forecastSoilsCarbonStorage: number | null;
   operationsFirstYear: number;
   decontaminatedSurface?: number;
 };
@@ -217,13 +217,16 @@ export const computeEnvironmentalMonetaryImpacts = (
 
   const ecosystemServicesImpacts: EcosystemServicesImpact["details"] = [
     {
-      amount: Math.round(
-        computeSoilsCarbonStorage(
-          input.baseSoilsCarbonStorage,
-          input.forecastSoilsCarbonStorage,
-          input.operationsFirstYear,
-        ),
-      ),
+      amount:
+        input.baseSoilsCarbonStorage && input.forecastSoilsCarbonStorage
+          ? Math.round(
+              computeSoilsCarbonStorage(
+                input.baseSoilsCarbonStorage,
+                input.forecastSoilsCarbonStorage,
+                input.operationsFirstYear,
+              ),
+            )
+          : 0,
       impact: "carbon_storage",
     },
     {

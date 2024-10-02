@@ -173,6 +173,7 @@ const baseImpacts = {
     },
   },
   soilsCarbonStorage: {
+    isSuccess: true,
     current: {
       total: 20,
       soils: [

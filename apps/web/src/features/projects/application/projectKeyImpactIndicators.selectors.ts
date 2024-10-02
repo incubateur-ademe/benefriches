@@ -98,13 +98,17 @@ const getHouseholdsPoweredByRenewableEnergy = (state: RootState["projectImpacts"
 };
 
 const getAvoidedCo2eqEmissions = (state: RootState["projectImpacts"]) => {
+  if (!state.impactsData) {
+    return 0;
+  }
+
   const total = [
-    state.impactsData?.avoidedAirConditioningCo2EqEmissions ?? 0,
-    state.impactsData?.avoidedCarTrafficCo2EqEmissions ?? 0,
-    state.impactsData?.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0,
+    state.impactsData.avoidedAirConditioningCo2EqEmissions ?? 0,
+    state.impactsData.avoidedCarTrafficCo2EqEmissions ?? 0,
+    state.impactsData.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0,
   ].reduce((total, amount) => total + amount, 0);
 
-  if (state.impactsData?.soilsCarbonStorage) {
+  if (state.impactsData.soilsCarbonStorage.isSuccess) {
     const base = convertCarbonToCO2eq(state.impactsData.soilsCarbonStorage.current.total);
     const forecast = convertCarbonToCO2eq(state.impactsData.soilsCarbonStorage.forecast.total);
     return total + (forecast - base);
