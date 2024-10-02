@@ -34,7 +34,7 @@ type AvoidedAirConditioningExpensesImpact = BaseEconomicImpact & {
 type TravelTimeSavedImpact = BaseEconomicImpact & {
   impact: "travel_time_saved";
   impactCategory: "economic_indirect";
-  actor: "french_society";
+  actor: "local_residents" | "local_workers";
 };
 
 type AvoidedTrafficAccidentsImpact = BaseEconomicImpact & {
