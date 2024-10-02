@@ -55,7 +55,7 @@ function SiteOwnerForm({
   const shouldAskForLocalAuthorityType = ownerTypeSelected === "local_or_regional_authority";
 
   return (
-    <WizardFormLayout title={`Qui est le propriétaire ${isFriche ? "de la friche" : "du site"}?`}>
+    <WizardFormLayout title={`Qui est le propriétaire ${isFriche ? "de la friche" : "du site"} ?`}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={formState.errors.ownerType ? "error" : "default"}
