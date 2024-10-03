@@ -63,7 +63,7 @@ function SiteSoilsDistributionBySquareMetersForm({
             rules={{
               min: {
                 value: 0,
-                message: "Veuillez sélectionner un montant valide",
+                message: "Veuillez sélectionner une superficie valide",
               },
               max: {
                 value: totalSurfaceArea,
