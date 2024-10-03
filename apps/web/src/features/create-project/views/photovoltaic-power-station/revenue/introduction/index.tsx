@@ -1,7 +1,7 @@
 import {
   completeRevenuIntroductionStep,
   revertRevenuIntroductionStep,
-} from "../../../application/createProject.reducer";
+} from "../../../../application/createProject.reducer";
 import ProjectRevenueIntroduction from "./ProjectRevenueIntroduction";
 
 import { AppDispatch } from "@/app/application/store";

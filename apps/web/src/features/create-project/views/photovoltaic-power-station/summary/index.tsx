@@ -1,6 +1,6 @@
-import { revertFinalSummaryStep } from "../../application/createProject.reducer";
-import { saveReconversionProject } from "../../application/saveReconversionProject.action";
-import { SoilsCarbonStorageResult } from "../../application/soilsCarbonStorage.actions";
+import { revertFinalSummaryStep } from "../../../application/createProject.reducer";
+import { saveReconversionProject } from "../../../application/saveReconversionProject.action";
+import { SoilsCarbonStorageResult } from "../../../application/soilsCarbonStorage.actions";
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";

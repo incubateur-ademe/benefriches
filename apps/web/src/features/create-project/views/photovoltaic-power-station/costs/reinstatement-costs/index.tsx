@@ -2,7 +2,7 @@ import { computeProjectReinstatementCosts, ReinstatementExpense } from "shared";
 import {
   completeReinstatementExpenses,
   revertReinstatementExpenses,
-} from "../../../application/createProject.reducer";
+} from "../../../../application/createProject.reducer";
 import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";

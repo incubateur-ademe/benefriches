@@ -51,8 +51,6 @@ export type ProjectCreationState = {
 };
 
 export type PhotovoltaicProjectCreationStep =
-  | "INTRODUCTION"
-  | "PROJECT_TYPES"
   | "RENEWABLE_ENERGY_TYPES"
   | "PHOTOVOLTAIC_KEY_PARAMETER"
   | "PHOTOVOLTAIC_POWER"
@@ -95,7 +93,10 @@ export type PhotovoltaicProjectCreationStep =
   | "FINAL_SUMMARY"
   | "CREATION_RESULT";
 
-export type ProjectCreationStep = PhotovoltaicProjectCreationStep;
+export type ProjectCreationStep =
+  | "INTRODUCTION"
+  | "PROJECT_TYPES"
+  | PhotovoltaicProjectCreationStep;
 
 export const getInitialState = (): ProjectCreationState => {
   return {

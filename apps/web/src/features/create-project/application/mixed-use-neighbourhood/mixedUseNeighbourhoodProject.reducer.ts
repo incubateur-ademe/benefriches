@@ -6,12 +6,16 @@ import {
   resultStepReverted,
 } from "./mixedUseNeighbourhoodProject.actions";
 
-export type MixedUseNeighbourhoodCreationStep = "CREATE_MODE_SELECTION" | "CREATION_RESULT";
+export type MixedUseNeighbourhoodExpressCreationStep = "CREATION_RESULT";
+
+export type UrbanProjectCreationStep =
+  | "CREATE_MODE_SELECTION"
+  | MixedUseNeighbourhoodExpressCreationStep;
 
 export type MixedUseNeighbourhoodState = {
   createMode: "express" | "custom" | undefined;
   saveState: "idle" | "loading" | "success" | "error";
-  stepsHistory: MixedUseNeighbourhoodCreationStep[];
+  stepsHistory: UrbanProjectCreationStep[];
 };
 
 const mixedUseNeighbourhoodReducer = createReducer({} as ProjectCreationState, (builder) => {

@@ -1,7 +1,7 @@
 import {
   completeYearlyProjectedRevenue,
   revertYearlyProjectedRevenue,
-} from "../../../application/createProject.reducer";
+} from "../../../../application/createProject.reducer";
 import YearlyProjectedsRevenueForm, { FormValues } from "./ProjectYearlyProjectedRevenueForm";
 
 import { AppDispatch } from "@/app/application/store";
