@@ -21,5 +21,6 @@
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
     "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
     "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */
-  }
+  },
+  "include": ["src"]
 }
