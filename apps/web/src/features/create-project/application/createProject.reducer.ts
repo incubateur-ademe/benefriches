@@ -111,6 +111,7 @@ export const getInitialState = (): ProjectCreationState => {
     saveProjectLoadingState: "idle",
     mixedUseNeighbourhood: {
       createMode: undefined,
+      creationData: {},
       saveState: "idle",
       stepsHistory: ["CREATE_MODE_SELECTION"],
     },
@@ -510,7 +511,7 @@ const { revertStep } = projectCreationSlice.actions;
 export const revertDevelopmentPlanCategories = () =>
   revertStep({ resetFields: ["developmentPlanCategory"] });
 export const revertRenewableEnergyDevelopmentPlanType = () =>
-  revertStep({ resetFields: ["renewableEnergyType"] });
+  revertStep({ resetFields: ["renewableEnergyType", "developmentPlanCategory"] });
 export const revertSoilsDecontaminationIntroductionStep = () => revertStep();
 export const revertSoilsDecontaminationSelectionStep = () =>
   revertStep({ resetFields: ["decontaminatedSurfaceArea"] });

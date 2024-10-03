@@ -3,6 +3,17 @@ import { z } from "zod";
 import { TExpense } from "../financial";
 import { SoilType } from "../soils";
 
+export const urbanProjectSpacesCategories = z.enum([
+  "LIVING_AND_ACTIVITY_SPACES",
+  "PUBLIC_SPACES",
+  "GREEN_SPACES",
+  "URBAN_FARM",
+  "RENEWABLE_ENERGY_PRODUCTION_PLANT",
+  "URBAN_POND_OR_LAKE",
+]);
+
+export type UrbanSpaceCategory = z.infer<typeof urbanProjectSpacesCategories>;
+
 export const mixedUseNeighbourHoodSpaceSchema = z.record(
   z.enum([
     // private spaces
