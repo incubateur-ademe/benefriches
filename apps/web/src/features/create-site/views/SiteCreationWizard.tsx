@@ -15,7 +15,6 @@ import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationIntroduction from "./introduction";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
-import AboutFormsModal from "@/shared/app-settings/views/AboutFormsModal";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -33,12 +32,7 @@ const getMainChildren = (
         case "express":
           return <SiteCreationExpressStepContent />;
         case "custom":
-          return (
-            <>
-              <AboutFormsModal />
-              <SiteCreationCustomStepContent />
-            </>
-          );
+          return <SiteCreationCustomStepContent />;
         case undefined:
       }
   }
