@@ -1,4 +1,4 @@
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 const stepCategories = [

@@ -6,8 +6,8 @@ import { selectSiteSurfaceArea } from "@/features/create-project/application/cre
 import {
   spacesSurfaceAreaCompleted,
   spacesSurfaceAreaReverted,
-} from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.actions";
-import { selectSpacesCategories } from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.selectors";
+} from "@/features/create-project/application/urban-project/urbanProject.actions";
+import { selectSpacesCategories } from "@/features/create-project/application/urban-project/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 export default function UrbanProjectSpaceCategoriesSurfaceAreaDistributionContainer() {

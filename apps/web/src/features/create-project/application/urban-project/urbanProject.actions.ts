@@ -5,7 +5,7 @@ import { z } from "zod";
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 function prefixActionType(actionType: string) {
-  return `projectCreation/mixedUseNeighbourhood/${actionType}`;
+  return `projectCreation/urbanProject/${actionType}`;
 }
 
 const createAction = <TPayload = void>(actionName: string) =>

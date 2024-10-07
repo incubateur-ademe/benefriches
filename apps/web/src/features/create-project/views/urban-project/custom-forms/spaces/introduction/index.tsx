@@ -3,7 +3,7 @@ import UrbanProjectSpacesIntroduction from "./SpacesIntroduction";
 import {
   spacesIntroductionCompleted,
   spacesIntroductionReverted,
-} from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.actions";
+} from "@/features/create-project/application/urban-project/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 export default function UrbanProjectSpacesIntroductionContainer() {

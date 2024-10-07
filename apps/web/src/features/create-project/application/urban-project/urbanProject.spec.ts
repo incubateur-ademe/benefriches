@@ -7,8 +7,8 @@ import {
   spacesSelectionReverted,
   spacesSurfaceAreaCompleted,
   spacesSurfaceAreaReverted,
-} from "./mixedUseNeighbourhoodProject.actions";
-import { UrbanProjectCreationStep } from "./mixedUseNeighbourhoodProject.reducer";
+} from "./urbanProject.actions";
+import { UrbanProjectCreationStep } from "./urbanProject.reducer";
 
 import { createStore, RootState } from "@/app/application/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
@@ -18,29 +18,29 @@ const expectNewCurrentStep = (
   newState: RootState,
   expectedNewCurrentStep: UrbanProjectCreationStep,
 ) => {
-  expect(newState.projectCreation.mixedUseNeighbourhood.stepsHistory).toEqual([
-    ...initialState.projectCreation.mixedUseNeighbourhood.stepsHistory,
+  expect(newState.projectCreation.urbanProject.stepsHistory).toEqual([
+    ...initialState.projectCreation.urbanProject.stepsHistory,
     expectedNewCurrentStep,
   ]);
 };
 
 const expectCurrentStep = (state: RootState, step: UrbanProjectCreationStep) => {
-  expect(state.projectCreation.mixedUseNeighbourhood.stepsHistory).toEqual([step]);
+  expect(state.projectCreation.urbanProject.stepsHistory).toEqual([step]);
 };
 
 const expectStepReverted = (initialState: RootState, newState: RootState) => {
-  expect(newState.projectCreation.mixedUseNeighbourhood.stepsHistory).toEqual(
-    initialState.projectCreation.mixedUseNeighbourhood.stepsHistory.slice(0, -1),
+  expect(newState.projectCreation.urbanProject.stepsHistory).toEqual(
+    initialState.projectCreation.urbanProject.stepsHistory.slice(0, -1),
   );
 };
 
 const expectProjectDataDiff = (
   initialState: RootState,
   newState: RootState,
-  creationDataDiff: Partial<RootState["projectCreation"]["mixedUseNeighbourhood"]["creationData"]>,
+  creationDataDiff: Partial<RootState["projectCreation"]["urbanProject"]["creationData"]>,
 ) => {
-  expect(newState.projectCreation.mixedUseNeighbourhood.creationData).toEqual({
-    ...initialState.projectCreation.mixedUseNeighbourhood.creationData,
+  expect(newState.projectCreation.urbanProject.creationData).toEqual({
+    ...initialState.projectCreation.urbanProject.creationData,
     ...creationDataDiff,
   });
 };
@@ -59,7 +59,7 @@ describe("Urban project creation", () => {
     describe("SPACES_CATEGORIES_INTRODUCTION step", () => {
       it("goes to SPACES_CATEGORIES_SELECTION step when step is completed", () => {
         const store = initStoreWithState({
-          mixedUseNeighbourhood: {
+          urbanProject: {
             createMode: "custom",
             saveState: "idle",
             stepsHistory: ["SPACES_CATEGORIES_INTRODUCTION"],
@@ -76,7 +76,7 @@ describe("Urban project creation", () => {
 
       it("goes to CREATE_MODE_SELECTION step and unsets create mode when step is reverted", () => {
         const store = initStoreWithState({
-          mixedUseNeighbourhood: {
+          urbanProject: {
             createMode: "custom",
             saveState: "idle",
             stepsHistory: ["SPACES_CATEGORIES_INTRODUCTION"],
@@ -87,13 +87,13 @@ describe("Urban project creation", () => {
 
         const newState = store.getState();
         expectCurrentStep(newState, "CREATE_MODE_SELECTION");
-        expect(newState.projectCreation.mixedUseNeighbourhood.createMode).toBeUndefined();
+        expect(newState.projectCreation.urbanProject.createMode).toBeUndefined();
       });
     });
     describe("SPACES_CATEGORIES_SELECTION step", () => {
       it("goes to SPACES_CATEGORIES_SURFACE_AREA step and sets space categories when step is completed", () => {
         const store = initStoreWithState({
-          mixedUseNeighbourhood: {
+          urbanProject: {
             createMode: "custom",
             saveState: "idle",
             stepsHistory: ["SPACES_CATEGORIES_INTRODUCTION", "SPACES_CATEGORIES_SELECTION"],
@@ -116,7 +116,7 @@ describe("Urban project creation", () => {
       });
       it("goes to previous step and unset space categories when step is reverted", () => {
         const store = initStoreWithState({
-          mixedUseNeighbourhood: {
+          urbanProject: {
             createMode: "custom",
             saveState: "idle",
             stepsHistory: ["SPACES_CATEGORIES_INTRODUCTION", "SPACES_CATEGORIES_SELECTION"],
@@ -139,7 +139,7 @@ describe("Urban project creation", () => {
     describe("SPACES_CATEGORIES_SURFACE_AREA step", () => {
       it("sets space categories surface area distribution when step is completed", () => {
         const store = initStoreWithState({
-          mixedUseNeighbourhood: {
+          urbanProject: {
             createMode: "custom",
             saveState: "idle",
             stepsHistory: ["SPACES_CATEGORIES_SELECTION", "SPACES_CATEGORIES_SURFACE_AREA"],
@@ -161,7 +161,7 @@ describe("Urban project creation", () => {
       });
       it("goes to previous step and unset space categories surface area distribution when step is reverted", () => {
         const store = initStoreWithState({
-          mixedUseNeighbourhood: {
+          urbanProject: {
             createMode: "custom",
             saveState: "idle",
             stepsHistory: ["SPACES_CATEGORIES_SELECTION", "SPACES_CATEGORIES_SURFACE_AREA"],

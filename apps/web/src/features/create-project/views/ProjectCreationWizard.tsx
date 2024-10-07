@@ -4,7 +4,7 @@ import { Route } from "type-route";
 import { projectCreationInitiated } from "../application/createProject.actions";
 import { selectCurrentStep } from "../application/createProject.reducer";
 import { selectProjectDevelopmentPlanCategory } from "../application/createProject.selectors";
-import MixedUseNeighbourhoodWizard from "./mixed-use-neighbourhood/MixedUseNeighbourhoodWizard";
+import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
 import ProjectCreationIntroduction from "./introduction";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station";
 import ProjectTypesForm from "./project-types";
@@ -45,7 +45,7 @@ function ProjectCreationWizard({ route }: Props) {
     case "RENEWABLE_ENERGY":
       return <PhotovoltaicPowerStationCreationWizard />;
     case "MIXED_USE_NEIGHBOURHOOD":
-      return <MixedUseNeighbourhoodWizard />;
+      return <UrbanProjectCreationWizard />;
     default:
       return (
         <SidebarLayout

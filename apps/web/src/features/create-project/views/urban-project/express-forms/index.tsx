@@ -1,12 +1,12 @@
 import { useState } from "react";
-import MixedUseNeighbourhoodCreationResult from "./creation-result";
+import UrbanProjectCreationResult from "./creation-result";
 import UrbanProjectExpressStepper from "./UrbanProjectExpressStepper";
 
-import { MixedUseNeighbourhoodExpressCreationStep } from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
+import { UrbanProjectExpressCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 type Props = {
-  currentStep: MixedUseNeighbourhoodExpressCreationStep;
+  currentStep: UrbanProjectExpressCreationStep;
 };
 
 export default function UrbanProjectExpressCreationStepWizard({ currentStep }: Props) {
@@ -14,7 +14,7 @@ export default function UrbanProjectExpressCreationStepWizard({ currentStep }: P
 
   return (
     <SidebarLayout
-      mainChildren={<MixedUseNeighbourhoodCreationResult />}
+      mainChildren={<UrbanProjectCreationResult />}
       title="Renseignement du projet"
       isOpen={isOpen}
       toggleIsOpen={() => {

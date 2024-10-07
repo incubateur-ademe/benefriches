@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import {
-  MixedUseNeighbourhoodExpressCreationStep,
   UrbanProjectCreationStep,
   UrbanProjectCustomCreationStep,
-} from "../../application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
+  UrbanProjectExpressCreationStep,
+} from "../../application/urban-project/urbanProject.reducer";
 import {
   selectCreateMode,
   selectCurrentStep,
-} from "../../application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.selectors";
+} from "../../application/urban-project/urbanProject.selectors";
 import CreateModeSelectionForm from "./create-mode-selection";
 import UrbanProjectCustomCreationStepWizard from "./custom-forms";
 import UrbanProjectExpressCreationStepWizard from "./express-forms";
-import MixedUseNeighbourhoodCreationStepper from "./Stepper";
+import UrbanProjectCreationStepper from "./Stepper";
 
 import { routes, useRoute } from "@/app/views/router";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -49,7 +49,7 @@ const useSyncCreationStepWithRouteQuery = () => {
   }, [currentStep, currentRoute.name]);
 };
 
-function MixedUseNeighbourhoodWizard() {
+function UrbanProjectCreationWizard() {
   const currentStep = useAppSelector(selectCurrentStep);
   const createMode = useAppSelector(selectCreateMode);
   const [isOpen, setOpen] = useState(true);
@@ -65,15 +65,13 @@ function MixedUseNeighbourhoodWizard() {
           toggleIsOpen={() => {
             setOpen((current) => !current);
           }}
-          sidebarChildren={
-            <MixedUseNeighbourhoodCreationStepper step={currentStep} isExtended={isOpen} />
-          }
+          sidebarChildren={<UrbanProjectCreationStepper step={currentStep} isExtended={isOpen} />}
         />
       );
     case "express":
       return (
         <UrbanProjectExpressCreationStepWizard
-          currentStep={currentStep as MixedUseNeighbourhoodExpressCreationStep}
+          currentStep={currentStep as UrbanProjectExpressCreationStep}
         />
       );
     case "custom":
@@ -85,4 +83,4 @@ function MixedUseNeighbourhoodWizard() {
   }
 }
 
-export default MixedUseNeighbourhoodWizard;
+export default UrbanProjectCreationWizard;

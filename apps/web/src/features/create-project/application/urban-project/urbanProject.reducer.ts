@@ -11,9 +11,9 @@ import {
   spacesSelectionReverted,
   spacesSurfaceAreaCompleted,
   spacesSurfaceAreaReverted,
-} from "./mixedUseNeighbourhoodProject.actions";
+} from "./urbanProject.actions";
 
-export type MixedUseNeighbourhoodExpressCreationStep = "CREATION_RESULT";
+export type UrbanProjectExpressCreationStep = "CREATION_RESULT";
 export type UrbanProjectCustomCreationStep =
   | "SPACES_CATEGORIES_INTRODUCTION"
   | "SPACES_CATEGORIES_SELECTION"
@@ -21,10 +21,10 @@ export type UrbanProjectCustomCreationStep =
 
 export type UrbanProjectCreationStep =
   | "CREATE_MODE_SELECTION"
-  | MixedUseNeighbourhoodExpressCreationStep
+  | UrbanProjectExpressCreationStep
   | UrbanProjectCustomCreationStep;
 
-export type MixedUseNeighbourhoodState = {
+export type UrbanProjectState = {
   createMode: "express" | "custom" | undefined;
   saveState: "idle" | "loading" | "success" | "error";
   stepsHistory: UrbanProjectCreationStep[];
@@ -36,57 +36,56 @@ export type MixedUseNeighbourhoodState = {
 
 const isRevertedAction = (action: { type: string }) => {
   return (
-    action.type.startsWith("projectCreation/mixedUseNeighbourhood/") &&
-    action.type.endsWith("Reverted")
+    action.type.startsWith("projectCreation/urbanProject/") && action.type.endsWith("Reverted")
   );
 };
 
-const mixedUseNeighbourhoodReducer = createReducer({} as ProjectCreationState, (builder) => {
+const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
   builder.addCase(createModeStepReverted, (state) => {
-    state.mixedUseNeighbourhood.createMode = undefined;
+    state.urbanProject.createMode = undefined;
   });
   builder.addCase(expressCreateModeSelected.pending, (state) => {
-    state.mixedUseNeighbourhood.createMode = "express";
-    state.mixedUseNeighbourhood.saveState = "loading";
-    state.mixedUseNeighbourhood.stepsHistory.push("CREATION_RESULT");
+    state.urbanProject.createMode = "express";
+    state.urbanProject.saveState = "loading";
+    state.urbanProject.stepsHistory.push("CREATION_RESULT");
   });
   builder.addCase(expressCreateModeSelected.rejected, (state) => {
-    state.mixedUseNeighbourhood.saveState = "error";
+    state.urbanProject.saveState = "error";
   });
   builder.addCase(expressCreateModeSelected.fulfilled, (state) => {
-    state.mixedUseNeighbourhood.saveState = "success";
+    state.urbanProject.saveState = "success";
   });
 
   builder.addCase(customCreateModeSelected, (state) => {
-    state.mixedUseNeighbourhood.createMode = "custom";
-    state.mixedUseNeighbourhood.stepsHistory.push("SPACES_CATEGORIES_INTRODUCTION");
+    state.urbanProject.createMode = "custom";
+    state.urbanProject.stepsHistory.push("SPACES_CATEGORIES_INTRODUCTION");
   });
   builder.addCase(spacesIntroductionCompleted, (state) => {
-    state.mixedUseNeighbourhood.stepsHistory.push("SPACES_CATEGORIES_SELECTION");
+    state.urbanProject.stepsHistory.push("SPACES_CATEGORIES_SELECTION");
   });
   builder.addCase(spacesIntroductionReverted, (state) => {
-    state.mixedUseNeighbourhood.createMode = undefined;
+    state.urbanProject.createMode = undefined;
   });
   builder.addCase(spacesSelectionCompleted, (state, action) => {
-    state.mixedUseNeighbourhood.creationData.spacesCategories = action.payload.spacesCategories;
-    state.mixedUseNeighbourhood.stepsHistory.push("SPACES_CATEGORIES_SURFACE_AREA");
+    state.urbanProject.creationData.spacesCategories = action.payload.spacesCategories;
+    state.urbanProject.stepsHistory.push("SPACES_CATEGORIES_SURFACE_AREA");
   });
   builder.addCase(spacesSelectionReverted, (state) => {
-    state.mixedUseNeighbourhood.creationData.spacesCategories = undefined;
+    state.urbanProject.creationData.spacesCategories = undefined;
   });
   builder.addCase(spacesSurfaceAreaCompleted, (state, action) => {
-    state.mixedUseNeighbourhood.creationData.spacesCategoriesDistribution =
+    state.urbanProject.creationData.spacesCategoriesDistribution =
       action.payload.surfaceAreaDistribution;
   });
   builder.addCase(spacesSurfaceAreaReverted, (state) => {
-    state.mixedUseNeighbourhood.creationData.spacesCategoriesDistribution = undefined;
+    state.urbanProject.creationData.spacesCategoriesDistribution = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {
-    if (state.mixedUseNeighbourhood.stepsHistory.length === 1)
-      state.mixedUseNeighbourhood.stepsHistory = ["CREATE_MODE_SELECTION"];
-    else state.mixedUseNeighbourhood.stepsHistory.pop();
+    if (state.urbanProject.stepsHistory.length === 1)
+      state.urbanProject.stepsHistory = ["CREATE_MODE_SELECTION"];
+    else state.urbanProject.stepsHistory.pop();
   });
 });
 
-export default mixedUseNeighbourhoodReducer;
+export default urbanProjectReducer;

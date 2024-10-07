@@ -23,10 +23,8 @@ import {
   transformNonSuitableSoils,
   transformSoilsForRenaturation,
 } from "../domain/soilsTransformation";
-import { createModeStepReverted } from "./mixed-use-neighbourhood/mixedUseNeighbourhoodProject.actions";
-import mixedUseNeighbourhoodReducer, {
-  MixedUseNeighbourhoodState,
-} from "./mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
+import { createModeStepReverted } from "./urban-project/urbanProject.actions";
+import urbanProjectReducer, { UrbanProjectState } from "./urban-project/urbanProject.reducer";
 import { projectCreationInitiated } from "./createProject.actions";
 import { saveReconversionProject } from "./saveReconversionProject.action";
 
@@ -47,7 +45,7 @@ export type ProjectCreationState = {
   siteData?: ProjectSite;
   siteDataLoadingState: LoadingState;
   saveProjectLoadingState: LoadingState;
-  mixedUseNeighbourhood: MixedUseNeighbourhoodState;
+  urbanProject: UrbanProjectState;
 };
 
 export type PhotovoltaicProjectCreationStep =
@@ -109,7 +107,7 @@ export const getInitialState = (): ProjectCreationState => {
     siteData: undefined,
     siteDataLoadingState: "idle",
     saveProjectLoadingState: "idle",
-    mixedUseNeighbourhood: {
+    urbanProject: {
       createMode: undefined,
       creationData: {},
       saveState: "idle",
@@ -631,7 +629,7 @@ export const {
 const projectCreationReducer = reduceReducers<ProjectCreationState>(
   getInitialState(),
   projectCreationSlice.reducer,
-  mixedUseNeighbourhoodReducer,
+  urbanProjectReducer,
 );
 
 export default projectCreationReducer;

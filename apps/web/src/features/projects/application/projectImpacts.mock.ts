@@ -275,7 +275,7 @@ export const photovoltaicProjectImpactMock = {
   },
 } satisfies ReconversionProjectImpactsResult;
 
-export const mixedUseNeighbourhoodProjectImpactMock = {
+export const urbanProjectImpactMock = {
   name: "Quartier Mixte",
   id: "5bd1c7cd-22e6-4c1c-8d50-41bca284ce05",
   relatedSiteId: "13958ec7-0468-4ecb-8217-0cc80a82b633",

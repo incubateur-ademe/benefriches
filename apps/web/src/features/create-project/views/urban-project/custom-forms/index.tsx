@@ -4,7 +4,7 @@ import SpacesCategoriesSelection from "./spaces/selection";
 import UrbanProjectSpaceCategoriesSurfaceAreaDistribution from "./spaces/surface-area";
 import UrbanProjectCustomSteps from "./UrbanProjectCustomSteps";
 
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 type Props = {

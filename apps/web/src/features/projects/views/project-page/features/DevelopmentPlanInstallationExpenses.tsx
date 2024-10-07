@@ -4,8 +4,8 @@ import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
 } from "@/features/projects/domain/projects.types";
-import { getLabelForMixedUseNeighbourhoodDevelopmentExpense } from "@/shared/domain/mixedUseNeighbourhood";
 import { getLabelForPhotovoltaicInstallationExpensePurpose } from "@/shared/domain/reconversionProject";
+import { getLabelForUrbanProjectDevelopmentExpense } from "@/shared/domain/urbanProject";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumList } from "@/shared/services/sum/sum";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
@@ -57,7 +57,7 @@ export default function DevelopmentPlanInstallationExpenses({
           {installationCosts.map(({ amount, purpose }) => {
             return (
               <DataLine
-                label={getLabelForMixedUseNeighbourhoodDevelopmentExpense(
+                label={getLabelForUrbanProjectDevelopmentExpense(
                   purpose as MixedUseNeighbourhoodDevelopmentExpense["purpose"],
                 )}
                 value={`${formatNumberFr(amount)} €`}

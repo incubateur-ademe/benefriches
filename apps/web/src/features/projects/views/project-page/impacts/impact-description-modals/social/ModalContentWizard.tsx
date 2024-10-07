@@ -2,9 +2,9 @@ import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
 import AvoidedVehiculeKilometersDescription from "./avoided-vehicule-kilometers/AvoidedVehiculeKilometersDescription";
 import FullTimeJobsDescription from "./full-time-jobs/FullTimeJobsDescription";
-import MixedUseNeighbourhoodOperationFullTimeJobsDescription from "./full-time-jobs/MixedUseNeighbourhoodOperationFullTimeJobsDescription";
 import PhotovoltaicOperationFullTimeJobsDescription from "./full-time-jobs/PhotovoltaicOperationFullTimeJobsDescription";
 import ReconversionFullTimeJobsDescription from "./full-time-jobs/ReconversionFullTimeJobsDescription";
+import UrbanProjectOperationFullTimeJobsDescription from "./full-time-jobs/UrbanProjectOperationFullTimeJobsDescription";
 import HouseholdsPoweredByRenewableEnergyDescription from "./householdsPoweredByEnR/householdsPoweredByEnR";
 import TimeTravelSavedDescription from "./time-travel-saved/TimeTravelSavedDescription";
 import SocialMainDescription from "./SocialMainDescription";
@@ -95,7 +95,7 @@ const SocialSectionModalContentWizard = ({
               electricalPowerKWc={projectData.developmentPlan.electricalPowerKWc}
             />
           ) : (
-            <MixedUseNeighbourhoodOperationFullTimeJobsDescription
+            <UrbanProjectOperationFullTimeJobsDescription
               groundFloorRetailSurface={
                 projectData.developmentPlan.buildingsFloorAreaDistribution.GROUND_FLOOR_RETAIL ?? 0
               }

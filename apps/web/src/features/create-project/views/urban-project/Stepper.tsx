@@ -1,4 +1,4 @@
-import { UrbanProjectCreationStep } from "../../application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
+import { UrbanProjectCreationStep } from "../../application/urban-project/urbanProject.reducer";
 
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
@@ -9,7 +9,7 @@ type Props = {
   isExtended?: boolean;
 };
 
-function MixedUseNeighbourhoodCreationStepper({ step, isExtended }: Props) {
+function UrbanProjectCreationStepper({ step, isExtended }: Props) {
   const currentStepCategory = "Mode de création";
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
   const isDone = step === "CREATION_RESULT";
@@ -24,4 +24,4 @@ function MixedUseNeighbourhoodCreationStepper({ step, isExtended }: Props) {
   );
 }
 
-export default MixedUseNeighbourhoodCreationStepper;
+export default UrbanProjectCreationStepper;

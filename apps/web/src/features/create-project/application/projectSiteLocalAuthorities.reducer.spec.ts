@@ -77,7 +77,7 @@ const INITIAL_STATE = {
   projectData: {},
   siteDataLoadingState: "success",
   saveProjectLoadingState: "idle",
-  mixedUseNeighbourhood: {
+  urbanProject: {
     createMode: undefined,
     stepsHistory: [],
     saveState: "idle",

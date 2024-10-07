@@ -34,7 +34,7 @@ export default function CallToActionSection() {
             )}
           >
             <img
-              src="/img/pictograms/development-plans/mixed-used-neighborhood.svg"
+              src="/img/pictograms/development-plans/urban-project.svg"
               width="100px"
               aria-hidden="true"
               alt="icône projet d’aménagement urbain"

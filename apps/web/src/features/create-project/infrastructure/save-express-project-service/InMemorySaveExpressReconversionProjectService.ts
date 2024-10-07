@@ -1,4 +1,4 @@
-import { SaveExpressReconversionProjectGateway } from "../../application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.actions";
+import { SaveExpressReconversionProjectGateway } from "../../application/urban-project/urbanProject.actions";
 import { SaveExpressReconversionProjectPayload } from "./HttpSaveExpressReconversionProjectService";
 
 export class InMemorySaveExpressReconversionProjectService

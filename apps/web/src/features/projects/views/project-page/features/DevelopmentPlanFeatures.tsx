@@ -1,7 +1,7 @@
 import { typedObjectEntries } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
-import { getLabelForMixedUseNeighbourhoodSpace } from "@/shared/domain/mixedUseNeighbourhood";
+import { getLabelForUrbanProjectSpace } from "@/shared/domain/urbanProject";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { sumList } from "@/shared/services/sum/sum";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
@@ -43,7 +43,7 @@ export default function DevelopmentPlanFeatures(props: Props) {
           {typedObjectEntries(props.spaces).map(([space, surfaceArea]) => {
             return (
               <DataLine
-                label={getLabelForMixedUseNeighbourhoodSpace(space)}
+                label={getLabelForUrbanProjectSpace(space)}
                 value={formatSurfaceArea(surfaceArea)}
                 key={space}
                 isDetails

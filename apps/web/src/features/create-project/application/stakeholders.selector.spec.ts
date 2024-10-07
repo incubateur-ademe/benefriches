@@ -30,7 +30,7 @@ const MOCK_STATES = {
     siteData,
     siteDataLoadingState: "success",
     saveProjectLoadingState: "success",
-    mixedUseNeighbourhood: {
+    urbanProject: {
       createMode: undefined,
       stepsHistory: [],
       saveState: "idle",

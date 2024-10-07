@@ -8,9 +8,7 @@ type Props = {
   groundFloorRetailSurface: number;
 };
 
-const MixedUseNeighbourhoodOperationFullTimeJobsDescription = ({
-  groundFloorRetailSurface,
-}: Props) => {
+const UrbanProjectOperationFullTimeJobsDescription = ({ groundFloorRetailSurface }: Props) => {
   return (
     <>
       <p>
@@ -51,4 +49,4 @@ const MixedUseNeighbourhoodOperationFullTimeJobsDescription = ({
   );
 };
 
-export default MixedUseNeighbourhoodOperationFullTimeJobsDescription;
+export default UrbanProjectOperationFullTimeJobsDescription;
