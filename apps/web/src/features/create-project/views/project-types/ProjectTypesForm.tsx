@@ -4,8 +4,6 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { DevelopmentPlanCategory, developmentPlanCategorySchema } from "shared";
 import DevelopmentPlanCategoryTile from "./DevelopmentPlanCategoryTile";
 
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
-
 type Props = {
   onSubmit: (data: FormValues) => void;
   allowedDevelopmentPlanCategories: DevelopmentPlanCategory[];
@@ -27,45 +25,47 @@ function ProjectTypesForm({ onSubmit, allowedDevelopmentPlanCategories }: Props)
   });
 
   return (
-    <WizardFormLayout title="Que souhaitez-vous aménager sur ce site ?">
+    <section className="tw-px-6">
+      <h2>Que souhaitez-vous aménager sur ce site ?</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={fr.cx("fr-mb-5w")}>
-          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-            {options.map(({ value, disabled }) => {
-              return (
-                <div className={fr.cx("fr-col-12", "fr-col-sm-6")} key={value}>
-                  <Controller
-                    control={control}
-                    name="developmentPlanCategory"
-                    rules={{ required: "Veuillez sélectionner un type d'aménagement." }}
-                    render={({ field }) => {
-                      const isSelected = field.value === value;
-                      return (
-                        <DevelopmentPlanCategoryTile
-                          developmentPlanCategory={value}
-                          disabled={disabled}
-                          isSelected={isSelected}
-                          onSelect={() => {
-                            field.onChange(value);
-                          }}
-                        />
-                      );
-                    }}
-                  />
-                </div>
-              );
-            })}
+        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_350px)] tw-gap-x-4">
+          {options.map(({ value, disabled }) => {
+            return (
+              <div className="tw-mb-4" key={value}>
+                <Controller
+                  control={control}
+                  name="developmentPlanCategory"
+                  rules={{ required: "Veuillez sélectionner un type d'aménagement." }}
+                  render={({ field }) => {
+                    const isSelected = field.value === value;
+                    return (
+                      <DevelopmentPlanCategoryTile
+                        developmentPlanCategory={value}
+                        disabled={disabled}
+                        isSelected={isSelected}
+                        onSelect={() => {
+                          field.onChange(value);
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </div>
+            );
+          })}
+
+          <div className="tw-row-start-6 tw-col-start-1 tw-col-end-[-1]">
+            {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
+            <Button
+              className="tw-float-right"
+              nativeButtonProps={{ type: "submit", disabled: !formState.isValid }}
+            >
+              Valider
+            </Button>
           </div>
-          {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
         </div>
-        <Button
-          className="tw-float-right"
-          nativeButtonProps={{ type: "submit", disabled: !formState.isValid }}
-        >
-          Valider
-        </Button>
       </form>
-    </WizardFormLayout>
+    </section>
   );
 }
 
