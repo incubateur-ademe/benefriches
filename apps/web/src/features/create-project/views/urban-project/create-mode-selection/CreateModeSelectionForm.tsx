@@ -1,6 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
 
+import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CreateModeOption from "@/shared/views/components/form/CreateModeOption/CreateModeOption";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -38,8 +39,10 @@ const options: Option[] = [
     title: "Mode personnalisé",
     description:
       "Renseignez les informations dont vous disposez : aménagement des espaces, bâtiments, dépenses et recettes, emplois mobilisés, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
-    badgeText: "Bientôt disponible",
-    disabled: true,
+    badgeText: BENEFRICHES_ENV.isUrbanProjectCustomCreationAvailable
+      ? "Le plus précis"
+      : "Bientôt disponible",
+    disabled: !BENEFRICHES_ENV.isUrbanProjectCustomCreationAvailable,
     imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",
   },
 ] as const;

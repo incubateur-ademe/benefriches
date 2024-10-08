@@ -13,6 +13,8 @@ export const BENEFRICHES_ENV = {
   matomoSiteId: windowEnv.WEBAPP_MATOMO_SITE_ID ?? "",
   matomoUrl: windowEnv.WEBAPP_MATOMO_URL ?? "",
   isSiteExpressAllowed: windowEnv.WEBAPP_IS_SITE_EXPRESS_ALLOWED === "YES",
+  isUrbanProjectCustomCreationAvailable:
+    windowEnv.WEBAPP_IS_URBAN_PROJECT_CUSTOM_CREATION_AVAILABLE === "YES",
   allowedDevelopmentPlanCategories:
     windowEnv.WEBAPP_ALLOWED_DEVELOPMENT_PLAN_CATEGORIES?.split(",") ?? [],
 };
