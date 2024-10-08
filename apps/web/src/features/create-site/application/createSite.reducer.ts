@@ -3,7 +3,6 @@ import { FricheActivity, SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
 import { saveCustomSiteAction, saveExpressSiteAction } from "./createSite.actions";
 
-import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import { RootState } from "@/app/application/store";
 import {
   Address,
@@ -91,10 +90,7 @@ export const siteCreationSlice = createSlice({
       return getInitialState();
     },
     introductionStepCompleted: (state) => {
-      const nextStep = BENEFRICHES_ENV.isSiteExpressAllowed
-        ? "CREATE_MODE_SELECTION"
-        : "SITE_NATURE";
-      state.stepsHistory.push(nextStep);
+      state.stepsHistory.push("CREATE_MODE_SELECTION");
     },
     completeCreateModeSelectionStep: (
       state,
