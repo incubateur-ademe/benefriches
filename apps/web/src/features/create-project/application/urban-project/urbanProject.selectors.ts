@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { UrbanGreenSpace, UrbanSpaceCategory } from "shared";
+import { UrbanGreenSpace, UrbanLivingAndActivitySpace, UrbanSpaceCategory } from "shared";
 
 import { RootState } from "@/app/application/store";
 
@@ -30,3 +30,10 @@ export const selectSpaceCategorySurfaceArea = createSelector(
 export const selectGreenSpaces = createSelector([selectSelf], (state): UrbanGreenSpace[] => {
   return state.creationData.greenSpaces ?? [];
 });
+
+export const selectLivingAndActivitySpaces = createSelector(
+  [selectSelf],
+  (state): UrbanLivingAndActivitySpace[] => {
+    return state.creationData.livingAndActivitySpaces ?? [];
+  },
+);

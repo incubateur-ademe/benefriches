@@ -55,3 +55,4 @@ export * from "./photovoltaicPowerStation";
 export * from "./reinstatementCosts";
 export * from "./reinstatementFullTimeJobs";
 export * from "./green-spaces/urbanGreenSpaces";
+export * from "./living-and-activity-spaces/urbanLivingAndActivitySpaces";

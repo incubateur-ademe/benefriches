@@ -12,6 +12,12 @@ import {
   greenSpacesIntroductionReverted,
   greenSpacesSelectionCompleted,
   greenSpacesSelectionReverted,
+  livingAndActivitySpacesDistributionCompleted,
+  livingAndActivitySpacesDistributionReverted,
+  livingAndActivitySpacesIntroductionCompleted,
+  livingAndActivitySpacesIntroductionReverted,
+  livingAndActivitySpacesSelectionCompleted,
+  livingAndActivitySpacesSelectionReverted,
   spacesDevelopmentPlanIntroductionCompleted,
   spacesDevelopmentPlanIntroductionReverted,
   spacesIntroductionCompleted,
@@ -417,6 +423,197 @@ describe("Urban project creation", () => {
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
           creationDataDiff: { greenSpacesDistribution: undefined },
+        });
+      });
+    });
+    describe("LIVING_AND_ACTIVITY_SPACES_INTRODUCTION step", () => {
+      it("goes to LIVING_AND_ACTIVITY_SPACES_SELECTION when step is completed", () => {
+        const store = buildInitialState({
+          stepsHistory: ["LIVING_AND_ACTIVITY_SPACES_INTRODUCTION"],
+          creationData: {
+            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
+            spacesCategoriesDistribution: { GREEN_SPACES: 2000, LIVING_AND_ACTIVITY_SPACES: 8000 },
+          },
+        });
+        const initialRootState = store.getState();
+
+        store.dispatch(livingAndActivitySpacesIntroductionCompleted());
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "LIVING_AND_ACTIVITY_SPACES_SELECTION",
+        });
+      });
+      it("goes to previous step and add LIVING_AND_ACTIVITY_SPACES to space categories to complete when step is reverted", () => {
+        const store = buildInitialState({
+          spacesCategoriesToComplete: ["GREEN_SPACES"],
+          stepsHistory: ["SPACES_CATEGORIES_SELECTION", "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION"],
+          creationData: {
+            greenSpaces: ["LAWNS_AND_BUSHES", "TREE_FILLED_SPACE"],
+          },
+        });
+        const initialRootState = store.getState();
+
+        store.dispatch(livingAndActivitySpacesIntroductionReverted());
+
+        const newState = store.getState();
+        expectRevertedState(initialRootState, newState, {
+          spacesCategoriesToComplete: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
+        });
+      });
+    });
+    describe("LIVING_AND_ACTIVITY_SPACES_SELECTION step", () => {
+      it("goes to LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION and sets living/activity spaces when step is completed", () => {
+        const store = buildInitialState({
+          stepsHistory: ["LIVING_AND_ACTIVITY_SPACES_SELECTION"],
+          creationData: {
+            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
+            spacesCategoriesDistribution: { GREEN_SPACES: 2000, LIVING_AND_ACTIVITY_SPACES: 8000 },
+          },
+        });
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          livingAndActivitySpacesSelectionCompleted([
+            "BUILDINGS",
+            "PAVED_ALLEY_OR_PARKING_LOT",
+            "GARDEN_AND_GRASS_ALLEYS",
+          ]),
+        );
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          creationDataDiff: {
+            livingAndActivitySpaces: [
+              "BUILDINGS",
+              "PAVED_ALLEY_OR_PARKING_LOT",
+              "GARDEN_AND_GRASS_ALLEYS",
+            ],
+          },
+        });
+      });
+      it("goes to previous step and unset living/activity spaces when step is reverted", () => {
+        const store = buildInitialState({
+          spacesCategoriesToComplete: ["GREEN_SPACES"],
+          stepsHistory: ["SPACES_CATEGORIES_SELECTION", "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION"],
+          creationData: {
+            livingAndActivitySpaces: [
+              "BUILDINGS",
+              "PAVED_ALLEY_OR_PARKING_LOT",
+              "GARDEN_AND_GRASS_ALLEYS",
+            ],
+          },
+        });
+        const initialRootState = store.getState();
+
+        store.dispatch(livingAndActivitySpacesSelectionReverted());
+
+        const newState = store.getState();
+        expectRevertedState(initialRootState, newState, {
+          creationDataDiff: { livingAndActivitySpaces: undefined },
+        });
+      });
+    });
+    describe("LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION step", () => {
+      it("sets living/activity spaces surface areas and goes to next spaces category introduction step when step is completed", () => {
+        const store = buildInitialState({
+          stepsHistory: [
+            "LIVING_AND_ACTIVITY_SPACES_SELECTION",
+            "LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          ],
+          spacesCategoriesToComplete: ["PUBLIC_SPACES", "GREEN_SPACES"],
+          creationData: {
+            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "PUBLIC_SPACES", "GREEN_SPACES"],
+            spacesCategoriesDistribution: {
+              GREEN_SPACES: 1000,
+              PUBLIC_SPACES: 1000,
+              LIVING_AND_ACTIVITY_SPACES: 8000,
+            },
+          },
+        });
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          livingAndActivitySpacesDistributionCompleted({
+            BUILDINGS: 5000,
+            GRAVEL_ALLEY_OR_PARKING_LOT: 3000,
+          }),
+        );
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "PUBLIC_SPACES_INTRODUCTION",
+          spacesCategoriesToComplete: ["GREEN_SPACES"],
+          creationDataDiff: {
+            livingAndActivitySpacesDistribution: {
+              BUILDINGS: 5000,
+              GRAVEL_ALLEY_OR_PARKING_LOT: 3000,
+            },
+          },
+        });
+      });
+      it("sets living/activity spaces surface areas and goes to spaces summary step when step is completed and no more space category to complete", () => {
+        const store = buildInitialState({
+          stepsHistory: [
+            "LIVING_AND_ACTIVITY_SPACES_SELECTION",
+            "LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION",
+          ],
+          spacesCategoriesToComplete: [],
+          creationData: {
+            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
+            spacesCategoriesDistribution: { LIVING_AND_ACTIVITY_SPACES: 8000 },
+          },
+        });
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          livingAndActivitySpacesDistributionCompleted({
+            BUILDINGS: 5000,
+            GRAVEL_ALLEY_OR_PARKING_LOT: 3000,
+          }),
+        );
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "SPACES_DEVELOPMENT_PLAN_SUMMARY",
+          creationDataDiff: {
+            livingAndActivitySpacesDistribution: {
+              BUILDINGS: 5000,
+              GRAVEL_ALLEY_OR_PARKING_LOT: 3000,
+            },
+          },
+        });
+      });
+      it("goes to previous step and unset green spaces step is reverted", () => {
+        const store = buildInitialState({
+          stepsHistory: [
+            "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+            "LIVING_AND_ACTIVITY_SPACES_SELECTION",
+            "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+          ],
+          creationData: {
+            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
+            spacesCategoriesDistribution: { GREEN_SPACES: 2000, LIVING_AND_ACTIVITY_SPACES: 8000 },
+            livingAndActivitySpaces: [
+              "BUILDINGS",
+              "PAVED_ALLEY_OR_PARKING_LOT",
+              "GARDEN_AND_GRASS_ALLEYS",
+            ],
+            livingAndActivitySpacesDistribution: {
+              BUILDINGS: 2000,
+              PAVED_ALLEY_OR_PARKING_LOT: 3000,
+              GARDEN_AND_GRASS_ALLEYS: 3000,
+            },
+          },
+        });
+        const initialRootState = store.getState();
+
+        store.dispatch(livingAndActivitySpacesDistributionReverted());
+
+        const newState = store.getState();
+        expectRevertedState(initialRootState, newState, {
+          creationDataDiff: { livingAndActivitySpacesDistribution: undefined },
         });
       });
     });

@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { UrbanGreenSpace, UrbanSpaceCategory } from "shared";
+import { UrbanGreenSpace, UrbanLivingAndActivitySpace, UrbanSpaceCategory } from "shared";
 
 import { ProjectCreationState } from "../createProject.reducer";
 import {
@@ -12,6 +12,12 @@ import {
   greenSpacesIntroductionReverted,
   greenSpacesSelectionCompleted,
   greenSpacesSelectionReverted,
+  livingAndActivitySpacesDistributionCompleted,
+  livingAndActivitySpacesDistributionReverted,
+  livingAndActivitySpacesIntroductionCompleted,
+  livingAndActivitySpacesIntroductionReverted,
+  livingAndActivitySpacesSelectionCompleted,
+  livingAndActivitySpacesSelectionReverted,
   spacesDevelopmentPlanIntroductionCompleted,
   spacesIntroductionCompleted,
   spacesIntroductionReverted,
@@ -31,12 +37,15 @@ export type UrbanProjectCustomCreationStep =
   | "GREEN_SPACES_SELECTION"
   | "GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"
   | "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION"
+  | "LIVING_AND_ACTIVITY_SPACES_SELECTION"
+  | "LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION"
+  | "PUBLIC_SPACES_INTRODUCTION"
   | "SPACES_DEVELOPMENT_PLAN_SUMMARY";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
   LIVING_AND_ACTIVITY_SPACES: "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
-  PUBLIC_SPACES: undefined,
+  PUBLIC_SPACES: "PUBLIC_SPACES_INTRODUCTION",
   URBAN_FARM: undefined,
   RENEWABLE_ENERGY_PRODUCTION_PLANT: undefined,
   URBAN_POND_OR_LAKE: undefined,
@@ -57,6 +66,8 @@ export type UrbanProjectState = {
     spacesCategoriesDistribution?: Partial<Record<UrbanSpaceCategory, number>>;
     greenSpaces?: UrbanGreenSpace[];
     greenSpacesDistribution?: Partial<Record<UrbanGreenSpace, number>>;
+    livingAndActivitySpaces?: UrbanLivingAndActivitySpace[];
+    livingAndActivitySpacesDistribution?: Partial<Record<UrbanLivingAndActivitySpace, number>>;
   };
 };
 
@@ -143,6 +154,33 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(greenSpacesDistributionReverted, (state) => {
     state.urbanProject.creationData.greenSpacesDistribution = undefined;
+  });
+  builder.addCase(livingAndActivitySpacesIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("LIVING_AND_ACTIVITY_SPACES_SELECTION");
+  });
+  builder.addCase(livingAndActivitySpacesIntroductionReverted, (state) => {
+    state.urbanProject.spacesCategoriesToComplete.unshift("LIVING_AND_ACTIVITY_SPACES");
+  });
+  builder.addCase(livingAndActivitySpacesSelectionCompleted, (state, action) => {
+    state.urbanProject.creationData.livingAndActivitySpaces = action.payload;
+    state.urbanProject.stepsHistory.push("LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION");
+  });
+  builder.addCase(livingAndActivitySpacesSelectionReverted, (state) => {
+    state.urbanProject.creationData.livingAndActivitySpaces = undefined;
+  });
+  builder.addCase(livingAndActivitySpacesDistributionCompleted, (state, action) => {
+    state.urbanProject.creationData.livingAndActivitySpacesDistribution = action.payload;
+    const nextCategoryToComplete = state.urbanProject.spacesCategoriesToComplete.shift();
+    const nextStep =
+      nextCategoryToComplete && urbanSpaceCategoryIntroductionMap[nextCategoryToComplete];
+    if (nextStep) {
+      state.urbanProject.stepsHistory.push(nextStep);
+    } else {
+      state.urbanProject.stepsHistory.push("SPACES_DEVELOPMENT_PLAN_SUMMARY");
+    }
+  });
+  builder.addCase(livingAndActivitySpacesDistributionReverted, (state) => {
+    state.urbanProject.creationData.livingAndActivitySpacesDistribution = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {
