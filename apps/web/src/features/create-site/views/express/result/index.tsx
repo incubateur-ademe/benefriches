@@ -1,7 +1,7 @@
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
 import { revertStep } from "../../../application/createSite.reducer";
 import SiteCreationResult from "./SiteCreationResult";
-
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function SiteCreationResultContainer() {
   const { siteData, saveLoadingState: creationLoadingState } = useAppSelector(

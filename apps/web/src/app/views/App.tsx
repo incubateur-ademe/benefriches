@@ -1,9 +1,5 @@
-import { lazy, Suspense, useEffect } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import { trackPageView } from "../application/analytics";
-import { BENEFRICHES_ENV } from "../application/envVars";
-import MatomoContainer from "./MatomoContainer";
-import { routes, useRoute } from "./router";
+import { lazy, Suspense, useEffect } from "react";
 
 import ProjectImpactsOnboardingPage from "@/features/projects/views/project-impacts-onboarding";
 import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
@@ -12,6 +8,11 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
+
+import { trackPageView } from "../application/analytics";
+import { BENEFRICHES_ENV } from "../application/envVars";
+import MatomoContainer from "./MatomoContainer";
+import { routes, useRoute } from "./router";
 
 /* Lazy-loaded pages */
 const CreateUserPage = lazy(() => import("@/features/users/views"));

@@ -1,3 +1,4 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import {
   type DetailedHTMLProps,
   forwardRef,
@@ -6,7 +7,6 @@ import {
   ReactNode,
   useId,
 } from "react";
-import { fr } from "@codegouvfr/react-dsfr";
 
 import classNames from "@/shared/views/clsx";
 

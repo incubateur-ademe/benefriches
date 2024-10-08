@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux";
-import { revertResultStep } from "../../../application/createProject.reducer";
-import ProjectCreationResult from "./ProjectCreationResult";
 
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { revertResultStep } from "../../../application/createProject.reducer";
+import ProjectCreationResult from "./ProjectCreationResult";
 
 function ProjectCreationResultContainer() {
   const { projectData, saveProjectLoadingState, siteData } = useAppSelector(

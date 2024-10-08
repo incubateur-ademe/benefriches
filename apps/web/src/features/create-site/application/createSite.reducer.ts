@@ -1,7 +1,6 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution, SoilType } from "shared";
 import { v4 as uuid } from "uuid";
-import { saveCustomSiteAction, saveExpressSiteAction } from "./createSite.actions";
 
 import { RootState } from "@/app/application/store";
 import {
@@ -13,6 +12,8 @@ import {
   Tenant,
 } from "@/features/create-site/domain/siteFoncier.types";
 import { splitEvenly } from "@/shared/services/split-number/splitNumber";
+
+import { saveCustomSiteAction, saveExpressSiteAction } from "./createSite.actions";
 
 export type SiteCreationCustomStep =
   | "SITE_NATURE"

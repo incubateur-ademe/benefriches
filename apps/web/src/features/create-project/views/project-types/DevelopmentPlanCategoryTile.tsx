@@ -1,12 +1,13 @@
 import { DevelopmentPlanCategory } from "shared";
+
+import Badge from "@/shared/views/components/Badge/Badge";
+import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
+
 import {
   getDescriptionForDevelopmentPlanCategory,
   getLabelForDevelopmentPlanCategory,
   getPictogramForDevelopmentPlanCategory,
 } from "../projectTypeLabelMapping";
-
-import Badge from "@/shared/views/components/Badge/Badge";
-import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 
 type Props = {
   developmentPlanCategory: DevelopmentPlanCategory;

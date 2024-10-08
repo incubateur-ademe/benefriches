@@ -1,6 +1,6 @@
-import ExampleArticle from "./Example";
-
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+
+import ExampleArticle from "./Example";
 
 type Props = {
   onBackClick: () => void;

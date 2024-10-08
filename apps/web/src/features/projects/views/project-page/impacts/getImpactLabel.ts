@@ -1,5 +1,4 @@
 import { RecurringExpense, RecurringRevenue, ReinstatementExpense } from "shared";
-import { FinancialAssistance } from "../../../domain/impacts.types";
 
 import {
   DevelopmentPlanInstallationExpenseName,
@@ -15,6 +14,8 @@ import {
 } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
 import { SocialImpactName } from "@/features/projects/application/projectImpactsSocial.selectors";
 import { SocioEconomicImpactName } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+
+import { FinancialAssistance } from "../../../domain/impacts.types";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {

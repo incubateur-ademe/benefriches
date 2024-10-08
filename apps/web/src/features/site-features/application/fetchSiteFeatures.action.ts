@@ -1,6 +1,6 @@
-import { SiteFeatures } from "../domain/siteFeatures";
-
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { SiteFeatures } from "../domain/siteFeatures";
 
 export interface SiteFeaturesGateway {
   getSiteFeatures(siteId: string): Promise<SiteFeatures>;

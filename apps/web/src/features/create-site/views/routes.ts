@@ -1,7 +1,8 @@
 import { Route } from "type-route";
-import { SiteCreationStep } from "../application/createSite.reducer";
 
 import { routes } from "@/app/views/router";
+
+import { SiteCreationStep } from "../application/createSite.reducer";
 
 const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   INTRODUCTION: "introduction",

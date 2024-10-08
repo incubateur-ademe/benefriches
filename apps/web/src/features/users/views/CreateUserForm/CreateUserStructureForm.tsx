@@ -1,15 +1,16 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { UseFormReturn } from "react-hook-form";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { AutoComplete } from "antd";
+import { ChangeEvent, useEffect, useState } from "react";
+import { UseFormReturn } from "react-hook-form";
 import { formatLocalAuthorityName, LocalAuthority } from "shared";
-import { UserStructureActivity } from "../../domain/user";
-import { FormValues } from "./CreateUserForm";
-import { AdministrativeDivision, AdministrativeDivisionService } from ".";
 
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+
+import { AdministrativeDivision, AdministrativeDivisionService } from ".";
+import { UserStructureActivity } from "../../domain/user";
+import { FormValues } from "./CreateUserForm";
 
 type StructureCategory = Exclude<UserStructureActivity, LocalAuthority> | "local_authority";
 

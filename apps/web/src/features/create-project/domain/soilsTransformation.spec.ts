@@ -1,4 +1,5 @@
 import { getTotalSurfaceArea, SoilsDistribution, SoilType } from "shared";
+
 import {
   allocateRecommendedSoilSurfaceArea,
   canSiteAccomodatePhotovoltaicPanels,

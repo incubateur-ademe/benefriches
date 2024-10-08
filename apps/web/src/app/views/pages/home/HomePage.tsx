@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+
 import CallToActionSection from "./sections/CallToActionSection";
 import DataSourcesSection from "./sections/DataSourcesSection";
 import HowItWorksSection from "./sections/HowItWorksSection";

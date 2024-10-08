@@ -1,9 +1,4 @@
 import { computeProjectReinstatementCosts, ReinstatementExpense } from "shared";
-import {
-  completeReinstatementExpenses,
-  revertReinstatementExpenses,
-} from "../../../../application/createProject.reducer";
-import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
 
 import { AppDispatch } from "@/app/application/store";
 import {
@@ -11,6 +6,12 @@ import {
   ReconversionProjectCreationData,
 } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import {
+  completeReinstatementExpenses,
+  revertReinstatementExpenses,
+} from "../../../../application/createProject.reducer";
+import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
   soilsDistribution.BUILDINGS ? soilsDistribution.BUILDINGS > 0 : false;

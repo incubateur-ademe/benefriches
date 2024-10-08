@@ -1,5 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { isLocalAuthority } from "shared";
+
+import { RootState } from "@/app/application/store";
+import { getPercentageDifference } from "@/shared/services/percentage/percentage";
+
 import {
   getMainKeyImpactIndicators,
   getProjectOverallImpact,
@@ -7,9 +11,6 @@ import {
 } from "../domain/projectKeyImpactIndicators";
 import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
 import { ImpactCategoryFilter } from "./projectImpacts.reducer";
-
-import { RootState } from "@/app/application/store";
-import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

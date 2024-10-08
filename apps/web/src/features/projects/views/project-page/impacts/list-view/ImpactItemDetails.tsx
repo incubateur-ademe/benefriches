@@ -1,8 +1,9 @@
 import { ReactNode, useState } from "react";
-import ImpactRowLabel from "./ImpactRowLabel";
-import ImpactRowValue from "./ImpactRowValue";
 
 import classNames from "@/shared/views/clsx";
+
+import ImpactRowLabel from "./ImpactRowLabel";
+import ImpactRowValue from "./ImpactRowValue";
 
 type Props = {
   label?: ReactNode;

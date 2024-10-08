@@ -1,4 +1,8 @@
 import { FinancialAssistanceRevenue, typedObjectEntries } from "shared";
+
+import { AppDispatch } from "@/app/application/store";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
 import {
   completeFinancialAssistanceRevenues,
   revertFinancialAssistanceRevenues,
@@ -6,9 +10,6 @@ import {
 import ProjectFinancialAssistanceRevenueForm, {
   FormValues,
 } from "./ProjectFinancialAssistanceRevenueForm";
-
-import { AppDispatch } from "@/app/application/store";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 const mapFormValuesToFinancialAssistanceRevenues = (
   formData: FormValues,

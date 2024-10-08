@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { getScenarioPictoUrl } from "../../shared/scenarioType";
-import ScenarioTile from "./ScenarioTile/ScenarioTile";
 
 import { routes } from "@/app/views/router";
+
+import { getScenarioPictoUrl } from "../../shared/scenarioType";
+import ScenarioTile from "./ScenarioTile/ScenarioTile";
 
 type Props = {
   id: string;

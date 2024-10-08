@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Card } from "@codegouvfr/react-dsfr/Card";
+import { ReactNode } from "react";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";

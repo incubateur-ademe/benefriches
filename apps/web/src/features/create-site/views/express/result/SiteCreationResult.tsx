@@ -1,7 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
-import SiteFeaturesModalView from "./SiteFeaturesModalView";
 
 import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -12,6 +11,8 @@ import {
   EditorialPageTitle,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import SiteFeaturesModalView from "./SiteFeaturesModalView";
 
 type Props = {
   siteId: string;

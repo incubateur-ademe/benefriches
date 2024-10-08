@@ -1,14 +1,15 @@
-import { useEffect } from "react";
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import { useEffect } from "react";
+
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
 import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
 import {
   selectMainKeyImpactIndicators,
   selectProjectOverallImpact,
 } from "../../application/projectKeyImpactIndicators.selectors";
 import ProjectImpactsOnboardingPage from "./ProjectImpactsOnboardingPage";
-
-import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   projectId: string;

@@ -1,9 +1,9 @@
-import { completeSoils } from "../../../../application/createSite.reducer";
-import SiteSoilsForm, { FormValues } from "./SoilsForm";
-
 import { AppDispatch, RootState } from "@/app/application/store";
 import { revertSoilsSelectionStep } from "@/features/create-site/application/createSite.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { completeSoils } from "../../../../application/createSite.reducer";
+import SiteSoilsForm, { FormValues } from "./SoilsForm";
 
 const mapProps = (dispatch: AppDispatch, siteCreationState: RootState["siteCreation"]) => {
   return {

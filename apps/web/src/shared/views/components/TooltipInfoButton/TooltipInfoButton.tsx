@@ -1,5 +1,5 @@
-import { type ReactNode, useId } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { type ReactNode, useId } from "react";
 
 export type Props = {
   id?: string;

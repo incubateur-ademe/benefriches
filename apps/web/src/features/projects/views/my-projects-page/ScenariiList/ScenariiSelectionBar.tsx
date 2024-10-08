@@ -3,6 +3,7 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import clsx from "clsx/lite";
 
 import classNames from "@/shared/views/clsx";
+
 type Props = {
   baseScenario?: {
     type: "PROJECT" | "STATU_QUO";

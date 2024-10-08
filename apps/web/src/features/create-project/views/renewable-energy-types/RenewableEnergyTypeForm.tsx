@@ -1,11 +1,12 @@
-import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
-import RenewableEnergyTile from "./RenewableEnergyTile";
+import { Controller, useForm } from "react-hook-form";
 
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import RenewableEnergyTile from "./RenewableEnergyTile";
 
 type Props = {
   onSubmit: (data: FormValues) => void;

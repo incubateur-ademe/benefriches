@@ -1,5 +1,3 @@
-import ClimateAndBiodiversityImpactNotice from "./ClimateAndBiodiversityImpactNotice";
-
 import {
   completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep,
   revertBiodiversityAndClimateImpactNoticeStep,
@@ -10,6 +8,8 @@ import {
   selectWillSoilsTransformationHaveNegativeImpactOnBiodiversityAndClimate,
 } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import ClimateAndBiodiversityImpactNotice from "./ClimateAndBiodiversityImpactNotice";
 
 export default function ClimateAndBiodiversityImpactNoticeContainer() {
   const dispatch = useAppDispatch();

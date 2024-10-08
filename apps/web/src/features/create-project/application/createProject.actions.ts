@@ -1,6 +1,6 @@
-import { ProjectSite } from "../domain/project.types";
-
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { ProjectSite } from "../domain/project.types";
 
 export interface GetSitesByIdGateway {
   getById(siteId: string): Promise<ProjectSite | undefined>;

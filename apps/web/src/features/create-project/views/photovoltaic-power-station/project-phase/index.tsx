@@ -1,10 +1,10 @@
-import ProjectPhaseForm, { FormValues } from "./ProjectPhaseForm";
-
 import {
   completeProjectPhaseStep,
   revertProjectPhaseStep,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import ProjectPhaseForm, { FormValues } from "./ProjectPhaseForm";
 
 function ProjectPhaseFormContainer() {
   const dispatch = useAppDispatch();

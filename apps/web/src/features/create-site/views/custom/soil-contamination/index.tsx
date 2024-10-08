@@ -1,9 +1,9 @@
-import { revertSoilsContaminationStep } from "../../../application/createSite.actions";
-import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
-
 import { AppDispatch } from "@/app/application/store";
 import { completeSoilsContamination } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { revertSoilsContaminationStep } from "../../../application/createSite.actions";
+import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
 
 const mapProps = (dispatch: AppDispatch, siteSurfaceArea: number) => {
   return {

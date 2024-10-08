@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "./pvExpectedPerformanceStorage.actions";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";

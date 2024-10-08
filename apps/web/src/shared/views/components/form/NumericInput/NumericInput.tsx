@@ -1,6 +1,6 @@
+import DsfrInput from "@codegouvfr/react-dsfr/Input";
 import { ChangeEvent, ReactNode } from "react";
 import { FieldValues, useController, UseControllerProps } from "react-hook-form";
-import DsfrInput from "@codegouvfr/react-dsfr/Input";
 
 import {
   numberToString,

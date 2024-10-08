@@ -2,14 +2,15 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import Dropdown from "antd/es/dropdown/dropdown";
-import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
-import { getScenarioPictoUrl } from "../shared/scenarioType";
-import AboutImpactsModalContent from "./impacts/AboutImpactsModalContent";
-import ExpressProjectTooltipBadge from "./ExpressProjectBadge";
-import ProjectFeaturesView from "./features";
 
 import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
+
+import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
+import { getScenarioPictoUrl } from "../shared/scenarioType";
+import ExpressProjectTooltipBadge from "./ExpressProjectBadge";
+import ProjectFeaturesView from "./features";
+import AboutImpactsModalContent from "./impacts/AboutImpactsModalContent";
 
 type Props = {
   projectName: string;

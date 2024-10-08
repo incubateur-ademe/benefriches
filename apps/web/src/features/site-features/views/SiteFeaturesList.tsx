@@ -1,5 +1,4 @@
 import { typedObjectEntries } from "shared";
-import { SiteFeatures } from "../domain/siteFeatures";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
 import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
@@ -10,6 +9,8 @@ import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPie
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
+
+import { SiteFeatures } from "../domain/siteFeatures";
 
 type Props = SiteFeatures;
 

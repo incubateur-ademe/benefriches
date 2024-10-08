@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SoilType } from "shared";
+
 import { ProjectForComparison, ProjectSite } from "../domain/projects.types";
 import {
   fetchBaseProjectAndWithProjectData,

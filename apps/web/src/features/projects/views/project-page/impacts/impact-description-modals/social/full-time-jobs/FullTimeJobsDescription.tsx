@@ -1,8 +1,9 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { SocialImpactDescriptionModalId } from "../types";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { SocialImpactDescriptionModalId } from "../types";
 
 type Props = {
   onChangeModalCategoryOpened: (modalCategory: SocialImpactDescriptionModalId) => void;

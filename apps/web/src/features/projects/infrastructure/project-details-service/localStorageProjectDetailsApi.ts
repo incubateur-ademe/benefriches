@@ -1,12 +1,13 @@
 import { LocalAuthority, SoilsDistribution } from "shared";
+
+import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
+import { delay } from "@/shared/services/delay/delay";
+
 import {
   ProjectDetailsResult as ProjectImpactsComparisonResult,
   ProjectsDetailsGateway as ProjectImpactsComparisonGateway,
 } from "../../application/projectImpactsComparison.actions";
 import { ProjectForComparison, ProjectSite } from "../../domain/projects.types";
-
-import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
-import { delay } from "@/shared/services/delay/delay";
 
 export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 

@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { SoilType } from "shared";
-import SiteSoilsDistributionByPercentageForm, { type FormValues } from "./ByPercentageForm";
 
 import { revertSoilsDistributionStep } from "@/features/create-site/application/createSite.actions";
 import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteSoilsDistributionByPercentageForm, { type FormValues } from "./ByPercentageForm";
 
 const convertPercentToSquareMeters = (percent: number, total: number) => {
   return (percent * total) / 100;

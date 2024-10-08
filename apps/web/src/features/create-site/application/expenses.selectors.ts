@@ -1,12 +1,13 @@
 import { createSelector } from "@reduxjs/toolkit";
+
+import { RootState } from "@/app/application/store";
+
 import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
 } from "../domain/expenses.functions";
 import { SiteDraft } from "../domain/siteFoncier.types";
-
-import { RootState } from "@/app/application/store";
 
 const selectSiteData = createSelector(
   (state: RootState) => state.siteCreation,

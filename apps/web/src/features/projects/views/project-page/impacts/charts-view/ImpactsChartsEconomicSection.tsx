@@ -1,9 +1,9 @@
+import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanceImpactCard";
 import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";
-
-import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 
 type Props = {
   economicBalance: EconomicBalance;

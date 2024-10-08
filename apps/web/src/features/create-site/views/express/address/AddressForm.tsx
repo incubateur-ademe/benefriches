@@ -1,10 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
-import { MunicipalityAddress } from "../../../domain/siteFoncier.types";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SearchAddressAutocompleteContainer from "@/shared/views/components/form/Address/SearchAddressAutocompleteContainer";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import { MunicipalityAddress } from "../../../domain/siteFoncier.types";
 
 type Props = {
   onSubmit: (address: MunicipalityAddress) => void;

@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { LocalAuthority } from "shared";
-import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 
 import { revertOwnerStep } from "@/features/create-site/application/createSite.actions";
 import { completeOwner } from "@/features/create-site/application/createSite.reducer";
@@ -13,6 +12,8 @@ import { Owner } from "@/features/create-site/domain/siteFoncier.types";
 import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
 import { UserStructure } from "@/features/users/domain/user";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 
 type LocalAuthoritiesList = {
   type: LocalAuthority;

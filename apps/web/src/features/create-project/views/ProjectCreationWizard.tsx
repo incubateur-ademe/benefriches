@@ -1,19 +1,20 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { Route } from "type-route";
-import { projectCreationInitiated } from "../application/createProject.actions";
-import { selectCurrentStep } from "../application/createProject.reducer";
-import { selectProjectDevelopmentPlanCategory } from "../application/createProject.selectors";
-import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
-import ProjectCreationIntroduction from "./introduction";
-import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station";
-import ProjectTypesForm from "./project-types";
-import Stepper from "./Stepper";
-import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 import { routes } from "@/app/views/router";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+
+import { projectCreationInitiated } from "../application/createProject.actions";
+import { selectCurrentStep } from "../application/createProject.reducer";
+import { selectProjectDevelopmentPlanCategory } from "../application/createProject.selectors";
+import Stepper from "./Stepper";
+import ProjectCreationIntroduction from "./introduction";
+import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station";
+import ProjectTypesForm from "./project-types";
+import UrbanProjectCreationWizard from "./urban-project/UrbanProjectCreationWizard";
+import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 type Props = {
   route: Route<typeof routes.createProject>;

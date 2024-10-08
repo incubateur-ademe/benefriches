@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
+import { useEffect, useState } from "react";
 
 const modal = createModal({
   id: "about-projects-comparison-modal",

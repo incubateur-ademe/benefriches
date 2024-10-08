@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
 import DsfrBadge from "@codegouvfr/react-dsfr/Badge";
+import { ReactNode } from "react";
+
 import classNames, { ClassValue } from "../../clsx";
 
 type Props = {

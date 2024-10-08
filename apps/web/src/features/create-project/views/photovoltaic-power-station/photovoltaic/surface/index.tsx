@@ -1,6 +1,3 @@
-import PhotovoltaicSurfaceForm from "./SurfaceForm";
-import PhotovoltaicSurfaceFromPowerForm from "./SurfaceFromPowerForm";
-
 import {
   completePhotovoltaicInstallationSurface,
   revertPhotovoltaicInstallationSurface,
@@ -12,6 +9,9 @@ import {
   selectRecommendedPhotovoltaicPlantSurfaceFromElectricalPower,
 } from "@/features/create-project/application/pvFeatures.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import PhotovoltaicSurfaceForm from "./SurfaceForm";
+import PhotovoltaicSurfaceFromPowerForm from "./SurfaceFromPowerForm";
 
 function PhotovoltaicSurfaceContainer() {
   const dispatch = useAppDispatch();

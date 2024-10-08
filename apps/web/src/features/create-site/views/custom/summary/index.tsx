@@ -1,8 +1,8 @@
-import { revertStep } from "../../../application/createSite.reducer";
-import SiteDataSummary from "./SiteDataSummary";
-
 import { saveCustomSiteAction } from "@/features/create-site/application/createSite.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { revertStep } from "../../../application/createSite.reducer";
+import SiteDataSummary from "./SiteDataSummary";
 
 function SiteDataSummaryContainer() {
   const siteData = useAppSelector((state) => state.siteCreation.siteData);

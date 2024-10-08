@@ -1,12 +1,13 @@
-import { ReactNode, useEffect } from "react";
 import { useTour } from "@reactour/tour";
-import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
+import { ReactNode, useEffect } from "react";
 
 import { selectCurrentUserFirstname } from "@/features/users/application/user.reducer";
 import { DEFAULT_APP_SETTINGS } from "@/shared/app-settings/domain/appSettings";
 import { LocalStorageAppSettings } from "@/shared/app-settings/infrastructure/LocalStorageUISettings";
 import TourGuideProvider from "@/shared/views/components/TourGuideProvider/TourGuideProvider";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
 
 type Props = {
   projectsList: ReconversionProjectsGroupedBySite;

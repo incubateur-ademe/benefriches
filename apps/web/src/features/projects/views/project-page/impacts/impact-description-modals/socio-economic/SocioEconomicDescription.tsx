@@ -1,6 +1,6 @@
-import ModalTitleTwo from "../shared/ModalTitleTwo";
-
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 const SocioEconomicDescription = () => {
   return (

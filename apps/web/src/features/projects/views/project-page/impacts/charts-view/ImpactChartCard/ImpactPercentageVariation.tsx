@@ -1,6 +1,6 @@
-import { formatEvolutionPercentage } from "../../../../shared/formatImpactValue";
-
 import Badge from "@/shared/views/components/Badge/Badge";
+
+import { formatEvolutionPercentage } from "../../../../shared/formatImpactValue";
 
 type Props = {
   percentage: number;

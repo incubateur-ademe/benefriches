@@ -1,9 +1,10 @@
 import { FricheActivity, SoilsDistribution } from "shared";
-import { Expense } from "../../../domain/siteFoncier.types";
 
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import { Expense } from "../../../domain/siteFoncier.types";
 
 type Props = {
   siteData: {

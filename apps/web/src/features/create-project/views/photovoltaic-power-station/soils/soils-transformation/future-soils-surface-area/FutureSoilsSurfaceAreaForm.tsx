@@ -1,8 +1,5 @@
 import { useForm } from "react-hook-form";
 import { getTotalSurfaceArea, SoilsDistribution, SoilType } from "shared";
-import AllocatedSurfaceAreaControlInput from "./AllocatedSurfaceAreaControlInput";
-import FutureSoilsSurfaceAreaInstructions from "./FutureSoilsSurfaceAreaInstructions";
-import SuitableSurfaceAreaControlInput from "./SuitableSurfaceAreaControlInput";
 
 import { getSuitableSurfaceAreaForPhotovoltaicPanels } from "@/features/create-project/domain/soilsTransformation";
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
@@ -14,6 +11,10 @@ import {
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import AllocatedSurfaceAreaControlInput from "./AllocatedSurfaceAreaControlInput";
+import FutureSoilsSurfaceAreaInstructions from "./FutureSoilsSurfaceAreaInstructions";
+import SuitableSurfaceAreaControlInput from "./SuitableSurfaceAreaControlInput";
 
 type Props = {
   selectedSoils: SoilType[];

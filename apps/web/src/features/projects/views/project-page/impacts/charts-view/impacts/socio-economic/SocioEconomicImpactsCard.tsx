@@ -1,7 +1,7 @@
+import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+
 import ImpactsChartsSection from "../../ImpactsChartsSection";
 import SocioEconomicImpactsByActorChart from "./SocioEconomicImpactsByActorChart";
-
-import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicImpactByActor;

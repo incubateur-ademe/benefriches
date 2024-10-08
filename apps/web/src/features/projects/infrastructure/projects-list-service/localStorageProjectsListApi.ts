@@ -1,12 +1,12 @@
+import { ProjectSite } from "@/features/create-project/domain/project.types";
+import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
+import { delay } from "@/shared/services/delay/delay";
+
 import { ReconversionProjectsListGateway } from "../../application/projectsList.actions";
 import {
   ProjectDevelopmentPlanType,
   ReconversionProjectsGroupedBySite,
 } from "../../domain/projects.types";
-
-import { ProjectSite } from "@/features/create-project/domain/project.types";
-import { SITES_LIST_STORAGE_KEY } from "@/features/create-site/infrastructure/create-site-service/localStorageCreateSiteApi";
-import { delay } from "@/shared/services/delay/delay";
 
 export const PROJECTS_LIST_STORAGE_KEY = "benefriches/projects-list";
 

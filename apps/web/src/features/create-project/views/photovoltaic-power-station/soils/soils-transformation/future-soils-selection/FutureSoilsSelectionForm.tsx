@@ -1,5 +1,5 @@
-import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
+import { Controller, useForm } from "react-hook-form";
 import { SoilsDistribution, SoilType } from "shared";
 
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";

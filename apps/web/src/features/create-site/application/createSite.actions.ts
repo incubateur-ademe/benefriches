@@ -1,10 +1,11 @@
 import { fricheActivitySchema, soilTypeSchema } from "shared";
 import z from "zod";
+
+import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
 import getExpressSiteData from "../domain/siteExpress";
 import { SiteExpressDraft } from "../domain/siteFoncier.types";
 import { revertStep } from "./createSite.reducer";
-
-import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 export const revertSiteTypeStep = () => revertStep({ resetFields: ["isFriche"] });
 export const revertAddressStep = () => revertStep({ resetFields: ["address"] });

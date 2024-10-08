@@ -1,5 +1,3 @@
-import FutureSoilsSurfaceAreaForm, { FormValues } from "./FutureSoilsSurfaceAreaForm";
-
 import {
   completeCustomSoilsSurfaceAreaAllocationStep,
   revertCustomSoilsSurfaceAreaAllocationStep,
@@ -11,6 +9,8 @@ import {
   selectSiteSurfaceArea,
 } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import FutureSoilsSurfaceAreaForm, { FormValues } from "./FutureSoilsSurfaceAreaForm";
 
 function FutureSoilsSurfaceAreaFormContainer() {
   const dispatch = useAppDispatch();

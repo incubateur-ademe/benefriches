@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 import { RootState } from "@/app/application/store";
+
+import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

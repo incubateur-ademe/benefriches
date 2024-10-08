@@ -1,8 +1,8 @@
-import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
-
 import { formatPerFrenchPersonAnnualEquivalent } from "@/features/create-project/views/photovoltaic-power-station/soils/soils-carbon-storage/formatCarbonStorage";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
+
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   value: number;

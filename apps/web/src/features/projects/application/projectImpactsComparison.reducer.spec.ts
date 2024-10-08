@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+import { createStore } from "@/app/application/store";
+import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
+
 import { Owner, ProjectStakeholder } from "../domain/projects.types";
 import { ProjectDetailsServiceMock } from "../infrastructure/project-details-service/projectDetailsServiceMock";
 import { SoilsCarbonStorageResult } from "./fetchReconversionProjectCarbonStorageImpact.action";
@@ -6,10 +10,6 @@ import {
   fetchBaseProjectAndWithProjectData,
   fetchCurrentAndProjectedSoilsCarbonStorage,
 } from "./projectImpactsComparison.actions";
-
-import { createStore } from "@/app/application/store";
-import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 const SOILS_STORAGE_API_MOCKED_RESULT: SoilsCarbonStorageResult = {
   totalCarbonStorage: 350,

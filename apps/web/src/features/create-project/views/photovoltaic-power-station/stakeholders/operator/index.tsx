@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
 import {
   completeFutureOperator,
@@ -14,6 +13,8 @@ import {
 } from "@/features/create-project/application/stakeholders.selector";
 import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
 const convertFormValuesForStore = (
   data: FormValues,

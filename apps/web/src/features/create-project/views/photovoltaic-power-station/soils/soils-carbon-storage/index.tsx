@@ -1,5 +1,3 @@
-import SiteSoilsCarbonStorage from "./ProjectSoilsCarbonStorage";
-
 import { AppDispatch } from "@/app/application/store";
 import {
   completeSoilsCarbonStorageStep,
@@ -8,6 +6,8 @@ import {
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/soilsCarbonStorage.actions";
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteSoilsCarbonStorage from "./ProjectSoilsCarbonStorage";
 
 type SuccessData = {
   loadingState: Exclude<State["loadingState"], "idle" | "error" | "loading">;

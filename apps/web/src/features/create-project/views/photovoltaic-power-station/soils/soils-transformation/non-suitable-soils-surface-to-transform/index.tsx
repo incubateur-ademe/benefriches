@@ -1,5 +1,3 @@
-import NonSuitableSoilsSurfaceForm, { FormValues } from "./NonSuitableSoilsSurfaceToTransformForm";
-
 import {
   completeNonSuitableSoilsSurfaceStep,
   revertNonSuitableSoilsSurfaceStep,
@@ -9,6 +7,8 @@ import {
   selectNonSuitableSoilsForPhototovoltaicPanelsToTransform,
 } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import NonSuitableSoilsSurfaceForm, { FormValues } from "./NonSuitableSoilsSurfaceToTransformForm";
 
 function NonSuitableSoilsSurfaceFormContainer() {
   const dispatch = useAppDispatch();

@@ -1,8 +1,6 @@
-import { useEffect } from "react";
 import { Alert } from "@codegouvfr/react-dsfr/Alert";
+import { useEffect } from "react";
 import { roundToInteger } from "shared";
-import CarbonStorageDifferenceSection from "./CarbonStorageDifferenceSection";
-import { formatCarbonStorage } from "./formatCarbonStorage";
 
 import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
@@ -11,6 +9,9 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import CarbonStorageDifferenceSection from "./CarbonStorageDifferenceSection";
+import { formatCarbonStorage } from "./formatCarbonStorage";
 
 type PropsFunction = {
   onNext: () => void;

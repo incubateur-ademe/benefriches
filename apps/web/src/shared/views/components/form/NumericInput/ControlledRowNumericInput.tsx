@@ -1,11 +1,12 @@
 import { ChangeEvent } from "react";
 import { FieldPath, FieldValues, UseControllerReturn } from "react-hook-form";
-import RowNumericInput, { RowNumericInputInputProps } from "./RowNumericInput";
 
 import {
   numberToString,
   stringToNumber,
 } from "@/shared/services/number-conversion/numberConversion";
+
+import RowNumericInput, { RowNumericInputInputProps } from "./RowNumericInput";
 
 type Props<
   TFieldValues extends FieldValues = FieldValues,

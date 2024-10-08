@@ -1,6 +1,4 @@
 import { getTotalSurfaceArea, typedObjectEntries } from "shared";
-import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
-import DevelopmentPlanInstallationExpenses from "./DevelopmentPlanInstallationExpenses";
 
 import {
   getLabelForDevelopmentPlanCategory,
@@ -21,6 +19,9 @@ import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLin
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
+
+import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
+import DevelopmentPlanInstallationExpenses from "./DevelopmentPlanInstallationExpenses";
 
 type Props = {
   projectData: ProjectFeatures;

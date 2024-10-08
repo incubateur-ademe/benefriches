@@ -1,4 +1,5 @@
 import { FricheActivity, SiteYearlyExpensePurpose, SoilType } from "shared";
+
 import { SiteFeaturesGateway } from "../../application/fetchSiteFeatures.action";
 import { SiteFeatures } from "../../domain/siteFeatures";
 

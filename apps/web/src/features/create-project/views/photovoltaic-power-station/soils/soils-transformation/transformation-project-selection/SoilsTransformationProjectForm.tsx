@@ -1,5 +1,4 @@
 import { Controller, useForm } from "react-hook-form";
-import SoilsTransformationProjectRadioInput from "./SoilsTransformationProjectOption";
 
 import { SoilsTransformationProject } from "@/features/create-project/domain/soilsTransformation";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -7,6 +6,8 @@ import Badge from "@/shared/views/components/Badge/Badge";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import SoilsTransformationProjectRadioInput from "./SoilsTransformationProjectOption";
 
 type Props = {
   onSubmit: (data: FormValues) => void;

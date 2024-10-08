@@ -1,7 +1,7 @@
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
 import { completeCreateModeSelectionStep } from "../../application/createSite.reducer";
 import CreateModeSelectionForm, { FormValues } from "./CreateModeSelectionForm";
-
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 export default function CreateModeSelectionFormContainer() {
   const dispatch = useAppDispatch();

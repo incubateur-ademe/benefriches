@@ -1,9 +1,9 @@
+import { FormValues } from "./SiteYearlyExpensesForm";
 import {
   getSiteManagementExpensesWithBearer,
   getSiteSecurityExpensesWithBearer,
   mapFormDataToExpenses,
 } from "./mappers";
-import { FormValues } from "./SiteYearlyExpensesForm";
 
 describe("getSiteManagementExpensesWithBearer", () => {
   it("returns expenses for friche with tenant", () => {

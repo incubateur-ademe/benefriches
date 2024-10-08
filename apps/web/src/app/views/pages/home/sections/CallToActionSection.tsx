@@ -1,14 +1,15 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
+
+import { routes } from "@/app/views/router";
+import classNames from "@/shared/views/clsx";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
 import {
   BENEFRICHES_DOCUMENTATION_URL,
   BENEFRICHES_SPREADSHEET_URL,
   BENEFRICHES_TUTORIAL_URL,
 } from "../links";
-
-import { routes } from "@/app/views/router";
-import classNames from "@/shared/views/clsx";
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 export default function CallToActionSection() {
   return (

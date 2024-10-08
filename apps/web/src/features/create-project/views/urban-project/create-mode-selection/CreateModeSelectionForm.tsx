@@ -1,5 +1,5 @@
-import { Controller, useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
+import { Controller, useForm } from "react-hook-form";
 
 import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";

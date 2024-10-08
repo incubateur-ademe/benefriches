@@ -1,7 +1,6 @@
-import { useForm } from "react-hook-form";
 import Input from "@codegouvfr/react-dsfr/Input";
+import { useForm } from "react-hook-form";
 import { SoilsDistribution, typedObjectEntries } from "shared";
-import SoilSurfaceAreaSliderInput from "./SoilSurfaceAreaSliderInput";
 
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -9,6 +8,8 @@ import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import SoilSurfaceAreaSliderInput from "./SoilSurfaceAreaSliderInput";
 
 export type FormValues = {
   soilsTransformation: SoilsDistribution;

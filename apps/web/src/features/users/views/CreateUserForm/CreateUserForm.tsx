@@ -1,16 +1,17 @@
-import { useForm } from "react-hook-form";
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
-import UserStructureForm, { StructureFormValues } from "./CreateUserStructureForm";
-import { AdministrativeDivisionService } from ".";
+import { useForm } from "react-hook-form";
 
 import PolitiqueConfidentialiteContent from "@/shared/app-settings/views/PolitiqueConfidentialiteContent/PolitiqueConfidentialiteContent";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import { AdministrativeDivisionService } from ".";
+import UserStructureForm, { StructureFormValues } from "./CreateUserStructureForm";
 
 const modal = createModal({
   id: "terms-modal",

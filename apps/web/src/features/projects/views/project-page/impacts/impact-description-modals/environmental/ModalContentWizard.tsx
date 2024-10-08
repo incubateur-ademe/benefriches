@@ -1,12 +1,12 @@
 import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
+import EnvironmentalMainDescription from "./EnvironmentalMainDescription";
 import AvoidedCO2WithEnREnvironmentalDescription from "./impact-co2/AvoidedCO2WithEnREnvironmentalDescription";
 import CarbonSoilsStorageEnvironmentalDescription from "./impact-co2/CarbonSoilsStorageEnvironmentalDescription";
 import NonContaminatedSurfaceDescription from "./non-contaminated-surface/NonContaminatedSurface";
 import PermeableGreenSurfaceDescription from "./permeable-surface/PermeableGreenSurface";
 import PermeableMineraleSurfaceDescription from "./permeable-surface/PermeableMineraleSurface";
 import PermeableSurfaceDescription from "./permeable-surface/PermeableSurface";
-import EnvironmentalMainDescription from "./EnvironmentalMainDescription";
 import { EnvironmentalImpactDescriptionModalId } from "./types";
 
 type Props = {

@@ -1,10 +1,10 @@
+import { objectToQueryParams } from "@/shared/services/object-query-parameters/objectToQueryParameters";
+
 import {
   PhotovoltaicPerformanceApiPayload,
   PhotovoltaicPerformanceApiResult,
   PhotovoltaicPerformanceGateway,
 } from "../../application/pvExpectedPerformanceStorage.actions";
-
-import { objectToQueryParams } from "@/shared/services/object-query-parameters/objectToQueryParameters";
 
 export class ExpectedPhotovoltaicPerformanceApi implements PhotovoltaicPerformanceGateway {
   async getExpectedPhotovoltaicPerformance({

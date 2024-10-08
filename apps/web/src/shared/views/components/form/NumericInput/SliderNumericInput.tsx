@@ -1,14 +1,15 @@
-import { ChangeEvent, ReactNode, useState } from "react";
-import { FieldValues, RegisterOptions, useController, UseControllerProps } from "react-hook-form";
 import { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { Slider } from "antd";
 import { SliderBaseProps } from "antd/es/slider";
-import SurfaceInput from "./RowNumericInput";
+import { ChangeEvent, ReactNode, useState } from "react";
+import { FieldValues, RegisterOptions, useController, UseControllerProps } from "react-hook-form";
 
 import {
   numberToString,
   stringToNumber,
 } from "@/shared/services/number-conversion/numberConversion";
+
+import SurfaceInput from "./RowNumericInput";
 
 type Props<T extends FieldValues> = {
   label: ReactNode;

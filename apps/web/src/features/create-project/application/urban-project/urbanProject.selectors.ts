@@ -1,8 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { UrbanSpaceCategory } from "shared";
-import { UrbanProjectCreationStep } from "./urbanProject.reducer";
 
 import { RootState } from "@/app/application/store";
+
+import { UrbanProjectCreationStep } from "./urbanProject.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation.urbanProject;
 

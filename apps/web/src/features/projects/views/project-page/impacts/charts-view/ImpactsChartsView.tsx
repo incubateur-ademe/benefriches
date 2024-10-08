@@ -1,12 +1,12 @@
-import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
-import ImpactsChartsEconomicSection from "./ImpactsChartsEconomicSection";
-import ImpactsChartsEnvironmentSection from "./ImpactsChartsEnvironmentSection";
-import ImpactsChartsSocialSection from "./ImpactsChartsSocialSection";
-
 import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import { EnvironmentalImpact } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
 import { SocialImpact } from "@/features/projects/application/projectImpactsSocial.selectors";
 import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
+import ImpactsChartsEconomicSection from "./ImpactsChartsEconomicSection";
+import ImpactsChartsEnvironmentSection from "./ImpactsChartsEnvironmentSection";
+import ImpactsChartsSocialSection from "./ImpactsChartsSocialSection";
 
 type Props = {
   projectName: string;

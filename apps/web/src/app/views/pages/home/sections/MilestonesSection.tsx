@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import { BENEFRICHES_SPREADSHEET_URL } from "../links";
+import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+import { BENEFRICHES_SPREADSHEET_URL } from "../links";
 
 type MilestoneItemProps = {
   title: string;

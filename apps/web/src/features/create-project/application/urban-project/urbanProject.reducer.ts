@@ -1,5 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { UrbanSpaceCategory } from "shared";
+
 import { ProjectCreationState } from "../createProject.reducer";
 import {
   createModeStepReverted,

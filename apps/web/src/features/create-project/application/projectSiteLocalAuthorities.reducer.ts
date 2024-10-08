@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";

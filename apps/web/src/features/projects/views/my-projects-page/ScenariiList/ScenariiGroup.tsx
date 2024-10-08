@@ -1,14 +1,15 @@
-import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { ReactNode } from "react";
 import { FricheActivity } from "shared";
-import NewScenarioTile from "./NewScenarioTile";
-import ProjectScenarioTile from "./ProjectScenarioTile";
-import StatuQuoScenarioTile from "./StatuQuoScenarioTile";
-import { ReconversionProjectList } from ".";
 
 import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
+
+import { ReconversionProjectList } from ".";
+import NewScenarioTile from "./NewScenarioTile";
+import ProjectScenarioTile from "./ProjectScenarioTile";
+import StatuQuoScenarioTile from "./StatuQuoScenarioTile";
 
 type Props = {
   siteId: string;

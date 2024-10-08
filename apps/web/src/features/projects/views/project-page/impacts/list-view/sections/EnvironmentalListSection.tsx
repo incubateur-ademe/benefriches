@@ -1,16 +1,16 @@
 import {
+  EnvironmentalImpact,
+  EnvironmentalImpactName,
+} from "@/features/projects/application/projectImpactsEnvironmental.selectors";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
+
+import {
   getEnvironmentalDetailsImpactLabel,
   getEnvironmentalImpactLabel,
 } from "../../getImpactLabel";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";
-
-import {
-  EnvironmentalImpact,
-  EnvironmentalImpactName,
-} from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 
 type Props = {
   impacts: EnvironmentalImpact[];

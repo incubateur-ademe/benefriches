@@ -1,8 +1,9 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { introductionStepCompleted } from "../../application/createProject.reducer";
-import CreateProjectIntroductionPage from "./CreateProjetIntroductionPage";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { introductionStepCompleted } from "../../application/createProject.reducer";
+import CreateProjectIntroductionPage from "./CreateProjetIntroductionPage";
 
 function CreateProjectIntroductionContainer() {
   const dispatch = useAppDispatch();

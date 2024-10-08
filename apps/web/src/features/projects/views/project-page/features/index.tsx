@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import ProjectFeaturesView from "./ProjectFeaturesView";
 
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { selectProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import ProjectFeaturesView from "./ProjectFeaturesView";
 
 type Props = {
   projectId: string;

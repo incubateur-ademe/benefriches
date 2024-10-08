@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { fetchReconversionProjects } from "../../application/projectsList.actions";
-import MyProjectsPage from "./MyProjectsPage";
 
 import { selectCurrentUserId } from "@/features/users/application/user.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { fetchReconversionProjects } from "../../application/projectsList.actions";
+import MyProjectsPage from "./MyProjectsPage";
 
 function MyProjectsPageContainer() {
   const dispatch = useAppDispatch();

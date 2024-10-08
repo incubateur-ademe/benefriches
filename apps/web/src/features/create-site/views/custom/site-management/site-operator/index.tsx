@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
 import { revertOperatorStep } from "@/features/create-site/application/createSite.actions";
 import { completeOperator } from "@/features/create-site/application/createSite.reducer";
@@ -10,6 +9,8 @@ import {
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";
 
 const getTenant = (
   data: FormValues,

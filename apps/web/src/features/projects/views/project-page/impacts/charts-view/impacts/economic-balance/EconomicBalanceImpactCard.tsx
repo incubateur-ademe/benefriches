@@ -1,8 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { roundTo2Digits } from "shared";
-import ImpactChartTooltip from "../../ImpactChartCard/ImpactChartTooltip";
-import ImpactsChartsSection from "../../ImpactsChartsSection";
 
 import {
   EconomicBalance,
@@ -14,6 +12,9 @@ import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedCh
 import { sumList } from "@/shared/services/sum/sum";
 import HighchartsCustomColorsWrapper from "@/shared/views/components/Charts/HighchartsCustomColorsWrapper";
 import HighchartsMainColorsBehoreHover from "@/shared/views/components/Charts/HighchartsMainColorsBehoreHover";
+
+import ImpactChartTooltip from "../../ImpactChartCard/ImpactChartTooltip";
+import ImpactsChartsSection from "../../ImpactsChartsSection";
 
 type Props = {
   economicBalance: EconomicBalance["economicBalance"];

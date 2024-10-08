@@ -1,13 +1,13 @@
+import {
+  SocialImpact,
+  SocialImpactName,
+} from "@/features/projects/application/projectImpactsSocial.selectors";
+
 import { getSocialImpactLabel } from "../../getImpactLabel";
 import { ImpactDescriptionModalCategory } from "../../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";
-
-import {
-  SocialImpact,
-  SocialImpactName,
-} from "@/features/projects/application/projectImpactsSocial.selectors";
 
 type Props = {
   impacts: SocialImpact[];

@@ -1,6 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+
+import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
+import { getPercentageDifference } from "@/shared/services/percentage/percentage";
+import classNames from "@/shared/views/clsx";
+import HighchartsMainColorsBehoreHover from "@/shared/views/components/Charts/HighchartsMainColorsBehoreHover";
+
 import {
   formatCO2Impact,
   formatDefaultImpact,
@@ -12,11 +18,6 @@ import {
 } from "../../../../shared/formatImpactValue";
 import ImpactChartTooltip from "./ImpactChartTooltip";
 import ImpactPercentageVariation from "./ImpactPercentageVariation";
-
-import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import { getPercentageDifference } from "@/shared/services/percentage/percentage";
-import classNames from "@/shared/views/clsx";
-import HighchartsMainColorsBehoreHover from "@/shared/views/components/Charts/HighchartsMainColorsBehoreHover";
 
 const impactTypeFormatterMap = {
   co2: { ...impactFormatConfig["co2"], formatFn: formatCO2Impact },

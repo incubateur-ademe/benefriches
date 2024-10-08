@@ -1,11 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
-import MyProjectsPageHeader from "./MyProjectsPageHeader";
-import MyProjectsTourGuide from "./MyProjectTourGuide";
-import ScenariiList from "./ScenariiList";
 
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+
+import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
+import MyProjectsTourGuide from "./MyProjectTourGuide";
+import MyProjectsPageHeader from "./MyProjectsPageHeader";
+import ScenariiList from "./ScenariiList";
 
 type Props = {
   loadingState: "idle" | "loading" | "error" | "success";

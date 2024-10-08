@@ -1,9 +1,10 @@
 import { CSSProperties } from "react";
 import { SoilType } from "shared";
-import classNames from "../../clsx";
 
 import { getColorForSoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+
+import classNames from "../../clsx";
 
 const SoilTypeLabelWithColorSquare = ({ soilType }: { soilType: SoilType }) => {
   return (

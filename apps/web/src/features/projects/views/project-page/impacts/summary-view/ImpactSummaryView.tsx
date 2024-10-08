@@ -1,3 +1,6 @@
+import { ImpactCategoryFilter } from "@/features/projects/application/projectImpacts.reducer";
+import { KeyImpactIndicatorData } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
+
 import ImpactSummaryAvoidedCo2eqEmissions from "./impacts/AvoidedCo2eqEmissions";
 import ImpactSummaryAvoidedFricheCostsForLocalAuthority from "./impacts/AvoidedFricheCostsForLocalAuthority";
 import ImpactSummaryFullTimeJobs from "./impacts/FullTimeJobs";
@@ -8,9 +11,6 @@ import ImpactSummaryPermeableSurfaceArea from "./impacts/PermeableSurfaceArea";
 import ImpactSummaryProjectBalance from "./impacts/ProjectBalance";
 import ImpactSummaryTaxesIncome from "./impacts/TaxesIncome";
 import ImpactSummaryZanCompliance from "./impacts/ZanCompliance";
-
-import { ImpactCategoryFilter } from "@/features/projects/application/projectImpacts.reducer";
-import { KeyImpactIndicatorData } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
 
 type Props = {
   categoryFilter: ImpactCategoryFilter;

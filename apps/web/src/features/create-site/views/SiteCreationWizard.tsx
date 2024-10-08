@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+
 import {
   resetState,
   selectCurrentStep,
@@ -7,16 +11,13 @@ import {
   SiteCreationState,
   SiteCreationStep,
 } from "../application/createSite.reducer";
+import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
 import SiteCreationCustomStepper from "./custom/Stepper";
 import SiteCreationExpressStepContent from "./express/StepContent";
 import SiteCreationExpressStepper from "./express/Stepper";
-import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationIntroduction from "./introduction";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
-
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 const getMainChildren = (
   currentStep: SiteCreationStep,

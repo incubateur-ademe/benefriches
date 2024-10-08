@@ -1,6 +1,6 @@
-import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
-
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+
+import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
 
 type Props = {
   baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];

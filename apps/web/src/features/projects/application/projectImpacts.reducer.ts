@@ -1,12 +1,13 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution } from "shared";
+
+import { RootState } from "@/app/application/store";
+
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import {
   fetchReconversionProjectImpacts,
   ReconversionProjectImpactsResult,
 } from "./fetchReconversionProjectImpacts.action";
-
-import { RootState } from "@/app/application/store";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

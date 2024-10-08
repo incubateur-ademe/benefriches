@@ -1,8 +1,9 @@
 import { useDispatch } from "react-redux";
-import UrbanProjectCreationResult from "./UrbanProjectCreationResult";
 
 import { resultStepReverted } from "@/features/create-project/application/urban-project/urbanProject.actions";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import UrbanProjectCreationResult from "./UrbanProjectCreationResult";
 
 function UrbanProjectCreationResultContainer() {
   const dispatch = useDispatch();

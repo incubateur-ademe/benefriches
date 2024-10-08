@@ -1,10 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { formatLocalAuthorityName } from "shared";
 import { LocalAuthority } from "shared/dist/local-authority";
-import { ProjectStakeholder, ProjectStakeholderStructure } from "../domain/project.types";
 
 import { RootState } from "@/app/application/store";
 import { UserStructure } from "@/features/users/domain/user";
+
+import { ProjectStakeholder, ProjectStakeholderStructure } from "../domain/project.types";
 
 export type AvailableProjectStakeholder = {
   name: string;

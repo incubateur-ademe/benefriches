@@ -1,10 +1,10 @@
-import SoilsDecontaminationSelection, { FormValues } from "./SoilsDecontaminationSelection";
-
 import {
   completeSoilsDecontaminationSelection,
   revertSoilsDecontaminationSelectionStep,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import SoilsDecontaminationSelection, { FormValues } from "./SoilsDecontaminationSelection";
 
 function SoilsDecontaminationSelectionContainer() {
   const dispatch = useAppDispatch();

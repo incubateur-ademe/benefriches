@@ -1,10 +1,10 @@
-import UrbanProjectSpacesSelection, { FormValues } from "./SpacesCategoriesSelection";
-
 import {
   spacesSelectionCompleted,
   spacesSelectionReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import UrbanProjectSpacesSelection, { FormValues } from "./SpacesCategoriesSelection";
 
 export default function UrbanProjectSpacesCategoriesSelectionContainer() {
   const dispatch = useAppDispatch();

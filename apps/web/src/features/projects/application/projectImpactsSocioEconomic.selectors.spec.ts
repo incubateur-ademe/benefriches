@@ -1,10 +1,10 @@
+import { RootState } from "@/app/application/store";
+
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
 import {
   getDetailedSocioEconomicProjectImpacts,
   getSocioEconomicProjectImpactsByActor,
 } from "./projectImpactsSocioEconomic.selectors";
-
-import { RootState } from "@/app/application/store";
 
 const MOCK_STATES = {
   projectImpacts: {

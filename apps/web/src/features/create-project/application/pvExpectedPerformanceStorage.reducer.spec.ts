@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+import { createStore } from "@/app/application/store";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
+
 import { ProjectSite } from "../domain/project.types";
 import { ExpectedPhotovoltaicPerformanceMock } from "../infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
 import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
@@ -8,9 +11,6 @@ import {
   fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation,
   PhotovoltaicPerformanceApiResult,
 } from "./pvExpectedPerformanceStorage.actions";
-
-import { createStore } from "@/app/application/store";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 const API_MOCKED_RESULT = {
   expectedPerformance: {

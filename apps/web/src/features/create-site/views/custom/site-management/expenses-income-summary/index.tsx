@@ -1,5 +1,3 @@
-import SiteExpensesSummary from "./SiteExpensesIncomeSummary";
-
 import { AppDispatch, RootState } from "@/app/application/store";
 import {
   completeYearlyExpensesSummary,
@@ -8,6 +6,8 @@ import {
 import { hasTenant } from "@/features/create-site/domain/site.functions";
 import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteExpensesSummary from "./SiteExpensesIncomeSummary";
 
 const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["siteData"]) => {
   const onNext = () => {

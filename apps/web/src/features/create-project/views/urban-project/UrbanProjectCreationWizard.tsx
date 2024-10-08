@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { useEffect } from "react";
+
+import { routes, useRoute } from "@/app/views/router";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+
 import {
   UrbanProjectCreationStep,
   UrbanProjectCustomCreationStep,
@@ -9,14 +14,10 @@ import {
   selectCreateMode,
   selectCurrentStep,
 } from "../../application/urban-project/urbanProject.selectors";
+import UrbanProjectCreationStepper from "./Stepper";
 import CreateModeSelectionForm from "./create-mode-selection";
 import UrbanProjectCustomCreationStepWizard from "./custom-forms";
 import UrbanProjectExpressCreationStepWizard from "./express-forms";
-import UrbanProjectCreationStepper from "./Stepper";
-
-import { routes, useRoute } from "@/app/views/router";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
-import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   CREATE_MODE_SELECTION: "mode-creation",

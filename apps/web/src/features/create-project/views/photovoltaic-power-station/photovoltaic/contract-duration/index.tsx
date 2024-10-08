@@ -1,10 +1,10 @@
-import PhotovoltaicContractDurationForm from "./ContractDurationForm";
-
 import {
   completePhotovoltaicContractDuration,
   revertPhotovoltaicContractDuration,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import PhotovoltaicContractDurationForm from "./ContractDurationForm";
 
 function PhotovoltaicContractDurationContainer() {
   const dispatch = useAppDispatch();

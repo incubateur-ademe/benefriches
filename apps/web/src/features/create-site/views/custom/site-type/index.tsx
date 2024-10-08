@@ -1,8 +1,8 @@
-import SiteTypeForm from "./SiteTypeForm";
-
 import { revertSiteTypeStep } from "@/features/create-site/application/createSite.actions";
 import { siteNatureStepCompleted } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import SiteTypeForm from "./SiteTypeForm";
 
 function SiteTypeFormContainer() {
   const dispatch = useAppDispatch();

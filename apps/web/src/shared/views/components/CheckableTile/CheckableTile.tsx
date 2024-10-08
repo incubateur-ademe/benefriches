@@ -1,9 +1,10 @@
-import React from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
-import classNames, { ClassValue } from "../../clsx";
+import React from "react";
 
 import { noop } from "@/shared/services/noop/noop";
+
+import classNames, { ClassValue } from "../../clsx";
 
 type CheckableTileProps = {
   title: string;

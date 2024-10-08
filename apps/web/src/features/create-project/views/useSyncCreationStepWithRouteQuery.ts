@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { selectCurrentStep } from "../application/createProject.reducer";
-import { ProjectCreationStep } from "../application/createProject.reducer";
 
 import { routes, useRoute } from "@/app/views/router";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { selectCurrentStep } from "../application/createProject.reducer";
+import { ProjectCreationStep } from "../application/createProject.reducer";
 
 const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   INTRODUCTION: "introduction",

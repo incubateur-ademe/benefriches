@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { ReactNode } from "react";
+
 import { KeyImpactIndicatorData } from "../../application/projectKeyImpactIndicators.selectors";
 import { ProjectOverallImpact } from "../../domain/projectKeyImpactIndicators";
 import ImpactSummaryAvoidedCo2eqEmissions from "../project-page/impacts/summary-view/impacts/AvoidedCo2eqEmissions";

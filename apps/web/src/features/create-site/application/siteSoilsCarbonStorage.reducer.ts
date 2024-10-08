@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SoilType } from "shared";
+
 import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";

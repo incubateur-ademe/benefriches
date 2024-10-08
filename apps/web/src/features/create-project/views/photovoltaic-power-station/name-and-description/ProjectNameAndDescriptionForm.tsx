@@ -1,5 +1,5 @@
-import { useForm } from "react-hook-form";
 import { Input } from "@codegouvfr/react-dsfr/Input";
+import { useForm } from "react-hook-form";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";

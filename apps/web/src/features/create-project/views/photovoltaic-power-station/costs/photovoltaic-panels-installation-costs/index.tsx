@@ -1,4 +1,9 @@
 import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
+
+import { AppDispatch } from "@/app/application/store";
+import { getDefaultValuesForPhotovoltaicInstallationExpenses } from "@/features/create-project/application/createProject.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
 import {
   completePhotovoltaicPanelsInstallationExpenses,
   revertPhotovoltaicPanelsInstallationExpenses,
@@ -6,10 +11,6 @@ import {
 import PhotovoltaicPanelsInstallationExpensesForm, {
   FormValues,
 } from "./PhotoVoltaicPanelsInstallationCostsForm";
-
-import { AppDispatch } from "@/app/application/store";
-import { getDefaultValuesForPhotovoltaicInstallationExpenses } from "@/features/create-project/application/createProject.selectors";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const mapFormValuesToPhotovoltaicInstallationExpenses = (
   formData: FormValues,

@@ -1,8 +1,8 @@
-import ModalTitleThree from "./ModalTitleThree";
-import ModalTitleTwo from "./ModalTitleTwo";
-
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+import ModalTitleThree from "./ModalTitleThree";
+import ModalTitleTwo from "./ModalTitleTwo";
 
 type Props = {
   address: string;

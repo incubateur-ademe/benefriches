@@ -1,7 +1,3 @@
-import UrbanProjectSpaceCategoriesSurfaceAreaDistributionForm, {
-  FormValues,
-} from "./SpacesCategoriesSurfaceAreaDistributionForm";
-
 import { selectSiteSurfaceArea } from "@/features/create-project/application/createProject.selectors";
 import {
   spacesSurfaceAreaCompleted,
@@ -9,6 +5,10 @@ import {
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
 import { selectSpacesCategories } from "@/features/create-project/application/urban-project/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import UrbanProjectSpaceCategoriesSurfaceAreaDistributionForm, {
+  FormValues,
+} from "./SpacesCategoriesSurfaceAreaDistributionForm";
 
 export default function UrbanProjectSpaceCategoriesSurfaceAreaDistributionContainer() {
   const dispatch = useAppDispatch();

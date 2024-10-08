@@ -1,8 +1,9 @@
 import { SoilType } from "shared";
 import { validate as uuidValidate } from "uuid";
-import { ProjectForComparison, ProjectSite } from "../domain/projects.types";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { ProjectForComparison, ProjectSite } from "../domain/projects.types";
 
 type SoilsCarbonStorage = {
   totalCarbonStorage: number;

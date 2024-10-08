@@ -1,8 +1,9 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
-import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 import { RootState } from "@/app/application/store";
+
+import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
+import { ProjectImpactsState } from "./projectImpacts.reducer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

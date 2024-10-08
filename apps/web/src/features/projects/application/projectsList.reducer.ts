@@ -1,11 +1,12 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
+
+import { RootState } from "@/app/application/store";
+
 import {
   ProjectDevelopmentPlanType,
   ReconversionProjectsGroupedBySite,
 } from "../domain/projects.types";
 import { fetchReconversionProjects } from "./projectsList.actions";
-
-import { RootState } from "@/app/application/store";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
 

@@ -1,14 +1,15 @@
-import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
-import ImpactAreaChartCard from "./ImpactChartCard/ImpactAreaChartCard";
-import ImpactsChartsSection from "./ImpactsChartsSection";
+import { ReactNode } from "react";
 
 import {
   SocialImpact,
   SocialImpactName,
 } from "@/features/projects/application/projectImpactsSocial.selectors";
 import { getSocialImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
+
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
+import ImpactAreaChartCard from "./ImpactChartCard/ImpactAreaChartCard";
+import ImpactsChartsSection from "./ImpactsChartsSection";
 
 type Props = {
   projectName: string;

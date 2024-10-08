@@ -1,21 +1,22 @@
-import { ReactElement, useEffect, useLayoutEffect, useMemo } from "react";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
+import { ReactElement, useEffect, useLayoutEffect, useMemo } from "react";
 import { SoilsDistribution } from "shared";
-import { getEconomicBalanceSectionModalTitle } from "./economic-balance/getTitle";
-import EconomicBalanceSectionModalContentWizard from "./economic-balance/ModalContentWizard";
-import { EconomicBalanceImpactDescriptionModalId } from "./economic-balance/types";
-import { getEnvironmentalSectionModalTitle } from "./environmental/getTitle";
-import EnvironmentalSectionModalContentWizard from "./environmental/ModalContentWizard";
-import { EnvironmentalImpactDescriptionModalId } from "./environmental/types";
-import { getSocialSectionModalTitle } from "./social/getTitle";
-import SocialSectionModalContentWizard from "./social/ModalContentWizard";
-import { SocialImpactDescriptionModalId } from "./social/types";
-import { getSocioEconomicSectionModalTitle } from "./socio-economic/getTitle";
-import SocioEconomicModalContentWizard from "./socio-economic/ModalContentWizard";
-import { SocioEconomicImpactDescriptionModalId } from "./socio-economic/types";
 
 import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+
+import EconomicBalanceSectionModalContentWizard from "./economic-balance/ModalContentWizard";
+import { getEconomicBalanceSectionModalTitle } from "./economic-balance/getTitle";
+import { EconomicBalanceImpactDescriptionModalId } from "./economic-balance/types";
+import EnvironmentalSectionModalContentWizard from "./environmental/ModalContentWizard";
+import { getEnvironmentalSectionModalTitle } from "./environmental/getTitle";
+import { EnvironmentalImpactDescriptionModalId } from "./environmental/types";
+import SocialSectionModalContentWizard from "./social/ModalContentWizard";
+import { getSocialSectionModalTitle } from "./social/getTitle";
+import { SocialImpactDescriptionModalId } from "./social/types";
+import SocioEconomicModalContentWizard from "./socio-economic/ModalContentWizard";
+import { getSocioEconomicSectionModalTitle } from "./socio-economic/getTitle";
+import { SocioEconomicImpactDescriptionModalId } from "./socio-economic/types";
 
 export type ImpactSectionName = "economic-balance" | "socio-economic" | "social" | "environmental";
 

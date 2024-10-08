@@ -1,9 +1,9 @@
-import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
-
 import {
   formatEvolutionPercentage,
   formatSurfaceAreaImpact,
 } from "@/features/projects/views/shared/formatImpactValue";
+
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   percentageEvolution: number;

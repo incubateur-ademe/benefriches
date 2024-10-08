@@ -1,10 +1,10 @@
-import ProjectStakeholdersIntroduction from "./StakeholdersIntroduction";
-
 import {
   completeStakeholdersIntroductionStep,
   revertStakeholdersIntroductionStep,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import ProjectStakeholdersIntroduction from "./StakeholdersIntroduction";
 
 function ProjectStakeholdersIntroductionContainer() {
   const dispatch = useAppDispatch();

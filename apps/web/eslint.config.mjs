@@ -5,7 +5,6 @@ import jestPlugin from "eslint-plugin-jest";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import reactRefreshPlugin from "eslint-plugin-react-refresh";
-import simpleImportSortPlugin from "eslint-plugin-simple-import-sort";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -32,7 +31,6 @@ export default tseslint.config(
   {
     plugins: {
       ["@typescript-eslint"]: tseslint.plugin,
-      ["simple-import-sort"]: simpleImportSortPlugin,
       ["react-refresh"]: reactRefreshPlugin,
     },
   },
@@ -60,25 +58,6 @@ export default tseslint.config(
       "@typescript-eslint/no-misused-promises": [
         "error",
         { checksVoidReturn: { attributes: false } },
-      ],
-      "simple-import-sort/imports": [
-        "error",
-        {
-          groups: [
-            [
-              // `react` related packages come first.
-              "^react",
-              "^@?\\w",
-              "^src/",
-              "^\\u0000",
-              "^\\.\\.(?!/?$)",
-              "^\\.\\./?$",
-              "^\\./(?=.*/)(?!/?$)",
-              "^\\.(?!/?$)",
-              "^\\./?$",
-            ],
-          ],
-        },
       ],
     },
   },

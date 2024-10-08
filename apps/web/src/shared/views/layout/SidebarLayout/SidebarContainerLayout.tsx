@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
+import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
 

@@ -1,7 +1,4 @@
 import { useEffect } from "react";
-import SiteReinstatementContractOwnerForm, {
-  FormValues,
-} from "./SiteReinstatementContractOwnerForm";
 
 import {
   completeReinstatementContractOwner,
@@ -16,6 +13,10 @@ import {
 } from "@/features/create-project/application/stakeholders.selector";
 import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteReinstatementContractOwnerForm, {
+  FormValues,
+} from "./SiteReinstatementContractOwnerForm";
 
 const convertFormValuesForStore = (
   data: FormValues,

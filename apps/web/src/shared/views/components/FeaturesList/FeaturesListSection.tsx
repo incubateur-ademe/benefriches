@@ -1,5 +1,6 @@
-import { ReactNode, useState } from "react";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { ReactNode, useState } from "react";
+
 import classNames from "../../clsx";
 
 export default function Section({ children, title }: { title: ReactNode; children: ReactNode }) {

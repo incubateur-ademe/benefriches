@@ -1,8 +1,8 @@
-import ModalTitleThree from "../../shared/ModalTitleThree";
-import ModalTitleTwo from "../../shared/ModalTitleTwo";
-
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+import ModalTitleThree from "../../shared/ModalTitleThree";
+import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 type Props = {
   groundFloorRetailSurface: number;

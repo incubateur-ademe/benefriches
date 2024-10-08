@@ -1,12 +1,12 @@
+import { createStore } from "@/app/application/store";
+import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
+
 import {
   fetchCarbonStorageForSoils,
   GetSiteSoilsCarbonStoragePayload,
   SiteSoilsCarbonStorageResult,
 } from "./siteSoilsCarbonStorage.actions";
-
-import { createStore } from "@/app/application/store";
-import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 describe("Site carbon sequestration reducer", () => {
   it("should get carbon sequestration for city code and soils", async () => {

@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { ReactNode } from "react";
 
 import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";

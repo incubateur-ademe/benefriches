@@ -1,10 +1,10 @@
-import ProjectSoilsSummary from "./ProjectSoilsSummary";
-
 import {
   completeSoilsSummaryStep,
   revertSoilsSummaryStep,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import ProjectSoilsSummary from "./ProjectSoilsSummary";
 
 function ProjectSoilsSummaryContainer() {
   const dispatch = useAppDispatch();

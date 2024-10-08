@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
-import "./Example.css";
 
 import classNames from "@/shared/views/clsx";
+
+import "./Example.css";
 
 function RoundedIcon({ children, ariaLabel }: { children: ReactNode; ariaLabel: string }) {
   return (

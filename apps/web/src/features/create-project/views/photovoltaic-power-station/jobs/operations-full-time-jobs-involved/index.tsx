@@ -1,7 +1,3 @@
-import OperationsFullTimeJobsInvolvedForm, {
-  FormValues,
-} from "./OperationsFullTimeJobsInvolvedForm";
-
 import { AppDispatch } from "@/app/application/store";
 import {
   completeOperationsFullTimeJobsInvolved,
@@ -9,6 +5,10 @@ import {
 } from "@/features/create-project/application/createProject.reducer";
 import { getDefaultValuesForFullTimeOperationsJobsInvolved } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import OperationsFullTimeJobsInvolvedForm, {
+  FormValues,
+} from "./OperationsFullTimeJobsInvolvedForm";
 
 const mapProps = (dispatch: AppDispatch, defaultValue?: number) => {
   return {

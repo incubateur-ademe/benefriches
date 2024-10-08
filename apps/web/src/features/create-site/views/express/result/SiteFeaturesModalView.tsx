@@ -1,5 +1,5 @@
-import { useEffect } from "react";
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import { useEffect } from "react";
 
 import { fetchSiteFeatures } from "@/features/site-features/application/fetchSiteFeatures.action";
 import {

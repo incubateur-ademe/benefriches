@@ -1,10 +1,11 @@
 import { useMemo } from "react";
 import { SoilType, typedObjectEntries } from "shared";
-import SiteSoilsDistributionBySquareMetersForm, { type FormValues } from "./BySquareMeters";
 
 import { revertSoilsDistributionStep } from "@/features/create-site/application/createSite.actions";
 import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteSoilsDistributionBySquareMetersForm, { type FormValues } from "./BySquareMeters";
 
 const getFormatFormValuesFunction = (surfaceArea?: number) => (formData: FormValues) => {
   if (!surfaceArea) {

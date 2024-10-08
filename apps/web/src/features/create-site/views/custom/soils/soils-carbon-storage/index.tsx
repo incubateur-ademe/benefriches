@@ -1,10 +1,11 @@
 import { typedObjectEntries } from "shared";
-import { completeSoilsCarbonStorage, revertStep } from "../../../../application/createSite.reducer";
-import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 import { AppDispatch, RootState } from "@/app/application/store";
 import { fetchCarbonStorageForSoils } from "@/features/create-site/application/siteSoilsCarbonStorage.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import { completeSoilsCarbonStorage, revertStep } from "../../../../application/createSite.reducer";
+import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 const mapProps = (
   dispatch: AppDispatch,

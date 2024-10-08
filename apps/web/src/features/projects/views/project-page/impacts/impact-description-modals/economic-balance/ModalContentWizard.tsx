@@ -1,8 +1,8 @@
 import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
+import EconomicBalanceDescription from "./EconomicBalanceDescription";
 import RealEstateAcquisitionDescription from "./real-estate-acquisition/RealEstateAcquisition";
 import SiteReinstatementDescription from "./site-reinstatement/SiteReinstatementDescription";
-import EconomicBalanceDescription from "./EconomicBalanceDescription";
 import { EconomicBalanceImpactDescriptionModalId } from "./types";
 
 type Props = {

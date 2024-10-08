@@ -1,5 +1,5 @@
-import { AppSettings, DEFAULT_APP_SETTINGS } from "../domain/appSettings";
 import { AppSettingsGateway } from "../domain/AppSettingsGateway";
+import { AppSettings, DEFAULT_APP_SETTINGS } from "../domain/appSettings";
 
 export const APP_SETTINGS_STORAGE_KEY = "benefriches/app-settings/v0";
 

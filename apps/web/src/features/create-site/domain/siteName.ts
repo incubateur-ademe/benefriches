@@ -1,5 +1,6 @@
 import { isForest, isPrairie, isSoilAgricultural, SoilType } from "shared";
 import { startsByVowel } from "shared";
+
 import { getFricheActivityLabel } from "./friche.types";
 import { SiteDraft } from "./siteFoncier.types";
 

@@ -11,6 +11,16 @@ import {
   stripEmptySurfaces,
 } from "shared";
 import { v4 as uuid } from "uuid";
+
+import { RootState } from "@/app/application/store";
+import {
+  PhotovoltaicKeyParameter,
+  ProjectSite,
+  ReconversionProjectCreationData,
+} from "@/features/create-project/domain/project.types";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
+import { WorksSchedule } from "@/shared/domain/reconversionProject";
+
 import {
   getRecommendedPhotovoltaicPanelsAccessPathSurfaceArea,
   getRecommendedPhotovoltaicPanelsFoundationsSurfaceArea,
@@ -23,19 +33,10 @@ import {
   transformNonSuitableSoils,
   transformSoilsForRenaturation,
 } from "../domain/soilsTransformation";
-import { createModeStepReverted } from "./urban-project/urbanProject.actions";
-import urbanProjectReducer, { UrbanProjectState } from "./urban-project/urbanProject.reducer";
 import { projectCreationInitiated } from "./createProject.actions";
 import { saveReconversionProject } from "./saveReconversionProject.action";
-
-import { RootState } from "@/app/application/store";
-import {
-  PhotovoltaicKeyParameter,
-  ProjectSite,
-  ReconversionProjectCreationData,
-} from "@/features/create-project/domain/project.types";
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
-import { WorksSchedule } from "@/shared/domain/reconversionProject";
+import { createModeStepReverted } from "./urban-project/urbanProject.actions";
+import urbanProjectReducer, { UrbanProjectState } from "./urban-project/urbanProject.reducer";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

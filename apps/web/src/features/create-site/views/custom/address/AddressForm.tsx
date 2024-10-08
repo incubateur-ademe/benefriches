@@ -1,11 +1,12 @@
 import { Controller, useForm } from "react-hook-form";
-import { Address } from "../../../domain/siteFoncier.types";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SearchAddressAutocomplete from "@/shared/views/components/form/Address/SearchAddressAutocompleteContainer";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import { Address } from "../../../domain/siteFoncier.types";
 
 type Props = {
   onSubmit: (address: Address) => void;

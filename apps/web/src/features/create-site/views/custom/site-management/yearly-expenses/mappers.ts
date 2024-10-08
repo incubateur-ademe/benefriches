@@ -1,6 +1,6 @@
-import { FormValues } from "./SiteYearlyExpensesForm";
-
 import { Expense } from "@/features/create-site/domain/siteFoncier.types";
+
+import { FormValues } from "./SiteYearlyExpensesForm";
 
 const PURPOSE_CATEGORIES = {
   rent: "rent",

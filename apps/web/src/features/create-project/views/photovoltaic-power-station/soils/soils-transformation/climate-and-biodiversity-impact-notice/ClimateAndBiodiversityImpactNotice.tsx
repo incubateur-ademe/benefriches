@@ -1,6 +1,3 @@
-import ClimateAndBiodiversityInformationModal from "./modal/ClimateAndBiodiversityInformationModal";
-import { open } from "./modal";
-
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import {
@@ -9,6 +6,9 @@ import {
   EditorialPageText,
   EditorialPageTitle,
 } from "@/shared/views/layout/EditorialPageLayout";
+
+import { open } from "./modal";
+import ClimateAndBiodiversityInformationModal from "./modal/ClimateAndBiodiversityInformationModal";
 
 const PositiveImpactTitleAndIcon = () => {
   return (

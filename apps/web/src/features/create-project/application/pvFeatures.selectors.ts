@@ -1,7 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "../domain/photovoltaic";
 
 import { RootState } from "@/app/application/store";
+
+import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "../domain/photovoltaic";
 
 const selectProjectCreationState = (state: RootState) => state.projectCreation;
 const selectProjectCreationData = createSelector(

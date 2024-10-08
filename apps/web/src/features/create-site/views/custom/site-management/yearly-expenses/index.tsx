@@ -1,10 +1,4 @@
 import { useEffect } from "react";
-import {
-  getSiteManagementExpensesWithBearer,
-  getSiteSecurityExpensesWithBearer,
-  mapFormDataToExpenses,
-} from "./mappers";
-import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
 
 import { AppDispatch, RootState } from "@/app/application/store";
 import { revertYearlyExpensesStep } from "@/features/create-site/application/createSite.actions";
@@ -14,6 +8,13 @@ import { fetchSiteMunicipalityData } from "@/features/create-site/application/si
 import { hasTenant } from "@/features/create-site/domain/site.functions";
 import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
+import {
+  getSiteManagementExpensesWithBearer,
+  getSiteSecurityExpensesWithBearer,
+  mapFormDataToExpenses,
+} from "./mappers";
 
 const mapProps = (
   dispatch: AppDispatch,

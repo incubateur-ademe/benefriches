@@ -1,4 +1,5 @@
 import { SoilsDistribution } from "shared";
+
 import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
 
 type Props = {

@@ -1,11 +1,12 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
-import ScenarioTileImage from "./ScenarioTileImage";
-import ScenarioTileTitle from "./ScenarioTileTitle";
-import WithTooltip from "./ScenarioTileTooltip";
 
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
+
+import ScenarioTileImage from "./ScenarioTileImage";
+import ScenarioTileTitle from "./ScenarioTileTitle";
+import WithTooltip from "./ScenarioTileTooltip";
 
 type Props = {
   title: string;

@@ -1,4 +1,8 @@
 import { createSelector } from "@reduxjs/toolkit";
+
+import { RootState } from "@/app/application/store";
+import { sumList } from "@/shared/services/sum/sum";
+
 import {
   AvoidedFricheExpensesImpact,
   AvoidedTrafficAccidentsImpact,
@@ -6,9 +10,6 @@ import {
   ReconversionProjectImpacts,
 } from "../domain/impacts.types";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
-
-import { RootState } from "@/app/application/store";
-import { sumList } from "@/shared/services/sum/sum";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

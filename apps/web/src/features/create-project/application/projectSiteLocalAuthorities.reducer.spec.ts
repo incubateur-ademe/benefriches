@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { Address } from "../domain/project.types";
-import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
-import { relatedSiteData } from "./siteData.mock";
-
 import { createStore, RootState } from "@/app/application/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
+
+import { Address } from "../domain/project.types";
+import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
+import { relatedSiteData } from "./siteData.mock";
 
 const API_MOCKED_RESULT = {
   "75110": {

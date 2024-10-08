@@ -1,7 +1,7 @@
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 type Props = {
   isPhotovoltaic: boolean;

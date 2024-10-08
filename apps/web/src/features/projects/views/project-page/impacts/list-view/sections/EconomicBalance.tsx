@@ -1,15 +1,15 @@
 import {
+  EconomicBalance,
+  EconomicBalanceName,
+} from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
+
+import {
   getEconomicBalanceDetailsImpactLabel,
   getEconomicBalanceImpactLabel,
 } from "../../getImpactLabel";
 import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactSection from "../ImpactSection";
-
-import {
-  EconomicBalance,
-  EconomicBalanceName,
-} from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 
 const getImpactItemOnClick = (
   itemName: EconomicBalanceName,

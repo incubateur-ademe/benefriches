@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import PhotovoltaicExpectedAnnualProductionForm from "./ExpectedAnnualProductionForm";
 
 import {
   completePhotovoltaicExpectedAnnualProduction,
@@ -8,6 +7,8 @@ import {
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import PhotovoltaicExpectedAnnualProductionForm from "./ExpectedAnnualProductionForm";
 
 function PhotovoltaicExpectedAnnualProductionContainer() {
   const dispatch = useAppDispatch();

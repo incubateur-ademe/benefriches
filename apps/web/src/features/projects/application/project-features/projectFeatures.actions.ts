@@ -1,6 +1,6 @@
-import { ProjectFeatures } from "../../domain/projects.types";
-
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { ProjectFeatures } from "../../domain/projects.types";
 
 export interface ProjectFeaturesGateway {
   getById(projectId: string): Promise<ProjectFeatures>;

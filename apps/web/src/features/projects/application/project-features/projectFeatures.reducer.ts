@@ -1,8 +1,9 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
-import { ProjectFeatures } from "../../domain/projects.types";
-import { fetchProjectFeatures } from "./projectFeatures.actions";
 
 import { RootState } from "@/app/application/store";
+
+import { ProjectFeatures } from "../../domain/projects.types";
+import { fetchProjectFeatures } from "./projectFeatures.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

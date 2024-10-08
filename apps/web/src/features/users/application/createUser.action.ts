@@ -1,7 +1,8 @@
 import { v4 as uuid } from "uuid";
-import { User, userSchema } from "../domain/user";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { User, userSchema } from "../domain/user";
 
 export type CreateUserProps = Omit<User, "id">;
 

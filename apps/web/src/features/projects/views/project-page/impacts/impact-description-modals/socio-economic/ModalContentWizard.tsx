@@ -1,5 +1,6 @@
 import { ImpactsData, ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
+import SocioEconomicDescription from "./SocioEconomicDescription";
 import AvoidedCO2WithEnRMonetaryValueDescription from "./avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";
 import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheCostsDescription";
 import AvoidedIllegalDumpingCostsDescription from "./avoided-friche-costs/AvoidedIllegalDumpingCostsDescription";
@@ -16,9 +17,8 @@ import WaterCycle from "./ecosystem-services/WaterCycle";
 import PropertyTransferDutiesIncreaseDescription from "./property-value-increase/PropertyTransferDutiesIncreaseDescription";
 import PropertyValueIncreaseDescription from "./property-value-increase/PropertyValueIncreaseDescription";
 import RentalIncomeDescription from "./rental-income/RentalIncomeDescription";
-import WaterRegulationDescription from "./water-regulation/WaterRegulationDescription";
-import SocioEconomicDescription from "./SocioEconomicDescription";
 import { SocioEconomicImpactDescriptionModalId } from "./types";
+import WaterRegulationDescription from "./water-regulation/WaterRegulationDescription";
 
 type Props = {
   modalId: SocioEconomicImpactDescriptionModalId;

@@ -1,12 +1,13 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+
+import { EcosystemServicesImpact } from "@/features/projects/domain/impacts.types";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
 import { ImpactsData } from "../../ImpactDescriptionModalWizard";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { getSocioEconomicSectionModalTitle } from "../getTitle";
 import { SocioEconomicImpactDescriptionModalId } from "../types";
-
-import { EcosystemServicesImpact } from "@/features/projects/domain/impacts.types";
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 type Props = {
   onChangeModalCategoryOpened: (modalCategory: SocioEconomicImpactDescriptionModalId) => void;

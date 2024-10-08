@@ -1,10 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { RecurringExpense, RecurringRevenue, ReinstatementExpensePurpose } from "shared";
+
+import { RootState } from "@/app/application/store";
+
 import { DevelopmentPlanInstallationExpense, FinancialAssistance } from "../domain/impacts.types";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import { ProjectImpactsState } from "./projectImpacts.reducer";
-
-import { RootState } from "@/app/application/store";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

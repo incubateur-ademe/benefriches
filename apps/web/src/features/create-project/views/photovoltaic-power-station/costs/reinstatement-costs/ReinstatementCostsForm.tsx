@@ -1,6 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
-import SustainableSoilsReinstatementInfoButton from "./SustainableSoilsReinstatementInfoButton";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
@@ -8,6 +7,8 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import SustainableSoilsReinstatementInfoButton from "./SustainableSoilsReinstatementInfoButton";
 
 type Props = {
   onSubmit: (data: FormValues) => void;

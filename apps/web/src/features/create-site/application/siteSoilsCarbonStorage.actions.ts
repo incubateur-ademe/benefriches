@@ -1,7 +1,8 @@
 import { SoilType } from "shared";
-import { SiteCarbonStorage } from "./siteSoilsCarbonStorage.reducer";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { SiteCarbonStorage } from "./siteSoilsCarbonStorage.reducer";
 
 export type GetSiteSoilsCarbonStoragePayload = {
   cityCode: string;

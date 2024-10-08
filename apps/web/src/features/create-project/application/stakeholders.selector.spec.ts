@@ -1,3 +1,6 @@
+import { RootState } from "@/app/application/store";
+import { buildUser } from "@/features/users/domain/user.mock";
+
 import { ProjectSite } from "../domain/project.types";
 import { ProjectCreationState } from "./createProject.reducer";
 import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
@@ -6,9 +9,6 @@ import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
 } from "./stakeholders.selector";
-
-import { RootState } from "@/app/application/store";
-import { buildUser } from "@/features/users/domain/user.mock";
 
 const siteData = {
   ...relatedSiteData,

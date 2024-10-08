@@ -1,6 +1,6 @@
-import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
-
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   value: number;

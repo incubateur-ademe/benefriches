@@ -1,17 +1,18 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
+
+import classNames from "@/shared/views/clsx";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+
 import {
   ImpactCategoryFilter,
   ProjectImpactsState,
   ViewMode,
 } from "../../application/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
-import ProjectImpactsPage from "./impacts/ProjectImpactsView";
 import ProjectImpactsActionBar from "./ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./ProjectPageHeader";
-
-import classNames from "@/shared/views/clsx";
-import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import ProjectImpactsPage from "./impacts/ProjectImpactsView";
 
 type Props = {
   projectId: string;

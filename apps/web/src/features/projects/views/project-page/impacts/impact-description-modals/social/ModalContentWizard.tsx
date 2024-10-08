@@ -1,5 +1,6 @@
 import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
+import SocialMainDescription from "./SocialMainDescription";
 import AvoidedVehiculeKilometersDescription from "./avoided-vehicule-kilometers/AvoidedVehiculeKilometersDescription";
 import FullTimeJobsDescription from "./full-time-jobs/FullTimeJobsDescription";
 import PhotovoltaicOperationFullTimeJobsDescription from "./full-time-jobs/PhotovoltaicOperationFullTimeJobsDescription";
@@ -7,7 +8,6 @@ import ReconversionFullTimeJobsDescription from "./full-time-jobs/ReconversionFu
 import UrbanProjectOperationFullTimeJobsDescription from "./full-time-jobs/UrbanProjectOperationFullTimeJobsDescription";
 import HouseholdsPoweredByRenewableEnergyDescription from "./householdsPoweredByEnR/householdsPoweredByEnR";
 import TimeTravelSavedDescription from "./time-travel-saved/TimeTravelSavedDescription";
-import SocialMainDescription from "./SocialMainDescription";
 import { SocialImpactDescriptionModalId } from "./types";
 
 type Props = {

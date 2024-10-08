@@ -1,9 +1,9 @@
+import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
 import { ProjectData } from "../../ImpactDescriptionModalWizard";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 type Props = {
   developmentPlan: ProjectData["developmentPlan"];

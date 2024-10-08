@@ -1,5 +1,8 @@
-import { ReactNode } from "react";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { ReactNode } from "react";
+
+import classNames from "@/shared/views/clsx";
+
 import {
   formatCO2Impact,
   formatDefaultImpact,
@@ -8,8 +11,6 @@ import {
   formatSurfaceAreaImpact,
   formatTimeImpact,
 } from "../../../shared/formatImpactValue";
-
-import classNames from "@/shared/views/clsx";
 
 type Props = {
   value?: number;

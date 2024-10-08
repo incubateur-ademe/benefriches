@@ -1,9 +1,6 @@
-import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { ReactNode } from "react";
 import { SoilType } from "shared";
-import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
-import ImpactAreaChartCard from "./ImpactChartCard/ImpactAreaChartCard";
-import ImpactsChartsSection from "./ImpactsChartsSection";
 
 import {
   EnvironmentalImpact,
@@ -15,6 +12,10 @@ import {
 } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { getColorForCarbonStorageSoilType } from "@/shared/domain/soils";
 import HighchartsCustomColorsWrapper from "@/shared/views/components/Charts/HighchartsCustomColorsWrapper";
+
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
+import ImpactAreaChartCard from "./ImpactChartCard/ImpactAreaChartCard";
+import ImpactsChartsSection from "./ImpactsChartsSection";
 
 type Props = {
   projectName: string;

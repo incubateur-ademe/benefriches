@@ -1,9 +1,14 @@
 import { useState } from "react";
+
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+
 import {
   PhotovoltaicProjectCreationStep,
   selectCurrentStep,
 } from "../../application/createProject.reducer";
 import RenewableEnergyTypesForm from "../renewable-energy-types";
+import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
 import ProjectExpensesIntroduction from "./costs/introduction";
 import PhotovoltaicPanelsInstallationExpensesForm from "./costs/photovoltaic-panels-installation-costs";
 import ReinstatementsExpensesForm from "./costs/reinstatement-costs";
@@ -11,16 +16,22 @@ import SitePurchaseAmountsContainer from "./costs/site-purchase-amounts";
 import YearlyProjectedExpensesForm from "./costs/yearly-projected-costs";
 import ProjectFullTimeJobsInvolvedForm from "./jobs/conversion-full-time-jobs-involved";
 import OperationsFullTimeJobsInvolvedForm from "./jobs/operations-full-time-jobs-involved";
+import ProjectNameAndDescriptionForm from "./name-and-description";
 import PhotovoltaicContractDurationContainer from "./photovoltaic/contract-duration";
 import PhotovoltaicExpectedAnnualProductionContainer from "./photovoltaic/expected-annual-production";
 import PhotovoltaicKeyParameter from "./photovoltaic/key-parameter";
 import PhotovoltaicPower from "./photovoltaic/power";
 import PhotovoltaicSurface from "./photovoltaic/surface";
+import ProjectPhaseForm from "./project-phase";
+import ProjectCreationResult from "./result";
 import ProjectFinancialAssistanceRevenueForm from "./revenue/financial-assistance";
 import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
 import ProjectScheduleIntroductionContainer from "./schedule/introduction";
 import ProjectScheduleProjectionFormContainer from "./schedule/projection";
+import SoilsDecontaminationIntroduction from "./soils-decontamination/introduction";
+import SoilsDecontaminationSelection from "./soils-decontamination/selection";
+import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
 import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
 import ClimateAndBiodiversityImpactNotice from "./soils/soils-transformation/climate-and-biodiversity-impact-notice";
@@ -31,23 +42,13 @@ import NonSuitableSoilsNotice from "./soils/soils-transformation/non-suitable-so
 import NonSuitableSoilsSelection from "./soils/soils-transformation/non-suitable-soils-selection";
 import NonSuitableSoilsSurfaceToTransformForm from "./soils/soils-transformation/non-suitable-soils-surface-to-transform";
 import SoilsTransformationProjectSelection from "./soils/soils-transformation/transformation-project-selection";
-import SoilsDecontaminationIntroduction from "./soils-decontamination/introduction";
-import SoilsDecontaminationSelection from "./soils-decontamination/selection";
-import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
 import DeveloperForm from "./stakeholders/developer";
 import FutureOwnerFormContainer from "./stakeholders/future-site-owner";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import SiteOperatorForm from "./stakeholders/operator";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 import SitePurchasedFormContainer from "./stakeholders/site-purchased";
-import ProjectNameAndDescriptionForm from "./name-and-description";
-import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
-import ProjectPhaseForm from "./project-phase";
-import ProjectCreationResult from "./result";
 import ProjectionCreationDataSummaryContainer from "./summary";
-
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
-import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 const getCurrentStepView = (currentStep: PhotovoltaicProjectCreationStep) => {
   switch (currentStep) {

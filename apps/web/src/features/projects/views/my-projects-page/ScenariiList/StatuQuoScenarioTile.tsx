@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { FricheActivity } from "shared";
-import ScenarioTile from "./ScenarioTile/ScenarioTile";
 
 import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
+
+import ScenarioTile from "./ScenarioTile/ScenarioTile";
 
 type Props = {
   siteId: string;

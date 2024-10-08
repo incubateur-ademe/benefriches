@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
 

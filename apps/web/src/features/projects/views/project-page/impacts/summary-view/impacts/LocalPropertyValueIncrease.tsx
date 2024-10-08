@@ -1,6 +1,6 @@
-import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
-
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+
+import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   value: number;

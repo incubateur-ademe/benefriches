@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+import { createStore, RootState } from "@/app/application/store";
+import { buildUser } from "@/features/users/domain/user.mock";
+import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
+
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 import {
   getAvailableLocalAuthorities,
   getAvailableLocalAuthoritiesWithoutCurrentUser,
 } from "./siteMunicipalityData.reducer";
-
-import { createStore, RootState } from "@/app/application/store";
-import { buildUser } from "@/features/users/domain/user.mock";
-import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 const API_MOCKED_RESULT = {
   "75110": {

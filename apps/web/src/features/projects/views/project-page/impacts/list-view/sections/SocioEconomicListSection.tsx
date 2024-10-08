@@ -1,6 +1,3 @@
-import ImpactActorsItem from "../ImpactActorsItem";
-import ImpactSection from "../ImpactSection";
-
 import {
   SocioEconomicDetailedImpact,
   SocioEconomicImpactName,
@@ -8,6 +5,9 @@ import {
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
+
+import ImpactActorsItem from "../ImpactActorsItem";
+import ImpactSection from "../ImpactSection";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicDetailedImpact;

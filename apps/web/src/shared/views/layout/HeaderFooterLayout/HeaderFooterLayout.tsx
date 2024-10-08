@@ -1,9 +1,10 @@
-import { ReactNode } from "react";
 import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
-import BenefrichesFooter from "./BenefrichesFooter";
-import BenefrichesHeader from "./BenefrichesHeader";
+import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
+
+import BenefrichesFooter from "./BenefrichesFooter";
+import BenefrichesHeader from "./BenefrichesHeader";
 
 type HeaderFooterLayoutProps = {
   children: ReactNode;

@@ -6,6 +6,10 @@ import {
   SoilType,
   sumSoilsSurfaceAreasWhere,
 } from "shared";
+
+import { RootState } from "@/app/application/store";
+import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+
 import {
   computeDefaultPhotovoltaicConversionFullTimeJobs,
   computeDefaultPhotovoltaicOperationsFullTimeJobs,
@@ -26,9 +30,6 @@ import {
   willTransformationNoticeablyImpactBiodiversityAndClimate,
 } from "../domain/soilsTransformation";
 import { ProjectCreationState } from "./createProject.reducer";
-
-import { RootState } from "@/app/application/store";
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 

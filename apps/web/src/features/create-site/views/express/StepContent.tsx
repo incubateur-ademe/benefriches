@@ -1,10 +1,10 @@
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+
 import { selectCurrentStep } from "../../application/createSite.reducer";
 import AddressForm from "./address";
 import SiteCreationResult from "./result";
 import SiteTypeForm from "./site-type";
 import SiteSurfaceAreaForm from "./surface-area";
-
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function SiteCreationExpressStepContent() {
   const currentStep = useAppSelector(selectCurrentStep);

@@ -1,6 +1,6 @@
-import { User } from "../domain/user";
-
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { User } from "../domain/user";
 
 export interface CurrentUserGateway {
   get(): Promise<User | undefined>;

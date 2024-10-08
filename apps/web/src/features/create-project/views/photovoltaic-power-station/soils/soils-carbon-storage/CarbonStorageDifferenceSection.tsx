@@ -1,6 +1,6 @@
-import { formatCarbonStorage, formatPerFrenchPersonAnnualEquivalent } from "./formatCarbonStorage";
-
 import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
+
+import { formatCarbonStorage, formatPerFrenchPersonAnnualEquivalent } from "./formatCarbonStorage";
 
 type Props = {
   carbonStorageDifference: number;

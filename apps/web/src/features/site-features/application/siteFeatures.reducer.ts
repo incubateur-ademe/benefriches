@@ -1,8 +1,9 @@
 import { createSelector, createSlice } from "@reduxjs/toolkit";
-import { SiteFeatures } from "../domain/siteFeatures";
-import { fetchSiteFeatures } from "./fetchSiteFeatures.action";
 
 import { RootState } from "@/app/application/store";
+
+import { SiteFeatures } from "../domain/siteFeatures";
+import { fetchSiteFeatures } from "./fetchSiteFeatures.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

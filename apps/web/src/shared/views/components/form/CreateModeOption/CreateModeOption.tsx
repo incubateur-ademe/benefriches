@@ -1,5 +1,5 @@
-import React, { useId } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
+import React, { useId } from "react";
 
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";

@@ -1,4 +1,7 @@
 /* eslint-disable jest/expect-expect */
+import { createStore, RootState } from "@/app/application/store";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
+
 import { getInitialState } from "../createProject.reducer";
 import {
   spacesIntroductionCompleted,
@@ -9,9 +12,6 @@ import {
   spacesSurfaceAreaReverted,
 } from "./urbanProject.actions";
 import { UrbanProjectCreationStep } from "./urbanProject.reducer";
-
-import { createStore, RootState } from "@/app/application/store";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 const expectNewCurrentStep = (
   initialState: RootState,

@@ -1,7 +1,6 @@
 import { ChangeEvent } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
-import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
 import { Expense } from "@/features/create-site/domain/siteFoncier.types";
@@ -10,11 +9,13 @@ import {
   stringToNumber,
 } from "@/shared/services/number-conversion/numberConversion";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
-import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
 
 type YearlyExpenseBearer = "owner" | "tenant";
 type FormExpense =

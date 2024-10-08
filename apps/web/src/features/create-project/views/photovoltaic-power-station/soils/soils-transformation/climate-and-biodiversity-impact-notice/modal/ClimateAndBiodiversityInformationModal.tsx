@@ -1,6 +1,6 @@
-import { Component as ModalComponent } from ".";
-
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+import { Component as ModalComponent } from ".";
 
 export default function ClimateAndBiodiversityInformationModal() {
   return (

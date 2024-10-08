@@ -1,10 +1,10 @@
-import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
-
 import {
   completeSitePurchase,
   revertwillSiteBePurchased,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
 
 function SitePurchasedFormContainer() {
   const dispatch = useAppDispatch();

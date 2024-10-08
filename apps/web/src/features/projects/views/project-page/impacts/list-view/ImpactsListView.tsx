@@ -1,13 +1,13 @@
+import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+import { EnvironmentalImpact } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
+import { SocialImpact } from "@/features/projects/application/projectImpactsSocial.selectors";
+import { SocioEconomicDetailedImpact } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";
 import SocialListSection from "./sections/SocialListSection";
 import SocioEconomicImpactsListSection from "./sections/SocioEconomicListSection";
-
-import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { EnvironmentalImpact } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { SocialImpact } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { SocioEconomicDetailedImpact } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 
 type Props = {
   economicBalance: EconomicBalance;

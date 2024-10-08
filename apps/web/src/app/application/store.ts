@@ -1,9 +1,4 @@
 import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
-import { GetSitesByIdGateway } from "../../features/create-project/application/createProject.actions";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.actions";
-import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
-import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
-import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
@@ -29,6 +24,12 @@ import siteFeatures from "@/features/site-features/application/siteFeatures.redu
 import { CreateUserGateway } from "@/features/users/application/createUser.action";
 import { CurrentUserGateway } from "@/features/users/application/initCurrentUser.action";
 import currentUser from "@/features/users/application/user.reducer";
+
+import { GetSitesByIdGateway } from "../../features/create-project/application/createProject.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.actions";
+import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
+import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
+import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
 
 export type AppDependencies = {
   soilsCarbonStorageService: SiteSoilsCarbonStorageGateway | ProjectSoilsCarbonStorageGateway;

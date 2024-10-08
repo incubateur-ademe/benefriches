@@ -1,6 +1,6 @@
-import { useForm } from "react-hook-form";
 import Input from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
+import { useForm } from "react-hook-form";
 import { LocalAuthority } from "shared";
 
 import { AvailableProjectStakeholder } from "@/features/create-project/application/stakeholders.selector";

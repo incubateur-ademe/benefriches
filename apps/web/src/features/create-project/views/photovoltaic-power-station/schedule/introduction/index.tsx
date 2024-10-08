@@ -1,10 +1,10 @@
-import ScheduleIntroduction from "./ScheduleIntroduction";
-
 import {
   completeScheduleIntroductionStep,
   revertScheduleIntroductionStep,
 } from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import ScheduleIntroduction from "./ScheduleIntroduction";
 
 function ProjectScheduleIntroductionContainer() {
   const dispatch = useAppDispatch();

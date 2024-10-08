@@ -1,13 +1,14 @@
 import { useMemo, useState } from "react";
-import AboutComparisonModal from "./AboutComparisonModal";
-import { getProjectsInfosList, getSelectionInfos, getSitesInfosList } from "./getSelectionDetails";
-import ScenariiGroup from "./ScenariiGroup";
-import ScenariiSelectionBar from "./ScenariiSelectionBar";
 
 import {
   ProjectDevelopmentPlanType,
   ReconversionProjectsGroupedBySite,
 } from "@/features/projects/domain/projects.types";
+
+import AboutComparisonModal from "./AboutComparisonModal";
+import ScenariiGroup from "./ScenariiGroup";
+import ScenariiSelectionBar from "./ScenariiSelectionBar";
+import { getProjectsInfosList, getSelectionInfos, getSitesInfosList } from "./getSelectionDetails";
 
 type Props = {
   projectsList: ReconversionProjectsGroupedBySite;

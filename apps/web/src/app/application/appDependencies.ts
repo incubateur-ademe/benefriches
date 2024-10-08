@@ -1,5 +1,3 @@
-import { AppDependencies } from "./store";
-
 import { ExpectedPhotovoltaicPerformanceApi } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceApi";
 import HttpSaveExpressReconversionProjectService from "@/features/create-project/infrastructure/save-express-project-service/HttpSaveExpressReconversionProjectService";
 import { HttpSaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/HttpSaveReconversionProjectService";
@@ -14,6 +12,8 @@ import { HttpCreateUserService } from "@/features/users/infra/create-user-servic
 import { LocalStorageUserService } from "@/features/users/infra/current-user-service/LocalStorageUserService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
+
+import { AppDependencies } from "./store";
 
 export const appDependencies: AppDependencies = {
   soilsCarbonStorageService: new SoilsCarbonStorageApi(),

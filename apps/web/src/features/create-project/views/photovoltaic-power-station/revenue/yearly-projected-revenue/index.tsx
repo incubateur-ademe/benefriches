@@ -1,13 +1,13 @@
+import { AppDispatch } from "@/app/application/store";
+import { getDefaultValuesForYearlyProjectedRecurringRevenue } from "@/features/create-project/application/createProject.selectors";
+import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
 import {
   completeYearlyProjectedRevenue,
   revertYearlyProjectedRevenue,
 } from "../../../../application/createProject.reducer";
 import YearlyProjectedsRevenueForm, { FormValues } from "./ProjectYearlyProjectedRevenueForm";
-
-import { AppDispatch } from "@/app/application/store";
-import { getDefaultValuesForYearlyProjectedRecurringRevenue } from "@/features/create-project/application/createProject.selectors";
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 const revenuesFormMap = {
   operationsAmount: "operations",

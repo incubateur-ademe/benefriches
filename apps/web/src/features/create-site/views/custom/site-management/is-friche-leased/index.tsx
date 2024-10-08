@@ -1,8 +1,8 @@
-import IsFricheLeasedForm, { FormValues } from "./IsFricheLeasedForm";
-
 import { revertIsFricheLeasedStep } from "@/features/create-site/application/createSite.actions";
 import { completeIsFricheLeased } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import IsFricheLeasedForm, { FormValues } from "./IsFricheLeasedForm";
 
 function IsFricheLeasedFormContainer() {
   const dispatch = useAppDispatch();

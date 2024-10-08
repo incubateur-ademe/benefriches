@@ -1,12 +1,13 @@
 import { SoilType } from "shared";
-import ModalTitleThree from "./ModalTitleThree";
-import ModalTitleTwo from "./ModalTitleTwo";
 
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+import ModalTitleThree from "./ModalTitleThree";
+import ModalTitleTwo from "./ModalTitleTwo";
 
 type Props = {
   baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];

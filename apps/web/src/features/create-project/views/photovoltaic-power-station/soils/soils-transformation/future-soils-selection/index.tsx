@@ -1,5 +1,3 @@
-import FutureSoilsSelectionForm, { FormValues } from "./FutureSoilsSelectionForm";
-
 import {
   completeCustomSoilsSelectionStep,
   revertCustomSoilsSelectionStep,
@@ -9,6 +7,8 @@ import {
   selectTransformableSoils,
 } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import FutureSoilsSelectionForm, { FormValues } from "./FutureSoilsSelectionForm";
 
 function FutureSoilsSelectionFormContainer() {
   const dispatch = useAppDispatch();

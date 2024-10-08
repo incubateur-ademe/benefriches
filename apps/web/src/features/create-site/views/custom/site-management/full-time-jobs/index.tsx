@@ -1,9 +1,9 @@
-import SiteFullTimeJobsInvolvedForm, { FormValues } from "./SiteFullTimeJobsInvolvedForm";
-
 import { AppDispatch } from "@/app/application/store";
 import { revertFullTimeJobsInvolvedStep } from "@/features/create-site/application/createSite.actions";
 import { completeFullTimeJobsInvolved } from "@/features/create-site/application/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import SiteFullTimeJobsInvolvedForm, { FormValues } from "./SiteFullTimeJobsInvolvedForm";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {

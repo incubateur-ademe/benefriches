@@ -1,7 +1,3 @@
-import ConversionFullTimeJobsInvolvedForm, {
-  FormValues,
-} from "./ConversionFullTimeJobsInvolvedForm";
-
 import { AppDispatch } from "@/app/application/store";
 import {
   completeConversionFullTimeJobsInvolved,
@@ -9,6 +5,10 @@ import {
 } from "@/features/create-project/application/createProject.reducer";
 import { getDefaultValuesForFullTimeConversionJobsInvolved } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import ConversionFullTimeJobsInvolvedForm, {
+  FormValues,
+} from "./ConversionFullTimeJobsInvolvedForm";
 
 const mapProps = (
   dispatch: AppDispatch,

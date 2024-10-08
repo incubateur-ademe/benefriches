@@ -1,6 +1,6 @@
-import { useRef } from "react";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { useRef } from "react";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
 import { Expense, Income } from "@/features/create-site/domain/siteFoncier.types";

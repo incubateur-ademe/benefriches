@@ -1,9 +1,10 @@
 import { useState } from "react";
-import UrbanProjectCreationResult from "./creation-result";
-import UrbanProjectExpressStepper from "./UrbanProjectExpressStepper";
 
 import { UrbanProjectExpressCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+
+import UrbanProjectExpressStepper from "./UrbanProjectExpressStepper";
+import UrbanProjectCreationResult from "./creation-result";
 
 type Props = {
   currentStep: UrbanProjectExpressCreationStep;

@@ -1,11 +1,11 @@
+import { AppDispatch } from "@/app/application/store";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
 import {
   completeSitePurchaseAmounts,
   revertSitePurchaseAmounts,
 } from "../../../../application/createProject.reducer";
 import SitePurchaseAmountsForm, { FormValues } from "./SitePurchaseAmountsForm";
-
-import { AppDispatch } from "@/app/application/store";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {

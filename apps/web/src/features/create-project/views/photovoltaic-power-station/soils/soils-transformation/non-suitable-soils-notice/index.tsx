@@ -1,5 +1,3 @@
-import NonSuitableSoilsNotice from "./NonSuitableSoilsNotice";
-
 import {
   completeNonSuitableSoilsNoticeStep,
   revertNonSuitableSoilsNoticeStep,
@@ -9,6 +7,8 @@ import {
   selectSuitableSurfaceAreaForPhotovoltaicPanels,
 } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import NonSuitableSoilsNotice from "./NonSuitableSoilsNotice";
 
 function NonSuitableSoilsNoticeContainer() {
   const dispatch = useAppDispatch();

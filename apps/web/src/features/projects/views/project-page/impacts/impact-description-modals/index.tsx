@@ -1,9 +1,9 @@
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+
 import {
   ImpactDescriptionModalCategory,
   ImpactDescriptionModalWizard,
 } from "./ImpactDescriptionModalWizard";
-
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   modalCategory: ImpactDescriptionModalCategory;

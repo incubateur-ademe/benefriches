@@ -1,4 +1,7 @@
 import { useEffect } from "react";
+
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
 import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
 import {
   getProjectContext,
@@ -9,8 +12,6 @@ import {
   ViewMode,
 } from "../../application/projectImpacts.reducer";
 import ProjectPage from "./ProjectImpactsPage";
-
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
   projectId: string;

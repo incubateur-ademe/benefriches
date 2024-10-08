@@ -1,11 +1,11 @@
-import SoilsDecontaminationIntroduction from "./SoilsDecontaminationIntroduction";
-
 import {
   completeSoilsDecontaminationIntroduction,
   revertSoilsDecontaminationIntroductionStep,
 } from "@/features/create-project/application/createProject.reducer";
 import { selectSiteData } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SoilsDecontaminationIntroduction from "./SoilsDecontaminationIntroduction";
 
 function SoilsDecontaminationIntroductionContainer() {
   const dispatch = useAppDispatch();

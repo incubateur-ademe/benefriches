@@ -1,14 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
-import ImpactsActionBar from "../shared/actions/ActionBar";
-import ImpactEvaluationPeriodSelect from "../shared/actions/ImpactEvaluationPeriodSelect";
-import ProjectsImpactsPageHeader from "./ProjectPageHeader";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
   ImpactCategoryFilter,
   ViewMode,
 } from "@/features/projects/application/projectImpacts.reducer";
 import classNames from "@/shared/views/clsx";
+
+import ImpactsActionBar from "../shared/actions/ActionBar";
+import ImpactEvaluationPeriodSelect from "../shared/actions/ImpactEvaluationPeriodSelect";
+import ProjectsImpactsPageHeader from "./ProjectPageHeader";
 
 type Props = {
   selectedFilter: ImpactCategoryFilter;

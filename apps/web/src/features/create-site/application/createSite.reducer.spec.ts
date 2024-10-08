@@ -1,4 +1,8 @@
 /* eslint-disable jest/expect-expect */
+import { createStore, RootState } from "@/app/application/store";
+import { buildUser } from "@/features/users/domain/user.mock";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
+
 import getExpressSiteData from "../domain/siteExpress";
 import { InMemoryCreateSiteService } from "../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import {
@@ -59,10 +63,6 @@ import {
   siteWithExhaustiveData,
   siteWithMinimalData,
 } from "./siteData.mock";
-
-import { createStore, RootState } from "@/app/application/store";
-import { buildUser } from "@/features/users/domain/user.mock";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 const expectNewCurrentStep = (
   initialState: RootState,

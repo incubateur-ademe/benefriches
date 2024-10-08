@@ -1,21 +1,22 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { Provider as ReduxProvider } from "react-redux";
 import { startReactDsfr } from "@codegouvfr/react-dsfr/spa";
 import { ConfigProvider as AntdConfigProvider } from "antd";
-import { createRouter, defineRoute, param } from "type-route";
-import { appDependencies } from "./app/application/appDependencies.ts";
-import { createStore } from "./app/application/store.ts";
-import { theme } from "./app/views/antdConfig.ts";
-
-startReactDsfr({ defaultColorScheme: "system" });
-
+import React from "react";
 import { lazy, Suspense, useEffect } from "react";
-import "./main.css";
+import ReactDOM from "react-dom/client";
+import { Provider as ReduxProvider } from "react-redux";
+import { createRouter, defineRoute, param } from "type-route";
 
 import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import { appDependencies } from "./app/application/appDependencies.ts";
+import { createStore } from "./app/application/store.ts";
+import { theme } from "./app/views/antdConfig.ts";
+import "./main.css";
+
+startReactDsfr({ defaultColorScheme: "system" });
+
 const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
 
 const embedRoutes = createRouter({

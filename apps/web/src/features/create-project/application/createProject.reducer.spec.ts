@@ -1,12 +1,12 @@
+import { createStore, RootState } from "@/app/application/store";
+import { buildUser } from "@/features/users/domain/user.mock";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
+
 import { InMemorySaveReconversionProjectService } from "../infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { getInitialState } from "./createProject.reducer";
 import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
 import { saveReconversionProject } from "./saveReconversionProject.action";
 import { relatedSiteData } from "./siteData.mock";
-
-import { createStore, RootState } from "@/app/application/store";
-import { buildUser } from "@/features/users/domain/user.mock";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 describe("createProject reducer", () => {
   describe("saveReconversionProject action", () => {

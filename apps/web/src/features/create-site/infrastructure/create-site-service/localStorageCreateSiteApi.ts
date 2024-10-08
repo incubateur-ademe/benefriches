@@ -1,6 +1,6 @@
-import { CreateSiteGateway, CreateSiteGatewayPayload } from "../../application/createSite.actions";
-
 import { delay } from "@/shared/services/delay/delay";
+
+import { CreateSiteGateway, CreateSiteGatewayPayload } from "../../application/createSite.actions";
 
 export const SITES_LIST_STORAGE_KEY = "benefriches/sites-list";
 

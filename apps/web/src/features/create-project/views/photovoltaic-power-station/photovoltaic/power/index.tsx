@@ -1,6 +1,3 @@
-import PhotovoltaicPowerForm from "./PowerForm";
-import PhotovoltaicPowerFromSurfaceForm from "./PowerFromSurfaceForm";
-
 import {
   completePhotovoltaicInstallationElectricalPower,
   revertPhotovoltaicInstallationElectricalPower,
@@ -15,6 +12,9 @@ import {
   selectRecommendedPowerKWcFromSiteSurfaceArea,
 } from "@/features/create-project/application/pvFeatures.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import PhotovoltaicPowerForm from "./PowerForm";
+import PhotovoltaicPowerFromSurfaceForm from "./PowerFromSurfaceForm";
 
 function PhotovoltaicPowerContainer() {
   const dispatch = useAppDispatch();

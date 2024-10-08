@@ -1,6 +1,6 @@
-import { ReconversionProjectsGroupedBySite } from "../domain/projects.types";
-
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { ReconversionProjectsGroupedBySite } from "../domain/projects.types";
 
 export interface ReconversionProjectsListGateway {
   getGroupedBySite({ userId }: { userId: string }): Promise<ReconversionProjectsGroupedBySite>;

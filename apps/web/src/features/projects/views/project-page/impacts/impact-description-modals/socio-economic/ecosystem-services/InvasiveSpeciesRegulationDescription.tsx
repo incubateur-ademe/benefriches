@@ -1,12 +1,13 @@
 import { isSurfaceWithEcosystemBenefits, typedObjectEntries } from "shared";
 import { SoilsDistribution } from "shared";
-import ModalTitleThree from "../../shared/ModalTitleThree";
-import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+
+import ModalTitleThree from "../../shared/ModalTitleThree";
+import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 type Props = {
   baseSoilsDistribution: SoilsDistribution;

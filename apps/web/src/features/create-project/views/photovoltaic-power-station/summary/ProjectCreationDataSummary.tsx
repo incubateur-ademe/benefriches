@@ -8,13 +8,6 @@ import {
   SoilsDistribution,
   SoilType,
 } from "shared";
-import { Schedule } from "../../../application/saveReconversionProject.action";
-import { SoilsCarbonStorageResult } from "../../../application/soilsCarbonStorage.actions";
-import {
-  getLabelForDevelopmentPlanCategory,
-  getLabelForRenewableEnergyProductionType,
-} from "../../projectTypeLabelMapping";
-import { formatCarbonStorage } from "../soils/soils-carbon-storage/formatCarbonStorage";
 
 import {
   getLabelForFinancialAssistanceRevenueSource,
@@ -34,6 +27,14 @@ import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListSc
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
+import { Schedule } from "../../../application/saveReconversionProject.action";
+import { SoilsCarbonStorageResult } from "../../../application/soilsCarbonStorage.actions";
+import {
+  getLabelForDevelopmentPlanCategory,
+  getLabelForRenewableEnergyProductionType,
+} from "../../projectTypeLabelMapping";
+import { formatCarbonStorage } from "../soils/soils-carbon-storage/formatCarbonStorage";
 
 type Props = {
   projectData: {
