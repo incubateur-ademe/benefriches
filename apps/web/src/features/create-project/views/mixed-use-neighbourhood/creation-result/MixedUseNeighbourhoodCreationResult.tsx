@@ -1,6 +1,5 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { createModal } from "@codegouvfr/react-dsfr/Modal";
 
 import { routes } from "@/app/views/router";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features";
@@ -19,11 +18,6 @@ type Props = {
   loadingState: "idle" | "loading" | "success" | "error";
   onBack: () => void;
 };
-
-const projectFeaturesModal = createModal({
-  id: "project-features-modal",
-  isOpenedByDefault: false,
-});
 
 function MixedUseNeighbourhoodCreationResult({ projectId, siteName, loadingState, onBack }: Props) {
   switch (loadingState) {
@@ -55,18 +49,7 @@ function MixedUseNeighbourhoodCreationResult({ projectId, siteName, loadingState
             habitations, des espaces verts et des espaces publics.
             <br />
             <br />
-            <a
-              onClick={() => {
-                projectFeaturesModal.open();
-              }}
-              role="button"
-              href="#"
-            >
-              Consulter les données créées par Bénéfriches
-            </a>
-            <projectFeaturesModal.Component title="Caractéristiques du projet" size="large">
-              <ProjectFeaturesView projectId={projectId} />
-            </projectFeaturesModal.Component>
+            <ProjectFeaturesView projectId={projectId} />
           </EditorialPageText>
           <Button size="large" linkProps={routes.projectImpactsOnboarding({ projectId }).link}>
             Consulter les impacts
