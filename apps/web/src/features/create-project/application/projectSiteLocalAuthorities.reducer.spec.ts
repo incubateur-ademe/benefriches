@@ -4,6 +4,7 @@ import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrati
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { Address } from "../domain/project.types";
+import { getInitialState as getInitialProjectCreationState } from "./createProject.reducer";
 import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
 import { relatedSiteData } from "./siteData.mock";
 
@@ -69,20 +70,12 @@ const GRENOBLE_ADDRESS_MOCK: Address = {
 };
 
 const INITIAL_STATE = {
+  ...getInitialProjectCreationState(),
   siteData: {
     ...relatedSiteData,
     address: PARIS_ADDRESS_MOCK,
   },
-  stepsHistory: ["PROJECT_TYPES"],
-  projectData: {},
   siteDataLoadingState: "success",
-  saveProjectLoadingState: "idle",
-  urbanProject: {
-    createMode: undefined,
-    stepsHistory: [],
-    saveState: "idle",
-    creationData: {},
-  },
 } as const satisfies RootState["projectCreation"];
 
 describe("Site Local Authorities reducer", () => {

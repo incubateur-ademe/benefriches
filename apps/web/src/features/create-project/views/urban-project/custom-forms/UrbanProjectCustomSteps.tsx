@@ -23,6 +23,13 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "SPACES_CATEGORIES_SELECTION":
     case "SPACES_CATEGORIES_SURFACE_AREA":
       return "Espaces";
+    case "SPACES_DEVELOPMENT_PLAN_INTRODUCTION":
+    case "GREEN_SPACES_INTRODUCTION":
+    case "GREEN_SPACES_SELECTION":
+    case "GREEN_SPACES_SURFACE_AREA_DISTRIBUTION":
+    case "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION":
+    case "SPACES_DEVELOPMENT_PLAN_SUMMARY":
+      return "Aménagement des espaces";
   }
 };
 

@@ -113,6 +113,7 @@ export const getInitialState = (): ProjectCreationState => {
       creationData: {},
       saveState: "idle",
       stepsHistory: ["CREATE_MODE_SELECTION"],
+      spacesCategoriesToComplete: [],
     },
   };
 };

@@ -1,11 +1,18 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { UrbanSpaceCategory } from "shared";
+import { UrbanGreenSpace, UrbanSpaceCategory } from "shared";
 
 import { ProjectCreationState } from "../createProject.reducer";
 import {
   createModeStepReverted,
   customCreateModeSelected,
   expressCreateModeSelected,
+  greenSpacesDistributionCompleted,
+  greenSpacesDistributionReverted,
+  greenSpacesIntroductionCompleted,
+  greenSpacesIntroductionReverted,
+  greenSpacesSelectionCompleted,
+  greenSpacesSelectionReverted,
+  spacesDevelopmentPlanIntroductionCompleted,
   spacesIntroductionCompleted,
   spacesIntroductionReverted,
   spacesSelectionCompleted,
@@ -18,7 +25,22 @@ export type UrbanProjectExpressCreationStep = "CREATION_RESULT";
 export type UrbanProjectCustomCreationStep =
   | "SPACES_CATEGORIES_INTRODUCTION"
   | "SPACES_CATEGORIES_SELECTION"
-  | "SPACES_CATEGORIES_SURFACE_AREA";
+  | "SPACES_CATEGORIES_SURFACE_AREA"
+  | "SPACES_DEVELOPMENT_PLAN_INTRODUCTION"
+  | "GREEN_SPACES_INTRODUCTION"
+  | "GREEN_SPACES_SELECTION"
+  | "GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"
+  | "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION"
+  | "SPACES_DEVELOPMENT_PLAN_SUMMARY";
+
+const urbanSpaceCategoryIntroductionMap = {
+  GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
+  LIVING_AND_ACTIVITY_SPACES: "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+  PUBLIC_SPACES: undefined,
+  URBAN_FARM: undefined,
+  RENEWABLE_ENERGY_PRODUCTION_PLANT: undefined,
+  URBAN_POND_OR_LAKE: undefined,
+} as const satisfies Record<UrbanSpaceCategory, UrbanProjectCustomCreationStep | undefined>;
 
 export type UrbanProjectCreationStep =
   | "CREATE_MODE_SELECTION"
@@ -29,9 +51,12 @@ export type UrbanProjectState = {
   createMode: "express" | "custom" | undefined;
   saveState: "idle" | "loading" | "success" | "error";
   stepsHistory: UrbanProjectCreationStep[];
+  spacesCategoriesToComplete: UrbanSpaceCategory[];
   creationData: {
     spacesCategories?: UrbanSpaceCategory[];
     spacesCategoriesDistribution?: Partial<Record<UrbanSpaceCategory, number>>;
+    greenSpaces?: UrbanGreenSpace[];
+    greenSpacesDistribution?: Partial<Record<UrbanGreenSpace, number>>;
   };
 };
 
@@ -69,6 +94,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(spacesSelectionCompleted, (state, action) => {
     state.urbanProject.creationData.spacesCategories = action.payload.spacesCategories;
+    state.urbanProject.spacesCategoriesToComplete = action.payload.spacesCategories;
     state.urbanProject.stepsHistory.push("SPACES_CATEGORIES_SURFACE_AREA");
   });
   builder.addCase(spacesSelectionReverted, (state) => {
@@ -77,9 +103,46 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(spacesSurfaceAreaCompleted, (state, action) => {
     state.urbanProject.creationData.spacesCategoriesDistribution =
       action.payload.surfaceAreaDistribution;
+    state.urbanProject.stepsHistory.push("SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
   });
   builder.addCase(spacesSurfaceAreaReverted, (state) => {
     state.urbanProject.creationData.spacesCategoriesDistribution = undefined;
+  });
+  builder.addCase(spacesDevelopmentPlanIntroductionCompleted, (state) => {
+    const nextCategoryToComplete = state.urbanProject.spacesCategoriesToComplete.shift();
+    const nextStep =
+      nextCategoryToComplete && urbanSpaceCategoryIntroductionMap[nextCategoryToComplete];
+    if (nextStep) {
+      state.urbanProject.stepsHistory.push(nextStep);
+    }
+  });
+  builder.addCase(greenSpacesIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("GREEN_SPACES_SELECTION");
+  });
+  builder.addCase(greenSpacesIntroductionReverted, (state) => {
+    state.urbanProject.spacesCategoriesToComplete.unshift("GREEN_SPACES");
+  });
+  builder.addCase(greenSpacesSelectionCompleted, (state, action) => {
+    state.urbanProject.creationData.greenSpaces = action.payload.greenSpaces;
+    state.urbanProject.stepsHistory.push("GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
+  });
+  builder.addCase(greenSpacesSelectionReverted, (state) => {
+    state.urbanProject.creationData.greenSpaces = undefined;
+  });
+  builder.addCase(greenSpacesDistributionCompleted, (state, action) => {
+    state.urbanProject.creationData.greenSpacesDistribution =
+      action.payload.surfaceAreaDistribution;
+    const nextCategoryToComplete = state.urbanProject.spacesCategoriesToComplete.shift();
+    const nextStep =
+      nextCategoryToComplete && urbanSpaceCategoryIntroductionMap[nextCategoryToComplete];
+    if (nextStep) {
+      state.urbanProject.stepsHistory.push(nextStep);
+    } else {
+      state.urbanProject.stepsHistory.push("SPACES_DEVELOPMENT_PLAN_SUMMARY");
+    }
+  });
+  builder.addCase(greenSpacesDistributionReverted, (state) => {
+    state.urbanProject.creationData.greenSpacesDistribution = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {

@@ -35,6 +35,7 @@ const MOCK_STATES = {
       stepsHistory: [],
       saveState: "idle",
       creationData: {},
+      spacesCategoriesToComplete: [],
     },
   } satisfies RootState["projectCreation"],
   currentUser: {
