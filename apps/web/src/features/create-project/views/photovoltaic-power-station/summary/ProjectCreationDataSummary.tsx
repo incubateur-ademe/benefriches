@@ -8,12 +8,12 @@ import {
   SoilsDistribution,
   SoilType,
 } from "shared";
-import { Schedule } from "../../application/saveReconversionProject.action";
-import { SoilsCarbonStorageResult } from "../../application/soilsCarbonStorage.actions";
+import { Schedule } from "../../../application/saveReconversionProject.action";
+import { SoilsCarbonStorageResult } from "../../../application/soilsCarbonStorage.actions";
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
-} from "../projectTypeLabelMapping";
+} from "../../projectTypeLabelMapping";
 import { formatCarbonStorage } from "../soils/soils-carbon-storage/formatCarbonStorage";
 
 import {

@@ -2,7 +2,7 @@ import { FinancialAssistanceRevenue, typedObjectEntries } from "shared";
 import {
   completeFinancialAssistanceRevenues,
   revertFinancialAssistanceRevenues,
-} from "../../../application/createProject.reducer";
+} from "../../../../application/createProject.reducer";
 import ProjectFinancialAssistanceRevenueForm, {
   FormValues,
 } from "./ProjectFinancialAssistanceRevenueForm";

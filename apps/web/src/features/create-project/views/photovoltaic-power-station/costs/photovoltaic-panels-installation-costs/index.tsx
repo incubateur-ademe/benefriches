@@ -2,7 +2,7 @@ import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 import {
   completePhotovoltaicPanelsInstallationExpenses,
   revertPhotovoltaicPanelsInstallationExpenses,
-} from "../../../application/createProject.reducer";
+} from "../../../../application/createProject.reducer";
 import PhotovoltaicPanelsInstallationExpensesForm, {
   FormValues,
 } from "./PhotoVoltaicPanelsInstallationCostsForm";

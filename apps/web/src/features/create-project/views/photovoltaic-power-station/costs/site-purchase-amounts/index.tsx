@@ -1,7 +1,7 @@
 import {
   completeSitePurchaseAmounts,
   revertSitePurchaseAmounts,
-} from "../../../application/createProject.reducer";
+} from "../../../../application/createProject.reducer";
 import SitePurchaseAmountsForm, { FormValues } from "./SitePurchaseAmountsForm";
 
 import { AppDispatch } from "@/app/application/store";

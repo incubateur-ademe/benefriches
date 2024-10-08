@@ -1,27 +1,16 @@
-import { MixedUseNeighbourhoodCreationStep } from "../../application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
+import { UrbanProjectCreationStep } from "../../application/mixed-use-neighbourhood/mixedUseNeighbourhoodProject.reducer";
 
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-const stepCategories = ["Type de projet", "Mode de création", "Récapitulatif"] as const;
-
-type StepCategory = (typeof stepCategories)[number];
-
-const getCategoryForStep = (step: MixedUseNeighbourhoodCreationStep): StepCategory => {
-  switch (step) {
-    case "CREATE_MODE_SELECTION":
-      return "Mode de création";
-    case "CREATION_RESULT":
-      return "Récapitulatif";
-  }
-};
+const stepCategories = ["Type de projet", "Mode de création"] as const;
 
 type Props = {
-  step: MixedUseNeighbourhoodCreationStep;
+  step: UrbanProjectCreationStep;
   isExtended?: boolean;
 };
 
 function MixedUseNeighbourhoodCreationStepper({ step, isExtended }: Props) {
-  const currentStepCategory = getCategoryForStep(step);
+  const currentStepCategory = "Mode de création";
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
   const isDone = step === "CREATION_RESULT";
 

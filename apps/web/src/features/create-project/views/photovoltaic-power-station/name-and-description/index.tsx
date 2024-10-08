@@ -1,5 +1,5 @@
-import { ReconversionProjectCreationData } from "../../domain/project.types";
-import { generateProjectName } from "../../domain/projectName";
+import { ReconversionProjectCreationData } from "../../../domain/project.types";
+import { generateProjectName } from "../../../domain/projectName";
 import ProjectNameAndDescriptionForm, { FormValues } from "./ProjectNameAndDescriptionForm";
 
 import { AppDispatch } from "@/app/application/store";
