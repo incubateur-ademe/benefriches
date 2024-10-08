@@ -34,6 +34,7 @@ const MOCK_STATES = {
       createMode: undefined,
       stepsHistory: [],
       saveState: "idle",
+      creationData: {},
     },
   } satisfies RootState["projectCreation"],
   currentUser: {

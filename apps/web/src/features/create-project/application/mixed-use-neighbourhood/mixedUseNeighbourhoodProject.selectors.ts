@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { UrbanSpaceCategory } from "shared";
 import { UrbanProjectCreationStep } from "./mixedUseNeighbourhoodProject.reducer";
 
 import { RootState } from "@/app/application/store";
@@ -10,3 +11,8 @@ export const selectCurrentStep = createSelector([selectSelf], (state): UrbanProj
 });
 
 export const selectCreateMode = createSelector([selectSelf], (state) => state.createMode);
+
+export const selectSpacesCategories = createSelector(
+  [selectSelf],
+  (state): UrbanSpaceCategory[] => state.creationData.spacesCategories ?? [],
+);

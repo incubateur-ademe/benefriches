@@ -81,6 +81,7 @@ const INITIAL_STATE = {
     createMode: undefined,
     stepsHistory: [],
     saveState: "idle",
+    creationData: {},
   },
 } as const satisfies RootState["projectCreation"];
 
