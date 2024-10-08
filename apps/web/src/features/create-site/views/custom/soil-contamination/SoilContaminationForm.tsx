@@ -91,7 +91,7 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
               />
             </div>
           )}
-          <RadioButton {...register("hasContaminatedSoils")} label="Non" value="no" />
+          <RadioButton {...register("hasContaminatedSoils")} label="Non / Ne sait pas" value="no" />
         </Fieldset>
 
         <BackNextButtonsGroup
