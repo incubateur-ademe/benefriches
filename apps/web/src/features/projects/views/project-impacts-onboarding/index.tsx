@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Alert from "@codegouvfr/react-dsfr/Alert";
 import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
 import {
   selectMainKeyImpactIndicators,
@@ -6,6 +7,7 @@ import {
 } from "../../application/projectKeyImpactIndicators.selectors";
 import ProjectImpactsOnboardingPage from "./ProjectImpactsOnboardingPage";
 
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 type Props = {
@@ -15,13 +17,28 @@ type Props = {
 function ProjectImpactsOnboardingPageContainer({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
-  const { evaluationPeriod } = useAppSelector((state) => state.projectImpacts);
+  const { evaluationPeriod, dataLoadingState } = useAppSelector((state) => state.projectImpacts);
   const projectOverallImpact = useAppSelector(selectProjectOverallImpact);
   const mainKeyImpactIndicators = useAppSelector(selectMainKeyImpactIndicators);
 
   useEffect(() => {
     void dispatch(fetchReconversionProjectImpacts({ projectId, evaluationPeriod }));
   }, [projectId, evaluationPeriod, dispatch]);
+
+  if (dataLoadingState === "error") {
+    return (
+      <Alert
+        description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
+        severity="error"
+        title="Impossible de charger les impacts du projet"
+        className="fr-my-7v"
+      />
+    );
+  }
+
+  if (dataLoadingState === "loading") {
+    return <LoadingSpinner />;
+  }
 
   return (
     <ProjectImpactsOnboardingPage
