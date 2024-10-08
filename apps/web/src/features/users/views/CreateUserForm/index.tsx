@@ -1,7 +1,6 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { LocalAuthority } from "shared";
 
-import { routes } from "@/app/views/router";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -49,12 +48,6 @@ function CreateUserFormContainer() {
       }),
     );
   };
-
-  useEffect(() => {
-    if (createUserLoadingState === "success") {
-      routes.createSiteFoncier().push();
-    }
-  }, [createUserLoadingState]);
 
   return (
     <CreateUserForm
