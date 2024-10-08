@@ -9,7 +9,7 @@ type Props = {
 };
 
 function UrbanProjectExpressStepper({ isExtended }: Props) {
-  const stepCategory = "Mode de création";
+  const stepCategory = "Récapitulatif";
   const currentStepIndex = stepCategories.findIndex((step) => step === stepCategory);
 
   return (
