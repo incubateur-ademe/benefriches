@@ -2,7 +2,8 @@ import { createRouter, defineRoute, param } from "type-route";
 
 const { RouteProvider, useRoute, routes } = createRouter({
   home: defineRoute("/"),
-  onboarding: defineRoute("/premiers-pas"),
+  onBoardingIdentity: defineRoute("/premiers-pas/identite"),
+  onBoardingIntroduction: defineRoute("/premiers-pas/comment-ca-marche"),
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
   createSiteFoncier: defineRoute(

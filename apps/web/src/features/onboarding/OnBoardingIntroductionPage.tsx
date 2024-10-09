@@ -1,6 +1,6 @@
-import { ReactNode } from "react";
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
+import { ReactNode } from "react";
 
 import DataSourcesSection from "@/app/views/pages/home/sections/DataSourcesSection";
 import { routes } from "@/app/views/router";
@@ -49,7 +49,7 @@ function Step({ number, title, text }: StepProps) {
   );
 }
 
-function OnBoardingPage() {
+function OnBoardingIntroductionPage() {
   return (
     <>
       <section
@@ -102,4 +102,4 @@ function OnBoardingPage() {
   );
 }
 
-export default OnBoardingPage;
+export default OnBoardingIntroductionPage;
