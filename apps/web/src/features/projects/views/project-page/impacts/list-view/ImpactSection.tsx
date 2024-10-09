@@ -1,8 +1,7 @@
-import { ReactNode, useState } from "react";
+import { MouseEvent, ReactNode, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import ImpactRowLabel from "./ImpactRowLabel";
 import ImpactRowValue from "./ImpactRowValue";
 
 type Props = {
@@ -11,12 +10,28 @@ type Props = {
   total?: number;
   onTitleClick?: () => void;
   children: ReactNode;
+  initialShowSectionContent?: boolean;
 };
 
-const ImpactSection = ({ title, total, isMain = false, onTitleClick, children }: Props) => {
-  const [displaySectionContent, setDisplaySectionContent] = useState(true);
+const ImpactSection = ({
+  title,
+  total,
+  isMain = false,
+  onTitleClick,
+  children,
+  initialShowSectionContent = true,
+}: Props) => {
+  const [displaySectionContent, setDisplaySectionContent] = useState(initialShowSectionContent);
+
   const toggleDisplaySectionContent = () => {
     setDisplaySectionContent((displaySectionContent) => !displaySectionContent);
+  };
+
+  const onToggleAccordionFromChild = (e?: MouseEvent<HTMLElement>) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    toggleDisplaySectionContent();
   };
 
   return (
@@ -29,32 +44,39 @@ const ImpactSection = ({ title, total, isMain = false, onTitleClick, children }:
           isMain
             ? ["tw-bg-impacts-dark", "dark:tw-bg-black", "tw-mb-6"]
             : ["tw-bg-impacts-main", "dark:tw-bg-black", "tw-mb-2"],
-          onTitleClick && [
-            "tw-cursor-pointer",
-            "tw-transition",
-            "hover:tw-border hover:tw-border-solid",
-          ],
+          "tw-cursor-pointer",
+          onTitleClick && ["tw-transition", "hover:tw-border hover:tw-border-solid"],
         )}
+        onClick={toggleDisplaySectionContent}
       >
         <ImpactRowValue
-          value={total}
-          type="monetary"
-          isTotal
-          isAccordionOpened={displaySectionContent}
-          onToggleAccordion={toggleDisplaySectionContent}
-        >
-          <ImpactRowLabel onLabelClick={onTitleClick}>
-            {isMain ? (
+          label={
+            isMain ? (
               <h3 className="tw-text-xl tw-mb-0" onClick={onTitleClick}>
                 {title}
               </h3>
             ) : (
-              <h4 className={classNames("tw-font-bold", "tw-text-lg", "tw-mb-0")}>{title}</h4>
-            )}
-          </ImpactRowLabel>
-        </ImpactRowValue>
+              <h4 className={classNames("tw-font-bold", "tw-text-base", "tw-mb-0")}>{title}</h4>
+            )
+          }
+          value={total}
+          type="monetary"
+          isTotal
+          isAccordionOpened={displaySectionContent}
+          onLabelClick={
+            onTitleClick
+              ? (e?: MouseEvent<HTMLElement>) => {
+                  if (e) {
+                    e.stopPropagation();
+                  }
+                  onTitleClick();
+                }
+              : undefined
+          }
+          onToggleAccordion={onToggleAccordionFromChild}
+        />
       </div>
-      {displaySectionContent && children}
+      {displaySectionContent && <div className="tw-text-sm">{children}</div>}
     </section>
   );
 };

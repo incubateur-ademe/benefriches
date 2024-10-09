@@ -65,7 +65,7 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
       {co2Impacts.length > 0 && (
         <ImpactSection title="Impacts sur le CO2-eq">
           {co2Impacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name}>
+            <ImpactItemGroup key={name} isClickable>
               <ImpactItemDetails
                 label={getEnvironmentalImpactLabel(name)}
                 value={impact.difference}
@@ -89,7 +89,7 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
       {soilsImpacts.length > 0 && (
         <ImpactSection title="Impacts sur  les sols">
           {soilsImpacts.map(({ name, impact, type }) => (
-            <ImpactItemGroup key={name}>
+            <ImpactItemGroup key={name} isClickable>
               <ImpactItemDetails
                 label={getEnvironmentalImpactLabel(name)}
                 value={impact.difference}

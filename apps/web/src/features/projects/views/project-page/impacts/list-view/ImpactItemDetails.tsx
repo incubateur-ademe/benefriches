@@ -1,8 +1,7 @@
-import { ReactNode, useState } from "react";
+import { MouseEvent, ReactNode, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import ImpactRowLabel from "./ImpactRowLabel";
 import ImpactRowValue from "./ImpactRowValue";
 
 type Props = {
@@ -15,44 +14,68 @@ type Props = {
 };
 
 const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) => {
-  const [displayDetails, setDisplayDetails] = useState(true);
+  const hasData = data && data.length > 0;
+
+  const [displayDetails, setDisplayDetails] = useState(false);
 
   const onToggleAccordion = () => {
     setDisplayDetails((current) => !current);
   };
 
-  const hasData = data && data.length > 0;
+  const onToggleAccordionFromChild = (e?: MouseEvent<HTMLElement>) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    onToggleAccordion();
+  };
 
   return (
-    <>
+    <div
+      onClick={hasData ? onToggleAccordion : undefined}
+      className={classNames(hasData && "tw-cursor-pointer")}
+    >
       <ImpactRowValue
+        label={label}
+        actor={actor}
         value={value}
         type={type}
         isTotal
         isAccordionOpened={displayDetails}
-        onToggleAccordion={hasData ? onToggleAccordion : undefined}
-      >
-        <div className="tw-grid lg:tw-grid-cols-5 tw-w-full tw-items-center">
-          {label && (
-            <span className={classNames("lg:tw-col-start-1", "lg:tw-col-end-5")}>
-              <ImpactRowLabel isTotal onLabelClick={onClick}>
-                {label}
-              </ImpactRowLabel>
-            </span>
-          )}
-          {actor && <span className={classNames("lg:tw-col-start-5")}>{actor}</span>}
-        </div>
-      </ImpactRowValue>
+        onLabelClick={
+          onClick
+            ? (e?: MouseEvent<HTMLElement>) => {
+                if (e) {
+                  e.stopPropagation();
+                }
+                onClick();
+              }
+            : undefined
+        }
+        onToggleAccordion={hasData ? onToggleAccordionFromChild : undefined}
+      />
       {hasData && displayDetails && (
         <div className={classNames("tw-pl-4")}>
           {data.map(({ label: detailsLabel, value: detailsValue, onClick: onDetailsClick }) => (
-            <ImpactRowValue value={detailsValue} type={type} key={detailsLabel}>
-              <ImpactRowLabel onLabelClick={onDetailsClick}>{detailsLabel}</ImpactRowLabel>
-            </ImpactRowValue>
+            <ImpactRowValue
+              value={detailsValue}
+              type={type}
+              key={detailsLabel}
+              label={detailsLabel}
+              onLabelClick={
+                onDetailsClick
+                  ? (e?: MouseEvent<HTMLElement>) => {
+                      if (e) {
+                        e.stopPropagation();
+                      }
+                      onDetailsClick();
+                    }
+                  : undefined
+              }
+            />
           ))}
         </div>
       )}
-    </>
+    </div>
   );
 };
 

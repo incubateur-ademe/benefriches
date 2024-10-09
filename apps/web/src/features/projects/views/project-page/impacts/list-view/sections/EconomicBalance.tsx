@@ -41,6 +41,7 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
       title="Bilan de l'opération"
       isMain
       total={total}
+      initialShowSectionContent={false}
       onTitleClick={() => {
         openImpactDescriptionModal("economic-balance");
       }}

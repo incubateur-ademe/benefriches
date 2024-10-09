@@ -14,8 +14,9 @@ type Props = {
 
 const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
   const [firstActor, ...othersActors] = actors;
+  const isClickable = !!onClick || (!!firstActor?.details && firstActor.details.length > 0);
   return (
-    <ImpactItemGroup>
+    <ImpactItemGroup isClickable={isClickable}>
       {firstActor && (
         <ImpactItemDetails
           value={firstActor.value}
