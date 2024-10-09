@@ -27,7 +27,6 @@ const ImpactsChartsSection = ({ title, children, onClick }: Props) => {
         onClick && [
           "tw-cursor-pointer",
           "hover:tw-border-current",
-          "hover:tw-scale-x-[1.02]",
           "tw-transition tw-ease-in-out tw-duration-500",
         ],
       )}
