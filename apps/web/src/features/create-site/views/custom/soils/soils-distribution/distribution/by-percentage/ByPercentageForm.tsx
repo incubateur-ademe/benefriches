@@ -9,6 +9,7 @@ import {
   getLabelForSoilType,
   getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
@@ -23,11 +24,6 @@ type Props = {
 
 export type FormValues = Record<SoilType, number>;
 
-const getTotalAllocated = (distribution: FormValues) =>
-  Object.values(distribution)
-    .filter(Number)
-    .reduce((total, percent) => total + percent, 0);
-
 const SLIDER_PROPS = {
   tooltip: {
     formatter: (value?: number) => value && `${formatNumberFr(value)} %`,
@@ -40,7 +36,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
 
   const soilsValues = watch();
 
-  const totalAllocated = useMemo(() => getTotalAllocated(soilsValues), [soilsValues]);
+  const totalAllocated = useMemo(() => sumObjectValues(soilsValues), [soilsValues]);
 
   const remainder = 100 - totalAllocated;
 

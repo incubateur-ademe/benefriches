@@ -3,18 +3,15 @@ import { Controller, useForm } from "react-hook-form";
 import { SoilType } from "shared";
 
 import {
-  formatSurfaceArea,
-  SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
-import {
   getDescriptionForSoilType,
   getLabelForSoilType,
   getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
-import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaControlInput/SurfaceAreaControlInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -25,11 +22,6 @@ type Props = {
 };
 
 export type FormValues = Record<SoilType, number>;
-
-const getTotalSurface = (soilsDistribution: FormValues) =>
-  Object.values(soilsDistribution)
-    .filter(Number)
-    .reduce((total, surface) => total + surface, 0);
 
 function SiteSoilsDistributionBySquareMetersForm({
   soils,
@@ -42,7 +34,7 @@ function SiteSoilsDistributionBySquareMetersForm({
 
   const soilsValues = watch();
 
-  const totalAllocatedSurface = useMemo(() => getTotalSurface(soilsValues), [soilsValues]);
+  const totalAllocatedSurface = useMemo(() => sumObjectValues(soilsValues), [soilsValues]);
 
   const remainder = totalSurfaceArea - totalAllocatedSurface;
   const isValid = remainder === 0;
@@ -84,24 +76,10 @@ function SiteSoilsDistributionBySquareMetersForm({
             }}
           />
         ))}
-
-        <RowNumericInput
-          className="tw-pb-5"
+        <SurfaceAreaControlInput
           label="Total de toutes les surfaces"
-          hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
-          nativeInputProps={{
-            value: totalAllocatedSurface,
-            min: 0,
-            max: totalSurfaceArea,
-            type: "number",
-          }}
-          disabled
-          state={isValid ? "success" : "error"}
-          stateRelatedMessage={
-            isValid
-              ? "Le compte est bon !"
-              : `${formatSurfaceArea(Math.abs(remainder))} ${remainder > 0 ? "manquants" : "en trop"}`
-          }
+          currentSurfaceArea={totalAllocatedSurface}
+          targetSurfaceArea={totalSurfaceArea}
         />
         <BackNextButtonsGroup onBack={onBack} disabled={!isValid} nextLabel="Valider" />
       </form>

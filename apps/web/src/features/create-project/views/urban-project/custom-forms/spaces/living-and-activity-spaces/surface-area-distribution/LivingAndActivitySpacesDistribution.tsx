@@ -3,13 +3,10 @@ import { Controller, useForm } from "react-hook-form";
 import { UrbanLivingAndActivitySpace } from "shared";
 
 import { getLabelForLivingAndActivitySpace } from "@/features/create-project/domain/urbanProject";
-import {
-  formatSurfaceArea,
-  SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
-import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaControlInput/SurfaceAreaControlInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -20,11 +17,6 @@ type Props = {
 };
 
 export type FormValues = Record<UrbanLivingAndActivitySpace, number>;
-
-const getTotalSurface = (surfaceAreaDistribution: FormValues) =>
-  Object.values(surfaceAreaDistribution)
-    .filter(Number)
-    .reduce((total, surface) => total + surface, 0);
 
 function LivingAndActivitySpacesDistribution({
   livingAndActivitySpaces,
@@ -37,7 +29,7 @@ function LivingAndActivitySpacesDistribution({
 
   const surfaceAreas = watch();
 
-  const totalAllocatedSurface = useMemo(() => getTotalSurface(surfaceAreas), [surfaceAreas]);
+  const totalAllocatedSurface = useMemo(() => sumObjectValues(surfaceAreas), [surfaceAreas]);
 
   const remainder = totalSurfaceArea - totalAllocatedSurface;
   const isValid = remainder === 0;
@@ -73,24 +65,10 @@ function LivingAndActivitySpacesDistribution({
             }}
           />
         ))}
-
-        <RowNumericInput
-          className="tw-pb-5"
-          label="Total des espaces de vie et d'activité"
-          hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
-          nativeInputProps={{
-            value: totalAllocatedSurface,
-            min: 0,
-            max: totalSurfaceArea,
-            type: "number",
-          }}
-          disabled
-          state={isValid ? "success" : "error"}
-          stateRelatedMessage={
-            isValid
-              ? "Le compte est bon !"
-              : `${formatSurfaceArea(Math.abs(remainder))} ${remainder > 0 ? "manquants" : "en trop"}`
-          }
+        <SurfaceAreaControlInput
+          label="Total de tous les espaces de vie et d'activité"
+          currentSurfaceArea={totalAllocatedSurface}
+          targetSurfaceArea={totalSurfaceArea}
         />
         <BackNextButtonsGroup onBack={onBack} disabled={!isValid} nextLabel="Valider" />
       </form>

@@ -3,13 +3,10 @@ import { Controller, useForm } from "react-hook-form";
 import { UrbanGreenSpace } from "shared";
 
 import { getLabelForUrbanGreenSpace } from "@/features/create-project/domain/urbanProject";
-import {
-  formatSurfaceArea,
-  SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
+import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
-import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaControlInput/SurfaceAreaControlInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -21,18 +18,13 @@ type Props = {
 
 export type FormValues = Record<UrbanGreenSpace, number>;
 
-const getTotalSurface = (surfaceAreaDistribution: FormValues) =>
-  Object.values(surfaceAreaDistribution)
-    .filter(Number)
-    .reduce((total, surface) => total + surface, 0);
-
 function UrbanGreenSpacesDistribution({ greenSpaces, totalSurfaceArea, onSubmit, onBack }: Props) {
   const { control, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
   const surfaceAreas = watch();
 
-  const totalAllocatedSurface = useMemo(() => getTotalSurface(surfaceAreas), [surfaceAreas]);
+  const totalAllocatedSurface = useMemo(() => sumObjectValues(surfaceAreas), [surfaceAreas]);
 
   const remainder = totalSurfaceArea - totalAllocatedSurface;
   const isValid = remainder === 0;
@@ -69,23 +61,10 @@ function UrbanGreenSpacesDistribution({ greenSpaces, totalSurfaceArea, onSubmit,
           />
         ))}
 
-        <RowNumericInput
-          className="tw-pb-5"
-          label="Total de toutes les surfaces"
-          hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
-          nativeInputProps={{
-            value: totalAllocatedSurface,
-            min: 0,
-            max: totalSurfaceArea,
-            type: "number",
-          }}
-          disabled
-          state={isValid ? "success" : "error"}
-          stateRelatedMessage={
-            isValid
-              ? "Le compte est bon !"
-              : `${formatSurfaceArea(Math.abs(remainder))} ${remainder > 0 ? "manquants" : "en trop"}`
-          }
+        <SurfaceAreaControlInput
+          label="Total de tous les espaces verts"
+          currentSurfaceArea={totalAllocatedSurface}
+          targetSurfaceArea={totalSurfaceArea}
         />
         <BackNextButtonsGroup onBack={onBack} disabled={!isValid} nextLabel="Valider" />
       </form>
