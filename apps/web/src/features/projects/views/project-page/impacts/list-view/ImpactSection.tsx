@@ -45,7 +45,11 @@ const ImpactSection = ({
             ? ["tw-bg-impacts-dark", "dark:tw-bg-black", "tw-mb-6"]
             : ["tw-bg-impacts-main", "dark:tw-bg-black", "tw-mb-2"],
           "tw-cursor-pointer",
-          onTitleClick && ["tw-transition", "hover:tw-border hover:tw-border-solid"],
+          onTitleClick && [
+            "tw-transition tw-ease-in-out tw-duration-500",
+            "hover:tw-border hover:tw-border-solid",
+            "hover:tw-scale-x-[1.02]",
+          ],
         )}
         onClick={toggleDisplaySectionContent}
       >

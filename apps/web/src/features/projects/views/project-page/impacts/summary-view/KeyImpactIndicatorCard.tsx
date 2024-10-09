@@ -30,7 +30,6 @@ const KeyImpactIndicatorCard = ({
           "tw-border tw-border-solid tw-border-transparent",
           type === "success" ? "tw-bg-impacts-positive-light" : "tw-bg-impacts-negative-light",
           displayTooltip && [
-            "hover:tw-scale-105",
             "tw-transition tw-ease-in-out tw-duration-500",
             type === "success"
               ? "hover:tw-border-impacts-positive-border"
