@@ -12,7 +12,7 @@ const ImpactSummaryLocalPropertyValueIncrease = ({ value, descriptionDisplayMode
     <KeyImpactIndicatorCard
       type="success"
       description={`${formatMonetaryImpact(value)} de valeur patrimoniale attendue par la reconversion de la friche`}
-      title="+ d’attractivité&nbsp;🏡"
+      title="Un cadre de vie amélioré&nbsp;🏡"
       descriptionDisplayMode={descriptionDisplayMode}
     />
   );
