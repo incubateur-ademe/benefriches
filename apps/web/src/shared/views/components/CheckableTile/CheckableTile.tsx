@@ -9,7 +9,7 @@ import classNames, { ClassValue } from "../../clsx";
 type CheckableTileProps = {
   title: string;
   description?: React.ReactNode;
-  imgSrc: string;
+  imgSrc?: string;
   isSelected: boolean;
   onSelect: () => void;
   disabled?: boolean;
@@ -108,14 +108,20 @@ export default function CheckableTile({
       )}
       onClick={onTileClick}
     >
-      <div className="tw-text-center">
-        <img
-          src={imgSrc}
-          width="80px"
-          alt={`Illustration pour la tuile ${title}`}
-          className={classNames(disabled && "tw-filter tw-grayscale")}
-        />
-      </div>
+      {imgSrc ? (
+        <div className="tw-text-center">
+          <img
+            src={imgSrc}
+            width="80px"
+            alt={`Illustration pour la tuile ${title}`}
+            className={classNames(disabled && "tw-filter tw-grayscale")}
+          />
+        </div>
+      ) : (
+        <div className="tw-flex tw-items-center tw-text-grey-dark tw-m-auto tw-w-[120px] tw-h-[80px] tw-bg-grey-light tw-text-sm tw-px-4 tw-py-3">
+          Illustration indisponible
+        </div>
+      )}
       <div className={classNames(fr.cx("fr-mt-1w"), "tw-text-center")}>
         <label
           className={classNames(
