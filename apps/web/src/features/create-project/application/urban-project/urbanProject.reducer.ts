@@ -1,5 +1,10 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { UrbanGreenSpace, UrbanLivingAndActivitySpace, UrbanSpaceCategory } from "shared";
+import {
+  UrbanGreenSpace,
+  UrbanLivingAndActivitySpace,
+  UrbanPublicSpace,
+  UrbanSpaceCategory,
+} from "shared";
 
 import { ProjectCreationState } from "../createProject.reducer";
 import {
@@ -18,6 +23,12 @@ import {
   livingAndActivitySpacesIntroductionReverted,
   livingAndActivitySpacesSelectionCompleted,
   livingAndActivitySpacesSelectionReverted,
+  publicSpacesDistributionCompleted,
+  publicSpacesDistributionReverted,
+  publicSpacesIntroductionCompleted,
+  publicSpacesIntroductionReverted,
+  publicSpacesSelectionCompleted,
+  publicSpacesSelectionReverted,
   spacesDevelopmentPlanIntroductionCompleted,
   spacesIntroductionCompleted,
   spacesIntroductionReverted,
@@ -40,6 +51,8 @@ export type UrbanProjectCustomCreationStep =
   | "LIVING_AND_ACTIVITY_SPACES_SELECTION"
   | "LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION"
   | "PUBLIC_SPACES_INTRODUCTION"
+  | "PUBLIC_SPACES_SELECTION"
+  | "PUBLIC_SPACES_DISTRIBUTION"
   | "SPACES_DEVELOPMENT_PLAN_SUMMARY";
 
 const urbanSpaceCategoryIntroductionMap = {
@@ -68,6 +81,8 @@ export type UrbanProjectState = {
     greenSpacesDistribution?: Partial<Record<UrbanGreenSpace, number>>;
     livingAndActivitySpaces?: UrbanLivingAndActivitySpace[];
     livingAndActivitySpacesDistribution?: Partial<Record<UrbanLivingAndActivitySpace, number>>;
+    publicSpaces?: UrbanPublicSpace[];
+    publicSpacesDistribution?: Partial<Record<UrbanPublicSpace, number>>;
   };
 };
 
@@ -181,6 +196,33 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(livingAndActivitySpacesDistributionReverted, (state) => {
     state.urbanProject.creationData.livingAndActivitySpacesDistribution = undefined;
+  });
+  builder.addCase(publicSpacesIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("PUBLIC_SPACES_SELECTION");
+  });
+  builder.addCase(publicSpacesIntroductionReverted, (state) => {
+    state.urbanProject.spacesCategoriesToComplete.unshift("PUBLIC_SPACES");
+  });
+  builder.addCase(publicSpacesSelectionCompleted, (state, action) => {
+    state.urbanProject.creationData.publicSpaces = action.payload;
+    state.urbanProject.stepsHistory.push("PUBLIC_SPACES_DISTRIBUTION");
+  });
+  builder.addCase(publicSpacesSelectionReverted, (state) => {
+    state.urbanProject.creationData.publicSpaces = undefined;
+  });
+  builder.addCase(publicSpacesDistributionCompleted, (state, action) => {
+    state.urbanProject.creationData.publicSpacesDistribution = action.payload;
+    const nextCategoryToComplete = state.urbanProject.spacesCategoriesToComplete.shift();
+    const nextStep =
+      nextCategoryToComplete && urbanSpaceCategoryIntroductionMap[nextCategoryToComplete];
+    if (nextStep) {
+      state.urbanProject.stepsHistory.push(nextStep);
+    } else {
+      state.urbanProject.stepsHistory.push("SPACES_DEVELOPMENT_PLAN_SUMMARY");
+    }
+  });
+  builder.addCase(publicSpacesDistributionReverted, (state) => {
+    state.urbanProject.creationData.publicSpacesDistribution = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {

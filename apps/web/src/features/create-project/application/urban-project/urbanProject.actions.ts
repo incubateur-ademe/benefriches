@@ -1,5 +1,10 @@
 import { createAction as _createAction } from "@reduxjs/toolkit";
-import { UrbanGreenSpace, UrbanLivingAndActivitySpace, UrbanSpaceCategory } from "shared";
+import {
+  UrbanGreenSpace,
+  UrbanLivingAndActivitySpace,
+  UrbanPublicSpace,
+  UrbanSpaceCategory,
+} from "shared";
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
@@ -88,3 +93,15 @@ export const livingAndActivitySpacesDistributionCompleted = createAction<
 export const livingAndActivitySpacesDistributionReverted = createAction(
   "livingAndActivitySpacesDistributionReverted",
 );
+
+// public spaces
+export const publicSpacesIntroductionCompleted = createAction("publicSpacesIntroductionCompleted");
+export const publicSpacesIntroductionReverted = createAction("publicSpacesIntroductionReverted");
+export const publicSpacesSelectionCompleted = createAction<UrbanPublicSpace[]>(
+  "publicSpacesSelectionCompleted",
+);
+export const publicSpacesSelectionReverted = createAction("publicSpacesSelectionReverted");
+export const publicSpacesDistributionCompleted = createAction<
+  Partial<Record<UrbanPublicSpace, number>>
+>("publicSpacesDistributionCompleted");
+export const publicSpacesDistributionReverted = createAction("publicSpacesDistributionReverted");

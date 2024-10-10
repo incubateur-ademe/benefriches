@@ -12,6 +12,9 @@ import UrbanProjectSpacesIntroduction from "./spaces/introduction";
 import LivingAndActivitySpacesIntroduction from "./spaces/living-and-activity-spaces/introduction";
 import LivingAndActivitySpacesSelection from "./spaces/living-and-activity-spaces/selection";
 import LivingAndActivitySpacesDistribution from "./spaces/living-and-activity-spaces/surface-area-distribution";
+import PublicSpacesIntroduction from "./spaces/public-spaces/introduction";
+import PublicSpacesSelection from "./spaces/public-spaces/selection";
+import PublicSpacesDistribution from "./spaces/public-spaces/surface-area-distribution";
 import SpacesCategoriesSelection from "./spaces/selection";
 import UrbanProjectSpaceCategoriesSurfaceAreaDistribution from "./spaces/surface-area";
 
@@ -44,7 +47,11 @@ const getCurrentStepView = (
     case "LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION":
       return <LivingAndActivitySpacesDistribution />;
     case "PUBLIC_SPACES_INTRODUCTION":
-      return <div>PUBLIC_SPACES_INTRODUCTION</div>;
+      return <PublicSpacesIntroduction />;
+    case "PUBLIC_SPACES_SELECTION":
+      return <PublicSpacesSelection />;
+    case "PUBLIC_SPACES_DISTRIBUTION":
+      return <PublicSpacesDistribution />;
     case "SPACES_DEVELOPMENT_PLAN_SUMMARY":
       return <div>SPACES_DEVELOPMENT_PLAN_SUMMARY</div>;
   }

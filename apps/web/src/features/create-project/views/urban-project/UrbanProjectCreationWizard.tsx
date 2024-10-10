@@ -32,6 +32,8 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   LIVING_AND_ACTIVITY_SPACES_SELECTION: "espaces-de-vie-et-activites-selection",
   LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION: "espaces-de-vie-et-activites-surfaces",
   PUBLIC_SPACES_INTRODUCTION: "espaces-publics-introduction",
+  PUBLIC_SPACES_SELECTION: "espaces-publics-selection",
+  PUBLIC_SPACES_DISTRIBUTION: "espaces-publics-surfaces",
   SPACES_DEVELOPMENT_PLAN_SUMMARY: "recapitulatif-amenagement-des-espaces",
   CREATION_RESULT: "fin",
 } as const satisfies Record<UrbanProjectCreationStep, string>;

@@ -1,4 +1,9 @@
-import { UrbanGreenSpace, UrbanLivingAndActivitySpace, UrbanSpaceCategory } from "shared";
+import {
+  UrbanGreenSpace,
+  UrbanLivingAndActivitySpace,
+  UrbanPublicSpace,
+  UrbanSpaceCategory,
+} from "shared";
 
 export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
   switch (spaceCategory) {
@@ -38,11 +43,11 @@ export const getPictogramForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCateg
 export const getDescriptionForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
   switch (spaceCategory) {
     case "LIVING_AND_ACTIVITY_SPACES":
-      return "Bâtiments, voirie privée, jardings et espaces verts privés...";
+      return "Bâtiments, voirie privée, jardins et espaces verts privés...";
     case "PUBLIC_SPACES":
       return "(hors espaces verts) Rues, places, pistes cyclables, parking de surface...";
     case "GREEN_SPACES":
-      return "Parc, jarding public, forêt urbaine...";
+      return "Parc, jardin public, forêt urbaine...";
     case "URBAN_FARM":
       return "Production de fruits et légumes";
     case "RENEWABLE_ENERGY_PRODUCTION_PLANT":
@@ -81,5 +86,16 @@ export const getLabelForLivingAndActivitySpace = (
       return "Jardin ou allée enherbée";
     case "TREE_FILLED_GARDEN_OR_ALLEY":
       return "Jardin ou allée arborée";
+  }
+};
+
+export const getLabelForPublicSpace = (publicSpace: UrbanPublicSpace): string => {
+  switch (publicSpace) {
+    case "GRASS_COVERED_SURFACE":
+      return "Herbe";
+    case "IMPERMEABLE_SURFACE":
+      return "Bitume, pavé ou ciment";
+    case "PERMEABLE_SURFACE":
+      return "Gravier, dalles alvéolées ou enrobé poreux";
   }
 };
