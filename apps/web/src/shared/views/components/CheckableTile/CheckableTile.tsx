@@ -1,150 +1,128 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
-import React from "react";
+import React, { useId } from "react";
 
-import { noop } from "@/shared/services/noop/noop";
+import classNames from "@/shared/views/clsx";
 
-import classNames, { ClassValue } from "../../clsx";
-
-type CheckableTileProps = {
+type Props = {
   title: string;
   description?: React.ReactNode;
-  imgSrc?: string;
-  isSelected: boolean;
-  onSelect: () => void;
+  imgSrc: string;
+  checked: boolean;
+  onChange: () => void;
+  className?: string;
   disabled?: boolean;
-  className?: ClassValue;
   checkType?: "checkbox" | "radio";
 };
 
-type NoLabelCheckboxProps = {
-  isChecked: boolean;
-  disabled: boolean;
-};
-
-const NoLabelCheckbox = ({ isChecked, disabled }: NoLabelCheckboxProps) => {
+function RadioInputIcon({ checked, disabled = false }: { checked: boolean; disabled?: boolean }) {
   return (
-    <Checkbox
-      className="tw-absolute tw-top-4 tw-right-[-8px]"
-      options={[
-        {
-          label: "",
-          nativeInputProps: {
-            checked: isChecked,
-            onChange: noop,
-            disabled,
-          },
-        },
-      ]}
+    <div
+      className={classNames(
+        "tw-absolute tw-top-0 tw-right-0 tw-w-full tw-h-12",
+        disabled && "tw-filter tw-grayscale tw-opacity-50",
+      )}
+      style={{
+        backgroundSize: "1.875rem 1.875rem",
+        backgroundImage: checked
+          ? `radial-gradient(transparent 10px, var(--border-active-blue-france) 11px, transparent 12px), radial-gradient(var(--background-active-blue-france) 5px, transparent 6px)`
+          : `radial-gradient(transparent 10px, var(--border-action-high-blue-france) 11px, transparent 12px)`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "top 16px right 16px",
+      }}
     />
   );
-};
+}
 
-type NoLabelRadioButtonProps = {
-  isChecked: boolean;
-  disabled: boolean;
-  name: string;
-};
-
-const NoLabelRadioButton = ({ isChecked, disabled, name }: NoLabelRadioButtonProps) => {
+function CheckboxInputIcon({
+  checked,
+  disabled = false,
+}: {
+  checked: boolean;
+  disabled?: boolean;
+}) {
   return (
-    <div className={classNames(fr.cx("fr-radio-group"), "tw-absolute tw-top-4 tw-right-2")}>
-      <input
-        type="radio"
-        disabled={disabled}
-        onChange={noop}
-        onClick={noop}
-        checked={isChecked}
-        id={name}
-        name={name}
-      />
-      <label className="tw-h-6 tw-w-6" onClick={noop}>
-        {" "}
-      </label>
-    </div>
+    <div
+      className={classNames(
+        "tw-absolute tw-top-0 tw-right-0 tw-w-full tw-h-12 tw-m-4",
+        disabled && "tw-filter tw-grayscale tw-opacity-50",
+      )}
+      style={{
+        width: "1.5rem",
+        height: "1.5rem",
+        borderRadius: "0.25rem",
+        backgroundSize:
+          "0.25rem 0.25rem, calc(100% - 0.25rem) 1px, 0.25rem 0.25rem, 1px calc(100% - 0.5rem), 0.25rem 0.25rem, calc(100% - 0.5rem) 1px, 0.25rem 0.25rem, 1px calc(100% - 0.5rem), 1rem",
+        backgroundPosition:
+          "0 0, 0.25rem 0, 100% 0, 0 0.25rem, 100% 100%, calc(100% - 0.25rem) 100%, 0 100%, 100% 0.25rem, center",
+        backgroundRepeat: "no-repeat",
+        backgroundColor: checked ? "var(--background-active-blue-france)" : "initial",
+        backgroundImage: checked
+          ? `radial-gradient(at 5px 4px, transparent 4px, var(--border-active-blue-france) 4px, var(--border-active-blue-france) 5px, transparent 6px), linear-gradient(var(--border-active-blue-france), var(--border-active-blue-france)), radial-gradient(at calc(100% - 5px) 4px, transparent 4px, var(--border-active-blue-france) 4px, var(--border-active-blue-france) 5px, transparent 6px), linear-gradient(var(--border-active-blue-france), var(--border-active-blue-france)), radial-gradient(at calc(100% - 5px) calc(100% - 4px), transparent 4px, var(--border-active-blue-france) 4px, var(--border-active-blue-france) 5px, transparent 6px), linear-gradient(var(--border-active-blue-france), var(--border-active-blue-france)), radial-gradient(at 5px calc(100% - 4px), transparent 4px, var(--border-active-blue-france) 4px, var(--border-active-blue-france) 5px, transparent 6px), linear-gradient(var(--border-active-blue-france), var(--border-active-blue-france)), url("data:image/svg+xml;charset=utf-8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path fill='%23f5f5fe' d='M10 15.17l9.2-9.2 1.4 1.42L10 18l-6.36-6.36 1.4-1.42z'/></svg>")`
+          : "radial-gradient(at 5px 4px, transparent 4px, var(--border-action-high-blue-france) 4px, var(--border-action-high-blue-france) 5px, transparent 6px), linear-gradient(var(--border-action-high-blue-france), var(--border-action-high-blue-france)), radial-gradient(at calc(100% - 5px) 4px, transparent 4px, var(--border-action-high-blue-france) 4px, var(--border-action-high-blue-france) 5px, transparent 6px), linear-gradient(var(--border-action-high-blue-france), var(--border-action-high-blue-france)), radial-gradient(at calc(100% - 5px) calc(100% - 4px), transparent 4px, var(--border-action-high-blue-france) 4px, var(--border-action-high-blue-france) 5px, transparent 6px), linear-gradient(var(--border-action-high-blue-france), var(--border-action-high-blue-france)), radial-gradient(at 5px calc(100% - 4px), transparent 4px, var(--border-action-high-blue-france) 4px, var(--border-action-high-blue-france) 5px, transparent 6px), linear-gradient(var(--border-action-high-blue-france), var(--border-action-high-blue-france))",
+      }}
+    />
   );
-};
+}
 
 export default function CheckableTile({
   title,
   description,
   imgSrc,
-  isSelected,
-  disabled = false,
-  onSelect,
+  checked,
+  onChange,
   className,
-  checkType = "checkbox",
-}: CheckableTileProps) {
-  const onTileClick = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (disabled) {
-      return;
-    }
-    // stop event propagation so it is not fired twice when checkbox is clicked
-    event.stopPropagation();
-    event.preventDefault();
-    onSelect();
-  };
-
-  const checkComponent =
-    checkType === "checkbox" ? (
-      <NoLabelCheckbox isChecked={isSelected} disabled={disabled} />
-    ) : (
-      <NoLabelRadioButton isChecked={isSelected} disabled={disabled} name={title} />
-    );
-
+  disabled = false,
+  checkType = "radio",
+}: Props) {
+  const id = useId();
   return (
     <div
       className={classNames(
+        "tw-relative tw-border tw-border-solid tw-rounded-lg tw-h-full",
+        checked ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
         className,
-        "tw-p-6",
-        "tw-border",
-        "tw-border-solid",
-        "tw-min-h-56",
-        "tw-relative",
-        "tw-h-full",
-        "tw-rounded-lg",
-        disabled ? "tw-cursor-not-allowed" : "tw-cursor-pointer",
-        isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
       )}
-      onClick={onTileClick}
+      role={checkType}
     >
-      {imgSrc ? (
-        <div className="tw-text-center">
-          <img
-            src={imgSrc}
-            width="80px"
-            alt={`Illustration pour la tuile ${title}`}
-            className={classNames(disabled && "tw-filter tw-grayscale")}
-          />
+      <input
+        type={checkType}
+        className="!tw-opacity-0 tw-h-6 tw-w-6 tw-absolute tw-top-[19px] tw-right-[19px]"
+        id={id}
+        value={id}
+        checked={checked}
+        disabled={disabled}
+        onChange={onChange}
+      />
+      <label htmlFor={id} className="tw-w-full">
+        <div className="tw-p-6">
+          <div className="tw-text-center">
+            {imgSrc ? (
+              <img
+                src={imgSrc}
+                width="80px"
+                height="80px"
+                alt={`Illustration pour la tuile "${title}"`}
+                className={disabled ? "tw-filter tw-grayscale tw-opacity-50 tw-mb-2" : "tw-mb-2"}
+              />
+            ) : (
+              <div className="tw-flex tw-items-center tw-text-grey-dark tw-m-auto tw-w-[120px] tw-h-[80px] tw-bg-grey-light tw-text-sm tw-px-4 tw-py-3 tw-mb-2">
+                Illustration indisponible
+              </div>
+            )}
+            <div className={classNames("tw-mb-2", fr.cx("fr-text--lg", "fr-text--bold"))}>
+              {title}
+            </div>
+            {description && (
+              <legend className={fr.cx("fr-text--sm", "fr-mb-0")}>{description}</legend>
+            )}
+          </div>
         </div>
-      ) : (
-        <div className="tw-flex tw-items-center tw-text-grey-dark tw-m-auto tw-w-[120px] tw-h-[80px] tw-bg-grey-light tw-text-sm tw-px-4 tw-py-3">
-          Illustration indisponible
-        </div>
-      )}
-      <div className={classNames(fr.cx("fr-mt-1w"), "tw-text-center")}>
-        <label
-          className={classNames(
-            fr.cx("fr-text--lg", "fr-text--bold"),
-            disabled && "tw-text-dsfr-greyDisabled",
-          )}
-          htmlFor={title}
-        >
-          {title}
-        </label>
-      </div>
-      {description && (
-        <div
-          className={classNames(
-            "tw-text-center",
-            disabled && "tw-text-dsfr-greyDisabled",
-            fr.cx("fr-mt-1w"),
-          )}
-        >
-          <legend className={fr.cx("fr-text--sm")}>{description}</legend>
-        </div>
-      )}
-      {checkComponent}
+        {checkType === "radio" ? (
+          <RadioInputIcon checked={checked} disabled={disabled} />
+        ) : (
+          <CheckboxInputIcon checked={checked} disabled={disabled} />
+        )}
+      </label>
     </div>
   );
 }

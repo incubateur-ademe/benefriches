@@ -40,11 +40,10 @@ export default function DevelopmentPlanCategoryTile({
           description
         )
       }
-      imgSrc={imgSrc}
       disabled={disabled}
-      isSelected={isSelected}
-      onSelect={onSelect}
-      checkType="radio"
+      onChange={onSelect}
+      checked={isSelected}
+      imgSrc={imgSrc}
     />
   );
 }

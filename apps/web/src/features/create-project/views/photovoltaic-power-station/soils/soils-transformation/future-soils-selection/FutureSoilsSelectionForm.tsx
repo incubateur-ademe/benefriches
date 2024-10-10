@@ -29,7 +29,7 @@ type SoilTypeTileProps = {
   soilType: SoilType;
   surfaceArea: number;
   isSelected: boolean;
-  onSelect: () => void;
+  onChange: () => void;
 };
 
 const soilTypeCategories = [
@@ -59,18 +59,20 @@ const soilTypeCategories = [
   },
 ] as const;
 
-const SoilTypeTile = ({ soilType, surfaceArea, isSelected, onSelect }: SoilTypeTileProps) => {
+const SoilTypeTile = ({ soilType, surfaceArea, isSelected, onChange }: SoilTypeTileProps) => {
   const title: string = getLabelForSoilType(soilType);
+  const description = surfaceArea ? `${formatSurfaceArea(surfaceArea)} existant` : undefined;
   const imgSrc = `/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`;
 
   return (
     <CheckableTile
       title={title}
-      description={surfaceArea ? `${formatSurfaceArea(surfaceArea)} existant` : undefined}
+      description={description}
       imgSrc={imgSrc}
-      isSelected={isSelected}
-      onSelect={onSelect}
+      checked={isSelected}
+      onChange={onChange}
       disabled={REQUIRED_SOILS.includes(soilType)}
+      checkType="checkbox"
     />
   );
 };
@@ -148,7 +150,7 @@ function FutureSoilsSelectionForm({
                               soilType={soilType}
                               surfaceArea={surfaceArea}
                               isSelected={isSelected}
-                              onSelect={() => {
+                              onChange={() => {
                                 field.onChange(
                                   isSelected
                                     ? field.value.filter((v) => v !== soilType)

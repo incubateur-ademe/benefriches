@@ -19,19 +19,24 @@ type Props = {
 type LivingAndActivitySpaceTileProps = {
   livingAndActivitySpace: UrbanLivingAndActivitySpace;
   isSelected: boolean;
-  onSelect: () => void;
+  onChange: () => void;
 };
 
 const LivingAndActivitySpaceTile = ({
   livingAndActivitySpace,
   isSelected,
-  onSelect,
+  onChange,
 }: LivingAndActivitySpaceTileProps) => {
   const title = getLabelForLivingAndActivitySpace(livingAndActivitySpace);
-  const imgSrc = "";
 
   return (
-    <CheckableTile title={title} imgSrc={imgSrc} isSelected={isSelected} onSelect={onSelect} />
+    <CheckableTile
+      title={title}
+      imgSrc={""}
+      checked={isSelected}
+      onChange={onChange}
+      checkType="checkbox"
+    />
   );
 };
 
@@ -56,7 +61,7 @@ function LivingAndActivitySpacesSelection({ onSubmit, onBack }: Props) {
                       <LivingAndActivitySpaceTile
                         livingAndActivitySpace={value}
                         isSelected={isSelected}
-                        onSelect={() => {
+                        onChange={() => {
                           field.onChange(
                             isSelected
                               ? field.value.filter((v) => v !== value)

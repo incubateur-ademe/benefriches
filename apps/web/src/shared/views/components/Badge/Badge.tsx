@@ -30,7 +30,7 @@ const badgeStyleClasses = {
   ["neutral"]: "tw-bg-impacts-neutral-main dark:tw-bg-impacts-neutral-light",
 } as const satisfies Record<Props["style"], string>;
 
-export default function Badge({ children, className, small = false, style = "default" }: Props) {
+export default function Badge({ children, className, small = false, style }: Props) {
   return (
     <DsfrBadge
       as="span"

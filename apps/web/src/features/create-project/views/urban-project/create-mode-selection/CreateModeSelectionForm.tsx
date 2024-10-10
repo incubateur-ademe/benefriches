@@ -3,7 +3,8 @@ import { Controller, useForm } from "react-hook-form";
 
 import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import CreateModeOption from "@/shared/views/components/form/CreateModeOption/CreateModeOption";
+import Badge from "@/shared/views/components/Badge/Badge";
+import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -66,14 +67,23 @@ function CreateModeSelectionForm({ onSubmit, onBack }: Props) {
                     render={({ field }) => {
                       const isSelected = field.value === option.value;
                       return (
-                        <CreateModeOption
+                        <CheckableTile
+                          title={option.title}
+                          description={
+                            <>
+                              <div>{option.description}</div>
+                              <Badge
+                                className="tw-mt-3"
+                                style={option.disabled ? "disabled" : "green-tilleul"}
+                              >
+                                {option.badgeText}
+                              </Badge>
+                            </>
+                          }
                           checked={isSelected}
                           onChange={() => {
                             field.onChange(option.value);
                           }}
-                          title={option.title}
-                          description={option.description}
-                          badgeText={option.badgeText}
                           disabled={option.disabled}
                           imgSrc={option.imgSrc}
                         />

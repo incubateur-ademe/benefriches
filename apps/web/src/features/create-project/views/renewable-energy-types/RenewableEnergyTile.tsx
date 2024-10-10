@@ -41,8 +41,8 @@ export default function RenewableEnergyTile({
       }
       imgSrc={imgSrc}
       disabled={disabled}
-      isSelected={isSelected}
-      onSelect={onSelect}
+      checked={isSelected}
+      onChange={onSelect}
       checkType="radio"
     />
   );

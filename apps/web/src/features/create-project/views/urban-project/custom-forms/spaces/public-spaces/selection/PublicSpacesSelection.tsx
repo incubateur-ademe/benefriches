@@ -22,10 +22,10 @@ type Props = {
 type PublicSpaceTileProps = {
   publicSpace: UrbanPublicSpace;
   isSelected: boolean;
-  onSelect: () => void;
+  onChange: () => void;
 };
 
-const PublicSpaceTile = ({ publicSpace, isSelected, onSelect }: PublicSpaceTileProps) => {
+const PublicSpaceTile = ({ publicSpace, isSelected, onChange }: PublicSpaceTileProps) => {
   const title = getLabelForPublicSpace(publicSpace);
   const description = getDescriptionForPublicSpace(publicSpace);
   const imgSrc = "";
@@ -35,8 +35,9 @@ const PublicSpaceTile = ({ publicSpace, isSelected, onSelect }: PublicSpaceTileP
       title={title}
       description={description}
       imgSrc={imgSrc}
-      isSelected={isSelected}
-      onSelect={onSelect}
+      checked={isSelected}
+      onChange={onChange}
+      checkType="checkbox"
     />
   );
 };
@@ -62,7 +63,7 @@ function PublicSpacesSelection({ onSubmit, onBack }: Props) {
                       <PublicSpaceTile
                         publicSpace={value}
                         isSelected={isSelected}
-                        onSelect={() => {
+                        onChange={() => {
                           field.onChange(
                             isSelected
                               ? field.value.filter((v) => v !== value)

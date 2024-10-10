@@ -19,15 +19,21 @@ type Props = {
 type GreenSpaceTileProps = {
   greenSpace: UrbanGreenSpace;
   isSelected: boolean;
-  onSelect: () => void;
+  onChange: () => void;
 };
 
-const GreenSpaceTile = ({ greenSpace, isSelected, onSelect }: GreenSpaceTileProps) => {
+const GreenSpaceTile = ({ greenSpace, isSelected, onChange }: GreenSpaceTileProps) => {
   const title = getLabelForUrbanGreenSpace(greenSpace);
   const imgSrc = "";
 
   return (
-    <CheckableTile title={title} imgSrc={imgSrc} isSelected={isSelected} onSelect={onSelect} />
+    <CheckableTile
+      title={title}
+      imgSrc={imgSrc}
+      checked={isSelected}
+      onChange={onChange}
+      checkType="checkbox"
+    />
   );
 };
 
@@ -52,7 +58,7 @@ function UrbanGreenSpacesSelection({ onSubmit, onBack }: Props) {
                       <GreenSpaceTile
                         greenSpace={value}
                         isSelected={isSelected}
-                        onSelect={() => {
+                        onChange={() => {
                           field.onChange(
                             isSelected
                               ? field.value.filter((v) => v !== value)

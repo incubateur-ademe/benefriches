@@ -23,10 +23,10 @@ type Props = {
 type SoilTypeTileProps = {
   spaceCategory: UrbanSpaceCategory;
   isSelected: boolean;
-  onSelect: () => void;
+  onChange: () => void;
 };
 
-const SoilTypeTile = ({ spaceCategory, isSelected, onSelect }: SoilTypeTileProps) => {
+const SoilTypeTile = ({ spaceCategory, isSelected, onChange }: SoilTypeTileProps) => {
   const title = getLabelForSpaceCategory(spaceCategory);
   const imgSrc = getPictogramForUrbanSpaceCategory(spaceCategory);
 
@@ -35,8 +35,9 @@ const SoilTypeTile = ({ spaceCategory, isSelected, onSelect }: SoilTypeTileProps
       title={title}
       description={getDescriptionForUrbanSpaceCategory(spaceCategory)}
       imgSrc={imgSrc}
-      isSelected={isSelected}
-      onSelect={onSelect}
+      checked={isSelected}
+      onChange={onChange}
+      checkType="checkbox"
     />
   );
 };
@@ -62,7 +63,7 @@ function SpacesCategoriesSelection({ onSubmit, onBack }: Props) {
                       <SoilTypeTile
                         spaceCategory={value}
                         isSelected={isSelected}
-                        onSelect={() => {
+                        onChange={() => {
                           field.onChange(
                             isSelected
                               ? field.value.filter((v) => v !== value)

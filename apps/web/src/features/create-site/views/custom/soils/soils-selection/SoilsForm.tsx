@@ -93,8 +93,9 @@ const SoilTypeTile = ({ soilType, isSelected, onSelect }: SoilTypeTileProps) => 
       title={title}
       description={description}
       imgSrc={imgSrc}
-      isSelected={isSelected}
-      onSelect={onSelect}
+      checked={isSelected}
+      onChange={onSelect}
+      checkType="checkbox"
     />
   );
 };

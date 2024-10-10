@@ -2,7 +2,8 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Controller, useForm } from "react-hook-form";
 
-import CreateModeOption from "@/shared/views/components/form/CreateModeOption/CreateModeOption";
+import Badge from "@/shared/views/components/Badge/Badge";
+import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -19,6 +20,7 @@ type Option = {
   description: string;
   imgSrc: string;
   badgeText: string;
+  badgeColor: "blue" | "green-tilleul";
 };
 
 const options: Option[] = [
@@ -28,6 +30,7 @@ const options: Option[] = [
     description:
       "Renseignez seulement 3 infos : le type de site, sa commune et sa superficie. Bénéfriches affectera des données par défaut sur la typologie des sols, les dépenses de gestion, etc.",
     badgeText: "Le plus rapide",
+    badgeColor: "green-tilleul",
     imgSrc: "/img/pictograms/creation-mode/express-creation.svg",
   },
   {
@@ -36,9 +39,10 @@ const options: Option[] = [
     description:
       "Renseignez les infos dont vous disposez : type de site, superficie, adresse, typologie des sols, acteurs, dépenses de gestion, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
     badgeText: "Le plus précis",
+    badgeColor: "blue",
     imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",
   },
-] as const;
+] as const satisfies Option[];
 
 function CreateModeSelectionForm({ onSubmit }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>();
@@ -59,14 +63,20 @@ function CreateModeSelectionForm({ onSubmit }: Props) {
                     render={({ field }) => {
                       const isSelected = field.value === option.value;
                       return (
-                        <CreateModeOption
+                        <CheckableTile
+                          title={option.title}
+                          description={
+                            <>
+                              <div>{option.description}</div>
+                              <Badge className="tw-mt-3" style={option.badgeColor}>
+                                {option.badgeText}
+                              </Badge>
+                            </>
+                          }
                           checked={isSelected}
                           onChange={() => {
                             field.onChange(option.value);
                           }}
-                          title={option.title}
-                          description={option.description}
-                          badgeText={option.badgeText}
                           imgSrc={option.imgSrc}
                         />
                       );

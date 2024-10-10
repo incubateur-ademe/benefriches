@@ -40,8 +40,9 @@ const SoilTypeTile = ({ soilType, surfaceArea, isSelected, onSelect }: SoilTypeT
       title={title}
       description={`Jusqu'à ${formatSurfaceArea(surfaceArea)} supprimables`}
       imgSrc={imgSrc}
-      isSelected={isSelected}
-      onSelect={onSelect}
+      checked={isSelected}
+      onChange={onSelect}
+      checkType="checkbox"
     />
   );
 };
