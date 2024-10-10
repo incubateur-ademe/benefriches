@@ -2,7 +2,10 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanPublicSpace, urbanPublicSpace } from "shared";
 
-import { getLabelForPublicSpace } from "@/features/create-project/domain/urbanProject";
+import {
+  getDescriptionForPublicSpace,
+  getLabelForPublicSpace,
+} from "@/features/create-project/domain/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -17,17 +20,24 @@ type Props = {
 };
 
 type PublicSpaceTileProps = {
-  publicSpaces: UrbanPublicSpace;
+  publicSpace: UrbanPublicSpace;
   isSelected: boolean;
   onSelect: () => void;
 };
 
-const PublicSpaceTile = ({ publicSpaces, isSelected, onSelect }: PublicSpaceTileProps) => {
-  const title = getLabelForPublicSpace(publicSpaces);
+const PublicSpaceTile = ({ publicSpace, isSelected, onSelect }: PublicSpaceTileProps) => {
+  const title = getLabelForPublicSpace(publicSpace);
+  const description = getDescriptionForPublicSpace(publicSpace);
   const imgSrc = "";
 
   return (
-    <CheckableTile title={title} imgSrc={imgSrc} isSelected={isSelected} onSelect={onSelect} />
+    <CheckableTile
+      title={title}
+      description={description}
+      imgSrc={imgSrc}
+      isSelected={isSelected}
+      onSelect={onSelect}
+    />
   );
 };
 
@@ -50,7 +60,7 @@ function PublicSpacesSelection({ onSubmit, onBack }: Props) {
                     const isSelected = field.value.includes(value);
                     return (
                       <PublicSpaceTile
-                        publicSpaces={value}
+                        publicSpace={value}
                         isSelected={isSelected}
                         onSelect={() => {
                           field.onChange(

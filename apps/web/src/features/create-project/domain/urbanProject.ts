@@ -99,3 +99,12 @@ export const getLabelForPublicSpace = (publicSpace: UrbanPublicSpace): string =>
       return "Gravier, dalles alvéolées ou enrobé poreux";
   }
 };
+
+export const getDescriptionForPublicSpace = (publicSpace: UrbanPublicSpace): string | undefined => {
+  switch (publicSpace) {
+    case "GRASS_COVERED_SURFACE":
+      return "Pelouse, prairie, gazon...";
+    default:
+      return undefined;
+  }
+};
