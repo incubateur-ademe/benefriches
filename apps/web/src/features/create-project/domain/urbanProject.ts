@@ -1,4 +1,4 @@
-import { UrbanSpaceCategory } from "shared";
+import { UrbanGreenSpace, UrbanSpaceCategory } from "shared";
 
 export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
   switch (spaceCategory) {
@@ -49,5 +49,20 @@ export const getDescriptionForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCat
       return "Géothermique ou biomasse";
     case "URBAN_POND_OR_LAKE":
       return "Mare, étang, gravière...";
+  }
+};
+
+export const getLabelForUrbanGreenSpace = (greenSpace: UrbanGreenSpace): string => {
+  switch (greenSpace) {
+    case "LAWNS_AND_BUSHES":
+      return "Pelouses et arbustes";
+    case "GRAVEL_ALLEY":
+      return "Allée en gravier";
+    case "PAVED_ALLEY":
+      return "Allée pavée ou bitumée";
+    case "TREE_FILLED_SPACE":
+      return "Zone arborée";
+    case "URBAN_POND_OR_LAKE":
+      return "Plan d'eau";
   }
 };
