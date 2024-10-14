@@ -53,8 +53,10 @@ const getCurrentStepView = (
       return <PublicSpacesSelection />;
     case "PUBLIC_SPACES_DISTRIBUTION":
       return <PublicSpacesDistribution />;
-    case "SPACES_DEVELOPMENT_PLAN_SUMMARY":
+    case "SPACES_SOILS_SUMMARY":
       return <UrbanProjectSoilsSummary />;
+    case "SOILS_CARBON_SUMMARY":
+      return <div>SOILS_CARBON_SUMMARY</div>;
   }
 };
 
