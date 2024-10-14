@@ -29,6 +29,7 @@ import {
   publicSpacesIntroductionReverted,
   publicSpacesSelectionCompleted,
   publicSpacesSelectionReverted,
+  soilsSummaryCompleted,
   spacesDevelopmentPlanIntroductionCompleted,
   spacesIntroductionCompleted,
   spacesIntroductionReverted,
@@ -53,7 +54,8 @@ export type UrbanProjectCustomCreationStep =
   | "PUBLIC_SPACES_INTRODUCTION"
   | "PUBLIC_SPACES_SELECTION"
   | "PUBLIC_SPACES_DISTRIBUTION"
-  | "SPACES_DEVELOPMENT_PLAN_SUMMARY";
+  | "SPACES_SOILS_SUMMARY"
+  | "SOILS_CARBON_SUMMARY";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
@@ -164,7 +166,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     if (nextStep) {
       state.urbanProject.stepsHistory.push(nextStep);
     } else {
-      state.urbanProject.stepsHistory.push("SPACES_DEVELOPMENT_PLAN_SUMMARY");
+      state.urbanProject.stepsHistory.push("SPACES_SOILS_SUMMARY");
     }
   });
   builder.addCase(greenSpacesDistributionReverted, (state) => {
@@ -191,7 +193,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     if (nextStep) {
       state.urbanProject.stepsHistory.push(nextStep);
     } else {
-      state.urbanProject.stepsHistory.push("SPACES_DEVELOPMENT_PLAN_SUMMARY");
+      state.urbanProject.stepsHistory.push("SPACES_SOILS_SUMMARY");
     }
   });
   builder.addCase(livingAndActivitySpacesDistributionReverted, (state) => {
@@ -218,11 +220,14 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     if (nextStep) {
       state.urbanProject.stepsHistory.push(nextStep);
     } else {
-      state.urbanProject.stepsHistory.push("SPACES_DEVELOPMENT_PLAN_SUMMARY");
+      state.urbanProject.stepsHistory.push("SPACES_SOILS_SUMMARY");
     }
   });
   builder.addCase(publicSpacesDistributionReverted, (state) => {
     state.urbanProject.creationData.publicSpacesDistribution = undefined;
+  });
+  builder.addCase(soilsSummaryCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("SOILS_CARBON_SUMMARY");
   });
 
   builder.addMatcher(isRevertedAction, (state) => {

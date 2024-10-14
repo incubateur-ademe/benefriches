@@ -105,3 +105,7 @@ export const publicSpacesDistributionCompleted = createAction<
   Partial<Record<UrbanPublicSpace, number>>
 >("publicSpacesDistributionCompleted");
 export const publicSpacesDistributionReverted = createAction("publicSpacesDistributionReverted");
+
+// soils summary and carbon storage
+export const soilsSummaryCompleted = createAction("soilsSummaryCompleted");
+export const soilsSummaryReverted = createAction("soilsSummaryReverted");

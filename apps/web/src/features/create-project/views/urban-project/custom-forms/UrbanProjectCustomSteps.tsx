@@ -33,7 +33,8 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "PUBLIC_SPACES_INTRODUCTION":
     case "PUBLIC_SPACES_SELECTION":
     case "PUBLIC_SPACES_DISTRIBUTION":
-    case "SPACES_DEVELOPMENT_PLAN_SUMMARY":
+    case "SPACES_SOILS_SUMMARY":
+    case "SOILS_CARBON_SUMMARY":
       return "Aménagement des espaces";
   }
 };

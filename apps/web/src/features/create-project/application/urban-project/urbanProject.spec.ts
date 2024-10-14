@@ -407,7 +407,7 @@ describe("Urban project creation", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "SPACES_DEVELOPMENT_PLAN_SUMMARY",
+          currentStep: "SPACES_SOILS_SUMMARY",
           creationDataDiff: {
             greenSpacesDistribution: { LAWNS_AND_BUSHES: 1400, TREE_FILLED_SPACE: 600 },
           },
@@ -582,7 +582,7 @@ describe("Urban project creation", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "SPACES_DEVELOPMENT_PLAN_SUMMARY",
+          currentStep: "SPACES_SOILS_SUMMARY",
           creationDataDiff: {
             livingAndActivitySpacesDistribution: {
               BUILDINGS: 5000,
@@ -755,7 +755,7 @@ describe("Urban project creation", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "SPACES_DEVELOPMENT_PLAN_SUMMARY",
+          currentStep: "SPACES_SOILS_SUMMARY",
           creationDataDiff: {
             publicSpacesDistribution: {
               GRASS_COVERED_SURFACE: 900,

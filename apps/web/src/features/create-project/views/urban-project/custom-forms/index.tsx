@@ -16,6 +16,7 @@ import PublicSpacesIntroduction from "./spaces/public-spaces/introduction";
 import PublicSpacesSelection from "./spaces/public-spaces/selection";
 import PublicSpacesDistribution from "./spaces/public-spaces/surface-area-distribution";
 import SpacesCategoriesSelection from "./spaces/selection";
+import UrbanProjectSoilsSummary from "./spaces/soils-summary/";
 import UrbanProjectSpaceCategoriesSurfaceAreaDistribution from "./spaces/surface-area";
 
 type Props = {
@@ -53,7 +54,7 @@ const getCurrentStepView = (
     case "PUBLIC_SPACES_DISTRIBUTION":
       return <PublicSpacesDistribution />;
     case "SPACES_DEVELOPMENT_PLAN_SUMMARY":
-      return <div>SPACES_DEVELOPMENT_PLAN_SUMMARY</div>;
+      return <UrbanProjectSoilsSummary />;
   }
 };
 

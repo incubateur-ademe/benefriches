@@ -3,6 +3,35 @@ import { typedObjectEntries } from "../object-entries";
 
 export type SoilsDistribution = Partial<Record<SoilType, number>>;
 
+export class NewSoilsDistribution {
+  private readonly surfaceBySoilType: Map<SoilType, number>;
+
+  constructor() {
+    this.surfaceBySoilType = new Map();
+  }
+
+  addSurface(soilType: SoilType, surface: number) {
+    if (surface <= 0) return;
+
+    const existingSurfaceAreaForSoilType = this.surfaceBySoilType.get(soilType);
+    const surfaceAreaToSave = existingSurfaceAreaForSoilType
+      ? existingSurfaceAreaForSoilType + surface
+      : surface;
+    this.surfaceBySoilType.set(soilType, surfaceAreaToSave);
+  }
+
+  getTotalSurfaceArea(): number {
+    return Array.from(this.surfaceBySoilType.values()).reduce((sum, surface) => sum + surface, 0);
+  }
+
+  toJSON(): SoilsDistribution {
+    return Array.from(this.surfaceBySoilType.entries()).reduce((acc, cur) => {
+      const [soilType, surfaceArea] = cur;
+      return { ...acc, [soilType]: surfaceArea };
+    }, {});
+  }
+}
+
 export const getTotalSurfaceArea = (soilsDistribution: SoilsDistribution): number => {
   return typedObjectEntries(soilsDistribution).reduce((sum, [, area]) => sum + (area ?? 0), 0);
 };
