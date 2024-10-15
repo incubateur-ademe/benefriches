@@ -9,7 +9,7 @@ function RoundedIcon({ children, ariaLabel }: { children: ReactNode; ariaLabel: 
     <span
       role="img"
       aria-label={ariaLabel}
-      className="tw-mr-4 tw-text-2xl tw-bg-[#D9D9D9] tw-rounded-full tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center"
+      className="tw-mr-4 tw-text-2xl tw-bg-[#D9D9D9] dark:tw-bg-[#363636] tw-rounded-full tw-w-12 tw-h-12 tw-flex tw-items-center tw-justify-center"
     >
       {children}
     </span>
@@ -18,7 +18,7 @@ function RoundedIcon({ children, ariaLabel }: { children: ReactNode; ariaLabel: 
 
 function ExampleFigure({ children }: { children: ReactNode }) {
   return (
-    <figure className="tw-flex tw-items-center tw-w-full tw-border tw-border-solid tw-border-borderGrey tw-p-4 tw-m-0 tw-bg-grey-light tw-rounded-lg">
+    <figure className="tw-flex tw-items-center tw-w-full tw-border tw-border-solid tw-border-borderGrey tw-p-4 tw-m-0 tw-bg-[var(--background-alt-grey)] tw-rounded-lg">
       {children}
     </figure>
   );

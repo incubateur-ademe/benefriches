@@ -28,19 +28,21 @@ function getTitle(projectOverallImpact: ProjectOverallImpact): ReactNode {
         <>
           Attention !<br />
           🚨 Votre projet présente des{" "}
-          <span className="tw-bg-[#F06767]">impacts négatifs notables</span>.
+          <span className="tw-bg-[#F06767] tw-text-black">impacts négatifs notables</span>.
         </>
       );
     case "negative":
       return (
         <>
-          Votre projet présente des <span className="tw-bg-[#F0BB67]">impacts négatifs</span>.
+          Votre projet présente des{" "}
+          <span className="tw-bg-[#F0BB67] tw-text-black">impacts négatifs</span>.
         </>
       );
     case "positive":
       return (
         <>
-          Votre projet aura un impact <span className="tw-bg-[#8CF07A]">plutôt positif</span>.
+          Votre projet aura un impact{" "}
+          <span className="tw-bg-[#8CF07A] tw-text-black">plutôt positif</span>.
         </>
       );
     case "strong_positive":
@@ -48,7 +50,8 @@ function getTitle(projectOverallImpact: ProjectOverallImpact): ReactNode {
         <>
           Félicitations ! 🎉
           <br />
-          Votre projet aura un <span className="tw-bg-[#34EB7B]">fort impact positif</span>.
+          Votre projet aura un{" "}
+          <span className="tw-bg-[#34EB7B] tw-text-black">fort impact positif</span>.
         </>
       );
   }

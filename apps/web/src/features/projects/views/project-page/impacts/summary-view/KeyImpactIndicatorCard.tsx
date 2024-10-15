@@ -28,7 +28,9 @@ const KeyImpactIndicatorCard = ({
           "tw-p-4",
           "tw-rounded-md",
           "tw-border tw-border-solid tw-border-transparent",
-          type === "success" ? "tw-bg-impacts-positive-light" : "tw-bg-impacts-negative-light",
+          type === "success"
+            ? ["tw-bg-impacts-positive-light", "dark:tw-bg-impacts-positive-main"]
+            : ["tw-bg-impacts-negative-light", "dark:tw-bg-impacts-negative-main"],
           displayTooltip && [
             "tw-transition tw-ease-in-out tw-duration-500",
             type === "success"
@@ -48,7 +50,9 @@ const KeyImpactIndicatorCard = ({
         ></span>
         <div>
           <h3 className="tw-text-lg tw-font-bold tw-mb-0">{title}</h3>
-          {displayDescriptionInline && <p className="tw-pt-2 tw-m-0">{description}</p>}
+          {displayDescriptionInline && (
+            <p className="tw-pt-2 tw-m-0 dark:tw-text-grey-light">{description}</p>
+          )}
         </div>
       </article>
       {displayTooltip && (
