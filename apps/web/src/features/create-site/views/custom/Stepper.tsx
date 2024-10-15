@@ -43,7 +43,6 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "IS_SITE_OPERATED":
     case "OPERATOR":
     case "TENANT":
-    case "FULL_TIME_JOBS_INVOLVED":
     case "YEARLY_EXPENSES":
     case "YEARLY_INCOME":
     case "YEARLY_EXPENSES_SUMMARY":

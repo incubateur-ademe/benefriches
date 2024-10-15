@@ -23,7 +23,6 @@ function SiteDataSummaryContainer() {
         address: siteData.address?.value ?? "",
         ownerName: siteData.owner?.name ?? "",
         tenantName: siteData.tenant?.name,
-        fullTimeJobsInvolved: siteData.fullTimeJobsInvolved ?? 0,
         accidents: siteData.hasRecentAccidents
           ? {
               accidentsDeaths: siteData.accidentsDeaths,

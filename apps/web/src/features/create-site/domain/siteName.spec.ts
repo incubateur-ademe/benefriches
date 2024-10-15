@@ -15,7 +15,6 @@ const buildSiteDraft = (siteData: Partial<SiteDraft>): SiteDraft => {
     yearlyIncomes: [],
     isFriche: false,
     hasRecentAccidents: false,
-    fullTimeJobsInvolved: 0,
     hasContaminatedSoils: false,
     address: {
       banId: "31070_p4ur8e",

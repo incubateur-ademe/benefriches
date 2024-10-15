@@ -15,7 +15,6 @@ const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
     yearlyIncomes: [],
     isFriche: false,
     hasRecentAccidents: false,
-    fullTimeJobsInvolved: 0,
     hasContaminatedSoils: false,
     address: {
       city: "Paris",
