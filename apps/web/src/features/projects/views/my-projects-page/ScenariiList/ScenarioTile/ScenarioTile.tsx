@@ -50,7 +50,7 @@ function ScenarioTile({
         "tw-border-solid",
         "tw-rounded-lg",
         isSelected ? "tw-border-dsfr-borderBlue" : "tw-border-borderGrey",
-        isHovered ? "tw-bg-grey-light" : "tw-bg-none",
+        isHovered ? "tw-bg-grey-light dark:tw-bg-grey-dark" : "tw-bg-none",
         className,
       )}
       {...rest}
@@ -62,7 +62,7 @@ function ScenarioTile({
               {pictogramUrl && <ScenarioTileImage imageUrl={pictogramUrl} />}
               <ScenarioTileTitle>{title}</ScenarioTileTitle>
               <div className="fr-tile__details tw-grow">
-                <p className="fr-tile__desc tw-text-sm">{details}</p>
+                <p className="fr-tile__desc tw-text-sm dark:tw-text-grey-main">{details}</p>
               </div>
               {badgeText && (
                 <Badge small className="tw-mt-2" style="green-tilleul">

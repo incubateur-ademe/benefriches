@@ -24,6 +24,7 @@ function MyProjectsPageHeader() {
         <Dropdown
           trigger={["click"]}
           menu={{
+            className: "dark:!tw-bg-dsfr-contrastGrey",
             items: [
               {
                 label: "Revoir le tutoriel",

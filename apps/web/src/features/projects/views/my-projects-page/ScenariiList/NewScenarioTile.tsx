@@ -16,7 +16,7 @@ function NewScenarioTile({ siteId }: Props) {
         "tw-border-dashed",
         "tw-border",
         "tw-rounded-lg",
-        "hover:tw-bg-grey-light",
+        "hover:tw-bg-grey-light hover:dark:tw-bg-grey-dark",
       )}
     >
       <a

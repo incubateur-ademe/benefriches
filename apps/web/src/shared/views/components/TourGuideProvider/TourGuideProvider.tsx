@@ -21,7 +21,11 @@ const mapStep = ({ selector, description, title }: Props["steps"][number]): Step
   );
 
   if (selector) {
-    return { selector, content };
+    return {
+      selector,
+      content,
+      position: ({ left, bottom }) => [left, bottom + 16],
+    };
   }
 
   return {
@@ -50,8 +54,9 @@ function TourGuideProvider({ children, steps, onCloseTutorial }: Props) {
       className="tw-rounded-lg tw-p-4 !tw-max-w-96"
       afterOpen={preventBodyOverflow}
       beforeClose={allowBodyOverflow}
-      onClickMask={({ setIsOpen }) => {
+      onClickMask={({ setIsOpen, setCurrentStep }) => {
         setIsOpen(false);
+        setCurrentStep(0);
         if (onCloseTutorial) {
           onCloseTutorial();
         }
@@ -72,6 +77,7 @@ function TourGuideProvider({ children, steps, onCloseTutorial }: Props) {
 
         const onClose = () => {
           setIsOpen(false);
+          setCurrentStep(0);
           if (onCloseTutorial) {
             onCloseTutorial();
           }
@@ -105,7 +111,11 @@ function TourGuideProvider({ children, steps, onCloseTutorial }: Props) {
         );
       }}
       styles={{
-        popover: (base) => ({ ...base, padding: "1rem" }),
+        popover: (base) => ({
+          ...base,
+          padding: "1rem",
+          backgroundColor: "var(--background-default-grey)",
+        }),
         maskArea: (base) => ({ ...base, rx: 8 }),
       }}
     >
