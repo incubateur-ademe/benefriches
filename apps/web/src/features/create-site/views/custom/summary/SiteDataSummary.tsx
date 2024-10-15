@@ -12,7 +12,6 @@ type Props = {
     address: string;
     ownerName: string;
     tenantName?: string;
-    fullTimeJobsInvolved: number;
     accidents: {
       minorInjuries?: number;
       severyInjuries?: number;
@@ -43,7 +42,6 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
         address={siteData.address}
         ownerName={siteData.ownerName}
         tenantName={siteData.tenantName}
-        fullTimeJobsInvolved={siteData.fullTimeJobsInvolved}
         accidents={siteData.accidents ?? {}}
         expenses={siteData.expenses}
         surfaceArea={siteData.totalSurfaceArea}

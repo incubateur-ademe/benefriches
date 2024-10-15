@@ -9,7 +9,6 @@ import {
   revertAddressStep,
   revertFricheAccidentsStep,
   revertFricheActivityStep,
-  revertFullTimeJobsInvolvedStep,
   revertIsFricheLeasedStep,
   revertIsSiteOperatedStep,
   revertNamingStep,
@@ -31,7 +30,6 @@ import {
   completeFricheAccidents,
   completeFricheAccidentsIntroduction,
   completeFricheActivity,
-  completeFullTimeJobsInvolved,
   completeIsFricheLeased,
   completeIsSiteOperated,
   completeManagementIntroduction,
@@ -686,7 +684,7 @@ describe("Create site reducer", () => {
           expectSiteDataDiff(initialRootState, newState, { isFricheLeased: true });
           expectNewCurrentStep(initialRootState, newState, "TENANT");
         });
-        it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and not leased", () => {
+        it("goes to YEARLY_EXPENSES step when step is completed and not leased", () => {
           const store = initStoreWithState({ stepsHistory: ["IS_FRICHE_LEASED"] });
           const initialRootState = store.getState();
 
@@ -694,7 +692,7 @@ describe("Create site reducer", () => {
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { isFricheLeased: false });
-          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
       });
       describe("revert", () => {
@@ -765,7 +763,7 @@ describe("Create site reducer", () => {
     });
     describe("OPERATOR", () => {
       describe("complete", () => {
-        it("goes to FULL_TIME_JOBS_INVOLVED step and sets tenant when step is completed", () => {
+        it("goes to YEARLY_EXPENSES step and sets tenant when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["OPERATOR"] });
           const initialRootState = store.getState();
 
@@ -773,9 +771,9 @@ describe("Create site reducer", () => {
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
-          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
-        it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed with tenant", () => {
+        it("goes to YEARLY_EXPENSES step when step is completed with tenant", () => {
           const store = initStoreWithState({ stepsHistory: ["OPERATOR"] });
           const initialRootState = store.getState();
 
@@ -783,7 +781,7 @@ describe("Create site reducer", () => {
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { tenant: undefined });
-          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
       });
       describe("revert", () => {
@@ -809,7 +807,7 @@ describe("Create site reducer", () => {
 
     describe("TENANT", () => {
       describe("complete", () => {
-        it("goes to FULL_TIME_JOBS_INVOLVED step and sets tenant when step is completed", () => {
+        it("goes to YEARLY_EXPENSES step and sets tenant when step is completed", () => {
           const store = initStoreWithState({ stepsHistory: ["TENANT"] });
           const initialRootState = store.getState();
 
@@ -817,9 +815,9 @@ describe("Create site reducer", () => {
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
-          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
-        it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and no tenant", () => {
+        it("goes to YEARLY_EXPENSES step when step is completed and no tenant", () => {
           const store = initStoreWithState({ stepsHistory: ["TENANT"] });
           const initialRootState = store.getState();
 
@@ -827,7 +825,7 @@ describe("Create site reducer", () => {
 
           const newState = store.getState();
           expectSiteDataUnchanged(initialRootState, newState);
-          expectNewCurrentStep(initialRootState, newState, "FULL_TIME_JOBS_INVOLVED");
+          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
       });
       describe("revert", () => {
@@ -846,47 +844,6 @@ describe("Create site reducer", () => {
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, {
             tenant: undefined,
-          });
-          expectStepReverted(initialRootState, newState);
-        });
-      });
-    });
-    describe("FULL_TIME_JOBS_INVOLVED", () => {
-      describe("complete", () => {
-        it("goes to YEARLY_EXPENSES step and sets full time jobs when step is completed", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["FULL_TIME_JOBS_INVOLVED"],
-            siteData: { isFriche: true },
-          });
-          const initialRootState = store.getState();
-
-          store.dispatch(
-            completeFullTimeJobsInvolved({ jobs: siteWithExhaustiveData.fullTimeJobsInvolved }),
-          );
-
-          const newState = store.getState();
-          expectSiteDataDiff(initialRootState, newState, {
-            fullTimeJobsInvolved: siteWithExhaustiveData.fullTimeJobsInvolved,
-          });
-          expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
-        });
-      });
-      describe("revert", () => {
-        it("goes to previous step and unset full time jobs", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SITE_NATURE", "ADDRESS", "FULL_TIME_JOBS_INVOLVED"],
-            siteData: {
-              isFriche: true,
-              fullTimeJobsInvolved: 1.2,
-            },
-          });
-          const initialRootState = store.getState();
-
-          store.dispatch(revertFullTimeJobsInvolvedStep());
-
-          const newState = store.getState();
-          expectSiteDataDiff(initialRootState, newState, {
-            fullTimeJobsInvolved: undefined,
           });
           expectStepReverted(initialRootState, newState);
         });
@@ -1136,7 +1093,6 @@ describe("Create site reducer", () => {
 
       expect(spy).toHaveBeenCalledWith({
         address: siteWithMinimalData.address,
-        fullTimeJobsInvolved: siteWithMinimalData.fullTimeJobsInvolved,
         hasContaminatedSoils: siteWithMinimalData.hasContaminatedSoils,
         hasRecentAccidents: siteWithMinimalData.hasRecentAccidents,
         id: siteWithMinimalData.id,
