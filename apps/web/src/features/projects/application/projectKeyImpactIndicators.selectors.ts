@@ -203,7 +203,7 @@ export const getKeyImpactIndicatorsList = createSelector(selectSelf, (state) => 
   if (isFriche) {
     impacts.push({
       name: "zanCompliance",
-      isSuccess: isAgriculturalFriche,
+      isSuccess: !isAgriculturalFriche,
       value: {
         isAgriculturalFriche,
       },
