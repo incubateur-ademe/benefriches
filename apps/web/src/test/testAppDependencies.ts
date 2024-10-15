@@ -7,7 +7,6 @@ import { InMemorySaveExpressReconversionProjectService } from "@/features/create
 import { InMemorySaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/InMemorySaveReconversionProjectService";
 import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
 import { InMemoryCreateSiteService } from "@/features/create-site/infrastructure/create-site-service/inMemoryCreateSiteApi";
-import { LocalStorageProjectDetailsApi } from "@/features/projects/infrastructure/project-details-service/localStorageProjectDetailsApi";
 import { MockProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/MockProjectFeaturesService";
 import { InMemoryReconversionProjectsListService } from "@/features/projects/infrastructure/projects-list-service/InMemoryProjectsListService";
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
@@ -27,7 +26,6 @@ export const getTestAppDependencies = (
     }),
     createSiteService: new InMemoryCreateSiteService(),
     reconversionProjectsListService: new InMemoryReconversionProjectsListService([]),
-    projectDetailsService: new LocalStorageProjectDetailsApi(),
     reconversionProjectImpacts: new MockReconversionProjectImpactsApi(),
     saveReconversionProjectService: new InMemorySaveReconversionProjectService(),
     getSiteByIdService: new SitesServiceMock(),

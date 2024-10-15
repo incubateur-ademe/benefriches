@@ -16,8 +16,6 @@ import { ReconversionProjectImpactsGateway } from "@/features/projects/applicati
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { projectFeaturesReducer } from "@/features/projects/application/project-features/projectFeatures.reducer";
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
-import { ProjectsDetailsGateway } from "@/features/projects/application/projectImpactsComparison.actions";
-import projectImpactsComparison from "@/features/projects/application/projectImpactsComparison.reducer";
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
 import { SiteFeaturesGateway } from "@/features/site-features/application/fetchSiteFeatures.action";
 import siteFeatures from "@/features/site-features/application/siteFeatures.reducer";
@@ -37,7 +35,6 @@ export type AppDependencies = {
   saveReconversionProjectService: SaveReconversionProjectGateway;
   saveExpressReconversionProjectService: SaveExpressReconversionProjectGateway;
   reconversionProjectsListService: ReconversionProjectsListGateway;
-  projectDetailsService: ProjectsDetailsGateway;
   getSiteByIdService: GetSitesByIdGateway;
   photovoltaicPerformanceService: PhotovoltaicPerformanceGateway;
   municipalityDataService: CreateSiteMunicipalityDataGateway | CreateProjectMunicipalityDataGateway;
@@ -63,7 +60,6 @@ const rootReducer = combineReducers({
   currentUser,
   projectImpacts,
   projectFeatures: projectFeaturesReducer,
-  projectImpactsComparison,
   projectSoilsCarbonStorage,
   siteMunicipalityData,
   projectSiteLocalAuthorities,
