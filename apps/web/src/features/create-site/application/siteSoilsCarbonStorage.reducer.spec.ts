@@ -2,14 +2,15 @@ import { createStore } from "@/app/application/store";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
+import { Address } from "../domain/siteFoncier.types";
+import { getInitialState } from "./createSite.reducer";
 import {
-  fetchCarbonStorageForSoils,
-  GetSiteSoilsCarbonStoragePayload,
+  fetchSiteSoilsCarbonStorage,
   SiteSoilsCarbonStorageResult,
 } from "./siteSoilsCarbonStorage.actions";
 
 describe("Site carbon sequestration reducer", () => {
-  it("should get carbon sequestration for city code and soils", async () => {
+  it("should get carbon sequestration for site city code and soils distribution", async () => {
     const mockedResult: SiteSoilsCarbonStorageResult = {
       totalCarbonStorage: 350,
       soilsStorage: [
@@ -27,20 +28,35 @@ describe("Site carbon sequestration reducer", () => {
         },
       ],
     };
+
+    const address: Address = {
+      lat: 5.7243,
+      long: 45.182081,
+      city: "Grenoble",
+      banId: "38185",
+      cityCode: "38185",
+      postCode: "38100",
+      value: "Grenoble",
+    };
     const store = createStore(
       getTestAppDependencies({
         soilsCarbonStorageService: new SoilsCarbonStorageMock(mockedResult),
       }),
+      {
+        siteCreation: {
+          ...getInitialState(),
+          siteData: {
+            address,
+            soilsDistribution: {
+              BUILDINGS: 1400,
+              MINERAL_SOIL: 5000,
+            },
+          },
+        },
+      },
     );
 
-    const siteInfo: GetSiteSoilsCarbonStoragePayload = {
-      cityCode: "75011",
-      soils: [
-        { type: "BUILDINGS", surfaceArea: 1400 },
-        { type: "MINERAL_SOIL", surfaceArea: 5000 },
-      ],
-    };
-    await store.dispatch(fetchCarbonStorageForSoils(siteInfo));
+    await store.dispatch(fetchSiteSoilsCarbonStorage());
 
     const state = store.getState();
     expect(state.siteCarbonStorage).toEqual({
@@ -63,14 +79,7 @@ describe("Site carbon sequestration reducer", () => {
       }),
     );
 
-    const siteInfo: GetSiteSoilsCarbonStoragePayload = {
-      cityCode: "75011",
-      soils: [
-        { type: "BUILDINGS", surfaceArea: 1400 },
-        { type: "MINERAL_SOIL", surfaceArea: 5000 },
-      ],
-    };
-    await store.dispatch(fetchCarbonStorageForSoils(siteInfo));
+    await store.dispatch(fetchSiteSoilsCarbonStorage());
 
     const state = store.getState();
     expect(state.siteCarbonStorage).toEqual({

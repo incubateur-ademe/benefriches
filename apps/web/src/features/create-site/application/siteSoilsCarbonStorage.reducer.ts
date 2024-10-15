@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { SoilType } from "shared";
 
-import { fetchCarbonStorageForSoils } from "./siteSoilsCarbonStorage.actions";
+import { fetchSiteSoilsCarbonStorage } from "./siteSoilsCarbonStorage.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -30,14 +30,14 @@ export const siteCarbonStorage = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCarbonStorageForSoils.pending, (state) => {
+    builder.addCase(fetchSiteSoilsCarbonStorage.pending, (state) => {
       state.loadingState = "loading";
     });
-    builder.addCase(fetchCarbonStorageForSoils.fulfilled, (state, action) => {
+    builder.addCase(fetchSiteSoilsCarbonStorage.fulfilled, (state, action) => {
       state.loadingState = "success";
       state.carbonStorage = action.payload;
     });
-    builder.addCase(fetchCarbonStorageForSoils.rejected, (state) => {
+    builder.addCase(fetchSiteSoilsCarbonStorage.rejected, (state) => {
       state.loadingState = "error";
     });
   },

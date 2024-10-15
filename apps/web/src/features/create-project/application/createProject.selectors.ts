@@ -21,6 +21,7 @@ import {
   computeDefaultPhotovoltaicYearlyRentAmount,
   computeDefaultPhotovoltaicYearlyTaxesAmount,
 } from "../domain/photovoltaic";
+import { Address } from "../domain/project.types";
 import {
   getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
   getNonSuitableSoilsForPhotovoltaicPanels,
@@ -49,9 +50,14 @@ export const selectBaseSoilsDistributionForTransformation = createSelector(
   },
 );
 
-export const selectSiteSoilsDistribution = createSelector(
+export const selectSiteData = createSelector(
   selectSelf,
-  (state): SoilsDistribution => state.siteData?.soilsDistribution ?? {},
+  (state): ProjectCreationState["siteData"] => state.siteData,
+);
+
+export const selectSiteSoilsDistribution = createSelector(
+  selectSiteData,
+  (siteData): SoilsDistribution => siteData?.soilsDistribution ?? {},
 );
 
 export const selectProjectSoilsDistribution = createSelector(
@@ -60,9 +66,13 @@ export const selectProjectSoilsDistribution = createSelector(
 );
 
 export const selectSiteSurfaceArea = createSelector(
-  selectSelf,
-  (state): number => state.siteData?.surfaceArea ?? 0,
+  selectSiteData,
+  (siteData): number => siteData?.surfaceArea ?? 0,
 );
+
+export const selectSiteAddress = createSelector(selectSiteData, (siteData): Address | undefined => {
+  return siteData?.address;
+});
 
 export const selectPhotovoltaicPanelsSurfaceArea = createSelector(
   selectSelf,
@@ -156,11 +166,6 @@ const selectProjectData = createSelector(
 export const selectIsSiteLoaded = createSelector(
   selectSelf,
   (state): boolean => state.siteDataLoadingState === "success" && !!state.siteData,
-);
-
-export const selectSiteData = createSelector(
-  selectSelf,
-  (state): ProjectCreationState["siteData"] => state.siteData,
 );
 
 export const getDefaultValuesForYearlyProjectedExpenses = createSelector(

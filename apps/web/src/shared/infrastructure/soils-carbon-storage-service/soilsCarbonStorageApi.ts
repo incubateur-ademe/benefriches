@@ -17,7 +17,13 @@ export class SoilsCarbonStorageApi
     cityCode,
     soils,
   }: GetSoilsCarbonStoragePayload | GetSiteSoilsCarbonStoragePayload) {
-    const queryString = objectToQueryParams({ cityCode, soils });
+    const soilsDistributionAsArray: { type: string; surfaceArea: number }[] = Object.entries(
+      soils,
+    ).map(([type, surfaceArea]) => ({
+      type,
+      surfaceArea,
+    }));
+    const queryString = objectToQueryParams({ cityCode, soils: soilsDistributionAsArray });
     const response = await fetch(`/api/carbon-storage/site-soils?${queryString}`);
 
     if (!response.ok) throw new Error("Error while computing carbon storage");

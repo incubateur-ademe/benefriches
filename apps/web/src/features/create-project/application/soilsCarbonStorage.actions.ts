@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
@@ -19,7 +19,7 @@ export type CurrentAndProjectedSoilsCarbonStorageResult = {
 
 export type GetSoilsCarbonStoragePayload = {
   cityCode: string;
-  soils: { type: SoilType; surfaceArea: number }[];
+  soils: SoilsDistribution;
 };
 
 export interface SoilsCarbonStorageGateway {
@@ -42,16 +42,10 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       const [current, projected] = await Promise.all([
         await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
           cityCode,
-          soils: Object.entries(siteSoils).map(([type, surfaceArea]) => ({
-            type: type as SoilType,
-            surfaceArea,
-          })),
+          soils: siteSoils,
         }),
         await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
-          soils: Object.entries(projectSoils).map(([type, surfaceArea]) => ({
-            type: type as SoilType,
-            surfaceArea,
-          })),
+          soils: projectSoils,
           cityCode,
         }),
       ]);

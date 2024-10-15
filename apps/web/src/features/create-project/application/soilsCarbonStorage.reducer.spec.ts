@@ -104,18 +104,11 @@ describe("Site carbon sequestration reducer", () => {
     expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledTimes(2);
     expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledWith({
       cityCode: "75110",
-      soils: [
-        { surfaceArea: 1400, type: "BUILDINGS" },
-        { surfaceArea: 1500, type: "MINERAL_SOIL" },
-      ],
+      soils: PROJECT_SOILS_MOCK,
     });
     expect(soilsCarbonStorageMockSpy.getForCityCodeAndSoils).toHaveBeenCalledWith({
       cityCode: "75110",
-      soils: [
-        { surfaceArea: 400, type: "BUILDINGS" },
-        { surfaceArea: 500, type: "MINERAL_SOIL" },
-        { surfaceArea: 5500, type: "PRAIRIE_GRASS" },
-      ],
+      soils: SITE_MOCKED_RESULT.soilsDistribution,
     });
   });
 

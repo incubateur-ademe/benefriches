@@ -1,12 +1,13 @@
-import { SoilType } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
+import { selectSiteSoilsDistribution } from "./createSite.selectors";
 import { SiteCarbonStorage } from "./siteSoilsCarbonStorage.reducer";
 
 export type GetSiteSoilsCarbonStoragePayload = {
   cityCode: string;
-  soils: { type: SoilType; surfaceArea: number }[];
+  soils: SoilsDistribution;
 };
 
 export type SiteSoilsCarbonStorageResult = {
@@ -25,14 +26,23 @@ export interface SoilsCarbonStorageGateway {
   ): Promise<SiteSoilsCarbonStorageResult>;
 }
 
-export const fetchCarbonStorageForSoils = createAppAsyncThunk<
-  SiteCarbonStorage,
-  GetSiteSoilsCarbonStoragePayload
->("site/fetchCarbonStorageForSoils", async (payload, { extra }) => {
-  const result = await extra.soilsCarbonStorageService.getForCityCodeAndSoils(payload);
+export const fetchSiteSoilsCarbonStorage = createAppAsyncThunk<SiteCarbonStorage>(
+  "site/fetchSiteSoilsCarbonStorage",
+  async (_, { extra, getState }) => {
+    const rootState = getState();
+    const soilsDistribution = selectSiteSoilsDistribution(rootState);
+    const siteAddress = rootState.siteCreation.siteData.address;
 
-  return {
-    total: result.totalCarbonStorage,
-    soils: result.soilsStorage,
-  };
-});
+    if (!siteAddress) throw new Error("No address in store");
+
+    const result = await extra.soilsCarbonStorageService.getForCityCodeAndSoils({
+      cityCode: siteAddress.cityCode,
+      soils: soilsDistribution,
+    });
+
+    return {
+      total: result.totalCarbonStorage,
+      soils: result.soilsStorage,
+    };
+  },
+);
