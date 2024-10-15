@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { formatCarbonStorage } from "@/features/create-project/views/photovoltaic-power-station/soils/soils-carbon-storage/formatCarbonStorage";
+import { formatCarbonStorage } from "@/features/create-project/views/common-views/soils-carbon-storage-comparison/formatCarbonStorage";
 import { SiteCarbonStorage } from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";

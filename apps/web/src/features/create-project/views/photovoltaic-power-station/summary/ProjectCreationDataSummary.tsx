@@ -30,11 +30,11 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 import { Schedule } from "../../../application/saveReconversionProject.action";
 import { SoilsCarbonStorageResult } from "../../../application/soilsCarbonStorage.actions";
+import { formatCarbonStorage } from "../../common-views/soils-carbon-storage-comparison/formatCarbonStorage";
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
 } from "../../projectTypeLabelMapping";
-import { formatCarbonStorage } from "../soils/soils-carbon-storage/formatCarbonStorage";
 
 type Props = {
   projectData: {
