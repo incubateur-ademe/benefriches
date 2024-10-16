@@ -4,7 +4,7 @@ import { z } from "zod";
 import { UseCase } from "src/shared-kernel/usecase";
 import { Address } from "src/sites/core/models/site";
 
-import { MixedUseNeighbourHoodReconversionProjectCreationService } from "../model/createReconversionProjectFromSite";
+import { MixedUseNeighbourhoodProjectExpressCreationService } from "../model/create-from-site-services/MixedUseNeighbourhoodProjectExpressCreationService";
 import { ReconversionProject, reconversionProjectSchema } from "../model/reconversionProject";
 
 export type SiteView = {
@@ -54,14 +54,13 @@ export class CreateExpressReconversionProjectUseCase implements UseCase<Request,
       throw new Error(`Site with id ${props.siteId} does not exist`);
     }
 
-    const creationService = new MixedUseNeighbourHoodReconversionProjectCreationService(
+    const creationService = new MixedUseNeighbourhoodProjectExpressCreationService(
       this.dateProvider,
-    );
-    const reconversionProject = creationService.fromSiteData({
-      createdBy: props.createdBy,
-      reconversionProjectId: props.reconversionProjectId,
+      props.reconversionProjectId,
+      props.createdBy,
       siteData,
-    });
+    );
+    const reconversionProject = creationService.getReconversionProject();
 
     await this.reconversionProjectRepository.save(reconversionProject);
   }
