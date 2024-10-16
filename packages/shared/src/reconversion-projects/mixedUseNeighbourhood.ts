@@ -56,6 +56,9 @@ export const buildingsFloorAreaUsageDistribution = z.record(
   z.enum(["RESIDENTIAL", "GROUND_FLOOR_RETAIL"]),
   z.number().nonnegative(),
 );
+export type BuildingFloorAreaUsageDistribution = z.infer<
+  typeof buildingsFloorAreaUsageDistribution
+>;
 
 export type MixedUseNeighbourhoodDevelopmentExpense = TExpense<
   "technical_studies" | "development_works" | "other"

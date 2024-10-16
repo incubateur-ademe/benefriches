@@ -286,6 +286,9 @@ importers:
 
   packages/shared:
     dependencies:
+      date-fns:
+        specifier: ~3.6.0
+        version: 3.6.0
       zod:
         specifier: ~3.23.8
         version: 3.23.8
