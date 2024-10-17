@@ -36,7 +36,10 @@ import {
 import { projectCreationInitiated } from "./createProject.actions";
 import { saveReconversionProject } from "./saveReconversionProject.action";
 import { createModeStepReverted } from "./urban-project/urbanProject.actions";
-import urbanProjectReducer, { UrbanProjectState } from "./urban-project/urbanProject.reducer";
+import urbanProjectReducer, {
+  initialState as urbanProjectInitialState,
+  UrbanProjectState,
+} from "./urban-project/urbanProject.reducer";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -108,13 +111,7 @@ export const getInitialState = (): ProjectCreationState => {
     siteData: undefined,
     siteDataLoadingState: "idle",
     saveProjectLoadingState: "idle",
-    urbanProject: {
-      createMode: undefined,
-      creationData: {},
-      saveState: "idle",
-      stepsHistory: ["CREATE_MODE_SELECTION"],
-      spacesCategoriesToComplete: [],
-    },
+    urbanProject: urbanProjectInitialState,
   };
 };
 

@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
-function prefixActionType(actionType: string) {
+export function prefixActionType(actionType: string) {
   return `projectCreation/urbanProject/${actionType}`;
 }
 
@@ -109,3 +109,6 @@ export const publicSpacesDistributionReverted = createAction("publicSpacesDistri
 // soils summary and carbon storage
 export const soilsSummaryCompleted = createAction("soilsSummaryCompleted");
 export const soilsSummaryReverted = createAction("soilsSummaryReverted");
+
+export const soilsCarbonStorageCompleted = createAction("soilsCarbonStorageCompleted");
+export const soilsCarbonStorageReverted = createAction("soilsCarbonStorageReverted");

@@ -1,4 +1,4 @@
-import { createReducer } from "@reduxjs/toolkit";
+import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 import {
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
@@ -7,6 +7,9 @@ import {
 } from "shared";
 
 import { ProjectCreationState } from "../createProject.reducer";
+import soilsCarbonStorageReducer, {
+  State as SoilsCarbonStorageState,
+} from "./soilsCarbonStorage.reducer";
 import {
   createModeStepReverted,
   customCreateModeSelected,
@@ -86,12 +89,22 @@ export type UrbanProjectState = {
     publicSpaces?: UrbanPublicSpace[];
     publicSpacesDistribution?: Partial<Record<UrbanPublicSpace, number>>;
   };
+  soilsCarbonStorage: SoilsCarbonStorageState;
 };
 
 const isRevertedAction = (action: { type: string }) => {
   return (
     action.type.startsWith("projectCreation/urbanProject/") && action.type.endsWith("Reverted")
   );
+};
+
+export const initialState: UrbanProjectState = {
+  createMode: undefined,
+  creationData: {},
+  saveState: "idle",
+  stepsHistory: ["CREATE_MODE_SELECTION"],
+  spacesCategoriesToComplete: [],
+  soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
 };
 
 const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
@@ -237,4 +250,13 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
 });
 
-export default urbanProjectReducer;
+export default (state: ProjectCreationState, action: UnknownAction): ProjectCreationState => {
+  const s = urbanProjectReducer(state, action);
+  return {
+    ...s,
+    urbanProject: {
+      ...s.urbanProject,
+      soilsCarbonStorage: soilsCarbonStorageReducer(state.urbanProject.soilsCarbonStorage, action),
+    },
+  };
+};

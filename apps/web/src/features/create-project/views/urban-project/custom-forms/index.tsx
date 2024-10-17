@@ -16,6 +16,7 @@ import PublicSpacesIntroduction from "./spaces/public-spaces/introduction";
 import PublicSpacesSelection from "./spaces/public-spaces/selection";
 import PublicSpacesDistribution from "./spaces/public-spaces/surface-area-distribution";
 import SpacesCategoriesSelection from "./spaces/selection";
+import UrbanProjectSoilsCarbonStorage from "./spaces/soils-carbon-storage";
 import UrbanProjectSoilsSummary from "./spaces/soils-summary/";
 import UrbanProjectSpaceCategoriesSurfaceAreaDistribution from "./spaces/surface-area";
 
@@ -56,7 +57,7 @@ const getCurrentStepView = (
     case "SPACES_SOILS_SUMMARY":
       return <UrbanProjectSoilsSummary />;
     case "SOILS_CARBON_SUMMARY":
-      return <div>SOILS_CARBON_SUMMARY</div>;
+      return <UrbanProjectSoilsCarbonStorage />;
   }
 };
 
