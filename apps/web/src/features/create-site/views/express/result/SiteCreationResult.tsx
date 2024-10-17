@@ -52,7 +52,7 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
           <EditorialPageIcon>✅</EditorialPageIcon>
           <EditorialPageTitle>Le site « {siteName} » est créé !</EditorialPageTitle>
           <EditorialPageText>
-            Bénéfriches a affecté des données par défaut, notamment pour la typologie des sols et
+            Bénéfriches a affecté des données par défaut, notamment pour la répartition des sols et
             les dépenses de gestion.
             <br />
             <a

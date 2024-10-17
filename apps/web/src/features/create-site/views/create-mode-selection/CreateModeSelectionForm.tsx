@@ -28,7 +28,7 @@ const options: Option[] = [
     value: "express",
     title: "Mode express",
     description:
-      "Renseignez seulement 3 infos : le type de site, sa commune et sa superficie. Bénéfriches affectera des données par défaut sur la typologie des sols, les dépenses de gestion, etc.",
+      "Renseignez seulement 3 infos : le type de site, sa commune et sa superficie. Bénéfriches affectera des données par défaut sur la répartition des sols, les dépenses de gestion, etc.",
     badgeText: "Le plus rapide",
     badgeColor: "green-tilleul",
     imgSrc: "/img/pictograms/creation-mode/express-creation.svg",
@@ -37,7 +37,7 @@ const options: Option[] = [
     value: "custom",
     title: "Mode personnalisé",
     description:
-      "Renseignez les infos dont vous disposez : type de site, superficie, adresse, typologie des sols, acteurs, dépenses de gestion, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
+      "Renseignez les infos dont vous disposez : type de site, superficie, adresse, répartition des sols, acteurs, dépenses de gestion, etc. Si certaines infos vous manquent, Bénéfriches vous proposera des données automatiques.",
     badgeText: "Le plus précis",
     badgeColor: "blue",
     imgSrc: "/img/pictograms/creation-mode/custom-creation.svg",

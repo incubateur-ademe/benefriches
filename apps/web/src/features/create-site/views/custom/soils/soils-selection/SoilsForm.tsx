@@ -118,8 +118,8 @@ function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
         <FormInfo>
           <p>Plusieurs réponses possibles.</p>
           <p>
-            Il est important de définir la typologie des sols pour connaître la quantité de carbone
-            stocké par le site.
+            Il est important de définir la répartition des sols pour connaître la quantité de
+            carbone stocké par le site.
           </p>
         </FormInfo>
       }
