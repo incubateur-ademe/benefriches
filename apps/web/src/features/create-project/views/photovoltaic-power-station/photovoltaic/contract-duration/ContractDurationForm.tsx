@@ -36,7 +36,7 @@ function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
         <NumericInput
           name="photovoltaicContractDuration"
           label="Durée du contrat de revente"
-          hintText="en années"
+          addonText="années"
           rules={{
             min: 2,
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",

@@ -2,7 +2,10 @@ import { useForm } from "react-hook-form";
 import { getTotalSurfaceArea, SoilsDistribution, SoilType } from "shared";
 
 import { getSuitableSurfaceAreaForPhotovoltaicPanels } from "@/features/create-project/domain/soilsTransformation";
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import {
+  formatSurfaceArea,
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/services/format-number/formatNumber";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
@@ -84,6 +87,7 @@ function FutureSoilsSurfaceAreaForm({
                   },
                 }}
                 control={control}
+                addonText={SQUARE_METERS_HTML_SYMBOL}
                 className="tw-w-full"
               />
             </div>

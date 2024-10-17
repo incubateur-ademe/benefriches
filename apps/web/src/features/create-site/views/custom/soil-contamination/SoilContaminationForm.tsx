@@ -29,9 +29,7 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
   });
 
   const hasContaminatedSoilsError = formState.errors.hasContaminatedSoils;
-  const contaminatedSurfaceHintText = `en ${SQUARE_METERS_HTML_SYMBOL} (maximum ${formatSurfaceArea(
-    siteSurfaceArea,
-  )})`;
+  const contaminatedSurfaceHintText = `(maximum ${formatSurfaceArea(siteSurfaceArea)})`;
 
   const hasContaminatedSoilsValue = watch("hasContaminatedSoils");
   const hasContaminatedSoils = hasContaminatedSoilsValue === "yes";
@@ -74,6 +72,7 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
               <NumericInput
                 control={control}
                 label={<RequiredLabel label="Superficie polluée" />}
+                addonText={SQUARE_METERS_HTML_SYMBOL}
                 hintText={contaminatedSurfaceHintText}
                 name="contaminatedSurface"
                 rules={{

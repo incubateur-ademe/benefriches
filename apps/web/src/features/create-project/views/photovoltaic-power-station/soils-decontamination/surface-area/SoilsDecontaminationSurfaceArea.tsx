@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import {
+  formatSurfaceArea,
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -24,6 +27,7 @@ function SoilsDecontaminationSurfaceArea({ onSubmit, onBack, contaminatedSoilSur
       <form onSubmit={handleSubmit(onSubmit)}>
         <NumericInput
           control={control}
+          addonText={SQUARE_METERS_HTML_SYMBOL}
           hintText={`Surface contaminée : ${formatSurfaceArea(contaminatedSoilSurface)}`}
           label={<RequiredLabel label="Superficie à dépolluer" />}
           name="surfaceArea"

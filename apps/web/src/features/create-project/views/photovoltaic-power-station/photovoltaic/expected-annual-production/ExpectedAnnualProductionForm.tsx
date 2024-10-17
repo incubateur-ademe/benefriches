@@ -44,7 +44,7 @@ function PhotovoltaicAnnualProductionForm({
         <NumericInput
           name="photovoltaicExpectedAnnualProduction"
           label="Production attendue de l'installation"
-          hintText="en MWh/an"
+          addonText="MWh/an"
           rules={{
             min: 0,
             required: "Ce champ est nécessaire pour déterminer les questions suivantes",

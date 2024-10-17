@@ -37,7 +37,7 @@ function SurfaceAreaForm({ onSubmit, onBack }: Props) {
         <NumericInput
           name="surfaceArea"
           label={<RequiredLabel label="Superficie totale" />}
-          hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
+          addonText={SQUARE_METERS_HTML_SYMBOL}
           rules={{
             required: "Ce champ est requis",
             min: {
