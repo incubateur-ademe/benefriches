@@ -59,8 +59,8 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
               <ControlledRowNumericInput
                 {...controller}
                 label="Participation des collectivités"
-                hintInputText="€"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€"
+                className="!tw-pt-4"
               />
             );
           }}
@@ -79,8 +79,8 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
               <ControlledRowNumericInput
                 {...controller}
                 label="Subvention publiques"
-                hintInputText="€"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€"
+                className="!tw-pt-4"
               />
             );
           }}
@@ -99,8 +99,8 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
               <ControlledRowNumericInput
                 {...controller}
                 label="Autres ressources"
-                hintInputText="€"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€"
+                className="!tw-pt-4"
               />
             );
           }}

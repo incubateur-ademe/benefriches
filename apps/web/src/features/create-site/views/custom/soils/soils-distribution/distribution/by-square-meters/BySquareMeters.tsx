@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { SoilType } from "shared";
 
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
@@ -69,7 +70,7 @@ function SiteSoilsDistributionBySquareMetersForm({
                   {...controller}
                   label={getLabelForSoilType(soilType)}
                   hintText={getDescriptionForSoilType(soilType)}
-                  hintInputText="en m²"
+                  addonText={SQUARE_METERS_HTML_SYMBOL}
                   imgSrc={`/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`}
                 />
               );

@@ -41,7 +41,7 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
 
   return (
     <WizardFormLayout
-      title="Dépenses d’installation de la centrale photovoltaïque"
+      title="Dépenses d'installation de la centrale photovoltaïque"
       instructions={
         <FormInfo>
           <p>
@@ -74,8 +74,8 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
               <ControlledRowNumericInput
                 {...controller}
                 label="Travaux d'installation"
-                hintInputText="€"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€"
+                className="!tw-pt-4"
               />
             );
           }}
@@ -95,8 +95,8 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
               <ControlledRowNumericInput
                 {...controller}
                 label="Études et honoraires techniques"
-                hintInputText="€"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€"
+                className="!tw-pt-4"
               />
             );
           }}
@@ -115,8 +115,8 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
               <ControlledRowNumericInput
                 {...controller}
                 label="Autres dépenses d'installation"
-                hintInputText="€"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€"
+                className="!tw-pt-4"
               />
             );
           }}

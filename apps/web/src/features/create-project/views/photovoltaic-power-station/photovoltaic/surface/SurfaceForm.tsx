@@ -1,6 +1,10 @@
 import { Controller, useForm } from "react-hook-form";
 
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import {
+  formatNumberFr,
+  formatSurfaceArea,
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
@@ -22,7 +26,7 @@ type FormValues = {
 function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
   const { control, handleSubmit, watch, formState } = useForm<FormValues>();
 
-  const hintText = `Maximum : ${formatSurfaceArea(siteSurfaceArea)}`;
+  const hintText = `Maximum conseillé : ${formatSurfaceArea(siteSurfaceArea)}`;
 
   const maxErrorMessage = `La superficie des panneaux ne peut pas être supérieure à la superficie total du site (${formatSurfaceArea(
     siteSurfaceArea,
@@ -77,17 +81,20 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
                 {...controller}
                 label={<RequiredLabel label="Superficie de l'installation" />}
                 hintText={hintText}
-                hintInputText="en m²"
-                className="!tw-pt-4"
+                hintInputText={
+                  !isNaN(surface) && (
+                    <p>
+                      💡 Soit{" "}
+                      <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
+                    </p>
+                  )
+                }
+                className="!tw-pt-4 tw-pb-6"
+                addonText={SQUARE_METERS_HTML_SYMBOL}
               />
             );
           }}
         />
-        {!isNaN(surface) && (
-          <p>
-            💡 Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
-          </p>
-        )}
         <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>

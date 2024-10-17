@@ -18,7 +18,7 @@ function SurfaceAreaControlInput({ label, targetSurfaceArea, currentSurfaceArea 
     <RowNumericInput
       className="tw-pb-5"
       label={label}
-      hintText={`en ${SQUARE_METERS_HTML_SYMBOL}`}
+      addonText={SQUARE_METERS_HTML_SYMBOL}
       nativeInputProps={{
         value: currentSurfaceArea,
         min: 0,

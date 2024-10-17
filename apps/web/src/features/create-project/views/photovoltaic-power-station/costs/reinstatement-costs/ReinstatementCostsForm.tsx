@@ -161,14 +161,7 @@ const ReinstatementsExpensesForm = ({
               },
             }}
             render={(controller) => {
-              return (
-                <ControlledRowNumericInput
-                  {...controller}
-                  label={label}
-                  hintInputText="€"
-                  className="!tw-pt-4 !tw-mb-0"
-                />
-              );
+              return <ControlledRowNumericInput {...controller} label={label} addonText="€" />;
             }}
           />
         ))}

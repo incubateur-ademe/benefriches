@@ -181,8 +181,7 @@ function SiteYearlyExpensesForm({
                           ? undefined
                           : getBearerLabel(bearer, isFriche)
                       }
-                      hintInputText="€ / an"
-                      className="!tw-pt-4"
+                      addonText="€ / an"
                     />
                   );
                 }}
@@ -240,8 +239,7 @@ function SiteYearlyExpensesForm({
                               ? undefined
                               : getBearerLabel(bearer, isFriche)
                           }
-                          hintInputText="€ / an"
-                          className="!tw-pt-4"
+                          addonText="€ / an"
                         />
                       );
                     }}

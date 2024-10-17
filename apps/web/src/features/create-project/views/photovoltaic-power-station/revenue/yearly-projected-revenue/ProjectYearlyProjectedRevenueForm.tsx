@@ -65,8 +65,8 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
               <ControlledRowNumericInput
                 {...controller}
                 label="Recettes d'exploitation"
-                hintInputText="€ / an"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€ / an"
+                className="!tw-pt-4"
               />
             );
           }}
@@ -86,8 +86,8 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
               <ControlledRowNumericInput
                 {...controller}
                 label="Autres recettes"
-                hintInputText="€ / an"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€ / an"
+                className="!tw-pt-4"
               />
             );
           }}

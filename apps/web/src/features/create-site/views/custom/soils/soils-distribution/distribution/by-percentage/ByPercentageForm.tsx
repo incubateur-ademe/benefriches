@@ -56,7 +56,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
             label={getLabelForSoilType(soilType)}
             imgSrc={`/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`}
             hintText={getDescriptionForSoilType(soilType)}
-            hintInputText="%"
+            addonText="%"
             sliderStartValue={0}
             sliderEndValue={100}
             sliderProps={{
@@ -73,7 +73,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
         <RowNumericInput
           className="fr-my-8v"
           label="Total de toutes les surfaces"
-          hintText={`en %`}
+          addonText="%"
           nativeInputProps={{
             value: totalAllocated,
             min: 0,

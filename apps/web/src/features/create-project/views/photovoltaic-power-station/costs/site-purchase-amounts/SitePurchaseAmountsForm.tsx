@@ -80,8 +80,8 @@ const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
               <ControlledRowNumericInput
                 {...controller}
                 label="Prix de vente"
-                hintInputText="€"
-                className="!tw-pt-4 !tw-mb-0"
+                addonText="€"
+                className="!tw-pt-4"
               />
             );
           }}
@@ -101,8 +101,8 @@ const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
               <ControlledRowNumericInput
                 {...controller}
                 label="Droit de mutation"
-                hintInputText="€"
-                className="!tw-pt-4 !tw-mb-3"
+                addonText="€"
+                className="!tw-pt-4"
               />
             );
           }}

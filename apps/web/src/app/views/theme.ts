@@ -26,6 +26,7 @@ export default {
         openBlue: "var(--background-open-blue-france)",
         titleBlue: "var(--text-title-blue-france)",
         borderBlue: "var(--border-plain-blue-france)",
+        borderSuccess: "var(--border-plain-success)",
         grey: "var(--background-default-grey)",
         contrastGrey: "var(--background-contrast-grey)",
         greyDisabled: "var(--text-disabled-grey)",

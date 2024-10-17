@@ -66,7 +66,7 @@ function PhotovoltaicPowerFromSurfaceForm({
                 {...controller}
                 label={<RequiredLabel label="Puissance de l'installation" />}
                 hintText={hintText}
-                hintInputText="en kWc"
+                addonText="kWc"
                 className="!tw-pt-4 tw-pb-6"
               />
             );

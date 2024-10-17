@@ -9,11 +9,12 @@ import {
   stringToNumber,
 } from "@/shared/services/number-conversion/numberConversion";
 
-import SurfaceInput from "./RowNumericInput";
+import RowNumericInput from "./RowNumericInput";
 
 type Props<T extends FieldValues> = {
   label: ReactNode;
   imgSrc?: string;
+  addonText?: string;
   hintText?: string;
   hintInputText?: string;
   minValue?: number;
@@ -39,6 +40,7 @@ const getValidatedNewValue = (newValue: number, min: number, max: number) => {
 const SliderNumericInput = <T extends FieldValues>({
   control,
   name,
+  addonText,
   minValue,
   maxValue,
   required,
@@ -91,9 +93,10 @@ const SliderNumericInput = <T extends FieldValues>({
 
   return (
     <div className="fr-col">
-      <SurfaceInput
+      <RowNumericInput
         label={label}
         imgSrc={imgSrc}
+        addonText={addonText}
         hintText={hintText}
         hintInputText={hintInputText}
         state={error ? "error" : "default"}

@@ -10,6 +10,33 @@ import {
 
 import classNames from "@/shared/views/clsx";
 
+type WithAddonProps = {
+  state: "error" | "success" | "warning" | "default";
+  children: ReactNode;
+  addon: ReactNode;
+};
+const WithAddon = ({ state, children, addon }: WithAddonProps) => {
+  return addon ? (
+    <div className={fr.cx("fr-input-wrap", "fr-input-wrap--addon")}>
+      {children}
+      <div
+        className={classNames(
+          "tw-px-2 tw-pt-[8px]",
+          "tw-bg-dsfr-contrastGrey",
+          "tw-text-nowrap",
+          "tw-border-solid tw-border-0 tw-border-b-2 tw-border-[#000091]",
+          state === "error" && "tw-border-dsfr-red",
+          state === "success" && "tw-border-dsfr-borderSuccess",
+        )}
+      >
+        {addon}
+      </div>
+    </div>
+  ) : (
+    children
+  );
+};
+
 export type RowNumericInputInputProps = {
   className?: string;
   id?: string;
@@ -17,6 +44,7 @@ export type RowNumericInputInputProps = {
   imgSrc?: string;
   hintText?: ReactNode;
   hintInputText?: ReactNode;
+  addonText?: ReactNode;
   hideLabel?: boolean;
   disabled?: boolean;
   state?: "success" | "error" | "default" | "warning";
@@ -34,6 +62,7 @@ const RowNumericInput = memo(
         id,
         label,
         imgSrc,
+        addonText,
         hintText,
         hintInputText,
         hideLabel,
@@ -50,11 +79,8 @@ const RowNumericInput = memo(
       return (
         <div
           className={classNames(
-            "tw-flex",
-            "tw-justify-between",
-            "tw-items-start",
-            "tw-mb-0",
-            "tw-pt-7",
+            "tw-flex tw-justify-between tw-items-start",
+            "tw-mb-0 tw-pt-7",
             "fr-input-group",
             fr.cx(
               disabled && "fr-input-group--disabled",
@@ -105,23 +131,23 @@ const RowNumericInput = memo(
             </label>
           </div>
 
-          <div className="tw-flex tw-flex-col tw-w-44">
-            <input
-              {...nativeInputProps}
-              className={classNames(
-                fr.cx(
+          <div className="tw-w-44">
+            <WithAddon state={state} addon={addonText}>
+              <input
+                {...nativeInputProps}
+                className={classNames(
                   "fr-input",
                   state === "error" && "fr-input--error",
                   state === "success" && "fr-input--valid",
-                ),
-                state === "warning" && "fr-input--warning",
-              )}
-              disabled={disabled}
-              aria-describedby={messageId}
-              type="number"
-              id={inputId}
-            />
-            {hintInputText && <span className="fr-hint-text tw-mt-1">{hintInputText}</span>}
+                  state === "warning" && "fr-input--warning",
+                )}
+                disabled={disabled}
+                aria-describedby={messageId}
+                type="number"
+                id={inputId}
+              />
+            </WithAddon>
+            {hintInputText && <span className="fr-hint-text !tw-mt-1">{hintInputText}</span>}
           </div>
         </div>
       );

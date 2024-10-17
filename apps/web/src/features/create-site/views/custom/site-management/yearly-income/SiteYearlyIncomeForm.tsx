@@ -40,7 +40,7 @@ function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
               <ControlledRowNumericInput
                 {...controller}
                 label="Recettes d'exploitation"
-                hintInputText="€ / an"
+                addonText="€ / an"
                 className="!tw-pt-4"
               />
             );
@@ -60,7 +60,7 @@ function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
               <ControlledRowNumericInput
                 {...controller}
                 label="Autres recettes"
-                hintInputText="€ / an"
+                addonText="€ / an"
                 className="!tw-pt-4"
               />
             );
