@@ -113,6 +113,7 @@ describe("Urban project creation", () => {
           stepsHistory,
           creationData,
           spacesCategoriesToComplete: spacesCategoriesToComplete,
+          soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
         },
       });
     };

@@ -36,6 +36,7 @@ const MOCK_STATES = {
       saveState: "idle",
       creationData: {},
       spacesCategoriesToComplete: [],
+      soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
     },
   } satisfies RootState["projectCreation"],
   currentUser: {
