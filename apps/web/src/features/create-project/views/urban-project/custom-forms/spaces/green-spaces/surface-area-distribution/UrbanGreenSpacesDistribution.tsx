@@ -52,7 +52,7 @@ function UrbanGreenSpacesDistribution({ greenSpaces, totalSurfaceArea, onSubmit,
             render={(controller) => {
               return (
                 <ControlledRowNumericInput
-                  {...controller}
+                  controlProps={controller}
                   label={getLabelForUrbanGreenSpace(spaceCategory)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}
                   imgSrc={undefined}

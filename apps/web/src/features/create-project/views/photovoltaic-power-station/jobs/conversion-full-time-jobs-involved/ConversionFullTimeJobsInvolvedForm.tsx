@@ -68,7 +68,7 @@ function ConversionFullTimeJobsInvolvedForm({
             render={(controller) => {
               return (
                 <ControlledRowNumericInput
-                  {...controller}
+                  controlProps={controller}
                   label="Remise en état de la friche"
                   className="!tw-pt-4 !tw-mb-3"
                 />
@@ -88,7 +88,7 @@ function ConversionFullTimeJobsInvolvedForm({
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Installation des panneaux photovoltaïques"
                 className="!tw-pt-4 !tw-mb-8"
               />

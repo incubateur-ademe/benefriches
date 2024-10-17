@@ -78,7 +78,7 @@ function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label={<RequiredLabel label="Superficie de l'installation" />}
                 hintText={hintText}
                 hintInputText={

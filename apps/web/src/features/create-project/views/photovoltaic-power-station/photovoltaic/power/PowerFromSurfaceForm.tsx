@@ -63,7 +63,7 @@ function PhotovoltaicPowerFromSurfaceForm({
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label={<RequiredLabel label="Puissance de l'installation" />}
                 hintText={hintText}
                 addonText="kWc"

@@ -49,7 +49,7 @@ function OperationsFullTimeJobsInvolvedForm({ defaultValue, onSubmit, onBack }: 
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Maintenance des panneaux photovoltaïques"
                 className="!tw-pt-4 !tw-mb-8"
               />

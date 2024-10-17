@@ -57,7 +57,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Participation des collectivités"
                 addonText="€"
                 className="!tw-pt-4"
@@ -77,7 +77,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Subvention publiques"
                 addonText="€"
                 className="!tw-pt-4"
@@ -97,7 +97,7 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Autres ressources"
                 addonText="€"
                 className="!tw-pt-4"

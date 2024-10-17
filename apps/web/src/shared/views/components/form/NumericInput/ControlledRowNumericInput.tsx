@@ -11,20 +11,22 @@ import RowNumericInput, { RowNumericInputInputProps } from "./RowNumericInput";
 type Props<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = RowNumericInputInputProps & UseControllerReturn<TFieldValues, TName> & { noDecimals?: boolean };
+> = RowNumericInputInputProps & { controlProps: UseControllerReturn<TFieldValues, TName> } & {
+  noDecimals?: boolean;
+};
 
 const ControlledRowNumericInput = <
   TFieldValues extends FieldValues,
   TName extends FieldPath<TFieldValues>,
 >({
-  field,
-  fieldState,
+  controlProps,
   nativeInputProps = {},
   stateRelatedMessage,
   state,
   noDecimals = false,
   ...props
 }: Props<TFieldValues, TName>) => {
+  const { field, fieldState } = controlProps;
   const error = fieldState.error;
 
   return (

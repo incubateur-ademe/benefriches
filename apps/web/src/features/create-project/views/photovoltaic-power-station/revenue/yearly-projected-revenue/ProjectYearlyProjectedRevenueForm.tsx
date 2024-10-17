@@ -63,7 +63,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Recettes d'exploitation"
                 addonText="€ / an"
                 className="!tw-pt-4"
@@ -84,7 +84,7 @@ const ProjectYearlyProjectedRevenueForm = ({ onSubmit, onBack, defaultValues }: 
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Autres recettes"
                 addonText="€ / an"
                 className="!tw-pt-4"

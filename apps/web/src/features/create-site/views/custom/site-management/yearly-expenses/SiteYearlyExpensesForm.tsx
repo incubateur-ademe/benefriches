@@ -174,7 +174,7 @@ function SiteYearlyExpensesForm({
                 render={(controller) => {
                   return (
                     <ControlledRowNumericInput
-                      {...controller}
+                      controlProps={controller}
                       label={getLabelForExpense(name)}
                       hintText={
                         !hasTenant || bearer === undefined

@@ -161,7 +161,9 @@ const ReinstatementsExpensesForm = ({
               },
             }}
             render={(controller) => {
-              return <ControlledRowNumericInput {...controller} label={label} addonText="€" />;
+              return (
+                <ControlledRowNumericInput controlProps={controller} label={label} addonText="€" />
+              );
             }}
           />
         ))}

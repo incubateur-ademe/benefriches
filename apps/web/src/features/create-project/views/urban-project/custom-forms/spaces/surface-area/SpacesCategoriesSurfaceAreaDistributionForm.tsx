@@ -60,7 +60,7 @@ function SpacesCategoriesSurfaceAreaDistributionForm({
             render={(controller) => {
               return (
                 <ControlledRowNumericInput
-                  {...controller}
+                  controlProps={controller}
                   label={getLabelForSpaceCategory(spaceCategory)}
                   hintText={getDescriptionForUrbanSpaceCategory(spaceCategory)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}

@@ -73,7 +73,7 @@ const YearlyProjectedExpensesForm = ({ onSubmit, onBack, defaultValues }: Props)
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Loyer"
                 addonText="€ / an"
                 className="!tw-pt-4"
@@ -93,7 +93,7 @@ const YearlyProjectedExpensesForm = ({ onSubmit, onBack, defaultValues }: Props)
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Maintenance"
                 addonText="€ / an"
                 className="!tw-pt-4"
@@ -113,7 +113,7 @@ const YearlyProjectedExpensesForm = ({ onSubmit, onBack, defaultValues }: Props)
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Taxes et impôts"
                 addonText="€ / an"
                 className="!tw-pt-4"
@@ -134,7 +134,7 @@ const YearlyProjectedExpensesForm = ({ onSubmit, onBack, defaultValues }: Props)
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Autres dépenses"
                 addonText="€ / an"
                 className="!tw-pt-4"

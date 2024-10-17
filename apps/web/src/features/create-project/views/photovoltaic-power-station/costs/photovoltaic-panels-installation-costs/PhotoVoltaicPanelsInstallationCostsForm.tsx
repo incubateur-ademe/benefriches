@@ -72,7 +72,7 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Travaux d'installation"
                 addonText="€"
                 className="!tw-pt-4"
@@ -93,7 +93,7 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Études et honoraires techniques"
                 addonText="€"
                 className="!tw-pt-4"
@@ -113,7 +113,7 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Autres dépenses d'installation"
                 addonText="€"
                 className="!tw-pt-4"

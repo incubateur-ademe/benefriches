@@ -70,7 +70,6 @@ const RowNumericInput = memo(
         state = "default",
         stateRelatedMessage,
         nativeInputProps = {},
-        ...rest
       } = baseProps;
       const domId = useId();
       const inputId = `input-${id ?? domId}`;
@@ -92,7 +91,6 @@ const RowNumericInput = memo(
           )}
           ref={ref}
           id={id}
-          {...rest}
         >
           <div className="tw-flex tw-gap-2 tw-items-start">
             {imgSrc && (

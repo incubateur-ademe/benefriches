@@ -57,7 +57,7 @@ function LivingAndActivitySpacesDistribution({
             render={(controller) => {
               return (
                 <ControlledRowNumericInput
-                  {...controller}
+                  controlProps={controller}
                   label={getLabelForLivingAndActivitySpace(spaceCategory)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}
                   imgSrc={undefined}

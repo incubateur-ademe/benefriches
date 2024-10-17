@@ -52,7 +52,7 @@ function PublicSpacesDistribution({ publicSpaces, totalSurfaceArea, onSubmit, on
             render={(controller) => {
               return (
                 <ControlledRowNumericInput
-                  {...controller}
+                  controlProps={controller}
                   label={getLabelForPublicSpace(publicSpace)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}
                   imgSrc={undefined}

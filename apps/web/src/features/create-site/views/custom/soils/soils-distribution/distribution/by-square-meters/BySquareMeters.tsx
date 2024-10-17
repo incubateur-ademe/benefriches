@@ -67,7 +67,7 @@ function SiteSoilsDistributionBySquareMetersForm({
             render={(controller) => {
               return (
                 <ControlledRowNumericInput
-                  {...controller}
+                  controlProps={controller}
                   label={getLabelForSoilType(soilType)}
                   hintText={getDescriptionForSoilType(soilType)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}

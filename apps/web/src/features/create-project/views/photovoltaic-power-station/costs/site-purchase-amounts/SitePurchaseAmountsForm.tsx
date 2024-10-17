@@ -78,7 +78,7 @@ const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Prix de vente"
                 addonText="€"
                 className="!tw-pt-4"
@@ -99,7 +99,7 @@ const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
           render={(controller) => {
             return (
               <ControlledRowNumericInput
-                {...controller}
+                controlProps={controller}
                 label="Droit de mutation"
                 addonText="€"
                 className="!tw-pt-4"
