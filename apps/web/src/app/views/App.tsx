@@ -27,7 +27,15 @@ const CreateProjectPage = lazy(
 );
 const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
 const LoginPage = lazy(() => import("@/features/login"));
-const OnboardingPage = lazy(() => import("@/features/onboarding"));
+const OnBoardingIdentityPage = lazy(
+  () => import("@/features/onboarding/identity/OnBoardingIdentityPage"),
+);
+const OnBoardingIntroductionWhyBenefriches = lazy(
+  () => import("@/features/onboarding/why-benefriches/WhyBenefrichesPage"),
+);
+const OnBoardingIntroductionHowItWorks = lazy(
+  () => import("@/features/onboarding/how-it-works/HowItWorksPage"),
+);
 const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
 const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
 const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
@@ -55,8 +63,8 @@ function App() {
           switch (route.name) {
             case routes.home.name:
               return <HomePage />;
-            case routes.onboarding.name:
-              return <OnboardingPage />;
+            case routes.onBoardingIdentity.name:
+              return <OnBoardingIdentityPage />;
             case routes.login.name:
               return <LoginPage />;
             case routes.budget.name:
@@ -70,6 +78,18 @@ function App() {
             case routes.politiqueConfidentialite.name:
               return <PolitiqueConfidentialitePage />;
             // protected pages
+            case routes.onBoardingIntroductionWhy.name:
+              return (
+                <RequireRegisteredUser>
+                  <OnBoardingIntroductionWhyBenefriches />
+                </RequireRegisteredUser>
+              );
+            case routes.onBoardingIntroductionHow.name:
+              return (
+                <RequireRegisteredUser>
+                  <OnBoardingIntroductionHowItWorks />
+                </RequireRegisteredUser>
+              );
             case routes.createUser.name:
               return (
                 <RequireRegisteredUser>

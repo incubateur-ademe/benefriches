@@ -14,7 +14,7 @@ export default function RequireRegisteredUser({ children }: { children: React.Re
 
   useEffect(() => {
     if (currentUserLoaded && !currentUserId) {
-      routes.onboarding().replace();
+      routes.onBoardingIdentity().replace();
     }
   }, [currentUserLoaded, currentUserId]);
 

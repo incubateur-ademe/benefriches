@@ -71,6 +71,12 @@ export default {
           light: "#FFE9E9",
         },
       },
+      onboarding: {
+        step1: "#59C939",
+        step2: "#137FEB",
+        step3: "#919CB3",
+        step4: "#F80338",
+      },
       // can be used with classes tw-soils-buildings, tw-soils-impermeable-soils...
       soils: soilColors,
     },

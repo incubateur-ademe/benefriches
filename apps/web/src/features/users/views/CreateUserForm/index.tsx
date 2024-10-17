@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { LocalAuthority } from "shared";
 
-import { routes } from "@/app/views/router";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -22,7 +21,11 @@ export interface AdministrativeDivisionService {
   searchMunicipality(searchText: string): Promise<AdministrativeDivision[]>;
 }
 
-function CreateUserFormContainer() {
+type Props = {
+  onSuccess: () => void;
+};
+
+function CreateUserFormContainer({ onSuccess }: Props) {
   const dispatch = useAppDispatch();
   const createUserLoadingState = useAppSelector((state) => state.currentUser.createUserState);
 
@@ -52,9 +55,9 @@ function CreateUserFormContainer() {
 
   useEffect(() => {
     if (createUserLoadingState === "success") {
-      routes.createSiteFoncier().push();
+      onSuccess();
     }
-  }, [createUserLoadingState]);
+  }, [createUserLoadingState, onSuccess]);
 
   return (
     <CreateUserForm
