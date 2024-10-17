@@ -45,7 +45,6 @@ export type RowNumericInputInputProps = {
   hintText?: ReactNode;
   hintInputText?: ReactNode;
   addonText?: ReactNode;
-  hideLabel?: boolean;
   disabled?: boolean;
   state?: "success" | "error" | "default" | "warning";
   stateRelatedMessage?: ReactNode;
@@ -65,7 +64,6 @@ const RowNumericInput = memo(
         addonText,
         hintText,
         hintInputText,
-        hideLabel,
         disabled = false,
         state = "default",
         stateRelatedMessage,
@@ -103,10 +101,7 @@ const RowNumericInput = memo(
                 className={classNames(disabled && "tw-filter tw-grayscale")}
               />
             )}
-            <label
-              className={classNames("tw-text-lg", fr.cx("fr-label", hideLabel && "fr-sr-only"))}
-              htmlFor={inputId}
-            >
+            <label className={classNames("tw-text-lg", fr.cx("fr-label"))} htmlFor={inputId}>
               {label}
               {hintText && (
                 <span className="fr-hint-text tw-text-sm tw-font-normal">{hintText}</span>
