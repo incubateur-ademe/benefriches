@@ -9,7 +9,6 @@ import SiteNameAndDescriptionForm from "./naming";
 import SiteNamingIntroduction from "./naming/introduction";
 import SiteCreationResult from "./result";
 import SiteExpensesIncomeSummary from "./site-management/expenses-income-summary";
-import SiteFullTimeJobsInvolvedForm from "./site-management/full-time-jobs";
 import SiteManagementIntroduction from "./site-management/introduction";
 import IsFricheLeasedForm from "./site-management/is-friche-leased";
 import IsSiteOperatedForm from "./site-management/is-site-operated";
@@ -74,8 +73,6 @@ function SiteCreationCustomStepContent() {
       return <SiteOperatorForm />;
     case "TENANT":
       return <SiteTenantForm />;
-    case "FULL_TIME_JOBS_INVOLVED":
-      return <SiteFullTimeJobsInvolvedForm />;
     case "YEARLY_EXPENSES":
       return <SiteYearlyExpensesForm />;
     case "YEARLY_INCOME":

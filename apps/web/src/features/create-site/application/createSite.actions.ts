@@ -26,8 +26,6 @@ export const revertIsFricheLeasedStep = () => revertStep({ resetFields: ["isFric
 export const revertIsSiteOperatedStep = () => revertStep({ resetFields: ["isSiteOperated"] });
 export const revertTenantStep = () => revertStep({ resetFields: ["tenant"] });
 export const revertOperatorStep = () => revertStep({ resetFields: ["tenant"] });
-export const revertFullTimeJobsInvolvedStep = () =>
-  revertStep({ resetFields: ["fullTimeJobsInvolved"] });
 export const revertFricheAccidentsIntroductionStep = () => revertStep();
 export const revertFricheAccidentsStep = () =>
   revertStep({
@@ -69,7 +67,6 @@ const createSiteSchema = z.object({
   contaminatedSoilSurface: z.number().nonnegative().optional(),
   fricheActivity: fricheActivitySchema.optional(),
   // management
-  fullTimeJobsInvolved: z.number().nonnegative().optional(),
   owner: z.object({
     structureType: z.string(),
     name: z.string().optional(),

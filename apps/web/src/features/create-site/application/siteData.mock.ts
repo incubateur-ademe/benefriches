@@ -62,7 +62,6 @@ export const siteWithExhaustiveData: SiteDraft = {
   ],
   yearlyIncomes: [{ amount: 150000, source: "income" }],
   isFriche: false,
-  fullTimeJobsInvolved: 0.5,
   hasContaminatedSoils: false,
   contaminatedSoilSurface: 1000,
   address: {
@@ -109,7 +108,6 @@ export const siteWithMinimalData: SiteDraft = {
   isFriche: false,
   isSiteOperated: false,
   hasRecentAccidents: false,
-  fullTimeJobsInvolved: 0.5,
   hasContaminatedSoils: false,
   address: {
     banId: "31070_p4ur8e",

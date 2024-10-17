@@ -39,7 +39,6 @@ export type SiteCreationCustomStep =
   | "IS_SITE_OPERATED"
   | "TENANT"
   | "OPERATOR"
-  | "FULL_TIME_JOBS_INVOLVED"
   | "YEARLY_EXPENSES"
   | "YEARLY_INCOME"
   | "YEARLY_EXPENSES_SUMMARY"
@@ -198,7 +197,7 @@ export const siteCreationSlice = createSlice({
     completeIsFricheLeased: (state, action: PayloadAction<{ isFricheLeased: boolean }>) => {
       const { isFricheLeased } = action.payload;
       state.siteData.isFricheLeased = isFricheLeased;
-      state.stepsHistory.push(isFricheLeased ? "TENANT" : "FULL_TIME_JOBS_INVOLVED");
+      state.stepsHistory.push(isFricheLeased ? "TENANT" : "YEARLY_EXPENSES");
     },
     completeIsSiteOperated: (state, action: PayloadAction<{ isSiteOperated: boolean }>) => {
       const { isSiteOperated } = action.payload;
@@ -207,18 +206,12 @@ export const siteCreationSlice = createSlice({
     },
     completeTenant: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
       state.siteData.tenant = action.payload.tenant;
-      state.stepsHistory.push("FULL_TIME_JOBS_INVOLVED");
+      state.stepsHistory.push("YEARLY_EXPENSES");
     },
     completeOperator: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
       const { tenant } = action.payload;
       if (tenant) {
         state.siteData.tenant = tenant;
-      }
-      state.stepsHistory.push("FULL_TIME_JOBS_INVOLVED");
-    },
-    completeFullTimeJobsInvolved: (state, action: PayloadAction<{ jobs?: number }>) => {
-      if (action.payload.jobs) {
-        state.siteData.fullTimeJobsInvolved = action.payload.jobs;
       }
       state.stepsHistory.push("YEARLY_EXPENSES");
     },
@@ -341,7 +334,6 @@ export const {
   completeFricheAccidentsIntroduction,
   completeFricheAccidents,
   completeManagementIntroduction,
-  completeFullTimeJobsInvolved,
   completeOwner,
   completeIsFricheLeased,
   completeIsSiteOperated,

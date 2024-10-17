@@ -42,7 +42,6 @@ export type SiteDraft = {
   contaminatedSoilSurface?: number;
   fricheActivity?: FricheActivity;
   // management
-  fullTimeJobsInvolved?: number;
   owner: { structureType: OwnerStructureType; name: string };
   isFricheLeased?: boolean;
   isSiteOperated?: boolean;
