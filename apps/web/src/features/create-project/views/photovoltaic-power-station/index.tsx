@@ -7,6 +7,9 @@ import {
   PhotovoltaicProjectCreationStep,
   selectCurrentStep,
 } from "../../application/createProject.reducer";
+import SoilsDecontaminationIntroduction from "../common-views/soils-decontamination/introduction";
+import SoilsDecontaminationSelection from "../common-views/soils-decontamination/selection";
+import SoilsDecontaminationSurfaceArea from "../common-views/soils-decontamination/surface-area";
 import RenewableEnergyTypesForm from "../renewable-energy-types";
 import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";
 import ProjectExpensesIntroduction from "./costs/introduction";
@@ -29,9 +32,6 @@ import ProjectRevenueIntroduction from "./revenue/introduction";
 import ProjectYearlyProjectedRevenueForm from "./revenue/yearly-projected-revenue";
 import ProjectScheduleIntroductionContainer from "./schedule/introduction";
 import ProjectScheduleProjectionFormContainer from "./schedule/projection";
-import SoilsDecontaminationIntroduction from "./soils-decontamination/introduction";
-import SoilsDecontaminationSelection from "./soils-decontamination/selection";
-import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
 import ProjectSoilsCarbonStorageContainer from "./soils/soils-carbon-storage";
 import ProjectSoilsSummaryContainer from "./soils/soils-summary";
 import ClimateAndBiodiversityImpactNotice from "./soils/soils-transformation/climate-and-biodiversity-impact-notice";
