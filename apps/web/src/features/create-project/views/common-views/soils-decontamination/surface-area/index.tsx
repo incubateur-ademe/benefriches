@@ -2,15 +2,14 @@ import {
   completeSoilsDecontaminationSurfaceArea,
   revertSoilsDecontaminationSurfaceAreaStep,
 } from "@/features/create-project/application/createProject.reducer";
-import { selectSiteData } from "@/features/create-project/application/createProject.selectors";
+import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/application/createProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilsDecontaminationSurfaceArea, { FormValues } from "./SoilsDecontaminationSurfaceArea";
 
 function SoilsDecontaminationSurfaceAreaContainer() {
   const dispatch = useAppDispatch();
-
-  const siteData = useAppSelector(selectSiteData);
+  const contaminatedSurfaceArea = useAppSelector(selectSiteContaminatedSurfaceArea);
 
   const onSubmit = (data: FormValues) => {
     dispatch(completeSoilsDecontaminationSurfaceArea(data.surfaceArea));
@@ -18,7 +17,7 @@ function SoilsDecontaminationSurfaceAreaContainer() {
 
   return (
     <SoilsDecontaminationSurfaceArea
-      contaminatedSoilSurface={siteData?.contaminatedSoilSurface ?? 0}
+      contaminatedSoilSurface={contaminatedSurfaceArea}
       onSubmit={onSubmit}
       onBack={() => dispatch(revertSoilsDecontaminationSurfaceAreaStep())}
     />

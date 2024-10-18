@@ -70,6 +70,11 @@ export const selectSiteSurfaceArea = createSelector(
   (siteData): number => siteData?.surfaceArea ?? 0,
 );
 
+export const selectSiteContaminatedSurfaceArea = createSelector(
+  selectSiteData,
+  (siteData): number => siteData?.contaminatedSoilSurface ?? 0,
+);
+
 export const selectSiteAddress = createSelector(selectSiteData, (siteData): Address | undefined => {
   return siteData?.address;
 });
