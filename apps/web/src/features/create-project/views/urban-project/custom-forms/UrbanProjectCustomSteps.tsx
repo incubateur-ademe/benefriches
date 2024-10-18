@@ -6,6 +6,7 @@ const stepCategories = [
   "Mode de création",
   "Espaces",
   "Aménagement des espaces",
+  "Dépollution des sols",
   "Bâtiments",
   "Acteurs",
   "Cession foncière",
@@ -36,6 +37,12 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "SPACES_SOILS_SUMMARY":
     case "SOILS_CARBON_SUMMARY":
       return "Aménagement des espaces";
+    case "SOILS_DECONTAMINATION_INTRODUCTION":
+    case "SOILS_DECONTAMINATION_SELECTION":
+    case "SOILS_DECONTAMINATION_SURFACE_AREA":
+      return "Dépollution des sols";
+    case "BUILDINGS_INTRODUCTION":
+      return "Bâtiments";
   }
 };
 

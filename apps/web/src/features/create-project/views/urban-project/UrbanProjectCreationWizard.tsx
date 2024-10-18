@@ -36,6 +36,10 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   PUBLIC_SPACES_DISTRIBUTION: "espaces-publics-surfaces",
   SPACES_SOILS_SUMMARY: "recapitulatif-sols-amenagement-des-espaces",
   SOILS_CARBON_SUMMARY: "recapitulatif-stockage-carbone-sols",
+  SOILS_DECONTAMINATION_INTRODUCTION: "introduction-depollution-sols",
+  SOILS_DECONTAMINATION_SELECTION: "selection-depollution-sols",
+  SOILS_DECONTAMINATION_SURFACE_AREA: "surface-depollution-sols",
+  BUILDINGS_INTRODUCTION: "introduction-batiments",
   CREATION_RESULT: "fin",
 } as const satisfies Record<UrbanProjectCreationStep, string>;
 

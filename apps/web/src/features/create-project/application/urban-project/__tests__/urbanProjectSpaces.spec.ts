@@ -18,6 +18,7 @@ import {
   publicSpacesIntroductionReverted,
   publicSpacesSelectionCompleted,
   publicSpacesSelectionReverted,
+  soilsCarbonStorageCompleted,
   spacesDevelopmentPlanIntroductionCompleted,
   spacesDevelopmentPlanIntroductionReverted,
   spacesIntroductionCompleted,
@@ -726,6 +727,33 @@ describe("Urban project creation : introduction and spaces steps", () => {
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
           creationDataDiff: { publicSpacesDistribution: undefined },
+        });
+      });
+    });
+    describe("SOILS_CARBON_SUMMARY", () => {
+      it("goes to SOILS_DECONTAMINATION_INTRODUCTION when site has contaminated soils and step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["SOILS_CARBON_SUMMARY"])
+          .withSiteData({ contaminatedSoilSurface: 150 })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(soilsCarbonStorageCompleted());
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "SOILS_DECONTAMINATION_INTRODUCTION",
+        });
+      });
+      it("goes to BUILDINGS_INTRODUCTION when site has no contamination and step is completed", () => {
+        const store = new StoreBuilder().withStepsHistory(["SOILS_CARBON_SUMMARY"]).build();
+        const initialRootState = store.getState();
+
+        store.dispatch(soilsCarbonStorageCompleted());
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "BUILDINGS_INTRODUCTION",
         });
       });
     });

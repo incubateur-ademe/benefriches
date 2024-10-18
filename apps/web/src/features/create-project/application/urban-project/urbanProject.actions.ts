@@ -112,3 +112,23 @@ export const soilsSummaryReverted = createAction("soilsSummaryReverted");
 
 export const soilsCarbonStorageCompleted = createAction("soilsCarbonStorageCompleted");
 export const soilsCarbonStorageReverted = createAction("soilsCarbonStorageReverted");
+
+// soils decontamination
+export const soilsDecontaminationIntroductionCompleted = createAction(
+  "soilsDecontaminationIntroductionCompleted",
+);
+export const soilsDecontaminationIntroductionReverted = createAction(
+  "soilsDecontaminationIntroductionReverted",
+);
+export const soilsDecontaminationSelectionCompleted = createAction<
+  "all" | "partial" | "unknown" | "none"
+>("soilsDecontaminationSelectionCompleted");
+export const soilsDecontaminationSelectionReverted = createAction(
+  "soilsDecontaminationSelectionReverted",
+);
+export const soilsDecontaminationSurfaceAreaCompleted = createAction<number>(
+  "soilsDecontaminationSurfaceAreaCompleted",
+);
+export const soilsDecontaminationSurfaceAreaReverted = createAction(
+  "soilsDecontaminationSurfaceAreaReverted",
+);

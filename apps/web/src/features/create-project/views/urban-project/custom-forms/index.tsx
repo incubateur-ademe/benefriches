@@ -4,6 +4,9 @@ import { UrbanProjectCustomCreationStep } from "@/features/create-project/applic
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import UrbanProjectCustomSteps from "./UrbanProjectCustomSteps";
+import SoilsDecontaminationIntroduction from "./soils-decontamination/intro";
+import SoilsDecontaminationSelection from "./soils-decontamination/selection";
+import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
 import UrbanSpacesDevelopmentPlanIntroduction from "./spaces/development-plan-introduction";
 import GreenSpacesIntroduction from "./spaces/green-spaces/introduction";
 import UrbanGreenSpacesSelection from "./spaces/green-spaces/selection";
@@ -58,6 +61,14 @@ const getCurrentStepView = (
       return <UrbanProjectSoilsSummary />;
     case "SOILS_CARBON_SUMMARY":
       return <UrbanProjectSoilsCarbonStorage />;
+    case "SOILS_DECONTAMINATION_INTRODUCTION":
+      return <SoilsDecontaminationIntroduction />;
+    case "SOILS_DECONTAMINATION_SELECTION":
+      return <SoilsDecontaminationSelection />;
+    case "SOILS_DECONTAMINATION_SURFACE_AREA":
+      return <SoilsDecontaminationSurfaceArea />;
+    case "BUILDINGS_INTRODUCTION":
+      return <div>BUILDINGS_INTRODUCTION</div>;
   }
 };
 

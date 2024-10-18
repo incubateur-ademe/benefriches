@@ -32,6 +32,12 @@ import {
   publicSpacesIntroductionReverted,
   publicSpacesSelectionCompleted,
   publicSpacesSelectionReverted,
+  soilsCarbonStorageCompleted,
+  soilsDecontaminationIntroductionCompleted,
+  soilsDecontaminationSelectionCompleted,
+  soilsDecontaminationSelectionReverted,
+  soilsDecontaminationSurfaceAreaCompleted,
+  soilsDecontaminationSurfaceAreaReverted,
   soilsSummaryCompleted,
   spacesDevelopmentPlanIntroductionCompleted,
   spacesIntroductionCompleted,
@@ -58,7 +64,11 @@ export type UrbanProjectCustomCreationStep =
   | "PUBLIC_SPACES_SELECTION"
   | "PUBLIC_SPACES_DISTRIBUTION"
   | "SPACES_SOILS_SUMMARY"
-  | "SOILS_CARBON_SUMMARY";
+  | "SOILS_CARBON_SUMMARY"
+  | "SOILS_DECONTAMINATION_INTRODUCTION"
+  | "SOILS_DECONTAMINATION_SELECTION"
+  | "SOILS_DECONTAMINATION_SURFACE_AREA"
+  | "BUILDINGS_INTRODUCTION";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
@@ -88,6 +98,7 @@ export type UrbanProjectState = {
     livingAndActivitySpacesDistribution?: Partial<Record<UrbanLivingAndActivitySpace, number>>;
     publicSpaces?: UrbanPublicSpace[];
     publicSpacesDistribution?: Partial<Record<UrbanPublicSpace, number>>;
+    decontaminatedSurfaceArea?: number;
   };
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
@@ -241,6 +252,44 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(soilsSummaryCompleted, (state) => {
     state.urbanProject.stepsHistory.push("SOILS_CARBON_SUMMARY");
+  });
+  builder.addCase(soilsCarbonStorageCompleted, (state) => {
+    const nextStep = state.siteData?.contaminatedSoilSurface
+      ? "SOILS_DECONTAMINATION_INTRODUCTION"
+      : "BUILDINGS_INTRODUCTION";
+    state.urbanProject.stepsHistory.push(nextStep);
+  });
+  builder.addCase(soilsDecontaminationIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("SOILS_DECONTAMINATION_SELECTION");
+  });
+  builder.addCase(soilsDecontaminationSelectionCompleted, (state, action) => {
+    switch (action.payload) {
+      case "all":
+        state.urbanProject.creationData.decontaminatedSurfaceArea =
+          state.siteData?.contaminatedSoilSurface ?? 0;
+        state.urbanProject.stepsHistory.push("BUILDINGS_INTRODUCTION");
+        break;
+      case "partial":
+        state.urbanProject.stepsHistory.push("SOILS_DECONTAMINATION_SURFACE_AREA");
+        break;
+      case "none":
+        state.urbanProject.creationData.decontaminatedSurfaceArea = 0;
+        state.urbanProject.stepsHistory.push("BUILDINGS_INTRODUCTION");
+        break;
+      case "unknown":
+        state.urbanProject.stepsHistory.push("BUILDINGS_INTRODUCTION");
+    }
+  });
+  builder.addCase(soilsDecontaminationSelectionReverted, (state) => {
+    if (state.urbanProject.creationData.decontaminatedSurfaceArea)
+      state.urbanProject.creationData.decontaminatedSurfaceArea = undefined;
+  });
+  builder.addCase(soilsDecontaminationSurfaceAreaCompleted, (state, action) => {
+    state.urbanProject.stepsHistory.push("BUILDINGS_INTRODUCTION");
+    state.urbanProject.creationData.decontaminatedSurfaceArea = action.payload;
+  });
+  builder.addCase(soilsDecontaminationSurfaceAreaReverted, (state) => {
+    state.urbanProject.creationData.decontaminatedSurfaceArea = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {
