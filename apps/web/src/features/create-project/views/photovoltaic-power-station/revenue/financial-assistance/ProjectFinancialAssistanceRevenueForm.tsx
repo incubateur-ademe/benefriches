@@ -1,8 +1,8 @@
 import { Controller, useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
+import { sumObjectValues } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
-import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";

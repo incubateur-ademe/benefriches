@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { sumList } from "shared";
 
 import { RootState } from "@/app/application/store";
-import { sumList } from "@/shared/services/sum/sum";
 
 import {
   AvoidedFricheExpensesImpact,

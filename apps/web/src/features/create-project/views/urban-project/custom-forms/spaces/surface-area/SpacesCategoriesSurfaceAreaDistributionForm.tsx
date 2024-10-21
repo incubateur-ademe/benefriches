@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanSpaceCategory } from "shared";
+import { sumObjectValues } from "shared";
 
 import {
   getDescriptionForUrbanSpaceCategory,
@@ -8,7 +9,6 @@ import {
   getPictogramForUrbanSpaceCategory,
 } from "@/features/create-project/domain/urbanProject";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
-import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaControlInput/SurfaceAreaControlInput";

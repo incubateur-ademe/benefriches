@@ -8,6 +8,7 @@ import {
   SoilsDistribution,
   SoilType,
 } from "shared";
+import { sumList } from "shared";
 
 import {
   getLabelForFinancialAssistanceRevenueSource,
@@ -18,7 +19,6 @@ import {
   RenewableEnergyDevelopmentPlanType,
 } from "@/shared/domain/reconversionProject";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import { sumList } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";

@@ -1,4 +1,5 @@
 import { getTotalSurfaceArea, typedObjectEntries } from "shared";
+import { sumList } from "shared";
 
 import {
   getLabelForDevelopmentPlanCategory,
@@ -12,7 +13,6 @@ import {
   getLabelForReinstatementExpensePurpose,
 } from "@/shared/domain/reconversionProject";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import { sumList } from "@/shared/services/sum/sum";
 import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
