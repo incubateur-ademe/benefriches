@@ -49,7 +49,7 @@ export default function CallToActionSection() {
               className={fr.cx("fr-mb-3w")}
             />
 
-            <h2>Vous êtes aménageur urbain ou porteur de projet photovoltaïque&nbsp;?</h2>
+            <h2>Vous avez un projet d'aménagement urbain ou un projet photovoltaïque&nbsp;?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>
               Calculez les impacts d'un projet d’aménagement urbain (logements, quartier mixte) ou
               photovoltaïque sur une friche ou sur un autre site grâce à Bénéfriches&nbsp;!
