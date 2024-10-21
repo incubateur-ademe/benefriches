@@ -1,9 +1,9 @@
 import { typedObjectEntries } from "shared";
+import { sumList } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { getLabelForUrbanProjectSpace } from "@/shared/domain/urbanProject";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import { sumList } from "@/shared/services/sum/sum";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 

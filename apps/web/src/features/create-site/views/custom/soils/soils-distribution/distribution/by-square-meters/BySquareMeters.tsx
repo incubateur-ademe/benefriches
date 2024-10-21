@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { SoilType } from "shared";
+import { sumObjectValues } from "shared";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import {
@@ -8,7 +9,6 @@ import {
   getLabelForSoilType,
   getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
-import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
