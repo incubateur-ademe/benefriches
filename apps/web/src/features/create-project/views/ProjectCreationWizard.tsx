@@ -45,7 +45,7 @@ function ProjectCreationWizard({ route }: Props) {
   switch (projectDevelopmentPlanCategory) {
     case "RENEWABLE_ENERGY":
       return <PhotovoltaicPowerStationCreationWizard />;
-    case "URBAN_BUILDINGS":
+    case "URBAN_PROJECT":
       return <UrbanProjectCreationWizard />;
     default:
       return (

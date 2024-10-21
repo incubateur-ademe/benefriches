@@ -18,7 +18,7 @@ export type ReconversionProjectFeaturesView = {
         developerName?: string;
       }
     | {
-        type: "URBAN_BUILDINGS";
+        type: "URBAN_PROJECT";
         developerName?: string;
         spaces: SpacesDistribution;
         installationCosts: { amount: number; purpose: string }[];

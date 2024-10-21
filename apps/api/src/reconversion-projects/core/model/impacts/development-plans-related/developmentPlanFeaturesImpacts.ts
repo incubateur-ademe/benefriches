@@ -50,7 +50,7 @@ export const getDevelopmentPlanRelatedImpacts = async ({
         expectedAnnualProduction: features.expectedAnnualProduction,
       });
     }
-    case "URBAN_BUILDINGS": {
+    case "URBAN_PROJECT": {
       const features = developmentPlanFeatures as UrbanProjectFeatures;
 
       return await getUrbanProjectSpecificImpacts({

@@ -34,7 +34,7 @@ describe("Projects list reducer", () => {
         {
           id: reconversionProjectIdB,
           name: "Reconversion project B on site 2",
-          type: "URBAN_BUILDINGS",
+          type: "URBAN_PROJECT",
           isExpressProject: true,
         },
       ],
@@ -95,7 +95,7 @@ describe("Projects list reducer", () => {
       expect(reconversionProject).toEqual({
         id: reconversionProjectIdB,
         name: "Reconversion project B on site 2",
-        type: "URBAN_BUILDINGS",
+        type: "URBAN_PROJECT",
         site: { id: reconversionProjects[1]?.siteId, name: "Site 2" },
       });
     });

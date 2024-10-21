@@ -108,7 +108,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
     it("should the right impact key for mixed use neighbourhood project for installation costs", () => {
       const economicBalance = getEconomicBalanceProjectImpacts.resultFunc(
         "all",
-        "URBAN_BUILDINGS",
+        "URBAN_PROJECT",
         MOCK_STATES.projectImpacts["impactsData"],
       );
 

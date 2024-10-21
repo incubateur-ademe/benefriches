@@ -69,7 +69,7 @@ export type EconomicBalance = {
 
 const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType) => {
   switch (projectType) {
-    case "URBAN_BUILDINGS":
+    case "URBAN_PROJECT":
       return "urban_project";
     case "PHOTOVOLTAIC_POWER_PLANT":
       return "photovoltaic";

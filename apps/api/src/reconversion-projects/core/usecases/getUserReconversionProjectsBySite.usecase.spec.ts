@@ -34,7 +34,7 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
           {
             id: "78330779-017d-49b3-bb3e-8b5724aaf56f",
             name: "ReconversionProject 1",
-            type: "URBAN_BUILDINGS",
+            type: "URBAN_PROJECT",
             isExpressProject: true,
           },
           {

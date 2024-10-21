@@ -44,7 +44,7 @@ export default function DevelopmentPlanInstallationExpenses({
           })}
         </>
       );
-    case "URBAN_BUILDINGS":
+    case "URBAN_PROJECT":
       return (
         <>
           <DataLine
