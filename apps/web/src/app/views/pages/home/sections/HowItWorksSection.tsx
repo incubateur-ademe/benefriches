@@ -39,7 +39,7 @@ export default function HowItWorksSection() {
         <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
         <ol
           className={classNames(
-            "tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-10",
+            "tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-10",
             "tw-list-none marker:tw-content-none",
             "tw-p-0 tw-mt-10",
           )}
