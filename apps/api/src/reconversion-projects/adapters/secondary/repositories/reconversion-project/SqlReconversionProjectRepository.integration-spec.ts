@@ -333,7 +333,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           creationMode: "express",
           name: "Quartier mixte",
           developmentPlan: {
-            type: "URBAN_BUILDINGS",
+            type: "URBAN_PROJECT",
             developer: { name: "Montrouge", structureType: "municipality" },
             costs: [],
             installationSchedule: {

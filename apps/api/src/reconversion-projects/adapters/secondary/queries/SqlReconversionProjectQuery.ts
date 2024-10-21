@@ -169,7 +169,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           expectedAnnualProduction,
         };
       }
-      if (sqlResult.development_plan.type === "URBAN_BUILDINGS") {
+      if (sqlResult.development_plan.type === "URBAN_PROJECT") {
         return {
           installationCosts: sqlResult.development_plan.costs,
           developerName: sqlResult.development_plan.developer_name,
@@ -177,7 +177,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
             sqlResult.development_plan.schedule_start_date,
             sqlResult.development_plan.schedule_end_date,
           ),
-          type: "URBAN_BUILDINGS",
+          type: "URBAN_PROJECT",
           spaces: (sqlResult.development_plan.features as UrbanProjectFeatures).spacesDistribution,
         };
       }

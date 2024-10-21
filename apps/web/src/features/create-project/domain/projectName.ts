@@ -20,7 +20,7 @@ const generateRenewableEnergyProjectName = (
 
 export const generateProjectName = (projectData: ProjectInfo): string => {
   switch (projectData.developmentPlanCategory) {
-    case "URBAN_BUILDINGS":
+    case "URBAN_PROJECT":
     case "NATURAL_URBAN_SPACES":
     case "URBAN_AGRICULTURE":
     case "COMMERCIAL_ACTIVITY_AREA":

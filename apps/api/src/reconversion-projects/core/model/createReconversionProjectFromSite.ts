@@ -259,7 +259,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
           buildingsFloorAreaDistribution,
         },
         installationSchedule,
-        type: "URBAN_BUILDINGS",
+        type: "URBAN_PROJECT",
         costs: [
           { amount: installationCosts.technicalStudies, purpose: "technical_studies" },
           { amount: installationCosts.developmentWorks, purpose: "development_works" },

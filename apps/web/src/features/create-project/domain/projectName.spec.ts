@@ -21,7 +21,7 @@ describe("Project name generation", () => {
 
   it("should return 'Projet extension urbaine'", () => {
     const project: Omit<ProjectInfo, "renewableEnergyType"> = {
-      developmentPlanCategory: "URBAN_BUILDINGS",
+      developmentPlanCategory: "URBAN_PROJECT",
     };
 
     // @ts-expect-error renewableEnergyType is missing

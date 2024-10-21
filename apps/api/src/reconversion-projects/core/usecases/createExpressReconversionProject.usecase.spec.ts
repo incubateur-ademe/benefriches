@@ -200,7 +200,7 @@ describe("CreateReconversionProject Use Case", () => {
             reconversionProjectRepository._getReconversionProjects();
           expect(createdReconversionProjects).toHaveLength(1);
           const createdReconversionProject = createdReconversionProjects[0];
-          expect(createdReconversionProject?.developmentPlan.type).toEqual("URBAN_BUILDINGS");
+          expect(createdReconversionProject?.developmentPlan.type).toEqual("URBAN_PROJECT");
           expect(
             (createdReconversionProject?.developmentPlan.features as UrbanProjectFeatures)
               .spacesDistribution,

@@ -18,7 +18,7 @@ export type PhotovoltaicPowerStationFeatures = z.infer<
 export const costSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
 const revenueSchema = z.object({ source: z.string(), amount: z.number().nonnegative() });
 
-const developmentPlanType = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "URBAN_BUILDINGS"]);
+const developmentPlanType = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "URBAN_PROJECT"]);
 
 const baseDevelopmentPlanSchema = z.object({
   type: developmentPlanType,
@@ -33,7 +33,7 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
     features: photovoltaicPowerStationFeaturesSchema,
   }),
   baseDevelopmentPlanSchema.extend({
-    type: z.literal("URBAN_BUILDINGS"),
+    type: z.literal("URBAN_PROJECT"),
     features: urbanProjectsFeaturesSchema,
   }),
 ]);

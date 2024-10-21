@@ -104,7 +104,7 @@ export type ProjectFeatures = {
         contractDuration: number;
       }
     | {
-        type: "URBAN_BUILDINGS";
+        type: "URBAN_PROJECT";
         developerName?: string;
         installationCosts: UrbanProjectDevelopmentExpense[];
         installationSchedule?: WorksSchedule;
@@ -128,7 +128,7 @@ export type ProjectFeatures = {
   decontaminatedSoilSurface?: number;
 };
 
-export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "URBAN_BUILDINGS";
+export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "URBAN_PROJECT";
 
 export type ProjectForComparison = {
   id: string;
