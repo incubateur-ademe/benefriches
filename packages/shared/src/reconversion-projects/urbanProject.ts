@@ -14,7 +14,7 @@ export const urbanProjectSpacesCategories = z.enum([
 
 export type UrbanSpaceCategory = z.infer<typeof urbanProjectSpacesCategories>;
 
-export const mixedUseNeighbourHoodSpaceSchema = z.record(
+export const urbanProjectsSpaceSchema = z.record(
   z.enum([
     // private spaces
     "BUILDINGS_FOOTPRINT", // emprise au sol bâti = surface occupée au sol par les bâtiments
@@ -31,10 +31,10 @@ export const mixedUseNeighbourHoodSpaceSchema = z.record(
   z.number().nonnegative(),
 );
 
-export type SpacesDistribution = z.infer<typeof mixedUseNeighbourHoodSpaceSchema>;
-export type MixedUseNeighbourhoodSpace = keyof SpacesDistribution;
+export type SpacesDistribution = z.infer<typeof urbanProjectsSpaceSchema>;
+export type UrbanProjectSpace = keyof SpacesDistribution;
 
-export const getSoilTypeForSpace = (space: MixedUseNeighbourhoodSpace): SoilType => {
+export const getSoilTypeForSpace = (space: UrbanProjectSpace): SoilType => {
   switch (space) {
     case "BUILDINGS_FOOTPRINT":
       return "BUILDINGS";
@@ -57,6 +57,6 @@ export const buildingsFloorAreaUsageDistribution = z.record(
   z.number().nonnegative(),
 );
 
-export type MixedUseNeighbourhoodDevelopmentExpense = TExpense<
+export type UrbanProjectDevelopmentExpense = TExpense<
   "technical_studies" | "development_works" | "other"
 >;

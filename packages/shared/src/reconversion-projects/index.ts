@@ -4,17 +4,14 @@ import { TExpense, TRevenue } from "../financial";
 
 export const developmentPlanCategorySchema = z.enum([
   "RENEWABLE_ENERGY",
-  "MIXED_USE_NEIGHBOURHOOD",
+  "URBAN_BUILDINGS",
   "URBAN_AGRICULTURE",
   "NATURAL_URBAN_SPACES",
   "COMMERCIAL_ACTIVITY_AREA",
 ]);
 export type DevelopmentPlanCategory = z.infer<typeof developmentPlanCategorySchema>;
 
-export const developmentPlanTypeSchema = z.enum([
-  "PHOTOVOLTAIC_POWER_PLANT",
-  "MIXED_USE_NEIGHBOURHOOD",
-]);
+export const developmentPlanTypeSchema = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "URBAN_BUILDINGS"]);
 export type DevelopmentPlanType = z.infer<typeof developmentPlanTypeSchema>;
 
 export type ProjectPhase =
@@ -50,7 +47,7 @@ export const scheduleSchema = z.object({
 });
 export type Schedule = z.infer<typeof scheduleSchema>;
 
-export * from "./mixedUseNeighbourhood";
+export * from "./urbanProject";
 export * from "./photovoltaicPowerStation";
 export * from "./reinstatementCosts";
 export * from "./reinstatementFullTimeJobs";

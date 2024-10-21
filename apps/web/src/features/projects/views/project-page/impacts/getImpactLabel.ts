@@ -234,7 +234,7 @@ export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName) => 
       return "🏗 Aménagement du projet";
     case "photovoltaic_development_plan_installation":
       return "⚡️ Installation des panneaux photovoltaïques";
-    case "mixed_use_neighbourhood_development_plan_installation":
+    case "urban_project_development_plan_installation":
       return "🏘 Aménagement du site";
     case "operations_costs":
       return "💸️ Charges d'exploitation";
@@ -259,7 +259,7 @@ export const getEconomicBalanceDetailsImpactLabel = (
     case "financial_assistance":
       return getEconomicBalanceFinancialAssistanceLabel(name as FinancialAssistance);
     case "photovoltaic_development_plan_installation":
-    case "mixed_use_neighbourhood_development_plan_installation":
+    case "urban_project_development_plan_installation":
     case "development_plan_installation":
       return getEconomicBalanceInstallationLabel(name as DevelopmentPlanInstallationExpenseName);
     default:
@@ -327,7 +327,7 @@ const getEconomicBalanceInstallationLabel = (
   purpose: DevelopmentPlanInstallationExpenseName,
 ): string => {
   switch (purpose) {
-    case "mixed_use_neighbourhood_technical_studies":
+    case "urban_project_technical_studies":
     case "photovoltaic_technical_studies":
     case "technical_studies":
       return "📋 Études et honoraires techniques";
@@ -335,9 +335,9 @@ const getEconomicBalanceInstallationLabel = (
       return "🛠 Travaux d'installation des panneaux";
     case "photovoltaic_other":
       return "⚡️ Autres frais d'installation des panneaux";
-    case "mixed_use_neighbourhood_works":
+    case "urban_project_works":
       return "🏗 Travaux d'aménagement";
-    case "mixed_use_neighbourhood_other":
+    case "urban_project_other":
       return " 🏘 Autres dépenses d'aménagement";
     case "installation_works":
     case "development_works":

@@ -35,16 +35,16 @@ export type EconomicBalanceMainName =
   | "financial_assistance"
   | "development_plan_installation"
   | "photovoltaic_development_plan_installation"
-  | "mixed_use_neighbourhood_development_plan_installation"
+  | "urban_project_development_plan_installation"
   | "site_resale";
 
 export type DevelopmentPlanInstallationExpenseName =
   | "photovoltaic_technical_studies"
   | "photovoltaic_works"
   | "photovoltaic_other"
-  | "mixed_use_neighbourhood_technical_studies"
-  | "mixed_use_neighbourhood_works"
-  | "mixed_use_neighbourhood_other"
+  | "urban_project_technical_studies"
+  | "urban_project_works"
+  | "urban_project_other"
   | DevelopmentPlanInstallationExpense["purpose"];
 
 type EconomicBalanceDetailsName =
@@ -69,8 +69,8 @@ export type EconomicBalance = {
 
 const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType) => {
   switch (projectType) {
-    case "MIXED_USE_NEIGHBOURHOOD":
-      return "mixed_use_neighbourhood";
+    case "URBAN_BUILDINGS":
+      return "urban_project";
     case "PHOTOVOLTAIC_POWER_PLANT":
       return "photovoltaic";
     default:

@@ -2,7 +2,7 @@ import { differenceInDays } from "date-fns";
 import { Schedule, scheduleSchema, soilTypeSchema } from "shared";
 import { z } from "zod";
 
-import { mixedUseNeighbourhoodFeaturesSchema } from "./mixedUseNeighbourhood";
+import { urbanProjectsFeaturesSchema } from "./urbanProjects";
 
 export const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),
@@ -18,7 +18,7 @@ export type PhotovoltaicPowerStationFeatures = z.infer<
 export const costSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
 const revenueSchema = z.object({ source: z.string(), amount: z.number().nonnegative() });
 
-const developmentPlanType = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "MIXED_USE_NEIGHBOURHOOD"]);
+const developmentPlanType = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "URBAN_BUILDINGS"]);
 
 const baseDevelopmentPlanSchema = z.object({
   type: developmentPlanType,
@@ -33,8 +33,8 @@ const developmentPlanSchema = z.discriminatedUnion("type", [
     features: photovoltaicPowerStationFeaturesSchema,
   }),
   baseDevelopmentPlanSchema.extend({
-    type: z.literal("MIXED_USE_NEIGHBOURHOOD"),
-    features: mixedUseNeighbourhoodFeaturesSchema,
+    type: z.literal("URBAN_BUILDINGS"),
+    features: urbanProjectsFeaturesSchema,
   }),
 ]);
 

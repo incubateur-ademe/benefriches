@@ -1,27 +1,23 @@
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 
 import { DevelopmentPlan } from "../../reconversionProject";
-import {
-  getMixedUseNeighbourhoodSpecificImpacts,
-  MixedUseNeighbourhoodSocioEconomicSpecificImpact,
-} from "./mixedUseNeighbourhoodImpacts";
+import { UrbanProjectFeatures } from "../../urbanProjects";
 import {
   getPhotovoltaicProjectSpecificImpacts,
   PhotovoltaicSocioEconomicSpecificImpact,
 } from "./photovoltaicPowerPlantImpacts";
+import {
+  getUrbanProjectSpecificImpacts,
+  UrbanProjectSocioEconomicSpecificImpact,
+} from "./urbanProjectImpacts";
 
 export type SocioEconomicSpecificImpact =
   | PhotovoltaicSocioEconomicSpecificImpact
-  | MixedUseNeighbourhoodSocioEconomicSpecificImpact;
+  | UrbanProjectSocioEconomicSpecificImpact;
 
 type PhotovoltaicPowerPlantFeatures = Extract<
   DevelopmentPlan,
   { type: "PHOTOVOLTAIC_POWER_PLANT" }
->["features"];
-
-type MixedUseNeighbourhoodFeatures = Extract<
-  DevelopmentPlan,
-  { type: "MIXED_USE_NEIGHBOURHOOD" }
 >["features"];
 
 type Input = {
@@ -54,10 +50,10 @@ export const getDevelopmentPlanRelatedImpacts = async ({
         expectedAnnualProduction: features.expectedAnnualProduction,
       });
     }
-    case "MIXED_USE_NEIGHBOURHOOD": {
-      const features = developmentPlanFeatures as MixedUseNeighbourhoodFeatures;
+    case "URBAN_BUILDINGS": {
+      const features = developmentPlanFeatures as UrbanProjectFeatures;
 
-      return await getMixedUseNeighbourhoodSpecificImpacts({
+      return await getUrbanProjectSpecificImpacts({
         evaluationPeriodInYears,
         operationsFirstYear,
         features,
