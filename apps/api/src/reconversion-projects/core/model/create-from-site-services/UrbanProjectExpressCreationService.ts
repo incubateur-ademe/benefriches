@@ -5,8 +5,9 @@ import {
   computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution,
   computeDefaultReinstatementSchedule,
   computeDefaultSitePurchaseFromSiteSurfaceArea,
-  computeExpectedPostDevelopmentResaleFromSiteSurfaceArea,
+  computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces,
   computeProjectReinstatementCosts,
+  computePropertyTransferDutiesFromSellingPrice,
   computeReinstatementFullTimeJobs,
   computeSoilsDistributionFromSpaces,
   formatMunicipalityName,
@@ -151,8 +152,14 @@ export class UrbanProjectExpressCreationService {
   }
 
   // expected resale
-  get siteResaleExpectedTransactionValues() {
-    return computeExpectedPostDevelopmentResaleFromSiteSurfaceArea(this.siteData.surfaceArea);
+  get siteResaleExpectedSellingPrice() {
+    return computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces(
+      this.buildingsFloorAreaDistribution,
+    );
+  }
+
+  get siteResaleExpectedPropertyTransferDuties() {
+    return computePropertyTransferDutiesFromSellingPrice(this.siteResaleExpectedSellingPrice);
   }
 
   get reinstatementFullTimeJobsInvolved() {
@@ -187,9 +194,8 @@ export class UrbanProjectExpressCreationService {
       futureSiteOwner: this.futureSiteOwner,
       sitePurchaseSellingPrice: this.sitePurchaseValues.sellingPrice,
       sitePurchasePropertyTransferDuties: this.sitePurchaseValues.propertyTransactionDuties,
-      siteResaleExpectedSellingPrice: this.siteResaleExpectedTransactionValues.sellingPrice,
-      siteResaleExpectedPropertyTransferDuties:
-        this.siteResaleExpectedTransactionValues.propertyTransferDuties,
+      siteResaleExpectedSellingPrice: this.siteResaleExpectedSellingPrice,
+      siteResaleExpectedPropertyTransferDuties: this.siteResaleExpectedPropertyTransferDuties,
       reinstatementCosts: this.reinstatementCosts,
       reinstatementSchedule: this.reinstatementSchedule,
       reinstatementFullTimeJobsInvolved: this.reinstatementFullTimeJobsInvolved,

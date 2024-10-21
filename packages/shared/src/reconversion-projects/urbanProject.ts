@@ -53,7 +53,15 @@ export const getSoilTypeForSpace = (space: UrbanProjectSpace): SoilType => {
 };
 
 export const buildingsFloorAreaUsageDistribution = z.record(
-  z.enum(["RESIDENTIAL", "GROUND_FLOOR_RETAIL"]),
+  z.enum([
+    "RESIDENTIAL",
+    "GROUND_FLOOR_RETAIL",
+    "TERTIARY_ACTIVITIES",
+    "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
+    "PUBLIC_FACILITIES",
+    "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
+    "SHIPPING_OR_INDUSTRIAL_BUILDINGS",
+  ]),
   z.number().nonnegative(),
 );
 export type BuildingFloorAreaUsageDistribution = z.infer<

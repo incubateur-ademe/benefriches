@@ -5,6 +5,10 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { Address } from "src/sites/core/models/site";
 
 import { MixedUseNeighbourhoodProjectExpressCreationService } from "../model/create-from-site-services/MixedUseNeighbourhoodProjectExpressCreationService";
+import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
+import { PublicFacilitiesProjectExpressCreationService } from "../model/create-from-site-services/PublicFacilitiesProjectExpressCreationService";
+import { ResidentialProjectExpressCreationService } from "../model/create-from-site-services/ResidentialProjectExpressCreationService";
+import { ResidentialTenseAreaProjectExpressCreationService } from "../model/create-from-site-services/ResidentialTenseAreaProjectExpressCreationService";
 import { ReconversionProject, reconversionProjectSchema } from "../model/reconversionProject";
 
 export type SiteView = {
@@ -39,6 +43,26 @@ type Request = {
   reconversionProjectId: string;
   siteId: string;
   createdBy: string;
+  category?:
+    | "PUBLIC_FACILITIES"
+    | "RESIDENTIAL_TENSE_AREA"
+    | "RESIDENTIAL_NORMAL_AREA"
+    | "NEW_URBAN_CENTER";
+};
+
+const getCreationServiceClass = (category: Request["category"]) => {
+  switch (category) {
+    case "NEW_URBAN_CENTER":
+      return NewUrbanCenterProjectExpressCreationService;
+    case "RESIDENTIAL_TENSE_AREA":
+      return ResidentialTenseAreaProjectExpressCreationService;
+    case "RESIDENTIAL_NORMAL_AREA":
+      return ResidentialProjectExpressCreationService;
+    case "PUBLIC_FACILITIES":
+      return PublicFacilitiesProjectExpressCreationService;
+    default:
+      return MixedUseNeighbourhoodProjectExpressCreationService;
+  }
 };
 
 export class CreateExpressReconversionProjectUseCase implements UseCase<Request, void> {
@@ -54,7 +78,9 @@ export class CreateExpressReconversionProjectUseCase implements UseCase<Request,
       throw new Error(`Site with id ${props.siteId} does not exist`);
     }
 
-    const creationService = new MixedUseNeighbourhoodProjectExpressCreationService(
+    const ProjectExpressCreationServiceClass = getCreationServiceClass(props.category);
+
+    const creationService = new ProjectExpressCreationServiceClass(
       this.dateProvider,
       props.reconversionProjectId,
       props.createdBy,
