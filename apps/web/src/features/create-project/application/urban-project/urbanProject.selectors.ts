@@ -91,3 +91,7 @@ export const selectUrbanProjectSoilsDistribution = createSelector(
     return soilsDistribution.toJSON();
   },
 );
+
+export const selectBuildingsFootprintSurfaceArea = createSelector([selectSelf], (state): number => {
+  return state.creationData.livingAndActivitySpacesDistribution?.BUILDINGS ?? 0;
+});

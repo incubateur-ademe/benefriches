@@ -132,3 +132,7 @@ export const soilsDecontaminationSurfaceAreaCompleted = createAction<number>(
 export const soilsDecontaminationSurfaceAreaReverted = createAction(
   "soilsDecontaminationSurfaceAreaReverted",
 );
+
+// buildings
+export const buildingsIntroductionCompleted = createAction("buildingsIntroductionCompleted");
+export const buildingsIntroductionReverted = createAction("buildingsIntroductionReverted");

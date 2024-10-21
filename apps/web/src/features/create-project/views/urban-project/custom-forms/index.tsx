@@ -4,6 +4,7 @@ import { UrbanProjectCustomCreationStep } from "@/features/create-project/applic
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import UrbanProjectCustomSteps from "./UrbanProjectCustomSteps";
+import BuildingsIntroduction from "./buildings/introduction";
 import SoilsDecontaminationIntroduction from "./soils-decontamination/intro";
 import SoilsDecontaminationSelection from "./soils-decontamination/selection";
 import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
@@ -68,7 +69,7 @@ const getCurrentStepView = (
     case "SOILS_DECONTAMINATION_SURFACE_AREA":
       return <SoilsDecontaminationSurfaceArea />;
     case "BUILDINGS_INTRODUCTION":
-      return <div>BUILDINGS_INTRODUCTION</div>;
+      return <BuildingsIntroduction />;
   }
 };
 
