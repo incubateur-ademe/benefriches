@@ -11,35 +11,39 @@ type HowItWorksStepProps = {
 
 function HowItWorksStep({ number, title, text }: HowItWorksStepProps) {
   return (
-    <div className={fr.cx("fr-col-12", "fr-col-md-3")}>
+    <li>
       <div
         className={classNames(
-          fr.cx("fr-mb-1w"),
-          "tw-text-white",
+          "tw-mb-2",
+          "tw-text-white tw-bg-blue-main",
           "tw-rounded-full",
           "tw-text-center",
-          "tw-h-12",
-          "tw-w-12",
+          "tw-h-12 tw-w-12",
           "tw-font-bold",
           "tw-pr-[1px]",
           "tw-pt-[11px]",
-          "tw-bg-blue-main",
         )}
       >
         {number}
       </div>
-      <span className={fr.cx("fr-text--xl", "fr-text--bold")}>{title}</span>
-      <p className={fr.cx("fr-text--sm", "fr-mt-1w")}>{text}</p>
-    </div>
+      <h3 className="tw-text-xl tw-mb-2">{title}</h3>
+      <p className={fr.cx("fr-text--sm")}>{text}</p>
+    </li>
   );
 }
 
 export default function HowItWorksSection() {
   return (
-    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-grey-light", "dark:tw-bg-grey-dark")}>
+    <section className="tw-py-20 tw-bg-grey-light dark:tw-bg-grey-dark">
       <div className={fr.cx("fr-container")}>
         <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
-        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mt-5w")}>
+        <ol
+          className={classNames(
+            "tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-10",
+            "tw-list-none marker:tw-content-none",
+            "tw-p-0 tw-mt-10",
+          )}
+        >
           <HowItWorksStep
             number={1}
             title="Décrivez le site"
@@ -76,7 +80,7 @@ export default function HowItWorksSection() {
               </span>
             }
           />
-        </div>
+        </ol>
       </div>
     </section>
   );
