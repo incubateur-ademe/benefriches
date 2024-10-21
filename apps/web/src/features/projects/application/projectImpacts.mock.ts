@@ -293,7 +293,7 @@ export const urbanProjectImpactMock = {
       IMPERMEABLE_SOILS: 30000,
     },
     developmentPlan: {
-      type: "MIXED_USE_NEIGHBOURHOOD",
+      type: "URBAN_BUILDINGS",
       buildingsFloorAreaDistribution: {
         GROUND_FLOOR_RETAIL: 20000,
         RESIDENTIAL: 70000,

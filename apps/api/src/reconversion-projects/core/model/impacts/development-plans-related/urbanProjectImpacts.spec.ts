@@ -6,7 +6,7 @@ import {
   getLocalPropertyValueIncreaseRelatedImpacts,
   getTravelRelatedImpacts,
   getUrbanFreshnessRelatedImpacts,
-} from "./mixedUseNeighbourhoodImpacts";
+} from "./urbanProjectImpacts";
 
 describe("Mixed use neighbourhood specific impacts", () => {
   describe("Urban Freshness related impacts", () => {

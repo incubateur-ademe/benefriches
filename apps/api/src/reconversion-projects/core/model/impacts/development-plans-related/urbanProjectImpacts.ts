@@ -1,13 +1,13 @@
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 
-import { MixedUseNeighbourhoodFeatures } from "../../mixedUseNeighbourhood";
+import { UrbanProjectFeatures } from "../../urbanProjects";
 import { CO2eqMonetaryValueService } from "../services/CO2eqMonetaryValueService";
 import { GetInfluenceAreaValuesService } from "../services/GetInfluenceAreaValuesService";
 import { TravelRelatedImpactsService } from "../services/TravelRelatedImpactsService";
 import { UrbanFreshnessRelatedImpactsService } from "../services/UrbanFreshnessRelatedImpactsService";
 import { computePropertyValueImpact } from "../socio-economic/property-value/propertyValueImpact";
 
-export type MixedUseNeighbourhoodSocioEconomicSpecificImpact =
+export type UrbanProjectSocioEconomicSpecificImpact =
   | AvoidedCarRelatedExpensesImpact
   | AvoidedAirConditioningExpensesImpact
   | TravelTimeSavedImpact
@@ -102,7 +102,7 @@ const getUrbanFreshnessInfluenceRadius = (
 type UrbanFreshnessInput = {
   evaluationPeriodInYears: number;
   operationsFirstYear: number;
-  features: MixedUseNeighbourhoodFeatures;
+  features: UrbanProjectFeatures;
   siteSurfaceArea: number;
   citySurfaceArea: number;
   cityPopulation: number;
@@ -116,7 +116,7 @@ export const getUrbanFreshnessRelatedImpacts = ({
   citySurfaceArea,
   cityPopulation,
 }: UrbanFreshnessInput): {
-  socioeconomic: MixedUseNeighbourhoodSocioEconomicSpecificImpact[];
+  socioeconomic: UrbanProjectSocioEconomicSpecificImpact[];
   avoidedAirConditioningCo2EqEmissions?: number;
 } => {
   const { buildingsFloorAreaDistribution, spacesDistribution } = features;
@@ -181,7 +181,7 @@ export const getUrbanFreshnessRelatedImpacts = ({
       impact: "avoided_air_conditioning_expenses",
       impactCategory: "economic_indirect",
     },
-  ] as MixedUseNeighbourhoodSocioEconomicSpecificImpact[];
+  ] as UrbanProjectSocioEconomicSpecificImpact[];
 
   return {
     socioeconomic: socioeconomic.filter(({ amount }) => amount > 0),
@@ -215,7 +215,7 @@ const getTravelRelatedImpactInfluenceRadius = (
 type TravelInput = {
   evaluationPeriodInYears: number;
   operationsFirstYear: number;
-  features: MixedUseNeighbourhoodFeatures;
+  features: UrbanProjectFeatures;
   siteSurfaceArea: number;
   citySurfaceArea: number;
   cityPopulation: number;
@@ -398,14 +398,14 @@ export const getLocalPropertyValueIncreaseRelatedImpacts = async ({
 type Input = {
   evaluationPeriodInYears: number;
   operationsFirstYear: number;
-  features: MixedUseNeighbourhoodFeatures;
+  features: UrbanProjectFeatures;
   siteSurfaceArea: number;
   siteIsFriche: boolean;
   siteCityCode: string;
   getCityRelatedDataService: GetCityRelatedDataService;
 };
 
-export const getMixedUseNeighbourhoodSpecificImpacts = async ({
+export const getUrbanProjectSpecificImpacts = async ({
   evaluationPeriodInYears,
   operationsFirstYear,
   features,
@@ -451,7 +451,7 @@ export const getMixedUseNeighbourhoodSpecificImpacts = async ({
       ...urbanFreshnessSocioEconomicImpacts,
       ...travelRelatedSocioEconomicImpacts,
       ...localPropertyIncreaseRelatedImpacts,
-    ] as MixedUseNeighbourhoodSocioEconomicSpecificImpact[],
+    ] as UrbanProjectSocioEconomicSpecificImpact[],
     ...urbanFreshnessImpacts,
     ...travelRelatedImpacts,
   };

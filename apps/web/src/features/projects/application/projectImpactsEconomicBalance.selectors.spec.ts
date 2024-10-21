@@ -108,15 +108,15 @@ describe("projectImpactsEconomicBalance selectors", () => {
     it("should the right impact key for mixed use neighbourhood project for installation costs", () => {
       const economicBalance = getEconomicBalanceProjectImpacts.resultFunc(
         "all",
-        "MIXED_USE_NEIGHBOURHOOD",
+        "URBAN_BUILDINGS",
         MOCK_STATES.projectImpacts["impactsData"],
       );
 
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({
-          name: "mixed_use_neighbourhood_development_plan_installation",
+          name: "urban_project_development_plan_installation",
           value: -200000,
-          details: [{ value: -200000, name: "mixed_use_neighbourhood_works" }],
+          details: [{ value: -200000, name: "urban_project_works" }],
         }),
       );
     });

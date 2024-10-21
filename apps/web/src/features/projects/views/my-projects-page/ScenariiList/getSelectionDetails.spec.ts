@@ -73,7 +73,7 @@ const MOCK_PROJECTS_LIST = [
     name: "Projet quartier",
     siteId: "22339455-2ca2-4e2f-ab6b-bb3e2709f3e0",
     siteName: "Friche d'habitat de Forcalquier",
-    type: "MIXED_USE_NEIGHBOURHOOD",
+    type: "URBAN_BUILDINGS",
   },
 ];
 

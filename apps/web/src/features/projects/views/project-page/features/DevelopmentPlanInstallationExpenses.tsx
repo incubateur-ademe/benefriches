@@ -1,4 +1,4 @@
-import { MixedUseNeighbourhoodDevelopmentExpense, PhotovoltaicInstallationExpense } from "shared";
+import { UrbanProjectDevelopmentExpense, PhotovoltaicInstallationExpense } from "shared";
 
 import {
   ProjectDevelopmentPlanType,
@@ -44,7 +44,7 @@ export default function DevelopmentPlanInstallationExpenses({
           })}
         </>
       );
-    case "MIXED_USE_NEIGHBOURHOOD":
+    case "URBAN_BUILDINGS":
       return (
         <>
           <DataLine
@@ -58,7 +58,7 @@ export default function DevelopmentPlanInstallationExpenses({
             return (
               <DataLine
                 label={getLabelForUrbanProjectDevelopmentExpense(
-                  purpose as MixedUseNeighbourhoodDevelopmentExpense["purpose"],
+                  purpose as UrbanProjectDevelopmentExpense["purpose"],
                 )}
                 value={`${formatNumberFr(amount)} €`}
                 isDetails

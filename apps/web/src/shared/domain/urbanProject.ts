@@ -1,6 +1,6 @@
-import { MixedUseNeighbourhoodDevelopmentExpense, MixedUseNeighbourhoodSpace } from "shared";
+import { UrbanProjectDevelopmentExpense, UrbanProjectSpace } from "shared";
 
-export const getLabelForUrbanProjectSpace = (space: MixedUseNeighbourhoodSpace): string => {
+export const getLabelForUrbanProjectSpace = (space: UrbanProjectSpace): string => {
   switch (space) {
     case "BUILDINGS_FOOTPRINT":
       return "Emprise au sol bâti";
@@ -24,7 +24,7 @@ export const getLabelForUrbanProjectSpace = (space: MixedUseNeighbourhoodSpace):
 };
 
 export const getLabelForUrbanProjectDevelopmentExpense = (
-  expensePurpose: MixedUseNeighbourhoodDevelopmentExpense["purpose"],
+  expensePurpose: UrbanProjectDevelopmentExpense["purpose"],
 ): string => {
   switch (expensePurpose) {
     case "technical_studies":

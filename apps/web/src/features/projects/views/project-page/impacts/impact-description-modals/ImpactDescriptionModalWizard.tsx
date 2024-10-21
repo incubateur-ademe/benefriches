@@ -37,7 +37,7 @@ export type ProjectData = {
         surfaceArea: number;
       }
     | {
-        type: "MIXED_USE_NEIGHBOURHOOD";
+        type: "URBAN_BUILDINGS";
         buildingsFloorAreaDistribution: {
           GROUND_FLOOR_RETAIL?: number;
           RESIDENTIAL?: number;

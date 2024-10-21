@@ -32,7 +32,7 @@ export default function DevelopmentPlanFeatures(props: Props) {
           />
         </Section>
       );
-    case "MIXED_USE_NEIGHBOURHOOD":
+    case "URBAN_BUILDINGS":
       return (
         <Section title="🏘 Espaces du quartier">
           <DataLine

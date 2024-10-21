@@ -194,7 +194,7 @@ describe("ReconversionProjects controller", () => {
         {
           id: uuid(),
           reconversion_project_id: projectInDb2.id,
-          type: "MIXED_USE_NEIGHBOURHOOD",
+          type: "URBAN_BUILDINGS",
           features: {},
         },
       ]);
@@ -220,7 +220,7 @@ describe("ReconversionProjects controller", () => {
             {
               id: projectInDb2.id,
               name: projectInDb2.name,
-              type: "MIXED_USE_NEIGHBOURHOOD",
+              type: "URBAN_BUILDINGS",
               isExpressProject: true,
             },
           ],

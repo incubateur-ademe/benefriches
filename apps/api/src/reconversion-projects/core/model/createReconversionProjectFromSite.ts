@@ -15,8 +15,8 @@ import {
 import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { Address } from "src/sites/core/models/site";
 
-import { MixedUseNeighbourhoodFeatures } from "./mixedUseNeighbourhood";
 import { ReconversionProject, reconversionProjectSchema } from "./reconversionProject";
+import { UrbanProjectFeatures } from "./urbanProjects";
 
 type SiteData = {
   id: string;
@@ -107,7 +107,7 @@ const computeReinstatementSchedule = (dateProvider: IDateProvider): Schedule => 
 
 const JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR = 0.044;
 const computeOperationsFullTimeJobs = (
-  buildingsFloorAreaDistribution: MixedUseNeighbourhoodFeatures["buildingsFloorAreaDistribution"],
+  buildingsFloorAreaDistribution: UrbanProjectFeatures["buildingsFloorAreaDistribution"],
 ) => {
   return (
     JOBS_RATIO_PER_GROUND_FLOOR_RETAIL_SQUARE_METER_PER_YEAR *
@@ -259,7 +259,7 @@ export class MixedUseNeighbourHoodReconversionProjectCreationService {
           buildingsFloorAreaDistribution,
         },
         installationSchedule,
-        type: "MIXED_USE_NEIGHBOURHOOD",
+        type: "URBAN_BUILDINGS",
         costs: [
           { amount: installationCosts.technicalStudies, purpose: "technical_studies" },
           { amount: installationCosts.developmentWorks, purpose: "development_works" },

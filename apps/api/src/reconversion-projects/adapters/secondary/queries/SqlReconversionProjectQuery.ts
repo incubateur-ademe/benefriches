@@ -2,11 +2,11 @@ import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
 import { Schedule } from "shared";
 
-import { MixedUseNeighbourhoodFeatures } from "src/reconversion-projects/core/model/mixedUseNeighbourhood";
 import {
   DevelopmentPlan,
   PhotovoltaicPowerStationFeatures,
 } from "src/reconversion-projects/core/model/reconversionProject";
+import { UrbanProjectFeatures } from "src/reconversion-projects/core/model/urbanProjects";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 import {
@@ -169,7 +169,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           expectedAnnualProduction,
         };
       }
-      if (sqlResult.development_plan.type === "MIXED_USE_NEIGHBOURHOOD") {
+      if (sqlResult.development_plan.type === "URBAN_BUILDINGS") {
         return {
           installationCosts: sqlResult.development_plan.costs,
           developerName: sqlResult.development_plan.developer_name,
@@ -177,9 +177,8 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
             sqlResult.development_plan.schedule_start_date,
             sqlResult.development_plan.schedule_end_date,
           ),
-          type: "MIXED_USE_NEIGHBOURHOOD",
-          spaces: (sqlResult.development_plan.features as MixedUseNeighbourhoodFeatures)
-            .spacesDistribution,
+          type: "URBAN_BUILDINGS",
+          spaces: (sqlResult.development_plan.features as UrbanProjectFeatures).spacesDistribution,
         };
       }
       throw new Error("Unknown development plan type");

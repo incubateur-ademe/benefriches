@@ -1,13 +1,13 @@
 import {
   FinancialAssistanceRevenue,
   FricheActivity,
-  MixedUseNeighbourhoodDevelopmentExpense,
-  MixedUseNeighbourhoodSpace,
+  UrbanProjectDevelopmentExpense,
   PhotovoltaicInstallationExpense,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
   SoilsDistribution,
+  UrbanProjectSpace,
 } from "shared";
 
 import { WorksSchedule } from "@/shared/domain/reconversionProject";
@@ -104,11 +104,11 @@ export type ProjectFeatures = {
         contractDuration: number;
       }
     | {
-        type: "MIXED_USE_NEIGHBOURHOOD";
+        type: "URBAN_BUILDINGS";
         developerName?: string;
-        installationCosts: MixedUseNeighbourhoodDevelopmentExpense[];
+        installationCosts: UrbanProjectDevelopmentExpense[];
         installationSchedule?: WorksSchedule;
-        spaces: Record<MixedUseNeighbourhoodSpace, number>;
+        spaces: Record<UrbanProjectSpace, number>;
       };
   soilsDistribution: SoilsDistribution;
   futureOwner?: string;
@@ -128,7 +128,7 @@ export type ProjectFeatures = {
   decontaminatedSoilSurface?: number;
 };
 
-export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "MIXED_USE_NEIGHBOURHOOD";
+export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "URBAN_BUILDINGS";
 
 export type ProjectForComparison = {
   id: string;

@@ -36,7 +36,7 @@ const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName) => {
       return "#F57F0A";
     case "photovoltaic_development_plan_installation":
       return "#EF410F";
-    case "mixed_use_neighbourhood_development_plan_installation":
+    case "urban_project_development_plan_installation":
       return "#DA244F";
     case "operations_costs":
       return "#C535A4";

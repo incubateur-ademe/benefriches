@@ -5,8 +5,8 @@ import { InMemoryReconversionProjectRepository } from "src/reconversion-projects
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 
-import { MixedUseNeighbourhoodFeatures } from "../model/mixedUseNeighbourhood";
 import { ReconversionProject } from "../model/reconversionProject";
+import { UrbanProjectFeatures } from "../model/urbanProjects";
 import {
   CreateExpressReconversionProjectUseCase,
   DateProvider,
@@ -200,15 +200,13 @@ describe("CreateReconversionProject Use Case", () => {
             reconversionProjectRepository._getReconversionProjects();
           expect(createdReconversionProjects).toHaveLength(1);
           const createdReconversionProject = createdReconversionProjects[0];
-          expect(createdReconversionProject?.developmentPlan.type).toEqual(
-            "MIXED_USE_NEIGHBOURHOOD",
-          );
+          expect(createdReconversionProject?.developmentPlan.type).toEqual("URBAN_BUILDINGS");
           expect(
-            (createdReconversionProject?.developmentPlan.features as MixedUseNeighbourhoodFeatures)
+            (createdReconversionProject?.developmentPlan.features as UrbanProjectFeatures)
               .spacesDistribution,
           ).toEqual(expectedSpacesDistribution);
           expect(
-            (createdReconversionProject?.developmentPlan.features as MixedUseNeighbourhoodFeatures)
+            (createdReconversionProject?.developmentPlan.features as UrbanProjectFeatures)
               .buildingsFloorAreaDistribution,
           ).toEqual(expectedBuildingsFloorAreaDistribution);
           expect(createdReconversionProject?.soilsDistribution).toEqual(expectedSoilsDistribution);
