@@ -1,7 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { lazy, Suspense, useEffect } from "react";
 
-import ProjectImpactsOnboardingPage from "@/features/projects/views/project-impacts-onboarding";
 import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
 import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -30,15 +29,15 @@ const LoginPage = lazy(() => import("@/features/login"));
 const OnBoardingIdentityPage = lazy(
   () => import("@/features/onboarding/identity/OnBoardingIdentityPage"),
 );
-const OnBoardingIntroductionWhyBenefriches = lazy(
-  () => import("@/features/onboarding/why-benefriches/WhyBenefrichesPage"),
-);
-const OnBoardingIntroductionHowItWorks = lazy(
-  () => import("@/features/onboarding/how-it-works/HowItWorksPage"),
+const OnBoardingIntroductionPages = lazy(
+  () => import("@/features/onboarding/OnBoardingIntroductionPages"),
 );
 const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
 const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
 const SiteFeaturesPage = lazy(() => import("@/features/site-features/views"));
+const ProjectImpactsOnboardingPage = lazy(
+  () => import("@/features/projects/views/project-impacts-onboarding"),
+);
 
 function App() {
   const route = useRoute();
@@ -79,15 +78,10 @@ function App() {
               return <PolitiqueConfidentialitePage />;
             // protected pages
             case routes.onBoardingIntroductionWhy.name:
-              return (
-                <RequireRegisteredUser>
-                  <OnBoardingIntroductionWhyBenefriches />
-                </RequireRegisteredUser>
-              );
             case routes.onBoardingIntroductionHow.name:
               return (
                 <RequireRegisteredUser>
-                  <OnBoardingIntroductionHowItWorks />
+                  <OnBoardingIntroductionPages route={route} />
                 </RequireRegisteredUser>
               );
             case routes.createUser.name:
