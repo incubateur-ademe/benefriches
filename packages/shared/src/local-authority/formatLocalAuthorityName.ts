@@ -1,9 +1,5 @@
 import { LocalAuthority } from ".";
-import { startsByVowel } from "../services/strings/startsByVowel";
-
-const capitalize = (text: string): string => {
-  return text.charAt(0).toUpperCase() + text.slice(1);
-};
+import { formatCityWithPlacePreposition } from "./formatCityWithPlacePreposition";
 
 export const formatEpciName = (name: string): string => {
   if (name.startsWith("CC")) {
@@ -19,10 +15,7 @@ export const formatEpciName = (name: string): string => {
 };
 
 export const formatMunicipalityName = (name: string): string => {
-  if (startsByVowel(name) || name.toLowerCase().startsWith("h")) {
-    return `Mairie d'${capitalize(name)}`;
-  }
-  return `Mairie de ${capitalize(name)}`;
+  return `Mairie ${formatCityWithPlacePreposition(name)}`;
 };
 
 export const formatLocalAuthorityName = (

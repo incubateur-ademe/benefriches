@@ -1,5 +1,10 @@
-import { isForest, isPrairie, isSoilAgricultural, SoilType } from "shared";
-import { startsByVowel } from "shared";
+import {
+  formatCityWithPlacePreposition,
+  isForest,
+  isPrairie,
+  isSoilAgricultural,
+  SoilType,
+} from "shared";
 
 import { getFricheActivityLabel } from "./friche.types";
 import { SiteDraft } from "./siteFoncier.types";
@@ -41,9 +46,7 @@ export const generateSiteName = (siteData: SiteData): string => {
 
   const { city } = siteData.address;
 
-  const hasElision = startsByVowel(city) || city.toLowerCase().startsWith("h");
-
-  const name = `${designation} ${hasElision ? "d'" : "de "}${city}`;
+  const name = `${designation} ${formatCityWithPlacePreposition(city)}`;
 
   return name.charAt(0).toUpperCase() + name.slice(1);
 };

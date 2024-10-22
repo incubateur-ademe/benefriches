@@ -158,5 +158,23 @@ describe("siteName", () => {
       });
       expect(generateSiteName(site)).toEqual("Friche industrielle d'Angers");
     });
+
+    it("should generate 'Friche industrielle du Mans'", () => {
+      const site = buildSiteDraft({
+        isFriche: true,
+        fricheActivity: "INDUSTRY",
+        soils: ["BUILDINGS", "MINERAL_SOIL"],
+        address: {
+          banId: "31070_p4ur8e",
+          value: "Le Mans",
+          city: "Le Mans",
+          cityCode: "49007",
+          postCode: "49000",
+          long: 0.664699,
+          lat: 43.260859,
+        },
+      });
+      expect(generateSiteName(site)).toEqual("Friche industrielle du Mans");
+    });
   });
 });

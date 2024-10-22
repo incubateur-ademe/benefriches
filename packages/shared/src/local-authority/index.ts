@@ -7,3 +7,4 @@ export const isLocalAuthority = (structureType: string): structureType is LocalA
 };
 
 export * from "./formatLocalAuthorityName";
+export * from "./formatCityWithPlacePreposition";
