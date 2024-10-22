@@ -2,6 +2,7 @@ import { roundTo1Digit, roundTo2Digits, roundToInteger } from "shared";
 
 import {
   formatNumberFr,
+  formatPercentage,
   SQUARE_METERS_HTML_SYMBOL,
 } from "@/shared/services/format-number/formatNumber";
 
@@ -70,5 +71,5 @@ export const formatEvolutionPercentage = (evolutionInPercentage: number) => {
   const roundedValue = roundToInteger(evolutionInPercentage);
   const prefix = getSignPrefix(evolutionInPercentage);
 
-  return `${prefix}${formatNumberFr(roundedValue)}%`;
+  return `${prefix}${formatPercentage(roundedValue)}`;
 };

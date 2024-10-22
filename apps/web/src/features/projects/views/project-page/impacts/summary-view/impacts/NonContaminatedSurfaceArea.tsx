@@ -1,34 +1,33 @@
-import {
-  formatEvolutionPercentage,
-  formatSurfaceAreaImpact,
-} from "@/features/projects/views/shared/formatImpactValue";
+import { formatPercentage, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   percentageEvolution: number;
-  value: number;
+  decontaminatedSurfaceArea: number;
+  forecastContaminatedSurfaceArea: number;
   isSuccess: boolean;
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
 const ImpactSummaryNonContaminatedSurfaceArea = ({
   percentageEvolution,
-  value,
+  decontaminatedSurfaceArea,
+  forecastContaminatedSurfaceArea,
   isSuccess,
   descriptionDisplayMode,
 }: Props) => {
   return isSuccess ? (
     <KeyImpactIndicatorCard
       type="success"
-      description={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols non dépollués`}
+      description={`${formatSurfaceArea(decontaminatedSurfaceArea)} (soit ${formatPercentage(percentageEvolution)}) de sols dépollués`}
       title="Des risques sanitaires réduits&nbsp;☢️"
       descriptionDisplayMode={descriptionDisplayMode}
     />
   ) : (
     <KeyImpactIndicatorCard
       type="error"
-      description={`${formatSurfaceAreaImpact(value)} de sols non dépollués`}
+      description={`${formatSurfaceArea(forecastContaminatedSurfaceArea)} de sols non dépollués`}
       title="des sols encore pollués&nbsp;☢️"
       descriptionDisplayMode={descriptionDisplayMode}
     />

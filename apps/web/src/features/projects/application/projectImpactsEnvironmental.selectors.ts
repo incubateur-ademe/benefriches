@@ -101,7 +101,7 @@ export const getEnvironmentalProjectImpacts = createSelector(
       return [];
     }
 
-    if (nonContaminatedSurfaceArea) {
+    if (nonContaminatedSurfaceArea && nonContaminatedSurfaceArea.difference !== 0) {
       impacts.push({
         name: "non_contaminated_surface_area",
         type: "surfaceArea",

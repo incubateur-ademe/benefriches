@@ -1,19 +1,16 @@
-import {
-  formatEvolutionPercentage,
-  formatSurfaceAreaImpact,
-} from "@/features/projects/views/shared/formatImpactValue";
+import { formatPercentage, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   percentageEvolution: number;
-  value: number;
+  difference: number;
   isSuccess: boolean;
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
 const ImpactSummaryPermeableSurfaceArea = ({
-  value,
+  difference,
   percentageEvolution,
   isSuccess,
   descriptionDisplayMode,
@@ -21,14 +18,14 @@ const ImpactSummaryPermeableSurfaceArea = ({
   return isSuccess ? (
     <KeyImpactIndicatorCard
       type="success"
-      description={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols désimperméabilisés`}
+      description={`${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols désimperméabilisés`}
       title="+ de sols perméables&nbsp;☔️"
       descriptionDisplayMode={descriptionDisplayMode}
     />
   ) : (
     <KeyImpactIndicatorCard
       type="error"
-      description={`${formatSurfaceAreaImpact(value)} (soit ${formatEvolutionPercentage(percentageEvolution)}) de sols imperméabilisés`}
+      description={`${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols imperméabilisés`}
       title="- de sols perméables&nbsp;☔️"
       descriptionDisplayMode={descriptionDisplayMode}
     />

@@ -84,7 +84,7 @@ const getFullTimeJobsImpact = (state: RootState["projectImpacts"]) => {
 
   return {
     percentageEvolution: getPercentageDifference(current, forecast),
-    value: difference,
+    difference,
   };
 };
 
@@ -126,19 +126,25 @@ const getPermeableSurfaceArea = (state: RootState["projectImpacts"]) => {
 
   return {
     percentageEvolution: getPercentageDifference(base, forecast),
-    value: forecast - base,
+    difference: forecast - base,
   };
 };
 
 const getNonContaminatedSurfaceArea = (state: RootState["projectImpacts"]) => {
-  if (!state.impactsData?.nonContaminatedSurfaceArea) {
+  const siteContaminatedSurfaceArea = state.relatedSiteData?.contaminatedSoilSurface ?? 0;
+  const siteSurfaceArea = state.relatedSiteData?.surfaceArea ?? 0;
+  const nonContaminatedSurfaceAreaImpact = state.impactsData?.nonContaminatedSurfaceArea;
+
+  if (!nonContaminatedSurfaceAreaImpact || !siteContaminatedSurfaceArea) {
     return undefined;
   }
-  const { forecast, current, difference } = state.impactsData.nonContaminatedSurfaceArea;
+
+  const { forecast, current, difference } = nonContaminatedSurfaceAreaImpact;
 
   return {
     percentageEvolution: getPercentageDifference(current, forecast),
-    value: difference,
+    forecastContaminatedSurfaceArea: siteSurfaceArea - forecast,
+    decontaminatedSurfaceArea: difference,
   };
 };
 
@@ -160,9 +166,18 @@ export type KeyImpactIndicatorData =
       value: number;
     }
   | {
-      name: "fullTimeJobs" | "permeableSurfaceArea" | "nonContaminatedSurfaceArea";
+      name: "nonContaminatedSurfaceArea";
       isSuccess: boolean;
-      value: { value: number; percentageEvolution: number };
+      value: {
+        forecastContaminatedSurfaceArea: number;
+        decontaminatedSurfaceArea: number;
+        percentageEvolution: number;
+      };
+    }
+  | {
+      name: "fullTimeJobs" | "permeableSurfaceArea";
+      isSuccess: boolean;
+      value: { difference: number; percentageEvolution: number };
     }
   | {
       name: "avoidedFricheCostsForLocalAuthority";
@@ -208,7 +223,7 @@ export const getKeyImpactIndicatorsList = createSelector(selectSelf, (state) => 
         isAgriculturalFriche,
       },
     });
-  } else if (permeableSurfaceArea && permeableSurfaceArea.value < 0) {
+  } else if (permeableSurfaceArea && permeableSurfaceArea.difference < 0) {
     impacts.push({
       name: "zanCompliance",
       isSuccess: false,
@@ -248,10 +263,10 @@ export const getKeyImpactIndicatorsList = createSelector(selectSelf, (state) => 
     });
   }
 
-  if (fullTimeJobs && fullTimeJobs.value !== 0) {
+  if (fullTimeJobs && fullTimeJobs.difference !== 0) {
     impacts.push({
       name: "fullTimeJobs",
-      isSuccess: fullTimeJobs.value > 0,
+      isSuccess: fullTimeJobs.difference > 0,
       value: fullTimeJobs,
     });
   }
@@ -272,10 +287,10 @@ export const getKeyImpactIndicatorsList = createSelector(selectSelf, (state) => 
     });
   }
 
-  if (permeableSurfaceArea) {
+  if (permeableSurfaceArea && permeableSurfaceArea.difference > 0) {
     impacts.push({
       name: "permeableSurfaceArea",
-      isSuccess: permeableSurfaceArea.value > 0,
+      isSuccess: permeableSurfaceArea.difference > 0,
       value: permeableSurfaceArea,
     });
   }
@@ -283,7 +298,7 @@ export const getKeyImpactIndicatorsList = createSelector(selectSelf, (state) => 
   if (nonContaminatedSurfaceArea) {
     impacts.push({
       name: "nonContaminatedSurfaceArea",
-      isSuccess: nonContaminatedSurfaceArea.value > 0,
+      isSuccess: nonContaminatedSurfaceArea.decontaminatedSurfaceArea > 0,
       value: nonContaminatedSurfaceArea,
     });
   }

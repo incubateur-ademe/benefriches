@@ -1,18 +1,17 @@
-import { formatEvolutionPercentage } from "@/features/projects/views/shared/formatImpactValue";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatPercentage } from "@/shared/services/format-number/formatNumber";
 
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   percentageEvolution: number;
-  value: number;
+  difference: number;
   isSuccess: boolean;
   descriptionDisplayMode?: "inline" | "tooltip";
 };
 
 const ImpactSummaryFullTimeJobs = ({
   percentageEvolution,
-  value,
+  difference,
   isSuccess,
   descriptionDisplayMode,
 }: Props) => {
@@ -20,7 +19,7 @@ const ImpactSummaryFullTimeJobs = ({
     return (
       <KeyImpactIndicatorCard
         type="success"
-        description={`${formatNumberFr(value)} emploi équivalent temps plein créé ou maintenu (soit ${formatEvolutionPercentage(percentageEvolution)})`}
+        description={`${formatNumberFr(difference)} emploi équivalent temps plein créé ou maintenu (soit ${formatPercentage(percentageEvolution)})`}
         title="+ d’emplois&nbsp;👷"
         descriptionDisplayMode={descriptionDisplayMode}
       />
@@ -30,7 +29,7 @@ const ImpactSummaryFullTimeJobs = ({
   return (
     <KeyImpactIndicatorCard
       type="error"
-      description={`${formatNumberFr(value)} emploi équivalent temps plein perdu (soit ${formatEvolutionPercentage(percentageEvolution)})`}
+      description={`${formatNumberFr(difference)} emploi équivalent temps plein perdu (soit ${formatPercentage(percentageEvolution)})`}
       title="- d’emplois&nbsp;👷"
       descriptionDisplayMode={descriptionDisplayMode}
     />
