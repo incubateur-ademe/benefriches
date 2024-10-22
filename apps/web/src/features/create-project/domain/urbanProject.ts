@@ -1,9 +1,15 @@
 import {
+  BuildingsUse,
+  getSoilTypeForLivingAndActivitySpace,
+  getSoilTypeForPublicSpace,
+  getSoilTypeForUrbanGreenSpace,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
   UrbanPublicSpace,
   UrbanSpaceCategory,
 } from "shared";
+
+import { getPictogramForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
   switch (spaceCategory) {
@@ -107,4 +113,44 @@ export const getDescriptionForPublicSpace = (publicSpace: UrbanPublicSpace): str
     default:
       return undefined;
   }
+};
+
+export const getLabelForBuildingsUse = (buildingsUse: BuildingsUse): string => {
+  switch (buildingsUse) {
+    case "RESIDENTIAL":
+      return "Habitations";
+    case "ECONOMIC_ACTIVITY":
+      return "Lieux d'activité économique";
+    case "MULTI_STORY_PARKING":
+      return "Parking silo";
+    case "OTHER":
+      return "Autres usages";
+  }
+};
+
+export const getDescriptionForBuildingsUse = (buildingsUse: BuildingsUse): string => {
+  switch (buildingsUse) {
+    case "RESIDENTIAL":
+      return "Maisons, immeubles collectifs...";
+    case "ECONOMIC_ACTIVITY":
+      return "Bureaux, commerces...";
+    case "MULTI_STORY_PARKING":
+      return "Parking voiture à étage";
+    case "OTHER":
+      return "Établissement éducatif, espace de santé, lieu socio-culturel...";
+  }
+};
+
+export const getPictogramUrlForUrbanGreenSpace = (space: UrbanGreenSpace): string => {
+  return getPictogramForSoilType(getSoilTypeForUrbanGreenSpace(space));
+};
+
+export const getPictogramUrlForUrbanLivingAndActivitySpace = (
+  space: UrbanLivingAndActivitySpace,
+): string => {
+  return getPictogramForSoilType(getSoilTypeForLivingAndActivitySpace(space));
+};
+
+export const getPictogramUrlForUrbanPublicSpace = (space: UrbanPublicSpace): string => {
+  return getPictogramForSoilType(getSoilTypeForPublicSpace(space));
 };
