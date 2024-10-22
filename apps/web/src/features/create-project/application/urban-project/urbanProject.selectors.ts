@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
+  BuildingsUse,
   SoilsDistribution,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
@@ -94,4 +95,12 @@ export const selectUrbanProjectSoilsDistribution = createSelector(
 
 export const selectBuildingsFootprintSurfaceArea = createSelector([selectSelf], (state): number => {
   return state.creationData.livingAndActivitySpacesDistribution?.BUILDINGS ?? 0;
+});
+
+export const selectBuildingsFloorSurfaceArea = createSelector([selectSelf], (state): number => {
+  return state.creationData.buildingsFloorSurfaceArea ?? 0;
+});
+
+export const selectBuildingsUses = createSelector([selectSelf], (state): BuildingsUse[] => {
+  return state.creationData.buildingsUses ?? [];
 });

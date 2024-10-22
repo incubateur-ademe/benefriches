@@ -4,7 +4,11 @@ import { UrbanProjectCustomCreationStep } from "@/features/create-project/applic
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import UrbanProjectCustomSteps from "./UrbanProjectCustomSteps";
+import BuildingsFloorSurfaceArea from "./buildings/floor-surface-area";
 import BuildingsIntroduction from "./buildings/introduction";
+import BuildingsUseIntroduction from "./buildings/use-introduction";
+import BuildingsUseSelection from "./buildings/use-selection";
+import BuildingsUseSurfaceAreas from "./buildings/use-surface-areas";
 import SoilsDecontaminationIntroduction from "./soils-decontamination/intro";
 import SoilsDecontaminationSelection from "./soils-decontamination/selection";
 import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
@@ -70,6 +74,20 @@ const getCurrentStepView = (
       return <SoilsDecontaminationSurfaceArea />;
     case "BUILDINGS_INTRODUCTION":
       return <BuildingsIntroduction />;
+    case "BUILDINGS_FLOOR_SURFACE_AREA":
+      return <BuildingsFloorSurfaceArea />;
+    case "BUILDINGS_USE_INTRODUCTION":
+      return <BuildingsUseIntroduction />;
+    case "BUILDINGS_USE_SELECTION":
+      return <BuildingsUseSelection />;
+    case "BUILDINGS_USE_SURFACE_AREA":
+      return <BuildingsUseSurfaceAreas />;
+    case "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION":
+      return <div>BUILDINGS_ECONOMIC_ACTIVITY_SELECTION</div>;
+    case "BUILDINGS_EQUIPMENT_INTRODUCTION":
+      return <div>BUILDINGS_EQUIPMENT_INTRODUCTION</div>;
+    case "BUILDINGS_EQUIPMENT_SELECTION":
+      return <div>BUILDINGS_EQUIPMENT_SELECTION</div>;
   }
 };
 

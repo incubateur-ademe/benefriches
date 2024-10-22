@@ -42,6 +42,13 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "SOILS_DECONTAMINATION_SURFACE_AREA":
       return "Dépollution des sols";
     case "BUILDINGS_INTRODUCTION":
+    case "BUILDINGS_FLOOR_SURFACE_AREA":
+    case "BUILDINGS_USE_INTRODUCTION":
+    case "BUILDINGS_USE_SELECTION":
+    case "BUILDINGS_USE_SURFACE_AREA":
+    case "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION":
+    case "BUILDINGS_EQUIPMENT_INTRODUCTION":
+    case "BUILDINGS_EQUIPMENT_SELECTION":
       return "Bâtiments";
   }
 };

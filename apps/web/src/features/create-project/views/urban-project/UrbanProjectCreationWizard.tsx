@@ -40,6 +40,13 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   SOILS_DECONTAMINATION_SELECTION: "selection-depollution-sols",
   SOILS_DECONTAMINATION_SURFACE_AREA: "surface-depollution-sols",
   BUILDINGS_INTRODUCTION: "introduction-batiments",
+  BUILDINGS_FLOOR_SURFACE_AREA: "surface-plancher-batiments",
+  BUILDINGS_USE_INTRODUCTION: "introduction-usage-batiments",
+  BUILDINGS_USE_SELECTION: "selection-usage-batiments",
+  BUILDINGS_USE_SURFACE_AREA: "surface-usage-batiments",
+  BUILDINGS_ECONOMIC_ACTIVITY_SELECTION: "selection-lieux-activites-economique",
+  BUILDINGS_EQUIPMENT_INTRODUCTION: "introduction-equipements",
+  BUILDINGS_EQUIPMENT_SELECTION: "selection-equipements",
   CREATION_RESULT: "fin",
 } as const satisfies Record<UrbanProjectCreationStep, string>;
 

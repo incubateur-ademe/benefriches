@@ -1,5 +1,6 @@
 import { createAction as _createAction } from "@reduxjs/toolkit";
 import {
+  BuildingsUse,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
   UrbanPublicSpace,
@@ -136,3 +137,17 @@ export const soilsDecontaminationSurfaceAreaReverted = createAction(
 // buildings
 export const buildingsIntroductionCompleted = createAction("buildingsIntroductionCompleted");
 export const buildingsIntroductionReverted = createAction("buildingsIntroductionReverted");
+export const buildingsFloorSurfaceAreaCompleted = createAction<number>(
+  "buildingsFloorSurfaceAreaCompleted",
+);
+export const buildingsFloorSurfaceAreaReverted = createAction("buildingsFloorSurfaceAreaReverted");
+export const buildingsUseIntroductionCompleted = createAction("buildingsUseIntroductionCompleted");
+export const buildingsUseIntroductionReverted = createAction("buildingsUseIntroductionReverted");
+export const buildingsUseSelectionCompleted = createAction<BuildingsUse[]>(
+  "buildingsUseSelectionCompleted",
+);
+export const buildingsUseSelectionReverted = createAction("buildingsUseSelectionReverted");
+export const buildingsUseSurfaceAreasCompleted = createAction<
+  Partial<Record<BuildingsUse, number>>
+>("buildingsUseSurfaceAreasCompleted");
+export const buildingsUseSurfaceAreasReverted = createAction("buildingsUseSurfaceAreasReverted");

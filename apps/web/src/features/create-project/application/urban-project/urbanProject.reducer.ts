@@ -1,5 +1,6 @@
 import { createReducer, UnknownAction } from "@reduxjs/toolkit";
 import {
+  BuildingsUse,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
   UrbanPublicSpace,
@@ -11,6 +12,14 @@ import soilsCarbonStorageReducer, {
   State as SoilsCarbonStorageState,
 } from "./soilsCarbonStorage.reducer";
 import {
+  buildingsFloorSurfaceAreaCompleted,
+  buildingsFloorSurfaceAreaReverted,
+  buildingsIntroductionCompleted,
+  buildingsUseIntroductionCompleted,
+  buildingsUseSelectionCompleted,
+  buildingsUseSelectionReverted,
+  buildingsUseSurfaceAreasCompleted,
+  buildingsUseSurfaceAreasReverted,
   createModeStepReverted,
   customCreateModeSelected,
   expressCreateModeSelected,
@@ -68,7 +77,14 @@ export type UrbanProjectCustomCreationStep =
   | "SOILS_DECONTAMINATION_INTRODUCTION"
   | "SOILS_DECONTAMINATION_SELECTION"
   | "SOILS_DECONTAMINATION_SURFACE_AREA"
-  | "BUILDINGS_INTRODUCTION";
+  | "BUILDINGS_INTRODUCTION"
+  | "BUILDINGS_FLOOR_SURFACE_AREA"
+  | "BUILDINGS_USE_INTRODUCTION"
+  | "BUILDINGS_USE_SELECTION"
+  | "BUILDINGS_USE_SURFACE_AREA"
+  | "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION"
+  | "BUILDINGS_EQUIPMENT_INTRODUCTION"
+  | "BUILDINGS_EQUIPMENT_SELECTION";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
@@ -99,6 +115,9 @@ export type UrbanProjectState = {
     publicSpaces?: UrbanPublicSpace[];
     publicSpacesDistribution?: Partial<Record<UrbanPublicSpace, number>>;
     decontaminatedSurfaceArea?: number;
+    buildingsFloorSurfaceArea?: number;
+    buildingsUses?: BuildingsUse[];
+    buildingsUsesDistribution?: Partial<Record<BuildingsUse, number>>;
   };
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
@@ -291,7 +310,36 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(soilsDecontaminationSurfaceAreaReverted, (state) => {
     state.urbanProject.creationData.decontaminatedSurfaceArea = undefined;
   });
-
+  builder.addCase(buildingsIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("BUILDINGS_FLOOR_SURFACE_AREA");
+  });
+  builder.addCase(buildingsFloorSurfaceAreaCompleted, (state, action) => {
+    state.urbanProject.creationData.buildingsFloorSurfaceArea = action.payload;
+    state.urbanProject.stepsHistory.push("BUILDINGS_USE_INTRODUCTION");
+  });
+  builder.addCase(buildingsFloorSurfaceAreaReverted, (state) => {
+    state.urbanProject.creationData.buildingsFloorSurfaceArea = undefined;
+  });
+  builder.addCase(buildingsUseIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("BUILDINGS_USE_SELECTION");
+  });
+  builder.addCase(buildingsUseSelectionCompleted, (state, action) => {
+    state.urbanProject.creationData.buildingsUses = action.payload;
+    state.urbanProject.stepsHistory.push("BUILDINGS_USE_SURFACE_AREA");
+  });
+  builder.addCase(buildingsUseSelectionReverted, (state) => {
+    state.urbanProject.creationData.buildingsUses = undefined;
+  });
+  builder.addCase(buildingsUseSurfaceAreasCompleted, (state, action) => {
+    state.urbanProject.creationData.buildingsUsesDistribution = action.payload;
+    const nextStep = action.payload.ECONOMIC_ACTIVITY
+      ? "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION"
+      : "BUILDINGS_EQUIPMENT_INTRODUCTION";
+    state.urbanProject.stepsHistory.push(nextStep);
+  });
+  builder.addCase(buildingsUseSurfaceAreasReverted, (state) => {
+    state.urbanProject.creationData.buildingsUsesDistribution = undefined;
+  });
   builder.addMatcher(isRevertedAction, (state) => {
     if (state.urbanProject.stepsHistory.length === 1)
       state.urbanProject.stepsHistory = ["CREATE_MODE_SELECTION"];
