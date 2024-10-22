@@ -52,7 +52,7 @@ const ProjectPageHeader = ({
         <div className="tw-flex tw-items-center">
           {projectType && (
             <img
-              className={fr.cx("fr-mr-3v")}
+              className="tw-mr-3"
               src={getScenarioPictoUrl(projectType)}
               aria-hidden={true}
               alt="Icône du type de scénario"

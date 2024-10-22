@@ -46,7 +46,7 @@ export default function SoilsCarbonStorageComparisonWrapper({
             description="Une erreur s'est produite lors du calcul du pouvoir de stockage de carbone par les sols..."
             severity="error"
             title="Erreur"
-            className="fr-my-7v"
+            className="tw-my-7"
           />
           <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
         </WizardFormLayout>

@@ -23,7 +23,7 @@ export default function MentionsLegalesPage() {
         <a href="https://benefriches.ademe.fr">https://benefriches.ademe.fr</a> (et autres sites en
         ademe.fr, ci-après les “Sites”) est édité par l’ADEME, ayant son siège social au :
       </p>
-      <address className="fr-mb-2w">
+      <address className="tw-mb-4">
         20, avenue du Grésillé — BP 90406
         <br />
         49004 Angers Cedex 01
@@ -57,7 +57,7 @@ export default function MentionsLegalesPage() {
         <a href="https://benefriches.ademe.fr">https://benefriches.ademe.fr</a> est Scalingo SAS,,
         dont le siège social est situé :
       </p>
-      <address className="fr-mb-2w">
+      <address className="tw-mb-4">
         <p>
           9 rue de la Krutenau
           <br />

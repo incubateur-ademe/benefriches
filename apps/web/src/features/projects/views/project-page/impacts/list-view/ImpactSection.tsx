@@ -35,7 +35,7 @@ const ImpactSection = ({
   };
 
   return (
-    <section className="fr-mb-5w">
+    <section className="tw-mb-10">
       <div
         className={classNames(
           "tw-py-2 tw-px-4",

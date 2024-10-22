@@ -24,7 +24,7 @@ function ScenarioSelection({ name, siteName }: { name?: string; siteName?: strin
     return (
       <div>
         <span>{name} </span>
-        <div className="fr-m-0">
+        <div className="tw-m-0">
           <span className={fr.cx("fr-icon-map-pin-2-line", "fr-pr-1w")} aria-hidden="true"></span>
           {siteName}
         </div>
@@ -71,7 +71,7 @@ function ScenariiSelectionBar({ baseScenario, withScenario, onCancel }: Props) {
         "tw-w-full",
         "tw-z-10",
         "tw-bg-dsfr-openBlue",
-        fr.cx("fr-py-5v"),
+        "tw-py-5",
       )}
     >
       <div
@@ -94,13 +94,13 @@ function ScenariiSelectionBar({ baseScenario, withScenario, onCancel }: Props) {
             {
               priority: "primary",
               children: "Comparer les impacts",
-              className: "fr-mb-0",
+              className: "tw-mb-0",
               ...getCompareButtonProps(baseScenario, withScenario),
             },
             {
               priority: "tertiary",
               children: "Annuler",
-              className: "fr-mb-0",
+              className: "tw-mb-0",
               iconId: "fr-icon-close-line",
               onClick: onCancel,
             },

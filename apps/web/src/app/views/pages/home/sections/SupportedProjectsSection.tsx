@@ -88,7 +88,7 @@ function SupportedProjectCard({
         size="small"
         title={projectType}
         titleAs="h3"
-        className={fr.cx("fr-mr-3w")}
+        className="tw-mr-6"
       />
     </div>
   );
@@ -96,10 +96,10 @@ function SupportedProjectCard({
 
 export default function SupportedProjectsSection() {
   return (
-    <section className={classNames(fr.cx("fr-py-10w"), "tw-bg-grey-light", "dark:tw-bg-grey-dark")}>
+    <section className={classNames("tw-py-20", "tw-bg-grey-light", "dark:tw-bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
         <h2>Les projets accompagnés par Bénéfriches</h2>
-        <div className={classNames("tw-flex", "tw-overflow-x-scroll", fr.cx("fr-mt-5w"))}>
+        <div className={classNames("tw-flex", "tw-overflow-x-scroll", "tw-mt-10")}>
           <SupportedProjectCard
             projectType="Voirie, parking relais, espaces paysagers et ZMEL"
             projectLocation="Balaruc-les-Bains (34)"

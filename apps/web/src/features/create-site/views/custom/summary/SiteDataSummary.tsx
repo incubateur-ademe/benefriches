@@ -52,7 +52,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
         description={siteData.description}
         isFriche={siteData.isFriche}
       />
-      <div className="fr-mt-4w">
+      <div className="tw-mt-8">
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
       </div>
     </WizardFormLayout>

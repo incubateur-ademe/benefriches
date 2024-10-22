@@ -68,7 +68,7 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
         >
           <RadioButton label="Oui" value="yes" {...register("hasContaminatedSoils")} />
           {hasContaminatedSoils && (
-            <div className="fr-pb-7v">
+            <div className="tw-pb-7">
               <NumericInput
                 control={control}
                 label={<RequiredLabel label="Superficie polluée" />}

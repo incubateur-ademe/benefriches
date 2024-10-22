@@ -91,7 +91,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
         })}
         <Input
           label="Total des sols à aplanir ou remblayer"
-          className="fr-mt-6w"
+          className="tw-mt-12"
           hintText="en m²"
           nativeInputProps={{
             value: totalSurfaceEntered,

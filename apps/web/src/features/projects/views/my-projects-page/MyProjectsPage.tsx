@@ -23,7 +23,7 @@ function MyProjectsPage({ loadingState, projectsList }: Props) {
           description="Une erreur est survenue lors du chargement de vos projets. Veuillez recharger la page."
           severity="error"
           title="Chargement des projets"
-          className="fr-my-7v"
+          className="tw-my-7"
         />
       );
 

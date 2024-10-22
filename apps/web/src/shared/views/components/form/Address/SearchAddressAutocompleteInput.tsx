@@ -74,7 +74,7 @@ const SearchAddressAutocompleteInput = ({
   return (
     <div>
       <AutoComplete
-        className="fr-mb-8w tw-w-full"
+        className="tw-mb-16 tw-w-full"
         value={autocompleteValue}
         options={suggestions}
         onSelect={_onSelect}

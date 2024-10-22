@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 import { SoilsDistribution, SoilType } from "shared";
 
@@ -125,7 +124,7 @@ function FutureSoilsSelectionForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         {filteredCategories.map(({ category, soils }) => {
           return (
-            <section key={category} className={fr.cx("fr-mb-5w")}>
+            <section key={category} className="tw-mb-10">
               <h4>{category}</h4>
               <div
                 className={classNames(

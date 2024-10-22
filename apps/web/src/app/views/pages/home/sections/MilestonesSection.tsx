@@ -13,7 +13,7 @@ type MilestoneItemProps = {
 
 function MilestoneItem({ title, text }: MilestoneItemProps) {
   return (
-    <li className={classNames(fr.cx("fr-mr-6w"), "tw-list-none")}>
+    <li className="tw-mr-12 tw-list-none">
       <div className="tw-w-52">
         <span className={fr.cx("fr-text--xl", "fr-text--bold")}>{title}</span>
         <p className={fr.cx("fr-text--sm", "fr-mt-1w")}>{text}</p>
@@ -26,7 +26,7 @@ export default function MilestonesSection() {
   return (
     <section className={fr.cx("fr-container", "fr-py-10w")}>
       <h2>Les grandes dates de Bénéfriches</h2>
-      <ul className={classNames("tw-flex", "tw-overflow-x-scroll", fr.cx("fr-mt-5w", "fr-px-0"))}>
+      <ul className={classNames("tw-flex", "tw-overflow-x-scroll", "tw-mt-10 tw-px-0")}>
         <MilestoneItem
           title="🐣 2018"
           text="Sur le constat qu'il n'existe aucune solution de calcul des impacts des projets d'aménagement, Laurent Chateau, expert friche de l'ADEME, imagine Bénéfriches. Un bureau d'étude est mandaté pour collecter les données et concevoir l'outil."

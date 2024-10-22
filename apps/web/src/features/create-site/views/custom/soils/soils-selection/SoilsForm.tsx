@@ -127,7 +127,7 @@ function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         {optionsCategories.map(({ category, options }) => {
           return (
-            <section key={category} className={fr.cx("fr-mb-5w")}>
+            <section key={category} className="tw-mb-10">
               <h4>{category}</h4>
               <div
                 className={classNames(

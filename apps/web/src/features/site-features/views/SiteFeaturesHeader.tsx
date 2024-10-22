@@ -12,9 +12,7 @@ type Props = {
 
 export default function SiteFeaturesHeader({ siteName, address, isFriche, isExpressSite }: Props) {
   return (
-    <section
-      className={classNames(fr.cx("fr-py-8v"), "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}
-    >
+    <section className={classNames("tw-py-8", "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
         <div className="tw-flex tw-items-center">
           <img
@@ -27,7 +25,7 @@ export default function SiteFeaturesHeader({ siteName, address, isFriche, isExpr
           />
           <div>
             <div className="tw-inline-flex tw-items-center">
-              <h2 className={classNames(fr.cx("fr-my-0"))}>{siteName}</h2>
+              <h2 className="tw-my-0">{siteName}</h2>
               {isExpressSite && (
                 <Badge small className="tw-ml-3" style="green-tilleul">
                   Site express

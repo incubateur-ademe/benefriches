@@ -33,7 +33,7 @@ export default function SiteFeaturesModalView({ siteId }: Props) {
         description="Une erreur s'est produite lors du chargement des caractéristiques du site... Veuillez réessayer."
         severity="error"
         title="Échec du chargement des caractéristiques du site"
-        className="fr-my-7v"
+        className="tw-my-7"
       />
     );
   }

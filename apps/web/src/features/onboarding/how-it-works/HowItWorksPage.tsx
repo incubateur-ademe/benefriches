@@ -54,13 +54,7 @@ const OnBoardingIntroductionHow = () => {
 
   return (
     <section
-      className={classNames(
-        fr.cx("fr-py-10w"),
-        fr.cx("fr-container"),
-        "tw-grid",
-        "tw-grid-cols-12",
-        "tw-gap-2",
-      )}
+      className={classNames(fr.cx("fr-container"), "tw-py-20", "tw-grid tw-grid-cols-12 tw-gap-2")}
     >
       <div
         className={classNames(

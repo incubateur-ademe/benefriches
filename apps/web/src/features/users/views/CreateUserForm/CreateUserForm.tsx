@@ -99,7 +99,7 @@ function CreateUserForm({
               description="Une erreur s'est produite lors de la sauvegarde des données... Veuillez réessayer."
               severity="error"
               title="Échec de l'enregistrement"
-              className="fr-my-7v"
+              className="tw-my-7"
             />
           )}
 

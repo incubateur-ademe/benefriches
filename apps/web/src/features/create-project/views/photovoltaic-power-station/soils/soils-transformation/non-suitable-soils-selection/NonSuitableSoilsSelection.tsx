@@ -94,7 +94,7 @@ function NonSuitableSoilsSelection({
             "sm:tw-grid-cols-2",
             "lg:tw-grid-cols-3",
             "tw-gap-4",
-            "fr-mb-5w",
+            "tw-mb-10",
           )}
         >
           {typedObjectEntries(nonSuitableSoils).map(([soilType, surfaceArea]) => {

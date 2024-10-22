@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
 import classNames from "@/shared/views/clsx";
@@ -48,7 +47,7 @@ function ProjectPage({
       id="project-impacts-page"
       className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full")}
     >
-      <div className={classNames(fr.cx("fr-py-8v"))}>
+      <div className="tw-py-8">
         <ProjectsImpactsPageHeader
           projectType={projectContext.type}
           projectId={projectId}
@@ -78,7 +77,7 @@ function ProjectPage({
             description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
             severity="error"
             title="Impossible de charger les impacts et caractéristiques du projet"
-            className="fr-my-7v"
+            className="tw-my-7"
           />
         )}
         {dataLoadingState === "loading" && <LoadingSpinner />}

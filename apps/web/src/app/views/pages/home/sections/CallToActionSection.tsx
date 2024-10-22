@@ -14,7 +14,7 @@ import {
 export default function CallToActionSection() {
   return (
     <section
-      className={classNames(fr.cx("fr-py-10w"), "tw-bg-grey-light", "dark:tw-bg-grey-dark")}
+      className={classNames("tw-py-20", "tw-bg-grey-light", "dark:tw-bg-grey-dark")}
       id="cta-section"
     >
       <div className={fr.cx("fr-container")}>
@@ -33,14 +33,14 @@ export default function CallToActionSection() {
               width="100px"
               aria-hidden="true"
               alt="icône projet d’aménagement urbain"
-              className={fr.cx("fr-mb-3w")}
+              className="tw-mb-6"
             />
             <img
               src="/img/pictograms/renewable-energy/photovoltaic.svg"
               width="100px"
               aria-hidden="true"
               alt="icône projet d’aménagement photovoltaïque"
-              className={fr.cx("fr-mb-3w")}
+              className="tw-mb-6"
             />
 
             <h2>Vous avez un projet d'aménagement urbain ou un projet photovoltaïque&nbsp;?</h2>
@@ -59,14 +59,14 @@ export default function CallToActionSection() {
               width="100px"
               aria-hidden="true"
               alt="icône projet zone d’activités économiques"
-              className={fr.cx("fr-mb-3w")}
+              className="tw-mb-6"
             />
             <img
               src="/img/pictograms/development-plans/natural-urban-space.svg"
               width="100px"
               aria-hidden="true"
               alt="icône projet de renaturation"
-              className={fr.cx("fr-mb-3w")}
+              className="tw-mb-6"
             />
             <h2>Vous êtes porteur d’un autre type de projet&nbsp;?</h2>
             <p className={fr.cx("fr-text--xl", "fr-text--bold")}>

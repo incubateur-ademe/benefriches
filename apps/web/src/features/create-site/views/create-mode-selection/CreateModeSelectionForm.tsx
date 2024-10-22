@@ -51,7 +51,7 @@ function CreateModeSelectionForm({ onSubmit }: Props) {
   return (
     <WizardFormLayout title="Comment souhaitez-vous renseigner le site ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={fr.cx("fr-mb-5w")}>
+        <div className="tw-mb-10">
           <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4">
             {options.map((option) => {
               return (

@@ -164,7 +164,7 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
       {structureCategory === "local_authority" ? (
         <>
           <AutoComplete
-            className="fr-mb-8w tw-w-full"
+            className="tw-mb-16 tw-w-full"
             value={selectedStructureMunicipality?.value}
             options={suggestions}
             onSearch={onSearch}

@@ -32,7 +32,7 @@ function ProjectImpactsOnboardingPageContainer({ projectId }: Props) {
         description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
         severity="error"
         title="Impossible de charger les impacts du projet"
-        className="fr-my-7v"
+        className="tw-my-7"
       />
     );
   }

@@ -5,7 +5,7 @@ export default function DataSourcesSection() {
     <section className={fr.cx("fr-container", "fr-py-10w")}>
       <div className="md:tw-flex md:tw-gap-4">
         <div className="md:tw-pr-12 tw-m-auto tw-order-last md:tw-order-first">
-          <div className="fr-mb-5w tw-hidden md:tw-flex tw-justify-between tw-items-center">
+          <div className="tw-mb-10 tw-hidden md:tw-flex tw-justify-between tw-items-center">
             <img src="/img/logos/logo-ademe.svg" alt="Logo de l'ADEME" height="80px" />
             <img src="/img/logos/logo-aldo.svg" alt="Logo de l'outil Aldo" height="50px" />
             <img src="/img/logos/logo-insee.svg" alt="Logo de l'INSEE" height="80px" />

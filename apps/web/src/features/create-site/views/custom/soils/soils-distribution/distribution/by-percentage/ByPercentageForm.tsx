@@ -71,7 +71,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
         ))}
 
         <RowNumericInput
-          className="fr-my-8v"
+          className="tw-my-8"
           label="Total de toutes les surfaces"
           addonText="%"
           nativeInputProps={{

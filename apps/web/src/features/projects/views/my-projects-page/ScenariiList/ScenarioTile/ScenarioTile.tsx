@@ -72,7 +72,7 @@ function ScenarioTile({
             </a>
             <Checkbox
               className={classNames(
-                fr.cx("fr-mt-3v"),
+                "tw-mt-3",
                 shouldDisplayCheckbox ? "tw-visible" : "tw-invisible",
               )}
               // Scenarii comparison is not released yet
