@@ -70,11 +70,7 @@ function FutureSoilsSurfaceAreaForm({
           );
           return (
             <div key={soilType} className="tw-inline-flex tw-items-center tw-w-full tw-mb-6">
-              <img
-                src={`/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`}
-                width="60"
-                className="tw-mr-4"
-              />
+              <img src={getPictogramForSoilType(soilType)} width="60" className="tw-mr-4" />
               <NumericInput
                 name={soilType}
                 label={getLabelForSoilType(soilType)}

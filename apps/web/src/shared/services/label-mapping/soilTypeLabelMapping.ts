@@ -89,5 +89,5 @@ const soilTypePictogramMap: Record<SoilType, string> = {
 } as const;
 
 export const getPictogramForSoilType = (value: SoilType): string => {
-  return soilTypePictogramMap[value];
+  return `/img/pictograms/soil-types/${soilTypePictogramMap[value]}`;
 };

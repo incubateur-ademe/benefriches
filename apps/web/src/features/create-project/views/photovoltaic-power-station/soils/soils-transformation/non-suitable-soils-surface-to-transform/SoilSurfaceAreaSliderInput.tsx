@@ -27,7 +27,7 @@ export default function SoilSurfaceAreaSliderInput<T extends FieldValues>({
       key={soilType}
       control={control}
       name={name}
-      imgSrc={`/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`}
+      imgSrc={getPictogramForSoilType(soilType)}
       label={<span>{getLabelForSoilType(soilType)}</span>}
       maxValue={maxValue}
       sliderStartValue={0}

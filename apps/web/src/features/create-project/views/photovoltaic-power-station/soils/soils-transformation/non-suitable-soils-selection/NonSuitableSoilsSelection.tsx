@@ -33,7 +33,7 @@ type SoilTypeTileProps = {
 
 const SoilTypeTile = ({ soilType, surfaceArea, isSelected, onSelect }: SoilTypeTileProps) => {
   const title: string = getLabelForSoilType(soilType);
-  const imgSrc = `/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`;
+  const imgSrc = getPictogramForSoilType(soilType);
 
   return (
     <CheckableTile

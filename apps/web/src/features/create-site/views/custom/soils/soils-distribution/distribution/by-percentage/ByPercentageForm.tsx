@@ -54,7 +54,7 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
             control={control}
             name={soilType}
             label={getLabelForSoilType(soilType)}
-            imgSrc={`/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`}
+            imgSrc={getPictogramForSoilType(soilType)}
             hintText={getDescriptionForSoilType(soilType)}
             addonText="%"
             sliderStartValue={0}

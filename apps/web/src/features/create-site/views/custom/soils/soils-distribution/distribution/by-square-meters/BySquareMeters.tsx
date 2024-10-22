@@ -71,7 +71,7 @@ function SiteSoilsDistributionBySquareMetersForm({
                   label={getLabelForSoilType(soilType)}
                   hintText={getDescriptionForSoilType(soilType)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}
-                  imgSrc={`/img/pictograms/soil-types/${getPictogramForSoilType(soilType)}`}
+                  imgSrc={getPictogramForSoilType(soilType)}
                 />
               );
             }}
