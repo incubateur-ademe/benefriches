@@ -43,11 +43,12 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
           ({ name: aName }, { name: bName }) =>
             PRIORITY_ORDER.indexOf(aName) - PRIORITY_ORDER.indexOf(bName),
         )
-        .map(({ name, value, isSuccess }) => {
+        .map(({ name, value, isSuccess }, index) => {
           switch (name) {
             case "zanCompliance":
               return (
                 <ImpactSummaryZanCompliance
+                  key={index}
                   {...value}
                   isSuccess={isSuccess}
                   descriptionDisplayMode="tooltip"
@@ -56,6 +57,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "projectImpactBalance":
               return (
                 <ImpactSummaryProjectBalance
+                  key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -65,6 +67,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "avoidedFricheCostsForLocalAuthority":
               return displayEconomicCards ? (
                 <ImpactSummaryAvoidedFricheCostsForLocalAuthority
+                  key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -73,6 +76,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "taxesIncomesImpact":
               return displayEconomicCards ? (
                 <ImpactSummaryTaxesIncome
+                  key={index}
                   isSuccess={isSuccess}
                   value={value}
                   descriptionDisplayMode="tooltip"
@@ -81,6 +85,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "fullTimeJobs":
               return displaySocialCards ? (
                 <ImpactSummaryFullTimeJobs
+                  key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -89,6 +94,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "avoidedCo2eqEmissions":
               return displayEnvironmentCards ? (
                 <ImpactSummaryAvoidedCo2eqEmissions
+                  key={index}
                   isSuccess={isSuccess}
                   value={value}
                   descriptionDisplayMode="tooltip"
@@ -97,6 +103,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "nonContaminatedSurfaceArea":
               return displayEnvironmentCards ? (
                 <ImpactSummaryNonContaminatedSurfaceArea
+                  key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -105,6 +112,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "permeableSurfaceArea":
               return displayEnvironmentCards ? (
                 <ImpactSummaryPermeableSurfaceArea
+                  key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
@@ -113,6 +121,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "householdsPoweredByRenewableEnergy":
               return displayEnvironmentCards ? (
                 <ImpactSummaryHouseholdsPoweredByRenewableEnergy
+                  key={index}
                   value={value}
                   descriptionDisplayMode="tooltip"
                 />
@@ -120,6 +129,7 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
             case "localPropertyValueIncrease":
               return displayEconomicCards ? (
                 <ImpactSummaryLocalPropertyValueIncrease
+                  key={index}
                   value={value}
                   descriptionDisplayMode="tooltip"
                 />
