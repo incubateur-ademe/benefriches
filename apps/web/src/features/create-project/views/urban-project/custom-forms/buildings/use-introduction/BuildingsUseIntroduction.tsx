@@ -16,7 +16,7 @@ const BuildingsUseIntroduction = ({ onNext, onBack }: Props) => {
     <EditorialPageLayout>
       <EditorialPageIcon>🏫</EditorialPageIcon>
       <EditorialPageTitle>
-        Nous allons maintenant parler des bâtiments qui composeront les lieux de vie et d'activité.
+        Continuons sur les bâtiments et voyons maintenant quels seront leurs usages.
       </EditorialPageTitle>
       <EditorialPageText>
         Les lieux de vie et d'activité peuvent comporter des habitations, des lieux d'activité
