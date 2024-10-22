@@ -2,7 +2,10 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanLivingAndActivitySpace, livingAndActivitySpace } from "shared";
 
-import { getLabelForLivingAndActivitySpace } from "@/features/create-project/domain/urbanProject";
+import {
+  getLabelForLivingAndActivitySpace,
+  getPictogramUrlForUrbanLivingAndActivitySpace,
+} from "@/features/create-project/domain/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -28,11 +31,12 @@ const LivingAndActivitySpaceTile = ({
   onChange,
 }: LivingAndActivitySpaceTileProps) => {
   const title = getLabelForLivingAndActivitySpace(livingAndActivitySpace);
+  const imgSrc = getPictogramUrlForUrbanLivingAndActivitySpace(livingAndActivitySpace);
 
   return (
     <CheckableTile
       title={title}
-      imgSrc={""}
+      imgSrc={imgSrc}
       checked={isSelected}
       onChange={onChange}
       checkType="checkbox"

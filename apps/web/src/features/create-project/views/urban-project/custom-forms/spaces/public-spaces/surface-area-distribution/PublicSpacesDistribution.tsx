@@ -2,7 +2,10 @@ import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanPublicSpace } from "shared";
 
-import { getLabelForPublicSpace } from "@/features/create-project/domain/urbanProject";
+import {
+  getLabelForPublicSpace,
+  getPictogramUrlForUrbanPublicSpace,
+} from "@/features/create-project/domain/urbanProject";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -55,7 +58,7 @@ function PublicSpacesDistribution({ publicSpaces, totalSurfaceArea, onSubmit, on
                   controlProps={controller}
                   label={getLabelForPublicSpace(publicSpace)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}
-                  imgSrc={undefined}
+                  imgSrc={getPictogramUrlForUrbanPublicSpace(publicSpace)}
                 />
               );
             }}

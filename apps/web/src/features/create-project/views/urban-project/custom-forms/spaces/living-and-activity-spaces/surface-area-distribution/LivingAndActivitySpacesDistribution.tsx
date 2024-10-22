@@ -2,7 +2,10 @@ import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanLivingAndActivitySpace } from "shared";
 
-import { getLabelForLivingAndActivitySpace } from "@/features/create-project/domain/urbanProject";
+import {
+  getLabelForLivingAndActivitySpace,
+  getPictogramUrlForUrbanLivingAndActivitySpace,
+} from "@/features/create-project/domain/urbanProject";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -38,11 +41,11 @@ function LivingAndActivitySpacesDistribution({
   return (
     <WizardFormLayout title="Quelle est la part de chaque espace à aménager dans les lieux de vie et d'activité ?">
       <form onSubmit={_onSubmit}>
-        {livingAndActivitySpaces.map((spaceCategory) => (
+        {livingAndActivitySpaces.map((space) => (
           <Controller
-            name={spaceCategory}
+            name={space}
             control={control}
-            key={spaceCategory}
+            key={space}
             rules={{
               min: {
                 value: 0,
@@ -58,9 +61,9 @@ function LivingAndActivitySpacesDistribution({
               return (
                 <ControlledRowNumericInput
                   controlProps={controller}
-                  label={getLabelForLivingAndActivitySpace(spaceCategory)}
+                  label={getLabelForLivingAndActivitySpace(space)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}
-                  imgSrc={undefined}
+                  imgSrc={getPictogramUrlForUrbanLivingAndActivitySpace(space)}
                 />
               );
             }}

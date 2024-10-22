@@ -2,7 +2,10 @@ import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanGreenSpace } from "shared";
 
-import { getLabelForUrbanGreenSpace } from "@/features/create-project/domain/urbanProject";
+import {
+  getLabelForUrbanGreenSpace,
+  getPictogramUrlForUrbanGreenSpace,
+} from "@/features/create-project/domain/urbanProject";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import { sumObjectValues } from "@/shared/services/sum/sum";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -33,11 +36,11 @@ function UrbanGreenSpacesDistribution({ greenSpaces, totalSurfaceArea, onSubmit,
   return (
     <WizardFormLayout title="Quelle est la part de chaque espace à aménager sur les espaces verts ?">
       <form onSubmit={_onSubmit}>
-        {greenSpaces.map((spaceCategory) => (
+        {greenSpaces.map((space) => (
           <Controller
-            name={spaceCategory}
+            name={space}
             control={control}
-            key={spaceCategory}
+            key={space}
             rules={{
               min: {
                 value: 0,
@@ -53,9 +56,9 @@ function UrbanGreenSpacesDistribution({ greenSpaces, totalSurfaceArea, onSubmit,
               return (
                 <ControlledRowNumericInput
                   controlProps={controller}
-                  label={getLabelForUrbanGreenSpace(spaceCategory)}
+                  label={getLabelForUrbanGreenSpace(space)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}
-                  imgSrc={undefined}
+                  imgSrc={getPictogramUrlForUrbanGreenSpace(space)}
                 />
               );
             }}

@@ -2,7 +2,10 @@ import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanGreenSpace, urbanGreenSpaces } from "shared";
 
-import { getLabelForUrbanGreenSpace } from "@/features/create-project/domain/urbanProject";
+import {
+  getLabelForUrbanGreenSpace,
+  getPictogramUrlForUrbanGreenSpace,
+} from "@/features/create-project/domain/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -24,7 +27,7 @@ type GreenSpaceTileProps = {
 
 const GreenSpaceTile = ({ greenSpace, isSelected, onChange }: GreenSpaceTileProps) => {
   const title = getLabelForUrbanGreenSpace(greenSpace);
-  const imgSrc = "";
+  const imgSrc = getPictogramUrlForUrbanGreenSpace(greenSpace);
 
   return (
     <CheckableTile

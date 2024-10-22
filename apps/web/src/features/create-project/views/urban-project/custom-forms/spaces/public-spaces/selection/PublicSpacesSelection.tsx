@@ -5,6 +5,7 @@ import { UrbanPublicSpace, urbanPublicSpace } from "shared";
 import {
   getDescriptionForPublicSpace,
   getLabelForPublicSpace,
+  getPictogramUrlForUrbanPublicSpace,
 } from "@/features/create-project/domain/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
@@ -28,7 +29,7 @@ type PublicSpaceTileProps = {
 const PublicSpaceTile = ({ publicSpace, isSelected, onChange }: PublicSpaceTileProps) => {
   const title = getLabelForPublicSpace(publicSpace);
   const description = getDescriptionForPublicSpace(publicSpace);
-  const imgSrc = "";
+  const imgSrc = getPictogramUrlForUrbanPublicSpace(publicSpace);
 
   return (
     <CheckableTile
