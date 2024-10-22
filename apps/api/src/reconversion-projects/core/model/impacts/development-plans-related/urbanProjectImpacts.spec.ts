@@ -8,7 +8,7 @@ import {
   getUrbanFreshnessRelatedImpacts,
 } from "./urbanProjectImpacts";
 
-describe("Mixed use neighbourhood specific impacts", () => {
+describe("Urban project specific impacts", () => {
   describe("Urban Freshness related impacts", () => {
     it("returns no urban freshness impacts if there is no public green spaces in project", () => {
       const result = getUrbanFreshnessRelatedImpacts({

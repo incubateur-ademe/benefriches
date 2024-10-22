@@ -40,7 +40,7 @@ describe("CreateReconversionProject Use Case", () => {
   });
 
   describe("Success cases", () => {
-    describe("Mixed-use neighbourhood", () => {
+    describe("Urban project", () => {
       describe("On friche site", () => {
         const site = {
           id: uuid(),

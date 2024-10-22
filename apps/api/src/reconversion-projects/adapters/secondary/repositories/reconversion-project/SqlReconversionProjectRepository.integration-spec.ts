@@ -322,7 +322,7 @@ describe("SqlReconversionProjectRepository integration", () => {
         });
       });
     });
-    describe("Mixed-use neighbourhood development plan", () => {
+    describe("Urban project development plan", () => {
       let reconversionProject: ReconversionProject;
 
       beforeEach(async () => {
