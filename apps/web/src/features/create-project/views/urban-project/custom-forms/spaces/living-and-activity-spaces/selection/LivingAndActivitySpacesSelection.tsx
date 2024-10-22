@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanLivingAndActivitySpace, livingAndActivitySpace } from "shared";
 
@@ -52,31 +51,30 @@ function LivingAndActivitySpacesSelection({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Quels types d'espaces y aura-t-il dans les lieux de vie et d'activité ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-5w")}>
+        <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4 tw-mb-10">
           {livingAndActivitySpace.options.map((value) => {
             return (
-              <div className={fr.cx("fr-col-12", "fr-col-sm-6")} key={value}>
-                <Controller
-                  control={control}
-                  name="livingAndActivitySpaces"
-                  render={({ field }) => {
-                    const isSelected = field.value.includes(value);
-                    return (
-                      <LivingAndActivitySpaceTile
-                        livingAndActivitySpace={value}
-                        isSelected={isSelected}
-                        onChange={() => {
-                          field.onChange(
-                            isSelected
-                              ? field.value.filter((v) => v !== value)
-                              : [...field.value, value],
-                          );
-                        }}
-                      />
-                    );
-                  }}
-                />
-              </div>
+              <Controller
+                key={value}
+                control={control}
+                name="livingAndActivitySpaces"
+                render={({ field }) => {
+                  const isSelected = field.value.includes(value);
+                  return (
+                    <LivingAndActivitySpaceTile
+                      livingAndActivitySpace={value}
+                      isSelected={isSelected}
+                      onChange={() => {
+                        field.onChange(
+                          isSelected
+                            ? field.value.filter((v) => v !== value)
+                            : [...field.value, value],
+                        );
+                      }}
+                    />
+                  );
+                }}
+              />
             );
           })}
         </div>

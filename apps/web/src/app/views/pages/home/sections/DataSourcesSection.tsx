@@ -3,10 +3,8 @@ import { fr } from "@codegouvfr/react-dsfr";
 export default function DataSourcesSection() {
   return (
     <section className={fr.cx("fr-container", "fr-py-10w")}>
-      <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-        <div
-          className={"fr-col-12 fr-col-md-6 fr-pr-md-6w fr-m-auto tw-order-last md:tw-order-first"}
-        >
+      <div className="md:tw-flex md:tw-gap-4">
+        <div className="md:tw-pr-12 tw-m-auto tw-order-last md:tw-order-first">
           <div className="fr-mb-5w tw-hidden md:tw-flex tw-justify-between tw-items-center">
             <img src="/img/logos/logo-ademe.svg" alt="Logo de l'ADEME" height="80px" />
             <img src="/img/logos/logo-aldo.svg" alt="Logo de l'outil Aldo" height="50px" />
@@ -42,7 +40,7 @@ export default function DataSourcesSection() {
             />
           </div>
         </div>
-        <div className={fr.cx("fr-col-12", "fr-col-md-6", "fr-pl-md-6w")}>
+        <div className="md:tw-pl-12 tw-pt-8 md:tw-pt-0">
           <h2>Des données de haute qualité</h2>
           <p className={fr.cx("fr-text--xl")}>
             <strong>

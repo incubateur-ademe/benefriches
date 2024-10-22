@@ -139,29 +139,28 @@ function FutureSoilsSelectionForm({
                 {soils.map((soilType) => {
                   const surfaceArea = currentSoilsDistribution[soilType] ?? 0;
                   return (
-                    <div key={soilType}>
-                      <Controller
-                        control={control}
-                        name="soils"
-                        render={({ field }) => {
-                          const isSelected = field.value.includes(soilType);
-                          return (
-                            <SoilTypeTile
-                              soilType={soilType}
-                              surfaceArea={surfaceArea}
-                              isSelected={isSelected}
-                              onChange={() => {
-                                field.onChange(
-                                  isSelected
-                                    ? field.value.filter((v) => v !== soilType)
-                                    : [...field.value, soilType],
-                                );
-                              }}
-                            />
-                          );
-                        }}
-                      />
-                    </div>
+                    <Controller
+                      key={soilType}
+                      control={control}
+                      name="soils"
+                      render={({ field }) => {
+                        const isSelected = field.value.includes(soilType);
+                        return (
+                          <SoilTypeTile
+                            soilType={soilType}
+                            surfaceArea={surfaceArea}
+                            isSelected={isSelected}
+                            onChange={() => {
+                              field.onChange(
+                                isSelected
+                                  ? field.value.filter((v) => v !== soilType)
+                                  : [...field.value, soilType],
+                              );
+                            }}
+                          />
+                        );
+                      }}
+                    />
                   );
                 })}
               </div>

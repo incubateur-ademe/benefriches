@@ -1,5 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import { ReactNode } from "react";
 import { SoilType } from "shared";
 
 import {
@@ -21,10 +19,6 @@ type Props = {
   projectName: string;
   impacts: EnvironmentalImpact[];
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
-};
-
-const Row = ({ children }: { children: ReactNode }) => {
-  return <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>{children}</div>;
 };
 
 const ENVIRONMENTAL_IMPACTS: EnvironmentalImpactName[] = [
@@ -107,42 +101,39 @@ const ImpactsChartsEnvironmentSection = ({
       }}
       title="Impacts environnementaux"
     >
-      <Row>
+      <div className="tw-grid tw-gap-6 md:tw-grid-cols-2 lg:tw-grid-cols-4 ">
         {soilsCarbonStorage && (
-          <div className={fr.cx("fr-col-lg-3", "fr-col-6")}>
-            <HighchartsCustomColorsWrapper
-              colors={(soilsCarbonStorage.impact.details ?? []).map(({ name }) =>
-                getColorForCarbonStorageSoilType(name.toUpperCase() as SoilType),
-              )}
-            >
-              <ImpactAreaChartCard
-                onClick={() => {
-                  openImpactDescriptionModal("environmental.carbon-storage");
-                }}
-                type="co2"
-                baseLabel="Pas de changement"
-                forecastLabel={projectName}
-                impact={formatImpactForChartAreaCard({
-                  impact: soilsCarbonStorage.impact,
-                  name: "soils_carbon_storage",
-                })}
-              />
-            </HighchartsCustomColorsWrapper>
-          </div>
+          <HighchartsCustomColorsWrapper
+            colors={(soilsCarbonStorage.impact.details ?? []).map(({ name }) =>
+              getColorForCarbonStorageSoilType(name.toUpperCase() as SoilType),
+            )}
+          >
+            <ImpactAreaChartCard
+              onClick={() => {
+                openImpactDescriptionModal("environmental.carbon-storage");
+              }}
+              type="co2"
+              baseLabel="Pas de changement"
+              forecastLabel={projectName}
+              impact={formatImpactForChartAreaCard({
+                impact: soilsCarbonStorage.impact,
+                name: "soils_carbon_storage",
+              })}
+            />
+          </HighchartsCustomColorsWrapper>
         )}
 
         {impactsList.map(({ name, impact, type }) => (
-          <div className={fr.cx("fr-col-lg-3", "fr-col-6")} key={name}>
-            <ImpactAreaChartCard
-              type={type}
-              baseLabel="Pas de changement"
-              forecastLabel={projectName}
-              impact={formatImpactForChartAreaCard({ impact, name })}
-              onClick={getImpactOnClick(name, openImpactDescriptionModal)}
-            />
-          </div>
+          <ImpactAreaChartCard
+            key={name}
+            type={type}
+            baseLabel="Pas de changement"
+            forecastLabel={projectName}
+            impact={formatImpactForChartAreaCard({ impact, name })}
+            onClick={getImpactOnClick(name, openImpactDescriptionModal)}
+          />
         ))}
-      </Row>
+      </div>
     </ImpactsChartsSection>
   );
 };

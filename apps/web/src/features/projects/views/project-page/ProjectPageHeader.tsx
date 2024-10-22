@@ -45,10 +45,8 @@ const ProjectPageHeader = ({
     <div className={fr.cx("fr-container")}>
       <div
         className={classNames(
-          fr.cx("fr-grid-row"),
-          !isSmall && fr.cx("fr-my-2w"),
-          "tw-justify-between",
-          "tw-items-center",
+          "sm:tw-flex tw-justify-between tw-items-center",
+          !isSmall && "tw-my-4",
         )}
       >
         <div className="tw-flex tw-items-center">
@@ -64,13 +62,11 @@ const ProjectPageHeader = ({
           )}
 
           <div>
-            <div className="tw-inline-flex tw-items-center">
-              <h2 className={classNames(fr.cx("fr-my-0"), isSmall && "tw-text-2xl")}>
-                {projectName}
-              </h2>
+            <div className="sm:tw-inline-flex tw-items-center">
+              <h2 className={classNames("tw-my-0", isSmall && "tw-text-2xl")}>{projectName}</h2>
               {isExpressProject && <ExpressProjectTooltipBadge siteName={siteName} />}
             </div>
-            <div className={classNames(!isSmall && fr.cx("fr-mt-1v"))}>
+            <div className={classNames(!isSmall && "tw-mt-1")}>
               <span
                 className={classNames(
                   fr.cx(

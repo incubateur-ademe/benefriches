@@ -19,7 +19,7 @@ const ImpactsChartsEconomicSection = ({
   const displayEconomicBalance = economicBalance.economicBalance.length > 0;
 
   return (
-    <div className={"tw-grid tw-grid-rows-1 lg:tw-grid-cols-3 tw-gap-10 tw-mb-8"}>
+    <div className="tw-grid lg:tw-grid-cols-3 tw-gap-10 tw-mb-8">
       {displayEconomicBalance && (
         <div className="lg:tw-col-start-1">
           <EconomicBalanceImpactCard

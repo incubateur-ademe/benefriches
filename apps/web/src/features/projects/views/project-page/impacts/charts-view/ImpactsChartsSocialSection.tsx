@@ -1,6 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import { ReactNode } from "react";
-
 import {
   SocialImpact,
   SocialImpactName,
@@ -15,10 +12,6 @@ type Props = {
   projectName: string;
   impacts: SocialImpact[];
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
-};
-
-const Row = ({ children }: { children: ReactNode }) => {
-  return <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>{children}</div>;
 };
 
 const getImpactOnClick = (
@@ -108,20 +101,19 @@ const ImpactsChartsSocialSection = ({
         openImpactDescriptionModal("social");
       }}
     >
-      <Row>
+      <div className="tw-grid tw-gap-6 md:tw-grid-cols-2 lg:tw-grid-cols-4 ">
         {impactsList.map(({ name, impact, type }) => (
-          <div className={fr.cx("fr-col-lg-3", "fr-col-6")} key={name}>
-            <ImpactAreaChartCard
-              type={type}
-              unitSuffix={getImpactUnitSuffix(name, impact.difference)}
-              baseLabel="Pas de changement"
-              forecastLabel={projectName}
-              impact={formatImpactForChartAreaCard({ impact, name })}
-              onClick={getImpactOnClick(name, openImpactDescriptionModal)}
-            />
-          </div>
+          <ImpactAreaChartCard
+            type={type}
+            key={name}
+            unitSuffix={getImpactUnitSuffix(name, impact.difference)}
+            baseLabel="Pas de changement"
+            forecastLabel={projectName}
+            impact={formatImpactForChartAreaCard({ impact, name })}
+            onClick={getImpactOnClick(name, openImpactDescriptionModal)}
+          />
         ))}
-      </Row>
+      </div>
     </ImpactsChartsSection>
   );
 };

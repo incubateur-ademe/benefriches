@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 import { UrbanPublicSpace, urbanPublicSpace } from "shared";
 
@@ -51,31 +50,30 @@ function PublicSpacesSelection({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Quel sera le revêtement des espaces publics ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters", "fr-mb-5w")}>
+        <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4 tw-mb-10">
           {urbanPublicSpace.options.map((value) => {
             return (
-              <div className={fr.cx("fr-col-12", "fr-col-sm-6")} key={value}>
-                <Controller
-                  control={control}
-                  name="publicSpaces"
-                  render={({ field }) => {
-                    const isSelected = field.value.includes(value);
-                    return (
-                      <PublicSpaceTile
-                        publicSpace={value}
-                        isSelected={isSelected}
-                        onChange={() => {
-                          field.onChange(
-                            isSelected
-                              ? field.value.filter((v) => v !== value)
-                              : [...field.value, value],
-                          );
-                        }}
-                      />
-                    );
-                  }}
-                />
-              </div>
+              <Controller
+                key={value}
+                control={control}
+                name="publicSpaces"
+                render={({ field }) => {
+                  const isSelected = field.value.includes(value);
+                  return (
+                    <PublicSpaceTile
+                      publicSpace={value}
+                      isSelected={isSelected}
+                      onChange={() => {
+                        field.onChange(
+                          isSelected
+                            ? field.value.filter((v) => v !== value)
+                            : [...field.value, value],
+                        );
+                      }}
+                    />
+                  );
+                }}
+              />
             );
           })}
         </div>

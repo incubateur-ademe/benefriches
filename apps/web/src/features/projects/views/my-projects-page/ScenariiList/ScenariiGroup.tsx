@@ -1,9 +1,6 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import { ReactNode } from "react";
 import { FricheActivity } from "shared";
 
 import { routes } from "@/app/views/router";
-import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 
 import { ReconversionProjectList } from ".";
@@ -45,12 +42,6 @@ function ScenarioGroupTitle({
   );
 }
 
-function GridColumn({ children }: { children: ReactNode }) {
-  return (
-    <div className={classNames(fr.cx("fr-col-md-3", "fr-col-sm-6"), "tw-w-full")}>{children}</div>
-  );
-}
-
 function ScenariiGroup({
   siteId,
   siteName,
@@ -64,42 +55,37 @@ function ScenariiGroup({
   onChangeSelectedProject,
 }: Props) {
   return (
-    <div className="fr-mb-5w" key={siteId}>
+    <div className="tw-mb-10">
       <ScenarioGroupTitle siteName={siteName} siteId={siteId} isExpressSite={isExpressSite} />
       {reconversionProjects.length > 0 ? (
         <p>{reconversionProjects.length + 1} scenarii possibles pour ce site :</p>
       ) : (
         <p>1 scenario possible pour ce site :</p>
       )}
-      <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
-        <GridColumn>
-          <StatuQuoScenarioTile
-            isFriche={isFriche}
-            fricheActivity={fricheActivity}
-            siteId={siteId}
-            onChangeSelectedSite={onChangeSelectedSite}
-            selectedIds={selectedIds}
-            selectableIds={selectableIds}
-          />
-        </GridColumn>
+      <div className="tw-grid sm:tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-6">
+        <StatuQuoScenarioTile
+          isFriche={isFriche}
+          fricheActivity={fricheActivity}
+          siteId={siteId}
+          onChangeSelectedSite={onChangeSelectedSite}
+          selectedIds={selectedIds}
+          selectableIds={selectableIds}
+        />
         {reconversionProjects.map((project) => {
           return (
-            <GridColumn key={project.id}>
-              <ProjectScenarioTile
-                name={project.name}
-                id={project.id}
-                isExpressProject={project.isExpressProject}
-                selectedIds={selectedIds}
-                selectableIds={selectableIds}
-                onChangeSelectedProject={onChangeSelectedProject}
-                type={project.type}
-              />
-            </GridColumn>
+            <ProjectScenarioTile
+              key={project.id}
+              name={project.name}
+              id={project.id}
+              isExpressProject={project.isExpressProject}
+              selectedIds={selectedIds}
+              selectableIds={selectableIds}
+              onChangeSelectedProject={onChangeSelectedProject}
+              type={project.type}
+            />
           );
         })}
-        <GridColumn>
-          <NewScenarioTile siteId={siteId} />
-        </GridColumn>
+        <NewScenarioTile siteId={siteId} />
       </div>
     </div>
   );

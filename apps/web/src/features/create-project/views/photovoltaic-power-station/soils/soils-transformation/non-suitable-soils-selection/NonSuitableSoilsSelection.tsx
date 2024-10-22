@@ -99,30 +99,29 @@ function NonSuitableSoilsSelection({
         >
           {typedObjectEntries(nonSuitableSoils).map(([soilType, surfaceArea]) => {
             return (
-              <div key={soilType}>
-                <Controller
-                  control={control}
-                  name="soils"
-                  rules={{ required: "Veuillez sélectionner au moins un type de sol." }}
-                  render={({ field }) => {
-                    const isSelected = field.value.includes(soilType);
-                    return (
-                      <SoilTypeTile
-                        soilType={soilType}
-                        surfaceArea={surfaceArea as number}
-                        isSelected={isSelected}
-                        onSelect={() => {
-                          field.onChange(
-                            isSelected
-                              ? field.value.filter((v) => v !== soilType)
-                              : [...field.value, soilType],
-                          );
-                        }}
-                      />
-                    );
-                  }}
-                />
-              </div>
+              <Controller
+                key={soilType}
+                control={control}
+                name="soils"
+                rules={{ required: "Veuillez sélectionner au moins un type de sol." }}
+                render={({ field }) => {
+                  const isSelected = field.value.includes(soilType);
+                  return (
+                    <SoilTypeTile
+                      soilType={soilType}
+                      surfaceArea={surfaceArea as number}
+                      isSelected={isSelected}
+                      onSelect={() => {
+                        field.onChange(
+                          isSelected
+                            ? field.value.filter((v) => v !== soilType)
+                            : [...field.value, soilType],
+                        );
+                      }}
+                    />
+                  );
+                }}
+              />
             );
           })}
         </div>

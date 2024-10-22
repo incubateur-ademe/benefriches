@@ -18,20 +18,14 @@ export default function CallToActionSection() {
       id="cta-section"
     >
       <div className={fr.cx("fr-container")}>
-        <div className={fr.cx("fr-grid-row")}>
+        <div className="md:tw-flex">
           <div
             className={classNames(
-              "fr-col-12",
-              "fr-col-md-5",
-              "fr-pr-md-8w",
-              "tw-border-0",
-              "tw-border-b",
-              "md:tw-border-b-0",
-              "md:tw-border-r",
-              "tw-border-solid",
-              "tw-border-borderGrey",
-              "fr-pb-12v",
-              "fr-pb-md-0",
+              "tw-pb-12",
+              "md:tw-flex-[5]",
+              "md:tw-pr-16 md:tw-pb-0",
+              "tw-border-0 tw-border-b tw-border-solid tw-border-borderGrey",
+              "md:tw-border-b-0 md:tw-border-r",
             )}
           >
             <img
@@ -59,9 +53,7 @@ export default function CallToActionSection() {
             </Button>
           </div>
           <hr />
-          <div
-            className={fr.cx("fr-col-12", "fr-col-md-7", "fr-pl-md-8w", "fr-pt-6v", "fr-pt-md-0")}
-          >
+          <div className={classNames("tw-pt-6 md:tw-flex-[7] md:tw-pl-16 md:tw-pt-0")}>
             <img
               src="/img/pictograms/development-plans/commercial-activity-area.svg"
               width="100px"

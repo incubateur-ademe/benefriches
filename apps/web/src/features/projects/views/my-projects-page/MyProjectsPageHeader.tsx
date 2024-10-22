@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useTour } from "@reactour/tour";
 import { Dropdown } from "antd";
@@ -9,7 +8,7 @@ import classNames from "@/shared/views/clsx";
 function MyProjectsPageHeader() {
   const { setIsOpen } = useTour();
   return (
-    <div className={classNames(fr.cx("fr-grid-row"), "tw-justify-between", "tw-items-center")}>
+    <div className={classNames("sm:tw-flex", "tw-justify-between", "tw-items-center")}>
       <h2>Mes projets</h2>
       <div className={classNames("tw-flex", "tw-gap-2")}>
         <div className="tour-guide-step-create-new-site">

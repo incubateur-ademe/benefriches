@@ -55,42 +55,41 @@ function CreateModeSelectionForm({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Comment souhaitez-vous créer votre projet ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={fr.cx("fr-mb-5w")}>
-          <div className={fr.cx("fr-grid-row", "fr-grid-row--gutters")}>
+        <div className="tw-mb-10">
+          <div className="tw-grid md:tw-grid-cols-2 tw-gap-4">
             {options.map((option) => {
               return (
-                <div className={fr.cx("fr-col-12", "fr-col-md-6")} key={option.value}>
-                  <Controller
-                    control={control}
-                    name="createMode"
-                    rules={{ required: "Veuillez sélectionner un mode de création." }}
-                    render={({ field }) => {
-                      const isSelected = field.value === option.value;
-                      return (
-                        <CheckableTile
-                          title={option.title}
-                          description={
-                            <>
-                              <div>{option.description}</div>
-                              <Badge
-                                className="tw-mt-3"
-                                style={option.disabled ? "disabled" : "green-tilleul"}
-                              >
-                                {option.badgeText}
-                              </Badge>
-                            </>
-                          }
-                          checked={isSelected}
-                          onChange={() => {
-                            field.onChange(option.value);
-                          }}
-                          disabled={option.disabled}
-                          imgSrc={option.imgSrc}
-                        />
-                      );
-                    }}
-                  />
-                </div>
+                <Controller
+                  key={option.value}
+                  control={control}
+                  name="createMode"
+                  rules={{ required: "Veuillez sélectionner un mode de création." }}
+                  render={({ field }) => {
+                    const isSelected = field.value === option.value;
+                    return (
+                      <CheckableTile
+                        title={option.title}
+                        description={
+                          <>
+                            <div>{option.description}</div>
+                            <Badge
+                              className="tw-mt-3"
+                              style={option.disabled ? "disabled" : "green-tilleul"}
+                            >
+                              {option.badgeText}
+                            </Badge>
+                          </>
+                        }
+                        checked={isSelected}
+                        onChange={() => {
+                          field.onChange(option.value);
+                        }}
+                        disabled={option.disabled}
+                        imgSrc={option.imgSrc}
+                      />
+                    );
+                  }}
+                />
               );
             })}
           </div>

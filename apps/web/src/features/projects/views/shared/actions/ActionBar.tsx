@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { forwardRef } from "react";
@@ -7,7 +6,6 @@ import {
   ImpactCategoryFilter,
   ViewMode,
 } from "@/features/projects/application/projectImpacts.reducer";
-import classNames from "@/shared/views/clsx";
 
 import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
 
@@ -44,10 +42,7 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
   };
 
   return (
-    <section
-      ref={ref}
-      className={classNames(fr.cx("fr-grid-row", "fr-py-2w", "fr-mb-1w"), "tw-justify-between")}
-    >
+    <section ref={ref} className="md:tw-flex tw-py-4 tw-mb-2 tw-justify-between">
       <SegmentedControl
         legend="Filtres"
         hideLegend
@@ -69,7 +64,7 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
           },
         ]}
       />
-      <div className="tw-flex tw-flex-col tw-mt-4 tw-w-full sm:tw-mt-0 sm:tw-w-auto sm:tw-flex-row tw-gap-4">
+      <div className="tw-flex tw-flex-col tw-mt-4 tw-w-full md:tw-mt-0 md:tw-w-auto md:tw-flex-row tw-gap-4">
         <ImpactEvaluationPeriodSelect
           onChange={onEvaluationPeriodChange}
           value={evaluationPeriod}

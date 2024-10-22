@@ -78,9 +78,8 @@ function ScheduleProjectionForm({
               ) : undefined
             }
           >
-            <div className="fr-grid-row fr-grid-row--gutters">
+            <div className="tw-grid tw-gap-4 sm:tw-grid-cols-2">
               <Input
-                className="fr-col-6"
                 label="Début des travaux"
                 nativeInputProps={{
                   type: "date",
@@ -88,7 +87,6 @@ function ScheduleProjectionForm({
                 }}
               />
               <Input
-                className="fr-col-6"
                 label="Fin des travaux"
                 nativeInputProps={{
                   type: "date",
@@ -119,9 +117,8 @@ function ScheduleProjectionForm({
             ) : undefined
           }
         >
-          <div className="fr-grid-row fr-grid-row--gutters">
+          <div className="tw-grid tw-gap-4 sm:tw-grid-cols-2">
             <Input
-              className="fr-col-6"
               label="Début des travaux"
               nativeInputProps={{
                 type: "date",
@@ -130,7 +127,6 @@ function ScheduleProjectionForm({
             />
 
             <Input
-              className="fr-col-6"
               label="Fin des travaux"
               nativeInputProps={{
                 type: "date",
