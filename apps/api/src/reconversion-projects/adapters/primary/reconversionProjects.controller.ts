@@ -40,6 +40,12 @@ class CreateExpressReconversionProjectBodyDto extends createZodDto(
     reconversionProjectId: z.string(),
     siteId: z.string(),
     createdBy: z.string(),
+    category: z.enum([
+      "PUBLIC_FACILITIES",
+      "RESIDENTIAL_TENSE_AREA",
+      "RESIDENTIAL_NORMAL_AREA",
+      "NEW_URBAN_CENTER",
+    ]),
   }),
 ) {}
 
@@ -76,7 +82,7 @@ export class ReconversionProjectController {
   async createExpressReconversionProject(
     @Body() createReconversionProjectDto: CreateExpressReconversionProjectBodyDto,
   ) {
-    await this.createExpressReconversionProjectUseCase.execute(createReconversionProjectDto);
+    return await this.createExpressReconversionProjectUseCase.execute(createReconversionProjectDto);
   }
 
   @Get("list-by-site")

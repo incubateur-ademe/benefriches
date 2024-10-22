@@ -19,5 +19,8 @@ export default class HttpSaveExpressReconversionProjectService
     });
 
     if (!response.ok) throw new Error("Error while saving express reconversion project");
+
+    const jsonResponse = (await response.json()) as { id: string; name: string };
+    return jsonResponse;
   }
 }

@@ -58,6 +58,7 @@ const MOCK_STATES = {
     },
     urbanProject: {
       createMode: undefined,
+      expressData: {},
       stepsHistory: [],
       saveState: "idle",
       creationData: {},

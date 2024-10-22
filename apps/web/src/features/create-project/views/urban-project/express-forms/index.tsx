@@ -5,6 +5,7 @@ import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import UrbanProjectExpressStepper from "./UrbanProjectExpressStepper";
 import UrbanProjectCreationResult from "./creation-result";
+import UrbanProjectExpressCategory from "./express-category";
 
 type Props = {
   currentStep: UrbanProjectExpressCreationStep;
@@ -15,7 +16,13 @@ export default function UrbanProjectExpressCreationStepWizard({ currentStep }: P
 
   return (
     <SidebarLayout
-      mainChildren={<UrbanProjectCreationResult />}
+      mainChildren={
+        currentStep === "EXPRESS_CATEGORY_SELECTION" ? (
+          <UrbanProjectExpressCategory />
+        ) : (
+          <UrbanProjectCreationResult />
+        )
+      }
       title="Renseignement du projet"
       isOpen={isOpen}
       toggleIsOpen={() => {

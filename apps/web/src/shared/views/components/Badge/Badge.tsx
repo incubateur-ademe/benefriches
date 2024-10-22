@@ -7,7 +7,7 @@ type Props = {
   children: NonNullable<ReactNode>;
   className?: ClassValue;
   small?: boolean;
-  style:
+  style?:
     | "default"
     | "green-emeraude"
     | "green-tilleul"
@@ -28,9 +28,9 @@ const badgeStyleClasses = {
   ["success"]: "tw-bg-impacts-positive-light",
   ["error"]: "tw-bg-impacts-negative-light",
   ["neutral"]: "tw-bg-impacts-neutral-main dark:tw-bg-impacts-neutral-light",
-} as const satisfies Record<Props["style"], string>;
+} as const satisfies Record<Exclude<Props["style"], undefined>, string>;
 
-export default function Badge({ children, className, small = false, style }: Props) {
+export default function Badge({ children, className, small = false, style = "default" }: Props) {
   return (
     <DsfrBadge
       as="span"

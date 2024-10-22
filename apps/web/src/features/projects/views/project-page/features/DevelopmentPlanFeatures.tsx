@@ -115,16 +115,18 @@ const DevelopmentPlanFeatures = ({
                   label={<strong>Lieux de vie et d’activités</strong>}
                   value={<strong>{formatSurfaceArea(totalLivingAndActivitiesSpaces)}</strong>}
                 />
-                {typedObjectEntries(livingAndActivitiesSpaces).map(([space, surfaceArea]) => {
-                  return (
-                    <DataLine
-                      label={getLabelForUrbanProjectSpace(space)}
-                      value={formatSurfaceArea(surfaceArea)}
-                      key={space}
-                      isDetails
-                    />
-                  );
-                })}
+                {typedObjectEntries(livingAndActivitiesSpaces)
+                  .filter(([, surfaceArea]) => surfaceArea)
+                  .map(([space, surfaceArea]) => {
+                    return (
+                      <DataLine
+                        label={getLabelForUrbanProjectSpace(space)}
+                        value={formatSurfaceArea(surfaceArea)}
+                        key={space}
+                        isDetails
+                      />
+                    );
+                  })}
               </>
             )}
             {totalGreenPublicSpaces > 0 && (
@@ -135,16 +137,18 @@ const DevelopmentPlanFeatures = ({
                   label={<strong>Espaces verts</strong>}
                   value={<strong>{formatSurfaceArea(totalGreenPublicSpaces)}</strong>}
                 />
-                {typedObjectEntries(greenPublicSpaces).map(([space, surfaceArea]) => {
-                  return (
-                    <DataLine
-                      label={getLabelForUrbanProjectSpace(space)}
-                      value={formatSurfaceArea(surfaceArea)}
-                      key={space}
-                      isDetails
-                    />
-                  );
-                })}
+                {typedObjectEntries(greenPublicSpaces)
+                  .filter(([, surfaceArea]) => surfaceArea)
+                  .map(([space, surfaceArea]) => {
+                    return (
+                      <DataLine
+                        label={getLabelForUrbanProjectSpace(space)}
+                        value={formatSurfaceArea(surfaceArea)}
+                        key={space}
+                        isDetails
+                      />
+                    );
+                  })}
               </>
             )}
             {totalPublicSpaces > 0 && (
@@ -155,16 +159,18 @@ const DevelopmentPlanFeatures = ({
                   label={<strong>Espaces publics</strong>}
                   value={<strong>{formatSurfaceArea(totalPublicSpaces)}</strong>}
                 />
-                {typedObjectEntries(publicSpaces).map(([space, surfaceArea]) => {
-                  return (
-                    <DataLine
-                      label={getLabelForUrbanProjectSpace(space)}
-                      value={formatSurfaceArea(surfaceArea)}
-                      key={space}
-                      isDetails
-                    />
-                  );
-                })}
+                {typedObjectEntries(publicSpaces)
+                  .filter(([, surfaceArea]) => surfaceArea)
+                  .map(([space, surfaceArea]) => {
+                    return (
+                      <DataLine
+                        label={getLabelForUrbanProjectSpace(space)}
+                        value={formatSurfaceArea(surfaceArea)}
+                        key={space}
+                        isDetails
+                      />
+                    );
+                  })}
               </>
             )}
 

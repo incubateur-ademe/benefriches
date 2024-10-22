@@ -4,7 +4,6 @@ import { z } from "zod";
 import { UseCase } from "src/shared-kernel/usecase";
 import { Address } from "src/sites/core/models/site";
 
-import { MixedUseNeighbourhoodProjectExpressCreationService } from "../model/create-from-site-services/MixedUseNeighbourhoodProjectExpressCreationService";
 import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
 import { PublicFacilitiesProjectExpressCreationService } from "../model/create-from-site-services/PublicFacilitiesProjectExpressCreationService";
 import { ResidentialProjectExpressCreationService } from "../model/create-from-site-services/ResidentialProjectExpressCreationService";
@@ -50,6 +49,11 @@ type Request = {
     | "NEW_URBAN_CENTER";
 };
 
+type Response = {
+  id: string;
+  name: string;
+};
+
 const getCreationServiceClass = (category: Request["category"]) => {
   switch (category) {
     case "NEW_URBAN_CENTER":
@@ -61,18 +65,18 @@ const getCreationServiceClass = (category: Request["category"]) => {
     case "PUBLIC_FACILITIES":
       return PublicFacilitiesProjectExpressCreationService;
     default:
-      return MixedUseNeighbourhoodProjectExpressCreationService;
+      return ResidentialProjectExpressCreationService;
   }
 };
 
-export class CreateExpressReconversionProjectUseCase implements UseCase<Request, void> {
+export class CreateExpressReconversionProjectUseCase implements UseCase<Request, Response> {
   constructor(
     private readonly dateProvider: DateProvider,
     private readonly siteQuery: SiteQuery,
     private readonly reconversionProjectRepository: ReconversionProjectRepository,
   ) {}
 
-  async execute(props: Request): Promise<void> {
+  async execute(props: Request): Promise<Response> {
     const siteData = await this.siteQuery.getById(props.siteId);
     if (!siteData) {
       throw new Error(`Site with id ${props.siteId} does not exist`);
@@ -89,5 +93,7 @@ export class CreateExpressReconversionProjectUseCase implements UseCase<Request,
     const reconversionProject = creationService.getReconversionProject();
 
     await this.reconversionProjectRepository.save(reconversionProject);
+
+    return { id: reconversionProject.id, name: reconversionProject.name };
   }
 }

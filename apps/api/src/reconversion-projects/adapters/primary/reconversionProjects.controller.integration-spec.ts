@@ -107,6 +107,82 @@ describe("ReconversionProjects controller", () => {
     });
   });
 
+  describe("POST /create-from-site", () => {
+    const siteId = "f590f643-cd9a-4187-8973-f90e9f1998c8";
+    beforeEach(async () => {
+      await sqlConnection("sites").insert({
+        id: siteId,
+        name: "Site name",
+        surface_area: 14000,
+        is_friche: false,
+        owner_structure_type: "company",
+        created_at: new Date(),
+      });
+      await sqlConnection("addresses").insert({
+        id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+        ban_id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+        value: "Grenoble",
+        city: "Grenoble",
+        city_code: "38100",
+        post_code: "38000",
+        site_id: siteId,
+      });
+    });
+
+    it("can't create a reconversion project without category", async () => {
+      const response = await supertest(app.getHttpServer())
+        .post("/reconversion-projects/create-from-site")
+        .send({
+          reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
+          createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
+          siteId: siteId,
+        });
+
+      expect(response.status).toEqual(400);
+      expect(response.body).toHaveProperty("errors");
+
+      const responseErrors = (response.body as BadRequestResponseBody).errors;
+      expect(responseErrors).toHaveLength(1);
+      expect(responseErrors[0]?.path).toContain("category");
+    });
+
+    it.each([
+      "PUBLIC_FACILITIES",
+      "RESIDENTIAL_TENSE_AREA",
+      "RESIDENTIAL_NORMAL_AREA",
+      "NEW_URBAN_CENTER",
+    ])(
+      "get a 201 response and reconversion project is created with category %s",
+      async (category) => {
+        const requestBody = {
+          reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
+          createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
+          siteId: siteId,
+          category,
+        };
+
+        const response = await supertest(app.getHttpServer())
+          .post("/reconversion-projects/create-from-site")
+          .send(requestBody);
+        expect(response.status).toEqual(201);
+
+        const reconversionProjectsInDb = await sqlConnection("reconversion_projects").select(
+          "id",
+          "created_by",
+          "related_site_id",
+          "creation_mode",
+        );
+        expect(reconversionProjectsInDb.length).toEqual(1);
+        expect(reconversionProjectsInDb[0]).toEqual({
+          id: requestBody.reconversionProjectId,
+          created_by: requestBody.createdBy,
+          related_site_id: requestBody.siteId,
+          creation_mode: "express",
+        });
+      },
+    );
+  });
+
   describe("GET /reconversion-projects/list-by-site", () => {
     it("gets a 400 response when no userId provided", async () => {
       const response = await supertest(app.getHttpServer())

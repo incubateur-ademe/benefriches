@@ -8,7 +8,7 @@ const RESALE_RATIO_PER_SQUARE_METERS = {
 };
 
 export class NewUrbanCenterProjectExpressCreationService extends UrbanProjectExpressCreationService {
-  override name = "Nouvelle centralité";
+  override name = "Centralité urbaine";
 
   override get spacesDistribution() {
     return {

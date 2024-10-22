@@ -25,6 +25,8 @@ import {
   buildingsUseCategorySurfaceAreasReverted,
   createModeStepReverted,
   customCreateModeSelected,
+  expressCategorySelected,
+  expressCategoryStepReverted,
   expressCreateModeSelected,
   greenSpacesDistributionCompleted,
   greenSpacesDistributionReverted,
@@ -64,7 +66,7 @@ import {
   buildingsEconomicActivitySurfaceAreasReverted,
 } from "./urbanProject.actions";
 
-export type UrbanProjectExpressCreationStep = "CREATION_RESULT";
+export type UrbanProjectExpressCreationStep = "EXPRESS_CATEGORY_SELECTION" | "CREATION_RESULT";
 export type UrbanProjectCustomCreationStep =
   | "SPACES_CATEGORIES_INTRODUCTION"
   | "SPACES_CATEGORIES_SELECTION"
@@ -111,6 +113,14 @@ export type UrbanProjectCreationStep =
 
 export type UrbanProjectState = {
   createMode: "express" | "custom" | undefined;
+  expressData: {
+    name?: string;
+    category?:
+      | "PUBLIC_FACILITIES"
+      | "RESIDENTIAL_TENSE_AREA"
+      | "RESIDENTIAL_NORMAL_AREA"
+      | "NEW_URBAN_CENTER";
+  };
   saveState: "idle" | "loading" | "success" | "error";
   stepsHistory: UrbanProjectCreationStep[];
   spacesCategoriesToComplete: UrbanSpaceCategory[];
@@ -145,6 +155,10 @@ const isRevertedAction = (action: { type: string }) => {
 
 export const initialState: UrbanProjectState = {
   createMode: undefined,
+  expressData: {
+    name: undefined,
+    category: undefined,
+  },
   creationData: {},
   saveState: "idle",
   stepsHistory: ["CREATE_MODE_SELECTION"],
@@ -156,18 +170,25 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(createModeStepReverted, (state) => {
     state.urbanProject.createMode = undefined;
   });
-  builder.addCase(expressCreateModeSelected.pending, (state) => {
+  builder.addCase(expressCreateModeSelected, (state) => {
     state.urbanProject.createMode = "express";
+    state.urbanProject.stepsHistory.push("EXPRESS_CATEGORY_SELECTION");
+  });
+  builder.addCase(expressCategoryStepReverted, (state) => {
+    state.urbanProject.createMode = undefined;
+  });
+  builder.addCase(expressCategorySelected.pending, (state, action) => {
     state.urbanProject.saveState = "loading";
+    state.urbanProject.expressData.category = action.payload;
     state.urbanProject.stepsHistory.push("CREATION_RESULT");
   });
-  builder.addCase(expressCreateModeSelected.rejected, (state) => {
+  builder.addCase(expressCategorySelected.rejected, (state) => {
     state.urbanProject.saveState = "error";
   });
-  builder.addCase(expressCreateModeSelected.fulfilled, (state) => {
+  builder.addCase(expressCategorySelected.fulfilled, (state, action) => {
     state.urbanProject.saveState = "success";
+    state.urbanProject.expressData.name = action.payload.name;
   });
-
   builder.addCase(customCreateModeSelected, (state) => {
     state.urbanProject.createMode = "custom";
     state.urbanProject.stepsHistory.push("SPACES_CATEGORIES_INTRODUCTION");

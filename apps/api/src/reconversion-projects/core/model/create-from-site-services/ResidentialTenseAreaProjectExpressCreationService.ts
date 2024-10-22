@@ -6,7 +6,7 @@ import {
 import { UrbanProjectExpressCreationService } from "./UrbanProjectExpressCreationService";
 
 export class ResidentialTenseAreaProjectExpressCreationService extends UrbanProjectExpressCreationService {
-  override name = "Résidentiel zone tendue";
+  override name = "Résidentiel secteur tendu";
 
   override get spacesDistribution() {
     return {
