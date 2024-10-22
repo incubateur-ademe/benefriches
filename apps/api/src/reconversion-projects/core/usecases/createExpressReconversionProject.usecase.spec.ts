@@ -110,13 +110,13 @@ describe("CreateReconversionProject Use Case", () => {
 
         let expectedName = "";
         if (expressCategory === "NEW_URBAN_CENTER") {
-          expectedName = "Nouvelle centralité";
+          expectedName = "Centralité urbaine";
         } else if (expressCategory === "PUBLIC_FACILITIES") {
           expectedName = "Équipement public";
         } else if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
-          expectedName = "Résidentiel zone tendue";
+          expectedName = "Résidentiel secteur tendu";
         } else {
-          expectedName = "Résidentiel zone détendue";
+          expectedName = "Résidentiel secteur détendu";
         }
 
         const createdReconversionProjects: ReconversionProject[] =

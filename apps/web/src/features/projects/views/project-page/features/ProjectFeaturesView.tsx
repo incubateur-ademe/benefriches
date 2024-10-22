@@ -135,34 +135,41 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             installationCosts={projectData.developmentPlan.installationCosts}
           />
         )}
-        <DataLine
-          noBorder
-          label={<strong>Dépenses annuelles</strong>}
-          value={
-            <div>
-              <strong>
-                {formatNumberFr(sumList(projectData.yearlyProjectedExpenses.map((e) => e.amount)))}{" "}
-                €
-              </strong>
-            </div>
-          }
-        />
-        {projectData.yearlyProjectedExpenses.map(({ amount, purpose }) => {
-          return (
-            <DataLine
-              label={getLabelForRecurringExpense(purpose)}
-              value={`${formatNumberFr(amount)} €`}
-              isDetails
-              key={purpose}
-            />
-          );
-        })}
+
         {projectData.siteResaleTotalAmount ? (
           <DataLine
             label={<strong>Prix de revente du site et droits de mutation</strong>}
             value={<strong>{formatNumberFr(projectData.siteResaleTotalAmount)} €</strong>}
           />
         ) : undefined}
+        {projectData.yearlyProjectedExpenses.length > 0 && (
+          <>
+            <DataLine
+              label={<strong>Dépenses annuelles</strong>}
+              value={
+                <div>
+                  <strong>
+                    {formatNumberFr(
+                      sumList(projectData.yearlyProjectedExpenses.map((e) => e.amount)),
+                    )}{" "}
+                    €
+                  </strong>
+                </div>
+              }
+            />
+            {projectData.yearlyProjectedExpenses.map(({ amount, purpose }) => {
+              return (
+                <DataLine
+                  label={getLabelForRecurringExpense(purpose)}
+                  value={`${formatNumberFr(amount)} €`}
+                  isDetails
+                  key={purpose}
+                />
+              );
+            })}
+          </>
+        )}
+
         {!!projectData.financialAssistanceRevenues && (
           <>
             <DataLine
@@ -189,32 +196,38 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             })}
           </>
         )}
-        <DataLine
-          noBorder
-          label={
-            <div>
-              <strong>Recettes annuelles</strong>
-            </div>
-          }
-          value={
-            <div>
-              <strong>
-                {formatNumberFr(sumList(projectData.yearlyProjectedRevenues.map((e) => e.amount)))}{" "}
-                €
-              </strong>
-            </div>
-          }
-        />
-        {projectData.yearlyProjectedRevenues.map(({ amount, source }) => {
-          return (
+        {projectData.yearlyProjectedRevenues.length > 0 && (
+          <>
             <DataLine
-              label={getLabelForRecurringRevenueSource(source)}
-              value={`${formatNumberFr(amount)} €`}
-              isDetails
-              key={source}
+              noBorder
+              label={
+                <div>
+                  <strong>Recettes annuelles</strong>
+                </div>
+              }
+              value={
+                <div>
+                  <strong>
+                    {formatNumberFr(
+                      sumList(projectData.yearlyProjectedRevenues.map((e) => e.amount)),
+                    )}{" "}
+                    €
+                  </strong>
+                </div>
+              }
             />
-          );
-        })}
+            {projectData.yearlyProjectedRevenues.map(({ amount, source }) => {
+              return (
+                <DataLine
+                  label={getLabelForRecurringRevenueSource(source)}
+                  value={`${formatNumberFr(amount)} €`}
+                  isDetails
+                  key={source}
+                />
+              );
+            })}
+          </>
+        )}
       </Section>
       <Section title="📆 Calendrier">
         {projectData.reinstatementSchedule && (

@@ -20,6 +20,7 @@ import UrbanProjectExpressCreationStepWizard from "./express-forms";
 
 const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   CREATE_MODE_SELECTION: "mode-creation",
+  EXPRESS_CATEGORY_SELECTION: "typologie-de-projet-express",
   SPACES_CATEGORIES_INTRODUCTION: "espaces-introduction",
   SPACES_CATEGORIES_SELECTION: "espaces-selection",
   SPACES_CATEGORIES_SURFACE_AREA: "espaces-surfaces",

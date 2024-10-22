@@ -8,8 +8,8 @@ type Props = {
   isExtended?: boolean;
 };
 
-function UrbanProjectExpressStepper({ isExtended }: Props) {
-  const stepCategory = "Récapitulatif";
+function UrbanProjectExpressStepper({ isExtended, step }: Props) {
+  const stepCategory = step === "CREATION_RESULT" ? "Récapitulatif" : "Mode de création";
   const currentStepIndex = stepCategories.findIndex((step) => step === stepCategory);
 
   return (
@@ -17,7 +17,7 @@ function UrbanProjectExpressStepper({ isExtended }: Props) {
       currentStepIndex={currentStepIndex}
       steps={stepCategories.map((step) => step)}
       isExtended={isExtended}
-      isDone
+      isDone={step === "CREATION_RESULT"}
     />
   );
 }

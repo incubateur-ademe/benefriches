@@ -11,5 +11,6 @@ export class InMemorySaveExpressReconversionProjectService
   async save(newProject: SaveExpressReconversionProjectPayload) {
     if (this.shouldFail) throw new Error("Intended error");
     await Promise.resolve(this._payloads.push(newProject));
+    return { name: "Projet express", id: "" };
   }
 }

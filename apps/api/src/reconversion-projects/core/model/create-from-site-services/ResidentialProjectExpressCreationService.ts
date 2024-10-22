@@ -3,7 +3,7 @@ import { roundTo2Digits } from "shared";
 import { UrbanProjectExpressCreationService } from "./UrbanProjectExpressCreationService";
 
 export class ResidentialProjectExpressCreationService extends UrbanProjectExpressCreationService {
-  override name = "Résidentiel zone détendue";
+  override name = "Résidentiel secteur détendu";
 
   override get spacesDistribution() {
     return {
