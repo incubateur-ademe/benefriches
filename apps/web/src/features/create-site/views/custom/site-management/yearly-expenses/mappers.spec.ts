@@ -9,7 +9,6 @@ describe("getSiteManagementExpensesWithBearer", () => {
   it("returns expenses for friche with tenant", () => {
     expect(getSiteManagementExpensesWithBearer(true, false, true)).toEqual([
       { name: "rent", bearer: "tenant" },
-      { name: "operationsTaxes", bearer: "tenant" },
       { name: "maintenance", bearer: "tenant" },
       { name: "propertyTaxes", bearer: "owner" },
       { name: "otherManagementCosts", bearer: undefined },
