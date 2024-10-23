@@ -1,9 +1,8 @@
 import { useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { SoilType } from "shared";
 import { sumObjectValues } from "shared";
 
-import { getColorForSoilType } from "@/shared/domain/soils";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import {
   getDescriptionForSoilType,
@@ -12,8 +11,8 @@ import {
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
-import SliderNumericInput from "@/shared/views/components/form/NumericInput/SliderNumericInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -23,12 +22,6 @@ type Props = {
 };
 
 export type FormValues = Record<SoilType, number>;
-
-const SLIDER_PROPS = {
-  tooltip: {
-    formatter: (value?: number) => value && `${formatNumberFr(value)} %`,
-  },
-};
 
 function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Props) {
   const { control, handleSubmit, watch } = useForm<FormValues>();
@@ -49,29 +42,32 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
     >
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
-          <SliderNumericInput
+          <Controller
             key={soilType}
             control={control}
             name={soilType}
-            label={getLabelForSoilType(soilType)}
-            imgSrc={getPictogramForSoilType(soilType)}
-            hintText={getDescriptionForSoilType(soilType)}
-            addonText="%"
-            sliderStartValue={0}
-            sliderEndValue={100}
-            sliderProps={{
-              styles: {
-                track: {
-                  background: getColorForSoilType(soilType),
-                },
+            rules={{
+              min: {
+                value: 0,
+                message: "Veuillez entrer un montant valide",
               },
-              ...SLIDER_PROPS,
+            }}
+            render={(controller) => {
+              return (
+                <ControlledRowNumericInput
+                  controlProps={controller}
+                  label={getLabelForSoilType(soilType)}
+                  imgSrc={getPictogramForSoilType(soilType)}
+                  addonText="%"
+                  hintText={getDescriptionForSoilType(soilType)}
+                />
+              );
             }}
           />
         ))}
 
         <RowNumericInput
-          className="tw-my-8"
+          className="tw-my-10 tw-pt-0"
           label="Total de toutes les surfaces"
           addonText="%"
           nativeInputProps={{
