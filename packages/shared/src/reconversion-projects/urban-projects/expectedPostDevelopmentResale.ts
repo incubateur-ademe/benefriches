@@ -1,5 +1,10 @@
 import { typedObjectEntries } from "../../object-entries";
-import { BuildingFloorAreaUsageDistribution } from "../urbanProject";
+import {
+  BuildingsUse,
+  BuildingsUseSurfaceAreaDistribution,
+} from "../living-and-activity-spaces/buildingsUse";
+
+type BuildingsUseResaleRatioPerSquareMeters = Record<BuildingsUse, number>;
 
 export const DEFAULT_RESALE_RATIO_PER_SQUARE_METERS = {
   RESIDENTIAL: 150,
@@ -9,10 +14,12 @@ export const DEFAULT_RESALE_RATIO_PER_SQUARE_METERS = {
   PUBLIC_FACILITIES: 40,
   OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: 80,
   SHIPPING_OR_INDUSTRIAL_BUILDINGS: 65,
-};
+  MULTI_STORY_PARKING: 0,
+  OTHER: 0,
+} as const satisfies BuildingsUseResaleRatioPerSquareMeters;
 
 export const computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces = (
-  buildingsFloorAreaDistribution: BuildingFloorAreaUsageDistribution,
+  buildingsFloorAreaDistribution: BuildingsUseSurfaceAreaDistribution,
 ): number => {
   return typedObjectEntries(buildingsFloorAreaDistribution).reduce(
     (total, [surfaceName, surfaceArea]) => {
@@ -30,10 +37,12 @@ const TENSE_AREA_RESALE_RATIO_PER_SQUARE_METERS = {
   PUBLIC_FACILITIES: 140,
   OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: 40,
   SHIPPING_OR_INDUSTRIAL_BUILDINGS: 65,
-};
+  MULTI_STORY_PARKING: 0,
+  OTHER: 0,
+} as const satisfies BuildingsUseResaleRatioPerSquareMeters;
 
 export const computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTenseArea = (
-  buildingsFloorAreaDistribution: BuildingFloorAreaUsageDistribution,
+  buildingsFloorAreaDistribution: BuildingsUseSurfaceAreaDistribution,
 ): number => {
   return typedObjectEntries(buildingsFloorAreaDistribution).reduce(
     (total, [surfaceName, surfaceArea]) => {

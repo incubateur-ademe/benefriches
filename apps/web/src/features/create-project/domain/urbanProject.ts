@@ -1,5 +1,4 @@
 import {
-  BuildingsUse,
   getSoilTypeForLivingAndActivitySpace,
   getSoilTypeForPublicSpace,
   getSoilTypeForUrbanGreenSpace,
@@ -115,8 +114,13 @@ export const getDescriptionForPublicSpace = (publicSpace: UrbanPublicSpace): str
   }
 };
 
-export const getLabelForBuildingsUse = (buildingsUse: BuildingsUse): string => {
-  switch (buildingsUse) {
+export type BuildingsUseCategory =
+  | "RESIDENTIAL"
+  | "MULTI_STORY_PARKING"
+  | "OTHER"
+  | "ECONOMIC_ACTIVITY";
+export const getLabelForBuildingsUseCategory = (useCategory: BuildingsUseCategory): string => {
+  switch (useCategory) {
     case "RESIDENTIAL":
       return "Habitations";
     case "ECONOMIC_ACTIVITY":
@@ -128,8 +132,10 @@ export const getLabelForBuildingsUse = (buildingsUse: BuildingsUse): string => {
   }
 };
 
-export const getDescriptionForBuildingsUse = (buildingsUse: BuildingsUse): string => {
-  switch (buildingsUse) {
+export const getDescriptionForBuildingsUseCategory = (
+  useCategory: BuildingsUseCategory,
+): string => {
+  switch (useCategory) {
     case "RESIDENTIAL":
       return "Maisons, immeubles collectifs...";
     case "ECONOMIC_ACTIVITY":

@@ -1,6 +1,5 @@
 import { createAction as _createAction } from "@reduxjs/toolkit";
 import {
-  BuildingsUse,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
   UrbanPublicSpace,
@@ -9,6 +8,8 @@ import {
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+
+import { BuildingsUseCategory } from "../../domain/urbanProject";
 
 export function prefixActionType(actionType: string) {
   return `projectCreation/urbanProject/${actionType}`;
@@ -143,11 +144,27 @@ export const buildingsFloorSurfaceAreaCompleted = createAction<number>(
 export const buildingsFloorSurfaceAreaReverted = createAction("buildingsFloorSurfaceAreaReverted");
 export const buildingsUseIntroductionCompleted = createAction("buildingsUseIntroductionCompleted");
 export const buildingsUseIntroductionReverted = createAction("buildingsUseIntroductionReverted");
-export const buildingsUseSelectionCompleted = createAction<BuildingsUse[]>(
-  "buildingsUseSelectionCompleted",
+export const buildingsUseCategorySelectionCompleted = createAction<BuildingsUseCategory[]>(
+  "buildingsUseCategorySelectionCompleted",
 );
-export const buildingsUseSelectionReverted = createAction("buildingsUseSelectionReverted");
-export const buildingsUseSurfaceAreasCompleted = createAction<
-  Partial<Record<BuildingsUse, number>>
->("buildingsUseSurfaceAreasCompleted");
-export const buildingsUseSurfaceAreasReverted = createAction("buildingsUseSurfaceAreasReverted");
+export const buildingsUseCategorySelectionReverted = createAction(
+  "buildingsUseCategorySelectionReverted",
+);
+export const buildingsUseCategorySurfaceAreasCompleted = createAction<
+  Partial<Record<BuildingsUseCategory, number>>
+>("buildingsUseCategorySurfaceAreasCompleted");
+export const buildingsUseCategorySurfaceAreasReverted = createAction(
+  "buildingsUseCategorySurfaceAreasReverted",
+);
+export const buildingsEconomicActivitySelectionCompleted = createAction(
+  "buildingsEconomicActivitySelectionCompleted",
+);
+export const buildingsEconomicActivitySelectionReverted = createAction(
+  "buildingsEconomicActivitySelectionReverted",
+);
+export const buildingsEconomicActivitySurfaceAreasCompleted = createAction(
+  "buildingsEconomicActivitySurfaceAreasCompleted",
+);
+export const buildingsEconomicActivitySurfaceAreasReverted = createAction(
+  "buildingsEconomicActivitySurfaceAreasReverted",
+);

@@ -1,32 +1,31 @@
-import { BuildingsUse } from "shared";
-
 import {
-  buildingsUseSurfaceAreasCompleted,
-  buildingsUseSurfaceAreasReverted,
+  buildingsUseCategorySurfaceAreasCompleted,
+  buildingsUseCategorySurfaceAreasReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
 import {
   selectBuildingsFloorSurfaceArea,
-  selectBuildingsUses,
+  selectBuildingUseCategories,
 } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+import { BuildingsUseCategory } from "@/features/create-project/domain/urbanProject";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import BuildingsUseSurfaceAreas from "./BuildingsUseSurfaceAreas";
 
 export default function BuildingsUseSurfaceAreaContainers() {
   const dispatch = useAppDispatch();
-  const selectedBuildingsUses = useAppSelector(selectBuildingsUses);
+  const selectedBuildingsUses = useAppSelector(selectBuildingUseCategories);
   const buildingsFloorSurfaceArea = useAppSelector(selectBuildingsFloorSurfaceArea);
 
   return (
     <BuildingsUseSurfaceAreas
-      onSubmit={(data: Record<BuildingsUse, number>) => {
-        dispatch(buildingsUseSurfaceAreasCompleted(data));
+      onSubmit={(data: Record<BuildingsUseCategory, number>) => {
+        dispatch(buildingsUseCategorySurfaceAreasCompleted(data));
       }}
       onBack={() => {
-        dispatch(buildingsUseSurfaceAreasReverted());
+        dispatch(buildingsUseCategorySurfaceAreasReverted());
       }}
       totalSurfaceArea={buildingsFloorSurfaceArea}
-      selectedBuildingsUses={selectedBuildingsUses}
+      selectedBuildingsUseCategories={selectedBuildingsUses}
     />
   );
 }

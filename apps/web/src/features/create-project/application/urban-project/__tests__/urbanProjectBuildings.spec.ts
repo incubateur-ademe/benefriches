@@ -7,10 +7,10 @@ import {
   buildingsIntroductionReverted,
   buildingsUseIntroductionCompleted,
   buildingsUseIntroductionReverted,
-  buildingsUseSelectionCompleted,
-  buildingsUseSelectionReverted,
-  buildingsUseSurfaceAreasCompleted,
-  buildingsUseSurfaceAreasReverted,
+  buildingsUseCategorySelectionCompleted,
+  buildingsUseCategorySelectionReverted,
+  buildingsUseCategorySurfaceAreasCompleted,
+  buildingsUseCategorySurfaceAreasReverted,
 } from "../urbanProject.actions";
 import { expectRevertedState, expectUpdatedState, StoreBuilder } from "./testUtils";
 
@@ -103,28 +103,32 @@ describe("Urban project custom creation : buildings steps", () => {
         .build();
       const initialRootState = store.getState();
 
-      store.dispatch(buildingsUseSelectionCompleted(["RESIDENTIAL", "ECONOMIC_ACTIVITY"]));
+      store.dispatch(buildingsUseCategorySelectionCompleted(["RESIDENTIAL", "ECONOMIC_ACTIVITY"]));
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
         currentStep: "BUILDINGS_USE_SURFACE_AREA",
         creationDataDiff: {
-          buildingsUses: ["RESIDENTIAL", "ECONOMIC_ACTIVITY"],
+          buildingsUseCategories: ["RESIDENTIAL", "ECONOMIC_ACTIVITY"],
+          buildingsUses: ["RESIDENTIAL"],
         },
       });
     });
     it("goes to previous step when step is reverted", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["BUILDINGS_USE_INTRODUCTION", "BUILDINGS_USE_SELECTION"])
-        .withCreationData({ buildingsUses: ["RESIDENTIAL", "MULTI_STORY_PARKING"] })
+        .withCreationData({
+          buildingsUseCategories: ["RESIDENTIAL", "MULTI_STORY_PARKING"],
+          buildingsUses: ["RESIDENTIAL", "MULTI_STORY_PARKING"],
+        })
         .build();
       const initialRootState = store.getState();
 
-      store.dispatch(buildingsUseSelectionReverted());
+      store.dispatch(buildingsUseCategorySelectionReverted());
 
       const newState = store.getState();
       expectRevertedState(initialRootState, newState, {
-        creationDataDiff: { buildingsUses: undefined },
+        creationDataDiff: { buildingsUses: undefined, buildingsUseCategories: undefined },
       });
     });
   });
@@ -132,12 +136,15 @@ describe("Urban project custom creation : buildings steps", () => {
     it("sets buildings use surface areas and goes to BUILDINGS_ECONOMIC_ACTIVITY_SELECTION when step is completed and buildings have economic activity", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["BUILDINGS_USE_SELECTION", "BUILDINGS_USE_SURFACE_AREA"])
-        .withCreationData({ buildingsUses: ["RESIDENTIAL", "ECONOMIC_ACTIVITY"] })
+        .withCreationData({
+          buildingsUseCategories: ["RESIDENTIAL", "ECONOMIC_ACTIVITY"],
+          buildingsUses: ["RESIDENTIAL"],
+        })
         .build();
       const initialRootState = store.getState();
 
       store.dispatch(
-        buildingsUseSurfaceAreasCompleted({
+        buildingsUseCategorySurfaceAreasCompleted({
           RESIDENTIAL: 2000,
           ECONOMIC_ACTIVITY: 5000,
         }),
@@ -149,6 +156,9 @@ describe("Urban project custom creation : buildings steps", () => {
         creationDataDiff: {
           buildingsUsesDistribution: {
             RESIDENTIAL: 2000,
+          },
+          buildingsUseCategoriesDistribution: {
+            RESIDENTIAL: 2000,
             ECONOMIC_ACTIVITY: 5000,
           },
         },
@@ -157,12 +167,15 @@ describe("Urban project custom creation : buildings steps", () => {
     it("sets buildings use surface areas and goes to BUILDINGS_EQUIPMENT_INTRODUCTION when step is completed and buildings have NO economic activity", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["BUILDINGS_USE_SELECTION", "BUILDINGS_USE_SURFACE_AREA"])
-        .withCreationData({ buildingsUses: ["RESIDENTIAL", "ECONOMIC_ACTIVITY"] })
+        .withCreationData({
+          buildingsUseCategories: ["RESIDENTIAL", "ECONOMIC_ACTIVITY"],
+          buildingsUses: ["RESIDENTIAL"],
+        })
         .build();
       const initialRootState = store.getState();
 
       store.dispatch(
-        buildingsUseSurfaceAreasCompleted({
+        buildingsUseCategorySurfaceAreasCompleted({
           RESIDENTIAL: 2000,
           MULTI_STORY_PARKING: 5000,
         }),
@@ -176,6 +189,10 @@ describe("Urban project custom creation : buildings steps", () => {
             RESIDENTIAL: 2000,
             MULTI_STORY_PARKING: 5000,
           },
+          buildingsUseCategoriesDistribution: {
+            RESIDENTIAL: 2000,
+            MULTI_STORY_PARKING: 5000,
+          },
         },
       });
     });
@@ -183,19 +200,27 @@ describe("Urban project custom creation : buildings steps", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["BUILDINGS_USE_SELECTION", "BUILDINGS_USE_SURFACE_AREA"])
         .withCreationData({
-          buildingsUses: ["RESIDENTIAL", "ECONOMIC_ACTIVITY"],
+          buildingsUseCategories: ["RESIDENTIAL", "ECONOMIC_ACTIVITY"],
+          buildingsUses: ["RESIDENTIAL"],
           buildingsUsesDistribution: {
+            RESIDENTIAL: 40000,
+          },
+          buildingsUseCategoriesDistribution: {
+            RESIDENTIAL: 40000,
             ECONOMIC_ACTIVITY: 12000,
           },
         })
         .build();
       const initialRootState = store.getState();
 
-      store.dispatch(buildingsUseSurfaceAreasReverted());
+      store.dispatch(buildingsUseCategorySurfaceAreasReverted());
 
       const newState = store.getState();
       expectRevertedState(initialRootState, newState, {
-        creationDataDiff: { buildingsUsesDistribution: undefined },
+        creationDataDiff: {
+          buildingsUsesDistribution: undefined,
+          buildingsUseCategoriesDistribution: undefined,
+        },
       });
     });
   });

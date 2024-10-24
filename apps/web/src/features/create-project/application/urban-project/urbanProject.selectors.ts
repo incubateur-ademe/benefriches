@@ -1,6 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
-  BuildingsUse,
   SoilsDistribution,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
@@ -10,6 +9,7 @@ import {
 
 import { RootState } from "@/app/application/store";
 
+import { BuildingsUseCategory } from "../../domain/urbanProject";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
@@ -101,6 +101,9 @@ export const selectBuildingsFloorSurfaceArea = createSelector([selectSelf], (sta
   return state.creationData.buildingsFloorSurfaceArea ?? 0;
 });
 
-export const selectBuildingsUses = createSelector([selectSelf], (state): BuildingsUse[] => {
-  return state.creationData.buildingsUses ?? [];
-});
+export const selectBuildingUseCategories = createSelector(
+  [selectSelf],
+  (state): BuildingsUseCategory[] => {
+    return state.creationData.buildingsUseCategories ?? [];
+  },
+);

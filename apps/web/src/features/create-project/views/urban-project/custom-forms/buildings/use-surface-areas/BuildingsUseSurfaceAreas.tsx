@@ -1,8 +1,11 @@
 import { useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { BuildingsUse, sumObjectValues } from "shared";
+import { sumObjectValues } from "shared";
 
-import { getLabelForBuildingsUse } from "@/features/create-project/domain/urbanProject";
+import {
+  BuildingsUseCategory,
+  getLabelForBuildingsUseCategory,
+} from "@/features/create-project/domain/urbanProject";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
@@ -11,15 +14,15 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   totalSurfaceArea: number;
-  selectedBuildingsUses: BuildingsUse[];
+  selectedBuildingsUseCategories: BuildingsUseCategory[];
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
 
-export type FormValues = Record<BuildingsUse, number>;
+export type FormValues = Record<BuildingsUseCategory, number>;
 
-function BuildingsUseSurfaceAreas({
-  selectedBuildingsUses,
+function BuildingsUseCategorySurfaceAreas({
+  selectedBuildingsUseCategories,
   totalSurfaceArea,
   onSubmit,
   onBack,
@@ -37,11 +40,11 @@ function BuildingsUseSurfaceAreas({
   return (
     <WizardFormLayout title="Quelles seront les surfaces de plancher des usages ?">
       <form onSubmit={_onSubmit}>
-        {selectedBuildingsUses.map((buildingsUse) => (
+        {selectedBuildingsUseCategories.map((useCategory) => (
           <Controller
-            name={buildingsUse}
+            name={useCategory}
             control={control}
-            key={buildingsUse}
+            key={useCategory}
             rules={{
               min: {
                 value: 0,
@@ -57,7 +60,7 @@ function BuildingsUseSurfaceAreas({
               return (
                 <ControlledRowNumericInput
                   controlProps={controller}
-                  label={getLabelForBuildingsUse(buildingsUse)}
+                  label={getLabelForBuildingsUseCategory(useCategory)}
                   addonText={SQUARE_METERS_HTML_SYMBOL}
                   imgSrc={undefined}
                 />
@@ -77,4 +80,4 @@ function BuildingsUseSurfaceAreas({
   );
 }
 
-export default BuildingsUseSurfaceAreas;
+export default BuildingsUseCategorySurfaceAreas;
