@@ -3,7 +3,7 @@ import { roundTo2Digits } from "shared";
 import { UrbanProjectExpressCreationService } from "./UrbanProjectExpressCreationService";
 
 export class PublicFacilitiesProjectExpressCreationService extends UrbanProjectExpressCreationService {
-  override name = "Équipements publics";
+  override name = "Équipement public";
 
   override get spacesDistribution() {
     return {

@@ -112,7 +112,7 @@ describe("CreateReconversionProject Use Case", () => {
         if (expressCategory === "NEW_URBAN_CENTER") {
           expectedName = "Nouvelle centralité";
         } else if (expressCategory === "PUBLIC_FACILITIES") {
-          expectedName = "Équipements publics";
+          expectedName = "Équipement public";
         } else if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
           expectedName = "Résidentiel zone tendue";
         } else {

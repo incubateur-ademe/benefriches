@@ -8,6 +8,7 @@ import {
   ReinstatementExpense,
   SoilsDistribution,
   UrbanProjectSpace,
+  BuildingFloorAreaUsageDistribution,
 } from "shared";
 
 import { WorksSchedule } from "@/shared/domain/reconversionProject";
@@ -88,28 +89,29 @@ type ProjectStakeholderStructure =
 
 export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
 
+type PhotovoltaicPowerPlantFeatures = {
+  type: "PHOTOVOLTAIC_POWER_PLANT";
+  developerName?: string;
+  installationCosts: PhotovoltaicInstallationExpense[];
+  installationSchedule?: WorksSchedule;
+  electricalPowerKWc: number;
+  surfaceArea: number;
+  expectedAnnualProduction: number;
+  contractDuration: number;
+};
+export type UrbanProjectFeatures = {
+  type: "URBAN_PROJECT";
+  developerName?: string;
+  installationCosts: UrbanProjectDevelopmentExpense[];
+  installationSchedule?: WorksSchedule;
+  spaces: Record<UrbanProjectSpace, number>;
+  buildingsFloorArea: BuildingFloorAreaUsageDistribution;
+};
 export type ProjectFeatures = {
   id: string;
   name: string;
   description?: string;
-  developmentPlan:
-    | {
-        type: "PHOTOVOLTAIC_POWER_PLANT";
-        developerName?: string;
-        installationCosts: PhotovoltaicInstallationExpense[];
-        installationSchedule?: WorksSchedule;
-        electricalPowerKWc: number;
-        surfaceArea: number;
-        expectedAnnualProduction: number;
-        contractDuration: number;
-      }
-    | {
-        type: "URBAN_PROJECT";
-        developerName?: string;
-        installationCosts: UrbanProjectDevelopmentExpense[];
-        installationSchedule?: WorksSchedule;
-        spaces: Record<UrbanProjectSpace, number>;
-      };
+  developmentPlan: PhotovoltaicPowerPlantFeatures | UrbanProjectFeatures;
   soilsDistribution: SoilsDistribution;
   futureOwner?: string;
   futureOperator?: string;

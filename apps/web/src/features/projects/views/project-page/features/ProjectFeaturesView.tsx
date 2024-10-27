@@ -1,4 +1,3 @@
-import { getTotalSurfaceArea, typedObjectEntries } from "shared";
 import { sumList } from "shared";
 
 import {
@@ -12,13 +11,10 @@ import {
   getLabelForRecurringRevenueSource,
   getLabelForReinstatementExpensePurpose,
 } from "@/shared/domain/reconversionProject";
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import classNames from "@/shared/views/clsx";
-import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
+import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
-import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 
 import DevelopmentPlanFeatures from "./DevelopmentPlanFeatures";
 import DevelopmentPlanInstallationExpenses from "./DevelopmentPlanInstallationExpenses";
@@ -46,66 +42,8 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           />
         )}
       </Section>
-      <DevelopmentPlanFeatures {...projectData.developmentPlan} />
-      <Section title="🌾 Transformation des sols">
-        {projectData.decontaminatedSoilSurface ? (
-          <DataLine
-            label="Surface dépolluée"
-            value={formatSurfaceArea(projectData.decontaminatedSoilSurface)}
-          />
-        ) : null}
-        <DataLine
-          noBorder
-          label={<strong>Superficie totale</strong>}
-          value={
-            <strong>{formatSurfaceArea(getTotalSurfaceArea(projectData.soilsDistribution))}</strong>
-          }
-        />
-        <div className="tw-grid tw-grid-cols-12">
-          <div
-            className={classNames(
-              "tw-col-span-12",
-              "md:tw-col-span-3",
-              "tw-border-0",
-              "tw-border-solid",
-              "tw-border-l-black",
-              "tw-border-l",
-            )}
-          >
-            <SurfaceAreaPieChart
-              soilsDistribution={projectData.soilsDistribution}
-              customHeight="200px"
-              noLabels
-            />
-          </div>
+      <DevelopmentPlanFeatures {...projectData} />
 
-          <div
-            className={classNames(
-              "tw-col-span-12",
-              "md:tw-col-span-9",
-              "tw-border-0",
-              "tw-border-solid",
-              "tw-border-l-black",
-              "tw-border-l",
-              "md:tw-border-0",
-              "tw-pl-2",
-              "md:tw-pl-0",
-            )}
-          >
-            {typedObjectEntries(projectData.soilsDistribution).map(([soilType, surfaceArea]) => {
-              return (
-                <DataLine
-                  noBorder
-                  label={<SoilTypeLabelWithColorSquare soilType={soilType} />}
-                  value={formatSurfaceArea(surfaceArea ?? 0)}
-                  key={soilType}
-                  className="md:tw-grid-cols-[5fr_4fr]"
-                />
-              );
-            })}
-          </div>
-        </div>
-      </Section>
       <Section title="👱 Acteurs">
         <DataLine
           label={<strong>Aménageur du site</strong>}

@@ -1,4 +1,5 @@
 import {
+  BuildingFloorAreaUsageDistribution,
   computeDefaultInstallationCostsFromSiteSurfaceArea,
   computeDefaultInstallationSchedule,
   computeDefaultOperationsFirstYear,
@@ -13,6 +14,7 @@ import {
   formatMunicipalityName,
   ReinstatementExpensePurpose,
   SoilsDistribution,
+  SpacesDistribution,
   typedObjectEntries,
 } from "shared";
 
@@ -48,11 +50,11 @@ export class UrbanProjectExpressCreationService {
     this.developmentType = "URBAN_PROJECT" as const;
   }
 
-  get spacesDistribution() {
+  get spacesDistribution(): SpacesDistribution {
     return {};
   }
 
-  get buildingsFloorAreaDistribution() {
+  get buildingsFloorAreaDistribution(): BuildingFloorAreaUsageDistribution {
     return {};
   }
 
