@@ -3,9 +3,9 @@ import { createStore, RootState } from "@/app/application/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { Address } from "../domain/project.types";
-import { getInitialState as getInitialProjectCreationState } from "./createProject.reducer";
-import { fetchSiteLocalAuthorities } from "./projectSiteLocalAuthorities.actions";
+import { Address } from "../../domain/project.types";
+import { getInitialState as getInitialProjectCreationState } from "../createProject.reducer";
+import { fetchSiteLocalAuthorities } from "../getSiteLocalAuthorities.action";
 import { relatedSiteData } from "./siteData.mock";
 
 const API_MOCKED_RESULT = {
@@ -89,9 +89,8 @@ describe("Site Local Authorities reducer", () => {
     await store.dispatch(fetchSiteLocalAuthorities());
 
     const state = store.getState();
-    expect(state.projectSiteLocalAuthorities).toEqual({
+    expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
       loadingState: "error",
-      localAuthorities: undefined,
     });
   });
 
@@ -127,9 +126,9 @@ describe("Site Local Authorities reducer", () => {
     await store.dispatch(fetchSiteLocalAuthorities());
 
     const state = store.getState();
-    expect(state.projectSiteLocalAuthorities).toEqual({
+    expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
       loadingState: "success",
-      localAuthorities: API_MOCKED_RESULT["75110"].localAuthorities,
+      ...API_MOCKED_RESULT["75110"].localAuthorities,
     });
   });
 
@@ -152,9 +151,9 @@ describe("Site Local Authorities reducer", () => {
     await store.dispatch(fetchSiteLocalAuthorities());
 
     const state = store.getState();
-    expect(state.projectSiteLocalAuthorities).toEqual({
+    expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
       loadingState: "success",
-      localAuthorities: API_MOCKED_RESULT["38185"].localAuthorities,
+      ...API_MOCKED_RESULT["38185"].localAuthorities,
     });
   });
 
@@ -175,9 +174,8 @@ describe("Site Local Authorities reducer", () => {
     await store.dispatch(fetchSiteLocalAuthorities());
 
     const state = store.getState();
-    expect(state.projectSiteLocalAuthorities).toEqual({
+    expect(state.projectCreation.siteRelatedLocalAuthorities).toEqual({
       loadingState: "error",
-      localAuthorities: undefined,
     });
   });
 });

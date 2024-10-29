@@ -63,46 +63,47 @@ export interface SaveReconversionProjectGateway {
 }
 
 export const saveReconversionProject = createAppAsyncThunk(
-  "projectCreation/save",
+  "projectCreation/renewableEnergyProject/save",
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
-    const { projectData, siteData } = projectCreation;
+    const { renewableEnergyProject, siteData, projectId } = projectCreation;
+    const { creationData } = renewableEnergyProject;
 
     const mappedProjectData = {
-      id: projectData.id,
-      name: projectData.name,
+      id: projectId,
+      name: creationData.name,
       createdBy: currentUser.currentUser?.id,
-      description: projectData.description,
+      description: creationData.description,
       relatedSiteId: siteData?.id,
-      futureOperator: projectData.futureOperator,
-      futureSiteOwner: projectData.futureSiteOwner,
-      conversionFullTimeJobsInvolved: projectData.conversionFullTimeJobsInvolved,
-      reinstatementFullTimeJobsInvolved: projectData.reinstatementFullTimeJobsInvolved,
-      reinstatementContractOwner: projectData.reinstatementContractOwner,
-      operationsFullTimeJobsInvolved: projectData.operationsFullTimeJobsInvolved,
-      reinstatementCosts: projectData.reinstatementExpenses,
-      sitePurchaseSellingPrice: projectData.sitePurchaseSellingPrice,
-      sitePurchasePropertyTransferDuties: projectData.sitePurchasePropertyTransferDuties,
-      financialAssistanceRevenues: projectData.financialAssistanceRevenues,
-      yearlyProjectedCosts: projectData.yearlyProjectedExpenses,
-      yearlyProjectedRevenues: projectData.yearlyProjectedRevenues,
-      soilsDistribution: projectData.soilsDistribution,
-      reinstatementSchedule: projectData.reinstatementSchedule,
-      operationsFirstYear: projectData.firstYearOfOperation,
+      futureOperator: creationData.futureOperator,
+      futureSiteOwner: creationData.futureSiteOwner,
+      conversionFullTimeJobsInvolved: creationData.conversionFullTimeJobsInvolved,
+      reinstatementFullTimeJobsInvolved: creationData.reinstatementFullTimeJobsInvolved,
+      reinstatementContractOwner: creationData.reinstatementContractOwner,
+      operationsFullTimeJobsInvolved: creationData.operationsFullTimeJobsInvolved,
+      reinstatementCosts: creationData.reinstatementExpenses,
+      sitePurchaseSellingPrice: creationData.sitePurchaseSellingPrice,
+      sitePurchasePropertyTransferDuties: creationData.sitePurchasePropertyTransferDuties,
+      financialAssistanceRevenues: creationData.financialAssistanceRevenues,
+      yearlyProjectedCosts: creationData.yearlyProjectedExpenses,
+      yearlyProjectedRevenues: creationData.yearlyProjectedRevenues,
+      soilsDistribution: creationData.soilsDistribution,
+      reinstatementSchedule: creationData.reinstatementSchedule,
+      operationsFirstYear: creationData.firstYearOfOperation,
       developmentPlan: {
         type: "PHOTOVOLTAIC_POWER_PLANT",
-        developer: projectData.projectDeveloper,
-        costs: projectData.photovoltaicPanelsInstallationExpenses ?? [],
-        installationSchedule: projectData.photovoltaicInstallationSchedule,
+        developer: creationData.projectDeveloper,
+        costs: creationData.photovoltaicPanelsInstallationExpenses ?? [],
+        installationSchedule: creationData.photovoltaicInstallationSchedule,
         features: {
-          surfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters,
-          electricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc,
-          expectedAnnualProduction: projectData.photovoltaicExpectedAnnualProduction,
-          contractDuration: projectData.photovoltaicContractDuration,
+          surfaceArea: creationData.photovoltaicInstallationSurfaceSquareMeters,
+          electricalPowerKWc: creationData.photovoltaicInstallationElectricalPowerKWc,
+          expectedAnnualProduction: creationData.photovoltaicExpectedAnnualProduction,
+          contractDuration: creationData.photovoltaicContractDuration,
         },
       },
-      projectPhase: projectData.projectPhase,
-      decontaminatedSoilSurface: projectData.decontaminatedSurfaceArea,
+      projectPhase: creationData.projectPhase,
+      decontaminatedSoilSurface: creationData.decontaminatedSurfaceArea,
     };
 
     const projectToSave = saveProjectSchema.parse(mappedProjectData);

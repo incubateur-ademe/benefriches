@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { SoilsCarbonStorageResult } from "@/features/create-project/application/soilsCarbonStorage.actions";
+import { SoilsCarbonStorageResult } from "@/features/create-project/application/soilsCarbonStorage.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/urban-project/soilsCarbonStorage.actions";
 import {
   selectCurrentAndProjectedSoilsCarbonStorage,

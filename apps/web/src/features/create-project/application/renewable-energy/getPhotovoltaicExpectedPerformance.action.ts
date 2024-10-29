@@ -32,11 +32,13 @@ export type FetchResult = {
 
 export const fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation =
   createAppAsyncThunk<FetchResult>(
-    "project/fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation",
+    "projectCreation/renewableEnergyProject/fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation",
     async (_, { extra, getState }) => {
       const { projectCreation } = getState();
       const { lat, long } = projectCreation.siteData?.address ?? {};
-      const peakPower = projectCreation.projectData.photovoltaicInstallationElectricalPowerKWc;
+      const peakPower =
+        projectCreation.renewableEnergyProject.creationData
+          .photovoltaicInstallationElectricalPowerKWc;
 
       if (!lat || !long || !peakPower) {
         return Promise.reject(

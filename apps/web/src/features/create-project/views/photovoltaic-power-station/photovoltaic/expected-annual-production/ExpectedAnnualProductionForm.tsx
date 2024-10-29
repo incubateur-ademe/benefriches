@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 
-import { State } from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
@@ -11,7 +10,7 @@ import ExpectedAnnualProductionHint from "./ExpectedAnnualProductionHint";
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  expectedPerformanceMwhPerYear?: State["expectedPerformanceMwhPerYear"];
+  expectedPerformanceMwhPerYear?: number;
 };
 
 type FormValues = {

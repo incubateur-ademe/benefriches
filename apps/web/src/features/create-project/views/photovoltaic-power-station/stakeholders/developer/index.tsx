@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 
+import { fetchSiteLocalAuthorities } from "@/features/create-project/application/getSiteLocalAuthorities.action";
 import {
   completeProjectDeveloper,
   revertProjectDeveloper,
-} from "@/features/create-project/application/createProject.reducer";
-import { fetchSiteLocalAuthorities } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import {
   AvailableLocalAuthorityStakeholder,
   AvailableProjectStakeholder,
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
-} from "@/features/create-project/application/stakeholders.selector";
+} from "@/features/create-project/application/renewable-energy/stakeholders.selector";
 import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

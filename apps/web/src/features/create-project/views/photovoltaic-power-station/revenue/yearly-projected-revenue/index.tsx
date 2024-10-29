@@ -1,12 +1,12 @@
 import { AppDispatch } from "@/app/application/store";
-import { getDefaultValuesForYearlyProjectedRecurringRevenue } from "@/features/create-project/application/createProject.selectors";
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
 import {
   completeYearlyProjectedRevenue,
   revertYearlyProjectedRevenue,
-} from "../../../../application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+import { getDefaultValuesForYearlyProjectedRecurringRevenue } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
 import YearlyProjectedsRevenueForm, { FormValues } from "./ProjectYearlyProjectedRevenueForm";
 
 const revenuesFormMap = {

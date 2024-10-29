@@ -1,10 +1,10 @@
 import { AppDispatch } from "@/app/application/store";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-
 import {
   completeExpensesIntroductionStep,
   revertExpensesIntroductionStep,
-} from "../../../../application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
 import ProjectExpensesIntroduction from "./ProjectCostsIntroduction";
 
 const mapProps = (dispatch: AppDispatch) => {

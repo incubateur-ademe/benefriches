@@ -1,7 +1,7 @@
 import {
   completeSitePurchase,
-  revertwillSiteBePurchased,
-} from "@/features/create-project/application/createProject.reducer";
+  revertWillSiteBePurchased,
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
@@ -16,7 +16,7 @@ function SitePurchasedFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(revertwillSiteBePurchased());
+    dispatch(revertWillSiteBePurchased());
   };
 
   return (

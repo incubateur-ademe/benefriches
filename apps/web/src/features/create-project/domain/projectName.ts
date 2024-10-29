@@ -1,13 +1,12 @@
+import { DevelopmentPlanCategory } from "shared";
+
 import {
   getLabelForDevelopmentPlanCategory,
   getLabelForRenewableEnergyProductionType,
 } from "../views/projectTypeLabelMapping";
 import { ReconversionProjectCreationData } from "./project.types";
 
-export type ProjectInfo = Pick<
-  ReconversionProjectCreationData,
-  "developmentPlanCategory" | "renewableEnergyType"
->;
+export type ProjectInfo = Pick<ReconversionProjectCreationData, "renewableEnergyType">;
 
 const generateRenewableEnergyProjectName = (
   renewableEnergyType: ProjectInfo["renewableEnergyType"],
@@ -18,13 +17,16 @@ const generateRenewableEnergyProjectName = (
   return `Projet ${getLabelForRenewableEnergyProductionType(renewableEnergyType).toLowerCase()}`;
 };
 
-export const generateProjectName = (projectData: ProjectInfo): string => {
-  switch (projectData.developmentPlanCategory) {
+export const generateProjectName = (
+  developmentPlanCategory: DevelopmentPlanCategory,
+  projectData: ProjectInfo,
+): string => {
+  switch (developmentPlanCategory) {
     case "URBAN_PROJECT":
     case "NATURAL_URBAN_SPACES":
     case "URBAN_AGRICULTURE":
     case "COMMERCIAL_ACTIVITY_AREA":
-      return `Projet ${getLabelForDevelopmentPlanCategory(projectData.developmentPlanCategory).toLowerCase()}`;
+      return `Projet ${getLabelForDevelopmentPlanCategory(developmentPlanCategory).toLowerCase()}`;
     case "RENEWABLE_ENERGY":
       return generateRenewableEnergyProjectName(projectData.renewableEnergyType);
   }

@@ -1,7 +1,7 @@
 import {
   SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway,
   SoilsCarbonStorageResult,
-} from "@/features/create-project/application/soilsCarbonStorage.actions";
+} from "@/features/create-project/application/soilsCarbonStorage.action";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "@/features/create-site/application/siteSoilsCarbonStorage.actions";
 
 export class SoilsCarbonStorageMock

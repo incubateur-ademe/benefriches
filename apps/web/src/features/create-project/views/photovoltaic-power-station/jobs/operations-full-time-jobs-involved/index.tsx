@@ -2,8 +2,8 @@ import { AppDispatch } from "@/app/application/store";
 import {
   completeOperationsFullTimeJobsInvolved,
   revertOperationsFullTimeJobsInvolved,
-} from "@/features/create-project/application/createProject.reducer";
-import { getDefaultValuesForFullTimeOperationsJobsInvolved } from "@/features/create-project/application/createProject.selectors";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+import { getDefaultValuesForFullTimeOperationsJobsInvolved } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import OperationsFullTimeJobsInvolvedForm, {

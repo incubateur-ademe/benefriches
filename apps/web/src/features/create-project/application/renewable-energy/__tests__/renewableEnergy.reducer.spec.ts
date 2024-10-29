@@ -2,18 +2,21 @@ import { createStore, RootState } from "@/app/application/store";
 import { buildUser } from "@/features/users/domain/user.mock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { InMemorySaveReconversionProjectService } from "../infrastructure/save-project-service/InMemorySaveReconversionProjectService";
-import { getInitialState } from "./createProject.reducer";
+import { InMemorySaveReconversionProjectService } from "../../../infrastructure/save-project-service/InMemorySaveReconversionProjectService";
+import { relatedSiteData } from "../../__tests__/siteData.mock";
+import { getInitialState } from "../../createProject.reducer";
+import { saveReconversionProject } from "../saveReconversionProject.action";
 import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
-import { saveReconversionProject } from "./saveReconversionProject.action";
-import { relatedSiteData } from "./siteData.mock";
 
-describe("createProject reducer", () => {
+describe("renewableEnergy.reducer.spec reducer", () => {
   describe("saveReconversionProject action", () => {
     it("should result in error state when no related site data", async () => {
       const initialState: RootState["projectCreation"] = {
         ...getInitialState(),
-        projectData: projectWithMinimalData,
+        renewableEnergyProject: {
+          ...getInitialState().renewableEnergyProject,
+          creationData: projectWithMinimalData,
+        },
       };
 
       const store = createStore(getTestAppDependencies(), {
@@ -27,10 +30,10 @@ describe("createProject reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation).toEqual({
-        ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
-        saveProjectLoadingState: "error",
+      expect(state.projectCreation.renewableEnergyProject).toEqual({
+        ...initialState.renewableEnergyProject,
+        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
+        saveState: "error",
       });
     });
 
@@ -38,7 +41,10 @@ describe("createProject reducer", () => {
       const initialState: RootState["projectCreation"] = {
         ...getInitialState(),
         siteData: relatedSiteData,
-        projectData: projectWithMinimalData,
+        renewableEnergyProject: {
+          ...getInitialState().renewableEnergyProject,
+          creationData: projectWithMinimalData,
+        },
       };
 
       const store = createStore(getTestAppDependencies(), {
@@ -52,15 +58,43 @@ describe("createProject reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation).toEqual({
-        ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
-        saveProjectLoadingState: "error",
+      expect(state.projectCreation.renewableEnergyProject).toEqual({
+        ...initialState.renewableEnergyProject,
+        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
+        saveState: "error",
+      });
+    });
+
+    it("should result in error state when no projectId in store", async () => {
+      const initialState: RootState["projectCreation"] = {
+        ...getInitialState(),
+        siteData: relatedSiteData,
+        projectId: "",
+        renewableEnergyProject: {
+          ...getInitialState().renewableEnergyProject,
+          creationData: projectWithMinimalData,
+        },
+      };
+
+      const store = createStore(getTestAppDependencies(), {
+        projectCreation: initialState,
+        currentUser: {
+          currentUser: null,
+          createUserState: "idle",
+          currentUserLoaded: true,
+        },
+      });
+      await store.dispatch(saveReconversionProject());
+
+      const state = store.getState();
+      expect(state.projectCreation.renewableEnergyProject).toEqual({
+        ...initialState.renewableEnergyProject,
+        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
+        saveState: "error",
       });
     });
 
     it.each([
-      { case: "no id", dataProp: "id", invalidValue: undefined },
       { case: "no name", dataProp: "name", invalidValue: undefined },
       { case: "no projectPhase", dataProp: "projectPhase", invalidValue: undefined },
       {
@@ -172,7 +206,10 @@ describe("createProject reducer", () => {
         const initialState: RootState["projectCreation"] = {
           ...getInitialState(),
           siteData: relatedSiteData,
-          projectData: projectCreationData,
+          renewableEnergyProject: {
+            ...getInitialState().renewableEnergyProject,
+            creationData: projectCreationData,
+          },
         };
 
         const store = createStore(getTestAppDependencies(), {
@@ -186,10 +223,10 @@ describe("createProject reducer", () => {
         const actionResult = await store.dispatch(saveReconversionProject());
 
         const state = store.getState();
-        expect(state.projectCreation).toEqual({
-          ...initialState,
-          stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
-          saveProjectLoadingState: "error",
+        expect(state.projectCreation.renewableEnergyProject).toEqual({
+          ...initialState.renewableEnergyProject,
+          stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
+          saveState: "error",
         });
         expect(
           (actionResult as typeof actionResult & { error: { name: string } }).error.name,
@@ -201,7 +238,10 @@ describe("createProject reducer", () => {
       const initialState: RootState["projectCreation"] = {
         ...getInitialState(),
         siteData: relatedSiteData,
-        projectData: projectWithMinimalData,
+        renewableEnergyProject: {
+          ...getInitialState().renewableEnergyProject,
+          creationData: projectWithMinimalData,
+        },
       };
 
       const shouldFail = true;
@@ -221,10 +261,10 @@ describe("createProject reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation).toEqual({
-        ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
-        saveProjectLoadingState: "error",
+      expect(state.projectCreation.renewableEnergyProject).toEqual({
+        ...initialState.renewableEnergyProject,
+        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
+        saveState: "error",
       });
     });
 
@@ -235,7 +275,10 @@ describe("createProject reducer", () => {
       const initialState: RootState["projectCreation"] = {
         ...getInitialState(),
         siteData: relatedSiteData,
-        projectData: projectWithMinimalData,
+        renewableEnergyProject: {
+          ...getInitialState().renewableEnergyProject,
+          creationData: projectWithMinimalData,
+        },
       };
 
       const store = createStore(getTestAppDependencies(), {
@@ -249,10 +292,10 @@ describe("createProject reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
-      expect(state.projectCreation).toEqual({
-        ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
-        saveProjectLoadingState: "success",
+      expect(state.projectCreation.renewableEnergyProject).toEqual({
+        ...initialState.renewableEnergyProject,
+        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
+        saveState: "success",
       });
     });
   });

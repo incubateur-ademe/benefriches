@@ -3,8 +3,8 @@ import { UrbanSpaceCategory } from "shared";
 import { createStore, RootState } from "@/app/application/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
+import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { getInitialState } from "../../createProject.reducer";
-import { relatedSiteData } from "../../siteData.mock";
 import { UrbanProjectCreationStep } from "../urbanProject.reducer";
 
 export const expectCurrentStep = (state: RootState, step: UrbanProjectCreationStep) => {

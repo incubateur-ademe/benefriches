@@ -1,16 +1,18 @@
 import { computeProjectReinstatementCosts, ReinstatementExpense } from "shared";
 
 import { AppDispatch } from "@/app/application/store";
+import { selectSiteData } from "@/features/create-project/application/createProject.selectors";
+import {
+  completeReinstatementExpenses,
+  revertReinstatementExpenses,
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+import { selectCreationData } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
 import {
   ProjectSite,
   ReconversionProjectCreationData,
 } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import {
-  completeReinstatementExpenses,
-  revertReinstatementExpenses,
-} from "../../../../application/createProject.reducer";
 import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
@@ -114,8 +116,8 @@ const mapProps = (
 function ReinstatementExpensesFormContainer() {
   const dispatch = useAppDispatch();
 
-  const siteData = useAppSelector((state) => state.projectCreation.siteData);
-  const projectData = useAppSelector((state) => state.projectCreation.projectData);
+  const siteData = useAppSelector(selectSiteData);
+  const projectData = useAppSelector(selectCreationData);
 
   return <ReinstatementExpensesForm {...mapProps(dispatch, projectData, siteData)} />;
 }

@@ -1,7 +1,6 @@
-import { ReconversionProjectCreationData } from "../domain/project.types";
+import { ReconversionProjectCreationData } from "@/features/create-project/domain/project.types";
 
 export const projectWithMinimalData = {
-  id: "64789135-afad-46ea-97a2-f14ba460d485",
   relatedSiteId: "f590f643-cd9a-4187-8973-f90e9f1998c8",
   name: "Centrale photovoltaique",
   soilsDistribution: {
@@ -14,7 +13,6 @@ export const projectWithMinimalData = {
   yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   projectPhase: "planning",
-  developmentPlanCategory: "RENEWABLE_ENERGY",
   renewableEnergyType: "PHOTOVOLTAIC_POWER_PLANT",
   photovoltaicKeyParameter: "POWER",
   photovoltaicInstallationElectricalPowerKWc: 10000,

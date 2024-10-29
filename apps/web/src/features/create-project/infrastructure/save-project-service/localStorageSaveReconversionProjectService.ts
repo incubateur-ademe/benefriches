@@ -4,7 +4,7 @@ import { delay } from "@/shared/services/delay/delay";
 import {
   SaveProjectPayload,
   SaveReconversionProjectGateway,
-} from "../../application/saveReconversionProject.action";
+} from "../../application/renewable-energy/saveReconversionProject.action";
 
 export class LocalStorageSaveProjectApi implements SaveReconversionProjectGateway {
   async save(newProject: SaveProjectPayload) {

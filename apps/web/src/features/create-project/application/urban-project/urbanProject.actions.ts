@@ -34,7 +34,7 @@ export const expressCreateModeSelected = createAppAsyncThunk(
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
     const expressProjectPayload = await schema.parseAsync({
-      reconversionProjectId: projectCreation.projectData.id,
+      reconversionProjectId: projectCreation.projectId,
       siteId: projectCreation.siteData?.id,
       createdBy: currentUser.currentUser?.id,
     });
