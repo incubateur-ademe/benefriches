@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { useEffect } from "react";
 
-import { routes, useRoute } from "@/app/views/router";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -14,6 +12,7 @@ import {
   selectCreateMode,
   selectCurrentStep,
 } from "../../application/urban-project/urbanProject.selectors";
+import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import UrbanProjectCreationStepper from "./Stepper";
 import CreateModeSelectionForm from "./create-mode-selection";
 import UrbanProjectCustomCreationStepWizard from "./custom-forms";
@@ -50,34 +49,12 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   CREATION_RESULT: "fin",
 } as const satisfies Record<UrbanProjectCreationStep, string>;
 
-const useSyncCreationStepWithRouteQuery = () => {
-  const currentStep = useAppSelector(selectCurrentStep);
-  const currentRoute = useRoute();
-
-  useEffect(() => {
-    if (
-      currentRoute.name !== routes.createProject.name ||
-      !(currentStep in PROJECT_CREATION_STEP_QUERY_STRING_MAP)
-    )
-      return;
-
-    const stepQueryParamValue = PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep];
-    routes
-      .createProject({
-        siteId: currentRoute.params.siteId,
-        etape: stepQueryParamValue,
-      })
-      .push();
-    // we don't care about other parameters
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentStep, currentRoute.name]);
-};
-
 function UrbanProjectCreationWizard() {
   const currentStep = useAppSelector(selectCurrentStep);
   const createMode = useAppSelector(selectCreateMode);
   const [isOpen, setOpen] = useState(true);
-  useSyncCreationStepWithRouteQuery();
+
+  useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   switch (createMode) {
     case undefined:

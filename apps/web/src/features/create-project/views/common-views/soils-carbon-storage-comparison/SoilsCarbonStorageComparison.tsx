@@ -1,6 +1,6 @@
 import { roundToInteger } from "shared";
 
-import { SoilsCarbonStorageResult } from "@/features/create-project/application/soilsCarbonStorage.actions";
+import { SoilsCarbonStorageResult } from "@/features/create-project/application/soilsCarbonStorage.action";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";

@@ -10,6 +10,7 @@ import {
 } from "shared";
 import { sumList } from "shared";
 
+import { SoilsCarbonStorageResult } from "@/features/create-project/application/soilsCarbonStorage.action";
 import {
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForPhotovoltaicInstallationExpensePurpose,
@@ -28,8 +29,7 @@ import Section from "@/shared/views/components/FeaturesList/FeaturesListSection"
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { Schedule } from "../../../application/saveReconversionProject.action";
-import { SoilsCarbonStorageResult } from "../../../application/soilsCarbonStorage.actions";
+import { Schedule } from "../../../application/renewable-energy/saveReconversionProject.action";
 import { formatCarbonStorage } from "../../common-views/soils-carbon-storage-comparison/formatCarbonStorage";
 import {
   getLabelForDevelopmentPlanCategory,

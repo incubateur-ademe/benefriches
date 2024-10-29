@@ -2,7 +2,7 @@ import { AppDispatch } from "@/app/application/store";
 import {
   completeScheduleStep,
   revertScheduleStep,
-} from "@/features/create-project/application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

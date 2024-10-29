@@ -5,7 +5,9 @@ import { LocalAuthority } from "shared/dist/local-authority";
 import { RootState } from "@/app/application/store";
 import { UserStructure } from "@/features/users/domain/user";
 
-import { ProjectStakeholder, ProjectStakeholderStructure } from "../domain/project.types";
+import { ProjectStakeholder, ProjectStakeholderStructure } from "../../domain/project.types";
+import { selectSiteData } from "../createProject.selectors";
+import { selectCreationData } from "./renewableEnergy.selector";
 
 export type AvailableProjectStakeholder = {
   name: string;
@@ -31,10 +33,8 @@ const hasStakeholder = (
 };
 
 export const getProjectAvailableStakeholders = createSelector(
-  [(state: RootState) => state.projectCreation, (state: RootState) => state.currentUser],
-  (projectCreation, currentUserState) => {
-    const currentUser = currentUserState.currentUser;
-
+  [selectSiteData, selectCreationData, (state: RootState) => state.currentUser.currentUser],
+  (siteData, creationData, currentUser) => {
     const stakeholders: AvailableProjectStakeholder[] = currentUser?.structureName
       ? [
           {
@@ -45,7 +45,7 @@ export const getProjectAvailableStakeholders = createSelector(
         ]
       : [];
 
-    const siteOwner = projectCreation.siteData?.owner;
+    const siteOwner = siteData?.owner;
     if (siteOwner && !hasStakeholder(siteOwner, stakeholders)) {
       stakeholders.push({
         name: siteOwner.name,
@@ -54,7 +54,7 @@ export const getProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const siteTenant = projectCreation.siteData?.tenant;
+    const siteTenant = siteData?.tenant;
     if (siteTenant && !hasStakeholder(siteTenant, stakeholders)) {
       stakeholders.push({
         name: siteTenant.name,
@@ -63,7 +63,7 @@ export const getProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const projectDeveloper = projectCreation.projectData.projectDeveloper;
+    const projectDeveloper = creationData.projectDeveloper;
     if (projectDeveloper && !hasStakeholder(projectDeveloper, stakeholders)) {
       stakeholders.push({
         name: projectDeveloper.name,
@@ -72,7 +72,7 @@ export const getProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const futureOperator = projectCreation.projectData.futureOperator;
+    const futureOperator = creationData.futureOperator;
     if (futureOperator && !hasStakeholder(futureOperator, stakeholders)) {
       stakeholders.push({
         name: futureOperator.name,
@@ -81,7 +81,7 @@ export const getProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const reinstatementContractOwner = projectCreation.projectData.reinstatementContractOwner;
+    const reinstatementContractOwner = creationData.reinstatementContractOwner;
     if (reinstatementContractOwner && !hasStakeholder(reinstatementContractOwner, stakeholders)) {
       stakeholders.push({
         name: reinstatementContractOwner.name,
@@ -90,7 +90,7 @@ export const getProjectAvailableStakeholders = createSelector(
       });
     }
 
-    const futureSiteOwner = projectCreation.projectData.futureSiteOwner;
+    const futureSiteOwner = creationData.futureSiteOwner;
     if (futureSiteOwner && !hasStakeholder(futureSiteOwner, stakeholders)) {
       stakeholders.push({
         name: futureSiteOwner.name,
@@ -110,15 +110,15 @@ export type AvailableLocalAuthorityStakeholder = {
 
 export const getAvailableLocalAuthoritiesStakeholders = createSelector(
   [
-    (state: RootState) => state.projectSiteLocalAuthorities,
-    (state: RootState) => state.projectCreation,
-    (state: RootState) => state.currentUser,
+    selectSiteData,
+    selectCreationData,
+    (state: RootState) => state.projectCreation.siteRelatedLocalAuthorities,
+    (state: RootState) => state.currentUser.currentUser,
   ],
-  (siteLocalAuthorities, projectCreation, currentUserState) => {
-    const currentUser = currentUserState.currentUser;
-    const { owner: siteOwner, tenant: siteTenant } = projectCreation.siteData ?? {};
+  (siteData, creationData, siteRelatedLocalAuthorities, currentUser) => {
+    const { owner: siteOwner, tenant: siteTenant } = siteData ?? {};
     const { projectDeveloper, futureOperator, reinstatementContractOwner, futureSiteOwner } =
-      projectCreation.projectData;
+      creationData;
 
     const projectLocalAuthorities = [
       siteOwner,
@@ -144,7 +144,7 @@ export const getAvailableLocalAuthoritiesStakeholders = createSelector(
       });
     }
 
-    const { city, department, region, epci } = siteLocalAuthorities.localAuthorities ?? {};
+    const { city, department, region, epci } = siteRelatedLocalAuthorities;
 
     const addressLocalAuthorities = [
       {

@@ -3,7 +3,7 @@ import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { useForm } from "react-hook-form";
 import { LocalAuthority } from "shared";
 
-import { AvailableProjectStakeholder } from "@/features/create-project/application/stakeholders.selector";
+import { AvailableProjectStakeholder } from "@/features/create-project/application/renewable-energy/stakeholders.selector";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";

@@ -2,7 +2,8 @@ import { AppDispatch } from "@/app/application/store";
 import {
   completeNaming,
   revertNaming,
-} from "@/features/create-project/application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+import { selectCreationData } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { ReconversionProjectCreationData } from "../../../domain/project.types";
@@ -11,7 +12,7 @@ import ProjectNameAndDescriptionForm, { FormValues } from "./ProjectNameAndDescr
 
 const mapProps = (dispatch: AppDispatch, projectData: ReconversionProjectCreationData) => {
   return {
-    defaultProjectName: generateProjectName(projectData),
+    defaultProjectName: generateProjectName("RENEWABLE_ENERGY", projectData),
     onSubmit: (formData: FormValues) => {
       dispatch(completeNaming(formData));
     },
@@ -23,7 +24,7 @@ const mapProps = (dispatch: AppDispatch, projectData: ReconversionProjectCreatio
 
 function ProjectNameAndDescriptionFormContainer() {
   const dispatch = useAppDispatch();
-  const projectData = useAppSelector((state) => state.projectCreation.projectData);
+  const projectData = useAppSelector(selectCreationData);
 
   return (
     <ProjectNameAndDescriptionForm

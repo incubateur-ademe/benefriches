@@ -1,12 +1,12 @@
 import { FinancialAssistanceRevenue, typedObjectEntries } from "shared";
 
 import { AppDispatch } from "@/app/application/store";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-
 import {
   completeFinancialAssistanceRevenues,
   revertFinancialAssistanceRevenues,
-} from "../../../../application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
 import ProjectFinancialAssistanceRevenueForm, {
   FormValues,
 } from "./ProjectFinancialAssistanceRevenueForm";

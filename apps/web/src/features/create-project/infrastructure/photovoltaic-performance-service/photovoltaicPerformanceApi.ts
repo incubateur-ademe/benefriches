@@ -4,7 +4,7 @@ import {
   PhotovoltaicPerformanceApiPayload,
   PhotovoltaicPerformanceApiResult,
   PhotovoltaicPerformanceGateway,
-} from "../../application/pvExpectedPerformanceStorage.actions";
+} from "../../application/renewable-energy/getPhotovoltaicExpectedPerformance.action";
 
 export class ExpectedPhotovoltaicPerformanceApi implements PhotovoltaicPerformanceGateway {
   async getExpectedPhotovoltaicPerformance({

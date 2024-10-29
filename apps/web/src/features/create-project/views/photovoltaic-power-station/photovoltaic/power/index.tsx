@@ -1,16 +1,14 @@
+import { selectSiteSurfaceArea } from "@/features/create-project/application/createProject.selectors";
 import {
   completePhotovoltaicInstallationElectricalPower,
   revertPhotovoltaicInstallationElectricalPower,
-} from "@/features/create-project/application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import {
   selectPhotovoltaicPanelsSurfaceArea,
-  selectSiteSurfaceArea,
-} from "@/features/create-project/application/createProject.selectors";
-import {
   selectPhotovoltaicPlantFeaturesKeyParameter,
   selectRecommendedPowerKWcFromPhotovoltaicPlantSurfaceArea,
   selectRecommendedPowerKWcFromSiteSurfaceArea,
-} from "@/features/create-project/application/pvFeatures.selectors";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import PhotovoltaicPowerForm from "./PowerForm";

@@ -1,7 +1,7 @@
 import {
   completeSoilsSummaryStep,
   revertSoilsSummaryStep,
-} from "@/features/create-project/application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectSoilsSummary from "./ProjectSoilsSummary";
@@ -18,7 +18,7 @@ function ProjectSoilsSummaryContainer() {
     (state) => state.projectCreation.siteData?.soilsDistribution ?? {},
   );
   const projectSoilsDistribution = useAppSelector(
-    (state) => state.projectCreation.projectData.soilsDistribution ?? {},
+    (state) => state.projectCreation.renewableEnergyProject.creationData.soilsDistribution ?? {},
   );
 
   return (

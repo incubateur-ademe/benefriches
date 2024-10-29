@@ -7,8 +7,11 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import { projectCreationInitiated } from "../application/createProject.actions";
-import { selectCurrentStep } from "../application/createProject.reducer";
-import { selectProjectDevelopmentPlanCategory } from "../application/createProject.selectors";
+import { ProjectCreationStep } from "../application/createProject.reducer";
+import {
+  selectCurrentStep,
+  selectProjectDevelopmentPlanCategory,
+} from "../application/createProject.selectors";
 import Stepper from "./Stepper";
 import ProjectCreationIntroduction from "./introduction";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station";
@@ -19,6 +22,10 @@ import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRout
 type Props = {
   route: Route<typeof routes.createProject>;
 };
+const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
+  INTRODUCTION: "introduction",
+  PROJECT_TYPES: "type-de-projet",
+} as const satisfies Record<ProjectCreationStep, string>;
 
 function ProjectCreationWizard({ route }: Props) {
   const currentStep = useAppSelector(selectCurrentStep);
@@ -31,7 +38,7 @@ function ProjectCreationWizard({ route }: Props) {
     void dispatch(projectCreationInitiated({ relatedSiteId }));
   }, [dispatch, route.params.siteId]);
 
-  useSyncCreationStepWithRouteQuery();
+  useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
   const getStepComponent = () => {
     switch (currentStep) {

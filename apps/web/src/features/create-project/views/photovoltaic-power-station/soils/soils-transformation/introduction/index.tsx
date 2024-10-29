@@ -1,7 +1,7 @@
 import {
   completeSoilsTransformationIntroductionStep,
   revertSoilsTransformationIntroductionStep,
-} from "@/features/create-project/application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import SoilsTransformationIntroduction from "./SoilsTransformationIntroduction";

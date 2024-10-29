@@ -1,9 +1,9 @@
-import {
-  completeRenewableEnergyDevelopmentPlanType,
-  revertRenewableEnergyDevelopmentPlanType,
-} from "@/features/create-project/application/createProject.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
+import {
+  completeRenewableEnergyType,
+  revertRenewableEnergyType,
+} from "../../application/renewable-energy/renewableEnergy.actions";
 import RenewableEnergyTypeForm from "./RenewableEnergyTypeForm";
 
 function ProjectRenewableEnergyTypesFormContainer() {
@@ -11,9 +11,9 @@ function ProjectRenewableEnergyTypesFormContainer() {
   return (
     <RenewableEnergyTypeForm
       onSubmit={({ renewableEnergyType }) => {
-        dispatch(completeRenewableEnergyDevelopmentPlanType(renewableEnergyType));
+        dispatch(completeRenewableEnergyType(renewableEnergyType));
       }}
-      onBack={() => dispatch(revertRenewableEnergyDevelopmentPlanType())}
+      onBack={() => dispatch(revertRenewableEnergyType())}
     />
   );
 }

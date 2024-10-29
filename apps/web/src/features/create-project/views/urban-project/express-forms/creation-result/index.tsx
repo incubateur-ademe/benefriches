@@ -7,7 +7,7 @@ import UrbanProjectCreationResult from "./UrbanProjectCreationResult";
 
 function UrbanProjectCreationResultContainer() {
   const dispatch = useDispatch();
-  const { urbanProject, projectData, siteData } = useAppSelector((state) => state.projectCreation);
+  const { urbanProject, siteData, projectId } = useAppSelector((state) => state.projectCreation);
 
   const onBack = () => {
     dispatch(resultStepReverted());
@@ -15,7 +15,7 @@ function UrbanProjectCreationResultContainer() {
 
   return (
     <UrbanProjectCreationResult
-      projectId={projectData.id ?? ""}
+      projectId={projectId}
       siteName={siteData?.name ?? ""}
       loadingState={urbanProject.saveState}
       onBack={onBack}

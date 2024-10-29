@@ -1,5 +1,4 @@
 import {
-  DevelopmentPlanCategory,
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
   ProjectPhase,
@@ -14,16 +13,14 @@ import { UserStructureType } from "@/features/users/domain/user";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 
-import { Schedule } from "../application/saveReconversionProject.action";
+import { Schedule } from "../application/renewable-energy/saveReconversionProject.action";
 
 export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 
 export type ReconversionProjectCreationData = {
-  id: string;
   name: string;
   description?: string;
   relatedSiteId: string;
-  developmentPlanCategory: DevelopmentPlanCategory;
   renewableEnergyType: RenewableEnergyDevelopmentPlanType;
   photovoltaicKeyParameter: PhotovoltaicKeyParameter;
   photovoltaicInstallationElectricalPowerKWc: number;

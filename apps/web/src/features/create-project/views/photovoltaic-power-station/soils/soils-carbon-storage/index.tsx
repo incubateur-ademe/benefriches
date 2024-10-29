@@ -3,16 +3,17 @@ import { useEffect } from "react";
 import {
   completeSoilsCarbonStorageStep,
   revertSoilsCarbonStorageStep,
-} from "@/features/create-project/application/createProject.reducer";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/soilsCarbonStorage.actions";
-import { State } from "@/features/create-project/application/soilsCarbonStorage.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/renewable-energy/soilsCarbonStorage.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilsCarbonStorageComparison from "../../../common-views/soils-carbon-storage-comparison";
 
 function ProjectSoilsCarbonStorageContainer() {
   const dispatch = useAppDispatch();
-  const state = useAppSelector((state) => state.projectSoilsCarbonStorage) as State;
+  const state = useAppSelector(
+    (state) => state.projectCreation.renewableEnergyProject.soilsCarbonStorage,
+  );
 
   useEffect(() => {
     void dispatch(fetchCurrentAndProjectedSoilsCarbonStorage());

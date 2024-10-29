@@ -1,9 +1,9 @@
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../createProject.selectors";
+import { selectProjectSoilsDistribution } from "../renewable-energy/renewableEnergy.selector";
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "../soilsCarbonStorage.action";
-import { prefixActionType } from "../urban-project/urbanProject.actions";
-import { selectUrbanProjectSoilsDistribution } from "./urbanProject.selectors";
+import { prefixActionType } from "./renewableEnergy.actions";
 
 export const fetchCurrentAndProjectedSoilsCarbonStorage =
   createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
@@ -12,7 +12,7 @@ export const fetchCurrentAndProjectedSoilsCarbonStorage =
       const rootState = getState();
       const siteAddress = selectSiteAddress(rootState);
       const siteSoils = selectSiteSoilsDistribution(rootState);
-      const projectSoils = selectUrbanProjectSoilsDistribution(rootState);
+      const projectSoils = selectProjectSoilsDistribution(rootState);
 
       if (!siteAddress) throw new Error("Missing site address");
 

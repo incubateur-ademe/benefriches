@@ -1,12 +1,9 @@
 import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
 
 import projectCreation from "@/features/create-project/application/createProject.reducer";
-import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/application/projectSiteLocalAuthorities.actions";
-import projectSiteLocalAuthorities from "@/features/create-project/application/projectSiteLocalAuthorities.reducer";
-import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/pvExpectedPerformanceStorage.actions";
-import projectPvExpectedPerformancesStorage from "@/features/create-project/application/pvExpectedPerformanceStorage.reducer";
-import { SaveReconversionProjectGateway } from "@/features/create-project/application/saveReconversionProject.action";
-import projectSoilsCarbonStorage from "@/features/create-project/application/soilsCarbonStorage.reducer";
+import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/application/getSiteLocalAuthorities.action";
+import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/renewable-energy/getPhotovoltaicExpectedPerformance.action";
+import { SaveReconversionProjectGateway } from "@/features/create-project/application/renewable-energy/saveReconversionProject.action";
 import { SaveExpressReconversionProjectGateway } from "@/features/create-project/application/urban-project/urbanProject.actions";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/application/siteMunicipalityData.actions";
@@ -24,7 +21,7 @@ import { CurrentUserGateway } from "@/features/users/application/initCurrentUser
 import currentUser from "@/features/users/application/user.reducer";
 
 import { GetSitesByIdGateway } from "../../features/create-project/application/createProject.actions";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.action";
 import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
 import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
@@ -54,15 +51,12 @@ const rootReducer = combineReducers({
   siteCreation,
   siteFeatures,
   projectCreation,
-  projectPvExpectedPerformancesStorage,
   siteCarbonStorage,
   reconversionProjectsList,
   currentUser,
   projectImpacts,
   projectFeatures: projectFeaturesReducer,
-  projectSoilsCarbonStorage,
   siteMunicipalityData,
-  projectSiteLocalAuthorities,
 });
 
 export const createStore = (

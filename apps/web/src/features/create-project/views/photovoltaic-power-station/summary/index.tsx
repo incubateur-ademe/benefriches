@@ -1,17 +1,17 @@
+import { revertFinalSummaryStep } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+import { selectCreationData } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertFinalSummaryStep } from "../../../application/createProject.reducer";
-import { saveReconversionProject } from "../../../application/saveReconversionProject.action";
-import { SoilsCarbonStorageResult } from "../../../application/soilsCarbonStorage.actions";
+import { saveReconversionProject } from "../../../application/renewable-energy/saveReconversionProject.action";
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 
 function ProjectionCreationDataSummaryContainer() {
-  const projectData = useAppSelector((state) => state.projectCreation.projectData);
+  const projectData = useAppSelector(selectCreationData);
   const siteData = useAppSelector((state) => state.projectCreation.siteData);
 
   const { current: siteSoilsCarbonStorage, projected: projectSoilsCarbonStorage } = useAppSelector(
-    (state) => state.projectSoilsCarbonStorage,
-  ) as { current?: SoilsCarbonStorageResult; projected?: SoilsCarbonStorageResult };
+    (state) => state.projectCreation.renewableEnergyProject.soilsCarbonStorage,
+  );
 
   const dispatch = useAppDispatch();
 
@@ -30,7 +30,7 @@ function ProjectionCreationDataSummaryContainer() {
       projectData={{
         name: projectData.name ?? "",
         description: projectData.description,
-        developmentPlanCategory: projectData.developmentPlanCategory!,
+        developmentPlanCategory: "RENEWABLE_ENERGY",
         renewableEnergy: projectData.renewableEnergyType!,
         photovoltaicElectricalPowerKWc: projectData.photovoltaicInstallationElectricalPowerKWc ?? 0,
         photovoltaicSurfaceArea: projectData.photovoltaicInstallationSurfaceSquareMeters ?? 0,

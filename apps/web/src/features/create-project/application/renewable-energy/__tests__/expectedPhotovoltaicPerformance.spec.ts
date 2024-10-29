@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import { createStore } from "@/app/application/store";
+import { ProjectSite } from "@/features/create-project/domain/project.types";
+import { ExpectedPhotovoltaicPerformanceMock } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
+import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { ProjectSite } from "../domain/project.types";
-import { ExpectedPhotovoltaicPerformanceMock } from "../infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
-import { SitesServiceMock } from "../infrastructure/sites-service/SitesServiceMock";
-import { projectCreationInitiated } from "./createProject.actions";
-import { completePhotovoltaicInstallationElectricalPower } from "./createProject.reducer";
+import { projectCreationInitiated } from "../../createProject.actions";
 import {
   fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation,
   PhotovoltaicPerformanceApiResult,
-} from "./pvExpectedPerformanceStorage.actions";
+} from "../getPhotovoltaicExpectedPerformance.action";
+import { completePhotovoltaicInstallationElectricalPower } from "../renewableEnergy.actions";
 
 const API_MOCKED_RESULT = {
   expectedPerformance: {
@@ -57,7 +57,7 @@ describe("Photovoltaic expected performance reducer", () => {
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
     const state = store.getState();
-    expect(state.projectPvExpectedPerformancesStorage).toEqual({
+    expect(state.projectCreation.renewableEnergyProject.expectedPhotovoltaicPerformance).toEqual({
       loadingState: "error",
       expectedPerformanceMwhPerYear: undefined,
     });
@@ -98,7 +98,7 @@ describe("Photovoltaic expected performance reducer", () => {
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
     const state = store.getState();
-    expect(state.projectPvExpectedPerformancesStorage).toEqual({
+    expect(state.projectCreation.renewableEnergyProject.expectedPhotovoltaicPerformance).toEqual({
       loadingState: "success",
       expectedPerformanceMwhPerYear: 3,
     });
@@ -120,7 +120,7 @@ describe("Photovoltaic expected performance reducer", () => {
     await store.dispatch(fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation());
 
     const state = store.getState();
-    expect(state.projectPvExpectedPerformancesStorage).toEqual({
+    expect(state.projectCreation.renewableEnergyProject.expectedPhotovoltaicPerformance).toEqual({
       loadingState: "error",
       expectedPerformanceMwhPerYear: undefined,
     });

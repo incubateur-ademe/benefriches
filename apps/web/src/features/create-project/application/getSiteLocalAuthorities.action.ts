@@ -28,23 +28,26 @@ export interface SiteMunicipalityDataGateway {
 export const fetchSiteLocalAuthorities = createAppAsyncThunk<
   GetMunicipalityDataResult["localAuthorities"]
 >("project/fetchSiteLocalAuthorities", async (_, { extra, getState }) => {
-  const { projectCreation, projectSiteLocalAuthorities } = getState();
-  const cityCode = projectCreation.siteData?.address.cityCode;
+  const { projectCreation } = getState();
+  const { siteRelatedLocalAuthorities, siteData } = projectCreation;
+  const cityCode = siteData?.address.cityCode;
 
   if (!cityCode) {
     throw new Error("fetchSiteLocalAuthorities: Missing city code");
   }
 
-  const { loadingState, localAuthorities } = projectSiteLocalAuthorities;
-  const projectSiteLocalAuthoritiesCityCode = localAuthorities?.city.code;
+  const { loadingState, city, department, region, epci } = siteRelatedLocalAuthorities;
+  const projectSiteLocalAuthoritiesCityCode = city?.code;
 
   const dataAlreadyFetched =
     loadingState === "success" &&
     projectSiteLocalAuthoritiesCityCode === cityCode &&
-    localAuthorities;
+    city &&
+    department &&
+    region;
 
   if (dataAlreadyFetched) {
-    return Promise.resolve(localAuthorities);
+    return Promise.resolve({ city, department, region, epci });
   }
 
   const result = await extra.municipalityDataService.getMunicipalityData(cityCode);

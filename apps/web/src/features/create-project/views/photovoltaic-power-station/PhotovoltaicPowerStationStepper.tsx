@@ -1,5 +1,6 @@
-import { PhotovoltaicProjectCreationStep } from "@/features/create-project/application/createProject.reducer";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
+
+import { PhotovoltaicProjectCreationStep } from "../../application/renewable-energy/renewableEnergy.reducer";
 
 const stepCategories = [
   "Type de projet",

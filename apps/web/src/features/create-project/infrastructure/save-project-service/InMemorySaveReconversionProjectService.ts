@@ -1,7 +1,7 @@
 import {
   SaveProjectPayload,
   SaveReconversionProjectGateway,
-} from "../../application/saveReconversionProject.action";
+} from "../../application/renewable-energy/saveReconversionProject.action";
 
 export class InMemorySaveReconversionProjectService implements SaveReconversionProjectGateway {
   _reconversionProjects: SaveProjectPayload[] = [];

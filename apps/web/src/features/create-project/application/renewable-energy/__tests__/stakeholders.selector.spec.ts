@@ -1,14 +1,12 @@
 import { RootState } from "@/app/application/store";
 import { buildUser } from "@/features/users/domain/user.mock";
 
-import { ProjectSite } from "../domain/project.types";
-import { ProjectCreationState } from "./createProject.reducer";
-import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
-import { relatedSiteData } from "./siteData.mock";
+import { relatedSiteData } from "../../__tests__/siteData.mock";
 import {
   getAvailableLocalAuthoritiesStakeholders,
   getProjectAvailableStakeholders,
-} from "./stakeholders.selector";
+} from "../stakeholders.selector";
+import { projectWithExhaustiveData, projectWithMinimalData } from "./projectData.mock";
 
 const siteData = {
   ...relatedSiteData,
@@ -20,16 +18,44 @@ const siteData = {
     name: "SARL Locataire",
     structureType: "company",
   },
-} as const satisfies ProjectSite;
+} as const;
 
 const USER = buildUser({ structureName: "My company" });
+const MOCK_LOCAL_AUTHORITIES_SUCCESS = {
+  loadingState: "success",
+  city: {
+    code: "38185",
+    name: "Grenoble",
+  },
+  epci: {
+    code: "200040715",
+    name: "Grenoble-Alpes-Métropole",
+  },
+  department: {
+    code: "38",
+    name: "Isère",
+  },
+  region: {
+    code: "84",
+    name: "Auvergne-Rhône-Alpes",
+  },
+} as const;
 const MOCK_STATES = {
   projectCreation: {
-    projectData: projectWithExhaustiveData,
     stepsHistory: ["PROJECT_TYPES"],
+    projectId: "",
     siteData,
     siteDataLoadingState: "success",
-    saveProjectLoadingState: "success",
+    siteRelatedLocalAuthorities: { loadingState: "idle" },
+    renewableEnergyProject: {
+      creationData: projectWithExhaustiveData,
+      stepsHistory: [],
+      expectedPhotovoltaicPerformance: {
+        loadingState: "idle",
+      },
+      saveState: "idle",
+      soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
+    },
     urbanProject: {
       createMode: undefined,
       stepsHistory: [],
@@ -44,35 +70,15 @@ const MOCK_STATES = {
     currentUserLoaded: true,
     createUserState: "success" as const,
   },
-  projectSiteLocalAuthorities: {
-    loadingState: "success" as const,
-    localAuthorities: {
-      city: {
-        code: "38185",
-        name: "Grenoble",
-      },
-      epci: {
-        code: "200040715",
-        name: "Grenoble-Alpes-Métropole",
-      },
-      department: {
-        code: "38",
-        name: "Isère",
-      },
-      region: {
-        code: "84",
-        name: "Auvergne-Rhône-Alpes",
-      },
-    },
-  },
 };
 
 describe("Project Stakeholders selector", () => {
   describe("getProjectAvailableStakeholders", () => {
     it("should return project developer, reinstatement expenses owner, future site owner, future site operator, site tenant and site owner and current user structure", () => {
       const stakeholders = getProjectAvailableStakeholders.resultFunc(
-        MOCK_STATES.projectCreation,
-        MOCK_STATES.currentUser,
+        MOCK_STATES.projectCreation.siteData,
+        MOCK_STATES.projectCreation.renewableEnergyProject.creationData,
+        MOCK_STATES.currentUser.currentUser,
       );
 
       expect(stakeholders).toContainEqual(
@@ -133,10 +139,11 @@ describe("Project Stakeholders selector", () => {
     });
 
     it("should return project developer, reinstatement expenses owner, future site owner, future site operator, site tenant and site owner but not current user structure", () => {
-      const stakeholders = getProjectAvailableStakeholders.resultFunc(MOCK_STATES.projectCreation, {
-        ...MOCK_STATES.currentUser,
-        currentUser: buildUser(),
-      });
+      const stakeholders = getProjectAvailableStakeholders.resultFunc(
+        MOCK_STATES.projectCreation.siteData,
+        MOCK_STATES.projectCreation.renewableEnergyProject.creationData,
+        buildUser(),
+      );
 
       expect(stakeholders).toContainEqual(
         expect.objectContaining({
@@ -191,12 +198,9 @@ describe("Project Stakeholders selector", () => {
 
     it("should return only future site owner, project developer and current user structure", () => {
       const stakeholders = getProjectAvailableStakeholders.resultFunc(
-        {
-          ...MOCK_STATES.projectCreation,
-          projectData: projectWithMinimalData,
-          siteData: { ...siteData, tenant: undefined },
-        } as ProjectCreationState,
-        MOCK_STATES.currentUser,
+        { ...siteData, tenant: undefined },
+        projectWithMinimalData,
+        MOCK_STATES.currentUser.currentUser,
       );
 
       expect(stakeholders.length).toEqual(3);
@@ -226,30 +230,27 @@ describe("Project Stakeholders selector", () => {
 
     it("should return only future site owner, Reinstatement company, site owner and current user structure", () => {
       const stakeholders = getProjectAvailableStakeholders.resultFunc(
+        { ...siteData, tenant: undefined },
         {
-          ...MOCK_STATES.projectCreation,
-          projectData: {
-            ...projectWithMinimalData,
-            projectDeveloper: {
-              name: USER.structureName,
-              structureType: "company",
-            },
-            futureOperator: {
-              name: USER.structureName,
-              structureType: "company",
-            },
-            futureSiteOwner: {
-              name: "Future site owner company name",
-              structureType: "company",
-            },
-            reinstatementContractOwner: {
-              name: "Reinstatement company",
-              structureType: "company",
-            },
+          ...projectWithMinimalData,
+          projectDeveloper: {
+            name: USER.structureName as string,
+            structureType: "company",
           },
-          siteData: { ...siteData, tenant: undefined },
-        } as ProjectCreationState,
-        MOCK_STATES.currentUser,
+          futureOperator: {
+            name: USER.structureName as string,
+            structureType: "company",
+          },
+          futureSiteOwner: {
+            name: "Future site owner company name",
+            structureType: "company",
+          },
+          reinstatementContractOwner: {
+            name: "Reinstatement company",
+            structureType: "company",
+          },
+        },
+        MOCK_STATES.currentUser.currentUser,
       );
 
       expect(stakeholders.length).toEqual(4);
@@ -288,26 +289,24 @@ describe("Project Stakeholders selector", () => {
   describe("getAvailableLocalAuthoritiesStakeholders", () => {
     it("should return empty array", () => {
       const localAuthorities = getAvailableLocalAuthoritiesStakeholders.resultFunc(
-        MOCK_STATES.projectSiteLocalAuthorities,
+        MOCK_STATES.projectCreation.siteData,
         {
-          ...MOCK_STATES.projectCreation,
-          projectData: {
-            ...projectWithMinimalData,
-            projectDeveloper: {
-              name: "Grenoble-Alpes-Métropole",
-              structureType: "epci",
-            },
-            futureOperator: {
-              name: "Région Auvergne-Rhône-Alpes",
-              structureType: "region",
-            },
-            futureSiteOwner: {
-              name: "Département Isère",
-              structureType: "department",
-            },
+          ...projectWithMinimalData,
+          projectDeveloper: {
+            name: "Grenoble-Alpes-Métropole",
+            structureType: "epci",
+          },
+          futureOperator: {
+            name: "Région Auvergne-Rhône-Alpes",
+            structureType: "region",
+          },
+          futureSiteOwner: {
+            name: "Département Isère",
+            structureType: "department",
           },
         },
-        MOCK_STATES.currentUser,
+        MOCK_LOCAL_AUTHORITIES_SUCCESS,
+        MOCK_STATES.currentUser.currentUser,
       );
 
       expect(localAuthorities).toEqual([]);
@@ -315,12 +314,10 @@ describe("Project Stakeholders selector", () => {
 
     it("should return all local authorities", () => {
       const localAuthorities = getAvailableLocalAuthoritiesStakeholders.resultFunc(
-        MOCK_STATES.projectSiteLocalAuthorities,
-        {
-          ...MOCK_STATES.projectCreation,
-          siteData: { ...siteData, owner: { structureType: "company", name: "" } },
-        } as ProjectCreationState,
-        MOCK_STATES.currentUser,
+        { ...siteData, owner: { structureType: "company", name: "" } },
+        MOCK_STATES.projectCreation.renewableEnergyProject.creationData,
+        MOCK_LOCAL_AUTHORITIES_SUCCESS,
+        MOCK_STATES.currentUser.currentUser,
       );
 
       expect(localAuthorities).toEqual([
@@ -333,12 +330,12 @@ describe("Project Stakeholders selector", () => {
 
     it("should return local authorities with generic name if no data", () => {
       const localAuthorities = getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        MOCK_STATES.projectCreation.siteData,
+        MOCK_STATES.projectCreation.renewableEnergyProject.creationData,
         {
           loadingState: "error",
-          localAuthorities: undefined,
         },
-        MOCK_STATES.projectCreation,
-        MOCK_STATES.currentUser,
+        MOCK_STATES.currentUser.currentUser,
       );
 
       expect(localAuthorities).toEqual([
@@ -349,25 +346,24 @@ describe("Project Stakeholders selector", () => {
       ]);
 
       const localAuthoritiesWithNoEpci = getAvailableLocalAuthoritiesStakeholders.resultFunc(
+        MOCK_STATES.projectCreation.siteData,
+        MOCK_STATES.projectCreation.renewableEnergyProject.creationData,
         {
           loadingState: "success",
-          localAuthorities: {
-            city: {
-              code: "38185",
-              name: "Grenoble",
-            },
-            department: {
-              code: "38",
-              name: "Isère",
-            },
-            region: {
-              code: "84",
-              name: "Auvergne-Rhône-Alpes",
-            },
+          city: {
+            code: "38185",
+            name: "Grenoble",
+          },
+          department: {
+            code: "38",
+            name: "Isère",
+          },
+          region: {
+            code: "84",
+            name: "Auvergne-Rhône-Alpes",
           },
         },
-        MOCK_STATES.projectCreation,
-        MOCK_STATES.currentUser,
+        MOCK_STATES.currentUser.currentUser,
       );
 
       expect(localAuthoritiesWithNoEpci).toEqual([
@@ -379,16 +375,14 @@ describe("Project Stakeholders selector", () => {
 
     it("should return local authorities without current user if it is local_authority", () => {
       const localAuthorities = getAvailableLocalAuthoritiesStakeholders.resultFunc(
-        MOCK_STATES.projectSiteLocalAuthorities,
-        MOCK_STATES.projectCreation,
+        MOCK_STATES.projectCreation.siteData,
+        MOCK_STATES.projectCreation.renewableEnergyProject.creationData,
+        MOCK_LOCAL_AUTHORITIES_SUCCESS,
         {
-          ...MOCK_STATES.currentUser,
-          currentUser: {
-            ...MOCK_STATES.currentUser.currentUser,
-            structureActivity: "department",
-            structureType: "local_authority",
-            structureName: "Département Isère",
-          },
+          ...MOCK_STATES.currentUser.currentUser,
+          structureActivity: "department",
+          structureType: "local_authority",
+          structureName: "Département Isère",
         },
       );
 
@@ -400,16 +394,14 @@ describe("Project Stakeholders selector", () => {
 
     it("should return local authorities with current user if it is local_authority but not related to the site address", () => {
       const localAuthorities = getAvailableLocalAuthoritiesStakeholders.resultFunc(
-        MOCK_STATES.projectSiteLocalAuthorities,
-        MOCK_STATES.projectCreation,
+        MOCK_STATES.projectCreation.siteData,
+        MOCK_STATES.projectCreation.renewableEnergyProject.creationData,
+        MOCK_LOCAL_AUTHORITIES_SUCCESS,
         {
-          ...MOCK_STATES.currentUser,
-          currentUser: {
-            ...MOCK_STATES.currentUser.currentUser,
-            structureActivity: "department",
-            structureType: "local_authority",
-            structureName: "Département Rhône",
-          },
+          ...MOCK_STATES.currentUser.currentUser,
+          structureActivity: "department",
+          structureType: "local_authority",
+          structureName: "Département Rhône",
         },
       );
 

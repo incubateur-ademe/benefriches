@@ -1,7 +1,7 @@
 import {
   completePhotovoltaicContractDuration,
   revertPhotovoltaicContractDuration,
-} from "@/features/create-project/application/createProject.reducer";
+} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import PhotovoltaicContractDurationForm from "./ContractDurationForm";
