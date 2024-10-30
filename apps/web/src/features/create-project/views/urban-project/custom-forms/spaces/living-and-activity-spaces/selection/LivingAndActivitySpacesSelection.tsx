@@ -51,7 +51,7 @@ function LivingAndActivitySpacesSelection({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Quels types d'espaces y aura-t-il dans les lieux de vie et d'activité ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4 tw-mb-10">
+        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_260px)] tw-gap-4 tw-mb-10">
           {livingAndActivitySpace.options.map((value) => {
             return (
               <Controller

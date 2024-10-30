@@ -96,7 +96,7 @@ export default function CheckableTile({
       <label htmlFor={id} className="tw-w-full">
         <div className="tw-p-6">
           <div className="tw-text-center">
-            {imgSrc ? (
+            {imgSrc && (
               <img
                 src={imgSrc}
                 width="80px"
@@ -104,12 +104,14 @@ export default function CheckableTile({
                 alt={`Illustration pour la tuile "${title}"`}
                 className={disabled ? "tw-filter tw-grayscale tw-opacity-50 tw-mb-2" : "tw-mb-2"}
               />
-            ) : (
-              <div className="tw-flex tw-items-center tw-text-grey-dark tw-m-auto tw-w-[120px] tw-h-[80px] tw-bg-grey-light tw-text-sm tw-px-4 tw-py-3 tw-mb-2">
-                Illustration indisponible
-              </div>
             )}
-            <div className={classNames("tw-mb-2", fr.cx("fr-text--lg", "fr-text--bold"))}>
+            <div
+              className={classNames(
+                "tw-mb-2",
+                !imgSrc && "tw-mt-6",
+                fr.cx("fr-text--lg", "fr-text--bold"),
+              )}
+            >
               {title}
             </div>
             {description && (

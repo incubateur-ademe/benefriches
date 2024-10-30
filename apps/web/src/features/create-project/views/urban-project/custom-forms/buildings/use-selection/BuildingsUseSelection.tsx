@@ -4,6 +4,7 @@ import {
   BuildingsUseCategory,
   getDescriptionForBuildingsUseCategory,
   getLabelForBuildingsUseCategory,
+  getPictogramUrlForBuildingsUseCategory,
 } from "@/features/create-project/domain/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
@@ -31,7 +32,7 @@ const BuildingsUseCategoryTile = ({
 }: BuildingsUseCategoryTileProps) => {
   const title = getLabelForBuildingsUseCategory(buildingsUseCategory);
   const description = getDescriptionForBuildingsUseCategory(buildingsUseCategory);
-  const imgSrc = "";
+  const imgSrc = getPictogramUrlForBuildingsUseCategory(buildingsUseCategory);
 
   return (
     <CheckableTile
@@ -51,9 +52,9 @@ function BuildingsUseSelection({ onSubmit, onBack }: Props) {
   });
 
   return (
-    <WizardFormLayout title="Quelles seront les surfaces de plancher de chacun des usages ?">
+    <WizardFormLayout title="Quels usages auront les bâtiments ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 tw-gap-4 tw-mb-10">
+        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_300px)] tw-gap-4 tw-mb-10">
           {(["RESIDENTIAL", "ECONOMIC_ACTIVITY", "MULTI_STORY_PARKING", "OTHER"] as const).map(
             (value) => {
               return (

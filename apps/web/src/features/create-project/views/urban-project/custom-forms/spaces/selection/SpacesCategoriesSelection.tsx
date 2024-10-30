@@ -49,7 +49,7 @@ function SpacesCategoriesSelection({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Quels espaces y aura-t-il dans ce projet urbain ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4 tw-mb-10">
+        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_300px)] tw-gap-4 tw-mb-10">
           {urbanProjectSpacesCategories.options.map((value) => {
             return (
               <Controller

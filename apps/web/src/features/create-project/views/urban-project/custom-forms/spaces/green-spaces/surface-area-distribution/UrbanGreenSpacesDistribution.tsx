@@ -1,17 +1,11 @@
-import { useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { UrbanGreenSpace } from "shared";
-import { sumObjectValues } from "shared";
 
 import {
+  getColorForUrbanGreenSpace,
   getLabelForUrbanGreenSpace,
   getPictogramUrlForUrbanGreenSpace,
 } from "@/features/create-project/domain/urbanProject";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
-import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
-import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaControlInput/SurfaceAreaControlInput";
-import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 
 type Props = {
   totalSurfaceArea: number;
@@ -23,56 +17,20 @@ type Props = {
 export type FormValues = Record<UrbanGreenSpace, number>;
 
 function UrbanGreenSpacesDistribution({ greenSpaces, totalSurfaceArea, onSubmit, onBack }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
-  const _onSubmit = handleSubmit(onSubmit);
-
-  const surfaceAreas = watch();
-
-  const totalAllocatedSurface = useMemo(() => sumObjectValues(surfaceAreas), [surfaceAreas]);
-
-  const remainder = totalSurfaceArea - totalAllocatedSurface;
-  const isValid = remainder === 0;
-
   return (
-    <WizardFormLayout title="Quelle est la part de chaque espace à aménager sur les espaces verts ?">
-      <form onSubmit={_onSubmit}>
-        {greenSpaces.map((space) => (
-          <Controller
-            name={space}
-            control={control}
-            key={space}
-            rules={{
-              min: {
-                value: 0,
-                message: "Veuillez sélectionner une superficie",
-              },
-              max: {
-                value: totalSurfaceArea,
-                message:
-                  "La superficie ne peut pas être supérieure à la superficie totale des espaces verts",
-              },
-            }}
-            render={(controller) => {
-              return (
-                <ControlledRowNumericInput
-                  controlProps={controller}
-                  label={getLabelForUrbanGreenSpace(space)}
-                  addonText={SQUARE_METERS_HTML_SYMBOL}
-                  imgSrc={getPictogramUrlForUrbanGreenSpace(space)}
-                />
-              );
-            }}
-          />
-        ))}
-
-        <SurfaceAreaControlInput
-          label="Total de tous les espaces verts"
-          currentSurfaceArea={totalAllocatedSurface}
-          targetSurfaceArea={totalSurfaceArea}
-        />
-        <BackNextButtonsGroup onBack={onBack} disabled={!isValid} nextLabel="Valider" />
-      </form>
-    </WizardFormLayout>
+    <SurfaceAreaDistributionForm
+      title="Quelle est la part de chaque espace à aménager sur les espaces verts ?"
+      onBack={onBack}
+      onSubmit={onSubmit as (data: Record<string, number>) => void}
+      totalSurfaceArea={totalSurfaceArea}
+      maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale des espaces verts"
+      soils={greenSpaces.map((space) => ({
+        name: space,
+        label: getLabelForUrbanGreenSpace(space),
+        imgSrc: getPictogramUrlForUrbanGreenSpace(space),
+        color: getColorForUrbanGreenSpace(space),
+      }))}
+    />
   );
 }
 

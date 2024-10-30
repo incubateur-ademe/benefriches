@@ -50,7 +50,7 @@ function PublicSpacesSelection({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Quel sera le revêtement des espaces publics ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4 tw-mb-10">
+        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_260px)] tw-gap-4 tw-mb-10">
           {urbanPublicSpace.options.map((value) => {
             return (
               <Controller

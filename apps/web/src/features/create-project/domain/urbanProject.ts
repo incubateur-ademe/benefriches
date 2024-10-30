@@ -1,4 +1,5 @@
 import {
+  BuildingFloorAreaUsageDistribution,
   getSoilTypeForLivingAndActivitySpace,
   getSoilTypeForPublicSpace,
   getSoilTypeForUrbanGreenSpace,
@@ -8,6 +9,7 @@ import {
   UrbanSpaceCategory,
 } from "shared";
 
+import { getColorForSoilType } from "@/shared/domain/soils";
 import { getPictogramForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
@@ -147,8 +149,27 @@ export const getDescriptionForBuildingsUseCategory = (
   }
 };
 
+export const getPictogramUrlForBuildingsUseCategory = (
+  useCategory: BuildingsUseCategory,
+): string => {
+  switch (useCategory) {
+    case "RESIDENTIAL":
+      return `/img/pictograms/buildings-uses/habitations.svg`;
+    case "ECONOMIC_ACTIVITY":
+      return `/img/pictograms/buildings-uses/LAE.svg`;
+    case "MULTI_STORY_PARKING":
+      return `/img/pictograms/buildings-uses/parking-silo.svg`;
+    case "OTHER":
+      return `/img/pictograms/buildings-uses/autres-usages.svg`;
+  }
+};
+
 export const getPictogramUrlForUrbanGreenSpace = (space: UrbanGreenSpace): string => {
   return getPictogramForSoilType(getSoilTypeForUrbanGreenSpace(space));
+};
+
+export const getColorForUrbanGreenSpace = (space: UrbanGreenSpace): string => {
+  return getColorForSoilType(getSoilTypeForUrbanGreenSpace(space));
 };
 
 export const getPictogramUrlForUrbanLivingAndActivitySpace = (
@@ -157,6 +178,16 @@ export const getPictogramUrlForUrbanLivingAndActivitySpace = (
   return getPictogramForSoilType(getSoilTypeForLivingAndActivitySpace(space));
 };
 
+export const getColorForUrbanLivingAndActivitySpace = (
+  space: UrbanLivingAndActivitySpace,
+): string => {
+  return getColorForSoilType(getSoilTypeForLivingAndActivitySpace(space));
+};
+
 export const getPictogramUrlForUrbanPublicSpace = (space: UrbanPublicSpace): string => {
   return getPictogramForSoilType(getSoilTypeForPublicSpace(space));
+};
+
+export const getColorForUrbanPublicSpace = (space: UrbanPublicSpace): string => {
+  return getColorForSoilType(getSoilTypeForPublicSpace(space));
 };
