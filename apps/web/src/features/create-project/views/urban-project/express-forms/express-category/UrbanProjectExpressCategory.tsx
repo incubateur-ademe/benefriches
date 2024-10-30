@@ -71,7 +71,7 @@ function UrbanProjectExpressCategory({ onSubmit, onBack }: Props) {
   const validationError = formState.errors.expressCategory;
 
   return (
-    <WizardFormLayout title="Quelle typologie de projet vous convient le plus ?" fullScreen>
+    <WizardFormLayout title="De quel type de projet urbain s’agit-il ?" fullScreen>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TileFormFieldsWrapper>
           {options.map((option) => {
