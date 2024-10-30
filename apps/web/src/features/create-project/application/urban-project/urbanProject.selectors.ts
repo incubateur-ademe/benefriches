@@ -9,7 +9,7 @@ import {
 
 import { RootState } from "@/app/application/store";
 
-import { BuildingsUseCategory } from "../../domain/urbanProject";
+import { BuildingsEconomicActivityUse, BuildingsUseCategory } from "../../domain/urbanProject";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
@@ -105,5 +105,21 @@ export const selectBuildingUseCategories = createSelector(
   [selectSelf],
   (state): BuildingsUseCategory[] => {
     return state.creationData.buildingsUseCategories ?? [];
+  },
+);
+
+export const selectBuildingsEconomicActivityUses = createSelector(
+  [selectSelf],
+  (
+    state,
+  ): {
+    buildingsEconomicActivityUses: BuildingsEconomicActivityUse[];
+    buildingsEconomicActivityTotalSurfaceArea: number;
+  } => {
+    return {
+      buildingsEconomicActivityUses: state.creationData.buildingsEconomicActivityUses ?? [],
+      buildingsEconomicActivityTotalSurfaceArea:
+        state.creationData.buildingsUseCategoriesDistribution?.ECONOMIC_ACTIVITY ?? 0,
+    };
   },
 );

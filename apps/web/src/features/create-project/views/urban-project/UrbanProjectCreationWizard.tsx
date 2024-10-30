@@ -44,8 +44,10 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   BUILDINGS_USE_SELECTION: "selection-usage-batiments",
   BUILDINGS_USE_SURFACE_AREA: "surface-usage-batiments",
   BUILDINGS_ECONOMIC_ACTIVITY_SELECTION: "selection-lieux-activites-economique",
+  BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA: "surface-lieux-activites-economique",
   BUILDINGS_EQUIPMENT_INTRODUCTION: "introduction-equipements",
   BUILDINGS_EQUIPMENT_SELECTION: "selection-equipements",
+  STAKEHOLDERS_INTRODUCTION: "acteurs-introduction",
   CREATION_RESULT: "fin",
 } as const satisfies Record<UrbanProjectCreationStep, string>;
 

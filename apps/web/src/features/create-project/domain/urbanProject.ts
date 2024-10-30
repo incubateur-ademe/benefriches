@@ -191,3 +191,43 @@ export const getPictogramUrlForUrbanPublicSpace = (space: UrbanPublicSpace): str
 export const getColorForUrbanPublicSpace = (space: UrbanPublicSpace): string => {
   return getColorForSoilType(getSoilTypeForPublicSpace(space));
 };
+
+export type BuildingsEconomicActivityUse =
+  | "GROUND_FLOOR_RETAIL"
+  | "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS"
+  | "TERTIARY_ACTIVITIES"
+  | "SHIPPING_OR_INDUSTRIAL_BUILDINGS"
+  | "NEIGHBOURHOOD_FACILITIES_AND_SERVICES";
+export const getDescriptionForBuildingFloorArea = (
+  building: keyof BuildingFloorAreaUsageDistribution,
+): string | undefined => {
+  switch (building) {
+    case "GROUND_FLOOR_RETAIL":
+      return "Boulangerie, restaurant, supérette...";
+    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
+      return "Garage, atelier...";
+    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
+      return "Entrepot, usine...";
+    case "TERTIARY_ACTIVITIES":
+      return "Bureaux, lieu d’enseignement ou de culture...";
+    default:
+      return undefined;
+  }
+};
+
+export const getPictogramUrlForEconomicActivityUses = (
+  useCategory: BuildingsEconomicActivityUse,
+): string => {
+  switch (useCategory) {
+    case "GROUND_FLOOR_RETAIL":
+      return `/img/pictograms/buildings-uses/economic-activity/commerce-pied-d-immeuble.svg`;
+    case "NEIGHBOURHOOD_FACILITIES_AND_SERVICES":
+      return `/img/pictograms/buildings-uses/economic-activity/autre-LAE.svg`;
+    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
+      return `/img/pictograms/buildings-uses/economic-activity/autre-LAE.svg`;
+    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
+      return `/img/pictograms/buildings-uses/economic-activity/autre-LAE.svg`;
+    case "TERTIARY_ACTIVITIES":
+      return `/img/pictograms/buildings-uses/economic-activity/bureaux.svg`;
+  }
+};

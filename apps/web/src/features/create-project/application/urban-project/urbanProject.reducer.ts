@@ -9,7 +9,7 @@ import {
   UrbanSpaceCategory,
 } from "shared";
 
-import { BuildingsUseCategory } from "../../domain/urbanProject";
+import { BuildingsUseCategory, BuildingsEconomicActivityUse } from "../../domain/urbanProject";
 import { ProjectCreationState } from "../createProject.reducer";
 import soilsCarbonStorageReducer, {
   State as SoilsCarbonStorageState,
@@ -58,6 +58,10 @@ import {
   spacesSelectionReverted,
   spacesSurfaceAreaCompleted,
   spacesSurfaceAreaReverted,
+  buildingsEconomicActivitySelectionCompleted,
+  buildingsEconomicActivitySelectionReverted,
+  buildingsEconomicActivitySurfaceAreasCompleted,
+  buildingsEconomicActivitySurfaceAreasReverted,
 } from "./urbanProject.actions";
 
 export type UrbanProjectExpressCreationStep = "CREATION_RESULT";
@@ -86,8 +90,10 @@ export type UrbanProjectCustomCreationStep =
   | "BUILDINGS_USE_SELECTION"
   | "BUILDINGS_USE_SURFACE_AREA"
   | "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION"
+  | "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA"
   | "BUILDINGS_EQUIPMENT_INTRODUCTION"
-  | "BUILDINGS_EQUIPMENT_SELECTION";
+  | "BUILDINGS_EQUIPMENT_SELECTION"
+  | "STAKEHOLDERS_INTRODUCTION";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
@@ -123,6 +129,10 @@ export type UrbanProjectState = {
     buildingsUses?: BuildingsUse[];
     buildingsUseCategoriesDistribution?: Partial<Record<BuildingsUseCategory, number>>;
     buildingsUsesDistribution?: Partial<Record<BuildingsUse, number>>;
+    buildingsEconomicActivityUses?: BuildingsEconomicActivityUse[];
+    buildingsEconomicActivityUsesDistribution?: Partial<
+      Record<BuildingsEconomicActivityUse, number>
+    >;
   };
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
@@ -171,10 +181,21 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(spacesSelectionCompleted, (state, action) => {
     state.urbanProject.creationData.spacesCategories = action.payload.spacesCategories;
     state.urbanProject.spacesCategoriesToComplete = action.payload.spacesCategories;
+
+    if (action.payload.spacesCategories.length === 1) {
+      const [spaceCategory] = action.payload.spacesCategories;
+      state.urbanProject.creationData.spacesCategoriesDistribution = {
+        [spaceCategory as UrbanSpaceCategory]: state.siteData?.surfaceArea,
+      };
+      state.urbanProject.stepsHistory.push("SPACES_DEVELOPMENT_PLAN_INTRODUCTION");
+      return;
+    }
+
     state.urbanProject.stepsHistory.push("SPACES_CATEGORIES_SURFACE_AREA");
   });
   builder.addCase(spacesSelectionReverted, (state) => {
     state.urbanProject.creationData.spacesCategories = undefined;
+    state.urbanProject.creationData.spacesCategoriesDistribution = undefined;
   });
   builder.addCase(spacesSurfaceAreaCompleted, (state, action) => {
     state.urbanProject.creationData.spacesCategoriesDistribution =
@@ -200,10 +221,22 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(greenSpacesSelectionCompleted, (state, action) => {
     state.urbanProject.creationData.greenSpaces = action.payload.greenSpaces;
+
+    if (action.payload.greenSpaces.length === 1) {
+      const [spaceCategory] = action.payload.greenSpaces;
+      state.urbanProject.creationData.greenSpacesDistribution = {
+        [spaceCategory as UrbanGreenSpace]:
+          state.urbanProject.creationData.spacesCategoriesDistribution?.GREEN_SPACES,
+      };
+      state.urbanProject.stepsHistory.push("SPACES_SOILS_SUMMARY");
+      return;
+    }
+
     state.urbanProject.stepsHistory.push("GREEN_SPACES_SURFACE_AREA_DISTRIBUTION");
   });
   builder.addCase(greenSpacesSelectionReverted, (state) => {
     state.urbanProject.creationData.greenSpaces = undefined;
+    state.urbanProject.creationData.greenSpacesDistribution = undefined;
   });
   builder.addCase(greenSpacesDistributionCompleted, (state, action) => {
     state.urbanProject.creationData.greenSpacesDistribution =
@@ -228,10 +261,26 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(livingAndActivitySpacesSelectionCompleted, (state, action) => {
     state.urbanProject.creationData.livingAndActivitySpaces = action.payload;
+
+    if (action.payload.length === 1) {
+      const [livingOrActivitySpace] = action.payload;
+
+      state.urbanProject.creationData.livingAndActivitySpacesDistribution = {
+        [livingOrActivitySpace as UrbanLivingAndActivitySpace]:
+          state.urbanProject.creationData.spacesCategoriesDistribution?.LIVING_AND_ACTIVITY_SPACES,
+      };
+
+      const nextCategory = state.urbanProject.spacesCategoriesToComplete.shift();
+      const nextStep = nextCategory && urbanSpaceCategoryIntroductionMap[nextCategory];
+      state.urbanProject.stepsHistory.push(nextStep ?? "SPACES_SOILS_SUMMARY");
+      return;
+    }
+
     state.urbanProject.stepsHistory.push("LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION");
   });
   builder.addCase(livingAndActivitySpacesSelectionReverted, (state) => {
     state.urbanProject.creationData.livingAndActivitySpaces = undefined;
+    state.urbanProject.creationData.livingAndActivitySpacesDistribution = undefined;
   });
   builder.addCase(livingAndActivitySpacesDistributionCompleted, (state, action) => {
     state.urbanProject.creationData.livingAndActivitySpacesDistribution = action.payload;
@@ -255,10 +304,22 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(publicSpacesSelectionCompleted, (state, action) => {
     state.urbanProject.creationData.publicSpaces = action.payload;
+
+    if (action.payload.length === 1) {
+      const [publicSpace] = action.payload;
+      state.urbanProject.creationData.publicSpacesDistribution = {
+        [publicSpace as UrbanPublicSpace]:
+          state.urbanProject.creationData.spacesCategoriesDistribution?.GREEN_SPACES,
+      };
+      state.urbanProject.stepsHistory.push("SPACES_SOILS_SUMMARY");
+      return;
+    }
+
     state.urbanProject.stepsHistory.push("PUBLIC_SPACES_DISTRIBUTION");
   });
   builder.addCase(publicSpacesSelectionReverted, (state) => {
     state.urbanProject.creationData.publicSpaces = undefined;
+    state.urbanProject.creationData.publicSpacesDistribution = undefined;
   });
   builder.addCase(publicSpacesDistributionCompleted, (state, action) => {
     state.urbanProject.creationData.publicSpacesDistribution = action.payload;
@@ -335,11 +396,25 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
       state.urbanProject.creationData.buildingsUses = buildingsUses;
     }
 
+    if (action.payload.length === 1) {
+      const [buildingsUse] = action.payload;
+      state.urbanProject.creationData.buildingsUseCategoriesDistribution = {
+        [buildingsUse as BuildingsUseCategory]:
+          state.urbanProject.creationData.buildingsFloorSurfaceArea,
+      };
+      const nextStep = action.payload.includes("ECONOMIC_ACTIVITY")
+        ? "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION"
+        : "BUILDINGS_EQUIPMENT_INTRODUCTION";
+      state.urbanProject.stepsHistory.push(nextStep);
+      return;
+    }
+
     state.urbanProject.stepsHistory.push("BUILDINGS_USE_SURFACE_AREA");
   });
   builder.addCase(buildingsUseCategorySelectionReverted, (state) => {
     state.urbanProject.creationData.buildingsUses = undefined;
     state.urbanProject.creationData.buildingsUseCategories = undefined;
+    state.urbanProject.creationData.buildingsUseCategoriesDistribution = undefined;
   });
   builder.addCase(buildingsUseCategorySurfaceAreasCompleted, (state, action) => {
     state.urbanProject.creationData.buildingsUseCategoriesDistribution = action.payload;
@@ -360,6 +435,45 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.buildingsUsesDistribution = undefined;
     state.urbanProject.creationData.buildingsUseCategoriesDistribution = undefined;
   });
+
+  builder.addCase(buildingsEconomicActivitySelectionReverted, (state) => {
+    state.urbanProject.creationData.buildingsEconomicActivityUses = undefined;
+    state.urbanProject.creationData.buildingsEconomicActivityUsesDistribution = undefined;
+  });
+  builder.addCase(buildingsEconomicActivitySelectionCompleted, (state, action) => {
+    state.urbanProject.creationData.buildingsEconomicActivityUses = action.payload;
+
+    if (!state.urbanProject.creationData.buildingsUses) {
+      state.urbanProject.creationData.buildingsUses = [];
+    }
+    state.urbanProject.creationData.buildingsUses.concat(action.payload);
+
+    if (action.payload.length === 1) {
+      const [economicActivityCategory] = action.payload;
+      state.urbanProject.creationData.buildingsEconomicActivityUsesDistribution = {
+        [economicActivityCategory as BuildingsEconomicActivityUse]:
+          state.urbanProject.creationData.buildingsUseCategoriesDistribution?.ECONOMIC_ACTIVITY,
+      };
+      state.urbanProject.stepsHistory.push("STAKEHOLDERS_INTRODUCTION");
+      return;
+    }
+    state.urbanProject.stepsHistory.push("BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA");
+  });
+
+  builder.addCase(buildingsEconomicActivitySurfaceAreasReverted, (state) => {
+    state.urbanProject.creationData.buildingsEconomicActivityUses = undefined;
+    state.urbanProject.creationData.buildingsEconomicActivityUsesDistribution = undefined;
+  });
+  builder.addCase(buildingsEconomicActivitySurfaceAreasCompleted, (state, action) => {
+    state.urbanProject.creationData.buildingsEconomicActivityUsesDistribution = action.payload;
+    state.urbanProject.creationData.buildingsUsesDistribution = {
+      ...state.urbanProject.creationData.buildingsUsesDistribution,
+      ...action.payload,
+    };
+
+    state.urbanProject.stepsHistory.push("STAKEHOLDERS_INTRODUCTION");
+  });
+
   builder.addMatcher(isRevertedAction, (state) => {
     if (state.urbanProject.stepsHistory.length === 1)
       state.urbanProject.stepsHistory = ["CREATE_MODE_SELECTION"];

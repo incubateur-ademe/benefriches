@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
-import { BuildingsUseCategory } from "../../domain/urbanProject";
+import { BuildingsEconomicActivityUse, BuildingsUseCategory } from "../../domain/urbanProject";
 
 export function prefixActionType(actionType: string) {
   return `projectCreation/urbanProject/${actionType}`;
@@ -156,15 +156,15 @@ export const buildingsUseCategorySurfaceAreasCompleted = createAction<
 export const buildingsUseCategorySurfaceAreasReverted = createAction(
   "buildingsUseCategorySurfaceAreasReverted",
 );
-export const buildingsEconomicActivitySelectionCompleted = createAction(
-  "buildingsEconomicActivitySelectionCompleted",
-);
+export const buildingsEconomicActivitySelectionCompleted = createAction<
+  BuildingsEconomicActivityUse[]
+>("buildingsEconomicActivitySelectionCompleted");
 export const buildingsEconomicActivitySelectionReverted = createAction(
   "buildingsEconomicActivitySelectionReverted",
 );
-export const buildingsEconomicActivitySurfaceAreasCompleted = createAction(
-  "buildingsEconomicActivitySurfaceAreasCompleted",
-);
+export const buildingsEconomicActivitySurfaceAreasCompleted = createAction<
+  Partial<Record<BuildingsEconomicActivityUse, number>>
+>("buildingsEconomicActivitySurfaceAreasCompleted");
 export const buildingsEconomicActivitySurfaceAreasReverted = createAction(
   "buildingsEconomicActivitySurfaceAreasReverted",
 );

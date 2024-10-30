@@ -4,6 +4,8 @@ import { UrbanProjectCustomCreationStep } from "@/features/create-project/applic
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import UrbanProjectCustomSteps from "./UrbanProjectCustomSteps";
+import BuildingsEconomicActivitySelection from "./buildings/economic-activity-selection";
+import BuildingsEconomicActivitySurfaceArea from "./buildings/economic-activity-surface-area";
 import BuildingsFloorSurfaceArea from "./buildings/floor-surface-area";
 import BuildingsIntroduction from "./buildings/introduction";
 import BuildingsUseIntroduction from "./buildings/use-introduction";
@@ -83,7 +85,11 @@ const getCurrentStepView = (
     case "BUILDINGS_USE_SURFACE_AREA":
       return <BuildingsUseSurfaceAreas />;
     case "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION":
-      return <div>BUILDINGS_ECONOMIC_ACTIVITY_SELECTION</div>;
+      return <BuildingsEconomicActivitySelection />;
+    case "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA":
+      return <BuildingsEconomicActivitySurfaceArea />;
+    case "STAKEHOLDERS_INTRODUCTION":
+      return "STAKEHOLDERS_INTRODUCTION";
     case "BUILDINGS_EQUIPMENT_INTRODUCTION":
       return <div>BUILDINGS_EQUIPMENT_INTRODUCTION</div>;
     case "BUILDINGS_EQUIPMENT_SELECTION":

@@ -49,7 +49,10 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION":
     case "BUILDINGS_EQUIPMENT_INTRODUCTION":
     case "BUILDINGS_EQUIPMENT_SELECTION":
+    case "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA":
       return "Bâtiments";
+    case "STAKEHOLDERS_INTRODUCTION":
+      return "Acteurs";
   }
 };
 
