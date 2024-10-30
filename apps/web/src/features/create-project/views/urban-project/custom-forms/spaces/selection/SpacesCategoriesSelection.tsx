@@ -59,6 +59,7 @@ function SpacesCategoriesSelection({ onSubmit, onBack }: Props) {
                 <Controller
                   control={control}
                   name="spaceCategories"
+                  rules={{ required: "Veuillez sélectionner au moins un type d'espace." }}
                   render={({ field }) => {
                     const isSelected = field.value.includes(value);
                     return (

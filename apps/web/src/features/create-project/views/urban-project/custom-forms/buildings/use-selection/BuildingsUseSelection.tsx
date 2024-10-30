@@ -70,6 +70,7 @@ function BuildingsUseSelection({ onSubmit, onBack }: Props) {
                 <Controller
                   control={control}
                   name="buildingsUseCategories"
+                  rules={{ required: "Veuillez sélectionner au moins un type d'usage." }}
                   render={({ field }) => {
                     const isSelected = field.value.includes(value);
                     return (

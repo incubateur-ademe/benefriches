@@ -54,6 +54,7 @@ function UrbanGreenSpacesSelection({ onSubmit, onBack }: Props) {
                 key={value}
                 control={control}
                 name="greenSpaces"
+                rules={{ required: "Veuillez sélectionner au moins un type d'espace." }}
                 render={({ field }) => {
                   const isSelected = field.value.includes(value);
                   return (
