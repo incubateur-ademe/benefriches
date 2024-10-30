@@ -5,6 +5,9 @@ import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
+import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
+import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
+import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -53,14 +56,13 @@ function CreateModeSelectionForm({ onSubmit, onBack }: Props) {
   const validationError = formState.errors.createMode;
 
   return (
-    <WizardFormLayout title="Comment souhaitez-vous créer votre projet ?">
+    <WizardFormLayout title="Comment souhaitez-vous créer votre projet ?" fullScreen>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-mb-10">
-          <div className="tw-grid md:tw-grid-cols-2 tw-gap-4">
-            {options.map((option) => {
-              return (
+        <TileFormFieldsWrapper>
+          {options.map((option) => {
+            return (
+              <TileFormFieldWrapper key={option.value}>
                 <Controller
-                  key={option.value}
                   control={control}
                   name="createMode"
                   rules={{ required: "Veuillez sélectionner un mode de création." }}
@@ -90,12 +92,20 @@ function CreateModeSelectionForm({ onSubmit, onBack }: Props) {
                     );
                   }}
                 />
-              );
-            })}
-          </div>
-          {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
-        </div>
-        <BackNextButtonsGroup onBack={onBack} disabled={!formState.isValid} nextLabel="Valider" />
+              </TileFormFieldWrapper>
+            );
+          })}
+          <TileFormFooterWrapper tileCount={options.length}>
+            {validationError && (
+              <p className={fr.cx("fr-error-text", "fr-mb-2w")}>{validationError.message}</p>
+            )}
+            <BackNextButtonsGroup
+              onBack={onBack}
+              nextLabel="Valider"
+              disabled={!formState.isValid}
+            />
+          </TileFormFooterWrapper>
+        </TileFormFieldsWrapper>
       </form>
     </WizardFormLayout>
   );

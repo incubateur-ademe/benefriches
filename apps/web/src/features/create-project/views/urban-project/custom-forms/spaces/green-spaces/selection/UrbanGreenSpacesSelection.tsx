@@ -47,7 +47,7 @@ function UrbanGreenSpacesSelection({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Quels types d'espaces souhaitez-vous aménager sur les espaces verts ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_300px)] tw-gap-4 tw-mb-10">
+        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_260px)] tw-gap-4 tw-mb-10">
           {urbanGreenSpaces.options.map((value) => {
             return (
               <Controller

@@ -6,12 +6,21 @@ type Props = {
   title: ReactNode;
   instructions?: ReactNode;
   children: ReactNode;
+  fullScreen?: boolean;
 };
 
-function WizardFormLayout({ title, children, instructions = null }: Props) {
+function WizardFormLayout({ title, children, instructions = null, fullScreen = false }: Props) {
+  const shouldDisplayFullScreen = fullScreen && !instructions;
+
   return (
     <div className="tw-grid tw-grid-cols-12 tw-gap-6 tw-w-full">
-      <section className="tw-col-span-12 tw-col-start-1 md:tw-col-span-8">
+      <section
+        className={classNames(
+          "tw-col-span-12",
+          "tw-col-start-1",
+          !shouldDisplayFullScreen && "md:tw-col-span-8",
+        )}
+      >
         <div className="tw-px-6">
           <h2>{title}</h2>
           {children}

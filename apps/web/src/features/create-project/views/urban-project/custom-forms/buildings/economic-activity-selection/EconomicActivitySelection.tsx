@@ -8,6 +8,9 @@ import {
 import { getLabelForBuildingFloorArea } from "@/shared/domain/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
+import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
+import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
+import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -33,40 +36,47 @@ function BuildingsEconomicActivitySelection({ onSubmit, onBack }: Props) {
   });
 
   return (
-    <WizardFormLayout title="Quel(s) lieu(x) d’activité économique y aura-t-il ?">
+    <WizardFormLayout title="Quel(s) lieu(x) d’activité économique y aura-t-il ?" fullScreen>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_300px)] tw-gap-4 tw-mb-10">
+        <TileFormFieldsWrapper small>
           {ECONOMIC_ACTIVITY_BUILDINGS_USE.map((value) => {
             return (
-              <Controller
-                control={control}
-                name="economicActivityCategories"
-                rules={{ required: "Veuillez sélectionner au moins un type de lieu." }}
-                render={({ field }) => {
-                  const isSelected = field.value.includes(value);
-                  return (
-                    <CheckableTile
-                      title={getLabelForBuildingFloorArea(value)}
-                      description={getDescriptionForBuildingFloorArea(value)}
-                      imgSrc={getPictogramUrlForEconomicActivityUses(value)}
-                      checked={isSelected}
-                      checkType="checkbox"
-                      onChange={() => {
-                        field.onChange(
-                          isSelected
-                            ? field.value.filter((v) => v !== value)
-                            : [...field.value, value],
-                        );
-                      }}
-                    />
-                  );
-                }}
-                key={value}
-              />
+              <TileFormFieldWrapper key={value}>
+                <Controller
+                  control={control}
+                  name="economicActivityCategories"
+                  rules={{ required: "Veuillez sélectionner au moins un type de lieu." }}
+                  render={({ field }) => {
+                    const isSelected = field.value.includes(value);
+                    return (
+                      <CheckableTile
+                        title={getLabelForBuildingFloorArea(value)}
+                        description={getDescriptionForBuildingFloorArea(value)}
+                        imgSrc={getPictogramUrlForEconomicActivityUses(value)}
+                        checked={isSelected}
+                        checkType="checkbox"
+                        onChange={() => {
+                          field.onChange(
+                            isSelected
+                              ? field.value.filter((v) => v !== value)
+                              : [...field.value, value],
+                          );
+                        }}
+                      />
+                    );
+                  }}
+                />
+              </TileFormFieldWrapper>
             );
           })}
-        </div>
-        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
+          <TileFormFooterWrapper tileCount={ECONOMIC_ACTIVITY_BUILDINGS_USE.length}>
+            <BackNextButtonsGroup
+              onBack={onBack}
+              nextLabel="Valider"
+              disabled={!formState.isValid}
+            />
+          </TileFormFooterWrapper>
+        </TileFormFieldsWrapper>
       </form>
     </WizardFormLayout>
   );

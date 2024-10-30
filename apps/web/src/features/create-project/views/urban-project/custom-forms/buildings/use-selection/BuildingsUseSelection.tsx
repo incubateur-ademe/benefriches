@@ -8,6 +8,9 @@ import {
 } from "@/features/create-project/domain/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
+import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
+import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
+import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -46,6 +49,12 @@ const BuildingsUseCategoryTile = ({
   );
 };
 
+const BUILDINGS_USES = [
+  "RESIDENTIAL",
+  "ECONOMIC_ACTIVITY",
+  "MULTI_STORY_PARKING",
+  "OTHER",
+] as const;
 function BuildingsUseSelection({ onSubmit, onBack }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: { buildingsUseCategories: [] },
@@ -54,10 +63,10 @@ function BuildingsUseSelection({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Quels usages auront les bâtiments ?">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_300px)] tw-gap-4 tw-mb-10">
-          {(["RESIDENTIAL", "ECONOMIC_ACTIVITY", "MULTI_STORY_PARKING", "OTHER"] as const).map(
-            (value) => {
-              return (
+        <TileFormFieldsWrapper small>
+          {BUILDINGS_USES.map((value) => {
+            return (
+              <TileFormFieldWrapper key={value}>
                 <Controller
                   control={control}
                   name="buildingsUseCategories"
@@ -77,13 +86,18 @@ function BuildingsUseSelection({ onSubmit, onBack }: Props) {
                       />
                     );
                   }}
-                  key={value}
                 />
-              );
-            },
-          )}
-        </div>
-        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
+              </TileFormFieldWrapper>
+            );
+          })}
+          <TileFormFooterWrapper tileCount={BUILDINGS_USES.length}>
+            <BackNextButtonsGroup
+              onBack={onBack}
+              nextLabel="Valider"
+              disabled={!formState.isValid}
+            />
+          </TileFormFooterWrapper>
+        </TileFormFieldsWrapper>
       </form>
     </WizardFormLayout>
   );

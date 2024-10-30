@@ -3,6 +3,11 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { Controller, useForm } from "react-hook-form";
 import { DevelopmentPlanCategory, developmentPlanCategorySchema } from "shared";
 
+import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
+import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
+import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
+import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+
 import DevelopmentPlanCategoryTile from "./DevelopmentPlanCategoryTile";
 
 type Props = {
@@ -26,13 +31,12 @@ function ProjectTypesForm({ onSubmit, allowedDevelopmentPlanCategories }: Props)
   });
 
   return (
-    <section className="tw-px-6">
-      <h2>Que souhaitez-vous aménager sur ce site ?</h2>
+    <WizardFormLayout title="Que souhaitez-vous aménager sur ce site ?" fullScreen>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_350px)] tw-gap-x-4">
+        <TileFormFieldsWrapper small>
           {options.map(({ value, disabled }) => {
             return (
-              <div className="tw-mb-4" key={value}>
+              <TileFormFieldWrapper key={value}>
                 <Controller
                   control={control}
                   name="developmentPlanCategory"
@@ -51,11 +55,11 @@ function ProjectTypesForm({ onSubmit, allowedDevelopmentPlanCategories }: Props)
                     );
                   }}
                 />
-              </div>
+              </TileFormFieldWrapper>
             );
           })}
 
-          <div className="tw-row-start-6 tw-col-start-1 tw-col-end-[-1]">
+          <TileFormFooterWrapper tileCount={options.length}>
             {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
             <Button
               className="tw-float-right"
@@ -63,10 +67,10 @@ function ProjectTypesForm({ onSubmit, allowedDevelopmentPlanCategories }: Props)
             >
               Valider
             </Button>
-          </div>
-        </div>
+          </TileFormFooterWrapper>
+        </TileFormFieldsWrapper>
       </form>
-    </section>
+    </WizardFormLayout>
   );
 }
 
