@@ -5,7 +5,9 @@ import {
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SoilsDecontaminationSurfaceArea, { FormValues } from "./SoilsDecontaminationSurfaceArea";
+import SoilsDecontaminationSurfaceArea, {
+  FormValues,
+} from "../../../common-views/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
 
 function SoilsDecontaminationSurfaceAreaContainer() {
   const dispatch = useAppDispatch();
