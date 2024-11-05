@@ -1,95 +1,44 @@
-import { useEffect } from "react";
-
-import { fetchSiteLocalAuthorities } from "@/features/create-project/application/getSiteLocalAuthorities.action";
 import {
   completeReinstatementContractOwner,
   revertReinstatementContractOwner,
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import {
-  AvailableLocalAuthorityStakeholder,
-  AvailableProjectStakeholder,
-  getAvailableLocalAuthoritiesStakeholders,
-  getProjectAvailableStakeholders,
-} from "@/features/create-project/application/renewable-energy/stakeholders.selector";
-import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
+  getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
+  getRenewableEnergyProjectAvailableStakeholders,
+} from "@/features/create-project/application/renewable-energy/stakeholders.selectors";
+import { ProjectStakeholderStructure } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
-import SiteReinstatementContractOwnerForm, {
-  FormValues,
-} from "./SiteReinstatementContractOwnerForm";
-
-const convertFormValuesForStore = (
-  data: FormValues,
-  stakeholdersList: AvailableProjectStakeholder[],
-  siteLocalAuthorities: AvailableLocalAuthorityStakeholder[],
-): ProjectStakeholder => {
-  switch (data.stakeholder) {
-    case "site_tenant":
-    case "site_owner":
-    case "project_developer":
-    case "future_site_operator":
-    case "user_structure": {
-      const stakeholder = stakeholdersList.find(
-        ({ role }) => role === data.stakeholder,
-      ) as AvailableProjectStakeholder;
-      return {
-        name: stakeholder.name,
-        structureType: stakeholder.structureType,
-      };
-    }
-
-    case "local_or_regional_authority": {
-      const localAuthority = siteLocalAuthorities.find(
-        ({ type }) => type === data.localAuthority,
-      ) as AvailableLocalAuthorityStakeholder;
-      return {
-        name: localAuthority.name,
-        structureType: data.localAuthority,
-      };
-    }
-
-    case "other_structure":
-      return {
-        name: data.otherStructureName,
-        structureType: "other",
-      };
-    case "unknown":
-    case null:
-      return {
-        name: "Maître d’ouvrage des travaux de remise en état",
-        structureType: "unknown",
-      };
-  }
-};
+import StakeholderForm from "../../../common-views/stakeholder-form";
 
 function SiteReinstatementContractOwnerFormContainer() {
   const dispatch = useAppDispatch();
 
-  const availableStakeholdersList = useAppSelector(getProjectAvailableStakeholders);
+  const availableStakeholdersList = useAppSelector(getRenewableEnergyProjectAvailableStakeholders);
   const availableLocalAuthoritiesStakeholders = useAppSelector(
-    getAvailableLocalAuthoritiesStakeholders,
+    getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   );
 
-  const onSubmit = (data: FormValues) => {
-    dispatch(
-      completeReinstatementContractOwner(
-        convertFormValuesForStore(
-          data,
-          availableStakeholdersList,
-          availableLocalAuthoritiesStakeholders,
-        ),
-      ),
-    );
+  const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
+    dispatch(completeReinstatementContractOwner(data));
   };
 
   const onBack = () => {
     dispatch(revertReinstatementContractOwner());
   };
 
-  useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
-
   return (
-    <SiteReinstatementContractOwnerForm
+    <StakeholderForm
+      title="Qui sera le maître d'ouvrage des travaux de remise en état de la friche ?"
+      instructions={
+        <FormInfo>
+          <p>
+            Les travaux de remise en état incluent la désimperméabilisation des sols, la
+            dépollution, l'enlèvement des déchets, la déconstruction, etc.
+          </p>
+        </FormInfo>
+      }
       onSubmit={onSubmit}
       onBack={onBack}
       availableStakeholdersList={availableStakeholdersList}

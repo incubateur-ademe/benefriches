@@ -1,93 +1,34 @@
-import { useEffect } from "react";
-
-import { fetchSiteLocalAuthorities } from "@/features/create-project/application/getSiteLocalAuthorities.action";
 import {
   completeFutureSiteOwner,
   revertFutureSiteOwner,
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import {
-  AvailableLocalAuthorityStakeholder,
-  AvailableProjectStakeholder,
-  getAvailableLocalAuthoritiesStakeholders,
-  getProjectAvailableStakeholders,
-} from "@/features/create-project/application/renewable-energy/stakeholders.selector";
-import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
+  getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
+  getRenewableEnergyProjectAvailableStakeholders,
+} from "@/features/create-project/application/renewable-energy/stakeholders.selectors";
+import { ProjectStakeholderStructure } from "@/features/create-project/domain/project.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import FutureSiteOwnerForm, { FormValues } from "./FutureSiteOwnerForm";
-
-const convertFormValuesForStore = (
-  data: FormValues,
-  stakeholdersList: AvailableProjectStakeholder[],
-  siteLocalAuthorities: AvailableLocalAuthorityStakeholder[],
-): ProjectStakeholder => {
-  switch (data.stakeholder) {
-    case "site_tenant":
-    case "site_owner":
-    case "project_developer":
-    case "future_site_operator":
-    case "reinstatement_contract_owner":
-    case "user_structure": {
-      const stakeholder = stakeholdersList.find(
-        ({ role }) => role === data.stakeholder,
-      ) as AvailableProjectStakeholder;
-      return {
-        name: stakeholder.name,
-        structureType: stakeholder.structureType,
-      };
-    }
-
-    case "local_or_regional_authority": {
-      const localAuthority = siteLocalAuthorities.find(
-        ({ type }) => type === data.localAuthority,
-      ) as AvailableLocalAuthorityStakeholder;
-      return {
-        name: localAuthority.name,
-        structureType: data.localAuthority,
-      };
-    }
-
-    case "other_structure":
-      return {
-        name: data.otherStructureName,
-        structureType: "other",
-      };
-    case "unknown":
-    case null:
-      return {
-        name: "Futur propriétaire",
-        structureType: "unknown",
-      };
-  }
-};
+import StakeholderForm from "../../../common-views/stakeholder-form";
 
 function FutureOwnerFormContainer() {
   const dispatch = useAppDispatch();
-  const availableStakeholdersList = useAppSelector(getProjectAvailableStakeholders);
+  const availableStakeholdersList = useAppSelector(getRenewableEnergyProjectAvailableStakeholders);
   const availableLocalAuthoritiesStakeholders = useAppSelector(
-    getAvailableLocalAuthoritiesStakeholders,
+    getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   );
 
-  const onSubmit = (data: FormValues) => {
-    dispatch(
-      completeFutureSiteOwner(
-        convertFormValuesForStore(
-          data,
-          availableStakeholdersList,
-          availableLocalAuthoritiesStakeholders,
-        ),
-      ),
-    );
+  const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
+    dispatch(completeFutureSiteOwner(data));
   };
 
   const onBack = () => {
     dispatch(revertFutureSiteOwner());
   };
 
-  useEffect(() => void dispatch(fetchSiteLocalAuthorities()), [dispatch]);
-
   return (
-    <FutureSiteOwnerForm
+    <StakeholderForm
+      title="Qui sera le nouveau propriétaire du site ?"
       onSubmit={onSubmit}
       onBack={onBack}
       availableStakeholdersList={availableStakeholdersList.filter(

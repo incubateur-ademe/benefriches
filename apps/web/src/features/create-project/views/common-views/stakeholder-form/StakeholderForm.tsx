@@ -1,9 +1,10 @@
 import Input from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
+import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { LocalAuthority } from "shared";
+import { LocalAuthority } from "shared/dist/local-authority";
 
-import { AvailableProjectStakeholder } from "@/features/create-project/application/renewable-energy/stakeholders.selector";
+import { AvailableProjectStakeholder } from "@/features/create-project/application/stakeholders.selectors";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
@@ -13,6 +14,8 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  title: ReactNode;
+  instructions: ReactNode;
   availableStakeholdersList: AvailableProjectStakeholder[];
   availableLocalAuthoritiesStakeholders: {
     type: LocalAuthority;
@@ -36,9 +39,7 @@ export type FormValues =
         | "user_structure"
         | "site_tenant"
         | "site_owner"
-        | "project_developer"
-        | "future_site_operator"
-        | "reinstatement_contract_owner"
+        | "project_stakeholder"
         | "unknown";
       localAuthority: undefined;
       otherStructureName: undefined;
@@ -49,9 +50,11 @@ export type FormValues =
       otherStructureName: undefined;
     };
 
-function FutureSiteOwnerForm({
+function StakeholderForm({
   onSubmit,
   onBack,
+  title,
+  instructions,
   availableStakeholdersList,
   availableLocalAuthoritiesStakeholders,
 }: Props) {
@@ -62,7 +65,7 @@ function FutureSiteOwnerForm({
   const selectedStakeholder = watch("stakeholder");
 
   return (
-    <WizardFormLayout title="Qui sera le nouveau propriétaire du site ?">
+    <WizardFormLayout title={title} instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={formState.errors.stakeholder ? "error" : "default"}
@@ -78,7 +81,6 @@ function FutureSiteOwnerForm({
               {...register("stakeholder")}
             />
           ))}
-
           {availableLocalAuthoritiesStakeholders.length > 0 && (
             <RadioButton
               label="Une collectivité"
@@ -130,4 +132,4 @@ function FutureSiteOwnerForm({
   );
 }
 
-export default FutureSiteOwnerForm;
+export default StakeholderForm;
