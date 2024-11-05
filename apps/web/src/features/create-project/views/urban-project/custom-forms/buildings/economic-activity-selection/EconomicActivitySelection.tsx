@@ -2,6 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import {
   BuildingsEconomicActivityUse,
+  ECONOMIC_ACTIVITY_BUILDINGS_USE,
   getDescriptionForBuildingFloorArea,
   getPictogramUrlForEconomicActivityUses,
 } from "@/features/create-project/domain/urbanProject";
@@ -21,14 +22,6 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
-
-const ECONOMIC_ACTIVITY_BUILDINGS_USE = [
-  "GROUND_FLOOR_RETAIL",
-  "TERTIARY_ACTIVITIES",
-  "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
-  "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
-  "SHIPPING_OR_INDUSTRIAL_BUILDINGS",
-] as const;
 
 function BuildingsEconomicActivitySelection({ onSubmit, onBack }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({

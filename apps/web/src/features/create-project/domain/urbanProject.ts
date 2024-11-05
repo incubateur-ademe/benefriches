@@ -1,5 +1,6 @@
 import {
   BuildingFloorAreaUsageDistribution,
+  BuildingsUse,
   getSoilTypeForLivingAndActivitySpace,
   getSoilTypeForPublicSpace,
   getSoilTypeForUrbanGreenSpace,
@@ -192,12 +193,27 @@ export const getColorForUrbanPublicSpace = (space: UrbanPublicSpace): string => 
   return getColorForSoilType(getSoilTypeForPublicSpace(space));
 };
 
-export type BuildingsEconomicActivityUse =
+export const ECONOMIC_ACTIVITY_BUILDINGS_USE: BuildingsEconomicActivityUse[] = [
+  "GROUND_FLOOR_RETAIL",
+  "TERTIARY_ACTIVITIES",
+  "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
+  "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
+  "SHIPPING_OR_INDUSTRIAL_BUILDINGS",
+];
+
+export const isBuildingEconomicActivityUse = (buildingUse: BuildingsUse) => {
+  return ECONOMIC_ACTIVITY_BUILDINGS_USE.includes(buildingUse as BuildingsEconomicActivityUse);
+};
+
+export type BuildingsEconomicActivityUse = Extract<
+  BuildingsUse,
   | "GROUND_FLOOR_RETAIL"
-  | "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS"
   | "TERTIARY_ACTIVITIES"
+  | "NEIGHBOURHOOD_FACILITIES_AND_SERVICES"
+  | "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS"
   | "SHIPPING_OR_INDUSTRIAL_BUILDINGS"
-  | "NEIGHBOURHOOD_FACILITIES_AND_SERVICES";
+>;
+
 export const getDescriptionForBuildingFloorArea = (
   building: keyof BuildingFloorAreaUsageDistribution,
 ): string | undefined => {

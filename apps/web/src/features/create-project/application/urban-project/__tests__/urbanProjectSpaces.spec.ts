@@ -65,6 +65,29 @@ describe("Urban project creation : introduction and spaces steps", () => {
       });
     });
     describe("SPACES_CATEGORIES_SELECTION step", () => {
+      it("goes to SPACES_DEVELOPMENT_PLAN_INTRODUCTION step and sets space category when step is completed with only one space selected", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["SPACES_CATEGORIES_INTRODUCTION", "SPACES_CATEGORIES_SELECTION"])
+          .withSiteData({ surfaceArea: 15000 })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          spacesSelectionCompleted({
+            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
+          }),
+        );
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
+          spacesCategoriesToComplete: ["LIVING_AND_ACTIVITY_SPACES"],
+          creationDataDiff: {
+            spacesCategoriesDistribution: { LIVING_AND_ACTIVITY_SPACES: 15000 },
+            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES"],
+          },
+        });
+      });
       it("goes to SPACES_CATEGORIES_SURFACE_AREA step and sets space categories when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["SPACES_CATEGORIES_INTRODUCTION", "SPACES_CATEGORIES_SELECTION"])
@@ -80,11 +103,6 @@ describe("Urban project creation : introduction and spaces steps", () => {
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
           currentStep: "SPACES_CATEGORIES_SURFACE_AREA",
-          spacesCategoriesToComplete: [
-            "LIVING_AND_ACTIVITY_SPACES",
-            "GREEN_SPACES",
-            "URBAN_POND_OR_LAKE",
-          ],
           creationDataDiff: {
             spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES", "URBAN_POND_OR_LAKE"],
           },
@@ -93,6 +111,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
       it("goes to previous step and unset space categories when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["SPACES_CATEGORIES_INTRODUCTION", "SPACES_CATEGORIES_SELECTION"])
+          .withSpacesCategoriesToComplete(["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"])
           .withCreationData({
             spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
           })
@@ -103,6 +122,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
+          spacesCategoriesToComplete: [],
           creationDataDiff: {
             spacesCategories: undefined,
           },
@@ -125,6 +145,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
           currentStep: "SPACES_DEVELOPMENT_PLAN_INTRODUCTION",
+          spacesCategoriesToComplete: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
           creationDataDiff: {
             spacesCategoriesDistribution: { LIVING_AND_ACTIVITY_SPACES: 8000, GREEN_SPACES: 2000 },
           },
@@ -133,6 +154,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
       it("goes to previous step and unset space categories surface area distribution when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["SPACES_CATEGORIES_SELECTION", "SPACES_CATEGORIES_SURFACE_AREA"])
+          .withSpacesCategoriesToComplete(["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"])
           .withCreationData({
             spacesCategoriesDistribution: {
               LIVING_AND_ACTIVITY_SPACES: 8000,
@@ -146,6 +168,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
+          spacesCategoriesToComplete: [],
           creationDataDiff: {
             spacesCategoriesDistribution: undefined,
           },
@@ -255,6 +278,29 @@ describe("Urban project creation : introduction and spaces steps", () => {
       });
     });
     describe("GREEN_SPACES_SELECTION step", () => {
+      it("goes to next spaces category introduction step and sets green spaces when step is completed with only one category", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["GREEN_SPACES_SELECTION"])
+          .withSpacesCategoriesToComplete(["LIVING_AND_ACTIVITY_SPACES"])
+          .withCreationData({
+            spacesCategories: ["GREEN_SPACES", "LIVING_AND_ACTIVITY_SPACES"],
+            spacesCategoriesDistribution: { GREEN_SPACES: 2000, LIVING_AND_ACTIVITY_SPACES: 8000 },
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(greenSpacesSelectionCompleted({ greenSpaces: ["LAWNS_AND_BUSHES"] }));
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+          spacesCategoriesToComplete: [],
+          creationDataDiff: {
+            greenSpaces: ["LAWNS_AND_BUSHES"],
+            greenSpacesDistribution: { LAWNS_AND_BUSHES: 2000 },
+          },
+        });
+      });
       it("goes to GREEN_SPACES_SURFACE_AREA_DISTRIBUTION and sets green spaces when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["GREEN_SPACES_SELECTION"])
@@ -275,7 +321,7 @@ describe("Urban project creation : introduction and spaces steps", () => {
           creationDataDiff: { greenSpaces: ["LAWNS_AND_BUSHES", "TREE_FILLED_SPACE"] },
         });
       });
-      it("goes to previous step and unset green spaces step is reverted", () => {
+      it("goes to previous step and unset green spaces if step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["GREEN_SPACES_INTRODUCTION", "GREEN_SPACES_SELECTION"])
           .withCreationData({
@@ -289,6 +335,23 @@ describe("Urban project creation : introduction and spaces steps", () => {
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
           creationDataDiff: { greenSpaces: undefined },
+        });
+      });
+      it("goes to previous step and unset green spaces and green spaces distribution if step is reverted", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["GREEN_SPACES_INTRODUCTION", "GREEN_SPACES_SELECTION"])
+          .withCreationData({
+            greenSpaces: ["LAWNS_AND_BUSHES"],
+            greenSpacesDistribution: { LAWNS_AND_BUSHES: 3000 },
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(greenSpacesSelectionReverted());
+
+        const newState = store.getState();
+        expectRevertedState(initialRootState, newState, {
+          creationDataDiff: { greenSpaces: undefined, greenSpacesDistribution: undefined },
         });
       });
     });
@@ -408,6 +471,31 @@ describe("Urban project creation : introduction and spaces steps", () => {
       });
     });
     describe("LIVING_AND_ACTIVITY_SPACES_SELECTION step", () => {
+      it("goes to next spaces category introduction step when step is completed with only one category", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["LIVING_AND_ACTIVITY_SPACES_SELECTION"])
+          .withSpacesCategoriesToComplete(["PUBLIC_SPACES", "GREEN_SPACES"])
+          .withCreationData({
+            spacesCategories: ["LIVING_AND_ACTIVITY_SPACES", "GREEN_SPACES"],
+            spacesCategoriesDistribution: { GREEN_SPACES: 2000, LIVING_AND_ACTIVITY_SPACES: 8000 },
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(livingAndActivitySpacesSelectionCompleted(["BUILDINGS"]));
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "PUBLIC_SPACES_INTRODUCTION",
+          spacesCategoriesToComplete: ["GREEN_SPACES"],
+          creationDataDiff: {
+            livingAndActivitySpaces: ["BUILDINGS"],
+            livingAndActivitySpacesDistribution: {
+              BUILDINGS: 8000,
+            },
+          },
+        });
+      });
       it("goes to LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION and sets living/activity spaces when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["LIVING_AND_ACTIVITY_SPACES_SELECTION"])
@@ -460,6 +548,30 @@ describe("Urban project creation : introduction and spaces steps", () => {
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
           creationDataDiff: { livingAndActivitySpaces: undefined },
+        });
+      });
+      it("goes to previous step and unset living/activity spaces and distribution when step is reverted", () => {
+        const store = new StoreBuilder()
+          .withSpacesCategoriesToComplete(["GREEN_SPACES"])
+          .withStepsHistory([
+            "SPACES_CATEGORIES_SELECTION",
+            "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION",
+          ])
+          .withCreationData({
+            livingAndActivitySpaces: ["BUILDINGS"],
+            livingAndActivitySpacesDistribution: { BUILDINGS: 8000 },
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(livingAndActivitySpacesSelectionReverted());
+
+        const newState = store.getState();
+        expectRevertedState(initialRootState, newState, {
+          creationDataDiff: {
+            livingAndActivitySpaces: undefined,
+            livingAndActivitySpacesDistribution: undefined,
+          },
         });
       });
     });
@@ -601,6 +713,29 @@ describe("Urban project creation : introduction and spaces steps", () => {
       });
     });
     describe("PUBLIC_SPACES_SELECTION step", () => {
+      it("goes to to next spaces category introduction step and sets public spaces when step is completed with only one category", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["PUBLIC_SPACES_SELECTION"])
+          .withSpacesCategoriesToComplete(["GREEN_SPACES"])
+          .withCreationData({
+            spacesCategories: ["PUBLIC_SPACES", "LIVING_AND_ACTIVITY_SPACES"],
+            spacesCategoriesDistribution: { LIVING_AND_ACTIVITY_SPACES: 2000, PUBLIC_SPACES: 8000 },
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(publicSpacesSelectionCompleted(["GRASS_COVERED_SURFACE"]));
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "GREEN_SPACES_INTRODUCTION",
+          spacesCategoriesToComplete: [],
+          creationDataDiff: {
+            publicSpaces: ["GRASS_COVERED_SURFACE"],
+            publicSpacesDistribution: { GRASS_COVERED_SURFACE: 8000 },
+          },
+        });
+      });
       it("goes to PUBLIC_SPACES_DISTRIBUTION and sets public spaces when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["PUBLIC_SPACES_SELECTION"])
@@ -638,6 +773,24 @@ describe("Urban project creation : introduction and spaces steps", () => {
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
           creationDataDiff: { publicSpaces: undefined },
+        });
+      });
+      it("goes to previous step and unset public spaces and distribution when step is reverted", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["PUBLIC_SPACES_INTRODUCTION", "PUBLIC_SPACES_SELECTION"])
+          .withSpacesCategoriesToComplete(["GREEN_SPACES"])
+          .withCreationData({
+            publicSpaces: ["GRASS_COVERED_SURFACE"],
+            publicSpacesDistribution: { GRASS_COVERED_SURFACE: 8000 },
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(publicSpacesSelectionReverted());
+
+        const newState = store.getState();
+        expectRevertedState(initialRootState, newState, {
+          creationDataDiff: { publicSpaces: undefined, publicSpacesDistribution: undefined },
         });
       });
     });
