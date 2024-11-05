@@ -4,7 +4,7 @@ import {
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
-import ProjectStakeholdersIntroduction from "./StakeholdersIntroduction";
+import ProjectStakeholdersIntroduction from "../../../common-views/stakeholder-introduction/StakeholdersIntroduction";
 
 function ProjectStakeholdersIntroductionContainer() {
   const dispatch = useAppDispatch();

@@ -29,6 +29,9 @@ import SpacesCategoriesSelection from "./spaces/selection";
 import UrbanProjectSoilsCarbonStorage from "./spaces/soils-carbon-storage";
 import UrbanProjectSoilsSummary from "./spaces/soils-summary/";
 import UrbanProjectSpaceCategoriesSurfaceAreaDistribution from "./spaces/surface-area";
+import DeveloperForm from "./stakeholders/developer";
+import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
+import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
 
 type Props = {
   currentStep: UrbanProjectCustomCreationStep;
@@ -88,12 +91,18 @@ const getCurrentStepView = (
       return <BuildingsEconomicActivitySelection />;
     case "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA":
       return <BuildingsEconomicActivitySurfaceArea />;
-    case "STAKEHOLDERS_INTRODUCTION":
-      return "STAKEHOLDERS_INTRODUCTION";
     case "BUILDINGS_EQUIPMENT_INTRODUCTION":
       return <div>BUILDINGS_EQUIPMENT_INTRODUCTION</div>;
     case "BUILDINGS_EQUIPMENT_SELECTION":
       return <div>BUILDINGS_EQUIPMENT_SELECTION</div>;
+    case "STAKEHOLDERS_INTRODUCTION":
+      return <ProjectStakeholdersIntroduction />;
+    case "STAKEHOLDERS_PROJECT_DEVELOPER":
+      return <DeveloperForm />;
+    case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
+      return <SiteReinstatementContractOwnerForm />;
+    case "FINAL_SUMMARY":
+      return "RÉCAPITULATIF";
   }
 };
 

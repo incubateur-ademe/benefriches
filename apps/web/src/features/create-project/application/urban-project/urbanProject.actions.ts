@@ -9,6 +9,7 @@ import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
+import { ProjectStakeholderStructure } from "../../domain/project.types";
 import { BuildingsEconomicActivityUse, BuildingsUseCategory } from "../../domain/urbanProject";
 
 export function prefixActionType(actionType: string) {
@@ -176,4 +177,22 @@ export const buildingsEconomicActivitySurfaceAreasCompleted = createAction<
 >("buildingsEconomicActivitySurfaceAreasCompleted");
 export const buildingsEconomicActivitySurfaceAreasReverted = createAction(
   "buildingsEconomicActivitySurfaceAreasReverted",
+);
+
+// stakeholders
+export const stakeholderIntroductionCompleted = createAction("stakeholderIntroductionCompleted");
+export const stakeholderIntroductionReverted = createAction("stakeholderIntroductionReverted");
+export const stakeholderProjectDeveloperCompleted = createAction<{
+  name: string;
+  structureType: ProjectStakeholderStructure;
+}>("stakeholderProjectDeveloperCompleted");
+export const stakeholderProjectDeveloperReverted = createAction(
+  "stakeholderProjectDeveloperReverted",
+);
+export const stakeholderReinstatementContractOwnerCompleted = createAction<{
+  name: string;
+  structureType: ProjectStakeholderStructure;
+}>("stakeholderReinstatementContractOwnerCompleted");
+export const stakeholderReinstatementContractOwnerReverted = createAction(
+  "stakeholderReinstatementContractOwnerReverted",
 );

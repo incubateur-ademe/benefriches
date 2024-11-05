@@ -14,9 +14,14 @@ import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
 } from "../../domain/urbanProjectSoils";
-import { UrbanProjectCreationStep } from "./urbanProject.reducer";
+import { UrbanProjectCreationStep, UrbanProjectState } from "./urbanProject.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation.urbanProject;
+
+export const selectCreationData = createSelector(
+  selectSelf,
+  (state): UrbanProjectState["creationData"] => state.creationData,
+);
 
 export const selectCurrentStep = createSelector([selectSelf], (state): UrbanProjectCreationStep => {
   return state.stepsHistory.at(-1) ?? "CREATE_MODE_SELECTION";

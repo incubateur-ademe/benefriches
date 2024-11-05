@@ -52,7 +52,11 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA":
       return "Bâtiments";
     case "STAKEHOLDERS_INTRODUCTION":
+    case "STAKEHOLDERS_PROJECT_DEVELOPER":
+    case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
       return "Acteurs";
+    case "FINAL_SUMMARY":
+      return "Récapitulatif";
   }
 };
 

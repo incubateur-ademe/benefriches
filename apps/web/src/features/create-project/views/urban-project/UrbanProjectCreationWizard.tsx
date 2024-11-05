@@ -49,6 +49,9 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   BUILDINGS_EQUIPMENT_INTRODUCTION: "introduction-equipements",
   BUILDINGS_EQUIPMENT_SELECTION: "selection-equipements",
   STAKEHOLDERS_INTRODUCTION: "acteurs-introduction",
+  STAKEHOLDERS_PROJECT_DEVELOPER: "acteurs-amenageur",
+  STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: "acteurs-maitre-ouvrage-remise-en-etat",
+  FINAL_SUMMARY: "recapitulatif-projet-urbain",
   CREATION_RESULT: "fin",
 } as const satisfies Record<UrbanProjectCreationStep, string>;
 

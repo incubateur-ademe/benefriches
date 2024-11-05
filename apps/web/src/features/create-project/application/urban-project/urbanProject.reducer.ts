@@ -12,6 +12,7 @@ import {
 
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
+import { ProjectStakeholder } from "../../domain/project.types";
 import {
   BuildingsUseCategory,
   BuildingsEconomicActivityUse,
@@ -72,6 +73,11 @@ import {
   buildingsEconomicActivitySelectionReverted,
   buildingsEconomicActivitySurfaceAreasCompleted,
   buildingsEconomicActivitySurfaceAreasReverted,
+  stakeholderIntroductionCompleted,
+  stakeholderProjectDeveloperCompleted,
+  stakeholderProjectDeveloperReverted,
+  stakeholderReinstatementContractOwnerCompleted,
+  stakeholderReinstatementContractOwnerReverted,
 } from "./urbanProject.actions";
 
 export type UrbanProjectExpressCreationStep = "EXPRESS_CATEGORY_SELECTION" | "CREATION_RESULT";
@@ -103,7 +109,10 @@ export type UrbanProjectCustomCreationStep =
   | "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA"
   | "BUILDINGS_EQUIPMENT_INTRODUCTION"
   | "BUILDINGS_EQUIPMENT_SELECTION"
-  | "STAKEHOLDERS_INTRODUCTION";
+  | "STAKEHOLDERS_INTRODUCTION"
+  | "STAKEHOLDERS_PROJECT_DEVELOPER"
+  | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
+  | "FINAL_SUMMARY";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
@@ -148,6 +157,8 @@ export type UrbanProjectState = {
     buildingsUseCategoriesDistribution?: Partial<Record<BuildingsUseCategory, number>>;
     buildingsUsesDistribution?: Partial<Record<BuildingsUse, number>>;
     buildingsEconomicActivityUses?: BuildingsEconomicActivityUse[];
+    projectDeveloper?: ProjectStakeholder;
+    reinstatementContractOwner?: ProjectStakeholder;
   };
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
@@ -536,6 +547,26 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     };
 
     state.urbanProject.stepsHistory.push("STAKEHOLDERS_INTRODUCTION");
+  });
+
+  builder.addCase(stakeholderIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("STAKEHOLDERS_PROJECT_DEVELOPER");
+  });
+  builder.addCase(stakeholderProjectDeveloperCompleted, (state, action) => {
+    state.urbanProject.creationData.projectDeveloper = action.payload;
+    state.urbanProject.stepsHistory.push(
+      state.siteData?.isFriche ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER" : "FINAL_SUMMARY",
+    );
+  });
+  builder.addCase(stakeholderProjectDeveloperReverted, (state) => {
+    state.urbanProject.creationData.projectDeveloper = undefined;
+  });
+  builder.addCase(stakeholderReinstatementContractOwnerCompleted, (state, action) => {
+    state.urbanProject.creationData.reinstatementContractOwner = action.payload;
+    state.urbanProject.stepsHistory.push("FINAL_SUMMARY");
+  });
+  builder.addCase(stakeholderReinstatementContractOwnerReverted, (state) => {
+    state.urbanProject.creationData.reinstatementContractOwner = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {
