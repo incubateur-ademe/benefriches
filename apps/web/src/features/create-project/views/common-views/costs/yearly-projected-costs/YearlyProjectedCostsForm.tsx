@@ -1,36 +1,44 @@
+import { ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
-import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  title?: ReactNode;
+  instructions?: ReactNode;
   defaultValues?: {
-    works: number;
-    technicalStudy: number;
-    other: number;
+    rent: number;
+    maintenance: number;
+    taxes: number;
   };
 };
 
 export type FormValues = {
-  worksAmount?: number;
-  technicalStudyAmount?: number;
+  rentAmount?: number;
+  maintenanceAmount?: number;
+  taxesAmount?: number;
   otherAmount?: number;
 };
 
-const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultValues }: Props) => {
+const YearlyProjectedExpensesForm = ({
+  onSubmit,
+  onBack,
+  defaultValues,
+  title = "Dépenses annuelles",
+  instructions,
+}: Props) => {
   const { handleSubmit, control, watch } = useForm<FormValues>({
     defaultValues: {
-      worksAmount: defaultValues?.works,
-      technicalStudyAmount: defaultValues?.technicalStudy,
-      otherAmount: defaultValues?.other,
+      rentAmount: defaultValues?.rent,
+      maintenanceAmount: defaultValues?.maintenance,
+      taxesAmount: defaultValues?.taxes,
     },
   });
 
@@ -40,29 +48,11 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
     typedObjectEntries(allExpenses).filter(([, value]) => typeof value === "number").length === 0;
 
   return (
-    <WizardFormLayout
-      title="Dépenses d'installation de la centrale photovoltaïque"
-      instructions={
-        <FormInfo>
-          <p>
-            Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
-            renseignée (exprimée en kWc) et les dépenses moyennes observées.
-          </p>
-          <p>
-            <strong>Source&nbsp;: </strong>
-            <br />
-            <ExternalLink href="https://www.cre.fr/documents/Publications/Rapports-thematiques/Couts-et-rentabilites-du-grand-photovoltaique-en-metropole-continentale">
-              Commission de régulation de l'énergie
-            </ExternalLink>
-          </p>
-          <p>Vous pouvez modifier ces montants.</p>
-        </FormInfo>
-      }
-    >
+    <WizardFormLayout title={title} instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Controller
           control={control}
-          name="worksAmount"
+          name="rentAmount"
           rules={{
             min: {
               value: 0,
@@ -73,34 +63,54 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
             return (
               <ControlledRowNumericInput
                 controlProps={controller}
-                label="Travaux d'installation"
-                addonText="€"
+                label="Loyer"
+                addonText="€ / an"
+                className="!tw-pt-4"
+              />
+            );
+          }}
+        />
+        <Controller
+          control={control}
+          name="maintenanceAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez entrer un montant valide",
+            },
+          }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                controlProps={controller}
+                label="Maintenance"
+                addonText="€ / an"
+                className="!tw-pt-4"
+              />
+            );
+          }}
+        />
+        <Controller
+          control={control}
+          name="taxesAmount"
+          rules={{
+            min: {
+              value: 0,
+              message: "Veuillez entrer un montant valide",
+            },
+          }}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                controlProps={controller}
+                label="Taxes et impôts"
+                addonText="€ / an"
                 className="!tw-pt-4"
               />
             );
           }}
         />
 
-        <Controller
-          control={control}
-          name="technicalStudyAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Études et honoraires techniques"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
-        />
         <Controller
           control={control}
           name="otherAmount"
@@ -114,8 +124,8 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
             return (
               <ControlledRowNumericInput
                 controlProps={controller}
-                label="Autres dépenses d'installation"
-                addonText="€"
+                label="Autres dépenses"
+                addonText="€ / an"
                 className="!tw-pt-4"
               />
             );
@@ -125,7 +135,7 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
         {!hasNoValuesFilled && (
           <p>
             <strong>
-              Total des dépenses d'installation : {formatNumberFr(sumObjectValues(allExpenses))} €
+              Total des dépenses annuelles : {formatNumberFr(sumObjectValues(allExpenses))} €
             </strong>
           </p>
         )}
@@ -139,4 +149,4 @@ const PhotovoltaicPanelsInstallationExpensesForm = ({ onSubmit, onBack, defaultV
   );
 };
 
-export default PhotovoltaicPanelsInstallationExpensesForm;
+export default YearlyProjectedExpensesForm;

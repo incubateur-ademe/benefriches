@@ -55,6 +55,15 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "STAKEHOLDERS_PROJECT_DEVELOPER":
     case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
       return "Acteurs";
+    case "EXPENSES_INSTALLATION":
+    case "EXPENSES_INTRODUCTION":
+    case "EXPENSES_PROJECTED_YEARLY_EXPENSES":
+    case "EXPENSES_REINSTATEMENT":
+    case "EXPENSES_SITE_PURCHASE_AMOUNTS":
+    case "REVENUE_FINANCIAL_ASSISTANCE":
+    case "REVENUE_INTRODUCTION":
+    case "REVENUE_PROJECTED_YEARLY_REVENUE":
+      return "Dépenses et recettes";
     case "FINAL_SUMMARY":
       return "Récapitulatif";
   }

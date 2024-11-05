@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
+  computeDefaultInstallationCostsFromSiteSurfaceArea,
   SoilsDistribution,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
@@ -14,6 +15,7 @@ import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
 } from "../../domain/urbanProjectSoils";
+import { selectSiteData } from "../createProject.selectors";
 import { UrbanProjectCreationStep, UrbanProjectState } from "./urbanProject.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation.urbanProject;
@@ -128,3 +130,10 @@ export const selectBuildingsEconomicActivityUses = createSelector(
     };
   },
 );
+
+export const getDefaultInstallationCosts = createSelector(selectSiteData, (state) => {
+  if (!state?.surfaceArea) {
+    return undefined;
+  }
+  return computeDefaultInstallationCostsFromSiteSurfaceArea(state.surfaceArea);
+});

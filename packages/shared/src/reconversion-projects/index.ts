@@ -41,6 +41,8 @@ export type FinancialAssistanceRevenue = TRevenue<
   "local_or_regional_authority_participation" | "public_subsidies" | "other"
 >;
 
+export type InstallationExpense = TExpense<"technical_studies" | "development_works" | "other">;
+
 export const scheduleSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),

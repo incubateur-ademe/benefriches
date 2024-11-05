@@ -11,6 +11,11 @@ import BuildingsIntroduction from "./buildings/introduction";
 import BuildingsUseIntroduction from "./buildings/use-introduction";
 import BuildingsUseSelection from "./buildings/use-selection";
 import BuildingsUseSurfaceAreas from "./buildings/use-surface-areas";
+import InstallationExpensesForm from "./costs/installation-costs";
+import ProjectExpensesIntroduction from "./costs/introduction";
+import ReinstatementExpensesForm from "./costs/reinstatement-costs";
+import SitePurchaseAmounts from "./costs/site-purchase-amounts";
+import YearlyProjectedExpensesForm from "./costs/yearly-projected-costs";
 import SoilsDecontaminationIntroduction from "./soils-decontamination/intro";
 import SoilsDecontaminationSelection from "./soils-decontamination/selection";
 import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
@@ -101,6 +106,20 @@ const getCurrentStepView = (
       return <DeveloperForm />;
     case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
       return <SiteReinstatementContractOwnerForm />;
+    case "EXPENSES_INTRODUCTION":
+      return <ProjectExpensesIntroduction />;
+    case "EXPENSES_SITE_PURCHASE_AMOUNTS":
+      return <SitePurchaseAmounts />;
+    case "EXPENSES_INSTALLATION":
+      return <InstallationExpensesForm />;
+    case "EXPENSES_PROJECTED_YEARLY_EXPENSES":
+      return <YearlyProjectedExpensesForm />;
+    case "EXPENSES_REINSTATEMENT":
+      return <ReinstatementExpensesForm />;
+    case "REVENUE_FINANCIAL_ASSISTANCE":
+    case "REVENUE_INTRODUCTION":
+    case "REVENUE_PROJECTED_YEARLY_REVENUE":
+      return "En construction";
     case "FINAL_SUMMARY":
       return "RÉCAPITULATIF";
   }

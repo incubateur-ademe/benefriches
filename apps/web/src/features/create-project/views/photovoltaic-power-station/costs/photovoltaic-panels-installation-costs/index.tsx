@@ -1,61 +1,65 @@
 import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 
-import { AppDispatch } from "@/app/application/store";
 import {
   completePhotovoltaicPanelsInstallationExpenses,
   revertPhotovoltaicPanelsInstallationExpenses,
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { getDefaultValuesForPhotovoltaicInstallationExpenses } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
-import PhotovoltaicPanelsInstallationExpensesForm, {
+import InstallationExpensesForm, {
   FormValues,
-} from "./PhotoVoltaicPanelsInstallationCostsForm";
+} from "../../../common-views/costs/installation-costs/InstallationCostsForm";
 
-const mapFormValuesToPhotovoltaicInstallationExpenses = (
-  formData: FormValues,
-): PhotovoltaicInstallationExpense[] => {
-  const expenses: PhotovoltaicInstallationExpense[] = [];
-  typedObjectEntries(formData).forEach(([purpose, amount]) => {
-    if (!amount) return;
-    switch (purpose) {
-      case "technicalStudyAmount":
-        expenses.push({ amount: amount, purpose: "technical_studies" });
-        break;
-      case "worksAmount":
-        expenses.push({ amount: amount, purpose: "installation_works" });
-        break;
-      case "otherAmount":
-        expenses.push({ amount: amount, purpose: "other" });
-        break;
-      default:
-        break;
-    }
-  });
-  return expenses;
-};
-
-const mapProps = (
-  dispatch: AppDispatch,
-  defaultValues?: { works: number; technicalStudy: number; other: number },
-) => {
-  return {
-    defaultValues,
-    onSubmit: (formData: FormValues) => {
-      const expenses = mapFormValuesToPhotovoltaicInstallationExpenses(formData);
-      dispatch(completePhotovoltaicPanelsInstallationExpenses(expenses));
-    },
-    onBack: () => {
-      dispatch(revertPhotovoltaicPanelsInstallationExpenses());
-    },
-  };
+const purposeMapKeys = {
+  technicalStudyAmount: "technical_studies",
+  worksAmount: "installation_works",
+  otherAmount: "other",
 };
 
 function PhotovoltaicPanelsInstallationExpensesFormContainer() {
   const dispatch = useAppDispatch();
   const defaultValues = useAppSelector(getDefaultValuesForPhotovoltaicInstallationExpenses);
 
-  return <PhotovoltaicPanelsInstallationExpensesForm {...mapProps(dispatch, defaultValues)} />;
+  return (
+    <InstallationExpensesForm
+      title="Dépenses d'installation de la centrale photovoltaïque"
+      instructions={
+        <FormInfo>
+          <p>
+            Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
+            renseignée (exprimée en kWc) et les dépenses moyennes observées.
+          </p>
+          <p>
+            <strong>Source&nbsp;: </strong>
+            <br />
+            <ExternalLink href="https://www.cre.fr/documents/Publications/Rapports-thematiques/Couts-et-rentabilites-du-grand-photovoltaique-en-metropole-continentale">
+              Commission de régulation de l'énergie
+            </ExternalLink>
+          </p>
+          <p>Vous pouvez modifier ces montants.</p>
+        </FormInfo>
+      }
+      defaultValues={defaultValues}
+      onSubmit={(formData: FormValues) => {
+        const expenses = typedObjectEntries(formData)
+          .filter(([, amount]) => amount && amount > 0)
+          .map(
+            ([purpose, amount]) =>
+              ({
+                amount: amount,
+                purpose: purposeMapKeys[purpose],
+              }) as PhotovoltaicInstallationExpense,
+          );
+        dispatch(completePhotovoltaicPanelsInstallationExpenses(expenses));
+      }}
+      onBack={() => {
+        dispatch(revertPhotovoltaicPanelsInstallationExpenses());
+      }}
+    />
+  );
 }
 
 export default PhotovoltaicPanelsInstallationExpensesFormContainer;

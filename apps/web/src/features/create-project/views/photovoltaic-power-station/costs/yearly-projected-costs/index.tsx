@@ -1,47 +1,47 @@
-import { AppDispatch } from "@/app/application/store";
+import { RecurringExpense } from "shared";
+
 import {
   completeYearlyProjectedExpenses,
   revertYearlyProjectedExpenses,
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { getDefaultValuesForYearlyProjectedExpenses } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
-import YearlyProjectedsExpensesForm, { FormValues } from "./YearlyProjectedCostsForm";
-
-const expensesFormMap = {
-  rentAmount: "rent",
-  maintenanceAmount: "maintenance",
-  taxesAmount: "taxes",
-  otherAmount: "other",
-} as const;
-
-const mapProps = (
-  dispatch: AppDispatch,
-  defaultValues?: { rent: number; maintenance: number; taxes: number },
-) => {
-  return {
-    defaultValues,
-    onSubmit: (expenses: FormValues) => {
-      const yearlyProjectedExpenses = typedObjectKeys(expenses)
-        .filter((sourceKey) => !!expenses[sourceKey])
-        .map((sourceKey) => ({
-          purpose: expensesFormMap[sourceKey],
-          amount: expenses[sourceKey] as number,
-        }));
-      dispatch(completeYearlyProjectedExpenses(yearlyProjectedExpenses));
-    },
-    onBack: () => {
-      dispatch(revertYearlyProjectedExpenses());
-    },
-  };
-};
+import YearlyProjectedExpensesForm from "../../../common-views/costs/yearly-projected-costs";
 
 function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();
   const defaultValues = useAppSelector(getDefaultValuesForYearlyProjectedExpenses);
 
-  return <YearlyProjectedsExpensesForm {...mapProps(dispatch, defaultValues)} />;
+  return (
+    <YearlyProjectedExpensesForm
+      instructions={
+        <FormInfo>
+          <p>
+            Les montants pré-remplis le sont d'après la puissance d'installation que vous avez
+            renseigné (exprimée en kWc) et les dépenses moyennes observées.
+          </p>
+          <p>
+            <strong>Source&nbsp;: </strong>
+            <br />
+            <ExternalLink href="https://www.cre.fr/documents/Publications/Rapports-thematiques/Couts-et-rentabilites-du-grand-photovoltaique-en-metropole-continentale">
+              Commission de régulation de l'énergie
+            </ExternalLink>
+          </p>
+          <p>Vous pouvez modifier ces montants.</p>
+        </FormInfo>
+      }
+      defaultValues={defaultValues}
+      onSubmit={(expenses: RecurringExpense[]) => {
+        dispatch(completeYearlyProjectedExpenses(expenses));
+      }}
+      onBack={() => {
+        dispatch(revertYearlyProjectedExpenses());
+      }}
+    />
+  );
 }
 
 export default YearlyProjectedExpensesFormContainer;

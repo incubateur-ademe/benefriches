@@ -1,26 +1,25 @@
 import { AppDispatch } from "@/app/application/store";
 import {
-  completeSitePurchaseAmounts,
-  revertSitePurchaseAmounts,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
-
+  sitePurchaseCompleted,
+  sitePurchaseReverted,
+} from "@/features/create-project/application/urban-project/urbanProject.actions";
 import SitePurchaseAmountsForm, {
   FormValues,
-} from "../../../common-views/costs/site-purchase-amounts/SitePurchaseAmountsForm";
+} from "@/features/create-project/views/common-views/costs/site-purchase-amounts/SitePurchaseAmountsForm";
+import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 const mapProps = (dispatch: AppDispatch) => {
   return {
     onSubmit: (data: FormValues) => {
       dispatch(
-        completeSitePurchaseAmounts({
-          sellingPrice: data.sellingPrice ?? 0,
+        sitePurchaseCompleted({
+          sellingPrice: data.sellingPrice,
           propertyTransferDuties: data.propertyTransferDuties,
         }),
       );
     },
     onBack: () => {
-      dispatch(revertSitePurchaseAmounts());
+      dispatch(sitePurchaseReverted());
     },
   };
 };

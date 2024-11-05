@@ -1,7 +1,10 @@
 import { createAction as _createAction } from "@reduxjs/toolkit";
 import {
+  RecurringExpense,
+  ReinstatementExpense,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
+  UrbanProjectDevelopmentExpense,
   UrbanPublicSpace,
   UrbanSpaceCategory,
 } from "shared";
@@ -196,3 +199,36 @@ export const stakeholderReinstatementContractOwnerCompleted = createAction<{
 export const stakeholderReinstatementContractOwnerReverted = createAction(
   "stakeholderReinstatementContractOwnerReverted",
 );
+
+// expenses
+export const expensesIntroductionCompleted = createAction("expensesIntroductionCompleted");
+export const expensesIntroductionReverted = createAction("expensesIntroductionReverted");
+export const sitePurchaseCompleted = createAction<{
+  sellingPrice?: number;
+  propertyTransferDuties?: number;
+}>("sitePurchaseCompleted");
+export const sitePurchaseReverted = createAction("sitePurchaseReverted");
+export const reinstatementExpensesCompleted = createAction<ReinstatementExpense[]>(
+  "reinstatementExpensesCompleted",
+);
+export const reinstatementExpensesReverted = createAction("reinstatementExpensesReverted");
+export const installationExpensesCompleted = createAction<UrbanProjectDevelopmentExpense[]>(
+  "installationExpensesCompleted",
+);
+export const installationExpensesReverted = createAction("installationExpensesReverted");
+export const yearlyProjectedExpensesCompleted = createAction<RecurringExpense[]>(
+  "yearlyProjectedExpensesCompleted",
+);
+export const yearlyProjectedExpensesReverted = createAction("yearlyProjectedExpensesReverted");
+
+// revenues
+export const revenueIntroductionCompleted = createAction("revenueIntroductionCompleted");
+export const revenueIntroductionReverted = createAction("revenueIntroductionReverted");
+export const financialAssistanceRevenuesCompleted = createAction(
+  "financialAssistanceRevenuesCompleted",
+);
+export const financialAssistanceRevenuesReverted = createAction(
+  "financialAssistanceRevenuesReverted",
+);
+export const yearlyProjectedRevenueCompleted = createAction("yearlyProjectedRevenueCompleted");
+export const yearlyProjectedRevenueReverted = createAction("yearlyProjectedRevenueReverted");

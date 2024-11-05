@@ -8,6 +8,11 @@ import {
   UrbanPublicSpace,
   UrbanSpaceCategory,
   filterObjectWithoutKeys,
+  FinancialAssistanceRevenue,
+  RecurringRevenue,
+  RecurringExpense,
+  ReinstatementExpense,
+  UrbanProjectDevelopmentExpense,
 } from "shared";
 
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -78,6 +83,15 @@ import {
   stakeholderProjectDeveloperReverted,
   stakeholderReinstatementContractOwnerCompleted,
   stakeholderReinstatementContractOwnerReverted,
+  expensesIntroductionCompleted,
+  sitePurchaseCompleted,
+  sitePurchaseReverted,
+  reinstatementExpensesCompleted,
+  reinstatementExpensesReverted,
+  installationExpensesCompleted,
+  installationExpensesReverted,
+  yearlyProjectedExpensesCompleted,
+  yearlyProjectedExpensesReverted,
 } from "./urbanProject.actions";
 
 export type UrbanProjectExpressCreationStep = "EXPRESS_CATEGORY_SELECTION" | "CREATION_RESULT";
@@ -112,6 +126,14 @@ export type UrbanProjectCustomCreationStep =
   | "STAKEHOLDERS_INTRODUCTION"
   | "STAKEHOLDERS_PROJECT_DEVELOPER"
   | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
+  | "EXPENSES_INTRODUCTION"
+  | "EXPENSES_SITE_PURCHASE_AMOUNTS"
+  | "EXPENSES_REINSTATEMENT"
+  | "EXPENSES_INSTALLATION"
+  | "EXPENSES_PROJECTED_YEARLY_EXPENSES"
+  | "REVENUE_INTRODUCTION"
+  | "REVENUE_PROJECTED_YEARLY_REVENUE"
+  | "REVENUE_FINANCIAL_ASSISTANCE"
   | "FINAL_SUMMARY";
 
 const urbanSpaceCategoryIntroductionMap = {
@@ -159,6 +181,16 @@ export type UrbanProjectState = {
     buildingsEconomicActivityUses?: BuildingsEconomicActivityUse[];
     projectDeveloper?: ProjectStakeholder;
     reinstatementContractOwner?: ProjectStakeholder;
+    // site purchase
+    sitePurchaseSellingPrice?: number;
+    sitePurchasePropertyTransferDuties?: number;
+    // expenses
+    reinstatementExpenses?: ReinstatementExpense[];
+    installationExpenses?: UrbanProjectDevelopmentExpense[];
+    yearlyProjectedExpenses?: RecurringExpense[];
+    // revenues
+    yearlyProjectedRevenues?: RecurringRevenue[];
+    financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   };
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
@@ -563,10 +595,50 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(stakeholderReinstatementContractOwnerCompleted, (state, action) => {
     state.urbanProject.creationData.reinstatementContractOwner = action.payload;
-    state.urbanProject.stepsHistory.push("FINAL_SUMMARY");
+    state.urbanProject.stepsHistory.push("EXPENSES_INTRODUCTION");
   });
   builder.addCase(stakeholderReinstatementContractOwnerReverted, (state) => {
     state.urbanProject.creationData.reinstatementContractOwner = undefined;
+  });
+
+  builder.addCase(expensesIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("EXPENSES_SITE_PURCHASE_AMOUNTS");
+  });
+  builder.addCase(sitePurchaseCompleted, (state, action) => {
+    state.urbanProject.creationData.sitePurchaseSellingPrice = action.payload.sellingPrice;
+    state.urbanProject.creationData.sitePurchasePropertyTransferDuties =
+      action.payload.propertyTransferDuties;
+    state.urbanProject.stepsHistory.push(
+      state.siteData?.isFriche ? "EXPENSES_REINSTATEMENT" : "EXPENSES_INSTALLATION",
+    );
+  });
+  builder.addCase(sitePurchaseReverted, (state) => {
+    state.urbanProject.creationData.sitePurchaseSellingPrice = undefined;
+    state.urbanProject.creationData.sitePurchasePropertyTransferDuties = undefined;
+  });
+
+  builder.addCase(reinstatementExpensesCompleted, (state, action) => {
+    state.urbanProject.creationData.reinstatementExpenses = action.payload;
+    state.urbanProject.stepsHistory.push("EXPENSES_INSTALLATION");
+  });
+  builder.addCase(reinstatementExpensesReverted, (state) => {
+    state.urbanProject.creationData.reinstatementExpenses = undefined;
+  });
+
+  builder.addCase(installationExpensesCompleted, (state, action) => {
+    state.urbanProject.creationData.installationExpenses = action.payload;
+    state.urbanProject.stepsHistory.push("EXPENSES_PROJECTED_YEARLY_EXPENSES");
+  });
+  builder.addCase(installationExpensesReverted, (state) => {
+    state.urbanProject.creationData.installationExpenses = undefined;
+  });
+
+  builder.addCase(yearlyProjectedExpensesCompleted, (state, action) => {
+    state.urbanProject.creationData.yearlyProjectedExpenses = action.payload;
+    state.urbanProject.stepsHistory.push("FINAL_SUMMARY");
+  });
+  builder.addCase(yearlyProjectedExpensesReverted, (state) => {
+    state.urbanProject.creationData.yearlyProjectedExpenses = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {
