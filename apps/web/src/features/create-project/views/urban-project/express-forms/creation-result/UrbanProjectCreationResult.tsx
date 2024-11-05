@@ -59,8 +59,9 @@ function UrbanProjectCreationResult({
           <EditorialPageIcon>✅</EditorialPageIcon>
           <EditorialPageTitle>Le projet "{projectName}" est créé !</EditorialPageTitle>
           <EditorialPageText>
-            Bénéfriches a généré, au sein du site "{siteName}", un projet de quartier comprenant des
-            habitations, des espaces verts et des espaces publics.
+            💡 Bénéfriches a affecté des données par défaut pour créer le projet sur "{siteName}".
+            <br />
+            Ces données sont basées sur les moyennes observées pour ce type de site.
             <br />
             <br />
             {projectFeatures && (
