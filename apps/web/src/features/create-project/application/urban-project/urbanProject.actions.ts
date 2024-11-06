@@ -1,6 +1,7 @@
 import { createAction as _createAction } from "@reduxjs/toolkit";
 import {
   FinancialAssistanceRevenue,
+  ProjectPhase,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
@@ -13,6 +14,7 @@ import {
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { WorksSchedule } from "@/shared/domain/reconversionProject";
 
 import { ProjectStakeholderStructure } from "../../domain/project.types";
 import { BuildingsEconomicActivityUse, BuildingsUseCategory } from "../../domain/urbanProject";
@@ -229,6 +231,7 @@ export const revenueIntroductionReverted = createAction("revenueIntroductionReve
 export const financialAssistanceRevenuesCompleted = createAction<FinancialAssistanceRevenue[]>(
   "financialAssistanceRevenuesCompleted",
 );
+
 export const financialAssistanceRevenuesReverted = createAction(
   "financialAssistanceRevenuesReverted",
 );
@@ -236,3 +239,19 @@ export const yearlyProjectedRevenueCompleted = createAction<RecurringRevenue[]>(
   "yearlyProjectedRevenueCompleted",
 );
 export const yearlyProjectedRevenueReverted = createAction("yearlyProjectedRevenueReverted");
+
+export const scheduleIntroductionCompleted = createAction("scheduleIntroductionCompleted");
+export const scheduleIntroductionReverted = createAction("scheduleIntroductioReverted");
+export const projectPhaseCompleted = createAction<ProjectPhase>("projectPhaseCompleted");
+export const projectPhaseReverted = createAction("projectPhaseReverted");
+export const scheduleCompleted = createAction<{
+  reinstatementSchedule?: WorksSchedule;
+  installationSchedule?: WorksSchedule;
+  firstYearOfOperation: number;
+}>("scheduleCompleted");
+export const scheduleReverted = createAction("scheduleReverted");
+
+export const namingCompleted = createAction<{ name: string; description?: string }>(
+  "namingCompleted",
+);
+export const namingReverted = createAction("namingReverted");

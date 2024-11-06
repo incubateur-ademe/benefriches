@@ -13,6 +13,7 @@ import {
   RecurringExpense,
   ReinstatementExpense,
   UrbanProjectDevelopmentExpense,
+  ProjectPhase,
 } from "shared";
 
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -97,6 +98,13 @@ import {
   yearlyProjectedRevenueReverted,
   financialAssistanceRevenuesCompleted,
   financialAssistanceRevenuesReverted,
+  namingCompleted,
+  namingReverted,
+  projectPhaseCompleted,
+  projectPhaseReverted,
+  scheduleCompleted,
+  scheduleIntroductionCompleted,
+  scheduleReverted,
 } from "./urbanProject.actions";
 
 export type UrbanProjectExpressCreationStep = "EXPRESS_CATEGORY_SELECTION" | "CREATION_RESULT";
@@ -139,6 +147,10 @@ export type UrbanProjectCustomCreationStep =
   | "REVENUE_INTRODUCTION"
   | "REVENUE_PROJECTED_YEARLY_REVENUE"
   | "REVENUE_FINANCIAL_ASSISTANCE"
+  | "SCHEDULE_INTRODUCTION"
+  | "SCHEDULE_PROJECTION"
+  | "NAMING"
+  | "PROJECT_PHASE"
   | "FINAL_SUMMARY";
 
 const urbanSpaceCategoryIntroductionMap = {
@@ -169,6 +181,8 @@ export type UrbanProjectState = {
   stepsHistory: UrbanProjectCreationStep[];
   spacesCategoriesToComplete: UrbanSpaceCategory[];
   creationData: {
+    name?: string;
+    description?: string;
     // spaces and surfaces
     spacesCategories?: UrbanSpaceCategory[];
     spacesCategoriesDistribution?: Partial<Record<UrbanSpaceCategory, number>>;
@@ -199,6 +213,18 @@ export type UrbanProjectState = {
     // revenues
     yearlyProjectedRevenues?: RecurringRevenue[];
     financialAssistanceRevenues?: FinancialAssistanceRevenue[];
+    // schedules
+    reinstatementSchedule?: {
+      startDate: string;
+      endDate: string;
+    };
+    installationSchedule?: {
+      startDate: string;
+      endDate: string;
+    };
+    firstYearOfOperation?: number;
+    // project phase
+    projectPhase?: ProjectPhase;
   };
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
@@ -685,10 +711,48 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(financialAssistanceRevenuesCompleted, (state, action) => {
     state.urbanProject.creationData.financialAssistanceRevenues = action.payload;
-    state.urbanProject.stepsHistory.push("FINAL_SUMMARY");
+    state.urbanProject.stepsHistory.push("SCHEDULE_INTRODUCTION");
   });
   builder.addCase(financialAssistanceRevenuesReverted, (state) => {
     state.urbanProject.creationData.financialAssistanceRevenues = undefined;
+  });
+
+  builder.addCase(scheduleIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("SCHEDULE_PROJECTION");
+  });
+  builder.addCase(scheduleCompleted, (state, action) => {
+    const { firstYearOfOperation, installationSchedule, reinstatementSchedule } = action.payload;
+    state.urbanProject.creationData.firstYearOfOperation = firstYearOfOperation;
+    state.urbanProject.creationData.reinstatementSchedule = reinstatementSchedule;
+    state.urbanProject.creationData.installationSchedule = installationSchedule;
+
+    state.urbanProject.stepsHistory.push("PROJECT_PHASE");
+  });
+  builder.addCase(scheduleReverted, (state) => {
+    state.urbanProject.creationData.firstYearOfOperation = undefined;
+    state.urbanProject.creationData.reinstatementSchedule = undefined;
+    state.urbanProject.creationData.installationSchedule = undefined;
+  });
+
+  builder.addCase(projectPhaseCompleted, (state, action) => {
+    state.urbanProject.creationData.projectPhase = action.payload;
+    state.urbanProject.stepsHistory.push("NAMING");
+  });
+  builder.addCase(projectPhaseReverted, (state) => {
+    state.urbanProject.creationData.projectPhase = undefined;
+  });
+
+  builder.addCase(namingCompleted, (state, action) => {
+    const { name, description } = action.payload;
+    state.urbanProject.creationData.name = name;
+    if (description) state.urbanProject.creationData.description = description;
+
+    state.urbanProject.stepsHistory.push("FINAL_SUMMARY");
+  });
+
+  builder.addCase(namingReverted, (state) => {
+    state.renewableEnergyProject.creationData.name = undefined;
+    state.renewableEnergyProject.creationData.description = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {

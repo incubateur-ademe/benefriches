@@ -16,9 +16,13 @@ import ProjectExpensesIntroduction from "./costs/introduction";
 import ReinstatementExpensesForm from "./costs/reinstatement-costs";
 import SitePurchaseAmounts from "./costs/site-purchase-amounts";
 import YearlyProjectedExpensesForm from "./costs/yearly-projected-costs";
+import ProjectNameAndDescriptionForm from "./name-and-description";
+import ProjectPhaseForm from "./project-phase";
 import ProjectFinancialAssistanceRevenueForm from "./revenues/financial-assistance";
 import ProjectRevenueIntroduction from "./revenues/introduction";
 import YearlyProjectedRevenueForm from "./revenues/yearly-projected-revenue";
+import ProjectScheduleIntroduction from "./schedule/introduction";
+import ScheduleProjectionForm from "./schedule/projection";
 import SoilsDecontaminationIntroduction from "./soils-decontamination/intro";
 import SoilsDecontaminationSelection from "./soils-decontamination/selection";
 import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
@@ -125,6 +129,14 @@ const getCurrentStepView = (
       return <ProjectFinancialAssistanceRevenueForm />;
     case "REVENUE_PROJECTED_YEARLY_REVENUE":
       return <YearlyProjectedRevenueForm />;
+    case "SCHEDULE_INTRODUCTION":
+      return <ProjectScheduleIntroduction />;
+    case "SCHEDULE_PROJECTION":
+      return <ScheduleProjectionForm />;
+    case "PROJECT_PHASE":
+      return <ProjectPhaseForm />;
+    case "NAMING":
+      return <ProjectNameAndDescriptionForm />;
     case "FINAL_SUMMARY":
       return "RÉCAPITULATIF";
   }

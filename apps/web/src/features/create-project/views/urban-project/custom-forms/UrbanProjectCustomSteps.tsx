@@ -5,7 +5,7 @@ import {
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-const stepCategories = [
+const STEP_CATEGORIES = [
   "Type de projet",
   "Mode de création",
   "Espaces",
@@ -20,7 +20,7 @@ const stepCategories = [
   "Récapitulatif",
 ] as const;
 
-type StepCategory = (typeof stepCategories)[number];
+type StepCategory = (typeof STEP_CATEGORIES)[number];
 
 const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory => {
   switch (step) {
@@ -68,6 +68,12 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "REVENUE_INTRODUCTION":
     case "REVENUE_PROJECTED_YEARLY_REVENUE":
       return "Dépenses et recettes";
+    case "SCHEDULE_INTRODUCTION":
+    case "SCHEDULE_PROJECTION":
+    case "PROJECT_PHASE":
+      return "Calendrier et avancement";
+    case "NAMING":
+      return "Dénomination";
     case "FINAL_SUMMARY":
       return "Récapitulatif";
   }
@@ -80,15 +86,16 @@ type Props = {
 
 function UrbanProjectCustomSteps({ step, isExtended }: Props) {
   const currentStepCategory = getCategoryForStep(step);
-  const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
   const displayBuildingsSection = useAppSelector((state) => hasBuildings(state.projectCreation));
-
-  const steps = stepCategories.map((step) => step);
+  const stepCategories = displayBuildingsSection
+    ? STEP_CATEGORIES
+    : STEP_CATEGORIES.filter((step) => step !== "Bâtiments");
+  const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
 
   return (
     <FormStepper
       currentStepIndex={currentStepIndex}
-      steps={displayBuildingsSection ? steps : steps.filter((step) => step !== "Bâtiments")}
+      steps={stepCategories.map((step) => step)}
       isExtended={isExtended}
       isDone={false}
     />

@@ -93,7 +93,7 @@ describe("Urban project creation : revenues steps", () => {
       });
     });
     describe("REVENUE_FINANCIAL_ASSISTANCE step", () => {
-      it("goes to FINAL_SUMMARY and sets financialAssistanceRevenues when step is completed", () => {
+      it("goes to SCHEDULE_INTRODUCTION and sets financialAssistanceRevenues when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["REVENUE_PROJECTED_YEARLY_REVENUE", "REVENUE_FINANCIAL_ASSISTANCE"])
           .build();
@@ -107,7 +107,7 @@ describe("Urban project creation : revenues steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "FINAL_SUMMARY",
+          currentStep: "SCHEDULE_INTRODUCTION",
           creationDataDiff: {
             financialAssistanceRevenues: [
               { source: "local_or_regional_authority_participation", amount: 1000 },

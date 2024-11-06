@@ -59,6 +59,10 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   REVENUE_INTRODUCTION: "introduction-recettes",
   REVENUE_PROJECTED_YEARLY_REVENUE: "recettes-annuelles-previsionnelles",
   REVENUE_FINANCIAL_ASSISTANCE: "aides-financieres",
+  SCHEDULE_INTRODUCTION: "introduction-calendrier",
+  SCHEDULE_PROJECTION: "calendrier",
+  NAMING: "denomination",
+  PROJECT_PHASE: "avancement-projet",
   FINAL_SUMMARY: "recapitulatif-projet-urbain",
   CREATION_RESULT: "fin",
 } as const satisfies Record<UrbanProjectCreationStep, string>;

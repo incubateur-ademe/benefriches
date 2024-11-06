@@ -4,15 +4,16 @@ import {
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
-import ProjectPhaseForm, { FormValues } from "./ProjectPhaseForm";
+import ProjectPhaseForm from "../../common-views/project-phase/ProjectPhaseForm";
 
 function ProjectPhaseFormContainer() {
   const dispatch = useAppDispatch();
 
   return (
     <ProjectPhaseForm
-      onSubmit={(formData: FormValues) => {
-        dispatch(completeProjectPhaseStep({ phase: formData.phase ?? "unknown" }));
+      excludedPhases={["planning"]}
+      onSubmit={(phase) => {
+        dispatch(completeProjectPhaseStep({ phase }));
       }}
       onBack={() => {
         dispatch(revertProjectPhaseStep());

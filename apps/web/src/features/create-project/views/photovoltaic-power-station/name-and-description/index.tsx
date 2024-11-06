@@ -7,12 +7,14 @@ import { selectCreationData } from "@/features/create-project/application/renewa
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { ReconversionProjectCreationData } from "../../../domain/project.types";
-import { generateProjectName } from "../../../domain/projectName";
-import ProjectNameAndDescriptionForm, { FormValues } from "./ProjectNameAndDescriptionForm";
+import { generateRenewableEnergyProjectName } from "../../../domain/projectName";
+import ProjectNameAndDescriptionForm, {
+  FormValues,
+} from "../../common-views/name-and-description/ProjectNameAndDescriptionForm";
 
 const mapProps = (dispatch: AppDispatch, projectData: ReconversionProjectCreationData) => {
   return {
-    defaultProjectName: generateProjectName("RENEWABLE_ENERGY", projectData),
+    defaultProjectName: generateRenewableEnergyProjectName(projectData.renewableEnergyType),
     onSubmit: (formData: FormValues) => {
       dispatch(completeNaming(formData));
     },

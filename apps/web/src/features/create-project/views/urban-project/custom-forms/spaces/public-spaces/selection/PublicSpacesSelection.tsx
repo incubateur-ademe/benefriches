@@ -57,6 +57,7 @@ function PublicSpacesSelection({ onSubmit, onBack }: Props) {
                 key={value}
                 control={control}
                 name="publicSpaces"
+                rules={{ required: "Veuillez sélectionner au moins un type d'espace." }}
                 render={({ field }) => {
                   const isSelected = field.value.includes(value);
                   return (
