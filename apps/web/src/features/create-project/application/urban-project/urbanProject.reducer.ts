@@ -92,6 +92,11 @@ import {
   installationExpensesReverted,
   yearlyProjectedExpensesCompleted,
   yearlyProjectedExpensesReverted,
+  revenueIntroductionCompleted,
+  yearlyProjectedRevenueCompleted,
+  yearlyProjectedRevenueReverted,
+  financialAssistanceRevenuesCompleted,
+  financialAssistanceRevenuesReverted,
 } from "./urbanProject.actions";
 
 export type UrbanProjectExpressCreationStep = "EXPRESS_CATEGORY_SELECTION" | "CREATION_RESULT";
@@ -606,7 +611,9 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(stakeholderProjectDeveloperCompleted, (state, action) => {
     state.urbanProject.creationData.projectDeveloper = action.payload;
     state.urbanProject.stepsHistory.push(
-      state.siteData?.isFriche ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER" : "FINAL_SUMMARY",
+      state.siteData?.isFriche
+        ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
+        : "EXPENSES_INTRODUCTION",
     );
   });
   builder.addCase(stakeholderProjectDeveloperReverted, (state) => {
@@ -620,6 +627,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.reinstatementContractOwner = undefined;
   });
 
+  // costs
   builder.addCase(expensesIntroductionCompleted, (state) => {
     state.urbanProject.stepsHistory.push("EXPENSES_SITE_PURCHASE_AMOUNTS");
   });
@@ -647,7 +655,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(installationExpensesCompleted, (state, action) => {
     state.urbanProject.creationData.installationExpenses = action.payload;
     state.urbanProject.stepsHistory.push(
-      hasBuildings(state) ? "EXPENSES_PROJECTED_YEARLY_EXPENSES" : "FINAL_SUMMARY",
+      hasBuildings(state) ? "EXPENSES_PROJECTED_YEARLY_EXPENSES" : "REVENUE_INTRODUCTION",
     );
   });
   builder.addCase(installationExpensesReverted, (state) => {
@@ -656,10 +664,31 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
 
   builder.addCase(yearlyProjectedExpensesCompleted, (state, action) => {
     state.urbanProject.creationData.yearlyProjectedExpenses = action.payload;
-    state.urbanProject.stepsHistory.push("FINAL_SUMMARY");
+    state.urbanProject.stepsHistory.push("REVENUE_INTRODUCTION");
   });
   builder.addCase(yearlyProjectedExpensesReverted, (state) => {
     state.urbanProject.creationData.yearlyProjectedExpenses = undefined;
+  });
+
+  // revenues
+  builder.addCase(revenueIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push(
+      hasBuildings(state) ? "REVENUE_PROJECTED_YEARLY_REVENUE" : "REVENUE_FINANCIAL_ASSISTANCE",
+    );
+  });
+  builder.addCase(yearlyProjectedRevenueCompleted, (state, action) => {
+    state.urbanProject.creationData.yearlyProjectedRevenues = action.payload;
+    state.urbanProject.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");
+  });
+  builder.addCase(yearlyProjectedRevenueReverted, (state) => {
+    state.urbanProject.creationData.yearlyProjectedRevenues = undefined;
+  });
+  builder.addCase(financialAssistanceRevenuesCompleted, (state, action) => {
+    state.urbanProject.creationData.financialAssistanceRevenues = action.payload;
+    state.urbanProject.stepsHistory.push("FINAL_SUMMARY");
+  });
+  builder.addCase(financialAssistanceRevenuesReverted, (state) => {
+    state.urbanProject.creationData.financialAssistanceRevenues = undefined;
   });
 
   builder.addMatcher(isRevertedAction, (state) => {

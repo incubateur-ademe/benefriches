@@ -1,55 +1,24 @@
-import { FinancialAssistanceRevenue, typedObjectEntries } from "shared";
-
-import { AppDispatch } from "@/app/application/store";
 import {
   completeFinancialAssistanceRevenues,
   revertFinancialAssistanceRevenues,
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
-import ProjectFinancialAssistanceRevenueForm, {
-  FormValues,
-} from "./ProjectFinancialAssistanceRevenueForm";
-
-const mapFormValuesToFinancialAssistanceRevenues = (
-  formData: FormValues,
-): FinancialAssistanceRevenue[] => {
-  const revenues: FinancialAssistanceRevenue[] = [];
-  typedObjectEntries(formData).forEach(([source, amount]) => {
-    if (!amount) return;
-    switch (source) {
-      case "localOrRegionalAuthorityAmount":
-        revenues.push({ amount: amount, source: "local_or_regional_authority_participation" });
-        break;
-      case "publicSubsidiesAmount":
-        revenues.push({ amount: amount, source: "public_subsidies" });
-        break;
-      case "otherAmount":
-        revenues.push({ amount: amount, source: "other" });
-        break;
-      default:
-        break;
-    }
-  });
-  return revenues;
-};
-
-const mapProps = (dispatch: AppDispatch) => {
-  return {
-    onSubmit: (formData: FormValues) => {
-      const financialAssistanceRevenues = mapFormValuesToFinancialAssistanceRevenues(formData);
-      dispatch(completeFinancialAssistanceRevenues(financialAssistanceRevenues));
-    },
-    onBack: () => {
-      dispatch(revertFinancialAssistanceRevenues());
-    },
-  };
-};
+import ProjectFinancialAssistanceRevenueForm from "../../../common-views/revenues/financial-assistance";
 
 function ProjectFinancialAssistanceRevenueFormContainer() {
   const dispatch = useAppDispatch();
 
-  return <ProjectFinancialAssistanceRevenueForm {...mapProps(dispatch)} />;
+  return (
+    <ProjectFinancialAssistanceRevenueForm
+      onBack={() => {
+        dispatch(revertFinancialAssistanceRevenues());
+      }}
+      onSubmit={(revenues) => {
+        dispatch(completeFinancialAssistanceRevenues(revenues));
+      }}
+    />
+  );
 }
 
 export default ProjectFinancialAssistanceRevenueFormContainer;

@@ -33,7 +33,7 @@ describe("Urban project creation : costs steps", () => {
         });
       });
 
-      it("goes to CREATE_MODE_SELECTION step and unsets create mode when step is reverted", () => {
+      it("goes to STAKEHOLDERS_PROJECT_DEVELOPER step when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["STAKEHOLDERS_PROJECT_DEVELOPER", "EXPENSES_INTRODUCTION"])
           .build();
@@ -171,7 +171,7 @@ describe("Urban project creation : costs steps", () => {
           },
         });
       });
-      it("goes to FINAL_SUMMARY when step is completed and project has no buildings", () => {
+      it("goes to REVENUE_INTRODUCTION when step is completed and project has no buildings", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["EXPENSES_SITE_PURCHASE_AMOUNTS", "EXPENSES_INSTALLATION"])
           .build();
@@ -183,7 +183,7 @@ describe("Urban project creation : costs steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "FINAL_SUMMARY",
+          currentStep: "REVENUE_INTRODUCTION",
           creationDataDiff: {
             installationExpenses: [{ amount: 10000, purpose: "development_works" }],
           },
@@ -210,7 +210,7 @@ describe("Urban project creation : costs steps", () => {
       });
     });
     describe("EXPENSES_PROJECTED_YEARLY_EXPENSES step", () => {
-      it("goes to FINAL_SUMMARY when step is completed", () => {
+      it("goes to REVENUE_INTRODUCTION when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["EXPENSES_PROJECTED_YEARLY_EXPENSES"])
           .build();
@@ -222,7 +222,7 @@ describe("Urban project creation : costs steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "FINAL_SUMMARY",
+          currentStep: "REVENUE_INTRODUCTION",
           creationDataDiff: {
             yearlyProjectedExpenses: [{ amount: 1000, purpose: "maintenance" }],
           },

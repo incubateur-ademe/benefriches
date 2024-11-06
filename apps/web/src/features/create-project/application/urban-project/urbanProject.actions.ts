@@ -1,6 +1,8 @@
 import { createAction as _createAction } from "@reduxjs/toolkit";
 import {
+  FinancialAssistanceRevenue,
   RecurringExpense,
+  RecurringRevenue,
   ReinstatementExpense,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
@@ -224,11 +226,13 @@ export const yearlyProjectedExpensesReverted = createAction("yearlyProjectedExpe
 // revenues
 export const revenueIntroductionCompleted = createAction("revenueIntroductionCompleted");
 export const revenueIntroductionReverted = createAction("revenueIntroductionReverted");
-export const financialAssistanceRevenuesCompleted = createAction(
+export const financialAssistanceRevenuesCompleted = createAction<FinancialAssistanceRevenue[]>(
   "financialAssistanceRevenuesCompleted",
 );
 export const financialAssistanceRevenuesReverted = createAction(
   "financialAssistanceRevenuesReverted",
 );
-export const yearlyProjectedRevenueCompleted = createAction("yearlyProjectedRevenueCompleted");
+export const yearlyProjectedRevenueCompleted = createAction<RecurringRevenue[]>(
+  "yearlyProjectedRevenueCompleted",
+);
 export const yearlyProjectedRevenueReverted = createAction("yearlyProjectedRevenueReverted");
