@@ -898,8 +898,22 @@ describe("Urban project creation : introduction and spaces steps", () => {
           currentStep: "SOILS_DECONTAMINATION_INTRODUCTION",
         });
       });
-      it("goes to BUILDINGS_INTRODUCTION when site has no contamination and step is completed", () => {
+      it("goes to STAKEHOLDERS_INTRODUCTION when site has no contamination and step is completed and there is no buildings in project", () => {
         const store = new StoreBuilder().withStepsHistory(["SOILS_CARBON_SUMMARY"]).build();
+        const initialRootState = store.getState();
+
+        store.dispatch(soilsCarbonStorageCompleted());
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "STAKEHOLDERS_INTRODUCTION",
+        });
+      });
+      it("goes to BUILDINGS_INTRODUCTION when site has no contamination and step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["SOILS_CARBON_SUMMARY"])
+          .withCreationData({ livingAndActivitySpacesDistribution: { BUILDINGS: 1000 } })
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(soilsCarbonStorageCompleted());

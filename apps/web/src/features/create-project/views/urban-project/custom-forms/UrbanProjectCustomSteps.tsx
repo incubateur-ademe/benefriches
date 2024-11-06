@@ -1,4 +1,8 @@
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
+import {
+  hasBuildings,
+  UrbanProjectCustomCreationStep,
+} from "@/features/create-project/application/urban-project/urbanProject.reducer";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 const stepCategories = [
@@ -77,11 +81,14 @@ type Props = {
 function UrbanProjectCustomSteps({ step, isExtended }: Props) {
   const currentStepCategory = getCategoryForStep(step);
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
+  const displayBuildingsSection = useAppSelector((state) => hasBuildings(state.projectCreation));
+
+  const steps = stepCategories.map((step) => step);
 
   return (
     <FormStepper
       currentStepIndex={currentStepIndex}
-      steps={stepCategories.map((step) => step)}
+      steps={displayBuildingsSection ? steps : steps.filter((step) => step !== "Bâtiments")}
       isExtended={isExtended}
       isDone={false}
     />
