@@ -11,9 +11,9 @@ import {
   BuildingFloorAreaUsageDistribution,
 } from "shared";
 
-import { WorksSchedule } from "@/shared/domain/reconversionProject";
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 
+type Schedule = { startDate: string; endDate: string };
 export type ProjectsList = {
   id: string;
   name: string;
@@ -93,7 +93,7 @@ type PhotovoltaicPowerPlantFeatures = {
   type: "PHOTOVOLTAIC_POWER_PLANT";
   developerName?: string;
   installationCosts: PhotovoltaicInstallationExpense[];
-  installationSchedule?: WorksSchedule;
+  installationSchedule?: Schedule;
   electricalPowerKWc: number;
   surfaceArea: number;
   expectedAnnualProduction: number;
@@ -103,8 +103,8 @@ export type UrbanProjectFeatures = {
   type: "URBAN_PROJECT";
   developerName?: string;
   installationCosts: UrbanProjectDevelopmentExpense[];
-  installationSchedule?: WorksSchedule;
-  spaces: Record<UrbanProjectSpace, number>;
+  installationSchedule?: Schedule;
+  spaces: Partial<Record<UrbanProjectSpace, number>>;
   buildingsFloorArea: BuildingFloorAreaUsageDistribution;
 };
 export type ProjectFeatures = {
@@ -123,7 +123,7 @@ export type ProjectFeatures = {
   reinstatementCosts?: ReinstatementExpense[];
   yearlyProjectedExpenses: RecurringExpense[];
   yearlyProjectedRevenues: RecurringRevenue[];
-  reinstatementSchedule?: WorksSchedule;
+  reinstatementSchedule?: Schedule;
   firstYearOfOperation?: number;
   sitePurchaseTotalAmount?: number;
   siteResaleTotalAmount?: number;

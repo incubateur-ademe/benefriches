@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import { WorksSchedule } from "@/shared/domain/reconversionProject";
+import { Schedule } from "@/features/create-project/domain/project.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -17,18 +17,24 @@ type Props = {
       label: string;
     };
   };
-  onSubmit: (data: FormValues) => void;
+  onSubmit: (data: {
+    reinstatementSchedule?: Schedule;
+    installationSchedule?: Schedule;
+    firstYearOfOperation: number;
+  }) => void;
   onBack: () => void;
 };
 
 export type FormValues = {
-  reinstatementSchedule?: WorksSchedule;
-  installationSchedule?: WorksSchedule;
+  reinstatementSchedule?: Partial<Schedule>;
+  installationSchedule?: Partial<Schedule>;
   firstYearOfOperation: number;
 };
 
-const formatScheduleBeforeSubmit = (schedule?: WorksSchedule) => {
-  return schedule?.startDate && schedule.endDate ? schedule : undefined;
+const formatScheduleBeforeSubmit = (schedule?: Partial<Schedule>): Schedule | undefined => {
+  return schedule?.startDate && schedule.endDate
+    ? { startDate: schedule.startDate, endDate: schedule.endDate }
+    : undefined;
 };
 
 function ScheduleProjectionForm({

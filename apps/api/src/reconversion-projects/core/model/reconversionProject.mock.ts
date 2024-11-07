@@ -115,3 +115,67 @@ export const buildReconversionProject = (
     ...props,
   };
 };
+
+export const buildUrbanProjectReconversionProjectProps = (): ReconversionProjectProps => {
+  return {
+    ...baseReconversionProjectProps,
+    developmentPlan: {
+      type: "URBAN_PROJECT",
+      costs: [
+        { amount: 130000, purpose: "development_works" },
+        { amount: 59999, purpose: "technical_studies" },
+      ],
+      developer: {
+        name: "developer company name",
+        structureType: "company",
+      },
+      features: {
+        spacesDistribution: {
+          BUILDINGS_FOOTPRINT: 1500,
+          PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 1000,
+          PUBLIC_GREEN_SPACES: 5000,
+        },
+        buildingsFloorAreaDistribution: {
+          RESIDENTIAL: 250,
+          GROUND_FLOOR_RETAIL: 250,
+          SHIPPING_OR_INDUSTRIAL_BUILDINGS: 250,
+          MULTI_STORY_PARKING: 250,
+        },
+      },
+      installationSchedule: {
+        startDate: new Date("2028-07-01"),
+        endDate: new Date("2029-03-01"),
+      },
+    },
+    description: "Description of reconversion project",
+    conversionFullTimeJobsInvolved: 0.3,
+    operationsFullTimeJobsInvolved: 2,
+    // reinstatement
+    reinstatementFullTimeJobsInvolved: 0.2,
+    reinstatementContractOwner: {
+      name: "Reinstatement company",
+      structureType: "company",
+    },
+    reinstatementCosts: [
+      { amount: 120000, purpose: "waste_collection" },
+      { amount: 33333, purpose: "deimpermeabilization" },
+      { amount: 44444, purpose: "sustainable_soils_reinstatement" },
+      { amount: 1, purpose: "other_reinstatement_costs" },
+    ],
+    sitePurchaseSellingPrice: 150000,
+    sitePurchasePropertyTransferDuties: 12000,
+    siteResaleExpectedPropertyTransferDuties: 20000,
+    siteResaleExpectedSellingPrice: 2000000,
+    financialAssistanceRevenues: [
+      { amount: 14000, source: "public_subsidies" },
+      { amount: 999.99, source: "other" },
+    ],
+    reinstatementSchedule: {
+      startDate: new Date("2025-02-01"),
+      endDate: new Date("2028-06-30"),
+    },
+    operationsFirstYear: 2029,
+    projectPhase: "design",
+    decontaminatedSoilSurface: 3000,
+  };
+};

@@ -1,8 +1,8 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
-import { Schedule } from "shared";
 
 import {
+  Schedule,
   DevelopmentPlan,
   PhotovoltaicPowerStationFeatures,
 } from "src/reconversion-projects/core/model/reconversionProject";

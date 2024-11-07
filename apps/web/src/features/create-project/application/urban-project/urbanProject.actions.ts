@@ -14,9 +14,8 @@ import {
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
-import { WorksSchedule } from "@/shared/domain/reconversionProject";
 
-import { ProjectStakeholderStructure } from "../../domain/project.types";
+import { ProjectStakeholderStructure, Schedule } from "../../domain/project.types";
 import { BuildingsEconomicActivityUse, BuildingsUseCategory } from "../../domain/urbanProject";
 
 export function prefixActionType(actionType: string) {
@@ -245,8 +244,8 @@ export const scheduleIntroductionReverted = createAction("scheduleIntroductioRev
 export const projectPhaseCompleted = createAction<ProjectPhase>("projectPhaseCompleted");
 export const projectPhaseReverted = createAction("projectPhaseReverted");
 export const scheduleCompleted = createAction<{
-  reinstatementSchedule?: WorksSchedule;
-  installationSchedule?: WorksSchedule;
+  reinstatementSchedule?: Schedule;
+  installationSchedule?: Schedule;
   firstYearOfOperation: number;
 }>("scheduleCompleted");
 export const scheduleReverted = createAction("scheduleReverted");

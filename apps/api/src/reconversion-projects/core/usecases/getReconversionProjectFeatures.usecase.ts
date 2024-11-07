@@ -1,11 +1,8 @@
-import {
-  BuildingFloorAreaUsageDistribution,
-  Schedule,
-  SoilsDistribution,
-  SpacesDistribution,
-} from "shared";
+import { BuildingFloorAreaUsageDistribution, SoilsDistribution, SpacesDistribution } from "shared";
 
 import { UseCase } from "src/shared-kernel/usecase";
+
+import { Schedule } from "../model/reconversionProject";
 
 export type ReconversionProjectFeaturesView = {
   id: string;

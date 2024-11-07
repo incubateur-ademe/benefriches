@@ -8,7 +8,7 @@ import { NewUrbanCenterProjectExpressCreationService } from "../model/create-fro
 import { PublicFacilitiesProjectExpressCreationService } from "../model/create-from-site-services/PublicFacilitiesProjectExpressCreationService";
 import { ResidentialProjectExpressCreationService } from "../model/create-from-site-services/ResidentialProjectExpressCreationService";
 import { ResidentialTenseAreaProjectExpressCreationService } from "../model/create-from-site-services/ResidentialTenseAreaProjectExpressCreationService";
-import { ReconversionProject, reconversionProjectSchema } from "../model/reconversionProject";
+import { ReconversionProject, reconversionProjectPropsSchema } from "../model/reconversionProject";
 
 export type SiteView = {
   id: string;
@@ -35,7 +35,6 @@ export interface DateProvider {
   now(): Date;
 }
 
-export const reconversionProjectPropsSchema = reconversionProjectSchema.omit({ createdAt: true });
 export type ReconversionProjectProps = z.infer<typeof reconversionProjectPropsSchema>;
 
 type Request = {

@@ -1,4 +1,4 @@
-import { WorksSchedule } from "@/shared/domain/reconversionProject";
+import { Schedule } from "@/features/create-project/domain/project.types";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ScheduleProjectionForm from "./ScheduleProjectionForm";
@@ -6,8 +6,8 @@ import ScheduleProjectionForm from "./ScheduleProjectionForm";
 type Props = {
   onSubmit: (data: {
     firstYearOfOperation: number;
-    installationSchedule?: WorksSchedule;
-    reinstatementSchedule?: WorksSchedule;
+    installationSchedule?: Schedule;
+    reinstatementSchedule?: Schedule;
   }) => void;
   onBack: () => void;
   installationScheduleLabel?: string;

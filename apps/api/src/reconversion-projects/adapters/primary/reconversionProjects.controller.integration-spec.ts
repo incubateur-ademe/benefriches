@@ -11,6 +11,7 @@ import { AppModule } from "src/app.module";
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
+  buildUrbanProjectReconversionProjectProps,
 } from "src/reconversion-projects/core/model/reconversionProject.mock";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
@@ -76,6 +77,7 @@ describe("ReconversionProjects controller", () => {
     it.each([
       { case: "with minimal data", requestBody: buildMinimalReconversionProjectProps() },
       { case: "with exhaustive data", requestBody: buildExhaustiveReconversionProjectProps() },
+      { case: "with urban project data", requestBody: buildUrbanProjectReconversionProjectProps() },
     ])("get a 201 response and reconversion project is created $case", async ({ requestBody }) => {
       await sqlConnection("sites").insert({
         id: requestBody.relatedSiteId,

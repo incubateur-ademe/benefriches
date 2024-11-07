@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { ReconversionProject, reconversionProjectSchema } from "../model/reconversionProject";
+import { ReconversionProject, reconversionProjectPropsSchema } from "../model/reconversionProject";
 
 export interface SiteRepository {
   existsWithId(id: string): Promise<boolean>;
@@ -16,10 +16,6 @@ export interface DateProvider {
   now(): Date;
 }
 
-export const reconversionProjectPropsSchema = reconversionProjectSchema.omit({
-  createdAt: true,
-  creationMode: true,
-});
 export type ReconversionProjectProps = z.infer<typeof reconversionProjectPropsSchema>;
 
 type Request = {

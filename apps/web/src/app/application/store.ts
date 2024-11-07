@@ -3,7 +3,7 @@ import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
 import projectCreation from "@/features/create-project/application/createProject.reducer";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/application/getSiteLocalAuthorities.action";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/renewable-energy/getPhotovoltaicExpectedPerformance.action";
-import { SaveReconversionProjectGateway } from "@/features/create-project/application/renewable-energy/saveReconversionProject.action";
+import { SaveReconversionProjectGateway } from "@/features/create-project/application/saveReconversionProject.action";
 import { SaveExpressReconversionProjectGateway } from "@/features/create-project/application/urban-project/urbanProject.actions";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/application/siteMunicipalityData.actions";

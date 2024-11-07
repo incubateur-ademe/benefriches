@@ -12,11 +12,6 @@ export type RenewableEnergyDevelopmentPlanType =
   | "GEOTHERMAL"
   | "BIOMASS";
 
-export type WorksSchedule = {
-  startDate: string;
-  endDate: string;
-};
-
 export const getLabelForRecurringExpense = (
   expensePurpose: RecurringExpense["purpose"],
 ): string => {

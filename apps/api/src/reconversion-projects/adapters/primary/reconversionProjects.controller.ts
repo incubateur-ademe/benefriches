@@ -2,36 +2,14 @@ import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import {
-  costSchema,
-  photovoltaicPowerStationFeaturesSchema,
-} from "src/reconversion-projects/core/model/reconversionProject";
+import { reconversionProjectPropsSchema } from "src/reconversion-projects/core/model/reconversionProject";
 import { ComputeReconversionProjectImpactsUseCase } from "src/reconversion-projects/core/usecases/computeReconversionProjectImpacts.usecase";
 import { CreateExpressReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createExpressReconversionProject.usecase";
-import {
-  CreateReconversionProjectUseCase,
-  reconversionProjectPropsSchema,
-} from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
+import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
 
-const jsonScheduleSchema = z.object({
-  startDate: z.string().pipe(z.coerce.date()),
-  endDate: z.string().pipe(z.coerce.date()),
-});
-
-export const createReconversionProjectInputSchema = reconversionProjectPropsSchema.extend({
-  reinstatementSchedule: jsonScheduleSchema.optional(),
-  developmentPlan: z.discriminatedUnion("type", [
-    z.object({
-      type: z.literal("PHOTOVOLTAIC_POWER_PLANT"),
-      costs: costSchema.array(),
-      developer: z.object({ name: z.string(), structureType: z.string() }),
-      features: photovoltaicPowerStationFeaturesSchema,
-      installationSchedule: jsonScheduleSchema.optional(),
-    }),
-  ]),
-});
+export const createReconversionProjectInputSchema = reconversionProjectPropsSchema;
 
 class CreateReconversionProjectBodyDto extends createZodDto(createReconversionProjectInputSchema) {}
 

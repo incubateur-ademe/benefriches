@@ -8,14 +8,12 @@ import {
   SoilType,
 } from "shared";
 
-import {
-  RenewableEnergyDevelopmentPlanType,
-  WorksSchedule,
-} from "@/shared/domain/reconversionProject";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 
 import {
   PhotovoltaicKeyParameter,
   ReconversionProjectCreationData,
+  Schedule,
 } from "../../domain/project.types";
 import { SoilsTransformationProject } from "../../domain/soilsTransformation";
 
@@ -110,8 +108,8 @@ export const completeSoilsCarbonStorageStep = createAction("completeSoilsCarbonS
 export const completeScheduleIntroductionStep = createAction("completeScheduleIntroductionStep");
 export const completeScheduleStep = createAction<{
   firstYearOfOperation?: number;
-  photovoltaicInstallationSchedule?: WorksSchedule;
-  reinstatementSchedule?: WorksSchedule;
+  photovoltaicInstallationSchedule?: Schedule;
+  reinstatementSchedule?: Schedule;
 }>("completeScheduleStep");
 export const completeSitePurchase = createAction<boolean>("completeSitePurchase");
 export const completeFutureSiteOwner =

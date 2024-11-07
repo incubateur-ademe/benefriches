@@ -13,9 +13,12 @@ import { UserStructureType } from "@/features/users/domain/user";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 
-import { Schedule } from "../application/renewable-energy/saveReconversionProject.action";
-
 export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
+
+export type Schedule = {
+  startDate: string;
+  endDate: string;
+};
 
 export type ReconversionProjectCreationData = {
   name: string;

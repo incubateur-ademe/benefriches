@@ -43,12 +43,6 @@ export type FinancialAssistanceRevenue = TRevenue<
 
 export type InstallationExpense = TExpense<"technical_studies" | "development_works" | "other">;
 
-export const scheduleSchema = z.object({
-  startDate: z.date(),
-  endDate: z.date(),
-});
-export type Schedule = z.infer<typeof scheduleSchema>;
-
 export * from "./urbanProject";
 export * from "./photovoltaicPowerStation";
 export * from "./reinstatementCosts";
@@ -59,3 +53,4 @@ export * from "./public-spaces/urbanPublicSpaces";
 export * from "./living-and-activity-spaces/buildingsUse";
 export * from "./urban-projects";
 export * from "./sitePurchase";
+export * from "./reconversionProjectSchemas";
