@@ -196,7 +196,6 @@ export const getColorForUrbanPublicSpace = (space: UrbanPublicSpace): string => 
 export const ECONOMIC_ACTIVITY_BUILDINGS_USE: BuildingsEconomicActivityUse[] = [
   "GROUND_FLOOR_RETAIL",
   "TERTIARY_ACTIVITIES",
-  "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
   "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
   "SHIPPING_OR_INDUSTRIAL_BUILDINGS",
 ];

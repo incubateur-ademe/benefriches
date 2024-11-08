@@ -61,6 +61,8 @@ const DevelopmentPlanFeatures = ({
       };
       const greenPublicSpaces = {
         PUBLIC_GREEN_SPACES: developmentPlan.spaces.PUBLIC_GREEN_SPACES ?? 0,
+        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS:
+          developmentPlan.spaces.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
       };
 
       const publicSpaces = {
@@ -68,8 +70,6 @@ const DevelopmentPlanFeatures = ({
           developmentPlan.spaces.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
         PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS:
           developmentPlan.spaces.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-        PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS:
-          developmentPlan.spaces.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
         PUBLIC_PARKING_LOT: developmentPlan.spaces.PUBLIC_PARKING_LOT ?? 0,
       };
 

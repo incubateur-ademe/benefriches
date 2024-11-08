@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { roundTo2Digits } from "shared";
 
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -43,10 +43,9 @@ function BuildingsFloorSurfaceArea({ onSubmit, onBack, buildingsFootprintSurface
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
+        <Controller
+          control={control}
           name="surfaceArea"
-          label={<RequiredLabel label="Superficie" />}
-          addonText={SQUARE_METERS_HTML_SYMBOL}
           rules={{
             required: "Ce champ est requis",
             min: {
@@ -54,7 +53,15 @@ function BuildingsFloorSurfaceArea({ onSubmit, onBack, buildingsFootprintSurface
               message: "Veuillez entrer une superficie valide.",
             },
           }}
-          control={control}
+          render={(controller) => {
+            return (
+              <ControlledRowNumericInput
+                controlProps={controller}
+                label={<RequiredLabel label="Superficie" />}
+                addonText={SQUARE_METERS_HTML_SYMBOL}
+              />
+            );
+          }}
         />
         {!isNaN(surface) && (
           <p>

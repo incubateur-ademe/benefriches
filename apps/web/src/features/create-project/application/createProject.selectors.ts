@@ -12,6 +12,10 @@ export const selectCurrentStep = createSelector(selectSelf, (state): ProjectCrea
   return state.stepsHistory.at(-1) ?? "INTRODUCTION";
 });
 
+export const selectProjectId = createSelector(selectSelf, (state): string => {
+  return state.projectId;
+});
+
 export const selectProjectDevelopmentPlanCategory = createSelector(
   selectSelf,
   (state): DevelopmentPlanCategory | undefined => state.developmentPlanCategory,

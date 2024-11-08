@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
   computeDefaultInstallationCostsFromSiteSurfaceArea,
+  filterObject,
   SoilsDistribution,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
@@ -20,9 +21,19 @@ import { UrbanProjectCreationStep, UrbanProjectState } from "./urbanProject.redu
 
 const selectSelf = (state: RootState) => state.projectCreation.urbanProject;
 
+export const selectSaveState = createSelector(
+  selectSelf,
+  (state): UrbanProjectState["saveState"] => state.saveState,
+);
+
 export const selectCreationData = createSelector(
   selectSelf,
   (state): UrbanProjectState["creationData"] => state.creationData,
+);
+
+export const selectProjectName = createSelector(
+  selectCreationData,
+  (state): string => state.name ?? "",
 );
 
 export const selectCurrentStep = createSelector([selectSelf], (state): UrbanProjectCreationStep => {
@@ -130,6 +141,45 @@ export const selectBuildingsEconomicActivityUses = createSelector(
     };
   },
 );
+
+export const getUrbanProjectSpaceDistribution = createSelector(selectCreationData, (state) => {
+  const {
+    IMPERMEABLE_SURFACE = 0,
+    PERMEABLE_SURFACE = 0,
+    GRASS_COVERED_SURFACE = 0,
+  } = state.publicSpacesDistribution ?? {};
+  const {
+    URBAN_POND_OR_LAKE = 0,
+    LAWNS_AND_BUSHES = 0,
+    TREE_FILLED_SPACE = 0,
+    PAVED_ALLEY = 0,
+    GRAVEL_ALLEY = 0,
+  } = state.greenSpacesDistribution ?? {};
+  const publicGreenSpaces = URBAN_POND_OR_LAKE + LAWNS_AND_BUSHES + TREE_FILLED_SPACE;
+  const {
+    BUILDINGS = 0,
+    PAVED_ALLEY_OR_PARKING_LOT = 0,
+    GRAVEL_ALLEY_OR_PARKING_LOT = 0,
+    GARDEN_AND_GRASS_ALLEYS = 0,
+    TREE_FILLED_GARDEN_OR_ALLEY = 0,
+  } = state.livingAndActivitySpacesDistribution ?? {};
+
+  return filterObject(
+    {
+      BUILDINGS_FOOTPRINT: BUILDINGS,
+      PRIVATE_PAVED_ALLEY_OR_PARKING_LOT: PAVED_ALLEY_OR_PARKING_LOT,
+      PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT: GRAVEL_ALLEY_OR_PARKING_LOT,
+      PRIVATE_GARDEN_AND_GRASS_ALLEYS: GARDEN_AND_GRASS_ALLEYS,
+      PRIVATE_TREE_FILLED_GARDEN_AND_ALLEYS: TREE_FILLED_GARDEN_OR_ALLEY,
+      // public spaces
+      PUBLIC_GREEN_SPACES: publicGreenSpaces,
+      PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS: IMPERMEABLE_SURFACE + PAVED_ALLEY,
+      PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: PERMEABLE_SURFACE + GRAVEL_ALLEY,
+      PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: GRASS_COVERED_SURFACE,
+    },
+    ([, value]) => !!value && value > 0,
+  );
+});
 
 export const getDefaultInstallationCosts = createSelector(selectSiteData, (state) => {
   if (!state?.surfaceArea) {

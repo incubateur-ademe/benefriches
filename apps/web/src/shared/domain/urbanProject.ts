@@ -13,7 +13,7 @@ export const getLabelForUrbanProjectSpace = (space: UrbanProjectSpace): string =
     case "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT":
       return "Allée ou parking privé en gravier";
     case "PRIVATE_GARDEN_AND_GRASS_ALLEYS":
-      return "Jardin et allées enherbées privées";
+      return "Jardins et allées enherbées privées";
     case "PUBLIC_GREEN_SPACES":
       return "Espaces verts publics";
     case "PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS":
@@ -24,6 +24,8 @@ export const getLabelForUrbanProjectSpace = (space: UrbanProjectSpace): string =
       return "Voies, places, trottoirs enherbés";
     case "PUBLIC_PARKING_LOT":
       return "Parking public";
+    case "PRIVATE_TREE_FILLED_GARDEN_AND_ALLEYS":
+      return "Jardins ou allées arborés privés";
   }
 };
 

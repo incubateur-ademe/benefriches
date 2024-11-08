@@ -16,6 +16,7 @@ import ProjectExpensesIntroduction from "./costs/introduction";
 import ReinstatementExpensesForm from "./costs/reinstatement-costs";
 import SitePurchaseAmounts from "./costs/site-purchase-amounts";
 import YearlyProjectedExpensesForm from "./costs/yearly-projected-costs";
+import ProjectCreationResult from "./creation-result";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectPhaseForm from "./project-phase";
 import ProjectFinancialAssistanceRevenueForm from "./revenues/financial-assistance";
@@ -44,6 +45,7 @@ import UrbanProjectSpaceCategoriesSurfaceAreaDistribution from "./spaces/surface
 import DeveloperForm from "./stakeholders/developer";
 import ProjectStakeholdersIntroduction from "./stakeholders/introduction";
 import SiteReinstatementContractOwnerForm from "./stakeholders/reinstatement-contract-owner";
+import ProjectCreationDataSummary from "./summary";
 
 type Props = {
   currentStep: UrbanProjectCustomCreationStep;
@@ -138,7 +140,9 @@ const getCurrentStepView = (
     case "NAMING":
       return <ProjectNameAndDescriptionForm />;
     case "FINAL_SUMMARY":
-      return "RÉCAPITULATIF";
+      return <ProjectCreationDataSummary />;
+    case "CREATION_RESULT":
+      return <ProjectCreationResult />;
   }
 };
 

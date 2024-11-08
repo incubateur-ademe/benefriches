@@ -21,6 +21,7 @@ export const urbanProjectsSpaceSchema = z.record(
     "PRIVATE_PAVED_ALLEY_OR_PARKING_LOT",
     "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT",
     "PRIVATE_GARDEN_AND_GRASS_ALLEYS",
+    "PRIVATE_TREE_FILLED_GARDEN_AND_ALLEYS",
     // public spaces
     "PUBLIC_GREEN_SPACES",
     "PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS",
@@ -49,6 +50,8 @@ export const getSoilTypeForSpace = (space: UrbanProjectSpace): SoilType => {
     case "PRIVATE_GRAVEL_ALLEY_OR_PARKING_LOT":
     case "PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS":
       return "MINERAL_SOIL";
+    case "PRIVATE_TREE_FILLED_GARDEN_AND_ALLEYS":
+      return "ARTIFICIAL_TREE_FILLED";
   }
 };
 

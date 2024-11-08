@@ -75,6 +75,7 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "NAMING":
       return "Dénomination";
     case "FINAL_SUMMARY":
+    case "CREATION_RESULT":
       return "Récapitulatif";
   }
 };
@@ -97,7 +98,7 @@ function UrbanProjectCustomSteps({ step, isExtended }: Props) {
       currentStepIndex={currentStepIndex}
       steps={stepCategories.map((step) => step)}
       isExtended={isExtended}
-      isDone={false}
+      isDone={step === "CREATION_RESULT"}
     />
   );
 }

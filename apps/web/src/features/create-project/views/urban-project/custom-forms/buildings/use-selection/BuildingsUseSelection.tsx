@@ -10,7 +10,6 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
 import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
-import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -61,7 +60,10 @@ function BuildingsUseSelection({ onSubmit, onBack }: Props) {
   });
 
   return (
-    <WizardFormLayout title="Quels usages auront les bâtiments ?">
+    <WizardFormLayout
+      title="Quels usages auront les bâtiments ?"
+      instructions="Plusieurs réponses possibles."
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <TileFormFieldsWrapper small>
           {BUILDINGS_USES.map((value) => {
@@ -91,14 +93,8 @@ function BuildingsUseSelection({ onSubmit, onBack }: Props) {
               </TileFormFieldWrapper>
             );
           })}
-          <TileFormFooterWrapper tileCount={BUILDINGS_USES.length}>
-            <BackNextButtonsGroup
-              onBack={onBack}
-              nextLabel="Valider"
-              disabled={!formState.isValid}
-            />
-          </TileFormFooterWrapper>
         </TileFormFieldsWrapper>
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

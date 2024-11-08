@@ -26,6 +26,7 @@ import {
   isBuildingEconomicActivityUse,
 } from "../../domain/urbanProject";
 import { ProjectCreationState } from "../createProject.reducer";
+import { saveReconversionProject } from "./saveReconversionProject.action";
 import soilsCarbonStorageReducer, {
   State as SoilsCarbonStorageState,
 } from "./soilsCarbonStorage.reducer";
@@ -151,7 +152,8 @@ export type UrbanProjectCustomCreationStep =
   | "SCHEDULE_PROJECTION"
   | "NAMING"
   | "PROJECT_PHASE"
-  | "FINAL_SUMMARY";
+  | "FINAL_SUMMARY"
+  | "CREATION_RESULT";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
@@ -753,6 +755,18 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(namingReverted, (state) => {
     state.renewableEnergyProject.creationData.name = undefined;
     state.renewableEnergyProject.creationData.description = undefined;
+  });
+
+  builder.addCase(saveReconversionProject.pending, (state) => {
+    state.urbanProject.saveState = "loading";
+  });
+  builder.addCase(saveReconversionProject.fulfilled, (state) => {
+    state.urbanProject.saveState = "success";
+    state.urbanProject.stepsHistory.push("CREATION_RESULT");
+  });
+  builder.addCase(saveReconversionProject.rejected, (state) => {
+    state.urbanProject.saveState = "error";
+    state.urbanProject.stepsHistory.push("CREATION_RESULT");
   });
 
   builder.addMatcher(isRevertedAction, (state) => {

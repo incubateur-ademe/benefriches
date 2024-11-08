@@ -404,11 +404,11 @@ describe("Urban project custom creation : buildings steps", () => {
         .withCreationData({
           buildingsEconomicActivityUses: [
             "GROUND_FLOOR_RETAIL",
-            "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
+            "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
           ],
           buildingsUses: [
             "GROUND_FLOOR_RETAIL",
-            "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
+            "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
             "RESIDENTIAL",
           ],
           buildingsUsesDistribution: { RESIDENTIAL: 5000 },
@@ -422,7 +422,7 @@ describe("Urban project custom creation : buildings steps", () => {
       store.dispatch(
         buildingsEconomicActivitySurfaceAreasCompleted({
           GROUND_FLOOR_RETAIL: 2000,
-          NEIGHBOURHOOD_FACILITIES_AND_SERVICES: 3000,
+          OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: 3000,
         }),
       );
 
@@ -433,7 +433,7 @@ describe("Urban project custom creation : buildings steps", () => {
           buildingsUsesDistribution: {
             RESIDENTIAL: 5000,
             GROUND_FLOOR_RETAIL: 2000,
-            NEIGHBOURHOOD_FACILITIES_AND_SERVICES: 3000,
+            OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: 3000,
           },
         },
       });
@@ -447,17 +447,17 @@ describe("Urban project custom creation : buildings steps", () => {
         .withCreationData({
           buildingsEconomicActivityUses: [
             "GROUND_FLOOR_RETAIL",
-            "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
+            "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
           ],
           buildingsUses: [
             "GROUND_FLOOR_RETAIL",
-            "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
+            "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
             "RESIDENTIAL",
           ],
           buildingsUsesDistribution: {
             RESIDENTIAL: 5000,
             GROUND_FLOOR_RETAIL: 2000,
-            NEIGHBOURHOOD_FACILITIES_AND_SERVICES: 3000,
+            OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: 3000,
           },
           buildingsUseCategoriesDistribution: { RESIDENTIAL: 5000, ECONOMIC_ACTIVITY: 5000 },
           buildingsFloorSurfaceArea: 10000,

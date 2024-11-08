@@ -145,6 +145,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
         {projectData.yearlyProjectedExpenses.length > 0 && (
           <>
             <DataLine
+              noBorder
               label={<strong>Dépenses annuelles</strong>}
               value={
                 <div>

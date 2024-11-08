@@ -11,7 +11,6 @@ import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/Back
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
 import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
-import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -29,7 +28,10 @@ function BuildingsEconomicActivitySelection({ onSubmit, onBack }: Props) {
   });
 
   return (
-    <WizardFormLayout title="Quel(s) lieu(x) d’activité économique y aura-t-il ?" fullScreen>
+    <WizardFormLayout
+      title="Quel(s) lieu(x) d’activité économique y aura-t-il&nbsp;?"
+      instructions="Plusieurs réponses possibles."
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <TileFormFieldsWrapper small>
           {ECONOMIC_ACTIVITY_BUILDINGS_USE.map((value) => {
@@ -62,14 +64,8 @@ function BuildingsEconomicActivitySelection({ onSubmit, onBack }: Props) {
               </TileFormFieldWrapper>
             );
           })}
-          <TileFormFooterWrapper tileCount={ECONOMIC_ACTIVITY_BUILDINGS_USE.length}>
-            <BackNextButtonsGroup
-              onBack={onBack}
-              nextLabel="Valider"
-              disabled={!formState.isValid}
-            />
-          </TileFormFooterWrapper>
         </TileFormFieldsWrapper>
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );

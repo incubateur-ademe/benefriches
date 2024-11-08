@@ -40,6 +40,9 @@ const SoilTypeTile = ({ spaceCategory, isSelected, onChange }: SoilTypeTileProps
       checked={isSelected}
       onChange={onChange}
       checkType="checkbox"
+      disabled={
+        spaceCategory === "URBAN_FARM" || spaceCategory === "RENEWABLE_ENERGY_PRODUCTION_PLANT"
+      }
     />
   );
 };

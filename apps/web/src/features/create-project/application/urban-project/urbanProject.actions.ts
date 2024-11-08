@@ -254,3 +254,4 @@ export const namingCompleted = createAction<{ name: string; description?: string
   "namingCompleted",
 );
 export const namingReverted = createAction("namingReverted");
+export const finalSummaryReverted = createAction("finalSummaryReverted");
