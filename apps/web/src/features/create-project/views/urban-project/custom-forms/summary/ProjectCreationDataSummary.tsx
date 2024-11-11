@@ -25,6 +25,12 @@ function ProjectCreationDataSummary({
   const sitePurchaseTotalAmount = projectData.sitePurchaseSellingPrice
     ? projectData.sitePurchaseSellingPrice + (projectData.sitePurchasePropertyTransferDuties ?? 0)
     : undefined;
+
+  const siteResaleTotalAmount = projectData.siteResaleExpectedSellingPrice
+    ? projectData.siteResaleExpectedSellingPrice +
+      (projectData.siteResaleExpectedPropertyTransferDuties ?? 0)
+    : undefined;
+
   return (
     <>
       <WizardFormLayout
@@ -56,7 +62,7 @@ function ProjectCreationDataSummary({
             reinstatementSchedule: projectData.reinstatementSchedule,
             firstYearOfOperation: projectData.firstYearOfOperation,
             sitePurchaseTotalAmount,
-            //siteResaleTotalAmount: projectData.siteResaleTotalAmount;
+            siteResaleTotalAmount,
             decontaminatedSoilSurface: projectData.decontaminatedSurfaceArea,
           }}
         />

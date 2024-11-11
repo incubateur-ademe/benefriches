@@ -1,5 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import {
+  expectedSiteResaleRevenueCompleted,
+  expectedSiteResaleRevenueReverted,
   expensesIntroductionReverted,
   financialAssistanceRevenuesCompleted,
   financialAssistanceRevenuesReverted,
@@ -17,22 +19,7 @@ import {
 describe("Urban project creation : revenues steps", () => {
   describe("Custom creation mode", () => {
     describe("REVENUE_INTRODUCTION step", () => {
-      it("goes to REVENUE_PROJECTED_YEARLY_REVENUE step when step is completed if project has buildings", () => {
-        const store = new StoreBuilder()
-          .withStepsHistory(["REVENUE_INTRODUCTION"])
-          .withCreationData({ livingAndActivitySpacesDistribution: { BUILDINGS: 1000 } })
-          .build();
-        const initialRootState = store.getState();
-
-        store.dispatch(revenueIntroductionCompleted());
-
-        const newState = store.getState();
-        expectUpdatedState(initialRootState, newState, {
-          currentStep: "REVENUE_PROJECTED_YEARLY_REVENUE",
-        });
-      });
-
-      it("goes to REVENUE_FINANCIAL_ASSISTANCE step when step is completed if project has no buildings", () => {
+      it("goes to REVENUE_EXPECTED_SITE_RESALE step when step is completed", () => {
         const store = new StoreBuilder().withStepsHistory(["REVENUE_INTRODUCTION"]).build();
         const initialRootState = store.getState();
 
@@ -40,7 +27,7 @@ describe("Urban project creation : revenues steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "REVENUE_FINANCIAL_ASSISTANCE",
+          currentStep: "REVENUE_EXPECTED_SITE_RESALE",
         });
       });
 
@@ -55,11 +42,76 @@ describe("Urban project creation : revenues steps", () => {
         expectCurrentStep(newState, "EXPENSES_PROJECTED_YEARLY_EXPENSES");
       });
     });
+    describe("REVENUE_EXPECTED_SITE_RESALE step", () => {
+      it("goes to REVENUE_FINANCIAL_ASSISTANCE step and sets siteResaleExpectedSellingPrice and siteResaleExpectedPropertyTransferDuties when step is completed if project has no buildings", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_EXPECTED_SITE_RESALE"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          expectedSiteResaleRevenueCompleted({
+            sellingPrice: 500000,
+            propertyTransferDuties: 25000,
+          }),
+        );
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "REVENUE_FINANCIAL_ASSISTANCE",
+          creationDataDiff: {
+            siteResaleExpectedSellingPrice: 500000,
+            siteResaleExpectedPropertyTransferDuties: 25000,
+          },
+        });
+      });
+      it("goes to REVENUE_PROJECTED_YEARLY_REVENUE step when step is completed if project has buildings", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_EXPECTED_SITE_RESALE"])
+          .withCreationData({ livingAndActivitySpacesDistribution: { BUILDINGS: 1000 } })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          expectedSiteResaleRevenueCompleted({
+            sellingPrice: 500000,
+            propertyTransferDuties: 25000,
+          }),
+        );
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "REVENUE_PROJECTED_YEARLY_REVENUE",
+          creationDataDiff: {
+            siteResaleExpectedSellingPrice: 500000,
+            siteResaleExpectedPropertyTransferDuties: 25000,
+          },
+        });
+      });
+      it("goes to previous step and unset siteResaleExpectedSellingPrice and siteResaleExpectedPropertyTransferDuties when step is reverted", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_EXPECTED_SITE_RESALE"])
+          .withCreationData({
+            siteResaleExpectedSellingPrice: 500000,
+            siteResaleExpectedPropertyTransferDuties: 25000,
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(expectedSiteResaleRevenueReverted());
+
+        const newState = store.getState();
+        expectRevertedState(initialRootState, newState, {
+          creationDataDiff: {
+            siteResaleExpectedSellingPrice: undefined,
+            siteResaleExpectedPropertyTransferDuties: undefined,
+          },
+        });
+      });
+    });
     describe("REVENUE_PROJECTED_YEARLY_REVENUE step", () => {
       it("goes to REVENUE_FINANCIAL_ASSISTANCE step and sets yearlyProjectedRevenues when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_PROJECTED_YEARLY_REVENUE"])
-          .withSiteData({ isFriche: true })
           .build();
         const initialRootState = store.getState();
 

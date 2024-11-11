@@ -106,6 +106,8 @@ import {
   scheduleCompleted,
   scheduleIntroductionCompleted,
   scheduleReverted,
+  expectedSiteResaleRevenueCompleted,
+  expectedSiteResaleRevenueReverted,
 } from "./urbanProject.actions";
 
 export type UrbanProjectExpressCreationStep = "EXPRESS_CATEGORY_SELECTION" | "CREATION_RESULT";
@@ -146,6 +148,7 @@ export type UrbanProjectCustomCreationStep =
   | "EXPENSES_INSTALLATION"
   | "EXPENSES_PROJECTED_YEARLY_EXPENSES"
   | "REVENUE_INTRODUCTION"
+  | "REVENUE_EXPECTED_SITE_RESALE"
   | "REVENUE_PROJECTED_YEARLY_REVENUE"
   | "REVENUE_FINANCIAL_ASSISTANCE"
   | "SCHEDULE_INTRODUCTION"
@@ -215,6 +218,8 @@ export type UrbanProjectState = {
     // revenues
     yearlyProjectedRevenues?: RecurringRevenue[];
     financialAssistanceRevenues?: FinancialAssistanceRevenue[];
+    siteResaleExpectedSellingPrice?: number;
+    siteResaleExpectedPropertyTransferDuties?: number;
     // schedules
     reinstatementSchedule?: {
       startDate: string;
@@ -700,10 +705,22 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
 
   // revenues
   builder.addCase(revenueIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("REVENUE_EXPECTED_SITE_RESALE");
+  });
+
+  builder.addCase(expectedSiteResaleRevenueCompleted, (state, action) => {
+    state.urbanProject.creationData.siteResaleExpectedSellingPrice = action.payload.sellingPrice;
+    state.urbanProject.creationData.siteResaleExpectedPropertyTransferDuties =
+      action.payload.propertyTransferDuties;
     state.urbanProject.stepsHistory.push(
       hasBuildings(state) ? "REVENUE_PROJECTED_YEARLY_REVENUE" : "REVENUE_FINANCIAL_ASSISTANCE",
     );
   });
+  builder.addCase(expectedSiteResaleRevenueReverted, (state) => {
+    state.urbanProject.creationData.siteResaleExpectedSellingPrice = undefined;
+    state.urbanProject.creationData.siteResaleExpectedPropertyTransferDuties = undefined;
+  });
+
   builder.addCase(yearlyProjectedRevenueCompleted, (state, action) => {
     state.urbanProject.creationData.yearlyProjectedRevenues = action.payload;
     state.urbanProject.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");

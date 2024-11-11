@@ -238,6 +238,11 @@ export const yearlyProjectedRevenueCompleted = createAction<RecurringRevenue[]>(
   "yearlyProjectedRevenueCompleted",
 );
 export const yearlyProjectedRevenueReverted = createAction("yearlyProjectedRevenueReverted");
+export const expectedSiteResaleRevenueReverted = createAction("expectedSiteResaleRevenueReverted");
+export const expectedSiteResaleRevenueCompleted = createAction<{
+  sellingPrice?: number;
+  propertyTransferDuties?: number;
+}>("expectedSiteResaleRevenueCompleted");
 
 export const scheduleIntroductionCompleted = createAction("scheduleIntroductionCompleted");
 export const scheduleIntroductionReverted = createAction("scheduleIntroductioReverted");
