@@ -770,8 +770,8 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
 
   builder.addCase(namingReverted, (state) => {
-    state.renewableEnergyProject.creationData.name = undefined;
-    state.renewableEnergyProject.creationData.description = undefined;
+    state.urbanProject.creationData.name = undefined;
+    state.urbanProject.creationData.description = undefined;
   });
 
   builder.addCase(saveReconversionProject.pending, (state) => {
