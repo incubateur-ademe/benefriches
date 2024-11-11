@@ -1,16 +1,29 @@
-import { MouseEvent, ReactNode, useState } from "react";
+import { MouseEvent, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
 import ImpactRowValue from "./ImpactRowValue";
 
 type Props = {
-  label?: ReactNode;
+  label: string;
   actor?: string;
   value: number;
   onClick?: () => void;
   data?: { label: string; value: number; onClick?: () => void }[];
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
+};
+
+const getFromChildEventPropFunction = (fn?: () => void) => {
+  if (!fn) {
+    return undefined;
+  }
+
+  return (e?: MouseEvent<HTMLElement>) => {
+    if (e) {
+      e.stopPropagation();
+    }
+    fn();
+  };
 };
 
 const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) => {
@@ -22,12 +35,7 @@ const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) 
     setDisplayDetails((current) => !current);
   };
 
-  const onToggleAccordionFromChild = (e?: MouseEvent<HTMLElement>) => {
-    if (e) {
-      e.stopPropagation();
-    }
-    onToggleAccordion();
-  };
+  const onToggleAccordionFromChild = getFromChildEventPropFunction(onToggleAccordion);
 
   return (
     <div
@@ -41,16 +49,7 @@ const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) 
         type={type}
         isTotal
         isAccordionOpened={displayDetails}
-        onLabelClick={
-          onClick
-            ? (e?: MouseEvent<HTMLElement>) => {
-                if (e) {
-                  e.stopPropagation();
-                }
-                onClick();
-              }
-            : undefined
-        }
+        labelProps={{ onClick: getFromChildEventPropFunction(onClick) }}
         onToggleAccordion={hasData ? onToggleAccordionFromChild : undefined}
       />
       {hasData && displayDetails && (
@@ -61,16 +60,9 @@ const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) 
               type={type}
               key={detailsLabel}
               label={detailsLabel}
-              onLabelClick={
-                onDetailsClick
-                  ? (e?: MouseEvent<HTMLElement>) => {
-                      if (e) {
-                        e.stopPropagation();
-                      }
-                      onDetailsClick();
-                    }
-                  : undefined
-              }
+              labelProps={{
+                onClick: getFromChildEventPropFunction(onDetailsClick),
+              }}
             />
           ))}
         </div>

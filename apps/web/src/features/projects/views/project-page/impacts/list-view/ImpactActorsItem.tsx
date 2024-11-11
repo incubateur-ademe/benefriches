@@ -28,7 +28,14 @@ const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
         />
       )}
       {othersActors.map(({ label: actor, value, details = [] }) => (
-        <ImpactItemDetails type={type} key={actor} value={value} actor={actor} data={details} />
+        <ImpactItemDetails
+          label=""
+          type={type}
+          key={actor}
+          value={value}
+          actor={actor}
+          data={details}
+        />
       ))}
     </ImpactItemGroup>
   );

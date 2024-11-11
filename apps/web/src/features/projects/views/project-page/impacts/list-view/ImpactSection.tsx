@@ -5,7 +5,7 @@ import classNames from "@/shared/views/clsx";
 import ImpactRowValue from "./ImpactRowValue";
 
 type Props = {
-  title: ReactNode;
+  title: string;
   isMain?: boolean;
   total?: number;
   onTitleClick?: () => void;
@@ -34,6 +34,15 @@ const ImpactSection = ({
     toggleDisplaySectionContent();
   };
 
+  const onLabelClick = onTitleClick
+    ? (e?: MouseEvent<HTMLElement>) => {
+        if (e) {
+          e.stopPropagation();
+        }
+        onTitleClick();
+      }
+    : undefined;
+
   return (
     <section className="tw-mb-10">
       <div
@@ -54,29 +63,17 @@ const ImpactSection = ({
         onClick={toggleDisplaySectionContent}
       >
         <ImpactRowValue
-          label={
-            isMain ? (
-              <h3 className="tw-text-xl tw-mb-0" onClick={onTitleClick}>
-                {title}
-              </h3>
-            ) : (
-              <h4 className={classNames("tw-font-bold", "tw-text-base", "tw-mb-0")}>{title}</h4>
-            )
-          }
+          label={title}
+          labelProps={{
+            role: "heading",
+            ariaLevel: isMain ? "3" : "4",
+            className: isMain ? "tw-text-xl" : "tw-text-base",
+            onClick: onLabelClick,
+          }}
           value={total}
           type="monetary"
           isTotal
           isAccordionOpened={displaySectionContent}
-          onLabelClick={
-            onTitleClick
-              ? (e?: MouseEvent<HTMLElement>) => {
-                  if (e) {
-                    e.stopPropagation();
-                  }
-                  onTitleClick();
-                }
-              : undefined
-          }
           onToggleAccordion={onToggleAccordionFromChild}
         />
       </div>
