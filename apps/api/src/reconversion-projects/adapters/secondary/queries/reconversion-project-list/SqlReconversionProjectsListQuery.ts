@@ -34,7 +34,10 @@ export class SqlReconversionProjectsListQuery implements ReconversionProjectsLis
         this.sqlConnection.raw(`
         CASE 
           WHEN count(rp.id) = 0 THEN '[]'::json
-          ELSE json_agg(json_build_object('id', rp.id, 'name', rp.name, 'type', rpdp.type, 'creationMode', rp.creation_mode)) 
+          ELSE json_agg(
+            json_build_object('id', rp.id, 'name', rp.name, 'type', rpdp.type, 'creationMode', rp.creation_mode, 'createdAt', rp.created_at)
+            order by rp.created_at 
+          ) 
         END as "reconversionProjects"`),
       )
       .groupBy("sites.id")
