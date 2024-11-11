@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
@@ -45,8 +45,6 @@ function SiteCreationWizard() {
   const createMode = useAppSelector((state) => state.siteCreation.createMode);
   const dispatch = useAppDispatch();
 
-  const [isOpen, setOpen] = useState(true);
-
   useEffect(() => {
     dispatch(resetState());
   }, [dispatch]);
@@ -57,25 +55,15 @@ function SiteCreationWizard() {
     <SidebarLayout
       mainChildren={getMainChildren(currentStep, createMode)}
       title="Renseignement du site"
-      isOpen={isOpen}
-      toggleIsOpen={() => {
-        setOpen((current) => !current);
-      }}
       sidebarChildren={(() => {
         switch (createMode) {
           case "express":
-            return (
-              <SiteCreationExpressStepper
-                step={currentStep as SiteCreationExpressStep}
-                isExtended={isOpen}
-              />
-            );
+            return <SiteCreationExpressStepper step={currentStep as SiteCreationExpressStep} />;
           case "custom":
             return (
               <SiteCreationCustomStepper
                 isFriche={isFriche}
                 step={currentStep as SiteCreationCustomStep}
-                isExtended={isOpen}
               />
             );
           default:

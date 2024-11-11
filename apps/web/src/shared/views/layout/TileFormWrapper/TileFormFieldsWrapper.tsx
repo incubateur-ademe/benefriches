@@ -13,8 +13,15 @@ function TileFormFieldsWrapper({ children, small = false }: Props) {
       className={classNames(
         "tw-grid",
         small
-          ? ["tw-grid-cols-[repeat(auto-fill,_350px)]"]
-          : ["tw-grid-cols-[repeat(auto-fill,_357px)]", "lg:tw-grid-cols-[repeat(2,_357px)]"],
+          ? [
+              "tw-grid-cols-[repeat(auto-fill,_300px)]",
+              "sm:tw-grid-cols-[repeat(auto-fill,_350px)]",
+            ]
+          : [
+              "tw-grid-cols-[repeat(auto-fill,_300px)]",
+              "sm:tw-grid-cols-[repeat(auto-fill,_357px)]",
+              "lg:tw-grid-cols-[repeat(2,_357px)]",
+            ],
         "tw-gap-x-4",
         "tw-mb-4",
       )}

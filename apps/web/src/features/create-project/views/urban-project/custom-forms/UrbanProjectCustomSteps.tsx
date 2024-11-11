@@ -82,10 +82,9 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
 
 type Props = {
   step: UrbanProjectCustomCreationStep;
-  isExtended?: boolean;
 };
 
-function UrbanProjectCustomSteps({ step, isExtended }: Props) {
+function UrbanProjectCustomSteps({ step }: Props) {
   const currentStepCategory = getCategoryForStep(step);
   const displayBuildingsSection = useAppSelector((state) => hasBuildings(state.projectCreation));
   const stepCategories = displayBuildingsSection
@@ -97,7 +96,6 @@ function UrbanProjectCustomSteps({ step, isExtended }: Props) {
     <FormStepper
       currentStepIndex={currentStepIndex}
       steps={stepCategories.map((step) => step)}
-      isExtended={isExtended}
       isDone={step === "CREATION_RESULT"}
     />
   );

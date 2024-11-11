@@ -72,10 +72,9 @@ const getCategoryForStep = (step: PhotovoltaicProjectCreationStep): StepCategory
 
 type Props = {
   step: PhotovoltaicProjectCreationStep;
-  isExtended?: boolean;
 };
 
-function PhotovoltaicPowerStationStepper({ step, isExtended }: Props) {
+function PhotovoltaicPowerStationStepper({ step }: Props) {
   const currentStepCategory = getCategoryForStep(step);
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
   const isDone = step === "CREATION_RESULT";
@@ -84,7 +83,6 @@ function PhotovoltaicPowerStationStepper({ step, isExtended }: Props) {
     <FormStepper
       currentStepIndex={currentStepIndex}
       steps={stepCategories.map((step) => step)}
-      isExtended={isExtended}
       isDone={isDone}
     />
   );

@@ -76,7 +76,7 @@ const RowNumericInput = memo(
       return (
         <div
           className={classNames(
-            "tw-flex tw-justify-between tw-items-start",
+            "tw-flex tw-flex-col md:tw-flex-row tw-justify-between tw-items-start",
             "tw-mb-0 tw-pt-7",
             "fr-input-group",
             fr.cx(
@@ -90,7 +90,7 @@ const RowNumericInput = memo(
           ref={ref}
           id={id}
         >
-          <div className="tw-flex tw-gap-2 tw-items-start">
+          <div className="tw-flex tw-gap-2 tw-items-start tw-mb-2 md:tw-mb-0">
             {imgSrc && (
               <img
                 src={imgSrc}
@@ -124,7 +124,7 @@ const RowNumericInput = memo(
             </label>
           </div>
 
-          <div className="tw-w-44">
+          <div className="tw-w-full md:tw-w-44">
             <WithAddon state={state} addon={addonText}>
               <input
                 {...nativeInputProps}

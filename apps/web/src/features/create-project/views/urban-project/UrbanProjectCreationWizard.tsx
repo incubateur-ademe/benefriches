@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -70,7 +68,6 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
 function UrbanProjectCreationWizard() {
   const currentStep = useAppSelector(selectCurrentStep);
   const createMode = useAppSelector(selectCreateMode);
-  const [isOpen, setOpen] = useState(true);
 
   useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
@@ -80,11 +77,7 @@ function UrbanProjectCreationWizard() {
         <SidebarLayout
           mainChildren={<CreateModeSelectionForm />}
           title="Renseignement du projet"
-          isOpen={isOpen}
-          toggleIsOpen={() => {
-            setOpen((current) => !current);
-          }}
-          sidebarChildren={<UrbanProjectCreationStepper step={currentStep} isExtended={isOpen} />}
+          sidebarChildren={<UrbanProjectCreationStepper step={currentStep} />}
         />
       );
     case "express":

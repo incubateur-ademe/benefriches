@@ -58,11 +58,10 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
 
 type Props = {
   step: SiteCreationCustomStep;
-  isExtended?: boolean;
   isFriche?: boolean;
 };
 
-function SiteCreationCustomStepper({ step, isFriche, isExtended }: Props) {
+function SiteCreationCustomStepper({ step, isFriche }: Props) {
   const currentStepCategory = getCurrentStepCategory(step);
 
   const stepsCategories = isFriche ? fricheStepsCategories : siteStepsCategories;
@@ -72,7 +71,6 @@ function SiteCreationCustomStepper({ step, isFriche, isExtended }: Props) {
     <FormStepper
       currentStepIndex={currentStepIndex}
       steps={stepsCategories as string[]}
-      isExtended={isExtended}
       isDone={step === "CREATION_RESULT"}
     />
   );

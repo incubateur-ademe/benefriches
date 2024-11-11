@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { UrbanProjectExpressCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -12,8 +10,6 @@ type Props = {
 };
 
 export default function UrbanProjectExpressCreationStepWizard({ currentStep }: Props) {
-  const [isOpen, setOpen] = useState(true);
-
   return (
     <SidebarLayout
       mainChildren={
@@ -24,11 +20,7 @@ export default function UrbanProjectExpressCreationStepWizard({ currentStep }: P
         )
       }
       title="Renseignement du projet"
-      isOpen={isOpen}
-      toggleIsOpen={() => {
-        setOpen((current) => !current);
-      }}
-      sidebarChildren={<UrbanProjectExpressStepper step={currentStep} isExtended={isOpen} />}
+      sidebarChildren={<UrbanProjectExpressStepper step={currentStep} />}
     />
   );
 }

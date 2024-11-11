@@ -6,10 +6,9 @@ const stepCategories = ["Type de projet", "Mode de création"] as const;
 
 type Props = {
   step: UrbanProjectCreationStep;
-  isExtended?: boolean;
 };
 
-function UrbanProjectCreationStepper({ step, isExtended }: Props) {
+function UrbanProjectCreationStepper({ step }: Props) {
   const currentStepCategory = "Mode de création";
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
   const isDone = step === "CREATION_RESULT";
@@ -18,7 +17,6 @@ function UrbanProjectCreationStepper({ step, isExtended }: Props) {
     <FormStepper
       currentStepIndex={currentStepIndex}
       steps={stepCategories.map((step) => step)}
-      isExtended={isExtended}
       isDone={isDone}
     />
   );

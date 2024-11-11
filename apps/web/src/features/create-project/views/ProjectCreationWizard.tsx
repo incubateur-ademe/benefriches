@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useState } from "react";
 import { Route } from "type-route";
 
 import { routes } from "@/app/views/router";
@@ -30,7 +29,6 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
 function ProjectCreationWizard({ route }: Props) {
   const currentStep = useAppSelector(selectCurrentStep);
   const projectDevelopmentPlanCategory = useAppSelector(selectProjectDevelopmentPlanCategory);
-  const [isOpen, setOpen] = useState(true);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -59,11 +57,7 @@ function ProjectCreationWizard({ route }: Props) {
         <SidebarLayout
           mainChildren={getStepComponent()}
           title="Renseignement du projet"
-          isOpen={isOpen}
-          toggleIsOpen={() => {
-            setOpen((current) => !current);
-          }}
-          sidebarChildren={<Stepper isExtended={isOpen} />}
+          sidebarChildren={<Stepper />}
         />
       );
   }

@@ -21,7 +21,7 @@ function WizardFormLayout({ title, children, instructions = null, fullScreen = f
           !shouldDisplayFullScreen && "md:tw-col-span-8",
         )}
       >
-        <div className="tw-px-6">
+        <div className="md:tw-px-6">
           <h2>{title}</h2>
           {children}
         </div>

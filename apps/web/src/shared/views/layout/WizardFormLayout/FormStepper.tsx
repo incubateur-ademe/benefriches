@@ -1,9 +1,12 @@
+import { useContext } from "react";
+
 import classNames from "@/shared/views/clsx";
+
+import { SidebarLayoutContext } from "../SidebarLayout/SidebarLayout";
 
 type Props = {
   currentStepIndex: number;
   steps: string[];
-  isExtended?: boolean;
   isDone?: boolean;
 };
 
@@ -12,13 +15,14 @@ type StepProps = {
   index: number;
   currentStepIndex: number;
   isDone: boolean;
-  isExtended: boolean;
 };
 
-const Step = ({ title, index, currentStepIndex, isDone, isExtended }: StepProps) => {
+const Step = ({ title, index, currentStepIndex, isDone }: StepProps) => {
   const isPreviousStep = currentStepIndex > index;
   const isCurrent = currentStepIndex === index;
   const isCompleted = isPreviousStep || (isCurrent && isDone);
+
+  const isExtended = useContext(SidebarLayoutContext);
 
   return (
     <li
@@ -71,7 +75,7 @@ const Step = ({ title, index, currentStepIndex, isDone, isExtended }: StepProps)
   );
 };
 
-function FormStepper({ steps, currentStepIndex, isExtended = true, isDone = false }: Props) {
+function FormStepper({ steps, currentStepIndex, isDone = false }: Props) {
   return (
     <ol role="list" className={classNames("tw-list-none", "tw-list-inside", "tw-p-0")}>
       {steps.map((title, index) => (
@@ -81,7 +85,6 @@ function FormStepper({ steps, currentStepIndex, isExtended = true, isDone = fals
           index={index}
           currentStepIndex={currentStepIndex}
           isDone={isDone}
-          isExtended={isExtended}
         />
       ))}
     </ol>

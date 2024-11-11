@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 import { UrbanProjectCustomCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
@@ -147,17 +147,11 @@ const getCurrentStepView = (
 };
 
 export default function UrbanProjectCustomCreationStepWizard({ currentStep }: Props) {
-  const [isOpen, setOpen] = useState(true);
-
   return (
     <SidebarLayout
       mainChildren={getCurrentStepView(currentStep)}
       title="Renseignement du projet"
-      isOpen={isOpen}
-      toggleIsOpen={() => {
-        setOpen((current) => !current);
-      }}
-      sidebarChildren={<UrbanProjectCustomSteps step={currentStep} isExtended={isOpen} />}
+      sidebarChildren={<UrbanProjectCustomSteps step={currentStep} />}
     />
   );
 }

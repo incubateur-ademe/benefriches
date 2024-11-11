@@ -20,10 +20,9 @@ const getCurrentStepCategory = (step: SiteCreationExpressStep): StepCategory => 
 
 type Props = {
   step: SiteCreationExpressStep;
-  isExtended?: boolean;
 };
 
-function SiteCreationExpressStepper({ step, isExtended }: Props) {
+function SiteCreationExpressStepper({ step }: Props) {
   const currentStepCategory = getCurrentStepCategory(step);
 
   const currentStepIndex = STEPS_CATEGORIES.findIndex((step) => step === currentStepCategory);
@@ -32,7 +31,6 @@ function SiteCreationExpressStepper({ step, isExtended }: Props) {
     <FormStepper
       currentStepIndex={currentStepIndex}
       steps={[...STEPS_CATEGORIES]}
-      isExtended={isExtended}
       isDone={step === "CREATION_RESULT"}
     />
   );

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
@@ -183,7 +181,6 @@ const getCurrentStepView = (currentStep: PhotovoltaicProjectCreationStep) => {
 
 function PhotovoltaicPowerStationCreationWizard() {
   const currentStep = useAppSelector(selectCurrentStep);
-  const [isOpen, setOpen] = useState(true);
 
   useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);
 
@@ -191,11 +188,7 @@ function PhotovoltaicPowerStationCreationWizard() {
     <SidebarLayout
       mainChildren={getCurrentStepView(currentStep)}
       title="Renseignement du projet"
-      isOpen={isOpen}
-      toggleIsOpen={() => {
-        setOpen((current) => !current);
-      }}
-      sidebarChildren={<PhotovoltaicPowerStationStepper step={currentStep} isExtended={isOpen} />}
+      sidebarChildren={<PhotovoltaicPowerStationStepper step={currentStep} />}
     />
   );
 }
