@@ -2,7 +2,7 @@ import {
   getGreenArtificalSurfaceArea,
   getImpermeableSurfaceArea,
   SoilsDistribution,
-} from "../soils/soilDistribution";
+} from "../../soils/soilDistribution";
 
 type ProjectReinstatementCosts = {
   deimpermeabilization?: number;

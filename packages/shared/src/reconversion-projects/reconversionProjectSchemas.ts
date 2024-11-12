@@ -1,7 +1,8 @@
 import z from "zod";
 
-import { buildingsUseSurfaceAreaDistributionSchema, urbanProjectsSpaceSchema } from ".";
 import { soilTypeSchema } from "../soils";
+import { buildingsUseSurfaceAreaDistributionSchema } from "./urban-project";
+import { urbanProjectsSpaceSchema } from "./urban-project/urbanProject";
 
 export const photovoltaicPowerStationFeaturesSchema = z.object({
   surfaceArea: z.number().nonnegative(),

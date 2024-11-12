@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { SoilType } from "../../soils";
+import { SoilType } from "../../../soils";
 
 export const urbanPublicSpace = z.enum([
   "IMPERMEABLE_SURFACE",

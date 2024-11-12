@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { TExpense } from "../financial";
-import { SoilType } from "../soils";
+import { TExpense } from "../../financial";
+import { SoilType } from "../../soils";
 
 export const urbanProjectSpacesCategories = z.enum([
   "LIVING_AND_ACTIVITY_SPACES",

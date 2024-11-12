@@ -43,14 +43,8 @@ export type FinancialAssistanceRevenue = TRevenue<
 
 export type InstallationExpense = TExpense<"technical_studies" | "development_works" | "other">;
 
-export * from "./urbanProject";
 export * from "./photovoltaicPowerStation";
-export * from "./reinstatementCosts";
-export * from "./reinstatementFullTimeJobs";
-export * from "./green-spaces/urbanGreenSpaces";
-export * from "./living-and-activity-spaces/urbanLivingAndActivitySpaces";
-export * from "./public-spaces/urbanPublicSpaces";
-export * from "./living-and-activity-spaces/buildingsUse";
-export * from "./urban-projects";
+export * from "./reinstatement";
+export * from "./urban-project";
 export * from "./sitePurchase";
 export * from "./reconversionProjectSchemas";

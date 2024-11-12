@@ -1,6 +1,6 @@
 import { typedObjectEntries } from "../../object-entries";
 import { SoilsDistribution } from "../../soils";
-import { getSoilTypeForSpace, SpacesDistribution } from "../urbanProject";
+import { getSoilTypeForSpace, SpacesDistribution } from "./urbanProject";
 
 export const computeSoilsDistributionFromSpaces = (
   spacesDistribution: SpacesDistribution,
