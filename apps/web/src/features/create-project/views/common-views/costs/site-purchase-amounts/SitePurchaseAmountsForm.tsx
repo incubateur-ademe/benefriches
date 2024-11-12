@@ -34,10 +34,14 @@ const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
 
   return (
     <WizardFormLayout
-      title="Montant de la transaction foncière"
+      title="Montant de l'acquisition foncière"
       instructions={
         <>
           <FormInfo>
+            <p>
+              Le site sera peut-être racheté avant de procéder à l'aménagement. Vous pouvez
+              renseigner ici le montant de la transaction ou passer la question.
+            </p>
             <p>
               Les droits de mutation sont calculés automatiquement selon le prix de vente
               renseignés. Vous pouvez modifier ces montants.
