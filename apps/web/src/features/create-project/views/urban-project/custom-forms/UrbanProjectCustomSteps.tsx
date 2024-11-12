@@ -13,7 +13,7 @@ const STEP_CATEGORIES = [
   "Dépollution des sols",
   "Bâtiments",
   "Acteurs",
-  "Cession foncière",
+  // "Cession foncière",
   "Dépenses et recettes",
   "Calendrier et avancement",
   "Dénomination",
