@@ -155,6 +155,7 @@ describe("Urban project creation : costs steps", () => {
           .withStepsHistory(["EXPENSES_SITE_PURCHASE_AMOUNTS", "EXPENSES_INSTALLATION"])
           .withCreationData({
             livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
+            projectDevoloperOwnsBuildings: true,
           })
           .build();
         const initialRootState = store.getState();

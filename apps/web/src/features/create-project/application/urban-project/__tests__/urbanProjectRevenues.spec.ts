@@ -67,7 +67,10 @@ describe("Urban project creation : revenues steps", () => {
       it("goes to REVENUE_PROJECTED_YEARLY_REVENUE step when step is completed if project has buildings", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_EXPECTED_SITE_RESALE"])
-          .withCreationData({ livingAndActivitySpacesDistribution: { BUILDINGS: 1000 } })
+          .withCreationData({
+            livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
+            projectDevoloperOwnsBuildings: true,
+          })
           .build();
         const initialRootState = store.getState();
 

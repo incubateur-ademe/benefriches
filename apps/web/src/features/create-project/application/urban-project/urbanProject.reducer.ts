@@ -205,6 +205,9 @@ export type UrbanProjectState = {
     buildingsUseCategoriesDistribution?: Partial<Record<BuildingsUseCategory, number>>;
     buildingsUsesDistribution?: Partial<Record<BuildingsUse, number>>;
     buildingsEconomicActivityUses?: BuildingsEconomicActivityUse[];
+    // cession foncière
+    // TODO : question à poser dans Cession foncière
+    projectDevoloperOwnsBuildings?: boolean;
     // stakeholders
     projectDeveloper?: ProjectStakeholder;
     reinstatementContractOwner?: ProjectStakeholder;
@@ -259,6 +262,10 @@ export const hasBuildings = (state: ProjectCreationState) => {
   const buildingsSurfaceArea =
     state.urbanProject.creationData.livingAndActivitySpacesDistribution?.BUILDINGS ?? 0;
   return buildingsSurfaceArea > 0;
+};
+
+export const hasBuildingsOperations = (state: ProjectCreationState) => {
+  return hasBuildings(state) && state.urbanProject.creationData.projectDevoloperOwnsBuildings;
 };
 
 const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
@@ -688,7 +695,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(installationExpensesCompleted, (state, action) => {
     state.urbanProject.creationData.installationExpenses = action.payload;
     state.urbanProject.stepsHistory.push(
-      hasBuildings(state) ? "EXPENSES_PROJECTED_YEARLY_EXPENSES" : "REVENUE_INTRODUCTION",
+      hasBuildingsOperations(state) ? "EXPENSES_PROJECTED_YEARLY_EXPENSES" : "REVENUE_INTRODUCTION",
     );
   });
   builder.addCase(installationExpensesReverted, (state) => {
@@ -713,7 +720,9 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.siteResaleExpectedPropertyTransferDuties =
       action.payload.propertyTransferDuties;
     state.urbanProject.stepsHistory.push(
-      hasBuildings(state) ? "REVENUE_PROJECTED_YEARLY_REVENUE" : "REVENUE_FINANCIAL_ASSISTANCE",
+      hasBuildingsOperations(state)
+        ? "REVENUE_PROJECTED_YEARLY_REVENUE"
+        : "REVENUE_FINANCIAL_ASSISTANCE",
     );
   });
   builder.addCase(expectedSiteResaleRevenueReverted, (state) => {
