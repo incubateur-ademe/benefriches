@@ -19,7 +19,8 @@ type Props = {
   siteId: string;
   projectType?: ProjectDevelopmentPlanType;
   isExpressProject: boolean;
-  isSmall?: boolean;
+  isFloatingHeader?: boolean;
+  isSmScreen?: boolean;
 };
 
 const aboutImpactsModal = createModal({
@@ -39,14 +40,15 @@ const ProjectPageHeader = ({
   siteId,
   projectType,
   isExpressProject,
-  isSmall = false,
+  isFloatingHeader = false,
+  isSmScreen = false,
 }: Props) => {
   return (
     <div className={fr.cx("fr-container")}>
       <div
         className={classNames(
-          "sm:tw-flex tw-justify-between tw-items-center",
-          !isSmall && "tw-my-4",
+          "tw-flex tw-justify-between tw-items-center",
+          !isFloatingHeader && "tw-my-4",
         )}
       >
         <div className="tw-flex tw-items-center">
@@ -56,30 +58,39 @@ const ProjectPageHeader = ({
               src={getScenarioPictoUrl(projectType)}
               aria-hidden={true}
               alt="Icône du type de scénario"
-              width={isSmall ? 60 : 76}
-              height={isSmall ? 60 : 76}
+              width={isFloatingHeader ? 60 : 76}
+              height={isFloatingHeader ? 60 : 76}
             />
           )}
 
           <div>
             <div className="sm:tw-inline-flex tw-items-center">
-              <h2 className={classNames("tw-my-0", isSmall && "tw-text-2xl")}>{projectName}</h2>
-              {isExpressProject && <ExpressProjectTooltipBadge siteName={siteName} />}
+              <h2
+                className={classNames("tw-my-0", isFloatingHeader || (isSmScreen && "tw-text-2xl"))}
+              >
+                {projectName}
+              </h2>
+              {isExpressProject && !(isFloatingHeader && isSmScreen) && (
+                <ExpressProjectTooltipBadge siteName={siteName} />
+              )}
             </div>
-            <div className={classNames(!isSmall && "tw-mt-1")}>
+            <div className={classNames(!isFloatingHeader && "tw-mt-1")}>
               <span
                 className={classNames(
                   fr.cx(
                     "fr-icon-map-pin-2-line",
                     "fr-icon--sm",
-                    isSmall ? "fr-mr-1w" : "fr-mr-0-5v",
+                    isFloatingHeader ? "fr-mr-1w" : "fr-mr-0-5v",
                   ),
                 )}
                 aria-hidden="true"
               ></span>
               <a
                 href={routes.siteFeatures({ siteId }).href}
-                className={classNames(fr.cx("fr-text--lg"), isSmall && "tw-text-lg tw-mb-0")}
+                className={classNames(
+                  fr.cx("fr-text--lg"),
+                  isFloatingHeader && "tw-text-lg tw-mb-0",
+                )}
               >
                 {siteName}
               </a>
@@ -130,6 +141,7 @@ const ProjectPageHeader = ({
           }}
         >
           <Button
+            size={isSmScreen ? "small" : "medium"}
             priority="secondary"
             iconId="fr-icon-more-fill"
             title="Voir plus de fonctionnalités"

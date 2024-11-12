@@ -1,4 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
+import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
+import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -42,12 +44,17 @@ function ProjectPage({
   onCurrentViewModeChange,
   onCurrentCategoryFilterChange,
 }: Props) {
+  const { breakpointsValues } = useBreakpointsValuesPx();
+  const { windowInnerWidth } = useWindowInnerSize();
+
+  const isSmScreen = windowInnerWidth < breakpointsValues.sm;
+
   return (
     <div
       id="project-impacts-page"
       className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full")}
     >
-      <div className="tw-py-8">
+      <div className="tw-pt-8 md:tw-pb-8">
         <ProjectsImpactsPageHeader
           projectType={projectContext.type}
           projectId={projectId}
@@ -55,6 +62,7 @@ function ProjectPage({
           projectName={projectContext.name}
           siteName={projectContext.siteName}
           isExpressProject={projectContext.isExpressProject}
+          isSmScreen={isSmScreen}
         />
       </div>
 
@@ -71,6 +79,7 @@ function ProjectPage({
           onFilterClick={onCurrentCategoryFilterChange}
           onViewModeClick={onCurrentViewModeChange}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
+          isSmScreen={isSmScreen}
         />
         {dataLoadingState === "error" && (
           <Alert

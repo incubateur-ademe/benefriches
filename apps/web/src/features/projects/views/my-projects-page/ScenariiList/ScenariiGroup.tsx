@@ -31,7 +31,7 @@ function ScenarioGroupTitle({
   isExpressSite: boolean;
 }) {
   return (
-    <h4 className="tour-guide-step-created-site tw-flex tw-items-center">
+    <h4 className="tour-guide-step-created-site">
       <a {...routes.siteFeatures({ siteId }).link}>{siteName}</a>
       {isExpressSite && (
         <Badge small className="tw-ml-3" style="green-tilleul">

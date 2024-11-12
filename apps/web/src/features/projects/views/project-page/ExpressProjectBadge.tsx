@@ -7,7 +7,7 @@ type Props = {
 
 const ExpressProjectTooltipBadge = ({ siteName }: Props) => {
   return (
-    <Badge small className="sm:tw-ml-3" style="green-tilleul">
+    <Badge small className="tw-my-2 sm:tw-ml-3" style="green-tilleul">
       <span>Projet express</span>
       <TooltipInfoButton
         text={

@@ -24,10 +24,10 @@ export default function SiteFeaturesHeader({ siteName, address, isFriche, isExpr
             height={76}
           />
           <div>
-            <div className="tw-inline-flex tw-items-center">
+            <div className="md:tw-inline-flex md:tw-items-center">
               <h2 className="tw-my-0">{siteName}</h2>
               {isExpressSite && (
-                <Badge small className="tw-ml-3" style="green-tilleul">
+                <Badge small className="tw-my-2 md:tw-mx-3" style="green-tilleul">
                   Site express
                 </Badge>
               )}

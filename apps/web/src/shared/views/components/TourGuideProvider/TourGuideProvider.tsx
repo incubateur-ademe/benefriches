@@ -24,7 +24,6 @@ const mapStep = ({ selector, description, title }: Props["steps"][number]): Step
     return {
       selector,
       content,
-      position: ({ left, bottom }) => [left, bottom + 16],
     };
   }
 

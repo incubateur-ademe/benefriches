@@ -23,6 +23,7 @@ type Props = {
   siteName: string;
   siteId: string;
   isExpressProject: boolean;
+  isSmScreen?: boolean;
 };
 
 function ProjectImpactsActionBar({
@@ -37,6 +38,7 @@ function ProjectImpactsActionBar({
   siteName,
   siteId,
   isExpressProject,
+  isSmScreen,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [isIntersecting, setIntersecting] = useState(false);
@@ -77,6 +79,8 @@ function ProjectImpactsActionBar({
           className={classNames(
             fr.cx("fr-container"),
             "tw-flex",
+            "tw-flex-col",
+            "md:tw-flex-row",
             "tw-justify-between",
             "tw-items-center",
           )}
@@ -87,12 +91,15 @@ function ProjectImpactsActionBar({
             siteName={siteName}
             siteId={siteId}
             isExpressProject={isExpressProject}
-            isSmall
+            isFloatingHeader
+            isSmScreen={isSmScreen}
           />
-          <ImpactEvaluationPeriodSelect
-            onChange={onEvaluationPeriodChange}
-            value={evaluationPeriod}
-          />
+          {!isSmScreen && (
+            <ImpactEvaluationPeriodSelect
+              onChange={onEvaluationPeriodChange}
+              value={evaluationPeriod}
+            />
+          )}
         </div>
       </div>
       <ImpactsActionBar
