@@ -20,7 +20,7 @@ export type ReconversionProjectImpactsResult = {
   projectData: {
     isExpressProject: boolean;
     soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: 0;
+    contaminatedSoilSurface: number;
     developmentPlan:
       | {
           type: "PHOTOVOLTAIC_POWER_PLANT";
