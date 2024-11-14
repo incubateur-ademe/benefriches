@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import { routes } from "@/app/views/router";
-
 import { KeyImpactIndicatorData } from "../../application/projectKeyImpactIndicators.selectors";
 import { ProjectOverallImpact } from "../../domain/projectKeyImpactIndicators";
 import Step1 from "./Step1";
@@ -9,14 +7,14 @@ import Step2 from "./Step2";
 import Step3 from "./Step3";
 
 type Props = {
-  projectId: string;
+  onFinalNext: () => void;
   evaluationPeriod: number;
   projectOverallImpact: ProjectOverallImpact;
   mainKeyImpactIndicators: KeyImpactIndicatorData[];
 };
 
 export default function ProjectImpactsOnboardingPage({
-  projectId,
+  onFinalNext,
   evaluationPeriod,
   projectOverallImpact,
   mainKeyImpactIndicators,
@@ -42,14 +40,7 @@ export default function ProjectImpactsOnboardingPage({
           case 2:
             return <Step2 onNextClick={goToStep(3)} onBackClick={goToStep(1)} />;
           case 3:
-            return (
-              <Step3
-                onNextClick={() => {
-                  routes.projectImpacts({ projectId }).push();
-                }}
-                onBackClick={goToStep(2)}
-              />
-            );
+            return <Step3 onNextClick={onFinalNext} onBackClick={goToStep(2)} />;
         }
       })()}
     </div>

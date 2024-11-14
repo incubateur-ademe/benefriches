@@ -1,8 +1,13 @@
-import { Header } from "@codegouvfr/react-dsfr/Header";
+import { Header, HeaderProps } from "@codegouvfr/react-dsfr/Header";
+import { Link } from "type-route";
 
 import { routes } from "@/app/views/router";
 
-function BenefrichesHeader() {
+function BenefrichesHeader({
+  homeLinkPropsHref = routes.home().href,
+  myProjectsLink = routes.myProjects().link,
+  ...props
+}: Partial<HeaderProps> & { myProjectsLink?: Link; homeLinkPropsHref?: Link["href"] }) {
   return (
     <Header
       brandTop={
@@ -13,7 +18,7 @@ function BenefrichesHeader() {
         </>
       }
       homeLinkProps={{
-        href: "/",
+        href: homeLinkPropsHref,
         title: "Accueil - Bénéfriches",
       }}
       operatorLogo={{
@@ -24,10 +29,11 @@ function BenefrichesHeader() {
       quickAccessItems={[
         {
           iconId: "fr-icon-briefcase-fill",
-          linkProps: routes.myProjects().link,
+          linkProps: myProjectsLink,
           text: "Mes projets",
         },
       ]}
+      {...props}
     />
   );
 }

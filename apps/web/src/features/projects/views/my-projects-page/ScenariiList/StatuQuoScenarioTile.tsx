@@ -7,18 +7,18 @@ import ScenarioTile from "./ScenarioTile/ScenarioTile";
 
 type Props = {
   siteId: string;
-  selectedIds: string[];
-  selectableIds: string[];
-  onChangeSelectedSite: (value?: string) => void;
+  selectedIds?: string[];
+  selectableIds?: string[];
+  onChangeSelectedSite?: (value?: string) => void;
   isFriche: boolean;
   fricheActivity?: FricheActivity;
 };
 
 function StatuQuoScenarioTile({
   siteId,
-  onChangeSelectedSite,
-  selectedIds,
-  selectableIds,
+  onChangeSelectedSite = () => {},
+  selectedIds = [],
+  selectableIds = [],
   isFriche,
   fricheActivity,
 }: Props) {

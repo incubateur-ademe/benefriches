@@ -4,8 +4,8 @@ import { routes } from "@/app/views/router";
 import Badge from "@/shared/views/components/Badge/Badge";
 
 import { ReconversionProjectList } from ".";
-import NewScenarioTile from "./NewScenarioTile";
 import ProjectScenarioTile from "./ProjectScenarioTile";
+import NewScenarioTile from "./ScenarioTile/NewScenarioTile";
 import StatuQuoScenarioTile from "./StatuQuoScenarioTile";
 
 type Props = {
@@ -85,7 +85,7 @@ function ScenariiGroup({
             />
           );
         })}
-        <NewScenarioTile siteId={siteId} />
+        <NewScenarioTile linkProps={routes.createProject({ siteId }).link} />
       </div>
     </div>
   );

@@ -3,21 +3,26 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import Dropdown from "antd/es/dropdown/dropdown";
 
-import { routes } from "@/app/views/router";
+import {
+  ProjectDevelopmentPlanType,
+  ProjectFeatures,
+} from "@/features/projects/domain/projects.types";
 import classNames from "@/shared/views/clsx";
+import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
-import { getScenarioPictoUrl } from "../shared/scenarioType";
-import ExpressProjectTooltipBadge from "./ExpressProjectBadge";
-import ProjectFeaturesView from "./features";
-import AboutImpactsModalContent from "./impacts/AboutImpactsModalContent";
+import { getScenarioPictoUrl } from "../../shared/scenarioType";
+import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
+import ProjectFeaturesView from "./../features/ProjectFeaturesView";
+import AboutImpactsModalContent from "./../impacts/AboutImpactsModalContent";
 
 type Props = {
   projectName: string;
-  projectId: string;
+  projectFeaturesData?: ProjectFeatures;
+  onFetchProjectFeatures?: () => void;
+  siteFeaturesHref: string;
   siteName: string;
-  siteId: string;
   projectType?: ProjectDevelopmentPlanType;
+  onGoToImpactsOnBoarding: () => void;
   isExpressProject: boolean;
   isFloatingHeader?: boolean;
   isSmScreen?: boolean;
@@ -35,9 +40,11 @@ const featuresModal = createModal({
 
 const ProjectPageHeader = ({
   projectName,
-  projectId,
+  projectFeaturesData,
+  onFetchProjectFeatures,
   siteName,
-  siteId,
+  siteFeaturesHref,
+  onGoToImpactsOnBoarding,
   projectType,
   isExpressProject,
   isFloatingHeader = false,
@@ -54,12 +61,17 @@ const ProjectPageHeader = ({
         <div className="tw-flex tw-items-center">
           {projectType && (
             <img
-              className="tw-mr-3"
+              className={classNames(
+                "tw-mr-3",
+                isFloatingHeader
+                  ? "tw-w-[60px] tw-h-[60px]"
+                  : "tw-w-[60px] tw-h-[60px] md:tw-w-[72px] md:tw-h-[72px]",
+              )}
               src={getScenarioPictoUrl(projectType)}
               aria-hidden={true}
               alt="Icône du type de scénario"
-              width={isFloatingHeader ? 60 : 76}
-              height={isFloatingHeader ? 60 : 76}
+              width="60"
+              height="60"
             />
           )}
 
@@ -86,7 +98,7 @@ const ProjectPageHeader = ({
                 aria-hidden="true"
               ></span>
               <a
-                href={routes.siteFeatures({ siteId }).href}
+                href={siteFeaturesHref}
                 className={classNames(
                   fr.cx("fr-text--lg"),
                   isFloatingHeader && "tw-text-lg tw-mb-0",
@@ -132,10 +144,13 @@ const ProjectPageHeader = ({
                 aboutImpactsModal.open();
               }
               if (key === "project-features") {
+                if (onFetchProjectFeatures) {
+                  onFetchProjectFeatures();
+                }
                 featuresModal.open();
               }
               if (key === "go-to-impacts-onboarding") {
-                routes.projectImpactsOnboarding({ projectId }).push();
+                onGoToImpactsOnBoarding();
               }
             },
           }}
@@ -151,7 +166,11 @@ const ProjectPageHeader = ({
           <AboutImpactsModalContent />
         </aboutImpactsModal.Component>
         <featuresModal.Component title="Caractéristiques du projet" size="large">
-          <ProjectFeaturesView projectId={projectId} />
+          {projectFeaturesData ? (
+            <ProjectFeaturesView projectData={projectFeaturesData} />
+          ) : (
+            <LoadingSpinner />
+          )}
         </featuresModal.Component>
       </div>
     </div>
