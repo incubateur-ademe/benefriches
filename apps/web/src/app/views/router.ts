@@ -1,12 +1,16 @@
 import { createRouter, defineRoute, param } from "type-route";
 
+const onBoarding = defineRoute("/premiers-pas");
+
 const { RouteProvider, useRoute, routes } = createRouter({
   home: defineRoute("/"),
-  onBoardingIdentity: defineRoute("/premiers-pas/identite"),
-  onBoardingIntroductionWhy: defineRoute("/premiers-pas/pourquoi-benefriches"),
-  onBoardingIntroductionHow: defineRoute("/premiers-pas/comment-ca-marche"),
+  // ONBOARDING GLOBAL
+  onBoardingIdentity: onBoarding.extend("/identite"),
+  onBoardingIntroductionWhy: onBoarding.extend("/pourquoi-benefriches"),
+  onBoardingIntroductionHow: onBoarding.extend("/premiers-pas/comment-ca-marche"),
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
+  // FORMS
   createSiteFoncier: defineRoute(
     { etape: param.query.optional.string },
     () => "/creer-site-foncier",
@@ -15,6 +19,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { etape: param.query.optional.string, siteId: param.query.string },
     () => "/creer-projet",
   ),
+  // PROJECT IMPACTS
   projectImpacts: defineRoute(
     { projectId: param.path.string },
     (params) => `/mes-projets/${params.projectId}/impacts`,
@@ -23,6 +28,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
     { projectId: param.path.string },
     (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
   ),
+  // MES PROJETS
   myProjects: defineRoute("/mes-projets"),
   siteFeatures: defineRoute(
     {
@@ -30,6 +36,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
     },
     (params) => `/sites/${params.siteId}/caracteristiques`,
   ),
+  // PAGES
   budget: defineRoute("/budget"),
   stats: defineRoute("/statistiques"),
   mentionsLegales: defineRoute("/mentions-legales"),
