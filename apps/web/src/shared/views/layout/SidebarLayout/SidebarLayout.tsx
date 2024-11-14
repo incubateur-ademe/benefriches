@@ -1,18 +1,18 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
-import { createContext, ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 
 import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
+
+import { SidebarLayoutContext } from "./SidebarLayoutContext";
 
 type SidebarLayoutProps = {
   mainChildren: ReactNode;
   sidebarChildren: ReactNode;
   title: ReactNode;
 };
-
-export const SidebarLayoutContext = createContext(false);
 
 function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutProps) {
   const { breakpointsValues } = useBreakpointsValuesPx();
@@ -21,7 +21,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
   const [isOpen, setOpen] = useState(windowInnerWidth < breakpointsValues.lg ? false : true);
 
   return (
-    <SidebarLayoutContext.Provider value={isOpen}>
+    <SidebarLayoutContext.Provider value={{ isOpen }}>
       <div className={classNames("tw-flex", "tw-w-full", "tw-h-full")}>
         <div
           className={classNames(

@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { SidebarLayoutContext } from "../SidebarLayout/SidebarLayout";
+import { SidebarLayoutContext } from "../SidebarLayout/SidebarLayoutContext";
 
 type Props = {
   currentStepIndex: number;
@@ -22,7 +22,7 @@ const Step = ({ title, index, currentStepIndex, isDone }: StepProps) => {
   const isCurrent = currentStepIndex === index;
   const isCompleted = isPreviousStep || (isCurrent && isDone);
 
-  const isExtended = useContext(SidebarLayoutContext);
+  const { isOpen: isExtended } = useContext(SidebarLayoutContext);
 
   return (
     <li
