@@ -1,7 +1,4 @@
-import {
-  SocialImpact,
-  SocialImpactName,
-} from "@/features/projects/application/projectImpactsSocial.selectors";
+import { SocialImpact, SocialImpactName } from "@/features/projects/domain/projectImpactsSocial";
 import { getSocialImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";

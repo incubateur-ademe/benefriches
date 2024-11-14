@@ -1,7 +1,7 @@
 import { RootState } from "@/app/application/store";
 
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
-import { getEconomicBalanceProjectImpacts } from "./projectImpactsEconomicBalance.selectors";
+import { getEconomicBalanceProjectImpactsSelector } from "./projectImpactsEconomicBalance.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {
@@ -29,7 +29,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
     it.each([{ filter: "all" }, { filter: "economic" }])(
       "should return economic balance formatted with details and total for filter $filter",
       ({ filter }) => {
-        const economicBalance = getEconomicBalanceProjectImpacts.resultFunc(
+        const economicBalance = getEconomicBalanceProjectImpactsSelector.resultFunc(
           filter as "economic" | "all",
           "PHOTOVOLTAIC_POWER_PLANT",
           MOCK_STATES.projectImpacts["impactsData"],
@@ -94,7 +94,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
     it.each([{ filter: "environment" }, { filter: "social" }])(
       "should return empty economic balance for filter $filter",
       ({ filter }) => {
-        const economicBalance = getEconomicBalanceProjectImpacts.resultFunc(
+        const economicBalance = getEconomicBalanceProjectImpactsSelector.resultFunc(
           filter as "environment" | "social",
           "PHOTOVOLTAIC_POWER_PLANT",
           MOCK_STATES.projectImpacts["impactsData"],
@@ -106,7 +106,7 @@ describe("projectImpactsEconomicBalance selectors", () => {
     );
 
     it("should the right impact key for mixed use neighbourhood project for installation costs", () => {
-      const economicBalance = getEconomicBalanceProjectImpacts.resultFunc(
+      const economicBalance = getEconomicBalanceProjectImpactsSelector.resultFunc(
         "all",
         "URBAN_PROJECT",
         MOCK_STATES.projectImpacts["impactsData"],

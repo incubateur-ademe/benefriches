@@ -1,7 +1,7 @@
 import {
   EconomicBalance,
   EconomicBalanceName,
-} from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+} from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 
 import {

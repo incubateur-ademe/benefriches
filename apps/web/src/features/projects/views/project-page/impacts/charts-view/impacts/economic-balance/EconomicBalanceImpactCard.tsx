@@ -6,7 +6,7 @@ import { sumList } from "shared";
 import {
   EconomicBalance,
   EconomicBalanceMainName,
-} from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+} from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
