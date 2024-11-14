@@ -25,7 +25,7 @@ export type ProjectImpactsState = {
     id: string;
     name: string;
     soilsDistribution: SoilsDistribution;
-    contaminatedSoilSurface: 0;
+    contaminatedSoilSurface: number;
     isExpressProject: boolean;
     developmentPlan:
       | {

@@ -29,7 +29,7 @@ export type ImpactDescriptionModalCategory =
 
 export type ProjectData = {
   soilsDistribution: SoilsDistribution;
-  contaminatedSoilSurface: 0;
+  contaminatedSoilSurface: number;
   developmentPlan:
     | {
         type: "PHOTOVOLTAIC_POWER_PLANT";
