@@ -32,7 +32,7 @@ type Props = {
     projectType?: ProjectDevelopmentPlanType;
     onGoToImpactsOnBoarding: () => void;
     isExpressProject: boolean;
-    isFloatingHeader?: boolean;
+    isSmall?: boolean;
   };
 };
 
@@ -77,13 +77,13 @@ function ProjectImpactsActionBar({
           "tw-w-full",
           "tw-fixed",
           "tw-top-0",
-          "tw-p-4",
+          "tw-py-4 md:tw-p-4",
           isIntersecting && "tw-hidden",
         )}
       >
         <div
           className={classNames(
-            fr.cx("fr-container"),
+            fr.cx("fr-container-md"),
             "tw-flex",
             "tw-flex-col",
             "md:tw-flex-row",
@@ -91,7 +91,7 @@ function ProjectImpactsActionBar({
             "tw-items-center",
           )}
         >
-          <ProjectsImpactsPageHeader {...headerProps} isFloatingHeader />
+          <ProjectsImpactsPageHeader {...headerProps} isSmall />
           {!isSmScreen && (
             <ImpactEvaluationPeriodSelect
               onChange={onEvaluationPeriodChange}
@@ -108,6 +108,7 @@ function ProjectImpactsActionBar({
         onFilterClick={onFilterClick}
         onViewModeClick={onViewModeClick}
         onEvaluationPeriodChange={onEvaluationPeriodChange}
+        small={isSmScreen}
       />
     </>
   );

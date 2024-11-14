@@ -24,8 +24,7 @@ type Props = {
   projectType?: ProjectDevelopmentPlanType;
   onGoToImpactsOnBoarding: () => void;
   isExpressProject: boolean;
-  isFloatingHeader?: boolean;
-  isSmScreen?: boolean;
+  isSmall?: boolean;
 };
 
 const aboutImpactsModal = createModal({
@@ -47,69 +46,59 @@ const ProjectPageHeader = ({
   onGoToImpactsOnBoarding,
   projectType,
   isExpressProject,
-  isFloatingHeader = false,
-  isSmScreen = false,
+  isSmall = false,
 }: Props) => {
   return (
     <div className={fr.cx("fr-container")}>
       <div
         className={classNames(
-          "tw-flex tw-justify-between tw-items-center",
-          !isFloatingHeader && "tw-my-4",
+          "tw-grid",
+          "tw-grid-cols-[60px_1fr_32px]",
+          "md:tw-grid-cols-[72px_1fr_40px]",
+          "tw-gap-x-2 md:tw-gap-x-3",
+          "tw-items-center",
+          "tw-justify-center",
         )}
       >
-        <div className="tw-flex tw-items-center">
-          {projectType && (
-            <img
-              className={classNames(
-                "tw-mr-3",
-                isFloatingHeader
-                  ? "tw-w-[60px] tw-h-[60px]"
-                  : "tw-w-[60px] tw-h-[60px] md:tw-w-[72px] md:tw-h-[72px]",
-              )}
-              src={getScenarioPictoUrl(projectType)}
-              aria-hidden={true}
-              alt="Icône du type de scénario"
-              width="60"
-              height="60"
-            />
-          )}
+        {projectType && (
+          <img
+            className={classNames(
+              "tw-col-start-1",
+              "sm:tw-row-start-1",
+              "sm:tw-row-span-2",
+              "tw-w-[60px] tw-h-[60px] md:tw-w-[72px] md:tw-h-[72px]",
+            )}
+            src={getScenarioPictoUrl(projectType)}
+            aria-hidden={true}
+            alt="Icône du type de scénario"
+            width="60"
+            height="60"
+          />
+        )}
 
-          <div>
-            <div className="sm:tw-inline-flex tw-items-center">
-              <h2
-                className={classNames("tw-my-0", isFloatingHeader || (isSmScreen && "tw-text-2xl"))}
-              >
-                {projectName}
-              </h2>
-              {isExpressProject && !(isFloatingHeader && isSmScreen) && (
-                <ExpressProjectTooltipBadge siteName={siteName} />
-              )}
-            </div>
-            <div className={classNames(!isFloatingHeader && "tw-mt-1")}>
-              <span
-                className={classNames(
-                  fr.cx(
-                    "fr-icon-map-pin-2-line",
-                    "fr-icon--sm",
-                    isFloatingHeader ? "fr-mr-1w" : "fr-mr-0-5v",
-                  ),
-                )}
-                aria-hidden="true"
-              ></span>
-              <a
-                href={siteFeaturesHref}
-                className={classNames(
-                  fr.cx("fr-text--lg"),
-                  isFloatingHeader && "tw-text-lg tw-mb-0",
-                )}
-              >
-                {siteName}
-              </a>
-            </div>
-          </div>
+        <div className="tw-col-start-2 sm:tw-inline-flex tw-items-center">
+          <h2 className={classNames("tw-my-0", isSmall && "tw-text-2xl")}>{projectName}</h2>
+          {isExpressProject && !isSmall && <ExpressProjectTooltipBadge siteName={siteName} />}
+        </div>
+        <div
+          className={classNames(
+            "tw-row-start-2",
+            "tw-col-start-1 sm:tw-col-start-2",
+            "tw-col-span-3 sm:tw-col-span-1",
+          )}
+        >
+          <span
+            className={classNames(
+              fr.cx("fr-icon-map-pin-2-line", "fr-icon--sm", isSmall ? "fr-mr-1w" : "fr-mr-0-5v"),
+            )}
+            aria-hidden="true"
+          ></span>
+          <a href={siteFeaturesHref} className={classNames("tw-text-base md:tw-text-lg")}>
+            {siteName}
+          </a>
         </div>
         <Dropdown
+          className="tw-col-start-3 sm:tw-row-span-2"
           trigger={["click"]}
           menu={{
             items: [
@@ -156,7 +145,7 @@ const ProjectPageHeader = ({
           }}
         >
           <Button
-            size={isSmScreen ? "small" : "medium"}
+            size={isSmall ? "small" : "medium"}
             priority="secondary"
             iconId="fr-icon-more-fill"
             title="Voir plus de fonctionnalités"

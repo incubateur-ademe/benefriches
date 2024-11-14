@@ -72,8 +72,8 @@ function ProjectPage({
       id="project-impacts-page"
       className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full")}
     >
-      <div className="tw-pt-8 md:tw-pb-8">
-        <ProjectsImpactsPageHeader {...headerProps} />
+      <div className="tw-pt-8 tw-pb-8">
+        <ProjectsImpactsPageHeader {...headerProps} isSmall={isSmScreen} />
       </div>
 
       <div className="fr-container">

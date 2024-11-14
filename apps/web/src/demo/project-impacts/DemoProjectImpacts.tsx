@@ -67,8 +67,8 @@ function DemoProjectImpacts({ projectData, siteData, impactsData }: Props) {
       id="project-impacts-page"
       className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full")}
     >
-      <div className="tw-pt-8 md:tw-pb-8">
-        <ProjectPageHeader {...headerProps} />
+      <div className="tw-py-8">
+        <ProjectPageHeader {...headerProps} isSmall={isSmScreen} />
       </div>
 
       <div className="fr-container">

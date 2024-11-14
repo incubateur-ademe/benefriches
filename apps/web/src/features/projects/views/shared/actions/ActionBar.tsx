@@ -16,6 +16,7 @@ type Props = {
   onFilterClick: (filterValue: ImpactCategoryFilter) => void;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
+  small?: boolean;
 };
 
 type Ref = HTMLDivElement;
@@ -30,6 +31,7 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
     selectedViewMode,
     evaluationPeriod,
     onEvaluationPeriodChange,
+    small,
   } = baseProps;
 
   const getViewSegmentInputProps = (value: ViewMode) => {
@@ -44,6 +46,7 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
   return (
     <section ref={ref} className="md:tw-flex tw-py-4 tw-mb-2 tw-justify-between">
       <SegmentedControl
+        small={small}
         legend="Filtres"
         hideLegend
         segments={[
