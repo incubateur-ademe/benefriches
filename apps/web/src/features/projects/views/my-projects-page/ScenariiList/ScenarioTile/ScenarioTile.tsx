@@ -15,18 +15,18 @@ type Props = {
   details?: string;
   linkProps?: { href: string };
   isHovered?: boolean;
-  isSelected: boolean;
-  shouldDisplayCheckbox: boolean;
+  isSelected?: boolean;
+  shouldDisplayCheckbox?: boolean;
   className?: ClassValue;
   tooltipText?: string;
-  onChangeCheckbox: (selected: boolean) => void;
-  onMouseEnter: () => void;
-  onMouseLeave: () => void;
+  onChangeCheckbox?: (selected: boolean) => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 };
 
 function ScenarioTile({
-  onChangeCheckbox,
-  isSelected,
+  onChangeCheckbox = () => {},
+  isSelected = false,
   shouldDisplayCheckbox,
   title,
   details,

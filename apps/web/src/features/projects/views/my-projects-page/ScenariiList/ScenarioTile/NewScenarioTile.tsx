@@ -1,14 +1,14 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import "@codegouvfr/react-dsfr/dsfr/utility/icons/icons-system/icons-system.css";
+import { Link } from "type-route";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 
 type Props = {
-  siteId: string;
+  linkProps?: Link;
 };
 
-function NewScenarioTile({ siteId }: Props) {
+function NewScenarioTile({ linkProps }: Props) {
   return (
     <div
       className={classNames(
@@ -20,7 +20,7 @@ function NewScenarioTile({ siteId }: Props) {
       )}
     >
       <a
-        {...routes.createProject({ siteId }).link}
+        {...linkProps}
         className={classNames(
           "tw-w-full",
           "tw-h-full",

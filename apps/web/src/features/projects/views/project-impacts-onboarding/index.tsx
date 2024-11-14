@@ -1,6 +1,7 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 
+import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -43,7 +44,9 @@ function ProjectImpactsOnboardingPageContainer({ projectId }: Props) {
 
   return (
     <ProjectImpactsOnboardingPage
-      projectId={projectId}
+      onFinalNext={() => {
+        routes.projectImpacts({ projectId }).push();
+      }}
       projectOverallImpact={projectOverallImpact}
       mainKeyImpactIndicators={mainKeyImpactIndicators}
       evaluationPeriod={evaluationPeriod}

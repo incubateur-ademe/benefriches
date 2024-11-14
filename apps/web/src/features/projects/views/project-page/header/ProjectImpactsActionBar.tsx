@@ -5,10 +5,14 @@ import {
   ImpactCategoryFilter,
   ViewMode,
 } from "@/features/projects/application/projectImpacts.reducer";
+import {
+  ProjectDevelopmentPlanType,
+  ProjectFeatures,
+} from "@/features/projects/domain/projects.types";
 import classNames from "@/shared/views/clsx";
 
-import ImpactsActionBar from "../shared/actions/ActionBar";
-import ImpactEvaluationPeriodSelect from "../shared/actions/ImpactEvaluationPeriodSelect";
+import ImpactsActionBar from "../../shared/actions/ActionBar";
+import ImpactEvaluationPeriodSelect from "../../shared/actions/ImpactEvaluationPeriodSelect";
 import ProjectsImpactsPageHeader from "./ProjectPageHeader";
 
 type Props = {
@@ -18,12 +22,18 @@ type Props = {
   onFilterClick: (filterValue: ImpactCategoryFilter) => void;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
-  projectName: string;
-  projectId: string;
-  siteName: string;
-  siteId: string;
-  isExpressProject: boolean;
   isSmScreen?: boolean;
+  headerProps: {
+    projectName: string;
+    projectFeaturesData?: ProjectFeatures;
+    onFetchProjectFeatures?: () => void;
+    siteFeaturesHref: string;
+    siteName: string;
+    projectType?: ProjectDevelopmentPlanType;
+    onGoToImpactsOnBoarding: () => void;
+    isExpressProject: boolean;
+    isFloatingHeader?: boolean;
+  };
 };
 
 function ProjectImpactsActionBar({
@@ -33,12 +43,8 @@ function ProjectImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
-  projectName,
-  projectId,
-  siteName,
-  siteId,
-  isExpressProject,
   isSmScreen,
+  headerProps,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [isIntersecting, setIntersecting] = useState(false);
@@ -85,15 +91,7 @@ function ProjectImpactsActionBar({
             "tw-items-center",
           )}
         >
-          <ProjectsImpactsPageHeader
-            projectName={projectName}
-            projectId={projectId}
-            siteName={siteName}
-            siteId={siteId}
-            isExpressProject={isExpressProject}
-            isFloatingHeader
-            isSmScreen={isSmScreen}
-          />
+          <ProjectsImpactsPageHeader {...headerProps} isFloatingHeader />
           {!isSmScreen && (
             <ImpactEvaluationPeriodSelect
               onChange={onEvaluationPeriodChange}
