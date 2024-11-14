@@ -3,7 +3,7 @@ import { SoilType } from "shared";
 import {
   EnvironmentalImpact,
   EnvironmentalImpactName,
-} from "@/features/projects/application/projectImpactsEnvironmental.selectors";
+} from "@/features/projects/domain/projectImpactsEnvironmental";
 import {
   getEnvironmentalDetailsImpactLabel,
   getEnvironmentalImpactLabel,

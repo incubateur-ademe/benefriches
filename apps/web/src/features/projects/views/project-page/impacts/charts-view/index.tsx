@@ -1,8 +1,8 @@
 import { getProjectName } from "@/features/projects/application/projectImpacts.reducer";
-import { getEconomicBalanceProjectImpacts } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { getEnvironmentalProjectImpacts } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { getSocialProjectImpacts } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { getSocioEconomicProjectImpactsByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { getEconomicBalanceProjectImpactsSelector } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+import { getEnvironmentalProjectImpactsSelector } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
+import { getSocialProjectImpactsSelector } from "@/features/projects/application/projectImpactsSocial.selectors";
+import { getSocioEconomicProjectImpactsByActorSelector } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
@@ -13,10 +13,10 @@ type Props = {
 };
 
 const ImpactsChartsViewContainer = ({ openImpactDescriptionModal }: Props) => {
-  const economicBalance = useAppSelector(getEconomicBalanceProjectImpacts);
-  const socioEconomicImpacts = useAppSelector(getSocioEconomicProjectImpactsByActor);
-  const environmentImpacts = useAppSelector(getEnvironmentalProjectImpacts);
-  const socialImpacts = useAppSelector(getSocialProjectImpacts);
+  const economicBalance = useAppSelector(getEconomicBalanceProjectImpactsSelector);
+  const socioEconomicImpacts = useAppSelector(getSocioEconomicProjectImpactsByActorSelector);
+  const environmentImpacts = useAppSelector(getEnvironmentalProjectImpactsSelector);
+  const socialImpacts = useAppSelector(getSocialProjectImpactsSelector);
   const projectName = useAppSelector(getProjectName);
 
   return (

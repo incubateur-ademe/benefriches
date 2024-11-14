@@ -2,8 +2,8 @@ import { RootState } from "@/app/application/store";
 
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
 import {
-  getDetailedSocioEconomicProjectImpacts,
-  getSocioEconomicProjectImpactsByActor,
+  getDetailedSocioEconomicProjectImpactsSelector,
+  getSocioEconomicProjectImpactsByActorSelector,
 } from "./projectImpactsSocioEconomic.selectors";
 
 const MOCK_STATES = {
@@ -31,7 +31,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
   describe("getDetailedSocioEconomicProjectImpacts", () => {
     it("should return socio economic impacts formatted with details and total for filter `all`", () => {
       const { economicDirect, economicIndirect, environmentalMonetary } =
-        getDetailedSocioEconomicProjectImpacts.resultFunc(
+        getDetailedSocioEconomicProjectImpactsSelector.resultFunc(
           "all",
           MOCK_STATES.projectImpacts["impactsData"],
         );
@@ -145,7 +145,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
 
     it("should return socio economic impacts formatted with details and total for filter `economic`", () => {
       const { economicDirect, economicIndirect, environmentalMonetary } =
-        getDetailedSocioEconomicProjectImpacts.resultFunc(
+        getDetailedSocioEconomicProjectImpactsSelector.resultFunc(
           "economic",
           MOCK_STATES.projectImpacts["impactsData"],
         );
@@ -200,7 +200,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
 
     it("should return socio economic impacts formatted with details and total for filter `environment`", () => {
       const { economicDirect, economicIndirect, environmentalMonetary } =
-        getDetailedSocioEconomicProjectImpacts.resultFunc(
+        getDetailedSocioEconomicProjectImpactsSelector.resultFunc(
           "environment",
           MOCK_STATES.projectImpacts["impactsData"],
         );
@@ -271,7 +271,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
 
     it("should return socio economic impacts formatted with details and total for filter `social`", () => {
       const { economicDirect, economicIndirect, environmentalMonetary, total } =
-        getDetailedSocioEconomicProjectImpacts.resultFunc(
+        getDetailedSocioEconomicProjectImpactsSelector.resultFunc(
           "social",
           MOCK_STATES.projectImpacts["impactsData"],
         );
@@ -286,7 +286,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
 
   describe("getSocioEconomicProjectImpactsByActor", () => {
     it("should return socio economic impacts formatted by actor for filter `all`", () => {
-      const byActor = getSocioEconomicProjectImpactsByActor.resultFunc(
+      const byActor = getSocioEconomicProjectImpactsByActorSelector.resultFunc(
         "all",
         MOCK_STATES.projectImpacts["impactsData"],
       );
@@ -334,7 +334,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
     });
 
     it("should return socio economic impacts formatted by actor for filter `economic`", () => {
-      const byActor = getSocioEconomicProjectImpactsByActor.resultFunc(
+      const byActor = getSocioEconomicProjectImpactsByActorSelector.resultFunc(
         "economic",
         MOCK_STATES.projectImpacts["impactsData"],
       );
@@ -370,7 +370,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
     });
 
     it("should return socio economic impacts formatted by actor for filter `environment`", () => {
-      const byActor = getSocioEconomicProjectImpactsByActor.resultFunc(
+      const byActor = getSocioEconomicProjectImpactsByActorSelector.resultFunc(
         "environment",
         MOCK_STATES.projectImpacts["impactsData"],
       );
@@ -397,7 +397,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
     });
 
     it("should return socio economic impacts formatted by actor for filter `social`", () => {
-      const byActor = getSocioEconomicProjectImpactsByActor.resultFunc(
+      const byActor = getSocioEconomicProjectImpactsByActorSelector.resultFunc(
         "social",
         MOCK_STATES.projectImpacts["impactsData"],
       );

@@ -1,7 +1,7 @@
 import { RootState } from "@/app/application/store";
 
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
-import { getEnvironmentalProjectImpacts } from "./projectImpactsEnvironmental.selectors";
+import { getEnvironmentalProjectImpactsSelector } from "./projectImpactsEnvironmental.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {
@@ -29,7 +29,7 @@ describe("projectImpactsEnvironmental selectors", () => {
     it.each([{ filter: "all" }, { filter: "environment" }])(
       "should return environment formatted with details and total for filter $filter",
       ({ filter }) => {
-        const impacts = getEnvironmentalProjectImpacts.resultFunc(
+        const impacts = getEnvironmentalProjectImpactsSelector.resultFunc(
           filter as "environment" | "all",
           MOCK_STATES.projectImpacts["impactsData"],
         );
@@ -114,7 +114,7 @@ describe("projectImpactsEnvironmental selectors", () => {
     it.each([{ filter: "economic" }, { filter: "social" }])(
       "should return empty environmental impacts for filter $filter",
       ({ filter }) => {
-        const impacts = getEnvironmentalProjectImpacts.resultFunc(
+        const impacts = getEnvironmentalProjectImpactsSelector.resultFunc(
           filter as "economic" | "social",
           MOCK_STATES.projectImpacts["impactsData"],
         );

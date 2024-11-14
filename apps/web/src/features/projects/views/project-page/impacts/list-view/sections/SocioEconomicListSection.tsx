@@ -1,7 +1,7 @@
 import {
   SocioEconomicDetailedImpact,
   SocioEconomicImpactName,
-} from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+} from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";

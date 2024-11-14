@@ -1,6 +1,6 @@
 import {
   getCategoryFilter,
-  getKeyImpactIndicatorsList,
+  getKeyImpactIndicatorsListSelector,
 } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -8,7 +8,7 @@ import ImpactSummaryView from "./ImpactSummaryView";
 
 const ImpactsSummaryViewContainer = () => {
   const categoryFilter = useAppSelector(getCategoryFilter);
-  const keyImpactIndicatorsList = useAppSelector(getKeyImpactIndicatorsList);
+  const keyImpactIndicatorsList = useAppSelector(getKeyImpactIndicatorsListSelector);
 
   return (
     <ImpactSummaryView

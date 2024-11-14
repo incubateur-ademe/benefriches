@@ -1,4 +1,4 @@
-import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { SocioEconomicImpactByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import ImpactsChartsSection from "../../ImpactsChartsSection";
 import SocioEconomicImpactsByActorChart from "./SocioEconomicImpactsByActorChart";

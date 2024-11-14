@@ -1,5 +1,5 @@
-import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { SocioEconomicImpactByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
+import { SocioEconomicImpactByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanceImpactCard";

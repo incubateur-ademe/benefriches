@@ -1,7 +1,7 @@
 import {
   EnvironmentalImpact,
   EnvironmentalImpactName,
-} from "@/features/projects/application/projectImpactsEnvironmental.selectors";
+} from "@/features/projects/domain/projectImpactsEnvironmental";
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 
 import {

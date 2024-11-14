@@ -1,7 +1,7 @@
-import { EconomicBalance } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { EnvironmentalImpact } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { SocialImpact } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { SocioEconomicDetailedImpact } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
+import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEnvironmental";
+import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
+import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import EconomicBalanceListSection from "./sections/EconomicBalance";

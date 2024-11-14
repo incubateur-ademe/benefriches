@@ -4,16 +4,16 @@ import {
   DevelopmentPlanInstallationExpenseName,
   EconomicBalanceMainName,
   EconomicBalanceName,
-} from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+} from "@/features/projects/domain/projectImpactsEconomicBalance";
 import {
   CO2BenefitDetails,
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
   PermeableSoilsDetails,
   SoilsCarbonStorageDetails,
-} from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { SocialImpactName } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { SocioEconomicImpactName } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+} from "@/features/projects/domain/projectImpactsEnvironmental";
+import { SocialImpactName } from "@/features/projects/domain/projectImpactsSocial";
+import { SocioEconomicImpactName } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { FinancialAssistance } from "../../../domain/impacts.types";
 
