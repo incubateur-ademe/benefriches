@@ -34,4 +34,15 @@ export class LocalStorageAppSettings implements AppSettingsGateway {
 
     localStorage.setItem(APP_SETTINGS_STORAGE_KEY, JSON.stringify(updatedAppSettings));
   }
+
+  setShouldDisplayDemoMyProjectTourGuide(value: boolean) {
+    const appSettings = this.getAll();
+
+    const updatedAppSettings: AppSettings = {
+      ...appSettings,
+      shouldDisplayDemoMyProjectTourGuide: value,
+    };
+
+    localStorage.setItem(APP_SETTINGS_STORAGE_KEY, JSON.stringify(updatedAppSettings));
+  }
 }

@@ -1,9 +1,11 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { breakpoints } from "@codegouvfr/react-dsfr/fr/breakpoints";
 import { PopoverContentProps, StepType, TourProvider } from "@reactour/tour";
 import { ReactElement, ReactNode } from "react";
 
 type Props = {
   children: ReactNode;
+  disableCloseBeforeEnd?: boolean;
   steps: {
     selector?: string | Element;
     title: ReactElement | string;
@@ -24,13 +26,19 @@ const mapStep = ({ selector, description, title }: Props["steps"][number]): Step
     return {
       selector,
       content,
+      padding: {
+        popover: [10, 5, 10, 5],
+      },
     };
   }
 
   return {
     selector: ".tour-guide-no-selector",
     content,
-    position: ({ windowHeight, height }) => [32, windowHeight - height - 32],
+    position: ({ windowHeight, height, windowWidth }) =>
+      windowWidth < breakpoints.getPxValues().sm
+        ? [16, windowHeight - height - 16]
+        : [32, windowHeight - height - 32],
     styles: {
       maskArea: (base) => ({ ...base, height: 0, width: 0 }),
     },
@@ -45,15 +53,24 @@ const allowBodyOverflow = () => {
   document.body.classList.remove("tw-overflow-hidden");
 };
 
-function TourGuideProvider({ children, steps, onCloseTutorial }: Props) {
+function TourGuideProvider({
+  children,
+  steps,
+  onCloseTutorial,
+  disableCloseBeforeEnd = false,
+}: Props) {
   const hasIntro = !steps[0]?.selector;
 
   return (
     <TourProvider
-      className="tw-rounded-lg tw-p-4 !tw-max-w-96"
+      className="tw-rounded-lg tw-p-4 tw-max-w-[calc(100%-16px)]  sm:!tw-max-w-96"
       afterOpen={preventBodyOverflow}
       beforeClose={allowBodyOverflow}
       onClickMask={({ setIsOpen, setCurrentStep }) => {
+        if (disableCloseBeforeEnd) {
+          setIsOpen(true);
+          return;
+        }
         setIsOpen(false);
         setCurrentStep(0);
         if (onCloseTutorial) {
@@ -102,9 +119,11 @@ function TourGuideProvider({ children, steps, onCloseTutorial }: Props) {
               <Button priority="primary" onClick={onNext}>
                 {isIntro ? "C’est parti" : isLast ? "C’est compris" : "Suivant"}
               </Button>
-              <Button priority="tertiary no outline" onClick={onClose}>
-                Quitter le tutoriel
-              </Button>
+              {!disableCloseBeforeEnd && (
+                <Button priority="tertiary no outline" onClick={onClose}>
+                  Quitter le tutoriel
+                </Button>
+              )}
             </div>
           </>
         );
