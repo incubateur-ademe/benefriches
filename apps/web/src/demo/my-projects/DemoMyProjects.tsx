@@ -9,7 +9,6 @@ import Badge from "@/shared/views/components/Badge/Badge";
 
 import NewScenarioTile from "../../features/projects/views/my-projects-page/ScenariiList/ScenarioTile/NewScenarioTile";
 import ScenarioTile from "../../features/projects/views/my-projects-page/ScenariiList/ScenarioTile/ScenarioTile";
-import StatuQuoScenarioTile from "../../features/projects/views/my-projects-page/ScenariiList/StatuQuoScenarioTile";
 import { getScenarioPictoUrl } from "../../features/projects/views/shared/scenarioType";
 import MyProjectsTourGuide from "./MyProjectTourGuide";
 
@@ -47,13 +46,8 @@ function DemoMyProjects({ siteData, projectData }: Props) {
             Site démo
           </Badge>
         </h4>
-        <p>1 scenario possible pour ce site :</p>
+        <p>Dans ce mode demo, un seul usage possible pour ce site :</p>
         <div className="tw-grid sm:tw-grid-cols-[repeat(auto-fill,_282px)] tw-gap-6">
-          <StatuQuoScenarioTile
-            isFriche={siteData.isFriche}
-            fricheActivity={siteData.fricheActivity}
-            siteId={siteData.id}
-          />
           <ScenarioTile
             className="tour-guide-step-created-project"
             title={projectData.name}
