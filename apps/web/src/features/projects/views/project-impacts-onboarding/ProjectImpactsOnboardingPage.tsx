@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import { KeyImpactIndicatorData } from "../../application/projectKeyImpactIndicators.selectors";
 import { ProjectOverallImpact } from "../../domain/projectKeyImpactIndicators";
@@ -24,8 +24,12 @@ export default function ProjectImpactsOnboardingPage({
     setStep(nextStep);
   };
 
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentStep]);
+
   return (
-    <div className="fr-container tw-my-8 md:tw-my-20">
+    <div className="fr-container tw-my-8 md:tw-my-20" id="step-container">
       {(() => {
         switch (currentStep) {
           case 1:

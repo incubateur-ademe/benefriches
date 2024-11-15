@@ -9,16 +9,14 @@ type Props = {
 
 export default function Step2({ onNextClick, onBackClick }: Props) {
   return (
-    <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6">
-      <div className="tw-m-auto md:tw-m-0">
-        <img
-          src="/img/pictograms/project-impacts-onboarding/beneficiaries.svg"
-          aria-hidden="true"
-          alt="pictogramme bénéficiaires des impacts"
-          width="100%"
-        />
-      </div>
-      <div>
+    <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6 tw-items-start">
+      <img
+        src="/img/pictograms/project-impacts-onboarding/beneficiaries.svg"
+        aria-hidden="true"
+        alt="pictogramme bénéficiaires des impacts"
+        className="tw-w-1/2 md:tw-w-1/3 tw-mx-auto"
+      />
+      <div className="md:tw-w-2/3">
         <h1 className="tw-text-[32px]">
           Votre projet aura un impact réel sur de{" "}
           <span className="tw-bg-[#E180A080]">nombreuses personnes</span>.

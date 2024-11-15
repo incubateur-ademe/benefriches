@@ -77,16 +77,14 @@ export default function Step1({
   onNextClick,
 }: Props) {
   return (
-    <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6">
-      <div className="tw-m-auto md:tw-m-0">
-        <img
-          src={getOverallImpactIllustrationUrl(projectOverallImpact)}
-          aria-hidden="true"
-          alt="pictogramme curseur des impacts"
-          width="100%"
-        />
-      </div>
-      <div>
+    <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6 tw-items-start">
+      <img
+        src={getOverallImpactIllustrationUrl(projectOverallImpact)}
+        aria-hidden="true"
+        alt="pictogramme curseur des impacts"
+        className="tw-w-[90%] md:tw-w-1/3 tw-mx-auto"
+      />
+      <div className="md:tw-w-2/3">
         <h1 className="tw-text-[32px]">{getTitle(projectOverallImpact)}</h1>
         <p className="tw-text-lg tw-font-bold">
           En {evaluationPeriod} {evaluationPeriod <= 1 ? "an" : "ans"}, il générera notamment :
