@@ -1,8 +1,8 @@
-import { getProjectName } from "@/features/projects/application/projectImpacts.reducer";
-import { getEconomicBalanceProjectImpactsSelector } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { getEnvironmentalProjectImpactsSelector } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { getSocialProjectImpactsSelector } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { getSocioEconomicProjectImpactsByActorSelector } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import { selectProjectName } from "@/features/projects/application/projectImpacts.reducer";
+import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
+import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
+import { selectSocialProjectImpacts } from "@/features/projects/application/projectImpactsSocial.selectors";
+import { selectSocioEconomicProjectImpactsByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
@@ -13,11 +13,11 @@ type Props = {
 };
 
 const ImpactsChartsViewContainer = ({ openImpactDescriptionModal }: Props) => {
-  const economicBalance = useAppSelector(getEconomicBalanceProjectImpactsSelector);
-  const socioEconomicImpacts = useAppSelector(getSocioEconomicProjectImpactsByActorSelector);
-  const environmentImpacts = useAppSelector(getEnvironmentalProjectImpactsSelector);
-  const socialImpacts = useAppSelector(getSocialProjectImpactsSelector);
-  const projectName = useAppSelector(getProjectName);
+  const economicBalance = useAppSelector(selectEconomicBalanceProjectImpacts);
+  const socioEconomicImpacts = useAppSelector(selectSocioEconomicProjectImpactsByActor);
+  const environmentImpacts = useAppSelector(selectEnvironmentalProjectImpacts);
+  const socialImpacts = useAppSelector(selectSocialProjectImpacts);
+  const projectName = useAppSelector(selectProjectName);
 
   return (
     <ImpactsChartsView

@@ -1,7 +1,8 @@
-import { RootState } from "@/app/application/store";
+import { createStore, RootState } from "@/app/application/store";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
-import { getEnvironmentalProjectImpactsSelector } from "./projectImpactsEnvironmental.selectors";
+import { selectEnvironmentalProjectImpacts } from "./projectImpactsEnvironmental.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {
@@ -26,9 +27,9 @@ const MOCK_STATES = {
 describe("projectImpactsEnvironmental selectors", () => {
   describe("getEnvironmentalProjectImpacts", () => {
     it("should return environment formatted with details and total", () => {
-      const impacts = getEnvironmentalProjectImpactsSelector.resultFunc(
-        MOCK_STATES.projectImpacts["impactsData"],
-      );
+      const store = createStore(getTestAppDependencies(), MOCK_STATES);
+      const rootState = store.getState();
+      const impacts = selectEnvironmentalProjectImpacts(rootState);
 
       expect(impacts).toContainEqual(
         expect.objectContaining({

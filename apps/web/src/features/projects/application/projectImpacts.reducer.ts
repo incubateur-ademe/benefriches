@@ -110,7 +110,7 @@ export const { setEvaluationPeriod, setViewMode } = projectImpactsSlice.actions;
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
-export const getProjectName = createSelector(
+export const selectProjectName = createSelector(
   selectSelf,
   (state): string => state.projectData?.name ?? "Project",
 );
@@ -122,7 +122,7 @@ type ProjectContext = {
   type?: ProjectDevelopmentPlanType;
   isExpressProject: boolean;
 };
-export const getProjectContext = createSelector(
+export const selectProjectContext = createSelector(
   selectSelf,
   (state): ProjectContext => ({
     name: state.projectData?.name ?? "Project",

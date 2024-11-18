@@ -1,9 +1,10 @@
-import { RootState } from "@/app/application/store";
+import { createStore, RootState } from "@/app/application/store";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
 import {
-  getDetailedSocioEconomicProjectImpactsSelector,
-  getSocioEconomicProjectImpactsByActorSelector,
+  selectDetailedSocioEconomicProjectImpacts,
+  selectSocioEconomicProjectImpactsByActor,
 } from "./projectImpactsSocioEconomic.selectors";
 
 const MOCK_STATES = {
@@ -29,10 +30,10 @@ const MOCK_STATES = {
 describe("projectImpactsSocioEconomic selectors", () => {
   describe("getDetailedSocioEconomicProjectImpacts", () => {
     it("should return socio economic impacts formatted with details and total", () => {
+      const store = createStore(getTestAppDependencies(), MOCK_STATES);
+      const rootState = store.getState();
       const { economicDirect, economicIndirect, environmentalMonetary } =
-        getDetailedSocioEconomicProjectImpactsSelector.resultFunc(
-          MOCK_STATES.projectImpacts["impactsData"],
-        );
+        selectDetailedSocioEconomicProjectImpacts(rootState);
 
       expect(economicDirect.impacts.length).toEqual(3);
       expect(economicIndirect.impacts.length).toEqual(1);
@@ -144,9 +145,9 @@ describe("projectImpactsSocioEconomic selectors", () => {
 
   describe("getSocioEconomicProjectImpactsByActor", () => {
     it("should return socio economic impacts formatted by actor", () => {
-      const byActor = getSocioEconomicProjectImpactsByActorSelector.resultFunc(
-        MOCK_STATES.projectImpacts["impactsData"],
-      );
+      const store = createStore(getTestAppDependencies(), MOCK_STATES);
+      const rootState = store.getState();
+      const byActor = selectSocioEconomicProjectImpactsByActor(rootState);
 
       expect(byActor.length).toEqual(4);
 

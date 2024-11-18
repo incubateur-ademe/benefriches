@@ -6,7 +6,7 @@ import { fetchReconversionProjectImpacts } from "../../application/fetchReconver
 import { fetchProjectFeatures } from "../../application/project-features/projectFeatures.actions";
 import { selectProjectFeatures } from "../../application/project-features/projectFeatures.reducer";
 import {
-  getProjectContext,
+  selectProjectContext,
   setEvaluationPeriod,
   setViewMode,
   ViewMode,
@@ -24,7 +24,7 @@ function ProjectPageContainer({ projectId }: Props) {
     (state) => state.projectImpacts,
   );
 
-  const projectContext = useAppSelector(getProjectContext);
+  const projectContext = useAppSelector(selectProjectContext);
 
   useEffect(() => {
     void dispatch(fetchReconversionProjectImpacts({ projectId, evaluationPeriod }));

@@ -15,12 +15,12 @@ const selectImpactsData = createSelector(
   (state): ProjectImpactsState["impactsData"] => state.impactsData,
 );
 
-export const getDetailedSocioEconomicProjectImpactsSelector = createSelector(
+export const selectDetailedSocioEconomicProjectImpacts = createSelector(
   selectImpactsData,
   getDetailedSocioEconomicProjectImpacts,
 );
 
-export const getSocioEconomicProjectImpactsByActorSelector = createSelector(
+export const selectSocioEconomicProjectImpactsByActor = createSelector(
   selectImpactsData,
   getSocioEconomicProjectImpactsByActor,
 );

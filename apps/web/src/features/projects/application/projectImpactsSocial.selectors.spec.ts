@@ -1,7 +1,8 @@
-import { RootState } from "@/app/application/store";
+import { createStore, RootState } from "@/app/application/store";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
-import { getSocialProjectImpactsSelector } from "./projectImpactsSocial.selectors";
+import { selectSocialProjectImpacts } from "./projectImpactsSocial.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {
@@ -26,9 +27,9 @@ const MOCK_STATES = {
 describe("projectImpactsSocial selectors", () => {
   describe("getSocialProjectImpacts", () => {
     it("should return social formatted with details and total", () => {
-      const impacts = getSocialProjectImpactsSelector.resultFunc(
-        MOCK_STATES.projectImpacts["impactsData"],
-      );
+      const store = createStore(getTestAppDependencies(), MOCK_STATES);
+      const rootState = store.getState();
+      const impacts = selectSocialProjectImpacts(rootState);
 
       expect(impacts).toContainEqual(
         expect.objectContaining({

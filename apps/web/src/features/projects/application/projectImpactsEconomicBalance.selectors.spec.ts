@@ -1,24 +1,25 @@
-import { RootState } from "@/app/application/store";
+import { createStore, RootState } from "@/app/application/store";
+import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";
-import { getEconomicBalanceProjectImpactsSelector } from "./projectImpactsEconomicBalance.selectors";
+import { photovoltaicProjectImpactMock, urbanProjectImpactMock } from "./projectImpacts.mock";
+import { selectEconomicBalanceProjectImpacts } from "./projectImpactsEconomicBalance.selectors";
 
 const MOCK_STATES = {
   projectImpacts: {
     dataLoadingState: "success",
     evaluationPeriod: 10,
     currentViewMode: "list",
-    impactsData: projectImpactMock.impacts,
+    impactsData: photovoltaicProjectImpactMock.impacts,
     projectData: {
-      id: projectImpactMock.id,
-      name: projectImpactMock.name,
-      ...projectImpactMock.projectData,
+      id: photovoltaicProjectImpactMock.id,
+      name: photovoltaicProjectImpactMock.name,
+      ...photovoltaicProjectImpactMock.projectData,
     },
     relatedSiteData: {
-      id: projectImpactMock.relatedSiteId,
-      name: projectImpactMock.relatedSiteName,
-      isExpressSite: projectImpactMock.isExpressSite,
-      ...projectImpactMock.siteData,
+      id: photovoltaicProjectImpactMock.relatedSiteId,
+      name: photovoltaicProjectImpactMock.relatedSiteName,
+      isExpressSite: photovoltaicProjectImpactMock.isExpressSite,
+      ...photovoltaicProjectImpactMock.siteData,
     },
   } satisfies RootState["projectImpacts"],
 };
@@ -26,10 +27,9 @@ const MOCK_STATES = {
 describe("projectImpactsEconomicBalance selectors", () => {
   describe("getEconomicBalanceProjectImpacts", () => {
     it("should return economic balance formatted with details and total", () => {
-      const economicBalance = getEconomicBalanceProjectImpactsSelector.resultFunc(
-        "PHOTOVOLTAIC_POWER_PLANT",
-        MOCK_STATES.projectImpacts["impactsData"],
-      );
+      const store = createStore(getTestAppDependencies(), MOCK_STATES);
+      const rootState = store.getState();
+      const economicBalance = selectEconomicBalanceProjectImpacts(rootState);
 
       expect(economicBalance.bearer).toEqual("Mairie de Blajan");
       expect(economicBalance.total).toEqual(-500000);
@@ -87,11 +87,19 @@ describe("projectImpactsEconomicBalance selectors", () => {
       );
     });
 
-    it("should the right impact key for mixed use neighbourhood project for installation costs", () => {
-      const economicBalance = getEconomicBalanceProjectImpactsSelector.resultFunc(
-        "URBAN_PROJECT",
-        MOCK_STATES.projectImpacts["impactsData"],
-      );
+    it("should the right impact key for urban project for installation costs", () => {
+      const store = createStore(getTestAppDependencies(), {
+        projectImpacts: {
+          ...MOCK_STATES.projectImpacts,
+          projectData: {
+            name: "Urban project 1",
+            id: "aaa-bbb-111",
+            ...urbanProjectImpactMock.projectData,
+          },
+        },
+      });
+      const rootState = store.getState();
+      const economicBalance = selectEconomicBalanceProjectImpacts(rootState);
 
       expect(economicBalance.economicBalance).toContainEqual(
         expect.objectContaining({

@@ -19,7 +19,7 @@ export const selectProjectDevelopmentType = createSelector(
     state.projectData?.developmentPlan.type ?? "PHOTOVOLTAIC_POWER_PLANT",
 );
 
-export const getEconomicBalanceProjectImpactsSelector = createSelector(
+export const selectEconomicBalanceProjectImpacts = createSelector(
   selectProjectDevelopmentType,
   selectImpactsData,
   getEconomicBalanceProjectImpacts,
