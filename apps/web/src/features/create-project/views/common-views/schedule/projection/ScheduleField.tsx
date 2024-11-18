@@ -51,9 +51,7 @@ function ScheduleField({ label, scheduleName, control }: Props) {
                 name,
                 max: endDateValue,
                 value,
-                onChange: (e) => {
-                  onChange(e);
-                },
+                onChange,
               }}
             />
           )}

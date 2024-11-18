@@ -1,5 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { DevelopmentPlanCategory, SoilsDistribution } from "shared";
+import {
+  DevelopmentPlanCategory,
+  getDefaultScheduleForProject,
+  ProjectSchedule,
+  SoilsDistribution,
+} from "shared";
 
 import { RootState } from "@/app/application/store";
 
@@ -25,6 +30,10 @@ export const selectSiteData = createSelector(
   selectSelf,
   (state): ProjectCreationState["siteData"] => state.siteData,
 );
+export const selectIsSiteFriche = createSelector(
+  selectSiteData,
+  (siteData): boolean => siteData?.isFriche ?? false,
+);
 
 export const selectSiteSoilsDistribution = createSelector(
   selectSiteData,
@@ -48,4 +57,11 @@ export const selectSiteAddress = createSelector(selectSiteData, (siteData): Addr
 export const selectIsSiteLoaded = createSelector(
   selectSelf,
   (state): boolean => state.siteDataLoadingState === "success" && !!state.siteData,
+);
+
+export const selectDefaultSchedule = createSelector(
+  selectIsSiteFriche,
+  (isFriche): ProjectSchedule => {
+    return getDefaultScheduleForProject({ now: () => new Date() })({ hasReinstatement: isFriche });
+  },
 );

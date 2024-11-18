@@ -1,4 +1,6 @@
+import { format } from "date-fns";
 import { useForm } from "react-hook-form";
+import { ProjectSchedule } from "shared";
 
 import { Schedule } from "@/features/create-project/domain/project.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -9,14 +11,14 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 import ScheduleField from "./ScheduleField";
 
+function formatDateForInput(date: Date) {
+  return format(date, "yyyy-MM-dd");
+}
+
 type Props = {
-  defaultFirstYearOfOperation: number;
-  schedulesConfig: {
-    reinstatement: boolean;
-    installation: {
-      label: string;
-    };
-  };
+  defaultSchedule: ProjectSchedule;
+  hasReinstatement: boolean;
+  installationScheduleLabel: string;
   onSubmit: (data: {
     reinstatementSchedule?: Schedule;
     installationSchedule?: Schedule;
@@ -38,14 +40,25 @@ const formatScheduleBeforeSubmit = (schedule?: Partial<Schedule>): Schedule | un
 };
 
 function ScheduleProjectionForm({
-  defaultFirstYearOfOperation,
-  schedulesConfig,
+  defaultSchedule,
+  hasReinstatement,
+  installationScheduleLabel,
   onSubmit,
   onBack,
 }: Props) {
   const { handleSubmit, control, formState } = useForm<FormValues>({
     defaultValues: {
-      firstYearOfOperation: defaultFirstYearOfOperation,
+      firstYearOfOperation: defaultSchedule.firstYearOfOperations,
+      installationSchedule: {
+        startDate: formatDateForInput(defaultSchedule.installation.startDate),
+        endDate: formatDateForInput(defaultSchedule.installation.endDate),
+      },
+      reinstatementSchedule: defaultSchedule.reinstatement
+        ? {
+            startDate: formatDateForInput(defaultSchedule.reinstatement.startDate),
+            endDate: formatDateForInput(defaultSchedule.reinstatement.endDate),
+          }
+        : undefined,
     },
   });
 
@@ -54,8 +67,14 @@ function ScheduleProjectionForm({
       title="Calendrier"
       instructions={
         <FormInfo>
-          <p>L'année de mise en service est proposée par défaut à l'année suivante.</p>
-          <p>Vous pouvez modifier cette date.</p>
+          <p>
+            Les dates de début et fin des travaux sont proposés par défaut avec une durée d'un an.
+          </p>
+          <p>
+            L'année de mise en service est proposée par défaut à l'année correspondant à la fin des
+            travaux.
+          </p>
+          <p>Vous pouvez modifier ces dates.</p>
         </FormInfo>
       }
     >
@@ -68,7 +87,7 @@ function ScheduleProjectionForm({
           });
         })}
       >
-        {schedulesConfig.reinstatement && (
+        {hasReinstatement && (
           <ScheduleField
             control={control}
             scheduleName="reinstatementSchedule"
@@ -79,13 +98,12 @@ function ScheduleProjectionForm({
         <ScheduleField
           control={control}
           scheduleName="installationSchedule"
-          label={schedulesConfig.installation.label}
+          label={installationScheduleLabel}
         />
 
         <NumericInput
           label={<RequiredLabel label="Mise en service du site" />}
           name="firstYearOfOperation"
-          placeholder="2025"
           control={control}
           allowDecimals={false}
           rules={{

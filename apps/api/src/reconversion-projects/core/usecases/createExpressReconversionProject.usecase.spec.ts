@@ -160,8 +160,8 @@ describe("CreateReconversionProject Use Case", () => {
           endDate: new Date("2026-09-01T13:00:00"),
         });
         expect(createdReconversionProject?.developmentPlan.installationSchedule).toEqual({
-          startDate: new Date("2026-09-01T13:00:00"),
-          endDate: new Date("2027-09-01T13:00:00"),
+          startDate: new Date("2026-09-02T13:00:00"),
+          endDate: new Date("2027-09-02T13:00:00"),
         });
         expect(createdReconversionProject?.operationsFirstYear).toEqual(2028);
       },

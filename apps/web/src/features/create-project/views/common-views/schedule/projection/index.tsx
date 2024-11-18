@@ -1,3 +1,7 @@
+import {
+  selectDefaultSchedule,
+  selectIsSiteFriche,
+} from "@/features/create-project/application/createProject.selectors";
 import { Schedule } from "@/features/create-project/domain/project.types";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -18,16 +22,15 @@ function ScheduleProjectionFormContainer({
   installationScheduleLabel = "Installation du projet",
   ...props
 }: Props) {
-  const projectSite = useAppSelector((state) => state.projectCreation.siteData);
+  const isSiteFriche = useAppSelector(selectIsSiteFriche);
+  const defaultSchedule = useAppSelector(selectDefaultSchedule);
 
   return (
     <ScheduleProjectionForm
       {...props}
-      schedulesConfig={{
-        reinstatement: projectSite?.isFriche ?? false,
-        installation: { label: installationScheduleLabel },
-      }}
-      defaultFirstYearOfOperation={new Date().getFullYear() + 1}
+      defaultSchedule={defaultSchedule}
+      hasReinstatement={isSiteFriche}
+      installationScheduleLabel={installationScheduleLabel}
       onSubmit={onSubmit}
     />
   );
