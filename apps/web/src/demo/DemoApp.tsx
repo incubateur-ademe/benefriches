@@ -2,15 +2,12 @@ import Badge from "@codegouvfr/react-dsfr/Badge";
 import { Suspense, useEffect } from "react";
 
 import { routes, useRoute } from "@/app/views/router";
-import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
+import { initCurrentUser } from "@/users/application/initCurrentUser.action";
 
-import {
-  isCurrentUserLoaded,
-  selectCurrentUserId,
-} from "../features/users/application/user.reducer";
+import { isCurrentUserLoaded, selectCurrentUserId } from "../users/application/user.reducer";
 import { DEMO_PROJECT, DEMO_SITE, IMPACTS_DATA } from "./demoData";
 import AppDemoIdentity from "./identity/DemoIdentity";
 import DemoMyProjects from "./my-projects/DemoMyProjects";

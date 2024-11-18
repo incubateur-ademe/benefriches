@@ -6,9 +6,9 @@ import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 import { createRouter, defineRoute, param } from "type-route";
 
-import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { initCurrentUser } from "@/users/application/initCurrentUser.action.ts";
 
 import { appDependencies } from "./app/application/appDependencies.ts";
 import { createStore } from "./app/application/store.ts";

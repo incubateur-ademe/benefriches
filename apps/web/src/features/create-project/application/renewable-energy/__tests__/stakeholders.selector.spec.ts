@@ -1,5 +1,5 @@
 import { RootState } from "@/app/application/store";
-import { buildUser } from "@/features/users/domain/user.mock";
+import { buildUser } from "@/users/domain/user.mock";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import {

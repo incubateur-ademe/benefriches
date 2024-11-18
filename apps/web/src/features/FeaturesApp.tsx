@@ -5,15 +5,15 @@ import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import MatomoContainer from "@/app/views/MatomoContainer";
 import NotFoundScreen from "@/app/views/not-found";
 import { routes, useRoute } from "@/app/views/router";
-import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
 import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
+import { initCurrentUser } from "@/users/application/initCurrentUser.action";
 
 /* Lazy-loaded pages */
-const CreateUserPage = lazy(() => import("@/features/users/views"));
+const CreateUserPage = lazy(() => import("@/users/views"));
 const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
 );

@@ -16,9 +16,9 @@ import projectImpacts from "@/features/projects/application/projectImpacts.reduc
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
 import { SiteFeaturesGateway } from "@/features/site-features/application/fetchSiteFeatures.action";
 import siteFeatures from "@/features/site-features/application/siteFeatures.reducer";
-import { CreateUserGateway } from "@/features/users/application/createUser.action";
-import { CurrentUserGateway } from "@/features/users/application/initCurrentUser.action";
-import currentUser from "@/features/users/application/user.reducer";
+import { CreateUserGateway } from "@/users/application/createUser.action";
+import { CurrentUserGateway } from "@/users/application/initCurrentUser.action";
+import currentUser from "@/users/application/user.reducer";
 
 import { GetSitesByIdGateway } from "../../features/create-project/application/createProject.actions";
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.action";

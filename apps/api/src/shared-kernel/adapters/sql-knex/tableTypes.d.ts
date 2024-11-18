@@ -7,6 +7,7 @@ export type SqlUser = {
   structure_type?: string;
   structure_activity?: string;
   created_at: Date;
+  created_from: "features_app" | "demo_app";
   personal_data_storage_consented_at: Date;
   personal_data_analytics_use_consented_at?: Date;
   personal_data_communication_use_consented_at?: Date;

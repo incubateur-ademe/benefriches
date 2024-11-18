@@ -40,6 +40,7 @@ describe("SqlSiteRepository integration", () => {
     expect(result[0]?.structure_activity).toEqual(user.structureActivity);
     expect(result[0]?.personal_data_analytics_use_consented_at).toEqual(null);
     expect(result[0]?.personal_data_communication_use_consented_at).toEqual(null);
+    expect(result[0]?.created_from).toEqual(user.createdFrom);
   });
 
   it("Saves user with full props", async () => {
@@ -55,6 +56,7 @@ describe("SqlSiteRepository integration", () => {
       firstname: user.firstname,
       lastname: user.lastname,
       created_at: user.createdAt,
+      created_from: user.createdFrom,
       structure_name: user.structureName,
       structure_type: user.structureType,
       structure_activity: user.structureActivity,

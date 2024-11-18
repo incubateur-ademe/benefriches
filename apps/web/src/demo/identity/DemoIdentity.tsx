@@ -1,9 +1,10 @@
 import { routes } from "@/app/views/router";
-import CreateUserForm from "@/features/users/views/CreateUserForm";
+import CreateUserForm from "@/users/views/CreateUserForm";
 
 function AppDemoIdentity() {
   return (
     <CreateUserForm
+      createdFrom="demo_app"
       onSuccess={() => {
         routes.demoMyProjects().push();
       }}

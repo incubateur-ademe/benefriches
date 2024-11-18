@@ -8,7 +8,7 @@ import {
 } from "shared";
 
 import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
-import { initCurrentUser } from "@/features/users/application/initCurrentUser.action";
+import { initCurrentUser } from "@/users/application/initCurrentUser.action";
 
 import { saveReconversionProject } from "../saveReconversionProject.action";
 import { StoreBuilder } from "./testUtils";

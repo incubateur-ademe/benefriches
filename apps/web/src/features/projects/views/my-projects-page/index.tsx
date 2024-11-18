@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
-import { selectCurrentUserId } from "@/features/users/application/user.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { selectCurrentUserId } from "@/users/application/user.reducer";
 
 import { fetchReconversionProjects } from "../../application/projectsList.actions";
 import MyProjectsPage from "./MyProjectsPage";

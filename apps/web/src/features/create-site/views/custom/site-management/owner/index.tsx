@@ -9,9 +9,9 @@ import {
   getAvailableLocalAuthoritiesWithoutCurrentUser,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Owner } from "@/features/create-site/domain/siteFoncier.types";
-import { selectCurrentUserStructure } from "@/features/users/application/user.reducer";
-import { UserStructure } from "@/features/users/domain/user";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { selectCurrentUserStructure } from "@/users/application/user.reducer";
+import { UserStructure } from "@/users/domain/user";
 
 import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 

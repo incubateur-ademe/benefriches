@@ -3,13 +3,13 @@ import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { useForm } from "react-hook-form";
 import { LocalAuthority } from "shared";
 
-import { UserStructure } from "@/features/users/domain/user";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import { UserStructure } from "@/users/domain/user";
 
 type Props = {
   onSubmit: (data: FormValues) => void;

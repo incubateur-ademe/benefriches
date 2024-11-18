@@ -12,6 +12,7 @@ export const userSchema = z.object({
   personalDataStorageConsentedAt: z.date(),
   personalDataAnalyticsUseConsentedAt: z.date().optional(),
   personalDataCommunicationUseConsentedAt: z.date().optional(),
+  createdFrom: z.enum(["demo_app", "features_app"]),
 });
 
 export type User = z.infer<typeof userSchema>;

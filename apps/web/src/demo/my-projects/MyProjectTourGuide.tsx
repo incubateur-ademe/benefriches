@@ -1,11 +1,11 @@
 import { useTour } from "@reactour/tour";
 import { ReactNode, useEffect } from "react";
 
-import { selectCurrentUserFirstname } from "@/features/users/application/user.reducer";
 import { DEFAULT_APP_SETTINGS } from "@/shared/app-settings/domain/appSettings";
 import { LocalStorageAppSettings } from "@/shared/app-settings/infrastructure/LocalStorageUISettings";
 import TourGuideProvider from "@/shared/views/components/TourGuideProvider/TourGuideProvider";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { selectCurrentUserFirstname } from "@/users/application/user.reducer";
 
 type Props = {
   children: ReactNode;
