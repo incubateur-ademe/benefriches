@@ -1,10 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import {
-  ImpactCategoryFilter,
-  ViewMode,
-} from "@/features/projects/application/projectImpacts.reducer";
+import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
 import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
@@ -16,10 +13,8 @@ import ImpactEvaluationPeriodSelect from "../../shared/actions/ImpactEvaluationP
 import ProjectsImpactsPageHeader from "./ProjectPageHeader";
 
 type Props = {
-  selectedFilter: ImpactCategoryFilter;
   selectedViewMode: ViewMode;
   evaluationPeriod: number;
-  onFilterClick: (filterValue: ImpactCategoryFilter) => void;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
   isSmScreen?: boolean;
@@ -37,9 +32,7 @@ type Props = {
 };
 
 function ProjectImpactsActionBar({
-  onFilterClick,
   onViewModeClick,
-  selectedFilter,
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
@@ -102,10 +95,8 @@ function ProjectImpactsActionBar({
       </div>
       <ImpactsActionBar
         ref={ref}
-        selectedFilter={selectedFilter}
         selectedViewMode={selectedViewMode}
         evaluationPeriod={evaluationPeriod}
-        onFilterClick={onFilterClick}
         onViewModeClick={onViewModeClick}
         onEvaluationPeriodChange={onEvaluationPeriodChange}
         small={isSmScreen}

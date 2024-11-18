@@ -1,5 +1,4 @@
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
-import { ImpactCategoryFilter } from "../application/projectImpacts.reducer";
 
 type ImpactValue = {
   base: number;
@@ -47,7 +46,6 @@ export type SocialImpact = {
 };
 
 export const getSocialProjectImpacts = (
-  currentFilter: ImpactCategoryFilter,
   impactsData?: ReconversionProjectImpactsResult["impacts"],
 ): SocialImpact[] => {
   const {
@@ -60,12 +58,6 @@ export const getSocialProjectImpacts = (
   } = impactsData || {};
 
   const impacts: SocialImpact[] = [];
-  const displayAll = currentFilter === "all";
-  const displaySocialData = displayAll || currentFilter === "social";
-
-  if (!(displayAll || displaySocialData)) {
-    return [];
-  }
 
   if (fullTimeJobs && (fullTimeJobs.current !== 0 || fullTimeJobs.forecast !== 0)) {
     const { current, forecast, conversion, operations } = fullTimeJobs;

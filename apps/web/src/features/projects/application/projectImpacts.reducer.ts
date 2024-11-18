@@ -13,10 +13,7 @@ type LoadingState = "idle" | "loading" | "success" | "error";
 
 const DEFAULT_EVALUATION_PERIOD_IN_YEARS = 20;
 const DEFAULT_VIEW_MODE = "summary";
-const DEFAULT_CATEGORY_FILTER = "all";
 
-type ImpactCategory = "economic" | "environment" | "social";
-export type ImpactCategoryFilter = ImpactCategory | "all";
 export type ViewMode = "charts" | "list" | "summary";
 
 export type ProjectImpactsState = {
@@ -59,7 +56,6 @@ export type ProjectImpactsState = {
   impactsData?: ReconversionProjectImpactsResult["impacts"];
   evaluationPeriod: number;
   currentViewMode: ViewMode;
-  currentCategoryFilter: ImpactCategoryFilter;
 };
 
 export const getInitialState = (): ProjectImpactsState => {
@@ -70,7 +66,6 @@ export const getInitialState = (): ProjectImpactsState => {
     dataLoadingState: "idle",
     evaluationPeriod: DEFAULT_EVALUATION_PERIOD_IN_YEARS,
     currentViewMode: DEFAULT_VIEW_MODE,
-    currentCategoryFilter: DEFAULT_CATEGORY_FILTER,
   };
 };
 
@@ -83,9 +78,6 @@ export const projectImpactsSlice = createSlice({
     },
     setViewMode: (state, action: PayloadAction<ViewMode>) => {
       state.currentViewMode = action.payload;
-    },
-    setCategoryFilter: (state, action: PayloadAction<ImpactCategoryFilter>) => {
-      state.currentCategoryFilter = action.payload;
     },
   },
   extraReducers(builder) {
@@ -114,7 +106,7 @@ export const projectImpactsSlice = createSlice({
   },
 });
 
-export const { setEvaluationPeriod, setCategoryFilter, setViewMode } = projectImpactsSlice.actions;
+export const { setEvaluationPeriod, setViewMode } = projectImpactsSlice.actions;
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 

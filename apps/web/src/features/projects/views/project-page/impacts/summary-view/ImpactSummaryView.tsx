@@ -1,4 +1,3 @@
-import { ImpactCategoryFilter } from "@/features/projects/application/projectImpacts.reducer";
 import { KeyImpactIndicatorData } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
 
 import ImpactSummaryAvoidedCo2eqEmissions from "./impacts/AvoidedCo2eqEmissions";
@@ -13,7 +12,6 @@ import ImpactSummaryTaxesIncome from "./impacts/TaxesIncome";
 import ImpactSummaryZanCompliance from "./impacts/ZanCompliance";
 
 type Props = {
-  categoryFilter: ImpactCategoryFilter;
   keyImpactIndicatorsList: KeyImpactIndicatorData[];
 };
 
@@ -30,12 +28,7 @@ const PRIORITY_ORDER = [
   "nonContaminatedSurfaceArea",
 ];
 
-const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) => {
-  const displayAll = categoryFilter === "all";
-  const displayEconomicCards = displayAll || categoryFilter === "economic";
-  const displayEnvironmentCards = displayAll || categoryFilter === "environment";
-  const displaySocialCards = displayAll || categoryFilter === "social";
-
+const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
   return (
     <div className="tw-grid tw-grid-rows-1 lg:tw-grid-cols-3 tw-gap-6 tw-mb-8">
       {keyImpactIndicatorsList
@@ -65,75 +58,75 @@ const ImpactSummaryView = ({ categoryFilter, keyImpactIndicatorsList }: Props) =
               );
 
             case "avoidedFricheCostsForLocalAuthority":
-              return displayEconomicCards ? (
+              return (
                 <ImpactSummaryAvoidedFricheCostsForLocalAuthority
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
                 />
-              ) : null;
+              );
             case "taxesIncomesImpact":
-              return displayEconomicCards ? (
+              return (
                 <ImpactSummaryTaxesIncome
                   key={index}
                   isSuccess={isSuccess}
                   value={value}
                   descriptionDisplayMode="tooltip"
                 />
-              ) : null;
+              );
             case "fullTimeJobs":
-              return displaySocialCards ? (
+              return (
                 <ImpactSummaryFullTimeJobs
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
                 />
-              ) : null;
+              );
             case "avoidedCo2eqEmissions":
-              return displayEnvironmentCards ? (
+              return (
                 <ImpactSummaryAvoidedCo2eqEmissions
                   key={index}
                   isSuccess={isSuccess}
                   value={value}
                   descriptionDisplayMode="tooltip"
                 />
-              ) : null;
+              );
             case "nonContaminatedSurfaceArea":
-              return displayEnvironmentCards ? (
+              return (
                 <ImpactSummaryNonContaminatedSurfaceArea
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
                 />
-              ) : null;
+              );
             case "permeableSurfaceArea":
-              return displayEnvironmentCards ? (
+              return (
                 <ImpactSummaryPermeableSurfaceArea
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
                   descriptionDisplayMode="tooltip"
                 />
-              ) : null;
+              );
             case "householdsPoweredByRenewableEnergy":
-              return displayEnvironmentCards ? (
+              return (
                 <ImpactSummaryHouseholdsPoweredByRenewableEnergy
                   key={index}
                   value={value}
                   descriptionDisplayMode="tooltip"
                 />
-              ) : null;
+              );
             case "localPropertyValueIncrease":
-              return displayEconomicCards ? (
+              return (
                 <ImpactSummaryLocalPropertyValueIncrease
                   key={index}
                   value={value}
                   descriptionDisplayMode="tooltip"
                 />
-              ) : null;
+              );
           }
         })}
     </div>

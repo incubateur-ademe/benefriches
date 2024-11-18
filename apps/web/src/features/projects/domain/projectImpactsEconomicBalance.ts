@@ -1,7 +1,6 @@
 import { RecurringExpense, RecurringRevenue, ReinstatementExpensePurpose } from "shared";
 
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
-import { ImpactCategoryFilter } from "../application/projectImpacts.reducer";
 import { DevelopmentPlanInstallationExpense, FinancialAssistance } from "../domain/impacts.types";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 
@@ -79,22 +78,16 @@ const getDevelopmentPlanDetailsName = (
 };
 
 export const getEconomicBalanceProjectImpacts = (
-  currentFilter: ImpactCategoryFilter,
   projectType: ProjectDevelopmentPlanType,
   impactsData?: ReconversionProjectImpactsResult["impacts"],
 ): EconomicBalance => {
-  const { economicBalance } = impactsData || {};
-
-  const displayAll = currentFilter === "all";
-  const displayEconomicData = displayAll || currentFilter === "economic";
-
-  if (!economicBalance || !(displayAll || displayEconomicData)) {
+  if (!impactsData)
     return {
       total: 0,
       economicBalance: [],
     };
-  }
 
+  const { economicBalance } = impactsData;
   const impacts: EconomicBalance["economicBalance"] = [];
 
   if (economicBalance.costs.siteReinstatement?.total) {

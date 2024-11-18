@@ -4,10 +4,7 @@ import { useState } from "react";
 
 import { routes } from "@/app/views/router";
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
-import {
-  ImpactCategoryFilter,
-  ViewMode,
-} from "@/features/projects/application/projectImpacts.reducer";
+import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
 import { getEconomicBalanceProjectImpacts } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { getEnvironmentalProjectImpacts } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { getSocialProjectImpacts } from "@/features/projects/domain/projectImpactsSocial";
@@ -36,14 +33,9 @@ type Props = {
 
 function DemoProjectImpacts({ projectData, siteData, impactsData }: Props) {
   const [evaluationPeriod, setEvaluationPeriod] = useState<number>(20);
-  const [currentCategoryFilter, setCategoryFilter] = useState<ImpactCategoryFilter>("all");
   const [currentViewMode, setViewMode] = useState<ViewMode>("summary");
   const [modalCategoryOpened, setModalCategoryOpened] =
     useState<ImpactDescriptionModalCategory>(undefined);
-
-  const onCurrentCategoryFilterChange = (category: ImpactCategoryFilter) => {
-    setCategoryFilter(category);
-  };
 
   const headerProps = {
     projectType: projectData.developmentPlan.type,
@@ -73,10 +65,8 @@ function DemoProjectImpacts({ projectData, siteData, impactsData }: Props) {
 
       <div className="fr-container">
         <ProjectImpactsActionBar
-          selectedFilter={currentCategoryFilter}
           selectedViewMode={currentViewMode}
           evaluationPeriod={evaluationPeriod}
-          onFilterClick={onCurrentCategoryFilterChange}
           onViewModeClick={(newViewMode: ViewMode) => {
             setViewMode(newViewMode);
           }}
@@ -109,41 +99,26 @@ function DemoProjectImpacts({ projectData, siteData, impactsData }: Props) {
         />
         {currentViewMode === "summary" && (
           <ImpactSummaryView
-            categoryFilter={currentCategoryFilter}
             keyImpactIndicatorsList={getKeyImpactIndicatorsList(impactsData, siteData)}
           />
         )}
         {currentViewMode === "list" && (
           <ImpactsListView
             openImpactDescriptionModal={setModalCategoryOpened}
-            economicBalance={getEconomicBalanceProjectImpacts(
-              currentCategoryFilter,
-              "URBAN_PROJECT",
-              impactsData,
-            )}
-            socialImpacts={getSocialProjectImpacts(currentCategoryFilter, impactsData)}
-            environmentImpacts={getEnvironmentalProjectImpacts(currentCategoryFilter, impactsData)}
-            socioEconomicImpacts={getDetailedSocioEconomicProjectImpacts(
-              currentCategoryFilter,
-              impactsData,
-            )}
+            economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
+            socialImpacts={getSocialProjectImpacts(impactsData)}
+            environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
+            socioEconomicImpacts={getDetailedSocioEconomicProjectImpacts(impactsData)}
           />
         )}
         {currentViewMode === "charts" && (
           <ImpactsChartsView
             projectName={projectData.name}
             openImpactDescriptionModal={setModalCategoryOpened}
-            economicBalance={getEconomicBalanceProjectImpacts(
-              currentCategoryFilter,
-              "URBAN_PROJECT",
-              impactsData,
-            )}
-            socialImpacts={getSocialProjectImpacts(currentCategoryFilter, impactsData)}
-            environmentImpacts={getEnvironmentalProjectImpacts(currentCategoryFilter, impactsData)}
-            socioEconomicImpacts={getSocioEconomicProjectImpactsByActor(
-              currentCategoryFilter,
-              impactsData,
-            )}
+            economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
+            socialImpacts={getSocialProjectImpacts(impactsData)}
+            environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
+            socioEconomicImpacts={getSocioEconomicProjectImpactsByActor(impactsData)}
           />
         )}
       </div>

@@ -8,14 +8,8 @@ import {
   getProjectOverallImpact,
   ProjectOverallImpact,
 } from "../domain/projectKeyImpactIndicators";
-import { ImpactCategoryFilter } from "./projectImpacts.reducer";
 
 const selectSelf = (state: RootState) => state.projectImpacts;
-
-export const getCategoryFilter = createSelector(
-  selectSelf,
-  (state): ImpactCategoryFilter => state.currentCategoryFilter,
-);
 
 export const getEvaluationPeriod = createSelector(
   selectSelf,

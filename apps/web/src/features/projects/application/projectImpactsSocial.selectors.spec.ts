@@ -8,7 +8,6 @@ const MOCK_STATES = {
     dataLoadingState: "success",
     evaluationPeriod: 10,
     currentViewMode: "list",
-    currentCategoryFilter: "all",
     impactsData: projectImpactMock.impacts,
     projectData: {
       id: projectImpactMock.id,
@@ -26,81 +25,66 @@ const MOCK_STATES = {
 
 describe("projectImpactsSocial selectors", () => {
   describe("getSocialProjectImpacts", () => {
-    it.each([{ filter: "all" }, { filter: "social" }])(
-      "should return social formatted with details and total for filter $filter",
-      ({ filter }) => {
-        const impacts = getSocialProjectImpactsSelector.resultFunc(
-          filter as "social" | "all",
-          MOCK_STATES.projectImpacts["impactsData"],
-        );
+    it("should return social formatted with details and total", () => {
+      const impacts = getSocialProjectImpactsSelector.resultFunc(
+        MOCK_STATES.projectImpacts["impactsData"],
+      );
 
-        expect(impacts).toContainEqual(
-          expect.objectContaining({
-            name: "full_time_jobs",
-            type: "etp",
-            impact: {
-              base: 1,
-              forecast: 3.5,
-              difference: 2.5,
-              details: [
-                {
-                  impact: { base: 0, difference: 3, forecast: 3 },
-                  name: "conversion_full_time_jobs",
-                },
-                {
-                  impact: { base: 1, difference: -0.5, forecast: 0.5 },
-                  name: "operations_full_time_jobs",
-                },
-              ],
-            },
-          }),
-        );
+      expect(impacts).toContainEqual(
+        expect.objectContaining({
+          name: "full_time_jobs",
+          type: "etp",
+          impact: {
+            base: 1,
+            forecast: 3.5,
+            difference: 2.5,
+            details: [
+              {
+                impact: { base: 0, difference: 3, forecast: 3 },
+                name: "conversion_full_time_jobs",
+              },
+              {
+                impact: { base: 1, difference: -0.5, forecast: 0.5 },
+                name: "operations_full_time_jobs",
+              },
+            ],
+          },
+        }),
+      );
 
-        expect(impacts).toContainEqual(
-          expect.objectContaining({
-            name: "avoided_friche_accidents",
-            type: "default",
-            impact: {
-              base: 0,
-              difference: 3,
-              forecast: 3,
-              details: [
-                {
-                  impact: { base: 0, difference: 1, forecast: 1 },
-                  name: "avoided_friche_minor_accidents",
-                },
-                {
-                  impact: { base: 0, difference: 2, forecast: 2 },
-                  name: "avoided_friche_severe_accidents",
-                },
-              ],
-            },
-          }),
-        );
+      expect(impacts).toContainEqual(
+        expect.objectContaining({
+          name: "avoided_friche_accidents",
+          type: "default",
+          impact: {
+            base: 0,
+            difference: 3,
+            forecast: 3,
+            details: [
+              {
+                impact: { base: 0, difference: 1, forecast: 1 },
+                name: "avoided_friche_minor_accidents",
+              },
+              {
+                impact: { base: 0, difference: 2, forecast: 2 },
+                name: "avoided_friche_severe_accidents",
+              },
+            ],
+          },
+        }),
+      );
 
-        expect(impacts).toContainEqual(
-          expect.objectContaining({
-            name: "households_powered_by_renewable_energy",
-            type: "default",
-            impact: {
-              base: 0,
-              difference: 1000,
-              forecast: 1000,
-            },
-          }),
-        );
-      },
-    );
-    it.each([{ filter: "economic" }, { filter: "environment" }])(
-      "should return empty social impacts for filter $filter",
-      ({ filter }) => {
-        const impacts = getSocialProjectImpactsSelector.resultFunc(
-          filter as "economic" | "environment",
-          MOCK_STATES.projectImpacts["impactsData"],
-        );
-
-        expect(impacts.length).toEqual(0);
-      },
-    );
+      expect(impacts).toContainEqual(
+        expect.objectContaining({
+          name: "households_powered_by_renewable_energy",
+          type: "default",
+          impact: {
+            base: 0,
+            difference: 1000,
+            forecast: 1000,
+          },
+        }),
+      );
+    });
   });
 });

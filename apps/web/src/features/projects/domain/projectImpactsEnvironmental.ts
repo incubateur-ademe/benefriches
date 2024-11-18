@@ -1,5 +1,4 @@
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
-import { ImpactCategoryFilter } from "../application/projectImpacts.reducer";
 import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
 
 type ImpactValue = {
@@ -65,7 +64,6 @@ export type EnvironmentalImpact = {
 };
 
 export const getEnvironmentalProjectImpacts = (
-  currentFilter: ImpactCategoryFilter,
   impactsData?: ReconversionProjectImpactsResult["impacts"],
 ): EnvironmentalImpact[] => {
   if (!impactsData) return [];
@@ -79,12 +77,6 @@ export const getEnvironmentalProjectImpacts = (
   } = impactsData;
 
   const impacts: EnvironmentalImpact[] = [];
-  const displayAll = currentFilter === "all";
-  const displayEnvironmentData = displayAll || currentFilter === "environment";
-
-  if (!(displayAll || displayEnvironmentData)) {
-    return [];
-  }
 
   if (nonContaminatedSurfaceArea && nonContaminatedSurfaceArea.difference !== 0) {
     impacts.push({

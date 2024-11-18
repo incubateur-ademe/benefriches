@@ -15,19 +15,12 @@ const selectImpactsData = createSelector(
   (state): ProjectImpactsState["impactsData"] => state.impactsData,
 );
 
-const selectCurrentFilter = createSelector(
-  selectSelf,
-  (state): ProjectImpactsState["currentCategoryFilter"] => state.currentCategoryFilter,
-);
-
 export const getDetailedSocioEconomicProjectImpactsSelector = createSelector(
-  selectCurrentFilter,
   selectImpactsData,
   getDetailedSocioEconomicProjectImpacts,
 );
 
 export const getSocioEconomicProjectImpactsByActorSelector = createSelector(
-  selectCurrentFilter,
   selectImpactsData,
   getSocioEconomicProjectImpactsByActor,
 );

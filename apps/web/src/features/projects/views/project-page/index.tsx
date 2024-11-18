@@ -7,8 +7,6 @@ import { fetchProjectFeatures } from "../../application/project-features/project
 import { selectProjectFeatures } from "../../application/project-features/projectFeatures.reducer";
 import {
   getProjectContext,
-  ImpactCategoryFilter,
-  setCategoryFilter,
   setEvaluationPeriod,
   setViewMode,
   ViewMode,
@@ -22,8 +20,9 @@ type Props = {
 function ProjectPageContainer({ projectId }: Props) {
   const dispatch = useAppDispatch();
 
-  const { dataLoadingState, evaluationPeriod, currentCategoryFilter, currentViewMode } =
-    useAppSelector((state) => state.projectImpacts);
+  const { dataLoadingState, evaluationPeriod, currentViewMode } = useAppSelector(
+    (state) => state.projectImpacts,
+  );
 
   const projectContext = useAppSelector(getProjectContext);
 
@@ -46,12 +45,8 @@ function ProjectPageContainer({ projectId }: Props) {
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
       currentViewMode={currentViewMode}
-      currentCategoryFilter={currentCategoryFilter}
       onEvaluationPeriodChange={(evaluationPeriod: number) =>
         dispatch(setEvaluationPeriod(evaluationPeriod))
-      }
-      onCurrentCategoryFilterChange={(category: ImpactCategoryFilter) =>
-        dispatch(setCategoryFilter(category))
       }
       onCurrentViewModeChange={(viewMode: ViewMode) => dispatch(setViewMode(viewMode))}
     />

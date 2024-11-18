@@ -6,11 +6,7 @@ import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import {
-  ImpactCategoryFilter,
-  ProjectImpactsState,
-  ViewMode,
-} from "../../application/projectImpacts.reducer";
+import { ProjectImpactsState, ViewMode } from "../../application/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType, ProjectFeatures } from "../../domain/projects.types";
 import ProjectImpactsActionBar from "./header/ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
@@ -30,8 +26,6 @@ type Props = {
   };
   onEvaluationPeriodChange: (n: number) => void;
   evaluationPeriod: number;
-  onCurrentCategoryFilterChange: (n: ImpactCategoryFilter) => void;
-  currentCategoryFilter: ImpactCategoryFilter;
   onCurrentViewModeChange: (n: ViewMode) => void;
   currentViewMode: ViewMode;
 };
@@ -44,10 +38,8 @@ function ProjectPage({
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
-  currentCategoryFilter,
   currentViewMode,
   onCurrentViewModeChange,
-  onCurrentCategoryFilterChange,
 }: Props) {
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
@@ -78,10 +70,8 @@ function ProjectPage({
 
       <div className="fr-container">
         <ProjectImpactsActionBar
-          selectedFilter={currentCategoryFilter}
           selectedViewMode={currentViewMode}
           evaluationPeriod={evaluationPeriod}
-          onFilterClick={onCurrentCategoryFilterChange}
           onViewModeClick={onCurrentViewModeChange}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
           isSmScreen={isSmScreen}
