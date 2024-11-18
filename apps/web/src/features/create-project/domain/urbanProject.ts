@@ -241,7 +241,7 @@ export const getPictogramUrlForEconomicActivityUses = (
     case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
       return `/img/pictograms/buildings-uses/economic-activity/autre-LAE.svg`;
     case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
-      return `/img/pictograms/buildings-uses/economic-activity/autre-LAE.svg`;
+      return `/img/pictograms/buildings-uses/economic-activity/industry.svg`;
     case "TERTIARY_ACTIVITIES":
       return `/img/pictograms/buildings-uses/economic-activity/bureaux.svg`;
   }
