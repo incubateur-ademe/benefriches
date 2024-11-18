@@ -1,7 +1,7 @@
 import { SiteCreationExpressStep } from "@/features/create-site/application/createSite.reducer";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-const STEPS_CATEGORIES = ["Type de site", "Adresse", "Sols", "Récapitulatif"] as const;
+const STEPS_CATEGORIES = ["Type de site", "Adresse", "Superficie", "Récapitulatif"] as const;
 
 type StepCategory = (typeof STEPS_CATEGORIES)[number];
 
@@ -12,7 +12,7 @@ const getCurrentStepCategory = (step: SiteCreationExpressStep): StepCategory => 
     case "ADDRESS":
       return "Adresse";
     case "SURFACE_AREA":
-      return "Sols";
+      return "Superficie";
     case "CREATION_RESULT":
       return "Récapitulatif";
   }
