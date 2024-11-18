@@ -428,10 +428,9 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
           </Section>
           <Section title="✍️ Dénomination">
             <DataLine label={<strong>Nom du projet</strong>} value={projectData.name} />
-            <DataLine
-              label={<strong>Description</strong>}
-              value={projectData.description || "Pas de description"}
-            />
+            {projectData.description && (
+              <DataLine label={<strong>Description</strong>} value={projectData.description} />
+            )}
           </Section>
         </>
         <div className="tw-mt-8">

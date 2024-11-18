@@ -202,10 +202,9 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           />
         ) : null}
         <DataLine label={<strong>Nom du site</strong>} value={siteFeatures.name} />
-        <DataLine
-          label={<strong>Description</strong>}
-          value={siteFeatures.description || "Pas de description"}
-        />
+        {siteFeatures.description && (
+          <DataLine label={<strong>Description</strong>} value={siteFeatures.description} />
+        )}
       </Section>
     </>
   );
