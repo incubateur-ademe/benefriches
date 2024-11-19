@@ -168,7 +168,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🏛 Droits de mutation sur les ventes immobilières alentour";
     /// Quartier
     case "avoided_property_damages_expenses":
-      return "🚙 Dépenses de réparation évitées";
+      return "🚙 Dépenses d’entretien et réparation évitées";
     case "avoided_car_related_expenses":
       return "🚗 Dépenses automobiles évitées";
     case "avoided_air_conditioning_expenses":
