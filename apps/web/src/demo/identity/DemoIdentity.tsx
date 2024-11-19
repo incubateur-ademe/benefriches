@@ -6,7 +6,7 @@ function AppDemoIdentity() {
     <CreateUserForm
       createdFrom="demo_app"
       onSuccess={() => {
-        routes.demoMyProjects().push();
+        routes.demoOnBoardingIntroductionWhy().push();
       }}
     />
   );

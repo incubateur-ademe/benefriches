@@ -4,8 +4,8 @@ import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { useEffect, useState } from "react";
+import { Link } from "type-route";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 
 import IllustrationCard from "./IllustrationCard";
@@ -15,7 +15,12 @@ const TRANSITION_CLASSES = ["tw-transition", "tw-ease-in-out", "tw-duration-1000
 const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible", "tw-translate-y-0"] as const;
 const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible", "md:tw-translate-y-44"] as const;
 
-const OnBoardingIntroductionHow = () => {
+type Props = {
+  nextLinkProps: Link;
+  backLinkProps: Link;
+};
+
+const OnBoardingIntroductionHow = ({ nextLinkProps, backLinkProps }: Props) => {
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
@@ -32,7 +37,7 @@ const OnBoardingIntroductionHow = () => {
     step === 4
       ? {
           children: "C'est parti",
-          linkProps: routes.createSiteFoncier().link,
+          linkProps: nextLinkProps,
         }
       : {
           children: "Suivant",
@@ -171,7 +176,7 @@ const OnBoardingIntroductionHow = () => {
             {
               children: "Retour",
               priority: "secondary",
-              linkProps: routes.onBoardingIntroductionWhy(),
+              linkProps: backLinkProps,
             },
             {
               priority: "primary",

@@ -21,6 +21,9 @@ const { RouteProvider, useRoute, routes } = createRouter({
   ),
   demoProjectImpacts: demoProject.extend(`/impacts`),
   demoProjectImpactsOnboarding: demoProject.extend(`/onboarding-impacts`),
+  demoOnBoardingIntroductionWhy: demo.extend("/pourquoi-benefriches"),
+  demoOnBoardingIntroductionHow: demo.extend("/comment-ca-marche"),
+
   // ONBOARDING GLOBAL
   onBoardingIdentity: onBoarding.extend("/identite"),
   onBoardingIntroductionWhy: onBoarding.extend("/pourquoi-benefriches"),

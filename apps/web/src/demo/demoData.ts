@@ -36,7 +36,7 @@ export const DEMO_SITE = {
 
 export const DEMO_PROJECT = {
   id: "cef23bf6-bad9-4408-b38c-0116e9d4bf9b",
-  name: "Centralité urbaine",
+  name: "Projet urbain",
   decontaminatedSoilSurface: 7500,
   firstYearOfOperation: 2028,
   developmentPlan: {

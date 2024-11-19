@@ -1,10 +1,16 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import Button from "@codegouvfr/react-dsfr/Button";
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import { Link } from "type-route";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 
-function OnBoardingIntroductionWhyBenefriches() {
+type Props = {
+  nextLinkProps: Link;
+  backLinkProps?: Link;
+};
+
+function OnBoardingIntroductionWhyBenefriches({ nextLinkProps, backLinkProps }: Props) {
   return (
     <section
       className={classNames(fr.cx("fr-container"), "tw-py-20", "tw-grid tw-grid-cols-12 tw-gap-6")}
@@ -55,22 +61,28 @@ function OnBoardingIntroductionWhyBenefriches() {
           <li className="tw-pb-4">❌ Vous avez besoin de conseils pour avancer sur votre projet</li>
         </ul>
 
-        <ButtonsGroup
-          inlineLayoutWhen="always"
-          alignment="between"
-          buttons={[
-            {
-              children: "Retour",
-              priority: "secondary",
-              linkProps: routes.home().link,
-            },
-            {
-              children: "Suivant",
-              priority: "primary",
-              linkProps: routes.onBoardingIntroductionHow().link,
-            },
-          ]}
-        />
+        {backLinkProps ? (
+          <ButtonsGroup
+            inlineLayoutWhen="always"
+            alignment="between"
+            buttons={[
+              {
+                children: "Retour",
+                priority: "secondary",
+                linkProps: backLinkProps,
+              },
+              {
+                children: "Suivant",
+                priority: "primary",
+                linkProps: nextLinkProps,
+              },
+            ]}
+          />
+        ) : (
+          <Button priority="primary" linkProps={nextLinkProps}>
+            Suivant
+          </Button>
+        )}
       </div>
     </section>
   );

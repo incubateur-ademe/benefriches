@@ -2,6 +2,8 @@ import Badge from "@codegouvfr/react-dsfr/Badge";
 import { Suspense, useEffect } from "react";
 
 import { routes, useRoute } from "@/app/views/router";
+import OnBoardingIntroductionHow from "@/features/onboarding/how-it-works/HowItWorksPage";
+import OnBoardingIntroductionWhyBenefriches from "@/features/onboarding/why-benefriches/WhyBenefrichesPage";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
@@ -34,7 +36,7 @@ function DemoApp() {
 
   useEffect(() => {
     if (route.name === routes.demo().name) {
-      routes.demoMyProjects().replace();
+      routes.demoOnBoardingIntroductionWhy().replace();
     }
   }, [route.name]);
 
@@ -55,6 +57,22 @@ function DemoApp() {
           switch (route.name) {
             case routes.demoIdentity.name:
               return <AppDemoIdentity />;
+            case routes.demoOnBoardingIntroductionHow.name:
+              return (
+                <OnBoardingIntroductionHow
+                  nextLinkProps={routes.demoMyProjects().link}
+                  backLinkProps={routes.demoOnBoardingIntroductionWhy().link}
+                />
+              );
+            case routes.demoOnBoardingIntroductionWhy.name:
+              return (
+                <OnBoardingIntroductionWhyBenefriches
+                  nextLinkProps={routes.demoOnBoardingIntroductionHow().link}
+                />
+              );
+            case routes.demoMyProjects.name:
+              return <DemoMyProjects siteData={DEMO_SITE} projectData={DEMO_PROJECT} />;
+
             case routes.demoSiteFeatures.name:
               return <DemoSiteFeatures siteData={DEMO_SITE} />;
             case routes.demoProjectImpacts.name:
@@ -81,8 +99,13 @@ function DemoApp() {
                   projectId={DEMO_PROJECT.id}
                 />
               );
+
             default:
-              return <DemoMyProjects siteData={DEMO_SITE} projectData={DEMO_PROJECT} />;
+              return (
+                <OnBoardingIntroductionWhyBenefriches
+                  nextLinkProps={routes.demoOnBoardingIntroductionHow().link}
+                />
+              );
           }
         })()}
       </Suspense>

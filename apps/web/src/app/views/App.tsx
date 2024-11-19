@@ -26,6 +26,8 @@ const groups = {
     routes.demoProjectImpacts,
     routes.demoSiteFeatures,
     routes.demoProjectImpactsOnboarding,
+    routes.demoOnBoardingIntroductionHow,
+    routes.demoOnBoardingIntroductionWhy,
   ]),
 };
 
