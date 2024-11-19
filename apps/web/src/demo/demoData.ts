@@ -96,7 +96,7 @@ export const DEMO_PROJECT = {
 
 export const IMPACTS_DATA = {
   id: "cef23bf6-bad9-4408-b38c-0116e9d4bf9b",
-  name: "Centralité urbaine",
+  name: "Projet urbain",
   relatedSiteId: "690b9489-b2a2-47b3-9e91-a27c998b7f55",
   relatedSiteName: "Friche industrielle de Mauges-sur-Loire",
   isExpressSite: false,
