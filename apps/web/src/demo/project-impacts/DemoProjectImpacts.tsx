@@ -25,13 +25,15 @@ import ImpactsListView from "@/features/projects/views/project-page/impacts/list
 import ImpactSummaryView from "@/features/projects/views/project-page/impacts/summary-view/ImpactSummaryView";
 import classNames from "@/shared/views/clsx";
 
+import { getImpactsDataFromEvaluationPeriod } from "../demoData";
+
 type Props = {
   siteData: { name: string; id: string } & ReconversionProjectImpactsResult["siteData"];
   projectData: Omit<ProjectFeatures, "developmentPlan"> & { developmentPlan: UrbanProjectFeatures };
   impactsData: ReconversionProjectImpactsResult["impacts"];
 };
 
-function DemoProjectImpacts({ projectData, siteData, impactsData }: Props) {
+function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor1Year }: Props) {
   const [evaluationPeriod, setEvaluationPeriod] = useState<number>(20);
   const [currentViewMode, setViewMode] = useState<ViewMode>("summary");
   const [modalCategoryOpened, setModalCategoryOpened] =
@@ -53,6 +55,8 @@ function DemoProjectImpacts({ projectData, siteData, impactsData }: Props) {
   const { windowInnerWidth } = useWindowInnerSize();
 
   const isSmScreen = windowInnerWidth < breakpointsValues.sm;
+
+  const impactsData = getImpactsDataFromEvaluationPeriod(impactsDataFor1Year, evaluationPeriod);
 
   return (
     <div

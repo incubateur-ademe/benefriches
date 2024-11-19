@@ -1,4 +1,9 @@
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+import {
+  AvoidedFricheExpensesImpact,
+  AvoidedTrafficAccidentsImpact,
+  EcosystemServicesImpact,
+} from "@/features/projects/domain/impacts.types";
 import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
 import { SiteFeatures } from "@/features/site-features/domain/siteFeatures";
 
@@ -169,105 +174,105 @@ export const IMPACTS_DATA = {
     socioeconomic: {
       impacts: [
         {
-          amount: 715500,
+          amount: 35775,
           actor: "Mairie de Mauges-sur-Loire",
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
           details: [
-            { amount: 700000, impact: "avoided_maintenance_costs" },
-            { amount: 15500, impact: "avoided_illegal_dumping_costs" },
+            { amount: 35000, impact: "avoided_maintenance_costs" },
+            { amount: 775, impact: "avoided_illegal_dumping_costs" },
           ],
         },
         {
-          amount: 1770,
+          amount: 89,
           impact: "water_regulation",
           impactCategory: "environmental_monetary",
           actor: "community",
         },
         {
-          amount: 66887,
+          amount: 67490,
           impact: "ecosystem_services",
           impactCategory: "environmental_monetary",
           actor: "human_society",
           details: [
             { amount: 67522, impact: "carbon_storage" },
-            { amount: -635, impact: "water_cycle" },
+            { amount: -32, impact: "water_cycle" },
           ],
         },
         {
           actor: "human_society",
-          amount: 5014.78,
+          amount: 80.32,
           impact: "avoided_air_conditioning_co2_eq_emissions",
           impactCategory: "environmental_monetary",
         },
         {
           actor: "local_residents",
-          amount: 29669.3582780995,
+          amount: 1483.467913904975,
           impact: "avoided_air_conditioning_expenses",
           impactCategory: "economic_indirect",
         },
         {
           actor: "local_companies",
-          amount: 1120.0000000000002,
+          amount: 56.00000000000001,
           impact: "avoided_air_conditioning_expenses",
           impactCategory: "economic_indirect",
         },
         {
           actor: "human_society",
-          amount: 269896.39,
+          amount: 4322.77,
           impact: "avoided_traffic_co2_eq_emissions",
           impactCategory: "environmental_monetary",
         },
         {
           actor: "human_society",
-          amount: 35891.15913704867,
+          amount: 1794.5579568524333,
           impact: "avoided_air_pollution",
           impactCategory: "environmental_monetary",
         },
         {
           actor: "local_residents",
-          amount: 267777.55119896587,
+          amount: 13388.877559948294,
           impact: "avoided_car_related_expenses",
           impactCategory: "economic_indirect",
         },
         {
           actor: "local_workers",
-          amount: 2080.7881773399017,
+          amount: 104.03940886699507,
           impact: "avoided_car_related_expenses",
           impactCategory: "economic_indirect",
         },
         {
           actor: "french_society",
-          amount: 806.3172882559663,
+          amount: 40.31586441279832,
           impact: "avoided_property_damages_expenses",
           impactCategory: "economic_indirect",
         },
         {
           actor: "local_residents",
-          amount: 1078548.4701069458,
+          amount: 53927.42350534729,
           impact: "travel_time_saved",
           impactCategory: "social_monetary",
         },
         {
           actor: "local_workers",
-          amount: 8380.952380952382,
+          amount: 419.04761904761904,
           impact: "travel_time_saved",
           impactCategory: "social_monetary",
         },
         {
           actor: "local_residents",
-          amount: 1038926.9952014461,
+          amount: 51946.349760072306,
           impact: "local_property_value_increase",
           impactCategory: "economic_indirect",
         },
         {
           actor: "community",
-          amount: 1829.14116427891,
+          amount: 91.4570582139455,
           impact: "local_transfer_duties_increase",
           impactCategory: "economic_indirect",
         },
       ],
-      total: 3524098.9029333335,
+      total: 231008.62664666667,
     },
     permeableSurfaceArea: {
       base: 30000,
@@ -279,9 +284,9 @@ export const IMPACTS_DATA = {
     nonContaminatedSurfaceArea: { current: 40000, forecast: 47500, difference: 7500 },
     fullTimeJobs: {
       current: 0.1,
-      forecast: 35.550000000000004,
+      forecast: 42.2,
       operations: { current: 0.1, forecast: 35.2 },
-      conversion: { current: 0, forecast: 0.35 },
+      conversion: { current: 0, forecast: 7 },
     },
     soilsCarbonStorage: {
       isSuccess: true,
@@ -304,9 +309,60 @@ export const IMPACTS_DATA = {
         ],
       },
     },
-    avoidedAirConditioningCo2EqEmissions: 7.882124367065018,
-    avoidedVehiculeKilometers: 2698583.393763058,
-    travelTimeSaved: 108692.9422487898,
-    avoidedCarTrafficCo2EqEmissions: 424.2173094995526,
+    avoidedAirConditioningCo2EqEmissions: 0.3941062183532509,
+    avoidedVehiculeKilometers: 134929.16968815288,
+    travelTimeSaved: 5434.64711243949,
+    avoidedCarTrafficCo2EqEmissions: 21.21086547497763,
   },
 } as ReconversionProjectImpactsResult;
+
+export const getImpactsDataFromEvaluationPeriod = (
+  impactsDataFor1Year: ReconversionProjectImpactsResult["impacts"],
+  evaluationPeriod: number,
+): ReconversionProjectImpactsResult["impacts"] => {
+  return {
+    ...impactsDataFor1Year,
+    socioeconomic: {
+      ...impactsDataFor1Year.socioeconomic,
+      impacts: impactsDataFor1Year.socioeconomic.impacts.map(({ amount, impact, ...rest }) => {
+        switch (impact) {
+          case "avoided_friche_costs":
+          case "avoided_traffic_accidents":
+          case "ecosystem_services": {
+            const { details } = rest as
+              | AvoidedFricheExpensesImpact
+              | AvoidedTrafficAccidentsImpact
+              | EcosystemServicesImpact;
+            return {
+              ...rest,
+              impact,
+              amount: amount * evaluationPeriod,
+              details: details.map(({ amount: amountDetails, ...restDetails }) => ({
+                amount: amountDetails * evaluationPeriod,
+                ...restDetails,
+              })),
+            };
+          }
+          default:
+            return {
+              ...rest,
+              impact,
+              amount: amount * evaluationPeriod,
+            };
+        }
+      }),
+    },
+    avoidedAirConditioningCo2EqEmissions: impactsDataFor1Year.avoidedAirConditioningCo2EqEmissions
+      ? impactsDataFor1Year.avoidedAirConditioningCo2EqEmissions * evaluationPeriod
+      : undefined,
+    avoidedVehiculeKilometers: impactsDataFor1Year.avoidedVehiculeKilometers
+      ? impactsDataFor1Year.avoidedVehiculeKilometers * evaluationPeriod
+      : undefined,
+    travelTimeSaved: impactsDataFor1Year.travelTimeSaved
+      ? impactsDataFor1Year.travelTimeSaved * evaluationPeriod
+      : undefined,
+    avoidedCarTrafficCo2EqEmissions: impactsDataFor1Year.avoidedCarTrafficCo2EqEmissions
+      ? impactsDataFor1Year.avoidedCarTrafficCo2EqEmissions * evaluationPeriod
+      : undefined,
+  } as ReconversionProjectImpactsResult["impacts"];
+};

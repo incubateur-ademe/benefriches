@@ -7,13 +7,20 @@ import {
 } from "@/features/projects/domain/projectKeyImpactIndicators";
 import ProjectImpactsOnboardingPage from "@/features/projects/views/project-impacts-onboarding/ProjectImpactsOnboardingPage";
 
+import { getImpactsDataFromEvaluationPeriod } from "../demoData";
+
 type Props = {
   projectId: string;
   siteData: { name: string; id: string } & ReconversionProjectImpactsResult["siteData"];
   impactsData: ReconversionProjectImpactsResult["impacts"];
 };
 
-function DemoProjectImpactsOnboarding({ impactsData, siteData, projectId }: Props) {
+function DemoProjectImpactsOnboarding({
+  impactsData: impactsDataFor1Year,
+  siteData,
+  projectId,
+}: Props) {
+  const impactsData = getImpactsDataFromEvaluationPeriod(impactsDataFor1Year, 20);
   const keyImpactIndicatorsList = getKeyImpactIndicatorsList(impactsData, siteData);
 
   return (
