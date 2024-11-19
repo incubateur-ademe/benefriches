@@ -7,6 +7,7 @@ import {
   getPictogramForUrbanSpaceCategory,
 } from "@/features/create-project/domain/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
 import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
@@ -31,18 +32,30 @@ type SoilTypeTileProps = {
 const SoilTypeTile = ({ spaceCategory, isSelected, onChange }: SoilTypeTileProps) => {
   const title = getLabelForSpaceCategory(spaceCategory);
   const imgSrc = getPictogramForUrbanSpaceCategory(spaceCategory);
+  const description = getDescriptionForUrbanSpaceCategory(spaceCategory);
+  const disabled =
+    spaceCategory === "URBAN_FARM" || spaceCategory === "RENEWABLE_ENERGY_PRODUCTION_PLANT";
 
   return (
     <CheckableTile
       title={title}
-      description={getDescriptionForUrbanSpaceCategory(spaceCategory)}
+      description={
+        disabled ? (
+          <div>
+            <div>{description}</div>
+            <Badge small style="disabled" className="tw-mt-2">
+              Bientôt disponible
+            </Badge>
+          </div>
+        ) : (
+          description
+        )
+      }
       imgSrc={imgSrc}
       checked={isSelected}
       onChange={onChange}
       checkType="checkbox"
-      disabled={
-        spaceCategory === "URBAN_FARM" || spaceCategory === "RENEWABLE_ENERGY_PRODUCTION_PLANT"
-      }
+      disabled={disabled}
     />
   );
 };
