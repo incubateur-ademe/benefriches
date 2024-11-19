@@ -41,9 +41,8 @@ function PhotovoltaicPowerForm({
             </strong>
           </p>
           <p>
-            La superficie du site étant de {formatNumberFr(siteSurfaceArea)}
-            &nbsp;m², votre puissance devrait être de maximum{" "}
-            {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
+            La superficie du site étant de {formatSurfaceArea(siteSurfaceArea)}, votre puissance
+            devrait être de maximum {formatNumberFr(recommendedElectricalPowerKWc)}&nbsp;kWc.
           </p>
         </FormInfo>
       }
