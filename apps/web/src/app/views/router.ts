@@ -24,7 +24,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
   // ONBOARDING GLOBAL
   onBoardingIdentity: onBoarding.extend("/identite"),
   onBoardingIntroductionWhy: onBoarding.extend("/pourquoi-benefriches"),
-  onBoardingIntroductionHow: onBoarding.extend("/premiers-pas/comment-ca-marche"),
+  onBoardingIntroductionHow: onBoarding.extend("/comment-ca-marche"),
   login: defineRoute("/se-connecter"),
   createUser: defineRoute("/creer-un-compte"),
   // FORMS
