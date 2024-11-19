@@ -21,8 +21,8 @@ const ImpactSummaryProjectBalance = ({
       description={`${formatMonetaryImpact(socioEconomicMonetaryImpactsTotal)} d’impacts socio-économiques contre ${formatMonetaryImpact(economicBalanceTotal)} de bilan de l’opération`}
       title={
         isSuccess
-          ? "Impacts avec une valeur qui compense le déficit\u00a0💰"
-          : "Impacts avec une valeur plus faible que le déficit\u00a0💸"
+          ? "Les impacts compensent le déficit de l'opération\u00a0💰"
+          : "Les impacts ne compensent pas le déficit de l'opération\u00a0💸"
       }
       descriptionDisplayMode={descriptionDisplayMode}
     />
