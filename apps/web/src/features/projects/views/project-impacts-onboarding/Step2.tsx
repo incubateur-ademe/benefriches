@@ -1,4 +1,4 @@
-import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
 
 import ExampleArticle from "./Example";
 
@@ -45,10 +45,21 @@ export default function Step2({ onNextClick, onBackClick }: Props) {
           Mais aussi la collectivité, les riverains, les structures locales, les futurs habitants...
         </p>
         <div className="tw-mt-5">
-          <BackNextButtonsGroup
-            onBack={onBackClick}
-            onNext={onNextClick}
-            nextLabel="Suivant (2/3)"
+          <ButtonsGroup
+            inlineLayoutWhen="always"
+            alignment="between"
+            buttons={[
+              {
+                children: "Retour",
+                priority: "secondary",
+                onClick: onBackClick,
+              },
+              {
+                priority: "primary",
+                children: "Suivant (2/3)",
+                onClick: onNextClick,
+              },
+            ]}
           />
         </div>
       </div>
