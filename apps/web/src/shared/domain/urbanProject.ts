@@ -51,6 +51,10 @@ export const getLabelForBuildingFloorArea = (
       return "Parking silo";
     case "OTHER":
       return "Autres";
+    case "SOCIO_CULTURAL_PLACE":
+      return "Lieux socio-culturels";
+    case "SPORTS_FACILITIES":
+      return "Équipements sportifs";
   }
 };
 

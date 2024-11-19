@@ -354,10 +354,10 @@ describe("Urban project specific impacts", () => {
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
             GROUND_FLOOR_RETAIL: 1000,
+            SOCIO_CULTURAL_PLACE: 500,
+            SPORTS_FACILITIES: 1000,
           },
-          spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 1500,
-          },
+          spacesDistribution: {},
         },
         siteSurfaceArea: 15000,
         cityPopulation: 18000,
@@ -474,10 +474,9 @@ describe("Urban project specific impacts", () => {
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
             GROUND_FLOOR_RETAIL: 250,
+            SOCIO_CULTURAL_PLACE: 200,
           },
-          spacesDistribution: {
-            PUBLIC_GREEN_SPACES: 200,
-          },
+          spacesDistribution: {},
         },
       });
 

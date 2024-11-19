@@ -1,3 +1,10 @@
+import {
+  BuildingFloorAreaUsageDistribution,
+  ECONOMIC_ACTIVITY_BUILDINGS_USE,
+  filterObjectWithKeys,
+  sumObjectValues,
+} from "shared";
+
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 
 import { UrbanProjectFeatures } from "../../urbanProjects";
@@ -80,6 +87,24 @@ type LocalTransferDutiesIncreaseImpact = BaseEconomicImpact & {
   actor: "community";
 };
 
+const getEconomicActivityBuildingSurfaces = (
+  buildingsFloorAreaDistribution: BuildingFloorAreaUsageDistribution,
+) => {
+  const economicActivityBuildings = filterObjectWithKeys(
+    buildingsFloorAreaDistribution,
+    ECONOMIC_ACTIVITY_BUILDINGS_USE,
+  );
+  const economicActivityBuildingSurface = sumObjectValues(economicActivityBuildings);
+
+  const tertiaryActivityBuildingSurface = buildingsFloorAreaDistribution.TERTIARY_ACTIVITIES ?? 0;
+  const otherEconomicActivityBuildingSurface =
+    economicActivityBuildingSurface - tertiaryActivityBuildingSurface;
+  return {
+    tertiaryActivityBuildingSurface,
+    otherEconomicActivityBuildingSurface,
+  };
+};
+
 const getUrbanFreshnessInfluenceRadius = (
   publicGreenSpaceSurfaceRatio: number,
   publicGreenSpaceSurface: number,
@@ -150,12 +175,15 @@ export const getUrbanFreshnessRelatedImpacts = ({
 
   const co2eqMonetaryValueService = new CO2eqMonetaryValueService();
 
+  const { tertiaryActivityBuildingSurface, otherEconomicActivityBuildingSurface } =
+    getEconomicActivityBuildingSurfaces(buildingsFloorAreaDistribution);
+
   const urbanFreshnessRelatedImpactsService = new UrbanFreshnessRelatedImpactsService(
     influenceAreaService,
     co2eqMonetaryValueService,
     buildingsFloorAreaDistribution.RESIDENTIAL ?? 0,
-    0,
-    buildingsFloorAreaDistribution.GROUND_FLOOR_RETAIL ?? 0,
+    tertiaryActivityBuildingSurface,
+    otherEconomicActivityBuildingSurface,
     evaluationPeriodInYears,
     operationsFirstYear,
   );
@@ -191,21 +219,18 @@ export const getUrbanFreshnessRelatedImpacts = ({
 };
 
 const getTravelRelatedImpactInfluenceRadius = (
-  tertiaryActivitySurface: number,
-  groundFloorRetailSurface: number,
+  economicActivityBuildingSurface: number,
   publicCulturalAndSportsFacilitiesSurface: number,
 ) => {
-  const economicActivitySurface = tertiaryActivitySurface + groundFloorRetailSurface;
-
-  if (economicActivitySurface === 0 && publicCulturalAndSportsFacilitiesSurface === 0) {
+  if (economicActivityBuildingSurface === 0 && publicCulturalAndSportsFacilitiesSurface === 0) {
     return 0;
   }
 
-  if (economicActivitySurface < 151 && publicCulturalAndSportsFacilitiesSurface === 0) {
+  if (economicActivityBuildingSurface < 151 && publicCulturalAndSportsFacilitiesSurface === 0) {
     return 100;
   }
 
-  if (economicActivitySurface < 300 && publicCulturalAndSportsFacilitiesSurface === 0) {
+  if (economicActivityBuildingSurface < 300 && publicCulturalAndSportsFacilitiesSurface === 0) {
     return 200;
   }
 
@@ -228,19 +253,16 @@ export const getTravelRelatedImpacts = ({
   citySurfaceArea,
   cityPopulation,
 }: TravelInput) => {
-  const { buildingsFloorAreaDistribution, spacesDistribution } = features;
+  const { buildingsFloorAreaDistribution } = features;
 
-  const publicCulturalAndSportsFacilitiesSurface = [
-    spacesDistribution.PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-    spacesDistribution.PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-    spacesDistribution.PUBLIC_GREEN_SPACES ?? 0,
-    spacesDistribution.PUBLIC_PARKING_LOT ?? 0,
-    spacesDistribution.PUBLIC_PAVED_ROAD_OR_SQUARES_OR_SIDEWALKS ?? 0,
-  ].reduce((sum, value) => sum + value, 0);
+  const { SOCIO_CULTURAL_PLACE = 0, SPORTS_FACILITIES = 0 } = buildingsFloorAreaDistribution;
+  const publicCulturalAndSportsFacilitiesSurface = SOCIO_CULTURAL_PLACE + SPORTS_FACILITIES;
+
+  const { tertiaryActivityBuildingSurface, otherEconomicActivityBuildingSurface } =
+    getEconomicActivityBuildingSurfaces(buildingsFloorAreaDistribution);
 
   const influenceRadius = getTravelRelatedImpactInfluenceRadius(
-    0,
-    buildingsFloorAreaDistribution.GROUND_FLOOR_RETAIL ?? 0,
+    tertiaryActivityBuildingSurface + otherEconomicActivityBuildingSurface,
     publicCulturalAndSportsFacilitiesSurface,
   );
 
@@ -257,8 +279,8 @@ export const getTravelRelatedImpacts = ({
     influenceAreaService,
     co2eqMonetaryValueService,
     buildingsFloorAreaDistribution.RESIDENTIAL ?? 0,
-    0,
-    buildingsFloorAreaDistribution.GROUND_FLOOR_RETAIL ?? 0,
+    tertiaryActivityBuildingSurface,
+    otherEconomicActivityBuildingSurface,
     evaluationPeriodInYears,
     operationsFirstYear,
   );
