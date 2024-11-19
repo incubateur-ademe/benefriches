@@ -102,7 +102,7 @@ export const getLabelForLivingAndActivitySpace = (
 export const getLabelForPublicSpace = (publicSpace: UrbanPublicSpace): string => {
   switch (publicSpace) {
     case "GRASS_COVERED_SURFACE":
-      return "Herbe";
+      return "Bandes végétalisées";
     case "IMPERMEABLE_SURFACE":
       return "Bitume, pavé ou ciment";
     case "PERMEABLE_SURFACE":
@@ -113,7 +113,7 @@ export const getLabelForPublicSpace = (publicSpace: UrbanPublicSpace): string =>
 export const getDescriptionForPublicSpace = (publicSpace: UrbanPublicSpace): string | undefined => {
   switch (publicSpace) {
     case "GRASS_COVERED_SURFACE":
-      return "Pelouse, prairie, gazon...";
+      return "Engazonnées, à strates végétales basses ou arbustives, alignement d'arbres, noues d'infiltration...";
     default:
       return undefined;
   }
