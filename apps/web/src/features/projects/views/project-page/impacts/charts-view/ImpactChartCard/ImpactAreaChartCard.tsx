@@ -10,7 +10,6 @@ import HighchartsMainColorsBehoreHover from "@/shared/views/components/Charts/Hi
 import {
   formatCO2Impact,
   formatDefaultImpact,
-  formatETPImpact,
   formatMonetaryImpact,
   formatSurfaceAreaImpact,
   formatTimeImpact,
@@ -26,16 +25,14 @@ const impactTypeFormatterMap = {
     formatFn: formatSurfaceAreaImpact,
     ...impactFormatConfig["surface_area"],
   },
-  etp: {
-    formatFn: formatETPImpact,
-    ...impactFormatConfig["etp"],
-  },
   time: {
     formatFn: formatTimeImpact,
     ...impactFormatConfig["time"],
   },
   default: { formatFn: formatDefaultImpact, ...impactFormatConfig["default"] },
 } as const;
+
+type AllowedImpactType = keyof typeof impactTypeFormatterMap;
 
 type Props = {
   baseLabel: string;
@@ -48,7 +45,7 @@ type Props = {
     difference: number;
     data: { impactLabel: string; base: number; forecast: number }[];
   };
-  type: "surfaceArea" | "monetary" | "co2" | "etp" | "time" | "default" | undefined;
+  type?: AllowedImpactType;
   unitSuffix?: string;
 };
 

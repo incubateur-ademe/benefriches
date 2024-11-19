@@ -6,7 +6,6 @@ import { SocioEconomicImpactByActor } from "@/features/projects/domain/projectIm
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactsChartsEconomicSection from "./ImpactsChartsEconomicSection";
 import ImpactsChartsEnvironmentSection from "./ImpactsChartsEnvironmentSection";
-import ImpactsChartsSocialSection from "./ImpactsChartsSocialSection";
 
 type Props = {
   projectName: string;
@@ -22,7 +21,6 @@ const ImpactsChartsView = ({
   economicBalance,
   socioEconomicImpacts,
   environmentImpacts,
-  socialImpacts,
   openImpactDescriptionModal,
 }: Props) => {
   const displayEconomicBalance = economicBalance.economicBalance.length > 0;
@@ -34,13 +32,6 @@ const ImpactsChartsView = ({
           openImpactDescriptionModal={openImpactDescriptionModal}
           economicBalance={economicBalance}
           socioEconomicImpacts={socioEconomicImpacts}
-        />
-      )}
-      {socialImpacts.length > 0 && (
-        <ImpactsChartsSocialSection
-          openImpactDescriptionModal={openImpactDescriptionModal}
-          impacts={socialImpacts}
-          projectName={projectName}
         />
       )}
       {environmentImpacts.length > 0 && (
