@@ -10,13 +10,14 @@ import {
   UrbanProjectDevelopmentExpense,
   UrbanPublicSpace,
   UrbanSpaceCategory,
+  BuildingsEconomicActivityUse,
 } from "shared";
 import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 import { ProjectStakeholderStructure, Schedule } from "../../domain/project.types";
-import { BuildingsEconomicActivityUse, BuildingsUseCategory } from "../../domain/urbanProject";
+import { BuildingsUseCategory } from "../../domain/urbanProject";
 
 export function prefixActionType(actionType: string) {
   return `projectCreation/urbanProject/${actionType}`;

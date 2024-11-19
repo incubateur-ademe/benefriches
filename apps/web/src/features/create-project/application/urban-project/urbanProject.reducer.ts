@@ -14,17 +14,14 @@ import {
   ReinstatementExpense,
   UrbanProjectDevelopmentExpense,
   ProjectPhase,
+  ECONOMIC_ACTIVITY_BUILDINGS_USE,
+  BuildingsEconomicActivityUse,
 } from "shared";
 
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
 import { ProjectStakeholder } from "../../domain/project.types";
-import {
-  BuildingsUseCategory,
-  BuildingsEconomicActivityUse,
-  ECONOMIC_ACTIVITY_BUILDINGS_USE,
-  isBuildingEconomicActivityUse,
-} from "../../domain/urbanProject";
+import { BuildingsUseCategory, isBuildingEconomicActivityUse } from "../../domain/urbanProject";
 import { ProjectCreationState } from "../createProject.reducer";
 import { saveReconversionProject } from "./saveReconversionProject.action";
 import soilsCarbonStorageReducer, {

@@ -1,7 +1,6 @@
-import {
-  BuildingsEconomicActivityUse,
-  getPictogramUrlForEconomicActivityUses,
-} from "@/features/create-project/domain/urbanProject";
+import { BuildingsEconomicActivityUse } from "shared";
+
+import { getPictogramUrlForEconomicActivityUses } from "@/features/create-project/domain/urbanProject";
 import { getLabelForBuildingFloorArea } from "@/shared/domain/urbanProject";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 

@@ -1,8 +1,9 @@
+import { BuildingsEconomicActivityUse } from "shared";
+
 import {
   buildingsEconomicActivitySelectionCompleted,
   buildingsEconomicActivitySelectionReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { BuildingsEconomicActivityUse } from "@/features/create-project/domain/urbanProject";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import EconomicActivitiesSelectionSelection from "./EconomicActivitySelection";

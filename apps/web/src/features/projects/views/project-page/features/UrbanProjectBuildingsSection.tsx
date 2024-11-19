@@ -1,11 +1,11 @@
 import {
+  ECONOMIC_ACTIVITY_BUILDINGS_USE,
   filterObjectWithKeys,
   filterObjectWithoutKeys,
   sumObjectValues,
   typedObjectEntries,
 } from "shared";
 
-import { ECONOMIC_ACTIVITY_BUILDINGS_USE } from "@/features/create-project/domain/urbanProject";
 import { UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
 import { getLabelForBuildingFloorArea } from "@/shared/domain/urbanProject";
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";

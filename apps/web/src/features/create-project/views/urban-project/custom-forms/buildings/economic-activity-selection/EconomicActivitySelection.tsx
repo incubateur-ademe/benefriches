@@ -1,8 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
+import { BuildingsEconomicActivityUse, ECONOMIC_ACTIVITY_BUILDINGS_USE } from "shared";
 
 import {
-  BuildingsEconomicActivityUse,
-  ECONOMIC_ACTIVITY_BUILDINGS_USE,
   getDescriptionForBuildingFloorArea,
   getPictogramUrlForEconomicActivityUses,
 } from "@/features/create-project/domain/urbanProject";

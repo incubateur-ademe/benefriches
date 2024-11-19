@@ -7,11 +7,12 @@ import {
   UrbanLivingAndActivitySpace,
   UrbanPublicSpace,
   UrbanSpaceCategory,
+  BuildingsEconomicActivityUse,
 } from "shared";
 
 import { RootState } from "@/app/application/store";
 
-import { BuildingsEconomicActivityUse, BuildingsUseCategory } from "../../domain/urbanProject";
+import { BuildingsUseCategory } from "../../domain/urbanProject";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
