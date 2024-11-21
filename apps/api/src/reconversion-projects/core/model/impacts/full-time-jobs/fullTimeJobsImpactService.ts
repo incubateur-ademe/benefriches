@@ -129,9 +129,11 @@ export class FullTimeJobsImpactService implements FullTimeJobsImpactServiceInter
           this.developmentPlan.features.electricalPowerKWc,
         );
       case "URBAN_PROJECT":
-        return computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution(
-          this.developmentPlan.features.buildingsFloorAreaDistribution,
-        ) ?? 0;
+        return (
+          computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution(
+            this.developmentPlan.features.buildingsFloorAreaDistribution,
+          ) ?? 0
+        );
       default:
         return 0;
     }
