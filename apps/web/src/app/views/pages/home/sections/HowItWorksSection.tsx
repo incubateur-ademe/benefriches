@@ -1,86 +1,96 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import { ReactNode } from "react";
-
+import IllustrationCard from "@/features/onboarding/how-it-works/IllustrationCard";
+import OnBoardingIntroductionStep from "@/features/onboarding/how-it-works/Step";
+import { HOW_IT_WORKS_CONTENT } from "@/features/onboarding/how-it-works/content";
 import classNames from "@/shared/views/clsx";
-
-type HowItWorksStepProps = {
-  number: number;
-  title: string;
-  text: ReactNode;
-};
-
-function HowItWorksStep({ number, title, text }: HowItWorksStepProps) {
-  return (
-    <li>
-      <div
-        className={classNames(
-          "tw-mb-2",
-          "tw-text-white tw-bg-blue-main",
-          "tw-rounded-full",
-          "tw-text-center",
-          "tw-h-12 tw-w-12",
-          "tw-font-bold",
-          "tw-pr-[1px]",
-          "tw-pt-[11px]",
-        )}
-      >
-        {number}
-      </div>
-      <h3 className="tw-text-xl tw-mb-2">{title}</h3>
-      <p className={fr.cx("fr-text--sm")}>{text}</p>
-    </li>
-  );
-}
 
 export default function HowItWorksSection() {
   return (
     <section className="tw-py-20 tw-bg-grey-light dark:tw-bg-grey-dark">
-      <div className={fr.cx("fr-container")}>
-        <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
-        <ol
+      <div className="fr-container tw-grid tw-grid-cols-12 tw-gap-8">
+        <div
           className={classNames(
-            "tw-grid tw-grid-cols-1 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-gap-10",
-            "tw-list-none marker:tw-content-none",
-            "tw-p-0 tw-mt-10",
+            "tw-col-span-12 tw-row-start-2",
+            "md:tw-row-start-1 md:tw-col-span-4",
+            "tw-grid tw-grid-rows-3 tw-gap-10",
+            "tw-px-14",
           )}
         >
-          <HowItWorksStep
-            number={1}
-            title="Décrivez le site"
-            text="Adresse, type de site, typologie des sols, pollution, gestion du site, etc. Si vous n'avez pas l'info, Bénéfriches vous propose des valeurs par défaut, basées sur des moyennes sur des sites similaires."
+          <div className="tw-relative">
+            <IllustrationCard
+              title="Votre site"
+              iconId="fr-icon-map-pin-2-fill"
+              stepNumber={1}
+              className="tw-w-[60%]"
+            />
+            <IllustrationCard
+              title="Votre projet"
+              iconId="fr-icon-briefcase-fill"
+              stepNumber={2}
+              className={["tw-w-[60%]", "tw-absolute", "tw-right-0", "tw-bottom-4", "tw-z-10"]}
+            />
+          </div>
+          <div className="tw-flex tw-flex-col tw-justify-center">
+            <IllustrationCard
+              title="Données Bénéfriches"
+              iconId="fr-icon-database-fill"
+              stepNumber={3}
+              className={[
+                "tw-translate-y-0",
+                "before:tw-content-['x']",
+                "before:tw-absolute",
+                "before:tw-top-[-3.5rem]",
+                "before:tw-left-[50%]",
+                "before:tw-text-3xl",
+                "before:tw-font-bold",
+              ]}
+            />
+          </div>
+          <IllustrationCard
+            title="Impacts de votre projet"
+            iconId="fr-icon-bar-chart-box-fill"
+            stepNumber={4}
+            className={[
+              "tw-translate-y-0",
+              "before:tw-content-['=']",
+              "before:tw-absolute",
+              "before:tw-top-[-3.5rem]",
+              "before:tw-left-[50%]",
+              "before:tw-text-3xl",
+              "before:tw-font-bold",
+            ]}
+          >
+            <span className="tw-text-sm">
+              🌱 Environnement, 👷 Emploi, 🤕 Sécurité, 💰 Finances publiques...
+            </span>
+          </IllustrationCard>
+        </div>
+
+        <div className="tw-col-span-12 md:tw-col-span-8">
+          <h2>Bénéfriches, comment ça marche&nbsp;?</h2>
+          <OnBoardingIntroductionStep
+            stepNumber={1}
+            title={HOW_IT_WORKS_CONTENT.DESCRIBE_SITE_TITLE}
+            text={HOW_IT_WORKS_CONTENT.DESCRIBE_SITE_TEXT}
           />
-          <HowItWorksStep
-            number={2}
-            title="Renseignez le projet"
-            text="Type de projet, usage des sols, caractéristiques des bâtiments ou équipements, acteurs, dépenses et recettes, calendrier, etc. Là aussi, si vous n'avez pas l'info, Bénéfriches vous propose des valeurs par défaut."
+
+          <OnBoardingIntroductionStep
+            stepNumber={2}
+            title={HOW_IT_WORKS_CONTENT.DESCRIBE_PROJECT_TITLE}
+            text={HOW_IT_WORKS_CONTENT.DESCRIBE_PROJECT_TEXT}
           />
-          <HowItWorksStep
-            number={3}
-            title="Consultez les impacts"
-            text={
-              <span>
-                Consultez les indicateurs du projet sur le site :{" "}
-                <strong>
-                  impacts économiques directs et indirects, impacts sociaux, impacts
-                  environnementaux
-                </strong>
-                , sur différentes durées allant de 1 à 50 ans.
-              </span>
-            }
+
+          <OnBoardingIntroductionStep
+            stepNumber={3}
+            title={HOW_IT_WORKS_CONTENT.BENEFRICHES_COMPUTING_TITLE}
+            text={HOW_IT_WORKS_CONTENT.BENEFRICHES_COMPUTING_TEXT}
           />
-          <HowItWorksStep
-            number={4}
-            title="Comparez les impacts"
-            text={
-              <span>
-                Après avoir renseigné plusieurs sites et projets, vous comparez les impacts entre{" "}
-                <strong>2 variantes</strong> d'un projet, <strong>2 projets différents</strong> sur
-                un même site, un même projet sur <strong>2 sites différents</strong> ou un site{" "}
-                <strong>avec et sans projet</strong>.
-              </span>
-            }
+
+          <OnBoardingIntroductionStep
+            stepNumber={4}
+            title={HOW_IT_WORKS_CONTENT.VIEW_IMPACTS_TITLE}
+            text={HOW_IT_WORKS_CONTENT.VIEW_IMPACTS_TEXT}
           />
-        </ol>
+        </div>
       </div>
     </section>
   );

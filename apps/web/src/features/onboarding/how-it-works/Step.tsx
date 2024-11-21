@@ -7,7 +7,7 @@ type StepProps = {
   stepNumber: 1 | 2 | 3 | 4;
   title: string;
   text: ReactNode;
-  className: ClassValue;
+  className?: ClassValue;
 };
 
 const numberBgVariants = {

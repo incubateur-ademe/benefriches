@@ -10,6 +10,7 @@ import classNames from "@/shared/views/clsx";
 
 import IllustrationCard from "./IllustrationCard";
 import OnBoardingIntroductionStep from "./Step";
+import { HOW_IT_WORKS_CONTENT } from "./content";
 
 const TRANSITION_CLASSES = ["tw-transition", "tw-ease-in-out", "tw-duration-1000"] as const;
 const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible", "tw-translate-y-0"] as const;
@@ -143,29 +144,29 @@ const OnBoardingIntroductionHow = ({ nextLinkProps, backLinkProps }: Props) => {
         <OnBoardingIntroductionStep
           stepNumber={1}
           className={[TRANSITION_CLASSES, step1Classes]}
-          title="Décrivez le site"
-          text="Adresse, type de site, typologie des sols, pollution, gestion du site... Vous n’avez pas toutes les infos ? Pas de panique, Bénéfriches vous propose un mode express qui génère des données basées sur des moyennes."
+          title={HOW_IT_WORKS_CONTENT.DESCRIBE_SITE_TITLE}
+          text={HOW_IT_WORKS_CONTENT.DESCRIBE_SITE_TEXT}
         />
 
         <OnBoardingIntroductionStep
           stepNumber={2}
           className={[TRANSITION_CLASSES, step2Classes]}
-          title="Renseignez le projet"
-          text="Type de projet, usage des sols, dépenses et recettes, calendrier... là aussi, si vous n’avez pas l’info, Bénéfriches vous propose un mode express."
+          title={HOW_IT_WORKS_CONTENT.DESCRIBE_PROJECT_TITLE}
+          text={HOW_IT_WORKS_CONTENT.DESCRIBE_PROJECT_TEXT}
         />
 
         <OnBoardingIntroductionStep
           stepNumber={3}
           className={[TRANSITION_CLASSES, step3Classes]}
-          title="Bénéfriches croise vos informations avec ses données"
-          text="Instructions du gouvernement, enquêtes et statistiques, rapports institutionnels scientifiques... Au total, Bénéfriches mobilise plus de 50 sources."
+          title={HOW_IT_WORKS_CONTENT.BENEFRICHES_COMPUTING_TITLE}
+          text={HOW_IT_WORKS_CONTENT.BENEFRICHES_COMPUTING_TEXT}
         />
 
         <OnBoardingIntroductionStep
           stepNumber={4}
           className={[TRANSITION_CLASSES, step4Classes]}
-          title="Consultez les impacts "
-          text="Bénéfriches quantifie et monétarise l’ensemble des impacts de votre projet (sur l’environnement, l’emploi, la sécurité des personnes, le cadre de vie des riverains, les finances publiques...) Vous retrouverez ces résultats dans une page sauvegardée et exportable en PDF."
+          title={HOW_IT_WORKS_CONTENT.VIEW_IMPACTS_TITLE}
+          text={HOW_IT_WORKS_CONTENT.VIEW_IMPACTS_TEXT}
         />
 
         <ButtonsGroup
