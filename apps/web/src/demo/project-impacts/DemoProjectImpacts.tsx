@@ -122,7 +122,8 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
             economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
             socialImpacts={getSocialProjectImpacts(impactsData)}
             environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
-            socioEconomicImpacts={getSocioEconomicProjectImpactsByActor(impactsData)}
+            socioEconomicImpactsByActor={getSocioEconomicProjectImpactsByActor(impactsData)}
+            socioEconomicTotalImpact={impactsData.socioeconomic.total}
           />
         )}
       </div>
