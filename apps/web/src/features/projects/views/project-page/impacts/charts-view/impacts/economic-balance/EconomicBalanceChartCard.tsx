@@ -45,7 +45,7 @@ const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName) => {
   }
 };
 
-function EconomicBalanceImpactCard({ economicBalance, onClick, bearer = "Aménageur" }: Props) {
+function EconomicBalanceChartCard({ economicBalance, onClick, bearer = "Aménageur" }: Props) {
   const totalValues = economicBalance.map(({ value }) => value);
 
   const totalRevenues = sumList(totalValues.filter((value) => value > 0));
@@ -125,4 +125,4 @@ function EconomicBalanceImpactCard({ economicBalance, onClick, bearer = "Aménag
   );
 }
 
-export default EconomicBalanceImpactCard;
+export default EconomicBalanceChartCard;

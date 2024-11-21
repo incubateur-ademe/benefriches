@@ -2,8 +2,8 @@ import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconom
 import { SocioEconomicImpactByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
-import EconomicBalanceImpactCard from "./impacts/economic-balance/EconomicBalanceImpactCard";
-import SocioEconomicImpactsCard from "./impacts/socio-economic/SocioEconomicImpactsCard";
+import EconomicBalanceChartCard from "./impacts/economic-balance/EconomicBalanceChartCard";
+import SocioEconomicImpactsChartCard from "./impacts/socio-economic/SocioEconomicImpactsChartCard";
 
 type Props = {
   economicBalance: EconomicBalance;
@@ -22,7 +22,7 @@ const ImpactsChartsEconomicSection = ({
     <div className="tw-grid lg:tw-grid-cols-3 tw-gap-10 tw-mb-8">
       {displayEconomicBalance && (
         <div className="lg:tw-col-start-1">
-          <EconomicBalanceImpactCard
+          <EconomicBalanceChartCard
             economicBalance={economicBalance["economicBalance"]}
             bearer={economicBalance["bearer"]}
             onClick={() => {
@@ -39,7 +39,7 @@ const ImpactsChartsEconomicSection = ({
             : "lg:tw-col-start-1 lg:tw-col-end-3"
         }
       >
-        <SocioEconomicImpactsCard
+        <SocioEconomicImpactsChartCard
           socioEconomicImpacts={socioEconomicImpacts}
           onClick={() => {
             openImpactDescriptionModal("socio-economic");

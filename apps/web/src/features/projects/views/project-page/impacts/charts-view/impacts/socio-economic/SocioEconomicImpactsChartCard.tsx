@@ -8,7 +8,7 @@ type Props = {
   onClick: () => void;
 };
 
-function SocioEconomicImpactsCard({ socioEconomicImpacts, onClick }: Props) {
+function SocioEconomicChartCard({ socioEconomicImpacts, onClick }: Props) {
   return (
     <ImpactsChartsSection onClick={onClick} title="Impacts socio-économiques">
       <SocioEconomicImpactsByActorChart socioEconomicImpacts={socioEconomicImpacts} />
@@ -16,4 +16,4 @@ function SocioEconomicImpactsCard({ socioEconomicImpacts, onClick }: Props) {
   );
 }
 
-export default SocioEconomicImpactsCard;
+export default SocioEconomicChartCard;
