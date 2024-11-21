@@ -1,5 +1,8 @@
-import { UrbanProjectDevelopmentExpense, PhotovoltaicInstallationExpense } from "shared";
-import { sumList } from "shared";
+import {
+  UrbanProjectDevelopmentExpense,
+  PhotovoltaicInstallationExpense,
+  sumListWithKey,
+} from "shared";
 
 import {
   ProjectDevelopmentPlanType,
@@ -27,7 +30,12 @@ export default function DevelopmentPlanInstallationExpenses({
             noBorder
             label={<strong>Dépenses d'installation de la centrale photovoltaïque</strong>}
             value={
-              <strong>{formatNumberFr(sumList(installationCosts.map((r) => r.amount)))} €</strong>
+              <strong>
+                {formatNumberFr(
+                  sumListWithKey(installationCosts as PhotovoltaicInstallationExpense[], "amount"),
+                )}{" "}
+                €
+              </strong>
             }
           />
           {installationCosts.map(({ amount, purpose }) => {
@@ -51,7 +59,12 @@ export default function DevelopmentPlanInstallationExpenses({
             noBorder
             label={<strong>Dépenses d'aménagement du quartier</strong>}
             value={
-              <strong>{formatNumberFr(sumList(installationCosts.map((r) => r.amount)))} €</strong>
+              <strong>
+                {formatNumberFr(
+                  sumListWithKey(installationCosts as UrbanProjectDevelopmentExpense[], "amount"),
+                )}{" "}
+                €
+              </strong>
             }
           />
           {installationCosts.map(({ amount, purpose }) => {

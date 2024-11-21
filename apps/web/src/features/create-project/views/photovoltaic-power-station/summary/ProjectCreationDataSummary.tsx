@@ -7,8 +7,8 @@ import {
   ReinstatementExpense,
   SoilsDistribution,
   SoilType,
+  sumListWithKey,
 } from "shared";
-import { sumList } from "shared";
 
 import { SoilsCarbonStorageResult } from "@/features/create-project/application/soilsCarbonStorage.action";
 import { Schedule } from "@/features/create-project/domain/project.types";
@@ -275,9 +275,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                   label={<strong>Dépenses de remise en état de la friche</strong>}
                   value={
                     <strong>
-                      {formatNumberFr(
-                        sumList(projectData.reinstatementExpenses.map((r) => r.amount)),
-                      )}{" "}
+                      {formatNumberFr(sumListWithKey(projectData.reinstatementExpenses, "amount"))}{" "}
                       €
                     </strong>
                   }
@@ -303,8 +301,9 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                     value={
                       <strong>
                         {formatNumberFr(
-                          sumList(
-                            projectData.photovoltaicPanelsInstallationExpenses.map((r) => r.amount),
+                          sumListWithKey(
+                            projectData.photovoltaicPanelsInstallationExpenses,
+                            "amount",
                           ),
                         )}{" "}
                         €
@@ -326,10 +325,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               label={<strong>Dépenses annuelles</strong>}
               value={
                 <strong>
-                  {formatNumberFr(
-                    sumList(projectData.yearlyProjectedExpenses.map((e) => e.amount)),
-                  )}{" "}
-                  €
+                  {formatNumberFr(sumListWithKey(projectData.yearlyProjectedExpenses, "amount"))} €
                 </strong>
               }
             />
@@ -351,7 +347,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                   value={
                     <strong>
                       {formatNumberFr(
-                        sumList(projectData.financialAssistanceRevenues.map((r) => r.amount)),
+                        sumListWithKey(projectData.financialAssistanceRevenues, "amount"),
                       )}{" "}
                       €
                     </strong>
@@ -379,9 +375,7 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               value={
                 <div>
                   <strong>
-                    {formatNumberFr(
-                      sumList(projectData.yearlyProjectedRevenues.map((e) => e.amount)),
-                    )}{" "}
+                    {formatNumberFr(sumListWithKey(projectData.yearlyProjectedRevenues, "amount"))}{" "}
                     €
                   </strong>
                 </div>

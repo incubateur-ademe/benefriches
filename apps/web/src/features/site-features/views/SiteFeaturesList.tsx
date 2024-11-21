@@ -1,5 +1,4 @@
-import { typedObjectEntries } from "shared";
-import { sumList, sumObjectValues } from "shared";
+import { sumListWithKey, typedObjectEntries, sumObjectValues } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
 import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
@@ -146,9 +145,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
             }
             value={
               siteFeatures.expenses.length > 0 ? (
-                <strong>
-                  {formatNumberFr(sumList(siteFeatures.expenses.map((e) => e.amount)))} €
-                </strong>
+                <strong>{formatNumberFr(sumListWithKey(siteFeatures.expenses, "amount"))} €</strong>
               ) : (
                 "Aucun"
               )
@@ -159,7 +156,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
               <DataLine
                 isDetails
                 label={<strong>Gestion du site</strong>}
-                value={`${sumList(siteManagementExpenses.map(({ amount }) => amount))} €`}
+                value={`${sumListWithKey(siteManagementExpenses, "amount")} €`}
               />
               {siteManagementExpenses.map(({ purpose, amount }) => {
                 return (
@@ -178,7 +175,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
               <DataLine
                 isDetails
                 label={<strong>Sécurisation du site</strong>}
-                value={`${sumList(fricheSpecificExpenses.map(({ amount }) => amount))} €`}
+                value={`${sumListWithKey(fricheSpecificExpenses, "amount")} €`}
               />
               {fricheSpecificExpenses.map(({ amount, purpose }) => {
                 return (

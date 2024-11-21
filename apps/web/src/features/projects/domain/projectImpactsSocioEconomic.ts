@@ -1,4 +1,4 @@
-import { sumList } from "shared";
+import { sumListWithKey } from "shared";
 
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
 import {
@@ -85,7 +85,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         details: details.map(({ amount, impact }) => ({ name: impact, value: amount })),
       })),
     });
-    economicDirect.total += sumList(avoidedFricheExpensesImpacts.map(({ amount }) => amount));
+    economicDirect.total += sumListWithKey(avoidedFricheExpensesImpacts, "amount");
   }
 
   const rentalIncomeImpacts = socioEconomicImpacts.filter(
@@ -99,7 +99,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         name: actor,
       })),
     });
-    economicDirect.total += sumList(rentalIncomeImpacts.map(({ amount }) => amount));
+    economicDirect.total += sumListWithKey(rentalIncomeImpacts, "amount");
   }
 
   const propertyTransferDutiesIncomeImpact = socioEconomicImpacts.find(
@@ -130,7 +130,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         name: actor,
       })),
     });
-    economicIndirect.total += sumList(taxesIncomeImpacts.map(({ amount }) => amount));
+    economicIndirect.total += sumListWithKey(taxesIncomeImpacts, "amount");
   }
 
   const localPropertyValueIncrease = socioEconomicImpacts.filter(
@@ -144,7 +144,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         name: actor,
       })),
     });
-    economicIndirect.total += sumList(localPropertyValueIncrease.map(({ amount }) => amount));
+    economicIndirect.total += sumListWithKey(localPropertyValueIncrease, "amount");
   }
 
   const localPropertyTransferDutiesIncrease = socioEconomicImpacts.filter(
@@ -158,9 +158,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         name: actor,
       })),
     });
-    economicIndirect.total += sumList(
-      localPropertyTransferDutiesIncrease.map(({ amount }) => amount),
-    );
+    economicIndirect.total += sumListWithKey(localPropertyTransferDutiesIncrease, "amount");
   }
 
   const avoidedCarRelatedExpenses = socioEconomicImpacts.filter(
@@ -175,7 +173,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         name: actor,
       })),
     });
-    economicIndirect.total += sumList(avoidedCarRelatedExpenses.map(({ amount }) => amount));
+    economicIndirect.total += sumListWithKey(avoidedCarRelatedExpenses, "amount");
   }
 
   const avoidedPropertyDamagesExpenses = socioEconomicImpacts.filter(
@@ -190,7 +188,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         name: actor,
       })),
     });
-    economicIndirect.total += sumList(avoidedPropertyDamagesExpenses.map(({ amount }) => amount));
+    economicIndirect.total += sumListWithKey(avoidedPropertyDamagesExpenses, "amount");
   }
 
   const avoidedAirConditioningExpenses = socioEconomicImpacts.filter(
@@ -205,7 +203,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         name: actor,
       })),
     });
-    economicIndirect.total += sumList(avoidedAirConditioningExpenses.map(({ amount }) => amount));
+    economicIndirect.total += sumListWithKey(avoidedAirConditioningExpenses, "amount");
   }
 
   const travelTimeSaved = socioEconomicImpacts.filter(
@@ -220,7 +218,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
         name: actor,
       })),
     });
-    socialMonetary.total += sumList(travelTimeSaved.map(({ amount }) => amount));
+    socialMonetary.total += sumListWithKey(travelTimeSaved, "amount");
   }
 
   const avoidedTrafficAccidents = socioEconomicImpacts.find(
@@ -289,7 +287,7 @@ export const getDetailedSocioEconomicProjectImpacts = (
       });
     }
 
-    const total = sumList(details.map(({ value }) => value));
+    const total = sumListWithKey(details, "value");
 
     environmentalMonetary.impacts.push({
       name: "co2_benefit_monetary",
@@ -378,15 +376,16 @@ const getGroupedByImpactName = (impacts: { amount: number; impact: ImpactName }[
     (impactName) => {
       return {
         name: impactName,
-        value: sumList(
-          impacts.filter((impact) => impact.impact === impactName).map(({ amount }) => amount),
+        value: sumListWithKey(
+          impacts.filter((impact) => impact.impact === impactName),
+          "amount",
         ),
       };
     },
   );
   return {
     impacts: byImpactsName,
-    total: sumList(impacts.map(({ amount }) => amount)),
+    total: sumListWithKey(impacts, "amount"),
   };
 };
 

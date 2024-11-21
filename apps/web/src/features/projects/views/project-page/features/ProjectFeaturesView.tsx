@@ -1,4 +1,4 @@
-import { sumList } from "shared";
+import { sumListWithKey } from "shared";
 
 import {
   getLabelForDevelopmentPlanCategory,
@@ -113,7 +113,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
               label={<strong>Dépenses de remise en état de la friche</strong>}
               value={
                 <strong>
-                  {formatNumberFr(sumList(projectData.reinstatementCosts.map((r) => r.amount)))} €
+                  {formatNumberFr(sumListWithKey(projectData.reinstatementCosts, "amount"))} €
                 </strong>
               }
             />
@@ -150,9 +150,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
               value={
                 <div>
                   <strong>
-                    {formatNumberFr(
-                      sumList(projectData.yearlyProjectedExpenses.map((e) => e.amount)),
-                    )}{" "}
+                    {formatNumberFr(sumListWithKey(projectData.yearlyProjectedExpenses, "amount"))}{" "}
                     €
                   </strong>
                 </div>
@@ -179,7 +177,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
               value={
                 <strong>
                   {formatNumberFr(
-                    sumList(projectData.financialAssistanceRevenues.map((r) => r.amount)),
+                    sumListWithKey(projectData.financialAssistanceRevenues, "amount"),
                   )}{" "}
                   €
                 </strong>
@@ -209,9 +207,7 @@ export default function ProjectFeaturesView({ projectData }: Props) {
               value={
                 <div>
                   <strong>
-                    {formatNumberFr(
-                      sumList(projectData.yearlyProjectedRevenues.map((e) => e.amount)),
-                    )}{" "}
+                    {formatNumberFr(sumListWithKey(projectData.yearlyProjectedRevenues, "amount"))}{" "}
                     €
                   </strong>
                 </div>
