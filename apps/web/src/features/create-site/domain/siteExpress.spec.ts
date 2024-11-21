@@ -75,7 +75,7 @@ describe("Site Express data creation", () => {
             purposeCategory: "site_management",
           },
           {
-            amount: 30000,
+            amount: 90000,
             purpose: "propertyTaxes",
             bearer: "owner",
             purposeCategory: "taxes",
@@ -137,7 +137,7 @@ describe("Site Express data creation", () => {
             purposeCategory: "site_management",
           },
           {
-            amount: 30000,
+            amount: 90000,
             purpose: "propertyTaxes",
             bearer: "owner",
             purposeCategory: "taxes",

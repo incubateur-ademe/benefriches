@@ -5,7 +5,7 @@ import { CreateSiteGatewayPayload } from "../application/createSite.actions";
 import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
-  computePropertyTaxesDefaultCost,
+  computeEstimatedPropertyTaxesAmount,
   computeSecurityDefaultCost,
 } from "./expenses.functions";
 import { Expense, SiteExpressDraft } from "./siteFoncier.types";
@@ -41,7 +41,7 @@ const getExpressSiteData = (
       purposeCategory: "site_management",
     },
     {
-      amount: computePropertyTaxesDefaultCost(surfaceArea),
+      amount: computeEstimatedPropertyTaxesAmount(soilsDistribution.BUILDINGS),
       purpose: "propertyTaxes",
       bearer: "owner",
       purposeCategory: "taxes",

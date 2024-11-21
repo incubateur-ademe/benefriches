@@ -23,15 +23,16 @@ type FormExpense =
   | { amount: number; bearer?: YearlyExpenseBearer };
 export type FormValues = Partial<Record<Expense["purpose"], FormExpense>>;
 
-type Props = {
+export type Props = {
   hasTenant: boolean;
   isFriche: boolean;
   siteManagementExpensesWithBearer: { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[];
   siteSecurityExpensesWithBearer: { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[];
   defaultValues: {
+    propertyTaxes?: { amount?: number };
     illegalDumpingCost?: { amount?: number };
     security?: { amount?: number };
-    maintenance: { amount?: number };
+    maintenance?: { amount?: number };
   };
   onSubmit: (data: FormValues) => void;
   onBack: () => void;

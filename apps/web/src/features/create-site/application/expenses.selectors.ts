@@ -3,6 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import { RootState } from "@/app/application/store";
 
 import {
+  computeEstimatedPropertyTaxesAmount,
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
@@ -18,33 +19,33 @@ const selectSitePopulation = createSelector(
   (state): number | undefined => state.population,
 );
 
-export const getDefaultValuesForYearlyExpenses = createSelector(
+export type EstimatedSiteYearlyExpenses = {
+  illegalDumpingCostAmount?: number;
+  securityAmount?: number;
+  maintenanceAmount?: number;
+  propertyTaxesAmount?: number;
+};
+export const selectEstimatedYearlyExpensesForSite = createSelector(
   selectSiteData,
   selectSitePopulation,
-  (
-    siteData,
-    population,
-  ): { illegalDumpingCostAmount?: number; securityAmount?: number; maintenanceAmount?: number } => {
+  (siteData, population): EstimatedSiteYearlyExpenses => {
     const { soilsDistribution = {}, surfaceArea, isFriche } = siteData;
     const buildingsSurface = soilsDistribution.BUILDINGS;
-    const maintenance = buildingsSurface
+    const maintenanceAmount = buildingsSurface
       ? computeMaintenanceDefaultCost(buildingsSurface)
       : undefined;
+    const propertyTaxesAmount = buildingsSurface
+      ? computeEstimatedPropertyTaxesAmount(buildingsSurface)
+      : undefined;
+    const illegalDumpingCostAmount =
+      isFriche && population ? computeIllegalDumpingDefaultCost(population) : undefined;
+    const securityAmount = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
 
-    if (isFriche) {
-      const illegalDumpingCost = population
-        ? computeIllegalDumpingDefaultCost(population)
-        : undefined;
-      const security = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
-
-      return {
-        illegalDumpingCostAmount: illegalDumpingCost,
-        securityAmount: security,
-        maintenanceAmount: maintenance,
-      };
-    }
     return {
-      maintenanceAmount: maintenance,
+      maintenanceAmount,
+      propertyTaxesAmount,
+      illegalDumpingCostAmount,
+      securityAmount,
     };
   },
 );

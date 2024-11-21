@@ -81,7 +81,9 @@ export const computeSecurityDefaultCost = (surfaceArea: number) => {
   return Math.round(SECURITY_COST_BY_HECTARE_PER_YEAR * (surfaceArea / 10000));
 };
 
-const PROPERTY_TAXES_EURO_PER_SQUARE_METERS_ESTIMATED_RATIO = 1.5;
-export const computePropertyTaxesDefaultCost = (surfaceArea: number) => {
-  return Math.round(PROPERTY_TAXES_EURO_PER_SQUARE_METERS_ESTIMATED_RATIO * surfaceArea);
+const AVERAGE_PROPERTY_TAXES_EURO_PER_BUILDINGS_SURFACE_SQUARE_METERS = 15;
+export const computeEstimatedPropertyTaxesAmount = (buildingsSurfaceArea: number) => {
+  return Math.round(
+    AVERAGE_PROPERTY_TAXES_EURO_PER_BUILDINGS_SURFACE_SQUARE_METERS * buildingsSurfaceArea,
+  );
 };

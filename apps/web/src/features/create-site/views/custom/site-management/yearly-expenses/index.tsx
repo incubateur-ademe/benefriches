@@ -3,13 +3,16 @@ import { useEffect } from "react";
 import { AppDispatch, RootState } from "@/app/application/store";
 import { revertYearlyExpensesStep } from "@/features/create-site/application/createSite.actions";
 import { completeYearlyExpenses } from "@/features/create-site/application/createSite.reducer";
-import { getDefaultValuesForYearlyExpenses } from "@/features/create-site/application/expenses.selectors";
+import {
+  EstimatedSiteYearlyExpenses,
+  selectEstimatedYearlyExpensesForSite,
+} from "@/features/create-site/application/expenses.selectors";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import { hasTenant } from "@/features/create-site/domain/site.functions";
 import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
+import SiteYearlyExpensesForm, { FormValues, Props } from "./SiteYearlyExpensesForm";
 import {
   getSiteManagementExpensesWithBearer,
   getSiteSecurityExpensesWithBearer,
@@ -19,12 +22,8 @@ import {
 const mapProps = (
   dispatch: AppDispatch,
   { siteData }: RootState["siteCreation"],
-  defaultValues: {
-    illegalDumpingCostAmount?: number;
-    securityAmount?: number;
-    maintenanceAmount?: number;
-  },
-) => {
+  defaultValues: EstimatedSiteYearlyExpenses,
+): Props => {
   const siteHasTenant = hasTenant(siteData as SiteDraft);
 
   const siteManagementExpensesWithBearer = getSiteManagementExpensesWithBearer(
@@ -47,6 +46,7 @@ const mapProps = (
       maintenance: { amount: defaultValues.maintenanceAmount },
       illegalDumpingCost: { amount: defaultValues.illegalDumpingCostAmount },
       security: { amount: defaultValues.securityAmount },
+      propertyTaxes: { amount: defaultValues.propertyTaxesAmount },
     },
     onBack: () => {
       dispatch(revertYearlyExpensesStep());
@@ -66,7 +66,7 @@ function SiteYearlyExpensesFormContainer() {
   const dispatch = useAppDispatch();
   const siteCreationState = useAppSelector((state) => state.siteCreation);
 
-  const defaultValues = useAppSelector(getDefaultValuesForYearlyExpenses);
+  const defaultValues = useAppSelector(selectEstimatedYearlyExpensesForSite);
 
   useEffect(() => {
     void dispatch(fetchSiteMunicipalityData());
