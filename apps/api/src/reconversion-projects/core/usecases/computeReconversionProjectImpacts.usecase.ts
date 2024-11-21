@@ -1,4 +1,4 @@
-import { SoilsDistribution, sumListWithKey } from "shared";
+import { ReinstatementExpense, SoilsDistribution, sumListWithKey } from "shared";
 
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
@@ -17,10 +17,8 @@ import {
   computeEconomicBalanceImpact,
   EconomicBalanceImpactResult,
 } from "../model/impacts/economic-balance/economicBalanceImpact";
-import {
-  computeFullTimeJobsImpact,
-  FullTimeJobsImpactResult,
-} from "../model/impacts/full-time-jobs/fullTimeJobsImpact";
+import { FullTimeJobsImpactService } from "../model/impacts/full-time-jobs/fullTimeJobsImpactService";
+import { FullTimeJobsImpactResult } from "../model/impacts/full-time-jobs/fullTimeJobsImpactServiceInterface";
 import { HouseholdsPoweredByRenewableEnergyImpact } from "../model/impacts/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
 import {
   computeNonContaminatedSurfaceAreaImpact,
@@ -43,11 +41,7 @@ import {
   GetSoilsCarbonStoragePerSoilsService,
   SoilsCarbonStorageImpactResult,
 } from "../model/impacts/soils-carbon-storage/soilsCarbonStorageImpact";
-import {
-  DevelopmentPlan,
-  getDurationFromScheduleInYears,
-  Schedule,
-} from "../model/reconversionProject";
+import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
 export type SiteImpactsDataView = {
   id: string;
@@ -314,21 +308,20 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
               totalSurfaceArea: relatedSite.surfaceArea,
             })
           : undefined,
-        fullTimeJobs: computeFullTimeJobsImpact({
-          current: { operationsFullTimeJobs: relatedSite.fullTimeJobs },
-          forecast: {
-            operationsFullTimeJobs: reconversionProject.operationsFullTimeJobs,
-            conversionFullTimeJobs: reconversionProject.conversionFullTimeJobs,
-            conversionDurationInYears:
-              reconversionProject.conversionSchedule &&
-              getDurationFromScheduleInYears(reconversionProject.conversionSchedule),
-            reinstatementFullTimeJobs: reconversionProject.reinstatementFullTimeJobs,
-            reinstatementDurationInYears:
-              reconversionProject.reinstatementSchedule &&
-              getDurationFromScheduleInYears(reconversionProject.reinstatementSchedule),
-          },
-          evaluationPeriodInYears,
-        }),
+        fullTimeJobs: new FullTimeJobsImpactService({
+          developmentPlan: {
+            type: reconversionProject.developmentPlanType,
+            features: reconversionProject.developmentPlanFeatures,
+          } as DevelopmentPlan,
+          conversionSchedule: reconversionProject.conversionSchedule,
+          reinstatementSchedule: reconversionProject.reinstatementSchedule,
+          statuQuoOperationsFullTimeJobs: relatedSite.fullTimeJobs,
+          reinstatementFullTimeJobs: reconversionProject.reinstatementFullTimeJobs,
+          conversionFullTimeJobs: reconversionProject.conversionFullTimeJobs,
+          projectOperationsFullTimeJobs: reconversionProject.operationsFullTimeJobs,
+          reinstatementExpenses: reconversionProject.reinstatementCosts as ReinstatementExpense[],
+          evaluationPeriodInYears: evaluationPeriodInYears,
+        }).getFullTimeJobsImpacts(),
         accidents: relatedSite.hasAccidents
           ? computeAccidentsImpact({
               severeInjuries: relatedSite.accidentsSevereInjuries,

@@ -4,14 +4,14 @@ import {
   SoilsDistribution,
   SoilType,
   sumSoilsSurfaceAreasWhere,
+  computeDefaultPhotovoltaicConversionFullTimeJobs,
+  computeDefaultPhotovoltaicOperationsFullTimeJobs,
 } from "shared";
 
 import { RootState } from "@/app/application/store";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
 import {
-  computeDefaultPhotovoltaicConversionFullTimeJobs,
-  computeDefaultPhotovoltaicOperationsFullTimeJobs,
   computeDefaultPhotovoltaicOtherAmountExpenses,
   computeDefaultPhotovoltaicTechnicalStudiesAmountExpenses,
   computeDefaultPhotovoltaicWorksAmountExpenses,

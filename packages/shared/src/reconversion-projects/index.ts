@@ -43,7 +43,7 @@ export type FinancialAssistanceRevenue = TRevenue<
 
 export type InstallationExpense = TExpense<"technical_studies" | "development_works" | "other">;
 
-export * from "./photovoltaicPowerStation";
+export * from "./renewable-energy";
 export * from "./reinstatement";
 export * from "./urban-project";
 export * from "./sitePurchase";

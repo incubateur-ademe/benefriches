@@ -78,13 +78,3 @@ export const computeDefaultPhotovoltaicYearlyTaxesAmount = (electricalPowerKWc: 
     electricalPowerKWc * PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR.taxes,
   );
 };
-
-const PHOTOVOLTAIC_OPERATIONS_FULL_TIME_JOBS_JOB_PER_KWC = 0.0002;
-export const computeDefaultPhotovoltaicOperationsFullTimeJobs = (electricalPowerKWc: number) => {
-  return Math.round(electricalPowerKWc * PHOTOVOLTAIC_OPERATIONS_FULL_TIME_JOBS_JOB_PER_KWC);
-};
-
-const PHOTOVOLTAIC_INSTALLATION_FULL_TIME_JOBS_JOB_PER_KWC = 0.0013;
-export const computeDefaultPhotovoltaicConversionFullTimeJobs = (electricalPowerKWc: number) => {
-  return Math.round(electricalPowerKWc * PHOTOVOLTAIC_INSTALLATION_FULL_TIME_JOBS_JOB_PER_KWC);
-};
