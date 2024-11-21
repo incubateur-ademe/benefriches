@@ -1,4 +1,4 @@
-import { sumListWithKey } from "src/shared-kernel/sum-list/sumList";
+import { sumListWithKey } from "shared";
 
 import { ReconversionProject } from "../../reconversionProject";
 
