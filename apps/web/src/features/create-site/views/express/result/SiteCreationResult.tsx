@@ -73,8 +73,13 @@ function SiteCreationResult({ siteId, siteName, loadingState, onBack }: Props) {
             personnalisé.
           </EditorialPageText>
           <Button size="large" linkProps={routes.createProject({ siteId }).link}>
-            Suivant
+            Renseigner mon projet sur ce site
           </Button>
+          <p className="tw-text-sm tw-mt-5">
+            Attention, le site ayant été créé en mode "express", c'est-à-dire avec des données
+            moyennes, les impacts du projet que vous allez renseigner peuvent ne pas refléter la
+            réalité.
+          </p>
         </EditorialPageLayout>
       );
   }
