@@ -1,4 +1,3 @@
-import { fixupPluginRules } from "@eslint/compat";
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import jestPlugin from "eslint-plugin-jest";
@@ -31,14 +30,14 @@ export default tseslint.config(
   {
     plugins: {
       ["@typescript-eslint"]: tseslint.plugin,
-      ["react-refresh"]: reactRefreshPlugin,
     },
   },
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
       react: reactPlugin,
-      "react-hooks": fixupPluginRules(reactHooksPlugin),
+      ["react-hooks"]: reactHooksPlugin,
+      ["react-refresh"]: reactRefreshPlugin,
     },
     rules: {
       ...reactPlugin.configs["recommended"].rules,
