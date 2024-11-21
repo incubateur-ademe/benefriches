@@ -20,6 +20,13 @@ export const selectDetailedSocioEconomicProjectImpacts = createSelector(
   getDetailedSocioEconomicProjectImpacts,
 );
 
+export const selectTotalSocioEconomicImpact = createSelector(
+  selectImpactsData,
+  (impacts): number => {
+    return impacts?.socioeconomic.total ?? 0;
+  },
+);
+
 export const selectSocioEconomicProjectImpactsByActor = createSelector(
   selectImpactsData,
   getSocioEconomicProjectImpactsByActor,

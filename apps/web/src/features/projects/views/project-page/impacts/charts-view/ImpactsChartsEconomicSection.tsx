@@ -2,50 +2,49 @@ import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconom
 import { SocioEconomicImpactByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
+import CostBenefitAnalysisChartCard from "./impacts/cost-benefit-analysis/CostBenefitAnalysisChartCard";
 import EconomicBalanceChartCard from "./impacts/economic-balance/EconomicBalanceChartCard";
 import SocioEconomicImpactsChartCard from "./impacts/socio-economic/SocioEconomicImpactsChartCard";
 
 type Props = {
   economicBalance: EconomicBalance;
-  socioEconomicImpacts: SocioEconomicImpactByActor;
+  socioEconomicTotalImpact: number;
+  socioEconomicImpactsByActor: SocioEconomicImpactByActor;
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 const ImpactsChartsEconomicSection = ({
   economicBalance,
-  socioEconomicImpacts,
+  socioEconomicTotalImpact,
+  socioEconomicImpactsByActor,
   openImpactDescriptionModal,
 }: Props) => {
   const displayEconomicBalance = economicBalance.economicBalance.length > 0;
 
   return (
-    <div className="tw-grid lg:tw-grid-cols-3 tw-gap-10 tw-mb-8">
+    <div className="tw-grid md:tw-grid-cols-2 tw-gap-10 tw-mb-8">
       {displayEconomicBalance && (
-        <div className="lg:tw-col-start-1">
-          <EconomicBalanceChartCard
-            economicBalance={economicBalance["economicBalance"]}
-            bearer={economicBalance["bearer"]}
-            onClick={() => {
-              openImpactDescriptionModal("economic-balance");
-            }}
-          />
-        </div>
+        <CostBenefitAnalysisChartCard
+          economicBalanceTotal={economicBalance.total}
+          socioEconomicTotalImpact={socioEconomicTotalImpact}
+        />
       )}
-
-      <div
-        className={
-          displayEconomicBalance
-            ? "lg:tw-col-start-2 lg:tw-col-end-4"
-            : "lg:tw-col-start-1 lg:tw-col-end-3"
-        }
-      >
-        <SocioEconomicImpactsChartCard
-          socioEconomicImpacts={socioEconomicImpacts}
+      {displayEconomicBalance && (
+        <EconomicBalanceChartCard
+          economicBalance={economicBalance["economicBalance"]}
+          bearer={economicBalance["bearer"]}
           onClick={() => {
-            openImpactDescriptionModal("socio-economic");
+            openImpactDescriptionModal("economic-balance");
           }}
         />
-      </div>
+      )}
+
+      <SocioEconomicImpactsChartCard
+        socioEconomicImpacts={socioEconomicImpactsByActor}
+        onClick={() => {
+          openImpactDescriptionModal("socio-economic");
+        }}
+      />
     </div>
   );
 };

@@ -10,7 +10,8 @@ import ImpactsChartsEnvironmentSection from "./ImpactsChartsEnvironmentSection";
 type Props = {
   projectName: string;
   economicBalance: EconomicBalance;
-  socioEconomicImpacts: SocioEconomicImpactByActor;
+  socioEconomicTotalImpact: number;
+  socioEconomicImpactsByActor: SocioEconomicImpactByActor;
   environmentImpacts: EnvironmentalImpact[];
   socialImpacts: SocialImpact[];
   openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
@@ -19,7 +20,8 @@ type Props = {
 const ImpactsChartsView = ({
   projectName,
   economicBalance,
-  socioEconomicImpacts,
+  socioEconomicTotalImpact,
+  socioEconomicImpactsByActor,
   environmentImpacts,
   openImpactDescriptionModal,
 }: Props) => {
@@ -27,11 +29,12 @@ const ImpactsChartsView = ({
 
   return (
     <div>
-      {(displayEconomicBalance || socioEconomicImpacts.length > 0) && (
+      {(displayEconomicBalance || socioEconomicImpactsByActor.length > 0) && (
         <ImpactsChartsEconomicSection
           openImpactDescriptionModal={openImpactDescriptionModal}
           economicBalance={economicBalance}
-          socioEconomicImpacts={socioEconomicImpacts}
+          socioEconomicTotalImpact={socioEconomicTotalImpact}
+          socioEconomicImpactsByActor={socioEconomicImpactsByActor}
         />
       )}
       {environmentImpacts.length > 0 && (

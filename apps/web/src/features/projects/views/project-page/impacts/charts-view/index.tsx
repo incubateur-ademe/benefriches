@@ -2,7 +2,10 @@ import { selectProjectName } from "@/features/projects/application/projectImpact
 import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
 import { selectSocialProjectImpacts } from "@/features/projects/application/projectImpactsSocial.selectors";
-import { selectSocioEconomicProjectImpactsByActor } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
+import {
+  selectSocioEconomicProjectImpactsByActor,
+  selectTotalSocioEconomicImpact,
+} from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
@@ -14,7 +17,8 @@ type Props = {
 
 const ImpactsChartsViewContainer = ({ openImpactDescriptionModal }: Props) => {
   const economicBalance = useAppSelector(selectEconomicBalanceProjectImpacts);
-  const socioEconomicImpacts = useAppSelector(selectSocioEconomicProjectImpactsByActor);
+  const socioEconomicImpactsByActor = useAppSelector(selectSocioEconomicProjectImpactsByActor);
+  const socioEconomicTotalImpact = useAppSelector(selectTotalSocioEconomicImpact);
   const environmentImpacts = useAppSelector(selectEnvironmentalProjectImpacts);
   const socialImpacts = useAppSelector(selectSocialProjectImpacts);
   const projectName = useAppSelector(selectProjectName);
@@ -26,7 +30,8 @@ const ImpactsChartsViewContainer = ({ openImpactDescriptionModal }: Props) => {
       economicBalance={economicBalance}
       socialImpacts={socialImpacts}
       environmentImpacts={environmentImpacts}
-      socioEconomicImpacts={socioEconomicImpacts}
+      socioEconomicTotalImpact={socioEconomicTotalImpact}
+      socioEconomicImpactsByActor={socioEconomicImpactsByActor}
     />
   );
 };
