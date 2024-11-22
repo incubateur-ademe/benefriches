@@ -17,11 +17,11 @@ const SoilsDecontaminationIntroduction = ({ onNext, onBack, contaminatedSurfaceA
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>✨</EditorialPageIcon>
-      <EditorialPageTitle> Parlons dépollution.</EditorialPageTitle>
+      <EditorialPageTitle>Et si on dépolluait les sols ?</EditorialPageTitle>
       <EditorialPageText>
         Le site existant comporte {formatSurfaceArea(contaminatedSurfaceArea)} de sols pollués.
       </EditorialPageText>
-      <EditorialPageText>Il est possible d’en dépolluer tout ou partie.</EditorialPageText>
+      <EditorialPageText>Voyons quelle part vous souhaitez dépolluer.</EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </EditorialPageLayout>
   );
