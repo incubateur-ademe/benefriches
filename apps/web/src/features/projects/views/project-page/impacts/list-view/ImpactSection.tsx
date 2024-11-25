@@ -66,7 +66,7 @@ const ImpactSection = ({
           label={title}
           labelProps={{
             role: "heading",
-            "aria-label": isMain ? "3" : "4",
+            "aria-level": isMain ? 3 : 4,
             className: isMain ? "tw-text-xl" : "tw-text-base",
             onClick: onLabelClick,
           }}

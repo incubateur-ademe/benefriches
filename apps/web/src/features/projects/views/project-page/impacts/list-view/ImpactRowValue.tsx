@@ -25,7 +25,7 @@ type Props = {
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time";
   labelProps?: {
     role?: "heading";
-    ["aria-label"]?: "3" | "4";
+    ["aria-level"]?: 3 | 4;
     className?: ClassValue;
     onClick?: (e?: MouseEvent<HTMLElement>) => void;
   };
