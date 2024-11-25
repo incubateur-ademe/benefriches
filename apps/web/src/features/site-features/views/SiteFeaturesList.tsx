@@ -126,14 +126,12 @@ export default function SiteFeaturesList(siteFeatures: Props) {
               value={siteFeatures.tenantName}
             />
           )}
-          <DataLine
-            label={<strong>Nombre d'emplois temps plein mobilisés sur le site</strong>}
-            value={
-              siteFeatures.fullTimeJobsInvolved
-                ? formatNumberFr(siteFeatures.fullTimeJobsInvolved)
-                : "Non renseigné"
-            }
-          />
+          {siteFeatures.fullTimeJobsInvolved ? (
+            <DataLine
+              label={<strong>Nombre d'emplois temps plein mobilisés sur le site</strong>}
+              value={formatNumberFr(siteFeatures.fullTimeJobsInvolved)}
+            />
+          ) : undefined}
         </>
         <>
           <DataLine

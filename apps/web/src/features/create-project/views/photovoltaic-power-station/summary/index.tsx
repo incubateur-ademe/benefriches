@@ -42,9 +42,6 @@ function ProjectionCreationDataSummaryContainer() {
         futureOwner: projectData.futureSiteOwner?.name,
         futureOperator: projectData.futureOperator?.name,
         reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
-        reinstatementFullTimeJobs: projectData.reinstatementFullTimeJobsInvolved,
-        conversionFullTimeJobs: projectData.conversionFullTimeJobsInvolved,
-        operationsFullTimeJobs: projectData.operationsFullTimeJobsInvolved,
         sitePurchaseTotalCost: projectData.sitePurchaseSellingPrice
           ? projectData.sitePurchaseSellingPrice +
             (projectData.sitePurchasePropertyTransferDuties ?? 0)

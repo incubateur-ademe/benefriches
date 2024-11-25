@@ -11,8 +11,6 @@ import PhotovoltaicPanelsInstallationExpensesForm from "./costs/photovoltaic-pan
 import ReinstatementsExpensesForm from "./costs/reinstatement-costs";
 import SitePurchaseAmountsContainer from "./costs/site-purchase-amounts";
 import YearlyProjectedExpensesForm from "./costs/yearly-projected-costs";
-import ProjectFullTimeJobsInvolvedForm from "./jobs/conversion-full-time-jobs-involved";
-import OperationsFullTimeJobsInvolvedForm from "./jobs/operations-full-time-jobs-involved";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import PhotovoltaicContractDurationContainer from "./photovoltaic/contract-duration";
 import PhotovoltaicExpectedAnnualProductionContainer from "./photovoltaic/expected-annual-production";
@@ -74,8 +72,6 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: "maitre-ouvrage-remise-en-etat",
   STAKEHOLDERS_FUTURE_SITE_OWNER: "futur-proprietaire-du-site",
   STAKEHOLDERS_SITE_PURCHASE: "acquisition-du-site",
-  RECONVERSION_FULL_TIME_JOBS: "etp-reconversion",
-  OPERATIONS_FULL_TIMES_JOBS: "etp-exploitation",
   EXPENSES_INTRODUCTION: "introduct-depenses",
   EXPENSES_SITE_PURCHASE_AMOUNTS: "montant-acquisition-site",
   EXPENSES_REINSTATEMENT: "depenses-remise-en-etat",
@@ -104,10 +100,6 @@ const getCurrentStepView = (currentStep: PhotovoltaicProjectCreationStep) => {
       return <SiteOperatorForm />;
     case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
       return <SiteReinstatementContractOwnerForm />;
-    case "RECONVERSION_FULL_TIME_JOBS":
-      return <ProjectFullTimeJobsInvolvedForm />;
-    case "OPERATIONS_FULL_TIMES_JOBS":
-      return <OperationsFullTimeJobsInvolvedForm />;
     case "STAKEHOLDERS_SITE_PURCHASE":
       return <SitePurchasedFormContainer />;
     case "STAKEHOLDERS_FUTURE_SITE_OWNER":

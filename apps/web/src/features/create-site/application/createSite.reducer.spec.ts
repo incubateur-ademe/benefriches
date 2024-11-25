@@ -728,7 +728,7 @@ describe("Create site reducer", () => {
           expectSiteDataDiff(initialRootState, newState, { isSiteOperated: true });
           expectNewCurrentStep(initialRootState, newState, "OPERATOR");
         });
-        it("goes to FULL_TIME_JOBS_INVOLVED step when step is completed and no tenant", () => {
+        it("goes to YEARLY_EXPENSES step when step is completed and no tenant", () => {
           const store = initStoreWithState({ stepsHistory: ["IS_SITE_OPERATED"] });
           const initialRootState = store.getState();
 

@@ -1,12 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import {
-  computeReinstatementFullTimeJobs,
-  SoilsDistribution,
-  SoilType,
-  sumSoilsSurfaceAreasWhere,
-  computeDefaultPhotovoltaicConversionFullTimeJobs,
-  computeDefaultPhotovoltaicOperationsFullTimeJobs,
-} from "shared";
+import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere } from "shared";
 
 import { RootState } from "@/app/application/store";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -169,46 +162,6 @@ export const getDefaultValuesForPhotovoltaicInstallationExpenses = createSelecto
             computeDefaultPhotovoltaicTechnicalStudiesAmountExpenses(electricalPowerKWc),
           other: computeDefaultPhotovoltaicOtherAmountExpenses(electricalPowerKWc),
         }
-      : undefined;
-  },
-);
-
-export const getDefaultValuesForFullTimeConversionJobsInvolved = createSelector(
-  selectCreationData,
-  selectSiteData,
-  (creationData, siteData): { fullTimeJobs?: number; reinstatementFullTimeJobs?: number } => {
-    const {
-      photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc,
-      renewableEnergyType,
-      reinstatementExpenses,
-    } = creationData;
-
-    const isPhotovoltaicProject = renewableEnergyType === "PHOTOVOLTAIC_POWER_PLANT";
-
-    const fullTimeJobs =
-      isPhotovoltaicProject && electricalPowerKWc
-        ? computeDefaultPhotovoltaicConversionFullTimeJobs(electricalPowerKWc)
-        : undefined;
-
-    const reinstatementFullTimeJobs =
-      siteData?.isFriche && reinstatementExpenses
-        ? computeReinstatementFullTimeJobs(reinstatementExpenses)
-        : undefined;
-
-    return {
-      fullTimeJobs,
-      reinstatementFullTimeJobs,
-    };
-  },
-);
-
-export const getDefaultValuesForFullTimeOperationsJobsInvolved = createSelector(
-  selectCreationData,
-  (creationData): number | undefined => {
-    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = creationData;
-
-    return electricalPowerKWc
-      ? computeDefaultPhotovoltaicOperationsFullTimeJobs(electricalPowerKWc)
       : undefined;
   },
 );

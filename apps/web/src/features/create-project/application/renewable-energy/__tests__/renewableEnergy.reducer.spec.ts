@@ -154,21 +154,6 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       },
       { case: "no soilsDistribution", dataProp: "soilsDistribution", invalidValue: undefined },
       {
-        case: "negative conversionFullTimeJobsInvolved",
-        dataProp: "conversionFullTimeJobsInvolved",
-        invalidValue: -1,
-      },
-      {
-        case: "negative reinstatementFullTimeJobsInvolved",
-        dataProp: "reinstatementFullTimeJobsInvolved",
-        invalidValue: -1,
-      },
-      {
-        case: "negative operationsFullTimeJobsInvolved",
-        dataProp: "operationsFullTimeJobsInvolved",
-        invalidValue: -1,
-      },
-      {
         case: "negative sitePurchaseSellingPrice",
         dataProp: "sitePurchaseSellingPrice",
         invalidValue: -1,

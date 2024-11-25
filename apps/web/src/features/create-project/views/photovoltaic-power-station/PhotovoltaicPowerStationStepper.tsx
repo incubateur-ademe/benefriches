@@ -8,7 +8,6 @@ const stepCategories = [
   "Transformation des sols",
   "Acteurs",
   "Dépenses et recettes",
-  "Emploi",
   "Calendrier et avancement",
   "Dénomination",
   "Récapitulatif",
@@ -46,9 +45,6 @@ const getCategoryForStep = (step: PhotovoltaicProjectCreationStep): StepCategory
     case "STAKEHOLDERS_FUTURE_SITE_OWNER":
     case "STAKEHOLDERS_SITE_PURCHASE":
       return "Acteurs";
-    case "RECONVERSION_FULL_TIME_JOBS":
-    case "OPERATIONS_FULL_TIMES_JOBS":
-      return "Emploi";
     case "EXPENSES_INTRODUCTION":
     case "EXPENSES_SITE_PURCHASE_AMOUNTS":
     case "EXPENSES_REINSTATEMENT":

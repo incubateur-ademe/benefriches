@@ -48,10 +48,6 @@ export const projectWithExhaustiveData = {
     name: "Future site owner company name",
     structureType: "company",
   },
-  conversionFullTimeJobsInvolved: 0.3,
-  operationsFullTimeJobsInvolved: 2,
-  // reinstatement
-  reinstatementFullTimeJobsInvolved: 0.2,
   reinstatementContractOwner: {
     name: "Reinstatement company",
     structureType: "company",

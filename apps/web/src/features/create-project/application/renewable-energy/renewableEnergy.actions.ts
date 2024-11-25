@@ -61,13 +61,6 @@ export const completeProjectDeveloper = createAction<
 export const completeReinstatementContractOwner = createAction<
   ReconversionProjectCreationData["reinstatementContractOwner"]
 >("completeReinstatementContractOwner");
-export const completeConversionFullTimeJobsInvolved = createAction<{
-  reinstatementFullTimeJobs?: number;
-  fullTimeJobs?: number;
-}>("completeConversionFullTimeJobsInvolved");
-export const completeOperationsFullTimeJobsInvolved = createAction<number | undefined>(
-  "completeOperationsFullTimeJobsInvolved",
-);
 export const completeExpensesIntroductionStep = createAction("completeExpensesIntroductionStep");
 export const completeReinstatementExpenses = createAction<ReinstatementExpense[]>(
   "completeReinstatementExpenses",
@@ -164,12 +157,6 @@ export const revertStakeholdersIntroductionStep = createAction(
 );
 export const revertProjectDeveloper = createAction("revertProjectDeveloper");
 export const revertFutureOperator = createAction("revertFutureOperator");
-export const revertConversionFullTimeJobsInvolved = createAction(
-  "revertConversionFullTimeJobsInvolved",
-);
-export const revertOperationsFullTimeJobsInvolved = createAction(
-  "revertOperationsFullTimeJobsInvolved",
-);
 export const revertReinstatementContractOwner = createAction("revertReinstatementContractOwner");
 export const revertWillSiteBePurchased = createAction("revertWillSiteBePurchased");
 export const revertFutureSiteOwner = createAction("revertFutureSiteOwner");

@@ -53,9 +53,6 @@ type Props = {
     futureOperator?: string;
     projectDeveloper?: string;
     reinstatementContractOwner?: string;
-    reinstatementFullTimeJobs?: number;
-    conversionFullTimeJobs?: number;
-    operationsFullTimeJobs?: number;
     sitePurchaseTotalCost?: number;
     financialAssistanceRevenues?: FinancialAssistanceRevenue[];
     reinstatementExpenses?: ReinstatementExpense[];
@@ -222,44 +219,6 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                 value={projectData.reinstatementContractOwner}
               />
             )}
-            <DataLine
-              noBorder
-              label={<strong>Emplois équivalent temps plein mobilisés</strong>}
-              value={formatNumberFr(
-                (projectData.reinstatementFullTimeJobs ?? 0) +
-                  (projectData.conversionFullTimeJobs ?? 0) +
-                  (projectData.operationsFullTimeJobs ?? 0),
-              )}
-            />
-            {siteData.isFriche ? (
-              <DataLine
-                label="Remise en état de la friche"
-                value={
-                  projectData.reinstatementFullTimeJobs
-                    ? formatNumberFr(projectData.reinstatementFullTimeJobs)
-                    : "Non renseigné"
-                }
-                isDetails
-              />
-            ) : null}
-            <DataLine
-              label="Installation des panneaux photovoltaïques"
-              value={
-                projectData.conversionFullTimeJobs
-                  ? formatNumberFr(projectData.conversionFullTimeJobs)
-                  : "Non renseigné"
-              }
-              isDetails
-            />
-            <DataLine
-              label="Exploitation du site reconverti"
-              value={
-                projectData.operationsFullTimeJobs
-                  ? formatNumberFr(projectData.operationsFullTimeJobs)
-                  : "Non renseigné"
-              }
-              isDetails
-            />
           </Section>
           <Section title="💰 Dépenses et recettes du projet">
             {projectData.sitePurchaseTotalCost ? (

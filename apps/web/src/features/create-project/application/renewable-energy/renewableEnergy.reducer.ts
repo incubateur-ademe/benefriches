@@ -34,8 +34,6 @@ import {
   completeFutureOperator,
   completeProjectDeveloper,
   completeReinstatementContractOwner,
-  completeConversionFullTimeJobsInvolved,
-  completeOperationsFullTimeJobsInvolved,
   completeExpensesIntroductionStep,
   completeReinstatementExpenses,
   completeRevenuIntroductionStep,
@@ -63,7 +61,6 @@ import {
   completeSoilsDecontaminationSurfaceArea,
   completeSoilsTransformationIntroductionStep,
   revertBiodiversityAndClimateImpactNoticeStep,
-  revertConversionFullTimeJobsInvolved,
   revertCustomSoilsSelectionStep,
   revertCustomSoilsSurfaceAreaAllocationStep,
   revertExpensesIntroductionStep,
@@ -75,7 +72,6 @@ import {
   revertNonSuitableSoilsNoticeStep,
   revertNonSuitableSoilsSelectionStep,
   revertNonSuitableSoilsSurfaceStep,
-  revertOperationsFullTimeJobsInvolved,
   revertPhotovoltaicContractDuration,
   revertPhotovoltaicExpectedAnnualProduction,
   revertPhotovoltaicInstallationElectricalPower,
@@ -154,8 +150,6 @@ export type PhotovoltaicProjectCreationStep =
   | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
   | "STAKEHOLDERS_FUTURE_SITE_OWNER"
   | "STAKEHOLDERS_SITE_PURCHASE"
-  | "RECONVERSION_FULL_TIME_JOBS"
-  | "OPERATIONS_FULL_TIMES_JOBS"
   | "EXPENSES_INTRODUCTION"
   | "EXPENSES_SITE_PURCHASE_AMOUNTS"
   | "EXPENSES_REINSTATEMENT"
@@ -322,24 +316,6 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
       : "STAKEHOLDERS_SITE_PURCHASE";
     state.renewableEnergyProject.stepsHistory.push(nextStep);
   });
-  builder.addCase(completeConversionFullTimeJobsInvolved, (state, action) => {
-    const { fullTimeJobs, reinstatementFullTimeJobs } = action.payload;
-    if (fullTimeJobs) {
-      state.renewableEnergyProject.creationData.conversionFullTimeJobsInvolved = fullTimeJobs;
-    }
-    if (reinstatementFullTimeJobs !== undefined) {
-      state.renewableEnergyProject.creationData.reinstatementFullTimeJobsInvolved =
-        reinstatementFullTimeJobs;
-    }
-    state.renewableEnergyProject.stepsHistory.push("OPERATIONS_FULL_TIMES_JOBS");
-  });
-  builder.addCase(
-    completeOperationsFullTimeJobsInvolved,
-    (state, action: PayloadAction<number | undefined>) => {
-      state.renewableEnergyProject.creationData.operationsFullTimeJobsInvolved = action.payload;
-      state.renewableEnergyProject.stepsHistory.push("SCHEDULE_INTRODUCTION");
-    },
-  );
   builder.addCase(
     completeReinstatementContractOwner,
     (
@@ -404,7 +380,7 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
   });
   builder.addCase(completeFinancialAssistanceRevenues, (state, action) => {
     state.renewableEnergyProject.creationData.financialAssistanceRevenues = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("RECONVERSION_FULL_TIME_JOBS");
+    state.renewableEnergyProject.stepsHistory.push("SCHEDULE_INTRODUCTION");
   });
   builder.addCase(completeYearlyProjectedRevenue, (state, action) => {
     state.renewableEnergyProject.creationData.yearlyProjectedRevenues = action.payload;
@@ -607,12 +583,6 @@ const addRevertStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreati
   });
   builder.addCase(revertFutureOperator, (state) => {
     revertStep(state, ["futureOperator"]);
-  });
-  builder.addCase(revertConversionFullTimeJobsInvolved, (state) => {
-    revertStep(state, ["reinstatementFullTimeJobsInvolved", "conversionFullTimeJobsInvolved"]);
-  });
-  builder.addCase(revertOperationsFullTimeJobsInvolved, (state) => {
-    revertStep(state, ["operationsFullTimeJobsInvolved"]);
   });
   builder.addCase(revertReinstatementContractOwner, (state) => {
     revertStep(state, ["reinstatementContractOwner"]);

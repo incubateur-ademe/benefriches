@@ -33,10 +33,7 @@ export type ReconversionProjectCreationData = {
   projectDeveloper: ProjectStakeholder;
   futureOperator: ProjectStakeholder;
   futureSiteOwner: ProjectStakeholder;
-  conversionFullTimeJobsInvolved?: number;
-  reinstatementFullTimeJobsInvolved?: number;
   reinstatementContractOwner?: ProjectStakeholder;
-  operationsFullTimeJobsInvolved?: number;
   decontaminatedSurfaceArea?: number;
   // soils transformation
   baseSoilsDistributionForTransformation: SoilsDistribution;
