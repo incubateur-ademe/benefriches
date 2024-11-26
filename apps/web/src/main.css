@@ -115,6 +115,20 @@ text.highcharts-data-label {
   background-image: linear-gradient(0deg, var(--border-plain-warning), var(--border-plain-warning));
 }
 
+/* fix outline on focus for input with addon */
+.fr-input-wrap.fr-input-wrap--addon:focus-within {
+  outline-offset: 2px;
+  outline-width: 2px;
+  outline-color: #0a76f6;
+  outline-style: solid;
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.fr-input-wrap.fr-input-wrap--addon > .fr-input:focus,
+.fr-input-wrap.fr-input-wrap--addon > .fr-input:focus-visible {
+  outline-width: 0 !important;
+}
+
 /* Page Impacts: couleurs par type de projet */
 
 #project-impacts-page {
