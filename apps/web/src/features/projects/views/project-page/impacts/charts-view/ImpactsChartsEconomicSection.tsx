@@ -22,30 +22,31 @@ const ImpactsChartsEconomicSection = ({
   const displayEconomicBalance = economicBalance.economicBalance.length > 0;
 
   return (
-    <div className="tw-grid md:tw-grid-cols-2 tw-gap-10 tw-mb-8">
-      {displayEconomicBalance && (
-        <CostBenefitAnalysisChartCard
-          economicBalanceTotal={economicBalance.total}
-          socioEconomicTotalImpact={socioEconomicTotalImpact}
-        />
-      )}
-      {displayEconomicBalance && (
-        <EconomicBalanceChartCard
-          economicBalance={economicBalance["economicBalance"]}
-          bearer={economicBalance["bearer"]}
-          onClick={() => {
-            openImpactDescriptionModal("economic-balance");
-          }}
-        />
-      )}
-
+    <>
+      <div className="tw-grid md:tw-grid-cols-2 tw-gap-8 tw-mb-8">
+        {displayEconomicBalance && (
+          <CostBenefitAnalysisChartCard
+            economicBalanceTotal={economicBalance.total}
+            socioEconomicTotalImpact={socioEconomicTotalImpact}
+          />
+        )}
+        {displayEconomicBalance && (
+          <EconomicBalanceChartCard
+            economicBalance={economicBalance["economicBalance"]}
+            bearer={economicBalance["bearer"]}
+            onClick={() => {
+              openImpactDescriptionModal("economic-balance");
+            }}
+          />
+        )}
+      </div>
       <SocioEconomicImpactsChartCard
         socioEconomicImpacts={socioEconomicImpactsByActor}
         onClick={() => {
           openImpactDescriptionModal("socio-economic");
         }}
       />
-    </div>
+    </>
   );
 };
 
