@@ -66,7 +66,7 @@ function SpacesCategoriesSelection({ onSubmit, onBack }: Props) {
   });
 
   return (
-    <WizardFormLayout title="Quels espaces y aura-t-il dans ce projet urbain ?" fullScreen>
+    <WizardFormLayout title="Quels espaces seront aménagés dans ce projet urbain ?" fullScreen>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TileFormFieldsWrapper small>
           {urbanProjectSpacesCategories.options.map((value) => {
