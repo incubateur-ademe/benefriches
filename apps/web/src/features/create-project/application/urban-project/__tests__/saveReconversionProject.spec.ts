@@ -1,10 +1,10 @@
 import {
   FinancialAssistanceRevenue,
   InstallationExpense,
-  ProjectPhase,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
+  UrbanProjectPhase,
 } from "shared";
 
 import { ProjectStakeholder } from "@/features/create-project/domain/project.types";
@@ -83,7 +83,7 @@ const mock = {
   },
   firstYearOfOperation: 2025,
   // project phase
-  projectPhase: "construction" as ProjectPhase,
+  projectPhase: "construction" as UrbanProjectPhase,
 };
 
 describe("Urban project creation : saveReconversionProject action", () => {

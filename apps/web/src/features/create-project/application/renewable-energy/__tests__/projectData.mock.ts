@@ -12,7 +12,7 @@ export const projectWithMinimalData = {
   },
   yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }],
   yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
-  projectPhase: "planning",
+  projectPhase: "design",
   renewableEnergyType: "PHOTOVOLTAIC_POWER_PLANT",
   photovoltaicKeyParameter: "POWER",
   photovoltaicInstallationElectricalPowerKWc: 10000,

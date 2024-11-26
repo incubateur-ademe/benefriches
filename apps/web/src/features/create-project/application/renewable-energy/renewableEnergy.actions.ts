@@ -2,8 +2,8 @@ import { createAction as _createAction } from "@reduxjs/toolkit";
 import {
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
-  ProjectPhase,
   ReinstatementExpense,
+  RenewableEnergyProjectPhase,
   SoilsDistribution,
   SoilType,
 } from "shared";
@@ -111,7 +111,7 @@ export const completeSitePurchaseAmounts = createAction<{
   sellingPrice: number;
   propertyTransferDuties?: number;
 }>("completeSitePurchaseAmounts");
-export const completeProjectPhaseStep = createAction<{ phase: ProjectPhase }>(
+export const completeProjectPhaseStep = createAction<{ phase: RenewableEnergyProjectPhase }>(
   "completeProjectPhaseStep",
 );
 export const completeSoilsDecontaminationIntroduction = createAction(

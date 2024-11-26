@@ -1,10 +1,10 @@
 import {
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
-  ProjectPhase,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
+  RenewableEnergyProjectPhase,
   SoilsDistribution,
   SoilType,
 } from "shared";
@@ -56,7 +56,7 @@ export type ReconversionProjectCreationData = {
   photovoltaicInstallationSchedule?: Schedule;
   firstYearOfOperation?: number;
   // project phase
-  projectPhase: ProjectPhase;
+  projectPhase?: RenewableEnergyProjectPhase;
 };
 
 export type ProjectStakeholderStructure =

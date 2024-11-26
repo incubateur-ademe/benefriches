@@ -14,14 +14,6 @@ export type DevelopmentPlanCategory = z.infer<typeof developmentPlanCategorySche
 export const developmentPlanTypeSchema = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "URBAN_PROJECT"]);
 export type DevelopmentPlanType = z.infer<typeof developmentPlanTypeSchema>;
 
-export type ProjectPhase =
-  | "setup"
-  | "planning"
-  | "design"
-  | "construction"
-  | "completed"
-  | "unknown";
-
 export type ReinstatementExpensePurpose =
   | "asbestos_removal"
   | "deimpermeabilization"

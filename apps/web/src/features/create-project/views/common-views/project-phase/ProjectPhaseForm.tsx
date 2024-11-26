@@ -1,49 +1,33 @@
-import { useForm } from "react-hook-form";
-import { ProjectPhase } from "shared";
+import { FieldError, useForm } from "react-hook-form";
 
-import { getHintTextForProjectPhase, getLabelForProjectPhase } from "@/shared/domain/projectPhase";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-type Props = {
-  onSubmit: (data: ProjectPhase) => void;
+type Props<T> = {
+  projectPhaseOptions: { value: T; label: string; hintText?: string }[];
+  onSubmit: (data: FormValues<T>) => void;
   onBack: () => void;
-  excludedPhases?: ProjectPhase[];
 };
 
-export type FormValues = {
-  phase?: ProjectPhase;
+export type FormValues<T> = {
+  phase?: T;
 };
 
-const options = (
-  ["setup", "design", "construction", "planning", "completed", "unknown"] as const
-).map((phase) => ({
-  value: phase,
-  label: getLabelForProjectPhase(phase),
-  hintText: getHintTextForProjectPhase(phase) ?? undefined,
-})) satisfies {
-  value: ProjectPhase;
-  label: string;
-  hintText?: string;
-}[];
-
-function ProjectPhaseForm({ onSubmit, onBack, excludedPhases = [] }: Props) {
-  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
-    shouldUnregister: true,
-  });
+function ProjectPhaseForm<TProjectPhase extends string>({
+  projectPhaseOptions,
+  onSubmit,
+  onBack,
+}: Props<TProjectPhase>) {
+  const { register, handleSubmit, formState, watch } = useForm<FormValues<TProjectPhase>>();
 
   return (
-    <WizardFormLayout title="A quelle phase de votre projet êtes-vous ?">
-      <form
-        onSubmit={handleSubmit((formData: FormValues) => {
-          onSubmit(formData.phase ?? "unknown");
-        })}
-      >
+    <WizardFormLayout title="A quelle phase du projet êtes-vous ?">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("phase")}
-          options={options.filter((phase) => !excludedPhases.includes(phase.value))}
-          error={formState.errors.phase}
+          options={projectPhaseOptions}
+          error={formState.errors.phase as FieldError}
         />
         <BackNextButtonsGroup onBack={onBack} nextLabel={watch("phase") ? "Valider" : "Passer"} />
       </form>

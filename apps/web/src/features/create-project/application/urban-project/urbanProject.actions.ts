@@ -1,7 +1,7 @@
 import { createAction as _createAction } from "@reduxjs/toolkit";
 import {
   FinancialAssistanceRevenue,
-  ProjectPhase,
+  UrbanProjectPhase,
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
@@ -247,7 +247,7 @@ export const expectedSiteResaleRevenueCompleted = createAction<{
 
 export const scheduleIntroductionCompleted = createAction("scheduleIntroductionCompleted");
 export const scheduleIntroductionReverted = createAction("scheduleIntroductioReverted");
-export const projectPhaseCompleted = createAction<ProjectPhase>("projectPhaseCompleted");
+export const projectPhaseCompleted = createAction<UrbanProjectPhase>("projectPhaseCompleted");
 export const projectPhaseReverted = createAction("projectPhaseReverted");
 export const scheduleCompleted = createAction<{
   reinstatementSchedule?: Schedule;

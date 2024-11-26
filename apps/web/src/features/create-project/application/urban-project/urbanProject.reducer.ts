@@ -13,7 +13,7 @@ import {
   RecurringExpense,
   ReinstatementExpense,
   UrbanProjectDevelopmentExpense,
-  ProjectPhase,
+  UrbanProjectPhase,
   ECONOMIC_ACTIVITY_BUILDINGS_USE,
   BuildingsEconomicActivityUse,
 } from "shared";
@@ -231,7 +231,7 @@ export type UrbanProjectState = {
     };
     firstYearOfOperation?: number;
     // project phase
-    projectPhase?: ProjectPhase;
+    projectPhase?: UrbanProjectPhase;
   };
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
