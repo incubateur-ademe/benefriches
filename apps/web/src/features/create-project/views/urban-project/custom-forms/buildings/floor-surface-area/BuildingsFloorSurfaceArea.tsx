@@ -1,10 +1,11 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { roundTo2Digits } from "shared";
 
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -25,7 +26,7 @@ const getFormattedFloorCount = (footprintSurfaceArea: number, floorSurfaceArea: 
 };
 
 function BuildingsFloorSurfaceArea({ onSubmit, onBack, buildingsFootprintSurfaceArea }: Props) {
-  const { control, handleSubmit, watch, formState } = useForm<FormValues>();
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>();
 
   const surface = watch("surfaceArea");
 
@@ -43,26 +44,12 @@ function BuildingsFloorSurfaceArea({ onSubmit, onBack, buildingsFootprintSurface
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="surfaceArea"
-          rules={{
-            required: "Ce champ est requis",
-            min: {
-              value: 0,
-              message: "Veuillez entrer une superficie valide.",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label={<RequiredLabel label="Superficie" />}
-                addonText={SQUARE_METERS_HTML_SYMBOL}
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          addonText={SQUARE_METERS_HTML_SYMBOL}
+          label={<RequiredLabel label="Superficie" />}
+          nativeInputProps={register("surfaceArea", requiredNumericFieldRegisterOptions)}
         />
+
         {!isNaN(surface) && (
           <p>
             💡 Soit une moyenne de{" "}

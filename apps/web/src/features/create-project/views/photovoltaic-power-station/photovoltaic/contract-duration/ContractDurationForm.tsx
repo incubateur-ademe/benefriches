@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 
 import { AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS } from "@/features/create-project/domain/photovoltaic";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -16,7 +17,7 @@ type FormValues = {
 };
 
 function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>({
+  const { register, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: {
       photovoltaicContractDuration: AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS,
     },
@@ -33,15 +34,13 @@ function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
-          name="photovoltaicContractDuration"
+        <RowNumericInput
+          nativeInputProps={register("photovoltaicContractDuration", {
+            ...requiredNumericFieldRegisterOptions,
+            min: 2,
+          })}
           label="Durée du contrat de revente"
           addonText="années"
-          rules={{
-            min: 2,
-            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
-          }}
-          control={control}
         />
         <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>

@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -22,7 +23,7 @@ export type FormValues = {
 };
 
 function FricheAccidentsForm({ onSubmit, onBack }: Props) {
-  const { register, control, handleSubmit, formState, watch } = useForm<FormValues>({
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
 
@@ -59,41 +60,23 @@ function FricheAccidentsForm({ onSubmit, onBack }: Props) {
           <RadioButton label="Oui" value="yes" {...register("hasRecentAccidents")} />
           {hasRecentAccidents && (
             <>
-              <NumericInput
-                name="accidentsMinorInjuries"
+              <RowNumericInput
+                nativeInputProps={register(
+                  "accidentsMinorInjuries",
+                  optionalNumericFieldRegisterOptions,
+                )}
                 label="Nombre de blessés légers"
-                control={control}
-                allowDecimals={false}
-                rules={{
-                  min: {
-                    value: 0,
-                    message: "Veuillez entrer un nombre positif",
-                  },
-                }}
               />
-              <NumericInput
-                name="accidentsSevereInjuries"
+              <RowNumericInput
+                nativeInputProps={register(
+                  "accidentsSevereInjuries",
+                  optionalNumericFieldRegisterOptions,
+                )}
                 label="Nombre de blessés graves"
-                control={control}
-                allowDecimals={false}
-                rules={{
-                  min: {
-                    value: 0,
-                    message: "Veuillez entrer un nombre positif",
-                  },
-                }}
               />
-              <NumericInput
-                name="accidentsDeaths"
+              <RowNumericInput
+                nativeInputProps={register("accidentsDeaths", optionalNumericFieldRegisterOptions)}
                 label="Nombre de décès"
-                control={control}
-                allowDecimals={false}
-                rules={{
-                  min: {
-                    value: 0,
-                    message: "Veuillez entrer un nombre positif",
-                  },
-                }}
               />
             </>
           )}

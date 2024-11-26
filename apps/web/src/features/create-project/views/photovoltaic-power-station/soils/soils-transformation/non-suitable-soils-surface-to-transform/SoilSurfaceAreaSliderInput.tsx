@@ -43,6 +43,7 @@ export default function SoilSurfaceAreaSliderInput<T extends FieldValues>({
           formatter: (value?: number) => value && formatSurfaceArea(value),
         },
       }}
+      inputProps={{ step: "0.01" }}
     />
   );
 }

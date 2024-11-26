@@ -1,10 +1,11 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -20,7 +21,7 @@ export type FormValues = {
 };
 
 const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
-  const { handleSubmit, control, watch } = useForm<FormValues>();
+  const { handleSubmit, register, watch } = useForm<FormValues>();
 
   const allRevenues = watch();
 
@@ -45,65 +46,28 @@ const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="localOrRegionalAuthorityAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Participation des collectivités"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€"
+          label="Participation des collectivités"
+          nativeInputProps={register(
+            "localOrRegionalAuthorityAmount",
+            optionalNumericFieldRegisterOptions,
+          )}
         />
-        <Controller
-          control={control}
-          name="publicSubsidiesAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Subvention publiques"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€"
+          label="Subvention publiques"
+          nativeInputProps={register("publicSubsidiesAmount", optionalNumericFieldRegisterOptions)}
         />
-        <Controller
-          control={control}
-          name="otherAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Autres ressources"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€"
+          label="Autres ressources"
+          nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
         />
 
         {!hasNoValuesFilled && (

@@ -1,9 +1,10 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -25,7 +26,7 @@ function PhotovoltaicPowerForm({
   siteSurfaceArea,
   recommendedElectricalPowerKWc,
 }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>();
+  const { handleSubmit, formState, register } = useForm<FormValues>();
 
   const hintText = `Maximum conseillé : ${formatNumberFr(recommendedElectricalPowerKWc)} kWc`;
 
@@ -48,24 +49,15 @@ function PhotovoltaicPowerForm({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="photovoltaicInstallationElectricalPowerKWc"
-          rules={{
-            min: 1,
-            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label={<RequiredLabel label="Puissance de l'installation" />}
-                hintText={hintText}
-                addonText="kWc"
-                className="!tw-pt-4 tw-pb-6"
-              />
-            );
-          }}
+        <RowNumericInput
+          className="!tw-pt-4 tw-pb-6"
+          addonText="kWc"
+          hintText={hintText}
+          label={<RequiredLabel label="Puissance de l'installation" />}
+          nativeInputProps={register(
+            "photovoltaicInstallationElectricalPowerKWc",
+            requiredNumericFieldRegisterOptions,
+          )}
         />
 
         <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />

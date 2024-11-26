@@ -1,8 +1,9 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -16,7 +17,7 @@ export type FormValues = {
 };
 
 function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const { register, handleSubmit, watch } = useForm<FormValues>();
 
   const formValues = watch();
 
@@ -26,46 +27,20 @@ function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
   return (
     <WizardFormLayout title="Recettes annuelles liées à l'exploitation du site">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="operationsIncome"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez sélectionner un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Recettes d'exploitation"
-                addonText="€ / an"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          addonText="€ / an"
+          label="Recettes d'exploitation"
+          className="!tw-pt-4"
+          nativeInputProps={register("operationsIncome", optionalNumericFieldRegisterOptions)}
         />
-        <Controller
-          control={control}
-          name="otherIncome"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez sélectionner un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Autres recettes"
-                addonText="€ / an"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+
+        <RowDecimalsNumericInput
+          addonText="€ / an"
+          label="Autres recettes"
+          className="!tw-pt-4"
+          nativeInputProps={register("otherIncome", optionalNumericFieldRegisterOptions)}
         />
+
         <BackNextButtonsGroup
           onBack={onBack}
           nextLabel={hasNoValuesFilled ? "Passer" : "Valider"}

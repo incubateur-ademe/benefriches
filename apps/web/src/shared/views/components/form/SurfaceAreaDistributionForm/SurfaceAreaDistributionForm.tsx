@@ -1,14 +1,15 @@
 import { ReactNode, useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaControlInput/SurfaceAreaControlInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
+import RowDecimalsNumericInput from "../NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "../NumericInput/registerOptions";
 import SurfaceAreaPieChart from "./SurfaceAreaPieChart";
 
 type Props = {
@@ -32,7 +33,7 @@ function SurfaceAreaDistributionForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const { register, handleSubmit, watch } = useForm<FormValues>();
 
   const _onSubmit = (formData: FormValues) => {
     const entries = typedObjectEntries(formData);
@@ -72,31 +73,19 @@ function SurfaceAreaDistributionForm({
     >
       <form onSubmit={handleSubmit(_onSubmit)}>
         {soils.map(({ label, name, hintText, imgSrc }) => (
-          <Controller
+          <RowDecimalsNumericInput
             key={name}
-            control={control}
-            name={name}
-            rules={{
-              min: {
-                value: 0,
-                message: "Veuillez sélectionner une superficie valide",
-              },
+            label={label}
+            hintText={hintText}
+            addonText={SQUARE_METERS_HTML_SYMBOL}
+            imgSrc={imgSrc}
+            nativeInputProps={register(name, {
+              ...optionalNumericFieldRegisterOptions,
               max: {
                 value: totalSurfaceArea,
                 message: maxErrorMessage,
               },
-            }}
-            render={(controller) => {
-              return (
-                <ControlledRowNumericInput
-                  controlProps={controller}
-                  label={label}
-                  hintText={hintText}
-                  addonText={SQUARE_METERS_HTML_SYMBOL}
-                  imgSrc={imgSrc}
-                />
-              );
-            }}
+            })}
           />
         ))}
         <SurfaceAreaControlInput

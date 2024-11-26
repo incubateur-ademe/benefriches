@@ -1,10 +1,10 @@
+import Input from "@codegouvfr/react-dsfr/Input";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { ProjectSchedule } from "shared";
 
 import { Schedule } from "@/features/create-project/domain/project.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -46,7 +46,7 @@ function ScheduleProjectionForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { handleSubmit, control, formState } = useForm<FormValues>({
+  const { handleSubmit, control, formState, register } = useForm<FormValues>({
     defaultValues: {
       firstYearOfOperation: defaultSchedule.firstYearOfOperations,
       installationSchedule: {
@@ -101,12 +101,10 @@ function ScheduleProjectionForm({
           label={installationScheduleLabel}
         />
 
-        <NumericInput
+        <Input
           label={<RequiredLabel label="Mise en service du site" />}
-          name="firstYearOfOperation"
-          control={control}
-          allowDecimals={false}
-          rules={{
+          nativeInputProps={register("firstYearOfOperation", {
+            valueAsNumber: true,
             required:
               "L'année de mise en service est nécessaire pour pouvoir calculer les impacts de votre projet.",
             min: {
@@ -117,7 +115,7 @@ function ScheduleProjectionForm({
               value: 2100,
               message: "Veuillez entrer une année valide",
             },
-          }}
+          })}
         />
         <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>

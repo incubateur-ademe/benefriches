@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -19,7 +20,7 @@ export type FormValues = {
 };
 
 const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
-  const { handleSubmit, control, watch, setValue } = useForm<FormValues>();
+  const { handleSubmit, register, watch, setValue } = useForm<FormValues>();
 
   const sellingPrice = watch("sellingPrice");
 
@@ -70,47 +71,20 @@ const SitePurchaseAmountsForm = ({ onSubmit, onBack }: Props) => {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="sellingPrice"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Prix de vente"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€"
+          label="Prix de vente"
+          nativeInputProps={register("sellingPrice", optionalNumericFieldRegisterOptions)}
         />
 
-        <Controller
-          control={control}
-          name="propertyTransferDuties"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Droit de mutation"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€"
+          label="Droit de mutation"
+          nativeInputProps={register("propertyTransferDuties", optionalNumericFieldRegisterOptions)}
         />
+
         <BackNextButtonsGroup onBack={onBack} nextLabel={!sellingPrice ? "Passer" : "Valider"} />
       </form>
     </WizardFormLayout>

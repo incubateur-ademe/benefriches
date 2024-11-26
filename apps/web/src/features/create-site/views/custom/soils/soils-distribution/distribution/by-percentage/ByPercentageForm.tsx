@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { SoilType } from "shared";
 import { sumObjectValues } from "shared";
 
@@ -11,8 +11,8 @@ import {
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 export type FormValues = Record<SoilType, number>;
 
 function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const { register, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
   const soilsValues = watch();
@@ -42,27 +42,14 @@ function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Prop
     >
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
-          <Controller
+          <RowNumericInput
             key={soilType}
-            control={control}
-            name={soilType}
-            rules={{
-              min: {
-                value: 0,
-                message: "Veuillez entrer un montant valide",
-              },
-            }}
-            render={(controller) => {
-              return (
-                <ControlledRowNumericInput
-                  controlProps={controller}
-                  label={getLabelForSoilType(soilType)}
-                  imgSrc={getPictogramForSoilType(soilType)}
-                  addonText="%"
-                  hintText={getDescriptionForSoilType(soilType)}
-                />
-              );
-            }}
+            hintText={getDescriptionForSoilType(soilType)}
+            addonText="%"
+            label={getLabelForSoilType(soilType)}
+            imgSrc={getPictogramForSoilType(soilType)}
+            className="!tw-pt-4"
+            nativeInputProps={register(soilType, optionalNumericFieldRegisterOptions)}
           />
         ))}
 

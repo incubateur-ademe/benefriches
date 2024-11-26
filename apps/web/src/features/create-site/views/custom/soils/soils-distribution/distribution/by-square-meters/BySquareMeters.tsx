@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { SoilType } from "shared";
 import { sumObjectValues } from "shared";
 
@@ -11,7 +11,8 @@ import {
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaControlInput/SurfaceAreaControlInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -30,7 +31,7 @@ function SiteSoilsDistributionBySquareMetersForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { control, handleSubmit, watch } = useForm<FormValues>();
+  const { register, handleSubmit, watch } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
   const soilsValues = watch();
@@ -49,32 +50,20 @@ function SiteSoilsDistributionBySquareMetersForm({
     >
       <form onSubmit={_onSubmit}>
         {soils.map((soilType) => (
-          <Controller
+          <RowDecimalsNumericInput
             key={soilType}
-            control={control}
-            name={soilType}
-            rules={{
-              min: {
-                value: 0,
-                message: "Veuillez sélectionner une superficie valide",
-              },
+            hintText={getDescriptionForSoilType(soilType)}
+            addonText={SQUARE_METERS_HTML_SYMBOL}
+            label={getLabelForSoilType(soilType)}
+            imgSrc={getPictogramForSoilType(soilType)}
+            nativeInputProps={register(soilType, {
+              ...optionalNumericFieldRegisterOptions,
               max: {
                 value: totalSurfaceArea,
                 message:
                   "La surface de ce sol ne peut pas être supérieure à la surface totale du site",
               },
-            }}
-            render={(controller) => {
-              return (
-                <ControlledRowNumericInput
-                  controlProps={controller}
-                  label={getLabelForSoilType(soilType)}
-                  hintText={getDescriptionForSoilType(soilType)}
-                  addonText={SQUARE_METERS_HTML_SYMBOL}
-                  imgSrc={getPictogramForSoilType(soilType)}
-                />
-              );
-            }}
+            })}
           />
         ))}
         <SurfaceAreaControlInput

@@ -4,7 +4,8 @@ import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber"
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
@@ -24,7 +25,7 @@ export type FormValues = {
 };
 
 function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
-  const { register, control, handleSubmit, formState, watch } = useForm<FormValues>({
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
   });
 
@@ -69,24 +70,18 @@ function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
           <RadioButton label="Oui" value="yes" {...register("hasContaminatedSoils")} />
           {hasContaminatedSoils && (
             <div className="tw-pb-7">
-              <NumericInput
-                control={control}
+              <RowDecimalsNumericInput
                 label={<RequiredLabel label="Superficie polluée" />}
                 addonText={SQUARE_METERS_HTML_SYMBOL}
                 hintText={contaminatedSurfaceHintText}
-                name="contaminatedSurface"
-                rules={{
-                  required: "Ce champ est requis",
-                  min: {
-                    value: 0,
-                    message: "Veuillez sélectionner une surface valide.",
-                  },
+                nativeInputProps={register("contaminatedSurface", {
+                  ...requiredNumericFieldRegisterOptions,
                   max: {
                     value: siteSurfaceArea,
                     message:
                       "La superficie polluée ne peut être supérieure à la superficie du site.",
                   },
-                }}
+                })}
               />
             </div>
           )}

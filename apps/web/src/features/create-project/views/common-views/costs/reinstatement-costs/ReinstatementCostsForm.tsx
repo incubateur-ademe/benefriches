@@ -1,10 +1,11 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -120,7 +121,7 @@ const ReinstatementsExpensesForm = ({
   hasImpermeableSoils,
   defaultValues,
 }: Props) => {
-  const { handleSubmit, control, watch } = useForm<FormValues>({
+  const { handleSubmit, register, watch } = useForm<FormValues>({
     defaultValues,
   });
 
@@ -150,21 +151,11 @@ const ReinstatementsExpensesForm = ({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         {getExpensesInputs(hasProjectedDecontamination).map(({ label, name }) => (
-          <Controller
+          <RowDecimalsNumericInput
             key={name}
-            control={control}
-            name={name}
-            rules={{
-              min: {
-                value: 0,
-                message: "Veuillez entrer un montant valide",
-              },
-            }}
-            render={(controller) => {
-              return (
-                <ControlledRowNumericInput controlProps={controller} label={label} addonText="€" />
-              );
-            }}
+            addonText="€"
+            label={label}
+            nativeInputProps={register(name, optionalNumericFieldRegisterOptions)}
           />
         ))}
 

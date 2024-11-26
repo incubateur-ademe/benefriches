@@ -1,18 +1,13 @@
-import { ChangeEvent } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
 import { Expense } from "@/features/create-site/domain/siteFoncier.types";
-import {
-  numberToString,
-  stringToNumber,
-} from "@/shared/services/number-conversion/numberConversion";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
-import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import SiteYearlyExpensesFormInstructions from "./SiteYearlyExpensesFormInstructions";
@@ -133,7 +128,7 @@ function SiteYearlyExpensesForm({
   isFriche,
   defaultValues,
 }: Props) {
-  const { handleSubmit, control, watch, register, formState } = useForm<FormValues>({
+  const { handleSubmit, watch, register, formState } = useForm<FormValues>({
     shouldUnregister: true,
     defaultValues,
   });
@@ -162,30 +157,14 @@ function SiteYearlyExpensesForm({
         {siteManagementExpensesWithBearer.map(({ name, bearer }) => {
           return (
             <>
-              <Controller
+              <RowDecimalsNumericInput
                 key={name}
-                control={control}
-                name={`${name}.amount`}
-                rules={{
-                  min: {
-                    value: 0,
-                    message: "Veuillez sélectionner un montant valide",
-                  },
-                }}
-                render={(controller) => {
-                  return (
-                    <ControlledRowNumericInput
-                      controlProps={controller}
-                      label={getLabelForExpense(name)}
-                      hintText={
-                        !hasTenant || bearer === undefined
-                          ? undefined
-                          : getBearerLabel(bearer, isFriche)
-                      }
-                      addonText="€ / an"
-                    />
-                  );
-                }}
+                hintText={
+                  !hasTenant || bearer === undefined ? undefined : getBearerLabel(bearer, isFriche)
+                }
+                addonText="€ / an"
+                label={getLabelForExpense(name)}
+                nativeInputProps={register(`${name}.amount`, optionalNumericFieldRegisterOptions)}
               />
 
               {bearer === undefined && !!watch(`${name}.amount`) && (
@@ -206,44 +185,24 @@ function SiteYearlyExpensesForm({
             {siteSecurityExpensesWithBearer.map(({ name, bearer }) => {
               return (
                 <>
-                  <Controller
-                    key={name}
-                    control={control}
-                    name={`${name}.amount`}
-                    rules={{
-                      min: {
-                        value: 0,
-                        message: "Veuillez sélectionner un montant valide",
-                      },
-                    }}
-                    render={({ field }) => {
-                      return (
-                        <RowNumericInput
-                          state={formState.errors[name]?.amount ? "error" : "default"}
-                          stateRelatedMessage={
-                            formState.errors[name]?.amount
-                              ? formState.errors[name].amount.message
-                              : undefined
-                          }
-                          nativeInputProps={{
-                            name: field.name,
-                            value: field.value ? numberToString(field.value) : undefined,
-                            onChange: (ev: ChangeEvent<HTMLInputElement>) => {
-                              field.onChange(stringToNumber(ev.target.value));
-                            },
-                            onBlur: field.onBlur,
-                            type: "number",
-                          }}
-                          label={getLabelForExpense(name)}
-                          hintText={
-                            !hasTenant || bearer === undefined
-                              ? undefined
-                              : getBearerLabel(bearer, isFriche)
-                          }
-                          addonText="€ / an"
-                        />
-                      );
-                    }}
+                  <RowDecimalsNumericInput
+                    state={formState.errors[name]?.amount ? "error" : "default"}
+                    stateRelatedMessage={
+                      formState.errors[name]?.amount
+                        ? formState.errors[name].amount.message
+                        : undefined
+                    }
+                    nativeInputProps={register(
+                      `${name}.amount`,
+                      optionalNumericFieldRegisterOptions,
+                    )}
+                    label={getLabelForExpense(name)}
+                    hintText={
+                      !hasTenant || bearer === undefined
+                        ? undefined
+                        : getBearerLabel(bearer, isFriche)
+                    }
+                    addonText="€ / an"
                   />
                   {bearer === undefined && !!watch(`${name}.amount`) && (
                     <RadioButtons

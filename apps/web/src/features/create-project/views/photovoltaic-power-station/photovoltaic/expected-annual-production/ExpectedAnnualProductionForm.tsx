@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
@@ -22,7 +23,7 @@ function PhotovoltaicAnnualProductionForm({
   onBack,
   expectedPerformanceMwhPerYear,
 }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>({
+  const { register, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: {
       photovoltaicExpectedAnnualProduction: expectedPerformanceMwhPerYear,
     },
@@ -40,16 +41,13 @@ function PhotovoltaicAnnualProductionForm({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <NumericInput
-          name="photovoltaicExpectedAnnualProduction"
+        <RowNumericInput
+          nativeInputProps={register(
+            "photovoltaicExpectedAnnualProduction",
+            requiredNumericFieldRegisterOptions,
+          )}
           label="Production attendue de l'installation"
           addonText="MWh/an"
-          rules={{
-            min: 0,
-            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
-          }}
-          control={control}
-          allowDecimals={false}
         />
         <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>

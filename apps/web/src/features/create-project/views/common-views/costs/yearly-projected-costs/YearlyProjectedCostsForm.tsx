@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -34,7 +35,7 @@ const YearlyProjectedExpensesForm = ({
   title = "Dépenses annuelles",
   instructions,
 }: Props) => {
-  const { handleSubmit, control, watch } = useForm<FormValues>({
+  const { handleSubmit, register, watch } = useForm<FormValues>({
     defaultValues: {
       rentAmount: defaultValues?.rent,
       maintenanceAmount: defaultValues?.maintenance,
@@ -50,86 +51,30 @@ const YearlyProjectedExpensesForm = ({
   return (
     <WizardFormLayout title={title} instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="rentAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Loyer"
-                addonText="€ / an"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€ / an"
+          label="Loyer"
+          nativeInputProps={register("rentAmount", optionalNumericFieldRegisterOptions)}
         />
-        <Controller
-          control={control}
-          name="maintenanceAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Maintenance"
-                addonText="€ / an"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€ / an"
+          label="Maintenance"
+          nativeInputProps={register("maintenanceAmount", optionalNumericFieldRegisterOptions)}
         />
-        <Controller
-          control={control}
-          name="taxesAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Taxes et impôts"
-                addonText="€ / an"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€ / an"
+          label="Taxes et impôts"
+          nativeInputProps={register("taxesAmount", optionalNumericFieldRegisterOptions)}
         />
 
-        <Controller
-          control={control}
-          name="otherAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Autres dépenses"
-                addonText="€ / an"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          className="!tw-pt-4"
+          addonText="€ / an"
+          label="Autres dépenses"
+          nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
         />
 
         {!hasNoValuesFilled && (

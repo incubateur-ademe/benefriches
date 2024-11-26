@@ -12,7 +12,8 @@ import {
   getPictogramForSoilType,
 } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import NumericInput from "@/shared/views/components/form/NumericInput/NumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 import AllocatedSurfaceAreaControlInput from "./AllocatedSurfaceAreaControlInput";
@@ -38,7 +39,7 @@ function FutureSoilsSurfaceAreaForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { control, handleSubmit, watch, formState } = useForm<FormValues>();
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>();
 
   const allocatedSoilsDistribution = watch();
 
@@ -69,24 +70,22 @@ function FutureSoilsSurfaceAreaForm({
             </span>
           );
           return (
-            <div key={soilType} className="tw-inline-flex tw-items-center tw-w-full tw-mb-6">
-              <img src={getPictogramForSoilType(soilType)} width="60" className="tw-mr-4" />
-              <NumericInput
-                name={soilType}
-                label={getLabelForSoilType(soilType)}
-                hintText={hintText}
-                rules={{
-                  max: {
-                    value: siteSurfaceArea,
-                    message:
-                      "La surface de ce sol ne peut pas être supérieure à la surface totale du site",
-                  },
-                }}
-                control={control}
-                addonText={SQUARE_METERS_HTML_SYMBOL}
-                className="tw-w-full"
-              />
-            </div>
+            <RowDecimalsNumericInput
+              key={soilType}
+              imgSrc={getPictogramForSoilType(soilType)}
+              nativeInputProps={register(soilType, {
+                ...optionalNumericFieldRegisterOptions,
+                max: {
+                  value: siteSurfaceArea,
+                  message:
+                    "La surface de ce sol ne peut pas être supérieure à la surface totale du site",
+                },
+              })}
+              label={getLabelForSoilType(soilType)}
+              hintText={hintText}
+              addonText={SQUARE_METERS_HTML_SYMBOL}
+              className="tw-w-full"
+            />
           );
         })}
         <div className="tw-mt-6">

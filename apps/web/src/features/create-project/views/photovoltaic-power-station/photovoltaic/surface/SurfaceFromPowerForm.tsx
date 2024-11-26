@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
 import {
@@ -8,7 +8,8 @@ import {
 } from "@/shared/services/format-number/formatNumber";
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinition";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
@@ -33,7 +34,7 @@ function PhotovoltaicSurfaceFromPowerForm({
   recommendedSurface,
   siteSurfaceArea,
 }: Props) {
-  const { control, handleSubmit, watch, formState } = useForm<FormValues>({
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     defaultValues: {
       photovoltaicInstallationSurfaceSquareMeters: recommendedSurface,
     },
@@ -90,36 +91,26 @@ function PhotovoltaicSurfaceFromPowerForm({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="photovoltaicInstallationSurfaceSquareMeters"
-          rules={{
-            min: 1,
-            required: "Ce champ est nécessaire pour déterminer les questions suivantes",
+        <RowDecimalsNumericInput
+          className="!tw-pt-4 tw-pb-6"
+          addonText={SQUARE_METERS_HTML_SYMBOL}
+          hintText={hintText}
+          hintInputText={
+            !isNaN(surface) && (
+              <p>
+                💡 Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong>{" "}
+                ha.
+              </p>
+            )
+          }
+          label={<RequiredLabel label="Superficie de l'installation" />}
+          nativeInputProps={register("photovoltaicInstallationSurfaceSquareMeters", {
+            ...requiredNumericFieldRegisterOptions,
             max: {
               value: siteSurfaceArea,
               message: maxErrorMessage,
             },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label={<RequiredLabel label="Superficie de l'installation" />}
-                hintText={hintText}
-                hintInputText={
-                  !isNaN(surface) && (
-                    <p>
-                      💡 Soit{" "}
-                      <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
-                    </p>
-                  )
-                }
-                className="!tw-pt-4 tw-pb-6"
-                addonText={SQUARE_METERS_HTML_SYMBOL}
-              />
-            );
-          }}
+          })}
         />
         <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>

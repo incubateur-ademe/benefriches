@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import ControlledRowNumericInput from "@/shared/views/components/form/NumericInput/ControlledRowNumericInput";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
@@ -33,7 +34,7 @@ const InstallationExpensesForm = ({
   title,
   instructions,
 }: Props) => {
-  const { handleSubmit, control, watch } = useForm<FormValues>({
+  const { handleSubmit, register, watch } = useForm<FormValues>({
     defaultValues: {
       worksAmount: defaultValues?.works,
       technicalStudyAmount: defaultValues?.technicalStudy,
@@ -49,66 +50,23 @@ const InstallationExpensesForm = ({
   return (
     <WizardFormLayout title={title} instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Controller
-          control={control}
-          name="worksAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Travaux d'installation"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          addonText="€"
+          className="!tw-pt-4"
+          label="Travaux d'installation"
+          nativeInputProps={register("worksAmount", optionalNumericFieldRegisterOptions)}
         />
-
-        <Controller
-          control={control}
-          name="technicalStudyAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Études et honoraires techniques"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          addonText="€"
+          className="!tw-pt-4"
+          label="Études et honoraires techniques"
+          nativeInputProps={register("technicalStudyAmount", optionalNumericFieldRegisterOptions)}
         />
-        <Controller
-          control={control}
-          name="otherAmount"
-          rules={{
-            min: {
-              value: 0,
-              message: "Veuillez entrer un montant valide",
-            },
-          }}
-          render={(controller) => {
-            return (
-              <ControlledRowNumericInput
-                controlProps={controller}
-                label="Autres dépenses d'installation"
-                addonText="€"
-                className="!tw-pt-4"
-              />
-            );
-          }}
+        <RowDecimalsNumericInput
+          addonText="€"
+          className="!tw-pt-4"
+          label="Autres dépenses d'installation"
+          nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
         />
 
         {!hasNoValuesFilled && (
