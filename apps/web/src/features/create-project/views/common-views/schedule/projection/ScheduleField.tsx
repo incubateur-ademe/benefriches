@@ -10,9 +10,10 @@ type Props = {
   label: string;
   scheduleName: "installationSchedule" | "reinstatementSchedule";
   control: Control<FormValues>;
+  onStartDateChange: () => void;
 };
 
-function ScheduleField({ label, scheduleName, control }: Props) {
+function ScheduleField({ label, scheduleName, control, onStartDateChange }: Props) {
   const formValues = useWatch({ control });
   const formState = useFormState({
     control,
@@ -43,15 +44,16 @@ function ScheduleField({ label, scheduleName, control }: Props) {
         <Controller
           name={`${scheduleName}.startDate`}
           control={control}
-          render={({ field: { onChange, value, name } }) => (
+          render={({ field }) => (
             <Input
               label="Début des travaux"
               nativeInputProps={{
+                ...field,
+                onChange: (ev) => {
+                  field.onChange(ev);
+                  onStartDateChange();
+                },
                 type: "date",
-                name,
-                max: endDateValue,
-                value,
-                onChange,
               }}
             />
           )}
@@ -59,17 +61,13 @@ function ScheduleField({ label, scheduleName, control }: Props) {
         <Controller
           name={`${scheduleName}.endDate`}
           control={control}
-          render={({ field: { onChange, value, name } }) => (
+          render={({ field }) => (
             <Input
               label="Fin des travaux"
               nativeInputProps={{
+                ...field,
                 type: "date",
-                name,
-                value,
                 min: startDateValue,
-                onChange: (e) => {
-                  onChange(e);
-                },
               }}
             />
           )}

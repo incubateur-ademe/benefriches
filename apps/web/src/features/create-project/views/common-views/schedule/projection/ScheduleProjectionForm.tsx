@@ -46,7 +46,7 @@ function ScheduleProjectionForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { handleSubmit, control, formState, register } = useForm<FormValues>({
+  const { handleSubmit, control, formState, register, setValue } = useForm<FormValues>({
     defaultValues: {
       firstYearOfOperation: defaultSchedule.firstYearOfOperations,
       installationSchedule: {
@@ -92,6 +92,9 @@ function ScheduleProjectionForm({
             control={control}
             scheduleName="reinstatementSchedule"
             label="Remise en état de la friche"
+            onStartDateChange={() => {
+              setValue("reinstatementSchedule.endDate", "");
+            }}
           />
         )}
 
@@ -99,6 +102,9 @@ function ScheduleProjectionForm({
           control={control}
           scheduleName="installationSchedule"
           label={installationScheduleLabel}
+          onStartDateChange={() => {
+            setValue("installationSchedule.endDate", "");
+          }}
         />
 
         <Input
