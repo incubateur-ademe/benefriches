@@ -36,10 +36,6 @@ export default function Step2({ onNextClick, onBackClick }: Props) {
               Bénéfriches utilise dans ses calculs."
           />
         </section>
-        <p>
-          Mais aussi les dépenses de santé évitées, la valeur monétaire des services écosystémiques,
-          les dépenses de traitement de l’eau évitée...
-        </p>
         <div className="tw-mt-5">
           <ButtonsGroup
             inlineLayoutWhen="always"
