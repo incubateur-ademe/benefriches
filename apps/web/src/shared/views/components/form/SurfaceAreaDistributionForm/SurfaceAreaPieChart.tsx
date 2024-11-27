@@ -46,7 +46,7 @@ const SurfaceAreaPieChart = ({
     },
     credits: { enabled: false },
     tooltip: {
-      pointFormat: `Superficie : <strong>{point.y} ${SQUARE_METERS_HTML_SYMBOL}</strong> ({point.percentage:.2f}%)`,
+      pointFormat: `Superficie : <strong>{point.y} ${SQUARE_METERS_HTML_SYMBOL}</strong> ({point.percentage:.0f}%)`,
     },
     plotOptions: { pie: { cursor: "pointer", dataLabels: { enabled: false } } },
     series: [

@@ -10,7 +10,7 @@ describe("SurfaceAreaDistributionForm", () => {
     render(
       <SurfaceAreaDistributionForm
         title="Test form"
-        soils={[
+        surfaces={[
           { name: "field1", label: "Field1" },
           { name: "field2", label: "Field2" },
         ]}
@@ -28,13 +28,13 @@ describe("SurfaceAreaDistributionForm", () => {
     });
   });
 
-  it("should call onSubmit with right args if form is valid", async () => {
+  it("should call onSubmit with right args if form is valid and convert percent values to square meters", async () => {
     const onSubmitSpy = vi.fn();
 
     render(
       <SurfaceAreaDistributionForm
         title="Test form"
-        soils={[
+        surfaces={[
           { name: "field1", label: "Field1" },
           { name: "field2", label: "Field2" },
         ]}
@@ -49,21 +49,21 @@ describe("SurfaceAreaDistributionForm", () => {
 
     fireEvent.input(field1, {
       target: {
-        value: 7000,
+        value: 70,
       },
     });
 
     fireEvent.input(field2, {
       target: {
-        value: 3000,
+        value: 30,
       },
     });
 
     expect(field1).toBeInTheDocument();
     expect(field2).toBeInTheDocument();
 
-    expect(field1).toHaveValue(7000);
-    expect(field2).toHaveValue(3000);
+    expect(field1).toHaveValue(70);
+    expect(field2).toHaveValue(30);
 
     expect(screen.getByRole("button", { name: "Valider" })).not.toBeDisabled();
 
@@ -74,13 +74,13 @@ describe("SurfaceAreaDistributionForm", () => {
     });
   });
 
-  it("should call onSubmit only with soils with valid value (nor 0 nor null)", async () => {
+  it("should call onSubmit only with surfaces with valid value (nor 0 nor null) and convert percent values to square meters", async () => {
     const onSubmitSpy = vi.fn();
 
     render(
       <SurfaceAreaDistributionForm
         title="Test form"
-        soils={[
+        surfaces={[
           { name: "field1", label: "Field1" },
           { name: "field2", label: "Field2" },
           { name: "field3", label: "Field3" },
@@ -99,7 +99,7 @@ describe("SurfaceAreaDistributionForm", () => {
 
     fireEvent.input(field1, {
       target: {
-        value: 7000,
+        value: 70,
       },
     });
 
@@ -117,7 +117,7 @@ describe("SurfaceAreaDistributionForm", () => {
 
     fireEvent.input(field4, {
       target: {
-        value: 3000,
+        value: 30,
       },
     });
 
@@ -126,10 +126,10 @@ describe("SurfaceAreaDistributionForm", () => {
     expect(field3).toBeInTheDocument();
     expect(field4).toBeInTheDocument();
 
-    expect(field1).toHaveValue(7000);
+    expect(field1).toHaveValue(70);
     expect(field2).toHaveValue(null);
     expect(field3).toHaveValue(0);
-    expect(field4).toHaveValue(3000);
+    expect(field4).toHaveValue(30);
 
     expect(screen.getByRole("button", { name: "Valider" })).not.toBeDisabled();
 

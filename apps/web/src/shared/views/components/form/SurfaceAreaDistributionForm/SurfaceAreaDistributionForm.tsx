@@ -1,14 +1,13 @@
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
+import { formatPercentage, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaControlInput/SurfaceAreaControlInput";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import RowDecimalsNumericInput from "../NumericInput/RowDecimalsNumericInput";
+import RowNumericInput from "../NumericInput/RowNumericInput";
 import { optionalNumericFieldRegisterOptions } from "../NumericInput/registerOptions";
 import SurfaceAreaPieChart from "./SurfaceAreaPieChart";
 
@@ -16,18 +15,31 @@ type Props = {
   title: ReactNode;
   instructions?: ReactNode;
   totalSurfaceArea: number;
-  soils: { name: string; label: string; hintText?: ReactNode; imgSrc?: string; color?: string }[];
+  surfaces: {
+    name: string;
+    label: string;
+    hintText?: ReactNode;
+    imgSrc?: string;
+    color?: string;
+  }[];
   maxErrorMessage?: string;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
 
-export type FormValues = Record<string, number>;
+type FormValues = Record<string, number>;
+
+const convertPercentToSquareMeters = (percent: number, total: number) => {
+  return Math.round((percent * total) / 100);
+};
+
+const targetSurfaceArea = 100;
+const addonText = "%";
 
 function SurfaceAreaDistributionForm({
   title,
   instructions,
-  soils,
+  surfaces,
   totalSurfaceArea,
   maxErrorMessage = "La surface de ce sol ne peut pas être supérieure à la surface totale disponible",
   onSubmit,
@@ -35,28 +47,44 @@ function SurfaceAreaDistributionForm({
 }: Props) {
   const { register, handleSubmit, watch } = useForm<FormValues>();
 
-  const _onSubmit = (formData: FormValues) => {
-    const entries = typedObjectEntries(formData);
-    const formattedEntries = entries.filter(([, value]) => value && value > 0);
-    onSubmit(Object.fromEntries(formattedEntries) as Record<string, number>);
-  };
+  const convertValuesBeforeSubmit = useCallback(
+    (values: FormValues) => {
+      const formattedEntries = typedObjectEntries(values)
+        .filter(([, value]) => value && value > 0)
+        .map(([key, value]) => [key, convertPercentToSquareMeters(value, totalSurfaceArea)]);
+      return Object.fromEntries(formattedEntries) as Record<string, number>;
+    },
+    [totalSurfaceArea],
+  );
 
-  const soilsValues = watch();
+  const getHintInputText = useCallback(
+    (value?: number) => {
+      if (!value) {
+        return undefined;
+      }
+      const equivalent = convertPercentToSquareMeters(value, totalSurfaceArea);
+      return `Soit ${formatSurfaceArea(equivalent)}`;
+    },
+    [totalSurfaceArea],
+  );
 
-  const totalAllocatedSurface = useMemo(() => sumObjectValues(soilsValues), [soilsValues]);
+  const surfaceValues = watch();
 
-  const remainder = totalSurfaceArea - totalAllocatedSurface;
+  const totalAllocatedSurface = useMemo(() => sumObjectValues(surfaceValues), [surfaceValues]);
+
+  const remainder = targetSurfaceArea - totalAllocatedSurface;
   const isValid = remainder === 0;
 
-  const chartSoilsDistribution = typedObjectEntries(soilsValues).map(([soilType, value]) => {
-    const soil = soils.find(({ name }) => name === soilType);
-
-    return {
-      name: soil?.label ?? soilType,
-      value,
-      color: soil?.color,
-    };
-  });
+  const chartSurfaceAreaDistribution = typedObjectEntries(surfaceValues).map(
+    ([soilType, value]) => {
+      const { label, color } = surfaces.find(({ name }) => name === soilType) ?? {};
+      return {
+        name: label ?? soilType,
+        value: convertPercentToSquareMeters(value, totalSurfaceArea),
+        color,
+      };
+    },
+  );
 
   return (
     <WizardFormLayout
@@ -65,33 +93,51 @@ function SurfaceAreaDistributionForm({
         <>
           {instructions}
           <SurfaceAreaPieChart
-            soilsDistribution={chartSoilsDistribution}
-            remainderSurfaceArea={remainder}
+            soilsDistribution={chartSurfaceAreaDistribution}
+            remainderSurfaceArea={convertPercentToSquareMeters(remainder, totalSurfaceArea)}
           />
         </>
       }
     >
-      <form onSubmit={handleSubmit(_onSubmit)}>
-        {soils.map(({ label, name, hintText, imgSrc }) => (
-          <RowDecimalsNumericInput
+      <form
+        onSubmit={handleSubmit((values: FormValues) => {
+          onSubmit(convertValuesBeforeSubmit(values));
+        })}
+      >
+        {surfaces.map(({ label, name, hintText, imgSrc }) => (
+          <RowNumericInput
             key={name}
             label={label}
             hintText={hintText}
-            addonText={SQUARE_METERS_HTML_SYMBOL}
+            hintInputText={getHintInputText(surfaceValues[name])}
+            addonText={addonText}
             imgSrc={imgSrc}
             nativeInputProps={register(name, {
               ...optionalNumericFieldRegisterOptions,
               max: {
-                value: totalSurfaceArea,
+                value: targetSurfaceArea,
                 message: maxErrorMessage,
               },
             })}
           />
         ))}
-        <SurfaceAreaControlInput
+
+        <RowNumericInput
+          className="tw-pb-5"
           label="Total de toutes les surfaces"
-          currentSurfaceArea={totalAllocatedSurface}
-          targetSurfaceArea={totalSurfaceArea}
+          addonText={addonText}
+          nativeInputProps={{
+            value: totalAllocatedSurface,
+            min: 0,
+            max: targetSurfaceArea,
+          }}
+          disabled
+          state={isValid ? "success" : "error"}
+          stateRelatedMessage={
+            isValid
+              ? "Le compte est bon !"
+              : `${formatPercentage(Math.abs(remainder))} ${remainder > 0 ? "manquants" : "en trop"}`
+          }
         />
         <BackNextButtonsGroup onBack={onBack} disabled={!isValid} nextLabel="Valider" />
       </form>

@@ -5,7 +5,9 @@ import {
   getLabelForSpaceCategory,
   getPictogramForUrbanSpaceCategory,
 } from "@/features/create-project/domain/urbanProject";
+import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 type Props = {
   totalSurfaceArea: number;
@@ -25,11 +27,16 @@ function SpacesCategoriesSurfaceAreaDistributionForm({
   return (
     <SurfaceAreaDistributionForm
       title="Quelle superficie occuperont chacun des espaces ?"
+      instructions={
+        <FormInfo>
+          La surface totale du site est de <strong>{formatSurfaceArea(totalSurfaceArea)}</strong>.
+        </FormInfo>
+      }
       onBack={onBack}
       onSubmit={onSubmit as (data: Record<string, number>) => void}
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale du site"
-      soils={spacesCategories.map((spaceCategory) => ({
+      surfaces={spacesCategories.map((spaceCategory) => ({
         name: spaceCategory,
         label: getLabelForSpaceCategory(spaceCategory),
         hintText: getDescriptionForUrbanSpaceCategory(spaceCategory),
