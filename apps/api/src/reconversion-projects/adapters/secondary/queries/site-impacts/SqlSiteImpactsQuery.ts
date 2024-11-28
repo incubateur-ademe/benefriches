@@ -19,7 +19,6 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
         "friche_activity",
         "surface_area",
         "friche_contaminated_soil_surface_area",
-        "full_time_jobs_involved",
         "friche_accidents_minor_injuries",
         "friche_accidents_severe_injuries",
         "friche_accidents_deaths",
@@ -54,7 +53,6 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       addressLabel: sqlAddress?.value ?? "",
       surfaceArea: sqlSite.surface_area,
       contaminatedSoilSurface: sqlSite.friche_contaminated_soil_surface_area ?? undefined,
-      fullTimeJobs: sqlSite.full_time_jobs_involved ?? undefined,
       soilsDistribution: sqlSoilDistributions.reduce((acc, { soil_type, surface_area }) => {
         return {
           ...acc,

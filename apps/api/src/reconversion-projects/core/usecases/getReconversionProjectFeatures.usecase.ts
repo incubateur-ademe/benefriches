@@ -31,9 +31,6 @@ export type ReconversionProjectFeaturesView = {
   futureOwner?: string;
   futureOperator?: string;
   reinstatementContractOwner?: string;
-  reinstatementFullTimeJobs?: number;
-  conversionFullTimeJobs?: number;
-  operationsFullTimeJobs?: number;
   financialAssistanceRevenues?: { amount: number; source: string }[];
   reinstatementCosts?: { amount: number; purpose: string }[];
   yearlyProjectedExpenses: { amount: number; purpose: string }[];

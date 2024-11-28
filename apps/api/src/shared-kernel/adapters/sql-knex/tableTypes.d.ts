@@ -24,7 +24,6 @@ type SqlSite = {
   description: string | null;
   surface_area: number;
   is_friche: boolean;
-  full_time_jobs_involved: number | null;
   owner_structure_type: string;
   owner_name: string | null;
   tenant_structure_type: string | null;
@@ -91,13 +90,10 @@ export type SqlReconversionProject = {
   future_operator_structure_type?: string;
   future_site_owner_name?: string;
   future_site_owner_structure_type?: string;
-  future_operations_full_time_jobs?: number;
-  conversion_full_time_jobs_involved?: number;
   operations_first_year?: number;
   // reinstatement
   reinstatement_contract_owner_name?: string;
   reinstatement_contract_owner_structure_type?: string;
-  reinstatement_full_time_jobs_involved?: number;
   reinstatement_schedule_start_date?: Date;
   reinstatement_schedule_end_date?: Date;
   // site purchase

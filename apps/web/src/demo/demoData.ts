@@ -12,7 +12,6 @@ export const DEMO_SITE = {
   name: "Friche industrielle de Mauges-sur-Loire",
   isExpressSite: false,
   fricheActivity: "INDUSTRY",
-  fullTimeJobsInvolved: 0.1,
   isFriche: true,
   ownerName: "Mairie de Mauges-sur-Loire",
   owner: { name: "Mairie de Mauges-sur-Loire", structureType: "municipality" },
@@ -80,12 +79,10 @@ export const DEMO_PROJECT = {
   yearlyProjectedExpenses: [],
   yearlyProjectedRevenues: [],
   reinstatementContractOwner: "Mairie de Mauges-sur-Loire",
-  operationsFullTimeJobs: 35.2,
   reinstatementSchedule: {
     startDate: "2025-11-14T10:27:41.601Z",
     endDate: "2026-11-14T10:27:41.601Z",
   },
-  reinstatementFullTimeJobs: 7,
   reinstatementCosts: [
     { amount: 495000, purpose: "remediation" },
     { amount: 375000, purpose: "demolition" },

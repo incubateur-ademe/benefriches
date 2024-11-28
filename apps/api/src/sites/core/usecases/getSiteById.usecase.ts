@@ -27,7 +27,6 @@ export type SiteViewModel = {
   soilsDistribution: Partial<Record<SoilType, number>>;
   surfaceArea: number;
   address: Address;
-  fullTimeJobsInvolved?: number;
   accidentsMinorInjuries?: number;
   accidentsSevereInjuries?: number;
   accidentsDeaths?: number;

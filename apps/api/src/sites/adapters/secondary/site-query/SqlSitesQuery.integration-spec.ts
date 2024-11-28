@@ -41,7 +41,6 @@ describe("SqlSitesQuery integration", () => {
         friche_activity: "INDUSTRIAL",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 1200,
-        full_time_jobs_involved: 1.3,
         friche_accidents_deaths: 0,
         friche_accidents_minor_injuries: 1,
         friche_accidents_severe_injuries: 2,
@@ -121,7 +120,6 @@ describe("SqlSitesQuery integration", () => {
         accidentsMinorInjuries: 1,
         accidentsSevereInjuries: 2,
         fricheActivity: "INDUSTRIAL",
-        fullTimeJobsInvolved: 1.3,
       };
 
       expect(result).toEqual(expectedResult);

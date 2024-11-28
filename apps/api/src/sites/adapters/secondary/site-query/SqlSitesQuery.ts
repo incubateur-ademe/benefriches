@@ -29,7 +29,6 @@ export class SqlSitesQuery implements SitesQuery {
         "sites.name",
         "sites.creation_mode",
         "sites.friche_activity",
-        "sites.full_time_jobs_involved",
         "sites.description",
         "sites.is_friche",
         "sites.owner_name",
@@ -76,7 +75,6 @@ export class SqlSitesQuery implements SitesQuery {
           creation_mode: SqlSite["creation_mode"];
           description: SqlSite["description"];
           friche_activity: SqlSite["friche_activity"];
-          full_time_jobs_involved: SqlSite["full_time_jobs_involved"];
           is_friche: SqlSite["is_friche"];
           surface_area: SqlSite["surface_area"];
           owner_name: SqlSite["owner_name"];
@@ -110,7 +108,6 @@ export class SqlSitesQuery implements SitesQuery {
       isExpressSite: sqlSite.creation_mode === "express",
       description: sqlSite.description ?? undefined,
       fricheActivity: sqlSite.friche_activity ?? undefined,
-      fullTimeJobsInvolved: sqlSite.full_time_jobs_involved ?? undefined,
       isFriche: sqlSite.is_friche,
       owner: {
         name: sqlSite.owner_name ?? undefined,

@@ -20,9 +20,6 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
         "name",
         "creation_mode",
         "related_site_id",
-        "conversion_full_time_jobs_involved",
-        "future_operations_full_time_jobs",
-        "reinstatement_full_time_jobs_involved",
         "reinstatement_schedule_start_date",
         "reinstatement_schedule_end_date",
         "future_operator_name",
@@ -144,11 +141,7 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
           [soil_type]: surface_area,
         };
       }, {}),
-      conversionFullTimeJobs: reconversionProject.conversion_full_time_jobs_involved ?? undefined,
       conversionSchedule,
-      operationsFullTimeJobs: reconversionProject.future_operations_full_time_jobs ?? undefined,
-      reinstatementFullTimeJobs:
-        reconversionProject.reinstatement_full_time_jobs_involved ?? undefined,
       reinstatementSchedule,
       futureOperatorName: reconversionProject.future_operator_name ?? undefined,
       futureSiteOwnerName: reconversionProject.future_site_owner_name ?? undefined,

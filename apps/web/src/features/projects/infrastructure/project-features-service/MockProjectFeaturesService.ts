@@ -27,9 +27,6 @@ export class MockProjectFeaturesService implements ProjectFeaturesGateway {
     futureOwner: "ADEME",
     futureOperator: "ADEME",
     reinstatementContractOwner: "ADEME",
-    reinstatementFullTimeJobs: 1.5,
-    conversionFullTimeJobs: 3,
-    operationsFullTimeJobs: 0.4,
     financialAssistanceRevenues: [{ amount: 9999, source: "public_subsidies" }],
     reinstatementCosts: [
       {

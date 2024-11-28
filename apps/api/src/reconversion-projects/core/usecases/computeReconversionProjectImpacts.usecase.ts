@@ -56,7 +56,6 @@ export type SiteImpactsDataView = {
   tenantName?: string;
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;
-  fullTimeJobs?: number;
   hasAccidents: boolean;
   accidentsDeaths?: number;
   accidentsMinorInjuries?: number;
@@ -74,9 +73,6 @@ export type ReconversionProjectImpactsDataView = {
   relatedSiteId: string;
   soilsDistribution: SoilsDistribution;
   isExpressProject: boolean;
-  conversionFullTimeJobs?: number;
-  reinstatementFullTimeJobs?: number;
-  operationsFullTimeJobs?: number;
   conversionSchedule?: Schedule;
   reinstatementSchedule?: Schedule;
   futureOperatorName?: string;
@@ -315,10 +311,6 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           } as DevelopmentPlan,
           conversionSchedule: reconversionProject.conversionSchedule,
           reinstatementSchedule: reconversionProject.reinstatementSchedule,
-          statuQuoOperationsFullTimeJobs: relatedSite.fullTimeJobs,
-          reinstatementFullTimeJobs: reconversionProject.reinstatementFullTimeJobs,
-          conversionFullTimeJobs: reconversionProject.conversionFullTimeJobs,
-          projectOperationsFullTimeJobs: reconversionProject.operationsFullTimeJobs,
           reinstatementExpenses: reconversionProject.reinstatementCosts as ReinstatementExpense[],
           evaluationPeriodInYears: evaluationPeriodInYears,
         }).getFullTimeJobsImpacts(),

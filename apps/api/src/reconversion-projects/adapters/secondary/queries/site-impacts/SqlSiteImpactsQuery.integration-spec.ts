@@ -40,7 +40,6 @@ describe("SqlSiteImpactsQuery integration", () => {
         friche_activity: "HOUSING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
-        full_time_jobs_involved: 2,
         friche_accidents_deaths: 1,
         friche_accidents_minor_injuries: 2,
         friche_accidents_severe_injuries: 0,
@@ -87,7 +86,6 @@ describe("SqlSiteImpactsQuery integration", () => {
           FOREST_MIXED: 1200,
           PRAIRIE_GRASS: 12800,
         },
-        fullTimeJobs: 2,
         hasAccidents: true,
         accidentsDeaths: 1,
         accidentsMinorInjuries: 2,
@@ -98,7 +96,7 @@ describe("SqlSiteImpactsQuery integration", () => {
         yearlyCosts: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
       });
     });
-    it("gets site with data needed for impact computation when no full time jobs, no accidents and no contaminated surface", async () => {
+    it("gets site with data needed for impact computation when no accidents and no contaminated surface", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,

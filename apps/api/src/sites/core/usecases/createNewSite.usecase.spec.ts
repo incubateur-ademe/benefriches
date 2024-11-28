@@ -96,7 +96,6 @@ describe("CreateNewSite Use Case", () => {
   it("Can create a new site with complete data", async () => {
     const siteProps = buildMinimalSiteProps({
       description: "Description of site",
-      fullTimeJobsInvolved: 1.3,
       tenant: {
         structureType: "company",
         name: "Tenant SARL",
@@ -148,7 +147,6 @@ describe("CreateNewSite Use Case", () => {
     it("Can create a new friche with complete data", async () => {
       const fricheProps = buildFricheProps({
         description: "Description of site",
-        fullTimeJobsInvolved: 1.3,
         tenant: {
           structureType: "company",
           name: "Tenant SARL",

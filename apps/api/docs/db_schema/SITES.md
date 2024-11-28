@@ -32,10 +32,7 @@ erDiagram
         reinstatement_contract_owner_name character_varying "null"
         reinstatement_contract_owner_structure_type character_varying "null"
         operations_first_year integer "null"
-        conversion_full_time_jobs_involved numeric "null"
         friche_decontaminated_soil_surface_area numeric "null"
-        future_operations_full_time_jobs numeric "null"
-        reinstatement_full_time_jobs_involved numeric "null"
         site_purchase_property_transfer_duties numeric "null"
         site_purchase_selling_price numeric "null"
         site_resale_expected_property_transfer_duties numeric "null"
@@ -86,7 +83,6 @@ erDiagram
         friche_accidents_minor_injuries integer "null"
         friche_accidents_severe_injuries integer "null"
         friche_contaminated_soil_surface_area numeric "null"
-        full_time_jobs_involved numeric "null"
         description text "null"
         created_by uuid "null"
     }

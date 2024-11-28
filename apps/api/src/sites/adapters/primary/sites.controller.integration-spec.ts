@@ -163,7 +163,6 @@ describe("Sites controller", () => {
           accidentsMinorInjuries: 1,
           accidentsSevereInjuries: 2,
           accidentsDeaths: 0,
-          fullTimeJobsInvolved: 1.2,
           hasContaminatedSoils: true,
           contaminatedSoilsSurface: 1400.3,
           address: {
@@ -233,7 +232,6 @@ describe("Sites controller", () => {
         friche_accidents_deaths: 1,
         friche_accidents_minor_injuries: 2,
         friche_accidents_severe_injuries: 3,
-        full_time_jobs_involved: 2.3,
       });
 
       await sqlConnection("addresses").insert({
@@ -298,7 +296,6 @@ describe("Sites controller", () => {
         accidentsDeaths: 1,
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 3,
-        fullTimeJobsInvolved: 2.3,
       });
     });
   });

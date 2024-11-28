@@ -65,7 +65,6 @@ describe("SqlSiteRepository integration", () => {
           friche_activity: null,
           friche_contaminated_soil_surface_area: null,
           friche_has_contaminated_soils: null,
-          full_time_jobs_involved: null,
           is_friche: false,
           name: "My site",
           owner_name: "Le département Paris",
@@ -96,7 +95,6 @@ describe("SqlSiteRepository integration", () => {
           friche_activity: null,
           friche_contaminated_soil_surface_area: null,
           friche_has_contaminated_soils: null,
-          full_time_jobs_involved: null,
           is_friche: false,
           name: "My site",
           owner_name: "Le département Paris",
@@ -112,7 +110,6 @@ describe("SqlSiteRepository integration", () => {
     it("Saves given site with complete data in sites table", async () => {
       const site: NonFricheSite = buildMinimalSite({
         description: "Description of site",
-        fullTimeJobsInvolved: 1.3,
         tenant: {
           structureType: "company",
           name: "Tenant SARL",
@@ -135,7 +132,6 @@ describe("SqlSiteRepository integration", () => {
           friche_activity: null,
           friche_contaminated_soil_surface_area: null,
           friche_has_contaminated_soils: null,
-          full_time_jobs_involved: 1.3,
           is_friche: false,
           name: "My site",
           owner_name: "Le département Paris",
@@ -183,7 +179,6 @@ describe("SqlSiteRepository integration", () => {
           surface_area: 15000.0,
           tenant_name: null,
           tenant_structure_type: null,
-          full_time_jobs_involved: null,
           created_at: now,
           creation_mode: "custom",
         },

@@ -87,13 +87,10 @@ describe("SqlReconversionProjectRepository integration", () => {
             future_operator_structure_type: null,
             future_site_owner_name: null,
             future_site_owner_structure_type: null,
-            future_operations_full_time_jobs: null,
             reinstatement_contract_owner_name: null,
             reinstatement_contract_owner_structure_type: null,
             site_purchase_selling_price: null,
             site_purchase_property_transfer_duties: null,
-            reinstatement_full_time_jobs_involved: null,
-            conversion_full_time_jobs_involved: null,
             reinstatement_schedule_start_date: null,
             reinstatement_schedule_end_date: null,
             operations_first_year: null,
@@ -129,7 +126,6 @@ describe("SqlReconversionProjectRepository integration", () => {
               future_operator_structure_type: reconversionProject.futureOperator?.structureType,
               future_site_owner_name: reconversionProject.futureSiteOwner?.name,
               future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
-              future_operations_full_time_jobs: reconversionProject.operationsFullTimeJobsInvolved,
               friche_decontaminated_soil_surface_area:
                 reconversionProject.decontaminatedSoilSurface,
               reinstatement_contract_owner_name:
@@ -139,10 +135,6 @@ describe("SqlReconversionProjectRepository integration", () => {
               site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
               site_purchase_property_transfer_duties:
                 reconversionProject.sitePurchasePropertyTransferDuties,
-              reinstatement_full_time_jobs_involved:
-                reconversionProject.reinstatementFullTimeJobsInvolved,
-              conversion_full_time_jobs_involved:
-                reconversionProject.conversionFullTimeJobsInvolved,
               reinstatement_schedule_start_date:
                 reconversionProject.reinstatementSchedule?.startDate,
               reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
@@ -399,15 +391,12 @@ describe("SqlReconversionProjectRepository integration", () => {
             future_operator_structure_type: null,
             future_site_owner_name: reconversionProject.futureSiteOwner?.name,
             future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
-            future_operations_full_time_jobs: null,
             friche_decontaminated_soil_surface_area: null,
             reinstatement_contract_owner_name: null,
             reinstatement_contract_owner_structure_type: null,
             site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
             site_purchase_property_transfer_duties:
               reconversionProject.sitePurchasePropertyTransferDuties,
-            reinstatement_full_time_jobs_involved: null,
-            conversion_full_time_jobs_involved: null,
             reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
             reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
             operations_first_year: reconversionProject.operationsFirstYear,

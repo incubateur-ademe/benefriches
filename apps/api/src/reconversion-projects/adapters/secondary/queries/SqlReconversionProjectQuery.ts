@@ -42,9 +42,6 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         "operations_first_year",
         "future_site_owner_name",
         "future_operator_name",
-        "conversion_full_time_jobs_involved",
-        "reinstatement_full_time_jobs_involved",
-        "future_operations_full_time_jobs",
         "reinstatement_contract_owner_name",
         "reinstatement_schedule_start_date",
         "reinstatement_schedule_end_date",
@@ -121,9 +118,6 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           operations_first_year: number | null;
           future_site_owner_name: string | null;
           future_operator_name: string | null;
-          future_operations_full_time_jobs: number | null;
-          conversion_full_time_jobs_involved: number | null;
-          reinstatement_full_time_jobs_involved: number | null;
           reinstatement_contract_owner_name: string | null;
           reinstatement_schedule_start_date: string | null;
           reinstatement_schedule_end_date: string | null;
@@ -205,13 +199,10 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
       yearlyProjectedExpenses: sqlResult.expenses ?? [],
       yearlyProjectedRevenues: sqlResult.revenues ?? [],
       reinstatementContractOwner: sqlResult.reinstatement_contract_owner_name ?? undefined,
-      conversionFullTimeJobs: sqlResult.conversion_full_time_jobs_involved ?? undefined,
-      operationsFullTimeJobs: sqlResult.future_operations_full_time_jobs ?? undefined,
       reinstatementSchedule: mapSqlSchedule(
         sqlResult.reinstatement_schedule_start_date,
         sqlResult.reinstatement_schedule_end_date,
       ),
-      reinstatementFullTimeJobs: sqlResult.reinstatement_full_time_jobs_involved ?? undefined,
       financialAssistanceRevenues: sqlResult.financial_assistance_revenues ?? undefined,
       reinstatementCosts: sqlResult.reinstatement_costs ?? undefined,
       sitePurchaseTotalAmount: sumIfNotNull(

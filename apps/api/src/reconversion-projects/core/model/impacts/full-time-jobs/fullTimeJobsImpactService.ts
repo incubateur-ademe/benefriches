@@ -4,6 +4,7 @@ import {
   computeDefaultPhotovoltaicOperationsFullTimeJobs,
   computeReinstatementFullTimeJobs,
   ReinstatementExpense,
+  roundTo1Digit,
   roundTo2Digits,
 } from "shared";
 
@@ -22,7 +23,9 @@ type SpreadTemporaryFullTimeJobsOverInput = {
 };
 
 const spreadTemporaryFullTimeJobsOver = (input: SpreadTemporaryFullTimeJobsOverInput) => {
-  return (input.temporaryFullTimeJobs * input.currentDurationInYears) / input.targetDurationInYears;
+  return roundTo1Digit(
+    (input.temporaryFullTimeJobs * input.currentDurationInYears) / input.targetDurationInYears,
+  );
 };
 
 type DevelopmentPlan =
@@ -41,20 +44,10 @@ export type FullTimeJobsImpactServiceProps = {
   reinstatementSchedule?: Schedule;
   evaluationPeriodInYears: number;
   reinstatementExpenses: ReinstatementExpense[];
-  reinstatementFullTimeJobs?: number;
-  conversionFullTimeJobs?: number;
-  statuQuoOperationsFullTimeJobs?: number;
-  projectOperationsFullTimeJobs?: number;
 };
 
 export class FullTimeJobsImpactService implements FullTimeJobsImpactServiceInterface {
   private readonly developmentPlan: FullTimeJobsImpactServiceProps["developmentPlan"];
-
-  private readonly statuQuoOperationsFullTimeJobs: number;
-
-  private readonly propsProjectOperationsFullTimeJobs?: number;
-  private readonly propsConversionFullTimeJobs?: number;
-  private readonly propsReinstatementFullTimeJobs?: number;
 
   private readonly conversionSchedule: Schedule | undefined;
   private readonly reinstatementSchedule: Schedule | undefined;
@@ -62,16 +55,12 @@ export class FullTimeJobsImpactService implements FullTimeJobsImpactServiceInter
 
   private readonly reinstatementExpenses: ReinstatementExpense[];
 
-  private readonly defaultStatusQuoOperationsFullTimeJobs = 0;
+  private readonly statuQuoOperationsFullTimeJobs = 0;
 
   constructor({
     developmentPlan,
     conversionSchedule,
     reinstatementSchedule,
-    statuQuoOperationsFullTimeJobs,
-    reinstatementFullTimeJobs,
-    conversionFullTimeJobs,
-    projectOperationsFullTimeJobs,
     reinstatementExpenses,
     evaluationPeriodInYears,
   }: FullTimeJobsImpactServiceProps) {
@@ -82,36 +71,13 @@ export class FullTimeJobsImpactService implements FullTimeJobsImpactServiceInter
     this.evaluationPeriodInYears = evaluationPeriodInYears;
 
     this.reinstatementExpenses = reinstatementExpenses;
-
-    this.statuQuoOperationsFullTimeJobs =
-      statuQuoOperationsFullTimeJobs ?? this.defaultStatusQuoOperationsFullTimeJobs;
-    this.propsProjectOperationsFullTimeJobs = projectOperationsFullTimeJobs;
-    this.propsConversionFullTimeJobs = conversionFullTimeJobs;
-    this.propsReinstatementFullTimeJobs = reinstatementFullTimeJobs;
-  }
-
-  private get projectOperationsFullTimeJobs() {
-    if (this.propsProjectOperationsFullTimeJobs === undefined) {
-      return this.defaultProjectOperationsFullTimeJobs;
-    }
-    return this.propsProjectOperationsFullTimeJobs;
   }
 
   private get reinstatementFullTimeJobs() {
-    if (this.propsReinstatementFullTimeJobs === undefined) {
-      return computeReinstatementFullTimeJobs(this.reinstatementExpenses);
-    }
-    return this.propsReinstatementFullTimeJobs;
+    return computeReinstatementFullTimeJobs(this.reinstatementExpenses);
   }
 
   private get conversionFullTimeJobs() {
-    if (this.propsConversionFullTimeJobs === undefined) {
-      return this.defaultConversionFullTimeJobs;
-    }
-    return this.propsConversionFullTimeJobs;
-  }
-
-  private get defaultConversionFullTimeJobs() {
     switch (this.developmentPlan.type) {
       case "PHOTOVOLTAIC_POWER_PLANT":
         return computeDefaultPhotovoltaicConversionFullTimeJobs(
@@ -122,7 +88,7 @@ export class FullTimeJobsImpactService implements FullTimeJobsImpactServiceInter
     }
   }
 
-  private get defaultProjectOperationsFullTimeJobs() {
+  private get projectOperationsFullTimeJobs() {
     switch (this.developmentPlan.type) {
       case "PHOTOVOLTAIC_POWER_PLANT":
         return computeDefaultPhotovoltaicOperationsFullTimeJobs(

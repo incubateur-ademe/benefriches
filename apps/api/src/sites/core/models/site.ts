@@ -43,7 +43,6 @@ export const nonFricheSiteSchema = z.object({
   }),
   yearlyExpenses: expenseSchema.array(),
   yearlyIncomes: incomeSchema.array(),
-  fullTimeJobsInvolved: z.number().nonnegative().optional(),
   tenant: z
     .object({
       structureType: z.string(),

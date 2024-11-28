@@ -3,13 +3,11 @@ import {
   computeDefaultInstallationCostsFromSiteSurfaceArea,
   computeDefaultInstallationSchedule,
   computeDefaultOperationsFirstYear,
-  computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution,
   computeDefaultReinstatementSchedule,
   computeDefaultSitePurchaseFromSiteSurfaceArea,
   computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces,
   computeProjectReinstatementCosts,
   computePropertyTransferDutiesFromSellingPrice,
-  computeReinstatementFullTimeJobs,
   computeSoilsDistributionFromSpaces,
   formatMunicipalityName,
   ReinstatementExpensePurpose,
@@ -164,21 +162,8 @@ export class UrbanProjectExpressCreationService {
     return computePropertyTransferDutiesFromSellingPrice(this.siteResaleExpectedSellingPrice);
   }
 
-  get reinstatementFullTimeJobsInvolved() {
-    if (this.siteData.isFriche) {
-      return computeReinstatementFullTimeJobs(this.reinstatementCosts);
-    }
-    return undefined;
-  }
-
   get operationsFirstYear() {
     return computeDefaultOperationsFirstYear(this.installationSchedule.endDate);
-  }
-
-  get operationsFullTimeJobsInvolved() {
-    return computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution(
-      this.buildingsFloorAreaDistribution,
-    );
   }
 
   getReconversionProject(): ReconversionProject {
@@ -200,10 +185,8 @@ export class UrbanProjectExpressCreationService {
       siteResaleExpectedPropertyTransferDuties: this.siteResaleExpectedPropertyTransferDuties,
       reinstatementCosts: this.reinstatementCosts,
       reinstatementSchedule: this.reinstatementSchedule,
-      reinstatementFullTimeJobsInvolved: this.reinstatementFullTimeJobsInvolved,
       reinstatementContractOwner: this.reinstatementContractOwner,
       operationsFirstYear: this.operationsFirstYear,
-      operationsFullTimeJobsInvolved: this.operationsFullTimeJobsInvolved,
       name: this.name,
       developmentPlan: {
         developer: this.developer,

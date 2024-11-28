@@ -48,16 +48,12 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           future_operator_structure_type: reconversionProject.futureOperator?.structureType,
           future_site_owner_name: reconversionProject.futureSiteOwner?.name,
           future_site_owner_structure_type: reconversionProject.futureSiteOwner?.structureType,
-          future_operations_full_time_jobs: reconversionProject.operationsFullTimeJobsInvolved,
           reinstatement_contract_owner_name: reconversionProject.reinstatementContractOwner?.name,
           reinstatement_contract_owner_structure_type:
             reconversionProject.reinstatementContractOwner?.structureType,
           site_purchase_selling_price: reconversionProject.sitePurchaseSellingPrice,
           site_purchase_property_transfer_duties:
             reconversionProject.sitePurchasePropertyTransferDuties,
-          reinstatement_full_time_jobs_involved:
-            reconversionProject.reinstatementFullTimeJobsInvolved,
-          conversion_full_time_jobs_involved: reconversionProject.conversionFullTimeJobsInvolved,
           reinstatement_schedule_start_date: reconversionProject.reinstatementSchedule?.startDate,
           reinstatement_schedule_end_date: reconversionProject.reinstatementSchedule?.endDate,
           operations_first_year: reconversionProject.operationsFirstYear,

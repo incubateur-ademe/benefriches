@@ -90,13 +90,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         MINERAL_SOIL: 20000,
         IMPERMEABLE_SOILS: 30000,
       },
-      operationsFullTimeJobs: 0.5,
-      conversionFullTimeJobs: 20,
       conversionSchedule: {
         startDate: new Date("2025-07-01"),
         endDate: new Date("2026-07-01"),
       },
-      reinstatementFullTimeJobs: 10,
       reinstatementSchedule: {
         startDate: new Date("2025-01-01"),
         endDate: new Date("2026-01-01"),
@@ -147,7 +144,6 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       ownerName: "Current owner",
       ownerStructureType: "company",
       tenantName: "Current tenant",
-      fullTimeJobs: 1,
       hasAccidents: true,
       accidentsDeaths: 0,
       accidentsMinorInjuries: 1,
@@ -346,15 +342,15 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             },
           },
           fullTimeJobs: {
-            current: 1,
-            forecast: 3.5,
+            current: 0,
+            forecast: 0.4,
             conversion: {
               current: 0,
-              forecast: 3,
+              forecast: 0.3,
             },
             operations: {
-              current: 1,
-              forecast: 0.5,
+              current: 0,
+              forecast: 0.1,
             },
           },
           accidents: {

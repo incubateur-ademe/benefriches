@@ -62,50 +62,6 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             value={projectData.reinstatementContractOwner}
           />
         )}
-        {projectData.reinstatementFullTimeJobs ||
-        projectData.conversionFullTimeJobs ||
-        projectData.operationsFullTimeJobs ? (
-          <>
-            <DataLine
-              noBorder
-              label={<strong>Emplois équivalent temps plein mobilisés</strong>}
-              value={formatNumberFr(
-                (projectData.reinstatementFullTimeJobs ?? 0) +
-                  (projectData.conversionFullTimeJobs ?? 0) +
-                  (projectData.operationsFullTimeJobs ?? 0),
-              )}
-            />
-            {projectData.reinstatementFullTimeJobs ? (
-              <DataLine
-                label="Remise en état de la friche"
-                value={formatNumberFr(projectData.reinstatementFullTimeJobs)}
-                isDetails
-              />
-            ) : null}
-            {projectData.conversionFullTimeJobs ? (
-              <DataLine
-                label="Installation des panneaux photovoltaïques"
-                value={
-                  projectData.conversionFullTimeJobs
-                    ? formatNumberFr(projectData.conversionFullTimeJobs)
-                    : "Non renseigné"
-                }
-                isDetails
-              />
-            ) : null}
-            {projectData.operationsFullTimeJobs ? (
-              <DataLine
-                label="Exploitation du site reconverti"
-                value={
-                  projectData.operationsFullTimeJobs
-                    ? formatNumberFr(projectData.operationsFullTimeJobs)
-                    : "Non renseigné"
-                }
-                isDetails
-              />
-            ) : null}
-          </>
-        ) : undefined}
       </Section>
       <Section title="💰 Dépenses et recettes du projet">
         {projectData.sitePurchaseTotalAmount ? (

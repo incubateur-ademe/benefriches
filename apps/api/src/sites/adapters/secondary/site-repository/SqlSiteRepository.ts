@@ -28,7 +28,6 @@ export class SqlSiteRepository implements SitesRepository {
           description: site.description,
           surface_area: site.surfaceArea,
           is_friche: site.isFriche,
-          full_time_jobs_involved: site.fullTimeJobsInvolved,
           owner_name: site.owner.name,
           owner_structure_type: site.owner.structureType,
           tenant_name: site.tenant?.name,

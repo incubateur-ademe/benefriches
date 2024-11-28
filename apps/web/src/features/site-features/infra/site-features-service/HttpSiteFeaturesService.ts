@@ -23,7 +23,6 @@ type SiteFromApi = {
   address: {
     value: string;
   };
-  fullTimeJobsInvolved?: number;
   accidentsMinorInjuries?: number;
   accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
@@ -50,7 +49,6 @@ export class HttpSiteFeaturesService implements SiteFeaturesGateway {
       address: jsonResponse.address.value,
       ownerName: jsonResponse.owner.name || "",
       tenantName: jsonResponse.tenant?.name || "",
-      fullTimeJobsInvolved: jsonResponse.fullTimeJobsInvolved,
       accidents: {
         minorInjuries: jsonResponse.accidentsMinorInjuries || 0,
         severyInjuries: jsonResponse.accidentsSevereInjuries || 0,

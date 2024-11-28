@@ -116,9 +116,6 @@ export type ProjectFeatures = {
   futureOwner?: string;
   futureOperator?: string;
   reinstatementContractOwner?: string;
-  reinstatementFullTimeJobs?: number;
-  conversionFullTimeJobs?: number;
-  operationsFullTimeJobs?: number;
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   reinstatementCosts?: ReinstatementExpense[];
   yearlyProjectedExpenses: RecurringExpense[];
