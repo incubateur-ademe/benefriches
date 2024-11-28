@@ -8,6 +8,7 @@ import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/Toolt
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 import { UserStructure } from "@/users/domain/user";
 
@@ -55,7 +56,25 @@ function SiteOwnerForm({
   const shouldAskForLocalAuthorityType = ownerTypeSelected === "local_or_regional_authority";
 
   return (
-    <WizardFormLayout title={`Qui est le propriétaire ${isFriche ? "de la friche" : "du site"} ?`}>
+    <WizardFormLayout
+      title={`Qui est le propriétaire ${isFriche ? "de la friche" : "du site"} ?`}
+      instructions={
+        <FormInfo>
+          <p>
+            Il n’est pas rare {isFriche ? "qu'une friche" : "qu'un site"} ait plusieurs
+            propriétaires (par exemple si elle est composée de plusieurs parcelles cadastrales ou
+            alors si le bien immobilier est en indivision).
+          </p>
+
+          <p>
+            Dans ce cas, il n’est pas attendu que la totalité des propriétaires soit renseigné,
+            l’information utile pour Bénéfriches étant d’en désigner un (par exemple celui ayant la
+            propriété de la plus grande parcelle), cette donnée étant utilisée pour affecter la
+            partie des impacts correspondant à cette catégorie d’acteur.
+          </p>
+        </FormInfo>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={formState.errors.ownerType ? "error" : "default"}
