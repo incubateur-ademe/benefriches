@@ -1,32 +1,21 @@
-import { useMemo } from "react";
-import { SoilType, typedObjectEntries } from "shared";
+import { NewSoilsDistribution } from "shared";
 
 import { revertSoilsDistributionStep } from "@/features/create-site/application/createSite.actions";
 import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
+import { selectSiteSoilsDistribution } from "@/features/create-site/application/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSoilsDistributionBySquareMetersForm, { type FormValues } from "./BySquareMeters";
 
-const getFormatFormValuesFunction = (surfaceArea?: number) => (formData: FormValues) => {
-  if (!surfaceArea) {
-    return {};
-  }
-  const entries = typedObjectEntries(formData);
-  const formattedEntries = entries.filter(([, value]) => value && value > 0);
-  return Object.fromEntries(formattedEntries) as Record<SoilType, number>;
-};
-
 function SiteSoilsDistributionBySquareMetersFormContainer() {
   const dispatch = useAppDispatch();
   const siteData = useAppSelector((state) => state.siteCreation.siteData);
-
-  const formatFormValues = useMemo(
-    () => getFormatFormValuesFunction(siteData.surfaceArea),
-    [siteData.surfaceArea],
-  );
+  const soilsDistribution = useAppSelector(selectSiteSoilsDistribution);
 
   const onSubmit = (formData: FormValues) => {
-    dispatch(completeSoilsDistribution({ distribution: formatFormValues(formData) }));
+    dispatch(
+      completeSoilsDistribution({ distribution: NewSoilsDistribution.fromJSON(formData).toJSON() }),
+    );
   };
 
   const onBack = () => {
@@ -35,6 +24,7 @@ function SiteSoilsDistributionBySquareMetersFormContainer() {
 
   return (
     <SiteSoilsDistributionBySquareMetersForm
+      initialValues={soilsDistribution}
       onSubmit={onSubmit}
       onBack={onBack}
       soils={siteData.soils ?? []}

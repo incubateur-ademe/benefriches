@@ -16,6 +16,7 @@ import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/f
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues: Partial<FormValues>;
   soils: SoilType[];
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -23,8 +24,10 @@ type Props = {
 
 export type FormValues = Record<SoilType, number>;
 
-function SiteSoilsDistributionByPercentageForm({ soils, onSubmit, onBack }: Props) {
-  const { register, handleSubmit, watch } = useForm<FormValues>();
+function SiteSoilsDistributionByPercentageForm({ initialValues, soils, onSubmit, onBack }: Props) {
+  const { register, handleSubmit, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
   const _onSubmit = handleSubmit(onSubmit);
 
   const soilsValues = watch();

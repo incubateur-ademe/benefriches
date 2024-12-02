@@ -1,8 +1,9 @@
 import { useMemo } from "react";
-import { SoilType } from "shared";
+import { NewSoilsDistribution, SoilType } from "shared";
 
 import { revertSoilsDistributionStep } from "@/features/create-site/application/createSite.actions";
 import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
+import { selectSiteSoilsDistribution } from "@/features/create-site/application/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSoilsDistributionByPercentageForm, { type FormValues } from "./ByPercentageForm";
@@ -25,6 +26,10 @@ const getFormatFormValuesFunction = (surfaceArea?: number) => (formData: FormVal
 function SiteSoilsDistributionByPercentageContainer() {
   const dispatch = useAppDispatch();
   const siteData = useAppSelector((state) => state.siteCreation.siteData);
+  const siteSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
+
+  const initialValues =
+    NewSoilsDistribution.fromJSON(siteSoilsDistribution).getDistributionInPercentage();
 
   const formatFormValues = useMemo(
     () => getFormatFormValuesFunction(siteData.surfaceArea),
@@ -41,6 +46,7 @@ function SiteSoilsDistributionByPercentageContainer() {
 
   return (
     <SiteSoilsDistributionByPercentageForm
+      initialValues={initialValues}
       onSubmit={onSubmit}
       onBack={onBack}
       soils={siteData.soils ?? []}

@@ -17,6 +17,7 @@ import SurfaceAreaControlInput from "@/shared/views/components/form/SurfaceAreaC
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues: Partial<FormValues>;
   totalSurfaceArea: number;
   soils: SoilType[];
   onSubmit: (data: FormValues) => void;
@@ -26,12 +27,15 @@ type Props = {
 export type FormValues = Record<SoilType, number>;
 
 function SiteSoilsDistributionBySquareMetersForm({
+  initialValues,
   soils,
   totalSurfaceArea,
   onSubmit,
   onBack,
 }: Props) {
-  const { register, handleSubmit, watch } = useForm<FormValues>();
+  const { register, handleSubmit, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
   const _onSubmit = handleSubmit(onSubmit);
 
   const soilsValues = watch();

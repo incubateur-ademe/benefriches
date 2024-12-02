@@ -10,6 +10,14 @@ export class NewSoilsDistribution {
     this.surfaceBySoilType = new Map();
   }
 
+  static fromJSON(jsonSoilsDistribution: SoilsDistribution): NewSoilsDistribution {
+    const soilsDistribution = new NewSoilsDistribution();
+    typedObjectEntries(jsonSoilsDistribution).forEach(([soilType, surfaceArea]) => {
+      soilsDistribution.addSurface(soilType, surfaceArea ?? 0);
+    });
+    return soilsDistribution;
+  }
+
   addSurface(soilType: SoilType, surface: number) {
     if (surface <= 0) return;
 
@@ -22,6 +30,34 @@ export class NewSoilsDistribution {
 
   getTotalSurfaceArea(): number {
     return Array.from(this.surfaceBySoilType.values()).reduce((sum, surface) => sum + surface, 0);
+  }
+
+  getDistributionInPercentage(): SoilsDistribution {
+    const totalSurface = this.getTotalSurfaceArea();
+    const rawPercentageEntries: [soilType: SoilType, percentage: number][] = [];
+    let totalRoundedPercentage = 0;
+
+    // compute rounded percentages to 1 digit
+    this.surfaceBySoilType.forEach((surfaceArea, soilType) => {
+      const percentage = (surfaceArea / totalSurface) * 100;
+      const roundedPercentage = Math.floor(percentage * 10) / 10; // round to 1 digit
+      totalRoundedPercentage += roundedPercentage;
+      rawPercentageEntries.push([soilType, roundedPercentage]);
+    });
+
+    // compte adjustment to ensure total equals 100
+    const neededAdjustment = 100 - totalRoundedPercentage;
+    if (neededAdjustment > 0.1) {
+      const lastEntry = rawPercentageEntries.pop();
+      if (!lastEntry) return {};
+      const roundedAdjustment = Math.floor(neededAdjustment * 10) / 10;
+      rawPercentageEntries.push([lastEntry[0], lastEntry[1] + roundedAdjustment]);
+    }
+
+    return rawPercentageEntries.reduce((acc, cur) => {
+      const [soilType, surfaceArea] = cur;
+      return { ...acc, [soilType]: surfaceArea };
+    }, {});
   }
 
   toJSON(): SoilsDistribution {
