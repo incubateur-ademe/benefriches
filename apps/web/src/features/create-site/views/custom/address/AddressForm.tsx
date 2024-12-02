@@ -9,6 +9,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 import { Address } from "../../../domain/siteFoncier.types";
 
 type Props = {
+  initialValues: FormValues;
   onSubmit: (address: Address) => void;
   onBack: () => void;
   isFriche: boolean;
@@ -19,8 +20,10 @@ type FormValues = {
   searchText: string;
 };
 
-function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
-  const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>();
+function SiteAddressForm({ initialValues, onSubmit, isFriche, onBack }: Props) {
+  const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const error = formState.errors.selectedAddress;
 

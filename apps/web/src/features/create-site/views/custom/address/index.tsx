@@ -1,28 +1,36 @@
-import { AppDispatch } from "@/app/application/store";
+import {
+  selectIsFriche,
+  selectSiteAddress,
+} from "@/features/create-site/application/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { revertAddressStep } from "../../../application/createSite.actions";
-import { completeAddressStep, SiteCreationState } from "../../../application/createSite.reducer";
+import { completeAddressStep } from "../../../application/createSite.reducer";
 import { Address } from "../../../domain/siteFoncier.types";
 import AddressForm from "./AddressForm";
 
-const mapProps = (dispatch: AppDispatch, creationState: SiteCreationState) => {
-  return {
-    isFriche: creationState.siteData.isFriche!,
-    onSubmit: (address: Address) => {
-      dispatch(completeAddressStep({ address }));
-    },
-    onBack: () => {
-      dispatch(revertAddressStep());
-    },
-  };
+const mapInitialValues = (address: Address | undefined) => {
+  if (!address) return { selectedAddress: undefined, searchText: "" };
+  return { selectedAddress: address, searchText: address.value };
 };
 
 function AddressFormContainer() {
   const dispatch = useAppDispatch();
-  const creationState = useAppSelector((state) => state.siteCreation);
+  const isFriche = useAppSelector(selectIsFriche);
+  const address = useAppSelector(selectSiteAddress);
 
-  return <AddressForm {...mapProps(dispatch, creationState)} />;
+  return (
+    <AddressForm
+      initialValues={mapInitialValues(address)}
+      isFriche={!!isFriche}
+      onSubmit={(address: Address) => {
+        dispatch(completeAddressStep({ address }));
+      }}
+      onBack={() => {
+        dispatch(revertAddressStep());
+      }}
+    />
+  );
 }
 
 export default AddressFormContainer;
