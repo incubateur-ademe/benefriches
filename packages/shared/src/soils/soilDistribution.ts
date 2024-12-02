@@ -69,10 +69,6 @@ export class NewSoilsDistribution {
   }
 }
 
-export const getTotalSurfaceArea = (soilsDistribution: SoilsDistribution): number => {
-  return typedObjectEntries(soilsDistribution).reduce((sum, [, area]) => sum + (area ?? 0), 0);
-};
-
 export const sumSoilsSurfaceAreasWhere = (
   soilsDistribution: SoilsDistribution,
   cb: (s: SoilType) => boolean,

@@ -1,4 +1,4 @@
-import { getTotalSurfaceArea, typedObjectEntries } from "shared";
+import { NewSoilsDistribution, typedObjectEntries } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
@@ -17,7 +17,13 @@ export default function SoilsDistribution({ soilsDistribution }: Props) {
       <DataLine
         noBorder
         label={<strong>Superficie totale</strong>}
-        value={<strong>{formatSurfaceArea(getTotalSurfaceArea(soilsDistribution))}</strong>}
+        value={
+          <strong>
+            {formatSurfaceArea(
+              NewSoilsDistribution.fromJSON(soilsDistribution).getTotalSurfaceArea(),
+            )}
+          </strong>
+        }
       />
       <div className="tw-grid tw-grid-cols-12">
         <div
