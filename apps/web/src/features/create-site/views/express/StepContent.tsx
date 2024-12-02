@@ -3,7 +3,7 @@ import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { selectCurrentStep } from "../../application/createSite.reducer";
 import AddressForm from "./address";
 import SiteCreationResult from "./result";
-import SiteTypeForm from "./site-type";
+import IsFricheForm from "./site-type";
 import SiteSurfaceAreaForm from "./surface-area";
 
 function SiteCreationExpressStepContent() {
@@ -11,7 +11,7 @@ function SiteCreationExpressStepContent() {
 
   switch (currentStep) {
     case "SITE_NATURE":
-      return <SiteTypeForm />;
+      return <IsFricheForm />;
     case "ADDRESS":
       return <AddressForm />;
     case "SURFACE_AREA":

@@ -1,13 +1,22 @@
 import { revertSiteTypeStep } from "@/features/create-site/application/createSite.actions";
 import { siteNatureStepCompleted } from "@/features/create-site/application/createSite.reducer";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { selectIsFriche } from "@/features/create-site/application/createSite.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteTypeForm from "./SiteTypeForm";
+import IsFricheForm from "./IsFricheForm";
 
-function SiteTypeFormContainer() {
+const mapIsFricheValue = (isFriche: boolean | undefined) => {
+  if (isFriche === undefined) return undefined;
+  return isFriche ? "yes" : "no";
+};
+
+function IsFricheFormContainer() {
   const dispatch = useAppDispatch();
+  const isFriche = useAppSelector(selectIsFriche);
+
   return (
-    <SiteTypeForm
+    <IsFricheForm
+      initialValues={{ isFriche: mapIsFricheValue(isFriche) }}
       onSubmit={(data) => {
         dispatch(siteNatureStepCompleted({ isFriche: data.isFriche === "yes" }));
       }}
@@ -16,4 +25,4 @@ function SiteTypeFormContainer() {
   );
 }
 
-export default SiteTypeFormContainer;
+export default IsFricheFormContainer;

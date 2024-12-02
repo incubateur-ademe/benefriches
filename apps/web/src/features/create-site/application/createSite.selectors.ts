@@ -16,3 +16,5 @@ export const selectSiteSoilsDistribution = createSelector(
   selectSelf,
   (state): SoilsDistribution => state.siteData.soilsDistribution ?? {},
 );
+
+export const selectIsFriche = createSelector(selectSelf, (state) => state.siteData.isFriche);

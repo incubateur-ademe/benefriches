@@ -11,6 +11,7 @@ type Props = {
   onSubmit: (address: MunicipalityAddress) => void;
   onBack: () => void;
   isFriche: boolean;
+  initialValues: Partial<FormValues>;
 };
 
 type FormValues = {
@@ -18,8 +19,10 @@ type FormValues = {
   searchText: string;
 };
 
-function SiteAddressForm({ onSubmit, isFriche, onBack }: Props) {
-  const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>();
+function SiteAddressForm({ initialValues, onSubmit, isFriche, onBack }: Props) {
+  const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const error = formState.errors.selectedAddress;
 

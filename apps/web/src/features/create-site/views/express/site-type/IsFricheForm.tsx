@@ -8,6 +8,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  initialValues: Partial<FormValues>;
 };
 
 type FormValues = {
@@ -16,8 +17,10 @@ type FormValues = {
 
 const requiredMessage = "Ce champ est nécessaire pour déterminer les questions suivantes";
 
-function SiteTypeForm({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+function IsFricheForm({ initialValues, onSubmit, onBack }: Props) {
+  const { register, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
   const error = formState.errors.isFriche;
 
   const options = [
@@ -62,4 +65,4 @@ function SiteTypeForm({ onSubmit, onBack }: Props) {
   );
 }
 
-export default SiteTypeForm;
+export default IsFricheForm;

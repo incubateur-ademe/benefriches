@@ -17,7 +17,7 @@ import SiteOperatorForm from "./site-management/site-operator";
 import SiteTenantForm from "./site-management/tenant";
 import SiteYearlyExpensesForm from "./site-management/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/yearly-income";
-import SiteTypeForm from "./site-type";
+import IsFricheForm from "./site-type";
 import SoilContaminationForm from "./soil-contamination";
 import SoilContaminationIntroduction from "./soil-contamination/introduction";
 import SiteSoilsCarbonStorage from "./soils/soils-carbon-storage";
@@ -34,7 +34,7 @@ function SiteCreationCustomStepContent() {
 
   switch (currentStep) {
     case "SITE_NATURE":
-      return <SiteTypeForm />;
+      return <IsFricheForm />;
     case "FRICHE_ACTIVITY":
       return <FricheActivityForm />;
     case "ADDRESS":
