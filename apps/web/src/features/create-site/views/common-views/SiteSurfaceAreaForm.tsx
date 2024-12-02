@@ -11,6 +11,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues: Partial<FormValues>;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -19,8 +20,8 @@ type FormValues = {
   surfaceArea: number;
 };
 
-function SurfaceAreaForm({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, watch } = useForm<FormValues>();
+function SiteSurfaceAreaForm({ initialValues, onSubmit, onBack }: Props) {
+  const { register, handleSubmit, watch } = useForm<FormValues>({ defaultValues: initialValues });
 
   const surface = watch("surfaceArea");
 
@@ -36,20 +37,21 @@ function SurfaceAreaForm({ onSubmit, onBack }: Props) {
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
-          nativeInputProps={register("surfaceArea", requiredNumericFieldRegisterOptions)}
-          label={<RequiredLabel label="Superficie totale" />}
           addonText={SQUARE_METERS_HTML_SYMBOL}
+          label={<RequiredLabel label="Superficie totale" />}
+          nativeInputProps={register("surfaceArea", requiredNumericFieldRegisterOptions)}
         />
+
         {!isNaN(surface) && (
           <p>
             💡 Soit <strong>{formatNumberFr(convertSquareMetersToHectares(surface))}</strong> ha.
           </p>
         )}
 
-        <BackNextButtonsGroup onBack={onBack} disabled={!surface} nextLabel="Valider" />
+        <BackNextButtonsGroup onBack={onBack} disabled={!surface} />
       </form>
     </WizardFormLayout>
   );
 }
 
-export default SurfaceAreaForm;
+export default SiteSurfaceAreaForm;

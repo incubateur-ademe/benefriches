@@ -1,29 +1,29 @@
-import { AppDispatch } from "@/app/application/store";
 import {
   revertSurfaceAreaStep,
   saveExpressSiteAction,
 } from "@/features/create-site/application/createSite.actions";
 import { completeSiteSurfaceArea } from "@/features/create-site/application/createSite.reducer";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { selectSiteSurfaceArea } from "@/features/create-site/application/createSite.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteSurfaceAreaForm from "./SiteSurfaceAreaForm";
-
-const mapProps = (dispatch: AppDispatch) => {
-  return {
-    onSubmit: (formData: { surfaceArea: number }) => {
-      dispatch(completeSiteSurfaceArea({ surfaceArea: formData.surfaceArea }));
-      void dispatch(saveExpressSiteAction());
-    },
-    onBack: () => {
-      dispatch(revertSurfaceAreaStep());
-    },
-  };
-};
+import SiteSurfaceAreaForm from "../../common-views/SiteSurfaceAreaForm";
 
 function SiteSurfaceAreaFormContainer() {
   const dispatch = useAppDispatch();
+  const siteSurfaceArea = useAppSelector(selectSiteSurfaceArea);
 
-  return <SiteSurfaceAreaForm {...mapProps(dispatch)} />;
+  return (
+    <SiteSurfaceAreaForm
+      initialValues={{ surfaceArea: siteSurfaceArea }}
+      onSubmit={(formData: { surfaceArea: number }) => {
+        dispatch(completeSiteSurfaceArea({ surfaceArea: formData.surfaceArea }));
+        void dispatch(saveExpressSiteAction());
+      }}
+      onBack={() => {
+        dispatch(revertSurfaceAreaStep());
+      }}
+    />
+  );
 }
 
 export default SiteSurfaceAreaFormContainer;

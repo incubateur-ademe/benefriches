@@ -1,25 +1,25 @@
-import { AppDispatch } from "@/app/application/store";
 import { completeFricheActivity } from "@/features/create-site/application/createSite.reducer";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { selectFricheActivity } from "@/features/create-site/application/createSite.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { revertFricheActivityStep } from "../../../application/createSite.actions";
 import FricheActivityForm, { FormValues } from "./FricheActivityForm";
 
-const mapProps = (dispatch: AppDispatch) => {
-  return {
-    onSubmit: (formData: FormValues) => {
-      dispatch(completeFricheActivity(formData.activity));
-    },
-    onBack: () => {
-      dispatch(revertFricheActivityStep());
-    },
-  };
-};
-
 function FricheActivityFormContainer() {
   const dispatch = useAppDispatch();
+  const fricheActivity = useAppSelector(selectFricheActivity);
 
-  return <FricheActivityForm {...mapProps(dispatch)} />;
+  return (
+    <FricheActivityForm
+      initialValues={{ activity: fricheActivity }}
+      onSubmit={(formData: FormValues) => {
+        dispatch(completeFricheActivity(formData.activity));
+      }}
+      onBack={() => {
+        dispatch(revertFricheActivityStep());
+      }}
+    />
+  );
 }
 
 export default FricheActivityFormContainer;

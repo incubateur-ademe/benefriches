@@ -53,6 +53,7 @@ export type FormValues = {
 };
 
 type Props = {
+  initialValues: Partial<FormValues>;
   onSubmit: (formData: FormValues) => void;
   onBack: () => void;
 };
@@ -60,12 +61,12 @@ type Props = {
 const requiredMessage =
   "Si vous ne savez pas qualifier l'activité de la friche, sélectionner « Autre / Ne sait pas ». Vous pourrez revenir plus tard préciser votre réponse.";
 
-function FricheActivityForm({ onSubmit, onBack }: Props) {
+function FricheActivityForm({ initialValues, onSubmit, onBack }: Props) {
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<FormValues>();
+  } = useForm<FormValues>({ defaultValues: initialValues });
 
   const error = errors.activity;
 

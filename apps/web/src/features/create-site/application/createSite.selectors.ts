@@ -18,3 +18,13 @@ export const selectSiteSoilsDistribution = createSelector(
 );
 
 export const selectIsFriche = createSelector(selectSelf, (state) => state.siteData.isFriche);
+
+export const selectFricheActivity = createSelector(
+  selectSelf,
+  (state) => state.siteData.fricheActivity,
+);
+
+export const selectSiteSurfaceArea = createSelector(
+  selectSelf,
+  (state) => state.siteData.surfaceArea,
+);
