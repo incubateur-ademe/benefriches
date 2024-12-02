@@ -54,7 +54,7 @@ export default function MilestonesSection() {
         />
         <MilestoneItem
           title="🏘 Été 2024"
-          text="Mise en ligne de la fonctionnalité 'Comparaison des impacts' et du cas d'usage Quartier."
+          text="Mise en ligne de la fonctionnalité 'Comparaison des impacts' et du cas d'usage 'Projet urbain'."
         />
         <MilestoneItem
           title="🌾 Automne-hiver 2024"

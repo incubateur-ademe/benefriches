@@ -5,15 +5,15 @@ import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversion
 export const getLabelForDevelopmentPlanCategory = (value: DevelopmentPlanCategory): string => {
   switch (value) {
     case "URBAN_PROJECT":
-      return "Quartier";
+      return "Projet urbain";
     case "NATURAL_URBAN_SPACES":
       return "Espace de nature en ville";
     case "URBAN_AGRICULTURE":
       return "Ferme urbaine";
     case "RENEWABLE_ENERGY":
-      return "Centrale d'énergies renouvelables";
+      return "Centrale d'énergie renouvelable";
     case "COMMERCIAL_ACTIVITY_AREA":
-      return "Zone d'activité économique";
+      return "Zone d'activités économiques";
   }
 };
 
@@ -22,11 +22,11 @@ export const getDescriptionForDevelopmentPlanCategory = (
 ): string => {
   switch (value) {
     case "URBAN_PROJECT":
-      return "Logements, bureaux, commerces, espaces verts, petite centrale EnR…";
+      return "Logements, lieux d'activité économique, équipements publics, espaces verts...";
     case "NATURAL_URBAN_SPACES":
-      return "Parc ou forêt urbaine";
+      return "Parc ou espaces verts urbains, renaturations...";
     case "URBAN_AGRICULTURE":
-      return "Production de fruits et légumes";
+      return "Cultures de fruits et légumes, horticulture...";
     case "RENEWABLE_ENERGY":
       return "Centrale photovoltaïque, agrivoltaïque, géothermique ou biomasse";
     case "COMMERCIAL_ACTIVITY_AREA":

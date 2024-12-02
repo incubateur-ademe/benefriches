@@ -323,7 +323,7 @@ describe("SqlReconversionProjectRepository integration", () => {
           id: uuid(),
           createdBy: uuid(),
           creationMode: "express",
-          name: "Quartier mixte",
+          name: "Projet urbain",
           developmentPlan: {
             type: "URBAN_PROJECT",
             developer: { name: "Montrouge", structureType: "municipality" },

@@ -166,7 +166,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🏡 Valeur patrimoniale des bâtiments alentour";
     case "local_transfer_duties_increase":
       return "🏛 Droits de mutation sur les ventes immobilières alentour";
-    /// Quartier
+    /// Projet urbain
     case "avoided_property_damages_expenses":
       return "🚙 Dépenses d’entretien et réparation évitées";
     case "avoided_car_related_expenses":
@@ -174,7 +174,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     case "avoided_air_conditioning_expenses":
       return "❄️ Dépenses de climatisation évitées";
     // Sociaux monétarisés
-    /// Quartier
+    /// Projet urbain
     case "travel_time_saved":
       return "⏱ Temps de déplacement économisé";
     case "avoided_traffic_accidents":
