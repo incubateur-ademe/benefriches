@@ -1,4 +1,5 @@
 import { lastValueFrom } from "rxjs";
+import { roundTo2Digits } from "shared";
 
 import { UseCase } from "../../../shared-kernel/usecase";
 import { CityDataProvider } from "../gateways/CityDataProvider";
@@ -25,7 +26,7 @@ export class GetCityPopulationDensityUseCase implements UseCase<Request, Respons
     );
 
     const density = city.population / city.area;
-    const rounded = Math.round(density * 100) / 100;
+    const rounded = roundTo2Digits(density);
 
     return {
       value: rounded,

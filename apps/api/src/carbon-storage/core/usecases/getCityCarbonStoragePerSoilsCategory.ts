@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { roundTo2Digits, SoilType } from "shared";
 
 import { UseCase } from "../../../shared-kernel/usecase";
 import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
@@ -55,7 +55,7 @@ export class GetCityCarbonStoragePerSoilsCategoryUseCase implements UseCase<Requ
     );
 
     return {
-      totalCarbonStorage: Math.round(totalCarbonStorage * 100) / 100,
+      totalCarbonStorage: roundTo2Digits(totalCarbonStorage),
       soilsCarbonStorage,
     };
   }

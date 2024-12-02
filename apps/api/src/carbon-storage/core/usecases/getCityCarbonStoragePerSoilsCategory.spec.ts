@@ -1,3 +1,5 @@
+import { roundTo2Digits } from "shared";
+
 import { LocalCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/LocalCarbonStorageQuery.mock";
 
 import { CarbonStorageQuery } from "../gateways/CarbonStorageQuery";
@@ -71,7 +73,7 @@ describe("GetCityCarbonStocksPerSoilsCategoryUseCase", () => {
       biomassArtificialNonForest +
       litterForest;
 
-    expect(result.totalCarbonStorage).toEqual(Math.round(total * 100) / 100);
+    expect(result.totalCarbonStorage).toEqual(roundTo2Digits(total));
   });
 
   test("it should return the right object format with forest value", async () => {

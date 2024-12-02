@@ -56,13 +56,13 @@ describe("SoilsDistribution", () => {
         BUILDINGS: 33.4,
       });
     });
-    it("should return soils distribution in percentage with total not equal to 100 when lots of digits", () => {
+    it("should return soils distribution in percentage when lots of digits", () => {
       const decimalSoilsDistribution = new NewSoilsDistribution();
       decimalSoilsDistribution.addSurface("ARTIFICIAL_GRASS_OR_BUSHES_FILLED", 1000.3);
       decimalSoilsDistribution.addSurface("BUILDINGS", 1000.000004);
       expect(decimalSoilsDistribution.getDistributionInPercentage()).toEqual({
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 50,
-        BUILDINGS: 49.9,
+        BUILDINGS: 50,
       });
     });
   });

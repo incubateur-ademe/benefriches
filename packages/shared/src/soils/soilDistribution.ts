@@ -1,5 +1,6 @@
 import { isImpermeableSoil, SoilType } from ".";
 import { typedObjectEntries } from "../object-entries";
+import { roundTo1Digit } from "../services";
 
 export type SoilsDistribution = Partial<Record<SoilType, number>>;
 
@@ -40,7 +41,7 @@ export class NewSoilsDistribution {
     // compute rounded percentages to 1 digit
     this.surfaceBySoilType.forEach((surfaceArea, soilType) => {
       const percentage = (surfaceArea / totalSurface) * 100;
-      const roundedPercentage = Math.floor(percentage * 10) / 10; // round to 1 digit
+      const roundedPercentage = roundTo1Digit(percentage);
       totalRoundedPercentage += roundedPercentage;
       rawPercentageEntries.push([soilType, roundedPercentage]);
     });
@@ -50,8 +51,8 @@ export class NewSoilsDistribution {
     if (neededAdjustment > 0.1) {
       const lastEntry = rawPercentageEntries.pop();
       if (!lastEntry) return {};
-      const roundedAdjustment = Math.floor(neededAdjustment * 10) / 10;
-      rawPercentageEntries.push([lastEntry[0], lastEntry[1] + roundedAdjustment]);
+      const roundedNewValue = roundTo1Digit(lastEntry[1] + neededAdjustment);
+      rawPercentageEntries.push([lastEntry[0], roundedNewValue]);
     }
 
     return rawPercentageEntries.reduce((acc, cur) => {
