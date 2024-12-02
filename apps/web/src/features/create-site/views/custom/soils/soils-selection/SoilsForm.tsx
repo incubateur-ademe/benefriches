@@ -18,6 +18,7 @@ export type FormValues = {
 };
 
 type Props = {
+  initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   isFriche: boolean;
@@ -100,11 +101,9 @@ const SoilTypeTile = ({ soilType, isSelected, onSelect }: SoilTypeTileProps) => 
   );
 };
 
-function SiteSoilsForm({ onSubmit, onBack, isFriche }: Props) {
+function SiteSoilsForm({ initialValues, onSubmit, onBack, isFriche }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: {
-      soils: [],
-    },
+    defaultValues: initialValues,
   });
 
   const validationError = formState.errors.soils;

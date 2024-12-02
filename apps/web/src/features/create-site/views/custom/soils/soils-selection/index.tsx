@@ -1,27 +1,32 @@
-import { AppDispatch, RootState } from "@/app/application/store";
 import { revertSoilsSelectionStep } from "@/features/create-site/application/createSite.actions";
+import {
+  selectIsFriche,
+  selectSiteSoils,
+} from "@/features/create-site/application/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { completeSoils } from "../../../../application/createSite.reducer";
 import SiteSoilsForm, { FormValues } from "./SoilsForm";
 
-const mapProps = (dispatch: AppDispatch, siteCreationState: RootState["siteCreation"]) => {
-  return {
-    isFriche: !!siteCreationState.siteData.isFriche,
-    onSubmit: (formData: FormValues) => {
-      dispatch(completeSoils({ soils: formData.soils }));
-    },
-    onBack: () => {
-      dispatch(revertSoilsSelectionStep());
-    },
-  };
-};
-
 const SiteSoilsFormContainer = () => {
   const dispatch = useAppDispatch();
-  const siteCreationState = useAppSelector((state) => state.siteCreation);
+  const isFriche = useAppSelector(selectIsFriche);
+  const soils = useAppSelector(selectSiteSoils);
 
-  return <SiteSoilsForm {...mapProps(dispatch, siteCreationState)} />;
+  return (
+    <SiteSoilsForm
+      isFriche={!!isFriche}
+      initialValues={{
+        soils: soils ?? [],
+      }}
+      onSubmit={(formData: FormValues) => {
+        dispatch(completeSoils({ soils: formData.soils }));
+      }}
+      onBack={() => {
+        dispatch(revertSoilsSelectionStep());
+      }}
+    />
+  );
 };
 
 export default SiteSoilsFormContainer;

@@ -28,3 +28,5 @@ export const selectSiteSurfaceArea = createSelector(
   selectSelf,
   (state) => state.siteData.surfaceArea,
 );
+
+export const selectSiteSoils = createSelector(selectSelf, (state) => state.siteData.soils);
