@@ -27,69 +27,67 @@ const UrbanProjectBuildingsSection = ({ buildingsFloorArea }: Props) => {
   ]);
 
   return (
-    <>
-      <Section title="🏘 Bâtiments">
+    <Section title="🏘 Bâtiments">
+      <DataLine
+        noBorder
+        label={<strong>Surface de plancher des bâtiments</strong>}
+        value={formatSurfaceArea(sumObjectValues(buildingsFloorArea))}
+      />
+      <h4 className="tw-text-base tw-pb-2 tw-pt-4 tw-mb-0">Usage de bâtiments</h4>
+      {buildingsFloorArea.RESIDENTIAL ? (
         <DataLine
-          noBorder
-          label={<strong>Surface de plancher des bâtiments</strong>}
-          value={formatSurfaceArea(sumObjectValues(buildingsFloorArea))}
+          label={getLabelForBuildingFloorArea("RESIDENTIAL")}
+          value={formatSurfaceArea(buildingsFloorArea.RESIDENTIAL)}
+          isDetails
         />
-        <h4 className="tw-text-base tw-pb-2 tw-pt-4 tw-mb-0">Usage de bâtiments</h4>
-        {buildingsFloorArea.RESIDENTIAL ? (
-          <DataLine
-            label={getLabelForBuildingFloorArea("RESIDENTIAL")}
-            value={formatSurfaceArea(buildingsFloorArea.RESIDENTIAL)}
-            isDetails
-          />
-        ) : undefined}
+      ) : undefined}
 
-        {economicActivitySurfaceArea > 0 ? (
+      {economicActivitySurfaceArea > 0 ? (
+        <DataLine
+          label="Lieux d’activité économique"
+          value={formatSurfaceArea(economicActivitySurfaceArea)}
+          isDetails
+        />
+      ) : undefined}
+      {typedObjectEntries(otherBuildings).map(([category, value]) =>
+        value ? (
           <DataLine
-            label="Lieux d’activité économique"
-            value={formatSurfaceArea(economicActivitySurfaceArea)}
+            key={category}
+            label={getLabelForBuildingFloorArea(category)}
+            value={formatSurfaceArea(value)}
             isDetails
           />
-        ) : undefined}
-        {typedObjectEntries(otherBuildings).map(([category, value]) =>
-          value ? (
-            <DataLine
-              key={category}
-              label={getLabelForBuildingFloorArea(category)}
-              value={formatSurfaceArea(value)}
-              isDetails
-            />
-          ) : undefined,
-        )}
-        {buildingsFloorArea.OTHER ? (
-          <DataLine
-            label={getLabelForBuildingFloorArea("OTHER")}
-            value={formatSurfaceArea(buildingsFloorArea.OTHER)}
-            isDetails
-          />
-        ) : undefined}
+        ) : undefined,
+      )}
+      {buildingsFloorArea.OTHER ? (
+        <DataLine
+          label={getLabelForBuildingFloorArea("OTHER")}
+          value={formatSurfaceArea(buildingsFloorArea.OTHER)}
+          isDetails
+        />
+      ) : undefined}
 
-        {economicActivitySurfaceArea > 0 && (
-          <>
-            <h4 className="tw-text-base tw-pb-2 tw-pt-4 tw-mb-0">Lieux d’activité économique</h4>
-            <DataLine
-              noBorder
-              label="Espaces à aménager"
-              value={<strong>{formatSurfaceArea(economicActivitySurfaceArea)}</strong>}
-            />
-            {typedObjectEntries(economicActivityBuildings).map(([category, value]) =>
-              value ? (
-                <DataLine
-                  key={category}
-                  label={` ➔ ${getLabelForBuildingFloorArea(category)}`}
-                  value={formatSurfaceArea(value)}
-                  isDetails
-                />
-              ) : undefined,
-            )}
-          </>
-        )}
-      </Section>
-    </>
+      {economicActivitySurfaceArea > 0 && (
+        <>
+          <h4 className="tw-text-base tw-pb-2 tw-pt-4 tw-mb-0">Lieux d’activité économique</h4>
+          <DataLine
+            noBorder
+            label="Espaces à aménager"
+            value={<strong>{formatSurfaceArea(economicActivitySurfaceArea)}</strong>}
+          />
+          {typedObjectEntries(economicActivityBuildings).map(([category, value]) =>
+            value ? (
+              <DataLine
+                key={category}
+                label={` ➔ ${getLabelForBuildingFloorArea(category)}`}
+                value={formatSurfaceArea(value)}
+                isDetails
+              />
+            ) : undefined,
+          )}
+        </>
+      )}
+    </Section>
   );
 };
 

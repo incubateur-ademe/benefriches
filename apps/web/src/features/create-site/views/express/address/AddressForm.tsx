@@ -36,41 +36,39 @@ function SiteAddressForm({ initialValues, onSubmit, isFriche, onBack }: Props) {
   const selectedAddress = watch("selectedAddress");
 
   return (
-    <>
-      <WizardFormLayout title={title}>
-        <form
-          onSubmit={handleSubmit((formData: FormValues) => {
-            onSubmit(formData.selectedAddress!);
-          })}
-        >
-          <Controller
-            control={control}
-            name="searchText"
-            render={({ field }) => (
-              <SearchAddressAutocompleteContainer
-                addressType="municipality"
-                searchInputValue={field.value}
-                onSearchInputChange={(searchText: string) => {
-                  field.onChange(searchText);
-                  setValue("selectedAddress", undefined);
-                }}
-                selectedAddress={selectedAddress}
-                onSelect={(v) => {
-                  setValue("selectedAddress", v as MunicipalityAddress);
-                  setValue("searchText", v.value);
-                }}
-                searchInputProps={{
-                  label: <RequiredLabel label="Commune ou code postal" />,
-                  state: error ? "error" : "default",
-                  stateRelatedMessage: error ? error.message : undefined,
-                }}
-              />
-            )}
-          />
-          <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
-        </form>
-      </WizardFormLayout>
-    </>
+    <WizardFormLayout title={title}>
+      <form
+        onSubmit={handleSubmit((formData: FormValues) => {
+          onSubmit(formData.selectedAddress!);
+        })}
+      >
+        <Controller
+          control={control}
+          name="searchText"
+          render={({ field }) => (
+            <SearchAddressAutocompleteContainer
+              addressType="municipality"
+              searchInputValue={field.value}
+              onSearchInputChange={(searchText: string) => {
+                field.onChange(searchText);
+                setValue("selectedAddress", undefined);
+              }}
+              selectedAddress={selectedAddress}
+              onSelect={(v) => {
+                setValue("selectedAddress", v as MunicipalityAddress);
+                setValue("searchText", v.value);
+              }}
+              searchInputProps={{
+                label: <RequiredLabel label="Commune ou code postal" />,
+                state: error ? "error" : "default",
+                stateRelatedMessage: error ? error.message : undefined,
+              }}
+            />
+          )}
+        />
+        <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
+      </form>
+    </WizardFormLayout>
   );
 }
 

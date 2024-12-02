@@ -36,70 +36,68 @@ function SiteAddressForm({ initialValues, onSubmit, isFriche, onBack }: Props) {
   const selectedAddress = watch("selectedAddress");
 
   return (
-    <>
-      <WizardFormLayout
-        title={title}
-        instructions={
-          <FormInfo>
-            <p>
-              Si vous ne connaissez pas l'adresse exacte, entrez simplement le nom de la commune ou
-              son code postal.
-            </p>
-            <p className="tw-text-sm tw-m-0">
-              L'adresse sert à positionner le site dans son environnement local, ce qui est utile
-              pour&nbsp;:
-            </p>
-            <ul>
-              <li>Connaître le type d'environnement (résidentiel, industriel, naturel, etc.)</li>
-              <li>
-                Déterminer des paramètres socio-économiques locaux (marché foncier et immobilier,
-                densité de population, d'emplois, etc.)
-              </li>
-              <li>
-                Identifier les éventuels services de proximité (loisirs, culturels, éducatifs, etc.)
-              </li>
-              <li>Identifier la proximité d'espaces naturels, agricoles ou forestiers</li>
-              <li>
-                Identifier la proximité de parcs urbains ou d'espaces de nature en ville Autant
-                d'informations qui permettent à Bénéfriches de quantifier des indicateurs d'impacts
-                socio-économiques.
-              </li>
-            </ul>
-          </FormInfo>
-        }
+    <WizardFormLayout
+      title={title}
+      instructions={
+        <FormInfo>
+          <p>
+            Si vous ne connaissez pas l'adresse exacte, entrez simplement le nom de la commune ou
+            son code postal.
+          </p>
+          <p className="tw-text-sm tw-m-0">
+            L'adresse sert à positionner le site dans son environnement local, ce qui est utile
+            pour&nbsp;:
+          </p>
+          <ul>
+            <li>Connaître le type d'environnement (résidentiel, industriel, naturel, etc.)</li>
+            <li>
+              Déterminer des paramètres socio-économiques locaux (marché foncier et immobilier,
+              densité de population, d'emplois, etc.)
+            </li>
+            <li>
+              Identifier les éventuels services de proximité (loisirs, culturels, éducatifs, etc.)
+            </li>
+            <li>Identifier la proximité d'espaces naturels, agricoles ou forestiers</li>
+            <li>
+              Identifier la proximité de parcs urbains ou d'espaces de nature en ville Autant
+              d'informations qui permettent à Bénéfriches de quantifier des indicateurs d'impacts
+              socio-économiques.
+            </li>
+          </ul>
+        </FormInfo>
+      }
+    >
+      <form
+        onSubmit={handleSubmit((formData: FormValues) => {
+          onSubmit(formData.selectedAddress!);
+        })}
       >
-        <form
-          onSubmit={handleSubmit((formData: FormValues) => {
-            onSubmit(formData.selectedAddress!);
-          })}
-        >
-          <Controller
-            control={control}
-            name="searchText"
-            render={({ field }) => (
-              <SearchAddressAutocomplete
-                searchInputValue={field.value}
-                onSearchInputChange={(searchText: string) => {
-                  field.onChange(searchText);
-                  setValue("selectedAddress", undefined);
-                }}
-                selectedAddress={selectedAddress}
-                onSelect={(v) => {
-                  setValue("selectedAddress", v);
-                  setValue("searchText", v.value);
-                }}
-                searchInputProps={{
-                  label: <RequiredLabel label="Adresse du site" />,
-                  state: error ? "error" : "default",
-                  stateRelatedMessage: error ? error.message : undefined,
-                }}
-              />
-            )}
-          />
-          <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
-        </form>
-      </WizardFormLayout>
-    </>
+        <Controller
+          control={control}
+          name="searchText"
+          render={({ field }) => (
+            <SearchAddressAutocomplete
+              searchInputValue={field.value}
+              onSearchInputChange={(searchText: string) => {
+                field.onChange(searchText);
+                setValue("selectedAddress", undefined);
+              }}
+              selectedAddress={selectedAddress}
+              onSelect={(v) => {
+                setValue("selectedAddress", v);
+                setValue("searchText", v.value);
+              }}
+              searchInputProps={{
+                label: <RequiredLabel label="Adresse du site" />,
+                state: error ? "error" : "default",
+                stateRelatedMessage: error ? error.message : undefined,
+              }}
+            />
+          )}
+        />
+        <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
+      </form>
+    </WizardFormLayout>
   );
 }
 

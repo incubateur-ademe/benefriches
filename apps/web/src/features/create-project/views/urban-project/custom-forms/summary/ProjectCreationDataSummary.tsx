@@ -32,43 +32,41 @@ function ProjectCreationDataSummary({
     : undefined;
 
   return (
-    <>
-      <WizardFormLayout
-        title="Récapitulatif du projet"
-        instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
-      >
-        <ProjectFeaturesView
-          projectData={{
-            id: projectId,
-            name: projectData.name ?? "",
-            description: projectData.description,
-            developmentPlan: {
-              type: "URBAN_PROJECT",
-              developerName: projectData.projectDeveloper?.name,
-              installationCosts: projectData.installationExpenses ?? [],
-              installationSchedule: projectData.installationSchedule,
-              spaces: projectSpaces,
-              buildingsFloorArea: projectData.buildingsUsesDistribution ?? {},
-            },
-            soilsDistribution: projectSoilsDistribution,
-            reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
-            financialAssistanceRevenues: projectData.financialAssistanceRevenues,
-            reinstatementCosts: projectData.reinstatementExpenses,
-            yearlyProjectedExpenses: projectData.yearlyProjectedExpenses ?? [],
-            yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
-            reinstatementSchedule: projectData.reinstatementSchedule,
-            firstYearOfOperation: projectData.firstYearOfOperation,
-            sitePurchaseTotalAmount,
-            siteResaleTotalAmount,
-            decontaminatedSoilSurface: projectData.decontaminatedSurfaceArea,
-          }}
-        />
+    <WizardFormLayout
+      title="Récapitulatif du projet"
+      instructions="Si des données sont erronées, vous pouvez revenir en arrière pour les modifier."
+    >
+      <ProjectFeaturesView
+        projectData={{
+          id: projectId,
+          name: projectData.name ?? "",
+          description: projectData.description,
+          developmentPlan: {
+            type: "URBAN_PROJECT",
+            developerName: projectData.projectDeveloper?.name,
+            installationCosts: projectData.installationExpenses ?? [],
+            installationSchedule: projectData.installationSchedule,
+            spaces: projectSpaces,
+            buildingsFloorArea: projectData.buildingsUsesDistribution ?? {},
+          },
+          soilsDistribution: projectSoilsDistribution,
+          reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
+          financialAssistanceRevenues: projectData.financialAssistanceRevenues,
+          reinstatementCosts: projectData.reinstatementExpenses,
+          yearlyProjectedExpenses: projectData.yearlyProjectedExpenses ?? [],
+          yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
+          reinstatementSchedule: projectData.reinstatementSchedule,
+          firstYearOfOperation: projectData.firstYearOfOperation,
+          sitePurchaseTotalAmount,
+          siteResaleTotalAmount,
+          decontaminatedSoilSurface: projectData.decontaminatedSurfaceArea,
+        }}
+      />
 
-        <div className="tw-mt-8">
-          <BackNextButtonsGroup onBack={onBack} onNext={onNext} nextLabel="Valider" />
-        </div>
-      </WizardFormLayout>
-    </>
+      <div className="tw-mt-8">
+        <BackNextButtonsGroup onBack={onBack} onNext={onNext} nextLabel="Valider" />
+      </div>
+    </WizardFormLayout>
   );
 }
 

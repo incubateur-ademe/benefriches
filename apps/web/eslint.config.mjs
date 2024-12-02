@@ -40,11 +40,12 @@ export default tseslint.config(
       ["react-refresh"]: reactRefreshPlugin,
     },
     rules: {
-      ...reactPlugin.configs["recommended"].rules,
-      ...reactPlugin.configs["jsx-runtime"].rules,
+      ...reactPlugin.configs.flat.recommended.rules,
+      ...reactPlugin.configs.flat["jsx-runtime"].rules,
       ...reactHooksPlugin.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "react/no-unescaped-entities": ["error", { forbid: [">", "}"] }],
+      "react/jsx-no-useless-fragment": "error",
     },
     settings: {
       react: { version: "detect" },
