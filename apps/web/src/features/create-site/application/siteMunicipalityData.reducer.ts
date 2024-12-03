@@ -3,6 +3,7 @@ import { formatLocalAuthorityName, LocalAuthority } from "shared";
 
 import { RootState } from "@/app/application/store";
 
+import { selectSiteOwner } from "./createSite.selectors";
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 
 export type LoadingState = "idle" | "loading" | "success" | "error";
@@ -44,13 +45,11 @@ export type AvailableLocalAuthority = {
 };
 
 export const selectAvailableLocalAuthorities = createSelector(
-  [(state: RootState) => state.siteMunicipalityData, (state: RootState) => state.siteCreation],
-  (siteMunicipalityData, siteCreation): AvailableLocalAuthority[] => {
-    const { owner: siteOwner } = siteCreation.siteData;
-
+  (state: RootState) => state.siteMunicipalityData,
+  (siteMunicipalityData): AvailableLocalAuthority[] => {
     const { city, department, region, epci } = siteMunicipalityData.localAuthorities ?? {};
 
-    const addressLocalAuthorities = [
+    return [
       {
         type: "municipality",
         name: city ? formatLocalAuthorityName("municipality", city.name) : "Mairie",
@@ -69,13 +68,20 @@ export const selectAvailableLocalAuthorities = createSelector(
         type: "region",
         name: region ? formatLocalAuthorityName("region", region.name) : "Région",
       },
-    ] as const;
+    ];
+  },
+);
 
-    return addressLocalAuthorities.filter(
-      (addressLocalAuthority) =>
+export const selectAvailableLocalAuthoritiesWithoutCurrentOwner = createSelector(
+  [selectAvailableLocalAuthorities, selectSiteOwner],
+  (availableLocalAuthorities, siteOwner) => {
+    if (!siteOwner) {
+      return availableLocalAuthorities;
+    }
+    return availableLocalAuthorities.filter(
+      (localAuthority) =>
         !(
-          addressLocalAuthority.name === siteOwner?.name &&
-          addressLocalAuthority.type === siteOwner.structureType
+          localAuthority.name === siteOwner.name && localAuthority.type === siteOwner.structureType
         ),
     );
   },

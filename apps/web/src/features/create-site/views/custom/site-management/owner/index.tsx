@@ -3,6 +3,10 @@ import { LocalAuthority } from "shared";
 
 import { revertOwnerStep } from "@/features/create-site/application/createSite.actions";
 import { completeOwner } from "@/features/create-site/application/createSite.reducer";
+import {
+  selectIsFriche,
+  selectSiteOwner,
+} from "@/features/create-site/application/createSite.selectors";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
   AvailableLocalAuthority,
@@ -56,9 +60,52 @@ const convertFormValuesForStore = (
   }
 };
 
+const mapInitialValues = (
+  owner: Owner | undefined,
+  currentUserStructure: UserStructure | undefined,
+): FormValues | undefined => {
+  if (!owner) return undefined;
+
+  if (
+    owner.structureType === currentUserStructure?.type &&
+    owner.name === currentUserStructure.name
+  ) {
+    return {
+      ownerType: "user_structure",
+      localAuthority: undefined,
+      ownerName: undefined,
+    };
+  }
+
+  switch (owner.structureType) {
+    case "region":
+    case "municipality":
+    case "department":
+    case "epci":
+      return {
+        ownerType: "local_or_regional_authority",
+        localAuthority: owner.structureType,
+        ownerName: undefined,
+      };
+    case "company":
+      return {
+        ownerType: "other_company",
+        localAuthority: undefined,
+        ownerName: owner.name,
+      };
+    case "private_individual":
+      return {
+        ownerType: "private_individual",
+        localAuthority: undefined,
+        ownerName: owner.name,
+      };
+  }
+};
+
 function SiteOwnerFormContainer() {
   const currentUserStructure = useAppSelector(selectCurrentUserStructure);
-  const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche) ?? false;
+  const isFriche = useAppSelector(selectIsFriche);
+  const owner = useAppSelector(selectSiteOwner);
   const dispatch = useAppDispatch();
 
   const localAuthoritiesList = useAppSelector(selectAvailableLocalAuthoritiesWithoutCurrentUser);
@@ -81,7 +128,8 @@ function SiteOwnerFormContainer() {
 
   return (
     <SiteOwnerForm
-      isFriche={isFriche}
+      initialValues={mapInitialValues(owner, currentUserStructure)}
+      isFriche={!!isFriche}
       localAuthoritiesList={localAuthoritiesList}
       currentUserStructure={currentUserStructure}
       onSubmit={onSubmit}

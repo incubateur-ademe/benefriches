@@ -7,6 +7,7 @@ import { buildUser } from "@/users/domain/user.mock";
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 import {
   selectAvailableLocalAuthorities,
+  selectAvailableLocalAuthoritiesWithoutCurrentOwner,
   selectAvailableLocalAuthoritiesWithoutCurrentUser,
 } from "./siteMunicipalityData.reducer";
 
@@ -203,8 +204,8 @@ describe("Site Municipality data reducer", () => {
 });
 
 describe("Site public authorities selectors", () => {
-  describe("getAvailablePublicLocalAuthorities", () => {
-    it("should get all public authorities options related to municipality from store with along french state", () => {
+  describe("selectAvailableLocalAuthorities", () => {
+    it("should get all public authorities options related to municipality from store", () => {
       const state = {
         ...createStore(getTestAppDependencies()).getState(),
         siteMunicipalityData: {
@@ -260,8 +261,10 @@ describe("Site public authorities selectors", () => {
         },
       ]);
     });
+  });
 
-    it("should exclude site owner from available options", () => {
+  describe("selectAvailableLocalAuthoritiesWithoutCurrentOwner", () => {
+    it("should exclude site owner from available local authorities", () => {
       const defaultState = createStore(getTestAppDependencies()).getState();
       const grenobleLocalAuthorities = API_MOCKED_RESULT["38185"].localAuthorities;
 
@@ -283,7 +286,7 @@ describe("Site public authorities selectors", () => {
           population: 83459,
         },
       } satisfies RootState;
-      const result = selectAvailableLocalAuthorities(state);
+      const result = selectAvailableLocalAuthoritiesWithoutCurrentOwner(state);
 
       expect(result).toEqual([
         {
@@ -300,9 +303,42 @@ describe("Site public authorities selectors", () => {
         },
       ]);
     });
+    it("should return all available local authorities when no site owner in store", () => {
+      const defaultState = createStore(getTestAppDependencies()).getState();
+      const grenobleLocalAuthorities = API_MOCKED_RESULT["38185"].localAuthorities;
+
+      const state = {
+        ...defaultState,
+        siteMunicipalityData: {
+          loadingState: "success",
+          localAuthorities: grenobleLocalAuthorities,
+          population: 83459,
+        },
+      } satisfies RootState;
+      const result = selectAvailableLocalAuthoritiesWithoutCurrentOwner(state);
+
+      expect(result).toEqual([
+        {
+          type: "municipality",
+          name: "Mairie de Grenoble",
+        },
+        {
+          type: "epci",
+          name: "Grenoble-Alpes-Métropole",
+        },
+        {
+          type: "department",
+          name: "Département Isère",
+        },
+        {
+          type: "region",
+          name: "Région Auvergne-Rhône-Alpes",
+        },
+      ]);
+    });
   });
 
-  describe("getAvailablePublicLocalAuthoritiesWithoutCurrentUser", () => {
+  describe("selectAvailableLocalAuthoritiesWithoutCurrentUser", () => {
     it("should exclude user structure from available options", () => {
       const defaultState = createStore(getTestAppDependencies()).getState();
       const grenobleLocalAuthorities = API_MOCKED_RESULT["38185"].localAuthorities;

@@ -10,6 +10,7 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues: FormValues | undefined;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   localAuthoritiesList: { type: LocalAuthority; name: string }[];
@@ -37,9 +38,10 @@ export type FormValues =
 
 const requiredMessage = "Ce champ est requis";
 
-function SiteTenantForm({ onSubmit, onBack, localAuthoritiesList }: Props) {
+function SiteTenantForm({ initialValues, onSubmit, onBack, localAuthoritiesList }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
+    defaultValues: initialValues,
   });
 
   const { tenantType: selectedTenantType } = watch();

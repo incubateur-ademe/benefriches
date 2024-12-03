@@ -46,3 +46,5 @@ export const selectSiteAccidentsData = createSelector(selectSelf, (state) => {
     accidentsDeaths: state.siteData.accidentsDeaths,
   };
 });
+
+export const selectSiteOwner = createSelector(selectSelf, (state) => state.siteData.owner);

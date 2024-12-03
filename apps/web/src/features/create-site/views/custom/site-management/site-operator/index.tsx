@@ -5,7 +5,7 @@ import { completeOperator } from "@/features/create-site/application/createSite.
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
   AvailableLocalAuthority,
-  selectAvailableLocalAuthorities,
+  selectAvailableLocalAuthoritiesWithoutCurrentOwner,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -44,7 +44,7 @@ const getTenant = (
 function SiteOperatorFormContainer() {
   const dispatch = useAppDispatch();
   const siteOwner = useAppSelector((state) => state.siteCreation.siteData.owner);
-  const localAuthoritiesList = useAppSelector(selectAvailableLocalAuthorities);
+  const localAuthoritiesList = useAppSelector(selectAvailableLocalAuthoritiesWithoutCurrentOwner);
 
   useEffect(() => {
     void dispatch(fetchSiteMunicipalityData());

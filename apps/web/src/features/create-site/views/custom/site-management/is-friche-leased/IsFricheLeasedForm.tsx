@@ -5,6 +5,7 @@ import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -13,8 +14,10 @@ export type FormValues = {
   isFricheLeased: "yes" | "no" | null;
 };
 
-function IsFricheLeasedForm({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, formState, watch } = useForm<FormValues>();
+function IsFricheLeasedForm({ initialValues, onSubmit, onBack }: Props) {
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   return (
     <WizardFormLayout title="La friche est-elle encore louée ?">

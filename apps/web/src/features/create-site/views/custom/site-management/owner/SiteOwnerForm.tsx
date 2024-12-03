@@ -15,6 +15,7 @@ import { UserStructure } from "@/users/domain/user";
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  initialValues: FormValues | undefined;
   currentUserStructure?: UserStructure;
   localAuthoritiesList: { type: LocalAuthority; name: string }[];
   isFriche: boolean;
@@ -42,12 +43,14 @@ const requiredMessage = "Ce champ requis pour la suite du formulaire";
 function SiteOwnerForm({
   onSubmit,
   onBack,
+  initialValues,
   currentUserStructure,
   localAuthoritiesList,
   isFriche,
 }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     shouldUnregister: true,
+    defaultValues: initialValues,
   });
 
   const ownerTypeSelected = watch("ownerType");
