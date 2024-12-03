@@ -37,3 +37,12 @@ export const selectSiteSoilsContamination = createSelector(selectSelf, (state) =
     contaminatedSoilSurface: state.siteData.contaminatedSoilSurface,
   };
 });
+
+export const selectSiteAccidentsData = createSelector(selectSelf, (state) => {
+  return {
+    hasRecentAccidents: state.siteData.hasRecentAccidents,
+    accidentsMinorInjuries: state.siteData.accidentsMinorInjuries,
+    accidentsSevereInjuries: state.siteData.accidentsSevereInjuries,
+    accidentsDeaths: state.siteData.accidentsDeaths,
+  };
+});

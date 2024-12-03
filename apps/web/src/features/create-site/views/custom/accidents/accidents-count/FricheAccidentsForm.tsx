@@ -9,6 +9,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -22,8 +23,9 @@ export type FormValues = {
   accidentsDeaths?: number;
 };
 
-function FricheAccidentsForm({ onSubmit, onBack }: Props) {
+function FricheAccidentsForm({ initialValues, onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
     shouldUnregister: true,
   });
 
