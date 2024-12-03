@@ -30,3 +30,10 @@ export const selectSiteSurfaceArea = createSelector(
 );
 
 export const selectSiteSoils = createSelector(selectSelf, (state) => state.siteData.soils);
+
+export const selectSiteSoilsContamination = createSelector(selectSelf, (state) => {
+  return {
+    hasContaminatedSoils: state.siteData.hasContaminatedSoils,
+    contaminatedSoilSurface: state.siteData.contaminatedSoilSurface,
+  };
+});

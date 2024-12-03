@@ -1,32 +1,54 @@
-import { AppDispatch } from "@/app/application/store";
 import { completeSoilsContamination } from "@/features/create-site/application/createSite.reducer";
+import {
+  selectSiteSoilsContamination,
+  selectSiteSurfaceArea,
+} from "@/features/create-site/application/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { revertSoilsContaminationStep } from "../../../application/createSite.actions";
 import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
 
-const mapProps = (dispatch: AppDispatch, siteSurfaceArea: number) => {
+const mapInitialValues = (siteContamination: {
+  hasContaminatedSoils: boolean | undefined;
+  contaminatedSoilSurface: number | undefined;
+}): FormValues => {
   return {
-    siteSurfaceArea,
-    onBack: () => {
-      dispatch(revertSoilsContaminationStep());
-    },
-    onSubmit: ({ hasContaminatedSoils, contaminatedSurface }: FormValues) => {
-      dispatch(
-        completeSoilsContamination({
-          hasContaminatedSoils: hasContaminatedSoils === "yes",
-          contaminatedSoilSurface: contaminatedSurface,
-        }),
-      );
-    },
+    hasContaminatedSoils: (() => {
+      switch (siteContamination.hasContaminatedSoils) {
+        case true:
+          return "yes";
+        case false:
+          return "no";
+        default:
+          return null;
+      }
+    })(),
+    contaminatedSurface: siteContamination.contaminatedSoilSurface ?? 0,
   };
 };
 
 function SoilContaminationFormController() {
   const dispatch = useAppDispatch();
-  const siteSurfaceArea = useAppSelector((state) => state.siteCreation.siteData.surfaceArea ?? 0);
+  const siteSurfaceArea = useAppSelector(selectSiteSurfaceArea);
+  const siteContamination = useAppSelector(selectSiteSoilsContamination);
 
-  return <SoilContaminationForm {...mapProps(dispatch, siteSurfaceArea)} />;
+  return (
+    <SoilContaminationForm
+      initialValues={mapInitialValues(siteContamination)}
+      siteSurfaceArea={siteSurfaceArea ?? 0}
+      onSubmit={({ hasContaminatedSoils, contaminatedSurface }: FormValues) => {
+        dispatch(
+          completeSoilsContamination({
+            hasContaminatedSoils: hasContaminatedSoils === "yes",
+            contaminatedSoilSurface: contaminatedSurface,
+          }),
+        );
+      }}
+      onBack={() => {
+        dispatch(revertSoilsContaminationStep());
+      }}
+    />
+  );
 }
 
 export default SoilContaminationFormController;

@@ -15,6 +15,7 @@ type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   siteSurfaceArea: number;
+  initialValues: FormValues;
 };
 
 type HasContaminatedSoilsString = "yes" | "no" | null;
@@ -24,9 +25,10 @@ export type FormValues = {
   contaminatedSurface?: number;
 };
 
-function SoilContaminationForm({ onSubmit, onBack, siteSurfaceArea }: Props) {
+function SoilContaminationForm({ initialValues, onSubmit, onBack, siteSurfaceArea }: Props) {
   const { register, handleSubmit, formState, watch } = useForm<FormValues>({
     shouldUnregister: true,
+    defaultValues: initialValues,
   });
 
   const hasContaminatedSoilsError = formState.errors.hasContaminatedSoils;
