@@ -46,25 +46,28 @@ const mapInitialValues = (tenant: Tenant | undefined): FormValues | undefined =>
 const convertFormValuesForStore = (
   data: FormValues,
   localAuthorities: AvailableLocalAuthority[],
-): Tenant | undefined => {
-  if (data.tenantType === "local_or_regional_authority") {
-    const localAuthority = localAuthorities.find(
-      ({ type }) => type === data.localAuthority,
-    ) as AvailableLocalAuthority;
-    return {
-      name: localAuthority.name,
-      structureType: data.localAuthority,
-    };
+): Tenant => {
+  switch (data.tenantType) {
+    case "local_or_regional_authority":
+      // eslint-disable-next-line no-case-declarations
+      const localAuthority = localAuthorities.find(
+        ({ type }) => type === data.localAuthority,
+      ) as AvailableLocalAuthority;
+      return {
+        name: localAuthority.name,
+        structureType: data.localAuthority,
+      };
+    case "company":
+      return {
+        structureType: "company",
+        name: data.companyName,
+      };
+    case "private_individual":
+      return {
+        structureType: "private_individual",
+        name: data.tenantName,
+      };
   }
-
-  if (data.tenantType === "company") {
-    return {
-      structureType: "company",
-      name: data.companyName,
-    };
-  }
-
-  return undefined;
 };
 
 function FricheTenantFormContainer() {
