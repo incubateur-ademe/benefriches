@@ -10,6 +10,8 @@ import {
   sumSoilsSurfaceAreasWhere,
 } from "shared";
 
+import { EcosystemServicesImpact, EnvironmentalMonetaryImpact } from "../socioEconomic.types";
+
 type EnvironmentalMonetaryImpactInput = {
   evaluationPeriodInYears: number;
   baseSoilsDistribution: SoilsDistribution;
@@ -18,33 +20,6 @@ type EnvironmentalMonetaryImpactInput = {
   forecastSoilsCarbonStorage: number | null;
   operationsFirstYear: number;
   decontaminatedSurface?: number;
-};
-
-export type EnvironmentalMonetaryImpact = EcosystemServicesImpact | WaterRegulationImpact;
-
-type WaterRegulationImpact = {
-  amount: number;
-  actor: "community";
-  impactCategory: "environmental_monetary";
-  impact: "water_regulation";
-};
-type EcosystemServicesImpact = {
-  amount: number;
-  actor: "human_society";
-  impact: "ecosystem_services";
-  impactCategory: "environmental_monetary";
-  details: {
-    amount: number;
-    impact:
-      | "nature_related_wellness_and_leisure"
-      | "forest_related_product"
-      | "pollination"
-      | "invasive_species_regulation"
-      | "water_cycle"
-      | "nitrogen_cycle"
-      | "soil_erosion"
-      | "carbon_storage";
-  }[];
 };
 
 const ENVIRONMENTAL_AMENITIES_PRAIRIE_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0071;

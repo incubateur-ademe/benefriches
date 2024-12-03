@@ -1,3 +1,4 @@
+import { differenceInDays } from "date-fns";
 import {
   computeDefaultOperationsFullTimeJobsFromBuildingsAreaDistribution,
   computeDefaultPhotovoltaicConversionFullTimeJobs,
@@ -8,11 +9,7 @@ import {
   roundTo2Digits,
 } from "shared";
 
-import {
-  getDurationFromScheduleInYears,
-  PhotovoltaicPowerStationFeatures,
-  Schedule,
-} from "../../reconversionProject";
+import { PhotovoltaicPowerStationFeatures, Schedule } from "../../reconversionProject";
 import { UrbanProjectFeatures } from "../../urbanProjects";
 import { FullTimeJobsImpactServiceInterface } from "./fullTimeJobsImpactServiceInterface";
 
@@ -26,6 +23,12 @@ const spreadTemporaryFullTimeJobsOver = (input: SpreadTemporaryFullTimeJobsOverI
   return roundTo1Digit(
     (input.temporaryFullTimeJobs * input.currentDurationInYears) / input.targetDurationInYears,
   );
+};
+
+const getDurationFromScheduleInYears = ({ startDate, endDate }: Schedule) => {
+  const durationInDays = differenceInDays(endDate, startDate);
+
+  return durationInDays / 365;
 };
 
 type DevelopmentPlan =

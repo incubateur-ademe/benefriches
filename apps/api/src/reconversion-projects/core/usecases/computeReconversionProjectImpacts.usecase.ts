@@ -9,14 +9,13 @@ import {
   computeAccidentsImpact,
 } from "../model/impacts/accidents/accidentsImpact";
 import { AvoidedCO2WithEnergyProductionImpact } from "../model/impacts/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
-import {
-  getDevelopmentPlanRelatedImpacts,
-  SocioEconomicSpecificImpact,
-} from "../model/impacts/development-plans-related/developmentPlanFeaturesImpacts";
+import { getDevelopmentPlanRelatedImpacts } from "../model/impacts/developmentPlanFeaturesImpacts";
+import { computeDirectAndIndirectEconomicImpacts } from "../model/impacts/direct-and-indirect-economic/computeDirectAndIndirectEconomicImpacts";
 import {
   computeEconomicBalanceImpact,
   EconomicBalanceImpactResult,
 } from "../model/impacts/economic-balance/economicBalanceImpact";
+import { computeEnvironmentalMonetaryImpacts } from "../model/impacts/environmental-monetary/computeEnvironmentalMonetaryImpacts";
 import { FullTimeJobsImpactService } from "../model/impacts/full-time-jobs/fullTimeJobsImpactService";
 import { FullTimeJobsImpactResult } from "../model/impacts/full-time-jobs/fullTimeJobsImpactServiceInterface";
 import { HouseholdsPoweredByRenewableEnergyImpact } from "../model/impacts/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
@@ -28,14 +27,7 @@ import {
   computePermeableSurfaceAreaImpact,
   PermeableSurfaceAreaImpactResult,
 } from "../model/impacts/permeable-surface/permeableSurfaceAreaImpact";
-import {
-  computeDirectAndIndirectEconomicImpacts,
-  DirectAndIndirectEconomicImpact,
-} from "../model/impacts/socio-economic/computeDirectAndIndirectEconomicImpacts";
-import {
-  computeEnvironmentalMonetaryImpacts,
-  EnvironmentalMonetaryImpact,
-} from "../model/impacts/socio-economic/computeEnvironmentalMonetaryImpacts";
+import { SocioEconomicImpact } from "../model/impacts/socioEconomic.types";
 import {
   computeSoilsCarbonStorageImpact,
   GetSoilsCarbonStoragePerSoilsService,
@@ -137,11 +129,7 @@ export type Result = {
     avoidedCO2TonsWithEnergyProduction?: AvoidedCO2WithEnergyProductionImpact | undefined;
     soilsCarbonStorage: SoilsCarbonStorageImpactResult;
     socioeconomic: {
-      impacts: (
-        | DirectAndIndirectEconomicImpact
-        | EnvironmentalMonetaryImpact
-        | SocioEconomicSpecificImpact
-      )[];
+      impacts: SocioEconomicImpact[];
       total: number;
     };
     avoidedVehiculeKilometers?: number;

@@ -1,6 +1,7 @@
 import { sumListWithKey } from "shared";
 
 import { ReconversionProject } from "../../reconversionProject";
+import { DirectAndIndirectEconomicImpact } from "../socioEconomic.types";
 
 const RENT_PURPOSE_KEY = "rent";
 const TAXES_PURPOSE_KEY = "taxes";
@@ -24,42 +25,6 @@ type DirectAndIndirectEconomicImpactsInput = {
   propertyTransferDutiesAmount?: number;
   isFriche: boolean;
 };
-
-type BaseEconomicImpact = { actor: string; amount: number };
-type RentalIncomeImpact = BaseEconomicImpact & {
-  impact: "rental_income";
-  impactCategory: "economic_direct";
-};
-type AvoidedFricheCostsImpact = BaseEconomicImpact & {
-  impact: "avoided_friche_costs";
-  impactCategory: "economic_direct";
-  details: {
-    amount: number;
-    impact:
-      | "avoided_security_costs"
-      | "avoided_illegal_dumping_costs"
-      | "avoided_accidents_costs"
-      | "avoided_other_securing_costs"
-      | "avoided_maintenance_costs";
-  }[];
-};
-
-type TaxesIncomeImpact = BaseEconomicImpact & {
-  impact: "taxes_income";
-  impactCategory: "economic_indirect";
-  actor: "community";
-};
-type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
-  impact: "property_transfer_duties_income";
-  impactCategory: "economic_direct";
-  actor: "community";
-};
-
-export type DirectAndIndirectEconomicImpact =
-  | RentalIncomeImpact
-  | AvoidedFricheCostsImpact
-  | TaxesIncomeImpact
-  | PropertyTransferDutiesIncomeImpact;
 
 export type SocioEconomicImpactsResult = DirectAndIndirectEconomicImpact[];
 
