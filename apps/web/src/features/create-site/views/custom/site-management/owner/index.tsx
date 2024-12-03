@@ -6,7 +6,7 @@ import { completeOwner } from "@/features/create-site/application/createSite.red
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
   AvailableLocalAuthority,
-  getAvailableLocalAuthoritiesWithoutCurrentUser,
+  selectAvailableLocalAuthoritiesWithoutCurrentUser,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Owner } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -61,7 +61,7 @@ function SiteOwnerFormContainer() {
   const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche) ?? false;
   const dispatch = useAppDispatch();
 
-  const localAuthoritiesList = useAppSelector(getAvailableLocalAuthoritiesWithoutCurrentUser);
+  const localAuthoritiesList = useAppSelector(selectAvailableLocalAuthoritiesWithoutCurrentUser);
 
   const onSubmit = (data: FormValues) => {
     dispatch(

@@ -6,8 +6,8 @@ import { buildUser } from "@/users/domain/user.mock";
 
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 import {
-  getAvailableLocalAuthorities,
-  getAvailableLocalAuthoritiesWithoutCurrentUser,
+  selectAvailableLocalAuthorities,
+  selectAvailableLocalAuthoritiesWithoutCurrentUser,
 } from "./siteMunicipalityData.reducer";
 
 const API_MOCKED_RESULT = {
@@ -214,7 +214,7 @@ describe("Site public authorities selectors", () => {
         },
       } satisfies RootState;
 
-      const result = getAvailableLocalAuthorities(state);
+      const result = selectAvailableLocalAuthorities(state);
 
       expect(result).toEqual([
         {
@@ -239,7 +239,7 @@ describe("Site public authorities selectors", () => {
     it("should get default public authorities options related to municipality when no data in store", () => {
       const state = createStore(getTestAppDependencies()).getState();
 
-      const result = getAvailableLocalAuthorities(state);
+      const result = selectAvailableLocalAuthorities(state);
 
       expect(result).toEqual([
         {
@@ -283,7 +283,7 @@ describe("Site public authorities selectors", () => {
           population: 83459,
         },
       } satisfies RootState;
-      const result = getAvailableLocalAuthorities(state);
+      const result = selectAvailableLocalAuthorities(state);
 
       expect(result).toEqual([
         {
@@ -324,7 +324,7 @@ describe("Site public authorities selectors", () => {
           population: 83459,
         },
       } satisfies RootState;
-      const result = getAvailableLocalAuthoritiesWithoutCurrentUser(state);
+      const result = selectAvailableLocalAuthoritiesWithoutCurrentUser(state);
 
       expect(result).toEqual([
         {
@@ -362,7 +362,7 @@ describe("Site public authorities selectors", () => {
           population: 83459,
         },
       } satisfies RootState;
-      const result = getAvailableLocalAuthoritiesWithoutCurrentUser(state);
+      const result = selectAvailableLocalAuthoritiesWithoutCurrentUser(state);
 
       expect(result).toEqual([
         {

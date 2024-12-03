@@ -5,7 +5,7 @@ import { completeTenant } from "@/features/create-site/application/createSite.re
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import {
   AvailableLocalAuthority,
-  getAvailableLocalAuthorities,
+  selectAvailableLocalAuthorities,
 } from "@/features/create-site/application/siteMunicipalityData.reducer";
 import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -37,7 +37,7 @@ const convertFormValuesForStore = (
 
 function FricheTenantFormContainer() {
   const dispatch = useAppDispatch();
-  const localAuthoritiesList = useAppSelector(getAvailableLocalAuthorities);
+  const localAuthoritiesList = useAppSelector(selectAvailableLocalAuthorities);
 
   useEffect(() => {
     void dispatch(fetchSiteMunicipalityData());

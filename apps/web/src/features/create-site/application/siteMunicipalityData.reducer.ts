@@ -43,7 +43,7 @@ export type AvailableLocalAuthority = {
   name: string;
 };
 
-export const getAvailableLocalAuthorities = createSelector(
+export const selectAvailableLocalAuthorities = createSelector(
   [(state: RootState) => state.siteMunicipalityData, (state: RootState) => state.siteCreation],
   (siteMunicipalityData, siteCreation): AvailableLocalAuthority[] => {
     const { owner: siteOwner } = siteCreation.siteData;
@@ -81,11 +81,8 @@ export const getAvailableLocalAuthorities = createSelector(
   },
 );
 
-export const getAvailableLocalAuthoritiesWithoutCurrentUser = createSelector(
-  [
-    (state: RootState) => getAvailableLocalAuthorities(state),
-    (state: RootState) => state.currentUser,
-  ],
+export const selectAvailableLocalAuthoritiesWithoutCurrentUser = createSelector(
+  [selectAvailableLocalAuthorities, (state: RootState) => state.currentUser],
   (availableLocalAuthorities, currentUserState) => {
     const currentUser = currentUserState.currentUser;
     if (currentUser?.structureType !== "local_authority") {
