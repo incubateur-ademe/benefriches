@@ -116,7 +116,7 @@ const getBearerLabel = (bearer: "tenant" | "owner", isFriche: boolean) => {
   if (bearer === "owner") {
     return "À la charge du propriétaire";
   }
-  return isFriche ? "À la charge du locataire" : "À la charge de l’exploitant";
+  return isFriche ? "À la charge du locataire" : "À la charge de l'exploitant";
 };
 
 function SiteYearlyExpensesForm({
@@ -155,22 +155,24 @@ function SiteYearlyExpensesForm({
         {isFriche && <h3 className="!tw-mb-0">Gestion du site</h3>}
 
         {siteManagementExpensesWithBearer.map(({ name, bearer }) => {
+          const amountEntered = !!formValues[name]?.amount;
+          const askForBearer = bearer === undefined && amountEntered;
+          const bearerError = formState.errors[name]?.bearer;
           return (
             <>
               <RowDecimalsNumericInput
-                key={name}
-                hintText={
-                  !hasTenant || bearer === undefined ? undefined : getBearerLabel(bearer, isFriche)
-                }
+                key={`${name}.amount`}
+                hintText={hasTenant && bearer ? getBearerLabel(bearer, isFriche) : undefined}
                 addonText="€ / an"
                 label={getLabelForExpense(name)}
                 nativeInputProps={register(`${name}.amount`, optionalNumericFieldRegisterOptions)}
               />
 
-              {bearer === undefined && !!watch(`${name}.amount`) && (
+              {askForBearer && (
                 <RadioButtons
-                  error={formState.errors[name]?.bearer ?? undefined}
-                  {...register(`${name}.bearer` as keyof FormValues, {
+                  key={`${name}.bearer`}
+                  error={bearerError}
+                  {...register(`${name}.bearer`, {
                     required: "Cette information est obligatoire.",
                   })}
                   options={expenseBearerOptions}
@@ -183,31 +185,29 @@ function SiteYearlyExpensesForm({
           <>
             <h3 className="!tw-mb-0 tw-mt-6">Sécurisation du site</h3>
             {siteSecurityExpensesWithBearer.map(({ name, bearer }) => {
+              const amountEntered = !!formValues[name]?.amount;
+              const askForBearer = bearer === undefined && amountEntered;
+              const amountError = formState.errors[name]?.amount;
+              const bearerError = formState.errors[name]?.bearer;
               return (
                 <>
                   <RowDecimalsNumericInput
-                    state={formState.errors[name]?.amount ? "error" : "default"}
-                    stateRelatedMessage={
-                      formState.errors[name]?.amount
-                        ? formState.errors[name].amount.message
-                        : undefined
-                    }
+                    key={`${name}.amount`}
+                    state={amountError ? "error" : "default"}
+                    stateRelatedMessage={amountError?.message}
                     nativeInputProps={register(
                       `${name}.amount`,
                       optionalNumericFieldRegisterOptions,
                     )}
                     label={getLabelForExpense(name)}
-                    hintText={
-                      !hasTenant || bearer === undefined
-                        ? undefined
-                        : getBearerLabel(bearer, isFriche)
-                    }
+                    hintText={hasTenant && bearer ? getBearerLabel(bearer, isFriche) : undefined}
                     addonText="€ / an"
                   />
-                  {bearer === undefined && !!watch(`${name}.amount`) && (
+                  {askForBearer && (
                     <RadioButtons
-                      error={formState.errors[name]?.bearer ?? undefined}
-                      {...register(`${name}.bearer` as keyof FormValues, {
+                      key={`${name}.bearer`}
+                      error={bearerError}
+                      {...register(`${name}.bearer`, {
                         required: "Cette information est obligatoire.",
                       })}
                       options={expenseBearerOptions}
