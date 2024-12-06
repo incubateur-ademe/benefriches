@@ -42,7 +42,7 @@ const options: Option[] = [
   {
     value: "RESIDENTIAL_NORMAL_AREA",
     title: "Résidentiel secteur détendu",
-    description: "Habitat individuel + petit habitat collectif",
+    description: "Habitat individuel + petit collectif",
     imgSrc: "/img/pictograms/express-urban-categories/residentiel-secteur-detendu.svg",
     badgeText: "40 logements / ha",
     badgeClassName: "tw-bg-[#ECF2FF] tw-text-[#5371AC]",
@@ -50,7 +50,7 @@ const options: Option[] = [
   {
     value: "RESIDENTIAL_TENSE_AREA",
     title: "Résidentiel secteur tendu",
-    description: "Beaucoup d’habitat, quelques commerces, locaux tertiaires ou services",
+    description: "Habitat collectif, commerces, tertiaires, services et équipements de proximité",
     imgSrc: "/img/pictograms/express-urban-categories/residentiel-secteur-tendu.svg",
     badgeText: "200 logements / ha",
     badgeClassName: "tw-bg-[#C2D5FF] tw-text-[#212D45]",
@@ -59,7 +59,7 @@ const options: Option[] = [
   {
     value: "NEW_URBAN_CENTER",
     title: "Centralité urbaine",
-    description: "Un peu d’habitat, beaucoup de commerces, locaux tertiaires ou services",
+    description: "Forte mixité fonctionnelle",
     imgSrc: "/img/pictograms/express-urban-categories/nouvelle-centralite.svg",
     badgeText: "115 logements / ha",
     badgeClassName: "tw-bg-[#D6E3FF] tw-text-[#3A4F79]",

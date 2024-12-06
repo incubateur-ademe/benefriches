@@ -12,6 +12,7 @@ import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile
 import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
 import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
 import TileFormFooterWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFooterWrapper";
+import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 export type FormValues = {
@@ -66,7 +67,24 @@ function SpacesCategoriesSelection({ onSubmit, onBack }: Props) {
   });
 
   return (
-    <WizardFormLayout title="Quels espaces seront aménagés dans ce projet urbain ?" fullScreen>
+    <WizardFormLayout
+      title="Quels espaces y aura-t-il dans votre projet&nbsp;?"
+      fullScreen
+      instructions={
+        <FormInfo>
+          <p>Plusieurs réponses possibles.</p>
+          {/* <p>
+            Si le site existant contient des espaces naturels (forêt, prairie, zone humide...), dans
+            une étape ultérieure il vous sera possible de les inclure dans vos espaces verts.
+          </p> */}
+          <p>La question des VRD sera posée dans une étape ultérieure.</p>
+          {/* <p>
+            La question des équipements liés aux bâtiments (murs végétalisés, photovoltaïque en
+            toiture, pompe à chaleur...) sera posée dans une question ultérieure.
+          </p> */}
+        </FormInfo>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <TileFormFieldsWrapper small>
           {urbanProjectSpacesCategories.options.map((value) => {

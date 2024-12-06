@@ -53,17 +53,17 @@ export const getPictogramForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCateg
 export const getDescriptionForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
   switch (spaceCategory) {
     case "LIVING_AND_ACTIVITY_SPACES":
-      return "Bâtiments, voirie privée, jardins et espaces verts privés...";
+      return "Logements, lieux d'activités économiques, équipements publics...";
     case "PUBLIC_SPACES":
       return "(hors espaces verts) Rues, places, pistes cyclables, parking de surface...";
     case "GREEN_SPACES":
       return "Parc, jardin public, forêt urbaine...";
     case "URBAN_FARM":
-      return "Production de fruits et légumes";
+      return "Cultures de fruits et légumes, horticulture...";
     case "RENEWABLE_ENERGY_PRODUCTION_PLANT":
       return "Géothermique ou biomasse";
     case "URBAN_POND_OR_LAKE":
-      return "Mare, étang, gravière...";
+      return "Mare, étang...";
   }
 };
 
