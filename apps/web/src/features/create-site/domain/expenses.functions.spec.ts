@@ -1,12 +1,12 @@
-import { groupExpensesByBearer, groupExpensesByCategory } from "./expenses.functions";
-import { Expense } from "./siteFoncier.types";
+import { SiteYearlyExpense } from "shared";
 
-const buildExpense = (expenseData: Partial<Expense>): Expense => {
+import { groupExpensesByBearer } from "./expenses.functions";
+
+const buildExpense = (expenseData: Partial<SiteYearlyExpense>): SiteYearlyExpense => {
   return {
     bearer: "owner",
     amount: 1000,
     purpose: "maintenance",
-    purposeCategory: "other",
     ...expenseData,
   };
 };
@@ -14,12 +14,12 @@ const buildExpense = (expenseData: Partial<Expense>): Expense => {
 describe("Expenses functions", () => {
   describe("groupExpensesByBearer", () => {
     it("returns empty array when no expenses", () => {
-      const expenses: Expense[] = [];
+      const expenses: SiteYearlyExpense[] = [];
       expect(groupExpensesByBearer(expenses)).toEqual([]);
     });
 
     it("should group expenses for only one bearer", () => {
-      const expenses: Expense[] = [
+      const expenses: SiteYearlyExpense[] = [
         buildExpense({ amount: 1500, bearer: "owner" }),
         buildExpense({ amount: 1400, bearer: "owner" }),
         buildExpense({ amount: 100, bearer: "owner" }),
@@ -28,7 +28,7 @@ describe("Expenses functions", () => {
     });
 
     it("should group expenses for mixed bearers", () => {
-      const expenses: Expense[] = [
+      const expenses: SiteYearlyExpense[] = [
         buildExpense({ amount: 1500, bearer: "owner" }),
         buildExpense({ amount: 1400, bearer: "owner" }),
         buildExpense({ amount: 100, bearer: "owner" }),
@@ -39,40 +39,6 @@ describe("Expenses functions", () => {
       expect(groupExpensesByBearer(expenses)).toEqual([
         { amount: 12000, bearer: "owner" },
         { amount: 3200, bearer: "tenant" },
-      ]);
-    });
-  });
-
-  describe("groupExpensesByCategory", () => {
-    it("returns empty array when no expenses", () => {
-      const expenses: Expense[] = [];
-      expect(groupExpensesByCategory(expenses)).toEqual([]);
-    });
-
-    it("should group expenses for only one category", () => {
-      const expenses: Expense[] = [
-        buildExpense({ amount: 1500, purposeCategory: "safety" }),
-        buildExpense({ amount: 1400, purposeCategory: "safety" }),
-        buildExpense({ amount: 100, purposeCategory: "safety" }),
-      ];
-      expect(groupExpensesByCategory(expenses)).toEqual([
-        { amount: 3000, purposeCategory: "safety" },
-      ]);
-    });
-
-    it("should group expenses for mixed categories", () => {
-      const expenses: Expense[] = [
-        buildExpense({ amount: 1500, purposeCategory: "taxes" }),
-        buildExpense({ amount: 1400, purposeCategory: "taxes" }),
-        buildExpense({ amount: 100, purposeCategory: "taxes" }),
-        buildExpense({ amount: 1100, purposeCategory: "safety" }),
-        buildExpense({ amount: 9000, purposeCategory: "rent" }),
-        buildExpense({ amount: 2100, purposeCategory: "safety" }),
-      ];
-      expect(groupExpensesByCategory(expenses)).toEqual([
-        { amount: 3000, purposeCategory: "taxes" },
-        { amount: 3200, purposeCategory: "safety" },
-        { amount: 9000, purposeCategory: "rent" },
       ]);
     });
   });

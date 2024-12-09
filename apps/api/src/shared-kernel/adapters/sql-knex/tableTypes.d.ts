@@ -65,7 +65,6 @@ type SqlSiteExpense = {
   site_id: string;
   purpose: string;
   bearer: string;
-  purpose_category: string;
   amount: number;
 };
 

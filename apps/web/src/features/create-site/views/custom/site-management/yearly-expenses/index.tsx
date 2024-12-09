@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { SiteYearlyExpense } from "shared";
 
 import { AppDispatch, RootState } from "@/app/application/store";
 import { revertYearlyExpensesStep } from "@/features/create-site/application/createSite.actions";
@@ -9,7 +10,7 @@ import {
 } from "@/features/create-site/application/expenses.selectors";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
 import { hasTenant } from "@/features/create-site/domain/site.functions";
-import { Expense, SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteYearlyExpensesForm, { FormValues, Props } from "./SiteYearlyExpensesForm";
@@ -52,7 +53,7 @@ const mapProps = (
       dispatch(revertYearlyExpensesStep());
     },
     onSubmit: (formData: FormValues) => {
-      const expenses: Expense[] = mapFormDataToExpenses(formData, [
+      const expenses: SiteYearlyExpense[] = mapFormDataToExpenses(formData, [
         ...siteManagementExpensesWithBearer,
         ...siteSecurityExpensesWithBearer,
       ]);

@@ -259,7 +259,6 @@ describe("Sites controller", () => {
           amount: 3300,
           purpose: "security",
           bearer: "owner",
-          purpose_category: "security",
         },
       ]);
       const response = await supertest(app.getHttpServer()).get(`/sites/${siteId}`).send();

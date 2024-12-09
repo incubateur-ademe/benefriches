@@ -1,4 +1,6 @@
-import { Expense, Income } from "@/features/create-site/domain/siteFoncier.types";
+import { SiteYearlyExpense } from "shared";
+
+import { Income } from "@/features/create-site/domain/siteFoncier.types";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 
@@ -6,8 +8,8 @@ import ExpensesIncomeBarChart from "./ExpensesIncomeBarChart";
 
 type Props = {
   isFriche: boolean;
-  ownerExpenses: Expense[];
-  tenantExpenses: Expense[];
+  ownerExpenses: SiteYearlyExpense[];
+  tenantExpenses: SiteYearlyExpense[];
   ownerIncome: Income[];
   tenantIncome: Income[];
   ownerName?: string;

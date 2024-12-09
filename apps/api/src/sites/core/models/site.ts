@@ -4,7 +4,6 @@ import { z } from "zod";
 const expenseSchema = z.object({
   purpose: z.string(),
   bearer: z.string(),
-  purposeCategory: z.string(),
   amount: z.number().nonnegative(),
 });
 

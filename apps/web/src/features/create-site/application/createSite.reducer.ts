@@ -1,11 +1,10 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FricheActivity, SoilsDistribution, SoilType } from "shared";
+import { FricheActivity, SoilsDistribution, SoilType, SiteYearlyExpense } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { RootState } from "@/app/application/store";
 import {
   Address,
-  Expense,
   Income,
   Owner,
   SiteDraft,
@@ -243,7 +242,7 @@ export const siteCreationSlice = createSlice({
 
       state.stepsHistory.push("MANAGEMENT_INTRODUCTION");
     },
-    completeYearlyExpenses: (state, action: PayloadAction<Expense[]>) => {
+    completeYearlyExpenses: (state, action: PayloadAction<SiteYearlyExpense[]>) => {
       state.siteData.yearlyExpenses = action.payload;
       state.stepsHistory.push(
         state.siteData.isSiteOperated ? "YEARLY_INCOME" : "YEARLY_EXPENSES_SUMMARY",

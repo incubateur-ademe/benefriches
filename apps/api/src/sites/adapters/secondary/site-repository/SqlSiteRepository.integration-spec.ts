@@ -213,9 +213,7 @@ describe("SqlSiteRepository integration", () => {
 
     it("Saves given site with expenses and incomes in sites, expenses and incomes", async () => {
       const site: NonFricheSite = buildMinimalSite({
-        yearlyExpenses: [
-          { amount: 45000, bearer: "owner", purposeCategory: "other", purpose: "other" },
-        ],
+        yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "other" }],
         yearlyIncomes: [
           { amount: 20000, source: "operations" },
           { amount: 32740.3, source: "other" },

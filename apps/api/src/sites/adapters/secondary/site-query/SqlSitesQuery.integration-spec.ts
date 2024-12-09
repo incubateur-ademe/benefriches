@@ -71,7 +71,6 @@ describe("SqlSitesQuery integration", () => {
           site_id: siteId,
           purpose: "rent",
           bearer: "tenant",
-          purpose_category: "rent",
           amount: 45000,
         },
         {
@@ -79,7 +78,6 @@ describe("SqlSitesQuery integration", () => {
           site_id: siteId,
           purpose: "maintenance",
           bearer: "tenant",
-          purpose_category: "site_management",
           amount: 55000,
         },
       ]);
@@ -162,7 +160,6 @@ describe("SqlSitesQuery integration", () => {
           amount: 3300,
           purpose: "security",
           bearer: "owner",
-          purpose_category: "security",
         },
       ]);
 

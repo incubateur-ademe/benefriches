@@ -57,7 +57,6 @@ describe("SqlSiteImpactsQuery integration", () => {
           amount: 100,
           bearer: "tenant",
           purpose: "rent",
-          purpose_category: "rent",
         },
       ]);
 

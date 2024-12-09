@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
-import { typedObjectEntries } from "shared";
+import { SiteYearlyExpensePurpose, typedObjectEntries } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
-import { Expense } from "@/features/create-site/domain/siteFoncier.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
@@ -16,13 +15,16 @@ type YearlyExpenseBearer = "owner" | "tenant";
 type FormExpense =
   | { amount?: undefined; bearer?: undefined }
   | { amount: number; bearer?: YearlyExpenseBearer };
-export type FormValues = Partial<Record<Expense["purpose"], FormExpense>>;
+export type FormValues = Partial<Record<SiteYearlyExpensePurpose, FormExpense>>;
 
 export type Props = {
   hasTenant: boolean;
   isFriche: boolean;
-  siteManagementExpensesWithBearer: { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[];
-  siteSecurityExpensesWithBearer: { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[];
+  siteManagementExpensesWithBearer: {
+    name: SiteYearlyExpensePurpose;
+    bearer?: "tenant" | "owner";
+  }[];
+  siteSecurityExpensesWithBearer: { name: SiteYearlyExpensePurpose; bearer?: "tenant" | "owner" }[];
   defaultValues: {
     propertyTaxes?: { amount?: number };
     illegalDumpingCost?: { amount?: number };
@@ -33,7 +35,7 @@ export type Props = {
   onBack: () => void;
 };
 
-const getLabelForExpense = (purpose: Expense["purpose"]) => {
+const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
   switch (purpose) {
     case "propertyTaxes":
     case "operationsTaxes":

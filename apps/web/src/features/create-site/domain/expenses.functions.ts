@@ -1,11 +1,11 @@
-import { Expense } from "./siteFoncier.types";
+import { SiteYearlyExpense } from "shared";
 
-type GroupedByExpensesKey = "bearer" | "purposeCategory";
+type GroupedByExpensesKey = "bearer";
 
 const groupAndSumBy =
   <K extends GroupedByExpensesKey>(key: K) =>
-  (expenses: Expense[]) => {
-    return expenses.reduce<Record<Expense[K], number>>(
+  (expenses: SiteYearlyExpense[]) => {
+    return expenses.reduce<Record<SiteYearlyExpense[K], number>>(
       (expensesByKey, expense) => {
         const group = expense[key];
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -13,29 +13,20 @@ const groupAndSumBy =
         return { ...expensesByKey, [group]: totalAmountForKey };
       },
       // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
-      {} as Record<Expense[K], number>,
+      {} as Record<SiteYearlyExpense[K], number>,
     );
   };
 
-export const groupExpensesByBearer = (expenses: Expense[]) => {
+export const groupExpensesByBearer = (expenses: SiteYearlyExpense[]) => {
   const expensesMapByCategory = groupAndSumBy("bearer")(expenses);
 
   return Object.entries(expensesMapByCategory).map(([bearer, amount]) => ({
-    bearer: bearer as Expense["bearer"],
+    bearer: bearer as SiteYearlyExpense["bearer"],
     amount,
   }));
 };
 
-export const groupExpensesByCategory = (expenses: Expense[]) => {
-  const expensesMapByCategory = groupAndSumBy("purposeCategory")(expenses);
-
-  return Object.entries(expensesMapByCategory).map(([category, amount]) => ({
-    purposeCategory: category as Expense["purposeCategory"],
-    amount,
-  }));
-};
-
-export const getLabelForExpensePurpose = (expensePurpose: Expense["purpose"]): string => {
+export const getLabelForExpensePurpose = (expensePurpose: SiteYearlyExpense["purpose"]): string => {
   switch (expensePurpose) {
     case "propertyTaxes":
       return "Taxe foncière";

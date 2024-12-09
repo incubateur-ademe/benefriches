@@ -82,7 +82,6 @@ export class SqlSiteRepository implements SitesRepository {
           return {
             id: uuid(),
             site_id: insertedSite.id,
-            purpose_category: expense.purposeCategory,
             amount: expense.amount,
             bearer: expense.bearer,
             purpose: expense.purpose,

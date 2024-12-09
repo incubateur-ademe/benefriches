@@ -147,9 +147,9 @@ describe("Site yearly expenses mappers", () => {
         { name: "accidentsCost", bearer: "owner" },
       ]),
     ).toEqual([
-      { purpose: "rent", bearer: "tenant", amount: 140, purposeCategory: "rent" },
-      { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
-      { purpose: "security", bearer: "owner", amount: 89, purposeCategory: "safety" },
+      { purpose: "rent", bearer: "tenant", amount: 140 },
+      { purpose: "propertyTaxes", bearer: "owner", amount: 130 },
+      { purpose: "security", bearer: "owner", amount: 89 },
     ]);
   });
 
@@ -178,20 +178,19 @@ describe("Site yearly expenses mappers", () => {
         { name: "accidentsCost", bearer: "owner" },
       ]),
     ).toEqual([
-      { purpose: "rent", bearer: "tenant", amount: 140, purposeCategory: "rent" },
-      { purpose: "operationsTaxes", bearer: "tenant", amount: 3, purposeCategory: "taxes" },
-      { purpose: "maintenance", bearer: "tenant", amount: 19, purposeCategory: "site_management" },
-      { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
+      { purpose: "rent", bearer: "tenant", amount: 140 },
+      { purpose: "operationsTaxes", bearer: "tenant", amount: 3 },
+      { purpose: "maintenance", bearer: "tenant", amount: 19 },
+      { purpose: "propertyTaxes", bearer: "owner", amount: 130 },
       {
         purpose: "otherManagementCosts",
         bearer: "tenant",
         amount: 15,
-        purposeCategory: "site_management",
       },
-      { purpose: "security", bearer: "owner", amount: 89, purposeCategory: "safety" },
-      { purpose: "illegalDumpingCost", bearer: "owner", amount: 90, purposeCategory: "safety" },
-      { purpose: "otherSecuringCosts", bearer: "tenant", amount: 129, purposeCategory: "safety" },
-      { purpose: "accidentsCost", bearer: "owner", amount: 12, purposeCategory: "safety" },
+      { purpose: "security", bearer: "owner", amount: 89 },
+      { purpose: "illegalDumpingCost", bearer: "owner", amount: 90 },
+      { purpose: "otherSecuringCosts", bearer: "tenant", amount: 129 },
+      { purpose: "accidentsCost", bearer: "owner", amount: 12 },
     ]);
   });
 
@@ -220,18 +219,17 @@ describe("Site yearly expenses mappers", () => {
         { name: "accidentsCost", bearer: "owner" },
       ]),
     ).toEqual([
-      { purpose: "maintenance", bearer: "owner", amount: 19, purposeCategory: "site_management" },
-      { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
+      { purpose: "maintenance", bearer: "owner", amount: 19 },
+      { purpose: "propertyTaxes", bearer: "owner", amount: 130 },
       {
         purpose: "otherManagementCosts",
         bearer: "owner",
         amount: 15,
-        purposeCategory: "site_management",
       },
-      { purpose: "security", bearer: "owner", amount: 89, purposeCategory: "safety" },
-      { purpose: "illegalDumpingCost", bearer: "owner", amount: 90, purposeCategory: "safety" },
-      { purpose: "otherSecuringCosts", bearer: "owner", amount: 129, purposeCategory: "safety" },
-      { purpose: "accidentsCost", bearer: "owner", amount: 12, purposeCategory: "safety" },
+      { purpose: "security", bearer: "owner", amount: 89 },
+      { purpose: "illegalDumpingCost", bearer: "owner", amount: 90 },
+      { purpose: "otherSecuringCosts", bearer: "owner", amount: 129 },
+      { purpose: "accidentsCost", bearer: "owner", amount: 12 },
     ]);
   });
 
@@ -260,20 +258,19 @@ describe("Site yearly expenses mappers", () => {
         { name: "accidentsCost", bearer: undefined },
       ]),
     ).toEqual([
-      { purpose: "rent", bearer: "tenant", amount: 140, purposeCategory: "rent" },
-      { purpose: "operationsTaxes", bearer: "tenant", amount: 3, purposeCategory: "taxes" },
-      { purpose: "maintenance", bearer: "owner", amount: 19, purposeCategory: "site_management" },
-      { purpose: "propertyTaxes", bearer: "owner", amount: 130, purposeCategory: "taxes" },
+      { purpose: "rent", bearer: "tenant", amount: 140 },
+      { purpose: "operationsTaxes", bearer: "tenant", amount: 3 },
+      { purpose: "maintenance", bearer: "owner", amount: 19 },
+      { purpose: "propertyTaxes", bearer: "owner", amount: 130 },
       {
         purpose: "otherManagementCosts",
         bearer: "tenant",
         amount: 15,
-        purposeCategory: "site_management",
       },
-      { purpose: "security", bearer: "owner", amount: 89, purposeCategory: "safety" },
-      { purpose: "illegalDumpingCost", bearer: "owner", amount: 90, purposeCategory: "safety" },
-      { purpose: "otherSecuringCosts", bearer: "owner", amount: 129, purposeCategory: "safety" },
-      { purpose: "accidentsCost", bearer: "tenant", amount: 12, purposeCategory: "safety" },
+      { purpose: "security", bearer: "owner", amount: 89 },
+      { purpose: "illegalDumpingCost", bearer: "owner", amount: 90 },
+      { purpose: "otherSecuringCosts", bearer: "owner", amount: 129 },
+      { purpose: "accidentsCost", bearer: "tenant", amount: 12 },
     ]);
   });
 });

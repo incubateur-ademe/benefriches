@@ -11,6 +11,12 @@ export type SiteYearlyExpensePurpose =
   | "accidentsCost"
   | "otherSecuringCosts";
 
+export type SiteYearlyExpense = {
+  purpose: SiteYearlyExpensePurpose;
+  amount: number;
+  bearer: "owner" | "tenant";
+};
+
 export const fricheActivitySchema = z.enum([
   "AGRICULTURE",
   "INDUSTRY",

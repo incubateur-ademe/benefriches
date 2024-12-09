@@ -1,4 +1,4 @@
-import { FricheActivity, SiteYearlyExpensePurpose, SoilsDistribution, SoilType } from "shared";
+import { FricheActivity, SiteYearlyExpense, SoilsDistribution, SoilType } from "shared";
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
 
@@ -50,7 +50,7 @@ export type SiteDraft = {
   accidentsMinorInjuries?: number;
   accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
-  yearlyExpenses: Expense[];
+  yearlyExpenses: SiteYearlyExpense[];
   yearlyIncomes: Income[];
 };
 
@@ -63,21 +63,6 @@ export type SiteExpressDraft = {
 
 export type Tenant = { structureType: TenantStructureType; name: string };
 export type Owner = { structureType: OwnerStructureType; name: string };
-
-type ExpensePurposeCategory =
-  | "rent"
-  | "safety"
-  | "site_management"
-  | "soils_degradation"
-  | "taxes"
-  | "other";
-
-export type Expense = {
-  purpose: SiteYearlyExpensePurpose;
-  purposeCategory: ExpensePurposeCategory;
-  bearer: "owner" | "tenant";
-  amount: number;
-};
 
 export type Income = {
   source: string;

@@ -1,21 +1,22 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
+import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
-import { Expense, Income } from "@/features/create-site/domain/siteFoncier.types";
+import { Income } from "@/features/create-site/domain/siteFoncier.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
 type Props = {
-  ownerExpenses: Expense[];
-  tenantExpenses: Expense[];
+  ownerExpenses: SiteYearlyExpense[];
+  tenantExpenses: SiteYearlyExpense[];
   ownerIncome: Income[];
   tenantIncome: Income[];
   ownerName?: string;
   tenantName?: string;
 };
 
-const getColorForPurpose = (purpose: Expense["purpose"]) => {
+const getColorForPurpose = (purpose: SiteYearlyExpensePurpose) => {
   switch (purpose) {
     case "accidentsCost":
       return "#13BAEC";

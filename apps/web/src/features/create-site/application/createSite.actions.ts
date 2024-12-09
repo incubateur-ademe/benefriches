@@ -85,7 +85,6 @@ const createSiteSchema = z.object({
     .object({
       purpose: z.string(),
       bearer: z.string(),
-      purposeCategory: z.string(),
       amount: z.number().nonnegative(),
     })
     .array(),

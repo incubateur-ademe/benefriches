@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SiteYearlyExpense, SoilType } from "shared";
 import { formatMunicipalityName } from "shared";
 
 import { CreateSiteGatewayPayload } from "../application/createSite.actions";
@@ -8,7 +8,7 @@ import {
   computeEstimatedPropertyTaxesAmount,
   computeSecurityDefaultCost,
 } from "./expenses.functions";
-import { Expense, SiteExpressDraft } from "./siteFoncier.types";
+import { SiteExpressDraft } from "./siteFoncier.types";
 import { generateSiteName } from "./siteName";
 
 const FRANCE_AVERAGE_CITY_POPULATION = 1800;
@@ -33,18 +33,16 @@ const getExpressSiteData = (
     ARTIFICIAL_TREE_FILLED: 0.1 * surfaceArea,
   };
 
-  const yearlyExpenses = [
+  const yearlyExpenses: SiteYearlyExpense[] = [
     {
       amount: computeMaintenanceDefaultCost(soilsDistribution.BUILDINGS),
       purpose: "maintenance",
       bearer: "owner",
-      purposeCategory: "site_management",
     },
     {
       amount: computeEstimatedPropertyTaxesAmount(soilsDistribution.BUILDINGS),
       purpose: "propertyTaxes",
       bearer: "owner",
-      purposeCategory: "taxes",
     },
   ];
 
@@ -54,13 +52,11 @@ const getExpressSiteData = (
         amount: computeIllegalDumpingDefaultCost(population),
         purpose: "illegalDumpingCost",
         bearer: "owner",
-        purposeCategory: "safety",
       },
       {
         amount: computeSecurityDefaultCost(surfaceArea),
         purpose: "security",
         bearer: "owner",
-        purposeCategory: "safety",
       },
     );
   }
@@ -80,7 +76,7 @@ const getExpressSiteData = (
       structureType: "company",
       name: "Actuel locataire",
     },
-    yearlyExpenses: yearlyExpenses as Expense[],
+    yearlyExpenses,
     yearlyIncomes: [],
     name: generateSiteName({
       address: siteData.address,

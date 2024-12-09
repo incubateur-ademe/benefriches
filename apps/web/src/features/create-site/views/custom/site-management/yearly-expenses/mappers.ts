@@ -1,37 +1,24 @@
-import { Expense } from "@/features/create-site/domain/siteFoncier.types";
+import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 
 import { FormValues } from "./SiteYearlyExpensesForm";
 
-const PURPOSE_CATEGORIES = {
-  rent: "rent",
-  propertyTaxes: "taxes",
-  operationsTaxes: "taxes",
-  maintenance: "site_management",
-  otherManagementCosts: "site_management",
-  security: "safety",
-  illegalDumpingCost: "safety",
-  accidentsCost: "safety",
-  otherSecuringCosts: "safety",
-} as const;
-
 export const mapFormDataToExpenses = (
   formData: FormValues,
-  expectedExpenses: { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[],
-): Expense[] =>
+  expectedExpenses: { name: SiteYearlyExpensePurpose; bearer?: "tenant" | "owner" }[],
+): SiteYearlyExpense[] =>
   expectedExpenses
     .map(({ name, bearer }) => ({
       purpose: name,
       bearer: bearer ?? formData[name]?.bearer ?? "tenant",
       amount: formData[name]?.amount,
-      purposeCategory: PURPOSE_CATEGORIES[name],
     }))
-    .filter(({ amount }) => !!amount) as Expense[];
+    .filter(({ amount }) => !!amount) as SiteYearlyExpense[];
 
 export const getSiteManagementExpensesWithBearer = (
   isFriche: boolean,
   isWorked: boolean,
   hasTenant: boolean,
-): { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[] => {
+): { name: SiteYearlyExpensePurpose; bearer?: "tenant" | "owner" }[] => {
   const isFricheLeased = isFriche && hasTenant;
   const isSiteOperatedByTenant = !isFriche && isWorked && hasTenant;
   if (isFricheLeased) {
@@ -82,5 +69,5 @@ export const getSiteSecurityExpensesWithBearer = (
   if (hasRecentAccidents) {
     expenses.push({ name: "accidentsCost", bearer: expensesOwner });
   }
-  return expenses as { name: Expense["purpose"]; bearer?: "tenant" | "owner" }[];
+  return expenses as { name: SiteYearlyExpensePurpose; bearer?: "tenant" | "owner" }[];
 };
