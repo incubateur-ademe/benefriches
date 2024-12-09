@@ -7,12 +7,12 @@ import { fetchProjectFeatures } from "./projectFeatures.actions";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type ProjectFeaturesState = {
+type ProjectFeaturesState = {
   dataLoadingState: LoadingState;
   data?: ProjectFeatures;
 };
 
-export const getInitialState = (): ProjectFeaturesState => {
+const getInitialState = (): ProjectFeaturesState => {
   return {
     data: undefined,
     dataLoadingState: "idle",

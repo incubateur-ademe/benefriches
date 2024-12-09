@@ -1,7 +1,7 @@
 import { AppSettingsGateway } from "../domain/AppSettingsGateway";
 import { AppSettings, DEFAULT_APP_SETTINGS } from "../domain/appSettings";
 
-export const APP_SETTINGS_STORAGE_KEY = "benefriches/app-settings/v0";
+const APP_SETTINGS_STORAGE_KEY = "benefriches/app-settings/v0";
 
 export class LocalStorageAppSettings implements AppSettingsGateway {
   getAll(): AppSettings {

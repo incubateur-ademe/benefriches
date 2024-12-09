@@ -14,7 +14,7 @@ type Props = {
   onBack: () => void;
 };
 
-export type FormValues = {
+type FormValues = {
   sellingPrice?: number;
   propertyTransferDuties?: number;
 };

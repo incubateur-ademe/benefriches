@@ -21,7 +21,7 @@ export function prefixActionType(actionType: string) {
   return `projectCreation/renewableEnergyProject/${actionType}`;
 }
 
-export const createAction = <TPayload = void>(actionName: string) =>
+const createAction = <TPayload = void>(actionName: string) =>
   _createAction<TPayload>(prefixActionType(actionName));
 
 export const completeRenewableEnergyType = createAction<RenewableEnergyDevelopmentPlanType>(

@@ -14,7 +14,7 @@ type Props = {
   onBack: () => void;
 };
 
-export type FormValues = Record<BuildingsUseCategory, number>;
+type FormValues = Record<BuildingsUseCategory, number>;
 
 function BuildingsUseCategorySurfaceAreas({
   selectedBuildingsUseCategories,

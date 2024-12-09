@@ -114,15 +114,6 @@ export const computeSoilsCarbonStorage = (
   return (soilsCarbonStorageDifference / RATIO_CO2_TO_CARBON) * co2eqMonetaryValue;
 };
 
-export const computeAvoidedCO2eqMonetaryValue = (
-  avoidedCO2Tons: number,
-  operationsFirstYear: number,
-) => {
-  const co2eqMonetaryValue = computeCO2eqMonetaryValueForYear(operationsFirstYear);
-
-  return avoidedCO2Tons * co2eqMonetaryValue;
-};
-
 const WATER_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0118;
 const computeWaterRegulation = (
   forestSurface: number,

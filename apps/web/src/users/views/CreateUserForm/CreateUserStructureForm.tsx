@@ -14,7 +14,7 @@ import { FormValues } from "./CreateUserForm";
 
 type StructureCategory = Exclude<UserStructureActivity, LocalAuthority> | "local_authority";
 
-export type Municipality = {
+type Municipality = {
   label: AdministrativeDivision["name"];
   value: AdministrativeDivision["code"];
   localAuthorities: AdministrativeDivision["localAuthorities"];

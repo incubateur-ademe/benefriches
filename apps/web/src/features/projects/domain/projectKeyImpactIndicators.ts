@@ -7,9 +7,7 @@ import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
 
 export type ProjectOverallImpact = "strong_negative" | "negative" | "positive" | "strong_positive";
 
-export const isProjectOverallImpactPositive = (
-  projectOverallImpact: ProjectOverallImpact,
-): boolean => {
+const isProjectOverallImpactPositive = (projectOverallImpact: ProjectOverallImpact): boolean => {
   return projectOverallImpact === "positive" || projectOverallImpact === "strong_positive";
 };
 
@@ -223,7 +221,7 @@ const getLocalPropertyValueIncrease = (
   return localPropertyValueIncrease?.amount;
 };
 
-export type KeyImpactIndicatorData =
+type KeyImpactIndicatorData =
   | {
       name:
         | "taxesIncomesImpact"

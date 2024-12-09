@@ -11,22 +11,7 @@ import {
   BuildingFloorAreaUsageDistribution,
 } from "shared";
 
-import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
-
 type Schedule = { startDate: string; endDate: string };
-export type ProjectsList = {
-  id: string;
-  name: string;
-  site: {
-    id: string;
-    name: string;
-  };
-}[];
-
-export type SitesList = {
-  id: string;
-  name: string;
-}[];
 
 export type ProjectsGroup = {
   siteId: string;
@@ -43,51 +28,6 @@ export type ProjectsGroup = {
 };
 
 export type ReconversionProjectsGroupedBySite = ProjectsGroup[];
-
-export type SiteExpense = {
-  type: string;
-  bearer: "owner" | "tenant";
-  category: "rent" | "safety" | "soils_degradation" | "taxes" | "other";
-  amount: number;
-};
-
-type SiteIncome = {
-  type: string;
-  amount: number;
-};
-
-export type Owner = { structureType: OwnerStructureType; name: string };
-
-export type ProjectSite = {
-  id: string;
-  name: string;
-  isFriche: boolean;
-  soilsDistribution: SoilsDistribution;
-  surfaceArea: number;
-  address: {
-    id: string;
-    value: string;
-    city: string;
-    cityCode: string;
-    postCode: string;
-    streetNumber?: string;
-    streetName?: string;
-    long: number;
-    lat: number;
-  };
-  yearlyExpenses: SiteExpense[];
-  yearlyIncomes: SiteIncome[];
-  owner: Owner;
-};
-
-type ProjectStakeholderStructure =
-  | OwnerStructureType
-  | TenantStructureType
-  | "company"
-  | "other"
-  | "unknown";
-
-export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
 
 type PhotovoltaicPowerPlantFeatures = {
   type: "PHOTOVOLTAIC_POWER_PLANT";
@@ -128,17 +68,3 @@ export type ProjectFeatures = {
 };
 
 export type ProjectDevelopmentPlanType = "PHOTOVOLTAIC_POWER_PLANT" | "URBAN_PROJECT";
-
-export type ProjectForComparison = {
-  id: string;
-  name: string;
-  relatedSiteId: string;
-  soilsDistribution: SoilsDistribution;
-  futureOperator: ProjectStakeholder;
-  reinstatementContractOwner?: ProjectStakeholder;
-  reinstatementCost?: number;
-  photovoltaicPanelsInstallationCost: number;
-  financialAssistanceRevenues: number;
-  yearlyProjectedCosts: RecurringExpense[];
-  yearlyProjectedRevenues: RecurringRevenue[];
-};

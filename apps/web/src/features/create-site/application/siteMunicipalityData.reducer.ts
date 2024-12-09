@@ -6,9 +6,9 @@ import { RootState } from "@/app/application/store";
 import { selectSiteOwner } from "./createSite.selectors";
 import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
 
-export type LoadingState = "idle" | "loading" | "success" | "error";
+type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type SiteLocalAuthorities = {
+type SiteLocalAuthorities = {
   city: {
     code: string;
     name: string;
@@ -27,7 +27,7 @@ export type SiteLocalAuthorities = {
   };
 };
 
-export type SiteMunicipalityDataState = {
+type SiteMunicipalityDataState = {
   loadingState: LoadingState;
   localAuthorities?: SiteLocalAuthorities;
   population?: number;
@@ -105,7 +105,7 @@ export const selectAvailableLocalAuthoritiesWithoutCurrentUser = createSelector(
   },
 );
 
-export const siteMunicipalityData = createSlice({
+const siteMunicipalityData = createSlice({
   name: "siteMunicipalityData",
   initialState,
   reducers: {},

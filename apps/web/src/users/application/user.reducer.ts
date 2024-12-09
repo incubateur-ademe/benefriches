@@ -6,7 +6,7 @@ import { User, UserStructure } from "../domain/user";
 import { createUser } from "./createUser.action";
 import { initCurrentUser } from "./initCurrentUser.action";
 
-export type State = {
+type State = {
   currentUser: User | null;
   currentUserLoaded: boolean;
   createUserState: "idle" | "loading" | "success" | "error";
@@ -18,7 +18,7 @@ const initialState: State = {
   createUserState: "idle",
 };
 
-export const userSlice = createSlice({
+const userSlice = createSlice({
   name: "currentUser",
   initialState,
   reducers: {},

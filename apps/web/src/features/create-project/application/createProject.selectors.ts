@@ -54,11 +54,6 @@ export const selectSiteAddress = createSelector(selectSiteData, (siteData): Addr
   return siteData?.address;
 });
 
-export const selectIsSiteLoaded = createSelector(
-  selectSelf,
-  (state): boolean => state.siteDataLoadingState === "success" && !!state.siteData,
-);
-
 export const selectDefaultSchedule = createSelector(
   selectIsSiteFriche,
   (isFriche): ProjectSchedule => {

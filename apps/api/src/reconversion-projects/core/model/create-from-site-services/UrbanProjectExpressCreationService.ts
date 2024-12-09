@@ -21,7 +21,7 @@ import { Address } from "src/sites/core/models/site";
 
 import { ReconversionProject, reconversionProjectSchema } from "../reconversionProject";
 
-export type SiteData = {
+type SiteData = {
   id: string;
   isFriche: boolean;
   surfaceArea: number;

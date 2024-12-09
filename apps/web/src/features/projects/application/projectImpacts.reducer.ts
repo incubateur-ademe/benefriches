@@ -58,7 +58,7 @@ export type ProjectImpactsState = {
   currentViewMode: ViewMode;
 };
 
-export const getInitialState = (): ProjectImpactsState => {
+const getInitialState = (): ProjectImpactsState => {
   return {
     impactsData: undefined,
     projectData: undefined,
@@ -69,7 +69,7 @@ export const getInitialState = (): ProjectImpactsState => {
   };
 };
 
-export const projectImpactsSlice = createSlice({
+const projectImpactsSlice = createSlice({
   name: "projectImpacts",
   initialState: getInitialState(),
   reducers: {

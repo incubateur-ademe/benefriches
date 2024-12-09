@@ -1,5 +1,4 @@
 import { SoilsDistribution } from "shared";
-import { z } from "zod";
 
 import { UseCase } from "src/shared-kernel/usecase";
 import { Address } from "src/sites/core/models/site";
@@ -8,9 +7,9 @@ import { NewUrbanCenterProjectExpressCreationService } from "../model/create-fro
 import { PublicFacilitiesProjectExpressCreationService } from "../model/create-from-site-services/PublicFacilitiesProjectExpressCreationService";
 import { ResidentialProjectExpressCreationService } from "../model/create-from-site-services/ResidentialProjectExpressCreationService";
 import { ResidentialTenseAreaProjectExpressCreationService } from "../model/create-from-site-services/ResidentialTenseAreaProjectExpressCreationService";
-import { ReconversionProject, reconversionProjectPropsSchema } from "../model/reconversionProject";
+import { ReconversionProject } from "../model/reconversionProject";
 
-export type SiteView = {
+type SiteView = {
   id: string;
   isFriche: boolean;
   surfaceArea: number;
@@ -26,7 +25,7 @@ export type SiteView = {
 export interface SiteQuery {
   getById(id: string): Promise<SiteView | undefined>;
 }
-export interface ReconversionProjectRepository {
+interface ReconversionProjectRepository {
   existsWithId(id: string): Promise<boolean>;
   save(reconversionProject: ReconversionProject): Promise<void>;
 }
@@ -34,8 +33,6 @@ export interface ReconversionProjectRepository {
 export interface DateProvider {
   now(): Date;
 }
-
-export type ReconversionProjectProps = z.infer<typeof reconversionProjectPropsSchema>;
 
 type Request = {
   reconversionProjectId: string;

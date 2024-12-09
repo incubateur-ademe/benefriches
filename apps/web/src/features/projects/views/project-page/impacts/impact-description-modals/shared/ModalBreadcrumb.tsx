@@ -3,7 +3,7 @@ import { useId } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-export type ModalBreadcrumbSegments = {
+type ModalBreadcrumbSegments = {
   onClick?: () => void;
   label: string;
   isCurrent?: boolean;

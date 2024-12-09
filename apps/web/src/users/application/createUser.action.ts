@@ -4,7 +4,7 @@ import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
 import { User, userSchema } from "../domain/user";
 
-export type CreateUserProps = Omit<User, "id">;
+type CreateUserProps = Omit<User, "id">;
 
 export interface CreateUserGateway {
   save(user: User): Promise<void>;

@@ -7,7 +7,7 @@ type ImpactValue = {
   difference: number;
 };
 
-export type ImpactDetails = {
+type ImpactDetails = {
   name: EnvironmentalImpactDetailsName;
   impact: ImpactValue;
 };

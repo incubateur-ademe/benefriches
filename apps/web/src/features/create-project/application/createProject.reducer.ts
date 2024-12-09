@@ -66,7 +66,7 @@ export const getInitialState = (): ProjectCreationState => {
   };
 };
 
-export const projectCreationSlice = createSlice({
+const projectCreationSlice = createSlice({
   name: "projectCreation",
   initialState: getInitialState(),
   reducers: {

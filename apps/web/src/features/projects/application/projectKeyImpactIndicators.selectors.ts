@@ -11,11 +11,6 @@ import {
 
 const selectSelf = (state: RootState) => state.projectImpacts;
 
-export const getEvaluationPeriod = createSelector(
-  selectSelf,
-  (state): number => state.evaluationPeriod,
-);
-
 export type KeyImpactIndicatorData =
   | {
       name:

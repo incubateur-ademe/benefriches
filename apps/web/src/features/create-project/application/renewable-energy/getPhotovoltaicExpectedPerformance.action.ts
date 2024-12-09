@@ -26,7 +26,7 @@ export interface PhotovoltaicPerformanceGateway {
   ): Promise<PhotovoltaicPerformanceApiResult>;
 }
 
-export type FetchResult = {
+type FetchResult = {
   expectedPerformanceMwhPerYear: number;
 };
 

@@ -13,7 +13,7 @@ const selectImpactsData = createSelector(
   (state): ProjectImpactsState["impactsData"] => state.impactsData,
 );
 
-export const selectProjectDevelopmentType = createSelector(
+const selectProjectDevelopmentType = createSelector(
   selectSelf,
   (state): ProjectDevelopmentPlanType =>
     state.projectData?.developmentPlan.type ?? "PHOTOVOLTAIC_POWER_PLANT",

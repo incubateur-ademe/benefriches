@@ -81,7 +81,7 @@ export const getInitialState = (): SiteCreationState => {
   } as const;
 };
 
-export const siteCreationSlice = createSlice({
+const siteCreationSlice = createSlice({
   name: "siteCreation",
   initialState: getInitialState(),
   reducers: {

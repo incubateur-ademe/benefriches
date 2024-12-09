@@ -7,12 +7,12 @@ import { fetchSiteFeatures } from "./fetchSiteFeatures.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type SiteFeaturesState = {
+type SiteFeaturesState = {
   dataLoadingState: LoadingState;
   siteData?: SiteFeatures;
 };
 
-export const getInitialState = (): SiteFeaturesState => {
+const getInitialState = (): SiteFeaturesState => {
   return {
     dataLoadingState: "idle",
     siteData: undefined,

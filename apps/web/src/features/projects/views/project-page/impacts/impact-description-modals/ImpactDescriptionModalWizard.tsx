@@ -16,7 +16,7 @@ import SocioEconomicModalContentWizard from "./socio-economic/ModalContentWizard
 import { getSocioEconomicSectionModalTitle } from "./socio-economic/getTitle";
 import { SocioEconomicImpactDescriptionModalId } from "./socio-economic/types";
 
-export type ImpactSectionName = "economic-balance" | "socio-economic" | "social" | "environmental";
+type ImpactSectionName = "economic-balance" | "socio-economic" | "social" | "environmental";
 
 export type ImpactDescriptionModalCategory =
   | EconomicBalanceImpactDescriptionModalId

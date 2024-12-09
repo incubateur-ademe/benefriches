@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { type ReactNode, useId } from "react";
 
-export type Props = {
+type Props = {
   id?: string;
   legend?: ReactNode;
   hintText?: ReactNode;

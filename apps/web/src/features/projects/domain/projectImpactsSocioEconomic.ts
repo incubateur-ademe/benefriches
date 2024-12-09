@@ -8,7 +8,7 @@ import {
 
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
 
-export type SocioEconomicImpactByCategory = {
+type SocioEconomicImpactByCategory = {
   total: number;
   impacts: {
     name: SocioEconomicMainImpactName;

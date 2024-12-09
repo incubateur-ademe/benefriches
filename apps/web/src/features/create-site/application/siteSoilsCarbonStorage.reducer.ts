@@ -15,7 +15,7 @@ export type SiteCarbonStorage = {
   }[];
 };
 
-export type State = {
+type State = {
   loadingState: LoadingState;
   carbonStorage: SiteCarbonStorage | undefined;
 };
@@ -25,7 +25,7 @@ const initialState: State = {
   carbonStorage: undefined,
 };
 
-export const siteCarbonStorage = createSlice({
+const siteCarbonStorage = createSlice({
   name: "carbonStorage",
   initialState,
   reducers: {},

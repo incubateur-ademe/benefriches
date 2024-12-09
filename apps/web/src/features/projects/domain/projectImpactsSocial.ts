@@ -6,15 +6,6 @@ type ImpactValue = {
   difference: number;
 };
 
-export type ImpactDetails = {
-  name:
-    | "stored_co2_eq"
-    | "avoided_co2_eq_emissions_with_production"
-    | "mineral_soil"
-    | "green_soil";
-  impact: ImpactValue;
-};
-
 export type SocialImpactName = SocialMainImpactName | SocialImpactDetailsName;
 
 type SocialMainImpactName =

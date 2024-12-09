@@ -8,9 +8,9 @@ import {
 } from "../domain/projects.types";
 import { fetchReconversionProjects } from "./projectsList.actions";
 
-export type LoadingState = "idle" | "loading" | "success" | "error";
+type LoadingState = "idle" | "loading" | "success" | "error";
 
-export type State = {
+type State = {
   reconversionProjectsLoadingState: LoadingState;
   reconversionProjects: ReconversionProjectsGroupedBySite;
 };
@@ -20,7 +20,7 @@ const initialState: State = {
   reconversionProjects: [],
 };
 
-export const reconversionProjectsList = createSlice({
+const reconversionProjectsList = createSlice({
   name: "reconversionProjectsList",
   initialState,
   reducers: {},

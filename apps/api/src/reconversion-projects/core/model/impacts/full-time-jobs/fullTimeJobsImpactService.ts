@@ -41,7 +41,7 @@ type DevelopmentPlan =
       features: Pick<UrbanProjectFeatures, "buildingsFloorAreaDistribution">;
     };
 
-export type FullTimeJobsImpactServiceProps = {
+type FullTimeJobsImpactServiceProps = {
   developmentPlan: DevelopmentPlan;
   conversionSchedule?: Schedule;
   reinstatementSchedule?: Schedule;

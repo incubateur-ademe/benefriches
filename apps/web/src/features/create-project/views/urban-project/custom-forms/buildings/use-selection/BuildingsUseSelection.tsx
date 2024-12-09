@@ -12,7 +12,7 @@ import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileForm
 import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-export type FormValues = {
+type FormValues = {
   buildingsUseCategories: BuildingsUseCategory[];
 };
 

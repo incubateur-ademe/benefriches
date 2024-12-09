@@ -1,6 +1,6 @@
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
-export type GetMunicipalityDataResult = {
+type GetMunicipalityDataResult = {
   localAuthorities: {
     city: {
       code: string;

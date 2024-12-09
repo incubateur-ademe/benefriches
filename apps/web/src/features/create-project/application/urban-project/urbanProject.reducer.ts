@@ -261,7 +261,7 @@ export const hasBuildings = (state: ProjectCreationState) => {
   return buildingsSurfaceArea > 0;
 };
 
-export const hasBuildingsOperations = (state: ProjectCreationState) => {
+const hasBuildingsOperations = (state: ProjectCreationState) => {
   return hasBuildings(state) && state.urbanProject.creationData.projectDevoloperOwnsBuildings;
 };
 

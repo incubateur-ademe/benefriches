@@ -16,7 +16,7 @@ export const sitePropsSchema = z.discriminatedUnion("isFriche", [
 
 export type NonFricheSiteProps = z.infer<typeof nonFrichePropsSchema>;
 export type FricheSiteProps = z.infer<typeof frichePropsSchema>;
-export type SiteProps = z.infer<typeof sitePropsSchema>;
+type SiteProps = z.infer<typeof sitePropsSchema>;
 
 type Request = {
   siteProps: SiteProps;

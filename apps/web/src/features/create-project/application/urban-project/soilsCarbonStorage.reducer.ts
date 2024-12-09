@@ -3,8 +3,6 @@ import { createReducer } from "@reduxjs/toolkit";
 import { SoilsCarbonStorageResult } from "../soilsCarbonStorage.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./soilsCarbonStorage.actions";
 
-export type LoadingState = "idle" | "loading" | "success" | "error";
-
 export type State =
   | {
       loadingState: "success";

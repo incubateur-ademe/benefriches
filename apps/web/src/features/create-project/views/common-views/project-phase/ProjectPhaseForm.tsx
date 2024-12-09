@@ -10,7 +10,7 @@ type Props<T> = {
   onBack: () => void;
 };
 
-export type FormValues<T> = {
+type FormValues<T> = {
   phase?: T;
 };
 

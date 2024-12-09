@@ -3,7 +3,7 @@ import { useId } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-export type Props = {
+type Props = {
   title: string;
   type: "success" | "error";
   description?: string;
