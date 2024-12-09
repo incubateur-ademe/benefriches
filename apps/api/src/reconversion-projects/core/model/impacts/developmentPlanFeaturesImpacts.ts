@@ -1,4 +1,9 @@
-import { getAnnualizedCO2MonetaryValueForDuration } from "shared";
+import {
+  EnvironmentalCo2RelatedImpacts,
+  getAnnualizedCO2MonetaryValueForDuration,
+  SocialImpacts,
+  SocioEconomicImpact,
+} from "shared";
 
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 
@@ -7,7 +12,6 @@ import { UrbanProjectFeatures } from "../urbanProjects";
 import { computeAvoidedCO2TonsWithEnergyProductionImpact } from "./avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import { computeHouseholdsPoweredByRenewableEnergyImpact } from "./households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
 import { getLocalPropertyValueIncreaseRelatedImpacts } from "./property-value/propertyValueImpact";
-import { SocioEconomicImpact } from "./socioEconomic.types";
 import { TravelRelatedImpactsService } from "./travel-related-impacts-service/TravelRelatedImpactsService";
 import { UrbanFreshnessRelatedImpactsService } from "./urban-freshness-related-impacts-service/UrbanFreshnessRelatedImpactsService";
 
@@ -27,6 +31,11 @@ type Input = {
   getCityRelatedDataService: GetCityRelatedDataService;
 };
 
+type Result = {
+  socioeconomic: SocioEconomicImpact[];
+} & SocialImpacts &
+  EnvironmentalCo2RelatedImpacts;
+
 export const getDevelopmentPlanRelatedImpacts = async ({
   developmentPlanType,
   developmentPlanFeatures,
@@ -36,7 +45,7 @@ export const getDevelopmentPlanRelatedImpacts = async ({
   siteCityCode,
   siteIsFriche,
   getCityRelatedDataService,
-}: Input) => {
+}: Input): Promise<Result> => {
   switch (developmentPlanType) {
     case "PHOTOVOLTAIC_POWER_PLANT": {
       const features = developmentPlanFeatures as PhotovoltaicPowerPlantFeatures;

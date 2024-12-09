@@ -189,7 +189,7 @@ export const getEnvironmentalProjectImpacts = (
     }
   }
 
-  const { base, forecast, mineralSoil, greenSoil } = permeableSurfaceArea;
+  const { base, forecast, difference, mineralSoil, greenSoil } = permeableSurfaceArea;
 
   impacts.push({
     name: "permeable_surface_area",
@@ -197,14 +197,14 @@ export const getEnvironmentalProjectImpacts = (
     impact: {
       base,
       forecast,
-      difference: forecast - base,
+      difference,
       details: [
         {
           name: "mineral_soil",
           impact: {
             base: mineralSoil.base,
             forecast: mineralSoil.forecast,
-            difference: mineralSoil.forecast - mineralSoil.base,
+            difference: mineralSoil.difference,
           },
         },
         {
@@ -212,7 +212,7 @@ export const getEnvironmentalProjectImpacts = (
           impact: {
             base: greenSoil.base,
             forecast: greenSoil.forecast,
-            difference: greenSoil.forecast - greenSoil.base,
+            difference: greenSoil.difference,
           },
         },
       ],

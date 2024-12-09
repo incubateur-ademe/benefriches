@@ -1,4 +1,9 @@
-import { RecurringExpense, RecurringRevenue, ReinstatementExpense } from "shared";
+import {
+  FinancialAssistanceRevenue,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpense,
+} from "shared";
 
 import {
   DevelopmentPlanInstallationExpenseName,
@@ -14,8 +19,6 @@ import {
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { SocialImpactName } from "@/features/projects/domain/projectImpactsSocial";
 import { SocioEconomicImpactName } from "@/features/projects/domain/projectImpactsSocioEconomic";
-
-import { FinancialAssistance } from "../../../domain/impacts.types";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {
@@ -257,7 +260,9 @@ export const getEconomicBalanceDetailsImpactLabel = (
     case "operations_revenues":
       return getEconomicBalanceYearlyRevenueSourceLabel(name as RecurringRevenue["source"]);
     case "financial_assistance":
-      return getEconomicBalanceFinancialAssistanceLabel(name as FinancialAssistance);
+      return getEconomicBalanceFinancialAssistanceLabel(
+        name as FinancialAssistanceRevenue["source"],
+      );
     case "photovoltaic_development_plan_installation":
     case "urban_project_development_plan_installation":
     case "development_plan_installation":
@@ -312,7 +317,9 @@ const getEconomicBalanceReinstatementExpensePurposeLabel = (
   }
 };
 
-const getEconomicBalanceFinancialAssistanceLabel = (revenueSource: FinancialAssistance): string => {
+const getEconomicBalanceFinancialAssistanceLabel = (
+  revenueSource: FinancialAssistanceRevenue["source"],
+): string => {
   switch (revenueSource) {
     case "local_or_regional_authority_participation":
       return "🏛 Participation des collectivités";

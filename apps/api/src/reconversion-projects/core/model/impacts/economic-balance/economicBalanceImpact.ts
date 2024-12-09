@@ -1,52 +1,31 @@
-import { sumListWithKey } from "shared";
-
-import { ReconversionProject } from "../../reconversionProject";
-
-type Cost = {
-  amount: number;
-  purpose: string;
-};
-type Revenue = {
-  amount: number;
-  source: string;
-};
-
-export type EconomicBalanceImpactResult = {
-  total: number;
-  bearer?: string;
-  costs: {
-    total: number;
-    operationsCosts?: { total: number; costs: Cost[] };
-    siteReinstatement?: { total: number; costs: Cost[] };
-    developmentPlanInstallation?: { total: number; costs: Cost[] };
-    sitePurchase?: number;
-  };
-  revenues: {
-    total: number;
-    operationsRevenues?: { total: number; revenues: Revenue[] };
-    financialAssistance?: { total: number; revenues: Revenue[] };
-    siteResale?: number;
-  };
-};
+import {
+  DevelopmentPlanInstallationCost,
+  EconomicBalanceImpactResult,
+  FinancialAssistanceRevenue,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpense,
+  sumListWithKey,
+} from "shared";
 
 type ProjectProps = {
-  financialAssistanceRevenues?: Revenue[];
-  reinstatementCosts: Cost[];
-  developmentPlanInstallationCosts: Cost[];
+  financialAssistanceRevenues?: FinancialAssistanceRevenue[];
+  reinstatementCosts: ReinstatementExpense[];
+  developmentPlanInstallationCosts: DevelopmentPlanInstallationCost[];
   sitePurchaseTotalAmount?: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
   futureSiteOwnerName?: string;
   reinstatementContractOwnerName?: string;
-  yearlyProjectedRevenues: Revenue[];
-  yearlyProjectedCosts: Cost[];
+  yearlyProjectedRevenues: RecurringRevenue[];
+  yearlyProjectedCosts: RecurringExpense[];
   siteResaleTotalAmount?: number;
 };
 
 type ReconversionProjectInstallationCostsInput = {
-  financialAssistanceRevenues?: Revenue[];
-  reinstatementCosts: Cost[];
-  developmentPlanInstallationCosts: Cost[];
+  financialAssistanceRevenues?: FinancialAssistanceRevenue[];
+  reinstatementCosts: ReinstatementExpense[];
+  developmentPlanInstallationCosts: DevelopmentPlanInstallationCost[];
   sitePurchaseTotalAmount: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
@@ -58,26 +37,14 @@ type ReconversionProjectInstallationEconomicResult = {
   total: number;
   costs: {
     total: number;
-    developmentPlanInstallation?: { total: number; costs: Cost[] };
-    siteReinstatement?: { total: number; costs: Cost[] };
+    developmentPlanInstallation?: { total: number; costs: DevelopmentPlanInstallationCost[] };
+    siteReinstatement?: { total: number; costs: ReinstatementExpense[] };
     sitePurchase?: number;
   };
   revenues: {
     total: number;
-    financialAssistance?: { total: number; revenues: Revenue[] };
+    financialAssistance?: { total: number; revenues: FinancialAssistanceRevenue[] };
   };
-};
-
-const getCostsWithTotalAmount = (costs: Cost[]): { total: number; costs: Cost[] } => {
-  const total = sumListWithKey(costs, "amount");
-  return { total, costs };
-};
-
-const getFinancialAssistanceRevenuesWithTotalAmount = (
-  financialAssistanceRevenues: Revenue[],
-): { total: number; revenues: Revenue[] } => {
-  const total = sumListWithKey(financialAssistanceRevenues, "amount");
-  return { total, revenues: financialAssistanceRevenues };
 };
 
 const withSiteResaleRevenues =
@@ -110,12 +77,16 @@ export const getEconomicResultsOfProjectInstallation = ({
   const costDetails: Omit<ReconversionProjectInstallationEconomicResult["costs"], "total"> = {};
 
   if (developmentPlanInstallationCosts.length > 0) {
-    costDetails.developmentPlanInstallation = getCostsWithTotalAmount(
-      developmentPlanInstallationCosts,
-    );
+    costDetails.developmentPlanInstallation = {
+      total: sumListWithKey(developmentPlanInstallationCosts, "amount"),
+      costs: developmentPlanInstallationCosts,
+    };
   }
   if (isDeveloperOwnerOfReinstatement && reinstatementCosts.length > 0) {
-    costDetails.siteReinstatement = getCostsWithTotalAmount(reinstatementCosts);
+    costDetails.siteReinstatement = {
+      total: sumListWithKey(reinstatementCosts, "amount"),
+      costs: reinstatementCosts,
+    };
   }
 
   if (isDeveloperFutureSiteOwner && sitePurchaseTotalAmount) {
@@ -135,11 +106,12 @@ export const getEconomicResultsOfProjectInstallation = ({
 
   // financial assistance is given for reinstatement works
   if (financialAssistanceRevenues?.length && isDeveloperOwnerOfReinstatement) {
-    const financialAssistanceRevenuesWithTotal = getFinancialAssistanceRevenuesWithTotalAmount(
-      financialAssistanceRevenues,
-    );
-    revenues.total = financialAssistanceRevenuesWithTotal.total;
-    revenues.financialAssistance = financialAssistanceRevenuesWithTotal;
+    const financialAssistanceRevenuesTotal = sumListWithKey(financialAssistanceRevenues, "amount");
+    revenues.total = financialAssistanceRevenuesTotal;
+    revenues.financialAssistance = {
+      total: financialAssistanceRevenuesTotal,
+      revenues: financialAssistanceRevenues,
+    };
   }
 
   const { total: projectInstallationTotalCost } = costs;
@@ -153,8 +125,8 @@ export const getEconomicResultsOfProjectInstallation = ({
 };
 
 export const getEconomicResultsOfProjectExploitationForDuration = (
-  yearlyProjectedRevenues: ReconversionProject["yearlyProjectedRevenues"],
-  yearlyProjectedCosts: ReconversionProject["yearlyProjectedCosts"],
+  yearlyProjectedRevenues: ProjectProps["yearlyProjectedRevenues"],
+  yearlyProjectedCosts: ProjectProps["yearlyProjectedCosts"],
   durationInYear: number,
 ) => {
   const costsForDuration = yearlyProjectedCosts.map(({ amount, purpose }) => ({

@@ -1,6 +1,6 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { EcosystemServicesImpact } from "shared";
 
-import { EcosystemServicesImpact } from "@/features/projects/domain/impacts.types";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ImpactsData } from "../../ImpactDescriptionModalWizard";

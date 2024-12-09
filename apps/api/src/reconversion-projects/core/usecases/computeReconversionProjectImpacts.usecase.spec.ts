@@ -119,7 +119,6 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       ],
       yearlyProjectedRevenues: [
         { amount: 10000, source: "rent" },
-        { amount: 20000, source: "sell" },
         { amount: 1000, source: "other" },
       ],
       sitePurchasePropertyTransferDutiesAmount: 5432,
@@ -287,7 +286,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             ],
           },
           economicBalance: {
-            total: -500000,
+            total: -700000,
             bearer: "Mairie de Blajan",
             costs: {
               total: 960000,
@@ -309,12 +308,11 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               sitePurchase: 150000,
             },
             revenues: {
-              total: 460000,
+              total: 260000,
               operationsRevenues: {
-                total: 310000,
+                total: 110000,
                 revenues: [
                   { amount: 100000, source: "rent" },
-                  { amount: 200000, source: "sell" },
                   { amount: 10000, source: "other" },
                 ],
               },
@@ -332,13 +330,16 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           permeableSurfaceArea: {
             base: 60000,
             forecast: 50000,
+            difference: -10000,
             greenSoil: {
               base: 40000,
               forecast: 30000,
+              difference: -10000,
             },
             mineralSoil: {
               base: 20000,
               forecast: 20000,
+              difference: 0,
             },
           },
           fullTimeJobs: {

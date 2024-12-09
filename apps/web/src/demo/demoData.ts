@@ -1,9 +1,10 @@
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import {
-  AvoidedFricheExpensesImpact,
   AvoidedTrafficAccidentsImpact,
   EcosystemServicesImpact,
-} from "@/features/projects/domain/impacts.types";
+  AvoidedFricheCostsImpact,
+} from "shared";
+
+import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
 import { SiteFeatures } from "@/features/site-features/domain/siteFeatures";
 
@@ -327,7 +328,7 @@ export const getImpactsDataFromEvaluationPeriod = (
           case "avoided_traffic_accidents":
           case "ecosystem_services": {
             const { details } = rest as
-              | AvoidedFricheExpensesImpact
+              | AvoidedFricheCostsImpact
               | AvoidedTrafficAccidentsImpact
               | EcosystemServicesImpact;
             return {

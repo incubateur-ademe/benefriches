@@ -1,9 +1,7 @@
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { ReactElement, useEffect, useLayoutEffect, useMemo } from "react";
-import { SoilsDistribution } from "shared";
-
-import { ReconversionProjectImpacts } from "@/features/projects/domain/impacts.types";
+import { ReconversionProjectImpacts, SoilsDistribution } from "shared";
 
 import EconomicBalanceSectionModalContentWizard from "./economic-balance/ModalContentWizard";
 import { getEconomicBalanceSectionModalTitle } from "./economic-balance/getTitle";

@@ -19,13 +19,16 @@ describe("PermeableSurfaceArea impact", () => {
     ).toEqual({
       base: 920,
       forecast: 920,
+      difference: 0,
       greenSoil: {
         base: 600,
         forecast: 600,
+        difference: 0,
       },
       mineralSoil: {
         base: 320,
         forecast: 320,
+        difference: 0,
       },
     });
   });
@@ -51,13 +54,16 @@ describe("PermeableSurfaceArea impact", () => {
     ).toEqual({
       base: 920,
       forecast: 1020,
+      difference: 100,
       greenSoil: {
         base: 600,
         forecast: 600,
+        difference: 0,
       },
       mineralSoil: {
         base: 320,
         forecast: 420,
+        difference: 100,
       },
     });
   });
@@ -83,13 +89,16 @@ describe("PermeableSurfaceArea impact", () => {
     ).toEqual({
       base: 920,
       forecast: 1120,
+      difference: 200,
       greenSoil: {
         base: 600,
         forecast: 800,
+        difference: 200,
       },
       mineralSoil: {
         base: 320,
         forecast: 320,
+        difference: 0,
       },
     });
   });
@@ -116,13 +125,16 @@ describe("PermeableSurfaceArea impact", () => {
     ).toEqual({
       base: 920,
       forecast: 1220,
+      difference: 300,
       greenSoil: {
         base: 600,
         forecast: 800,
+        difference: 200,
       },
       mineralSoil: {
         base: 320,
         forecast: 420,
+        difference: 100,
       },
     });
   });
@@ -146,13 +158,16 @@ describe("PermeableSurfaceArea impact", () => {
     ).toEqual({
       base: 920,
       forecast: 0,
+      difference: -920,
       greenSoil: {
         base: 600,
         forecast: 0,
+        difference: -600,
       },
       mineralSoil: {
         base: 320,
         forecast: 0,
+        difference: -320,
       },
     });
   });

@@ -1,24 +1,9 @@
+import { AccidentsImpactResult } from "shared";
+
 type AccidentsImpactInput = {
   severeInjuries?: number;
   minorInjuries?: number;
   deaths?: number;
-};
-
-export type AccidentsImpactResult = {
-  current: number;
-  forecast: 0;
-  severeInjuries: {
-    current: number;
-    forecast: 0;
-  };
-  minorInjuries: {
-    current: number;
-    forecast: 0;
-  };
-  deaths: {
-    current: number;
-    forecast: 0;
-  };
 };
 
 export const computeAccidentsImpact = (input: AccidentsImpactInput): AccidentsImpactResult => {

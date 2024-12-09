@@ -1,7 +1,6 @@
-import { sumListWithKey } from "shared";
+import { DirectAndIndirectEconomicImpact, sumListWithKey } from "shared";
 
 import { ReconversionProject } from "../../reconversionProject";
-import { DirectAndIndirectEconomicImpact } from "../socioEconomic.types";
 
 const RENT_PURPOSE_KEY = "rent";
 const TAXES_PURPOSE_KEY = "taxes";

@@ -8,6 +8,7 @@ import {
   sumObjectValues,
 } from "shared";
 
+import { ImpactServiceInterface } from "../ImpactServiceInterface";
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
 
 const AVOIDED_KILOMETER_FOR_TRAVELERS = 1.2;
@@ -26,7 +27,10 @@ type Props = {
   operationsFirstYear: number;
 };
 
-export class TravelRelatedImpactsService extends InfluenceAreaService {
+export class TravelRelatedImpactsService
+  extends InfluenceAreaService
+  implements ImpactServiceInterface
+{
   private readonly projectHousingSurfaceArea: number;
   private readonly projectTertiaryActivitySurface: number;
   private readonly projectOtherEconomicActivitySurface: number;

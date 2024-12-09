@@ -1,12 +1,12 @@
-import { sumListWithKey } from "shared";
-
-import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
 import {
-  AvoidedFricheExpensesImpact,
   AvoidedTrafficAccidentsImpact,
   EcosystemServicesImpact,
+  sumListWithKey,
+  AvoidedFricheCostsImpact,
   ReconversionProjectImpacts,
-} from "../domain/impacts.types";
+} from "shared";
+
+import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
 
 export type SocioEconomicImpactByCategory = {
   total: number;
@@ -57,7 +57,7 @@ type SocioEconomicDetailsName =
   | "avoided_air_conditioning_co2_eq_emissions"
   | EcosystemServicesImpact["details"][number]["impact"]
   | AvoidedTrafficAccidentsImpact["details"][number]["impact"]
-  | AvoidedFricheExpensesImpact["details"][number]["impact"];
+  | AvoidedFricheCostsImpact["details"][number]["impact"];
 
 export const getDetailedSocioEconomicProjectImpacts = (
   impactsData?: ReconversionProjectImpactsResult["impacts"],

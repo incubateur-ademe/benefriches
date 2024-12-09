@@ -1,10 +1,7 @@
+import { AvoidedCO2WithEnergyProductionImpact } from "shared";
+
 type AvoidedCO2WithEnergyProductionImpactInput = {
   forecastAnnualEnergyProductionMWh: number;
-};
-
-export type AvoidedCO2WithEnergyProductionImpact = {
-  current: 0;
-  forecast: number;
 };
 
 const AVERAGE_FRENCH_ENERGY_PRODUCTION_CO2_GRAMS_PER_KWH = 79;

@@ -2,22 +2,10 @@ import {
   isGreenSoil,
   isMineralSoil,
   isPermeableSoil,
+  PermeableSurfaceAreaImpactResult,
   SoilsDistribution,
   sumSoilsSurfaceAreasWhere,
 } from "shared";
-
-export type PermeableSurfaceAreaImpactResult = {
-  base: number;
-  forecast: number;
-  mineralSoil: {
-    base: number;
-    forecast: number;
-  };
-  greenSoil: {
-    base: number;
-    forecast: number;
-  };
-};
 
 type PermeableSurfaceAreaImpactInput = {
   baseSoilsDistribution: SoilsDistribution;
@@ -55,13 +43,16 @@ export const computePermeableSurfaceAreaImpact = (
   return {
     base: basePermeableSoilsSurfaceArea,
     forecast: forecastPermeableSoilsSurfaceArea,
+    difference: forecastPermeableSoilsSurfaceArea - basePermeableSoilsSurfaceArea,
     greenSoil: {
       base: baseGreenSoilsSurfaceArea,
       forecast: forecastGreenSoilsSurfaceArea,
+      difference: forecastGreenSoilsSurfaceArea - baseGreenSoilsSurfaceArea,
     },
     mineralSoil: {
       base: baseMineralSurfaceArea,
       forecast: forecastMineralSurfaceArea,
+      difference: forecastMineralSurfaceArea - baseMineralSurfaceArea,
     },
   };
 };

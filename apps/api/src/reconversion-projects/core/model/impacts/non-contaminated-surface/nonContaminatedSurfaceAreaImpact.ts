@@ -1,13 +1,9 @@
+import { NonContaminatedSurfaceAreaImpact } from "shared";
+
 type NonContaminatedSurfaceAreaImpactInput = {
   currentContaminatedSurfaceArea: number;
   forecastDecontaminedSurfaceArea: number;
   totalSurfaceArea: number;
-};
-
-export type NonContaminatedSurfaceAreaImpact = {
-  current: number;
-  forecast: number;
-  difference: number;
 };
 
 export const computeNonContaminatedSurfaceAreaImpact = (

@@ -1,4 +1,4 @@
-import { typedObjectEntries } from "shared";
+import { SoilsCarbonStorageImpactResult, typedObjectEntries } from "shared";
 import { SoilsDistribution, SoilType } from "shared";
 
 import { Response as SoilsCarbonStorageResult } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
@@ -11,28 +11,6 @@ const soilsDistributionObjToArray = (
     surfaceArea: surfaceArea ?? 0,
   }));
 };
-
-export type SoilsCarbonStorageImpactResult =
-  | {
-      isSuccess: true;
-      current: {
-        total: number;
-        soils: {
-          type: SoilType;
-          surfaceArea: number;
-          carbonStorage: number;
-        }[];
-      };
-      forecast: {
-        total: number;
-        soils: {
-          type: SoilType;
-          surfaceArea: number;
-          carbonStorage: number;
-        }[];
-      };
-    }
-  | { isSuccess: false };
 
 export interface GetSoilsCarbonStoragePerSoilsService {
   execute(input: {

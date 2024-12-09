@@ -4,10 +4,12 @@ import {
   filterObjectWithKeys,
   getAnnualizedCO2MonetaryValueForDuration,
   roundTo2Digits,
+  SocioEconomicImpact,
   SpacesDistribution,
   sumObjectValues,
 } from "shared";
 
+import { ImpactServiceInterface } from "../ImpactServiceInterface";
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
 
 const CO2_BENEFIT_AMOUNT_GRAM_PER_HOUSING_SQUARE_METER_PER_YEAR = 15;
@@ -25,7 +27,10 @@ type Props = {
   operationsFirstYear: number;
 };
 
-export class UrbanFreshnessRelatedImpactsService extends InfluenceAreaService {
+export class UrbanFreshnessRelatedImpactsService
+  extends InfluenceAreaService
+  implements ImpactServiceInterface
+{
   private readonly projectHousingSurfaceArea: number;
   private readonly projectTertiaryActivitySurface: number;
   private readonly projectOtherEconomicActivitySurface: number;
@@ -186,10 +191,10 @@ export class UrbanFreshnessRelatedImpactsService extends InfluenceAreaService {
 
   formatImpact() {
     if (!this.hasUrbanFreshnessImpact) {
-      return { socioeconomic: [] };
+      return { socioeconomic: [] as SocioEconomicImpact[] };
     }
 
-    const socioeconomic = [
+    const socioeconomic: SocioEconomicImpact[] = [
       {
         actor: "human_society",
         amount: roundTo2Digits(this.getAvoidedAirConditioningCo2EmissionsMonetaryValue()),

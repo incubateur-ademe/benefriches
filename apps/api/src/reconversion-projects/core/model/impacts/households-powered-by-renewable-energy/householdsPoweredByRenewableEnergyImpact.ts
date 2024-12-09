@@ -1,10 +1,7 @@
+import { HouseholdsPoweredByRenewableEnergyImpact } from "shared";
+
 type HouseholdsPoweredByRenewableEnergyImpactInput = {
   forecastRenewableEnergyAnnualProductionMWh: number;
-};
-
-export type HouseholdsPoweredByRenewableEnergyImpact = {
-  current: number;
-  forecast: number;
 };
 
 const AVERAGE_HOUSEHOLD_ANNUAL_CONSUMPTION_KWH = 4679;

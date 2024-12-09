@@ -1,15 +1,4 @@
-export type FullTimeJobsImpactResult = {
-  current: number;
-  forecast: number;
-  operations: {
-    current: number;
-    forecast: number;
-  };
-  conversion: {
-    current: number;
-    forecast: number;
-  };
-};
+import { FullTimeJobsImpactResult } from "shared";
 
 export interface FullTimeJobsImpactServiceInterface {
   getFullTimeJobsImpacts: () => FullTimeJobsImpactResult;

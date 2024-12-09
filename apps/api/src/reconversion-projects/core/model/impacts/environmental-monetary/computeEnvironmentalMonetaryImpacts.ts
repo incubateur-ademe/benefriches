@@ -1,4 +1,6 @@
 import {
+  EcosystemServicesImpact,
+  EnvironmentalMonetaryImpact,
   isForest,
   isPermeableSurfaceWithoutPermanentVegetation,
   isPrairie,
@@ -9,8 +11,6 @@ import {
   SoilType,
   sumSoilsSurfaceAreasWhere,
 } from "shared";
-
-import { EcosystemServicesImpact, EnvironmentalMonetaryImpact } from "../socioEconomic.types";
 
 type EnvironmentalMonetaryImpactInput = {
   evaluationPeriodInYears: number;

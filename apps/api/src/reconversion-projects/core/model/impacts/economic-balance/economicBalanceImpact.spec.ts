@@ -37,7 +37,7 @@ describe("EconomicBalance impact", () => {
           ],
           reinstatementCosts: [
             { amount: 10000, purpose: "waste_collection" },
-            { amount: 39999, purpose: "deimpermebilization" },
+            { amount: 39999, purpose: "deimpermeabilization" },
           ],
           developmentPlanInstallationCosts: [
             { amount: 50000, purpose: "installation_works" },
@@ -57,7 +57,7 @@ describe("EconomicBalance impact", () => {
             total: 49999,
             costs: [
               { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermebilization" },
+              { amount: 39999, purpose: "deimpermeabilization" },
             ],
           },
           developmentPlanInstallation: {
@@ -91,7 +91,7 @@ describe("EconomicBalance impact", () => {
           ],
           reinstatementCosts: [
             { amount: 10000, purpose: "waste_collection" },
-            { amount: 39999, purpose: "deimpermebilization" },
+            { amount: 39999, purpose: "deimpermeabilization" },
           ],
           developmentPlanInstallationCosts: [
             { amount: 50000, purpose: "installation_works" },
@@ -111,7 +111,7 @@ describe("EconomicBalance impact", () => {
             total: 49999,
             costs: [
               { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermebilization" },
+              { amount: 39999, purpose: "deimpermeabilization" },
             ],
           },
           developmentPlanInstallation: {
@@ -144,7 +144,7 @@ describe("EconomicBalance impact", () => {
           ],
           reinstatementCosts: [
             { amount: 10000, purpose: "waste_collection" },
-            { amount: 39999, purpose: "deimpermebilization" },
+            { amount: 39999, purpose: "deimpermeabilization" },
           ],
           developmentPlanInstallationCosts: [
             { amount: 50000, purpose: "installation_works" },
@@ -195,7 +195,6 @@ describe("EconomicBalance impact", () => {
         getEconomicResultsOfProjectExploitationForDuration(
           [
             { amount: 1000, source: "rent" },
-            { amount: 2000, source: "sell" },
             { amount: 500, source: "other" },
           ],
           [
@@ -205,7 +204,7 @@ describe("EconomicBalance impact", () => {
           10,
         ),
       ).toEqual({
-        total: -25500,
+        total: -45500,
         operationsCosts: {
           total: 60500,
           costs: [
@@ -214,10 +213,9 @@ describe("EconomicBalance impact", () => {
           ],
         },
         operationsRevenues: {
-          total: 35000,
+          total: 15000,
           revenues: [
             { amount: 10000, source: "rent" },
-            { amount: 20000, source: "sell" },
             { amount: 5000, source: "other" },
           ],
         },
@@ -255,7 +253,7 @@ describe("EconomicBalance impact", () => {
           {
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermebilization" },
+              { amount: 39999, purpose: "deimpermeabilization" },
             ],
             developmentPlanInstallationCosts: [
               { amount: 50000, purpose: "installation_works" },
@@ -308,7 +306,7 @@ describe("EconomicBalance impact", () => {
             ],
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermebilization" },
+              { amount: 39999, purpose: "deimpermeabilization" },
             ],
             developmentPlanInstallationCosts: [
               { amount: 50000, purpose: "installation_works" },
@@ -325,7 +323,6 @@ describe("EconomicBalance impact", () => {
             ],
             yearlyProjectedRevenues: [
               { amount: 10000, source: "rent" },
-              { amount: 20000, source: "sell" },
               { amount: 5000, source: "other" },
             ],
             siteResaleTotalAmount: 150000,
@@ -333,7 +330,7 @@ describe("EconomicBalance impact", () => {
           20,
         ),
       ).toEqual({
-        total: 900000 - (1210000 + 49999 + 150000),
+        total: 500000 - (1210000 + 49999 + 150000),
         bearer: "Mairie de Blajan",
         costs: {
           total: 1210000 + 49999 + 150000,
@@ -348,7 +345,7 @@ describe("EconomicBalance impact", () => {
             total: 49999,
             costs: [
               { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermebilization" },
+              { amount: 39999, purpose: "deimpermeabilization" },
             ],
           },
           developmentPlanInstallation: {
@@ -360,13 +357,12 @@ describe("EconomicBalance impact", () => {
           },
         },
         revenues: {
-          total: 900000,
+          total: 500000,
           siteResale: 150000,
           operationsRevenues: {
-            total: 700000,
+            total: 300000,
             revenues: [
               { amount: 200000, source: "rent" },
-              { amount: 400000, source: "sell" },
               { amount: 100000, source: "other" },
             ],
           },
@@ -387,7 +383,7 @@ describe("EconomicBalance impact", () => {
           {
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermebilization" },
+              { amount: 39999, purpose: "deimpermeabilization" },
             ],
             developmentPlanInstallationCosts: [
               { amount: 50000, purpose: "installation_works" },
@@ -430,7 +426,7 @@ describe("EconomicBalance impact", () => {
             ],
             reinstatementCosts: [
               { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermebilization" },
+              { amount: 39999, purpose: "deimpermeabilization" },
             ],
             developmentPlanInstallationCosts: [
               { amount: 50000, purpose: "installation_works" },
@@ -447,7 +443,6 @@ describe("EconomicBalance impact", () => {
             ],
             yearlyProjectedRevenues: [
               { amount: 10000, source: "rent" },
-              { amount: 20000, source: "sell" },
               { amount: 5000, source: "other" },
             ],
           },
@@ -462,7 +457,7 @@ describe("EconomicBalance impact", () => {
             total: 49999,
             costs: [
               { amount: 10000, purpose: "waste_collection" },
-              { amount: 39999, purpose: "deimpermebilization" },
+              { amount: 39999, purpose: "deimpermeabilization" },
             ],
           },
           developmentPlanInstallation: {

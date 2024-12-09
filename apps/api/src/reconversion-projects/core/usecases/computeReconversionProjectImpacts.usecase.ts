@@ -1,37 +1,29 @@
-import { ReinstatementExpense, SoilsDistribution, sumListWithKey } from "shared";
+import {
+  DevelopmentPlanInstallationCost,
+  FinancialAssistanceRevenue,
+  ReconversionProjectImpacts,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpense,
+  SoilsDistribution,
+  sumListWithKey,
+} from "shared";
 
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import {
-  AccidentsImpactResult,
-  computeAccidentsImpact,
-} from "../model/impacts/accidents/accidentsImpact";
-import { AvoidedCO2WithEnergyProductionImpact } from "../model/impacts/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
+import { computeAccidentsImpact } from "../model/impacts/accidents/accidentsImpact";
 import { getDevelopmentPlanRelatedImpacts } from "../model/impacts/developmentPlanFeaturesImpacts";
 import { computeDirectAndIndirectEconomicImpacts } from "../model/impacts/direct-and-indirect-economic/computeDirectAndIndirectEconomicImpacts";
-import {
-  computeEconomicBalanceImpact,
-  EconomicBalanceImpactResult,
-} from "../model/impacts/economic-balance/economicBalanceImpact";
+import { computeEconomicBalanceImpact } from "../model/impacts/economic-balance/economicBalanceImpact";
 import { computeEnvironmentalMonetaryImpacts } from "../model/impacts/environmental-monetary/computeEnvironmentalMonetaryImpacts";
 import { FullTimeJobsImpactService } from "../model/impacts/full-time-jobs/fullTimeJobsImpactService";
-import { FullTimeJobsImpactResult } from "../model/impacts/full-time-jobs/fullTimeJobsImpactServiceInterface";
-import { HouseholdsPoweredByRenewableEnergyImpact } from "../model/impacts/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
-import {
-  computeNonContaminatedSurfaceAreaImpact,
-  NonContaminatedSurfaceAreaImpact,
-} from "../model/impacts/non-contaminated-surface/nonContaminatedSurfaceAreaImpact";
-import {
-  computePermeableSurfaceAreaImpact,
-  PermeableSurfaceAreaImpactResult,
-} from "../model/impacts/permeable-surface/permeableSurfaceAreaImpact";
-import { SocioEconomicImpact } from "../model/impacts/socioEconomic.types";
+import { computeNonContaminatedSurfaceAreaImpact } from "../model/impacts/non-contaminated-surface/nonContaminatedSurfaceAreaImpact";
+import { computePermeableSurfaceAreaImpact } from "../model/impacts/permeable-surface/permeableSurfaceAreaImpact";
 import {
   computeSoilsCarbonStorageImpact,
   GetSoilsCarbonStoragePerSoilsService,
-  SoilsCarbonStorageImpactResult,
 } from "../model/impacts/soils-carbon-storage/soilsCarbonStorageImpact";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
@@ -119,30 +111,7 @@ export type Result = {
       name: string;
     };
   };
-  impacts: {
-    nonContaminatedSurfaceArea: NonContaminatedSurfaceAreaImpact | undefined;
-    permeableSurfaceArea: PermeableSurfaceAreaImpactResult;
-    fullTimeJobs: FullTimeJobsImpactResult;
-    accidents: AccidentsImpactResult | undefined;
-    economicBalance: EconomicBalanceImpactResult;
-    householdsPoweredByRenewableEnergy?: HouseholdsPoweredByRenewableEnergyImpact | undefined;
-    avoidedCO2TonsWithEnergyProduction?: AvoidedCO2WithEnergyProductionImpact | undefined;
-    soilsCarbonStorage: SoilsCarbonStorageImpactResult;
-    socioeconomic: {
-      impacts: SocioEconomicImpact[];
-      total: number;
-    };
-    avoidedVehiculeKilometers?: number;
-    travelTimeSaved?: number;
-    avoidedTrafficAccidents?: {
-      total: number;
-      minorInjuries: number;
-      severeInjuries: number;
-      deaths: number;
-    };
-    avoidedCarTrafficCo2EqEmissions?: number;
-    avoidedAirConditioningCo2EqEmissions?: number;
-  };
+  impacts: ReconversionProjectImpacts;
 };
 
 class ReconversionProjectNotFound extends Error {
@@ -267,12 +236,15 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
             futureOperatorName: reconversionProject.futureOperatorName,
             futureSiteOwnerName: reconversionProject.futureSiteOwnerName,
             reinstatementContractOwnerName: reconversionProject.reinstatementContractOwnerName,
-            reinstatementCosts: reconversionProject.reinstatementCosts,
-            yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
-            yearlyProjectedRevenues: reconversionProject.yearlyProjectedRevenues,
+            reinstatementCosts: reconversionProject.reinstatementCosts as ReinstatementExpense[],
+            yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts as RecurringExpense[],
+            yearlyProjectedRevenues:
+              reconversionProject.yearlyProjectedRevenues as RecurringRevenue[],
             sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
-            financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,
-            developmentPlanInstallationCosts: reconversionProject.developmentPlanInstallationCosts,
+            financialAssistanceRevenues:
+              reconversionProject.financialAssistanceRevenues as FinancialAssistanceRevenue[],
+            developmentPlanInstallationCosts:
+              reconversionProject.developmentPlanInstallationCosts as DevelopmentPlanInstallationCost[],
             siteResaleTotalAmount: reconversionProject.siteResaleTotalAmount,
           },
           evaluationPeriodInYears,

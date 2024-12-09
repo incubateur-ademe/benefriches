@@ -1,7 +1,12 @@
-import { RecurringExpense, RecurringRevenue, ReinstatementExpensePurpose } from "shared";
+import {
+  DevelopmentPlanInstallationCost,
+  FinancialAssistanceRevenue,
+  RecurringExpense,
+  RecurringRevenue,
+  ReinstatementExpensePurpose,
+} from "shared";
 
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
-import { DevelopmentPlanInstallationExpense, FinancialAssistance } from "../domain/impacts.types";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 
 export type EconomicBalanceName = EconomicBalanceMainName | EconomicBalanceDetailsName;
@@ -24,13 +29,13 @@ export type DevelopmentPlanInstallationExpenseName =
   | "urban_project_technical_studies"
   | "urban_project_works"
   | "urban_project_other"
-  | DevelopmentPlanInstallationExpense["purpose"];
+  | DevelopmentPlanInstallationCost["purpose"];
 
 type EconomicBalanceDetailsName =
   | RecurringExpense["purpose"]
   | RecurringRevenue["source"]
   | ReinstatementExpensePurpose
-  | FinancialAssistance
+  | FinancialAssistanceRevenue["source"]
   | DevelopmentPlanInstallationExpenseName;
 
 export type EconomicBalance = {
@@ -58,7 +63,7 @@ const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType)
 };
 
 const getDevelopmentPlanDetailsName = (
-  costName: DevelopmentPlanInstallationExpense["purpose"],
+  costName: DevelopmentPlanInstallationCost["purpose"],
   projectType?: ProjectDevelopmentPlanType,
 ) => {
   const prefix = getInstallationCostNamePrefix(projectType);

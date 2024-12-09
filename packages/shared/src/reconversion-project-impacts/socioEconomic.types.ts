@@ -8,17 +8,19 @@ export type SocioEconomicImpact =
   | AvoidedTrafficCO2EqEmissions
   | AvoidedAirConditioningCO2EqEmissions
   | AvoidedAirPollutionImpact
+  | AvoidedPropertyDamagesExpensesImpact
   | AvoidedCO2EqWithEnRImpact
   | LocalHousingPropertyValueIncreaseImpact
   | LocalTransferDutiesIncreaseImpact;
 
 type BaseEconomicImpact = { actor: string; amount: number };
 
+/* ECONOMIC DIRECT */
 type RentalIncomeImpact = BaseEconomicImpact & {
   impact: "rental_income";
   impactCategory: "economic_direct";
 };
-type AvoidedFricheCostsImpact = BaseEconomicImpact & {
+export type AvoidedFricheCostsImpact = BaseEconomicImpact & {
   impact: "avoided_friche_costs";
   impactCategory: "economic_direct";
   details: {
@@ -32,6 +34,7 @@ type AvoidedFricheCostsImpact = BaseEconomicImpact & {
   }[];
 };
 
+/* ECONOMIC INDIRECT */
 type TaxesIncomeImpact = BaseEconomicImpact & {
   impact: "taxes_income";
   impactCategory: "economic_indirect";
@@ -42,32 +45,33 @@ type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
   impactCategory: "economic_direct";
   actor: "community";
 };
+export type AvoidedCarRelatedExpensesImpact = BaseEconomicImpact & {
+  impact: "avoided_car_related_expenses";
+  impactCategory: "economic_indirect";
+  actor: "local_residents" | "local_workers";
+};
+
+export type AvoidedAirConditioningExpensesImpact = BaseEconomicImpact & {
+  impact: "avoided_air_conditioning_expenses";
+  impactCategory: "economic_indirect";
+  actor: "local_residents" | "local_companies";
+};
 
 export type DirectAndIndirectEconomicImpact =
   | RentalIncomeImpact
   | AvoidedFricheCostsImpact
   | TaxesIncomeImpact
-  | PropertyTransferDutiesIncomeImpact;
+  | PropertyTransferDutiesIncomeImpact
+  | AvoidedCarRelatedExpensesImpact
+  | AvoidedAirConditioningExpensesImpact;
 
-type AvoidedCarRelatedExpensesImpact = BaseEconomicImpact & {
-  impact: "avoided_car_related_expenses";
-  impactCategory: "economic_indirect";
-  actor: "local_residents";
-};
-
-type AvoidedAirConditioningExpensesImpact = BaseEconomicImpact & {
-  impact: "avoided_air_conditioning_expenses";
-  impactCategory: "economic_indirect";
-  actor: "local_residents";
-};
-
-type TravelTimeSavedImpact = BaseEconomicImpact & {
+export type TravelTimeSavedImpact = BaseEconomicImpact & {
   impact: "travel_time_saved";
-  impactCategory: "economic_indirect";
+  impactCategory: "social_monetary";
   actor: "local_residents" | "local_workers";
 };
 
-type AvoidedTrafficAccidentsImpact = BaseEconomicImpact & {
+export type AvoidedTrafficAccidentsImpact = BaseEconomicImpact & {
   impact: "avoided_traffic_accidents";
   impactCategory: "social_monetary";
   actor: "french_society";
@@ -80,10 +84,16 @@ type AvoidedTrafficAccidentsImpact = BaseEconomicImpact & {
   }[];
 };
 
-type AvoidedTrafficCO2EqEmissions = BaseEconomicImpact & {
+export type AvoidedTrafficCO2EqEmissions = BaseEconomicImpact & {
   impact: "avoided_traffic_co2_eq_emissions";
   impactCategory: "environmental_monetary";
   actor: "human_society";
+};
+
+export type AvoidedPropertyDamagesExpensesImpact = BaseEconomicImpact & {
+  impact: "avoided_property_damages_expenses";
+  impactCategory: "economic_indirect";
+  actor: "french_society";
 };
 
 type AvoidedAirConditioningCO2EqEmissions = BaseEconomicImpact & {
@@ -92,7 +102,7 @@ type AvoidedAirConditioningCO2EqEmissions = BaseEconomicImpact & {
   actor: "human_society";
 };
 
-type AvoidedAirPollutionImpact = BaseEconomicImpact & {
+export type AvoidedAirPollutionImpact = BaseEconomicImpact & {
   actor: "human_society";
   impactCategory: "environmental_monetary";
   impact: "avoided_air_pollution";
@@ -112,7 +122,7 @@ type LocalTransferDutiesIncreaseImpact = BaseEconomicImpact & {
 
 export type EnvironmentalMonetaryImpact = EcosystemServicesImpact | WaterRegulationImpact;
 
-type WaterRegulationImpact = {
+export type WaterRegulationImpact = {
   amount: number;
   actor: "community";
   impactCategory: "environmental_monetary";
