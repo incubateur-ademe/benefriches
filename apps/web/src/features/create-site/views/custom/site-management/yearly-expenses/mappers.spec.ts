@@ -1,91 +1,5 @@
 import { FormValues } from "./SiteYearlyExpensesForm";
-import {
-  getSiteManagementExpensesWithBearer,
-  getSiteSecurityExpensesWithBearer,
-  mapFormDataToExpenses,
-} from "./mappers";
-
-describe("getSiteManagementExpensesWithBearer", () => {
-  it("returns expenses for friche with tenant", () => {
-    expect(getSiteManagementExpensesWithBearer(true, false, true)).toEqual([
-      { name: "rent", bearer: "tenant" },
-      { name: "maintenance", bearer: "tenant" },
-      { name: "propertyTaxes", bearer: "owner" },
-      { name: "otherManagementCosts", bearer: undefined },
-    ]);
-  });
-
-  it("returns expenses for friche with no tenant", () => {
-    expect(getSiteManagementExpensesWithBearer(true, false, false)).toEqual([
-      { name: "maintenance", bearer: "owner" },
-      { name: "propertyTaxes", bearer: "owner" },
-      { name: "otherManagementCosts", bearer: "owner" },
-    ]);
-  });
-
-  it("returns expenses for site non friche with tenant", () => {
-    expect(getSiteManagementExpensesWithBearer(false, true, true)).toEqual([
-      { name: "rent", bearer: "tenant" },
-      { name: "operationsTaxes", bearer: "tenant" },
-      { name: "maintenance", bearer: "tenant" },
-      { name: "propertyTaxes", bearer: "owner" },
-      { name: "otherManagementCosts", bearer: undefined },
-    ]);
-  });
-
-  it("returns expenses for site non friche not worked", () => {
-    expect(getSiteManagementExpensesWithBearer(false, false, false)).toEqual([
-      { name: "maintenance", bearer: "owner" },
-      { name: "propertyTaxes", bearer: "owner" },
-      { name: "otherManagementCosts", bearer: "owner" },
-    ]);
-  });
-
-  it("returns expenses for site non friche worked by owner", () => {
-    expect(getSiteManagementExpensesWithBearer(false, true, false)).toEqual([
-      { name: "operationsTaxes", bearer: "owner" },
-      { name: "maintenance", bearer: "owner" },
-      { name: "propertyTaxes", bearer: "owner" },
-      { name: "otherManagementCosts", bearer: "owner" },
-    ]);
-  });
-});
-
-describe("getSiteSecurityExpensesWithBearer", () => {
-  it("returns expenses for friche with tenant and recent accident", () => {
-    expect(getSiteSecurityExpensesWithBearer(true, true)).toEqual([
-      { name: "security", bearer: undefined },
-      { name: "illegalDumpingCost", bearer: undefined },
-      { name: "otherSecuringCosts", bearer: undefined },
-      { name: "accidentsCost", bearer: undefined },
-    ]);
-  });
-
-  it("returns expenses for friche with no tenant and recent accident", () => {
-    expect(getSiteSecurityExpensesWithBearer(false, true)).toEqual([
-      { name: "security", bearer: "owner" },
-      { name: "illegalDumpingCost", bearer: "owner" },
-      { name: "otherSecuringCosts", bearer: "owner" },
-      { name: "accidentsCost", bearer: "owner" },
-    ]);
-  });
-
-  it("returns expenses for friche with tenant and no recent accident", () => {
-    expect(getSiteSecurityExpensesWithBearer(true, false)).toEqual([
-      { name: "security", bearer: undefined },
-      { name: "illegalDumpingCost", bearer: undefined },
-      { name: "otherSecuringCosts", bearer: undefined },
-    ]);
-  });
-
-  it("returns expenses for friche with no tenant and no recent accident", () => {
-    expect(getSiteSecurityExpensesWithBearer(false, false)).toEqual([
-      { name: "security", bearer: "owner" },
-      { name: "illegalDumpingCost", bearer: "owner" },
-      { name: "otherSecuringCosts", bearer: "owner" },
-    ]);
-  });
-});
+import { mapFormDataToExpenses } from "./mappers";
 
 describe("Site yearly expenses mappers", () => {
   it("returns empty array when no expense", () => {
@@ -103,14 +17,14 @@ describe("Site yearly expenses mappers", () => {
           otherSecuringCosts: {},
         },
         [
-          { name: "rent", bearer: "tenant" },
-          { name: "operationsTaxes", bearer: "tenant" },
-          { name: "maintenance", bearer: "tenant" },
-          { name: "propertyTaxes", bearer: "owner" },
-          { name: "otherManagementCosts", bearer: "tenant" },
-          { name: "security", bearer: "owner" },
-          { name: "illegalDumpingCost", bearer: "owner" },
-          { name: "accidentsCost", bearer: "owner" },
+          { purpose: "rent", fixedBearer: "tenant" },
+          { purpose: "operationsTaxes", fixedBearer: "tenant" },
+          { purpose: "maintenance", fixedBearer: "tenant" },
+          { purpose: "propertyTaxes", fixedBearer: "owner" },
+          { purpose: "otherManagementCosts", fixedBearer: "tenant" },
+          { purpose: "security", fixedBearer: "owner" },
+          { purpose: "illegalDumpingCost", fixedBearer: "owner" },
+          { purpose: "accidentsCost", fixedBearer: "owner" },
         ],
       ),
     ).toEqual([]);
@@ -136,15 +50,15 @@ describe("Site yearly expenses mappers", () => {
     };
     expect(
       mapFormDataToExpenses(formCosts, [
-        { name: "rent", bearer: "tenant" },
-        { name: "operationsTaxes", bearer: "tenant" },
-        { name: "maintenance", bearer: "tenant" },
-        { name: "propertyTaxes", bearer: "owner" },
-        { name: "otherManagementCosts", bearer: "tenant" },
-        { name: "security", bearer: "owner" },
-        { name: "illegalDumpingCost", bearer: "owner" },
-        { name: "otherSecuringCosts", bearer: "tenant" },
-        { name: "accidentsCost", bearer: "owner" },
+        { purpose: "rent", fixedBearer: "tenant" },
+        { purpose: "operationsTaxes", fixedBearer: "tenant" },
+        { purpose: "maintenance", fixedBearer: "tenant" },
+        { purpose: "propertyTaxes", fixedBearer: "owner" },
+        { purpose: "otherManagementCosts", fixedBearer: "tenant" },
+        { purpose: "security", fixedBearer: "owner" },
+        { purpose: "illegalDumpingCost", fixedBearer: "owner" },
+        { purpose: "otherSecuringCosts", fixedBearer: "tenant" },
+        { purpose: "accidentsCost", fixedBearer: "owner" },
       ]),
     ).toEqual([
       { purpose: "rent", bearer: "tenant", amount: 140 },
@@ -167,15 +81,15 @@ describe("Site yearly expenses mappers", () => {
     };
     expect(
       mapFormDataToExpenses(formCosts, [
-        { name: "rent", bearer: "tenant" },
-        { name: "operationsTaxes", bearer: "tenant" },
-        { name: "maintenance", bearer: "tenant" },
-        { name: "propertyTaxes", bearer: "owner" },
-        { name: "otherManagementCosts", bearer: "tenant" },
-        { name: "security", bearer: "owner" },
-        { name: "illegalDumpingCost", bearer: "owner" },
-        { name: "otherSecuringCosts", bearer: "tenant" },
-        { name: "accidentsCost", bearer: "owner" },
+        { purpose: "rent", fixedBearer: "tenant" },
+        { purpose: "operationsTaxes", fixedBearer: "tenant" },
+        { purpose: "maintenance", fixedBearer: "tenant" },
+        { purpose: "propertyTaxes", fixedBearer: "owner" },
+        { purpose: "otherManagementCosts", fixedBearer: "tenant" },
+        { purpose: "security", fixedBearer: "owner" },
+        { purpose: "illegalDumpingCost", fixedBearer: "owner" },
+        { purpose: "otherSecuringCosts", fixedBearer: "tenant" },
+        { purpose: "accidentsCost", fixedBearer: "owner" },
       ]),
     ).toEqual([
       { purpose: "rent", bearer: "tenant", amount: 140 },
@@ -208,15 +122,15 @@ describe("Site yearly expenses mappers", () => {
     };
     expect(
       mapFormDataToExpenses(formCosts, [
-        { name: "rent", bearer: "owner" },
-        { name: "operationsTaxes", bearer: "owner" },
-        { name: "maintenance", bearer: "owner" },
-        { name: "propertyTaxes", bearer: "owner" },
-        { name: "otherManagementCosts", bearer: "owner" },
-        { name: "security", bearer: "owner" },
-        { name: "illegalDumpingCost", bearer: "owner" },
-        { name: "otherSecuringCosts", bearer: "owner" },
-        { name: "accidentsCost", bearer: "owner" },
+        { purpose: "rent", fixedBearer: "owner" },
+        { purpose: "operationsTaxes", fixedBearer: "owner" },
+        { purpose: "maintenance", fixedBearer: "owner" },
+        { purpose: "propertyTaxes", fixedBearer: "owner" },
+        { purpose: "otherManagementCosts", fixedBearer: "owner" },
+        { purpose: "security", fixedBearer: "owner" },
+        { purpose: "illegalDumpingCost", fixedBearer: "owner" },
+        { purpose: "otherSecuringCosts", fixedBearer: "owner" },
+        { purpose: "accidentsCost", fixedBearer: "owner" },
       ]),
     ).toEqual([
       { purpose: "maintenance", bearer: "owner", amount: 19 },
@@ -247,15 +161,15 @@ describe("Site yearly expenses mappers", () => {
     };
     expect(
       mapFormDataToExpenses(formCosts, [
-        { name: "rent", bearer: "tenant" },
-        { name: "operationsTaxes", bearer: "tenant" },
-        { name: "maintenance", bearer: "owner" },
-        { name: "propertyTaxes", bearer: "owner" },
-        { name: "otherManagementCosts", bearer: undefined },
-        { name: "security", bearer: undefined },
-        { name: "illegalDumpingCost", bearer: undefined },
-        { name: "otherSecuringCosts", bearer: undefined },
-        { name: "accidentsCost", bearer: undefined },
+        { purpose: "rent", fixedBearer: "tenant" },
+        { purpose: "operationsTaxes", fixedBearer: "tenant" },
+        { purpose: "maintenance", fixedBearer: "owner" },
+        { purpose: "propertyTaxes", fixedBearer: "owner" },
+        { purpose: "otherManagementCosts", fixedBearer: null },
+        { purpose: "security", fixedBearer: null },
+        { purpose: "illegalDumpingCost", fixedBearer: null },
+        { purpose: "otherSecuringCosts", fixedBearer: null },
+        { purpose: "accidentsCost", fixedBearer: null },
       ]),
     ).toEqual([
       { purpose: "rent", bearer: "tenant", amount: 140 },

@@ -1,73 +1,76 @@
 import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 
+import { SiteYearlyExpensesBaseConfig } from "@/features/create-site/domain/expenses.functions";
+
 import { FormValues } from "./SiteYearlyExpensesForm";
 
 export const mapFormDataToExpenses = (
   formData: FormValues,
-  expectedExpenses: { name: SiteYearlyExpensePurpose; bearer?: "tenant" | "owner" }[],
-): SiteYearlyExpense[] =>
-  expectedExpenses
-    .map(({ name, bearer }) => ({
-      purpose: name,
-      bearer: bearer ?? formData[name]?.bearer ?? "tenant",
-      amount: formData[name]?.amount,
+  expensesBaseConfig: SiteYearlyExpensesBaseConfig,
+): SiteYearlyExpense[] => {
+  return expensesBaseConfig
+    .map(({ purpose, fixedBearer }) => ({
+      purpose,
+      bearer: fixedBearer ?? formData[purpose]?.bearer ?? "tenant",
+      amount: formData[purpose]?.amount,
     }))
     .filter(({ amount }) => !!amount) as SiteYearlyExpense[];
-
-export const getSiteManagementExpensesWithBearer = (
-  isFriche: boolean,
-  isWorked: boolean,
-  hasTenant: boolean,
-): { name: SiteYearlyExpensePurpose; bearer?: "tenant" | "owner" }[] => {
-  const isFricheLeased = isFriche && hasTenant;
-  const isSiteOperatedByTenant = !isFriche && isWorked && hasTenant;
-  if (isFricheLeased) {
-    return [
-      { name: "rent", bearer: "tenant" },
-      { name: "maintenance", bearer: "tenant" },
-      { name: "propertyTaxes", bearer: "owner" },
-      { name: "otherManagementCosts", bearer: undefined },
-    ];
-  }
-  if (isSiteOperatedByTenant) {
-    return [
-      { name: "rent", bearer: "tenant" },
-      { name: "operationsTaxes", bearer: "tenant" },
-      { name: "maintenance", bearer: "tenant" },
-      { name: "propertyTaxes", bearer: "owner" },
-      { name: "otherManagementCosts", bearer: undefined },
-    ];
-  }
-
-  const isSiteOperatedByOwner = !isFriche && isWorked;
-  if (isSiteOperatedByOwner) {
-    return [
-      { name: "operationsTaxes", bearer: "owner" },
-      { name: "maintenance", bearer: "owner" },
-      { name: "propertyTaxes", bearer: "owner" },
-      { name: "otherManagementCosts", bearer: "owner" },
-    ];
-  }
-
-  return [
-    { name: "maintenance", bearer: "owner" },
-    { name: "propertyTaxes", bearer: "owner" },
-    { name: "otherManagementCosts", bearer: "owner" },
-  ];
 };
 
-export const getSiteSecurityExpensesWithBearer = (
-  hasTenant: boolean,
-  hasRecentAccidents: boolean,
-) => {
-  const expensesOwner = hasTenant ? undefined : "owner";
-  const expenses = [
-    { name: "security", bearer: expensesOwner },
-    { name: "illegalDumpingCost", bearer: expensesOwner },
-    { name: "otherSecuringCosts", bearer: expensesOwner },
-  ];
-  if (hasRecentAccidents) {
-    expenses.push({ name: "accidentsCost", bearer: expensesOwner });
-  }
-  return expenses as { name: SiteYearlyExpensePurpose; bearer?: "tenant" | "owner" }[];
+type SiteExpensesInitialValues = {
+  purpose: SiteYearlyExpensePurpose;
+  amount: number;
+  bearer: "owner" | "tenant" | undefined;
+}[];
+const mapDefaultAndStoreExpensesToInitialValues = (
+  expensesBaseConfig: SiteYearlyExpensesBaseConfig,
+  predefinedExpenses: SiteYearlyExpense[],
+  estimatedAmounts: Partial<Record<SiteYearlyExpensePurpose, number>>,
+): SiteExpensesInitialValues => {
+  const hasExpensesInStore = predefinedExpenses.length > 0;
+  if (!hasExpensesInStore)
+    return expensesBaseConfig.map((defaultExpense) => {
+      return {
+        purpose: defaultExpense.purpose,
+        amount: estimatedAmounts[defaultExpense.purpose] ?? 0,
+        bearer: defaultExpense.fixedBearer ?? undefined,
+      };
+    });
+
+  // assign predefined amount and bearer to expenses, if it exists
+  // otherwise, assign default with amount 0
+  return expensesBaseConfig.map((defaultExpense) => {
+    const expenseInStore = predefinedExpenses.find((e) => e.purpose === defaultExpense.purpose);
+    return {
+      purpose: defaultExpense.purpose,
+      amount: expenseInStore?.amount ?? 0,
+      bearer: expenseInStore?.bearer ?? defaultExpense.fixedBearer ?? undefined,
+    };
+  });
+};
+const mapExpensesListToFormValues = (expenses: SiteExpensesInitialValues): FormValues => {
+  return expenses.reduce((acc, expense) => {
+    return {
+      ...acc,
+      [expense.purpose]: {
+        amount: expense.amount,
+        bearer: expense.bearer,
+      },
+    };
+  }, {});
+};
+
+// predefinedExpenses are from the store, when user has already entered expenses
+export const getInitialValues = (
+  expensesBaseConfig: SiteYearlyExpensesBaseConfig,
+  predefinedExpenses: SiteYearlyExpense[],
+  estimatedAmounts: Partial<Record<SiteYearlyExpensePurpose, number>>,
+): FormValues => {
+  return mapExpensesListToFormValues(
+    mapDefaultAndStoreExpensesToInitialValues(
+      expensesBaseConfig,
+      predefinedExpenses,
+      estimatedAmounts,
+    ),
+  );
 };
