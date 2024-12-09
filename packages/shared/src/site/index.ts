@@ -1,15 +1,21 @@
 import { z } from "zod";
 
-export type SiteYearlyExpensePurpose =
+export type SiteManagementYearlyExpensePurpose =
   | "rent"
   | "propertyTaxes"
   | "operationsTaxes"
   | "maintenance"
-  | "otherManagementCosts"
+  | "otherManagementCosts";
+
+export type SiteSecurityYearlyExpensePurpose =
   | "security"
   | "illegalDumpingCost"
   | "accidentsCost"
   | "otherSecuringCosts";
+
+export type SiteYearlyExpensePurpose =
+  | SiteManagementYearlyExpensePurpose
+  | SiteSecurityYearlyExpensePurpose;
 
 export type SiteYearlyExpense = {
   purpose: SiteYearlyExpensePurpose;
