@@ -1,7 +1,11 @@
 import { useForm } from "react-hook-form";
 import { SiteYearlyExpensePurpose, typedObjectEntries } from "shared";
 
-import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
+import {
+  getLabelForExpensePurpose,
+  SiteManagementYearlyExpensesBaseConfig,
+  SiteSecurityYearlyExpensesBaseConfig,
+} from "@/features/create-site/domain/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
@@ -17,20 +21,12 @@ type FormExpense =
   | { amount: number; bearer?: YearlyExpenseBearer };
 export type FormValues = Partial<Record<SiteYearlyExpensePurpose, FormExpense>>;
 
-export type Props = {
+type Props = {
   hasTenant: boolean;
   isFriche: boolean;
-  siteManagementExpensesWithBearer: {
-    name: SiteYearlyExpensePurpose;
-    bearer?: "tenant" | "owner";
-  }[];
-  siteSecurityExpensesWithBearer: { name: SiteYearlyExpensePurpose; bearer?: "tenant" | "owner" }[];
-  defaultValues: {
-    propertyTaxes?: { amount?: number };
-    illegalDumpingCost?: { amount?: number };
-    security?: { amount?: number };
-    maintenance?: { amount?: number };
-  };
+  siteManagementYearlyExpensesBaseConfig: SiteManagementYearlyExpensesBaseConfig;
+  siteSecurityExpensesBaseConfig: SiteSecurityYearlyExpensesBaseConfig;
+  initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -124,15 +120,15 @@ const getBearerLabel = (bearer: "tenant" | "owner", isFriche: boolean) => {
 function SiteYearlyExpensesForm({
   onSubmit,
   onBack,
-  siteManagementExpensesWithBearer,
-  siteSecurityExpensesWithBearer,
+  siteManagementYearlyExpensesBaseConfig,
+  siteSecurityExpensesBaseConfig,
   hasTenant,
   isFriche,
-  defaultValues,
+  initialValues,
 }: Props) {
   const { handleSubmit, watch, register, formState } = useForm<FormValues>({
     shouldUnregister: true,
-    defaultValues,
+    defaultValues: initialValues,
   });
 
   const expenseBearerOptions = [
@@ -156,25 +152,30 @@ function SiteYearlyExpensesForm({
       <form onSubmit={handleSubmit(onSubmit)}>
         {isFriche && <h3 className="!tw-mb-0">Gestion du site</h3>}
 
-        {siteManagementExpensesWithBearer.map(({ name, bearer }) => {
-          const amountEntered = !!formValues[name]?.amount;
-          const askForBearer = bearer === undefined && amountEntered;
-          const bearerError = formState.errors[name]?.bearer;
+        {siteManagementYearlyExpensesBaseConfig.map(({ purpose, fixedBearer }) => {
+          const amountEntered = !!formValues[purpose]?.amount;
+          const askForBearer = fixedBearer === null && amountEntered;
+          const bearerError = formState.errors[purpose]?.bearer;
           return (
             <>
               <RowDecimalsNumericInput
-                key={`${name}.amount`}
-                hintText={hasTenant && bearer ? getBearerLabel(bearer, isFriche) : undefined}
+                key={`${purpose}.amount`}
+                hintText={
+                  fixedBearer && hasTenant ? getBearerLabel(fixedBearer, isFriche) : undefined
+                }
                 addonText="€ / an"
-                label={getLabelForExpense(name)}
-                nativeInputProps={register(`${name}.amount`, optionalNumericFieldRegisterOptions)}
+                label={getLabelForExpense(purpose)}
+                nativeInputProps={register(
+                  `${purpose}.amount`,
+                  optionalNumericFieldRegisterOptions,
+                )}
               />
 
               {askForBearer && (
                 <RadioButtons
-                  key={`${name}.bearer`}
+                  key={`${purpose}.bearer`}
                   error={bearerError}
-                  {...register(`${name}.bearer`, {
+                  {...register(`${purpose}.bearer`, {
                     required: "Cette information est obligatoire.",
                   })}
                   options={expenseBearerOptions}
@@ -186,30 +187,32 @@ function SiteYearlyExpensesForm({
         {isFriche && (
           <>
             <h3 className="!tw-mb-0 tw-mt-6">Sécurisation du site</h3>
-            {siteSecurityExpensesWithBearer.map(({ name, bearer }) => {
-              const amountEntered = !!formValues[name]?.amount;
-              const askForBearer = bearer === undefined && amountEntered;
-              const amountError = formState.errors[name]?.amount;
-              const bearerError = formState.errors[name]?.bearer;
+            {siteSecurityExpensesBaseConfig.map(({ purpose, fixedBearer }) => {
+              const amountEntered = !!formValues[purpose]?.amount;
+              const askForBearer = fixedBearer === null && amountEntered;
+              const amountError = formState.errors[purpose]?.amount;
+              const bearerError = formState.errors[purpose]?.bearer;
               return (
                 <>
                   <RowDecimalsNumericInput
-                    key={`${name}.amount`}
+                    key={`${purpose}.amount`}
                     state={amountError ? "error" : "default"}
                     stateRelatedMessage={amountError?.message}
                     nativeInputProps={register(
-                      `${name}.amount`,
+                      `${purpose}.amount`,
                       optionalNumericFieldRegisterOptions,
                     )}
-                    label={getLabelForExpense(name)}
-                    hintText={hasTenant && bearer ? getBearerLabel(bearer, isFriche) : undefined}
+                    label={getLabelForExpense(purpose)}
+                    hintText={
+                      hasTenant && fixedBearer ? getBearerLabel(fixedBearer, isFriche) : undefined
+                    }
                     addonText="€ / an"
                   />
                   {askForBearer && (
                     <RadioButtons
-                      key={`${name}.bearer`}
+                      key={`${purpose}.bearer`}
                       error={bearerError}
-                      {...register(`${name}.bearer`, {
+                      {...register(`${purpose}.bearer`, {
                         required: "Cette information est obligatoire.",
                       })}
                       options={expenseBearerOptions}

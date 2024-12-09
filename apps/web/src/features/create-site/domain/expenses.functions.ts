@@ -1,4 +1,8 @@
-import { SiteYearlyExpense } from "shared";
+import {
+  SiteYearlyExpense,
+  SiteManagementYearlyExpensePurpose,
+  SiteSecurityYearlyExpensePurpose,
+} from "shared";
 
 type GroupedByExpensesKey = "bearer";
 
@@ -77,4 +81,66 @@ export const computeEstimatedPropertyTaxesAmount = (buildingsSurfaceArea: number
   return Math.round(
     AVERAGE_PROPERTY_TAXES_EURO_PER_BUILDINGS_SURFACE_SQUARE_METERS * buildingsSurfaceArea,
   );
+};
+
+export type SiteYearlyExpensesBaseConfig = {
+  purpose: SiteManagementYearlyExpensePurpose | SiteSecurityYearlyExpensePurpose;
+  fixedBearer: "owner" | "tenant" | null;
+}[];
+
+export type SiteManagementYearlyExpensesBaseConfig = {
+  purpose: SiteManagementYearlyExpensePurpose;
+  fixedBearer: "owner" | "tenant" | null;
+}[];
+export const getSiteManagementExpensesBaseConfig = (input: {
+  hasTenant: boolean;
+  isOperated: boolean;
+}): SiteManagementYearlyExpensesBaseConfig => {
+  const { hasTenant, isOperated } = input;
+
+  if (hasTenant) {
+    return [
+      { purpose: "rent", fixedBearer: "tenant" },
+      ...(isOperated
+        ? ([
+            { purpose: "operationsTaxes", fixedBearer: "tenant" },
+          ] as SiteManagementYearlyExpensesBaseConfig)
+        : []),
+      { purpose: "maintenance", fixedBearer: "tenant" },
+      { purpose: "propertyTaxes", fixedBearer: "owner" },
+      { purpose: "otherManagementCosts", fixedBearer: null },
+    ];
+  }
+  return [
+    ...(isOperated
+      ? ([
+          { purpose: "operationsTaxes", fixedBearer: "owner" },
+        ] as SiteManagementYearlyExpensesBaseConfig)
+      : []),
+    { purpose: "maintenance", fixedBearer: "owner" },
+    { purpose: "propertyTaxes", fixedBearer: "owner" },
+    { purpose: "otherManagementCosts", fixedBearer: "owner" },
+  ];
+};
+
+export type SiteSecurityYearlyExpensesBaseConfig = {
+  purpose: SiteSecurityYearlyExpensePurpose;
+  fixedBearer: "owner" | "tenant" | null;
+}[];
+export const getSiteSecurityExpensesBaseConfig = (input: {
+  hasTenant: boolean;
+  hasRecentAccidents: boolean;
+}): SiteSecurityYearlyExpensesBaseConfig => {
+  const { hasTenant, hasRecentAccidents } = input;
+  const expensesBearer = hasTenant ? null : "owner";
+  const expenses: SiteSecurityYearlyExpensesBaseConfig = [
+    { purpose: "security", fixedBearer: expensesBearer },
+    { purpose: "illegalDumpingCost", fixedBearer: expensesBearer },
+    { purpose: "otherSecuringCosts", fixedBearer: expensesBearer },
+  ];
+
+  if (hasRecentAccidents) {
+    expenses.push({ purpose: "accidentsCost", fixedBearer: expensesBearer });
+  }
+  return expenses;
 };

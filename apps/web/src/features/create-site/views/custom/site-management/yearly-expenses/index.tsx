@@ -1,79 +1,55 @@
 import { useEffect } from "react";
-import { SiteYearlyExpense } from "shared";
 
-import { AppDispatch, RootState } from "@/app/application/store";
 import { revertYearlyExpensesStep } from "@/features/create-site/application/createSite.actions";
 import { completeYearlyExpenses } from "@/features/create-site/application/createSite.reducer";
 import {
-  EstimatedSiteYearlyExpenses,
   selectEstimatedYearlyExpensesForSite,
+  selectSiteManagementExpensesBaseConfig,
+  selectSiteSecurityExpensesBaseConfig,
 } from "@/features/create-site/application/expenses.selectors";
 import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
-import { hasTenant } from "@/features/create-site/domain/site.functions";
-import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import { SiteYearlyExpensesBaseConfig } from "@/features/create-site/domain/expenses.functions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteYearlyExpensesForm, { FormValues, Props } from "./SiteYearlyExpensesForm";
-import {
-  getSiteManagementExpensesWithBearer,
-  getSiteSecurityExpensesWithBearer,
-  mapFormDataToExpenses,
-} from "./mappers";
-
-const mapProps = (
-  dispatch: AppDispatch,
-  { siteData }: RootState["siteCreation"],
-  defaultValues: EstimatedSiteYearlyExpenses,
-): Props => {
-  const siteHasTenant = hasTenant(siteData as SiteDraft);
-
-  const siteManagementExpensesWithBearer = getSiteManagementExpensesWithBearer(
-    siteData.isFriche ?? false,
-    siteData.isSiteOperated ?? false,
-    siteHasTenant,
-  );
-
-  const siteSecurityExpensesWithBearer = getSiteSecurityExpensesWithBearer(
-    siteHasTenant,
-    siteData.hasRecentAccidents ?? false,
-  );
-
-  return {
-    hasTenant: siteHasTenant,
-    isFriche: !!siteData.isFriche,
-    siteManagementExpensesWithBearer,
-    siteSecurityExpensesWithBearer,
-    defaultValues: {
-      maintenance: { amount: defaultValues.maintenanceAmount },
-      illegalDumpingCost: { amount: defaultValues.illegalDumpingCostAmount },
-      security: { amount: defaultValues.securityAmount },
-      propertyTaxes: { amount: defaultValues.propertyTaxesAmount },
-    },
-    onBack: () => {
-      dispatch(revertYearlyExpensesStep());
-    },
-    onSubmit: (formData: FormValues) => {
-      const expenses: SiteYearlyExpense[] = mapFormDataToExpenses(formData, [
-        ...siteManagementExpensesWithBearer,
-        ...siteSecurityExpensesWithBearer,
-      ]);
-
-      dispatch(completeYearlyExpenses(expenses));
-    },
-  };
-};
+import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";
+import { getInitialValues, mapFormDataToExpenses } from "./mappers";
 
 function SiteYearlyExpensesFormContainer() {
   const dispatch = useAppDispatch();
   const siteCreationState = useAppSelector((state) => state.siteCreation);
+  const expensesInStore = useAppSelector((state) => state.siteCreation.siteData.yearlyExpenses);
+  const siteManagementExpensesBaseConfig = useAppSelector(selectSiteManagementExpensesBaseConfig);
+  const siteSecurityExpensesBaseConfig = useAppSelector(selectSiteSecurityExpensesBaseConfig);
+  const siteExpensesEstimatedAmounts = useAppSelector(selectEstimatedYearlyExpensesForSite);
 
-  const defaultValues = useAppSelector(selectEstimatedYearlyExpensesForSite);
+  const expensesBaseconfig: SiteYearlyExpensesBaseConfig = [
+    ...siteManagementExpensesBaseConfig,
+    ...siteSecurityExpensesBaseConfig,
+  ];
 
   useEffect(() => {
     void dispatch(fetchSiteMunicipalityData());
   }, [dispatch]);
-
-  return <SiteYearlyExpensesForm {...mapProps(dispatch, siteCreationState, defaultValues)} />;
+  return (
+    <SiteYearlyExpensesForm
+      hasTenant={!!siteCreationState.siteData.tenant}
+      isFriche={!!siteCreationState.siteData.isFriche}
+      initialValues={getInitialValues(
+        expensesBaseconfig,
+        expensesInStore ?? [],
+        siteExpensesEstimatedAmounts,
+      )}
+      onBack={() => {
+        dispatch(revertYearlyExpensesStep());
+      }}
+      onSubmit={(formData: FormValues) => {
+        const expenses = mapFormDataToExpenses(formData, expensesBaseconfig);
+        dispatch(completeYearlyExpenses(expenses));
+      }}
+      siteManagementYearlyExpensesBaseConfig={siteManagementExpensesBaseConfig}
+      siteSecurityExpensesBaseConfig={siteSecurityExpensesBaseConfig}
+    />
+  );
 }
 
 export default SiteYearlyExpensesFormContainer;
