@@ -1,6 +1,6 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import highchartsVariablePie from "highcharts/modules/variable-pie";
+import "highcharts/modules/variable-pie";
 import { useRef } from "react";
 import { SoilType } from "shared";
 
@@ -8,8 +8,6 @@ import { getColorForCarbonStorageSoilType } from "@/shared/domain/soils";
 import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
 
 import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
-
-highchartsVariablePie(Highcharts);
 
 type Props = {
   soilsCarbonStorage: {

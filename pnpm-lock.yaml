@@ -178,11 +178,11 @@ importers:
         specifier: ~4.1.0
         version: 4.1.0
       highcharts:
-        specifier: ~11.4.8
-        version: 11.4.8
+        specifier: ~12.0.2
+        version: 12.0.2
       highcharts-react-official:
         specifier: ~3.2.1
-        version: 3.2.1(highcharts@11.4.8)(react@18.3.1)
+        version: 3.2.1(highcharts@12.0.2)(react@18.3.1)
       react:
         specifier: ~18.3.1
         version: 18.3.1
@@ -3120,8 +3120,8 @@ packages:
       highcharts: '>=6.0.0'
       react: '>=16.8.0'
 
-  highcharts@11.4.8:
-    resolution: {integrity: sha512-5Tke9LuzZszC4osaFisxLIcw7xgNGz4Sy3Jc9pRMV+ydm6sYqsPYdU8ELOgpzGNrbrRNDRBtveoR5xS3SzneEA==}
+  highcharts@12.0.2:
+    resolution: {integrity: sha512-DKZFNn2Mk3EUmOfJIvIgPqBjUoKDkDW9WY1nT9zrhfB9SSyg5yVbVEFrw267C4+Hzg4U1H/0i0Z6S3VYJwg6qQ==}
 
   history@5.3.0:
     resolution: {integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==}
@@ -8857,12 +8857,12 @@ snapshots:
 
   hexoid@2.0.0: {}
 
-  highcharts-react-official@3.2.1(highcharts@11.4.8)(react@18.3.1):
+  highcharts-react-official@3.2.1(highcharts@12.0.2)(react@18.3.1):
     dependencies:
-      highcharts: 11.4.8
+      highcharts: 12.0.2
       react: 18.3.1
 
-  highcharts@11.4.8: {}
+  highcharts@12.0.2: {}
 
   history@5.3.0:
     dependencies:
