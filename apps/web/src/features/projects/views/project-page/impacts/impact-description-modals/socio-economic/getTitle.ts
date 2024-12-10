@@ -20,6 +20,8 @@ export const getSocioEconomicSectionModalTitle = (
       return "🏛 Droits de mutation sur la transaction foncière";
     case "socio-economic.property-value-increase":
       return "🏡 Valeur patrimoniale des bâtiments alentour";
+    case "socio-economic.roads-and-utilities-maintenance-expenses":
+      return "🅿️ Dépenses d’entretien des VRD";
     case "socio-economic.avoided-co2-renewable-energy":
       return "⚡️️ Emissions de CO2-eq évitées grâce à la production d'énergies renouvelables";
     case "socio-economic.water-regulation":

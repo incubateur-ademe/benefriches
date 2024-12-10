@@ -36,6 +36,8 @@ const itemDescriptionModalIds: Partial<
   soil_erosion: "socio-economic.ecosystem-services.soil-erosion",
   invasive_species_regulation: "socio-economic.ecosystem-services.invasive-species-regulation",
   water_regulation: "socio-economic.water-regulation",
+  roads_and_utilities_maintenance_expenses:
+    "socio-economic.roads-and-utilities-maintenance-expenses",
 };
 
 const getImpactItemOnClick = (

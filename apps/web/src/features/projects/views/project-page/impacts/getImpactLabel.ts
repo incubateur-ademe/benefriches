@@ -176,6 +176,8 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🚗 Dépenses automobiles évitées";
     case "avoided_air_conditioning_expenses":
       return "❄️ Dépenses de climatisation évitées";
+    case "roads_and_utilities_maintenance_expenses":
+      return "🅿️ Dépenses d’entretien des VRD";
     // Sociaux monétarisés
     /// Projet urbain
     case "travel_time_saved":

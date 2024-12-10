@@ -12,6 +12,7 @@ import { UrbanProjectFeatures } from "../urbanProjects";
 import { computeAvoidedCO2TonsWithEnergyProductionImpact } from "./avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import { computeHouseholdsPoweredByRenewableEnergyImpact } from "./households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
 import { getLocalPropertyValueIncreaseRelatedImpacts } from "./property-value/propertyValueImpact";
+import { formatRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 import { TravelRelatedImpactsService } from "./travel-related-impacts-service/TravelRelatedImpactsService";
 import { UrbanFreshnessRelatedImpactsService } from "./urban-freshness-related-impacts-service/UrbanFreshnessRelatedImpactsService";
 
@@ -119,11 +120,19 @@ export const getDevelopmentPlanRelatedImpacts = async ({
         },
       );
 
+      const { socioeconomic: roadsAndUtilitiesExpensesImpacts } =
+        formatRoadsAndUtilitiesExpensesImpacts(
+          siteIsFriche,
+          siteSurfaceArea,
+          evaluationPeriodInYears,
+        );
+
       return {
         socioeconomic: [
           ...urbanFreshnessSocioEconomicImpacts,
           ...travelRelatedSocioEconomicImpacts,
           ...localPropertyIncreaseRelatedImpacts,
+          ...roadsAndUtilitiesExpensesImpacts,
         ] as SocioEconomicImpact[],
         ...urbanFreshnessImpacts,
         ...travelRelatedImpacts,

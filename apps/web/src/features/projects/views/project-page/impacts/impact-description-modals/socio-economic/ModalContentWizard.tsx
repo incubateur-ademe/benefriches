@@ -17,6 +17,7 @@ import WaterCycle from "./ecosystem-services/WaterCycle";
 import PropertyTransferDutiesIncreaseDescription from "./property-value-increase/PropertyTransferDutiesIncreaseDescription";
 import PropertyValueIncreaseDescription from "./property-value-increase/PropertyValueIncreaseDescription";
 import RentalIncomeDescription from "./rental-income/RentalIncomeDescription";
+import RoadsAndUtilitiesMaintenanceExpenses from "./roads-and-utilities-maintenance-expenses/RoadsAndUtilitiesMaintenanceExpenses";
 import { SocioEconomicImpactDescriptionModalId } from "./types";
 import WaterRegulationDescription from "./water-regulation/WaterRegulationDescription";
 
@@ -225,6 +226,27 @@ const SocioEconomicModalContentWizard = ({
             ]}
           />
           <RentalIncomeDescription developmentPlan={projectData.developmentPlan} />
+        </>
+      );
+
+    case "socio-economic.roads-and-utilities-maintenance-expenses":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              {
+                label: "Impacts économiques directs",
+              },
+              { label: "Dépenses d’entretien des VRD", isCurrent: true },
+            ]}
+          />
+          <RoadsAndUtilitiesMaintenanceExpenses surfaceArea={siteData.surfaceArea} />
         </>
       );
 

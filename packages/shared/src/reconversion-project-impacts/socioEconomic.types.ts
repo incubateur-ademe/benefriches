@@ -57,13 +57,20 @@ export type AvoidedAirConditioningExpensesImpact = BaseEconomicImpact & {
   actor: "local_residents" | "local_companies";
 };
 
+type RoadsAndUtilitiesMaintenanceExpensesImpact = BaseEconomicImpact & {
+  impact: "roads_and_utilities_maintenance_expenses";
+  impactCategory: "economic_direct";
+  actor: "community";
+};
+
 export type DirectAndIndirectEconomicImpact =
   | RentalIncomeImpact
   | AvoidedFricheCostsImpact
   | TaxesIncomeImpact
   | PropertyTransferDutiesIncomeImpact
   | AvoidedCarRelatedExpensesImpact
-  | AvoidedAirConditioningExpensesImpact;
+  | AvoidedAirConditioningExpensesImpact
+  | RoadsAndUtilitiesMaintenanceExpensesImpact;
 
 export type TravelTimeSavedImpact = BaseEconomicImpact & {
   impact: "travel_time_saved";

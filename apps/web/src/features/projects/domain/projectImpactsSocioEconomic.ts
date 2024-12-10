@@ -36,6 +36,7 @@ type SocioEconomicMainImpactName =
   | "rental_income"
   | "avoided_friche_costs"
   | "avoided_car_related_expenses"
+  | "roads_and_utilities_maintenance_expenses"
   | "avoided_property_damages_expenses"
   | "avoided_air_conditioning_expenses"
   | "travel_time_saved"
@@ -117,6 +118,21 @@ export const getDetailedSocioEconomicProjectImpacts = (
       ],
     });
     economicDirect.total += propertyTransferDutiesIncomeImpact.amount;
+  }
+
+  const avoidedRoadAndUtilitiesMaintenanceExpenses = socioEconomicImpacts.filter(
+    (impact) => impact.impact === "roads_and_utilities_maintenance_expenses",
+  );
+
+  if (avoidedRoadAndUtilitiesMaintenanceExpenses.length > 0) {
+    economicDirect.impacts.push({
+      name: "roads_and_utilities_maintenance_expenses",
+      actors: avoidedRoadAndUtilitiesMaintenanceExpenses.map(({ amount, actor }) => ({
+        value: amount,
+        name: actor,
+      })),
+    });
+    economicDirect.total += sumListWithKey(avoidedRoadAndUtilitiesMaintenanceExpenses, "amount");
   }
 
   const taxesIncomeImpacts = socioEconomicImpacts.filter(
