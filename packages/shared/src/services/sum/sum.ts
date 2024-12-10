@@ -8,9 +8,7 @@ export const sumList = (list: number[]): number => {
   return list.reduce((sum, amount) => sum + amount, 0);
 };
 
-type ObjNumericKeys<K extends string> = {
-  [key in K]: number;
-};
+type ObjNumericKeys<K extends string> = Record<K, number>;
 export function sumListWithKey<K extends string, T extends ObjNumericKeys<K>>(
   list: T[],
   key: K,

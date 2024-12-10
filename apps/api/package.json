@@ -51,8 +51,8 @@
     "testcontainers": "~10.13.2",
     "ts-jest": "~29.2.5",
     "ts-node": "~10.9.2",
-    "typescript": "~5.5.4",
-    "typescript-eslint": "~8.7.0"
+    "typescript": "~5.7.2",
+    "typescript-eslint": "~8.18.0"
   },
   "dependencies": {
     "@nestjs/axios": "~3.0.3",
