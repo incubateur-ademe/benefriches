@@ -43,6 +43,7 @@ erDiagram
         email character_varying "not null"
         created_at timestamp_with_time_zone "not null"
         personal_data_storage_consented_at timestamp_with_time_zone "not null"
+        created_from character_varying "null"
         firstname character_varying "null"
         lastname character_varying "null"
         structure_activity character_varying "null"
@@ -54,8 +55,16 @@ erDiagram
 
     users_deprecated {
         email character_varying "not null"
-        password character_varying "not null"
+        created_at timestamp_with_time_zone "not null"
+        personal_data_storage_consented_at timestamp_with_time_zone "not null"
         id uuid "not null"
+        firstname character_varying "null"
+        lastname character_varying "null"
+        structure_activity character_varying "null"
+        structure_name character_varying "null"
+        structure_type character_varying "null"
+        personal_data_analytics_use_consented_at timestamp_with_time_zone "null"
+        personal_data_communication_use_consented_at timestamp_with_time_zone "null"
     }
 ```
 

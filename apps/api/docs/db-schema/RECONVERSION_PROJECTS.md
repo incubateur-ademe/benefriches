@@ -7,6 +7,7 @@ erDiagram
         id uuid PK "not null"
         development_plan_id uuid FK "not null"
         purpose character_varying "not null"
+        id uuid "not null"
         amount numeric "null"
     }
 
@@ -15,6 +16,7 @@ erDiagram
         reconversion_project_id uuid FK "not null"
         type character_varying "not null"
         features json "not null"
+        id uuid "not null"
         developer_name character_varying "null"
         developer_structure_type character_varying "null"
         schedule_end_date timestamp_with_time_zone "null"
@@ -25,6 +27,7 @@ erDiagram
         id uuid PK "not null"
         reconversion_project_id uuid FK "not null"
         source character_varying "not null"
+        id uuid "not null"
         amount numeric "null"
     }
 
@@ -32,6 +35,7 @@ erDiagram
         id uuid PK "not null"
         reconversion_project_id uuid FK "not null"
         purpose character_varying "not null"
+        id uuid "not null"
         amount numeric "null"
     }
 
@@ -40,6 +44,7 @@ erDiagram
         reconversion_project_id uuid FK "not null"
         soil_type character_varying "not null"
         surface_area numeric "not null"
+        id uuid "not null"
     }
 
     reconversion_project_yearly_expenses {
@@ -47,6 +52,7 @@ erDiagram
         reconversion_project_id uuid FK "not null"
         purpose character_varying "not null"
         amount numeric "not null"
+        id uuid "not null"
     }
 
     reconversion_project_yearly_revenues {
@@ -54,6 +60,7 @@ erDiagram
         reconversion_project_id uuid FK "not null"
         source character_varying "not null"
         amount numeric "not null"
+        id uuid "not null"
     }
 
     reconversion_projects {
@@ -61,6 +68,7 @@ erDiagram
         related_site_id uuid FK "not null"
         name character_varying "not null"
         created_at timestamp_with_time_zone "not null"
+        id uuid "not null"
         creation_mode character_varying "null"
         future_operator_name character_varying "null"
         future_operator_structure_type character_varying "null"
@@ -70,6 +78,7 @@ erDiagram
         reinstatement_contract_owner_name character_varying "null"
         reinstatement_contract_owner_structure_type character_varying "null"
         operations_first_year integer "null"
+        financial_assistance_revenues numeric "null"
         friche_decontaminated_soil_surface_area numeric "null"
         site_purchase_property_transfer_duties numeric "null"
         site_purchase_selling_price numeric "null"
