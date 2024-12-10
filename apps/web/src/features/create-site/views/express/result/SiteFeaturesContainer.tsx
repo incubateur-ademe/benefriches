@@ -14,7 +14,7 @@ type Props = {
   siteId: string;
 };
 
-export default function SiteFeaturesModalView({ siteId }: Props) {
+export default function SiteFeaturesContainer({ siteId }: Props) {
   const dispatch = useAppDispatch();
   const siteFeatures = useAppSelector(selectSiteFeatures);
   const loadingState = useAppSelector(selectLoadingState);
