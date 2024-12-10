@@ -27,23 +27,23 @@
     "prebuild": "react-dsfr update-icons"
   },
   "dependencies": {
-    "@codegouvfr/react-dsfr": "~1.13.9",
+    "@codegouvfr/react-dsfr": "~1.16.1",
     "@reactour/tour": "~3.7.0",
-    "@reduxjs/toolkit": "~2.2.8",
-    "antd": "~5.21.6",
+    "@reduxjs/toolkit": "~2.4.0",
+    "antd": "~5.22.4",
     "clsx": "~2.1.1",
-    "date-fns": "~3.6.0",
+    "date-fns": "~4.1.0",
     "highcharts": "~11.4.8",
     "highcharts-react-official": "~3.2.1",
     "react": "~18.3.1",
     "react-dom": "~18.3.1",
-    "react-hook-form": "~7.53.2",
+    "react-hook-form": "~7.54.0",
     "react-redux": "~9.1.2",
     "reduce-reducers": "~1.0.4",
     "shared": "workspace:*",
     "type-route": "~1.1.0",
-    "uuid": "~10.0.0",
-    "zod": "~3.23.8"
+    "uuid": "~11.0.3",
+    "zod": "~3.24.0"
   },
   "devDependencies": {
     "@eslint/js": "~9.15.0",
@@ -51,11 +51,11 @@
     "@testing-library/react": "^16.0.1",
     "@trivago/prettier-plugin-sort-imports": "~4.3.0",
     "@types/eslint__js": "~8.42.3",
-    "@types/geojson": "~7946.0.14",
+    "@types/geojson": "~7946.0.15",
     "@types/react": "~18.3.12",
     "@types/react-dom": "~18.3.1",
     "@types/uuid": "~10.0.0",
-    "@vitejs/plugin-react": "~4.3.3",
+    "@vitejs/plugin-react": "~4.3.4",
     "autoprefixer": "~10.4.20",
     "eslint": "~9.15.0",
     "eslint-config-prettier": "~9.1.0",
@@ -63,14 +63,14 @@
     "eslint-plugin-react": "~7.37.2",
     "eslint-plugin-react-hooks": "~5.0.0",
     "eslint-plugin-react-refresh": "~0.4.14",
-    "globals": "~15.9.0",
+    "globals": "~15.13.0",
     "jsdom": "~25.0.1",
     "postcss": "~8.4.49",
     "prettier": "~3.3.3",
-    "tailwindcss": "~3.4.14",
+    "tailwindcss": "~3.4.16",
     "typescript": "~5.7.2",
     "typescript-eslint": "~8.18.0",
     "vite": "~5.4.11",
-    "vitest": "~2.1.5"
+    "vitest": "~2.1.8"
   }
 }

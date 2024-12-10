@@ -16,13 +16,13 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "date-fns": "~3.6.0",
-    "zod": "~3.23.8"
+    "date-fns": "~4.1.0",
+    "zod": "~3.24.0"
   },
   "devDependencies": {
     "@eslint/js": "~9.9.0",
     "@trivago/prettier-plugin-sort-imports": "~4.3.0",
-    "@types/jest": "~29.5.12",
+    "@types/jest": "~29.5.14",
     "eslint": "~9.9.0",
     "eslint-plugin-jest": "~28.8.0",
     "jest": "~29.7.0",
