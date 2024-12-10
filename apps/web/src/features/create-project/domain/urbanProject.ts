@@ -70,15 +70,26 @@ export const getDescriptionForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCat
 export const getLabelForUrbanGreenSpace = (greenSpace: UrbanGreenSpace): string => {
   switch (greenSpace) {
     case "LAWNS_AND_BUSHES":
-      return "Pelouses et arbustes";
+      return "Pelouses et buissons";
     case "GRAVEL_ALLEY":
-      return "Allée en gravier";
+      return "Alléess et espaces en revêtement perméable";
     case "PAVED_ALLEY":
-      return "Allée pavée ou bitumée";
+      return "Allées et espaces en revêtement imperméable";
     case "TREE_FILLED_SPACE":
       return "Zone arborée";
     case "URBAN_POND_OR_LAKE":
       return "Plan d'eau";
+  }
+};
+
+export const getDescriptionForUrbanGreenSpace = (
+  greenSpace: UrbanGreenSpace,
+): string | undefined => {
+  switch (greenSpace) {
+    case "PAVED_ALLEY":
+      return "Pavé, bitum...";
+    case "GRAVEL_ALLEY":
+      return "Gravier, dalles alvéolées...";
   }
 };
 

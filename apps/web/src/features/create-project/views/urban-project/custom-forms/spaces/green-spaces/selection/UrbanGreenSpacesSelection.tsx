@@ -2,6 +2,7 @@ import { Controller, useForm } from "react-hook-form";
 import { UrbanGreenSpace, urbanGreenSpaces } from "shared";
 
 import {
+  getDescriptionForUrbanGreenSpace,
   getLabelForUrbanGreenSpace,
   getPictogramUrlForUrbanGreenSpace,
 } from "@/features/create-project/domain/urbanProject";
@@ -26,11 +27,13 @@ type GreenSpaceTileProps = {
 
 const GreenSpaceTile = ({ greenSpace, isSelected, onChange }: GreenSpaceTileProps) => {
   const title = getLabelForUrbanGreenSpace(greenSpace);
+  const description = getDescriptionForUrbanGreenSpace(greenSpace);
   const imgSrc = getPictogramUrlForUrbanGreenSpace(greenSpace);
 
   return (
     <CheckableTile
       title={title}
+      description={description}
       imgSrc={imgSrc}
       checked={isSelected}
       onChange={onChange}
