@@ -1,8 +1,10 @@
-export default {
-  preset: "ts-jest",
+import { JestConfigWithTsJest, createDefaultPreset as tsTransformPreset } from "ts-jest";
+
+const config: JestConfigWithTsJest = {
+  ...tsTransformPreset(),
   testEnvironment: "node",
   testMatch: ["<rootDir>/**/*.spec.ts"],
   testPathIgnorePatterns: ["/node_modules/"],
-  globals: { "ts-jest": { diagnostics: false } },
-  transform: {},
 };
+
+export default config;
