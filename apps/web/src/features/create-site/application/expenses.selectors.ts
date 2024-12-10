@@ -1,4 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
+import { SiteYearlyExpensePurpose } from "shared";
 
 import { RootState } from "@/app/application/store";
 
@@ -7,6 +8,10 @@ import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
+  getSiteManagementExpensesBaseConfig,
+  getSiteSecurityExpensesBaseConfig,
+  SiteManagementYearlyExpensesBaseConfig,
+  SiteSecurityYearlyExpensesBaseConfig,
 } from "../domain/expenses.functions";
 import { SiteDraft } from "../domain/siteFoncier.types";
 
@@ -19,16 +24,10 @@ const selectSitePopulation = createSelector(
   (state): number | undefined => state.population,
 );
 
-export type EstimatedSiteYearlyExpenses = {
-  illegalDumpingCostAmount?: number;
-  securityAmount?: number;
-  maintenanceAmount?: number;
-  propertyTaxesAmount?: number;
-};
+type EstimatedSiteYearlyExpensesAmounts = Partial<Record<SiteYearlyExpensePurpose, number>>;
 export const selectEstimatedYearlyExpensesForSite = createSelector(
-  selectSiteData,
-  selectSitePopulation,
-  (siteData, population): EstimatedSiteYearlyExpenses => {
+  [selectSiteData, selectSitePopulation],
+  (siteData, population): EstimatedSiteYearlyExpensesAmounts => {
     const { soilsDistribution = {}, surfaceArea, isFriche } = siteData;
     const buildingsSurface = soilsDistribution.BUILDINGS;
     const maintenanceAmount = buildingsSurface
@@ -42,10 +41,36 @@ export const selectEstimatedYearlyExpensesForSite = createSelector(
     const securityAmount = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
 
     return {
-      maintenanceAmount,
-      propertyTaxesAmount,
-      illegalDumpingCostAmount,
-      securityAmount,
+      maintenance: maintenanceAmount,
+      propertyTaxes: propertyTaxesAmount,
+      illegalDumpingCost: illegalDumpingCostAmount,
+      security: securityAmount,
     };
+  },
+);
+
+export const selectSiteManagementExpensesBaseConfig = createSelector(
+  [selectSiteData],
+  (siteData): SiteManagementYearlyExpensesBaseConfig => {
+    const hasTenant = !!siteData.isFricheLeased;
+    const isOperated = !!siteData.isSiteOperated;
+
+    return getSiteManagementExpensesBaseConfig({
+      hasTenant,
+      isOperated,
+    });
+  },
+);
+
+export const selectSiteSecurityExpensesBaseConfig = createSelector(
+  [selectSiteData],
+  (siteData): SiteSecurityYearlyExpensesBaseConfig => {
+    const hasTenant = !!siteData.isFricheLeased;
+    const hasRecentAccidents = !!siteData.hasRecentAccidents;
+
+    return getSiteSecurityExpensesBaseConfig({
+      hasTenant,
+      hasRecentAccidents,
+    });
   },
 );
