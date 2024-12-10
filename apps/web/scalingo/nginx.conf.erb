@@ -1,6 +1,6 @@
 location / {
   root /app/dist;
-  add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://tally.so/widgets/embed.js https://stats.beta.gouv.fr ;connect-src 'self' https://stats.beta.gouv.fr/matomo.php https://api-adresse.data.gouv.fr/search/ https://geo.api.gouv.fr/communes/;font-src 'self';img-src 'self' data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org;frame-ancestors 'none';style-src 'self' 'unsafe-inline'; frame-src https://tally.so;";
+  add_header Content-Security-Policy "default-src 'self'; script-src 'self' https://tally.so/widgets/embed.js https://stats.beta.gouv.fr ;connect-src 'self' https://stats.beta.gouv.fr/matomo.php https://api-adresse.data.gouv.fr/search/ https://geo.api.gouv.fr/communes/;font-src 'self';img-src 'self' data: https://a.tile.openstreetmap.org https://b.tile.openstreetmap.org https://c.tile.openstreetmap.org;frame-ancestors 'none';style-src 'self' 'unsafe-inline'; frame-src https://tally.so http://benefriches-metabase.osc-secnum-fr1.scalingo.io/public/dashboard;";
   add_header X-Content-Type-Options "nosniff";
   add_header X-Frame-Options "DENY";
   try_files $uri $uri/ /index.html =404;
