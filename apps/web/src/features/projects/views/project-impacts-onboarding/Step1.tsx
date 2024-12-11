@@ -87,7 +87,10 @@ export default function Step1({
       <div className="md:tw-w-2/3">
         <h1 className="tw-text-[32px]">{getTitle(projectOverallImpact)}</h1>
         <p className="tw-text-lg tw-font-bold">
-          En {evaluationPeriod} {evaluationPeriod <= 1 ? "an" : "ans"}, il générera notamment :
+          Voici les atouts principaux de votre projet sur{" "}
+          {evaluationPeriod <= 1
+            ? `la première année :`
+            : `les ${evaluationPeriod} premières années :`}
         </p>
         <section className="tw-flex tw-flex-col tw-space-y-6">
           {mainKeyImpactIndicators.map(({ name, value, isSuccess }) => {
