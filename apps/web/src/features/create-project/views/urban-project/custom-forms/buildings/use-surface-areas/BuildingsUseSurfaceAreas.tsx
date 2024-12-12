@@ -1,5 +1,6 @@
 import {
   BuildingsUseCategory,
+  getDescriptionForBuildingsUseCategory,
   getLabelForBuildingsUseCategory,
   getPictogramUrlForBuildingsUseCategory,
 } from "@/features/create-project/domain/urbanProject";
@@ -38,6 +39,7 @@ function BuildingsUseCategorySurfaceAreas({
       surfaces={selectedBuildingsUseCategories.map((useCategory) => ({
         name: useCategory,
         label: getLabelForBuildingsUseCategory(useCategory),
+        hintText: getDescriptionForBuildingsUseCategory(useCategory),
         imgSrc: getPictogramUrlForBuildingsUseCategory(useCategory),
       }))}
     />
