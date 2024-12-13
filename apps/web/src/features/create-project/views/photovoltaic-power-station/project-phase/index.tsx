@@ -7,6 +7,7 @@ import {
 import {
   getHintTextForRenewableEnergyProjectPhase,
   getLabelForRenewableEnergyProjectPhase,
+  getPictogramForProjectPhase,
 } from "@/shared/domain/projectPhase";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
@@ -19,6 +20,7 @@ function ProjectPhaseFormContainer() {
     value: phase,
     label: getLabelForRenewableEnergyProjectPhase(phase),
     hintText: getHintTextForRenewableEnergyProjectPhase(phase),
+    pictogram: getPictogramForProjectPhase(phase),
   }));
 
   return (
