@@ -1,5 +1,3 @@
-import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
-import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { useState } from "react";
 
 import { routes } from "@/app/views/router";
@@ -51,11 +49,6 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
     },
   };
 
-  const { breakpointsValues } = useBreakpointsValuesPx();
-  const { windowInnerWidth } = useWindowInnerSize();
-
-  const isSmScreen = windowInnerWidth < breakpointsValues.sm;
-
   const impactsData = getImpactsDataFromEvaluationPeriod(impactsDataFor1Year, evaluationPeriod);
 
   return (
@@ -64,7 +57,7 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
       className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full")}
     >
       <div className="tw-py-8">
-        <ProjectPageHeader {...headerProps} isSmall={isSmScreen} />
+        <ProjectPageHeader {...headerProps} />
       </div>
 
       <div className="fr-container">
@@ -77,7 +70,6 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
           onEvaluationPeriodChange={(newEvaluationPeriod: number) => {
             setEvaluationPeriod(newEvaluationPeriod);
           }}
-          isSmScreen={isSmScreen}
           headerProps={headerProps}
         />
 

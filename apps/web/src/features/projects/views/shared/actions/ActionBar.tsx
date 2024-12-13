@@ -1,6 +1,7 @@
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 
 import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
+import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import ImpactEvaluationPeriodSelect from "./ImpactEvaluationPeriodSelect";
 
@@ -18,9 +19,9 @@ function ImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
-  small,
   ref,
 }: Props) {
+  const isSmScreen = useIsSmallScreen();
   const getViewSegmentInputProps = (value: ViewMode) => {
     return {
       checked: selectedViewMode === value,
@@ -33,7 +34,7 @@ function ImpactsActionBar({
   return (
     <section ref={ref} className="md:tw-flex tw-py-4 tw-mb-2 tw-justify-between">
       <SegmentedControl
-        small={small}
+        small={isSmScreen}
         legend="Filtres"
         hideLegend
         segments={[

@@ -14,7 +14,6 @@ type Props = {
   evaluationPeriod: number;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
-  isSmScreen?: boolean;
   headerProps: {
     projectName: string;
     projectFeaturesData?: ProjectFeatures;
@@ -24,7 +23,6 @@ type Props = {
     projectType?: ProjectDevelopmentPlanType;
     onGoToImpactsOnBoarding: () => void;
     isExpressProject: boolean;
-    isSmall?: boolean;
   };
 };
 
@@ -33,7 +31,6 @@ function ProjectImpactsActionBar({
   selectedViewMode,
   evaluationPeriod,
   onEvaluationPeriodChange,
-  isSmScreen,
   headerProps,
 }: Props) {
   const [isActionBarInViewport, setIsActionBarInViewPort] = useState(false);
@@ -57,7 +54,6 @@ function ProjectImpactsActionBar({
           headerProps={headerProps}
           evaluationPeriod={evaluationPeriod}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
-          isSmScreen={isSmScreen}
         />
       )}
       <ImpactsActionBar
@@ -66,7 +62,6 @@ function ProjectImpactsActionBar({
         evaluationPeriod={evaluationPeriod}
         onViewModeClick={onViewModeClick}
         onEvaluationPeriodChange={onEvaluationPeriodChange}
-        small={isSmScreen}
       />
     </>
   );

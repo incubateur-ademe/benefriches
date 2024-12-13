@@ -1,11 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
-import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { DevelopmentPlanType, FricheActivity } from "shared";
 
 import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
+import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import NewScenarioTile from "../../features/projects/views/my-projects-page/ScenariiList/ScenarioTile/NewScenarioTile";
 import ScenarioTile from "../../features/projects/views/my-projects-page/ScenariiList/ScenarioTile/ScenarioTile";
@@ -18,10 +17,7 @@ type Props = {
 };
 
 function DemoMyProjects({ siteData, projectData }: Props) {
-  const { breakpointsValues } = useBreakpointsValuesPx();
-  const { windowInnerWidth } = useWindowInnerSize();
-
-  const isSmScreen = windowInnerWidth < breakpointsValues.sm;
+  const isSmScreen = useIsSmallScreen();
 
   return (
     <MyProjectsTourGuide>

@@ -1,6 +1,4 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
-import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
-import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 
 import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
@@ -41,11 +39,6 @@ function ProjectPage({
   currentViewMode,
   onCurrentViewModeChange,
 }: Props) {
-  const { breakpointsValues } = useBreakpointsValuesPx();
-  const { windowInnerWidth } = useWindowInnerSize();
-
-  const isSmScreen = windowInnerWidth < breakpointsValues.sm;
-
   const headerProps = {
     projectType: projectContext.type,
     projectFeaturesData: projectFeaturesData,
@@ -65,7 +58,7 @@ function ProjectPage({
       className={classNames("tw-bg-grey-light dark:tw-bg-grey-dark", "tw-h-full")}
     >
       <div className="tw-pt-8 tw-pb-8">
-        <ProjectsImpactsPageHeader {...headerProps} isSmall={isSmScreen} />
+        <ProjectsImpactsPageHeader {...headerProps} />
       </div>
 
       <div className="fr-container">
@@ -74,7 +67,6 @@ function ProjectPage({
           evaluationPeriod={evaluationPeriod}
           onViewModeClick={onCurrentViewModeChange}
           onEvaluationPeriodChange={onEvaluationPeriodChange}
-          isSmScreen={isSmScreen}
           headerProps={headerProps}
         />
         {dataLoadingState === "error" && (

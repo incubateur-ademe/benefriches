@@ -1,19 +1,14 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
-import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { useTour } from "@reactour/tour";
 import { Dropdown } from "antd";
 
 import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
+import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 function MyProjectsPageHeader() {
   const { setIsOpen } = useTour();
-
-  const { breakpointsValues } = useBreakpointsValuesPx();
-  const { windowInnerWidth } = useWindowInnerSize();
-
-  const isSmScreen = windowInnerWidth < breakpointsValues.sm;
+  const isSmScreen = useIsSmallScreen();
 
   return (
     <div className={classNames("tw-flex", "tw-justify-between", "tw-items-center")}>

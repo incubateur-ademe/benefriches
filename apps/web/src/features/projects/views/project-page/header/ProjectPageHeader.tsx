@@ -9,6 +9,7 @@ import {
 } from "@/features/projects/domain/projects.types";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
 import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
@@ -24,7 +25,6 @@ type Props = {
   projectType?: ProjectDevelopmentPlanType;
   onGoToImpactsOnBoarding: () => void;
   isExpressProject: boolean;
-  isSmall?: boolean;
 };
 
 const aboutImpactsModal = createModal({
@@ -46,8 +46,8 @@ const ProjectPageHeader = ({
   onGoToImpactsOnBoarding,
   projectType,
   isExpressProject,
-  isSmall = false,
 }: Props) => {
+  const isSmall = useIsSmallScreen();
   return (
     <div className={fr.cx("fr-container")}>
       <div

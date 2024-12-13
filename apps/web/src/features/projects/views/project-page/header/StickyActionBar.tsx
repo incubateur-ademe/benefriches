@@ -5,6 +5,7 @@ import {
   ProjectFeatures,
 } from "@/features/projects/domain/projects.types";
 import classNames from "@/shared/views/clsx";
+import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import ImpactEvaluationPeriodSelect from "../../shared/actions/ImpactEvaluationPeriodSelect";
 import ProjectsImpactsPageHeader from "./ProjectPageHeader";
@@ -12,7 +13,6 @@ import ProjectsImpactsPageHeader from "./ProjectPageHeader";
 type Props = {
   evaluationPeriod: number;
   onEvaluationPeriodChange: (n: number) => void;
-  isSmScreen?: boolean;
   headerProps: {
     projectName: string;
     projectFeaturesData?: ProjectFeatures;
@@ -29,9 +29,10 @@ type Props = {
 function ProjectImpactsStickyActionBar({
   evaluationPeriod,
   onEvaluationPeriodChange,
-  isSmScreen,
   headerProps,
 }: Props) {
+  const isSmScreen = useIsSmallScreen();
+
   return (
     <div
       className={classNames(
@@ -55,7 +56,7 @@ function ProjectImpactsStickyActionBar({
           "tw-items-center",
         )}
       >
-        <ProjectsImpactsPageHeader {...headerProps} isSmall />
+        <ProjectsImpactsPageHeader {...headerProps} />
         {!isSmScreen && (
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}
