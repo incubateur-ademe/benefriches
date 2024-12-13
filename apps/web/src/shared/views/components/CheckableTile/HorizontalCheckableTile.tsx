@@ -8,7 +8,7 @@ import { getCustomCheckboxStyle, getCustomRadioButtonStyle } from "./styles";
 type Props = {
   title: string;
   description?: React.ReactNode;
-  imgSrc: string;
+  imgSrc?: string;
   checked: boolean;
   onChange: () => void;
   disabled?: boolean;
@@ -18,33 +18,24 @@ type Props = {
 type CheckIconProps = {
   checked: boolean;
   disabled?: boolean;
+  checkType: "checkbox" | "radio";
 };
 
-function RadioInputIcon({ checked, disabled = false }: CheckIconProps) {
+function CheckIcon({ checkType, checked, disabled = false }: CheckIconProps) {
   return (
     <div
       className={classNames(
-        "tw-absolute tw-top-0 tw-right-0 tw-w-full tw-h-12",
+        "tw-min-w-6 tw-h-6 tw-mr-4",
         disabled && "tw-filter tw-grayscale tw-opacity-50",
       )}
-      style={{ ...getCustomRadioButtonStyle(checked), backgroundPosition: "right 16px top 16px" }}
+      style={
+        checkType === "radio" ? getCustomRadioButtonStyle(checked) : getCustomCheckboxStyle(checked)
+      }
     />
   );
 }
 
-function CheckboxInputIcon({ checked, disabled = false }: CheckIconProps) {
-  return (
-    <div
-      className={classNames(
-        "tw-absolute tw-top-0 tw-right-0 tw-w-full tw-h-12 tw-m-4",
-        disabled && "tw-filter tw-grayscale tw-opacity-50",
-      )}
-      style={getCustomCheckboxStyle(checked)}
-    />
-  );
-}
-
-export default function CheckableTile({
+export default function HorizontalCheckableTile({
   title,
   description,
   imgSrc,
@@ -72,21 +63,21 @@ export default function CheckableTile({
         onChange={onChange}
       />
       <label htmlFor={id} className="tw-w-full">
-        <div className="tw-p-6">
-          <div className="tw-text-center">
-            {imgSrc && (
-              <img
-                src={imgSrc}
-                width="80px"
-                height="80px"
-                alt={`Illustration pour la tuile "${title}"`}
-                className={disabled ? "tw-filter tw-grayscale tw-opacity-50 tw-mb-2" : "tw-mb-2"}
-              />
-            )}
+        <div className="tw-p-4 tw-flex tw-items-center">
+          <CheckIcon checkType={checkType} checked={checked} disabled={disabled} />
+          {imgSrc && (
+            <img
+              src={imgSrc}
+              width="80px"
+              height="80px"
+              alt={`Illustration pour la tuile "${title}"`}
+              className={classNames("tw-mr-4", disabled && "tw-filter tw-grayscale tw-opacity-50")}
+            />
+          )}
+          <div>
             <div
               className={classNames(
-                "tw-mb-2",
-                !imgSrc && "tw-mt-6",
+                description ? "tw-mb-1" : "tw-mb-0",
                 fr.cx("fr-text--lg", "fr-text--bold"),
               )}
             >
@@ -97,11 +88,6 @@ export default function CheckableTile({
             )}
           </div>
         </div>
-        {checkType === "radio" ? (
-          <RadioInputIcon checked={checked} disabled={disabled} />
-        ) : (
-          <CheckboxInputIcon checked={checked} disabled={disabled} />
-        )}
       </label>
     </div>
   );
