@@ -3,11 +3,10 @@ import { Controller, useForm } from "react-hook-form";
 import { SoilsTransformationProject } from "@/features/create-project/domain/soilsTransformation";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
+import HorizontalCheckableTile from "@/shared/views/components/CheckableTile/HorizontalCheckableTile";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
-
-import SoilsTransformationProjectRadioInput from "./SoilsTransformationProjectOption";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
@@ -116,16 +115,18 @@ function SoilsTransformationProjectForm({ onSubmit, onBack }: Props) {
                 rules={{ required: true }}
                 render={({ field }) => {
                   return (
-                    <SoilsTransformationProjectRadioInput
-                      onChange={() => {
-                        field.onChange(option.value);
-                      }}
-                      checked={field.value === option.value}
-                      title={option.title}
-                      description={option.description}
-                      imgSrc={option.imgSrc}
-                      className="tw-mb-4"
-                    />
+                    <div className="tw-mb-4">
+                      <HorizontalCheckableTile
+                        checked={field.value === option.value}
+                        title={option.title}
+                        description={option.description}
+                        imgSrc={option.imgSrc}
+                        onChange={() => {
+                          field.onChange(option.value);
+                        }}
+                        checkType="radio"
+                      />
+                    </div>
                   );
                 }}
               />
