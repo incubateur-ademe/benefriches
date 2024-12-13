@@ -65,3 +65,22 @@ export const getHintTextForUrbanProjectPhase = (
       return undefined;
   }
 };
+
+export const getPictogramForProjectPhase = (
+  projectPhase: UrbanProjectPhase | RenewableEnergyProjectPhase,
+): string | undefined => {
+  switch (projectPhase) {
+    case "setup":
+      return "/img/pictograms/project-phase/setup-phase.svg";
+    case "planning":
+      return "/img/pictograms/project-phase/planning-phase.svg";
+    case "design":
+      return "/img/pictograms/project-phase/design-phase.svg";
+    case "construction":
+      return "/img/pictograms/project-phase/construction-phase.svg";
+    case "completed":
+      return "/img/pictograms/project-phase/completed-phase.svg";
+    case "unknown":
+      return undefined;
+  }
+};
