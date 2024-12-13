@@ -1,5 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { type ComponentProps, forwardRef, type ReactNode, useId } from "react";
+import { type ComponentProps, type ReactNode, useId } from "react";
 
 type Props = {
   id?: string;
@@ -9,11 +9,12 @@ type Props = {
   disabled?: boolean;
   name?: string;
   key?: string;
+  ref: React.Ref<HTMLDivElement>;
 } & ComponentProps<"input">;
 
-const RadioButton = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
+const RadioButton = (props: Props) => {
   const reactId = useId();
-  const { id = reactId, name: nameProps, label, hintText, ...rest } = props;
+  const { id = reactId, name: nameProps, label, hintText, ref, ...rest } = props;
   const name = nameProps ?? `radio-name-${reactId}`;
 
   return (
@@ -25,7 +26,7 @@ const RadioButton = forwardRef<HTMLDivElement, Props>((props: Props, ref) => {
       </label>
     </div>
   );
-});
+};
 
 RadioButton.displayName = "RadioButton";
 

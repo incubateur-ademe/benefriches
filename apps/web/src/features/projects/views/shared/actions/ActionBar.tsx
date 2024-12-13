@@ -1,5 +1,4 @@
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
-import { forwardRef } from "react";
 
 import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
 
@@ -11,16 +10,17 @@ type Props = {
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
   small?: boolean;
+  ref: React.Ref<HTMLElement>;
 };
 
-type Ref = HTMLDivElement;
-
-const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(baseProps, ref) {
-  // props are not destructured nor named 'props' here because of an issue with eslint-plugin-react when using forwardRef
-  // see https://github.com/jsx-eslint/eslint-plugin-react/issues/3796
-  const { onViewModeClick, selectedViewMode, evaluationPeriod, onEvaluationPeriodChange, small } =
-    baseProps;
-
+function ImpactsActionBar({
+  onViewModeClick,
+  selectedViewMode,
+  evaluationPeriod,
+  onEvaluationPeriodChange,
+  small,
+  ref,
+}: Props) {
   const getViewSegmentInputProps = (value: ViewMode) => {
     return {
       checked: selectedViewMode === value,
@@ -62,6 +62,6 @@ const ImpactsActionBar = forwardRef<Ref, Props>(function BaseImpactsActionBar(ba
       </div>
     </section>
   );
-});
+}
 
 export default ImpactsActionBar;

@@ -1,5 +1,5 @@
 import DsfrRadioButtons from "@codegouvfr/react-dsfr/RadioButtons";
-import { ChangeEventHandler, forwardRef, ReactNode } from "react";
+import { ChangeEventHandler, ReactNode } from "react";
 
 type Props = {
   options: { value: string; label: string; hintText?: ReactNode }[];
@@ -7,12 +7,10 @@ type Props = {
   onChange: ChangeEventHandler;
   onBlur?: ChangeEventHandler;
   error?: { message?: string };
+  ref: React.Ref<HTMLInputElement>;
 };
 
-const RadioButtons = forwardRef<HTMLInputElement, Props>(function BaseRadioButtons(baseProps, ref) {
-  // props are not destructured nor named 'props' here because of an issue with eslint-plugin-react when using forwardRef
-  // see https://github.com/jsx-eslint/eslint-plugin-react/issues/3796
-  const { name, onChange, onBlur, options, error } = baseProps;
+function RadioButtons({ name, onChange, onBlur, options, error, ref }: Props) {
   const mappedOptions = options.map(({ value, label, hintText }) => ({
     label,
     hintText,
@@ -32,6 +30,6 @@ const RadioButtons = forwardRef<HTMLInputElement, Props>(function BaseRadioButto
       stateRelatedMessage={error ? error.message : undefined}
     />
   );
-});
+}
 
 export default RadioButtons;
