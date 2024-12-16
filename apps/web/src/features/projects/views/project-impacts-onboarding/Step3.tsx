@@ -7,7 +7,7 @@ type Props = {
   onNextClick: () => void;
 };
 
-export default function Step2({ onNextClick, onBackClick }: Props) {
+export default function Step3({ onNextClick, onBackClick }: Props) {
   return (
     <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6 tw-items-start">
       <img
@@ -48,7 +48,7 @@ export default function Step2({ onNextClick, onBackClick }: Props) {
               },
               {
                 priority: "primary",
-                children: "Consulter les impacts",
+                children: "Suivant (3/4)",
                 onClick: onNextClick,
               },
             ]}

@@ -130,7 +130,7 @@ export default function Step1({
           })}
         </section>
         <div className="tw-flex tw-flex-row-reverse tw-mt-5">
-          <Button onClick={onNextClick}>Suivant (1/3)</Button>
+          <Button onClick={onNextClick}>Suivant (1/4)</Button>
         </div>
       </div>
     </div>

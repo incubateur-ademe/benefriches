@@ -56,7 +56,7 @@ export default function Step2({ onNextClick, onBackClick }: Props) {
               },
               {
                 priority: "primary",
-                children: "Suivant (2/3)",
+                children: "Suivant (2/4)",
                 onClick: onNextClick,
               },
             ]}

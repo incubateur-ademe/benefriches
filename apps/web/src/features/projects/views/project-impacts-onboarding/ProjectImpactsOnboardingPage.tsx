@@ -5,6 +5,7 @@ import { ProjectOverallImpact } from "../../domain/projectKeyImpactIndicators";
 import Step1 from "./Step1";
 import Step2 from "./Step2";
 import Step3 from "./Step3";
+import Step4 from "./Step4";
 
 type Props = {
   onFinalNext: () => void;
@@ -44,7 +45,9 @@ export default function ProjectImpactsOnboardingPage({
           case 2:
             return <Step2 onNextClick={goToStep(3)} onBackClick={goToStep(1)} />;
           case 3:
-            return <Step3 onNextClick={onFinalNext} onBackClick={goToStep(2)} />;
+            return <Step3 onNextClick={goToStep(4)} onBackClick={goToStep(2)} />;
+          case 4:
+            return <Step4 onNextClick={onFinalNext} onBackClick={goToStep(3)} />;
         }
       })()}
     </div>
