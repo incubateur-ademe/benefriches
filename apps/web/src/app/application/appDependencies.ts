@@ -7,6 +7,7 @@ import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/p
 import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
 import { HttpSiteFeaturesService } from "@/features/site-features/infra/site-features-service/HttpSiteFeaturesService";
+import { LocalStorageAppSettings } from "@/shared/app-settings/infrastructure/LocalStorageAppSettings";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
 import { HttpCreateUserService } from "@/users/infra/create-user-service/HttpCreateUserService";
@@ -15,6 +16,7 @@ import { LocalStorageUserService } from "@/users/infra/current-user-service/Loca
 import { AppDependencies } from "./store";
 
 export const appDependencies: AppDependencies = {
+  appSettingsService: new LocalStorageAppSettings(),
   soilsCarbonStorageService: new SoilsCarbonStorageApi(),
   createSiteService: new HttpCreateSiteApi(),
   getSiteByIdService: new HttpSitesService(),

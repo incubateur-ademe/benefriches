@@ -16,6 +16,8 @@ import projectImpacts from "@/features/projects/application/projectImpacts.reduc
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
 import { SiteFeaturesGateway } from "@/features/site-features/application/fetchSiteFeatures.action";
 import siteFeatures from "@/features/site-features/application/siteFeatures.reducer";
+import { AppSettingsGateway } from "@/shared/app-settings/core/AppSettingsGateway";
+import { appSettingsReducer as appSettings } from "@/shared/app-settings/core/appSettings";
 import { CreateUserGateway } from "@/users/application/createUser.action";
 import { CurrentUserGateway } from "@/users/application/initCurrentUser.action";
 import currentUser from "@/users/application/user.reducer";
@@ -27,6 +29,7 @@ import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../.
 import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
 
 export type AppDependencies = {
+  appSettingsService: AppSettingsGateway;
   soilsCarbonStorageService: SiteSoilsCarbonStorageGateway | ProjectSoilsCarbonStorageGateway;
   createSiteService: CreateSiteGateway;
   saveReconversionProjectService: SaveReconversionProjectGateway;
@@ -48,6 +51,7 @@ type PreloadedStateFromReducer<R extends Reducer<any, any, any>> =
   R extends Reducer<any, any, infer P> ? P : never;
 
 const rootReducer = combineReducers({
+  appSettings,
   siteCreation,
   siteFeatures,
   projectCreation,
@@ -63,9 +67,14 @@ export const createStore = (
   appDependencies: AppDependencies,
   preloadedState?: PreloadedStateFromReducer<typeof rootReducer>,
 ) => {
+  const persistedAppSettings = appDependencies.appSettingsService.getAll();
+
   return configureStore({
     reducer: rootReducer,
-    preloadedState,
+    preloadedState: {
+      appSettings: persistedAppSettings,
+      ...preloadedState,
+    },
     middleware(getDefaultMiddleware) {
       return getDefaultMiddleware({
         thunk: {

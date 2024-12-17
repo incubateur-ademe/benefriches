@@ -1,10 +1,9 @@
 import { useTour } from "@reactour/tour";
 import { ReactNode, useEffect } from "react";
 
-import { DEFAULT_APP_SETTINGS } from "@/shared/app-settings/domain/appSettings";
-import { LocalStorageAppSettings } from "@/shared/app-settings/infrastructure/LocalStorageUISettings";
+import { appSettingChanged, selectAppSettings } from "@/shared/app-settings/core/appSettings";
 import TourGuideProvider from "@/shared/views/components/TourGuideProvider/TourGuideProvider";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { selectCurrentUserFirstname } from "@/users/application/user.reducer";
 
 type Props = {
@@ -22,16 +21,13 @@ const MyProjectsTourGuideLauncher = () => {
 };
 
 function MyProjectsTourGuide({ children }: Props) {
-  const localStorageAppSettings = new LocalStorageAppSettings();
-
   const userFirstname = useAppSelector(selectCurrentUserFirstname);
-
-  const shouldDisplayMyProjectTourGuide =
-    localStorageAppSettings.getAll().shouldDisplayDemoMyProjectTourGuide ??
-    DEFAULT_APP_SETTINGS.shouldDisplayDemoMyProjectTourGuide;
+  const dispatch = useAppDispatch();
+  const shouldDisplayDemoMyProjectTourGuide =
+    useAppSelector(selectAppSettings).shouldDisplayDemoMyProjectTourGuide;
 
   const onCloseTutorial = () => {
-    localStorageAppSettings.setShouldDisplayDemoMyProjectTourGuide(false);
+    dispatch(appSettingChanged({ setting: "shouldDisplayDemoMyProjectTourGuide", value: false }));
   };
 
   const steps: {
@@ -58,7 +54,7 @@ function MyProjectsTourGuide({ children }: Props) {
 
   return (
     <TourGuideProvider steps={steps} onCloseTutorial={onCloseTutorial} disableCloseBeforeEnd>
-      {shouldDisplayMyProjectTourGuide && <MyProjectsTourGuideLauncher />}
+      {shouldDisplayDemoMyProjectTourGuide && <MyProjectsTourGuideLauncher />}
       {children}
     </TourGuideProvider>
   );

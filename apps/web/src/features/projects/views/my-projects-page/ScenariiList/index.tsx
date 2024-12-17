@@ -5,7 +5,6 @@ import {
   ReconversionProjectsGroupedBySite,
 } from "@/features/projects/domain/projects.types";
 
-import AboutComparisonModal from "./AboutComparisonModal";
 import ScenariiGroup from "./ScenariiGroup";
 import ScenariiSelectionBar from "./ScenariiSelectionBar";
 import { getProjectsInfosList, getSelectionInfos, getSitesInfosList } from "./getSelectionDetails";
@@ -49,12 +48,8 @@ function ScenariiListContainer({ projectsList }: Props) {
     [projectsInfosList, selectedProjectScenarii, selectedStatuQuoScenario, siteInfosList],
   );
 
-  const shouldOpenModal = selectedIds.length > 0;
-
   return (
     <>
-      <AboutComparisonModal isOpen={shouldOpenModal} />
-
       {(baseScenario || withScenario) && (
         <ScenariiSelectionBar
           baseScenario={baseScenario}

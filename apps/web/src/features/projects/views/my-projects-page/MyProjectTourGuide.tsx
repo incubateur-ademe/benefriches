@@ -1,10 +1,9 @@
 import { useTour } from "@reactour/tour";
 import { ReactNode, useEffect } from "react";
 
-import { DEFAULT_APP_SETTINGS } from "@/shared/app-settings/domain/appSettings";
-import { LocalStorageAppSettings } from "@/shared/app-settings/infrastructure/LocalStorageUISettings";
+import { appSettingChanged, selectAppSettings } from "@/shared/app-settings/core/appSettings";
 import TourGuideProvider from "@/shared/views/components/TourGuideProvider/TourGuideProvider";
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { selectCurrentUserFirstname } from "@/users/application/user.reducer";
 
 import { ReconversionProjectsGroupedBySite } from "../../domain/projects.types";
@@ -25,16 +24,13 @@ const MyProjectsTourGuideLauncher = () => {
 };
 
 function MyProjectsTourGuide({ projectsList, children }: Props) {
-  const localStorageAppSettings = new LocalStorageAppSettings();
-
   const userFirstname = useAppSelector(selectCurrentUserFirstname);
-
+  const dispatch = useAppDispatch();
   const shouldDisplayMyProjectTourGuide =
-    localStorageAppSettings.getAll().shouldDisplayMyProjectTourGuide ??
-    DEFAULT_APP_SETTINGS.shouldDisplayMyProjectTourGuide;
+    useAppSelector(selectAppSettings).shouldDisplayMyProjectTourGuide;
 
   const onCloseTutorial = () => {
-    localStorageAppSettings.setShouldDisplayMyProjectTourGuide(false);
+    dispatch(appSettingChanged({ setting: "shouldDisplayMyProjectTourGuide", value: false }));
   };
 
   const [firstProjectGroup] = projectsList;
