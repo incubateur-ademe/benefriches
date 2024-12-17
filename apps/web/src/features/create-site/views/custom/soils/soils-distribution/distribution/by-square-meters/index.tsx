@@ -1,4 +1,4 @@
-import { NewSoilsDistribution } from "shared";
+import { createSoilSurfaceAreaDistribution } from "shared";
 
 import { revertSoilsDistributionStep } from "@/features/create-site/application/createSite.actions";
 import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
@@ -14,7 +14,9 @@ function SiteSoilsDistributionBySquareMetersFormContainer() {
 
   const onSubmit = (formData: FormValues) => {
     dispatch(
-      completeSoilsDistribution({ distribution: NewSoilsDistribution.fromJSON(formData).toJSON() }),
+      completeSoilsDistribution({
+        distribution: createSoilSurfaceAreaDistribution(formData).toJSON(),
+      }),
     );
   };
 

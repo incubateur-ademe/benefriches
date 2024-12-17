@@ -1,5 +1,6 @@
 export * from "./object-entries";
 export * from "./soils";
+export * from "./surface-area";
 export * from "./site";
 export * from "./reconversion-projects";
 export * from "./reconversion-project-impacts";

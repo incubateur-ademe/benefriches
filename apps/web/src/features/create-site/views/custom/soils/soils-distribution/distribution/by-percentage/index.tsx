@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { NewSoilsDistribution, SoilType } from "shared";
+import { createSoilSurfaceAreaDistribution, SoilType } from "shared";
 
 import { revertSoilsDistributionStep } from "@/features/create-site/application/createSite.actions";
 import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
@@ -29,7 +29,7 @@ function SiteSoilsDistributionByPercentageContainer() {
   const siteSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
 
   const initialValues =
-    NewSoilsDistribution.fromJSON(siteSoilsDistribution).getDistributionInPercentage();
+    createSoilSurfaceAreaDistribution(siteSoilsDistribution).getDistributionInPercentage();
 
   const formatFormValues = useMemo(
     () => getFormatFormValuesFunction(siteData.surfaceArea),

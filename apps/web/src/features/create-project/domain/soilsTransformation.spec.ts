@@ -1,4 +1,4 @@
-import { NewSoilsDistribution, SoilsDistribution, SoilType } from "shared";
+import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "shared";
 
 import {
   allocateRecommendedSoilSurfaceArea,
@@ -14,8 +14,8 @@ const assertSurfaceAreasEqual = (
   soilsDistribution1: SoilsDistribution,
   soilsDistribution2: SoilsDistribution,
 ) => {
-  expect(NewSoilsDistribution.fromJSON(soilsDistribution1).getTotalSurfaceArea()).toEqual(
-    NewSoilsDistribution.fromJSON(soilsDistribution2).getTotalSurfaceArea(),
+  expect(createSoilSurfaceAreaDistribution(soilsDistribution1).getTotalSurfaceArea()).toEqual(
+    createSoilSurfaceAreaDistribution(soilsDistribution2).getTotalSurfaceArea(),
   );
 };
 

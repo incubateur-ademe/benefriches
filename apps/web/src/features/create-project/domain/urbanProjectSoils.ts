@@ -2,12 +2,14 @@ import {
   getSoilTypeForLivingAndActivitySpace,
   getSoilTypeForPublicSpace,
   getSoilTypeForUrbanGreenSpace,
-  NewSoilsDistribution,
+  createSoilSurfaceAreaDistribution,
+  SoilType,
   typedObjectEntries,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
   UrbanPublicSpace,
 } from "shared";
+import { SurfaceAreaDistribution } from "shared/dist/surface-area/surfaceArea";
 
 export type UrbanSpacesByCategory = (
   | {
@@ -37,8 +39,8 @@ export type UrbanSpacesByCategory = (
 
 export const getUrbanProjectSoilsDistributionFromSpaces = (
   spaces: UrbanSpacesByCategory,
-): NewSoilsDistribution => {
-  const soilsDistribution = new NewSoilsDistribution();
+): SurfaceAreaDistribution<SoilType> => {
+  const soilsDistribution = createSoilSurfaceAreaDistribution({});
 
   spaces.forEach((spaceByCategory) => {
     switch (spaceByCategory.category) {

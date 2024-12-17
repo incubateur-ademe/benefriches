@@ -1,4 +1,4 @@
-import { NewSoilsDistribution, typedObjectEntries } from "shared";
+import { createSoilSurfaceAreaDistribution, typedObjectEntries } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
@@ -20,7 +20,7 @@ export default function SoilsDistribution({ soilsDistribution }: Props) {
         value={
           <strong>
             {formatSurfaceArea(
-              NewSoilsDistribution.fromJSON(soilsDistribution).getTotalSurfaceArea(),
+              createSoilSurfaceAreaDistribution(soilsDistribution).getTotalSurfaceArea(),
             )}
           </strong>
         }

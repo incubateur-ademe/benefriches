@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { NewSoilsDistribution, SoilsDistribution, SoilType } from "shared";
+import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "shared";
 
 import { getSuitableSurfaceAreaForPhotovoltaicPanels } from "@/features/create-project/domain/soilsTransformation";
 import {
@@ -43,7 +43,7 @@ function FutureSoilsSurfaceAreaForm({
 
   const allocatedSoilsDistribution = watch();
 
-  const totalAllocatedSurface = NewSoilsDistribution.fromJSON(
+  const totalAllocatedSurface = createSoilSurfaceAreaDistribution(
     allocatedSoilsDistribution,
   ).getTotalSurfaceArea();
   const allocatedSuitableSurfaceAreaForPhotovoltaicPanels =
