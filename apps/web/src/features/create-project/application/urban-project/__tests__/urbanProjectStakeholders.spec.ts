@@ -31,13 +31,16 @@ describe("Urban project creation : stakeholders steps", () => {
 
       it("goes to EXPENSES_PROJECTED_YEARLY_EXPENSES step when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["BUILDINGS_USE_SURFACE_AREA", "STAKEHOLDERS_INTRODUCTION"])
+          .withStepsHistory([
+            "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
+            "STAKEHOLDERS_INTRODUCTION",
+          ])
           .build();
 
         store.dispatch(stakeholderIntroductionReverted());
 
         const newState = store.getState();
-        expectCurrentStep(newState, "BUILDINGS_USE_SURFACE_AREA");
+        expectCurrentStep(newState, "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION");
       });
     });
     describe("STAKEHOLDERS_PROJECT_DEVELOPER step", () => {

@@ -1,7 +1,8 @@
-import { UrbanPublicSpace } from "shared";
+import { urbanPublicSpace, UrbanPublicSpace } from "shared";
 
 import {
   getColorForUrbanPublicSpace,
+  getDescriptionForPublicSpace,
   getLabelForPublicSpace,
   getPictogramUrlForUrbanPublicSpace,
 } from "@/features/create-project/domain/urbanProject";
@@ -11,14 +12,13 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 type Props = {
   totalSurfaceArea: number;
-  publicSpaces: UrbanPublicSpace[];
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
 
 export type FormValues = Record<UrbanPublicSpace, number>;
 
-function PublicSpacesDistribution({ publicSpaces, totalSurfaceArea, onSubmit, onBack }: Props) {
+function PublicSpacesDistribution({ totalSurfaceArea, onSubmit, onBack }: Props) {
   return (
     <SurfaceAreaDistributionForm
       title="Quelle est la part de chaque espace dans les espaces publics ?"
@@ -32,9 +32,10 @@ function PublicSpacesDistribution({ publicSpaces, totalSurfaceArea, onSubmit, on
       onSubmit={onSubmit as (data: Record<string, number>) => void}
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale des espaces publics"
-      surfaces={publicSpaces.map((space) => ({
+      surfaces={urbanPublicSpace.options.map((space) => ({
         name: space,
         label: getLabelForPublicSpace(space),
+        hintText: getDescriptionForPublicSpace(space),
         imgSrc: getPictogramUrlForUrbanPublicSpace(space),
         color: getColorForUrbanPublicSpace(space),
       }))}

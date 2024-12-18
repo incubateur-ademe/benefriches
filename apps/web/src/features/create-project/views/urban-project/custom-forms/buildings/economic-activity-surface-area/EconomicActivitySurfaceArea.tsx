@@ -1,6 +1,9 @@
-import { BuildingsEconomicActivityUse } from "shared";
+import { BuildingsEconomicActivityUse, ECONOMIC_ACTIVITY_BUILDINGS_USE } from "shared";
 
-import { getPictogramUrlForEconomicActivityUses } from "@/features/create-project/domain/urbanProject";
+import {
+  getDescriptionForBuildingFloorArea,
+  getPictogramUrlForEconomicActivityUses,
+} from "@/features/create-project/domain/urbanProject";
 import { getLabelForBuildingFloorArea } from "@/shared/domain/urbanProject";
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
@@ -8,14 +11,13 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 type Props = {
   totalSurfaceArea: number;
-  soils: BuildingsEconomicActivityUse[];
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
 
 export type FormValues = Record<BuildingsEconomicActivityUse, number>;
 
-function EconomicActivitiesSurfaceAreaForm({ soils, totalSurfaceArea, onSubmit, onBack }: Props) {
+function EconomicActivitiesSurfaceAreaForm({ totalSurfaceArea, onSubmit, onBack }: Props) {
   return (
     <SurfaceAreaDistributionForm
       title="Quelles seront les surfaces de plancher de chaque lieu d’activité économique ?"
@@ -28,10 +30,11 @@ function EconomicActivitiesSurfaceAreaForm({ soils, totalSurfaceArea, onSubmit, 
       onBack={onBack}
       onSubmit={onSubmit as (data: Record<string, number>) => void}
       totalSurfaceArea={totalSurfaceArea}
-      surfaces={soils.map((soil) => ({
-        name: soil,
-        label: getLabelForBuildingFloorArea(soil),
-        imgSrc: getPictogramUrlForEconomicActivityUses(soil),
+      surfaces={ECONOMIC_ACTIVITY_BUILDINGS_USE.map((use) => ({
+        name: use,
+        label: getLabelForBuildingFloorArea(use),
+        hintText: getDescriptionForBuildingFloorArea(use),
+        imgSrc: getPictogramUrlForEconomicActivityUses(use),
       }))}
     />
   );

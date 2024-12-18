@@ -9,8 +9,9 @@ import EconomicActivitiesSurfaceArea, { type FormValues } from "./EconomicActivi
 
 function BuildingsEconomicActivitySurfaceAreaContainer() {
   const dispatch = useAppDispatch();
-  const { buildingsEconomicActivityTotalSurfaceArea, buildingsEconomicActivityUses } =
-    useAppSelector(selectBuildingsEconomicActivityUses);
+  const { buildingsEconomicActivityTotalSurfaceArea } = useAppSelector(
+    selectBuildingsEconomicActivityUses,
+  );
 
   const onSubmit = (formData: FormValues) => {
     dispatch(buildingsEconomicActivitySurfaceAreasCompleted(formData));
@@ -24,7 +25,6 @@ function BuildingsEconomicActivitySurfaceAreaContainer() {
     <EconomicActivitiesSurfaceArea
       onSubmit={onSubmit}
       onBack={onBack}
-      soils={buildingsEconomicActivityUses}
       totalSurfaceArea={buildingsEconomicActivityTotalSurfaceArea}
     />
   );

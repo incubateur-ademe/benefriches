@@ -3,16 +3,12 @@ import {
   computeDefaultInstallationCostsFromSiteSurfaceArea,
   filterObject,
   SoilsDistribution,
-  UrbanGreenSpace,
-  UrbanLivingAndActivitySpace,
-  UrbanPublicSpace,
   UrbanSpaceCategory,
   BuildingsEconomicActivityUse,
 } from "shared";
 
 import { RootState } from "@/app/application/store";
 
-import { BuildingsUseCategory } from "../../domain/urbanProject";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
@@ -56,21 +52,6 @@ export const selectSpaceCategorySurfaceArea = createSelector(
     return surfaceAreaDistribution[spaceCategory] ?? 0;
   },
 );
-
-export const selectGreenSpaces = createSelector([selectSelf], (state): UrbanGreenSpace[] => {
-  return state.creationData.greenSpaces ?? [];
-});
-
-export const selectLivingAndActivitySpaces = createSelector(
-  [selectSelf],
-  (state): UrbanLivingAndActivitySpace[] => {
-    return state.creationData.livingAndActivitySpaces ?? [];
-  },
-);
-
-export const selectPublicSpaces = createSelector([selectSelf], (state): UrbanPublicSpace[] => {
-  return state.creationData.publicSpaces ?? [];
-});
 
 export const selectUrbanProjectSoilsDistribution = createSelector(
   [selectSelf],
@@ -119,13 +100,6 @@ export const selectBuildingsFootprintSurfaceArea = createSelector([selectSelf], 
 export const selectBuildingsFloorSurfaceArea = createSelector([selectSelf], (state): number => {
   return state.creationData.buildingsFloorSurfaceArea ?? 0;
 });
-
-export const selectBuildingUseCategories = createSelector(
-  [selectSelf],
-  (state): BuildingsUseCategory[] => {
-    return state.creationData.buildingsUseCategories ?? [];
-  },
-);
 
 export const selectBuildingsEconomicActivityUses = createSelector(
   [selectSelf],

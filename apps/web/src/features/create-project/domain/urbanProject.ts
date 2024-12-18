@@ -1,8 +1,6 @@
 import {
   BuildingFloorAreaUsageDistribution,
   BuildingsEconomicActivityUse,
-  BuildingsUse,
-  ECONOMIC_ACTIVITY_BUILDINGS_USE,
   getSoilTypeForLivingAndActivitySpace,
   getSoilTypeForPublicSpace,
   getSoilTypeForUrbanGreenSpace,
@@ -130,11 +128,13 @@ export const getDescriptionForPublicSpace = (publicSpace: UrbanPublicSpace): str
   }
 };
 
-export type BuildingsUseCategory =
-  | "RESIDENTIAL"
-  | "MULTI_STORY_PARKING"
-  | "OTHER"
-  | "ECONOMIC_ACTIVITY";
+export const BUILDINGS_USE_CATEGORIES = [
+  "RESIDENTIAL",
+  "ECONOMIC_ACTIVITY",
+  "MULTI_STORY_PARKING",
+  "OTHER",
+] as const;
+export type BuildingsUseCategory = (typeof BUILDINGS_USE_CATEGORIES)[number];
 export const getLabelForBuildingsUseCategory = (useCategory: BuildingsUseCategory): string => {
   switch (useCategory) {
     case "RESIDENTIAL":
@@ -204,10 +204,6 @@ export const getPictogramUrlForUrbanPublicSpace = (space: UrbanPublicSpace): str
 
 export const getColorForUrbanPublicSpace = (space: UrbanPublicSpace): string => {
   return getColorForSoilType(getSoilTypeForPublicSpace(space));
-};
-
-export const isBuildingEconomicActivityUse = (buildingUse: BuildingsUse) => {
-  return ECONOMIC_ACTIVITY_BUILDINGS_USE.includes(buildingUse as BuildingsEconomicActivityUse);
 };
 
 export const getDescriptionForBuildingFloorArea = (

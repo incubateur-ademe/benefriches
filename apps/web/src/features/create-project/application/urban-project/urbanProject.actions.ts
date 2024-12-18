@@ -84,10 +84,6 @@ export const spacesDevelopmentPlanIntroductionReverted = createAction(
 // green spaces
 export const greenSpacesIntroductionCompleted = createAction("greenSpacesIntroductionCompleted");
 export const greenSpacesIntroductionReverted = createAction("greenSpacesIntroductionReverted");
-export const greenSpacesSelectionCompleted = createAction<{ greenSpaces: UrbanGreenSpace[] }>(
-  "greenSpacesSelectionCompleted",
-);
-export const greenSpacesSelectionReverted = createAction("greenSpacesSelectionReverted");
 export const greenSpacesDistributionCompleted = createAction<{
   surfaceAreaDistribution: Partial<Record<UrbanGreenSpace, number>>;
 }>("greenSpacesDistributionCompleted");
@@ -100,12 +96,6 @@ export const livingAndActivitySpacesIntroductionCompleted = createAction(
 export const livingAndActivitySpacesIntroductionReverted = createAction(
   "livingAndActivitySpacesIntroductionReverted",
 );
-export const livingAndActivitySpacesSelectionCompleted = createAction<
-  UrbanLivingAndActivitySpace[]
->("livingAndActivitySpacesSelectionCompleted");
-export const livingAndActivitySpacesSelectionReverted = createAction(
-  "livingAndActivitySpacesSelectionReverted",
-);
 export const livingAndActivitySpacesDistributionCompleted = createAction<
   Partial<Record<UrbanLivingAndActivitySpace, number>>
 >("livingAndActivitySpacesDistributionCompleted");
@@ -116,10 +106,6 @@ export const livingAndActivitySpacesDistributionReverted = createAction(
 // public spaces
 export const publicSpacesIntroductionCompleted = createAction("publicSpacesIntroductionCompleted");
 export const publicSpacesIntroductionReverted = createAction("publicSpacesIntroductionReverted");
-export const publicSpacesSelectionCompleted = createAction<UrbanPublicSpace[]>(
-  "publicSpacesSelectionCompleted",
-);
-export const publicSpacesSelectionReverted = createAction("publicSpacesSelectionReverted");
 export const publicSpacesDistributionCompleted = createAction<
   Partial<Record<UrbanPublicSpace, number>>
 >("publicSpacesDistributionCompleted");
@@ -161,23 +147,11 @@ export const buildingsFloorSurfaceAreaCompleted = createAction<number>(
 export const buildingsFloorSurfaceAreaReverted = createAction("buildingsFloorSurfaceAreaReverted");
 export const buildingsUseIntroductionCompleted = createAction("buildingsUseIntroductionCompleted");
 export const buildingsUseIntroductionReverted = createAction("buildingsUseIntroductionReverted");
-export const buildingsUseCategorySelectionCompleted = createAction<BuildingsUseCategory[]>(
-  "buildingsUseCategorySelectionCompleted",
-);
-export const buildingsUseCategorySelectionReverted = createAction(
-  "buildingsUseCategorySelectionReverted",
-);
 export const buildingsUseCategorySurfaceAreasCompleted = createAction<
   Partial<Record<BuildingsUseCategory, number>>
 >("buildingsUseCategorySurfaceAreasCompleted");
 export const buildingsUseCategorySurfaceAreasReverted = createAction(
   "buildingsUseCategorySurfaceAreasReverted",
-);
-export const buildingsEconomicActivitySelectionCompleted = createAction<
-  BuildingsEconomicActivityUse[]
->("buildingsEconomicActivitySelectionCompleted");
-export const buildingsEconomicActivitySelectionReverted = createAction(
-  "buildingsEconomicActivitySelectionReverted",
 );
 export const buildingsEconomicActivitySurfaceAreasCompleted = createAction<
   Partial<Record<BuildingsEconomicActivityUse, number>>

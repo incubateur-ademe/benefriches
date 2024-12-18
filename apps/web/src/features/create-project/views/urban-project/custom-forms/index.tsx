@@ -4,12 +4,10 @@ import { UrbanProjectCustomCreationStep } from "@/features/create-project/applic
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import UrbanProjectCustomSteps from "./UrbanProjectCustomSteps";
-import BuildingsEconomicActivitySelection from "./buildings/economic-activity-selection";
 import BuildingsEconomicActivitySurfaceArea from "./buildings/economic-activity-surface-area";
 import BuildingsFloorSurfaceArea from "./buildings/floor-surface-area";
 import BuildingsIntroduction from "./buildings/introduction";
 import BuildingsUseIntroduction from "./buildings/use-introduction";
-import BuildingsUseSelection from "./buildings/use-selection";
 import BuildingsUseSurfaceAreas from "./buildings/use-surface-areas";
 import InstallationExpensesForm from "./costs/installation-costs";
 import ProjectExpensesIntroduction from "./costs/introduction";
@@ -30,14 +28,11 @@ import SoilsDecontaminationSelection from "./soils-decontamination/selection";
 import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
 import UrbanSpacesDevelopmentPlanIntroduction from "./spaces/development-plan-introduction";
 import GreenSpacesIntroduction from "./spaces/green-spaces/introduction";
-import UrbanGreenSpacesSelection from "./spaces/green-spaces/selection";
 import UrbanGreenSpacesDistribution from "./spaces/green-spaces/surface-area-distribution";
 import UrbanProjectSpacesIntroduction from "./spaces/introduction";
 import LivingAndActivitySpacesIntroduction from "./spaces/living-and-activity-spaces/introduction";
-import LivingAndActivitySpacesSelection from "./spaces/living-and-activity-spaces/selection";
 import LivingAndActivitySpacesDistribution from "./spaces/living-and-activity-spaces/surface-area-distribution";
 import PublicSpacesIntroduction from "./spaces/public-spaces/introduction";
-import PublicSpacesSelection from "./spaces/public-spaces/selection";
 import PublicSpacesDistribution from "./spaces/public-spaces/surface-area-distribution";
 import SpacesCategoriesSelection from "./spaces/selection";
 import UrbanProjectSoilsCarbonStorage from "./spaces/soils-carbon-storage";
@@ -66,20 +61,14 @@ const getCurrentStepView = (
       return <UrbanSpacesDevelopmentPlanIntroduction />;
     case "GREEN_SPACES_INTRODUCTION":
       return <GreenSpacesIntroduction />;
-    case "GREEN_SPACES_SELECTION":
-      return <UrbanGreenSpacesSelection />;
     case "GREEN_SPACES_SURFACE_AREA_DISTRIBUTION":
       return <UrbanGreenSpacesDistribution />;
     case "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION":
       return <LivingAndActivitySpacesIntroduction />;
-    case "LIVING_AND_ACTIVITY_SPACES_SELECTION":
-      return <LivingAndActivitySpacesSelection />;
     case "LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION":
       return <LivingAndActivitySpacesDistribution />;
     case "PUBLIC_SPACES_INTRODUCTION":
       return <PublicSpacesIntroduction />;
-    case "PUBLIC_SPACES_SELECTION":
-      return <PublicSpacesSelection />;
     case "PUBLIC_SPACES_DISTRIBUTION":
       return <PublicSpacesDistribution />;
     case "SPACES_SOILS_SUMMARY":
@@ -98,12 +87,8 @@ const getCurrentStepView = (
       return <BuildingsFloorSurfaceArea />;
     case "BUILDINGS_USE_INTRODUCTION":
       return <BuildingsUseIntroduction />;
-    case "BUILDINGS_USE_SELECTION":
-      return <BuildingsUseSelection />;
-    case "BUILDINGS_USE_SURFACE_AREA":
+    case "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
       return <BuildingsUseSurfaceAreas />;
-    case "BUILDINGS_ECONOMIC_ACTIVITY_SELECTION":
-      return <BuildingsEconomicActivitySelection />;
     case "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA":
       return <BuildingsEconomicActivitySurfaceArea />;
     case "BUILDINGS_EQUIPMENT_INTRODUCTION":
