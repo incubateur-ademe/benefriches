@@ -7,6 +7,7 @@ import {
 import {
   getHintTextForUrbanProjectPhase,
   getLabelForUrbanProjectPhase,
+  getPictogramForProjectPhase,
 } from "@/shared/domain/projectPhase";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
@@ -19,6 +20,7 @@ function ProjectPhaseFormContainer() {
     value: phase,
     label: getLabelForUrbanProjectPhase(phase),
     hintText: getHintTextForUrbanProjectPhase(phase),
+    pictogram: getPictogramForProjectPhase(phase),
   }));
 
   return (
