@@ -25,7 +25,7 @@ function ImpactsActionBar({
   const getViewSegmentInputProps = (value: ViewMode) => {
     return {
       checked: selectedViewMode === value,
-      onClick: () => {
+      onChange: () => {
         onViewModeClick(value);
       },
     };
