@@ -29,7 +29,7 @@ function PublicSpacesDistribution({ totalSurfaceArea, onSubmit, onBack }: Props)
         </FormInfo>
       }
       onBack={onBack}
-      onSubmit={onSubmit as (data: Record<string, number>) => void}
+      onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale des espaces publics"
       surfaces={urbanPublicSpace.options.map((space) => ({

@@ -1,5 +1,5 @@
 import { ReactNode, useCallback, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
@@ -11,23 +11,25 @@ import RowNumericInput from "../NumericInput/RowNumericInput";
 import { optionalNumericFieldRegisterOptions } from "../NumericInput/registerOptions";
 import SurfaceAreaPieChart from "./SurfaceAreaPieChart";
 
-type Props = {
+type FormValues<TSurface extends string> = {
+  [K in TSurface]: number;
+};
+
+type Props<TSurface extends string> = {
   title: ReactNode;
   instructions?: ReactNode;
   totalSurfaceArea: number;
   surfaces: {
-    name: string;
+    name: TSurface;
     label: string;
     hintText?: ReactNode;
     imgSrc?: string;
     color?: string;
   }[];
   maxErrorMessage?: string;
-  onSubmit: (data: FormValues) => void;
+  onSubmit: (data: FormValues<TSurface>) => void;
   onBack: () => void;
 };
-
-type FormValues = Record<string, number>;
 
 const convertPercentToSquareMeters = (percent: number, total: number) => {
   return Math.round((percent * total) / 100);
@@ -36,7 +38,7 @@ const convertPercentToSquareMeters = (percent: number, total: number) => {
 const targetSurfaceArea = 100;
 const addonText = "%";
 
-function SurfaceAreaDistributionForm({
+function SurfaceAreaDistributionForm<TSurface extends string>({
   title,
   instructions,
   surfaces,
@@ -44,15 +46,15 @@ function SurfaceAreaDistributionForm({
   maxErrorMessage = "La surface de ce sol ne peut pas être supérieure à la surface totale disponible",
   onSubmit,
   onBack,
-}: Props) {
-  const { register, handleSubmit, watch } = useForm<FormValues>();
+}: Props<TSurface>) {
+  const { register, handleSubmit, watch } = useForm<FormValues<TSurface>>();
 
   const convertValuesBeforeSubmit = useCallback(
-    (values: FormValues) => {
+    (values: FormValues<TSurface>) => {
       const formattedEntries = typedObjectEntries(values)
         .filter(([, value]) => value && value > 0)
         .map(([key, value]) => [key, convertPercentToSquareMeters(value, totalSurfaceArea)]);
-      return Object.fromEntries(formattedEntries) as Record<string, number>;
+      return Object.fromEntries(formattedEntries) as Record<TSurface, number>;
     },
     [totalSurfaceArea],
   );
@@ -100,7 +102,7 @@ function SurfaceAreaDistributionForm({
       }
     >
       <form
-        onSubmit={handleSubmit((values: FormValues) => {
+        onSubmit={handleSubmit((values: FormValues<TSurface>) => {
           onSubmit(convertValuesBeforeSubmit(values));
         })}
       >
@@ -112,7 +114,7 @@ function SurfaceAreaDistributionForm({
             hintInputText={getHintInputText(surfaceValues[name])}
             addonText={addonText}
             imgSrc={imgSrc}
-            nativeInputProps={register(name, {
+            nativeInputProps={register(name as string as Path<FormValues<TSurface>>, {
               ...optionalNumericFieldRegisterOptions,
               max: {
                 value: targetSurfaceArea,

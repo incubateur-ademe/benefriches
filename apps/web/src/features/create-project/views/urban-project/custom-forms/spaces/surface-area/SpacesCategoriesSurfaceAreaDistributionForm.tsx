@@ -33,7 +33,7 @@ function SpacesCategoriesSurfaceAreaDistributionForm({
         </FormInfo>
       }
       onBack={onBack}
-      onSubmit={onSubmit as (data: Record<string, number>) => void}
+      onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la superficie totale du site"
       surfaces={spacesCategories.map((spaceCategory) => ({

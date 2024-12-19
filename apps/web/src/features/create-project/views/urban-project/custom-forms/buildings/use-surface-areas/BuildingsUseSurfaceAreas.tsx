@@ -28,7 +28,7 @@ function BuildingsUseCategorySurfaceAreas({ totalSurfaceArea, onSubmit, onBack }
         </FormInfo>
       }
       onBack={onBack}
-      onSubmit={onSubmit as (data: Record<string, number>) => void}
+      onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la surface de plancher des bâtiments"
       surfaces={BUILDINGS_USE_CATEGORIES.map((useCategory) => ({

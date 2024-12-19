@@ -28,7 +28,7 @@ function EconomicActivitiesSurfaceAreaForm({ totalSurfaceArea, onSubmit, onBack 
         </FormInfo>
       }
       onBack={onBack}
-      onSubmit={onSubmit as (data: Record<string, number>) => void}
+      onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}
       surfaces={ECONOMIC_ACTIVITY_BUILDINGS_USE.map((use) => ({
         name: use,
