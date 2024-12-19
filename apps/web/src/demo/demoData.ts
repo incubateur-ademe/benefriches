@@ -15,9 +15,6 @@ export const DEMO_SITE = {
   fricheActivity: "INDUSTRY",
   isFriche: true,
   ownerName: "Mairie de Mauges-sur-Loire",
-  owner: { name: "Mairie de Mauges-sur-Loire", structureType: "municipality" },
-  hasContaminatedSoils: true,
-  contaminatedSoilSurface: 10000,
   surfaceArea: 50000,
   address: "Mauges-sur-Loire",
   soilsDistribution: {
@@ -32,7 +29,7 @@ export const DEMO_SITE = {
     { amount: 35000, purpose: "maintenance" },
   ],
   accidents: {},
-} as SiteFeatures;
+} as const satisfies SiteFeatures;
 
 export const DEMO_PROJECT = {
   id: "cef23bf6-bad9-4408-b38c-0116e9d4bf9b",
@@ -90,7 +87,9 @@ export const DEMO_PROJECT = {
     { amount: 375000, purpose: "asbestos_removal" },
   ],
   siteResaleTotalAmount: 6416318.4,
-} as Omit<ProjectFeatures, "developmentPlan"> & { developmentPlan: UrbanProjectFeatures };
+} as const satisfies Omit<ProjectFeatures, "developmentPlan"> & {
+  developmentPlan: UrbanProjectFeatures;
+};
 
 export const IMPACTS_DATA = {
   id: "cef23bf6-bad9-4408-b38c-0116e9d4bf9b",
