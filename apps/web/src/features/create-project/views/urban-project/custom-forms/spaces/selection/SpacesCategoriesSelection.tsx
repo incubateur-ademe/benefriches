@@ -20,6 +20,7 @@ export type FormValues = {
 };
 
 type Props = {
+  initialValues: UrbanSpaceCategory[];
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -61,9 +62,9 @@ const SoilTypeTile = ({ spaceCategory, isSelected, onChange }: SoilTypeTileProps
   );
 };
 
-function SpacesCategoriesSelection({ onSubmit, onBack }: Props) {
+function SpacesCategoriesSelection({ initialValues, onSubmit, onBack }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: { spaceCategories: [] },
+    defaultValues: { spaceCategories: initialValues },
   });
 
   return (
