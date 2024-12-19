@@ -1,15 +1,23 @@
-import Input from "@codegouvfr/react-dsfr/Input";
 import { useForm } from "react-hook-form";
 import { SoilsDistribution, typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import {
+  formatSurfaceArea,
+  SQUARE_METERS_HTML_SYMBOL,
+} from "@/shared/services/format-number/formatNumber";
+import {
+  getDescriptionForSoilType,
+  getLabelForSoilType,
+  getPictogramForSoilType,
+} from "@/shared/services/label-mapping/soilTypeLabelMapping";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
+import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
+import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
+import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
-
-import SoilSurfaceAreaSliderInput from "./SoilSurfaceAreaSliderInput";
 
 export type FormValues = {
   soilsTransformation: SoilsDistribution;
@@ -37,14 +45,14 @@ function NonSuitableSoilsSurfaceToTransformForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { control, handleSubmit, watch, formState } = useForm<FormValues>({
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     defaultValues: {
       soilsTransformation: getSoilsTransformationDefaultValue(soilsToTransform),
     },
   });
 
   const totalSurfaceEntered = sumObjectValues(watch("soilsTransformation"));
-  const missesSuitableSurfaceArea = totalSurfaceEntered < missingSuitableSurfaceArea;
+  const totalSurfaceEnteredIsValid = totalSurfaceEntered >= missingSuitableSurfaceArea;
 
   return (
     <WizardFormLayout
@@ -69,39 +77,48 @@ function NonSuitableSoilsSurfaceToTransformForm({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         {typedObjectEntries(soilsToTransform).map(([soilType, surfaceArea]) => {
-          const maxValue = surfaceArea as number;
-          const marks = {
-            0: "0",
-
-            [maxValue]: formatNumberFr(maxValue),
-          };
-          if (maxValue > missingSuitableSurfaceArea) {
-            marks[missingSuitableSurfaceArea] = formatNumberFr(missingSuitableSurfaceArea);
-          }
+          const soilSurfaceArea = surfaceArea as number;
+          const nativeInputProps = register(`soilsTransformation.${soilType}`, {
+            ...optionalNumericFieldRegisterOptions,
+            max: {
+              value: soilSurfaceArea,
+              message: `La superficie de ce sol est de ${formatSurfaceArea(soilSurfaceArea)}.`,
+            },
+          });
+          const error =
+            formState.errors.soilsTransformation && formState.errors.soilsTransformation[soilType];
           return (
-            <SoilSurfaceAreaSliderInput
-              soilType={soilType}
-              control={control}
-              name={`soilsTransformation.${soilType}`}
-              marks={marks}
-              maxValue={maxValue}
+            <RowDecimalsNumericInput
               key={soilType}
+              hintText={getDescriptionForSoilType(soilType)}
+              addonText={SQUARE_METERS_HTML_SYMBOL}
+              label={getLabelForSoilType(soilType)}
+              imgSrc={getPictogramForSoilType(soilType)}
+              nativeInputProps={nativeInputProps}
+              state={error ? "error" : "default"}
+              stateRelatedMessage={error?.message}
+              hintInputText={`Maximum ${formatSurfaceArea(soilSurfaceArea)}`}
             />
           );
         })}
-        <Input
+        <RowNumericInput
+          className="tw-pb-5"
           label="Total des sols à aplanir ou remblayer"
-          className="tw-mt-12"
-          hintText="en m²"
+          addonText={SQUARE_METERS_HTML_SYMBOL}
           nativeInputProps={{
             value: totalSurfaceEntered,
             min: missingSuitableSurfaceArea,
+            type: "number",
           }}
           disabled
-          state={missesSuitableSurfaceArea ? "error" : "default"}
-          stateRelatedMessage={`Vous devez aplanir ou remblayer au moins ${formatSurfaceArea(missingSuitableSurfaceArea)}`}
+          state={totalSurfaceEnteredIsValid ? "success" : "warning"}
+          stateRelatedMessage={
+            totalSurfaceEnteredIsValid
+              ? "Le compte est bon !"
+              : `${formatSurfaceArea(Math.abs(missingSuitableSurfaceArea - totalSurfaceEntered))} manquants`
+          }
         />
-        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={formState.isValid} />
       </form>
     </WizardFormLayout>
   );
