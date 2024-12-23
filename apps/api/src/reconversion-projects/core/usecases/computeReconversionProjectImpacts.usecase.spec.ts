@@ -44,6 +44,39 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       ).rejects.toThrow(`ReconversionProject with id ${reconversionProjectId} not found`);
     });
 
+    it("throws error when reconversion project development plan does not exist", async () => {
+      const reconversionProjectId = uuid();
+      const siteId = uuid();
+      const projectQuery = new InMemoryReconversionProjectImpactsQuery();
+      projectQuery._setData({
+        id: reconversionProjectId,
+        isExpressProject: false,
+        name: "Test reconversion project",
+        relatedSiteId: siteId,
+        soilsDistribution: {},
+        sitePurchaseTotalAmount: 0,
+        reinstatementCosts: [],
+        developmentPlanInstallationCosts: [],
+        financialAssistanceRevenues: [],
+        yearlyProjectedCosts: [],
+        yearlyProjectedRevenues: [],
+      });
+      const siteQuery = new InMemorySiteImpactsQuery();
+      const usecase = new ComputeReconversionProjectImpactsUseCase(
+        projectQuery,
+        siteQuery,
+        new FakeGetSoilsCarbonStorageService(),
+        dateProvider,
+        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
+      );
+      const evaluationPeriodInYears = 10;
+      await expect(
+        usecase.execute({ reconversionProjectId, evaluationPeriodInYears }),
+      ).rejects.toThrow(
+        `ComputeReconversionProjectImpacts: ReconversionProject with id ${reconversionProjectId} has no development plan`,
+      );
+    });
+
     it("throws error when reconversion project related site does not exist", async () => {
       const reconversionProjectId = uuid();
       const siteId = uuid();
@@ -52,6 +85,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         id: reconversionProjectId,
         isExpressProject: false,
         name: "Test reconversion project",
+        developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
         relatedSiteId: siteId,
         soilsDistribution: {},
         sitePurchaseTotalAmount: 0,
@@ -322,103 +356,107 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               },
             },
           },
-          nonContaminatedSurfaceArea: {
-            current: 30000,
-            forecast: 50000,
-            difference: 20000,
-          },
-          permeableSurfaceArea: {
-            base: 60000,
-            forecast: 50000,
-            difference: -10000,
-            greenSoil: {
-              base: 40000,
-              forecast: 30000,
+          environmental: {
+            nonContaminatedSurfaceArea: {
+              current: 30000,
+              forecast: 50000,
+              difference: 20000,
+            },
+            permeableSurfaceArea: {
+              base: 60000,
+              forecast: 50000,
               difference: -10000,
+              greenSoil: {
+                base: 40000,
+                forecast: 30000,
+                difference: -10000,
+              },
+              mineralSoil: {
+                base: 20000,
+                forecast: 20000,
+                difference: 0,
+              },
             },
-            mineralSoil: {
-              base: 20000,
-              forecast: 20000,
-              difference: 0,
-            },
-          },
-          fullTimeJobs: {
-            current: 0,
-            forecast: 0.4,
-            conversion: {
+            avoidedCO2TonsWithEnergyProduction: {
               current: 0,
-              forecast: 0.3,
+              forecast: 112.29599999999999,
             },
-            operations: {
+            soilsCarbonStorage: {
+              isSuccess: true,
+              current: {
+                total: 20,
+                soils: [
+                  {
+                    type: "IMPERMEABLE_SOILS",
+                    carbonStorage: 2,
+                    surfaceArea: 1000,
+                  },
+                  {
+                    type: "BUILDINGS",
+                    carbonStorage: 2,
+                    surfaceArea: 1000,
+                  },
+                  {
+                    type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                    carbonStorage: 16,
+                    surfaceArea: 1000,
+                  },
+                ],
+              },
+              forecast: {
+                total: 20,
+                soils: [
+                  {
+                    type: "IMPERMEABLE_SOILS",
+                    carbonStorage: 2,
+                    surfaceArea: 1000,
+                  },
+                  {
+                    type: "BUILDINGS",
+                    carbonStorage: 2,
+                    surfaceArea: 1000,
+                  },
+                  {
+                    type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+                    carbonStorage: 16,
+                    surfaceArea: 1000,
+                  },
+                ],
+              },
+            },
+          },
+          social: {
+            fullTimeJobs: {
               current: 0,
-              forecast: 0.1,
+              forecast: 0.4,
+              conversion: {
+                current: 0,
+                forecast: 0.3,
+              },
+              operations: {
+                current: 0,
+                forecast: 0.1,
+              },
             },
-          },
-          accidents: {
-            current: 3,
-            forecast: 0,
-            deaths: {
+            accidents: {
+              current: 3,
+              forecast: 0,
+              deaths: {
+                current: 0,
+                forecast: 0,
+              },
+              severeInjuries: {
+                current: 2,
+                forecast: 0,
+              },
+              minorInjuries: {
+                current: 1,
+                forecast: 0,
+              },
+            },
+            householdsPoweredByRenewableEnergy: {
               current: 0,
-              forecast: 0,
-            },
-            severeInjuries: {
-              current: 2,
-              forecast: 0,
-            },
-            minorInjuries: {
-              current: 1,
-              forecast: 0,
-            },
-          },
-          householdsPoweredByRenewableEnergy: {
-            current: 0,
-            forecast: 1000,
-          },
-          avoidedCO2TonsWithEnergyProduction: {
-            current: 0,
-            forecast: 112.29599999999999,
-          },
-          soilsCarbonStorage: {
-            isSuccess: true,
-            current: {
-              total: 20,
-              soils: [
-                {
-                  type: "IMPERMEABLE_SOILS",
-                  carbonStorage: 2,
-                  surfaceArea: 1000,
-                },
-                {
-                  type: "BUILDINGS",
-                  carbonStorage: 2,
-                  surfaceArea: 1000,
-                },
-                {
-                  type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-                  carbonStorage: 16,
-                  surfaceArea: 1000,
-                },
-              ],
-            },
-            forecast: {
-              total: 20,
-              soils: [
-                {
-                  type: "IMPERMEABLE_SOILS",
-                  carbonStorage: 2,
-                  surfaceArea: 1000,
-                },
-                {
-                  type: "BUILDINGS",
-                  carbonStorage: 2,
-                  surfaceArea: 1000,
-                },
-                {
-                  type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-                  carbonStorage: 16,
-                  surfaceArea: 1000,
-                },
-              ],
+              forecast: 1000,
             },
           },
         },
@@ -446,7 +484,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         evaluationPeriodInYears,
       });
       expect(result.id).toEqual(reconversionProjectImpactDataView.id);
-      expect(result.impacts.soilsCarbonStorage).toEqual({
+      expect(result.impacts.environmental.soilsCarbonStorage).toEqual({
         isSuccess: false,
       });
     });

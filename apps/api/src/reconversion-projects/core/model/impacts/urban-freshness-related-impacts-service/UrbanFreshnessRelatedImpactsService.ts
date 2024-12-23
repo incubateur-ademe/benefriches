@@ -9,7 +9,7 @@ import {
   sumObjectValues,
 } from "shared";
 
-import { ImpactServiceInterface } from "../ImpactServiceInterface";
+import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
 
 const CO2_BENEFIT_AMOUNT_GRAM_PER_HOUSING_SQUARE_METER_PER_YEAR = 15;
@@ -29,7 +29,7 @@ type Props = {
 
 export class UrbanFreshnessRelatedImpactsService
   extends InfluenceAreaService
-  implements ImpactServiceInterface
+  implements PartialImpactsServiceInterface
 {
   private readonly projectHousingSurfaceArea: number;
   private readonly projectTertiaryActivitySurface: number;
@@ -189,7 +189,7 @@ export class UrbanFreshnessRelatedImpactsService
     );
   }
 
-  formatImpact() {
+  formatImpacts() {
     if (!this.hasUrbanFreshnessImpact) {
       return { socioeconomic: [] as SocioEconomicImpact[] };
     }

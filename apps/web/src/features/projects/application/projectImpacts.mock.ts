@@ -124,95 +124,100 @@ const baseImpacts = {
       },
     },
   },
-  nonContaminatedSurfaceArea: {
-    current: 30000,
-    forecast: 50000,
-    difference: 20000,
-  },
-  permeableSurfaceArea: {
-    base: 60000,
-    forecast: 50000,
-    difference: -10000,
-    greenSoil: {
-      base: 40000,
-      forecast: 30000,
+  environmental: {
+    nonContaminatedSurfaceArea: {
+      current: 30000,
+      forecast: 50000,
+      difference: 20000,
+    },
+    permeableSurfaceArea: {
+      base: 60000,
+      forecast: 50000,
       difference: -10000,
+      greenSoil: {
+        base: 40000,
+        forecast: 30000,
+        difference: -10000,
+      },
+      mineralSoil: {
+        base: 20000,
+        forecast: 20000,
+        difference: 0,
+      },
     },
-    mineralSoil: {
-      base: 20000,
-      forecast: 20000,
-      difference: 0,
+
+    soilsCarbonStorage: {
+      isSuccess: true,
+      current: {
+        total: 20,
+        soils: [
+          {
+            type: "IMPERMEABLE_SOILS",
+            carbonStorage: 2,
+            surfaceArea: 1000,
+          },
+          {
+            type: "BUILDINGS",
+            carbonStorage: 2,
+            surfaceArea: 1000,
+          },
+          {
+            type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            carbonStorage: 16,
+            surfaceArea: 1000,
+          },
+        ],
+      },
+      forecast: {
+        total: 20,
+        soils: [
+          {
+            type: "IMPERMEABLE_SOILS",
+            carbonStorage: 2,
+            surfaceArea: 1000,
+          },
+          {
+            type: "BUILDINGS",
+            carbonStorage: 2,
+            surfaceArea: 1000,
+          },
+          {
+            type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+            carbonStorage: 16,
+            surfaceArea: 1000,
+          },
+        ],
+      },
     },
   },
-  fullTimeJobs: {
-    current: 1,
-    forecast: 3.5,
-    conversion: {
-      current: 0,
-      forecast: 3,
-    },
-    operations: {
+  social: {
+    fullTimeJobs: {
       current: 1,
-      forecast: 0.5,
+      forecast: 3.5,
+      conversion: {
+        current: 0,
+        forecast: 3,
+      },
+      operations: {
+        current: 1,
+        forecast: 0.5,
+      },
     },
-  },
-  accidents: {
-    current: 3,
-    forecast: 0,
-    deaths: {
-      current: 0,
+    accidents: {
+      current: 3,
       forecast: 0,
-    },
-    severeInjuries: {
-      current: 2,
-      forecast: 0,
-    },
-    minorInjuries: {
-      current: 1,
-      forecast: 0,
-    },
-  },
-  soilsCarbonStorage: {
-    isSuccess: true,
-    current: {
-      total: 20,
-      soils: [
-        {
-          type: "IMPERMEABLE_SOILS",
-          carbonStorage: 2,
-          surfaceArea: 1000,
-        },
-        {
-          type: "BUILDINGS",
-          carbonStorage: 2,
-          surfaceArea: 1000,
-        },
-        {
-          type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-          carbonStorage: 16,
-          surfaceArea: 1000,
-        },
-      ],
-    },
-    forecast: {
-      total: 20,
-      soils: [
-        {
-          type: "IMPERMEABLE_SOILS",
-          carbonStorage: 2,
-          surfaceArea: 1000,
-        },
-        {
-          type: "BUILDINGS",
-          carbonStorage: 2,
-          surfaceArea: 1000,
-        },
-        {
-          type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-          carbonStorage: 16,
-          surfaceArea: 1000,
-        },
-      ],
+      deaths: {
+        current: 0,
+        forecast: 0,
+      },
+      severeInjuries: {
+        current: 2,
+        forecast: 0,
+      },
+      minorInjuries: {
+        current: 1,
+        forecast: 0,
+      },
     },
   },
 } satisfies ReconversionProjectImpactsResult["impacts"];
@@ -264,13 +269,19 @@ export const photovoltaicProjectImpactMock = {
         },
       ],
     },
-    householdsPoweredByRenewableEnergy: {
-      current: 0,
-      forecast: 1000,
+    social: {
+      ...baseImpacts.social,
+      householdsPoweredByRenewableEnergy: {
+        current: 0,
+        forecast: 1000,
+      },
     },
-    avoidedCO2TonsWithEnergyProduction: {
-      current: 0,
-      forecast: 112.29599999999999,
+    environmental: {
+      ...baseImpacts.environmental,
+      avoidedCO2TonsWithEnergyProduction: {
+        current: 0,
+        forecast: 112.29599999999999,
+      },
     },
   },
 } satisfies ReconversionProjectImpactsResult;
@@ -408,15 +419,21 @@ export const urbanProjectImpactMock = {
         },
       ],
     },
-    avoidedVehiculeKilometers: 150000,
-    travelTimeSaved: 555555,
-    avoidedTrafficAccidents: {
-      total: 1000,
-      minorInjuries: 500,
-      severeInjuries: 500,
-      deaths: 80,
+    social: {
+      ...baseImpacts.social,
+      avoidedVehiculeKilometers: 150000,
+      travelTimeSaved: 555555,
+      avoidedTrafficAccidents: {
+        total: 1000,
+        minorInjuries: 500,
+        severeInjuries: 500,
+        deaths: 80,
+      },
     },
-    avoidedCarTrafficCo2EqEmissions: 115,
-    avoidedAirConditioningCo2EqEmissions: 300,
+    environmental: {
+      ...baseImpacts.environmental,
+      avoidedCarTrafficCo2EqEmissions: 115,
+      avoidedAirConditioningCo2EqEmissions: 300,
+    },
   },
 } satisfies ReconversionProjectImpactsResult;

@@ -1,6 +1,6 @@
 import { Response as SoilsCarbonStorageResult } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
 
-import { GetSoilsCarbonStoragePerSoilsService } from "../model/impacts/soils-carbon-storage/soilsCarbonStorageImpact";
+import { GetSoilsCarbonStoragePerSoilsService } from "../model/impacts/ReconversionProjectImpactsService";
 
 const resultMock: SoilsCarbonStorageResult = {
   totalCarbonStorage: 20,

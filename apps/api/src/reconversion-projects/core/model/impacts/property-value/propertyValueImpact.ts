@@ -1,4 +1,8 @@
-import { TRANSFER_TAX_PERCENT_PER_TRANSACTION } from "shared";
+import {
+  LocalHousingPropertyValueIncreaseImpact,
+  LocalTransferDutiesIncreaseImpact,
+  TRANSFER_TAX_PERCENT_PER_TRANSACTION,
+} from "shared";
 
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 
@@ -85,6 +89,10 @@ type LocalPropertyInput = {
   cityPopulation: number;
   getCityRelatedDataService: GetCityRelatedDataService;
 };
+
+type LocalPropertyResult =
+  | [LocalHousingPropertyValueIncreaseImpact, LocalTransferDutiesIncreaseImpact]
+  | [];
 export const getLocalPropertyValueIncreaseRelatedImpacts = async ({
   evaluationPeriodInYears,
   siteSurfaceArea,
@@ -93,7 +101,7 @@ export const getLocalPropertyValueIncreaseRelatedImpacts = async ({
   citySurfaceArea,
   cityPopulation,
   getCityRelatedDataService,
-}: LocalPropertyInput) => {
+}: LocalPropertyInput): Promise<LocalPropertyResult> => {
   if (!siteIsFriche) {
     return [];
   }

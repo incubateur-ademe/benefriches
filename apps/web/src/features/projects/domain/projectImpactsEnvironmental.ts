@@ -1,5 +1,6 @@
+import { convertCarbonToCO2eq } from "shared";
+
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
-import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
 
 type ImpactValue = {
   base: number;
@@ -74,7 +75,7 @@ export const getEnvironmentalProjectImpacts = (
     permeableSurfaceArea,
     avoidedAirConditioningCo2EqEmissions,
     avoidedCarTrafficCo2EqEmissions,
-  } = impactsData;
+  } = impactsData.environmental;
 
   const impacts: EnvironmentalImpact[] = [];
 

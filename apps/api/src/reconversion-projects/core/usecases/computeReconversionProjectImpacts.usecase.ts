@@ -6,25 +6,15 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
   SoilsDistribution,
-  sumListWithKey,
 } from "shared";
 
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { computeAccidentsImpact } from "../model/impacts/accidents/accidentsImpact";
-import { getDevelopmentPlanRelatedImpacts } from "../model/impacts/developmentPlanFeaturesImpacts";
-import { computeDirectAndIndirectEconomicImpacts } from "../model/impacts/direct-and-indirect-economic/computeDirectAndIndirectEconomicImpacts";
-import { computeEconomicBalanceImpact } from "../model/impacts/economic-balance/economicBalanceImpact";
-import { computeEnvironmentalMonetaryImpacts } from "../model/impacts/environmental-monetary/computeEnvironmentalMonetaryImpacts";
-import { FullTimeJobsImpactService } from "../model/impacts/full-time-jobs/fullTimeJobsImpactService";
-import { computeNonContaminatedSurfaceAreaImpact } from "../model/impacts/non-contaminated-surface/nonContaminatedSurfaceAreaImpact";
-import { computePermeableSurfaceAreaImpact } from "../model/impacts/permeable-surface/permeableSurfaceAreaImpact";
-import {
-  computeSoilsCarbonStorageImpact,
-  GetSoilsCarbonStoragePerSoilsService,
-} from "../model/impacts/soils-carbon-storage/soilsCarbonStorageImpact";
+import { PhotovoltaicProjectImpactsService } from "../model/impacts/PhotovoltaicProjectImpactsService";
+import { GetSoilsCarbonStoragePerSoilsService } from "../model/impacts/ReconversionProjectImpactsService";
+import { UrbanProjectImpactsService } from "../model/impacts/UrbanProjectImpactsService";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
 export type SiteImpactsDataView = {
@@ -64,11 +54,11 @@ export type ReconversionProjectImpactsDataView = {
   reinstatementContractOwnerName?: string;
   sitePurchaseTotalAmount?: number;
   sitePurchasePropertyTransferDutiesAmount?: number;
-  reinstatementCosts: { amount: number; purpose: string }[];
-  developmentPlanInstallationCosts: { amount: number; purpose: string }[];
-  financialAssistanceRevenues: { amount: number; source: string }[];
-  yearlyProjectedCosts: { amount: number; purpose: string }[];
-  yearlyProjectedRevenues: { amount: number; source: string }[];
+  reinstatementCosts: ReinstatementExpense[];
+  developmentPlanInstallationCosts: DevelopmentPlanInstallationCost[];
+  financialAssistanceRevenues: FinancialAssistanceRevenue[];
+  yearlyProjectedCosts: RecurringExpense[];
+  yearlyProjectedRevenues: RecurringRevenue[];
   developmentPlanType?: DevelopmentPlan["type"];
   developmentPlanDeveloperName?: string;
   developmentPlanFeatures?: DevelopmentPlan["features"];
@@ -130,6 +120,15 @@ class SiteNotFound extends Error {
   }
 }
 
+class NoDevelopmentPlanType extends Error {
+  constructor(reconversionProjectId: string) {
+    super(
+      `ComputeReconversionProjectImpacts: ReconversionProject with id ${reconversionProjectId} has no development plan`,
+    );
+    this.name = "SiteNotFound";
+  }
+}
+
 export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request, Result> {
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
@@ -144,64 +143,15 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
 
     if (!reconversionProject) throw new ReconversionProjectNotFound(reconversionProjectId);
 
+    if (!reconversionProject.developmentPlanType) {
+      throw new NoDevelopmentPlanType(reconversionProjectId);
+    }
+
     const relatedSite = await this.siteRepository.getById(reconversionProject.relatedSiteId);
 
     if (!relatedSite) throw new SiteNotFound(reconversionProject.relatedSiteId);
 
-    const operationsFirstYear =
-      reconversionProject.operationsFirstYear ?? this.dateProvider.now().getFullYear();
-
-    const soilsCarbonStorageImpactResult = await computeSoilsCarbonStorageImpact({
-      currentSoilsDistribution: relatedSite.soilsDistribution,
-      forecastSoilsDistribution: reconversionProject.soilsDistribution,
-      siteCityCode: relatedSite.addressCityCode,
-      getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
-    });
-
-    const {
-      socioeconomic: developmentPlanRelatedSocioEconomicImpacts = [],
-      ...developmentPlanRelatedImpacts
-    } = await getDevelopmentPlanRelatedImpacts({
-      developmentPlanType: reconversionProject.developmentPlanType,
-      developmentPlanFeatures: reconversionProject.developmentPlanFeatures,
-      evaluationPeriodInYears,
-      operationsFirstYear,
-      siteSurfaceArea: relatedSite.surfaceArea,
-      siteCityCode: relatedSite.addressCityCode,
-      siteIsFriche: relatedSite.isFriche,
-      getCityRelatedDataService: this.getCityRelatedDataService,
-    });
-
-    const socioeconomic = [
-      ...computeDirectAndIndirectEconomicImpacts({
-        evaluationPeriodInYears: evaluationPeriodInYears,
-        currentOwner: relatedSite.ownerName,
-        currentTenant: relatedSite.tenantName,
-        futureSiteOwner: reconversionProject.futureSiteOwnerName,
-        yearlyCurrentCosts: relatedSite.yearlyCosts,
-        yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts,
-        propertyTransferDutiesAmount: reconversionProject.sitePurchasePropertyTransferDutiesAmount,
-        isFriche: relatedSite.isFriche,
-      }),
-      ...computeEnvironmentalMonetaryImpacts({
-        baseSoilsDistribution: relatedSite.soilsDistribution,
-        forecastSoilsDistribution: reconversionProject.soilsDistribution,
-        evaluationPeriodInYears,
-        baseSoilsCarbonStorage: soilsCarbonStorageImpactResult.isSuccess
-          ? soilsCarbonStorageImpactResult.current.total
-          : null,
-        forecastSoilsCarbonStorage: soilsCarbonStorageImpactResult.isSuccess
-          ? soilsCarbonStorageImpactResult.forecast.total
-          : null,
-        operationsFirstYear: operationsFirstYear,
-        decontaminatedSurface: reconversionProject.decontaminatedSoilSurface,
-      }),
-      ...developmentPlanRelatedSocioEconomicImpacts,
-    ];
-
-    const { developmentPlanFeatures, developmentPlanType } = reconversionProject;
-
-    return {
+    const result = {
       id: reconversionProjectId,
       name: reconversionProject.name,
       relatedSiteId: reconversionProject.relatedSiteId,
@@ -213,8 +163,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           (reconversionProject.decontaminatedSoilSurface ?? 0),
         isExpressProject: reconversionProject.isExpressProject,
         developmentPlan: {
-          ...developmentPlanFeatures,
-          type: developmentPlanType,
+          ...reconversionProject.developmentPlanFeatures,
+          type: reconversionProject.developmentPlanType,
         },
       },
       siteData: {
@@ -229,61 +179,45 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           structureType: relatedSite.ownerStructureType,
         },
       },
-      impacts: {
-        economicBalance: computeEconomicBalanceImpact(
-          {
-            developmentPlanDeveloperName: reconversionProject.developmentPlanDeveloperName,
-            futureOperatorName: reconversionProject.futureOperatorName,
-            futureSiteOwnerName: reconversionProject.futureSiteOwnerName,
-            reinstatementContractOwnerName: reconversionProject.reinstatementContractOwnerName,
-            reinstatementCosts: reconversionProject.reinstatementCosts as ReinstatementExpense[],
-            yearlyProjectedCosts: reconversionProject.yearlyProjectedCosts as RecurringExpense[],
-            yearlyProjectedRevenues:
-              reconversionProject.yearlyProjectedRevenues as RecurringRevenue[],
-            sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
-            financialAssistanceRevenues:
-              reconversionProject.financialAssistanceRevenues as FinancialAssistanceRevenue[],
-            developmentPlanInstallationCosts:
-              reconversionProject.developmentPlanInstallationCosts as DevelopmentPlanInstallationCost[],
-            siteResaleTotalAmount: reconversionProject.siteResaleTotalAmount,
-          },
-          evaluationPeriodInYears,
-        ),
-        socioeconomic: {
-          impacts: socioeconomic,
-          total: sumListWithKey(socioeconomic, "amount"),
-        },
-        permeableSurfaceArea: computePermeableSurfaceAreaImpact({
-          baseSoilsDistribution: relatedSite.soilsDistribution,
-          forecastSoilsDistribution: reconversionProject.soilsDistribution,
-        }),
-        nonContaminatedSurfaceArea: relatedSite.contaminatedSoilSurface
-          ? computeNonContaminatedSurfaceAreaImpact({
-              currentContaminatedSurfaceArea: relatedSite.contaminatedSoilSurface,
-              forecastDecontaminedSurfaceArea: reconversionProject.decontaminatedSoilSurface ?? 0,
-              totalSurfaceArea: relatedSite.surfaceArea,
-            })
-          : undefined,
-        fullTimeJobs: new FullTimeJobsImpactService({
-          developmentPlan: {
-            type: reconversionProject.developmentPlanType,
-            features: reconversionProject.developmentPlanFeatures,
-          } as DevelopmentPlan,
-          conversionSchedule: reconversionProject.conversionSchedule,
-          reinstatementSchedule: reconversionProject.reinstatementSchedule,
-          reinstatementExpenses: reconversionProject.reinstatementCosts as ReinstatementExpense[],
-          evaluationPeriodInYears: evaluationPeriodInYears,
-        }).getFullTimeJobsImpacts(),
-        accidents: relatedSite.hasAccidents
-          ? computeAccidentsImpact({
-              severeInjuries: relatedSite.accidentsSevereInjuries,
-              minorInjuries: relatedSite.accidentsMinorInjuries,
-              deaths: relatedSite.accidentsDeaths,
-            })
-          : undefined,
-        soilsCarbonStorage: soilsCarbonStorageImpactResult,
-        ...developmentPlanRelatedImpacts,
-      },
     };
+
+    switch (reconversionProject.developmentPlanType) {
+      case "PHOTOVOLTAIC_POWER_PLANT": {
+        const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
+          reconversionProject,
+          relatedSite,
+          evaluationPeriodInYears,
+          dateProvider: this.dateProvider,
+          getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
+        });
+
+        return {
+          ...result,
+          impacts: await photovoltaicProjectImpactsService.formatImpacts(),
+        };
+      }
+      case "URBAN_PROJECT": {
+        const { squareMetersSurfaceArea, population } =
+          await this.getCityRelatedDataService.getCityPopulationAndSurfaceArea(
+            relatedSite.addressCityCode,
+          );
+
+        const urbanProjectImpactsService = new UrbanProjectImpactsService({
+          reconversionProject,
+          relatedSite,
+          evaluationPeriodInYears,
+          dateProvider: this.dateProvider,
+          getCityRelatedDataService: this.getCityRelatedDataService,
+          getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
+          citySquareMetersSurfaceArea: squareMetersSurfaceArea,
+          cityPopulation: population,
+        });
+
+        return {
+          ...result,
+          impacts: await urbanProjectImpactsService.formatImpacts(),
+        };
+      }
+    }
   }
 }

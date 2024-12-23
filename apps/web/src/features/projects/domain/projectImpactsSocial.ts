@@ -46,7 +46,7 @@ export const getSocialProjectImpacts = (
     travelTimeSaved,
     avoidedTrafficAccidents,
     avoidedVehiculeKilometers,
-  } = impactsData || {};
+  } = impactsData?.social || {};
 
   const impacts: SocialImpact[] = [];
 

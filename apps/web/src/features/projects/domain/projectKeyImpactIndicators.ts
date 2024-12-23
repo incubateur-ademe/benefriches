@@ -1,9 +1,8 @@
-import { isLocalAuthority } from "shared";
+import { convertCarbonToCO2eq, isLocalAuthority } from "shared";
 
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
-import { convertCarbonToCO2eq } from "../views/shared/convertCarbonToCO2eq";
 
 export type ProjectOverallImpact = "strong_negative" | "negative" | "positive" | "strong_positive";
 
@@ -135,10 +134,10 @@ const getTaxesIncomeImpact = (impactsData?: ReconversionProjectImpactsResult["im
 };
 
 const getFullTimeJobsImpact = (impactsData?: ReconversionProjectImpactsResult["impacts"]) => {
-  if (!impactsData?.fullTimeJobs) {
+  if (!impactsData?.social.fullTimeJobs) {
     return undefined;
   }
-  const { forecast, current } = impactsData.fullTimeJobs;
+  const { forecast, current } = impactsData.social.fullTimeJobs;
   const difference = forecast - current;
 
   return {
@@ -150,10 +149,10 @@ const getFullTimeJobsImpact = (impactsData?: ReconversionProjectImpactsResult["i
 const getHouseholdsPoweredByRenewableEnergy = (
   impactsData?: ReconversionProjectImpactsResult["impacts"],
 ) => {
-  if (!impactsData?.householdsPoweredByRenewableEnergy) {
+  if (!impactsData?.social.householdsPoweredByRenewableEnergy) {
     return undefined;
   }
-  const { forecast, current } = impactsData.householdsPoweredByRenewableEnergy;
+  const { forecast, current } = impactsData.social.householdsPoweredByRenewableEnergy;
   const difference = forecast - current;
 
   return difference;
@@ -165,14 +164,16 @@ const getAvoidedCo2eqEmissions = (impactsData?: ReconversionProjectImpactsResult
   }
 
   const total = [
-    impactsData.avoidedAirConditioningCo2EqEmissions ?? 0,
-    impactsData.avoidedCarTrafficCo2EqEmissions ?? 0,
-    impactsData.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0,
+    impactsData.environmental.avoidedAirConditioningCo2EqEmissions ?? 0,
+    impactsData.environmental.avoidedCarTrafficCo2EqEmissions ?? 0,
+    impactsData.environmental.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0,
   ].reduce((total, amount) => total + amount, 0);
 
-  if (impactsData.soilsCarbonStorage.isSuccess) {
-    const base = convertCarbonToCO2eq(impactsData.soilsCarbonStorage.current.total);
-    const forecast = convertCarbonToCO2eq(impactsData.soilsCarbonStorage.forecast.total);
+  if (impactsData.environmental.soilsCarbonStorage.isSuccess) {
+    const base = convertCarbonToCO2eq(impactsData.environmental.soilsCarbonStorage.current.total);
+    const forecast = convertCarbonToCO2eq(
+      impactsData.environmental.soilsCarbonStorage.forecast.total,
+    );
     return total + (forecast - base);
   }
 
@@ -180,10 +181,10 @@ const getAvoidedCo2eqEmissions = (impactsData?: ReconversionProjectImpactsResult
 };
 
 const getPermeableSurfaceArea = (impactsData?: ReconversionProjectImpactsResult["impacts"]) => {
-  if (!impactsData?.permeableSurfaceArea) {
+  if (!impactsData?.environmental.permeableSurfaceArea) {
     return undefined;
   }
-  const { forecast, base } = impactsData.permeableSurfaceArea;
+  const { forecast, base } = impactsData.environmental.permeableSurfaceArea;
 
   return {
     percentageEvolution: getPercentageDifference(base, forecast),
@@ -197,7 +198,7 @@ const getNonContaminatedSurfaceArea = (
 ) => {
   const siteContaminatedSurfaceArea = relatedSiteData?.contaminatedSoilSurface ?? 0;
   const siteSurfaceArea = relatedSiteData?.surfaceArea ?? 0;
-  const nonContaminatedSurfaceAreaImpact = impactsData?.nonContaminatedSurfaceArea;
+  const nonContaminatedSurfaceAreaImpact = impactsData?.environmental.nonContaminatedSurfaceArea;
 
   if (!nonContaminatedSurfaceAreaImpact || !siteContaminatedSurfaceArea) {
     return undefined;

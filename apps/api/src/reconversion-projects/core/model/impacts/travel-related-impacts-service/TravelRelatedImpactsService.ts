@@ -5,10 +5,11 @@ import {
   getAnnualizedCO2MonetaryValueForDuration,
   roundTo1Digit,
   roundTo2Digits,
+  SocioEconomicImpact,
   sumObjectValues,
 } from "shared";
 
-import { ImpactServiceInterface } from "../ImpactServiceInterface";
+import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
 
 const AVOIDED_KILOMETER_FOR_TRAVELERS = 1.2;
@@ -29,7 +30,7 @@ type Props = {
 
 export class TravelRelatedImpactsService
   extends InfluenceAreaService
-  implements ImpactServiceInterface
+  implements PartialImpactsServiceInterface
 {
   private readonly projectHousingSurfaceArea: number;
   private readonly projectTertiaryActivitySurface: number;
@@ -397,7 +398,7 @@ export class TravelRelatedImpactsService
     );
   }
 
-  formatImpact() {
+  formatImpacts() {
     const socioEconomicImpacts = [
       {
         actor: "human_society",
@@ -471,7 +472,9 @@ export class TravelRelatedImpactsService
     };
 
     return {
-      socioeconomic: socioEconomicImpacts.filter(({ amount }) => amount > 0),
+      socioeconomic: socioEconomicImpacts.filter(
+        ({ amount }) => amount > 0,
+      ) as SocioEconomicImpact[],
       avoidedVehiculeKilometers: roundTo2Digits(this.getAvoidedKilometersPerVehicule()),
       travelTimeSaved: roundTo2Digits(this.getTravelTimeSavedPerTraveler()),
       avoidedTrafficAccidents:

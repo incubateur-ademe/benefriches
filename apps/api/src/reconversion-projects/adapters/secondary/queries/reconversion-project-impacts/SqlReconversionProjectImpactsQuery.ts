@@ -162,6 +162,6 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       siteResaleTotalAmount,
       decontaminatedSoilSurface:
         reconversionProject.friche_decontaminated_soil_surface_area ?? undefined,
-    };
+    } as ReconversionProjectImpactsDataView;
   }
 }

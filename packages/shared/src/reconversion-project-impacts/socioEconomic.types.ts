@@ -9,7 +9,7 @@ export type SocioEconomicImpact =
   | AvoidedAirConditioningCO2EqEmissions
   | AvoidedAirPollutionImpact
   | AvoidedPropertyDamagesExpensesImpact
-  | AvoidedCO2EqWithEnRImpact
+  | AvoidedCO2EqWithEnRMonetaryImpact
   | LocalHousingPropertyValueIncreaseImpact
   | LocalTransferDutiesIncreaseImpact;
 
@@ -115,13 +115,13 @@ export type AvoidedAirPollutionImpact = BaseEconomicImpact & {
   impact: "avoided_air_pollution";
 };
 
-type LocalHousingPropertyValueIncreaseImpact = BaseEconomicImpact & {
+export type LocalHousingPropertyValueIncreaseImpact = BaseEconomicImpact & {
   impact: "local_property_value_increase";
   impactCategory: "economic_indirect";
   actor: "local_residents";
 };
 
-type LocalTransferDutiesIncreaseImpact = BaseEconomicImpact & {
+export type LocalTransferDutiesIncreaseImpact = BaseEconomicImpact & {
   impact: "local_transfer_duties_increase";
   impactCategory: "economic_indirect";
   actor: "community";
@@ -154,7 +154,7 @@ export type EcosystemServicesImpact = {
   }[];
 };
 
-type AvoidedCO2EqWithEnRImpact = {
+export type AvoidedCO2EqWithEnRMonetaryImpact = {
   amount: number;
   actor: "human_society";
   impactCategory: "environmental_monetary";

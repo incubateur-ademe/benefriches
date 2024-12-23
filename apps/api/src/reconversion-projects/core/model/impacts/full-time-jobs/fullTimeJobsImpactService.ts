@@ -11,7 +11,7 @@ import {
 
 import { PhotovoltaicPowerStationFeatures, Schedule } from "../../reconversionProject";
 import { UrbanProjectFeatures } from "../../urbanProjects";
-import { FullTimeJobsImpactServiceInterface } from "./fullTimeJobsImpactServiceInterface";
+import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
 
 type SpreadTemporaryFullTimeJobsOverInput = {
   temporaryFullTimeJobs: number;
@@ -49,7 +49,7 @@ type FullTimeJobsImpactServiceProps = {
   reinstatementExpenses: ReinstatementExpense[];
 };
 
-export class FullTimeJobsImpactService implements FullTimeJobsImpactServiceInterface {
+export class FullTimeJobsImpactService implements PartialImpactsServiceInterface {
   private readonly developmentPlan: FullTimeJobsImpactServiceProps["developmentPlan"];
 
   private readonly conversionSchedule: Schedule | undefined;
@@ -156,19 +156,21 @@ export class FullTimeJobsImpactService implements FullTimeJobsImpactServiceInter
     );
   }
 
-  getFullTimeJobsImpacts() {
+  formatImpacts() {
     return {
-      current: this.totalCurrentFullTimeJobs,
-      forecast: this.totalForecastFullTimeJobs,
-      operations: {
-        current: this.statuQuoOperationsFullTimeJobs,
-        forecast: this.projectOperationsFullTimeJobs,
-      },
-      conversion: {
-        current: 0,
-        forecast:
-          this.conversionJobsSpreadOverEvaluationPeriod +
-          this.reinstatementJobsSpreadOverEvaluationPeriod,
+      fullTimeJobs: {
+        current: this.totalCurrentFullTimeJobs,
+        forecast: this.totalForecastFullTimeJobs,
+        operations: {
+          current: this.statuQuoOperationsFullTimeJobs,
+          forecast: this.projectOperationsFullTimeJobs,
+        },
+        conversion: {
+          current: 0,
+          forecast:
+            this.conversionJobsSpreadOverEvaluationPeriod +
+            this.reinstatementJobsSpreadOverEvaluationPeriod,
+        },
       },
     };
   }

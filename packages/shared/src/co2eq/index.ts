@@ -1,1 +1,2 @@
-export * from "./CO2eqMonetaryValue";
+export * from "./co2eqMonetaryValue";
+export * from "./convertCarbonToCO2eq";

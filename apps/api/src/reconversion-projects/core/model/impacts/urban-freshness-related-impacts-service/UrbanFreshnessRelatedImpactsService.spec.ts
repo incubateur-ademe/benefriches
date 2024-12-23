@@ -199,7 +199,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       const expected = {
         socioeconomic: [],
       };
-      expect(urbanFreshnessRelatedImpactsService.formatImpact()).toEqual(expected);
+      expect(urbanFreshnessRelatedImpactsService.formatImpacts()).toEqual(expected);
     });
 
     it("returns no urban freshness impacts if there is not enough public green spaces in project for public green space < 5000 m²", () => {
@@ -221,7 +221,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       const expected = {
         socioeconomic: [],
       };
-      expect(urbanFreshnessRelatedImpactsService.formatImpact()).toEqual(expected);
+      expect(urbanFreshnessRelatedImpactsService.formatImpacts()).toEqual(expected);
     });
 
     it("returns urban freshness impacts formated", () => {
@@ -265,7 +265,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         avoidedAirConditioningCo2EqEmissions: 4.06,
       };
 
-      expect(urbanFreshnessRelatedImpactsService.formatImpact()).toMatchObject(expected);
+      expect(urbanFreshnessRelatedImpactsService.formatImpacts()).toMatchObject(expected);
     });
   });
 });

@@ -271,45 +271,54 @@ export const IMPACTS_DATA = {
       ],
       total: 231008.62664666667,
     },
-    permeableSurfaceArea: {
-      base: 30000,
-      forecast: 28750,
-      difference: 28750 - 30000,
-      greenSoil: { base: 5000, forecast: 24625, difference: 24625 - 5000 },
-      mineralSoil: { base: 25000, forecast: 4125, difference: 4125 - 25000 },
-    },
-    nonContaminatedSurfaceArea: { current: 40000, forecast: 47500, difference: 7500 },
-    fullTimeJobs: {
-      current: 0.1,
-      forecast: 42.2,
-      operations: { current: 0.1, forecast: 35.2 },
-      conversion: { current: 0, forecast: 7 },
-    },
-    soilsCarbonStorage: {
-      isSuccess: true,
-      current: {
-        total: 173,
-        soils: [
-          { type: "BUILDINGS", surfaceArea: 5000, carbonStorage: 15 },
-          { type: "IMPERMEABLE_SOILS", surfaceArea: 15000, carbonStorage: 45 },
-          { type: "MINERAL_SOIL", surfaceArea: 25000, carbonStorage: 75 },
-          { type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 5000, carbonStorage: 38 },
-        ],
+    environmental: {
+      permeableSurfaceArea: {
+        base: 30000,
+        forecast: 28750,
+        difference: 28750 - 30000,
+        greenSoil: { base: 5000, forecast: 24625, difference: 24625 - 5000 },
+        mineralSoil: { base: 25000, forecast: 4125, difference: 4125 - 25000 },
       },
-      forecast: {
-        total: 263.27,
-        soils: [
-          { type: "BUILDINGS", surfaceArea: 14625, carbonStorage: 43.875 },
-          { type: "IMPERMEABLE_SOILS", surfaceArea: 6625, carbonStorage: 19.875 },
-          { type: "MINERAL_SOIL", surfaceArea: 4125, carbonStorage: 12.375 },
-          { type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 24625, carbonStorage: 187.15 },
-        ],
+      nonContaminatedSurfaceArea: { current: 40000, forecast: 47500, difference: 7500 },
+      soilsCarbonStorage: {
+        isSuccess: true,
+        current: {
+          total: 173,
+          soils: [
+            { type: "BUILDINGS", surfaceArea: 5000, carbonStorage: 15 },
+            { type: "IMPERMEABLE_SOILS", surfaceArea: 15000, carbonStorage: 45 },
+            { type: "MINERAL_SOIL", surfaceArea: 25000, carbonStorage: 75 },
+            { type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 5000, carbonStorage: 38 },
+          ],
+        },
+        forecast: {
+          total: 263.27,
+          soils: [
+            { type: "BUILDINGS", surfaceArea: 14625, carbonStorage: 43.875 },
+            { type: "IMPERMEABLE_SOILS", surfaceArea: 6625, carbonStorage: 19.875 },
+            { type: "MINERAL_SOIL", surfaceArea: 4125, carbonStorage: 12.375 },
+            {
+              type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
+              surfaceArea: 24625,
+              carbonStorage: 187.15,
+            },
+          ],
+        },
       },
+      avoidedAirConditioningCo2EqEmissions: 0.3941062183532509,
+
+      avoidedCarTrafficCo2EqEmissions: 21.21086547497763,
     },
-    avoidedAirConditioningCo2EqEmissions: 0.3941062183532509,
-    avoidedVehiculeKilometers: 134929.16968815288,
-    travelTimeSaved: 5434.64711243949,
-    avoidedCarTrafficCo2EqEmissions: 21.21086547497763,
+    social: {
+      fullTimeJobs: {
+        current: 0.1,
+        forecast: 42.2,
+        operations: { current: 0.1, forecast: 35.2 },
+        conversion: { current: 0, forecast: 7 },
+      },
+      avoidedVehiculeKilometers: 134929.16968815288,
+      travelTimeSaved: 5434.64711243949,
+    },
   },
 } as ReconversionProjectImpactsResult;
 
@@ -349,17 +358,19 @@ export const getImpactsDataFromEvaluationPeriod = (
         }
       }),
     },
-    avoidedAirConditioningCo2EqEmissions: impactsDataFor1Year.avoidedAirConditioningCo2EqEmissions
-      ? impactsDataFor1Year.avoidedAirConditioningCo2EqEmissions * evaluationPeriod
+    avoidedAirConditioningCo2EqEmissions: impactsDataFor1Year.environmental
+      .avoidedAirConditioningCo2EqEmissions
+      ? impactsDataFor1Year.environmental.avoidedAirConditioningCo2EqEmissions * evaluationPeriod
       : undefined,
-    avoidedVehiculeKilometers: impactsDataFor1Year.avoidedVehiculeKilometers
-      ? impactsDataFor1Year.avoidedVehiculeKilometers * evaluationPeriod
+    avoidedVehiculeKilometers: impactsDataFor1Year.social.avoidedVehiculeKilometers
+      ? impactsDataFor1Year.social.avoidedVehiculeKilometers * evaluationPeriod
       : undefined,
-    travelTimeSaved: impactsDataFor1Year.travelTimeSaved
-      ? impactsDataFor1Year.travelTimeSaved * evaluationPeriod
+    travelTimeSaved: impactsDataFor1Year.social.travelTimeSaved
+      ? impactsDataFor1Year.social.travelTimeSaved * evaluationPeriod
       : undefined,
-    avoidedCarTrafficCo2EqEmissions: impactsDataFor1Year.avoidedCarTrafficCo2EqEmissions
-      ? impactsDataFor1Year.avoidedCarTrafficCo2EqEmissions * evaluationPeriod
+    avoidedCarTrafficCo2EqEmissions: impactsDataFor1Year.environmental
+      .avoidedCarTrafficCo2EqEmissions
+      ? impactsDataFor1Year.environmental.avoidedCarTrafficCo2EqEmissions * evaluationPeriod
       : undefined,
   } as ReconversionProjectImpactsResult["impacts"];
 };

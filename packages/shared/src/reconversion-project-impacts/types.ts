@@ -152,16 +152,12 @@ export type SocialImpacts = {
   householdsPoweredByRenewableEnergy?: HouseholdsPoweredByRenewableEnergyImpact;
 };
 
-type SocioEconomicImpacts = {
+export type ReconversionProjectImpacts = {
+  economicBalance: EconomicBalanceImpactResult;
   socioeconomic: {
     impacts: SocioEconomicImpact[];
     total: number;
   };
+  social: SocialImpacts;
+  environmental: EnvironmentalSoilsRelatedImpacts & EnvironmentalCo2RelatedImpacts;
 };
-
-export type ReconversionProjectImpacts = {
-  economicBalance: EconomicBalanceImpactResult;
-} & SocioEconomicImpacts &
-  SocialImpacts &
-  EnvironmentalSoilsRelatedImpacts &
-  EnvironmentalCo2RelatedImpacts;

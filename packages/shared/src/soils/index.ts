@@ -100,3 +100,4 @@ export const isSoilAgricultural = (soilType: SoilType): boolean => {
 };
 
 export * from "./soilDistribution";
+export * from "./soilsDistributionObjToArray";

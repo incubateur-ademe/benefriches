@@ -182,7 +182,7 @@ describe("TravelRelatedImpactsService", () => {
         travelTimeSaved: 79000.75,
         avoidedCarTrafficCo2EqEmissions: 308.33,
       };
-      expect(travelRelatedImpactsService.formatImpact()).toMatchObject(expected);
+      expect(travelRelatedImpactsService.formatImpacts()).toMatchObject(expected);
     });
   });
 });
