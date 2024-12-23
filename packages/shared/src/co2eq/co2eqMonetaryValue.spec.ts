@@ -16,7 +16,7 @@ describe("CO2eqMonetaryValue services", () => {
 describe("computeSoilsCarbonStorage", () => {
   it("compute CO2 eq monetary value for a year", () => {
     expect(getCO2MonetaryValueForYear(2025)).toEqual(150);
-    expect(getCO2MonetaryValueForYear(2027)).toEqual(184);
+    expect(getCO2MonetaryValueForYear(2027)).toEqual(184.01);
     expect(getCO2MonetaryValueForYear(2030)).toEqual(250);
   });
 });
