@@ -79,13 +79,24 @@ describe("projectImpactsSocioEconomic selectors", () => {
       expect(economicIndirect.impacts).toContainEqual(
         expect.objectContaining({
           name: "taxes_income",
-          actors: [{ name: "community", value: 5000 }],
+          actors: [
+            {
+              name: "community",
+              value: 5000,
+              details: [
+                {
+                  name: "project_photovoltaic_taxes_income",
+                  value: 5000,
+                },
+              ],
+            },
+          ],
         }),
       );
 
       expect(environmentalMonetary.impacts).toContainEqual(
         expect.objectContaining({
-          name: "co2_benefit_monetary",
+          name: "avoided_co2_eq_emissions",
           actors: [
             {
               name: "human_society",
@@ -173,7 +184,7 @@ describe("projectImpactsSocioEconomic selectors", () => {
           total: 198264,
           impacts: [
             { name: "ecosystem_services", value: 29820 },
-            { name: "avoided_co2_eq_with_enr", value: 168444 },
+            { name: "avoided_co2_eq_emissions", value: 168444 },
           ],
         }),
       );
@@ -183,9 +194,9 @@ describe("projectImpactsSocioEconomic selectors", () => {
           name: "community",
           total: 15152,
           impacts: [
-            { name: "taxes_income", value: 5000 },
             { name: "property_transfer_duties_income", value: 5432 },
             { name: "water_regulation", value: 4720 },
+            { name: "taxes_income", value: 5000 },
           ],
         }),
       );

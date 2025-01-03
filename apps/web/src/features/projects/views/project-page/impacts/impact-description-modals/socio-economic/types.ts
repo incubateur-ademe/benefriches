@@ -1,6 +1,7 @@
 export type SocioEconomicImpactDescriptionModalId =
   | "socio-economic"
   | "socio-economic.rental-income"
+  | "socio-economic.taxes-income"
   | "socio-economic.avoided-friche-costs"
   | "socio-economic.avoided-illegal-dumping-costs"
   | "socio-economic.avoided-security-costs"

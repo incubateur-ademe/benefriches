@@ -354,8 +354,8 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
     });
   });
 
-  describe("Taxes income", () => {
-    it("returns no impact when no current taxes costs", () => {
+  describe("Property transfer duties income", () => {
+    it("returns no impact when no property transfer duties", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
         reconversionProject: {
           ...reconversionProjectImpactDataView,
@@ -365,138 +365,35 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: {
           ...site,
           yearlyCosts: [],
-          ownerName: "Current owner",
           isFriche: false,
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
-      expect(projectImpactsService["taxesImpacts"]).toEqual([]);
+      expect(projectImpactsService["propertyTransferDutiesIncome"]).toEqual([]);
     });
 
-    it("returns taxes income impact as difference between projected and current taxes amounts", () => {
+    it("returns property transfer duties income impact for community", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
         reconversionProject: {
           ...reconversionProjectImpactDataView,
-          yearlyProjectedCosts: [{ amount: 20000, purpose: "taxes" }],
-          sitePurchasePropertyTransferDutiesAmount: undefined,
-        },
-        relatedSite: {
-          ...site,
-          yearlyCosts: [{ amount: 12000, purpose: "taxes", bearer: "Current owner" }],
-          ownerName: "Current owner",
-          isFriche: false,
-        },
-        evaluationPeriodInYears: 10,
-        dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-      });
-      expect(projectImpactsService["taxesImpacts"]).toEqual([
-        {
-          actor: "community",
-          amount: 80000,
-          impact: "taxes_income",
-          impactCategory: "economic_indirect",
-        },
-      ]);
-    });
-
-    it("returns taxes income impact when only current taxes amount provided", () => {
-      const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: {
-          ...reconversionProjectImpactDataView,
-          yearlyProjectedCosts: [],
-          sitePurchasePropertyTransferDutiesAmount: undefined,
-        },
-        relatedSite: {
-          ...site,
-          yearlyCosts: [{ amount: 12000, purpose: "taxes", bearer: "Current owner" }],
-          ownerName: "Current owner",
-          isFriche: false,
-        },
-        evaluationPeriodInYears: 10,
-        dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-      });
-      expect(projectImpactsService["taxesImpacts"]).toEqual([
-        {
-          actor: "community",
-          amount: -120000,
-          impact: "taxes_income",
-          impactCategory: "economic_indirect",
-        },
-      ]);
-    });
-
-    it("returns taxes income impact when only projected taxes amount provided", () => {
-      const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: {
-          ...reconversionProjectImpactDataView,
-          yearlyProjectedCosts: [{ amount: 1234, purpose: "taxes" }],
-          sitePurchasePropertyTransferDutiesAmount: undefined,
+          sitePurchasePropertyTransferDutiesAmount: 5000,
         },
         relatedSite: {
           ...site,
           yearlyCosts: [],
-          ownerName: "Current owner",
           isFriche: false,
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
-      expect(projectImpactsService["taxesImpacts"]).toEqual([
-        {
-          actor: "community",
-          amount: 12340,
-          impact: "taxes_income",
-          impactCategory: "economic_indirect",
-        },
-      ]);
-    });
-
-    describe("Property transfer duties income", () => {
-      it("returns no impact when no property transfer duties", () => {
-        const projectImpactsService = new ReconversionProjectImpactsService({
-          reconversionProject: {
-            ...reconversionProjectImpactDataView,
-            yearlyProjectedCosts: [],
-            sitePurchasePropertyTransferDutiesAmount: undefined,
-          },
-          relatedSite: {
-            ...site,
-            yearlyCosts: [],
-            isFriche: false,
-          },
-          evaluationPeriodInYears: 10,
-          dateProvider: dateProvider,
-          getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-        });
-        expect(projectImpactsService["taxesImpacts"]).toEqual([]);
-      });
-
-      it("returns property transfer duties income impact for community", () => {
-        const projectImpactsService = new ReconversionProjectImpactsService({
-          reconversionProject: {
-            ...reconversionProjectImpactDataView,
-            sitePurchasePropertyTransferDutiesAmount: 5000,
-          },
-          relatedSite: {
-            ...site,
-            yearlyCosts: [],
-            isFriche: false,
-          },
-          evaluationPeriodInYears: 10,
-          dateProvider: dateProvider,
-          getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-        });
-        expect(projectImpactsService["taxesImpacts"]).toContainEqual({
-          actor: "community",
-          amount: 5000,
-          impact: "property_transfer_duties_income",
-          impactCategory: "economic_direct",
-        });
+      expect(projectImpactsService["propertyTransferDutiesIncome"]).toContainEqual({
+        actor: "community",
+        amount: 5000,
+        impact: "property_transfer_duties_income",
+        impactCategory: "economic_direct",
       });
     });
   });
@@ -545,7 +442,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
     expect(result.socioeconomic.impacts).toEqual([
       ...projectImpactsService["rentImpacts"],
       ...projectImpactsService["avoidedFricheCosts"],
-      ...projectImpactsService["taxesImpacts"],
+      ...projectImpactsService["propertyTransferDutiesIncome"],
       ...soilsRelatedSocioEconomicImpacts.socioEconomicList,
     ]);
     expect(result.social).toEqual({

@@ -196,10 +196,9 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         operationsFirstYear: 2025,
       });
 
-      const expected = {
-        socioeconomic: [],
-      };
-      expect(urbanFreshnessRelatedImpactsService.formatImpacts()).toEqual(expected);
+      expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([]);
+      expect(urbanFreshnessRelatedImpactsService.getEnvironmentalImpacts()).toEqual({});
+      expect(urbanFreshnessRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([]);
     });
 
     it("returns no urban freshness impacts if there is not enough public green spaces in project for public green space < 5000 m²", () => {
@@ -218,10 +217,9 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         operationsFirstYear: 2025,
       });
 
-      const expected = {
-        socioeconomic: [],
-      };
-      expect(urbanFreshnessRelatedImpactsService.formatImpacts()).toEqual(expected);
+      expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([]);
+      expect(urbanFreshnessRelatedImpactsService.getEnvironmentalImpacts()).toEqual({});
+      expect(urbanFreshnessRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([]);
     });
 
     it("returns urban freshness impacts formated", () => {
@@ -241,31 +239,29 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         operationsFirstYear: 2025,
       });
 
-      const expected = {
-        socioeconomic: [
-          {
-            actor: "human_society",
-            amount: 1005.49,
-            impact: "avoided_air_conditioning_co2_eq_emissions",
-            impactCategory: "environmental_monetary",
-          },
-          {
-            actor: "local_residents",
-            amount: 2481.42,
-            impact: "avoided_air_conditioning_expenses",
-            impactCategory: "economic_indirect",
-          },
-          {
-            actor: "local_companies",
-            amount: 9100,
-            impact: "avoided_air_conditioning_expenses",
-            impactCategory: "economic_indirect",
-          },
-        ],
+      expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([
+        {
+          actor: "local_residents",
+          amount: 2481.42,
+          impact: "avoided_air_conditioning_expenses",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "local_companies",
+          amount: 9100,
+          impact: "avoided_air_conditioning_expenses",
+          impactCategory: "economic_indirect",
+        },
+      ]);
+      expect(urbanFreshnessRelatedImpactsService.getEnvironmentalImpacts()).toEqual({
         avoidedAirConditioningCo2EqEmissions: 4.06,
-      };
-
-      expect(urbanFreshnessRelatedImpactsService.formatImpacts()).toMatchObject(expected);
+      });
+      expect(urbanFreshnessRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([
+        {
+          amount: 1005.49,
+          impact: "avoided_air_conditioning_co2_eq_emissions",
+        },
+      ]);
     });
   });
 });

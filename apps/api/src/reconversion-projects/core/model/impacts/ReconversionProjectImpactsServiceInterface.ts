@@ -1,4 +1,5 @@
 import {
+  AvoidedCO2EqEmissions,
   EnvironmentalCo2RelatedImpacts,
   EnvironmentalSoilsRelatedImpacts,
   ReconversionProjectImpacts,
@@ -7,11 +8,12 @@ import {
 } from "shared";
 
 export interface PartialImpactsServiceInterface {
-  formatImpacts(): Partial<
-    { socioEconomicList: SocioEconomicImpact[] } & SocialImpacts &
-      EnvironmentalSoilsRelatedImpacts &
-      EnvironmentalCo2RelatedImpacts
+  getSocioEconomicList?: () => SocioEconomicImpact[];
+  getAvoidedCo2EqEmissionsDetails?: () => AvoidedCO2EqEmissions["details"];
+  getEnvironmentalImpacts?: () => Partial<
+    EnvironmentalSoilsRelatedImpacts & EnvironmentalCo2RelatedImpacts
   >;
+  getSocialImpacts?: () => Partial<SocialImpacts>;
 }
 
 export interface ImpactsServiceInterface {

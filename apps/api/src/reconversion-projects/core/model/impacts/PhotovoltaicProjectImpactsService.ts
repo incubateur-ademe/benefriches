@@ -1,7 +1,8 @@
 import {
-  AvoidedCO2EqWithEnRMonetaryImpact,
   getAnnualizedCO2MonetaryValueForDuration,
+  SocioEconomicImpact,
   sumListWithKey,
+  TaxesIncomeImpact,
 } from "shared";
 
 import { PhotovoltaicPowerStationFeatures } from "../reconversionProject";
@@ -12,6 +13,8 @@ import {
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { computeAvoidedCO2TonsWithEnergyProductionImpact } from "./renewable-energy/avoided-CO2-with-energy-production/avoidedCO2WithEnergyProductionImpact";
 import { computeHouseholdsPoweredByRenewableEnergyImpact } from "./renewable-energy/households-powered-by-renewable-energy/householdsPoweredByRenewableEnergyImpact";
+
+const TAXES_PURPOSE_KEY = "taxes";
 
 export type PhotovoltaicProjectImpactsServiceProps = ReconversionProjectImpactsServiceProps;
 
@@ -27,7 +30,8 @@ export class PhotovoltaicProjectImpactsService
     this.developmentPlanFeatures = this.reconversionProject
       .developmentPlanFeatures as PhotovoltaicPowerStationFeatures;
   }
-  get avoidedCO2TonsWithEnergyProduction() {
+
+  protected get avoidedCO2TonsWithEnergyProduction() {
     if (!this.developmentPlanFeatures.expectedAnnualProduction) {
       return undefined;
     }
@@ -36,7 +40,7 @@ export class PhotovoltaicProjectImpactsService
     });
   }
 
-  get householdsPoweredByRenewableEnergy() {
+  protected get householdsPoweredByRenewableEnergy() {
     if (!this.developmentPlanFeatures.expectedAnnualProduction) {
       return undefined;
     }
@@ -46,7 +50,31 @@ export class PhotovoltaicProjectImpactsService
     });
   }
 
-  get socioEconomicList() {
+  protected get taxesIncomeImpact() {
+    const impacts: TaxesIncomeImpact[] = [];
+
+    const projectedTaxesAmount =
+      this.reconversionProject.yearlyProjectedCosts.find(
+        ({ purpose }) => purpose === TAXES_PURPOSE_KEY,
+      )?.amount ?? 0;
+
+    if (projectedTaxesAmount) {
+      const photovoltaicTaxesIncome: TaxesIncomeImpact["details"][number] = {
+        amount: projectedTaxesAmount * this.evaluationPeriodInYears,
+        impact: "project_photovoltaic_taxes_income",
+      };
+      impacts.push({
+        amount: photovoltaicTaxesIncome.amount,
+        impact: "taxes_income",
+        impactCategory: "economic_indirect",
+        actor: "community",
+        details: [photovoltaicTaxesIncome],
+      });
+    }
+    return impacts;
+  }
+
+  protected get avoidedCo2EqEmissions(): SocioEconomicImpact[] {
     if (!this.avoidedCO2TonsWithEnergyProduction) {
       return [];
     }
@@ -57,18 +85,30 @@ export class PhotovoltaicProjectImpactsService
       this.evaluationPeriodInYears,
     );
 
-    const avoidedCo2EqWithEnrImpact: AvoidedCO2EqWithEnRMonetaryImpact = {
-      amount: avoidedCo2EqWithEnr,
-      impact: "avoided_co2_eq_with_enr",
-      impactCategory: "environmental_monetary",
-      actor: "human_society",
-    };
-    return [avoidedCo2EqWithEnrImpact];
+    return [
+      {
+        amount: avoidedCo2EqWithEnr,
+        impact: "avoided_co2_eq_emissions",
+        impactCategory: "environmental_monetary",
+        actor: "human_society",
+        details: [
+          {
+            amount: avoidedCo2EqWithEnr,
+            impact: "avoided_co2_eq_with_enr",
+          },
+        ],
+      },
+    ];
   }
 
   override async formatImpacts() {
     const { economicBalance, environmental, social, socioeconomic } = await super.formatImpacts();
-    const photovoltaicProjectSocioEconomic = [...socioeconomic.impacts, ...this.socioEconomicList];
+    const photovoltaicProjectSocioEconomic = [
+      ...socioeconomic.impacts,
+      ...this.taxesIncomeImpact,
+      ...this.avoidedCo2EqEmissions,
+    ];
+
     return {
       economicBalance: economicBalance,
       social: {

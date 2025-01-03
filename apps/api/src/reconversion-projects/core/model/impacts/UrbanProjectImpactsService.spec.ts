@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/dot-notation */
+import { AvoidedCO2EqEmissions } from "shared";
 import { v4 as uuid } from "uuid";
 
 import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
@@ -92,7 +93,6 @@ const site: Required<SiteImpactsDataView> = {
 const commonSocioEconomicImpacts = [
   "rental_income",
   "avoided_friche_costs",
-  "taxes_income",
   "property_transfer_duties_income",
   "ecosystem_services",
   "water_regulation",
@@ -104,12 +104,12 @@ const urbanProjectSocioEconomicImpacts = [
   "roads_and_utilities_maintenance_expenses",
   "travel_time_saved",
   "avoided_traffic_accidents",
-  "avoided_traffic_co2_eq_emissions",
-  "avoided_air_conditioning_co2_eq_emissions",
+  "avoided_co2_eq_emissions",
   "avoided_air_pollution",
   "avoided_property_damages_expenses",
   "local_property_value_increase",
   "local_transfer_duties_increase",
+  "taxes_income",
   "ecosystem_services",
   "water_regulation",
 ] as const;
@@ -179,6 +179,75 @@ describe("UrbanProjectImpactsService", () => {
       ),
     ).toBe(false);
   });
+  describe("TaxesIncomeImpact", () => {
+    it("returns taxes income impact when new houses planned in project", () => {
+      const projectImpactsService = new UrbanProjectImpactsService({
+        reconversionProject: reconversionProjectImpactDataView,
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
+        getCityRelatedDataService: new GetCityRelatedDataService(
+          new MockLocalDataInseeService(),
+          new MockDV3FApiService(),
+        ),
+        cityPopulation: 150000,
+        citySquareMetersSurfaceArea: 1500000000,
+      });
+      expect(projectImpactsService["taxesIncomeImpact"]).toEqual([
+        {
+          actor: "community",
+          amount: 1210000,
+          impact: "taxes_income",
+          impactCategory: "economic_indirect",
+          details: [
+            {
+              impact: "project_new_houses_taxes_income",
+              amount: 1210000,
+            },
+          ],
+        },
+      ]);
+    });
+
+    it("returns taxes income impact when economic activity places planned in project", () => {
+      const projectImpactsService = new UrbanProjectImpactsService({
+        reconversionProject: {
+          ...reconversionProjectImpactDataView,
+          developmentPlanFeatures: {
+            buildingsFloorAreaDistribution: { GROUND_FLOOR_RETAIL: 500, TERTIARY_ACTIVITIES: 500 },
+            spacesDistribution: {
+              BUILDINGS_FOOTPRINT: 1000,
+            },
+          },
+        },
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
+        getCityRelatedDataService: new GetCityRelatedDataService(
+          new MockLocalDataInseeService(),
+          new MockDV3FApiService(),
+        ),
+        cityPopulation: 150000,
+        citySquareMetersSurfaceArea: 1500000000,
+      });
+      expect(projectImpactsService["taxesIncomeImpact"]).toEqual([
+        {
+          actor: "community",
+          amount: 672667,
+          impact: "taxes_income",
+          impactCategory: "economic_indirect",
+          details: [
+            {
+              impact: "project_new_company_taxation_income",
+              amount: 672667,
+            },
+          ],
+        },
+      ]);
+    });
+  });
 
   describe("urban project impacts", () => {
     let urbanProjectImpactsService: UrbanProjectImpactsService;
@@ -231,6 +300,23 @@ describe("UrbanProjectImpactsService", () => {
       },
     );
 
+    it("has urban project avoided_co2_eq_emissions socio economic impact with traffic and air conditioning", async () => {
+      const result = await urbanProjectImpactsService.formatImpacts();
+
+      const avoidedCo2Emissions = result.socioeconomic.impacts.find(
+        ({ impact }) => impact === "avoided_co2_eq_emissions",
+      ) as AvoidedCO2EqEmissions | undefined;
+
+      expect(avoidedCo2Emissions?.details).toContainEqual({
+        amount: expect.any(Number) as number,
+        impact: "avoided_traffic_co2_eq_emissions",
+      });
+      expect(avoidedCo2Emissions?.details).toContainEqual({
+        amount: expect.any(Number) as number,
+        impact: "avoided_air_conditioning_co2_eq_emissions",
+      });
+    });
+
     it("returns urban project social impacts", async () => {
       const result = await urbanProjectImpactsService.formatImpacts();
 
@@ -238,10 +324,11 @@ describe("UrbanProjectImpactsService", () => {
         accidents: urbanProjectImpactsService["accidentsImpact"],
         fullTimeJobs: urbanProjectImpactsService["fullTimeJobsImpact"],
         avoidedVehiculeKilometers:
-          urbanProjectImpactsService["travelRelatedImpacts"]["avoidedVehiculeKilometers"],
-        travelTimeSaved: urbanProjectImpactsService["travelRelatedImpacts"]["travelTimeSaved"],
+          urbanProjectImpactsService["travelRelatedImpacts"]["social"]["avoidedVehiculeKilometers"],
+        travelTimeSaved:
+          urbanProjectImpactsService["travelRelatedImpacts"]["social"]["travelTimeSaved"],
         avoidedTrafficAccidents:
-          urbanProjectImpactsService["travelRelatedImpacts"]["avoidedTrafficAccidents"],
+          urbanProjectImpactsService["travelRelatedImpacts"]["social"]["avoidedTrafficAccidents"],
       });
     });
 
@@ -252,10 +339,14 @@ describe("UrbanProjectImpactsService", () => {
       expect(result.environmental.permeableSurfaceArea).toBeDefined();
       expect(result.environmental.soilsCarbonStorage).toBeDefined();
       expect(result.environmental.avoidedCarTrafficCo2EqEmissions).toEqual(
-        urbanProjectImpactsService["travelRelatedImpacts"]["avoidedCarTrafficCo2EqEmissions"],
+        urbanProjectImpactsService["travelRelatedImpacts"]["environmental"][
+          "avoidedCarTrafficCo2EqEmissions"
+        ],
       );
       expect(result.environmental.avoidedAirConditioningCo2EqEmissions).toEqual(
-        urbanProjectImpactsService["urbanFreshnessImpacts"]["avoidedAirConditioningCo2EqEmissions"],
+        urbanProjectImpactsService["urbanFreshnessImpacts"]["environmental"][
+          "avoidedAirConditioningCo2EqEmissions"
+        ],
       );
     });
   });

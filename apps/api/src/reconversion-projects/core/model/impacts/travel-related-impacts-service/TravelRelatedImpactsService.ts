@@ -1,4 +1,5 @@
 import {
+  AvoidedCO2EqEmissions,
   BuildingFloorAreaUsageDistribution,
   ECONOMIC_ACTIVITY_BUILDINGS_USE,
   filterObjectWithKeys,
@@ -398,14 +399,8 @@ export class TravelRelatedImpactsService
     );
   }
 
-  formatImpacts() {
+  getSocioEconomicList() {
     const socioEconomicImpacts = [
-      {
-        actor: "human_society",
-        amount: roundTo2Digits(this.getAvoidedTrafficCO2EmissionsMonetaryValue()),
-        impact: "avoided_traffic_co2_eq_emissions",
-        impactCategory: "environmental_monetary",
-      },
       {
         actor: "human_society",
         amount: roundTo2Digits(this.getAvoidedAirPollution()),
@@ -464,6 +459,19 @@ export class TravelRelatedImpactsService
       },
     ];
 
+    return socioEconomicImpacts.filter(({ amount }) => amount > 0) as SocioEconomicImpact[];
+  }
+
+  getAvoidedCo2EqEmissionsDetails(): AvoidedCO2EqEmissions["details"] {
+    return [
+      {
+        amount: roundTo2Digits(this.getAvoidedTrafficCO2EmissionsMonetaryValue()),
+        impact: "avoided_traffic_co2_eq_emissions",
+      },
+    ];
+  }
+
+  getSocialImpacts() {
     const avoidedTrafficAccidents = {
       total: roundTo1Digit(this.getAvoidedAccidentsInjuriesOrDeaths()),
       minorInjuries: roundTo1Digit(this.getAvoidedAccidentsMinorInjuries()),
@@ -472,14 +480,22 @@ export class TravelRelatedImpactsService
     };
 
     return {
-      socioeconomic: socioEconomicImpacts.filter(
-        ({ amount }) => amount > 0,
-      ) as SocioEconomicImpact[],
       avoidedVehiculeKilometers: roundTo2Digits(this.getAvoidedKilometersPerVehicule()),
       travelTimeSaved: roundTo2Digits(this.getTravelTimeSavedPerTraveler()),
       avoidedTrafficAccidents:
         avoidedTrafficAccidents.total > 0 ? avoidedTrafficAccidents : undefined,
-      avoidedCarTrafficCo2EqEmissions: roundTo2Digits(this.getAvoidedTrafficCO2EmissionsInTons()),
+    };
+  }
+
+  getEnvironmentalImpacts() {
+    const avoidedCarTrafficCo2EqEmissions = roundTo2Digits(
+      this.getAvoidedTrafficCO2EmissionsInTons(),
+    );
+    if (avoidedCarTrafficCo2EqEmissions === 0) {
+      return {};
+    }
+    return {
+      avoidedCarTrafficCo2EqEmissions,
     };
   }
 }

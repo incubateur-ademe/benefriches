@@ -1,5 +1,6 @@
 import {
   SocioEconomicDetailedImpact,
+  SocioEconomicImpactByCategory,
   SocioEconomicImpactName,
 } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
@@ -19,6 +20,7 @@ const itemDescriptionModalIds: Partial<
 > = {
   avoided_co2_eq_with_enr: "socio-economic.avoided-co2-renewable-energy",
   rental_income: "socio-economic.rental-income",
+  taxes_income: "socio-economic.taxes-income",
   avoided_friche_costs: "socio-economic.avoided-friche-costs",
   avoided_illegal_dumping_costs: "socio-economic.avoided-illegal-dumping-costs",
   avoided_security_costs: "socio-economic.avoided-security-costs",
@@ -53,6 +55,43 @@ const getImpactItemOnClick = (
     : undefined;
 };
 
+const SocioEconomicImpactSection = ({
+  impacts,
+  total,
+  title,
+  openImpactDescriptionModal,
+}: SocioEconomicImpactByCategory & {
+  title: string;
+  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
+}) => {
+  if (impacts.length === 0) {
+    return null;
+  }
+  return (
+    <ImpactSection title={title} total={total}>
+      {impacts.map(({ name, actors }) => (
+        <ImpactActorsItem
+          key={name}
+          label={getSocioEconomicImpactLabel(name)}
+          actors={actors.map(({ name: actorLabel, value: actorValue, details: actorDetails }) => ({
+            label: getActorLabel(actorLabel),
+            value: actorValue,
+            details: actorDetails
+              ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
+                  label: getSocioEconomicImpactLabel(detailsName),
+                  value: detailsValue,
+                  onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                }))
+              : undefined,
+          }))}
+          onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
+          type="monetary"
+        />
+      ))}
+    </ImpactSection>
+  );
+};
+
 const SocioEconomicImpactsListSection = ({
   socioEconomicImpacts,
   openImpactDescriptionModal,
@@ -70,103 +109,26 @@ const SocioEconomicImpactsListSection = ({
         openImpactDescriptionModal("socio-economic");
       }}
     >
-      {economicDirect.impacts.length > 0 && (
-        <ImpactSection title="Impacts économiques directs" total={economicDirect.total}>
-          {economicDirect.impacts.map(({ name, actors }) => (
-            <ImpactActorsItem
-              key={name}
-              label={getSocioEconomicImpactLabel(name)}
-              actors={actors.map(
-                ({ name: actorLabel, value: actorValue, details: actorDetails }) => ({
-                  label: getActorLabel(actorLabel),
-                  value: actorValue,
-                  details: actorDetails
-                    ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
-                        label: getSocioEconomicImpactLabel(detailsName),
-                        value: detailsValue,
-                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
-                      }))
-                    : undefined,
-                }),
-              )}
-              onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              type="monetary"
-            />
-          ))}
-        </ImpactSection>
-      )}
-
-      {economicIndirect.impacts.length > 0 && (
-        <ImpactSection title="Impacts économiques indirects" total={economicIndirect.total}>
-          {economicIndirect.impacts.map(({ name, actors }) => (
-            <ImpactActorsItem
-              key={name}
-              label={getSocioEconomicImpactLabel(name)}
-              actors={actors.map(({ name: actorLabel, value: actorValue }) => ({
-                label: getActorLabel(actorLabel),
-                value: actorValue,
-              }))}
-              onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              type="monetary"
-            />
-          ))}
-        </ImpactSection>
-      )}
-
-      {socialMonetary.impacts.length > 0 && (
-        <ImpactSection title="Impacts sociaux monétarisés" total={socialMonetary.total}>
-          {socialMonetary.impacts.map(({ name, actors }) => (
-            <ImpactActorsItem
-              key={name}
-              label={getSocioEconomicImpactLabel(name)}
-              actors={actors.map(
-                ({ name: actorName, value: actorValue, details: actorDetails }) => ({
-                  label: getActorLabel(actorName),
-                  value: actorValue,
-                  details: actorDetails
-                    ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
-                        label: getSocioEconomicImpactLabel(detailsName),
-                        value: detailsValue,
-                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
-                      }))
-                    : undefined,
-                }),
-              )}
-              onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              type="monetary"
-            />
-          ))}
-        </ImpactSection>
-      )}
-
-      {environmentalMonetary.impacts.length > 0 && (
-        <ImpactSection
-          title="Impacts environnementaux monétarisés"
-          total={environmentalMonetary.total}
-        >
-          {environmentalMonetary.impacts.map(({ name, actors }) => (
-            <ImpactActorsItem
-              key={name}
-              label={getSocioEconomicImpactLabel(name)}
-              actors={actors.map(
-                ({ name: actorName, value: actorValue, details: actorDetails }) => ({
-                  label: getActorLabel(actorName),
-                  value: actorValue,
-                  details: actorDetails
-                    ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
-                        label: getSocioEconomicImpactLabel(detailsName),
-                        value: detailsValue,
-                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
-                      }))
-                    : undefined,
-                }),
-              )}
-              onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
-              type="monetary"
-            />
-          ))}
-        </ImpactSection>
-      )}
+      <SocioEconomicImpactSection
+        title="Impacts économiques directs"
+        {...economicDirect}
+        openImpactDescriptionModal={openImpactDescriptionModal}
+      />
+      <SocioEconomicImpactSection
+        title="Impacts économiques indirects"
+        {...economicIndirect}
+        openImpactDescriptionModal={openImpactDescriptionModal}
+      />
+      <SocioEconomicImpactSection
+        title="Impacts sociaux monétarisés"
+        {...socialMonetary}
+        openImpactDescriptionModal={openImpactDescriptionModal}
+      />
+      <SocioEconomicImpactSection
+        title="Impacts environnementaux monétarisés"
+        {...environmentalMonetary}
+        openImpactDescriptionModal={openImpactDescriptionModal}
+      />
     </ImpactSection>
   );
 };

@@ -1,4 +1,10 @@
-import { sumListWithKey } from "shared";
+import {
+  AvoidedCO2EqEmissions,
+  roundToInteger,
+  SocioEconomicImpact,
+  sumListWithKey,
+  TaxesIncomeImpact,
+} from "shared";
 
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 
@@ -50,7 +56,11 @@ export class UrbanProjectImpactsService
       citySquareMetersSurfaceArea: this.citySquareMetersSurfaceArea,
       cityPopulation: this.cityPopulation,
     });
-    return urbanFreshnessImpactsService.formatImpacts();
+    return {
+      socioEconomicList: urbanFreshnessImpactsService.getSocioEconomicList(),
+      avoidedCo2EqEmissions: urbanFreshnessImpactsService.getAvoidedCo2EqEmissionsDetails(),
+      environmental: urbanFreshnessImpactsService.getEnvironmentalImpacts(),
+    };
   }
 
   protected get travelRelatedImpacts() {
@@ -62,7 +72,12 @@ export class UrbanProjectImpactsService
       citySquareMetersSurfaceArea: this.citySquareMetersSurfaceArea,
       cityPopulation: this.cityPopulation,
     });
-    return travelRelatedImpactsService.formatImpacts();
+    return {
+      socioEconomicList: travelRelatedImpactsService.getSocioEconomicList(),
+      avoidedCo2EqEmissions: travelRelatedImpactsService.getAvoidedCo2EqEmissionsDetails(),
+      social: travelRelatedImpactsService.getSocialImpacts(),
+      environmental: travelRelatedImpactsService.getEnvironmentalImpacts(),
+    };
   }
 
   protected get roadsAndUtilitiesExpensesImpacts() {
@@ -73,13 +88,79 @@ export class UrbanProjectImpactsService
     );
   }
 
+  protected get taxesIncomeImpact(): TaxesIncomeImpact[] {
+    const impacts: TaxesIncomeImpact[] = [];
+    const details: TaxesIncomeImpact["details"] = [];
+
+    const newHousesSurfaceArea =
+      this.developmentPlanFeatures.buildingsFloorAreaDistribution.RESIDENTIAL ?? 0;
+
+    if (newHousesSurfaceArea > 0) {
+      details.push({
+        amount: roundToInteger(newHousesSurfaceArea * 11 * this.evaluationPeriodInYears),
+        impact: "project_new_houses_taxes_income",
+      });
+    }
+
+    const newCompanySurfaceArea =
+      this.developmentPlanFeatures.buildingsFloorAreaDistribution.TERTIARY_ACTIVITIES ?? 0;
+
+    if (newCompanySurfaceArea > 0) {
+      details.push({
+        amount: roundToInteger(
+          ((2018 * newCompanySurfaceArea) / 15) * this.evaluationPeriodInYears,
+        ),
+        impact: "project_new_company_taxation_income",
+      });
+    }
+
+    if (details.length !== 0) {
+      impacts.push({
+        impact: "taxes_income",
+        actor: "community",
+        impactCategory: "economic_indirect",
+        amount: sumListWithKey(details, "amount"),
+        details,
+      });
+    }
+
+    return impacts;
+  }
+
+  protected get avoidedCo2EqEmissions(): SocioEconomicImpact[] {
+    const avoidedUrbanFreshnessCo2EqEmissions = this.urbanFreshnessImpacts.avoidedCo2EqEmissions;
+    const avoidedTrafficCo2EqEmissions = this.travelRelatedImpacts.avoidedCo2EqEmissions;
+
+    const details: AvoidedCO2EqEmissions["details"] = [
+      ...avoidedUrbanFreshnessCo2EqEmissions,
+      ...avoidedTrafficCo2EqEmissions,
+    ].filter(({ amount }) => amount > 0);
+
+    const total = sumListWithKey(details, "amount");
+
+    if (total > 0) {
+      return [
+        {
+          amount: total,
+          impact: "avoided_co2_eq_emissions",
+          impactCategory: "environmental_monetary",
+          actor: "human_society",
+          details: details,
+        },
+      ];
+    }
+    return [];
+  }
+
   override async formatImpacts() {
     const localPropertyIncreaseImpacts = await this.getLocalPropertyIncreaseImpacts();
     const { economicBalance, environmental, social, socioeconomic } = await super.formatImpacts();
     const urbanProjectSocioEconomic = [
       ...socioeconomic.impacts,
-      ...this.urbanFreshnessImpacts.socioeconomic,
-      ...this.travelRelatedImpacts.socioeconomic,
+      ...this.taxesIncomeImpact,
+      ...this.avoidedCo2EqEmissions,
+      ...this.urbanFreshnessImpacts.socioEconomicList,
+      ...this.travelRelatedImpacts.socioEconomicList,
       ...localPropertyIncreaseImpacts,
       ...this.roadsAndUtilitiesExpensesImpacts.socioeconomic,
     ];
@@ -87,15 +168,12 @@ export class UrbanProjectImpactsService
       economicBalance: economicBalance,
       social: {
         ...social,
-        avoidedVehiculeKilometers: this.travelRelatedImpacts.avoidedVehiculeKilometers,
-        travelTimeSaved: this.travelRelatedImpacts.travelTimeSaved,
-        avoidedTrafficAccidents: this.travelRelatedImpacts.avoidedTrafficAccidents,
+        ...this.travelRelatedImpacts.social,
       },
       environmental: {
         ...environmental,
-        avoidedCarTrafficCo2EqEmissions: this.travelRelatedImpacts.avoidedCarTrafficCo2EqEmissions,
-        avoidedAirConditioningCo2EqEmissions:
-          this.urbanFreshnessImpacts.avoidedAirConditioningCo2EqEmissions,
+        ...this.travelRelatedImpacts.environmental,
+        ...this.urbanFreshnessImpacts.environmental,
       },
       socioeconomic: {
         impacts: urbanProjectSocioEconomic,

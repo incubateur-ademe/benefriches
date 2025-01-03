@@ -1,7 +1,11 @@
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { ReactElement, useEffect, useLayoutEffect, useMemo } from "react";
-import { ReconversionProjectImpacts, SoilsDistribution } from "shared";
+import {
+  BuildingFloorAreaUsageDistribution,
+  ReconversionProjectImpacts,
+  SoilsDistribution,
+} from "shared";
 
 import EconomicBalanceSectionModalContentWizard from "./economic-balance/ModalContentWizard";
 import { getEconomicBalanceSectionModalTitle } from "./economic-balance/getTitle";
@@ -36,10 +40,7 @@ export type ProjectData = {
       }
     | {
         type: "URBAN_PROJECT";
-        buildingsFloorAreaDistribution: {
-          GROUND_FLOOR_RETAIL?: number;
-          RESIDENTIAL?: number;
-        };
+        buildingsFloorAreaDistribution: BuildingFloorAreaUsageDistribution;
       };
 };
 

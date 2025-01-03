@@ -38,7 +38,6 @@ type FricheCostPurpose =
   | "maintenance";
 
 const RENT_PURPOSE_KEY = "rent";
-const TAXES_PURPOSE_KEY = "taxes";
 
 type SoilsCarbonStorageResult = {
   totalCarbonStorage: number;
@@ -122,7 +121,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       evaluationPeriodInYears: this.evaluationPeriodInYears,
     });
 
-    return fullTimeJobsImpactService.formatImpacts().fullTimeJobs;
+    return fullTimeJobsImpactService.getSocialImpacts().fullTimeJobs;
   }
 
   protected get accidentsImpact() {
@@ -130,6 +129,10 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       (this.relatedSite.accidentsDeaths ?? 0) +
       (this.relatedSite.accidentsSevereInjuries ?? 0) +
       (this.relatedSite.accidentsMinorInjuries ?? 0);
+
+    if (currentAccidents === 0) {
+      return undefined;
+    }
 
     return {
       current: currentAccidents,
@@ -226,24 +229,8 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     return impacts;
   }
 
-  protected get taxesImpacts() {
+  protected get propertyTransferDutiesIncome() {
     const impacts: SocioEconomicImpact[] = [];
-
-    const currentTaxesAmount =
-      this.relatedSite.yearlyCosts.find(({ purpose }) => purpose === TAXES_PURPOSE_KEY)?.amount ??
-      0;
-    const projectedTaxesAmount =
-      this.reconversionProject.yearlyProjectedCosts.find(
-        ({ purpose }) => purpose === TAXES_PURPOSE_KEY,
-      )?.amount ?? 0;
-    if (currentTaxesAmount || projectedTaxesAmount) {
-      impacts.push({
-        amount: (projectedTaxesAmount - currentTaxesAmount) * this.evaluationPeriodInYears,
-        impact: "taxes_income",
-        impactCategory: "economic_indirect",
-        actor: "community",
-      });
-    }
 
     if (this.reconversionProject.sitePurchasePropertyTransferDutiesAmount) {
       impacts.push({
@@ -264,7 +251,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     const impacts = [
       ...this.rentImpacts,
       ...this.avoidedFricheCosts,
-      ...this.taxesImpacts,
+      ...this.propertyTransferDutiesIncome,
       ...soilsRelatedSocioEconomicImpacts,
     ];
     return {
@@ -305,6 +292,9 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       evaluationPeriodInYears: this.evaluationPeriodInYears,
       operationsFirstYear: this.operationsFirstYear,
     });
-    return environmentalSoilsRelatedImpactService.formatImpacts();
+    return {
+      socioEconomicList: environmentalSoilsRelatedImpactService.getSocioEconomicList(),
+      environmental: environmentalSoilsRelatedImpactService.getEnvironmentalImpacts(),
+    };
   }
 }

@@ -1,4 +1,5 @@
 import {
+  AvoidedCO2EqEmissions,
   BuildingFloorAreaUsageDistribution,
   ECONOMIC_ACTIVITY_BUILDINGS_USE,
   filterObjectWithKeys,
@@ -189,18 +190,12 @@ export class UrbanFreshnessRelatedImpactsService
     );
   }
 
-  formatImpacts() {
+  getSocioEconomicList(): SocioEconomicImpact[] {
     if (!this.hasUrbanFreshnessImpact) {
-      return { socioeconomic: [] as SocioEconomicImpact[] };
+      return [];
     }
 
     const socioeconomic: SocioEconomicImpact[] = [
-      {
-        actor: "human_society",
-        amount: roundTo2Digits(this.getAvoidedAirConditioningCo2EmissionsMonetaryValue()),
-        impact: "avoided_air_conditioning_co2_eq_emissions",
-        impactCategory: "environmental_monetary",
-      },
       {
         actor: "local_residents",
         amount: roundTo2Digits(this.getAvoidedInhabitantsAirConditioningExpenses()),
@@ -215,8 +210,27 @@ export class UrbanFreshnessRelatedImpactsService
       },
     ];
 
+    return socioeconomic.filter(({ amount }) => amount > 0);
+  }
+
+  getAvoidedCo2EqEmissionsDetails(): AvoidedCO2EqEmissions["details"] {
+    if (!this.hasUrbanFreshnessImpact) {
+      return [];
+    }
+
+    return [
+      {
+        impact: "avoided_air_conditioning_co2_eq_emissions",
+        amount: roundTo2Digits(this.getAvoidedAirConditioningCo2EmissionsMonetaryValue()),
+      },
+    ];
+  }
+  getEnvironmentalImpacts() {
+    if (!this.hasUrbanFreshnessImpact) {
+      return {};
+    }
+
     return {
-      socioeconomic: socioeconomic.filter(({ amount }) => amount > 0),
       avoidedAirConditioningCo2EqEmissions: roundTo2Digits(
         this.getAvoidedAirConditioningCo2EmissionsInTons(),
       ),

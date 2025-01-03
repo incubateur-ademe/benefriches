@@ -169,6 +169,12 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🏡 Valeur patrimoniale des bâtiments alentour";
     case "local_transfer_duties_increase":
       return "🏛 Droits de mutation sur les ventes immobilières alentour";
+    case "project_new_company_taxation_income":
+      return "🏢 Fiscalité sur les entreprises créées";
+    case "project_new_houses_taxes_income":
+      return "🏠 Taxe foncière sur les habitations créées";
+    case "project_photovoltaic_taxes_income":
+      return "⚡️ Taxes et impôts sur la centrale EnR";
     /// Projet urbain
     case "avoided_property_damages_expenses":
       return "🚙 Dépenses d’entretien et réparation évitées";
@@ -191,7 +197,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     case "avoided_traffic_severe_injuries":
       return "‍🚑 Blessés graves évités";
     // Environementaux monétarisés
-    case "co2_benefit_monetary":
+    case "avoided_co2_eq_emissions":
       return "☁️ Emissions de CO2-eq";
     case "avoided_co2_eq_with_enr":
       return "⚡️️ Grâce à la production d'énergies renouvelables";

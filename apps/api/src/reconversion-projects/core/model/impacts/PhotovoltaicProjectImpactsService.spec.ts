@@ -109,9 +109,15 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
 
     expect(result.socioeconomic.impacts).toContainEqual({
       amount: expect.any(Number) as number,
-      impact: "avoided_co2_eq_with_enr",
+      impact: "avoided_co2_eq_emissions",
       impactCategory: "environmental_monetary",
       actor: "human_society",
+      details: [
+        {
+          impact: "avoided_co2_eq_with_enr",
+          amount: expect.any(Number) as number,
+        },
+      ],
     });
     expect(result.environmental.avoidedCO2TonsWithEnergyProduction).toMatchObject({
       current: 0,
@@ -161,9 +167,10 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
     expect(result.socioeconomic.impacts).toEqual([
       ...photovoltaicProjectImpactsService["rentImpacts"],
       ...photovoltaicProjectImpactsService["avoidedFricheCosts"],
-      ...photovoltaicProjectImpactsService["taxesImpacts"],
+      ...photovoltaicProjectImpactsService["propertyTransferDutiesIncome"],
       ...soilsRelatedSocioEconomicImpacts.socioEconomicList,
-      ...photovoltaicProjectImpactsService.socioEconomicList,
+      ...photovoltaicProjectImpactsService["taxesIncomeImpact"],
+      ...photovoltaicProjectImpactsService["avoidedCo2EqEmissions"],
     ]);
     expect(result.social).toEqual({
       fullTimeJobs: photovoltaicProjectImpactsService["fullTimeJobsImpact"],

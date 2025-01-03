@@ -424,7 +424,7 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     };
   }
 
-  formatImpacts() {
+  getSocioEconomicList() {
     const socioEconomicList: SocioEconomicImpact[] = [];
 
     if (this.waterRegulationMonetaryImpact) {
@@ -445,13 +445,14 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
         details: this.ecosystemServicesMonetaryImpact,
       });
     }
+    return socioEconomicList;
+  }
+
+  getEnvironmentalImpacts() {
     return {
-      socioEconomicList,
-      environmental: {
-        nonContaminatedSurfaceArea: this.nonContaminatedSurfaceAreaImpact,
-        permeableSurfaceArea: this.permeableSurfaceImpact,
-        soilsCarbonStorage: this.soilsCarbonStorage,
-      },
+      nonContaminatedSurfaceArea: this.nonContaminatedSurfaceAreaImpact,
+      permeableSurfaceArea: this.permeableSurfaceImpact,
+      soilsCarbonStorage: this.soilsCarbonStorage,
     };
   }
 }

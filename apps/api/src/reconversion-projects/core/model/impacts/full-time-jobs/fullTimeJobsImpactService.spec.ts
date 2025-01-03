@@ -44,7 +44,7 @@ describe("FullTimeJobsImpactService impact", () => {
               conversion: 0,
               operation: 880,
             };
-      expect(service.formatImpacts().fullTimeJobs).toEqual({
+      expect(service.getSocialImpacts().fullTimeJobs).toEqual({
         current: 0,
         forecast: expected.operation + expected.conversion,
         operations: {
@@ -73,7 +73,7 @@ describe("FullTimeJobsImpactService impact", () => {
 
       const expectedOperationsJobs = developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" ? 2 : 880;
 
-      expect(service.formatImpacts().fullTimeJobs).toEqual({
+      expect(service.getSocialImpacts().fullTimeJobs).toEqual({
         current: 0,
         forecast: expectedOperationsJobs,
         operations: {
@@ -120,7 +120,7 @@ describe("FullTimeJobsImpactService impact", () => {
               conversion: 0,
               operation: 880,
             };
-      expect(service.formatImpacts().fullTimeJobs).toEqual({
+      expect(service.getSocialImpacts().fullTimeJobs).toEqual({
         current: 0,
         forecast: expected.reinstatement + expected.conversion + expected.operation,
         operations: {

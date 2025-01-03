@@ -41,12 +41,6 @@ const baseImpacts = {
       },
       {
         actor: "community",
-        amount: 5000,
-        impact: "taxes_income",
-        impactCategory: "economic_indirect",
-      },
-      {
-        actor: "community",
         amount: 5432,
         impact: "property_transfer_duties_income",
         impactCategory: "economic_direct",
@@ -262,10 +256,28 @@ export const photovoltaicProjectImpactMock = {
       impacts: [
         ...baseImpacts.socioeconomic.impacts,
         {
+          actor: "community",
+          amount: 5000,
+          impact: "taxes_income",
+          impactCategory: "economic_indirect",
+          details: [
+            {
+              impact: "project_photovoltaic_taxes_income",
+              amount: 5000,
+            },
+          ],
+        },
+        {
           actor: "human_society",
           amount: 168444,
-          impact: "avoided_co2_eq_with_enr",
+          impact: "avoided_co2_eq_emissions",
           impactCategory: "environmental_monetary",
+          details: [
+            {
+              impact: "avoided_co2_eq_with_enr",
+              amount: 168444,
+            },
+          ],
         },
       ],
     },
@@ -332,17 +344,38 @@ export const urbanProjectImpactMock = {
       impacts: [
         ...baseImpacts.socioeconomic.impacts,
         {
-          amount: 150000,
-          impact: "avoided_traffic_co2_eq_emissions",
-          impactCategory: "environmental_monetary",
-          actor: "human_society",
+          actor: "community",
+          amount: 168444,
+          impact: "taxes_income",
+          impactCategory: "economic_indirect",
+          details: [
+            {
+              impact: "project_new_houses_taxes_income",
+              amount: 160000,
+            },
+            {
+              impact: "project_new_company_taxation_income",
+              amount: 8444,
+            },
+          ],
         },
         {
-          amount: 200000,
-          impact: "avoided_air_conditioning_co2_eq_emissions",
+          amount: 350000,
+          impact: "avoided_co2_eq_emissions",
           impactCategory: "environmental_monetary",
           actor: "human_society",
+          details: [
+            {
+              impact: "avoided_traffic_co2_eq_emissions",
+              amount: 150000,
+            },
+            {
+              amount: 200000,
+              impact: "avoided_air_conditioning_co2_eq_emissions",
+            },
+          ],
         },
+
         {
           amount: 1500,
           impact: "avoided_air_pollution",

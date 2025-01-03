@@ -243,7 +243,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         },
         impacts: {
           socioeconomic: {
-            total: -85636.10999999999,
+            total: -80636.10999999999,
             impacts: [
               {
                 actor: "Current owner",
@@ -261,12 +261,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                   { amount: 15000, impact: "avoided_illegal_dumping_costs" },
                 ],
               },
-              {
-                actor: "community",
-                amount: 5000,
-                impact: "taxes_income",
-                impactCategory: "economic_indirect",
-              },
+
               {
                 actor: "community",
                 amount: 5432,
@@ -312,10 +307,23 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 ],
               },
               {
+                actor: "community",
+                amount: 10000,
+                impact: "taxes_income",
+                impactCategory: "economic_indirect",
+                details: [
+                  {
+                    impact: "project_photovoltaic_taxes_income",
+                    amount: 10000,
+                  },
+                ],
+              },
+              {
                 actor: "human_society",
                 amount: 278391.89,
-                impact: "avoided_co2_eq_with_enr",
+                impact: "avoided_co2_eq_emissions",
                 impactCategory: "environmental_monetary",
+                details: [{ impact: "avoided_co2_eq_with_enr", amount: 278391.89 }],
               },
             ],
           },

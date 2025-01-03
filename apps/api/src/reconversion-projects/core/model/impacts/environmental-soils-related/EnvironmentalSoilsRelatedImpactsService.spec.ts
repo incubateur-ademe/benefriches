@@ -87,7 +87,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2024,
       });
-      expect(environmentalSoilsRelatedImpactService.formatImpacts().socioEconomicList).toEqual([]);
+      expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toEqual([]);
     });
 
     it("returns no carbon storage impact if no base and forecast provided", () => {
@@ -105,7 +105,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2024,
       });
-      const { socioEconomicList } = environmentalSoilsRelatedImpactService.formatImpacts();
+      const socioEconomicList = environmentalSoilsRelatedImpactService.getSocioEconomicList();
       const ecosystemServicesResult = socioEconomicList.find(
         ({ impact }) => impact === "ecosystem_services",
       ) as EcosystemServicesImpact | undefined;
@@ -159,17 +159,13 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2024,
       });
-      expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().socioEconomicList,
-      ).toContainEqual({
+      expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toContainEqual({
         amount: 236,
         impact: "water_regulation",
         impactCategory: "environmental_monetary",
         actor: "community",
       });
-      expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().socioEconomicList,
-      ).toContainEqual({
+      expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toContainEqual({
         amount: 27190,
         impact: "ecosystem_services",
         impactCategory: "environmental_monetary",
@@ -226,17 +222,13 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2024,
       });
-      expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().socioEconomicList,
-      ).toContainEqual({
+      expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toContainEqual({
         amount: -65,
         impact: "water_regulation",
         impactCategory: "environmental_monetary",
         actor: "community",
       });
-      expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().socioEconomicList,
-      ).toContainEqual({
+      expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toContainEqual({
         amount: -50540,
         impact: "ecosystem_services",
         impactCategory: "environmental_monetary",
@@ -269,8 +261,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       });
 
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental
-          .nonContaminatedSurfaceArea,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().nonContaminatedSurfaceArea,
       ).toEqual({
         current: 1000,
         forecast: 1000,
@@ -294,8 +285,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       });
 
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental
-          .nonContaminatedSurfaceArea,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().nonContaminatedSurfaceArea,
       ).toEqual({
         current: 750,
         forecast: 1000,
@@ -318,8 +308,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         operationsFirstYear: 2024,
       });
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental
-          .nonContaminatedSurfaceArea,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().nonContaminatedSurfaceArea,
       ).toEqual({
         current: 750,
         forecast: 850,
@@ -350,7 +339,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         operationsFirstYear: 2024,
       });
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental.permeableSurfaceArea,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().permeableSurfaceArea,
       ).toEqual({
         base: 920,
         forecast: 920,
@@ -390,7 +379,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       });
 
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental.permeableSurfaceArea,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().permeableSurfaceArea,
       ).toEqual({
         base: 920,
         forecast: 1020,
@@ -429,7 +418,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       });
 
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental.permeableSurfaceArea,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().permeableSurfaceArea,
       ).toEqual({
         base: 920,
         forecast: 1120,
@@ -468,7 +457,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       });
 
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental.permeableSurfaceArea,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().permeableSurfaceArea,
       ).toEqual({
         base: 920,
         forecast: 1220,
@@ -503,7 +492,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         operationsFirstYear: 2024,
       });
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental.permeableSurfaceArea,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().permeableSurfaceArea,
       ).toEqual({
         base: 920,
         forecast: 0,
@@ -541,7 +530,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         operationsFirstYear: 2024,
       });
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental.soilsCarbonStorage,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().soilsCarbonStorage,
       ).toEqual({ isSuccess: false });
     });
     it("returns negative impact if soils are artificialized", () => {
@@ -600,7 +589,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         operationsFirstYear: 2024,
       });
       expect(
-        environmentalSoilsRelatedImpactService.formatImpacts().environmental.soilsCarbonStorage,
+        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().soilsCarbonStorage,
       ).toEqual({
         isSuccess: true,
         current: {

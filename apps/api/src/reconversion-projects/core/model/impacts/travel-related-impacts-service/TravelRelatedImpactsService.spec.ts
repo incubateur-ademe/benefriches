@@ -133,56 +133,56 @@ describe("TravelRelatedImpactsService", () => {
         operationsFirstYear: 2025,
       });
 
-      const expected = {
-        socioeconomic: [
-          {
-            actor: "human_society",
-            amount: 76438.22,
-            impact: "avoided_traffic_co2_eq_emissions",
-            impactCategory: "environmental_monetary",
-          },
-          {
-            actor: "human_society",
-            amount: 30990.09,
-            impact: "avoided_air_pollution",
-            impactCategory: "environmental_monetary",
-          },
-          {
-            actor: "local_residents",
-            amount: 188770.33,
-            impact: "avoided_car_related_expenses",
-            impactCategory: "economic_indirect",
-          },
-          {
-            actor: "local_workers",
-            amount: 7369.46,
-            impact: "avoided_car_related_expenses",
-            impactCategory: "economic_indirect",
-          },
-          {
-            actor: "french_society",
-            amount: 586.05,
-            impact: "avoided_property_damages_expenses",
-            impactCategory: "economic_indirect",
-          },
-          {
-            actor: "local_residents",
-            amount: 760324.96,
-            impact: "travel_time_saved",
-            impactCategory: "social_monetary",
-          },
-          {
-            actor: "local_workers",
-            amount: 29682.54,
-            impact: "travel_time_saved",
-            impactCategory: "social_monetary",
-          },
-        ],
-        avoidedVehiculeKilometers: 1961397.93,
-        travelTimeSaved: 79000.75,
+      expect(travelRelatedImpactsService.getSocioEconomicList()).toEqual([
+        {
+          actor: "human_society",
+          amount: 30990.09,
+          impact: "avoided_air_pollution",
+          impactCategory: "environmental_monetary",
+        },
+        {
+          actor: "local_residents",
+          amount: 188770.33,
+          impact: "avoided_car_related_expenses",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "local_workers",
+          amount: 7369.46,
+          impact: "avoided_car_related_expenses",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "french_society",
+          amount: 586.05,
+          impact: "avoided_property_damages_expenses",
+          impactCategory: "economic_indirect",
+        },
+        {
+          actor: "local_residents",
+          amount: 760324.96,
+          impact: "travel_time_saved",
+          impactCategory: "social_monetary",
+        },
+        {
+          actor: "local_workers",
+          amount: 29682.54,
+          impact: "travel_time_saved",
+          impactCategory: "social_monetary",
+        },
+      ]);
+      expect(travelRelatedImpactsService.getEnvironmentalImpacts()).toEqual({
         avoidedCarTrafficCo2EqEmissions: 308.33,
-      };
-      expect(travelRelatedImpactsService.formatImpacts()).toMatchObject(expected);
+      });
+      expect(travelRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([
+        {
+          amount: 76438.22,
+          impact: "avoided_traffic_co2_eq_emissions",
+        },
+      ]);
+      expect(travelRelatedImpactsService.getSocialImpacts()).toMatchObject({
+        travelTimeSaved: 79000.75,
+      });
     });
   });
 });

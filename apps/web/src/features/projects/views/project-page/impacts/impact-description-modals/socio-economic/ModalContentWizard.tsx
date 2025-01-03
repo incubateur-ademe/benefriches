@@ -18,6 +18,7 @@ import PropertyTransferDutiesIncreaseDescription from "./property-value-increase
 import PropertyValueIncreaseDescription from "./property-value-increase/PropertyValueIncreaseDescription";
 import RentalIncomeDescription from "./rental-income/RentalIncomeDescription";
 import RoadsAndUtilitiesMaintenanceExpenses from "./roads-and-utilities-maintenance-expenses/RoadsAndUtilitiesMaintenanceExpenses";
+import TaxesIncomeDescription from "./taxes-income/TaxesIncomeDescription";
 import { SocioEconomicImpactDescriptionModalId } from "./types";
 import WaterRegulationDescription from "./water-regulation/WaterRegulationDescription";
 
@@ -229,6 +230,26 @@ const SocioEconomicModalContentWizard = ({
         </>
       );
 
+    case "socio-economic.taxes-income":
+      return (
+        <>
+          <ModalBreadcrumb
+            segments={[
+              {
+                label: "Impacts socio-économiques",
+                onClick: () => {
+                  onChangeModalCategoryOpened("socio-economic");
+                },
+              },
+              {
+                label: "Impacts économiques directs",
+              },
+              { label: "Recettes fiscales", isCurrent: true },
+            ]}
+          />
+          <TaxesIncomeDescription developmentPlan={projectData.developmentPlan} />
+        </>
+      );
     case "socio-economic.roads-and-utilities-maintenance-expenses":
       return (
         <>

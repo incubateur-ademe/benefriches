@@ -156,7 +156,7 @@ export class FullTimeJobsImpactService implements PartialImpactsServiceInterface
     );
   }
 
-  formatImpacts() {
+  getSocialImpacts() {
     return {
       fullTimeJobs: {
         current: this.totalCurrentFullTimeJobs,

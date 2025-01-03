@@ -5,11 +5,9 @@ export type SocioEconomicImpact =
   | AvoidedAirConditioningExpensesImpact
   | TravelTimeSavedImpact
   | AvoidedTrafficAccidentsImpact
-  | AvoidedTrafficCO2EqEmissions
-  | AvoidedAirConditioningCO2EqEmissions
   | AvoidedAirPollutionImpact
   | AvoidedPropertyDamagesExpensesImpact
-  | AvoidedCO2EqWithEnRMonetaryImpact
+  | AvoidedCO2EqEmissions
   | LocalHousingPropertyValueIncreaseImpact
   | LocalTransferDutiesIncreaseImpact;
 
@@ -35,10 +33,17 @@ export type AvoidedFricheCostsImpact = BaseEconomicImpact & {
 };
 
 /* ECONOMIC INDIRECT */
-type TaxesIncomeImpact = BaseEconomicImpact & {
+export type TaxesIncomeImpact = BaseEconomicImpact & {
   impact: "taxes_income";
   impactCategory: "economic_indirect";
   actor: "community";
+  details: {
+    impact:
+      | "project_new_houses_taxes_income"
+      | "project_new_company_taxation_income"
+      | "project_photovoltaic_taxes_income";
+    amount: number;
+  }[];
 };
 type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
   impact: "property_transfer_duties_income";
@@ -91,22 +96,23 @@ export type AvoidedTrafficAccidentsImpact = BaseEconomicImpact & {
   }[];
 };
 
-export type AvoidedTrafficCO2EqEmissions = BaseEconomicImpact & {
-  impact: "avoided_traffic_co2_eq_emissions";
+export type AvoidedCO2EqEmissions = BaseEconomicImpact & {
+  impact: "avoided_co2_eq_emissions";
   impactCategory: "environmental_monetary";
   actor: "human_society";
+  details: {
+    amount: number;
+    impact:
+      | "avoided_co2_eq_with_enr"
+      | "avoided_traffic_co2_eq_emissions"
+      | "avoided_air_conditioning_co2_eq_emissions";
+  }[];
 };
 
 export type AvoidedPropertyDamagesExpensesImpact = BaseEconomicImpact & {
   impact: "avoided_property_damages_expenses";
   impactCategory: "economic_indirect";
   actor: "french_society";
-};
-
-type AvoidedAirConditioningCO2EqEmissions = BaseEconomicImpact & {
-  impact: "avoided_air_conditioning_co2_eq_emissions";
-  impactCategory: "environmental_monetary";
-  actor: "human_society";
 };
 
 export type AvoidedAirPollutionImpact = BaseEconomicImpact & {
@@ -152,11 +158,4 @@ export type EcosystemServicesImpact = {
       | "soil_erosion"
       | "carbon_storage";
   }[];
-};
-
-export type AvoidedCO2EqWithEnRMonetaryImpact = {
-  amount: number;
-  actor: "human_society";
-  impactCategory: "environmental_monetary";
-  impact: "avoided_co2_eq_with_enr";
 };
