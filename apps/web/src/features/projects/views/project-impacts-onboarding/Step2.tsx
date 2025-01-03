@@ -32,11 +32,9 @@ export default function Step2({ onNextClick, onBackClick }: Props) {
               renouvelables...)."
           />
           <ExampleArticle
-            name="La société humaine"
+            name="L'humanité"
             emoji="🌍"
-            text="La société humaine représente l'ensemble des habitants de la planète. Ceux-ci
-              bénéficient indirectement des impacts du projet sur l'environnement (réduction des
-              émissions de gaz à effet de serre, amélioration des services écosystémiques...)."
+            text="L'humanité représente l’ensemble des habitants de la planète. Ceux-ci bénéficient indirectement des impacts du projet sur l’environnement (réduction des émissions de gaz à effet de serre, maintien de la biodiversité...)."
             arrowDirection="left"
             className="md:tw-mt-14"
           />

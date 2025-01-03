@@ -36,7 +36,7 @@ const ForestRelatedProductDescription = ({
         ressources génétiques, biochimiques, médicinales.
       </p>
       <p>
-        <strong>Bénéficiaire</strong> : société humaine
+        <strong>Bénéficiaire</strong> : humanité
       </p>
       <ModalTitleTwo>Quelles données sont utilisées dans le calcul ?</ModalTitleTwo>
       <ModalTitleThree> Données systémiques agrégées par Bénéfriches :</ModalTitleThree>

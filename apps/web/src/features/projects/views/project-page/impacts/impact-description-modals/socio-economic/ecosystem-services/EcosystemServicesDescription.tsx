@@ -117,7 +117,7 @@ const EcosystemServicesDescription = ({ onChangeModalCategoryOpened, impactsData
         respecter les engagements climatiques français.
       </p>
       <p>
-        <strong>Bénéficiaires</strong> : société humaine
+        <strong>Bénéficiaires</strong> : humanité
       </p>
 
       <div className="tw-flex tw-flex-col">
