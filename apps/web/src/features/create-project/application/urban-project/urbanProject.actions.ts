@@ -125,9 +125,9 @@ export const soilsDecontaminationIntroductionCompleted = createAction(
 export const soilsDecontaminationIntroductionReverted = createAction(
   "soilsDecontaminationIntroductionReverted",
 );
-export const soilsDecontaminationSelectionCompleted = createAction<
-  "all" | "partial" | "unknown" | "none"
->("soilsDecontaminationSelectionCompleted");
+export const soilsDecontaminationSelectionCompleted = createAction<"partial" | "unknown" | "none">(
+  "soilsDecontaminationSelectionCompleted",
+);
 export const soilsDecontaminationSelectionReverted = createAction(
   "soilsDecontaminationSelectionReverted",
 );

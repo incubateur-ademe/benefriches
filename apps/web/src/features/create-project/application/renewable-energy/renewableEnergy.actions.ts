@@ -118,7 +118,7 @@ export const completeSoilsDecontaminationIntroduction = createAction(
   "completeSoilsDecontaminationIntroduction",
 );
 export const completeSoilsDecontaminationSelection = createAction<
-  "all" | "partial" | "none" | "unknown" | null
+  "partial" | "none" | "unknown" | null
 >("completeSoilsDecontaminationSelection");
 export const completeSoilsDecontaminationSurfaceArea = createAction<number>(
   "completeSoilsDecontaminationSurfaceArea",

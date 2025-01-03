@@ -11,7 +11,7 @@ type Props = {
 };
 
 export type FormValues = {
-  decontaminationSelection: "all" | "partial" | "none" | "unknown" | null;
+  decontaminationSelection: "partial" | "none" | "unknown" | null;
 };
 
 function SoilsDecontaminationSelection({ onSubmit, onBack }: Props) {
@@ -36,11 +36,11 @@ function SoilsDecontaminationSelection({ onSubmit, onBack }: Props) {
               pour les futurs usagers du projet.
             </li>
           </ul>
-          {/* <p>
+          <p>
             Si vous ne savez pas (encore) si le site doit être dépollué, Bénéfriches considérera
             qu'il est nécessaire de le faire au niveau moyen constaté sur les projets accompagnés
             par l'ADEME.
-          </p> */}
+          </p>
         </FormInfo>
       }
     >
@@ -49,11 +49,7 @@ function SoilsDecontaminationSelection({ onSubmit, onBack }: Props) {
           {...register("decontaminationSelection")}
           options={[
             {
-              label: "Oui, totalement dépollués",
-              value: "all",
-            },
-            {
-              label: "Oui, partiellement dépollués",
+              label: "Oui",
               value: "partial",
             },
             {

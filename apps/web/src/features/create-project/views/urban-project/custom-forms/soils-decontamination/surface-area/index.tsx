@@ -3,9 +3,7 @@ import {
   soilsDecontaminationSurfaceAreaCompleted,
   soilsDecontaminationSurfaceAreaReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
-import SoilsDecontaminationSurfaceArea, {
-  FormValues,
-} from "@/features/create-project/views/common-views/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
+import SoilsDecontaminationSurfaceArea from "@/features/create-project/views/common-views/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function SoilsDecontaminationSurfaceAreaContainer() {
@@ -15,8 +13,8 @@ function SoilsDecontaminationSurfaceAreaContainer() {
   return (
     <SoilsDecontaminationSurfaceArea
       contaminatedSoilSurface={contaminatedSurfaceArea}
-      onSubmit={(data: FormValues) => {
-        dispatch(soilsDecontaminationSurfaceAreaCompleted(data.surfaceArea));
+      onSubmit={(surfaceArea: number) => {
+        dispatch(soilsDecontaminationSurfaceAreaCompleted(surfaceArea));
       }}
       onBack={() => dispatch(soilsDecontaminationSurfaceAreaReverted())}
     />

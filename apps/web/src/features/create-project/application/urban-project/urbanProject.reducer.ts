@@ -401,11 +401,6 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
       ? "BUILDINGS_INTRODUCTION"
       : "STAKEHOLDERS_INTRODUCTION";
     switch (action.payload) {
-      case "all":
-        state.urbanProject.creationData.decontaminatedSurfaceArea =
-          state.siteData?.contaminatedSoilSurface ?? 0;
-        state.urbanProject.stepsHistory.push(nextSectionStep);
-        break;
       case "partial":
         state.urbanProject.stepsHistory.push("SOILS_DECONTAMINATION_SURFACE_AREA");
         break;
@@ -413,8 +408,12 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
         state.urbanProject.creationData.decontaminatedSurfaceArea = 0;
         state.urbanProject.stepsHistory.push(nextSectionStep);
         break;
-      case "unknown":
+      case "unknown": {
+        const contaminatedSoilSurface = state.siteData?.contaminatedSoilSurface ?? 0;
+        state.urbanProject.creationData.decontaminatedSurfaceArea = contaminatedSoilSurface * 0.25;
         state.urbanProject.stepsHistory.push(nextSectionStep);
+        break;
+      }
     }
   });
   builder.addCase(soilsDecontaminationSelectionReverted, (state) => {
