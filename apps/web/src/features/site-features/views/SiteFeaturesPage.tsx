@@ -20,11 +20,11 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
     onPageLoad();
   }, [onPageLoad]);
 
-  if (loadingState === "loading") {
+  if (loadingState === "loading" || !siteData) {
     return <LoadingSpinner />;
   }
 
-  if (loadingState === "error" || !siteData) {
+  if (loadingState === "error") {
     return (
       <div className="fr-container">
         <Alert
