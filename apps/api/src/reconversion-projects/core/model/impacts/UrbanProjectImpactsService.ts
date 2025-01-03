@@ -1,5 +1,6 @@
 import {
   AvoidedCO2EqEmissions,
+  computeEstimatedPropertyTaxesAmount,
   roundToInteger,
   SocioEconomicImpact,
   sumListWithKey,
@@ -97,7 +98,8 @@ export class UrbanProjectImpactsService
 
     if (newHousesSurfaceArea > 0) {
       details.push({
-        amount: roundToInteger(newHousesSurfaceArea * 11 * this.evaluationPeriodInYears),
+        amount:
+          computeEstimatedPropertyTaxesAmount(newHousesSurfaceArea) * this.evaluationPeriodInYears,
         impact: "project_new_houses_taxes_income",
       });
     }

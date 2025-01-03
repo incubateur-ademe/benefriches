@@ -129,6 +129,11 @@ const TaxesIncomeDescription = ({ developmentPlan }: Props) => {
             Les conditions de logement des ménages résidant en France en 2020
           </ExternalLink>
         </li>
+        <li>
+          <ExternalLink href="https://data.economie.gouv.fr/explore/dataset/fiscalite-locale-des-particuliers-geo/table/?disjunctive.insee_com">
+            Fiscalité locale des particuliers
+          </ExternalLink>
+        </li>
       </ul>
     </>
   );

@@ -1,11 +1,10 @@
-import { SiteYearlyExpense, SoilType } from "shared";
+import { computeEstimatedPropertyTaxesAmount, SiteYearlyExpense, SoilType } from "shared";
 import { formatMunicipalityName } from "shared";
 
 import { CreateSiteGatewayPayload } from "../application/createSite.actions";
 import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
-  computeEstimatedPropertyTaxesAmount,
   computeSecurityDefaultCost,
 } from "./expenses.functions";
 import { SiteExpressDraft } from "./siteFoncier.types";

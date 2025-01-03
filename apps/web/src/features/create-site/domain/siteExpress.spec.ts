@@ -74,7 +74,7 @@ describe("Site Express data creation", () => {
             bearer: "owner",
           },
           {
-            amount: 90000,
+            amount: 16960,
             purpose: "propertyTaxes",
             bearer: "owner",
           },
@@ -132,7 +132,7 @@ describe("Site Express data creation", () => {
             bearer: "owner",
           },
           {
-            amount: 90000,
+            amount: 16960,
             purpose: "propertyTaxes",
             bearer: "owner",
           },

@@ -197,13 +197,13 @@ describe("UrbanProjectImpactsService", () => {
       expect(projectImpactsService["taxesIncomeImpact"]).toEqual([
         {
           actor: "community",
-          amount: 1210000,
+          amount: 310930,
           impact: "taxes_income",
           impactCategory: "economic_indirect",
           details: [
             {
               impact: "project_new_houses_taxes_income",
-              amount: 1210000,
+              amount: 310930,
             },
           ],
         },

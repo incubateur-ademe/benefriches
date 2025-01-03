@@ -76,13 +76,6 @@ export const computeSecurityDefaultCost = (surfaceArea: number) => {
   return Math.round(SECURITY_COST_BY_HECTARE_PER_YEAR * (surfaceArea / 10000));
 };
 
-const AVERAGE_PROPERTY_TAXES_EURO_PER_BUILDINGS_SURFACE_SQUARE_METERS = 15;
-export const computeEstimatedPropertyTaxesAmount = (buildingsSurfaceArea: number) => {
-  return Math.round(
-    AVERAGE_PROPERTY_TAXES_EURO_PER_BUILDINGS_SURFACE_SQUARE_METERS * buildingsSurfaceArea,
-  );
-};
-
 export type SiteYearlyExpensesBaseConfig = {
   purpose: SiteManagementYearlyExpensePurpose | SiteSecurityYearlyExpensePurpose;
   fixedBearer: "owner" | "tenant" | null;
