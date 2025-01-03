@@ -118,7 +118,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
               : `${formatSurfaceArea(Math.abs(missingSuitableSurfaceArea - totalSurfaceEntered))} manquants`
           }
         />
-        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={formState.isValid} />
+        <BackNextButtonsGroup onBack={onBack} nextLabel="Valider" disabled={!formState.isValid} />
       </form>
     </WizardFormLayout>
   );
