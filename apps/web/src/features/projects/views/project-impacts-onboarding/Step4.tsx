@@ -45,7 +45,8 @@ export default function Step4({ onNextClick, onBackClick }: Props) {
 
       <div className="md:tw-w-2/3">
         <h1 className="tw-text-[32px]">
-          Les indicateurs sont <span className="tw-bg-[#E3E3FD]">cliquables</span>.
+          Le <span className="tw-bg-[#B8FEC9]">détail des calculs</span> se trouve dans une fenêtre
+          accessible au clic sur les indicateurs.
         </h1>
         <p className="tw-text-lg">
           Dans la vue graphique comme dans la vue liste, vous pouvez cliquer sur la plupart des

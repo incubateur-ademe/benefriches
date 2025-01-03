@@ -22,9 +22,11 @@ export default function Step3({ onNextClick, onBackClick }: Props) {
           <span className="tw-bg-[#FFC72780]">gains en nature monétarisés</span>.
         </h1>
         <p className="tw-text-lg">
-          Bénéfriches calcule tous les impacts de votre projet : les impacts économiques, les effets
-          secondaires... mais aussi les gains en nature monétarisés. Il s’agit d’impacts sociaux ou
-          environnementaux pouvant générer un gain monétaire.{" "}
+          Bénéfriches calcule tous les impacts de votre projet : économiques directs (ex :
+          fiscalité), retombées (ex&nbsp;:&nbsp;↘️&nbsp;des dépenses de sécurisation d'un site),
+          mais aussi les "gains en nature" monétarisés. Il s’agit d’effets non marchands ou
+          "externalités" (ex&nbsp;:&nbsp;↘️&nbsp; des émissions carbone) auxquels il est possible
+          d'attribuer une valeur monétaire.
         </p>
         <p className="tw-text-lg tw-font-bold">Par exemple :</p>
         <section className="tw-my-6">
