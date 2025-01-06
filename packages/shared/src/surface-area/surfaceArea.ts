@@ -22,6 +22,19 @@ export class SurfaceAreaDistribution<TSurface extends string> {
     return surfaceAreaDistribution;
   }
 
+  static fromJSONPercentage<T extends string>(input: {
+    totalSurfaceArea: number;
+    percentageDistribution: SurfaceAreaDistributionJson<T>;
+  }): SurfaceAreaDistribution<T> {
+    const sd = new SurfaceAreaDistribution<T>();
+
+    typedObjectEntries(input.percentageDistribution).forEach(([surfaceType, percent]) => {
+      const surfaceAreaInSquareMeters = ((percent ?? 0) * input.totalSurfaceArea) / 100;
+      sd.addSurface(surfaceType, surfaceAreaInSquareMeters);
+    });
+    return sd;
+  }
+
   addSurface(surfaceType: TSurface, surface: number) {
     if (surface <= 0) return;
 

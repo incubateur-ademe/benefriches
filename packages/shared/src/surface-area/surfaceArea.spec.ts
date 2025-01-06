@@ -35,6 +35,47 @@ describe("SurfaceAreaDistribution", () => {
     });
   });
 
+  describe("fromJSONPercentage", () => {
+    it("should return empty surface area distribution for empty JSON", () => {
+      const emptySurfaceAreaDistribution = SurfaceAreaDistribution.fromJSONPercentage({
+        totalSurfaceArea: 500,
+        percentageDistribution: {},
+      });
+      expect(emptySurfaceAreaDistribution.getTotalSurfaceArea()).toEqual(0);
+      expect(emptySurfaceAreaDistribution.toJSON()).toEqual({});
+    });
+
+    it("should return surface area distribution for simple 50/50 distribution on a total surface area of 300 sqmt", () => {
+      const surfaceAreaDistribution = SurfaceAreaDistribution.fromJSONPercentage({
+        totalSurfaceArea: 300,
+        percentageDistribution: {
+          BUILDINGS: 50,
+          ARTIFICIAL_TREE_FILLED: 50,
+        },
+      });
+      expect(surfaceAreaDistribution.toJSON()).toEqual({
+        BUILDINGS: 150,
+        ARTIFICIAL_TREE_FILLED: 150,
+      });
+    });
+
+    it("should return surface area distribution for 20/30/50 distribution on a total surface area of 301 sqmt", () => {
+      const surfaceAreaDistribution = SurfaceAreaDistribution.fromJSONPercentage({
+        totalSurfaceArea: 301,
+        percentageDistribution: {
+          BUILDINGS: 20,
+          PRAIRIE_BUSHES: 30,
+          ARTIFICIAL_TREE_FILLED: 50,
+        },
+      });
+      expect(surfaceAreaDistribution.toJSON()).toEqual({
+        BUILDINGS: 60.2,
+        PRAIRIE_BUSHES: 90.3,
+        ARTIFICIAL_TREE_FILLED: 150.5,
+      });
+    });
+  });
+
   describe("getTotalSurfaceArea", () => {
     it("should return 0 for empty surface area distribution", () => {
       const emptySurfaceAreaDistribution = new SurfaceAreaDistribution();
