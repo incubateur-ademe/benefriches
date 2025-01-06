@@ -6,6 +6,7 @@ import {
   DEFAULT_APP_SETTINGS,
   displayMyProjectTourGuideChanged,
   selectAppSettings,
+  surfaceAreaInputModeChanged,
 } from "./appSettings";
 
 describe("App settings", () => {
@@ -20,6 +21,7 @@ describe("App settings", () => {
     appSettingsService.persist({
       shouldDisplayMyProjectTourGuide: true,
       shouldDisplayDemoMyProjectTourGuide: false,
+      surfaceAreaInputMode: "squareMeters",
     });
     const store = createStore(
       getTestAppDependencies({
@@ -30,10 +32,11 @@ describe("App settings", () => {
     expect(selectAppSettings(rootState)).toEqual({
       shouldDisplayMyProjectTourGuide: true,
       shouldDisplayDemoMyProjectTourGuide: false,
+      surfaceAreaInputMode: "squareMeters",
     });
   });
 
-  it("should update given app setting and persist it", () => {
+  it("should update 'shouldDisplayMyProjectTourGuide' app setting and persist it", () => {
     const appSettingsService = new InMemoryAppSettings();
     appSettingsService.persist({
       ...DEFAULT_APP_SETTINGS,
@@ -50,6 +53,28 @@ describe("App settings", () => {
     const expectedAppSettings = {
       ...DEFAULT_APP_SETTINGS,
       shouldDisplayMyProjectTourGuide: true,
+    };
+    expect(selectAppSettings(rootState)).toEqual(expectedAppSettings);
+    expect(appSettingsService.getAll()).toEqual(expectedAppSettings);
+  });
+
+  it("should update 'surfaceAreaInputModefa' app setting and persist it", () => {
+    const appSettingsService = new InMemoryAppSettings();
+    appSettingsService.persist({
+      ...DEFAULT_APP_SETTINGS,
+      surfaceAreaInputMode: "squareMeters",
+    });
+    const store = createStore(
+      getTestAppDependencies({
+        appSettingsService,
+      }),
+    );
+    store.dispatch(surfaceAreaInputModeChanged("percentage"));
+    const rootState = store.getState();
+
+    const expectedAppSettings = {
+      ...DEFAULT_APP_SETTINGS,
+      surfaceAreaInputMode: "percentage",
     };
     expect(selectAppSettings(rootState)).toEqual(expectedAppSettings);
     expect(appSettingsService.getAll()).toEqual(expectedAppSettings);
