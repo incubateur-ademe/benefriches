@@ -1,7 +1,10 @@
 import { useTour } from "@reactour/tour";
 import { ReactNode, useEffect } from "react";
 
-import { appSettingChanged, selectAppSettings } from "@/shared/app-settings/core/appSettings";
+import {
+  displayMyProjectTourGuideChanged,
+  selectAppSettings,
+} from "@/shared/app-settings/core/appSettings";
 import TourGuideProvider from "@/shared/views/components/TourGuideProvider/TourGuideProvider";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { selectCurrentUserFirstname } from "@/users/application/user.reducer";
@@ -30,7 +33,7 @@ function MyProjectsTourGuide({ projectsList, children }: Props) {
     useAppSelector(selectAppSettings).shouldDisplayMyProjectTourGuide;
 
   const onCloseTutorial = () => {
-    dispatch(appSettingChanged({ setting: "shouldDisplayMyProjectTourGuide", value: false }));
+    dispatch(displayMyProjectTourGuideChanged(false));
   };
 
   const [firstProjectGroup] = projectsList;

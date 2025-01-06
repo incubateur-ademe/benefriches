@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 
-import { AppDependencies, AppDispatch, RootState } from "@/app/application/store";
+import { RootState } from "@/app/application/store";
 
 export type AppSettings = {
   shouldDisplayMyProjectTourGuide: boolean;
@@ -14,23 +14,25 @@ export const DEFAULT_APP_SETTINGS: AppSettings = {
 
 export const selectAppSettings = (state: RootState) => state.appSettings;
 
-type SetAppSettingPayload = {
-  [K in keyof AppSettings]: { setting: K; value: AppSettings[K] };
-}[keyof AppSettings];
+const updateActionPrefix = "appSettings/changed/";
+export const isAppSettingsUpdateAction = (actionName: string) =>
+  actionName.startsWith(updateActionPrefix);
 
-const setAppSetting = createAction<SetAppSettingPayload>("appSettings/changed");
+const createUpdateAction = <K extends keyof AppSettings>(key: K) =>
+  createAction<AppSettings[K]>(`${updateActionPrefix}${key}`);
 
-export const appSettingChanged = (payload: SetAppSettingPayload) => {
-  return (dispatch: AppDispatch, getState: () => RootState, extra: AppDependencies) => {
-    dispatch(setAppSetting(payload));
-
-    extra.appSettingsService.persist(getState().appSettings);
-  };
-};
+export const displayMyProjectTourGuideChanged = createUpdateAction(
+  "shouldDisplayMyProjectTourGuide",
+);
+export const displayDemoMyProjectTourGuideChanged = createUpdateAction(
+  "shouldDisplayDemoMyProjectTourGuide",
+);
 
 export const appSettingsReducer = createReducer(DEFAULT_APP_SETTINGS, (builder) => {
-  builder.addCase(setAppSetting, (state, action) => {
-    const { setting, value } = action.payload;
-    state[setting] = value;
+  builder.addCase(displayMyProjectTourGuideChanged, (state, action) => {
+    state.shouldDisplayMyProjectTourGuide = action.payload;
+  });
+  builder.addCase(displayDemoMyProjectTourGuideChanged, (state, action) => {
+    state.shouldDisplayDemoMyProjectTourGuide = action.payload;
   });
 });

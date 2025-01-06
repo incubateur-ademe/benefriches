@@ -2,7 +2,11 @@ import { createStore } from "@/app/application/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { InMemoryAppSettings } from "../infrastructure/InMemoryAppSettings";
-import { appSettingChanged, DEFAULT_APP_SETTINGS, selectAppSettings } from "./appSettings";
+import {
+  DEFAULT_APP_SETTINGS,
+  displayMyProjectTourGuideChanged,
+  selectAppSettings,
+} from "./appSettings";
 
 describe("App settings", () => {
   it("should get default app settings", () => {
@@ -40,7 +44,7 @@ describe("App settings", () => {
         appSettingsService,
       }),
     );
-    store.dispatch(appSettingChanged({ setting: "shouldDisplayMyProjectTourGuide", value: true }));
+    store.dispatch(displayMyProjectTourGuideChanged(true));
     const rootState = store.getState();
 
     const expectedAppSettings = {

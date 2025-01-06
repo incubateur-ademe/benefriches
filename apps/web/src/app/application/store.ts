@@ -1,32 +1,24 @@
-import { combineReducers, configureStore, Reducer } from "@reduxjs/toolkit";
+import { configureStore, Reducer } from "@reduxjs/toolkit";
 
-import projectCreation from "@/features/create-project/application/createProject.reducer";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/application/getSiteLocalAuthorities.action";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/renewable-energy/getPhotovoltaicExpectedPerformance.action";
 import { SaveReconversionProjectGateway } from "@/features/create-project/application/saveReconversionProject.action";
 import { SaveExpressReconversionProjectGateway } from "@/features/create-project/application/urban-project/urbanProject.actions";
-import siteCreation from "@/features/create-site/application/createSite.reducer";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/application/siteMunicipalityData.actions";
-import siteMunicipalityData from "@/features/create-site/application/siteMunicipalityData.reducer";
-import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
-import { projectFeaturesReducer } from "@/features/projects/application/project-features/projectFeatures.reducer";
-import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
-import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
 import { SiteFeaturesGateway } from "@/features/site-features/application/fetchSiteFeatures.action";
-import siteFeatures from "@/features/site-features/application/siteFeatures.reducer";
 import { AppSettingsGateway } from "@/shared/app-settings/core/AppSettingsGateway";
-import { appSettingsReducer as appSettings } from "@/shared/app-settings/core/appSettings";
 import { CreateUserGateway } from "@/users/application/createUser.action";
 import { CurrentUserGateway } from "@/users/application/initCurrentUser.action";
-import currentUser from "@/users/application/user.reducer";
 
 import { GetSitesByIdGateway } from "../../features/create-project/application/createProject.actions";
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.action";
 import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
 import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
+import { getListener, setupAllListeners } from "./listenerMiddleware";
+import { rootReducer } from "./rootReducer";
 
 export type AppDependencies = {
   appSettingsService: AppSettingsGateway;
@@ -50,26 +42,15 @@ type PreloadedStateFromReducer<R extends Reducer<any, any, any>> =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   R extends Reducer<any, any, infer P> ? P : never;
 
-const rootReducer = combineReducers({
-  appSettings,
-  siteCreation,
-  siteFeatures,
-  projectCreation,
-  siteCarbonStorage,
-  reconversionProjectsList,
-  currentUser,
-  projectImpacts,
-  projectFeatures: projectFeaturesReducer,
-  siteMunicipalityData,
-});
-
 export const createStore = (
   appDependencies: AppDependencies,
   preloadedState?: PreloadedStateFromReducer<typeof rootReducer>,
 ) => {
   const persistedAppSettings = appDependencies.appSettingsService.getAll();
 
-  return configureStore({
+  const listener = getListener(appDependencies);
+
+  const store = configureStore({
     reducer: rootReducer,
     preloadedState: {
       appSettings: persistedAppSettings,
@@ -80,12 +61,15 @@ export const createStore = (
         thunk: {
           extraArgument: appDependencies,
         },
-      });
+      }).prepend(listener.middleware);
     },
   });
+
+  setupAllListeners(listener.startListening);
+
+  return store;
 };
 
-type Store = ReturnType<typeof createStore>;
-
-export type RootState = ReturnType<Store["getState"]>;
-export type AppDispatch = ReturnType<typeof createStore>["dispatch"];
+type AppStore = ReturnType<typeof createStore>;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
