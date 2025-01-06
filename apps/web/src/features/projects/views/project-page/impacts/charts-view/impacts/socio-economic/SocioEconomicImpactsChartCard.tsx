@@ -10,7 +10,11 @@ type Props = {
 
 function SocioEconomicChartCard({ socioEconomicImpacts, onClick }: Props) {
   return (
-    <ImpactsChartsSection onClick={onClick} title="Impacts socio-économiques">
+    <ImpactsChartsSection
+      onClick={onClick}
+      title="Impacts socio-économiques"
+      subtitle="Par bénéficiaires"
+    >
       <SocioEconomicImpactsByActorChart socioEconomicImpacts={socioEconomicImpacts} />
     </ImpactsChartsSection>
   );

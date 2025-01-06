@@ -1,133 +1,135 @@
-import { fr } from "@codegouvfr/react-dsfr";
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import { Tooltip } from "@codegouvfr/react-dsfr/Tooltip";
+import { roundTo1Digit, roundToInteger } from "shared";
 
-import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 import classNames from "@/shared/views/clsx";
-import HighchartsMainColorsBehoreHover from "@/shared/views/components/Charts/HighchartsMainColorsBehoreHover";
 
 import {
   formatCO2Impact,
   formatDefaultImpact,
-  formatMonetaryImpact,
   formatSurfaceAreaImpact,
-  formatTimeImpact,
-  impactFormatConfig,
 } from "../../../../shared/formatImpactValue";
-import ImpactChartTooltip from "./ImpactChartTooltip";
+import ImpactChartTooltipContent from "./ImpactChartTooltipContent";
+import ImpactColoredAreaChart from "./ImpactColoredAreaChart";
 import ImpactPercentageVariation from "./ImpactPercentageVariation";
 
 const impactTypeFormatterMap = {
-  co2: { ...impactFormatConfig["co2"], formatFn: formatCO2Impact },
-  monetary: { formatFn: formatMonetaryImpact, ...impactFormatConfig["monetary"] },
+  co2: {
+    roundFn: roundToInteger,
+    formatFn: formatCO2Impact,
+    unitSuffix: "",
+  },
   surfaceArea: {
+    roundFn: roundTo1Digit,
     formatFn: formatSurfaceAreaImpact,
-    ...impactFormatConfig["surface_area"],
+    unitSuffix: "",
   },
-  time: {
-    formatFn: formatTimeImpact,
-    ...impactFormatConfig["time"],
+  etp: {
+    roundFn: roundTo1Digit,
+    formatFn: formatDefaultImpact,
+    unitSuffix: "ETP",
   },
-  default: { formatFn: formatDefaultImpact, ...impactFormatConfig["default"] },
+  default: {
+    roundFn: roundToInteger,
+    formatFn: formatDefaultImpact,
+    unitSuffix: "",
+  },
 } as const;
 
 type AllowedImpactType = keyof typeof impactTypeFormatterMap;
 
 type Props = {
-  baseLabel: string;
-  forecastLabel: string;
+  baseLabel?: string;
+  forecastLabel?: string;
   onClick?: () => void;
   impact: {
     impactLabel: string;
     base: number;
     forecast: number;
     difference: number;
-    data: { impactLabel: string; base: number; forecast: number }[];
+    details?: { impactLabel: string; base: number; forecast: number; color?: string }[];
   };
   type?: AllowedImpactType;
-  unitSuffix?: string;
 };
 
-const getMaxDetailsDifferenceIndex = (
-  data: { impactLabel: string; base: number; forecast: number }[],
-) => {
-  const differences = data.map(({ base, forecast }) => forecast - base);
-
-  return differences.indexOf(Math.max(...differences));
-};
-
-function ImpactAreaChartCard({
-  type = "default",
-  baseLabel,
-  forecastLabel,
-  impact,
-  onClick,
-  unitSuffix,
-}: Props) {
-  const { data, base, forecast, difference, impactLabel } = impact;
+function ImpactAreaChartCard({ type = "default", impact, onClick }: Props) {
+  const { details, base, forecast, impactLabel } = impact;
   const percentageVariation = getPercentageDifference(base, forecast);
 
-  const barChartOptions: Highcharts.Options = {
-    ...baseAreaChartConfig,
-    xAxis: {
-      labels: { enabled: false },
-      categories: [baseLabel, forecastLabel],
+  const { formatFn, unitSuffix } = impactTypeFormatterMap[type];
+
+  const baseValueText = `${formatFn(impact.base, { withSignPrefix: false })} ${unitSuffix}`;
+  const forecastValueText = `${formatFn(impact.forecast, { withSignPrefix: false })} ${unitSuffix}`;
+
+  const data = details ?? [
+    {
+      impactLabel,
+      base,
+      forecast,
     },
-    tooltip: {
-      enabled: false,
-    },
-    plotOptions: {
-      area: {
-        ...baseAreaChartConfig.plotOptions?.area,
-        stacking: "normal",
-        marker: { enabled: false, states: { hover: { enabled: false } } },
-      },
-      series: {
-        enableMouseTracking: false,
-      },
-    },
-    legend: { enabled: false },
-    series: data.map((data) => ({
-      name: data.impactLabel,
-      type: "area",
-      data: [
-        impactTypeFormatterMap[type].roundFn(data.base),
-        impactTypeFormatterMap[type].roundFn(data.forecast),
-      ],
-    })) as Array<Highcharts.SeriesOptionsType>,
-  };
+  ];
 
   return (
-    <HighchartsMainColorsBehoreHover
-      colors={data.map(() => getMaxDetailsDifferenceIndex(data))}
-      aria-describedby={`tooltip-${impactLabel}`}
+    <div
       onClick={(e) => {
         if (onClick) {
           e.stopPropagation();
           onClick();
         }
       }}
+      className={classNames(
+        "tw-p-6",
+        "tw-m-0",
+        "tw-mb-8",
+        "tw-rounded-2xl",
+        "tw-bg-white",
+        "dark:tw-bg-black",
+        "tw-border",
+        "tw-border-solid",
+        "tw-border-transparent",
+        onClick && [
+          "tw-cursor-pointer",
+          "hover:tw-border-current",
+          "tw-transition tw-ease-in-out tw-duration-500",
+        ],
+      )}
     >
-      <HighchartsReact highcharts={Highcharts} options={barChartOptions} />
-      <h4 className="tw-text-sm tw-text-center tw-mb-1">{impactLabel}</h4>
-      <div className={classNames(fr.cx("fr-text--sm", "fr-m-0"), "tw-text-center")}>
-        {impactTypeFormatterMap[type].formatFn(difference)}
-        {unitSuffix}
-
+      <div className="tw-flex tw-justify-between tw-items-start">
+        <h4 className="tw-text-xl tw-mb-1">{impactLabel}</h4>
         <ImpactPercentageVariation
           percentage={percentageVariation > 10000 ? 9999 : percentageVariation}
         />
       </div>
-      <ImpactChartTooltip
-        tooltipId={`tooltip-${impactLabel}`}
-        rows={data.map(({ impactLabel, base, forecast }) => ({
-          label: impactLabel,
-          value: forecast - base,
-          valueText: impactTypeFormatterMap[type].formatFn(forecast - base),
-        }))}
-      />
-    </HighchartsMainColorsBehoreHover>
+
+      <Tooltip
+        kind="hover"
+        title={
+          <ImpactChartTooltipContent
+            rows={data.map(({ impactLabel, base, forecast, color }) => ({
+              label: impactLabel,
+              value: forecast - base,
+              valueText: impactTypeFormatterMap[type].formatFn(forecast - base),
+              color,
+            }))}
+          />
+        }
+      >
+        <ImpactColoredAreaChart
+          categoryLabels={[
+            `<strong>Sans le projet</strong><br>${baseValueText}`,
+            `<strong>Avec le projet</strong><br>${forecastValueText}`,
+          ]}
+          data={data.map((data) => ({
+            label: data.impactLabel,
+            color: data.color,
+            values: [
+              impactTypeFormatterMap[type].roundFn(data.base),
+              impactTypeFormatterMap[type].roundFn(data.forecast),
+            ],
+          }))}
+        />
+      </Tooltip>
+    </div>
   );
 }
 

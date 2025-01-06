@@ -1,5 +1,4 @@
-import * as Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
+import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { roundTo2Digits } from "shared";
 import { sumList } from "shared";
 
@@ -7,13 +6,11 @@ import {
   EconomicBalance,
   EconomicBalanceMainName,
 } from "@/features/projects/domain/projectImpactsEconomicBalance";
+import HighchartBarColoredChart from "@/features/projects/views/project-page/impacts/charts-view/ImpactChartCard/ImpactBarColoredBalanceChart";
 import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
-import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
-import HighchartsCustomColorsWrapper from "@/shared/views/components/Charts/HighchartsCustomColorsWrapper";
-import HighchartsMainColorsBehoreHover from "@/shared/views/components/Charts/HighchartsMainColorsBehoreHover";
 
-import ImpactChartTooltip from "../../ImpactChartCard/ImpactChartTooltip";
+import ImpactChartTooltipContent from "../../ImpactChartCard/ImpactChartTooltipContent";
 import ImpactsChartsSection from "../../ImpactsChartsSection";
 
 type Props = {
@@ -25,101 +22,68 @@ type Props = {
 const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName) => {
   switch (name) {
     case "site_resale":
-      return "#72D98D";
+      return "#8DC85D";
     case "site_purchase":
-      return "#F3F511";
+      return "#8DC85D";
     case "site_reinstatement":
-      return "#F4C00A";
+      return "#FFBE04";
     case "financial_assistance":
-      return "#14EA81";
+      return "#ECE54C";
     case "development_plan_installation":
-      return "#F57F0A";
+      return "#F9E2B8";
     case "photovoltaic_development_plan_installation":
-      return "#EF410F";
+      return "#FF9700";
     case "urban_project_development_plan_installation":
-      return "#DA244F";
+      return "#E9452B";
     case "operations_costs":
-      return "#C535A4";
+      return "#8D9BA3";
     case "operations_revenues":
-      return "#37C95D";
+      return "#D5B250";
   }
 };
 
-function EconomicBalanceChartCard({ economicBalance, onClick, bearer = "Aménageur" }: Props) {
+function EconomicBalanceChartCard({ economicBalance, onClick, bearer = "l'aménageur" }: Props) {
   const totalValues = economicBalance.map(({ value }) => value);
 
   const totalRevenues = sumList(totalValues.filter((value) => value > 0));
   const totalExpenses = sumList(totalValues.filter((value) => value < 0));
 
-  const barChartOptions: Highcharts.Options = {
-    ...baseColumnChartConfig,
-    xAxis: {
-      categories: [
-        `<strong>Dépenses</strong><br>${formatMonetaryImpact(totalExpenses)}`,
-        `<strong>Recettes</strong><br>${formatMonetaryImpact(totalRevenues)}`,
-      ],
-      opposite: true,
-    },
-    tooltip: {
-      enabled: false,
-    },
-    plotOptions: {
-      column: {
-        stacking: "normal",
-      },
-      series: {
-        enableMouseTracking: false,
-      },
-    },
-    legend: {
-      enabled: false,
-    },
-    series: economicBalance.map(({ value, name }) => {
-      const point = {
-        y: roundTo2Digits(value),
-        customTooltip: `${bearer} : ${formatMonetaryImpact(value)}`,
-      };
-
-      return {
-        name: getEconomicBalanceImpactLabel(name),
-        data: value > 0 ? [0, point] : [point, 0],
-        type: "column",
-      };
-    }) as Array<Highcharts.SeriesOptionsType>,
-  };
-
-  const economicBalanceValues = economicBalance.map(({ value }) => value);
-  const maxIndexValue = economicBalanceValues.indexOf(Math.max(...economicBalanceValues));
-  const minIndexValue = economicBalanceValues.indexOf(Math.min(...economicBalanceValues));
-
   return (
-    <ImpactsChartsSection title="Bilan de l'opération" onClick={onClick}>
+    <ImpactsChartsSection
+      title="Bilan de l'opération"
+      subtitle={`Pour ${bearer}`}
+      onClick={onClick}
+    >
       {economicBalance.length === 0 ? (
         <div>Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet.</div>
       ) : (
-        <HighchartsCustomColorsWrapper
-          colors={economicBalance.map(({ name }) => getEconomicBalanceImpactColor(name))}
-        >
-          <HighchartsMainColorsBehoreHover
-            colors={economicBalance.map(({ value }) => (value > 0 ? maxIndexValue : minIndexValue))}
-            aria-describedby={`tooltip-economic-balance`}
-          >
-            <HighchartsReact
-              containerProps={{ className: "highcharts-no-xaxis" }}
-              highcharts={Highcharts}
-              options={barChartOptions}
-            />
-
-            <ImpactChartTooltip
-              tooltipId={`tooltip-economic-balance`}
+        <Tooltip
+          kind="hover"
+          title={
+            <ImpactChartTooltipContent
               rows={economicBalance.map(({ value, name }) => ({
                 label: getEconomicBalanceImpactLabel(name),
+                color: getEconomicBalanceImpactColor(name),
                 value: value,
                 valueText: formatMonetaryImpact(value),
               }))}
             />
-          </HighchartsMainColorsBehoreHover>
-        </HighchartsCustomColorsWrapper>
+          }
+        >
+          <HighchartBarColoredChart
+            categoryLabels={[
+              `<strong>Dépenses</strong><br>${formatMonetaryImpact(totalExpenses)}`,
+              `<strong>Recettes</strong><br>${formatMonetaryImpact(totalRevenues)}`,
+            ]}
+            data={economicBalance.map(({ value, name }) => {
+              return {
+                label: getEconomicBalanceImpactLabel(name),
+                color: getEconomicBalanceImpactColor(name),
+                values: value > 0 ? [0, roundTo2Digits(value)] : [roundTo2Digits(value), 0],
+              };
+            })}
+          />
+        </Tooltip>
       )}
     </ImpactsChartsSection>
   );

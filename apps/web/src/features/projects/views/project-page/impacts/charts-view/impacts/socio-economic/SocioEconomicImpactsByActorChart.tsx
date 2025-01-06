@@ -76,14 +76,11 @@ function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
     ],
   };
   return (
-    <>
-      <h4 className="tw-text-sm tw-mt-[-24px]">Par bénéficiaires</h4>
-      <HighchartsReact
-        containerProps={{ className: "highcharts-no-xaxis" }}
-        highcharts={Highcharts}
-        options={barChartOptions}
-      />
-    </>
+    <HighchartsReact
+      containerProps={{ className: "highcharts-no-xaxis" }}
+      highcharts={Highcharts}
+      options={barChartOptions}
+    />
   );
 }
 

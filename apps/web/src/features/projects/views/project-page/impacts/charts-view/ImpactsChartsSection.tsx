@@ -4,11 +4,12 @@ import classNames from "@/shared/views/clsx";
 
 type Props = {
   title: ReactNode;
+  subtitle?: ReactNode;
   children?: ReactNode;
   onClick?: () => void;
 };
 
-const ImpactsChartsSection = ({ title, children, onClick }: Props) => {
+const ImpactsChartsSection = ({ title, subtitle, children, onClick }: Props) => {
   return (
     <section
       className={classNames(
@@ -32,8 +33,13 @@ const ImpactsChartsSection = ({ title, children, onClick }: Props) => {
       )}
       onClick={onClick}
     >
-      <h3 className="tw-text-2xl">{title}</h3>
-      <div className="tw-flex tw-flex-col tw-grow tw-justify-center">{children}</div>
+      <h3
+        className={classNames("tw-text-2xl", !subtitle ? "tw-mb-[calc(4rem + 20px)]" : "tw-mb-2")}
+      >
+        {title}
+      </h3>
+      {subtitle && <h4 className="tw-text-sm tw-font-normal tw-mb-2">{subtitle}</h4>}
+      <div className="tw-flex tw-flex-col tw-grow tw-justify-between">{children}</div>
     </section>
   );
 };

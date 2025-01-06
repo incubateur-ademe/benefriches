@@ -19,7 +19,6 @@ function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotal
         `<strong>Bilan de l'opération</strong><br>${formatMonetaryImpact(economicBalanceTotal)}`,
         `<strong>Impacts socio-économiques</strong><br>${formatMonetaryImpact(socioEconomicTotalImpact)}`,
       ],
-      opposite: true,
     },
     tooltip: {
       enabled: false,

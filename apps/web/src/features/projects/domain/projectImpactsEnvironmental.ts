@@ -124,7 +124,8 @@ export const getEnvironmentalProjectImpacts = (
   if (
     avoidedCarTrafficCo2EqEmissions ||
     avoidedAirConditioningCo2EqEmissions ||
-    avoidedCO2TonsWithEnergyProduction
+    avoidedCO2TonsWithEnergyProduction ||
+    soilsCarbonStorage.isSuccess
   ) {
     const details: ImpactDetails[] = [];
 

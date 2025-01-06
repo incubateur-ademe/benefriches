@@ -16,7 +16,7 @@ type SocialMainImpactName =
   | "avoided_vehicule_kilometers"
   | "households_powered_by_renewable_energy";
 
-type SocialImpactDetailsName =
+export type SocialImpactDetailsName =
   | "operations_full_time_jobs"
   | "conversion_full_time_jobs"
   | "avoided_friche_severe_accidents"
