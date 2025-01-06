@@ -8,7 +8,7 @@ import {
 import { setupAppSettingsListeners } from "@/shared/app-settings/core/appSettingsListeners";
 
 import { rootReducer } from "./rootReducer";
-import { AppDependencies, RootState } from "./store";
+import { AppDependencies, AppDispatch, RootState } from "./store";
 
 export type AppListenerMiddlewareInstance = ListenerMiddlewareInstance<
   ReturnType<typeof rootReducer>,
@@ -17,12 +17,12 @@ export type AppListenerMiddlewareInstance = ListenerMiddlewareInstance<
 >;
 
 export const getListener = (appDependencies: AppDependencies): AppListenerMiddlewareInstance => {
-  return createListenerMiddleware<RootState, Dispatch, AppDependencies>({
+  return createListenerMiddleware({
     extra: appDependencies,
   });
 };
 
-export type AppStartListening = TypedStartListening<RootState, Dispatch, AppDependencies>;
+export type AppStartListening = TypedStartListening<RootState, AppDispatch, AppDependencies>;
 
 export function setupAllListeners(startAppListening: AppStartListening) {
   setupAppSettingsListeners(startAppListening);

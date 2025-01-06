@@ -65,7 +65,7 @@ export const createStore = (
     },
   });
 
-  setupAllListeners(listener.startListening);
+  setupAllListeners(listener.startListening.withTypes<RootState, AppDispatch, AppDependencies>());
 
   return store;
 };
