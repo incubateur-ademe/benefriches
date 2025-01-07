@@ -5,9 +5,12 @@ import {
   SoilsDistribution,
   UrbanSpaceCategory,
   BuildingsEconomicActivityUse,
+  SurfaceAreaDistribution,
+  SurfaceAreaDistributionJson,
 } from "shared";
 
 import { RootState } from "@/app/application/store";
+import { selectAppSettings } from "@/shared/app-settings/core/appSettings";
 
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
@@ -42,6 +45,65 @@ export const selectCreateMode = createSelector([selectSelf], (state) => state.cr
 export const selectSpacesCategories = createSelector(
   [selectSelf],
   (state): UrbanSpaceCategory[] => state.creationData.spacesCategories ?? [],
+);
+
+type SurfaceAreaDistributionWithUnit<TSurface extends string> = {
+  unit: "percentage" | "squareMeters";
+  value: SurfaceAreaDistributionJson<TSurface>;
+};
+const getSurfaceAreaDistributionWithUnit = <TSurface extends string>(
+  surfaceAreaDistributionInSquareMeters: SurfaceAreaDistributionJson<TSurface>,
+  outputUnit: "percentage" | "squareMeters",
+): SurfaceAreaDistributionWithUnit<TSurface> => {
+  const surfaceAreaDistribution = SurfaceAreaDistribution.fromJSON(
+    surfaceAreaDistributionInSquareMeters,
+  );
+  return outputUnit === "percentage"
+    ? {
+        unit: "percentage",
+        value: surfaceAreaDistribution.getDistributionInPercentage(),
+      }
+    : { unit: "squareMeters", value: surfaceAreaDistribution.toJSON() };
+};
+
+export const selectSpacesCategoriesSurfaceDistribution = createSelector(
+  [selectSelf, selectAppSettings],
+  (state, appSettings) => {
+    return getSurfaceAreaDistributionWithUnit(
+      state.creationData.spacesCategoriesDistribution ?? {},
+      appSettings.surfaceAreaInputMode,
+    );
+  },
+);
+
+export const selectPublicSpacesDistribution = createSelector(
+  [selectSelf, selectAppSettings],
+  (state, appSettings) => {
+    return getSurfaceAreaDistributionWithUnit(
+      state.creationData.publicSpacesDistribution ?? {},
+      appSettings.surfaceAreaInputMode,
+    );
+  },
+);
+
+export const selectGreenSpacesDistribution = createSelector(
+  [selectSelf, selectAppSettings],
+  (state, appSettings) => {
+    return getSurfaceAreaDistributionWithUnit(
+      state.creationData.greenSpacesDistribution ?? {},
+      appSettings.surfaceAreaInputMode,
+    );
+  },
+);
+
+export const selectLivingAndActivitySpacessDistribution = createSelector(
+  [selectSelf, selectAppSettings],
+  (state, appSettings) => {
+    return getSurfaceAreaDistributionWithUnit(
+      state.creationData.livingAndActivitySpacesDistribution ?? {},
+      appSettings.surfaceAreaInputMode,
+    );
+  },
 );
 
 export const selectSpaceCategorySurfaceArea = createSelector(

@@ -2,7 +2,10 @@ import {
   greenSpacesDistributionCompleted,
   greenSpacesDistributionReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { selectSpaceCategorySurfaceArea } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+import {
+  selectGreenSpacesDistribution,
+  selectSpaceCategorySurfaceArea,
+} from "@/features/create-project/application/urban-project/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import UrbanGreenSpacesDistribution, { FormValues } from "./UrbanGreenSpacesDistribution";
@@ -12,9 +15,11 @@ export default function UrbanGreenSpacesDistributionContainer() {
   const greenSpacesSurfaceArea = useAppSelector((state) =>
     selectSpaceCategorySurfaceArea(state, "GREEN_SPACES"),
   );
+  const greenSpacesSurfaceAreaDistribution = useAppSelector(selectGreenSpacesDistribution);
 
   return (
     <UrbanGreenSpacesDistribution
+      initialValues={greenSpacesSurfaceAreaDistribution.value}
       totalSurfaceArea={greenSpacesSurfaceArea}
       onSubmit={(formData: FormValues) => {
         dispatch(greenSpacesDistributionCompleted({ surfaceAreaDistribution: formData }));

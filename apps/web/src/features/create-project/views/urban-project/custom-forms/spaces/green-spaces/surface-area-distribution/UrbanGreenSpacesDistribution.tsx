@@ -11,6 +11,7 @@ import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceA
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 type Props = {
+  initialValues: SurfaceAreaDistributionJson<UrbanGreenSpace>;
   totalSurfaceArea: number;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -18,9 +19,15 @@ type Props = {
 
 export type FormValues = SurfaceAreaDistributionJson<UrbanGreenSpace>;
 
-function UrbanGreenSpacesDistribution({ totalSurfaceArea, onSubmit, onBack }: Props) {
+function UrbanGreenSpacesDistribution({
+  initialValues,
+  totalSurfaceArea,
+  onSubmit,
+  onBack,
+}: Props) {
   return (
     <SurfaceAreaDistributionForm
+      initialValues={initialValues}
       title="Quelle est la part de chaque espace à aménager sur les espaces verts ?"
       instructions={
         <FormInfo>

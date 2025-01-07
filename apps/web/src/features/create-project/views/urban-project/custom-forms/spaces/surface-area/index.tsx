@@ -3,7 +3,10 @@ import {
   spacesSurfaceAreaCompleted,
   spacesSurfaceAreaReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { selectSpacesCategories } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+import {
+  selectSpacesCategories,
+  selectSpacesCategoriesSurfaceDistribution,
+} from "@/features/create-project/application/urban-project/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import UrbanProjectSpaceCategoriesSurfaceAreaDistributionForm, {
@@ -14,9 +17,11 @@ export default function UrbanProjectSpaceCategoriesSurfaceAreaDistributionContai
   const dispatch = useAppDispatch();
   const totalSiteSurfaceArea = useAppSelector(selectSiteSurfaceArea);
   const selectedSpacesCategories = useAppSelector(selectSpacesCategories);
+  const initialValues = useAppSelector(selectSpacesCategoriesSurfaceDistribution);
 
   return (
     <UrbanProjectSpaceCategoriesSurfaceAreaDistributionForm
+      initialValues={initialValues.value}
       spacesCategories={selectedSpacesCategories}
       totalSurfaceArea={totalSiteSurfaceArea}
       onBack={() => {
