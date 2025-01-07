@@ -91,6 +91,10 @@ text.highcharts-data-label {
 }
 
 .fr-icon--xl::before {
+  --icon-size: 3rem;
+}
+
+.fr-icon--xxl::before {
   --icon-size: 3.5rem;
 }
 

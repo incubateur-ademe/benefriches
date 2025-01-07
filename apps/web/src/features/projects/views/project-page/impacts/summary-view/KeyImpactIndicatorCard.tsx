@@ -41,7 +41,7 @@ const KeyImpactIndicatorCard = ({
       >
         <span
           className={classNames(
-            "fr-icon--xl",
+            "fr-icon--xxl",
             type === "success"
               ? [fr.cx("fr-icon-checkbox-circle-fill"), "tw-text-impacts-positive-border"]
               : [fr.cx("fr-icon-warning-fill"), "tw-text-impacts-negative-border"],

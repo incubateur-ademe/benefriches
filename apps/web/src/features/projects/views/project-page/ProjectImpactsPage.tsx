@@ -6,6 +6,7 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { ProjectImpactsState, ViewMode } from "../../application/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType, ProjectFeatures } from "../../domain/projects.types";
+import ProjectImpactFooter from "./footer/ProjectImpactFooter";
 import ProjectImpactsActionBar from "./header/ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
@@ -61,7 +62,7 @@ function ProjectPage({
         <ProjectsImpactsPageHeader {...headerProps} />
       </div>
 
-      <div className="fr-container">
+      <div className="fr-container tw-pb-14">
         <ProjectImpactsActionBar
           selectedViewMode={currentViewMode}
           evaluationPeriod={evaluationPeriod}
@@ -79,10 +80,10 @@ function ProjectPage({
         )}
         {dataLoadingState === "loading" && <LoadingSpinner />}
         {dataLoadingState === "success" && (
-          <ProjectImpactsPage
-            evaluationPeriod={evaluationPeriod}
-            currentViewMode={currentViewMode}
-          />
+          <>
+            <ProjectImpactsPage currentViewMode={currentViewMode} />
+            <ProjectImpactFooter siteId={projectContext.siteId} />
+          </>
         )}
       </div>
     </div>

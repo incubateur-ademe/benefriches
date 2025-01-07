@@ -24,7 +24,7 @@ const badgeStyleClasses = {
   ["green-emeraude"]: "tw-bg-[#E3FDEB] tw-text-[#297254]",
   ["green-tilleul"]: "tw-bg-[#FEF7DA] tw-text-[#66673D]",
   ["blue"]: "tw-bg-[#F4F6FE] tw-text-[#2F4077]",
-  ["disabled"]: "tw-bg-[#E5E5E5] tw-text-[#929292]",
+  ["disabled"]: "tw-bg-[#E5E5E5] tw-text-[#929292] dark:tw-bg-[#929292] dark:tw-text-[#E5E5E5]",
   ["success"]: "tw-bg-impacts-positive-light",
   ["error"]: "tw-bg-impacts-negative-light",
   ["neutral"]: "tw-bg-impacts-neutral-main dark:tw-bg-impacts-neutral-light",

@@ -9,7 +9,6 @@ import ImpactsSummaryViewContainer from "./summary-view";
 
 type Props = {
   currentViewMode: ViewMode;
-  evaluationPeriod: number;
 };
 
 const ProjectImpactsView = ({ currentViewMode }: Props) => {

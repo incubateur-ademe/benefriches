@@ -24,6 +24,7 @@ export default {
       dsfr: {
         red: "var(--text-label-red-marianne)",
         openBlue: "var(--background-open-blue-france)",
+        altBlue: "var(--background-alt-blue-france)",
         titleBlue: "var(--text-title-blue-france)",
         borderBlue: "var(--border-plain-blue-france)",
         borderSuccess: "var(--border-plain-success)",
