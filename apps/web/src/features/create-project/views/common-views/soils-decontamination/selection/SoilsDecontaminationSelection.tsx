@@ -6,6 +6,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -14,8 +15,10 @@ export type FormValues = {
   decontaminationSelection: "partial" | "none" | "unknown" | null;
 };
 
-function SoilsDecontaminationSelection({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, formState, watch } = useForm<FormValues>();
+function SoilsDecontaminationSelection({ initialValues, onSubmit, onBack }: Props) {
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   return (
     <WizardFormLayout

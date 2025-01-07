@@ -49,6 +49,9 @@ describe("Urban project custom creation : soils decontamination", () => {
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
         currentStep: "SOILS_DECONTAMINATION_SURFACE_AREA",
+        creationDataDiff: {
+          decontaminationNeeded: "partial",
+        },
       });
     });
     it("goes to BUILDINGS_INTRODUCTION step and set 0 to decontaminated surface when step is completed with 'none' option", () => {
@@ -66,6 +69,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "BUILDINGS_INTRODUCTION",
         creationDataDiff: {
+          decontaminationNeeded: "none",
           decontaminatedSurfaceArea: 0,
         },
       });
@@ -88,6 +92,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "BUILDINGS_INTRODUCTION",
         creationDataDiff: {
+          decontaminationNeeded: "unknown",
           decontaminatedSurfaceArea: 250,
         },
       });
@@ -105,6 +110,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "STAKEHOLDERS_INTRODUCTION",
         creationDataDiff: {
+          decontaminationNeeded: "none",
           decontaminatedSurfaceArea: 0,
         },
       });
@@ -124,6 +130,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "STAKEHOLDERS_INTRODUCTION",
         creationDataDiff: {
+          decontaminationNeeded: "unknown",
           decontaminatedSurfaceArea: 250,
         },
       });
