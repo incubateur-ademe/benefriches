@@ -8,6 +8,7 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (surfaceArea: number) => void;
   onBack: () => void;
   contaminatedSoilSurface: number;
@@ -17,8 +18,15 @@ type FormValues = {
   percentSurfaceArea: number;
 };
 
-function SoilsDecontaminationSurfaceArea({ onSubmit, onBack, contaminatedSoilSurface }: Props) {
-  const { handleSubmit, register, formState, watch } = useForm<FormValues>();
+function SoilsDecontaminationSurfaceArea({
+  initialValues,
+  onSubmit,
+  onBack,
+  contaminatedSoilSurface,
+}: Props) {
+  const { handleSubmit, register, formState, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const percentSurfaceArea = watch("percentSurfaceArea");
   const surfaceArea = (percentSurfaceArea * contaminatedSoilSurface) / 100;

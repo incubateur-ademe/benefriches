@@ -224,3 +224,14 @@ export const getDefaultInstallationCosts = createSelector(selectSiteData, (state
   }
   return computeDefaultInstallationCostsFromSiteSurfaceArea(state.surfaceArea);
 });
+
+export const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSelector(
+  [selectSelf, selectSiteData],
+  (state, siteData): number => {
+    const contaminatedSurfaceArea = siteData?.contaminatedSoilSurface;
+    if (!contaminatedSurfaceArea) return 0;
+
+    const surfaceAreaToDecontaminate = state.creationData.decontaminatedSurfaceArea ?? 0;
+    return (surfaceAreaToDecontaminate * 100) / contaminatedSurfaceArea;
+  },
+);
