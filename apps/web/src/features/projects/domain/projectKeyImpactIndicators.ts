@@ -1,4 +1,4 @@
-import { convertCarbonToCO2eq, isLocalAuthority } from "shared";
+import { convertCarbonToCO2eq, isLocalAuthority, sumListWithKey } from "shared";
 
 import { getPercentageDifference } from "@/shared/services/percentage/percentage";
 
@@ -126,11 +126,11 @@ const getTaxesIncomeImpact = (impactsData?: ReconversionProjectImpactsResult["im
       impact === "local_transfer_duties_increase",
   );
 
-  if (!taxesIncomes || taxesIncomes.length > 0) {
+  if (!taxesIncomes || taxesIncomes.length === 0) {
     return undefined;
   }
 
-  return taxesIncomes.reduce((total, { amount }) => total + amount, 0);
+  return sumListWithKey(taxesIncomes, "amount");
 };
 
 const getFullTimeJobsImpact = (impactsData?: ReconversionProjectImpactsResult["impacts"]) => {
