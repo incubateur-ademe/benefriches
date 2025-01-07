@@ -1,4 +1,4 @@
-import { UrbanSpaceCategory } from "shared";
+import { SurfaceAreaDistributionJson, UrbanSpaceCategory } from "shared";
 
 import {
   getDescriptionForUrbanSpaceCategory,
@@ -16,7 +16,7 @@ type Props = {
   onBack: () => void;
 };
 
-export type FormValues = Record<UrbanSpaceCategory, number>;
+export type FormValues = SurfaceAreaDistributionJson<UrbanSpaceCategory>;
 
 function SpacesCategoriesSurfaceAreaDistributionForm({
   spacesCategories,

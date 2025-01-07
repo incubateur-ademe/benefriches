@@ -1,3 +1,5 @@
+import { SurfaceAreaDistributionJson } from "shared";
+
 import {
   buildingsUseCategorySurfaceAreasCompleted,
   buildingsUseCategorySurfaceAreasReverted,
@@ -14,7 +16,7 @@ export default function BuildingsUseSurfaceAreaContainers() {
 
   return (
     <BuildingsUseSurfaceAreas
-      onSubmit={(data: Record<BuildingsUseCategory, number>) => {
+      onSubmit={(data: SurfaceAreaDistributionJson<BuildingsUseCategory>) => {
         dispatch(buildingsUseCategorySurfaceAreasCompleted(data));
       }}
       onBack={() => {

@@ -1,4 +1,8 @@
-import { BuildingsEconomicActivityUse, ECONOMIC_ACTIVITY_BUILDINGS_USE } from "shared";
+import {
+  BuildingsEconomicActivityUse,
+  ECONOMIC_ACTIVITY_BUILDINGS_USE,
+  SurfaceAreaDistributionJson,
+} from "shared";
 
 import {
   getDescriptionForBuildingFloorArea,
@@ -15,7 +19,7 @@ type Props = {
   onBack: () => void;
 };
 
-export type FormValues = Record<BuildingsEconomicActivityUse, number>;
+export type FormValues = SurfaceAreaDistributionJson<BuildingsEconomicActivityUse>;
 
 function EconomicActivitiesSurfaceAreaForm({ totalSurfaceArea, onSubmit, onBack }: Props) {
   return (

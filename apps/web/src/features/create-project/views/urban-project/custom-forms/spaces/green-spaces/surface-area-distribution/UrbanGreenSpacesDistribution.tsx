@@ -1,4 +1,4 @@
-import { UrbanGreenSpace, urbanGreenSpaces } from "shared";
+import { SurfaceAreaDistributionJson, UrbanGreenSpace, urbanGreenSpaces } from "shared";
 
 import {
   getColorForUrbanGreenSpace,
@@ -16,7 +16,7 @@ type Props = {
   onBack: () => void;
 };
 
-export type FormValues = Record<UrbanGreenSpace, number>;
+export type FormValues = SurfaceAreaDistributionJson<UrbanGreenSpace>;
 
 function UrbanGreenSpacesDistribution({ totalSurfaceArea, onSubmit, onBack }: Props) {
   return (

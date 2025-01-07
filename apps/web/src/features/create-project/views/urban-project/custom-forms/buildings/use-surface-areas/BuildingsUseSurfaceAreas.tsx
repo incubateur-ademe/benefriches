@@ -1,3 +1,5 @@
+import { SurfaceAreaDistributionJson } from "shared";
+
 import {
   BUILDINGS_USE_CATEGORIES,
   BuildingsUseCategory,
@@ -15,7 +17,7 @@ type Props = {
   onBack: () => void;
 };
 
-type FormValues = Record<BuildingsUseCategory, number>;
+type FormValues = SurfaceAreaDistributionJson<BuildingsUseCategory>;
 
 function BuildingsUseCategorySurfaceAreas({ totalSurfaceArea, onSubmit, onBack }: Props) {
   return (
