@@ -5,6 +5,7 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -27,6 +28,23 @@ const NitrogenCycleDescription = ({ baseSoilsDistribution, forecastSoilsDistribu
 
   return (
     <>
+      <ModalHeader
+        title="🍄 Cycle de l'azote"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          {
+            label: "Services écosystémiques",
+            id: "socio-economic.ecosystem-services",
+          },
+          { label: "Cycle de l'azote" },
+        ]}
+      />
       <p>
         Les zones naturelles telles que les prairies et les zones humides ont un apport sur la
         dénitrification des sols et eaux souterraines, réduisant les quantités de nitrates dégradant

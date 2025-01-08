@@ -6,6 +6,7 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -27,6 +28,23 @@ const PollinationDescription = ({ baseSoilsDistribution, forecastSoilsDistributi
   ).filter(([key]) => isSurfaceWithEcosystemBenefits(key));
   return (
     <>
+      <ModalHeader
+        title="🐝 Pollinisation"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          {
+            label: "Services écosystémiques",
+            id: "socio-economic.ecosystem-services",
+          },
+          { label: "Pollinisation" },
+        ]}
+      />
       <p>
         Les pollinisateurs jouent un rôle crucial dans la production alimentaire, un nombre
         important de cultures dépendant d’une manière ou d’une autre de la pollinisation animale. Le

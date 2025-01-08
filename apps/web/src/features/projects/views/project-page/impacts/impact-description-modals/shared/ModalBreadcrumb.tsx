@@ -1,13 +1,16 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import { useId } from "react";
+import { useContext, useId } from "react";
 
 import classNames from "@/shared/views/clsx";
 
+import { ImpactDescriptionModalCategory } from "../ImpactDescriptionModalWizard";
+import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+
 type ModalBreadcrumbSegments = {
-  onClick?: () => void;
   label: string;
-  isCurrent?: boolean;
+  id?: ImpactDescriptionModalCategory;
 }[];
+
 type Props = {
   segments: ModalBreadcrumbSegments;
 };
@@ -15,29 +18,26 @@ type Props = {
 const ModalBreadcrumb = ({ segments }: Props) => {
   const id = useId();
   const breadcrumbId = `breadcrumb-${id}`;
+  const lastIndex = segments.length - 1;
+
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
   return (
-    <nav
-      role="navigation"
-      className={classNames(
-        fr.cx("fr-breadcrumb"),
-        "tw-w-3/4",
-        "tw-absolute",
-        "tw-top-1",
-        "tw-left-8",
-      )}
-    >
+    <nav role="navigation" className={classNames(fr.cx("fr-breadcrumb"), "tw-m-0", "tw-py-1")}>
       <button className="fr-breadcrumb__button" aria-expanded="false" aria-controls={breadcrumbId}>
         Voir le fil d'Ariane
       </button>
       <div className="fr-collapse" id={breadcrumbId}>
         <ol className="fr-breadcrumb__list">
-          {segments.map(({ onClick, isCurrent, label }) => (
+          {segments.map(({ label, id }, index) => (
             <li key={label}>
-              {onClick ? (
+              {id ? (
                 <button
                   className="fr-breadcrumb__link"
-                  onClick={onClick}
-                  aria-current={isCurrent ? "page" : "false"}
+                  onClick={() => {
+                    openImpactModalDescription(id);
+                  }}
+                  aria-current={lastIndex === index ? "page" : "false"}
                 >
                   {label}
                 </button>

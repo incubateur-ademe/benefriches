@@ -1,20 +1,29 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { useContext } from "react";
 
-import { EnvironmentalImpactDescriptionModalId } from "../types";
+import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import ModalHeader from "../../shared/ModalHeader";
 
-type Props = {
-  onChangeModalCategoryOpened: (modalCategory: EnvironmentalImpactDescriptionModalId) => void;
-};
-
-const PermeableSurfaceDescription = ({ onChangeModalCategoryOpened }: Props) => {
+const PermeableSurfaceDescription = () => {
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
   return (
     <>
+      <ModalHeader
+        title="🌧 Surface perméable"
+        breadcrumbSegments={[
+          {
+            label: "Impacts environnementaux",
+            id: "environmental",
+          },
+          { label: "Surface perméable" },
+        ]}
+      />
       <p>
         Il s'agit de la surface qui n'est pas imperméabilisée et permet ainsi l'infiltration de
         l'eau de pluie sur la parcelle. La surface perméable peut être{" "}
         <Button
           onClick={() => {
-            onChangeModalCategoryOpened("environmental.minerale-surface");
+            openImpactModalDescription("environmental.minerale-surface");
           }}
           priority="tertiary no outline"
         >
@@ -23,7 +32,7 @@ const PermeableSurfaceDescription = ({ onChangeModalCategoryOpened }: Props) => 
         ou{" "}
         <Button
           onClick={() => {
-            onChangeModalCategoryOpened("environmental.green-surface");
+            openImpactModalDescription("environmental.green-surface");
           }}
           priority="tertiary no outline"
         >

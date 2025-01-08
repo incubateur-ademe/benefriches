@@ -1,6 +1,9 @@
+import ModalHeader from "../shared/ModalHeader";
+
 const SocialMainDescription = () => {
   return (
     <>
+      <ModalHeader title="Impacts sociaux" breadcrumbSegments={[{ label: "Impacts sociaux" }]} />
       <p>La catégorie des impacts sociaux regroupe les impacts :</p>
       <ul>
         <li>sur l'emploi</li>

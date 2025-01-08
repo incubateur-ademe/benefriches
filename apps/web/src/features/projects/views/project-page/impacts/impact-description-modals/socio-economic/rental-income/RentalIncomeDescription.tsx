@@ -2,6 +2,7 @@ import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-numb
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ProjectData } from "../../ImpactModalDescriptionProvider";
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -20,6 +21,19 @@ const RentalIncomeDescription = ({ developmentPlan }: Props) => {
 
   return (
     <>
+      <ModalHeader
+        title="🔑 Revenu locatif"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts économiques directs",
+          },
+          { label: "Dépenses friche évitées" },
+        ]}
+      />
       <p>
         Dans certains projets (ex : centrale photovoltaïque au sol), le foncier aménagé ne fait pas
         l’objet de cession mais d’une location. Les revenus issus de cette éventuelle location sont

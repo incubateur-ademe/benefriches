@@ -1,6 +1,21 @@
+import ModalHeader from "../../shared/ModalHeader";
+
 const AvoidedFricheExpensesDescription = () => {
   return (
     <>
+      <ModalHeader
+        title="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts économiques directs",
+          },
+          { label: "Dépenses friche évitées" },
+        ]}
+      />
       <p>
         Un site qui reste en l'état, sans intervention, induit des coûts importants, à la charge de
         l'ancien locataire ou du propriétaire du terrain :

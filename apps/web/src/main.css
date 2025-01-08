@@ -86,10 +86,6 @@ text.highcharts-data-label {
   border-radius: 16px;
 }
 
-.fr-modal.modal-with-breadcrumb .fr-modal__content {
-  padding-top: 1rem;
-}
-
 .fr-icon--xl::before {
   --icon-size: 3rem;
 }

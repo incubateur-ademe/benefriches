@@ -6,6 +6,7 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -30,6 +31,23 @@ const ForestRelatedProductDescription = ({
   ).filter(([key]) => isForest(key));
   return (
     <>
+      <ModalHeader
+        title="🪵 Produits issus de la forêt"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          {
+            label: "Services écosystémiques",
+            id: "socio-economic.ecosystem-services",
+          },
+          { label: "Produits issus de la forêt" },
+        ]}
+      />
       <p>
         Parmi les services écosystémiques, les services de production correspondent aux produits
         obtenus directement de l’écosystème tels que la nourriture, le bois, les énergies, les

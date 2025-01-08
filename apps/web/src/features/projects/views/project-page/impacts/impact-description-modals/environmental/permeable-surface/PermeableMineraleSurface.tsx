@@ -1,6 +1,22 @@
+import ModalHeader from "../../shared/ModalHeader";
+
 const PermeableMineraleSurfaceDescription = () => {
   return (
     <>
+      <ModalHeader
+        title="🪨 Surface minérale"
+        breadcrumbSegments={[
+          {
+            label: "Impacts environnementaux",
+            id: "environmental",
+          },
+          {
+            label: "Surface perméable",
+            id: "environmental.permeable-surface",
+          },
+          { label: "Surface minérale" },
+        ]}
+      />
       <p>
         Il s'agit de la surface non imperméabilisée dont le revêtement est minéral : granulat,
         gravier, cailloux, roche mère ou sol nu non recouvert de terre végétale ou de végétation.

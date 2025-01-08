@@ -1,17 +1,27 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { useContext } from "react";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { SocialImpactDescriptionModalId } from "../types";
 
-type Props = {
-  onChangeModalCategoryOpened: (modalCategory: SocialImpactDescriptionModalId) => void;
-};
+const FullTimeJobsDescription = () => {
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
-const FullTimeJobsDescription = ({ onChangeModalCategoryOpened }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="🧑‍🔧 Emplois équivalent temps plein"
+        breadcrumbSegments={[
+          {
+            label: "Impacts sociaux",
+            id: "social",
+          },
+          { label: "Emplois équivalent temps plein" },
+        ]}
+      />
       <p>
         La concrétisation du projet implique généralement une activité économique qui va impliquer
         des emplois (pour des études et/ou des travaux) : pour la remise en état du site
@@ -32,7 +42,7 @@ const FullTimeJobsDescription = ({ onChangeModalCategoryOpened }: Props) => {
       <div className="tw-flex tw-flex-col">
         <Button
           onClick={() => {
-            onChangeModalCategoryOpened("social.full-time-reconversion-jobs");
+            openImpactModalDescription("social.full-time-reconversion-jobs");
           }}
           priority="tertiary no outline"
         >
@@ -40,7 +50,7 @@ const FullTimeJobsDescription = ({ onChangeModalCategoryOpened }: Props) => {
         </Button>{" "}
         <Button
           onClick={() => {
-            onChangeModalCategoryOpened("social.full-time-operation-jobs");
+            openImpactModalDescription("social.full-time-operation-jobs");
           }}
           priority="tertiary no outline"
         >

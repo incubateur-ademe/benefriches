@@ -1,6 +1,7 @@
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 
 import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
+import ModalHeader from "../../shared/ModalHeader";
 
 type Props = {
   baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];
@@ -8,7 +9,21 @@ type Props = {
 };
 
 const CarbonSoilsStorageEnvironmentalDescription = (props: Props) => {
-  return <CarbonSoilsStorageDescription withMonetarisation={false} {...props} />;
+  return (
+    <>
+      <ModalHeader
+        title="🍂️ Carbone stocké dans les sols"
+        breadcrumbSegments={[
+          {
+            label: "Impacts environnementaux",
+            id: "environmental",
+          },
+          { label: "Carbone stocké dans les sols" },
+        ]}
+      />
+      <CarbonSoilsStorageDescription withMonetarisation={false} {...props} />
+    </>
+  );
 };
 
 export default CarbonSoilsStorageEnvironmentalDescription;

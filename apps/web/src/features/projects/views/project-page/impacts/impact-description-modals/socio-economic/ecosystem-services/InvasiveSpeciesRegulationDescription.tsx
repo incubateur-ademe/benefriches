@@ -6,6 +6,7 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -30,6 +31,23 @@ const InvasiveSpeciesRegulationDescription = ({
   ).filter(([key]) => isSurfaceWithEcosystemBenefits(key));
   return (
     <>
+      <ModalHeader
+        title="🦔 Régulation des espèces invasives"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          {
+            label: "Services écosystémiques",
+            id: "socio-economic.ecosystem-services",
+          },
+          { label: "Régulation des espèces invasives" },
+        ]}
+      />
       <p>
         Les espaces naturels, comportant un nombre d'espèces endémiques élevé, peuvent servir de
         barrière à l'invasion. La fonction de régulation des invasions est la combinaison d'une

@@ -1,5 +1,6 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -10,6 +11,24 @@ type Props = {
 const AvoidedIllegalDumpingCostsDescription = ({ addressLabel }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="🚮 Débarras de dépôt sauvage"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts économiques directs",
+          },
+          {
+            label: "Dépenses friche évitées",
+            id: "socio-economic.avoided-friche-costs",
+          },
+
+          { label: "Débarras de dépôt sauvage" },
+        ]}
+      />
       <p>
         De par sa vacance, le site peut subir des incivilités tels que des dépôts sauvages, dont
         l’enlèvement est coûteux !

@@ -1,6 +1,7 @@
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -17,6 +18,16 @@ const HouseholdsPoweredByRenewableEnergyDescription = ({
 }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="🏠 Foyers alimentés par les EnR"
+        breadcrumbSegments={[
+          {
+            label: "Impacts sociaux",
+            id: "social",
+          },
+          { label: "Foyers alimentés par les EnR" },
+        ]}
+      />
       <p>
         Cet indicateur propose une illustration du potentiel de production en électricité
         renouvelable qui sera produite par la centrale du projet en nombre de foyers alimentés.

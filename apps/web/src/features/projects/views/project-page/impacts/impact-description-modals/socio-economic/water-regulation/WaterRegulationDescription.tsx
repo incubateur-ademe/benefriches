@@ -6,6 +6,7 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -36,6 +37,19 @@ const WaterRegulationDescription = ({
 
   return (
     <>
+      <ModalHeader
+        title="🚰 Régulation de la qualité de l'eau"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          { label: "Régulation de la qualité de l'eau" },
+        ]}
+      />
       <p>
         Les friches sont bien souvent concernées par des pollutions des sols, vestiges des activités
         passées. Il peut en résulter des impacts sur les eaux souterraines, à savoir une dégradation

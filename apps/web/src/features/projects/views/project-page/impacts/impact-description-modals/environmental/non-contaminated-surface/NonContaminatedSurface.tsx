@@ -1,6 +1,18 @@
+import ModalHeader from "../../shared/ModalHeader";
+
 const NonContaminatedSurfaceDescription = () => {
   return (
     <>
+      <ModalHeader
+        title="✨ Surface non polluée"
+        breadcrumbSegments={[
+          {
+            label: "Impacts environnementaux",
+            id: "environmental",
+          },
+          { label: "Surface non polluée" },
+        ]}
+      />
       <p>
         Les friches sont bien souvent concernées par des pollutions des sols, vestiges des activités
         passées. Réaliser un projet sur un tel site implique donc souvent la mise en place de mesure

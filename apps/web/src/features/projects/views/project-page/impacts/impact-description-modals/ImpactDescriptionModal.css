@@ -1,0 +1,11 @@
+#modal-impacts-description .fr-modal__title {
+  display: none;
+}
+
+#modal-impacts-description.fr-modal .fr-modal__content {
+  padding-top: 0;
+}
+
+#modal-impacts-description .fr-modal__header {
+  padding-bottom: 0;
+}

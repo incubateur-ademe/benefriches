@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 import {
   EnvironmentalImpact,
   EnvironmentalImpactName,
@@ -8,6 +10,7 @@ import {
   getEnvironmentalDetailsImpactLabel,
   getEnvironmentalImpactLabel,
 } from "../../getImpactLabel";
+import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
 import ImpactSection from "../ImpactSection";
@@ -35,9 +38,16 @@ const ENVIRONMENTAL_SECTIONS = {
 const EnvironmentalListSection = ({ impacts }: Props) => {
   const co2Impacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.co2.includes(name));
   const soilsImpacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.soils.includes(name));
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
-    <ImpactSection isMain title="Impacts environnementaux">
+    <ImpactSection
+      isMain
+      title="Impacts environnementaux"
+      onTitleClick={() => {
+        openImpactModalDescription("environmental");
+      }}
+    >
       {co2Impacts.length > 0 && (
         <ImpactSection title="Impacts sur le CO2-eq">
           {co2Impacts.map(({ name, impact, type }) => (

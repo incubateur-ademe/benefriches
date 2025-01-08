@@ -1,6 +1,7 @@
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -11,6 +12,24 @@ type Props = {
 const AvoidedSecurityCostsDescription = ({ siteSurfaceArea }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="👮‍♀️ Gardiennage"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts économiques directs",
+          },
+          {
+            label: "Dépenses friche évitées",
+            id: "socio-economic.avoided-friche-costs",
+          },
+
+          { label: "Gardiennage" },
+        ]}
+      />
       <p>
         Afin d’éviter que le site ne dégrade de manière naturelle ou par l’intermédiaire de
         dégradation volontaire ou de vandalisme (ex&nbsp;: vol de métaux, casse de vitres, incendie)

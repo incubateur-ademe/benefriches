@@ -1,6 +1,7 @@
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -11,6 +12,19 @@ type Props = {
 const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="🅿️ Dépenses d’entretien des VRD"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts économiques directs",
+          },
+          { label: "Dépenses d’entretien des VRD" },
+        ]}
+      />
       <p>
         L’entretien des réseaux et voiries (VRD) est proportionnel à l’ampleur de ces VRD. L’impact
         de cet entretien est donc moindre en reconversion qu’en extension. Toutefois, en cas de

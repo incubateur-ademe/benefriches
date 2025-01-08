@@ -1,6 +1,7 @@
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -11,6 +12,20 @@ type Props = {
 const UrbanProjectOperationFullTimeJobsDescription = ({ groundFloorRetailSurface }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="🧑‍🔧 Exploitation du site"
+        breadcrumbSegments={[
+          {
+            label: "Impacts sociaux",
+            id: "social",
+          },
+          {
+            label: "Emplois équivalent temps plein",
+            id: "social.full-time-jobs",
+          },
+          { label: "Mobilisés pour l’exploitation du site" },
+        ]}
+      />
       <p>
         Il s’agit des emplois mobilisés pendant la durée d’exploitation du projet (étude et
         travaux). Ils sont exprimés en “équivalent temps pleins”.

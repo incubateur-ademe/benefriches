@@ -1,16 +1,16 @@
 import Button from "@codegouvfr/react-dsfr/Button";
+import { useContext } from "react";
 import { EcosystemServicesImpact } from "shared";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import { ImpactsData } from "../../ImpactModalDescriptionProvider";
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { getSocioEconomicSectionModalTitle } from "../getTitle";
-import { SocioEconomicImpactDescriptionModalId } from "../types";
 
 type Props = {
-  onChangeModalCategoryOpened: (modalCategory: SocioEconomicImpactDescriptionModalId) => void;
   impactsData: ImpactsData;
 };
 
@@ -37,17 +37,54 @@ const getDescriptionModalKey = (
   }
 };
 
-const EcosystemServicesDescription = ({ onChangeModalCategoryOpened, impactsData }: Props) => {
+const getEcosystemServiceDetailsTitle = (
+  impactName: EcosystemServicesImpact["details"][number]["impact"],
+) => {
+  switch (impactName) {
+    case "carbon_storage":
+      return "🍂️ Carbone stocké dans les sols";
+    case "nature_related_wellness_and_leisure":
+      return "🚵‍♂️ Loisirs et bien-être liés à la nature";
+    case "forest_related_product":
+      return "🪵 Produits issus de la forêt";
+    case "invasive_species_regulation":
+      return "🦔 Régulation des espèces invasives";
+    case "nitrogen_cycle":
+      return "🍄 Cycle de l'azote";
+    case "pollination":
+      return "🐝 Pollinisation";
+    case "soil_erosion":
+      return "🌾 Régulation de l'érosion des sols";
+    case "water_cycle":
+      return "💧 Cycle de l'eau";
+  }
+};
+
+const EcosystemServicesDescription = ({ impactsData }: Props) => {
   const ecosystemServicesImpact = impactsData.socioeconomic.impacts.find(
     (impact): impact is EcosystemServicesImpact => impact.impact === "ecosystem_services",
   );
 
-  const ecosystemServicesDetailsKeys = (ecosystemServicesImpact?.details ?? []).map(({ impact }) =>
-    getDescriptionModalKey(impact),
-  );
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
     <>
+      <ModalHeader
+        title="🌻 Services écosystémiques"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          {
+            label: "Services écosystémiques",
+            id: "socio-economic.ecosystem-services",
+          },
+        ]}
+      />
       <p>
         Les services écosystémiques sont définis comme des avantages socio-économiques, directs et
         indirects, retirés par l'homme du fonctionnement (notion de « fonction ») des écosystèmes.
@@ -119,21 +156,19 @@ const EcosystemServicesDescription = ({ onChangeModalCategoryOpened, impactsData
       <p>
         <strong>Bénéficiaires</strong> : humanité
       </p>
-
       <div className="tw-flex tw-flex-col">
-        {ecosystemServicesDetailsKeys.map((key) => (
+        {(ecosystemServicesImpact?.details ?? []).map(({ impact }) => (
           <Button
-            key={key}
+            key={impact}
             onClick={() => {
-              onChangeModalCategoryOpened(key);
+              openImpactModalDescription(getDescriptionModalKey(impact));
             }}
             priority="tertiary no outline"
           >
-            {getSocioEconomicSectionModalTitle(key)}
+            {getEcosystemServiceDetailsTitle(impact)}
           </Button>
         ))}
       </div>
-
       <ModalTitleTwo>Aller plus loin</ModalTitleTwo>
       <ul>
         <li>

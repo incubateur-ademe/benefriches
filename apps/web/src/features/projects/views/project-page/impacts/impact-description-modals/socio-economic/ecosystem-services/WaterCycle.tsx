@@ -10,6 +10,7 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -38,6 +39,23 @@ const WaterCycle = ({ baseSoilsDistribution, forecastSoilsDistribution }: Props)
 
   return (
     <>
+      <ModalHeader
+        title="💧 Cycle de l'eau"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          {
+            label: "Services écosystémiques",
+            id: "socio-economic.ecosystem-services",
+          },
+          { label: "Cycle de l'eau" },
+        ]}
+      />
       <p>
         Les zones naturelles, et dans une moindre mesure les zones agricoles ou les zones
         artificialisées mais non imperméabilisées, ont un apport sur la gestion de l’eau en termes

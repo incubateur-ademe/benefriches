@@ -1,10 +1,19 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 const EconomicBalanceDescription = () => {
   return (
     <>
+      <ModalHeader
+        title="📉 Bilan de l'opération"
+        breadcrumbSegments={[
+          {
+            label: "Bilan de l'opération",
+          },
+        ]}
+      />
       <p>
         Le bilan d'opération regroupe l'ensemble des recettes et des dépenses d'une opération
         d'aménagement ou de construction. Son périmètre est donc circonscrit au porteur du projet.

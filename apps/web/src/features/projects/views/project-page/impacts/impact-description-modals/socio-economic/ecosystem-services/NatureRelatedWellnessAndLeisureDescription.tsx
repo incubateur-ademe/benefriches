@@ -6,6 +6,7 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -30,6 +31,23 @@ const NatureRelatedWellnessAndLeisureDescription = ({
   ).filter(([key]) => isPrairie(key) || isForest(key) || isWetLand(key));
   return (
     <>
+      <ModalHeader
+        title="🚵‍♂️ Loisirs et bien-être liés à la nature"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          {
+            label: "Services écosystémiques",
+            id: "socio-economic.ecosystem-services",
+          },
+          { label: "Loisirs et bien-être liés à la nature" },
+        ]}
+      />
       <p>
         Les zones naturelles et forestières ou encore les prairies favorisent la biodiversité et
         constituent des zones pour lesquelles les citoyens ont un attachement à leur préservation.

@@ -1,6 +1,7 @@
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -11,6 +12,19 @@ type Props = {
 const PropertyValueIncreaseDescription = ({ siteSurfaceArea }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="🏡 Valeur patrimoniale des bâtiments alentour"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts économiques indirects",
+          },
+          { label: "Valeur patrimoniale des bâtiments alentour" },
+        ]}
+      />
       <p>
         La reconversion d’une friche urbaine, du fait de la transformation d’un espace plus ou moins
         ancien et dégradé, se traduit par une amélioration du cadre de vie des riverains du projet.

@@ -6,6 +6,7 @@ import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLab
 import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -27,6 +28,23 @@ const SoilErosionDescription = ({ baseSoilsDistribution, forecastSoilsDistributi
   ).filter(([key]) => isSurfaceWithEcosystemBenefits(key));
   return (
     <>
+      <ModalHeader
+        title="🌾 Régulation de l'érosion des sols"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts environnementaux monétarisés",
+          },
+          {
+            label: "Services écosystémiques",
+            id: "socio-economic.ecosystem-services",
+          },
+          { label: "Régulation de l'érosion des sols" },
+        ]}
+      />
       <p>
         L’érosion est un phénomène naturel qui résulte de l’ablation des couches superficielles du
         sol et du déplacement des matériaux le constituant, ****sous l’action notamment de l’eau ou

@@ -1,10 +1,16 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 const SocioEconomicDescription = () => {
   return (
     <>
+      <ModalHeader
+        title="🌍 Impacts socio-économiques"
+        breadcrumbSegments={[{ label: "Impacts socio-économiques" }]}
+      />
+
       <p>
         L'évaluation socio-économique a pour objet d'apprécier l'intérêt d'un projet ou d'un
         investissement pour la collectivité.

@@ -1,5 +1,6 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -9,6 +10,20 @@ type Props = {
 const ReconversionFullTimeJobsDescription = ({ isPhotovoltaic }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="👷 Reconversion du site"
+        breadcrumbSegments={[
+          {
+            label: "Impacts sociaux",
+            id: "social",
+          },
+          {
+            label: "Emplois équivalent temps plein",
+            id: "social.full-time-jobs",
+          },
+          { label: "Mobilisés pour la reconversion du site" },
+        ]}
+      />
       <p>
         Il s’agit des emplois mobilisés pendant la durée de la reconversion (étude et travaux). Ils
         sont exprimés en “équivalent temps pleins”.

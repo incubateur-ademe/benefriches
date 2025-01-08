@@ -2,6 +2,7 @@ import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-numb
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ProjectData } from "../../ImpactModalDescriptionProvider";
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
@@ -12,6 +13,19 @@ type Props = {
 const TaxesIncomeDescription = ({ developmentPlan }: Props) => {
   return (
     <>
+      <ModalHeader
+        title="🏛 Recettes fiscales"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts économiques directs",
+          },
+          { label: "Recettes fiscales" },
+        ]}
+      />
       <p>
         La concrétisation du projet va générer des recettes fiscales pour la collectivité, variables
         selon le type de projet et/ou la catégories d’utilisateurs :

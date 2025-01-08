@@ -1,10 +1,23 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 const SiteReinstatementDescription = () => {
   return (
     <>
+      <ModalHeader
+        title="🚧 Remise en état de la friche"
+        breadcrumbSegments={[
+          {
+            label: "Bilan de l'opération",
+            id: "economic-balance",
+          },
+
+          { label: "Remise en état de la friche" },
+        ]}
+      />
+
       <p>
         Le recyclage de friches ou de fonciers déjà artificialisés implique le plus souvent des
         études et de travaux du fait des activités passées qu’elles ont accueillies : présence de

@@ -1,9 +1,23 @@
+import ModalHeader from "../../shared/ModalHeader";
+
 const AvoidedVehiculeKilometersDescription = () => {
   return (
-    <p>
-      Il s’agit du nombre de kilomètres totaux qui ne seront pas parcourus dans les transports par
-      les personnes impactées par le projet.
-    </p>
+    <>
+      <ModalHeader
+        title="🚙 Kilomètres évités"
+        breadcrumbSegments={[
+          {
+            label: "Impacts sociaux",
+            id: "social",
+          },
+          { label: "Kilomètres évités" },
+        ]}
+      />
+      <p>
+        Il s’agit du nombre de kilomètres totaux qui ne seront pas parcourus dans les transports par
+        les personnes impactées par le projet.
+      </p>
+    </>
   );
 };
 

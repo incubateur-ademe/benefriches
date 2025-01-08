@@ -1,11 +1,25 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 
 const PropertyTransferDutiesIncreaseDescription = () => {
   return (
     <>
+      <ModalHeader
+        title="🏛 Droits de mutation sur la transaction foncière"
+        breadcrumbSegments={[
+          {
+            label: "Impacts socio-économiques",
+            id: "socio-economic",
+          },
+          {
+            label: "Impacts économiques indirects",
+          },
+          { label: "Droits de mutation sur les ventes immobilières alentour" },
+        ]}
+      />
       <p>
         L’amélioration de l’attractivité liée au projet de reconversion va contribuer à un meilleur
         dynamise du marché immobilier avec à la clé un accroissement de rentrée fiscale pour les
