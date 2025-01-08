@@ -1,3 +1,4 @@
+import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 
 const NonContaminatedSurfaceDescription = () => {
@@ -13,16 +14,19 @@ const NonContaminatedSurfaceDescription = () => {
           { label: "Surface non polluée" },
         ]}
       />
-      <p>
-        Les friches sont bien souvent concernées par des pollutions des sols, vestiges des activités
-        passées. Réaliser un projet sur un tel site implique donc souvent la mise en place de mesure
-        de gestion des pollutions (ex : traitement de dépollution) pour réduire la surface polluée
-        et les risques associés, pour les futurs usagers (habitants, salariés, etc.).
-      </p>
-      <p>
-        La surface non polluée est une donnée saisie par l'utilisateur pour le site et pour le
-        projet.
-      </p>
+      <ModalContent>
+        <p>
+          Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
+          activités passées. Réaliser un projet sur un tel site implique donc souvent la mise en
+          place de mesure de gestion des pollutions (ex : traitement de dépollution) pour réduire la
+          surface polluée et les risques associés, pour les futurs usagers (habitants, salariés,
+          etc.).
+        </p>
+        <p>
+          La surface non polluée est une donnée saisie par l'utilisateur pour le site et pour le
+          projet.
+        </p>
+      </ModalContent>
     </>
   );
 };

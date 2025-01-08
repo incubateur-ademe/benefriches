@@ -1,6 +1,7 @@
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 
 import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
+import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 
 type Props = {
@@ -21,7 +22,9 @@ const CarbonSoilsStorageEnvironmentalDescription = (props: Props) => {
           { label: "Carbone stocké dans les sols" },
         ]}
       />
-      <CarbonSoilsStorageDescription withMonetarisation={false} {...props} />
+      <ModalContent>
+        <CarbonSoilsStorageDescription withMonetarisation={false} {...props} />
+      </ModalContent>
     </>
   );
 };

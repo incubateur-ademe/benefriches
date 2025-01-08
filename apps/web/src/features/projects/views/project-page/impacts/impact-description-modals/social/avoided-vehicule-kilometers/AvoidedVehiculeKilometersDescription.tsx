@@ -1,3 +1,4 @@
+import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 
 const AvoidedVehiculeKilometersDescription = () => {
@@ -13,10 +14,12 @@ const AvoidedVehiculeKilometersDescription = () => {
           { label: "Kilomètres évités" },
         ]}
       />
-      <p>
-        Il s’agit du nombre de kilomètres totaux qui ne seront pas parcourus dans les transports par
-        les personnes impactées par le projet.
-      </p>
+      <ModalContent>
+        <p>
+          Il s’agit du nombre de kilomètres totaux qui ne seront pas parcourus dans les transports
+          par les personnes impactées par le projet.
+        </p>
+      </ModalContent>
     </>
   );
 };

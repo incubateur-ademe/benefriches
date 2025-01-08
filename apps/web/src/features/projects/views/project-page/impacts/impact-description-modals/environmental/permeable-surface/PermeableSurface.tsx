@@ -2,6 +2,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { useContext } from "react";
 
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 
 const PermeableSurfaceDescription = () => {
@@ -18,32 +19,34 @@ const PermeableSurfaceDescription = () => {
           { label: "Surface perméable" },
         ]}
       />
-      <p>
-        Il s'agit de la surface qui n'est pas imperméabilisée et permet ainsi l'infiltration de
-        l'eau de pluie sur la parcelle. La surface perméable peut être{" "}
-        <Button
-          onClick={() => {
-            openImpactModalDescription("environmental.minerale-surface");
-          }}
-          priority="tertiary no outline"
-        >
-          🪨 minérale
-        </Button>{" "}
-        ou{" "}
-        <Button
-          onClick={() => {
-            openImpactModalDescription("environmental.green-surface");
-          }}
-          priority="tertiary no outline"
-        >
-          ☘️ végétalisée
-        </Button>
-        .
-      </p>
-      <p>
-        La valeur est la somme des surfaces détaillées ci-dessus, qui ont été renseignées par
-        l'utilisateur, pour le site et pour le projet.
-      </p>
+      <ModalContent>
+        <p>
+          Il s'agit de la surface qui n'est pas imperméabilisée et permet ainsi l'infiltration de
+          l'eau de pluie sur la parcelle. La surface perméable peut être{" "}
+          <Button
+            onClick={() => {
+              openImpactModalDescription("environmental.minerale-surface");
+            }}
+            priority="tertiary no outline"
+          >
+            🪨 minérale
+          </Button>{" "}
+          ou{" "}
+          <Button
+            onClick={() => {
+              openImpactModalDescription("environmental.green-surface");
+            }}
+            priority="tertiary no outline"
+          >
+            ☘️ végétalisée
+          </Button>
+          .
+        </p>
+        <p>
+          La valeur est la somme des surfaces détaillées ci-dessus, qui ont été renseignées par
+          l'utilisateur, pour le site et pour le projet.
+        </p>
+      </ModalContent>
     </>
   );
 };

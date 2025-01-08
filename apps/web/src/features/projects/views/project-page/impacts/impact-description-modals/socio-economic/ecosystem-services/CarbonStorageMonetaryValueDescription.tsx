@@ -1,6 +1,7 @@
 import { SoilsDistribution } from "shared";
 
 import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
+import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 
 type Props = {
@@ -28,7 +29,9 @@ const CarbonSoilsStorageMonetaryValueDescription = (props: Props) => {
           { label: "Carbone stocké dans les sols" },
         ]}
       />
-      <CarbonSoilsStorageDescription withMonetarisation={true} {...props} />;
+      <ModalContent>
+        <CarbonSoilsStorageDescription withMonetarisation={true} {...props} />
+      </ModalContent>
     </>
   );
 };

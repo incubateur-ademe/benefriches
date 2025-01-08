@@ -1,4 +1,5 @@
 import AvoidedCO2WithEnRDescription from "../../shared/AvoidedCo2WithRenewableEnergyDescription";
+import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 
 type Props = {
@@ -22,7 +23,9 @@ const AvoidedCO2WithEnREnvironmentalDescription = (props: Props) => {
           },
         ]}
       />
-      <AvoidedCO2WithEnRDescription withMonetarisation={false} {...props} />
+      <ModalContent>
+        <AvoidedCO2WithEnRDescription withMonetarisation={false} {...props} />
+      </ModalContent>
     </>
   );
 };

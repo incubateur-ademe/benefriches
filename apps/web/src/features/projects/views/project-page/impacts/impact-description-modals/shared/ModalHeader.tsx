@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 
+import classNames from "@/shared/views/clsx";
+
 import { ImpactDescriptionModalCategory } from "../ImpactDescriptionModalWizard";
 import ModalBreadcrumb from "./ModalBreadcrumb";
 
@@ -10,9 +12,22 @@ type Props = {
 
 const ModalHeader = ({ title, breadcrumbSegments }: Props) => {
   return (
-    <div className="tw-max-w-[calc(100%-100px)] tw-mt-[-2rem]">
-      <ModalBreadcrumb segments={breadcrumbSegments} />
-      <h1 className="tw-text-2xl tw-mt-2">{title}</h1>
+    <div
+      className={classNames(
+        "tw-border-0",
+        "tw-border-solid",
+        "tw-border-b",
+        "tw-border-borderGrey",
+        "tw-bg-white dark:tw-bg-black",
+        "tw-px-6",
+        "tw-pb-6",
+        "tw-mt-[-3rem]",
+      )}
+    >
+      <div className="tw-max-w-[calc(100%-100px)] tw-pt-4">
+        <ModalBreadcrumb segments={breadcrumbSegments} />
+        <h1 className="tw-text-2xl tw-m-0">{title}</h1>
+      </div>
     </div>
   );
 };

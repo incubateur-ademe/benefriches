@@ -1,4 +1,3 @@
-import { fr } from "@codegouvfr/react-dsfr";
 import { ReactNode } from "react";
 
 type Props = {
@@ -6,7 +5,7 @@ type Props = {
 };
 
 const ModalTitleThree = ({ children }: Props) => {
-  return <h3 className={fr.cx("fr-h6", "fr-my-3v")}>{children}</h3>;
+  return <h3 className="tw-text-base tw-my-3">{children}</h3>;
 };
 
 export default ModalTitleThree;
