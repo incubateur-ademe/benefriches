@@ -235,3 +235,18 @@ export const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSele
     return (surfaceAreaToDecontaminate * 100) / contaminatedSurfaceArea;
   },
 );
+
+type SitePurchaseAmounts = {
+  sellingPrice: number;
+  propertyTransferDuties?: number;
+};
+export const selectSitePurchaseAmounts = createSelector(
+  [selectSelf],
+  ({ creationData }): SitePurchaseAmounts | undefined => {
+    if (!creationData.sitePurchaseSellingPrice) return undefined;
+    return {
+      sellingPrice: creationData.sitePurchaseSellingPrice,
+      propertyTransferDuties: creationData.sitePurchasePropertyTransferDuties ?? 0,
+    };
+  },
+);
