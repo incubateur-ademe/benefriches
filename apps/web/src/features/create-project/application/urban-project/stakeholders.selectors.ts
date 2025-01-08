@@ -11,7 +11,7 @@ import { selectCreationData } from "./urbanProject.selectors";
 export const getUrbanProjectAvailableStakeholders = createSelector(
   [getProjectAvailableStakeholders, selectCreationData],
   (projectAvailableStakeholders, creationData) => {
-    const stakeholders: AvailableProjectStakeholder[] = projectAvailableStakeholders;
+    const stakeholders: AvailableProjectStakeholder[] = projectAvailableStakeholders.slice();
 
     const projectDeveloper = creationData.projectDeveloper;
     if (projectDeveloper && !hasStakeholder(projectDeveloper, stakeholders)) {
