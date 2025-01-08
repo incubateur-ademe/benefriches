@@ -62,8 +62,6 @@ export type ReconversionProjectCreationData = {
 export type ProjectStakeholderStructure =
   | OwnerStructureType
   | TenantStructureType
-  | "company"
-  | "other"
   | UserStructureType
   | "unknown";
 
