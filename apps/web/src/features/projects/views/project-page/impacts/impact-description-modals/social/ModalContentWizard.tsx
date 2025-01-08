@@ -1,4 +1,4 @@
-import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
+import { ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
 import SocialMainDescription from "./SocialMainDescription";
 import AvoidedVehiculeKilometersDescription from "./avoided-vehicule-kilometers/AvoidedVehiculeKilometersDescription";

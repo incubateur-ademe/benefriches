@@ -1,20 +1,26 @@
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactItemDetails from "./ImpactItemDetails";
 import ImpactItemGroup from "./ImpactItemGroup";
 
 type Props = {
   label: string;
-  onClick?: () => void;
+  descriptionModalId?: ImpactDescriptionModalCategory;
   actors: {
     label: string;
     value: number;
-    details?: { label: string; value: number; onClick?: () => void }[];
+    details?: {
+      label: string;
+      value: number;
+      descriptionModalId?: ImpactDescriptionModalCategory;
+    }[];
   }[];
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
 };
 
-const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
+const ImpactActorsItem = ({ label, actors, type, descriptionModalId }: Props) => {
   const [firstActor, ...othersActors] = actors;
-  const isClickable = !!onClick || (!!firstActor?.details && firstActor.details.length > 0);
+  const isClickable =
+    !!descriptionModalId || (!!firstActor?.details && firstActor.details.length > 0);
   return (
     <ImpactItemGroup isClickable={isClickable}>
       {firstActor && (
@@ -24,7 +30,7 @@ const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
           actor={firstActor.label}
           data={firstActor.details}
           type={type}
-          onClick={onClick}
+          descriptionModalId={descriptionModalId}
         />
       )}
       {othersActors.map(({ label: actor, value, details = [] }) => (

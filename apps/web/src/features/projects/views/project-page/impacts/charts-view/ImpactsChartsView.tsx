@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import {
   EnvironmentalImpact,
@@ -10,7 +12,7 @@ import {
 import { SocioEconomicImpactByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 import { getEnvironmentalImpactLabel } from "../getImpactLabel";
-import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
+import { ImpactModalDescriptionContext } from "../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactAreaChartCard from "./ImpactChartCard/ImpactAreaChartCard";
 import ImpactsChartsEconomicSection from "./ImpactsChartsEconomicSection";
 
@@ -21,7 +23,6 @@ type Props = {
   socioEconomicImpactsByActor: SocioEconomicImpactByActor;
   environmentImpacts: EnvironmentalImpact[];
   socialImpacts: SocialImpact[];
-  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 const getImpactColor = (name: SocialImpactDetailsName | EnvironmentalImpactDetailsName) => {
@@ -90,7 +91,6 @@ const ImpactsChartsView = ({
   socioEconomicImpactsByActor,
   environmentImpacts,
   socialImpacts,
-  openImpactDescriptionModal,
 }: Props) => {
   const displayEconomicBalance = economicBalance.economicBalance.length > 0;
 
@@ -100,11 +100,12 @@ const ImpactsChartsView = ({
   );
   const fullTimeJobs = socialImpacts.find(({ name }) => "full_time_jobs" === name);
 
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
   return (
     <div>
       {(displayEconomicBalance || socioEconomicImpactsByActor.length > 0) && (
         <ImpactsChartsEconomicSection
-          openImpactDescriptionModal={openImpactDescriptionModal}
           economicBalance={economicBalance}
           socioEconomicTotalImpact={socioEconomicTotalImpact}
           socioEconomicImpactsByActor={socioEconomicImpactsByActor}
@@ -131,7 +132,7 @@ const ImpactsChartsView = ({
               details: formatImpactDetails(permeableSurfaceArea.impact.details),
             }}
             onClick={() => {
-              openImpactDescriptionModal("environmental.permeable-surface");
+              openImpactModalDescription("environmental.permeable-surface");
             }}
           />
         )}
@@ -144,7 +145,7 @@ const ImpactsChartsView = ({
               details: formatImpactDetails(fullTimeJobs.impact.details),
             }}
             onClick={() => {
-              openImpactDescriptionModal("social.full-time-jobs");
+              openImpactModalDescription("social.full-time-jobs");
             }}
           />
         )}

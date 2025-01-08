@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 import {
   EconomicBalance,
   EconomicBalanceName,
@@ -8,34 +10,26 @@ import {
   getEconomicBalanceDetailsImpactLabel,
   getEconomicBalanceImpactLabel,
 } from "../../getImpactLabel";
+import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactSection from "../ImpactSection";
 
-const getImpactItemOnClick = (
-  itemName: EconomicBalanceName,
-  openImpactDescriptionModal: Props["openImpactDescriptionModal"],
-) => {
-  switch (itemName) {
-    case "site_purchase":
-      return () => {
-        openImpactDescriptionModal("economic-balance.real-estate-acquisition");
-      };
-    case "site_reinstatement":
-      return () => {
-        openImpactDescriptionModal("economic-balance.site-reinstatement");
-      };
-    default:
-      return undefined;
-  }
+const itemDescriptionModalIds: Partial<
+  Record<EconomicBalanceName, ImpactDescriptionModalCategory>
+> = {
+  site_purchase: "economic-balance.real-estate-acquisition",
+  site_reinstatement: "economic-balance.site-reinstatement",
 };
 
 type Props = {
   impact: EconomicBalance;
-  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
-const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Props) => {
+const EconomicBalanceListSection = ({ impact }: Props) => {
   const { total, economicBalance, bearer } = impact;
+
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
   return (
     <ImpactSection
       title="Bilan de l'opération"
@@ -43,14 +37,14 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
       total={total}
       initialShowSectionContent={false}
       onTitleClick={() => {
-        openImpactDescriptionModal("economic-balance");
+        openImpactModalDescription("economic-balance");
       }}
     >
       {economicBalance.map(({ name, value, details = [] }) => (
         <ImpactActorsItem
           key={name}
           label={getEconomicBalanceImpactLabel(name)}
-          onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
+          descriptionModalId={itemDescriptionModalIds[name]}
           actors={[
             {
               label: bearer ?? "Aménageur",
@@ -58,7 +52,7 @@ const EconomicBalanceListSection = ({ impact, openImpactDescriptionModal }: Prop
               details: details.map(({ name: detailsName, value: detailsValue }) => ({
                 label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
                 value: detailsValue,
-                onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                descriptionModalId: itemDescriptionModalIds[detailsName],
               })),
             },
           ]}

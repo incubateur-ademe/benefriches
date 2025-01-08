@@ -1,12 +1,10 @@
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
-import { ReactElement, useEffect, useLayoutEffect, useMemo } from "react";
-import {
-  BuildingFloorAreaUsageDistribution,
-  ReconversionProjectImpacts,
-  SoilsDistribution,
-} from "shared";
+import { ReactElement, useContext, useEffect, useLayoutEffect, useMemo } from "react";
+import { ReconversionProjectImpacts } from "shared";
 
+import { ImpactModalDescriptionContext } from "./ImpactModalDescriptionContext";
+import { ProjectData, SiteData } from "./ImpactModalDescriptionProvider";
 import EconomicBalanceSectionModalContentWizard from "./economic-balance/ModalContentWizard";
 import { getEconomicBalanceSectionModalTitle } from "./economic-balance/getTitle";
 import { EconomicBalanceImpactDescriptionModalId } from "./economic-balance/types";
@@ -29,41 +27,15 @@ export type ImpactDescriptionModalCategory =
   | EnvironmentalImpactDescriptionModalId
   | undefined;
 
-export type ProjectData = {
-  soilsDistribution: SoilsDistribution;
-  contaminatedSoilSurface: number;
-  developmentPlan:
-    | {
-        type: "PHOTOVOLTAIC_POWER_PLANT";
-        electricalPowerKWc: number;
-        surfaceArea: number;
-      }
-    | {
-        type: "URBAN_PROJECT";
-        buildingsFloorAreaDistribution: BuildingFloorAreaUsageDistribution;
-      };
-};
-
-export type SiteData = {
-  soilsDistribution: SoilsDistribution;
-  contaminatedSoilSurface: number;
-  addressLabel: string;
-  surfaceArea: number;
-};
-
-export type ImpactsData = ReconversionProjectImpacts;
-
 type Props = {
-  modalCategory: ImpactDescriptionModalCategory;
-  onChangeModalCategoryOpened: (modalCategory: ImpactDescriptionModalCategory) => void;
   projectData: ProjectData;
   siteData: SiteData;
   impactsData: ReconversionProjectImpacts;
 };
 
 const getModalTitleAndContent = (
-  modalId: Props["modalCategory"],
-  onChangeModalCategoryOpened: Props["onChangeModalCategoryOpened"],
+  modalId: ImpactDescriptionModalCategory,
+  onChangeModalCategoryOpened: (modalCategory: ImpactDescriptionModalCategory) => void,
   projectData: Props["projectData"],
   siteData: Props["siteData"],
   impactsData: Props["impactsData"],
@@ -135,13 +107,13 @@ const modal = createModal({
   isOpenedByDefault: false,
 });
 
-export function ImpactDescriptionModalWizard({
-  modalCategory,
-  onChangeModalCategoryOpened,
-  projectData,
-  siteData,
-  impactsData,
-}: Props) {
+export function ImpactDescriptionModalWizard({ projectData, siteData, impactsData }: Props) {
+  const {
+    resetOpenState,
+    openState: modalCategory,
+    openImpactModalDescription: onChangeModalCategoryOpened,
+  } = useContext(ImpactModalDescriptionContext);
+
   const { title, content } = useMemo(
     () =>
       getModalTitleAndContent(
@@ -155,9 +127,7 @@ export function ImpactDescriptionModalWizard({
   );
 
   useIsModalOpen(modal, {
-    onConceal: () => {
-      onChangeModalCategoryOpened(undefined);
-    },
+    onConceal: resetOpenState,
   });
 
   useEffect(() => {

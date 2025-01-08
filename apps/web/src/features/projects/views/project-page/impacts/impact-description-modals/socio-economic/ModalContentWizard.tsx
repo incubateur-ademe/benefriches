@@ -1,4 +1,4 @@
-import { ImpactsData, ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
+import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
 import SocioEconomicDescription from "./SocioEconomicDescription";
 import AvoidedCO2WithEnRMonetaryValueDescription from "./avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";

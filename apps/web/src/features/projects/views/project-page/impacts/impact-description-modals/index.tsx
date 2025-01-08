@@ -1,32 +1,27 @@
+import { ReactNode } from "react";
+
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import {
-  ImpactDescriptionModalCategory,
-  ImpactDescriptionModalWizard,
-} from "./ImpactDescriptionModalWizard";
+import ImpactModalDescriptionProvider from "./ImpactModalDescriptionProvider";
 
-type Props = {
-  modalCategory: ImpactDescriptionModalCategory;
-  onChangeModalCategoryOpened: (modalCategory: ImpactDescriptionModalCategory) => void;
+type ModalDescriptionProviderProps = {
+  children: ReactNode;
 };
 
-function ImpactDescriptionModalWizardWrapper({
-  modalCategory,
-  onChangeModalCategoryOpened,
-}: Props) {
+function ImpactModalDescriptionProviderContainer({ children }: ModalDescriptionProviderProps) {
   const { projectData, relatedSiteData, impactsData } = useAppSelector(
     (state) => state.projectImpacts,
   );
 
   return (
-    <ImpactDescriptionModalWizard
-      modalCategory={modalCategory}
-      onChangeModalCategoryOpened={onChangeModalCategoryOpened}
+    <ImpactModalDescriptionProvider
       projectData={projectData!}
       siteData={relatedSiteData!}
       impactsData={impactsData!}
-    />
+    >
+      {children}
+    </ImpactModalDescriptionProvider>
   );
 }
 
-export default ImpactDescriptionModalWizardWrapper;
+export default ImpactModalDescriptionProviderContainer;

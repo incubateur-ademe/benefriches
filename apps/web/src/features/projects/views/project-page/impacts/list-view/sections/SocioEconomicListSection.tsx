@@ -1,3 +1,5 @@
+import { useContext } from "react";
+
 import {
   SocioEconomicDetailedImpact,
   SocioEconomicImpactByCategory,
@@ -7,12 +9,12 @@ import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-p
 import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
+import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactSection from "../ImpactSection";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicDetailedImpact;
-  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 const itemDescriptionModalIds: Partial<
@@ -42,27 +44,12 @@ const itemDescriptionModalIds: Partial<
     "socio-economic.roads-and-utilities-maintenance-expenses",
 };
 
-const getImpactItemOnClick = (
-  itemName: SocioEconomicImpactName,
-  openImpactDescriptionModal: Props["openImpactDescriptionModal"],
-) => {
-  const modalId = itemDescriptionModalIds[itemName];
-
-  return modalId
-    ? () => {
-        openImpactDescriptionModal(modalId);
-      }
-    : undefined;
-};
-
 const SocioEconomicImpactSection = ({
   impacts,
   total,
   title,
-  openImpactDescriptionModal,
 }: SocioEconomicImpactByCategory & {
   title: string;
-  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 }) => {
   if (impacts.length === 0) {
     return null;
@@ -80,11 +67,11 @@ const SocioEconomicImpactSection = ({
               ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
                   label: getSocioEconomicImpactLabel(detailsName),
                   value: detailsValue,
-                  onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                  descriptionModalId: itemDescriptionModalIds[detailsName],
                 }))
               : undefined,
           }))}
-          onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
+          descriptionModalId={itemDescriptionModalIds[name]}
           type="monetary"
         />
       ))}
@@ -92,12 +79,10 @@ const SocioEconomicImpactSection = ({
   );
 };
 
-const SocioEconomicImpactsListSection = ({
-  socioEconomicImpacts,
-  openImpactDescriptionModal,
-}: Props) => {
+const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
   const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary, total } =
     socioEconomicImpacts;
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
     <ImpactSection
@@ -106,28 +91,15 @@ const SocioEconomicImpactsListSection = ({
       total={total}
       initialShowSectionContent={false}
       onTitleClick={() => {
-        openImpactDescriptionModal("socio-economic");
+        openImpactModalDescription("socio-economic");
       }}
     >
-      <SocioEconomicImpactSection
-        title="Impacts économiques directs"
-        {...economicDirect}
-        openImpactDescriptionModal={openImpactDescriptionModal}
-      />
-      <SocioEconomicImpactSection
-        title="Impacts économiques indirects"
-        {...economicIndirect}
-        openImpactDescriptionModal={openImpactDescriptionModal}
-      />
-      <SocioEconomicImpactSection
-        title="Impacts sociaux monétarisés"
-        {...socialMonetary}
-        openImpactDescriptionModal={openImpactDescriptionModal}
-      />
+      <SocioEconomicImpactSection title="Impacts économiques directs" {...economicDirect} />
+      <SocioEconomicImpactSection title="Impacts économiques indirects" {...economicIndirect} />
+      <SocioEconomicImpactSection title="Impacts sociaux monétarisés" {...socialMonetary} />
       <SocioEconomicImpactSection
         title="Impacts environnementaux monétarisés"
         {...environmentalMonetary}
-        openImpactDescriptionModal={openImpactDescriptionModal}
       />
     </ImpactSection>
   );

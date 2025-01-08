@@ -1,4 +1,4 @@
-import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
+import { ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
 import EnvironmentalMainDescription from "./EnvironmentalMainDescription";
 import AvoidedCO2WithEnREnvironmentalDescription from "./impact-co2/AvoidedCO2WithEnREnvironmentalDescription";

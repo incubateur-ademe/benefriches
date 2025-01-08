@@ -14,41 +14,17 @@ import ImpactSection from "../ImpactSection";
 
 type Props = {
   impacts: EnvironmentalImpact[];
-  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
-const getImpactItemOnClick = (
-  itemName: EnvironmentalImpactName,
-  openImpactDescriptionModal: Props["openImpactDescriptionModal"],
-) => {
-  switch (itemName) {
-    case "non_contaminated_surface_area":
-      return () => {
-        openImpactDescriptionModal("environmental.non-contamined-surface");
-      };
-    case "permeable_surface_area":
-      return () => {
-        openImpactDescriptionModal("environmental.permeable-surface");
-      };
-    case "mineral_soil":
-      return () => {
-        openImpactDescriptionModal("environmental.minerale-surface");
-      };
-    case "green_soil":
-      return () => {
-        openImpactDescriptionModal("environmental.green-surface");
-      };
-    case "avoided_co2_eq_emissions_with_production":
-      return () => {
-        openImpactDescriptionModal("environmental.avoided-co2-renewable-energy");
-      };
-    case "stored_co2_eq":
-      return () => {
-        openImpactDescriptionModal("environmental.carbon-storage");
-      };
-    default:
-      return undefined;
-  }
+const itemDescriptionModalIds: Partial<
+  Record<EnvironmentalImpactName, ImpactDescriptionModalCategory>
+> = {
+  non_contaminated_surface_area: "environmental.non-contamined-surface",
+  permeable_surface_area: "environmental.permeable-surface",
+  mineral_soil: "environmental.minerale-surface",
+  green_soil: "environmental.green-surface",
+  avoided_co2_eq_emissions_with_production: "environmental.avoided-co2-renewable-energy",
+  stored_co2_eq: "environmental.carbon-storage",
 };
 
 const ENVIRONMENTAL_SECTIONS = {
@@ -56,7 +32,7 @@ const ENVIRONMENTAL_SECTIONS = {
   soils: ["non_contaminated_surface_area", "permeable_surface_area"],
 };
 
-const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props) => {
+const EnvironmentalListSection = ({ impacts }: Props) => {
   const co2Impacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.co2.includes(name));
   const soilsImpacts = impacts.filter(({ name }) => ENVIRONMENTAL_SECTIONS.soils.includes(name));
 
@@ -69,13 +45,13 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
               <ImpactItemDetails
                 label={getEnvironmentalImpactLabel(name)}
                 value={impact.difference}
-                onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
+                descriptionModalId={itemDescriptionModalIds[name]}
                 data={
                   impact.details
                     ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
                         label: getEnvironmentalDetailsImpactLabel(name, detailsName),
                         value: detailsImpact.difference,
-                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                        descriptionModalId: itemDescriptionModalIds[detailsName],
                       }))
                     : undefined
                 }
@@ -93,13 +69,13 @@ const EnvironmentalListSection = ({ impacts, openImpactDescriptionModal }: Props
               <ImpactItemDetails
                 label={getEnvironmentalImpactLabel(name)}
                 value={impact.difference}
-                onClick={getImpactItemOnClick(name, openImpactDescriptionModal)}
+                descriptionModalId={itemDescriptionModalIds[name]}
                 data={
                   impact.details
                     ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
                         label: getEnvironmentalDetailsImpactLabel(name, detailsName),
                         value: detailsImpact.difference,
-                        onClick: getImpactItemOnClick(detailsName, openImpactDescriptionModal),
+                        descriptionModalId: itemDescriptionModalIds[detailsName],
                       }))
                     : undefined
                 }

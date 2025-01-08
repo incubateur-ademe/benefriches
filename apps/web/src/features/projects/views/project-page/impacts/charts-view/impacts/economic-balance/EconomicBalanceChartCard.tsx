@@ -1,4 +1,5 @@
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
+import { useContext } from "react";
 import { roundTo2Digits } from "shared";
 import { sumList } from "shared";
 
@@ -10,13 +11,13 @@ import HighchartBarColoredChart from "@/features/projects/views/project-page/imp
 import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactChartTooltipContent from "../../ImpactChartCard/ImpactChartTooltipContent";
 import ImpactsChartsSection from "../../ImpactsChartsSection";
 
 type Props = {
   economicBalance: EconomicBalance["economicBalance"];
   bearer?: string;
-  onClick: () => void;
 };
 
 const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName) => {
@@ -42,17 +43,21 @@ const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName) => {
   }
 };
 
-function EconomicBalanceChartCard({ economicBalance, onClick, bearer = "l'aménageur" }: Props) {
+function EconomicBalanceChartCard({ economicBalance, bearer = "l'aménageur" }: Props) {
   const totalValues = economicBalance.map(({ value }) => value);
 
   const totalRevenues = sumList(totalValues.filter((value) => value > 0));
   const totalExpenses = sumList(totalValues.filter((value) => value < 0));
 
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
   return (
     <ImpactsChartsSection
       title="Bilan de l'opération"
       subtitle={`Pour ${bearer}`}
-      onClick={onClick}
+      onClick={() => {
+        openImpactModalDescription("economic-balance");
+      }}
     >
       {economicBalance.length === 0 ? (
         <div>Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet.</div>

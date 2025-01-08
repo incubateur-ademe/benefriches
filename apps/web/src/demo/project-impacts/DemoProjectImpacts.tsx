@@ -15,10 +15,7 @@ import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domai
 import ProjectImpactsActionBar from "@/features/projects/views/project-page/header/ProjectImpactsActionBar";
 import ProjectPageHeader from "@/features/projects/views/project-page/header/ProjectPageHeader";
 import ImpactsChartsView from "@/features/projects/views/project-page/impacts/charts-view/ImpactsChartsView";
-import {
-  ImpactDescriptionModalCategory,
-  ImpactDescriptionModalWizard,
-} from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
+import ImpactModalDescriptionProvider from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactModalDescriptionProvider";
 import ImpactsListView from "@/features/projects/views/project-page/impacts/list-view/ImpactsListView";
 import ImpactSummaryView from "@/features/projects/views/project-page/impacts/summary-view/ImpactSummaryView";
 import classNames from "@/shared/views/clsx";
@@ -34,8 +31,6 @@ type Props = {
 function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor1Year }: Props) {
   const [evaluationPeriod, setEvaluationPeriod] = useState<number>(20);
   const [currentViewMode, setViewMode] = useState<ViewMode>("summary");
-  const [modalCategoryOpened, setModalCategoryOpened] =
-    useState<ImpactDescriptionModalCategory>(undefined);
 
   const headerProps = {
     projectType: projectData.developmentPlan.type,
@@ -73,9 +68,7 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
           headerProps={headerProps}
         />
 
-        <ImpactDescriptionModalWizard
-          modalCategory={modalCategoryOpened}
-          onChangeModalCategoryOpened={setModalCategoryOpened}
+        <ImpactModalDescriptionProvider
           projectData={{
             soilsDistribution: projectData.soilsDistribution,
             contaminatedSoilSurface:
@@ -92,32 +85,33 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
             surfaceArea: siteData.surfaceArea,
           }}
           impactsData={impactsData}
-        />
-        {currentViewMode === "summary" && (
-          <ImpactSummaryView
-            keyImpactIndicatorsList={getKeyImpactIndicatorsList(impactsData, siteData)}
-          />
-        )}
-        {currentViewMode === "list" && (
-          <ImpactsListView
-            openImpactDescriptionModal={setModalCategoryOpened}
-            economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
-            socialImpacts={getSocialProjectImpacts(impactsData)}
-            environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
-            socioEconomicImpacts={getDetailedSocioEconomicProjectImpacts(impactsData)}
-          />
-        )}
-        {currentViewMode === "charts" && (
-          <ImpactsChartsView
-            projectName={projectData.name}
-            openImpactDescriptionModal={setModalCategoryOpened}
-            economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
-            socialImpacts={getSocialProjectImpacts(impactsData)}
-            environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
-            socioEconomicImpactsByActor={getSocioEconomicProjectImpactsByActor(impactsData)}
-            socioEconomicTotalImpact={impactsData.socioeconomic.total}
-          />
-        )}
+        >
+          <>
+            {currentViewMode === "summary" && (
+              <ImpactSummaryView
+                keyImpactIndicatorsList={getKeyImpactIndicatorsList(impactsData, siteData)}
+              />
+            )}
+            {currentViewMode === "list" && (
+              <ImpactsListView
+                economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
+                socialImpacts={getSocialProjectImpacts(impactsData)}
+                environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
+                socioEconomicImpacts={getDetailedSocioEconomicProjectImpacts(impactsData)}
+              />
+            )}
+            {currentViewMode === "charts" && (
+              <ImpactsChartsView
+                projectName={projectData.name}
+                economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
+                socialImpacts={getSocialProjectImpacts(impactsData)}
+                environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
+                socioEconomicImpactsByActor={getSocioEconomicProjectImpactsByActor(impactsData)}
+                socioEconomicTotalImpact={impactsData.socioeconomic.total}
+              />
+            )}
+          </>
+        </ImpactModalDescriptionProvider>
       </div>
     </div>
   );

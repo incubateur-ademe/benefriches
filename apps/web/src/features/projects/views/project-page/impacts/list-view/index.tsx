@@ -4,14 +4,9 @@ import { selectSocialProjectImpacts } from "@/features/projects/application/proj
 import { selectDetailedSocioEconomicProjectImpacts } from "@/features/projects/application/projectImpactsSocioEconomic.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import ImpactsListView from "./ImpactsListView";
 
-type Props = {
-  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
-};
-
-const ImpactsListViewContainer = ({ openImpactDescriptionModal }: Props) => {
+const ImpactsListViewContainer = () => {
   const economicBalance = useAppSelector(selectEconomicBalanceProjectImpacts);
   const socioEconomicImpacts = useAppSelector(selectDetailedSocioEconomicProjectImpacts);
   const environmentImpacts = useAppSelector(selectEnvironmentalProjectImpacts);
@@ -19,7 +14,6 @@ const ImpactsListViewContainer = ({ openImpactDescriptionModal }: Props) => {
 
   return (
     <ImpactsListView
-      openImpactDescriptionModal={openImpactDescriptionModal}
       economicBalance={economicBalance}
       socialImpacts={socialImpacts}
       environmentImpacts={environmentImpacts}

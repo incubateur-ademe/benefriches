@@ -3,7 +3,6 @@ import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEn
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
 import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
-import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";
 import SocialListSection from "./sections/SocialListSection";
@@ -14,7 +13,6 @@ type Props = {
   socioEconomicImpacts: SocioEconomicDetailedImpact;
   environmentImpacts: EnvironmentalImpact[];
   socialImpacts: SocialImpact[];
-  openImpactDescriptionModal: (category: ImpactDescriptionModalCategory) => void;
 };
 
 const ImpactsListView = ({
@@ -22,37 +20,20 @@ const ImpactsListView = ({
   socioEconomicImpacts,
   environmentImpacts,
   socialImpacts,
-  openImpactDescriptionModal,
 }: Props) => {
   return (
     <div className="tw-max-w-4xl tw-mx-auto tw-pb-8">
       {economicBalance.economicBalance.length !== 0 && (
-        <EconomicBalanceListSection
-          openImpactDescriptionModal={openImpactDescriptionModal}
-          impact={economicBalance}
-        />
+        <EconomicBalanceListSection impact={economicBalance} />
       )}
 
       {socioEconomicImpacts.total !== 0 && (
-        <SocioEconomicImpactsListSection
-          socioEconomicImpacts={socioEconomicImpacts}
-          openImpactDescriptionModal={openImpactDescriptionModal}
-        />
+        <SocioEconomicImpactsListSection socioEconomicImpacts={socioEconomicImpacts} />
       )}
 
-      {environmentImpacts.length > 0 && (
-        <EnvironmentalListSection
-          impacts={environmentImpacts}
-          openImpactDescriptionModal={openImpactDescriptionModal}
-        />
-      )}
+      {environmentImpacts.length > 0 && <EnvironmentalListSection impacts={environmentImpacts} />}
 
-      {socialImpacts.length > 0 && (
-        <SocialListSection
-          openImpactDescriptionModal={openImpactDescriptionModal}
-          impacts={socialImpacts}
-        />
-      )}
+      {socialImpacts.length > 0 && <SocialListSection impacts={socialImpacts} />}
     </div>
   );
 };

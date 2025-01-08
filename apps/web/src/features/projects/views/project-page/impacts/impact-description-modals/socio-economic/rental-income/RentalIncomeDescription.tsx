@@ -1,7 +1,7 @@
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { ProjectData } from "../../ImpactDescriptionModalWizard";
+import { ProjectData } from "../../ImpactModalDescriptionProvider";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 

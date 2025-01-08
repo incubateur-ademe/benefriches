@@ -3,7 +3,7 @@ import { EcosystemServicesImpact } from "shared";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { ImpactsData } from "../../ImpactDescriptionModalWizard";
+import { ImpactsData } from "../../ImpactModalDescriptionProvider";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { getSocioEconomicSectionModalTitle } from "../getTitle";

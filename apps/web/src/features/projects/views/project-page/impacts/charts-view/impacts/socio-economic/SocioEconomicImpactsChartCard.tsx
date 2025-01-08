@@ -1,17 +1,23 @@
+import { useContext } from "react";
+
 import { SocioEconomicImpactByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
+import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactsChartsSection from "../../ImpactsChartsSection";
 import SocioEconomicImpactsByActorChart from "./SocioEconomicImpactsByActorChart";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicImpactByActor;
-  onClick: () => void;
 };
 
-function SocioEconomicChartCard({ socioEconomicImpacts, onClick }: Props) {
+function SocioEconomicChartCard({ socioEconomicImpacts }: Props) {
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
   return (
     <ImpactsChartsSection
-      onClick={onClick}
+      onClick={() => {
+        openImpactModalDescription("socio-economic");
+      }}
       title="Impacts socio-économiques"
       subtitle="Par bénéficiaires"
     >

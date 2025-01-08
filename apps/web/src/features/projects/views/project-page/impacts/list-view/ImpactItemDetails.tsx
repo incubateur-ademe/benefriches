@@ -1,15 +1,17 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useContext, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
+import { ImpactDescriptionModalCategory } from "../impact-description-modals/ImpactDescriptionModalWizard";
+import { ImpactModalDescriptionContext } from "../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactRowValue from "./ImpactRowValue";
 
 type Props = {
   label: string;
   actor?: string;
   value: number;
-  onClick?: () => void;
-  data?: { label: string; value: number; onClick?: () => void }[];
+  descriptionModalId?: ImpactDescriptionModalCategory;
+  data?: { label: string; value: number; descriptionModalId?: ImpactDescriptionModalCategory }[];
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
 };
 
@@ -26,7 +28,7 @@ const getFromChildEventPropFunction = (fn?: () => void) => {
   };
 };
 
-const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) => {
+const ImpactItemDetails = ({ label, value, actor, data, type, descriptionModalId }: Props) => {
   const hasData = data && data.length > 0;
 
   const [displayDetails, setDisplayDetails] = useState(false);
@@ -36,6 +38,8 @@ const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) 
   };
 
   const onToggleAccordionFromChild = getFromChildEventPropFunction(onToggleAccordion);
+
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
     <div
@@ -49,22 +53,42 @@ const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) 
         type={type}
         isTotal
         isAccordionOpened={displayDetails}
-        labelProps={{ onClick: getFromChildEventPropFunction(onClick) }}
+        labelProps={{
+          onClick: getFromChildEventPropFunction(
+            descriptionModalId
+              ? () => {
+                  openImpactModalDescription(descriptionModalId);
+                }
+              : undefined,
+          ),
+        }}
         onToggleAccordion={hasData ? onToggleAccordionFromChild : undefined}
       />
       {hasData && displayDetails && (
         <div className={classNames("tw-pl-4")}>
-          {data.map(({ label: detailsLabel, value: detailsValue, onClick: onDetailsClick }) => (
-            <ImpactRowValue
-              value={detailsValue}
-              type={type}
-              key={detailsLabel}
-              label={detailsLabel}
-              labelProps={{
-                onClick: getFromChildEventPropFunction(onDetailsClick),
-              }}
-            />
-          ))}
+          {data.map(
+            ({
+              label: detailsLabel,
+              value: detailsValue,
+              descriptionModalId: detailsDescriptionModalId,
+            }) => (
+              <ImpactRowValue
+                value={detailsValue}
+                type={type}
+                key={detailsLabel}
+                label={detailsLabel}
+                labelProps={{
+                  onClick: getFromChildEventPropFunction(
+                    detailsDescriptionModalId
+                      ? () => {
+                          openImpactModalDescription(detailsDescriptionModalId);
+                        }
+                      : undefined,
+                  ),
+                }}
+              />
+            ),
+          )}
         </div>
       )}
     </div>

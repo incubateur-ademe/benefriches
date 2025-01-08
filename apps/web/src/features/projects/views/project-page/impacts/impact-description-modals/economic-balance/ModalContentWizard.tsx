@@ -1,4 +1,4 @@
-import { ProjectData, SiteData } from "../ImpactDescriptionModalWizard";
+import { ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import ModalBreadcrumb from "../shared/ModalBreadcrumb";
 import EconomicBalanceDescription from "./EconomicBalanceDescription";
 import RealEstateAcquisitionDescription from "./real-estate-acquisition/RealEstateAcquisition";
