@@ -46,7 +46,7 @@ const convertFormValuesForStore = (
     case "other_structure":
       return {
         name: data.otherStructureName,
-        structureType: "other",
+        structureType: "unknown",
       };
     case "unknown":
     case null:
