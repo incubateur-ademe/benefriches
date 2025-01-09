@@ -16,9 +16,11 @@ function ReinstatementExpensesFormContainer() {
   const siteSoilsDistribution = useAppSelector(selectSiteSoilsDistribution);
   const projectSoilsDistribution = useAppSelector(selectProjectSoilsDistribution);
   const projectData = useAppSelector(selectCreationData);
+  const preEnteredData = projectData.reinstatementExpenses;
 
   return (
     <ReinstatementsExpensesForm
+      preEnteredData={preEnteredData}
       siteSoilsDistribution={siteSoilsDistribution}
       projectSoilsDistribution={projectSoilsDistribution}
       decontaminatedSurfaceArea={projectData.decontaminatedSurfaceArea ?? 0}

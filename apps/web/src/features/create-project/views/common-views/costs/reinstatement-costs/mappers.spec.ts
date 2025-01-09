@@ -1,6 +1,6 @@
 import { mapFormValuesToReinstatementExpenses } from "./mappers";
 
-describe("Reinstatement cost form mappers", () => {
+describe("Reinstatement expenses form mappers", () => {
   describe("convertFormValuesToExpenses", () => {
     it("should return an empty when form values are empty", () => {
       const result = mapFormValuesToReinstatementExpenses({});

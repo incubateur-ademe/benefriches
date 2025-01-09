@@ -12,20 +12,12 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 import SustainableSoilsReinstatementInfoButton from "./SustainableSoilsReinstatementInfoButton";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   hasBuildings: boolean;
   hasProjectedDecontamination: boolean;
   hasImpermeableSoils: boolean;
-  defaultValues: {
-    wasteCollectionAmount?: number;
-    asbestosRemovalAmount?: number;
-    demolitionAmount?: number;
-    remediationAmount?: number;
-    deimpermeabilizationAmount?: number;
-    sustainableSoilsReinstatementAmount?: number;
-    otherReinstatementExpenseAmount?: number;
-  };
 };
 
 export type FormValues = {
@@ -114,15 +106,15 @@ const getExpensesInputs = (hasProjectedDecontamination: boolean) => {
 };
 
 const ReinstatementsExpensesForm = ({
+  initialValues,
   onSubmit,
   onBack,
   hasProjectedDecontamination,
   hasBuildings,
   hasImpermeableSoils,
-  defaultValues,
 }: Props) => {
   const { handleSubmit, register, watch } = useForm<FormValues>({
-    defaultValues,
+    defaultValues: initialValues,
   });
 
   const allExpenses = watch();

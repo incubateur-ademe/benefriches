@@ -4,7 +4,7 @@ import {
   SoilsDistribution,
 } from "../../soils/soilDistribution";
 
-type ProjectReinstatementCosts = {
+export type ComputedReinstatementCosts = {
   deimpermeabilization?: number;
   sustainableSoilsReinstatement?: number;
   remediation?: number;
@@ -16,7 +16,7 @@ export const computeProjectReinstatementCosts = (
   siteSoilsDistribution: SoilsDistribution,
   projectSoilsDistribution: SoilsDistribution,
   decontaminatedSoilSurface: number,
-): ProjectReinstatementCosts => {
+): ComputedReinstatementCosts => {
   const impermeableSoilsDelta =
     getImpermeableSurfaceArea(projectSoilsDistribution) -
     getImpermeableSurfaceArea(siteSoilsDistribution);

@@ -3,7 +3,7 @@ import { computeProjectReinstatementCosts, ReinstatementExpense, SoilsDistributi
 import { ProjectSite } from "@/features/create-project/domain/project.types";
 
 import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
-import { mapFormValuesToReinstatementExpenses } from "./mappers";
+import { mapFormValuesToReinstatementExpenses, mapInitialValues } from "./mappers";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
   soilsDistribution.BUILDINGS ? soilsDistribution.BUILDINGS > 0 : false;
@@ -12,34 +12,8 @@ const hasImpermeableSoils = (soilsDistribution: ProjectSite["soilsDistribution"]
 const hasMineralSoils = (soilsDistribution: ProjectSite["soilsDistribution"]) =>
   soilsDistribution.MINERAL_SOIL ? soilsDistribution.MINERAL_SOIL > 0 : false;
 
-const getDefaultValues = (
-  siteSoilsDistribution: Props["siteSoilsDistribution"],
-  projectSoilsDistribution: Props["projectSoilsDistribution"],
-  decontaminatedSurfaceArea: Props["decontaminatedSurfaceArea"],
-) => {
-  const {
-    deimpermeabilization,
-    sustainableSoilsReinstatement,
-    remediation,
-    demolition,
-    asbestosRemoval,
-  } = computeProjectReinstatementCosts(
-    siteSoilsDistribution,
-    projectSoilsDistribution,
-    decontaminatedSurfaceArea,
-  );
-
-  return {
-    deimpermeabilizationAmount: deimpermeabilization && Math.round(deimpermeabilization),
-    sustainableSoilsReinstatementAmount:
-      sustainableSoilsReinstatement && Math.round(sustainableSoilsReinstatement),
-    remediationAmount: remediation && Math.round(remediation),
-    demolitionAmount: demolition && Math.round(demolition),
-    asbestosRemovalAmount: asbestosRemoval && Math.round(asbestosRemoval),
-  };
-};
-
 type Props = {
+  preEnteredData?: ReinstatementExpense[];
   onSubmit: (data: ReinstatementExpense[]) => void;
   onBack: () => void;
   siteSoilsDistribution: SoilsDistribution;
@@ -50,6 +24,7 @@ type Props = {
 function ReinstatementExpensesFormContainer({
   onBack,
   onSubmit,
+  preEnteredData,
   siteSoilsDistribution,
   projectSoilsDistribution,
   decontaminatedSurfaceArea,
@@ -60,17 +35,22 @@ function ReinstatementExpensesFormContainer({
     decontaminatedSurfaceArea && decontaminatedSurfaceArea > 0
   );
 
+  const initialValues = mapInitialValues(
+    preEnteredData,
+    computeProjectReinstatementCosts(
+      siteSoilsDistribution,
+      projectSoilsDistribution,
+      decontaminatedSurfaceArea,
+    ),
+  );
+
   return (
     <ReinstatementExpensesForm
       onBack={onBack}
       onSubmit={(data: FormValues) => {
         onSubmit(mapFormValuesToReinstatementExpenses(data));
       }}
-      defaultValues={getDefaultValues(
-        siteSoilsDistribution,
-        projectSoilsDistribution,
-        decontaminatedSurfaceArea,
-      )}
+      initialValues={initialValues}
       hasBuildings={hasBuildings(siteSoilsDistribution)}
       hasProjectedDecontamination={hasProjectedDecontamination}
       hasImpermeableSoils={hasImpermeableOrMineralSoils}
