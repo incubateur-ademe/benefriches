@@ -2,7 +2,7 @@ import { mapFormValuesToReinstatementExpenses } from "./mappers";
 
 describe("Reinstatement expenses form mappers", () => {
   describe("convertFormValuesToExpenses", () => {
-    it("should return an empty when form values are empty", () => {
+    it("should return an empty array when form values are empty", () => {
       const result = mapFormValuesToReinstatementExpenses({});
       expect(result).toEqual([]);
     });

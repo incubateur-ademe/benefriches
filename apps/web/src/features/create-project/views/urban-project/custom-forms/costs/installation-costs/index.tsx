@@ -1,25 +1,25 @@
-import { typedObjectEntries, UrbanProjectDevelopmentExpense } from "shared";
-
 import {
   installationExpensesCompleted,
   installationExpensesReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { getDefaultInstallationCosts } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+import {
+  selectDefaultInstallationCosts,
+  selectInstallationCosts,
+} from "@/features/create-project/application/urban-project/urbanProject.selectors";
 import InstallationExpensesForm, {
   FormValues,
 } from "@/features/create-project/views/common-views/costs/installation-costs/InstallationCostsForm";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
-const purposeMapKeys = {
-  technicalStudyAmount: "technical_studies",
-  worksAmount: "development_works",
-  otherAmount: "other",
-};
+import { mapFormValuesToExpenses, mapInitialValues } from "./mappers";
 
 function InstallationExpensesFormContainer() {
   const dispatch = useAppDispatch();
-  const defaultValues = useAppSelector(getDefaultInstallationCosts);
+  const preEnteredValues = useAppSelector(selectInstallationCosts);
+  const defaultValues = useAppSelector(selectDefaultInstallationCosts);
+
+  const initialValues = mapInitialValues(preEnteredValues, defaultValues);
 
   return (
     <InstallationExpensesForm
@@ -34,26 +34,9 @@ function InstallationExpensesFormContainer() {
           <p>Vous pouvez modifier ces montants.</p>
         </FormInfo>
       }
-      defaultValues={
-        defaultValues
-          ? {
-              works: defaultValues.developmentWorks,
-              technicalStudy: defaultValues.technicalStudies,
-              other: defaultValues.other,
-            }
-          : undefined
-      }
+      initialValues={initialValues}
       onSubmit={(formData: FormValues) => {
-        const expenses = typedObjectEntries(formData)
-          .filter(([, amount]) => amount && amount > 0)
-          .map(
-            ([purpose, amount]) =>
-              ({
-                amount: amount,
-                purpose: purposeMapKeys[purpose],
-              }) as UrbanProjectDevelopmentExpense,
-          );
-        dispatch(installationExpensesCompleted(expenses));
+        dispatch(installationExpensesCompleted(mapFormValuesToExpenses(formData)));
       }}
       onBack={() => {
         dispatch(installationExpensesReverted());

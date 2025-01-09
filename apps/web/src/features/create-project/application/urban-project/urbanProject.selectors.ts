@@ -218,11 +218,15 @@ export const getUrbanProjectSpaceDistribution = createSelector(selectCreationDat
   );
 });
 
-export const getDefaultInstallationCosts = createSelector(selectSiteData, (state) => {
+export const selectDefaultInstallationCosts = createSelector(selectSiteData, (state) => {
   if (!state?.surfaceArea) {
     return undefined;
   }
   return computeDefaultInstallationCostsFromSiteSurfaceArea(state.surfaceArea);
+});
+
+export const selectInstallationCosts = createSelector(selectCreationData, (creationData) => {
+  return creationData.installationExpenses ?? undefined;
 });
 
 export const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSelector(

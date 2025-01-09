@@ -1,3 +1,9 @@
+export type ComputedInstallationCosts = {
+  technicalStudies: number;
+  developmentWorks: number;
+  other: number;
+};
+
 export const computeDefaultInstallationCostsFromSiteSurfaceArea = (
   surfaceArea: number,
 ): { technicalStudies: number; developmentWorks: number; other: number } => {

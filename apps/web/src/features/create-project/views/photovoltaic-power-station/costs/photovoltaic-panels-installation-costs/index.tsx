@@ -17,11 +17,17 @@ const purposeMapKeys = {
   technicalStudyAmount: "technical_studies",
   worksAmount: "installation_works",
   otherAmount: "other",
-};
+} as const;
 
 function PhotovoltaicPanelsInstallationExpensesFormContainer() {
   const dispatch = useAppDispatch();
   const defaultValues = useAppSelector(getDefaultValuesForPhotovoltaicInstallationExpenses);
+
+  const initialValues = defaultValues && {
+    technicalStudyAmount: defaultValues.technicalStudy,
+    worksAmount: defaultValues.works,
+    otherAmount: defaultValues.other,
+  };
 
   return (
     <InstallationExpensesForm
@@ -42,17 +48,14 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
           <p>Vous pouvez modifier ces montants.</p>
         </FormInfo>
       }
-      defaultValues={defaultValues}
+      initialValues={initialValues}
       onSubmit={(formData: FormValues) => {
-        const expenses = typedObjectEntries(formData)
+        const expenses: PhotovoltaicInstallationExpense[] = typedObjectEntries(formData)
           .filter(([, amount]) => amount && amount > 0)
-          .map(
-            ([purpose, amount]) =>
-              ({
-                amount: amount,
-                purpose: purposeMapKeys[purpose],
-              }) as PhotovoltaicInstallationExpense,
-          );
+          .map(([purpose, amount]) => ({
+            amount: amount as number,
+            purpose: purposeMapKeys[purpose],
+          }));
         dispatch(completePhotovoltaicPanelsInstallationExpenses(expenses));
       }}
       onBack={() => {
