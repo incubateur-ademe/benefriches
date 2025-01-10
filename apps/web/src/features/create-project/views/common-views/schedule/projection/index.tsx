@@ -1,13 +1,13 @@
-import {
-  selectDefaultSchedule,
-  selectIsSiteFriche,
-} from "@/features/create-project/application/createProject.selectors";
+import { ProjectSchedule } from "shared";
+
+import { selectIsSiteFriche } from "@/features/create-project/application/createProject.selectors";
 import { Schedule } from "@/features/create-project/domain/project.types";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ScheduleProjectionForm from "./ScheduleProjectionForm";
 
 type Props = {
+  initialValues: ProjectSchedule;
   onSubmit: (data: {
     firstYearOfOperation: number;
     installationSchedule?: Schedule;
@@ -18,20 +18,20 @@ type Props = {
 };
 
 function ScheduleProjectionFormContainer({
+  initialValues,
   onSubmit,
+  onBack,
   installationScheduleLabel = "Installation du projet",
-  ...props
 }: Props) {
   const isSiteFriche = useAppSelector(selectIsSiteFriche);
-  const defaultSchedule = useAppSelector(selectDefaultSchedule);
 
   return (
     <ScheduleProjectionForm
-      {...props}
-      defaultSchedule={defaultSchedule}
+      initialValues={initialValues}
       hasReinstatement={isSiteFriche}
       installationScheduleLabel={installationScheduleLabel}
       onSubmit={onSubmit}
+      onBack={onBack}
     />
   );
 }

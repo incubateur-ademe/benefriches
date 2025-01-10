@@ -16,7 +16,7 @@ function formatDateForInput(date: Date) {
 }
 
 type Props = {
-  defaultSchedule: ProjectSchedule;
+  initialValues: ProjectSchedule;
   hasReinstatement: boolean;
   installationScheduleLabel: string;
   onSubmit: (data: {
@@ -40,7 +40,7 @@ const formatScheduleBeforeSubmit = (schedule?: Partial<Schedule>): Schedule | un
 };
 
 function ScheduleProjectionForm({
-  defaultSchedule,
+  initialValues,
   hasReinstatement,
   installationScheduleLabel,
   onSubmit,
@@ -48,15 +48,15 @@ function ScheduleProjectionForm({
 }: Props) {
   const { handleSubmit, control, formState, register, setValue } = useForm<FormValues>({
     defaultValues: {
-      firstYearOfOperation: defaultSchedule.firstYearOfOperations,
+      firstYearOfOperation: initialValues.firstYearOfOperations,
       installationSchedule: {
-        startDate: formatDateForInput(defaultSchedule.installation.startDate),
-        endDate: formatDateForInput(defaultSchedule.installation.endDate),
+        startDate: formatDateForInput(initialValues.installation.startDate),
+        endDate: formatDateForInput(initialValues.installation.endDate),
       },
-      reinstatementSchedule: defaultSchedule.reinstatement
+      reinstatementSchedule: initialValues.reinstatement
         ? {
-            startDate: formatDateForInput(defaultSchedule.reinstatement.startDate),
-            endDate: formatDateForInput(defaultSchedule.reinstatement.endDate),
+            startDate: formatDateForInput(initialValues.reinstatement.startDate),
+            endDate: formatDateForInput(initialValues.reinstatement.endDate),
           }
         : undefined,
     },

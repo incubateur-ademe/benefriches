@@ -1,5 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere } from "shared";
+import {
+  ProjectSchedule,
+  ProjectScheduleBuilder,
+  SoilsDistribution,
+  SoilType,
+  sumSoilsSurfaceAreasWhere,
+} from "shared";
 
 import { RootState } from "@/app/application/store";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
@@ -24,7 +30,11 @@ import {
   willTransformationNoticeablyImpactBiodiversityAndClimate,
 } from "../../domain/soilsTransformation";
 import { ProjectCreationState } from "../createProject.reducer";
-import { selectSiteData, selectSiteSoilsDistribution } from "../createProject.selectors";
+import {
+  selectDefaultSchedule,
+  selectSiteData,
+  selectSiteSoilsDistribution,
+} from "../createProject.selectors";
 import { RenewableEneryProjectState } from "./renewableEnergy.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation;
@@ -218,6 +228,21 @@ export const selectRecommendedPhotovoltaicPlantSurfaceFromElectricalPower = crea
 export const selectPhotovoltaicPlantElectricalPowerKWc = createSelector(
   selectCreationData,
   (creationData): number => creationData.photovoltaicInstallationElectricalPowerKWc ?? 0,
+);
+
+export const selectPhotovoltaicInstallationExpenses = createSelector(
+  [selectCreationData, selectDefaultSchedule],
+  (creationData, defaultSchedule): ProjectSchedule => {
+    if (creationData.photovoltaicInstallationSchedule && creationData.firstYearOfOperation) {
+      return new ProjectScheduleBuilder()
+        .withInstallation(creationData.photovoltaicInstallationSchedule)
+        .withFirstYearOfOperations(creationData.firstYearOfOperation)
+        .withReinstatement(creationData.reinstatementSchedule)
+        .build();
+    }
+
+    return defaultSchedule;
+  },
 );
 
 export const selectNameAndDescriptionInitialValues = createSelector(

@@ -7,6 +7,8 @@ import {
   BuildingsEconomicActivityUse,
   SurfaceAreaDistribution,
   SurfaceAreaDistributionJson,
+  ProjectSchedule,
+  ProjectScheduleBuilder,
 } from "shared";
 
 import { RootState } from "@/app/application/store";
@@ -17,7 +19,7 @@ import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
 } from "../../domain/urbanProjectSoils";
-import { selectSiteData } from "../createProject.selectors";
+import { selectDefaultSchedule, selectSiteData } from "../createProject.selectors";
 import { UrbanProjectCreationStep, UrbanProjectState } from "./urbanProject.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation.urbanProject;
@@ -284,6 +286,21 @@ export const selectFinancialAssistanceRevenues = createSelector(
   [selectCreationData],
   (creationData) => {
     return creationData.financialAssistanceRevenues;
+  },
+);
+
+export const selectProjectScheduleInitialValues = createSelector(
+  [selectCreationData, selectDefaultSchedule],
+  (creationData, defaultSchedule): ProjectSchedule => {
+    if (creationData.installationSchedule && creationData.firstYearOfOperation) {
+      return new ProjectScheduleBuilder()
+        .withInstallation(creationData.installationSchedule)
+        .withFirstYearOfOperations(creationData.firstYearOfOperation)
+        .withReinstatement(creationData.reinstatementSchedule)
+        .build();
+    }
+
+    return defaultSchedule;
   },
 );
 
