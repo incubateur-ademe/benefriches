@@ -14,6 +14,7 @@ import {
   computeDefaultPhotovoltaicYearlyTaxesAmount,
   PHOTOVOLTAIC_RATIO_M2_PER_KWC,
 } from "../../domain/photovoltaic";
+import { generateRenewableEnergyProjectName } from "../../domain/projectName";
 import {
   getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
   getNonSuitableSoilsForPhotovoltaicPanels,
@@ -217,4 +218,17 @@ export const selectRecommendedPhotovoltaicPlantSurfaceFromElectricalPower = crea
 export const selectPhotovoltaicPlantElectricalPowerKWc = createSelector(
   selectCreationData,
   (creationData): number => creationData.photovoltaicInstallationElectricalPowerKWc ?? 0,
+);
+
+export const selectNameAndDescriptionInitialValues = createSelector(
+  selectCreationData,
+  (creationData) => {
+    if (creationData.name) {
+      return { name: creationData.name, description: creationData.description };
+    }
+    if (creationData.renewableEnergyType) {
+      return { name: generateRenewableEnergyProjectName(creationData.renewableEnergyType) };
+    }
+    return undefined;
+  },
 );

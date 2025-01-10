@@ -5,6 +5,7 @@ import HorizontalCheckableTile from "@/shared/views/components/CheckableTile/Hor
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props<T> = {
+  initialValues?: FormValues<T>;
   projectPhaseOptions: { value: T; label: string; hintText?: string; pictogram?: string }[];
   onSubmit: (data: FormValues<T>) => void;
   onBack: () => void;
@@ -42,11 +43,14 @@ const ProjectPhaseOption = ({
 };
 
 function ProjectPhaseForm<TProjectPhase extends string>({
+  initialValues,
   projectPhaseOptions,
   onSubmit,
   onBack,
 }: Props<TProjectPhase>) {
-  const { handleSubmit, watch, control } = useForm<FormValues<TProjectPhase>>();
+  const { handleSubmit, watch, control } = useForm<FormValues<TProjectPhase>>({
+    defaultValues: initialValues,
+  });
 
   return (
     <WizardFormLayout title="A quelle phase du projet êtes-vous ?">

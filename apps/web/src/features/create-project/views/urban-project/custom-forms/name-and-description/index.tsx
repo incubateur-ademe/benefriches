@@ -2,15 +2,17 @@ import {
   namingCompleted,
   namingReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { generateUrbanProjectName } from "@/features/create-project/domain/projectName";
+import { selectNameAndDescriptionInitialValues } from "@/features/create-project/application/urban-project/urbanProject.selectors";
 import ProjectNameAndDescriptionForm from "@/features/create-project/views/common-views/name-and-description/ProjectNameAndDescriptionForm";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectNameAndDescriptionFormContainer() {
   const dispatch = useAppDispatch();
+  const initialValues = useAppSelector(selectNameAndDescriptionInitialValues);
+
   return (
     <ProjectNameAndDescriptionForm
-      defaultProjectName={generateUrbanProjectName()}
+      initialValues={initialValues}
       onBack={() => {
         dispatch(namingReverted());
       }}

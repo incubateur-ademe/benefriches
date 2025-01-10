@@ -12,6 +12,7 @@ import {
 import { RootState } from "@/app/application/store";
 import { selectAppSettings } from "@/shared/app-settings/core/appSettings";
 
+import { generateUrbanProjectName } from "../../domain/projectName";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
@@ -283,5 +284,21 @@ export const selectFinancialAssistanceRevenues = createSelector(
   [selectCreationData],
   (creationData) => {
     return creationData.financialAssistanceRevenues;
+  },
+);
+
+export const selectProjectPhase = createSelector(
+  [selectCreationData],
+  (creationData) => creationData.projectPhase,
+);
+
+export const selectNameAndDescriptionInitialValues = createSelector(
+  [selectCreationData],
+  (creationData) => {
+    if (!creationData.name) return { name: generateUrbanProjectName() };
+    return {
+      name: creationData.name,
+      description: creationData.description,
+    };
   },
 );
