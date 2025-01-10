@@ -254,3 +254,18 @@ export const selectSitePurchaseAmounts = createSelector(
     };
   },
 );
+
+type SiteResaleAmounts = {
+  sellingPrice: number;
+  propertyTransferDuties?: number;
+};
+export const selectSiteResaleAmounts = createSelector(
+  [selectCreationData],
+  (creationData): SiteResaleAmounts | undefined => {
+    if (!creationData.siteResaleExpectedSellingPrice) return undefined;
+    return {
+      sellingPrice: creationData.siteResaleExpectedSellingPrice,
+      propertyTransferDuties: creationData.siteResaleExpectedPropertyTransferDuties ?? 0,
+    };
+  },
+);

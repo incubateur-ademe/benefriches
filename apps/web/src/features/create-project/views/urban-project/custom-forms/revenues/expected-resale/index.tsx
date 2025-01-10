@@ -2,15 +2,18 @@ import {
   expectedSiteResaleRevenueCompleted,
   expectedSiteResaleRevenueReverted,
 } from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { selectSiteResaleAmounts } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ExpectedSiteResaleForm from "./ExpectedSiteResaleForm";
 
 function ExpectedResaleFormContainer() {
   const dispatch = useAppDispatch();
+  const initialValues = useAppSelector(selectSiteResaleAmounts);
 
   return (
     <ExpectedSiteResaleForm
+      initialValues={initialValues}
       onBack={() => {
         dispatch(expectedSiteResaleRevenueReverted());
       }}

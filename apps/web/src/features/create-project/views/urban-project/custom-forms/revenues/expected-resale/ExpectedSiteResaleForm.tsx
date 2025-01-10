@@ -10,6 +10,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -19,19 +20,23 @@ type FormValues = {
   propertyTransferDuties?: number;
 };
 
-const ExpectedSiteResaleForm = ({ onSubmit, onBack }: Props) => {
-  const { handleSubmit, register, watch, setValue } = useForm<FormValues>();
+const ExpectedSiteResaleForm = ({ initialValues, onSubmit, onBack }: Props) => {
+  const { handleSubmit, register, watch, setValue, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const sellingPrice = watch("sellingPrice");
 
   useEffect(() => {
-    setValue(
-      "propertyTransferDuties",
+    // we don't want to override the default value is form has not been touched
+    if (!formState.isDirty && !!initialValues) return;
+
+    const propertyTransferDuties =
       sellingPrice && !isNaN(sellingPrice)
         ? computePropertyTransferDutiesFromSellingPrice(sellingPrice)
-        : undefined,
-    );
-  }, [sellingPrice, setValue]);
+        : undefined;
+    setValue("propertyTransferDuties", propertyTransferDuties);
+  }, [sellingPrice, setValue, formState.isDirty, initialValues]);
 
   return (
     <WizardFormLayout
