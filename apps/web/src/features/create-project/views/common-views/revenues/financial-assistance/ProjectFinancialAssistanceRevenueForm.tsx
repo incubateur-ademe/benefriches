@@ -10,6 +10,7 @@ import FormDefinition from "@/shared/views/layout/WizardFormLayout/FormDefinitio
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -20,8 +21,10 @@ export type FormValues = {
   otherAmount?: number;
 };
 
-const ProjectFinancialAssistanceRevenueForm = ({ onSubmit, onBack }: Props) => {
-  const { handleSubmit, register, watch } = useForm<FormValues>();
+const ProjectFinancialAssistanceRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
+  const { handleSubmit, register, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const allRevenues = watch();
 

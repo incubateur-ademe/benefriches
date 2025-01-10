@@ -278,3 +278,10 @@ export const selectSiteResaleAmounts = createSelector(
     };
   },
 );
+
+export const selectFinancialAssistanceRevenues = createSelector(
+  [selectCreationData],
+  (creationData) => {
+    return creationData.financialAssistanceRevenues;
+  },
+);
