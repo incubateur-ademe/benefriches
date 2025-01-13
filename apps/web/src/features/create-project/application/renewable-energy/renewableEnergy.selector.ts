@@ -271,6 +271,8 @@ export const selectPhotovoltaicSurfaceViewData = createSelector(
         keyParameter: "SURFACE",
         initialValue: creationData.photovoltaicInstallationSurfaceSquareMeters,
         siteSurfaceArea,
+        electricalPowerKWc: undefined,
+        recommendedSurfaceArea: undefined,
       };
     }
 
