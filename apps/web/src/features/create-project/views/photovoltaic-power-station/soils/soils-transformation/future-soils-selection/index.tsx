@@ -5,7 +5,7 @@ import {
 import {
   selectBaseSoilsDistributionForTransformation,
   selectTransformableSoils,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+} from "@/features/create-project/application/renewable-energy/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import FutureSoilsSelectionForm, { FormValues } from "./FutureSoilsSelectionForm";

@@ -1,8 +1,8 @@
+import { selectPhotovoltaicSurfaceViewData } from "@/features/create-project/application/renewable-energy/photovoltaicPowerStation.selectors";
 import {
   completePhotovoltaicInstallationSurface,
   revertPhotovoltaicInstallationSurface,
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicSurfaceViewData } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import PhotovoltaicSurfaceForm from "./SurfaceForm";

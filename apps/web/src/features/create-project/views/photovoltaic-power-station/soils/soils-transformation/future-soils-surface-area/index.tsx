@@ -1,4 +1,5 @@
 import { selectSiteSurfaceArea } from "@/features/create-project/application/createProject.selectors";
+import { selectPhotovoltaicPanelsSurfaceArea } from "@/features/create-project/application/renewable-energy/photovoltaicPowerStation.selectors";
 import {
   completeCustomSoilsSurfaceAreaAllocationStep,
   revertCustomSoilsSurfaceAreaAllocationStep,
@@ -6,8 +7,7 @@ import {
 import {
   selectBaseSoilsDistributionForTransformation,
   selectFutureSoils,
-  selectPhotovoltaicPanelsSurfaceArea,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+} from "@/features/create-project/application/renewable-energy/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import FutureSoilsSurfaceAreaForm, { FormValues } from "./FutureSoilsSurfaceAreaForm";

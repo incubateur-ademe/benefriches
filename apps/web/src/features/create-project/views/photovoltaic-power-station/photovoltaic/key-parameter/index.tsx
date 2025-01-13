@@ -1,8 +1,8 @@
+import { selectPhotovoltaicPlantFeaturesKeyParameter } from "@/features/create-project/application/renewable-energy/photovoltaicPowerStation.selectors";
 import {
   completePhotovoltaicKeyParameter,
   revertPhotovoltaicKeyParameter,
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { selectPhotovoltaicPlantFeaturesKeyParameter } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import PhotovoltaicKeyParameterForm from "./KeyParameterForm";
