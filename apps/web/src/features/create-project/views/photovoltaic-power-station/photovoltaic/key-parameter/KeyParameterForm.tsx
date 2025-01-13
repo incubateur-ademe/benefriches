@@ -7,6 +7,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -17,8 +18,10 @@ type FormValues = {
 
 const requiredMessage = "Ce champ est nécessaire pour déterminer les questions suivantes";
 
-function KeyParameterForm({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, formState } = useForm<FormValues>();
+function KeyParameterForm({ initialValues, onSubmit, onBack }: Props) {
+  const { register, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
   const error = formState.errors.photovoltaicKeyParameter;
 
   const options = [

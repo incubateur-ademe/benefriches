@@ -15,6 +15,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   siteSurfaceArea: number;
@@ -24,8 +25,10 @@ type FormValues = {
   photovoltaicInstallationSurfaceSquareMeters: number;
 };
 
-function PhotovoltaicSurfaceForm({ onSubmit, siteSurfaceArea, onBack }: Props) {
-  const { register, handleSubmit, watch, formState } = useForm<FormValues>();
+function PhotovoltaicSurfaceForm({ initialValues, onSubmit, siteSurfaceArea, onBack }: Props) {
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const hintText = `Maximum conseillé : ${formatSurfaceArea(siteSurfaceArea)}`;
 

@@ -1,14 +1,8 @@
-import { selectSiteSurfaceArea } from "@/features/create-project/application/createProject.selectors";
 import {
   completePhotovoltaicInstallationElectricalPower,
   revertPhotovoltaicInstallationElectricalPower,
 } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import {
-  selectPhotovoltaicPanelsSurfaceArea,
-  selectPhotovoltaicPlantFeaturesKeyParameter,
-  selectRecommendedPowerKWcFromPhotovoltaicPlantSurfaceArea,
-  selectRecommendedPowerKWcFromSiteSurfaceArea,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+import { selectPhotovoltaicPowerViewData } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import PhotovoltaicPowerForm from "./PowerForm";
@@ -16,15 +10,13 @@ import PhotovoltaicPowerFromSurfaceForm from "./PowerFromSurfaceForm";
 
 function PhotovoltaicPowerContainer() {
   const dispatch = useAppDispatch();
-  const recommendedElectricalPowerKWc = useAppSelector(
-    selectRecommendedPowerKWcFromPhotovoltaicPlantSurfaceArea,
-  );
-  const recommendedElectricalPowerKWcFromSiteSurfaceArea = useAppSelector(
-    selectRecommendedPowerKWcFromSiteSurfaceArea,
-  );
-  const siteSurfaceArea = useAppSelector(selectSiteSurfaceArea);
-  const surfaceSquareMeters = useAppSelector(selectPhotovoltaicPanelsSurfaceArea);
-  const photovoltaicKeyParameter = useAppSelector(selectPhotovoltaicPlantFeaturesKeyParameter);
+  const {
+    initialValue,
+    siteSurfaceArea,
+    recommendedPowerKWc,
+    photovoltaicInstallationSurfaceArea,
+    keyParameter,
+  } = useAppSelector(selectPhotovoltaicPowerViewData);
 
   const onSubmit = (data: { photovoltaicInstallationElectricalPowerKWc: number }) => {
     dispatch(
@@ -38,11 +30,14 @@ function PhotovoltaicPowerContainer() {
     dispatch(revertPhotovoltaicInstallationElectricalPower());
   };
 
-  if (photovoltaicKeyParameter === "SURFACE") {
+  if (keyParameter === "SURFACE") {
     return (
       <PhotovoltaicPowerFromSurfaceForm
-        recommendedElectricalPowerKWc={recommendedElectricalPowerKWc}
-        photovoltaicSurfaceArea={surfaceSquareMeters}
+        initialValues={
+          initialValue ? { photovoltaicInstallationElectricalPowerKWc: initialValue } : undefined
+        }
+        recommendedElectricalPowerKWc={recommendedPowerKWc}
+        photovoltaicSurfaceArea={photovoltaicInstallationSurfaceArea}
         onSubmit={onSubmit}
         onBack={onBack}
       />
@@ -51,7 +46,10 @@ function PhotovoltaicPowerContainer() {
 
   return (
     <PhotovoltaicPowerForm
-      recommendedElectricalPowerKWc={recommendedElectricalPowerKWcFromSiteSurfaceArea}
+      initialValues={
+        initialValue ? { photovoltaicInstallationElectricalPowerKWc: initialValue } : undefined
+      }
+      recommendedElectricalPowerKWc={recommendedPowerKWc}
       siteSurfaceArea={siteSurfaceArea}
       onSubmit={onSubmit}
       onBack={onBack}

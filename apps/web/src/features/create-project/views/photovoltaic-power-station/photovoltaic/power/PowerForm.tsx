@@ -10,6 +10,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   recommendedElectricalPowerKWc: number;
@@ -21,12 +22,15 @@ type FormValues = {
 };
 
 function PhotovoltaicPowerForm({
+  initialValues,
   onSubmit,
   onBack,
   siteSurfaceArea,
   recommendedElectricalPowerKWc,
 }: Props) {
-  const { handleSubmit, formState, register } = useForm<FormValues>();
+  const { handleSubmit, formState, register } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const hintText = `Maximum conseillé : ${formatNumberFr(recommendedElectricalPowerKWc)} kWc`;
 

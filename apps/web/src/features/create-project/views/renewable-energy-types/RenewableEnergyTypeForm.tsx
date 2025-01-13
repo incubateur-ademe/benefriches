@@ -12,6 +12,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 import RenewableEnergyTile from "./RenewableEnergyTile";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -27,8 +28,10 @@ const options: Record<RenewableEnergyDevelopmentPlanType, { disabled: boolean }>
   BIOMASS: { disabled: true },
 };
 
-function RenewableEnergyTypesForm({ onSubmit, onBack }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>();
+function RenewableEnergyTypesForm({ initialValues, onSubmit, onBack }: Props) {
+  const { control, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
   const validationError = formState.errors.renewableEnergyType;
 
   return (

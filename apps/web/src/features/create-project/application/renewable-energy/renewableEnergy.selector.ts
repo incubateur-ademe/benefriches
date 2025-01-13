@@ -8,6 +8,7 @@ import {
 } from "shared";
 
 import { RootState } from "@/app/application/store";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
 import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
 
 import {
@@ -18,7 +19,8 @@ import {
   computeDefaultPhotovoltaicYearlyRecurringRevenueAmount,
   computeDefaultPhotovoltaicYearlyRentAmount,
   computeDefaultPhotovoltaicYearlyTaxesAmount,
-  PHOTOVOLTAIC_RATIO_M2_PER_KWC,
+  getRecommendedPhotovoltaicPanelsSurfaceAreaFromElectricalPower,
+  getRecommendedPowerKWcFromPhotovoltaicPanelsSurfaceArea,
 } from "../../domain/photovoltaic";
 import { generateRenewableEnergyProjectName } from "../../domain/projectName";
 import {
@@ -34,6 +36,7 @@ import {
   selectDefaultSchedule,
   selectSiteData,
   selectSiteSoilsDistribution,
+  selectSiteSurfaceArea,
 } from "../createProject.selectors";
 import { RenewableEneryProjectState } from "./renewableEnergy.reducer";
 
@@ -51,6 +54,13 @@ export const selectCurrentStep = createSelector(selectRenewableEnergyData, (stat
 export const selectCreationData = createSelector(
   selectRenewableEnergyData,
   (state): RenewableEneryProjectState["creationData"] => state.creationData,
+);
+
+export const selectRenewableEnergyType = createSelector(
+  [selectCreationData],
+  (creationData): RenewableEnergyDevelopmentPlanType | undefined => {
+    return creationData.renewableEnergyType;
+  },
 );
 
 export const selectProjectSoilsDistribution = createSelector(
@@ -193,41 +203,93 @@ export const selectPhotovoltaicPlantFeaturesKeyParameter = createSelector(
   (creationData) => creationData.photovoltaicKeyParameter,
 );
 
-export const selectRecommendedPowerKWcFromPhotovoltaicPlantSurfaceArea = createSelector(
-  selectCreationData,
-  (creationData): number => {
-    if (!creationData.photovoltaicInstallationSurfaceSquareMeters) return 0;
-    return Math.round(
-      creationData.photovoltaicInstallationSurfaceSquareMeters / PHOTOVOLTAIC_RATIO_M2_PER_KWC,
-    );
+type PhotovoltaicPowerViewData =
+  | {
+      keyParameter: "SURFACE";
+      initialValue: number;
+      photovoltaicInstallationSurfaceArea: number;
+      recommendedPowerKWc: number;
+      siteSurfaceArea: number;
+    }
+  | {
+      keyParameter: "POWER";
+      initialValue: number | undefined;
+      recommendedPowerKWc: number;
+      photovoltaicInstallationSurfaceArea: undefined;
+      siteSurfaceArea: number;
+    };
+export const selectPhotovoltaicPowerViewData = createSelector(
+  [selectCreationData, selectSiteSurfaceArea],
+  (creationData, siteSurfaceArea): PhotovoltaicPowerViewData => {
+    if (creationData.photovoltaicKeyParameter === "SURFACE") {
+      const installationSurfaceArea = creationData.photovoltaicInstallationSurfaceSquareMeters ?? 0;
+      const recommendedPowerKWc =
+        getRecommendedPowerKWcFromPhotovoltaicPanelsSurfaceArea(installationSurfaceArea);
+      const initialValue =
+        creationData.photovoltaicInstallationElectricalPowerKWc ?? recommendedPowerKWc;
+      return {
+        initialValue,
+        keyParameter: "SURFACE",
+        photovoltaicInstallationSurfaceArea: installationSurfaceArea,
+        recommendedPowerKWc,
+        siteSurfaceArea,
+      };
+    }
+    const recommendedPowerKWc =
+      getRecommendedPowerKWcFromPhotovoltaicPanelsSurfaceArea(siteSurfaceArea);
+    return {
+      initialValue: creationData.photovoltaicInstallationElectricalPowerKWc,
+      keyParameter: "POWER",
+      recommendedPowerKWc,
+      photovoltaicInstallationSurfaceArea: undefined,
+      siteSurfaceArea,
+    };
   },
 );
 
-export const selectRecommendedPowerKWcFromSiteSurfaceArea = createSelector(
-  selectSiteData,
-  (siteData): number => {
-    if (!siteData?.surfaceArea) return 0;
-    return Math.round(siteData.surfaceArea / PHOTOVOLTAIC_RATIO_M2_PER_KWC);
-  },
-);
+type PhotovoltaicSurfaceAreaViewData =
+  | {
+      keyParameter: "SURFACE";
+      initialValue: number | undefined;
+      siteSurfaceArea: number;
+      recommendedSurfaceArea: undefined;
+      electricalPowerKWc: undefined;
+    }
+  | {
+      keyParameter: "POWER";
+      initialValue: number;
+      siteSurfaceArea: number;
+      recommendedSurfaceArea: number;
+      electricalPowerKWc: number;
+    };
 
-export const selectRecommendedPhotovoltaicPlantSurfaceFromElectricalPower = createSelector(
-  [selectCreationData, selectSiteData],
-  (creationData, siteData): number => {
-    if (!creationData.photovoltaicInstallationElectricalPowerKWc || !siteData?.surfaceArea)
-      return 0;
+export const selectPhotovoltaicSurfaceViewData = createSelector(
+  [selectCreationData, selectSiteSurfaceArea],
+  (creationData, siteSurfaceArea): PhotovoltaicSurfaceAreaViewData => {
+    if (creationData.photovoltaicKeyParameter === "SURFACE") {
+      return {
+        keyParameter: "SURFACE",
+        initialValue: creationData.photovoltaicInstallationSurfaceSquareMeters,
+        siteSurfaceArea,
+      };
+    }
 
-    const computedFromElectricalPower = Math.round(
-      creationData.photovoltaicInstallationElectricalPowerKWc * PHOTOVOLTAIC_RATIO_M2_PER_KWC,
-    );
+    const electricalPowerKWc = creationData.photovoltaicInstallationElectricalPowerKWc ?? 0;
     // photovoltaic plant can't be bigger than site
-    return Math.min(computedFromElectricalPower, siteData.surfaceArea);
+    const recommendedSurfaceArea = Math.min(
+      getRecommendedPhotovoltaicPanelsSurfaceAreaFromElectricalPower(electricalPowerKWc),
+      siteSurfaceArea,
+    );
+    const initialValue =
+      creationData.photovoltaicInstallationSurfaceSquareMeters ?? recommendedSurfaceArea;
+    return {
+      keyParameter: "POWER",
+      initialValue,
+      recommendedSurfaceArea,
+      siteSurfaceArea,
+      electricalPowerKWc,
+    };
   },
-);
-
-export const selectPhotovoltaicPlantElectricalPowerKWc = createSelector(
-  selectCreationData,
-  (creationData): number => creationData.photovoltaicInstallationElectricalPowerKWc ?? 0,
 );
 
 export const selectPhotovoltaicInstallationExpenses = createSelector(
