@@ -12,7 +12,7 @@ function YearlyProjectedExpensesFormContainer() {
 
   return (
     <YearlyProjectedExpensesForm
-      title="Dépenses annuelles d’exploitation des bâtiments"
+      title="Dépenses annuelles d'exploitation des bâtiments"
       onSubmit={(expenses: RecurringExpense[]) => {
         dispatch(yearlyProjectedExpensesCompleted(expenses));
       }}

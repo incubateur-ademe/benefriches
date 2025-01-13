@@ -12,7 +12,7 @@ function YearlyProjectedRevenueFormContainer() {
 
   return (
     <YearlyProjectedsRevenueForm
-      title="Recettes annuelles d’exploitation des bâtiments"
+      title="Recettes annuelles d'exploitation des bâtiments"
       onBack={() => {
         dispatch(yearlyProjectedRevenueReverted());
       }}
