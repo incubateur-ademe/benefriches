@@ -8,6 +8,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -16,11 +17,9 @@ type FormValues = {
   photovoltaicContractDuration: number;
 };
 
-function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
+function PhotovoltaicAnnualProductionForm({ initialValues, onSubmit, onBack }: Props) {
   const { register, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: {
-      photovoltaicContractDuration: AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS,
-    },
+    defaultValues: initialValues,
   });
 
   return (
@@ -28,7 +27,10 @@ function PhotovoltaicAnnualProductionForm({ onSubmit, onBack }: Props) {
       title="Quelle sera la durée prévisionnelle du contrat de la revente d'énergie au distributeur ?"
       instructions={
         <FormInfo>
-          <p>La durée moyenne des contrats de rachat d'électricité photovoltaïque est de 20 ans.</p>
+          <p>
+            La durée moyenne des contrats de rachat d'électricité photovoltaïque est de{" "}
+            {AVERAGE_PHOTOVOLTAIC_CONTRACT_DURATION_IN_YEARS} ans.
+          </p>
           <p>Vous pouvez modifier cette durée.</p>
         </FormInfo>
       }
