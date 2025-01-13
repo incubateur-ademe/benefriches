@@ -11,6 +11,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   buildingsFootprintSurfaceArea: number;
@@ -25,8 +26,15 @@ const getFormattedFloorCount = (footprintSurfaceArea: number, floorSurfaceArea: 
   return formatNumberFr(roundTo2Digits(floorSurfaceArea / footprintSurfaceArea));
 };
 
-function BuildingsFloorSurfaceArea({ onSubmit, onBack, buildingsFootprintSurfaceArea }: Props) {
-  const { register, handleSubmit, watch, formState } = useForm<FormValues>();
+function BuildingsFloorSurfaceArea({
+  initialValues,
+  onSubmit,
+  onBack,
+  buildingsFootprintSurfaceArea,
+}: Props) {
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const surface = watch("surfaceArea");
 

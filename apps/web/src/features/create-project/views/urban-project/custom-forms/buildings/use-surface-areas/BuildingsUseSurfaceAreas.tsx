@@ -12,6 +12,7 @@ import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceA
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 type Props = {
+  initialValues?: FormValues;
   totalSurfaceArea: number;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -19,9 +20,15 @@ type Props = {
 
 type FormValues = SurfaceAreaDistributionJson<BuildingsUseCategory>;
 
-function BuildingsUseCategorySurfaceAreas({ totalSurfaceArea, onSubmit, onBack }: Props) {
+function BuildingsUseCategorySurfaceAreas({
+  initialValues,
+  totalSurfaceArea,
+  onSubmit,
+  onBack,
+}: Props) {
   return (
     <SurfaceAreaDistributionForm
+      initialValues={initialValues}
       title="Quelles seront les surfaces de plancher des usages ?"
       instructions={
         <FormInfo>

@@ -31,3 +31,9 @@ export type BuildingsEconomicActivityUse = Extract<
   | "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS"
   | "SHIPPING_OR_INDUSTRIAL_BUILDINGS"
 >;
+
+export const isBuildingsEconomicActivityUse = (
+  value: unknown,
+): value is BuildingsEconomicActivityUse => {
+  return ECONOMIC_ACTIVITY_BUILDINGS_USE.includes(value as BuildingsEconomicActivityUse);
+};

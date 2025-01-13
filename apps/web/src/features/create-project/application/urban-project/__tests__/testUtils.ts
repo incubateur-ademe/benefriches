@@ -1,6 +1,7 @@
 import { UrbanSpaceCategory } from "shared";
 
 import { createStore, RootState } from "@/app/application/store";
+import { DEFAULT_APP_SETTINGS } from "@/shared/app-settings/core/appSettings";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
@@ -60,6 +61,7 @@ export const expectRevertedState = (
 export class StoreBuilder {
   preloadedRootState = {
     projectCreation: getInitialState(),
+    appSettings: DEFAULT_APP_SETTINGS,
   };
 
   withSiteData(siteData: Partial<RootState["projectCreation"]["siteData"]>) {
@@ -90,9 +92,20 @@ export class StoreBuilder {
   }
 
   withCreationData(creationData: RootState["projectCreation"]["urbanProject"]["creationData"]) {
-    this.preloadedRootState.projectCreation.urbanProject.creationData = creationData;
+    this.preloadedRootState.projectCreation.urbanProject = {
+      ...this.preloadedRootState.projectCreation.urbanProject,
+      creationData,
+    };
     return this;
   }
+
+  withAppSettingInputMode = (inputMode: "percentage" | "squareMeters") => {
+    this.preloadedRootState.appSettings = {
+      ...this.preloadedRootState.appSettings,
+      surfaceAreaInputMode: inputMode,
+    };
+    return this;
+  };
 
   build() {
     return createStore(getTestAppDependencies(), this.preloadedRootState);

@@ -9,6 +9,8 @@ import {
   SurfaceAreaDistributionJson,
   ProjectSchedule,
   ProjectScheduleBuilder,
+  typedObjectEntries,
+  isBuildingsEconomicActivityUse,
 } from "shared";
 
 import { RootState } from "@/app/application/store";
@@ -169,6 +171,33 @@ export const selectBuildingsFloorSurfaceArea = createSelector(
   [selectCreationData],
   (creationData): number => {
     return creationData.buildingsFloorSurfaceArea ?? 0;
+  },
+);
+
+export const selectBuildingsFloorUseSurfaceAreas = createSelector(
+  [selectCreationData, selectAppSettings],
+  (creationData, appSettings) => {
+    return getSurfaceAreaDistributionWithUnit(
+      creationData.buildingsUseCategoriesDistribution ?? {},
+      appSettings.surfaceAreaInputMode,
+    );
+  },
+);
+
+export const selectBuildingsEconomicActivitySurfaceDistributionWithUnit = createSelector(
+  [selectCreationData, selectAppSettings],
+  (creationData, appSettings) => {
+    const economicActivityDistribution: SurfaceAreaDistributionJson<BuildingsEconomicActivityUse> =
+      {};
+    typedObjectEntries(creationData.buildingsUsesDistribution ?? {}).forEach(
+      ([use, surfaceArea]) => {
+        if (isBuildingsEconomicActivityUse(use)) economicActivityDistribution[use] = surfaceArea;
+      },
+    );
+    return getSurfaceAreaDistributionWithUnit(
+      economicActivityDistribution,
+      appSettings.surfaceAreaInputMode,
+    );
   },
 );
 
