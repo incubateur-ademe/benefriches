@@ -1,10 +1,6 @@
 import { useContext } from "react";
 
-import {
-  EconomicBalance,
-  EconomicBalanceName,
-} from "@/features/projects/domain/projectImpactsEconomicBalance";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
+import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 
 import {
   getEconomicBalanceDetailsImpactLabel,
@@ -13,13 +9,6 @@ import {
 import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactSection from "../ImpactSection";
-
-const itemDescriptionModalIds: Partial<
-  Record<EconomicBalanceName, ImpactDescriptionModalCategory>
-> = {
-  site_purchase: "economic-balance.real-estate-acquisition",
-  site_reinstatement: "economic-balance.site-reinstatement",
-};
 
 type Props = {
   impact: EconomicBalance;
@@ -37,14 +26,16 @@ const EconomicBalanceListSection = ({ impact }: Props) => {
       total={total}
       initialShowSectionContent={false}
       onTitleClick={() => {
-        openImpactModalDescription("economic-balance");
+        openImpactModalDescription({ sectionName: "economic_balance" });
       }}
     >
       {economicBalance.map(({ name, value, details = [] }) => (
         <ImpactActorsItem
           key={name}
           label={getEconomicBalanceImpactLabel(name)}
-          descriptionModalId={itemDescriptionModalIds[name]}
+          onClick={() => {
+            openImpactModalDescription({ sectionName: "economic_balance", impactName: name });
+          }}
           actors={[
             {
               label: bearer ?? "Aménageur",
@@ -52,7 +43,13 @@ const EconomicBalanceListSection = ({ impact }: Props) => {
               details: details.map(({ name: detailsName, value: detailsValue }) => ({
                 label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
                 value: detailsValue,
-                descriptionModalId: itemDescriptionModalIds[detailsName],
+                onClick: () => {
+                  openImpactModalDescription({
+                    sectionName: "economic_balance",
+                    impactName: name,
+                    impactDetailsName: detailsName,
+                  });
+                },
               })),
             },
           ]}

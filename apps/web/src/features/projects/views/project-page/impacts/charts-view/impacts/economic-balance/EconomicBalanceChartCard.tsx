@@ -56,7 +56,7 @@ function EconomicBalanceChartCard({ economicBalance, bearer = "l'aménageur" }: 
       title="Bilan de l'opération"
       subtitle={`Pour ${bearer}`}
       onClick={() => {
-        openImpactModalDescription("economic-balance");
+        openImpactModalDescription({ sectionName: "economic_balance" });
       }}
     >
       {economicBalance.length === 0 ? (

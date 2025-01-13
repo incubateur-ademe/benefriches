@@ -1,5 +1,6 @@
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 const AvoidedFricheExpensesDescription = () => {
   return (
@@ -7,10 +8,7 @@ const AvoidedFricheExpensesDescription = () => {
       <ModalHeader
         title="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
         breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
+          breadcrumbSection,
           {
             label: "Impacts économiques directs",
           },

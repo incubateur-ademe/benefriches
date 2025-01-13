@@ -3,10 +3,8 @@ import { useContext } from "react";
 import {
   SocioEconomicDetailedImpact,
   SocioEconomicImpactByCategory,
-  SocioEconomicImpactName,
 } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
-import { ImpactDescriptionModalCategory } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactDescriptionModalWizard";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
 
 import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
@@ -17,33 +15,6 @@ type Props = {
   socioEconomicImpacts: SocioEconomicDetailedImpact;
 };
 
-const itemDescriptionModalIds: Partial<
-  Record<SocioEconomicImpactName, ImpactDescriptionModalCategory>
-> = {
-  avoided_co2_eq_with_enr: "socio-economic.avoided-co2-renewable-energy",
-  rental_income: "socio-economic.rental-income",
-  taxes_income: "socio-economic.taxes-income",
-  avoided_friche_costs: "socio-economic.avoided-friche-costs",
-  avoided_illegal_dumping_costs: "socio-economic.avoided-illegal-dumping-costs",
-  avoided_security_costs: "socio-economic.avoided-security-costs",
-  avoided_other_securing_costs: "socio-economic.avoided-other-securing-costs",
-  local_transfer_duties_increase: "socio-economic.property-transfer-duties-increase",
-  local_property_value_increase: "socio-economic.property-value-increase",
-  ecosystem_services: "socio-economic.ecosystem-services",
-  nature_related_wellness_and_leisure:
-    "socio-economic.ecosystem-services.nature-related-wellness-and-leisure",
-  carbon_storage: "socio-economic.ecosystem-services.carbon-storage",
-  forest_related_product: "socio-economic.ecosystem-services.forest-related-product",
-  nitrogen_cycle: "socio-economic.ecosystem-services.nitrogen-cycle",
-  water_cycle: "socio-economic.ecosystem-services.water-cycle",
-  pollination: "socio-economic.ecosystem-services.pollinisation",
-  soil_erosion: "socio-economic.ecosystem-services.soil-erosion",
-  invasive_species_regulation: "socio-economic.ecosystem-services.invasive-species-regulation",
-  water_regulation: "socio-economic.water-regulation",
-  roads_and_utilities_maintenance_expenses:
-    "socio-economic.roads-and-utilities-maintenance-expenses",
-};
-
 const SocioEconomicImpactSection = ({
   impacts,
   total,
@@ -51,6 +22,8 @@ const SocioEconomicImpactSection = ({
 }: SocioEconomicImpactByCategory & {
   title: string;
 }) => {
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
   if (impacts.length === 0) {
     return null;
   }
@@ -67,11 +40,19 @@ const SocioEconomicImpactSection = ({
               ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
                   label: getSocioEconomicImpactLabel(detailsName),
                   value: detailsValue,
-                  descriptionModalId: itemDescriptionModalIds[detailsName],
+                  onClick: () => {
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      impactName: name,
+                      impactDetailsName: detailsName,
+                    });
+                  },
                 }))
               : undefined,
           }))}
-          descriptionModalId={itemDescriptionModalIds[name]}
+          onClick={() => {
+            openImpactModalDescription({ sectionName: "socio_economic", impactName: name });
+          }}
           type="monetary"
         />
       ))}
@@ -91,7 +72,7 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
       total={total}
       initialShowSectionContent={false}
       onTitleClick={() => {
-        openImpactModalDescription("socio-economic");
+        openImpactModalDescription({ sectionName: "socio_economic" });
       }}
     >
       <SocioEconomicImpactSection title="Impacts économiques directs" {...economicDirect} />

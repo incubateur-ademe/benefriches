@@ -16,7 +16,7 @@ function SocioEconomicChartCard({ socioEconomicImpacts }: Props) {
   return (
     <ImpactsChartsSection
       onClick={() => {
-        openImpactModalDescription("socio-economic");
+        openImpactModalDescription({ sectionName: "socio_economic" });
       }}
       title="Impacts socio-économiques"
       subtitle="Par bénéficiaires"

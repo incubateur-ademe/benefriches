@@ -1,6 +1,7 @@
 import AvoidedCO2WithEnRDescription from "../../shared/AvoidedCo2WithRenewableEnergyDescription";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
   address: string;
@@ -14,10 +15,7 @@ const AvoidedCO2WithEnRMonetaryValueDescription = (props: Props) => {
       <ModalHeader
         title="⚡️️ Emissions de CO2-eq évitées grâce à la production d'énergies renouvelables"
         breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
+          breadcrumbSection,
           {
             label: "Impacts environnementaux monétarisés",
           },

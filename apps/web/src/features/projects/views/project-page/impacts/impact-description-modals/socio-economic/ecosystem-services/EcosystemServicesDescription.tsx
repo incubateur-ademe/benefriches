@@ -10,32 +10,10 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
   impactsData: ImpactsData;
-};
-
-const getDescriptionModalKey = (
-  impactName: EcosystemServicesImpact["details"][number]["impact"],
-) => {
-  switch (impactName) {
-    case "nature_related_wellness_and_leisure":
-      return "socio-economic.ecosystem-services.nature-related-wellness-and-leisure";
-    case "carbon_storage":
-      return "socio-economic.ecosystem-services.carbon-storage";
-    case "forest_related_product":
-      return "socio-economic.ecosystem-services.forest-related-product";
-    case "invasive_species_regulation":
-      return "socio-economic.ecosystem-services.invasive-species-regulation";
-    case "nitrogen_cycle":
-      return "socio-economic.ecosystem-services.nitrogen-cycle";
-    case "pollination":
-      return "socio-economic.ecosystem-services.pollinisation";
-    case "soil_erosion":
-      return "socio-economic.ecosystem-services.soil-erosion";
-    case "water_cycle":
-      return "socio-economic.ecosystem-services.water-cycle";
-  }
 };
 
 const getEcosystemServiceDetailsTitle = (
@@ -73,16 +51,12 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
       <ModalHeader
         title="🌻 Services écosystémiques"
         breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
+          breadcrumbSection,
           {
             label: "Impacts environnementaux monétarisés",
           },
           {
             label: "Services écosystémiques",
-            id: "socio-economic.ecosystem-services",
           },
         ]}
       />
@@ -163,7 +137,11 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
             <Button
               key={impact}
               onClick={() => {
-                openImpactModalDescription(getDescriptionModalKey(impact));
+                openImpactModalDescription({
+                  sectionName: "socio_economic",
+                  impactName: "ecosystem_services",
+                  impactDetailsName: impact,
+                });
               }}
               priority="tertiary no outline"
             >

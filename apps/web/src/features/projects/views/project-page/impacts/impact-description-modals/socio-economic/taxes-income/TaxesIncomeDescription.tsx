@@ -6,6 +6,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
   developmentPlan: ProjectData["developmentPlan"];
@@ -17,10 +18,7 @@ const TaxesIncomeDescription = ({ developmentPlan }: Props) => {
       <ModalHeader
         title="🏛 Recettes fiscales"
         breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
+          breadcrumbSection,
           {
             label: "Impacts économiques directs",
           },

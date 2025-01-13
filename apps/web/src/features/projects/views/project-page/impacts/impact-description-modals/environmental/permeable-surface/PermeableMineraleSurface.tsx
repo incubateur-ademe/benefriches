@@ -1,22 +1,13 @@
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import { breadcrumbSegments } from "./breadcrumbSegments";
 
 const PermeableMineraleSurfaceDescription = () => {
   return (
     <>
       <ModalHeader
         title="🪨 Surface minérale"
-        breadcrumbSegments={[
-          {
-            label: "Impacts environnementaux",
-            id: "environmental",
-          },
-          {
-            label: "Surface perméable",
-            id: "environmental.permeable-surface",
-          },
-          { label: "Surface minérale" },
-        ]}
+        breadcrumbSegments={[...breadcrumbSegments, { label: "Surface minérale" }]}
       />
       <ModalContent>
         <p>

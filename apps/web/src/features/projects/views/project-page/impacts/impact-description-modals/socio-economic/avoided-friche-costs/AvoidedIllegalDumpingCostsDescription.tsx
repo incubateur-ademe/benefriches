@@ -4,6 +4,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   addressLabel: string;
@@ -14,21 +15,7 @@ const AvoidedIllegalDumpingCostsDescription = ({ addressLabel }: Props) => {
     <>
       <ModalHeader
         title="🚮 Débarras de dépôt sauvage"
-        breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
-          {
-            label: "Impacts économiques directs",
-          },
-          {
-            label: "Dépenses friche évitées",
-            id: "socio-economic.avoided-friche-costs",
-          },
-
-          { label: "Débarras de dépôt sauvage" },
-        ]}
+        breadcrumbSegments={[...breadcrumbSegments, { label: "Débarras de dépôt sauvage" }]}
       />
       <ModalContent>
         <p>

@@ -10,6 +10,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   baseSoilsDistribution: SoilsDistribution;
@@ -34,20 +35,7 @@ const ForestRelatedProductDescription = ({
     <>
       <ModalHeader
         title="🪵 Produits issus de la forêt"
-        breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
-          {
-            label: "Impacts environnementaux monétarisés",
-          },
-          {
-            label: "Services écosystémiques",
-            id: "socio-economic.ecosystem-services",
-          },
-          { label: "Produits issus de la forêt" },
-        ]}
+        breadcrumbSegments={[...breadcrumbSegments, { label: "Produits issus de la forêt" }]}
       />
       <ModalContent>
         <p>

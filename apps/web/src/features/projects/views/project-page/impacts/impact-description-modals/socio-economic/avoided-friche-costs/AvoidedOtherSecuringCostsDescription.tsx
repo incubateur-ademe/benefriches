@@ -1,26 +1,13 @@
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import { breadcrumbSegments } from "./breadcrumbSegments";
 
 const AvoidedOtherSecuringCostsDescription = () => {
   return (
     <>
       <ModalHeader
         title="🛡 Autres dépenses de sécurisation"
-        breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
-          {
-            label: "Impacts économiques directs",
-          },
-          {
-            label: "Dépenses friche évitées",
-            id: "socio-economic.avoided-friche-costs",
-          },
-
-          { label: "Autres dépenses de sécurisation" },
-        ]}
+        breadcrumbSegments={[...breadcrumbSegments, { label: "Autres dépenses de sécurisation" }]}
       />
       <ModalContent>
         <p>

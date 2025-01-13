@@ -7,11 +7,13 @@ import {
   SoilsDistribution,
 } from "shared";
 
+import { ImpactDescriptionModalWizard } from "./ImpactDescriptionModalWizard";
 import {
-  ImpactDescriptionModalCategory,
-  ImpactDescriptionModalWizard,
-} from "./ImpactDescriptionModalWizard";
-import { ImpactModalDescriptionContext } from "./ImpactModalDescriptionContext";
+  ImpactModalDescriptionContext,
+  INITIAL_OPEN_STATE,
+  OpenImpactModalDescriptionArgs,
+  OpenState,
+} from "./ImpactModalDescriptionContext";
 
 export type ProjectData = {
   soilsDistribution: SoilsDistribution;
@@ -44,10 +46,6 @@ type ModalDescriptionProviderProps = {
   impactsData: ImpactsData;
 };
 
-type State = ImpactDescriptionModalCategory;
-
-const INITAL_OPEN_STATE = undefined;
-
 const modal = createModal({
   id: `modal-impacts-description`,
   isOpenedByDefault: false,
@@ -59,14 +57,14 @@ function ImpactModalDescriptionProvider({
   siteData,
   impactsData,
 }: ModalDescriptionProviderProps) {
-  const [openState, setOpenState] = useState<State>(INITAL_OPEN_STATE);
+  const [openState, setOpenState] = useState<OpenState>(INITIAL_OPEN_STATE);
 
-  const openImpactModalDescription = (modalId: ImpactDescriptionModalCategory) => {
-    setOpenState(modalId);
+  const openImpactModalDescription = (args: OpenImpactModalDescriptionArgs) => {
+    setOpenState(args);
   };
 
   const resetOpenState = () => {
-    setOpenState(INITAL_OPEN_STATE);
+    setOpenState(INITIAL_OPEN_STATE);
   };
 
   useIsModalOpen(modal, {
@@ -74,7 +72,7 @@ function ImpactModalDescriptionProvider({
   });
 
   useEffect(() => {
-    if (openState) {
+    if (openState.sectionName) {
       modal.open();
     }
   }, [openState]);

@@ -35,9 +35,9 @@ export type SocioEconomicDetailedImpact = {
 };
 
 export type SocioEconomicImpactName = SocioEconomicMainImpactName | SocioEconomicDetailsName;
-type SocioEconomicMainImpactName = SocioEconomicImpact["impact"];
+export type SocioEconomicMainImpactName = SocioEconomicImpact["impact"];
 
-type SocioEconomicDetailsName =
+export type SocioEconomicDetailsName =
   | TaxesIncomeImpact["details"][number]["impact"]
   | AvoidedCO2EqEmissions["details"][number]["impact"]
   | EcosystemServicesImpact["details"][number]["impact"]

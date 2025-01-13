@@ -10,6 +10,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   baseSoilsDistribution: SoilsDistribution;
@@ -31,20 +32,7 @@ const PollinationDescription = ({ baseSoilsDistribution, forecastSoilsDistributi
     <>
       <ModalHeader
         title="🐝 Pollinisation"
-        breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
-          {
-            label: "Impacts environnementaux monétarisés",
-          },
-          {
-            label: "Services écosystémiques",
-            id: "socio-economic.ecosystem-services",
-          },
-          { label: "Pollinisation" },
-        ]}
+        breadcrumbSegments={[...breadcrumbSegments, { label: "Pollinisation" }]}
       />
       <ModalContent>
         <p>

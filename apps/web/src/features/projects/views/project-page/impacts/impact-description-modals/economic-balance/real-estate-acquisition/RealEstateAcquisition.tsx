@@ -1,18 +1,13 @@
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 const RealEstateAcquisitionDescription = () => {
   return (
     <>
       <ModalHeader
         title="🏠 Acquisition du site"
-        breadcrumbSegments={[
-          {
-            label: "Bilan de l'opération",
-            id: "economic-balance",
-          },
-          { label: "Acquisition du site" },
-        ]}
+        breadcrumbSegments={[breadcrumbSection, { label: "Acquisition du site" }]}
       />
       <ModalContent>
         <p>

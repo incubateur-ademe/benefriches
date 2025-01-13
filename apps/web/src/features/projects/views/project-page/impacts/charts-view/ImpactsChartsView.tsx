@@ -121,6 +121,12 @@ const ImpactsChartsView = ({
               ...co2Benefit.impact,
               details: formatImpactDetails(co2Benefit.impact.details),
             }}
+            onClick={() => {
+              openImpactModalDescription({
+                sectionName: "environmental",
+                impactName: "co2_benefit",
+              });
+            }}
           />
         )}
         {permeableSurfaceArea && (
@@ -132,7 +138,10 @@ const ImpactsChartsView = ({
               details: formatImpactDetails(permeableSurfaceArea.impact.details),
             }}
             onClick={() => {
-              openImpactModalDescription("environmental.permeable-surface");
+              openImpactModalDescription({
+                sectionName: "environmental",
+                impactName: "permeable_surface_area",
+              });
             }}
           />
         )}
@@ -145,7 +154,7 @@ const ImpactsChartsView = ({
               details: formatImpactDetails(fullTimeJobs.impact.details),
             }}
             onClick={() => {
-              openImpactModalDescription("social.full-time-jobs");
+              openImpactModalDescription({ sectionName: "social", impactName: "full_time_jobs" });
             }}
           />
         )}

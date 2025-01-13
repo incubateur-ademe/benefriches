@@ -2,12 +2,11 @@ import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { ImpactDescriptionModalCategory } from "../ImpactDescriptionModalWizard";
-import ModalBreadcrumb from "./ModalBreadcrumb";
+import ModalBreadcrumb, { BreadcrumbProps } from "./ModalBreadcrumb";
 
 type Props = {
   title: ReactNode;
-  breadcrumbSegments: { label: string; id?: ImpactDescriptionModalCategory }[];
+  breadcrumbSegments: BreadcrumbProps["segments"];
 };
 
 const ModalHeader = ({ title, breadcrumbSegments }: Props) => {

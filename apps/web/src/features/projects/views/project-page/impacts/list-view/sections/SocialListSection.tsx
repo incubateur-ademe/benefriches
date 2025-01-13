@@ -1,9 +1,8 @@
 import { useContext } from "react";
 
-import { SocialImpact, SocialImpactName } from "@/features/projects/domain/projectImpactsSocial";
+import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
 
 import { getSocialImpactLabel } from "../../getImpactLabel";
-import { ImpactDescriptionModalCategory } from "../../impact-description-modals/ImpactDescriptionModalWizard";
 import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactItemDetails from "../ImpactItemDetails";
 import ImpactItemGroup from "../ImpactItemGroup";
@@ -17,15 +16,6 @@ const SOCIAL_SECTIONS = {
   jobs: ["full_time_jobs"],
   residents: ["avoided_vehicule_kilometers", "travel_time_saved", "avoided_traffic_accidents"],
   french_society: ["avoided_friche_accidents", "households_powered_by_renewable_energy"],
-};
-
-const itemDescriptionModalIds: Partial<Record<SocialImpactName, ImpactDescriptionModalCategory>> = {
-  households_powered_by_renewable_energy: "social.households-powered-by-renewable-energy",
-  travel_time_saved: "social.time-travel-saved",
-  avoided_vehicule_kilometers: "social.avoided-vehicule-kilometers",
-  full_time_jobs: "social.full-time-jobs",
-  conversion_full_time_jobs: "social.full-time-reconversion-jobs",
-  operations_full_time_jobs: "social.full-time-operation-jobs",
 };
 
 const SocialListSection = ({ impacts }: Props) => {
@@ -42,7 +32,7 @@ const SocialListSection = ({ impacts }: Props) => {
       title="Impacts sociaux"
       isMain
       onTitleClick={() => {
-        openImpactModalDescription("social");
+        openImpactModalDescription({ sectionName: "social" });
       }}
     >
       {jobsImpacts.length > 0 && (
@@ -52,13 +42,21 @@ const SocialListSection = ({ impacts }: Props) => {
               <ImpactItemDetails
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
-                descriptionModalId={itemDescriptionModalIds[name]}
+                onClick={() => {
+                  openImpactModalDescription({ sectionName: "social", impactName: name });
+                }}
                 data={
                   impact.details
                     ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
                         label: getSocialImpactLabel(detailsName),
                         value: detailsImpact.difference,
-                        descriptionModalId: itemDescriptionModalIds[detailsName],
+                        onClick: () => {
+                          openImpactModalDescription({
+                            sectionName: "social",
+                            impactName: name,
+                            impactDetailsName: detailsName,
+                          });
+                        },
                       }))
                     : undefined
                 }
@@ -76,13 +74,21 @@ const SocialListSection = ({ impacts }: Props) => {
               <ImpactItemDetails
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
-                descriptionModalId={itemDescriptionModalIds[name]}
+                onClick={() => {
+                  openImpactModalDescription({ sectionName: "social", impactName: name });
+                }}
                 data={
                   impact.details
                     ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
                         label: getSocialImpactLabel(detailsName),
                         value: detailsImpact.difference,
-                        descriptionModalId: itemDescriptionModalIds[detailsName],
+                        onClick: () => {
+                          openImpactModalDescription({
+                            sectionName: "social",
+                            impactName: name,
+                            impactDetailsName: detailsName,
+                          });
+                        },
                       }))
                     : undefined
                 }
@@ -100,13 +106,21 @@ const SocialListSection = ({ impacts }: Props) => {
               <ImpactItemDetails
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
-                descriptionModalId={itemDescriptionModalIds[name]}
+                onClick={() => {
+                  openImpactModalDescription({ sectionName: "social", impactName: name });
+                }}
                 data={
                   impact.details
                     ? impact.details.map(({ name: detailsName, impact: detailsImpact }) => ({
                         label: getSocialImpactLabel(detailsName),
                         value: detailsImpact.difference,
-                        descriptionModalId: itemDescriptionModalIds[detailsName],
+                        onClick: () => {
+                          openImpactModalDescription({
+                            sectionName: "social",
+                            impactName: name,
+                            impactDetailsName: detailsName,
+                          });
+                        },
                       }))
                     : undefined
                 }

@@ -1,18 +1,13 @@
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 const AvoidedVehiculeKilometersDescription = () => {
   return (
     <>
       <ModalHeader
         title="🚙 Kilomètres évités"
-        breadcrumbSegments={[
-          {
-            label: "Impacts sociaux",
-            id: "social",
-          },
-          { label: "Kilomètres évités" },
-        ]}
+        breadcrumbSegments={[breadcrumbSection, { label: "Kilomètres évités" }]}
       />
       <ModalContent>
         <p>

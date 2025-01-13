@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 const PermeableSurfaceDescription = () => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
@@ -11,13 +12,7 @@ const PermeableSurfaceDescription = () => {
     <>
       <ModalHeader
         title="🌧 Surface perméable"
-        breadcrumbSegments={[
-          {
-            label: "Impacts environnementaux",
-            id: "environmental",
-          },
-          { label: "Surface perméable" },
-        ]}
+        breadcrumbSegments={[breadcrumbSection, { label: "Surface perméable" }]}
       />
       <ModalContent>
         <p>
@@ -25,7 +20,11 @@ const PermeableSurfaceDescription = () => {
           l'eau de pluie sur la parcelle. La surface perméable peut être{" "}
           <Button
             onClick={() => {
-              openImpactModalDescription("environmental.minerale-surface");
+              openImpactModalDescription({
+                sectionName: "environmental",
+                impactName: "permeable_surface_area",
+                impactDetailsName: "mineral_soil",
+              });
             }}
             priority="tertiary no outline"
           >
@@ -34,7 +33,11 @@ const PermeableSurfaceDescription = () => {
           ou{" "}
           <Button
             onClick={() => {
-              openImpactModalDescription("environmental.green-surface");
+              openImpactModalDescription({
+                sectionName: "environmental",
+                impactName: "permeable_surface_area",
+                impactDetailsName: "green_soil",
+              });
             }}
             priority="tertiary no outline"
           >

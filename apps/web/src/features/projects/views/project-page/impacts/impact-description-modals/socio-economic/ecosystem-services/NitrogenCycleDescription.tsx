@@ -9,6 +9,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   baseSoilsDistribution: SoilsDistribution;
@@ -31,20 +32,7 @@ const NitrogenCycleDescription = ({ baseSoilsDistribution, forecastSoilsDistribu
     <>
       <ModalHeader
         title="🍄 Cycle de l'azote"
-        breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
-          {
-            label: "Impacts environnementaux monétarisés",
-          },
-          {
-            label: "Services écosystémiques",
-            id: "socio-economic.ecosystem-services",
-          },
-          { label: "Cycle de l'azote" },
-        ]}
+        breadcrumbSegments={[...breadcrumbSegments, { label: "Cycle de l'azote" }]}
       />
       <ModalContent>
         <p>

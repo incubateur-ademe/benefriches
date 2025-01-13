@@ -7,6 +7,7 @@ import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionConte
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 const FullTimeJobsDescription = () => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
@@ -15,13 +16,7 @@ const FullTimeJobsDescription = () => {
     <>
       <ModalHeader
         title="🧑‍🔧 Emplois équivalent temps plein"
-        breadcrumbSegments={[
-          {
-            label: "Impacts sociaux",
-            id: "social",
-          },
-          { label: "Emplois équivalent temps plein" },
-        ]}
+        breadcrumbSegments={[breadcrumbSection, { label: "Emplois équivalent temps plein" }]}
       />
       <ModalContent>
         <p>
@@ -44,7 +39,11 @@ const FullTimeJobsDescription = () => {
         <div className="tw-flex tw-flex-col">
           <Button
             onClick={() => {
-              openImpactModalDescription("social.full-time-reconversion-jobs");
+              openImpactModalDescription({
+                sectionName: "social",
+                impactName: "full_time_jobs",
+                impactDetailsName: "conversion_full_time_jobs",
+              });
             }}
             priority="tertiary no outline"
           >
@@ -52,7 +51,11 @@ const FullTimeJobsDescription = () => {
           </Button>{" "}
           <Button
             onClick={() => {
-              openImpactModalDescription("social.full-time-operation-jobs");
+              openImpactModalDescription({
+                sectionName: "social",
+                impactName: "full_time_jobs",
+                impactDetailsName: "operations_full_time_jobs",
+              });
             }}
             priority="tertiary no outline"
           >

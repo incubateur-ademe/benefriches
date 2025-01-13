@@ -5,6 +5,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   siteSurfaceArea: number;
@@ -15,21 +16,7 @@ const AvoidedSecurityCostsDescription = ({ siteSurfaceArea }: Props) => {
     <>
       <ModalHeader
         title="👮‍♀️ Gardiennage"
-        breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
-          {
-            label: "Impacts économiques directs",
-          },
-          {
-            label: "Dépenses friche évitées",
-            id: "socio-economic.avoided-friche-costs",
-          },
-
-          { label: "Gardiennage" },
-        ]}
+        breadcrumbSegments={[...breadcrumbSegments, { label: "Gardiennage" }]}
       />
       <ModalContent>
         <p>

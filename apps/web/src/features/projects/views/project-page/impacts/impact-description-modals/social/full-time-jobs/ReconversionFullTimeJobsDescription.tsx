@@ -4,6 +4,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   isPhotovoltaic: boolean;
@@ -14,14 +15,7 @@ const ReconversionFullTimeJobsDescription = ({ isPhotovoltaic }: Props) => {
       <ModalHeader
         title="👷 Reconversion du site"
         breadcrumbSegments={[
-          {
-            label: "Impacts sociaux",
-            id: "social",
-          },
-          {
-            label: "Emplois équivalent temps plein",
-            id: "social.full-time-jobs",
-          },
+          ...breadcrumbSegments,
           { label: "Mobilisés pour la reconversion du site" },
         ]}
       />

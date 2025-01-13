@@ -5,6 +5,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
   address: string;
@@ -21,13 +22,7 @@ const HouseholdsPoweredByRenewableEnergyDescription = ({
     <>
       <ModalHeader
         title="🏠 Foyers alimentés par les EnR"
-        breadcrumbSegments={[
-          {
-            label: "Impacts sociaux",
-            id: "social",
-          },
-          { label: "Foyers alimentés par les EnR" },
-        ]}
+        breadcrumbSegments={[breadcrumbSection, { label: "Foyers alimentés par les EnR" }]}
       />
       <ModalContent>
         <p>

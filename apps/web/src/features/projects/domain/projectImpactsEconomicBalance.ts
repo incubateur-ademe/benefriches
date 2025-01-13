@@ -31,7 +31,7 @@ export type DevelopmentPlanInstallationExpenseName =
   | "urban_project_other"
   | DevelopmentPlanInstallationCost["purpose"];
 
-type EconomicBalanceDetailsName =
+export type EconomicBalanceDetailsName =
   | RecurringExpense["purpose"]
   | RecurringRevenue["source"]
   | ReinstatementExpensePurpose

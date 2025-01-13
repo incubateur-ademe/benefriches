@@ -8,7 +8,7 @@ type ImpactValue = {
 
 export type SocialImpactName = SocialMainImpactName | SocialImpactDetailsName;
 
-type SocialMainImpactName =
+export type SocialMainImpactName =
   | "full_time_jobs"
   | "avoided_friche_accidents"
   | "avoided_traffic_accidents"

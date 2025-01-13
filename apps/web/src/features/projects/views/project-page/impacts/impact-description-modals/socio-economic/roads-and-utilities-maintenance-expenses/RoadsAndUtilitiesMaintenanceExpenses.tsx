@@ -5,6 +5,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
   surfaceArea: number;
@@ -16,10 +17,7 @@ const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea }: Props) => {
       <ModalHeader
         title="🅿️ Dépenses d’entretien des VRD"
         breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
+          breadcrumbSection,
           {
             label: "Impacts économiques directs",
           },

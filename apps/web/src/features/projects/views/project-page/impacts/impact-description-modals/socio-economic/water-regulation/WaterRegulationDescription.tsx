@@ -10,6 +10,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
   baseSoilsDistribution: SoilsDistribution;
@@ -41,10 +42,7 @@ const WaterRegulationDescription = ({
       <ModalHeader
         title="🚰 Régulation de la qualité de l'eau"
         breadcrumbSegments={[
-          {
-            label: "Impacts socio-économiques",
-            id: "socio-economic",
-          },
+          breadcrumbSection,
           {
             label: "Impacts environnementaux monétarisés",
           },
