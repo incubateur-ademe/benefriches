@@ -9,10 +9,10 @@ import {
   Owner,
   SiteDraft,
   Tenant,
-} from "@/features/create-site/domain/siteFoncier.types";
+} from "@/features/create-site/core/siteFoncier.types";
 import { splitEvenly } from "@/shared/services/split-number/splitNumber";
 
-import { saveCustomSiteAction, saveExpressSiteAction } from "./createSite.actions";
+import { saveCustomSiteAction, saveExpressSiteAction } from "./actions/createSite.actions";
 
 export type SiteCreationCustomStep =
   | "SITE_NATURE"

@@ -2,12 +2,12 @@ import { createStore } from "@/app/application/store";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { Address } from "../domain/siteFoncier.types";
-import { getInitialState } from "./createSite.reducer";
 import {
   fetchSiteSoilsCarbonStorage,
   SiteSoilsCarbonStorageResult,
-} from "./siteSoilsCarbonStorage.actions";
+} from "../actions/siteSoilsCarbonStorage.actions";
+import { getInitialState } from "../createSite.reducer";
+import { Address } from "../siteFoncier.types";
 
 describe("Site carbon sequestration reducer", () => {
   it("should get carbon sequestration for site city code and soils distribution", async () => {

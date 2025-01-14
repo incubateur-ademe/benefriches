@@ -1,5 +1,5 @@
-import { SiteDraft } from "./siteFoncier.types";
-import { generateSiteDesignation, generateSiteName } from "./siteName";
+import { SiteDraft } from "../siteFoncier.types";
+import { generateSiteDesignation, generateSiteName } from "../siteName";
 
 const buildSiteDraft = (siteData: Partial<SiteDraft>): SiteDraft => {
   return {

@@ -1,6 +1,6 @@
-import { revertSurfaceAreaStep } from "@/features/create-site/application/createSite.actions";
-import { completeSiteSurfaceArea } from "@/features/create-site/application/createSite.reducer";
-import { selectSiteSurfaceArea } from "@/features/create-site/application/createSite.selectors";
+import { revertSurfaceAreaStep } from "@/features/create-site/core/actions/createSite.actions";
+import { completeSiteSurfaceArea } from "@/features/create-site/core/createSite.reducer";
+import { selectSiteSurfaceArea } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSurfaceAreaForm from "../../../common-views/SiteSurfaceAreaForm";

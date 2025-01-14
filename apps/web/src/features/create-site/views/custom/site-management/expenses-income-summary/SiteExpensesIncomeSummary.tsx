@@ -1,6 +1,6 @@
 import { SiteYearlyExpense } from "shared";
 
-import { Income } from "@/features/create-site/domain/siteFoncier.types";
+import { Income } from "@/features/create-site/core/siteFoncier.types";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 

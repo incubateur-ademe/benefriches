@@ -3,8 +3,8 @@ import { formatLocalAuthorityName, LocalAuthority } from "shared";
 
 import { RootState } from "@/app/application/store";
 
-import { selectSiteOwner } from "./createSite.selectors";
-import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
+import { fetchSiteMunicipalityData } from "./actions/siteMunicipalityData.actions";
+import { selectSiteOwner } from "./selectors/createSite.selectors";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 

@@ -1,8 +1,8 @@
 import { AppDispatch, RootState } from "@/app/application/store";
-import { fetchSiteSoilsCarbonStorage } from "@/features/create-site/application/siteSoilsCarbonStorage.actions";
+import { fetchSiteSoilsCarbonStorage } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { completeSoilsCarbonStorage, revertStep } from "../../../../application/createSite.reducer";
+import { completeSoilsCarbonStorage, revertStep } from "../../../../core/createSite.reducer";
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 const mapProps = (dispatch: AppDispatch, siteCarbonStorage: RootState["siteCarbonStorage"]) => {

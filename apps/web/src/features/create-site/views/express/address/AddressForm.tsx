@@ -5,7 +5,7 @@ import SearchAddressAutocompleteContainer from "@/shared/views/components/form/A
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { MunicipalityAddress } from "../../../domain/siteFoncier.types";
+import { MunicipalityAddress } from "../../../core/siteFoncier.types";
 
 type Props = {
   onSubmit: (address: MunicipalityAddress) => void;

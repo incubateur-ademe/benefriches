@@ -10,7 +10,7 @@ import {
   SiteCreationExpressStep,
   SiteCreationState,
   SiteCreationStep,
-} from "../application/createSite.reducer";
+} from "../core/createSite.reducer";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
 import SiteCreationCustomStepper from "./custom/Stepper";

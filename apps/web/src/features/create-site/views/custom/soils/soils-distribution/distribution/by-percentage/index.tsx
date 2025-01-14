@@ -1,9 +1,9 @@
 import { useMemo } from "react";
 import { createSoilSurfaceAreaDistribution, SoilType } from "shared";
 
-import { revertSoilsDistributionStep } from "@/features/create-site/application/createSite.actions";
-import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
-import { selectSiteSoilsDistribution } from "@/features/create-site/application/createSite.selectors";
+import { revertSoilsDistributionStep } from "@/features/create-site/core/actions/createSite.actions";
+import { completeSoilsDistribution } from "@/features/create-site/core/createSite.reducer";
+import { selectSiteSoilsDistribution } from "@/features/create-site/core/selectors/createSite.selectors";
 import { computeValueFromPercentage } from "@/shared/services/percentage/percentage";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

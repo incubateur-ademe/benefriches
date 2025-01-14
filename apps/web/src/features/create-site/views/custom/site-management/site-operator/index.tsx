@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 
-import { revertOperatorStep } from "@/features/create-site/application/createSite.actions";
-import { completeOperator } from "@/features/create-site/application/createSite.reducer";
-import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
+import { revertOperatorStep } from "@/features/create-site/core/actions/createSite.actions";
+import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import { completeOperator } from "@/features/create-site/core/createSite.reducer";
+import { Tenant } from "@/features/create-site/core/siteFoncier.types";
 import {
   AvailableLocalAuthority,
   selectAvailableLocalAuthoritiesWithoutCurrentOwner,
-} from "@/features/create-site/application/siteMunicipalityData.reducer";
-import { Tenant } from "@/features/create-site/domain/siteFoncier.types";
+} from "@/features/create-site/core/siteMunicipalityData.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteOperatorForm, { FormValues } from "./SiteOperatorForm";

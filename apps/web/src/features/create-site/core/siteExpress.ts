@@ -1,7 +1,7 @@
 import { computeEstimatedPropertyTaxesAmount, SiteYearlyExpense, SoilType } from "shared";
 import { formatMunicipalityName } from "shared";
 
-import { CreateSiteGatewayPayload } from "../application/createSite.actions";
+import { CreateSiteGatewayPayload } from "../core/actions/createSite.actions";
 import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,

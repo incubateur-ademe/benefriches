@@ -1,4 +1,4 @@
-import { GetMunicipalityDataResult } from "@/features/create-site/application/siteMunicipalityData.actions";
+import { GetMunicipalityDataResult } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 
 export class AdministrativeDivisionMock {
   constructor(

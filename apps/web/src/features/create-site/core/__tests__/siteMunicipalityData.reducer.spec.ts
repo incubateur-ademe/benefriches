@@ -4,12 +4,12 @@ import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrati
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 import { buildUser } from "@/users/domain/user.mock";
 
-import { fetchSiteMunicipalityData } from "./siteMunicipalityData.actions";
+import { fetchSiteMunicipalityData } from "../actions/siteMunicipalityData.actions";
 import {
   selectAvailableLocalAuthorities,
   selectAvailableLocalAuthoritiesWithoutCurrentOwner,
   selectAvailableLocalAuthoritiesWithoutCurrentUser,
-} from "./siteMunicipalityData.reducer";
+} from "../siteMunicipalityData.reducer";
 
 const API_MOCKED_RESULT = {
   "75110": {

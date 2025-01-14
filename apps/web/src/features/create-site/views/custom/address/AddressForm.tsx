@@ -6,7 +6,7 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-import { Address } from "../../../domain/siteFoncier.types";
+import { Address } from "../../../core/siteFoncier.types";
 
 type Props = {
   initialValues: FormValues;

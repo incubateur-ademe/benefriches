@@ -1,8 +1,8 @@
 import { createSoilSurfaceAreaDistribution } from "shared";
 
-import { revertSoilsDistributionStep } from "@/features/create-site/application/createSite.actions";
-import { completeSoilsDistribution } from "@/features/create-site/application/createSite.reducer";
-import { selectSiteSoilsDistribution } from "@/features/create-site/application/createSite.selectors";
+import { revertSoilsDistributionStep } from "@/features/create-site/core/actions/createSite.actions";
+import { completeSoilsDistribution } from "@/features/create-site/core/createSite.reducer";
+import { selectSiteSoilsDistribution } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSoilsDistributionBySquareMetersForm, { type FormValues } from "./BySquareMeters";

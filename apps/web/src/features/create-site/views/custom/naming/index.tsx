@@ -1,9 +1,9 @@
-import { completeNaming } from "@/features/create-site/application/createSite.reducer";
-import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import { completeNaming } from "@/features/create-site/core/createSite.reducer";
+import { SiteDraft } from "@/features/create-site/core/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertNamingStep } from "../../../application/createSite.actions";
-import { generateSiteName } from "../../../domain/siteName";
+import { revertNamingStep } from "../../../core/actions/createSite.actions";
+import { generateSiteName } from "../../../core/siteName";
 import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
 
 function SiteNameAndDescriptionFormContainer() {

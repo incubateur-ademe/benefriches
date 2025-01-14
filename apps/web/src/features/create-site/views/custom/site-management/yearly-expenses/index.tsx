@@ -1,14 +1,14 @@
 import { useEffect } from "react";
 
-import { revertYearlyExpensesStep } from "@/features/create-site/application/createSite.actions";
-import { completeYearlyExpenses } from "@/features/create-site/application/createSite.reducer";
+import { revertYearlyExpensesStep } from "@/features/create-site/core/actions/createSite.actions";
+import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import { completeYearlyExpenses } from "@/features/create-site/core/createSite.reducer";
+import { SiteYearlyExpensesBaseConfig } from "@/features/create-site/core/expenses.functions";
 import {
   selectEstimatedYearlyExpensesForSite,
   selectSiteManagementExpensesBaseConfig,
   selectSiteSecurityExpensesBaseConfig,
-} from "@/features/create-site/application/expenses.selectors";
-import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
-import { SiteYearlyExpensesBaseConfig } from "@/features/create-site/domain/expenses.functions";
+} from "@/features/create-site/core/selectors/expenses.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteYearlyExpensesForm, { FormValues } from "./SiteYearlyExpensesForm";

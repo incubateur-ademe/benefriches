@@ -1,4 +1,4 @@
-import { SiteCreationExpressStep } from "@/features/create-site/application/createSite.reducer";
+import { SiteCreationExpressStep } from "@/features/create-site/core/createSite.reducer";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 const STEPS_CATEGORIES = ["Type de site", "Adresse", "Superficie", "Récapitulatif"] as const;

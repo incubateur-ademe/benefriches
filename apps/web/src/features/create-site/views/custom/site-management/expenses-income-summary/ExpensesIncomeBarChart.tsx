@@ -3,8 +3,8 @@ import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
 import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 
-import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
-import { Income } from "@/features/create-site/domain/siteFoncier.types";
+import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
+import { Income } from "@/features/create-site/core/siteFoncier.types";
 import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
 
 type Props = {

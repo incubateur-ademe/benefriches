@@ -1,7 +1,7 @@
-import { saveCustomSiteAction } from "@/features/create-site/application/createSite.actions";
+import { saveCustomSiteAction } from "@/features/create-site/core/actions/createSite.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertStep } from "../../../application/createSite.reducer";
+import { revertStep } from "../../../core/createSite.reducer";
 import SiteDataSummary from "./SiteDataSummary";
 
 function SiteDataSummaryContainer() {

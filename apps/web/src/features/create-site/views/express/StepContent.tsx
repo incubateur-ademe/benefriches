@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { selectCurrentStep } from "../../application/createSite.reducer";
+import { selectCurrentStep } from "../../core/createSite.reducer";
 import AddressForm from "./address";
 import SiteCreationResult from "./result";
 import IsFricheForm from "./site-type";

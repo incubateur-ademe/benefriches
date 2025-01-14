@@ -2,7 +2,7 @@ import { Feature, FeatureCollection, Point } from "geojson";
 
 import { AddressService } from "@/shared/views/components/form/Address/SearchAddressAutocompleteInput";
 
-import { Address } from "../../domain/siteFoncier.types";
+import { Address } from "../../core/siteFoncier.types";
 
 const BAN_API_URL = "https://api-adresse.data.gouv.fr/search/?";
 

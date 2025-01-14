@@ -1,7 +1,7 @@
 import { sumListWithKey, typedObjectEntries, sumObjectValues } from "shared";
 
-import { getLabelForExpensePurpose } from "@/features/create-site/domain/expenses.functions";
-import { getFricheActivityLabel } from "@/features/create-site/domain/friche.types";
+import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
+import { getFricheActivityLabel } from "@/features/create-site/core/friche.types";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";

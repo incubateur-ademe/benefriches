@@ -1,11 +1,11 @@
-import { revertSoilsSelectionStep } from "@/features/create-site/application/createSite.actions";
+import { revertSoilsSelectionStep } from "@/features/create-site/core/actions/createSite.actions";
 import {
   selectIsFriche,
   selectSiteSoils,
-} from "@/features/create-site/application/createSite.selectors";
+} from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { completeSoils } from "../../../../application/createSite.reducer";
+import { completeSoils } from "../../../../core/createSite.reducer";
 import SiteSoilsForm, { FormValues } from "./SoilsForm";
 
 const SiteSoilsFormContainer = () => {

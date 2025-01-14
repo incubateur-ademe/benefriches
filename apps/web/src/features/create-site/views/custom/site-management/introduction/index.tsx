@@ -1,7 +1,7 @@
 import {
   completeManagementIntroduction,
   revertStep,
-} from "@/features/create-site/application/createSite.reducer";
+} from "@/features/create-site/core/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteManagementIntroduction from "./SiteManagementIntroduction";

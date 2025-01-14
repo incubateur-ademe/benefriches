@@ -11,8 +11,8 @@ import {
   getSiteSecurityExpensesBaseConfig,
   SiteManagementYearlyExpensesBaseConfig,
   SiteSecurityYearlyExpensesBaseConfig,
-} from "../domain/expenses.functions";
-import { SiteDraft } from "../domain/siteFoncier.types";
+} from "../expenses.functions";
+import { SiteDraft } from "../siteFoncier.types";
 
 const selectSiteData = createSelector(
   (state: RootState) => state.siteCreation,

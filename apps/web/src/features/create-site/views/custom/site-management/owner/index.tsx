@@ -1,18 +1,18 @@
 import { useEffect } from "react";
 import { LocalAuthority } from "shared";
 
-import { revertOwnerStep } from "@/features/create-site/application/createSite.actions";
-import { completeOwner } from "@/features/create-site/application/createSite.reducer";
+import { revertOwnerStep } from "@/features/create-site/core/actions/createSite.actions";
+import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import { completeOwner } from "@/features/create-site/core/createSite.reducer";
 import {
   selectIsFriche,
   selectSiteOwner,
-} from "@/features/create-site/application/createSite.selectors";
-import { fetchSiteMunicipalityData } from "@/features/create-site/application/siteMunicipalityData.actions";
+} from "@/features/create-site/core/selectors/createSite.selectors";
+import { Owner } from "@/features/create-site/core/siteFoncier.types";
 import {
   AvailableLocalAuthority,
   selectAvailableLocalAuthoritiesWithoutCurrentUser,
-} from "@/features/create-site/application/siteMunicipalityData.reducer";
-import { Owner } from "@/features/create-site/domain/siteFoncier.types";
+} from "@/features/create-site/core/siteMunicipalityData.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { selectCurrentUserStructure } from "@/users/application/user.reducer";
 import { UserStructure } from "@/users/domain/user";

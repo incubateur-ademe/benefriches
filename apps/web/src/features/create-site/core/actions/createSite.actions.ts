@@ -3,9 +3,9 @@ import z from "zod";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
-import getExpressSiteData from "../domain/siteExpress";
-import { SiteExpressDraft } from "../domain/siteFoncier.types";
-import { revertStep } from "./createSite.reducer";
+import { revertStep } from "../createSite.reducer";
+import getExpressSiteData from "../siteExpress";
+import { SiteExpressDraft } from "../siteFoncier.types";
 
 export const revertSiteTypeStep = () => revertStep({ resetFields: ["isFriche"] });
 export const revertAddressStep = () => revertStep({ resetFields: ["address"] });

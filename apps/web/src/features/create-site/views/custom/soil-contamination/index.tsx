@@ -1,11 +1,11 @@
-import { completeSoilsContamination } from "@/features/create-site/application/createSite.reducer";
+import { completeSoilsContamination } from "@/features/create-site/core/createSite.reducer";
 import {
   selectSiteSoilsContamination,
   selectSiteSurfaceArea,
-} from "@/features/create-site/application/createSite.selectors";
+} from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertSoilsContaminationStep } from "../../../application/createSite.actions";
+import { revertSoilsContaminationStep } from "../../../core/actions/createSite.actions";
 import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
 
 const mapInitialValues = (siteContamination: {

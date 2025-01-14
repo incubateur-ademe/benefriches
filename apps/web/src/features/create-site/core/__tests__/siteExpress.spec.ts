@@ -1,4 +1,4 @@
-import getExpressSiteData from "./siteExpress";
+import getExpressSiteData from "../siteExpress";
 
 const currentUserId = "0f274b34-84f8-4527-9163-ab77cb467cd1";
 const expressFricheDraft = {

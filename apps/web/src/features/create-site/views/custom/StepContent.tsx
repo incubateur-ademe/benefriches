@@ -1,6 +1,6 @@
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { selectCurrentStep } from "../../application/createSite.reducer";
+import { selectCurrentStep } from "../../core/createSite.reducer";
 import FricheAccidentsForm from "./accidents/accidents-count";
 import FricheAccidentsIntroduction from "./accidents/introduction";
 import AddressForm from "./address";

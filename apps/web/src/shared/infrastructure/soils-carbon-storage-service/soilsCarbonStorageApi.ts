@@ -7,7 +7,7 @@ import {
   GetSiteSoilsCarbonStoragePayload,
   SiteSoilsCarbonStorageResult,
   SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway,
-} from "@/features/create-site/application/siteSoilsCarbonStorage.actions";
+} from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { objectToQueryParams } from "@/shared/services/object-query-parameters/objectToQueryParameters";
 
 export class SoilsCarbonStorageApi

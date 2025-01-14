@@ -1,6 +1,6 @@
 import { AppDispatch } from "@/app/application/store";
-import { revertYearlyIncomeStep } from "@/features/create-site/application/createSite.actions";
-import { completeYearlyIncome } from "@/features/create-site/application/createSite.reducer";
+import { revertYearlyIncomeStep } from "@/features/create-site/core/actions/createSite.actions";
+import { completeYearlyIncome } from "@/features/create-site/core/createSite.reducer";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import SiteYearlyIncomeForm, { FormValues } from "./SiteYearlyIncomeForm";

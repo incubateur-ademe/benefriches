@@ -2,8 +2,8 @@ import { SoilsDistribution, SoilType } from "shared";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
-import { selectSiteSoilsDistribution } from "./createSite.selectors";
-import { SiteCarbonStorage } from "./siteSoilsCarbonStorage.reducer";
+import { selectSiteSoilsDistribution } from "../selectors/createSite.selectors";
+import { SiteCarbonStorage } from "../siteSoilsCarbonStorage.reducer";
 
 export type GetSiteSoilsCarbonStoragePayload = {
   cityCode: string;

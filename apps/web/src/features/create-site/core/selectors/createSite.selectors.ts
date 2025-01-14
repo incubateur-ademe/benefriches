@@ -3,7 +3,7 @@ import { SoilsDistribution } from "shared";
 
 import { RootState } from "@/app/application/store";
 
-import { Address } from "../domain/siteFoncier.types";
+import { Address } from "../siteFoncier.types";
 
 const selectSelf = (state: RootState) => state.siteCreation;
 

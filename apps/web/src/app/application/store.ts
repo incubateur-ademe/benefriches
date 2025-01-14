@@ -4,7 +4,7 @@ import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } f
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/saveReconversionProject.action";
 import { SaveExpressReconversionProjectGateway } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/application/siteMunicipalityData.actions";
+import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/application/fetchSiteFeatures.action";
@@ -14,8 +14,8 @@ import { CurrentUserGateway } from "@/users/application/initCurrentUser.action";
 
 import { GetSitesByIdGateway } from "../../features/create-project/core/createProject.actions";
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/core/soilsCarbonStorage.action";
-import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
-import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
+import { CreateSiteGateway } from "../../features/create-site/core/actions/createSite.actions";
+import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";

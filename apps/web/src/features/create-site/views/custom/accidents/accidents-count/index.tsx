@@ -1,6 +1,6 @@
-import { revertFricheAccidentsStep } from "@/features/create-site/application/createSite.actions";
-import { completeFricheAccidents } from "@/features/create-site/application/createSite.reducer";
-import { selectSiteAccidentsData } from "@/features/create-site/application/createSite.selectors";
+import { revertFricheAccidentsStep } from "@/features/create-site/core/actions/createSite.actions";
+import { completeFricheAccidents } from "@/features/create-site/core/createSite.reducer";
+import { selectSiteAccidentsData } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import FricheAccidentsForm, { FormValues } from "./FricheAccidentsForm";

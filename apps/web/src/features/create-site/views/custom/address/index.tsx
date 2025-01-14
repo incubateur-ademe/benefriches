@@ -1,12 +1,12 @@
 import {
   selectIsFriche,
   selectSiteAddress,
-} from "@/features/create-site/application/createSite.selectors";
+} from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertAddressStep } from "../../../application/createSite.actions";
-import { completeAddressStep } from "../../../application/createSite.reducer";
-import { Address } from "../../../domain/siteFoncier.types";
+import { revertAddressStep } from "../../../core/actions/createSite.actions";
+import { completeAddressStep } from "../../../core/createSite.reducer";
+import { Address } from "../../../core/siteFoncier.types";
 import AddressForm from "./AddressForm";
 
 const mapInitialValues = (address: Address | undefined) => {

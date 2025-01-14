@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+import { SiteDraft } from "@/features/create-site/core/siteFoncier.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";

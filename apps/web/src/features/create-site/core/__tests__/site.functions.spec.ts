@@ -1,5 +1,5 @@
-import { hasBuildings, hasImpermeableSoils, hasTenant } from "./site.functions";
-import { SiteDraft } from "./siteFoncier.types";
+import { hasBuildings, hasImpermeableSoils, hasTenant } from "../site.functions";
+import { SiteDraft } from "../siteFoncier.types";
 
 const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
   return {

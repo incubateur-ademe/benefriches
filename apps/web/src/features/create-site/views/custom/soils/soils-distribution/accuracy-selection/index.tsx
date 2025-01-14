@@ -1,5 +1,5 @@
-import { revertSoilsSurfaceAreaDistributionEntryModeStep } from "@/features/create-site/application/createSite.actions";
-import { completeSoilsSurfaceAreaDistributionEntryMode } from "@/features/create-site/application/createSite.reducer";
+import { revertSoilsSurfaceAreaDistributionEntryModeStep } from "@/features/create-site/core/actions/createSite.actions";
+import { completeSoilsSurfaceAreaDistributionEntryMode } from "@/features/create-site/core/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import AccuracySelectionForm, { type FormValues } from "./AccuracySelectionForm";

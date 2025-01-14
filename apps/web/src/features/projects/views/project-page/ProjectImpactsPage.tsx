@@ -10,7 +10,7 @@ import ProjectImpactFooter from "./footer/ProjectImpactFooter";
 import ProjectImpactsActionBar from "./header/ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
-import AboutImpactsModal from "./impacts/about-impacts-modal/AboutImpactsModal";
+import AboutImpactsModal from "./impacts/about-impacts-modal/AboutImpactsModal.tsx";
 import ProjectFeaturesModal from "./impacts/project-features-modal";
 import SiteFeaturesModal from "./impacts/site-features-modal";
 

@@ -5,7 +5,7 @@ import {
   getLabelForExpensePurpose,
   SiteManagementYearlyExpensesBaseConfig,
   SiteSecurityYearlyExpensesBaseConfig,
-} from "@/features/create-site/domain/expenses.functions";
+} from "@/features/create-site/core/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";

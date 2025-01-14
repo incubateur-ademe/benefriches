@@ -2,9 +2,9 @@ import { AppDispatch, RootState } from "@/app/application/store";
 import {
   completeYearlyExpensesSummary,
   revertStep,
-} from "@/features/create-site/application/createSite.reducer";
-import { hasTenant } from "@/features/create-site/domain/site.functions";
-import { SiteDraft } from "@/features/create-site/domain/siteFoncier.types";
+} from "@/features/create-site/core/createSite.reducer";
+import { hasTenant } from "@/features/create-site/core/site.functions";
+import { SiteDraft } from "@/features/create-site/core/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteExpensesSummary from "./SiteExpensesIncomeSummary";

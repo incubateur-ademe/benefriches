@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { completeSoilsIntroduction, revertStep } from "../../../../application/createSite.reducer";
+import { completeSoilsIntroduction, revertStep } from "../../../../core/createSite.reducer";
 import SiteSoilsIntroduction from "./SoilsIntroduction";
 
 function SiteSoilsIntroductionContainer() {

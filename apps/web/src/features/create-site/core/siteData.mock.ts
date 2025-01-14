@@ -1,4 +1,4 @@
-import { SiteDraft, SiteExpressDraft } from "../domain/siteFoncier.types";
+import { SiteDraft, SiteExpressDraft } from "../core/siteFoncier.types";
 
 export const siteWithExhaustiveData: SiteDraft = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",

@@ -4,7 +4,7 @@ import {
   getSiteManagementExpensesBaseConfig,
   getSiteSecurityExpensesBaseConfig,
   groupExpensesByBearer,
-} from "./expenses.functions";
+} from "../expenses.functions";
 
 const buildExpense = (expenseData: Partial<SiteYearlyExpense>): SiteYearlyExpense => {
   return {

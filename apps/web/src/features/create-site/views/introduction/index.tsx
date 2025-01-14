@@ -1,6 +1,6 @@
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
-import { introductionStepCompleted } from "../../application/createSite.reducer";
+import { introductionStepCompleted } from "../../core/createSite.reducer";
 import SiteCreationIntroduction from "./SiteCreationIntroduction";
 
 export default function SiteCreationIntroductionContainer() {

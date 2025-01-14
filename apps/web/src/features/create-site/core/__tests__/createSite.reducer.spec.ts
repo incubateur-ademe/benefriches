@@ -3,8 +3,7 @@ import { createStore, RootState } from "@/app/application/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 import { buildUser } from "@/users/domain/user.mock";
 
-import getExpressSiteData from "../domain/siteExpress";
-import { InMemoryCreateSiteService } from "../infrastructure/create-site-service/inMemoryCreateSiteApi";
+import { InMemoryCreateSiteService } from "../../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import {
   revertAddressStep,
   revertFricheAccidentsStep,
@@ -24,7 +23,7 @@ import {
   revertYearlyIncomeStep,
   saveCustomSiteAction,
   saveExpressSiteAction,
-} from "./createSite.actions";
+} from "../actions/createSite.actions";
 import {
   completeAddressStep,
   completeFricheAccidents,
@@ -53,14 +52,15 @@ import {
   namingIntroductionStepCompleted,
   SiteCreationStep,
   siteNatureStepCompleted,
-} from "./createSite.reducer";
+} from "../createSite.reducer";
 import {
   expressSiteDraft,
   fricheWithExhaustiveData,
   fricheWithMinimalData,
   siteWithExhaustiveData,
   siteWithMinimalData,
-} from "./siteData.mock";
+} from "../siteData.mock";
+import getExpressSiteData from "../siteExpress";
 
 const expectNewCurrentStep = (
   initialState: RootState,
