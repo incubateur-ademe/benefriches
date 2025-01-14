@@ -226,7 +226,7 @@ export function ImpactDescriptionModalWizard({ projectData, siteData, impactsDat
       default:
         return (
           <ImpactInProgressDescriptionModal
-            title={getSocioEconomicImpactLabel(impactName)}
+            title={getSocioEconomicImpactLabel(impactDetailsName ?? impactName)}
             breadcrumbProps={{
               section: socioEconomicBreadcrumbSection,
               segments: impactDetailsName && [
@@ -292,7 +292,7 @@ export function ImpactDescriptionModalWizard({ projectData, siteData, impactsDat
       default:
         return (
           <ImpactInProgressDescriptionModal
-            title={getSocialImpactLabel(impactName)}
+            title={getSocialImpactLabel(impactDetailsName ?? impactName)}
             breadcrumbProps={{
               section: socialBreadcrumbSection,
               segments: impactDetailsName && [
