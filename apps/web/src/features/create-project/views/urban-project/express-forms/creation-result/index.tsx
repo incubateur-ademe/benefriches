@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { resultStepReverted } from "@/features/create-project/application/urban-project/urbanProject.actions";
+import { resultStepReverted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { selectProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";

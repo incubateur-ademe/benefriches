@@ -1,8 +1,8 @@
-import { revertFinalSummaryStep } from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { selectCreationData } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+import { revertFinalSummaryStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { saveReconversionProject } from "@/features/create-project/core/renewable-energy/actions/saveReconversionProject.action";
+import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { saveReconversionProject } from "../../../application/renewable-energy/saveReconversionProject.action";
 import ProjectionCreationDataSummary from "./ProjectCreationDataSummary";
 
 function ProjectionCreationDataSummaryContainer() {

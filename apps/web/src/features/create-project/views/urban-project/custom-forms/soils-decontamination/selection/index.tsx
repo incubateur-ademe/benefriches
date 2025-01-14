@@ -1,7 +1,7 @@
 import {
   soilsDecontaminationSelectionCompleted,
   soilsDecontaminationSelectionReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import SoilsDecontaminationSelection, {
   FormValues,
 } from "@/features/create-project/views/common-views/soils-decontamination/selection/SoilsDecontaminationSelection";

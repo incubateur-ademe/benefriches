@@ -1,8 +1,8 @@
 import {
   completeNaming,
   revertNaming,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { selectNameAndDescriptionInitialValues } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { selectNameAndDescriptionInitialValues } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectNameAndDescriptionForm, {

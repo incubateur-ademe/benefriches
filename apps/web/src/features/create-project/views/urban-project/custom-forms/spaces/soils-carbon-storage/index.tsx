@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 
-import { SoilsCarbonStorageResult } from "@/features/create-project/application/soilsCarbonStorage.action";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/urban-project/soilsCarbonStorage.actions";
-import {
-  selectCurrentAndProjectedSoilsCarbonStorage,
-  selectLoadingState,
-} from "@/features/create-project/application/urban-project/soilsCarbonStorage.selectors";
+import { SoilsCarbonStorageResult } from "@/features/create-project/core/soilsCarbonStorage.action";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/urban-project/actions/soilsCarbonStorage.actions";
 import {
   soilsCarbonStorageCompleted,
   soilsCarbonStorageReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import {
+  selectCurrentAndProjectedSoilsCarbonStorage,
+  selectLoadingState,
+} from "@/features/create-project/core/urban-project/selectors/soilsCarbonStorage.selectors";
 import SoilsCarbonStorageComparison from "@/features/create-project/views/common-views/soils-carbon-storage-comparison";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

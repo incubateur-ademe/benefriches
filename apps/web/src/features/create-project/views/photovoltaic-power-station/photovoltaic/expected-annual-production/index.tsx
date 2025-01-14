@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
-import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "@/features/create-project/application/renewable-energy/getPhotovoltaicExpectedPerformance.action";
+import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import {
   completePhotovoltaicExpectedAnnualProduction,
   revertPhotovoltaicExpectedAnnualProduction,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

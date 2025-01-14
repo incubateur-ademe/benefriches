@@ -1,8 +1,8 @@
 import {
   financialAssistanceRevenuesCompleted,
   financialAssistanceRevenuesReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { selectFinancialAssistanceRevenues } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { selectFinancialAssistanceRevenues } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import ProjectFinancialAssistanceRevenueForm from "@/features/create-project/views/common-views/revenues/financial-assistance";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

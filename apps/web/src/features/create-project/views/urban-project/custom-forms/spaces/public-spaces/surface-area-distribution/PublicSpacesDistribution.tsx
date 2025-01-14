@@ -5,7 +5,7 @@ import {
   getDescriptionForPublicSpace,
   getLabelForPublicSpace,
   getPictogramUrlForUrbanPublicSpace,
-} from "@/features/create-project/domain/urbanProject";
+} from "@/features/create-project/core/urban-project/urbanProject";
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";

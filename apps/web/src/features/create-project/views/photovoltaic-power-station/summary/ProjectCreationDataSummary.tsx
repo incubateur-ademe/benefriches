@@ -10,8 +10,8 @@ import {
   sumListWithKey,
 } from "shared";
 
-import { SoilsCarbonStorageResult } from "@/features/create-project/application/soilsCarbonStorage.action";
-import { Schedule } from "@/features/create-project/domain/project.types";
+import { Schedule } from "@/features/create-project/core/project.types";
+import { SoilsCarbonStorageResult } from "@/features/create-project/core/soilsCarbonStorage.action";
 import {
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForPhotovoltaicInstallationExpensePurpose,

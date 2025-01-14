@@ -5,12 +5,12 @@ import { routes } from "@/app/views/router";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import { projectCreationInitiated } from "../application/createProject.actions";
-import { ProjectCreationStep } from "../application/createProject.reducer";
+import { projectCreationInitiated } from "../core/createProject.actions";
+import { ProjectCreationStep } from "../core/createProject.reducer";
 import {
   selectCurrentStep,
   selectProjectDevelopmentPlanCategory,
-} from "../application/createProject.selectors";
+} from "../core/createProject.selectors";
 import Stepper from "./Stepper";
 import ProjectCreationIntroduction from "./introduction";
 import PhotovoltaicPowerStationCreationWizard from "./photovoltaic-power-station";

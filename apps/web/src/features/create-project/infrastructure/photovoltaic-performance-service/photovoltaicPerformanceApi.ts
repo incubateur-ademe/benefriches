@@ -1,10 +1,9 @@
-import { objectToQueryParams } from "@/shared/services/object-query-parameters/objectToQueryParameters";
-
 import {
   PhotovoltaicPerformanceApiPayload,
   PhotovoltaicPerformanceApiResult,
   PhotovoltaicPerformanceGateway,
-} from "../../application/renewable-energy/getPhotovoltaicExpectedPerformance.action";
+} from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
+import { objectToQueryParams } from "@/shared/services/object-query-parameters/objectToQueryParameters";
 
 export class ExpectedPhotovoltaicPerformanceApi implements PhotovoltaicPerformanceGateway {
   async getExpectedPhotovoltaicPerformance({

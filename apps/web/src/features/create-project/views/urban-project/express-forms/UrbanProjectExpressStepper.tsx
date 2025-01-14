@@ -1,4 +1,4 @@
-import { UrbanProjectExpressCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
+import { UrbanProjectExpressCreationStep } from "@/features/create-project/core/urban-project/urbanProject.reducer";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 const stepCategories = ["Type de projet", "Mode de création", "Récapitulatif"] as const;

@@ -3,7 +3,7 @@ import { RecurringRevenue } from "shared";
 import {
   yearlyProjectedRevenueCompleted,
   yearlyProjectedRevenueReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import YearlyProjectedsRevenueForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 

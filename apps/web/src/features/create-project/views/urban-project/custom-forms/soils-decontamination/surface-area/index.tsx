@@ -1,9 +1,9 @@
-import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/application/createProject.selectors";
+import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
 import {
   soilsDecontaminationSurfaceAreaCompleted,
   soilsDecontaminationSurfaceAreaReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { selectContaminatedSurfaceAreaPercentageToDecontaminate } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { selectContaminatedSurfaceAreaPercentageToDecontaminate } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import SoilsDecontaminationSurfaceArea from "@/features/create-project/views/common-views/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

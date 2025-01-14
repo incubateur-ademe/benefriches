@@ -1,12 +1,12 @@
 import { ReinstatementExpense } from "shared";
 
-import { selectSiteSoilsDistribution } from "@/features/create-project/application/createProject.selectors";
-import { selectProjectSoilsDistribution } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+import { selectSiteSoilsDistribution } from "@/features/create-project/core/createProject.selectors";
+import { selectProjectSoilsDistribution } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import {
   reinstatementExpensesCompleted,
   reinstatementExpensesReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { selectCreationData } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { selectCreationData } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import ReinstatementsExpensesForm from "@/features/create-project/views/common-views/costs/reinstatement-costs";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 

@@ -1,7 +1,7 @@
 import {
   spacesDevelopmentPlanIntroductionCompleted,
   spacesDevelopmentPlanIntroductionReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import UrbanSpacesDevelopmentPlanIntroduction from "./UrbanSpacesDevelopmentPlanIntroduction";

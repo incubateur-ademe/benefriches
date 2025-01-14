@@ -1,7 +1,7 @@
 import {
   scheduleIntroductionCompleted,
   scheduleIntroductionReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import ScheduleIntroduction from "@/features/create-project/views/common-views/schedule/introduction/ScheduleIntroduction";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 

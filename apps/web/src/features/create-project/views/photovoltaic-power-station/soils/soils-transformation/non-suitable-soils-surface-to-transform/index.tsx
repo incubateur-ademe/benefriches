@@ -1,11 +1,11 @@
 import {
   completeNonSuitableSoilsSurfaceStep,
   revertNonSuitableSoilsSurfaceStep,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import {
   selectMissingSuitableSurfaceAreaForPhotovoltaicPanels,
   selectNonSuitableSoilsForPhototovoltaicPanelsToTransform,
-} from "@/features/create-project/application/renewable-energy/soilsTransformation.selectors";
+} from "@/features/create-project/core/renewable-energy/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import NonSuitableSoilsSurfaceForm, { FormValues } from "./NonSuitableSoilsSurfaceToTransformForm";

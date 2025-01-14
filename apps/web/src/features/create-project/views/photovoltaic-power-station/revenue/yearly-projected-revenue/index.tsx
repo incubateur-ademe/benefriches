@@ -3,8 +3,8 @@ import { RecurringRevenue } from "shared";
 import {
   completeYearlyProjectedRevenue,
   revertYearlyProjectedRevenue,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { getDefaultValuesForYearlyProjectedRecurringRevenue } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { getDefaultValuesForYearlyProjectedRecurringRevenue } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import YearlyProjectedsRevenueForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";

@@ -1,11 +1,11 @@
 import {
   buildingsEconomicActivitySurfaceAreasCompleted,
   buildingsEconomicActivitySurfaceAreasReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectBuildingsEconomicActivitySurfaceDistributionWithUnit,
   selectBuildingsEconomicActivityUses,
-} from "@/features/create-project/application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import EconomicActivitiesSurfaceArea, { type FormValues } from "./EconomicActivitySurfaceArea";

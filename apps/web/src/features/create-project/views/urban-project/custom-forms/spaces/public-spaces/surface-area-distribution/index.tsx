@@ -1,11 +1,11 @@
 import {
   publicSpacesDistributionCompleted,
   publicSpacesDistributionReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectPublicSpacesDistribution,
   selectSpaceCategorySurfaceArea,
-} from "@/features/create-project/application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import PublicSpacesDistribution, { FormValues } from "./PublicSpacesDistribution";

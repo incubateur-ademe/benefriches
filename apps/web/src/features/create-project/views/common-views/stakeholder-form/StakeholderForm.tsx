@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { LocalAuthority } from "shared/dist/local-authority";
 
-import { AvailableProjectStakeholder } from "@/features/create-project/application/stakeholders.selectors";
+import { AvailableProjectStakeholder } from "@/features/create-project/core/stakeholders.selectors";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
