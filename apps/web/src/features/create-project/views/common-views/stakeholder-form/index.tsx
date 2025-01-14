@@ -1,15 +1,15 @@
 import { ReactNode, useEffect } from "react";
 import { LocalAuthority } from "shared";
 
-import { fetchSiteLocalAuthorities } from "@/features/create-project/application/getSiteLocalAuthorities.action";
-import {
-  AvailableLocalAuthorityStakeholder,
-  AvailableProjectStakeholder,
-} from "@/features/create-project/application/stakeholders.selectors";
+import { fetchSiteLocalAuthorities } from "@/features/create-project/core/getSiteLocalAuthorities.action";
 import {
   ProjectStakeholder,
   ProjectStakeholderStructure,
-} from "@/features/create-project/domain/project.types";
+} from "@/features/create-project/core/project.types";
+import {
+  AvailableLocalAuthorityStakeholder,
+  AvailableProjectStakeholder,
+} from "@/features/create-project/core/stakeholders.selectors";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import StakeholderForm, { FormValues } from "./StakeholderForm";

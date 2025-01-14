@@ -1,8 +1,8 @@
+import { PhotovoltaicProjectCreationStep } from "@/features/create-project/core/renewable-energy/renewableEnergy.reducer";
+import { selectCurrentStep } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
-import { PhotovoltaicProjectCreationStep } from "../../application/renewable-energy/renewableEnergy.reducer";
-import { selectCurrentStep } from "../../application/renewable-energy/renewableEnergy.selector";
 import RenewableEnergyTypesForm from "../renewable-energy-types";
 import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import PhotovoltaicPowerStationStepper from "./PhotovoltaicPowerStationStepper";

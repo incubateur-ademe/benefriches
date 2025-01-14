@@ -1,6 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
-import projectCreation from "@/features/create-project/application/createProject.reducer";
+import projectCreation from "@/features/create-project/core/createProject.reducer";
 import siteCreation from "@/features/create-site/application/createSite.reducer";
 import siteMunicipalityData from "@/features/create-site/application/siteMunicipalityData.reducer";
 import siteCarbonStorage from "@/features/create-site/application/siteSoilsCarbonStorage.reducer";

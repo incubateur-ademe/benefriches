@@ -1,12 +1,12 @@
+import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import {
   completeProjectDeveloper,
   revertProjectDeveloper,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import {
   getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   getRenewableEnergyProjectAvailableStakeholders,
-} from "@/features/create-project/application/renewable-energy/stakeholders.selectors";
-import { ProjectStakeholderStructure } from "@/features/create-project/domain/project.types";
+} from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 

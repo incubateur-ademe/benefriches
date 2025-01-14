@@ -1,6 +1,6 @@
 import { SoilsDistribution, UrbanProjectSpace } from "shared";
 
-import { UrbanProjectState } from "@/features/create-project/application/urban-project/urbanProject.reducer";
+import { UrbanProjectState } from "@/features/create-project/core/urban-project/urbanProject.reducer";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";

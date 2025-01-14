@@ -1,7 +1,7 @@
 import {
   PhotovoltaicPerformanceApiResult,
   PhotovoltaicPerformanceGateway,
-} from "../../application/renewable-energy/getPhotovoltaicExpectedPerformance.action";
+} from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 
 export const MOCK_RESULT = {
   expectedPerformance: {

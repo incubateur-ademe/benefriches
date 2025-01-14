@@ -1,8 +1,8 @@
 import {
   sitePurchaseCompleted,
   sitePurchaseReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { selectSitePurchaseAmounts } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { selectSitePurchaseAmounts } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import SitePurchaseAmountsForm, {
   FormValues,
 } from "@/features/create-project/views/common-views/costs/site-purchase-amounts/SitePurchaseAmountsForm";

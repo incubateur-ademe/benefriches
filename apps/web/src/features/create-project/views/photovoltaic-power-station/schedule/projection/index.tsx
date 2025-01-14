@@ -1,8 +1,8 @@
 import {
   completeScheduleStep,
   revertScheduleStep,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { selectProjectScheduleInitialValues } from "@/features/create-project/application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { selectProjectScheduleInitialValues } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ScheduleProjectionForm from "../../../common-views/schedule/projection";

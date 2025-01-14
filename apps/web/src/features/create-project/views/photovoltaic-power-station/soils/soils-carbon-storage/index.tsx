@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import {
   completeSoilsCarbonStorageStep,
   revertSoilsCarbonStorageStep,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/application/renewable-energy/soilsCarbonStorage.actions";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/renewable-energy/actions/soilsCarbonStorage.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilsCarbonStorageComparison from "../../../common-views/soils-carbon-storage-comparison";

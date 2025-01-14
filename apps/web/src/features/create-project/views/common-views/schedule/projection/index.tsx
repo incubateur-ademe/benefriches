@@ -1,7 +1,7 @@
 import { ProjectSchedule } from "shared";
 
-import { selectIsSiteFriche } from "@/features/create-project/application/createProject.selectors";
-import { Schedule } from "@/features/create-project/domain/project.types";
+import { selectIsSiteFriche } from "@/features/create-project/core/createProject.selectors";
+import { Schedule } from "@/features/create-project/core/project.types";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ScheduleProjectionForm from "./ScheduleProjectionForm";

@@ -1,6 +1,6 @@
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-import { UrbanProjectCreationStep } from "../../application/urban-project/urbanProject.reducer";
+import { UrbanProjectCreationStep } from "../../core/urban-project/urbanProject.reducer";
 
 const stepCategories = ["Type de projet", "Mode de création"] as const;
 

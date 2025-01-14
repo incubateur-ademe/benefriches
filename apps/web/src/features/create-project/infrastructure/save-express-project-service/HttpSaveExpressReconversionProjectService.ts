@@ -1,4 +1,4 @@
-import { SaveExpressReconversionProjectGateway } from "../../application/urban-project/urbanProject.actions";
+import { SaveExpressReconversionProjectGateway } from "../../core/urban-project/actions/urbanProject.actions";
 
 export type SaveExpressReconversionProjectPayload = {
   reconversionProjectId: string;

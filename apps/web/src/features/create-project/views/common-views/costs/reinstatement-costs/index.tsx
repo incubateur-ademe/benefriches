@@ -1,6 +1,6 @@
 import { computeProjectReinstatementCosts, ReinstatementExpense, SoilsDistribution } from "shared";
 
-import { ProjectSite } from "@/features/create-project/domain/project.types";
+import { ProjectSite } from "@/features/create-project/core/project.types";
 
 import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
 import { mapFormValuesToReinstatementExpenses, mapInitialValues } from "./mappers";

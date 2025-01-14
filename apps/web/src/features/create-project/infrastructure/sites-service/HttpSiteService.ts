@@ -1,5 +1,5 @@
-import { GetSitesByIdGateway } from "../../application/createProject.actions";
-import { ProjectSite } from "../../domain/project.types";
+import { GetSitesByIdGateway } from "../../core/createProject.actions";
+import { ProjectSite } from "../../core/project.types";
 
 export class HttpSitesService implements GetSitesByIdGateway {
   async getById(siteId: string): Promise<ProjectSite | undefined> {

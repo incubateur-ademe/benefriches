@@ -3,7 +3,7 @@ import { RENEWABLE_ENERGY_PROJECT_PHASE_VALUES } from "shared";
 import {
   completeProjectPhaseStep,
   revertProjectPhaseStep,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import {
   getHintTextForRenewableEnergyProjectPhase,
   getLabelForRenewableEnergyProjectPhase,

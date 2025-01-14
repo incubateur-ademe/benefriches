@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import { PhotovoltaicKeyParameter } from "@/features/create-project/domain/project.types";
+import { PhotovoltaicKeyParameter } from "@/features/create-project/core/project.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";

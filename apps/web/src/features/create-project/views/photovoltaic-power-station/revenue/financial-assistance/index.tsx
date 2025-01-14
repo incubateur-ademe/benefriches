@@ -1,7 +1,7 @@
 import {
   completeFinancialAssistanceRevenues,
   revertFinancialAssistanceRevenues,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import ProjectFinancialAssistanceRevenueForm from "../../../common-views/revenues/financial-assistance";

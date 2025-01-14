@@ -1,7 +1,7 @@
 import {
   completeSitePurchase,
   revertWillSiteBePurchased,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";

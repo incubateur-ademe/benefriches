@@ -1,9 +1,9 @@
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 
-import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/application/getSiteLocalAuthorities.action";
-import { PhotovoltaicPerformanceGateway } from "@/features/create-project/application/renewable-energy/getPhotovoltaicExpectedPerformance.action";
-import { SaveReconversionProjectGateway } from "@/features/create-project/application/saveReconversionProject.action";
-import { SaveExpressReconversionProjectGateway } from "@/features/create-project/application/urban-project/urbanProject.actions";
+import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/core/getSiteLocalAuthorities.action";
+import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
+import { SaveReconversionProjectGateway } from "@/features/create-project/core/saveReconversionProject.action";
+import { SaveExpressReconversionProjectGateway } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/application/siteMunicipalityData.actions";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
@@ -12,8 +12,8 @@ import { AppSettingsGateway } from "@/shared/app-settings/core/AppSettingsGatewa
 import { CreateUserGateway } from "@/users/application/createUser.action";
 import { CurrentUserGateway } from "@/users/application/initCurrentUser.action";
 
-import { GetSitesByIdGateway } from "../../features/create-project/application/createProject.actions";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/application/soilsCarbonStorage.action";
+import { GetSitesByIdGateway } from "../../features/create-project/core/createProject.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/core/soilsCarbonStorage.action";
 import { CreateSiteGateway } from "../../features/create-site/application/createSite.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/application/siteSoilsCarbonStorage.actions";
 import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";

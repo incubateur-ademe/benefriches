@@ -1,9 +1,9 @@
-import { selectPhotovoltaicPanelsSurfaceArea } from "@/features/create-project/application/renewable-energy/photovoltaicPowerStation.selectors";
 import {
   completeNonSuitableSoilsNoticeStep,
   revertNonSuitableSoilsNoticeStep,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { selectSuitableSurfaceAreaForPhotovoltaicPanels } from "@/features/create-project/application/renewable-energy/soilsTransformation.selectors";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { selectPhotovoltaicPanelsSurfaceArea } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
+import { selectSuitableSurfaceAreaForPhotovoltaicPanels } from "@/features/create-project/core/renewable-energy/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import NonSuitableSoilsNotice from "./NonSuitableSoilsNotice";

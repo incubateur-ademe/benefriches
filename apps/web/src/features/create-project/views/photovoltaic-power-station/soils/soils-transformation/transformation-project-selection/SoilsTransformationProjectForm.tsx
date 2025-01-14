@@ -1,6 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 
-import { SoilsTransformationProject } from "@/features/create-project/domain/soilsTransformation";
+import { SoilsTransformationProject } from "@/features/create-project/core/renewable-energy/soilsTransformation";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
 import HorizontalCheckableTile from "@/shared/views/components/CheckableTile/HorizontalCheckableTile";

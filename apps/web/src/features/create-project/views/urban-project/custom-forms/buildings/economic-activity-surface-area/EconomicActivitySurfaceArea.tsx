@@ -7,7 +7,7 @@ import {
 import {
   getDescriptionForBuildingFloorArea,
   getPictogramUrlForEconomicActivityUses,
-} from "@/features/create-project/domain/urbanProject";
+} from "@/features/create-project/core/urban-project/urbanProject";
 import { getLabelForBuildingFloorArea } from "@/shared/domain/urbanProject";
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";

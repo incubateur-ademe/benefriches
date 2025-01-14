@@ -5,7 +5,7 @@ import {
   getDescriptionForUrbanSpaceCategory,
   getLabelForSpaceCategory,
   getPictogramForUrbanSpaceCategory,
-} from "@/features/create-project/domain/urbanProject";
+} from "@/features/create-project/core/urban-project/urbanProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";

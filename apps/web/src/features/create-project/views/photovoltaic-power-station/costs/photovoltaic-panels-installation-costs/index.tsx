@@ -3,8 +3,8 @@ import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 import {
   completePhotovoltaicPanelsInstallationExpenses,
   revertPhotovoltaicPanelsInstallationExpenses,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
-import { getDefaultValuesForPhotovoltaicInstallationExpenses } from "@/features/create-project/application/renewable-energy/renewableEnergy.selector";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { getDefaultValuesForPhotovoltaicInstallationExpenses } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";

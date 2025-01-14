@@ -3,7 +3,7 @@ import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { ProjectSchedule } from "shared";
 
-import { Schedule } from "@/features/create-project/domain/project.types";
+import { Schedule } from "@/features/create-project/core/project.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";

@@ -1,4 +1,4 @@
-import { UrbanProjectExpressCreationStep } from "@/features/create-project/application/urban-project/urbanProject.reducer";
+import { UrbanProjectExpressCreationStep } from "@/features/create-project/core/urban-project/urbanProject.reducer";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import UrbanProjectExpressStepper from "./UrbanProjectExpressStepper";

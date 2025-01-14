@@ -1,8 +1,8 @@
-import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/application/createProject.selectors";
+import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
 import {
   completeSoilsDecontaminationSurfaceArea,
   revertSoilsDecontaminationSurfaceAreaStep,
-} from "@/features/create-project/application/renewable-energy/renewableEnergy.actions";
+} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilsDecontaminationSurfaceArea from "../../../common-views/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";

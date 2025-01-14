@@ -1,12 +1,12 @@
-import {
-  getUrbanProjectAvailableLocalAuthoritiesStakeholders,
-  getUrbanProjectAvailableStakeholders,
-} from "@/features/create-project/application/urban-project/stakeholders.selectors";
+import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import {
   stakeholderReinstatementContractOwnerCompleted,
   stakeholderReinstatementContractOwnerReverted,
-} from "@/features/create-project/application/urban-project/urbanProject.actions";
-import { ProjectStakeholderStructure } from "@/features/create-project/domain/project.types";
+} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import {
+  getUrbanProjectAvailableLocalAuthoritiesStakeholders,
+  getUrbanProjectAvailableStakeholders,
+} from "@/features/create-project/core/urban-project/selectors/stakeholders.selectors";
 import StakeholderForm from "@/features/create-project/views/common-views/stakeholder-form";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";

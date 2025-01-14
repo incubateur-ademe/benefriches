@@ -1,11 +1,11 @@
-import { selectProjectId } from "@/features/create-project/application/createProject.selectors";
-import { saveReconversionProject } from "@/features/create-project/application/urban-project/saveReconversionProject.action";
-import { finalSummaryReverted } from "@/features/create-project/application/urban-project/urbanProject.actions";
+import { selectProjectId } from "@/features/create-project/core/createProject.selectors";
+import { saveReconversionProject } from "@/features/create-project/core/urban-project/actions/saveReconversionProject.action";
+import { finalSummaryReverted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   getUrbanProjectSpaceDistribution,
   selectCreationData,
   selectUrbanProjectSoilsDistribution,
-} from "@/features/create-project/application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectCreationDataSummary from "./ProjectCreationDataSummary";

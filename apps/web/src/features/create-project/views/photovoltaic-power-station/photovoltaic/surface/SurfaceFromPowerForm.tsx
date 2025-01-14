@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/domain/photovoltaic";
+import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/core/renewable-energy/photovoltaic";
 import {
   formatNumberFr,
   formatSurfaceArea,

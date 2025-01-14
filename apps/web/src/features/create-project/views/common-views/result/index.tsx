@@ -1,7 +1,7 @@
 import {
   selectProjectId,
   selectSiteData,
-} from "@/features/create-project/application/createProject.selectors";
+} from "@/features/create-project/core/createProject.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectCreationResult from "./ProjectCreationResult";

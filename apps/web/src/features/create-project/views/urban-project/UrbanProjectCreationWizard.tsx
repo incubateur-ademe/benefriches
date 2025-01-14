@@ -1,15 +1,15 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
-import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
-
+import {
+  selectCreateMode,
+  selectCurrentStep,
+} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import {
   UrbanProjectCreationStep,
   UrbanProjectCustomCreationStep,
   UrbanProjectExpressCreationStep,
-} from "../../application/urban-project/urbanProject.reducer";
-import {
-  selectCreateMode,
-  selectCurrentStep,
-} from "../../application/urban-project/urbanProject.selectors";
+} from "@/features/create-project/core/urban-project/urbanProject.reducer";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+
 import { useSyncCreationStepWithRouteQuery } from "../useSyncCreationStepWithRouteQuery";
 import UrbanProjectCreationStepper from "./Stepper";
 import CreateModeSelectionForm from "./create-mode-selection";
