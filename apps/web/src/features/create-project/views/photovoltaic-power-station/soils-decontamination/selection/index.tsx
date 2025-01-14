@@ -2,7 +2,7 @@ import {
   completeSoilsDecontaminationSelection,
   revertSoilsDecontaminationSelectionStep,
 } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilsDecontaminationSelection, {
   FormValues,
@@ -10,14 +10,18 @@ import SoilsDecontaminationSelection, {
 
 function SoilsDecontaminationSelectionContainer() {
   const dispatch = useAppDispatch();
-
-  const onSubmit = (data: FormValues) => {
-    dispatch(completeSoilsDecontaminationSelection(data.decontaminationSelection));
-  };
+  const decontaminationPlan = useAppSelector(
+    (state) => state.projectCreation.renewableEnergyProject.creationData.decontaminationPlan,
+  );
 
   return (
     <SoilsDecontaminationSelection
-      onSubmit={onSubmit}
+      initialValues={{
+        decontaminationSelection: decontaminationPlan ?? null,
+      }}
+      onSubmit={(data: FormValues) => {
+        dispatch(completeSoilsDecontaminationSelection(data.decontaminationSelection ?? "unknown"));
+      }}
       onBack={() => dispatch(revertSoilsDecontaminationSelectionStep())}
     />
   );

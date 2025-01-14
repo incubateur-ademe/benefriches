@@ -3,9 +3,10 @@ import { ProjectSchedule, ProjectScheduleBuilder, SoilsDistribution } from "shar
 
 import { RootState } from "@/app/application/store";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
+import { computePercentage } from "@/shared/services/percentage/percentage";
 
 import { ProjectCreationState } from "../../createProject.reducer";
-import { selectDefaultSchedule } from "../../createProject.selectors";
+import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateRenewableEnergyProjectName } from "../../projectName";
 import {
   computeDefaultPhotovoltaicOtherAmountExpenses,
@@ -44,6 +45,17 @@ export const selectRenewableEnergyType = createSelector(
 export const selectProjectSoilsDistribution = createSelector(
   selectRenewableEnergyData,
   (state): SoilsDistribution => state.creationData.soilsDistribution ?? {},
+);
+
+export const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSelector(
+  [selectCreationData, selectSiteData],
+  (creationData, siteData) => {
+    const surfaceToDecontaminate = creationData.decontaminatedSurfaceArea;
+    const contaminatedSurfaceArea = siteData?.contaminatedSoilSurface;
+    if (!contaminatedSurfaceArea || !surfaceToDecontaminate) return 0;
+
+    return computePercentage(surfaceToDecontaminate, contaminatedSurfaceArea);
+  },
 );
 
 export const getDefaultValuesForYearlyProjectedExpenses = createSelector(

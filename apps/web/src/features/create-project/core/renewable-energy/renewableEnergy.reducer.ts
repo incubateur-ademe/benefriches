@@ -193,13 +193,13 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
   });
 
   builder.addCase(completeSoilsDecontaminationSelection, (state, action) => {
+    state.renewableEnergyProject.creationData.decontaminationPlan = action.payload;
     switch (action.payload) {
       case "none":
         state.renewableEnergyProject.creationData.decontaminatedSurfaceArea = 0;
         state.renewableEnergyProject.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
         break;
-      case "unknown":
-      case null: {
+      case "unknown": {
         const contaminatedSoilSurface = state.siteData?.contaminatedSoilSurface ?? 0;
         state.renewableEnergyProject.creationData.decontaminatedSurfaceArea =
           contaminatedSoilSurface * 0.25;

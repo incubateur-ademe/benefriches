@@ -35,6 +35,7 @@ export type ReconversionProjectCreationData = {
   futureSiteOwner: ProjectStakeholder;
   reinstatementContractOwner?: ProjectStakeholder;
   decontaminatedSurfaceArea?: number;
+  decontaminationPlan?: "none" | "partial" | "unknown";
   // soils transformation
   baseSoilsDistributionForTransformation: SoilsDistribution;
   soilsDistribution: SoilsDistribution;

@@ -117,9 +117,9 @@ export const completeProjectPhaseStep = createAction<{ phase: RenewableEnergyPro
 export const completeSoilsDecontaminationIntroduction = createAction(
   "completeSoilsDecontaminationIntroduction",
 );
-export const completeSoilsDecontaminationSelection = createAction<
-  "partial" | "none" | "unknown" | null
->("completeSoilsDecontaminationSelection");
+export const completeSoilsDecontaminationSelection = createAction<"partial" | "none" | "unknown">(
+  "completeSoilsDecontaminationSelection",
+);
 export const completeSoilsDecontaminationSurfaceArea = createAction<number>(
   "completeSoilsDecontaminationSurfaceArea",
 );

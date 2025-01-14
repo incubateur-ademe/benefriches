@@ -176,7 +176,7 @@ export type UrbanProjectState = {
     greenSpacesDistribution?: Partial<Record<UrbanGreenSpace, number>>;
     livingAndActivitySpacesDistribution?: Partial<Record<UrbanLivingAndActivitySpace, number>>;
     publicSpacesDistribution?: Partial<Record<UrbanPublicSpace, number>>;
-    decontaminationNeeded?: "partial" | "none" | "unknown";
+    decontaminationPlan?: "partial" | "none" | "unknown";
     decontaminatedSurfaceArea?: number;
     // buildings
     buildingsFloorSurfaceArea?: number;
@@ -402,7 +402,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
       ? "BUILDINGS_INTRODUCTION"
       : "STAKEHOLDERS_INTRODUCTION";
 
-    state.urbanProject.creationData.decontaminationNeeded = action.payload;
+    state.urbanProject.creationData.decontaminationPlan = action.payload;
     switch (action.payload) {
       case "partial":
         state.urbanProject.stepsHistory.push("SOILS_DECONTAMINATION_SURFACE_AREA");

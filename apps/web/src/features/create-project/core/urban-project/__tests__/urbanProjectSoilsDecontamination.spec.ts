@@ -50,7 +50,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "SOILS_DECONTAMINATION_SURFACE_AREA",
         creationDataDiff: {
-          decontaminationNeeded: "partial",
+          decontaminationPlan: "partial",
         },
       });
     });
@@ -69,7 +69,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "BUILDINGS_INTRODUCTION",
         creationDataDiff: {
-          decontaminationNeeded: "none",
+          decontaminationPlan: "none",
           decontaminatedSurfaceArea: 0,
         },
       });
@@ -92,7 +92,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "BUILDINGS_INTRODUCTION",
         creationDataDiff: {
-          decontaminationNeeded: "unknown",
+          decontaminationPlan: "unknown",
           decontaminatedSurfaceArea: 250,
         },
       });
@@ -110,7 +110,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "STAKEHOLDERS_INTRODUCTION",
         creationDataDiff: {
-          decontaminationNeeded: "none",
+          decontaminationPlan: "none",
           decontaminatedSurfaceArea: 0,
         },
       });
@@ -130,7 +130,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectUpdatedState(initialRootState, newState, {
         currentStep: "STAKEHOLDERS_INTRODUCTION",
         creationDataDiff: {
-          decontaminationNeeded: "unknown",
+          decontaminationPlan: "unknown",
           decontaminatedSurfaceArea: 250,
         },
       });

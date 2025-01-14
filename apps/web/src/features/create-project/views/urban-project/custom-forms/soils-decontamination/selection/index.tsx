@@ -8,15 +8,15 @@ import SoilsDecontaminationSelection, {
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function SoilsDecontaminationSelectionContainer() {
-  const decontaminationNeeded = useAppSelector(
-    (state) => state.projectCreation.urbanProject.creationData.decontaminationNeeded,
+  const decontaminationPlan = useAppSelector(
+    (state) => state.projectCreation.urbanProject.creationData.decontaminationPlan,
   );
   const dispatch = useAppDispatch();
 
   return (
     <SoilsDecontaminationSelection
       initialValues={{
-        decontaminationSelection: decontaminationNeeded ?? null,
+        decontaminationSelection: decontaminationPlan ?? null,
       }}
       onSubmit={(data: FormValues) => {
         dispatch(
