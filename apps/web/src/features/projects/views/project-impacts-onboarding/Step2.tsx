@@ -26,10 +26,7 @@ export default function Step2({ onNextClick, onBackClick }: Props) {
           <ExampleArticle
             name="La société française"
             emoji="🇫🇷"
-            text=" La société française regroupe l'état français, ses acteurs économiques et sa
-              population. Ils peuvent être indirectement affectés par certains dispositifs du projet
-              (les accidents de la route évités, les foyers alimentés par les énergies
-              renouvelables...)."
+            text="La société française regroupe l’état français, ses acteurs économiques et sa population. Ils peuvent être indirectement affectés par le projet (accidents de la route évités, dépenses de santé évitées...)"
           />
           <ExampleArticle
             name="L'humanité"
