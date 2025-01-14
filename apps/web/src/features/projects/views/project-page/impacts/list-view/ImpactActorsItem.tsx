@@ -19,30 +19,44 @@ type Props = {
 const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
   const [firstActor, ...othersActors] = actors;
 
-  return (
-    <ImpactItemGroup isClickable>
-      {firstActor && (
-        <ImpactItemDetails
-          value={firstActor.value}
-          label={label}
-          actor={firstActor.label}
-          data={firstActor.details}
-          type={type}
-          onClick={onClick}
-        />
-      )}
-      {othersActors.map(({ label: actor, value, details = [] }) => (
-        <ImpactItemDetails
-          label=""
-          type={type}
-          key={actor}
-          value={value}
-          actor={actor}
-          data={details}
-        />
-      ))}
+  if (!firstActor?.details) {
+    return (
+      <ImpactItemGroup isClickable>
+        {firstActor && (
+          <ImpactItemDetails
+            value={firstActor.value}
+            label={label}
+            actor={firstActor.label}
+            type={type}
+            onClick={onClick}
+          />
+        )}
+        {othersActors.map(({ label: actor, value, details = [] }) => (
+          <ImpactItemDetails
+            label=""
+            type={type}
+            key={actor}
+            value={value}
+            actor={actor}
+            data={details}
+          />
+        ))}
+      </ImpactItemGroup>
+    );
+  }
+
+  return actors.map(({ label: actor, value, details = [] }) => (
+    <ImpactItemGroup isClickable key={actor}>
+      <ImpactItemDetails
+        value={value}
+        label={label}
+        actor={actor}
+        data={details}
+        type={type}
+        onClick={onClick}
+      />
     </ImpactItemGroup>
-  );
+  ));
 };
 
 export default ImpactActorsItem;

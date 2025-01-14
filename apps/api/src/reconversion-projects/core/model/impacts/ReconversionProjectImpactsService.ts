@@ -158,37 +158,42 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     }
 
     const currentFricheCosts = this.relatedSite.yearlyCosts.filter(({ purpose }) =>
-      FRICHE_COST_PURPOSES.includes(purpose as (typeof FRICHE_COST_PURPOSES)[number]),
-    ) as { purpose: FricheCostPurpose; amount: number }[];
-
+      FRICHE_COST_PURPOSES.includes(purpose as FricheCostPurpose),
+    ) as { purpose: FricheCostPurpose; amount: number; bearer: string }[];
     if (currentFricheCosts.length === 0) {
       return [];
     }
 
-    const fricheCostImpactAmount = sumListWithKey(currentFricheCosts, "amount");
-    return [
-      {
-        amount: fricheCostImpactAmount * this.evaluationPeriodInYears,
-        actor: this.relatedSite.tenantName ?? this.relatedSite.ownerName,
-        impact: "avoided_friche_costs",
-        impactCategory: "economic_direct",
-        details: currentFricheCosts.map(({ amount, purpose }) => {
-          const totalAmount = amount * this.evaluationPeriodInYears;
-          switch (purpose) {
-            case "maintenance":
-              return { amount: totalAmount, impact: "avoided_maintenance_costs" };
-            case "security":
-              return { amount: totalAmount, impact: "avoided_security_costs" };
-            case "accidentsCost":
-              return { amount: totalAmount, impact: "avoided_accidents_costs" };
-            case "illegalDumpingCost":
-              return { amount: totalAmount, impact: "avoided_illegal_dumping_costs" };
-            case "otherSecuringCosts":
-              return { amount: totalAmount, impact: "avoided_other_securing_costs" };
-          }
-        }),
-      },
-    ];
+    const groupedByBearer = currentFricheCosts.reduce<
+      Record<string, { purpose: FricheCostPurpose; amount: number }[]>
+    >((result, currentValue) => {
+      (result[currentValue.bearer] = result[currentValue.bearer] ?? []).push(currentValue);
+      return result;
+    }, {});
+
+    const siteTenantName = this.relatedSite.tenantName ?? "Ancien locataire du site";
+
+    return Object.entries(groupedByBearer).map(([bearer, costs]) => ({
+      amount: sumListWithKey(costs, "amount") * this.evaluationPeriodInYears,
+      actor: bearer === "owner" ? this.relatedSite.ownerName : siteTenantName,
+      impact: "avoided_friche_costs",
+      impactCategory: "economic_direct",
+      details: costs.map(({ amount, purpose }) => {
+        const totalAmount = amount * this.evaluationPeriodInYears;
+        switch (purpose) {
+          case "maintenance":
+            return { amount: totalAmount, impact: "avoided_maintenance_costs" };
+          case "security":
+            return { amount: totalAmount, impact: "avoided_security_costs" };
+          case "accidentsCost":
+            return { amount: totalAmount, impact: "avoided_accidents_costs" };
+          case "illegalDumpingCost":
+            return { amount: totalAmount, impact: "avoided_illegal_dumping_costs" };
+          case "otherSecuringCosts":
+            return { amount: totalAmount, impact: "avoided_other_securing_costs" };
+        }
+      }),
+    }));
   }
 
   protected get rentImpacts() {
