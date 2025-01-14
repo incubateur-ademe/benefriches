@@ -6,7 +6,7 @@ import { selectProjectFeatures } from "@/features/projects/application/project-f
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectFeaturesModal from "./ProjectFeaturesModal";
-import { projectFeaturesModal } from "./projectFeaturesModal";
+import { projectFeaturesModal } from "./createProjectFeaturesModal";
 
 type Props = {
   projectId: string;

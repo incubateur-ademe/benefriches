@@ -3,9 +3,9 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { routes } from "@/app/views/router";
 import TileLink from "@/shared/views/components/TileLink/TileLink";
 
-import { aboutImpactsModal } from "../impacts/about-impacts-modal/aboutImpactsModal";
-import { projectFeaturesModal } from "../impacts/project-features-modal/projectFeaturesModal";
-import { siteFeaturesModal } from "../impacts/site-features-modal/siteFeaturesModal";
+import { aboutImpactsModal } from "../impacts/about-impacts-modal";
+import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";
+import { siteFeaturesModal } from "../impacts/site-features-modal/createSiteFeaturesModal";
 
 type Props = {
   siteId: string;

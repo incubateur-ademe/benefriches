@@ -2,7 +2,7 @@ import { SiteFeatures } from "@/features/site-features/domain/siteFeatures";
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { siteFeaturesModal } from "./siteFeaturesModal";
+import { siteFeaturesModal } from "./createSiteFeaturesModal";
 
 type Props = {
   siteFeaturesData?: SiteFeatures;

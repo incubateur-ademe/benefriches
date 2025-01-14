@@ -1,6 +1,6 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { aboutImpactsModal } from "./aboutImpactsModal";
+import { aboutImpactsModal } from ".";
 
 const SectionTitle = ({ children }: { children: string }) => {
   return <h3 className="tw-text-base tw-mb-1">{children}</h3>;

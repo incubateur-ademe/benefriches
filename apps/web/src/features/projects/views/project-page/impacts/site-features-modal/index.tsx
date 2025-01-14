@@ -6,7 +6,7 @@ import { selectSiteFeatures } from "@/features/site-features/application/siteFea
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteFeaturesModal from "./SiteFeaturesModal";
-import { siteFeaturesModal } from "./siteFeaturesModal";
+import { siteFeaturesModal } from "./createSiteFeaturesModal";
 
 type Props = {
   siteId: string;

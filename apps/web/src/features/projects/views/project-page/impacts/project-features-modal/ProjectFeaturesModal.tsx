@@ -2,7 +2,7 @@ import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import ProjectFeaturesView from "../../features/ProjectFeaturesView";
-import { projectFeaturesModal } from "./projectFeaturesModal";
+import { projectFeaturesModal } from "./createProjectFeaturesModal";
 
 type Props = {
   projectFeaturesData?: ProjectFeatures;

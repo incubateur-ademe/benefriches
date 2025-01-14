@@ -7,8 +7,8 @@ import classNames from "@/shared/views/clsx";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
-import { aboutImpactsModal } from "../impacts/about-impacts-modal/aboutImpactsModal";
-import { projectFeaturesModal } from "../impacts/project-features-modal/projectFeaturesModal";
+import { aboutImpactsModal } from "../impacts/about-impacts-modal";
+import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";
 import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
 
 type Props = {
