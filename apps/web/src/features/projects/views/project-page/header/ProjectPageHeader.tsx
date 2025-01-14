@@ -1,25 +1,18 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
-import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import Dropdown from "antd/es/dropdown/dropdown";
 
-import {
-  ProjectDevelopmentPlanType,
-  ProjectFeatures,
-} from "@/features/projects/domain/projects.types";
+import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import classNames from "@/shared/views/clsx";
-import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
+import { aboutImpactsModal } from "../impacts/about-impacts-modal/aboutImpactsModal";
+import { projectFeaturesModal } from "../impacts/project-features-modal/projectFeaturesModal";
 import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
-import ProjectFeaturesView from "./../features/ProjectFeaturesView";
-import AboutImpactsModalContent from "./../impacts/AboutImpactsModalContent";
 
 type Props = {
   projectName: string;
-  projectFeaturesData?: ProjectFeatures;
-  onFetchProjectFeatures?: () => void;
   siteFeaturesHref: string;
   siteName: string;
   projectType?: ProjectDevelopmentPlanType;
@@ -27,20 +20,8 @@ type Props = {
   isExpressProject: boolean;
 };
 
-const aboutImpactsModal = createModal({
-  id: "about-benefriches-impacts-modal",
-  isOpenedByDefault: false,
-});
-
-const featuresModal = createModal({
-  id: "project-features-modal",
-  isOpenedByDefault: false,
-});
-
 const ProjectPageHeader = ({
   projectName,
-  projectFeaturesData,
-  onFetchProjectFeatures,
   siteName,
   siteFeaturesHref,
   onGoToImpactsOnBoarding,
@@ -110,7 +91,7 @@ const ProjectPageHeader = ({
                 key: "project-features",
               },
               {
-                label: "À propos des indicateurs d’impact",
+                label: "Comprendre les impacts",
                 icon: (
                   <span className="fr-icon--sm fr-icon-information-line" aria-hidden="true"></span>
                 ),
@@ -133,10 +114,7 @@ const ProjectPageHeader = ({
                 aboutImpactsModal.open();
               }
               if (key === "project-features") {
-                if (onFetchProjectFeatures) {
-                  onFetchProjectFeatures();
-                }
-                featuresModal.open();
+                projectFeaturesModal.open();
               }
               if (key === "go-to-impacts-onboarding") {
                 onGoToImpactsOnBoarding();
@@ -151,16 +129,6 @@ const ProjectPageHeader = ({
             title="Voir plus de fonctionnalités"
           />
         </Dropdown>
-        <aboutImpactsModal.Component title="À propos des indicateurs d’impact" size="large">
-          <AboutImpactsModalContent />
-        </aboutImpactsModal.Component>
-        <featuresModal.Component title="Caractéristiques du projet" size="large">
-          {projectFeaturesData ? (
-            <ProjectFeaturesView projectData={projectFeaturesData} />
-          ) : (
-            <LoadingSpinner />
-          )}
-        </featuresModal.Component>
       </div>
     </div>
   );

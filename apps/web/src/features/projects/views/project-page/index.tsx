@@ -3,8 +3,6 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
-import { fetchProjectFeatures } from "../../application/project-features/projectFeatures.actions";
-import { selectProjectFeatures } from "../../application/project-features/projectFeatures.reducer";
 import {
   selectProjectContext,
   setEvaluationPeriod,
@@ -30,18 +28,10 @@ function ProjectPageContainer({ projectId }: Props) {
     void dispatch(fetchReconversionProjectImpacts({ projectId, evaluationPeriod }));
   }, [projectId, evaluationPeriod, dispatch]);
 
-  const projectFeatures = useAppSelector(selectProjectFeatures);
-
-  const onFetchProjectFeatures = () => {
-    void dispatch(fetchProjectFeatures({ projectId }));
-  };
-
   return (
     <ProjectPage
       projectId={projectId}
       projectContext={projectContext}
-      projectFeaturesData={projectFeatures}
-      onFetchProjectFeatures={onFetchProjectFeatures}
       dataLoadingState={dataLoadingState}
       evaluationPeriod={evaluationPeriod}
       currentViewMode={currentViewMode}

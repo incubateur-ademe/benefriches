@@ -5,17 +5,18 @@ import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
 import { ProjectImpactsState, ViewMode } from "../../application/projectImpacts.reducer";
-import { ProjectDevelopmentPlanType, ProjectFeatures } from "../../domain/projects.types";
+import { ProjectDevelopmentPlanType } from "../../domain/projects.types";
 import ProjectImpactFooter from "./footer/ProjectImpactFooter";
 import ProjectImpactsActionBar from "./header/ProjectImpactsActionBar";
 import ProjectsImpactsPageHeader from "./header/ProjectPageHeader";
 import ProjectImpactsPage from "./impacts/ProjectImpactsView";
+import AboutImpactsModal from "./impacts/about-impacts-modal/AboutImpactsModal";
+import ProjectFeaturesModal from "./impacts/project-features-modal";
+import SiteFeaturesModal from "./impacts/site-features-modal";
 
 type Props = {
   projectId: string;
   dataLoadingState: ProjectImpactsState["dataLoadingState"];
-  projectFeaturesData?: ProjectFeatures;
-  onFetchProjectFeatures?: () => void;
   projectContext: {
     name: string;
     siteName: string;
@@ -32,8 +33,6 @@ type Props = {
 function ProjectPage({
   projectId,
   projectContext,
-  projectFeaturesData,
-  onFetchProjectFeatures,
   dataLoadingState,
   onEvaluationPeriodChange,
   evaluationPeriod,
@@ -42,8 +41,6 @@ function ProjectPage({
 }: Props) {
   const headerProps = {
     projectType: projectContext.type,
-    projectFeaturesData: projectFeaturesData,
-    onFetchProjectFeatures: onFetchProjectFeatures,
     projectName: projectContext.name,
     siteName: projectContext.siteName,
     isExpressProject: projectContext.isExpressProject,
@@ -86,6 +83,10 @@ function ProjectPage({
           </>
         )}
       </div>
+
+      <AboutImpactsModal />
+      <ProjectFeaturesModal projectId={projectId} />
+      <SiteFeaturesModal siteId={projectContext.siteId} />
     </div>
   );
 }

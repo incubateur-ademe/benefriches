@@ -1,10 +1,7 @@
 import { useState } from "react";
 
 import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
-import {
-  ProjectDevelopmentPlanType,
-  ProjectFeatures,
-} from "@/features/projects/domain/projects.types";
+import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 
 import ImpactsActionBar from "../../shared/actions/ActionBar";
 import StickyActionBar from "./StickyActionBar";
@@ -16,8 +13,6 @@ type Props = {
   onEvaluationPeriodChange: (n: number) => void;
   headerProps: {
     projectName: string;
-    projectFeaturesData?: ProjectFeatures;
-    onFetchProjectFeatures?: () => void;
     siteFeaturesHref: string;
     siteName: string;
     projectType?: ProjectDevelopmentPlanType;

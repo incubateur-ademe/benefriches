@@ -1,12 +1,14 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import { aboutImpactsModal } from "./aboutImpactsModal";
+
 const SectionTitle = ({ children }: { children: string }) => {
   return <h3 className="tw-text-base tw-mb-1">{children}</h3>;
 };
 
-function AboutImpactsModalContent() {
+function AboutImpactsModal() {
   return (
-    <>
+    <aboutImpactsModal.Component title="Comprendre les impacts" size="large">
       <section className="tw-mb-4">
         <SectionTitle>📊 Les indicateurs sont calculés à partir de données sourcées</SectionTitle>
         <p className="tw-mb-2">
@@ -53,8 +55,8 @@ function AboutImpactsModalContent() {
         <SectionTitle>💾 Cette page est consultable à tout moment</SectionTitle>
         <p>Vous pouvez la retrouver dans votre espace "Mes projets"</p>
       </section>
-    </>
+    </aboutImpactsModal.Component>
   );
 }
 
-export default AboutImpactsModalContent;
+export default AboutImpactsModal;
