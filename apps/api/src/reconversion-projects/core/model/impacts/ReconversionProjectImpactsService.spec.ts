@@ -233,32 +233,32 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
             {
               amount: 14000,
               purpose: "security",
-              bearer: "Current tenant",
+              bearer: "tenant",
             },
             {
               amount: 1000,
               purpose: "maintenance",
-              bearer: "Current tenant",
+              bearer: "tenant",
             },
             {
               amount: 1500,
               purpose: "illegalDumpingCost",
-              bearer: "Current tenant",
+              bearer: "tenant",
             },
             {
               amount: 1500,
               purpose: "accidentsCost",
-              bearer: "Current tenant",
+              bearer: "tenant",
             },
             {
               amount: 5000,
               purpose: "otherSecuringCosts",
-              bearer: "Current tenant",
+              bearer: "tenant",
             },
             {
               amount: 500000000,
               purpose: "non-relevant-cost",
-              bearer: "Current tenant",
+              bearer: "tenant",
             },
           ],
           ownerName: "Current owner",
@@ -295,17 +295,17 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
             {
               amount: 14000,
               purpose: "security",
-              bearer: "Current owner",
+              bearer: "owner",
             },
             {
               amount: 1500,
               purpose: "illegalDumpingCost",
-              bearer: "Current owner",
+              bearer: "owner",
             },
             {
               amount: 500000000,
               purpose: "non-relevant-cost",
-              bearer: "Current owner",
+              bearer: "owner",
             },
           ],
           ownerName: "Current owner",
@@ -351,6 +351,70 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([]);
+    });
+
+    it("returns avoided friche costs with different owners", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedCosts: [] },
+        relatedSite: {
+          ...site,
+          yearlyCosts: [
+            {
+              amount: 14000,
+              purpose: "security",
+              bearer: "owner",
+            },
+            {
+              amount: 1000,
+              purpose: "maintenance",
+              bearer: "tenant",
+            },
+            {
+              amount: 1500,
+              purpose: "illegalDumpingCost",
+              bearer: "owner",
+            },
+            {
+              amount: 1500,
+              purpose: "accidentsCost",
+              bearer: "tenant",
+            },
+            {
+              amount: 5000,
+              purpose: "otherSecuringCosts",
+              bearer: "tenant",
+            },
+          ],
+          ownerName: "Current owner",
+          tenantName: "Current tenant",
+        },
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
+      });
+      expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
+        {
+          actor: "Current owner",
+          amount: 155000,
+          impact: "avoided_friche_costs",
+          impactCategory: "economic_direct",
+          details: [
+            { amount: 140000, impact: "avoided_security_costs" },
+            { amount: 15000, impact: "avoided_illegal_dumping_costs" },
+          ],
+        },
+        {
+          actor: "Current tenant",
+          amount: 75000,
+          impact: "avoided_friche_costs",
+          impactCategory: "economic_direct",
+          details: [
+            { amount: 10000, impact: "avoided_maintenance_costs" },
+            { amount: 15000, impact: "avoided_accidents_costs" },
+            { amount: 50000, impact: "avoided_other_securing_costs" },
+          ],
+        },
+      ]);
     });
   });
 
