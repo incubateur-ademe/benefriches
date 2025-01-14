@@ -13,7 +13,7 @@ const AvoidedCO2WithEnRMonetaryValueDescription = (props: Props) => {
   return (
     <>
       <ModalHeader
-        title="⚡️️ Emissions de CO2-eq évitées grâce à la production d'énergies renouvelables"
+        title="⚡️️ Valeur monétaire de la décarbonation grâce à la production d'énergies renouvelables"
         breadcrumbSegments={[
           breadcrumbSection,
           {

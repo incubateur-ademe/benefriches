@@ -40,13 +40,13 @@ const WaterRegulationDescription = ({
   return (
     <>
       <ModalHeader
-        title="🚰 Régulation de la qualité de l'eau"
+        title="🚰 Dépenses de traitement de l’eau évitées"
         breadcrumbSegments={[
           breadcrumbSection,
           {
             label: "Impacts environnementaux monétarisés",
           },
-          { label: "Régulation de la qualité de l'eau" },
+          { label: "Dépenses de traitement de l’eau évitées" },
         ]}
       />
       <ModalContent>

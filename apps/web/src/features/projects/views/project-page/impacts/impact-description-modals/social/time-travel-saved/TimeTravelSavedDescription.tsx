@@ -2,12 +2,14 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import { breadcrumbSection } from "../breadcrumbSection";
 
+const TITLE = "Temps passé en moins dans les transports";
+
 const TimeTravelSavedDescription = () => {
   return (
     <>
       <ModalHeader
-        title="⏱ Temps de déplacement économisé"
-        breadcrumbSegments={[breadcrumbSection, { label: "Temps de déplacement économisé" }]}
+        title={`⏱ ${TITLE}`}
+        breadcrumbSegments={[breadcrumbSection, { label: TITLE }]}
       />
       <ModalContent>
         <p>

@@ -68,7 +68,7 @@ const SocialListSection = ({ impacts }: Props) => {
       )}
 
       {residentsImpacts.length > 0 && (
-        <ImpactSection title="Impacts sur les riverains">
+        <ImpactSection title="Impacts sur la population locale">
           {residentsImpacts.map(({ name, impact, type }) => (
             <ImpactItemGroup key={name} isClickable>
               <ImpactItemDetails

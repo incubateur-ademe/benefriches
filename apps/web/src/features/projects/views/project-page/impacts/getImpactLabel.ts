@@ -117,9 +117,9 @@ export const getSocialImpactLabel = (name: SocialImpactName) => {
     case "operations_full_time_jobs":
       return "🧑‍🔧 Exploitation du site";
     case "avoided_friche_accidents":
-      return "🤕 Personnes préservées des accidents sur la friche";
+      return "💥 Personnes préservées des accidents sur la friche";
     case "avoided_friche_minor_accidents":
-      return "💥 Blessés légers évités";
+      return "🤕 Blessés légers évités";
     case "avoided_friche_severe_accidents":
       return "🚑 Blessés graves évités";
 
@@ -138,7 +138,7 @@ export const getSocialImpactLabel = (name: SocialImpactName) => {
     case "avoided_vehicule_kilometers":
       return "🚙 Kilomètres évités";
     case "travel_time_saved":
-      return "⏱ Temps de déplacement économisé";
+      return "⏱ Temps passé en moins dans les transports";
   }
 };
 
@@ -187,9 +187,9 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
     // Sociaux monétarisés
     /// Projet urbain
     case "travel_time_saved":
-      return "⏱ Temps de déplacement économisé";
+      return "⏱ Valeur monétaire du temps passé en moins dans les transports";
     case "avoided_traffic_accidents":
-      return "🚘 Personnes préservées des accidents de la route";
+      return "🚗 Dépenses de santé évitées grâce à la diminution des accidents de la route";
     case "avoided_traffic_deaths":
       return "🪦 Décès évités";
     case "avoided_traffic_minor_injuries":
@@ -198,20 +198,20 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "‍🚑 Blessés graves évités";
     // Environementaux monétarisés
     case "avoided_co2_eq_emissions":
-      return "☁️ Emissions de CO2-eq";
+      return "☁️  Valeur monétaire de la décarbonation ";
     case "avoided_co2_eq_with_enr":
-      return "⚡️️ Grâce à la production d'énergies renouvelables";
+      return "⚡️️ Production d'énergies renouvelables";
     case "avoided_traffic_co2_eq_emissions":
-      return "🚶‍♀️ Evitées grâce aux déplacements en voiture évités";
+      return "🚙 Déplacements en voiture évités";
     case "avoided_air_conditioning_co2_eq_emissions":
-      return "❄️ Evitées grâce à l'utilisation réduite de de la climatisation";
+      return "❄️ Utilisation réduite de de la climatisation";
     case "avoided_air_pollution":
-      return "💨 Pollution de l'air évitée";
+      return "💨 Dépenses de santé évitées grâce à la réduction de la pollution de l’air";
     case "water_regulation":
-      return "🚰 Régulation de la qualité de l'eau";
+      return "🚰 Dépenses de traitement de l’eau évitées";
     // Services écosystémiques
     case "ecosystem_services":
-      return "🌻 Services écosystémiques";
+      return "🌱 Valeur monétaire des services écosystémiques";
     case "forest_related_product":
       return "🪵 Produits issus de la forêt";
     case "invasive_species_regulation":

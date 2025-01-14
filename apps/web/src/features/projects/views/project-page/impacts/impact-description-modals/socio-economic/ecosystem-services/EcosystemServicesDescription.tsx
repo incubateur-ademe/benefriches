@@ -49,14 +49,14 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
   return (
     <>
       <ModalHeader
-        title="🌻 Services écosystémiques"
+        title="🌱 Valeur monétaire des services écosystémiques"
         breadcrumbSegments={[
           breadcrumbSection,
           {
             label: "Impacts environnementaux monétarisés",
           },
           {
-            label: "Services écosystémiques",
+            label: "Valeur monétaire des services écosystémiques",
           },
         ]}
       />

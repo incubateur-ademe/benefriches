@@ -33,7 +33,7 @@ const PropertyValueIncreaseDescription = ({ siteSurfaceArea }: Props) => {
           espace de nature.
         </p>
         <p>
-          <strong>Bénéficiaire</strong> : Riverains
+          <strong>Bénéficiaire</strong> : Population locale
         </p>
         <ModalTitleTwo>Quelles données sont utilisées dans le calcul ?</ModalTitleTwo>
         <ModalTitleThree> Données systémiques agrégées par Bénéfriches :</ModalTitleThree>
