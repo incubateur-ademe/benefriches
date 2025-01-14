@@ -6,10 +6,8 @@ export const getActorLabel = (label: string) => {
       return "Société française";
     case "human_society":
       return "Humanité";
-    case "local_residents":
+    case "local_people":
       return "Population locale";
-    case "local_workers":
-      return "Actifs locaux";
     case "local_companies":
       return "Structures locales";
     case "local_people_or_companies":

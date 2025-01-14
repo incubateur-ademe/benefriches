@@ -197,7 +197,7 @@ export class UrbanFreshnessRelatedImpactsService
 
     const socioeconomic: SocioEconomicImpact[] = [
       {
-        actor: "local_residents",
+        actor: "local_people",
         amount: roundTo2Digits(this.getAvoidedInhabitantsAirConditioningExpenses()),
         impact: "avoided_air_conditioning_expenses",
         impactCategory: "economic_indirect",

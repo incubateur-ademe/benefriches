@@ -405,17 +405,14 @@ export class TravelRelatedImpactsService
         actor: "human_society",
         amount: roundTo2Digits(this.getAvoidedAirPollution()),
         impact: "avoided_air_pollution",
-        impactCategory: "environmental_monetary",
+        impactCategory: "social_monetary",
       },
       {
-        actor: "local_residents",
-        amount: roundTo2Digits(this.getAvoidedKilometersPerResidentVehiculeMonetaryAmount()),
-        impact: "avoided_car_related_expenses",
-        impactCategory: "economic_indirect",
-      },
-      {
-        actor: "local_workers",
-        amount: roundTo2Digits(this.getAvoidedKilometersPerWorkerVehiculeMonetaryAmount()),
+        actor: "local_people",
+        amount: roundTo2Digits(
+          this.getAvoidedKilometersPerResidentVehiculeMonetaryAmount() +
+            this.getAvoidedKilometersPerWorkerVehiculeMonetaryAmount(),
+        ),
         impact: "avoided_car_related_expenses",
         impactCategory: "economic_indirect",
       },
@@ -426,14 +423,11 @@ export class TravelRelatedImpactsService
         impactCategory: "economic_indirect",
       },
       {
-        actor: "local_residents",
-        amount: roundTo2Digits(this.getTravelTimeSavedPerInhabitantTravelerMonetaryAmount()),
-        impact: "travel_time_saved",
-        impactCategory: "social_monetary",
-      },
-      {
-        actor: "local_workers",
-        amount: roundTo2Digits(this.getTravelTimeSavedPerWorkerTravelerMonetaryAmount()),
+        actor: "local_people",
+        amount: roundTo2Digits(
+          this.getTravelTimeSavedPerInhabitantTravelerMonetaryAmount() +
+            this.getTravelTimeSavedPerWorkerTravelerMonetaryAmount(),
+        ),
         impact: "travel_time_saved",
         impactCategory: "social_monetary",
       },

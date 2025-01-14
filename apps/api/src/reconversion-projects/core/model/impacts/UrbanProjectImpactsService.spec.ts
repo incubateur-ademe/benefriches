@@ -140,7 +140,7 @@ describe("UrbanProjectImpactsService", () => {
     const result = await urbanProjectImpactsService.formatImpacts();
 
     expect(result.socioeconomic.impacts).toContainEqual({
-      actor: "local_residents",
+      actor: "local_people",
       amount: expect.any(Number) as number,
       impact: "local_property_value_increase",
       impactCategory: "economic_indirect",

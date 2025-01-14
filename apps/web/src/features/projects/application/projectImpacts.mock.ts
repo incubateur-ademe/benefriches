@@ -379,18 +379,12 @@ export const urbanProjectImpactMock = {
         {
           amount: 1500,
           impact: "avoided_air_pollution",
-          impactCategory: "environmental_monetary",
+          impactCategory: "social_monetary",
           actor: "human_society",
         },
         {
-          actor: "local_workers",
-          amount: 155,
-          impact: "avoided_car_related_expenses",
-          impactCategory: "economic_indirect",
-        },
-        {
-          actor: "local_residents",
-          amount: 1000,
+          actor: "local_people",
+          amount: 1155,
           impact: "avoided_car_related_expenses",
           impactCategory: "economic_indirect",
         },
@@ -401,7 +395,7 @@ export const urbanProjectImpactMock = {
           actor: "french_society",
         },
         {
-          actor: "local_residents",
+          actor: "local_people",
           amount: 1000,
           impact: "avoided_air_conditioning_expenses",
           impactCategory: "economic_indirect",
@@ -413,7 +407,7 @@ export const urbanProjectImpactMock = {
           impactCategory: "economic_indirect",
         },
         {
-          actor: "local_residents",
+          actor: "local_people",
           amount: 10000,
           impact: "travel_time_saved",
           impactCategory: "social_monetary",
@@ -442,7 +436,7 @@ export const urbanProjectImpactMock = {
           amount: 150000,
           impact: "local_property_value_increase",
           impactCategory: "economic_indirect",
-          actor: "local_residents",
+          actor: "local_people",
         },
         {
           amount: 5000,

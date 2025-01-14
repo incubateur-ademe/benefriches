@@ -241,7 +241,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
 
       expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([
         {
-          actor: "local_residents",
+          actor: "local_people",
           amount: 2481.42,
           impact: "avoided_air_conditioning_expenses",
           impactCategory: "economic_indirect",

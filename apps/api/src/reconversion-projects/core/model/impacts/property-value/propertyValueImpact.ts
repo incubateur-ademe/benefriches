@@ -118,7 +118,7 @@ export const getLocalPropertyValueIncreaseRelatedImpacts = async ({
   );
   return [
     {
-      actor: "local_residents",
+      actor: "local_people",
       amount: propertyValueIncrease * evaluationPeriodInYears,
       impact: "local_property_value_increase",
       impactCategory: "economic_indirect",

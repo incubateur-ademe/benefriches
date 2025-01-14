@@ -166,7 +166,7 @@ export const getSocioEconomicProjectImpactsByActor = (
 
   const mergedActors = socioEconomicImpacts.map((impact) => ({
     ...impact,
-    actor: ["local_residents", "local_companies", "local_workers"].includes(impact.actor)
+    actor: ["local_people", "local_companies"].includes(impact.actor)
       ? "local_people_or_companies"
       : impact.actor,
   }));

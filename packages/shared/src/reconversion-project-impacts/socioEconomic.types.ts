@@ -53,13 +53,13 @@ type PropertyTransferDutiesIncomeImpact = BaseEconomicImpact & {
 export type AvoidedCarRelatedExpensesImpact = BaseEconomicImpact & {
   impact: "avoided_car_related_expenses";
   impactCategory: "economic_indirect";
-  actor: "local_residents" | "local_workers";
+  actor: "local_people";
 };
 
 export type AvoidedAirConditioningExpensesImpact = BaseEconomicImpact & {
   impact: "avoided_air_conditioning_expenses";
   impactCategory: "economic_indirect";
-  actor: "local_residents" | "local_companies";
+  actor: "local_people" | "local_companies";
 };
 
 type RoadsAndUtilitiesMaintenanceExpensesImpact = BaseEconomicImpact & {
@@ -80,7 +80,7 @@ export type DirectAndIndirectEconomicImpact =
 export type TravelTimeSavedImpact = BaseEconomicImpact & {
   impact: "travel_time_saved";
   impactCategory: "social_monetary";
-  actor: "local_residents" | "local_workers";
+  actor: "local_people";
 };
 
 export type AvoidedTrafficAccidentsImpact = BaseEconomicImpact & {
@@ -117,14 +117,14 @@ export type AvoidedPropertyDamagesExpensesImpact = BaseEconomicImpact & {
 
 export type AvoidedAirPollutionImpact = BaseEconomicImpact & {
   actor: "human_society";
-  impactCategory: "environmental_monetary";
+  impactCategory: "social_monetary";
   impact: "avoided_air_pollution";
 };
 
 export type LocalHousingPropertyValueIncreaseImpact = BaseEconomicImpact & {
   impact: "local_property_value_increase";
   impactCategory: "economic_indirect";
-  actor: "local_residents";
+  actor: "local_people";
 };
 
 export type LocalTransferDutiesIncreaseImpact = BaseEconomicImpact & {
