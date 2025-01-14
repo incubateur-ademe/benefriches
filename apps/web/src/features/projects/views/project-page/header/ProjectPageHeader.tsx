@@ -11,13 +11,14 @@ import { aboutImpactsModal } from "../impacts/about-impacts-modal";
 import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";
 import ExpressProjectTooltipBadge from "./../ExpressProjectBadge";
 
-type Props = {
+export type HeaderProps = {
   projectName: string;
   siteFeaturesHref: string;
   siteName: string;
   projectType?: ProjectDevelopmentPlanType;
   onGoToImpactsOnBoarding: () => void;
   isExpressProject: boolean;
+  size?: "small" | "medium";
 };
 
 const ProjectPageHeader = ({
@@ -27,8 +28,11 @@ const ProjectPageHeader = ({
   onGoToImpactsOnBoarding,
   projectType,
   isExpressProject,
-}: Props) => {
-  const isSmall = useIsSmallScreen();
+  size: propsSize,
+}: HeaderProps) => {
+  const isSmallScreen = useIsSmallScreen();
+  const size = propsSize ?? (isSmallScreen ? "small" : "medium");
+  const isSmallSize = size === "small";
   return (
     <div className={fr.cx("fr-container")}>
       <div
@@ -47,7 +51,7 @@ const ProjectPageHeader = ({
               "tw-col-start-1",
               "sm:tw-row-start-1",
               "sm:tw-row-span-2",
-              "tw-w-[60px] tw-h-[60px] md:tw-w-[72px] md:tw-h-[72px]",
+              isSmallSize ? "tw-w-[60px] tw-h-[60px]" : "md:tw-w-[72px] md:tw-h-[72px]",
             )}
             src={getScenarioPictoUrl(projectType)}
             aria-hidden={true}
@@ -58,8 +62,8 @@ const ProjectPageHeader = ({
         )}
 
         <div className="tw-col-start-2 sm:tw-inline-flex tw-items-center">
-          <h2 className={classNames("tw-my-0", isSmall && "tw-text-2xl")}>{projectName}</h2>
-          {isExpressProject && !isSmall && <ExpressProjectTooltipBadge siteName={siteName} />}
+          <h2 className={classNames("tw-my-0", isSmallSize && "tw-text-2xl")}>{projectName}</h2>
+          {isExpressProject && !isSmallScreen && <ExpressProjectTooltipBadge siteName={siteName} />}
         </div>
         <div
           className={classNames(
@@ -70,11 +74,15 @@ const ProjectPageHeader = ({
         >
           <span
             className={classNames(
-              fr.cx("fr-icon-map-pin-2-line", "fr-icon--sm", isSmall ? "fr-mr-1w" : "fr-mr-0-5v"),
+              fr.cx(
+                "fr-icon-map-pin-2-line",
+                "fr-icon--sm",
+                isSmallSize ? "fr-mr-1w" : "fr-mr-0-5v",
+              ),
             )}
             aria-hidden="true"
           ></span>
-          <a href={siteFeaturesHref} className={classNames("tw-text-base md:tw-text-lg")}>
+          <a href={siteFeaturesHref} className="tw-text-base">
             {siteName}
           </a>
         </div>
@@ -123,7 +131,7 @@ const ProjectPageHeader = ({
           }}
         >
           <Button
-            size={isSmall ? "small" : "medium"}
+            size={size}
             priority="secondary"
             iconId="fr-icon-more-fill"
             title="Voir plus de fonctionnalités"

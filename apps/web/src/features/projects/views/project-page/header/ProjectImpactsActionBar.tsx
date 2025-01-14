@@ -1,9 +1,9 @@
 import { useState } from "react";
 
 import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
-import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 
 import ImpactsActionBar from "../../shared/actions/ActionBar";
+import { HeaderProps } from "./ProjectPageHeader";
 import StickyActionBar from "./StickyActionBar";
 
 type Props = {
@@ -11,14 +11,7 @@ type Props = {
   evaluationPeriod: number;
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
-  headerProps: {
-    projectName: string;
-    siteFeaturesHref: string;
-    siteName: string;
-    projectType?: ProjectDevelopmentPlanType;
-    onGoToImpactsOnBoarding: () => void;
-    isExpressProject: boolean;
-  };
+  headerProps: HeaderProps;
 };
 
 function ProjectImpactsActionBar({

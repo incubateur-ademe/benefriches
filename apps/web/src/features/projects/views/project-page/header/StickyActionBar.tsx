@@ -1,29 +1,15 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
-import {
-  ProjectDevelopmentPlanType,
-  ProjectFeatures,
-} from "@/features/projects/domain/projects.types";
 import classNames from "@/shared/views/clsx";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import ImpactEvaluationPeriodSelect from "../../shared/actions/ImpactEvaluationPeriodSelect";
-import ProjectsImpactsPageHeader from "./ProjectPageHeader";
+import ProjectsImpactsPageHeader, { HeaderProps } from "./ProjectPageHeader";
 
 type Props = {
   evaluationPeriod: number;
   onEvaluationPeriodChange: (n: number) => void;
-  headerProps: {
-    projectName: string;
-    projectFeaturesData?: ProjectFeatures;
-    onFetchProjectFeatures?: () => void;
-    siteFeaturesHref: string;
-    siteName: string;
-    projectType?: ProjectDevelopmentPlanType;
-    onGoToImpactsOnBoarding: () => void;
-    isExpressProject: boolean;
-    isSmall?: boolean;
-  };
+  headerProps: HeaderProps;
 };
 
 function ProjectImpactsStickyActionBar({
@@ -56,7 +42,7 @@ function ProjectImpactsStickyActionBar({
           "tw-items-center",
         )}
       >
-        <ProjectsImpactsPageHeader {...headerProps} />
+        <ProjectsImpactsPageHeader size="small" {...headerProps} />
         {!isSmScreen && (
           <ImpactEvaluationPeriodSelect
             onChange={onEvaluationPeriodChange}
