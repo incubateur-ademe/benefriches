@@ -15,6 +15,7 @@ import {
 
 import { RootState } from "@/app/application/store";
 import { selectAppSettings } from "@/shared/app-settings/core/appSettings";
+import { computePercentage } from "@/shared/services/percentage/percentage";
 
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateUrbanProjectName } from "../../projectName";
@@ -273,11 +274,11 @@ export const selectInstallationCosts = createSelector(selectCreationData, (creat
 export const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSelector(
   [selectCreationData, selectSiteData],
   (creationData, siteData): number => {
+    const surfaceToDecontaminate = creationData.decontaminatedSurfaceArea;
     const contaminatedSurfaceArea = siteData?.contaminatedSoilSurface;
-    if (!contaminatedSurfaceArea) return 0;
+    if (!contaminatedSurfaceArea || !surfaceToDecontaminate) return 0;
 
-    const surfaceAreaToDecontaminate = creationData.decontaminatedSurfaceArea ?? 0;
-    return (surfaceAreaToDecontaminate * 100) / contaminatedSurfaceArea;
+    return computePercentage(surfaceToDecontaminate, contaminatedSurfaceArea);
   },
 );
 

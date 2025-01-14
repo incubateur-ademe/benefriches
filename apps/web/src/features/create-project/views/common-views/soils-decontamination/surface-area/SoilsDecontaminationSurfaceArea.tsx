@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { computeValueFromPercentage } from "@/shared/services/percentage/percentage";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
@@ -29,7 +30,7 @@ function SoilsDecontaminationSurfaceArea({
   });
 
   const percentSurfaceArea = watch("percentSurfaceArea");
-  const surfaceArea = (percentSurfaceArea * contaminatedSoilSurface) / 100;
+  const surfaceArea = computeValueFromPercentage(percentSurfaceArea, contaminatedSoilSurface);
 
   return (
     <WizardFormLayout title="Quelle part des sols pollués sera dépolluée ?">

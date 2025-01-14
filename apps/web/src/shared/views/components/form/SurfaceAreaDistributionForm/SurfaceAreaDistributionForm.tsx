@@ -7,6 +7,10 @@ import {
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
 } from "@/shared/services/format-number/formatNumber";
+import {
+  computePercentage,
+  computeValueFromPercentage,
+} from "@/shared/services/percentage/percentage";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import { useSurfaceAreaInputMode } from "@/shared/views/hooks/useSurfaceAreaInputMode";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -33,14 +37,6 @@ type Props = {
   maxErrorMessage?: string;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-};
-
-const percentToSquareMeters = (percent: number, total: number) => {
-  return Math.round((percent * total) / 100);
-};
-
-const squareMetersToPercent = (squareMeters: number, total: number) => {
-  return (squareMeters / total) * 100;
 };
 
 type TotalAllocatedSurfaceAreaInputProps = {
@@ -116,8 +112,8 @@ function SurfaceAreaDistributionForm({
       const valueToConvert = surfaceArea ?? 0;
       const convertedValue =
         newInputMode === "percentage"
-          ? squareMetersToPercent(valueToConvert, totalSurfaceArea)
-          : percentToSquareMeters(valueToConvert, totalSurfaceArea);
+          ? computePercentage(valueToConvert, totalSurfaceArea)
+          : Math.round(computeValueFromPercentage(valueToConvert, totalSurfaceArea));
       setValue(surfaceType, convertedValue);
     });
   };
@@ -126,7 +122,7 @@ function SurfaceAreaDistributionForm({
     if (!value || inputMode === "squareMeters") {
       return undefined;
     }
-    const equivalent = percentToSquareMeters(value, totalSurfaceArea);
+    const equivalent = computeValueFromPercentage(value, totalSurfaceArea);
     return `Soit ${formatSurfaceArea(equivalent)}`;
   };
 
@@ -153,7 +149,7 @@ function SurfaceAreaDistributionForm({
           {instructions}
           <SurfaceAreaPieChart
             soilsDistribution={chartSurfaceAreaDistribution}
-            remainderSurfaceArea={percentToSquareMeters(remainder, totalSurfaceArea)}
+            remainderSurfaceArea={computeValueFromPercentage(remainder, totalSurfaceArea)}
           />
         </>
       }
