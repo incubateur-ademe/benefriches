@@ -71,4 +71,5 @@ export const projectWithExhaustiveData = {
   firstYearOfOperation: 2029,
   projectPhase: "design",
   decontaminatedSurfaceArea: 1000,
+  decontaminationPlan: "partial",
 } as const satisfies Required<ReconversionProjectCreationData>;
