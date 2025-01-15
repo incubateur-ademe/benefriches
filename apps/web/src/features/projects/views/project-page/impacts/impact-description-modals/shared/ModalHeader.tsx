@@ -31,8 +31,9 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
     >
       <div className="tw-max-w-[calc(100%-100px)] tw-pt-4">
         <ModalBreadcrumb segments={breadcrumbSegments} />
-        <h1 className="tw-text-2xl tw-m-0">{title}</h1>
       </div>
+      <h1 className="tw-text-2xl tw-m-0 tw-mb-2">{title}</h1>
+
       {subtitle && <span className="tw-font-bold">{subtitle}</span>}
       {value && (
         <div>

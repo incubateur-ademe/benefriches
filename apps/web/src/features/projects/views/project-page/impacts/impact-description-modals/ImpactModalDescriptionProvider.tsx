@@ -7,8 +7,6 @@ import {
   SoilsDistribution,
 } from "shared";
 
-import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
-
 import "./ImpactDescriptionModal.css";
 import {
   ImpactModalDescriptionContext,
@@ -44,10 +42,7 @@ export type SiteData = {
   surfaceArea: number;
 };
 
-export type ImpactsData = {
-  socioEconomicList: ReconversionProjectImpacts["socioeconomic"];
-  keyImpactIndicatorsList: KeyImpactIndicatorData[];
-};
+export type ImpactsData = ReconversionProjectImpacts;
 
 type ModalDescriptionProviderProps = {
   children: ReactNode;
@@ -111,6 +106,8 @@ function ImpactModalDescriptionProvider({
               return (
                 <EconomicBalanceModalWizard
                   impactName={openState.impactName}
+                  projectData={projectData}
+                  impactsData={impactsData}
                   impactDetailsName={openState.impactDetailsName}
                 />
               );
@@ -119,7 +116,7 @@ function ImpactModalDescriptionProvider({
                 <SocioEconomicModalWizard
                   projectData={projectData}
                   siteData={siteData}
-                  impactsData={impactsData.socioEconomicList}
+                  impactsData={impactsData}
                   impactName={openState.impactName}
                   impactDetailsName={openState.impactDetailsName}
                 />

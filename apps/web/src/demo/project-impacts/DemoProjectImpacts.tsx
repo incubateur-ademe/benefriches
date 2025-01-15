@@ -86,10 +86,7 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
             addressLabel: siteData.addressLabel,
             surfaceArea: siteData.surfaceArea,
           }}
-          impactsData={{
-            socioEconomicList: impactsData.socioeconomic,
-            keyImpactIndicatorsList: getKeyImpactIndicatorsList(impactsData, siteData),
-          }}
+          impactsData={impactsData}
         >
           <>
             {currentViewMode === "summary" && (

@@ -14,7 +14,7 @@ import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
-  impactsData: ImpactsData["socioEconomicList"]["impacts"];
+  impactsData: ImpactsData["socioeconomic"]["impacts"];
 };
 
 const getEcosystemServiceDetailsTitle = (

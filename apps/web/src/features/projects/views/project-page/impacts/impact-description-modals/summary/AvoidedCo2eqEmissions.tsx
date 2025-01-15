@@ -45,20 +45,26 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
       <ModalContent>
-        <ImpactItemGroup isClickable>
-          <ImpactItemDetails
-            impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
-            value={co2eqValue}
-            label="☁️ CO2-eq stocké ou évité"
-            type="co2"
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "environmental",
-                impactName: "co2_benefit",
-              });
-            }}
-          />
-        </ImpactItemGroup>
+        {isSuccess ? (
+          <ImpactItemGroup isClickable>
+            <ImpactItemDetails
+              impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+              value={co2eqValue}
+              label="☁️ CO2-eq stocké ou évité"
+              type="co2"
+              onClick={() => {
+                openImpactModalDescription({
+                  sectionName: "environmental",
+                  impactName: "co2_benefit",
+                });
+              }}
+            />
+          </ImpactItemGroup>
+        ) : (
+          <p>
+            <i>En cours de rédaction...</i>
+          </p>
+        )}
       </ModalContent>
     </>
   );

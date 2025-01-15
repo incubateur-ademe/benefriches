@@ -8,6 +8,7 @@ import {
   getEconomicBalanceImpactLabel,
 } from "../../getImpactLabel";
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
+import { ImpactsData, ProjectData } from "../ImpactModalDescriptionProvider";
 import EconomicBalanceDescription from "./EconomicBalanceDescription";
 import { breadcrumbSection as economicBalanceBreadcrumbSection } from "./breadcrumbSection";
 import RealEstateAcquisitionDescription from "./real-estate-acquisition/RealEstateAcquisition";
@@ -16,11 +17,18 @@ import SiteReinstatementDescription from "./site-reinstatement/SiteReinstatement
 type Props = {
   impactName?: EconomicBalanceMainName;
   impactDetailsName?: EconomicBalanceDetailsName;
+  impactsData: ImpactsData;
+  projectData: ProjectData;
 };
 
-export function EconomicBalanceModalWizard({ impactName, impactDetailsName }: Props) {
+export function EconomicBalanceModalWizard({
+  impactName,
+  impactDetailsName,
+  impactsData,
+  projectData,
+}: Props) {
   if (!impactName) {
-    return <EconomicBalanceDescription />;
+    return <EconomicBalanceDescription impactsData={impactsData} projectData={projectData} />;
   }
 
   switch (impactDetailsName ?? impactName) {

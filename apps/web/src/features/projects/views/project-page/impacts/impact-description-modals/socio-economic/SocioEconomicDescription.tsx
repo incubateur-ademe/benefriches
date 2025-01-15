@@ -1,14 +1,30 @@
+import { getDetailedSocioEconomicProjectImpacts } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import SocioEconomicImpactSection from "../../list-view/sections/SocioEconomicImpactSection";
+import { ImpactsData } from "../ImpactModalDescriptionProvider";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
 
-const SocioEconomicDescription = () => {
+type Props = {
+  impactsData: ImpactsData;
+};
+
+const SocioEconomicDescription = ({ impactsData }: Props) => {
+  const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary, total } =
+    getDetailedSocioEconomicProjectImpacts(impactsData);
+
   return (
     <>
       <ModalHeader
         title="🌍 Impacts socio-économiques"
+        value={{
+          state: total > 0 ? "success" : "error",
+          text: formatMonetaryImpact(total),
+          description: "répartis entre plusieurs bénéficiaires",
+        }}
         breadcrumbSegments={[{ label: "Impacts socio-économiques" }]}
       />
       <ModalContent>
@@ -42,6 +58,34 @@ const SocioEconomicDescription = () => {
           Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-dessous et leurs
           méthodes de calcul sont détaillées au niveau de chacun.
         </p>
+
+        <div className="tw-flex tw-flex-col tw-gap-4">
+          <SocioEconomicImpactSection
+            title="Impacts économiques directs"
+            {...economicDirect}
+            initialShowSectionContent={false}
+            noMarginBottom
+          />
+          <SocioEconomicImpactSection
+            title="Impacts économiques indirects"
+            {...economicIndirect}
+            initialShowSectionContent={false}
+            noMarginBottom
+          />
+          <SocioEconomicImpactSection
+            title="Impacts sociaux monétarisés"
+            {...socialMonetary}
+            initialShowSectionContent={false}
+            noMarginBottom
+          />
+          <SocioEconomicImpactSection
+            title="Impacts environnementaux monétarisés"
+            {...environmentalMonetary}
+            initialShowSectionContent={false}
+            noMarginBottom
+          />
+        </div>
+
         <ModalTitleTwo>Aller plus loin</ModalTitleTwo>
         <ul>
           <li>

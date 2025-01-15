@@ -11,6 +11,7 @@ type Props = {
   onTitleClick?: () => void;
   children: ReactNode;
   initialShowSectionContent?: boolean;
+  noMarginBottom?: boolean;
 };
 
 const ImpactSection = ({
@@ -20,6 +21,7 @@ const ImpactSection = ({
   onTitleClick,
   children,
   initialShowSectionContent = true,
+  noMarginBottom = false,
 }: Props) => {
   const [displaySectionContent, setDisplaySectionContent] = useState(initialShowSectionContent);
 
@@ -44,7 +46,7 @@ const ImpactSection = ({
     : undefined;
 
   return (
-    <section className="tw-mb-10">
+    <section className={classNames(!noMarginBottom && "tw-mb-10")}>
       <div
         className={classNames(
           "tw-py-2 tw-px-4",
