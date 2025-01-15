@@ -15,15 +15,12 @@ import {
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
   PermeableSoilsDetails,
-  SoilsCarbonStorageDetails,
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { SocialImpactName } from "@/features/projects/domain/projectImpactsSocial";
 import { SocioEconomicImpactName } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
 export const getEnvironmentalImpactLabel = (name: EnvironmentalMainImpactName) => {
   switch (name) {
-    case "soils_carbon_storage":
-      return "🍂 Carbone stocké dans les sols";
     case "non_contaminated_surface_area":
       return "✨ Surface non polluée";
     case "co2_benefit":
@@ -38,8 +35,6 @@ export const getEnvironmentalDetailsImpactLabel = (
   name: EnvironmentalImpactDetailsName,
 ) => {
   switch (mainCategory) {
-    case "soils_carbon_storage":
-      return getSoilStorageDetailsImpactLabel(name as SoilsCarbonStorageDetails);
     case "permeable_surface_area":
       return getPermeableSurfaceDetailsImpactLabel(name as PermeableSoilsDetails);
     case "co2_benefit":
@@ -68,45 +63,6 @@ const getPermeableSurfaceDetailsImpactLabel = (name: PermeableSoilsDetails) => {
       return "🪨 Surface perméable minérale";
     case "green_soil":
       return "🌱 Surface perméable végétalisée";
-  }
-};
-
-const getSoilStorageDetailsImpactLabel = (name: SoilsCarbonStorageDetails) => {
-  switch (name) {
-    case "buildings":
-      return "Bâtiments";
-    case "impermeable_soils":
-      return "Sols imperméabilisés";
-    case "mineral_soil":
-      return "Sol perméable minéral";
-    case "artificial_grass_or_bushes_filled":
-      return "Sol enherbé et arbustif";
-    case "artificial_tree_filled":
-      return "Sol arboré";
-    case "forest_conifer":
-      return "Forêt de conifères";
-    case "forest_deciduous":
-      return "Forêt de feuillus";
-    case "forest_poplar":
-      return "Forêt de peupliers";
-    case "forest_mixed":
-      return "Forêt mixte";
-    case "prairie_grass":
-      return "Prairie herbacée";
-    case "prairie_bushes":
-      return "Prairie arbustive";
-    case "prairie_trees":
-      return "Prairie arborée";
-    case "wet_land":
-      return "Zone humide";
-    case "cultivation":
-      return "Culture";
-    case "orchard":
-      return "Verger";
-    case "vineyard":
-      return "Vigne";
-    case "water":
-      return "Plan d'eau";
   }
 };
 

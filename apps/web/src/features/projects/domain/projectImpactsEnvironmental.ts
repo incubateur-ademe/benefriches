@@ -16,29 +16,9 @@ type ImpactDetails = {
 export type EnvironmentalImpactName = EnvironmentalMainImpactName | EnvironmentalImpactDetailsName;
 
 export type EnvironmentalMainImpactName =
-  | "soils_carbon_storage"
   | "non_contaminated_surface_area"
   | "permeable_surface_area"
   | "co2_benefit";
-
-export type SoilsCarbonStorageDetails =
-  | "buildings"
-  | "impermeable_soils"
-  | "mineral_soil"
-  | "artificial_grass_or_bushes_filled"
-  | "artificial_tree_filled"
-  | "forest_deciduous"
-  | "forest_conifer"
-  | "forest_poplar"
-  | "forest_mixed"
-  | "prairie_grass"
-  | "prairie_bushes"
-  | "prairie_trees"
-  | "orchard"
-  | "cultivation"
-  | "vineyard"
-  | "wet_land"
-  | "water";
 
 export type CO2BenefitDetails =
   | "stored_co2_eq"
@@ -48,10 +28,7 @@ export type CO2BenefitDetails =
 
 export type PermeableSoilsDetails = "mineral_soil" | "green_soil";
 
-export type EnvironmentalImpactDetailsName =
-  | CO2BenefitDetails
-  | PermeableSoilsDetails
-  | SoilsCarbonStorageDetails;
+export type EnvironmentalImpactDetailsName = CO2BenefitDetails | PermeableSoilsDetails;
 
 export type EnvironmentalImpact = {
   name: EnvironmentalMainImpactName;
@@ -87,36 +64,6 @@ export const getEnvironmentalProjectImpacts = (
         base: nonContaminatedSurfaceArea.current,
         forecast: nonContaminatedSurfaceArea.forecast,
         difference: nonContaminatedSurfaceArea.difference,
-      },
-    });
-  }
-
-  if (soilsCarbonStorage.isSuccess) {
-    const current = soilsCarbonStorage.current.soils;
-    const forecast = soilsCarbonStorage.forecast.soils;
-    const soilsTypes = Array.from(new Set([...current, ...forecast].map(({ type }) => type)));
-
-    impacts.push({
-      name: "soils_carbon_storage",
-      type: "co2",
-      impact: {
-        base: soilsCarbonStorage.current.total,
-        forecast: soilsCarbonStorage.forecast.total,
-        difference: soilsCarbonStorage.forecast.total - soilsCarbonStorage.current.total,
-        details: soilsTypes.map((soilType) => {
-          const { carbonStorage: baseCarbonStorage = 0 } =
-            current.find(({ type }) => type === soilType) ?? {};
-          const { carbonStorage: forecastCarbonStorage = 0 } =
-            forecast.find(({ type }) => type === soilType) ?? {};
-          return {
-            name: soilType.toLowerCase() as SoilsCarbonStorageDetails,
-            impact: {
-              base: baseCarbonStorage,
-              forecast: forecastCarbonStorage,
-              difference: forecastCarbonStorage - baseCarbonStorage,
-            },
-          };
-        }),
       },
     });
   }

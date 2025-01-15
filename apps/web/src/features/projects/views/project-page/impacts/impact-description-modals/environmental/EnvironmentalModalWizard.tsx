@@ -1,6 +1,7 @@
 import {
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
+  getEnvironmentalProjectImpacts,
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 
 import {
@@ -8,11 +9,12 @@ import {
   getEnvironmentalImpactLabel,
 } from "../../getImpactLabel";
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
-import { ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
+import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import EnvironmentalMainDescription from "./EnvironmentalMainDescription";
 import { breadcrumbSection as environmentalBreadcrumbSection } from "./breadcrumbSection";
 import AvoidedCO2WithEnREnvironmentalDescription from "./impact-co2/AvoidedCO2WithEnREnvironmentalDescription";
 import CarbonSoilsStorageEnvironmentalDescription from "./impact-co2/CarbonSoilsStorageEnvironmentalDescription";
+import Co2BenefitDescription from "./impact-co2/Co2BenefitDescription";
 import NonContaminatedSurfaceDescription from "./non-contaminated-surface/NonContaminatedSurface";
 import PermeableGreenSurfaceDescription from "./permeable-surface/PermeableGreenSurface";
 import PermeableMineraleSurfaceDescription from "./permeable-surface/PermeableMineraleSurface";
@@ -23,6 +25,7 @@ type Props = {
   impactDetailsName?: EnvironmentalImpactDetailsName;
   projectData: ProjectData;
   siteData: SiteData;
+  impactsData: ImpactsData;
 };
 
 export function EnvironmentalModalWizard({
@@ -30,12 +33,17 @@ export function EnvironmentalModalWizard({
   impactDetailsName,
   projectData,
   siteData,
+  impactsData,
 }: Props) {
+  const environmentalImpacts = getEnvironmentalProjectImpacts(impactsData);
+
   if (!impactName) {
     return <EnvironmentalMainDescription />;
   }
 
   switch (impactDetailsName ?? impactName) {
+    case "co2_benefit":
+      return <Co2BenefitDescription impactsData={environmentalImpacts} />;
     case "avoided_co2_eq_emissions_with_production": {
       const surfaceArea =
         projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
@@ -54,7 +62,7 @@ export function EnvironmentalModalWizard({
       );
     }
 
-    case "soils_carbon_storage":
+    case "stored_co2_eq":
       return (
         <CarbonSoilsStorageEnvironmentalDescription
           baseSoilsDistribution={siteData.soilsDistribution}

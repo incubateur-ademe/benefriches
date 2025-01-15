@@ -136,6 +136,7 @@ function ImpactModalDescriptionProvider({
                 <EnvironmentalModalWizard
                   projectData={projectData}
                   siteData={siteData}
+                  impactsData={impactsData}
                   impactName={openState.impactName}
                   impactDetailsName={openState.impactDetailsName}
                 />

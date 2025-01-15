@@ -45,26 +45,6 @@ describe("projectImpactsEnvironmental selectors", () => {
 
       expect(impacts).toContainEqual(
         expect.objectContaining({
-          name: "soils_carbon_storage",
-          type: "co2",
-          impact: {
-            base: 20,
-            difference: 0,
-            forecast: 20,
-            details: [
-              { impact: { base: 2, difference: 0, forecast: 2 }, name: "impermeable_soils" },
-              { impact: { base: 2, difference: 0, forecast: 2 }, name: "buildings" },
-              {
-                impact: { base: 16, difference: 0, forecast: 16 },
-                name: "artificial_grass_or_bushes_filled",
-              },
-            ],
-          },
-        }),
-      );
-
-      expect(impacts).toContainEqual(
-        expect.objectContaining({
           name: "co2_benefit",
           type: "co2",
           impact: {

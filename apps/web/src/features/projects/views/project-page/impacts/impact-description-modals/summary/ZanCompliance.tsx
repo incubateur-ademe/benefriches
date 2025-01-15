@@ -19,11 +19,11 @@ const SummaryZanComplianceDescription = ({ impactData }: Props) => {
       <ModalContent>
         <p>
           {isSuccess &&
-            "Le projet est considéré favorable à l'objectif de Zéro Artifitialisation Nette car il s'agit de la reconversion d’un site en friche limitant la consommation d’espaces naturels, agricoles ou forestiers."}
+            "Le projet est considéré favorable à l'objectif de Zéro Artificialisation Nette car il s'agit de la reconversion d’un site en friche limitant la consommation d’espaces naturels, agricoles ou forestiers."}
           {!isSuccess &&
             (value.isAgriculturalFriche
-              ? "Le projet est considéré favorable à l'objectif de Zéro Artifitialisation Nette car il s'agit d'un projet consommant des espaces agricoles."
-              : "Le projet est considéré favorable à l'objectif de Zéro Artifitialisation Nette car il s'agit d'un projet consommant des espaces naturels, agricoles ou forestiers et imperméabilisant les sols.")}
+              ? "Le projet est considéré favorable à l'objectif de Zéro Artificialisation Nette car il s'agit d'un projet consommant des espaces agricoles."
+              : "Le projet est considéré favorable à l'objectif de Zéro Artificialisation Nette car il s'agit d'un projet consommant des espaces naturels, agricoles ou forestiers et imperméabilisant les sols.")}
         </p>
       </ModalContent>
     </>
