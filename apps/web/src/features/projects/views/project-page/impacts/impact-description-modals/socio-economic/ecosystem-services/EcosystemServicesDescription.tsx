@@ -13,7 +13,7 @@ import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
-  impactsData: ImpactsData;
+  impactsData: ImpactsData["socioeconomic"];
 };
 
 const getEcosystemServiceDetailsTitle = (
@@ -40,7 +40,7 @@ const getEcosystemServiceDetailsTitle = (
 };
 
 const EcosystemServicesDescription = ({ impactsData }: Props) => {
-  const ecosystemServicesImpact = impactsData.socioeconomic.impacts.find(
+  const ecosystemServicesImpact = impactsData.impacts.find(
     (impact): impact is EcosystemServicesImpact => impact.impact === "ecosystem_services",
   );
 

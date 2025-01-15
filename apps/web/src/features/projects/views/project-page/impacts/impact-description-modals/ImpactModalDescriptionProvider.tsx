@@ -7,13 +7,17 @@ import {
   SoilsDistribution,
 } from "shared";
 
-import { ImpactDescriptionModalWizard } from "./ImpactDescriptionModalWizard";
+import "./ImpactDescriptionModal.css";
 import {
   ImpactModalDescriptionContext,
   INITIAL_OPEN_STATE,
   OpenImpactModalDescriptionArgs,
   OpenState,
 } from "./ImpactModalDescriptionContext";
+import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard.";
+import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
+import { SocialModalWizard } from "./social/SocialModalWizard";
+import { SocioEconomicModalWizard } from "./socio-economic/SocioEconomicModalWizard";
 
 export type ProjectData = {
   soilsDistribution: SoilsDistribution;
@@ -95,11 +99,48 @@ function ImpactModalDescriptionProvider({
       {children}
 
       <modal.Component title={undefined} concealingBackdrop={true} size="large">
-        <ImpactDescriptionModalWizard
-          projectData={projectData}
-          siteData={siteData}
-          impactsData={impactsData}
-        />
+        {(() => {
+          switch (openState.sectionName) {
+            case "economic_balance":
+              return (
+                <EconomicBalanceModalWizard
+                  impactName={openState.impactName}
+                  impactDetailsName={openState.impactDetailsName}
+                />
+              );
+            case "socio_economic":
+              return (
+                <SocioEconomicModalWizard
+                  projectData={projectData}
+                  siteData={siteData}
+                  impactsData={impactsData.socioeconomic}
+                  impactName={openState.impactName}
+                  impactDetailsName={openState.impactDetailsName}
+                />
+              );
+
+            case "social":
+              return (
+                <SocialModalWizard
+                  projectData={projectData}
+                  siteData={siteData}
+                  impactName={openState.impactName}
+                  impactDetailsName={openState.impactDetailsName}
+                />
+              );
+            case "environmental":
+              return (
+                <EnvironmentalModalWizard
+                  projectData={projectData}
+                  siteData={siteData}
+                  impactName={openState.impactName}
+                  impactDetailsName={openState.impactDetailsName}
+                />
+              );
+            default:
+              return undefined;
+          }
+        })()}
       </modal.Component>
     </ImpactModalDescriptionContext.Provider>
   );
