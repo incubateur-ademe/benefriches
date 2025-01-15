@@ -2,7 +2,7 @@ import { MouseEvent, useState } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import ImpactRowValue from "./ImpactRowValue";
+import ImpactRowValue, { ImpactRowValueProps } from "./ImpactRowValue";
 
 type Props = {
   label: string;
@@ -11,6 +11,7 @@ type Props = {
   onClick?: () => void;
   data?: { label: string; value: number; onClick?: () => void }[];
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
+  impactRowValueProps?: Partial<ImpactRowValueProps>;
 };
 
 const getFromChildEventPropFunction = (fn?: () => void) => {
@@ -26,7 +27,15 @@ const getFromChildEventPropFunction = (fn?: () => void) => {
   };
 };
 
-const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) => {
+const ImpactItemDetails = ({
+  label,
+  value,
+  actor,
+  data,
+  type,
+  onClick,
+  impactRowValueProps,
+}: Props) => {
   const hasData = data && data.length > 0;
 
   const [displayDetails, setDisplayDetails] = useState(false);
@@ -53,6 +62,7 @@ const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) 
           onClick: getFromChildEventPropFunction(onClick),
         }}
         onToggleAccordion={hasData ? onToggleAccordionFromChild : undefined}
+        {...impactRowValueProps}
       />
       {hasData && displayDetails && (
         <div className={classNames("tw-pl-4")}>
@@ -65,6 +75,7 @@ const ImpactItemDetails = ({ label, value, actor, data, type, onClick }: Props) 
               labelProps={{
                 onClick: getFromChildEventPropFunction(detailsOnClick),
               }}
+              {...impactRowValueProps}
             />
           ))}
         </div>

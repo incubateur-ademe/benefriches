@@ -3,21 +3,27 @@ import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 type Props = {
   isSuccess: boolean;
   isAgriculturalFriche: boolean;
-  descriptionDisplayMode?: "inline" | "tooltip";
+  onClick?: () => void;
+  noDescription?: boolean;
 };
 
 const ImpactSummaryZanCompliance = ({
   isAgriculturalFriche,
   isSuccess,
-  descriptionDisplayMode,
+  noDescription = false,
+  ...props
 }: Props) => {
   if (isSuccess) {
     return (
       <KeyImpactIndicatorCard
         type="success"
-        description="Reconversion d’un site en friche limitant la consommation d’espaces naturels, agricoles ou forestiers"
+        description={
+          noDescription
+            ? undefined
+            : "Reconversion d’un site en friche limitant la consommation d’espaces naturels, agricoles ou forestiers"
+        }
         title={`Projet favorable au ZAN\u00a0🌾`}
-        descriptionDisplayMode={descriptionDisplayMode}
+        {...props}
       />
     );
   }
@@ -25,12 +31,14 @@ const ImpactSummaryZanCompliance = ({
     <KeyImpactIndicatorCard
       type="error"
       description={
-        isAgriculturalFriche
-          ? "Projet consommant des espaces agricoles"
-          : "Projet consommant des espaces naturels, agricoles ou forestiers et imperméabilisant les sols"
+        noDescription
+          ? undefined
+          : isAgriculturalFriche
+            ? "Projet consommant des espaces agricoles"
+            : "Projet consommant des espaces naturels, agricoles ou forestiers et imperméabilisant les sols"
       }
       title={`Projet défavorable au ZAN\u00a0🌾`}
-      descriptionDisplayMode={descriptionDisplayMode}
+      {...props}
     />
   );
 };

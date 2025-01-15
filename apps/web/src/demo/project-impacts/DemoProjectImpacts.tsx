@@ -14,9 +14,11 @@ import { getKeyImpactIndicatorsList } from "@/features/projects/domain/projectKe
 import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
 import ProjectImpactsActionBar from "@/features/projects/views/project-page/header/ProjectImpactsActionBar";
 import ProjectPageHeader from "@/features/projects/views/project-page/header/ProjectPageHeader";
+import AboutImpactsModal from "@/features/projects/views/project-page/impacts/about-impacts-modal/AboutImpactsModal";
 import ImpactsChartsView from "@/features/projects/views/project-page/impacts/charts-view/ImpactsChartsView";
 import ImpactModalDescriptionProvider from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactModalDescriptionProvider";
 import ImpactsListView from "@/features/projects/views/project-page/impacts/list-view/ImpactsListView";
+import ProjectFeaturesModal from "@/features/projects/views/project-page/impacts/project-features-modal/ProjectFeaturesModal";
 import ImpactSummaryView from "@/features/projects/views/project-page/impacts/summary-view/ImpactSummaryView";
 import classNames from "@/shared/views/clsx";
 
@@ -84,7 +86,10 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
             addressLabel: siteData.addressLabel,
             surfaceArea: siteData.surfaceArea,
           }}
-          impactsData={impactsData}
+          impactsData={{
+            socioEconomicList: impactsData.socioeconomic,
+            keyImpactIndicatorsList: getKeyImpactIndicatorsList(impactsData, siteData),
+          }}
         >
           <>
             {currentViewMode === "summary" && (
@@ -113,6 +118,8 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
           </>
         </ImpactModalDescriptionProvider>
       </div>
+      <AboutImpactsModal />
+      <ProjectFeaturesModal projectFeaturesData={projectData} isOpen />
     </div>
   );
 }

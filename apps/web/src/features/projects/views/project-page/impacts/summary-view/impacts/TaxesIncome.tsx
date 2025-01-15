@@ -5,17 +5,22 @@ import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 type Props = {
   value: number;
   isSuccess: boolean;
-  descriptionDisplayMode?: "inline" | "tooltip";
+  onClick?: () => void;
+  noDescription?: boolean;
 };
 
-const ImpactSummaryTaxesIncome = ({ value, isSuccess, descriptionDisplayMode }: Props) => {
+const ImpactSummaryTaxesIncome = ({ value, isSuccess, noDescription, ...props }: Props) => {
   if (isSuccess) {
     return (
       <KeyImpactIndicatorCard
         type="success"
-        description={`${formatMonetaryImpact(value)} à venir au profit notamment de la collectivité`}
+        description={
+          noDescription
+            ? undefined
+            : `${formatMonetaryImpact(value)} à venir au profit notamment de la collectivité`
+        }
         title="+ de recettes fiscales&nbsp;💰"
-        descriptionDisplayMode={descriptionDisplayMode}
+        {...props}
       />
     );
   }
@@ -23,9 +28,13 @@ const ImpactSummaryTaxesIncome = ({ value, isSuccess, descriptionDisplayMode }: 
   return (
     <KeyImpactIndicatorCard
       type="error"
-      description={`${formatMonetaryImpact(value)} en moins pour, notamment, la collectivité`}
+      description={
+        noDescription
+          ? undefined
+          : `${formatMonetaryImpact(value)} en moins pour, notamment, la collectivité`
+      }
       title="- de recettes fiscales&nbsp;💸"
-      descriptionDisplayMode={descriptionDisplayMode}
+      {...props}
     />
   );
 };

@@ -1,9 +1,10 @@
-import Button from "@codegouvfr/react-dsfr/Button";
 import { useContext } from "react";
 import { EcosystemServicesImpact } from "shared";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
+import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import { ImpactsData } from "../../ImpactModalDescriptionProvider";
 import ModalContent from "../../shared/ModalContent";
@@ -13,7 +14,7 @@ import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { breadcrumbSection } from "../breadcrumbSection";
 
 type Props = {
-  impactsData: ImpactsData["socioeconomic"];
+  impactsData: ImpactsData["socioEconomicList"]["impacts"];
 };
 
 const getEcosystemServiceDetailsTitle = (
@@ -40,7 +41,7 @@ const getEcosystemServiceDetailsTitle = (
 };
 
 const EcosystemServicesDescription = ({ impactsData }: Props) => {
-  const ecosystemServicesImpact = impactsData.impacts.find(
+  const ecosystemServicesImpact = impactsData.find(
     (impact): impact is EcosystemServicesImpact => impact.impact === "ecosystem_services",
   );
 
@@ -133,20 +134,21 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
           <strong>Bénéficiaires</strong> : humanité
         </p>
         <div className="tw-flex tw-flex-col">
-          {(ecosystemServicesImpact?.details ?? []).map(({ impact }) => (
-            <Button
-              key={impact}
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "socio_economic",
-                  impactName: "ecosystem_services",
-                  impactDetailsName: impact,
-                });
-              }}
-              priority="tertiary no outline"
-            >
-              {getEcosystemServiceDetailsTitle(impact)}
-            </Button>
+          {(ecosystemServicesImpact?.details ?? []).map(({ impact, amount }) => (
+            <ImpactItemGroup isClickable key={impact}>
+              <ImpactItemDetails
+                value={amount}
+                label={getEcosystemServiceDetailsTitle(impact)}
+                type="monetary"
+                onClick={() => {
+                  openImpactModalDescription({
+                    sectionName: "socio_economic",
+                    impactName: "ecosystem_services",
+                    impactDetailsName: impact,
+                  });
+                }}
+              />
+            </ImpactItemGroup>
           ))}
         </div>
         <ModalTitleTwo>Aller plus loin</ModalTitleTwo>

@@ -6,22 +6,28 @@ type Props = {
   percentageEvolution: number;
   difference: number;
   isSuccess: boolean;
-  descriptionDisplayMode?: "inline" | "tooltip";
+  onClick?: () => void;
+  noDescription?: boolean;
 };
 
 const ImpactSummaryFullTimeJobs = ({
   percentageEvolution,
   difference,
   isSuccess,
-  descriptionDisplayMode,
+  onClick,
+  noDescription,
 }: Props) => {
   if (isSuccess) {
     return (
       <KeyImpactIndicatorCard
         type="success"
-        description={`${formatNumberFr(difference)} emploi équivalent temps plein créé ou maintenu (soit ${formatPercentage(percentageEvolution)})`}
+        description={
+          noDescription
+            ? undefined
+            : `${formatNumberFr(difference)} emploi équivalent temps plein créé ou maintenu (soit ${formatPercentage(percentageEvolution)})`
+        }
         title="+ d’emplois&nbsp;👷"
-        descriptionDisplayMode={descriptionDisplayMode}
+        onClick={onClick}
       />
     );
   }
@@ -29,9 +35,13 @@ const ImpactSummaryFullTimeJobs = ({
   return (
     <KeyImpactIndicatorCard
       type="error"
-      description={`${formatNumberFr(difference)} emploi équivalent temps plein perdu (soit ${formatPercentage(percentageEvolution)})`}
+      description={
+        noDescription
+          ? undefined
+          : `${formatNumberFr(difference)} emploi équivalent temps plein perdu (soit ${formatPercentage(percentageEvolution)})`
+      }
       title="- d’emplois&nbsp;👷"
-      descriptionDisplayMode={descriptionDisplayMode}
+      onClick={onClick}
     />
   );
 };

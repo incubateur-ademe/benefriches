@@ -1,9 +1,11 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import { useContext } from "react";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 
+import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactsChartsSection from "../../ImpactsChartsSection";
 
 type Props = {
@@ -35,8 +37,28 @@ function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotal
     ],
   };
 
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
+  const projectBalance = economicBalanceTotal + socioEconomicTotalImpact;
+
   return (
-    <ImpactsChartsSection title="Analyse coûts/bénéfices">
+    <ImpactsChartsSection
+      title="Analyse coûts/bénéfices"
+      onClick={() => {
+        openImpactModalDescription({
+          sectionName: "summary",
+          impactData: {
+            name: "projectImpactBalance",
+            value: {
+              economicBalanceTotal,
+              socioEconomicMonetaryImpactsTotal: socioEconomicTotalImpact,
+              projectBalance,
+            },
+            isSuccess: projectBalance > 0,
+          },
+        });
+      }}
+    >
       <HighchartsReact
         containerProps={{ className: "highcharts-no-xaxis" }}
         highcharts={Highcharts}

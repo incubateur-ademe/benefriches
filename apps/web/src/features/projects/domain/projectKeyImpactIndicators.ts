@@ -222,7 +222,7 @@ const getLocalPropertyValueIncrease = (
   return localPropertyValueIncrease?.amount;
 };
 
-type KeyImpactIndicatorData =
+export type KeyImpactIndicatorData =
   | {
       name:
         | "taxesIncomesImpact"

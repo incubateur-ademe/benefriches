@@ -6,10 +6,16 @@ import ModalBreadcrumb, { BreadcrumbProps } from "./ModalBreadcrumb";
 
 type Props = {
   title: ReactNode;
+  subtitle?: ReactNode;
   breadcrumbSegments: BreadcrumbProps["segments"];
+  value?: {
+    state: "success" | "error";
+    text: string;
+    description?: string;
+  };
 };
 
-const ModalHeader = ({ title, breadcrumbSegments }: Props) => {
+const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
   return (
     <div
       className={classNames(
@@ -27,6 +33,26 @@ const ModalHeader = ({ title, breadcrumbSegments }: Props) => {
         <ModalBreadcrumb segments={breadcrumbSegments} />
         <h1 className="tw-text-2xl tw-m-0">{title}</h1>
       </div>
+      {subtitle && <span className="tw-font-bold">{subtitle}</span>}
+      {value && (
+        <div>
+          <span
+            className={classNames(
+              "tw-text-2xl",
+              "tw-font-bold",
+              value.state === "success"
+                ? "tw-text-impacts-positive-main dark:tw-text-impacts-positive-light"
+                : "tw-text-impacts-negative-main dark:tw-text-impacts-negative-light",
+            )}
+          >
+            {value.text}
+          </span>
+
+          {value.description && (
+            <span className="tw-text-text-light">{` ${value.description}`}</span>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -16,6 +16,7 @@ import {
   SocioEconomicDetailsName,
   SocioEconomicMainImpactName,
 } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { KeyImpactIndicatorData } from "@/features/projects/domain/projectKeyImpactIndicators";
 
 type IsClosedState = {
   sectionName: undefined;
@@ -43,6 +44,10 @@ type IsOpenedState =
       sectionName: "environmental";
       impactName?: EnvironmentalMainImpactName;
       impactDetailsName?: EnvironmentalImpactDetailsName;
+    }
+  | {
+      sectionName: "summary";
+      impactData: KeyImpactIndicatorData;
     };
 
 export type OpenState = IsClosedState | IsOpenedState;

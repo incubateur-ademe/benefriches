@@ -6,28 +6,38 @@ type Props = {
   percentageEvolution: number;
   difference: number;
   isSuccess: boolean;
-  descriptionDisplayMode?: "inline" | "tooltip";
+  onClick?: () => void;
+  noDescription?: boolean;
 };
 
 const ImpactSummaryPermeableSurfaceArea = ({
   difference,
   percentageEvolution,
   isSuccess,
-  descriptionDisplayMode,
+  noDescription,
+  onClick,
 }: Props) => {
   return isSuccess ? (
     <KeyImpactIndicatorCard
       type="success"
-      description={`${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols désimperméabilisés`}
+      description={
+        noDescription
+          ? undefined
+          : `${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols désimperméabilisés`
+      }
       title="+ de sols perméables&nbsp;☔️"
-      descriptionDisplayMode={descriptionDisplayMode}
+      onClick={onClick}
     />
   ) : (
     <KeyImpactIndicatorCard
       type="error"
-      description={`${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols imperméabilisés`}
+      description={
+        noDescription
+          ? undefined
+          : `${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols imperméabilisés`
+      }
       title="- de sols perméables&nbsp;☔️"
-      descriptionDisplayMode={descriptionDisplayMode}
+      onClick={onClick}
     />
   );
 };

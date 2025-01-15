@@ -15,13 +15,14 @@ import {
   formatTimeImpact,
 } from "../../../shared/formatImpactValue";
 
-type Props = {
+export type ImpactRowValueProps = {
   value?: number;
   actor?: string;
   label: string;
   isTotal?: boolean;
   onToggleAccordion?: (e?: MouseEvent<HTMLElement>) => void;
   isAccordionOpened?: boolean;
+  buttonInfoAlwaysDisplayed?: boolean;
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time";
   labelProps?: {
     role?: "heading";
@@ -49,7 +50,8 @@ const ImpactRowValue = ({
   onToggleAccordion,
   isAccordionOpened,
   labelProps,
-}: Props) => {
+  buttonInfoAlwaysDisplayed = false,
+}: ImpactRowValueProps) => {
   const [isSectionHovered, setIsSectionHovered] = useState(false);
 
   const { breakpointsValues } = useBreakpointsValuesPx();
@@ -113,7 +115,7 @@ const ImpactRowValue = ({
               "tw-ease-in",
               "tw-duration-50",
               "tw-font-normal",
-              isSectionHovered
+              isSectionHovered || buttonInfoAlwaysDisplayed
                 ? "tw-visible tw-opacity-100"
                 : "md:tw-opacity-0 md:tw-invisible tw-duration-0",
             )}

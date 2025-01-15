@@ -1,5 +1,8 @@
+import { useContext } from "react";
+
 import { KeyImpactIndicatorData } from "@/features/projects/application/projectKeyImpactIndicators.selectors";
 
+import { ImpactModalDescriptionContext } from "../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactSummaryAvoidedCo2eqEmissions from "./impacts/AvoidedCo2eqEmissions";
 import ImpactSummaryAvoidedFricheCostsForLocalAuthority from "./impacts/AvoidedFricheCostsForLocalAuthority";
 import ImpactSummaryFullTimeJobs from "./impacts/FullTimeJobs";
@@ -29,6 +32,8 @@ const PRIORITY_ORDER = [
 ];
 
 const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
   return (
     <div className="tw-grid tw-grid-rows-1 lg:tw-grid-cols-3 tw-gap-6 tw-mb-8">
       {keyImpactIndicatorsList
@@ -44,7 +49,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                   key={index}
                   {...value}
                   isSuccess={isSuccess}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
             case "projectImpactBalance":
@@ -53,7 +64,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
 
@@ -63,7 +80,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
             case "taxesIncomesImpact":
@@ -72,7 +95,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                   key={index}
                   isSuccess={isSuccess}
                   value={value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
             case "fullTimeJobs":
@@ -81,7 +110,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
             case "avoidedCo2eqEmissions":
@@ -90,7 +125,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                   key={index}
                   isSuccess={isSuccess}
                   value={value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
             case "nonContaminatedSurfaceArea":
@@ -99,7 +140,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
             case "permeableSurfaceArea":
@@ -108,7 +155,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                   key={index}
                   isSuccess={isSuccess}
                   {...value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
             case "householdsPoweredByRenewableEnergy":
@@ -116,7 +169,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                 <ImpactSummaryHouseholdsPoweredByRenewableEnergy
                   key={index}
                   value={value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
             case "localPropertyValueIncrease":
@@ -124,7 +183,13 @@ const ImpactSummaryView = ({ keyImpactIndicatorsList }: Props) => {
                 <ImpactSummaryLocalPropertyValueIncrease
                   key={index}
                   value={value}
-                  descriptionDisplayMode="tooltip"
+                  noDescription
+                  onClick={() => {
+                    openImpactModalDescription({
+                      sectionName: "summary",
+                      impactData: { value, isSuccess, name },
+                    });
+                  }}
                 />
               );
           }

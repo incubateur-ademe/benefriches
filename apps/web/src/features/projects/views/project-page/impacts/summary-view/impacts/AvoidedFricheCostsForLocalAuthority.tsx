@@ -6,22 +6,28 @@ type Props = {
   actorName: string;
   amount: number;
   isSuccess: boolean;
-  descriptionDisplayMode?: "inline" | "tooltip";
+  onClick?: () => void;
+  noDescription?: boolean;
 };
 
 const ImpactSummaryAvoidedFricheCostsForLocalAuthority = ({
   actorName,
   amount,
   isSuccess,
-  descriptionDisplayMode,
+  onClick,
+  noDescription,
 }: Props) => {
   if (isSuccess) {
     return (
       <KeyImpactIndicatorCard
         type="success"
-        description={`${formatMonetaryImpact(amount)} économisés par ${actorName} grâce à la reconversion de la friche`}
+        description={
+          noDescription
+            ? undefined
+            : `${formatMonetaryImpact(amount)} économisés par ${actorName} grâce à la reconversion de la friche`
+        }
         title="- de dépenses de sécurisation&nbsp;💰"
-        descriptionDisplayMode={descriptionDisplayMode}
+        onClick={onClick}
       />
     );
   }
@@ -29,9 +35,13 @@ const ImpactSummaryAvoidedFricheCostsForLocalAuthority = ({
   return (
     <KeyImpactIndicatorCard
       type="error"
-      description={`${formatMonetaryImpact(amount)} toujours à la charge de ${actorName}`}
+      description={
+        noDescription
+          ? undefined
+          : `${formatMonetaryImpact(amount)} toujours à la charge de ${actorName}`
+      }
       title="Des dépenses de sécurisation demeurent&nbsp;💸"
-      descriptionDisplayMode={descriptionDisplayMode}
+      onClick={onClick}
     />
   );
 };

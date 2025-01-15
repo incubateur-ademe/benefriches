@@ -4,16 +4,21 @@ import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   value: number;
-  descriptionDisplayMode?: "inline" | "tooltip";
+  onClick?: () => void;
+  noDescription?: boolean;
 };
 
-const ImpactSummaryLocalPropertyValueIncrease = ({ value, descriptionDisplayMode }: Props) => {
+const ImpactSummaryLocalPropertyValueIncrease = ({ value, onClick, noDescription }: Props) => {
   return (
     <KeyImpactIndicatorCard
       type="success"
-      description={`${formatMonetaryImpact(value)} de valeur patrimoniale attendue par la reconversion de la friche`}
+      description={
+        noDescription
+          ? undefined
+          : `${formatMonetaryImpact(value)} de valeur patrimoniale attendue par la reconversion de la friche`
+      }
       title="Un cadre de vie amélioré&nbsp;🏡"
-      descriptionDisplayMode={descriptionDisplayMode}
+      onClick={onClick}
     />
   );
 };

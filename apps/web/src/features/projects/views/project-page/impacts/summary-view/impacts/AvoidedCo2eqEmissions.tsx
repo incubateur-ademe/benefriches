@@ -7,13 +7,15 @@ import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 type Props = {
   value: number;
   isSuccess: boolean;
-  descriptionDisplayMode?: "inline" | "tooltip";
+  onClick?: () => void;
+  noDescription?: boolean;
 };
 
 const ImpactSummaryAvoidedCo2eqEmissions = ({
   value,
   isSuccess,
-  descriptionDisplayMode,
+  onClick,
+  noDescription,
 }: Props) => {
   const co2eqValue = Math.abs(value);
   const co2eqValueText = formatCO2Impact(co2eqValue, { withSignPrefix: false });
@@ -28,9 +30,13 @@ const ImpactSummaryAvoidedCo2eqEmissions = ({
     return (
       <KeyImpactIndicatorCard
         type="success"
-        description={`${co2eqValueText} de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`}
+        description={
+          noDescription
+            ? undefined
+            : `${co2eqValueText} de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`
+        }
         title="- d’émissions de CO2&nbsp;☁️"
-        descriptionDisplayMode={descriptionDisplayMode}
+        onClick={onClick}
       />
     );
   }
@@ -38,9 +44,13 @@ const ImpactSummaryAvoidedCo2eqEmissions = ({
   return (
     <KeyImpactIndicatorCard
       type="error"
-      description={`${co2eqValueText} de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`}
+      description={
+        noDescription
+          ? undefined
+          : `${co2eqValueText} de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`
+      }
       title="+ d’émissions de CO2&nbsp;☁️"
-      descriptionDisplayMode={descriptionDisplayMode}
+      onClick={onClick}
     />
   );
 };

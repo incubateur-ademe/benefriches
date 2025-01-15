@@ -33,7 +33,7 @@ type Props = {
   impactDetailsName?: SocioEconomicDetailsName;
   projectData: ProjectData;
   siteData: SiteData;
-  impactsData: ImpactsData["socioeconomic"];
+  impactsData: ImpactsData["socioEconomicList"];
 };
 
 export function SocioEconomicModalWizard({
@@ -99,7 +99,7 @@ export function SocioEconomicModalWizard({
       );
 
     case "ecosystem_services":
-      return <EcosystemServicesDescription impactsData={impactsData} />;
+      return <EcosystemServicesDescription impactsData={impactsData["impacts"]} />;
 
     case "carbon_storage":
       return (
