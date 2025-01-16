@@ -13,8 +13,6 @@ type ImpactDetails = {
   impact: ImpactValue;
 };
 
-export type EnvironmentalImpactName = EnvironmentalMainImpactName | EnvironmentalImpactDetailsName;
-
 export type EnvironmentalMainImpactName =
   | "non_contaminated_surface_area"
   | "permeable_surface_area"

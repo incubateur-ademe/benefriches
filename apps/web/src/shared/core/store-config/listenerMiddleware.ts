@@ -10,7 +10,7 @@ import { setupAppSettingsListeners } from "@/features/app-settings/core/appSetti
 import { rootReducer } from "./rootReducer";
 import { AppDependencies, AppDispatch, RootState } from "./store";
 
-export type AppListenerMiddlewareInstance = ListenerMiddlewareInstance<
+type AppListenerMiddlewareInstance = ListenerMiddlewareInstance<
   ReturnType<typeof rootReducer>,
   Dispatch,
   AppDependencies
