@@ -95,7 +95,7 @@ export const getDefaultValuesForYearlyProjectedRecurringRevenue = createSelector
   },
 );
 
-export const selectPhotovoltaicInstallationExpenses = createSelector(
+export const selectPhotovoltaicPowerStationScheduleInitialValues = createSelector(
   [selectCreationData, selectDefaultSchedule],
   (creationData, defaultSchedule): ProjectSchedule => {
     if (creationData.photovoltaicInstallationSchedule && creationData.firstYearOfOperation) {

@@ -2,14 +2,14 @@ import {
   completeScheduleStep,
   revertScheduleStep,
 } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { selectProjectScheduleInitialValues } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { selectPhotovoltaicPowerStationScheduleInitialValues } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ScheduleProjectionForm from "../../../common-views/schedule/projection";
 
 function ScheduleProjectionFormContainer() {
   const dispatch = useAppDispatch();
-  const initialValues = useAppSelector(selectProjectScheduleInitialValues);
+  const initialValues = useAppSelector(selectPhotovoltaicPowerStationScheduleInitialValues);
 
   return (
     <ScheduleProjectionForm
