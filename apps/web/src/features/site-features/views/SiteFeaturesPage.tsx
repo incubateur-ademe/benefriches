@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 
-import { SiteFeatures } from "../domain/siteFeatures";
+import { SiteFeatures } from "../core/siteFeatures";
 import SiteFeaturesHeader from "./SiteFeaturesHeader";
 import SiteFeaturesList from "./SiteFeaturesList";
 

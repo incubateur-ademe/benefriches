@@ -2,8 +2,8 @@ import { useCallback } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { fetchSiteFeatures } from "../application/fetchSiteFeatures.action";
-import { selectLoadingState, selectSiteFeatures } from "../application/siteFeatures.reducer";
+import { fetchSiteFeatures } from "../core/fetchSiteFeatures.action";
+import { selectLoadingState, selectSiteFeatures } from "../core/siteFeatures.reducer";
 import SiteFeaturesPage from "./SiteFeaturesPage";
 
 type Props = {

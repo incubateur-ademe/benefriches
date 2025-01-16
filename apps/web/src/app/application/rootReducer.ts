@@ -7,7 +7,7 @@ import siteCarbonStorage from "@/features/create-site/core/siteSoilsCarbonStorag
 import { projectFeaturesReducer } from "@/features/projects/application/project-features/projectFeatures.reducer";
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
-import siteFeatures from "@/features/site-features/application/siteFeatures.reducer";
+import siteFeatures from "@/features/site-features/core/siteFeatures.reducer";
 import { appSettingsReducer as appSettings } from "@/shared/app-settings/core/appSettings";
 import currentUser from "@/users/application/user.reducer";
 

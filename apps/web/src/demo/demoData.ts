@@ -6,7 +6,7 @@ import {
 
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
-import { SiteFeatures } from "@/features/site-features/domain/siteFeatures";
+import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
 
 export const DEMO_SITE = {
   id: "690b9489-b2a2-47b3-9e91-a27c998b7f55",

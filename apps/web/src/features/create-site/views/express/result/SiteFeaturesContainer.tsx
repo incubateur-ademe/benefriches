@@ -1,11 +1,11 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 
-import { fetchSiteFeatures } from "@/features/site-features/application/fetchSiteFeatures.action";
+import { fetchSiteFeatures } from "@/features/site-features/core/fetchSiteFeatures.action";
 import {
   selectLoadingState,
   selectSiteFeatures,
-} from "@/features/site-features/application/siteFeatures.reducer";
+} from "@/features/site-features/core/siteFeatures.reducer";
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";

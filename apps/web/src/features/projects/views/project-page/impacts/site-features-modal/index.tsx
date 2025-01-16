@@ -1,8 +1,8 @@
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { useEffect } from "react";
 
-import { fetchSiteFeatures } from "@/features/site-features/application/fetchSiteFeatures.action";
-import { selectSiteFeatures } from "@/features/site-features/application/siteFeatures.reducer";
+import { fetchSiteFeatures } from "@/features/site-features/core/fetchSiteFeatures.action";
+import { selectSiteFeatures } from "@/features/site-features/core/siteFeatures.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteFeaturesModal from "./SiteFeaturesModal";

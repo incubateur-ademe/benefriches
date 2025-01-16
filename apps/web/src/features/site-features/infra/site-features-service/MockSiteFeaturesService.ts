@@ -1,5 +1,5 @@
-import { SiteFeaturesGateway } from "../../application/fetchSiteFeatures.action";
-import { SiteFeatures } from "../../domain/siteFeatures";
+import { SiteFeaturesGateway } from "../../core/fetchSiteFeatures.action";
+import { SiteFeatures } from "../../core/siteFeatures";
 
 export class MockSiteFeaturesService implements SiteFeaturesGateway {
   siteFeatures: SiteFeatures = {

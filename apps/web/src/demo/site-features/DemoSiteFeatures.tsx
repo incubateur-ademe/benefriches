@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
-import { SiteFeatures } from "@/features/site-features/domain/siteFeatures";
+import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
 import SiteFeaturesHeader from "@/features/site-features/views/SiteFeaturesHeader";
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import classNames from "@/shared/views/clsx";

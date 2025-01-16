@@ -9,7 +9,7 @@ import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLin
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 import SoilTypeLabelWithColorSquare from "@/shared/views/components/FeaturesList/FeaturesListSoilTypeLabel";
 
-import { SiteFeatures } from "../domain/siteFeatures";
+import { SiteFeatures } from "../core/siteFeatures";
 
 type Props = SiteFeatures;
 

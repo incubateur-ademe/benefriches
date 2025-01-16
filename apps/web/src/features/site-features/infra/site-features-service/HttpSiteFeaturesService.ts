@@ -1,7 +1,7 @@
 import { FricheActivity, SiteYearlyExpensePurpose, SoilType } from "shared";
 
-import { SiteFeaturesGateway } from "../../application/fetchSiteFeatures.action";
-import { SiteFeatures } from "../../domain/siteFeatures";
+import { SiteFeaturesGateway } from "../../core/fetchSiteFeatures.action";
+import { SiteFeatures } from "../../core/siteFeatures";
 
 type SiteFromApi = {
   id: string;
