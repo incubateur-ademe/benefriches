@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 

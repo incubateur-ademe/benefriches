@@ -1,11 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
 import { SoilsDistribution, SoilType } from "shared";
 
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForSoilType,
   getPictogramForSoilType,
-} from "@/shared/services/label-mapping/soilTypeLabelMapping";
+} from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";

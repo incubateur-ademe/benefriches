@@ -1,4 +1,4 @@
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ModalContent from "../../shared/ModalContent";

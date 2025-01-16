@@ -4,7 +4,7 @@ import {
   formatNumberFr,
   formatPercentage,
   SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
+} from "@/shared/core/format-number/formatNumber";
 
 const NO_BREAK_SPACE = "\u00A0";
 

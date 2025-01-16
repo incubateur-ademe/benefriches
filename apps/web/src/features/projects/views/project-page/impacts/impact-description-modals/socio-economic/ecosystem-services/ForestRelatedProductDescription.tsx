@@ -1,9 +1,9 @@
 import { typedObjectEntries } from "shared";
 import { isForest, SoilsDistribution } from "shared";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
-import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
-import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ModalContent from "../../shared/ModalContent";

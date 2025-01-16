@@ -1,4 +1,4 @@
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import {
   EditorialPageIcon,

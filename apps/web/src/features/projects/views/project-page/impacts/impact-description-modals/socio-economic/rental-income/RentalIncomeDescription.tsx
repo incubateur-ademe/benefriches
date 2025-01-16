@@ -1,4 +1,4 @@
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ProjectData } from "../../ImpactModalDescriptionProvider";

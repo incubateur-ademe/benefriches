@@ -4,8 +4,8 @@ import "highcharts/modules/variable-pie";
 import { useRef } from "react";
 import { SoilType } from "shared";
 
-import { getColorForCarbonStorageSoilType } from "@/shared/domain/soils";
-import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { getColorForCarbonStorageSoilType } from "@/shared/core/soils";
 
 import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
 

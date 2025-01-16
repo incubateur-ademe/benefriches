@@ -5,7 +5,7 @@ import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
 import { Income } from "@/features/create-site/core/siteFoncier.types";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
 type Props = {
   ownerExpenses: SiteYearlyExpense[];

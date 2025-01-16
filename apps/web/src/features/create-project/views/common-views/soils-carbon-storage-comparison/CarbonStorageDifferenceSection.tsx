@@ -1,4 +1,4 @@
-import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
+import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
 
 import { formatCarbonStorage, formatPerFrenchPersonAnnualEquivalent } from "./formatCarbonStorage";
 

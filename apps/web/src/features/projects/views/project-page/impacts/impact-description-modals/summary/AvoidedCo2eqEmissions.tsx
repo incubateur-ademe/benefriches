@@ -2,7 +2,7 @@ import { useContext } from "react";
 
 import { formatPerFrenchPersonAnnualEquivalent } from "@/features/create-project/views/common-views/soils-carbon-storage-comparison/formatCarbonStorage";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
-import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
+import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
 
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";

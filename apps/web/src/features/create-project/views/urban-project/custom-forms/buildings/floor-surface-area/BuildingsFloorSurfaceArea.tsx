@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { roundTo2Digits } from "shared";
 
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";

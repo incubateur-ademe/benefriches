@@ -1,7 +1,7 @@
 import { createSoilSurfaceAreaDistribution, typedObjectEntries } from "shared";
 
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";

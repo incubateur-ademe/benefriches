@@ -1,6 +1,6 @@
 import { FricheActivity, SiteYearlyExpense, SoilsDistribution, SoilType } from "shared";
 
-import { OwnerStructureType, TenantStructureType } from "@/shared/domain/stakeholder";
+import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
 
 export type Address = StreetAddress | HouseNumberAddress | MunicipalityAddress | BaseAddress;
 

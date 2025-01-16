@@ -8,7 +8,7 @@ import {
 } from "shared";
 import { z } from "zod";
 
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
 const isSoilSuitableForPhotovoltaicPanels = (soilType: SoilType): boolean => {
   return [

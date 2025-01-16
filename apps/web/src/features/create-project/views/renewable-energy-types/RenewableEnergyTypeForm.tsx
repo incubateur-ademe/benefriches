@@ -1,8 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
 
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import TileFormFieldWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldWrapper";
 import TileFormFieldsWrapper from "@/shared/views/layout/TileFormWrapper/TileFormFieldsWrapper";

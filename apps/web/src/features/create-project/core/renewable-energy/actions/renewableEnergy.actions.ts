@@ -8,7 +8,7 @@ import {
   SoilType,
 } from "shared";
 
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
 import {
   PhotovoltaicKeyParameter,

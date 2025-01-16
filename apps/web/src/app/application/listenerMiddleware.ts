@@ -5,7 +5,7 @@ import {
   TypedStartListening,
 } from "@reduxjs/toolkit";
 
-import { setupAppSettingsListeners } from "@/shared/app-settings/core/appSettingsListeners";
+import { setupAppSettingsListeners } from "@/features/app-settings/core/appSettingsListeners";
 
 import { rootReducer } from "./rootReducer";
 import { AppDependencies, AppDispatch, RootState } from "./store";

@@ -3,7 +3,7 @@ import {
   PhotovoltaicPerformanceApiResult,
   PhotovoltaicPerformanceGateway,
 } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
-import { objectToQueryParams } from "@/shared/services/object-query-parameters/objectToQueryParameters";
+import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
 
 export class ExpectedPhotovoltaicPerformanceApi implements PhotovoltaicPerformanceGateway {
   async getExpectedPhotovoltaicPerformance({

@@ -5,13 +5,13 @@ import { sumObjectValues } from "shared";
 import {
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
+} from "@/shared/core/format-number/formatNumber";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
   getPictogramForSoilType,
-} from "@/shared/services/label-mapping/soilTypeLabelMapping";
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+} from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";

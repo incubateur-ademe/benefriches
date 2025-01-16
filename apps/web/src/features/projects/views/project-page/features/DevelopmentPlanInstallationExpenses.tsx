@@ -8,9 +8,9 @@ import {
   ProjectDevelopmentPlanType,
   ProjectFeatures,
 } from "@/features/projects/domain/projects.types";
-import { getLabelForPhotovoltaicInstallationExpensePurpose } from "@/shared/domain/reconversionProject";
-import { getLabelForUrbanProjectDevelopmentExpense } from "@/shared/domain/urbanProject";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { getLabelForPhotovoltaicInstallationExpensePurpose } from "@/shared/core/reconversionProject";
+import { getLabelForUrbanProjectDevelopmentExpense } from "@/shared/core/urbanProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 
 type Props = {

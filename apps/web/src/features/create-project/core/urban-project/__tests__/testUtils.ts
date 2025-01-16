@@ -1,7 +1,7 @@
 import { UrbanSpaceCategory } from "shared";
 
 import { createStore, RootState } from "@/app/application/store";
-import { DEFAULT_APP_SETTINGS } from "@/shared/app-settings/core/appSettings";
+import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";

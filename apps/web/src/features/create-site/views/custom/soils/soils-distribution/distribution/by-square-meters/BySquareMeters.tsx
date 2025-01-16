@@ -3,12 +3,12 @@ import { useForm } from "react-hook-form";
 import { SoilType } from "shared";
 import { sumObjectValues } from "shared";
 
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import {
   getDescriptionForSoilType,
   getLabelForSoilType,
   getPictogramForSoilType,
-} from "@/shared/services/label-mapping/soilTypeLabelMapping";
+} from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";

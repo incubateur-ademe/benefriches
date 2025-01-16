@@ -6,7 +6,7 @@ import {
   getDescriptionForSoilType,
   getLabelForSoilType,
   getPictogramForSoilType,
-} from "@/shared/services/label-mapping/soilTypeLabelMapping";
+} from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";

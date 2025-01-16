@@ -3,7 +3,7 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import {
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
+} from "@/shared/core/format-number/formatNumber";
 
 type Props = {
   minSuitableSurfaceAreaToAllocate: number;

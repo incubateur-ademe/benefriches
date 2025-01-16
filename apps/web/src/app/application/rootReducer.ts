@@ -1,5 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
+import { appSettingsReducer as appSettings } from "@/features/app-settings/core/appSettings";
 import projectCreation from "@/features/create-project/core/createProject.reducer";
 import siteCreation from "@/features/create-site/core/createSite.reducer";
 import siteMunicipalityData from "@/features/create-site/core/siteMunicipalityData.reducer";
@@ -8,7 +9,6 @@ import { projectFeaturesReducer } from "@/features/projects/application/project-
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
 import siteFeatures from "@/features/site-features/core/siteFeatures.reducer";
-import { appSettingsReducer as appSettings } from "@/shared/app-settings/core/appSettings";
 import currentUser from "@/users/application/user.reducer";
 
 export const rootReducer = combineReducers({

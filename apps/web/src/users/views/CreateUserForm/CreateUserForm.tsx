@@ -6,7 +6,7 @@ import { Input } from "@codegouvfr/react-dsfr/Input";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useForm } from "react-hook-form";
 
-import PolitiqueConfidentialiteContent from "@/shared/app-settings/views/PolitiqueConfidentialiteContent/PolitiqueConfidentialiteContent";
+import PolitiqueConfidentialiteContent from "@/shared/views/components/PolitiqueConfidentialiteContent/PolitiqueConfidentialiteContent";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 

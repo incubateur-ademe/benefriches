@@ -10,8 +10,8 @@ import {
   UrbanSpaceCategory,
 } from "shared";
 
-import { getColorForSoilType } from "@/shared/domain/soils";
-import { getPictogramForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import { getPictogramForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { getColorForSoilType } from "@/shared/core/soils";
 
 export const getLabelForSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
   switch (spaceCategory) {

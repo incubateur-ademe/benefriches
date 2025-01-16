@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 import { formatCarbonStorage } from "@/features/create-project/views/common-views/soils-carbon-storage-comparison/formatCarbonStorage";
 import { SiteCarbonStorage } from "@/features/create-site/core/siteSoilsCarbonStorage.reducer";
-import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/domain/carbonEmissions";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/shared/core/carbonEmissions";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";

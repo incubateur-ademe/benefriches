@@ -8,8 +8,8 @@ import {
   getDescriptionForBuildingFloorArea,
   getPictogramUrlForEconomicActivityUses,
 } from "@/features/create-project/core/urban-project/urbanProject";
-import { getLabelForBuildingFloorArea } from "@/shared/domain/urbanProject";
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { getLabelForBuildingFloorArea } from "@/shared/core/urbanProject";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 

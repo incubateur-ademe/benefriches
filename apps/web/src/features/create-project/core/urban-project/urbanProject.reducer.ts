@@ -18,7 +18,7 @@ import {
   BuildingsEconomicActivityUse,
 } from "shared";
 
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
 import { ProjectCreationState } from "../createProject.reducer";
 import { ProjectStakeholder } from "../project.types";

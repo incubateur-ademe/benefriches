@@ -2,7 +2,7 @@ import { sumListWithKey, typedObjectEntries, sumObjectValues } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
 import { getFricheActivityLabel } from "@/features/create-site/core/friche.types";
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";

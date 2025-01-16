@@ -1,5 +1,6 @@
 import { configureStore, Reducer } from "@reduxjs/toolkit";
 
+import { AppSettingsGateway } from "@/features/app-settings/core/AppSettingsGateway";
 import { SiteMunicipalityDataGateway as CreateProjectMunicipalityDataGateway } from "@/features/create-project/core/getSiteLocalAuthorities.action";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/saveReconversionProject.action";
@@ -8,7 +9,6 @@ import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
-import { AppSettingsGateway } from "@/shared/app-settings/core/AppSettingsGateway";
 import { CreateUserGateway } from "@/users/application/createUser.action";
 import { CurrentUserGateway } from "@/users/application/initCurrentUser.action";
 

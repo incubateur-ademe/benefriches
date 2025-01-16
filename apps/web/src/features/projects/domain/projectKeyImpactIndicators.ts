@@ -1,6 +1,6 @@
 import { convertCarbonToCO2eq, isLocalAuthority, sumListWithKey } from "shared";
 
-import { getPercentageDifference } from "@/shared/services/percentage/percentage";
+import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 
 import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
 

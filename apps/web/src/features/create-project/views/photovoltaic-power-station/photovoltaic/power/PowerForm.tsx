@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
 import { PHOTOVOLTAIC_RATIO_M2_PER_KWC } from "@/features/create-project/core/renewable-energy/photovoltaic";
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";

@@ -4,9 +4,9 @@ import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
 import { SoilsDistribution, typedObjectEntries } from "shared";
 
-import { getColorForSoilType } from "@/shared/domain/soils";
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
-import { getLabelForSoilType } from "@/shared/services/label-mapping/soilTypeLabelMapping";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
+import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { getColorForSoilType } from "@/shared/core/soils";
 
 import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
 

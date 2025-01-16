@@ -6,11 +6,8 @@ import {
   formatPercentage,
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
-import {
-  computePercentage,
-  computeValueFromPercentage,
-} from "@/shared/services/percentage/percentage";
+} from "@/shared/core/format-number/formatNumber";
+import { computePercentage, computeValueFromPercentage } from "@/shared/core/percentage/percentage";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import { useSurfaceAreaInputMode } from "@/shared/views/hooks/useSurfaceAreaInputMode";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";

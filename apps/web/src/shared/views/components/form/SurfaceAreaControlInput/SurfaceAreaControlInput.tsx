@@ -1,7 +1,7 @@
 import {
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
+} from "@/shared/core/format-number/formatNumber";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
 
 type Props = {

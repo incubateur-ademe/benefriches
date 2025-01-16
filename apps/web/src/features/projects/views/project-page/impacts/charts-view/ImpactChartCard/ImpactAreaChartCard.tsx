@@ -1,7 +1,7 @@
 import { Tooltip } from "@codegouvfr/react-dsfr/Tooltip";
 import { roundTo1Digit, roundToInteger } from "shared";
 
-import { getPercentageDifference } from "@/shared/services/percentage/percentage";
+import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 import classNames from "@/shared/views/clsx";
 
 import {

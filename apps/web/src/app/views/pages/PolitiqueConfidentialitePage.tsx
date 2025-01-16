@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
-import PolitiqueConfidentialiteContent from "@/shared/app-settings/views/PolitiqueConfidentialiteContent/PolitiqueConfidentialiteContent";
+import PolitiqueConfidentialiteContent from "@/shared/views/components/PolitiqueConfidentialiteContent/PolitiqueConfidentialiteContent";
 
 function PolitiqueConfidentialitePage() {
   return (

@@ -5,13 +5,13 @@ import {
   getLabelForRenewableEnergyProductionType,
 } from "@/features/create-project/views/projectTypeLabelMapping";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForRecurringExpense,
   getLabelForRecurringRevenueSource,
   getLabelForReinstatementExpensePurpose,
-} from "@/shared/domain/reconversionProject";
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+} from "@/shared/core/reconversionProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import ScheduleDates from "@/shared/views/components/FeaturesList/FeaturesListScheduleDates";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";

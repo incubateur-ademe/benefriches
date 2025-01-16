@@ -10,7 +10,7 @@ import {
   SiteDraft,
   Tenant,
 } from "@/features/create-site/core/siteFoncier.types";
-import { splitEvenly } from "@/shared/services/split-number/splitNumber";
+import { splitEvenly } from "@/shared/core/split-number/splitNumber";
 
 import { saveCustomSiteAction, saveExpressSiteAction } from "./actions/createSite.actions";
 

@@ -1,6 +1,6 @@
 import { SegmentedControl } from "@codegouvfr/react-dsfr/SegmentedControl";
 
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 
 type InputMode = "squareMeters" | "percentage";
 

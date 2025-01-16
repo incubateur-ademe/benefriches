@@ -1,7 +1,7 @@
 import Input from "@codegouvfr/react-dsfr/Input";
 import { Control, Controller, useFormState, useWatch } from "react-hook-form";
 
-import { getFormattedDuration } from "@/shared/services/dates";
+import { getFormattedDuration } from "@/shared/core/dates";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 
 import { FormValues } from "./ScheduleProjectionForm";

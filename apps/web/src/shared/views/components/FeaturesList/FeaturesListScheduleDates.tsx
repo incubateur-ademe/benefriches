@@ -1,4 +1,4 @@
-import { getFormattedDuration } from "@/shared/services/dates";
+import { getFormattedDuration } from "@/shared/core/dates";
 
 type ScheduleDatesProps = {
   startDateString: string;

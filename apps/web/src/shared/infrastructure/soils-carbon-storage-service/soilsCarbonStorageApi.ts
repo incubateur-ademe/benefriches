@@ -8,7 +8,7 @@ import {
   SiteSoilsCarbonStorageResult,
   SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway,
 } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
-import { objectToQueryParams } from "@/shared/services/object-query-parameters/objectToQueryParameters";
+import { objectToQueryParams } from "@/shared/core/object-query-parameters/objectToQueryParameters";
 
 export class SoilsCarbonStorageApi
   implements SiteSoilsCarbonStorageGateway, ProjectSoilsCarbonStorageGateway

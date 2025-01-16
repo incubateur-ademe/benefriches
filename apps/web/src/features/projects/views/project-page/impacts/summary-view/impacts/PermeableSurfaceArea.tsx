@@ -1,4 +1,4 @@
-import { formatPercentage, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatPercentage, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 

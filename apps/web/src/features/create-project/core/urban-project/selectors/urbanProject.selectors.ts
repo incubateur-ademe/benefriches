@@ -14,8 +14,8 @@ import {
 } from "shared";
 
 import { RootState } from "@/app/application/store";
-import { selectAppSettings } from "@/shared/app-settings/core/appSettings";
-import { computePercentage } from "@/shared/services/percentage/percentage";
+import { selectAppSettings } from "@/features/app-settings/core/appSettings";
+import { computePercentage } from "@/shared/core/percentage/percentage";
 
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateUrbanProjectName } from "../../projectName";

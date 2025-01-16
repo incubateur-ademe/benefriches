@@ -5,8 +5,8 @@ import {
   formatNumberFr,
   formatSurfaceArea,
   SQUARE_METERS_HTML_SYMBOL,
-} from "@/shared/services/format-number/formatNumber";
-import { convertSquareMetersToHectares } from "@/shared/services/surface-area/surfaceArea";
+} from "@/shared/core/format-number/formatNumber";
+import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";

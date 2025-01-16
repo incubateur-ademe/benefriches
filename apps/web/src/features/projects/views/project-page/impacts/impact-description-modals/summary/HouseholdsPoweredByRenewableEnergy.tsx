@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { formatNumberFr } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";

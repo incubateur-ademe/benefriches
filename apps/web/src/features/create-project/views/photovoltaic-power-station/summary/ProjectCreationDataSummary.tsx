@@ -12,6 +12,7 @@ import {
 
 import { Schedule } from "@/features/create-project/core/project.types";
 import { SoilsCarbonStorageResult } from "@/features/create-project/core/soilsCarbonStorage.action";
+import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,
   getLabelForPhotovoltaicInstallationExpensePurpose,
@@ -19,8 +20,7 @@ import {
   getLabelForRecurringRevenueSource,
   getLabelForReinstatementExpensePurpose,
   RenewableEnergyDevelopmentPlanType,
-} from "@/shared/domain/reconversionProject";
-import { formatNumberFr, formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+} from "@/shared/core/reconversionProject";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SoilsCarbonStorageChart from "@/shared/views/components/Charts/SoilsCarbonStorageChart";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";

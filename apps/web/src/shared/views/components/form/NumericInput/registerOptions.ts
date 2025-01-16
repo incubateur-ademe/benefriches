@@ -1,4 +1,4 @@
-import { stringToNumber } from "@/shared/services/number-conversion/numberConversion";
+import { stringToNumber } from "@/shared/core/number-conversion/numberConversion";
 
 export const requiredNumericFieldRegisterOptions = {
   setValueAs: (v?: string) => (v ? stringToNumber(v) : undefined),

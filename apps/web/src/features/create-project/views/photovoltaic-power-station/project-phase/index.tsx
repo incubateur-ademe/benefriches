@@ -8,7 +8,7 @@ import {
   getHintTextForRenewableEnergyProjectPhase,
   getLabelForRenewableEnergyProjectPhase,
   getPictogramForProjectPhase,
-} from "@/shared/domain/projectPhase";
+} from "@/shared/core/projectPhase";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import ProjectPhaseForm from "../../common-views/project-phase/ProjectPhaseForm";

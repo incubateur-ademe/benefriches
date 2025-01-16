@@ -1,4 +1,4 @@
-import { formatNumberFr, formatPercentage } from "@/shared/services/format-number/formatNumber";
+import { formatNumberFr, formatPercentage } from "@/shared/core/format-number/formatNumber";
 
 import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 

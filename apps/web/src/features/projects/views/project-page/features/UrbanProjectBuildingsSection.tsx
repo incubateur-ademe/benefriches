@@ -7,8 +7,8 @@ import {
 } from "shared";
 
 import { UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
-import { getLabelForBuildingFloorArea } from "@/shared/domain/urbanProject";
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { getLabelForBuildingFloorArea } from "@/shared/core/urbanProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 

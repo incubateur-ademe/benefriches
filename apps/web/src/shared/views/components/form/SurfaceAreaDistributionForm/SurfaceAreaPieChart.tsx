@@ -3,7 +3,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
 
-import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/services/format-number/formatNumber";
+import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 
 import HighchartsCustomColorsWrapper from "../../Charts/HighchartsCustomColorsWrapper";
 

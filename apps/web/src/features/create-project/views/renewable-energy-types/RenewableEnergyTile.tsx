@@ -1,4 +1,4 @@
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 

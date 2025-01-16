@@ -9,7 +9,7 @@ import {
   getHintTextForUrbanProjectPhase,
   getLabelForUrbanProjectPhase,
   getPictogramForProjectPhase,
-} from "@/shared/domain/projectPhase";
+} from "@/shared/core/projectPhase";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectPhaseForm from "../../../common-views/project-phase/ProjectPhaseForm";

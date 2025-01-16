@@ -1,4 +1,4 @@
-import { appSettingUpdated, selectAppSettings } from "@/shared/app-settings/core/appSettings";
+import { appSettingUpdated, selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 export const useSurfaceAreaInputMode = () => {

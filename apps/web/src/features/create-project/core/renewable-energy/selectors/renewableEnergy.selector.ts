@@ -2,8 +2,8 @@ import { createSelector } from "@reduxjs/toolkit";
 import { ProjectSchedule, ProjectScheduleBuilder, SoilsDistribution } from "shared";
 
 import { RootState } from "@/app/application/store";
-import { RenewableEnergyDevelopmentPlanType } from "@/shared/domain/reconversionProject";
-import { computePercentage } from "@/shared/services/percentage/percentage";
+import { computePercentage } from "@/shared/core/percentage/percentage";
+import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 
 import { ProjectCreationState } from "../../createProject.reducer";
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";

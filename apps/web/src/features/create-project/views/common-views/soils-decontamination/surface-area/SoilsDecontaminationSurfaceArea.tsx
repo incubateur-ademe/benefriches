@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 
-import { formatSurfaceArea } from "@/shared/services/format-number/formatNumber";
-import { computeValueFromPercentage } from "@/shared/services/percentage/percentage";
+import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { computeValueFromPercentage } from "@/shared/core/percentage/percentage";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { requiredNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";

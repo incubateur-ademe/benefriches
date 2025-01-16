@@ -4,7 +4,7 @@ import {
   ComputedReinstatementCosts,
 } from "shared";
 
-import { typedObjectKeys } from "@/shared/services/object-keys/objectKeys";
+import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
 import { FormValues } from "./ReinstatementCostsForm";
 
