@@ -1,7 +1,7 @@
 import { fricheActivitySchema, soilTypeSchema } from "shared";
 import z from "zod";
 
-import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { revertStep } from "../createSite.reducer";
 import getExpressSiteData from "../siteExpress";

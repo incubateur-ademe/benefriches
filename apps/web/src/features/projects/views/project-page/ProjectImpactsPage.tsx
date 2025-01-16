@@ -1,8 +1,8 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import { routes } from "@/shared/views/router.ts";
 
 import { ProjectImpactsState, ViewMode } from "../../application/projectImpacts.reducer";
 import { ProjectDevelopmentPlanType } from "../../domain/projects.types";

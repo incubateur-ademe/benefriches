@@ -1,6 +1,6 @@
 import { SoilsDistribution, SoilType } from "shared";
 
-import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { selectSiteSoilsDistribution } from "../selectors/createSite.selectors";
 import { SiteCarbonStorage } from "../siteSoilsCarbonStorage.reducer";

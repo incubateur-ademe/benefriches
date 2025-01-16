@@ -1,9 +1,9 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
+import { routes } from "@/shared/views/router";
 
 import {
   BENEFRICHES_DOCUMENTATION_URL,

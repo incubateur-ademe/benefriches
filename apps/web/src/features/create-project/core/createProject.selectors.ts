@@ -6,7 +6,7 @@ import {
   SoilsDistribution,
 } from "shared";
 
-import { RootState } from "@/app/application/store";
+import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
 import { Address } from "./project.types";

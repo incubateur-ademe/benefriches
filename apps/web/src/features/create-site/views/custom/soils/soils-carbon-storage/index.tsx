@@ -1,5 +1,5 @@
-import { AppDispatch, RootState } from "@/app/application/store";
 import { fetchSiteSoilsCarbonStorage } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
+import { AppDispatch, RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { completeSoilsCarbonStorage, revertStep } from "../../../../core/createSite.reducer";

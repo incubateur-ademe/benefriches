@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { createStore, RootState } from "@/app/application/store";
 import { buildUser } from "@/features/onboarding/core/user.mock";
+import { createStore, RootState } from "@/shared/core/store-config/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 

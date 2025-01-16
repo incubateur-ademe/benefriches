@@ -1,6 +1,6 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/application/store";
+import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectFeatures } from "../../domain/projects.types";
 import { fetchProjectFeatures } from "./projectFeatures.actions";

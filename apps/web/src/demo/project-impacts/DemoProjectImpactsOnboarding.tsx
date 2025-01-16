@@ -1,4 +1,3 @@
-import { routes } from "@/app/views/router";
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import {
   getKeyImpactIndicatorsList,
@@ -6,6 +5,7 @@ import {
   getProjectOverallImpact,
 } from "@/features/projects/domain/projectKeyImpactIndicators";
 import ProjectImpactsOnboardingPage from "@/features/projects/views/project-impacts-onboarding/ProjectImpactsOnboardingPage";
+import { routes } from "@/shared/views/router";
 
 import { getImpactsDataFromEvaluationPeriod } from "../demoData";
 

@@ -1,6 +1,6 @@
 import { Route } from "type-route";
 
-import { routes } from "@/app/views/router";
+import { routes } from "@/shared/views/router";
 
 import OnBoardingIntroductionHow from "./pages/how-it-works";
 import OnBoardingIntroductionWhyBenefriches from "./pages/why-benefriches";

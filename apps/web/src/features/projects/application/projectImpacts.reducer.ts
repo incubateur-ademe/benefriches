@@ -1,7 +1,7 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution } from "shared";
 
-import { RootState } from "@/app/application/store";
+import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import {

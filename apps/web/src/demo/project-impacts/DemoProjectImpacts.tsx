@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import { routes } from "@/app/views/router";
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
 import { getEconomicBalanceProjectImpacts } from "@/features/projects/domain/projectImpactsEconomicBalance";
@@ -21,6 +20,7 @@ import ImpactsListView from "@/features/projects/views/project-page/impacts/list
 import ProjectFeaturesModal from "@/features/projects/views/project-page/impacts/project-features-modal/ProjectFeaturesModal";
 import ImpactSummaryView from "@/features/projects/views/project-page/impacts/summary-view/ImpactSummaryView";
 import classNames from "@/shared/views/clsx";
+import { routes } from "@/shared/views/router";
 
 import { getImpactsDataFromEvaluationPeriod } from "../demoData";
 

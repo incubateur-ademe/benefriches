@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { routes } from "@/app/views/router";
+import { routes } from "@/shared/views/router";
 
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
 import ScenarioTile from "./ScenarioTile/ScenarioTile";

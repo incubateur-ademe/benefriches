@@ -1,10 +1,10 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { DevelopmentPlanType, FricheActivity } from "shared";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
+import { routes } from "@/shared/views/router";
 
 import NewScenarioTile from "../../features/projects/views/my-projects-page/ScenariiList/ScenarioTile/NewScenarioTile";
 import ScenarioTile from "../../features/projects/views/my-projects-page/ScenariiList/ScenarioTile/ScenarioTile";

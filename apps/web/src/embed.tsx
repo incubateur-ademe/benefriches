@@ -10,10 +10,10 @@ import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.acti
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
-import { appDependencies } from "./app/application/appDependencies.ts";
-import { createStore } from "./app/application/store.ts";
-import { theme } from "./app/views/antdConfig.ts";
 import "./main.css";
+import { appDependencies } from "./shared/core/store-config/appDependencies.ts";
+import { createStore } from "./shared/core/store-config/store.ts";
+import { theme } from "./shared/views/antdConfig.ts";
 
 startReactDsfr({ defaultColorScheme: "system" });
 

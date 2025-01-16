@@ -1,9 +1,9 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { useEffect } from "react";
 
-import { routes } from "@/app/views/router";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { routes } from "@/shared/views/router";
 
 import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
 import {

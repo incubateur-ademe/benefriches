@@ -1,4 +1,4 @@
-import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../../createProject.selectors";
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "../../soilsCarbonStorage.action";

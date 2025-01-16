@@ -12,11 +12,11 @@ import { ReconversionProjectImpactsGateway } from "@/features/projects/applicati
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
 
-import { GetSitesByIdGateway } from "../../features/create-project/core/createProject.actions";
-import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/core/soilsCarbonStorage.action";
-import { CreateSiteGateway } from "../../features/create-site/core/actions/createSite.actions";
-import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
-import { ReconversionProjectsListGateway } from "../../features/projects/application/projectsList.actions";
+import { GetSitesByIdGateway } from "../../../features/create-project/core/createProject.actions";
+import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../../features/create-project/core/soilsCarbonStorage.action";
+import { CreateSiteGateway } from "../../../features/create-site/core/actions/createSite.actions";
+import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
+import { ReconversionProjectsListGateway } from "../../../features/projects/application/projectsList.actions";
 import { getListener, setupAllListeners } from "./listenerMiddleware";
 import { rootReducer } from "./rootReducer";
 

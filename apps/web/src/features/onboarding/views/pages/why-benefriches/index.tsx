@@ -1,4 +1,4 @@
-import { routes } from "@/app/views/router";
+import { routes } from "@/shared/views/router";
 
 import WhyBenefrichesPage from "./WhyBenefrichesPage";
 

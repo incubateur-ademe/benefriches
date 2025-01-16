@@ -3,16 +3,22 @@ import { lazy, Suspense } from "react";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 
-import NotFoundScreen from "./not-found";
-import { routes, useRoute } from "./router";
+import NotFoundScreen from "../../shared/views/components/NotFound/NotFound";
+import { routes, useRoute } from "../../shared/views/router";
 
 /* Lazy-loaded pages */
-const AccessibilitePage = lazy(() => import("./pages/AccessibilitePage"));
-const BudgetPage = lazy(() => import("./pages/BudgetPage"));
-const HomePage = lazy(() => import("./pages/home/HomePage"));
-const MentionsLegalesPage = lazy(() => import("./pages/MentionsLegalesPage"));
-const PolitiqueConfidentialitePage = lazy(() => import("./pages/PolitiqueConfidentialitePage"));
-const StatsPage = lazy(() => import("./pages/StatsPage"));
+const AccessibilitePage = lazy(
+  () => import("@/features/public-pages/accesibilite/AccessibilitePage"),
+);
+const BudgetPage = lazy(() => import("@/features/public-pages/budget/BudgetPage"));
+const HomePage = lazy(() => import("@/features/public-pages/home/HomePage"));
+const MentionsLegalesPage = lazy(
+  () => import("@/features/public-pages/mentions-legales/MentionsLegalesPage"),
+);
+const PolitiqueConfidentialitePage = lazy(
+  () => import("@/features/public-pages/politique-confidentialite/PolitiqueConfidentialitePage"),
+);
+const StatsPage = lazy(() => import("@/features/public-pages/stats/StatsPage"));
 
 function PublicApp() {
   const route = useRoute();

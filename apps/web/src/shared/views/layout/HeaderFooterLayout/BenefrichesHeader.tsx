@@ -1,7 +1,7 @@
 import { Header, HeaderProps } from "@codegouvfr/react-dsfr/Header";
 import { Link } from "type-route";
 
-import { routes } from "@/app/views/router";
+import { routes } from "@/shared/views/router";
 
 function BenefrichesHeader({
   homeLinkPropsHref = routes.home().href,

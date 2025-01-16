@@ -2,9 +2,9 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { useTour } from "@reactour/tour";
 import { Dropdown } from "antd";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
+import { routes } from "@/shared/views/router";
 
 function MyProjectsPageHeader() {
   const { setIsOpen } = useTour();

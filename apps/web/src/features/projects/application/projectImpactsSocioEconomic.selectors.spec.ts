@@ -1,4 +1,4 @@
-import { createStore, RootState } from "@/app/application/store";
+import { createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { photovoltaicProjectImpactMock as projectImpactMock } from "./projectImpacts.mock";

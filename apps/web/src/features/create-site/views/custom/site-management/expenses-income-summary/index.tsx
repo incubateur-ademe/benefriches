@@ -1,10 +1,10 @@
-import { AppDispatch, RootState } from "@/app/application/store";
 import {
   completeYearlyExpensesSummary,
   revertStep,
 } from "@/features/create-site/core/createSite.reducer";
 import { hasTenant } from "@/features/create-site/core/site.functions";
 import { SiteDraft } from "@/features/create-site/core/siteFoncier.types";
+import { AppDispatch, RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteExpensesSummary from "./SiteExpensesIncomeSummary";

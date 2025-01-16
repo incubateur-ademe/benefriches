@@ -1,6 +1,6 @@
 import { FricheActivity, ReconversionProjectImpacts, SoilsDistribution } from "shared";
 
-import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 export interface ReconversionProjectImpactsGateway {
   getReconversionProjectImpacts(

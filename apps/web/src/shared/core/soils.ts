@@ -1,7 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { SoilType } from "shared";
 
-import { soilColors } from "@/app/views/theme";
+import { soilColors } from "@/shared/views/theme";
 
 export const getColorForSoilType = (value: SoilType): string => {
   switch (value) {

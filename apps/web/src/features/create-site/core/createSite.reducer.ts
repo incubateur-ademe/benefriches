@@ -2,7 +2,6 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution, SoilType, SiteYearlyExpense } from "shared";
 import { v4 as uuid } from "uuid";
 
-import { RootState } from "@/app/application/store";
 import {
   Address,
   Income,
@@ -11,6 +10,7 @@ import {
   Tenant,
 } from "@/features/create-site/core/siteFoncier.types";
 import { splitEvenly } from "@/shared/core/split-number/splitNumber";
+import { RootState } from "@/shared/core/store-config/store";
 
 import { saveCustomSiteAction, saveExpressSiteAction } from "./actions/createSite.actions";
 

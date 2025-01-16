@@ -1,16 +1,16 @@
 import { lazy, Suspense, useEffect } from "react";
 import { createGroup } from "type-route";
 
-import { BENEFRICHES_ENV } from "@/app/application/envVars";
-import MatomoContainer from "@/app/views/MatomoContainer";
-import NotFoundScreen from "@/app/views/not-found";
-import { routes, useRoute } from "@/app/views/router";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
+import MatomoContainer from "@/shared/views/MatomoContainer";
+import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
 import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
+import { routes, useRoute } from "@/shared/views/router";
 
 /* Lazy-loaded pages */
 const CreateUserPage = lazy(() => import("@/features/onboarding/views"));

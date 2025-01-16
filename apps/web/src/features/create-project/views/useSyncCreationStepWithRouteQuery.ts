@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { routes, useRoute } from "@/app/views/router";
+import { routes, useRoute } from "@/shared/views/router";
 
 export const useSyncCreationStepWithRouteQuery = (projectCreationStepQueryString: string) => {
   const currentRoute = useRoute();

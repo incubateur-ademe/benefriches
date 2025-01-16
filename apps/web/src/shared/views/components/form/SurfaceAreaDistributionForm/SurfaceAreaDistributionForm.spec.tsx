@@ -3,9 +3,9 @@ import { PropsWithChildren } from "react";
 import { Provider } from "react-redux";
 import { expect } from "vitest";
 
-import { createStore, RootState } from "@/app/application/store";
 import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
+import { createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import SurfaceAreaDistributionForm from "./SurfaceAreaDistributionForm";

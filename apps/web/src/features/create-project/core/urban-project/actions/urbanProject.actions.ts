@@ -14,7 +14,7 @@ import {
 } from "shared";
 import { z } from "zod";
 
-import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { ProjectStakeholderStructure, Schedule } from "../../project.types";
 import { BuildingsUseCategory } from "../urbanProject";

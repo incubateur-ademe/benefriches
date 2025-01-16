@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { createStore } from "@/app/application/store";
+import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { ReconversionProjectsGroupedBySite } from "../domain/projects.types";

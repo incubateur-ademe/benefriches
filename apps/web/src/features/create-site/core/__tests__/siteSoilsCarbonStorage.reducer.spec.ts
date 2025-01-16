@@ -1,4 +1,4 @@
-import { createStore } from "@/app/application/store";
+import { createStore } from "@/shared/core/store-config/store";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 

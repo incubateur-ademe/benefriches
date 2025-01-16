@@ -1,5 +1,5 @@
-import { createStore, RootState } from "@/app/application/store";
 import { buildUser } from "@/features/onboarding/core/user.mock";
+import { createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { InMemorySaveReconversionProjectService } from "../../../infrastructure/save-project-service/InMemorySaveReconversionProjectService";

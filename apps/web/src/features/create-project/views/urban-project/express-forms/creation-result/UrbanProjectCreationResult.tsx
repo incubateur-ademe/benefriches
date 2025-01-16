@@ -1,7 +1,6 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { routes } from "@/app/views/router";
 import { ProjectFeatures } from "@/features/projects/domain/projects.types";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
@@ -12,6 +11,7 @@ import {
   EditorialPageTitle,
 } from "@/shared/views/layout/EditorialPageLayout";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
+import { routes } from "@/shared/views/router";
 
 type Props = {
   projectId: string;

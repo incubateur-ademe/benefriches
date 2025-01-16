@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
+import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { User, userSchema } from "./user";
 

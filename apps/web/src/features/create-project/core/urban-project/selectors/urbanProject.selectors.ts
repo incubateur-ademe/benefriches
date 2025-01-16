@@ -13,9 +13,9 @@ import {
   isBuildingsEconomicActivityUse,
 } from "shared";
 
-import { RootState } from "@/app/application/store";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { computePercentage } from "@/shared/core/percentage/percentage";
+import { RootState } from "@/shared/core/store-config/store";
 
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateUrbanProjectName } from "../../projectName";

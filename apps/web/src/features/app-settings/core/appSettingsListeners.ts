@@ -1,4 +1,4 @@
-import { AppStartListening } from "@/app/application/listenerMiddleware";
+import { AppStartListening } from "@/shared/core/store-config/listenerMiddleware";
 
 import { appSettingUpdated } from "./appSettings";
 

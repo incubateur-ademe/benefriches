@@ -1,7 +1,7 @@
 import { DevelopmentPlanCategory } from "shared";
 
-import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import { completeDevelopmentPlanCategories } from "@/features/create-project/core/createProject.reducer";
+import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import ProjectTypeForm from "./ProjectTypesForm";

@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/application/store";
+import { RootState } from "@/shared/core/store-config/store";
 
 import { getEconomicBalanceProjectImpacts } from "../domain/projectImpactsEconomicBalance";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";

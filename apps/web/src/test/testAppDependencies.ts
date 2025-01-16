@@ -1,4 +1,3 @@
-import { AppDependencies } from "@/app/application/store";
 import { InMemoryAppSettings } from "@/features/app-settings/infrastructure/InMemoryAppSettings";
 import {
   ExpectedPhotovoltaicPerformanceMock,
@@ -14,6 +13,7 @@ import { MockProjectFeaturesService } from "@/features/projects/infrastructure/p
 import { InMemoryReconversionProjectsListService } from "@/features/projects/infrastructure/projects-list-service/InMemoryProjectsListService";
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 import { MockSiteFeaturesService } from "@/features/site-features/infra/site-features-service/MockSiteFeaturesService";
+import { AppDependencies } from "@/shared/core/store-config/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 

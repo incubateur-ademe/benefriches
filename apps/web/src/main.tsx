@@ -4,12 +4,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 
-import { appDependencies } from "./app/application/appDependencies.ts";
-import { createStore } from "./app/application/store.ts";
-import App from "./app/views/App.tsx";
-import { theme } from "./app/views/antdConfig.ts";
-import { RouteProvider } from "./app/views/router.ts";
 import "./main.css";
+import { appDependencies } from "./shared/core/store-config/appDependencies.ts";
+import { createStore } from "./shared/core/store-config/store.ts";
+import App from "./shared/views/App.tsx";
+import { theme } from "./shared/views/antdConfig.ts";
+import { RouteProvider } from "./shared/views/router.ts";
 
 startReactDsfr({ defaultColorScheme: "system" });
 

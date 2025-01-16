@@ -1,7 +1,7 @@
 import { FricheActivity } from "shared";
 
-import { routes } from "@/app/views/router";
 import Badge from "@/shared/views/components/Badge/Badge";
+import { routes } from "@/shared/views/router";
 
 import { ReconversionProjectList } from ".";
 import ProjectScenarioTile from "./ProjectScenarioTile";

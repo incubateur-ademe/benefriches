@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/unbound-method */
-import { createStore } from "@/app/application/store";
 import { ProjectSite } from "@/features/create-project/core/project.types";
 import { ExpectedPhotovoltaicPerformanceMock } from "@/features/create-project/infrastructure/photovoltaic-performance-service/photovoltaicPerformanceMock";
 import { SitesServiceMock } from "@/features/create-project/infrastructure/sites-service/SitesServiceMock";
+import { createStore } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { projectCreationInitiated } from "../../createProject.actions";

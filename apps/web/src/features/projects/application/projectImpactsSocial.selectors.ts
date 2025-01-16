@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { RootState } from "@/app/application/store";
+import { RootState } from "@/shared/core/store-config/store";
 
 import { getSocialProjectImpacts } from "../domain/projectImpactsSocial";
 import { ProjectImpactsState } from "./projectImpacts.reducer";

@@ -3,8 +3,8 @@ import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerS
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
 import { ReactNode, useState } from "react";
 
-import { routes } from "@/app/views/router";
 import classNames from "@/shared/views/clsx";
+import { routes } from "@/shared/views/router";
 
 import { SidebarLayoutContext } from "./SidebarLayoutContext";
 

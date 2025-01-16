@@ -1,7 +1,7 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 
-import { routes } from "@/app/views/router";
 import TileLink from "@/shared/views/components/TileLink/TileLink";
+import { routes } from "@/shared/views/router";
 
 import { aboutImpactsModal } from "../impacts/about-impacts-modal";
 import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";

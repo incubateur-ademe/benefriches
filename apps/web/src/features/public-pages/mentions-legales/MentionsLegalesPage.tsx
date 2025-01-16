@@ -1,8 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
-
-import { routes } from "../router";
+import { routes } from "@/shared/views/router";
 
 export default function MentionsLegalesPage() {
   return (

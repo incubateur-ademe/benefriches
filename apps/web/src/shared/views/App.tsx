@@ -4,10 +4,10 @@ import { createGroup } from "type-route";
 import DemoApp from "@/demo/DemoApp";
 import FeaturesApp from "@/features/FeaturesApp";
 
-import { trackPageView } from "../application/analytics";
-import { BENEFRICHES_ENV } from "../application/envVars";
+import PublicApp from "../../features/public-pages/PublicApp";
 import MatomoContainer from "./MatomoContainer";
-import PublicApp from "./PublicApp";
+import { trackPageView } from "./analytics";
+import { BENEFRICHES_ENV } from "./envVars";
 import { routes, useRoute } from "./router";
 
 const groups = {
