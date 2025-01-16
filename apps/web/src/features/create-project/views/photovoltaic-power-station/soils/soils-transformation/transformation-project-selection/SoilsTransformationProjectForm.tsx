@@ -9,6 +9,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -63,9 +64,10 @@ const options = [
   },
 ] as const;
 
-function SoilsTransformationProjectForm({ onSubmit, onBack }: Props) {
+function SoilsTransformationProjectForm({ initialValues, onSubmit, onBack }: Props) {
   const { handleSubmit, formState, control } = useForm<FormValues>({
     shouldUnregister: true,
+    defaultValues: initialValues,
   });
 
   return (

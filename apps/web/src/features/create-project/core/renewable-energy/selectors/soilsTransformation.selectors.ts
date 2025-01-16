@@ -3,7 +3,11 @@ import { SoilsDistribution, SoilType, sumSoilsSurfaceAreasWhere } from "shared";
 
 import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
-import { selectSiteData, selectSiteSoilsDistribution } from "../../createProject.selectors";
+import {
+  selectSiteData,
+  selectSiteSoilsDistribution,
+  selectSiteSurfaceArea,
+} from "../../createProject.selectors";
 import {
   getNonSuitableSoilsForPhotovoltaicPanels,
   getSuitableSoilsForTransformation,
@@ -11,6 +15,7 @@ import {
   isBiodiversityAndClimateSensibleSoil,
   willTransformationNoticeablyImpactBiodiversityAndClimate,
   getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
+  REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS,
 } from "../soilsTransformation";
 import { selectPhotovoltaicPanelsSurfaceArea } from "./photovoltaicPowerStation.selectors";
 import { selectCreationData, selectProjectSoilsDistribution } from "./renewableEnergy.selector";
@@ -83,9 +88,52 @@ export const selectNonSuitableSoilsSurfaceAreaToTransformViewData = createSelect
   },
 );
 
-export const selectFutureSoils = createSelector(selectCreationData, (creationData): SoilType[] => {
-  return creationData.futureSoilsSelection ?? [];
-});
+type FutureSoilsSelectionViewData = {
+  initialValues: SoilType[];
+  selectableSoils: SoilType[];
+  baseSoilsDistribution: SoilsDistribution;
+};
+export const selectFutureSoilsSelectionViewData = createSelector(
+  [selectCreationData, selectSiteSoilsDistribution],
+  (creationData, siteSoilsDistribution): FutureSoilsSelectionViewData => {
+    const selectableSoils = getSuitableSoilsForTransformation(
+      typedObjectKeys(creationData.baseSoilsDistributionForTransformation ?? siteSoilsDistribution),
+    );
+    const initialValues =
+      creationData.futureSoilsSelection ?? REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS;
+    return {
+      initialValues,
+      selectableSoils,
+      baseSoilsDistribution: creationData.baseSoilsDistributionForTransformation ?? {},
+    };
+  },
+);
+
+type FutureSoilsSurfaceAreasViewData = {
+  initialValues?: SoilsDistribution;
+  selectedSoils: SoilType[];
+  siteSurfaceArea: number;
+  photovoltaicPanelsSurfaceArea: number;
+  baseSoilsDistribution: SoilsDistribution;
+};
+export const selectFutureSoilsSurfaceAreasViewData = createSelector(
+  [selectCreationData, selectSiteSurfaceArea, selectSiteSoilsDistribution],
+  (creationData, siteSurfaceArea, siteSoilsDistribution): FutureSoilsSurfaceAreasViewData => {
+    const initialValues = creationData.soilsDistribution;
+    const selectedSoils = creationData.futureSoilsSelection ?? [];
+    const photovoltaicPanelsSurfaceArea =
+      creationData.photovoltaicInstallationSurfaceSquareMeters ?? 0;
+
+    return {
+      initialValues,
+      selectedSoils,
+      photovoltaicPanelsSurfaceArea,
+      siteSurfaceArea,
+      baseSoilsDistribution:
+        creationData.baseSoilsDistributionForTransformation ?? siteSoilsDistribution,
+    };
+  },
+);
 
 export const selectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed = createSelector(
   [selectSiteSoilsDistribution, selectProjectSoilsDistribution],
@@ -112,21 +160,5 @@ export const selectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea = create
   selectProjectSoilsDistribution,
   (futureSoilsDistribution): number => {
     return sumSoilsSurfaceAreasWhere(futureSoilsDistribution, isBiodiversityAndClimateSensibleSoil);
-  },
-);
-
-export const selectBaseSoilsDistributionForTransformation = createSelector(
-  selectCreationData,
-  selectSiteData,
-  (creationData, siteData): SoilsDistribution => {
-    return creationData.baseSoilsDistributionForTransformation ?? siteData?.soilsDistribution ?? {};
-  },
-);
-
-export const selectTransformableSoils = createSelector(
-  selectBaseSoilsDistributionForTransformation,
-  (baseSoilsDistributionForTransformation): SoilType[] => {
-    const currentSoils = typedObjectKeys(baseSoilsDistributionForTransformation);
-    return getSuitableSoilsForTransformation(currentSoils);
   },
 );

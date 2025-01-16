@@ -21,6 +21,7 @@ import FutureSoilsSurfaceAreaInstructions from "./FutureSoilsSurfaceAreaInstruct
 import SuitableSurfaceAreaControlInput from "./SuitableSurfaceAreaControlInput";
 
 type Props = {
+  initialValues?: FormValues;
   selectedSoils: SoilType[];
   siteSurfaceArea: number;
   photovoltaicPanelsSurfaceArea: number;
@@ -32,6 +33,7 @@ type Props = {
 export type FormValues = SoilsDistribution;
 
 function FutureSoilsSurfaceAreaForm({
+  initialValues,
   selectedSoils,
   siteSurfaceArea,
   photovoltaicPanelsSurfaceArea,
@@ -39,7 +41,9 @@ function FutureSoilsSurfaceAreaForm({
   onSubmit,
   onBack,
 }: Props) {
-  const { register, handleSubmit, watch, formState } = useForm<FormValues>();
+  const { register, handleSubmit, watch, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const allocatedSoilsDistribution = watch();
 

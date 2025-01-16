@@ -1,6 +1,7 @@
 import { Controller, useForm } from "react-hook-form";
 import { SoilsDistribution, SoilType } from "shared";
 
+import { REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS } from "@/features/create-project/core/renewable-energy/soilsTransformation";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForSoilType,
@@ -18,6 +19,7 @@ export type FormValues = {
 };
 
 type Props = {
+  initialValues: FormValues;
   currentSoilsDistribution: SoilsDistribution;
   selectableSoils: SoilType[];
   onSubmit: (data: FormValues) => void;
@@ -70,24 +72,21 @@ const SoilTypeTile = ({ soilType, surfaceArea, isSelected, onChange }: SoilTypeT
       imgSrc={imgSrc}
       checked={isSelected}
       onChange={onChange}
-      disabled={REQUIRED_SOILS.includes(soilType)}
+      disabled={REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS.includes(soilType)}
       checkType="checkbox"
     />
   );
 };
 
-const REQUIRED_SOILS: SoilType[] = ["IMPERMEABLE_SOILS", "MINERAL_SOIL"] as const;
-
 function FutureSoilsSelectionForm({
+  initialValues,
   selectableSoils,
   currentSoilsDistribution,
   onSubmit,
   onBack,
 }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: {
-      soils: REQUIRED_SOILS,
-    },
+    defaultValues: initialValues,
   });
 
   const filteredCategories = soilTypeCategories

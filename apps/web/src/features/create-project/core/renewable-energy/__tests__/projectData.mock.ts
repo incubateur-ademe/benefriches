@@ -30,6 +30,7 @@ export const projectWithMinimalData = {
   nonSuitableSoilsSurfaceAreaToTransform: {},
   baseSoilsDistributionForTransformation: {},
   nonSuitableSoilsToTransform: [],
+  soilsTransformationProject: "custom",
   futureSoilsSelection: [],
   willSiteBePurchased: false,
 } as const satisfies ReconversionProjectCreationData;

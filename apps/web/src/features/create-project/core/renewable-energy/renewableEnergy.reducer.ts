@@ -243,6 +243,7 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
   });
   builder.addCase(completeSoilsTransformationProjectSelectionStep, (state, action) => {
     const transformationProject = action.payload;
+    state.renewableEnergyProject.creationData.soilsTransformationProject = transformationProject;
 
     if (transformationProject === "custom") {
       state.renewableEnergyProject.stepsHistory.push("SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION");

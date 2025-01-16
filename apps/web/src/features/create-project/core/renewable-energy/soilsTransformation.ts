@@ -10,6 +10,11 @@ import { z } from "zod";
 
 import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
+export const REQUIRED_SOILS_FOR_PHOTOVOLTAIC_PANELS: SoilType[] = [
+  "IMPERMEABLE_SOILS",
+  "MINERAL_SOIL",
+] as const;
+
 const isSoilSuitableForPhotovoltaicPanels = (soilType: SoilType): boolean => {
   return [
     "MINERAL_SOIL",
