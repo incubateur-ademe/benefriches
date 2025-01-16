@@ -15,9 +15,11 @@ function ReinstatementExpensesFormContainer() {
 
   const siteData = useAppSelector(selectSiteData);
   const projectData = useAppSelector(selectCreationData);
+  const initialValues = projectData.reinstatementExpenses;
 
   return (
     <ReinstatementsExpensesForm
+      preEnteredData={initialValues}
       siteSoilsDistribution={siteData?.soilsDistribution ?? {}}
       projectSoilsDistribution={projectData.soilsDistribution ?? {}}
       decontaminatedSurfaceArea={projectData.decontaminatedSurfaceArea ?? 0}

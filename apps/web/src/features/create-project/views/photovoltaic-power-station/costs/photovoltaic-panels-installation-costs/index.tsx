@@ -4,7 +4,7 @@ import {
   completePhotovoltaicPanelsInstallationExpenses,
   revertPhotovoltaicPanelsInstallationExpenses,
 } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { getDefaultValuesForPhotovoltaicInstallationExpenses } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
@@ -17,17 +17,13 @@ const purposeMapKeys = {
   technicalStudyAmount: "technical_studies",
   worksAmount: "installation_works",
   otherAmount: "other",
-} as const;
+} as const satisfies Record<keyof FormValues, PhotovoltaicInstallationExpense["purpose"]>;
 
 function PhotovoltaicPanelsInstallationExpensesFormContainer() {
   const dispatch = useAppDispatch();
-  const defaultValues = useAppSelector(getDefaultValuesForPhotovoltaicInstallationExpenses);
-
-  const initialValues = defaultValues && {
-    technicalStudyAmount: defaultValues.technicalStudy,
-    worksAmount: defaultValues.works,
-    otherAmount: defaultValues.other,
-  };
+  const initialValues = useAppSelector(
+    selectPhotovoltaicPowerStationInstallationExpensesInitialValues,
+  );
 
   return (
     <InstallationExpensesForm
@@ -48,7 +44,11 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
           <p>Vous pouvez modifier ces montants.</p>
         </FormInfo>
       }
-      initialValues={initialValues}
+      initialValues={{
+        worksAmount: initialValues.works,
+        technicalStudyAmount: initialValues.technicalStudy,
+        otherAmount: initialValues.other,
+      }}
       onSubmit={(formData: FormValues) => {
         const expenses: PhotovoltaicInstallationExpense[] = typedObjectEntries(formData)
           .filter(([, amount]) => amount && amount > 0)

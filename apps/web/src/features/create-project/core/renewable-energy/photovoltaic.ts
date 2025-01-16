@@ -36,25 +36,33 @@ const PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC = {
   other: 75,
 };
 
-export const computeDefaultPhotovoltaicWorksAmountExpenses = (electricalPowerKWc: number) => {
+const computeDefaultPhotovoltaicWorksAmountExpenses = (electricalPowerKWc: number) => {
   return Math.round(
     electricalPowerKWc * PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC.works,
   );
 };
 
-export const computeDefaultPhotovoltaicTechnicalStudiesAmountExpenses = (
-  electricalPowerKWc: number,
-) => {
+const computeDefaultPhotovoltaicTechnicalStudiesAmountExpenses = (electricalPowerKWc: number) => {
   return Math.round(
     electricalPowerKWc *
       PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC.technicalStudyAmount,
   );
 };
 
-export const computeDefaultPhotovoltaicOtherAmountExpenses = (electricalPowerKWc: number) => {
+const computeDefaultPhotovoltaicOtherAmountExpenses = (electricalPowerKWc: number) => {
   return Math.round(
     electricalPowerKWc * PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC.other,
   );
+};
+
+export const computePhotovoltaicPowerStationExpensesFromElectricalPower = (
+  electricalPowerKWc: number,
+) => {
+  return {
+    works: computeDefaultPhotovoltaicWorksAmountExpenses(electricalPowerKWc),
+    technicalStudy: computeDefaultPhotovoltaicTechnicalStudiesAmountExpenses(electricalPowerKWc),
+    other: computeDefaultPhotovoltaicOtherAmountExpenses(electricalPowerKWc),
+  };
 };
 
 const PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR = {
