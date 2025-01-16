@@ -58,6 +58,21 @@ export const selectContaminatedSurfaceAreaPercentageToDecontaminate = createSele
   },
 );
 
+type SitePurchaseAmounts = {
+  sellingPrice: number;
+  propertyTransferDuties: number;
+};
+export const selectSitePurchaseAmounts = createSelector(
+  [selectCreationData],
+  (creationData): SitePurchaseAmounts | undefined => {
+    if (!creationData.sitePurchaseSellingPrice) return undefined;
+    return {
+      sellingPrice: creationData.sitePurchaseSellingPrice ?? 0,
+      propertyTransferDuties: creationData.sitePurchasePropertyTransferDuties ?? 0,
+    };
+  },
+);
+
 export const getDefaultValuesForYearlyProjectedExpenses = createSelector(
   selectCreationData,
   (creationData): { rent: number; maintenance: number; taxes: number } | undefined => {

@@ -5,6 +5,7 @@ import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues?: FormValues;
   currentOwnerName?: string;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -14,8 +15,10 @@ export type FormValues = {
   willSiteBePurchased: "yes" | "no" | null;
 };
 
-function SitePurchasedForm({ onSubmit, onBack, currentOwnerName }: Props) {
-  const { register, handleSubmit, formState, watch } = useForm<FormValues>();
+function SitePurchasedForm({ initialValues, onSubmit, onBack, currentOwnerName }: Props) {
+  const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   return (
     <WizardFormLayout

@@ -166,7 +166,7 @@ export type PhotovoltaicProjectCreationStep =
   | "CREATION_RESULT";
 
 export const INITIAL_STATE: RenewableEneryProjectState = {
-  stepsHistory: ["RENEWABLE_ENERGY_TYPES"],
+  stepsHistory: ["STAKEHOLDERS_SITE_PURCHASE"],
   creationData: {
     yearlyProjectedExpenses: [],
     yearlyProjectedRevenues: [],
@@ -353,10 +353,8 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
   builder.addCase(completeSitePurchaseAmounts, (state, action) => {
     state.renewableEnergyProject.creationData.sitePurchaseSellingPrice =
       action.payload.sellingPrice;
-    if (action.payload.propertyTransferDuties) {
-      state.renewableEnergyProject.creationData.sitePurchasePropertyTransferDuties =
-        action.payload.propertyTransferDuties;
-    }
+    state.renewableEnergyProject.creationData.sitePurchasePropertyTransferDuties =
+      action.payload.propertyTransferDuties ?? 0;
     if (state.siteData?.isFriche) {
       state.renewableEnergyProject.stepsHistory.push("EXPENSES_REINSTATEMENT");
       return;

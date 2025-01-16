@@ -9,6 +9,9 @@ import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
 function SitePurchasedFormContainer() {
   const dispatch = useAppDispatch();
   const siteOwner = useAppSelector((state) => state.projectCreation.siteData?.owner);
+  const initialValue = useAppSelector(
+    (state) => state.projectCreation.renewableEnergyProject.creationData.willSiteBePurchased,
+  );
 
   const onSubmit = (data: FormValues) => {
     const willSiteBePurchased = data.willSiteBePurchased === "yes";
@@ -20,7 +23,16 @@ function SitePurchasedFormContainer() {
   };
 
   return (
-    <SitePurchasedForm onSubmit={onSubmit} onBack={onBack} currentOwnerName={siteOwner?.name} />
+    <SitePurchasedForm
+      initialValues={
+        initialValue === undefined
+          ? undefined
+          : { willSiteBePurchased: initialValue ? "yes" : "no" }
+      }
+      onSubmit={onSubmit}
+      onBack={onBack}
+      currentOwnerName={siteOwner?.name}
+    />
   );
 }
 
