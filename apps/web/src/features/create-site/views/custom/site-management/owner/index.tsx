@@ -13,9 +13,9 @@ import {
   AvailableLocalAuthority,
   selectAvailableLocalAuthoritiesWithoutCurrentUser,
 } from "@/features/create-site/core/siteMunicipalityData.reducer";
+import { UserStructure } from "@/features/onboarding/core/user";
+import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { selectCurrentUserStructure } from "@/users/application/user.reducer";
-import { UserStructure } from "@/users/domain/user";
 
 import SiteOwnerForm, { FormValues } from "./SiteOwnerForm";
 

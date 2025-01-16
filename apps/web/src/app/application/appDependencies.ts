@@ -4,14 +4,14 @@ import HttpSaveExpressReconversionProjectService from "@/features/create-project
 import { HttpSaveReconversionProjectService } from "@/features/create-project/infrastructure/save-project-service/HttpSaveReconversionProjectService";
 import { HttpSitesService } from "@/features/create-project/infrastructure/sites-service/HttpSiteService";
 import { HttpCreateSiteApi } from "@/features/create-site/infrastructure/create-site-service/HttpCreateSiteApi";
+import { HttpCreateUserService } from "@/features/onboarding/infrastructure/create-user-service/HttpCreateUserService";
+import { LocalStorageUserService } from "@/features/onboarding/infrastructure/current-user-service/LocalStorageUserService";
 import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/HttpProjectFeaturesService";
 import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
 import { HttpSiteFeaturesService } from "@/features/site-features/infra/site-features-service/HttpSiteFeaturesService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
 import { SoilsCarbonStorageApi } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageApi";
-import { HttpCreateUserService } from "@/users/infra/create-user-service/HttpCreateUserService";
-import { LocalStorageUserService } from "@/users/infra/current-user-service/LocalStorageUserService";
 
 import { AppDependencies } from "./store";
 

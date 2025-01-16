@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 
 import { createAppAsyncThunk } from "@/app/application/appAsyncThunk";
 
-import { User, userSchema } from "../domain/user";
+import { User, userSchema } from "./user";
 
 type CreateUserProps = Omit<User, "id">;
 

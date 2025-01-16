@@ -2,9 +2,9 @@ import { useTour } from "@reactour/tour";
 import { ReactNode, useEffect } from "react";
 
 import { appSettingUpdated, selectAppSettings } from "@/features/app-settings/core/appSettings";
+import { selectCurrentUserFirstname } from "@/features/onboarding/core/user.reducer";
 import TourGuideProvider from "@/shared/views/components/TourGuideProvider/TourGuideProvider";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-import { selectCurrentUserFirstname } from "@/users/application/user.reducer";
 
 type Props = {
   children: ReactNode;

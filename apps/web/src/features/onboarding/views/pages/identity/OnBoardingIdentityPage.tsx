@@ -1,10 +1,10 @@
 import { routes } from "@/app/views/router";
 
-import CreateUserForm from "../../../users/views/CreateUserForm";
+import CreateUserFormContainer from "./CreateUserForm";
 
 function OnBoardingIdentityPage() {
   return (
-    <CreateUserForm
+    <CreateUserFormContainer
       createdFrom="features_app"
       onSuccess={() => {
         routes.onBoardingIntroductionWhy().push();

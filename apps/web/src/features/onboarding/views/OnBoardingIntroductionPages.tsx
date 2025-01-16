@@ -2,8 +2,8 @@ import { Route } from "type-route";
 
 import { routes } from "@/app/views/router";
 
-import OnBoardingIntroductionHow from "./how-it-works";
-import OnBoardingIntroductionWhyBenefriches from "./why-benefriches";
+import OnBoardingIntroductionHow from "./pages/how-it-works";
+import OnBoardingIntroductionWhyBenefriches from "./pages/why-benefriches";
 
 type Props = {
   route:

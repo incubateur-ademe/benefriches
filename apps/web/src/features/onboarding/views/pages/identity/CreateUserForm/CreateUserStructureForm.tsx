@@ -9,7 +9,7 @@ import { formatLocalAuthorityName, LocalAuthority } from "shared";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
 import { AdministrativeDivision, AdministrativeDivisionService } from ".";
-import { UserStructureActivity } from "../../domain/user";
+import { UserStructureActivity } from "../../../../core/user";
 import { FormValues } from "./CreateUserForm";
 
 type StructureCategory = Exclude<UserStructureActivity, LocalAuthority> | "local_authority";

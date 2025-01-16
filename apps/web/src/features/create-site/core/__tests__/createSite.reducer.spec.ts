@@ -1,7 +1,7 @@
 /* eslint-disable jest/expect-expect */
 import { createStore, RootState } from "@/app/application/store";
+import { buildUser } from "@/features/onboarding/core/user.mock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
-import { buildUser } from "@/users/domain/user.mock";
 
 import { InMemoryCreateSiteService } from "../../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import {

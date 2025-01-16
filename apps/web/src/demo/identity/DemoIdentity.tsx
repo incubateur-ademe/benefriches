@@ -1,5 +1,5 @@
 import { routes } from "@/app/views/router";
-import CreateUserForm from "@/users/views/CreateUserForm";
+import CreateUserForm from "@/features/onboarding/views/pages/identity/CreateUserForm";
 
 function AppDemoIdentity() {
   return (

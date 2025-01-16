@@ -5,25 +5,25 @@ import { BENEFRICHES_ENV } from "@/app/application/envVars";
 import MatomoContainer from "@/app/views/MatomoContainer";
 import NotFoundScreen from "@/app/views/not-found";
 import { routes, useRoute } from "@/app/views/router";
+import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
-import { initCurrentUser } from "@/users/application/initCurrentUser.action";
 
 /* Lazy-loaded pages */
-const CreateUserPage = lazy(() => import("@/users/views"));
+const CreateUserPage = lazy(() => import("@/features/onboarding/views"));
 const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
 );
 const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
 const LoginPage = lazy(() => import("@/features/login"));
 const OnBoardingIdentityPage = lazy(
-  () => import("@/features/onboarding/identity/OnBoardingIdentityPage"),
+  () => import("@/features/onboarding/views/pages/identity/OnBoardingIdentityPage"),
 );
 const OnBoardingIntroductionPages = lazy(
-  () => import("@/features/onboarding/OnBoardingIntroductionPages"),
+  () => import("@/features/onboarding/views/OnBoardingIntroductionPages"),
 );
 const MyProjectsPage = lazy(() => import("@/features/projects/views/my-projects-page"));
 const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));

@@ -9,9 +9,9 @@ import {
   SoilType,
 } from "shared";
 
+import { UserStructureType } from "@/features/onboarding/core/user";
 import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionProject";
 import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
-import { UserStructureType } from "@/users/domain/user";
 
 export type PhotovoltaicKeyParameter = "POWER" | "SURFACE";
 

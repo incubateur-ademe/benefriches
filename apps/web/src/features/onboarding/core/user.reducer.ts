@@ -2,9 +2,9 @@ import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { RootState } from "@/app/application/store";
 
-import { User, UserStructure } from "../domain/user";
 import { createUser } from "./createUser.action";
 import { initCurrentUser } from "./initCurrentUser.action";
+import { User, UserStructure } from "./user";
 
 type State = {
   currentUser: User | null;

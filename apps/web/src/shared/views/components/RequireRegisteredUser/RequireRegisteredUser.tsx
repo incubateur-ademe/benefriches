@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { routes } from "@/app/views/router";
-import { isCurrentUserLoaded, selectCurrentUserId } from "@/users/application/user.reducer";
+import { isCurrentUserLoaded, selectCurrentUserId } from "@/features/onboarding/core/user.reducer";
 
 import { useAppSelector } from "../../hooks/store.hooks";
 

@@ -1,6 +1,6 @@
-import IllustrationCard from "@/features/onboarding/how-it-works/IllustrationCard";
-import OnBoardingIntroductionStep from "@/features/onboarding/how-it-works/Step";
-import { HOW_IT_WORKS_CONTENT } from "@/features/onboarding/how-it-works/content";
+import IllustrationCard from "@/features/onboarding/views/pages/how-it-works/IllustrationCard";
+import OnBoardingIntroductionStep from "@/features/onboarding/views/pages/how-it-works/Step";
+import { HOW_IT_WORKS_CONTENT } from "@/features/onboarding/views/pages/how-it-works/content";
 import classNames from "@/shared/views/clsx";
 
 export default function HowItWorksSection() {

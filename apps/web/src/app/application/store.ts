@@ -6,11 +6,11 @@ import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/r
 import { SaveReconversionProjectGateway } from "@/features/create-project/core/saveReconversionProject.action";
 import { SaveExpressReconversionProjectGateway } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
+import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
-import { CreateUserGateway } from "@/users/application/createUser.action";
-import { CurrentUserGateway } from "@/users/application/initCurrentUser.action";
 
 import { GetSitesByIdGateway } from "../../features/create-project/core/createProject.actions";
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../features/create-project/core/soilsCarbonStorage.action";
