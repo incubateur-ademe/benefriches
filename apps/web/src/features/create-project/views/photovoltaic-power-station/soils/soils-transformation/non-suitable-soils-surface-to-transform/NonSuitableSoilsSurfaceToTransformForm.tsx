@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { SoilsDistribution, typedObjectEntries } from "shared";
+import { SoilsDistribution, SoilType } from "shared";
 import { sumObjectValues } from "shared";
 
 import {
@@ -11,7 +11,6 @@ import {
   getLabelForSoilType,
   getPictogramForSoilType,
 } from "@/shared/core/label-mapping/soilTypeLabelMapping";
-import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import RowNumericInput from "@/shared/views/components/form/NumericInput/RowNumericInput";
@@ -24,31 +23,22 @@ export type FormValues = {
 };
 
 type Props = {
-  soilsToTransform: SoilsDistribution;
+  initialValues: FormValues;
+  soilsToTransform: { soilType: SoilType; currentSurfaceArea: number }[];
   missingSuitableSurfaceArea: number;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
 
-const getSoilsTransformationDefaultValue = (
-  soilsToTransform: SoilsDistribution,
-): SoilsDistribution => {
-  return typedObjectKeys(soilsToTransform).reduce<SoilsDistribution>((acc, soilType) => {
-    acc[soilType] = 0;
-    return acc;
-  }, {});
-};
-
 function NonSuitableSoilsSurfaceToTransformForm({
+  initialValues,
   soilsToTransform,
   missingSuitableSurfaceArea,
   onSubmit,
   onBack,
 }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
-    defaultValues: {
-      soilsTransformation: getSoilsTransformationDefaultValue(soilsToTransform),
-    },
+    defaultValues: initialValues,
   });
 
   const totalSurfaceEntered = sumObjectValues(watch("soilsTransformation"));
@@ -76,13 +66,12 @@ function NonSuitableSoilsSurfaceToTransformForm({
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {typedObjectEntries(soilsToTransform).map(([soilType, surfaceArea]) => {
-          const soilSurfaceArea = surfaceArea as number;
+        {soilsToTransform.map(({ soilType, currentSurfaceArea }) => {
           const nativeInputProps = register(`soilsTransformation.${soilType}`, {
             ...optionalNumericFieldRegisterOptions,
             max: {
-              value: soilSurfaceArea,
-              message: `La superficie de ce sol est de ${formatSurfaceArea(soilSurfaceArea)}.`,
+              value: currentSurfaceArea,
+              message: `La superficie de ce sol est de ${formatSurfaceArea(currentSurfaceArea)}.`,
             },
           });
           const error =
@@ -97,7 +86,7 @@ function NonSuitableSoilsSurfaceToTransformForm({
               nativeInputProps={nativeInputProps}
               state={error ? "error" : "default"}
               stateRelatedMessage={error?.message}
-              hintInputText={`Maximum ${formatSurfaceArea(soilSurfaceArea)}`}
+              hintInputText={`Maximum ${formatSurfaceArea(currentSurfaceArea)}`}
             />
           );
         })}

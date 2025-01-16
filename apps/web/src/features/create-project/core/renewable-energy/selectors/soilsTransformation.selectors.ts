@@ -5,12 +5,12 @@ import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
 import { selectSiteData, selectSiteSoilsDistribution } from "../../createProject.selectors";
 import {
-  getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
   getNonSuitableSoilsForPhotovoltaicPanels,
   getSuitableSoilsForTransformation,
   getSuitableSurfaceAreaForPhotovoltaicPanels,
   isBiodiversityAndClimateSensibleSoil,
   willTransformationNoticeablyImpactBiodiversityAndClimate,
+  getBioversityAndClimateSensitiveSoilsSurfaceAreaDestroyed,
 } from "../soilsTransformation";
 import { selectPhotovoltaicPanelsSurfaceArea } from "./photovoltaicPowerStation.selectors";
 import { selectCreationData, selectProjectSoilsDistribution } from "./renewableEnergy.selector";
@@ -22,33 +22,64 @@ export const selectSuitableSurfaceAreaForPhotovoltaicPanels = createSelector(
   },
 );
 
-export const selectNonSuitableSoilsForPhototovoltaicPanels = createSelector(
-  selectSiteData,
-  (state): SoilsDistribution => {
-    return state ? getNonSuitableSoilsForPhotovoltaicPanels(state.soilsDistribution) : {};
+const selectMissingSuitableSurfaceArea = createSelector(
+  [selectPhotovoltaicPanelsSurfaceArea, selectSiteSoilsDistribution],
+  (neededSurfaceArea, siteSoilsDistribution): number => {
+    return neededSurfaceArea - getSuitableSurfaceAreaForPhotovoltaicPanels(siteSoilsDistribution);
   },
 );
 
-export const selectMissingSuitableSurfaceAreaForPhotovoltaicPanels = createSelector(
-  [selectPhotovoltaicPanelsSurfaceArea, selectSuitableSurfaceAreaForPhotovoltaicPanels],
-  (neededSurfaceArea, suitableSurfaceArea): number => {
-    return neededSurfaceArea - suitableSurfaceArea;
+type NonSuitableSoilsSelectionViewData = {
+  initialValues: { soils: SoilType[] };
+  nonSuitableSoils: SoilsDistribution;
+  missingSuitableSurfaceArea: number;
+};
+export const selectNonSuitableSelectionViewData = createSelector(
+  [selectCreationData, selectSiteSoilsDistribution, selectMissingSuitableSurfaceArea],
+  (
+    creationData,
+    siteSoilsDistribution,
+    missingSuitableSurfaceArea,
+  ): NonSuitableSoilsSelectionViewData => {
+    const nonSuitableSoils = getNonSuitableSoilsForPhotovoltaicPanels(siteSoilsDistribution);
+    return {
+      initialValues: { soils: creationData.nonSuitableSoilsToTransform ?? [] },
+      nonSuitableSoils,
+      missingSuitableSurfaceArea,
+    };
   },
 );
 
-const selectNonSuitableSoilsSelected = createSelector(
-  selectCreationData,
-  (creationData): SoilType[] => creationData.nonSuitableSoilsToTransform ?? [],
-);
-
-export const selectNonSuitableSoilsForPhototovoltaicPanelsToTransform = createSelector(
-  [selectNonSuitableSoilsForPhototovoltaicPanels, selectNonSuitableSoilsSelected],
-  (nonSuitableSoils, selectedNonSuitableSoilsToTransform): SoilsDistribution => {
-    return typedObjectKeys(nonSuitableSoils)
-      .filter((soilType) => selectedNonSuitableSoilsToTransform.includes(soilType))
-      .reduce((soilsDistribution, soilType) => {
-        return { ...soilsDistribution, [soilType]: nonSuitableSoils[soilType] };
+type NonSuitableSoilsSurfaceAreaToTransformViewData = {
+  initialValues: SoilsDistribution;
+  soilsToTransform: { soilType: SoilType; currentSurfaceArea: number }[];
+  missingSuitableSurfaceArea: number;
+};
+export const selectNonSuitableSoilsSurfaceAreaToTransformViewData = createSelector(
+  [selectCreationData, selectSiteSoilsDistribution, selectMissingSuitableSurfaceArea],
+  (
+    creationData,
+    siteSoilsDistribution,
+    missingSuitableSurfaceArea,
+  ): NonSuitableSoilsSurfaceAreaToTransformViewData => {
+    const nonSuitableSoilsSurfaceAreas =
+      getNonSuitableSoilsForPhotovoltaicPanels(siteSoilsDistribution);
+    // set every surface area to 0 if user hasn't entered data
+    const initialValues =
+      creationData.nonSuitableSoilsSurfaceAreaToTransform ??
+      typedObjectKeys(nonSuitableSoilsSurfaceAreas).reduce<SoilsDistribution>((acc, soilType) => {
+        acc[soilType] = 0;
+        return acc;
       }, {});
+
+    const soilsToTransform = (creationData.nonSuitableSoilsToTransform ?? []).map((soilType) => {
+      return { soilType, currentSurfaceArea: nonSuitableSoilsSurfaceAreas[soilType] ?? 0 };
+    });
+    return {
+      initialValues,
+      missingSuitableSurfaceArea,
+      soilsToTransform,
+    };
   },
 );
 

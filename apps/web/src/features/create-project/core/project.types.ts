@@ -37,6 +37,7 @@ export type ReconversionProjectCreationData = {
   decontaminatedSurfaceArea?: number;
   decontaminationPlan?: "none" | "partial" | "unknown";
   // soils transformation
+  nonSuitableSoilsSurfaceAreaToTransform: SoilsDistribution;
   baseSoilsDistributionForTransformation: SoilsDistribution;
   soilsDistribution: SoilsDistribution;
   nonSuitableSoilsToTransform: SoilType[];

@@ -27,6 +27,7 @@ export const projectWithMinimalData = {
   projectDeveloper: { name: "SolarDev", structureType: "company" },
   futureOperator: { name: "SolarDev", structureType: "company" },
   futureSiteOwner: { name: "SolarDev", structureType: "company" },
+  nonSuitableSoilsSurfaceAreaToTransform: {},
   baseSoilsDistributionForTransformation: {},
   nonSuitableSoilsToTransform: [],
   futureSoilsSelection: [],

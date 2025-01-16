@@ -234,6 +234,8 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
     state.renewableEnergyProject.stepsHistory.push("NON_SUITABLE_SOILS_SURFACE");
   });
   builder.addCase(completeNonSuitableSoilsSurfaceStep, (state, action) => {
+    state.renewableEnergyProject.creationData.nonSuitableSoilsSurfaceAreaToTransform =
+      action.payload;
     state.renewableEnergyProject.creationData.baseSoilsDistributionForTransformation =
       transformNonSuitableSoils(state.siteData?.soilsDistribution ?? {}, action.payload);
 

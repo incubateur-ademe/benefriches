@@ -7,7 +7,7 @@ import { selectPhotovoltaicPanelsSurfaceArea } from "@/features/create-project/c
 import {
   selectBaseSoilsDistributionForTransformation,
   selectFutureSoils,
-} from "@/features/create-project/core/renewable-energy/soilsTransformation.selectors";
+} from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import FutureSoilsSurfaceAreaForm, { FormValues } from "./FutureSoilsSurfaceAreaForm";

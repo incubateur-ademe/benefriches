@@ -18,6 +18,7 @@ export type FormValues = {
 };
 
 type Props = {
+  initialValues?: FormValues;
   nonSuitableSoils: SoilsDistribution;
   missingSuitableSurfaceArea: number;
   onSubmit: (data: FormValues) => void;
@@ -48,15 +49,14 @@ const SoilTypeTile = ({ soilType, surfaceArea, isSelected, onSelect }: SoilTypeT
 };
 
 function NonSuitableSoilsSelection({
+  initialValues,
   nonSuitableSoils,
   missingSuitableSurfaceArea,
   onSubmit,
   onBack,
 }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
-    defaultValues: {
-      soils: [],
-    },
+    defaultValues: initialValues,
   });
 
   const validationError = formState.errors.soils;

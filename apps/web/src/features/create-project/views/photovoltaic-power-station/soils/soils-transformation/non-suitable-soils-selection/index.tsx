@@ -2,23 +2,20 @@ import {
   completeNonSuitableSoilsSelectionStep,
   revertNonSuitableSoilsSelectionStep,
 } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import {
-  selectMissingSuitableSurfaceAreaForPhotovoltaicPanels,
-  selectNonSuitableSoilsForPhototovoltaicPanels,
-} from "@/features/create-project/core/renewable-energy/soilsTransformation.selectors";
+import { selectNonSuitableSelectionViewData } from "@/features/create-project/core/renewable-energy/selectors/soilsTransformation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import NonSuitableSoilsSelection, { FormValues } from "./NonSuitableSoilsSelection";
 
 function NonSuitableSoilsSelectionContainer() {
   const dispatch = useAppDispatch();
-  const nonSuitableSoils = useAppSelector(selectNonSuitableSoilsForPhototovoltaicPanels);
-  const missingSuitableSurfaceArea = useAppSelector(
-    selectMissingSuitableSurfaceAreaForPhotovoltaicPanels,
+  const { initialValues, nonSuitableSoils, missingSuitableSurfaceArea } = useAppSelector(
+    selectNonSuitableSelectionViewData,
   );
 
   return (
     <NonSuitableSoilsSelection
+      initialValues={initialValues}
       nonSuitableSoils={nonSuitableSoils}
       missingSuitableSurfaceArea={missingSuitableSurfaceArea}
       onSubmit={(data: FormValues) => {
