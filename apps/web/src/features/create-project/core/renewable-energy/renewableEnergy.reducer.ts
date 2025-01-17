@@ -166,7 +166,7 @@ export type PhotovoltaicProjectCreationStep =
   | "CREATION_RESULT";
 
 export const INITIAL_STATE: RenewableEneryProjectState = {
-  stepsHistory: ["STAKEHOLDERS_SITE_PURCHASE"],
+  stepsHistory: ["RENEWABLE_ENERGY_TYPES"],
   creationData: {
     yearlyProjectedExpenses: [],
     yearlyProjectedRevenues: [],
