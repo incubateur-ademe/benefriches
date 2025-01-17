@@ -544,7 +544,7 @@ const addRevertStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreati
     revertStep(state);
   });
   builder.addCase(revertSoilsDecontaminationSelectionStep, (state) => {
-    revertStep(state, ["decontaminatedSurfaceArea"]);
+    revertStep(state, ["decontaminatedSurfaceArea", "decontaminationPlan"]);
   });
   builder.addCase(revertSoilsDecontaminationSurfaceAreaStep, (state) => {
     revertStep(state, ["decontaminatedSurfaceArea"]);
@@ -560,10 +560,13 @@ const addRevertStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreati
   });
 
   builder.addCase(revertNonSuitableSoilsSurfaceStep, (state) => {
-    revertStep(state, ["baseSoilsDistributionForTransformation"]);
+    revertStep(state, [
+      "baseSoilsDistributionForTransformation",
+      "nonSuitableSoilsSurfaceAreaToTransform",
+    ]);
   });
   builder.addCase(revertSoilsTransformationProjectSelectionStep, (state) => {
-    revertStep(state);
+    revertStep(state, ["soilsTransformationProject", "soilsDistribution"]);
   });
   builder.addCase(revertCustomSoilsSelectionStep, (state) => {
     revertStep(state, ["futureSoilsSelection"]);

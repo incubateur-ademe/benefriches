@@ -138,7 +138,7 @@ describe("Urban project custom creation : soils decontamination", () => {
     it("goes to previous step and unset space categories when step is reverted", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["SOILS_DECONTAMINATION_INTRODUCTION", "SOILS_DECONTAMINATION_SELECTION"])
-        .withCreationData({ decontaminatedSurfaceArea: 100 })
+        .withCreationData({ decontaminatedSurfaceArea: 100, decontaminationPlan: "partial" })
         .build();
       const initialRootState = store.getState();
 
@@ -148,6 +148,7 @@ describe("Urban project custom creation : soils decontamination", () => {
       expectRevertedState(initialRootState, newState, {
         creationDataDiff: {
           decontaminatedSurfaceArea: undefined,
+          decontaminationPlan: undefined,
         },
       });
     });

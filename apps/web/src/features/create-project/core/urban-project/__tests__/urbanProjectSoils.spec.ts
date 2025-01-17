@@ -1,6 +1,6 @@
 import { SoilsDistribution } from "shared";
 
-import { getUrbanProjectSoilsDistributionFromSpaces } from "./urbanProjectSoils";
+import { getUrbanProjectSoilsDistributionFromSpaces } from "../urbanProjectSoils";
 
 describe("Urban project soils", () => {
   describe("getUrbanProjectSoilsDistributionFromSpaces", () => {

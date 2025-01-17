@@ -420,6 +420,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     }
   });
   builder.addCase(soilsDecontaminationSelectionReverted, (state) => {
+    state.urbanProject.creationData.decontaminationPlan = undefined;
     if (state.urbanProject.creationData.decontaminatedSurfaceArea)
       state.urbanProject.creationData.decontaminatedSurfaceArea = undefined;
   });
