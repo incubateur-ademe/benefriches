@@ -9,12 +9,15 @@ import {
   getLabelForRenewableEnergyProjectPhase,
   getPictogramForProjectPhase,
 } from "@/shared/core/projectPhase";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectPhaseForm from "../../common-views/project-phase/ProjectPhaseForm";
 
 function ProjectPhaseFormContainer() {
   const dispatch = useAppDispatch();
+  const initialValue = useAppSelector(
+    (state) => state.projectCreation.renewableEnergyProject.creationData.projectPhase,
+  );
 
   const options = RENEWABLE_ENERGY_PROJECT_PHASE_VALUES.map((phase) => ({
     value: phase,
@@ -25,6 +28,7 @@ function ProjectPhaseFormContainer() {
 
   return (
     <ProjectPhaseForm
+      initialValues={initialValue && { phase: initialValue }}
       projectPhaseOptions={options}
       onSubmit={({ phase }) => {
         dispatch(completeProjectPhaseStep({ phase: phase ?? "unknown" }));
