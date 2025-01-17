@@ -7,7 +7,7 @@ export const getLabelForDevelopmentPlanCategory = (value: DevelopmentPlanCategor
     case "URBAN_PROJECT":
       return "Projet urbain";
     case "NATURAL_URBAN_SPACES":
-      return "Espace de nature en ville";
+      return "Espace de nature";
     case "URBAN_AGRICULTURE":
       return "Ferme urbaine";
     case "RENEWABLE_ENERGY":
@@ -22,9 +22,9 @@ export const getDescriptionForDevelopmentPlanCategory = (
 ): string => {
   switch (value) {
     case "URBAN_PROJECT":
-      return "Logements, lieux d'activité économique, équipements publics, espaces verts...";
+      return "Logements, lieux d'activités économiques, équipements publics, espaces verts...";
     case "NATURAL_URBAN_SPACES":
-      return "Parc ou espaces verts urbains, renaturations...";
+      return "Parc ou espaces verts urbains, renaturation...";
     case "URBAN_AGRICULTURE":
       return "Cultures de fruits et légumes, horticulture...";
     case "RENEWABLE_ENERGY":
