@@ -4,7 +4,7 @@ import {
   completeYearlyProjectedRevenue,
   revertYearlyProjectedRevenue,
 } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { getDefaultValuesForYearlyProjectedRecurringRevenue } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { selectPhotovoltaicPowerStationYearlyRevenueInitialValues } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
 import YearlyProjectedsRevenueForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -12,7 +12,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 function YearlyProjectedRevenueFormContainer() {
   const dispatch = useAppDispatch();
-  const defaultOperationsValue = useAppSelector(getDefaultValuesForYearlyProjectedRecurringRevenue);
+  const initialValues = useAppSelector(selectPhotovoltaicPowerStationYearlyRevenueInitialValues);
 
   return (
     <YearlyProjectedsRevenueForm
@@ -32,7 +32,10 @@ function YearlyProjectedRevenueFormContainer() {
           <p>Vous pouvez modifier ces montants.</p>
         </FormInfo>
       }
-      defaultValues={{ operationsAmount: defaultOperationsValue }}
+      initialValues={{
+        operationsAmount: initialValues.operations,
+        otherAmount: initialValues.other,
+      }}
       onBack={() => {
         dispatch(revertYearlyProjectedRevenue());
       }}

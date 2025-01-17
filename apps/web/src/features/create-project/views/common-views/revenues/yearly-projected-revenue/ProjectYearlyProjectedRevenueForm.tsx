@@ -14,9 +14,7 @@ type Props = {
   onBack: () => void;
   title?: ReactNode;
   instructions?: ReactNode;
-  defaultValues?: {
-    operationsAmount?: number;
-  };
+  initialValues?: FormValues;
 };
 
 export type FormValues = {
@@ -28,10 +26,10 @@ const ProjectYearlyProjectedRevenueForm = ({
   title = "Recettes annuelles",
   onSubmit,
   onBack,
-  defaultValues,
+  initialValues,
   instructions,
 }: Props) => {
-  const { handleSubmit, register, watch } = useForm<FormValues>({ defaultValues });
+  const { handleSubmit, register, watch } = useForm<FormValues>({ defaultValues: initialValues });
 
   const allRevenues = watch();
 

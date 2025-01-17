@@ -8,7 +8,6 @@ import { RootState } from "@/shared/core/store-config/store";
 import { ProjectCreationState } from "../../createProject.reducer";
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateRenewableEnergyProjectName } from "../../projectName";
-import { computeDefaultPhotovoltaicYearlyRecurringRevenueAmount } from "../photovoltaic";
 import { RenewableEneryProjectState } from "../renewableEnergy.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation;
@@ -62,17 +61,6 @@ export const selectSitePurchaseAmounts = createSelector(
       sellingPrice: creationData.sitePurchaseSellingPrice ?? 0,
       propertyTransferDuties: creationData.sitePurchasePropertyTransferDuties ?? 0,
     };
-  },
-);
-
-export const getDefaultValuesForYearlyProjectedRecurringRevenue = createSelector(
-  selectCreationData,
-  (creationData): number | undefined => {
-    const { photovoltaicExpectedAnnualProduction } = creationData;
-
-    return photovoltaicExpectedAnnualProduction
-      ? computeDefaultPhotovoltaicYearlyRecurringRevenueAmount(photovoltaicExpectedAnnualProduction)
-      : undefined;
   },
 );
 

@@ -27,42 +27,30 @@ const mapFormValuesToFinancialAssistanceRevenues = (
   return revenues;
 };
 
-const mapFinnancialAssistanceRevenuesToFormValues = (
-  financialAssistanceRevenues: FinancialAssistanceRevenue[],
-): FormValues => {
-  const formValues: FormValues = {};
-  financialAssistanceRevenues.forEach((revenue) => {
-    switch (revenue.source) {
-      case "local_or_regional_authority_participation":
-        formValues.localOrRegionalAuthorityAmount = revenue.amount;
-        break;
-      case "public_subsidies":
-        formValues.publicSubsidiesAmount = revenue.amount;
-        break;
-      case "other":
-        formValues.otherAmount = revenue.amount;
-        break;
-      default:
-        break;
-    }
-  });
-  return formValues;
-};
-
 type Props = {
-  preEnteredData?: FinancialAssistanceRevenue[];
+  initialValues?: {
+    localOrRegionalAuthority: number;
+    publicSubsidies: number;
+    other: number;
+  };
   onSubmit: (data: FinancialAssistanceRevenue[]) => void;
   onBack: () => void;
 };
 
 function ProjectFinancialAssistanceRevenueFormContainer({
-  preEnteredData,
+  initialValues,
   onBack,
   onSubmit,
 }: Props) {
   return (
     <ProjectFinancialAssistanceRevenueForm
-      initialValues={preEnteredData && mapFinnancialAssistanceRevenuesToFormValues(preEnteredData)}
+      initialValues={
+        initialValues && {
+          localOrRegionalAuthorityAmount: initialValues.localOrRegionalAuthority,
+          publicSubsidiesAmount: initialValues.publicSubsidies,
+          otherAmount: initialValues.other,
+        }
+      }
       onBack={onBack}
       onSubmit={(formData: FormValues) => {
         const financialAssistanceRevenues = mapFormValuesToFinancialAssistanceRevenues(formData);

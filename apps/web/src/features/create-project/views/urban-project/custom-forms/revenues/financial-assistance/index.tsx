@@ -2,17 +2,17 @@ import {
   financialAssistanceRevenuesCompleted,
   financialAssistanceRevenuesReverted,
 } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import { selectFinancialAssistanceRevenues } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
+import { selectUrbanProjectFinancialAssistanceRevenueInitialValues } from "@/features/create-project/core/urban-project/selectors/revenues.selectors";
 import ProjectFinancialAssistanceRevenueForm from "@/features/create-project/views/common-views/revenues/financial-assistance";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ProjectFinancialAssistanceRevenueFormContainer() {
   const dispatch = useAppDispatch();
-  const preEnteredData = useAppSelector(selectFinancialAssistanceRevenues);
+  const initialValues = useAppSelector(selectUrbanProjectFinancialAssistanceRevenueInitialValues);
 
   return (
     <ProjectFinancialAssistanceRevenueForm
-      preEnteredData={preEnteredData}
+      initialValues={initialValues}
       onBack={() => {
         dispatch(financialAssistanceRevenuesReverted());
       }}

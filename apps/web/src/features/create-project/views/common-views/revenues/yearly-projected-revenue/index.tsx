@@ -15,9 +15,7 @@ type Props = {
   onBack: () => void;
   title?: ReactNode;
   instructions?: ReactNode;
-  defaultValues?: {
-    operationsAmount?: number;
-  };
+  initialValues?: FormValues;
 };
 
 function YearlyProjectedRevenueFormContainer({ onSubmit, ...props }: Props) {
