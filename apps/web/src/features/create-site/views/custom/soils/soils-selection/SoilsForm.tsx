@@ -42,7 +42,7 @@ const siteSoilTypeTilesCategories: readonly { category: string; options: SoilTyp
     options: ["WATER", "WET_LAND"],
   },
   {
-    category: "Sols végétalisés végétalisés",
+    category: "Sols artificiels végétalisés",
     options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
   },
   {
