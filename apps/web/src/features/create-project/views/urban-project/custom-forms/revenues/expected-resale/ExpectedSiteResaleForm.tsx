@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { computePropertyTransferDutiesFromSellingPrice } from "shared";
 
@@ -21,22 +20,11 @@ type FormValues = {
 };
 
 const ExpectedSiteResaleForm = ({ initialValues, onSubmit, onBack }: Props) => {
-  const { handleSubmit, register, watch, setValue, formState } = useForm<FormValues>({
+  const { handleSubmit, register, watch, setValue } = useForm<FormValues>({
     defaultValues: initialValues,
   });
 
   const sellingPrice = watch("sellingPrice");
-
-  useEffect(() => {
-    // we don't want to override the default value is form has not been touched
-    if (!formState.isDirty && !!initialValues) return;
-
-    const propertyTransferDuties =
-      sellingPrice && !isNaN(sellingPrice)
-        ? computePropertyTransferDutiesFromSellingPrice(sellingPrice)
-        : undefined;
-    setValue("propertyTransferDuties", propertyTransferDuties);
-  }, [sellingPrice, setValue, formState.isDirty, initialValues]);
 
   return (
     <WizardFormLayout
@@ -75,7 +63,22 @@ const ExpectedSiteResaleForm = ({ initialValues, onSubmit, onBack }: Props) => {
           className="!tw-pt-4"
           addonText="€"
           label="Prix de vente"
-          nativeInputProps={register("sellingPrice", optionalNumericFieldRegisterOptions)}
+          nativeInputProps={(() => {
+            const registerProps = register("sellingPrice", optionalNumericFieldRegisterOptions);
+            return {
+              ...registerProps,
+              onChange: (e) => {
+                void registerProps.onChange(e);
+
+                const sellingPrice = parseFloat(e.target.value);
+                const propertyTransferDuties =
+                  sellingPrice && !isNaN(sellingPrice)
+                    ? computePropertyTransferDutiesFromSellingPrice(sellingPrice)
+                    : undefined;
+                setValue("propertyTransferDuties", propertyTransferDuties);
+              },
+            };
+          })()}
         />
 
         <RowDecimalsNumericInput
