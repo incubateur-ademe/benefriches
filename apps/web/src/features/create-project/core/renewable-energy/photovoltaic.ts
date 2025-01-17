@@ -55,7 +55,7 @@ const computeDefaultPhotovoltaicOtherAmountExpenses = (electricalPowerKWc: numbe
   );
 };
 
-export const computePhotovoltaicPowerStationExpensesFromElectricalPower = (
+export const computePhotovoltaicPowerStationInstallationExpensesFromElectricalPower = (
   electricalPowerKWc: number,
 ) => {
   return {
@@ -71,17 +71,34 @@ const PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR = {
   taxes: 4.394,
 };
 
-export const computeDefaultPhotovoltaicYearlyRentAmount = (electricalPowerKWc: number) => {
+const computeDefaultPhotovoltaicYearlyRentAmount = (electricalPowerKWc: number) => {
   return Math.round(
     electricalPowerKWc * PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR.rent,
   );
 };
 
-export const computeDefaultPhotovoltaicYearlyMaintenanceAmount = (electricalPowerKWc: number) => {
+const computeDefaultPhotovoltaicYearlyMaintenanceAmount = (electricalPowerKWc: number) => {
   return Math.round(
     electricalPowerKWc *
       PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR.maintenance,
   );
+};
+
+const computeDefaultPhotovoltaicYearlyTaxesAmount = (electricalPowerKWc: number) => {
+  return Math.round(
+    electricalPowerKWc * PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR.taxes,
+  );
+};
+
+export const computePhotovoltaicPowerStationYearlyExpensesFromElectricalPower = (
+  electricalPowerKWc: number,
+) => {
+  return {
+    rent: computeDefaultPhotovoltaicYearlyRentAmount(electricalPowerKWc),
+    maintenance: computeDefaultPhotovoltaicYearlyMaintenanceAmount(electricalPowerKWc),
+    taxes: computeDefaultPhotovoltaicYearlyTaxesAmount(electricalPowerKWc),
+    other: 0,
+  };
 };
 
 const ECONOMICAL_RATIO_OPERATIONS_INCOME_EURO_PER_MWH_PER_YEAR = 65;
@@ -90,11 +107,5 @@ export const computeDefaultPhotovoltaicYearlyRecurringRevenueAmount = (
 ) => {
   return Math.round(
     expectedProductionMWh * ECONOMICAL_RATIO_OPERATIONS_INCOME_EURO_PER_MWH_PER_YEAR,
-  );
-};
-
-export const computeDefaultPhotovoltaicYearlyTaxesAmount = (electricalPowerKWc: number) => {
-  return Math.round(
-    electricalPowerKWc * PHOTOVOLTAIC_POWER_PLANT_ECONOMICAL_RATIO_EURO_PER_KWC_PER_YEAR.taxes,
   );
 };

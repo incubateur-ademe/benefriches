@@ -10,15 +10,11 @@ import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/f
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
   title?: ReactNode;
   instructions?: ReactNode;
-  defaultValues?: {
-    rent: number;
-    maintenance: number;
-    taxes: number;
-  };
 };
 
 export type FormValues = {
@@ -31,16 +27,12 @@ export type FormValues = {
 const YearlyProjectedExpensesForm = ({
   onSubmit,
   onBack,
-  defaultValues,
+  initialValues,
   title = "Dépenses annuelles",
   instructions,
 }: Props) => {
   const { handleSubmit, register, watch } = useForm<FormValues>({
-    defaultValues: {
-      rentAmount: defaultValues?.rent,
-      maintenanceAmount: defaultValues?.maintenance,
-      taxesAmount: defaultValues?.taxes,
-    },
+    defaultValues: initialValues,
   });
 
   const allExpenses = watch();

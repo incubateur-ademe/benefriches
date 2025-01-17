@@ -8,12 +8,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import { ProjectCreationState } from "../../createProject.reducer";
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateRenewableEnergyProjectName } from "../../projectName";
-import {
-  computeDefaultPhotovoltaicYearlyMaintenanceAmount,
-  computeDefaultPhotovoltaicYearlyRecurringRevenueAmount,
-  computeDefaultPhotovoltaicYearlyRentAmount,
-  computeDefaultPhotovoltaicYearlyTaxesAmount,
-} from "../photovoltaic";
+import { computeDefaultPhotovoltaicYearlyRecurringRevenueAmount } from "../photovoltaic";
 import { RenewableEneryProjectState } from "../renewableEnergy.reducer";
 
 const selectSelf = (state: RootState) => state.projectCreation;
@@ -67,20 +62,6 @@ export const selectSitePurchaseAmounts = createSelector(
       sellingPrice: creationData.sitePurchaseSellingPrice ?? 0,
       propertyTransferDuties: creationData.sitePurchasePropertyTransferDuties ?? 0,
     };
-  },
-);
-
-export const getDefaultValuesForYearlyProjectedExpenses = createSelector(
-  selectCreationData,
-  (creationData): { rent: number; maintenance: number; taxes: number } | undefined => {
-    const { photovoltaicInstallationElectricalPowerKWc: electricalPowerKWc } = creationData;
-    return electricalPowerKWc
-      ? {
-          rent: computeDefaultPhotovoltaicYearlyRentAmount(electricalPowerKWc),
-          maintenance: computeDefaultPhotovoltaicYearlyMaintenanceAmount(electricalPowerKWc),
-          taxes: computeDefaultPhotovoltaicYearlyTaxesAmount(electricalPowerKWc),
-        }
-      : undefined;
   },
 );
 

@@ -4,7 +4,8 @@ import {
   completeYearlyProjectedExpenses,
   revertYearlyProjectedExpenses,
 } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { getDefaultValuesForYearlyProjectedExpenses } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { selectPhotovoltaicPowerStationYearlyExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
+import "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
@@ -13,10 +14,11 @@ import YearlyProjectedExpensesForm from "../../../common-views/costs/yearly-proj
 
 function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();
-  const defaultValues = useAppSelector(getDefaultValuesForYearlyProjectedExpenses);
+  const initialValues = useAppSelector(selectPhotovoltaicPowerStationYearlyExpensesInitialValues);
 
   return (
     <YearlyProjectedExpensesForm
+      initialValues={initialValues}
       instructions={
         <FormInfo>
           <p>
@@ -33,7 +35,6 @@ function YearlyProjectedExpensesFormContainer() {
           <p>Vous pouvez modifier ces montants.</p>
         </FormInfo>
       }
-      defaultValues={defaultValues}
       onSubmit={(expenses: RecurringExpense[]) => {
         dispatch(completeYearlyProjectedExpenses(expenses));
       }}

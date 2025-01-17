@@ -17,10 +17,11 @@ type Props = {
   onBack: () => void;
   title?: ReactNode;
   instructions?: ReactNode;
-  defaultValues?: {
+  initialValues: {
     rent: number;
     maintenance: number;
     taxes: number;
+    other: number;
   };
 };
 
@@ -29,7 +30,7 @@ function YearlyProjectedExpensesFormContainer({
   onBack,
   title,
   instructions,
-  defaultValues,
+  initialValues,
 }: Props) {
   return (
     <YearlyProjectedsExpensesForm
@@ -44,7 +45,12 @@ function YearlyProjectedExpensesFormContainer({
         );
       }}
       onBack={onBack}
-      defaultValues={defaultValues}
+      initialValues={{
+        taxesAmount: initialValues.taxes,
+        maintenanceAmount: initialValues.maintenance,
+        rentAmount: initialValues.rent,
+        otherAmount: initialValues.other,
+      }}
       title={title}
       instructions={instructions}
     />
