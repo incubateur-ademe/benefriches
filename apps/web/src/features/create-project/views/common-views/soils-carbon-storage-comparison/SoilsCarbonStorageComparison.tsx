@@ -40,7 +40,7 @@ const SoilsCarbonStorageComparison = ({
       : 0;
   return (
     <>
-      <h2>Stockage du carbone par les sols</h2>
+      <h2>Stockage du carbone par les sols après transformation</h2>
       <CarbonStorageDifferenceSection carbonStorageDifference={carbonStorageDifference} />
       <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6 tw-pb-10">
         <div className="tw-border tw-border-solid tw-border-borderGrey tw-p-8">

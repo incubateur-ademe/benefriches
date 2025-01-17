@@ -21,6 +21,6 @@ export const getFricheActivityLabel = (fricheActivity: FricheActivity): string =
     case "HOUSING":
       return "Ancienne zone d'habitation";
     case "OTHER":
-      return "Autre";
+      return "Friche";
   }
 };

@@ -62,6 +62,7 @@ function SoilsDecontaminationSelection({ initialValues, onSubmit, onBack }: Prop
             {
               label: "Ne sait pas",
               value: "unknown",
+              hintText: "Bénéfriches appliquera un ratio de 25% aux sols pollués.",
             },
           ]}
           error={formState.errors.decontaminationSelection}
