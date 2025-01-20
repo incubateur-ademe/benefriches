@@ -45,6 +45,22 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
       <ModalContent>
+        <p>
+          La réalisation du projet a des conséquences sur les émissions de CO2 pour plusieurs
+          raisons, le cas échéant du fait :
+        </p>
+        <ul>
+          <li>
+            du changement d’affectation des sols (ces derniers ayant une pouvoir de stockage de
+            carbone variable selon leur type), par exemple via la désimperméabilisation puis
+            renaturation,
+          </li>
+          <li>
+            de la réduction des déplacements, par exemple par la création de fonctions urbaines en
+            coeur de ville et non en périphérie,
+          </li>
+          <li>de la création de capacités de production d’énergies renouvelables.</li>
+        </ul>
         {isSuccess ? (
           <ImpactItemGroup isClickable>
             <ImpactItemDetails

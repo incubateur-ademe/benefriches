@@ -36,8 +36,8 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
       />
       <ModalContent>
         <p>
-          La concrétisation du projet va générer des recettes fiscales pour la collectivité,
-          variables selon le type de projet et/ou la catégories d’utilisateurs :
+          La concrétisation du projet va générer des recettes fiscales pour la collectivité
+          (exemples : taxe foncière sur les propriétés bâties, cotisation foncière des entreprises).
         </p>
         <ImpactItemGroup isClickable>
           <ImpactItemDetails

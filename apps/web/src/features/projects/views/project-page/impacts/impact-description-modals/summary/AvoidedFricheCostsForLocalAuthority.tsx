@@ -42,10 +42,35 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
       <ModalContent>
-        <p>
-          Un site qui reste en l'état, sans intervention, induit des coûts importants, à la charge
-          de l'ancien locataire ou du propriétaire du terrain.
-        </p>
+        {isSuccess ? (
+          <>
+            <p>
+              Un site qui reste en l'état, sans intervention, induit des coûts importants, à la
+              charge de l'ancien exploitant du site ou du propriétaire du terrain. En effet, lorsque
+              ces derniers sont défaillants, ou que le site soit sous la responsabilité d’un
+              liquidateur, c’est souvent la commune qui se substitue à eux pour éviter les
+              dégradations ou intrusions et ainsi réduire les risques d’accidents et la perte de
+              valeur du site / terrain.
+            </p>
+            <p>Ainsi, reconvertir une friche permet d’économiser ces dépenses !</p>
+          </>
+        ) : (
+          <>
+            <p>
+              Un site qui reste en l'état, sans intervention, induit des coûts importants, à la
+              charge de l'ancien exploitant du site ou du propriétaire du terrain. En effet, lorsque
+              ces derniers sont défaillants, ou que le site soit sous la responsabilité d’un
+              liquidateur, c’est souvent la commune qui se substitue à eux pour éviter les
+              dégradations ou intrusions et ainsi réduire les risques d’accidents et la perte de
+              valeur du site / terrain.
+            </p>
+            <p>
+              Ainsi, réaliser un projet sur des espaces natures, agricoles ou forestiers et non sur
+              une friche ne permet pas de réduire ces dépenses !
+            </p>
+          </>
+        )}
+
         <ImpactItemGroup isClickable>
           <ImpactItemDetails
             impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}

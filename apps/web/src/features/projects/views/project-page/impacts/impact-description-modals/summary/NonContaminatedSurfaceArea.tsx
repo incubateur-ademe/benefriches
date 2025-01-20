@@ -44,24 +44,40 @@ const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => 
       />
       <ModalContent>
         {isSuccess ? (
-          <ImpactItemGroup isClickable>
-            <ImpactItemDetails
-              impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
-              value={decontaminatedSurfaceArea}
-              label="✨ Surface non polluée"
-              type="surfaceArea"
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "environmental",
-                  impactName: "non_contaminated_surface_area",
-                });
-              }}
-            />
-          </ImpactItemGroup>
+          <>
+            <p>
+              Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
+              activités passées. Réaliser un projet sur un tel site implique donc souvent la mise en
+              place de mesure de gestion des pollutions (ex : traitement de dépollution) pour
+              réduire l’ampleur de la pollution (surface occupée, teneurs présentes, etc.) et les
+              risques sanitaires associés, pour les futurs usagers (habitants, salariés, etc.).
+            </p>
+            <ImpactItemGroup isClickable>
+              <ImpactItemDetails
+                impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
+                value={decontaminatedSurfaceArea}
+                label="✨ Surface non polluée"
+                type="surfaceArea"
+                onClick={() => {
+                  openImpactModalDescription({
+                    sectionName: "environmental",
+                    impactName: "non_contaminated_surface_area",
+                  });
+                }}
+              />
+            </ImpactItemGroup>
+          </>
         ) : (
-          <p>
-            <i>En cours de rédaction...</i>
-          </p>
+          <>
+            <p>
+              Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
+              activités passées. Réaliser un projet sur un tel site implique donc souvent la mise en
+              place de mesure de gestion des pollutions (ex : traitement de dépollution) pour
+              réduire l’ampleur de la pollution (surface occupée, teneurs présentes, etc.) et les
+              risques sanitaires associés, pour les futurs usagers (habitants, salariés, etc.).
+            </p>
+            <p> Ainsi, en l’absence de dépollution envisagée, ces risques peuvent demeurer.</p>
+          </>
         )}
       </ModalContent>
     </>

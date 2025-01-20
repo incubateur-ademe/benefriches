@@ -65,6 +65,15 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
       <ModalContent>
+        <p>
+          {isSuccess
+            ? "Pour ce projet, la valeur monétaire de tous les impacts socio-économiques et environnementaux est plus élevée que la valeur absolue du déficit d’opération."
+            : "Pour ce projet, la valeur monétaire de tous les impacts socio-économiques et environnementaux est plus faible que la valeur absolue du déficit d’opération. La valeur générée par le projet à moyen / long terme reste inférieure au déficit économique de court terme."}
+        </p>
+        <p>
+          Retrouver les valeurs associées à ces indicateurs et à leurs modalités de calcul via les
+          liens ci-dessous.
+        </p>
         <ImpactItemGroup isClickable>
           <ImpactItemDetails
             impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
