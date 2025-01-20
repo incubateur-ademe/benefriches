@@ -39,6 +39,20 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
       <ModalContent>
+        {isSuccess ? (
+          <p>
+            Le projet présente une plus grande surface de sol perméable que ce que l’on trouve
+            actuellement sur le site. Cela permet une meilleure infiltration de l’eau de pluie sur
+            la parcelle. La surface perméable peut être minérale ou végétalisée.
+          </p>
+        ) : (
+          <p>
+            Le projet présente une plus faible surface de sol perméable que ce que l’on trouve
+            actuellement sur le site. Cela réduit la capacité d’infiltration de l’eau de pluie sur
+            la parcelle. La surface perméable peut être minérale ou végétalisée.
+          </p>
+        )}
+
         <ImpactItemGroup isClickable>
           <ImpactItemDetails
             impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
