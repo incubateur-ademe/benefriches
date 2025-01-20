@@ -7,12 +7,12 @@ import { getSocialImpactLabel } from "../../getImpactLabel";
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
 import { SocialSubSectionName } from "../ImpactModalDescriptionContext";
 import { ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
+import JobsSubSectionDescription from "./JobsSubSectionDescription";
 import SocialMainDescription from "./SocialMainDescription";
 import AvoidedVehiculeKilometersDescription from "./avoided-vehicule-kilometers/AvoidedVehiculeKilometersDescription";
 import {
   frenchSocietyBreadcrumbSection,
   getSubSectionBreadcrumb,
-  jobsBreadcrumbSection,
   localPeopleBreadcrumbSection,
   mainBreadcrumbSection,
 } from "./breadcrumbSections";
@@ -50,14 +50,7 @@ export function SocialModalWizard({
           />
         );
       case "jobs":
-        return (
-          <ImpactInProgressDescriptionModal
-            title={jobsBreadcrumbSection.label}
-            breadcrumbProps={{
-              section: mainBreadcrumbSection,
-            }}
-          />
-        );
+        return <JobsSubSectionDescription />;
       case "local_people":
         return (
           <ImpactInProgressDescriptionModal

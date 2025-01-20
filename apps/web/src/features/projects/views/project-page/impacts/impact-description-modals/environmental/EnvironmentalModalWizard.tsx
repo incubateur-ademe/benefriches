@@ -11,9 +11,9 @@ import {
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
 import { EnvironmentSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
+import Co2SubSectionDescription from "./Co2SubSectionDescription";
 import EnvironmentalMainDescription from "./EnvironmentalMainDescription";
 import {
-  co2BreadcrumbSection,
   getSubSectionBreadcrumb,
   mainBreadcrumbSection,
   soilsBreadcrumbSection,
@@ -48,14 +48,7 @@ export function EnvironmentalModalWizard({
   if (!impactName) {
     switch (impactSubSectionName) {
       case "co2":
-        return (
-          <ImpactInProgressDescriptionModal
-            title={co2BreadcrumbSection.label}
-            breadcrumbProps={{
-              section: mainBreadcrumbSection,
-            }}
-          />
-        );
+        return <Co2SubSectionDescription />;
       case "soils":
         return (
           <ImpactInProgressDescriptionModal
