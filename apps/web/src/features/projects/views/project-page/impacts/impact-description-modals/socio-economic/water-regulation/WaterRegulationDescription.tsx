@@ -10,7 +10,10 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { breadcrumbSection } from "../breadcrumbSection";
+import {
+  mainBreadcrumbSection,
+  environmentalMonetaryBreadcrumbSection,
+} from "../breadcrumbSections";
 
 type Props = {
   baseSoilsDistribution: SoilsDistribution;
@@ -43,10 +46,8 @@ const WaterRegulationDescription = ({
         title="🚰 Dépenses de traitement de l’eau évitées"
         subtitle="Grâce à la dépollution de la friche et à la régulation de la qualité de l’eau par les espaces naturels"
         breadcrumbSegments={[
-          breadcrumbSection,
-          {
-            label: "Impacts environnementaux monétarisés",
-          },
+          mainBreadcrumbSection,
+          environmentalMonetaryBreadcrumbSection,
           { label: "Dépenses de traitement de l’eau évitées" },
         ]}
       />

@@ -5,6 +5,7 @@ import {
 
 import { getSocioEconomicImpactLabel } from "../../getImpactLabel";
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
+import { SocioEconomicSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import SocioEconomicDescription from "./SocioEconomicDescription";
 import AvoidedCO2WithEnRMonetaryValueDescription from "./avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";
@@ -12,7 +13,7 @@ import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheC
 import AvoidedIllegalDumpingCostsDescription from "./avoided-friche-costs/AvoidedIllegalDumpingCostsDescription";
 import AvoidedOtherSecuringCostsDescription from "./avoided-friche-costs/AvoidedOtherSecuringCostsDescription";
 import AvoidedSecurityCostsDescription from "./avoided-friche-costs/AvoidedSecurityCostsDescription";
-import { breadcrumbSection as socioEconomicBreadcrumbSection } from "./breadcrumbSection";
+import { getSubSectionBreadcrumb, mainBreadcrumbSection } from "./breadcrumbSections";
 import CarbonSoilsStorageMonetaryValueDescription from "./ecosystem-services/CarbonStorageMonetaryValueDescription";
 import EcosystemServicesDescription from "./ecosystem-services/EcosystemServicesDescription";
 import InvasiveSpeciesRegulationDescription from "./ecosystem-services/InvasiveSpeciesRegulationDescription";
@@ -31,6 +32,7 @@ import WaterRegulationDescription from "./water-regulation/WaterRegulationDescri
 type Props = {
   impactName?: SocioEconomicMainImpactName;
   impactDetailsName?: SocioEconomicDetailsName;
+  impactSubSectionName?: SocioEconomicSubSectionName;
   projectData: ProjectData;
   siteData: SiteData;
   impactsData: ImpactsData;
@@ -39,12 +41,52 @@ type Props = {
 export function SocioEconomicModalWizard({
   impactName,
   impactDetailsName,
+  impactSubSectionName,
   projectData,
   siteData,
   impactsData,
 }: Props) {
   if (!impactName) {
-    return <SocioEconomicDescription impactsData={impactsData} />;
+    switch (impactSubSectionName) {
+      case "economic_direct":
+        return (
+          <ImpactInProgressDescriptionModal
+            title="Impacts économiques directs"
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case "economic_indirect":
+        return (
+          <ImpactInProgressDescriptionModal
+            title="Impacts économiques indirects"
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case "social_monetary":
+        return (
+          <ImpactInProgressDescriptionModal
+            title="Impacts sociaux monétarisés"
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case "environmental_monetary":
+        return (
+          <ImpactInProgressDescriptionModal
+            title="Impacts environnementaux monétarisés"
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case undefined:
+        return <SocioEconomicDescription impactsData={impactsData} />;
+    }
   }
 
   switch (impactDetailsName ?? impactName) {
@@ -160,20 +202,29 @@ export function SocioEconomicModalWizard({
         />
       );
 
-    default:
+    default: {
+      const subSectionSegments = impactSubSectionName && [
+        getSubSectionBreadcrumb(impactSubSectionName),
+      ];
+      const impactNameSegments = impactDetailsName && [
+        {
+          label: getSocioEconomicImpactLabel(impactName),
+          openState: {
+            sectionName: "socio_economic" as const,
+            subSectionName: impactSubSectionName,
+            impactName,
+          },
+        },
+      ];
       return (
         <ImpactInProgressDescriptionModal
           title={getSocioEconomicImpactLabel(impactDetailsName ?? impactName)}
           breadcrumbProps={{
-            section: socioEconomicBreadcrumbSection,
-            segments: impactDetailsName && [
-              {
-                label: getSocioEconomicImpactLabel(impactName),
-                openState: { sectionName: "socio_economic", impactName },
-              },
-            ],
+            section: mainBreadcrumbSection,
+            segments: [...(subSectionSegments ?? []), ...(impactNameSegments ?? [])],
           }}
         />
       );
+    }
   }
 }

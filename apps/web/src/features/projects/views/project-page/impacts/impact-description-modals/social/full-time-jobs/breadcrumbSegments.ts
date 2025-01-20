@@ -1,12 +1,13 @@
 import { BreadcrumbProps } from "../../shared/ModalBreadcrumb";
-import { breadcrumbSection } from "../breadcrumbSection";
+import { mainBreadcrumbSection, jobsBreadcrumbSection } from "../breadcrumbSections";
 
 export const breadcrumbSegments: BreadcrumbProps["segments"] = [
-  breadcrumbSection,
+  mainBreadcrumbSection,
+  jobsBreadcrumbSection,
   {
     label: "Emplois équivalent temps plein",
     openState: {
-      sectionName: breadcrumbSection.openState.sectionName,
+      sectionName: mainBreadcrumbSection.openState.sectionName,
       impactName: "full_time_jobs",
     },
   },

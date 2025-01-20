@@ -24,6 +24,14 @@ type IsClosedState = {
   impactDetailsName: undefined;
 };
 
+export type SocioEconomicSubSectionName =
+  | "economic_direct"
+  | "economic_indirect"
+  | "social_monetary"
+  | "environmental_monetary";
+export type SocialSubSectionName = "jobs" | "french_society" | "local_people";
+export type EnvironmentSubSectionName = "co2" | "soils";
+
 type IsOpenedState =
   | {
       sectionName: "economic_balance";
@@ -32,16 +40,19 @@ type IsOpenedState =
     }
   | {
       sectionName: "socio_economic";
+      subSectionName?: SocioEconomicSubSectionName;
       impactName?: SocioEconomicMainImpactName;
       impactDetailsName?: SocioEconomicDetailsName;
     }
   | {
       sectionName: "social";
+      subSectionName?: SocialSubSectionName;
       impactName?: SocialMainImpactName;
       impactDetailsName?: SocialImpactDetailsName;
     }
   | {
       sectionName: "environmental";
+      subSectionName?: EnvironmentSubSectionName;
       impactName?: EnvironmentalMainImpactName;
       impactDetailsName?: EnvironmentalImpactDetailsName;
     }

@@ -1,4 +1,4 @@
-import { BreadcrumbProps } from "./shared/ModalBreadcrumb";
+import { BreadcrumbProps, BreadcrumbSegment } from "./shared/ModalBreadcrumb";
 import ModalContent from "./shared/ModalContent";
 import ModalHeader from "./shared/ModalHeader";
 
@@ -6,7 +6,7 @@ type Props = {
   title: string;
   breadcrumbProps: {
     section: BreadcrumbProps["segments"][number];
-    segments?: BreadcrumbProps["segments"];
+    segments?: BreadcrumbSegment[];
   };
 };
 

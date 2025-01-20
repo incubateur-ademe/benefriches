@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
-import { breadcrumbSection } from "../breadcrumbSection";
+import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 
 const PermeableSurfaceDescription = () => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
@@ -12,7 +12,11 @@ const PermeableSurfaceDescription = () => {
     <>
       <ModalHeader
         title="🌧 Surface perméable"
-        breadcrumbSegments={[breadcrumbSection, { label: "Surface perméable" }]}
+        breadcrumbSegments={[
+          mainBreadcrumbSection,
+          soilsBreadcrumbSection,
+          { label: "Surface perméable" },
+        ]}
       />
       <ModalContent>
         <p>

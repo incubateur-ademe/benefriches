@@ -5,7 +5,10 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { breadcrumbSection } from "../breadcrumbSection";
+import {
+  mainBreadcrumbSection,
+  economicDirectMonetaryBreadcrumbSection,
+} from "../breadcrumbSections";
 
 type Props = {
   surfaceArea: number;
@@ -18,10 +21,8 @@ const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea }: Props) => {
         title="🅿️ Dépenses d’entretien des VRD"
         subtitle="Grâce à l’aménagement du projet en zone urbaine"
         breadcrumbSegments={[
-          breadcrumbSection,
-          {
-            label: "Impacts économiques directs",
-          },
+          mainBreadcrumbSection,
+          economicDirectMonetaryBreadcrumbSection,
           { label: "Dépenses d’entretien des VRD" },
         ]}
       />

@@ -5,10 +5,17 @@ import {
 
 import { getSocialImpactLabel } from "../../getImpactLabel";
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
+import { SocialSubSectionName } from "../ImpactModalDescriptionContext";
 import { ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import SocialMainDescription from "./SocialMainDescription";
 import AvoidedVehiculeKilometersDescription from "./avoided-vehicule-kilometers/AvoidedVehiculeKilometersDescription";
-import { breadcrumbSection as socialBreadcrumbSection } from "./breadcrumbSection";
+import {
+  frenchSocietyBreadcrumbSection,
+  getSubSectionBreadcrumb,
+  jobsBreadcrumbSection,
+  localPeopleBreadcrumbSection,
+  mainBreadcrumbSection,
+} from "./breadcrumbSections";
 import FullTimeJobsDescription from "./full-time-jobs/FullTimeJobsDescription";
 import PhotovoltaicOperationFullTimeJobsDescription from "./full-time-jobs/PhotovoltaicOperationFullTimeJobsDescription";
 import ReconversionFullTimeJobsDescription from "./full-time-jobs/ReconversionFullTimeJobsDescription";
@@ -19,13 +26,50 @@ import TimeTravelSavedDescription from "./time-travel-saved/TimeTravelSavedDescr
 type Props = {
   impactName?: SocialMainImpactName;
   impactDetailsName?: SocialImpactDetailsName;
+  impactSubSectionName?: SocialSubSectionName;
   projectData: ProjectData;
   siteData: SiteData;
 };
 
-export function SocialModalWizard({ impactName, impactDetailsName, projectData, siteData }: Props) {
+export function SocialModalWizard({
+  impactName,
+  impactDetailsName,
+  impactSubSectionName,
+  projectData,
+  siteData,
+}: Props) {
   if (!impactName) {
-    return <SocialMainDescription />;
+    switch (impactSubSectionName) {
+      case "french_society":
+        return (
+          <ImpactInProgressDescriptionModal
+            title={frenchSocietyBreadcrumbSection.label}
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case "jobs":
+        return (
+          <ImpactInProgressDescriptionModal
+            title={jobsBreadcrumbSection.label}
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case "local_people":
+        return (
+          <ImpactInProgressDescriptionModal
+            title={localPeopleBreadcrumbSection.label}
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case undefined:
+        return <SocialMainDescription />;
+    }
   }
 
   switch (impactDetailsName ?? impactName) {
@@ -71,20 +115,29 @@ export function SocialModalWizard({ impactName, impactDetailsName, projectData, 
     case "travel_time_saved":
       return <TimeTravelSavedDescription />;
 
-    default:
+    default: {
+      const subSectionSegments = impactSubSectionName && [
+        getSubSectionBreadcrumb(impactSubSectionName),
+      ];
+      const impactNameSegments = impactDetailsName && [
+        {
+          label: getSocialImpactLabel(impactName),
+          openState: {
+            sectionName: "social" as const,
+            subSectionName: impactSubSectionName,
+            impactName,
+          },
+        },
+      ];
       return (
         <ImpactInProgressDescriptionModal
           title={getSocialImpactLabel(impactDetailsName ?? impactName)}
           breadcrumbProps={{
-            section: socialBreadcrumbSection,
-            segments: impactDetailsName && [
-              {
-                label: getSocialImpactLabel(impactName),
-                openState: { sectionName: "social", impactName },
-              },
-            ],
+            section: mainBreadcrumbSection,
+            segments: [...(subSectionSegments ?? []), ...(impactNameSegments ?? [])],
           }}
         />
       );
+    }
   }
 }

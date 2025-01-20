@@ -61,25 +61,25 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
 
         <div className="tw-flex tw-flex-col tw-gap-4">
           <SocioEconomicImpactSection
-            title="Impacts économiques directs"
+            sectionName="economic_direct"
             {...economicDirect}
             initialShowSectionContent={false}
             noMarginBottom
           />
           <SocioEconomicImpactSection
-            title="Impacts économiques indirects"
+            sectionName="economic_indirect"
             {...economicIndirect}
             initialShowSectionContent={false}
             noMarginBottom
           />
           <SocioEconomicImpactSection
-            title="Impacts sociaux monétarisés"
+            sectionName="social_monetary"
             {...socialMonetary}
             initialShowSectionContent={false}
             noMarginBottom
           />
           <SocioEconomicImpactSection
-            title="Impacts environnementaux monétarisés"
+            sectionName="environmental_monetary"
             {...environmentalMonetary}
             initialShowSectionContent={false}
             noMarginBottom

@@ -9,18 +9,46 @@ import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactSection from "../ImpactSection";
 
 type Props = SocioEconomicImpactByCategory & {
-  title: string;
+  sectionName:
+    | "economic_direct"
+    | "economic_indirect"
+    | "social_monetary"
+    | "environmental_monetary";
   initialShowSectionContent?: boolean;
   noMarginBottom?: boolean;
 };
-const SocioEconomicImpactSection = ({ impacts, total, title, ...props }: Props) => {
+
+const getSectionTitle = (sectionName: Props["sectionName"]) => {
+  switch (sectionName) {
+    case "economic_direct":
+      return "Impacts économiques directs";
+    case "economic_indirect":
+      return "Impacts économiques indirects";
+    case "social_monetary":
+      return "Impacts sociaux monétarisés";
+    case "environmental_monetary":
+      return "Impacts environnementaux monétarisés";
+  }
+};
+const SocioEconomicImpactSection = ({ impacts, total, sectionName, ...props }: Props) => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   if (impacts.length === 0) {
     return null;
   }
+
   return (
-    <ImpactSection title={title} total={total} {...props}>
+    <ImpactSection
+      title={getSectionTitle(sectionName)}
+      total={total}
+      {...props}
+      onTitleClick={() => {
+        openImpactModalDescription({
+          sectionName: "socio_economic",
+          subSectionName: sectionName,
+        });
+      }}
+    >
       {impacts.map(({ name, actors }) => (
         <ImpactActorsItem
           key={name}
@@ -35,6 +63,7 @@ const SocioEconomicImpactSection = ({ impacts, total, title, ...props }: Props) 
                   onClick: () => {
                     openImpactModalDescription({
                       sectionName: "socio_economic",
+                      subSectionName: sectionName,
                       impactName: name,
                       impactDetailsName: detailsName,
                     });
@@ -43,7 +72,11 @@ const SocioEconomicImpactSection = ({ impacts, total, title, ...props }: Props) 
               : undefined,
           }))}
           onClick={() => {
-            openImpactModalDescription({ sectionName: "socio_economic", impactName: name });
+            openImpactModalDescription({
+              sectionName: "socio_economic",
+              subSectionName: sectionName,
+              impactName: name,
+            });
           }}
           type="monetary"
         />

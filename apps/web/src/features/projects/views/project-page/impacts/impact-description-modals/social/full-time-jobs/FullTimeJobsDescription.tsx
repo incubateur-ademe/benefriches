@@ -7,7 +7,7 @@ import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionConte
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { breadcrumbSection } from "../breadcrumbSection";
+import { mainBreadcrumbSection, jobsBreadcrumbSection } from "../breadcrumbSections";
 
 const FullTimeJobsDescription = () => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
@@ -16,7 +16,11 @@ const FullTimeJobsDescription = () => {
     <>
       <ModalHeader
         title="🧑‍🔧 Emplois équivalent temps plein"
-        breadcrumbSegments={[breadcrumbSection, { label: "Emplois équivalent temps plein" }]}
+        breadcrumbSegments={[
+          mainBreadcrumbSection,
+          jobsBreadcrumbSection,
+          { label: "Emplois équivalent temps plein" },
+        ]}
       />
       <ModalContent>
         <p>

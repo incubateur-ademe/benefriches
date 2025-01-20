@@ -3,7 +3,7 @@ import { ReconversionProjectImpactsResult } from "@/features/projects/applicatio
 import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
-import { breadcrumbSection } from "../breadcrumbSection";
+import { mainBreadcrumbSection, co2BreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];
@@ -15,7 +15,11 @@ const CarbonSoilsStorageEnvironmentalDescription = (props: Props) => {
     <>
       <ModalHeader
         title="🍂️ Carbone stocké dans les sols"
-        breadcrumbSegments={[breadcrumbSection, { label: "Carbone stocké dans les sols" }]}
+        breadcrumbSegments={[
+          mainBreadcrumbSection,
+          co2BreadcrumbSection,
+          { label: "Carbone stocké dans les sols" },
+        ]}
       />
       <ModalContent>
         <CarbonSoilsStorageDescription withMonetarisation={false} {...props} />

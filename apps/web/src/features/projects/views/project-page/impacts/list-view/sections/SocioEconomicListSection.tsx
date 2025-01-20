@@ -25,13 +25,10 @@ const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
         openImpactModalDescription({ sectionName: "socio_economic" });
       }}
     >
-      <SocioEconomicImpactSection title="Impacts économiques directs" {...economicDirect} />
-      <SocioEconomicImpactSection title="Impacts économiques indirects" {...economicIndirect} />
-      <SocioEconomicImpactSection title="Impacts sociaux monétarisés" {...socialMonetary} />
-      <SocioEconomicImpactSection
-        title="Impacts environnementaux monétarisés"
-        {...environmentalMonetary}
-      />
+      <SocioEconomicImpactSection sectionName="economic_direct" {...economicDirect} />
+      <SocioEconomicImpactSection sectionName="economic_indirect" {...economicIndirect} />
+      <SocioEconomicImpactSection sectionName="social_monetary" {...socialMonetary} />
+      <SocioEconomicImpactSection sectionName="environmental_monetary" {...environmentalMonetary} />
     </ImpactSection>
   );
 };

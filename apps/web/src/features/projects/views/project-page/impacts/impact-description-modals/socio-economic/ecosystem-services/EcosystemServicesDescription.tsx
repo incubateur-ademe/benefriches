@@ -11,7 +11,10 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { breadcrumbSection } from "../breadcrumbSection";
+import {
+  mainBreadcrumbSection,
+  environmentalMonetaryBreadcrumbSection,
+} from "../breadcrumbSections";
 
 type Props = {
   impactsData: ImpactsData["socioeconomic"]["impacts"];
@@ -52,10 +55,8 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
       <ModalHeader
         title="🌱 Valeur monétaire des services écosystémiques"
         breadcrumbSegments={[
-          breadcrumbSection,
-          {
-            label: "Impacts environnementaux monétarisés",
-          },
+          mainBreadcrumbSection,
+          environmentalMonetaryBreadcrumbSection,
           {
             label: "Valeur monétaire des services écosystémiques",
           },

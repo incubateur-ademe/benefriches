@@ -105,9 +105,9 @@ function ImpactModalDescriptionProvider({
             case "economic_balance":
               return (
                 <EconomicBalanceModalWizard
-                  impactName={openState.impactName}
                   projectData={projectData}
                   impactsData={impactsData}
+                  impactName={openState.impactName}
                   impactDetailsName={openState.impactDetailsName}
                 />
               );
@@ -117,6 +117,7 @@ function ImpactModalDescriptionProvider({
                   projectData={projectData}
                   siteData={siteData}
                   impactsData={impactsData}
+                  impactSubSectionName={openState.subSectionName}
                   impactName={openState.impactName}
                   impactDetailsName={openState.impactDetailsName}
                 />
@@ -127,6 +128,7 @@ function ImpactModalDescriptionProvider({
                 <SocialModalWizard
                   projectData={projectData}
                   siteData={siteData}
+                  impactSubSectionName={openState.subSectionName}
                   impactName={openState.impactName}
                   impactDetailsName={openState.impactDetailsName}
                 />
@@ -137,6 +139,7 @@ function ImpactModalDescriptionProvider({
                   projectData={projectData}
                   siteData={siteData}
                   impactsData={impactsData}
+                  impactSubSectionName={openState.subSectionName}
                   impactName={openState.impactName}
                   impactDetailsName={openState.impactDetailsName}
                 />

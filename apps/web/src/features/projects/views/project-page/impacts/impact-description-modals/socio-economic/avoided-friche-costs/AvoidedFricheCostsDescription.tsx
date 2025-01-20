@@ -1,6 +1,9 @@
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
-import { breadcrumbSection } from "../breadcrumbSection";
+import {
+  mainBreadcrumbSection,
+  economicDirectMonetaryBreadcrumbSection,
+} from "../breadcrumbSections";
 
 const AvoidedFricheExpensesDescription = () => {
   return (
@@ -9,10 +12,8 @@ const AvoidedFricheExpensesDescription = () => {
         title="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
         subtitle="Grâce à la reconversion de la friche"
         breadcrumbSegments={[
-          breadcrumbSection,
-          {
-            label: "Impacts économiques directs",
-          },
+          mainBreadcrumbSection,
+          economicDirectMonetaryBreadcrumbSection,
           { label: "Dépenses friche évitées" },
         ]}
       />

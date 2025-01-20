@@ -1,15 +1,16 @@
 import { BreadcrumbProps } from "../../shared/ModalBreadcrumb";
-import { breadcrumbSection } from "../breadcrumbSection";
+import {
+  mainBreadcrumbSection,
+  environmentalMonetaryBreadcrumbSection,
+} from "../breadcrumbSections";
 
 export const breadcrumbSegments: BreadcrumbProps["segments"] = [
-  breadcrumbSection,
-  {
-    label: "Impacts environnementaux monétarisés",
-  },
+  mainBreadcrumbSection,
+  environmentalMonetaryBreadcrumbSection,
   {
     label: "Services écosystémiques",
     openState: {
-      sectionName: breadcrumbSection.openState.sectionName,
+      sectionName: mainBreadcrumbSection.openState.sectionName,
       impactName: "ecosystem_services",
     },
   },

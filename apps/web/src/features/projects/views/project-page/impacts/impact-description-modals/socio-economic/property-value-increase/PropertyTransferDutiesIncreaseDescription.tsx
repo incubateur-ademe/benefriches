@@ -4,7 +4,10 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { breadcrumbSection } from "../breadcrumbSection";
+import {
+  mainBreadcrumbSection,
+  economicIndirectMonetaryBreadcrumbSection,
+} from "../breadcrumbSections";
 
 const PropertyTransferDutiesIncreaseDescription = () => {
   return (
@@ -12,10 +15,8 @@ const PropertyTransferDutiesIncreaseDescription = () => {
       <ModalHeader
         title="🏛 Droits de mutation sur la transaction foncière"
         breadcrumbSegments={[
-          breadcrumbSection,
-          {
-            label: "Impacts économiques indirects",
-          },
+          mainBreadcrumbSection,
+          economicIndirectMonetaryBreadcrumbSection,
           { label: "Droits de mutation sur les ventes immobilières alentour" },
         ]}
       />

@@ -9,7 +9,7 @@ import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
-import { breadcrumbSection } from "../breadcrumbSection";
+import { co2BreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   impactsData: EnvironmentalImpact[];
@@ -32,7 +32,11 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
           description: "pour l'humanité",
           state: total > 0 ? "success" : "error",
         }}
-        breadcrumbSegments={[breadcrumbSection, { label: "CO2-eq stocké ou évité" }]}
+        breadcrumbSegments={[
+          mainBreadcrumbSection,
+          co2BreadcrumbSection,
+          { label: "CO2-eq stocké ou évité" },
+        ]}
       />
       <ModalContent>
         <div className="tw-flex tw-flex-col">

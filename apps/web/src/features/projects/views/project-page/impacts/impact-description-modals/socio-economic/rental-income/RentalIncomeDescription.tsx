@@ -6,7 +6,10 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import { breadcrumbSection } from "../breadcrumbSection";
+import {
+  mainBreadcrumbSection,
+  economicDirectMonetaryBreadcrumbSection,
+} from "../breadcrumbSections";
 
 type Props = {
   developmentPlan: ProjectData["developmentPlan"];
@@ -26,10 +29,8 @@ const RentalIncomeDescription = ({ developmentPlan }: Props) => {
       <ModalHeader
         title="🔑 Revenu locatif"
         breadcrumbSegments={[
-          breadcrumbSection,
-          {
-            label: "Impacts économiques directs",
-          },
+          mainBreadcrumbSection,
+          economicDirectMonetaryBreadcrumbSection,
           { label: "Dépenses friche évitées" },
         ]}
       />

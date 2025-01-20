@@ -5,7 +5,7 @@ import classNames from "@/shared/views/clsx";
 
 import { ImpactModalDescriptionContext, OpenState } from "../ImpactModalDescriptionContext";
 
-type BreadcrumbSegment = {
+export type BreadcrumbSegment = {
   label: string;
   openState?: OpenState;
 };

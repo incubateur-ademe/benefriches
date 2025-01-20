@@ -34,14 +34,26 @@ const EnvironmentalListSection = ({ impacts }: Props) => {
       }}
     >
       {co2Impacts.length > 0 && (
-        <ImpactSection title="Impacts sur le CO2-eq">
+        <ImpactSection
+          title="Impacts sur le CO2-eq"
+          onTitleClick={() => {
+            openImpactModalDescription({
+              sectionName: "environmental",
+              subSectionName: "co2",
+            });
+          }}
+        >
           {co2Impacts.map(({ name, impact, type }) => (
             <ImpactItemGroup key={name} isClickable>
               <ImpactItemDetails
                 label={getEnvironmentalImpactLabel(name)}
                 value={impact.difference}
                 onClick={() => {
-                  openImpactModalDescription({ sectionName: "environmental", impactName: name });
+                  openImpactModalDescription({
+                    sectionName: "environmental",
+                    subSectionName: "co2",
+                    impactName: name,
+                  });
                 }}
                 data={
                   impact.details
@@ -66,14 +78,26 @@ const EnvironmentalListSection = ({ impacts }: Props) => {
       )}
 
       {soilsImpacts.length > 0 && (
-        <ImpactSection title="Impacts sur  les sols">
+        <ImpactSection
+          title="Impacts sur  les sols"
+          onTitleClick={() => {
+            openImpactModalDescription({
+              sectionName: "environmental",
+              subSectionName: "soils",
+            });
+          }}
+        >
           {soilsImpacts.map(({ name, impact, type }) => (
             <ImpactItemGroup key={name} isClickable>
               <ImpactItemDetails
                 label={getEnvironmentalImpactLabel(name)}
                 value={impact.difference}
                 onClick={() => {
-                  openImpactModalDescription({ sectionName: "environmental", impactName: name });
+                  openImpactModalDescription({
+                    sectionName: "environmental",
+                    subSectionName: "soils",
+                    impactName: name,
+                  });
                 }}
                 data={
                   impact.details

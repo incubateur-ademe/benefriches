@@ -1,13 +1,17 @@
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
-import { breadcrumbSection } from "../breadcrumbSection";
+import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 
 const NonContaminatedSurfaceDescription = () => {
   return (
     <>
       <ModalHeader
         title="✨ Surface non polluée"
-        breadcrumbSegments={[breadcrumbSection, { label: "Surface non polluée" }]}
+        breadcrumbSegments={[
+          mainBreadcrumbSection,
+          soilsBreadcrumbSection,
+          { label: "Surface non polluée" },
+        ]}
       />
       <ModalContent>
         <p>

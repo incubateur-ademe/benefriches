@@ -1,6 +1,6 @@
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
-import { breadcrumbSection } from "../breadcrumbSection";
+import { mainBreadcrumbSection, localPeopleBreadcrumbSection } from "../breadcrumbSections";
 
 const AvoidedVehiculeKilometersDescription = () => {
   return (
@@ -8,7 +8,11 @@ const AvoidedVehiculeKilometersDescription = () => {
       <ModalHeader
         title="🚙 Kilomètres évités"
         subtitle="Grâce à la ou les commodités créées dans le quartier"
-        breadcrumbSegments={[breadcrumbSection, { label: "Kilomètres évités" }]}
+        breadcrumbSegments={[
+          mainBreadcrumbSection,
+          localPeopleBreadcrumbSection,
+          { label: "Kilomètres évités" },
+        ]}
       />
       <ModalContent>
         <p>

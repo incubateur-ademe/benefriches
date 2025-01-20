@@ -1,12 +1,13 @@
 import { BreadcrumbProps } from "../../shared/ModalBreadcrumb";
-import { breadcrumbSection } from "../breadcrumbSection";
+import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 
 export const breadcrumbSegments: BreadcrumbProps["segments"] = [
-  breadcrumbSection,
+  mainBreadcrumbSection,
+  soilsBreadcrumbSection,
   {
     label: "Surface perméable",
     openState: {
-      sectionName: breadcrumbSection.openState.sectionName,
+      sectionName: mainBreadcrumbSection.openState.sectionName,
       impactName: "permeable_surface_area",
     },
   },

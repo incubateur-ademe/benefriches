@@ -36,14 +36,26 @@ const SocialListSection = ({ impacts }: Props) => {
       }}
     >
       {jobsImpacts.length > 0 && (
-        <ImpactSection title="Impacts sur l'emploi">
+        <ImpactSection
+          title="Impacts sur l'emploi"
+          onTitleClick={() => {
+            openImpactModalDescription({
+              sectionName: "social",
+              subSectionName: "jobs",
+            });
+          }}
+        >
           {jobsImpacts.map(({ name, impact, type }) => (
             <ImpactItemGroup key={name} isClickable>
               <ImpactItemDetails
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
                 onClick={() => {
-                  openImpactModalDescription({ sectionName: "social", impactName: name });
+                  openImpactModalDescription({
+                    sectionName: "social",
+                    subSectionName: "jobs",
+                    impactName: name,
+                  });
                 }}
                 data={
                   impact.details
@@ -68,14 +80,26 @@ const SocialListSection = ({ impacts }: Props) => {
       )}
 
       {residentsImpacts.length > 0 && (
-        <ImpactSection title="Impacts sur la population locale">
+        <ImpactSection
+          title="Impacts sur la population locale"
+          onTitleClick={() => {
+            openImpactModalDescription({
+              sectionName: "social",
+              subSectionName: "local_people",
+            });
+          }}
+        >
           {residentsImpacts.map(({ name, impact, type }) => (
             <ImpactItemGroup key={name} isClickable>
               <ImpactItemDetails
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
                 onClick={() => {
-                  openImpactModalDescription({ sectionName: "social", impactName: name });
+                  openImpactModalDescription({
+                    sectionName: "social",
+                    subSectionName: "local_people",
+                    impactName: name,
+                  });
                 }}
                 data={
                   impact.details
@@ -100,14 +124,26 @@ const SocialListSection = ({ impacts }: Props) => {
       )}
 
       {frenchSocietyImpacts.length > 0 && (
-        <ImpactSection title="Impacts sur la société française">
+        <ImpactSection
+          title="Impacts sur la société française"
+          onTitleClick={() => {
+            openImpactModalDescription({
+              sectionName: "social",
+              subSectionName: "french_society",
+            });
+          }}
+        >
           {frenchSocietyImpacts.map(({ name, impact, type }) => (
             <ImpactItemGroup key={name} isClickable>
               <ImpactItemDetails
                 label={getSocialImpactLabel(name)}
                 value={impact.difference}
                 onClick={() => {
-                  openImpactModalDescription({ sectionName: "social", impactName: name });
+                  openImpactModalDescription({
+                    sectionName: "social",
+                    subSectionName: "french_society",
+                    impactName: name,
+                  });
                 }}
                 data={
                   impact.details

@@ -9,9 +9,15 @@ import {
   getEnvironmentalImpactLabel,
 } from "../../getImpactLabel";
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
+import { EnvironmentSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import EnvironmentalMainDescription from "./EnvironmentalMainDescription";
-import { breadcrumbSection as environmentalBreadcrumbSection } from "./breadcrumbSection";
+import {
+  co2BreadcrumbSection,
+  getSubSectionBreadcrumb,
+  mainBreadcrumbSection,
+  soilsBreadcrumbSection,
+} from "./breadcrumbSections";
 import AvoidedCO2WithEnREnvironmentalDescription from "./impact-co2/AvoidedCO2WithEnREnvironmentalDescription";
 import CarbonSoilsStorageEnvironmentalDescription from "./impact-co2/CarbonSoilsStorageEnvironmentalDescription";
 import Co2BenefitDescription from "./impact-co2/Co2BenefitDescription";
@@ -23,6 +29,7 @@ import PermeableSurfaceDescription from "./permeable-surface/PermeableSurface";
 type Props = {
   impactName?: EnvironmentalMainImpactName;
   impactDetailsName?: EnvironmentalImpactDetailsName;
+  impactSubSectionName?: EnvironmentSubSectionName;
   projectData: ProjectData;
   siteData: SiteData;
   impactsData: ImpactsData;
@@ -31,6 +38,7 @@ type Props = {
 export function EnvironmentalModalWizard({
   impactName,
   impactDetailsName,
+  impactSubSectionName,
   projectData,
   siteData,
   impactsData,
@@ -38,7 +46,28 @@ export function EnvironmentalModalWizard({
   const environmentalImpacts = getEnvironmentalProjectImpacts(impactsData);
 
   if (!impactName) {
-    return <EnvironmentalMainDescription />;
+    switch (impactSubSectionName) {
+      case "co2":
+        return (
+          <ImpactInProgressDescriptionModal
+            title={co2BreadcrumbSection.label}
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case "soils":
+        return (
+          <ImpactInProgressDescriptionModal
+            title={soilsBreadcrumbSection.label}
+            breadcrumbProps={{
+              section: mainBreadcrumbSection,
+            }}
+          />
+        );
+      case undefined:
+        return <EnvironmentalMainDescription />;
+    }
   }
 
   switch (impactDetailsName ?? impactName) {
@@ -81,7 +110,20 @@ export function EnvironmentalModalWizard({
     case "green_soil":
       return <PermeableGreenSurfaceDescription />;
 
-    default:
+    default: {
+      const subSectionSegments = impactSubSectionName && [
+        getSubSectionBreadcrumb(impactSubSectionName),
+      ];
+      const impactNameSegments = impactDetailsName && [
+        {
+          label: getEnvironmentalImpactLabel(impactName),
+          openState: {
+            sectionName: "environmental" as const,
+            subSectionName: impactSubSectionName,
+            impactName,
+          },
+        },
+      ];
       return (
         <ImpactInProgressDescriptionModal
           title={
@@ -90,15 +132,11 @@ export function EnvironmentalModalWizard({
               : getEnvironmentalImpactLabel(impactName)
           }
           breadcrumbProps={{
-            section: environmentalBreadcrumbSection,
-            segments: impactDetailsName && [
-              {
-                label: getEnvironmentalImpactLabel(impactName),
-                openState: { sectionName: "environmental", impactName },
-              },
-            ],
+            section: mainBreadcrumbSection,
+            segments: [...(subSectionSegments ?? []), ...(impactNameSegments ?? [])],
           }}
         />
       );
+    }
   }
 }

@@ -1,15 +1,16 @@
 import { BreadcrumbProps } from "../../shared/ModalBreadcrumb";
-import { breadcrumbSection } from "../breadcrumbSection";
+import {
+  mainBreadcrumbSection,
+  economicDirectMonetaryBreadcrumbSection,
+} from "../breadcrumbSections";
 
 export const breadcrumbSegments: BreadcrumbProps["segments"] = [
-  breadcrumbSection,
-  {
-    label: "Impacts économiques directs",
-  },
+  mainBreadcrumbSection,
+  economicDirectMonetaryBreadcrumbSection,
   {
     label: "Dépenses friche évitées",
     openState: {
-      sectionName: breadcrumbSection.openState.sectionName,
+      sectionName: mainBreadcrumbSection.openState.sectionName,
       impactName: "avoided_friche_costs",
     },
   },
