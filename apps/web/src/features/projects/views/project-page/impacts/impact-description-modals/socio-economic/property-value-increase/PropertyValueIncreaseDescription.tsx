@@ -16,6 +16,7 @@ const PropertyValueIncreaseDescription = ({ siteSurfaceArea }: Props) => {
     <>
       <ModalHeader
         title="🏡 Valeur patrimoniale des bâtiments alentour"
+        subtitle="Grâce à la reconversion du site"
         breadcrumbSegments={[
           breadcrumbSection,
           {

@@ -41,6 +41,7 @@ const WaterRegulationDescription = ({
     <>
       <ModalHeader
         title="🚰 Dépenses de traitement de l’eau évitées"
+        subtitle="Grâce à la dépollution de la friche et à la régulation de la qualité de l’eau par les espaces naturels"
         breadcrumbSegments={[
           breadcrumbSection,
           {

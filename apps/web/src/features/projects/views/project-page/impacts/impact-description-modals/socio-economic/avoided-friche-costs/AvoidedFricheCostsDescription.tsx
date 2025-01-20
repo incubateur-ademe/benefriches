@@ -7,6 +7,7 @@ const AvoidedFricheExpensesDescription = () => {
     <>
       <ModalHeader
         title="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
+        subtitle="Grâce à la reconversion de la friche"
         breadcrumbSegments={[
           breadcrumbSection,
           {

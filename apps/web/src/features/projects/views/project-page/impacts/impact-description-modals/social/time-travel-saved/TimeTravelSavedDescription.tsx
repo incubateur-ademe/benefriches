@@ -9,6 +9,7 @@ const TimeTravelSavedDescription = () => {
     <>
       <ModalHeader
         title={`⏱ ${TITLE}`}
+        subtitle="Grâce à la ou les commodités créées dans le quartier"
         breadcrumbSegments={[breadcrumbSection, { label: TITLE }]}
       />
       <ModalContent>

@@ -69,6 +69,11 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
           comme la lutte contre les îlots de chaleur urbains, la limitation des inondations,
           l'aménagement de jardins récréatifs/partagés.
         </p>
+        <p>
+          Certains services ont une dimension globale ou mondiale (ex : régulation du climat) tandis
+          que d’autres ont plutôt une dimension locale (ex : valeur esthétique). Par convention,
+          Bénéfriches considère comme bénéficiaire l’Humanité et non la Société française.
+        </p>
         <div className="tw-text-center">
           <img
             src="/img/modals/services-ecosystemiques.png"

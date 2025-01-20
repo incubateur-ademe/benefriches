@@ -101,7 +101,8 @@ const AvoidedCO2WithEnRDescription = ({
         {withMonetarisation && (
           <li>
             <ExternalLink href="https://www.strategie.gouv.fr/sites/strategie.gouv.fr/files/atoms/files/fs-2019-rapport-la-valeur-de-laction-pour-le-climat_0.pdf">
-              Valeur tutélaire du carbone
+              Valeur tutélaire du carbone&nbsp;: variable selon l’année, selon une trajectoire à la
+              hausse
             </ExternalLink>
           </li>
         )}

@@ -16,6 +16,7 @@ const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea }: Props) => {
     <>
       <ModalHeader
         title="🅿️ Dépenses d’entretien des VRD"
+        subtitle="Grâce à l’aménagement du projet en zone urbaine"
         breadcrumbSegments={[
           breadcrumbSection,
           {

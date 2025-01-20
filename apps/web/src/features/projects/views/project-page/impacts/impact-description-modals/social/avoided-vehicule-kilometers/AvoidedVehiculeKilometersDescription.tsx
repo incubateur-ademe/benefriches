@@ -7,6 +7,7 @@ const AvoidedVehiculeKilometersDescription = () => {
     <>
       <ModalHeader
         title="🚙 Kilomètres évités"
+        subtitle="Grâce à la ou les commodités créées dans le quartier"
         breadcrumbSegments={[breadcrumbSection, { label: "Kilomètres évités" }]}
       />
       <ModalContent>
