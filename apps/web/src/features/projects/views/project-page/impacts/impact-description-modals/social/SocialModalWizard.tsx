@@ -6,7 +6,7 @@ import {
 import { getSocialImpactLabel } from "../../getImpactLabel";
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
 import { SocialSubSectionName } from "../ImpactModalDescriptionContext";
-import { ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
+import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import JobsSubSectionDescription from "./JobsSubSectionDescription";
 import SocialMainDescription from "./SocialMainDescription";
 import AvoidedVehiculeKilometersDescription from "./avoided-vehicule-kilometers/AvoidedVehiculeKilometersDescription";
@@ -29,6 +29,7 @@ type Props = {
   impactSubSectionName?: SocialSubSectionName;
   projectData: ProjectData;
   siteData: SiteData;
+  impactsData: ImpactsData;
 };
 
 export function SocialModalWizard({
@@ -37,6 +38,7 @@ export function SocialModalWizard({
   impactSubSectionName,
   projectData,
   siteData,
+  impactsData,
 }: Props) {
   if (!impactName) {
     switch (impactSubSectionName) {
@@ -104,7 +106,11 @@ export function SocialModalWizard({
       );
 
     case "avoided_vehicule_kilometers":
-      return <AvoidedVehiculeKilometersDescription />;
+      return (
+        <AvoidedVehiculeKilometersDescription
+          impactData={impactsData.social.avoidedVehiculeKilometers}
+        />
+      );
     case "travel_time_saved":
       return <TimeTravelSavedDescription />;
 

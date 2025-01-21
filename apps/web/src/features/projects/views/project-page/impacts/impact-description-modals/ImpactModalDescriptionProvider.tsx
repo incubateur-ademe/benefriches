@@ -128,6 +128,7 @@ function ImpactModalDescriptionProvider({
                 <SocialModalWizard
                   projectData={projectData}
                   siteData={siteData}
+                  impactsData={impactsData}
                   impactSubSectionName={openState.subSectionName}
                   impactName={openState.impactName}
                   impactDetailsName={openState.impactDetailsName}
