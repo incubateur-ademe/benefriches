@@ -70,7 +70,7 @@ export const getLabelForUrbanGreenSpace = (greenSpace: UrbanGreenSpace): string 
     case "LAWNS_AND_BUSHES":
       return "Pelouses et buissons";
     case "GRAVEL_ALLEY":
-      return "Alléess et espaces en revêtement perméable";
+      return "Allées et espaces en revêtement perméable";
     case "PAVED_ALLEY":
       return "Allées et espaces en revêtement imperméable";
     case "TREE_FILLED_SPACE":
@@ -85,7 +85,7 @@ export const getDescriptionForUrbanGreenSpace = (
 ): string | undefined => {
   switch (greenSpace) {
     case "PAVED_ALLEY":
-      return "Pavé, bitum...";
+      return "Pavé, bitume...";
     case "GRAVEL_ALLEY":
       return "Gravier, dalles alvéolées...";
   }
