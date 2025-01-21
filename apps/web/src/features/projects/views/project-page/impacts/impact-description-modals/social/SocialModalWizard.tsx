@@ -112,7 +112,7 @@ export function SocialModalWizard({
         />
       );
     case "travel_time_saved":
-      return <TimeTravelSavedDescription />;
+      return <TimeTravelSavedDescription impactData={impactsData.social.travelTimeSaved} />;
 
     default: {
       const subSectionSegments = impactSubSectionName && [

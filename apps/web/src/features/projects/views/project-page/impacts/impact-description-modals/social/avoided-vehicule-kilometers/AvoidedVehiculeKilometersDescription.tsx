@@ -34,10 +34,6 @@ const AvoidedVehiculeKilometersDescription = ({ impactData }: Props) => {
       />
       <ModalContent>
         <p>
-          Il s’agit du nombre de kilomètres totaux qui ne seront pas parcourus dans les transports
-          par les personnes impactées par le projet.
-        </p>
-        <p>
           La création de logements, équipements publics, espaces verts ou encore locaux d’activités
           ou de service au sein des centres villes en opposition à la localisation de ces mêmes
           activités en périphérie peut engendrer une réduction de l’utilisation des véhicules
