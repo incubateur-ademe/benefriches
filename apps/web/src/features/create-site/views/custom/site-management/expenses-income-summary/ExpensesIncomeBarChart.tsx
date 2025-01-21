@@ -6,6 +6,7 @@ import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
 import { Income } from "@/features/create-site/core/siteFoncier.types";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { withDefaultChartOptions } from "@/shared/views/charts";
 
 type Props = {
   ownerExpenses: SiteYearlyExpense[];
@@ -114,8 +115,7 @@ const ExpensesIncomeBarChart = ({
     }),
   ];
 
-  const barChartOptions: Highcharts.Options = {
-    title: { text: "" },
+  const barChartOptions: Highcharts.Options = withDefaultChartOptions({
     xAxis: {
       categories: [
         `<strong>DÉPENSES<br>${ownerName}</strong><br>${formatNumberFr(-ownerExpensesTotal)} €/an`,
@@ -142,9 +142,6 @@ const ExpensesIncomeBarChart = ({
     chart: {
       styledMode: true,
     },
-    credits: {
-      enabled: false,
-    },
     yAxis: {
       title: {
         text: null,
@@ -164,7 +161,7 @@ const ExpensesIncomeBarChart = ({
       verticalAlign: "middle",
     },
     series: expenses as Array<Highcharts.SeriesOptionsType>,
-  };
+  });
 
   return (
     <div

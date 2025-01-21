@@ -3,7 +3,7 @@ import HighchartsReact from "highcharts-react-official";
 import { useContext } from "react";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
-import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
+import { withDefaultBarChartOptions } from "@/shared/views/charts";
 
 import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactsChartsSection from "../../ImpactsChartsSection";
@@ -14,8 +14,7 @@ type Props = {
 };
 
 function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotalImpact }: Props) {
-  const barChartOptions: Highcharts.Options = {
-    ...baseColumnChartConfig,
+  const barChartOptions: Highcharts.Options = withDefaultBarChartOptions({
     xAxis: {
       categories: [
         `<strong>Bilan de l'opération</strong><br>${formatMonetaryImpact(economicBalanceTotal)}`,
@@ -35,7 +34,7 @@ function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotal
         data: [economicBalanceTotal, socioEconomicTotalImpact],
       },
     ],
-  };
+  });
 
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 

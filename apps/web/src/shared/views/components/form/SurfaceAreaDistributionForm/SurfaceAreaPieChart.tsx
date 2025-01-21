@@ -4,6 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
+import { withDefaultChartOptions } from "@/shared/views/charts";
 
 import HighchartsCustomColorsWrapper from "../../Charts/HighchartsCustomColorsWrapper";
 
@@ -38,13 +39,11 @@ const SurfaceAreaPieChart = ({
     });
   }
 
-  const variablePieChartOptions: Highcharts.Options = {
-    title: { text: "" },
+  const variablePieChartOptions: Highcharts.Options = withDefaultChartOptions({
     chart: {
       styledMode: true,
       height: customHeight,
     },
-    credits: { enabled: false },
     tooltip: {
       pointFormat: `Superficie : <strong>{point.y} ${SQUARE_METERS_HTML_SYMBOL}</strong> ({point.percentage:.0f}%)`,
     },
@@ -56,7 +55,7 @@ const SurfaceAreaPieChart = ({
         data,
       },
     ],
-  };
+  });
 
   return (
     <HighchartsCustomColorsWrapper colors={data.map(({ color }) => color)}>

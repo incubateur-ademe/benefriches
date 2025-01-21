@@ -2,7 +2,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { CSSProperties, HTMLAttributes, ReactNode, useMemo, useState } from "react";
 
-import { baseAreaChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
+import { withDefaultAreaChartOptions } from "@/shared/views/charts";
 
 type Props = {
   data: {
@@ -13,8 +13,7 @@ type Props = {
   categoryLabels: [string, string];
 } & HTMLAttributes<HTMLDivElement>;
 
-const barAreaChartOptions: Highcharts.Options = {
-  ...baseAreaChartConfig,
+const barAreaChartOptions: Highcharts.Options = withDefaultAreaChartOptions({
   xAxis: {
     labels: { enabled: true },
     categories: [],
@@ -24,16 +23,16 @@ const barAreaChartOptions: Highcharts.Options = {
   },
   plotOptions: {
     area: {
-      ...baseAreaChartConfig.plotOptions?.area,
       stacking: "normal",
       marker: { enabled: false, states: { hover: { enabled: false } } },
+      lineWidth: 0,
     },
     series: {
       enableMouseTracking: false,
     },
   },
   legend: { enabled: false },
-};
+});
 
 const ImpactColoredAreaChart = ({ data, categoryLabels, ...props }: Props) => {
   const [onHovered, setOnHovered] = useState(false);

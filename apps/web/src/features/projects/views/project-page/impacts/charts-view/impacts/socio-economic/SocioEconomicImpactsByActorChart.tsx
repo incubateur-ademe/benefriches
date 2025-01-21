@@ -5,16 +5,15 @@ import { roundTo2Digits } from "shared";
 import { SocioEconomicImpactByActor } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { getSocioEconomicImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
-import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig.ts";
 import { getActorLabel } from "@/features/projects/views/shared/socioEconomicLabels";
+import { withDefaultBarChartOptions } from "@/shared/views/charts";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicImpactByActor;
 };
 
 function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
-  const barChartOptions: Highcharts.Options = {
-    ...baseColumnChartConfig,
+  const barChartOptions: Highcharts.Options = withDefaultBarChartOptions({
     xAxis: {
       categories: socioEconomicImpacts.map(({ name }) => `<strong>${getActorLabel(name)}</strong>`),
     },
@@ -35,7 +34,6 @@ function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
     },
     tooltip: {
       format: "{point.impactsList}",
-
       useHTML: true,
     },
     series: [
@@ -74,7 +72,7 @@ function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
         })),
       },
     ],
-  };
+  });
   return (
     <HighchartsReact
       containerProps={{ className: "highcharts-no-xaxis" }}

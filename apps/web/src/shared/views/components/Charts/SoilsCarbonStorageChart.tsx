@@ -7,6 +7,7 @@ import { SoilType } from "shared";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForCarbonStorageSoilType } from "@/shared/core/soils";
 
+import { withDefaultChartOptions } from "../../charts";
 import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
 
 type Props = {
@@ -29,13 +30,11 @@ const SoilsCarbonStorageChart = ({
 
   const soilsData = soilsCarbonStorage.filter(({ surfaceArea }) => surfaceArea > 0);
 
-  const variablePieChartOptions: Highcharts.Options = {
-    title: { text: "" },
+  const variablePieChartOptions: Highcharts.Options = withDefaultChartOptions({
     chart: {
       styledMode: true,
       height: customHeight,
     },
-    credits: { enabled: false },
     tooltip: {
       distance: 40,
       pointFormat:
@@ -59,7 +58,7 @@ const SoilsCarbonStorageChart = ({
         })),
       },
     ],
-  };
+  });
 
   return (
     <HighchartsCustomColorsWrapper

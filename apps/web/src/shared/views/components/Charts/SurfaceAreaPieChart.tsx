@@ -8,6 +8,7 @@ import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNum
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";
 
+import { withDefaultChartOptions } from "../../charts";
 import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
 
 type Props = {
@@ -44,13 +45,11 @@ const SurfaceAreaPieChart = ({
     });
   }
 
-  const variablePieChartOptions: Highcharts.Options = {
-    title: { text: "" },
+  const variablePieChartOptions: Highcharts.Options = withDefaultChartOptions({
     chart: {
       styledMode: true,
       height: customHeight,
     },
-    credits: { enabled: false },
     tooltip: {
       pointFormat: `Superficie : <strong>{point.y} ${SQUARE_METERS_HTML_SYMBOL}</strong> ({point.percentage:.2f}%)`,
     },
@@ -62,7 +61,7 @@ const SurfaceAreaPieChart = ({
         data,
       },
     ],
-  };
+  });
 
   return (
     <HighchartsCustomColorsWrapper colors={data.map(({ color }) => color)}>

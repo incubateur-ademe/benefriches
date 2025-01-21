@@ -2,7 +2,7 @@ import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { CSSProperties, HTMLAttributes, ReactNode, useState } from "react";
 
-import { baseColumnChartConfig } from "@/features/projects/views/shared/sharedChartConfig";
+import { withDefaultBarChartOptions } from "@/shared/views/charts";
 
 type Props = {
   data: {
@@ -13,8 +13,7 @@ type Props = {
   categoryLabels: [string, string];
 } & HTMLAttributes<HTMLDivElement>;
 
-const barChartOptions: Highcharts.Options = {
-  ...baseColumnChartConfig,
+const barChartOptions: Highcharts.Options = withDefaultBarChartOptions({
   xAxis: {
     categories: [],
   },
@@ -32,7 +31,7 @@ const barChartOptions: Highcharts.Options = {
   legend: {
     enabled: false,
   },
-};
+});
 
 const ImpactBarColoredBalanceChart = ({ data, categoryLabels, ...props }: Props) => {
   const [onHovered, setOnHovered] = useState(false);
