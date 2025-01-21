@@ -12,6 +12,7 @@ import { RenewableEnergyDevelopmentPlanType } from "@/shared/core/reconversionPr
 
 import {
   PhotovoltaicKeyParameter,
+  ProjectStakeholder,
   ReconversionProjectCreationData,
   Schedule,
 } from "../../project.types";
@@ -53,8 +54,7 @@ export const completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep =
 export const completeStakeholdersIntroductionStep = createAction(
   "completeStakeholdersIntroductionStep",
 );
-export const completeFutureOperator =
-  createAction<ReconversionProjectCreationData["futureOperator"]>("completeFutureOperator");
+export const futureOperatorCompleted = createAction<ProjectStakeholder>("futureOperatorCompleted");
 export const completeProjectDeveloper = createAction<
   ReconversionProjectCreationData["projectDeveloper"]
 >("completeProjectDeveloper");

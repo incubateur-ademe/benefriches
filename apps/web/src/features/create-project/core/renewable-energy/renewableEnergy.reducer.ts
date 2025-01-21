@@ -20,7 +20,7 @@ import {
   completeCustomSoilsSurfaceAreaAllocationStep,
   completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep,
   completeStakeholdersIntroductionStep,
-  completeFutureOperator,
+  futureOperatorCompleted,
   completeProjectDeveloper,
   completeReinstatementContractOwner,
   completeExpensesIntroductionStep,
@@ -310,7 +310,7 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
     state.renewableEnergyProject.creationData.projectDeveloper = action.payload;
     state.renewableEnergyProject.stepsHistory.push("STAKEHOLDERS_FUTURE_OPERATOR");
   });
-  builder.addCase(completeFutureOperator, (state, action) => {
+  builder.addCase(futureOperatorCompleted, (state, action) => {
     state.renewableEnergyProject.creationData.futureOperator = action.payload;
     const nextStep = state.siteData?.isFriche
       ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"

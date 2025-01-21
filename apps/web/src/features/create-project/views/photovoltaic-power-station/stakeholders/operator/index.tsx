@@ -1,25 +1,47 @@
-import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
+import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import {
-  completeFutureOperator,
+  futureOperatorCompleted,
   revertFutureOperator,
 } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import {
-  getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  getRenewableEnergyProjectAvailableStakeholders,
-} from "@/features/create-project/core/renewable-energy/selectors/stakeholders.selectors";
+import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
+import { UserStructure } from "@/features/onboarding/core/user";
+import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import StakeholderForm from "../../../common-views/stakeholder-form";
+import FutureOperatorForm, { FormValues } from "./FutureOperatorForm";
 
-function SiteOperatorFormContainer() {
+const mapInitialValues = (
+  futureOperator: ProjectStakeholder | undefined,
+  currentUser: UserStructure | undefined,
+): FormValues | undefined => {
+  if (!futureOperator || !currentUser) return undefined;
+
+  if (
+    futureOperator.name === currentUser.name &&
+    futureOperator.structureType === currentUser.type
+  ) {
+    return { structureOption: "user_structure", otherStructureName: undefined };
+  }
+  return { otherStructureName: futureOperator.name, structureOption: "other_structure" };
+};
+
+function FutureOperatorFormContainer() {
   const dispatch = useAppDispatch();
-  const availableStakeholdersList = useAppSelector(getRenewableEnergyProjectAvailableStakeholders);
-  const availableLocalAuthoritiesStakeholders = useAppSelector(
-    getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
-  );
+  const currentUser = useAppSelector(selectCurrentUserStructure);
+  const initialValue = useAppSelector(selectCreationData).futureOperator;
 
-  const onSubmit = (data: { structureType: ProjectStakeholderStructure; name: string }) => {
-    dispatch(completeFutureOperator(data));
+  const onSubmit = (data: FormValues) => {
+    const futureOperator: ProjectStakeholder =
+      data.structureOption === "user_structure"
+        ? {
+            structureType: currentUser?.type ?? "company",
+            name: currentUser?.name ?? "Structure non renseignée",
+          }
+        : {
+            name: data.otherStructureName,
+            structureType: "company",
+          };
+    dispatch(futureOperatorCompleted(futureOperator));
   };
 
   const onBack = () => {
@@ -27,14 +49,14 @@ function SiteOperatorFormContainer() {
   };
 
   return (
-    <StakeholderForm
-      title="Qui sera l’exploitant de la centrale photovoltaïque&nbsp;?"
+    <FutureOperatorForm
+      initialValues={mapInitialValues(initialValue, currentUser)}
+      userStructureType={currentUser?.type ?? "company"}
+      userStructureName={currentUser?.name ?? "Structure non renseignée"}
       onSubmit={onSubmit}
       onBack={onBack}
-      availableStakeholdersList={availableStakeholdersList}
-      availableLocalAuthoritiesStakeholders={availableLocalAuthoritiesStakeholders}
     />
   );
 }
 
-export default SiteOperatorFormContainer;
+export default FutureOperatorFormContainer;
