@@ -18,7 +18,7 @@ type ImpactFormatConfig = Record<
   }
 >;
 
-export const impactFormatConfig: ImpactFormatConfig = {
+const impactFormatConfig: ImpactFormatConfig = {
   monetary: {
     roundFn: roundToInteger,
     unitSuffix: `${NO_BREAK_SPACE}€`,
