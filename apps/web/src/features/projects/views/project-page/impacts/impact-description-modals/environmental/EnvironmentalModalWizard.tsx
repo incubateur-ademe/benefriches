@@ -1,7 +1,6 @@
 import {
   EnvironmentalImpactDetailsName,
   EnvironmentalMainImpactName,
-  getEnvironmentalProjectImpacts,
 } from "@/features/projects/domain/projectImpactsEnvironmental";
 
 import {
@@ -18,9 +17,10 @@ import {
   mainBreadcrumbSection,
   soilsBreadcrumbSection,
 } from "./breadcrumbSections";
-import AvoidedCO2WithEnREnvironmentalDescription from "./impact-co2/AvoidedCO2WithEnREnvironmentalDescription";
-import CarbonSoilsStorageEnvironmentalDescription from "./impact-co2/CarbonSoilsStorageEnvironmentalDescription";
-import Co2BenefitDescription from "./impact-co2/Co2BenefitDescription";
+import Co2EqEmissionsDescription from "./impact-co2/Co2EqEmissionsDescription";
+import RenewableEnergyRelatedCo2Description from "./impact-co2/RenewableEnergyRelatedCo2Description";
+import StoredCarbonRelatedCo2Description from "./impact-co2/StoredCarbonRelatedCo2Description";
+import TravelRelatedCo2Description from "./impact-co2/TravelRelatedCo2Description";
 import NonContaminatedSurfaceDescription from "./non-contaminated-surface/NonContaminatedSurface";
 import PermeableGreenSurfaceDescription from "./permeable-surface/PermeableGreenSurface";
 import PermeableMineraleSurfaceDescription from "./permeable-surface/PermeableMineraleSurface";
@@ -43,8 +43,6 @@ export function EnvironmentalModalWizard({
   siteData,
   impactsData,
 }: Props) {
-  const environmentalImpacts = getEnvironmentalProjectImpacts(impactsData);
-
   if (!impactName) {
     switch (impactSubSectionName) {
       case "co2":
@@ -65,30 +63,32 @@ export function EnvironmentalModalWizard({
 
   switch (impactDetailsName ?? impactName) {
     case "co2_benefit":
-      return <Co2BenefitDescription impactsData={environmentalImpacts} />;
-    case "avoided_co2_eq_emissions_with_production": {
-      const surfaceArea =
-        projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-          ? projectData.developmentPlan.surfaceArea
-          : undefined;
-      const electricalPowerKWc =
-        projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-          ? projectData.developmentPlan.electricalPowerKWc
-          : undefined;
+      return <Co2EqEmissionsDescription impactsData={impactsData} />;
+    case "avoided_car_traffic_co2_eq_emissions":
       return (
-        <AvoidedCO2WithEnREnvironmentalDescription
-          address={siteData.addressLabel}
-          developmentPlanElectricalPowerKWc={electricalPowerKWc}
-          developmentPlanSurfaceArea={surfaceArea}
+        <TravelRelatedCo2Description
+          impactData={impactsData.environmental.avoidedCarTrafficCo2EqEmissions}
         />
       );
-    }
+    case "avoided_co2_eq_emissions_with_production":
+      return (
+        <RenewableEnergyRelatedCo2Description
+          siteData={{ address: siteData.addressLabel }}
+          impactData={impactsData.environmental.avoidedCO2TonsWithEnergyProduction?.forecast}
+          projectData={
+            projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
+              ? projectData.developmentPlan
+              : undefined
+          }
+        />
+      );
 
     case "stored_co2_eq":
       return (
-        <CarbonSoilsStorageEnvironmentalDescription
+        <StoredCarbonRelatedCo2Description
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
+          impactData={impactsData.environmental.soilsCarbonStorage}
         />
       );
     case "non_contaminated_surface_area":
