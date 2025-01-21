@@ -65,7 +65,7 @@ const SitePurchaseAmountsForm = ({ initialValues, onSubmit, onBack }: Props) => 
         <RowDecimalsNumericInput
           className="!tw-pt-4"
           addonText="€"
-          label="Prix de vente"
+          label="Prix d'acquisition"
           nativeInputProps={(() => {
             const registerProps = register("sellingPrice", optionalNumericFieldRegisterOptions);
             return {
