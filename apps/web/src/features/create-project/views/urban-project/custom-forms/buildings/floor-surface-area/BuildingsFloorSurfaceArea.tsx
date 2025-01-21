@@ -37,6 +37,10 @@ function BuildingsFloorSurfaceArea({
   });
 
   const surface = watch("surfaceArea");
+  const warningMessage =
+    surface < buildingsFootprintSurfaceArea
+      ? "Attention, la superficie entrée est inférieure à l'empreinte au sol des bâtiments."
+      : undefined;
 
   return (
     <WizardFormLayout
@@ -56,6 +60,8 @@ function BuildingsFloorSurfaceArea({
           addonText={SQUARE_METERS_HTML_SYMBOL}
           label={<RequiredLabel label="Superficie" />}
           nativeInputProps={register("surfaceArea", requiredNumericFieldRegisterOptions)}
+          state={warningMessage ? "warning" : "default"}
+          stateRelatedMessage={warningMessage}
         />
 
         {!isNaN(surface) && (
