@@ -1,6 +1,6 @@
-import AvoidedCO2WithEnRDescription from "../../shared/AvoidedCo2WithRenewableEnergyDescription";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import RenewableEnergyRelatedCo2Content from "../../shared/co2-emissions/RenewableEnergyRelatedCo2Content";
 import {
   mainBreadcrumbSection,
   environmentalMonetaryBreadcrumbSection,
@@ -16,17 +16,17 @@ const AvoidedCO2WithEnRMonetaryValueDescription = (props: Props) => {
   return (
     <>
       <ModalHeader
-        title="⚡️️ Valeur monétaire de la décarbonation grâce à la production d'énergies renouvelables"
+        title="⚡️️ Production d'énergies renouvelables"
         breadcrumbSegments={[
           mainBreadcrumbSection,
           environmentalMonetaryBreadcrumbSection,
           {
-            label: "CO2-eq évité grâce aux énergies renouvelables",
+            label: "Production d'énergies renouvelables",
           },
         ]}
       />
       <ModalContent>
-        <AvoidedCO2WithEnRDescription withMonetarisation={true} {...props} />;
+        <RenewableEnergyRelatedCo2Content withMonetarisation={true} {...props} />;
       </ModalContent>
     </>
   );

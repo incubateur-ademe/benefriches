@@ -1,8 +1,8 @@
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
-import AvoidedCO2WithEnRDescription from "../../shared/AvoidedCo2WithRenewableEnergyDescription";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import RenewableEnergyRelatedCo2Content from "../../shared/co2-emissions/RenewableEnergyRelatedCo2Content";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
@@ -16,11 +16,7 @@ type Props = {
   };
 };
 
-const AvoidedCO2WithEnREnvironmentalDescription = ({
-  impactData,
-  siteData,
-  projectData,
-}: Props) => {
+const RenewableEnergyRelatedCo2Description = ({ impactData, siteData, projectData }: Props) => {
   return (
     <>
       <ModalHeader
@@ -41,7 +37,7 @@ const AvoidedCO2WithEnREnvironmentalDescription = ({
         ]}
       />
       <ModalContent>
-        <AvoidedCO2WithEnRDescription
+        <RenewableEnergyRelatedCo2Content
           withMonetarisation={false}
           address={siteData.address}
           developmentPlanSurfaceArea={projectData?.surfaceArea}
@@ -52,4 +48,4 @@ const AvoidedCO2WithEnREnvironmentalDescription = ({
   );
 };
 
-export default AvoidedCO2WithEnREnvironmentalDescription;
+export default RenewableEnergyRelatedCo2Description;

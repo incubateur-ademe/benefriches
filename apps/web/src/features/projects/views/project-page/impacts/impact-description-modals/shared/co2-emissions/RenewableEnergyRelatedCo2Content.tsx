@@ -1,8 +1,8 @@
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ModalTitleThree from "./ModalTitleThree";
-import ModalTitleTwo from "./ModalTitleTwo";
+import ModalTitleThree from "../ModalTitleThree";
+import ModalTitleTwo from "../ModalTitleTwo";
 
 type Props = {
   address: string;
@@ -11,7 +11,7 @@ type Props = {
   withMonetarisation: boolean;
 };
 
-const AvoidedCO2WithEnRDescription = ({
+const RenewableEnergyRelatedCo2Content = ({
   address,
   developmentPlanSurfaceArea,
   developmentPlanElectricalPowerKWc,
@@ -127,4 +127,4 @@ const AvoidedCO2WithEnRDescription = ({
   );
 };
 
-export default AvoidedCO2WithEnRDescription;
+export default RenewableEnergyRelatedCo2Content;

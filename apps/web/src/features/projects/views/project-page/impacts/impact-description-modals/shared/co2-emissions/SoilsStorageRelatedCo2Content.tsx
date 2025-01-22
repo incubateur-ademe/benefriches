@@ -6,8 +6,8 @@ import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMa
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import ModalTitleThree from "./ModalTitleThree";
-import ModalTitleTwo from "./ModalTitleTwo";
+import ModalTitleThree from "../ModalTitleThree";
+import ModalTitleTwo from "../ModalTitleTwo";
 
 type Props = {
   baseSoilsDistribution: ReconversionProjectImpactsResult["siteData"]["soilsDistribution"];
@@ -19,7 +19,7 @@ const formatSoilSurfaceArea = (surfaceArea: number) => {
   return `${formatNumberFr(convertSquareMetersToHectares(surfaceArea))} ha`;
 };
 
-const CarbonSoilsStorageDescription = ({
+const SoilsStorageRelatedCo2Description = ({
   baseSoilsDistribution,
   forecastSoilsDistribution,
   withMonetarisation,
@@ -122,4 +122,4 @@ const CarbonSoilsStorageDescription = ({
   );
 };
 
-export default CarbonSoilsStorageDescription;
+export default SoilsStorageRelatedCo2Description;

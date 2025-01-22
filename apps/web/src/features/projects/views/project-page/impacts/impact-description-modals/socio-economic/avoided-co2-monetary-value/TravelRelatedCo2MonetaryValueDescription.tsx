@@ -9,11 +9,11 @@ type Props = {
   impactData?: number;
 };
 
-const TravelRelatedCo2Description = ({ impactData }: Props) => {
+const TravelRelatedCo2MonetaryValueDescription = ({ impactData }: Props) => {
   return (
     <>
       <ModalHeader
-        title="🚙 Evitées grâce aux déplacements en voiture évités"
+        title="🚙 Déplacements en voiture évités"
         value={
           impactData
             ? {
@@ -22,16 +22,13 @@ const TravelRelatedCo2Description = ({ impactData }: Props) => {
               }
             : undefined
         }
-        breadcrumbSegments={[
-          ...breadcrumbSegments,
-          { label: "Evitées grâce aux déplacements en voiture évités" },
-        ]}
+        breadcrumbSegments={[...breadcrumbSegments, { label: "Déplacements en voiture évités" }]}
       />
       <ModalContent>
-        <TravelRelatedCo2Content />
+        <TravelRelatedCo2Content withMonetarisation />
       </ModalContent>
     </>
   );
 };
 
-export default TravelRelatedCo2Description;
+export default TravelRelatedCo2MonetaryValueDescription;

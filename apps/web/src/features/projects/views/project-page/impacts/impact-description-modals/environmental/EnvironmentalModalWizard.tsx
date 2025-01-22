@@ -19,7 +19,7 @@ import {
 } from "./breadcrumbSections";
 import Co2EqEmissionsDescription from "./impact-co2/Co2EqEmissionsDescription";
 import RenewableEnergyRelatedCo2Description from "./impact-co2/RenewableEnergyRelatedCo2Description";
-import StoredCarbonRelatedCo2Description from "./impact-co2/StoredCarbonRelatedCo2Description";
+import SoilsStorageRelatedCo2Description from "./impact-co2/SoilsStorageRelatedCo2Description";
 import TravelRelatedCo2Description from "./impact-co2/TravelRelatedCo2Description";
 import NonContaminatedSurfaceDescription from "./non-contaminated-surface/NonContaminatedSurface";
 import PermeableGreenSurfaceDescription from "./permeable-surface/PermeableGreenSurface";
@@ -85,7 +85,7 @@ export function EnvironmentalModalWizard({
 
     case "stored_co2_eq":
       return (
-        <StoredCarbonRelatedCo2Description
+        <SoilsStorageRelatedCo2Description
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
           impactData={impactsData.environmental.soilsCarbonStorage}

@@ -3,9 +3,9 @@ import { convertCarbonToCO2eq } from "shared";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { ImpactsData, ProjectData, SiteData } from "../../ImpactModalDescriptionProvider";
-import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import SoilsStorageRelatedCo2Content from "../../shared/co2-emissions/SoilsStorageRelatedCo2Content";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   impactData: ImpactsData["environmental"]["soilsCarbonStorage"];
 };
 
-const CarbonSoilsStorageEnvironmentalDescription = ({ impactData, ...props }: Props) => {
+const SoilsStorageRelatedCo2Description = ({ impactData, ...props }: Props) => {
   const value = impactData.isSuccess
     ? convertCarbonToCO2eq(impactData.forecast.total - impactData.current.total)
     : undefined;
@@ -34,10 +34,10 @@ const CarbonSoilsStorageEnvironmentalDescription = ({ impactData, ...props }: Pr
         breadcrumbSegments={[...breadcrumbSegments, { label: "Carbone stocké dans les sols" }]}
       />
       <ModalContent>
-        <CarbonSoilsStorageDescription withMonetarisation={false} {...props} />
+        <SoilsStorageRelatedCo2Content withMonetarisation={false} {...props} />
       </ModalContent>
     </>
   );
 };
 
-export default CarbonSoilsStorageEnvironmentalDescription;
+export default SoilsStorageRelatedCo2Description;

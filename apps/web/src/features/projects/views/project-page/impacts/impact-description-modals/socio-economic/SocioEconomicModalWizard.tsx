@@ -8,19 +8,20 @@ import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModa
 import { SocioEconomicSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import SocioEconomicDescription from "./SocioEconomicDescription";
-import AvoidedCO2WithEnRMonetaryValueDescription from "./avoided-co2-monetary-value/AvoidedCo2WithRenewableEnergyMonetaryValueDescription";
+import RenewableEnergyRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/RenewableEnergyRelatedCo2MonetaryValueDescription";
+import TravelRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/TravelRelatedCo2MonetaryValueDescription";
 import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheCostsDescription";
 import AvoidedIllegalDumpingCostsDescription from "./avoided-friche-costs/AvoidedIllegalDumpingCostsDescription";
 import AvoidedOtherSecuringCostsDescription from "./avoided-friche-costs/AvoidedOtherSecuringCostsDescription";
 import AvoidedSecurityCostsDescription from "./avoided-friche-costs/AvoidedSecurityCostsDescription";
 import { getSubSectionBreadcrumb, mainBreadcrumbSection } from "./breadcrumbSections";
-import CarbonSoilsStorageMonetaryValueDescription from "./ecosystem-services/CarbonStorageMonetaryValueDescription";
 import EcosystemServicesDescription from "./ecosystem-services/EcosystemServicesDescription";
 import InvasiveSpeciesRegulationDescription from "./ecosystem-services/InvasiveSpeciesRegulationDescription";
 import NatureRelatedWellnessAndLeisureDescription from "./ecosystem-services/NatureRelatedWellnessAndLeisureDescription";
 import NitrogenCycleDescription from "./ecosystem-services/NitrogenCycleDescription";
 import PollinationDescription from "./ecosystem-services/PollinationDescription";
 import SoilErosionDescription from "./ecosystem-services/SoilErosionDescription";
+import SoilsStorageRelatedCo2MonetaryValueDescription from "./ecosystem-services/SoilsStorageRelatedCo2MonetaryValueDescription";
 import WaterCycle from "./ecosystem-services/WaterCycle";
 import PropertyTransferDutiesIncreaseDescription from "./property-value-increase/PropertyTransferDutiesIncreaseDescription";
 import PropertyValueIncreaseDescription from "./property-value-increase/PropertyValueIncreaseDescription";
@@ -115,7 +116,7 @@ export function SocioEconomicModalWizard({
       return <PropertyTransferDutiesIncreaseDescription />;
     case "avoided_co2_eq_with_enr":
       return (
-        <AvoidedCO2WithEnRMonetaryValueDescription
+        <RenewableEnergyRelatedCo2MonetaryValueDescription
           address={siteData.addressLabel}
           developmentPlanElectricalPowerKWc={
             projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
@@ -129,6 +130,9 @@ export function SocioEconomicModalWizard({
           }
         />
       );
+
+    case "avoided_traffic_co2_eq_emissions":
+      return <TravelRelatedCo2MonetaryValueDescription />;
 
     case "water_regulation":
       return (
@@ -145,7 +149,7 @@ export function SocioEconomicModalWizard({
 
     case "carbon_storage":
       return (
-        <CarbonSoilsStorageMonetaryValueDescription
+        <SoilsStorageRelatedCo2MonetaryValueDescription
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />

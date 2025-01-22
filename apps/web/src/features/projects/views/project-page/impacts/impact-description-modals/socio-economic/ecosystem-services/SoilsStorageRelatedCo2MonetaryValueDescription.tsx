@@ -1,8 +1,8 @@
 import { SoilsDistribution } from "shared";
 
-import CarbonSoilsStorageDescription from "../../shared/CarbonStorageDescription";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
+import SoilsStorageRelatedCo2Content from "../../shared/co2-emissions/SoilsStorageRelatedCo2Content";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
@@ -10,18 +10,18 @@ type Props = {
   forecastSoilsDistribution: SoilsDistribution;
 };
 
-const CarbonSoilsStorageMonetaryValueDescription = (props: Props) => {
+const SoilsStorageRelatedCo2MonetaryValueDescription = (props: Props) => {
   return (
     <>
       <ModalHeader
-        title="🍂️ Carbone stocké dans les sols"
+        title="🍂 CO2-eq stocké dans les sols"
         breadcrumbSegments={[...breadcrumbSegments, { label: "Carbone stocké dans les sols" }]}
       />
       <ModalContent>
-        <CarbonSoilsStorageDescription withMonetarisation={true} {...props} />
+        <SoilsStorageRelatedCo2Content withMonetarisation={true} {...props} />
       </ModalContent>
     </>
   );
 };
 
-export default CarbonSoilsStorageMonetaryValueDescription;
+export default SoilsStorageRelatedCo2MonetaryValueDescription;
