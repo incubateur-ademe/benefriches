@@ -21,7 +21,7 @@ Le projet est organisé en monorepo et géré avec le gestionnaire de packages `
 Le code commun au front-end et au back-end (types, fonctions de calculs, etc.) est placé dans le package `shared`.
 
 ### Pré-requis
-* node (version 20 ou supérieure)
+* node (version 22 ou supérieure)
 * pnpm (version 9.0.6 ou supérieure)
 * docker (optionnel)
 * postgresql (si docker non installé)
