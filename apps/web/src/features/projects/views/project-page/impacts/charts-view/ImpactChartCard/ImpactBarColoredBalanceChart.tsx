@@ -14,9 +14,6 @@ type Props = {
 } & HTMLAttributes<HTMLDivElement>;
 
 const barChartOptions: Highcharts.Options = withDefaultBarChartOptions({
-  xAxis: {
-    categories: [],
-  },
   tooltip: {
     enabled: false,
   },
@@ -73,7 +70,6 @@ const ImpactBarColoredBalanceChart = ({ data, categoryLabels, ...props }: Props)
         options={{
           ...barChartOptions,
           xAxis: {
-            ...barChartOptions.xAxis,
             categories: categoryLabels,
           },
           series: data.map(({ values, label }) => ({

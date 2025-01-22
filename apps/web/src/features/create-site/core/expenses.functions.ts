@@ -4,32 +4,6 @@ import {
   SiteSecurityYearlyExpensePurpose,
 } from "shared";
 
-type GroupedByExpensesKey = "bearer";
-
-const groupAndSumBy =
-  <K extends GroupedByExpensesKey>(key: K) =>
-  (expenses: SiteYearlyExpense[]) => {
-    return expenses.reduce<Record<SiteYearlyExpense[K], number>>(
-      (expensesByKey, expense) => {
-        const group = expense[key];
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        const totalAmountForKey = expense.amount + (expensesByKey[group] ?? 0);
-        return { ...expensesByKey, [group]: totalAmountForKey };
-      },
-      // eslint-disable-next-line @typescript-eslint/prefer-reduce-type-parameter
-      {} as Record<SiteYearlyExpense[K], number>,
-    );
-  };
-
-export const groupExpensesByBearer = (expenses: SiteYearlyExpense[]) => {
-  const expensesMapByCategory = groupAndSumBy("bearer")(expenses);
-
-  return Object.entries(expensesMapByCategory).map(([bearer, amount]) => ({
-    bearer: bearer as SiteYearlyExpense["bearer"],
-    amount,
-  }));
-};
-
 export const getLabelForExpensePurpose = (expensePurpose: SiteYearlyExpense["purpose"]): string => {
   switch (expensePurpose) {
     case "propertyTaxes":

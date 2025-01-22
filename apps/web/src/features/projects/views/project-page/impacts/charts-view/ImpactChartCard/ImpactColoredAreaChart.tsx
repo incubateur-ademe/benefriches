@@ -69,7 +69,7 @@ const ImpactColoredAreaChart = ({ data, categoryLabels, ...props }: Props) => {
         options={{
           ...barAreaChartOptions,
           xAxis: {
-            ...barAreaChartOptions.xAxis,
+            labels: { enabled: true },
             categories: categoryLabels,
           },
           series: data.map(({ label, values }) => ({
