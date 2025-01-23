@@ -402,7 +402,7 @@ export class TravelRelatedImpactsService
   getSocioEconomicList() {
     const socioEconomicImpacts = [
       {
-        actor: "human_society",
+        actor: "french_society",
         amount: roundTo2Digits(this.getAvoidedAirPollution()),
         impact: "avoided_air_pollution",
         impactCategory: "social_monetary",

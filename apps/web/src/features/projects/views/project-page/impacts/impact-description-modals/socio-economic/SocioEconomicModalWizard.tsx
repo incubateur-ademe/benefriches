@@ -12,6 +12,7 @@ import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModa
 import { SocioEconomicSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import SocioEconomicDescription from "./SocioEconomicDescription";
+import AvoidedAirPollutionDescription from "./avoided-air-pollution/AvoidedAirPollutionDescription";
 import AvoidedCarRelatedExpensesDescription from "./avoided-car-related-expenses/AvoidedCarRelatedExpensesDescription";
 import RenewableEnergyRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/RenewableEnergyRelatedCo2MonetaryValueDescription";
 import TravelRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/TravelRelatedCo2MonetaryValueDescription";
@@ -320,6 +321,13 @@ export function SocioEconomicModalWizard({
       return (
         <AvoidedCarRelatedExpensesDescription
           impactData={getImpactData(impactsGroupedByName.avoided_car_related_expenses)}
+        />
+      );
+
+    case "avoided_air_pollution":
+      return (
+        <AvoidedAirPollutionDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_air_pollution)}
         />
       );
 

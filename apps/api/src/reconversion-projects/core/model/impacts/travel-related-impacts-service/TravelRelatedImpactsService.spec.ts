@@ -135,7 +135,7 @@ describe("TravelRelatedImpactsService", () => {
 
       expect(travelRelatedImpactsService.getSocioEconomicList()).toEqual([
         {
-          actor: "human_society",
+          actor: "french_society",
           amount: 30990.09,
           impact: "avoided_air_pollution",
           impactCategory: "social_monetary",

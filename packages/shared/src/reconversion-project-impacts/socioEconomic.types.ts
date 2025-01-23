@@ -116,7 +116,7 @@ export type AvoidedPropertyDamagesExpensesImpact = BaseEconomicImpact & {
 };
 
 export type AvoidedAirPollutionImpact = BaseEconomicImpact & {
-  actor: "human_society";
+  actor: "french_society";
   impactCategory: "social_monetary";
   impact: "avoided_air_pollution";
 };

@@ -8,24 +8,24 @@ import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import LinkToAvoidedKilometersImpact from "../../shared/avoided-kilometers-social-impact-link/AvoidedKilometersSocialImpactLink";
 import { mainBreadcrumbSection, socialMonetaryBreadcrumbSection } from "../breadcrumbSections";
 
-const TITLE = "Dépenses automobiles évitées";
+const TITLE = "Dépenses de santé évitées grâce à la réduction de la pollution de l’air";
 
 type Props = {
   impactData?: number;
 };
 
-const AvoidedCarRelatedExpensesDescription = ({ impactData }: Props) => {
+const AvoidedAirPollutionDescription = ({ impactData }: Props) => {
   return (
     <>
       <ModalHeader
-        title={`🚗 ${TITLE}`}
-        subtitle="Grâce à la ou les commodités créées dans le quartier"
+        title={`💨 ${TITLE}`}
+        subtitle="Grâce aux déplacements évités"
         value={
           impactData
             ? {
                 state: "success",
                 text: formatMonetaryImpact(impactData),
-                description: "pour la population locale",
+                description: "pour la société française",
               }
             : undefined
         }
@@ -52,18 +52,21 @@ const AvoidedCarRelatedExpensesDescription = ({ impactData }: Props) => {
           <li>Effet en termes de sécurité routière</li>
         </ul>
         <p>
-          Les dépenses automobiles évitées (exprimées en €/an) correspondent aux dépenses
-          d’entretien, d’amortissement et énergétiques (associées à l’utilisation des véhicules
-          individuels) évités du fait d’une moindre utilisation de ces véhicules.
+          La réduction des déplacements attendue par la réalisation du projet urbain en centralité
+          conduira à de moindres émissions de polluants atmosphériques des véhicules (le parc
+          automobile étant encore largement thermique). Conduisant ainsi à des impacts réduits en
+          termes de santé public, donc des dépenses de santé évitées (exprimées en €/an).
         </p>
         <p>
-          <strong>Bénéficiaire</strong> : population locale
+          <strong>Bénéficiaire</strong> : société française
         </p>
         <ModalTitleTwo>Quelles données sont utilisées dans le calcul ?</ModalTitleTwo>
         <ModalTitleThree>Données systémiques agrégées par Bénéfriches :</ModalTitleThree>
         <ul>
+          <li>Densité de population communale (qui détermine la densité du tissu urbain)</li>
           <li>
-            Valeur du coût ressenti de la mobilité (exprimée en €/véhicule.km) : 0,1 (en 2018)
+            Coût sanitaire de la pollution atmosphérique (exprimée en €/véhicule.km) : variable
+            selon la densité du tissu urbain traversé
           </li>
           <li>
             Taux d'occupation moyen des véhicules (exprimé en nombre de personne / véhicule) : 1,45
@@ -80,11 +83,11 @@ const AvoidedCarRelatedExpensesDescription = ({ impactData }: Props) => {
         </p>
         <ModalTitleTwo>Comment est fait le calcul ?</ModalTitleTwo>
         <p>
-          Les dépenses automobiles évitées (exprimées en €/an) sont le produit de l’indicateur
-          d’impact social <LinkToAvoidedKilometersImpact /> annuellement (exprimé en nombre de «
+          Les dépenses de santé évitées (exprimées en €/an) sont le produit de l’indicateur d’impact
+          social <LinkToAvoidedKilometersImpact /> annuellement (exprimé en nombre de «
           voyageurs.km/an » évités) par le taux d'occupation moyen des véhicules (exprimé en nombre
-          de personne / véhicule) et par la valeur du coût ressenti de la mobilité (exprimée en
-          €/véhicule.km).
+          de personne / véhicule) et par le coût sanitaire de la pollution atmosphérique (exprimée
+          en €/100véhicules.km).
         </p>
         <ModalTitleTwo>Sources</ModalTitleTwo>
         <ul>
@@ -117,4 +120,4 @@ const AvoidedCarRelatedExpensesDescription = ({ impactData }: Props) => {
   );
 };
 
-export default AvoidedCarRelatedExpensesDescription;
+export default AvoidedAirPollutionDescription;

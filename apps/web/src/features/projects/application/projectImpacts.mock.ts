@@ -380,7 +380,7 @@ export const urbanProjectImpactMock = {
           amount: 1500,
           impact: "avoided_air_pollution",
           impactCategory: "social_monetary",
-          actor: "human_society",
+          actor: "french_society",
         },
         {
           actor: "local_people",

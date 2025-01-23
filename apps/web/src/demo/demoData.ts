@@ -221,7 +221,7 @@ export const IMPACTS_DATA = {
           impactCategory: "environmental_monetary",
         },
         {
-          actor: "human_society",
+          actor: "french_society",
           amount: 1794.5579568524333,
           impact: "avoided_air_pollution",
           impactCategory: "social_monetary",
