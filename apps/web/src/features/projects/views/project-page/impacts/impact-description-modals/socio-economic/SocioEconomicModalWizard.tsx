@@ -33,6 +33,7 @@ import PropertyValueIncreaseDescription from "./property-value-increase/Property
 import RentalIncomeDescription from "./rental-income/RentalIncomeDescription";
 import RoadsAndUtilitiesMaintenanceExpenses from "./roads-and-utilities-maintenance-expenses/RoadsAndUtilitiesMaintenanceExpenses";
 import TaxesIncomeDescription from "./taxes-income/TaxesIncomeDescription";
+import TimeTravelSavedMonetaryValueDescription from "./time-travel-saved/TimeTravelSavedMonetaryValueDescription";
 import WaterRegulationDescription from "./water-regulation/WaterRegulationDescription";
 
 type Props = {
@@ -304,6 +305,13 @@ export function SocioEconomicModalWizard({
           impactData={getImpactData(impactsGroupedByName.water_cycle)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
+        />
+      );
+
+    case "travel_time_saved":
+      return (
+        <TimeTravelSavedMonetaryValueDescription
+          impactData={getImpactData(impactsGroupedByName.travel_time_saved)}
         />
       );
 

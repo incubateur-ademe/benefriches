@@ -10,7 +10,7 @@ export const environmentalMonetaryBreadcrumbSection = {
   openState: { sectionName: "socio_economic", subSectionName: "environmental_monetary" },
 } as const;
 
-const socialMonetaryBreadcrumbSection = {
+export const socialMonetaryBreadcrumbSection = {
   label: "Impacts sociaux monétarisés",
   openState: { sectionName: "socio_economic", subSectionName: "social_monetary" },
 } as const;

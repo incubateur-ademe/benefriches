@@ -21,7 +21,7 @@ const LinkToAvoidedKilometersImpact = () => {
       className="tw-px-1"
       priority="tertiary no outline"
     >
-      « 🚙 Kilomètres évités »
+      «&nbsp;🚙 Kilomètres évités&nbsp;»
     </Button>
   );
 };
