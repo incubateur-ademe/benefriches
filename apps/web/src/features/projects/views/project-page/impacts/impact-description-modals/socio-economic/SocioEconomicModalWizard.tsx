@@ -12,6 +12,7 @@ import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModa
 import { SocioEconomicSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import SocioEconomicDescription from "./SocioEconomicDescription";
+import AvoidedCarRelatedExpensesDescription from "./avoided-car-related-expenses/AvoidedCarRelatedExpensesDescription";
 import RenewableEnergyRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/RenewableEnergyRelatedCo2MonetaryValueDescription";
 import TravelRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/TravelRelatedCo2MonetaryValueDescription";
 import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheCostsDescription";
@@ -312,6 +313,13 @@ export function SocioEconomicModalWizard({
       return (
         <TimeTravelSavedMonetaryValueDescription
           impactData={getImpactData(impactsGroupedByName.travel_time_saved)}
+        />
+      );
+
+    case "avoided_car_related_expenses":
+      return (
+        <AvoidedCarRelatedExpensesDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_car_related_expenses)}
         />
       );
 

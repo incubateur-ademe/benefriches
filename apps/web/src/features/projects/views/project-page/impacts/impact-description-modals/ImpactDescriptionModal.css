@@ -18,6 +18,7 @@
 #modal-impacts-description .fr-modal__body {
   max-height: unset !important;
   background-color: var(--background-alt-grey);
+  margin-bottom: 6rem;
 }
 
 #modal-impacts-description .fr-container--fluid {
