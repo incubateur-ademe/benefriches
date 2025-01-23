@@ -7,6 +7,9 @@ type Props = {
 };
 
 export default function ImpactPercentageVariation({ percentage }: Props) {
+  if (percentage === 0) {
+    return null;
+  }
   return (
     <Badge
       small

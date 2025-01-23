@@ -34,7 +34,7 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
       </div>
       <h1 className="tw-text-2xl tw-m-0 tw-mb-2">{title}</h1>
 
-      {subtitle && <span className="tw-font-bold">{subtitle}</span>}
+      {subtitle && <div className="tw-font-bold tw-mb-2">{subtitle}</div>}
       {value && (
         <div>
           <span

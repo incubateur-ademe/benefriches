@@ -1,4 +1,4 @@
-import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
@@ -18,7 +18,8 @@ const TravelRelatedCo2MonetaryValueDescription = ({ impactData }: Props) => {
           impactData
             ? {
                 state: "success",
-                text: formatCO2Impact(impactData),
+                text: formatMonetaryImpact(impactData),
+                description: "pour l'humanité",
               }
             : undefined
         }

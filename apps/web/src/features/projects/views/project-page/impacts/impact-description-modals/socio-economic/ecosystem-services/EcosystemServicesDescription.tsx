@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { EcosystemServicesImpact } from "shared";
 
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
@@ -54,6 +55,15 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
     <>
       <ModalHeader
         title="🌱 Valeur monétaire des services écosystémiques"
+        value={
+          ecosystemServicesImpact
+            ? {
+                state: ecosystemServicesImpact.amount > 0 ? "success" : "error",
+                text: formatMonetaryImpact(ecosystemServicesImpact.amount),
+                description: "pour l'humanité",
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           environmentalMonetaryBreadcrumbSection,

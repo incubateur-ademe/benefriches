@@ -1,3 +1,4 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ModalContent from "../../shared/ModalContent";
@@ -8,13 +9,23 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   addressLabel: string;
+  impactData?: number;
 };
 
-const AvoidedIllegalDumpingCostsDescription = ({ addressLabel }: Props) => {
+const AvoidedIllegalDumpingCostsDescription = ({ addressLabel, impactData }: Props) => {
   return (
     <>
       <ModalHeader
         title="🚮 Débarras de dépôt sauvage"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour l'actuel locataire ou le propriétaire",
+              }
+            : undefined
+        }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Débarras de dépôt sauvage" }]}
       />
       <ModalContent>

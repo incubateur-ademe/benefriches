@@ -1,3 +1,4 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -13,9 +14,10 @@ import {
 
 type Props = {
   developmentPlan: ProjectData["developmentPlan"];
+  impactData?: number;
 };
 
-const RentalIncomeDescription = ({ developmentPlan }: Props) => {
+const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
   const { surfaceArea, electricalPowerKWc } =
     developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
       ? {
@@ -28,6 +30,15 @@ const RentalIncomeDescription = ({ developmentPlan }: Props) => {
     <>
       <ModalHeader
         title="🔑 Revenu locatif"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "répartis entre l'actuel propriétaire et le futur propriétaire",
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           economicDirectMonetaryBreadcrumbSection,

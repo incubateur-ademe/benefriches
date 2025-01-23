@@ -1,3 +1,5 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import {
@@ -5,12 +7,25 @@ import {
   economicDirectMonetaryBreadcrumbSection,
 } from "../breadcrumbSections";
 
-const AvoidedFricheExpensesDescription = () => {
+type Props = {
+  impactData?: number;
+};
+
+const AvoidedFricheExpensesDescription = ({ impactData }: Props) => {
   return (
     <>
       <ModalHeader
         title="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
         subtitle="Grâce à la reconversion de la friche"
+        value={
+          impactData
+            ? {
+                text: formatMonetaryImpact(impactData),
+                state: impactData > 0 ? "success" : "error",
+                description: `répartis entre l'actuel locataire et le propriétaire`,
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           economicDirectMonetaryBreadcrumbSection,

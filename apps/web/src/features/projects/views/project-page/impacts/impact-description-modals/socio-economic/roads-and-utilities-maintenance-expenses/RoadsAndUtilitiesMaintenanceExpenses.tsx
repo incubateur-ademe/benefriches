@@ -1,3 +1,4 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -12,14 +13,24 @@ import {
 
 type Props = {
   surfaceArea: number;
+  impactData?: number;
 };
 
-const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea }: Props) => {
+const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea, impactData }: Props) => {
   return (
     <>
       <ModalHeader
         title="🅿️ Dépenses d’entretien des VRD"
         subtitle="Grâce à l’aménagement du projet en zone urbaine"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour la collectivité",
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           economicDirectMonetaryBreadcrumbSection,

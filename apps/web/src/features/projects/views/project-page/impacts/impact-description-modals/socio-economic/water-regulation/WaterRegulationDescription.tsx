@@ -1,6 +1,7 @@
 import { typedObjectEntries } from "shared";
 import { isForest, isPrairie, isWetLand, SoilsDistribution } from "shared";
 
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
@@ -20,6 +21,7 @@ type Props = {
   forecastSoilsDistribution: SoilsDistribution;
   baseContaminatedSurface: number;
   forecastContaminatedSurface: number;
+  impactData?: number;
 };
 
 const formatSoilSurfaceArea = (surfaceArea: number) => {
@@ -31,6 +33,7 @@ const WaterRegulationDescription = ({
   forecastSoilsDistribution,
   baseContaminatedSurface,
   forecastContaminatedSurface,
+  impactData,
 }: Props) => {
   const baseSoilsWithBenefitsDistributionEntries = typedObjectEntries(baseSoilsDistribution).filter(
     ([key]) => isPrairie(key) || isForest(key) || isWetLand(key),
@@ -45,6 +48,15 @@ const WaterRegulationDescription = ({
       <ModalHeader
         title="🚰 Dépenses de traitement de l’eau évitées"
         subtitle="Grâce à la dépollution de la friche et à la régulation de la qualité de l’eau par les espaces naturels"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour l'humanité",
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           environmentalMonetaryBreadcrumbSection,

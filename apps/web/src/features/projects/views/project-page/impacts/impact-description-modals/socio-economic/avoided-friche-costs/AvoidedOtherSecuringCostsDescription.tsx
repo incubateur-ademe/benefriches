@@ -1,12 +1,26 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
-const AvoidedOtherSecuringCostsDescription = () => {
+type Props = {
+  impactData?: number;
+};
+const AvoidedOtherSecuringCostsDescription = ({ impactData }: Props) => {
   return (
     <>
       <ModalHeader
         title="🛡 Autres dépenses de sécurisation"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour l'actuel locataire ou le propriétaire",
+              }
+            : undefined
+        }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Autres dépenses de sécurisation" }]}
       />
       <ModalContent>

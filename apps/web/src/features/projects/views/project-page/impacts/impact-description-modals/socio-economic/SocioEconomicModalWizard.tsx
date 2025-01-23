@@ -1,5 +1,9 @@
+import { useMemo } from "react";
+import { sumListWithKey } from "shared";
+
 import {
   SocioEconomicDetailsName,
+  SocioEconomicImpactName,
   SocioEconomicMainImpactName,
 } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
@@ -16,6 +20,7 @@ import AvoidedOtherSecuringCostsDescription from "./avoided-friche-costs/Avoided
 import AvoidedSecurityCostsDescription from "./avoided-friche-costs/AvoidedSecurityCostsDescription";
 import { getSubSectionBreadcrumb, mainBreadcrumbSection } from "./breadcrumbSections";
 import EcosystemServicesDescription from "./ecosystem-services/EcosystemServicesDescription";
+import ForestRelatedProductDescription from "./ecosystem-services/ForestRelatedProductDescription";
 import InvasiveSpeciesRegulationDescription from "./ecosystem-services/InvasiveSpeciesRegulationDescription";
 import NatureRelatedWellnessAndLeisureDescription from "./ecosystem-services/NatureRelatedWellnessAndLeisureDescription";
 import NitrogenCycleDescription from "./ecosystem-services/NitrogenCycleDescription";
@@ -39,6 +44,46 @@ type Props = {
   impactsData: ImpactsData;
 };
 
+type GetImpactsGroupedByNameProps = {
+  impact: SocioEconomicMainImpactName;
+  actor: string;
+  amount: number;
+  details?: {
+    amount: number;
+    impact: SocioEconomicDetailsName;
+  }[];
+}[];
+
+type ImpactActorList = { actor: string; amount: number }[];
+type ImpactsGroupedByName = Partial<Record<SocioEconomicImpactName, ImpactActorList>>;
+
+const groupByImpactName = (impacts: GetImpactsGroupedByNameProps): ImpactsGroupedByName => {
+  return impacts
+    .map(({ actor, amount, impact, details = [] }) => [
+      { actor, amount, impact },
+      ...details.map(({ impact, amount }) => ({ impact, amount, actor })),
+    ])
+    .flat()
+    .reduce<ImpactsGroupedByName>(
+      (byImpactName, { impact, actor, amount }) => ({
+        ...byImpactName,
+        [impact]: byImpactName[impact]
+          ? [...byImpactName[impact], { actor, amount }]
+          : [{ actor, amount }],
+      }),
+      {},
+    );
+};
+
+const getImpactData = (actors?: ImpactActorList) => {
+  if (!actors) {
+    return undefined;
+  }
+  if (actors.length === 1) {
+    return actors[0]?.amount;
+  }
+};
+
 export function SocioEconomicModalWizard({
   impactName,
   impactDetailsName,
@@ -47,6 +92,11 @@ export function SocioEconomicModalWizard({
   siteData,
   impactsData,
 }: Props) {
+  const impactsGroupedByName = useMemo(
+    () => groupByImpactName(impactsData.socioeconomic.impacts),
+    [impactsData.socioeconomic.impacts],
+  );
+
   if (!impactName) {
     switch (impactSubSectionName) {
       case "economic_direct":
@@ -92,51 +142,94 @@ export function SocioEconomicModalWizard({
 
   switch (impactDetailsName ?? impactName) {
     case "rental_income":
-      return <RentalIncomeDescription developmentPlan={projectData.developmentPlan} />;
+      return (
+        <RentalIncomeDescription
+          developmentPlan={projectData.developmentPlan}
+          impactData={sumListWithKey(impactsGroupedByName.rental_income ?? [], "amount")}
+        />
+      );
 
     case "taxes_income":
-      return <TaxesIncomeDescription developmentPlan={projectData.developmentPlan} />;
+      return (
+        <TaxesIncomeDescription
+          developmentPlan={projectData.developmentPlan}
+          impactData={getImpactData(impactsGroupedByName.taxes_income)}
+        />
+      );
     case "roads_and_utilities_maintenance_expenses":
-      return <RoadsAndUtilitiesMaintenanceExpenses surfaceArea={siteData.surfaceArea} />;
+      return (
+        <RoadsAndUtilitiesMaintenanceExpenses
+          surfaceArea={siteData.surfaceArea}
+          impactData={getImpactData(impactsGroupedByName.roads_and_utilities_maintenance_expenses)}
+        />
+      );
 
     case "avoided_friche_costs":
-      return <AvoidedFricheCostsDescription />;
+      return (
+        <AvoidedFricheCostsDescription
+          impactData={sumListWithKey(impactsGroupedByName.avoided_friche_costs ?? [], "amount")}
+        />
+      );
 
     case "avoided_illegal_dumping_costs":
-      return <AvoidedIllegalDumpingCostsDescription addressLabel={siteData.addressLabel} />;
+      return (
+        <AvoidedIllegalDumpingCostsDescription
+          addressLabel={siteData.addressLabel}
+          impactData={getImpactData(impactsGroupedByName.avoided_illegal_dumping_costs)}
+        />
+      );
     case "avoided_security_costs":
-      return <AvoidedSecurityCostsDescription siteSurfaceArea={siteData.surfaceArea} />;
+      return (
+        <AvoidedSecurityCostsDescription
+          siteSurfaceArea={siteData.surfaceArea}
+          impactData={getImpactData(impactsGroupedByName.avoided_security_costs)}
+        />
+      );
 
     case "avoided_other_securing_costs":
-      return <AvoidedOtherSecuringCostsDescription />;
+      return (
+        <AvoidedOtherSecuringCostsDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_other_securing_costs)}
+        />
+      );
 
     case "local_property_value_increase":
-      return <PropertyValueIncreaseDescription siteSurfaceArea={siteData.surfaceArea} />;
+      return (
+        <PropertyValueIncreaseDescription
+          siteSurfaceArea={siteData.surfaceArea}
+          impactData={getImpactData(impactsGroupedByName.local_property_value_increase)}
+        />
+      );
     case "property_transfer_duties_income":
-      return <PropertyTransferDutiesIncreaseDescription />;
+      return (
+        <PropertyTransferDutiesIncreaseDescription
+          impactData={getImpactData(impactsGroupedByName.property_transfer_duties_income)}
+        />
+      );
     case "avoided_co2_eq_with_enr":
       return (
         <RenewableEnergyRelatedCo2MonetaryValueDescription
-          address={siteData.addressLabel}
-          developmentPlanElectricalPowerKWc={
+          impactData={getImpactData(impactsGroupedByName.avoided_co2_eq_with_enr)}
+          projectData={
             projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-              ? projectData.developmentPlan.electricalPowerKWc
+              ? projectData.developmentPlan
               : undefined
           }
-          developmentPlanSurfaceArea={
-            projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
-              ? projectData.developmentPlan.surfaceArea
-              : undefined
-          }
+          siteData={{ address: siteData.addressLabel }}
         />
       );
 
     case "avoided_traffic_co2_eq_emissions":
-      return <TravelRelatedCo2MonetaryValueDescription />;
+      return (
+        <TravelRelatedCo2MonetaryValueDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_traffic_co2_eq_emissions)}
+        />
+      );
 
     case "water_regulation":
       return (
         <WaterRegulationDescription
+          impactData={getImpactData(impactsGroupedByName.water_regulation)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
           baseContaminatedSurface={siteData.contaminatedSoilSurface}
@@ -150,6 +243,7 @@ export function SocioEconomicModalWizard({
     case "carbon_storage":
       return (
         <SoilsStorageRelatedCo2MonetaryValueDescription
+          impactData={getImpactData(impactsGroupedByName.carbon_storage)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />
@@ -158,13 +252,15 @@ export function SocioEconomicModalWizard({
     case "nature_related_wellness_and_leisure":
       return (
         <NatureRelatedWellnessAndLeisureDescription
+          impactData={getImpactData(impactsGroupedByName.nature_related_wellness_and_leisure)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />
       );
     case "forest_related_product":
       return (
-        <NatureRelatedWellnessAndLeisureDescription
+        <ForestRelatedProductDescription
+          impactData={getImpactData(impactsGroupedByName.forest_related_product)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />
@@ -173,6 +269,7 @@ export function SocioEconomicModalWizard({
     case "invasive_species_regulation":
       return (
         <InvasiveSpeciesRegulationDescription
+          impactData={getImpactData(impactsGroupedByName.invasive_species_regulation)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />
@@ -180,6 +277,7 @@ export function SocioEconomicModalWizard({
     case "nitrogen_cycle":
       return (
         <NitrogenCycleDescription
+          impactData={getImpactData(impactsGroupedByName.nitrogen_cycle)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />
@@ -187,6 +285,7 @@ export function SocioEconomicModalWizard({
     case "pollination":
       return (
         <PollinationDescription
+          impactData={getImpactData(impactsGroupedByName.pollination)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />
@@ -194,6 +293,7 @@ export function SocioEconomicModalWizard({
     case "soil_erosion":
       return (
         <SoilErosionDescription
+          impactData={getImpactData(impactsGroupedByName.soil_erosion)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />
@@ -201,6 +301,7 @@ export function SocioEconomicModalWizard({
     case "water_cycle":
       return (
         <WaterCycle
+          impactData={getImpactData(impactsGroupedByName.water_cycle)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />

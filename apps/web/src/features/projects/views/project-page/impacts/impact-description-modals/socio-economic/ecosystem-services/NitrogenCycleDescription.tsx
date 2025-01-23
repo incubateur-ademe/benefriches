@@ -1,5 +1,6 @@
 import { isPrairie, isWetLand, SoilsDistribution, typedObjectEntries } from "shared";
 
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
@@ -14,13 +15,18 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 type Props = {
   baseSoilsDistribution: SoilsDistribution;
   forecastSoilsDistribution: SoilsDistribution;
+  impactData?: number;
 };
 
 const formatSoilSurfaceArea = (surfaceArea: number) => {
   return `${formatNumberFr(convertSquareMetersToHectares(surfaceArea))} ha`;
 };
 
-const NitrogenCycleDescription = ({ baseSoilsDistribution, forecastSoilsDistribution }: Props) => {
+const NitrogenCycleDescription = ({
+  baseSoilsDistribution,
+  forecastSoilsDistribution,
+  impactData,
+}: Props) => {
   const baseSoilsWithNitrogenCycleBenefitsDistributionEntries = typedObjectEntries(
     baseSoilsDistribution,
   ).filter(([key]) => isPrairie(key) || isWetLand(key));
@@ -32,6 +38,15 @@ const NitrogenCycleDescription = ({ baseSoilsDistribution, forecastSoilsDistribu
     <>
       <ModalHeader
         title="🍄 Cycle de l'azote"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour l'humanité",
+              }
+            : undefined
+        }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Cycle de l'azote" }]}
       />
       <ModalContent>

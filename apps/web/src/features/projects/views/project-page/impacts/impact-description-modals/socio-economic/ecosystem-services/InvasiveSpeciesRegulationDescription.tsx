@@ -1,6 +1,7 @@
 import { isSurfaceWithEcosystemBenefits, typedObjectEntries } from "shared";
 import { SoilsDistribution } from "shared";
 
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
@@ -15,6 +16,7 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 type Props = {
   baseSoilsDistribution: SoilsDistribution;
   forecastSoilsDistribution: SoilsDistribution;
+  impactData?: number;
 };
 
 const formatSoilSurfaceArea = (surfaceArea: number) => {
@@ -24,6 +26,7 @@ const formatSoilSurfaceArea = (surfaceArea: number) => {
 const InvasiveSpeciesRegulationDescription = ({
   baseSoilsDistribution,
   forecastSoilsDistribution,
+  impactData,
 }: Props) => {
   const baseSoilsWithBenefitsDistributionEntries = typedObjectEntries(baseSoilsDistribution).filter(
     ([key]) => isSurfaceWithEcosystemBenefits(key),
@@ -35,6 +38,15 @@ const InvasiveSpeciesRegulationDescription = ({
     <>
       <ModalHeader
         title="🦔 Régulation des espèces invasives"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour l'humanité",
+              }
+            : undefined
+        }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Régulation des espèces invasives" }]}
       />
       <ModalContent>

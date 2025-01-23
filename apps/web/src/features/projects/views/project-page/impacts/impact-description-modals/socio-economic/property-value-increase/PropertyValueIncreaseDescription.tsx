@@ -1,3 +1,4 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -12,14 +13,24 @@ import {
 
 type Props = {
   siteSurfaceArea: number;
+  impactData?: number;
 };
 
-const PropertyValueIncreaseDescription = ({ siteSurfaceArea }: Props) => {
+const PropertyValueIncreaseDescription = ({ siteSurfaceArea, impactData }: Props) => {
   return (
     <>
       <ModalHeader
         title="🏡 Valeur patrimoniale des bâtiments alentour"
         subtitle="Grâce à la reconversion du site"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour la population locale",
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           economicIndirectMonetaryBreadcrumbSection,

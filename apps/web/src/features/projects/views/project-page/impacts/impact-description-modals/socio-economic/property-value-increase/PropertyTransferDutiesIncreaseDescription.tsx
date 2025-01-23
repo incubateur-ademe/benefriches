@@ -1,3 +1,4 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ModalContent from "../../shared/ModalContent";
@@ -9,11 +10,23 @@ import {
   economicIndirectMonetaryBreadcrumbSection,
 } from "../breadcrumbSections";
 
-const PropertyTransferDutiesIncreaseDescription = () => {
+type Props = {
+  impactData?: number;
+};
+const PropertyTransferDutiesIncreaseDescription = ({ impactData }: Props) => {
   return (
     <>
       <ModalHeader
         title="🏛 Droits de mutation sur la transaction foncière"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour la collectivité",
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           economicIndirectMonetaryBreadcrumbSection,

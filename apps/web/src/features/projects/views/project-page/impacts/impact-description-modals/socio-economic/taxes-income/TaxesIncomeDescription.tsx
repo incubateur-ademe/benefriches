@@ -1,3 +1,4 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -13,13 +14,23 @@ import {
 
 type Props = {
   developmentPlan: ProjectData["developmentPlan"];
+  impactData?: number;
 };
 
-const TaxesIncomeDescription = ({ developmentPlan }: Props) => {
+const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
   return (
     <>
       <ModalHeader
         title="🏛 Recettes fiscales"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour la collectivité",
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           economicDirectMonetaryBreadcrumbSection,

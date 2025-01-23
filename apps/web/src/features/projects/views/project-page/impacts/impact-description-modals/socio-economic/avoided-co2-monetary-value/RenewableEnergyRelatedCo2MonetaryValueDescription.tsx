@@ -1,3 +1,5 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import RenewableEnergyRelatedCo2Content from "../../shared/co2-emissions/RenewableEnergyRelatedCo2Content";
@@ -7,16 +9,34 @@ import {
 } from "../breadcrumbSections";
 
 type Props = {
-  address: string;
-  developmentPlanSurfaceArea?: number;
-  developmentPlanElectricalPowerKWc?: number;
+  impactData?: number;
+  projectData?: {
+    surfaceArea: number;
+    electricalPowerKWc: number;
+  };
+  siteData: {
+    address: string;
+  };
 };
 
-const AvoidedCO2WithEnRMonetaryValueDescription = (props: Props) => {
+const AvoidedCO2WithEnRMonetaryValueDescription = ({
+  impactData,
+  siteData,
+  projectData,
+}: Props) => {
   return (
     <>
       <ModalHeader
         title="⚡️️ Production d'énergies renouvelables"
+        value={
+          impactData
+            ? {
+                state: "success",
+                text: formatMonetaryImpact(impactData),
+                description: "pour l'humanité",
+              }
+            : undefined
+        }
         breadcrumbSegments={[
           mainBreadcrumbSection,
           environmentalMonetaryBreadcrumbSection,
@@ -26,7 +46,13 @@ const AvoidedCO2WithEnRMonetaryValueDescription = (props: Props) => {
         ]}
       />
       <ModalContent>
-        <RenewableEnergyRelatedCo2Content withMonetarisation={true} {...props} />;
+        <RenewableEnergyRelatedCo2Content
+          withMonetarisation={true}
+          address={siteData.address}
+          developmentPlanSurfaceArea={projectData?.surfaceArea}
+          developmentPlanElectricalPowerKWc={projectData?.electricalPowerKWc}
+        />
+        ;
       </ModalContent>
     </>
   );

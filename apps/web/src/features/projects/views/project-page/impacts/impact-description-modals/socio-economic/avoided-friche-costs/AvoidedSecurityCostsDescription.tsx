@@ -1,3 +1,4 @@
+import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
@@ -9,13 +10,23 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
   siteSurfaceArea: number;
+  impactData?: number;
 };
 
-const AvoidedSecurityCostsDescription = ({ siteSurfaceArea }: Props) => {
+const AvoidedSecurityCostsDescription = ({ siteSurfaceArea, impactData }: Props) => {
   return (
     <>
       <ModalHeader
         title="👮‍♀️ Gardiennage"
+        value={
+          impactData
+            ? {
+                state: impactData > 0 ? "success" : "error",
+                text: formatMonetaryImpact(impactData),
+                description: "pour l'actuel locataire ou le propriétaire",
+              }
+            : undefined
+        }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Gardiennage" }]}
       />
       <ModalContent>
