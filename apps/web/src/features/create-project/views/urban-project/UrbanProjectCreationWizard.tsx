@@ -1,12 +1,12 @@
 import {
-  selectCreateMode,
-  selectCurrentStep,
-} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
-import {
   UrbanProjectCreationStep,
   UrbanProjectCustomCreationStep,
   UrbanProjectExpressCreationStep,
-} from "@/features/create-project/core/urban-project/urbanProject.reducer";
+} from "@/features/create-project/core/urban-project/creationSteps";
+import {
+  selectCreateMode,
+  selectCurrentStep,
+} from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 

@@ -6,7 +6,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { getInitialState } from "../../createProject.reducer";
-import { UrbanProjectCreationStep } from "../urbanProject.reducer";
+import { UrbanProjectCreationStep } from "../creationSteps";
 
 export const expectCurrentStep = (state: RootState, step: UrbanProjectCreationStep) => {
   expect(state.projectCreation.urbanProject.stepsHistory).toEqual([step]);

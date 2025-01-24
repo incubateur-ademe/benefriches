@@ -1,7 +1,5 @@
-import {
-  hasBuildings,
-  UrbanProjectCustomCreationStep,
-} from "@/features/create-project/core/urban-project/urbanProject.reducer";
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
+import { hasBuildings } from "@/features/create-project/core/urban-project/urbanProject.reducer";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 

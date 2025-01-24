@@ -92,53 +92,11 @@ import {
   expectedSiteResaleRevenueCompleted,
   expectedSiteResaleRevenueReverted,
 } from "./actions/urbanProject.actions";
+import { UrbanProjectCreationStep, UrbanProjectCustomCreationStep } from "./creationSteps";
 import soilsCarbonStorageReducer, {
   State as SoilsCarbonStorageState,
 } from "./soilsCarbonStorage.reducer";
 import { BuildingsUseCategory } from "./urbanProject";
-
-export type UrbanProjectExpressCreationStep = "EXPRESS_CATEGORY_SELECTION" | "CREATION_RESULT";
-export type UrbanProjectCustomCreationStep =
-  | "SPACES_CATEGORIES_INTRODUCTION"
-  | "SPACES_CATEGORIES_SELECTION"
-  | "SPACES_CATEGORIES_SURFACE_AREA"
-  | "SPACES_DEVELOPMENT_PLAN_INTRODUCTION"
-  | "GREEN_SPACES_INTRODUCTION"
-  | "GREEN_SPACES_SURFACE_AREA_DISTRIBUTION"
-  | "LIVING_AND_ACTIVITY_SPACES_INTRODUCTION"
-  | "LIVING_AND_ACTIVITY_SPACES_DISTRIBUTION"
-  | "PUBLIC_SPACES_INTRODUCTION"
-  | "PUBLIC_SPACES_DISTRIBUTION"
-  | "SPACES_SOILS_SUMMARY"
-  | "SOILS_CARBON_SUMMARY"
-  | "SOILS_DECONTAMINATION_INTRODUCTION"
-  | "SOILS_DECONTAMINATION_SELECTION"
-  | "SOILS_DECONTAMINATION_SURFACE_AREA"
-  | "BUILDINGS_INTRODUCTION"
-  | "BUILDINGS_FLOOR_SURFACE_AREA"
-  | "BUILDINGS_USE_INTRODUCTION"
-  | "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION"
-  | "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA"
-  | "BUILDINGS_EQUIPMENT_INTRODUCTION"
-  | "BUILDINGS_EQUIPMENT_SELECTION"
-  | "STAKEHOLDERS_INTRODUCTION"
-  | "STAKEHOLDERS_PROJECT_DEVELOPER"
-  | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
-  | "EXPENSES_INTRODUCTION"
-  | "EXPENSES_SITE_PURCHASE_AMOUNTS"
-  | "EXPENSES_REINSTATEMENT"
-  | "EXPENSES_INSTALLATION"
-  | "EXPENSES_PROJECTED_YEARLY_EXPENSES"
-  | "REVENUE_INTRODUCTION"
-  | "REVENUE_EXPECTED_SITE_RESALE"
-  | "REVENUE_PROJECTED_YEARLY_REVENUE"
-  | "REVENUE_FINANCIAL_ASSISTANCE"
-  | "SCHEDULE_INTRODUCTION"
-  | "SCHEDULE_PROJECTION"
-  | "NAMING"
-  | "PROJECT_PHASE"
-  | "FINAL_SUMMARY"
-  | "CREATION_RESULT";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
@@ -148,11 +106,6 @@ const urbanSpaceCategoryIntroductionMap = {
   RENEWABLE_ENERGY_PRODUCTION_PLANT: undefined,
   URBAN_POND_OR_LAKE: undefined,
 } as const satisfies Record<UrbanSpaceCategory, UrbanProjectCustomCreationStep | undefined>;
-
-export type UrbanProjectCreationStep =
-  | "CREATE_MODE_SELECTION"
-  | UrbanProjectExpressCreationStep
-  | UrbanProjectCustomCreationStep;
 
 export type UrbanProjectState = {
   createMode: "express" | "custom" | undefined;

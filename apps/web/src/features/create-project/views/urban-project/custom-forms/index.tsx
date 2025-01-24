@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/urbanProject.reducer";
+import { UrbanProjectCustomCreationStep } from "@/features/create-project/core/urban-project/creationSteps";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import UrbanProjectCustomSteps from "./UrbanProjectCustomSteps";

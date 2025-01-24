@@ -19,7 +19,8 @@ import { RootState } from "@/shared/core/store-config/store";
 
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateUrbanProjectName } from "../../projectName";
-import { UrbanProjectCreationStep, UrbanProjectState } from "../urbanProject.reducer";
+import { UrbanProjectCreationStep } from "../creationSteps";
+import { UrbanProjectState } from "../urbanProject.reducer";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
   UrbanSpacesByCategory,
