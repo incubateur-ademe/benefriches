@@ -1,5 +1,6 @@
 import { INestApplication } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
 import { Server } from "net";
@@ -20,7 +21,8 @@ describe("CarbonStorage controller", () => {
       .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
       .compile();
 
-    app = moduleRef.createNestApplication();
+    app = moduleRef.createNestApplication<NestExpressApplication>();
+    (app as NestExpressApplication).set("query parser", "extended");
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });

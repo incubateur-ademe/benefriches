@@ -1,13 +1,15 @@
 import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
+import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
 
 import { AppModule } from "./app.module";
 import { SqlConnection } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix("api");
+  app.set("query parser", "extended"); // allow nested query params like arrays and objects
 
   // test SQL connection so we fail fast if DB is not accesible
   const sqlConnection: Knex = app.get(SqlConnection);
