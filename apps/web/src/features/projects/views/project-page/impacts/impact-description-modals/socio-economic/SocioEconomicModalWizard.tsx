@@ -20,6 +20,10 @@ import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheC
 import AvoidedIllegalDumpingCostsDescription from "./avoided-friche-costs/AvoidedIllegalDumpingCostsDescription";
 import AvoidedOtherSecuringCostsDescription from "./avoided-friche-costs/AvoidedOtherSecuringCostsDescription";
 import AvoidedSecurityCostsDescription from "./avoided-friche-costs/AvoidedSecurityCostsDescription";
+import AvoidedTrafficAccidentsDeathsMonetaryValueDescription from "./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsDeathsDescription";
+import AvoidedTrafficAccidentsMonetaryValueDescription from "./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsDescription";
+import AvoidedTrafficAccidentsMinorInjuriesMonetaryValueDescription from "./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsMinorInjuries";
+import AvoidedTrafficAccidentsSevereInjuriesMonetaryValueDescription from "./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsSevereInjuriesDescription";
 import { getSubSectionBreadcrumb, mainBreadcrumbSection } from "./breadcrumbSections";
 import EcosystemServicesDescription from "./ecosystem-services/EcosystemServicesDescription";
 import ForestRelatedProductDescription from "./ecosystem-services/ForestRelatedProductDescription";
@@ -328,6 +332,32 @@ export function SocioEconomicModalWizard({
       return (
         <AvoidedAirPollutionDescription
           impactData={getImpactData(impactsGroupedByName.avoided_air_pollution)}
+        />
+      );
+
+    case "avoided_traffic_accidents":
+      return (
+        <AvoidedTrafficAccidentsMonetaryValueDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_traffic_accidents)}
+        />
+      );
+    case "avoided_traffic_minor_injuries":
+      return (
+        <AvoidedTrafficAccidentsMinorInjuriesMonetaryValueDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_traffic_minor_injuries)}
+        />
+      );
+    case "avoided_traffic_severe_injuries":
+      return (
+        <AvoidedTrafficAccidentsSevereInjuriesMonetaryValueDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_traffic_minor_injuries)}
+        />
+      );
+
+    case "avoided_traffic_deaths":
+      return (
+        <AvoidedTrafficAccidentsDeathsMonetaryValueDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_traffic_deaths)}
         />
       );
 

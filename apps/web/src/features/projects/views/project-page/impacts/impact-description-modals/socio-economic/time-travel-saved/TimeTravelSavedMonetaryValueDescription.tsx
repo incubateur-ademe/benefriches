@@ -9,6 +9,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
+import TravelRelatedImpactsIntroduction from "../../shared/travel-related-impacts-introduction/TravelRelatedImpactsIntroduction";
 import { mainBreadcrumbSection, socialMonetaryBreadcrumbSection } from "../breadcrumbSections";
 
 const TITLE = "Valeur monétaire du temps passé en moins dans les transports";
@@ -58,21 +59,7 @@ const TimeTravelSavedMonetaryValueDescription = ({ impactData }: Props) => {
         ]}
       />
       <ModalContent>
-        <p>
-          La création de logements, équipements publics, espaces verts ou encore locaux d’activités
-          ou de service au sein des centres villes en opposition à la localisation de ces mêmes
-          activités en périphérie peut engendrer une réduction de l’utilisation des véhicules
-          particuliers, comme l’ont montré de nombreuses études de mobilité ou scientifiques. Cette
-          diminution est à caractériser selon la nature des déplacements réalisés, du type de tissu
-          urbain et des distances parcourues. Elle génère en particulier les effets suivants&nbsp;:
-        </p>
-        <ul>
-          <li>Effet sur les émissions de GES</li>
-          <li>Effet sur la pollution locale</li>
-          <li>Effet sur les coûts de déplacement des usagers</li>
-          <li>Effet sur le temps de parcours des usagers</li>
-          <li>Effet en termes de sécurité routière</li>
-        </ul>
+        <TravelRelatedImpactsIntroduction />
         <p>
           La valeur monétaire du temps passé en moins dans les transports (exprimée en €/an) est la
           traduction de l’adage “le temps c’est de l’argent”.

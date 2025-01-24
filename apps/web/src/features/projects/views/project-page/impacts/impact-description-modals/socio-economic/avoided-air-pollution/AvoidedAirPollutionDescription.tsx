@@ -6,6 +6,7 @@ import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import LinkToAvoidedKilometersImpact from "../../shared/avoided-kilometers-social-impact-link/AvoidedKilometersSocialImpactLink";
+import TravelRelatedImpactsIntroduction from "../../shared/travel-related-impacts-introduction/TravelRelatedImpactsIntroduction";
 import { mainBreadcrumbSection, socialMonetaryBreadcrumbSection } from "../breadcrumbSections";
 
 const TITLE = "Dépenses de santé évitées grâce à la réduction de la pollution de l’air";
@@ -36,21 +37,8 @@ const AvoidedAirPollutionDescription = ({ impactData }: Props) => {
         ]}
       />
       <ModalContent>
-        <p>
-          La création de logements, équipements publics, espaces verts ou encore locaux d’activités
-          ou de service au sein des centres villes en opposition à la localisation de ces mêmes
-          activités en périphérie peut engendrer une réduction de l’utilisation des véhicules
-          particuliers, comme l’ont montré de nombreuses études de mobilité ou scientifiques. Cette
-          diminution est à caractériser selon la nature des déplacements réalisés, du type de tissu
-          urbain et des distances parcourues. Elle génère en particulier les effets suivants&nbsp;:
-        </p>
-        <ul>
-          <li>Effet sur les émissions de GES</li>
-          <li>Effet sur la pollution locale</li>
-          <li>Effet sur les coûts de déplacement des usagers</li>
-          <li>Effet sur le temps de parcours des usagers</li>
-          <li>Effet en termes de sécurité routière</li>
-        </ul>
+        <TravelRelatedImpactsIntroduction />
+
         <p>
           La réduction des déplacements attendue par la réalisation du projet urbain en centralité
           conduira à de moindres émissions de polluants atmosphériques des véhicules (le parc

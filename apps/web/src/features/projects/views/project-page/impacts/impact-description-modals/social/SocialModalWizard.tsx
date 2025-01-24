@@ -9,6 +9,10 @@ import { SocialSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import JobsSubSectionDescription from "./JobsSubSectionDescription";
 import SocialMainDescription from "./SocialMainDescription";
+import AvoidedTrafficAccidentsDeathsDescription from "./avoided-traffic-accidents/AvoidedTrafficAccidentsDeathsDescription";
+import AvoidedTrafficAccidentsDescription from "./avoided-traffic-accidents/AvoidedTrafficAccidentsDescription";
+import AvoidedTrafficAccidentsMinorInjuriesDescription from "./avoided-traffic-accidents/AvoidedTrafficAccidentsMinorInjuries";
+import AvoidedTrafficAccidentsSevereInjuriesDescription from "./avoided-traffic-accidents/AvoidedTrafficAccidentsSevereInjuriesDescription";
 import AvoidedVehiculeKilometersDescription from "./avoided-vehicule-kilometers/AvoidedVehiculeKilometersDescription";
 import {
   frenchSocietyBreadcrumbSection,
@@ -113,6 +117,31 @@ export function SocialModalWizard({
       );
     case "travel_time_saved":
       return <TimeTravelSavedDescription impactData={impactsData.social.travelTimeSaved} />;
+
+    case "avoided_traffic_accidents":
+      return (
+        <AvoidedTrafficAccidentsDescription
+          impactData={impactsData.social.avoidedTrafficAccidents?.total}
+        />
+      );
+    case "avoided_traffic_severe_injuries":
+      return (
+        <AvoidedTrafficAccidentsSevereInjuriesDescription
+          impactData={impactsData.social.avoidedTrafficAccidents?.severeInjuries}
+        />
+      );
+    case "avoided_traffic_minor_injuries":
+      return (
+        <AvoidedTrafficAccidentsMinorInjuriesDescription
+          impactData={impactsData.social.avoidedTrafficAccidents?.minorInjuries}
+        />
+      );
+    case "avoided_traffic_deaths":
+      return (
+        <AvoidedTrafficAccidentsDeathsDescription
+          impactData={impactsData.social.avoidedTrafficAccidents?.deaths}
+        />
+      );
 
     default: {
       const subSectionSegments = impactSubSectionName && [
