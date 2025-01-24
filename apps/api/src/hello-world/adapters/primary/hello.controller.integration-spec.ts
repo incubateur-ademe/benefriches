@@ -1,19 +1,13 @@
 import { INestApplication } from "@nestjs/common";
-import { Test as NestTest } from "@nestjs/testing";
 import { Server } from "net";
 import supertest from "supertest";
-
-import { HelloModule } from "./hello.module";
+import { createTestApp } from "test/testApp";
 
 describe("Hello controller", () => {
   let app: INestApplication<Server>;
 
   beforeAll(async () => {
-    const moduleRef = await NestTest.createTestingModule({
-      imports: [HelloModule],
-    }).compile();
-
-    app = moduleRef.createNestApplication();
+    app = await createTestApp();
     await app.init();
   });
 
@@ -22,7 +16,7 @@ describe("Hello controller", () => {
   });
 
   it(`/GET /hello`, async () => {
-    const response = await supertest(app.getHttpServer()).get("/hello");
+    const response = await supertest(app.getHttpServer()).get("/api/hello");
 
     expect(response.statusCode).toEqual(200);
     expect(response.text).toEqual("Hello!");

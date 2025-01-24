@@ -1,12 +1,9 @@
 import { INestApplication } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { NestExpressApplication } from "@nestjs/platform-express";
-import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
 import { Server } from "net";
 import supertest from "supertest";
+import { createTestApp } from "test/testApp";
 
-import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 describe("CarbonStorage controller", () => {
@@ -14,15 +11,7 @@ describe("CarbonStorage controller", () => {
   let sqlConnection: Knex;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
-    })
-      .overrideModule(ConfigModule)
-      .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
-      .compile();
-
-    app = moduleRef.createNestApplication<NestExpressApplication>();
-    (app as NestExpressApplication).set("query parser", "extended");
+    app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
@@ -34,14 +23,14 @@ describe("CarbonStorage controller", () => {
 
   describe("Get /carbon-storage/site-soils", () => {
     it("can't return information if there is no cityCode indication", async () => {
-      const response = await supertest(app.getHttpServer()).get("/carbon-storage/site-soils");
+      const response = await supertest(app.getHttpServer()).get("/api/carbon-storage/site-soils");
 
       expect(response.status).toEqual(400);
     });
 
     it("can't return information if there is no soils indication", async () => {
       const response = await supertest(app.getHttpServer()).get(
-        "/carbon-storage/site-soils?cityCode=01081",
+        "/api/carbon-storage/site-soils?cityCode=01081",
       );
 
       expect(response.status).toEqual(400);
@@ -58,7 +47,7 @@ describe("CarbonStorage controller", () => {
         "given %p and %p as arguments, returns %p",
         async (soilsParam) => {
           const response = await supertest(app.getHttpServer()).get(
-            `/carbon-storage/site-soils?cityCode=01081&${soilsParam}`,
+            `/api/carbon-storage/site-soils?cityCode=01081&${soilsParam}`,
           );
 
           expect(response.status).toEqual(400);
@@ -68,7 +57,7 @@ describe("CarbonStorage controller", () => {
 
     it("returns an object with totalCarbonStorage and soilsCarbonStorage", async () => {
       const response = await supertest(app.getHttpServer()).get(
-        "/carbon-storage/site-soils?cityCode=01081&soils[0][surfaceArea]=1500&soils[0][type]=CULTIVATION&soils[1][surfaceArea]=3000&soils[1][type]=FOREST_DECIDUOUS",
+        "/api/carbon-storage/site-soils?cityCode=01081&soils[0][surfaceArea]=1500&soils[0][type]=CULTIVATION&soils[1][surfaceArea]=3000&soils[1][type]=FOREST_DECIDUOUS",
       );
 
       expect(response.status).toEqual(200);

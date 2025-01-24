@@ -1,12 +1,10 @@
 import { INestApplication } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
 import { z } from "nestjs-zod/z";
 import { Server } from "net";
 import supertest from "supertest";
+import { createTestApp } from "test/testApp";
 
-import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { buildExhaustiveUserProps, buildMinimalUserProps } from "src/users/core/model/user.mock";
 
@@ -21,14 +19,7 @@ describe("Users controller", () => {
   let sqlConnection: Knex;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
-    })
-      .overrideModule(ConfigModule)
-      .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
-      .compile();
-
-    app = moduleRef.createNestApplication();
+    app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
@@ -46,7 +37,7 @@ describe("Users controller", () => {
       // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete requestBody[mandatoryField];
 
-      const response = await supertest(app.getHttpServer()).post("/users").send(requestBody);
+      const response = await supertest(app.getHttpServer()).post("/api/users").send(requestBody);
 
       expect(response.status).toEqual(400);
       expect(response.body).toHaveProperty("errors");
@@ -60,7 +51,7 @@ describe("Users controller", () => {
       { case: "with minimal data", requestBody: buildMinimalUserProps() },
       { case: "with exhaustive data", requestBody: buildExhaustiveUserProps() },
     ])("get a 201 response and user is created $case", async ({ requestBody }) => {
-      const response = await supertest(app.getHttpServer()).post("/users").send(requestBody);
+      const response = await supertest(app.getHttpServer()).post("/api/users").send(requestBody);
 
       expect(response.status).toEqual(201);
 

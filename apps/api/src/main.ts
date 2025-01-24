@@ -4,12 +4,12 @@ import { NestExpressApplication } from "@nestjs/platform-express";
 import { Knex } from "knex";
 
 import { AppModule } from "./app.module";
+import { configureServer } from "./httpServer";
 import { SqlConnection } from "./shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  app.setGlobalPrefix("api");
-  app.set("query parser", "extended"); // allow nested query params like arrays and objects
+  configureServer(app);
 
   // test SQL connection so we fail fast if DB is not accesible
   const sqlConnection: Knex = app.get(SqlConnection);

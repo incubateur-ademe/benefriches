@@ -1,13 +1,11 @@
 import { INestApplication } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
 import { Server } from "net";
 import supertest from "supertest";
+import { createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 import { z, ZodError } from "zod";
 
-import { AppModule } from "src/app.module";
 import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
@@ -26,14 +24,7 @@ describe("ReconversionProjects controller", () => {
   let sqlConnection: Knex;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
-    })
-      .overrideModule(ConfigModule)
-      .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
-      .compile();
-
-    app = moduleRef.createNestApplication();
+    app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
@@ -62,7 +53,7 @@ describe("ReconversionProjects controller", () => {
         delete requestBody[mandatoryField];
 
         const response = await supertest(app.getHttpServer())
-          .post("/reconversion-projects")
+          .post("/api/reconversion-projects")
           .send(requestBody);
 
         expect(response.status).toEqual(400);
@@ -88,7 +79,7 @@ describe("ReconversionProjects controller", () => {
         created_at: new Date(),
       });
       const response = await supertest(app.getHttpServer())
-        .post("/reconversion-projects")
+        .post("/api/reconversion-projects")
         .send(requestBody);
 
       expect(response.status).toEqual(201);
@@ -133,7 +124,7 @@ describe("ReconversionProjects controller", () => {
 
     it("can't create a reconversion project without category", async () => {
       const response = await supertest(app.getHttpServer())
-        .post("/reconversion-projects/create-from-site")
+        .post("/api/reconversion-projects/create-from-site")
         .send({
           reconversionProjectId: "64789135-afad-46ea-97a2-f14ba460d485",
           createdBy: "612d16c7-b6e4-4e2c-88a8-0512cc51946c",
@@ -164,7 +155,7 @@ describe("ReconversionProjects controller", () => {
         };
 
         const response = await supertest(app.getHttpServer())
-          .post("/reconversion-projects/create-from-site")
+          .post("/api/reconversion-projects/create-from-site")
           .send(requestBody);
         expect(response.status).toEqual(201);
 
@@ -188,7 +179,7 @@ describe("ReconversionProjects controller", () => {
   describe("GET /reconversion-projects/list-by-site", () => {
     it("gets a 400 response when no userId provided", async () => {
       const response = await supertest(app.getHttpServer())
-        .get("/reconversion-projects/list-by-site")
+        .get("/api/reconversion-projects/list-by-site")
         .send();
 
       expect(response.status).toEqual(400);
@@ -278,7 +269,7 @@ describe("ReconversionProjects controller", () => {
       ]);
 
       const response = await supertest(app.getHttpServer())
-        .get("/reconversion-projects/list-by-site?userId=" + userId)
+        .get("/api/reconversion-projects/list-by-site?userId=" + userId)
         .send();
 
       expect(response.status).toEqual(200);

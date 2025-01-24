@@ -1,12 +1,10 @@
 import { INestApplication } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { Test } from "@nestjs/testing";
 import { Knex } from "knex";
 import { Server } from "net";
 import supertest from "supertest";
+import { createTestApp } from "test/testApp";
 import { v4 as uuid } from "uuid";
 
-import { AppModule } from "src/app.module";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 
 import { CreateSiteBodyDto } from "./sites.controller";
@@ -20,14 +18,7 @@ describe("Sites controller", () => {
   let sqlConnection: Knex;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
-    })
-      .overrideModule(ConfigModule)
-      .useModule(ConfigModule.forRoot({ envFilePath: ".env.test" }))
-      .compile();
-
-    app = moduleRef.createNestApplication();
+    app = await createTestApp();
     await app.init();
     sqlConnection = app.get(SqlConnection);
   });
@@ -84,7 +75,7 @@ describe("Sites controller", () => {
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete requestBody[mandatoryField];
 
-        const response = await supertest(app.getHttpServer()).post("/sites").send(requestBody);
+        const response = await supertest(app.getHttpServer()).post("/api/sites").send(requestBody);
 
         expect(response.status).toEqual(400);
         expect(response.body).toHaveProperty("errors");
@@ -120,7 +111,7 @@ describe("Sites controller", () => {
         yearlyExpenses: [],
         yearlyIncomes: [],
       };
-      const response = await supertest(app.getHttpServer()).post("/sites").send(validSite);
+      const response = await supertest(app.getHttpServer()).post("/api/sites").send(validSite);
 
       expect(response.status).toEqual(201);
 
@@ -141,7 +132,7 @@ describe("Sites controller", () => {
 
     it("can create a friche site", async () => {
       const response = await supertest(app.getHttpServer())
-        .post("/sites")
+        .post("/api/sites")
         .send({
           id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
           createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
@@ -261,7 +252,7 @@ describe("Sites controller", () => {
           bearer: "owner",
         },
       ]);
-      const response = await supertest(app.getHttpServer()).get(`/sites/${siteId}`).send();
+      const response = await supertest(app.getHttpServer()).get(`/api/sites/${siteId}`).send();
 
       expect(response.status).toEqual(200);
       expect(response.body).toEqual({
