@@ -48,15 +48,15 @@ describe("Urban project creation : revenues steps", () => {
         });
       });
 
-      it("goes to EXPENSES_PROJECTED_YEARLY_EXPENSES step when step is reverted", () => {
+      it("goes to previous step when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_PROJECTED_YEARLY_EXPENSES", "REVENUE_INTRODUCTION"])
+          .withStepsHistory(["EXPENSES_INSTALLATION", "REVENUE_INTRODUCTION"])
           .build();
 
         store.dispatch(expensesIntroductionReverted());
 
         const newState = store.getState();
-        expectCurrentStep(newState, "EXPENSES_PROJECTED_YEARLY_EXPENSES");
+        expectCurrentStep(newState, "EXPENSES_INSTALLATION");
       });
     });
     describe("REVENUE_EXPECTED_SITE_RESALE step", () => {
@@ -75,32 +75,6 @@ describe("Urban project creation : revenues steps", () => {
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
           currentStep: "REVENUE_FINANCIAL_ASSISTANCE",
-          creationDataDiff: {
-            siteResaleExpectedSellingPrice: 500000,
-            siteResaleExpectedPropertyTransferDuties: 25000,
-          },
-        });
-      });
-      it("goes to REVENUE_PROJECTED_YEARLY_REVENUE step when step is completed if project has buildings", () => {
-        const store = new StoreBuilder()
-          .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_EXPECTED_SITE_RESALE"])
-          .withCreationData({
-            livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
-            projectDevoloperOwnsBuildings: true,
-          })
-          .build();
-        const initialRootState = store.getState();
-
-        store.dispatch(
-          expectedSiteResaleRevenueCompleted({
-            sellingPrice: 500000,
-            propertyTransferDuties: 25000,
-          }),
-        );
-
-        const newState = store.getState();
-        expectUpdatedState(initialRootState, newState, {
-          currentStep: "REVENUE_PROJECTED_YEARLY_REVENUE",
           creationDataDiff: {
             siteResaleExpectedSellingPrice: 500000,
             siteResaleExpectedPropertyTransferDuties: 25000,

@@ -30,7 +30,7 @@ describe("Urban project creation : schedule, name and phase steps", () => {
         });
       });
 
-      it("goes to EXPENSES_PROJECTED_YEARLY_EXPENSES step when step is reverted", () => {
+      it("goes to previous step when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["REVENUE_FINANCIAL_ASSISTANCE", "SCHEDULE_INTRODUCTION"])
           .build();
