@@ -65,6 +65,9 @@ export default tseslint.config(
   {
     files: ["**/*spec.ts"],
     ...jestPlugin.configs["flat/recommended"],
+    rules: {
+      "jest/expect-expect": ["error", { assertFunctionNames: ["expect*"] }],
+    },
   },
   // ignore typechecking for non-ts files
   {

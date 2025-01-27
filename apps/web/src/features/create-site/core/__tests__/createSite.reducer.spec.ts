@@ -1,4 +1,3 @@
-/* eslint-disable jest/expect-expect */
 import { buildUser } from "@/features/onboarding/core/user.mock";
 import { createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";

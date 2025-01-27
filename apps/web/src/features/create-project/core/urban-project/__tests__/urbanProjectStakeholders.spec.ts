@@ -1,4 +1,3 @@
-/* eslint-disable jest/expect-expect */
 import {
   stakeholderIntroductionCompleted,
   stakeholderIntroductionReverted,
@@ -65,7 +64,7 @@ describe("Urban project creation : stakeholders steps", () => {
           },
         });
       });
-      it("goes to EXPENSES_INTRODUCTION step when step is completed and site is not friche", () => {
+      it("goes to SITE_RESALE_INTRODUCTION step when step is completed and site is not friche", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["STAKEHOLDERS_PROJECT_DEVELOPER"])
           .build();
@@ -80,7 +79,7 @@ describe("Urban project creation : stakeholders steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_INTRODUCTION",
+          currentStep: "SITE_RESALE_INTRODUCTION",
           creationDataDiff: {
             projectDeveloper: { structureType: "municipality", name: "Mairie d’angers" },
           },
@@ -106,7 +105,7 @@ describe("Urban project creation : stakeholders steps", () => {
       });
     });
     describe("STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER step", () => {
-      it("goes to EXPENSES_INTRODUCTION step and sets reinstatementContractOwner when step is completed", () => {
+      it("goes to SITE_RESALE_INTRODUCTION step and sets reinstatementContractOwner when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
             "STAKEHOLDERS_PROJECT_DEVELOPER",
@@ -124,7 +123,7 @@ describe("Urban project creation : stakeholders steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_INTRODUCTION",
+          currentStep: "SITE_RESALE_INTRODUCTION",
           creationDataDiff: {
             reinstatementContractOwner: { structureType: "municipality", name: "Mairie d’angers" },
           },
