@@ -11,7 +11,7 @@ const STEP_CATEGORIES = [
   "Dépollution des sols",
   "Bâtiments",
   "Acteurs",
-  // "Cession foncière",
+  "Cession foncière",
   "Dépenses et recettes",
   "Calendrier et avancement",
   "Dénomination",
@@ -52,6 +52,9 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "STAKEHOLDERS_PROJECT_DEVELOPER":
     case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
       return "Acteurs";
+    case "SITE_RESALE_INTRODUCTION":
+    case "SITE_RESALE_SELECTION":
+      return "Cession foncière";
     case "EXPENSES_INSTALLATION":
     case "EXPENSES_INTRODUCTION":
     case "EXPENSES_PROJECTED_YEARLY_EXPENSES":

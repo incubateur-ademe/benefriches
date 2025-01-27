@@ -178,6 +178,14 @@ export const stakeholderReinstatementContractOwnerReverted = createAction(
   "stakeholderReinstatementContractOwnerReverted",
 );
 
+// site resale
+export const siteResaleIntroductionCompleted = createAction("siteResaleIntroductionCompleted");
+export const siteResaleIntroductionReverted = createAction("siteResaleIntroductionReverted");
+export const siteResaleChoiceCompleted = createAction<{
+  siteResalePlannedAfterDevelopment: boolean;
+}>("siteResaleChoiceCompleted");
+export const siteResaleChoiceReverted = createAction("siteResaleChoiceReverted");
+
 // expenses
 export const expensesIntroductionCompleted = createAction("expensesIntroductionCompleted");
 export const expensesIntroductionReverted = createAction("expensesIntroductionReverted");

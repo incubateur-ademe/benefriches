@@ -23,6 +23,8 @@ import ProjectRevenueIntroduction from "./revenues/introduction";
 import YearlyProjectedRevenueForm from "./revenues/yearly-projected-revenue";
 import ProjectScheduleIntroduction from "./schedule/introduction";
 import ScheduleProjectionForm from "./schedule/projection";
+import SiteResaleIntroduction from "./site-resale/introduction";
+import SiteResaleForm from "./site-resale/selection";
 import SoilsDecontaminationIntroduction from "./soils-decontamination/intro";
 import SoilsDecontaminationSelection from "./soils-decontamination/selection";
 import SoilsDecontaminationSurfaceArea from "./soils-decontamination/surface-area";
@@ -101,6 +103,10 @@ const getCurrentStepView = (
       return <DeveloperForm />;
     case "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
       return <SiteReinstatementContractOwnerForm />;
+    case "SITE_RESALE_INTRODUCTION":
+      return <SiteResaleIntroduction />;
+    case "SITE_RESALE_SELECTION":
+      return <SiteResaleForm />;
     case "EXPENSES_INTRODUCTION":
       return <ProjectExpensesIntroduction />;
     case "EXPENSES_SITE_PURCHASE_AMOUNTS":

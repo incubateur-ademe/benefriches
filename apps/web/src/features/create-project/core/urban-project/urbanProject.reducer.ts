@@ -91,6 +91,9 @@ import {
   scheduleReverted,
   expectedSiteResaleRevenueCompleted,
   expectedSiteResaleRevenueReverted,
+  siteResaleIntroductionCompleted,
+  siteResaleChoiceCompleted,
+  siteResaleChoiceReverted,
 } from "./actions/urbanProject.actions";
 import { UrbanProjectCreationStep, UrbanProjectCustomCreationStep } from "./creationSteps";
 import soilsCarbonStorageReducer, {
@@ -137,6 +140,7 @@ export type UrbanProjectState = {
     buildingsUsesDistribution?: Partial<Record<BuildingsUse, number>>;
     buildingsEconomicActivityUses?: BuildingsEconomicActivityUse[];
     // cession foncière
+    siteResalePlannedAfterDevelopment?: boolean;
     // TODO : question à poser dans Cession foncière
     projectDevoloperOwnsBuildings?: boolean;
     // stakeholders
@@ -444,7 +448,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.stepsHistory.push(
       state.siteData?.isFriche
         ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
-        : "EXPENSES_INTRODUCTION",
+        : "SITE_RESALE_INTRODUCTION",
     );
   });
   builder.addCase(stakeholderProjectDeveloperReverted, (state) => {
@@ -452,13 +456,28 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(stakeholderReinstatementContractOwnerCompleted, (state, action) => {
     state.urbanProject.creationData.reinstatementContractOwner = action.payload;
-    state.urbanProject.stepsHistory.push("EXPENSES_INTRODUCTION");
+    state.urbanProject.stepsHistory.push("SITE_RESALE_INTRODUCTION");
   });
   builder.addCase(stakeholderReinstatementContractOwnerReverted, (state) => {
     state.urbanProject.creationData.reinstatementContractOwner = undefined;
   });
 
-  // costs
+  // site resale
+  builder.addCase(siteResaleIntroductionCompleted, (state) => {
+    state.urbanProject.stepsHistory.push("SITE_RESALE_SELECTION");
+  });
+  builder.addCase(siteResaleChoiceCompleted, (state, action) => {
+    state.urbanProject.creationData.siteResalePlannedAfterDevelopment =
+      action.payload.siteResalePlannedAfterDevelopment;
+
+    const nextStep = "EXPENSES_INTRODUCTION";
+    state.urbanProject.stepsHistory.push(nextStep);
+  });
+  builder.addCase(siteResaleChoiceReverted, (state) => {
+    state.urbanProject.creationData.siteResalePlannedAfterDevelopment = undefined;
+  });
+
+  // expenses
   builder.addCase(expensesIntroductionCompleted, (state) => {
     state.urbanProject.stepsHistory.push("EXPENSES_SITE_PURCHASE_AMOUNTS");
   });
@@ -503,7 +522,10 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
 
   // revenues
   builder.addCase(revenueIntroductionCompleted, (state) => {
-    state.urbanProject.stepsHistory.push("REVENUE_EXPECTED_SITE_RESALE");
+    const nextStep = state.urbanProject.creationData.siteResalePlannedAfterDevelopment
+      ? "REVENUE_EXPECTED_SITE_RESALE"
+      : "REVENUE_FINANCIAL_ASSISTANCE";
+    state.urbanProject.stepsHistory.push(nextStep);
   });
 
   builder.addCase(expectedSiteResaleRevenueCompleted, (state, action) => {

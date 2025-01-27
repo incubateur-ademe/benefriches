@@ -18,8 +18,11 @@ import {
 describe("Urban project creation : revenues steps", () => {
   describe("Custom creation mode", () => {
     describe("REVENUE_INTRODUCTION step", () => {
-      it("goes to REVENUE_EXPECTED_SITE_RESALE step when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["REVENUE_INTRODUCTION"]).build();
+      it("goes to REVENUE_EXPECTED_SITE_RESALE step when step is completed and site will be sold after development", () => {
+        const store = new StoreBuilder()
+          .withCreationData({ siteResalePlannedAfterDevelopment: true })
+          .withStepsHistory(["REVENUE_INTRODUCTION"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(revenueIntroductionCompleted());
@@ -27,6 +30,21 @@ describe("Urban project creation : revenues steps", () => {
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
           currentStep: "REVENUE_EXPECTED_SITE_RESALE",
+        });
+      });
+
+      it("goes to REVENUE_FINANCIAL_ASSISTANCE step when step is completed and site will NOT be sold after development", () => {
+        const store = new StoreBuilder()
+          .withCreationData({ siteResalePlannedAfterDevelopment: false })
+          .withStepsHistory(["REVENUE_INTRODUCTION"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(revenueIntroductionCompleted());
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "REVENUE_FINANCIAL_ASSISTANCE",
         });
       });
 

@@ -44,6 +44,8 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   STAKEHOLDERS_INTRODUCTION: "acteurs-introduction",
   STAKEHOLDERS_PROJECT_DEVELOPER: "acteurs-amenageur",
   STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER: "acteurs-maitre-ouvrage-remise-en-etat",
+  SITE_RESALE_INTRODUCTION: "introduction-cession-fonciere",
+  SITE_RESALE_SELECTION: "selection-cession-fonciere",
   EXPENSES_INTRODUCTION: "introduction-depenses",
   EXPENSES_SITE_PURCHASE_AMOUNTS: "montant-acquisition-site",
   EXPENSES_REINSTATEMENT: "depenses-remise-en-etat",
