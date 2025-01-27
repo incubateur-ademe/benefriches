@@ -207,7 +207,7 @@ export function SocioEconomicModalWizard({
           impactData={getImpactData(impactsGroupedByName.local_property_value_increase)}
         />
       );
-    case "property_transfer_duties_income":
+    case "local_transfer_duties_increase":
       return (
         <PropertyTransferDutiesIncreaseDescription
           impactData={getImpactData(impactsGroupedByName.property_transfer_duties_income)}
