@@ -13,7 +13,7 @@ function ScheduleProjectionFormContainer() {
   return (
     <ScheduleProjectionForm
       initialValues={initialValues}
-      installationScheduleLabel="Travaux d’aménagement du quartier"
+      installationScheduleLabel="Travaux d'aménagement du projet urbain"
       onBack={() => {
         dispatch(scheduleReverted());
       }}

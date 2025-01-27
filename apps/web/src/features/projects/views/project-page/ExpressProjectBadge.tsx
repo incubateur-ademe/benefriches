@@ -13,8 +13,8 @@ const ExpressProjectTooltipBadge = ({ siteName }: Props) => {
         text={
           <div>
             <span>
-              Bénéfriches a généré, au sein du site "{siteName}", un projet de quartier comprenant
-              des habitations, des espaces verts et des espaces publics.
+              Bénéfriches a généré, au sein du site "{siteName}", un projet urbain comprenant des
+              habitations, des espaces verts et des espaces publics.
             </span>
             <br />
             <br />

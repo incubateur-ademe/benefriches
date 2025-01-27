@@ -57,7 +57,7 @@ export default function DevelopmentPlanInstallationExpenses({
         <>
           <DataLine
             noBorder
-            label={<strong>Dépenses d'aménagement du quartier</strong>}
+            label={<strong>Dépenses d'aménagement du projet urbain</strong>}
             value={
               <strong>
                 {formatNumberFr(

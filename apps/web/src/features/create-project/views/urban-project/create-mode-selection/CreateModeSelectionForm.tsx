@@ -33,7 +33,7 @@ const options: Option[] = [
     value: "express",
     title: "Mode express",
     description:
-      "Un projet d'aménagement de quartier sera créé automatiquement. Bénéfriches affectera des données par défaut sur l'aménagement des espaces, les bâtiments, les dépenses et recettes, les emplois mobilisés, etc.",
+      "Un projet d'aménagement urbain sera créé automatiquement. Bénéfriches affectera des données par défaut sur l'aménagement des espaces, les bâtiments, les dépenses et recettes, les emplois mobilisés, etc.",
     badgeText: "Le plus rapide",
     disabled: false,
     imgSrc: "/img/pictograms/creation-mode/express-creation.svg",

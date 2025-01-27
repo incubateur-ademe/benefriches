@@ -70,7 +70,7 @@ const MOCK_PROJECTS_LIST = [
   },
   {
     id: "e7c9b932-97e0-4c8a-b5fd-37a15723fecc",
-    name: "Projet quartier",
+    name: "Projet urbain",
     siteId: "22339455-2ca2-4e2f-ab6b-bb3e2709f3e0",
     siteName: "Friche d'habitat de Forcalquier",
     type: "URBAN_PROJECT",
@@ -161,7 +161,7 @@ describe("My projects page comparaison selection information", () => {
       baseScenario: {
         type: "PROJECT",
         id: "e7c9b932-97e0-4c8a-b5fd-37a15723fecc",
-        name: "Projet quartier",
+        name: "Projet urbain",
         siteName: "Friche d'habitat de Forcalquier",
       },
     });
@@ -186,7 +186,7 @@ describe("My projects page comparaison selection information", () => {
       },
       withScenario: {
         id: "e7c9b932-97e0-4c8a-b5fd-37a15723fecc",
-        name: "Projet quartier",
+        name: "Projet urbain",
         siteName: "Friche d'habitat de Forcalquier",
       },
     });
@@ -205,7 +205,7 @@ describe("My projects page comparaison selection information", () => {
       baseScenario: {
         type: "PROJECT",
         id: "e7c9b932-97e0-4c8a-b5fd-37a15723fecc",
-        name: "Projet quartier",
+        name: "Projet urbain",
         siteName: "Friche d'habitat de Forcalquier",
       },
       withScenario: {
