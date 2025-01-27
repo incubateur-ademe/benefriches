@@ -16,7 +16,7 @@ import {
 describe("Urban project creation : stakeholders steps", () => {
   describe("Custom creation mode", () => {
     describe("STAKEHOLDERS_INTRODUCTION step", () => {
-      it("goes to REVENUE_EXPECTED_SITE_RESALE step when step is completed", () => {
+      it("goes to STAKEHOLDERS_PROJECT_DEVELOPER step when step is completed", () => {
         const store = new StoreBuilder().withStepsHistory(["STAKEHOLDERS_INTRODUCTION"]).build();
         const initialRootState = store.getState();
 
@@ -28,7 +28,7 @@ describe("Urban project creation : stakeholders steps", () => {
         });
       });
 
-      it("goes to EXPENSES_PROJECTED_YEARLY_EXPENSES step when step is reverted", () => {
+      it("goes to previous step when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
             "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
