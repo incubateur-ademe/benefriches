@@ -54,12 +54,13 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
       return "Acteurs";
     case "SITE_RESALE_INTRODUCTION":
     case "SITE_RESALE_SELECTION":
+    case "BUILDINGS_RESALE_SELECTION":
       return "Cession foncière";
-    case "EXPENSES_INSTALLATION":
     case "EXPENSES_INTRODUCTION":
-    case "EXPENSES_PROJECTED_YEARLY_EXPENSES":
-    case "EXPENSES_REINSTATEMENT":
     case "EXPENSES_SITE_PURCHASE_AMOUNTS":
+    case "EXPENSES_REINSTATEMENT":
+    case "EXPENSES_INSTALLATION":
+    case "EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES":
     case "REVENUE_FINANCIAL_ASSISTANCE":
     case "REVENUE_INTRODUCTION":
     case "REVENUE_PROJECTED_YEARLY_REVENUE":

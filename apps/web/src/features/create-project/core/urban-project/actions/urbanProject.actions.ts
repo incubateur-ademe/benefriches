@@ -185,6 +185,10 @@ export const siteResaleChoiceCompleted = createAction<{
   siteResalePlannedAfterDevelopment: boolean;
 }>("siteResaleChoiceCompleted");
 export const siteResaleChoiceReverted = createAction("siteResaleChoiceReverted");
+export const buildingsResaleChoiceCompleted = createAction<{
+  buildingsResalePlannedAfterDevelopment: boolean;
+}>("buildingsResaleChoiceCompleted");
+export const buildingsResaleChoiceReverted = createAction("buildingsResaleChoiceReverted");
 
 // expenses
 export const expensesIntroductionCompleted = createAction("expensesIntroductionCompleted");
@@ -202,10 +206,12 @@ export const installationExpensesCompleted = createAction<UrbanProjectDevelopmen
   "installationExpensesCompleted",
 );
 export const installationExpensesReverted = createAction("installationExpensesReverted");
-export const yearlyProjectedExpensesCompleted = createAction<RecurringExpense[]>(
-  "yearlyProjectedExpensesCompleted",
+export const buildingsOperationsExpensesCompleted = createAction<RecurringExpense[]>(
+  "buildingsOperationsExpensesCompleted",
 );
-export const yearlyProjectedExpensesReverted = createAction("yearlyProjectedExpensesReverted");
+export const buildingsOperationsExpensesReverted = createAction(
+  "buildingsOperationsExpensesReverted",
+);
 
 // revenues
 export const revenueIntroductionCompleted = createAction("revenueIntroductionCompleted");

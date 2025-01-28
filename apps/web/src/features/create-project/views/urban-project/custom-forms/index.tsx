@@ -23,6 +23,7 @@ import ProjectRevenueIntroduction from "./revenues/introduction";
 import YearlyProjectedRevenueForm from "./revenues/yearly-projected-revenue";
 import ProjectScheduleIntroduction from "./schedule/introduction";
 import ScheduleProjectionForm from "./schedule/projection";
+import BuildingsResaleForm from "./site-resale/buildings-resale";
 import SiteResaleIntroduction from "./site-resale/introduction";
 import SiteResaleForm from "./site-resale/selection";
 import SoilsDecontaminationIntroduction from "./soils-decontamination/intro";
@@ -107,13 +108,15 @@ const getCurrentStepView = (
       return <SiteResaleIntroduction />;
     case "SITE_RESALE_SELECTION":
       return <SiteResaleForm />;
+    case "BUILDINGS_RESALE_SELECTION":
+      return <BuildingsResaleForm />;
     case "EXPENSES_INTRODUCTION":
       return <ProjectExpensesIntroduction />;
     case "EXPENSES_SITE_PURCHASE_AMOUNTS":
       return <SitePurchaseAmounts />;
     case "EXPENSES_INSTALLATION":
       return <InstallationExpensesForm />;
-    case "EXPENSES_PROJECTED_YEARLY_EXPENSES":
+    case "EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES":
       return <YearlyProjectedExpensesForm />;
     case "EXPENSES_REINSTATEMENT":
       return <ReinstatementExpensesForm />;

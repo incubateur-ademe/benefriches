@@ -110,7 +110,13 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           <>
             <DataLine
               noBorder
-              label={<strong>Dépenses annuelles</strong>}
+              label={
+                <strong>
+                  {projectData.developmentPlan.type === "URBAN_PROJECT"
+                    ? "Dépenses annuelles d'exploitation des bâtiments"
+                    : "Dépenses annuelles"}
+                </strong>
+              }
               value={
                 <div>
                   <strong>

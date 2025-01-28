@@ -28,7 +28,7 @@ export const saveReconversionProject = createAppAsyncThunk(
       siteResaleExpectedPropertyTransferDuties:
         creationData.siteResaleExpectedPropertyTransferDuties,
       financialAssistanceRevenues: creationData.financialAssistanceRevenues,
-      yearlyProjectedCosts: creationData.yearlyProjectedExpenses ?? [],
+      yearlyProjectedCosts: creationData.yearlyProjectedBuildingsOperationsExpenses ?? [],
       yearlyProjectedRevenues: creationData.yearlyProjectedRevenues ?? [],
       soilsDistribution: selectUrbanProjectSoilsDistribution(getState()),
       reinstatementSchedule: creationData.reinstatementSchedule,

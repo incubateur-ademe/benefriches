@@ -1,29 +1,33 @@
-import { RecurringExpense } from "shared";
-
 import {
-  yearlyProjectedExpensesCompleted,
-  yearlyProjectedExpensesReverted,
+  buildingsOperationsExpensesCompleted,
+  buildingsOperationsExpensesReverted,
 } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
-import YearlyProjectedExpensesForm from "@/features/create-project/views/common-views/costs/yearly-projected-costs";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+
+import BuildingsOperationsExpensesForm from "./BuildingsOperationsExpensesForm";
 
 function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();
 
   return (
-    <YearlyProjectedExpensesForm
+    <BuildingsOperationsExpensesForm
       initialValues={{
-        rent: 0,
         maintenance: 0,
         taxes: 0,
         other: 0,
       }}
-      title="Dépenses annuelles d'exploitation des bâtiments"
-      onSubmit={(expenses: RecurringExpense[]) => {
-        dispatch(yearlyProjectedExpensesCompleted(expenses));
+      onSubmit={(formData) => {
+        const expenses = (
+          [
+            { purpose: "maintenance", amount: formData.maintenance ?? 0 },
+            { purpose: "taxes", amount: formData.taxes ?? 0 },
+            { purpose: "other", amount: formData.other ?? 0 },
+          ] as const
+        ).filter(({ amount }) => amount > 0);
+        dispatch(buildingsOperationsExpensesCompleted(expenses));
       }}
       onBack={() => {
-        dispatch(yearlyProjectedExpensesReverted());
+        dispatch(buildingsOperationsExpensesReverted());
       }}
     />
   );

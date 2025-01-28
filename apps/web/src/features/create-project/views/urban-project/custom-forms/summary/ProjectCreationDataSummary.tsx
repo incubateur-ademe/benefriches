@@ -53,7 +53,7 @@ function ProjectCreationDataSummary({
           reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
           financialAssistanceRevenues: projectData.financialAssistanceRevenues,
           reinstatementCosts: projectData.reinstatementExpenses,
-          yearlyProjectedExpenses: projectData.yearlyProjectedExpenses ?? [],
+          yearlyProjectedExpenses: projectData.yearlyProjectedBuildingsOperationsExpenses ?? [],
           yearlyProjectedRevenues: projectData.yearlyProjectedRevenues ?? [],
           reinstatementSchedule: projectData.reinstatementSchedule,
           firstYearOfOperation: projectData.firstYearOfOperation,

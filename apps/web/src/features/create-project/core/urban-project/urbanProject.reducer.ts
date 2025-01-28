@@ -75,8 +75,6 @@ import {
   reinstatementExpensesReverted,
   installationExpensesCompleted,
   installationExpensesReverted,
-  yearlyProjectedExpensesCompleted,
-  yearlyProjectedExpensesReverted,
   revenueIntroductionCompleted,
   yearlyProjectedRevenueCompleted,
   yearlyProjectedRevenueReverted,
@@ -94,6 +92,10 @@ import {
   siteResaleIntroductionCompleted,
   siteResaleChoiceCompleted,
   siteResaleChoiceReverted,
+  buildingsResaleChoiceCompleted,
+  buildingsResaleChoiceReverted,
+  buildingsOperationsExpensesCompleted,
+  buildingsOperationsExpensesReverted,
 } from "./actions/urbanProject.actions";
 import { UrbanProjectCreationStep, UrbanProjectCustomCreationStep } from "./creationSteps";
 import soilsCarbonStorageReducer, {
@@ -141,8 +143,7 @@ export type UrbanProjectState = {
     buildingsEconomicActivityUses?: BuildingsEconomicActivityUse[];
     // cession foncière
     siteResalePlannedAfterDevelopment?: boolean;
-    // TODO : question à poser dans Cession foncière
-    projectDevoloperOwnsBuildings?: boolean;
+    buildingsResalePlannedAfterDevelopment?: boolean;
     // stakeholders
     projectDeveloper?: ProjectStakeholder;
     reinstatementContractOwner?: ProjectStakeholder;
@@ -152,7 +153,7 @@ export type UrbanProjectState = {
     // expenses
     reinstatementExpenses?: ReinstatementExpense[];
     installationExpenses?: UrbanProjectDevelopmentExpense[];
-    yearlyProjectedExpenses?: RecurringExpense[];
+    yearlyProjectedBuildingsOperationsExpenses?: RecurringExpense[];
     // revenues
     yearlyProjectedRevenues?: RecurringRevenue[];
     financialAssistanceRevenues?: FinancialAssistanceRevenue[];
@@ -199,8 +200,10 @@ export const hasBuildings = (state: ProjectCreationState) => {
   return buildingsSurfaceArea > 0;
 };
 
-const hasBuildingsOperations = (state: ProjectCreationState) => {
-  return hasBuildings(state) && state.urbanProject.creationData.projectDevoloperOwnsBuildings;
+const willBuildingsBeSoldAfterDevelopment = (state: ProjectCreationState): boolean => {
+  return (
+    hasBuildings(state) && !!state.urbanProject.creationData.buildingsResalePlannedAfterDevelopment
+  );
 };
 
 const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) => {
@@ -470,11 +473,19 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.siteResalePlannedAfterDevelopment =
       action.payload.siteResalePlannedAfterDevelopment;
 
-    const nextStep = "EXPENSES_INTRODUCTION";
+    const nextStep = hasBuildings(state) ? "BUILDINGS_RESALE_SELECTION" : "EXPENSES_INTRODUCTION";
     state.urbanProject.stepsHistory.push(nextStep);
   });
   builder.addCase(siteResaleChoiceReverted, (state) => {
     state.urbanProject.creationData.siteResalePlannedAfterDevelopment = undefined;
+  });
+  builder.addCase(buildingsResaleChoiceCompleted, (state, action) => {
+    state.urbanProject.creationData.buildingsResalePlannedAfterDevelopment =
+      action.payload.buildingsResalePlannedAfterDevelopment;
+    state.urbanProject.stepsHistory.push("EXPENSES_INTRODUCTION");
+  });
+  builder.addCase(buildingsResaleChoiceReverted, (state) => {
+    state.urbanProject.creationData.buildingsResalePlannedAfterDevelopment = undefined;
   });
 
   // expenses
@@ -504,20 +515,21 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
 
   builder.addCase(installationExpensesCompleted, (state, action) => {
     state.urbanProject.creationData.installationExpenses = action.payload;
-    state.urbanProject.stepsHistory.push(
-      hasBuildingsOperations(state) ? "EXPENSES_PROJECTED_YEARLY_EXPENSES" : "REVENUE_INTRODUCTION",
-    );
+    const nextStep = willBuildingsBeSoldAfterDevelopment(state)
+      ? "REVENUE_INTRODUCTION"
+      : "EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES";
+    state.urbanProject.stepsHistory.push(nextStep);
   });
   builder.addCase(installationExpensesReverted, (state) => {
     state.urbanProject.creationData.installationExpenses = undefined;
   });
 
-  builder.addCase(yearlyProjectedExpensesCompleted, (state, action) => {
-    state.urbanProject.creationData.yearlyProjectedExpenses = action.payload;
+  builder.addCase(buildingsOperationsExpensesCompleted, (state, action) => {
+    state.urbanProject.creationData.yearlyProjectedBuildingsOperationsExpenses = action.payload;
     state.urbanProject.stepsHistory.push("REVENUE_INTRODUCTION");
   });
-  builder.addCase(yearlyProjectedExpensesReverted, (state) => {
-    state.urbanProject.creationData.yearlyProjectedExpenses = undefined;
+  builder.addCase(buildingsOperationsExpensesReverted, (state) => {
+    state.urbanProject.creationData.yearlyProjectedBuildingsOperationsExpenses = undefined;
   });
 
   // revenues
@@ -532,11 +544,8 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.siteResaleExpectedSellingPrice = action.payload.sellingPrice;
     state.urbanProject.creationData.siteResaleExpectedPropertyTransferDuties =
       action.payload.propertyTransferDuties;
-    state.urbanProject.stepsHistory.push(
-      hasBuildingsOperations(state)
-        ? "REVENUE_PROJECTED_YEARLY_REVENUE"
-        : "REVENUE_FINANCIAL_ASSISTANCE",
-    );
+
+    state.urbanProject.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");
   });
   builder.addCase(expectedSiteResaleRevenueReverted, (state) => {
     state.urbanProject.creationData.siteResaleExpectedSellingPrice = undefined;
