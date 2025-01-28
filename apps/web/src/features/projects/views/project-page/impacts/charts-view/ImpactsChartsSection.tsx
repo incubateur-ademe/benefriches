@@ -6,7 +6,7 @@ type Props = {
   title: ReactNode;
   subtitle?: ReactNode;
   children?: ReactNode;
-  onClick?: () => void;
+  onClick: () => void;
 };
 
 const ImpactsChartsSection = ({ title, subtitle, children, onClick }: Props) => {
@@ -25,13 +25,18 @@ const ImpactsChartsSection = ({ title, subtitle, children, onClick }: Props) => 
         "tw-border",
         "tw-border-solid",
         "tw-border-transparent",
-        onClick && [
-          "tw-cursor-pointer",
-          "hover:tw-border-current",
-          "tw-transition tw-ease-in-out tw-duration-500",
-        ],
+        "tw-cursor-pointer",
+        "hover:tw-border-current",
+        "tw-transition tw-ease-in-out tw-duration-500",
       )}
       onClick={onClick}
+      tabIndex={0}
+      role="button"
+      onKeyUp={(e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === "Enter") {
+          onClick();
+        }
+      }}
     >
       <h3
         className={classNames("tw-text-2xl", !subtitle ? "tw-mb-[calc(4rem + 20px)]" : "tw-mb-2")}

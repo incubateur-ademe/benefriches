@@ -8,17 +8,13 @@ type Props = {
   label: string;
   actor?: string;
   value: number;
-  onClick?: () => void;
-  data?: { label: string; value: number; onClick?: () => void }[];
+  onClick: () => void;
+  data?: { label: string; value: number; onClick: () => void }[];
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
   impactRowValueProps?: Partial<ImpactRowValueProps>;
 };
 
-const getFromChildEventPropFunction = (fn?: () => void) => {
-  if (!fn) {
-    return undefined;
-  }
-
+const getFromChildEventPropFunction = (fn: () => void) => {
   return (e?: MouseEvent<HTMLElement>) => {
     if (e) {
       e.stopPropagation();

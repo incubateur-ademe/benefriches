@@ -10,9 +10,20 @@ type Props = {
 };
 
 const KeyImpactIndicatorCard = ({ title, type, description, onClick }: Props) => {
+  const actionProps = onClick
+    ? {
+        tabIndex: 0,
+        onClick,
+        onKeyUp: (e: React.KeyboardEvent<HTMLElement>) => {
+          if (e.key === "Enter") {
+            onClick();
+          }
+        },
+      }
+    : {};
   return (
     <article
-      onClick={onClick}
+      {...actionProps}
       className={classNames(
         "tw-flex tw-justify-start tw-items-center tw-gap-4",
         "tw-p-4",

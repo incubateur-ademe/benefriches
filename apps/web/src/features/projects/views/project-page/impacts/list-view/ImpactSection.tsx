@@ -8,7 +8,7 @@ type Props = {
   title: string;
   isMain?: boolean;
   total?: number;
-  onTitleClick?: () => void;
+  onTitleClick: () => void;
   children: ReactNode;
   initialShowSectionContent?: boolean;
   noMarginBottom?: boolean;
@@ -36,15 +36,6 @@ const ImpactSection = ({
     toggleDisplaySectionContent();
   };
 
-  const onLabelClick = onTitleClick
-    ? (e?: MouseEvent<HTMLElement>) => {
-        if (e) {
-          e.stopPropagation();
-        }
-        onTitleClick();
-      }
-    : undefined;
-
   return (
     <section className={classNames(!noMarginBottom && "tw-mb-10")}>
       <div
@@ -56,11 +47,9 @@ const ImpactSection = ({
             ? ["tw-bg-impacts-dark", "dark:tw-bg-black", "tw-mb-6"]
             : ["tw-bg-impacts-main", "dark:tw-bg-black", "tw-mb-2"],
           "tw-cursor-pointer",
-          onTitleClick && [
-            "tw-transition tw-ease-in-out tw-duration-500",
-            "hover:tw-border hover:tw-border-solid",
-            "hover:tw-scale-x-[1.02]",
-          ],
+          "tw-transition tw-ease-in-out tw-duration-500",
+          "hover:tw-border hover:tw-border-solid",
+          "hover:tw-scale-x-[1.02]",
         )}
         onClick={toggleDisplaySectionContent}
       >
@@ -70,7 +59,12 @@ const ImpactSection = ({
             role: "heading",
             "aria-level": isMain ? 3 : 4,
             className: isMain ? "tw-text-xl" : "tw-text-base",
-            onClick: onLabelClick,
+            onClick: (e?: MouseEvent<HTMLElement>) => {
+              if (e) {
+                e.stopPropagation();
+              }
+              onTitleClick();
+            },
           }}
           value={total}
           type="monetary"

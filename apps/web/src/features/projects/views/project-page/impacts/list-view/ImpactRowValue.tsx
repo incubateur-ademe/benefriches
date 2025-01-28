@@ -24,11 +24,11 @@ export type ImpactRowValueProps = {
   isAccordionOpened?: boolean;
   buttonInfoAlwaysDisplayed?: boolean;
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time";
-  labelProps?: {
+  labelProps: {
     role?: "heading";
     ["aria-level"]?: 3 | 4;
     className?: ClassValue;
-    onClick?: (e?: MouseEvent<HTMLElement>) => void;
+    onClick: (e?: MouseEvent<HTMLElement>) => void;
   };
 };
 
@@ -57,7 +57,7 @@ const ImpactRowValue = ({
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
-  const { onClick: onLabelClick, className: labelClassNames, ...labelPropsRest } = labelProps ?? {};
+  const { onClick: onLabelClick, className: labelClassNames, ...labelPropsRest } = labelProps;
 
   return (
     <div
@@ -92,41 +92,51 @@ const ImpactRowValue = ({
         />
       )}
       <div
+        tabIndex={0}
         onClick={onLabelClick}
+        onKeyUp={(e: React.KeyboardEvent<HTMLElement>) => {
+          if (e.key === "Enter") {
+            onLabelClick();
+          }
+        }}
         className={classNames(
           "tw-col-start-2",
           isTotal && "tw-font-bold",
-          isSectionHovered && !!onLabelClick && "tw-font-bold",
+          isSectionHovered && "tw-font-bold",
           "tw-cursor-pointer",
           labelClassNames,
         )}
         {...labelPropsRest}
       >
         {label}
-        {onLabelClick && (
-          <button
-            onClick={onLabelClick}
-            className={classNames(
-              "fr-link",
-              "fr-link--sm",
-              "md:tw-ml-2",
-              "tw-px-2",
-              "tw-transition-opacity",
-              "tw-ease-in",
-              "tw-duration-50",
-              "tw-font-normal",
-              isSectionHovered || buttonInfoAlwaysDisplayed
-                ? "tw-visible tw-opacity-100"
-                : "md:tw-opacity-0 md:tw-invisible tw-duration-0",
-            )}
-          >
-            {windowInnerWidth > breakpointsValues.md ? (
-              `En savoir plus`
-            ) : (
-              <span className={fr.cx("fr-icon--sm", "fr-icon-question-line")}></span>
-            )}
-          </button>
-        )}
+        <button
+          tabIndex={0}
+          onClick={onLabelClick}
+          onKeyUp={(e: React.KeyboardEvent<HTMLElement>) => {
+            if (e.key === "Enter") {
+              onLabelClick();
+            }
+          }}
+          className={classNames(
+            "fr-link",
+            "fr-link--sm",
+            "md:tw-ml-2",
+            "tw-px-2",
+            "tw-transition-opacity",
+            "tw-ease-in",
+            "tw-duration-50",
+            "tw-font-normal",
+            isSectionHovered || buttonInfoAlwaysDisplayed
+              ? "tw-visible tw-opacity-100"
+              : "md:tw-opacity-0 md:tw-invisible tw-duration-0",
+          )}
+        >
+          {windowInnerWidth > breakpointsValues.md ? (
+            `En savoir plus`
+          ) : (
+            <span className={fr.cx("fr-icon--sm", "fr-icon-question-line")}></span>
+          )}
+        </button>
       </div>
 
       {actor && <span className="tw-col-start-2 md:tw-col-start-3">{actor}</span>}

@@ -41,7 +41,7 @@ type AllowedImpactType = keyof typeof impactTypeFormatterMap;
 type Props = {
   baseLabel?: string;
   forecastLabel?: string;
-  onClick?: () => void;
+  onClick: () => void;
   impact: {
     impactLabel: string;
     base: number;
@@ -72,8 +72,12 @@ function ImpactAreaChartCard({ type = "default", impact, onClick }: Props) {
   return (
     <div
       onClick={(e) => {
-        if (onClick) {
-          e.stopPropagation();
+        e.stopPropagation();
+        onClick();
+      }}
+      tabIndex={0}
+      onKeyUp={(e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === "Enter") {
           onClick();
         }
       }}
@@ -87,11 +91,9 @@ function ImpactAreaChartCard({ type = "default", impact, onClick }: Props) {
         "tw-border",
         "tw-border-solid",
         "tw-border-transparent",
-        onClick && [
-          "tw-cursor-pointer",
-          "hover:tw-border-current",
-          "tw-transition tw-ease-in-out tw-duration-500",
-        ],
+        "tw-cursor-pointer",
+        "hover:tw-border-current",
+        "tw-transition tw-ease-in-out tw-duration-500",
       )}
     >
       <div className="tw-flex tw-justify-between tw-items-start">
