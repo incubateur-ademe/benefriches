@@ -10,7 +10,7 @@ import BuildingsIntroduction from "./buildings/introduction";
 import BuildingsUseIntroduction from "./buildings/use-introduction";
 import BuildingsUseSurfaceAreas from "./buildings/use-surface-areas";
 import ProjectCreationResult from "./creation-result";
-import InstallationExpensesForm from "./expenses/installation-costs";
+import InstallationExpensesForm from "./expenses/installation";
 import ProjectExpensesIntroduction from "./expenses/introduction";
 import ReinstatementExpensesForm from "./expenses/reinstatement";
 import SitePurchaseAmounts from "./expenses/site-purchase-amounts";

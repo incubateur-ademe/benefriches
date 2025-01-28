@@ -1,12 +1,12 @@
 import {
   BuildingFloorAreaUsageDistribution,
-  computeDefaultInstallationCostsFromSiteSurfaceArea,
+  computeDefaultInstallationExpensesFromSiteSurfaceArea,
   computeDefaultInstallationSchedule,
   computeDefaultOperationsFirstYear,
   computeDefaultReinstatementSchedule,
   computeDefaultSitePurchaseFromSiteSurfaceArea,
   computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces,
-  computeProjectReinstatementCosts,
+  computeProjectReinstatementExpenses,
   computePropertyTransferDutiesFromSellingPrice,
   computeSoilsDistributionFromSpaces,
   formatMunicipalityName,
@@ -82,7 +82,7 @@ export class UrbanProjectExpressCreationService {
   // expenses and incomes
   get installationCosts() {
     const { technicalStudies, developmentWorks, other } =
-      computeDefaultInstallationCostsFromSiteSurfaceArea(this.siteData.surfaceArea);
+      computeDefaultInstallationExpensesFromSiteSurfaceArea(this.siteData.surfaceArea);
     return [
       { amount: technicalStudies, purpose: "technical_studies" },
       { amount: developmentWorks, purpose: "development_works" },
@@ -95,7 +95,7 @@ export class UrbanProjectExpressCreationService {
       return undefined;
     }
     return typedObjectEntries(
-      computeProjectReinstatementCosts(
+      computeProjectReinstatementExpenses(
         this.siteData.soilsDistribution,
         this.projectSoilsDistribution,
         this.decontaminatedSoilSurface,

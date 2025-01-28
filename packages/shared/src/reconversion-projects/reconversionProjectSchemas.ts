@@ -16,7 +16,7 @@ export const urbanProjectsFeaturesSchema = z.object({
   buildingsFloorAreaDistribution: buildingsUseSurfaceAreaDistributionSchema,
 });
 
-const costSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
+const expenseSchema = z.object({ purpose: z.string(), amount: z.number().nonnegative() });
 const revenueSchema = z.object({ source: z.string(), amount: z.number().nonnegative() });
 
 const developmentPlanType = z.enum(["PHOTOVOLTAIC_POWER_PLANT", "URBAN_PROJECT"]);
@@ -29,7 +29,7 @@ export const scheduleSchema = z.object({
 export const baseDevelopmentPlanSchema = z.object({
   type: developmentPlanType,
   developer: z.object({ name: z.string(), structureType: z.string() }),
-  costs: costSchema.array(),
+  costs: expenseSchema.array(),
   installationSchedule: scheduleSchema.optional(),
 });
 
@@ -59,9 +59,9 @@ export const reconversionProjectSchema = z.object({
   reinstatementContractOwner: z.object({ name: z.string(), structureType: z.string() }).optional(),
   sitePurchaseSellingPrice: z.number().nonnegative().optional(),
   sitePurchasePropertyTransferDuties: z.number().nonnegative().optional(),
-  reinstatementCosts: z.array(costSchema).optional(),
+  reinstatementCosts: z.array(expenseSchema).optional(),
   financialAssistanceRevenues: z.array(revenueSchema).optional(),
-  yearlyProjectedCosts: z.array(costSchema),
+  yearlyProjectedCosts: z.array(expenseSchema),
   yearlyProjectedRevenues: z.array(revenueSchema),
   soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
   reinstatementSchedule: scheduleSchema.optional(),

@@ -1,2 +1,2 @@
-export * from "./reinstatementCosts";
+export * from "./reinstatementExpenses";
 export * from "./reinstatementFullTimeJobs";

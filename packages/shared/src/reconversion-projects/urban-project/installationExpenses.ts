@@ -1,12 +1,12 @@
-export type ComputedInstallationCosts = {
+export type ComputedInstallationExpenses = {
   technicalStudies: number;
   developmentWorks: number;
   other: number;
 };
 
-export const computeDefaultInstallationCostsFromSiteSurfaceArea = (
+export const computeDefaultInstallationExpensesFromSiteSurfaceArea = (
   surfaceArea: number,
-): { technicalStudies: number; developmentWorks: number; other: number } => {
+): ComputedInstallationExpenses => {
   const technicalStudies = surfaceArea * 6;
   const developmentWorks = surfaceArea * 54;
   const other = (technicalStudies + developmentWorks) * 0.09;

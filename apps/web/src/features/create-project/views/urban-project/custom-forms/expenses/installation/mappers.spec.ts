@@ -1,4 +1,4 @@
-import { ComputedInstallationCosts, UrbanProjectDevelopmentExpense } from "shared";
+import { ComputedInstallationExpenses, UrbanProjectDevelopmentExpense } from "shared";
 
 import { mapFormValuesToReinstatementExpenses } from "@/features/create-project/views/common-views/expenses/reinstatement/mappers";
 
@@ -25,7 +25,7 @@ describe("Urban project installation costs form mappers", () => {
         { purpose: "technical_studies", amount: 100 },
         { purpose: "development_works", amount: 200 },
       ];
-      const defaultValues: ComputedInstallationCosts = {
+      const defaultValues: ComputedInstallationExpenses = {
         technicalStudies: 430,
         developmentWorks: 540,
         other: 50,
@@ -38,7 +38,7 @@ describe("Urban project installation costs form mappers", () => {
     });
 
     it("should return mapped given default values when no pre-entered data", () => {
-      const defaultValues: ComputedInstallationCosts = {
+      const defaultValues: ComputedInstallationExpenses = {
         technicalStudies: 430,
         developmentWorks: 540,
         other: 50,

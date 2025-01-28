@@ -4,7 +4,7 @@ import {
 } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
-import ProjectExpensesIntroduction from "./ProjectCostsIntroduction";
+import ProjectExpensesIntroduction from "./ProjectExpensesIntroduction";
 
 function ProjectExpensesIntroductionContainer() {
   const dispatch = useAppDispatch();

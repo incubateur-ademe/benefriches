@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
-  computeDefaultInstallationCostsFromSiteSurfaceArea,
+  computeDefaultInstallationExpensesFromSiteSurfaceArea,
   filterObject,
   SoilsDistribution,
   UrbanSpaceCategory,
@@ -265,7 +265,7 @@ export const selectDefaultInstallationCosts = createSelector(selectSiteData, (si
   if (!siteData?.surfaceArea) {
     return undefined;
   }
-  return computeDefaultInstallationCostsFromSiteSurfaceArea(siteData.surfaceArea);
+  return computeDefaultInstallationExpensesFromSiteSurfaceArea(siteData.surfaceArea);
 });
 
 export const selectInstallationCosts = createSelector(selectCreationData, (creationData) => {

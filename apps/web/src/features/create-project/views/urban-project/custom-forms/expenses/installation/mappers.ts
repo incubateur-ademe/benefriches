@@ -1,5 +1,5 @@
 import {
-  ComputedInstallationCosts,
+  ComputedInstallationExpenses,
   typedObjectEntries,
   UrbanProjectDevelopmentExpense,
 } from "shared";
@@ -35,7 +35,7 @@ const mapExpensesToFormValues = (expenses: UrbanProjectDevelopmentExpense[]): Fo
   }, {});
 };
 
-const mapDefaultValuesToFormValues = (defaultValues: ComputedInstallationCosts): FormValues => {
+const mapDefaultValuesToFormValues = (defaultValues: ComputedInstallationExpenses): FormValues => {
   const { developmentWorks, technicalStudies, other } = defaultValues;
   return {
     worksAmount: developmentWorks && Math.round(developmentWorks),
@@ -46,7 +46,7 @@ const mapDefaultValuesToFormValues = (defaultValues: ComputedInstallationCosts):
 
 export const mapInitialValues = (
   preEnteredData: UrbanProjectDevelopmentExpense[] | undefined,
-  defaultValues: ComputedInstallationCosts | undefined,
+  defaultValues: ComputedInstallationExpenses | undefined,
 ): FormValues | undefined => {
   if (preEnteredData) return mapExpensesToFormValues(preEnteredData);
 

@@ -1,5 +1,5 @@
 import {
-  DevelopmentPlanInstallationCost,
+  DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   ReconversionProjectImpacts,
   RecurringExpense,
@@ -55,7 +55,7 @@ export type ReconversionProjectImpactsDataView = {
   sitePurchaseTotalAmount?: number;
   sitePurchasePropertyTransferDutiesAmount?: number;
   reinstatementCosts: ReinstatementExpense[];
-  developmentPlanInstallationCosts: DevelopmentPlanInstallationCost[];
+  developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
   financialAssistanceRevenues: FinancialAssistanceRevenue[];
   yearlyProjectedCosts: RecurringExpense[];
   yearlyProjectedRevenues: RecurringRevenue[];

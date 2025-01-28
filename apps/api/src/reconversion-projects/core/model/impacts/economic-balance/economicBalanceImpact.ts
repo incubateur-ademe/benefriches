@@ -1,5 +1,5 @@
 import {
-  DevelopmentPlanInstallationCost,
+  DevelopmentPlanInstallationExpenses,
   EconomicBalanceImpactResult,
   FinancialAssistanceRevenue,
   RecurringExpense,
@@ -11,7 +11,7 @@ import {
 type ProjectProps = {
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   reinstatementCosts: ReinstatementExpense[];
-  developmentPlanInstallationCosts: DevelopmentPlanInstallationCost[];
+  developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
   sitePurchaseTotalAmount?: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
@@ -25,7 +25,7 @@ type ProjectProps = {
 type ReconversionProjectInstallationCostsInput = {
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   reinstatementCosts: ReinstatementExpense[];
-  developmentPlanInstallationCosts: DevelopmentPlanInstallationCost[];
+  developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
   sitePurchaseTotalAmount: number;
   developmentPlanDeveloperName?: string;
   futureOperatorName?: string;
@@ -37,7 +37,7 @@ type ReconversionProjectInstallationEconomicResult = {
   total: number;
   costs: {
     total: number;
-    developmentPlanInstallation?: { total: number; costs: DevelopmentPlanInstallationCost[] };
+    developmentPlanInstallation?: { total: number; costs: DevelopmentPlanInstallationExpenses[] };
     siteReinstatement?: { total: number; costs: ReinstatementExpense[] };
     sitePurchase?: number;
   };

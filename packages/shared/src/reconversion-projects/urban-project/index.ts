@@ -1,6 +1,6 @@
 export * from "./expectedPostDevelopmentResale";
 export * from "./fullTimeJobs";
-export * from "./installationCosts";
+export * from "./installationExpenses";
 export * from "./operationFirstYear";
 export * from "./schedule/worksSchedule";
 export * from "./soilsDistributionFromSpaces";

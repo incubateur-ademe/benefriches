@@ -1,7 +1,7 @@
 import {
   ReinstatementExpense,
   ReinstatementExpensePurpose,
-  ComputedReinstatementCosts,
+  ComputedReinstatementExpenses,
 } from "shared";
 
 import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
@@ -41,7 +41,7 @@ export const mapFormValuesToReinstatementExpenses = (
 
 export const mapInitialValues = (
   preEnteredData: ReinstatementExpense[] | undefined,
-  defaultReinstatementExpenses: ComputedReinstatementCosts,
+  defaultReinstatementExpenses: ComputedReinstatementExpenses,
 ): FormValues => {
   if (preEnteredData) {
     return preEnteredData.reduce<FormValues>((acc, cur) => {

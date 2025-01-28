@@ -1,5 +1,5 @@
 import {
-  DevelopmentPlanInstallationCost,
+  DevelopmentPlanInstallationExpenses,
   FinancialAssistanceRevenue,
   RecurringExpense,
   RecurringRevenue,
@@ -29,7 +29,7 @@ export type DevelopmentPlanInstallationExpenseName =
   | "urban_project_technical_studies"
   | "urban_project_works"
   | "urban_project_other"
-  | DevelopmentPlanInstallationCost["purpose"];
+  | DevelopmentPlanInstallationExpenses["purpose"];
 
 export type EconomicBalanceDetailsName =
   | RecurringExpense["purpose"]
@@ -63,7 +63,7 @@ const getInstallationCostNamePrefix = (projectType?: ProjectDevelopmentPlanType)
 };
 
 const getDevelopmentPlanDetailsName = (
-  costName: DevelopmentPlanInstallationCost["purpose"],
+  costName: DevelopmentPlanInstallationExpenses["purpose"],
   projectType?: ProjectDevelopmentPlanType,
 ) => {
   const prefix = getInstallationCostNamePrefix(projectType);

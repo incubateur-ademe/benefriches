@@ -1,4 +1,8 @@
-import { computeProjectReinstatementCosts, ReinstatementExpense, SoilsDistribution } from "shared";
+import {
+  computeProjectReinstatementExpenses,
+  ReinstatementExpense,
+  SoilsDistribution,
+} from "shared";
 
 import { ProjectSite } from "@/features/create-project/core/project.types";
 
@@ -37,7 +41,7 @@ function ReinstatementExpensesFormContainer({
 
   const initialValues = mapInitialValues(
     preEnteredData,
-    computeProjectReinstatementCosts(
+    computeProjectReinstatementExpenses(
       siteSoilsDistribution,
       projectSoilsDistribution,
       decontaminatedSurfaceArea,

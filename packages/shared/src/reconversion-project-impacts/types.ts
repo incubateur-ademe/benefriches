@@ -7,12 +7,12 @@ import {
 import { SoilType } from "../soils";
 import { SocioEconomicImpact } from "./socioEconomic.types";
 
-export type DevelopmentPlanInstallationCost = {
+export type DevelopmentPlanInstallationExpenses = {
   purpose: "technical_studies" | "installation_works" | "development_works" | "other";
   amount: number;
 };
 
-type CostsTotalAndDetails<TExpense> = {
+type ExpensesDetailledTotal<TExpense> = {
   total: number;
   costs: TExpense[];
 };
@@ -22,9 +22,9 @@ export type EconomicBalanceImpactResult = {
   bearer?: string;
   costs: {
     total: number;
-    operationsCosts?: CostsTotalAndDetails<RecurringExpense>;
-    developmentPlanInstallation?: CostsTotalAndDetails<DevelopmentPlanInstallationCost>;
-    siteReinstatement?: CostsTotalAndDetails<ReinstatementExpense>;
+    operationsCosts?: ExpensesDetailledTotal<RecurringExpense>;
+    developmentPlanInstallation?: ExpensesDetailledTotal<DevelopmentPlanInstallationExpenses>;
+    siteReinstatement?: ExpensesDetailledTotal<ReinstatementExpense>;
     sitePurchase?: number;
   };
   revenues: {
