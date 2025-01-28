@@ -5,6 +5,7 @@ import { formatPercentage, formatSurfaceArea } from "@/shared/core/format-number
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
@@ -26,7 +27,7 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
   const title = isSuccess ? `+ de sols perméables\u00a0☔️` : `- de sols perméables\u00a0☔️`;
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title={title}
         value={{
@@ -68,7 +69,7 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
           />
         </ImpactItemGroup>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

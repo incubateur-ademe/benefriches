@@ -1,5 +1,6 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import TravelRelatedCo2Content from "../../shared/co2-emissions/TravelRelatedCo2Content";
@@ -11,7 +12,7 @@ type Props = {
 
 const TravelRelatedCo2MonetaryValueDescription = ({ impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🚙 Déplacements en voiture évités"
         value={
@@ -28,7 +29,7 @@ const TravelRelatedCo2MonetaryValueDescription = ({ impactData }: Props) => {
       <ModalContent>
         <TravelRelatedCo2Content withMonetarisation />
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

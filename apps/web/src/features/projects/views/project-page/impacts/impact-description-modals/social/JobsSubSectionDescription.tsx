@@ -1,10 +1,11 @@
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 import { mainBreadcrumbSection } from "./breadcrumbSections";
 
 const JobsSubSectionDescription = () => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="Impacts sur l'emploi"
         breadcrumbSegments={[mainBreadcrumbSection, { label: "Impacts sur l'emploi" }]}
@@ -23,7 +24,7 @@ const JobsSubSectionDescription = () => {
           photovoltaïque).
         </p>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

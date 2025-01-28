@@ -8,6 +8,7 @@ import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import { ImpactsData } from "../../ImpactModalDescriptionProvider";
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -52,7 +53,7 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🌱 Valeur monétaire des services écosystémiques"
         value={
@@ -200,7 +201,7 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

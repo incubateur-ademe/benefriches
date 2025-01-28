@@ -7,6 +7,7 @@ import { getCo2EqEmissionsTonsInAverageFrenchAnnualEmissionsPerPerson } from "@/
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
@@ -32,7 +33,7 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
   const title = isSuccess ? "- d’émissions de CO2\u00a0☁️" : "+ d’émissions de CO2\u00a0☁️";
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title={title}
         value={{
@@ -82,7 +83,7 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
           </p>
         )}
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

@@ -2,6 +2,7 @@ import { SoilsDistribution } from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import SoilsStorageRelatedCo2Content from "../../shared/co2-emissions/SoilsStorageRelatedCo2Content";
@@ -15,7 +16,7 @@ type Props = {
 
 const SoilsStorageRelatedCo2MonetaryValueDescription = (props: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🍂 CO2-eq stocké dans les sols"
         value={
@@ -32,7 +33,7 @@ const SoilsStorageRelatedCo2MonetaryValueDescription = (props: Props) => {
       <ModalContent>
         <SoilsStorageRelatedCo2Content withMonetarisation={true} {...props} />
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

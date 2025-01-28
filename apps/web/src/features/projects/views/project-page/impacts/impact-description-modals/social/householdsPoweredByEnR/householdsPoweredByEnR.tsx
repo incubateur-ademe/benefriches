@@ -1,6 +1,7 @@
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -19,7 +20,7 @@ const HouseholdsPoweredByRenewableEnergyDescription = ({
   developmentPlanElectricalPowerKWc,
 }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🏠 Foyers alimentés par les EnR"
         breadcrumbSegments={[
@@ -94,7 +95,7 @@ const HouseholdsPoweredByRenewableEnergyDescription = ({
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

@@ -3,6 +3,7 @@ import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/f
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ProjectData } from "../../ImpactModalDescriptionProvider";
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -27,7 +28,7 @@ const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
       : { surfaceArea: undefined, electricalPowerKWc: undefined };
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🔑 Revenu locatif"
         value={
@@ -95,7 +96,7 @@ const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
           CRE : Coûts et rentabilités du grand photovoltaïque en métropole continentale
         </ExternalLink>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

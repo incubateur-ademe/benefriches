@@ -1,6 +1,7 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -17,7 +18,7 @@ type Props = {
 
 const AvoidedAirPollutionDescription = ({ impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title={`💨 ${TITLE}`}
         subtitle="Grâce aux déplacements évités"
@@ -104,7 +105,7 @@ const AvoidedAirPollutionDescription = ({ impactData }: Props) => {
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

@@ -3,6 +3,7 @@ import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/f
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ProjectData } from "../../ImpactModalDescriptionProvider";
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -19,7 +20,7 @@ type Props = {
 
 const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🏛 Recettes fiscales"
         value={
@@ -163,7 +164,7 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

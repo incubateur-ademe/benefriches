@@ -6,6 +6,7 @@ import classNames from "@/shared/views/clsx";
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
@@ -31,7 +32,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
     : "Les impacts ne compensent pas le déficit de l'opération\u00a0💸";
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title={title}
         subtitle={
@@ -101,7 +102,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
           />
         </ImpactItemGroup>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

@@ -2,6 +2,7 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -18,7 +19,7 @@ type Props = {
 
 const PropertyValueIncreaseDescription = ({ siteSurfaceArea, impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🏡 Valeur patrimoniale des bâtiments alentour"
         subtitle="Grâce à la reconversion du site"
@@ -155,7 +156,7 @@ const PropertyValueIncreaseDescription = ({ siteSurfaceArea, impactData }: Props
           Référentiel Bénéfriches
         </ExternalLink>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

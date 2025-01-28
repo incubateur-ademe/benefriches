@@ -1,10 +1,11 @@
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 const PermeableGreenSurfaceDescription = () => {
   return (
-    <>
+    <ModalBody size="small">
       <ModalHeader
         title="☘️ Surface végétalisée"
         breadcrumbSegments={[...breadcrumbSegments, { label: "Surface végétalisée" }]}
@@ -20,7 +21,7 @@ const PermeableGreenSurfaceDescription = () => {
           l'utilisateur, pour le site et pour le projet.
         </p>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

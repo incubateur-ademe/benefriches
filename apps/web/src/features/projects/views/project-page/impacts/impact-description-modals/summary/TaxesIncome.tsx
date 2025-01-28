@@ -5,6 +5,7 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
@@ -22,7 +23,7 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
   const title = isSuccess ? `+ de recettes fiscales\u00a0💰` : `- de recettes fiscales\u00a0💸`;
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title={title}
         value={{
@@ -54,7 +55,7 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
           />
         </ImpactItemGroup>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

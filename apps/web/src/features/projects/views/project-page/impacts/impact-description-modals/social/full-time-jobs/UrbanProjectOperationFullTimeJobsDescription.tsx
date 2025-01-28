@@ -1,6 +1,7 @@
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -13,7 +14,7 @@ type Props = {
 
 const UrbanProjectOperationFullTimeJobsDescription = ({ groundFloorRetailSurface }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🧑‍🔧 Exploitation du site"
         breadcrumbSegments={[
@@ -57,7 +58,7 @@ const UrbanProjectOperationFullTimeJobsDescription = ({ groundFloorRetailSurface
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

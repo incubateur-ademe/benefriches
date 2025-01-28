@@ -6,6 +6,7 @@ import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMa
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -35,7 +36,7 @@ const NitrogenCycleDescription = ({
   ).filter(([key]) => isPrairie(key) || isWetLand(key));
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🍄 Cycle de l'azote"
         value={
@@ -144,7 +145,7 @@ const NitrogenCycleDescription = ({
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

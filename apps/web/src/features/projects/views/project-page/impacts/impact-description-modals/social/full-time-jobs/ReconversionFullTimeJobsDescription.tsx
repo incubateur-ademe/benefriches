@@ -1,5 +1,6 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -11,7 +12,7 @@ type Props = {
 };
 const ReconversionFullTimeJobsDescription = ({ isPhotovoltaic }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="👷 Reconversion du site"
         breadcrumbSegments={[
@@ -94,7 +95,7 @@ const ReconversionFullTimeJobsDescription = ({ isPhotovoltaic }: Props) => {
           )}
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

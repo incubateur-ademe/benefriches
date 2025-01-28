@@ -5,6 +5,7 @@ import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
@@ -19,7 +20,7 @@ const SummaryHouseholdsPoweredByRenewableEnergyDescription = ({ impactData }: Pr
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="+ d’énergies renouvelables&nbsp;⚡"
         value={{
@@ -49,7 +50,7 @@ const SummaryHouseholdsPoweredByRenewableEnergyDescription = ({ impactData }: Pr
           />
         </ImpactItemGroup>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

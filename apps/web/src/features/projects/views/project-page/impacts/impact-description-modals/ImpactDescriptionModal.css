@@ -2,32 +2,13 @@
   overflow: auto;
 }
 
-#modal-impacts-description .fr-modal__title {
-  display: none;
-}
-
-#modal-impacts-description .fr-modal__header {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-#modal-impacts-description .fr-modal__header .fr-btn--close {
-  margin-top: 1rem;
-}
-
 #modal-impacts-description .fr-modal__body {
   max-height: unset !important;
   background-color: var(--background-alt-grey);
-  margin-bottom: 6rem;
 }
 
 #modal-impacts-description .fr-container--fluid {
   overflow: unset;
-}
-
-#modal-impacts-description.fr-modal .fr-modal__content {
-  padding: 0;
-  margin-bottom: 0;
 }
 
 #modal-impacts-description.fr-modal .fr-modal__content p:last-child {

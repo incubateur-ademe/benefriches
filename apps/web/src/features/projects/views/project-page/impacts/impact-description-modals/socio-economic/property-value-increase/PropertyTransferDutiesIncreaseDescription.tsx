@@ -1,6 +1,7 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -15,7 +16,7 @@ type Props = {
 };
 const PropertyTransferDutiesIncreaseDescription = ({ impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🏛 Droits de mutation sur la transaction foncière"
         value={
@@ -78,7 +79,7 @@ const PropertyTransferDutiesIncreaseDescription = ({ impactData }: Props) => {
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

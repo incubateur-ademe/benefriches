@@ -1,5 +1,6 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import {
@@ -13,7 +14,7 @@ type Props = {
 
 const AvoidedFricheExpensesDescription = ({ impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
         subtitle="Grâce à la reconversion de la friche"
@@ -56,7 +57,7 @@ const AvoidedFricheExpensesDescription = ({ impactData }: Props) => {
           <strong>Bénéficiaire</strong> : actuel locataire ou propriétaire
         </p>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

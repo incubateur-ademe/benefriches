@@ -1,9 +1,10 @@
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
 const EnvironmentalMainDescription = () => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="Impacts environnementaux"
         breadcrumbSegments={[{ label: "Impacts environnementaux" }]}
@@ -16,7 +17,7 @@ const EnvironmentalMainDescription = () => {
           <li>la surface perméable, qu'elle soit végétalisée ou non.</li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

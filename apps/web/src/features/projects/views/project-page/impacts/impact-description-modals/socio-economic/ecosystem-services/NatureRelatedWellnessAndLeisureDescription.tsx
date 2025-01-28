@@ -7,6 +7,7 @@ import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMa
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -35,7 +36,7 @@ const NatureRelatedWellnessAndLeisureDescription = ({
     forecastSoilsDistribution,
   ).filter(([key]) => isPrairie(key) || isForest(key) || isWetLand(key));
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🚵‍♂️ Loisirs et bien-être liés à la nature"
         value={
@@ -161,7 +162,7 @@ const NatureRelatedWellnessAndLeisureDescription = ({
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

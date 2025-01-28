@@ -1,5 +1,6 @@
 import { formatDefaultImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import AvoidedTrafficAccidentsDeathsContent from "../../shared/avoided-traffic-accidents/AvoidedTrafficAccidentsDeathsContent";
@@ -13,7 +14,7 @@ type Props = {
 
 const AvoidedTrafficAccidentsDeathsDescription = ({ impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title={`🪦 ${TITLE}`}
         subtitle="Grâce aux déplacements évités"
@@ -30,7 +31,7 @@ const AvoidedTrafficAccidentsDeathsDescription = ({ impactData }: Props) => {
       <ModalContent>
         <AvoidedTrafficAccidentsDeathsContent />
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

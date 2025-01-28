@@ -8,6 +8,7 @@ import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
 import { ImpactsData } from "../../ImpactModalDescriptionProvider";
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import { co2BreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
@@ -27,7 +28,7 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
   const details = co2Benefit?.impact.details ?? [];
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="☁️ CO2-eq stocké ou évité"
         value={{
@@ -86,7 +87,7 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
           ))}
         </div>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

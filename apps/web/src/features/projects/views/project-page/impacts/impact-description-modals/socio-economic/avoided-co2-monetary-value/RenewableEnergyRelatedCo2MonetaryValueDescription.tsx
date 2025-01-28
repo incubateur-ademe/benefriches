@@ -1,5 +1,6 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import RenewableEnergyRelatedCo2Content from "../../shared/co2-emissions/RenewableEnergyRelatedCo2Content";
@@ -25,7 +26,7 @@ const AvoidedCO2WithEnRMonetaryValueDescription = ({
   projectData,
 }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="⚡️️ Production d'énergies renouvelables"
         value={
@@ -54,7 +55,7 @@ const AvoidedCO2WithEnRMonetaryValueDescription = ({
         />
         ;
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

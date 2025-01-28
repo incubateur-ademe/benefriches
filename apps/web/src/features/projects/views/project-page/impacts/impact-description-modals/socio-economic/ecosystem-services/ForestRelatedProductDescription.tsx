@@ -7,6 +7,7 @@ import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMa
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -35,7 +36,7 @@ const ForestRelatedProductDescription = ({
     forecastSoilsDistribution,
   ).filter(([key]) => isForest(key));
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🪵 Produits issus de la forêt"
         value={
@@ -124,7 +125,7 @@ const ForestRelatedProductDescription = ({
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

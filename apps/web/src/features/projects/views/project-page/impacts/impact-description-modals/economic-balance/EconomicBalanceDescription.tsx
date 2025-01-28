@@ -11,6 +11,7 @@ import {
 import ImpactActorsItem from "../../list-view/ImpactActorsItem";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData } from "../ImpactModalDescriptionProvider";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
@@ -28,7 +29,7 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="📉 Bilan de l'opération"
         value={{
@@ -93,7 +94,7 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

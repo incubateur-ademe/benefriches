@@ -1,10 +1,11 @@
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 import { mainBreadcrumbSection } from "./breadcrumbSections";
 
 const Co2SubSectionDescription = () => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="Impacts sur le CO2-eq"
         breadcrumbSegments={[mainBreadcrumbSection, { label: "Impacts sur le CO2-eq" }]}
@@ -28,7 +29,7 @@ const Co2SubSectionDescription = () => {
           <li>de la création de capacités de production d’énergies renouvelables. </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

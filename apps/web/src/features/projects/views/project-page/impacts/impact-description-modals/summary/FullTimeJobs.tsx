@@ -5,6 +5,7 @@ import { formatNumberFr, formatPercentage } from "@/shared/core/format-number/fo
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
@@ -27,7 +28,7 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
   const title = isSuccess ? `+ d’emplois\u00a0👷` : `- d’emplois\u00a0👷`;
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title={title}
         value={{
@@ -66,7 +67,7 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
           />
         </ImpactItemGroup>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

@@ -3,6 +3,7 @@ import { convertCarbonToCO2eq } from "shared";
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { ImpactsData, ProjectData, SiteData } from "../../ImpactModalDescriptionProvider";
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import SoilsStorageRelatedCo2Content from "../../shared/co2-emissions/SoilsStorageRelatedCo2Content";
@@ -20,7 +21,7 @@ const SoilsStorageRelatedCo2Description = ({ impactData, ...props }: Props) => {
     : undefined;
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🍂 CO2-eq stocké dans les sols"
         value={
@@ -36,7 +37,7 @@ const SoilsStorageRelatedCo2Description = ({ impactData, ...props }: Props) => {
       <ModalContent>
         <SoilsStorageRelatedCo2Content withMonetarisation={false} {...props} />
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

@@ -2,6 +2,7 @@ import Button from "@codegouvfr/react-dsfr/Button";
 import { useContext } from "react";
 
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
@@ -9,7 +10,7 @@ import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSect
 const PermeableSurfaceDescription = () => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
   return (
-    <>
+    <ModalBody size="small">
       <ModalHeader
         title="🌧 Surface perméable"
         breadcrumbSegments={[
@@ -54,7 +55,7 @@ const PermeableSurfaceDescription = () => {
           l'utilisateur, pour le site et pour le projet.
         </p>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

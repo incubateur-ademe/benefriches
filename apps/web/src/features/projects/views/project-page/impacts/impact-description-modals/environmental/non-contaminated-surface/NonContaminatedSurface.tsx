@@ -1,10 +1,11 @@
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import { mainBreadcrumbSection, soilsBreadcrumbSection } from "../breadcrumbSections";
 
 const NonContaminatedSurfaceDescription = () => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="✨ Surface non polluée"
         breadcrumbSegments={[
@@ -26,7 +27,7 @@ const NonContaminatedSurfaceDescription = () => {
           projet.
         </p>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

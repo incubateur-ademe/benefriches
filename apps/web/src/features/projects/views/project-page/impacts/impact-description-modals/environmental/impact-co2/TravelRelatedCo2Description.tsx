@@ -1,5 +1,6 @@
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import TravelRelatedCo2Content from "../../shared/co2-emissions/TravelRelatedCo2Content";
@@ -11,7 +12,7 @@ type Props = {
 
 const TravelRelatedCo2Description = ({ impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🚙 Evitées grâce aux déplacements en voiture évités"
         value={
@@ -30,7 +31,7 @@ const TravelRelatedCo2Description = ({ impactData }: Props) => {
       <ModalContent>
         <TravelRelatedCo2Content />
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

@@ -1,5 +1,6 @@
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import RenewableEnergyRelatedCo2Content from "../../shared/co2-emissions/RenewableEnergyRelatedCo2Content";
@@ -18,7 +19,7 @@ type Props = {
 
 const RenewableEnergyRelatedCo2Description = ({ impactData, siteData, projectData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="⚡️️ Emissions de CO2-eq évitées grâce à la production d'énergies renouvelables"
         value={
@@ -44,7 +45,7 @@ const RenewableEnergyRelatedCo2Description = ({ impactData, siteData, projectDat
           developmentPlanElectricalPowerKWc={projectData?.electricalPowerKWc}
         />
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

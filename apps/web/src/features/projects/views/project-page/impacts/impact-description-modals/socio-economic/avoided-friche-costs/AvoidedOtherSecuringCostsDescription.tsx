@@ -1,5 +1,6 @@
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import { breadcrumbSegments } from "./breadcrumbSegments";
@@ -9,7 +10,7 @@ type Props = {
 };
 const AvoidedOtherSecuringCostsDescription = ({ impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🛡 Autres dépenses de sécurisation"
         value={
@@ -36,7 +37,7 @@ const AvoidedOtherSecuringCostsDescription = ({ impactData }: Props) => {
 
         <p>Les données du site ont été saisies par l’utilisateur·ice.</p>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

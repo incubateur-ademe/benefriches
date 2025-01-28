@@ -1,5 +1,6 @@
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
@@ -7,7 +8,7 @@ import { breadcrumbSection } from "../breadcrumbSection";
 
 const SiteReinstatementDescription = () => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🚧 Remise en état de la friche"
         breadcrumbSegments={[breadcrumbSection, { label: "Remise en état de la friche" }]}
@@ -45,7 +46,7 @@ const SiteReinstatementDescription = () => {
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

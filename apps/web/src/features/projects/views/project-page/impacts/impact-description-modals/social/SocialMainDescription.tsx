@@ -1,9 +1,10 @@
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
 const SocialMainDescription = () => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader title="Impacts sociaux" breadcrumbSegments={[{ label: "Impacts sociaux" }]} />
       <ModalContent>
         <p>La catégorie des impacts sociaux regroupe les impacts :</p>
@@ -13,7 +14,7 @@ const SocialMainDescription = () => {
           <li>sur la société française</li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

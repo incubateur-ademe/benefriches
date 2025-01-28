@@ -4,6 +4,7 @@ import { useContext } from "react";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
@@ -13,7 +14,7 @@ const FullTimeJobsDescription = () => {
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🧑‍🔧 Emplois équivalent temps plein"
         breadcrumbSegments={[
@@ -71,7 +72,7 @@ const FullTimeJobsDescription = () => {
           Comment calculer les effectifs d'une entreprise ?
         </ExternalLink>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

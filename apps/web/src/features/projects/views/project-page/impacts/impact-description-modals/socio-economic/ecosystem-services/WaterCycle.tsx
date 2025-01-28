@@ -11,6 +11,7 @@ import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMa
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -42,7 +43,7 @@ const WaterCycle = ({ baseSoilsDistribution, forecastSoilsDistribution, impactDa
   );
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="💧 Cycle de l'eau"
         value={
@@ -163,7 +164,7 @@ const WaterCycle = ({ baseSoilsDistribution, forecastSoilsDistribution, impactDa
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

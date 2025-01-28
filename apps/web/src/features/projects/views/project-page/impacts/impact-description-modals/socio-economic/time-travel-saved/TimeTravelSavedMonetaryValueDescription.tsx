@@ -5,6 +5,7 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -39,7 +40,7 @@ const LinkToTimeTravelSavedSocialImpact = () => {
 
 const TimeTravelSavedMonetaryValueDescription = ({ impactData }: Props) => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title={`⏱ ${TITLE}`}
         subtitle="Grâce à la ou les commodités créées dans le quartier"
@@ -111,7 +112,7 @@ const TimeTravelSavedMonetaryValueDescription = ({ impactData }: Props) => {
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

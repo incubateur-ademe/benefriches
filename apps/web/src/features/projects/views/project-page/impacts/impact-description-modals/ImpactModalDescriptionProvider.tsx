@@ -1,6 +1,7 @@
-import { createModal } from "@codegouvfr/react-dsfr/Modal";
+import { fr } from "@codegouvfr/react-dsfr";
+import Button from "@codegouvfr/react-dsfr/Button";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
-import { ReactNode, useEffect, useLayoutEffect, useState } from "react";
+import { ReactNode, useLayoutEffect, useState } from "react";
 import {
   BuildingFloorAreaUsageDistribution,
   ReconversionProjectImpacts,
@@ -51,11 +52,9 @@ type ModalDescriptionProviderProps = {
   impactsData: ImpactsData;
 };
 
-const modal = createModal({
-  id: `modal-impacts-description`,
-  isOpenedByDefault: false,
-});
-
+export const MODAL_DESCRIPTION_ID = "modal-impacts-description";
+export const MODAL_TITLE_ID = `fr-modal-title-${MODAL_DESCRIPTION_ID}`;
+const HIDDEN_CONTROL_BUTTON_ID = `${MODAL_DESCRIPTION_ID}-control-button`;
 function ImpactModalDescriptionProvider({
   children,
   projectData,
@@ -64,26 +63,26 @@ function ImpactModalDescriptionProvider({
 }: ModalDescriptionProviderProps) {
   const [openState, setOpenState] = useState<OpenState>(INITIAL_OPEN_STATE);
 
-  const openImpactModalDescription = (args: OpenImpactModalDescriptionArgs) => {
-    setOpenState(args);
-  };
-
   const resetOpenState = () => {
     setOpenState(INITIAL_OPEN_STATE);
   };
 
-  useIsModalOpen(modal, {
-    onConceal: resetOpenState,
-  });
+  const isOpen = useIsModalOpen(
+    { id: MODAL_DESCRIPTION_ID, isOpenedByDefault: false },
+    {
+      onConceal: resetOpenState,
+    },
+  );
 
-  useEffect(() => {
-    if (openState.sectionName) {
-      modal.open();
+  const openImpactModalDescription = (args: OpenImpactModalDescriptionArgs) => {
+    if (!isOpen) {
+      document.getElementById(HIDDEN_CONTROL_BUTTON_ID)?.click();
     }
-  }, [openState]);
+    setOpenState(args);
+  };
 
   useLayoutEffect(() => {
-    const domModalBody = document.querySelector(`#${modal.id} .fr-modal__body`);
+    const domModalBody = document.querySelector(`#${MODAL_DESCRIPTION_ID} .fr-modal__body`);
     if (domModalBody) {
       domModalBody.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
@@ -99,7 +98,25 @@ function ImpactModalDescriptionProvider({
     >
       {children}
 
-      <modal.Component title={undefined} concealingBackdrop={true} size="large">
+      <Button
+        nativeButtonProps={{
+          id: HIDDEN_CONTROL_BUTTON_ID,
+          "aria-controls": MODAL_DESCRIPTION_ID,
+          "data-fr-opened": false,
+          type: "button",
+          tabIndex: -1,
+          "aria-hidden": true,
+        }}
+        className={fr.cx("fr-hidden")}
+      >
+        {" "}
+      </Button>
+      <dialog
+        aria-labelledby={MODAL_TITLE_ID}
+        id={MODAL_DESCRIPTION_ID}
+        className="fr-modal"
+        data-fr-concealing-backdrop={true}
+      >
         {(() => {
           switch (openState.sectionName) {
             case "economic_balance":
@@ -151,7 +168,7 @@ function ImpactModalDescriptionProvider({
               return undefined;
           }
         })()}
-      </modal.Component>
+      </dialog>
     </ImpactModalDescriptionContext.Provider>
   );
 }

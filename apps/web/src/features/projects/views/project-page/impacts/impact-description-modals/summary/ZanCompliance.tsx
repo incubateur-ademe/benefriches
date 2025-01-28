@@ -1,3 +1,4 @@
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
@@ -14,7 +15,7 @@ const SummaryZanComplianceDescription = ({ impactData }: Props) => {
   const { isSuccess } = impactData;
   const title = isSuccess ? `Projet favorable au ZAN\u00a0🌾` : `Projet défavorable au ZAN\u00a0🌾`;
   return (
-    <>
+    <ModalBody size="small">
       <ModalHeader title={title} breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]} />
       <ModalContent>
         <p>
@@ -23,7 +24,7 @@ const SummaryZanComplianceDescription = ({ impactData }: Props) => {
             : "Le projet est considéré défavorable à l'objectif de Zéro Artificialisation Nette car il consomme des espaces naturels, agricoles ou forestiers."}
         </p>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

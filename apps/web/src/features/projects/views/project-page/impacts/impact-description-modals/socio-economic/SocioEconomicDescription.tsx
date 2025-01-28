@@ -4,6 +4,7 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import SocioEconomicImpactSection from "../../list-view/sections/SocioEconomicImpactSection";
 import { ImpactsData } from "../ImpactModalDescriptionProvider";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
@@ -17,7 +18,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
     getDetailedSocioEconomicProjectImpacts(impactsData);
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🌍 Impacts socio-économiques"
         value={{
@@ -103,7 +104,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
           </li>
         </ul>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

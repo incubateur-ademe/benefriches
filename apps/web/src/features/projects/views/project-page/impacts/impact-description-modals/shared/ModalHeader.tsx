@@ -1,7 +1,9 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
 
+import { MODAL_DESCRIPTION_ID, MODAL_TITLE_ID } from "../ImpactModalDescriptionProvider";
 import ModalBreadcrumb, { BreadcrumbProps } from "./ModalBreadcrumb";
 
 type Props = {
@@ -24,15 +26,24 @@ const ModalHeader = ({ title, subtitle, breadcrumbSegments, value }: Props) => {
         "tw-border-b",
         "tw-border-borderGrey",
         "tw-bg-white dark:tw-bg-black",
-        "tw-px-6",
-        "tw-pb-6",
-        "tw-mt-[-3rem]",
+        "tw-p-6",
+        "tw-flex-col",
       )}
     >
-      <div className="tw-max-w-[calc(100%-100px)] tw-pt-4">
+      <div className="tw-flex tw-justify-around tw-items-start tw-w-full">
         <ModalBreadcrumb segments={breadcrumbSegments} />
+        <button
+          className={fr.cx("fr-btn--close", "fr-btn")}
+          title="Fermer"
+          aria-controls={MODAL_DESCRIPTION_ID}
+          type="button"
+        >
+          Fermer
+        </button>
       </div>
-      <h1 className="tw-text-2xl tw-m-0 tw-mb-2">{title}</h1>
+      <h1 id={MODAL_TITLE_ID} className={classNames(fr.cx("fr-modal__title"), "tw-mb-2")}>
+        {title}
+      </h1>
 
       {subtitle && <div className="tw-font-bold tw-mb-2">{subtitle}</div>}
       {value && (

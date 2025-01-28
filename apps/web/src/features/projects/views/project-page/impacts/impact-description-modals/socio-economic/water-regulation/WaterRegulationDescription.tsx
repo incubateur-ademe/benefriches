@@ -7,6 +7,7 @@ import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMa
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
@@ -44,7 +45,7 @@ const WaterRegulationDescription = ({
   ).filter(([key]) => isPrairie(key) || isForest(key) || isWetLand(key));
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🚰 Dépenses de traitement de l’eau évitées"
         subtitle="Grâce à la dépollution de la friche et à la régulation de la qualité de l’eau par les espaces naturels"
@@ -147,7 +148,7 @@ const WaterRegulationDescription = ({
           Approche économique de la biodiversité et des services liés aux écosystèmes, CAS (2009)
         </ExternalLink>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

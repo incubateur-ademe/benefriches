@@ -1,10 +1,11 @@
+import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import { breadcrumbSection } from "../breadcrumbSection";
 
 const RealEstateAcquisitionDescription = () => {
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="🏠 Acquisition du site"
         breadcrumbSegments={[breadcrumbSection, { label: "Acquisition du site" }]}
@@ -20,7 +21,7 @@ const RealEstateAcquisitionDescription = () => {
           <strong>Déficitaire</strong> : futur propriétaire
         </p>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 

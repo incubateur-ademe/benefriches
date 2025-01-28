@@ -5,6 +5,7 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
+import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 
@@ -19,7 +20,7 @@ const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => 
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
-    <>
+    <ModalBody>
       <ModalHeader
         title="Un cadre de vie amélioré&nbsp;🏡"
         value={{
@@ -51,7 +52,7 @@ const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => 
           />
         </ImpactItemGroup>
       </ModalContent>
-    </>
+    </ModalBody>
   );
 };
 
