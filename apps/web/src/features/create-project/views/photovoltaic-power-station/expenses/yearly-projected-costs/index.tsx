@@ -10,7 +10,7 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
-import YearlyProjectedExpensesForm from "../../../common-views/costs/yearly-projected-costs";
+import YearlyProjectedExpensesForm from "../../../common-views/expenses/yearly-projected-expenses";
 
 function YearlyProjectedExpensesFormContainer() {
   const dispatch = useAppDispatch();

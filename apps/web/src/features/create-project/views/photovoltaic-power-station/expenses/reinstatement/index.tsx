@@ -8,7 +8,7 @@ import {
 import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import ReinstatementsExpensesForm from "../../../common-views/costs/reinstatement-costs";
+import ReinstatementsExpensesForm from "../../../common-views/expenses/reinstatement";
 
 function ReinstatementExpensesFormContainer() {
   const dispatch = useAppDispatch();

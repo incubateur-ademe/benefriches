@@ -11,7 +11,7 @@ import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
 import InstallationExpensesForm, {
   FormValues,
-} from "../../../common-views/costs/installation-costs/InstallationCostsForm";
+} from "../../../common-views/expenses/installation-expenses/InstallationExpensesForm";
 
 const purposeMapKeys = {
   technicalStudyAmount: "technical_studies",

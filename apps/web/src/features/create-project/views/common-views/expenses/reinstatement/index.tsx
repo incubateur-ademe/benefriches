@@ -2,7 +2,7 @@ import { computeProjectReinstatementCosts, ReinstatementExpense, SoilsDistributi
 
 import { ProjectSite } from "@/features/create-project/core/project.types";
 
-import ReinstatementExpensesForm, { FormValues } from "./ReinstatementCostsForm";
+import ReinstatementExpensesForm, { FormValues } from "./ReinstatementExpensesForm";
 import { mapFormValuesToReinstatementExpenses, mapInitialValues } from "./mappers";
 
 const hasBuildings = (soilsDistribution: ProjectSite["soilsDistribution"]) =>

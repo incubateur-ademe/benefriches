@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 
 import SitePurchaseAmountsForm, {
   FormValues,
-} from "../../../common-views/costs/site-purchase-amounts/SitePurchaseAmountsForm";
+} from "../../../common-views/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
 
 function SitePurchaseAmountsContainer() {
   const dispatch = useAppDispatch();

@@ -5,7 +5,7 @@ import {
 import { selectSitePurchaseAmounts } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import SitePurchaseAmountsForm, {
   FormValues,
-} from "@/features/create-project/views/common-views/costs/site-purchase-amounts/SitePurchaseAmountsForm";
+} from "@/features/create-project/views/common-views/expenses/site-purchase-amounts/SitePurchaseAmountsForm";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function SitePurchaseAmountsContainer() {

@@ -7,7 +7,7 @@ import {
   reinstatementExpensesReverted,
 } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectCreationData } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
-import ReinstatementsExpensesForm from "@/features/create-project/views/common-views/costs/reinstatement-costs";
+import ReinstatementsExpensesForm from "@/features/create-project/views/common-views/expenses/reinstatement";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 function ReinstatementExpensesFormContainer() {

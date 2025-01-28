@@ -8,7 +8,7 @@ import {
 } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import InstallationExpensesForm, {
   FormValues,
-} from "@/features/create-project/views/common-views/costs/installation-costs/InstallationCostsForm";
+} from "@/features/create-project/views/common-views/expenses/installation-expenses/InstallationExpensesForm";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 

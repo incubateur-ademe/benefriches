@@ -1,6 +1,6 @@
 import { ComputedInstallationCosts, UrbanProjectDevelopmentExpense } from "shared";
 
-import { mapFormValuesToReinstatementExpenses } from "@/features/create-project/views/common-views/costs/reinstatement-costs/mappers";
+import { mapFormValuesToReinstatementExpenses } from "@/features/create-project/views/common-views/expenses/reinstatement/mappers";
 
 import { mapFormValuesToExpenses, mapInitialValues } from "./mappers";
 

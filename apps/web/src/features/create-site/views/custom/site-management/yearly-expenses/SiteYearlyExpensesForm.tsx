@@ -45,7 +45,7 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
           <TooltipInfoButton
             text="Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
       dépenses d'entretien sont à la charge de ce dernier."
-            id="maintenance-costs-info"
+            id="maintenance-expenses-info"
           />
         </>
       );
@@ -57,7 +57,7 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
             text="Par exemple, le maintien de bâtiments en bon état (ex&nbsp;: chauffage pour éviter le gel
           de canalisation ou la dégradation liée l'humidité), la taille de la végétation ou encore
           le règlement des factures d'eau ou d'électricité."
-            id="other-management-costs-info"
+            id="other-management-expenses-info"
           />
         </>
       );
@@ -68,7 +68,7 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
           <TooltipInfoButton
             text="Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
       dépenses de gardiennage sont à la charge de ce dernier."
-            id="security-costs-info"
+            id="security-expenses-info"
           />
         </>
       );
@@ -92,7 +92,7 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
                 les dépenses de d'enlèvement de déchets sont à la charge de ce dernier.
               </span>
             }
-            id="illegal-dumping-costs-info"
+            id="illegal-dumping-expenses-info"
           />
         </>
       );
@@ -103,7 +103,7 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
           <TooltipInfoButton
             text="La sécurisation peut aussi passer, par exemple, par la mise en place de portail, clôture
             ou de cadenas, voire de protections sur les parties vitrées."
-            id="other-security-costs-info"
+            id="other-security-expenses-info"
           />
         </>
       );

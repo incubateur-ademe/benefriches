@@ -4,7 +4,7 @@ import {
   UrbanProjectDevelopmentExpense,
 } from "shared";
 
-import { FormValues } from "@/features/create-project/views/common-views/costs/installation-costs/InstallationCostsForm";
+import { FormValues } from "@/features/create-project/views/common-views/expenses/installation-expenses/InstallationExpensesForm";
 
 const purposeMapKeys = {
   technicalStudyAmount: "technical_studies",

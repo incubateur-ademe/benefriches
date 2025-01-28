@@ -6,7 +6,7 @@ import {
 
 import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
-import { FormValues } from "./ReinstatementCostsForm";
+import { FormValues } from "./ReinstatementExpensesForm";
 
 const formValuesExpensesMap = {
   asbestosRemovalAmount: "asbestos_removal",

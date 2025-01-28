@@ -3,7 +3,7 @@ import { RecurringExpense } from "shared";
 
 import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
-import YearlyProjectedsExpensesForm, { FormValues } from "./YearlyProjectedCostsForm";
+import YearlyProjectedsExpensesForm, { FormValues } from "./YearlyProjectedExpensesForm";
 
 const expensesFormMap = {
   rentAmount: "rent",
