@@ -139,7 +139,7 @@ const ImpactRowValue = ({
         </button>
       </div>
 
-      {actor && <span className="tw-col-start-2 md:tw-col-start-3">{actor}</span>}
+      {actor && <span className="tw-col-start-2 md:tw-col-start-3 tw-pl-3">{actor}</span>}
 
       <div
         aria-hidden={value === undefined}

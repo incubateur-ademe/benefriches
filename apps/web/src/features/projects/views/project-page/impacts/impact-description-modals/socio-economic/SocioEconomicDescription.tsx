@@ -1,24 +1,23 @@
-import { getDetailedSocioEconomicProjectImpacts } from "@/features/projects/domain/projectImpactsSocioEconomic";
+import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import SocioEconomicImpactSection from "../../list-view/sections/SocioEconomicImpactSection";
-import { ImpactsData } from "../ImpactModalDescriptionProvider";
+import ModalBarColoredChart from "../shared/ModalBarColoredChart";
 import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 type Props = {
-  impactsData: ImpactsData;
+  impactsData: SocioEconomicDetailedImpact;
 };
 
 const SocioEconomicDescription = ({ impactsData }: Props) => {
   const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary, total } =
-    getDetailedSocioEconomicProjectImpacts(impactsData);
-
+    impactsData;
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🌍 Impacts socio-économiques"
         value={{
@@ -28,82 +27,106 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
         }}
         breadcrumbSegments={[{ label: "Impacts socio-économiques" }]}
       />
-      <ModalContent>
-        <p>
-          L'évaluation socio-économique a pour objet d'apprécier l'intérêt d'un projet ou d'un
-          investissement pour la collectivité.
-        </p>
-        <p>
-          Elle est réalisée en analysant les effets du projet (ses impacts) sur les différents types
-          d'acteurs directement ou indirectement concernés, que ces impacts soient positifs ou
-          négatifs. On parle alors d'impacts socio-économiques.
-        </p>
-        <p>
-          S'agissant de projets de renouvellement urbain, les impacts sont nombreux et de
-          différentes natures :
-        </p>
-        <ul>
-          <li>
-            environnementaux (ex : maintien de capacité de stockage de carbone dans les sols,
-            création d'ilots de fraicheur),
-          </li>
-          <li>
-            économiques (ex : réduction de dépenses futures en entretien de réseaux ou voiries),
-          </li>
-          <li>
-            sociaux (ex : création d'aménités, amélioration de l'attractivité d'un quartier,
-            réduction du besoin en en déplacements, etc.)
-          </li>
-        </ul>
-        <p>
-          Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-dessous et leurs
-          méthodes de calcul sont détaillées au niveau de chacun.
-        </p>
-
-        <div className="tw-flex tw-flex-col tw-gap-4">
-          <SocioEconomicImpactSection
-            sectionName="economic_direct"
-            {...economicDirect}
-            initialShowSectionContent={false}
-            noMarginBottom
+      <div className="tw-grid lg:tw-grid-cols-2">
+        <div className="tw-p-10">
+          <ModalBarColoredChart
+            data={[
+              {
+                label: "💰 Economiques directs",
+                color: "#7A13EB",
+                value: economicDirect.total,
+              },
+              {
+                label: "🪙 Economiques indirects",
+                color: "#1243EB",
+                value: economicIndirect.total,
+              },
+              {
+                label: "🚶‍♀️ Impacts sociaux monétarisés",
+                color: "#13BAEC",
+                value: socialMonetary.total,
+              },
+              {
+                label: "🌳 Environnementaux monétarisés",
+                color: "#14EA81",
+                value: environmentalMonetary.total,
+              },
+            ]}
           />
-          <SocioEconomicImpactSection
-            sectionName="economic_indirect"
-            {...economicIndirect}
-            initialShowSectionContent={false}
-            noMarginBottom
-          />
-          <SocioEconomicImpactSection
-            sectionName="social_monetary"
-            {...socialMonetary}
-            initialShowSectionContent={false}
-            noMarginBottom
-          />
-          <SocioEconomicImpactSection
-            sectionName="environmental_monetary"
-            {...environmentalMonetary}
-            initialShowSectionContent={false}
-            noMarginBottom
-          />
+          <div className="tw-flex tw-flex-col tw-gap-4">
+            <SocioEconomicImpactSection
+              sectionName="economic_direct"
+              {...economicDirect}
+              initialShowSectionContent={false}
+              noMarginBottom
+            />
+            <SocioEconomicImpactSection
+              sectionName="economic_indirect"
+              {...economicIndirect}
+              initialShowSectionContent={false}
+              noMarginBottom
+            />
+            <SocioEconomicImpactSection
+              sectionName="social_monetary"
+              {...socialMonetary}
+              initialShowSectionContent={false}
+              noMarginBottom
+            />
+            <SocioEconomicImpactSection
+              sectionName="environmental_monetary"
+              {...environmentalMonetary}
+              initialShowSectionContent={false}
+              noMarginBottom
+            />
+          </div>
         </div>
-
-        <ModalTitleTwo>Aller plus loin</ModalTitleTwo>
-        <ul>
-          <li>
-            Évaluer les bénéfices socio-économiques de la reconversion de friches pour lutter contre
-            l'artificialisation :{" "}
-            <ExternalLink href="https://librairie.ademe.fr/changement-climatique-et-energie/3772-evaluer-les-benefices-socio-economiques-de-la-reconversion-de-friches-pour-lutter-contre-l-artificialisation-outil-benefriches.html">
-              Outil Bénéfriches.
-            </ExternalLink>
-          </li>
-          <li>
-            Évaluation socioéconomique des opérations d'aménagement urbain :{" "}
-            <ExternalLink href="https://www.strategie.gouv.fr/publications/referentiel-methodologique-de-levaluation-socioeconomique-operations-damenagement">
-              Référentiel&nbsp;méthodologique
-            </ExternalLink>
-          </li>
-        </ul>
-      </ModalContent>
+        <ModalContent>
+          <p>
+            L'évaluation socio-économique a pour objet d'apprécier l'intérêt d'un projet ou d'un
+            investissement pour la collectivité.
+          </p>
+          <p>
+            Elle est réalisée en analysant les effets du projet (ses impacts) sur les différents
+            types d'acteurs directement ou indirectement concernés, que ces impacts soient positifs
+            ou négatifs. On parle alors d'impacts socio-économiques.
+          </p>
+          <p>
+            S’agissant de projets de renouvellement urbain, les impacts sont nombreux et de
+            différentes natures : environnementaux (ex : maintien de capacité de stockage de carbone
+            dans les sols, création d’ilots de fraicheur), économiques (ex : réduction de dépenses
+            futures en entretien de réseaux ou voiries), sociaux (ex : création d’aménités,
+            amélioration de l’attractivité d’un quartier, réduction du besoin en en déplacements,
+            etc.).
+          </p>
+          <p>
+            Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-contre et leurs
+            méthodes de calcul sont détaillées au niveau de chacun.
+          </p>
+          Les impacts socio-économiques sont classés en 4 catégories :
+          <ul>
+            <li>les impacts économiques directs</li>
+            <li>les impacts économiques indirects</li>
+            <li>les impacts sociaux monétarisés</li>
+            <li>les impacts environnementaux monétarisés</li>
+          </ul>
+          <ModalTitleTwo>Aller plus loin</ModalTitleTwo>
+          <ul>
+            <li>
+              Évaluer les bénéfices socio-économiques de la reconversion de friches pour lutter
+              contre l'artificialisation :{" "}
+              <ExternalLink href="https://librairie.ademe.fr/changement-climatique-et-energie/3772-evaluer-les-benefices-socio-economiques-de-la-reconversion-de-friches-pour-lutter-contre-l-artificialisation-outil-benefriches.html">
+                Outil Bénéfriches.
+              </ExternalLink>
+            </li>
+            <li>
+              Évaluation socioéconomique des opérations d'aménagement urbain :{" "}
+              <ExternalLink href="https://www.strategie.gouv.fr/publications/referentiel-methodologique-de-levaluation-socioeconomique-operations-damenagement">
+                Référentiel&nbsp;méthodologique
+              </ExternalLink>
+            </li>
+          </ul>
+        </ModalContent>
+      </div>
     </ModalBody>
   );
 };

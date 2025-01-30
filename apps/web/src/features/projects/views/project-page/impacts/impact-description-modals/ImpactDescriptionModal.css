@@ -4,6 +4,9 @@
 
 #modal-impacts-description .fr-modal__body {
   max-height: unset !important;
+}
+
+#modal-impacts-description .fr-modal__content {
   background-color: var(--background-alt-grey);
 }
 

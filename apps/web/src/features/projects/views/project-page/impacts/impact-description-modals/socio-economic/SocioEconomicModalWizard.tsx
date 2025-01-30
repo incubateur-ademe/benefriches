@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { sumListWithKey } from "shared";
 
 import {
+  getDetailedSocioEconomicProjectImpacts,
   SocioEconomicDetailsName,
   SocioEconomicImpactName,
   SocioEconomicMainImpactName,
@@ -11,6 +12,10 @@ import { getSocioEconomicImpactLabel } from "../../getImpactLabel";
 import ImpactInProgressDescriptionModal from "../ImpactInProgressDescriptionModal";
 import { SocioEconomicSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
+import EconomicDirectDescription from "./EconomicDirectDescription";
+import EconomicIndirectDescription from "./EconomicIndirectDescription";
+import EnvironmentalMonetaryDescription from "./EnvironmentalMonetaryDescription";
+import SocialMonetaryDescription from "./SocialMonetaryDescription";
 import SocioEconomicDescription from "./SocioEconomicDescription";
 import AvoidedAirPollutionDescription from "./avoided-air-pollution/AvoidedAirPollutionDescription";
 import AvoidedCarRelatedExpensesDescription from "./avoided-car-related-expenses/AvoidedCarRelatedExpensesDescription";
@@ -105,45 +110,21 @@ export function SocioEconomicModalWizard({
   );
 
   if (!impactName) {
+    const impactsByCategory = getDetailedSocioEconomicProjectImpacts(impactsData);
+
     switch (impactSubSectionName) {
       case "economic_direct":
-        return (
-          <ImpactInProgressDescriptionModal
-            title="Impacts économiques directs"
-            breadcrumbProps={{
-              section: mainBreadcrumbSection,
-            }}
-          />
-        );
+        return <EconomicDirectDescription impactsData={impactsByCategory.economicDirect} />;
       case "economic_indirect":
-        return (
-          <ImpactInProgressDescriptionModal
-            title="Impacts économiques indirects"
-            breadcrumbProps={{
-              section: mainBreadcrumbSection,
-            }}
-          />
-        );
+        return <EconomicIndirectDescription impactsData={impactsByCategory.economicIndirect} />;
       case "social_monetary":
-        return (
-          <ImpactInProgressDescriptionModal
-            title="Impacts sociaux monétarisés"
-            breadcrumbProps={{
-              section: mainBreadcrumbSection,
-            }}
-          />
-        );
+        return <SocialMonetaryDescription impactsData={impactsByCategory.socialMonetary} />;
       case "environmental_monetary":
         return (
-          <ImpactInProgressDescriptionModal
-            title="Impacts environnementaux monétarisés"
-            breadcrumbProps={{
-              section: mainBreadcrumbSection,
-            }}
-          />
+          <EnvironmentalMonetaryDescription impactsData={impactsByCategory.environmentalMonetary} />
         );
       case undefined:
-        return <SocioEconomicDescription impactsData={impactsData} />;
+        return <SocioEconomicDescription impactsData={impactsByCategory} />;
     }
   }
 

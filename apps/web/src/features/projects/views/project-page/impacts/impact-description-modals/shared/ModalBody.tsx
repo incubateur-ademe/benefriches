@@ -15,7 +15,7 @@ const ModalBody = ({ children, size = "medium" }: Props) => {
         <div
           className={classNames(
             size === "medium" && ["fr-col-12", "fr-col-md-10", "fr-col-lg-8"],
-            size === "large" && ["fr-col-12", "fr-col-lg-10"],
+            size === "large" && ["fr-col-12"],
             size === "small" && ["fr-col-12", "fr-col-md-8", "fr-col-lg-6"],
           )}
         >
