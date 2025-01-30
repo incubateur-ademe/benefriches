@@ -23,7 +23,6 @@ const barChartOptions: Highcharts.Options = withDefaultBarChartOptions({
     column: {
       stacking: "normal",
       groupPadding: 0,
-      borderRadius: 8,
       colorByPoint: true,
     },
     series: {

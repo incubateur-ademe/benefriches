@@ -11,7 +11,7 @@ export function withDefaultChartOptions(options: Options): Options {
   };
 }
 
-export function withDefaultBarChartOptions(options: Options): Options {
+export function withDefaultBarChartOptions({ plotOptions = {}, ...options }: Options): Options {
   return {
     ...withDefaultChartOptions(options),
     chart: {
@@ -31,6 +31,10 @@ export function withDefaultBarChartOptions(options: Options): Options {
         text: null,
       },
       maxPadding: 0.1,
+    },
+    plotOptions: {
+      ...plotOptions,
+      column: { borderRadius: 8, ...(plotOptions.column ?? {}) },
     },
   };
 }
