@@ -17,6 +17,7 @@ import {
   mainBreadcrumbSection,
   soilsBreadcrumbSection,
 } from "./breadcrumbSections";
+import AirConditionningRelatedCo2Description from "./impact-co2/AirConditionningRelatedCo2Description";
 import Co2EqEmissionsDescription from "./impact-co2/Co2EqEmissionsDescription";
 import RenewableEnergyRelatedCo2Description from "./impact-co2/RenewableEnergyRelatedCo2Description";
 import SoilsStorageRelatedCo2Description from "./impact-co2/SoilsStorageRelatedCo2Description";
@@ -89,6 +90,13 @@ export function EnvironmentalModalWizard({
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
           impactData={impactsData.environmental.soilsCarbonStorage}
+        />
+      );
+
+    case "avoided_air_conditioning_co2_eq_emissions":
+      return (
+        <AirConditionningRelatedCo2Description
+          impactData={impactsData.environmental.avoidedAirConditioningCo2EqEmissions}
         />
       );
     case "non_contaminated_surface_area":

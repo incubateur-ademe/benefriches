@@ -19,6 +19,8 @@ import SocialMonetaryDescription from "./SocialMonetaryDescription";
 import SocioEconomicDescription from "./SocioEconomicDescription";
 import AvoidedAirPollutionDescription from "./avoided-air-pollution/AvoidedAirPollutionDescription";
 import AvoidedCarRelatedExpensesDescription from "./avoided-car-related-expenses/AvoidedCarRelatedExpensesDescription";
+import AirConditionningRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/AirConditionningRelatedCo2MonetaryValueDescription";
+import AvoidedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/AvoidedCo2MonetaryValueDescription";
 import RenewableEnergyRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/RenewableEnergyRelatedCo2MonetaryValueDescription";
 import TravelRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/TravelRelatedCo2MonetaryValueDescription";
 import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheCostsDescription";
@@ -194,6 +196,10 @@ export function SocioEconomicModalWizard({
           impactData={getImpactData(impactsGroupedByName.property_transfer_duties_income)}
         />
       );
+
+    case "avoided_co2_eq_emissions":
+      return <AvoidedCo2MonetaryValueDescription impactsData={impactsData} />;
+
     case "avoided_co2_eq_with_enr":
       return (
         <RenewableEnergyRelatedCo2MonetaryValueDescription
@@ -211,6 +217,13 @@ export function SocioEconomicModalWizard({
       return (
         <TravelRelatedCo2MonetaryValueDescription
           impactData={getImpactData(impactsGroupedByName.avoided_traffic_co2_eq_emissions)}
+        />
+      );
+
+    case "avoided_air_conditioning_co2_eq_emissions":
+      return (
+        <AirConditionningRelatedCo2MonetaryValueDescription
+          impactData={getImpactData(impactsGroupedByName.avoided_air_conditioning_co2_eq_emissions)}
         />
       );
 
