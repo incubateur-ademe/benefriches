@@ -49,6 +49,8 @@ function ProjectCreationDataSummary({
             spaces: projectSpaces,
             buildingsFloorArea: projectData.buildingsUsesDistribution ?? {},
           },
+          futureOwner: projectData.futureSiteOwner?.name,
+          futureOperator: projectData.futureOperator?.name,
           soilsDistribution: projectSoilsDistribution,
           reinstatementContractOwner: projectData.reinstatementContractOwner?.name,
           financialAssistanceRevenues: projectData.financialAssistanceRevenues,

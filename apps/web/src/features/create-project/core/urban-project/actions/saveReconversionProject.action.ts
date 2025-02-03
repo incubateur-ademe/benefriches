@@ -33,6 +33,8 @@ export const saveReconversionProject = createAppAsyncThunk(
       soilsDistribution: selectUrbanProjectSoilsDistribution(getState()),
       reinstatementSchedule: creationData.reinstatementSchedule,
       operationsFirstYear: creationData.firstYearOfOperation,
+      futureOperator: creationData.futureOperator,
+      futureSiteOwner: creationData.futureSiteOwner,
       developmentPlan: {
         type: "URBAN_PROJECT",
         developer: creationData.projectDeveloper,

@@ -37,8 +37,37 @@ describe("Urban project creation : site resale steps", () => {
     });
 
     describe("SITE_RESALE_SELECTION step", () => {
-      it("goes to EXPENSES_INTRODUCTION and set site resale choice when step is completed and urban project doesn't have buildings", () => {
+      it("goes to EXPENSES_INTRODUCTION and set current owner as future owner when no site resale planned and urban project doesn't have buildings", () => {
         const store = new StoreBuilder()
+          .withSiteData({
+            owner: {
+              name: "Propriétaire de la friche",
+              structureType: "municipality",
+            },
+          })
+          .withStepsHistory(["SITE_RESALE_INTRODUCTION", "SITE_RESALE_SELECTION"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(siteResaleChoiceCompleted({ siteResalePlannedAfterDevelopment: false }));
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "EXPENSES_INTRODUCTION",
+          creationDataDiff: {
+            siteResalePlannedAfterDevelopment: false,
+            futureSiteOwner: { name: "Propriétaire de la friche", structureType: "municipality" },
+          },
+        });
+      });
+      it("goes to EXPENSES_INTRODUCTION and set future owner as unknown when site resale planned and urban project doesn't have buildings", () => {
+        const store = new StoreBuilder()
+          .withSiteData({
+            owner: {
+              name: "Propriétaire de la friche",
+              structureType: "municipality",
+            },
+          })
           .withStepsHistory(["SITE_RESALE_INTRODUCTION", "SITE_RESALE_SELECTION"])
           .build();
         const initialRootState = store.getState();
@@ -50,6 +79,7 @@ describe("Urban project creation : site resale steps", () => {
           currentStep: "EXPENSES_INTRODUCTION",
           creationDataDiff: {
             siteResalePlannedAfterDevelopment: true,
+            futureSiteOwner: { name: "Futur propriétaire inconnu", structureType: "unknown" },
           },
         });
       });
@@ -71,6 +101,10 @@ describe("Urban project creation : site resale steps", () => {
         expectUpdatedState(initialRootState, newState, {
           currentStep: "BUILDINGS_RESALE_SELECTION",
           creationDataDiff: {
+            futureSiteOwner: {
+              name: "Futur propriétaire inconnu",
+              structureType: "unknown",
+            },
             siteResalePlannedAfterDevelopment: true,
           },
         });
@@ -95,8 +129,42 @@ describe("Urban project creation : site resale steps", () => {
       });
     });
     describe("BUILDINGS_RESALE_SELECTION step", () => {
-      it("goes to EXPENSES_INTRODUCTION and set buildings resale choice when step is completed", () => {
+      it("goes to EXPENSES_INTRODUCTION and set project developer as future operator when no buildings resale planned when step is completed", () => {
         const store = new StoreBuilder()
+          .withCreationData({
+            projectDeveloper: {
+              name: "Mairie d'Angers",
+              structureType: "municipality",
+            },
+          })
+          .withStepsHistory(["SITE_RESALE_INTRODUCTION", "BUILDINGS_RESALE_SELECTION"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          buildingsResaleChoiceCompleted({ buildingsResalePlannedAfterDevelopment: false }),
+        );
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "EXPENSES_INTRODUCTION",
+          creationDataDiff: {
+            buildingsResalePlannedAfterDevelopment: false,
+            futureOperator: {
+              name: "Mairie d'Angers",
+              structureType: "municipality",
+            },
+          },
+        });
+      });
+      it("goes to EXPENSES_INTRODUCTION and set unknown future operator when buildings resale planned when step is completed", () => {
+        const store = new StoreBuilder()
+          .withCreationData({
+            projectDeveloper: {
+              name: "Mairie d'Angers",
+              structureType: "municipality",
+            },
+          })
           .withStepsHistory(["SITE_RESALE_INTRODUCTION", "BUILDINGS_RESALE_SELECTION"])
           .build();
         const initialRootState = store.getState();
@@ -110,6 +178,10 @@ describe("Urban project creation : site resale steps", () => {
           currentStep: "EXPENSES_INTRODUCTION",
           creationDataDiff: {
             buildingsResalePlannedAfterDevelopment: true,
+            futureOperator: {
+              name: "Futur exploitant inconnu",
+              structureType: "unknown",
+            },
           },
         });
       });

@@ -11,7 +11,7 @@ import {
 import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
 import { ProjectCreationState } from "../createProject.reducer";
-import { ProjectStakeholder } from "../project.types";
+import { getFutureOperator, getFutureSiteOwner } from "../stakeholders";
 import { saveReconversionProject } from "./actions/saveReconversionProject.action";
 import {
   buildingsFloorSurfaceAreaCompleted,
@@ -414,8 +414,14 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.stepsHistory.push("SITE_RESALE_SELECTION");
   });
   builder.addCase(siteResaleChoiceCompleted, (state, action) => {
+    const { siteResalePlannedAfterDevelopment } = action.payload;
     state.urbanProject.creationData.siteResalePlannedAfterDevelopment =
-      action.payload.siteResalePlannedAfterDevelopment;
+      siteResalePlannedAfterDevelopment;
+
+    state.urbanProject.creationData.futureSiteOwner = getFutureSiteOwner(
+      siteResalePlannedAfterDevelopment,
+      state.siteData?.owner,
+    );
 
     const nextStep = hasBuildings(state) ? "BUILDINGS_RESALE_SELECTION" : "EXPENSES_INTRODUCTION";
     state.urbanProject.stepsHistory.push(nextStep);
@@ -424,8 +430,14 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.siteResalePlannedAfterDevelopment = undefined;
   });
   builder.addCase(buildingsResaleChoiceCompleted, (state, action) => {
+    const { buildingsResalePlannedAfterDevelopment } = action.payload;
     state.urbanProject.creationData.buildingsResalePlannedAfterDevelopment =
-      action.payload.buildingsResalePlannedAfterDevelopment;
+      buildingsResalePlannedAfterDevelopment;
+
+    state.urbanProject.creationData.futureOperator = getFutureOperator(
+      buildingsResalePlannedAfterDevelopment,
+      state.urbanProject.creationData.projectDeveloper,
+    );
     state.urbanProject.stepsHistory.push("EXPENSES_INTRODUCTION");
   });
   builder.addCase(buildingsResaleChoiceReverted, (state) => {
