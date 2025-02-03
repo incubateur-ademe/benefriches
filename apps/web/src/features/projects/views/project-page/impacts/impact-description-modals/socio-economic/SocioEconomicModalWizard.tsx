@@ -17,6 +17,7 @@ import EconomicIndirectDescription from "./EconomicIndirectDescription";
 import EnvironmentalMonetaryDescription from "./EnvironmentalMonetaryDescription";
 import SocialMonetaryDescription from "./SocialMonetaryDescription";
 import SocioEconomicDescription from "./SocioEconomicDescription";
+import AvoidedAirConditionningExpensesDescription from "./avoided-air-conditionning-expenses/AvoidedAirConditionningExpensesDescription";
 import AvoidedAirPollutionDescription from "./avoided-air-pollution/AvoidedAirPollutionDescription";
 import AvoidedCarRelatedExpensesDescription from "./avoided-car-related-expenses/AvoidedCarRelatedExpensesDescription";
 import AirConditionningRelatedCo2MonetaryValueDescription from "./avoided-co2-monetary-value/AirConditionningRelatedCo2MonetaryValueDescription";
@@ -202,6 +203,16 @@ export function SocioEconomicModalWizard({
       return (
         <AvoidedPropertyDamagesExpenses
           impactData={getImpactData(impactsGroupedByName.avoided_property_damages_expenses)}
+        />
+      );
+
+    case "avoided_air_conditioning_expenses":
+      return (
+        <AvoidedAirConditionningExpensesDescription
+          impactData={sumListWithKey(
+            impactsGroupedByName.avoided_air_conditioning_expenses ?? [],
+            "amount",
+          )}
         />
       );
 
