@@ -27,6 +27,7 @@ import AvoidedFricheCostsDescription from "./avoided-friche-costs/AvoidedFricheC
 import AvoidedIllegalDumpingCostsDescription from "./avoided-friche-costs/AvoidedIllegalDumpingCostsDescription";
 import AvoidedOtherSecuringCostsDescription from "./avoided-friche-costs/AvoidedOtherSecuringCostsDescription";
 import AvoidedSecurityCostsDescription from "./avoided-friche-costs/AvoidedSecurityCostsDescription";
+import AvoidedPropertyDamagesExpenses from "./avoided-property-damages-expenses/AvoidedPropertyDamagesExpenses";
 import AvoidedTrafficAccidentsDeathsMonetaryValueDescription from "./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsDeathsDescription";
 import AvoidedTrafficAccidentsMonetaryValueDescription from "./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsDescription";
 import AvoidedTrafficAccidentsMinorInjuriesMonetaryValueDescription from "./avoided-traffic-accidents-monetary-value/AvoidedTrafficAccidentsMinorInjuries";
@@ -194,6 +195,13 @@ export function SocioEconomicModalWizard({
       return (
         <PropertyTransferDutiesIncreaseDescription
           impactData={getImpactData(impactsGroupedByName.property_transfer_duties_income)}
+        />
+      );
+
+    case "avoided_property_damages_expenses":
+      return (
+        <AvoidedPropertyDamagesExpenses
+          impactData={getImpactData(impactsGroupedByName.avoided_property_damages_expenses)}
         />
       );
 

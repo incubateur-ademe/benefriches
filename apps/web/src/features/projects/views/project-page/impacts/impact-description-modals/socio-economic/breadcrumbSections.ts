@@ -15,12 +15,12 @@ export const socialMonetaryBreadcrumbSection = {
   openState: { sectionName: "socio_economic", subSectionName: "social_monetary" },
 } as const;
 
-export const economicDirectMonetaryBreadcrumbSection = {
+export const economicDirectBreadcrumbSection = {
   label: "Impacts économiques directs",
   openState: { sectionName: "socio_economic", subSectionName: "economic_direct" },
 } as const;
 
-export const economicIndirectMonetaryBreadcrumbSection = {
+export const economicIndirectBreadcrumbSection = {
   label: "Impacts économiques indirects",
   openState: { sectionName: "socio_economic", subSectionName: "economic_indirect" },
 } as const;
@@ -28,9 +28,9 @@ export const economicIndirectMonetaryBreadcrumbSection = {
 export const getSubSectionBreadcrumb = (subSectionName: SocioEconomicSubSectionName) => {
   switch (subSectionName) {
     case "economic_direct":
-      return economicDirectMonetaryBreadcrumbSection;
+      return economicDirectBreadcrumbSection;
     case "economic_indirect":
-      return economicIndirectMonetaryBreadcrumbSection;
+      return economicIndirectBreadcrumbSection;
     case "social_monetary":
       return socialMonetaryBreadcrumbSection;
     case "environmental_monetary":

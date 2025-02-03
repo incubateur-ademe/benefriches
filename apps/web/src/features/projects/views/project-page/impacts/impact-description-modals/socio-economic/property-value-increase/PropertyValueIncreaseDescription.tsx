@@ -7,10 +7,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import {
-  mainBreadcrumbSection,
-  economicIndirectMonetaryBreadcrumbSection,
-} from "../breadcrumbSections";
+import { mainBreadcrumbSection, economicIndirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   siteSurfaceArea: number;
@@ -34,7 +31,7 @@ const PropertyValueIncreaseDescription = ({ siteSurfaceArea, impactData }: Props
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicIndirectMonetaryBreadcrumbSection,
+          economicIndirectBreadcrumbSection,
           { label: "Valeur patrimoniale des bâtiments alentour" },
         ]}
       />

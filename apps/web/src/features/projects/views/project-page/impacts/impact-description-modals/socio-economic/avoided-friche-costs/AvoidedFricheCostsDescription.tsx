@@ -3,10 +3,7 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
-import {
-  mainBreadcrumbSection,
-  economicDirectMonetaryBreadcrumbSection,
-} from "../breadcrumbSections";
+import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   impactData?: number;
@@ -29,7 +26,7 @@ const AvoidedFricheExpensesDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicDirectMonetaryBreadcrumbSection,
+          economicDirectBreadcrumbSection,
           { label: "Dépenses friche évitées" },
         ]}
       />

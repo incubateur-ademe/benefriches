@@ -8,10 +8,7 @@ import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
-import {
-  mainBreadcrumbSection,
-  economicDirectMonetaryBreadcrumbSection,
-} from "../breadcrumbSections";
+import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
   developmentPlan: ProjectData["developmentPlan"];
@@ -42,7 +39,7 @@ const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
         }
         breadcrumbSegments={[
           mainBreadcrumbSection,
-          economicDirectMonetaryBreadcrumbSection,
+          economicDirectBreadcrumbSection,
           { label: "Dépenses friche évitées" },
         ]}
       />

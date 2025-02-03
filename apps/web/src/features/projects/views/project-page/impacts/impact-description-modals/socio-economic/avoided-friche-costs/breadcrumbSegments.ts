@@ -1,12 +1,9 @@
 import { BreadcrumbProps } from "../../shared/ModalBreadcrumb";
-import {
-  mainBreadcrumbSection,
-  economicDirectMonetaryBreadcrumbSection,
-} from "../breadcrumbSections";
+import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 export const breadcrumbSegments: BreadcrumbProps["segments"] = [
   mainBreadcrumbSection,
-  economicDirectMonetaryBreadcrumbSection,
+  economicDirectBreadcrumbSection,
   {
     label: "Dépenses friche évitées",
     openState: {
