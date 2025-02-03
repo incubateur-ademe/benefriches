@@ -89,7 +89,7 @@ function UrbanProjectExpressCategory({ onSubmit, onBack }: Props) {
                         description={
                           option.badgeText ? (
                             <>
-                              {option.description}
+                              <div>{option.description}</div>
 
                               <Badge small className={["tw-mt-2", option.badgeClassName]}>
                                 {option.badgeText}
