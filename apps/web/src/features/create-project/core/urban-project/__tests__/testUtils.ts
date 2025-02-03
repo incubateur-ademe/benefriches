@@ -6,6 +6,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { relatedSiteData } from "../../__tests__/siteData.mock";
 import { getInitialState } from "../../createProject.reducer";
+import { UrbanProjectCreationData } from "../creationData";
 import { UrbanProjectCreationStep } from "../creationSteps";
 
 export const expectCurrentStep = (state: RootState, step: UrbanProjectCreationStep) => {
@@ -13,7 +14,7 @@ export const expectCurrentStep = (state: RootState, step: UrbanProjectCreationSt
 };
 
 type UpdatedStateAssertionInput = {
-  creationDataDiff?: Partial<RootState["projectCreation"]["urbanProject"]["creationData"]>;
+  creationDataDiff?: Partial<UrbanProjectCreationData>;
   currentStep: UrbanProjectCreationStep;
   spacesCategoriesToComplete?: RootState["projectCreation"]["urbanProject"]["spacesCategoriesToComplete"];
 };
@@ -91,7 +92,7 @@ export class StoreBuilder {
     return this;
   }
 
-  withCreationData(creationData: RootState["projectCreation"]["urbanProject"]["creationData"]) {
+  withCreationData(creationData: UrbanProjectCreationData) {
     this.preloadedRootState.projectCreation.urbanProject = {
       ...this.preloadedRootState.projectCreation.urbanProject,
       creationData,

@@ -1,16 +1,7 @@
-import {
-  FinancialAssistanceRevenue,
-  InstallationExpense,
-  RecurringExpense,
-  RecurringRevenue,
-  ReinstatementExpense,
-  UrbanProjectPhase,
-} from "shared";
-
-import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 
 import { saveReconversionProject } from "../actions/saveReconversionProject.action";
+import { UrbanProjectCreationData } from "../creationData";
 import { StoreBuilder } from "./testUtils";
 
 const mock = {
@@ -44,11 +35,11 @@ const mock = {
   projectDeveloper: {
     name: "developer company name",
     structureType: "company",
-  } as ProjectStakeholder,
+  },
   reinstatementContractOwner: {
     name: "Reinstatement company",
     structureType: "company",
-  } as ProjectStakeholder,
+  },
   // site purchase
   sitePurchaseSellingPrice: 150000,
   sitePurchasePropertyTransferDuties: 12000,
@@ -59,19 +50,19 @@ const mock = {
     { amount: 120000, purpose: "waste_collection" },
     { amount: 33333, purpose: "deimpermeabilization" },
     { amount: 44444, purpose: "sustainable_soils_reinstatement" },
-    { amount: 1, purpose: "other_reinstatement_costs" },
-  ] as ReinstatementExpense[],
+    { amount: 1, purpose: "other_reinstatement" },
+  ],
   installationExpenses: [
     { amount: 130000, purpose: "development_works" },
     { amount: 59999, purpose: "technical_studies" },
-  ] as InstallationExpense[],
-  yearlyProjectedExpenses: [{ purpose: "rent", amount: 12000 }] as RecurringExpense[],
+  ],
+  yearlyProjectedBuildingsOperationsExpenses: [{ purpose: "maintenance", amount: 12000 }],
   // revenues
-  yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }] as RecurringRevenue[],
+  yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
   financialAssistanceRevenues: [
     { amount: 14000, source: "public_subsidies" },
     { amount: 999.99, source: "other" },
-  ] as FinancialAssistanceRevenue[],
+  ],
   // schedules
   reinstatementSchedule: {
     startDate: new Date("2025-02-01").toISOString(),
@@ -83,8 +74,8 @@ const mock = {
   },
   firstYearOfOperation: 2025,
   // project phase
-  projectPhase: "construction" as UrbanProjectPhase,
-};
+  projectPhase: "construction",
+} as const satisfies UrbanProjectCreationData;
 
 describe("Urban project creation : saveReconversionProject action", () => {
   it("results as success with all creationData completed", async () => {

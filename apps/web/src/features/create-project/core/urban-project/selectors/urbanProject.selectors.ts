@@ -19,6 +19,7 @@ import { RootState } from "@/shared/core/store-config/store";
 
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateUrbanProjectName } from "../../projectName";
+import { UrbanProjectCreationData } from "../creationData";
 import { UrbanProjectCreationStep } from "../creationSteps";
 import { UrbanProjectState } from "../urbanProject.reducer";
 import {
@@ -35,7 +36,7 @@ export const selectSaveState = createSelector(
 
 export const selectCreationData = createSelector(
   selectSelf,
-  (state): UrbanProjectState["creationData"] => state.creationData,
+  (state): UrbanProjectCreationData => state.creationData,
 );
 
 export const selectProjectName = createSelector(

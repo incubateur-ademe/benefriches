@@ -3,19 +3,9 @@ import {
   BuildingsUse,
   isBuildingUse,
   typedObjectEntries,
-  UrbanGreenSpace,
-  UrbanLivingAndActivitySpace,
-  UrbanPublicSpace,
   UrbanSpaceCategory,
   filterObjectWithoutKeys,
-  FinancialAssistanceRevenue,
-  RecurringRevenue,
-  RecurringExpense,
-  ReinstatementExpense,
-  UrbanProjectDevelopmentExpense,
-  UrbanProjectPhase,
   ECONOMIC_ACTIVITY_BUILDINGS_USE,
-  BuildingsEconomicActivityUse,
 } from "shared";
 
 import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
@@ -97,11 +87,11 @@ import {
   buildingsOperationsExpensesCompleted,
   buildingsOperationsExpensesReverted,
 } from "./actions/urbanProject.actions";
+import { UrbanProjectCreationData } from "./creationData";
 import { UrbanProjectCreationStep, UrbanProjectCustomCreationStep } from "./creationSteps";
 import soilsCarbonStorageReducer, {
   State as SoilsCarbonStorageState,
 } from "./soilsCarbonStorage.reducer";
-import { BuildingsUseCategory } from "./urbanProject";
 
 const urbanSpaceCategoryIntroductionMap = {
   GREEN_SPACES: "GREEN_SPACES_INTRODUCTION",
@@ -125,53 +115,7 @@ export type UrbanProjectState = {
   saveState: "idle" | "loading" | "success" | "error";
   stepsHistory: UrbanProjectCreationStep[];
   spacesCategoriesToComplete: UrbanSpaceCategory[];
-  creationData: {
-    name?: string;
-    description?: string;
-    // spaces and surfaces
-    spacesCategories?: UrbanSpaceCategory[];
-    spacesCategoriesDistribution?: Partial<Record<UrbanSpaceCategory, number>>;
-    greenSpacesDistribution?: Partial<Record<UrbanGreenSpace, number>>;
-    livingAndActivitySpacesDistribution?: Partial<Record<UrbanLivingAndActivitySpace, number>>;
-    publicSpacesDistribution?: Partial<Record<UrbanPublicSpace, number>>;
-    decontaminationPlan?: "partial" | "none" | "unknown";
-    decontaminatedSurfaceArea?: number;
-    // buildings
-    buildingsFloorSurfaceArea?: number;
-    buildingsUseCategoriesDistribution?: Partial<Record<BuildingsUseCategory, number>>;
-    buildingsUsesDistribution?: Partial<Record<BuildingsUse, number>>;
-    buildingsEconomicActivityUses?: BuildingsEconomicActivityUse[];
-    // cession foncière
-    siteResalePlannedAfterDevelopment?: boolean;
-    buildingsResalePlannedAfterDevelopment?: boolean;
-    // stakeholders
-    projectDeveloper?: ProjectStakeholder;
-    reinstatementContractOwner?: ProjectStakeholder;
-    // site purchase
-    sitePurchaseSellingPrice?: number;
-    sitePurchasePropertyTransferDuties?: number;
-    // expenses
-    reinstatementExpenses?: ReinstatementExpense[];
-    installationExpenses?: UrbanProjectDevelopmentExpense[];
-    yearlyProjectedBuildingsOperationsExpenses?: RecurringExpense[];
-    // revenues
-    yearlyProjectedRevenues?: RecurringRevenue[];
-    financialAssistanceRevenues?: FinancialAssistanceRevenue[];
-    siteResaleExpectedSellingPrice?: number;
-    siteResaleExpectedPropertyTransferDuties?: number;
-    // schedules
-    reinstatementSchedule?: {
-      startDate: string;
-      endDate: string;
-    };
-    installationSchedule?: {
-      startDate: string;
-      endDate: string;
-    };
-    firstYearOfOperation?: number;
-    // project phase
-    projectPhase?: UrbanProjectPhase;
-  };
+  creationData: UrbanProjectCreationData;
   soilsCarbonStorage: SoilsCarbonStorageState;
 };
 

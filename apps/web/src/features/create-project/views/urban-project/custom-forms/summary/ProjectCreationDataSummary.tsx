@@ -1,13 +1,13 @@
 import { SoilsDistribution, UrbanProjectSpace } from "shared";
 
-import { UrbanProjectState } from "@/features/create-project/core/urban-project/urbanProject.reducer";
+import { UrbanProjectCreationData } from "@/features/create-project/core/urban-project/creationData";
 import ProjectFeaturesView from "@/features/projects/views/project-page/features/ProjectFeaturesView";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
   projectId: string;
-  projectData: UrbanProjectState["creationData"];
+  projectData: UrbanProjectCreationData;
   projectSoilsDistribution: SoilsDistribution;
   projectSpaces: Partial<Record<UrbanProjectSpace, number>>;
   onNext: () => void;
