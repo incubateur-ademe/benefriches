@@ -54,7 +54,7 @@ const PROJECT_CREATION_STEP_QUERY_STRING_MAP = {
   EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES: "depenses-annuelles-exploitation-batiments",
   REVENUE_INTRODUCTION: "introduction-recettes",
   REVENUE_EXPECTED_SITE_RESALE: "recettes-revente",
-  REVENUE_PROJECTED_YEARLY_REVENUE: "recettes-annuelles-previsionnelles",
+  REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES: "recettes-annuelles-exploitation-batiments",
   REVENUE_FINANCIAL_ASSISTANCE: "aides-financieres",
   SCHEDULE_INTRODUCTION: "introduction-calendrier",
   SCHEDULE_PROJECTION: "calendrier",

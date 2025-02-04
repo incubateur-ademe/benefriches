@@ -10,5 +10,6 @@ export * from "./living-and-activity-spaces/urbanLivingAndActivitySpaces";
 export * from "./public-spaces/urbanPublicSpaces";
 export * from "./living-and-activity-spaces/buildingsUse";
 export * from "./projectPhase";
+export * from "./revenues";
 
 export * from "./urbanProject";

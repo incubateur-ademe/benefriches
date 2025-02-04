@@ -58,7 +58,7 @@ const mock = {
   ],
   yearlyProjectedBuildingsOperationsExpenses: [{ purpose: "maintenance", amount: 12000 }],
   // revenues
-  yearlyProjectedRevenues: [{ source: "operations", amount: 13000 }],
+  yearlyProjectedRevenues: [{ source: "rent", amount: 13000 }],
   financialAssistanceRevenues: [
     { amount: 14000, source: "public_subsidies" },
     { amount: 999.99, source: "other" },

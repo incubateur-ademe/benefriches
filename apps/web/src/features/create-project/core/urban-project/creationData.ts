@@ -3,7 +3,6 @@ import {
   BuildingsUse,
   FinancialAssistanceRevenue,
   RecurringExpense,
-  RecurringRevenue,
   ReinstatementExpense,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
@@ -11,6 +10,7 @@ import {
   UrbanProjectPhase,
   UrbanPublicSpace,
   UrbanSpaceCategory,
+  YearlyBuildingsOperationsRevenues,
 } from "shared";
 
 import { ProjectStakeholder } from "../project.types";
@@ -48,7 +48,7 @@ export type UrbanProjectCreationData = {
   installationExpenses?: UrbanProjectDevelopmentExpense[];
   yearlyProjectedBuildingsOperationsExpenses?: RecurringExpense[];
   // revenues
-  yearlyProjectedRevenues?: RecurringRevenue[];
+  yearlyProjectedRevenues?: YearlyBuildingsOperationsRevenues[];
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   siteResaleExpectedSellingPrice?: number;
   siteResaleExpectedPropertyTransferDuties?: number;

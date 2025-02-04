@@ -5,11 +5,14 @@ import {
   revertYearlyProjectedRevenue,
 } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
 import { selectPhotovoltaicPowerStationYearlyRevenueInitialValues } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
-import YearlyProjectedsRevenueForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue";
+import ProjectYearlyRevenueForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
+import { getLabelForRecurringRevenueSource } from "@/shared/core/reconversionProject";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
+
+const fields = ["operations", "other"] as const;
 
 function YearlyProjectedRevenueFormContainer() {
   const dispatch = useAppDispatch();
@@ -21,7 +24,10 @@ function YearlyProjectedRevenueFormContainer() {
   );
 
   return (
-    <YearlyProjectedsRevenueForm
+    <ProjectYearlyRevenueForm
+      title="Recettes annuelles"
+      getFieldLabel={getLabelForRecurringRevenueSource}
+      fields={fields}
       instructions={
         <FormInfo>
           <p>
@@ -40,14 +46,23 @@ function YearlyProjectedRevenueFormContainer() {
         </FormInfo>
       }
       initialValues={{
-        operationsAmount: initialValues.operations,
-        otherAmount: initialValues.other,
+        operations: initialValues.operations,
+        other: initialValues.other,
       }}
       onBack={() => {
         dispatch(revertYearlyProjectedRevenue());
       }}
-      onSubmit={(revenues: RecurringRevenue[]) => {
-        dispatch(completeYearlyProjectedRevenue(revenues));
+      onSubmit={(formData) => {
+        const yearlyProjectedRevenues: RecurringRevenue[] = [];
+        for (const field of fields) {
+          if (formData[field]) {
+            yearlyProjectedRevenues.push({
+              source: field,
+              amount: formData[field],
+            });
+          }
+        }
+        dispatch(completeYearlyProjectedRevenue(yearlyProjectedRevenues));
       }}
     />
   );

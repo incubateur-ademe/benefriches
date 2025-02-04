@@ -5,8 +5,8 @@ import {
   financialAssistanceRevenuesCompleted,
   financialAssistanceRevenuesReverted,
   revenueIntroductionCompleted,
-  yearlyProjectedRevenueCompleted,
-  yearlyProjectedRevenueReverted,
+  yearlyBuildingsOperationsRevenuesCompleted,
+  yearlyBuildingsOperationsRevenuesReverted,
 } from "../actions/urbanProject.actions";
 import {
   expectCurrentStep,
@@ -33,9 +33,32 @@ describe("Urban project creation : revenues steps", () => {
         });
       });
 
-      it("goes to REVENUE_FINANCIAL_ASSISTANCE step when step is completed and site will NOT be sold after development", () => {
+      it("goes to REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES step when step is completed, site and buildings will not be sold after development", () => {
         const store = new StoreBuilder()
-          .withCreationData({ siteResalePlannedAfterDevelopment: false })
+          .withCreationData({
+            siteResalePlannedAfterDevelopment: false,
+            buildingsResalePlannedAfterDevelopment: false,
+            livingAndActivitySpacesDistribution: { BUILDINGS: 12400 },
+          })
+          .withStepsHistory(["REVENUE_INTRODUCTION"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(revenueIntroductionCompleted());
+
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
+        });
+      });
+
+      it("goes to REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES step when step is completed, site will be not be sold but buildings will", () => {
+        const store = new StoreBuilder()
+          .withCreationData({
+            siteResalePlannedAfterDevelopment: false,
+            buildingsResalePlannedAfterDevelopment: true,
+            livingAndActivitySpacesDistribution: { BUILDINGS: 12400 },
+          })
           .withStepsHistory(["REVENUE_INTRODUCTION"])
           .build();
         const initialRootState = store.getState();
@@ -60,9 +83,13 @@ describe("Urban project creation : revenues steps", () => {
       });
     });
     describe("REVENUE_EXPECTED_SITE_RESALE step", () => {
-      it("goes to REVENUE_FINANCIAL_ASSISTANCE step and sets siteResaleExpectedSellingPrice and siteResaleExpectedPropertyTransferDuties when step is completed if project has no buildings", () => {
+      it("goes to REVENUE_FINANCIAL_ASSISTANCE step and sets siteResaleExpectedSellingPrice and siteResaleExpectedPropertyTransferDuties when step is completed and buildings resale planned", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_EXPECTED_SITE_RESALE"])
+          .withCreationData({
+            livingAndActivitySpacesDistribution: { BUILDINGS: 5000 },
+            buildingsResalePlannedAfterDevelopment: true,
+          })
           .build();
         const initialRootState = store.getState();
 
@@ -75,6 +102,31 @@ describe("Urban project creation : revenues steps", () => {
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
           currentStep: "REVENUE_FINANCIAL_ASSISTANCE",
+          creationDataDiff: {
+            siteResaleExpectedSellingPrice: 500000,
+            siteResaleExpectedPropertyTransferDuties: 25000,
+          },
+        });
+      });
+      it("goes to REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES step and sets siteResaleExpectedSellingPrice and siteResaleExpectedPropertyTransferDuties when step is completed and buildings will not be sold", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_EXPECTED_SITE_RESALE"])
+          .withCreationData({
+            livingAndActivitySpacesDistribution: { BUILDINGS: 5000 },
+            buildingsResalePlannedAfterDevelopment: false,
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          expectedSiteResaleRevenueCompleted({
+            sellingPrice: 500000,
+            propertyTransferDuties: 25000,
+          }),
+        );
+        const newState = store.getState();
+        expectUpdatedState(initialRootState, newState, {
+          currentStep: "REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
           creationDataDiff: {
             siteResaleExpectedSellingPrice: 500000,
             siteResaleExpectedPropertyTransferDuties: 25000,
@@ -105,30 +157,38 @@ describe("Urban project creation : revenues steps", () => {
     describe("REVENUE_PROJECTED_YEARLY_REVENUE step", () => {
       it("goes to REVENUE_FINANCIAL_ASSISTANCE step and sets yearlyProjectedRevenues when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_PROJECTED_YEARLY_REVENUE"])
+          .withStepsHistory([
+            "REVENUE_INTRODUCTION",
+            "REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
+          ])
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(yearlyProjectedRevenueCompleted([{ amount: 1000, source: "operations" }]));
+        store.dispatch(
+          yearlyBuildingsOperationsRevenuesCompleted([{ amount: 1000, source: "rent" }]),
+        );
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
           currentStep: "REVENUE_FINANCIAL_ASSISTANCE",
           creationDataDiff: {
-            yearlyProjectedRevenues: [{ amount: 1000, source: "operations" }],
+            yearlyProjectedRevenues: [{ amount: 1000, source: "rent" }],
           },
         });
       });
       it("goes to previous step and unset yearlyProjectedRevenues when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["REVENUE_INTRODUCTION", "REVENUE_PROJECTED_YEARLY_REVENUE"])
+          .withStepsHistory([
+            "REVENUE_INTRODUCTION",
+            "REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
+          ])
           .withCreationData({
-            yearlyProjectedRevenues: [{ amount: 1000, source: "operations" }],
+            yearlyProjectedRevenues: [{ amount: 1000, source: "other" }],
           })
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(yearlyProjectedRevenueReverted());
+        store.dispatch(yearlyBuildingsOperationsRevenuesReverted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
@@ -141,7 +201,10 @@ describe("Urban project creation : revenues steps", () => {
     describe("REVENUE_FINANCIAL_ASSISTANCE step", () => {
       it("goes to SCHEDULE_INTRODUCTION and sets financialAssistanceRevenues when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["REVENUE_PROJECTED_YEARLY_REVENUE", "REVENUE_FINANCIAL_ASSISTANCE"])
+          .withStepsHistory([
+            "REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES",
+            "REVENUE_FINANCIAL_ASSISTANCE",
+          ])
           .build();
         const initialRootState = store.getState();
 

@@ -63,7 +63,7 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES":
     case "REVENUE_FINANCIAL_ASSISTANCE":
     case "REVENUE_INTRODUCTION":
-    case "REVENUE_PROJECTED_YEARLY_REVENUE":
+    case "REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES":
     case "REVENUE_EXPECTED_SITE_RESALE":
       return "Dépenses et recettes";
     case "SCHEDULE_INTRODUCTION":

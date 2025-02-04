@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useForm } from "react-hook-form";
+import { DefaultValues, Path, useForm } from "react-hook-form";
 import { typedObjectEntries } from "shared";
 import { sumObjectValues } from "shared";
 
@@ -9,27 +9,32 @@ import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
-type Props = {
-  onSubmit: (data: FormValues) => void;
-  onBack: () => void;
-  title?: ReactNode;
+type FormValues<Fields extends readonly string[]> = {
+  [K in Fields[number]]: number;
+};
+
+type Props<Fields extends readonly string[]> = {
+  title: string;
+  getFieldLabel: (field: Fields[number]) => string;
   instructions?: ReactNode;
-  initialValues?: FormValues;
+  fields: Fields;
+  onSubmit: (data: FormValues<Fields>) => void;
+  onBack: () => void;
+  initialValues?: Partial<FormValues<Fields>>;
 };
 
-export type FormValues = {
-  operationsAmount?: number;
-  otherAmount?: number;
-};
-
-const ProjectYearlyProjectedRevenueForm = ({
-  title = "Recettes annuelles",
+export default function ProjectYearlyRevenuesForm<Fields extends readonly string[]>({
+  title,
   onSubmit,
   onBack,
+  getFieldLabel,
+  fields,
   initialValues,
   instructions,
-}: Props) => {
-  const { handleSubmit, register, watch } = useForm<FormValues>({ defaultValues: initialValues });
+}: Props<Fields>) {
+  const { handleSubmit, register, watch } = useForm<FormValues<Fields>>({
+    defaultValues: initialValues ? (initialValues as DefaultValues<FormValues<Fields>>) : undefined,
+  });
 
   const allRevenues = watch();
 
@@ -39,18 +44,20 @@ const ProjectYearlyProjectedRevenueForm = ({
   return (
     <WizardFormLayout title={title} instructions={instructions}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <RowDecimalsNumericInput
-          className="!tw-pt-4"
-          addonText="€ / an"
-          label="Recettes d'exploitation"
-          nativeInputProps={register("operationsAmount", optionalNumericFieldRegisterOptions)}
-        />
-        <RowDecimalsNumericInput
-          className="!tw-pt-4"
-          addonText="€ / an"
-          label="Autres recettes"
-          nativeInputProps={register("otherAmount", optionalNumericFieldRegisterOptions)}
-        />
+        {fields.map((field) => {
+          return (
+            <RowDecimalsNumericInput
+              className="!tw-pt-4"
+              addonText="€ / an"
+              label={getFieldLabel(field)}
+              nativeInputProps={register(
+                field as Path<FormValues<Fields>>,
+                optionalNumericFieldRegisterOptions,
+              )}
+              key={field}
+            />
+          );
+        })}
 
         {!hasNoValuesFilled && (
           <p>
@@ -67,6 +74,4 @@ const ProjectYearlyProjectedRevenueForm = ({
       </form>
     </WizardFormLayout>
   );
-};
-
-export default ProjectYearlyProjectedRevenueForm;
+}

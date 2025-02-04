@@ -3,7 +3,6 @@ import {
   FinancialAssistanceRevenue,
   UrbanProjectPhase,
   RecurringExpense,
-  RecurringRevenue,
   ReinstatementExpense,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
@@ -11,6 +10,7 @@ import {
   UrbanPublicSpace,
   UrbanSpaceCategory,
   BuildingsEconomicActivityUse,
+  YearlyBuildingsOperationsRevenues,
 } from "shared";
 import { z } from "zod";
 
@@ -223,10 +223,12 @@ export const financialAssistanceRevenuesCompleted = createAction<FinancialAssist
 export const financialAssistanceRevenuesReverted = createAction(
   "financialAssistanceRevenuesReverted",
 );
-export const yearlyProjectedRevenueCompleted = createAction<RecurringRevenue[]>(
-  "yearlyProjectedRevenueCompleted",
+export const yearlyBuildingsOperationsRevenuesCompleted = createAction<
+  YearlyBuildingsOperationsRevenues[]
+>("yearlyBuildingsOperationsRevenuesCompleted");
+export const yearlyBuildingsOperationsRevenuesReverted = createAction(
+  "yearlyBuildingsOperationsRevenuesReverted",
 );
-export const yearlyProjectedRevenueReverted = createAction("yearlyProjectedRevenueReverted");
 export const expectedSiteResaleRevenueReverted = createAction("expectedSiteResaleRevenueReverted");
 export const expectedSiteResaleRevenueCompleted = createAction<{
   sellingPrice?: number;
