@@ -38,23 +38,12 @@ function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotal
 
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
-  const projectBalance = economicBalanceTotal + socioEconomicTotalImpact;
-
   return (
     <ImpactsChartsSection
       title="Analyse coûts/bénéfices"
       onClick={() => {
         openImpactModalDescription({
-          sectionName: "summary",
-          impactData: {
-            name: "projectImpactBalance",
-            value: {
-              economicBalanceTotal,
-              socioEconomicMonetaryImpactsTotal: socioEconomicTotalImpact,
-              projectBalance,
-            },
-            isSuccess: projectBalance > 0,
-          },
+          sectionName: "cost_benefit_analysis",
         });
       }}
     >

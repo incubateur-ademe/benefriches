@@ -15,6 +15,7 @@ import {
   OpenImpactModalDescriptionArgs,
   OpenState,
 } from "./ImpactModalDescriptionContext";
+import CostBenefitAnalysisDescription from "./cost-benefit-analysis/CostBenefitAnalysisDescription";
 import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceModalWizard.";
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";
@@ -164,6 +165,8 @@ function ImpactModalDescriptionProvider({
               );
             case "summary":
               return <SummaryModalWizard impactData={openState.impactData} />;
+            case "cost_benefit_analysis":
+              return <CostBenefitAnalysisDescription impactsData={impactsData} />;
             default:
               return undefined;
           }

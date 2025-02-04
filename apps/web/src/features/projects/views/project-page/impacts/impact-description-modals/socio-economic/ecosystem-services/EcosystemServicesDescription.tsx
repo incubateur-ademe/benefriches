@@ -11,6 +11,8 @@ import { ImpactsData } from "../../ImpactModalDescriptionProvider";
 import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
+import ModalData from "../../shared/ModalData";
+import ModalGrid from "../../shared/ModalGrid";
 import ModalHeader from "../../shared/ModalHeader";
 import ModalTitleThree from "../../shared/ModalTitleThree";
 import ModalTitleTwo from "../../shared/ModalTitleTwo";
@@ -95,8 +97,8 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
           },
         ]}
       />
-      <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2">
-        <div className="tw-p-6 md:tw-p-10">
+      <ModalGrid>
+        <ModalData>
           <ModalBarColoredChart
             data={
               ecosystemServicesImpact?.details.map(({ amount, impact }) => ({
@@ -123,7 +125,7 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
               />
             </ImpactItemGroup>
           ))}
-        </div>
+        </ModalData>
 
         <ModalContent>
           <p>
@@ -240,7 +242,7 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
             </li>
           </ul>
         </ModalContent>
-      </div>
+      </ModalGrid>
     </ModalBody>
   );
 };

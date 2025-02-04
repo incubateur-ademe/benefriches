@@ -59,6 +59,9 @@ type IsOpenedState =
   | {
       sectionName: "summary";
       impactData: KeyImpactIndicatorData;
+    }
+  | {
+      sectionName: "cost_benefit_analysis";
     };
 
 export type OpenState = IsClosedState | IsOpenedState;

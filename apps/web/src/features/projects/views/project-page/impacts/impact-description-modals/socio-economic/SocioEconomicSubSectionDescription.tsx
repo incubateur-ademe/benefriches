@@ -17,6 +17,8 @@ import {
 import ModalBarColoredChart from "../shared/ModalBarColoredChart";
 import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
+import ModalData from "../shared/ModalData";
+import ModalGrid from "../shared/ModalGrid";
 import ModalHeader from "../shared/ModalHeader";
 import { mainBreadcrumbSection } from "./breadcrumbSections";
 
@@ -87,8 +89,8 @@ const SocioEconomicSubSectionDescription = ({
         }}
         breadcrumbSegments={[mainBreadcrumbSection, { label: title }]}
       />
-      <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2">
-        <div className="tw-p-6 md:tw-p-10">
+      <ModalGrid>
+        <ModalData>
           <ModalBarColoredChart
             data={impacts.map(({ actors, name }) => ({
               label: getSocioEconomicImpactLabel(name),
@@ -131,7 +133,7 @@ const SocioEconomicSubSectionDescription = ({
               type="monetary"
             />
           ))}
-        </div>
+        </ModalData>
 
         <ModalContent>
           Les impacts socio-économiques consistent en 4 catégories :
@@ -143,7 +145,7 @@ const SocioEconomicSubSectionDescription = ({
           </ul>
           {children}
         </ModalContent>
-      </div>
+      </ModalGrid>
     </ModalBody>
   );
 };

@@ -6,6 +6,8 @@ import SocioEconomicImpactSection from "../../list-view/sections/SocioEconomicIm
 import ModalBarColoredChart from "../shared/ModalBarColoredChart";
 import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
+import ModalData from "../shared/ModalData";
+import ModalGrid from "../shared/ModalGrid";
 import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
 
@@ -27,8 +29,8 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
         }}
         breadcrumbSegments={[{ label: "Impacts socio-économiques" }]}
       />
-      <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2">
-        <div className="tw-p-6 md:tw-p-10">
+      <ModalGrid>
+        <ModalData>
           <ModalBarColoredChart
             data={[
               {
@@ -79,7 +81,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
               noMarginBottom
             />
           </div>
-        </div>
+        </ModalData>
         <ModalContent>
           <p>
             L'évaluation socio-économique a pour objet d'apprécier l'intérêt d'un projet ou d'un
@@ -126,7 +128,7 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
             </li>
           </ul>
         </ModalContent>
-      </div>
+      </ModalGrid>
     </ModalBody>
   );
 };
