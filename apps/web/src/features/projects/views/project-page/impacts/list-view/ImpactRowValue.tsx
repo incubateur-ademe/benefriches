@@ -101,6 +101,7 @@ const ImpactRowValue = ({
         }}
         className={classNames(
           "tw-col-start-2",
+          !actor && "md:tw-col-end-4",
           isTotal && "tw-font-bold",
           isSectionHovered && "tw-font-bold",
           "tw-cursor-pointer",

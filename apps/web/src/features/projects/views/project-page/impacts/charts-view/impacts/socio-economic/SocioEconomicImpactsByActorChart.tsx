@@ -35,6 +35,7 @@ function SocioEconomicImpactsByActorChart({ socioEconomicImpacts }: Props) {
     tooltip: {
       format: "{point.impactsList}",
       useHTML: true,
+      distance: 25,
     },
     series: [
       {

@@ -27,8 +27,8 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
         }}
         breadcrumbSegments={[{ label: "Impacts socio-économiques" }]}
       />
-      <div className="tw-grid lg:tw-grid-cols-2">
-        <div className="tw-p-10">
+      <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2">
+        <div className="tw-p-6 md:tw-p-10">
           <ModalBarColoredChart
             data={[
               {

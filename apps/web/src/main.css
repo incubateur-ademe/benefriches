@@ -76,6 +76,11 @@ text.highcharts-data-label {
   font-size: 0.875rem;
 }
 
+.highcharts-xaxis-labels {
+  font-size: 0.875rem;
+  width: 100%;
+}
+
 /* DSFR Customisation */
 
 .fr-btn {
