@@ -109,11 +109,15 @@ describe("Urban project creation : site resale steps", () => {
           },
         });
       });
-      it("goes to previous step and unsets site resale choice when step is reverted", () => {
+      it("goes to previous step and unsets site resale choice and future owner when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["SITE_RESALE_INTRODUCTION", "SITE_RESALE_SELECTION"])
           .withCreationData({
             siteResalePlannedAfterDevelopment: false,
+            futureSiteOwner: {
+              name: "Aménageur",
+              structureType: "company",
+            },
           })
           .build();
         const initialRootState = store.getState();
@@ -124,6 +128,7 @@ describe("Urban project creation : site resale steps", () => {
         expectRevertedState(initialRootState, newState, {
           creationDataDiff: {
             siteResalePlannedAfterDevelopment: undefined,
+            futureSiteOwner: undefined,
           },
         });
       });
@@ -185,11 +190,15 @@ describe("Urban project creation : site resale steps", () => {
           },
         });
       });
-      it("goes to previous step and unsets buildings resale choice when step is reverted", () => {
+      it("goes to previous step and unsets buildings resale choice and future operator when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["SITE_RESALE_SELECTION", "BUILDINGS_RESALE_SELECTION"])
           .withCreationData({
             buildingsResalePlannedAfterDevelopment: true,
+            futureOperator: {
+              name: "Futur exploitant inconnu",
+              structureType: "unknown",
+            },
           })
           .build();
         const initialRootState = store.getState();
@@ -200,6 +209,7 @@ describe("Urban project creation : site resale steps", () => {
         expectRevertedState(initialRootState, newState, {
           creationDataDiff: {
             buildingsResalePlannedAfterDevelopment: undefined,
+            futureOperator: undefined,
           },
         });
       });

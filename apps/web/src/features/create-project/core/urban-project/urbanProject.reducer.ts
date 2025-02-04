@@ -428,6 +428,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(siteResaleChoiceReverted, (state) => {
     state.urbanProject.creationData.siteResalePlannedAfterDevelopment = undefined;
+    state.urbanProject.creationData.futureSiteOwner = undefined;
   });
   builder.addCase(buildingsResaleChoiceCompleted, (state, action) => {
     const { buildingsResalePlannedAfterDevelopment } = action.payload;
@@ -442,6 +443,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   });
   builder.addCase(buildingsResaleChoiceReverted, (state) => {
     state.urbanProject.creationData.buildingsResalePlannedAfterDevelopment = undefined;
+    state.urbanProject.creationData.futureOperator = undefined;
   });
 
   // expenses
