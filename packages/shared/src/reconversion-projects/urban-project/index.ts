@@ -1,14 +1,15 @@
 export * from "./expectedPostDevelopmentResale";
 export * from "./fullTimeJobs";
 export * from "./installationExpenses";
-export * from "./operationFirstYear";
+export * from "./schedule/operationFirstYear";
 export * from "./schedule/worksSchedule";
-export * from "./soilsDistributionFromSpaces";
 
-export * from "./green-spaces/urbanGreenSpaces";
-export * from "./living-and-activity-spaces/urbanLivingAndActivitySpaces";
-export * from "./public-spaces/urbanPublicSpaces";
-export * from "./living-and-activity-spaces/buildingsUse";
+export * from "./spaces/green-spaces/urbanGreenSpaces";
+export * from "./spaces/living-and-activity-spaces/urbanLivingAndActivitySpaces";
+export * from "./spaces/public-spaces/urbanPublicSpaces";
+export * from "./spaces/living-and-activity-spaces/buildingsUse";
+export * from "./spaces/spaceCategories";
+export * from "./spaces/soilsDistributionFromSpaces";
 export * from "./projectPhase";
 export * from "./revenues";
 

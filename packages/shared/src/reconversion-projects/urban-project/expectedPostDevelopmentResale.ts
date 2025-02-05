@@ -2,7 +2,7 @@ import { typedObjectEntries } from "../../object-entries";
 import {
   BuildingsUse,
   BuildingsUseSurfaceAreaDistribution,
-} from "./living-and-activity-spaces/buildingsUse";
+} from "./spaces/living-and-activity-spaces/buildingsUse";
 
 type BuildingsUseResaleRatioPerSquareMeters = Record<BuildingsUse, number | undefined>;
 

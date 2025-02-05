@@ -1,4 +1,4 @@
-import { computePropertyTransferDutiesFromSellingPrice } from "../financial";
+import { computePropertyTransferDutiesFromSellingPrice } from "../../financial";
 
 export const computeDefaultSitePurchaseFromSiteSurfaceArea = (
   surfaceArea: number,

@@ -1,3 +1,9 @@
+import { TExpense } from "../../financial";
+
+export type UrbanProjectDevelopmentExpense = TExpense<
+  "technical_studies" | "development_works" | "other"
+>;
+
 export type ComputedInstallationExpenses = {
   technicalStudies: number;
   developmentWorks: number;

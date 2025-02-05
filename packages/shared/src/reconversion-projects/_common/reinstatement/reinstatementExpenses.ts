@@ -1,8 +1,19 @@
+import { TExpense } from "../../../financial";
 import {
   getGreenArtificalSurfaceArea,
   getImpermeableSurfaceArea,
   SoilsDistribution,
-} from "../../soils/soilDistribution";
+} from "../../../soils/soilDistribution";
+
+export type ReinstatementExpensePurpose =
+  | "asbestos_removal"
+  | "deimpermeabilization"
+  | "demolition"
+  | "other_reinstatement"
+  | "remediation"
+  | "sustainable_soils_reinstatement"
+  | "waste_collection";
+export type ReinstatementExpense = TExpense<ReinstatementExpensePurpose>;
 
 export type ComputedReinstatementExpenses = {
   deimpermeabilization?: number;
