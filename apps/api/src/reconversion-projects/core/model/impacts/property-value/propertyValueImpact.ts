@@ -50,6 +50,7 @@ export const computePropertyValueImpact = (
   citySurfaceArea: number,
   cityPopulation: number,
   localHousePriceEuroPerSquareMeters: number,
+  evaluationPeriodInYears: number,
   isRenaturation = false,
 ) => {
   const influenceZonesHousePriceRises = (
@@ -71,12 +72,22 @@ export const computePropertyValueImpact = (
 
   const totalHousePriceRise = influenceZonesHousePriceRises.reduce((total, value) => total + value);
 
+  const propertyValueIncreaseForOneYear = (totalHousePriceRise * (1 - SOCIAL_HOUSING_SHARE)) / 5;
+  const propertyValueIncreaseDurationInYears =
+    evaluationPeriodInYears > 5 ? 5 : evaluationPeriodInYears;
+
+  const propertyTransferDutiesIncreaseForOneYear =
+    (totalHousePriceRise / AVERAGE_HOUSE_HOLDING_PERIOD) *
+    TRANSFER_TAX_PERCENT_PER_TRANSACTION *
+    (1 - SOCIAL_HOUSING_SHARE);
+
+  const propertyTransferDutiesIncreaseDurationInYears =
+    evaluationPeriodInYears > 33 ? 33 : evaluationPeriodInYears;
+
   return {
-    propertyValueIncrease: totalHousePriceRise * (1 - SOCIAL_HOUSING_SHARE),
+    propertyValueIncrease: propertyValueIncreaseForOneYear * propertyValueIncreaseDurationInYears,
     propertyTransferDutiesIncrease:
-      (totalHousePriceRise / AVERAGE_HOUSE_HOLDING_PERIOD) *
-      TRANSFER_TAX_PERCENT_PER_TRANSACTION *
-      (1 - SOCIAL_HOUSING_SHARE),
+      propertyTransferDutiesIncreaseForOneYear * propertyTransferDutiesIncreaseDurationInYears,
   };
 };
 
@@ -114,18 +125,19 @@ export const getLocalPropertyValueIncreaseRelatedImpacts = async ({
     citySurfaceArea,
     cityPopulation,
     cityPropertyValuePerSquareMeter.medianPricePerSquareMeters,
+    evaluationPeriodInYears,
     false, // TODO: quartier V2 créer une méthode de calcul pour ce paramètre
   );
   return [
     {
       actor: "local_people",
-      amount: propertyValueIncrease * evaluationPeriodInYears,
+      amount: propertyValueIncrease,
       impact: "local_property_value_increase",
       impactCategory: "economic_indirect",
     },
     {
       actor: "community",
-      amount: propertyTransferDutiesIncrease * evaluationPeriodInYears,
+      amount: propertyTransferDutiesIncrease,
       impact: "local_transfer_duties_increase",
       impactCategory: "economic_indirect",
     },
