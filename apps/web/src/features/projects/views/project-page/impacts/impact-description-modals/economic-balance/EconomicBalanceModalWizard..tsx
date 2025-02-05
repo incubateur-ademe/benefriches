@@ -33,10 +33,19 @@ export function EconomicBalanceModalWizard({
 
   switch (impactDetailsName ?? impactName) {
     case "site_reinstatement":
-      return <SiteReinstatementDescription />;
+      return (
+        <SiteReinstatementDescription
+          impactData={impactsData.economicBalance.costs.siteReinstatement}
+          bearer={impactsData.economicBalance.bearer}
+        />
+      );
 
     case "site_purchase":
-      return <RealEstateAcquisitionDescription />;
+      return (
+        <RealEstateAcquisitionDescription
+          impactData={impactsData.economicBalance.costs.sitePurchase}
+        />
+      );
 
     default:
       return (
