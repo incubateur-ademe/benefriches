@@ -12,7 +12,7 @@ type Props = {
 
 const AirConditionningRelatedCo2Description = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="❄️ Evitées grâce à l’utilisation réduite de la climatisation"
         value={
@@ -28,7 +28,7 @@ const AirConditionningRelatedCo2Description = ({ impactData }: Props) => {
           { label: "Evitées grâce à l’utilisation réduite de la climatisation" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <AirConditionningRelatedCo2Content />
       </ModalContent>
     </ModalBody>

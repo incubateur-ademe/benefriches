@@ -36,7 +36,7 @@ const InvasiveSpeciesRegulationDescription = ({
     forecastSoilsDistribution,
   ).filter(([key]) => isSurfaceWithEcosystemBenefits(key));
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🦔 Régulation des espèces invasives"
         value={
@@ -50,7 +50,7 @@ const InvasiveSpeciesRegulationDescription = ({
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Régulation des espèces invasives" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Les espaces naturels, comportant un nombre d'espèces endémiques élevé, peuvent servir de
           barrière à l'invasion. La fonction de régulation des invasions est la combinaison d'une

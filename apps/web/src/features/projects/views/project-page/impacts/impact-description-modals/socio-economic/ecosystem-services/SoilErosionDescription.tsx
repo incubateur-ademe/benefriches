@@ -36,7 +36,7 @@ const SoilErosionDescription = ({
     forecastSoilsDistribution,
   ).filter(([key]) => isSurfaceWithEcosystemBenefits(key));
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🌾 Régulation de l'érosion des sols"
         value={
@@ -50,7 +50,7 @@ const SoilErosionDescription = ({
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Régulation de l'érosion des sols" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           L’érosion est un phénomène naturel qui résulte de l’ablation des couches superficielles du
           sol et du déplacement des matériaux le constituant, ****sous l’action notamment de l’eau

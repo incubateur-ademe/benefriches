@@ -40,7 +40,7 @@ const LinkToTimeTravelSavedSocialImpact = () => {
 
 const TimeTravelSavedMonetaryValueDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title={`⏱ ${TITLE}`}
         subtitle="Grâce à la ou les commodités créées dans le quartier"
@@ -59,7 +59,7 @@ const TimeTravelSavedMonetaryValueDescription = ({ impactData }: Props) => {
           { label: TITLE },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <TravelRelatedImpactsIntroduction />
         <p>
           La valeur monétaire du temps passé en moins dans les transports (exprimée en €/an) est la

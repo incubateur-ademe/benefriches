@@ -15,7 +15,7 @@ type Props = {
 
 const AvoidedIllegalDumpingCostsDescription = ({ addressLabel, impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🚮 Débarras de dépôt sauvage"
         value={
@@ -29,7 +29,7 @@ const AvoidedIllegalDumpingCostsDescription = ({ addressLabel, impactData }: Pro
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Débarras de dépôt sauvage" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           De par sa vacance, le site peut subir des incivilités tels que des dépôts sauvages, dont
           l’enlèvement est coûteux !

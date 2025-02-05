@@ -16,7 +16,7 @@ type Props = {
 
 const AvoidedSecurityCostsDescription = ({ siteSurfaceArea, impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="👮‍♀️ Gardiennage"
         value={
@@ -30,7 +30,7 @@ const AvoidedSecurityCostsDescription = ({ siteSurfaceArea, impactData }: Props)
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Gardiennage" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Afin d’éviter que le site ne dégrade de manière naturelle ou par l’intermédiaire de
           dégradation volontaire ou de vandalisme (ex&nbsp;: vol de métaux, casse de vitres,

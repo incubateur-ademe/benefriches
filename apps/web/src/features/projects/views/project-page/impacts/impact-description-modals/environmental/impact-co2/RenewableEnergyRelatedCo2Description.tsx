@@ -19,7 +19,7 @@ type Props = {
 
 const RenewableEnergyRelatedCo2Description = ({ impactData, siteData, projectData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="⚡️️ Emissions de CO2-eq évitées grâce à la production d'énergies renouvelables"
         value={
@@ -37,7 +37,7 @@ const RenewableEnergyRelatedCo2Description = ({ impactData, siteData, projectDat
           },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <RenewableEnergyRelatedCo2Content
           withMonetarisation={false}
           address={siteData.address}

@@ -16,7 +16,7 @@ type Props = {
 
 const SoilsStorageRelatedCo2MonetaryValueDescription = (props: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🍂 CO2-eq stocké dans les sols"
         value={
@@ -30,7 +30,7 @@ const SoilsStorageRelatedCo2MonetaryValueDescription = (props: Props) => {
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Carbone stocké dans les sols" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <SoilsStorageRelatedCo2Content withMonetarisation={true} {...props} />
       </ModalContent>
     </ModalBody>

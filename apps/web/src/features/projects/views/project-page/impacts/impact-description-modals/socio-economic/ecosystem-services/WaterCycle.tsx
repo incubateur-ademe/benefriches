@@ -43,7 +43,7 @@ const WaterCycle = ({ baseSoilsDistribution, forecastSoilsDistribution, impactDa
   );
 
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="💧 Cycle de l'eau"
         value={
@@ -57,7 +57,7 @@ const WaterCycle = ({ baseSoilsDistribution, forecastSoilsDistribution, impactDa
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Cycle de l'eau" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Les zones naturelles, et dans une moindre mesure les zones agricoles ou les zones
           artificialisées mais non imperméabilisées, ont un apport sur la gestion de l’eau en termes

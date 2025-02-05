@@ -36,7 +36,7 @@ const ForestRelatedProductDescription = ({
     forecastSoilsDistribution,
   ).filter(([key]) => isForest(key));
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🪵 Produits issus de la forêt"
         value={
@@ -50,7 +50,7 @@ const ForestRelatedProductDescription = ({
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Produits issus de la forêt" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Parmi les services écosystémiques, les services de production correspondent aux produits
           obtenus directement de l’écosystème tels que la nourriture, le bois, les énergies, les

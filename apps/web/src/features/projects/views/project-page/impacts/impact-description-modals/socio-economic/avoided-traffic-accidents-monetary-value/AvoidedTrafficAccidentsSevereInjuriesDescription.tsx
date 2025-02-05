@@ -14,7 +14,7 @@ type Props = {
 
 const AvoidedTrafficAccidentsSevereInjuriesMonetaryValueDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title={`🚑 ${TITLE}`}
         subtitle="Grâce aux déplacements évités"
@@ -28,7 +28,7 @@ const AvoidedTrafficAccidentsSevereInjuriesMonetaryValueDescription = ({ impactD
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: TITLE }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <AvoidedTrafficAccidentsSevereInjuriesContent withMonetarisation />
       </ModalContent>
     </ModalBody>

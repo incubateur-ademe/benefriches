@@ -45,7 +45,7 @@ const WaterRegulationDescription = ({
   ).filter(([key]) => isPrairie(key) || isForest(key) || isWetLand(key));
 
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🚰 Dépenses de traitement de l’eau évitées"
         subtitle="Grâce à la dépollution de la friche et à la régulation de la qualité de l’eau par les espaces naturels"
@@ -64,7 +64,7 @@ const WaterRegulationDescription = ({
           { label: "Dépenses de traitement de l’eau évitées" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
           activités passées. Il peut en résulter des impacts sur les eaux souterraines, à savoir une

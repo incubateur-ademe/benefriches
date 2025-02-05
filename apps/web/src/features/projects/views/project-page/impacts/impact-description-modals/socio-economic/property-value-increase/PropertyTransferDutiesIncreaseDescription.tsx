@@ -13,7 +13,7 @@ type Props = {
 };
 const PropertyTransferDutiesIncreaseDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🏛 Droits de mutation sur la transaction foncière"
         value={
@@ -31,7 +31,7 @@ const PropertyTransferDutiesIncreaseDescription = ({ impactData }: Props) => {
           { label: "Droits de mutation sur les ventes immobilières alentour" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           L’amélioration de l’attractivité liée au projet de reconversion va contribuer à un
           meilleur dynamise du marché immobilier avec à la clé un accroissement de rentrée fiscale

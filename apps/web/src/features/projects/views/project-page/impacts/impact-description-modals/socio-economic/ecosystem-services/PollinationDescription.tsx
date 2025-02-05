@@ -36,7 +36,7 @@ const PollinationDescription = ({
     forecastSoilsDistribution,
   ).filter(([key]) => isSurfaceWithEcosystemBenefits(key));
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🐝 Pollinisation"
         value={
@@ -50,7 +50,7 @@ const PollinationDescription = ({
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Pollinisation" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Les pollinisateurs jouent un rôle crucial dans la production alimentaire, un nombre
           important de cultures dépendant d’une manière ou d’une autre de la pollinisation animale.

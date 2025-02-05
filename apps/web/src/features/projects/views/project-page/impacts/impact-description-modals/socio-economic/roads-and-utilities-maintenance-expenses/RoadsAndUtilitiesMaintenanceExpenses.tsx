@@ -16,7 +16,7 @@ type Props = {
 
 const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea, impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🅿️ Dépenses d’entretien des VRD"
         subtitle="Grâce à l’aménagement du projet en zone urbaine"
@@ -35,7 +35,7 @@ const RoadsAndUtilitiesMaintenanceExpenses = ({ surfaceArea, impactData }: Props
           { label: "Dépenses d’entretien des VRD" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           L’entretien des réseaux et voiries (VRD) est proportionnel à l’ampleur de ces VRD.
           L’impact de cet entretien est donc moindre en reconversion qu’en extension. Toutefois, en

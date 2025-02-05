@@ -26,7 +26,7 @@ const AvoidedCO2WithEnRMonetaryValueDescription = ({
   projectData,
 }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="⚡️️ Production d'énergies renouvelables"
         value={
@@ -46,7 +46,7 @@ const AvoidedCO2WithEnRMonetaryValueDescription = ({
           },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <RenewableEnergyRelatedCo2Content
           withMonetarisation={true}
           address={siteData.address}

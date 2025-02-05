@@ -12,7 +12,7 @@ type Props = {
 
 const TravelRelatedCo2MonetaryValueDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🚙 Déplacements en voiture évités"
         value={
@@ -26,7 +26,7 @@ const TravelRelatedCo2MonetaryValueDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Déplacements en voiture évités" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <TravelRelatedCo2Content withMonetarisation />
       </ModalContent>
     </ModalBody>

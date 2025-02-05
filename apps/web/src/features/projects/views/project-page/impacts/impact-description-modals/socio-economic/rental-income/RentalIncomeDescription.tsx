@@ -25,7 +25,7 @@ const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
       : { surfaceArea: undefined, electricalPowerKWc: undefined };
 
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🔑 Revenu locatif"
         value={
@@ -43,7 +43,7 @@ const RentalIncomeDescription = ({ developmentPlan, impactData }: Props) => {
           { label: "Dépenses friche évitées" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Dans certains projets (ex : centrale photovoltaïque au sol), le foncier aménagé ne fait
           pas l’objet de cession mais d’une location. Les revenus issus de cette éventuelle location

@@ -121,7 +121,7 @@ export function SocialModalWizard({
     case "avoided_traffic_accidents":
       return (
         <AvoidedTrafficAccidentsDescription
-          impactData={impactsData.social.avoidedTrafficAccidents?.total}
+          impactData={impactsData.social.avoidedTrafficAccidents}
         />
       );
     case "avoided_traffic_severe_injuries":

@@ -15,7 +15,7 @@ type Props = {
 
 const AvoidedVehiculeKilometersDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🚙 Kilomètres évités"
         subtitle="Grâce à la ou les commodités créées dans le quartier"
@@ -34,7 +34,7 @@ const AvoidedVehiculeKilometersDescription = ({ impactData }: Props) => {
           { label: "Kilomètres évités" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <TravelRelatedImpactsIntroduction />
 
         <p>

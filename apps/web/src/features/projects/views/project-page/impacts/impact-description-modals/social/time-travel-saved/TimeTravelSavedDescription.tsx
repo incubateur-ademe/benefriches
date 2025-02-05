@@ -17,7 +17,7 @@ type Props = {
 
 const TimeTravelSavedDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title={`⏱ ${TITLE}`}
         subtitle="Grâce à la ou les commodités créées dans le quartier"
@@ -32,7 +32,7 @@ const TimeTravelSavedDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[mainBreadcrumbSection, localPeopleBreadcrumbSection, { label: TITLE }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <TravelRelatedImpactsIntroduction />
 
         <p>

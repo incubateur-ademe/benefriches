@@ -18,7 +18,7 @@ type Props = {
 
 const AvoidedCarRelatedExpensesDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title={`🚗 ${TITLE}`}
         subtitle="Grâce à la ou les commodités créées dans le quartier"
@@ -37,7 +37,7 @@ const AvoidedCarRelatedExpensesDescription = ({ impactData }: Props) => {
           { label: TITLE },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <TravelRelatedImpactsIntroduction />
 
         <p>

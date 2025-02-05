@@ -20,7 +20,7 @@ const HouseholdsPoweredByRenewableEnergyDescription = ({
   developmentPlanElectricalPowerKWc,
 }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🏠 Foyers alimentés par les EnR"
         breadcrumbSegments={[
@@ -29,7 +29,7 @@ const HouseholdsPoweredByRenewableEnergyDescription = ({
           { label: "Foyers alimentés par les EnR" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Cet indicateur propose une illustration du potentiel de production en électricité
           renouvelable qui sera produite par la centrale du projet en nombre de foyers alimentés.

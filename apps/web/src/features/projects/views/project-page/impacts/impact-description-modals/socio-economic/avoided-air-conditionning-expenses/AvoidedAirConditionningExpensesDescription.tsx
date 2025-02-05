@@ -14,7 +14,7 @@ type Props = {
 
 const AvoidedAirConditionningExpensesDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="❄️ Dépenses de climatisation évitées"
         value={
@@ -32,7 +32,7 @@ const AvoidedAirConditionningExpensesDescription = ({ impactData }: Props) => {
           { label: "Dépenses de climatisation évitées" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <>
           <p>
             La présence de nature en ville peut dans une certaine mesure (type de végétation,

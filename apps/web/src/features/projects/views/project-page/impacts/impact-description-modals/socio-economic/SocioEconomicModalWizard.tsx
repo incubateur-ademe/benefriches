@@ -145,7 +145,9 @@ export function SocioEconomicModalWizard({
       return (
         <TaxesIncomeDescription
           developmentPlan={projectData.developmentPlan}
-          impactData={getImpactData(impactsGroupedByName.taxes_income)}
+          impactData={impactsData["socioeconomic"]["impacts"].find(
+            (impact) => impact.impact === "taxes_income",
+          )}
         />
       );
     case "roads_and_utilities_maintenance_expenses":
@@ -159,7 +161,9 @@ export function SocioEconomicModalWizard({
     case "avoided_friche_costs":
       return (
         <AvoidedFricheCostsDescription
-          impactData={sumListWithKey(impactsGroupedByName.avoided_friche_costs ?? [], "amount")}
+          impactData={impactsData["socioeconomic"].impacts.filter(
+            (impact) => impact.impact === "avoided_friche_costs",
+          )}
         />
       );
 
@@ -351,7 +355,9 @@ export function SocioEconomicModalWizard({
     case "avoided_traffic_accidents":
       return (
         <AvoidedTrafficAccidentsMonetaryValueDescription
-          impactData={getImpactData(impactsGroupedByName.avoided_traffic_accidents)}
+          impactData={impactsData["socioeconomic"]["impacts"].find(
+            (impact) => impact.impact === "avoided_traffic_accidents",
+          )}
         />
       );
     case "avoided_traffic_minor_injuries":

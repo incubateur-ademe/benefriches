@@ -16,7 +16,7 @@ type Props = {
 
 const PropertyValueIncreaseDescription = ({ siteSurfaceArea, impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🏡 Valeur patrimoniale des bâtiments alentour"
         subtitle="Grâce à la reconversion du site"
@@ -35,7 +35,7 @@ const PropertyValueIncreaseDescription = ({ siteSurfaceArea, impactData }: Props
           { label: "Valeur patrimoniale des bâtiments alentour" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           La reconversion d’une friche urbaine, du fait de la transformation d’un espace plus ou
           moins ancien et dégradé, se traduit par une amélioration du cadre de vie des riverains du

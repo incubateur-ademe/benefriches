@@ -18,7 +18,7 @@ type Props = {
 
 const AvoidedAirPollutionDescription = ({ impactData }: Props) => {
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title={`💨 ${TITLE}`}
         subtitle="Grâce aux déplacements évités"
@@ -37,7 +37,7 @@ const AvoidedAirPollutionDescription = ({ impactData }: Props) => {
           { label: TITLE },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <TravelRelatedImpactsIntroduction />
 
         <p>

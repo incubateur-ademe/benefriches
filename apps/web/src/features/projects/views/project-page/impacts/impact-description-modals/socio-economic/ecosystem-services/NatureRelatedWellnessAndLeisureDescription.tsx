@@ -36,7 +36,7 @@ const NatureRelatedWellnessAndLeisureDescription = ({
     forecastSoilsDistribution,
   ).filter(([key]) => isPrairie(key) || isForest(key) || isWetLand(key));
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🚵‍♂️ Loisirs et bien-être liés à la nature"
         value={
@@ -54,7 +54,7 @@ const NatureRelatedWellnessAndLeisureDescription = ({
           { label: "Loisirs et bien-être liés à la nature" },
         ]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Les zones naturelles et forestières ou encore les prairies favorisent la biodiversité et
           constituent des zones pour lesquelles les citoyens ont un attachement à leur préservation.

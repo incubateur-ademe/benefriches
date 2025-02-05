@@ -36,7 +36,7 @@ const NitrogenCycleDescription = ({
   ).filter(([key]) => isPrairie(key) || isWetLand(key));
 
   return (
-    <ModalBody>
+    <ModalBody size="large">
       <ModalHeader
         title="🍄 Cycle de l'azote"
         value={
@@ -50,7 +50,7 @@ const NitrogenCycleDescription = ({
         }
         breadcrumbSegments={[...breadcrumbSegments, { label: "Cycle de l'azote" }]}
       />
-      <ModalContent>
+      <ModalContent fullWidth>
         <p>
           Les zones naturelles telles que les prairies et les zones humides ont un apport sur la
           dénitrification des sols et eaux souterraines, réduisant les quantités de nitrates
