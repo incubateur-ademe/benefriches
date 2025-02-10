@@ -201,7 +201,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
     };
 
     const reconversionProjectData: InputReconversionProjectData = {
-      developmentPlanInstallationCosts: reconversionProject.developmentPlanInstallationExpenses,
+      developmentPlanInstallationExpenses: reconversionProject.developmentPlanInstallationExpenses,
       developmentPlanType: reconversionProject.developmentPlanType,
       developmentPlanFeatures: reconversionProject.developmentPlanFeatures,
       developmentPlanDeveloperName: reconversionProject.developmentPlanDeveloperName,

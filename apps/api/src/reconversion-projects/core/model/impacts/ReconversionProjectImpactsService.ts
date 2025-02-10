@@ -92,7 +92,7 @@ export type InputReconversionProjectData = {
   financialAssistanceRevenues: FinancialAssistanceRevenue[];
   developmentPlanType: DevelopmentPlanType;
   developmentPlanFeatures?: DevelopmentPlan["features"];
-  developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
+  developmentPlanInstallationExpenses: DevelopmentPlanInstallationExpenses[];
   conversionSchedule?: Schedule;
   reinstatementSchedule?: Schedule;
   soilsDistribution: SoilsDistribution;
@@ -142,7 +142,8 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
         yearlyProjectedRevenues: this.reconversionProject.yearlyProjectedRevenues,
         sitePurchaseTotalAmount: this.reconversionProject.sitePurchaseTotalAmount,
         financialAssistanceRevenues: this.reconversionProject.financialAssistanceRevenues,
-        developmentPlanInstallationCosts: this.reconversionProject.developmentPlanInstallationCosts,
+        developmentPlanInstallationCosts:
+          this.reconversionProject.developmentPlanInstallationExpenses,
         siteResaleTotalAmount: this.reconversionProject.siteResaleTotalAmount,
       },
       this.evaluationPeriodInYears,

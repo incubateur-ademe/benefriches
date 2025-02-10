@@ -30,7 +30,7 @@ const reconversionProjectImpactDataView = {
   reinstatementContractOwnerName: "Mairie de Blajan",
   sitePurchaseTotalAmount: 150000,
   reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
-  developmentPlanInstallationCosts: [{ amount: 200000, purpose: "installation_works" }],
+  developmentPlanInstallationExpenses: [{ amount: 200000, purpose: "installation_works" }],
   developmentPlanFeatures: {
     surfaceArea: 5000,
     electricalPowerKWc: 53,
