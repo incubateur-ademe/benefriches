@@ -1,4 +1,19 @@
-import { FricheActivity } from "shared";
+import z from "zod";
+
+export const fricheActivitySchema = z.enum([
+  "AGRICULTURE",
+  "INDUSTRY",
+  "MILITARY",
+  "RAILWAY",
+  "PORT",
+  "TIP_OR_RECYCLING_SITE",
+  "PUBLIC_FACILITY",
+  "BUSINESS",
+  "HOUSING",
+  "OTHER",
+]);
+
+export type FricheActivity = z.infer<typeof fricheActivitySchema>;
 
 export const getFricheActivityLabel = (fricheActivity: FricheActivity): string => {
   switch (fricheActivity) {

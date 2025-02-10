@@ -1,9 +1,9 @@
+import { generateSiteName } from "shared";
+
 import { completeNaming } from "@/features/create-site/core/createSite.reducer";
-import { SiteDraft } from "@/features/create-site/core/siteFoncier.types";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { revertNamingStep } from "../../../core/actions/createSite.actions";
-import { generateSiteName } from "../../../core/siteName";
 import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
 
 function SiteNameAndDescriptionFormContainer() {
@@ -13,7 +13,14 @@ function SiteNameAndDescriptionFormContainer() {
   return (
     <SiteNameAndDescriptionForm
       initialValues={{
-        name: siteData.name ?? generateSiteName(siteData as SiteDraft),
+        name:
+          siteData.name ??
+          generateSiteName({
+            cityName: siteData.address?.city ?? "",
+            isFriche: siteData.isFriche ?? false,
+            soils: siteData.soils ?? [],
+            fricheActivity: siteData.fricheActivity,
+          }),
         description: siteData.description ?? "",
       }}
       onSubmit={(formData: FormValues) => {

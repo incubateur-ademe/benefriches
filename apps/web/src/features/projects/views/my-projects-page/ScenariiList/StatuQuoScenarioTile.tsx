@@ -1,7 +1,5 @@
 import { useState } from "react";
-import { FricheActivity } from "shared";
-
-import { getFricheActivityLabel } from "@/features/create-site/core/friche.types";
+import { FricheActivity, getFricheActivityLabel } from "shared";
 
 import ScenarioTile from "./ScenarioTile/ScenarioTile";
 

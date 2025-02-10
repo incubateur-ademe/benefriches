@@ -1,12 +1,15 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { SiteYearlyExpensePurpose, computeEstimatedPropertyTaxesAmount } from "shared";
+import {
+  SiteYearlyExpensePurpose,
+  computeEstimatedPropertyTaxesAmount,
+  computeIllegalDumpingDefaultCost,
+  computeMaintenanceDefaultCost,
+  computeSecurityDefaultCost,
+} from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
 
 import {
-  computeIllegalDumpingDefaultCost,
-  computeMaintenanceDefaultCost,
-  computeSecurityDefaultCost,
   getSiteManagementExpensesBaseConfig,
   getSiteSecurityExpensesBaseConfig,
   SiteManagementYearlyExpensesBaseConfig,

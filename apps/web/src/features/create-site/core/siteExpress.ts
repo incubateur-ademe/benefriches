@@ -1,14 +1,16 @@
-import { computeEstimatedPropertyTaxesAmount, SiteYearlyExpense, SoilType } from "shared";
-import { formatMunicipalityName } from "shared";
-
-import { CreateSiteGatewayPayload } from "../core/actions/createSite.actions";
 import {
+  computeEstimatedPropertyTaxesAmount,
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
-} from "./expenses.functions";
+  generateSiteName,
+  SiteYearlyExpense,
+  SoilType,
+} from "shared";
+import { formatMunicipalityName } from "shared";
+
+import { CreateSiteGatewayPayload } from "../core/actions/createSite.actions";
 import { SiteExpressDraft } from "./siteFoncier.types";
-import { generateSiteName } from "./siteName";
 
 const FRANCE_AVERAGE_CITY_POPULATION = 1800;
 
@@ -78,7 +80,7 @@ const getExpressSiteData = (
     yearlyExpenses,
     yearlyIncomes: [],
     name: generateSiteName({
-      address: siteData.address,
+      cityName: siteData.address.city,
       soils: Object.keys(soilsDistribution) as SoilType[],
       isFriche: siteData.isFriche,
     }),

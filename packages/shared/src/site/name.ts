@@ -1,13 +1,6 @@
-import {
-  formatCityWithPlacePreposition,
-  isForest,
-  isPrairie,
-  isSoilAgricultural,
-  SoilType,
-} from "shared";
-
-import { getFricheActivityLabel } from "./friche.types";
-import { SiteDraft } from "./siteFoncier.types";
+import { formatCityWithPlacePreposition } from "../local-authority";
+import { isForest, isPrairie, isSoilAgricultural, SoilType } from "../soils";
+import { FricheActivity, getFricheActivityLabel } from "./fricheActivity";
 
 const isSoilTypeArtificial = (soilType: SoilType) => {
   return [
@@ -23,8 +16,12 @@ const isSoilTypeNatural = (soilType: SoilType) => {
     isPrairie(soilType) || isForest(soilType) || soilType === "WATER" || soilType === "WET_LAND"
   );
 };
-
-type SiteData = Pick<SiteDraft, "isFriche" | "address" | "fricheActivity" | "soils">;
+type SiteData = {
+  isFriche: boolean;
+  fricheActivity?: FricheActivity;
+  soils: SoilType[];
+  cityName: string;
+};
 
 export const generateSiteDesignation = (siteData: SiteData) => {
   if (siteData.isFriche)
@@ -44,9 +41,7 @@ export const generateSiteDesignation = (siteData: SiteData) => {
 export const generateSiteName = (siteData: SiteData): string => {
   const designation = generateSiteDesignation(siteData);
 
-  const { city } = siteData.address;
-
-  const name = `${designation} ${formatCityWithPlacePreposition(city)}`;
+  const name = `${designation} ${formatCityWithPlacePreposition(siteData.cityName)}`;
 
   return name.charAt(0).toUpperCase() + name.slice(1);
 };
