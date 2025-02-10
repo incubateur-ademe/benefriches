@@ -92,7 +92,7 @@ describe("SqlSiteImpactsQuery integration", () => {
         ownerStructureType: "company",
         ownerName: "Current site owner",
         tenantName: "Current tenant",
-        yearlyCosts: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
+        yearlyExpenses: [{ amount: 100, bearer: "tenant", purpose: "rent" }],
       });
     });
     it("gets site with data needed for impact computation when no accidents and no contaminated surface", async () => {
@@ -140,7 +140,7 @@ describe("SqlSiteImpactsQuery integration", () => {
         ownerName: "Owner name",
         ownerStructureType: "company",
         hasAccidents: false,
-        yearlyCosts: [],
+        yearlyExpenses: [],
       });
     });
   });

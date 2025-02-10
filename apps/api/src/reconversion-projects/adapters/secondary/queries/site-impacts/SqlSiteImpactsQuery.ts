@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+import { SiteYearlyExpense } from "shared";
 
 import {
   SiteImpactsDataView,
@@ -69,7 +70,7 @@ export class SqlSiteImpactsQuery implements SiteImpactsQuery {
       ownerName: sqlSite.owner_name ?? "",
       ownerStructureType: sqlSite.owner_structure_type,
       tenantName: sqlSite.tenant_name ?? undefined,
-      yearlyCosts: sqlYearlyExpenses,
+      yearlyExpenses: sqlYearlyExpenses as SiteYearlyExpense[],
     };
   }
 }

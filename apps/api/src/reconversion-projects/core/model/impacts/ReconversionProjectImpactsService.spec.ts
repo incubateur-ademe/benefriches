@@ -1,21 +1,15 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { v4 as uuid } from "uuid";
-
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { FakeGetSoilsCarbonStorageService } from "../../gateways/FakeGetSoilsCarbonStorageService";
 import {
-  ReconversionProjectImpactsDataView,
-  SiteImpactsDataView,
-} from "../../usecases/computeReconversionProjectImpacts.usecase";
-import { ReconversionProjectImpactsService } from "./ReconversionProjectImpactsService";
+  InputReconversionProjectData,
+  InputSiteData,
+  ReconversionProjectImpactsService,
+} from "./ReconversionProjectImpactsService";
 
-const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
-  id: uuid(),
-  name: "Project with big impacts",
-  relatedSiteId: uuid(),
-  isExpressProject: false,
+const reconversionProjectImpactDataView = {
   soilsDistribution: {
     ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
     PRAIRIE_TREES: 20000,
@@ -35,7 +29,7 @@ const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
   futureSiteOwnerName: "Mairie de Blajan",
   reinstatementContractOwnerName: "Mairie de Blajan",
   sitePurchaseTotalAmount: 150000,
-  reinstatementCosts: [{ amount: 500000, purpose: "demolition" }],
+  reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
   developmentPlanInstallationCosts: [{ amount: 200000, purpose: "installation_works" }],
   developmentPlanFeatures: {
     surfaceArea: 5000,
@@ -46,7 +40,7 @@ const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
   developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
   developmentPlanDeveloperName: "Mairie de Blajan",
   financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
-  yearlyProjectedCosts: [
+  yearlyProjectedExpenses: [
     { amount: 1000, purpose: "taxes" },
     { amount: 10000, purpose: "maintenance" },
   ],
@@ -57,14 +51,11 @@ const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
   sitePurchasePropertyTransferDutiesAmount: 5432,
   operationsFirstYear: 2025,
   decontaminatedSoilSurface: 20000,
-} as const;
+} as const satisfies InputReconversionProjectData;
 
-const site: Required<SiteImpactsDataView> = {
-  id: reconversionProjectImpactDataView.relatedSiteId,
+const site = {
   contaminatedSoilSurface: 5000,
-  name: "My base site",
   isFriche: true,
-  fricheActivity: "AGRICULTURAL",
   surfaceArea: 20000,
   soilsDistribution: {
     PRAIRIE_TREES: 0,
@@ -72,21 +63,18 @@ const site: Required<SiteImpactsDataView> = {
     ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
   },
   addressCityCode: "69000",
-  addressLabel: "Lyon",
   ownerName: "Current owner",
-  ownerStructureType: "company",
   tenantName: "Current tenant",
-  hasAccidents: true,
   accidentsDeaths: 0,
   accidentsMinorInjuries: 1,
   accidentsSevereInjuries: 2,
-  yearlyCosts: [
+  yearlyExpenses: [
     { amount: 54000, bearer: "tenant", purpose: "rent" },
     { amount: 11600, bearer: "tenant", purpose: "security" },
     { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
-    { amount: 500, bearer: "owner", purpose: "taxes" },
+    { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
   ],
-} as const;
+} as const satisfies Required<InputSiteData>;
 
 describe("ReconversionProjectImpactsService: computes common impacts for all kind of project", () => {
   let dateProvider: DateProvider;
@@ -99,8 +87,8 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
   describe("Rental income", () => {
     it("returns no impact when no current or future rental income", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedCosts: [] },
-        relatedSite: { ...site, yearlyCosts: [], ownerName: "Current owner", isFriche: false },
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
+        relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
@@ -112,10 +100,10 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       const projectImpactsService = new ReconversionProjectImpactsService({
         reconversionProject: {
           ...reconversionProjectImpactDataView,
-          yearlyProjectedCosts: [{ amount: 30000, purpose: "rent" }],
+          yearlyProjectedExpenses: [{ amount: 30000, purpose: "rent" }],
           futureSiteOwnerName: "Mairie de Paris",
         },
-        relatedSite: { ...site, yearlyCosts: [], ownerName: "Current owner", isFriche: false },
+        relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
@@ -132,10 +120,10 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
 
     it("returns rental income negative impact over 10 years for current site owner when the site is rented but won't be anymore", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedCosts: [] },
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
         relatedSite: {
           ...site,
-          yearlyCosts: [{ amount: 20000, purpose: "rent", bearer: "" }],
+          yearlyExpenses: [{ amount: 20000, purpose: "rent", bearer: "tenant" }],
           ownerName: "Current owner",
           isFriche: false,
         },
@@ -156,12 +144,12 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       const projectImpactsService = new ReconversionProjectImpactsService({
         reconversionProject: {
           ...reconversionProjectImpactDataView,
-          yearlyProjectedCosts: [{ amount: 10000, purpose: "rent" }],
+          yearlyProjectedExpenses: [{ amount: 10000, purpose: "rent" }],
           futureSiteOwnerName: undefined,
         },
         relatedSite: {
           ...site,
-          yearlyCosts: [{ amount: 5000, purpose: "rent", bearer: "Mairie de Blajan" }],
+          yearlyExpenses: [{ amount: 5000, purpose: "rent", bearer: "tenant" }],
           isFriche: false,
         },
         evaluationPeriodInYears: 10,
@@ -183,11 +171,11 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         reconversionProject: {
           ...reconversionProjectImpactDataView,
           futureSiteOwnerName: "New owner",
-          yearlyProjectedCosts: [{ amount: 10000, purpose: "rent" }],
+          yearlyProjectedExpenses: [{ amount: 10000, purpose: "rent" }],
         },
         relatedSite: {
           ...site,
-          yearlyCosts: [{ amount: 5000, purpose: "rent", bearer: "" }],
+          yearlyExpenses: [{ amount: 5000, purpose: "rent", bearer: "owner" }],
           ownerName: "Current owner",
           isFriche: false,
         },
@@ -215,8 +203,8 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
   describe("Avoided friche costs", () => {
     it("returns no impact when no current friche costs", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedCosts: [] },
-        relatedSite: { ...site, yearlyCosts: [], ownerName: "Current owner", isFriche: false },
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
+        relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
@@ -226,10 +214,10 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
 
     it("returns avoided friche costs for current tenant over 10 years when friche costs", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedCosts: [] },
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
         relatedSite: {
           ...site,
-          yearlyCosts: [
+          yearlyExpenses: [
             {
               amount: 14000,
               purpose: "security",
@@ -257,7 +245,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
             },
             {
               amount: 500000000,
-              purpose: "non-relevant-cost",
+              purpose: "otherManagementCosts",
               bearer: "tenant",
             },
           ],
@@ -288,10 +276,10 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
 
     it("returns avoided friche costs for current owner over 10 years when friche costs but no tenant", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedCosts: [] },
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
         relatedSite: {
           ...site,
-          yearlyCosts: [
+          yearlyExpenses: [
             {
               amount: 14000,
               purpose: "security",
@@ -304,7 +292,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
             },
             {
               amount: 500000000,
-              purpose: "non-relevant-cost",
+              purpose: "otherManagementCosts",
               bearer: "owner",
             },
           ],
@@ -332,14 +320,14 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
 
     it("returns no avoided friche costs if site is not friche", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedCosts: [] },
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
         relatedSite: {
           ...site,
-          yearlyCosts: [
+          yearlyExpenses: [
             {
               amount: 14000,
               purpose: "maintenance",
-              bearer: "Current owner",
+              bearer: "owner",
             },
           ],
           ownerName: "Current owner",
@@ -355,10 +343,10 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
 
     it("returns avoided friche costs with different owners", () => {
       const projectImpactsService = new ReconversionProjectImpactsService({
-        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedCosts: [] },
+        reconversionProject: { ...reconversionProjectImpactDataView, yearlyProjectedExpenses: [] },
         relatedSite: {
           ...site,
-          yearlyCosts: [
+          yearlyExpenses: [
             {
               amount: 14000,
               purpose: "security",
@@ -423,12 +411,12 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       const projectImpactsService = new ReconversionProjectImpactsService({
         reconversionProject: {
           ...reconversionProjectImpactDataView,
-          yearlyProjectedCosts: [],
+          yearlyProjectedExpenses: [],
           sitePurchasePropertyTransferDutiesAmount: undefined,
         },
         relatedSite: {
           ...site,
-          yearlyCosts: [],
+          yearlyExpenses: [],
           isFriche: false,
         },
         evaluationPeriodInYears: 10,
@@ -446,7 +434,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         relatedSite: {
           ...site,
-          yearlyCosts: [],
+          yearlyExpenses: [],
           isFriche: false,
         },
         evaluationPeriodInYears: 10,

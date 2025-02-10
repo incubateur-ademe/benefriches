@@ -1,21 +1,12 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { v4 as uuid } from "uuid";
-
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { FakeGetSoilsCarbonStorageService } from "../../gateways/FakeGetSoilsCarbonStorageService";
-import {
-  ReconversionProjectImpactsDataView,
-  SiteImpactsDataView,
-} from "../../usecases/computeReconversionProjectImpacts.usecase";
 import { PhotovoltaicProjectImpactsService } from "./PhotovoltaicProjectImpactsService";
+import { InputReconversionProjectData, InputSiteData } from "./ReconversionProjectImpactsService";
 
-const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
-  id: uuid(),
-  name: "Project with big impacts",
-  relatedSiteId: uuid(),
-  isExpressProject: false,
+const reconversionProjectImpactDataView: InputReconversionProjectData = {
   soilsDistribution: {
     ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
     PRAIRIE_TREES: 20000,
@@ -35,7 +26,7 @@ const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
   futureSiteOwnerName: "Mairie de Blajan",
   reinstatementContractOwnerName: "Mairie de Blajan",
   sitePurchaseTotalAmount: 150000,
-  reinstatementCosts: [{ amount: 500000, purpose: "demolition" }],
+  reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
   developmentPlanInstallationCosts: [{ amount: 200000, purpose: "installation_works" }],
   developmentPlanFeatures: {
     surfaceArea: 5000,
@@ -46,7 +37,7 @@ const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
   developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
   developmentPlanDeveloperName: "Mairie de Blajan",
   financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
-  yearlyProjectedCosts: [
+  yearlyProjectedExpenses: [
     { amount: 1000, purpose: "taxes" },
     { amount: 10000, purpose: "maintenance" },
   ],
@@ -59,12 +50,9 @@ const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
   decontaminatedSoilSurface: 20000,
 } as const;
 
-const site: Required<SiteImpactsDataView> = {
-  id: reconversionProjectImpactDataView.relatedSiteId,
+const site = {
   contaminatedSoilSurface: 5000,
-  name: "My base site",
   isFriche: true,
-  fricheActivity: "AGRICULTURAL",
   surfaceArea: 20000,
   soilsDistribution: {
     PRAIRIE_TREES: 0,
@@ -72,21 +60,18 @@ const site: Required<SiteImpactsDataView> = {
     ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10000,
   },
   addressCityCode: "69000",
-  addressLabel: "Lyon",
   ownerName: "Current owner",
-  ownerStructureType: "company",
   tenantName: "Current tenant",
-  hasAccidents: true,
   accidentsDeaths: 0,
   accidentsMinorInjuries: 1,
   accidentsSevereInjuries: 2,
-  yearlyCosts: [
+  yearlyExpenses: [
     { amount: 54000, bearer: "tenant", purpose: "rent" },
     { amount: 11600, bearer: "tenant", purpose: "security" },
     { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
-    { amount: 500, bearer: "owner", purpose: "taxes" },
+    { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
   ],
-} as const;
+} as const satisfies Required<InputSiteData>;
 
 describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions with EnR production", () => {
   let dateProvider: DateProvider;

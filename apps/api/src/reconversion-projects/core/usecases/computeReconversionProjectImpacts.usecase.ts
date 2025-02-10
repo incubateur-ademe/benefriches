@@ -5,6 +5,7 @@ import {
   RecurringExpense,
   RecurringRevenue,
   ReinstatementExpense,
+  SiteYearlyExpense,
   SoilsDistribution,
 } from "shared";
 
@@ -13,7 +14,11 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { PhotovoltaicProjectImpactsService } from "../model/impacts/PhotovoltaicProjectImpactsService";
-import { GetSoilsCarbonStoragePerSoilsService } from "../model/impacts/ReconversionProjectImpactsService";
+import {
+  GetSoilsCarbonStoragePerSoilsService,
+  InputReconversionProjectData,
+  InputSiteData,
+} from "../model/impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/impacts/UrbanProjectImpactsService";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
@@ -34,7 +39,7 @@ export type SiteImpactsDataView = {
   accidentsDeaths?: number;
   accidentsMinorInjuries?: number;
   accidentsSevereInjuries?: number;
-  yearlyCosts: { bearer: string; amount: number; purpose: string }[];
+  yearlyExpenses: SiteYearlyExpense[];
 };
 
 export interface SiteImpactsQuery {
@@ -54,10 +59,10 @@ export type ReconversionProjectImpactsDataView = {
   reinstatementContractOwnerName?: string;
   sitePurchaseTotalAmount?: number;
   sitePurchasePropertyTransferDutiesAmount?: number;
-  reinstatementCosts: ReinstatementExpense[];
-  developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
+  reinstatementExpenses: ReinstatementExpense[];
+  developmentPlanInstallationExpenses: DevelopmentPlanInstallationExpenses[];
   financialAssistanceRevenues: FinancialAssistanceRevenue[];
-  yearlyProjectedCosts: RecurringExpense[];
+  yearlyProjectedExpenses: RecurringExpense[];
   yearlyProjectedRevenues: RecurringRevenue[];
   developmentPlanType?: DevelopmentPlan["type"];
   developmentPlanDeveloperName?: string;
@@ -181,11 +186,48 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       },
     };
 
+    const siteData: InputSiteData = {
+      isFriche: relatedSite.isFriche,
+      contaminatedSoilSurface: relatedSite.contaminatedSoilSurface,
+      accidentsDeaths: relatedSite.accidentsDeaths,
+      accidentsMinorInjuries: relatedSite.accidentsMinorInjuries,
+      accidentsSevereInjuries: relatedSite.accidentsSevereInjuries,
+      addressCityCode: relatedSite.addressCityCode,
+      soilsDistribution: relatedSite.soilsDistribution,
+      surfaceArea: relatedSite.surfaceArea,
+      ownerName: relatedSite.ownerName,
+      yearlyExpenses: relatedSite.yearlyExpenses,
+      tenantName: relatedSite.tenantName,
+    };
+
+    const reconversionProjectData: InputReconversionProjectData = {
+      developmentPlanInstallationCosts: reconversionProject.developmentPlanInstallationExpenses,
+      developmentPlanType: reconversionProject.developmentPlanType,
+      developmentPlanFeatures: reconversionProject.developmentPlanFeatures,
+      developmentPlanDeveloperName: reconversionProject.developmentPlanDeveloperName,
+      soilsDistribution: reconversionProject.soilsDistribution,
+      financialAssistanceRevenues: reconversionProject.financialAssistanceRevenues,
+      futureSiteOwnerName: reconversionProject.futureSiteOwnerName,
+      futureOperatorName: reconversionProject.futureOperatorName,
+      reinstatementContractOwnerName: reconversionProject.reinstatementContractOwnerName,
+      yearlyProjectedExpenses: reconversionProject.yearlyProjectedExpenses,
+      yearlyProjectedRevenues: reconversionProject.yearlyProjectedRevenues,
+      decontaminatedSoilSurface: reconversionProject.decontaminatedSoilSurface,
+      operationsFirstYear: reconversionProject.operationsFirstYear,
+      sitePurchaseTotalAmount: reconversionProject.sitePurchaseTotalAmount,
+      sitePurchasePropertyTransferDutiesAmount:
+        reconversionProject.sitePurchasePropertyTransferDutiesAmount,
+      reinstatementSchedule: reconversionProject.reinstatementSchedule,
+      reinstatementExpenses: reconversionProject.reinstatementExpenses,
+      conversionSchedule: reconversionProject.conversionSchedule,
+      siteResaleTotalAmount: reconversionProject.siteResaleTotalAmount,
+    };
+
     switch (reconversionProject.developmentPlanType) {
       case "PHOTOVOLTAIC_POWER_PLANT": {
         const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
-          reconversionProject,
-          relatedSite,
+          reconversionProject: reconversionProjectData,
+          relatedSite: siteData,
           evaluationPeriodInYears,
           dateProvider: this.dateProvider,
           getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
@@ -203,8 +245,8 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           );
 
         const urbanProjectImpactsService = new UrbanProjectImpactsService({
-          reconversionProject,
-          relatedSite,
+          reconversionProject: reconversionProjectData,
+          relatedSite: siteData,
           evaluationPeriodInYears,
           dateProvider: this.dateProvider,
           getCityRelatedDataService: this.getCityRelatedDataService,

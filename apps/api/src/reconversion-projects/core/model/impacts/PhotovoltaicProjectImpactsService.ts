@@ -54,7 +54,7 @@ export class PhotovoltaicProjectImpactsService
     const impacts: TaxesIncomeImpact[] = [];
 
     const projectedTaxesAmount =
-      this.reconversionProject.yearlyProjectedCosts.find(
+      this.reconversionProject.yearlyProjectedExpenses.find(
         ({ purpose }) => purpose === TAXES_PURPOSE_KEY,
       )?.amount ?? 0;
 

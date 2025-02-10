@@ -150,7 +150,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
           startDate: new Date("2024-07-01"),
           endDate: new Date("2024-12-31"),
         },
-        reinstatementCosts: [
+        reinstatementExpenses: [
           { purpose: "waste_collection", amount: 1000 },
           { purpose: "deimpermeabilization", amount: 500 },
         ],
@@ -159,7 +159,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         reinstatementContractOwnerName: "Mairie de Blajan",
         sitePurchaseTotalAmount: 108000,
         sitePurchasePropertyTransferDutiesAmount: 8000,
-        developmentPlanInstallationCosts: [
+        developmentPlanInstallationExpenses: [
           {
             amount: 35000,
             purpose: "technical_studies",
@@ -173,7 +173,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
           { amount: 45000, source: "public_subsidies" },
           { amount: 5000, source: "other" },
         ],
-        yearlyProjectedCosts: [],
+        yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
         developmentPlanFeatures: {
           expectedAnnualProduction: 10,
@@ -242,10 +242,10 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
           BUILDINGS: 1200,
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 30000,
         },
-        yearlyProjectedCosts: [],
+        yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
         conversionSchedule: undefined,
-        developmentPlanInstallationCosts: [],
+        developmentPlanInstallationExpenses: [],
         developmentPlanDeveloperName: undefined,
         developmentPlanFeatures: undefined,
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
@@ -253,7 +253,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         futureSiteOwnerName: undefined,
         sitePurchaseTotalAmount: undefined,
         reinstatementContractOwnerName: undefined,
-        reinstatementCosts: [],
+        reinstatementExpenses: [],
         financialAssistanceRevenues: [],
         reinstatementSchedule: undefined,
       });

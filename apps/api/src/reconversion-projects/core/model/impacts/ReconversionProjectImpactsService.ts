@@ -5,15 +5,19 @@ import {
   sumListWithKey,
   soilsDistributionObjToArray,
   SoilType,
+  SiteYearlyExpense,
+  SoilsDistribution,
+  ReinstatementExpense,
+  FinancialAssistanceRevenue,
+  DevelopmentPlanType,
+  RecurringExpense,
+  RecurringRevenue,
+  DevelopmentPlanInstallationExpenses,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
-import { DevelopmentPlan } from "../../model/reconversionProject";
-import {
-  ReconversionProjectImpactsDataView,
-  SiteImpactsDataView,
-} from "../../usecases/computeReconversionProjectImpacts.usecase";
+import { DevelopmentPlan, Schedule } from "../../model/reconversionProject";
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { computeEconomicBalanceImpact } from "./economic-balance/economicBalanceImpact";
 import {
@@ -59,18 +63,54 @@ export interface GetSoilsCarbonStoragePerSoilsService {
   }): Promise<SoilsCarbonStorageResult>;
 }
 
+export type InputSiteData = {
+  isFriche: boolean;
+  yearlyExpenses: SiteYearlyExpense[];
+  ownerName: string;
+  tenantName?: string;
+  addressCityCode: string;
+  soilsDistribution: SoilsDistribution;
+  surfaceArea: number;
+  contaminatedSoilSurface?: number;
+  accidentsDeaths?: number;
+  accidentsSevereInjuries?: number;
+  accidentsMinorInjuries?: number;
+};
+
+export type InputReconversionProjectData = {
+  operationsFirstYear?: number;
+  developmentPlanDeveloperName?: string;
+  futureOperatorName?: string;
+  futureSiteOwnerName?: string;
+  reinstatementContractOwnerName?: string;
+  reinstatementExpenses: ReinstatementExpense[];
+  yearlyProjectedExpenses: RecurringExpense[];
+  yearlyProjectedRevenues: RecurringRevenue[];
+  sitePurchaseTotalAmount?: number;
+  sitePurchasePropertyTransferDutiesAmount?: number;
+  siteResaleTotalAmount?: number;
+  financialAssistanceRevenues: FinancialAssistanceRevenue[];
+  developmentPlanType: DevelopmentPlanType;
+  developmentPlanFeatures?: DevelopmentPlan["features"];
+  developmentPlanInstallationCosts: DevelopmentPlanInstallationExpenses[];
+  conversionSchedule?: Schedule;
+  reinstatementSchedule?: Schedule;
+  soilsDistribution: SoilsDistribution;
+  decontaminatedSoilSurface?: number;
+};
+
 export type ReconversionProjectImpactsServiceProps = {
-  reconversionProject: ReconversionProjectImpactsDataView;
+  reconversionProject: InputReconversionProjectData;
   evaluationPeriodInYears: number;
-  relatedSite: SiteImpactsDataView;
+  relatedSite: InputSiteData;
   dateProvider: DateProvider;
   getSoilsCarbonStorageService: GetSoilsCarbonStoragePerSoilsService;
 };
 export class ReconversionProjectImpactsService implements ImpactsServiceInterface {
   protected readonly evaluationPeriodInYears: number;
   protected readonly operationsFirstYear: number;
-  protected readonly reconversionProject: ReconversionProjectImpactsDataView;
-  protected readonly relatedSite: SiteImpactsDataView;
+  protected readonly reconversionProject: InputReconversionProjectData;
+  protected readonly relatedSite: InputSiteData;
 
   protected readonly getSoilsCarbonStorageService: GetSoilsCarbonStoragePerSoilsService;
 
@@ -97,8 +137,8 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
         futureOperatorName: this.reconversionProject.futureOperatorName,
         futureSiteOwnerName: this.reconversionProject.futureSiteOwnerName,
         reinstatementContractOwnerName: this.reconversionProject.reinstatementContractOwnerName,
-        reinstatementCosts: this.reconversionProject.reinstatementCosts,
-        yearlyProjectedCosts: this.reconversionProject.yearlyProjectedCosts,
+        reinstatementCosts: this.reconversionProject.reinstatementExpenses,
+        yearlyProjectedCosts: this.reconversionProject.yearlyProjectedExpenses,
         yearlyProjectedRevenues: this.reconversionProject.yearlyProjectedRevenues,
         sitePurchaseTotalAmount: this.reconversionProject.sitePurchaseTotalAmount,
         financialAssistanceRevenues: this.reconversionProject.financialAssistanceRevenues,
@@ -117,7 +157,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       } as DevelopmentPlan,
       conversionSchedule: this.reconversionProject.conversionSchedule,
       reinstatementSchedule: this.reconversionProject.reinstatementSchedule,
-      reinstatementExpenses: this.reconversionProject.reinstatementCosts,
+      reinstatementExpenses: this.reconversionProject.reinstatementExpenses,
       evaluationPeriodInYears: this.evaluationPeriodInYears,
     });
 
@@ -157,7 +197,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       return [];
     }
 
-    const currentFricheCosts = this.relatedSite.yearlyCosts.filter(({ purpose }) =>
+    const currentFricheCosts = this.relatedSite.yearlyExpenses.filter(({ purpose }) =>
       FRICHE_COST_PURPOSES.includes(purpose as FricheCostPurpose),
     ) as { purpose: FricheCostPurpose; amount: number; bearer: string }[];
     if (currentFricheCosts.length === 0) {
@@ -199,10 +239,10 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
   protected get rentImpacts() {
     const impacts: SocioEconomicImpact[] = [];
 
-    const projectedRentCost = this.reconversionProject.yearlyProjectedCosts.find(
+    const projectedRentCost = this.reconversionProject.yearlyProjectedExpenses.find(
       ({ purpose }) => purpose === RENT_PURPOSE_KEY,
     );
-    const currentRentCost = this.relatedSite.yearlyCosts.find(
+    const currentRentCost = this.relatedSite.yearlyExpenses.find(
       ({ purpose }) => purpose === RENT_PURPOSE_KEY,
     );
     if (projectedRentCost) {

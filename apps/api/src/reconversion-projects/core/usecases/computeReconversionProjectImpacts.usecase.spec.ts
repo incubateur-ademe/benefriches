@@ -55,10 +55,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         relatedSiteId: siteId,
         soilsDistribution: {},
         sitePurchaseTotalAmount: 0,
-        reinstatementCosts: [],
-        developmentPlanInstallationCosts: [],
+        reinstatementExpenses: [],
+        developmentPlanInstallationExpenses: [],
         financialAssistanceRevenues: [],
-        yearlyProjectedCosts: [],
+        yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
       });
       const siteQuery = new InMemorySiteImpactsQuery();
@@ -89,10 +89,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         relatedSiteId: siteId,
         soilsDistribution: {},
         sitePurchaseTotalAmount: 0,
-        reinstatementCosts: [],
-        developmentPlanInstallationCosts: [],
+        reinstatementExpenses: [],
+        developmentPlanInstallationExpenses: [],
         financialAssistanceRevenues: [],
-        yearlyProjectedCosts: [],
+        yearlyProjectedExpenses: [],
         yearlyProjectedRevenues: [],
       });
       const siteQuery = new InMemorySiteImpactsQuery();
@@ -112,7 +112,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
   });
 
   describe("Success cases", () => {
-    const reconversionProjectImpactDataView: ReconversionProjectImpactsDataView = {
+    const reconversionProjectImpactDataView = {
       id: uuid(),
       name: "Project with big impacts",
       relatedSiteId: uuid(),
@@ -136,8 +136,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       futureSiteOwnerName: "Mairie de Blajan",
       reinstatementContractOwnerName: "Mairie de Blajan",
       sitePurchaseTotalAmount: 150000,
-      reinstatementCosts: [{ amount: 500000, purpose: "demolition" }],
-      developmentPlanInstallationCosts: [{ amount: 200000, purpose: "installation_works" }],
+      reinstatementExpenses: [{ amount: 500000, purpose: "demolition" }],
+      developmentPlanInstallationExpenses: [{ amount: 200000, purpose: "installation_works" }],
       developmentPlanFeatures: {
         electricalPowerKWc: 258,
         surfaceArea: 20000,
@@ -147,7 +147,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
       developmentPlanDeveloperName: "Mairie de Blajan",
       financialAssistanceRevenues: [{ amount: 150000, source: "public_subsidies" }],
-      yearlyProjectedCosts: [
+      yearlyProjectedExpenses: [
         { amount: 1000, purpose: "taxes" },
         { amount: 10000, purpose: "maintenance" },
       ],
@@ -158,8 +158,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       sitePurchasePropertyTransferDutiesAmount: 5432,
       operationsFirstYear: 2025,
       decontaminatedSoilSurface: 20000,
-    } as const;
-    const site: Required<SiteImpactsDataView> = {
+    } as const satisfies ReconversionProjectImpactsDataView;
+    const site = {
       id: reconversionProjectImpactDataView.relatedSiteId,
       contaminatedSoilSurface: 20000,
       name: "My base site",
@@ -181,13 +181,13 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
       accidentsDeaths: 0,
       accidentsMinorInjuries: 1,
       accidentsSevereInjuries: 2,
-      yearlyCosts: [
+      yearlyExpenses: [
         { amount: 54000, bearer: "tenant", purpose: "rent" },
         { amount: 11600, bearer: "tenant", purpose: "security" },
         { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
-        { amount: 500, bearer: "owner", purpose: "taxes" },
+        { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
       ],
-    } as const;
+    } as const satisfies Required<SiteImpactsDataView>;
 
     it("returns impacts over 10 years for a reconversion project dedicated to renewable energy production on friche with contaminated soil", async () => {
       const evaluationPeriodInYears = 10;

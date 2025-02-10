@@ -150,14 +150,14 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       sitePurchaseTotalAmount,
       sitePurchasePropertyTransferDutiesAmount:
         reconversionProject.site_purchase_property_transfer_duties ?? undefined,
-      reinstatementCosts: sqlReinstatementCosts,
+      reinstatementExpenses: sqlReinstatementCosts,
       financialAssistanceRevenues: sqlFinancialAssistanceRevenues,
-      yearlyProjectedCosts: sqlExpenses,
+      yearlyProjectedExpenses: sqlExpenses,
       yearlyProjectedRevenues: sqlRevenues,
       developmentPlanType: sqlDevelopmentPlan?.type ?? undefined,
       developmentPlanFeatures: sqlDevelopmentPlanFeatures,
       developmentPlanDeveloperName: sqlDevelopmentPlan?.developer_name ?? undefined,
-      developmentPlanInstallationCosts: sqlDevelopmentPlan?.costs ?? [],
+      developmentPlanInstallationExpenses: sqlDevelopmentPlan?.costs ?? [],
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
       siteResaleTotalAmount,
       decontaminatedSoilSurface:
