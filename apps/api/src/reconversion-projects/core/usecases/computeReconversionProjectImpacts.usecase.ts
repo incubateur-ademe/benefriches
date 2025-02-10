@@ -125,7 +125,7 @@ class NoDevelopmentPlanType extends Error {
     super(
       `ComputeReconversionProjectImpacts: ReconversionProject with id ${reconversionProjectId} has no development plan`,
     );
-    this.name = "SiteNotFound";
+    this.name = "NoDevelopmentPlanType";
   }
 }
 
