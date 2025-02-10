@@ -2,10 +2,11 @@
 import { z } from "zod";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
 import { buildFricheProps, buildMinimalSiteProps } from "../models/site.mock";
-import { CreateNewSiteUseCase, DateProvider } from "./createNewSite.usecase";
+import { CreateNewSiteUseCase } from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {
   let siteRepository: InMemorySitesRepository;

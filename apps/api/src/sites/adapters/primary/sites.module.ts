@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
-import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
 import { CreateNewSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
@@ -16,9 +16,9 @@ import { SitesController } from "./sites.controller";
   providers: [
     {
       provide: CreateNewSiteUseCase,
-      useFactory: (siteRepository: SitesRepository, dateProvider: IDateProvider) =>
+      useFactory: (siteRepository: SitesRepository, dateProvider: DateProvider) =>
         new CreateNewSiteUseCase(siteRepository, dateProvider),
-      inject: [SqlSiteRepository, DateProvider],
+      inject: [SqlSiteRepository, RealDateProvider],
     },
     {
       provide: GetSiteByIdUseCase,
@@ -27,7 +27,7 @@ import { SitesController } from "./sites.controller";
     },
     SqlSiteRepository,
     SqlSitesQuery,
-    DateProvider,
+    RealDateProvider,
   ],
 })
 export class SitesModule {}

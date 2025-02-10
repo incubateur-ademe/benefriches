@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { ReconversionProject, reconversionProjectPropsSchema } from "../model/reconversionProject";
@@ -10,10 +11,6 @@ export interface SiteRepository {
 export interface ReconversionProjectRepository {
   existsWithId(id: string): Promise<boolean>;
   save(reconversionProject: ReconversionProject): Promise<void>;
-}
-
-export interface DateProvider {
-  now(): Date;
 }
 
 export type ReconversionProjectProps = z.infer<typeof reconversionProjectPropsSchema>;

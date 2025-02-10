@@ -7,7 +7,7 @@ import {
   SoilType,
 } from "shared";
 
-import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { DevelopmentPlan } from "../../model/reconversionProject";
 import {
@@ -63,7 +63,7 @@ export type ReconversionProjectImpactsServiceProps = {
   reconversionProject: ReconversionProjectImpactsDataView;
   evaluationPeriodInYears: number;
   relatedSite: SiteImpactsDataView;
-  dateProvider: IDateProvider;
+  dateProvider: DateProvider;
   getSoilsCarbonStorageService: GetSoilsCarbonStoragePerSoilsService;
 };
 export class ReconversionProjectImpactsService implements ImpactsServiceInterface {

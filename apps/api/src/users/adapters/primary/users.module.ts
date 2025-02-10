@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
-import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { CreateUserUseCase, UserRepository } from "src/users/core/usecases/createUser.usecase";
 
 import { SqlUserRepository } from "../secondary/user-repository/SqlUserRepository";
@@ -12,12 +12,12 @@ import { UsersController } from "./users.controller";
   providers: [
     {
       provide: CreateUserUseCase,
-      useFactory: (userRepository: UserRepository, dateProvider: IDateProvider) =>
+      useFactory: (userRepository: UserRepository, dateProvider: DateProvider) =>
         new CreateUserUseCase(userRepository, dateProvider),
-      inject: [SqlUserRepository, DateProvider],
+      inject: [SqlUserRepository, RealDateProvider],
     },
     SqlUserRepository,
-    DateProvider,
+    RealDateProvider,
   ],
 })
 export class UsersModule {}

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { v4 as uuid } from "uuid";
 
-import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { FakeGetSoilsCarbonStorageService } from "../../gateways/FakeGetSoilsCarbonStorageService";
 import {

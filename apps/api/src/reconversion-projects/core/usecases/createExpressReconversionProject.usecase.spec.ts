@@ -3,14 +3,12 @@ import { v4 as uuid } from "uuid";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
 
 import { ReconversionProject } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
-import {
-  CreateExpressReconversionProjectUseCase,
-  DateProvider,
-} from "./createExpressReconversionProject.usecase";
+import { CreateExpressReconversionProjectUseCase } from "./createExpressReconversionProject.usecase";
 
 const EXPRESS_CATEGORIES = [
   "PUBLIC_FACILITIES",

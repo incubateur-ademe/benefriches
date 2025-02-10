@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 import { buildMinimalSite } from "src/sites/core/models/site.mock";
 
@@ -11,10 +12,7 @@ import {
   buildMinimalReconversionProjectProps,
   buildReconversionProject,
 } from "../model/reconversionProject.mock";
-import {
-  CreateReconversionProjectUseCase,
-  DateProvider,
-} from "./createReconversionProject.usecase";
+import { CreateReconversionProjectUseCase } from "./createReconversionProject.usecase";
 
 describe("CreateReconversionProject Use Case", () => {
   let dateProvider: DateProvider;

@@ -1,3 +1,3 @@
-export interface IDateProvider {
+export interface DateProvider {
   now(): Date;
 }

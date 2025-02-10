@@ -25,8 +25,8 @@ import {
   GetUserReconversionProjectsBySiteUseCase,
   ReconversionProjectsListQuery,
 } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
-import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
-import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
+import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SqlSitesQuery } from "src/sites/adapters/secondary/site-query/SqlSitesQuery";
 import { SqlSiteRepository } from "src/sites/adapters/secondary/site-repository/SqlSiteRepository";
 
@@ -44,7 +44,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     {
       provide: CreateReconversionProjectUseCase,
       useFactory: (
-        dateProvider: IDateProvider,
+        dateProvider: DateProvider,
         siteRepository: SiteRepository,
         reconversionProjectRepository: ReconversionProjectRepository,
       ) =>
@@ -53,12 +53,12 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           siteRepository,
           reconversionProjectRepository,
         ),
-      inject: [DateProvider, SqlSiteRepository, SqlReconversionProjectRepository],
+      inject: [RealDateProvider, SqlSiteRepository, SqlReconversionProjectRepository],
     },
     {
       provide: CreateExpressReconversionProjectUseCase,
       useFactory: (
-        dateProvider: IDateProvider,
+        dateProvider: DateProvider,
         siteRepository: SiteQuery,
         reconversionProjectRepository: ReconversionProjectRepository,
       ) =>
@@ -67,7 +67,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           siteRepository,
           reconversionProjectRepository,
         ),
-      inject: [DateProvider, SqlSitesQuery, SqlReconversionProjectRepository],
+      inject: [RealDateProvider, SqlSitesQuery, SqlReconversionProjectRepository],
     },
     {
       provide: GetUserReconversionProjectsBySiteUseCase,
@@ -89,7 +89,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
         getCityCarbonStoragePerSoilsCategoryUseCase: GetCityCarbonStoragePerSoilsCategoryUseCase,
-        dateProvider: IDateProvider,
+        dateProvider: DateProvider,
         getCityRelatedDataService: GetCityRelatedDataService,
       ) {
         return new ComputeReconversionProjectImpactsUseCase(
@@ -104,7 +104,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
         SqlReconversionProjectImpactsQuery,
         SqlSiteImpactsQuery,
         GetCityCarbonStoragePerSoilsCategoryUseCase,
-        DateProvider,
+        RealDateProvider,
         GetCityRelatedDataService,
       ],
     },
@@ -122,7 +122,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
     SqlSitesQuery,
     SqlReconversionProjectImpactsQuery,
     SqlSiteImpactsQuery,
-    DateProvider,
+    RealDateProvider,
     SqlCarbonStorageQuery,
     GeoApiGouvService,
     DV3FApiGouvService,

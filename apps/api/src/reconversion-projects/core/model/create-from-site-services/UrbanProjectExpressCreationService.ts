@@ -16,8 +16,7 @@ import {
   typedObjectEntries,
 } from "shared";
 
-import { IDateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { Address } from "src/sites/core/models/site";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { ReconversionProject, reconversionProjectSchema } from "../reconversionProject";
 
@@ -27,7 +26,9 @@ type SiteData = {
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;
   contaminatedSoilSurface?: number;
-  address: Address;
+  address: {
+    city: string;
+  };
   owner: {
     structureType: string;
     name?: string;
@@ -39,7 +40,7 @@ export class UrbanProjectExpressCreationService {
   developmentType;
 
   constructor(
-    private readonly dateProvider: IDateProvider,
+    private readonly dateProvider: DateProvider,
     private readonly reconversionProjectId: string,
     private readonly createdBy: string,
     readonly siteData: SiteData,

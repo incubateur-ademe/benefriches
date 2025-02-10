@@ -5,8 +5,8 @@ import { MockDV3FApiService } from "src/location-features/adapters/secondary/cit
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-impacts/InMemoryReconversionProjectImpactsQuery";
 import { InMemorySiteImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/site-impacts/InMemorySiteImpactsQuery";
-import { DateProvider } from "src/shared-kernel/adapters/date/DateProvider";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
+import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { FakeGetSoilsCarbonStorageService } from "../gateways/FakeGetSoilsCarbonStorageService";
 import {
