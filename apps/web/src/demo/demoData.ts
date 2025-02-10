@@ -4,7 +4,7 @@ import {
   AvoidedFricheCostsImpact,
 } from "shared";
 
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
 import { ProjectFeatures, UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
 import { SiteFeatures } from "@/features/site-features/core/siteFeatures";
 

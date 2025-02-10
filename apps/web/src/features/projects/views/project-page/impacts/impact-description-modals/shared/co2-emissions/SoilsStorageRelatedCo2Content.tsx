@@ -1,6 +1,6 @@
 import { SoilType } from "shared";
 
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";

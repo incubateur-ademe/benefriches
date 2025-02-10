@@ -9,7 +9,7 @@ import {
   TaxesIncomeImpact,
 } from "shared";
 
-import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "../application/fetchImpactsForReconversionProject.action";
 
 export type SocioEconomicImpactByCategory = {
   total: number;

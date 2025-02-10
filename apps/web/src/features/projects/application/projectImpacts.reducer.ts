@@ -5,9 +5,9 @@ import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 import {
-  fetchReconversionProjectImpacts,
+  fetchImpactsForReconversionProject,
   ReconversionProjectImpactsResult,
-} from "./fetchReconversionProjectImpacts.action";
+} from "./fetchImpactsForReconversionProject.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -82,10 +82,10 @@ const projectImpactsSlice = createSlice({
   },
   extraReducers(builder) {
     /* fetch reconversion project impacts */
-    builder.addCase(fetchReconversionProjectImpacts.pending, (state) => {
+    builder.addCase(fetchImpactsForReconversionProject.pending, (state) => {
       state.dataLoadingState = "loading";
     });
-    builder.addCase(fetchReconversionProjectImpacts.fulfilled, (state, action) => {
+    builder.addCase(fetchImpactsForReconversionProject.fulfilled, (state, action) => {
       state.dataLoadingState = "success";
       state.impactsData = action.payload.impacts;
       state.projectData = {
@@ -100,7 +100,7 @@ const projectImpactsSlice = createSlice({
         ...action.payload.siteData,
       };
     });
-    builder.addCase(fetchReconversionProjectImpacts.rejected, (state) => {
+    builder.addCase(fetchImpactsForReconversionProject.rejected, (state) => {
       state.dataLoadingState = "error";
     });
   },
@@ -125,7 +125,7 @@ type ProjectContext = {
 export const selectProjectContext = createSelector(
   selectSelf,
   (state): ProjectContext => ({
-    name: state.projectData?.name ?? "Project",
+    name: state.projectData?.name ?? "Projet",
     siteName: state.relatedSiteData?.name ?? "",
     siteId: state.relatedSiteData?.id ?? "",
     type: state.projectData?.developmentPlan.type,

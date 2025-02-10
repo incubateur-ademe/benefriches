@@ -6,7 +6,7 @@ import {
   ReinstatementExpensePurpose,
 } from "shared";
 
-import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "../application/fetchImpactsForReconversionProject.action";
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
 
 export type EconomicBalanceName = EconomicBalanceMainName | EconomicBalanceDetailsName;

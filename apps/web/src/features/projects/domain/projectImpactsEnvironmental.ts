@@ -1,6 +1,6 @@
 import { convertCarbonToCO2eq } from "shared";
 
-import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "../application/fetchImpactsForReconversionProject.action";
 
 type ImpactValue = {
   base: number;

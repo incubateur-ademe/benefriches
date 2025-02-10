@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
 import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
 import { getEconomicBalanceProjectImpacts } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { getEnvironmentalProjectImpacts } from "@/features/projects/domain/projectImpactsEnvironmental";

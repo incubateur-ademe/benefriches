@@ -1,4 +1,4 @@
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
 import {
   getKeyImpactIndicatorsList,
   getMainKeyImpactIndicators,

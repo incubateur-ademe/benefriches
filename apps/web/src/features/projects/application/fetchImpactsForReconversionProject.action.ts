@@ -48,11 +48,11 @@ export type ReconversionProjectImpactsResult = {
   impacts: ReconversionProjectImpacts;
 };
 
-export const fetchReconversionProjectImpacts = createAppAsyncThunk<
+export const fetchImpactsForReconversionProject = createAppAsyncThunk<
   ReconversionProjectImpactsResult,
   { evaluationPeriod: number; projectId: string }
 >(
-  "projectImpacts/fetchReconversionProjectImpacts",
+  "projectImpacts/fetchImpactsForReconversionProject",
   async ({ projectId, evaluationPeriod }, { extra }) => {
     const data = await extra.reconversionProjectImpacts.getReconversionProjectImpacts(
       projectId,

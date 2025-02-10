@@ -1,4 +1,4 @@
-import { ReconversionProjectImpactsResult } from "./fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "./fetchImpactsForReconversionProject.action";
 
 const siteData = {
   owner: { name: "Mairie de Blajan", structureType: "municipality" },

@@ -8,7 +8,7 @@ import { SaveExpressReconversionProjectGateway } from "@/features/create-project
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
-import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
 

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
+import { fetchImpactsForReconversionProject } from "../../application/fetchImpactsForReconversionProject.action";
 import {
   selectProjectContext,
   setEvaluationPeriod,
@@ -25,7 +25,7 @@ function ProjectPageContainer({ projectId }: Props) {
   const projectContext = useAppSelector(selectProjectContext);
 
   useEffect(() => {
-    void dispatch(fetchReconversionProjectImpacts({ projectId, evaluationPeriod }));
+    void dispatch(fetchImpactsForReconversionProject({ projectId, evaluationPeriod }));
   }, [projectId, evaluationPeriod, dispatch]);
 
   return (

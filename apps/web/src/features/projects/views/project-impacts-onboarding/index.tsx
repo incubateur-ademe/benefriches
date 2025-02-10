@@ -5,7 +5,7 @@ import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes } from "@/shared/views/router";
 
-import { fetchReconversionProjectImpacts } from "../../application/fetchReconversionProjectImpacts.action";
+import { fetchImpactsForReconversionProject } from "../../application/fetchImpactsForReconversionProject.action";
 import {
   selectMainKeyImpactIndicators,
   selectProjectOverallImpact,
@@ -24,7 +24,7 @@ function ProjectImpactsOnboardingPageContainer({ projectId }: Props) {
   const mainKeyImpactIndicators = useAppSelector(selectMainKeyImpactIndicators);
 
   useEffect(() => {
-    void dispatch(fetchReconversionProjectImpacts({ projectId, evaluationPeriod }));
+    void dispatch(fetchImpactsForReconversionProject({ projectId, evaluationPeriod }));
   }, [projectId, evaluationPeriod, dispatch]);
 
   if (dataLoadingState === "error") {

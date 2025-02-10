@@ -2,7 +2,7 @@ import { convertCarbonToCO2eq, isLocalAuthority, sumListWithKey } from "shared";
 
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 
-import { ReconversionProjectImpactsResult } from "../application/fetchReconversionProjectImpacts.action";
+import { ReconversionProjectImpactsResult } from "../application/fetchImpactsForReconversionProject.action";
 
 export type ProjectOverallImpact = "strong_negative" | "negative" | "positive" | "strong_positive";
 
