@@ -1,12 +1,12 @@
-import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
+import { MockCityDataService } from "src/location-features/adapters/secondary/city-data-provider/MockCityDataService";
 
 import { GetCityPopulationDensityUseCase } from "./getCityPopulationDensity.usecase";
 
 describe("GetCityPopulationDensity use case", () => {
-  let cityDataProvider: MockLocalDataInseeService;
+  let cityDataProvider: MockCityDataService;
 
   beforeEach(() => {
-    cityDataProvider = new MockLocalDataInseeService();
+    cityDataProvider = new MockCityDataService();
   });
 
   test("it should throw Error if a wrong cityCode is provided", async () => {

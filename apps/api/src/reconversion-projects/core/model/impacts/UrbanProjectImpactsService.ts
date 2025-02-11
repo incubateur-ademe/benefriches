@@ -20,7 +20,7 @@ import { formatRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-ex
 import { TravelRelatedImpactsService } from "./travel-related-impacts-service/TravelRelatedImpactsService";
 import { UrbanFreshnessRelatedImpactsService } from "./urban-freshness-related-impacts-service/UrbanFreshnessRelatedImpactsService";
 
-export type UrbanProjectImpactsServiceProps = ReconversionProjectImpactsServiceProps & {
+type UrbanProjectImpactsServiceProps = ReconversionProjectImpactsServiceProps & {
   getCityRelatedDataService: GetCityRelatedDataService;
   citySquareMetersSurfaceArea: number;
   cityPopulation: number;

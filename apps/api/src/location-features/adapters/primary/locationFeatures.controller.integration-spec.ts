@@ -6,10 +6,11 @@ import supertest from "supertest";
 
 import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
+import { CityDataProvider } from "src/location-features/core/gateways/CityDataProvider";
 import { GetCityPopulationDensityUseCase } from "src/location-features/core/usecases/getCityPopulationDensity.usecase";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
-import { MockLocalDataInseeService } from "../secondary/city-data-provider/LocalDataInseeService.mock";
+import { MockCityDataService } from "../secondary/city-data-provider/MockCityDataService";
 import { MockPhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi.mock";
 import { LocationFeaturesController } from "./locationFeatures.controller";
 
@@ -24,11 +25,11 @@ describe("LocationFeatures controller", () => {
       providers: [
         {
           provide: "CityDataProvider",
-          useClass: MockLocalDataInseeService,
+          useClass: MockCityDataService,
         },
         {
           provide: GetCityPopulationDensityUseCase,
-          useFactory: (cityDataProvider: MockLocalDataInseeService) =>
+          useFactory: (cityDataProvider: CityDataProvider) =>
             new GetCityPopulationDensityUseCase(cityDataProvider),
           inject: ["CityDataProvider"],
         },

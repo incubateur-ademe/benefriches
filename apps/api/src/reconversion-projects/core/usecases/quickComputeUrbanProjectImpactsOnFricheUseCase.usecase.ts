@@ -31,7 +31,7 @@ export type City = {
   surfaceArea: number;
 };
 
-export interface SiteGenerationService {
+interface SiteGenerationService {
   fromSurfaceAreaAndCity(surfaceArea: number, city: City): Site;
 }
 
@@ -86,7 +86,7 @@ type Request = {
   siteCityCode: string;
 };
 
-export type Result = {
+type Result = {
   id: string;
   name: string;
   relatedSiteId: string;

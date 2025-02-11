@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { AvoidedCO2EqEmissions } from "shared";
 
-import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
+import { MockCityDataService } from "src/location-features/adapters/secondary/city-data-provider/MockCityDataService";
 import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
@@ -115,7 +115,7 @@ describe("UrbanProjectImpactsService", () => {
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
       getCityRelatedDataService: new GetCityRelatedDataService(
-        new MockLocalDataInseeService(),
+        new MockCityDataService(),
         new MockDV3FApiService(),
       ),
       getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
@@ -146,7 +146,7 @@ describe("UrbanProjectImpactsService", () => {
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
       getCityRelatedDataService: new GetCityRelatedDataService(
-        new MockLocalDataInseeService(),
+        new MockCityDataService(),
         new MockDV3FApiService(),
       ),
       getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
@@ -174,7 +174,7 @@ describe("UrbanProjectImpactsService", () => {
         dateProvider: dateProvider,
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
         getCityRelatedDataService: new GetCityRelatedDataService(
-          new MockLocalDataInseeService(),
+          new MockCityDataService(),
           new MockDV3FApiService(),
         ),
         cityPopulation: 150000,
@@ -212,7 +212,7 @@ describe("UrbanProjectImpactsService", () => {
         dateProvider: dateProvider,
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
         getCityRelatedDataService: new GetCityRelatedDataService(
-          new MockLocalDataInseeService(),
+          new MockCityDataService(),
           new MockDV3FApiService(),
         ),
         cityPopulation: 150000,
@@ -259,7 +259,7 @@ describe("UrbanProjectImpactsService", () => {
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
         getCityRelatedDataService: new GetCityRelatedDataService(
-          new MockLocalDataInseeService(),
+          new MockCityDataService(),
           new MockDV3FApiService(),
         ),
         getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),

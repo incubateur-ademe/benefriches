@@ -17,7 +17,7 @@ type Props = {
   instructions?: ReactNode;
 };
 
-export type FormValues = {
+type FormValues = {
   maintenance?: number;
   taxes?: number;
   other?: number;

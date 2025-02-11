@@ -16,7 +16,7 @@ import { computeHouseholdsPoweredByRenewableEnergyImpact } from "./renewable-ene
 
 const TAXES_PURPOSE_KEY = "taxes";
 
-export type PhotovoltaicProjectImpactsServiceProps = ReconversionProjectImpactsServiceProps;
+type PhotovoltaicProjectImpactsServiceProps = ReconversionProjectImpactsServiceProps;
 
 export class PhotovoltaicProjectImpactsService
   extends ReconversionProjectImpactsService

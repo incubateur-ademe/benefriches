@@ -26,7 +26,7 @@ const SAMPLES = [
   },
 ];
 
-export class MockLocalDataInseeService implements CityDataProvider {
+export class MockCityDataService implements CityDataProvider {
   getCitySurfaceAreaAndPopulation(cityCode: string): Observable<City> {
     return new Observable((subscriber) => {
       const result = SAMPLES.find((sample) => sample.cityCode === cityCode);

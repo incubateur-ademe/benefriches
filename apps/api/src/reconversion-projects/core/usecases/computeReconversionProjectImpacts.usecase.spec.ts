@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
+import { MockCityDataService } from "src/location-features/adapters/secondary/city-data-provider/MockCityDataService";
 import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
 import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
 import { InMemoryReconversionProjectImpactsQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-impacts/InMemoryReconversionProjectImpactsQuery";
@@ -34,7 +34,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteQuery,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
-        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
+        new GetCityRelatedDataService(new MockCityDataService(), new MockDV3FApiService()),
       );
 
       const reconversionProjectId = uuid();
@@ -67,7 +67,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteQuery,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
-        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
+        new GetCityRelatedDataService(new MockCityDataService(), new MockDV3FApiService()),
       );
       const evaluationPeriodInYears = 10;
       await expect(
@@ -101,7 +101,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteQuery,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
-        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
+        new GetCityRelatedDataService(new MockCityDataService(), new MockDV3FApiService()),
       );
 
       const evaluationPeriodInYears = 10;
@@ -201,7 +201,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteQuery,
         new FakeGetSoilsCarbonStorageService(),
         dateProvider,
-        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
+        new GetCityRelatedDataService(new MockCityDataService(), new MockDV3FApiService()),
       );
       const result = await usecase.execute({
         reconversionProjectId: reconversionProjectImpactDataView.id,
@@ -485,7 +485,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         siteQuery,
         soilsCarbonStorageService,
         dateProvider,
-        new GetCityRelatedDataService(new MockLocalDataInseeService(), new MockDV3FApiService()),
+        new GetCityRelatedDataService(new MockCityDataService(), new MockDV3FApiService()),
       );
       const result = await usecase.execute({
         reconversionProjectId: reconversionProjectImpactDataView.id,

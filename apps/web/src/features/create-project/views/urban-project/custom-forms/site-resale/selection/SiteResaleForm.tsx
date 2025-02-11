@@ -10,7 +10,7 @@ type Props = {
   onBack: () => void;
 };
 
-export type FormValues = {
+type FormValues = {
   siteResalePlanned: "yes" | "no" | null;
 };
 

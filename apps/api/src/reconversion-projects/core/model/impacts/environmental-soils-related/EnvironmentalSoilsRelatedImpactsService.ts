@@ -30,25 +30,6 @@ type EcosystemServiceImpact =
   | "soil_erosion"
   | "carbon_storage";
 
-export type PermeableSurfaceAreaImpact = {
-  base: number;
-  forecast: number;
-  mineralSoil: {
-    base: number;
-    forecast: number;
-  };
-  greenSoil: {
-    base: number;
-    forecast: number;
-  };
-};
-
-export type NonContaminatedSurfaceAreaImpact = {
-  current: number;
-  forecast: number;
-  difference: number;
-};
-
 export type SoilsCarbonStorage = {
   totalCarbonStorage: number;
   soilsCarbonStorage: {

@@ -1,14 +1,14 @@
-import { MockLocalDataInseeService } from "src/location-features/adapters/secondary/city-data-provider/LocalDataInseeService.mock";
+import { MockCityDataService } from "src/location-features/adapters/secondary/city-data-provider/MockCityDataService";
 import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
 
 import { GetCityRelatedDataService } from "./getCityRelatedData";
 
 describe("GetCityRelatedDataService", () => {
   let cityPropertyValueProvider: MockDV3FApiService;
-  let cityDataProvider: MockLocalDataInseeService;
+  let cityDataProvider: MockCityDataService;
 
   beforeAll(() => {
-    cityDataProvider = new MockLocalDataInseeService();
+    cityDataProvider = new MockCityDataService();
     cityPropertyValueProvider = new MockDV3FApiService();
   });
 
@@ -39,10 +39,10 @@ describe("GetCityRelatedDataService", () => {
   });
 
   describe("getCityPopulationAndSurfaceArea use case", () => {
-    let cityDataProvider: MockLocalDataInseeService;
+    let cityDataProvider: MockCityDataService;
 
     beforeEach(() => {
-      cityDataProvider = new MockLocalDataInseeService();
+      cityDataProvider = new MockCityDataService();
     });
 
     test("it should return default value if error occured", async () => {
