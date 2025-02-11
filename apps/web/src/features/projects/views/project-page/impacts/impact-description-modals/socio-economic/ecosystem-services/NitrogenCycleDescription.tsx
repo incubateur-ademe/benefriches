@@ -1,9 +1,14 @@
-import { isPrairie, isWetLand, SoilsDistribution, typedObjectEntries } from "shared";
+import {
+  convertSquareMetersToHectares,
+  isPrairie,
+  isWetLand,
+  SoilsDistribution,
+  typedObjectEntries,
+} from "shared";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
-import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ModalBody from "../../shared/ModalBody";

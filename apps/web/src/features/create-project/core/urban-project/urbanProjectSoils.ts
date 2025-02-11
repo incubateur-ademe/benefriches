@@ -9,7 +9,7 @@ import {
   UrbanLivingAndActivitySpace,
   UrbanPublicSpace,
 } from "shared";
-import { SurfaceAreaDistribution } from "shared/dist/surface-area/surfaceArea";
+import { SurfaceAreaDistribution } from "shared/dist/surface-area/surfaceAreaDistribution";
 
 export type UrbanSpacesByCategory = (
   | {

@@ -1,7 +1,6 @@
-import { SoilsDistribution } from "shared";
+import { convertSquareMetersToHectares, SoilsDistribution } from "shared";
 
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
-import { convertSquareMetersToHectares } from "@/shared/core/surface-area/surfaceArea";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";

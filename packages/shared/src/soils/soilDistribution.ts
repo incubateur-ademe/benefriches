@@ -1,6 +1,9 @@
 import { isImpermeableSoil, SoilType } from ".";
 import { typedObjectEntries } from "../object-entries";
-import { SurfaceAreaDistribution, SurfaceAreaDistributionJson } from "../surface-area/surfaceArea";
+import {
+  SurfaceAreaDistribution,
+  SurfaceAreaDistributionJson,
+} from "../surface-area/surfaceAreaDistribution";
 
 export type SoilsDistribution = SurfaceAreaDistributionJson<SoilType>;
 
