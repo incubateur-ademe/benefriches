@@ -1,5 +1,5 @@
-import { MockCityDataService } from "src/location-features/adapters/secondary/city-data-provider/MockCityDataService";
 import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
+import { MockCityDataService } from "src/reconversion-projects/adapters/secondary/services/city-service/MockCityDataService";
 
 import { GetCityRelatedDataService } from "./getCityRelatedData";
 

@@ -15,7 +15,7 @@ import { GetCityRelatedDataService } from "src/location-features/core/services/g
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { CityCodeService } from "../gateways/CityCodeService";
+import { CityDataProvider } from "../gateways/CityDataProvider";
 import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
 import {
   GetSoilsCarbonStoragePerSoilsService,
@@ -118,7 +118,7 @@ const EVALUATION_PERIOD_IN_YEARS = 30;
 
 export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<Request, Result> {
   constructor(
-    private readonly cityCodeService: CityCodeService,
+    private readonly cityCodeService: CityDataProvider,
     private readonly siteGenerationService: SiteGenerationService,
     private readonly dateProvider: DateProvider,
     private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
@@ -126,7 +126,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
   ) {}
 
   async execute({ siteCityCode, siteSurfaceArea }: Request): Promise<Result> {
-    const city = await this.cityCodeService.getCityByCityCode(siteCityCode);
+    const city = await this.cityCodeService.getCitySurfaceAreaAndPopulation(siteCityCode);
 
     const site = this.siteGenerationService.fromSurfaceAreaAndCity(siteSurfaceArea, city) as Friche;
 

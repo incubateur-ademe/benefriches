@@ -1,15 +1,16 @@
 import { HttpService } from "@nestjs/axios";
 import { Injectable } from "@nestjs/common";
 import { AxiosError } from "axios";
-import { catchError, map } from "rxjs";
+import { catchError, lastValueFrom, map } from "rxjs";
+import { convertHectaresToSquareMeters } from "shared";
 
-import { CityDataProvider } from "src/location-features/core/gateways/CityDataProvider";
-import { City } from "src/location-features/core/models/city";
+import { CityDataProvider } from "src/reconversion-projects/core/gateways/CityDataProvider";
+import { City } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 
 type Response = {
   nom: string;
   population: number;
-  surface: number;
+  surface: number; // surface area is returned in hectares by Geo API
 };
 
 // API Découpage administratif : https://geo.api.gouv.fr/
@@ -22,8 +23,8 @@ const FIELDS = "fields=nom,population,surface";
 export class GeoApiGouvService implements CityDataProvider {
   constructor(private readonly httpService: HttpService) {}
 
-  getCitySurfaceAreaAndPopulation(cityCode: string) {
-    return this.httpService
+  async getCitySurfaceAreaAndPopulation(cityCode: string): Promise<City> {
+    const observable = this.httpService
       .get(`${GEO_API_HOSTNAME}${MUNICIPALITY_PATH}/${cityCode}?${FIELDS}`)
       .pipe(
         map((res) => {
@@ -33,12 +34,13 @@ export class GeoApiGouvService implements CityDataProvider {
           if (!population || !surfaceAreaInHectares) {
             throw new Error(`No data found for city with city code: ${cityCode}`);
           }
-          return City.create({
+
+          return {
             name: result.nom,
             cityCode,
-            surfaceArea: +surfaceAreaInHectares,
-            population: +population,
-          });
+            surfaceArea: convertHectaresToSquareMeters(surfaceAreaInHectares),
+            population,
+          };
         }),
       )
       .pipe(
@@ -50,5 +52,7 @@ export class GeoApiGouvService implements CityDataProvider {
           throw err;
         }),
       );
+    const city = await lastValueFrom(observable);
+    return city;
   }
 }

@@ -1,6 +1,6 @@
 import { lastValueFrom } from "rxjs";
 
-import { CityDataProvider } from "../gateways/CityDataProvider";
+import { CityDataProvider } from "../../../reconversion-projects/core/gateways/CityDataProvider";
 import { CityPropertyValueProvider } from "../gateways/CityPropertyValueProvider";
 
 const FRANCE_AVERAGE_CITY_POPULATION = 1800;
@@ -41,12 +41,10 @@ export class GetCityRelatedDataService {
     population: number;
   }> {
     try {
-      const city = await lastValueFrom(
-        this.cityDataProvider.getCitySurfaceAreaAndPopulation(cityCode),
-      );
+      const city = await this.cityDataProvider.getCitySurfaceAreaAndPopulation(cityCode);
 
       return {
-        squareMetersSurfaceArea: city.surfaceArea * 10000,
+        squareMetersSurfaceArea: city.surfaceArea,
         population: city.population,
       };
     } catch (error) {

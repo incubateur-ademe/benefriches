@@ -5,7 +5,6 @@ import { ConfigModule } from "@nestjs/config";
 import { PhotovoltaicDataProvider } from "src/location-features/core/gateways/PhotovoltaicDataProvider";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
-import { GeoApiGouvService } from "../secondary/city-data-provider/GeoApiGouvService";
 import { PhotovoltaicGeoInfoSystemApi } from "../secondary/photovoltaic-data-provider/PhotovoltaicGeoInfoSystemApi";
 import { LocationFeaturesController } from "./locationFeatures.controller";
 
@@ -20,7 +19,6 @@ import { LocationFeaturesController } from "./locationFeatures.controller";
       inject: [PhotovoltaicGeoInfoSystemApi],
     },
     PhotovoltaicGeoInfoSystemApi,
-    GeoApiGouvService,
   ],
 })
 export class LocationFeaturesModule {}
