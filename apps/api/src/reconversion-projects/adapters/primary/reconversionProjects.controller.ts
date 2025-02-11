@@ -8,6 +8,7 @@ import { CreateExpressReconversionProjectUseCase } from "src/reconversion-projec
 import { CreateReconversionProjectUseCase } from "src/reconversion-projects/core/usecases/createReconversionProject.usecase";
 import { GetReconversionProjectFeaturesUseCase } from "src/reconversion-projects/core/usecases/getReconversionProjectFeatures.usecase";
 import { GetUserReconversionProjectsBySiteUseCase } from "src/reconversion-projects/core/usecases/getUserReconversionProjectsBySite.usecase";
+import { QuickComputeUrbanProjectImpactsOnFricheUseCase } from "src/reconversion-projects/core/usecases/quickComputeUrbanProjectImpactsOnFricheUseCase.usecase";
 
 export const createReconversionProjectInputSchema = reconversionProjectPropsSchema;
 
@@ -45,6 +46,7 @@ export class ReconversionProjectController {
     private readonly getReconversionProjectImpactsUseCase: ComputeReconversionProjectImpactsUseCase,
     private readonly createExpressReconversionProjectUseCase: CreateExpressReconversionProjectUseCase,
     private readonly getReconversionProjectFeaturesUseCase: GetReconversionProjectFeaturesUseCase,
+    private readonly quickComputeUrbanProjectImpactsOnFricheUseCase: QuickComputeUrbanProjectImpactsOnFricheUseCase,
   ) {}
 
   @Post()
@@ -90,6 +92,18 @@ export class ReconversionProjectController {
       reconversionProjectId,
     });
 
+    return result;
+  }
+
+  @Get("quick-compute-urban-project-impacts-on-friche")
+  async quickComputeUrbanProjectImpactsOnFriche(
+    @Query("siteCityCode") siteCityCode: string,
+    @Query("siteSurfaceArea") siteSurfaceArea: string,
+  ) {
+    const result = await this.quickComputeUrbanProjectImpactsOnFricheUseCase.execute({
+      siteCityCode,
+      siteSurfaceArea: Number(siteSurfaceArea),
+    });
     return result;
   }
 }

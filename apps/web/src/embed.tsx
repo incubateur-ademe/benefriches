@@ -1,15 +1,14 @@
 import { startReactDsfr } from "@codegouvfr/react-dsfr/spa";
 import { ConfigProvider as AntdConfigProvider } from "antd";
 import React from "react";
-import { lazy, Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { Provider as ReduxProvider } from "react-redux";
 import { createRouter, defineRoute, param } from "type-route";
 
-import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action.ts";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
+import QuickImpactsEmbedView from "./features/projects/views/quick-impacts-embed-view/index.tsx";
 import "./main.css";
 import { appDependencies } from "./shared/core/store-config/appDependencies.ts";
 import { createStore } from "./shared/core/store-config/store.ts";
@@ -17,29 +16,25 @@ import { theme } from "./shared/views/antdConfig.ts";
 
 startReactDsfr({ defaultColorScheme: "system" });
 
-const ProjectImpactsPage = lazy(() => import("@/features/projects/views/project-page"));
-
 const embedRoutes = createRouter({
-  projectImpacts: defineRoute(
-    { projectId: param.path.string },
-    (params) => `/embed/mes-projets/${params.projectId}/impacts`,
+  quickImpactsUrbanProject: defineRoute(
+    {
+      siteSurfaceArea: param.query.number,
+      siteCityCode: param.query.string,
+    },
+    () => `/embed/calcul-rapide-impacts-projet-urbain`,
   ),
 });
 
 export default function EmbedApp() {
   const route = embedRoutes.useRoute();
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    void dispatch(initCurrentUser());
-  }, [dispatch]);
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
       {(() => {
         switch (route.name) {
-          case embedRoutes.routes.projectImpacts.name:
-            return <ProjectImpactsPage projectId={route.params.projectId} />;
+          case embedRoutes.routes.quickImpactsUrbanProject.name:
+            return <QuickImpactsEmbedView {...route.params} />;
           // 404
           default:
             return <p>Page non accessible en iframe</p>;

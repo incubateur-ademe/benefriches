@@ -8,6 +8,7 @@ import {
   fetchImpactsForReconversionProject,
   ReconversionProjectImpactsResult,
 } from "./fetchImpactsForReconversionProject.action";
+import { fetchQuickImpactsForUrbanProjectOnFriche } from "./fetchQuickImpactsForUrbanProjectOnFriche.action";
 
 type LoadingState = "idle" | "loading" | "success" | "error";
 
@@ -103,6 +104,28 @@ const projectImpactsSlice = createSlice({
     builder.addCase(fetchImpactsForReconversionProject.rejected, (state) => {
       state.dataLoadingState = "error";
     });
+    /* fetch quick impacts for urban project on friche */
+    builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.pending, (state) => {
+      state.dataLoadingState = "loading";
+    });
+    builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.fulfilled, (state, action) => {
+      state.dataLoadingState = "success";
+      state.impactsData = action.payload.impacts;
+      state.projectData = {
+        id: action.payload.id,
+        name: action.payload.name,
+        ...action.payload.projectData,
+      };
+      state.relatedSiteData = {
+        id: action.payload.relatedSiteId,
+        name: action.payload.relatedSiteName,
+        isExpressSite: action.payload.isExpressSite,
+        ...action.payload.siteData,
+      };
+    });
+    builder.addCase(fetchQuickImpactsForUrbanProjectOnFriche.rejected, (state) => {
+      state.dataLoadingState = "error";
+    });
   },
 });
 
@@ -112,7 +135,7 @@ const selectSelf = (state: RootState) => state.projectImpacts;
 
 export const selectProjectName = createSelector(
   selectSelf,
-  (state): string => state.projectData?.name ?? "Project",
+  (state): string => state.projectData?.name ?? "Projet",
 );
 
 type ProjectContext = {

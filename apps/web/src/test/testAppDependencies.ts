@@ -11,6 +11,7 @@ import { InMemoryCreateUserService } from "@/features/onboarding/infrastructure/
 import { InMemoryCurrentUserService } from "@/features/onboarding/infrastructure/current-user-service/inMemoryCurrentUserService";
 import { MockProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/MockProjectFeaturesService";
 import { InMemoryReconversionProjectsListService } from "@/features/projects/infrastructure/projects-list-service/InMemoryProjectsListService";
+import { MockQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/MockQuickUrbanProjectImpactsService";
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 import { MockSiteFeaturesService } from "@/features/site-features/infra/site-features-service/MockSiteFeaturesService";
 import { AppDependencies } from "@/shared/core/store-config/store";
@@ -58,6 +59,7 @@ export const getTestAppDependencies = (
     siteFeaturesService: new MockSiteFeaturesService(),
     saveExpressReconversionProjectService: new InMemorySaveExpressReconversionProjectService(),
     projectFeaturesService: new MockProjectFeaturesService(),
+    quickUrbanProjectImpactsService: new MockQuickUrbanProjectImpactsService(),
     ...depsOverride,
   };
 };

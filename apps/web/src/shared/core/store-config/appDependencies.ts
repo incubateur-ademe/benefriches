@@ -8,6 +8,7 @@ import { HttpCreateUserService } from "@/features/onboarding/infrastructure/crea
 import { LocalStorageUserService } from "@/features/onboarding/infrastructure/current-user-service/LocalStorageUserService";
 import { HttpProjectFeaturesService } from "@/features/projects/infrastructure/project-features-service/HttpProjectFeaturesService";
 import { HttpReconversionProjectsListApi } from "@/features/projects/infrastructure/projects-list-service/HttpProjectsListApi";
+import { HttpQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/HttpQuickUrbanProjectImpactsService";
 import { HttpReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/HttpReconversionProjectImpactsService";
 import { HttpSiteFeaturesService } from "@/features/site-features/infra/site-features-service/HttpSiteFeaturesService";
 import { AdministrativeDivisionGeoApi } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionGeoApi";
@@ -30,4 +31,5 @@ export const appDependencies: AppDependencies = {
   createUserService: new HttpCreateUserService(),
   siteFeaturesService: new HttpSiteFeaturesService(),
   projectFeaturesService: new HttpProjectFeaturesService(),
+  quickUrbanProjectImpactsService: new HttpQuickUrbanProjectImpactsService(),
 };

@@ -9,6 +9,7 @@ import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
+import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
 
@@ -35,6 +36,7 @@ export type AppDependencies = {
   createUserService: CreateUserGateway;
   siteFeaturesService: SiteFeaturesGateway;
   projectFeaturesService: ProjectFeaturesGateway;
+  quickUrbanProjectImpactsService: QuickUrbanProjectImpactsGateway;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

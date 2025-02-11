@@ -11,7 +11,7 @@ type Props = {
   onViewModeClick: (viewMode: ViewMode) => void;
   onEvaluationPeriodChange: (n: number) => void;
   small?: boolean;
-  ref: React.Ref<HTMLElement>;
+  ref?: React.Ref<HTMLElement>;
 };
 
 function ImpactsActionBar({
