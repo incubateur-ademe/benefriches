@@ -25,7 +25,7 @@ export class GetCityPopulationDensityUseCase implements UseCase<Request, Respons
       this.cityDataProvider.getCitySurfaceAreaAndPopulation(cityCode),
     );
 
-    const density = city.population / city.area;
+    const density = city.population / city.surfaceArea;
     const rounded = roundTo2Digits(density);
 
     return {
@@ -33,7 +33,7 @@ export class GetCityPopulationDensityUseCase implements UseCase<Request, Respons
       unit: "hab/km2",
       sources: {
         population: city.population,
-        area: city.area,
+        area: city.surfaceArea,
       },
     };
   }

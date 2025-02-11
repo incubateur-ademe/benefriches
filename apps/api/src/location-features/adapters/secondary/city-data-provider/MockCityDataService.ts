@@ -5,24 +5,28 @@ import { City } from "src/location-features/core/models/city";
 
 const SAMPLES = [
   {
-    area: 118.3,
+    name: "Longlaville",
+    surfaceArea: 118.3,
     population: 471941,
     cityCode: "54321",
   },
   {
+    name: "Béon",
     cityCode: "01039",
     population: undefined,
-    area: undefined,
+    surfaceArea: undefined,
   },
   {
+    name: "Saint-Christophe-en-Oisans",
     cityCode: "38375",
     population: 106,
-    area: 123.5,
+    surfaceArea: 123.5,
   },
   {
+    name: "Paris",
     cityCode: "75056",
     population: 2145906,
-    area: 10540,
+    surfaceArea: 10540,
   },
 ];
 
@@ -31,7 +35,7 @@ export class MockCityDataService implements CityDataProvider {
     return new Observable((subscriber) => {
       const result = SAMPLES.find((sample) => sample.cityCode === cityCode);
 
-      if (!result?.population || !result.area) {
+      if (!result?.population || !result.surfaceArea) {
         throw new Error("No data found for cityCode " + cityCode);
       }
 

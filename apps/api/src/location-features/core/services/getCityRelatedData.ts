@@ -46,7 +46,7 @@ export class GetCityRelatedDataService {
       );
 
       return {
-        squareMetersSurfaceArea: city.area * 10000,
+        squareMetersSurfaceArea: city.surfaceArea * 10000,
         population: city.population,
       };
     } catch (error) {

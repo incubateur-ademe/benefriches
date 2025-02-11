@@ -7,6 +7,7 @@ import { CityDataProvider } from "src/location-features/core/gateways/CityDataPr
 import { City } from "src/location-features/core/models/city";
 
 type Response = {
+  nom: string;
   population: number;
   surface: number;
 };
@@ -14,8 +15,8 @@ type Response = {
 // API Découpage administratif : https://geo.api.gouv.fr/
 
 const GEO_API_HOSTNAME = "https://geo.api.gouv.fr";
-const MUNICIPALITY_URL = "/communes";
-const FIELDS = "fields=population,surface";
+const MUNICIPALITY_PATH = "/communes";
+const FIELDS = "fields=nom,population,surface";
 
 @Injectable()
 export class GeoApiGouvService implements CityDataProvider {
@@ -23,18 +24,19 @@ export class GeoApiGouvService implements CityDataProvider {
 
   getCitySurfaceAreaAndPopulation(cityCode: string) {
     return this.httpService
-      .get(`${GEO_API_HOSTNAME}${MUNICIPALITY_URL}/${cityCode}?${FIELDS}`)
+      .get(`${GEO_API_HOSTNAME}${MUNICIPALITY_PATH}/${cityCode}?${FIELDS}`)
       .pipe(
         map((res) => {
           const result = res.data as Response;
-          const superficie = result.surface;
+          const surfaceAreaInHectares = result.surface;
           const population = result.population;
-          if (!population || !superficie) {
-            throw new Error(`No data found for cityCode: ${cityCode}`);
+          if (!population || !surfaceAreaInHectares) {
+            throw new Error(`No data found for city with city code: ${cityCode}`);
           }
           return City.create({
+            name: result.nom,
             cityCode,
-            area: +superficie,
+            surfaceArea: +surfaceAreaInHectares,
             population: +population,
           });
         }),
