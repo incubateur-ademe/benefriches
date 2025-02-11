@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { routes } from "@/shared/views/router";
 
-import { projectCreationInitiated } from "../core/createProject.actions";
+import { reconversionProjectCreationInitiated } from "../core/actions/urbanProjectCreationInitiated.action";
 import { ProjectCreationStep } from "../core/createProject.reducer";
 import {
   selectCurrentStep,
@@ -33,7 +33,7 @@ function ProjectCreationWizard({ route }: Props) {
 
   useEffect(() => {
     const relatedSiteId = route.params.siteId;
-    void dispatch(projectCreationInitiated({ relatedSiteId }));
+    void dispatch(reconversionProjectCreationInitiated({ relatedSiteId }));
   }, [dispatch, route.params.siteId]);
 
   useSyncCreationStepWithRouteQuery(PROJECT_CREATION_STEP_QUERY_STRING_MAP[currentStep]);

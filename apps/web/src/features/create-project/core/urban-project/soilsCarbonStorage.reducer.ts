@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 
-import { SoilsCarbonStorageResult } from "../soilsCarbonStorage.action";
+import { SoilsCarbonStorageResult } from "../actions/soilsCarbonStorage.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
 
 export type State =

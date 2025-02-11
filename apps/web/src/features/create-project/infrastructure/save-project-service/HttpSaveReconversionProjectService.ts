@@ -1,7 +1,7 @@
 import {
   SaveProjectPayload,
   SaveReconversionProjectGateway,
-} from "../../core/saveReconversionProject.action";
+} from "../../core/actions/saveReconversionProject.action";
 
 export class HttpSaveReconversionProjectService implements SaveReconversionProjectGateway {
   async save(newReconversionProject: SaveProjectPayload) {

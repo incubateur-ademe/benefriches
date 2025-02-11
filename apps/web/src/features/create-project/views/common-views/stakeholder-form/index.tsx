@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { LocalAuthority } from "shared";
 
-import { fetchSiteLocalAuthorities } from "@/features/create-project/core/getSiteLocalAuthorities.action";
+import { fetchSiteLocalAuthorities } from "@/features/create-project/core/actions/getSiteLocalAuthorities.action";
 import {
   ProjectStakeholder,
   ProjectStakeholderStructure,

@@ -1,14 +1,14 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { saveProjectSchema } from "../../saveReconversionProject.action";
+import { saveProjectSchema } from "../../actions/saveReconversionProject.action";
 import {
   getUrbanProjectSpaceDistribution,
   selectUrbanProjectSoilsDistribution,
 } from "../selectors/urbanProject.selectors";
 import { prefixActionType } from "./urbanProject.actions";
 
-export const saveReconversionProject = createAppAsyncThunk(
-  prefixActionType("saveReconversionProject"),
+export const customUrbanProjectSaved = createAppAsyncThunk(
+  prefixActionType("customProjectSaved"),
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
     const { urbanProject, siteData, projectId } = projectCreation;

@@ -8,8 +8,8 @@ import { SoilsDistribution, stripEmptySurfaces } from "shared";
 
 import { ReconversionProjectCreationData } from "@/features/create-project/core/project.types";
 
+import { SoilsCarbonStorageResult } from "../actions/soilsCarbonStorage.action";
 import { ProjectCreationState } from "../createProject.reducer";
-import { SoilsCarbonStorageResult } from "../soilsCarbonStorage.action";
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "./actions/getPhotovoltaicExpectedPerformance.action";
 import {
   completeNonSuitableSoilsNoticeStep,

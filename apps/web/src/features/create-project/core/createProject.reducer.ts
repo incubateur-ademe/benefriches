@@ -5,8 +5,8 @@ import { v4 as uuid } from "uuid";
 
 import { ProjectSite } from "@/features/create-project/core/project.types";
 
-import { projectCreationInitiated } from "./createProject.actions";
-import { fetchSiteLocalAuthorities } from "./getSiteLocalAuthorities.action";
+import { fetchSiteLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
+import { reconversionProjectCreationInitiated } from "./actions/urbanProjectCreationInitiated.action";
 import {
   RenewableEneryProjectState,
   INITIAL_STATE as renenewableEnergyProjectInitialState,
@@ -82,17 +82,17 @@ const projectCreationSlice = createSlice({
       state.developmentPlanCategory = undefined;
     });
     /* fetch related site */
-    builder.addCase(projectCreationInitiated.pending, () => {
+    builder.addCase(reconversionProjectCreationInitiated.pending, () => {
       return {
         ...getInitialState(),
         siteDataLoadingState: "loading",
       };
     });
-    builder.addCase(projectCreationInitiated.fulfilled, (state, action) => {
+    builder.addCase(reconversionProjectCreationInitiated.fulfilled, (state, action) => {
       state.siteDataLoadingState = "success";
       state.siteData = action.payload;
     });
-    builder.addCase(projectCreationInitiated.rejected, (state) => {
+    builder.addCase(reconversionProjectCreationInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
     });
     /* fetch site local authorities */

@@ -12,7 +12,8 @@ import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 
 import { ProjectCreationState } from "../createProject.reducer";
 import { getFutureOperator, getFutureSiteOwner } from "../stakeholders";
-import { saveReconversionProject } from "./actions/saveReconversionProject.action";
+import { customUrbanProjectSaved } from "./actions/customUrbanProjectSaved.action";
+import { expressUrbanProjectSaved } from "./actions/expressUrbanProjectSaved.action";
 import {
   buildingsFloorSurfaceAreaCompleted,
   buildingsFloorSurfaceAreaReverted,
@@ -22,7 +23,6 @@ import {
   buildingsUseCategorySurfaceAreasReverted,
   createModeStepReverted,
   customCreateModeSelected,
-  expressCategorySelected,
   expressCategoryStepReverted,
   expressCreateModeSelected,
   greenSpacesDistributionCompleted,
@@ -163,15 +163,15 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(expressCategoryStepReverted, (state) => {
     state.urbanProject.createMode = undefined;
   });
-  builder.addCase(expressCategorySelected.pending, (state, action) => {
+  builder.addCase(expressUrbanProjectSaved.pending, (state, action) => {
     state.urbanProject.saveState = "loading";
     state.urbanProject.expressData.category = action.payload;
     state.urbanProject.stepsHistory.push("CREATION_RESULT");
   });
-  builder.addCase(expressCategorySelected.rejected, (state) => {
+  builder.addCase(expressUrbanProjectSaved.rejected, (state) => {
     state.urbanProject.saveState = "error";
   });
-  builder.addCase(expressCategorySelected.fulfilled, (state, action) => {
+  builder.addCase(expressUrbanProjectSaved.fulfilled, (state, action) => {
     state.urbanProject.saveState = "success";
     state.urbanProject.expressData.name = action.payload.name;
   });
@@ -573,14 +573,14 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.description = undefined;
   });
 
-  builder.addCase(saveReconversionProject.pending, (state) => {
+  builder.addCase(customUrbanProjectSaved.pending, (state) => {
     state.urbanProject.saveState = "loading";
   });
-  builder.addCase(saveReconversionProject.fulfilled, (state) => {
+  builder.addCase(customUrbanProjectSaved.fulfilled, (state) => {
     state.urbanProject.saveState = "success";
     state.urbanProject.stepsHistory.push("CREATION_RESULT");
   });
-  builder.addCase(saveReconversionProject.rejected, (state) => {
+  builder.addCase(customUrbanProjectSaved.rejected, (state) => {
     state.urbanProject.saveState = "error";
     state.urbanProject.stepsHistory.push("CREATION_RESULT");
   });

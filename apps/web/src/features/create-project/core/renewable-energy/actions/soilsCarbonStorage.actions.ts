@@ -1,7 +1,7 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
+import { CurrentAndProjectedSoilsCarbonStorageResult } from "../../actions/soilsCarbonStorage.action";
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../../createProject.selectors";
-import { CurrentAndProjectedSoilsCarbonStorageResult } from "../../soilsCarbonStorage.action";
 import { selectProjectSoilsDistribution } from "../selectors/renewableEnergy.selector";
 import { prefixActionType } from "./renewableEnergy.actions";
 

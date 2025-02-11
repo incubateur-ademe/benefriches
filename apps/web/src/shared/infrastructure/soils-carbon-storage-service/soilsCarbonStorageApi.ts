@@ -2,7 +2,7 @@ import {
   GetSoilsCarbonStoragePayload,
   SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway,
   SoilsCarbonStorageResult,
-} from "@/features/create-project/core/soilsCarbonStorage.action";
+} from "@/features/create-project/core/actions/soilsCarbonStorage.action";
 import {
   GetSiteSoilsCarbonStoragePayload,
   SiteSoilsCarbonStorageResult,

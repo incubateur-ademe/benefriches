@@ -1,4 +1,4 @@
-import { GetSitesByIdGateway } from "../../core/createProject.actions";
+import { GetSitesByIdGateway } from "../../core/actions/urbanProjectCreationInitiated.action";
 import { ProjectSite } from "../../core/project.types";
 
 export class SitesServiceMock implements GetSitesByIdGateway {

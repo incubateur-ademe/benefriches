@@ -1,6 +1,6 @@
 import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 
-import { saveReconversionProject } from "../actions/saveReconversionProject.action";
+import { customUrbanProjectSaved } from "../actions/customUrbanProjectSaved.action";
 import { UrbanProjectCreationData } from "../creationData";
 import { StoreBuilder } from "./testUtils";
 
@@ -77,7 +77,7 @@ const mock = {
   projectPhase: "construction",
 } as const satisfies UrbanProjectCreationData;
 
-describe("Urban project creation : saveReconversionProject action", () => {
+describe("Urban project creation : customUrbanProjectSaved action", () => {
   it("results as success with all creationData completed", async () => {
     const store = new StoreBuilder()
       .withStepsHistory(["FINAL_SUMMARY"])
@@ -87,7 +87,7 @@ describe("Urban project creation : saveReconversionProject action", () => {
 
     await store.dispatch(initCurrentUser());
 
-    await store.dispatch(saveReconversionProject());
+    await store.dispatch(customUrbanProjectSaved());
 
     const newState = store.getState();
 
@@ -100,7 +100,7 @@ describe("Urban project creation : saveReconversionProject action", () => {
   it("results as error if creationData are empty", async () => {
     const store = new StoreBuilder().withStepsHistory(["FINAL_SUMMARY"]).build();
 
-    await store.dispatch(saveReconversionProject());
+    await store.dispatch(customUrbanProjectSaved());
 
     const newState = store.getState();
     expect(newState.projectCreation.urbanProject.saveState).toEqual("error");

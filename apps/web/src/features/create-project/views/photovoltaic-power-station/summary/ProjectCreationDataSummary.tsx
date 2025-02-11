@@ -10,8 +10,8 @@ import {
   sumListWithKey,
 } from "shared";
 
+import { SoilsCarbonStorageResult } from "@/features/create-project/core/actions/soilsCarbonStorage.action";
 import { Schedule } from "@/features/create-project/core/project.types";
-import { SoilsCarbonStorageResult } from "@/features/create-project/core/soilsCarbonStorage.action";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import {
   getLabelForFinancialAssistanceRevenueSource,

@@ -1,5 +1,5 @@
 import { selectProjectId } from "@/features/create-project/core/createProject.selectors";
-import { saveReconversionProject } from "@/features/create-project/core/urban-project/actions/saveReconversionProject.action";
+import { customUrbanProjectSaved } from "@/features/create-project/core/urban-project/actions/customUrbanProjectSaved.action";
 import { finalSummaryReverted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   getUrbanProjectSpaceDistribution,
@@ -20,7 +20,7 @@ function ProjectionCreationDataSummaryContainer() {
   const dispatch = useAppDispatch();
 
   const onNext = () => {
-    void dispatch(saveReconversionProject());
+    void dispatch(customUrbanProjectSaved());
   };
 
   const onBack = () => {

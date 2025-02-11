@@ -1,6 +1,6 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { saveProjectSchema } from "../../saveReconversionProject.action";
+import { saveProjectSchema } from "../../actions/saveReconversionProject.action";
 
 export const saveReconversionProject = createAppAsyncThunk(
   "projectCreation/renewableEnergyProject/save",
