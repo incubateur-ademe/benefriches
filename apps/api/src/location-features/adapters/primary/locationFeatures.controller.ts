@@ -1,8 +1,7 @@
-import { BadRequestException, Controller, Get, Query } from "@nestjs/common";
+import { Controller, Get, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
-import { GetCityPopulationDensityUseCase } from "src/location-features/core/usecases/getCityPopulationDensity.usecase";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
 const GetPhotovoltaicExpectedPerformanceDtoSchema = z.object({
@@ -18,22 +17,8 @@ class GetPhotovoltaicExpectedPerformanceDto extends createZodDto(
 @Controller("location-features")
 export class LocationFeaturesController {
   constructor(
-    private readonly getCityPopulationDensity: GetCityPopulationDensityUseCase,
     private readonly getPhotovoltaicExpectedPerformanceUseCase: GetPhotovoltaicExpectedPerformanceUseCase,
   ) {}
-
-  @Get()
-  async getFeaturesFromLocation(@Query("cityCode") cityCode: string) {
-    if (!cityCode) {
-      throw new BadRequestException("City code is missing");
-    }
-
-    const density = await this.getCityPopulationDensity.execute({ cityCode });
-    return {
-      populationDensity: density,
-      cityCode,
-    };
-  }
 
   @Get("pv-expected-performance")
   async getPhotovoltaicExpectedPerformance(@Query() query: GetPhotovoltaicExpectedPerformanceDto) {

@@ -6,8 +6,6 @@ import supertest from "supertest";
 
 import { AppModule } from "src/app.module";
 import { configureServer } from "src/httpServer";
-import { CityDataProvider } from "src/location-features/core/gateways/CityDataProvider";
-import { GetCityPopulationDensityUseCase } from "src/location-features/core/usecases/getCityPopulationDensity.usecase";
 import { GetPhotovoltaicExpectedPerformanceUseCase } from "src/location-features/core/usecases/getPhotovoltaicExpectedPerformanceUseCase";
 
 import { MockCityDataService } from "../secondary/city-data-provider/MockCityDataService";
@@ -26,12 +24,6 @@ describe("LocationFeatures controller", () => {
         {
           provide: "CityDataProvider",
           useClass: MockCityDataService,
-        },
-        {
-          provide: GetCityPopulationDensityUseCase,
-          useFactory: (cityDataProvider: CityDataProvider) =>
-            new GetCityPopulationDensityUseCase(cityDataProvider),
-          inject: ["CityDataProvider"],
         },
         {
           provide: "PhotovoltaicDataProvider",
@@ -53,33 +45,6 @@ describe("LocationFeatures controller", () => {
 
   afterAll(async () => {
     await app.close();
-  });
-
-  describe("Get /location-features", () => {
-    it("can't return information if there is no location indication", async () => {
-      const response = await supertest(app.getHttpServer()).get("/api/location-features");
-
-      expect(response.status).toEqual(400);
-    });
-
-    it("returns an object with the population density if a right city code is provided", async () => {
-      const response = await supertest(app.getHttpServer()).get(
-        "/api/location-features?cityCode=75056",
-      );
-
-      expect(response.status).toEqual(200);
-      expect(response.body).toEqual({
-        cityCode: "75056",
-        populationDensity: {
-          sources: {
-            area: 10540,
-            population: 2145906,
-          },
-          unit: "hab/km2",
-          value: 203.6,
-        },
-      });
-    });
   });
 
   describe("Get /location-features/pv-expected-performance", () => {
