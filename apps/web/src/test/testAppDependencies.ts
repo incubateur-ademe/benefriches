@@ -14,6 +14,7 @@ import { InMemoryReconversionProjectsListService } from "@/features/projects/inf
 import { MockQuickUrbanProjectImpactsService } from "@/features/projects/infrastructure/quick-urban-project-impacts-service/MockQuickUrbanProjectImpactsService";
 import { MockReconversionProjectImpactsApi } from "@/features/projects/infrastructure/reconversion-project-impacts-service/MockReconversionProjectImpactsService";
 import { MockSiteFeaturesService } from "@/features/site-features/infra/site-features-service/MockSiteFeaturesService";
+import { InMemoryCreateFeatureAlertService } from "@/features/user-feature-alerts/infrastructure/create-feature-alert-service/InMemoryCreateFeatureAlertService";
 import { AppDependencies } from "@/shared/core/store-config/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
@@ -56,6 +57,7 @@ export const getTestAppDependencies = (
     }),
     currentUserService: new InMemoryCurrentUserService(),
     createUserService: new InMemoryCreateUserService(),
+    createUserFeatureAlertService: new InMemoryCreateFeatureAlertService(),
     siteFeaturesService: new MockSiteFeaturesService(),
     saveExpressReconversionProjectService: new InMemorySaveExpressReconversionProjectService(),
     projectFeaturesService: new MockProjectFeaturesService(),

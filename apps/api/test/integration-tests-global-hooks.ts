@@ -19,6 +19,7 @@ global.afterEach(async () => {
     "site_incomes",
     "site_soils_distributions",
     "sites",
+    "users_feature_alerts",
     "users",
   ] as const;
 

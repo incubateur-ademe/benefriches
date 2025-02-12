@@ -10,6 +10,7 @@ import { projectFeaturesReducer } from "@/features/projects/application/project-
 import projectImpacts from "@/features/projects/application/projectImpacts.reducer";
 import reconversionProjectsList from "@/features/projects/application/projectsList.reducer";
 import siteFeatures from "@/features/site-features/core/siteFeatures.reducer";
+import userFeatureAlert from "@/features/user-feature-alerts/core/userFeatureAlert.reducer";
 
 export const rootReducer = combineReducers({
   appSettings,
@@ -19,6 +20,7 @@ export const rootReducer = combineReducers({
   siteCarbonStorage,
   reconversionProjectsList,
   currentUser,
+  userFeatureAlert,
   projectImpacts,
   projectFeatures: projectFeaturesReducer,
   siteMunicipalityData,

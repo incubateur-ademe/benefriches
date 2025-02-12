@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { loadFeatureAlerts } from "@/features/user-feature-alerts/core/loadFeatureAlerts.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { fetchImpactsForReconversionProject } from "../../application/fetchImpactsForReconversionProject.action";
@@ -27,6 +28,10 @@ function ProjectPageContainer({ projectId }: Props) {
   useEffect(() => {
     void dispatch(fetchImpactsForReconversionProject({ projectId, evaluationPeriod }));
   }, [projectId, evaluationPeriod, dispatch]);
+
+  useEffect(() => {
+    void dispatch(loadFeatureAlerts());
+  }, [dispatch]);
 
   return (
     <ProjectPage

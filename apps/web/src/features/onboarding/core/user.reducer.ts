@@ -75,4 +75,11 @@ export const selectCurrentUserFirstname = createSelector(
   },
 );
 
+export const selectCurrentUserEmail = createSelector(
+  [(state: RootState) => state.currentUser],
+  (state) => {
+    return state.currentUser?.email;
+  },
+);
+
 export default userSlice.reducer;

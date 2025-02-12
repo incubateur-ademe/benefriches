@@ -3,6 +3,10 @@ import { createZodDto } from "nestjs-zod";
 import { z } from "zod";
 
 import { CreateUserUseCase } from "src/users/core/usecases/createUser.usecase";
+import {
+  createFeatureAlertProps,
+  CreateUserFeatureAlertUseCase,
+} from "src/users/core/usecases/createUserFeatureAlert.usecase";
 
 export const createUserBodychema = z.object({
   id: z.string().uuid(),
@@ -20,14 +24,24 @@ export const createUserBodychema = z.object({
 
 class CreateUserBodyDto extends createZodDto(createUserBodychema) {}
 
+class CreateFeatureAlertBodyDto extends createZodDto(createFeatureAlertProps) {}
+
 @Controller("users")
 export class UsersController {
-  constructor(private readonly createUserUseCase: CreateUserUseCase) {}
+  constructor(
+    private readonly createUserUseCase: CreateUserUseCase,
+    private readonly createFeatureAlertUseCase: CreateUserFeatureAlertUseCase,
+  ) {}
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserBodyDto) {
     await this.createUserUseCase.execute({
       user: createUserDto,
     });
+  }
+
+  @Post("/feature-alert")
+  async createFeatureAlert(@Body() createFeatureAlertBodySchema: CreateFeatureAlertBodyDto) {
+    await this.createFeatureAlertUseCase.execute(createFeatureAlertBodySchema);
   }
 }

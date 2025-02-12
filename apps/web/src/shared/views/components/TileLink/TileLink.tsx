@@ -1,4 +1,5 @@
 import { FrCxArg } from "@codegouvfr/react-dsfr";
+import Button, { ButtonProps } from "@codegouvfr/react-dsfr/Button";
 import "@codegouvfr/react-dsfr/dsfr/utility/icons/icons-system/icons-system.css";
 import { ReactNode } from "react";
 import { Link } from "type-route";
@@ -13,17 +14,21 @@ type Props = {
   badgeText?: string;
   iconId?: FrCxArg;
   disabled?: boolean;
+  button?: ButtonProps;
 };
 
-const TileLink = ({ linkProps, title, badgeText, iconId, disabled }: Props) => {
+const TileLink = ({ linkProps, title, badgeText, iconId, disabled, button }: Props) => {
   return (
     <div
       className={classNames(
+        "tw-flex",
+        "tw-flex-col",
+        "tw-items-center",
         "tw-border-solid",
         "tw-border",
         "tw-rounded-lg",
         "tw-p-6",
-        "tw-h-60",
+        "tw-h-[264px]",
         "tw-bg-white dark:tw-bg-black",
         disabled ? "tw-border-dsfr-greyDisabled" : "tw-border-dsfr-borderBlue",
         !disabled && "hover:tw-bg-dsfr-altBlue hover:dark:tw-bg-grey-dark",
@@ -42,7 +47,7 @@ const TileLink = ({ linkProps, title, badgeText, iconId, disabled }: Props) => {
           "lg:tw-text-lg",
           "tw-font-medium",
           "tw-bg-none",
-          "tw-gap-6",
+          "tw-gap-4",
           disabled
             ? ["tw-text-text-light", "dark:tw-text-dsfr-greyDisabled"]
             : ["tw-text-dsfr-titleBlue"],
@@ -56,6 +61,11 @@ const TileLink = ({ linkProps, title, badgeText, iconId, disabled }: Props) => {
           </Badge>
         )}
       </a>
+      {button && (
+        <Button className={button.className} {...button}>
+          {button.children}
+        </Button>
+      )}
     </div>
   );
 };

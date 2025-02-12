@@ -14,6 +14,7 @@ import { ReconversionProjectImpactsGateway } from "@/features/projects/applicati
 import { QuickUrbanProjectImpactsGateway } from "@/features/projects/application/fetchQuickImpactsForUrbanProjectOnFriche.action";
 import { ProjectFeaturesGateway } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
+import { CreateFeatureAlertGateway } from "@/features/user-feature-alerts/core/CreateFeatureAlertGateway";
 
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../../features/create-project/core/actions/soilsCarbonStorage.action";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
@@ -34,6 +35,7 @@ export type AppDependencies = {
   reconversionProjectImpacts: ReconversionProjectImpactsGateway;
   currentUserService: CurrentUserGateway;
   createUserService: CreateUserGateway;
+  createUserFeatureAlertService: CreateFeatureAlertGateway;
   siteFeaturesService: SiteFeaturesGateway;
   projectFeaturesService: ProjectFeaturesGateway;
   quickUrbanProjectImpactsService: QuickUrbanProjectImpactsGateway;

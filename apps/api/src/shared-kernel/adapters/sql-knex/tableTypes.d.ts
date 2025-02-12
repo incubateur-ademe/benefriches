@@ -13,6 +13,14 @@ export type SqlUser = {
   personal_data_communication_use_consented_at?: Date;
 };
 
+type SqlUserFeatureAlert = {
+  id: string;
+  user_id: string;
+  email: string;
+  feature_type: string;
+  feature_options: Record<string, boolean> | null;
+  created_at: Date;
+};
 /*
   SITES TABLES
 */
@@ -174,5 +182,6 @@ declare module "knex/types/tables" {
 
     // users
     users: SqlUser;
+    users_feature_alerts: SqlUserFeatureAlert;
   }
 }
