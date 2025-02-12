@@ -34,7 +34,7 @@ const SUCCESS_BUTTON_PROPS: ButtonProps = {
   priority: "secondary",
   disabled: true,
   children: "Vous serez notifié·e",
-  iconId: "fr-icon-file-download-line",
+  iconId: "fr-icon-check-line",
   className: "!tw-bg-impacts-positive-light !tw-text-dsfr-titleBlue !tw-shadow-none",
 };
 
@@ -69,7 +69,7 @@ function TileExportImpacts({ exportImpactsAlert, onSubmit, onSaveLoadingState, u
         title={
           <FeatureAlertModalTitle
             title="Exporter les impacts du projet"
-            iconId="fr-icon-success-line"
+            iconId="fr-icon-file-download-line"
             isSuccess={isSuccess}
           />
         }
