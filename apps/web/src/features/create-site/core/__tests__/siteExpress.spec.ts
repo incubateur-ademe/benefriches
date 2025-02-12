@@ -49,6 +49,8 @@ describe("Site Express data creation", () => {
           long: 2.330785,
           value: "Paris",
         },
+        fricheActivity: "OTHER",
+        hasContaminatedSoils: true,
         createdBy: currentUserId,
         creationMode: "express",
         soilsDistribution: {
