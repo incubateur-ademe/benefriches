@@ -7,6 +7,7 @@ import { GetSitesByIdGateway } from "@/features/create-project/core/actions/urba
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { SaveExpressReconversionProjectGateway } from "@/features/create-project/core/urban-project/actions/expressUrbanProjectSaved.action";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
+import { CreateSiteGateway } from "@/features/create-site/core/actions/siteSaved.actions";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
@@ -15,7 +16,6 @@ import { ProjectFeaturesGateway } from "@/features/projects/application/project-
 import { SiteFeaturesGateway } from "@/features/site-features/core/fetchSiteFeatures.action";
 
 import { SoilsCarbonStorageGateway as ProjectSoilsCarbonStorageGateway } from "../../../features/create-project/core/actions/soilsCarbonStorage.action";
-import { CreateSiteGateway } from "../../../features/create-site/core/actions/createSite.actions";
 import { SoilsCarbonStorageGateway as SiteSoilsCarbonStorageGateway } from "../../../features/create-site/core/actions/siteSoilsCarbonStorage.actions";
 import { ReconversionProjectsListGateway } from "../../../features/projects/application/projectsList.actions";
 import { getListener, setupAllListeners } from "./listenerMiddleware";

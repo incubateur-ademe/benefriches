@@ -1,4 +1,4 @@
-import { CreateSiteGateway, CreateSiteGatewayPayload } from "../../core/actions/createSite.actions";
+import { CreateSiteGateway, CreateSiteGatewayPayload } from "../../core/actions/siteSaved.actions";
 
 export class HttpCreateSiteApi implements CreateSiteGateway {
   async save(newSite: CreateSiteGatewayPayload) {

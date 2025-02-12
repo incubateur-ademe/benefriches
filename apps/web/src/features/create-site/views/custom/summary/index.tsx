@@ -1,4 +1,4 @@
-import { saveCustomSiteAction } from "@/features/create-site/core/actions/createSite.actions";
+import { customSiteSaved } from "@/features/create-site/core/actions/siteSaved.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { revertStep } from "../../../core/createSite.reducer";
@@ -9,7 +9,7 @@ function SiteDataSummaryContainer() {
   const dispatch = useAppDispatch();
 
   const onNext = () => {
-    void dispatch(saveCustomSiteAction());
+    void dispatch(customSiteSaved());
   };
 
   const onBack = () => {

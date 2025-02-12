@@ -9,7 +9,7 @@ import {
 } from "shared";
 import { formatMunicipalityName } from "shared";
 
-import { CreateSiteGatewayPayload } from "../core/actions/createSite.actions";
+import { CreateSiteGatewayPayload } from "./actions/siteSaved.actions";
 import { SiteExpressDraft } from "./siteFoncier.types";
 
 const FRANCE_AVERAGE_CITY_POPULATION = 1800;

@@ -12,7 +12,7 @@ import {
 import { splitEvenly } from "@/shared/core/split-number/splitNumber";
 import { RootState } from "@/shared/core/store-config/store";
 
-import { saveCustomSiteAction, saveExpressSiteAction } from "./actions/createSite.actions";
+import { customSiteSaved, expressSiteSaved } from "./actions/siteSaved.actions";
 
 export type SiteCreationCustomStep =
   | "SITE_NATURE"
@@ -284,25 +284,25 @@ const siteCreationSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(saveCustomSiteAction.pending, (state) => {
+    builder.addCase(customSiteSaved.pending, (state) => {
       state.stepsHistory.push("CREATION_RESULT");
       state.saveLoadingState = "loading";
     });
-    builder.addCase(saveCustomSiteAction.fulfilled, (state) => {
+    builder.addCase(customSiteSaved.fulfilled, (state) => {
       state.saveLoadingState = "success";
     });
-    builder.addCase(saveCustomSiteAction.rejected, (state) => {
+    builder.addCase(customSiteSaved.rejected, (state) => {
       state.saveLoadingState = "error";
     });
-    builder.addCase(saveExpressSiteAction.pending, (state) => {
+    builder.addCase(expressSiteSaved.pending, (state) => {
       state.stepsHistory.push("CREATION_RESULT");
       state.saveLoadingState = "loading";
     });
-    builder.addCase(saveExpressSiteAction.fulfilled, (state, action) => {
+    builder.addCase(expressSiteSaved.fulfilled, (state, action) => {
       state.saveLoadingState = "success";
       state.siteData.name = action.payload.name;
     });
-    builder.addCase(saveExpressSiteAction.rejected, (state) => {
+    builder.addCase(expressSiteSaved.rejected, (state) => {
       state.saveLoadingState = "error";
     });
   },

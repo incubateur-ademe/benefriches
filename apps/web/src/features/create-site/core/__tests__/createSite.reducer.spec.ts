@@ -20,9 +20,8 @@ import {
   revertTenantStep,
   revertYearlyExpensesStep,
   revertYearlyIncomeStep,
-  saveCustomSiteAction,
-  saveExpressSiteAction,
 } from "../actions/createSite.actions";
+import { customSiteSaved, expressSiteSaved } from "../actions/siteSaved.actions";
 import {
   completeAddressStep,
   completeFricheAccidents,
@@ -999,7 +998,7 @@ describe("Create site reducer", () => {
     });
   });
 
-  describe("saveCustomSiteAction action", () => {
+  describe("customSiteSaved action", () => {
     it("should be in error state when site data in store is not valid (missing name)", async () => {
       const siteData = { ...siteWithMinimalData, name: undefined };
       const initialState: RootState["siteCreation"] = {
@@ -1017,7 +1016,7 @@ describe("Create site reducer", () => {
         },
       });
       const initialRootState = store.getState();
-      await store.dispatch(saveCustomSiteAction());
+      await store.dispatch(customSiteSaved());
 
       const newState = store.getState();
       expectSiteDataUnchanged(initialRootState, newState);
@@ -1034,7 +1033,7 @@ describe("Create site reducer", () => {
         },
       });
       const initialRootState = store.getState();
-      await store.dispatch(saveCustomSiteAction());
+      await store.dispatch(customSiteSaved());
 
       const newState = store.getState();
       expectSiteDataUnchanged(initialRootState, newState);
@@ -1060,7 +1059,7 @@ describe("Create site reducer", () => {
         },
       );
       const initialRootState = store.getState();
-      await store.dispatch(saveCustomSiteAction());
+      await store.dispatch(customSiteSaved());
 
       const newState = store.getState();
       expectSiteDataUnchanged(initialRootState, newState);
@@ -1088,7 +1087,7 @@ describe("Create site reducer", () => {
           currentUserLoaded: true,
         },
       });
-      await store.dispatch(saveCustomSiteAction());
+      await store.dispatch(customSiteSaved());
 
       expect(spy).toHaveBeenCalledWith({
         address: siteWithMinimalData.address,
@@ -1129,7 +1128,7 @@ describe("Create site reducer", () => {
       });
       const initialRootState = store.getState();
 
-      await store.dispatch(saveCustomSiteAction());
+      await store.dispatch(customSiteSaved());
 
       const newState = store.getState();
       expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
@@ -1137,7 +1136,7 @@ describe("Create site reducer", () => {
     });
   });
 
-  describe("saveExpressSiteAction action", () => {
+  describe("expressSiteSaved action", () => {
     it("should be in error state when site data in store is not valid (missing surfaceArea)", async () => {
       const initialState: RootState["siteCreation"] = {
         saveLoadingState: "idle",
@@ -1155,7 +1154,7 @@ describe("Create site reducer", () => {
       });
       const initialRootState = store.getState();
 
-      await store.dispatch(saveExpressSiteAction());
+      await store.dispatch(expressSiteSaved());
 
       const newState = store.getState();
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
@@ -1174,7 +1173,7 @@ describe("Create site reducer", () => {
       });
       const initialRootState = store.getState();
 
-      await store.dispatch(saveExpressSiteAction());
+      await store.dispatch(expressSiteSaved());
 
       const newState = store.getState();
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
@@ -1202,7 +1201,7 @@ describe("Create site reducer", () => {
       );
       const initialRootState = store.getState();
 
-      await store.dispatch(saveExpressSiteAction());
+      await store.dispatch(expressSiteSaved());
 
       const newState = store.getState();
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
@@ -1229,7 +1228,7 @@ describe("Create site reducer", () => {
           currentUserLoaded: true,
         },
       });
-      await store.dispatch(saveExpressSiteAction());
+      await store.dispatch(expressSiteSaved());
 
       expect(spy).toHaveBeenCalledWith(getExpressSiteData(expressSiteDraft, user.id));
     });
@@ -1253,7 +1252,7 @@ describe("Create site reducer", () => {
         },
       });
 
-      await store.dispatch(saveExpressSiteAction());
+      await store.dispatch(expressSiteSaved());
 
       const state = store.getState();
       expect(state.siteCreation).toEqual({
