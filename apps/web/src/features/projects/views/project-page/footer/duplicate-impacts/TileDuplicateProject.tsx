@@ -37,7 +37,7 @@ const SUCCESS_BUTTON_PROPS: ButtonProps = {
 const BUTTON_PROPS: ButtonProps = {
   size: "small",
   priority: "secondary",
-  iconId: "ri-file-copy-line",
+  iconId: "fr-icon-notification-3-line",
   children: "Me notifier",
   onClick: () => {
     duplicateImpactsFeatureAlertModal.open();
