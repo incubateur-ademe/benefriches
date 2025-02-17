@@ -86,6 +86,8 @@ import {
   buildingsResaleChoiceReverted,
   buildingsOperationsExpensesCompleted,
   buildingsOperationsExpensesReverted,
+  buildingsResaleRevenueCompleted,
+  buildingsResaleRevenueReverted,
 } from "./actions/urbanProject.actions";
 import { UrbanProjectCreationData } from "./creationData";
 import { UrbanProjectCreationStep, UrbanProjectCustomCreationStep } from "./creationSteps";
@@ -144,11 +146,9 @@ export const hasBuildings = (state: ProjectCreationState) => {
   return buildingsSurfaceArea > 0;
 };
 
-const shouldAskForBuildingsOperationsExpensesAndRevenues = (
-  state: ProjectCreationState,
-): boolean => {
+const willBuildingsBeSold = (state: ProjectCreationState): boolean => {
   return (
-    hasBuildings(state) && !state.urbanProject.creationData.buildingsResalePlannedAfterDevelopment
+    hasBuildings(state) && !!state.urbanProject.creationData.buildingsResalePlannedAfterDevelopment
   );
 };
 
@@ -475,9 +475,10 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
 
   builder.addCase(installationExpensesCompleted, (state, action) => {
     state.urbanProject.creationData.installationExpenses = action.payload;
-    const nextStep = shouldAskForBuildingsOperationsExpensesAndRevenues(state)
-      ? "EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"
-      : "REVENUE_INTRODUCTION";
+    const nextStep =
+      hasBuildings(state) && !willBuildingsBeSold(state)
+        ? "EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"
+        : "REVENUE_INTRODUCTION";
     state.urbanProject.stepsHistory.push(nextStep);
   });
   builder.addCase(installationExpensesReverted, (state) => {
@@ -498,11 +499,15 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
       state.urbanProject.stepsHistory.push("REVENUE_EXPECTED_SITE_RESALE");
       return;
     }
-    if (shouldAskForBuildingsOperationsExpensesAndRevenues(state)) {
-      state.urbanProject.stepsHistory.push("REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES");
+    if (!hasBuildings(state)) {
+      state.urbanProject.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");
       return;
     }
-    state.urbanProject.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");
+    if (willBuildingsBeSold(state)) {
+      state.urbanProject.stepsHistory.push("REVENUE_BUILDINGS_RESALE");
+      return;
+    }
+    state.urbanProject.stepsHistory.push("REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES");
   });
 
   builder.addCase(expectedSiteResaleRevenueCompleted, (state, action) => {
@@ -510,11 +515,28 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.siteResaleExpectedPropertyTransferDuties =
       action.payload.propertyTransferDuties;
 
-    const nextStep = shouldAskForBuildingsOperationsExpensesAndRevenues(state)
-      ? "REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES"
-      : "REVENUE_FINANCIAL_ASSISTANCE";
-    state.urbanProject.stepsHistory.push(nextStep);
+    if (!hasBuildings(state)) {
+      state.urbanProject.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");
+      return;
+    }
+    if (willBuildingsBeSold(state)) {
+      state.urbanProject.stepsHistory.push("REVENUE_BUILDINGS_RESALE");
+      return;
+    }
+    state.urbanProject.stepsHistory.push("REVENUE_BUILDINGS_OPERATIONS_YEARLY_REVENUES");
   });
+
+  builder.addCase(buildingsResaleRevenueCompleted, (state, action) => {
+    state.urbanProject.creationData.buildingsResaleSellingPrice = action.payload.sellingPrice;
+    state.urbanProject.creationData.buildingsResalePropertyTransferDuties =
+      action.payload.propertyTransferDuties;
+    state.urbanProject.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");
+  });
+  builder.addCase(buildingsResaleRevenueReverted, (state) => {
+    state.urbanProject.creationData.buildingsResaleSellingPrice = undefined;
+    state.urbanProject.creationData.buildingsResalePropertyTransferDuties = undefined;
+  });
+
   builder.addCase(expectedSiteResaleRevenueReverted, (state) => {
     state.urbanProject.creationData.siteResaleExpectedSellingPrice = undefined;
     state.urbanProject.creationData.siteResaleExpectedPropertyTransferDuties = undefined;

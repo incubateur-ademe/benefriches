@@ -52,6 +52,8 @@ export type UrbanProjectCreationData = {
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   siteResaleExpectedSellingPrice?: number;
   siteResaleExpectedPropertyTransferDuties?: number;
+  buildingsResaleSellingPrice?: number;
+  buildingsResalePropertyTransferDuties?: number;
   // schedules
   reinstatementSchedule?: {
     startDate: string;
