@@ -20,7 +20,8 @@ export type EconomicBalanceMainName =
   | "development_plan_installation"
   | "photovoltaic_development_plan_installation"
   | "urban_project_development_plan_installation"
-  | "site_resale";
+  | "site_resale"
+  | "buildings_resale";
 
 export type DevelopmentPlanInstallationExpenseName =
   | "photovoltaic_technical_studies"
@@ -166,6 +167,13 @@ export const getEconomicBalanceProjectImpacts = (
     impacts.push({
       name: "site_resale",
       value: economicBalance.revenues.siteResale,
+    });
+  }
+
+  if (economicBalance.revenues.buildingsResale) {
+    impacts.push({
+      name: "buildings_resale",
+      value: economicBalance.revenues.buildingsResale,
     });
   }
 

@@ -61,6 +61,10 @@ export class SqlReconversionProjectRepository implements ReconversionProjectRepo
           site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
           site_resale_expected_property_transfer_duties:
             reconversionProject.siteResaleExpectedPropertyTransferDuties,
+          buildings_resale_expected_selling_price:
+            reconversionProject.buildingsResaleExpectedSellingPrice,
+          buildings_resale_expected_property_transfer_duties:
+            reconversionProject.buildingsResaleExpectedPropertyTransferDuties,
           friche_decontaminated_soil_surface_area: reconversionProject.decontaminatedSoilSurface,
         },
         "id",

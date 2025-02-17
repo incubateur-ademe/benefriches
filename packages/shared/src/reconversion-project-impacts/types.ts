@@ -30,6 +30,7 @@ export type EconomicBalanceImpactResult = {
   revenues: {
     total: number;
     siteResale?: number;
+    buildingsResale?: number;
     operationsRevenues?: {
       bearer?: string;
       total: number;

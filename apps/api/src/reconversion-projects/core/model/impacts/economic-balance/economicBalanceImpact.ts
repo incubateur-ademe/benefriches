@@ -1,3 +1,4 @@
+import { pipe } from "rxjs";
 import {
   DevelopmentPlanInstallationExpenses,
   EconomicBalanceImpactResult,
@@ -20,6 +21,7 @@ type ProjectProps = {
   yearlyProjectedRevenues: RecurringRevenue[];
   yearlyProjectedCosts: RecurringExpense[];
   siteResaleTotalAmount?: number;
+  buildingsResaleTotalAmount?: number;
 };
 
 type ReconversionProjectInstallationCostsInput = {
@@ -48,7 +50,8 @@ type ReconversionProjectInstallationEconomicResult = {
 };
 
 const withSiteResaleRevenues =
-  (siteResaleTotalAmount?: number) => (economicBalance: EconomicBalanceImpactResult) => {
+  (siteResaleTotalAmount?: number) =>
+  (economicBalance: EconomicBalanceImpactResult): EconomicBalanceImpactResult => {
     if (!siteResaleTotalAmount) return economicBalance;
     return {
       ...economicBalance,
@@ -57,6 +60,21 @@ const withSiteResaleRevenues =
         ...economicBalance.revenues,
         siteResale: siteResaleTotalAmount,
         total: economicBalance.revenues.total + siteResaleTotalAmount,
+      },
+    };
+  };
+
+const withBuildingsResaleRevenues =
+  (buildingsResaleTotalAmount?: number) =>
+  (economicBalance: EconomicBalanceImpactResult): EconomicBalanceImpactResult => {
+    if (!buildingsResaleTotalAmount) return economicBalance;
+    return {
+      ...economicBalance,
+      total: economicBalance.total + buildingsResaleTotalAmount,
+      revenues: {
+        ...economicBalance.revenues,
+        buildingsResale: buildingsResaleTotalAmount,
+        total: economicBalance.revenues.total + buildingsResaleTotalAmount,
       },
     };
   };
@@ -166,6 +184,7 @@ export const computeEconomicBalanceImpact = (
     yearlyProjectedCosts,
     yearlyProjectedRevenues,
     siteResaleTotalAmount,
+    buildingsResaleTotalAmount,
   }: ProjectProps,
   durationInYear: number,
 ): EconomicBalanceImpactResult => {
@@ -199,7 +218,10 @@ export const computeEconomicBalanceImpact = (
       durationInYear,
     );
 
-    return withSiteResaleRevenues(siteResaleTotalAmount)({
+    return pipe(
+      withSiteResaleRevenues(siteResaleTotalAmount),
+      withBuildingsResaleRevenues(buildingsResaleTotalAmount),
+    )({
       total: Math.round(totalInstallation + totalExploitation),
       bearer: developmentPlanDeveloperName,
       costs: {
@@ -215,7 +237,10 @@ export const computeEconomicBalanceImpact = (
     });
   }
 
-  return withSiteResaleRevenues(siteResaleTotalAmount)({
+  return pipe(
+    withSiteResaleRevenues(siteResaleTotalAmount),
+    withBuildingsResaleRevenues(buildingsResaleTotalAmount),
+  )({
     total: Math.round(totalInstallation),
     bearer: developmentPlanDeveloperName,
     costs: {

@@ -1,3 +1,5 @@
+import { EconomicBalanceImpactResult } from "shared";
+
 import {
   computeEconomicBalanceImpact,
   getEconomicResultsOfProjectExploitationForDuration,
@@ -267,11 +269,12 @@ describe("EconomicBalance impact", () => {
             yearlyProjectedCosts: [],
             yearlyProjectedRevenues: [],
             siteResaleTotalAmount: 150000,
+            buildingsResaleTotalAmount: 199000,
           },
           1,
         ),
-      ).toEqual({
-        total: 55000,
+      ).toEqual<EconomicBalanceImpactResult>({
+        total: 254000,
         bearer: "Mairie de Blajan",
         costs: {
           total: 95000,
@@ -288,8 +291,9 @@ describe("EconomicBalance impact", () => {
           },
         },
         revenues: {
-          total: 150000,
+          total: 349000,
           siteResale: 150000,
+          buildingsResale: 199000,
           operationsRevenues: {
             total: 0,
             revenues: [],
@@ -297,7 +301,7 @@ describe("EconomicBalance impact", () => {
         },
       });
 
-      expect(
+      expect<EconomicBalanceImpactResult>(
         computeEconomicBalanceImpact(
           {
             financialAssistanceRevenues: [
@@ -326,6 +330,7 @@ describe("EconomicBalance impact", () => {
               { amount: 5000, source: "other" },
             ],
             siteResaleTotalAmount: 150000,
+            buildingsResaleTotalAmount: 0,
           },
           20,
         ),
