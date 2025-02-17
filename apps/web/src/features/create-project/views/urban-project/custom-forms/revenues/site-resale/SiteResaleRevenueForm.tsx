@@ -19,7 +19,7 @@ type FormValues = {
   propertyTransferDuties?: number;
 };
 
-const ExpectedSiteResaleForm = ({ initialValues, onSubmit, onBack }: Props) => {
+const SiteResaleRevenueForm = ({ initialValues, onSubmit, onBack }: Props) => {
   const { handleSubmit, register, watch, setValue } = useForm<FormValues>({
     defaultValues: initialValues,
   });
@@ -94,4 +94,4 @@ const ExpectedSiteResaleForm = ({ initialValues, onSubmit, onBack }: Props) => {
   );
 };
 
-export default ExpectedSiteResaleForm;
+export default SiteResaleRevenueForm;
