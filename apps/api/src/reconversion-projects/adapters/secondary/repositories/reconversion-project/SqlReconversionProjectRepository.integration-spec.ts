@@ -97,6 +97,8 @@ describe("SqlReconversionProjectRepository integration", () => {
             project_phase: reconversionProject.projectPhase,
             site_resale_expected_selling_price: null,
             site_resale_expected_property_transfer_duties: null,
+            buildings_resale_expected_selling_price: null,
+            buildings_resale_expected_property_transfer_duties: null,
             friche_decontaminated_soil_surface_area: null,
           },
         ]);
@@ -142,6 +144,8 @@ describe("SqlReconversionProjectRepository integration", () => {
               project_phase: reconversionProject.projectPhase,
               site_resale_expected_selling_price: null,
               site_resale_expected_property_transfer_duties: null,
+              buildings_resale_expected_selling_price: null,
+              buildings_resale_expected_property_transfer_duties: null,
             },
           ]);
         });
@@ -368,6 +372,8 @@ describe("SqlReconversionProjectRepository integration", () => {
           projectPhase: "planning",
           siteResaleExpectedSellingPrice: 2850000,
           siteResaleExpectedPropertyTransferDuties: 165585,
+          buildingsResaleExpectedSellingPrice: 3999000,
+          buildingsResaleExpectedPropertyTransferDuties: 233892,
           createdAt: now,
           relatedSiteId: siteId,
         };
@@ -404,6 +410,10 @@ describe("SqlReconversionProjectRepository integration", () => {
             site_resale_expected_selling_price: reconversionProject.siteResaleExpectedSellingPrice,
             site_resale_expected_property_transfer_duties:
               reconversionProject.siteResaleExpectedPropertyTransferDuties,
+            buildings_resale_expected_selling_price:
+              reconversionProject.buildingsResaleExpectedSellingPrice,
+            buildings_resale_expected_property_transfer_duties:
+              reconversionProject.buildingsResaleExpectedPropertyTransferDuties,
           },
         ]);
       });

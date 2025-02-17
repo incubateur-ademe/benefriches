@@ -20,10 +20,10 @@ type Props = {
   bearer?: string;
 };
 
-const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName) => {
+const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName): string => {
   switch (name) {
+    case "buildings_resale":
     case "site_resale":
-      return "#8DC85D";
     case "site_purchase":
       return "#8DC85D";
     case "site_reinstatement":

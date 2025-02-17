@@ -17,6 +17,7 @@ import SitePurchaseAmounts from "./expenses/site-purchase-amounts";
 import YearlyProjectedExpensesForm from "./expenses/yearly-projected-costs";
 import ProjectNameAndDescriptionForm from "./name-and-description";
 import ProjectPhaseForm from "./project-phase";
+import BuildingsResaleRevenueForm from "./revenues/buildings-resale";
 import ProjectFinancialAssistanceRevenueForm from "./revenues/financial-assistance";
 import ProjectRevenueIntroduction from "./revenues/introduction";
 import SiteResaleRevenueForm from "./revenues/site-resale";
@@ -128,6 +129,8 @@ const getCurrentStepView = (
       return <YearlyProjectedRevenueForm />;
     case "REVENUE_EXPECTED_SITE_RESALE":
       return <SiteResaleRevenueForm />;
+    case "REVENUE_BUILDINGS_RESALE":
+      return <BuildingsResaleRevenueForm />;
     case "SCHEDULE_INTRODUCTION":
       return <ProjectScheduleIntroduction />;
     case "SCHEDULE_PROJECTION":
