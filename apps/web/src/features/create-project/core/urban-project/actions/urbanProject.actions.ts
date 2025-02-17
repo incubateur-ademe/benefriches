@@ -201,6 +201,11 @@ export const expectedSiteResaleRevenueCompleted = createAction<{
   sellingPrice?: number;
   propertyTransferDuties?: number;
 }>("expectedSiteResaleRevenueCompleted");
+export const buildingsResaleRevenueReverted = createAction("buildingsResaleRevenueReverted");
+export const buildingsResaleRevenueCompleted = createAction<{
+  sellingPrice?: number;
+  propertyTransferDuties?: number;
+}>("buildingsResaleRevenueCompleted");
 
 export const scheduleIntroductionCompleted = createAction("scheduleIntroductionCompleted");
 export const scheduleIntroductionReverted = createAction("scheduleIntroductioReverted");

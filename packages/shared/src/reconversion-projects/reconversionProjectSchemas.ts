@@ -69,6 +69,8 @@ export const reconversionProjectSchema = z.object({
   projectPhase: z.string(),
   siteResaleExpectedSellingPrice: z.number().nonnegative().optional(),
   siteResaleExpectedPropertyTransferDuties: z.number().nonnegative().optional(),
+  buildingsResaleExpectedSellingPrice: z.number().nonnegative().optional(),
+  buildingsResaleExpectedPropertyTransferDuties: z.number().nonnegative().optional(),
 });
 
 export type DevelopmentPlan = z.infer<typeof reconversionProjectSchema>;

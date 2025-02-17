@@ -187,12 +187,12 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
   }
 };
 
-export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName) => {
+export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName): string => {
   switch (name) {
     case "site_purchase":
       return "🏠 Acquisition du site";
     case "site_resale":
-      return "🏠 Cession du site";
+      return "🚪 Cession du site";
     case "site_reinstatement":
       return "🚧 Remise en état de la friche";
     case "financial_assistance":
@@ -207,13 +207,15 @@ export const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName) => 
       return "💸️ Charges d'exploitation";
     case "operations_revenues":
       return "💰 Recettes d'exploitation";
+    case "buildings_resale":
+      return "🏢 Cession des bâtiments";
   }
 };
 
 export const getEconomicBalanceDetailsImpactLabel = (
   mainCategory: EconomicBalanceMainName,
   name: EconomicBalanceName,
-) => {
+): string => {
   switch (mainCategory) {
     case "site_reinstatement":
       return getEconomicBalanceReinstatementExpensePurposeLabel(
@@ -249,7 +251,7 @@ const getEconomicBalanceYearlyExpensePurposeLabel = (purpose: RecurringExpense["
   }
 };
 
-const getEconomicBalanceYearlyRevenueSourceLabel = (source: RecurringRevenue["source"]) => {
+const getEconomicBalanceYearlyRevenueSourceLabel = (source: RecurringRevenue["source"]): string => {
   switch (source) {
     case "operations":
       return "💰 Recettes principales";

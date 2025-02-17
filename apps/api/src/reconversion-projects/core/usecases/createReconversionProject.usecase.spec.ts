@@ -11,6 +11,7 @@ import {
   buildExhaustiveReconversionProjectProps,
   buildMinimalReconversionProjectProps,
   buildReconversionProject,
+  buildUrbanProjectReconversionProjectProps,
 } from "../model/reconversionProject.mock";
 import { CreateReconversionProjectUseCase } from "./createReconversionProject.usecase";
 
@@ -101,31 +102,56 @@ describe("CreateReconversionProject Use Case", () => {
   });
 
   describe("Success cases", () => {
-    it.each([
-      { case: "with minimal data", props: buildMinimalReconversionProjectProps() },
-      {
-        case: "with no costs and no revenues",
-        props: buildMinimalReconversionProjectProps({
-          yearlyProjectedCosts: [],
-          yearlyProjectedRevenues: [],
-        }),
-      },
-      { case: "with exhaustive data", props: buildExhaustiveReconversionProjectProps() },
-    ])("Can create a reconversion project $case", async ({ props }) => {
-      siteRepository._setSites([buildMinimalSite({ id: props.relatedSiteId })]);
+    describe("Photovoltaic power station", () => {
+      it.each([
+        { case: "with minimal data", props: buildMinimalReconversionProjectProps() },
+        {
+          case: "with no costs and no revenues",
+          props: buildMinimalReconversionProjectProps({
+            yearlyProjectedCosts: [],
+            yearlyProjectedRevenues: [],
+          }),
+        },
+        { case: "with exhaustive data", props: buildExhaustiveReconversionProjectProps() },
+      ])("Can create a reconversion project $case", async ({ props }) => {
+        siteRepository._setSites([buildMinimalSite({ id: props.relatedSiteId })]);
 
-      const usecase = new CreateReconversionProjectUseCase(
-        dateProvider,
-        siteRepository,
-        reconversionProjectRepository,
-      );
-      await usecase.execute({ reconversionProjectProps: props });
+        const usecase = new CreateReconversionProjectUseCase(
+          dateProvider,
+          siteRepository,
+          reconversionProjectRepository,
+        );
+        await usecase.execute({ reconversionProjectProps: props });
 
-      const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
+        const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
 
-      expect(savedReconversionProjects).toEqual([
-        { ...props, createdAt: fakeNow, creationMode: "custom" },
-      ]);
+        expect(savedReconversionProjects).toEqual([
+          { ...props, createdAt: fakeNow, creationMode: "custom" },
+        ]);
+      });
+    });
+    describe("Urban project", () => {
+      it.each([
+        {
+          case: "nominal case",
+          props: buildUrbanProjectReconversionProjectProps(),
+        },
+      ])("Can create an urban reconversion project $case", async ({ props }) => {
+        siteRepository._setSites([buildMinimalSite({ id: props.relatedSiteId })]);
+
+        const usecase = new CreateReconversionProjectUseCase(
+          dateProvider,
+          siteRepository,
+          reconversionProjectRepository,
+        );
+        await usecase.execute({ reconversionProjectProps: props });
+
+        const savedReconversionProjects = reconversionProjectRepository._getReconversionProjects();
+
+        expect(savedReconversionProjects).toEqual([
+          { ...props, createdAt: fakeNow, creationMode: "custom" },
+        ]);
+      });
     });
   });
 });

@@ -160,6 +160,8 @@ export const buildUrbanProjectReconversionProjectProps = (): ReconversionProject
     sitePurchasePropertyTransferDuties: 12000,
     siteResaleExpectedPropertyTransferDuties: 20000,
     siteResaleExpectedSellingPrice: 2000000,
+    buildingsResaleExpectedSellingPrice: 149000,
+    buildingsResaleExpectedPropertyTransferDuties: 9999,
     financialAssistanceRevenues: [
       { amount: 14000, source: "public_subsidies" },
       { amount: 999.99, source: "other" },

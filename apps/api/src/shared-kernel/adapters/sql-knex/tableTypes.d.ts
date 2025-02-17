@@ -109,6 +109,9 @@ export type SqlReconversionProject = {
   // site resale
   site_resale_expected_selling_price?: number;
   site_resale_expected_property_transfer_duties?: number;
+  // buildings resale
+  buildings_resale_expected_selling_price?: number;
+  buildings_resale_expected_property_transfer_duties?: number;
   // project phase
   project_phase: string;
   // dates

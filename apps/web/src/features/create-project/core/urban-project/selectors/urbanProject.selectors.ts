@@ -314,6 +314,21 @@ export const selectSiteResaleAmounts = createSelector(
   },
 );
 
+type BuildingsResaleAmounts = {
+  sellingPrice: number;
+  propertyTransferDuties?: number;
+};
+export const selectBuildingsResaleAmounts = createSelector(
+  [selectCreationData],
+  (creationData): BuildingsResaleAmounts | undefined => {
+    if (!creationData.buildingsResaleSellingPrice) return undefined;
+    return {
+      sellingPrice: creationData.buildingsResaleSellingPrice,
+      propertyTransferDuties: creationData.buildingsResalePropertyTransferDuties ?? 0,
+    };
+  },
+);
+
 export const selectProjectScheduleInitialValues = createSelector(
   [selectCreationData, selectDefaultSchedule],
   (creationData, defaultSchedule): ProjectSchedule => {

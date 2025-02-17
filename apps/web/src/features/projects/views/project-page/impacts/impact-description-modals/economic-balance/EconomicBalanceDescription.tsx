@@ -28,7 +28,7 @@ type Props = {
   projectData: ProjectData;
 };
 
-const getChartColor = (impactName: EconomicBalanceMainName) => {
+const getChartColor = (impactName: EconomicBalanceMainName): string => {
   switch (impactName) {
     case "site_reinstatement":
       return "#F4C00A";
@@ -40,6 +40,7 @@ const getChartColor = (impactName: EconomicBalanceMainName) => {
     case "photovoltaic_development_plan_installation":
       return "#EF410F";
     case "site_resale":
+    case "buildings_resale":
       return "#72D98D";
     case "financial_assistance":
       return "#14EA81";
