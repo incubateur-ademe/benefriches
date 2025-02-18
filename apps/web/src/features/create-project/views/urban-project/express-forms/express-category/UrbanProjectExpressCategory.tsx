@@ -34,12 +34,6 @@ type Option = {
 
 const options: Option[] = [
   {
-    value: "PUBLIC_FACILITIES",
-    title: "Équipement public",
-    description: "Établissement public (type médiathèque) + espace vert + espace public",
-    imgSrc: "/img/pictograms/express-urban-categories/equipement-public.svg",
-  },
-  {
     value: "RESIDENTIAL_NORMAL_AREA",
     title: "Résidentiel secteur détendu",
     description: "Habitat individuel + petit collectif",
@@ -63,6 +57,12 @@ const options: Option[] = [
     imgSrc: "/img/pictograms/express-urban-categories/nouvelle-centralite.svg",
     badgeText: "115 logements / ha",
     badgeClassName: "tw-bg-[#D6E3FF] tw-text-[#3A4F79]",
+  },
+  {
+    value: "PUBLIC_FACILITIES",
+    title: "Équipement public",
+    description: "Établissement public (type médiathèque) + espace vert + espace public",
+    imgSrc: "/img/pictograms/express-urban-categories/equipement-public.svg",
   },
 ] as const;
 
