@@ -21,7 +21,7 @@ type ProjectProps = {
   yearlyProjectedRevenues: RecurringRevenue[];
   yearlyProjectedCosts: RecurringExpense[];
   siteResaleTotalAmount?: number;
-  buildingsResaleTotalAmount?: number;
+  buildingsResaleSellingPrice?: number;
 };
 
 type ReconversionProjectInstallationCostsInput = {
@@ -65,16 +65,16 @@ const withSiteResaleRevenues =
   };
 
 const withBuildingsResaleRevenues =
-  (buildingsResaleTotalAmount?: number) =>
+  (buildingsResaleSellingPrice?: number) =>
   (economicBalance: EconomicBalanceImpactResult): EconomicBalanceImpactResult => {
-    if (!buildingsResaleTotalAmount) return economicBalance;
+    if (!buildingsResaleSellingPrice) return economicBalance;
     return {
       ...economicBalance,
-      total: economicBalance.total + buildingsResaleTotalAmount,
+      total: economicBalance.total + buildingsResaleSellingPrice,
       revenues: {
         ...economicBalance.revenues,
-        buildingsResale: buildingsResaleTotalAmount,
-        total: economicBalance.revenues.total + buildingsResaleTotalAmount,
+        buildingsResale: buildingsResaleSellingPrice,
+        total: economicBalance.revenues.total + buildingsResaleSellingPrice,
       },
     };
   };
@@ -184,7 +184,7 @@ export const computeEconomicBalanceImpact = (
     yearlyProjectedCosts,
     yearlyProjectedRevenues,
     siteResaleTotalAmount,
-    buildingsResaleTotalAmount,
+    buildingsResaleSellingPrice,
   }: ProjectProps,
   durationInYear: number,
 ): EconomicBalanceImpactResult => {
@@ -220,7 +220,7 @@ export const computeEconomicBalanceImpact = (
 
     return pipe(
       withSiteResaleRevenues(siteResaleTotalAmount),
-      withBuildingsResaleRevenues(buildingsResaleTotalAmount),
+      withBuildingsResaleRevenues(buildingsResaleSellingPrice),
     )({
       total: Math.round(totalInstallation + totalExploitation),
       bearer: developmentPlanDeveloperName,
@@ -239,7 +239,7 @@ export const computeEconomicBalanceImpact = (
 
   return pipe(
     withSiteResaleRevenues(siteResaleTotalAmount),
-    withBuildingsResaleRevenues(buildingsResaleTotalAmount),
+    withBuildingsResaleRevenues(buildingsResaleSellingPrice),
   )({
     total: Math.round(totalInstallation),
     bearer: developmentPlanDeveloperName,

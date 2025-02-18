@@ -187,7 +187,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         developmentPlanDeveloperName: "Terre cuite d’occitanie",
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
         siteResaleTotalAmount: 158715,
-        buildingsResaleTotalAmount: 145000,
+        buildingsResaleSellingPrice: 140000,
         decontaminatedSoilSurface: 1000,
       });
     });
@@ -255,7 +255,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         futureOperatorName: undefined,
         futureSiteOwnerName: undefined,
         sitePurchaseTotalAmount: undefined,
-        buildingsResaleTotalAmount: undefined,
+        buildingsResaleSellingPrice: undefined,
         reinstatementContractOwnerName: undefined,
         reinstatementExpenses: [],
         financialAssistanceRevenues: [],
