@@ -3,8 +3,6 @@ import { ReactNode } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import ModalTitleTwo from "./ModalTitleTwo";
-
 type Props = {
   children: ReactNode;
   fullWidth?: boolean;
@@ -21,7 +19,6 @@ const ModalContent = ({ children, fullWidth = false }: Props) => {
         fr.cx("fr-modal__content"),
       )}
     >
-      <ModalTitleTwo>Qu'est-ce que c'est ?</ModalTitleTwo>
       {children}
     </div>
   );
