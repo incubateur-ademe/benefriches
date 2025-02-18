@@ -56,6 +56,7 @@ function ProjectCreationDataSummary({
           firstYearOfOperation: projectData.firstYearOfOperation,
           sitePurchaseTotalAmount,
           siteResaleSellingPrice: projectData.siteResaleExpectedSellingPrice,
+          buildingsResaleSellingPrice: projectData.buildingsResaleSellingPrice,
           decontaminatedSoilSurface: projectData.decontaminatedSurfaceArea,
         }}
       />

@@ -39,6 +39,7 @@ export type ReconversionProjectFeaturesView = {
   firstYearOfOperation?: number;
   sitePurchaseTotalAmount?: number;
   siteResaleSellingPrice?: number;
+  buildingsResaleSellingPrice?: number;
   decontaminatedSoilSurface?: number;
 };
 

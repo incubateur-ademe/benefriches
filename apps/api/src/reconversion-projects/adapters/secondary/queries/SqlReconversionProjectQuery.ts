@@ -48,7 +48,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         "site_purchase_selling_price",
         "site_purchase_property_transfer_duties",
         "site_resale_expected_selling_price",
-        "site_resale_expected_property_transfer_duties",
+        "buildings_resale_expected_selling_price",
         this.sqlConnection
           .select(this.sqlConnection.raw("json_agg(row_to_json(soils_distribution_rows))"))
           .from({ soils_distribution_rows: "reconversion_project_soils_distributions" })
@@ -129,7 +129,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
           site_purchase_selling_price: number | null;
           site_purchase_property_transfer_duties: number | null;
           site_resale_expected_selling_price: number | null;
-          site_resale_expected_property_transfer_duties: number | null;
+          buildings_resale_expected_selling_price: number | null;
           development_plan: {
             type: string;
             costs: { amount: number; purpose: string }[];
@@ -210,6 +210,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         sqlResult.site_purchase_property_transfer_duties,
       ),
       siteResaleSellingPrice: sqlResult.site_resale_expected_selling_price ?? undefined,
+      buildingsResaleSellingPrice: sqlResult.buildings_resale_expected_selling_price ?? undefined,
     };
   }
 }
