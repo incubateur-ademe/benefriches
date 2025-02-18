@@ -68,7 +68,7 @@ export type ReconversionProjectImpactsDataView = {
   developmentPlanDeveloperName?: string;
   developmentPlanFeatures?: DevelopmentPlan["features"];
   operationsFirstYear?: number;
-  siteResaleTotalAmount?: number;
+  siteResaleSellingPrice?: number;
   buildingsResaleSellingPrice?: number;
   decontaminatedSoilSurface?: number;
 };
@@ -221,7 +221,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       reinstatementSchedule: reconversionProject.reinstatementSchedule,
       reinstatementExpenses: reconversionProject.reinstatementExpenses,
       conversionSchedule: reconversionProject.conversionSchedule,
-      siteResaleTotalAmount: reconversionProject.siteResaleTotalAmount,
+      siteResaleSellingPrice: reconversionProject.siteResaleSellingPrice,
       buildingsResaleSellingPrice: reconversionProject.buildingsResaleSellingPrice,
     };
 

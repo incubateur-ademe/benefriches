@@ -86,7 +86,7 @@ export const DEMO_PROJECT = {
     { amount: 375000, purpose: "demolition" },
     { amount: 375000, purpose: "asbestos_removal" },
   ],
-  siteResaleTotalAmount: 6416318.4,
+  siteResaleSellingPrice: 6416318.4,
 } as const satisfies Omit<ProjectFeatures, "developmentPlan"> & {
   developmentPlan: UrbanProjectFeatures;
 };

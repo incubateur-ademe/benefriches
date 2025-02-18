@@ -77,7 +77,7 @@ export type ReconversionProjectImpactsDataView = {
   developmentPlanDeveloperName?: string;
   developmentPlanFeatures?: DevelopmentPlan["features"];
   operationsFirstYear?: number;
-  siteResaleTotalAmount?: number;
+  siteResaleSellingPrice?: number;
   buildingsResaleSellingPrice?: number;
   decontaminatedSoilSurface?: number;
 };
@@ -194,9 +194,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
           : 0,
         sitePurchasePropertyTransferDutiesAmount:
           reconversionProject.sitePurchasePropertyTransferDuties,
-        siteResaleTotalAmount:
-          (reconversionProject.siteResaleExpectedSellingPrice ?? 0) +
-          (reconversionProject.siteResaleExpectedPropertyTransferDuties ?? 0),
+        siteResaleSellingPrice: reconversionProject.siteResaleExpectedSellingPrice,
         reinstatementSchedule: reconversionProject.reinstatementSchedule,
         reinstatementExpenses: (reconversionProject.reinstatementCosts ??
           []) as ReinstatementExpense[],

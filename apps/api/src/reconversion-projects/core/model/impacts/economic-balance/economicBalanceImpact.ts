@@ -20,7 +20,7 @@ type ProjectProps = {
   reinstatementContractOwnerName?: string;
   yearlyProjectedRevenues: RecurringRevenue[];
   yearlyProjectedCosts: RecurringExpense[];
-  siteResaleTotalAmount?: number;
+  siteResaleSellingPrice?: number;
   buildingsResaleSellingPrice?: number;
 };
 
@@ -50,16 +50,16 @@ type ReconversionProjectInstallationEconomicResult = {
 };
 
 const withSiteResaleRevenues =
-  (siteResaleTotalAmount?: number) =>
+  (siteResaleSellingPrice?: number) =>
   (economicBalance: EconomicBalanceImpactResult): EconomicBalanceImpactResult => {
-    if (!siteResaleTotalAmount) return economicBalance;
+    if (!siteResaleSellingPrice) return economicBalance;
     return {
       ...economicBalance,
-      total: economicBalance.total + siteResaleTotalAmount,
+      total: economicBalance.total + siteResaleSellingPrice,
       revenues: {
         ...economicBalance.revenues,
-        siteResale: siteResaleTotalAmount,
-        total: economicBalance.revenues.total + siteResaleTotalAmount,
+        siteResale: siteResaleSellingPrice,
+        total: economicBalance.revenues.total + siteResaleSellingPrice,
       },
     };
   };
@@ -183,7 +183,7 @@ export const computeEconomicBalanceImpact = (
     developmentPlanDeveloperName,
     yearlyProjectedCosts,
     yearlyProjectedRevenues,
-    siteResaleTotalAmount,
+    siteResaleSellingPrice,
     buildingsResaleSellingPrice,
   }: ProjectProps,
   durationInYear: number,
@@ -219,7 +219,7 @@ export const computeEconomicBalanceImpact = (
     );
 
     return pipe(
-      withSiteResaleRevenues(siteResaleTotalAmount),
+      withSiteResaleRevenues(siteResaleSellingPrice),
       withBuildingsResaleRevenues(buildingsResaleSellingPrice),
     )({
       total: Math.round(totalInstallation + totalExploitation),
@@ -238,7 +238,7 @@ export const computeEconomicBalanceImpact = (
   }
 
   return pipe(
-    withSiteResaleRevenues(siteResaleTotalAmount),
+    withSiteResaleRevenues(siteResaleSellingPrice),
     withBuildingsResaleRevenues(buildingsResaleSellingPrice),
   )({
     total: Math.round(totalInstallation),

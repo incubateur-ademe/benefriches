@@ -63,7 +63,7 @@ export type ProjectFeatures = {
   reinstatementSchedule?: Schedule;
   firstYearOfOperation?: number;
   sitePurchaseTotalAmount?: number;
-  siteResaleTotalAmount?: number;
+  siteResaleSellingPrice?: number;
   decontaminatedSoilSurface?: number;
 };
 
