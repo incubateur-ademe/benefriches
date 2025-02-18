@@ -1,23 +1,15 @@
 import {
   AvoidedCO2EqEmissions,
   BuildingsUseDistribution,
-  BUILDINGS_ECONOMIC_ACTIVITY_USE,
-  filterObjectWithKeys,
   getAnnualizedCO2MonetaryValueForDuration,
   roundTo2Digits,
   SocioEconomicImpact,
   SpacesDistribution,
-  sumObjectValues,
 } from "shared";
 
 import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
-import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
+import { YearlyUrbanFreshnessRelatedImpacts } from "./YearlyUrbanFreshnessRelatedImpacts";
 
-const CO2_BENEFIT_AMOUNT_GRAM_PER_HOUSING_SQUARE_METER_PER_YEAR = 15;
-const CO2_BENEFIT_AMOUNT_GRAM_PER_BUSINESS_SQUARE_METER_PER_YEAR = 26.4;
-
-const FRESHNESS_BENEFIT_AMOUNT_EUROS_PER_HOUSEHOLD_PER_YEAR = 4.2;
-const FRESHNESS_BENEFIT_AMOUNT_EUROS_PER_BUSINESS_SQUARE_METER_PER_YEAR = 0.07;
 type Props = {
   siteSquareMetersSurfaceArea: number;
   citySquareMetersSurfaceArea: number;
@@ -29,16 +21,11 @@ type Props = {
 };
 
 export class UrbanFreshnessRelatedImpactsService
-  extends InfluenceAreaService
+  extends YearlyUrbanFreshnessRelatedImpacts
   implements PartialImpactsServiceInterface
 {
-  private readonly projectHousingSurfaceArea: number;
-  private readonly projectOfficesActivitySurface: number;
-  private readonly projectOtherEconomicActivitySurface: number;
-  private readonly projectPublicGreenSpaceSurface: number;
-  private readonly evaluationPeriodInYears: number;
-  private readonly operationsFirstYear: number;
-  private readonly siteSurfaceArea: number;
+  protected readonly evaluationPeriodInYears: number;
+  protected readonly operationsFirstYear: number;
 
   constructor({
     siteSquareMetersSurfaceArea,
@@ -53,105 +40,21 @@ export class UrbanFreshnessRelatedImpactsService
       siteSquareMetersSurfaceArea,
       citySquareMetersSurfaceArea,
       cityPopulation,
-    });
-    const { RESIDENTIAL = 0, OFFICES = 0 } = buildingsFloorAreaDistribution;
-    this.projectHousingSurfaceArea = RESIDENTIAL;
-    this.projectOfficesActivitySurface = OFFICES;
-
-    const economicActivityBuildings = filterObjectWithKeys(
       buildingsFloorAreaDistribution,
-      BUILDINGS_ECONOMIC_ACTIVITY_USE.filter((use) => use !== "OFFICES"),
-    );
+      spacesDistribution,
+    });
 
-    this.projectOtherEconomicActivitySurface = sumObjectValues(economicActivityBuildings);
-    this.projectPublicGreenSpaceSurface = spacesDistribution.PUBLIC_GREEN_SPACES ?? 0;
     this.evaluationPeriodInYears = evaluationPeriodInYears;
     this.operationsFirstYear = operationsFirstYear;
-
-    this.siteSurfaceArea = siteSquareMetersSurfaceArea;
-
-    this.influenceRadius = this.urbanFreshnessInfluenceRadius;
-  }
-
-  get hasUrbanFreshnessImpact() {
-    if (this.projectPublicGreenSpaceSurface === 0) {
-      return false;
-    }
-    const minRatio =
-      this.projectPublicGreenSpaceSurface < 5000
-        ? 50
-        : this.projectPublicGreenSpaceSurface < 10000
-          ? 10
-          : 0;
-
-    if (this.publicGreenSpaceSurfaceRatio < minRatio) {
-      return false;
-    }
-
-    return true;
-  }
-
-  protected get urbanFreshnessInfluenceRadius() {
-    if (this.projectPublicGreenSpaceSurface < 5000) {
-      return this.publicGreenSpaceSurfaceRatio < 95 ? 0 : 25;
-    }
-
-    if (this.projectPublicGreenSpaceSurface < 10000) {
-      return this.publicGreenSpaceSurfaceRatio < 50 ? 25 : 50;
-    }
-
-    if (this.publicGreenSpaceSurfaceRatio < 10) {
-      return 0;
-    }
-
-    return this.publicGreenSpaceSurfaceRatio < 75 ? 50 : 75;
-  }
-
-  private get impactedHousing() {
-    return this.projectHousingSurfaceArea + this.getInfluenceAreaSquareMetersHousingSurface();
-  }
-  private get publicGreenSpaceSurfaceRatio() {
-    return (this.projectPublicGreenSpaceSurface / this.siteSurfaceArea) * 100;
-  }
-
-  private get impactedHouseholds() {
-    return InfluenceAreaService.getHouseholdsFromHousingSurface(this.impactedHousing);
-  }
-
-  private get impactedBusinessBuildings() {
-    return this.projectOtherEconomicActivitySurface + this.projectOfficesActivitySurface;
-  }
-
-  private get housingAvoidedAirConditioningCo2EmissionsPerYear() {
-    return this.impactedHousing * CO2_BENEFIT_AMOUNT_GRAM_PER_HOUSING_SQUARE_METER_PER_YEAR;
-  }
-
-  private get businessBuildingsAvoidedAirConditioningCo2EmissionsPerYear() {
-    return (
-      this.impactedBusinessBuildings * CO2_BENEFIT_AMOUNT_GRAM_PER_BUSINESS_SQUARE_METER_PER_YEAR
-    );
-  }
-
-  private get avoidedAirConditioningCo2EmissionsPerYear() {
-    return (
-      this.housingAvoidedAirConditioningCo2EmissionsPerYear +
-      this.businessBuildingsAvoidedAirConditioningCo2EmissionsPerYear
-    );
   }
 
   getAvoidedInhabitantsAirConditioningExpenses() {
-    return (
-      this.impactedHouseholds *
-      FRESHNESS_BENEFIT_AMOUNT_EUROS_PER_HOUSEHOLD_PER_YEAR *
-      this.evaluationPeriodInYears
-    );
+    return this.avoidedInhabitantsAirConditioningExpensesPerYear * this.evaluationPeriodInYears;
   }
 
   getAvoidedBusinessBuildingsAirConditioningExpenses() {
     return (
-      this.impactedBusinessBuildings *
-      FRESHNESS_BENEFIT_AMOUNT_EUROS_PER_BUSINESS_SQUARE_METER_PER_YEAR *
-      this.evaluationPeriodInYears
+      this.avoidedBusinessBuildingsAirConditioningExpensesPerYear * this.evaluationPeriodInYears
     );
   }
 
@@ -164,27 +67,24 @@ export class UrbanFreshnessRelatedImpactsService
 
   getHousingAvoidedAirConditioningCo2EmissionsInTons() {
     return (
-      (this.housingAvoidedAirConditioningCo2EmissionsPerYear / 1000000) *
-      this.evaluationPeriodInYears
+      this.housingAvoidedAirConditioningCo2EmissionsInTonsPerYear * this.evaluationPeriodInYears
     );
   }
 
   getBusinessBuildingsAvoidedAirConditioningCo2EmissionsInTons() {
     return (
-      (this.businessBuildingsAvoidedAirConditioningCo2EmissionsPerYear / 1000000) *
+      this.businessBuildingsAvoidedAirConditioningCo2EmissionsInTonsPerYear *
       this.evaluationPeriodInYears
     );
   }
 
   getAvoidedAirConditioningCo2EmissionsInTons() {
-    return (
-      (this.avoidedAirConditioningCo2EmissionsPerYear / 1000000) * this.evaluationPeriodInYears
-    );
+    return this.avoidedAirConditioningCo2EmissionsInTonsPerYear * this.evaluationPeriodInYears;
   }
 
   getAvoidedAirConditioningCo2EmissionsMonetaryValue() {
     return getAnnualizedCO2MonetaryValueForDuration(
-      this.avoidedAirConditioningCo2EmissionsPerYear / 1000000,
+      this.avoidedAirConditioningCo2EmissionsInTonsPerYear,
       this.operationsFirstYear,
       this.evaluationPeriodInYears,
     );
