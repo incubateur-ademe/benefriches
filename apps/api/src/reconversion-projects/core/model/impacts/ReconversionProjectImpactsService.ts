@@ -89,7 +89,7 @@ export type InputReconversionProjectData = {
   sitePurchaseTotalAmount?: number;
   sitePurchasePropertyTransferDutiesAmount?: number;
   siteResaleTotalAmount?: number;
-  buildingsResaleTotalAmount?: number;
+  buildingsResaleSellingPrice?: number;
   financialAssistanceRevenues: FinancialAssistanceRevenue[];
   developmentPlanType: DevelopmentPlanType;
   developmentPlanFeatures?: DevelopmentPlan["features"];
@@ -146,7 +146,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
         developmentPlanInstallationCosts:
           this.reconversionProject.developmentPlanInstallationExpenses,
         siteResaleTotalAmount: this.reconversionProject.siteResaleTotalAmount,
-        buildingsResaleTotalAmount: this.reconversionProject.buildingsResaleTotalAmount,
+        buildingsResaleSellingPrice: this.reconversionProject.buildingsResaleSellingPrice,
       },
       this.evaluationPeriodInYears,
     );

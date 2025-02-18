@@ -30,7 +30,7 @@ describe("EconomicBalance impact", () => {
         },
       });
     });
-    it("should return all costs and revenues in balance if operator is new site owner and reinstatement cost owner", () => {
+    it("should return all costs and revenues in balance if developer is new site owner and reinstatement cost owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
           financialAssistanceRevenues: [
@@ -84,7 +84,7 @@ describe("EconomicBalance impact", () => {
       });
     });
 
-    it("should not use real estate transaction in balance if operator is not the new site owner", () => {
+    it("should not use real estate transaction in balance if developer is not the new site owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
           financialAssistanceRevenues: [
@@ -137,7 +137,7 @@ describe("EconomicBalance impact", () => {
       });
     });
 
-    it("should not use reinstatement cost and financial assistance revenues in balance if operator is not the reinstatement cost owner", () => {
+    it("should not use reinstatement cost and financial assistance revenues in balance if developer is not the reinstatement cost owner", () => {
       expect(
         getEconomicResultsOfProjectInstallation({
           financialAssistanceRevenues: [
@@ -269,7 +269,7 @@ describe("EconomicBalance impact", () => {
             yearlyProjectedCosts: [],
             yearlyProjectedRevenues: [],
             siteResaleTotalAmount: 150000,
-            buildingsResaleTotalAmount: 199000,
+            buildingsResaleSellingPrice: 199000,
           },
           1,
         ),
@@ -330,7 +330,7 @@ describe("EconomicBalance impact", () => {
               { amount: 5000, source: "other" },
             ],
             siteResaleTotalAmount: 150000,
-            buildingsResaleTotalAmount: 0,
+            buildingsResaleSellingPrice: 0,
           },
           20,
         ),
