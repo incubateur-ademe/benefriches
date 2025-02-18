@@ -106,6 +106,12 @@ export default function ProjectFeaturesView({ projectData }: Props) {
             value={<strong>{formatNumberFr(projectData.siteResaleSellingPrice)} €</strong>}
           />
         ) : undefined}
+        {projectData.buildingsResaleSellingPrice ? (
+          <DataLine
+            label={<strong>Prix de revente des bâtiments</strong>}
+            value={<strong>{formatNumberFr(projectData.buildingsResaleSellingPrice)} €</strong>}
+          />
+        ) : undefined}
         {projectData.yearlyProjectedExpenses.length > 0 && (
           <>
             <DataLine

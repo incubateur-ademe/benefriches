@@ -64,6 +64,7 @@ export type ProjectFeatures = {
   firstYearOfOperation?: number;
   sitePurchaseTotalAmount?: number;
   siteResaleSellingPrice?: number;
+  buildingsResaleSellingPrice?: number;
   decontaminatedSoilSurface?: number;
 };
 
