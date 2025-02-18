@@ -31,7 +31,7 @@ function LivingAndActivitySpacesDistribution({
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
-      title="Quelle est la part de chaque espace à aménager dans les lieux de vie et d'activité ?"
+      title="Comment seront aménagés les espaces au sein des lieux de vie et d'activité ?"
       instructions={
         <FormInfo>
           Votre projet comporte <strong>{formatSurfaceArea(totalSurfaceArea)}</strong> de futurs
