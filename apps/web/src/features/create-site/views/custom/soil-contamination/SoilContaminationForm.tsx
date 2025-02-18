@@ -43,21 +43,20 @@ function SoilContaminationForm({ initialValues, onSubmit, onBack, siteSurfaceAre
       instructions={
         <FormDefinition hideDivider>
           <p>
-            Les friches sont bien souvent concernées par des pollutions des sols, vestiges des
-            activités passées, avec potentiellement 2 conséquences&nbsp;:
+            Les activités antérieures exercées sur le site, qu'elles soient industrielles (fonderie,
+            textiles, travail des métaux, etc.), de service (stations-services…), ferroviaire, etc.
+            ont pu être à l'origine de pollution des sols.
           </p>
-          <ol>
-            <li>Un impact sur la qualité des eaux souterraines</li>
-            <li>
-              La nécessité d'engager des études puis des travaux afin de les traiter et ainsi
-              permettre un usage futur sans risques sanitaires. Ces études et travaux représentent
-              des dépenses généralement importantes qui contraignent la concrétisation de projets de
-              reconversion.
-            </li>
-          </ol>
           <p>
-            Bénéfriches propose des indicateurs liés à la qualité des eaux souterraines et à la
-            surface dépolluée.
+            Donner un nouvel usage à un site présentant des pollutions (ex : hydrocarbures,
+            solvants, métaux lourds) nécessitera vraisemblablement des mesures de gestion pour
+            abaisser les niveaux de contamination et assurer la maîtrise des éventuels risques
+            sanitaires.
+          </p>
+          <p>
+            La pollution à l'amiante des bâtiments n'est pas à considérer ici, mais un poste de
+            dépense "désamiantage" pourra être alloué, le cas échéant, dans la partie “création d'un
+            projet sur la friche”.
           </p>
         </FormDefinition>
       }

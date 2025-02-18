@@ -20,7 +20,21 @@ function IsFricheLeasedForm({ initialValues, onSubmit, onBack }: Props) {
   });
 
   return (
-    <WizardFormLayout title="La friche est-elle encore louée ?">
+    <WizardFormLayout
+      title="La friche est-elle encore louée ?"
+      instructions={
+        <>
+          <p>
+            Tout ou partie du site peut encore être occupé (maintien d'une des activités du site,
+            usage transitoire, occupation temporaire...).
+          </p>
+          <p>
+            Bénéfriches a besoin de cette information pour savoir à qui imputer les différentes
+            dépenses de la friche.
+          </p>
+        </>
+      }
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <RadioButtons
           {...register("isFricheLeased")}
