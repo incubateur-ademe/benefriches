@@ -78,7 +78,7 @@ export type ReconversionProjectImpactsDataView = {
   developmentPlanFeatures?: DevelopmentPlan["features"];
   operationsFirstYear?: number;
   siteResaleTotalAmount?: number;
-  buildingsResaleTotalAmount?: number;
+  buildingsResaleSellingPrice?: number;
   decontaminatedSoilSurface?: number;
 };
 

@@ -139,10 +139,6 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       reconversionProject.site_resale_expected_selling_price,
       reconversionProject.site_resale_expected_property_transfer_duties,
     );
-    const buildingsResaleTotalAmount = sumIfNotNullish(
-      reconversionProject.buildings_resale_expected_selling_price,
-      reconversionProject.buildings_resale_expected_property_transfer_duties,
-    );
 
     return {
       id: reconversionProject.id,
@@ -174,7 +170,8 @@ export class SqlReconversionProjectImpactsQuery implements ReconversionProjectIm
       developmentPlanInstallationExpenses: sqlDevelopmentPlan?.costs ?? [],
       operationsFirstYear: reconversionProject.operations_first_year ?? undefined,
       siteResaleTotalAmount,
-      buildingsResaleTotalAmount,
+      buildingsResaleSellingPrice:
+        reconversionProject.buildings_resale_expected_selling_price ?? undefined,
       decontaminatedSoilSurface:
         reconversionProject.friche_decontaminated_soil_surface_area ?? undefined,
     } as ReconversionProjectImpactsDataView;
