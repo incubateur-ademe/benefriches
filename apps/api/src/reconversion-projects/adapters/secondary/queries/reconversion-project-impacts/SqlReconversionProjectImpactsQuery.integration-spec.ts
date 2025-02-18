@@ -49,7 +49,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         reinstatement_contract_owner_name: "Mairie de Blajan",
         site_purchase_selling_price: 100000,
         site_purchase_property_transfer_duties: 8000,
-        site_resale_expected_selling_price: 150000,
+        site_resale_expected_selling_price: 125000,
         site_resale_expected_property_transfer_duties: 8715,
         buildings_resale_expected_selling_price: 140000,
         buildings_resale_expected_property_transfer_duties: 5000,
@@ -186,7 +186,7 @@ describe("SqlReconversionProjectImpactsQuery integration", () => {
         operationsFirstYear: 2025,
         developmentPlanDeveloperName: "Terre cuite d’occitanie",
         developmentPlanType: "PHOTOVOLTAIC_POWER_PLANT",
-        siteResaleTotalAmount: 158715,
+        siteResaleSellingPrice: 125000,
         buildingsResaleSellingPrice: 140000,
         decontaminatedSoilSurface: 1000,
       });

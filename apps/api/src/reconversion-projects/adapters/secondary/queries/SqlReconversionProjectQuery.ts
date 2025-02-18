@@ -209,10 +209,7 @@ export class SqlReconversionProjectQuery implements ReconversionProjectQueryGate
         sqlResult.site_purchase_selling_price,
         sqlResult.site_purchase_property_transfer_duties,
       ),
-      siteResaleTotalAmount: sumIfNotNull(
-        sqlResult.site_resale_expected_selling_price,
-        sqlResult.site_resale_expected_property_transfer_duties,
-      ),
+      siteResaleSellingPrice: sqlResult.site_resale_expected_selling_price ?? undefined,
     };
   }
 }

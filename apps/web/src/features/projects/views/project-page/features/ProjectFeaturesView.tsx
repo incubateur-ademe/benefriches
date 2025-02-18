@@ -100,10 +100,10 @@ export default function ProjectFeaturesView({ projectData }: Props) {
           />
         )}
 
-        {projectData.siteResaleTotalAmount ? (
+        {projectData.siteResaleSellingPrice ? (
           <DataLine
-            label={<strong>Prix de revente du site et droits de mutation</strong>}
-            value={<strong>{formatNumberFr(projectData.siteResaleTotalAmount)} €</strong>}
+            label={<strong>Prix de revente du site</strong>}
+            value={<strong>{formatNumberFr(projectData.siteResaleSellingPrice)} €</strong>}
           />
         ) : undefined}
         {projectData.yearlyProjectedExpenses.length > 0 && (
