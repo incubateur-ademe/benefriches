@@ -126,7 +126,7 @@ export const initialState: UrbanProjectState = {
   },
   creationData: {},
   saveState: "idle",
-  stepsHistory: ["BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION"],
+  stepsHistory: ["CREATE_MODE_SELECTION"],
   spacesCategoriesToComplete: [],
   soilsCarbonStorage: { loadingState: "idle", current: undefined, projected: undefined },
 };
