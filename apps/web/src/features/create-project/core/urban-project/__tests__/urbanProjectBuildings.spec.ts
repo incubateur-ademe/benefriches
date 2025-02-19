@@ -8,6 +8,7 @@ import {
   buildingsUseSurfaceAreasCompleted,
   buildingsUseSurfaceAreasReverted,
 } from "../actions/urbanProject.actions";
+import { selectBuildingsFloorUseSurfaceAreas } from "../selectors/urbanProject.selectors";
 import { expectRevertedState, expectUpdatedState, StoreBuilder } from "./testUtils";
 
 describe("Urban project custom creation : buildings steps", () => {
@@ -150,91 +151,74 @@ describe("Urban project custom creation : buildings steps", () => {
       });
     });
   });
-  // todo
-  // describe("selectors", () => {
-  //   describe("selectBuildingsFloorUseSurfaceAreas", () => {
-  //     it("should return empty surface area distribution when no buildings use", () => {
-  //       const store = new StoreBuilder()
-  //         .withCreationData({
-  //           buildingsUsesDistribution: undefined,
-  //         })
-  //         .withAppSettingInputMode("squareMeters")
-  //         .build();
 
-  //       const result = selectBuildingsFloorUseSurfaceAreasWithUnit(store.getState());
+  describe("selectors", () => {
+    describe("selectBuildingsFloorUseSurfaceAreas", () => {
+      it("should return empty surface area distribution when no buildings use", () => {
+        const store = new StoreBuilder()
+          .withCreationData({
+            buildingsUsesDistribution: undefined,
+          })
+          .withAppSettingInputMode("squareMeters")
+          .build();
 
-  //       expect(result).toEqual({
-  //         unit: "squareMeters",
-  //         value: {},
-  //       });
-  //     });
-  //     it("should return empty surface area distribution when no economic activity use", () => {
-  //       const store = new StoreBuilder()
-  //         .withAppSettingInputMode("squareMeters")
-  //         .withCreationData({
-  //           buildingsUsesDistribution: {
-  //             RESIDENTIAL: 5000,
-  //             MULTI_STORY_PARKING: 1000,
-  //             CULTURAL_PLACE: 3500,
-  //           },
-  //         })
-  //         .build();
+        const result = selectBuildingsFloorUseSurfaceAreas(store.getState());
 
-  //       const result = selectBuildingsFloorUseSurfaceAreasWithUnit(store.getState());
+        expect(result).toEqual({
+          unit: "squareMeters",
+          value: {},
+        });
+      });
+      it("returns surface area distribution in square meters", () => {
+        const store = new StoreBuilder()
+          .withAppSettingInputMode("squareMeters")
+          .withCreationData({
+            buildingsUsesDistribution: {
+              LOCAL_STORE: 2000,
+              RESIDENTIAL: 5000,
+              ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
+              SPORTS_FACILITIES: 1200,
+              MULTI_STORY_PARKING: 50000,
+            },
+          })
+          .build();
 
-  //       expect(result).toEqual({
-  //         unit: "squareMeters",
-  //         value: {},
-  //       });
-  //     });
-  //     it("returns surface area distribution with only economic activity floor use in square meters", () => {
-  //       const store = new StoreBuilder()
-  //         .withAppSettingInputMode("squareMeters")
-  //         .withCreationData({
-  //           buildingsUsesDistribution: {
-  //             LOCAL_STORE: 2000,
-  //             RESIDENTIAL: 5000,
-  //             ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
-  //             ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 3000,
-  //             SPORTS_FACILITIES: 1200,
-  //             MULTI_STORY_PARKING: 50000,
-  //           },
-  //         })
-  //         .build();
+        const result = selectBuildingsFloorUseSurfaceAreas(store.getState());
 
-  //       const result = selectBuildingsFloorUseSurfaceAreasWithUnit(store.getState());
+        expect(result).toEqual({
+          unit: "squareMeters",
+          value: {
+            LOCAL_STORE: 2000,
+            RESIDENTIAL: 5000,
+            ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
+            SPORTS_FACILITIES: 1200,
+            MULTI_STORY_PARKING: 50000,
+          },
+        });
+      });
+      it("returns surface area distribution in percentage", () => {
+        const store = new StoreBuilder()
+          .withAppSettingInputMode("percentage")
+          .withCreationData({
+            buildingsUsesDistribution: {
+              LOCAL_STORE: 2000,
+              RESIDENTIAL: 4000,
+              ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 2000,
+            },
+          })
+          .build();
 
-  //       expect(result).toEqual({
-  //         unit: "squareMeters",
-  //         value: {
-  //           LOCAL_STORE: 2000,
-  //           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
-  //           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 3000,
-  //         },
-  //       });
-  //     });
-  //     it("returns surface area distribution with only economic activity floor use in percentage", () => {
-  //       const store = new StoreBuilder()
-  //         .withAppSettingInputMode("percentage")
-  //         .withCreationData({
-  //           buildingsUsesDistribution: {
-  //             LOCAL_STORE: 2000,
-  //             RESIDENTIAL: 5000,
-  //             ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
-  //           },
-  //         })
-  //         .build();
+        const result = selectBuildingsFloorUseSurfaceAreas(store.getState());
 
-  //       const result = selectBuildingsFloorUseSurfaceAreasWithUnit(store.getState());
-
-  //       expect(result).toEqual({
-  //         unit: "percentage",
-  //         value: {
-  //           LOCAL_STORE: 66.7,
-  //           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 33.3,
-  //         },
-  //       });
-  //     });
-  //   });
-  // });
+        expect(result).toEqual({
+          unit: "percentage",
+          value: {
+            LOCAL_STORE: 25,
+            RESIDENTIAL: 50,
+            ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 25,
+          },
+        });
+      });
+    });
+  });
 });
