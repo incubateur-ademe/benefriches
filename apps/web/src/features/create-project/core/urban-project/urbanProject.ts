@@ -1,6 +1,5 @@
 import {
-  BuildingFloorAreaUsageDistribution,
-  BuildingsEconomicActivityUse,
+  BuildingsUse,
   getSoilTypeForLivingAndActivitySpace,
   getSoilTypeForPublicSpace,
   getSoilTypeForUrbanGreenSpace,
@@ -128,53 +127,56 @@ export const getDescriptionForPublicSpace = (publicSpace: UrbanPublicSpace): str
   }
 };
 
-export const BUILDINGS_USE_CATEGORIES = [
-  "RESIDENTIAL",
-  "ECONOMIC_ACTIVITY",
-  "MULTI_STORY_PARKING",
-  "OTHER",
-] as const;
-export type BuildingsUseCategory = (typeof BUILDINGS_USE_CATEGORIES)[number];
-export const getLabelForBuildingsUseCategory = (useCategory: BuildingsUseCategory): string => {
-  switch (useCategory) {
-    case "RESIDENTIAL":
-      return "Habitations";
-    case "ECONOMIC_ACTIVITY":
-      return "Lieux d'activité économique";
-    case "MULTI_STORY_PARKING":
-      return "Parking silo";
-    case "OTHER":
-      return "Autres usages";
-  }
-};
-
-export const getDescriptionForBuildingsUseCategory = (
-  useCategory: BuildingsUseCategory,
-): string => {
-  switch (useCategory) {
+export const getDescriptionForBuildingsUse = (use: BuildingsUse): string => {
+  switch (use) {
     case "RESIDENTIAL":
       return "Maisons, immeubles collectifs...";
-    case "ECONOMIC_ACTIVITY":
-      return "Bureaux, commerces...";
+    case "GROUND_FLOOR_RETAIL":
+      return "Boulangerie, supérette...";
     case "MULTI_STORY_PARKING":
       return "Parking voiture à étage";
+    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
+      return "Garage, atelier...";
+    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
+      return "Entrepot, usine...";
+    case "SPORTS_FACILITIES":
+      return "Stade, gymnase, piscine...";
+    case "NEIGHBOURHOOD_FACILITIES_AND_SERVICES":
+      return "Banque, poste, restaurant...";
+    case "SOCIO_CULTURAL_PLACE":
+      return "Cinéma, théâtre, musée...";
     case "OTHER":
-      return "Établissement éducatif, espace de santé, lieu socio-culturel...";
+      return "Établissement éducatif, espace de santé...";
+    case "TERTIARY_ACTIVITIES":
+    case "PUBLIC_FACILITIES":
+      return "";
   }
 };
 
-export const getPictogramUrlForBuildingsUseCategory = (
-  useCategory: BuildingsUseCategory,
-): string => {
-  switch (useCategory) {
+const BUILDINGS_USE_PICTOGRAM_URL_BASE = "/img/pictograms/buildings-uses";
+export const getPictogramUrlForBuildingsUse = (use: BuildingsUse): string => {
+  switch (use) {
     case "RESIDENTIAL":
-      return `/img/pictograms/buildings-uses/habitations.svg`;
-    case "ECONOMIC_ACTIVITY":
-      return `/img/pictograms/buildings-uses/LAE.svg`;
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/residential.svg`;
+    case "GROUND_FLOOR_RETAIL":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/local-store.svg`;
+    case "NEIGHBOURHOOD_FACILITIES_AND_SERVICES":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/local-services.svg`;
+    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
+    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/industrial-and-artisanal-and-shipping-premises.svg`;
+    case "TERTIARY_ACTIVITIES":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/offices.svg`;
     case "MULTI_STORY_PARKING":
-      return `/img/pictograms/buildings-uses/parking-silo.svg`;
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/multi-story-parking.svg`;
+    case "SPORTS_FACILITIES":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/sports-facilities.svg`;
+    case "SOCIO_CULTURAL_PLACE":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/cultural-place.svg`;
+    case "PUBLIC_FACILITIES":
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/public-buildings.svg`;
     case "OTHER":
-      return `/img/pictograms/buildings-uses/autres-usages.svg`;
+      return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/other.svg`;
   }
 };
 
@@ -204,38 +206,4 @@ export const getPictogramUrlForUrbanPublicSpace = (space: UrbanPublicSpace): str
 
 export const getColorForUrbanPublicSpace = (space: UrbanPublicSpace): string => {
   return getColorForSoilType(getSoilTypeForPublicSpace(space));
-};
-
-export const getDescriptionForBuildingFloorArea = (
-  building: keyof BuildingFloorAreaUsageDistribution,
-): string | undefined => {
-  switch (building) {
-    case "GROUND_FLOOR_RETAIL":
-      return "Boulangerie, restaurant, supérette...";
-    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
-      return "Garage, atelier...";
-    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
-      return "Entrepot, usine...";
-    case "TERTIARY_ACTIVITIES":
-      return "Bureaux, lieu d’enseignement ou de culture...";
-    default:
-      return undefined;
-  }
-};
-
-export const getPictogramUrlForEconomicActivityUses = (
-  useCategory: BuildingsEconomicActivityUse,
-): string => {
-  switch (useCategory) {
-    case "GROUND_FLOOR_RETAIL":
-      return `/img/pictograms/buildings-uses/economic-activity/commerce-pied-d-immeuble.svg`;
-    case "NEIGHBOURHOOD_FACILITIES_AND_SERVICES":
-      return `/img/pictograms/buildings-uses/economic-activity/autre-LAE.svg`;
-    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
-      return `/img/pictograms/buildings-uses/economic-activity/autre-LAE.svg`;
-    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
-      return `/img/pictograms/buildings-uses/economic-activity/industry.svg`;
-    case "TERTIARY_ACTIVITIES":
-      return `/img/pictograms/buildings-uses/economic-activity/bureaux.svg`;
-  }
 };

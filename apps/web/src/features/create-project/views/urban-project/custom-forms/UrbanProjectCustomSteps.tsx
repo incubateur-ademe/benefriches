@@ -46,7 +46,6 @@ const getCategoryForStep = (step: UrbanProjectCustomCreationStep): StepCategory 
     case "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION":
     case "BUILDINGS_EQUIPMENT_INTRODUCTION":
     case "BUILDINGS_EQUIPMENT_SELECTION":
-    case "BUILDINGS_ECONOMIC_ACTIVITY_SURFACE_AREA":
       return "Bâtiments";
     case "STAKEHOLDERS_INTRODUCTION":
     case "STAKEHOLDERS_PROJECT_DEVELOPER":

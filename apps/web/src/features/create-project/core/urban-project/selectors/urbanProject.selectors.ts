@@ -4,13 +4,10 @@ import {
   filterObject,
   SoilsDistribution,
   UrbanSpaceCategory,
-  BuildingsEconomicActivityUse,
   SurfaceAreaDistribution,
   SurfaceAreaDistributionJson,
   ProjectSchedule,
   ProjectScheduleBuilder,
-  typedObjectEntries,
-  isBuildingsEconomicActivityUse,
 } from "shared";
 
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
@@ -181,42 +178,9 @@ export const selectBuildingsFloorUseSurfaceAreas = createSelector(
   [selectCreationData, selectAppSettings],
   (creationData, appSettings) => {
     return getSurfaceAreaDistributionWithUnit(
-      creationData.buildingsUseCategoriesDistribution ?? {},
+      creationData.buildingsUsesDistribution ?? {},
       appSettings.surfaceAreaInputMode,
     );
-  },
-);
-
-export const selectBuildingsEconomicActivitySurfaceDistributionWithUnit = createSelector(
-  [selectCreationData, selectAppSettings],
-  (creationData, appSettings) => {
-    const economicActivityDistribution: SurfaceAreaDistributionJson<BuildingsEconomicActivityUse> =
-      {};
-    typedObjectEntries(creationData.buildingsUsesDistribution ?? {}).forEach(
-      ([use, surfaceArea]) => {
-        if (isBuildingsEconomicActivityUse(use)) economicActivityDistribution[use] = surfaceArea;
-      },
-    );
-    return getSurfaceAreaDistributionWithUnit(
-      economicActivityDistribution,
-      appSettings.surfaceAreaInputMode,
-    );
-  },
-);
-
-export const selectBuildingsEconomicActivityUses = createSelector(
-  [selectCreationData],
-  (
-    creationData,
-  ): {
-    buildingsEconomicActivityUses: BuildingsEconomicActivityUse[];
-    buildingsEconomicActivityTotalSurfaceArea: number;
-  } => {
-    return {
-      buildingsEconomicActivityUses: creationData.buildingsEconomicActivityUses ?? [],
-      buildingsEconomicActivityTotalSurfaceArea:
-        creationData.buildingsUseCategoriesDistribution?.ECONOMIC_ACTIVITY ?? 0,
-    };
   },
 );
 

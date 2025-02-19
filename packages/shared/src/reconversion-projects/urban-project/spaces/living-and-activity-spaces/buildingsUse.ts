@@ -3,20 +3,18 @@ import z from "zod";
 const buildingsUseSchema = z.enum([
   "RESIDENTIAL",
   "GROUND_FLOOR_RETAIL",
-  "TERTIARY_ACTIVITIES",
   "NEIGHBOURHOOD_FACILITIES_AND_SERVICES",
-  "PUBLIC_FACILITIES",
-  "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
   "SHIPPING_OR_INDUSTRIAL_BUILDINGS",
-  "MULTI_STORY_PARKING",
+  "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS",
+  "PUBLIC_FACILITIES",
+  "TERTIARY_ACTIVITIES",
   "SOCIO_CULTURAL_PLACE",
   "SPORTS_FACILITIES",
+  "MULTI_STORY_PARKING",
   "OTHER",
 ]);
 
-export const isBuildingUse = (value: unknown): value is BuildingsUse => {
-  return buildingsUseSchema.safeParse(value).success;
-};
+export const BUILDINGS_USE_LIST = buildingsUseSchema.options;
 
 export type BuildingsUse = z.infer<typeof buildingsUseSchema>;
 
@@ -51,9 +49,3 @@ export type BuildingsEconomicActivityUse = Extract<
   | "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS"
   | "SHIPPING_OR_INDUSTRIAL_BUILDINGS"
 >;
-
-export const isBuildingsEconomicActivityUse = (
-  value: unknown,
-): value is BuildingsEconomicActivityUse => {
-  return ECONOMIC_ACTIVITY_BUILDINGS_USE.includes(value as BuildingsEconomicActivityUse);
-};

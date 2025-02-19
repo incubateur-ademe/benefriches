@@ -9,12 +9,12 @@ import {
   UrbanProjectDevelopmentExpense,
   UrbanPublicSpace,
   UrbanSpaceCategory,
-  BuildingsEconomicActivityUse,
   YearlyBuildingsOperationsRevenues,
+  BuildingsUse,
+  SurfaceAreaDistributionJson,
 } from "shared";
 
 import { ProjectStakeholderStructure, Schedule } from "../../project.types";
-import { BuildingsUseCategory } from "../urbanProject";
 
 export function prefixActionType(actionType: string) {
   return `projectCreation/urbanProject/${actionType}`;
@@ -114,18 +114,10 @@ export const buildingsFloorSurfaceAreaCompleted = createAction<number>(
 export const buildingsFloorSurfaceAreaReverted = createAction("buildingsFloorSurfaceAreaReverted");
 export const buildingsUseIntroductionCompleted = createAction("buildingsUseIntroductionCompleted");
 export const buildingsUseIntroductionReverted = createAction("buildingsUseIntroductionReverted");
-export const buildingsUseCategorySurfaceAreasCompleted = createAction<
-  Partial<Record<BuildingsUseCategory, number>>
->("buildingsUseCategorySurfaceAreasCompleted");
-export const buildingsUseCategorySurfaceAreasReverted = createAction(
-  "buildingsUseCategorySurfaceAreasReverted",
-);
-export const buildingsEconomicActivitySurfaceAreasCompleted = createAction<
-  Partial<Record<BuildingsEconomicActivityUse, number>>
->("buildingsEconomicActivitySurfaceAreasCompleted");
-export const buildingsEconomicActivitySurfaceAreasReverted = createAction(
-  "buildingsEconomicActivitySurfaceAreasReverted",
-);
+export const buildingsUseSurfaceAreasCompleted = createAction<
+  SurfaceAreaDistributionJson<BuildingsUse>
+>("buildingsUseSurfaceAreasCompleted");
+export const buildingsUseSurfaceAreasReverted = createAction("buildingsUseSurfaceAreasReverted");
 
 // stakeholders
 export const stakeholderIntroductionCompleted = createAction("stakeholderIntroductionCompleted");

@@ -1,14 +1,13 @@
-import { SurfaceAreaDistributionJson } from "shared";
+import { BuildingsUse, SurfaceAreaDistributionJson } from "shared";
 
 import {
-  buildingsUseCategorySurfaceAreasCompleted,
-  buildingsUseCategorySurfaceAreasReverted,
+  buildingsUseSurfaceAreasCompleted,
+  buildingsUseSurfaceAreasReverted,
 } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectBuildingsFloorSurfaceArea,
   selectBuildingsFloorUseSurfaceAreas,
 } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
-import { BuildingsUseCategory } from "@/features/create-project/core/urban-project/urbanProject";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import BuildingsUseSurfaceAreas from "./BuildingsUseSurfaceAreas";
@@ -21,11 +20,11 @@ export default function BuildingsUseSurfaceAreaContainers() {
   return (
     <BuildingsUseSurfaceAreas
       initialValues={initialValues.value}
-      onSubmit={(data: SurfaceAreaDistributionJson<BuildingsUseCategory>) => {
-        dispatch(buildingsUseCategorySurfaceAreasCompleted(data));
+      onSubmit={(data: SurfaceAreaDistributionJson<BuildingsUse>) => {
+        dispatch(buildingsUseSurfaceAreasCompleted(data));
       }}
       onBack={() => {
-        dispatch(buildingsUseCategorySurfaceAreasReverted());
+        dispatch(buildingsUseSurfaceAreasReverted());
       }}
       totalSurfaceArea={buildingsFloorSurfaceArea}
     />

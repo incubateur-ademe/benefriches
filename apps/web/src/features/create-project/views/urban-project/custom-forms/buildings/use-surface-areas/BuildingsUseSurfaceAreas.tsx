@@ -1,13 +1,11 @@
-import { SurfaceAreaDistributionJson } from "shared";
+import { BUILDINGS_USE_LIST, BuildingsUse, SurfaceAreaDistributionJson } from "shared";
 
 import {
-  BUILDINGS_USE_CATEGORIES,
-  BuildingsUseCategory,
-  getDescriptionForBuildingsUseCategory,
-  getLabelForBuildingsUseCategory,
-  getPictogramUrlForBuildingsUseCategory,
+  getDescriptionForBuildingsUse,
+  getPictogramUrlForBuildingsUse,
 } from "@/features/create-project/core/urban-project/urbanProject";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
+import { getLabelForBuildingFloorArea } from "@/shared/core/urbanProject";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
@@ -18,14 +16,9 @@ type Props = {
   onBack: () => void;
 };
 
-type FormValues = SurfaceAreaDistributionJson<BuildingsUseCategory>;
+type FormValues = SurfaceAreaDistributionJson<BuildingsUse>;
 
-function BuildingsUseCategorySurfaceAreas({
-  initialValues,
-  totalSurfaceArea,
-  onSubmit,
-  onBack,
-}: Props) {
+function BuildingsUseSurfaceAreas({ initialValues, totalSurfaceArea, onSubmit, onBack }: Props) {
   return (
     <SurfaceAreaDistributionForm
       initialValues={initialValues}
@@ -40,14 +33,14 @@ function BuildingsUseCategorySurfaceAreas({
       onSubmit={onSubmit}
       totalSurfaceArea={totalSurfaceArea}
       maxErrorMessage="La superficie ne peut pas être supérieure à la surface de plancher des bâtiments"
-      surfaces={BUILDINGS_USE_CATEGORIES.map((useCategory) => ({
-        name: useCategory,
-        label: getLabelForBuildingsUseCategory(useCategory),
-        hintText: getDescriptionForBuildingsUseCategory(useCategory),
-        imgSrc: getPictogramUrlForBuildingsUseCategory(useCategory),
+      surfaces={BUILDINGS_USE_LIST.map((use) => ({
+        name: use,
+        label: getLabelForBuildingFloorArea(use),
+        hintText: getDescriptionForBuildingsUse(use),
+        imgSrc: getPictogramUrlForBuildingsUse(use),
       }))}
     />
   );
 }
 
-export default BuildingsUseCategorySurfaceAreas;
+export default BuildingsUseSurfaceAreas;

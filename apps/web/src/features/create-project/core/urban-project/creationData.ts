@@ -1,9 +1,9 @@
 import {
-  BuildingsEconomicActivityUse,
   BuildingsUse,
   FinancialAssistanceRevenue,
   RecurringExpense,
   ReinstatementExpense,
+  SurfaceAreaDistributionJson,
   UrbanGreenSpace,
   UrbanLivingAndActivitySpace,
   UrbanProjectDevelopmentExpense,
@@ -14,7 +14,6 @@ import {
 } from "shared";
 
 import { ProjectStakeholder } from "../project.types";
-import { BuildingsUseCategory } from "./urbanProject";
 
 export type UrbanProjectCreationData = {
   name?: string;
@@ -29,9 +28,7 @@ export type UrbanProjectCreationData = {
   decontaminatedSurfaceArea?: number;
   // buildings
   buildingsFloorSurfaceArea?: number;
-  buildingsUseCategoriesDistribution?: Partial<Record<BuildingsUseCategory, number>>;
-  buildingsUsesDistribution?: Partial<Record<BuildingsUse, number>>;
-  buildingsEconomicActivityUses?: BuildingsEconomicActivityUse[];
+  buildingsUsesDistribution?: SurfaceAreaDistributionJson<BuildingsUse>;
   // cession foncière
   siteResalePlannedAfterDevelopment?: boolean;
   buildingsResalePlannedAfterDevelopment?: boolean;
