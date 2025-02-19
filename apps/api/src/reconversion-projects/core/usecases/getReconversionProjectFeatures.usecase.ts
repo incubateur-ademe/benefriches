@@ -1,4 +1,4 @@
-import { BuildingFloorAreaUsageDistribution, SoilsDistribution, SpacesDistribution } from "shared";
+import { BuildingsUseDistribution, SoilsDistribution, SpacesDistribution } from "shared";
 
 import { UseCase } from "src/shared-kernel/usecase";
 
@@ -23,7 +23,7 @@ export type ReconversionProjectFeaturesView = {
         type: "URBAN_PROJECT";
         developerName?: string;
         spaces: SpacesDistribution;
-        buildingsFloorArea: BuildingFloorAreaUsageDistribution;
+        buildingsFloorArea: BuildingsUseDistribution;
         installationCosts: { amount: number; purpose: string }[];
         installationSchedule?: Schedule;
       };

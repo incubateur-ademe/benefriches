@@ -1,5 +1,5 @@
 import {
-  BuildingFloorAreaUsageDistribution,
+  BuildingsUseDistribution,
   computeDefaultInstallationExpensesFromSiteSurfaceArea,
   computeDefaultInstallationSchedule,
   computeDefaultOperationsFirstYear,
@@ -53,7 +53,7 @@ export class UrbanProjectExpressCreationService {
     return {};
   }
 
-  get buildingsFloorAreaDistribution(): BuildingFloorAreaUsageDistribution {
+  get buildingsFloorAreaDistribution(): BuildingsUseDistribution {
     return {};
   }
 

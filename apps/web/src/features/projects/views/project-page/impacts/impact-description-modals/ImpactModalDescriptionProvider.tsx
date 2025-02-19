@@ -2,11 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
 import { ReactNode, useLayoutEffect, useState } from "react";
-import {
-  BuildingFloorAreaUsageDistribution,
-  ReconversionProjectImpacts,
-  SoilsDistribution,
-} from "shared";
+import { BuildingsUseDistribution, ReconversionProjectImpacts, SoilsDistribution } from "shared";
 
 import "./ImpactDescriptionModal.css";
 import {
@@ -33,7 +29,7 @@ export type ProjectData = {
       }
     | {
         type: "URBAN_PROJECT";
-        buildingsFloorAreaDistribution: BuildingFloorAreaUsageDistribution;
+        buildingsFloorAreaDistribution: BuildingsUseDistribution;
       };
 };
 

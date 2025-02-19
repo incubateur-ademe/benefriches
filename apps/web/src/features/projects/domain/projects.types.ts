@@ -8,7 +8,7 @@ import {
   ReinstatementExpense,
   SoilsDistribution,
   UrbanProjectSpace,
-  BuildingFloorAreaUsageDistribution,
+  BuildingsUseDistribution,
 } from "shared";
 
 type Schedule = { startDate: string; endDate: string };
@@ -45,7 +45,7 @@ export type UrbanProjectFeatures = {
   installationCosts: UrbanProjectDevelopmentExpense[];
   installationSchedule?: Schedule;
   spaces: Partial<Record<UrbanProjectSpace, number>>;
-  buildingsFloorArea: BuildingFloorAreaUsageDistribution;
+  buildingsFloorArea: BuildingsUseDistribution;
 };
 export type ProjectFeatures = {
   id: string;

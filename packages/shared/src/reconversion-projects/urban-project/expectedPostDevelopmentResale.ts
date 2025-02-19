@@ -1,7 +1,7 @@
 import { typedObjectEntries } from "../../object-entries";
 import {
   BuildingsUse,
-  BuildingsUseSurfaceAreaDistribution,
+  BuildingsUseDistribution,
 } from "./spaces/living-and-activity-spaces/buildingsUse";
 
 type BuildingsUseResaleRatioPerSquareMeters = Record<BuildingsUse, number | undefined>;
@@ -20,7 +20,7 @@ export const DEFAULT_RESALE_RATIO_PER_SQUARE_METERS = {
 } satisfies BuildingsUseResaleRatioPerSquareMeters;
 
 export const computeExpectedPostDevelopmentResaleSellingPriceFromSurfaces = (
-  buildingsFloorAreaDistribution: BuildingsUseSurfaceAreaDistribution,
+  buildingsFloorAreaDistribution: BuildingsUseDistribution,
 ): number => {
   return typedObjectEntries(buildingsFloorAreaDistribution).reduce(
     (total, [surfaceName, surfaceArea]) => {
@@ -48,7 +48,7 @@ const TENSE_AREA_RESALE_RATIO_PER_SQUARE_METERS = {
 } satisfies BuildingsUseResaleRatioPerSquareMeters;
 
 export const computeExpectedPostDevelopmentResaleSellingPriceFromSurfacesInTenseArea = (
-  buildingsFloorAreaDistribution: BuildingsUseSurfaceAreaDistribution,
+  buildingsFloorAreaDistribution: BuildingsUseDistribution,
 ): number => {
   return typedObjectEntries(buildingsFloorAreaDistribution).reduce(
     (total, [surfaceName, surfaceArea]) => {

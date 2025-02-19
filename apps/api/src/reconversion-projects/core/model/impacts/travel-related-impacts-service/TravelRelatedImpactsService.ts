@@ -1,7 +1,7 @@
 import {
   AvoidedCO2EqEmissions,
-  BuildingFloorAreaUsageDistribution,
-  ECONOMIC_ACTIVITY_BUILDINGS_USE,
+  BuildingsUseDistribution,
+  BUILDINGS_ECONOMIC_ACTIVITY_USE,
   filterObjectWithKeys,
   getAnnualizedCO2MonetaryValueForDuration,
   roundTo1Digit,
@@ -24,7 +24,7 @@ type Props = {
   siteSquareMetersSurfaceArea: number;
   citySquareMetersSurfaceArea: number;
   cityPopulation: number;
-  buildingsFloorAreaDistribution: BuildingFloorAreaUsageDistribution;
+  buildingsFloorAreaDistribution: BuildingsUseDistribution;
   evaluationPeriodInYears: number;
   operationsFirstYear: number;
 };
@@ -64,7 +64,7 @@ export class TravelRelatedImpactsService
 
     const economicActivityBuildings = filterObjectWithKeys(
       buildingsFloorAreaDistribution,
-      ECONOMIC_ACTIVITY_BUILDINGS_USE.filter((use) => use !== "OFFICES"),
+      BUILDINGS_ECONOMIC_ACTIVITY_USE.filter((use) => use !== "OFFICES"),
     );
 
     this.projectOtherEconomicActivitySurface = sumObjectValues(economicActivityBuildings);
