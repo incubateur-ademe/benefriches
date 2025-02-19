@@ -201,7 +201,7 @@ describe("UrbanProjectImpactsService", () => {
         reconversionProject: {
           ...reconversionProjectImpactDataView,
           developmentPlanFeatures: {
-            buildingsFloorAreaDistribution: { GROUND_FLOOR_RETAIL: 500, TERTIARY_ACTIVITIES: 500 },
+            buildingsFloorAreaDistribution: { LOCAL_STORE: 500, OFFICES: 500 },
             spacesDistribution: {
               BUILDINGS_FOOTPRINT: 1000,
             },
@@ -244,9 +244,9 @@ describe("UrbanProjectImpactsService", () => {
           developmentPlanFeatures: {
             buildingsFloorAreaDistribution: {
               RESIDENTIAL: 160000000,
-              GROUND_FLOOR_RETAIL: 1000,
-              TERTIARY_ACTIVITIES: 1000,
-              SOCIO_CULTURAL_PLACE: 500,
+              LOCAL_STORE: 1000,
+              OFFICES: 1000,
+              CULTURAL_PLACE: 500,
               SPORTS_FACILITIES: 1000,
             },
             spacesDistribution: {

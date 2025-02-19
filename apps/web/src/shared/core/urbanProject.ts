@@ -27,23 +27,21 @@ export const getLabelForUrbanProjectSpace = (space: UrbanProjectSpace): string =
 
 export const getLabelForBuildingFloorArea = (use: BuildingsUse): string => {
   switch (use) {
-    case "GROUND_FLOOR_RETAIL":
+    case "LOCAL_STORE":
       return "Commerce de proximité";
-    case "NEIGHBOURHOOD_FACILITIES_AND_SERVICES":
+    case "LOCAL_SERVICES":
       return "Service de proximité";
-    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
-      return "Locaux d'artisanat ou commerciaux (hors pied d'immeuble)";
     case "PUBLIC_FACILITIES":
       return "Équipements publics";
     case "RESIDENTIAL":
       return "Logements";
-    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
-      return "Locaux industriels ou logistiques";
-    case "TERTIARY_ACTIVITIES":
+    case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
+      return "Locaux industriels, artisanaux ou logistiques";
+    case "OFFICES":
       return "Bureaux";
     case "MULTI_STORY_PARKING":
       return "Parking silo";
-    case "SOCIO_CULTURAL_PLACE":
+    case "CULTURAL_PLACE":
       return "Lieux culturels";
     case "SPORTS_FACILITIES":
       return "Équipements sportifs";

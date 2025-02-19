@@ -107,7 +107,7 @@ describe("Urban project custom creation : buildings steps", () => {
           buildingsUseSurfaceAreasCompleted({
             RESIDENTIAL: 2000,
             MULTI_STORY_PARKING: 5000,
-            GROUND_FLOOR_RETAIL: 2100,
+            LOCAL_STORE: 2100,
           }),
         );
 
@@ -118,7 +118,7 @@ describe("Urban project custom creation : buildings steps", () => {
             buildingsUsesDistribution: {
               RESIDENTIAL: 2000,
               MULTI_STORY_PARKING: 5000,
-              GROUND_FLOOR_RETAIL: 2100,
+              LOCAL_STORE: 2100,
             },
           },
         });
@@ -133,7 +133,7 @@ describe("Urban project custom creation : buildings steps", () => {
             buildingsUsesDistribution: {
               RESIDENTIAL: 40000,
               MULTI_STORY_PARKING: 5000,
-              GROUND_FLOOR_RETAIL: 2100,
+              LOCAL_STORE: 2100,
             },
           })
           .build();
@@ -175,7 +175,7 @@ describe("Urban project custom creation : buildings steps", () => {
   //           buildingsUsesDistribution: {
   //             RESIDENTIAL: 5000,
   //             MULTI_STORY_PARKING: 1000,
-  //             SOCIO_CULTURAL_PLACE: 3500,
+  //             CULTURAL_PLACE: 3500,
   //           },
   //         })
   //         .build();
@@ -192,10 +192,10 @@ describe("Urban project custom creation : buildings steps", () => {
   //         .withAppSettingInputMode("squareMeters")
   //         .withCreationData({
   //           buildingsUsesDistribution: {
-  //             GROUND_FLOOR_RETAIL: 2000,
+  //             LOCAL_STORE: 2000,
   //             RESIDENTIAL: 5000,
-  //             SHIPPING_OR_INDUSTRIAL_BUILDINGS: 1000,
-  //             OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: 3000,
+  //             ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
+  //             ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 3000,
   //             SPORTS_FACILITIES: 1200,
   //             MULTI_STORY_PARKING: 50000,
   //           },
@@ -207,9 +207,9 @@ describe("Urban project custom creation : buildings steps", () => {
   //       expect(result).toEqual({
   //         unit: "squareMeters",
   //         value: {
-  //           GROUND_FLOOR_RETAIL: 2000,
-  //           SHIPPING_OR_INDUSTRIAL_BUILDINGS: 1000,
-  //           OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: 3000,
+  //           LOCAL_STORE: 2000,
+  //           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
+  //           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 3000,
   //         },
   //       });
   //     });
@@ -218,9 +218,9 @@ describe("Urban project custom creation : buildings steps", () => {
   //         .withAppSettingInputMode("percentage")
   //         .withCreationData({
   //           buildingsUsesDistribution: {
-  //             GROUND_FLOOR_RETAIL: 2000,
+  //             LOCAL_STORE: 2000,
   //             RESIDENTIAL: 5000,
-  //             SHIPPING_OR_INDUSTRIAL_BUILDINGS: 1000,
+  //             ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 1000,
   //           },
   //         })
   //         .build();
@@ -230,8 +230,8 @@ describe("Urban project custom creation : buildings steps", () => {
   //       expect(result).toEqual({
   //         unit: "percentage",
   //         value: {
-  //           GROUND_FLOOR_RETAIL: 66.7,
-  //           SHIPPING_OR_INDUSTRIAL_BUILDINGS: 33.3,
+  //           LOCAL_STORE: 66.7,
+  //           ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 33.3,
   //         },
   //       });
   //     });

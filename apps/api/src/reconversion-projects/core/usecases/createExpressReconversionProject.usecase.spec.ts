@@ -234,9 +234,9 @@ describe("CreateReconversionProject Use Case", () => {
           };
           expectedBuildingsFloorAreaDistribution = {
             RESIDENTIAL: 8500,
-            GROUND_FLOOR_RETAIL: 400,
-            TERTIARY_ACTIVITIES: 500,
-            NEIGHBOURHOOD_FACILITIES_AND_SERVICES: 600,
+            LOCAL_STORE: 400,
+            OFFICES: 500,
+            LOCAL_SERVICES: 600,
           };
         } else if (expressCategory === "NEW_URBAN_CENTER") {
           expectedSpacesDistribution = {
@@ -252,10 +252,10 @@ describe("CreateReconversionProject Use Case", () => {
           };
           expectedBuildingsFloorAreaDistribution = {
             RESIDENTIAL: 4960,
-            GROUND_FLOOR_RETAIL: 160,
-            TERTIARY_ACTIVITIES: 320,
-            NEIGHBOURHOOD_FACILITIES_AND_SERVICES: 640,
-            OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: 160,
+            LOCAL_STORE: 160,
+            OFFICES: 320,
+            LOCAL_SERVICES: 640,
+            ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 160,
             PUBLIC_FACILITIES: 160,
           };
         } else if (expressCategory === "PUBLIC_FACILITIES") {
@@ -354,14 +354,18 @@ describe("CreateReconversionProject Use Case", () => {
 
         let expectedResalePrice;
 
-        if (expressCategory === "RESIDENTIAL_TENSE_AREA") {
-          expectedResalePrice = 2772500;
-        } else if (expressCategory === "NEW_URBAN_CENTER") {
-          expectedResalePrice = 1212800;
-        } else if (expressCategory === "PUBLIC_FACILITIES") {
-          expectedResalePrice = 80000;
-        } else {
-          expectedResalePrice = 570000;
+        switch (expressCategory) {
+          case "RESIDENTIAL_TENSE_AREA":
+            expectedResalePrice = 2772500;
+            break;
+          case "NEW_URBAN_CENTER":
+            expectedResalePrice = 1211600;
+            break;
+          case "PUBLIC_FACILITIES":
+            expectedResalePrice = 80000;
+            break;
+          default:
+            expectedResalePrice = 570000;
         }
 
         expect(createdReconversionProject?.siteResaleExpectedSellingPrice).toEqual(

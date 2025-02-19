@@ -318,7 +318,7 @@ export const urbanProjectImpactMock = {
     developmentPlan: {
       type: "URBAN_PROJECT",
       buildingsFloorAreaDistribution: {
-        GROUND_FLOOR_RETAIL: 20000,
+        LOCAL_STORE: 20000,
         RESIDENTIAL: 70000,
       },
     },

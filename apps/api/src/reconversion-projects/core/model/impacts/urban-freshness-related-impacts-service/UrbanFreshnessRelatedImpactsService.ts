@@ -33,7 +33,7 @@ export class UrbanFreshnessRelatedImpactsService
   implements PartialImpactsServiceInterface
 {
   private readonly projectHousingSurfaceArea: number;
-  private readonly projectTertiaryActivitySurface: number;
+  private readonly projectOfficesActivitySurface: number;
   private readonly projectOtherEconomicActivitySurface: number;
   private readonly projectPublicGreenSpaceSurface: number;
   private readonly evaluationPeriodInYears: number;
@@ -54,13 +54,13 @@ export class UrbanFreshnessRelatedImpactsService
       citySquareMetersSurfaceArea,
       cityPopulation,
     });
-    const { RESIDENTIAL = 0, TERTIARY_ACTIVITIES = 0 } = buildingsFloorAreaDistribution;
+    const { RESIDENTIAL = 0, OFFICES = 0 } = buildingsFloorAreaDistribution;
     this.projectHousingSurfaceArea = RESIDENTIAL;
-    this.projectTertiaryActivitySurface = TERTIARY_ACTIVITIES;
+    this.projectOfficesActivitySurface = OFFICES;
 
     const economicActivityBuildings = filterObjectWithKeys(
       buildingsFloorAreaDistribution,
-      ECONOMIC_ACTIVITY_BUILDINGS_USE.filter((use) => use !== "TERTIARY_ACTIVITIES"),
+      ECONOMIC_ACTIVITY_BUILDINGS_USE.filter((use) => use !== "OFFICES"),
     );
 
     this.projectOtherEconomicActivitySurface = sumObjectValues(economicActivityBuildings);
@@ -119,7 +119,7 @@ export class UrbanFreshnessRelatedImpactsService
   }
 
   private get impactedBusinessBuildings() {
-    return this.projectOtherEconomicActivitySurface + this.projectTertiaryActivitySurface;
+    return this.projectOtherEconomicActivitySurface + this.projectOfficesActivitySurface;
   }
 
   private get housingAvoidedAirConditioningCo2EmissionsPerYear() {

@@ -88,7 +88,7 @@ export function SocialModalWizard({
       ) : (
         <UrbanProjectOperationFullTimeJobsDescription
           groundFloorRetailSurface={
-            projectData.developmentPlan.buildingsFloorAreaDistribution.GROUND_FLOOR_RETAIL ?? 0
+            projectData.developmentPlan.buildingsFloorAreaDistribution.LOCAL_STORE ?? 0
           }
         />
       );

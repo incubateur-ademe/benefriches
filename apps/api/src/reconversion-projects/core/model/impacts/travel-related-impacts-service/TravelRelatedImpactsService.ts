@@ -34,7 +34,7 @@ export class TravelRelatedImpactsService
   implements PartialImpactsServiceInterface
 {
   private readonly projectHousingSurfaceArea: number;
-  private readonly projectTertiaryActivitySurface: number;
+  private readonly projectOfficesSurface: number;
   private readonly projectOtherEconomicActivitySurface: number;
   private readonly publicCulturalAndSportsFacilitiesSurface: number;
   private readonly evaluationPeriodInYears: number;
@@ -55,20 +55,20 @@ export class TravelRelatedImpactsService
     });
     const {
       RESIDENTIAL = 0,
-      TERTIARY_ACTIVITIES = 0,
-      SOCIO_CULTURAL_PLACE = 0,
+      OFFICES = 0,
+      CULTURAL_PLACE = 0,
       SPORTS_FACILITIES = 0,
     } = buildingsFloorAreaDistribution;
     this.projectHousingSurfaceArea = RESIDENTIAL;
-    this.projectTertiaryActivitySurface = TERTIARY_ACTIVITIES;
+    this.projectOfficesSurface = OFFICES;
 
     const economicActivityBuildings = filterObjectWithKeys(
       buildingsFloorAreaDistribution,
-      ECONOMIC_ACTIVITY_BUILDINGS_USE.filter((use) => use !== "TERTIARY_ACTIVITIES"),
+      ECONOMIC_ACTIVITY_BUILDINGS_USE.filter((use) => use !== "OFFICES"),
     );
 
     this.projectOtherEconomicActivitySurface = sumObjectValues(economicActivityBuildings);
-    this.publicCulturalAndSportsFacilitiesSurface = SPORTS_FACILITIES + SOCIO_CULTURAL_PLACE;
+    this.publicCulturalAndSportsFacilitiesSurface = SPORTS_FACILITIES + CULTURAL_PLACE;
     this.evaluationPeriodInYears = evaluationPeriodInYears;
     this.operationsFirstYear = operationsFirstYear;
 
@@ -101,7 +101,7 @@ export class TravelRelatedImpactsService
   }
 
   private get economicActivityBuildingSurface() {
-    return this.projectTertiaryActivitySurface + this.projectOtherEconomicActivitySurface;
+    return this.projectOfficesSurface + this.projectOtherEconomicActivitySurface;
   }
 
   private get impactedInhabitants() {
@@ -111,7 +111,7 @@ export class TravelRelatedImpactsService
   }
 
   private get impactedTertiaryActivityEmployees() {
-    return this.projectTertiaryActivitySurface / 15;
+    return this.projectOfficesSurface / 15;
   }
 
   private get impactedOtherActivityEmployees() {

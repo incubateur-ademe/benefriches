@@ -28,10 +28,12 @@ export class NewUrbanCenterProjectExpressCreationService extends UrbanProjectExp
     const buildingsFloorSurfaceArea = this.siteData.surfaceArea * 0.8;
     return {
       RESIDENTIAL: roundTo2Digits(0.62 * buildingsFloorSurfaceArea),
-      GROUND_FLOOR_RETAIL: roundTo2Digits(0.02 * buildingsFloorSurfaceArea),
-      TERTIARY_ACTIVITIES: roundTo2Digits(0.04 * buildingsFloorSurfaceArea),
-      NEIGHBOURHOOD_FACILITIES_AND_SERVICES: roundTo2Digits(0.08 * buildingsFloorSurfaceArea),
-      OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS: roundTo2Digits(0.02 * buildingsFloorSurfaceArea),
+      LOCAL_STORE: roundTo2Digits(0.02 * buildingsFloorSurfaceArea),
+      OFFICES: roundTo2Digits(0.04 * buildingsFloorSurfaceArea),
+      LOCAL_SERVICES: roundTo2Digits(0.08 * buildingsFloorSurfaceArea),
+      ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: roundTo2Digits(
+        0.02 * buildingsFloorSurfaceArea,
+      ),
       PUBLIC_FACILITIES: roundTo2Digits(0.02 * buildingsFloorSurfaceArea),
     };
   }

@@ -27,8 +27,8 @@ const mock = {
   decontaminatedSurfaceArea: 3000,
   buildingsUsesDistribution: {
     RESIDENTIAL: 250,
-    GROUND_FLOOR_RETAIL: 250,
-    SHIPPING_OR_INDUSTRIAL_BUILDINGS: 250,
+    LOCAL_STORE: 250,
+    ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 250,
     MULTI_STORY_PARKING: 250,
   },
   // stakeholders

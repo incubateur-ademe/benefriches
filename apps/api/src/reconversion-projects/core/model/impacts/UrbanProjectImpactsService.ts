@@ -105,7 +105,7 @@ export class UrbanProjectImpactsService
     }
 
     const newCompanySurfaceArea =
-      this.developmentPlanFeatures.buildingsFloorAreaDistribution.TERTIARY_ACTIVITIES ?? 0;
+      this.developmentPlanFeatures.buildingsFloorAreaDistribution.OFFICES ?? 0;
 
     if (newCompanySurfaceArea > 0) {
       details.push({

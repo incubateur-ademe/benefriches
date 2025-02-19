@@ -28,7 +28,7 @@ export type ReconversionProjectImpactsResult = {
       | {
           type: "URBAN_PROJECT";
           buildingsFloorAreaDistribution: {
-            GROUND_FLOOR_RETAIL?: number;
+            LOCAL_STORE?: number;
             RESIDENTIAL?: number;
           };
         };

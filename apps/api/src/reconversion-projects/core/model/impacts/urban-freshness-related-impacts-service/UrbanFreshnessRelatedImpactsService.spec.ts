@@ -24,7 +24,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         cityPopulation: 18000,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 500,
-          GROUND_FLOOR_RETAIL: 100,
+          LOCAL_STORE: 100,
         },
         spacesDistribution: {
           PUBLIC_GREEN_SPACES: 400,
@@ -43,7 +43,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         cityPopulation: 18000,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 5000,
-          GROUND_FLOOR_RETAIL: 2600,
+          LOCAL_STORE: 2600,
         },
         spacesDistribution: {
           PUBLIC_GREEN_SPACES: 400,
@@ -70,7 +70,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         ...params,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 1500,
-          GROUND_FLOOR_RETAIL: 1000,
+          LOCAL_STORE: 1000,
         },
         spacesDistribution: {
           PUBLIC_GREEN_SPACES: 2100,
@@ -82,7 +82,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
-            GROUND_FLOOR_RETAIL: 1000,
+            LOCAL_STORE: 1000,
           },
           spacesDistribution: {
             PUBLIC_GREEN_SPACES: 3995,
@@ -112,7 +112,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
-            GROUND_FLOOR_RETAIL: 1000,
+            LOCAL_STORE: 1000,
           },
           spacesDistribution: {
             PUBLIC_GREEN_SPACES: 5100,
@@ -125,7 +125,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
           siteSquareMetersSurfaceArea: 10000,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
-            GROUND_FLOOR_RETAIL: 1000,
+            LOCAL_STORE: 1000,
           },
           spacesDistribution: {
             PUBLIC_GREEN_SPACES: 9990,
@@ -148,7 +148,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
-            GROUND_FLOOR_RETAIL: 1000,
+            LOCAL_STORE: 1000,
           },
           spacesDistribution: {
             PUBLIC_GREEN_SPACES: 11111,
@@ -161,7 +161,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
-            GROUND_FLOOR_RETAIL: 1000,
+            LOCAL_STORE: 1000,
           },
           spacesDistribution: {
             PUBLIC_GREEN_SPACES: 65600,
@@ -174,7 +174,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
-            GROUND_FLOOR_RETAIL: 1000,
+            LOCAL_STORE: 1000,
           },
           spacesDistribution: {
             PUBLIC_GREEN_SPACES: 119000,
@@ -208,7 +208,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         cityPopulation: 18000,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 500,
-          GROUND_FLOOR_RETAIL: 100,
+          LOCAL_STORE: 100,
         },
         spacesDistribution: {
           PUBLIC_GREEN_SPACES: 400,
@@ -229,8 +229,8 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         cityPopulation: 18000,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 1500,
-          TERTIARY_ACTIVITIES: 12000,
-          GROUND_FLOOR_RETAIL: 1000,
+          OFFICES: 12000,
+          LOCAL_STORE: 1000,
         },
         spacesDistribution: {
           PUBLIC_GREEN_SPACES: 65100,

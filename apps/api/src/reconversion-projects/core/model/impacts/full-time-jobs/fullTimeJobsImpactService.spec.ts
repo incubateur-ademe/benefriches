@@ -16,7 +16,7 @@ const CASES: Case[] = [
   {
     type: "URBAN_PROJECT",
     features: {
-      buildingsFloorAreaDistribution: { RESIDENTIAL: 10000, GROUND_FLOOR_RETAIL: 20000 },
+      buildingsFloorAreaDistribution: { RESIDENTIAL: 10000, LOCAL_STORE: 20000 },
     },
   },
 ];

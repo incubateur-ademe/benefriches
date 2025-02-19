@@ -348,7 +348,7 @@ describe("SqlReconversionProjectRepository integration", () => {
                 PUBLIC_GRAVEL_ROAD_OR_SQUARES_OR_SIDEWALKS: 700,
                 PUBLIC_GRASS_ROAD_OR_SQUARES_OR_SIDEWALKS: 100,
               },
-              buildingsFloorAreaDistribution: { RESIDENTIAL: 1840, GROUND_FLOOR_RETAIL: 160 },
+              buildingsFloorAreaDistribution: { RESIDENTIAL: 1840, LOCAL_STORE: 160 },
             },
           },
           futureSiteOwner: { name: "Montrouge", structureType: "municipality" },

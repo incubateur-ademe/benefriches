@@ -27,9 +27,9 @@ export class ResidentialTenseAreaProjectExpressCreationService extends UrbanProj
 
     return {
       RESIDENTIAL: roundTo2Digits(0.85 * buildingsFloorSurfaceArea),
-      GROUND_FLOOR_RETAIL: roundTo2Digits(0.04 * buildingsFloorSurfaceArea),
-      TERTIARY_ACTIVITIES: roundTo2Digits(0.05 * buildingsFloorSurfaceArea),
-      NEIGHBOURHOOD_FACILITIES_AND_SERVICES: roundTo2Digits(0.06 * buildingsFloorSurfaceArea),
+      LOCAL_STORE: roundTo2Digits(0.04 * buildingsFloorSurfaceArea),
+      OFFICES: roundTo2Digits(0.05 * buildingsFloorSurfaceArea),
+      LOCAL_SERVICES: roundTo2Digits(0.06 * buildingsFloorSurfaceArea),
     };
   }
 

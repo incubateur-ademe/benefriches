@@ -34,7 +34,7 @@ export type ProjectImpactsState = {
       | {
           type: "URBAN_PROJECT";
           buildingsFloorAreaDistribution: {
-            GROUND_FLOOR_RETAIL?: number;
+            LOCAL_STORE?: number;
             RESIDENTIAL?: number;
           };
         };

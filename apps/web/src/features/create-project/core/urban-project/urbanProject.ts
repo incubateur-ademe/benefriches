@@ -131,23 +131,21 @@ export const getDescriptionForBuildingsUse = (use: BuildingsUse): string => {
   switch (use) {
     case "RESIDENTIAL":
       return "Maisons, immeubles collectifs...";
-    case "GROUND_FLOOR_RETAIL":
+    case "LOCAL_STORE":
       return "Boulangerie, supérette...";
     case "MULTI_STORY_PARKING":
       return "Parking voiture à étage";
-    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
-      return "Garage, atelier...";
-    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
-      return "Entrepot, usine...";
+    case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
+      return "Usine, entrepôt, atelier...";
     case "SPORTS_FACILITIES":
       return "Stade, gymnase, piscine...";
-    case "NEIGHBOURHOOD_FACILITIES_AND_SERVICES":
+    case "LOCAL_SERVICES":
       return "Banque, poste, restaurant...";
-    case "SOCIO_CULTURAL_PLACE":
+    case "CULTURAL_PLACE":
       return "Cinéma, théâtre, musée...";
     case "OTHER":
       return "Établissement éducatif, espace de santé...";
-    case "TERTIARY_ACTIVITIES":
+    case "OFFICES":
     case "PUBLIC_FACILITIES":
       return "";
   }
@@ -158,20 +156,19 @@ export const getPictogramUrlForBuildingsUse = (use: BuildingsUse): string => {
   switch (use) {
     case "RESIDENTIAL":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/residential.svg`;
-    case "GROUND_FLOOR_RETAIL":
+    case "LOCAL_STORE":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/local-store.svg`;
-    case "NEIGHBOURHOOD_FACILITIES_AND_SERVICES":
+    case "LOCAL_SERVICES":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/local-services.svg`;
-    case "OTHER_COMMERCIAL_OR_ARTISANAL_BUILDINGS":
-    case "SHIPPING_OR_INDUSTRIAL_BUILDINGS":
+    case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/industrial-and-artisanal-and-shipping-premises.svg`;
-    case "TERTIARY_ACTIVITIES":
+    case "OFFICES":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/economic-activity/offices.svg`;
     case "MULTI_STORY_PARKING":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/multi-story-parking.svg`;
     case "SPORTS_FACILITIES":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/sports-facilities.svg`;
-    case "SOCIO_CULTURAL_PLACE":
+    case "CULTURAL_PLACE":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/cultural-place.svg`;
     case "PUBLIC_FACILITIES":
       return `${BUILDINGS_USE_PICTOGRAM_URL_BASE}/public-buildings.svg`;

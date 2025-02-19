@@ -11,9 +11,9 @@ describe("TravelRelatedImpactsService", () => {
         cityPopulation: 300000,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 10000,
-          TERTIARY_ACTIVITIES: 1500,
-          GROUND_FLOOR_RETAIL: 500,
-          SHIPPING_OR_INDUSTRIAL_BUILDINGS: 200,
+          OFFICES: 1500,
+          LOCAL_STORE: 500,
+          ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
         },
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2025,
@@ -35,8 +35,8 @@ describe("TravelRelatedImpactsService", () => {
         ...props,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 10000,
-          TERTIARY_ACTIVITIES: 100,
-          GROUND_FLOOR_RETAIL: 45,
+          OFFICES: 100,
+          LOCAL_STORE: 45,
         },
       });
       expect(travelRelatedImpactsService["influenceRadius"]).toEqual(100);
@@ -52,9 +52,9 @@ describe("TravelRelatedImpactsService", () => {
         ...props,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 10000,
-          TERTIARY_ACTIVITIES: 150,
-          GROUND_FLOOR_RETAIL: 35,
-          SHIPPING_OR_INDUSTRIAL_BUILDINGS: 100,
+          OFFICES: 150,
+          LOCAL_STORE: 35,
+          ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 100,
         },
       });
       expect(travelRelatedImpactsService["influenceRadius"]).toEqual(200);
@@ -63,10 +63,10 @@ describe("TravelRelatedImpactsService", () => {
         ...props,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 10000,
-          TERTIARY_ACTIVITIES: 250,
-          GROUND_FLOOR_RETAIL: 55,
-          SHIPPING_OR_INDUSTRIAL_BUILDINGS: 200,
-          SOCIO_CULTURAL_PLACE: 30,
+          OFFICES: 250,
+          LOCAL_STORE: 55,
+          ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
+          CULTURAL_PLACE: 30,
         },
       });
       expect(travelRelatedImpactsService["influenceRadius"]).toEqual(500);
@@ -95,9 +95,9 @@ describe("TravelRelatedImpactsService", () => {
         cityPopulation: 300000,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 160000000,
-          TERTIARY_ACTIVITIES: 1500,
-          GROUND_FLOOR_RETAIL: 500,
-          SHIPPING_OR_INDUSTRIAL_BUILDINGS: 200,
+          OFFICES: 1500,
+          LOCAL_STORE: 500,
+          ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
         },
         evaluationPeriodInYears: 10,
         operationsFirstYear: 2025,
@@ -124,9 +124,9 @@ describe("TravelRelatedImpactsService", () => {
         cityPopulation: 18000,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 1500,
-          GROUND_FLOOR_RETAIL: 1000,
-          TERTIARY_ACTIVITIES: 1000,
-          SOCIO_CULTURAL_PLACE: 500,
+          LOCAL_STORE: 1000,
+          OFFICES: 1000,
+          CULTURAL_PLACE: 500,
           SPORTS_FACILITIES: 1000,
         },
         evaluationPeriodInYears: 10,
