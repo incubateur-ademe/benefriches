@@ -20,7 +20,7 @@ const ProjectFeaturesModalContainer = ({ projectId }: Props) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isOpen && !projectFeatures) {
+    if (isOpen) {
       void dispatch(fetchProjectFeatures({ projectId }));
     }
   }, [dispatch, isOpen, projectFeatures, projectId]);
