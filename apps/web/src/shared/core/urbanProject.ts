@@ -25,7 +25,7 @@ export const getLabelForUrbanProjectSpace = (space: UrbanProjectSpace): string =
   }
 };
 
-export const getLabelForBuildingFloorArea = (use: BuildingsUse): string => {
+export const getLabelForBuildingsUse = (use: BuildingsUse): string => {
   switch (use) {
     case "LOCAL_STORE":
       return "Commerce de proximité";
@@ -47,6 +47,31 @@ export const getLabelForBuildingFloorArea = (use: BuildingsUse): string => {
       return "Équipements sportifs";
     case "OTHER":
       return "Autres usages";
+  }
+};
+
+export const getColorForBuildingsUse = (use: BuildingsUse): string => {
+  switch (use) {
+    case "RESIDENTIAL":
+      return "#EA1447";
+    case "LOCAL_STORE":
+      return "#7BEB13";
+    case "MULTI_STORY_PARKING":
+      return "#609596";
+    case "ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES":
+      return "#EB13BE";
+    case "SPORTS_FACILITIES":
+      return "#689E6A";
+    case "LOCAL_SERVICES":
+      return "#137FEB";
+    case "CULTURAL_PLACE":
+      return "#EB7F14";
+    case "OFFICES":
+      return "#7A13EB";
+    case "PUBLIC_FACILITIES":
+      return "#68699E";
+    case "OTHER":
+      return "#9D6B6B";
   }
 };
 

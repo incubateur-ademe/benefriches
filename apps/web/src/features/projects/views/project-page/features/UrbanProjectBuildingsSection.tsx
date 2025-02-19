@@ -2,7 +2,7 @@ import { sumObjectValues, typedObjectEntries } from "shared";
 
 import { UrbanProjectFeatures } from "@/features/projects/domain/projects.types";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
-import { getLabelForBuildingFloorArea } from "@/shared/core/urbanProject";
+import { getLabelForBuildingsUse } from "@/shared/core/urbanProject";
 import DataLine from "@/shared/views/components/FeaturesList/FeaturesListDataLine";
 import Section from "@/shared/views/components/FeaturesList/FeaturesListSection";
 
@@ -21,7 +21,7 @@ const UrbanProjectBuildingsSection = ({ buildingsFloorArea }: Props) => {
         value ? (
           <DataLine
             key={use}
-            label={getLabelForBuildingFloorArea(use)}
+            label={getLabelForBuildingsUse(use)}
             value={formatSurfaceArea(value)}
             isDetails
           />

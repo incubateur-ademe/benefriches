@@ -5,7 +5,7 @@ import {
   getPictogramUrlForBuildingsUse,
 } from "@/features/create-project/core/urban-project/urbanProject";
 import { formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
-import { getLabelForBuildingFloorArea } from "@/shared/core/urbanProject";
+import { getColorForBuildingsUse, getLabelForBuildingsUse } from "@/shared/core/urbanProject";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
@@ -35,9 +35,10 @@ function BuildingsUseSurfaceAreas({ initialValues, totalSurfaceArea, onSubmit, o
       maxErrorMessage="La superficie ne peut pas être supérieure à la surface de plancher des bâtiments"
       surfaces={BUILDINGS_USE_LIST.map((use) => ({
         name: use,
-        label: getLabelForBuildingFloorArea(use),
+        label: getLabelForBuildingsUse(use),
         hintText: getDescriptionForBuildingsUse(use),
         imgSrc: getPictogramUrlForBuildingsUse(use),
+        color: getColorForBuildingsUse(use),
       }))}
     />
   );
