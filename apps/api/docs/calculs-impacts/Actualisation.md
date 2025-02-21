@@ -127,26 +127,26 @@ On interpole l'évolution de la valeur CO2 à partir des données suivantes :
 
 si année évaluée < 2030
 
-- $ x_1 = 2020; $
-- $ x_2 = 2030; $
-- $ y_1 = 90; $
-- $ y_2 = 250; $
+- $x_1 = 2020$
+- $x_2 = 2030$
+- $y_1 = 90$
+- $y_2 = 250$
 
 si année évaluée < 2040
 
-- $ x_1 = 2030; $
-- $ x_2 = 2040; $
-- $ y_1 = 250; $
-- $ y_2 = 500; $
+- $x_1 = 2030$
+- $x_2 = 2040$
+- $y_1 = 250$
+- $y_2 = 500$
 
 sinon
 
-- $ x_1 = 2040; $
-- $ x_2 = 2050; $
-- $ y_1 = 500; $
-- $ y_2 = 775; $
+- $x_1 = 2040$
+- $x_2 = 2050$
+- $y_1 = 500$
+- $y_2 = 775$
 
-$$ CoeffValeurCO_2 = y_1 \times ({\frac{y_2}{y_1}})^{\frac{k - x_1}{x_2-x_1}} $$
+$$CoeffValeurCO_2 = y_1 \times ({\frac{y_2}{y_1}})^{\frac{k - x_1}{x_2-x_1}}$$
 
 ### Somme actualisée
 
@@ -167,13 +167,7 @@ $$
 - Année de mise en service = 2025
 
 $$
- \displaystyle\sum_{k=1}^{10} y_1 \times ({\frac{y_2}{y_1}})^{\frac{k - x_1}{x_2-x_1}} \times {\frac{Valeur}{{1.045}^{k}}} =
- ({\frac{250}{90}})^{\frac{1 - 2020}{2030-2020}} \times {\frac{217 685 / 1000000}{{1.045}^{1}}}
- + ({\frac{250}{90}})^{\frac{2 - 2020}{2030-2020}} \times {\frac{217 685 / 1000000}{{1.045}^{2}}}
- + ...
- + ({\frac{500}{250}})^{\frac{32 - 2030}{2040-2030}} \times {\frac{217 685 / 1000000}{{1.045}^{32}}}
- + ...
- +({\frac{775}{500}})^{\frac{50 - 2030}{2050-2040}} \times {\frac{217 685 / 1000000}{{1.045}^{50}}}
+\displaystyle\sum_{k=1}^{10} y_1 \times ({\frac{y_2}{y_1}})^{\frac{k - x_1}{x_2-x_1}} \times {\frac{Valeur}{{1.045}^{k}}} = ({\frac{250}{90}})^{\frac{1 - 2020}{2030-2020}} \times {\frac{217 685 / 1000000}{{1.045}^{1}}} + ({\frac{250}{90}})^{\frac{2 - 2020}{2030-2020}} \times {\frac{217 685 / 1000000}{{1.045}^{2}}} + ... + ({\frac{500}{250}})^{\frac{32 - 2030}{2040-2030}} \times {\frac{217 685 / 1000000}{{1.045}^{32}}} + ... +({\frac{775}{500}})^{\frac{50 - 2030}{2050-2040}} \times {\frac{217 685 / 1000000}{{1.045}^{50}}}
 $$
 
 #### Impacts concernés
@@ -199,17 +193,17 @@ On interpole l'évolution de la valeur des émissions de véhicules à partir de
 
 si année évaluée < 2030
 
-- $ x_1 = 2015; $
-- $ x_2 = 2030; $
-- $ y_1 = 157.2; $
-- $ y_2 = 120.9; $
+- $x_1 = 2015$
+- $x_2 = 2030$
+- $y_1 = 157.2$
+- $y_2 = 120.9$
 
 sinon
 
-- $ x_1 = 2030; $
-- $ x_2 = 2050; $
-- $ y_1 = 120.9; $
-- $ y_2 = 87.2 ; $
+- $x_1 = 2030$
+- $x_2 = 2050$
+- $y_1 = 120.9$
+- $y_2 = 87.2$
 
 $$ CoeffCO_2ParKm = p_1 \times ({\frac{p_2}{p_1}})^{\frac{k - x_1}{x_2-x_1}} $$
 
@@ -226,10 +220,6 @@ $$
 $$
 
 $$
-=
-$$
-
-$$
 \displaystyle\sum_{k=1}^{n} {p_1 \times ({\frac{p_2}{p_1}})^{\frac{k - x_1}{x_2-x_1}}\times {Valeur}}
 $$
 
@@ -243,10 +233,6 @@ $$
 
 $$
 \displaystyle\sum_{k=1}^{n} {CoeffCO_2ParKm\times {Valeur}} \times {\frac{CoeffValeurCO_2}{1000000}} \times CoeffActualisation
-$$
-
-$$
-=
 $$
 
 $$
