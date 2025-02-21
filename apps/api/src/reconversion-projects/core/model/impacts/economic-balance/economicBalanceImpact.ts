@@ -9,6 +9,8 @@ import {
   sumListWithKey,
 } from "shared";
 
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
+
 type ProjectProps = {
   financialAssistanceRevenues?: FinancialAssistanceRevenue[];
   reinstatementCosts: ReinstatementExpense[];
@@ -145,15 +147,15 @@ export const getEconomicResultsOfProjectInstallation = ({
 export const getEconomicResultsOfProjectExploitationForDuration = (
   yearlyProjectedRevenues: ProjectProps["yearlyProjectedRevenues"],
   yearlyProjectedCosts: ProjectProps["yearlyProjectedCosts"],
-  durationInYear: number,
+  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService,
 ) => {
   const costsForDuration = yearlyProjectedCosts.map(({ amount, purpose }) => ({
     purpose,
-    amount: amount * durationInYear,
+    amount: sumOnEvolutionPeriodService.sumWithDiscountFactor(amount),
   }));
   const revenuesForDuration = yearlyProjectedRevenues.map(({ amount, source }) => ({
     source,
-    amount: amount * durationInYear,
+    amount: sumOnEvolutionPeriodService.sumWithDiscountFactor(amount),
   }));
 
   const totalCostsForDuration = sumListWithKey(costsForDuration, "amount");
@@ -186,7 +188,7 @@ export const computeEconomicBalanceImpact = (
     siteResaleSellingPrice,
     buildingsResaleSellingPrice,
   }: ProjectProps,
-  durationInYear: number,
+  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService,
 ): EconomicBalanceImpactResult => {
   const {
     total: totalInstallation,
@@ -215,7 +217,7 @@ export const computeEconomicBalanceImpact = (
     } = getEconomicResultsOfProjectExploitationForDuration(
       yearlyProjectedRevenues,
       yearlyProjectedCosts,
-      durationInYear,
+      sumOnEvolutionPeriodService,
     );
 
     return pipe(

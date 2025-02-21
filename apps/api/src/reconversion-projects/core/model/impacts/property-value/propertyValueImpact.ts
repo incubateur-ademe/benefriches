@@ -1,11 +1,6 @@
-import {
-  LocalHousingPropertyValueIncreaseImpact,
-  LocalTransferDutiesIncreaseImpact,
-  TRANSFER_TAX_PERCENT_PER_TRANSACTION,
-} from "shared";
+import { TRANSFER_TAX_PERCENT_PER_TRANSACTION } from "shared";
 
-import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
-
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { InfluenceAreaService } from "../influence-area-service/InfluenceAreaService";
 
 const FRICHE_REMOVAL_PRICE_RISES = [
@@ -50,7 +45,7 @@ export const computePropertyValueImpact = (
   citySurfaceArea: number,
   cityPopulation: number,
   localHousePriceEuroPerSquareMeters: number,
-  evaluationPeriodInYears: number,
+  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService,
   isRenaturation = false,
 ) => {
   const influenceZonesHousePriceRises = (
@@ -73,73 +68,20 @@ export const computePropertyValueImpact = (
   const totalHousePriceRise = influenceZonesHousePriceRises.reduce((total, value) => total + value);
 
   const propertyValueIncreaseForOneYear = (totalHousePriceRise * (1 - SOCIAL_HOUSING_SHARE)) / 5;
-  const propertyValueIncreaseDurationInYears =
-    evaluationPeriodInYears > 5 ? 5 : evaluationPeriodInYears;
 
   const propertyTransferDutiesIncreaseForOneYear =
     (totalHousePriceRise / AVERAGE_HOUSE_HOLDING_PERIOD) *
     TRANSFER_TAX_PERCENT_PER_TRANSACTION *
     (1 - SOCIAL_HOUSING_SHARE);
 
-  const propertyTransferDutiesIncreaseDurationInYears =
-    evaluationPeriodInYears > 33 ? 33 : evaluationPeriodInYears;
-
   return {
-    propertyValueIncrease: propertyValueIncreaseForOneYear * propertyValueIncreaseDurationInYears,
-    propertyTransferDutiesIncrease:
-      propertyTransferDutiesIncreaseForOneYear * propertyTransferDutiesIncreaseDurationInYears,
+    propertyValueIncrease: sumOnEvolutionPeriodService.sumWithDiscountFactor(
+      propertyValueIncreaseForOneYear,
+      { rangeIndex: [1, 6] },
+    ),
+    propertyTransferDutiesIncrease: sumOnEvolutionPeriodService.sumWithDiscountFactor(
+      propertyTransferDutiesIncreaseForOneYear,
+      { rangeIndex: [1, 34] },
+    ),
   };
-};
-
-type LocalPropertyInput = {
-  evaluationPeriodInYears: number;
-  siteIsFriche: boolean;
-  siteSurfaceArea: number;
-  siteCityCode: string;
-  citySurfaceArea: number;
-  cityPopulation: number;
-  getCityRelatedDataService: GetCityRelatedDataService;
-};
-
-type LocalPropertyResult =
-  | [LocalHousingPropertyValueIncreaseImpact, LocalTransferDutiesIncreaseImpact]
-  | [];
-export const getLocalPropertyValueIncreaseRelatedImpacts = async ({
-  evaluationPeriodInYears,
-  siteSurfaceArea,
-  siteIsFriche,
-  siteCityCode,
-  citySurfaceArea,
-  cityPopulation,
-  getCityRelatedDataService,
-}: LocalPropertyInput): Promise<LocalPropertyResult> => {
-  if (!siteIsFriche) {
-    return [];
-  }
-
-  const cityPropertyValuePerSquareMeter =
-    await getCityRelatedDataService.getPropertyValuePerSquareMeter(siteCityCode);
-
-  const { propertyValueIncrease, propertyTransferDutiesIncrease } = computePropertyValueImpact(
-    siteSurfaceArea,
-    citySurfaceArea,
-    cityPopulation,
-    cityPropertyValuePerSquareMeter.medianPricePerSquareMeters,
-    evaluationPeriodInYears,
-    false, // TODO: quartier V2 créer une méthode de calcul pour ce paramètre
-  );
-  return [
-    {
-      actor: "local_people",
-      amount: propertyValueIncrease,
-      impact: "local_property_value_increase",
-      impactCategory: "economic_indirect",
-    },
-    {
-      actor: "community",
-      amount: propertyTransferDutiesIncrease,
-      impact: "local_transfer_duties_increase",
-      impactCategory: "economic_indirect",
-    },
-  ];
 };

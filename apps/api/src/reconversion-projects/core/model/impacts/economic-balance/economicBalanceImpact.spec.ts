@@ -1,5 +1,6 @@
 import { EconomicBalanceImpactResult } from "shared";
 
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import {
   computeEconomicBalanceImpact,
   getEconomicResultsOfProjectExploitationForDuration,
@@ -179,7 +180,16 @@ describe("EconomicBalance impact", () => {
 
   describe("getEconomicResultsOfProjectExploitationForDuration", () => {
     it("should return 0 for a project with no costs", () => {
-      expect(getEconomicResultsOfProjectExploitationForDuration([], [], 10)).toEqual({
+      expect(
+        getEconomicResultsOfProjectExploitationForDuration(
+          [],
+          [],
+          new SumOnEvolutionPeriodService({
+            evaluationPeriodInYears: 10,
+            operationsFirstYear: 2025,
+          }),
+        ),
+      ).toEqual({
         total: 0,
         operationsCosts: {
           total: 0,
@@ -192,7 +202,7 @@ describe("EconomicBalance impact", () => {
       });
     });
 
-    it("should return the difference between costs and benefits multiplied by duration", () => {
+    it("should return the difference between costs and benefits actualized with discount factor", () => {
       expect(
         getEconomicResultsOfProjectExploitationForDuration(
           [
@@ -203,22 +213,25 @@ describe("EconomicBalance impact", () => {
             { amount: 6000, purpose: "taxes" },
             { amount: 50, purpose: "maintenance" },
           ],
-          10,
+          new SumOnEvolutionPeriodService({
+            evaluationPeriodInYears: 10,
+            operationsFirstYear: 2025,
+          }),
         ),
       ).toEqual({
-        total: -45500,
+        total: -37623,
         operationsCosts: {
-          total: 60500,
+          total: 50026,
           costs: [
-            { amount: 60000, purpose: "taxes" },
-            { amount: 500, purpose: "maintenance" },
+            { amount: 49613, purpose: "taxes" },
+            { amount: 413, purpose: "maintenance" },
           ],
         },
         operationsRevenues: {
-          total: 15000,
+          total: 12403,
           revenues: [
-            { amount: 10000, source: "rent" },
-            { amount: 5000, source: "other" },
+            { amount: 8269, source: "rent" },
+            { amount: 4134, source: "other" },
           ],
         },
       });
@@ -229,15 +242,18 @@ describe("EconomicBalance impact", () => {
             { amount: 6000, purpose: "taxes" },
             { amount: 50, purpose: "maintenance" },
           ],
-          30,
+          new SumOnEvolutionPeriodService({
+            evaluationPeriodInYears: 30,
+            operationsFirstYear: 2025,
+          }),
         ),
       ).toEqual({
-        total: -181500,
+        total: -102982,
         operationsCosts: {
-          total: 181500,
+          total: 102982,
           costs: [
-            { amount: 180000, purpose: "taxes" },
-            { amount: 1500, purpose: "maintenance" },
+            { amount: 102131, purpose: "taxes" },
+            { amount: 851, purpose: "maintenance" },
           ],
         },
         operationsRevenues: {
@@ -271,7 +287,10 @@ describe("EconomicBalance impact", () => {
             siteResaleSellingPrice: 150000,
             buildingsResaleSellingPrice: 199000,
           },
-          1,
+          new SumOnEvolutionPeriodService({
+            evaluationPeriodInYears: 1,
+            operationsFirstYear: 2025,
+          }),
         ),
       ).toEqual<EconomicBalanceImpactResult>({
         total: 254000,
@@ -332,18 +351,21 @@ describe("EconomicBalance impact", () => {
             siteResaleSellingPrice: 150000,
             buildingsResaleSellingPrice: 0,
           },
-          20,
+          new SumOnEvolutionPeriodService({
+            evaluationPeriodInYears: 20,
+            operationsFirstYear: 2025,
+          }),
         ),
       ).toEqual({
-        total: 500000 - (1210000 + 49999 + 150000),
+        total: 403899 - (822395 + 49999 + 150000),
         bearer: "Mairie de Blajan",
         costs: {
-          total: 1210000 + 49999 + 150000,
+          total: 822395 + 49999 + 150000,
           operationsCosts: {
-            total: 1210000,
+            total: 822395,
             costs: [
-              { amount: 1200000, purpose: "taxes" },
-              { amount: 10000, purpose: "maintenance" },
+              { amount: 815598, purpose: "taxes" },
+              { amount: 6797, purpose: "maintenance" },
             ],
           },
           siteReinstatement: {
@@ -362,13 +384,13 @@ describe("EconomicBalance impact", () => {
           },
         },
         revenues: {
-          total: 500000,
+          total: 403899,
           siteResale: 150000,
           operationsRevenues: {
-            total: 300000,
+            total: 203899,
             revenues: [
-              { amount: 200000, source: "rent" },
-              { amount: 100000, source: "other" },
+              { amount: 135933, source: "rent" },
+              { amount: 67966, source: "other" },
             ],
           },
           financialAssistance: {
@@ -402,7 +424,10 @@ describe("EconomicBalance impact", () => {
             yearlyProjectedCosts: [],
             yearlyProjectedRevenues: [],
           },
-          1,
+          new SumOnEvolutionPeriodService({
+            evaluationPeriodInYears: 1,
+            operationsFirstYear: 2025,
+          }),
         ),
       ).toEqual({
         total: -150000,
@@ -451,7 +476,10 @@ describe("EconomicBalance impact", () => {
               { amount: 5000, source: "other" },
             ],
           },
-          20,
+          new SumOnEvolutionPeriodService({
+            evaluationPeriodInYears: 20,
+            operationsFirstYear: 2025,
+          }),
         ),
       ).toEqual({
         total: 50000 - (49999 + 95000),

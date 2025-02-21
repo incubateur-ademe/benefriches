@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { EcosystemServicesImpact } from "shared";
 
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { EnvironmentalSoilsRelatedImpactsService } from "./EnvironmentalSoilsRelatedImpactsService";
 
 describe("EnvironmentalSoilsRelatedService.spec", () => {
@@ -12,8 +13,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         forecastSoilsDistribution: {},
         siteContaminatedSurfaceArea: 0,
         projectDecontaminedSurfaceArea: 0,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       expect(environmentalSoilsRelatedImpactService["soilsDifferential"]).toEqual({});
     });
@@ -25,8 +28,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         forecastSoilsDistribution: { PRAIRIE_BUSHES: 1000, FOREST_CONIFER: 200 },
         siteContaminatedSurfaceArea: 0,
         projectDecontaminedSurfaceArea: 0,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       expect(environmentalSoilsRelatedImpactService["soilsDifferential"]).toEqual({
         PRAIRIE_BUSHES: 0,
@@ -54,8 +59,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         },
         siteContaminatedSurfaceArea: 0,
         projectDecontaminedSurfaceArea: 0,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
 
       expect(environmentalSoilsRelatedImpactService["soilsDifferential"]).toEqual({
@@ -84,8 +91,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         },
         siteContaminatedSurfaceArea: 0,
         projectDecontaminedSurfaceArea: 0,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toEqual([]);
     });
@@ -102,8 +111,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         },
         siteContaminatedSurfaceArea: 0,
         projectDecontaminedSurfaceArea: 0,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       const socioEconomicList = environmentalSoilsRelatedImpactService.getSocioEconomicList();
       const ecosystemServicesResult = socioEconomicList.find(
@@ -115,7 +126,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       ).toEqual(undefined);
     });
 
-    it("returns positive enviromental monetary value for soils differential", () => {
+    it("returns positive environmental monetary value for soils differential", () => {
       const environmentalSoilsRelatedImpactService = new EnvironmentalSoilsRelatedImpactsService({
         siteTotalSurfaceArea: 1200,
         baseSoilsDistribution: {
@@ -156,33 +167,35 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           ],
         },
         projectDecontaminedSurfaceArea: 1000,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2025,
+        }),
       });
       expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toContainEqual({
-        amount: 236,
+        amount: 213,
         impact: "water_regulation",
         impactCategory: "environmental_monetary",
         actor: "community",
       });
       expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toContainEqual({
-        amount: 27190,
+        amount: 29627,
         impact: "ecosystem_services",
         impactCategory: "environmental_monetary",
         actor: "human_society",
         details: [
-          { amount: 24829, impact: "carbon_storage" },
-          { amount: 67, impact: "nature_related_wellness_and_leisure" },
-          { amount: 120, impact: "pollination" },
-          { amount: 44, impact: "invasive_species_regulation" },
-          { amount: 1690, impact: "water_cycle" },
-          { amount: 115, impact: "nitrogen_cycle" },
-          { amount: 325, impact: "soil_erosion" },
+          { amount: 27500, impact: "carbon_storage" },
+          { amount: 60, impact: "nature_related_wellness_and_leisure" },
+          { amount: 108, impact: "pollination" },
+          { amount: 40, impact: "invasive_species_regulation" },
+          { amount: 1523, impact: "water_cycle" },
+          { amount: 103, impact: "nitrogen_cycle" },
+          { amount: 293, impact: "soil_erosion" },
         ],
       });
     });
 
-    it("returns negative enviromental monetary value for soils differential", () => {
+    it("returns negative environmental monetary value for soils differential", () => {
       const environmentalSoilsRelatedImpactService = new EnvironmentalSoilsRelatedImpactsService({
         siteTotalSurfaceArea: 1200,
         baseSoilsDistribution: {
@@ -219,26 +232,30 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           ],
         },
 
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2025,
+        }),
       });
+
       expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toContainEqual({
-        amount: -65,
+        amount: -58,
         impact: "water_regulation",
         impactCategory: "environmental_monetary",
         actor: "community",
       });
+
       expect(environmentalSoilsRelatedImpactService.getSocioEconomicList()).toContainEqual({
-        amount: -50540,
+        amount: -55795,
         impact: "ecosystem_services",
         impactCategory: "environmental_monetary",
         actor: "human_society",
         details: [
-          { amount: -49658, impact: "carbon_storage" },
-          { amount: -51, impact: "nature_related_wellness_and_leisure" },
-          { amount: -51, impact: "pollination" },
-          { amount: -746, impact: "water_cycle" },
-          { amount: -34, impact: "nitrogen_cycle" },
+          { amount: -55000, impact: "carbon_storage" },
+          { amount: -46, impact: "nature_related_wellness_and_leisure" },
+          { amount: -46, impact: "pollination" },
+          { amount: -672, impact: "water_cycle" },
+          { amount: -31, impact: "nitrogen_cycle" },
         ],
       });
     });
@@ -256,8 +273,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         },
         siteContaminatedSurfaceArea: 0,
         projectDecontaminedSurfaceArea: 0,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
 
       expect(
@@ -280,8 +299,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         },
         siteContaminatedSurfaceArea: 250,
         projectDecontaminedSurfaceArea: 250,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
 
       expect(
@@ -304,8 +325,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         },
         siteContaminatedSurfaceArea: 250,
         projectDecontaminedSurfaceArea: 100,
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       expect(
         environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().nonContaminatedSurfaceArea,
@@ -335,8 +358,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           PRAIRIE_GRASS: 500,
           MINERAL_SOIL: 320,
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       expect(
         environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().permeableSurfaceArea,
@@ -374,8 +399,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           PRAIRIE_GRASS: 500,
           MINERAL_SOIL: 420,
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
 
       expect(
@@ -413,8 +440,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           PRAIRIE_GRASS: 500,
           MINERAL_SOIL: 320,
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
 
       expect(
@@ -452,8 +481,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 300,
           PRAIRIE_GRASS: 500,
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
 
       expect(
@@ -488,8 +519,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           IMPERMEABLE_SOILS: 1000,
           BUILDINGS: 220,
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       expect(
         environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().permeableSurfaceArea,
@@ -526,8 +559,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           IMPERMEABLE_SOILS: 1000,
           BUILDINGS: 220,
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       expect(
         environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().soilsCarbonStorage,
@@ -585,8 +620,10 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
             },
           ],
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2024,
+        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+          evaluationPeriodInYears: 10,
+          operationsFirstYear: 2024,
+        }),
       });
       expect(
         environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().soilsCarbonStorage,

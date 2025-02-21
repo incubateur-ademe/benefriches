@@ -1,3 +1,4 @@
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { TravelRelatedImpactsService } from "./TravelRelatedImpactsService";
 
 describe("TravelRelatedImpactsService", () => {
@@ -13,8 +14,10 @@ describe("TravelRelatedImpactsService", () => {
         LOCAL_STORE: 500,
         ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
       },
-      evaluationPeriodInYears: 10,
-      operationsFirstYear: 2025,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
     });
   });
 
@@ -39,18 +42,20 @@ describe("TravelRelatedImpactsService", () => {
         LOCAL_STORE: 500,
         ARTISANAL_OR_INDUSTRIAL_OR_SHIPPING_PREMISES: 200,
       },
-      evaluationPeriodInYears: 10,
-      operationsFirstYear: 2025,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
     });
     expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuries()).toEqual(444);
     expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries()).toEqual(28);
     expect(travelRelatedImpactsService.getAvoidedAccidentsDeaths()).toEqual(8);
 
-    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses()).toEqual(7100765);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses()).toEqual(6397034);
     expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses()).toEqual(
-      11094945,
+      9995366,
     );
-    expect(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses()).toEqual(26512596);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses()).toEqual(23885030);
   });
 
   it("returns socioeconomic, social and environment impacts related to travel", () => {
@@ -65,42 +70,44 @@ describe("TravelRelatedImpactsService", () => {
         CULTURAL_PLACE: 500,
         SPORTS_FACILITIES: 1000,
       },
-      evaluationPeriodInYears: 10,
-      operationsFirstYear: 2025,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
     });
 
     expect(travelRelatedImpactsService.getSocioEconomicList()).toEqual([
       {
         actor: "french_society",
-        amount: 30990.09,
+        amount: 27919,
         impact: "avoided_air_pollution",
         impactCategory: "social_monetary",
       },
       {
         actor: "local_people",
-        amount: 196139.79,
+        amount: 176701,
         impact: "avoided_car_related_expenses",
         impactCategory: "economic_indirect",
       },
       {
         actor: "french_society",
-        amount: 586.05,
+        amount: 528,
         impact: "avoided_property_damages_expenses",
         impactCategory: "economic_indirect",
       },
       {
         actor: "local_people",
-        amount: 790007.5,
+        amount: 711713,
         impact: "travel_time_saved",
         impactCategory: "social_monetary",
       },
     ]);
     expect(travelRelatedImpactsService.getEnvironmentalImpacts()).toEqual({
-      avoidedCarTrafficCo2EqEmissions: 308.33,
+      avoidedCarTrafficCo2EqEmissions: 239.78,
     });
     expect(travelRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([
       {
-        amount: 76438.22,
+        amount: 45308,
         impact: "avoided_traffic_co2_eq_emissions",
       },
     ]);

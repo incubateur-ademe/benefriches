@@ -243,22 +243,22 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         },
         impacts: {
           socioeconomic: {
-            total: -80636.10999999999,
+            total: -79146,
             impacts: [
               {
                 actor: "Current owner",
-                amount: -540000,
+                amount: -446515,
                 impact: "rental_income",
                 impactCategory: "economic_direct",
               },
               {
                 actor: "Current tenant",
-                amount: 131000,
+                amount: 108321,
                 impact: "avoided_friche_costs",
                 impactCategory: "economic_direct",
                 details: [
-                  { amount: 116000, impact: "avoided_security_costs" },
-                  { amount: 15000, impact: "avoided_illegal_dumping_costs" },
+                  { amount: 95918, impact: "avoided_security_costs" },
+                  { amount: 12403, impact: "avoided_illegal_dumping_costs" },
                 ],
               },
 
@@ -270,60 +270,60 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               },
               {
                 actor: "community",
-                amount: 4720,
+                amount: 4252,
                 impact: "water_regulation",
                 impactCategory: "environmental_monetary",
               },
               {
                 actor: "human_society",
-                amount: 29820,
+                amount: 26864,
                 impact: "ecosystem_services",
                 impactCategory: "environmental_monetary",
                 details: [
                   {
-                    amount: 1420,
+                    amount: 1279,
                     impact: "nature_related_wellness_and_leisure",
                   },
                   {
-                    amount: 1840,
+                    amount: 1658,
                     impact: "pollination",
                   },
                   {
-                    amount: 680,
+                    amount: 613,
                     impact: "invasive_species_regulation",
                   },
                   {
-                    amount: 19500,
+                    amount: 17567,
                     impact: "water_cycle",
                   },
                   {
-                    amount: 1380,
+                    amount: 1243,
                     impact: "nitrogen_cycle",
                   },
                   {
-                    amount: 5000,
+                    amount: 4504,
                     impact: "soil_erosion",
                   },
                 ],
               },
               {
                 actor: "community",
-                amount: 10000,
+                amount: 9009,
                 impact: "taxes_income",
                 impactCategory: "economic_indirect",
                 details: [
                   {
                     impact: "project_photovoltaic_taxes_income",
-                    amount: 10000,
+                    amount: 9009,
                   },
                 ],
               },
               {
                 actor: "human_society",
-                amount: 278391.89,
+                amount: 213491,
                 impact: "avoided_co2_eq_emissions",
                 impactCategory: "environmental_monetary",
-                details: [{ impact: "avoided_co2_eq_with_enr", amount: 278391.89 }],
+                details: [{ impact: "avoided_co2_eq_with_enr", amount: 213491 }],
               },
             ],
           },
@@ -331,12 +331,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             total: -700000,
             bearer: "Mairie de Blajan",
             costs: {
-              total: 960000,
+              total: 940957,
               operationsCosts: {
-                total: 110000,
+                total: 90957,
                 costs: [
-                  { amount: 10000, purpose: "taxes" },
-                  { amount: 100000, purpose: "maintenance" },
+                  { amount: 8269, purpose: "taxes" },
+                  { amount: 82688, purpose: "maintenance" },
                 ],
               },
               siteReinstatement: {
@@ -350,12 +350,12 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               sitePurchase: 150000,
             },
             revenues: {
-              total: 260000,
+              total: 240957,
               operationsRevenues: {
-                total: 110000,
+                total: 90957,
                 revenues: [
-                  { amount: 100000, source: "rent" },
-                  { amount: 10000, source: "other" },
+                  { amount: 82688, source: "rent" },
+                  { amount: 8269, source: "other" },
                 ],
               },
               financialAssistance: {

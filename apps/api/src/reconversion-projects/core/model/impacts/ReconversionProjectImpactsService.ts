@@ -19,6 +19,7 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
 import { DevelopmentPlan, Schedule } from "../../model/reconversionProject";
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
+import { SumOnEvolutionPeriodService } from "./SumOnEvolutionPeriodService";
 import { computeEconomicBalanceImpact } from "./economic-balance/economicBalanceImpact";
 import {
   EnvironmentalSoilsRelatedImpactsService,
@@ -108,12 +109,11 @@ export type ReconversionProjectImpactsServiceProps = {
   getSoilsCarbonStorageService: GetSoilsCarbonStoragePerSoilsService;
 };
 export class ReconversionProjectImpactsService implements ImpactsServiceInterface {
-  protected readonly evaluationPeriodInYears: number;
-  protected readonly operationsFirstYear: number;
   protected readonly reconversionProject: InputReconversionProjectData;
   protected readonly relatedSite: InputSiteData;
 
   protected readonly getSoilsCarbonStorageService: GetSoilsCarbonStoragePerSoilsService;
+  protected readonly sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 
   constructor({
     reconversionProject,
@@ -124,11 +124,13 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
   }: ReconversionProjectImpactsServiceProps) {
     this.reconversionProject = reconversionProject;
     this.relatedSite = relatedSite;
-    this.evaluationPeriodInYears = evaluationPeriodInYears;
-    this.operationsFirstYear =
-      this.reconversionProject.operationsFirstYear ?? dateProvider.now().getFullYear();
 
     this.getSoilsCarbonStorageService = getSoilsCarbonStorageService;
+    this.sumOnEvolutionPeriodService = new SumOnEvolutionPeriodService({
+      evaluationPeriodInYears,
+      operationsFirstYear:
+        reconversionProject.operationsFirstYear ?? dateProvider.now().getFullYear(),
+    });
   }
 
   protected get economicBalance() {
@@ -148,7 +150,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
         siteResaleSellingPrice: this.reconversionProject.siteResaleSellingPrice,
         buildingsResaleSellingPrice: this.reconversionProject.buildingsResaleSellingPrice,
       },
-      this.evaluationPeriodInYears,
+      this.sumOnEvolutionPeriodService,
     );
   }
 
@@ -161,7 +163,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       conversionSchedule: this.reconversionProject.conversionSchedule,
       reinstatementSchedule: this.reconversionProject.reinstatementSchedule,
       reinstatementExpenses: this.reconversionProject.reinstatementExpenses,
-      evaluationPeriodInYears: this.evaluationPeriodInYears,
+      evaluationPeriodInYears: this.sumOnEvolutionPeriodService.evaluationPeriodInYears,
     });
 
     return fullTimeJobsImpactService.getSocialImpacts().fullTimeJobs;
@@ -216,13 +218,9 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
 
     const siteTenantName = this.relatedSite.tenantName ?? "Ancien locataire du site";
 
-    return Object.entries(groupedByBearer).map(([bearer, costs]) => ({
-      amount: sumListWithKey(costs, "amount") * this.evaluationPeriodInYears,
-      actor: bearer === "owner" ? this.relatedSite.ownerName : siteTenantName,
-      impact: "avoided_friche_costs",
-      impactCategory: "economic_direct",
-      details: costs.map(({ amount, purpose }) => {
-        const totalAmount = amount * this.evaluationPeriodInYears;
+    return Object.entries(groupedByBearer).map(([bearer, costs]) => {
+      const details: AvoidedFricheCostsImpact["details"] = costs.map(({ amount, purpose }) => {
+        const totalAmount = this.sumOnEvolutionPeriodService.sumWithDiscountFactor(amount);
         switch (purpose) {
           case "maintenance":
             return { amount: totalAmount, impact: "avoided_maintenance_costs" };
@@ -235,8 +233,15 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
           case "otherSecuringCosts":
             return { amount: totalAmount, impact: "avoided_other_securing_costs" };
         }
-      }),
-    }));
+      });
+      return {
+        amount: sumListWithKey(details, "amount"),
+        actor: bearer === "owner" ? this.relatedSite.ownerName : siteTenantName,
+        impact: "avoided_friche_costs",
+        impactCategory: "economic_direct",
+        details,
+      };
+    });
   }
 
   protected get rentImpacts() {
@@ -251,7 +256,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     if (projectedRentCost) {
       if (this.reconversionProject.futureSiteOwnerName) {
         impacts.push({
-          amount: projectedRentCost.amount * this.evaluationPeriodInYears,
+          amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactor(projectedRentCost.amount),
           actor: this.reconversionProject.futureSiteOwnerName,
           impact: "rental_income",
           impactCategory: "economic_direct",
@@ -259,8 +264,9 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       }
       if (currentRentCost) {
         impacts.push({
-          amount:
-            (projectedRentCost.amount - currentRentCost.amount) * this.evaluationPeriodInYears,
+          amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactor(
+            projectedRentCost.amount - currentRentCost.amount,
+          ),
           actor: this.relatedSite.ownerName,
           impact: "rental_income",
           impactCategory: "economic_direct",
@@ -268,7 +274,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       }
     } else if (currentRentCost) {
       impacts.push({
-        amount: -currentRentCost.amount * this.evaluationPeriodInYears,
+        amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactor(-currentRentCost.amount),
         actor: this.relatedSite.ownerName,
         impact: "rental_income",
         impactCategory: "economic_direct",
@@ -337,8 +343,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       projectDecontaminedSurfaceArea: this.reconversionProject.decontaminatedSoilSurface,
       baseSoilsCarbonStorage,
       forecastSoilsCarbonStorage,
-      evaluationPeriodInYears: this.evaluationPeriodInYears,
-      operationsFirstYear: this.operationsFirstYear,
+      sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });
     return {
       socioEconomicList: environmentalSoilsRelatedImpactService.getSocioEconomicList(),

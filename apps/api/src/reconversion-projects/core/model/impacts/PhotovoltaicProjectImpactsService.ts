@@ -1,9 +1,4 @@
-import {
-  getAnnualizedCO2MonetaryValueForDuration,
-  SocioEconomicImpact,
-  sumListWithKey,
-  TaxesIncomeImpact,
-} from "shared";
+import { SocioEconomicImpact, sumListWithKey, TaxesIncomeImpact } from "shared";
 
 import { PhotovoltaicPowerStationFeatures } from "../reconversionProject";
 import {
@@ -60,7 +55,10 @@ export class PhotovoltaicProjectImpactsService
 
     if (projectedTaxesAmount) {
       const photovoltaicTaxesIncome: TaxesIncomeImpact["details"][number] = {
-        amount: projectedTaxesAmount * this.evaluationPeriodInYears,
+        amount:
+          this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+            projectedTaxesAmount,
+          ),
         impact: "project_photovoltaic_taxes_income",
       };
       impacts.push({
@@ -79,11 +77,10 @@ export class PhotovoltaicProjectImpactsService
       return [];
     }
 
-    const avoidedCo2EqWithEnr = getAnnualizedCO2MonetaryValueForDuration(
-      this.avoidedCO2TonsWithEnergyProduction.forecast,
-      this.operationsFirstYear,
-      this.evaluationPeriodInYears,
-    );
+    const avoidedCo2EqWithEnr =
+      this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndCO2ValueEvolution(
+        this.avoidedCO2TonsWithEnergyProduction.forecast,
+      );
 
     return [
       {

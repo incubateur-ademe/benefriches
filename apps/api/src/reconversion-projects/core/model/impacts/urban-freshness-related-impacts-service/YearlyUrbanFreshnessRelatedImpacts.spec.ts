@@ -1,24 +1,22 @@
 /* eslint-disable @typescript-eslint/dot-notation */
-import { UrbanFreshnessRelatedImpactsService } from "./UrbanFreshnessRelatedImpactsService";
+import { YearlyUrbanFreshnessRelatedImpacts } from "./YearlyUrbanFreshnessRelatedImpacts";
 
 describe("YearlyUrbanFreshnessRelatedImpacts", () => {
   describe("YearlyUrbanFreshnessRelatedImpacts: hasUrbanFreshnessImpact", () => {
     it("returns no urban freshness impacts if there is no public green spaces in project", () => {
-      const urbanFreshnessRelatedImpactsService = new UrbanFreshnessRelatedImpactsService({
+      const urbanFreshnessRelatedImpactsService = new YearlyUrbanFreshnessRelatedImpacts({
         siteSquareMetersSurfaceArea: 15000,
         citySquareMetersSurfaceArea: 15000000,
         cityPopulation: 18000,
         buildingsFloorAreaDistribution: {},
         spacesDistribution: {},
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2025,
       });
 
       expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
     });
 
     it("returns no urban freshness impacts if there is not enough public green spaces in project for public green space < 5000 m²", () => {
-      const urbanFreshnessRelatedImpactsService = new UrbanFreshnessRelatedImpactsService({
+      const urbanFreshnessRelatedImpactsService = new YearlyUrbanFreshnessRelatedImpacts({
         siteSquareMetersSurfaceArea: 1000,
         citySquareMetersSurfaceArea: 15000000,
         cityPopulation: 18000,
@@ -29,15 +27,13 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         spacesDistribution: {
           PUBLIC_GREEN_SPACES: 400,
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2025,
       });
 
       expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
     });
 
     it("returns no urban freshness impacts if there is not enough public green spaces in project for 5000 < public green space < 10000 m²", () => {
-      const urbanFreshnessRelatedImpactsService = new UrbanFreshnessRelatedImpactsService({
+      const urbanFreshnessRelatedImpactsService = new YearlyUrbanFreshnessRelatedImpacts({
         siteSquareMetersSurfaceArea: 15000,
         citySquareMetersSurfaceArea: 15000000,
         cityPopulation: 18000,
@@ -48,8 +44,6 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         spacesDistribution: {
           PUBLIC_GREEN_SPACES: 400,
         },
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2025,
       });
 
       expect(urbanFreshnessRelatedImpactsService.hasUrbanFreshnessImpact).toEqual(false);
@@ -59,14 +53,12 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
   describe("YearlyUrbanFreshnessRelatedImpacts: influenceRadius", () => {
     it("returns influence radius of 0 or 25 for public green space < 5000m²", () => {
       const params = {
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2025,
         siteSquareMetersSurfaceArea: 4000,
         citySquareMetersSurfaceArea: 15000000,
         cityPopulation: 18000,
       };
 
-      const withOnlyNewResidentsEffectService = new UrbanFreshnessRelatedImpactsService({
+      const withOnlyNewResidentsEffectService = new YearlyUrbanFreshnessRelatedImpacts({
         ...params,
         buildingsFloorAreaDistribution: {
           RESIDENTIAL: 1500,
@@ -78,7 +70,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
       });
 
       const newResidentsEffectAndInfluenceRadiusEffectService =
-        new UrbanFreshnessRelatedImpactsService({
+        new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
@@ -100,15 +92,13 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
 
     it("returns influence radius of 25 or 50 for public green space surface > 5000m² and < 10000m²", () => {
       const params = {
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2025,
         siteSquareMetersSurfaceArea: 20000,
         citySquareMetersSurfaceArea: 15000000,
         cityPopulation: 18000,
       };
 
       expect(
-        new UrbanFreshnessRelatedImpactsService({
+        new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
@@ -120,7 +110,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
         })["influenceRadius"],
       ).toEqual(25);
       expect(
-        new UrbanFreshnessRelatedImpactsService({
+        new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           siteSquareMetersSurfaceArea: 10000,
           buildingsFloorAreaDistribution: {
@@ -136,15 +126,13 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
 
     it("returns influence radius for public green space surface > 10000m²", () => {
       const params = {
-        evaluationPeriodInYears: 10,
-        operationsFirstYear: 2025,
         citySquareMetersSurfaceArea: 15000000,
         cityPopulation: 18000,
         siteSquareMetersSurfaceArea: 120000,
       };
 
       expect(
-        new UrbanFreshnessRelatedImpactsService({
+        new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
@@ -157,7 +145,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
       ).toEqual(0);
 
       expect(
-        new UrbanFreshnessRelatedImpactsService({
+        new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,
@@ -170,7 +158,7 @@ describe("YearlyUrbanFreshnessRelatedImpacts", () => {
       ).toEqual(50);
 
       expect(
-        new UrbanFreshnessRelatedImpactsService({
+        new YearlyUrbanFreshnessRelatedImpacts({
           ...params,
           buildingsFloorAreaDistribution: {
             RESIDENTIAL: 1500,

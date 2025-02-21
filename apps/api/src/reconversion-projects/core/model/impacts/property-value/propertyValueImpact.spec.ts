@@ -1,17 +1,25 @@
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { computePropertyValueImpact } from "./propertyValueImpact";
 
 describe("LocalPropertyValueIncrease impact", () => {
+  let sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
+  beforeAll(() => {
+    sumOnEvolutionPeriodService = new SumOnEvolutionPeriodService({
+      operationsFirstYear: 2025,
+      evaluationPeriodInYears: 10,
+    });
+  });
   it("compute property value increase with friche removal", () => {
     const { propertyTransferDutiesIncrease, propertyValueIncrease } = computePropertyValueImpact(
       36000,
       20000000,
       36946,
       974,
-      10,
+      sumOnEvolutionPeriodService,
       false,
     );
-    expect(propertyValueIncrease).toBeCloseTo(518611.67);
-    expect(propertyTransferDutiesIncrease).toBeCloseTo(9130.708);
+    expect(propertyValueIncrease).toEqual(455339);
+    expect(propertyTransferDutiesIncrease).toEqual(6637);
   });
 
   it("compute property value increase with friche removal + renaturation", () => {
@@ -20,11 +28,11 @@ describe("LocalPropertyValueIncrease impact", () => {
       20000000,
       36946,
       974,
-      10,
+      sumOnEvolutionPeriodService,
       true,
     );
-    expect(propertyValueIncrease).toBeCloseTo(2603739.67);
-    expect(propertyTransferDutiesIncrease).toBeCloseTo(45841.6);
+    expect(propertyValueIncrease).toEqual(2286071);
+    expect(propertyTransferDutiesIncrease).toEqual(33321);
   });
 
   it("compute property value increase for evalution period < 5", () => {
@@ -33,11 +41,11 @@ describe("LocalPropertyValueIncrease impact", () => {
       20000000,
       36946,
       974,
-      3,
+      new SumOnEvolutionPeriodService({ operationsFirstYear: 2025, evaluationPeriodInYears: 3 }),
       true,
     );
-    expect(propertyValueIncrease).toBeCloseTo(1562243.802);
-    expect(propertyTransferDutiesIncrease).toBeCloseTo(13752.48);
+    expect(propertyValueIncrease).toEqual(975188);
+    expect(propertyTransferDutiesIncrease).toEqual(8585);
   });
 
   it("compute property value increase for evalution period of 50 years", () => {
@@ -46,10 +54,10 @@ describe("LocalPropertyValueIncrease impact", () => {
       20000000,
       36946,
       974,
-      50,
+      new SumOnEvolutionPeriodService({ operationsFirstYear: 2025, evaluationPeriodInYears: 50 }),
       true,
     );
-    expect(propertyValueIncrease).toBeCloseTo(2603739.67);
-    expect(propertyTransferDutiesIncrease).toBeCloseTo(151277.27);
+    expect(propertyValueIncrease).toEqual(2286071);
+    expect(propertyTransferDutiesIncrease).toEqual(78036);
   });
 });

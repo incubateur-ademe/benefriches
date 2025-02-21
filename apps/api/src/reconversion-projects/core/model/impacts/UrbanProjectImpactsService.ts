@@ -1,7 +1,6 @@
 import {
   AvoidedCO2EqEmissions,
   computeEstimatedPropertyTaxesAmount,
-  roundToInteger,
   SocioEconomicImpact,
   sumListWithKey,
   TaxesIncomeImpact,
@@ -15,8 +14,8 @@ import {
   ReconversionProjectImpactsServiceProps,
 } from "./ReconversionProjectImpactsService";
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
-import { getLocalPropertyValueIncreaseRelatedImpacts } from "./property-value/propertyValueImpact";
-import { formatRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
+import { computePropertyValueImpact } from "./property-value/propertyValueImpact";
+import { getRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-expenses/roadsAndUtilitiesExpensesImpact";
 import { TravelRelatedImpactsService } from "./travel-related-impacts-service/TravelRelatedImpactsService";
 import { UrbanFreshnessRelatedImpactsService } from "./urban-freshness-related-impacts-service/UrbanFreshnessRelatedImpactsService";
 
@@ -49,13 +48,12 @@ export class UrbanProjectImpactsService
 
   protected get urbanFreshnessImpacts() {
     const urbanFreshnessImpactsService = new UrbanFreshnessRelatedImpactsService({
-      evaluationPeriodInYears: this.evaluationPeriodInYears,
-      operationsFirstYear: this.operationsFirstYear,
       buildingsFloorAreaDistribution: this.developmentPlanFeatures.buildingsFloorAreaDistribution,
       spacesDistribution: this.developmentPlanFeatures.spacesDistribution,
       siteSquareMetersSurfaceArea: this.relatedSite.surfaceArea,
       citySquareMetersSurfaceArea: this.citySquareMetersSurfaceArea,
       cityPopulation: this.cityPopulation,
+      sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });
     return {
       socioEconomicList: urbanFreshnessImpactsService.getSocioEconomicList(),
@@ -66,12 +64,11 @@ export class UrbanProjectImpactsService
 
   protected get travelRelatedImpacts() {
     const travelRelatedImpactsService = new TravelRelatedImpactsService({
-      evaluationPeriodInYears: this.evaluationPeriodInYears,
-      operationsFirstYear: this.operationsFirstYear,
       buildingsFloorAreaDistribution: this.developmentPlanFeatures.buildingsFloorAreaDistribution,
       siteSquareMetersSurfaceArea: this.relatedSite.surfaceArea,
       citySquareMetersSurfaceArea: this.citySquareMetersSurfaceArea,
       cityPopulation: this.cityPopulation,
+      sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });
     return {
       socioEconomicList: travelRelatedImpactsService.getSocioEconomicList(),
@@ -81,12 +78,23 @@ export class UrbanProjectImpactsService
     };
   }
 
-  protected get roadsAndUtilitiesExpensesImpacts() {
-    return formatRoadsAndUtilitiesExpensesImpacts(
-      this.relatedSite.isFriche,
-      this.relatedSite.surfaceArea,
-      this.evaluationPeriodInYears,
-    );
+  protected get roadsAndUtilitiesExpensesImpacts(): SocioEconomicImpact[] {
+    const amount = getRoadsAndUtilitiesExpensesImpacts({
+      isFriche: this.relatedSite.isFriche,
+      surfaceArea: this.relatedSite.surfaceArea,
+      sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
+    });
+    if (amount) {
+      return [
+        {
+          impact: "roads_and_utilities_maintenance_expenses",
+          amount: amount,
+          actor: "community",
+          impactCategory: "economic_direct",
+        },
+      ];
+    }
+    return [];
   }
 
   protected get taxesIncomeImpact(): TaxesIncomeImpact[] {
@@ -98,8 +106,9 @@ export class UrbanProjectImpactsService
 
     if (newHousesSurfaceArea > 0) {
       details.push({
-        amount:
-          computeEstimatedPropertyTaxesAmount(newHousesSurfaceArea) * this.evaluationPeriodInYears,
+        amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+          computeEstimatedPropertyTaxesAmount(newHousesSurfaceArea),
+        ),
         impact: "project_new_houses_taxes_income",
       });
     }
@@ -109,8 +118,8 @@ export class UrbanProjectImpactsService
 
     if (newCompanySurfaceArea > 0) {
       details.push({
-        amount: roundToInteger(
-          ((2018 * newCompanySurfaceArea) / 15) * this.evaluationPeriodInYears,
+        amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+          (2018 * newCompanySurfaceArea) / 15,
         ),
         impact: "project_new_company_taxation_income",
       });
@@ -164,7 +173,7 @@ export class UrbanProjectImpactsService
       ...this.urbanFreshnessImpacts.socioEconomicList,
       ...this.travelRelatedImpacts.socioEconomicList,
       ...localPropertyIncreaseImpacts,
-      ...this.roadsAndUtilitiesExpensesImpacts.socioeconomic,
+      ...this.roadsAndUtilitiesExpensesImpacts,
     ];
     return {
       economicBalance: economicBalance,
@@ -184,15 +193,37 @@ export class UrbanProjectImpactsService
     };
   }
 
-  private async getLocalPropertyIncreaseImpacts() {
-    return await getLocalPropertyValueIncreaseRelatedImpacts({
-      evaluationPeriodInYears: this.evaluationPeriodInYears,
-      siteSurfaceArea: this.relatedSite.surfaceArea,
-      siteIsFriche: this.relatedSite.isFriche,
-      siteCityCode: this.relatedSite.addressCityCode,
-      citySurfaceArea: this.citySquareMetersSurfaceArea,
-      cityPopulation: this.cityPopulation,
-      getCityRelatedDataService: this.getCityRelatedDataService,
-    });
+  private async getLocalPropertyIncreaseImpacts(): Promise<SocioEconomicImpact[]> {
+    if (!this.relatedSite.isFriche) {
+      return [];
+    }
+
+    const cityPropertyValuePerSquareMeter =
+      await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
+        this.relatedSite.addressCityCode,
+      );
+
+    const { propertyValueIncrease, propertyTransferDutiesIncrease } = computePropertyValueImpact(
+      this.relatedSite.surfaceArea,
+      this.citySquareMetersSurfaceArea,
+      this.cityPopulation,
+      cityPropertyValuePerSquareMeter.medianPricePerSquareMeters,
+      this.sumOnEvolutionPeriodService,
+      false, // TODO: quartier V2 créer une méthode de calcul pour ce paramètre
+    );
+    return [
+      {
+        actor: "local_people",
+        amount: propertyValueIncrease,
+        impact: "local_property_value_increase",
+        impactCategory: "economic_indirect",
+      },
+      {
+        actor: "community",
+        amount: propertyTransferDutiesIncrease,
+        impact: "local_transfer_duties_increase",
+        impactCategory: "economic_indirect",
+      },
+    ];
   }
 }

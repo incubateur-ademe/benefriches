@@ -111,7 +111,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       expect(projectImpactsService["rentImpacts"]).toEqual([
         {
           actor: "Mairie de Paris",
-          amount: 300000,
+          amount: 248064,
           impact: "rental_income",
           impactCategory: "economic_direct",
         },
@@ -134,7 +134,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       expect(projectImpactsService["rentImpacts"]).toEqual([
         {
           actor: "Current owner",
-          amount: -200000,
+          amount: -165376,
           impact: "rental_income",
           impactCategory: "economic_direct",
         },
@@ -159,7 +159,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       expect(projectImpactsService["rentImpacts"]).toEqual([
         {
           actor: "Current owner",
-          amount: 50000,
+          amount: 41344,
           impact: "rental_income",
           impactCategory: "economic_direct",
         },
@@ -186,13 +186,13 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       expect(projectImpactsService["rentImpacts"]).toEqual([
         {
           actor: "New owner",
-          amount: 100000,
+          amount: 82688,
           impact: "rental_income",
           impactCategory: "economic_direct",
         },
         {
           actor: "Current owner",
-          amount: 50000,
+          amount: 41344,
           impact: "rental_income",
           impactCategory: "economic_direct",
         },
@@ -260,15 +260,15 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
         {
           actor: "Current tenant",
-          amount: 230000,
+          amount: 190182,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
           details: [
-            { amount: 140000, impact: "avoided_security_costs" },
-            { amount: 10000, impact: "avoided_maintenance_costs" },
-            { amount: 15000, impact: "avoided_illegal_dumping_costs" },
-            { amount: 15000, impact: "avoided_accidents_costs" },
-            { amount: 50000, impact: "avoided_other_securing_costs" },
+            { amount: 115763, impact: "avoided_security_costs" },
+            { amount: 8269, impact: "avoided_maintenance_costs" },
+            { amount: 12403, impact: "avoided_illegal_dumping_costs" },
+            { amount: 12403, impact: "avoided_accidents_costs" },
+            { amount: 41344, impact: "avoided_other_securing_costs" },
           ],
         },
       ]);
@@ -307,12 +307,12 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
         {
           actor: "Current owner",
-          amount: 155000,
+          amount: 128166,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
           details: [
-            { amount: 140000, impact: "avoided_security_costs" },
-            { amount: 15000, impact: "avoided_illegal_dumping_costs" },
+            { amount: 115763, impact: "avoided_security_costs" },
+            { amount: 12403, impact: "avoided_illegal_dumping_costs" },
           ],
         },
       ]);
@@ -383,23 +383,23 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
         {
           actor: "Current owner",
-          amount: 155000,
+          amount: 128166,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
           details: [
-            { amount: 140000, impact: "avoided_security_costs" },
-            { amount: 15000, impact: "avoided_illegal_dumping_costs" },
+            { amount: 115763, impact: "avoided_security_costs" },
+            { amount: 12403, impact: "avoided_illegal_dumping_costs" },
           ],
         },
         {
           actor: "Current tenant",
-          amount: 75000,
+          amount: 62016,
           impact: "avoided_friche_costs",
           impactCategory: "economic_direct",
           details: [
-            { amount: 10000, impact: "avoided_maintenance_costs" },
-            { amount: 15000, impact: "avoided_accidents_costs" },
-            { amount: 50000, impact: "avoided_other_securing_costs" },
+            { amount: 8269, impact: "avoided_maintenance_costs" },
+            { amount: 12403, impact: "avoided_accidents_costs" },
+            { amount: 41344, impact: "avoided_other_securing_costs" },
           ],
         },
       ]);

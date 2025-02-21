@@ -1,6 +1,5 @@
 import {
   convertCarbonToCO2eq,
-  getCO2MonetaryValueForYear,
   isForest,
   isGreenSoil,
   isMineralSoil,
@@ -19,6 +18,7 @@ import {
 } from "shared";
 
 import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 
 type EcosystemServiceImpact =
   | "nature_related_wellness_and_leisure"
@@ -46,8 +46,7 @@ type Props = {
   forecastSoilsDistribution: SoilsDistribution;
   baseSoilsCarbonStorage?: SoilsCarbonStorage;
   forecastSoilsCarbonStorage?: SoilsCarbonStorage;
-  evaluationPeriodInYears: number;
-  operationsFirstYear: number;
+  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
   siteContaminatedSurfaceArea?: number;
   projectDecontaminedSurfaceArea?: number;
 };
@@ -63,8 +62,7 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
   private readonly siteContaminatedSurfaceArea: number;
   private readonly projectDecontaminedSurfaceArea: number;
 
-  private readonly evaluationPeriodInYears: number;
-  private readonly operationsFirstYear: number;
+  private readonly sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 
   constructor({
     siteTotalSurfaceArea,
@@ -72,8 +70,7 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     forecastSoilsDistribution,
     baseSoilsCarbonStorage,
     forecastSoilsCarbonStorage,
-    evaluationPeriodInYears,
-    operationsFirstYear,
+    sumOnEvolutionPeriodService,
     siteContaminatedSurfaceArea,
     projectDecontaminedSurfaceArea,
   }: Props) {
@@ -88,8 +85,7 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     this.siteContaminatedSurfaceArea = siteContaminatedSurfaceArea ?? 0;
     this.projectDecontaminedSurfaceArea = projectDecontaminedSurfaceArea ?? 0;
 
-    this.evaluationPeriodInYears = evaluationPeriodInYears;
-    this.operationsFirstYear = operationsFirstYear;
+    this.sumOnEvolutionPeriodService = sumOnEvolutionPeriodService;
   }
 
   private get soilsDifferential() {
@@ -141,7 +137,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     if (!this.baseSoilsCarbonStorage || !this.forecastSoilsCarbonStorage) {
       return undefined;
     }
-    const co2eqMonetaryValue = getCO2MonetaryValueForYear(this.operationsFirstYear);
+    const co2eqMonetaryValue = SumOnEvolutionPeriodService.getYearCO2MonetaryValue(
+      this.sumOnEvolutionPeriodService.operationsFirstYear,
+    );
 
     const soilsCarbonStorageDifference =
       this.forecastSoilsCarbonStorage.totalCarbonStorage -
@@ -190,7 +188,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
       return undefined;
     }
     return {
-      amount: Math.round(this.natureRelatedWellnessAndLeisure * this.evaluationPeriodInYears),
+      amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+        this.natureRelatedWellnessAndLeisure,
+      ),
       impact: "nature_related_wellness_and_leisure",
     };
   }
@@ -208,7 +208,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
       return undefined;
     }
     return {
-      amount: Math.round(this.forestRelatedProduct * this.evaluationPeriodInYears),
+      amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+        this.forestRelatedProduct,
+      ),
       impact: "forest_related_product",
     };
   }
@@ -225,7 +227,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
       return undefined;
     }
     return {
-      amount: Math.round(this.pollinisation * this.evaluationPeriodInYears),
+      amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+        this.pollinisation,
+      ),
       impact: "pollination",
     };
   }
@@ -243,7 +247,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
       return undefined;
     }
     return {
-      amount: Math.round(this.invasiveSpeciesRegulation * this.evaluationPeriodInYears),
+      amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+        this.invasiveSpeciesRegulation,
+      ),
       impact: "invasive_species_regulation",
     };
   }
@@ -267,7 +273,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
       return undefined;
     }
     return {
-      amount: Math.round(this.waterCycle * this.evaluationPeriodInYears),
+      amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+        this.waterCycle,
+      ),
       impact: "water_cycle",
     };
   }
@@ -287,7 +295,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
       return undefined;
     }
     return {
-      amount: Math.round(this.nitrogenCycle * this.evaluationPeriodInYears),
+      amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+        this.nitrogenCycle,
+      ),
       impact: "nitrogen_cycle",
     };
   }
@@ -306,7 +316,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
       return undefined;
     }
     return {
-      amount: Math.round(this.soilErosion * this.evaluationPeriodInYears),
+      amount: this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+        this.soilErosion,
+      ),
       impact: "soil_erosion",
     };
   }
@@ -327,7 +339,9 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     if (this.waterRegulation === 0) {
       return undefined;
     }
-    return Math.round(this.waterRegulation * this.evaluationPeriodInYears);
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+      this.waterRegulation,
+    );
   }
 
   private get ecosystemServicesMonetaryImpact() {

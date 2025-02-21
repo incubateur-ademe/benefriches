@@ -1,7 +1,6 @@
 import {
   AvoidedCO2EqEmissions,
   BuildingsUseDistribution,
-  getAnnualizedCO2MonetaryValueForDuration,
   roundTo1Digit,
   roundTo2Digits,
   roundToInteger,
@@ -9,6 +8,7 @@ import {
 } from "shared";
 
 import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { YearlyTravelRelatedImpacts } from "./YearlyTravelRelatedImpacts";
 
 type Props = {
@@ -16,24 +16,21 @@ type Props = {
   citySquareMetersSurfaceArea: number;
   cityPopulation: number;
   buildingsFloorAreaDistribution: BuildingsUseDistribution;
-  evaluationPeriodInYears: number;
-  operationsFirstYear: number;
+  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 };
 
 export class TravelRelatedImpactsService
   extends YearlyTravelRelatedImpacts
   implements PartialImpactsServiceInterface
 {
-  protected readonly evaluationPeriodInYears: number;
-  protected readonly operationsFirstYear: number;
+  protected readonly sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 
   constructor({
     buildingsFloorAreaDistribution,
     siteSquareMetersSurfaceArea,
     citySquareMetersSurfaceArea,
     cityPopulation,
-    evaluationPeriodInYears,
-    operationsFirstYear,
+    sumOnEvolutionPeriodService,
   }: Props) {
     super({
       buildingsFloorAreaDistribution,
@@ -42,66 +39,89 @@ export class TravelRelatedImpactsService
       cityPopulation,
     });
 
-    this.evaluationPeriodInYears = evaluationPeriodInYears;
-    this.operationsFirstYear = operationsFirstYear;
+    this.sumOnEvolutionPeriodService = sumOnEvolutionPeriodService;
   }
 
   getAvoidedPropertyDamageExpenses() {
-    return this.avoidedPropertyDamageExpensesPerYear * this.evaluationPeriodInYears;
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+      this.avoidedPropertyDamageExpensesPerYear,
+    );
   }
 
   getTravelTimeSavedPerTraveler() {
-    return this.travelTimeSavedPerTravelerPerYear * this.evaluationPeriodInYears;
+    return this.sumOnEvolutionPeriodService.sum(this.travelTimeSavedPerTravelerPerYear);
   }
 
   getAvoidedKilometersPerWorkerVehicule() {
-    return this.evaluationPeriodInYears * this.avoidedKilometersPerWorkerVehiculePerYear;
+    return this.sumOnEvolutionPeriodService.sum(this.avoidedKilometersPerWorkerVehiculePerYear);
   }
 
   getAvoidedKilometersPerResidentVehicule() {
-    return this.evaluationPeriodInYears * this.avoidedKilometersPerResidentVehiculePerYear;
+    return this.sumOnEvolutionPeriodService.sum(this.avoidedKilometersPerResidentVehiculePerYear);
   }
 
   getAvoidedKilometersPerVehicule() {
-    return this.avoidedKilometersPerVehiculePerYear * this.evaluationPeriodInYears;
+    return this.sumOnEvolutionPeriodService.sum(this.avoidedKilometersPerVehiculePerYear);
   }
 
   getAvoidedCarRelatedExpenses() {
-    return this.avoidedKilometersPerVehiculeExpensesPerYear * this.evaluationPeriodInYears;
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+      this.avoidedKilometersPerVehiculeExpensesPerYear,
+    );
   }
 
   getTravelTimeSavedPerTravelerExpenses() {
-    return this.travelTimeAvoidedCostsPerTravelerPerYear * this.evaluationPeriodInYears;
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+      this.travelTimeAvoidedCostsPerTravelerPerYear,
+    );
   }
 
   getAvoidedTrafficCO2EmissionsInTons() {
     return (
-      ((this.avoidedKilometersPerVehiculePerYear * 157.2) / 1000000) * this.evaluationPeriodInYears
+      this.sumOnEvolutionPeriodService.sumWithCO2EqEmittedPerVehiculeKilometerEvolution(
+        this.avoidedKilometersPerVehiculePerYear,
+      ) / 1000000
     );
   }
 
   getAvoidedTrafficCO2EmissionsMonetaryValue() {
-    return getAnnualizedCO2MonetaryValueForDuration(
-      (this.avoidedKilometersPerVehiculePerYear * 157.2) / 1000000,
-      this.operationsFirstYear,
-      this.evaluationPeriodInYears,
+    return this.sumOnEvolutionPeriodService.sumWithCustomFn(
+      this.avoidedKilometersPerVehiculePerYear,
+      (value, yearIndex, { operationsFirstYear }) => {
+        const year = operationsFirstYear + yearIndex;
+        const avoidedCo2EqForYearInGrams =
+          value * SumOnEvolutionPeriodService.getYearCO2EqEmittedPerVehiculeKilometerValue(year);
+        return (
+          (avoidedCo2EqForYearInGrams / 1000000) *
+          SumOnEvolutionPeriodService.getYearCO2MonetaryValue(year) *
+          SumOnEvolutionPeriodService.getDiscountFactor(yearIndex)
+        );
+      },
     );
   }
 
   getAvoidedAirPollution() {
-    return this.avoidedAirPollutionHealthExpensesPerYear * this.evaluationPeriodInYears;
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+      this.avoidedAirPollutionHealthExpensesPerYear,
+    );
   }
 
   getAvoidedAccidentsMinorInjuries() {
-    return roundToInteger(this.avoidedMinorInjuriesPerYear * this.evaluationPeriodInYears);
+    return this.sumOnEvolutionPeriodService.sum(this.avoidedMinorInjuriesPerYear, {
+      roundFn: roundToInteger,
+    });
   }
 
   getAvoidedAccidentsSevereInjuries() {
-    return roundToInteger(this.avoidedSevereInjuriesPerYear * this.evaluationPeriodInYears);
+    return this.sumOnEvolutionPeriodService.sum(this.avoidedSevereInjuriesPerYear, {
+      roundFn: roundToInteger,
+    });
   }
 
   getAvoidedAccidentsDeaths() {
-    return roundToInteger(this.avoidedDeathsPerYear * this.evaluationPeriodInYears);
+    return this.sumOnEvolutionPeriodService.sum(this.avoidedDeathsPerYear, {
+      roundFn: roundToInteger,
+    });
   }
 
   getAvoidedAccidentsInjuriesOrDeaths() {
@@ -116,8 +136,8 @@ export class TravelRelatedImpactsService
     if (this.getAvoidedAccidentsMinorInjuries() === 0) {
       return 0;
     }
-    return roundToInteger(
-      this.avoidedAccidentsMinorInjuriesExpensesPerYear * this.evaluationPeriodInYears,
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+      this.avoidedAccidentsMinorInjuriesExpensesPerYear,
     );
   }
 
@@ -125,8 +145,8 @@ export class TravelRelatedImpactsService
     if (this.getAvoidedAccidentsSevereInjuries() === 0) {
       return 0;
     }
-    return roundToInteger(
-      this.avoidedAccidentsSevereInjuriesExpensesPerYear * this.evaluationPeriodInYears,
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+      this.avoidedAccidentsSevereInjuriesExpensesPerYear,
     );
   }
 
@@ -134,8 +154,8 @@ export class TravelRelatedImpactsService
     if (this.getAvoidedAccidentsDeaths() === 0) {
       return 0;
     }
-    return roundToInteger(
-      this.avoidedAccidentsDeathsExpensesPerYear * this.evaluationPeriodInYears,
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndGDPEvolution(
+      this.avoidedAccidentsDeathsExpensesPerYear,
     );
   }
 
@@ -151,25 +171,25 @@ export class TravelRelatedImpactsService
     const socioEconomicImpacts = [
       {
         actor: "french_society",
-        amount: roundTo2Digits(this.getAvoidedAirPollution()),
+        amount: this.getAvoidedAirPollution(),
         impact: "avoided_air_pollution",
         impactCategory: "social_monetary",
       },
       {
         actor: "local_people",
-        amount: roundTo2Digits(this.getAvoidedCarRelatedExpenses()),
+        amount: this.getAvoidedCarRelatedExpenses(),
         impact: "avoided_car_related_expenses",
         impactCategory: "economic_indirect",
       },
       {
         actor: "french_society",
-        amount: roundTo2Digits(this.getAvoidedPropertyDamageExpenses()),
+        amount: this.getAvoidedPropertyDamageExpenses(),
         impact: "avoided_property_damages_expenses",
         impactCategory: "economic_indirect",
       },
       {
         actor: "local_people",
-        amount: roundTo2Digits(this.getTravelTimeSavedPerTravelerExpenses()),
+        amount: this.getTravelTimeSavedPerTravelerExpenses(),
         impact: "travel_time_saved",
         impactCategory: "social_monetary",
       },
@@ -201,7 +221,7 @@ export class TravelRelatedImpactsService
   getAvoidedCo2EqEmissionsDetails(): AvoidedCO2EqEmissions["details"] {
     return [
       {
-        amount: roundTo2Digits(this.getAvoidedTrafficCO2EmissionsMonetaryValue()),
+        amount: this.getAvoidedTrafficCO2EmissionsMonetaryValue(),
         impact: "avoided_traffic_co2_eq_emissions",
       },
     ];

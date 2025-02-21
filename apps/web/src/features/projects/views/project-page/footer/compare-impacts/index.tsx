@@ -15,7 +15,6 @@ const TileCompareImpactsContainer = () => {
   return (
     <TileCompareImpacts
       onSubmit={({ email, options }) => {
-        console.log("ccc");
         void dispatch(createFeatureAlert({ email, feature: { type: "compare_impacts", options } }));
       }}
       compareImpactsAlert={compareImpactsAlert ?? false}

@@ -38,9 +38,14 @@ function AboutImpactsModal() {
       </section>
       <section className="tw-mb-4">
         <SectionTitle>
-          💰 Les indicateurs monétaires ne tiennent pas encore compte du coefficient d'actualisation
+          💰 Les indicateurs monétaires tiennent compte du coefficient d'actualisation
         </SectionTitle>
-        <p>Ce sera le cas dans une prochaine version de l'outil.</p>
+        Pour les indicateurs concernés, les calculs prennent également en compte :
+        <ul>
+          <li>l'évolution future estimée du PIB/habitants</li>
+          <li>l'évolution future estimée du CO2eq émis par les véhicules</li>
+          <li>l'évolution future estimée de la valeur monétaire associée aux émissions de CO2eq</li>
+        </ul>
       </section>
       <section className="tw-mb-4">
         <SectionTitle>⚖️ Les indicateurs affichent la valeur différentielle</SectionTitle>

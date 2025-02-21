@@ -1,13 +1,13 @@
 import {
   AvoidedCO2EqEmissions,
   BuildingsUseDistribution,
-  getAnnualizedCO2MonetaryValueForDuration,
   roundTo2Digits,
   SocioEconomicImpact,
   SpacesDistribution,
 } from "shared";
 
 import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { YearlyUrbanFreshnessRelatedImpacts } from "./YearlyUrbanFreshnessRelatedImpacts";
 
 type Props = {
@@ -16,16 +16,14 @@ type Props = {
   cityPopulation: number;
   buildingsFloorAreaDistribution: BuildingsUseDistribution;
   spacesDistribution: SpacesDistribution;
-  evaluationPeriodInYears: number;
-  operationsFirstYear: number;
+  sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 };
 
 export class UrbanFreshnessRelatedImpactsService
   extends YearlyUrbanFreshnessRelatedImpacts
   implements PartialImpactsServiceInterface
 {
-  protected readonly evaluationPeriodInYears: number;
-  protected readonly operationsFirstYear: number;
+  protected readonly sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 
   constructor({
     siteSquareMetersSurfaceArea,
@@ -33,8 +31,7 @@ export class UrbanFreshnessRelatedImpactsService
     cityPopulation,
     buildingsFloorAreaDistribution,
     spacesDistribution,
-    evaluationPeriodInYears,
-    operationsFirstYear,
+    sumOnEvolutionPeriodService,
   }: Props) {
     super({
       siteSquareMetersSurfaceArea,
@@ -44,17 +41,18 @@ export class UrbanFreshnessRelatedImpactsService
       spacesDistribution,
     });
 
-    this.evaluationPeriodInYears = evaluationPeriodInYears;
-    this.operationsFirstYear = operationsFirstYear;
+    this.sumOnEvolutionPeriodService = sumOnEvolutionPeriodService;
   }
 
   getAvoidedInhabitantsAirConditioningExpenses() {
-    return this.avoidedInhabitantsAirConditioningExpensesPerYear * this.evaluationPeriodInYears;
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactor(
+      this.avoidedInhabitantsAirConditioningExpensesPerYear,
+    );
   }
 
   getAvoidedBusinessBuildingsAirConditioningExpenses() {
-    return (
-      this.avoidedBusinessBuildingsAirConditioningExpensesPerYear * this.evaluationPeriodInYears
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactor(
+      this.avoidedBusinessBuildingsAirConditioningExpensesPerYear,
     );
   }
 
@@ -66,27 +64,26 @@ export class UrbanFreshnessRelatedImpactsService
   }
 
   getHousingAvoidedAirConditioningCo2EmissionsInTons() {
-    return (
-      this.housingAvoidedAirConditioningCo2EmissionsInTonsPerYear * this.evaluationPeriodInYears
+    return this.sumOnEvolutionPeriodService.sum(
+      this.housingAvoidedAirConditioningCo2EmissionsInTonsPerYear,
     );
   }
 
   getBusinessBuildingsAvoidedAirConditioningCo2EmissionsInTons() {
-    return (
-      this.businessBuildingsAvoidedAirConditioningCo2EmissionsInTonsPerYear *
-      this.evaluationPeriodInYears
+    return this.sumOnEvolutionPeriodService.sum(
+      this.businessBuildingsAvoidedAirConditioningCo2EmissionsInTonsPerYear,
     );
   }
 
   getAvoidedAirConditioningCo2EmissionsInTons() {
-    return this.avoidedAirConditioningCo2EmissionsInTonsPerYear * this.evaluationPeriodInYears;
+    return this.sumOnEvolutionPeriodService.sum(
+      this.avoidedAirConditioningCo2EmissionsInTonsPerYear,
+    );
   }
 
   getAvoidedAirConditioningCo2EmissionsMonetaryValue() {
-    return getAnnualizedCO2MonetaryValueForDuration(
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndCO2ValueEvolution(
       this.avoidedAirConditioningCo2EmissionsInTonsPerYear,
-      this.operationsFirstYear,
-      this.evaluationPeriodInYears,
     );
   }
 

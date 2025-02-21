@@ -1,3 +1,4 @@
+import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { UrbanFreshnessRelatedImpactsService } from "./UrbanFreshnessRelatedImpactsService";
 
 describe("UrbanFreshnessRelatedImpactsService", () => {
@@ -8,8 +9,10 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       cityPopulation: 18000,
       buildingsFloorAreaDistribution: {},
       spacesDistribution: {},
-      evaluationPeriodInYears: 10,
-      operationsFirstYear: 2025,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
     });
 
     expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([]);
@@ -29,8 +32,10 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       spacesDistribution: {
         PUBLIC_GREEN_SPACES: 400,
       },
-      evaluationPeriodInYears: 10,
-      operationsFirstYear: 2025,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
     });
 
     expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([]);
@@ -51,20 +56,22 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
       spacesDistribution: {
         PUBLIC_GREEN_SPACES: 65100,
       },
-      evaluationPeriodInYears: 10,
-      operationsFirstYear: 2025,
+      sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
+        evaluationPeriodInYears: 10,
+        operationsFirstYear: 2025,
+      }),
     });
 
     expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([
       {
         actor: "local_people",
-        amount: 2481.42,
+        amount: 2052,
         impact: "avoided_air_conditioning_expenses",
         impactCategory: "economic_indirect",
       },
       {
         actor: "local_companies",
-        amount: 9100,
+        amount: 7525,
         impact: "avoided_air_conditioning_expenses",
         impactCategory: "economic_indirect",
       },
@@ -74,7 +81,7 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
     });
     expect(urbanFreshnessRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([
       {
-        amount: 1005.49,
+        amount: 771,
         impact: "avoided_air_conditioning_co2_eq_emissions",
       },
     ]);
