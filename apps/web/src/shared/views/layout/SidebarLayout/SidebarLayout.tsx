@@ -43,7 +43,7 @@ function SidebarLayout({ mainChildren, title, sidebarChildren }: SidebarLayoutPr
             {isOpen && (
               <a
                 {...routes.myProjects().link}
-                className="tw-no-underline"
+                className="tw-bg-none"
                 aria-description="Retour à mes projets"
               >
                 <img src="/img/logos/logo-benefriches-simple.svg" alt="Logo de Bénéfriches" />
