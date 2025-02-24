@@ -7,6 +7,7 @@ import classNames from "@/shared/views/clsx";
 import {
   formatCO2Impact,
   formatDefaultImpact,
+  formatETPImpact,
   formatSurfaceAreaImpact,
 } from "../../../../shared/formatImpactValue";
 import ImpactChartTooltipContent from "./ImpactChartTooltipContent";
@@ -26,7 +27,7 @@ const impactTypeFormatterMap = {
   },
   etp: {
     roundFn: roundTo1Digit,
-    formatFn: formatDefaultImpact,
+    formatFn: formatETPImpact,
     unitSuffix: "ETP",
   },
   default: {
