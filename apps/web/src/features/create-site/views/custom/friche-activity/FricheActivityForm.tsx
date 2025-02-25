@@ -31,16 +31,8 @@ const FRICHE_ACTIVITY_OPTIONS = [
     label: "Ancienne décharge ou site de recyclage",
   },
   {
-    value: "PUBLIC_FACILITY",
-    label: "Ancien bâtiment public (hôpital, école, mairie...)",
-  },
-  {
-    value: "BUSINESS",
-    label: "Ancienne zone commerciale (commerce, hôtel, restaurant...)",
-  },
-  {
-    value: "HOUSING",
-    label: "Ancienne zone d'habitation (immeuble, quartier résidentiel...)",
+    value: "BUILDING",
+    label: "Ancien bâtiment (public, commercial ou d'habitation)",
   },
   {
     value: "OTHER",

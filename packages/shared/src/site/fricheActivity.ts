@@ -7,9 +7,7 @@ export const fricheActivitySchema = z.enum([
   "RAILWAY",
   "PORT",
   "TIP_OR_RECYCLING_SITE",
-  "PUBLIC_FACILITY",
-  "BUSINESS",
-  "HOUSING",
+  "BUILDING",
   "OTHER",
 ]);
 
@@ -29,12 +27,8 @@ export const getFricheActivityLabel = (fricheActivity: FricheActivity): string =
       return "Friche portuaire";
     case "TIP_OR_RECYCLING_SITE":
       return "Ancienne décharge ou site de recyclage";
-    case "PUBLIC_FACILITY":
-      return "Ancien bâtiment public";
-    case "BUSINESS":
-      return "Ancienne zone commerciale";
-    case "HOUSING":
-      return "Ancienne zone d'habitation";
+    case "BUILDING":
+      return "Ancien bâtiment";
     case "OTHER":
       return "Friche";
   }

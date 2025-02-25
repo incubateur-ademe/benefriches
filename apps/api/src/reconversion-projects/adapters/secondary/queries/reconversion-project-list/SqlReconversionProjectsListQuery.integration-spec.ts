@@ -44,7 +44,7 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_structure_type: "company",
         created_at: new Date(),
         is_friche: true,
-        friche_activity: "HOUSING",
+        friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
       };
@@ -69,7 +69,7 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_structure_type: "company",
         created_at: new Date(),
         is_friche: true,
-        friche_activity: "HOUSING",
+        friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
       };
@@ -83,7 +83,7 @@ describe("ReconversionProjectsListQuery integration", () => {
           siteId: siteInDb.id,
           isFriche: siteInDb.is_friche,
           isExpressSite: false,
-          fricheActivity: "HOUSING",
+          fricheActivity: "BUILDING",
           reconversionProjects: [],
         },
       ]);

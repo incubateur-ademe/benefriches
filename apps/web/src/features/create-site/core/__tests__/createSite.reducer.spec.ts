@@ -150,11 +150,11 @@ describe("Create site reducer", () => {
           const store = initStoreWithState({ stepsHistory: ["FRICHE_ACTIVITY"] });
           const initialRootState = store.getState();
 
-          store.dispatch(completeFricheActivity("BUSINESS"));
+          store.dispatch(completeFricheActivity("INDUSTRY"));
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, {
-            fricheActivity: "BUSINESS",
+            fricheActivity: "INDUSTRY",
           });
           expectNewCurrentStep(initialRootState, newState, "ADDRESS");
         });

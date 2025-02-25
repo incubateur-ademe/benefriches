@@ -17,11 +17,11 @@ describe("siteName", () => {
       expect(
         generateSiteDesignation({
           isFriche: true,
-          fricheActivity: "HOUSING",
+          fricheActivity: "BUILDING",
           soils: [],
           cityName: "Metz",
         }),
-      ).toEqual("Ancienne zone d'habitation");
+      ).toEqual("Ancien bâtiment");
     });
 
     it("should generate 'prairie' when no friche and all soils are of type prairie", () => {

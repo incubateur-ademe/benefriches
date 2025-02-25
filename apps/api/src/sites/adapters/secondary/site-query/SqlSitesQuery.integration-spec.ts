@@ -225,7 +225,7 @@ describe("SqlSitesQuery integration", () => {
         tenant_structure_type: "company",
         created_at: now,
         is_friche: true,
-        friche_activity: "HOUSING",
+        friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
       });
