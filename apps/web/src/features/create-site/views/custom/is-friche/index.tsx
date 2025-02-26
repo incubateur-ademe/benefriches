@@ -1,5 +1,5 @@
 import { revertSiteTypeStep } from "@/features/create-site/core/actions/createSite.actions";
-import { siteNatureStepCompleted } from "@/features/create-site/core/createSite.reducer";
+import { isFricheCompleted } from "@/features/create-site/core/createSite.reducer";
 import { selectIsFriche } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -18,7 +18,7 @@ function IsFricheFormContainer() {
     <IsFricheForm
       initialValues={{ isFriche: mapIsFricheValue(isFriche) }}
       onSubmit={(data) => {
-        dispatch(siteNatureStepCompleted({ isFriche: data.isFriche === "yes" }));
+        dispatch(isFricheCompleted({ isFriche: data.isFriche === "yes" }));
       }}
       onBack={() => dispatch(revertSiteTypeStep())}
     />

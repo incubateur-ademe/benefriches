@@ -7,7 +7,7 @@ type StepCategory = (typeof STEPS_CATEGORIES)[number];
 
 const getCurrentStepCategory = (step: SiteCreationExpressStep): StepCategory => {
   switch (step) {
-    case "SITE_NATURE":
+    case "IS_FRICHE":
       return "Type de site";
     case "ADDRESS":
       return "Adresse";

@@ -15,7 +15,7 @@ import { RootState } from "@/shared/core/store-config/store";
 import { customSiteSaved, expressSiteSaved } from "./actions/siteSaved.actions";
 
 export type SiteCreationCustomStep =
-  | "SITE_NATURE"
+  | "IS_FRICHE"
   | "FRICHE_ACTIVITY"
   | "ADDRESS"
   // soils
@@ -48,11 +48,7 @@ export type SiteCreationCustomStep =
   | "FINAL_SUMMARY"
   | "CREATION_RESULT";
 
-export type SiteCreationExpressStep =
-  | "SITE_NATURE"
-  | "ADDRESS"
-  | "SURFACE_AREA"
-  | "CREATION_RESULT";
+export type SiteCreationExpressStep = "IS_FRICHE" | "ADDRESS" | "SURFACE_AREA" | "CREATION_RESULT";
 
 export type SiteCreationStep =
   | "INTRODUCTION"
@@ -89,7 +85,7 @@ export const completeCreateModeSelectionStep = createAction<{ createMode: "expre
   "siteCreation/completeCreateModeSelectionStep",
 );
 
-export const siteNatureStepCompleted = createAction<{ isFriche: boolean }>(
+export const isFricheCompleted = createAction<{ isFriche: boolean }>(
   "siteCreation/siteNatureStepCompleted",
 );
 
@@ -196,9 +192,9 @@ export const siteCreationReducer = createReducer(getInitialState(), (builder) =>
     })
     .addCase(completeCreateModeSelectionStep, (state, action) => {
       state.createMode = action.payload.createMode;
-      state.stepsHistory.push("SITE_NATURE");
+      state.stepsHistory.push("IS_FRICHE");
     })
-    .addCase(siteNatureStepCompleted, (state, action) => {
+    .addCase(isFricheCompleted, (state, action) => {
       const { isFriche } = action.payload;
       state.siteData.isFriche = isFriche;
       const nextStep = isFriche && state.createMode !== "express" ? "FRICHE_ACTIVITY" : "ADDRESS";
@@ -376,7 +372,7 @@ export const siteCreationReducer = createReducer(getInitialState(), (builder) =>
 export const selectCurrentStep = createSelector(
   [(state: RootState) => state.siteCreation],
   (state): SiteCreationStep => {
-    return state.stepsHistory.at(-1) || "SITE_NATURE";
+    return state.stepsHistory.at(-1) || "IS_FRICHE";
   },
 );
 
