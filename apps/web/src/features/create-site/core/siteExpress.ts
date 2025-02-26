@@ -1,9 +1,20 @@
-import { FricheGenerator, AgriculturalOrNaturalSiteSiteGenerator } from "shared";
+import { FricheGenerator, AgriculturalOrNaturalSiteSiteGenerator, Site } from "shared";
 
 import { CreateSiteGatewayPayload } from "./actions/siteSaved.actions";
 import { Address, SiteExpressDraft } from "./siteFoncier.types";
 
 const FRANCE_AVERAGE_CITY_POPULATION = 1800;
+
+const omitUselessKeys = (site: Site) => {
+  if (!site.isFriche) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { surfaceArea, ...stripped } = site;
+    return stripped;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { hasContaminatedSoils, surfaceArea, ...stripped } = site;
+  return stripped;
+};
 
 const getExpressSiteData = (
   expressSiteProps: SiteExpressDraft,
@@ -37,7 +48,7 @@ const getExpressSiteData = (
       );
 
   return {
-    ...site,
+    ...omitUselessKeys(site),
     soilsDistribution: site.soilsDistribution.toJSON(),
     id: expressSiteProps.id,
     address,

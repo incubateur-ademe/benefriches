@@ -1091,14 +1091,11 @@ describe("Create site reducer", () => {
 
       expect(spy).toHaveBeenCalledWith({
         address: siteWithMinimalData.address,
-        hasContaminatedSoils: siteWithMinimalData.hasContaminatedSoils,
-        hasRecentAccidents: siteWithMinimalData.hasRecentAccidents,
         id: siteWithMinimalData.id,
         isFriche: siteWithMinimalData.isFriche,
         name: siteWithMinimalData.name,
         owner: siteWithMinimalData.owner,
         soilsDistribution: siteWithMinimalData.soilsDistribution,
-        surfaceArea: siteWithMinimalData.surfaceArea,
         yearlyExpenses: siteWithMinimalData.yearlyExpenses,
         yearlyIncomes: siteWithMinimalData.yearlyIncomes,
         creationMode: "custom",

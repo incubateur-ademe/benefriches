@@ -39,7 +39,8 @@ describe("Site Express data creation", () => {
   describe("getExpressSiteData", () => {
     it("returns friche express data", () => {
       expect(getExpressSiteData(expressFricheDraft, currentUserId)).toEqual({
-        ...expressFricheDraft,
+        id: expressFricheDraft.id,
+        isFriche: true,
         address: {
           city: "Paris",
           cityCode: "75109",
@@ -50,7 +51,6 @@ describe("Site Express data creation", () => {
           value: "Paris",
         },
         fricheActivity: "OTHER",
-        hasContaminatedSoils: true,
         createdBy: currentUserId,
         creationMode: "express",
         soilsDistribution: {
@@ -99,7 +99,8 @@ describe("Site Express data creation", () => {
 
     it("returns site express data", () => {
       expect(getExpressSiteData(expressSiteDraft, currentUserId)).toEqual({
-        ...expressSiteDraft,
+        id: expressFricheDraft.id,
+        isFriche: false,
         address: {
           city: "Blajan",
           cityCode: "31070",
