@@ -1,4 +1,4 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution, SoilType, SiteYearlyExpense } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -81,58 +81,154 @@ export const getInitialState = (): SiteCreationState => {
   } as const;
 };
 
-const siteCreationSlice = createSlice({
-  name: "siteCreation",
-  initialState: getInitialState(),
-  reducers: {
-    resetState: () => {
-      return getInitialState();
-    },
-    introductionStepCompleted: (state) => {
+export const resetState = createAction("siteCreation/resetState");
+
+export const introductionStepCompleted = createAction("siteCreation/introductionStepCompleted");
+
+export const completeCreateModeSelectionStep = createAction<{ createMode: "express" | "custom" }>(
+  "siteCreation/completeCreateModeSelectionStep",
+);
+
+export const siteNatureStepCompleted = createAction<{ isFriche: boolean }>(
+  "siteCreation/siteNatureStepCompleted",
+);
+
+export const completeFricheActivity = createAction<FricheActivity>(
+  "siteCreation/completeFricheActivity",
+);
+
+export const completeAddressStep = createAction<{ address: Address }>(
+  "siteCreation/completeAddressStep",
+);
+
+export const completeSoilsIntroduction = createAction("siteCreation/completeSoilsIntroduction");
+
+export const completeSiteSurfaceArea = createAction<{ surfaceArea: number }>(
+  "siteCreation/completeSiteSurfaceArea",
+);
+
+export const completeSoils = createAction<{ soils: SoilType[] }>("siteCreation/completeSoils");
+
+export const completeSoilsSurfaceAreaDistributionEntryMode = createAction<
+  "default_even_split" | "total_surface_percentage" | "square_meters"
+>("siteCreation/completeSoilsSurfaceAreaDistributionEntryMode");
+
+export const completeSoilsDistribution = createAction<{ distribution: SoilsDistribution }>(
+  "siteCreation/completeSoilsDistribution",
+);
+
+export const completeSoilsSummary = createAction("siteCreation/completeSoilsSummary");
+
+export const completeSoilsCarbonStorage = createAction("siteCreation/completeSoilsCarbonStorage");
+
+export const completeSoilsContaminationIntroductionStep = createAction(
+  "siteCreation/completeSoilsContaminationIntroductionStep",
+);
+
+export const completeSoilsContamination = createAction<{
+  hasContaminatedSoils: boolean;
+  contaminatedSoilSurface?: number;
+}>("siteCreation/completeSoilsContamination");
+
+export const completeManagementIntroduction = createAction(
+  "siteCreation/completeManagementIntroduction",
+);
+
+export const completeOwner = createAction<{ owner: Owner }>("siteCreation/completeOwner");
+
+export const completeIsFricheLeased = createAction<{ isFricheLeased: boolean }>(
+  "siteCreation/completeIsFricheLeased",
+);
+
+export const completeIsSiteOperated = createAction<{ isSiteOperated: boolean }>(
+  "siteCreation/completeIsSiteOperated",
+);
+
+export const completeTenant = createAction<{ tenant: Tenant | undefined }>(
+  "siteCreation/completeTenant",
+);
+
+export const completeOperator = createAction<{ tenant: Tenant | undefined }>(
+  "siteCreation/completeOperator",
+);
+
+export const completeFricheAccidentsIntroduction = createAction(
+  "siteCreation/completeFricheAccidentsIntroduction",
+);
+
+export const completeFricheAccidents = createAction<
+  | { hasRecentAccidents: false }
+  | {
+      hasRecentAccidents: true;
+      accidentsMinorInjuries?: number;
+      accidentsSevereInjuries?: number;
+      accidentsDeaths?: number;
+    }
+>("siteCreation/completeFricheAccidents");
+
+export const completeYearlyExpenses = createAction<SiteYearlyExpense[]>(
+  "siteCreation/completeYearlyExpenses",
+);
+
+export const completeYearlyExpensesSummary = createAction(
+  "siteCreation/completeYearlyExpensesSummary",
+);
+
+export const completeYearlyIncome = createAction<Income[]>("siteCreation/completeYearlyIncome");
+
+export const namingIntroductionStepCompleted = createAction(
+  "siteCreation/namingIntroductionStepCompleted",
+);
+
+export const completeNaming = createAction<{ name: string; description?: string }>(
+  "siteCreation/completeNaming",
+);
+
+export const revertStep = createAction<{ resetFields: (keyof SiteDraft)[] } | undefined>(
+  "siteCreation/revertStep",
+);
+
+export const siteCreationReducer = createReducer(getInitialState(), (builder) => {
+  builder
+    .addCase(resetState, () => getInitialState())
+    .addCase(introductionStepCompleted, (state) => {
       state.stepsHistory.push("CREATE_MODE_SELECTION");
-    },
-    completeCreateModeSelectionStep: (
-      state,
-      action: PayloadAction<{ createMode: "express" | "custom" }>,
-    ) => {
+    })
+    .addCase(completeCreateModeSelectionStep, (state, action) => {
       state.createMode = action.payload.createMode;
       state.stepsHistory.push("SITE_NATURE");
-    },
-    siteNatureStepCompleted: (state, action: PayloadAction<{ isFriche: boolean }>) => {
+    })
+    .addCase(siteNatureStepCompleted, (state, action) => {
       const { isFriche } = action.payload;
       state.siteData.isFriche = isFriche;
       const nextStep = isFriche && state.createMode !== "express" ? "FRICHE_ACTIVITY" : "ADDRESS";
       state.stepsHistory.push(nextStep);
-    },
-    completeFricheActivity: (state, action: PayloadAction<FricheActivity>) => {
+    })
+    .addCase(completeFricheActivity, (state, action) => {
       state.siteData.fricheActivity = action.payload;
       state.stepsHistory.push("ADDRESS");
-    },
-    completeAddressStep: (state, action: PayloadAction<{ address: Address }>) => {
+    })
+    .addCase(completeAddressStep, (state, action) => {
       state.siteData.address = action.payload.address;
       state.stepsHistory.push(
         state.createMode === "express" ? "SURFACE_AREA" : "SOILS_INTRODUCTION",
       );
-    },
-    completeSoilsIntroduction: (state) => {
+    })
+    .addCase(completeSoilsIntroduction, (state) => {
       state.stepsHistory.push("SURFACE_AREA");
-    },
-    completeSiteSurfaceArea: (state, action: PayloadAction<{ surfaceArea: number }>) => {
+    })
+    .addCase(completeSiteSurfaceArea, (state, action) => {
       state.siteData.surfaceArea = action.payload.surfaceArea;
       if (state.createMode === "custom") {
         state.stepsHistory.push("SOILS_SELECTION");
       }
-    },
-    completeSoils: (state, action: PayloadAction<{ soils: SoilType[] }>) => {
+    })
+    .addCase(completeSoils, (state, action) => {
       state.siteData.soils = action.payload.soils;
       state.stepsHistory.push("SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE");
-    },
-    completeSoilsSurfaceAreaDistributionEntryMode: (
-      state,
-      action: PayloadAction<"default_even_split" | "total_surface_percentage" | "square_meters">,
-    ) => {
+    })
+    .addCase(completeSoilsSurfaceAreaDistributionEntryMode, (state, action) => {
       const soilsDistributionEntryMode = action.payload;
-
       if (soilsDistributionEntryMode === "default_even_split") {
         const totalSurface = state.siteData.surfaceArea ?? 0;
         const soils = state.siteData.soils ?? [];
@@ -143,133 +239,105 @@ const siteCreationSlice = createSlice({
         });
         state.siteData.soilsDistribution = soilsDistribution;
       }
-
-      state.siteData.soilsDistributionEntryMode = action.payload;
+      state.siteData.soilsDistributionEntryMode = soilsDistributionEntryMode;
       const nextStep =
         soilsDistributionEntryMode === "default_even_split"
           ? "SOILS_SUMMARY"
           : "SOILS_SURFACE_AREAS_DISTRIBUTION";
       state.stepsHistory.push(nextStep);
-    },
-    completeSoilsDistribution: (
-      state,
-      action: PayloadAction<{ distribution: SoilsDistribution }>,
-    ) => {
+    })
+    .addCase(completeSoilsDistribution, (state, action) => {
       state.siteData.soilsDistribution = action.payload.distribution;
       state.stepsHistory.push("SOILS_SUMMARY");
-    },
-    completeSoilsSummary: (state) => {
+    })
+    .addCase(completeSoilsSummary, (state) => {
       state.stepsHistory.push("SOILS_CARBON_STORAGE");
-    },
-    completeSoilsCarbonStorage: (state) => {
+    })
+    .addCase(completeSoilsCarbonStorage, (state) => {
       const nextStep = state.siteData.isFriche
         ? "SOILS_CONTAMINATION_INTRODUCTION"
         : "MANAGEMENT_INTRODUCTION";
       state.stepsHistory.push(nextStep);
-    },
-    completeSoilsContaminationIntroductionStep: (state) => {
+    })
+    .addCase(completeSoilsContaminationIntroductionStep, (state) => {
       state.stepsHistory.push("SOILS_CONTAMINATION");
-    },
-    completeSoilsContamination: (
-      state,
-      action: PayloadAction<{
-        hasContaminatedSoils: boolean;
-        contaminatedSoilSurface?: number;
-      }>,
-    ) => {
+    })
+    .addCase(completeSoilsContamination, (state, action) => {
       const { hasContaminatedSoils, contaminatedSoilSurface } = action.payload;
       state.siteData.hasContaminatedSoils = hasContaminatedSoils;
 
       if (hasContaminatedSoils && contaminatedSoilSurface) {
         state.siteData.contaminatedSoilSurface = contaminatedSoilSurface;
       }
-
       state.stepsHistory.push("FRICHE_ACCIDENTS_INTRODUCTION");
-    },
-    completeManagementIntroduction: (state) => {
+    })
+    .addCase(completeManagementIntroduction, (state) => {
       state.stepsHistory.push("OWNER");
-    },
-    completeOwner: (state, action: PayloadAction<{ owner: Owner }>) => {
+    })
+    .addCase(completeOwner, (state, action) => {
       state.siteData.owner = action.payload.owner;
       state.stepsHistory.push(state.siteData.isFriche ? "IS_FRICHE_LEASED" : "IS_SITE_OPERATED");
-    },
-    completeIsFricheLeased: (state, action: PayloadAction<{ isFricheLeased: boolean }>) => {
+    })
+    .addCase(completeIsFricheLeased, (state, action) => {
       const { isFricheLeased } = action.payload;
       state.siteData.isFricheLeased = isFricheLeased;
       state.stepsHistory.push(isFricheLeased ? "TENANT" : "YEARLY_EXPENSES");
-    },
-    completeIsSiteOperated: (state, action: PayloadAction<{ isSiteOperated: boolean }>) => {
+    })
+    .addCase(completeIsSiteOperated, (state, action) => {
       const { isSiteOperated } = action.payload;
       state.siteData.isSiteOperated = isSiteOperated;
       state.stepsHistory.push(isSiteOperated ? "OPERATOR" : "YEARLY_EXPENSES");
-    },
-    completeTenant: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
+    })
+    .addCase(completeTenant, (state, action) => {
       state.siteData.tenant = action.payload.tenant;
       state.stepsHistory.push("YEARLY_EXPENSES");
-    },
-    completeOperator: (state, action: PayloadAction<{ tenant: Tenant | undefined }>) => {
+    })
+    .addCase(completeOperator, (state, action) => {
       const { tenant } = action.payload;
       if (tenant) {
         state.siteData.tenant = tenant;
       }
       state.stepsHistory.push("YEARLY_EXPENSES");
-    },
-    completeFricheAccidentsIntroduction: (state) => {
+    })
+    .addCase(completeFricheAccidentsIntroduction, (state) => {
       state.stepsHistory.push("FRICHE_ACCIDENTS");
-    },
-    completeFricheAccidents: (
-      state,
-      action: PayloadAction<
-        | {
-            hasRecentAccidents: false;
-          }
-        | {
-            hasRecentAccidents: true;
-            accidentsMinorInjuries?: number;
-            accidentsSevereInjuries?: number;
-            accidentsDeaths?: number;
-          }
-      >,
-    ) => {
+    })
+    .addCase(completeFricheAccidents, (state, action) => {
       const { hasRecentAccidents } = action.payload;
-      state.siteData.hasRecentAccidents = action.payload.hasRecentAccidents;
+      state.siteData.hasRecentAccidents = hasRecentAccidents;
 
       if (hasRecentAccidents) {
         state.siteData.accidentsMinorInjuries = action.payload.accidentsMinorInjuries ?? 0;
         state.siteData.accidentsSevereInjuries = action.payload.accidentsSevereInjuries ?? 0;
         state.siteData.accidentsDeaths = action.payload.accidentsDeaths ?? 0;
       }
-
       state.stepsHistory.push("MANAGEMENT_INTRODUCTION");
-    },
-    completeYearlyExpenses: (state, action: PayloadAction<SiteYearlyExpense[]>) => {
+    })
+    .addCase(completeYearlyExpenses, (state, action) => {
       state.siteData.yearlyExpenses = action.payload;
       state.stepsHistory.push(
         state.siteData.isSiteOperated ? "YEARLY_INCOME" : "YEARLY_EXPENSES_SUMMARY",
       );
-    },
-    completeYearlyExpensesSummary: (state) => {
+    })
+    .addCase(completeYearlyExpensesSummary, (state) => {
       state.stepsHistory.push("NAMING_INTRODUCTION");
-    },
-    completeYearlyIncome: (state, action: PayloadAction<Income[]>) => {
+    })
+    .addCase(completeYearlyIncome, (state, action) => {
       state.siteData.yearlyIncomes = action.payload;
       state.stepsHistory.push("YEARLY_EXPENSES_SUMMARY");
-    },
-    namingIntroductionStepCompleted: (state) => {
+    })
+    .addCase(namingIntroductionStepCompleted, (state) => {
       state.stepsHistory.push("NAMING");
-    },
-    completeNaming: (state, action: PayloadAction<{ name: string; description?: string }>) => {
+    })
+    .addCase(completeNaming, (state, action) => {
       state.siteData.name = action.payload.name;
+
       if (action.payload.description) state.siteData.description = action.payload.description;
 
       state.stepsHistory.push("FINAL_SUMMARY");
-    },
-    revertStep: (
-      state,
-      action: PayloadAction<{ resetFields: (keyof SiteDraft)[] } | undefined>,
-    ) => {
+    })
+    .addCase(revertStep, (state, action) => {
       const { siteData: initialSiteData } = getInitialState();
-
       if (action.payload) {
         /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
         /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
@@ -281,31 +349,28 @@ const siteCreationSlice = createSlice({
       if (state.stepsHistory.length > 1) {
         state.stepsHistory = state.stepsHistory.slice(0, -1);
       }
-    },
-  },
-  extraReducers(builder) {
-    builder.addCase(customSiteSaved.pending, (state) => {
+    })
+    .addCase(customSiteSaved.pending, (state) => {
       state.stepsHistory.push("CREATION_RESULT");
       state.saveLoadingState = "loading";
-    });
-    builder.addCase(customSiteSaved.fulfilled, (state) => {
+    })
+    .addCase(customSiteSaved.fulfilled, (state) => {
       state.saveLoadingState = "success";
-    });
-    builder.addCase(customSiteSaved.rejected, (state) => {
+    })
+    .addCase(customSiteSaved.rejected, (state) => {
       state.saveLoadingState = "error";
-    });
-    builder.addCase(expressSiteSaved.pending, (state) => {
+    })
+    .addCase(expressSiteSaved.pending, (state) => {
       state.stepsHistory.push("CREATION_RESULT");
       state.saveLoadingState = "loading";
-    });
-    builder.addCase(expressSiteSaved.fulfilled, (state, action) => {
+    })
+    .addCase(expressSiteSaved.fulfilled, (state, action) => {
       state.saveLoadingState = "success";
       state.siteData.name = action.payload.name;
-    });
-    builder.addCase(expressSiteSaved.rejected, (state) => {
+    })
+    .addCase(expressSiteSaved.rejected, (state) => {
       state.saveLoadingState = "error";
     });
-  },
 });
 
 export const selectCurrentStep = createSelector(
@@ -315,36 +380,4 @@ export const selectCurrentStep = createSelector(
   },
 );
 
-export const {
-  resetState,
-  introductionStepCompleted,
-  completeCreateModeSelectionStep,
-  siteNatureStepCompleted,
-  completeAddressStep,
-  completeSoilsIntroduction,
-  completeSiteSurfaceArea,
-  completeSoils,
-  completeSoilsSurfaceAreaDistributionEntryMode,
-  completeSoilsDistribution,
-  completeSoilsSummary,
-  completeSoilsCarbonStorage,
-  completeSoilsContaminationIntroductionStep,
-  completeSoilsContamination,
-  completeFricheAccidentsIntroduction,
-  completeFricheAccidents,
-  completeManagementIntroduction,
-  completeOwner,
-  completeIsFricheLeased,
-  completeIsSiteOperated,
-  completeTenant,
-  completeOperator,
-  completeYearlyExpenses,
-  completeYearlyExpensesSummary,
-  completeYearlyIncome,
-  completeFricheActivity,
-  namingIntroductionStepCompleted,
-  completeNaming,
-  revertStep,
-} = siteCreationSlice.actions;
-
-export default siteCreationSlice.reducer;
+export default siteCreationReducer;
