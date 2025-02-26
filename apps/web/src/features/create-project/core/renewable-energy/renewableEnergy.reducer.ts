@@ -1,9 +1,4 @@
-import {
-  ActionReducerMapBuilder,
-  createReducer,
-  PayloadAction,
-  UnknownAction,
-} from "@reduxjs/toolkit";
+import { ActionReducerMapBuilder, createReducer, PayloadAction } from "@reduxjs/toolkit";
 import { SoilsDistribution, stripEmptySurfaces } from "shared";
 
 import { ReconversionProjectCreationData } from "@/features/create-project/core/project.types";
@@ -675,7 +670,3 @@ export const renewableEnergyProjectReducer = createReducer(
     addFetchCarbonStorageComparisonActionCases(builder);
   },
 );
-
-export default (state: ProjectCreationState, action: UnknownAction): ProjectCreationState => {
-  return renewableEnergyProjectReducer(state, action);
-};
