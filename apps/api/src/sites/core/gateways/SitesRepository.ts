@@ -1,6 +1,6 @@
-import { Site } from "../models/site";
+import { SiteEntity } from "../models/site";
 
 export interface SitesRepository {
-  save(site: Site): Promise<void>;
-  existsWithId(siteId: Site["id"]): Promise<boolean>;
+  save(site: SiteEntity): Promise<void>;
+  existsWithId(siteId: SiteEntity["id"]): Promise<boolean>;
 }

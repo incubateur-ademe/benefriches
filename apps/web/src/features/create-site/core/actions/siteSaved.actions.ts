@@ -24,24 +24,20 @@ const createSiteSchema = z.object({
     long: z.number(),
     lat: z.number(),
   }),
-  surfaceArea: z.number().nonnegative(),
   soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
-  // contamination
-  hasContaminatedSoils: z.boolean().optional(),
   contaminatedSoilSurface: z.number().nonnegative().optional(),
   fricheActivity: fricheActivitySchema.optional(),
   // management
   owner: z.object({
     structureType: z.string(),
-    name: z.string().optional(),
+    name: z.string(),
   }),
   tenant: z
     .object({
       structureType: z.string(),
-      name: z.string().optional(),
+      name: z.string(),
     })
     .optional(),
-  hasRecentAccidents: z.boolean().optional(),
   accidentsMinorInjuries: z.number().nonnegative().optional(),
   accidentsSevereInjuries: z.number().nonnegative().optional(),
   accidentsDeaths: z.number().nonnegative().optional(),
@@ -73,7 +69,7 @@ export const customSiteSaved = createAppAsyncThunk(
   async (_, { getState, extra }) => {
     const { siteCreation, currentUser } = getState();
 
-    const siteToCreate = createSiteSchema.parse({
+    const siteToCreate: SiteCreatePayload = createSiteSchema.parse({
       ...siteCreation.siteData,
       creationMode: "custom",
       createdBy: currentUser.currentUser?.id,
@@ -93,7 +89,7 @@ export const expressSiteSaved = createAppAsyncThunk(
       throw new Error("Current user is missing");
     }
 
-    const siteToCreate = createSiteSchema.parse(
+    const siteToCreate: SiteCreatePayload = createSiteSchema.parse(
       getExpressSiteData(siteData as SiteExpressDraft, currentUser.currentUser.id),
     );
 

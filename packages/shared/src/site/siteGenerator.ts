@@ -3,8 +3,8 @@ import { v4 as uuid } from "uuid";
 import { generateSiteName, SiteYearlyExpense } from ".";
 import { computeEstimatedPropertyTaxesAmount } from "../financial";
 import { formatMunicipalityName } from "../local-authority";
-import { SoilsDistribution, SoilType } from "../soils";
-import { Friche, NonFriche } from "./site";
+import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../soils";
+import { createFriche, Friche, AgriculturalOrNaturalSite } from "./site";
 import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
@@ -50,15 +50,19 @@ export class FricheGenerator {
       },
     ];
 
-    return {
+    const result = createFriche({
       id: uuid(),
       address: {
         city: city.name,
-        label: city.name,
+        value: city.name,
         cityCode: city.cityCode,
+        // todo: mandatory data from Address type/schema but not used here, maybe simplify Address
+        banId: uuid(),
+        lat: 0,
+        long: 0,
+        postCode: "00000",
       },
-      soilsDistribution,
-      hasContaminatedSoils: true,
+      soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
       contaminatedSoilSurface: 0.5 * surfaceArea,
       owner: {
         structureType: "municipality",
@@ -69,21 +73,22 @@ export class FricheGenerator {
         name: "Actuel locataire",
       },
       yearlyExpenses,
-      yearlyIncomes: [],
       name: generateSiteName({
         cityName: city.name,
         isFriche: true,
         soils: Object.keys(soilsDistribution) as SoilType[],
       }),
-      fricheActivity: "OTHER",
-      isFriche: true,
-      surfaceArea,
-    };
+    });
+
+    if (!result.success) {
+      throw new Error(`Failed to create friche, ${result.error}`);
+    }
+    return result.site;
   }
 }
 
-export class NonFricheSiteGenerator {
-  fromSurfaceAreaAndCity(surfaceArea: number, city: City): NonFriche {
+export class AgriculturalOrNaturalSiteSiteGenerator {
+  fromSurfaceAreaAndCity(surfaceArea: number, city: City): AgriculturalOrNaturalSite {
     const soilsDistribution = {
       BUILDINGS: 0.3 * surfaceArea,
       IMPERMEABLE_SOILS: 0.2 * surfaceArea,
@@ -109,10 +114,15 @@ export class NonFricheSiteGenerator {
       id: uuid(),
       address: {
         city: city.name,
-        label: city.name,
+        value: city.name,
         cityCode: city.cityCode,
+        // todo: mandatory data from Address type/schema but not used here, maybe simplify Address
+        banId: uuid(),
+        lat: 0,
+        long: 0,
+        postCode: "00000",
       },
-      soilsDistribution,
+      soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
       owner: {
         structureType: "municipality",
         name: formatMunicipalityName(city.name),

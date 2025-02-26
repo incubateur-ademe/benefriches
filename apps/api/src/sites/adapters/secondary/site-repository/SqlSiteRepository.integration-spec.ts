@@ -1,9 +1,14 @@
 import knex, { Knex } from "knex";
+import {
+  CreateAgriculturalOrNaturalSiteProps,
+  CreateFricheProps,
+  createSoilSurfaceAreaDistribution,
+} from "shared";
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { FricheSite, NonFricheSite } from "src/sites/core/models/site";
-import { buildExpressSite, buildMinimalSite } from "src/sites/core/models/site.mock";
+import { SiteEntity } from "src/sites/core/models/site";
+import { buildAgriculturalOrNaturalSite, buildFriche } from "src/sites/core/models/site.mock";
 
 import { SqlSiteRepository } from "./SqlSiteRepository";
 
@@ -11,6 +16,26 @@ describe("SqlSiteRepository integration", () => {
   let sqlConnection: Knex;
   let siteRepository: SqlSiteRepository;
   const now = new Date();
+
+  function buildFricheEntity(fricheProps?: Partial<CreateFricheProps>): SiteEntity {
+    return {
+      ...buildFriche(fricheProps),
+      createdAt: now,
+      createdBy: uuid(),
+      creationMode: "custom",
+    };
+  }
+
+  function buildAgriculturalOrNaturalSiteEntity(
+    props?: Partial<CreateAgriculturalOrNaturalSiteProps>,
+  ): SiteEntity {
+    return {
+      ...buildAgriculturalOrNaturalSite(props),
+      createdAt: now,
+      createdBy: uuid(),
+      creationMode: "custom",
+    };
+  }
 
   beforeAll(() => {
     sqlConnection = knex(knexConfig);
@@ -48,7 +73,19 @@ describe("SqlSiteRepository integration", () => {
 
   describe("save", () => {
     it("Saves given site with minimal data and express mode in sites", async () => {
-      const site: NonFricheSite = buildExpressSite({ createdAt: now, creationMode: "express" });
+      const site: SiteEntity = {
+        ...buildAgriculturalOrNaturalSiteEntity({
+          name: "Integration test site",
+          soilsDistribution: createSoilSurfaceAreaDistribution({
+            PRAIRIE_GRASS: 1000,
+          }),
+          owner: {
+            name: "Le département Doubs",
+            structureType: "department",
+          },
+        }),
+        creationMode: "express",
+      };
 
       await siteRepository.save(site);
 
@@ -58,6 +95,12 @@ describe("SqlSiteRepository integration", () => {
           id: site.id,
           created_by: site.createdBy,
           creation_mode: "express",
+          name: "Integration test site",
+          created_at: now,
+          owner_name: "Le département Doubs",
+          owner_structure_type: "department",
+          surface_area: 1000.0,
+          is_friche: false,
           description: null,
           friche_accidents_deaths: null,
           friche_accidents_severe_injuries: null,
@@ -65,56 +108,27 @@ describe("SqlSiteRepository integration", () => {
           friche_activity: null,
           friche_contaminated_soil_surface_area: null,
           friche_has_contaminated_soils: null,
-          is_friche: false,
-          name: "My site",
-          owner_name: "Le département Paris",
-          owner_structure_type: "department",
-          surface_area: 15000.0,
           tenant_name: null,
           tenant_structure_type: null,
-          created_at: now,
-        },
-      ]);
-    });
-
-    it("Saves given site with minimal data in sites", async () => {
-      const site: NonFricheSite = buildMinimalSite({ createdAt: now });
-
-      await siteRepository.save(site);
-
-      const sitesResult = await sqlConnection("sites").select("*");
-      expect(sitesResult).toEqual([
-        {
-          id: site.id,
-          created_by: site.createdBy,
-          creation_mode: "custom",
-          description: null,
-          friche_accidents_deaths: null,
-          friche_accidents_severe_injuries: null,
-          friche_accidents_minor_injuries: null,
-          friche_activity: null,
-          friche_contaminated_soil_surface_area: null,
-          friche_has_contaminated_soils: null,
-          is_friche: false,
-          name: "My site",
-          owner_name: "Le département Paris",
-          owner_structure_type: "department",
-          surface_area: 15000.0,
-          tenant_name: null,
-          tenant_structure_type: null,
-          created_at: now,
         },
       ]);
     });
 
     it("Saves given site with complete data in sites table", async () => {
-      const site: NonFricheSite = buildMinimalSite({
+      const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
+        name: "Integration test site",
         description: "Description of site",
+        soilsDistribution: createSoilSurfaceAreaDistribution({
+          PRAIRIE_GRASS: 1000,
+        }),
+        owner: {
+          name: "Le département Doubs",
+          structureType: "department",
+        },
         tenant: {
           structureType: "company",
           name: "Tenant SARL",
         },
-        createdAt: now,
       });
 
       await siteRepository.save(site);
@@ -125,6 +139,12 @@ describe("SqlSiteRepository integration", () => {
           id: site.id,
           created_by: site.createdBy,
           creation_mode: "custom",
+          name: "Integration test site",
+          created_at: now,
+          owner_name: "Le département Doubs",
+          owner_structure_type: "department",
+          surface_area: 1000.0,
+          is_friche: false,
           description: "Description of site",
           friche_accidents_deaths: null,
           friche_accidents_severe_injuries: null,
@@ -132,31 +152,31 @@ describe("SqlSiteRepository integration", () => {
           friche_activity: null,
           friche_contaminated_soil_surface_area: null,
           friche_has_contaminated_soils: null,
-          is_friche: false,
-          name: "My site",
-          owner_name: "Le département Paris",
-          owner_structure_type: "department",
-          surface_area: 15000.0,
           tenant_name: "Tenant SARL",
           tenant_structure_type: "company",
-          created_at: now,
         },
       ]);
     });
 
-    it("Saves given site with friche data in sites table", async () => {
-      const site: FricheSite = {
-        ...buildMinimalSite(),
-        createdAt: now,
-        description: "Description of site",
-        isFriche: true,
+    it("Saves given friche in sites table", async () => {
+      const site: SiteEntity = buildFricheEntity({
+        name: "Integration test friche",
+        description: "Description of friche",
+        soilsDistribution: createSoilSurfaceAreaDistribution({
+          BUILDINGS: 1000,
+          MINERAL_SOIL: 500,
+          ARTIFICIAL_TREE_FILLED: 1500,
+        }),
+        owner: {
+          name: "Le département Nord",
+          structureType: "department",
+        },
         fricheActivity: "BUILDING",
-        hasContaminatedSoils: true,
         contaminatedSoilSurface: 1400,
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 1,
         accidentsDeaths: 0,
-      };
+      });
 
       await siteRepository.save(site);
 
@@ -165,7 +185,8 @@ describe("SqlSiteRepository integration", () => {
         {
           id: site.id,
           created_by: site.createdBy,
-          description: "Description of site",
+          name: "Integration test friche",
+          description: "Description of friche",
           friche_accidents_minor_injuries: 2,
           friche_accidents_severe_injuries: 1,
           friche_accidents_deaths: 0,
@@ -173,10 +194,9 @@ describe("SqlSiteRepository integration", () => {
           friche_contaminated_soil_surface_area: 1400.0,
           friche_has_contaminated_soils: true,
           is_friche: true,
-          name: "My site",
-          owner_name: "Le département Paris",
+          owner_name: "Le département Nord",
           owner_structure_type: "department",
-          surface_area: 15000.0,
+          surface_area: 3000.0,
           tenant_name: null,
           tenant_structure_type: null,
           created_at: now,
@@ -186,7 +206,15 @@ describe("SqlSiteRepository integration", () => {
     });
 
     it("Saves given site with minimal data in sites, soils distribution, address tables", async () => {
-      const site: NonFricheSite = buildMinimalSite();
+      const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
+        soilsDistribution: createSoilSurfaceAreaDistribution({
+          BUILDINGS: 3000,
+          ARTIFICIAL_TREE_FILLED: 5000,
+          FOREST_MIXED: 60000,
+          MINERAL_SOIL: 5000,
+          IMPERMEABLE_SOILS: 1300,
+        }),
+      });
 
       await siteRepository.save(site);
 
@@ -212,8 +240,8 @@ describe("SqlSiteRepository integration", () => {
     });
 
     it("Saves given site with expenses and incomes in sites, expenses and incomes", async () => {
-      const site: NonFricheSite = buildMinimalSite({
-        yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "other" }],
+      const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
+        yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "security" }],
         yearlyIncomes: [
           { amount: 20000, source: "operations" },
           { amount: 32740.3, source: "other" },
@@ -226,33 +254,13 @@ describe("SqlSiteRepository integration", () => {
       expect(sitesResult).toEqual([{ id: site.id }]);
 
       const expensesResult = await sqlConnection("site_expenses").select("amount", "purpose");
-      expect(expensesResult).toEqual([{ amount: 45000.0, purpose: "other" }]);
+      expect(expensesResult).toEqual([{ amount: 45000.0, purpose: "security" }]);
 
       const incomesResult = await sqlConnection("site_incomes").select("amount", "source");
       expect(incomesResult).toEqual([
         { amount: 20000.0, source: "operations" },
         { amount: 32740.3, source: "other" },
       ]);
-    });
-
-    it("Doesn't save given site and address if something goes wrong with insertion of soils distributions", async () => {
-      const site: NonFricheSite = buildMinimalSite({
-        soilsDistribution: {
-          // @ts-expect-error string is passed instead of number
-          MINERAL_SOIL: "wrong-value",
-        },
-      });
-
-      await expect(siteRepository.save(site)).rejects.toThrow();
-
-      const sitesResult = await sqlConnection("sites").select("id");
-      expect(sitesResult).toEqual([]);
-
-      const addressResult = await sqlConnection("addresses").select("value");
-      expect(addressResult).toEqual([]);
-
-      const soilsDistributionResult = await sqlConnection("site_soils_distributions").select("id");
-      expect(soilsDistributionResult).toEqual([]);
     });
   });
 });

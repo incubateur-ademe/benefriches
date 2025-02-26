@@ -1,11 +1,15 @@
 /* eslint-disable jest/no-conditional-expect */
-import { z } from "zod";
-
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
-import { buildFricheProps, buildMinimalSiteProps } from "../models/site.mock";
+import { SiteEntity } from "../models/site";
+import {
+  buildAgriculturalOrNaturalSite,
+  buildAgriculturalOrNaturalSiteProps,
+  buildFriche,
+  buildFricheProps,
+} from "../models/site.mock";
 import { CreateNewSiteUseCase } from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {
@@ -13,121 +17,116 @@ describe("CreateNewSite Use Case", () => {
   let dateProvider: DateProvider;
   const fakeNow = new Date("2024-01-03T13:50:45");
 
-  const getZodIssues = (err: unknown) => {
-    if (err instanceof z.ZodError) {
-      return err.issues;
-    }
-    throw new Error("Not a ZodError");
-  };
-
   beforeEach(() => {
     siteRepository = new InMemorySitesRepository();
     dateProvider = new DeterministicDateProvider(fakeNow);
   });
 
-  describe("Mandatory data", () => {
-    it.each([
-      "id",
-      "createdBy",
-      "creationMode",
-      "address",
-      "surfaceArea",
-      "isFriche",
-      "soilsDistribution",
-      "owner",
-      "yearlyExpenses",
-      "yearlyIncomes",
-    ])("Cannot create a new site without providing %s", async (mandatoryField) => {
-      const siteProps = buildMinimalSiteProps();
-      // @ts-expect-error dynamic delete
-      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-      delete siteProps[mandatoryField];
-
-      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
-
-      expect.assertions(2);
-      try {
-        await usecase.execute({ siteProps });
-      } catch (err) {
-        const zIssues = getZodIssues(err);
-        expect(zIssues.length).toEqual(1);
-        expect(zIssues[0]?.path).toEqual([mandatoryField]);
-      }
-    });
-  });
-
-  it("Cannot create a new site with invalid surfaceArea", async () => {
-    const siteProps = buildMinimalSiteProps({ surfaceArea: -1000 });
+  it("Cannot create a new friche with invalid props", async () => {
+    // @ts-expect-error invalid name
+    const siteProps = buildFricheProps({ name: 123 });
 
     const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
-    expect.assertions(2);
+    expect.assertions(1);
     try {
-      await usecase.execute({ siteProps });
+      await usecase.execute({
+        siteProps: { ...siteProps, isFriche: true },
+        createdBy: "user-123",
+        creationMode: "custom",
+      });
     } catch (err) {
-      const zIssues = getZodIssues(err);
-      expect(zIssues.length).toEqual(1);
-      expect(zIssues[0]?.path).toEqual(["surfaceArea"]);
+      expect((err as Error).message).toContain(
+        "Validation error: name (Expected string, received number)",
+      );
     }
   });
 
-  it("Can create a new site with minimal data", async () => {
-    const siteProps = buildMinimalSiteProps();
-
-    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
-
-    await usecase.execute({ siteProps });
-
-    const savedSites = siteRepository._getSites();
-
-    expect(savedSites).toEqual([{ ...siteProps, createdAt: fakeNow }]);
-  });
-
-  it("Can create a new site with creationMode = 'express'", async () => {
-    const siteProps = buildMinimalSiteProps({ creationMode: "express" });
-
-    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
-
-    await usecase.execute({ siteProps });
-
-    const savedSites = siteRepository._getSites();
-
-    expect(savedSites).toEqual([{ ...siteProps, createdAt: fakeNow }]);
-  });
-
-  it("Can create a new site with complete data", async () => {
-    const siteProps = buildMinimalSiteProps({
-      description: "Description of site",
-      tenant: {
-        structureType: "company",
-        name: "Tenant SARL",
-      },
-      yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "other" }],
-      yearlyIncomes: [
-        { amount: 20000, source: "other" },
-        { amount: 32740.3, source: "other" },
-      ],
-    });
-
-    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
-
-    await usecase.execute({ siteProps });
-
-    const savedSites = siteRepository._getSites();
-
-    expect(savedSites).toEqual([{ ...siteProps, createdAt: fakeNow }]);
-  });
-
   it("Cannot create a site when already exists", async () => {
-    const siteProps = buildMinimalSiteProps();
+    const fricheProps = buildFricheProps();
 
-    siteRepository._setSites([{ ...siteProps, createdAt: new Date() }]);
+    siteRepository._setSites([
+      {
+        ...buildFriche(fricheProps),
+        createdBy: "blabla",
+        creationMode: "custom",
+        createdAt: new Date(),
+      },
+    ]);
 
     const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
-    await expect(usecase.execute({ siteProps })).rejects.toThrow(
-      `Site with id ${siteProps.id} already exists`,
-    );
+    await expect(
+      usecase.execute({
+        siteProps: { ...fricheProps, isFriche: true },
+        createdBy: "blabla",
+        creationMode: "express",
+      }),
+    ).rejects.toThrow(`Site with id ${fricheProps.id} already exists`);
 
     expect(siteRepository._getSites().length).toEqual(1);
+  });
+  describe("Agricultural or natura site", () => {
+    it("Can create a new agricultural/natural site with minimal data", async () => {
+      const siteProps = buildAgriculturalOrNaturalSiteProps();
+
+      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+
+      await usecase.execute({
+        creationMode: "custom",
+        createdBy: "user-id-123",
+        siteProps: {
+          ...siteProps,
+          isFriche: false,
+        },
+      });
+
+      const savedSites = siteRepository._getSites();
+
+      expect(savedSites).toEqual<SiteEntity[]>([
+        {
+          ...buildAgriculturalOrNaturalSite(siteProps),
+          createdAt: fakeNow,
+          createdBy: "user-id-123",
+          creationMode: "custom",
+        },
+      ]);
+    });
+
+    it("Can create a new agricultural/natural site with complete data", async () => {
+      const siteProps = buildAgriculturalOrNaturalSiteProps({
+        description: "Description of site",
+        tenant: {
+          structureType: "company",
+          name: "Tenant SARL",
+        },
+        yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "maintenance" }],
+        yearlyIncomes: [
+          { amount: 20000, source: "other" },
+          { amount: 32740.3, source: "other" },
+        ],
+      });
+
+      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+
+      await usecase.execute({
+        creationMode: "custom",
+        createdBy: "user-id-123",
+        siteProps: {
+          ...siteProps,
+          isFriche: false,
+        },
+      });
+
+      const savedSites = siteRepository._getSites();
+
+      expect(savedSites).toEqual<SiteEntity[]>([
+        {
+          ...buildAgriculturalOrNaturalSite(siteProps),
+          createdAt: fakeNow,
+          createdBy: "user-id-123",
+          creationMode: "custom",
+        },
+      ]);
+    });
   });
 
   describe("Friche", () => {
@@ -136,11 +135,25 @@ describe("CreateNewSite Use Case", () => {
 
       const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 
-      await usecase.execute({ siteProps: fricheProps });
+      await usecase.execute({
+        creationMode: "custom",
+        createdBy: "user-id-123",
+        siteProps: {
+          ...fricheProps,
+          isFriche: true,
+        },
+      });
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual([{ ...fricheProps, createdAt: fakeNow }]);
+      expect(savedSites).toEqual<SiteEntity[]>([
+        {
+          ...buildFriche(fricheProps),
+          createdAt: fakeNow,
+          createdBy: "user-id-123",
+          creationMode: "custom",
+        },
+      ]);
     });
 
     it("Can create a new friche with complete data", async () => {
@@ -152,7 +165,6 @@ describe("CreateNewSite Use Case", () => {
         },
         // friche-only data
         fricheActivity: "INDUSTRY",
-        hasContaminatedSoils: true,
         contaminatedSoilSurface: 1400,
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 2,
@@ -161,11 +173,25 @@ describe("CreateNewSite Use Case", () => {
 
       const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
 
-      await usecase.execute({ siteProps: fricheProps });
+      await usecase.execute({
+        creationMode: "custom",
+        createdBy: "user-id-123",
+        siteProps: {
+          ...fricheProps,
+          isFriche: true,
+        },
+      });
 
       const savedSites = siteRepository._getSites();
 
-      expect(savedSites).toEqual([{ ...fricheProps, createdAt: fakeNow }]);
+      expect(savedSites).toEqual<SiteEntity[]>([
+        {
+          ...buildFriche(fricheProps),
+          createdAt: fakeNow,
+          createdBy: "user-id-123",
+          creationMode: "custom",
+        },
+      ]);
     });
   });
 });

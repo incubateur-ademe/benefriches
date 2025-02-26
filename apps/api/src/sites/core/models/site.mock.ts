@@ -1,29 +1,31 @@
-import { FricheSiteProps, NonFricheSiteProps } from "../usecases/createNewSite.usecase";
-import { FricheSite, NonFricheSite } from "./site";
+import {
+  AgriculturalOrNaturalSite,
+  createAgriculturalOrNaturalSite,
+  CreateAgriculturalOrNaturalSiteProps,
+  createFriche,
+  CreateFricheProps,
+  createSoilSurfaceAreaDistribution,
+  Friche,
+} from "shared";
 
-export const buildMinimalSiteProps = (
-  propsOverride?: Partial<NonFricheSiteProps>,
-): NonFricheSiteProps => {
+export const buildAgriculturalOrNaturalSiteProps = (
+  propsOverride?: Partial<CreateAgriculturalOrNaturalSiteProps>,
+): CreateAgriculturalOrNaturalSiteProps => {
   return {
-    id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
-    name: "My site",
-    createdBy: "841aaa8c-39c1-4953-8459-1f6fab6dd948",
-    creationMode: "custom",
-    isFriche: false,
-    surfaceArea: 15000,
+    id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+    name: "Unit test friche",
+    yearlyExpenses: [],
+    yearlyIncomes: [],
+    // createdBy: "841aaa8c-39c1-4953-8459-1f6fab6dd948",
     owner: {
       structureType: "department",
       name: "Le département Paris",
     },
-    soilsDistribution: {
-      BUILDINGS: 3000,
+    soilsDistribution: createSoilSurfaceAreaDistribution({
       ARTIFICIAL_TREE_FILLED: 5000,
       FOREST_MIXED: 60000,
       MINERAL_SOIL: 5000,
-      IMPERMEABLE_SOILS: 1300,
-    },
-    yearlyExpenses: [],
-    yearlyIncomes: [],
+    }),
     address: {
       city: "Paris",
       cityCode: "75109",
@@ -38,36 +40,51 @@ export const buildMinimalSiteProps = (
   };
 };
 
-export const buildMinimalSite = (propsOverride?: Partial<NonFricheSite>): NonFricheSite => {
+export const buildFricheProps = (propsOverride?: Partial<CreateFricheProps>): CreateFricheProps => {
   return {
-    ...buildMinimalSiteProps(),
-    createdAt: new Date(),
+    id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+    name: "Unit test friche",
+    yearlyExpenses: [],
+    // createdBy: "841aaa8c-39c1-4953-8459-1f6fab6dd948",
+    owner: {
+      structureType: "department",
+      name: "Le département Paris",
+    },
+    soilsDistribution: createSoilSurfaceAreaDistribution({
+      ARTIFICIAL_TREE_FILLED: 5000,
+      FOREST_MIXED: 60000,
+      MINERAL_SOIL: 5000,
+    }),
+    address: {
+      banId: "31070_p4ur8e",
+      value: "Sendere 31350 Blajan",
+      city: "Blajan",
+      cityCode: "31070",
+      postCode: "31350",
+      streetName: "Sendere",
+      long: 0.664699,
+      lat: 43.260859,
+    },
     ...propsOverride,
   };
 };
 
-export const buildFricheProps = (propsOverride?: Partial<FricheSiteProps>): FricheSiteProps => {
-  return {
-    ...buildMinimalSiteProps(),
-    isFriche: true,
-    fricheActivity: "INDUSTRY",
-    ...propsOverride,
-  };
+export const buildFriche = (propsOverride?: Partial<CreateFricheProps>): Friche => {
+  const result = createFriche(buildFricheProps(propsOverride));
+  if (!result.success) {
+    throw new Error("Failed to create friche in mock");
+  }
+  return result.site;
 };
 
-export const buildMinimalFriche = (propsOverride?: Partial<FricheSite>): FricheSite => {
-  return {
-    ...buildFricheProps(),
-    createdAt: new Date(),
-    ...propsOverride,
-  };
-};
-
-export const buildExpressSite = (propsOverride?: Partial<NonFricheSite>): NonFricheSite => {
-  return {
-    ...buildMinimalSiteProps(),
-    creationMode: "express",
-    createdAt: new Date(),
-    ...propsOverride,
-  };
+export const buildAgriculturalOrNaturalSite = (
+  propsOverride?: Partial<CreateAgriculturalOrNaturalSiteProps>,
+): AgriculturalOrNaturalSite => {
+  const result = createAgriculturalOrNaturalSite(
+    buildAgriculturalOrNaturalSiteProps(propsOverride),
+  );
+  if (!result.success) {
+    throw new Error("Failed to create agricultural/natural site in mock");
+  }
+  return result.site;
 };

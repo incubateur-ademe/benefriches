@@ -1,25 +1,34 @@
-export type SiteManagementYearlyExpensePurpose =
-  | "rent"
-  | "propertyTaxes"
-  | "operationsTaxes"
-  | "maintenance"
-  | "otherManagementCosts";
+import z from "zod";
 
-export type SiteSecurityYearlyExpensePurpose =
-  | "security"
-  | "illegalDumpingCost"
-  | "accidentsCost"
-  | "otherSecuringCosts";
+const siteManagementYearlyExpensePurpose = z.enum([
+  "rent",
+  "propertyTaxes",
+  "operationsTaxes",
+  "maintenance",
+  "otherManagementCosts",
+]);
 
+export type SiteManagementYearlyExpensePurpose = z.infer<typeof siteManagementYearlyExpensePurpose>;
+
+const siteSecurityYearlyExpensePurpose = z.enum([
+  "security",
+  "illegalDumpingCost",
+  "accidentsCost",
+  "otherSecuringCosts",
+]);
+
+export type SiteSecurityYearlyExpensePurpose = z.infer<typeof siteSecurityYearlyExpensePurpose>;
 export type SiteYearlyExpensePurpose =
   | SiteManagementYearlyExpensePurpose
   | SiteSecurityYearlyExpensePurpose;
 
-export type SiteYearlyExpense = {
-  purpose: SiteYearlyExpensePurpose;
-  amount: number;
-  bearer: "owner" | "tenant";
-};
+export const siteYearlyExpenseSchema = z.object({
+  purpose: z.union([siteManagementYearlyExpensePurpose, siteSecurityYearlyExpensePurpose]),
+  amount: z.number().nonnegative(),
+  bearer: z.enum(["owner", "tenant"]),
+});
+
+export type SiteYearlyExpense = z.infer<typeof siteYearlyExpenseSchema>;
 
 const SECURITY_COST_BY_HECTARE_PER_YEAR = 22000;
 const MAINTENANCE_COST_BY_BUILDING_SQUARE_METER_PER_YEAR = 7;

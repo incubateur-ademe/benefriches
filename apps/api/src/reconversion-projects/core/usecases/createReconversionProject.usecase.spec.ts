@@ -5,7 +5,8 @@ import { InMemoryReconversionProjectRepository } from "src/reconversion-projects
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
-import { buildMinimalSite } from "src/sites/core/models/site.mock";
+import { SiteEntity } from "src/sites/core/models/site";
+import { buildFriche } from "src/sites/core/models/site.mock";
 
 import {
   buildExhaustiveReconversionProjectProps,
@@ -85,7 +86,13 @@ describe("CreateReconversionProject Use Case", () => {
     it("Cannot create a reconversion project with existing id", async () => {
       const reconversionProjectProps = buildMinimalReconversionProjectProps();
 
-      siteRepository._setSites([buildMinimalSite({ id: reconversionProjectProps.relatedSiteId })]);
+      const siteEntity: SiteEntity = {
+        ...buildFriche({ id: reconversionProjectProps.relatedSiteId }),
+        createdAt: fakeNow,
+        createdBy: "user-123",
+        creationMode: "custom",
+      };
+      siteRepository._setSites([siteEntity]);
       reconversionProjectRepository._setReconversionProjects([
         buildReconversionProject({ id: reconversionProjectProps.id }),
       ]);
@@ -114,7 +121,13 @@ describe("CreateReconversionProject Use Case", () => {
         },
         { case: "with exhaustive data", props: buildExhaustiveReconversionProjectProps() },
       ])("Can create a reconversion project $case", async ({ props }) => {
-        siteRepository._setSites([buildMinimalSite({ id: props.relatedSiteId })]);
+        const siteEntity: SiteEntity = {
+          ...buildFriche({ id: props.relatedSiteId }),
+          createdAt: fakeNow,
+          createdBy: "user-123",
+          creationMode: "custom",
+        };
+        siteRepository._setSites([siteEntity]);
 
         const usecase = new CreateReconversionProjectUseCase(
           dateProvider,
@@ -137,7 +150,13 @@ describe("CreateReconversionProject Use Case", () => {
           props: buildUrbanProjectReconversionProjectProps(),
         },
       ])("Can create an urban reconversion project $case", async ({ props }) => {
-        siteRepository._setSites([buildMinimalSite({ id: props.relatedSiteId })]);
+        const siteEntity: SiteEntity = {
+          ...buildFriche({ id: props.relatedSiteId }),
+          createdAt: fakeNow,
+          createdBy: "user-123",
+          creationMode: "custom",
+        };
+        siteRepository._setSites([siteEntity]);
 
         const usecase = new CreateReconversionProjectUseCase(
           dateProvider,

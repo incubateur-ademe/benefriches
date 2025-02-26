@@ -12,12 +12,12 @@ import {
   SqlSiteSoilsDistribution,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
-import { Site } from "src/sites/core/models/site";
+import { SiteEntity } from "src/sites/core/models/site";
 
 export class SqlSiteRepository implements SitesRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}
 
-  async save(site: Site): Promise<void> {
+  async save(site: SiteEntity): Promise<void> {
     await this.sqlConnection.transaction(async (trx) => {
       const [insertedSite] = await trx<SqlSite>("sites").insert(
         {
@@ -64,7 +64,7 @@ export class SqlSiteRepository implements SitesRepository {
       });
 
       const soilsDistributionToInsert: SqlSiteSoilsDistribution[] = Object.entries(
-        site.soilsDistribution,
+        site.soilsDistribution.toJSON(),
       ).map(([soilType, surfaceArea]) => {
         return {
           id: uuid(),

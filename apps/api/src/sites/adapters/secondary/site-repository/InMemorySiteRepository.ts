@@ -1,10 +1,10 @@
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
-import { Site } from "src/sites/core/models/site";
+import { SiteEntity } from "src/sites/core/models/site";
 
 export class InMemorySitesRepository implements SitesRepository {
-  private sites: Site[] = [];
+  private sites: SiteEntity[] = [];
 
-  async save(site: Site) {
+  async save(site: SiteEntity) {
     this.sites.push(site);
     await Promise.resolve();
   }
@@ -18,7 +18,7 @@ export class InMemorySitesRepository implements SitesRepository {
     return this.sites;
   }
 
-  _setSites(sites: Site[]) {
+  _setSites(sites: SiteEntity[]) {
     this.sites = sites;
   }
 }
