@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 
 import {
-  resetState,
+  siteCreationInitiated,
   selectCurrentStep,
   SiteCreationCustomStep,
   SiteCreationExpressStep,
@@ -46,7 +46,7 @@ function SiteCreationWizard() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(resetState());
+    dispatch(siteCreationInitiated());
   }, [dispatch]);
 
   useSyncCreationStepWithRouteQuery();

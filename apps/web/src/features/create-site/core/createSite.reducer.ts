@@ -81,7 +81,7 @@ export const getInitialState = (): SiteCreationState => {
   } as const;
 };
 
-export const resetState = createAction("siteCreation/resetState");
+export const siteCreationInitiated = createAction("siteCreation/init");
 
 export const introductionStepCompleted = createAction("siteCreation/introductionStepCompleted");
 
@@ -190,7 +190,7 @@ export const revertStep = createAction<{ resetFields: (keyof SiteDraft)[] } | un
 
 export const siteCreationReducer = createReducer(getInitialState(), (builder) => {
   builder
-    .addCase(resetState, () => getInitialState())
+    .addCase(siteCreationInitiated, () => getInitialState())
     .addCase(introductionStepCompleted, (state) => {
       state.stepsHistory.push("CREATE_MODE_SELECTION");
     })
