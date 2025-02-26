@@ -1,5 +1,3 @@
-import { convertCarbonToCO2eq } from "shared";
-
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { ImpactsData, ProjectData, SiteData } from "../../ImpactModalDescriptionProvider";
@@ -12,13 +10,11 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 type Props = {
   baseSoilsDistribution: SiteData["soilsDistribution"];
   forecastSoilsDistribution: ProjectData["soilsDistribution"];
-  impactData: ImpactsData["environmental"]["soilsCarbonStorage"];
+  impactData: ImpactsData["environmental"]["soilsCo2eqStorage"];
 };
 
 const SoilsStorageRelatedCo2Description = ({ impactData, ...props }: Props) => {
-  const value = impactData.isSuccess
-    ? convertCarbonToCO2eq(impactData.forecast.total - impactData.current.total)
-    : undefined;
+  const value = impactData ? impactData.difference : undefined;
 
   return (
     <ModalBody size="large">

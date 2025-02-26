@@ -122,7 +122,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       ) as EcosystemServicesImpact | undefined;
       expect(ecosystemServicesResult).toBeDefined();
       expect(
-        ecosystemServicesResult?.details.find(({ impact }) => impact === "carbon_storage"),
+        ecosystemServicesResult?.details.find(({ impact }) => impact === "soils_co2_eq_storage"),
       ).toEqual(undefined);
     });
 
@@ -144,28 +144,8 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           WET_LAND: 300,
           ARTIFICIAL_TREE_FILLED: 300,
         },
-        baseSoilsCarbonStorage: {
-          totalCarbonStorage: 100,
-          soilsCarbonStorage: [
-            {
-              type: "FOREST_CONIFER",
-              surfaceArea: 200,
-              carbonStorage: 100,
-              carbonStorageInTonPerSquareMeters: 100,
-            },
-          ],
-        },
-        forecastSoilsCarbonStorage: {
-          totalCarbonStorage: 150,
-          soilsCarbonStorage: [
-            {
-              type: "FOREST_CONIFER",
-              surfaceArea: 200,
-              carbonStorage: 150,
-              carbonStorageInTonPerSquareMeters: 100,
-            },
-          ],
-        },
+        baseSoilsCo2eqStorage: 366.666,
+        forecastSoilsCo2eqStorage: 550,
         projectDecontaminedSurfaceArea: 1000,
         sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
           evaluationPeriodInYears: 10,
@@ -184,7 +164,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         impactCategory: "environmental_monetary",
         actor: "human_society",
         details: [
-          { amount: 27500, impact: "carbon_storage" },
+          { amount: 27500, impact: "soils_co2_eq_storage" },
           { amount: 60, impact: "nature_related_wellness_and_leisure" },
           { amount: 108, impact: "pollination" },
           { amount: 40, impact: "invasive_species_regulation" },
@@ -209,29 +189,8 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           WET_LAND: 250,
           IMPERMEABLE_SOILS: 500,
         },
-        baseSoilsCarbonStorage: {
-          totalCarbonStorage: 250,
-          soilsCarbonStorage: [
-            {
-              type: "FOREST_CONIFER",
-              surfaceArea: 200,
-              carbonStorage: 100,
-              carbonStorageInTonPerSquareMeters: 100,
-            },
-          ],
-        },
-        forecastSoilsCarbonStorage: {
-          totalCarbonStorage: 150,
-          soilsCarbonStorage: [
-            {
-              type: "FOREST_CONIFER",
-              surfaceArea: 200,
-              carbonStorage: 150,
-              carbonStorageInTonPerSquareMeters: 100,
-            },
-          ],
-        },
-
+        baseSoilsCo2eqStorage: 916.666,
+        forecastSoilsCo2eqStorage: 550,
         sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
           evaluationPeriodInYears: 10,
           operationsFirstYear: 2025,
@@ -251,7 +210,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
         impactCategory: "environmental_monetary",
         actor: "human_society",
         details: [
-          { amount: -55000, impact: "carbon_storage" },
+          { amount: -55000, impact: "soils_co2_eq_storage" },
           { amount: -46, impact: "nature_related_wellness_and_leisure" },
           { amount: -46, impact: "pollination" },
           { amount: -672, impact: "water_cycle" },
@@ -282,7 +241,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       expect(
         environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().nonContaminatedSurfaceArea,
       ).toEqual({
-        current: 1000,
+        base: 1000,
         forecast: 1000,
         difference: 0,
       });
@@ -308,7 +267,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       expect(
         environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().nonContaminatedSurfaceArea,
       ).toEqual({
-        current: 750,
+        base: 750,
         forecast: 1000,
         difference: 250,
       });
@@ -333,7 +292,7 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
       expect(
         environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().nonContaminatedSurfaceArea,
       ).toEqual({
-        current: 750,
+        base: 750,
         forecast: 850,
         difference: 100,
       });
@@ -539,130 +498,6 @@ describe("EnvironmentalSoilsRelatedService.spec", () => {
           base: 320,
           forecast: 0,
           difference: -320,
-        },
-      });
-    });
-  });
-
-  describe("computeSoilsCarbonStorage", () => {
-    it("returns isSuccess = false if base and forecast not provided", () => {
-      const environmentalSoilsRelatedImpactService = new EnvironmentalSoilsRelatedImpactsService({
-        siteTotalSurfaceArea: 1055,
-        baseSoilsDistribution: {
-          IMPERMEABLE_SOILS: 200,
-          BUILDINGS: 100,
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 100,
-          PRAIRIE_GRASS: 500,
-          MINERAL_SOIL: 320,
-        },
-        forecastSoilsDistribution: {
-          IMPERMEABLE_SOILS: 1000,
-          BUILDINGS: 220,
-        },
-        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
-          evaluationPeriodInYears: 10,
-          operationsFirstYear: 2024,
-        }),
-      });
-      expect(
-        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().soilsCarbonStorage,
-      ).toEqual({ isSuccess: false });
-    });
-    it("returns negative impact if soils are artificialized", () => {
-      const environmentalSoilsRelatedImpactService = new EnvironmentalSoilsRelatedImpactsService({
-        siteTotalSurfaceArea: 1055,
-        baseSoilsDistribution: {
-          IMPERMEABLE_SOILS: 200,
-          ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 100,
-          PRAIRIE_GRASS: 500,
-        },
-        forecastSoilsDistribution: {
-          IMPERMEABLE_SOILS: 1000,
-          BUILDINGS: 220,
-        },
-        baseSoilsCarbonStorage: {
-          totalCarbonStorage: 632,
-          soilsCarbonStorage: [
-            {
-              type: "IMPERMEABLE_SOILS",
-              surfaceArea: 100,
-              carbonStorage: 75,
-              carbonStorageInTonPerSquareMeters: 75 / 100,
-            },
-            {
-              type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-              surfaceArea: 100,
-              carbonStorage: 557.61,
-              carbonStorageInTonPerSquareMeters: 0.018587,
-            },
-            {
-              type: "PRAIRIE_GRASS",
-              surfaceArea: 432,
-              carbonStorage: 557.61,
-              carbonStorageInTonPerSquareMeters: 0.018587,
-            },
-          ],
-        },
-        forecastSoilsCarbonStorage: {
-          totalCarbonStorage: 9.5,
-          soilsCarbonStorage: [
-            {
-              type: "IMPERMEABLE_SOILS",
-              surfaceArea: 1000,
-              carbonStorage: 7.5,
-              carbonStorageInTonPerSquareMeters: 7.5 / 1000,
-            },
-            {
-              type: "BUILDINGS",
-              surfaceArea: 220,
-              carbonStorage: 1.5,
-              carbonStorageInTonPerSquareMeters: 1.5 / 220,
-            },
-          ],
-        },
-        sumOnEvolutionPeriodService: new SumOnEvolutionPeriodService({
-          evaluationPeriodInYears: 10,
-          operationsFirstYear: 2024,
-        }),
-      });
-      expect(
-        environmentalSoilsRelatedImpactService.getEnvironmentalImpacts().soilsCarbonStorage,
-      ).toEqual({
-        isSuccess: true,
-        current: {
-          total: 632,
-          soils: [
-            {
-              type: "IMPERMEABLE_SOILS",
-              surfaceArea: 100,
-              carbonStorage: 75,
-            },
-            {
-              type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-              surfaceArea: 100,
-              carbonStorage: 557.61,
-            },
-            {
-              type: "PRAIRIE_GRASS",
-              surfaceArea: 432,
-              carbonStorage: 557.61,
-            },
-          ],
-        },
-        forecast: {
-          total: 9.5,
-          soils: [
-            {
-              type: "IMPERMEABLE_SOILS",
-              surfaceArea: 1000,
-              carbonStorage: 7.5,
-            },
-            {
-              type: "BUILDINGS",
-              surfaceArea: 220,
-              carbonStorage: 1.5,
-            },
-          ],
         },
       });
     });

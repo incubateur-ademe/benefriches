@@ -156,6 +156,6 @@ export type EcosystemServicesImpact = {
       | "water_cycle"
       | "nitrogen_cycle"
       | "soil_erosion"
-      | "carbon_storage";
+      | "soils_co2_eq_storage";
   }[];
 };

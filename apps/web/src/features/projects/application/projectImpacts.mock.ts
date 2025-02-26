@@ -120,7 +120,7 @@ const baseImpacts = {
   },
   environmental: {
     nonContaminatedSurfaceArea: {
-      current: 30000,
+      base: 30000,
       forecast: 50000,
       difference: 20000,
     },
@@ -140,48 +140,10 @@ const baseImpacts = {
       },
     },
 
-    soilsCarbonStorage: {
-      isSuccess: true,
-      current: {
-        total: 20,
-        soils: [
-          {
-            type: "IMPERMEABLE_SOILS",
-            carbonStorage: 2,
-            surfaceArea: 1000,
-          },
-          {
-            type: "BUILDINGS",
-            carbonStorage: 2,
-            surfaceArea: 1000,
-          },
-          {
-            type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-            carbonStorage: 16,
-            surfaceArea: 1000,
-          },
-        ],
-      },
-      forecast: {
-        total: 20,
-        soils: [
-          {
-            type: "IMPERMEABLE_SOILS",
-            carbonStorage: 2,
-            surfaceArea: 1000,
-          },
-          {
-            type: "BUILDINGS",
-            carbonStorage: 2,
-            surfaceArea: 1000,
-          },
-          {
-            type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-            carbonStorage: 16,
-            surfaceArea: 1000,
-          },
-        ],
-      },
+    soilsCo2eqStorage: {
+      base: 59,
+      forecast: 59,
+      difference: 0,
     },
   },
   social: {
@@ -292,7 +254,7 @@ export const photovoltaicProjectImpactMock = {
       ...baseImpacts.environmental,
       avoidedCO2TonsWithEnergyProduction: {
         current: 0,
-        forecast: 112.29599999999999,
+        forecast: 112.3,
       },
     },
   },

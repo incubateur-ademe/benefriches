@@ -264,10 +264,10 @@ export function SocioEconomicModalWizard({
     case "ecosystem_services":
       return <EcosystemServicesDescription impactsData={impactsData["socioeconomic"]["impacts"]} />;
 
-    case "carbon_storage":
+    case "soils_co2_eq_storage":
       return (
         <SoilsStorageRelatedCo2MonetaryValueDescription
-          impactData={getImpactData(impactsGroupedByName.carbon_storage)}
+          impactData={getImpactData(impactsGroupedByName.soils_co2_eq_storage)}
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
         />

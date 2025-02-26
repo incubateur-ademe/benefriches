@@ -89,7 +89,7 @@ export function EnvironmentalModalWizard({
         <SoilsStorageRelatedCo2Description
           baseSoilsDistribution={siteData.soilsDistribution}
           forecastSoilsDistribution={projectData.soilsDistribution}
-          impactData={impactsData.environmental.soilsCarbonStorage}
+          impactData={impactsData.environmental.soilsCo2eqStorage}
         />
       );
 

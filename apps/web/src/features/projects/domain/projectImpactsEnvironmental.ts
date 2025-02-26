@@ -1,5 +1,3 @@
-import { convertCarbonToCO2eq } from "shared";
-
 import { ReconversionProjectImpactsResult } from "../application/fetchImpactsForReconversionProject.action";
 
 type ImpactValue = {
@@ -46,7 +44,7 @@ export const getEnvironmentalProjectImpacts = (
   const {
     nonContaminatedSurfaceArea,
     avoidedCO2TonsWithEnergyProduction,
-    soilsCarbonStorage,
+    soilsCo2eqStorage,
     permeableSurfaceArea,
     avoidedAirConditioningCo2EqEmissions,
     avoidedCarTrafficCo2EqEmissions,
@@ -59,7 +57,7 @@ export const getEnvironmentalProjectImpacts = (
       name: "non_contaminated_surface_area",
       type: "surfaceArea",
       impact: {
-        base: nonContaminatedSurfaceArea.current,
+        base: nonContaminatedSurfaceArea.base,
         forecast: nonContaminatedSurfaceArea.forecast,
         difference: nonContaminatedSurfaceArea.difference,
       },
@@ -70,17 +68,14 @@ export const getEnvironmentalProjectImpacts = (
     avoidedCarTrafficCo2EqEmissions ||
     avoidedAirConditioningCo2EqEmissions ||
     avoidedCO2TonsWithEnergyProduction ||
-    soilsCarbonStorage.isSuccess
+    soilsCo2eqStorage
   ) {
     const details: ImpactDetails[] = [];
 
-    if (soilsCarbonStorage.isSuccess) {
-      const base = convertCarbonToCO2eq(soilsCarbonStorage.current.total);
-      const forecast = convertCarbonToCO2eq(soilsCarbonStorage.forecast.total);
-
+    if (soilsCo2eqStorage) {
       details.push({
         name: "stored_co2_eq",
-        impact: { base, forecast, difference: forecast - base },
+        impact: soilsCo2eqStorage,
       });
     }
 

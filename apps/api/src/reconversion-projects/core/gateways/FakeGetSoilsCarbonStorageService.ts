@@ -1,36 +1,12 @@
-import { Response as SoilsCarbonStorageResult } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
+import { GetCarbonStorageFromSoilDistributionService } from "./SoilsCarbonStorageService";
 
-import { GetSoilsCarbonStoragePerSoilsService } from "../model/impacts/ReconversionProjectImpactsService";
-
-const resultMock: SoilsCarbonStorageResult = {
-  totalCarbonStorage: 20,
-  soilsCarbonStorage: [
-    {
-      type: "IMPERMEABLE_SOILS",
-      carbonStorage: 2,
-      surfaceArea: 1000,
-      carbonStorageInTonPerSquareMeters: 0.002,
-    },
-    {
-      type: "BUILDINGS",
-      carbonStorage: 2,
-      surfaceArea: 1000,
-      carbonStorageInTonPerSquareMeters: 0.002,
-    },
-    {
-      type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-      carbonStorage: 16,
-      surfaceArea: 1000,
-      carbonStorageInTonPerSquareMeters: 62.5,
-    },
-  ],
-} as const;
-
-export class FakeGetSoilsCarbonStorageService implements GetSoilsCarbonStoragePerSoilsService {
-  result: SoilsCarbonStorageResult | null = null;
+export class FakeGetSoilsCarbonStorageService
+  implements GetCarbonStorageFromSoilDistributionService
+{
+  result: number | null = null;
   _isShouldFailOnExecute = false;
 
-  _setResult(result: SoilsCarbonStorageResult) {
+  _setResult(result: number) {
     this.result = result;
   }
 
@@ -38,10 +14,10 @@ export class FakeGetSoilsCarbonStorageService implements GetSoilsCarbonStoragePe
     this._isShouldFailOnExecute = true;
   }
 
-  execute(): Promise<SoilsCarbonStorageResult> {
+  execute(): Promise<number | undefined> {
     if (this._isShouldFailOnExecute) {
-      throw new Error("FakeGetSoilsCarbonStorageService.execute failed");
+      return Promise.resolve(undefined);
     }
-    return Promise.resolve(this.result ?? resultMock);
+    return Promise.resolve(this.result ?? 20);
   }
 }

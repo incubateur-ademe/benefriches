@@ -2,7 +2,6 @@
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
-import { FakeGetSoilsCarbonStorageService } from "../../gateways/FakeGetSoilsCarbonStorageService";
 import {
   InputReconversionProjectData,
   InputSiteData,
@@ -51,6 +50,7 @@ const reconversionProjectImpactDataView = {
   sitePurchasePropertyTransferDutiesAmount: 5432,
   operationsFirstYear: 2025,
   decontaminatedSoilSurface: 20000,
+  soilsCarbonStorage: 21,
 } as const satisfies InputReconversionProjectData;
 
 const site = {
@@ -74,6 +74,7 @@ const site = {
     { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
     { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
   ],
+  soilsCarbonStorage: 25,
 } as const satisfies Required<InputSiteData>;
 
 describe("ReconversionProjectImpactsService: computes common impacts for all kind of project", () => {
@@ -91,7 +92,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["rentImpacts"]).toEqual([]);
     });
@@ -106,7 +106,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["rentImpacts"]).toEqual([
         {
@@ -129,7 +128,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["rentImpacts"]).toEqual([
         {
@@ -154,7 +152,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["rentImpacts"]).toEqual([
         {
@@ -181,7 +178,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["rentImpacts"]).toEqual([
         {
@@ -207,7 +203,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         relatedSite: { ...site, yearlyExpenses: [], ownerName: "Current owner", isFriche: false },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([]);
     });
@@ -255,7 +250,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
         {
@@ -302,7 +296,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
         {
@@ -336,7 +329,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([]);
     });
@@ -378,7 +370,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["avoidedFricheCosts"]).toEqual([
         {
@@ -421,7 +412,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["propertyTransferDutiesIncome"]).toEqual([]);
     });
@@ -439,7 +429,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
         },
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
       });
       expect(projectImpactsService["propertyTransferDutiesIncome"]).toContainEqual({
         actor: "community",
@@ -456,7 +445,6 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       relatedSite: site,
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
-      getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
     });
 
     expect(projectImpactsService["accidentsImpact"]).toEqual({
@@ -477,31 +465,30 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
     });
   });
 
-  it("format impacts as ReconversionProjectImpacts object", async () => {
+  it("format impacts as ReconversionProjectImpacts object", () => {
     const projectImpactsService = new ReconversionProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
       relatedSite: site,
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
-      getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
     });
 
-    const result = await projectImpactsService.formatImpacts();
-
-    const soilsRelatedSocioEconomicImpacts =
-      await projectImpactsService["getEnvironmentalSoilsRelatedImpacts"]();
+    const result = projectImpactsService.formatImpacts();
 
     expect(result.socioeconomic.impacts).toEqual([
       ...projectImpactsService["rentImpacts"],
       ...projectImpactsService["avoidedFricheCosts"],
       ...projectImpactsService["propertyTransferDutiesIncome"],
-      ...soilsRelatedSocioEconomicImpacts.socioEconomicList,
+      ...projectImpactsService["environmentalSoilsRelatedImpacts"].socioEconomicList,
     ]);
     expect(result.social).toEqual({
       fullTimeJobs: projectImpactsService["fullTimeJobsImpact"],
       accidents: projectImpactsService["accidentsImpact"],
     });
-    expect(result.environmental).toEqual(soilsRelatedSocioEconomicImpacts.environmental);
+    expect(result.environmental).toEqual({
+      ...projectImpactsService["environmentalSoilsRelatedImpacts"].environmental,
+      soilsCo2eqStorage: projectImpactsService["soilsCo2eqStorage"],
+    });
     expect(result.economicBalance).toEqual(projectImpactsService["economicBalance"]);
   });
 });

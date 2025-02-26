@@ -182,7 +182,7 @@ export const getSocioEconomicImpactLabel = (name: SocioEconomicImpactName) => {
       return "🌾 Régulation de l'érosion des sols";
     case "water_cycle":
       return "💧 Cycle de l'eau";
-    case "carbon_storage":
+    case "soils_co2_eq_storage":
       return "🍂️ Carbone stocké dans les sols";
   }
 };

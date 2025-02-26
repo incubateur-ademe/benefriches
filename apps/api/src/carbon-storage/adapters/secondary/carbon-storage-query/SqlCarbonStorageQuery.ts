@@ -83,7 +83,7 @@ export class SqlCarbonStorageQuery implements CarbonStorageQuery {
       .first();
 
     if (!sqlCity) {
-      throw new Error(`City with code ${cityCode} not found in INSEE data`);
+      throw new Error(`City with code ${cityCode} not found in database`);
     }
 
     const city = City.create(sqlCity);

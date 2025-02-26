@@ -3,8 +3,6 @@ import {
   AvoidedFricheCostsImpact,
   SocioEconomicImpact,
   sumListWithKey,
-  soilsDistributionObjToArray,
-  SoilType,
   SiteYearlyExpense,
   SoilsDistribution,
   ReinstatementExpense,
@@ -21,11 +19,9 @@ import { DevelopmentPlan, Schedule } from "../../model/reconversionProject";
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { SumOnEvolutionPeriodService } from "./SumOnEvolutionPeriodService";
 import { computeEconomicBalanceImpact } from "./economic-balance/economicBalanceImpact";
-import {
-  EnvironmentalSoilsRelatedImpactsService,
-  SoilsCarbonStorage,
-} from "./environmental-soils-related/EnvironmentalSoilsRelatedImpactsService";
+import { EnvironmentalSoilsRelatedImpactsService } from "./environmental-soils-related/EnvironmentalSoilsRelatedImpactsService";
 import { FullTimeJobsImpactService } from "./full-time-jobs/fullTimeJobsImpactService";
+import { computeSoilsCo2eqStorageImpact } from "./soilsCo2eqStorage/soilsCo2eqStorage";
 
 const FRICHE_COST_PURPOSES = [
   "security",
@@ -44,26 +40,6 @@ type FricheCostPurpose =
 
 const RENT_PURPOSE_KEY = "rent";
 
-type SoilsCarbonStorageResult = {
-  totalCarbonStorage: number;
-  soilsCarbonStorage: {
-    surfaceArea: number;
-    carbonStorage: number;
-    carbonStorageInTonPerSquareMeters: number;
-    type: SoilType;
-  }[];
-};
-
-export interface GetSoilsCarbonStoragePerSoilsService {
-  execute(input: {
-    cityCode: string;
-    soils: {
-      surfaceArea: number;
-      type: SoilType;
-    }[];
-  }): Promise<SoilsCarbonStorageResult>;
-}
-
 export type InputSiteData = {
   isFriche: boolean;
   yearlyExpenses: SiteYearlyExpense[];
@@ -76,6 +52,7 @@ export type InputSiteData = {
   accidentsDeaths?: number;
   accidentsSevereInjuries?: number;
   accidentsMinorInjuries?: number;
+  soilsCarbonStorage?: number;
 };
 
 export type InputReconversionProjectData = {
@@ -99,6 +76,7 @@ export type InputReconversionProjectData = {
   reinstatementSchedule?: Schedule;
   soilsDistribution: SoilsDistribution;
   decontaminatedSoilSurface?: number;
+  soilsCarbonStorage?: number;
 };
 
 export type ReconversionProjectImpactsServiceProps = {
@@ -106,13 +84,11 @@ export type ReconversionProjectImpactsServiceProps = {
   evaluationPeriodInYears: number;
   relatedSite: InputSiteData;
   dateProvider: DateProvider;
-  getSoilsCarbonStorageService: GetSoilsCarbonStoragePerSoilsService;
 };
 export class ReconversionProjectImpactsService implements ImpactsServiceInterface {
   protected readonly reconversionProject: InputReconversionProjectData;
   protected readonly relatedSite: InputSiteData;
 
-  protected readonly getSoilsCarbonStorageService: GetSoilsCarbonStoragePerSoilsService;
   protected readonly sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 
   constructor({
@@ -120,12 +96,10 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     relatedSite,
     evaluationPeriodInYears,
     dateProvider,
-    getSoilsCarbonStorageService,
   }: ReconversionProjectImpactsServiceProps) {
     this.reconversionProject = reconversionProject;
     this.relatedSite = relatedSite;
 
-    this.getSoilsCarbonStorageService = getSoilsCarbonStorageService;
     this.sumOnEvolutionPeriodService = new SumOnEvolutionPeriodService({
       evaluationPeriodInYears,
       operationsFirstYear:
@@ -297,57 +271,52 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     return impacts;
   }
 
-  async formatImpacts() {
-    const {
-      socioEconomicList: soilsRelatedSocioEconomicImpacts,
-      environmental: soilsRelatedEnvironmentalImpacts,
-    } = await this.getEnvironmentalSoilsRelatedImpacts();
-    const impacts = [
-      ...this.rentImpacts,
-      ...this.avoidedFricheCosts,
-      ...this.propertyTransferDutiesIncome,
-      ...soilsRelatedSocioEconomicImpacts,
-    ];
-    return {
-      economicBalance: this.economicBalance,
-      social: {
-        fullTimeJobs: this.fullTimeJobsImpact,
-        accidents: this.accidentsImpact as AccidentsImpactResult,
-      },
-      environmental: soilsRelatedEnvironmentalImpacts,
-      socioeconomic: { impacts, total: sumListWithKey(impacts, "amount") },
-    };
+  protected get soilsCo2eqStorage() {
+    return computeSoilsCo2eqStorageImpact(
+      this.relatedSite.soilsCarbonStorage,
+      this.reconversionProject.soilsCarbonStorage,
+    );
   }
 
-  protected async getEnvironmentalSoilsRelatedImpacts() {
-    let baseSoilsCarbonStorage: SoilsCarbonStorage | undefined = undefined;
-    let forecastSoilsCarbonStorage: SoilsCarbonStorage | undefined = undefined;
-    try {
-      baseSoilsCarbonStorage = await this.getSoilsCarbonStorageService.execute({
-        cityCode: this.relatedSite.addressCityCode,
-        soils: soilsDistributionObjToArray(this.relatedSite.soilsDistribution),
-      });
-      forecastSoilsCarbonStorage = await this.getSoilsCarbonStorageService.execute({
-        cityCode: this.relatedSite.addressCityCode,
-        soils: soilsDistributionObjToArray(this.reconversionProject.soilsDistribution),
-      });
-    } catch (err) {
-      console.error("Failed to compute soils carbon storage impact", err);
-    }
-
+  protected get environmentalSoilsRelatedImpacts() {
     const environmentalSoilsRelatedImpactService = new EnvironmentalSoilsRelatedImpactsService({
       siteTotalSurfaceArea: this.relatedSite.surfaceArea,
       baseSoilsDistribution: this.relatedSite.soilsDistribution,
       forecastSoilsDistribution: this.reconversionProject.soilsDistribution,
       siteContaminatedSurfaceArea: this.relatedSite.contaminatedSoilSurface,
       projectDecontaminedSurfaceArea: this.reconversionProject.decontaminatedSoilSurface,
-      baseSoilsCarbonStorage,
-      forecastSoilsCarbonStorage,
+      baseSoilsCo2eqStorage: this.soilsCo2eqStorage?.base,
+      forecastSoilsCo2eqStorage: this.soilsCo2eqStorage?.forecast,
       sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });
     return {
       socioEconomicList: environmentalSoilsRelatedImpactService.getSocioEconomicList(),
       environmental: environmentalSoilsRelatedImpactService.getEnvironmentalImpacts(),
+    };
+  }
+
+  formatImpacts() {
+    const impacts = [
+      ...this.rentImpacts,
+      ...this.avoidedFricheCosts,
+      ...this.propertyTransferDutiesIncome,
+      ...this.environmentalSoilsRelatedImpacts.socioEconomicList,
+    ];
+
+    return {
+      economicBalance: this.economicBalance,
+      social: {
+        fullTimeJobs: this.fullTimeJobsImpact,
+        accidents: this.accidentsImpact as AccidentsImpactResult,
+      },
+      environmental: {
+        ...this.environmentalSoilsRelatedImpacts.environmental,
+        soilsCo2eqStorage: this.soilsCo2eqStorage,
+      },
+      socioeconomic: {
+        impacts: impacts,
+        total: sumListWithKey(impacts, "amount"),
+      },
     };
   }
 }

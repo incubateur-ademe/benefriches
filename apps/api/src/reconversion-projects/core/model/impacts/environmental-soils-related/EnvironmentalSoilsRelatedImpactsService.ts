@@ -1,5 +1,4 @@
 import {
-  convertCarbonToCO2eq,
   isForest,
   isGreenSoil,
   isMineralSoil,
@@ -10,7 +9,6 @@ import {
   isSurfaceWithPermanentVegetation,
   isWetLand,
   SocioEconomicImpact,
-  SoilsCarbonStorageImpactResult,
   SoilsDistribution,
   SoilType,
   sumListWithKey,
@@ -28,24 +26,14 @@ type EcosystemServiceImpact =
   | "water_cycle"
   | "nitrogen_cycle"
   | "soil_erosion"
-  | "carbon_storage";
-
-export type SoilsCarbonStorage = {
-  totalCarbonStorage: number;
-  soilsCarbonStorage: {
-    surfaceArea: number;
-    carbonStorage: number;
-    carbonStorageInTonPerSquareMeters: number;
-    type: SoilType;
-  }[];
-};
+  | "soils_co2_eq_storage";
 
 type Props = {
   siteTotalSurfaceArea: number;
   baseSoilsDistribution: SoilsDistribution;
   forecastSoilsDistribution: SoilsDistribution;
-  baseSoilsCarbonStorage?: SoilsCarbonStorage;
-  forecastSoilsCarbonStorage?: SoilsCarbonStorage;
+  baseSoilsCo2eqStorage?: number;
+  forecastSoilsCo2eqStorage?: number;
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
   siteContaminatedSurfaceArea?: number;
   projectDecontaminedSurfaceArea?: number;
@@ -56,8 +44,8 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
   private readonly baseSoilsDistribution: SoilsDistribution;
   private readonly forecastSoilsDistribution: SoilsDistribution;
 
-  private readonly baseSoilsCarbonStorage?: SoilsCarbonStorage;
-  private readonly forecastSoilsCarbonStorage?: SoilsCarbonStorage;
+  private readonly baseSoilsCo2eqStorage?: number;
+  private readonly forecastSoilsCo2eqStorage?: number;
 
   private readonly siteContaminatedSurfaceArea: number;
   private readonly projectDecontaminedSurfaceArea: number;
@@ -68,8 +56,8 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     siteTotalSurfaceArea,
     baseSoilsDistribution,
     forecastSoilsDistribution,
-    baseSoilsCarbonStorage,
-    forecastSoilsCarbonStorage,
+    baseSoilsCo2eqStorage,
+    forecastSoilsCo2eqStorage,
     sumOnEvolutionPeriodService,
     siteContaminatedSurfaceArea,
     projectDecontaminedSurfaceArea,
@@ -79,8 +67,8 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     this.baseSoilsDistribution = baseSoilsDistribution;
     this.forecastSoilsDistribution = forecastSoilsDistribution;
 
-    this.baseSoilsCarbonStorage = baseSoilsCarbonStorage;
-    this.forecastSoilsCarbonStorage = forecastSoilsCarbonStorage;
+    this.baseSoilsCo2eqStorage = baseSoilsCo2eqStorage;
+    this.forecastSoilsCo2eqStorage = forecastSoilsCo2eqStorage;
 
     this.siteContaminatedSurfaceArea = siteContaminatedSurfaceArea ?? 0;
     this.projectDecontaminedSurfaceArea = projectDecontaminedSurfaceArea ?? 0;
@@ -107,46 +95,18 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     );
   }
 
-  private get soilsCarbonStorage(): SoilsCarbonStorageImpactResult {
-    if (!this.baseSoilsCarbonStorage || !this.forecastSoilsCarbonStorage) {
-      return { isSuccess: false };
-    }
-
-    return {
-      isSuccess: true,
-      current: {
-        total: this.baseSoilsCarbonStorage.totalCarbonStorage,
-        soils: this.baseSoilsCarbonStorage.soilsCarbonStorage.map((soil) => ({
-          type: soil.type,
-          surfaceArea: soil.surfaceArea,
-          carbonStorage: soil.carbonStorage,
-        })),
-      },
-      forecast: {
-        total: this.forecastSoilsCarbonStorage.totalCarbonStorage,
-        soils: this.forecastSoilsCarbonStorage.soilsCarbonStorage.map((soil) => ({
-          type: soil.type,
-          surfaceArea: soil.surfaceArea,
-          carbonStorage: soil.carbonStorage,
-        })),
-      },
-    };
-  }
-
   private get carbonStorageMonetaryImpact() {
-    if (!this.baseSoilsCarbonStorage || !this.forecastSoilsCarbonStorage) {
+    if (!this.baseSoilsCo2eqStorage || !this.forecastSoilsCo2eqStorage) {
       return undefined;
     }
     const co2eqMonetaryValue = SumOnEvolutionPeriodService.getYearCO2MonetaryValue(
       this.sumOnEvolutionPeriodService.operationsFirstYear,
     );
 
-    const soilsCarbonStorageDifference =
-      this.forecastSoilsCarbonStorage.totalCarbonStorage -
-      this.baseSoilsCarbonStorage.totalCarbonStorage;
+    const soilsCo2eqStorageDifference = this.forecastSoilsCo2eqStorage - this.baseSoilsCo2eqStorage;
     return {
-      amount: Math.round(convertCarbonToCO2eq(soilsCarbonStorageDifference) * co2eqMonetaryValue),
-      impact: "carbon_storage",
+      amount: Math.round(soilsCo2eqStorageDifference * co2eqMonetaryValue),
+      impact: "soils_co2_eq_storage",
     };
   }
 
@@ -413,7 +373,7 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     const forecastNonContaminatedSurfaceArea =
       currentNonContaminatedSurfaceArea + this.projectDecontaminedSurfaceArea;
     return {
-      current: currentNonContaminatedSurfaceArea,
+      base: currentNonContaminatedSurfaceArea,
       forecast: forecastNonContaminatedSurfaceArea,
       difference: forecastNonContaminatedSurfaceArea - currentNonContaminatedSurfaceArea,
     };
@@ -447,7 +407,6 @@ export class EnvironmentalSoilsRelatedImpactsService implements PartialImpactsSe
     return {
       nonContaminatedSurfaceArea: this.nonContaminatedSurfaceAreaImpact,
       permeableSurfaceArea: this.permeableSurfaceImpact,
-      soilsCarbonStorage: this.soilsCarbonStorage,
     };
   }
 }

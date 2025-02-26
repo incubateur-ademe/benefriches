@@ -366,7 +366,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           },
           environmental: {
             nonContaminatedSurfaceArea: {
-              current: 30000,
+              base: 30000,
               forecast: 50000,
               difference: 20000,
             },
@@ -389,48 +389,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               current: 0,
               forecast: 112.29599999999999,
             },
-            soilsCarbonStorage: {
-              isSuccess: true,
-              current: {
-                total: 20,
-                soils: [
-                  {
-                    type: "IMPERMEABLE_SOILS",
-                    carbonStorage: 2,
-                    surfaceArea: 1000,
-                  },
-                  {
-                    type: "BUILDINGS",
-                    carbonStorage: 2,
-                    surfaceArea: 1000,
-                  },
-                  {
-                    type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-                    carbonStorage: 16,
-                    surfaceArea: 1000,
-                  },
-                ],
-              },
-              forecast: {
-                total: 20,
-                soils: [
-                  {
-                    type: "IMPERMEABLE_SOILS",
-                    carbonStorage: 2,
-                    surfaceArea: 1000,
-                  },
-                  {
-                    type: "BUILDINGS",
-                    carbonStorage: 2,
-                    surfaceArea: 1000,
-                  },
-                  {
-                    type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-                    carbonStorage: 16,
-                    surfaceArea: 1000,
-                  },
-                ],
-              },
+            soilsCo2eqStorage: {
+              base: 73.33,
+              forecast: 73.33,
+              difference: 0,
             },
           },
           social: {
@@ -492,9 +454,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         evaluationPeriodInYears,
       });
       expect(result.id).toEqual(reconversionProjectImpactDataView.id);
-      expect(result.impacts.environmental.soilsCarbonStorage).toEqual({
-        isSuccess: false,
-      });
+      expect(result.impacts.environmental.soilsCo2eqStorage).toEqual(undefined);
     });
   });
 });

@@ -43,6 +43,12 @@ export type EconomicBalanceImpactResult = {
   };
 };
 
+export type Impact = {
+  base: number;
+  forecast: number;
+  difference: number;
+};
+
 export type AvoidedCO2WithEnergyProductionImpact = {
   current: 0;
   forecast: number;
@@ -51,28 +57,6 @@ export type AvoidedCO2WithEnergyProductionImpact = {
 export type HouseholdsPoweredByRenewableEnergyImpact = {
   current: number;
   forecast: number;
-};
-
-export type NonContaminatedSurfaceAreaImpact = {
-  current: number;
-  forecast: number;
-  difference: number;
-};
-
-export type PermeableSurfaceAreaImpactResult = {
-  base: number;
-  forecast: number;
-  difference: number;
-  mineralSoil: {
-    base: number;
-    forecast: number;
-    difference: number;
-  };
-  greenSoil: {
-    base: number;
-    forecast: number;
-    difference: number;
-  };
 };
 
 export type FullTimeJobsImpactResult = {
@@ -128,9 +112,12 @@ export type AccidentsImpactResult = {
 };
 
 export type EnvironmentalSoilsRelatedImpacts = {
-  nonContaminatedSurfaceArea?: NonContaminatedSurfaceAreaImpact;
-  permeableSurfaceArea: PermeableSurfaceAreaImpactResult;
-  soilsCarbonStorage: SoilsCarbonStorageImpactResult;
+  nonContaminatedSurfaceArea?: Impact;
+  permeableSurfaceArea: Impact & {
+    mineralSoil: Impact;
+    greenSoil: Impact;
+  };
+  soilsCo2eqStorage?: Impact;
 };
 
 export type EnvironmentalCo2RelatedImpacts = {

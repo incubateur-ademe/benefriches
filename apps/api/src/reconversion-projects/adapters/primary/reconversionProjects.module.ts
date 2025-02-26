@@ -4,7 +4,7 @@ import { FricheGenerator } from "shared";
 
 import { CarbonStorageModule } from "src/carbon-storage/adapters/primary/carbonStorage.module";
 import { SqlCarbonStorageQuery } from "src/carbon-storage/adapters/secondary/carbon-storage-query/SqlCarbonStorageQuery";
-import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
+import { GetCarbonStorageFromSoilDistributionService } from "src/carbon-storage/core/services/getCarbonStorageFromSoilDistribution";
 import { LocationFeaturesModule } from "src/location-features/adapters/primary/locationFeatures.module";
 import { DV3FApiGouvService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService";
 import { CityPropertyValueProvider } from "src/location-features/core/gateways/CityPropertyValueProvider";
@@ -90,14 +90,14 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       useFactory(
         reconversionProjectRepo: SqlReconversionProjectImpactsQuery,
         siteRepo: SqlSiteImpactsQuery,
-        getCityCarbonStoragePerSoilsCategoryUseCase: GetCityCarbonStoragePerSoilsCategoryUseCase,
+        getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
         getCityRelatedDataService: GetCityRelatedDataService,
       ) {
         return new ComputeReconversionProjectImpactsUseCase(
           reconversionProjectRepo,
           siteRepo,
-          getCityCarbonStoragePerSoilsCategoryUseCase,
+          getCarbonStorageFromSoilDistribution,
           dateProvider,
           getCityRelatedDataService,
         );
@@ -105,7 +105,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       inject: [
         SqlReconversionProjectImpactsQuery,
         SqlSiteImpactsQuery,
-        GetCityCarbonStoragePerSoilsCategoryUseCase,
+        GetCarbonStorageFromSoilDistributionService,
         RealDateProvider,
         GetCityRelatedDataService,
       ],
@@ -114,7 +114,7 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
       provide: QuickComputeUrbanProjectImpactsOnFricheUseCase,
       useFactory(
         cityCodeService: GeoApiGouvService,
-        getCityCarbonStoragePerSoilsCategoryUseCase: GetCityCarbonStoragePerSoilsCategoryUseCase,
+        getCarbonStorageFromSoilDistribution: GetCarbonStorageFromSoilDistributionService,
         dateProvider: DateProvider,
         getCityRelatedDataService: GetCityRelatedDataService,
       ) {
@@ -122,13 +122,13 @@ import { ReconversionProjectController } from "./reconversionProjects.controller
           cityCodeService,
           new FricheGenerator(),
           dateProvider,
-          getCityCarbonStoragePerSoilsCategoryUseCase,
+          getCarbonStorageFromSoilDistribution,
           getCityRelatedDataService,
         );
       },
       inject: [
         GeoApiGouvService,
-        GetCityCarbonStoragePerSoilsCategoryUseCase,
+        GetCarbonStorageFromSoilDistributionService,
         RealDateProvider,
         GetCityRelatedDataService,
       ],

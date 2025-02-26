@@ -6,8 +6,6 @@ import {
   TaxesIncomeImpact,
 } from "shared";
 
-import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
-
 import { UrbanProjectFeatures } from "../urbanProjects";
 import {
   ReconversionProjectImpactsService,
@@ -19,10 +17,21 @@ import { getRoadsAndUtilitiesExpensesImpacts } from "./roads-and-utilities-expen
 import { TravelRelatedImpactsService } from "./travel-related-impacts-service/TravelRelatedImpactsService";
 import { UrbanFreshnessRelatedImpactsService } from "./urban-freshness-related-impacts-service/UrbanFreshnessRelatedImpactsService";
 
+type SiteCityDataProps =
+  | {
+      siteIsFriche: true;
+      citySquareMetersSurfaceArea: number;
+      cityPopulation: number;
+      cityPropertyValuePerSquareMeter: number;
+    }
+  | {
+      siteIsFriche: false;
+      citySquareMetersSurfaceArea: number;
+      cityPopulation: number;
+    };
+
 type UrbanProjectImpactsServiceProps = ReconversionProjectImpactsServiceProps & {
-  getCityRelatedDataService: GetCityRelatedDataService;
-  citySquareMetersSurfaceArea: number;
-  cityPopulation: number;
+  siteCityData: SiteCityDataProps;
 };
 
 export class UrbanProjectImpactsService
@@ -30,20 +39,15 @@ export class UrbanProjectImpactsService
   implements ImpactsServiceInterface
 {
   protected readonly developmentPlanFeatures: UrbanProjectFeatures;
-  private readonly citySquareMetersSurfaceArea: number;
-  private readonly cityPopulation: number;
-
-  private readonly getCityRelatedDataService: GetCityRelatedDataService;
+  private readonly siteCityData: SiteCityDataProps;
 
   constructor(props: UrbanProjectImpactsServiceProps) {
     super(props);
 
     this.developmentPlanFeatures = this.reconversionProject
       .developmentPlanFeatures as UrbanProjectFeatures;
-    this.getCityRelatedDataService = props.getCityRelatedDataService;
 
-    this.citySquareMetersSurfaceArea = props.citySquareMetersSurfaceArea;
-    this.cityPopulation = props.cityPopulation;
+    this.siteCityData = props.siteCityData;
   }
 
   protected get urbanFreshnessImpacts() {
@@ -51,8 +55,8 @@ export class UrbanProjectImpactsService
       buildingsFloorAreaDistribution: this.developmentPlanFeatures.buildingsFloorAreaDistribution,
       spacesDistribution: this.developmentPlanFeatures.spacesDistribution,
       siteSquareMetersSurfaceArea: this.relatedSite.surfaceArea,
-      citySquareMetersSurfaceArea: this.citySquareMetersSurfaceArea,
-      cityPopulation: this.cityPopulation,
+      citySquareMetersSurfaceArea: this.siteCityData.citySquareMetersSurfaceArea,
+      cityPopulation: this.siteCityData.cityPopulation,
       sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });
     return {
@@ -66,8 +70,8 @@ export class UrbanProjectImpactsService
     const travelRelatedImpactsService = new TravelRelatedImpactsService({
       buildingsFloorAreaDistribution: this.developmentPlanFeatures.buildingsFloorAreaDistribution,
       siteSquareMetersSurfaceArea: this.relatedSite.surfaceArea,
-      citySquareMetersSurfaceArea: this.citySquareMetersSurfaceArea,
-      cityPopulation: this.cityPopulation,
+      citySquareMetersSurfaceArea: this.siteCityData.citySquareMetersSurfaceArea,
+      cityPopulation: this.siteCityData.cityPopulation,
       sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });
     return {
@@ -163,16 +167,44 @@ export class UrbanProjectImpactsService
     return [];
   }
 
-  override async formatImpacts() {
-    const localPropertyIncreaseImpacts = await this.getLocalPropertyIncreaseImpacts();
-    const { economicBalance, environmental, social, socioeconomic } = await super.formatImpacts();
+  private get localPropertyIncreaseImpacts(): SocioEconomicImpact[] {
+    if (!this.siteCityData.siteIsFriche) {
+      return [];
+    }
+
+    const { propertyValueIncrease, propertyTransferDutiesIncrease } = computePropertyValueImpact(
+      this.relatedSite.surfaceArea,
+      this.siteCityData.citySquareMetersSurfaceArea,
+      this.siteCityData.cityPopulation,
+      this.siteCityData.cityPropertyValuePerSquareMeter,
+      this.sumOnEvolutionPeriodService,
+      false, // TODO: quartier V2 créer une méthode de calcul pour ce paramètre
+    );
+    return [
+      {
+        actor: "local_people",
+        amount: propertyValueIncrease,
+        impact: "local_property_value_increase",
+        impactCategory: "economic_indirect",
+      },
+      {
+        actor: "community",
+        amount: propertyTransferDutiesIncrease,
+        impact: "local_transfer_duties_increase",
+        impactCategory: "economic_indirect",
+      },
+    ];
+  }
+
+  override formatImpacts() {
+    const { economicBalance, environmental, social, socioeconomic } = super.formatImpacts();
     const urbanProjectSocioEconomic = [
       ...socioeconomic.impacts,
       ...this.taxesIncomeImpact,
       ...this.avoidedCo2EqEmissions,
       ...this.urbanFreshnessImpacts.socioEconomicList,
       ...this.travelRelatedImpacts.socioEconomicList,
-      ...localPropertyIncreaseImpacts,
+      ...this.localPropertyIncreaseImpacts,
       ...this.roadsAndUtilitiesExpensesImpacts,
     ];
     return {
@@ -191,39 +223,5 @@ export class UrbanProjectImpactsService
         total: sumListWithKey(urbanProjectSocioEconomic, "amount"),
       },
     };
-  }
-
-  private async getLocalPropertyIncreaseImpacts(): Promise<SocioEconomicImpact[]> {
-    if (!this.relatedSite.isFriche) {
-      return [];
-    }
-
-    const cityPropertyValuePerSquareMeter =
-      await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
-        this.relatedSite.addressCityCode,
-      );
-
-    const { propertyValueIncrease, propertyTransferDutiesIncrease } = computePropertyValueImpact(
-      this.relatedSite.surfaceArea,
-      this.citySquareMetersSurfaceArea,
-      this.cityPopulation,
-      cityPropertyValuePerSquareMeter.medianPricePerSquareMeters,
-      this.sumOnEvolutionPeriodService,
-      false, // TODO: quartier V2 créer une méthode de calcul pour ce paramètre
-    );
-    return [
-      {
-        actor: "local_people",
-        amount: propertyValueIncrease,
-        impact: "local_property_value_increase",
-        impactCategory: "economic_indirect",
-      },
-      {
-        actor: "community",
-        amount: propertyTransferDutiesIncrease,
-        impact: "local_transfer_duties_increase",
-        impactCategory: "economic_indirect",
-      },
-    ];
   }
 }

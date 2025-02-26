@@ -13,9 +13,9 @@ import { GetCityRelatedDataService } from "src/location-features/core/services/g
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
+import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { PhotovoltaicProjectImpactsService } from "../model/impacts/PhotovoltaicProjectImpactsService";
 import {
-  GetSoilsCarbonStoragePerSoilsService,
   InputReconversionProjectData,
   InputSiteData,
 } from "../model/impacts/ReconversionProjectImpactsService";
@@ -139,7 +139,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
   constructor(
     private readonly reconversionProjectQuery: ReconversionProjectImpactsQuery,
     private readonly siteRepository: SiteImpactsQuery,
-    private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
+    private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
     private readonly dateProvider: DateProvider,
     private readonly getCityRelatedDataService: GetCityRelatedDataService,
   ) {}
@@ -187,6 +187,16 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       },
     };
 
+    const siteSoilsCarbonStorage = await this.getCarbonStorageFromSoilDistributionService.execute({
+      cityCode: relatedSite.addressCityCode,
+      soilsDistribution: relatedSite.soilsDistribution,
+    });
+    const projectSoilsCarbonStorage =
+      await this.getCarbonStorageFromSoilDistributionService.execute({
+        cityCode: relatedSite.addressCityCode,
+        soilsDistribution: reconversionProject.soilsDistribution,
+      });
+
     const siteData: InputSiteData = {
       isFriche: relatedSite.isFriche,
       contaminatedSoilSurface: relatedSite.contaminatedSoilSurface,
@@ -199,6 +209,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       ownerName: relatedSite.ownerName,
       yearlyExpenses: relatedSite.yearlyExpenses,
       tenantName: relatedSite.tenantName,
+      soilsCarbonStorage: siteSoilsCarbonStorage,
     };
 
     const reconversionProjectData: InputReconversionProjectData = {
@@ -223,6 +234,7 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
       conversionSchedule: reconversionProject.conversionSchedule,
       siteResaleSellingPrice: reconversionProject.siteResaleSellingPrice,
       buildingsResaleSellingPrice: reconversionProject.buildingsResaleSellingPrice,
+      soilsCarbonStorage: projectSoilsCarbonStorage,
     };
 
     switch (reconversionProject.developmentPlanType) {
@@ -232,12 +244,11 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           relatedSite: siteData,
           evaluationPeriodInYears,
           dateProvider: this.dateProvider,
-          getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
         });
 
         return {
           ...result,
-          impacts: await photovoltaicProjectImpactsService.formatImpacts(),
+          impacts: photovoltaicProjectImpactsService.formatImpacts(),
         };
       }
       case "URBAN_PROJECT": {
@@ -251,15 +262,27 @@ export class ComputeReconversionProjectImpactsUseCase implements UseCase<Request
           relatedSite: siteData,
           evaluationPeriodInYears,
           dateProvider: this.dateProvider,
-          getCityRelatedDataService: this.getCityRelatedDataService,
-          getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
-          citySquareMetersSurfaceArea: squareMetersSurfaceArea,
-          cityPopulation: population,
+          siteCityData: relatedSite.isFriche
+            ? {
+                siteIsFriche: true,
+                citySquareMetersSurfaceArea: squareMetersSurfaceArea,
+                cityPopulation: population,
+                cityPropertyValuePerSquareMeter: (
+                  await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
+                    relatedSite.addressCityCode,
+                  )
+                ).medianPricePerSquareMeters,
+              }
+            : {
+                siteIsFriche: false,
+                citySquareMetersSurfaceArea: squareMetersSurfaceArea,
+                cityPopulation: population,
+              },
         });
 
         return {
           ...result,
-          impacts: await urbanProjectImpactsService.formatImpacts(),
+          impacts: urbanProjectImpactsService.formatImpacts(),
         };
       }
     }

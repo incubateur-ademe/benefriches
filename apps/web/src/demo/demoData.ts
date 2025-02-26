@@ -192,7 +192,7 @@ export const IMPACTS_DATA = {
           impactCategory: "environmental_monetary",
           actor: "human_society",
           details: [
-            { amount: 67522, impact: "carbon_storage" },
+            { amount: 67522, impact: "soils_co2_eq_storage" },
             { amount: -32, impact: "water_cycle" },
           ],
         },
@@ -267,34 +267,13 @@ export const IMPACTS_DATA = {
         greenSoil: { base: 5000, forecast: 24625, difference: 24625 - 5000 },
         mineralSoil: { base: 25000, forecast: 4125, difference: 4125 - 25000 },
       },
-      nonContaminatedSurfaceArea: { current: 40000, forecast: 47500, difference: 7500 },
-      soilsCarbonStorage: {
-        isSuccess: true,
-        current: {
-          total: 173,
-          soils: [
-            { type: "BUILDINGS", surfaceArea: 5000, carbonStorage: 15 },
-            { type: "IMPERMEABLE_SOILS", surfaceArea: 15000, carbonStorage: 45 },
-            { type: "MINERAL_SOIL", surfaceArea: 25000, carbonStorage: 75 },
-            { type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED", surfaceArea: 5000, carbonStorage: 38 },
-          ],
-        },
-        forecast: {
-          total: 263.27,
-          soils: [
-            { type: "BUILDINGS", surfaceArea: 14625, carbonStorage: 43.875 },
-            { type: "IMPERMEABLE_SOILS", surfaceArea: 6625, carbonStorage: 19.875 },
-            { type: "MINERAL_SOIL", surfaceArea: 4125, carbonStorage: 12.375 },
-            {
-              type: "ARTIFICIAL_GRASS_OR_BUSHES_FILLED",
-              surfaceArea: 24625,
-              carbonStorage: 187.15,
-            },
-          ],
-        },
+      nonContaminatedSurfaceArea: { base: 40000, forecast: 47500, difference: 7500 },
+      soilsCo2eqStorage: {
+        base: 173,
+        forecast: 263.27,
+        difference: 263.27 - 173,
       },
       avoidedAirConditioningCo2EqEmissions: 0.3941062183532509,
-
       avoidedCarTrafficCo2EqEmissions: 21.21086547497763,
     },
     social: {

@@ -29,7 +29,7 @@ const getEcosystemServiceDetailsTitle = (
   impactName: EcosystemServicesImpact["details"][number]["impact"],
 ) => {
   switch (impactName) {
-    case "carbon_storage":
+    case "soils_co2_eq_storage":
       return "🍂️ Carbone stocké dans les sols";
     case "nature_related_wellness_and_leisure":
       return "🚵‍♂️ Loisirs et bien-être liés à la nature";
@@ -50,7 +50,7 @@ const getEcosystemServiceDetailsTitle = (
 
 const getChartColor = (impactName: EcosystemServicesImpact["details"][number]["impact"]) => {
   switch (impactName) {
-    case "carbon_storage":
+    case "soils_co2_eq_storage":
       return "#C56E11";
     case "soil_erosion":
       return "#C58C11";

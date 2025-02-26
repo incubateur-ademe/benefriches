@@ -48,19 +48,19 @@ describe("projectImpactsEnvironmental selectors", () => {
           name: "co2_benefit",
           type: "co2",
           impact: {
-            base: 73.33333333333334,
+            base: 59,
             details: [
               {
-                impact: { base: 73.33333333333334, difference: 0, forecast: 73.33333333333334 },
+                impact: { base: 59, difference: 0, forecast: 59 },
                 name: "stored_co2_eq",
               },
               {
-                impact: { base: 0, difference: 112.29599999999999, forecast: 112.29599999999999 },
+                impact: { base: 0, difference: 112.3, forecast: 112.3 },
                 name: "avoided_co2_eq_emissions_with_production",
               },
             ],
-            difference: 112.29599999999999,
-            forecast: 185.62933333333334,
+            difference: 112.3,
+            forecast: 171.3,
           },
         }),
       );

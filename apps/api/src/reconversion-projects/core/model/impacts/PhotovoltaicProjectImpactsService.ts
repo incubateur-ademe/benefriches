@@ -98,8 +98,8 @@ export class PhotovoltaicProjectImpactsService
     ];
   }
 
-  override async formatImpacts() {
-    const { economicBalance, environmental, social, socioeconomic } = await super.formatImpacts();
+  override formatImpacts() {
+    const { economicBalance, environmental, social, socioeconomic } = super.formatImpacts();
     const photovoltaicProjectSocioEconomic = [
       ...socioeconomic.impacts,
       ...this.taxesIncomeImpact,

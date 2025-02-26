@@ -1,4 +1,4 @@
-import { convertCarbonToCO2eq, isLocalAuthority, sumListWithKey } from "shared";
+import { isLocalAuthority, sumListWithKey } from "shared";
 
 import { getPercentageDifference } from "@/shared/core/percentage/percentage";
 
@@ -169,12 +169,8 @@ const getAvoidedCo2eqEmissions = (impactsData?: ReconversionProjectImpactsResult
     impactsData.environmental.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0,
   ].reduce((total, amount) => total + amount, 0);
 
-  if (impactsData.environmental.soilsCarbonStorage.isSuccess) {
-    const base = convertCarbonToCO2eq(impactsData.environmental.soilsCarbonStorage.current.total);
-    const forecast = convertCarbonToCO2eq(
-      impactsData.environmental.soilsCarbonStorage.forecast.total,
-    );
-    return total + (forecast - base);
+  if (impactsData.environmental.soilsCo2eqStorage) {
+    return total + impactsData.environmental.soilsCo2eqStorage.difference;
   }
 
   return total;
@@ -204,10 +200,10 @@ const getNonContaminatedSurfaceArea = (
     return undefined;
   }
 
-  const { forecast, current, difference } = nonContaminatedSurfaceAreaImpact;
+  const { forecast, base, difference } = nonContaminatedSurfaceAreaImpact;
 
   return {
-    percentageEvolution: getPercentageDifference(current, forecast),
+    percentageEvolution: getPercentageDifference(base, forecast),
     forecastContaminatedSurfaceArea: siteSurfaceArea - forecast,
     decontaminatedSurfaceArea: difference,
   };

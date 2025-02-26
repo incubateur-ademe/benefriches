@@ -2,7 +2,6 @@
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
-import { FakeGetSoilsCarbonStorageService } from "../../gateways/FakeGetSoilsCarbonStorageService";
 import { PhotovoltaicProjectImpactsService } from "./PhotovoltaicProjectImpactsService";
 import { InputReconversionProjectData, InputSiteData } from "./ReconversionProjectImpactsService";
 
@@ -48,6 +47,7 @@ const reconversionProjectImpactDataView: InputReconversionProjectData = {
   sitePurchasePropertyTransferDutiesAmount: 5432,
   operationsFirstYear: 2025,
   decontaminatedSoilSurface: 20000,
+  soilsCarbonStorage: 10,
 } as const;
 
 const site = {
@@ -71,6 +71,7 @@ const site = {
     { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
     { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
   ],
+  soilsCarbonStorage: 25,
 } as const satisfies Required<InputSiteData>;
 
 describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions with EnR production", () => {
@@ -81,16 +82,15 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
     dateProvider = new DeterministicDateProvider(fakeNow);
   });
 
-  it("returns householdsPoweredByRenewableEnergy, avoidedCO2TonsWithEnergyProduction and socioEconomic avoidedCO2TonsWithEnergyProduction", async () => {
+  it("returns householdsPoweredByRenewableEnergy, avoidedCO2TonsWithEnergyProduction and socioEconomic avoidedCO2TonsWithEnergyProduction", () => {
     const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
       relatedSite: site,
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
-      getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
     });
 
-    const result = await photovoltaicProjectImpactsService.formatImpacts();
+    const result = photovoltaicProjectImpactsService.formatImpacts();
 
     expect(result.socioeconomic.impacts).toContainEqual({
       amount: expect.any(Number) as number,
@@ -121,39 +121,34 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
     "property_transfer_duties_income",
     "ecosystem_services",
     "water_regulation",
-  ])("inherit common socio economic impact : %s", async (impactName) => {
+  ])("inherit common socio economic impact : %s", (impactName) => {
     const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
       relatedSite: site,
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
-      getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
     });
 
-    const result = await photovoltaicProjectImpactsService.formatImpacts();
+    const result = photovoltaicProjectImpactsService.formatImpacts();
 
     expect(result.socioeconomic.impacts.some(({ impact }) => impact === impactName)).toBe(true);
   });
 
-  it("format impacts as ReconversionProjectImpacts object", async () => {
+  it("format impacts as ReconversionProjectImpacts object", () => {
     const photovoltaicProjectImpactsService = new PhotovoltaicProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
       relatedSite: site,
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
-      getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
     });
 
-    const result = await photovoltaicProjectImpactsService.formatImpacts();
-
-    const soilsRelatedSocioEconomicImpacts =
-      await photovoltaicProjectImpactsService["getEnvironmentalSoilsRelatedImpacts"]();
+    const result = photovoltaicProjectImpactsService.formatImpacts();
 
     expect(result.socioeconomic.impacts).toEqual([
       ...photovoltaicProjectImpactsService["rentImpacts"],
       ...photovoltaicProjectImpactsService["avoidedFricheCosts"],
       ...photovoltaicProjectImpactsService["propertyTransferDutiesIncome"],
-      ...soilsRelatedSocioEconomicImpacts.socioEconomicList,
+      ...photovoltaicProjectImpactsService["environmentalSoilsRelatedImpacts"].socioEconomicList,
       ...photovoltaicProjectImpactsService["taxesIncomeImpact"],
       ...photovoltaicProjectImpactsService["avoidedCo2EqEmissions"],
     ]);
@@ -164,7 +159,8 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
         photovoltaicProjectImpactsService["householdsPoweredByRenewableEnergy"],
     });
     expect(result.environmental).toEqual({
-      ...soilsRelatedSocioEconomicImpacts.environmental,
+      ...photovoltaicProjectImpactsService["environmentalSoilsRelatedImpacts"].environmental,
+      soilsCo2eqStorage: photovoltaicProjectImpactsService["soilsCo2eqStorage"],
       avoidedCO2TonsWithEnergyProduction:
         photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"],
     });

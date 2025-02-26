@@ -1,13 +1,9 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { AvoidedCO2EqEmissions } from "shared";
 
-import { MockDV3FApiService } from "src/location-features/adapters/secondary/city-dv3f-provider/DV3FApiService.mock";
-import { GetCityRelatedDataService } from "src/location-features/core/services/getCityRelatedData";
-import { MockCityDataService } from "src/reconversion-projects/adapters/secondary/services/city-service/MockCityDataService";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
-import { FakeGetSoilsCarbonStorageService } from "../../gateways/FakeGetSoilsCarbonStorageService";
 import { InputReconversionProjectData, InputSiteData } from "./ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "./UrbanProjectImpactsService";
 
@@ -51,6 +47,7 @@ const reconversionProjectImpactDataView = {
   sitePurchasePropertyTransferDutiesAmount: 5432,
   operationsFirstYear: 2025,
   decontaminatedSoilSurface: 20000,
+  soilsCarbonStorage: 10,
 } as const satisfies InputReconversionProjectData;
 
 const site = {
@@ -74,6 +71,7 @@ const site = {
     { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
     { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
   ],
+  soilsCarbonStorage: 25,
 } as const satisfies Required<InputSiteData>;
 
 const commonSocioEconomicImpacts = [
@@ -108,22 +106,21 @@ describe("UrbanProjectImpactsService", () => {
     dateProvider = new DeterministicDateProvider(fakeNow);
   });
 
-  it("returns socioeconomic impacts related to local property value increase for friche", async () => {
+  it("returns socioeconomic impacts related to local property value increase for friche", () => {
     const urbanProjectImpactsService = new UrbanProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
       relatedSite: site,
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
-      getCityRelatedDataService: new GetCityRelatedDataService(
-        new MockCityDataService(),
-        new MockDV3FApiService(),
-      ),
-      getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-      cityPopulation: 150000,
-      citySquareMetersSurfaceArea: 1500000000,
+      siteCityData: {
+        siteIsFriche: true,
+        cityPopulation: 150000,
+        citySquareMetersSurfaceArea: 1500000000,
+        cityPropertyValuePerSquareMeter: 2500,
+      },
     });
 
-    const result = await urbanProjectImpactsService.formatImpacts();
+    const result = urbanProjectImpactsService.formatImpacts();
 
     expect(result.socioeconomic.impacts).toContainEqual({
       actor: "local_people",
@@ -139,22 +136,20 @@ describe("UrbanProjectImpactsService", () => {
     });
   });
 
-  it("returns no impacts related to local property value increase for non friche", async () => {
+  it("returns no impacts related to local property value increase for non friche", () => {
     const urbanProjectImpactsService = new UrbanProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
       relatedSite: { ...site, isFriche: false },
       evaluationPeriodInYears: 10,
       dateProvider: dateProvider,
-      getCityRelatedDataService: new GetCityRelatedDataService(
-        new MockCityDataService(),
-        new MockDV3FApiService(),
-      ),
-      getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-      cityPopulation: 150000,
-      citySquareMetersSurfaceArea: 1500000000,
+      siteCityData: {
+        siteIsFriche: false,
+        cityPopulation: 150000,
+        citySquareMetersSurfaceArea: 1500000000,
+      },
     });
 
-    const result = await urbanProjectImpactsService.formatImpacts();
+    const result = urbanProjectImpactsService.formatImpacts();
 
     expect(
       result.socioeconomic.impacts.some(({ impact }) => impact === "local_property_value_increase"),
@@ -172,13 +167,12 @@ describe("UrbanProjectImpactsService", () => {
         relatedSite: site,
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-        getCityRelatedDataService: new GetCityRelatedDataService(
-          new MockCityDataService(),
-          new MockDV3FApiService(),
-        ),
-        cityPopulation: 150000,
-        citySquareMetersSurfaceArea: 1500000000,
+        siteCityData: {
+          siteIsFriche: true,
+          cityPopulation: 150000,
+          citySquareMetersSurfaceArea: 1500000000,
+          cityPropertyValuePerSquareMeter: 2500,
+        },
       });
       expect(projectImpactsService["taxesIncomeImpact"]).toEqual([
         {
@@ -210,13 +204,12 @@ describe("UrbanProjectImpactsService", () => {
         relatedSite: site,
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-        getCityRelatedDataService: new GetCityRelatedDataService(
-          new MockCityDataService(),
-          new MockDV3FApiService(),
-        ),
-        cityPopulation: 150000,
-        citySquareMetersSurfaceArea: 1500000000,
+        siteCityData: {
+          siteIsFriche: true,
+          cityPopulation: 150000,
+          citySquareMetersSurfaceArea: 1500000000,
+          cityPropertyValuePerSquareMeter: 2500,
+        },
       });
       expect(projectImpactsService["taxesIncomeImpact"]).toEqual([
         {
@@ -258,20 +251,19 @@ describe("UrbanProjectImpactsService", () => {
         relatedSite: site,
         evaluationPeriodInYears: 10,
         dateProvider: dateProvider,
-        getCityRelatedDataService: new GetCityRelatedDataService(
-          new MockCityDataService(),
-          new MockDV3FApiService(),
-        ),
-        getSoilsCarbonStorageService: new FakeGetSoilsCarbonStorageService(),
-        cityPopulation: 300000,
-        citySquareMetersSurfaceArea: 6000000000,
+        siteCityData: {
+          siteIsFriche: true,
+          cityPopulation: 300000,
+          citySquareMetersSurfaceArea: 6000000000,
+          cityPropertyValuePerSquareMeter: 2500,
+        },
       });
     });
 
     it.each(commonSocioEconomicImpacts)(
       "inherit common socio economic impact : %s",
-      async (impactName) => {
-        const result = await urbanProjectImpactsService.formatImpacts();
+      (impactName) => {
+        const result = urbanProjectImpactsService.formatImpacts();
 
         expect(result.socioeconomic.impacts.some(({ impact }) => impact === impactName)).toBe(true);
       },
@@ -279,15 +271,15 @@ describe("UrbanProjectImpactsService", () => {
 
     it.each(urbanProjectSocioEconomicImpacts)(
       "has urban project socio economic impact : %s",
-      async (impactName) => {
-        const result = await urbanProjectImpactsService.formatImpacts();
+      (impactName) => {
+        const result = urbanProjectImpactsService.formatImpacts();
 
         expect(result.socioeconomic.impacts.some(({ impact }) => impact === impactName)).toBe(true);
       },
     );
 
-    it("has urban project avoided_co2_eq_emissions socio economic impact with traffic and air conditioning", async () => {
-      const result = await urbanProjectImpactsService.formatImpacts();
+    it("has urban project avoided_co2_eq_emissions socio economic impact with traffic and air conditioning", () => {
+      const result = urbanProjectImpactsService.formatImpacts();
 
       const avoidedCo2Emissions = result.socioeconomic.impacts.find(
         ({ impact }) => impact === "avoided_co2_eq_emissions",
@@ -303,8 +295,8 @@ describe("UrbanProjectImpactsService", () => {
       });
     });
 
-    it("returns urban project social impacts", async () => {
-      const result = await urbanProjectImpactsService.formatImpacts();
+    it("returns urban project social impacts", () => {
+      const result = urbanProjectImpactsService.formatImpacts();
 
       expect(result.social).toEqual({
         accidents: urbanProjectImpactsService["accidentsImpact"],
@@ -318,12 +310,12 @@ describe("UrbanProjectImpactsService", () => {
       });
     });
 
-    it("returns urban project environmental impacts", async () => {
-      const result = await urbanProjectImpactsService.formatImpacts();
+    it("returns urban project environmental impacts", () => {
+      const result = urbanProjectImpactsService.formatImpacts();
 
       expect(result.environmental.nonContaminatedSurfaceArea).toBeDefined();
       expect(result.environmental.permeableSurfaceArea).toBeDefined();
-      expect(result.environmental.soilsCarbonStorage).toBeDefined();
+      expect(result.environmental.soilsCo2eqStorage).toBeDefined();
       expect(result.environmental.avoidedCarTrafficCo2EqEmissions).toEqual(
         urbanProjectImpactsService["travelRelatedImpacts"]["environmental"][
           "avoidedCarTrafficCo2EqEmissions"

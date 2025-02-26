@@ -17,5 +17,5 @@ export interface PartialImpactsServiceInterface {
 }
 
 export interface ImpactsServiceInterface {
-  formatImpacts(): Promise<ReconversionProjectImpacts>;
+  formatImpacts(): ReconversionProjectImpacts;
 }

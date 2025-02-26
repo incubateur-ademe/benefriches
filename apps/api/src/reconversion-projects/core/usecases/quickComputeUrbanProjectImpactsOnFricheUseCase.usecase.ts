@@ -16,11 +16,9 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { CityDataProvider } from "../gateways/CityDataProvider";
+import { GetCarbonStorageFromSoilDistributionService } from "../gateways/SoilsCarbonStorageService";
 import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
-import {
-  GetSoilsCarbonStoragePerSoilsService,
-  InputSiteData,
-} from "../model/impacts/ReconversionProjectImpactsService";
+import { InputSiteData } from "../model/impacts/ReconversionProjectImpactsService";
 import { UrbanProjectImpactsService } from "../model/impacts/UrbanProjectImpactsService";
 import { DevelopmentPlan, Schedule } from "../model/reconversionProject";
 
@@ -122,7 +120,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
     private readonly cityCodeService: CityDataProvider,
     private readonly siteGenerationService: SiteGenerationService,
     private readonly dateProvider: DateProvider,
-    private readonly getSoilsCarbonStoragePerSoilsService: GetSoilsCarbonStoragePerSoilsService,
+    private readonly getCarbonStorageFromSoilDistributionService: GetCarbonStorageFromSoilDistributionService,
     private readonly getCityRelatedDataService: GetCityRelatedDataService,
   ) {}
 
@@ -130,6 +128,11 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
     const city = await this.cityCodeService.getCitySurfaceAreaAndPopulation(siteCityCode);
 
     const site = this.siteGenerationService.fromSurfaceAreaAndCity(siteSurfaceArea, city) as Friche;
+
+    const siteSoilsCarbonStorage = await this.getCarbonStorageFromSoilDistributionService.execute({
+      cityCode: site.address.cityCode,
+      soilsDistribution: site.soilsDistribution.toJSON(),
+    });
 
     const siteData: InputSiteData = {
       isFriche: site.isFriche,
@@ -143,6 +146,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
       accidentsDeaths: site.accidentsDeaths,
       accidentsMinorInjuries: site.accidentsMinorInjuries,
       accidentsSevereInjuries: site.accidentsSevereInjuries,
+      soilsCarbonStorage: siteSoilsCarbonStorage,
     };
 
     // we don't care for reconversion project and creator id since it won't be saved in DB
@@ -164,14 +168,32 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
     );
     const reconversionProject = reconversionProjectCreationService.getReconversionProject();
 
+    const projectSoilsCarbonStorage =
+      await this.getCarbonStorageFromSoilDistributionService.execute({
+        cityCode: site.address.cityCode,
+        soilsDistribution: reconversionProject.soilsDistribution,
+      });
+
     const impacts = new UrbanProjectImpactsService({
-      cityPopulation: city.population,
+      siteCityData: siteData.isFriche
+        ? {
+            siteIsFriche: true,
+            citySquareMetersSurfaceArea: city.surfaceArea,
+            cityPopulation: city.population,
+            cityPropertyValuePerSquareMeter: (
+              await this.getCityRelatedDataService.getPropertyValuePerSquareMeter(
+                siteData.addressCityCode,
+              )
+            ).medianPricePerSquareMeters,
+          }
+        : {
+            siteIsFriche: false,
+            citySquareMetersSurfaceArea: city.surfaceArea,
+            cityPopulation: city.population,
+          },
       relatedSite: siteData,
       evaluationPeriodInYears: EVALUATION_PERIOD_IN_YEARS,
       dateProvider: this.dateProvider,
-      citySquareMetersSurfaceArea: city.surfaceArea,
-      getCityRelatedDataService: this.getCityRelatedDataService,
-      getSoilsCarbonStorageService: this.getSoilsCarbonStoragePerSoilsService,
       reconversionProject: {
         developmentPlanInstallationExpenses: reconversionProject.developmentPlan
           .costs as DevelopmentPlanInstallationExpenses[],
@@ -198,6 +220,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
         reinstatementSchedule: reconversionProject.reinstatementSchedule,
         reinstatementExpenses: (reconversionProject.reinstatementCosts ??
           []) as ReinstatementExpense[],
+        soilsCarbonStorage: projectSoilsCarbonStorage,
       },
     });
 
@@ -229,7 +252,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
           structureType: site.owner.structureType,
         },
       },
-      impacts: await impacts.formatImpacts(),
+      impacts: impacts.formatImpacts(),
     };
   }
 }
