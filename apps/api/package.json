@@ -64,12 +64,12 @@
     "bcrypt": "~5.1.1",
     "date-fns": "~4.1.0",
     "knex": "~3.1.0",
-    "nestjs-zod": "~3.0.0",
+    "nestjs-zod": "~4.3.1",
     "pg": "~8.13.1",
     "reflect-metadata": "~0.2.2",
     "rxjs": "~7.8.1",
     "shared": "workspace:^",
     "uuid": "~11.0.5",
-    "zod": "~3.24.1"
+    "zod": "~3.24.2"
   }
 }

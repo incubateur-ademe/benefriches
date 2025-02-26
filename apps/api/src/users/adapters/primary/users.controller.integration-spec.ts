@@ -1,9 +1,9 @@
 import { INestApplication } from "@nestjs/common";
 import { Knex } from "knex";
-import { z } from "nestjs-zod/z";
 import { Server } from "net";
 import supertest from "supertest";
 import { createTestApp } from "test/testApp";
+import z from "zod";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { buildExhaustiveUserProps, buildMinimalUserProps } from "src/users/core/model/user.mock";

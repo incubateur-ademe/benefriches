@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { createZodDto } from "nestjs-zod";
-import { z } from "nestjs-zod/z";
 import { soilTypeSchema } from "shared";
+import { z } from "zod";
 
 import { GetCityCarbonStoragePerSoilsCategoryUseCase } from "src/carbon-storage/core/usecases/getCityCarbonStoragePerSoilsCategory";
 
