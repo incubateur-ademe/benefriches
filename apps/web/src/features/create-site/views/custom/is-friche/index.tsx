@@ -3,7 +3,7 @@ import { siteNatureStepCompleted } from "@/features/create-site/core/createSite.
 import { selectIsFriche } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import IsFricheForm from "./IsFricheForm";
+import IsFricheForm from "../../common-views/IsFricheForm";
 
 const mapIsFricheValue = (isFriche: boolean | undefined) => {
   if (isFriche === undefined) return undefined;

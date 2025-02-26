@@ -48,6 +48,11 @@ function IsFricheForm({ initialValues, onSubmit, onBack }: Props) {
             Une friche peut être industrielle, militaire, ferroviaire, portuaire... mais aussi
             agricole, hospitalière, administrative, commerciale ou d'habitat.
           </p>
+          <p>
+            Si vous ne savez pas si le site est en friche ou non, notamment en regard de son état
+            vacant ou non, et qu'il s'agit d'un espace artificialisé et construit (hors activité
+            agricole), nous vous invitons à sélectionner « friche ».
+          </p>
         </FormDefinition>
       }
     >
