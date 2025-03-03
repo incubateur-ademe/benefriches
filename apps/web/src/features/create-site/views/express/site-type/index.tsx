@@ -1,9 +1,9 @@
-import { revertSiteTypeStep } from "@/features/create-site/core/actions/createSite.actions";
+import { isFricheReverted } from "@/features/create-site/core/actions/createSite.actions";
 import { isFricheCompleted } from "@/features/create-site/core/createSite.reducer";
 import { selectIsFriche } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import IsFricheForm from "../../common-views/IsFricheForm";
+import IsFricheForm from "../../is-friche/IsFricheForm";
 
 const mapIsFricheValue = (isFriche: boolean | undefined) => {
   if (isFriche === undefined) return undefined;
@@ -22,7 +22,7 @@ function IsFricheFormContainer() {
       onSubmit={(data) => {
         dispatch(isFricheCompleted({ isFriche: data.isFriche === "yes" }));
       }}
-      onBack={() => dispatch(revertSiteTypeStep())}
+      onBack={() => dispatch(isFricheReverted())}
     />
   );
 }

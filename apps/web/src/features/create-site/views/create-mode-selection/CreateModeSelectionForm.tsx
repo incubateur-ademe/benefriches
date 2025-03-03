@@ -2,12 +2,15 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Controller, useForm } from "react-hook-form";
 
+import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
 import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
+  isFriche: boolean;
   onSubmit: (data: FormValues) => void;
+  onBack?: () => void;
 };
 
 export type FormValues = {
@@ -44,12 +47,14 @@ const options: Option[] = [
   },
 ] as const satisfies Option[];
 
-function CreateModeSelectionForm({ onSubmit }: Props) {
+function CreateModeSelectionForm({ isFriche, onSubmit, onBack }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>();
   const validationError = formState.errors.createMode;
 
   return (
-    <WizardFormLayout title="Comment souhaitez-vous renseigner le site ?">
+    <WizardFormLayout
+      title={`Comment souhaitez-vous renseigner ${isFriche ? "la friche" : "le site"} ?`}
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="tw-mb-10">
           <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4">
@@ -87,9 +92,13 @@ function CreateModeSelectionForm({ onSubmit }: Props) {
           </div>
           {validationError && <p className={fr.cx("fr-error-text")}>{validationError.message}</p>}
         </div>
-        <Button nativeButtonProps={{ type: "submit", disabled: !formState.isValid }}>
-          Valider
-        </Button>
+        {onBack ? (
+          <BackNextButtonsGroup onBack={onBack} />
+        ) : (
+          <Button nativeButtonProps={{ type: "submit", disabled: !formState.isValid }}>
+            Valider
+          </Button>
+        )}
       </form>
     </WizardFormLayout>
   );

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
+import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 import {
   siteCreationInitiated,
@@ -17,6 +18,7 @@ import SiteCreationCustomStepper from "./custom/Stepper";
 import SiteCreationExpressStepContent from "./express/StepContent";
 import SiteCreationExpressStepper from "./express/Stepper";
 import SiteCreationIntroduction from "./introduction";
+import IsFricheForm from "./is-friche";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 const getMainChildren = (
@@ -26,6 +28,10 @@ const getMainChildren = (
   switch (currentStep) {
     case "INTRODUCTION":
       return <SiteCreationIntroduction />;
+    case "IS_FRICHE":
+      return <IsFricheForm />;
+    case "SITE_NATURE":
+
     case "CREATE_MODE_SELECTION":
       return <CreateModeSelectionForm />;
     default:
@@ -67,7 +73,7 @@ function SiteCreationWizard() {
               />
             );
           default:
-            return null;
+            return <FormStepper currentStepIndex={0} steps={["Introduction"]} isDone={false} />;
         }
       })()}
     />

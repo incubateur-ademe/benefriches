@@ -2,7 +2,7 @@ import { SiteCreationCustomStep } from "@/features/create-site/core/createSite.r
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
 const fricheStepsCategories = [
-  "Type de site",
+  "Introduction",
   "Adresse",
   "Sols",
   "Pollution et accidents",
@@ -19,9 +19,8 @@ type StepCategory = (typeof fricheStepsCategories)[number];
 
 const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
   switch (step) {
-    case "IS_FRICHE":
     case "FRICHE_ACTIVITY":
-      return "Type de site";
+      return "Introduction";
     case "ADDRESS":
       return "Adresse";
     case "SOILS_INTRODUCTION":

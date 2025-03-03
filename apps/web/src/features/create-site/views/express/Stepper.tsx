@@ -1,14 +1,12 @@
 import { SiteCreationExpressStep } from "@/features/create-site/core/createSite.reducer";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-const STEPS_CATEGORIES = ["Type de site", "Adresse", "Superficie", "Récapitulatif"] as const;
+const STEPS_CATEGORIES = ["Introduction", "Adresse", "Superficie", "Récapitulatif"] as const;
 
 type StepCategory = (typeof STEPS_CATEGORIES)[number];
 
 const getCurrentStepCategory = (step: SiteCreationExpressStep): StepCategory => {
   switch (step) {
-    case "IS_FRICHE":
-      return "Type de site";
     case "ADDRESS":
       return "Adresse";
     case "SURFACE_AREA":

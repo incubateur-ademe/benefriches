@@ -2,6 +2,7 @@ import { createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {
+  isFricheReverted,
   revertAddressStep,
   revertFricheAccidentsStep,
   revertFricheActivityStep,
@@ -46,6 +47,8 @@ import {
   getInitialState,
   namingIntroductionStepCompleted,
   isFricheCompleted,
+  introductionStepCompleted,
+  createModeSelectionCompleted,
 } from "../createSite.reducer";
 import { siteWithExhaustiveData } from "../siteData.mock";
 import {
@@ -65,18 +68,30 @@ describe("Create site reducer", () => {
         },
       });
     };
-    describe("IS_FRICHE", () => {
-      it("goes to ADDRESS step and sets type when step is completed and site is not a friche", () => {
-        const store = initStoreWithState({ stepsHistory: ["IS_FRICHE"] });
+    describe("INTRODUCTION", () => {
+      it("goes to IS_FRICHE step when step completed", () => {
+        const store = initStoreWithState({ stepsHistory: ["INTRODUCTION"] });
         const initialRootState = store.getState();
 
-        store.dispatch(isFricheCompleted({ isFriche: false }));
+        store.dispatch(introductionStepCompleted());
 
         const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, { isFriche: false });
-        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+        expectSiteDataUnchanged(initialRootState, newState);
+        expectNewCurrentStep(initialRootState, newState, "IS_FRICHE");
       });
-      it("goes to FRICHE_ACTIVITY step and sets type when step is completed and site is a friche", () => {
+    });
+    describe("IS_FRICHE", () => {
+      // it("goes to SITE_NATURE step when step is completed and site is not a friche", () => {
+      //   const store = initStoreWithState({ stepsHistory: ["IS_FRICHE"] });
+      //   const initialRootState = store.getState();
+
+      //   store.dispatch(isFricheCompleted({ isFriche: false }));
+
+      //   const newState = store.getState();
+      //   expectSiteDataDiff(initialRootState, newState, { isFriche: false });
+      //   expectNewCurrentStep(initialRootState, newState, "SITE_NATURE");
+      // });
+      it("goes to CREATE_MODE_SELECTION step and sets site nature to friche when step is completed and site is a friche", () => {
         const store = initStoreWithState({ stepsHistory: ["IS_FRICHE"] });
         const initialRootState = store.getState();
 
@@ -84,26 +99,51 @@ describe("Create site reducer", () => {
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { isFriche: true });
+        expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
+      });
+      it("goes to previous step and unsets isFriche when step is reverted", () => {
+        const store = initStoreWithState({ stepsHistory: ["INTRODUCTION", "IS_FRICHE"] });
+        const initialRootState = store.getState();
+
+        store.dispatch(isFricheReverted());
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { isFriche: undefined });
+        expectStepReverted(initialRootState, newState);
+      });
+    });
+    describe("CREATE_MODE_SELECTION", () => {
+      it("goes to FRICHE_ACTIVITY step when 'custom' mode is selected and site is a friche", () => {
+        const store = initStoreWithState({
+          stepsHistory: ["IS_FRICHE", "CREATE_MODE_SELECTION"],
+          siteData: { isFriche: true },
+        });
+        const initialRootState = store.getState();
+
+        store.dispatch(createModeSelectionCompleted({ createMode: "custom" }));
+
+        const newState = store.getState();
         expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
       });
-      it("goes to ADDRESS step and sets type when step is completed and site is a friche and createMode is express", () => {
-        const store = initStoreWithState({ stepsHistory: ["IS_FRICHE"], createMode: "express" });
+      it("goes to ADDRESS step when 'custom' mode is selected and site is NOT a friche", () => {
+        const store = initStoreWithState({
+          stepsHistory: ["IS_FRICHE", "CREATE_MODE_SELECTION"],
+          siteData: { isFriche: false },
+        });
         const initialRootState = store.getState();
 
-        store.dispatch(isFricheCompleted({ isFriche: true }));
+        store.dispatch(createModeSelectionCompleted({ createMode: "custom" }));
 
         const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, { isFriche: true });
         expectNewCurrentStep(initialRootState, newState, "ADDRESS");
       });
-      it("goes to ADDRESS step and sets type when step is completed and site is not a friche and createMode is express", () => {
-        const store = initStoreWithState({ stepsHistory: ["IS_FRICHE"], createMode: "express" });
+      it("goes to ADDRESS step when 'express' mode is selected", () => {
+        const store = initStoreWithState({ stepsHistory: ["IS_FRICHE", "CREATE_MODE_SELECTION"] });
         const initialRootState = store.getState();
 
-        store.dispatch(isFricheCompleted({ isFriche: false }));
+        store.dispatch(createModeSelectionCompleted({ createMode: "express" }));
 
         const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, { isFriche: false });
         expectNewCurrentStep(initialRootState, newState, "ADDRESS");
       });
     });

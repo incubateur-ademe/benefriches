@@ -5,7 +5,6 @@ import FricheAccidentsForm from "./accidents/accidents-count";
 import FricheAccidentsIntroduction from "./accidents/introduction";
 import AddressForm from "./address";
 import FricheActivityForm from "./friche-activity";
-import IsFricheForm from "./is-friche";
 import SiteNameAndDescriptionForm from "./naming";
 import SiteNamingIntroduction from "./naming/introduction";
 import SiteCreationResult from "./result";
@@ -33,8 +32,6 @@ function SiteCreationCustomStepContent() {
   const currentStep = useAppSelector(selectCurrentStep);
 
   switch (currentStep) {
-    case "IS_FRICHE":
-      return <IsFricheForm />;
     case "FRICHE_ACTIVITY":
       return <FricheActivityForm />;
     case "ADDRESS":

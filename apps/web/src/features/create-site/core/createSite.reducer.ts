@@ -1,4 +1,4 @@
-import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
+import { createAction as _createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 import { FricheActivity, SoilsDistribution, SoilType, SiteYearlyExpense } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -7,6 +7,7 @@ import {
   Income,
   Owner,
   SiteDraft,
+  SurfaceAreaDistributionEntryMode,
   Tenant,
 } from "@/features/create-site/core/siteFoncier.types";
 import { splitEvenly } from "@/shared/core/split-number/splitNumber";
@@ -15,7 +16,6 @@ import { RootState } from "@/shared/core/store-config/store";
 import { customSiteSaved, expressSiteSaved } from "./actions/siteSaved.actions";
 
 export type SiteCreationCustomStep =
-  | "IS_FRICHE"
   | "FRICHE_ACTIVITY"
   | "ADDRESS"
   // soils
@@ -48,17 +48,18 @@ export type SiteCreationCustomStep =
   | "FINAL_SUMMARY"
   | "CREATION_RESULT";
 
-export type SiteCreationExpressStep = "IS_FRICHE" | "ADDRESS" | "SURFACE_AREA" | "CREATION_RESULT";
+export type SiteCreationExpressStep = "ADDRESS" | "SURFACE_AREA" | "CREATION_RESULT";
 
 export type SiteCreationStep =
   | "INTRODUCTION"
+  | "IS_FRICHE"
   | "CREATE_MODE_SELECTION"
   | SiteCreationExpressStep
   | SiteCreationCustomStep;
 
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
-  siteData: Partial<SiteDraft>;
+  siteData: SiteDraft;
   createMode?: "express" | "custom";
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
@@ -77,79 +78,74 @@ export const getInitialState = (): SiteCreationState => {
   } as const;
 };
 
-export const siteCreationInitiated = createAction("siteCreation/init");
+function prefixActionType(actionType: string) {
+  return `siteCreation/${actionType}`;
+}
 
-export const introductionStepCompleted = createAction("siteCreation/introductionStepCompleted");
+const createAction = <TPayload = void>(actionName: string) =>
+  _createAction<TPayload>(prefixActionType(actionName));
 
-export const completeCreateModeSelectionStep = createAction<{ createMode: "express" | "custom" }>(
-  "siteCreation/completeCreateModeSelectionStep",
+export const siteCreationInitiated = createAction("init");
+
+export const introductionStepCompleted = createAction("introductionStepCompleted");
+
+export const createModeSelectionCompleted = createAction<{ createMode: "express" | "custom" }>(
+  "createModeSelectionCompleted",
 );
+export const createModeReverted = createAction("createModeReverted");
 
-export const isFricheCompleted = createAction<{ isFriche: boolean }>(
-  "siteCreation/siteNatureStepCompleted",
-);
+export const isFricheCompleted = createAction<{ isFriche: boolean }>("siteNatureStepCompleted");
 
-export const completeFricheActivity = createAction<FricheActivity>(
-  "siteCreation/completeFricheActivity",
-);
+export const completeFricheActivity = createAction<FricheActivity>("completeFricheActivity");
 
-export const completeAddressStep = createAction<{ address: Address }>(
-  "siteCreation/completeAddressStep",
-);
+export const completeAddressStep = createAction<{ address: Address }>("completeAddressStep");
 
-export const completeSoilsIntroduction = createAction("siteCreation/completeSoilsIntroduction");
+export const completeSoilsIntroduction = createAction("completeSoilsIntroduction");
 
 export const completeSiteSurfaceArea = createAction<{ surfaceArea: number }>(
-  "siteCreation/completeSiteSurfaceArea",
+  "completeSiteSurfaceArea",
 );
 
-export const completeSoils = createAction<{ soils: SoilType[] }>("siteCreation/completeSoils");
+export const completeSoils = createAction<{ soils: SoilType[] }>("completeSoils");
 
-export const completeSoilsSurfaceAreaDistributionEntryMode = createAction<
-  "default_even_split" | "total_surface_percentage" | "square_meters"
->("siteCreation/completeSoilsSurfaceAreaDistributionEntryMode");
+export const completeSoilsSurfaceAreaDistributionEntryMode =
+  createAction<SurfaceAreaDistributionEntryMode>("completeSoilsSurfaceAreaDistributionEntryMode");
 
 export const completeSoilsDistribution = createAction<{ distribution: SoilsDistribution }>(
-  "siteCreation/completeSoilsDistribution",
+  "completeSoilsDistribution",
 );
 
-export const completeSoilsSummary = createAction("siteCreation/completeSoilsSummary");
+export const completeSoilsSummary = createAction("completeSoilsSummary");
 
-export const completeSoilsCarbonStorage = createAction("siteCreation/completeSoilsCarbonStorage");
+export const completeSoilsCarbonStorage = createAction("completeSoilsCarbonStorage");
 
 export const completeSoilsContaminationIntroductionStep = createAction(
-  "siteCreation/completeSoilsContaminationIntroductionStep",
+  "completeSoilsContaminationIntroductionStep",
 );
 
 export const completeSoilsContamination = createAction<{
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;
-}>("siteCreation/completeSoilsContamination");
+}>("completeSoilsContamination");
 
-export const completeManagementIntroduction = createAction(
-  "siteCreation/completeManagementIntroduction",
-);
+export const completeManagementIntroduction = createAction("completeManagementIntroduction");
 
-export const completeOwner = createAction<{ owner: Owner }>("siteCreation/completeOwner");
+export const completeOwner = createAction<{ owner: Owner }>("completeOwner");
 
 export const completeIsFricheLeased = createAction<{ isFricheLeased: boolean }>(
-  "siteCreation/completeIsFricheLeased",
+  "completeIsFricheLeased",
 );
 
 export const completeIsSiteOperated = createAction<{ isSiteOperated: boolean }>(
-  "siteCreation/completeIsSiteOperated",
+  "completeIsSiteOperated",
 );
 
-export const completeTenant = createAction<{ tenant: Tenant | undefined }>(
-  "siteCreation/completeTenant",
-);
+export const completeTenant = createAction<{ tenant: Tenant | undefined }>("completeTenant");
 
-export const completeOperator = createAction<{ tenant: Tenant | undefined }>(
-  "siteCreation/completeOperator",
-);
+export const completeOperator = createAction<{ tenant: Tenant | undefined }>("completeOperator");
 
 export const completeFricheAccidentsIntroduction = createAction(
-  "siteCreation/completeFricheAccidentsIntroduction",
+  "completeFricheAccidentsIntroduction",
 );
 
 export const completeFricheAccidents = createAction<
@@ -160,45 +156,48 @@ export const completeFricheAccidents = createAction<
       accidentsSevereInjuries?: number;
       accidentsDeaths?: number;
     }
->("siteCreation/completeFricheAccidents");
+>("completeFricheAccidents");
 
-export const completeYearlyExpenses = createAction<SiteYearlyExpense[]>(
-  "siteCreation/completeYearlyExpenses",
-);
+export const completeYearlyExpenses = createAction<SiteYearlyExpense[]>("completeYearlyExpenses");
 
-export const completeYearlyExpensesSummary = createAction(
-  "siteCreation/completeYearlyExpensesSummary",
-);
+export const completeYearlyExpensesSummary = createAction("completeYearlyExpensesSummary");
 
-export const completeYearlyIncome = createAction<Income[]>("siteCreation/completeYearlyIncome");
+export const completeYearlyIncome = createAction<Income[]>("completeYearlyIncome");
 
-export const namingIntroductionStepCompleted = createAction(
-  "siteCreation/namingIntroductionStepCompleted",
-);
+export const namingIntroductionStepCompleted = createAction("namingIntroductionStepCompleted");
 
 export const completeNaming = createAction<{ name: string; description?: string }>(
-  "siteCreation/completeNaming",
+  "completeNaming",
 );
 
 export const revertStep = createAction<{ resetFields: (keyof SiteDraft)[] } | undefined>(
-  "siteCreation/revertStep",
+  "revertStep",
 );
 
 export const siteCreationReducer = createReducer(getInitialState(), (builder) => {
   builder
     .addCase(siteCreationInitiated, () => getInitialState())
     .addCase(introductionStepCompleted, (state) => {
-      state.stepsHistory.push("CREATE_MODE_SELECTION");
-    })
-    .addCase(completeCreateModeSelectionStep, (state, action) => {
-      state.createMode = action.payload.createMode;
       state.stepsHistory.push("IS_FRICHE");
     })
     .addCase(isFricheCompleted, (state, action) => {
       const { isFriche } = action.payload;
       state.siteData.isFriche = isFriche;
-      const nextStep = isFriche && state.createMode !== "express" ? "FRICHE_ACTIVITY" : "ADDRESS";
+
+      state.siteData.nature = "FRICHE";
+      state.stepsHistory.push("CREATE_MODE_SELECTION");
+    })
+    .addCase(createModeSelectionCompleted, (state, action) => {
+      state.createMode = action.payload.createMode;
+      const nextStep =
+        action.payload.createMode === "express" || !state.siteData.isFriche
+          ? "ADDRESS"
+          : "FRICHE_ACTIVITY";
       state.stepsHistory.push(nextStep);
+    })
+    .addCase(createModeReverted, (state) => {
+      state.createMode = undefined;
+      state.stepsHistory = state.stepsHistory.slice(0, -1);
     })
     .addCase(completeFricheActivity, (state, action) => {
       state.siteData.fricheActivity = action.payload;
