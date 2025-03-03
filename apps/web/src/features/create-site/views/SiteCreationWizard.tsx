@@ -30,8 +30,6 @@ const getMainChildren = (
       return <SiteCreationIntroduction />;
     case "IS_FRICHE":
       return <IsFricheForm />;
-    case "SITE_NATURE":
-
     case "CREATE_MODE_SELECTION":
       return <CreateModeSelectionForm />;
     default:

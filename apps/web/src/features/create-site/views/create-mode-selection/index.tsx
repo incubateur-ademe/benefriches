@@ -9,7 +9,7 @@ export default function CreateModeSelectionFormContainer() {
 
   return (
     <CreateModeSelectionForm
-      isFriche={isFriche}
+      isFriche={!!isFriche}
       onSubmit={(data: FormValues) => {
         dispatch(createModeSelectionCompleted(data));
       }}

@@ -3,7 +3,6 @@ import {
   revertStep,
 } from "@/features/create-site/core/createSite.reducer";
 import { hasTenant } from "@/features/create-site/core/site.functions";
-import { SiteDraft } from "@/features/create-site/core/siteFoncier.types";
 import { AppDispatch, RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -14,18 +13,18 @@ const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["si
     dispatch(completeYearlyExpensesSummary());
   };
 
-  const rent = (siteData.yearlyExpenses ?? [])
+  const rent = siteData.yearlyExpenses
     .filter(({ purpose }) => purpose === "rent")
     .map(({ purpose, amount }) => ({ source: purpose, amount }));
-  const operationsIncome = siteData.yearlyIncomes ?? [];
-  const siteHasTenant = hasTenant(siteData as SiteDraft);
+  const operationsIncome = siteData.yearlyIncomes;
+  const siteHasTenant = hasTenant(siteData);
 
   return {
     isFriche: !!siteData.isFriche,
     ownerName: siteData.owner?.name,
     tenantName: siteData.tenant?.name,
-    ownerExpenses: (siteData.yearlyExpenses ?? []).filter(({ bearer }) => bearer === "owner"),
-    tenantExpenses: (siteData.yearlyExpenses ?? []).filter(({ bearer }) => bearer === "tenant"),
+    ownerExpenses: siteData.yearlyExpenses.filter(({ bearer }) => bearer === "owner"),
+    tenantExpenses: siteData.yearlyExpenses.filter(({ bearer }) => bearer === "tenant"),
     ownerIncome: siteHasTenant ? rent : operationsIncome,
     tenantIncome: siteHasTenant ? operationsIncome : [],
     onNext,

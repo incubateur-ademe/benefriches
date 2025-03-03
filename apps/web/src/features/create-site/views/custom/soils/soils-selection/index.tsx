@@ -17,7 +17,7 @@ const SiteSoilsFormContainer = () => {
     <SiteSoilsForm
       isFriche={!!isFriche}
       initialValues={{
-        soils: soils ?? [],
+        soils,
       }}
       onSubmit={(formData: FormValues) => {
         dispatch(completeSoils({ soils: formData.soils }));

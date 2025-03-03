@@ -184,7 +184,6 @@ export const siteCreationReducer = createReducer(getInitialState(), (builder) =>
       const { isFriche } = action.payload;
       state.siteData.isFriche = isFriche;
 
-      state.siteData.nature = "FRICHE";
       state.stepsHistory.push("CREATE_MODE_SELECTION");
     })
     .addCase(createModeSelectionCompleted, (state, action) => {
@@ -226,7 +225,7 @@ export const siteCreationReducer = createReducer(getInitialState(), (builder) =>
       const soilsDistributionEntryMode = action.payload;
       if (soilsDistributionEntryMode === "default_even_split") {
         const totalSurface = state.siteData.surfaceArea ?? 0;
-        const soils = state.siteData.soils ?? [];
+        const soils = state.siteData.soils;
         const surfaceSplit = splitEvenly(totalSurface, soils.length);
         const soilsDistribution: SoilsDistribution = {};
         soils.forEach((soilType, index) => {
@@ -337,7 +336,7 @@ export const siteCreationReducer = createReducer(getInitialState(), (builder) =>
         /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
         /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
         action.payload.resetFields.forEach(<K extends keyof SiteDraft>(field: K) => {
-          state.siteData[field] = field in initialSiteData ? initialSiteData[field] : undefined;
+          state.siteData[field] = initialSiteData[field];
         });
       }
 

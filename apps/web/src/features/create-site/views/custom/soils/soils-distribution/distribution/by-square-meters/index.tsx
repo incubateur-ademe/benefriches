@@ -29,7 +29,7 @@ function SiteSoilsDistributionBySquareMetersFormContainer() {
       initialValues={soilsDistribution}
       onSubmit={onSubmit}
       onBack={onBack}
-      soils={siteData.soils ?? []}
+      soils={siteData.soils}
       totalSurfaceArea={siteData.surfaceArea ?? 0}
     />
   );

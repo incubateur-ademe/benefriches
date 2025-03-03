@@ -36,7 +36,7 @@ function SiteYearlyExpensesFormContainer() {
       isFriche={!!siteCreationState.siteData.isFriche}
       initialValues={getInitialValues(
         expensesBaseconfig,
-        expensesInStore ?? [],
+        expensesInStore,
         siteExpensesEstimatedAmounts,
       )}
       onBack={() => {

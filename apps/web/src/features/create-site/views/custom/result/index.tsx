@@ -15,7 +15,7 @@ function SiteCreationResultContainer() {
 
   return (
     <SiteCreationResult
-      siteId={siteData.id ?? ""}
+      siteId={siteData.id}
       siteName={siteData.name ?? ""}
       loadingState={creationLoadingState}
       onBack={onBack}

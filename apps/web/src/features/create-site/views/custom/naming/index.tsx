@@ -18,7 +18,7 @@ function SiteNameAndDescriptionFormContainer() {
           generateSiteName({
             cityName: siteData.address?.city ?? "",
             isFriche: siteData.isFriche ?? false,
-            soils: siteData.soils ?? [],
+            soils: siteData.soils,
             fricheActivity: siteData.fricheActivity,
           }),
         description: siteData.description ?? "",

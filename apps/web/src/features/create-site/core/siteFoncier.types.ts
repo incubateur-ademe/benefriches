@@ -1,4 +1,10 @@
-import { FricheActivity, SiteYearlyExpense, SoilsDistribution, SoilType } from "shared";
+import {
+  FricheActivity,
+  SiteYearlyExpense,
+  SiteYearlyIncome,
+  SoilsDistribution,
+  SoilType,
+} from "shared";
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
 
@@ -26,23 +32,28 @@ export type MunicipalityAddress = BaseAddress & {
   municipality: string;
 };
 
+export type SurfaceAreaDistributionEntryMode =
+  | "default_even_split"
+  | "total_surface_percentage"
+  | "square_meters";
+
 export type SiteDraft = {
   id: string;
-  isFriche: boolean;
-  name: string;
+  isFriche?: boolean;
+  name?: string;
   description?: string;
-  address: Address;
+  address?: Address;
   // soils
-  surfaceArea: number;
+  surfaceArea?: number;
   soils: SoilType[];
-  soilsDistributionEntryMode: "default_even_split" | "total_surface_percentage" | "square_meters";
-  soilsDistribution: SoilsDistribution;
+  soilsDistributionEntryMode?: SurfaceAreaDistributionEntryMode;
+  soilsDistribution?: SoilsDistribution;
   // contamination
-  hasContaminatedSoils: boolean;
+  hasContaminatedSoils?: boolean;
   contaminatedSoilSurface?: number;
   fricheActivity?: FricheActivity;
   // management
-  owner: { structureType: OwnerStructureType; name: string };
+  owner?: { structureType: OwnerStructureType; name: string };
   isFricheLeased?: boolean;
   isSiteOperated?: boolean;
   tenant?: { structureType: TenantStructureType; name: string };
@@ -51,7 +62,7 @@ export type SiteDraft = {
   accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
   yearlyExpenses: SiteYearlyExpense[];
-  yearlyIncomes: Income[];
+  yearlyIncomes: SiteYearlyIncome[];
 };
 
 export type SiteExpressDraft = {

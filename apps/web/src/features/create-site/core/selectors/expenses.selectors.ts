@@ -19,7 +19,7 @@ import { SiteDraft } from "../siteFoncier.types";
 
 const selectSiteData = createSelector(
   (state: RootState) => state.siteCreation,
-  (state): Partial<SiteDraft> => state.siteData,
+  (state): SiteDraft => state.siteData,
 );
 const selectSitePopulation = createSelector(
   (state: RootState) => state.siteMunicipalityData,

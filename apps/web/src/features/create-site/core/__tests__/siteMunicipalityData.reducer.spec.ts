@@ -10,6 +10,7 @@ import {
   selectAvailableLocalAuthoritiesWithoutCurrentOwner,
   selectAvailableLocalAuthoritiesWithoutCurrentUser,
 } from "../siteMunicipalityData.reducer";
+import { StoreBuilder } from "./testUtils";
 
 const API_MOCKED_RESULT = {
   "75110": {
@@ -92,23 +93,10 @@ describe("Site Municipality data reducer", () => {
   it("should call Municipality data service with the right payload", async () => {
     const mockSpy = new AdministrativeDivisionMock(API_MOCKED_RESULT["75110"]);
     vi.spyOn(mockSpy, "getMunicipalityData");
-
-    const initialState: RootState["siteCreation"] = {
-      siteData: {
-        address: PARIS_ADDRESS_MOCK,
-      },
-      saveLoadingState: "idle",
-      stepsHistory: ["OWNER"],
-    };
-
-    const store = createStore(
-      getTestAppDependencies({
-        municipalityDataService: mockSpy,
-      }),
-      {
-        siteCreation: initialState,
-      },
-    );
+    const store = new StoreBuilder()
+      .withCreationData({ address: PARIS_ADDRESS_MOCK })
+      .withAppDependencies({ municipalityDataService: mockSpy })
+      .build();
 
     await store.dispatch(fetchSiteMunicipalityData());
 
@@ -117,23 +105,12 @@ describe("Site Municipality data reducer", () => {
   });
 
   it("should get site local authorities with no epci for paris 10", async () => {
-    const initialState: RootState["siteCreation"] = {
-      siteData: {
-        address: PARIS_ADDRESS_MOCK,
-      },
-      saveLoadingState: "idle",
-      stepsHistory: ["OWNER"],
-    };
-
-    const store = createStore(
-      getTestAppDependencies({
+    const store = new StoreBuilder()
+      .withCreationData({ address: PARIS_ADDRESS_MOCK })
+      .withAppDependencies({
         municipalityDataService: new AdministrativeDivisionMock(API_MOCKED_RESULT["75110"]),
-      }),
-      {
-        siteCreation: initialState,
-      },
-    );
-
+      })
+      .build();
     await store.dispatch(fetchSiteMunicipalityData());
 
     const state = store.getState();
@@ -144,23 +121,12 @@ describe("Site Municipality data reducer", () => {
   });
 
   it("should get all site local authorities for grenoble cityCode", async () => {
-    const initialState: RootState["siteCreation"] = {
-      siteData: {
-        address: GRENOBLE_ADDRESS_MOCK,
-      },
-      saveLoadingState: "idle",
-      stepsHistory: ["OWNER"],
-    };
-
-    const store = createStore(
-      getTestAppDependencies({
+    const store = new StoreBuilder()
+      .withCreationData({ address: GRENOBLE_ADDRESS_MOCK })
+      .withAppDependencies({
         municipalityDataService: new AdministrativeDivisionMock(API_MOCKED_RESULT["38185"]),
-      }),
-      {
-        siteCreation: initialState,
-      },
-    );
-
+      })
+      .build();
     await store.dispatch(fetchSiteMunicipalityData());
 
     const state = store.getState();
@@ -172,27 +138,16 @@ describe("Site Municipality data reducer", () => {
   });
 
   it("should return error state when service fails", async () => {
-    const initialState: RootState["siteCreation"] = {
-      siteData: {
-        address: GRENOBLE_ADDRESS_MOCK,
-      },
-      saveLoadingState: "idle",
-      stepsHistory: ["OWNER"],
-    };
-
-    const store = createStore(
-      getTestAppDependencies({
+    const store = new StoreBuilder()
+      .withCreationData({ address: GRENOBLE_ADDRESS_MOCK })
+      .withAppDependencies({
         municipalityDataService: new AdministrativeDivisionMock(
           // @ts-expect-error intended failure
           null,
           true,
         ),
-      }),
-      {
-        siteCreation: initialState,
-      },
-    );
-
+      })
+      .build();
     await store.dispatch(fetchSiteMunicipalityData());
 
     const state = store.getState();

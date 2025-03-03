@@ -60,7 +60,7 @@ export const expectRevertedState = (
 };
 
 export class StoreBuilder {
-  preloadedRootState = {
+  preloadedRootState: Pick<RootState, "projectCreation" | "appSettings"> = {
     projectCreation: getInitialState(),
     appSettings: DEFAULT_APP_SETTINGS,
   };

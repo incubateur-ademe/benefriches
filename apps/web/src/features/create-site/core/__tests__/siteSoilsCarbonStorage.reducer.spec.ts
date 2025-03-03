@@ -1,13 +1,11 @@
-import { createStore } from "@/shared/core/store-config/store";
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import {
   fetchSiteSoilsCarbonStorage,
   SiteSoilsCarbonStorageResult,
 } from "../actions/siteSoilsCarbonStorage.actions";
-import { getInitialState } from "../createSite.reducer";
 import { Address } from "../siteFoncier.types";
+import { StoreBuilder } from "./testUtils";
 
 describe("Site carbon sequestration reducer", () => {
   it("should get carbon sequestration for site city code and soils distribution", async () => {
@@ -38,23 +36,18 @@ describe("Site carbon sequestration reducer", () => {
       postCode: "38100",
       value: "Grenoble",
     };
-    const store = createStore(
-      getTestAppDependencies({
+    const store = new StoreBuilder()
+      .withAppDependencies({
         soilsCarbonStorageService: new SoilsCarbonStorageMock(mockedResult),
-      }),
-      {
-        siteCreation: {
-          ...getInitialState(),
-          siteData: {
-            address,
-            soilsDistribution: {
-              BUILDINGS: 1400,
-              MINERAL_SOIL: 5000,
-            },
-          },
+      })
+      .withCreationData({
+        address,
+        soilsDistribution: {
+          BUILDINGS: 1400,
+          MINERAL_SOIL: 5000,
         },
-      },
-    );
+      })
+      .build();
 
     await store.dispatch(fetchSiteSoilsCarbonStorage());
 
@@ -69,15 +62,15 @@ describe("Site carbon sequestration reducer", () => {
   });
 
   it("should return error state when service fails", async () => {
-    const store = createStore(
-      getTestAppDependencies({
+    const store = new StoreBuilder()
+      .withAppDependencies({
         soilsCarbonStorageService: new SoilsCarbonStorageMock(
           // @ts-expect-error intended failure
           null,
           true,
         ),
-      }),
-    );
+      })
+      .build();
 
     await store.dispatch(fetchSiteSoilsCarbonStorage());
 

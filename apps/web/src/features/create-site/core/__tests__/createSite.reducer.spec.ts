@@ -1,6 +1,3 @@
-import { createStore, RootState } from "@/shared/core/store-config/store";
-import { getTestAppDependencies } from "@/test/testAppDependencies";
-
 import {
   isFricheReverted,
   revertAddressStep,
@@ -44,7 +41,6 @@ import {
   completeYearlyExpenses,
   completeYearlyExpensesSummary,
   completeYearlyIncome,
-  getInitialState,
   namingIntroductionStepCompleted,
   isFricheCompleted,
   introductionStepCompleted,
@@ -56,21 +52,14 @@ import {
   expectSiteDataDiff,
   expectSiteDataUnchanged,
   expectStepReverted,
-} from "./testHelpers";
+  StoreBuilder,
+} from "./testUtils";
 
 describe("Create site reducer", () => {
   describe("Data creation steps", () => {
-    const initStoreWithState = (siteCreationState: Partial<RootState["siteCreation"]>) => {
-      return createStore(getTestAppDependencies(), {
-        siteCreation: {
-          ...getInitialState(),
-          ...siteCreationState,
-        },
-      });
-    };
     describe("INTRODUCTION", () => {
       it("goes to IS_FRICHE step when step completed", () => {
-        const store = initStoreWithState({ stepsHistory: ["INTRODUCTION"] });
+        const store = new StoreBuilder().withStepsHistory(["INTRODUCTION"]).build();
         const initialRootState = store.getState();
 
         store.dispatch(introductionStepCompleted());
@@ -82,7 +71,7 @@ describe("Create site reducer", () => {
     });
     describe("IS_FRICHE", () => {
       // it("goes to SITE_NATURE step when step is completed and site is not a friche", () => {
-      //   const store = initStoreWithState({ stepsHistory: ["IS_FRICHE"] });
+      //   const store = new StoreBuilder().withStepsHistory(["IS_FRICHE"] );
       //   const initialRootState = store.getState();
 
       //   store.dispatch(isFricheCompleted({ isFriche: false }));
@@ -92,7 +81,7 @@ describe("Create site reducer", () => {
       //   expectNewCurrentStep(initialRootState, newState, "SITE_NATURE");
       // });
       it("goes to CREATE_MODE_SELECTION step and sets site nature to friche when step is completed and site is a friche", () => {
-        const store = initStoreWithState({ stepsHistory: ["IS_FRICHE"] });
+        const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
         const initialRootState = store.getState();
 
         store.dispatch(isFricheCompleted({ isFriche: true }));
@@ -102,7 +91,7 @@ describe("Create site reducer", () => {
         expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
       });
       it("goes to previous step and unsets isFriche when step is reverted", () => {
-        const store = initStoreWithState({ stepsHistory: ["INTRODUCTION", "IS_FRICHE"] });
+        const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
         const initialRootState = store.getState();
 
         store.dispatch(isFricheReverted());
@@ -114,10 +103,13 @@ describe("Create site reducer", () => {
     });
     describe("CREATE_MODE_SELECTION", () => {
       it("goes to FRICHE_ACTIVITY step when 'custom' mode is selected and site is a friche", () => {
-        const store = initStoreWithState({
-          stepsHistory: ["IS_FRICHE", "CREATE_MODE_SELECTION"],
-          siteData: { isFriche: true },
-        });
+        const store = new StoreBuilder()
+          .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .withCreationData({
+            isFriche: true,
+          })
+          .build();
+
         const initialRootState = store.getState();
 
         store.dispatch(createModeSelectionCompleted({ createMode: "custom" }));
@@ -126,10 +118,12 @@ describe("Create site reducer", () => {
         expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
       });
       it("goes to ADDRESS step when 'custom' mode is selected and site is NOT a friche", () => {
-        const store = initStoreWithState({
-          stepsHistory: ["IS_FRICHE", "CREATE_MODE_SELECTION"],
-          siteData: { isFriche: false },
-        });
+        const store = new StoreBuilder()
+          .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .withCreationData({
+            isFriche: false,
+          })
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(createModeSelectionCompleted({ createMode: "custom" }));
@@ -138,7 +132,9 @@ describe("Create site reducer", () => {
         expectNewCurrentStep(initialRootState, newState, "ADDRESS");
       });
       it("goes to ADDRESS step when 'express' mode is selected", () => {
-        const store = initStoreWithState({ stepsHistory: ["IS_FRICHE", "CREATE_MODE_SELECTION"] });
+        const store = new StoreBuilder()
+          .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(createModeSelectionCompleted({ createMode: "express" }));
@@ -150,7 +146,7 @@ describe("Create site reducer", () => {
     describe("FRICHE_ACTIVITY", () => {
       describe("complete", () => {
         it("goes to ADDRESS step and sets friche activity when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACTIVITY"] });
+          const store = new StoreBuilder().withStepsHistory(["FRICHE_ACTIVITY"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeFricheActivity("INDUSTRY"));
@@ -164,10 +160,13 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset friche activity", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "FRICHE_ACTIVITY"],
-            siteData: { isFriche: true, fricheActivity: siteWithExhaustiveData.fricheActivity },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "FRICHE_ACTIVITY"])
+            .withCreationData({
+              isFriche: true,
+              fricheActivity: "BUILDING",
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertFricheActivityStep());
@@ -183,7 +182,7 @@ describe("Create site reducer", () => {
     describe("ADDRESS", () => {
       describe("complete", () => {
         it("goes to SOILS_INTRODUCTION step and sets address when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["ADDRESS"] });
+          const store = new StoreBuilder().withStepsHistory(["ADDRESS"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeAddressStep({ address: siteWithExhaustiveData.address }));
@@ -197,10 +196,10 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset address data", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS"],
-            siteData: { isFriche: true, address: siteWithExhaustiveData.address },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS"])
+            .withCreationData({ isFriche: true, address: siteWithExhaustiveData.address })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertAddressStep());
@@ -214,7 +213,7 @@ describe("Create site reducer", () => {
     describe("SOILS_INTRODUCTION", () => {
       describe("complete", () => {
         it("goes to SURFACE_AREA step when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["SOILS_INTRODUCTION"] });
+          const store = new StoreBuilder().withStepsHistory(["SOILS_INTRODUCTION"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeSoilsIntroduction());
@@ -229,10 +228,10 @@ describe("Create site reducer", () => {
       describe("complete", () => {
         describe("custom mode", () => {
           it("goes to SOILS_SELECTION step and sets surface area when step is completed", () => {
-            const store = initStoreWithState({
-              createMode: "custom",
-              stepsHistory: ["SURFACE_AREA"],
-            });
+            const store = new StoreBuilder()
+              .withCreateMode("custom")
+              .withStepsHistory(["SURFACE_AREA"])
+              .build();
             const initialRootState = store.getState();
 
             store.dispatch(completeSiteSurfaceArea({ surfaceArea: 143000 }));
@@ -243,10 +242,10 @@ describe("Create site reducer", () => {
           });
           describe("revert", () => {
             it("goes to previous step and unset surface area", () => {
-              const store = initStoreWithState({
-                stepsHistory: ["IS_FRICHE", "ADDRESS", "SOILS_SELECTION"],
-                siteData: { isFriche: true, surfaceArea: 12000 },
-              });
+              const store = new StoreBuilder()
+                .withStepsHistory(["IS_FRICHE", "ADDRESS", "SOILS_SELECTION"])
+                .withCreationData({ isFriche: true, surfaceArea: 12000 })
+                .build();
               const initialRootState = store.getState();
 
               store.dispatch(revertSurfaceAreaStep());
@@ -259,10 +258,10 @@ describe("Create site reducer", () => {
         });
         describe("express mode", () => {
           it("sets surface area when step is completed", () => {
-            const store = initStoreWithState({
-              createMode: "express",
-              stepsHistory: ["SURFACE_AREA"],
-            });
+            const store = new StoreBuilder()
+              .withStepsHistory(["SURFACE_AREA"])
+              .withCreateMode("express")
+              .build();
             const initialRootState = store.getState();
 
             store.dispatch(completeSiteSurfaceArea({ surfaceArea: 143000 }));
@@ -279,7 +278,7 @@ describe("Create site reducer", () => {
     describe("SOILS_SELECTION", () => {
       describe("complete", () => {
         it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE step and sets soils when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["SOILS_SELECTION"] });
+          const store = new StoreBuilder().withStepsHistory(["SOILS_SELECTION"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeSoils({ soils: siteWithExhaustiveData.soils }));
@@ -295,10 +294,10 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset soils data", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "SOILS_SELECTION"],
-            siteData: { isFriche: true, soils: siteWithExhaustiveData.soils },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "SOILS_SELECTION"])
+            .withCreationData({ isFriche: true, soils: siteWithExhaustiveData.soils })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertSoilsSelectionStep());
@@ -312,13 +311,13 @@ describe("Create site reducer", () => {
     describe("SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE", () => {
       describe("complete", () => {
         it("goes to SOILS_SUMMARY step when step is completed with default_even_split", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"],
-            siteData: {
+          const store = new StoreBuilder()
+            .withStepsHistory(["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"])
+            .withCreationData({
               surfaceArea: 100000,
               soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "BUILDINGS", "FOREST_CONIFER"],
-            },
-          });
+            })
+            .build();
 
           const initialRootState = store.getState();
 
@@ -338,13 +337,13 @@ describe("Create site reducer", () => {
       });
 
       it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION step when step is completed with square_meters", () => {
-        const store = initStoreWithState({
-          stepsHistory: ["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"],
-          siteData: {
+        const store = new StoreBuilder()
+          .withStepsHistory(["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"])
+          .withCreationData({
             surfaceArea: 100000,
             soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "BUILDINGS", "FOREST_CONIFER"],
-          },
-        });
+          })
+          .build();
 
         const initialRootState = store.getState();
 
@@ -358,20 +357,20 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset soils distribution entry mode and surface areas", () => {
-          const store = initStoreWithState({
-            stepsHistory: [
+          const store = new StoreBuilder()
+            .withStepsHistory([
               "IS_FRICHE",
               "ADDRESS",
               "SOILS_SELECTION",
               "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
-            ],
-            siteData: {
+            ])
+            .withCreationData({
               isFriche: true,
               soils: siteWithExhaustiveData.soils,
               soilsDistribution: siteWithExhaustiveData.soilsDistribution,
               soilsDistributionEntryMode: siteWithExhaustiveData.soilsDistributionEntryMode,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertSoilsSurfaceAreaDistributionEntryModeStep());
@@ -388,7 +387,9 @@ describe("Create site reducer", () => {
     describe("SOILS_SURFACE_AREAS_DISTRIBUTION", () => {
       describe("complete", () => {
         it("goes to SOILS_SUMMARY step and sets soils distribution when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["SOILS_SURFACE_AREAS_DISTRIBUTION"] });
+          const store = new StoreBuilder()
+            .withStepsHistory(["SOILS_SURFACE_AREAS_DISTRIBUTION"])
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(
@@ -404,20 +405,20 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset soils distribution surface areas", () => {
-          const store = initStoreWithState({
-            stepsHistory: [
+          const store = new StoreBuilder()
+            .withStepsHistory([
               "IS_FRICHE",
               "ADDRESS",
               "SOILS_SELECTION",
               "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
               "SOILS_SURFACE_AREAS_DISTRIBUTION",
-            ],
-            siteData: {
+            ])
+            .withCreationData({
               isFriche: true,
               soils: siteWithExhaustiveData.soils,
               soilsDistribution: siteWithExhaustiveData.soilsDistribution,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertSoilsDistributionStep());
@@ -431,7 +432,7 @@ describe("Create site reducer", () => {
     describe("SOILS_SUMMARY", () => {
       describe("complete", () => {
         it("goes to SOILS_CARBON_STORAGE step when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["SOILS_SUMMARY"] });
+          const store = new StoreBuilder().withStepsHistory(["SOILS_SUMMARY"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeSoilsSummary());
@@ -445,10 +446,10 @@ describe("Create site reducer", () => {
     describe("SOILS_CARBON_STORAGE", () => {
       describe("complete", () => {
         it("goes to SOILS_CONTAMINATION_INTRODUCTION step when step is completed and site is a friche", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SOILS_CARBON_STORAGE"],
-            siteData: { isFriche: true },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["SOILS_CARBON_STORAGE"])
+            .withCreationData({ isFriche: true })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(completeSoilsCarbonStorage());
@@ -458,10 +459,10 @@ describe("Create site reducer", () => {
           expectNewCurrentStep(initialRootState, newState, "SOILS_CONTAMINATION_INTRODUCTION");
         });
         it("goes to MANAGEMENT_INTRODUCTION step when step is completed and site is not a friche", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["SOILS_CARBON_STORAGE"],
-            siteData: { isFriche: false },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["SOILS_CARBON_STORAGE"])
+            .withCreationData({ isFriche: false })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(completeSoilsCarbonStorage());
@@ -475,7 +476,9 @@ describe("Create site reducer", () => {
     describe("SOILS_CONTAMINATION_INTRODUCTION", () => {
       describe("complete", () => {
         it("goes to SOILS_CONTAMINATION step when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["SOILS_CONTAMINATION_INTRODUCTION"] });
+          const store = new StoreBuilder()
+            .withStepsHistory(["SOILS_CONTAMINATION_INTRODUCTION"])
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(completeSoilsContaminationIntroductionStep());
@@ -489,7 +492,7 @@ describe("Create site reducer", () => {
     describe("SOILS_CONTAMINATION", () => {
       describe("complete", () => {
         it("goes to FRICHE_ACCIDENTS_INTRODUCTION step and sets contamination data when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["SOILS_CONTAMINATION"] });
+          const store = new StoreBuilder().withStepsHistory(["SOILS_CONTAMINATION"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(
@@ -509,22 +512,22 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset soils contamination", () => {
-          const store = initStoreWithState({
-            stepsHistory: [
+          const store = new StoreBuilder()
+            .withStepsHistory([
               "IS_FRICHE",
               "ADDRESS",
               "SOILS_SELECTION",
               "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
               "SOILS_SURFACE_AREAS_DISTRIBUTION",
               "SOILS_CONTAMINATION",
-            ],
-            siteData: {
+            ])
+            .withCreationData({
               isFriche: true,
               soils: siteWithExhaustiveData.soils,
               hasContaminatedSoils: true,
               contaminatedSoilSurface: 12000,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertSoilsContaminationStep());
@@ -541,7 +544,9 @@ describe("Create site reducer", () => {
     describe("FRICHE_ACCIDENTS_INTRODUCTION", () => {
       describe("complete", () => {
         it("goes to FRICHE_ACCIDENTS step when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS_INTRODUCTION"] });
+          const store = new StoreBuilder()
+            .withStepsHistory(["FRICHE_ACCIDENTS_INTRODUCTION"])
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(completeFricheAccidentsIntroduction());
@@ -555,7 +560,7 @@ describe("Create site reducer", () => {
     describe("FRICHE_ACCIDENTS", () => {
       describe("complete", () => {
         it("goes to MANAGEMENT_INTRODUCTION step and sets accidents data when step is completed and friche has accidents", () => {
-          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS"] });
+          const store = new StoreBuilder().withStepsHistory(["FRICHE_ACCIDENTS"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(
@@ -577,7 +582,7 @@ describe("Create site reducer", () => {
           expectNewCurrentStep(initialRootState, newState, "MANAGEMENT_INTRODUCTION");
         });
         it("goes to MANAGEMENT_INTRODUCTION step and sets accidents data when step is completed and friche has no accident", () => {
-          const store = initStoreWithState({ stepsHistory: ["FRICHE_ACCIDENTS"] });
+          const store = new StoreBuilder().withStepsHistory(["FRICHE_ACCIDENTS"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeFricheAccidents({ hasRecentAccidents: false }));
@@ -589,16 +594,16 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset friche accidents", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "FRICHE_ACCIDENTS"],
-            siteData: {
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "FRICHE_ACCIDENTS"])
+            .withCreationData({
               isFriche: true,
               hasRecentAccidents: true,
               accidentsDeaths: 1,
               accidentsSevereInjuries: 2,
               accidentsMinorInjuries: 0,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertFricheAccidentsStep());
@@ -617,7 +622,7 @@ describe("Create site reducer", () => {
     describe("MANAGEMENT_INTRODUCTION", () => {
       describe("complete", () => {
         it("goes to OWNER step when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["MANAGEMENT_INTRODUCTION"] });
+          const store = new StoreBuilder().withStepsHistory(["MANAGEMENT_INTRODUCTION"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeManagementIntroduction());
@@ -631,10 +636,10 @@ describe("Create site reducer", () => {
     describe("OWNER", () => {
       describe("complete", () => {
         it("goes to IS_FRICHE_LEASED step if site is friche and sets owner when step is completed", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["OWNER"],
-            siteData: { isFriche: true },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["OWNER"])
+            .withCreationData({ isFriche: true })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
@@ -644,7 +649,7 @@ describe("Create site reducer", () => {
           expectNewCurrentStep(initialRootState, newState, "IS_FRICHE_LEASED");
         });
         it("goes to IS_SITE_OPERATED step and sets owner when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["OWNER"] });
+          const store = new StoreBuilder().withStepsHistory(["OWNER"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
@@ -656,13 +661,13 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset owner", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "OWNER"],
-            siteData: {
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "OWNER"])
+            .withCreationData({
               isFriche: true,
               owner: siteWithExhaustiveData.owner,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertOwnerStep());
@@ -676,7 +681,7 @@ describe("Create site reducer", () => {
     describe("IS_FRICHE_LEASED", () => {
       describe("complete", () => {
         it("goes to TENANT step and sets isFricheLeased when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["IS_FRICHE_LEASED"] });
+          const store = new StoreBuilder().withStepsHistory(["IS_FRICHE_LEASED"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeIsFricheLeased({ isFricheLeased: true }));
@@ -686,7 +691,7 @@ describe("Create site reducer", () => {
           expectNewCurrentStep(initialRootState, newState, "TENANT");
         });
         it("goes to YEARLY_EXPENSES step when step is completed and not leased", () => {
-          const store = initStoreWithState({ stepsHistory: ["IS_FRICHE_LEASED"] });
+          const store = new StoreBuilder().withStepsHistory(["IS_FRICHE_LEASED"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeIsFricheLeased({ isFricheLeased: false }));
@@ -698,13 +703,13 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset isFricheLeased", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "OWNER", "IS_FRICHE_LEASED"],
-            siteData: {
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "OWNER", "IS_FRICHE_LEASED"])
+            .withCreationData({
               isFriche: true,
               tenant: siteWithExhaustiveData.tenant,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertIsFricheLeasedStep());
@@ -720,7 +725,7 @@ describe("Create site reducer", () => {
     describe("IS_SITE_OPERATED", () => {
       describe("complete", () => {
         it("goes to OPERATOR step and sets isSiteOperated when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["IS_SITE_OPERATED"] });
+          const store = new StoreBuilder().withStepsHistory(["IS_SITE_OPERATED"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeIsSiteOperated({ isSiteOperated: true }));
@@ -730,7 +735,7 @@ describe("Create site reducer", () => {
           expectNewCurrentStep(initialRootState, newState, "OPERATOR");
         });
         it("goes to YEARLY_EXPENSES step when step is completed and no tenant", () => {
-          const store = initStoreWithState({ stepsHistory: ["IS_SITE_OPERATED"] });
+          const store = new StoreBuilder().withStepsHistory(["IS_SITE_OPERATED"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeIsSiteOperated({ isSiteOperated: false }));
@@ -744,12 +749,12 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset isSiteOperated", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "OWNER", "IS_SITE_OPERATED"],
-            siteData: {
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "OWNER", "IS_SITE_OPERATED"])
+            .withCreationData({
               tenant: siteWithExhaustiveData.tenant,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertIsSiteOperatedStep());
@@ -765,7 +770,7 @@ describe("Create site reducer", () => {
     describe("OPERATOR", () => {
       describe("complete", () => {
         it("goes to YEARLY_EXPENSES step and sets tenant when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["OPERATOR"] });
+          const store = new StoreBuilder().withStepsHistory(["OPERATOR"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeOperator({ tenant: siteWithExhaustiveData.tenant }));
@@ -775,7 +780,7 @@ describe("Create site reducer", () => {
           expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
         it("goes to YEARLY_EXPENSES step when step is completed with tenant", () => {
-          const store = initStoreWithState({ stepsHistory: ["OPERATOR"] });
+          const store = new StoreBuilder().withStepsHistory(["OPERATOR"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeOperator({ tenant: undefined }));
@@ -787,12 +792,12 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset tenant", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "OWNER", "IS_SITE_OPERATED", "OPERATOR"],
-            siteData: {
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "OWNER", "IS_SITE_OPERATED", "OPERATOR"])
+            .withCreationData({
               tenant: siteWithExhaustiveData.tenant,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertOperatorStep());
@@ -809,7 +814,7 @@ describe("Create site reducer", () => {
     describe("TENANT", () => {
       describe("complete", () => {
         it("goes to YEARLY_EXPENSES step and sets tenant when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["TENANT"] });
+          const store = new StoreBuilder().withStepsHistory(["TENANT"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeTenant({ tenant: siteWithExhaustiveData.tenant }));
@@ -819,7 +824,7 @@ describe("Create site reducer", () => {
           expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
         });
         it("goes to YEARLY_EXPENSES step when step is completed and no tenant", () => {
-          const store = initStoreWithState({ stepsHistory: ["TENANT"] });
+          const store = new StoreBuilder().withStepsHistory(["TENANT"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(completeTenant({ tenant: undefined }));
@@ -831,13 +836,13 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset tenant", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "OWNER", "TENANT"],
-            siteData: {
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "OWNER", "TENANT"])
+            .withCreationData({
               isFriche: true,
               tenant: siteWithExhaustiveData.tenant,
-            },
-          });
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertTenantStep());
@@ -853,10 +858,10 @@ describe("Create site reducer", () => {
     describe("YEARLY_EXPENSES", () => {
       describe("complete", () => {
         it("goes to YEARLY_EXPENSES_SUMMARY step if site is friche and sets yearly expenses when step is completed", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["YEARLY_EXPENSES"],
-            siteData: { isFriche: true },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["YEARLY_EXPENSES"])
+            .withCreationData({ isFriche: true })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(completeYearlyExpenses(siteWithExhaustiveData.yearlyExpenses));
@@ -868,10 +873,10 @@ describe("Create site reducer", () => {
           expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES_SUMMARY");
         });
         it("goes to YEARLY_INCOME step if site is worked and sets yearly expenses when step is completed", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["YEARLY_EXPENSES"],
-            siteData: { isSiteOperated: true },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["YEARLY_EXPENSES"])
+            .withCreationData({ isSiteOperated: true })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(completeYearlyExpenses(siteWithExhaustiveData.yearlyExpenses));
@@ -885,10 +890,13 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset yearly expenses", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "YEARLY_EXPENSES"],
-            siteData: { isFriche: true, yearlyExpenses: siteWithExhaustiveData.yearlyExpenses },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "YEARLY_EXPENSES"])
+            .withCreationData({
+              isFriche: true,
+              yearlyExpenses: siteWithExhaustiveData.yearlyExpenses,
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertYearlyExpensesStep());
@@ -904,10 +912,10 @@ describe("Create site reducer", () => {
     describe("YEARLY_EXPENSES_SUMMARY", () => {
       describe("complete", () => {
         it("goes to NAMING_INTRODUCTION step when step is completed and site is a friche", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["YEARLY_EXPENSES_SUMMARY"],
-            siteData: { isFriche: true },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["YEARLY_EXPENSES_SUMMARY"])
+            .withCreationData({ isFriche: true })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(completeYearlyExpensesSummary());
@@ -920,7 +928,7 @@ describe("Create site reducer", () => {
     });
     describe("YEARLY_INCOME", () => {
       it("goes to YEARLY_EXPENSES_SUMMARY step and sets yearly income when step is completed", () => {
-        const store = initStoreWithState({ stepsHistory: ["YEARLY_INCOME"] });
+        const store = new StoreBuilder().withStepsHistory(["YEARLY_INCOME"]).build();
         const initialRootState = store.getState();
 
         store.dispatch(completeYearlyIncome(siteWithExhaustiveData.yearlyIncomes));
@@ -933,10 +941,13 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset yearly income", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "YEARLY_INCOME"],
-            siteData: { isFriche: true, yearlyIncomes: siteWithExhaustiveData.yearlyIncomes },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "YEARLY_INCOME"])
+            .withCreationData({
+              isFriche: true,
+              yearlyIncomes: siteWithExhaustiveData.yearlyIncomes,
+            })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertYearlyIncomeStep());
@@ -952,7 +963,7 @@ describe("Create site reducer", () => {
     describe("NAMING_INTRODUCTION", () => {
       describe("complete", () => {
         it("goes to NAMING step when completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["NAMING_INTRODUCTION"] });
+          const store = new StoreBuilder().withStepsHistory(["NAMING_INTRODUCTION"]).build();
           const initialRootState = store.getState();
 
           store.dispatch(namingIntroductionStepCompleted());
@@ -966,7 +977,7 @@ describe("Create site reducer", () => {
     describe("NAMING", () => {
       describe("complete", () => {
         it("goes to FINAL_SUMMARY step and sets name and description when step is completed", () => {
-          const store = initStoreWithState({ stepsHistory: ["NAMING"] });
+          const store = new StoreBuilder().withStepsHistory(["NAMING"]).build();
           const initialRootState = store.getState();
 
           const { name, description } = siteWithExhaustiveData;
@@ -982,10 +993,10 @@ describe("Create site reducer", () => {
       });
       describe("revert", () => {
         it("goes to previous step and unset naming", () => {
-          const store = initStoreWithState({
-            stepsHistory: ["IS_FRICHE", "ADDRESS", "NAMING"],
-            siteData: { isFriche: true, name: "site 1", description: "blabla" },
-          });
+          const store = new StoreBuilder()
+            .withStepsHistory(["IS_FRICHE", "ADDRESS", "NAMING"])
+            .withCreationData({ isFriche: true, name: "site 1", description: "blabla" })
+            .build();
           const initialRootState = store.getState();
 
           store.dispatch(revertNamingStep());

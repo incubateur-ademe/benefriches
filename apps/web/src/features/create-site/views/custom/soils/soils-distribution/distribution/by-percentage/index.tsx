@@ -46,7 +46,7 @@ function SiteSoilsDistributionByPercentageContainer() {
       initialValues={initialValues}
       onSubmit={onSubmit}
       onBack={onBack}
-      soils={siteData.soils ?? []}
+      soils={siteData.soils}
     />
   );
 }

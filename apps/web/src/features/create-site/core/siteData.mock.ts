@@ -1,6 +1,6 @@
 import { SiteDraft, SiteExpressDraft } from "../core/siteFoncier.types";
 
-export const siteWithExhaustiveData: SiteDraft = {
+export const siteWithExhaustiveData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   name: "My site name",
   description: "Description of the site",
@@ -67,9 +67,9 @@ export const siteWithExhaustiveData: SiteDraft = {
     long: 0.664699,
     lat: 43.260859,
   },
-} as const;
+} as const satisfies SiteDraft;
 
-export const fricheWithExhaustiveData: SiteDraft = {
+export const fricheWithExhaustiveData = {
   ...siteWithExhaustiveData,
   isFriche: true,
   isSiteOperated: undefined,
@@ -81,9 +81,9 @@ export const fricheWithExhaustiveData: SiteDraft = {
   accidentsMinorInjuries: 2,
   accidentsDeaths: 0,
   fricheActivity: "INDUSTRY",
-} as const;
+} as const satisfies SiteDraft;
 
-export const siteWithMinimalData: SiteDraft = {
+export const siteWithMinimalData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   name: "My site name",
   owner: { structureType: "company", name: "SAS Owner" },
@@ -112,15 +112,15 @@ export const siteWithMinimalData: SiteDraft = {
     long: 0.664699,
     lat: 43.260859,
   },
-} as const;
+} as const satisfies SiteDraft;
 
-export const fricheWithMinimalData: SiteDraft = {
+export const fricheWithMinimalData = {
   ...siteWithMinimalData,
   isFriche: true,
   fricheActivity: "RAILWAY",
-} as const;
+} as const satisfies SiteDraft;
 
-export const expressSiteDraft: SiteExpressDraft = {
+export const expressSiteDraft = {
   isFriche: true,
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   address: {
@@ -135,4 +135,4 @@ export const expressSiteDraft: SiteExpressDraft = {
     lat: 43.260859,
   },
   surfaceArea: 15000,
-} as const;
+} as const satisfies SiteExpressDraft;

@@ -12,7 +12,7 @@ import {
   siteWithMinimalData,
 } from "../siteData.mock";
 import getExpressSiteData from "../siteExpress";
-import { expectNewCurrentStep, expectSiteDataUnchanged } from "./testHelpers";
+import { expectNewCurrentStep, expectSiteDataUnchanged, StoreBuilder } from "./testUtils";
 
 describe("Save created site", () => {
   describe("custom creation", () => {
@@ -152,20 +152,10 @@ describe("Save created site", () => {
 
   describe("express creation", () => {
     it("should be in error state when site data in store is not valid (missing surfaceArea)", async () => {
-      const initialState: RootState["siteCreation"] = {
-        saveLoadingState: "idle",
-        stepsHistory: ["SURFACE_AREA"],
-        siteData: { ...expressSiteDraft, surfaceArea: undefined },
-      };
-
-      const store = createStore(getTestAppDependencies(), {
-        siteCreation: initialState,
-        currentUser: {
-          currentUser: buildUser(),
-          createUserState: "idle",
-          currentUserLoaded: true,
-        },
-      });
+      const store = new StoreBuilder()
+        .withCreationData({ ...expressSiteDraft, surfaceArea: undefined })
+        .withCurrentUser(buildUser())
+        .build();
       const initialRootState = store.getState();
 
       await store.dispatch(expressSiteSaved());
@@ -176,15 +166,9 @@ describe("Save created site", () => {
     });
 
     it("should be in error state when no user id in store", async () => {
-      const initialState: RootState["siteCreation"] = {
-        saveLoadingState: "idle",
-        stepsHistory: ["CREATION_RESULT"],
-        siteData: expressSiteDraft,
-      };
-
-      const store = createStore(getTestAppDependencies(), {
-        siteCreation: initialState,
-      });
+      const store = new StoreBuilder()
+        .withCreationData({ ...expressSiteDraft, surfaceArea: undefined })
+        .build();
       const initialRootState = store.getState();
 
       await store.dispatch(expressSiteSaved());
@@ -195,24 +179,12 @@ describe("Save created site", () => {
     });
 
     it("should be in error state when createSiteService fails", async () => {
-      const initialState: RootState["siteCreation"] = {
-        saveLoadingState: "idle",
-        stepsHistory: ["CREATION_RESULT"],
-        siteData: expressSiteDraft,
-      };
-
       const shouldFail = true;
-      const store = createStore(
-        getTestAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) }),
-        {
-          siteCreation: initialState,
-          currentUser: {
-            currentUser: buildUser(),
-            createUserState: "idle",
-            currentUserLoaded: true,
-          },
-        },
-      );
+      const store = new StoreBuilder()
+        .withCreationData(expressSiteDraft)
+        .withCurrentUser(buildUser())
+        .withAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) })
+        .build();
       const initialRootState = store.getState();
 
       await store.dispatch(expressSiteSaved());
@@ -224,24 +196,15 @@ describe("Save created site", () => {
 
     it("should call createSiteService with the right payload", async () => {
       const createSiteService = new InMemoryCreateSiteService();
+      const user = buildUser();
+      const store = new StoreBuilder()
+        .withCreationData(expressSiteDraft)
+        .withCurrentUser(user)
+        .withAppDependencies({ createSiteService })
+        .build();
 
       const spy = vi.spyOn(createSiteService, "save");
-      const user = buildUser();
 
-      const initialState: RootState["siteCreation"] = {
-        saveLoadingState: "idle",
-        stepsHistory: ["CREATION_RESULT"],
-        siteData: expressSiteDraft,
-      };
-
-      const store = createStore(getTestAppDependencies({ createSiteService }), {
-        siteCreation: initialState,
-        currentUser: {
-          currentUser: user,
-          createUserState: "idle",
-          currentUserLoaded: true,
-        },
-      });
       await store.dispatch(expressSiteSaved());
 
       expect(spy).toHaveBeenCalledWith(getExpressSiteData(expressSiteDraft, user.id));
@@ -251,20 +214,11 @@ describe("Save created site", () => {
       { siteData: expressSiteDraft, dataType: "express friche" },
       { siteData: { ...expressSiteDraft, isFriche: false }, dataType: "express non friche" },
     ])("should be in success state when saving $dataType", async ({ siteData }) => {
-      const initialState: RootState["siteCreation"] = {
-        saveLoadingState: "idle",
-        stepsHistory: ["CREATION_RESULT"],
-        siteData,
-      };
-
-      const store = createStore(getTestAppDependencies(), {
-        siteCreation: initialState,
-        currentUser: {
-          currentUser: buildUser(),
-          createUserState: "idle",
-          currentUserLoaded: true,
-        },
-      });
+      const store = new StoreBuilder()
+        .withCreationData(siteData)
+        .withCurrentUser(buildUser())
+        .build();
+      const initialState = store.getState().siteCreation;
 
       await store.dispatch(expressSiteSaved());
 

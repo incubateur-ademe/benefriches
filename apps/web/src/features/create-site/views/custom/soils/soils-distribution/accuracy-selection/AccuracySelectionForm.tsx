@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 
-import { SiteDraft } from "@/features/create-site/core/siteFoncier.types";
+import { SurfaceAreaDistributionEntryMode } from "@/features/create-site/core/siteFoncier.types";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export type FormValues = {
-  accuracy: SiteDraft["soilsDistributionEntryMode"];
+  accuracy: SurfaceAreaDistributionEntryMode;
 };
 
 function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, isFriche }: Props) {

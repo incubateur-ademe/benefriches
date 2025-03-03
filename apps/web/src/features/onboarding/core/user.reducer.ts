@@ -12,7 +12,7 @@ type State = {
   createUserState: "idle" | "loading" | "success" | "error";
 };
 
-const initialState: State = {
+export const initialState: State = {
   currentUser: null,
   currentUserLoaded: false,
   createUserState: "idle",

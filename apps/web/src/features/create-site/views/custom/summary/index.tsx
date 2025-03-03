@@ -19,7 +19,7 @@ function SiteDataSummaryContainer() {
   return (
     <SiteDataSummary
       siteData={{
-        id: siteData.id ?? "",
+        id: siteData.id,
         address: siteData.address?.value ?? "",
         ownerName: siteData.owner?.name ?? "",
         tenantName: siteData.tenant?.name,
@@ -30,7 +30,7 @@ function SiteDataSummaryContainer() {
               minorInjuries: siteData.accidentsMinorInjuries,
             }
           : null,
-        expenses: siteData.yearlyExpenses ?? [],
+        expenses: siteData.yearlyExpenses,
         totalSurfaceArea: siteData.surfaceArea ?? 0,
         soilsDistribution: siteData.soilsDistribution ?? {},
         contaminatedSurfaceArea: siteData.contaminatedSoilSurface,
