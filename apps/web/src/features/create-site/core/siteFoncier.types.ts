@@ -37,7 +37,7 @@ export type SurfaceAreaDistributionEntryMode =
   | "total_surface_percentage"
   | "square_meters";
 
-export type SiteDraft = {
+export type SiteCreationData = {
   id: string;
   isFriche?: boolean;
   name?: string;
@@ -65,7 +65,7 @@ export type SiteDraft = {
   yearlyIncomes: SiteYearlyIncome[];
 };
 
-export type SiteExpressDraft = {
+export type SiteExpressCreationData = {
   id: string;
   isFriche: boolean;
   address: MunicipalityAddress;

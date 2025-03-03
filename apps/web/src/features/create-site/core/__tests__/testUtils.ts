@@ -4,7 +4,7 @@ import { AppDependencies, createStore, RootState } from "@/shared/core/store-con
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { getInitialState, SiteCreationStep } from "../createSite.reducer";
-import { SiteDraft } from "../siteFoncier.types";
+import { SiteCreationData } from "../siteFoncier.types";
 
 export const expectNewCurrentStep = (
   initialState: RootState,
@@ -56,7 +56,7 @@ export class StoreBuilder {
     return this;
   }
 
-  withCreationData(creationData: Partial<SiteDraft>) {
+  withCreationData(creationData: Partial<SiteCreationData>) {
     this.preloadedRootState.siteCreation.siteData = {
       ...this.preloadedRootState.siteCreation.siteData,
       ...creationData,

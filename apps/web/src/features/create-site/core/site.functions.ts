@@ -1,13 +1,13 @@
-import { SiteDraft } from "./siteFoncier.types";
+import { SiteCreationData } from "./siteFoncier.types";
 
-export const hasBuildings = (site: SiteDraft) => {
+export const hasBuildings = (site: SiteCreationData) => {
   return site.soils.includes("BUILDINGS");
 };
 
-export const hasImpermeableSoils = (site: SiteDraft) => {
+export const hasImpermeableSoils = (site: SiteCreationData) => {
   return site.soils.includes("IMPERMEABLE_SOILS");
 };
 
-export const hasTenant = (site: SiteDraft) => {
+export const hasTenant = (site: SiteCreationData) => {
   return Boolean(site.tenant);
 };

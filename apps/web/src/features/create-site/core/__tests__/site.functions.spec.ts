@@ -1,7 +1,7 @@
 import { hasBuildings, hasImpermeableSoils, hasTenant } from "../site.functions";
-import { SiteDraft } from "../siteFoncier.types";
+import { SiteCreationData } from "../siteFoncier.types";
 
-const buildSite = (siteProps: Partial<SiteDraft> = {}): SiteDraft => {
+const buildSite = (siteProps: Partial<SiteCreationData> = {}): SiteCreationData => {
   return {
     id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
     name: "My site",

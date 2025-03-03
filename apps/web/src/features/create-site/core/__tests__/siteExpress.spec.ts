@@ -18,7 +18,7 @@ const expressFricheDraft = {
   },
 };
 
-const expressSiteDraft = {
+const expressSiteCreationData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   surfaceArea: 20000,
   isFriche: false,
@@ -98,7 +98,7 @@ describe("Site Express data creation", () => {
     });
 
     it("returns site express data", () => {
-      expect(getExpressSiteData(expressSiteDraft, currentUserId)).toEqual({
+      expect(getExpressSiteData(expressSiteCreationData, currentUserId)).toEqual({
         id: expressFricheDraft.id,
         isFriche: false,
         address: {

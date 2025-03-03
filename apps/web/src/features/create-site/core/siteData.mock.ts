@@ -1,4 +1,4 @@
-import { SiteDraft, SiteExpressDraft } from "../core/siteFoncier.types";
+import { SiteCreationData, SiteExpressCreationData } from "../core/siteFoncier.types";
 
 export const siteWithExhaustiveData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
@@ -67,7 +67,7 @@ export const siteWithExhaustiveData = {
     long: 0.664699,
     lat: 43.260859,
   },
-} as const satisfies SiteDraft;
+} as const satisfies SiteCreationData;
 
 export const fricheWithExhaustiveData = {
   ...siteWithExhaustiveData,
@@ -81,7 +81,7 @@ export const fricheWithExhaustiveData = {
   accidentsMinorInjuries: 2,
   accidentsDeaths: 0,
   fricheActivity: "INDUSTRY",
-} as const satisfies SiteDraft;
+} as const satisfies SiteCreationData;
 
 export const siteWithMinimalData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
@@ -112,15 +112,15 @@ export const siteWithMinimalData = {
     long: 0.664699,
     lat: 43.260859,
   },
-} as const satisfies SiteDraft;
+} as const satisfies SiteCreationData;
 
 export const fricheWithMinimalData = {
   ...siteWithMinimalData,
   isFriche: true,
   fricheActivity: "RAILWAY",
-} as const satisfies SiteDraft;
+} as const satisfies SiteCreationData;
 
-export const expressSiteDraft = {
+export const expressSiteCreationData = {
   isFriche: true,
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   address: {
@@ -135,4 +135,4 @@ export const expressSiteDraft = {
     lat: 43.260859,
   },
   surfaceArea: 15000,
-} as const satisfies SiteExpressDraft;
+} as const satisfies SiteExpressCreationData;

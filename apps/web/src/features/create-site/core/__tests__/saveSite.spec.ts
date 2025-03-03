@@ -5,7 +5,7 @@ import { getTestAppDependencies } from "@/test/testAppDependencies";
 import { InMemoryCreateSiteService } from "../../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import { customSiteSaved, expressSiteSaved } from "../actions/siteSaved.actions";
 import {
-  expressSiteDraft,
+  expressSiteCreationData,
   fricheWithExhaustiveData,
   fricheWithMinimalData,
   siteWithExhaustiveData,
@@ -153,7 +153,7 @@ describe("Save created site", () => {
   describe("express creation", () => {
     it("should be in error state when site data in store is not valid (missing surfaceArea)", async () => {
       const store = new StoreBuilder()
-        .withCreationData({ ...expressSiteDraft, surfaceArea: undefined })
+        .withCreationData({ ...expressSiteCreationData, surfaceArea: undefined })
         .withCurrentUser(buildUser())
         .build();
       const initialRootState = store.getState();
@@ -167,7 +167,7 @@ describe("Save created site", () => {
 
     it("should be in error state when no user id in store", async () => {
       const store = new StoreBuilder()
-        .withCreationData({ ...expressSiteDraft, surfaceArea: undefined })
+        .withCreationData({ ...expressSiteCreationData, surfaceArea: undefined })
         .build();
       const initialRootState = store.getState();
 
@@ -181,7 +181,7 @@ describe("Save created site", () => {
     it("should be in error state when createSiteService fails", async () => {
       const shouldFail = true;
       const store = new StoreBuilder()
-        .withCreationData(expressSiteDraft)
+        .withCreationData(expressSiteCreationData)
         .withCurrentUser(buildUser())
         .withAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) })
         .build();
@@ -198,7 +198,7 @@ describe("Save created site", () => {
       const createSiteService = new InMemoryCreateSiteService();
       const user = buildUser();
       const store = new StoreBuilder()
-        .withCreationData(expressSiteDraft)
+        .withCreationData(expressSiteCreationData)
         .withCurrentUser(user)
         .withAppDependencies({ createSiteService })
         .build();
@@ -207,12 +207,12 @@ describe("Save created site", () => {
 
       await store.dispatch(expressSiteSaved());
 
-      expect(spy).toHaveBeenCalledWith(getExpressSiteData(expressSiteDraft, user.id));
+      expect(spy).toHaveBeenCalledWith(getExpressSiteData(expressSiteCreationData, user.id));
     });
 
     it.each([
-      { siteData: expressSiteDraft, dataType: "express friche" },
-      { siteData: { ...expressSiteDraft, isFriche: false }, dataType: "express non friche" },
+      { siteData: expressSiteCreationData, dataType: "express friche" },
+      { siteData: { ...expressSiteCreationData, isFriche: false }, dataType: "express non friche" },
     ])("should be in success state when saving $dataType", async ({ siteData }) => {
       const store = new StoreBuilder()
         .withCreationData(siteData)

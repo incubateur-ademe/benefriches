@@ -6,7 +6,7 @@ import {
   Address,
   Income,
   Owner,
-  SiteDraft,
+  SiteCreationData,
   SurfaceAreaDistributionEntryMode,
   Tenant,
 } from "@/features/create-site/core/siteFoncier.types";
@@ -59,7 +59,7 @@ export type SiteCreationStep =
 
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
-  siteData: SiteDraft;
+  siteData: SiteCreationData;
   createMode?: "express" | "custom";
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
@@ -170,7 +170,7 @@ export const completeNaming = createAction<{ name: string; description?: string 
   "completeNaming",
 );
 
-export const revertStep = createAction<{ resetFields: (keyof SiteDraft)[] } | undefined>(
+export const revertStep = createAction<{ resetFields: (keyof SiteCreationData)[] } | undefined>(
   "revertStep",
 );
 
@@ -335,7 +335,7 @@ export const siteCreationReducer = createReducer(getInitialState(), (builder) =>
       if (action.payload) {
         /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
         /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
-        action.payload.resetFields.forEach(<K extends keyof SiteDraft>(field: K) => {
+        action.payload.resetFields.forEach(<K extends keyof SiteCreationData>(field: K) => {
           state.siteData[field] = initialSiteData[field];
         });
       }

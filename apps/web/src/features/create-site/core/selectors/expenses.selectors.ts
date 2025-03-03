@@ -15,11 +15,11 @@ import {
   SiteManagementYearlyExpensesBaseConfig,
   SiteSecurityYearlyExpensesBaseConfig,
 } from "../expenses.functions";
-import { SiteDraft } from "../siteFoncier.types";
+import { SiteCreationData } from "../siteFoncier.types";
 
 const selectSiteData = createSelector(
   (state: RootState) => state.siteCreation,
-  (state): SiteDraft => state.siteData,
+  (state): SiteCreationData => state.siteData,
 );
 const selectSitePopulation = createSelector(
   (state: RootState) => state.siteMunicipalityData,

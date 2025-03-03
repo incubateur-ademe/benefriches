@@ -4,7 +4,7 @@ import z from "zod";
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import getExpressSiteData from "../siteExpress";
-import { SiteExpressDraft } from "../siteFoncier.types";
+import { SiteExpressCreationData } from "../siteFoncier.types";
 
 const createSiteSchema = z.object({
   id: z.string().uuid(),
@@ -90,7 +90,7 @@ export const expressSiteSaved = createAppAsyncThunk(
     }
 
     const siteToCreate: SiteCreatePayload = createSiteSchema.parse(
-      getExpressSiteData(siteData as SiteExpressDraft, currentUser.currentUser.id),
+      getExpressSiteData(siteData as SiteExpressCreationData, currentUser.currentUser.id),
     );
 
     await extra.createSiteService.save(siteToCreate);

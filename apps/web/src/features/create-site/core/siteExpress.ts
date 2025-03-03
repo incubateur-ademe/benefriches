@@ -1,7 +1,7 @@
 import { FricheGenerator, AgriculturalOrNaturalSiteSiteGenerator, Site } from "shared";
 
 import { CreateSiteGatewayPayload } from "./actions/siteSaved.actions";
-import { Address, SiteExpressDraft } from "./siteFoncier.types";
+import { Address, SiteExpressCreationData } from "./siteFoncier.types";
 
 const FRANCE_AVERAGE_CITY_POPULATION = 1800;
 
@@ -17,7 +17,7 @@ const omitUselessKeys = (site: Site) => {
 };
 
 const getExpressSiteData = (
-  expressSiteProps: SiteExpressDraft,
+  expressSiteProps: SiteExpressCreationData,
   currentUserId: string,
 ): CreateSiteGatewayPayload => {
   const population = expressSiteProps.address.population || FRANCE_AVERAGE_CITY_POPULATION;
