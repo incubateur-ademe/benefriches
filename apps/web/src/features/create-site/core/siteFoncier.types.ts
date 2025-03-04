@@ -1,5 +1,6 @@
 import {
   FricheActivity,
+  SiteNature,
   SiteYearlyExpense,
   SiteYearlyIncome,
   SoilsDistribution,
@@ -40,6 +41,7 @@ export type SurfaceAreaDistributionEntryMode =
 export type SiteCreationData = {
   id: string;
   isFriche?: boolean;
+  nature?: SiteNature;
   name?: string;
   description?: string;
   address?: Address;
@@ -68,6 +70,7 @@ export type SiteCreationData = {
 export type SiteExpressCreationData = {
   id: string;
   isFriche: boolean;
+  nature: SiteNature;
   address: MunicipalityAddress;
   surfaceArea: number;
 };

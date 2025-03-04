@@ -1,6 +1,7 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { Controller, useForm } from "react-hook-form";
+import { SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import Badge from "@/shared/views/components/Badge/Badge";
@@ -8,7 +9,7 @@ import CheckableTile from "@/shared/views/components/CheckableTile/CheckableTile
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
 
 type Props = {
-  isFriche: boolean;
+  siteNature: SiteNature;
   onSubmit: (data: FormValues) => void;
   onBack?: () => void;
 };
@@ -47,14 +48,25 @@ const options: Option[] = [
   },
 ] as const satisfies Option[];
 
-function CreateModeSelectionForm({ isFriche, onSubmit, onBack }: Props) {
+const getTitle = (siteNature: SiteNature) => {
+  const withSiteNature = (natureLabel: string) =>
+    `Comment souhaitez-vous renseigner les informations ${natureLabel} ?`;
+  switch (siteNature) {
+    case "FRICHE":
+      return withSiteNature("de la friche");
+    case "AGRICULTURAL":
+      return withSiteNature("de l'exploitation agricole");
+    case "NATURAL_AREA":
+      return withSiteNature("de l'espace naturel");
+  }
+};
+
+function CreateModeSelectionForm({ siteNature, onSubmit, onBack }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>();
   const validationError = formState.errors.createMode;
 
   return (
-    <WizardFormLayout
-      title={`Comment souhaitez-vous renseigner ${isFriche ? "la friche" : "le site"} ?`}
-    >
+    <WizardFormLayout title={getTitle(siteNature)}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="tw-mb-10">
           <div className="tw-grid sm:tw-grid-cols-2 tw-gap-4">

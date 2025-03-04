@@ -1,4 +1,4 @@
-import { fricheActivitySchema, soilTypeSchema } from "shared";
+import { fricheActivitySchema, siteNatureSchema, soilTypeSchema } from "shared";
 import z from "zod";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
@@ -13,6 +13,7 @@ const createSiteSchema = z.object({
   name: z.string(),
   description: z.string().optional(),
   isFriche: z.boolean(),
+  nature: siteNatureSchema,
   address: z.object({
     banId: z.string(),
     value: z.string(),
@@ -89,7 +90,7 @@ export const expressSiteSaved = createAppAsyncThunk(
       throw new Error("Current user is missing");
     }
 
-    const siteToCreate: SiteCreatePayload = createSiteSchema.parse(
+    const siteToCreate = createSiteSchema.parse(
       getExpressSiteData(siteData as SiteExpressCreationData, currentUser.currentUser.id),
     );
 

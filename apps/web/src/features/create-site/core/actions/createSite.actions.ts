@@ -1,6 +1,7 @@
 import { revertStep } from "../createSite.reducer";
 
 export const isFricheReverted = () => revertStep({ resetFields: ["isFriche"] });
+export const siteNatureReverted = () => revertStep({ resetFields: ["nature"] });
 export const revertAddressStep = () => revertStep({ resetFields: ["address"] });
 export const revertSurfaceAreaStep = () => revertStep({ resetFields: ["surfaceArea"] });
 export const revertSoilsSelectionStep = () => revertStep({ resetFields: ["soils"] });

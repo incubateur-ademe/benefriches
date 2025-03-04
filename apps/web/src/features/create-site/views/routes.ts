@@ -8,6 +8,7 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   INTRODUCTION: "introduction",
   CREATE_MODE_SELECTION: "mode-de-creation",
   IS_FRICHE: "est-une-friche",
+  SITE_NATURE: "nature-du-site",
   FRICHE_ACTIVITY: "type-de-friche",
   ADDRESS: "adresse",
   SOILS_INTRODUCTION: "sols-introduction",

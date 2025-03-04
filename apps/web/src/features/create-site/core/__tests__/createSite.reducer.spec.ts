@@ -16,6 +16,7 @@ import {
   revertTenantStep,
   revertYearlyExpensesStep,
   revertYearlyIncomeStep,
+  siteNatureReverted,
 } from "../actions/createSite.actions";
 import {
   completeAddressStep,
@@ -45,6 +46,7 @@ import {
   isFricheCompleted,
   introductionStepCompleted,
   createModeSelectionCompleted,
+  siteNatureCompleted,
 } from "../createSite.reducer";
 import { siteWithExhaustiveData } from "../siteData.mock";
 import {
@@ -70,16 +72,16 @@ describe("Create site reducer", () => {
       });
     });
     describe("IS_FRICHE", () => {
-      // it("goes to SITE_NATURE step when step is completed and site is not a friche", () => {
-      //   const store = new StoreBuilder().withStepsHistory(["IS_FRICHE"] );
-      //   const initialRootState = store.getState();
+      it("goes to SITE_NATURE step when step is completed and site is not a friche", () => {
+        const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
+        const initialRootState = store.getState();
 
-      //   store.dispatch(isFricheCompleted({ isFriche: false }));
+        store.dispatch(isFricheCompleted({ isFriche: false }));
 
-      //   const newState = store.getState();
-      //   expectSiteDataDiff(initialRootState, newState, { isFriche: false });
-      //   expectNewCurrentStep(initialRootState, newState, "SITE_NATURE");
-      // });
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { isFriche: false });
+        expectNewCurrentStep(initialRootState, newState, "SITE_NATURE");
+      });
       it("goes to CREATE_MODE_SELECTION step and sets site nature to friche when step is completed and site is a friche", () => {
         const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
         const initialRootState = store.getState();
@@ -87,7 +89,7 @@ describe("Create site reducer", () => {
         store.dispatch(isFricheCompleted({ isFriche: true }));
 
         const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, { isFriche: true });
+        expectSiteDataDiff(initialRootState, newState, { isFriche: true, nature: "FRICHE" });
         expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
       });
       it("goes to previous step and unsets isFriche when step is reverted", () => {
@@ -98,6 +100,33 @@ describe("Create site reducer", () => {
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { isFriche: undefined });
+        expectStepReverted(initialRootState, newState);
+      });
+    });
+    describe("SITE_NATURE", () => {
+      it("goes to CREATE_MODE_SELECTION step when completed", () => {
+        const store = new StoreBuilder().withStepsHistory(["SITE_NATURE"]).build();
+        const initialRootState = store.getState();
+
+        store.dispatch(siteNatureCompleted({ nature: "AGRICULTURAL" }));
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { nature: "AGRICULTURAL" });
+        expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
+      });
+      it("goes to previous step and unsets site nature when step is reverted", () => {
+        const store = new StoreBuilder()
+          .withCreationData({
+            nature: "NATURAL_AREA",
+          })
+          .withStepsHistory(["IS_FRICHE", "SITE_NATURE"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(siteNatureReverted());
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { nature: undefined });
         expectStepReverted(initialRootState, newState);
       });
     });

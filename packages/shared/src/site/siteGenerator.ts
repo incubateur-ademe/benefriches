@@ -112,6 +112,8 @@ export class AgriculturalOrNaturalSiteSiteGenerator {
 
     return {
       id: uuid(),
+      nature: "AGRICULTURAL",
+      isFriche: false,
       address: {
         city: city.name,
         value: city.name,
@@ -138,7 +140,6 @@ export class AgriculturalOrNaturalSiteSiteGenerator {
         isFriche: false,
         soils: Object.keys(soilsDistribution) as SoilType[],
       }),
-      isFriche: false,
       surfaceArea,
     };
   }

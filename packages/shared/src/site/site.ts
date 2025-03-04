@@ -6,6 +6,9 @@ import { FricheActivity, fricheActivitySchema } from "./fricheActivity";
 import { SiteYearlyExpense, siteYearlyExpenseSchema } from "./yearlyExpenses";
 import { SiteYearlyIncome } from "./yearlyIncome";
 
+export const siteNatureSchema = z.enum(["FRICHE", "AGRICULTURAL", "NATURAL_AREA"]);
+export type SiteNature = z.infer<typeof siteNatureSchema>;
+
 const incomeSchema = z.object({
   source: z.string(),
   amount: z.number().nonnegative(),
@@ -28,6 +31,7 @@ export type Address = z.infer<typeof addressSchema>;
 const baseSiteSchema = z.object({
   id: z.string().uuid(),
   isFriche: z.boolean(),
+  nature: siteNatureSchema,
   name: z.string(),
   description: z.string().optional(),
   address: addressSchema.strict(),
@@ -49,6 +53,7 @@ const baseSiteSchema = z.object({
 
 export const fricheSchema = baseSiteSchema.extend({
   isFriche: z.literal(true),
+  nature: z.literal("FRICHE"),
   fricheActivity: fricheActivitySchema,
   hasContaminatedSoils: z.boolean().optional(),
   contaminatedSoilSurface: z.number().nonnegative().optional(),
@@ -59,6 +64,7 @@ export const fricheSchema = baseSiteSchema.extend({
 
 export const agriculturaOrNaturalSiteSchema = baseSiteSchema.extend({
   isFriche: z.literal(false),
+  nature: z.literal("AGRICULTURAL"),
   yearlyIncomes: incomeSchema.array(),
 });
 
@@ -94,6 +100,7 @@ interface BaseSite {
 
 export interface Friche extends BaseSite {
   isFriche: true;
+  nature: "FRICHE";
   hasContaminatedSoils: boolean;
   contaminatedSoilSurface?: number;
   fricheActivity: FricheActivity;
@@ -104,6 +111,7 @@ export interface Friche extends BaseSite {
 
 export interface AgriculturalOrNaturalSite extends BaseSite {
   isFriche: false;
+  nature: "AGRICULTURAL" | "NATURAL_AREA";
   yearlyIncomes: SiteYearlyIncome[];
 }
 
@@ -123,6 +131,7 @@ type SiteCreationResult<TSite> = { success: true; site: TSite } | { success: fal
 
 export type CreateAgriculturalOrNaturalSiteProps = {
   id: string;
+  nature: Extract<SiteNature, "AGRICULTURAL" | "NATURAL_AREA">;
   name: string;
   description?: string;
   address: Address;
@@ -142,6 +151,7 @@ export function createAgriculturalOrNaturalSite(
   const candidate = {
     id: props.id,
     name: props.name,
+    nature: props.nature,
     description: props.description,
     address: props.address,
     soilsDistribution: props.soilsDistribution,
@@ -190,6 +200,7 @@ export function createFriche(props: CreateFricheProps): SiteCreationResult<Frich
   const candidate = {
     id: props.id,
     name: props.name,
+    nature: "FRICHE",
     description: props.description,
     address: props.address,
     soilsDistribution: props.soilsDistribution,

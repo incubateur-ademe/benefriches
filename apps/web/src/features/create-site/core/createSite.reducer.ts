@@ -1,5 +1,5 @@
 import { createAction as _createAction, createReducer, createSelector } from "@reduxjs/toolkit";
-import { FricheActivity, SoilsDistribution, SoilType, SiteYearlyExpense } from "shared";
+import { FricheActivity, SoilsDistribution, SoilType, SiteYearlyExpense, SiteNature } from "shared";
 import { v4 as uuid } from "uuid";
 
 import {
@@ -53,6 +53,7 @@ export type SiteCreationExpressStep = "ADDRESS" | "SURFACE_AREA" | "CREATION_RES
 export type SiteCreationStep =
   | "INTRODUCTION"
   | "IS_FRICHE"
+  | "SITE_NATURE"
   | "CREATE_MODE_SELECTION"
   | SiteCreationExpressStep
   | SiteCreationCustomStep;
@@ -95,6 +96,8 @@ export const createModeSelectionCompleted = createAction<{ createMode: "express"
 export const createModeReverted = createAction("createModeReverted");
 
 export const isFricheCompleted = createAction<{ isFriche: boolean }>("siteNatureStepCompleted");
+
+export const siteNatureCompleted = createAction<{ nature: SiteNature }>("siteNatureCompleted");
 
 export const completeFricheActivity = createAction<FricheActivity>("completeFricheActivity");
 
@@ -182,8 +185,17 @@ export const siteCreationReducer = createReducer(getInitialState(), (builder) =>
     })
     .addCase(isFricheCompleted, (state, action) => {
       const { isFriche } = action.payload;
-      state.siteData.isFriche = isFriche;
 
+      state.siteData.isFriche = isFriche;
+      if (isFriche) {
+        state.siteData.nature = "FRICHE";
+        state.stepsHistory.push("CREATE_MODE_SELECTION");
+      } else {
+        state.stepsHistory.push("SITE_NATURE");
+      }
+    })
+    .addCase(siteNatureCompleted, (state, action) => {
+      state.siteData.nature = action.payload.nature;
       state.stepsHistory.push("CREATE_MODE_SELECTION");
     })
     .addCase(createModeSelectionCompleted, (state, action) => {

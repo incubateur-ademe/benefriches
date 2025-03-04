@@ -5,11 +5,11 @@ import CreateModeSelectionForm, { FormValues } from "./CreateModeSelectionForm";
 
 export default function CreateModeSelectionFormContainer() {
   const dispatch = useAppDispatch();
-  const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche);
+  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
 
   return (
     <CreateModeSelectionForm
-      isFriche={!!isFriche}
+      siteNature={siteNature ?? "FRICHE"}
       onSubmit={(data: FormValues) => {
         dispatch(createModeSelectionCompleted(data));
       }}

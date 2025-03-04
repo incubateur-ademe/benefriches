@@ -1,10 +1,13 @@
 import getExpressSiteData from "../siteExpress";
+import { SiteExpressCreationData } from "../siteFoncier.types";
 
 const currentUserId = "0f274b34-84f8-4527-9163-ab77cb467cd1";
-const expressFricheDraft = {
+
+const expressFricheCreationData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   surfaceArea: 20000,
   isFriche: true,
+  nature: "FRICHE",
   address: {
     city: "Paris",
     cityCode: "75109",
@@ -16,12 +19,13 @@ const expressFricheDraft = {
     municipality: "Paris",
     population: 2133111,
   },
-};
+} as const satisfies SiteExpressCreationData;
 
-const expressSiteCreationData = {
+const expressAgriculturalSiteCreationData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
   surfaceArea: 20000,
   isFriche: false,
+  nature: "AGRICULTURAL",
   address: {
     city: "Blajan",
     cityCode: "31070",
@@ -33,14 +37,15 @@ const expressSiteCreationData = {
     municipality: "Blajan",
     population: 439,
   },
-};
+} as const satisfies SiteExpressCreationData;
 
 describe("Site Express data creation", () => {
   describe("getExpressSiteData", () => {
     it("returns friche express data", () => {
-      expect(getExpressSiteData(expressFricheDraft, currentUserId)).toEqual({
-        id: expressFricheDraft.id,
+      expect(getExpressSiteData(expressFricheCreationData, currentUserId)).toEqual({
+        id: expressFricheCreationData.id,
         isFriche: true,
+        nature: "FRICHE",
         address: {
           city: "Paris",
           cityCode: "75109",
@@ -98,9 +103,10 @@ describe("Site Express data creation", () => {
     });
 
     it("returns site express data", () => {
-      expect(getExpressSiteData(expressSiteCreationData, currentUserId)).toEqual({
-        id: expressFricheDraft.id,
+      expect(getExpressSiteData(expressAgriculturalSiteCreationData, currentUserId)).toEqual({
+        id: expressFricheCreationData.id,
         isFriche: false,
+        nature: "AGRICULTURAL",
         address: {
           city: "Blajan",
           cityCode: "31070",

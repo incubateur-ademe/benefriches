@@ -13,10 +13,10 @@ export const buildAgriculturalOrNaturalSiteProps = (
 ): CreateAgriculturalOrNaturalSiteProps => {
   return {
     id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+    nature: "AGRICULTURAL",
     name: "Unit test friche",
     yearlyExpenses: [],
     yearlyIncomes: [],
-    // createdBy: "841aaa8c-39c1-4953-8459-1f6fab6dd948",
     owner: {
       structureType: "department",
       name: "Le département Paris",

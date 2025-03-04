@@ -55,8 +55,7 @@ export const siteWithExhaustiveData = {
   ],
   yearlyIncomes: [{ amount: 150000, source: "income" }],
   isFriche: false,
-  hasContaminatedSoils: false,
-  contaminatedSoilSurface: 1000,
+  nature: "AGRICULTURAL",
   address: {
     banId: "31070_p4ur8e",
     value: "Sendere 31350 Blajan",
@@ -72,6 +71,7 @@ export const siteWithExhaustiveData = {
 export const fricheWithExhaustiveData = {
   ...siteWithExhaustiveData,
   isFriche: true,
+  nature: "FRICHE",
   isSiteOperated: undefined,
   isFricheLeased: true,
   hasContaminatedSoils: true,
@@ -99,6 +99,7 @@ export const siteWithMinimalData = {
   yearlyExpenses: [],
   yearlyIncomes: [],
   isFriche: false,
+  nature: "AGRICULTURAL",
   isSiteOperated: false,
   hasRecentAccidents: false,
   hasContaminatedSoils: false,
@@ -117,12 +118,32 @@ export const siteWithMinimalData = {
 export const fricheWithMinimalData = {
   ...siteWithMinimalData,
   isFriche: true,
+  nature: "FRICHE",
   fricheActivity: "RAILWAY",
 } as const satisfies SiteCreationData;
 
-export const expressSiteCreationData = {
-  isFriche: true,
+export const expressFricheCreationData = {
   id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
+  isFriche: true,
+  nature: "FRICHE",
+  address: {
+    banId: "31070_p4ur8e",
+    value: "Blajan",
+    city: "Blajan",
+    cityCode: "31070",
+    postCode: "31350",
+    municipality: "Blajan",
+    population: 600,
+    long: 0.664699,
+    lat: 43.260859,
+  },
+  surfaceArea: 15000,
+} as const satisfies SiteExpressCreationData;
+
+export const expressAgriculturalCreationData = {
+  isFriche: false,
+  nature: "AGRICULTURAL",
+  id: "1fa5fba1-0ee6-4ba0-88f4-8cf66aa8b85b",
   address: {
     banId: "31070_p4ur8e",
     value: "Blajan",

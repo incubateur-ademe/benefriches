@@ -19,6 +19,7 @@ import SiteCreationExpressStepContent from "./express/StepContent";
 import SiteCreationExpressStepper from "./express/Stepper";
 import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
+import SiteNatureForm from "./site-nature";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 const getMainChildren = (
@@ -30,6 +31,8 @@ const getMainChildren = (
       return <SiteCreationIntroduction />;
     case "IS_FRICHE":
       return <IsFricheForm />;
+    case "SITE_NATURE":
+      return <SiteNatureForm />;
     case "CREATE_MODE_SELECTION":
       return <CreateModeSelectionForm />;
     default:
