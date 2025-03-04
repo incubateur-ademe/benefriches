@@ -11,6 +11,7 @@ import { ZodValidationPipe } from "nestjs-zod";
 import {
   createSoilSurfaceAreaDistribution,
   fricheActivitySchema,
+  siteNatureSchema,
   siteYearlyExpenseSchema,
 } from "shared";
 import { z } from "zod";
@@ -39,6 +40,7 @@ const commonSitePropsSchema = z.object({
 });
 const fricheDtoSchema = commonSitePropsSchema.extend({
   isFriche: z.literal(true),
+  nature: siteNatureSchema.extract(["FRICHE"]),
   fricheActivity: fricheActivitySchema.optional(),
   contaminatedSoilSurface: z.number().optional(),
   accidentsMinorInjuries: z.number().optional(),
@@ -47,6 +49,7 @@ const fricheDtoSchema = commonSitePropsSchema.extend({
 });
 const agriculturaOrNaturalSiteDtoSchema = commonSitePropsSchema.extend({
   isFriche: z.literal(false),
+  nature: siteNatureSchema.exclude(["FRICHE"]),
 });
 const createSiteDtoSchema = z.discriminatedUnion("isFriche", [
   fricheDtoSchema,

@@ -35,6 +35,7 @@ describe("Sites controller", () => {
       createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
       creationMode: "custom",
       isFriche: false,
+      nature: "AGRICULTURAL",
       owner: { name: "Owner name", structureType: "company" },
       name: "Friche industrielle",
       address: {
@@ -60,6 +61,7 @@ describe("Sites controller", () => {
     it.each([
       "id",
       "isFriche",
+      "nature",
       "creationMode",
       "createdBy",
       "name",
@@ -91,6 +93,7 @@ describe("Sites controller", () => {
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         creationMode: "custom",
         isFriche: false,
+        nature: "AGRICULTURAL",
         name: "Exploitation agricole",
         description: "Description of site",
         owner: { name: "Owner name", structureType: "company" },
@@ -191,6 +194,7 @@ describe("Sites controller", () => {
     it("can create a friche site", async () => {
       const fricheDto: CreateSiteBodyDto = {
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
+        nature: "FRICHE",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         creationMode: "express",
         name: "Ancienne gare de Bercy",
