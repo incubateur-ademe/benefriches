@@ -62,11 +62,11 @@ describe("Nature conservation yearly monetary values", () => {
   it("computeNitrogenCycleMonetaryValue", () => {
     expect(
       computeNitrogenCycleMonetaryValue({ prairieSurfaceArea: 1000, wetLandSurfaceArea: 200 }),
-    ).toBeCloseTo(25, 0);
+    ).toBeCloseTo(11, 0);
     expect(computeNitrogenCycleMonetaryValue({})).toEqual(0);
     expect(
       computeNitrogenCycleMonetaryValue({ prairieSurfaceArea: 1000, wetLandSurfaceArea: -8000 }),
-    ).toBeCloseTo(-724, 0);
+    ).toBeCloseTo(-152, 0);
   });
 
   it("computeSoilErosionMonetaryValue", () => {

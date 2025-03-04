@@ -154,7 +154,7 @@ describe("NatureConservationImpactsService", () => {
     expect(pollination).toEqual({ base: 120, difference: 108, forecast: 228 });
     expect(invasiveSpeciesRegulation).toEqual({ base: 44, difference: 40, forecast: 84 });
     expect(waterCycle).toEqual({ base: 1837, difference: 1523, forecast: 3359 });
-    expect(nitrogenCycle).toEqual({ base: 268, difference: 103, forecast: 371 });
+    expect(nitrogenCycle).toEqual({ base: 107, difference: 71, forecast: 178 });
     expect(soilErosion).toEqual({ base: 327, difference: 293, forecast: 619 });
   });
 

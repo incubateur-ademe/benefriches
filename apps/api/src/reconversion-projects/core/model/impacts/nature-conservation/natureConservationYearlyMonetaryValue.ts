@@ -1,6 +1,7 @@
+const WET_LAND_ECOSYSTEMIC_SERVICES_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0234;
 const ENVIRONMENTAL_AMENITIES_PRAIRIE_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0071;
 const ENVIRONMENTAL_AMENITIES_FOREST_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0315;
-const WET_LAND_ECOSYSTEMIC_SERVICES_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0234;
+
 type NatureAndRelatedWellnessProps = {
   prairieSurfaceArea?: number;
   forestSurfaceArea?: number;
@@ -23,25 +24,6 @@ export const computeNatureRelatedWellnessAndLeisureMonetaryValue = ({
   return environmentalAmenities + wetLandEcosystemServices;
 };
 
-const FOREST_RELATED_PRODUCT_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0157;
-export const computeForestRelatedProductMonetaryValue = (forestSurfaceArea: number) => {
-  return forestSurfaceArea * FOREST_RELATED_PRODUCT_MONETARY_VALUE_EURO_PER_SQUARE_METER;
-};
-
-const POLLINATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0092;
-export const computePollinisationMonetaryValue = (surfaceWithEcosystemBenefits: number) => {
-  return surfaceWithEcosystemBenefits * POLLINATION_MONETARY_VALUE_EURO_PER_SQUARE_METER;
-};
-
-const INVASIVE_SPECIES_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0034;
-export const computeInvasiveSpeciesRegulationMonetaryValue = (
-  surfaceWithEcosystemBenefits: number,
-) => {
-  return (
-    surfaceWithEcosystemBenefits * INVASIVE_SPECIES_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER
-  );
-};
-
 const WATER_CYCLE_PERMANENT_VEGETATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.1356;
 const WATER_CYCLE_NON_PERMANENT_VEGETATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0254;
 export const computeWaterCycleMonetaryValue = (
@@ -56,24 +38,6 @@ export const computeWaterCycleMonetaryValue = (
     WATER_CYCLE_NON_PERMANENT_VEGETATION_MONETARY_VALUE_EURO_PER_SQUARE_METER;
 
   return permanentVegetation + other;
-};
-
-type NitrogenCycleProps = { prairieSurfaceArea?: number; wetLandSurfaceArea?: number };
-const NITROGEN_CYCLE_PRAIRIE_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0069;
-const NITROGEN_CYCLE_WET_LAND_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0913;
-export const computeNitrogenCycleMonetaryValue = ({
-  prairieSurfaceArea = 0,
-  wetLandSurfaceArea = 0,
-}: NitrogenCycleProps) => {
-  const prairie = prairieSurfaceArea * NITROGEN_CYCLE_PRAIRIE_MONETARY_VALUE_EURO_PER_SQUARE_METER;
-  const wetLand = wetLandSurfaceArea * NITROGEN_CYCLE_WET_LAND_MONETARY_VALUE_EURO_PER_SQUARE_METER;
-
-  return prairie + wetLand;
-};
-
-const SOIL_EROSION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.025;
-export const computeSoilErosionMonetaryValue = (surfaceWithEcosystemBenefits: number) => {
-  return surfaceWithEcosystemBenefits * SOIL_EROSION_MONETARY_VALUE_EURO_PER_SQUARE_METER;
 };
 
 type WaterRegulationProps = {
@@ -92,5 +56,42 @@ export const computeWaterRegulationMonetaryValue = ({
   return (
     (forestSurfaceArea + prairieSurfaceArea + wetLandSurfaceArea + decontaminatedSurfaceArea) *
     WATER_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER
+  );
+};
+
+const POLLINATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0092;
+export const computePollinisationMonetaryValue = (surfaceWithEcosystemBenefits: number) => {
+  return surfaceWithEcosystemBenefits * POLLINATION_MONETARY_VALUE_EURO_PER_SQUARE_METER;
+};
+
+const FOREST_RELATED_PRODUCT_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0157;
+export const computeForestRelatedProductMonetaryValue = (forestSurfaceArea: number) => {
+  return forestSurfaceArea * FOREST_RELATED_PRODUCT_MONETARY_VALUE_EURO_PER_SQUARE_METER;
+};
+
+type NitrogenCycleProps = { prairieSurfaceArea?: number; wetLandSurfaceArea?: number };
+const NITROGEN_CYCLE_PRAIRIE_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0069;
+const NITROGEN_CYCLE_WET_LAND_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0199;
+export const computeNitrogenCycleMonetaryValue = ({
+  prairieSurfaceArea = 0,
+  wetLandSurfaceArea = 0,
+}: NitrogenCycleProps) => {
+  const prairie = prairieSurfaceArea * NITROGEN_CYCLE_PRAIRIE_MONETARY_VALUE_EURO_PER_SQUARE_METER;
+  const wetLand = wetLandSurfaceArea * NITROGEN_CYCLE_WET_LAND_MONETARY_VALUE_EURO_PER_SQUARE_METER;
+
+  return prairie + wetLand;
+};
+
+const SOIL_EROSION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.025;
+export const computeSoilErosionMonetaryValue = (surfaceWithEcosystemBenefits: number) => {
+  return surfaceWithEcosystemBenefits * SOIL_EROSION_MONETARY_VALUE_EURO_PER_SQUARE_METER;
+};
+
+const INVASIVE_SPECIES_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0034;
+export const computeInvasiveSpeciesRegulationMonetaryValue = (
+  surfaceWithEcosystemBenefits: number,
+) => {
+  return (
+    surfaceWithEcosystemBenefits * INVASIVE_SPECIES_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER
   );
 };
