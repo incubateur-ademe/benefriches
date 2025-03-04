@@ -148,7 +148,7 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
       ...photovoltaicProjectImpactsService["rentImpacts"],
       ...photovoltaicProjectImpactsService["avoidedFricheCosts"],
       ...photovoltaicProjectImpactsService["propertyTransferDutiesIncome"],
-      ...photovoltaicProjectImpactsService["environmentalSoilsRelatedImpacts"].socioEconomicList,
+      ...photovoltaicProjectImpactsService["natureConservationSocioEconomicImpacts"],
       ...photovoltaicProjectImpactsService["taxesIncomeImpact"],
       ...photovoltaicProjectImpactsService["avoidedCo2EqEmissions"],
     ]);
@@ -159,7 +159,8 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
         photovoltaicProjectImpactsService["householdsPoweredByRenewableEnergy"],
     });
     expect(result.environmental).toEqual({
-      ...photovoltaicProjectImpactsService["environmentalSoilsRelatedImpacts"].environmental,
+      nonContaminatedSurfaceArea: photovoltaicProjectImpactsService["nonContaminatedSurfaceArea"],
+      permeableSurfaceArea: photovoltaicProjectImpactsService["permeableSurfaceArea"],
       soilsCo2eqStorage: photovoltaicProjectImpactsService["soilsCo2eqStorage"],
       avoidedCO2TonsWithEnergyProduction:
         photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"],

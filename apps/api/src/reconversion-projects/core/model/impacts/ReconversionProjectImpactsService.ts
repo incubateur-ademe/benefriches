@@ -11,6 +11,8 @@ import {
   RecurringExpense,
   RecurringRevenue,
   DevelopmentPlanInstallationExpenses,
+  typedObjectEntries,
+  EcosystemServicesImpact,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -19,8 +21,10 @@ import { DevelopmentPlan, Schedule } from "../../model/reconversionProject";
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { SumOnEvolutionPeriodService } from "./SumOnEvolutionPeriodService";
 import { computeEconomicBalanceImpact } from "./economic-balance/economicBalanceImpact";
-import { EnvironmentalSoilsRelatedImpactsService } from "./environmental-soils-related/EnvironmentalSoilsRelatedImpactsService";
 import { FullTimeJobsImpactService } from "./full-time-jobs/fullTimeJobsImpactService";
+import { NatureConservationImpactsService } from "./nature-conservation/NatureConservationImpactsService";
+import { getNonContaminatedSurfaceAreaImpact } from "./nature-conservation/nonContaminatedSurfaceImpact";
+import { getPermeableSurfaceImpact } from "./nature-conservation/permeableSurfaceAreaImpact";
 import { computeSoilsCo2eqStorageImpact } from "./soilsCo2eqStorage/soilsCo2eqStorage";
 
 const FRICHE_COST_PURPOSES = [
@@ -278,29 +282,95 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     );
   }
 
-  protected get environmentalSoilsRelatedImpacts() {
-    const environmentalSoilsRelatedImpactService = new EnvironmentalSoilsRelatedImpactsService({
+  protected get nonContaminatedSurfaceArea() {
+    return getNonContaminatedSurfaceAreaImpact({
       siteTotalSurfaceArea: this.relatedSite.surfaceArea,
+      contaminatedSurface: this.relatedSite.contaminatedSoilSurface,
+      decontaminatedSurface: this.reconversionProject.decontaminatedSoilSurface,
+    });
+  }
+
+  protected get permeableSurfaceArea() {
+    return getPermeableSurfaceImpact(
+      this.relatedSite.soilsDistribution,
+      this.reconversionProject.soilsDistribution,
+    );
+  }
+
+  protected get natureConservationSocioEconomicImpacts() {
+    const socioEconomicList: SocioEconomicImpact[] = [];
+
+    const natureConservationImpactsService = new NatureConservationImpactsService({
       baseSoilsDistribution: this.relatedSite.soilsDistribution,
       forecastSoilsDistribution: this.reconversionProject.soilsDistribution,
-      siteContaminatedSurfaceArea: this.relatedSite.contaminatedSoilSurface,
-      projectDecontaminedSurfaceArea: this.reconversionProject.decontaminatedSoilSurface,
+      baseDecontaminatedSurfaceArea: 0,
+      forecastDecontaminedSurfaceArea: this.reconversionProject.decontaminatedSoilSurface,
       baseSoilsCo2eqStorage: this.soilsCo2eqStorage?.base,
       forecastSoilsCo2eqStorage: this.soilsCo2eqStorage?.forecast,
       sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });
-    return {
-      socioEconomicList: environmentalSoilsRelatedImpactService.getSocioEconomicList(),
-      environmental: environmentalSoilsRelatedImpactService.getEnvironmentalImpacts(),
-    };
+    const waterRegulationMonetaryImpact =
+      natureConservationImpactsService.getWaterRegulationMonetaryImpact();
+
+    if (waterRegulationMonetaryImpact.difference) {
+      socioEconomicList.push({
+        impact: "water_regulation",
+        impactCategory: "environmental_monetary",
+        actor: "community",
+        amount: waterRegulationMonetaryImpact.difference,
+      });
+    }
+
+    const ecosystemServicesMonetaryImpact =
+      natureConservationImpactsService.getEcosystemServicesMonetaryImpact();
+
+    const ecosystemServicesList: EcosystemServicesImpact["details"] = typedObjectEntries(
+      ecosystemServicesMonetaryImpact,
+    ).reduce<EcosystemServicesImpact["details"]>((impactList, [key, value]) => {
+      if (!value || value.difference === 0) {
+        return impactList;
+      }
+      const impact = (() => {
+        switch (key) {
+          case "storedCo2Eq":
+            return "soils_co2_eq_storage";
+          case "forestRelatedProduct":
+            return "forest_related_product";
+          case "invasiveSpeciesRegulation":
+            return "invasive_species_regulation";
+          case "natureRelatedWelnessAndLeisure":
+            return "nature_related_wellness_and_leisure";
+          case "nitrogenCycle":
+            return "nitrogen_cycle";
+          case "pollination":
+            return "pollination";
+          case "soilErosion":
+            return "soil_erosion";
+          case "waterCycle":
+            return "water_cycle";
+        }
+      })();
+      return [...impactList, { amount: value.difference, impact }];
+    }, []);
+
+    if (ecosystemServicesList.length > 0) {
+      socioEconomicList.push({
+        impact: "ecosystem_services",
+        impactCategory: "environmental_monetary",
+        actor: "human_society",
+        amount: sumListWithKey(ecosystemServicesList, "amount"),
+        details: ecosystemServicesList,
+      });
+    }
+    return socioEconomicList;
   }
 
   formatImpacts() {
-    const impacts = [
+    const socioEconomicList: SocioEconomicImpact[] = [
       ...this.rentImpacts,
       ...this.avoidedFricheCosts,
       ...this.propertyTransferDutiesIncome,
-      ...this.environmentalSoilsRelatedImpacts.socioEconomicList,
+      ...this.natureConservationSocioEconomicImpacts,
     ];
 
     return {
@@ -310,12 +380,13 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
         accidents: this.accidentsImpact as AccidentsImpactResult,
       },
       environmental: {
-        ...this.environmentalSoilsRelatedImpacts.environmental,
+        nonContaminatedSurfaceArea: this.nonContaminatedSurfaceArea,
+        permeableSurfaceArea: this.permeableSurfaceArea,
         soilsCo2eqStorage: this.soilsCo2eqStorage,
       },
       socioeconomic: {
-        impacts: impacts,
-        total: sumListWithKey(impacts, "amount"),
+        impacts: socioEconomicList,
+        total: sumListWithKey(socioEconomicList, "amount"),
       },
     };
   }

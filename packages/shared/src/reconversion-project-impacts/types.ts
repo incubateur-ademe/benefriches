@@ -110,15 +110,14 @@ export type AccidentsImpactResult = {
     forecast: 0;
   };
 };
-
-export type EnvironmentalSoilsRelatedImpacts = {
-  nonContaminatedSurfaceArea?: Impact;
+type EnvironmentalImpacts = {
+  nonContaminatedSurfaceArea: Impact;
   permeableSurfaceArea: Impact & {
     mineralSoil: Impact;
     greenSoil: Impact;
   };
   soilsCo2eqStorage?: Impact;
-};
+} & EnvironmentalCo2RelatedImpacts;
 
 export type EnvironmentalCo2RelatedImpacts = {
   avoidedAirConditioningCo2EqEmissions?: number;
@@ -147,5 +146,5 @@ export type ReconversionProjectImpacts = {
     total: number;
   };
   social: SocialImpacts;
-  environmental: EnvironmentalSoilsRelatedImpacts & EnvironmentalCo2RelatedImpacts;
+  environmental: EnvironmentalImpacts;
 };

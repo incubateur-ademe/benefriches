@@ -479,14 +479,15 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       ...projectImpactsService["rentImpacts"],
       ...projectImpactsService["avoidedFricheCosts"],
       ...projectImpactsService["propertyTransferDutiesIncome"],
-      ...projectImpactsService["environmentalSoilsRelatedImpacts"].socioEconomicList,
+      ...projectImpactsService["natureConservationSocioEconomicImpacts"],
     ]);
     expect(result.social).toEqual({
       fullTimeJobs: projectImpactsService["fullTimeJobsImpact"],
       accidents: projectImpactsService["accidentsImpact"],
     });
     expect(result.environmental).toEqual({
-      ...projectImpactsService["environmentalSoilsRelatedImpacts"].environmental,
+      nonContaminatedSurfaceArea: projectImpactsService["nonContaminatedSurfaceArea"],
+      permeableSurfaceArea: projectImpactsService["permeableSurfaceArea"],
       soilsCo2eqStorage: projectImpactsService["soilsCo2eqStorage"],
     });
     expect(result.economicBalance).toEqual(projectImpactsService["economicBalance"]);
