@@ -111,7 +111,7 @@ export type AccidentsImpactResult = {
   };
 };
 type EnvironmentalImpacts = {
-  nonContaminatedSurfaceArea: Impact;
+  nonContaminatedSurfaceArea?: Impact;
   permeableSurfaceArea: Impact & {
     mineralSoil: Impact;
     greenSoil: Impact;
