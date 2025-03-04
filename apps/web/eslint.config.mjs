@@ -53,6 +53,7 @@ export default tseslint.config(
   },
   {
     rules: {
+      "no-console": ["error", { allow: ["error"] }],
       "@typescript-eslint/restrict-template-expressions": ["error", { allowNumber: true }],
       "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/no-misused-promises": [
