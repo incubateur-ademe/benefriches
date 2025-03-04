@@ -1,3 +1,5 @@
+import { SiteYearlyIncome } from "shared";
+
 import { revertYearlyIncomeStep } from "@/features/create-site/core/actions/createSite.actions";
 import { completeYearlyIncome } from "@/features/create-site/core/createSite.reducer";
 import { AppDispatch } from "@/shared/core/store-config/store";
@@ -11,7 +13,7 @@ const mapProps = (dispatch: AppDispatch) => {
       dispatch(revertYearlyIncomeStep());
     },
     onSubmit: (formData: FormValues) => {
-      const incomes = [];
+      const incomes: SiteYearlyIncome[] = [];
       if (formData.operationsIncome) {
         incomes.push({
           source: "operations",

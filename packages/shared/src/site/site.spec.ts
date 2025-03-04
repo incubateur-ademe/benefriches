@@ -265,7 +265,7 @@ describe("Site core logic", () => {
         },
         soilsDistribution: createSoilSurfaceAreaDistribution({ PRAIRIE_BUSHES: 14000 }),
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: 150000 }],
-        yearlyIncomes: [{ source: "subsidies", amount: 10000 }],
+        yearlyIncomes: [{ source: "other", amount: 10000 }],
         address: {
           city: "Hazebrouck",
           cityCode: "59295",
@@ -295,7 +295,7 @@ describe("Site core logic", () => {
         },
         soilsDistribution: createSoilSurfaceAreaDistribution({ PRAIRIE_BUSHES: 14000 }),
         surfaceArea: 14000,
-        yearlyIncomes: [{ source: "subsidies", amount: 10000 }],
+        yearlyIncomes: [{ source: "rent", amount: 10000 }],
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: 150000 }],
         address: {
           city: "Hazebrouck",

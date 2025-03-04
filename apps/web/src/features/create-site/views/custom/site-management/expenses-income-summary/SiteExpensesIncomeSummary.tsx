@@ -1,6 +1,5 @@
-import { SiteYearlyExpense } from "shared";
+import { SiteYearlyExpense, SiteYearlyIncome } from "shared";
 
-import { Income } from "@/features/create-site/core/siteFoncier.types";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 
@@ -10,8 +9,8 @@ type Props = {
   isFriche: boolean;
   ownerExpenses: SiteYearlyExpense[];
   tenantExpenses: SiteYearlyExpense[];
-  ownerIncome: Income[];
-  tenantIncome: Income[];
+  ownerIncome: SiteYearlyIncome[];
+  tenantIncome: SiteYearlyIncome[];
   ownerName?: string;
   tenantName?: string;
   onNext: () => void;

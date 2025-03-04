@@ -53,7 +53,7 @@ export const siteWithExhaustiveData = {
       purpose: "accidentsCost",
     },
   ],
-  yearlyIncomes: [{ amount: 150000, source: "income" }],
+  yearlyIncomes: [{ amount: 150000, source: "operations" }],
   isFriche: false,
   nature: "AGRICULTURAL",
   address: {

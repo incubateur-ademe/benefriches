@@ -1,4 +1,4 @@
 export type SiteYearlyIncome = {
   amount: number;
-  source: string;
+  source: "operations" | "other" | "rent";
 };

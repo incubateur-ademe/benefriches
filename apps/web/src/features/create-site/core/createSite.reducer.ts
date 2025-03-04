@@ -1,10 +1,16 @@
 import { createAction as _createAction, createReducer, createSelector } from "@reduxjs/toolkit";
-import { FricheActivity, SoilsDistribution, SoilType, SiteYearlyExpense, SiteNature } from "shared";
+import {
+  FricheActivity,
+  SoilsDistribution,
+  SoilType,
+  SiteYearlyExpense,
+  SiteNature,
+  SiteYearlyIncome,
+} from "shared";
 import { v4 as uuid } from "uuid";
 
 import {
   Address,
-  Income,
   Owner,
   SiteCreationData,
   SurfaceAreaDistributionEntryMode,
@@ -165,7 +171,7 @@ export const completeYearlyExpenses = createAction<SiteYearlyExpense[]>("complet
 
 export const completeYearlyExpensesSummary = createAction("completeYearlyExpensesSummary");
 
-export const completeYearlyIncome = createAction<Income[]>("completeYearlyIncome");
+export const completeYearlyIncome = createAction<SiteYearlyIncome[]>("completeYearlyIncome");
 
 export const namingIntroductionStepCompleted = createAction("namingIntroductionStepCompleted");
 

@@ -90,12 +90,13 @@ export const expressSiteSaved = createAppAsyncThunk(
       throw new Error("Current user is missing");
     }
 
-    const siteToCreate = createSiteSchema.parse(
-      getExpressSiteData(siteData as SiteExpressCreationData, currentUser.currentUser.id),
+    const generatedSite = getExpressSiteData(
+      siteData as SiteExpressCreationData,
+      currentUser.currentUser.id,
     );
+    const siteToCreate = createSiteSchema.parse(generatedSite);
 
     await extra.createSiteService.save(siteToCreate);
-
     return siteToCreate;
   },
 );

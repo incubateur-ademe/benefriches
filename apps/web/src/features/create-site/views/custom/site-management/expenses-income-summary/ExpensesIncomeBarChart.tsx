@@ -1,18 +1,17 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
-import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
+import { SiteYearlyExpense, SiteYearlyExpensePurpose, SiteYearlyIncome } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
-import { Income } from "@/features/create-site/core/siteFoncier.types";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { withDefaultChartOptions } from "@/shared/views/charts";
 
 type Props = {
   ownerExpenses: SiteYearlyExpense[];
   tenantExpenses: SiteYearlyExpense[];
-  ownerIncome: Income[];
-  tenantIncome: Income[];
+  ownerIncome: SiteYearlyIncome[];
+  tenantIncome: SiteYearlyIncome[];
   ownerName?: string;
   tenantName?: string;
 };
@@ -39,7 +38,7 @@ const getColorForPurpose = (purpose: SiteYearlyExpensePurpose) => {
   }
 };
 
-const getColorForSourceIncome = (source: Income["source"]) => {
+const getColorForSourceIncome = (source: SiteYearlyIncome["source"]) => {
   switch (source) {
     case "operations":
       return "#37C95D";

@@ -77,8 +77,3 @@ export type SiteExpressCreationData = {
 
 export type Tenant = { structureType: TenantStructureType; name: string };
 export type Owner = { structureType: OwnerStructureType; name: string };
-
-export type Income = {
-  source: string;
-  amount: number;
-};

@@ -1,3 +1,5 @@
+import { SiteYearlyIncome } from "shared";
+
 import {
   completeYearlyExpensesSummary,
   revertStep,
@@ -15,7 +17,7 @@ const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["si
 
   const rent = siteData.yearlyExpenses
     .filter(({ purpose }) => purpose === "rent")
-    .map(({ purpose, amount }) => ({ source: purpose, amount }));
+    .map(({ purpose, amount }) => ({ source: purpose, amount })) as SiteYearlyIncome[];
   const operationsIncome = siteData.yearlyIncomes;
   const siteHasTenant = hasTenant(siteData);
 
