@@ -2,7 +2,7 @@ import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
 import jestPlugin from "eslint-plugin-jest";
 import reactPlugin from "eslint-plugin-react";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
+import * as reactHooks from "eslint-plugin-react-hooks";
 import reactRefreshPlugin from "eslint-plugin-react-refresh";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -36,13 +36,13 @@ export default tseslint.config(
     files: ["**/*.{js,jsx,ts,tsx}"],
     plugins: {
       react: reactPlugin,
-      ["react-hooks"]: reactHooksPlugin,
+      ["react-hooks"]: reactHooks,
       ["react-refresh"]: reactRefreshPlugin,
     },
     rules: {
       ...reactPlugin.configs.flat.recommended.rules,
       ...reactPlugin.configs.flat["jsx-runtime"].rules,
-      ...reactHooksPlugin.configs.recommended.rules,
+      ...reactHooks.configs["recommended-latest"].rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       "react/no-unescaped-entities": ["error", { forbid: [">", "}"] }],
       "react/jsx-no-useless-fragment": "error",
