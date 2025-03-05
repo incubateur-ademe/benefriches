@@ -67,7 +67,9 @@ describe("SumOnEvolutionPeriodService", () => {
       evaluationPeriodInYears: 50,
       operationsFirstYear: 2025,
     });
-    expect(service.sumWithDiscountFactor(83, { rangeIndex: [1, 34] })).toEqual(1413);
+    expect(service.sumWithDiscountFactor(83, { startYearIndex: 1, endYearIndex: 34 })).toEqual(
+      1413,
+    );
   });
 
   it("returns total value actualised with discount rate for 10 years and starting after 1 year", () => {
@@ -75,7 +77,7 @@ describe("SumOnEvolutionPeriodService", () => {
       evaluationPeriodInYears: 10,
       operationsFirstYear: 2025,
     });
-    expect(service.sumWithDiscountFactor(83, { rangeIndex: [1, 21] })).toEqual(603);
+    expect(service.sumWithDiscountFactor(83, { startYearIndex: 1, endYearIndex: 21 })).toEqual(603);
   });
 
   it("returns value actualised with GDP and discount rate for 50 years", () => {

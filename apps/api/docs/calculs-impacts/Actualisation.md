@@ -50,6 +50,8 @@ $$
   - **seulement 1 an après la mise en service et pendant 33 ans maximum**
 - Effet sur les déménagements évités des entreprises
   - **seulement pendant la durée des travaux**
+- Effets sur les investissements dans les VRD
+  - **à partir d'1 an après la mise en service**
 - Dépenses d'entretien de la friche évités
 - Revenu locatif
 - Dépenses et recettes annuelles d'exploitation (dans le bilan de l'opération)
@@ -103,7 +105,6 @@ $$
 - Effet en termes de valeurs récréatives et culturelles liées aux nouveaux équipements et aménités proposés par le projet
 - Effet éducatif lié à la création des espaces de nature
 - Effet carbone de la création d'un ilot de fraicheur
-- Effets sur les investissements dans les VRD
 - Effet sur le temps de parcours des usagers
 - Effet sur les coûts de déplacement des usagers
 - Effet sur la pollution locale (si moins de déplacements en voitures particulières…)

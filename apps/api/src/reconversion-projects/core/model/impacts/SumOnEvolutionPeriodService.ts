@@ -92,11 +92,14 @@ export class SumOnEvolutionPeriodService {
     return roundFn(firstYearValue * this.evaluationPeriodInYears);
   }
 
-  sumWithDiscountFactor(firstYearValue: number, options?: { rangeIndex: [number, number] }) {
+  sumWithDiscountFactor(
+    firstYearValue: number,
+    options?: { startYearIndex?: number; endYearIndex?: number },
+  ) {
     return roundToInteger(
       sumList(
         Array(this.evaluationPeriodInYears)
-          .fill(firstYearValue, options?.rangeIndex[0], options?.rangeIndex[1])
+          .fill(firstYearValue, options?.startYearIndex, options?.endYearIndex)
           .map(
             (value, yearIndex) => value * SumOnEvolutionPeriodService.getDiscountFactor(yearIndex),
           ),

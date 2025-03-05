@@ -77,11 +77,11 @@ export const computePropertyValueImpact = (
   return {
     propertyValueIncrease: sumOnEvolutionPeriodService.sumWithDiscountFactor(
       propertyValueIncreaseForOneYear,
-      { rangeIndex: [1, 6] },
+      { startYearIndex: 1, endYearIndex: 6 },
     ),
     propertyTransferDutiesIncrease: sumOnEvolutionPeriodService.sumWithDiscountFactor(
       propertyTransferDutiesIncreaseForOneYear,
-      { rangeIndex: [1, 34] },
+      { startYearIndex: 1, endYearIndex: 34 },
     ),
   };
 };
