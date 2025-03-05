@@ -1,5 +1,4 @@
 import {
-  AccidentsImpactResult,
   AvoidedFricheCostsImpact,
   SocioEconomicImpact,
   sumListWithKey,
@@ -22,6 +21,7 @@ import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInte
 import { SumOnEvolutionPeriodService } from "./SumOnEvolutionPeriodService";
 import { computeEconomicBalanceImpact } from "./economic-balance/economicBalanceImpact";
 import { FullTimeJobsImpactService } from "./full-time-jobs/fullTimeJobsImpactService";
+import { Impact } from "./impact";
 import { NatureConservationImpactsService } from "./nature-conservation/NatureConservationImpactsService";
 import { getNonContaminatedSurfaceAreaImpact } from "./nature-conservation/nonContaminatedSurfaceImpact";
 import { getPermeableSurfaceImpact } from "./nature-conservation/permeableSurfaceAreaImpact";
@@ -144,7 +144,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       evaluationPeriodInYears: this.sumOnEvolutionPeriodService.evaluationPeriodInYears,
     });
 
-    return fullTimeJobsImpactService.getSocialImpacts().fullTimeJobs;
+    return fullTimeJobsImpactService.getFullTimeJobsImpacts();
   }
 
   protected get accidentsImpact() {
@@ -158,20 +158,16 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
     }
 
     return {
-      current: currentAccidents,
-      forecast: 0,
-      deaths: {
-        current: this.relatedSite.accidentsDeaths ?? 0,
+      ...Impact.get({ base: currentAccidents, forecast: 0 }),
+      deaths: Impact.get({ base: this.relatedSite.accidentsDeaths ?? 0, forecast: 0 }),
+      severeInjuries: Impact.get({
+        base: this.relatedSite.accidentsSevereInjuries ?? 0,
         forecast: 0,
-      },
-      severeInjuries: {
-        current: this.relatedSite.accidentsSevereInjuries ?? 0,
+      }),
+      minorInjuries: Impact.get({
+        base: this.relatedSite.accidentsMinorInjuries ?? 0,
         forecast: 0,
-      },
-      minorInjuries: {
-        current: this.relatedSite.accidentsMinorInjuries ?? 0,
-        forecast: 0,
-      },
+      }),
     };
   }
 
@@ -377,7 +373,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
       economicBalance: this.economicBalance,
       social: {
         fullTimeJobs: this.fullTimeJobsImpact,
-        accidents: this.accidentsImpact as AccidentsImpactResult,
+        accidents: this.accidentsImpact,
       },
       environmental: {
         nonContaminatedSurfaceArea: this.nonContaminatedSurfaceArea,

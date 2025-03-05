@@ -50,31 +50,21 @@ export const getSocialProjectImpacts = (
 
   const impacts: SocialImpact[] = [];
 
-  if (fullTimeJobs && (fullTimeJobs.current !== 0 || fullTimeJobs.forecast !== 0)) {
-    const { current, forecast, conversion, operations } = fullTimeJobs;
+  if (fullTimeJobs) {
+    const { conversion, operations, ...fullTimeJobsImpact } = fullTimeJobs;
     impacts.push({
       name: "full_time_jobs",
       type: "etp",
       impact: {
-        base: current,
-        forecast,
-        difference: forecast - current,
+        ...fullTimeJobsImpact,
         details: [
           {
             name: "conversion_full_time_jobs",
-            impact: {
-              base: conversion.current,
-              forecast: conversion.forecast,
-              difference: conversion.forecast - conversion.current,
-            },
+            impact: conversion,
           },
           {
             name: "operations_full_time_jobs",
-            impact: {
-              base: operations.current,
-              forecast: operations.forecast,
-              difference: operations.forecast - operations.current,
-            },
+            impact: operations,
           },
         ],
       },
@@ -82,30 +72,30 @@ export const getSocialProjectImpacts = (
   }
 
   if (accidents) {
-    const { current, forecast, minorInjuries, severeInjuries } = accidents;
+    const { minorInjuries, severeInjuries, base, forecast, difference } = accidents;
 
     impacts.push({
       name: "avoided_friche_accidents",
       type: "default",
       impact: {
         base: forecast,
-        forecast: current,
-        difference: current - forecast,
+        forecast: base,
+        difference: -difference,
         details: [
           {
             name: "avoided_friche_minor_accidents",
             impact: {
               base: minorInjuries.forecast,
-              forecast: minorInjuries.current,
-              difference: minorInjuries.current - minorInjuries.forecast,
+              forecast: minorInjuries.base,
+              difference: -minorInjuries.difference,
             },
           },
           {
             name: "avoided_friche_severe_accidents",
             impact: {
               base: severeInjuries.forecast,
-              forecast: severeInjuries.current,
-              difference: severeInjuries.current - severeInjuries.forecast,
+              forecast: severeInjuries.base,
+              difference: -severeInjuries.difference,
             },
           },
         ],
@@ -189,10 +179,10 @@ export const getSocialProjectImpacts = (
       name: "households_powered_by_renewable_energy",
       type: "default",
       impact: {
-        base: householdsPoweredByRenewableEnergy.current,
+        base: householdsPoweredByRenewableEnergy.base,
         forecast: householdsPoweredByRenewableEnergy.forecast,
         difference:
-          householdsPoweredByRenewableEnergy.forecast - householdsPoweredByRenewableEnergy.current,
+          householdsPoweredByRenewableEnergy.forecast - householdsPoweredByRenewableEnergy.base,
       },
     });
   }

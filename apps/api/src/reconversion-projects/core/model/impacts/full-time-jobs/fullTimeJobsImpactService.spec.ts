@@ -44,16 +44,19 @@ describe("FullTimeJobsImpactService impact", () => {
               conversion: 0,
               operation: 880,
             };
-      expect(service.getSocialImpacts().fullTimeJobs).toEqual({
-        current: 0,
+      expect(service.getFullTimeJobsImpacts()).toEqual({
+        base: 0,
         forecast: expected.operation + expected.conversion,
+        difference: expected.operation + expected.conversion,
         operations: {
-          current: 0,
+          base: 0,
           forecast: expected.operation,
+          difference: expected.operation,
         },
         conversion: {
-          current: 0,
+          base: 0,
           forecast: expected.conversion,
+          difference: expected.conversion,
         },
       });
     });
@@ -73,16 +76,19 @@ describe("FullTimeJobsImpactService impact", () => {
 
       const expectedOperationsJobs = developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT" ? 2 : 880;
 
-      expect(service.getSocialImpacts().fullTimeJobs).toEqual({
-        current: 0,
+      expect(service.getFullTimeJobsImpacts()).toEqual({
+        base: 0,
         forecast: expectedOperationsJobs,
+        difference: expectedOperationsJobs,
         operations: {
-          current: 0,
+          base: 0,
           forecast: expectedOperationsJobs,
+          difference: expectedOperationsJobs,
         },
         conversion: {
-          current: 0,
+          base: 0,
           forecast: 0,
+          difference: 0,
         },
       });
     });
@@ -120,16 +126,19 @@ describe("FullTimeJobsImpactService impact", () => {
               conversion: 0,
               operation: 880,
             };
-      expect(service.getSocialImpacts().fullTimeJobs).toEqual({
-        current: 0,
+      expect(service.getFullTimeJobsImpacts()).toEqual({
+        base: 0,
         forecast: expected.reinstatement + expected.conversion + expected.operation,
+        difference: expected.reinstatement + expected.conversion + expected.operation,
         operations: {
-          current: 0,
+          base: 0,
           forecast: expected.operation,
+          difference: expected.operation,
         },
         conversion: {
-          current: 0,
+          base: 0,
           forecast: expected.conversion + expected.reinstatement,
+          difference: expected.conversion + expected.reinstatement,
         },
       });
     });

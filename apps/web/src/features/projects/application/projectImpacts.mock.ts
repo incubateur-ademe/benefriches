@@ -148,31 +148,38 @@ const baseImpacts = {
   },
   social: {
     fullTimeJobs: {
-      current: 1,
+      base: 1,
       forecast: 3.5,
+      difference: 2.5,
       conversion: {
-        current: 0,
+        base: 0,
         forecast: 3,
+        difference: 3,
       },
       operations: {
-        current: 1,
+        base: 1,
         forecast: 0.5,
+        difference: -0.5,
       },
     },
     accidents: {
-      current: 3,
+      base: 3,
       forecast: 0,
+      difference: -3,
       deaths: {
-        current: 0,
+        base: 0,
         forecast: 0,
+        difference: 0,
       },
       severeInjuries: {
-        current: 2,
+        base: 2,
         forecast: 0,
+        difference: -2,
       },
       minorInjuries: {
-        current: 1,
+        base: 1,
         forecast: 0,
+        difference: -1,
       },
     },
   },
@@ -246,16 +253,14 @@ export const photovoltaicProjectImpactMock = {
     social: {
       ...baseImpacts.social,
       householdsPoweredByRenewableEnergy: {
-        current: 0,
+        base: 0,
         forecast: 1000,
+        difference: 1000,
       },
     },
     environmental: {
       ...baseImpacts.environmental,
-      avoidedCO2TonsWithEnergyProduction: {
-        current: 0,
-        forecast: 112.3,
-      },
+      avoidedCO2TonsWithEnergyProduction: 112.3,
     },
   },
 } satisfies ReconversionProjectImpactsResult;

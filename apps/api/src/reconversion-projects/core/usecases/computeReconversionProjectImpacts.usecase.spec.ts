@@ -385,10 +385,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 difference: 0,
               },
             },
-            avoidedCO2TonsWithEnergyProduction: {
-              current: 0,
-              forecast: 112.29599999999999,
-            },
+            avoidedCO2TonsWithEnergyProduction: 112.29599999999999,
             soilsCo2eqStorage: {
               base: 73.33,
               forecast: 73.33,
@@ -397,36 +394,44 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
           },
           social: {
             fullTimeJobs: {
-              current: 0,
+              base: 0,
               forecast: 0.4,
+              difference: 0.4,
               conversion: {
-                current: 0,
+                base: 0,
                 forecast: 0.3,
+                difference: 0.3,
               },
               operations: {
-                current: 0,
+                base: 0,
                 forecast: 0.1,
+                difference: 0.1,
               },
             },
             accidents: {
-              current: 3,
+              base: 3,
               forecast: 0,
+              difference: -3,
               deaths: {
-                current: 0,
+                base: 0,
                 forecast: 0,
+                difference: 0,
               },
               severeInjuries: {
-                current: 2,
+                base: 2,
                 forecast: 0,
+                difference: -2,
               },
               minorInjuries: {
-                current: 1,
+                base: 1,
                 forecast: 0,
+                difference: -1,
               },
             },
             householdsPoweredByRenewableEnergy: {
-              current: 0,
+              base: 0,
               forecast: 1000,
+              difference: 1000,
             },
           },
         },

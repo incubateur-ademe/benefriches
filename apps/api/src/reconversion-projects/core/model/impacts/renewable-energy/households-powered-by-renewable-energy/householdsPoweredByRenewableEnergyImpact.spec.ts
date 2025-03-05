@@ -7,8 +7,9 @@ describe("HouseholdsPoweredByRenewableEnergy impact", () => {
         forecastRenewableEnergyAnnualProductionMWh: 0,
       }),
     ).toEqual({
-      current: 0,
+      base: 0,
       forecast: 0,
+      difference: 0,
     });
   });
 
@@ -18,8 +19,9 @@ describe("HouseholdsPoweredByRenewableEnergy impact", () => {
         forecastRenewableEnergyAnnualProductionMWh: 23.395,
       }),
     ).toEqual({
-      current: 0,
+      base: 0,
       forecast: 5,
+      difference: 5,
     });
   });
 });

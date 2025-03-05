@@ -75,7 +75,7 @@ export function EnvironmentalModalWizard({
       return (
         <RenewableEnergyRelatedCo2Description
           siteData={{ address: siteData.addressLabel }}
-          impactData={impactsData.environmental.avoidedCO2TonsWithEnergyProduction?.forecast}
+          impactData={impactsData.environmental.avoidedCO2TonsWithEnergyProduction}
           projectData={
             projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
               ? projectData.developmentPlan

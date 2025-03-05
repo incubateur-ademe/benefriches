@@ -4,7 +4,6 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
 } from "../reconversion-projects";
-import { SoilType } from "../soils";
 import { SocioEconomicImpact } from "./socioEconomic.types";
 
 export type DevelopmentPlanInstallationExpenses = {
@@ -49,67 +48,6 @@ export type Impact = {
   difference: number;
 };
 
-export type AvoidedCO2WithEnergyProductionImpact = {
-  current: 0;
-  forecast: number;
-};
-
-export type HouseholdsPoweredByRenewableEnergyImpact = {
-  current: number;
-  forecast: number;
-};
-
-export type FullTimeJobsImpactResult = {
-  current: number;
-  forecast: number;
-  operations: {
-    current: number;
-    forecast: number;
-  };
-  conversion: {
-    current: number;
-    forecast: number;
-  };
-};
-
-export type SoilsCarbonStorageImpactResult =
-  | {
-      isSuccess: true;
-      current: {
-        total: number;
-        soils: {
-          type: SoilType;
-          surfaceArea: number;
-          carbonStorage: number;
-        }[];
-      };
-      forecast: {
-        total: number;
-        soils: {
-          type: SoilType;
-          surfaceArea: number;
-          carbonStorage: number;
-        }[];
-      };
-    }
-  | { isSuccess: false };
-
-export type AccidentsImpactResult = {
-  current: number;
-  forecast: 0;
-  severeInjuries: {
-    current: number;
-    forecast: 0;
-  };
-  minorInjuries: {
-    current: number;
-    forecast: 0;
-  };
-  deaths: {
-    current: number;
-    forecast: 0;
-  };
-};
 type EnvironmentalImpacts = {
   nonContaminatedSurfaceArea?: Impact;
   permeableSurfaceArea: Impact & {
@@ -122,12 +60,19 @@ type EnvironmentalImpacts = {
 export type EnvironmentalCo2RelatedImpacts = {
   avoidedAirConditioningCo2EqEmissions?: number;
   avoidedCarTrafficCo2EqEmissions?: number;
-  avoidedCO2TonsWithEnergyProduction?: AvoidedCO2WithEnergyProductionImpact;
+  avoidedCO2TonsWithEnergyProduction?: number;
 };
 
 export type SocialImpacts = {
-  fullTimeJobs?: FullTimeJobsImpactResult;
-  accidents?: AccidentsImpactResult;
+  fullTimeJobs?: Impact & {
+    operations: Impact;
+    conversion: Impact;
+  };
+  accidents?: Impact & {
+    severeInjuries: Impact;
+    minorInjuries: Impact;
+    deaths: Impact;
+  };
   avoidedVehiculeKilometers?: number;
   travelTimeSaved?: number;
   avoidedTrafficAccidents?: {
@@ -136,7 +81,7 @@ export type SocialImpacts = {
     severeInjuries: number;
     deaths: number;
   };
-  householdsPoweredByRenewableEnergy?: HouseholdsPoweredByRenewableEnergyImpact;
+  householdsPoweredByRenewableEnergy?: Impact;
 };
 
 export type ReconversionProjectImpacts = {

@@ -448,19 +448,23 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
     });
 
     expect(projectImpactsService["accidentsImpact"]).toEqual({
-      current: 3,
+      base: 3,
       forecast: 0,
+      difference: -3,
       deaths: {
-        current: 0,
+        base: 0,
         forecast: 0,
+        difference: 0,
       },
       severeInjuries: {
-        current: 2,
+        base: 2,
         forecast: 0,
+        difference: -2,
       },
       minorInjuries: {
-        current: 1,
+        base: 1,
         forecast: 0,
+        difference: -1,
       },
     });
   });

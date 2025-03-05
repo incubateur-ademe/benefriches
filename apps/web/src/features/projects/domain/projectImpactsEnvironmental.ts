@@ -83,9 +83,9 @@ export const getEnvironmentalProjectImpacts = (
       details.push({
         name: "avoided_co2_eq_emissions_with_production",
         impact: {
-          base: avoidedCO2TonsWithEnergyProduction.current,
-          forecast: avoidedCO2TonsWithEnergyProduction.forecast,
-          difference: avoidedCO2TonsWithEnergyProduction.forecast,
+          base: 0,
+          forecast: avoidedCO2TonsWithEnergyProduction,
+          difference: avoidedCO2TonsWithEnergyProduction,
         },
       });
     }

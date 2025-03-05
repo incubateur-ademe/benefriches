@@ -35,6 +35,15 @@ export class PhotovoltaicProjectImpactsService
     });
   }
 
+  protected get avoidedCO2TonsWithEnergyProductionMonetaryValue() {
+    if (!this.avoidedCO2TonsWithEnergyProduction) {
+      return undefined;
+    }
+    return this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndCO2ValueEvolution(
+      this.avoidedCO2TonsWithEnergyProduction,
+    );
+  }
+
   protected get householdsPoweredByRenewableEnergy() {
     if (!this.developmentPlanFeatures.expectedAnnualProduction) {
       return undefined;
@@ -73,24 +82,19 @@ export class PhotovoltaicProjectImpactsService
   }
 
   protected get avoidedCo2EqEmissions(): SocioEconomicImpact[] {
-    if (!this.avoidedCO2TonsWithEnergyProduction) {
+    if (!this.avoidedCO2TonsWithEnergyProductionMonetaryValue) {
       return [];
     }
 
-    const avoidedCo2EqWithEnr =
-      this.sumOnEvolutionPeriodService.sumWithDiscountFactorAndCO2ValueEvolution(
-        this.avoidedCO2TonsWithEnergyProduction.forecast,
-      );
-
     return [
       {
-        amount: avoidedCo2EqWithEnr,
+        amount: this.avoidedCO2TonsWithEnergyProductionMonetaryValue,
         impact: "avoided_co2_eq_emissions",
         impactCategory: "environmental_monetary",
         actor: "human_society",
         details: [
           {
-            amount: avoidedCo2EqWithEnr,
+            amount: this.avoidedCO2TonsWithEnergyProductionMonetaryValue,
             impact: "avoided_co2_eq_with_enr",
           },
         ],

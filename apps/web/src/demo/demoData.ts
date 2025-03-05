@@ -278,10 +278,11 @@ export const IMPACTS_DATA = {
     },
     social: {
       fullTimeJobs: {
-        current: 0.1,
+        base: 0.1,
         forecast: 42.2,
-        operations: { current: 0.1, forecast: 35.2 },
-        conversion: { current: 0, forecast: 7 },
+        difference: 42.1,
+        operations: { base: 0.1, forecast: 35.2, difference: 35.1 },
+        conversion: { base: 0, forecast: 7, difference: 7 },
       },
       avoidedVehiculeKilometers: 134929.16968815288,
       travelTimeSaved: 5434.64711243949,

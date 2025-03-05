@@ -137,11 +137,10 @@ const getFullTimeJobsImpact = (impactsData?: ReconversionProjectImpactsResult["i
   if (!impactsData?.social.fullTimeJobs) {
     return undefined;
   }
-  const { forecast, current } = impactsData.social.fullTimeJobs;
-  const difference = forecast - current;
+  const { difference, base, forecast } = impactsData.social.fullTimeJobs;
 
   return {
-    percentageEvolution: getPercentageDifference(current, forecast),
+    percentageEvolution: getPercentageDifference(base, forecast),
     difference,
   };
 };
@@ -152,10 +151,8 @@ const getHouseholdsPoweredByRenewableEnergy = (
   if (!impactsData?.social.householdsPoweredByRenewableEnergy) {
     return undefined;
   }
-  const { forecast, current } = impactsData.social.householdsPoweredByRenewableEnergy;
-  const difference = forecast - current;
 
-  return difference;
+  return impactsData.social.householdsPoweredByRenewableEnergy.difference;
 };
 
 const getAvoidedCo2eqEmissions = (impactsData?: ReconversionProjectImpactsResult["impacts"]) => {
@@ -166,7 +163,7 @@ const getAvoidedCo2eqEmissions = (impactsData?: ReconversionProjectImpactsResult
   const total = [
     impactsData.environmental.avoidedAirConditioningCo2EqEmissions ?? 0,
     impactsData.environmental.avoidedCarTrafficCo2EqEmissions ?? 0,
-    impactsData.environmental.avoidedCO2TonsWithEnergyProduction?.forecast ?? 0,
+    impactsData.environmental.avoidedCO2TonsWithEnergyProduction ?? 0,
   ].reduce((total, amount) => total + amount, 0);
 
   if (impactsData.environmental.soilsCo2eqStorage) {
@@ -332,7 +329,7 @@ export const getKeyImpactIndicatorsList = (
     });
   }
 
-  if (fullTimeJobs && fullTimeJobs.difference !== 0) {
+  if (fullTimeJobs) {
     impacts.push({
       name: "fullTimeJobs",
       isSuccess: fullTimeJobs.difference > 0,

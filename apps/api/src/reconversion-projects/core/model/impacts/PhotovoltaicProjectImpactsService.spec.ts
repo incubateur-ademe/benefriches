@@ -104,12 +104,11 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
         },
       ],
     });
-    expect(result.environmental.avoidedCO2TonsWithEnergyProduction).toMatchObject({
-      current: 0,
-      forecast: expect.any(Number) as number,
-    });
+    expect(result.environmental.avoidedCO2TonsWithEnergyProduction).toEqual(
+      expect.any(Number) as number,
+    );
     expect(result.social.householdsPoweredByRenewableEnergy).toMatchObject({
-      current: 0,
+      base: 0,
       forecast: expect.any(Number) as number,
     });
   });
