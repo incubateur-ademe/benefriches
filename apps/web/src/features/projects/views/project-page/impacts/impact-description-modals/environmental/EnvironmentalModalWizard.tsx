@@ -12,11 +12,8 @@ import { EnvironmentSubSectionName } from "../ImpactModalDescriptionContext";
 import { ImpactsData, ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
 import Co2SubSectionDescription from "./Co2SubSectionDescription";
 import EnvironmentalMainDescription from "./EnvironmentalMainDescription";
-import {
-  getSubSectionBreadcrumb,
-  mainBreadcrumbSection,
-  soilsBreadcrumbSection,
-} from "./breadcrumbSections";
+import SoilsSubSectionDescription from "./SoilsSubSectionDescription";
+import { getSubSectionBreadcrumb, mainBreadcrumbSection } from "./breadcrumbSections";
 import AirConditionningRelatedCo2Description from "./impact-co2/AirConditionningRelatedCo2Description";
 import Co2EqEmissionsDescription from "./impact-co2/Co2EqEmissionsDescription";
 import RenewableEnergyRelatedCo2Description from "./impact-co2/RenewableEnergyRelatedCo2Description";
@@ -49,14 +46,7 @@ export function EnvironmentalModalWizard({
       case "co2":
         return <Co2SubSectionDescription />;
       case "soils":
-        return (
-          <ImpactInProgressDescriptionModal
-            title={soilsBreadcrumbSection.label}
-            breadcrumbProps={{
-              section: mainBreadcrumbSection,
-            }}
-          />
-        );
+        return <SoilsSubSectionDescription />;
       case undefined:
         return <EnvironmentalMainDescription />;
     }
