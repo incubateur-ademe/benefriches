@@ -63,6 +63,82 @@ describe("Sites controller", () => {
         expect(responseErrors[0]?.path).toContain(mandatoryField);
       },
     );
+
+    it("can create an agricultural site from express props", async () => {
+      const agriculturalSiteDto: CreateExpressSiteDto = {
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        nature: "AGRICULTURAL",
+        surfaceArea: 12000,
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          // using a city that is mocked in MockCityDataService
+          city: "Longlaville",
+          banId: "79f390cd-afe8-41ba-bd62-6b095eb8e6bd",
+          cityCode: "54321",
+          postCode: "54810",
+          value: "Longlaville",
+        },
+      };
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-express")
+        .send(agriculturalSiteDto);
+
+      expect(response.status).toEqual(201);
+
+      const sitesInDb = await sqlConnection("sites").select(
+        "id",
+        "created_by",
+        "is_friche",
+        "surface_area",
+      );
+      expect(sitesInDb.length).toEqual(1);
+      expect(sitesInDb[0]).toEqual({
+        id: agriculturalSiteDto.id,
+        created_by: agriculturalSiteDto.createdBy,
+        is_friche: false,
+        surface_area: 12000,
+      });
+    });
+
+    it("can create a friche from express props", async () => {
+      const frichDto: CreateExpressSiteDto = {
+        id: "599e0580-06eb-4cdd-9c87-aa84ae41a5aa",
+        createdBy: "6c97f648-4e22-481e-9bc4-106ff00accdf",
+        nature: "FRICHE",
+        surfaceArea: 134000,
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          // using a city that is mocked in MockCityDataService
+          city: "Longlaville",
+          banId: "79f390cd-afe8-41ba-bd62-6b095eb8e6bd",
+          cityCode: "54321",
+          postCode: "54810",
+          value: "Longlaville",
+        },
+      };
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-express")
+        .send(frichDto);
+
+      expect(response.status).toEqual(201);
+
+      const sitesInDb = await sqlConnection("sites").select(
+        "id",
+        "created_by",
+        "is_friche",
+        "surface_area",
+      );
+      expect(sitesInDb.length).toEqual(1);
+      expect(sitesInDb[0]).toEqual({
+        id: frichDto.id,
+        created_by: frichDto.createdBy,
+        is_friche: true,
+        surface_area: 134000,
+      });
+    });
   });
 
   describe("POST /sites/create-custom", () => {
