@@ -30,7 +30,7 @@ const SummaryHouseholdsPoweredByRenewableEnergyDescription = ({ impactData }: Pr
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: "+ d’énergies renouvelables" }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         <p>
           Il s'agit d'une illustration du potentiel de production en électricité renouvelable qui
           sera produite par la centrale du projet en nombre de foyers alimentés.

@@ -42,7 +42,7 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         {isSuccess ? (
           <>
             <p>

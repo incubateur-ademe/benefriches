@@ -43,7 +43,7 @@ const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => 
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         {isSuccess ? (
           <>
             <p>

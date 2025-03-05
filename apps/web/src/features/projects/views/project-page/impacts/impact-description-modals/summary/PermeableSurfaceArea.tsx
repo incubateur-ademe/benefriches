@@ -39,7 +39,7 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         {isSuccess ? (
           <p>
             Le projet présente une plus grande surface de sol perméable que ce que l’on trouve

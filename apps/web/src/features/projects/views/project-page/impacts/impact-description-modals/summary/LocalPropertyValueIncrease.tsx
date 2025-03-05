@@ -30,7 +30,7 @@ const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => 
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: "Un cadre de vie amélioré" }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         <p>
           La reconversion d’une friche urbaine, du fait de la transformation d’un espace plus ou
           moins ancien et dégradé, se traduit par une amélioration du cadre de vie des riverains du

@@ -45,7 +45,7 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         <p>
           La réalisation du projet a des conséquences sur les émissions de CO2 pour plusieurs
           raisons, le cas échéant du fait :

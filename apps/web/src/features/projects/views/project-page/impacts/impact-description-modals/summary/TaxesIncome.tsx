@@ -35,7 +35,7 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         <p>
           La concrétisation du projet va générer des recettes fiscales pour la collectivité
           (exemples : taxe foncière sur les propriétés bâties, cotisation foncière des entreprises).

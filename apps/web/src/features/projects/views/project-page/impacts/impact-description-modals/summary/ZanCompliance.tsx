@@ -17,7 +17,7 @@ const SummaryZanComplianceDescription = ({ impactData }: Props) => {
   return (
     <ModalBody size="small">
       <ModalHeader title={title} breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]} />
-      <ModalContent>
+      <ModalContent noTitle>
         <p>
           {isSuccess
             ? "Le projet est considéré favorable à l'objectif de Zéro Artificialisation Nette car il s'agit de la reconversion d’un site en friche limitant la consommation d’espaces naturels, agricoles ou forestiers."

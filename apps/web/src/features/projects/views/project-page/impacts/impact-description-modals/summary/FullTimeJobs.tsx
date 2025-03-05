@@ -40,7 +40,7 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
         }}
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         <p>
           La concrétisation du projet nécessite généralement une activité économique qui va
           impliquer des emplois, au minimum de manière transitoire pour la remise en état du site

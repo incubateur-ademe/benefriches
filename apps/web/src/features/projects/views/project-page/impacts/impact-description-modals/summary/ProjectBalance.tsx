@@ -65,7 +65,7 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
         }
         breadcrumbSegments={[{ label: "Synthèse" }, { label: title }]}
       />
-      <ModalContent>
+      <ModalContent noTitle>
         <p>
           {isSuccess
             ? "Pour ce projet, la valeur monétaire de tous les impacts socio-économiques et environnementaux est plus élevée que la valeur absolue du déficit d’opération."
