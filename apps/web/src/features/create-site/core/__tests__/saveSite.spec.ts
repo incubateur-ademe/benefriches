@@ -25,11 +25,6 @@ const BLAJAN_ADDRESS: Address = {
   lat: 43.260859,
 };
 
-const BLAJAN_ADDRESS_WITH_POPULATION: Address = {
-  ...BLAJAN_ADDRESS,
-  population: 600,
-};
-
 describe("Save created site", () => {
   describe("custom creation", () => {
     it("should be in error state when site data in store is not valid (missing name)", async () => {
@@ -180,7 +175,7 @@ describe("Save created site", () => {
         siteData: {
           id: uuid(),
           nature: "AGRICULTURAL",
-          address: BLAJAN_ADDRESS_WITH_POPULATION,
+          address: BLAJAN_ADDRESS,
           surfaceArea: 15000,
           isFriche: false,
         },
@@ -190,7 +185,7 @@ describe("Save created site", () => {
         siteData: {
           id: uuid(),
           nature: "FRICHE",
-          address: BLAJAN_ADDRESS_WITH_POPULATION,
+          address: BLAJAN_ADDRESS,
           surfaceArea: 35000,
           isFriche: true,
         },
@@ -219,7 +214,6 @@ describe("Save created site", () => {
             address: siteData.address,
             surfaceArea: siteData.surfaceArea,
             createdBy: user.id,
-            cityPopulation: siteData.address.population,
           },
         ]);
       },

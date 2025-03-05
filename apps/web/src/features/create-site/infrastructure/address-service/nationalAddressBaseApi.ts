@@ -62,11 +62,6 @@ const mapNationalBaseAddressToAddress = (
         ...address,
         streetName: nationalBaseAddress.properties.street,
       };
-    case "municipality":
-      return {
-        ...address,
-        population: nationalBaseAddress.properties.population,
-      };
     default:
       return address;
   }

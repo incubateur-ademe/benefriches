@@ -42,7 +42,6 @@ export const expressSiteSaved = createAppAsyncThunk(
     const siteToCreate: ExpressSitePayload = expressSiteSchema.parse({
       ...siteData,
       createdBy: currentUser.currentUser.id,
-      cityPopulation: siteData.address?.population,
     });
 
     await extra.createSiteService.saveExpress(siteToCreate);

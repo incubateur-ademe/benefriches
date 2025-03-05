@@ -38,7 +38,6 @@ describe("Sites controller", () => {
           createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
           nature: "AGRICULTURAL",
           surfaceArea: 12399,
-          cityPopulation: 10000,
           address: {
             lat: 2.347,
             long: 48.859,

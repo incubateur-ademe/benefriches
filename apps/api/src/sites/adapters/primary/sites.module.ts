@@ -1,5 +1,8 @@
+import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
 
+import { GeoApiGouvService } from "src/reconversion-projects/adapters/secondary/services/city-service/GeoApiGouvService";
+import { CityDataProvider } from "src/reconversion-projects/core/gateways/CityDataProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { RealDateProvider } from "src/shared-kernel/adapters/date/RealDateProvider";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
@@ -13,6 +16,7 @@ import { SqlSiteRepository } from "../secondary/site-repository/SqlSiteRepositor
 import { SitesController } from "./sites.controller";
 
 @Module({
+  imports: [HttpModule],
   controllers: [SitesController],
   providers: [
     {
@@ -23,9 +27,12 @@ import { SitesController } from "./sites.controller";
     },
     {
       provide: CreateNewExpressSiteUseCase,
-      useFactory: (siteRepository: SitesRepository, dateProvider: DateProvider) =>
-        new CreateNewExpressSiteUseCase(siteRepository, dateProvider),
-      inject: [SqlSiteRepository, RealDateProvider],
+      useFactory: (
+        siteRepository: SitesRepository,
+        dateProvider: DateProvider,
+        geoApiGouvService: CityDataProvider,
+      ) => new CreateNewExpressSiteUseCase(siteRepository, dateProvider, geoApiGouvService),
+      inject: [SqlSiteRepository, RealDateProvider, GeoApiGouvService],
     },
     {
       provide: GetSiteByIdUseCase,
@@ -35,6 +42,7 @@ import { SitesController } from "./sites.controller";
     SqlSiteRepository,
     SqlSitesQuery,
     RealDateProvider,
+    GeoApiGouvService,
   ],
 })
 export class SitesModule {}

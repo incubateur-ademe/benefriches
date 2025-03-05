@@ -1,5 +1,6 @@
 import { Address, createSoilSurfaceAreaDistribution } from "shared";
 
+import { MockCityDataService } from "src/reconversion-projects/adapters/secondary/services/city-service/MockCityDataService";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
@@ -26,11 +27,13 @@ const buildAddress = (propsOverride?: Partial<Address>): Address => {
 describe("CreateNewExpressSite Use case", () => {
   let siteRepository: InMemorySitesRepository;
   let dateProvider: DateProvider;
+  let cityDataProvider: MockCityDataService;
   const fakeNow = new Date("2024-01-03T13:50:45");
 
   beforeEach(() => {
     siteRepository = new InMemorySitesRepository();
     dateProvider = new DeterministicDateProvider(fakeNow);
+    cityDataProvider = new MockCityDataService();
   });
 
   it("Cannot create a site when already exists", async () => {
@@ -45,7 +48,7 @@ describe("CreateNewExpressSite Use case", () => {
       },
     ]);
 
-    const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider);
+    const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider, cityDataProvider);
     await expect(
       usecase.execute({
         siteProps: {
@@ -60,9 +63,35 @@ describe("CreateNewExpressSite Use case", () => {
 
     expect(siteRepository._getSites().length).toEqual(1);
   });
+
+  it("Can create a site when CityDataService fails to get city population", async () => {
+    const failingCityDataProvider = new MockCityDataService();
+    failingCityDataProvider.shouldFail();
+    const usecase = new CreateNewExpressSiteUseCase(
+      siteRepository,
+      dateProvider,
+      failingCityDataProvider,
+    );
+
+    const siteProps = {
+      id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+      surfaceArea: 1000,
+      address: buildAddress(),
+      nature: "AGRICULTURAL",
+    } as const;
+    await usecase.execute({ createdBy: "user-id-123", siteProps });
+
+    const savedSites = siteRepository._getSites();
+    expect(savedSites).toHaveLength(1);
+  });
+
   describe("Agricultural or natural site", () => {
     it("creates a new express agricultural site from given props", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityDataProvider,
+      );
 
       const siteProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
@@ -106,7 +135,11 @@ describe("CreateNewExpressSite Use case", () => {
 
   describe("Friche", () => {
     it("creates a new express friche from given props", async () => {
-      const usecase = new CreateNewExpressSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityDataProvider,
+      );
 
       const fricheProps = {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",

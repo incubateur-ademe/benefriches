@@ -24,7 +24,6 @@ export const addressSchema = z.object({
   streetName: z.string().optional(),
   long: z.number(),
   lat: z.number(),
-  population: z.number().optional(),
 });
 
 export type Address = z.infer<typeof addressSchema>;

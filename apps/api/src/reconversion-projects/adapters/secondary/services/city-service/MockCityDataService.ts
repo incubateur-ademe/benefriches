@@ -29,7 +29,15 @@ const SAMPLES = [
 ];
 
 export class MockCityDataService implements CityDataProvider {
+  private _shouldFail = false;
+
+  shouldFail() {
+    this._shouldFail = true;
+  }
+
   getCitySurfaceAreaAndPopulation(cityCode: string): Promise<City> {
+    if (this._shouldFail) throw new Error("Intended error");
+
     const result = SAMPLES.find((sample) => sample.cityCode === cityCode);
 
     if (!result?.population || !result.surfaceArea) {
