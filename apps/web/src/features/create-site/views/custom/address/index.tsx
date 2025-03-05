@@ -1,3 +1,5 @@
+import { Address } from "shared";
+
 import {
   selectIsFriche,
   selectSiteAddress,
@@ -6,7 +8,6 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 
 import { revertAddressStep } from "../../../core/actions/createSite.actions";
 import { completeAddressStep } from "../../../core/createSite.reducer";
-import { Address } from "../../../core/siteFoncier.types";
 import AddressForm from "./AddressForm";
 
 const mapInitialValues = (address: Address | undefined) => {

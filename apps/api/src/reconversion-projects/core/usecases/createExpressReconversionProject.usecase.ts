@@ -1,8 +1,7 @@
-import { SoilsDistribution } from "shared";
+import { Address, SoilsDistribution } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
-import { Address } from "src/sites/core/models/site";
 
 import { NewUrbanCenterProjectExpressCreationService } from "../model/create-from-site-services/NewUrbanCenterProjectExpressCreationService";
 import { PublicFacilitiesProjectExpressCreationService } from "../model/create-from-site-services/PublicFacilitiesProjectExpressCreationService";

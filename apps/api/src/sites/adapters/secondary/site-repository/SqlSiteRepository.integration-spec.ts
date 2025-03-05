@@ -7,8 +7,8 @@ import {
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
-import { SiteEntity } from "src/sites/core/models/site";
 import { buildAgriculturalOrNaturalSite, buildFriche } from "src/sites/core/models/site.mock";
+import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 import { SqlSiteRepository } from "./SqlSiteRepository";
 

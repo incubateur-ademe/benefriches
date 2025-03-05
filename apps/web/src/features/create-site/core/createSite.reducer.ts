@@ -6,11 +6,11 @@ import {
   SiteYearlyExpense,
   SiteNature,
   SiteYearlyIncome,
+  Address,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
 import {
-  Address,
   Owner,
   SiteCreationData,
   SurfaceAreaDistributionEntryMode,

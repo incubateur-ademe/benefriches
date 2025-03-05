@@ -4,8 +4,8 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
-import { SiteEntity } from "../models/site";
 import { buildFriche, buildFricheProps } from "../models/site.mock";
+import { SiteEntity } from "../models/siteEntity";
 import { CreateNewExpressSiteUseCase } from "./createNewExpressSite.usecase";
 
 const buildAddress = (propsOverride?: Partial<Address>): Address => {

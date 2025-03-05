@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/unbound-method */
+import { Address } from "shared";
+
 import { createStore, RootState } from "@/shared/core/store-config/store";
 import { AdministrativeDivisionMock } from "@/shared/infrastructure/administrative-division-service/administrativeDivisionMock";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
 import { fetchSiteLocalAuthorities } from "../actions/getSiteLocalAuthorities.action";
 import { getInitialState as getInitialProjectCreationState } from "../createProject.reducer";
-import { Address } from "../project.types";
 import { relatedSiteData } from "./siteData.mock";
 
 const API_MOCKED_RESULT = {

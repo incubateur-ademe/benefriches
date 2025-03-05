@@ -1,39 +1,47 @@
 import { Feature, FeatureCollection, Point } from "geojson";
+import { Address } from "shared";
 
 import { AddressService } from "@/shared/views/components/form/Address/SearchAddressAutocompleteInput";
-
-import { Address } from "../../core/siteFoncier.types";
 
 const BAN_API_URL = "https://api-adresse.data.gouv.fr/search/?";
 
 // https://adresse.data.gouv.fr/api-doc/adresse
+type BanBaseAddress = {
+  label: string;
+  id: string;
+  name: string;
+  postcode: string;
+  citycode: string;
+  city: string;
+};
 
-type DefaultProperties = "label" | "id" | "name" | "postcode" | "citycode" | "city" | "context";
+type BanStreetAddress = BanBaseAddress & {
+  type: "street";
+  street: string;
+};
 
-type StreetProperties = "street";
+type BanHouseNumberAddress = BanBaseAddress & {
+  type: "housenumber";
+  street: string;
+  housenumber: string;
+};
 
-type HouseNumberProperties = "housenumber";
+type BanMunicipalityAddress = BanBaseAddress & {
+  type: "municipality";
+  municipality: string;
+  population: number;
+};
 
-type GeoJsonProperties =
-  | ({ type: "street" } & {
-      [name in DefaultProperties | StreetProperties]: string;
-    })
-  | ({ type: "housenumber" } & {
-      [name in DefaultProperties | StreetProperties | HouseNumberProperties]: string;
-    })
-  | ({ type: "municipality" } & ({
-      [name in DefaultProperties]: string;
-    } & { population: number; municipality: string }))
-  | ({ type: "locality" } & { [name in DefaultProperties]: string });
+type BanAddress = BanStreetAddress | BanHouseNumberAddress | BanMunicipalityAddress;
 
 type ErrorResponse = { code: number; message: string };
-type BanFeatureCollection = FeatureCollection<Point, GeoJsonProperties>;
+type BanFeatureCollection = FeatureCollection<Point, BanAddress>;
 type APIResponse = BanFeatureCollection | ErrorResponse;
 
 const mapNationalBaseAddressToAddress = (
-  nationalBaseAddress: Feature<Point, GeoJsonProperties>,
+  nationalBaseAddress: Feature<Point, BanAddress>,
 ): Address => {
-  const address = {
+  const address: Address = {
     banId: nationalBaseAddress.properties.id,
     value: nationalBaseAddress.properties.label,
     city: nationalBaseAddress.properties.city,
@@ -57,7 +65,6 @@ const mapNationalBaseAddressToAddress = (
     case "municipality":
       return {
         ...address,
-        municipality: nationalBaseAddress.properties.municipality,
         population: nationalBaseAddress.properties.population,
       };
     default:

@@ -1,4 +1,4 @@
-import { SiteEntity } from "../models/site";
+import { SiteEntity } from "../models/siteEntity";
 
 export interface SitesRepository {
   save(site: SiteEntity): Promise<void>;

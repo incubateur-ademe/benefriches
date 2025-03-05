@@ -11,11 +11,7 @@ import {
   fricheWithMinimalData,
   siteWithMinimalData,
 } from "../siteData.mock";
-import {
-  MunicipalityAddress,
-  SiteCreationData,
-  SiteExpressCreationData,
-} from "../siteFoncier.types";
+import { SiteCreationData, SiteExpressCreationData } from "../siteFoncier.types";
 import { expectNewCurrentStep, expectSiteDataUnchanged, StoreBuilder } from "./testUtils";
 
 const BLAJAN_ADDRESS: Address = {
@@ -29,9 +25,8 @@ const BLAJAN_ADDRESS: Address = {
   lat: 43.260859,
 };
 
-const BLAJAN_ADDRESS_WITH_POPULATION: MunicipalityAddress = {
+const BLAJAN_ADDRESS_WITH_POPULATION: Address = {
   ...BLAJAN_ADDRESS,
-  municipality: "Blajan",
   population: 600,
 };
 
@@ -221,7 +216,7 @@ describe("Save created site", () => {
           {
             id: siteData.id,
             nature: siteData.nature,
-            address: BLAJAN_ADDRESS,
+            address: siteData.address,
             surfaceArea: siteData.surfaceArea,
             createdBy: user.id,
             cityPopulation: siteData.address.population,

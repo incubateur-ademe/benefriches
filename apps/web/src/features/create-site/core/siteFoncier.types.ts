@@ -1,4 +1,5 @@
 import {
+  Address,
   FricheActivity,
   SiteNature,
   SiteYearlyExpense,
@@ -8,30 +9,6 @@ import {
 } from "shared";
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
-
-export type Address = StreetAddress | HouseNumberAddress | MunicipalityAddress | BaseAddress;
-
-type BaseAddress = {
-  banId: string;
-  value: string;
-  city: string;
-  cityCode: string;
-  postCode: string;
-  long: number;
-  lat: number;
-};
-type StreetAddress = BaseAddress & {
-  streetName: string;
-};
-
-type HouseNumberAddress = StreetAddress & {
-  streetNumber: string;
-};
-
-export type MunicipalityAddress = BaseAddress & {
-  population: number;
-  municipality: string;
-};
 
 export type SurfaceAreaDistributionEntryMode =
   | "default_even_split"
@@ -71,7 +48,7 @@ export type SiteExpressCreationData = {
   id: string;
   isFriche: boolean;
   nature: SiteNature;
-  address: MunicipalityAddress;
+  address: Address;
   surfaceArea: number;
 };
 

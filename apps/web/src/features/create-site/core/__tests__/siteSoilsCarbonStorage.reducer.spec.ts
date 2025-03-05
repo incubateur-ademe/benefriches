@@ -1,10 +1,11 @@
+import { Address } from "shared";
+
 import { SoilsCarbonStorageMock } from "@/shared/infrastructure/soils-carbon-storage-service/soilsCarbonStorageMock";
 
 import {
   fetchSiteSoilsCarbonStorage,
   SiteSoilsCarbonStorageResult,
 } from "../actions/siteSoilsCarbonStorage.actions";
-import { Address } from "../siteFoncier.types";
 import { StoreBuilder } from "./testUtils";
 
 describe("Site carbon sequestration reducer", () => {

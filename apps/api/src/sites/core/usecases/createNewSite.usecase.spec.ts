@@ -3,13 +3,13 @@ import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/Deter
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
 
-import { SiteEntity } from "../models/site";
 import {
   buildAgriculturalOrNaturalSite,
   buildAgriculturalOrNaturalSiteProps,
   buildFriche,
   buildFricheProps,
 } from "../models/site.mock";
+import { SiteEntity } from "../models/siteEntity";
 import { CreateNewCustomSiteUseCase } from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {

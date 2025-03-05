@@ -3,8 +3,6 @@ import z from "zod";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { MunicipalityAddress } from "../siteFoncier.types";
-
 const customSiteSchema = API_ROUTES.SITES.CREATE_CUSTOM_SITE.bodySchema;
 export type CustomSitePayload = z.infer<typeof customSiteSchema>;
 
@@ -44,7 +42,7 @@ export const expressSiteSaved = createAppAsyncThunk(
     const siteToCreate: ExpressSitePayload = expressSiteSchema.parse({
       ...siteData,
       createdBy: currentUser.currentUser.id,
-      cityPopulation: (siteData.address as MunicipalityAddress).population,
+      cityPopulation: siteData.address?.population,
     });
 
     await extra.createSiteService.saveExpress(siteToCreate);

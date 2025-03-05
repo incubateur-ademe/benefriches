@@ -1,9 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { SoilsDistribution } from "shared";
+import { Address, SoilsDistribution } from "shared";
 
 import { RootState } from "@/shared/core/store-config/store";
-
-import { Address } from "../siteFoncier.types";
 
 const selectSelf = (state: RootState) => state.siteCreation;
 

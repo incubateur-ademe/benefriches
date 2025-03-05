@@ -1,4 +1,5 @@
 import {
+  Address,
   FinancialAssistanceRevenue,
   PhotovoltaicInstallationExpense,
   RecurringExpense,
@@ -71,18 +72,6 @@ export type ProjectStakeholderStructure =
   | "unknown";
 
 export type ProjectStakeholder = { name: string; structureType: ProjectStakeholderStructure };
-
-export type Address = {
-  banId: string;
-  value: string;
-  city: string;
-  cityCode: string;
-  postCode: string;
-  streetNumber?: string;
-  streetName?: string;
-  long: number;
-  lat: number;
-};
 
 export type ProjectSite = {
   id: string;

@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import {
+  Address,
   DevelopmentPlanCategory,
   getDefaultScheduleForProject,
   ProjectSchedule,
@@ -9,7 +10,6 @@ import {
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectCreationState, ProjectCreationStep } from "./createProject.reducer";
-import { Address } from "./project.types";
 
 const selectSelf = (state: RootState) => state.projectCreation;
 

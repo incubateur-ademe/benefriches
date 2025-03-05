@@ -1,8 +1,7 @@
 import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
 import { AutoComplete } from "antd";
 import { ChangeEvent, useState } from "react";
-
-import { Address } from "@/features/create-site/core/siteFoncier.types";
+import { Address } from "shared";
 
 export interface AddressService {
   search(

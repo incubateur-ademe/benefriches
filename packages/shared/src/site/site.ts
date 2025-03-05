@@ -24,6 +24,7 @@ export const addressSchema = z.object({
   streetName: z.string().optional(),
   long: z.number(),
   lat: z.number(),
+  population: z.number().optional(),
 });
 
 export type Address = z.infer<typeof addressSchema>;
@@ -71,17 +72,7 @@ export const agriculturaOrNaturalSiteSchema = baseSiteSchema.extend({
 interface BaseSite {
   id: string;
   isFriche: boolean;
-  address: {
-    banId: string;
-    value: string;
-    city: string;
-    cityCode: string;
-    postCode: string;
-    streetNumber?: string;
-    streetName?: string;
-    long: number;
-    lat: number;
-  };
+  address: Address;
   soilsDistribution: SurfaceAreaDistribution<SoilType>;
   owner: {
     structureType: string;

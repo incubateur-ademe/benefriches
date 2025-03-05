@@ -5,8 +5,8 @@ import { InMemoryReconversionProjectRepository } from "src/reconversion-projects
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repository/InMemorySiteRepository";
-import { SiteEntity } from "src/sites/core/models/site";
 import { buildFriche } from "src/sites/core/models/site.mock";
+import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 import {
   buildExhaustiveReconversionProjectProps,

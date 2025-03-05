@@ -9,7 +9,7 @@ import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { SitesRepository } from "../gateways/SitesRepository";
-import { SiteEntity } from "../models/site";
+import { SiteEntity } from "../models/siteEntity";
 
 type Request = {
   siteProps: { isFriche: boolean } & (CreateFricheProps | CreateAgriculturalOrNaturalSiteProps);

@@ -12,7 +12,7 @@ import {
   SqlSiteSoilsDistribution,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { SitesRepository } from "src/sites/core/gateways/SitesRepository";
-import { SiteEntity } from "src/sites/core/models/site";
+import { SiteEntity } from "src/sites/core/models/siteEntity";
 
 export class SqlSiteRepository implements SitesRepository {
   constructor(@Inject(SqlConnection) private readonly sqlConnection: Knex) {}

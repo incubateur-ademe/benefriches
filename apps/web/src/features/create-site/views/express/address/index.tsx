@@ -1,3 +1,5 @@
+import { Address } from "shared";
+
 import {
   selectIsFriche,
   selectSiteAddress,
@@ -6,12 +8,14 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 
 import { revertAddressStep } from "../../../core/actions/createSite.actions";
 import { completeAddressStep } from "../../../core/createSite.reducer";
-import { Address, MunicipalityAddress } from "../../../core/siteFoncier.types";
 import AddressForm from "./AddressForm";
 
 const mapInitialValues = (address: Address | undefined) => {
   if (!address) return { selectedAddress: undefined, searchText: "" };
-  return { selectedAddress: address as MunicipalityAddress, searchText: address.value };
+  return {
+    selectedAddress: address,
+    searchText: address.value,
+  };
 };
 
 function AddressFormContainer() {
@@ -23,7 +27,7 @@ function AddressFormContainer() {
     <AddressForm
       initialValues={mapInitialValues(address)}
       isFriche={!!isFriche}
-      onSubmit={(address: MunicipalityAddress) => {
+      onSubmit={(address: Address) => {
         dispatch(completeAddressStep({ address }));
       }}
       onBack={() => {
