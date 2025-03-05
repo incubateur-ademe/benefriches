@@ -70,6 +70,7 @@ export const siteWithExhaustiveData = {
 
 export const fricheWithExhaustiveData = {
   ...siteWithExhaustiveData,
+  description: "Description of the friche",
   isFriche: true,
   nature: "FRICHE",
   isSiteOperated: undefined,

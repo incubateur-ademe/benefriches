@@ -13,17 +13,16 @@ import { SiteEntity } from "../models/site";
 
 type Request = {
   siteProps: { isFriche: boolean } & (CreateFricheProps | CreateAgriculturalOrNaturalSiteProps);
-  creationMode: "express" | "custom";
   createdBy: string;
 };
 
-export class CreateNewSiteUseCase implements UseCase<Request, void> {
+export class CreateNewCustomSiteUseCase implements UseCase<Request, void> {
   constructor(
     private readonly sitesRepository: SitesRepository,
     private readonly dateProvider: DateProvider,
   ) {}
 
-  async execute({ siteProps, createdBy, creationMode }: Request): Promise<void> {
+  async execute({ siteProps, createdBy }: Request): Promise<void> {
     const result = siteProps.isFriche
       ? createFriche(siteProps as CreateFricheProps)
       : createAgriculturalOrNaturalSite(siteProps as CreateAgriculturalOrNaturalSiteProps);
@@ -37,9 +36,9 @@ export class CreateNewSiteUseCase implements UseCase<Request, void> {
 
     const siteEntity: SiteEntity = {
       ...result.site,
+      creationMode: "custom",
       createdAt: this.dateProvider.now(),
       createdBy,
-      creationMode,
     };
 
     await this.sitesRepository.save(siteEntity);

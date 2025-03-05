@@ -1,68 +1,19 @@
-import { fricheActivitySchema, siteNatureSchema, soilTypeSchema } from "shared";
+import { API_ROUTES } from "shared";
 import z from "zod";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import getExpressSiteData from "../siteExpress";
-import { SiteExpressCreationData } from "../siteFoncier.types";
+import { MunicipalityAddress } from "../siteFoncier.types";
 
-const createSiteSchema = z.object({
-  id: z.string().uuid(),
-  createdBy: z.string().uuid(),
-  creationMode: z.enum(["express", "custom"]),
-  name: z.string(),
-  description: z.string().optional(),
-  isFriche: z.boolean(),
-  nature: siteNatureSchema,
-  address: z.object({
-    banId: z.string(),
-    value: z.string(),
-    city: z.string(),
-    cityCode: z.string(),
-    postCode: z.string(),
-    streetNumber: z.string().optional(),
-    streetName: z.string().optional(),
-    long: z.number(),
-    lat: z.number(),
-  }),
-  soilsDistribution: z.record(soilTypeSchema, z.number().nonnegative()),
-  contaminatedSoilSurface: z.number().nonnegative().optional(),
-  fricheActivity: fricheActivitySchema.optional(),
-  // management
-  owner: z.object({
-    structureType: z.string(),
-    name: z.string(),
-  }),
-  tenant: z
-    .object({
-      structureType: z.string(),
-      name: z.string(),
-    })
-    .optional(),
-  accidentsMinorInjuries: z.number().nonnegative().optional(),
-  accidentsSevereInjuries: z.number().nonnegative().optional(),
-  accidentsDeaths: z.number().nonnegative().optional(),
-  yearlyExpenses: z
-    .object({
-      purpose: z.string(),
-      bearer: z.string(),
-      amount: z.number().nonnegative(),
-    })
-    .array(),
-  yearlyIncomes: z
-    .object({
-      source: z.string(),
-      amount: z.number().nonnegative(),
-    })
-    .array(),
-});
+const customSiteSchema = API_ROUTES.SITES.CREATE_CUSTOM_SITE.bodySchema;
+export type CustomSitePayload = z.infer<typeof customSiteSchema>;
 
-type SiteCreatePayload = z.infer<typeof createSiteSchema>;
-
-export type CreateSiteGatewayPayload = SiteCreatePayload;
+const expressSiteSchema = API_ROUTES.SITES.CREATE_EXPRESS_SITE.bodySchema;
+export type ExpressSitePayload = z.infer<typeof expressSiteSchema>;
 
 export interface CreateSiteGateway {
-  save(siteData: CreateSiteGatewayPayload): Promise<void>;
+  saveCustom(siteData: CustomSitePayload): Promise<void>;
+  saveExpress(siteData: ExpressSitePayload): Promise<void>;
 }
 
 export const customSiteSaved = createAppAsyncThunk(
@@ -70,13 +21,13 @@ export const customSiteSaved = createAppAsyncThunk(
   async (_, { getState, extra }) => {
     const { siteCreation, currentUser } = getState();
 
-    const siteToCreate: SiteCreatePayload = createSiteSchema.parse({
+    const siteToCreate: CustomSitePayload = customSiteSchema.parse({
       ...siteCreation.siteData,
       creationMode: "custom",
       createdBy: currentUser.currentUser?.id,
     });
 
-    await extra.createSiteService.save(siteToCreate);
+    await extra.createSiteService.saveCustom(siteToCreate);
   },
 );
 
@@ -90,13 +41,12 @@ export const expressSiteSaved = createAppAsyncThunk(
       throw new Error("Current user is missing");
     }
 
-    const generatedSite = getExpressSiteData(
-      siteData as SiteExpressCreationData,
-      currentUser.currentUser.id,
-    );
-    const siteToCreate = createSiteSchema.parse(generatedSite);
+    const siteToCreate: ExpressSitePayload = expressSiteSchema.parse({
+      ...siteData,
+      createdBy: currentUser.currentUser.id,
+      cityPopulation: (siteData.address as MunicipalityAddress).population,
+    });
 
-    await extra.createSiteService.save(siteToCreate);
-    return siteToCreate;
+    await extra.createSiteService.saveExpress(siteToCreate);
   },
 );

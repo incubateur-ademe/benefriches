@@ -8,7 +8,7 @@ import { v4 as uuid } from "uuid";
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 
-import { CreateSiteBodyDto } from "./sites.controller";
+import { CreateCustomSiteDto, CreateExpressSiteDto } from "./sites.controller";
 
 type BadRequestResponseBody = {
   errors: { path: string[] }[];
@@ -29,54 +29,86 @@ describe("Sites controller", () => {
     await sqlConnection.destroy();
   });
 
-  const buildValidSitePayload = () => {
-    const validSiteBody: CreateSiteBodyDto = {
-      id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-      createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
-      creationMode: "custom",
-      isFriche: false,
-      nature: "AGRICULTURAL",
-      owner: { name: "Owner name", structureType: "company" },
-      name: "Friche industrielle",
-      address: {
-        lat: 2.347,
-        long: 48.859,
-        city: "Paris",
-        banId: "75110_7043",
-        cityCode: "75110",
-        postCode: "75010",
-        value: "Rue de Paradis 75010 Paris",
-      },
-      soilsDistribution: {
-        BUILDINGS: 1400,
-        MINERAL_SOIL: 1500,
-      },
-      yearlyExpenses: [],
-      yearlyIncomes: [],
-    };
-    return validSiteBody;
-  };
+  describe("POST /sites/create-express", () => {
+    it.each(["id", "nature", "createdBy", "address"] satisfies (keyof CreateExpressSiteDto)[])(
+      "can't create a site without mandatory field %s",
+      async (mandatoryField) => {
+        const requestBody: CreateExpressSiteDto = {
+          id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+          createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
+          nature: "AGRICULTURAL",
+          surfaceArea: 12399,
+          cityPopulation: 10000,
+          address: {
+            lat: 2.347,
+            long: 48.859,
+            city: "Paris",
+            banId: "75110_7043",
+            cityCode: "75110",
+            postCode: "75010",
+            value: "Rue de Paradis 75010 Paris",
+          },
+        };
+        // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+        delete requestBody[mandatoryField];
 
-  describe("POST /sites", () => {
+        const response = await supertest(app.getHttpServer())
+          .post("/api/sites/create-express")
+          .send(requestBody);
+
+        expect(response.status).toEqual(400);
+        expect(response.body).toHaveProperty("errors");
+
+        const responseErrors = (response.body as BadRequestResponseBody).errors;
+        expect(responseErrors).toHaveLength(1);
+        expect(responseErrors[0]?.path).toContain(mandatoryField);
+      },
+    );
+  });
+
+  describe("POST /sites/create-custom", () => {
     it.each([
       "id",
       "isFriche",
       "nature",
-      "creationMode",
       "createdBy",
       "name",
       "address",
       "soilsDistribution",
       "yearlyExpenses",
       "yearlyIncomes",
-    ] satisfies (keyof CreateSiteBodyDto)[])(
+    ] satisfies (keyof CreateCustomSiteDto)[])(
       "can't create a site without mandatory field %s",
       async (mandatoryField) => {
-        const requestBody = buildValidSitePayload();
+        const requestBody = {
+          id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+          createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
+          isFriche: false,
+          nature: "AGRICULTURAL",
+          owner: { name: "Owner name", structureType: "company" },
+          name: "Friche industrielle",
+          address: {
+            lat: 2.347,
+            long: 48.859,
+            city: "Paris",
+            banId: "75110_7043",
+            cityCode: "75110",
+            postCode: "75010",
+            value: "Rue de Paradis 75010 Paris",
+          },
+          soilsDistribution: {
+            BUILDINGS: 1400,
+            MINERAL_SOIL: 1500,
+          },
+          yearlyExpenses: [],
+          yearlyIncomes: [],
+        };
         // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
         delete requestBody[mandatoryField];
 
-        const response = await supertest(app.getHttpServer()).post("/api/sites").send(requestBody);
+        const response = await supertest(app.getHttpServer())
+          .post("/api/sites/create-custom")
+          .send(requestBody);
 
         expect(response.status).toEqual(400);
         expect(response.body).toHaveProperty("errors");
@@ -88,10 +120,9 @@ describe("Sites controller", () => {
     );
 
     it("can create an agricultural site", async () => {
-      const agriculturalSiteDto: CreateSiteBodyDto = {
+      const agriculturalSiteDto: CreateCustomSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        creationMode: "custom",
         isFriche: false,
         nature: "AGRICULTURAL",
         name: "Exploitation agricole",
@@ -126,7 +157,7 @@ describe("Sites controller", () => {
         ],
       };
       const response = await supertest(app.getHttpServer())
-        .post("/api/sites")
+        .post("/api/sites/create-custom")
         .send(agriculturalSiteDto);
 
       expect(response.status).toEqual(201);
@@ -192,11 +223,10 @@ describe("Sites controller", () => {
     });
 
     it("can create a friche site", async () => {
-      const fricheDto: CreateSiteBodyDto = {
+      const fricheDto: CreateCustomSiteDto = {
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         nature: "FRICHE",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        creationMode: "express",
         name: "Ancienne gare de Bercy",
         description: "Description of site",
         isFriche: true,
@@ -231,7 +261,9 @@ describe("Sites controller", () => {
           streetName: "rue de Londres",
         },
       };
-      const response = await supertest(app.getHttpServer()).post("/api/sites").send(fricheDto);
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-custom")
+        .send(fricheDto);
 
       expect(response.status).toEqual(201);
 
@@ -240,7 +272,7 @@ describe("Sites controller", () => {
       expect(sitesInDb[0]).toEqual<SqlSite>({
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        creation_mode: "express",
+        creation_mode: "custom",
         name: "Ancienne gare de Bercy",
         owner_structure_type: "department",
         owner_name: "Le département Paris",

@@ -376,9 +376,8 @@ export const siteCreationReducer = createReducer(getInitialState(), (builder) =>
       state.stepsHistory.push("CREATION_RESULT");
       state.saveLoadingState = "loading";
     })
-    .addCase(expressSiteSaved.fulfilled, (state, action) => {
+    .addCase(expressSiteSaved.fulfilled, (state) => {
       state.saveLoadingState = "success";
-      state.siteData.name = action.payload.name;
     })
     .addCase(expressSiteSaved.rejected, (state) => {
       state.saveLoadingState = "error";

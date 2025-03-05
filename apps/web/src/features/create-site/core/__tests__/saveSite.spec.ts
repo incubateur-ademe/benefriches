@@ -1,17 +1,39 @@
+import { Address } from "shared";
+import { v4 as uuid } from "uuid";
+
 import { buildUser } from "@/features/onboarding/core/user.mock";
 
 import { InMemoryCreateSiteService } from "../../infrastructure/create-site-service/inMemoryCreateSiteApi";
 import { customSiteSaved, expressSiteSaved } from "../actions/siteSaved.actions";
 import {
-  expressAgriculturalCreationData,
   expressFricheCreationData,
   fricheWithExhaustiveData,
   fricheWithMinimalData,
-  siteWithExhaustiveData,
   siteWithMinimalData,
 } from "../siteData.mock";
-import getExpressSiteData from "../siteExpress";
+import {
+  MunicipalityAddress,
+  SiteCreationData,
+  SiteExpressCreationData,
+} from "../siteFoncier.types";
 import { expectNewCurrentStep, expectSiteDataUnchanged, StoreBuilder } from "./testUtils";
+
+const BLAJAN_ADDRESS: Address = {
+  banId: "31070_p4ur8e",
+  value: "Sendere 31350 Blajan",
+  city: "Blajan",
+  cityCode: "31070",
+  postCode: "31350",
+  streetName: "Sendere",
+  long: 0.664699,
+  lat: 43.260859,
+};
+
+const BLAJAN_ADDRESS_WITH_POPULATION: MunicipalityAddress = {
+  ...BLAJAN_ADDRESS,
+  municipality: "Blajan",
+  population: 600,
+};
 
 describe("Save created site", () => {
   describe("custom creation", () => {
@@ -39,10 +61,12 @@ describe("Save created site", () => {
     });
 
     it("should be in error state when createSiteService fails", async () => {
-      const shouldFail = true;
+      const failingCreateService = new InMemoryCreateSiteService();
+      failingCreateService.shouldFailOnCall();
+
       const store = new StoreBuilder()
         .withCreationData(siteWithMinimalData)
-        .withAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) })
+        .withAppDependencies({ createSiteService: failingCreateService })
         .withCurrentUser(buildUser())
         .build();
       const initialRootState = store.getState();
@@ -54,59 +78,65 @@ describe("Save created site", () => {
       expect(newState.siteCreation.saveLoadingState).toEqual("error");
     });
 
-    it("should call createSiteService with creationMode = 'custom'", async () => {
-      const createSiteService = new InMemoryCreateSiteService();
-
-      const spy = vi.spyOn(createSiteService, "save");
-      const user = buildUser();
-
-      const store = new StoreBuilder()
-        .withCreationData(siteWithMinimalData)
-        .withAppDependencies({ createSiteService })
-        .withCurrentUser(user)
-        .build();
-
-      await store.dispatch(customSiteSaved());
-
-      expect(spy).toHaveBeenCalledWith({
-        address: siteWithMinimalData.address,
-        id: siteWithMinimalData.id,
-        isFriche: siteWithMinimalData.isFriche,
-        nature: siteWithMinimalData.nature,
-        name: siteWithMinimalData.name,
-        owner: siteWithMinimalData.owner,
-        soilsDistribution: siteWithMinimalData.soilsDistribution,
-        yearlyExpenses: siteWithMinimalData.yearlyExpenses,
-        yearlyIncomes: siteWithMinimalData.yearlyIncomes,
-        creationMode: "custom",
-        createdBy: user.id,
-      });
-    });
-
     it.each([
-      { siteData: siteWithMinimalData, dataType: "site with minimal data" },
-      { siteData: siteWithExhaustiveData, dataType: "site with exhaustive data" },
-      { siteData: fricheWithMinimalData, dataType: "friche with minimal data" },
-      { siteData: fricheWithExhaustiveData, dataType: "friche with exhaustive data" },
-    ])("should be in success state when saving $dataType", async ({ siteData }) => {
-      const store = new StoreBuilder()
-        .withCreationData(siteData)
-        .withCurrentUser(buildUser())
-        .build();
-      const initialRootState = store.getState();
+      {
+        siteData: siteWithMinimalData,
+        dataType: "agricultural site",
+      },
+      {
+        siteData: fricheWithMinimalData,
+        dataType: "friche with minimal data",
+      },
+      {
+        siteData: fricheWithExhaustiveData,
+        dataType: "friche with exhaustive data",
+      },
+    ] satisfies { siteData: SiteCreationData; dataType: string }[])(
+      "should be in success state and move to CREATION_RESULT step after saving $dataType",
+      async ({ siteData }) => {
+        const createSiteService = new InMemoryCreateSiteService();
+        const user = buildUser();
+        const store = new StoreBuilder()
+          .withCreationData(siteData)
+          .withCurrentUser(buildUser())
+          .withAppDependencies({ createSiteService })
+          .build();
+        const initialRootState = store.getState();
 
-      await store.dispatch(customSiteSaved());
+        await store.dispatch(customSiteSaved());
 
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
-      expect(newState.siteCreation.saveLoadingState).toEqual("success");
-    });
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
+        expect(newState.siteCreation.saveLoadingState).toEqual("success");
+        expect(createSiteService._customSites).toEqual([
+          {
+            id: siteData.id,
+            name: siteData.name,
+            description: (siteData as SiteCreationData).description,
+            address: siteData.address,
+            soilsDistribution: siteData.soilsDistribution,
+            owner: siteData.owner,
+            tenant: (siteData as SiteCreationData).tenant,
+            yearlyExpenses: siteData.yearlyExpenses,
+            yearlyIncomes: siteData.yearlyIncomes,
+            nature: siteData.nature,
+            isFriche: siteData.isFriche,
+            fricheActivity: (siteData as SiteCreationData).fricheActivity,
+            contaminatedSoilSurface: (siteData as SiteCreationData).contaminatedSoilSurface,
+            accidentsMinorInjuries: (siteData as SiteCreationData).accidentsMinorInjuries,
+            accidentsSevereInjuries: (siteData as SiteCreationData).accidentsSevereInjuries,
+            accidentsDeaths: (siteData as SiteCreationData).accidentsDeaths,
+            createdBy: user.id,
+          },
+        ]);
+      },
+    );
   });
 
   describe("express creation", () => {
-    it("should be in error state when site data in store is not valid (missing surfaceArea)", async () => {
+    it("should be in error state when site data in store is not valid (missing site nature)", async () => {
       const store = new StoreBuilder()
-        .withCreationData({ ...expressFricheCreationData, surfaceArea: undefined })
+        .withCreationData({ ...expressFricheCreationData, nature: undefined })
         .withCurrentUser(buildUser())
         .build();
       const initialRootState = store.getState();
@@ -131,12 +161,14 @@ describe("Save created site", () => {
       expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
     });
 
-    it("should be in error state when createSiteService fails", async () => {
-      const shouldFail = true;
+    it("should be in error state and move to CREATION_RESULT step when createSiteService fails", async () => {
+      const failingCreateService = new InMemoryCreateSiteService();
+      failingCreateService.shouldFailOnCall();
+
       const store = new StoreBuilder()
         .withCreationData(expressFricheCreationData)
         .withCurrentUser(buildUser())
-        .withAppDependencies({ createSiteService: new InMemoryCreateSiteService(shouldFail) })
+        .withAppDependencies({ createSiteService: failingCreateService })
         .build();
       const initialRootState = store.getState();
 
@@ -147,47 +179,55 @@ describe("Save created site", () => {
       expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
     });
 
-    it("should call createSiteService with the right payload", async () => {
-      const createSiteService = new InMemoryCreateSiteService();
-      const user = buildUser();
-      const store = new StoreBuilder()
-        .withCreationData(expressFricheCreationData)
-        .withCurrentUser(user)
-        .withAppDependencies({ createSiteService })
-        .build();
-
-      const spy = vi.spyOn(createSiteService, "save");
-
-      await store.dispatch(expressSiteSaved());
-
-      expect(spy).toHaveBeenCalledWith(getExpressSiteData(expressFricheCreationData, user.id));
-    });
-
     it.each([
-      { siteData: expressFricheCreationData, dataType: "express friche" },
       {
-        siteData: expressAgriculturalCreationData,
-        dataType: "express agricultural data",
-      },
-    ])("should be in success state when saving $dataType", async ({ siteData }) => {
-      const store = new StoreBuilder()
-        .withCreationData(siteData)
-        .withCurrentUser(buildUser())
-        .build();
-      const initialState = store.getState().siteCreation;
-
-      await store.dispatch(expressSiteSaved());
-
-      const state = store.getState();
-      expect(state.siteCreation).toEqual({
-        ...initialState,
-        stepsHistory: [...initialState.stepsHistory, "CREATION_RESULT"],
+        dataType: "agricultural site",
         siteData: {
-          ...initialState.siteData,
-          name: expect.any(String) as string,
+          id: uuid(),
+          nature: "AGRICULTURAL",
+          address: BLAJAN_ADDRESS_WITH_POPULATION,
+          surfaceArea: 15000,
+          isFriche: false,
         },
-        saveLoadingState: "success",
-      });
-    });
+      },
+      {
+        dataType: "friche",
+        siteData: {
+          id: uuid(),
+          nature: "FRICHE",
+          address: BLAJAN_ADDRESS_WITH_POPULATION,
+          surfaceArea: 35000,
+          isFriche: true,
+        },
+      },
+    ] satisfies { siteData: SiteExpressCreationData; dataType: string }[])(
+      "should be in success state after saving $dataType",
+      async ({ siteData }) => {
+        const createSiteService = new InMemoryCreateSiteService();
+        const user = buildUser();
+        const store = new StoreBuilder()
+          .withCreationData(siteData)
+          .withCurrentUser(buildUser())
+          .withAppDependencies({ createSiteService })
+          .build();
+        const initialRootState = store.getState();
+
+        await store.dispatch(expressSiteSaved());
+
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "CREATION_RESULT");
+        expect(newState.siteCreation.saveLoadingState).toEqual("success");
+        expect(createSiteService._expressSites).toEqual([
+          {
+            id: siteData.id,
+            nature: siteData.nature,
+            address: BLAJAN_ADDRESS,
+            surfaceArea: siteData.surfaceArea,
+            createdBy: user.id,
+            cityPopulation: siteData.address.population,
+          },
+        ]);
+      },
+    );
   });
 });

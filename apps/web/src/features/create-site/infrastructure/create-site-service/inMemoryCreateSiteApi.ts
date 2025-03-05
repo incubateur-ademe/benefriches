@@ -1,13 +1,25 @@
-import { CreateSiteGateway, CreateSiteGatewayPayload } from "../../core/actions/siteSaved.actions";
+import {
+  CreateSiteGateway,
+  CustomSitePayload,
+  ExpressSitePayload,
+} from "../../core/actions/siteSaved.actions";
 
 export class InMemoryCreateSiteService implements CreateSiteGateway {
-  _sites: CreateSiteGatewayPayload[] = [];
+  _customSites: CustomSitePayload[] = [];
+  _expressSites: ExpressSitePayload[] = [];
+  private shouldFail = false;
 
-  constructor(private readonly shouldFail: boolean = false) {}
+  shouldFailOnCall() {
+    this.shouldFail = true;
+  }
 
-  async save(newSite: CreateSiteGatewayPayload) {
+  async saveCustom(newSite: CustomSitePayload) {
     if (this.shouldFail) throw new Error("Intended error");
+    await Promise.resolve(this._customSites.push(newSite));
+  }
 
-    await Promise.resolve(this._sites.push(newSite));
+  async saveExpress(newSite: ExpressSitePayload) {
+    if (this.shouldFail) throw new Error("Intended error");
+    await Promise.resolve(this._expressSites.push(newSite));
   }
 }

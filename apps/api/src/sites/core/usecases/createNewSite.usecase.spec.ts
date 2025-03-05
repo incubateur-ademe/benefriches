@@ -10,7 +10,7 @@ import {
   buildFriche,
   buildFricheProps,
 } from "../models/site.mock";
-import { CreateNewSiteUseCase } from "./createNewSite.usecase";
+import { CreateNewCustomSiteUseCase } from "./createNewSite.usecase";
 
 describe("CreateNewSite Use Case", () => {
   let siteRepository: InMemorySitesRepository;
@@ -26,13 +26,12 @@ describe("CreateNewSite Use Case", () => {
     // @ts-expect-error invalid name
     const siteProps = buildFricheProps({ name: 123 });
 
-    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+    const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
     expect.assertions(1);
     try {
       await usecase.execute({
         siteProps: { ...siteProps, isFriche: true },
         createdBy: "user-123",
-        creationMode: "custom",
       });
     } catch (err) {
       expect((err as Error).message).toContain(
@@ -53,12 +52,11 @@ describe("CreateNewSite Use Case", () => {
       },
     ]);
 
-    const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+    const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
     await expect(
       usecase.execute({
         siteProps: { ...fricheProps, isFriche: true },
         createdBy: "blabla",
-        creationMode: "express",
       }),
     ).rejects.toThrow(`Site with id ${fricheProps.id} already exists`);
 
@@ -68,10 +66,9 @@ describe("CreateNewSite Use Case", () => {
     it("Can create a new agricultural/natural site with minimal data", async () => {
       const siteProps = buildAgriculturalOrNaturalSiteProps();
 
-      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({
-        creationMode: "custom",
         createdBy: "user-id-123",
         siteProps: {
           ...siteProps,
@@ -105,10 +102,9 @@ describe("CreateNewSite Use Case", () => {
         ],
       });
 
-      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({
-        creationMode: "custom",
         createdBy: "user-id-123",
         siteProps: {
           ...siteProps,
@@ -133,10 +129,9 @@ describe("CreateNewSite Use Case", () => {
     it("Can create a new friche with minimal data", async () => {
       const fricheProps = buildFricheProps();
 
-      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({
-        creationMode: "custom",
         createdBy: "user-id-123",
         siteProps: {
           ...fricheProps,
@@ -171,10 +166,9 @@ describe("CreateNewSite Use Case", () => {
         accidentsDeaths: 2,
       });
 
-      const usecase = new CreateNewSiteUseCase(siteRepository, dateProvider);
+      const usecase = new CreateNewCustomSiteUseCase(siteRepository, dateProvider);
 
       await usecase.execute({
-        creationMode: "custom",
         createdBy: "user-id-123",
         siteProps: {
           ...fricheProps,

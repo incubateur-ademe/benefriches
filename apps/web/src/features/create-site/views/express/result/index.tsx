@@ -1,12 +1,15 @@
+import { selectSiteFeatures } from "@/features/site-features/core/siteFeatures.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { revertStep } from "../../../core/createSite.reducer";
 import SiteCreationResult from "./SiteCreationResult";
 
 function SiteCreationResultContainer() {
-  const { siteData, saveLoadingState: creationLoadingState } = useAppSelector(
+  const { siteData: creationData, saveLoadingState: creationLoadingState } = useAppSelector(
     (state) => state.siteCreation,
   );
+  const siteData = useAppSelector(selectSiteFeatures);
+
   const dispatch = useAppDispatch();
 
   const onBack = () => {
@@ -15,8 +18,8 @@ function SiteCreationResultContainer() {
 
   return (
     <SiteCreationResult
-      siteId={siteData.id}
-      siteName={siteData.name ?? ""}
+      siteId={creationData.id}
+      siteName={siteData?.name ?? ""}
       loadingState={creationLoadingState}
       onBack={onBack}
     />

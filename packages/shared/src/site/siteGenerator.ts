@@ -4,7 +4,7 @@ import { generateSiteName, SiteYearlyExpense } from ".";
 import { computeEstimatedPropertyTaxesAmount } from "../financial";
 import { formatMunicipalityName } from "../local-authority";
 import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../soils";
-import { createFriche, Friche, AgriculturalOrNaturalSite } from "./site";
+import { createFriche, Friche, AgriculturalOrNaturalSite, Address, Site } from "./site";
 import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
@@ -17,8 +17,24 @@ type City = {
   population: number;
 };
 
-export class FricheGenerator {
-  fromSurfaceAreaAndCity(surfaceArea: number, city: City): Friche {
+type FromSurfaceAreaAndLocalInformationProps = {
+  id: string;
+  surfaceArea: number;
+  address: Address;
+  cityPopulation: number;
+};
+
+interface SiteGenerator {
+  fromSurfaceAreaAndLocalInformation(props: FromSurfaceAreaAndLocalInformationProps): Site;
+}
+
+export class FricheGenerator implements SiteGenerator {
+  fromSurfaceAreaAndLocalInformation({
+    id,
+    surfaceArea,
+    address,
+    cityPopulation,
+  }: FromSurfaceAreaAndLocalInformationProps): Friche {
     const soilsDistribution = {
       BUILDINGS: 0.3 * surfaceArea,
       IMPERMEABLE_SOILS: 0.2 * surfaceArea,
@@ -39,7 +55,7 @@ export class FricheGenerator {
         bearer: "owner",
       },
       {
-        amount: computeIllegalDumpingDefaultCost(city.population),
+        amount: computeIllegalDumpingDefaultCost(cityPopulation),
         purpose: "illegalDumpingCost",
         bearer: "owner",
       },
@@ -51,22 +67,13 @@ export class FricheGenerator {
     ];
 
     const result = createFriche({
-      id: uuid(),
-      address: {
-        city: city.name,
-        value: city.name,
-        cityCode: city.cityCode,
-        // todo: mandatory data from Address type/schema but not used here, maybe simplify Address
-        banId: uuid(),
-        lat: 0,
-        long: 0,
-        postCode: "00000",
-      },
+      id,
+      address,
       soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
       contaminatedSoilSurface: 0.5 * surfaceArea,
       owner: {
         structureType: "municipality",
-        name: formatMunicipalityName(city.name),
+        name: formatMunicipalityName(address.city),
       },
       tenant: {
         structureType: "company",
@@ -74,7 +81,7 @@ export class FricheGenerator {
       },
       yearlyExpenses,
       name: generateSiteName({
-        cityName: city.name,
+        cityName: address.city,
         isFriche: true,
         soils: Object.keys(soilsDistribution) as SoilType[],
       }),
@@ -85,10 +92,32 @@ export class FricheGenerator {
     }
     return result.site;
   }
+
+  fromSurfaceAreaAndCity(surfaceArea: number, city: City): Friche {
+    return this.fromSurfaceAreaAndLocalInformation({
+      id: uuid(),
+      surfaceArea,
+      cityPopulation: city.population,
+      address: {
+        city: city.name,
+        value: city.name,
+        cityCode: city.cityCode,
+        // todo: mandatory data from Address type/schema but not used here, maybe simplify Address
+        banId: uuid(),
+        lat: 0,
+        long: 0,
+        postCode: "00000",
+      },
+    });
+  }
 }
 
-export class AgriculturalOrNaturalSiteSiteGenerator {
-  fromSurfaceAreaAndCity(surfaceArea: number, city: City): AgriculturalOrNaturalSite {
+export class AgriculturalOrNaturalSiteSiteGenerator implements SiteGenerator {
+  fromSurfaceAreaAndLocalInformation({
+    id,
+    surfaceArea,
+    address,
+  }: FromSurfaceAreaAndLocalInformationProps): AgriculturalOrNaturalSite {
     const soilsDistribution = {
       BUILDINGS: 0.3 * surfaceArea,
       IMPERMEABLE_SOILS: 0.2 * surfaceArea,
@@ -111,9 +140,35 @@ export class AgriculturalOrNaturalSiteSiteGenerator {
     ];
 
     return {
-      id: uuid(),
+      id,
       nature: "AGRICULTURAL",
       isFriche: false,
+      address,
+      soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
+      owner: {
+        structureType: "municipality",
+        name: formatMunicipalityName(address.city),
+      },
+      tenant: {
+        structureType: "company",
+        name: "Actuel locataire",
+      },
+      yearlyExpenses,
+      yearlyIncomes: [],
+      name: generateSiteName({
+        cityName: address.city,
+        isFriche: false,
+        soils: Object.keys(soilsDistribution) as SoilType[],
+      }),
+      surfaceArea,
+    };
+  }
+
+  fromSurfaceAreaAndCity(surfaceArea: number, city: City): AgriculturalOrNaturalSite {
+    return this.fromSurfaceAreaAndLocalInformation({
+      id: uuid(),
+      surfaceArea,
+      cityPopulation: city.population,
       address: {
         city: city.name,
         value: city.name,
@@ -124,23 +179,6 @@ export class AgriculturalOrNaturalSiteSiteGenerator {
         long: 0,
         postCode: "00000",
       },
-      soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
-      owner: {
-        structureType: "municipality",
-        name: formatMunicipalityName(city.name),
-      },
-      tenant: {
-        structureType: "company",
-        name: "Actuel locataire",
-      },
-      yearlyExpenses,
-      yearlyIncomes: [],
-      name: generateSiteName({
-        cityName: city.name,
-        isFriche: false,
-        soils: Object.keys(soilsDistribution) as SoilType[],
-      }),
-      surfaceArea,
-    };
+    });
   }
 }

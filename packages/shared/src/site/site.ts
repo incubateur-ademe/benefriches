@@ -14,7 +14,7 @@ const incomeSchema = z.object({
   amount: z.number().nonnegative(),
 });
 
-const addressSchema = z.object({
+export const addressSchema = z.object({
   banId: z.string(),
   value: z.string(),
   city: z.string(),
