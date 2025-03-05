@@ -21,6 +21,12 @@ const SocialMonetaryDescription = ({ impactsData }: Props) => {
         temps de gagné (là encore par la rationalisation des déplacements, s’agissant de projet de
         renouvellement urbain).
       </p>
+      <p>
+        Afin de pouvoir comparer les valeurs de ces indicateurs au bilan de l’opération (qui est
+        exprimé en €), il est nécessaire de convertir celles qui ne sont naturellement pas exprimées
+        en € (ex : pollution de l’air, temps de gagné) en valeurs monétaires. On parle alors de
+        ”monétarisation”.
+      </p>
     </ImpactSubSectionDescription>
   );
 };

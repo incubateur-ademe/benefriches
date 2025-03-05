@@ -101,6 +101,12 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
             etc.).
           </p>
           <p>
+            Afin de pouvoir comparer les valeurs de ces indicateurs au bilan de l’opération (qui est
+            exprimé en €), il est nécessaire de convertir celles qui ne sont naturellement pas
+            exprimées en € (ex : tonnes de CO2 évitées, surfaces désimperméabilisées) en valeurs
+            monétaires. On parle alors de ”monétarisation”.
+          </p>
+          <p>
             Les différents indicateurs utilisés dans Bénéfriches sont présentés ci-contre et leurs
             méthodes de calcul sont détaillées au niveau de chacun.
           </p>

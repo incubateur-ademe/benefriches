@@ -23,6 +23,12 @@ const EnvironmentalMonetaryDescription = ({ impactsData }: Props) => {
         donné sur une friche vs. un autre scénario envisageant le même projet sur un espace
         agricole, naturel ou forestier.
       </p>
+      <p>
+        Afin de pouvoir comparer les valeurs de ces indicateurs au bilan de l’opération (qui est
+        exprimé en €), il est nécessaire de convertir celles qui ne sont naturellement pas exprimées
+        en € (ex : tonnes de de CO2 évitées, pertes de services écosystémiques) en valeurs
+        monétaires. On parle alors de ”monétarisation”.
+      </p>
     </ImpactSubSectionDescription>
   );
 };
