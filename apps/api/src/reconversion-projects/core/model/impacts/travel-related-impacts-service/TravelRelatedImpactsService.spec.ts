@@ -51,11 +51,11 @@ describe("TravelRelatedImpactsService", () => {
     expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuries()).toEqual(28);
     expect(travelRelatedImpactsService.getAvoidedAccidentsDeaths()).toEqual(8);
 
-    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses()).toEqual(6397034);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsMinorInjuriesExpenses()).toEqual(7750407);
     expect(travelRelatedImpactsService.getAvoidedAccidentsSevereInjuriesExpenses()).toEqual(
-      9995366,
+      12110210,
     );
-    expect(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses()).toEqual(23885030);
+    expect(travelRelatedImpactsService.getAvoidedAccidentsDeathsExpenses()).toEqual(28938699);
   });
 
   it("returns socioeconomic, social and environment impacts related to travel", () => {
@@ -85,7 +85,7 @@ describe("TravelRelatedImpactsService", () => {
       },
       {
         actor: "local_people",
-        amount: 176701,
+        amount: 212041,
         impact: "avoided_car_related_expenses",
         impactCategory: "economic_indirect",
       },
@@ -97,7 +97,7 @@ describe("TravelRelatedImpactsService", () => {
       },
       {
         actor: "local_people",
-        amount: 711713,
+        amount: 709578,
         impact: "travel_time_saved",
         impactCategory: "social_monetary",
       },

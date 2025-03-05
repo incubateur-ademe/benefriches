@@ -14,6 +14,18 @@ const AVERAGE_TIME_SAVED_IN_HOURS = 2 / 60;
 const DAYS_IMPACTED_PER_YEAR_FOR_INHABITANTS = 365;
 const DAYS_IMPACTED_PER_YEAR_FOR_WORKERS = 220;
 
+const NB_OF_WORKERS_PER_OFFICE_SQUARE_METERS = 15;
+const NB_OF_WORKERS_PER_OTHER_ECONOMIC_ACTIVITY_SQUARE_METERS = 70;
+
+const NB_OF_ACCIDENTS_PER_100000000_VEHICULES = 4.77;
+
+const PROPERTY_DAMAGE_EURO_VALUE = 6264;
+const STATISTICAL_LIFE_EURO_VALUE = 3_877_066;
+const SEVERE_INJURY_EURO_VALUE = 484_633;
+const MINOR_INJURY_EURO_VALUE = 19_385;
+const FRENCH_TIME_EURO_VALUE_PER_HOUR = 9.97;
+const TRAVEL_COST_EURO_PER_KILOMETER = 0.12;
+
 type Props = {
   siteSquareMetersSurfaceArea: number;
   citySquareMetersSurfaceArea: number;
@@ -94,11 +106,14 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
   }
 
   protected get impactedTertiaryActivityEmployees() {
-    return this.projectOfficesSurface / 15;
+    return this.projectOfficesSurface / NB_OF_WORKERS_PER_OFFICE_SQUARE_METERS;
   }
 
   protected get impactedOtherActivityEmployees() {
-    return this.projectOtherEconomicActivitySurface / 70;
+    return (
+      this.projectOtherEconomicActivitySurface /
+      NB_OF_WORKERS_PER_OTHER_ECONOMIC_ACTIVITY_SQUARE_METERS
+    );
   }
 
   protected get avoidedKilometersPerInhabitantTraveler() {
@@ -249,7 +264,7 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
   }
 
   protected get avoidedAccidentsPerYearForHundredMillionOfVehicule() {
-    return this.avoidedKilometersPerVehiculePerYear * 4.77;
+    return this.avoidedKilometersPerVehiculePerYear * NB_OF_ACCIDENTS_PER_100000000_VEHICULES;
   }
 
   protected get avoidedAccidentsPerYear() {
@@ -269,19 +284,15 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
   }
 
   protected get avoidedPropertyDamageExpensesPerYear() {
-    return this.avoidedAccidentsPerYear * 6264;
+    return this.avoidedAccidentsPerYear * PROPERTY_DAMAGE_EURO_VALUE;
   }
 
   protected get avoidedKilometersPerVehiculeExpensesPerYear() {
-    return (
-      (this.avoidedKilometersPerWorkerVehiculePerYear +
-        this.avoidedKilometersPerResidentVehiculePerYear) *
-      0.1
-    );
+    return this.avoidedKilometersPerVehiculePerYear * TRAVEL_COST_EURO_PER_KILOMETER;
   }
 
   protected get travelTimeAvoidedCostsPerTravelerPerYear() {
-    return this.travelTimeSavedPerTravelerPerYear * 10;
+    return this.travelTimeSavedPerTravelerPerYear * FRENCH_TIME_EURO_VALUE_PER_HOUR;
   }
 
   protected get avoidedAirPollutionHealthExpensesPerYear() {
@@ -297,15 +308,15 @@ export class YearlyTravelRelatedImpacts extends InfluenceAreaService {
   }
 
   protected get avoidedAccidentsMinorInjuriesExpensesPerYear() {
-    return this.avoidedMinorInjuriesPerYear * 16000;
+    return this.avoidedMinorInjuriesPerYear * MINOR_INJURY_EURO_VALUE;
   }
 
   protected get avoidedAccidentsSevereInjuriesExpensesPerYear() {
-    return this.avoidedSevereInjuriesPerYear * 400000;
+    return this.avoidedSevereInjuriesPerYear * SEVERE_INJURY_EURO_VALUE;
   }
 
   protected get avoidedAccidentsDeathsExpensesPerYear() {
-    return this.avoidedDeathsPerYear * 3200000;
+    return this.avoidedDeathsPerYear * STATISTICAL_LIFE_EURO_VALUE;
   }
 
   protected get avoidedAccidentsInjuriesOrExpensesValuePerYear() {
