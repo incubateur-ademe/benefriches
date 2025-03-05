@@ -1,10 +1,12 @@
+import { roundToInteger } from "shared";
+
 import { Impact } from "../../impact";
 
 type HouseholdsPoweredByRenewableEnergyImpactInput = {
   forecastRenewableEnergyAnnualProductionMWh: number;
 };
 
-const AVERAGE_HOUSEHOLD_ANNUAL_CONSUMPTION_KWH = 4679;
+const AVERAGE_HOUSEHOLD_ANNUAL_CONSUMPTION_KWH = 4890.6;
 const MWH_TO_KWH_RATIO = 1000;
 
 export const computeHouseholdsPoweredByRenewableEnergyImpact = (
@@ -14,6 +16,8 @@ export const computeHouseholdsPoweredByRenewableEnergyImpact = (
     input.forecastRenewableEnergyAnnualProductionMWh * MWH_TO_KWH_RATIO;
   return Impact.get({
     base: 0,
-    forecast: forecastRenewableEnergyAnnualProductionKWh / AVERAGE_HOUSEHOLD_ANNUAL_CONSUMPTION_KWH,
+    forecast: roundToInteger(
+      forecastRenewableEnergyAnnualProductionKWh / AVERAGE_HOUSEHOLD_ANNUAL_CONSUMPTION_KWH,
+    ),
   });
 };

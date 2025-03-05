@@ -243,7 +243,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         },
         impacts: {
           socioeconomic: {
-            total: -79146,
+            total: -69361,
             impacts: [
               {
                 actor: "Current owner",
@@ -320,10 +320,10 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               },
               {
                 actor: "human_society",
-                amount: 213491,
+                amount: 223276,
                 impact: "avoided_co2_eq_emissions",
                 impactCategory: "environmental_monetary",
-                details: [{ impact: "avoided_co2_eq_with_enr", amount: 213491 }],
+                details: [{ impact: "avoided_co2_eq_with_enr", amount: 223276 }],
               },
             ],
           },
@@ -385,7 +385,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 difference: 0,
               },
             },
-            avoidedCO2TonsWithEnergyProduction: 112.29599999999999,
+            avoidedCO2TonsWithEnergyProduction: 117.4,
             soilsCo2eqStorage: {
               base: 73.33,
               forecast: 73.33,
@@ -430,8 +430,8 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
             },
             householdsPoweredByRenewableEnergy: {
               base: 0,
-              forecast: 1000,
-              difference: 1000,
+              forecast: 957,
+              difference: 957,
             },
           },
         },

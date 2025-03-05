@@ -1,4 +1,4 @@
-import { SocioEconomicImpact, sumListWithKey, TaxesIncomeImpact } from "shared";
+import { roundTo1Digit, SocioEconomicImpact, sumListWithKey, TaxesIncomeImpact } from "shared";
 
 import { PhotovoltaicPowerStationFeatures } from "../reconversionProject";
 import {
@@ -110,6 +110,10 @@ export class PhotovoltaicProjectImpactsService
       ...this.avoidedCo2EqEmissions,
     ];
 
+    const avoidedCO2TonsWithEnergyProduction = this.avoidedCO2TonsWithEnergyProduction
+      ? roundTo1Digit(this.avoidedCO2TonsWithEnergyProduction)
+      : undefined;
+
     return {
       economicBalance: economicBalance,
       social: {
@@ -118,7 +122,7 @@ export class PhotovoltaicProjectImpactsService
       },
       environmental: {
         ...environmental,
-        avoidedCO2TonsWithEnergyProduction: this.avoidedCO2TonsWithEnergyProduction,
+        avoidedCO2TonsWithEnergyProduction,
       },
       socioeconomic: {
         impacts: photovoltaicProjectSocioEconomic,

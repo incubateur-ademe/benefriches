@@ -161,8 +161,10 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
       nonContaminatedSurfaceArea: photovoltaicProjectImpactsService["nonContaminatedSurfaceArea"],
       permeableSurfaceArea: photovoltaicProjectImpactsService["permeableSurfaceArea"],
       soilsCo2eqStorage: photovoltaicProjectImpactsService["soilsCo2eqStorage"],
-      avoidedCO2TonsWithEnergyProduction:
-        photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"],
+      avoidedCO2TonsWithEnergyProduction: expect.closeTo(
+        photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"] ?? 0,
+        1,
+      ) as number,
     });
     expect(result.economicBalance).toEqual(photovoltaicProjectImpactsService["economicBalance"]);
   });

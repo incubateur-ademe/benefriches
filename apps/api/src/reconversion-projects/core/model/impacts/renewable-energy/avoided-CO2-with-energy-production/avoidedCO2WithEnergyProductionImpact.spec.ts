@@ -10,6 +10,6 @@ describe("AvoidedCO2WithEnergyProduction impact", () => {
   it("returns 336 tons when no forecast photovoltaic annual production is 14000", () => {
     expect(
       computeAvoidedCO2TonsWithEnergyProductionImpact({ forecastAnnualEnergyProductionMWh: 14000 }),
-    ).toEqual(336);
+    ).toBeCloseTo(351.4, 1);
   });
 });
