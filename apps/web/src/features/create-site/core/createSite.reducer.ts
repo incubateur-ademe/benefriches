@@ -183,7 +183,7 @@ export const revertStep = createAction<{ resetFields: (keyof SiteCreationData)[]
   "revertStep",
 );
 
-export const siteCreationReducer = createReducer(getInitialState(), (builder) => {
+const siteCreationReducer = createReducer(getInitialState(), (builder) => {
   builder
     .addCase(siteCreationInitiated, () => getInitialState())
     .addCase(introductionStepCompleted, (state) => {

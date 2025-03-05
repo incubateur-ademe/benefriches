@@ -133,24 +133,6 @@ export const expressFricheCreationData = {
     city: "Blajan",
     cityCode: "31070",
     postCode: "31350",
-    population: 600,
-    long: 0.664699,
-    lat: 43.260859,
-  },
-  surfaceArea: 15000,
-} as const satisfies SiteExpressCreationData;
-
-export const expressAgriculturalCreationData = {
-  isFriche: false,
-  nature: "AGRICULTURAL",
-  id: "1fa5fba1-0ee6-4ba0-88f4-8cf66aa8b85b",
-  address: {
-    banId: "31070_p4ur8e",
-    value: "Blajan",
-    city: "Blajan",
-    cityCode: "31070",
-    postCode: "31350",
-    population: 600,
     long: 0.664699,
     lat: 43.260859,
   },
