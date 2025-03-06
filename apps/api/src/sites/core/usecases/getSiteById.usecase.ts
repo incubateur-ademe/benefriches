@@ -1,4 +1,4 @@
-import { Address, SoilType } from "shared";
+import { Address, SiteNature, SoilType } from "shared";
 
 import { UseCase } from "src/shared-kernel/usecase";
 
@@ -12,6 +12,7 @@ export type SiteViewModel = {
   id: string;
   name: string;
   isFriche: boolean;
+  nature: SiteNature;
   isExpressSite: boolean;
   owner: {
     name?: string;

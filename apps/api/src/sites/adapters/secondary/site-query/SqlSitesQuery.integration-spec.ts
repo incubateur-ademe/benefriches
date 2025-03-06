@@ -24,13 +24,14 @@ describe("SqlSitesQuery integration", () => {
   });
 
   describe("getById", () => {
-    it("gets site with exhaustive data and address, soils distribution and yearly expenses", async () => {
+    it("gets friche with exhaustive data and address, soils distribution and yearly expenses", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
         name: "Site 123",
         description: "Description of site",
+        nature: "FRICHE",
         surface_area: 14000,
         owner_name: "Owner name",
         owner_structure_type: "company",
@@ -87,6 +88,7 @@ describe("SqlSitesQuery integration", () => {
       const expectedResult: Required<SiteViewModel> = {
         id: siteId,
         name: "Site 123",
+        nature: "FRICHE",
         isExpressSite: false,
         description: "Description of site",
         surfaceArea: 14000,
@@ -123,12 +125,13 @@ describe("SqlSitesQuery integration", () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it("gets site with only required data", async () => {
+    it("gets agricultural site with only required data", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
         created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
         name: "Site 456",
+        nature: "AGRICULTURAL",
         surface_area: 14000,
         owner_structure_type: "company",
         created_at: now,
@@ -168,6 +171,7 @@ describe("SqlSitesQuery integration", () => {
       const expectedResult: SiteViewModel = {
         id: siteId,
         name: "Site 456",
+        nature: "AGRICULTURAL",
         surfaceArea: 14000,
         isExpressSite: true,
         owner: { structureType: "company" },
@@ -215,6 +219,7 @@ describe("SqlSitesQuery integration", () => {
       const nonExistingSiteId = uuid();
       await sqlConnection("sites").insert({
         id: uuid(),
+        nature: "FRICHE",
         created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
         name: "Site 123",
         description: "Description of site",

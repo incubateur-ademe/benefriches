@@ -18,6 +18,7 @@ describe("GetSiteById Use Case", () => {
   it("Can get an existing site", async () => {
     const site: SiteViewModel = {
       id: "4550d9f0-ce28-43ae-a319-94851ae033db",
+      nature: "FRICHE",
       name: "My existing site",
       isExpressSite: true,
       isFriche: true,
@@ -64,6 +65,7 @@ describe("GetSiteById Use Case", () => {
     expect(result).toEqual({
       id: site.id,
       name: site.name,
+      nature: "FRICHE",
       isExpressSite: site.isExpressSite,
       description: site.description,
       isFriche: site.isFriche,

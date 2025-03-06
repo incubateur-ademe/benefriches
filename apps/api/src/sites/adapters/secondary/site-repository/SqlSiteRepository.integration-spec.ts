@@ -7,6 +7,7 @@ import {
 import { v4 as uuid } from "uuid";
 
 import knexConfig from "src/shared-kernel/adapters/sql-knex/knexConfig";
+import { SqlSite } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { buildAgriculturalOrNaturalSite, buildFriche } from "src/sites/core/models/site.mock";
 import { SiteEntity } from "src/sites/core/models/siteEntity";
 
@@ -55,6 +56,7 @@ describe("SqlSiteRepository integration", () => {
       await sqlConnection("sites").insert({
         id: siteId,
         name: "Site name",
+        nature: "AGRICULTURAL",
         surface_area: 140000.2,
         is_friche: false,
         owner_structure_type: "company",
@@ -72,7 +74,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   describe("save", () => {
-    it("Saves given site with minimal data and express mode in sites", async () => {
+    it("Saves given agricultural site with minimal data and express mode in sites", async () => {
       const site: SiteEntity = {
         ...buildAgriculturalOrNaturalSiteEntity({
           name: "Integration test site",
@@ -93,6 +95,7 @@ describe("SqlSiteRepository integration", () => {
       expect(sitesResult).toEqual([
         {
           id: site.id,
+          nature: "AGRICULTURAL",
           created_by: site.createdBy,
           creation_mode: "express",
           name: "Integration test site",
@@ -114,7 +117,7 @@ describe("SqlSiteRepository integration", () => {
       ]);
     });
 
-    it("Saves given site with complete data in sites table", async () => {
+    it("Saves given agricultural site with complete data in sites table", async () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
         name: "Integration test site",
         description: "Description of site",
@@ -134,11 +137,12 @@ describe("SqlSiteRepository integration", () => {
       await siteRepository.save(site);
 
       const sitesResult = await sqlConnection("sites").select("*");
-      expect(sitesResult).toEqual([
+      expect(sitesResult).toEqual<SqlSite[]>([
         {
           id: site.id,
           created_by: site.createdBy,
           creation_mode: "custom",
+          nature: "AGRICULTURAL",
           name: "Integration test site",
           created_at: now,
           owner_name: "Le département Doubs",
@@ -181,11 +185,12 @@ describe("SqlSiteRepository integration", () => {
       await siteRepository.save(site);
 
       const sitesResult = await sqlConnection("sites").select("*");
-      expect(sitesResult).toEqual([
+      expect(sitesResult).toEqual<SqlSite[]>([
         {
           id: site.id,
           created_by: site.createdBy,
           name: "Integration test friche",
+          nature: "FRICHE",
           description: "Description of friche",
           friche_accidents_minor_injuries: 2,
           friche_accidents_severe_injuries: 1,
@@ -205,7 +210,7 @@ describe("SqlSiteRepository integration", () => {
       ]);
     });
 
-    it("Saves given site with minimal data in sites, soils distribution, address tables", async () => {
+    it("Saves given agricultural site with minimal data in sites, soils distribution, address tables", async () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
         soilsDistribution: createSoilSurfaceAreaDistribution({
           BUILDINGS: 3000,
@@ -239,7 +244,7 @@ describe("SqlSiteRepository integration", () => {
       ]);
     });
 
-    it("Saves given site with expenses and incomes in sites, expenses and incomes", async () => {
+    it("Saves given agricultural site with expenses and incomes in sites, expenses and incomes", async () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
         yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "security" }],
         yearlyIncomes: [

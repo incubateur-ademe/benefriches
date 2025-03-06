@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+import { SiteNature } from "shared";
 
 import { SqlConnection } from "src/shared-kernel/adapters/sql-knex/sqlConnection.module";
 import {
@@ -27,6 +28,7 @@ export class SqlSitesQuery implements SitesQuery {
       .select(
         "sites.id",
         "sites.name",
+        "sites.nature",
         "sites.creation_mode",
         "sites.friche_activity",
         "sites.description",
@@ -72,6 +74,7 @@ export class SqlSitesQuery implements SitesQuery {
       | {
           id: SqlSite["id"];
           name: SqlSite["name"];
+          nature: SqlSite["nature"];
           creation_mode: SqlSite["creation_mode"];
           description: SqlSite["description"];
           friche_activity: SqlSite["friche_activity"];
@@ -105,6 +108,7 @@ export class SqlSitesQuery implements SitesQuery {
     return {
       id: sqlSite.id,
       name: sqlSite.name,
+      nature: sqlSite.nature as SiteNature,
       isExpressSite: sqlSite.creation_mode === "express",
       description: sqlSite.description ?? undefined,
       fricheActivity: sqlSite.friche_activity ?? undefined,

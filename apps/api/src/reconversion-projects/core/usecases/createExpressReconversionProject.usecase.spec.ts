@@ -5,6 +5,7 @@ import { InMemoryReconversionProjectRepository } from "src/reconversion-projects
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { InMemorySitesQuery } from "src/sites/adapters/secondary/site-query/InMemorySitesQuery";
+import { SiteViewModel } from "src/sites/core/usecases/getSiteById.usecase";
 
 import { ReconversionProject } from "../model/reconversionProject";
 import { UrbanProjectFeatures } from "../model/urbanProjects";
@@ -53,9 +54,10 @@ describe("CreateReconversionProject Use Case", () => {
   });
 
   describe("On friche site", () => {
-    const site = {
+    const site: SiteViewModel = {
       id: uuid(),
       name: "Base site",
+      nature: "FRICHE",
       isExpressSite: false,
       isFriche: true,
       surfaceArea: 10000,
@@ -71,8 +73,7 @@ describe("CreateReconversionProject Use Case", () => {
       },
       address: {
         city: "Montrouge",
-        postalCode: "12345",
-        street: "Avenue Pierre Brossolette",
+        streetName: "Avenue Pierre Brossolette",
         streetNumber: "155bis",
         value: "155 bis Av. Pierre Brossolette, 92120 Montrouge",
         banId: "92049_7161_00155_bis",
@@ -537,9 +538,10 @@ describe("CreateReconversionProject Use Case", () => {
     });
   });
 
-  describe("On non-friche site", () => {
-    const site = {
+  describe("On agricultural site", () => {
+    const site: SiteViewModel = {
       id: uuid(),
+      nature: "AGRICULTURAL",
       isExpressSite: true,
       name: "Base site",
       isFriche: false,
@@ -553,8 +555,7 @@ describe("CreateReconversionProject Use Case", () => {
       contaminatedSoilSurface: 0,
       address: {
         city: "Montrouge",
-        postalCode: "12345",
-        street: "Avenue Pierre Brossolette",
+        streetName: "Avenue Pierre Brossolette",
         streetNumber: "155bis",
         value: "155 bis Av. Pierre Brossolette, 92120 Montrouge",
         banId: "92049_7161_00155_bis",
@@ -564,21 +565,16 @@ describe("CreateReconversionProject Use Case", () => {
         lat: 48.815679,
       },
       yearlyExpenses: [],
+      owner: {
+        name: "Monsieur Dupont",
+        structureType: "private_individual",
+      },
     };
     describe("with site purchase", () => {
       test.each(EXPRESS_CATEGORIES)(
         "should create a %s with real estate sale transaction and development installation costs based on site",
         async (expressCategory) => {
-          const siteOwner = {
-            name: "Monsieur Dupont",
-            structureType: "private_individual",
-          };
-          sitesQuery._setSites([
-            {
-              ...site,
-              owner: siteOwner,
-            },
-          ]);
+          sitesQuery._setSites([site]);
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
             sitesQuery,
@@ -625,12 +621,7 @@ describe("CreateReconversionProject Use Case", () => {
             name: "Mairie de Montrouge",
             structureType: "municipality",
           };
-          sitesQuery._setSites([
-            {
-              ...site,
-              owner: siteOwner,
-            },
-          ]);
+          sitesQuery._setSites([{ ...site, owner: siteOwner }]);
           const usecase = new CreateExpressReconversionProjectUseCase(
             dateProvider,
             sitesQuery,

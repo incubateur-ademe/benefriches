@@ -23,6 +23,7 @@ export class SqlSiteRepository implements SitesRepository {
         {
           id: site.id,
           created_by: site.createdBy,
+          nature: site.nature,
           creation_mode: site.creationMode,
           name: site.name,
           description: site.description,
