@@ -1,5 +1,6 @@
 import {
   Address,
+  AgriculturalOperationActivity,
   FricheActivity,
   SiteNature,
   SiteYearlyExpense,
@@ -30,7 +31,6 @@ export type SiteCreationData = {
   // contamination
   hasContaminatedSoils?: boolean;
   contaminatedSoilSurface?: number;
-  fricheActivity?: FricheActivity;
   // management
   owner?: { structureType: OwnerStructureType; name: string };
   isFricheLeased?: boolean;
@@ -42,6 +42,9 @@ export type SiteCreationData = {
   accidentsDeaths?: number;
   yearlyExpenses: SiteYearlyExpense[];
   yearlyIncomes: SiteYearlyIncome[];
+  // activity
+  fricheActivity?: FricheActivity;
+  agriculturalOperationActivity?: AgriculturalOperationActivity;
 };
 
 export type SiteExpressCreationData = {

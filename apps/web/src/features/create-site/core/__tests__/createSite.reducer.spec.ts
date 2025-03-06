@@ -1,4 +1,5 @@
 import {
+  agriculturalOperationActivityReverted,
   isFricheReverted,
   revertAddressStep,
   revertFricheAccidentsStep,
@@ -47,6 +48,7 @@ import {
   introductionStepCompleted,
   createModeSelectionCompleted,
   siteNatureCompleted,
+  agriculturalOperationActivityCompleted,
 } from "../createSite.reducer";
 import { siteWithExhaustiveData } from "../siteData.mock";
 import {
@@ -136,6 +138,7 @@ describe("Create site reducer", () => {
           .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
           .withCreationData({
             isFriche: true,
+            nature: "FRICHE",
           })
           .build();
 
@@ -160,9 +163,25 @@ describe("Create site reducer", () => {
         const newState = store.getState();
         expectNewCurrentStep(initialRootState, newState, "ADDRESS");
       });
-      it("goes to ADDRESS step when 'express' mode is selected", () => {
+      it("goes to AGRICULTURAL_OPERATION_ACTIVITY step when 'express' mode is selected", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .withCreationData({
+            isFriche: false,
+            nature: "AGRICULTURAL",
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(createModeSelectionCompleted({ createMode: "express" }));
+
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "AGRICULTURAL_OPERATION_ACTIVITY");
+      });
+      it("goes to ADDRESS step when 'express' mode is selected and site is FRICHE or NATURAL_AREA", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .withCreationData({ nature: "FRICHE", isFriche: true })
           .build();
         const initialRootState = store.getState();
 
@@ -170,6 +189,49 @@ describe("Create site reducer", () => {
 
         const newState = store.getState();
         expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+      });
+    });
+    describe("AGRICULTURAL_OPERATION_ACTIVITY", () => {
+      it("goes to ADDRESS step when completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["AGRICULTURAL_OPERATION_ACTIVITY"])
+          .withCreationData({
+            isFriche: false,
+            nature: "AGRICULTURAL",
+          })
+          .build();
+
+        const initialRootState = store.getState();
+
+        store.dispatch(
+          agriculturalOperationActivityCompleted({ activity: "LARGE_VEGETABLE_CULTIVATION" }),
+        );
+
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+        expectSiteDataDiff(initialRootState, newState, {
+          agriculturalOperationActivity: "LARGE_VEGETABLE_CULTIVATION",
+        });
+      });
+      it("goes to previous step and unsets agricultural operation activity when reverted", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["CREATE_MODE_SELECTION", "AGRICULTURAL_OPERATION_ACTIVITY"])
+          .withCreationData({
+            isFriche: false,
+            nature: "AGRICULTURAL",
+            agriculturalOperationActivity: "CATTLE_FARMING",
+          })
+          .build();
+
+        const initialRootState = store.getState();
+
+        store.dispatch(agriculturalOperationActivityReverted());
+
+        const newState = store.getState();
+        expectStepReverted(initialRootState, newState);
+        expectSiteDataDiff(initialRootState, newState, {
+          agriculturalOperationActivity: undefined,
+        });
       });
     });
     describe("FRICHE_ACTIVITY", () => {

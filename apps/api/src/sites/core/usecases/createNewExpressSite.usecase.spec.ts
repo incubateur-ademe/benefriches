@@ -78,6 +78,7 @@ describe("CreateNewExpressSite Use case", () => {
       surfaceArea: 1000,
       address: buildAddress(),
       nature: "AGRICULTURAL",
+      activity: "VITICULTURE",
     } as const;
     await usecase.execute({ createdBy: "user-id-123", siteProps });
 
@@ -98,6 +99,7 @@ describe("CreateNewExpressSite Use case", () => {
         surfaceArea: 1000,
         address: buildAddress(),
         nature: "AGRICULTURAL",
+        activity: "VITICULTURE",
       } as const;
       await usecase.execute({ createdBy: "user-id-123", siteProps });
 
@@ -108,24 +110,21 @@ describe("CreateNewExpressSite Use case", () => {
           id: siteProps.id,
           address: siteProps.address,
           surfaceArea: siteProps.surfaceArea,
-          name: "Espace naturel et agricole de Montrouge",
+          name: "Espace agricole de Montrouge",
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",
           nature: "AGRICULTURAL",
           isFriche: false,
           soilsDistribution: createSoilSurfaceAreaDistribution({
-            BUILDINGS: 300,
-            IMPERMEABLE_SOILS: 200,
-            MINERAL_SOIL: 150,
-            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 250,
-            ARTIFICIAL_TREE_FILLED: 100,
+            VINEYARD: 950,
+            BUILDINGS: 50,
           }),
           owner: { structureType: "municipality", name: "Mairie de Montrouge" },
           tenant: { structureType: "company", name: "Actuel locataire" },
           yearlyExpenses: [
-            { amount: 2100, purpose: "maintenance", bearer: "owner" },
-            { amount: 848, purpose: "propertyTaxes", bearer: "owner" },
+            { amount: 350, purpose: "maintenance", bearer: "owner" },
+            { amount: 141, purpose: "propertyTaxes", bearer: "owner" },
           ],
           yearlyIncomes: [],
         },

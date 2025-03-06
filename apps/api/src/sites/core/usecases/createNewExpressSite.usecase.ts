@@ -1,6 +1,7 @@
 import {
   Address,
-  AgriculturalOrNaturalSiteSiteGenerator,
+  AgriculturalOperationActivity,
+  AgriculturalOperationGenerator,
   FricheGenerator,
   SiteNature,
 } from "shared";
@@ -17,6 +18,7 @@ type ExpressSiteProps = {
   surfaceArea: number;
   address: Address;
   nature: SiteNature;
+  activity?: string;
 };
 
 type Request = {
@@ -42,14 +44,21 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, void> {
       console.error(error);
     }
 
-    const site = new (siteProps.nature === "FRICHE"
-      ? FricheGenerator
-      : AgriculturalOrNaturalSiteSiteGenerator)().fromSurfaceAreaAndLocalInformation({
-      id: siteProps.id,
-      surfaceArea: siteProps.surfaceArea,
-      address: siteProps.address,
-      cityPopulation: siteCityPopulation,
-    });
+    const site =
+      siteProps.nature === "FRICHE"
+        ? new FricheGenerator().fromSurfaceAreaAndLocalInformation({
+            id: siteProps.id,
+            surfaceArea: siteProps.surfaceArea,
+            address: siteProps.address,
+            cityPopulation: siteCityPopulation,
+          })
+        : new AgriculturalOperationGenerator().fromSurfaceAreaAndLocalInformation({
+            id: siteProps.id,
+            operationActivity: siteProps.activity as AgriculturalOperationActivity,
+            surfaceArea: siteProps.surfaceArea,
+            address: siteProps.address,
+            cityPopulation: siteCityPopulation,
+          });
 
     if (await this.sitesRepository.existsWithId(site.id)) {
       throw new Error(`Site with id ${site.id} already exists`);

@@ -41,6 +41,7 @@ export const expressSiteSaved = createAppAsyncThunk(
 
     const siteToCreate: ExpressSitePayload = expressSiteSchema.parse({
       ...siteData,
+      activity: siteData.agriculturalOperationActivity,
       createdBy: currentUser.currentUser.id,
     });
 

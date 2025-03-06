@@ -7,6 +7,7 @@ import {
   SiteNature,
   SiteYearlyIncome,
   Address,
+  AgriculturalOperationActivity,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -54,7 +55,11 @@ export type SiteCreationCustomStep =
   | "FINAL_SUMMARY"
   | "CREATION_RESULT";
 
-export type SiteCreationExpressStep = "ADDRESS" | "SURFACE_AREA" | "CREATION_RESULT";
+export type SiteCreationExpressStep =
+  | "AGRICULTURAL_OPERATION_ACTIVITY"
+  | "ADDRESS"
+  | "SURFACE_AREA"
+  | "CREATION_RESULT";
 
 export type SiteCreationStep =
   | "INTRODUCTION"
@@ -106,6 +111,9 @@ export const isFricheCompleted = createAction<{ isFriche: boolean }>("siteNature
 export const siteNatureCompleted = createAction<{ nature: SiteNature }>("siteNatureCompleted");
 
 export const completeFricheActivity = createAction<FricheActivity>("completeFricheActivity");
+export const agriculturalOperationActivityCompleted = createAction<{
+  activity: AgriculturalOperationActivity;
+}>("agriculturalOperationActivityCompleted");
 
 export const completeAddressStep = createAction<{ address: Address }>("completeAddressStep");
 
@@ -205,12 +213,28 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       state.stepsHistory.push("CREATE_MODE_SELECTION");
     })
     .addCase(createModeSelectionCompleted, (state, action) => {
-      state.createMode = action.payload.createMode;
-      const nextStep =
-        action.payload.createMode === "express" || !state.siteData.isFriche
-          ? "ADDRESS"
-          : "FRICHE_ACTIVITY";
-      state.stepsHistory.push(nextStep);
+      const { createMode } = action.payload;
+      state.createMode = createMode;
+
+      switch (state.siteData.nature) {
+        case "AGRICULTURAL":
+          if (createMode === "express") {
+            state.stepsHistory.push("AGRICULTURAL_OPERATION_ACTIVITY");
+            break;
+          }
+          state.stepsHistory.push("ADDRESS");
+          break;
+        case "FRICHE":
+          if (createMode === "express") {
+            state.stepsHistory.push("ADDRESS");
+            break;
+          }
+          state.stepsHistory.push("FRICHE_ACTIVITY");
+          break;
+        default:
+          state.stepsHistory.push("ADDRESS");
+          break;
+      }
     })
     .addCase(createModeReverted, (state) => {
       state.createMode = undefined;
@@ -218,6 +242,10 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     })
     .addCase(completeFricheActivity, (state, action) => {
       state.siteData.fricheActivity = action.payload;
+      state.stepsHistory.push("ADDRESS");
+    })
+    .addCase(agriculturalOperationActivityCompleted, (state, action) => {
+      state.siteData.agriculturalOperationActivity = action.payload.activity;
       state.stepsHistory.push("ADDRESS");
     })
     .addCase(completeAddressStep, (state, action) => {

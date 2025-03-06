@@ -9,6 +9,7 @@ const createExpressSiteDtoSchema = z.object({
   surfaceArea: z.number().nonnegative(),
   address: addressSchema,
   nature: siteNatureSchema,
+  activity: z.string().optional(),
 });
 
 export const createExpressSite = {

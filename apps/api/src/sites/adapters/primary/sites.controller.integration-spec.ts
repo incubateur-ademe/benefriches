@@ -70,6 +70,7 @@ describe("Sites controller", () => {
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         nature: "AGRICULTURAL",
         surfaceArea: 12000,
+        activity: "MARKET_GARDENING",
         address: {
           lat: 2.347,
           long: 48.859,
@@ -90,12 +91,14 @@ describe("Sites controller", () => {
       const sitesInDb = await sqlConnection("sites").select(
         "id",
         "created_by",
+        "nature",
         "is_friche",
         "surface_area",
       );
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
         id: agriculturalSiteDto.id,
+        nature: "AGRICULTURAL",
         created_by: agriculturalSiteDto.createdBy,
         is_friche: false,
         surface_area: 12000,
@@ -127,6 +130,7 @@ describe("Sites controller", () => {
 
       const sitesInDb = await sqlConnection("sites").select(
         "id",
+        "nature",
         "created_by",
         "is_friche",
         "surface_area",
@@ -134,6 +138,7 @@ describe("Sites controller", () => {
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
         id: frichDto.id,
+        nature: "FRICHE",
         created_by: frichDto.createdBy,
         is_friche: true,
         surface_area: 134000,
