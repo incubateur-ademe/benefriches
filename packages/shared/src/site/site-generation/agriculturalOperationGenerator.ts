@@ -6,7 +6,7 @@ import {
   AgriculturalOperationActivity,
   getLabelForAgriculturalOperationActivity,
 } from "../agricultural-operation/operationActivity";
-import { AgriculturalOrNaturalSite } from "../site";
+import { AgriculturalOrNaturalSite, createAgriculturalOrNaturalSite } from "../site";
 import { computeMaintenanceDefaultCost } from "../yearlyExpenses";
 import { SiteGenerationProps, SiteGenerator } from "./siteGenerator";
 
@@ -96,11 +96,10 @@ export class AgriculturalOperationGenerator
         ]
       : [];
 
-    return {
+    const result = createAgriculturalOrNaturalSite({
       id,
-      nature: "AGRICULTURAL",
-      isFriche: false,
       address,
+      nature: "AGRICULTURAL",
       soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
       owner: {
         structureType: "municipality",
@@ -118,7 +117,11 @@ export class AgriculturalOperationGenerator
         soils: Object.keys(soilsDistribution) as SoilType[],
       }),
       description: getLabelForAgriculturalOperationActivity(operationActivity),
-      surfaceArea,
-    };
+    });
+
+    if (!result.success) {
+      throw new Error(`Failed to create friche, ${result.error}`);
+    }
+    return result.site;
   }
 }
