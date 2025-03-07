@@ -174,7 +174,7 @@ describe("Save created site", () => {
         dataType: "agricultural operation",
         siteData: {
           id: uuid(),
-          nature: "AGRICULTURAL",
+          nature: "AGRICULTURAL_OPERATION",
           address: BLAJAN_ADDRESS,
           surfaceArea: 15000,
           isFriche: false,

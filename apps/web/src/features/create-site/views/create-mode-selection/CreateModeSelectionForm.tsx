@@ -54,7 +54,7 @@ const getTitle = (siteNature: SiteNature) => {
   switch (siteNature) {
     case "FRICHE":
       return withSiteNature("de la friche");
-    case "AGRICULTURAL":
+    case "AGRICULTURAL_OPERATION":
       return withSiteNature("de l'exploitation agricole");
     case "NATURAL_AREA":
       return withSiteNature("de l'espace naturel");

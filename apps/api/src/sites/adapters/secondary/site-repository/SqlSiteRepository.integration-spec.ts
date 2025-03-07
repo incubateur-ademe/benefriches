@@ -56,7 +56,7 @@ describe("SqlSiteRepository integration", () => {
       await sqlConnection("sites").insert({
         id: siteId,
         name: "Site name",
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         surface_area: 140000.2,
         is_friche: false,
         owner_structure_type: "company",
@@ -95,7 +95,7 @@ describe("SqlSiteRepository integration", () => {
       expect(sitesResult).toEqual([
         {
           id: site.id,
-          nature: "AGRICULTURAL",
+          nature: "AGRICULTURAL_OPERATION",
           created_by: site.createdBy,
           creation_mode: "express",
           name: "Integration test site",
@@ -142,7 +142,7 @@ describe("SqlSiteRepository integration", () => {
           id: site.id,
           created_by: site.createdBy,
           creation_mode: "custom",
-          nature: "AGRICULTURAL",
+          nature: "AGRICULTURAL_OPERATION",
           name: "Integration test site",
           created_at: now,
           owner_name: "Le département Doubs",

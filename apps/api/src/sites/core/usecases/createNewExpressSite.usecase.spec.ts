@@ -77,7 +77,7 @@ describe("CreateNewExpressSite Use case", () => {
       id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
       surfaceArea: 1000,
       address: buildAddress(),
-      nature: "AGRICULTURAL",
+      nature: "AGRICULTURAL_OPERATION",
       activity: "VITICULTURE",
     } as const;
     await usecase.execute({ createdBy: "user-id-123", siteProps });
@@ -98,7 +98,7 @@ describe("CreateNewExpressSite Use case", () => {
         id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
         surfaceArea: 1000,
         address: buildAddress(),
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         activity: "VITICULTURE",
       } as const;
       await usecase.execute({ createdBy: "user-id-123", siteProps });
@@ -114,7 +114,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdAt: fakeNow,
           createdBy: "user-id-123",
           creationMode: "express",
-          nature: "AGRICULTURAL",
+          nature: "AGRICULTURAL_OPERATION",
           description: "Viticulture",
           isFriche: false,
           soilsDistribution: createSoilSurfaceAreaDistribution({

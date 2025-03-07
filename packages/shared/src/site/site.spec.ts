@@ -185,7 +185,7 @@ describe("Site core logic", () => {
     const minimalProps: CreateAgriculturalOrNaturalSiteProps = {
       id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
       name: "Unit test agricultural operation",
-      nature: "AGRICULTURAL",
+      nature: "AGRICULTURAL_OPERATION",
       address: {
         city: "Paris",
         cityCode: "75000",
@@ -256,7 +256,7 @@ describe("Site core logic", () => {
     it("creates agricultural operation with complete data", () => {
       const completeAgriculturalOperation: Required<CreateAgriculturalOrNaturalSiteProps> = {
         name: "My agricultural operation",
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         description: "Description of the site",
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         owner: {
@@ -286,7 +286,7 @@ describe("Site core logic", () => {
       expect(result.success).toBe(true);
       expect(result.site).toEqual<AgriculturalOrNaturalSite>({
         name: "My agricultural operation",
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         description: "Description of the site",
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
         owner: {

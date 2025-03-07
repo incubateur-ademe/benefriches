@@ -222,7 +222,7 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       state.createMode = createMode;
 
       switch (state.siteData.nature) {
-        case "AGRICULTURAL":
+        case "AGRICULTURAL_OPERATION":
           if (createMode === "express") {
             state.stepsHistory.push("AGRICULTURAL_OPERATION_ACTIVITY");
             break;

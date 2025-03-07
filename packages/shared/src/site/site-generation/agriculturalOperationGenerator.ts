@@ -99,7 +99,7 @@ export class AgriculturalOperationGenerator
     const result = createAgriculturalOrNaturalSite({
       id,
       address,
-      nature: "AGRICULTURAL",
+      nature: "AGRICULTURAL_OPERATION",
       soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
       owner: {
         structureType: "municipality",

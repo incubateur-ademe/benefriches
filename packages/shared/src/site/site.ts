@@ -6,7 +6,7 @@ import { FricheActivity, fricheActivitySchema } from "./fricheActivity";
 import { SiteYearlyExpense, siteYearlyExpenseSchema } from "./yearlyExpenses";
 import { SiteYearlyIncome } from "./yearlyIncome";
 
-export const siteNatureSchema = z.enum(["FRICHE", "AGRICULTURAL", "NATURAL_AREA"]);
+export const siteNatureSchema = z.enum(["FRICHE", "AGRICULTURAL_OPERATION", "NATURAL_AREA"]);
 export type SiteNature = z.infer<typeof siteNatureSchema>;
 
 const incomeSchema = z.object({
@@ -62,12 +62,6 @@ export const fricheSchema = baseSiteSchema.extend({
   accidentsDeaths: z.number().nonnegative().optional(),
 });
 
-export const agriculturaOrNaturalSiteSchema = baseSiteSchema.extend({
-  isFriche: z.literal(false),
-  nature: z.literal("AGRICULTURAL"),
-  yearlyIncomes: incomeSchema.array(),
-});
-
 interface BaseSite {
   id: string;
   isFriche: boolean;
@@ -101,7 +95,7 @@ export interface Friche extends BaseSite {
 
 export interface AgriculturalOrNaturalSite extends BaseSite {
   isFriche: false;
-  nature: "AGRICULTURAL" | "NATURAL_AREA";
+  nature: "AGRICULTURAL_OPERATION" | "NATURAL_AREA";
   yearlyIncomes: SiteYearlyIncome[];
 }
 
@@ -121,7 +115,7 @@ type SiteCreationResult<TSite> = { success: true; site: TSite } | { success: fal
 
 export type CreateAgriculturalOrNaturalSiteProps = {
   id: string;
-  nature: Extract<SiteNature, "AGRICULTURAL" | "NATURAL_AREA">;
+  nature: Extract<SiteNature, "AGRICULTURAL_OPERATION" | "NATURAL_AREA">;
   name: string;
   description?: string;
   address: Address;

@@ -21,7 +21,7 @@ export type ExpressSiteProps = {
   address: Address;
 } & (
   | { nature: "FRICHE" }
-  | { nature: "AGRICULTURAL"; activity: AgriculturalOperationActivity }
+  | { nature: "AGRICULTURAL_OPERATION"; activity: AgriculturalOperationActivity }
   | { nature: "NATURAL_AREA"; type: NaturalAreaType }
 );
 
@@ -34,7 +34,7 @@ function createSite(props: ExpressSiteProps & { cityPopulation: number }): Site 
   switch (props.nature) {
     case "FRICHE":
       return new FricheGenerator().fromSurfaceAreaAndLocalInformation(props);
-    case "AGRICULTURAL":
+    case "AGRICULTURAL_OPERATION":
       return new AgriculturalOperationGenerator().fromSurfaceAreaAndLocalInformation({
         ...props,
         operationActivity: props.activity,

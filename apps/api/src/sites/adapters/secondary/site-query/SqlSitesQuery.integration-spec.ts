@@ -131,7 +131,7 @@ describe("SqlSitesQuery integration", () => {
         id: siteId,
         created_by: "d185b43f-e54a-4dd4-9c60-ba85775a01e7",
         name: "Site 456",
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         surface_area: 14000,
         owner_structure_type: "company",
         created_at: now,
@@ -171,7 +171,7 @@ describe("SqlSitesQuery integration", () => {
       const expectedResult: SiteViewModel = {
         id: siteId,
         name: "Site 456",
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         surfaceArea: 14000,
         isExpressSite: true,
         owner: { structureType: "company" },

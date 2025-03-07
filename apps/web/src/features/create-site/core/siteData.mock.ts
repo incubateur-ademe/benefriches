@@ -55,7 +55,7 @@ export const siteWithExhaustiveData = {
   ],
   yearlyIncomes: [{ amount: 150000, source: "operations" }],
   isFriche: false,
-  nature: "AGRICULTURAL",
+  nature: "AGRICULTURAL_OPERATION",
   address: {
     banId: "31070_p4ur8e",
     value: "Sendere 31350 Blajan",
@@ -100,7 +100,7 @@ export const siteWithMinimalData = {
   yearlyExpenses: [],
   yearlyIncomes: [],
   isFriche: false,
-  nature: "AGRICULTURAL",
+  nature: "AGRICULTURAL_OPERATION",
   isSiteOperated: false,
   hasRecentAccidents: false,
   hasContaminatedSoils: false,

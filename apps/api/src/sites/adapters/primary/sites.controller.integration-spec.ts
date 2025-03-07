@@ -36,7 +36,7 @@ describe("Sites controller", () => {
         const requestBody: CreateExpressSiteDto = {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
           createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
-          nature: "AGRICULTURAL",
+          nature: "AGRICULTURAL_OPERATION",
           activity: "CATTLE_FARMING",
           surfaceArea: 12399,
           address: {
@@ -69,7 +69,7 @@ describe("Sites controller", () => {
       const agriculturalOperationDto: CreateExpressSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         surfaceArea: 12000,
         activity: "MARKET_GARDENING",
         address: {
@@ -99,7 +99,7 @@ describe("Sites controller", () => {
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
         id: agriculturalOperationDto.id,
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         created_by: agriculturalOperationDto.createdBy,
         is_friche: false,
         surface_area: 12000,
@@ -165,7 +165,7 @@ describe("Sites controller", () => {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
           createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
           isFriche: false,
-          nature: "AGRICULTURAL",
+          nature: "AGRICULTURAL_OPERATION",
           owner: { name: "Owner name", structureType: "company" },
           name: "Friche industrielle",
           address: {
@@ -205,7 +205,7 @@ describe("Sites controller", () => {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         isFriche: false,
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         name: "Exploitation agricole",
         description: "Description of site",
         owner: { name: "Owner name", structureType: "company" },
@@ -252,7 +252,7 @@ describe("Sites controller", () => {
         created_at: expect.any(Date),
         description: "Description of site",
         name: "Exploitation agricole",
-        nature: "AGRICULTURAL",
+        nature: "AGRICULTURAL_OPERATION",
         surface_area: 2900.0,
         creation_mode: "custom",
         owner_name: "Owner name",

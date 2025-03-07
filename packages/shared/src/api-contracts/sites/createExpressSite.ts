@@ -16,7 +16,7 @@ const createExpressSiteDtoSchema = z.discriminatedUnion("nature", [
     nature: z.literal("FRICHE"),
   }),
   baseExpressSiteDtoSchema.extend({
-    nature: z.literal("AGRICULTURAL"),
+    nature: z.literal("AGRICULTURAL_OPERATION"),
     activity: z.string(),
   }),
   baseExpressSiteDtoSchema.extend({

@@ -112,10 +112,10 @@ describe("Create site reducer", () => {
         const store = new StoreBuilder().withStepsHistory(["SITE_NATURE"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(siteNatureCompleted({ nature: "AGRICULTURAL" }));
+        store.dispatch(siteNatureCompleted({ nature: "AGRICULTURAL_OPERATION" }));
 
         const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, { nature: "AGRICULTURAL" });
+        expectSiteDataDiff(initialRootState, newState, { nature: "AGRICULTURAL_OPERATION" });
         expectNewCurrentStep(initialRootState, newState, "CREATE_MODE_SELECTION");
       });
       it("goes to previous step and unsets site nature when step is reverted", () => {
@@ -170,7 +170,7 @@ describe("Create site reducer", () => {
           .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
           .withCreationData({
             isFriche: false,
-            nature: "AGRICULTURAL",
+            nature: "AGRICULTURAL_OPERATION",
           })
           .build();
         const initialRootState = store.getState();
@@ -214,7 +214,7 @@ describe("Create site reducer", () => {
           .withStepsHistory(["AGRICULTURAL_OPERATION_ACTIVITY"])
           .withCreationData({
             isFriche: false,
-            nature: "AGRICULTURAL",
+            nature: "AGRICULTURAL_OPERATION",
           })
           .build();
 
@@ -235,7 +235,7 @@ describe("Create site reducer", () => {
           .withStepsHistory(["CREATE_MODE_SELECTION", "AGRICULTURAL_OPERATION_ACTIVITY"])
           .withCreationData({
             isFriche: false,
-            nature: "AGRICULTURAL",
+            nature: "AGRICULTURAL_OPERATION",
             agriculturalOperationActivity: "CATTLE_FARMING",
           })
           .build();
@@ -276,7 +276,7 @@ describe("Create site reducer", () => {
           .withStepsHistory(["CREATE_MODE_SELECTION", "NATURAL_AREA_TYPE"])
           .withCreationData({
             isFriche: false,
-            nature: "AGRICULTURAL",
+            nature: "AGRICULTURAL_OPERATION",
             naturalAreaType: "PRAIRIE",
           })
           .build();

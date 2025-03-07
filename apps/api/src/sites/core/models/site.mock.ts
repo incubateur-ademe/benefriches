@@ -13,7 +13,7 @@ export const buildAgriculturalOrNaturalSiteProps = (
 ): CreateAgriculturalOrNaturalSiteProps => {
   return {
     id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
-    nature: "AGRICULTURAL",
+    nature: "AGRICULTURAL_OPERATION",
     name: "Unit test friche",
     yearlyExpenses: [],
     yearlyIncomes: [],

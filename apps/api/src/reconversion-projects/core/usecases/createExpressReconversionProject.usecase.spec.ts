@@ -541,7 +541,7 @@ describe("CreateReconversionProject Use Case", () => {
   describe("On agricultural operation", () => {
     const site: SiteViewModel = {
       id: uuid(),
-      nature: "AGRICULTURAL",
+      nature: "AGRICULTURAL_OPERATION",
       isExpressSite: true,
       name: "Base site",
       isFriche: false,
