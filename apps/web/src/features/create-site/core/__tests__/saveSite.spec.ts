@@ -178,6 +178,7 @@ describe("Save created site", () => {
           address: BLAJAN_ADDRESS,
           surfaceArea: 15000,
           isFriche: false,
+          agriculturalOperationActivity: "POLYCULTURE_AND_LIVESTOCK",
         },
       },
       {
@@ -188,6 +189,17 @@ describe("Save created site", () => {
           address: BLAJAN_ADDRESS,
           surfaceArea: 35000,
           isFriche: true,
+        },
+      },
+      {
+        dataType: "natural area",
+        siteData: {
+          id: uuid(),
+          nature: "NATURAL_AREA",
+          address: BLAJAN_ADDRESS,
+          surfaceArea: 40000,
+          isFriche: false,
+          naturalAreaType: "FOREST",
         },
       },
     ] satisfies { siteData: SiteExpressCreationData; dataType: string }[])(
@@ -214,6 +226,8 @@ describe("Save created site", () => {
             address: siteData.address,
             surfaceArea: siteData.surfaceArea,
             createdBy: user.id,
+            type: siteData.naturalAreaType,
+            activity: siteData.agriculturalOperationActivity,
           },
         ]);
       },

@@ -2,6 +2,7 @@ import {
   Address,
   AgriculturalOperationActivity,
   FricheActivity,
+  NaturalAreaType,
   SiteNature,
   SiteYearlyExpense,
   SiteYearlyIncome,
@@ -45,6 +46,7 @@ export type SiteCreationData = {
   // activity
   fricheActivity?: FricheActivity;
   agriculturalOperationActivity?: AgriculturalOperationActivity;
+  naturalAreaType?: NaturalAreaType;
 };
 
 export type SiteExpressCreationData = {
@@ -53,6 +55,8 @@ export type SiteExpressCreationData = {
   nature: SiteNature;
   address: Address;
   surfaceArea: number;
+  agriculturalOperationActivity?: AgriculturalOperationActivity;
+  naturalAreaType?: NaturalAreaType;
 };
 
 export type Tenant = { structureType: TenantStructureType; name: string };

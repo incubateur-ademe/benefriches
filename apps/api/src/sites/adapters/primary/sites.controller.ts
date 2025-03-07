@@ -7,11 +7,14 @@ import {
   Param,
   Post,
 } from "@nestjs/common";
-import { createZodDto, ZodValidationPipe } from "nestjs-zod";
+import { ZodValidationPipe } from "nestjs-zod";
 import { API_ROUTES, createSoilSurfaceAreaDistribution } from "shared";
 import { z } from "zod";
 
-import { CreateNewExpressSiteUseCase } from "src/sites/core/usecases/createNewExpressSite.usecase";
+import {
+  CreateNewExpressSiteUseCase,
+  ExpressSiteProps,
+} from "src/sites/core/usecases/createNewExpressSite.usecase";
 import { CreateNewCustomSiteUseCase } from "src/sites/core/usecases/createNewSite.usecase";
 import { GetSiteByIdUseCase, SiteNotFoundError } from "src/sites/core/usecases/getSiteById.usecase";
 
@@ -19,9 +22,9 @@ import { GetSiteByIdUseCase, SiteNotFoundError } from "src/sites/core/usecases/g
 const createCustomSiteDtoSchema = API_ROUTES.SITES.CREATE_CUSTOM_SITE.bodySchema;
 export type CreateCustomSiteDto = z.infer<typeof createCustomSiteDtoSchema>;
 
-export class CreateExpressSiteDto extends createZodDto(
-  API_ROUTES.SITES.CREATE_EXPRESS_SITE.bodySchema,
-) {}
+// here we can't use createZodDto because dto schema is a discriminated union: https://github.com/risen228/nestjs-zod/issues/41
+const createExpressSiteDtoSchema = API_ROUTES.SITES.CREATE_EXPRESS_SITE.bodySchema;
+export type CreateExpressSiteDto = z.infer<typeof createExpressSiteDtoSchema>;
 
 @Controller()
 export class SitesController {
@@ -44,9 +47,14 @@ export class SitesController {
   }
 
   @Post(API_ROUTES.SITES.CREATE_EXPRESS_SITE.path)
-  async createNewExpressSite(@Body() createSiteDto: CreateExpressSiteDto) {
+  async createNewExpressSite(
+    @Body(new ZodValidationPipe(createExpressSiteDtoSchema)) createSiteDto: CreateExpressSiteDto,
+  ) {
     const { createdBy, ...siteProps } = createSiteDto;
-    await this.createNewExpressSiteUseCase.execute({ siteProps, createdBy });
+    await this.createNewExpressSiteUseCase.execute({
+      siteProps: siteProps as ExpressSiteProps,
+      createdBy,
+    });
   }
 
   @Get("sites/:siteId")

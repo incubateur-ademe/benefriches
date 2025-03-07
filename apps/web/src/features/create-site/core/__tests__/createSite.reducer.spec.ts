@@ -1,6 +1,7 @@
 import {
   agriculturalOperationActivityReverted,
   isFricheReverted,
+  naturalAreaTypeReverted,
   revertAddressStep,
   revertFricheAccidentsStep,
   revertFricheActivityStep,
@@ -49,6 +50,7 @@ import {
   createModeSelectionCompleted,
   siteNatureCompleted,
   agriculturalOperationActivityCompleted,
+  naturalAreaTypeCompleted,
 } from "../createSite.reducer";
 import { siteWithExhaustiveData } from "../siteData.mock";
 import {
@@ -163,7 +165,7 @@ describe("Create site reducer", () => {
         const newState = store.getState();
         expectNewCurrentStep(initialRootState, newState, "ADDRESS");
       });
-      it("goes to AGRICULTURAL_OPERATION_ACTIVITY step when 'express' mode is selected", () => {
+      it("goes to AGRICULTURAL_OPERATION_ACTIVITY step when 'express' mode is selected and site is agricultural operation", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
           .withCreationData({
@@ -177,6 +179,21 @@ describe("Create site reducer", () => {
 
         const newState = store.getState();
         expectNewCurrentStep(initialRootState, newState, "AGRICULTURAL_OPERATION_ACTIVITY");
+      });
+      it("goes to NATURAL_AREA_TYPE step when 'express' mode is selected and site is natural area", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .withCreationData({
+            isFriche: false,
+            nature: "NATURAL_AREA",
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(createModeSelectionCompleted({ createMode: "express" }));
+
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "NATURAL_AREA_TYPE");
       });
       it("goes to ADDRESS step when 'express' mode is selected and site is FRICHE or NATURAL_AREA", () => {
         const store = new StoreBuilder()
@@ -231,6 +248,47 @@ describe("Create site reducer", () => {
         expectStepReverted(initialRootState, newState);
         expectSiteDataDiff(initialRootState, newState, {
           agriculturalOperationActivity: undefined,
+        });
+      });
+    });
+    describe("NATURAL_AREA_TYPE", () => {
+      it("goes to ADDRESS step when completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["NATURAL_AREA_TYPE"])
+          .withCreationData({
+            isFriche: false,
+            nature: "NATURAL_AREA",
+          })
+          .build();
+
+        const initialRootState = store.getState();
+
+        store.dispatch(naturalAreaTypeCompleted({ naturalAreaType: "PRAIRIE" }));
+
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+        expectSiteDataDiff(initialRootState, newState, {
+          naturalAreaType: "PRAIRIE",
+        });
+      });
+      it("goes to previous step and unsets agricultural operation activity when reverted", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["CREATE_MODE_SELECTION", "NATURAL_AREA_TYPE"])
+          .withCreationData({
+            isFriche: false,
+            nature: "AGRICULTURAL",
+            naturalAreaType: "PRAIRIE",
+          })
+          .build();
+
+        const initialRootState = store.getState();
+
+        store.dispatch(naturalAreaTypeReverted());
+
+        const newState = store.getState();
+        expectStepReverted(initialRootState, newState);
+        expectSiteDataDiff(initialRootState, newState, {
+          naturalAreaType: undefined,
         });
       });
     });

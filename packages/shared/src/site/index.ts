@@ -5,3 +5,4 @@ export * from "./yearlyIncome";
 export * from "./site";
 export * from "./site-generation";
 export * from "./agricultural-operation";
+export * from "./natural-area";

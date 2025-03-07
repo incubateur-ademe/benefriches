@@ -6,6 +6,7 @@ export const agriculturalOperationActivityReverted = () =>
   revertStep({
     resetFields: ["agriculturalOperationActivity"],
   });
+export const naturalAreaTypeReverted = () => revertStep({ resetFields: ["naturalAreaType"] });
 export const revertAddressStep = () => revertStep({ resetFields: ["address"] });
 export const revertSurfaceAreaStep = () => revertStep({ resetFields: ["surfaceArea"] });
 export const revertSoilsSelectionStep = () => revertStep({ resetFields: ["soils"] });

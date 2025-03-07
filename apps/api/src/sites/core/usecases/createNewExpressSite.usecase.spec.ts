@@ -7,7 +7,7 @@ import { InMemorySitesRepository } from "src/sites/adapters/secondary/site-repos
 
 import { buildFriche, buildFricheProps } from "../models/site.mock";
 import { SiteEntity } from "../models/siteEntity";
-import { CreateNewExpressSiteUseCase } from "./createNewExpressSite.usecase";
+import { CreateNewExpressSiteUseCase, ExpressSiteProps } from "./createNewExpressSite.usecase";
 
 const buildAddress = (propsOverride?: Partial<Address>): Address => {
   return {
@@ -86,7 +86,7 @@ describe("CreateNewExpressSite Use case", () => {
     expect(savedSites).toHaveLength(1);
   });
 
-  describe("Agricultural or natural site", () => {
+  describe("Agricultural", () => {
     it("creates a new express agricultural operation from given props", async () => {
       const usecase = new CreateNewExpressSiteUseCase(
         siteRepository,
@@ -115,6 +115,7 @@ describe("CreateNewExpressSite Use case", () => {
           createdBy: "user-id-123",
           creationMode: "express",
           nature: "AGRICULTURAL",
+          description: "Viticulture",
           isFriche: false,
           soilsDistribution: createSoilSurfaceAreaDistribution({
             VINEYARD: 950,
@@ -126,6 +127,49 @@ describe("CreateNewExpressSite Use case", () => {
             { amount: 350, purpose: "maintenance", bearer: "owner" },
             { amount: 141, purpose: "propertyTaxes", bearer: "owner" },
           ],
+          yearlyIncomes: [],
+        },
+      ]);
+    });
+  });
+
+  describe("Natural area", () => {
+    it("creates a new natural area operation from given props", async () => {
+      const usecase = new CreateNewExpressSiteUseCase(
+        siteRepository,
+        dateProvider,
+        cityDataProvider,
+      );
+
+      const siteProps = {
+        id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
+        surfaceArea: 1000,
+        address: buildAddress(),
+        nature: "NATURAL_AREA",
+        type: "FOREST",
+      } as const satisfies ExpressSiteProps;
+      await usecase.execute({ createdBy: "user-id-123", siteProps });
+
+      const savedSites = siteRepository._getSites();
+
+      expect(savedSites).toEqual<SiteEntity[]>([
+        {
+          id: siteProps.id,
+          address: siteProps.address,
+          surfaceArea: siteProps.surfaceArea,
+          name: "Forêt de Montrouge",
+          description: "Forêt",
+          createdAt: fakeNow,
+          createdBy: "user-id-123",
+          creationMode: "express",
+          nature: "NATURAL_AREA",
+          isFriche: false,
+          soilsDistribution: createSoilSurfaceAreaDistribution({
+            FOREST_MIXED: 1000,
+          }),
+          owner: { structureType: "municipality", name: "Mairie de Montrouge" },
+          tenant: { structureType: "company", name: "Actuel locataire" },
+          yearlyExpenses: [],
           yearlyIncomes: [],
         },
       ]);

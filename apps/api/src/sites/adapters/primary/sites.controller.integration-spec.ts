@@ -37,6 +37,7 @@ describe("Sites controller", () => {
           id: "03a53ffd-4f71-419e-8d04-041311eefa23",
           createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
           nature: "AGRICULTURAL",
+          activity: "CATTLE_FARMING",
           surfaceArea: 12399,
           address: {
             lat: 2.347,

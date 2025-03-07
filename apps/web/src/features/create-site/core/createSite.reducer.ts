@@ -8,6 +8,7 @@ import {
   SiteYearlyIncome,
   Address,
   AgriculturalOperationActivity,
+  NaturalAreaType,
 } from "shared";
 import { v4 as uuid } from "uuid";
 
@@ -57,6 +58,7 @@ export type SiteCreationCustomStep =
 
 export type SiteCreationExpressStep =
   | "AGRICULTURAL_OPERATION_ACTIVITY"
+  | "NATURAL_AREA_TYPE"
   | "ADDRESS"
   | "SURFACE_AREA"
   | "CREATION_RESULT";
@@ -114,6 +116,9 @@ export const completeFricheActivity = createAction<FricheActivity>("completeFric
 export const agriculturalOperationActivityCompleted = createAction<{
   activity: AgriculturalOperationActivity;
 }>("agriculturalOperationActivityCompleted");
+export const naturalAreaTypeCompleted = createAction<{ naturalAreaType: NaturalAreaType }>(
+  "naturalAreaTypeCompleted",
+);
 
 export const completeAddressStep = createAction<{ address: Address }>("completeAddressStep");
 
@@ -231,6 +236,13 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
           }
           state.stepsHistory.push("FRICHE_ACTIVITY");
           break;
+        case "NATURAL_AREA":
+          if (createMode === "express") {
+            state.stepsHistory.push("NATURAL_AREA_TYPE");
+            break;
+          }
+          state.stepsHistory.push("ADDRESS");
+          break;
         default:
           state.stepsHistory.push("ADDRESS");
           break;
@@ -246,6 +258,10 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     })
     .addCase(agriculturalOperationActivityCompleted, (state, action) => {
       state.siteData.agriculturalOperationActivity = action.payload.activity;
+      state.stepsHistory.push("ADDRESS");
+    })
+    .addCase(naturalAreaTypeCompleted, (state, action) => {
+      state.siteData.naturalAreaType = action.payload.naturalAreaType;
       state.stepsHistory.push("ADDRESS");
     })
     .addCase(completeAddressStep, (state, action) => {

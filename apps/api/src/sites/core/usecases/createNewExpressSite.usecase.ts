@@ -3,7 +3,9 @@ import {
   AgriculturalOperationActivity,
   AgriculturalOperationGenerator,
   FricheGenerator,
-  SiteNature,
+  NaturalAreaGenerator,
+  NaturalAreaType,
+  Site,
 } from "shared";
 
 import { CityDataProvider } from "src/reconversion-projects/core/gateways/CityDataProvider";
@@ -13,18 +15,37 @@ import { UseCase } from "src/shared-kernel/usecase";
 import { SitesRepository } from "../gateways/SitesRepository";
 import { SiteEntity } from "../models/siteEntity";
 
-type ExpressSiteProps = {
+export type ExpressSiteProps = {
   id: string;
   surfaceArea: number;
   address: Address;
-  nature: SiteNature;
-  activity?: string;
-};
+} & (
+  | { nature: "FRICHE" }
+  | { nature: "AGRICULTURAL"; activity: AgriculturalOperationActivity }
+  | { nature: "NATURAL_AREA"; type: NaturalAreaType }
+);
 
 type Request = {
   siteProps: ExpressSiteProps;
   createdBy: string;
 };
+
+function createSite(props: ExpressSiteProps & { cityPopulation: number }): Site {
+  switch (props.nature) {
+    case "FRICHE":
+      return new FricheGenerator().fromSurfaceAreaAndLocalInformation(props);
+    case "AGRICULTURAL":
+      return new AgriculturalOperationGenerator().fromSurfaceAreaAndLocalInformation({
+        ...props,
+        operationActivity: props.activity,
+      });
+    case "NATURAL_AREA":
+      return new NaturalAreaGenerator().fromSurfaceAreaAndLocalInformation({
+        ...props,
+        naturalAreaType: props.type,
+      });
+  }
+}
 
 export class CreateNewExpressSiteUseCase implements UseCase<Request, void> {
   constructor(
@@ -44,21 +65,7 @@ export class CreateNewExpressSiteUseCase implements UseCase<Request, void> {
       console.error(error);
     }
 
-    const site =
-      siteProps.nature === "FRICHE"
-        ? new FricheGenerator().fromSurfaceAreaAndLocalInformation({
-            id: siteProps.id,
-            surfaceArea: siteProps.surfaceArea,
-            address: siteProps.address,
-            cityPopulation: siteCityPopulation,
-          })
-        : new AgriculturalOperationGenerator().fromSurfaceAreaAndLocalInformation({
-            id: siteProps.id,
-            operationActivity: siteProps.activity as AgriculturalOperationActivity,
-            surfaceArea: siteProps.surfaceArea,
-            address: siteProps.address,
-            cityPopulation: siteCityPopulation,
-          });
+    const site = createSite({ ...siteProps, cityPopulation: siteCityPopulation });
 
     if (await this.sitesRepository.existsWithId(site.id)) {
       throw new Error(`Site with id ${site.id} already exists`);
