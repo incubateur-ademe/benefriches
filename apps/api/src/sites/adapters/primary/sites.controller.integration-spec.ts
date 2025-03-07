@@ -64,8 +64,8 @@ describe("Sites controller", () => {
       },
     );
 
-    it("can create an agricultural site from express props", async () => {
-      const agriculturalSiteDto: CreateExpressSiteDto = {
+    it("can create an agricultural operation from express props", async () => {
+      const agriculturalOperationDto: CreateExpressSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         nature: "AGRICULTURAL",
@@ -84,7 +84,7 @@ describe("Sites controller", () => {
       };
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-express")
-        .send(agriculturalSiteDto);
+        .send(agriculturalOperationDto);
 
       expect(response.status).toEqual(201);
 
@@ -97,9 +97,9 @@ describe("Sites controller", () => {
       );
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
-        id: agriculturalSiteDto.id,
+        id: agriculturalOperationDto.id,
         nature: "AGRICULTURAL",
-        created_by: agriculturalSiteDto.createdBy,
+        created_by: agriculturalOperationDto.createdBy,
         is_friche: false,
         surface_area: 12000,
       });
@@ -199,8 +199,8 @@ describe("Sites controller", () => {
       },
     );
 
-    it("can create an agricultural site", async () => {
-      const agriculturalSiteDto: CreateCustomSiteDto = {
+    it("can create an agricultural operation", async () => {
+      const agriculturalOperationDto: CreateCustomSiteDto = {
         id: "03a53ffd-4f71-419e-8d04-041311eefa23",
         createdBy: "74ac340f-0654-4887-9449-3dbb43ce35b5",
         isFriche: false,
@@ -238,7 +238,7 @@ describe("Sites controller", () => {
       };
       const response = await supertest(app.getHttpServer())
         .post("/api/sites/create-custom")
-        .send(agriculturalSiteDto);
+        .send(agriculturalOperationDto);
 
       expect(response.status).toEqual(201);
 
@@ -269,7 +269,7 @@ describe("Sites controller", () => {
 
       const siteAddressInDb = await sqlConnection("addresses").select("value", "site_id");
       expect(siteAddressInDb).toEqual([
-        { value: agriculturalSiteDto.address.value, site_id: agriculturalSiteDto.id },
+        { value: agriculturalOperationDto.address.value, site_id: agriculturalOperationDto.id },
       ]);
 
       const soilsDistributionInDb = await sqlConnection("site_soils_distributions").select(
@@ -278,8 +278,8 @@ describe("Sites controller", () => {
         "site_id",
       );
       expect(soilsDistributionInDb).toEqual([
-        { soil_type: "PRAIRIE_GRASS", surface_area: 1400.0, site_id: agriculturalSiteDto.id },
-        { soil_type: "MINERAL_SOIL", surface_area: 1500.0, site_id: agriculturalSiteDto.id },
+        { soil_type: "PRAIRIE_GRASS", surface_area: 1400.0, site_id: agriculturalOperationDto.id },
+        { soil_type: "MINERAL_SOIL", surface_area: 1500.0, site_id: agriculturalOperationDto.id },
       ]);
 
       const expensesInDb = await sqlConnection("site_expenses").select(
@@ -292,14 +292,14 @@ describe("Sites controller", () => {
         {
           amount: 1000.0,
           purpose: "security",
-          site_id: agriculturalSiteDto.id,
+          site_id: agriculturalOperationDto.id,
           bearer: "owner",
         },
       ]);
 
       const incomesInDb = await sqlConnection("site_incomes").select("amount", "source", "site_id");
       expect(incomesInDb).toEqual([
-        { amount: 200.0, source: "other", site_id: agriculturalSiteDto.id },
+        { amount: 200.0, source: "other", site_id: agriculturalOperationDto.id },
       ]);
     });
 

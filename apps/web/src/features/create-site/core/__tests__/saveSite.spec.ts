@@ -71,7 +71,7 @@ describe("Save created site", () => {
     it.each([
       {
         siteData: siteWithMinimalData,
-        dataType: "agricultural site",
+        dataType: "agricultural operation",
       },
       {
         siteData: fricheWithMinimalData,
@@ -171,7 +171,7 @@ describe("Save created site", () => {
 
     it.each([
       {
-        dataType: "agricultural site",
+        dataType: "agricultural operation",
         siteData: {
           id: uuid(),
           nature: "AGRICULTURAL",

@@ -74,7 +74,7 @@ describe("SqlSiteRepository integration", () => {
   });
 
   describe("save", () => {
-    it("Saves given agricultural site with minimal data and express mode in sites", async () => {
+    it("Saves given agricultural operation with minimal data and express mode in sites", async () => {
       const site: SiteEntity = {
         ...buildAgriculturalOrNaturalSiteEntity({
           name: "Integration test site",
@@ -117,7 +117,7 @@ describe("SqlSiteRepository integration", () => {
       ]);
     });
 
-    it("Saves given agricultural site with complete data in sites table", async () => {
+    it("Saves given agricultural operation with complete data in sites table", async () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
         name: "Integration test site",
         description: "Description of site",
@@ -210,7 +210,7 @@ describe("SqlSiteRepository integration", () => {
       ]);
     });
 
-    it("Saves given agricultural site with minimal data in sites, soils distribution, address tables", async () => {
+    it("Saves given agricultural operation with minimal data in sites, soils distribution, address tables", async () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
         soilsDistribution: createSoilSurfaceAreaDistribution({
           BUILDINGS: 3000,
@@ -244,7 +244,7 @@ describe("SqlSiteRepository integration", () => {
       ]);
     });
 
-    it("Saves given agricultural site with expenses and incomes in sites, expenses and incomes", async () => {
+    it("Saves given agricultural operation with expenses and incomes in sites, expenses and incomes", async () => {
       const site: SiteEntity = buildAgriculturalOrNaturalSiteEntity({
         yearlyExpenses: [{ amount: 45000, bearer: "owner", purpose: "security" }],
         yearlyIncomes: [

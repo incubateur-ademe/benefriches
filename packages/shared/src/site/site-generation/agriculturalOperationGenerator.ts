@@ -10,7 +10,7 @@ import { AgriculturalOrNaturalSite, createAgriculturalOrNaturalSite } from "../s
 import { computeMaintenanceDefaultCost } from "../yearlyExpenses";
 import { SiteGenerationProps, SiteGenerator } from "./siteGenerator";
 
-function getSoilsDistributionForAgriculturalSiteType(
+function getSoilsDistributionForAgriculturalOperationActivity(
   surfaceArea: number,
   agriculturalOperationActivity: AgriculturalOperationActivity,
 ): SoilsDistribution {
@@ -77,7 +77,7 @@ export class AgriculturalOperationGenerator
   ): AgriculturalOrNaturalSite {
     const { id, surfaceArea, address, operationActivity } = props;
 
-    const soilsDistribution = getSoilsDistributionForAgriculturalSiteType(
+    const soilsDistribution = getSoilsDistributionForAgriculturalOperationActivity(
       surfaceArea,
       operationActivity,
     );

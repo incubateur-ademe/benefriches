@@ -173,18 +173,18 @@ describe("Site core logic", () => {
     });
   });
   describe("createAgriculturalOrNaturalSite", () => {
-    type AgriculturalSiteSuccessResult = Extract<
+    type AgriculturalOperationSuccessResult = Extract<
       ReturnType<typeof createAgriculturalOrNaturalSite>,
       { success: true }
     >;
-    type AgriculturalSiteErrorResult = Extract<
+    type AgriculturalOperationErrorResult = Extract<
       ReturnType<typeof createAgriculturalOrNaturalSite>,
       { success: false }
     >;
 
     const minimalProps: CreateAgriculturalOrNaturalSiteProps = {
       id: "e869d8db-3d63-4fd5-93ab-7728c1c19a1e",
-      name: "Unit test agricultural site",
+      name: "Unit test agricultural operation",
       nature: "AGRICULTURAL",
       address: {
         city: "Paris",
@@ -208,7 +208,7 @@ describe("Site core logic", () => {
       const result = createAgriculturalOrNaturalSite({
         ...minimalProps,
         soilsDistribution,
-      }) as AgriculturalSiteSuccessResult;
+      }) as AgriculturalOperationSuccessResult;
       expect(result.success).toBe(true);
       expect(result.site.surfaceArea).toBe(11200);
     });
@@ -217,45 +217,45 @@ describe("Site core logic", () => {
       const result = createAgriculturalOrNaturalSite({
         ...minimalProps,
         owner: undefined,
-      }) as AgriculturalSiteSuccessResult;
+      }) as AgriculturalOperationSuccessResult;
       expect(result.success).toBe(true);
       expect(result.site.owner).toEqual({ name: "Propriétaire inconnu", structureType: "unknown" });
     });
 
-    it("cannot create agricultural site with non-uuid id", () => {
+    it("cannot create agricultural operation with non-uuid id", () => {
       const result = createAgriculturalOrNaturalSite({
         ...minimalProps,
         id: "not-a-uuid",
-      }) as AgriculturalSiteErrorResult;
+      }) as AgriculturalOperationErrorResult;
       expect(result.success).toBe(false);
       expect(result.error).toContain("Validation error: id (Invalid uuid)");
     });
 
-    it("cannot create agricultural site with negative expenses amount", () => {
+    it("cannot create agricultural operation with negative expenses amount", () => {
       const result = createAgriculturalOrNaturalSite({
         ...minimalProps,
         yearlyExpenses: [{ purpose: "maintenance", bearer: "owner", amount: -1 }],
-      }) as AgriculturalSiteErrorResult;
+      }) as AgriculturalOperationErrorResult;
       expect(result.success).toBe(false);
       expect(result.error).toContain(
         "yearlyExpenses.0.amount (Number must be greater than or equal to 0)",
       );
     });
 
-    it("cannot create agricultural site with negative income amount", () => {
+    it("cannot create agricultural operation with negative income amount", () => {
       const result = createAgriculturalOrNaturalSite({
         ...minimalProps,
         yearlyIncomes: [{ source: "other", amount: -1 }],
-      }) as AgriculturalSiteErrorResult;
+      }) as AgriculturalOperationErrorResult;
       expect(result.success).toBe(false);
       expect(result.error).toContain(
         "yearlyIncomes.0.amount (Number must be greater than or equal to 0)",
       );
     });
 
-    it("creates agricultural site with complete data", () => {
-      const completeAgriculturalSite: Required<CreateAgriculturalOrNaturalSiteProps> = {
-        name: "My agricultural site",
+    it("creates agricultural operation with complete data", () => {
+      const completeAgriculturalOperation: Required<CreateAgriculturalOrNaturalSiteProps> = {
+        name: "My agricultural operation",
         nature: "AGRICULTURAL",
         description: "Description of the site",
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",
@@ -281,11 +281,11 @@ describe("Site core logic", () => {
         },
       };
       const result = createAgriculturalOrNaturalSite(
-        completeAgriculturalSite,
-      ) as AgriculturalSiteSuccessResult;
+        completeAgriculturalOperation,
+      ) as AgriculturalOperationSuccessResult;
       expect(result.success).toBe(true);
       expect(result.site).toEqual<AgriculturalOrNaturalSite>({
-        name: "My agricultural site",
+        name: "My agricultural operation",
         nature: "AGRICULTURAL",
         description: "Description of the site",
         id: "28b53918-a6f6-43f2-9554-7b5434428f8b",

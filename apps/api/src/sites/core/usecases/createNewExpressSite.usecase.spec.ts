@@ -87,7 +87,7 @@ describe("CreateNewExpressSite Use case", () => {
   });
 
   describe("Agricultural or natural site", () => {
-    it("creates a new express agricultural site from given props", async () => {
+    it("creates a new express agricultural operation from given props", async () => {
       const usecase = new CreateNewExpressSiteUseCase(
         siteRepository,
         dateProvider,

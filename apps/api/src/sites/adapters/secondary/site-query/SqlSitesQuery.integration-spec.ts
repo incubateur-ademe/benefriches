@@ -125,7 +125,7 @@ describe("SqlSitesQuery integration", () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it("gets agricultural site with only required data", async () => {
+    it("gets agricultural operation with only required data", async () => {
       const siteId = uuid();
       await sqlConnection("sites").insert({
         id: siteId,
