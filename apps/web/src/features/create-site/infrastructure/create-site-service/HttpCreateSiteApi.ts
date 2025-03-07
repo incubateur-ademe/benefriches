@@ -8,7 +8,7 @@ import {
 
 export class HttpCreateSiteApi implements CreateSiteGateway {
   async saveCustom(newSite: CustomSitePayload) {
-    const response = await fetch(`/api/${API_ROUTES.SITES.CREATE_CUSTOM_SITE.path}`, {
+    const response = await fetch(`/api${API_ROUTES.SITES.CREATE_CUSTOM_SITE.path}`, {
       method: "POST",
       body: JSON.stringify(newSite),
       headers: {
@@ -20,7 +20,7 @@ export class HttpCreateSiteApi implements CreateSiteGateway {
   }
 
   async saveExpress(newSite: ExpressSitePayload): Promise<void> {
-    const response = await fetch(`/api/${API_ROUTES.SITES.CREATE_EXPRESS_SITE.path}`, {
+    const response = await fetch(`/api${API_ROUTES.SITES.CREATE_EXPRESS_SITE.path}`, {
       method: "POST",
       body: JSON.stringify(newSite),
       headers: {
