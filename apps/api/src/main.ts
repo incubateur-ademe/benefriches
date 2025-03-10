@@ -15,6 +15,7 @@ async function bootstrap() {
   const sqlConnection: Knex = app.get(SqlConnection);
   try {
     await sqlConnection.raw("SELECT 1");
+    console.log("SQL connection looks good");
   } catch (err) {
     console.error("Error: could not establish SQL connection");
     console.error(err);
@@ -33,6 +34,14 @@ process.on("uncaughtException", (err) => {
 
 process.on("unhandledRejection", (reason, promise) => {
   console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
+
+process.on("beforeExit", (code) => {
+  console.log("Process beforeExit event with code: ", code);
+});
+
+process.on("exit", (code) => {
+  console.log("Process exit event with code: ", code);
 });
 
 void bootstrap();
