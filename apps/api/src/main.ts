@@ -26,4 +26,13 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   await app.listen(configService.getOrThrow("PORT"));
 }
+
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+});
+
 void bootstrap();
