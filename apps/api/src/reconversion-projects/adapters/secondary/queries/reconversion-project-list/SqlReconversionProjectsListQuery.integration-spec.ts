@@ -68,11 +68,12 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_name: "Tenant name",
         tenant_structure_type: "company",
         created_at: new Date(),
+        nature: "FRICHE",
         is_friche: true,
         friche_activity: "BUILDING",
         friche_has_contaminated_soils: true,
         friche_contaminated_soil_surface_area: 230,
-      };
+      } as const;
       await sqlConnection("sites").insert(siteInDb);
 
       const result = await reconversionProjectsListQuery.getGroupedBySite({ userId });
@@ -81,7 +82,7 @@ describe("ReconversionProjectsListQuery integration", () => {
         {
           siteName: siteInDb.name,
           siteId: siteInDb.id,
-          isFriche: siteInDb.is_friche,
+          siteNature: siteInDb.nature,
           isExpressSite: false,
           fricheActivity: "BUILDING",
           reconversionProjects: [],
@@ -103,7 +104,8 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_structure_type: "company",
         created_at: new Date("2024-02-01"),
         is_friche: false,
-      };
+        nature: "AGRICULTURAL_OPERATION",
+      } as const;
       const siteInDb2 = {
         id: uuid(),
         created_by: userId,
@@ -116,8 +118,9 @@ describe("ReconversionProjectsListQuery integration", () => {
         tenant_structure_type: "company",
         created_at: new Date("2024-02-20"),
         is_friche: false,
+        nature: "NATURAL_AREA",
         creation_mode: "express",
-      };
+      } as const;
       const projectInDb1 = {
         id: uuid(),
         created_by: userId,
@@ -178,7 +181,7 @@ describe("ReconversionProjectsListQuery integration", () => {
         {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
-          isFriche: siteInDb2.is_friche,
+          siteNature: siteInDb2.nature,
           isExpressSite: true,
           reconversionProjects: [
             {
@@ -198,8 +201,8 @@ describe("ReconversionProjectsListQuery integration", () => {
         {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
-          isFriche: siteInDb1.is_friche,
           isExpressSite: false,
+          siteNature: siteInDb1.nature,
           reconversionProjects: [
             {
               id: projectInDb1.id,

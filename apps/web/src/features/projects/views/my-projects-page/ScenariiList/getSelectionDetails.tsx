@@ -1,3 +1,5 @@
+import { SiteNature } from "shared";
+
 import {
   ProjectsGroup,
   ReconversionProjectsGroupedBySite,
@@ -21,10 +23,10 @@ export const getProjectsInfosList = (
   );
 
 export const getSitesInfosList = (projectsList: ReconversionProjectsGroupedBySite): SiteInfos[] =>
-  projectsList.map(({ reconversionProjects, siteId, siteName, isFriche }) => ({
+  projectsList.map(({ reconversionProjects, siteId, siteName, siteNature }) => ({
     id: siteId,
     name: siteName,
-    isFriche,
+    siteNature,
     reconversionProjectIds: reconversionProjects.map(({ id }) => id),
   }));
 
@@ -44,7 +46,12 @@ type SelectionInfos = {
   };
 };
 
-type SiteInfos = { id: string; name: string; isFriche: boolean; reconversionProjectIds: string[] };
+export type SiteInfos = {
+  id: string;
+  name: string;
+  siteNature: SiteNature;
+  reconversionProjectIds: string[];
+};
 type ProjectInfos = { id: string; siteId: string; siteName: string; type: string; name: string };
 
 export const getSelectionInfos = (
@@ -69,7 +76,7 @@ export const getSelectionInfos = (
         baseScenario: {
           type: "STATU_QUO",
           id: baseScenarioId,
-          name: baseScenario.isFriche ? "Site en friche" : "Site en l'état",
+          name: baseScenario.siteNature === "FRICHE" ? "Site en friche" : "Site en l'état",
           siteName: baseScenario.name,
         },
         withScenario: {
@@ -110,7 +117,7 @@ export const getSelectionInfos = (
       baseScenario: {
         type: "STATU_QUO",
         id: selectedStatuQuoScenario,
-        name: baseScenario.isFriche ? "Site en friche" : "Site en l'état",
+        name: baseScenario.siteNature === "FRICHE" ? "Site en friche" : "Site en l'état",
         siteName: baseScenario.name,
       },
     };

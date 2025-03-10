@@ -46,7 +46,7 @@ describe("Urban project creation : stakeholders steps", () => {
       it("goes to STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER step and sets projectDeveloper when step is completed and site is friche", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["STAKEHOLDERS_INTRODUCTION", "STAKEHOLDERS_PROJECT_DEVELOPER"])
-          .withSiteData({ isFriche: true })
+          .withSiteData({ nature: "FRICHE" })
           .build();
         const initialRootState = store.getState();
 

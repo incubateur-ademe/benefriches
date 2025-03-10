@@ -65,7 +65,6 @@ type Props = {
   };
   siteData: {
     surfaceArea: number;
-    isFriche: boolean;
     soilsDistribution: SoilsDistribution;
     soilsCarbonStorage?: SoilsCarbonStorageResult;
   };

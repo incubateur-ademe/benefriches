@@ -197,6 +197,7 @@ describe("ReconversionProjects controller", () => {
       const siteInDb1 = {
         id: uuid(),
         created_by: userId,
+        nature: "AGRICULTURAL_OPERATION",
         name: "Site A",
         description: "Description of site",
         surface_area: 14000,
@@ -220,6 +221,7 @@ describe("ReconversionProjects controller", () => {
         tenant_structure_type: "company",
         created_at: new Date("2024-02-01"),
         is_friche: false,
+        nature: "NATURAL_AREA",
       };
       const projectInDb1 = {
         id: uuid(),
@@ -277,7 +279,7 @@ describe("ReconversionProjects controller", () => {
         {
           siteName: siteInDb1.name,
           siteId: siteInDb1.id,
-          isFriche: siteInDb1.is_friche,
+          siteNature: siteInDb1.nature,
           isExpressSite: true,
           reconversionProjects: [
             {
@@ -297,7 +299,7 @@ describe("ReconversionProjects controller", () => {
         {
           siteName: siteInDb2.name,
           siteId: siteInDb2.id,
-          isFriche: siteInDb2.is_friche,
+          siteNature: siteInDb2.nature,
           isExpressSite: false,
           reconversionProjects: [],
         },

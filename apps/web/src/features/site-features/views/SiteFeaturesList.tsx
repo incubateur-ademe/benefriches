@@ -81,7 +81,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           </div>
         </div>
       </Section>
-      {siteFeatures.isFriche && (
+      {siteFeatures.nature === "FRICHE" && (
         <>
           <Section title="☣️ Pollution">
             <DataLine
@@ -119,13 +119,17 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           </Section>
         </>
       )}
-      <Section title={siteFeatures.isFriche ? "⚙️ Gestion de la friche" : "⚙️ Gestion du site"}>
+      <Section
+        title={siteFeatures.nature === "FRICHE" ? "⚙️ Gestion de la friche" : "⚙️ Gestion du site"}
+      >
         <>
           <DataLine label={<strong>Propriétaire actuel</strong>} value={siteFeatures.ownerName} />
           {siteFeatures.tenantName && (
             <DataLine
               label={
-                <strong>{siteFeatures.isFriche ? "Locataire actuel" : "Exploitant actuel"}</strong>
+                <strong>
+                  {siteFeatures.nature === "FRICHE" ? "Locataire actuel" : "Exploitant actuel"}
+                </strong>
               }
               value={siteFeatures.tenantName}
             />
@@ -136,7 +140,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
             noBorder
             label={
               <strong>
-                Dépenses annuelles {siteFeatures.isFriche ? "de la friche" : "du site"}
+                Dépenses annuelles {siteFeatures.nature === "FRICHE" ? "de la friche" : "du site"}
               </strong>
             }
             value={

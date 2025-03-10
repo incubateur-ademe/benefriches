@@ -68,7 +68,7 @@ function ScenariiListContainer({ projectsList }: Props) {
           selectedIds={selectedIds}
           onChangeSelectedProject={onChangeSelectedProject}
           onChangeSelectedSite={onChangeSelectedSite}
-          isFriche={projectGroup.isFriche}
+          siteNature={projectGroup.siteNature}
           fricheActivity={projectGroup.fricheActivity}
         />
       ))}

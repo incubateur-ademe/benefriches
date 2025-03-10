@@ -471,7 +471,6 @@ describe("Sites controller", () => {
         surfaceArea: 14000,
         owner: { name: "Owner name", structureType: "company" },
         tenant: { structureType: "company" },
-        isFriche: true,
         hasContaminatedSoils: true,
         contaminatedSoilSurface: 230,
         address: {

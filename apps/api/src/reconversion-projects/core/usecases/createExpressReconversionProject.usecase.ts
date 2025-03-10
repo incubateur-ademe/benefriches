@@ -1,4 +1,4 @@
-import { Address, SoilsDistribution } from "shared";
+import { Address, SiteNature, SoilsDistribution } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
@@ -11,7 +11,7 @@ import { ReconversionProject } from "../model/reconversionProject";
 
 type SiteView = {
   id: string;
-  isFriche: boolean;
+  nature: SiteNature;
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;
   contaminatedSoilSurface?: number;

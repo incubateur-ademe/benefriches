@@ -11,6 +11,7 @@ import {
   computeSoilsDistributionFromSpaces,
   formatMunicipalityName,
   ReinstatementExpensePurpose,
+  SiteNature,
   SoilsDistribution,
   SpacesDistribution,
   typedObjectEntries,
@@ -22,7 +23,7 @@ import { ReconversionProject, reconversionProjectSchema } from "../reconversionP
 
 type SiteData = {
   id: string;
-  isFriche: boolean;
+  nature: SiteNature;
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;
   contaminatedSoilSurface?: number;
@@ -34,6 +35,10 @@ type SiteData = {
     name?: string;
   };
 };
+
+function willProjectIncludeReinstatement(siteData: SiteData) {
+  return siteData.nature === "FRICHE";
+}
 
 export class UrbanProjectExpressCreationService {
   name;
@@ -69,7 +74,7 @@ export class UrbanProjectExpressCreationService {
   }
 
   get reinstatementContractOwner() {
-    if (this.siteData.isFriche) {
+    if (willProjectIncludeReinstatement(this.siteData)) {
       return this.developer;
     }
     return undefined;
@@ -92,7 +97,7 @@ export class UrbanProjectExpressCreationService {
   }
 
   get reinstatementCosts() {
-    if (!this.siteData.isFriche) {
+    if (!willProjectIncludeReinstatement(this.siteData)) {
       return undefined;
     }
     return typedObjectEntries(
@@ -140,7 +145,7 @@ export class UrbanProjectExpressCreationService {
 
   // schedules
   get reinstatementSchedule() {
-    if (this.siteData.isFriche) {
+    if (willProjectIncludeReinstatement(this.siteData)) {
       return computeDefaultReinstatementSchedule(this.dateProvider);
     }
     return undefined;

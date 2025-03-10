@@ -21,7 +21,6 @@ describe("GetSiteById Use Case", () => {
       nature: "FRICHE",
       name: "My existing site",
       isExpressSite: true,
-      isFriche: true,
       surfaceArea: 140000,
       fricheActivity: "ADMINISTRATION",
       owner: {
@@ -68,7 +67,6 @@ describe("GetSiteById Use Case", () => {
       nature: "FRICHE",
       isExpressSite: site.isExpressSite,
       description: site.description,
-      isFriche: site.isFriche,
       owner: site.owner,
       tenant: site.tenant,
       soilsDistribution: site.soilsDistribution,

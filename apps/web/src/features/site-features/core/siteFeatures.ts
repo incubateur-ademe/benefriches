@@ -1,7 +1,8 @@
-import { FricheActivity, SiteYearlyExpensePurpose, SoilsDistribution } from "shared";
+import { FricheActivity, SiteNature, SiteYearlyExpensePurpose, SoilsDistribution } from "shared";
 
 export type SiteFeatures = {
   id: string;
+  nature: SiteNature;
   isExpressSite: boolean;
   address: string;
   ownerName: string;
@@ -18,5 +19,4 @@ export type SiteFeatures = {
   fricheActivity?: FricheActivity;
   name: string;
   description?: string;
-  isFriche: boolean;
 };

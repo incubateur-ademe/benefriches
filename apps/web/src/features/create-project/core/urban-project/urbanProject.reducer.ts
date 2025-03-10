@@ -357,7 +357,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
   builder.addCase(stakeholderProjectDeveloperCompleted, (state, action) => {
     state.urbanProject.creationData.projectDeveloper = action.payload;
     state.urbanProject.stepsHistory.push(
-      state.siteData?.isFriche
+      state.siteData?.nature === "FRICHE"
         ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
         : "SITE_RESALE_INTRODUCTION",
     );
@@ -419,7 +419,7 @@ const urbanProjectReducer = createReducer({} as ProjectCreationState, (builder) 
     state.urbanProject.creationData.sitePurchasePropertyTransferDuties =
       action.payload.propertyTransferDuties;
     state.urbanProject.stepsHistory.push(
-      state.siteData?.isFriche ? "EXPENSES_REINSTATEMENT" : "EXPENSES_INSTALLATION",
+      state.siteData?.nature === "FRICHE" ? "EXPENSES_REINSTATEMENT" : "EXPENSES_INSTALLATION",
     );
   });
   builder.addCase(sitePurchaseReverted, (state) => {

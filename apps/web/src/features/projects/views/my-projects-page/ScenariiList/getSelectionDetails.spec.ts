@@ -1,22 +1,22 @@
-import { getSelectionInfos } from "./getSelectionDetails";
+import { getSelectionInfos, SiteInfos } from "./getSelectionDetails";
 
 const MOCK_SITES_LIST = [
   {
     id: "c8ad6277-69da-4b9c-9151-5bf2b16a870e",
     name: "Friche administrative de Gueltas",
-    isFriche: true,
+    siteNature: "FRICHE",
     reconversionProjectIds: ["e0f0bbb5-535a-43ec-99a7-de0c23a5210d"],
   },
   {
     id: "76944328-252c-4e0b-ae29-129f5a702186",
     name: "Friche d'habitat de San-Martino-di-Lota",
-    isFriche: true,
+    siteNature: "FRICHE",
     reconversionProjectIds: [],
   },
   {
     id: "8df69bf0-1148-4a91-b32b-fe32eec3520f",
     name: "Espace agricole de Centuri",
-    isFriche: false,
+    siteNature: "AGRICULTURAL_OPERATION",
     reconversionProjectIds: [
       "afa023c6-162c-4571-9d46-58a3e9fd75b7",
       "fc1f0e45-bd8e-471d-99ee-73509af3dc47",
@@ -25,7 +25,7 @@ const MOCK_SITES_LIST = [
   {
     id: "22339455-2ca2-4e2f-ab6b-bb3e2709f3e0",
     name: "Friche d'habitat de Forcalquier",
-    isFriche: true,
+    siteNature: "FRICHE",
     reconversionProjectIds: [
       "b1cb446c-fe38-44e9-8bee-f62c5be903d3",
       "e7c9b932-97e0-4c8a-b5fd-37a15723fecc",
@@ -34,10 +34,10 @@ const MOCK_SITES_LIST = [
   {
     id: "cd11d4d0-ad26-4e2b-9cdb-ac05bdb8cd8e",
     name: "Espace agricole de Anzin",
-    isFriche: false,
+    siteNature: "AGRICULTURAL_OPERATION",
     reconversionProjectIds: [],
   },
-];
+] as const satisfies SiteInfos[];
 
 const MOCK_PROJECTS_LIST = [
   {

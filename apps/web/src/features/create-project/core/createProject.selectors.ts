@@ -32,7 +32,7 @@ export const selectSiteData = createSelector(
 );
 export const selectIsSiteFriche = createSelector(
   selectSiteData,
-  (siteData): boolean => siteData?.isFriche ?? false,
+  (siteData): boolean => siteData?.nature === "FRICHE",
 );
 
 export const selectSiteSoilsDistribution = createSelector(

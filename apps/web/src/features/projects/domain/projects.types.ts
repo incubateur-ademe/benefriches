@@ -9,6 +9,7 @@ import {
   SoilsDistribution,
   UrbanProjectSpace,
   BuildingsUseDistribution,
+  SiteNature,
 } from "shared";
 
 type Schedule = { startDate: string; endDate: string };
@@ -16,7 +17,7 @@ type Schedule = { startDate: string; endDate: string };
 export type ProjectsGroup = {
   siteId: string;
   siteName: string;
-  isFriche: boolean;
+  siteNature: SiteNature;
   isExpressSite: boolean;
   fricheActivity?: FricheActivity;
   reconversionProjects: {

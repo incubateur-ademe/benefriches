@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import { SiteNature } from "shared";
 
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
@@ -6,18 +7,34 @@ import Badge from "@/shared/views/components/Badge/Badge";
 type Props = {
   siteName: string;
   address: string;
-  isFriche: boolean;
+  siteNature: SiteNature;
   isExpressSite: boolean;
 };
 
-export default function SiteFeaturesHeader({ siteName, address, isFriche, isExpressSite }: Props) {
+function getPictogramUrlForSiteNature(siteNature: SiteNature): string {
+  switch (siteNature) {
+    case "FRICHE":
+      return "/img/pictograms/site-nature/friche.svg";
+    case "AGRICULTURAL_OPERATION":
+      return "/img/pictograms/site-nature/agricultural-operation.svg";
+    case "NATURAL_AREA":
+      return "/img/pictograms/site-nature/natural-area.svg";
+  }
+}
+
+export default function SiteFeaturesHeader({
+  siteName,
+  address,
+  siteNature,
+  isExpressSite,
+}: Props) {
   return (
     <section className={classNames("tw-py-8", "tw-bg-impacts-main", "dark:tw-bg-grey-dark")}>
       <div className={fr.cx("fr-container")}>
         <div className="tw-flex tw-items-center">
           <img
             className="tw-mr-3"
-            src={isFriche ? "/icons/friche.svg" : "/icons/agricole.svg"}
+            src={getPictogramUrlForSiteNature(siteNature)}
             aria-hidden={true}
             alt="Icône friche"
             width={76}

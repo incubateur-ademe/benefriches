@@ -1,4 +1,4 @@
-import { FricheActivity, SiteYearlyExpensePurpose, SoilType } from "shared";
+import { Address, FricheActivity, SiteNature, SiteYearlyExpensePurpose, SoilType } from "shared";
 
 import { SiteFeaturesGateway } from "../../core/fetchSiteFeatures.action";
 import { SiteFeatures } from "../../core/siteFeatures";
@@ -6,7 +6,7 @@ import { SiteFeatures } from "../../core/siteFeatures";
 type SiteFromApi = {
   id: string;
   name: string;
-  isFriche: boolean;
+  nature: SiteNature;
   isExpressSite: boolean;
   owner: {
     name?: string;
@@ -20,9 +20,7 @@ type SiteFromApi = {
   contaminatedSoilSurface?: number;
   soilsDistribution: Partial<Record<SoilType, number>>;
   surfaceArea: number;
-  address: {
-    value: string;
-  };
+  address: Address;
   accidentsMinorInjuries?: number;
   accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
@@ -45,6 +43,7 @@ export class HttpSiteFeaturesService implements SiteFeaturesGateway {
     const jsonResponse = (await response.json()) as SiteFromApi;
     return {
       id: jsonResponse.id,
+      nature: jsonResponse.nature,
       isExpressSite: jsonResponse.isExpressSite,
       address: jsonResponse.address.value,
       ownerName: jsonResponse.owner.name || "",
@@ -64,7 +63,6 @@ export class HttpSiteFeaturesService implements SiteFeaturesGateway {
       fricheActivity: jsonResponse.fricheActivity as FricheActivity | undefined,
       name: jsonResponse.name,
       description: jsonResponse.description || "",
-      isFriche: jsonResponse.isFriche,
     };
   }
 }

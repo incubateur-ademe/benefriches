@@ -16,7 +16,7 @@ function DemoSiteFeatures({ siteData }: Props) {
         siteName={siteData.name}
         isExpressSite={siteData.isExpressSite}
         address={siteData.address}
-        isFriche={siteData.isFriche}
+        siteNature={siteData.nature}
       />
       <section className={classNames(fr.cx("fr-container"), "lg:tw-px-24", "tw-py-6")}>
         <SiteFeaturesList {...siteData} />

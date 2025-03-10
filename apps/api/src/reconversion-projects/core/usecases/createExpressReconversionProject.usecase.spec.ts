@@ -59,7 +59,6 @@ describe("CreateReconversionProject Use Case", () => {
       name: "Base site",
       nature: "FRICHE",
       isExpressSite: false,
-      isFriche: true,
       surfaceArea: 10000,
       soilsDistribution: {
         ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 5000,
@@ -539,12 +538,11 @@ describe("CreateReconversionProject Use Case", () => {
   });
 
   describe("On agricultural operation", () => {
-    const site: SiteViewModel = {
+    const site = {
       id: uuid(),
       nature: "AGRICULTURAL_OPERATION",
       isExpressSite: true,
       name: "Base site",
-      isFriche: false,
       surfaceArea: 50000,
       soilsDistribution: {
         PRAIRIE_GRASS: 30000,
@@ -569,7 +567,7 @@ describe("CreateReconversionProject Use Case", () => {
         name: "Monsieur Dupont",
         structureType: "private_individual",
       },
-    };
+    } as const satisfies SiteViewModel;
     describe("with site purchase", () => {
       test.each(EXPRESS_CATEGORIES)(
         "should create a %s with real estate sale transaction and development installation costs based on site",

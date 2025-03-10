@@ -28,7 +28,7 @@ const options: Option[] = [
     value: "AGRICULTURAL_OPERATION",
     title: "Exploitation agricole",
     description: "Culture, élevage...",
-    imgSrc: "/img/pictograms/site-nature/agricultural.svg",
+    imgSrc: "/img/pictograms/site-nature/agricultural-operation.svg",
   },
   {
     value: "NATURAL_AREA",

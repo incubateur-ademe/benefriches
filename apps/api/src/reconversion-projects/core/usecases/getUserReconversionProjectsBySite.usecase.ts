@@ -1,3 +1,5 @@
+import { SiteNature } from "shared";
+
 import { UseCase } from "src/shared-kernel/usecase";
 
 import { DevelopmentPlan } from "../model/reconversionProject";
@@ -5,7 +7,7 @@ import { DevelopmentPlan } from "../model/reconversionProject";
 export type ReconversionProjectsGroupedBySite = {
   siteName: string;
   siteId: string;
-  isFriche: boolean;
+  siteNature: SiteNature;
   isExpressSite: boolean;
   fricheActivity?: string;
   reconversionProjects: {

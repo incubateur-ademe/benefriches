@@ -1,4 +1,4 @@
-import { FricheActivity } from "shared";
+import { FricheActivity, SiteNature } from "shared";
 
 import Badge from "@/shared/views/components/Badge/Badge";
 import { routes } from "@/shared/views/router";
@@ -11,13 +11,13 @@ import StatuQuoScenarioTile from "./StatuQuoScenarioTile";
 type Props = {
   siteId: string;
   siteName: string;
+  siteNature: SiteNature;
   isExpressSite: boolean;
   reconversionProjects: ReconversionProjectList;
   selectedIds: string[];
   selectableIds: string[];
   onChangeSelectedSite: (value?: string) => void;
   onChangeSelectedProject: (id: string, checked: boolean) => void;
-  isFriche: boolean;
   fricheActivity?: FricheActivity;
 };
 
@@ -46,7 +46,7 @@ function ScenariiGroup({
   siteId,
   siteName,
   isExpressSite,
-  isFriche,
+  siteNature,
   fricheActivity,
   reconversionProjects,
   selectedIds,
@@ -64,7 +64,7 @@ function ScenariiGroup({
       )}
       <div className="tw-grid sm:tw-grid-cols-2 md:tw-grid-cols-4 tw-gap-6">
         <StatuQuoScenarioTile
-          isFriche={isFriche}
+          siteNature={siteNature}
           fricheActivity={fricheActivity}
           siteId={siteId}
           onChangeSelectedSite={onChangeSelectedSite}

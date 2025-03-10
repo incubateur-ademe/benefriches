@@ -6,6 +6,7 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
   RenewableEnergyProjectPhase,
+  SiteNature,
   SoilsDistribution,
   SoilType,
 } from "shared";
@@ -76,7 +77,7 @@ export type ProjectStakeholder = { name: string; structureType: ProjectStakehold
 export type ProjectSite = {
   id: string;
   name: string;
-  isFriche: boolean;
+  nature: SiteNature;
   isExpressSite: boolean;
   owner: {
     name: string;

@@ -28,7 +28,7 @@ const API_MOCKED_RESULT = {
 
 const SITE_MOCKED_RESULT = {
   id: "03a53ffd-4f71-419e-8d04-041311eefa23",
-  isFriche: true,
+  nature: "FRICHE",
   isExpressSite: false,
   owner: { name: "", structureType: "company" },
   name: "Friche industrielle",

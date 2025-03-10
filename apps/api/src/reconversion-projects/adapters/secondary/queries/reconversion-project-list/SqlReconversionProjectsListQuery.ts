@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { Knex } from "knex";
+import { SiteNature } from "shared";
 
 import { DevelopmentPlan } from "src/reconversion-projects/core/model/reconversionProject";
 import {
@@ -28,7 +29,7 @@ export class SqlReconversionProjectsListQuery implements ReconversionProjectsLis
       .select(
         "sites.id as siteId",
         "sites.name as siteName",
-        "sites.is_friche as isFriche",
+        "sites.nature as siteNature",
         "sites.creation_mode as creationMode",
         "sites.friche_activity as fricheActivity",
         this.sqlConnection.raw(`
@@ -44,7 +45,7 @@ export class SqlReconversionProjectsListQuery implements ReconversionProjectsLis
       .orderBy("sites.created_at", "desc")) as {
       siteId: string;
       siteName: string;
-      isFriche: boolean;
+      siteNature: SiteNature;
       creationMode: SqlSite["creation_mode"];
       fricheActivity: string | null;
       reconversionProjects: {

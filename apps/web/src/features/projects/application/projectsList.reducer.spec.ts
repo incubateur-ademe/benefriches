@@ -15,14 +15,14 @@ describe("Projects list reducer", () => {
     {
       siteId: uuid(),
       siteName: "Site 1",
-      isFriche: true,
+      siteNature: "FRICHE",
       isExpressSite: true,
       reconversionProjects: [],
     },
     {
       siteId: uuid(),
       siteName: "Site 2",
-      isFriche: false,
+      siteNature: "AGRICULTURAL_OPERATION",
       isExpressSite: false,
       reconversionProjects: [
         {
@@ -120,14 +120,14 @@ describe("Projects list reducer", () => {
         {
           siteId: uuid(),
           siteName: "Site 1",
-          isFriche: true,
+          siteNature: "FRICHE",
           isExpressSite: false,
           reconversionProjects: [],
         },
         {
           siteId: uuid(),
           siteName: "Site 2",
-          isFriche: false,
+          siteNature: "AGRICULTURAL_OPERATION",
           isExpressSite: true,
           reconversionProjects: [
             {

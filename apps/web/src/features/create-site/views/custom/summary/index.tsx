@@ -20,6 +20,7 @@ function SiteDataSummaryContainer() {
     <SiteDataSummary
       siteData={{
         id: siteData.id,
+        nature: siteData.nature!,
         address: siteData.address?.value ?? "",
         ownerName: siteData.owner?.name ?? "",
         tenantName: siteData.tenant?.name,
@@ -37,7 +38,6 @@ function SiteDataSummaryContainer() {
         name: siteData.name ?? "",
         description: siteData.description,
         fricheActivity: siteData.fricheActivity,
-        isFriche: siteData.isFriche ?? false,
       }}
       onNext={onNext}
       onBack={onBack}

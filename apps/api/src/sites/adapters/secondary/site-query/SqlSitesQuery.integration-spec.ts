@@ -94,7 +94,6 @@ describe("SqlSitesQuery integration", () => {
         surfaceArea: 14000,
         owner: { name: "Owner name", structureType: "company" },
         tenant: { name: "Tenant name", structureType: "company" },
-        isFriche: true,
         hasContaminatedSoils: true,
         yearlyExpenses: [
           { amount: 45000, purpose: "rent" },
@@ -175,7 +174,6 @@ describe("SqlSitesQuery integration", () => {
         surfaceArea: 14000,
         isExpressSite: true,
         owner: { structureType: "company" },
-        isFriche: false,
         yearlyExpenses: [{ amount: 3300, purpose: "security" }],
         address: {
           city: "Paris",

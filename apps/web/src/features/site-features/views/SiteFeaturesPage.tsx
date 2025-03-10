@@ -41,9 +41,9 @@ function SiteFeaturesPage({ onPageLoad, siteData, loadingState }: Props) {
     <>
       <SiteFeaturesHeader
         siteName={siteData.name}
+        siteNature={siteData.nature}
         isExpressSite={siteData.isExpressSite}
         address={siteData.address}
-        isFriche={siteData.isFriche}
       />
       <section className={classNames(fr.cx("fr-container"), "lg:tw-px-24", "tw-py-6")}>
         <SiteFeaturesList {...siteData} />

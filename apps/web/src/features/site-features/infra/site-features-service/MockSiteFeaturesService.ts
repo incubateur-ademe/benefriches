@@ -6,7 +6,7 @@ export class MockSiteFeaturesService implements SiteFeaturesGateway {
     id: "189038dd-3a6a-43af-bc8d-c4999d8d82cc",
     name: "Mocked site name",
     address: "155 bis Av. Pierre Brossolette, 92120 Montrouge",
-    isFriche: true,
+    nature: "FRICHE",
     isExpressSite: false,
     accidents: {
       accidentsDeaths: 0,

@@ -158,7 +158,7 @@ export class QuickComputeUrbanProjectImpactsOnFricheUseCase implements UseCase<R
       creatorId,
       {
         id: site.id,
-        isFriche: site.isFriche,
+        nature: site.nature,
         owner: site.owner,
         soilsDistribution: site.soilsDistribution.toJSON(),
         surfaceArea: site.surfaceArea,

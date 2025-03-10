@@ -11,7 +11,6 @@ type Request = {
 export type SiteViewModel = {
   id: string;
   name: string;
-  isFriche: boolean;
   nature: SiteNature;
   isExpressSite: boolean;
   owner: {

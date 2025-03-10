@@ -178,6 +178,10 @@ export const INITIAL_STATE: RenewableEneryProjectState = {
   },
 };
 
+const willSiteNeedReinstatement = (state: ProjectCreationState) => {
+  return state.siteData?.nature === "FRICHE";
+};
+
 const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
   builder.addCase(completeRenewableEnergyType, (state, action) => {
     state.renewableEnergyProject.creationData.renewableEnergyType = action.payload;
@@ -307,7 +311,7 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
   });
   builder.addCase(futureOperatorCompleted, (state, action) => {
     state.renewableEnergyProject.creationData.futureOperator = action.payload;
-    const nextStep = state.siteData?.isFriche
+    const nextStep = willSiteNeedReinstatement(state)
       ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
       : "STAKEHOLDERS_SITE_PURCHASE";
     state.renewableEnergyProject.stepsHistory.push(nextStep);
@@ -339,7 +343,7 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
       state.renewableEnergyProject.stepsHistory.push("EXPENSES_SITE_PURCHASE_AMOUNTS");
       return;
     }
-    if (state.siteData?.isFriche) {
+    if (willSiteNeedReinstatement(state)) {
       state.renewableEnergyProject.stepsHistory.push("EXPENSES_REINSTATEMENT");
       return;
     }
@@ -350,7 +354,7 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
       action.payload.sellingPrice;
     state.renewableEnergyProject.creationData.sitePurchasePropertyTransferDuties =
       action.payload.propertyTransferDuties ?? 0;
-    if (state.siteData?.isFriche) {
+    if (willSiteNeedReinstatement(state)) {
       state.renewableEnergyProject.stepsHistory.push("EXPENSES_REINSTATEMENT");
       return;
     }
@@ -419,7 +423,7 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
   builder.addCase(completePhotovoltaicContractDuration, (state, action) => {
     state.renewableEnergyProject.creationData.photovoltaicContractDuration = action.payload;
     state.renewableEnergyProject.stepsHistory.push(
-      state.siteData?.isFriche && state.siteData.contaminatedSoilSurface
+      state.siteData?.contaminatedSoilSurface
         ? "SOILS_DECONTAMINATION_INTRODUCTION"
         : "SOILS_TRANSFORMATION_INTRODUCTION",
     );

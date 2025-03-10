@@ -13,7 +13,7 @@ export const DEMO_SITE = {
   name: "Friche industrielle de Mauges-sur-Loire",
   isExpressSite: false,
   fricheActivity: "INDUSTRY",
-  isFriche: true,
+  nature: "FRICHE",
   ownerName: "Mairie de Mauges-sur-Loire",
   surfaceArea: 50000,
   address: "Mauges-sur-Loire",

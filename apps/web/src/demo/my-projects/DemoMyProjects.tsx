@@ -1,5 +1,5 @@
 import Button from "@codegouvfr/react-dsfr/Button";
-import { DevelopmentPlanType, FricheActivity } from "shared";
+import { DevelopmentPlanType, FricheActivity, SiteNature } from "shared";
 
 import classNames from "@/shared/views/clsx";
 import Badge from "@/shared/views/components/Badge/Badge";
@@ -12,7 +12,7 @@ import { getScenarioPictoUrl } from "../../features/projects/views/shared/scenar
 import MyProjectsTourGuide from "./MyProjectTourGuide";
 
 type Props = {
-  siteData: { id: string; name: string; isFriche: boolean; fricheActivity?: FricheActivity };
+  siteData: { id: string; name: string; nature: SiteNature; fricheActivity?: FricheActivity };
   projectData: { id: string; name: string; developmentPlan: { type: DevelopmentPlanType } };
 };
 

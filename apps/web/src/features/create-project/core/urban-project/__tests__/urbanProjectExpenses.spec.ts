@@ -47,7 +47,7 @@ describe("Urban project creation : costs steps", () => {
       it("goes to EXPENSES_REINSTATEMENT step and sets sellingPrice and propertyTransferDuties when step is completed if site is friche", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["EXPENSES_INTRODUCTION", "EXPENSES_SITE_PURCHASE_AMOUNTS"])
-          .withSiteData({ isFriche: true })
+          .withSiteData({ nature: "FRICHE" })
           .build();
         const initialRootState = store.getState();
 

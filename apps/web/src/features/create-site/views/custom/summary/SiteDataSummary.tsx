@@ -1,4 +1,4 @@
-import { FricheActivity, SiteYearlyExpense, SoilsDistribution } from "shared";
+import { FricheActivity, SiteNature, SiteYearlyExpense, SoilsDistribution } from "shared";
 
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -22,7 +22,7 @@ type Props = {
     fricheActivity?: FricheActivity;
     name: string;
     description?: string;
-    isFriche: boolean;
+    nature: SiteNature;
   };
   onNext: () => void;
   onBack: () => void;
@@ -36,6 +36,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
     >
       <SiteFeaturesList
         id={siteData.id}
+        nature={siteData.nature}
         isExpressSite={false}
         address={siteData.address}
         ownerName={siteData.ownerName}
@@ -48,7 +49,6 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
         fricheActivity={siteData.fricheActivity}
         name={siteData.name}
         description={siteData.description}
-        isFriche={siteData.isFriche}
       />
       <div className="tw-mt-8">
         <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
