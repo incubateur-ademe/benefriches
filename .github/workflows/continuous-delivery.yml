@@ -5,9 +5,10 @@ on:
   push:
     branches:
       - main
-      
+
 jobs:
   deploy-staging:
     name: Build and deploy on staging
     # jobs are run in parallel by default, we want them to run sequentially
     uses: ./.github/workflows/deploy-staging.yml
+    secrets: inherit
