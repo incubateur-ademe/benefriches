@@ -160,11 +160,11 @@ const getAvoidedCo2eqEmissions = (impactsData?: ReconversionProjectImpactsResult
     return 0;
   }
 
-  const total = [
-    impactsData.environmental.avoidedAirConditioningCo2EqEmissions ?? 0,
-    impactsData.environmental.avoidedCarTrafficCo2EqEmissions ?? 0,
-    impactsData.environmental.avoidedCO2TonsWithEnergyProduction ?? 0,
-  ].reduce((total, amount) => total + amount, 0);
+  const { avoidedCo2eqEmissions } = impactsData.environmental;
+  const total =
+    (avoidedCo2eqEmissions?.withAirConditioningDiminution ?? 0) +
+    (avoidedCo2eqEmissions?.withCarTrafficDiminution ?? 0) +
+    (avoidedCo2eqEmissions?.withRenewableEnergyProduction ?? 0);
 
   if (impactsData.environmental.soilsCo2eqStorage) {
     return total + impactsData.environmental.soilsCo2eqStorage.difference;

@@ -81,7 +81,7 @@ export class PhotovoltaicProjectImpactsService
     return impacts;
   }
 
-  protected get avoidedCo2EqEmissions(): SocioEconomicImpact[] {
+  protected get avoidedCo2EqEmissionsMonetaryValue(): SocioEconomicImpact[] {
     if (!this.avoidedCO2TonsWithEnergyProductionMonetaryValue) {
       return [];
     }
@@ -107,7 +107,7 @@ export class PhotovoltaicProjectImpactsService
     const photovoltaicProjectSocioEconomic = [
       ...socioeconomic.impacts,
       ...this.taxesIncomeImpact,
-      ...this.avoidedCo2EqEmissions,
+      ...this.avoidedCo2EqEmissionsMonetaryValue,
     ];
 
     const avoidedCO2TonsWithEnergyProduction = this.avoidedCO2TonsWithEnergyProduction
@@ -122,7 +122,9 @@ export class PhotovoltaicProjectImpactsService
       },
       environmental: {
         ...environmental,
-        avoidedCO2TonsWithEnergyProduction,
+        avoidedCo2eqEmissions: {
+          withRenewableEnergyProduction: avoidedCO2TonsWithEnergyProduction,
+        },
       },
       socioeconomic: {
         impacts: photovoltaicProjectSocioEconomic,

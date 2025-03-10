@@ -302,11 +302,13 @@ describe("UrbanProjectImpactsService", () => {
         accidents: urbanProjectImpactsService["accidentsImpact"],
         fullTimeJobs: urbanProjectImpactsService["fullTimeJobsImpact"],
         avoidedVehiculeKilometers:
-          urbanProjectImpactsService["travelRelatedImpacts"]["social"]["avoidedVehiculeKilometers"],
+          urbanProjectImpactsService[
+            "travelRelatedImpactsService"
+          ].getAvoidedKilometersPerVehicule(),
         travelTimeSaved:
-          urbanProjectImpactsService["travelRelatedImpacts"]["social"]["travelTimeSaved"],
+          urbanProjectImpactsService["travelRelatedImpactsService"].getTravelTimeSavedPerTraveler(),
         avoidedTrafficAccidents:
-          urbanProjectImpactsService["travelRelatedImpacts"]["social"]["avoidedTrafficAccidents"],
+          urbanProjectImpactsService["travelRelatedImpactsService"].getAvoidedTrafficAccidents(),
       });
     });
 
@@ -316,15 +318,14 @@ describe("UrbanProjectImpactsService", () => {
       expect(result.environmental.nonContaminatedSurfaceArea).toBeDefined();
       expect(result.environmental.permeableSurfaceArea).toBeDefined();
       expect(result.environmental.soilsCo2eqStorage).toBeDefined();
-      expect(result.environmental.avoidedCarTrafficCo2EqEmissions).toEqual(
-        urbanProjectImpactsService["travelRelatedImpacts"]["environmental"][
-          "avoidedCarTrafficCo2EqEmissions"
-        ],
+      expect(result.environmental.avoidedCo2eqEmissions.withCarTrafficDiminution).toEqual(
+        urbanProjectImpactsService["travelRelatedImpactsService"].getAvoidedTrafficCO2Emissions()
+          ?.inTons,
       );
-      expect(result.environmental.avoidedAirConditioningCo2EqEmissions).toEqual(
-        urbanProjectImpactsService["urbanFreshnessImpacts"]["environmental"][
-          "avoidedAirConditioningCo2EqEmissions"
-        ],
+      expect(result.environmental.avoidedCo2eqEmissions.withAirConditioningDiminution).toEqual(
+        urbanProjectImpactsService[
+          "urbanFreshnessImpactsService"
+        ].getAvoidedAirConditioningCo2Emissions()?.inTons,
       );
     });
   });

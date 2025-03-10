@@ -43,11 +43,9 @@ export const getEnvironmentalProjectImpacts = (
   if (!impactsData) return [];
   const {
     nonContaminatedSurfaceArea,
-    avoidedCO2TonsWithEnergyProduction,
+    avoidedCo2eqEmissions,
     soilsCo2eqStorage,
     permeableSurfaceArea,
-    avoidedAirConditioningCo2EqEmissions,
-    avoidedCarTrafficCo2EqEmissions,
   } = impactsData.environmental;
 
   const impacts: EnvironmentalImpact[] = [];
@@ -64,12 +62,7 @@ export const getEnvironmentalProjectImpacts = (
     });
   }
 
-  if (
-    avoidedCarTrafficCo2EqEmissions ||
-    avoidedAirConditioningCo2EqEmissions ||
-    avoidedCO2TonsWithEnergyProduction ||
-    soilsCo2eqStorage
-  ) {
+  if (avoidedCo2eqEmissions || soilsCo2eqStorage) {
     const details: ImpactDetails[] = [];
 
     if (soilsCo2eqStorage) {
@@ -79,35 +72,35 @@ export const getEnvironmentalProjectImpacts = (
       });
     }
 
-    if (avoidedCO2TonsWithEnergyProduction) {
+    if (avoidedCo2eqEmissions?.withRenewableEnergyProduction) {
       details.push({
         name: "avoided_co2_eq_emissions_with_production",
         impact: {
           base: 0,
-          forecast: avoidedCO2TonsWithEnergyProduction,
-          difference: avoidedCO2TonsWithEnergyProduction,
+          forecast: avoidedCo2eqEmissions.withRenewableEnergyProduction,
+          difference: avoidedCo2eqEmissions.withRenewableEnergyProduction,
         },
       });
     }
 
-    if (avoidedAirConditioningCo2EqEmissions) {
+    if (avoidedCo2eqEmissions?.withAirConditioningDiminution) {
       details.push({
         name: "avoided_air_conditioning_co2_eq_emissions",
         impact: {
           base: 0,
-          forecast: avoidedAirConditioningCo2EqEmissions,
-          difference: avoidedAirConditioningCo2EqEmissions,
+          forecast: avoidedCo2eqEmissions.withAirConditioningDiminution,
+          difference: avoidedCo2eqEmissions.withAirConditioningDiminution,
         },
       });
     }
 
-    if (avoidedCarTrafficCo2EqEmissions) {
+    if (avoidedCo2eqEmissions?.withCarTrafficDiminution) {
       details.push({
         name: "avoided_car_traffic_co2_eq_emissions",
         impact: {
           base: 0,
-          forecast: avoidedCarTrafficCo2EqEmissions,
-          difference: avoidedCarTrafficCo2EqEmissions,
+          forecast: avoidedCo2eqEmissions.withCarTrafficDiminution,
+          difference: avoidedCo2eqEmissions.withCarTrafficDiminution,
         },
       });
     }

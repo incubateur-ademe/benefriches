@@ -55,12 +55,13 @@ type EnvironmentalImpacts = {
     greenSoil: Impact;
   };
   soilsCo2eqStorage?: Impact;
-} & EnvironmentalCo2RelatedImpacts;
+  avoidedCo2eqEmissions?: AvoidedCo2EqEmissions;
+};
 
-export type EnvironmentalCo2RelatedImpacts = {
-  avoidedAirConditioningCo2EqEmissions?: number;
-  avoidedCarTrafficCo2EqEmissions?: number;
-  avoidedCO2TonsWithEnergyProduction?: number;
+export type AvoidedCo2EqEmissions = {
+  withAirConditioningDiminution?: number;
+  withCarTrafficDiminution?: number;
+  withRenewableEnergyProduction?: number;
 };
 
 export type SocialImpacts = {

@@ -40,6 +40,8 @@ export class UrbanProjectImpactsService
 {
   protected readonly developmentPlanFeatures: UrbanProjectFeatures;
   private readonly siteCityData: SiteCityDataProps;
+  private readonly travelRelatedImpactsService: TravelRelatedImpactsService;
+  private readonly urbanFreshnessImpactsService: UrbanFreshnessRelatedImpactsService;
 
   constructor(props: UrbanProjectImpactsServiceProps) {
     super(props);
@@ -48,10 +50,16 @@ export class UrbanProjectImpactsService
       .developmentPlanFeatures as UrbanProjectFeatures;
 
     this.siteCityData = props.siteCityData;
-  }
 
-  protected get urbanFreshnessImpacts() {
-    const urbanFreshnessImpactsService = new UrbanFreshnessRelatedImpactsService({
+    this.travelRelatedImpactsService = new TravelRelatedImpactsService({
+      buildingsFloorAreaDistribution: this.developmentPlanFeatures.buildingsFloorAreaDistribution,
+      siteSquareMetersSurfaceArea: this.relatedSite.surfaceArea,
+      citySquareMetersSurfaceArea: this.siteCityData.citySquareMetersSurfaceArea,
+      cityPopulation: this.siteCityData.cityPopulation,
+      sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
+    });
+
+    this.urbanFreshnessImpactsService = new UrbanFreshnessRelatedImpactsService({
       buildingsFloorAreaDistribution: this.developmentPlanFeatures.buildingsFloorAreaDistribution,
       spacesDistribution: this.developmentPlanFeatures.spacesDistribution,
       siteSquareMetersSurfaceArea: this.relatedSite.surfaceArea,
@@ -59,27 +67,6 @@ export class UrbanProjectImpactsService
       cityPopulation: this.siteCityData.cityPopulation,
       sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
     });
-    return {
-      socioEconomicList: urbanFreshnessImpactsService.getSocioEconomicList(),
-      avoidedCo2EqEmissions: urbanFreshnessImpactsService.getAvoidedCo2EqEmissionsDetails(),
-      environmental: urbanFreshnessImpactsService.getEnvironmentalImpacts(),
-    };
-  }
-
-  protected get travelRelatedImpacts() {
-    const travelRelatedImpactsService = new TravelRelatedImpactsService({
-      buildingsFloorAreaDistribution: this.developmentPlanFeatures.buildingsFloorAreaDistribution,
-      siteSquareMetersSurfaceArea: this.relatedSite.surfaceArea,
-      citySquareMetersSurfaceArea: this.siteCityData.citySquareMetersSurfaceArea,
-      cityPopulation: this.siteCityData.cityPopulation,
-      sumOnEvolutionPeriodService: this.sumOnEvolutionPeriodService,
-    });
-    return {
-      socioEconomicList: travelRelatedImpactsService.getSocioEconomicList(),
-      avoidedCo2EqEmissions: travelRelatedImpactsService.getAvoidedCo2EqEmissionsDetails(),
-      social: travelRelatedImpactsService.getSocialImpacts(),
-      environmental: travelRelatedImpactsService.getEnvironmentalImpacts(),
-    };
   }
 
   protected get roadsAndUtilitiesExpensesImpacts(): SocioEconomicImpact[] {
@@ -142,29 +129,39 @@ export class UrbanProjectImpactsService
     return impacts;
   }
 
-  protected get avoidedCo2EqEmissions(): SocioEconomicImpact[] {
-    const avoidedUrbanFreshnessCo2EqEmissions = this.urbanFreshnessImpacts.avoidedCo2EqEmissions;
-    const avoidedTrafficCo2EqEmissions = this.travelRelatedImpacts.avoidedCo2EqEmissions;
+  protected get avoidedCo2EqEmissionsMonetaryValue(): SocioEconomicImpact[] {
+    const details: AvoidedCO2EqEmissions["details"] = [];
 
-    const details: AvoidedCO2EqEmissions["details"] = [
-      ...avoidedUrbanFreshnessCo2EqEmissions,
-      ...avoidedTrafficCo2EqEmissions,
-    ].filter(({ amount }) => amount > 0);
+    const avoidedUrbanFreshnessCo2EqEmissions =
+      this.urbanFreshnessImpactsService.getAvoidedAirConditioningCo2Emissions();
+    const avoidedTrafficCo2EqEmissions =
+      this.travelRelatedImpactsService.getAvoidedTrafficCO2Emissions();
+
+    if (avoidedTrafficCo2EqEmissions) {
+      details.push({
+        amount: avoidedTrafficCo2EqEmissions.monetaryValue,
+        impact: "avoided_traffic_co2_eq_emissions",
+      });
+    }
+
+    if (avoidedUrbanFreshnessCo2EqEmissions) {
+      details.push({
+        amount: avoidedUrbanFreshnessCo2EqEmissions.monetaryValue,
+        impact: "avoided_air_conditioning_co2_eq_emissions",
+      });
+    }
 
     const total = sumListWithKey(details, "amount");
 
-    if (total > 0) {
-      return [
-        {
-          amount: total,
-          impact: "avoided_co2_eq_emissions",
-          impactCategory: "environmental_monetary",
-          actor: "human_society",
-          details: details,
-        },
-      ];
-    }
-    return [];
+    return [
+      {
+        amount: total,
+        impact: "avoided_co2_eq_emissions",
+        impactCategory: "environmental_monetary",
+        actor: "human_society",
+        details: details,
+      },
+    ];
   }
 
   private get localPropertyIncreaseImpacts(): SocioEconomicImpact[] {
@@ -201,22 +198,30 @@ export class UrbanProjectImpactsService
     const urbanProjectSocioEconomic = [
       ...socioeconomic.impacts,
       ...this.taxesIncomeImpact,
-      ...this.avoidedCo2EqEmissions,
-      ...this.urbanFreshnessImpacts.socioEconomicList,
-      ...this.travelRelatedImpacts.socioEconomicList,
+      ...this.avoidedCo2EqEmissionsMonetaryValue,
+      ...this.urbanFreshnessImpactsService.getSocioEconomicList(),
+      ...this.travelRelatedImpactsService.getSocioEconomicList(),
       ...this.localPropertyIncreaseImpacts,
       ...this.roadsAndUtilitiesExpensesImpacts,
     ];
+
     return {
       economicBalance: economicBalance,
       social: {
         ...social,
-        ...this.travelRelatedImpacts.social,
+        avoidedVehiculeKilometers:
+          this.travelRelatedImpactsService.getAvoidedKilometersPerVehicule(),
+        travelTimeSaved: this.travelRelatedImpactsService.getTravelTimeSavedPerTraveler(),
+        avoidedTrafficAccidents: this.travelRelatedImpactsService.getAvoidedTrafficAccidents(),
       },
       environmental: {
         ...environmental,
-        ...this.travelRelatedImpacts.environmental,
-        ...this.urbanFreshnessImpacts.environmental,
+        avoidedCo2eqEmissions: {
+          withCarTrafficDiminution:
+            this.travelRelatedImpactsService.getAvoidedTrafficCO2Emissions()?.inTons,
+          withAirConditioningDiminution:
+            this.urbanFreshnessImpactsService.getAvoidedAirConditioningCo2Emissions()?.inTons,
+        },
       },
       socioeconomic: {
         impacts: urbanProjectSocioEconomic,

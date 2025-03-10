@@ -385,7 +385,9 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
                 difference: 0,
               },
             },
-            avoidedCO2TonsWithEnergyProduction: 117.4,
+            avoidedCo2eqEmissions: {
+              withRenewableEnergyProduction: 117.4,
+            },
             soilsCo2eqStorage: {
               base: 73.33,
               forecast: 73.33,

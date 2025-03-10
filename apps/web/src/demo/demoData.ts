@@ -326,9 +326,10 @@ export const getImpactsDataFromEvaluationPeriod = (
         }
       }),
     },
-    avoidedAirConditioningCo2EqEmissions: impactsDataFor1Year.environmental
-      .avoidedAirConditioningCo2EqEmissions
-      ? impactsDataFor1Year.environmental.avoidedAirConditioningCo2EqEmissions * evaluationPeriod
+    avoidedAirConditioningCo2EqEmissions: impactsDataFor1Year.environmental.avoidedCo2eqEmissions
+      ?.withAirConditioningDiminution
+      ? impactsDataFor1Year.environmental.avoidedCo2eqEmissions.withAirConditioningDiminution *
+        evaluationPeriod
       : undefined,
     avoidedVehiculeKilometers: impactsDataFor1Year.social.avoidedVehiculeKilometers
       ? impactsDataFor1Year.social.avoidedVehiculeKilometers * evaluationPeriod
@@ -336,9 +337,10 @@ export const getImpactsDataFromEvaluationPeriod = (
     travelTimeSaved: impactsDataFor1Year.social.travelTimeSaved
       ? impactsDataFor1Year.social.travelTimeSaved * evaluationPeriod
       : undefined,
-    avoidedCarTrafficCo2EqEmissions: impactsDataFor1Year.environmental
-      .avoidedCarTrafficCo2EqEmissions
-      ? impactsDataFor1Year.environmental.avoidedCarTrafficCo2EqEmissions * evaluationPeriod
+    avoidedCarTrafficCo2EqEmissions: impactsDataFor1Year.environmental.avoidedCo2eqEmissions
+      ?.withCarTrafficDiminution
+      ? impactsDataFor1Year.environmental.avoidedCo2eqEmissions.withCarTrafficDiminution *
+        evaluationPeriod
       : undefined,
   } as ReconversionProjectImpactsResult["impacts"];
 };

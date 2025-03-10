@@ -260,7 +260,7 @@ export const photovoltaicProjectImpactMock = {
     },
     environmental: {
       ...baseImpacts.environmental,
-      avoidedCO2TonsWithEnergyProduction: 112.3,
+      avoidedCo2eqEmissions: { withRenewableEnergyProduction: 112.3 },
     },
   },
 } satisfies ReconversionProjectImpactsResult;
@@ -426,8 +426,10 @@ export const urbanProjectImpactMock = {
     },
     environmental: {
       ...baseImpacts.environmental,
-      avoidedCarTrafficCo2EqEmissions: 115,
-      avoidedAirConditioningCo2EqEmissions: 300,
+      avoidedCo2eqEmissions: {
+        withCarTrafficDiminution: 115,
+        withAirConditioningDiminution: 300,
+      },
     },
   },
 } satisfies ReconversionProjectImpactsResult;

@@ -93,6 +93,9 @@ export class YearlyUrbanFreshnessRelatedImpacts extends InfluenceAreaService {
   }
 
   protected get impactedHousing() {
+    if (!this.hasUrbanFreshnessImpact) {
+      return 0;
+    }
     return this.projectHousingSurfaceArea + this.getInfluenceAreaSquareMetersHousingSurface();
   }
   protected get publicGreenSpaceSurfaceRatio() {
@@ -104,6 +107,9 @@ export class YearlyUrbanFreshnessRelatedImpacts extends InfluenceAreaService {
   }
 
   protected get impactedBusinessBuildings() {
+    if (!this.hasUrbanFreshnessImpact) {
+      return 0;
+    }
     return this.projectOtherEconomicActivitySurface + this.projectOfficesActivitySurface;
   }
 

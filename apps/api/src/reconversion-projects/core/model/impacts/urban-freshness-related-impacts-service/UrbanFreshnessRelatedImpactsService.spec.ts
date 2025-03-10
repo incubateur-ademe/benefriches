@@ -16,8 +16,9 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
     });
 
     expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([]);
-    expect(urbanFreshnessRelatedImpactsService.getEnvironmentalImpacts()).toEqual({});
-    expect(urbanFreshnessRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([]);
+    expect(urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions()).toEqual(
+      undefined,
+    );
   });
 
   it("returns no urban freshness impacts if there is not enough public green spaces in project for public green space < 5000 m²", () => {
@@ -39,8 +40,9 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
     });
 
     expect(urbanFreshnessRelatedImpactsService.getSocioEconomicList()).toEqual([]);
-    expect(urbanFreshnessRelatedImpactsService.getEnvironmentalImpacts()).toEqual({});
-    expect(urbanFreshnessRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([]);
+    expect(urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions()).toEqual(
+      undefined,
+    );
   });
 
   it("returns urban freshness impacts formated", () => {
@@ -76,14 +78,9 @@ describe("UrbanFreshnessRelatedImpactsService", () => {
         impactCategory: "economic_indirect",
       },
     ]);
-    expect(urbanFreshnessRelatedImpactsService.getEnvironmentalImpacts()).toEqual({
-      avoidedAirConditioningCo2EqEmissions: 4.06,
+    expect(urbanFreshnessRelatedImpactsService.getAvoidedAirConditioningCo2Emissions()).toEqual({
+      inTons: 4.06,
+      monetaryValue: 771,
     });
-    expect(urbanFreshnessRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([
-      {
-        amount: 771,
-        impact: "avoided_air_conditioning_co2_eq_emissions",
-      },
-    ]);
   });
 });

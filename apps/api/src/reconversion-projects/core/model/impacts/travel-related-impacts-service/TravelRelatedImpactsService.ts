@@ -1,13 +1,10 @@
 import {
-  AvoidedCO2EqEmissions,
   BuildingsUseDistribution,
-  roundTo1Digit,
   roundTo2Digits,
   roundToInteger,
   SocioEconomicImpact,
 } from "shared";
 
-import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
 import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { YearlyTravelRelatedImpacts } from "./YearlyTravelRelatedImpacts";
 
@@ -19,10 +16,7 @@ type Props = {
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 };
 
-export class TravelRelatedImpactsService
-  extends YearlyTravelRelatedImpacts
-  implements PartialImpactsServiceInterface
-{
+export class TravelRelatedImpactsService extends YearlyTravelRelatedImpacts {
   protected readonly sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 
   constructor({
@@ -77,10 +71,10 @@ export class TravelRelatedImpactsService
   }
 
   getAvoidedTrafficCO2EmissionsInTons() {
-    return (
+    return roundTo2Digits(
       this.sumOnEvolutionPeriodService.sumWithCO2EqEmittedPerVehiculeKilometerEvolution(
         this.avoidedKilometersPerVehiculePerYear,
-      ) / 1000000
+      ) / 1000000,
     );
   }
 
@@ -167,6 +161,18 @@ export class TravelRelatedImpactsService
     );
   }
 
+  getAvoidedTrafficAccidents() {
+    if (this.getAvoidedAccidentsInjuriesOrDeaths() === 0) {
+      return undefined;
+    }
+    return {
+      total: this.getAvoidedAccidentsInjuriesOrDeaths(),
+      minorInjuries: this.getAvoidedAccidentsMinorInjuries(),
+      severeInjuries: this.getAvoidedAccidentsSevereInjuries(),
+      deaths: this.getAvoidedAccidentsDeaths(),
+    };
+  }
+
   getSocioEconomicList() {
     const socioEconomicImpacts = [
       {
@@ -218,40 +224,14 @@ export class TravelRelatedImpactsService
     return socioEconomicImpacts.filter(({ amount }) => amount > 0) as SocioEconomicImpact[];
   }
 
-  getAvoidedCo2EqEmissionsDetails(): AvoidedCO2EqEmissions["details"] {
-    return [
-      {
-        amount: this.getAvoidedTrafficCO2EmissionsMonetaryValue(),
-        impact: "avoided_traffic_co2_eq_emissions",
-      },
-    ];
-  }
-
-  getSocialImpacts() {
-    const avoidedTrafficAccidents = {
-      total: roundTo1Digit(this.getAvoidedAccidentsInjuriesOrDeaths()),
-      minorInjuries: roundTo1Digit(this.getAvoidedAccidentsMinorInjuries()),
-      severeInjuries: roundTo1Digit(this.getAvoidedAccidentsSevereInjuries()),
-      deaths: roundTo1Digit(this.getAvoidedAccidentsDeaths()),
-    };
-
-    return {
-      avoidedVehiculeKilometers: roundTo2Digits(this.getAvoidedKilometersPerVehicule()),
-      travelTimeSaved: roundTo2Digits(this.getTravelTimeSavedPerTraveler()),
-      avoidedTrafficAccidents:
-        avoidedTrafficAccidents.total > 0 ? avoidedTrafficAccidents : undefined,
-    };
-  }
-
-  getEnvironmentalImpacts() {
-    const avoidedCarTrafficCo2EqEmissions = roundTo2Digits(
-      this.getAvoidedTrafficCO2EmissionsInTons(),
-    );
+  getAvoidedTrafficCO2Emissions(): { inTons: number; monetaryValue: number } | undefined {
+    const avoidedCarTrafficCo2EqEmissions = this.getAvoidedTrafficCO2EmissionsInTons();
     if (avoidedCarTrafficCo2EqEmissions === 0) {
-      return {};
+      return undefined;
     }
     return {
-      avoidedCarTrafficCo2EqEmissions,
+      inTons: avoidedCarTrafficCo2EqEmissions,
+      monetaryValue: this.getAvoidedTrafficCO2EmissionsMonetaryValue(),
     };
   }
 }

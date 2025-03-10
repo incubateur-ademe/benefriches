@@ -1,12 +1,10 @@
 import {
-  AvoidedCO2EqEmissions,
   BuildingsUseDistribution,
   roundTo2Digits,
   SocioEconomicImpact,
   SpacesDistribution,
 } from "shared";
 
-import { PartialImpactsServiceInterface } from "../ReconversionProjectImpactsServiceInterface";
 import { SumOnEvolutionPeriodService } from "../SumOnEvolutionPeriodService";
 import { YearlyUrbanFreshnessRelatedImpacts } from "./YearlyUrbanFreshnessRelatedImpacts";
 
@@ -19,10 +17,7 @@ type Props = {
   sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 };
 
-export class UrbanFreshnessRelatedImpactsService
-  extends YearlyUrbanFreshnessRelatedImpacts
-  implements PartialImpactsServiceInterface
-{
+export class UrbanFreshnessRelatedImpactsService extends YearlyUrbanFreshnessRelatedImpacts {
   protected readonly sumOnEvolutionPeriodService: SumOnEvolutionPeriodService;
 
   constructor({
@@ -110,27 +105,14 @@ export class UrbanFreshnessRelatedImpactsService
     return socioeconomic.filter(({ amount }) => amount > 0);
   }
 
-  getAvoidedCo2EqEmissionsDetails(): AvoidedCO2EqEmissions["details"] {
+  getAvoidedAirConditioningCo2Emissions(): { inTons: number; monetaryValue: number } | undefined {
     if (!this.hasUrbanFreshnessImpact) {
-      return [];
-    }
-
-    return [
-      {
-        impact: "avoided_air_conditioning_co2_eq_emissions",
-        amount: roundTo2Digits(this.getAvoidedAirConditioningCo2EmissionsMonetaryValue()),
-      },
-    ];
-  }
-  getEnvironmentalImpacts() {
-    if (!this.hasUrbanFreshnessImpact) {
-      return {};
+      return undefined;
     }
 
     return {
-      avoidedAirConditioningCo2EqEmissions: roundTo2Digits(
-        this.getAvoidedAirConditioningCo2EmissionsInTons(),
-      ),
+      inTons: this.getAvoidedAirConditioningCo2EmissionsInTons(),
+      monetaryValue: this.getAvoidedAirConditioningCo2EmissionsMonetaryValue(),
     };
   }
 }

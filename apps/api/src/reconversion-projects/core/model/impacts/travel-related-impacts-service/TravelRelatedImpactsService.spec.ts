@@ -102,17 +102,11 @@ describe("TravelRelatedImpactsService", () => {
         impactCategory: "social_monetary",
       },
     ]);
-    expect(travelRelatedImpactsService.getEnvironmentalImpacts()).toEqual({
-      avoidedCarTrafficCo2EqEmissions: 239.78,
+    expect(travelRelatedImpactsService.getAvoidedTrafficCO2Emissions()).toEqual({
+      inTons: 239.78,
+      monetaryValue: 45308,
     });
-    expect(travelRelatedImpactsService.getAvoidedCo2EqEmissionsDetails()).toEqual([
-      {
-        amount: 45308,
-        impact: "avoided_traffic_co2_eq_emissions",
-      },
-    ]);
-    expect(travelRelatedImpactsService.getSocialImpacts()).toMatchObject({
-      travelTimeSaved: 79000.75,
-    });
+    expect(travelRelatedImpactsService.getTravelTimeSavedPerTraveler()).toEqual(79000.75);
+    expect(travelRelatedImpactsService.getAvoidedTrafficAccidents()).toEqual(undefined);
   });
 });

@@ -104,7 +104,7 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
         },
       ],
     });
-    expect(result.environmental.avoidedCO2TonsWithEnergyProduction).toEqual(
+    expect(result.environmental.avoidedCo2eqEmissions.withRenewableEnergyProduction).toEqual(
       expect.any(Number) as number,
     );
     expect(result.social.householdsPoweredByRenewableEnergy).toMatchObject({
@@ -149,7 +149,7 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
       ...photovoltaicProjectImpactsService["propertyTransferDutiesIncome"],
       ...photovoltaicProjectImpactsService["natureConservationSocioEconomicImpacts"],
       ...photovoltaicProjectImpactsService["taxesIncomeImpact"],
-      ...photovoltaicProjectImpactsService["avoidedCo2EqEmissions"],
+      ...photovoltaicProjectImpactsService["avoidedCo2EqEmissionsMonetaryValue"],
     ]);
     expect(result.social).toEqual({
       fullTimeJobs: photovoltaicProjectImpactsService["fullTimeJobsImpact"],
@@ -161,10 +161,12 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
       nonContaminatedSurfaceArea: photovoltaicProjectImpactsService["nonContaminatedSurfaceArea"],
       permeableSurfaceArea: photovoltaicProjectImpactsService["permeableSurfaceArea"],
       soilsCo2eqStorage: photovoltaicProjectImpactsService["soilsCo2eqStorage"],
-      avoidedCO2TonsWithEnergyProduction: expect.closeTo(
-        photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"] ?? 0,
-        1,
-      ) as number,
+      avoidedCo2eqEmissions: {
+        withRenewableEnergyProduction: expect.closeTo(
+          photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"] ?? 0,
+          1,
+        ) as number,
+      },
     });
     expect(result.economicBalance).toEqual(photovoltaicProjectImpactsService["economicBalance"]);
   });

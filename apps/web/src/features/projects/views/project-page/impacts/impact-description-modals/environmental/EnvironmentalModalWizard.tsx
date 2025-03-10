@@ -58,14 +58,16 @@ export function EnvironmentalModalWizard({
     case "avoided_car_traffic_co2_eq_emissions":
       return (
         <TravelRelatedCo2Description
-          impactData={impactsData.environmental.avoidedCarTrafficCo2EqEmissions}
+          impactData={impactsData.environmental.avoidedCo2eqEmissions?.withCarTrafficDiminution}
         />
       );
     case "avoided_co2_eq_emissions_with_production":
       return (
         <RenewableEnergyRelatedCo2Description
           siteData={{ address: siteData.addressLabel }}
-          impactData={impactsData.environmental.avoidedCO2TonsWithEnergyProduction}
+          impactData={
+            impactsData.environmental.avoidedCo2eqEmissions?.withRenewableEnergyProduction
+          }
           projectData={
             projectData.developmentPlan.type === "PHOTOVOLTAIC_POWER_PLANT"
               ? projectData.developmentPlan
@@ -86,7 +88,9 @@ export function EnvironmentalModalWizard({
     case "avoided_air_conditioning_co2_eq_emissions":
       return (
         <AirConditionningRelatedCo2Description
-          impactData={impactsData.environmental.avoidedAirConditioningCo2EqEmissions}
+          impactData={
+            impactsData.environmental.avoidedCo2eqEmissions?.withAirConditioningDiminution
+          }
         />
       );
     case "non_contaminated_surface_area":
