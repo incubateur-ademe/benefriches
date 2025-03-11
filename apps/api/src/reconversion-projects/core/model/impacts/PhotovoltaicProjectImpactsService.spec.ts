@@ -47,7 +47,7 @@ const reconversionProjectImpactDataView: InputReconversionProjectData = {
   sitePurchasePropertyTransferDutiesAmount: 5432,
   operationsFirstYear: 2025,
   decontaminatedSoilSurface: 20000,
-  soilsCarbonStorage: 10,
+  soilsCarbonStorage: { total: 10, ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10 },
 } as const;
 
 const site = {
@@ -71,7 +71,11 @@ const site = {
     { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
     { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
   ],
-  soilsCarbonStorage: 25,
+  soilsCarbonStorage: {
+    total: 25,
+    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10,
+    ARTIFICIAL_TREE_FILLED: 15,
+  },
 } as const satisfies Required<InputSiteData>;
 
 describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions with EnR production", () => {
@@ -161,6 +165,7 @@ describe("Photovoltaic power plant specific impacts: Avoided CO2 eq emissions wi
       nonContaminatedSurfaceArea: photovoltaicProjectImpactsService["nonContaminatedSurfaceArea"],
       permeableSurfaceArea: photovoltaicProjectImpactsService["permeableSurfaceArea"],
       soilsCo2eqStorage: photovoltaicProjectImpactsService["soilsCo2eqStorage"],
+      soilsCarbonStorage: photovoltaicProjectImpactsService["soilsCarbonStorage"],
       avoidedCo2eqEmissions: {
         withRenewableEnergyProduction: expect.closeTo(
           photovoltaicProjectImpactsService["avoidedCO2TonsWithEnergyProduction"] ?? 0,

@@ -47,7 +47,7 @@ const reconversionProjectImpactDataView = {
   sitePurchasePropertyTransferDutiesAmount: 5432,
   operationsFirstYear: 2025,
   decontaminatedSoilSurface: 20000,
-  soilsCarbonStorage: 10,
+  soilsCarbonStorage: { total: 10, ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10 },
 } as const satisfies InputReconversionProjectData;
 
 const site = {
@@ -71,7 +71,11 @@ const site = {
     { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
     { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
   ],
-  soilsCarbonStorage: 25,
+  soilsCarbonStorage: {
+    total: 25,
+    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10,
+    ARTIFICIAL_TREE_FILLED: 15,
+  },
 } as const satisfies Required<InputSiteData>;
 
 const commonSocioEconomicImpacts = [
@@ -318,6 +322,7 @@ describe("UrbanProjectImpactsService", () => {
       expect(result.environmental.nonContaminatedSurfaceArea).toBeDefined();
       expect(result.environmental.permeableSurfaceArea).toBeDefined();
       expect(result.environmental.soilsCo2eqStorage).toBeDefined();
+      expect(result.environmental.soilsCarbonStorage).toBeDefined();
       expect(result.environmental.avoidedCo2eqEmissions.withCarTrafficDiminution).toEqual(
         urbanProjectImpactsService["travelRelatedImpactsService"].getAvoidedTrafficCO2Emissions()
           ?.inTons,

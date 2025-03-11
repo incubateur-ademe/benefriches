@@ -40,6 +40,7 @@ export type EnvironmentalAreaChartImpactsData = {
   };
   nonContaminatedSurfaceArea?: ReconversionProjectImpacts["environmental"]["nonContaminatedSurfaceArea"];
   permeableSurfaceArea?: ReconversionProjectImpacts["environmental"]["permeableSurfaceArea"];
+  soilsCarbonStorage?: ReconversionProjectImpacts["environmental"]["soilsCarbonStorage"];
 };
 
 type Input = {
@@ -60,6 +61,7 @@ export const getEnvironmentalAreaChartImpactsData = ({
       ? impactsData?.environmental.nonContaminatedSurfaceArea
       : undefined,
     permeableSurfaceArea: impactsData?.environmental.permeableSurfaceArea,
+    soilsCarbonStorage: impactsData?.environmental.soilsCarbonStorage,
   };
 
   if (impactsData?.environmental.avoidedCo2eqEmissions) {

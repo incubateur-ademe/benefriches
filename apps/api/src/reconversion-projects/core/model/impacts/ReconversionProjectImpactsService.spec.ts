@@ -50,7 +50,7 @@ const reconversionProjectImpactDataView = {
   sitePurchasePropertyTransferDutiesAmount: 5432,
   operationsFirstYear: 2025,
   decontaminatedSoilSurface: 20000,
-  soilsCarbonStorage: 21,
+  soilsCarbonStorage: { total: 21, ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 21 },
 } as const satisfies InputReconversionProjectData;
 
 const site = {
@@ -74,7 +74,11 @@ const site = {
     { amount: 1500, bearer: "tenant", purpose: "illegalDumpingCost" },
     { amount: 500, bearer: "owner", purpose: "propertyTaxes" },
   ],
-  soilsCarbonStorage: 25,
+  soilsCarbonStorage: {
+    total: 25,
+    ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 21,
+    ARTIFICIAL_TREE_FILLED: 4,
+  },
 } as const satisfies Required<InputSiteData>;
 
 describe("ReconversionProjectImpactsService: computes common impacts for all kind of project", () => {
@@ -439,6 +443,40 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
     });
   });
 
+  describe("SoilsCarbonStorage", () => {
+    it("returns no impact when no site or project soilsCarbonStorage provided", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: {
+          ...reconversionProjectImpactDataView,
+          soilsCarbonStorage: undefined,
+        },
+        relatedSite: {
+          ...site,
+          soilsCarbonStorage: undefined,
+        },
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+      expect(projectImpactsService["soilsCarbonStorage"]).toEqual(undefined);
+    });
+
+    it("returns soilsCarbonStorage impact", () => {
+      const projectImpactsService = new ReconversionProjectImpactsService({
+        reconversionProject: reconversionProjectImpactDataView,
+        relatedSite: site,
+        evaluationPeriodInYears: 10,
+        dateProvider: dateProvider,
+      });
+      expect(projectImpactsService["soilsCarbonStorage"]).toEqual({
+        base: 25,
+        forecast: 21,
+        difference: -4,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: { base: 21, forecast: 21, difference: 0 },
+        ARTIFICIAL_TREE_FILLED: { base: 4, forecast: 0, difference: -4 },
+      });
+    });
+  });
+
   it("computes accidents impact", () => {
     const projectImpactsService = new ReconversionProjectImpactsService({
       reconversionProject: reconversionProjectImpactDataView,
@@ -493,6 +531,7 @@ describe("ReconversionProjectImpactsService: computes common impacts for all kin
       nonContaminatedSurfaceArea: projectImpactsService["nonContaminatedSurfaceArea"],
       permeableSurfaceArea: projectImpactsService["permeableSurfaceArea"],
       soilsCo2eqStorage: projectImpactsService["soilsCo2eqStorage"],
+      soilsCarbonStorage: projectImpactsService["soilsCarbonStorage"],
     });
     expect(result.economicBalance).toEqual(projectImpactsService["economicBalance"]);
   });

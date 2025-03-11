@@ -13,8 +13,8 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
   });
 
   test("it should return undefined if city is not found", async () => {
-    const usecase = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
-    const result = await usecase.execute({
+    const service = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
+    const result = await service.execute({
       cityCode: "62127",
       soilsDistribution: {
         CULTIVATION: 11500,
@@ -26,8 +26,8 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
   });
 
   test("it should compute the right total: simple example without forest", async () => {
-    const usecase = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
-    const result = await usecase.execute({
+    const service = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
+    const result = await service.execute({
       cityCode: "01026",
       soilsDistribution: {
         CULTIVATION: 11500,
@@ -39,12 +39,16 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
     const prairieBushesCultivation = 4 * 69;
     const biomass = 4 * 7;
 
-    expect(result).toEqual(soilCultivation + prairieBushesCultivation + biomass);
+    expect(result).toEqual({
+      total: soilCultivation + prairieBushesCultivation + biomass,
+      CULTIVATION: expect.closeTo(soilCultivation) as number,
+      PRAIRIE_BUSHES: expect.closeTo(prairieBushesCultivation + biomass) as number,
+    });
   });
 
   test("it should compute the right total: example with forest", async () => {
-    const usecase = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
-    const result = await usecase.execute({
+    const service = new GetCarbonStorageFromSoilDistributionService(carbonStorageQuery);
+    const result = await service.execute({
       cityCode: "01027",
       soilsDistribution: {
         ARTIFICIAL_TREE_FILLED: 1500,
@@ -71,6 +75,13 @@ describe("GetCarbonStorageFromSoilDistributionService", () => {
       biomassArtificialNonForest +
       litterForest;
 
-    expect(result).toEqual(roundTo2Digits(total));
+    expect(result).toEqual({
+      total: roundTo2Digits(total),
+      ARTIFICIAL_TREE_FILLED: expect.closeTo(artificialSoil + biomassArtificialNonForest) as number,
+      PRAIRIE_BUSHES: expect.closeTo(prairieBushesCultivation + biomassPrairieNonForest) as number,
+      FOREST_DECIDUOUS: expect.closeTo(
+        forestSoil + biomassForestLive + biomassForestDead + litterForest,
+      ) as number,
+    });
   });
 });

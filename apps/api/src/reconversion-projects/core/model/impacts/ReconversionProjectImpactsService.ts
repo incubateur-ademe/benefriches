@@ -12,10 +12,13 @@ import {
   DevelopmentPlanInstallationExpenses,
   typedObjectEntries,
   EcosystemServicesImpact,
+  SoilType,
+  SoilsCarbonStorageImpact,
 } from "shared";
 
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 
+import { SoilsCarbonStorage } from "../../gateways/SoilsCarbonStorageService";
 import { DevelopmentPlan, Schedule } from "../../model/reconversionProject";
 import { ImpactsServiceInterface } from "./ReconversionProjectImpactsServiceInterface";
 import { SumOnEvolutionPeriodService } from "./SumOnEvolutionPeriodService";
@@ -25,7 +28,7 @@ import { Impact } from "./impact";
 import { NatureConservationImpactsService } from "./nature-conservation/NatureConservationImpactsService";
 import { getNonContaminatedSurfaceAreaImpact } from "./nature-conservation/nonContaminatedSurfaceImpact";
 import { getPermeableSurfaceImpact } from "./nature-conservation/permeableSurfaceAreaImpact";
-import { computeSoilsCo2eqStorageImpact } from "./soilsCo2eqStorage/soilsCo2eqStorage";
+import { computeSoilsCo2eqStorageImpact } from "./soils-co2eq-storage/soilsCo2eqStorage";
 
 const FRICHE_COST_PURPOSES = [
   "security",
@@ -56,7 +59,7 @@ export type InputSiteData = {
   accidentsDeaths?: number;
   accidentsSevereInjuries?: number;
   accidentsMinorInjuries?: number;
-  soilsCarbonStorage?: number;
+  soilsCarbonStorage?: SoilsCarbonStorage;
 };
 
 export type InputReconversionProjectData = {
@@ -80,7 +83,7 @@ export type InputReconversionProjectData = {
   reinstatementSchedule?: Schedule;
   soilsDistribution: SoilsDistribution;
   decontaminatedSoilSurface?: number;
-  soilsCarbonStorage?: number;
+  soilsCarbonStorage?: SoilsCarbonStorage;
 };
 
 export type ReconversionProjectImpactsServiceProps = {
@@ -273,9 +276,41 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
 
   protected get soilsCo2eqStorage() {
     return computeSoilsCo2eqStorageImpact(
-      this.relatedSite.soilsCarbonStorage,
-      this.reconversionProject.soilsCarbonStorage,
+      this.relatedSite.soilsCarbonStorage?.total,
+      this.reconversionProject.soilsCarbonStorage?.total,
     );
+  }
+
+  protected get soilsCarbonStorage() {
+    if (!this.relatedSite.soilsCarbonStorage || !this.reconversionProject.soilsCarbonStorage) {
+      return undefined;
+    }
+
+    const { total: totalBase, ...current } = this.relatedSite.soilsCarbonStorage;
+    const { total: totalForecast, ...forecast } = this.reconversionProject.soilsCarbonStorage;
+
+    const soilsTypes = Array.from(
+      new Set([...Object.keys(current), ...Object.keys(forecast)]),
+    ) as SoilType[];
+
+    const soilsCarbonStorage: SoilsCarbonStorageImpact = Impact.get({
+      base: totalBase,
+      forecast: totalForecast,
+    });
+
+    soilsTypes.forEach((soilType) => {
+      const baseCarbonStorage = current[soilType] ?? 0;
+      const forecastCarbonStorage = forecast[soilType] ?? 0;
+
+      Object.assign(soilsCarbonStorage, {
+        [soilType]: Impact.get({
+          base: baseCarbonStorage,
+          forecast: forecastCarbonStorage,
+        }),
+      });
+    });
+
+    return soilsCarbonStorage;
   }
 
   protected get nonContaminatedSurfaceArea() {
@@ -379,6 +414,7 @@ export class ReconversionProjectImpactsService implements ImpactsServiceInterfac
         nonContaminatedSurfaceArea: this.nonContaminatedSurfaceArea,
         permeableSurfaceArea: this.permeableSurfaceArea,
         soilsCo2eqStorage: this.soilsCo2eqStorage,
+        soilsCarbonStorage: this.soilsCarbonStorage,
       },
       socioeconomic: {
         impacts: socioEconomicList,

@@ -43,7 +43,8 @@ function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotal
       title="Analyse coûts/bénéfices"
       onClick={() => {
         openImpactModalDescription({
-          sectionName: "cost_benefit_analysis",
+          sectionName: "charts",
+          impactName: "cost_benefit_analysis",
         });
       }}
     >

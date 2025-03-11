@@ -61,7 +61,8 @@ type IsOpenedState =
       impactData: KeyImpactIndicatorData;
     }
   | {
-      sectionName: "cost_benefit_analysis";
+      sectionName: "charts";
+      impactName: "cost_benefit_analysis" | "soils_carbon_storage";
     };
 
 export type OpenState = IsClosedState | IsOpenedState;

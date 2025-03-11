@@ -4,6 +4,7 @@ import {
   RecurringRevenue,
   ReinstatementExpense,
 } from "../reconversion-projects";
+import { SoilType } from "../soils";
 import { SocioEconomicImpact } from "./socioEconomic.types";
 
 export type DevelopmentPlanInstallationExpenses = {
@@ -48,6 +49,8 @@ export type Impact = {
   difference: number;
 };
 
+export type SoilsCarbonStorageImpact = Impact & Partial<Record<SoilType, Impact>>;
+
 type EnvironmentalImpacts = {
   nonContaminatedSurfaceArea?: Impact;
   permeableSurfaceArea: Impact & {
@@ -56,6 +59,7 @@ type EnvironmentalImpacts = {
   };
   soilsCo2eqStorage?: Impact;
   avoidedCo2eqEmissions?: AvoidedCo2EqEmissions;
+  soilsCarbonStorage?: SoilsCarbonStorageImpact;
 };
 
 export type AvoidedCo2EqEmissions = {

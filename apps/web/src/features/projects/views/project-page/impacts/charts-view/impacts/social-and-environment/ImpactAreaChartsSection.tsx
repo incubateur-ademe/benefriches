@@ -1,9 +1,12 @@
 import { useContext } from "react";
+import { SoilType } from "shared";
 
 import {
   EnvironmentalAreaChartImpactsData,
   SocialAreaChartImpactsData,
 } from "@/features/projects/domain/projectImpactsAreaChartsData";
+import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { getColorForSoilType } from "@/shared/core/soils";
 
 import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
 import ImpactAreaChartCard from "../../ImpactChartCard/ImpactAreaChartCard";
@@ -20,8 +23,12 @@ const ImpactAreaChartsSection = ({
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   const { fullTimeJobs, householdsPoweredByRenewableEnergy } = socialAreaChartImpactsData;
-  const { nonContaminatedSurfaceArea, avoidedCo2eqEmissions, permeableSurfaceArea } =
-    environmentalAreaChartImpactsData;
+  const {
+    nonContaminatedSurfaceArea,
+    avoidedCo2eqEmissions,
+    permeableSurfaceArea,
+    soilsCarbonStorage,
+  } = environmentalAreaChartImpactsData;
 
   return (
     <div className="tw-grid tw-gap-10 tw-grid-cols-1 md:tw-grid-cols-2 lg:tw-grid-cols-3 tw-mb-8">
@@ -66,6 +73,35 @@ const ImpactAreaChartsSection = ({
           }}
         />
       )}
+
+      {(() => {
+        if (!soilsCarbonStorage) {
+          return null;
+        }
+        const { base, forecast, difference, ...details } = soilsCarbonStorage;
+        return (
+          <ImpactAreaChartCard
+            type="co2"
+            impact={{
+              impactLabel: "🍂️ Carbone stocké dans les sols",
+              base,
+              forecast,
+              difference,
+              details: Object.entries(details).map(([type, value]) => ({
+                ...value,
+                impactLabel: getLabelForSoilType(type as SoilType),
+                color: getColorForSoilType(type as SoilType),
+              })),
+            }}
+            onClick={() => {
+              openImpactModalDescription({
+                sectionName: "charts",
+                impactName: "soils_carbon_storage",
+              });
+            }}
+          />
+        );
+      })()}
 
       {avoidedCo2eqEmissions && (
         <ImpactAreaChartCard

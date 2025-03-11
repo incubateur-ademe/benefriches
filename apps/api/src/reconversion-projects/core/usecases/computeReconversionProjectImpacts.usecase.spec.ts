@@ -243,7 +243,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         },
         impacts: {
           socioeconomic: {
-            total: -69361,
+            total: 32930639,
             impacts: [
               {
                 actor: "Current owner",
@@ -276,10 +276,15 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               },
               {
                 actor: "human_society",
-                amount: 26864,
+                amount: 33026864,
                 impact: "ecosystem_services",
                 impactCategory: "environmental_monetary",
                 details: [
+                  {
+                    amount: 33000000,
+                    impact: "soils_co2_eq_storage",
+                  },
+
                   {
                     amount: 1279,
                     impact: "nature_related_wellness_and_leisure",
@@ -389,9 +394,39 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               withRenewableEnergyProduction: 117.4,
             },
             soilsCo2eqStorage: {
-              base: 73.33,
-              forecast: 73.33,
-              difference: 0,
+              base: 1540000,
+              forecast: 1760000,
+              difference: 220000,
+            },
+            soilsCarbonStorage: {
+              base: 420000,
+              forecast: 480000,
+              difference: 60000,
+              ARTIFICIAL_GRASS_OR_BUSHES_FILLED: {
+                base: 320000,
+                forecast: 80000,
+                difference: -240000,
+              },
+              PRAIRIE_TREES: {
+                base: 0,
+                forecast: 300000,
+                difference: 300000,
+              },
+              BUILDINGS: {
+                base: 0,
+                forecast: 0,
+                difference: 0,
+              },
+              MINERAL_SOIL: {
+                base: 100000,
+                forecast: 100000,
+                difference: 0,
+              },
+              IMPERMEABLE_SOILS: {
+                base: 0,
+                forecast: 0,
+                difference: 0,
+              },
             },
           },
           social: {

@@ -16,6 +16,7 @@ import { EconomicBalanceModalWizard } from "./economic-balance/EconomicBalanceMo
 import { EnvironmentalModalWizard } from "./environmental/EnvironmentalModalWizard";
 import { SocialModalWizard } from "./social/SocialModalWizard";
 import { SocioEconomicModalWizard } from "./socio-economic/SocioEconomicModalWizard";
+import SoilsCarbonStorageDescription from "./soils-carbon-storage/SoilsCarbonStorageDescription";
 import { SummaryModalWizard } from "./summary/SummaryModalWizard";
 
 export type ProjectData = {
@@ -161,8 +162,20 @@ function ImpactModalDescriptionProvider({
               );
             case "summary":
               return <SummaryModalWizard impactData={openState.impactData} />;
-            case "cost_benefit_analysis":
-              return <CostBenefitAnalysisDescription impactsData={impactsData} />;
+            case "charts":
+              switch (openState.impactName) {
+                case "cost_benefit_analysis":
+                  return <CostBenefitAnalysisDescription impactsData={impactsData} />;
+                case "soils_carbon_storage":
+                  return (
+                    <SoilsCarbonStorageDescription
+                      impactData={impactsData.environmental.soilsCarbonStorage?.difference}
+                      baseSoilsDistribution={siteData.soilsDistribution}
+                      forecastSoilsDistribution={projectData.soilsDistribution}
+                    />
+                  );
+              }
+              break;
             default:
               return undefined;
           }
