@@ -151,11 +151,13 @@ export class UrbanProjectImpactsService
       });
     }
 
-    const total = sumListWithKey(details, "amount");
+    if (details.length === 0) {
+      return [];
+    }
 
     return [
       {
-        amount: total,
+        amount: sumListWithKey(details, "amount"),
         impact: "avoided_co2_eq_emissions",
         impactCategory: "environmental_monetary",
         actor: "human_society",
