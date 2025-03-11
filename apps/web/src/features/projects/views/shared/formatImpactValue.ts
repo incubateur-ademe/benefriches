@@ -24,7 +24,7 @@ const impactFormatConfig: ImpactFormatConfig = {
     unitSuffix: `${NO_BREAK_SPACE}€`,
   },
   co2: {
-    roundFn: roundToInteger,
+    roundFn: roundTo1Digit,
     unitSuffix: `${NO_BREAK_SPACE}t`,
   },
   surface_area: {

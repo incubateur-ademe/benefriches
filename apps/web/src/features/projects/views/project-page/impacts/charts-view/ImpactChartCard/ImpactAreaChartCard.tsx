@@ -48,13 +48,14 @@ type Props = {
     base: number;
     forecast: number;
     difference: number;
+    color?: string;
     details?: { impactLabel: string; base: number; forecast: number; color?: string }[];
   };
   type?: AllowedImpactType;
 };
 
 function ImpactAreaChartCard({ type = "default", impact, onClick }: Props) {
-  const { details, base, forecast, impactLabel } = impact;
+  const { details, base, forecast, impactLabel, color = "#22AFE5" } = impact;
   const percentageVariation = getPercentageDifference(base, forecast);
 
   const { formatFn, unitSuffix } = impactTypeFormatterMap[type];
@@ -62,11 +63,12 @@ function ImpactAreaChartCard({ type = "default", impact, onClick }: Props) {
   const baseValueText = `${formatFn(impact.base, { withSignPrefix: false })} ${unitSuffix}`;
   const forecastValueText = `${formatFn(impact.forecast, { withSignPrefix: false })} ${unitSuffix}`;
 
-  const data = details ?? [
+  const data = details?.filter(({ forecast, base }) => forecast - base !== 0) ?? [
     {
       impactLabel,
       base,
       forecast,
+      color,
     },
   ];
 
@@ -85,7 +87,6 @@ function ImpactAreaChartCard({ type = "default", impact, onClick }: Props) {
       className={classNames(
         "tw-p-6",
         "tw-m-0",
-        "tw-mb-8",
         "tw-rounded-2xl",
         "tw-bg-white",
         "dark:tw-bg-black",
@@ -95,13 +96,18 @@ function ImpactAreaChartCard({ type = "default", impact, onClick }: Props) {
         "tw-cursor-pointer",
         "hover:tw-border-current",
         "tw-transition tw-ease-in-out tw-duration-500",
+        "tw-flex",
+        "tw-flex-col",
+        "tw-justify-between",
       )}
     >
       <div className="tw-flex tw-justify-between tw-items-start">
         <h4 className="tw-text-xl tw-mb-1">{impactLabel}</h4>
-        <ImpactPercentageVariation
-          percentage={percentageVariation > 10000 ? 9999 : percentageVariation}
-        />
+        {base !== 0 && (
+          <ImpactPercentageVariation
+            percentage={percentageVariation > 10000 ? 9999 : percentageVariation}
+          />
+        )}
       </div>
 
       <Tooltip

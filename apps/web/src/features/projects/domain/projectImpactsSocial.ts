@@ -181,8 +181,7 @@ export const getSocialProjectImpacts = (
       impact: {
         base: householdsPoweredByRenewableEnergy.base,
         forecast: householdsPoweredByRenewableEnergy.forecast,
-        difference:
-          householdsPoweredByRenewableEnergy.forecast - householdsPoweredByRenewableEnergy.base,
+        difference: householdsPoweredByRenewableEnergy.difference,
       },
     });
   }

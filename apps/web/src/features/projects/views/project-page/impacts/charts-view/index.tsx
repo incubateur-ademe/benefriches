@@ -1,7 +1,9 @@
 import { selectProjectName } from "@/features/projects/application/projectImpacts.reducer";
+import {
+  selectEnvironmentalAreaChartImpactsData,
+  selectSocialAreaChartImpactsData,
+} from "@/features/projects/application/projectImpactsAreaChartsData";
 import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
-import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
-import { selectSocialProjectImpacts } from "@/features/projects/application/projectImpactsSocial.selectors";
 import {
   selectSocioEconomicProjectImpactsByActor,
   selectTotalSocioEconomicImpact,
@@ -14,16 +16,16 @@ const ImpactsChartsViewContainer = () => {
   const economicBalance = useAppSelector(selectEconomicBalanceProjectImpacts);
   const socioEconomicImpactsByActor = useAppSelector(selectSocioEconomicProjectImpactsByActor);
   const socioEconomicTotalImpact = useAppSelector(selectTotalSocioEconomicImpact);
-  const environmentImpacts = useAppSelector(selectEnvironmentalProjectImpacts);
-  const socialImpacts = useAppSelector(selectSocialProjectImpacts);
+  const socialAreaChartImpactsData = useAppSelector(selectSocialAreaChartImpactsData);
+  const environmentalAreaChartImpactsData = useAppSelector(selectEnvironmentalAreaChartImpactsData);
   const projectName = useAppSelector(selectProjectName);
 
   return (
     <ImpactsChartsView
       projectName={projectName}
       economicBalance={economicBalance}
-      socialImpacts={socialImpacts}
-      environmentImpacts={environmentImpacts}
+      socialAreaChartImpactsData={socialAreaChartImpactsData}
+      environmentalAreaChartImpactsData={environmentalAreaChartImpactsData}
       socioEconomicTotalImpact={socioEconomicTotalImpact}
       socioEconomicImpactsByActor={socioEconomicImpactsByActor}
     />

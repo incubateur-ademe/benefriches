@@ -2,6 +2,10 @@ import { useState } from "react";
 
 import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
 import { ViewMode } from "@/features/projects/application/projectImpacts.reducer";
+import {
+  getEnvironmentalAreaChartImpactsData,
+  getSocialAreaChartImpactsData,
+} from "@/features/projects/domain/projectImpactsAreaChartsData";
 import { getEconomicBalanceProjectImpacts } from "@/features/projects/domain/projectImpactsEconomicBalance";
 import { getEnvironmentalProjectImpacts } from "@/features/projects/domain/projectImpactsEnvironmental";
 import { getSocialProjectImpacts } from "@/features/projects/domain/projectImpactsSocial";
@@ -106,8 +110,12 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
               <ImpactsChartsView
                 projectName={projectData.name}
                 economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
-                socialImpacts={getSocialProjectImpacts(impactsData)}
-                environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
+                socialAreaChartImpactsData={getSocialAreaChartImpactsData(impactsData)}
+                environmentalAreaChartImpactsData={getEnvironmentalAreaChartImpactsData({
+                  projectContaminatedSurfaceArea: 0,
+                  siteContaminatedSurfaceArea: 0,
+                  impactsData,
+                })}
                 socioEconomicImpactsByActor={getSocioEconomicProjectImpactsByActor(impactsData)}
                 socioEconomicTotalImpact={impactsData.socioeconomic.total}
               />
