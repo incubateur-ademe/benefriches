@@ -24,34 +24,9 @@ type Props = {
   siteNature?: SiteNature;
 };
 
-const siteSoilTypeTilesCategories: readonly { category: string; options: SoilType[] }[] = [
-  {
-    category: "Prairie naturelle ou agricole",
-    options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
-  },
-  {
-    category: "Espaces agricoles",
-    options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
-  },
-  {
-    category: "Forêts",
-    options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
-  },
-  {
-    category: "Autres espaces naturels",
-    options: ["WATER", "WET_LAND"],
-  },
-  {
-    category: "Espaces artificiels végétalisés",
-    options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
-  },
-  {
-    category: "Espaces minéraux",
-    options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
-  },
-];
+type SoilOptionsByCategory = { category: string; options: SoilType[] }[];
 
-const fricheSoilTypeTilesCategories = [
+const FRICHE_OPTIONS = [
   {
     category: "Espaces minéraux",
     options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
@@ -69,14 +44,79 @@ const fricheSoilTypeTilesCategories = [
     options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
   },
   {
-    category: "Forêts",
+    category: "Forêt",
     options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
   },
   {
-    category: "Autres espaces naturels",
+    category: "Autre espace naturel",
     options: ["WET_LAND", "WATER"],
   },
-] as const;
+] as const satisfies SoilOptionsByCategory;
+
+const AGRICULTURAL_OPERATION_OPTIONS = [
+  {
+    category: "Espaces agricoles",
+    options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
+  },
+  {
+    category: "Prairie naturelle ou agricole",
+    options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
+  },
+  {
+    category: "Forêt",
+    options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
+  },
+  {
+    category: "Autre espace naturel",
+    options: ["WATER", "WET_LAND"],
+  },
+  {
+    category: "Espaces minéraux",
+    options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
+  },
+  {
+    category: "Espaces végétalisés artificiels",
+    options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
+  },
+] as const satisfies SoilOptionsByCategory;
+
+const NATURAL_AREA_OPTIONS = [
+  {
+    category: "Forêt",
+    options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
+  },
+  {
+    category: "Autre espace naturel",
+    options: ["WATER", "WET_LAND"],
+  },
+  {
+    category: "Prairie naturelle ou agricole",
+    options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
+  },
+  {
+    category: "Espaces minéraux",
+    options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
+  },
+  {
+    category: "Espaces végétalisés artificiels",
+    options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
+  },
+  {
+    category: "Espaces agricoles",
+    options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
+  },
+] as const satisfies SoilOptionsByCategory;
+
+const getOptionsForSiteNature = (siteNature: SiteNature): SoilOptionsByCategory => {
+  switch (siteNature) {
+    case "FRICHE":
+      return FRICHE_OPTIONS;
+    case "AGRICULTURAL_OPERATION":
+      return AGRICULTURAL_OPERATION_OPTIONS;
+    case "NATURAL_AREA":
+      return NATURAL_AREA_OPTIONS;
+  }
+};
 
 type SoilTypeTileProps = {
   soilType: SoilType;
@@ -126,8 +166,7 @@ function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
 
   const validationError = formState.errors.soils;
 
-  const optionsCategories =
-    siteNature === "FRICHE" ? fricheSoilTypeTilesCategories : siteSoilTypeTilesCategories;
+  const optionsByCategory = getOptionsForSiteNature(siteNature!);
 
   return (
     <WizardFormLayout
@@ -143,7 +182,7 @@ function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {optionsCategories.map(({ category, options }) => {
+        {optionsByCategory.map(({ category, options }) => {
           return (
             <section key={category} className="tw-mb-10">
               <h4>{category}</h4>
@@ -162,7 +201,7 @@ function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
                       <Controller
                         control={control}
                         name="soils"
-                        rules={{ required: "Veuillez sélectionner au moins un type de sol." }}
+                        rules={{ required: "Veuillez sélectionner au moins un type d'espace." }}
                         render={({ field }) => {
                           const isSelected = field.value.includes(option);
                           return (
