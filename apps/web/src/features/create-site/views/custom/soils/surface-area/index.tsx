@@ -8,10 +8,12 @@ import SiteSurfaceAreaForm from "../../../common-views/SiteSurfaceAreaForm";
 function SiteSurfaceAreaFormContainer() {
   const dispatch = useAppDispatch();
   const siteSurfaceArea = useAppSelector(selectSiteSurfaceArea);
+  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
 
   return (
     <SiteSurfaceAreaForm
       initialValues={{ surfaceArea: siteSurfaceArea }}
+      siteNature={siteNature}
       onSubmit={(formData: { surfaceArea: number }) => {
         dispatch(completeSiteSurfaceArea({ surfaceArea: formData.surfaceArea }));
       }}

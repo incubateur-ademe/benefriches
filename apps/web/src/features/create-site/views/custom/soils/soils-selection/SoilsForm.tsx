@@ -1,6 +1,6 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import { Controller, useForm } from "react-hook-form";
-import { SoilType } from "shared";
+import { SiteNature, SoilType } from "shared";
 
 import {
   getDescriptionForSoilType,
@@ -21,7 +21,7 @@ type Props = {
   initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
-  isFriche: boolean;
+  siteNature?: SiteNature;
 };
 
 const siteSoilTypeTilesCategories: readonly { category: string; options: SoilType[] }[] = [
@@ -101,18 +101,33 @@ const SoilTypeTile = ({ soilType, isSelected, onSelect }: SoilTypeTileProps) => 
   );
 };
 
-function SiteSoilsForm({ initialValues, onSubmit, onBack, isFriche }: Props) {
+const getTitle = (siteNature: SiteNature | undefined) => {
+  const baseTitle = `Quels types d'espaces y a-t-il sur`;
+  switch (siteNature) {
+    case "FRICHE":
+      return `${baseTitle} la friche ?`;
+    case "AGRICULTURAL_OPERATION":
+      return `${baseTitle} l'exploitation ?`;
+    case "NATURAL_AREA":
+      return `${baseTitle} l'espace naturel ?`;
+    default:
+      return `${baseTitle} le site ?`;
+  }
+};
+
+function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: initialValues,
   });
 
   const validationError = formState.errors.soils;
 
-  const optionsCategories = isFriche ? fricheSoilTypeTilesCategories : siteSoilTypeTilesCategories;
+  const optionsCategories =
+    siteNature === "FRICHE" ? fricheSoilTypeTilesCategories : siteSoilTypeTilesCategories;
 
   return (
     <WizardFormLayout
-      title={`Quels types de sols y a-t-il sur ${isFriche ? "cette friche" : "ce site"} ?`}
+      title={getTitle(siteNature)}
       instructions={
         <FormInfo>
           <p>Plusieurs réponses possibles.</p>

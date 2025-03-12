@@ -4,10 +4,7 @@ import { LocalAuthority } from "shared";
 import { revertOwnerStep } from "@/features/create-site/core/actions/createSite.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { completeOwner } from "@/features/create-site/core/createSite.reducer";
-import {
-  selectIsFriche,
-  selectSiteOwner,
-} from "@/features/create-site/core/selectors/createSite.selectors";
+import { selectSiteOwner } from "@/features/create-site/core/selectors/createSite.selectors";
 import { Owner } from "@/features/create-site/core/siteFoncier.types";
 import {
   AvailableLocalAuthority,
@@ -104,7 +101,7 @@ const mapInitialValues = (
 
 function SiteOwnerFormContainer() {
   const currentUserStructure = useAppSelector(selectCurrentUserStructure);
-  const isFriche = useAppSelector(selectIsFriche);
+  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
   const owner = useAppSelector(selectSiteOwner);
   const dispatch = useAppDispatch();
 
@@ -129,7 +126,7 @@ function SiteOwnerFormContainer() {
   return (
     <SiteOwnerForm
       initialValues={mapInitialValues(owner, currentUserStructure)}
-      isFriche={!!isFriche}
+      siteNature={siteNature}
       localAuthoritiesList={localAuthoritiesList}
       currentUserStructure={currentUserStructure}
       onSubmit={onSubmit}

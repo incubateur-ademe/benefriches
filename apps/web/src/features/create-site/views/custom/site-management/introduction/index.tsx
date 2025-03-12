@@ -8,11 +8,11 @@ import SiteManagementIntroduction from "./SiteManagementIntroduction";
 
 function SiteManagementIntroductionContainer() {
   const dispatch = useAppDispatch();
-  const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche ?? false);
+  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
 
   return (
     <SiteManagementIntroduction
-      isFriche={isFriche}
+      siteNature={siteNature}
       onNext={() => dispatch(completeManagementIntroduction())}
       onBack={() => dispatch(revertStep())}
     />

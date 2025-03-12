@@ -25,7 +25,7 @@ function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
     typedObjectEntries(formValues).filter(([, value]) => typeof value === "number").length === 0;
 
   return (
-    <WizardFormLayout title="Recettes annuelles liées à l'exploitation du site">
+    <WizardFormLayout title="Recettes annuelles liées à l'exploitation">
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
           addonText="€ / an"

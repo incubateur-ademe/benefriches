@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { SiteNature } from "shared";
 
 import { SurfaceAreaDistributionEntryMode } from "@/features/create-site/core/siteFoncier.types";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
@@ -9,23 +10,35 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onBack: () => void;
   onSubmit: (data: FormValues) => void;
-  isFriche: boolean;
+  siteNature?: SiteNature;
 };
 
 export type FormValues = {
   accuracy: SurfaceAreaDistributionEntryMode;
 };
 
-function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, isFriche }: Props) {
+const getTitle = (siteNature: SiteNature | undefined) => {
+  const baseTitle = `Connaissez-vous les superficies des différents sols`;
+  switch (siteNature) {
+    case "FRICHE":
+      return `${baseTitle} de la friche ?`;
+    case "AGRICULTURAL_OPERATION":
+      return `${baseTitle} de l'exploitation ?`;
+    case "NATURAL_AREA":
+      return `${baseTitle} de l'espace naturel ?`;
+    default:
+      return `${baseTitle} du site ?`;
+  }
+};
+
+function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, siteNature }: Props) {
   const { handleSubmit, register, formState } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
   const error = formState.errors.accuracy;
 
   return (
-    <WizardFormLayout
-      title={`Connaissez-vous les superficies des différents sols ${isFriche ? "de la friche" : "du site"} ?`}
-    >
+    <WizardFormLayout title={getTitle(siteNature)}>
       <form onSubmit={_onSubmit}>
         <RadioButtons
           {...register("accuracy", {

@@ -57,7 +57,7 @@ function SiteOperatorForm({
   const { operator: selectedOperator } = watch();
 
   return (
-    <WizardFormLayout title="Qui est l’exploitant du site ?">
+    <WizardFormLayout title="Qui est l'exploitant ?">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Fieldset
           state={formState.errors.operator ? "error" : "default"}

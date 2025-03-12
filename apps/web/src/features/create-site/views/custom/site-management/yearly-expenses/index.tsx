@@ -33,7 +33,7 @@ function SiteYearlyExpensesFormContainer() {
   return (
     <SiteYearlyExpensesForm
       hasTenant={!!siteCreationState.siteData.tenant}
-      isFriche={!!siteCreationState.siteData.isFriche}
+      siteNature={siteCreationState.siteData.nature}
       initialValues={getInitialValues(
         expensesBaseconfig,
         expensesInStore,

@@ -35,7 +35,7 @@ function SiteExpensesIncomeSummary({
 
   const title = isFriche
     ? "Récapitulatif des dépenses annuelles liées à la friche"
-    : "Récapitulatif des dépenses et recettes liées au site";
+    : "Récapitulatif des dépenses et recettes liées à l'exploitation";
 
   return (
     <>

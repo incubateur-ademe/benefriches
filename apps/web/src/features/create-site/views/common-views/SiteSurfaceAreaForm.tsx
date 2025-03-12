@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { convertSquareMetersToHectares } from "shared";
+import { convertSquareMetersToHectares, SiteNature } from "shared";
 
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
@@ -12,6 +12,7 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 
 type Props = {
   initialValues: Partial<FormValues>;
+  siteNature?: SiteNature;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
@@ -20,14 +21,28 @@ type FormValues = {
   surfaceArea: number;
 };
 
-function SiteSurfaceAreaForm({ initialValues, onSubmit, onBack }: Props) {
+const getTitle = (siteNature: SiteNature | undefined) => {
+  const baseTitle = `Quelle est la superficie totale`;
+  switch (siteNature) {
+    case "FRICHE":
+      return `${baseTitle} de la friche ?`;
+    case "AGRICULTURAL_OPERATION":
+      return `${baseTitle} de l'exploitation ?`;
+    case "NATURAL_AREA":
+      return `${baseTitle} de l'espace naturel ?`;
+    default:
+      return `${baseTitle} du site ?`;
+  }
+};
+
+function SiteSurfaceAreaForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
   const { register, handleSubmit, watch } = useForm<FormValues>({ defaultValues: initialValues });
 
   const surface = watch("surfaceArea");
 
   return (
     <WizardFormLayout
-      title="Quelle est la superficie totale du site ?"
+      title={getTitle(siteNature)}
       instructions={
         <FormInfo>
           <p>Superficie à renseigner en m².</p>

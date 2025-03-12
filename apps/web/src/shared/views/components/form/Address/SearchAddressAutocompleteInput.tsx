@@ -82,6 +82,7 @@ const SearchAddressAutocompleteInput = ({
         <Input
           {...searchInputProps}
           nativeInputProps={{
+            ...searchInputProps.nativeInputProps,
             value: searchInputValue ?? "",
             type: "search",
             onChange: (e: ChangeEvent<HTMLInputElement>) => {

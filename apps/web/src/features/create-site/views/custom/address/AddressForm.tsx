@@ -1,5 +1,5 @@
 import { Controller, useForm } from "react-hook-form";
-import { Address } from "shared";
+import { Address, SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import SearchAddressAutocomplete from "@/shared/views/components/form/Address/SearchAddressAutocompleteContainer";
@@ -11,7 +11,7 @@ type Props = {
   initialValues: FormValues;
   onSubmit: (address: Address) => void;
   onBack: () => void;
-  isFriche: boolean;
+  siteNature: SiteNature | undefined;
 };
 
 type FormValues = {
@@ -19,14 +19,27 @@ type FormValues = {
   searchText: string;
 };
 
-function SiteAddressForm({ initialValues, onSubmit, isFriche, onBack }: Props) {
+const getTitle = (siteNature: SiteNature | undefined) => {
+  switch (siteNature) {
+    case "FRICHE":
+      return `Où est située la friche ?`;
+    case "AGRICULTURAL_OPERATION":
+      return `Où est située l'exploitation agricole ?`;
+    case "NATURAL_AREA":
+      return `Où est situé l'espace naturel ?`;
+    default:
+      return `Où est situé le site ?`;
+  }
+};
+
+function SiteAddressForm({ initialValues, onSubmit, siteNature, onBack }: Props) {
   const { handleSubmit, formState, control, watch, setValue, register } = useForm<FormValues>({
     defaultValues: initialValues,
   });
 
   const error = formState.errors.selectedAddress;
 
-  const title = isFriche ? "Où est située cette friche ?" : "Où est situé ce site ?";
+  const title = getTitle(siteNature);
 
   register("selectedAddress", {
     required: "L'adresse est nécessaire pour les étapes suivantes",
@@ -87,14 +100,20 @@ function SiteAddressForm({ initialValues, onSubmit, isFriche, onBack }: Props) {
                 setValue("searchText", v.value);
               }}
               searchInputProps={{
-                label: <RequiredLabel label="Adresse du site" />,
+                label: <RequiredLabel label="Adresse" />,
                 state: error ? "error" : "default",
+                hintText: "Entrez une adresse complète, le nom d'une commune ou un code postal",
+                nativeInputProps: {
+                  placeholder: "Montrouge, 92120 etc.",
+                },
                 stateRelatedMessage: error ? error.message : undefined,
               }}
             />
           )}
         />
-        <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
+        <div className="tw-mt-4">
+          <BackNextButtonsGroup onBack={onBack} disabled={!selectedAddress} nextLabel="Valider" />
+        </div>
       </form>
     </WizardFormLayout>
   );

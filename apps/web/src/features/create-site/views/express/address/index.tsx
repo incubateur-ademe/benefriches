@@ -1,9 +1,6 @@
 import { Address } from "shared";
 
-import {
-  selectIsFriche,
-  selectSiteAddress,
-} from "@/features/create-site/core/selectors/createSite.selectors";
+import { selectSiteAddress } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { revertAddressStep } from "../../../core/actions/createSite.actions";
@@ -20,13 +17,13 @@ const mapInitialValues = (address: Address | undefined) => {
 
 function AddressFormContainer() {
   const dispatch = useAppDispatch();
-  const isFriche = useAppSelector(selectIsFriche);
   const address = useAppSelector(selectSiteAddress);
+  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
 
   return (
     <AddressForm
       initialValues={mapInitialValues(address)}
-      isFriche={!!isFriche}
+      siteNature={siteNature}
       onSubmit={(address: Address) => {
         dispatch(completeAddressStep({ address }));
       }}

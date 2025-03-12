@@ -5,11 +5,11 @@ import SiteSoilsIntroduction from "./SoilsIntroduction";
 
 function SiteSoilsIntroductionContainer() {
   const dispatch = useAppDispatch();
-  const isFriche = useAppSelector((state) => state.siteCreation.siteData.isFriche);
+  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
 
   return (
     <SiteSoilsIntroduction
-      isFriche={!!isFriche}
+      siteNature={siteNature}
       onNext={() => dispatch(completeSoilsIntroduction())}
       onBack={() => {
         dispatch(revertStep());

@@ -1,3 +1,5 @@
+import { SiteNature } from "shared";
+
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import {
   EditorialPageIcon,
@@ -9,19 +11,30 @@ import {
 type Props = {
   onNext: () => void;
   onBack: () => void;
-  isFriche: boolean;
+  siteNature?: SiteNature;
 };
 
-const SiteSoilsIntroduction = ({ isFriche, onNext, onBack }: Props) => {
+const getTitle = (siteNature: SiteNature | undefined) => {
+  const baseTitle = `Parlons d'abord des sols qui existent sur`;
+  switch (siteNature) {
+    case "FRICHE":
+      return `${baseTitle} la friche`;
+    case "AGRICULTURAL_OPERATION":
+      return `${baseTitle} l'exploitation`;
+    case "NATURAL_AREA":
+      return `${baseTitle} l'espace naturel`;
+    default:
+      return `${baseTitle} le site`;
+  }
+};
+
+const SiteSoilsIntroduction = ({ siteNature, onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>🌾</EditorialPageIcon>
-      <EditorialPageTitle>
-        Parlons d'abord des sols qui existent sur {isFriche ? "la friche" : "le site"}
-      </EditorialPageTitle>
+      <EditorialPageTitle>{getTitle(siteNature)}</EditorialPageTitle>
       <EditorialPageText>
-        Nous avons besoin de connaître leur typologie, leur occupation et les superficies
-        correspondantes.
+        Nous avons besoin de connaître les différentes espaces et leurs superficies.
       </EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </EditorialPageLayout>

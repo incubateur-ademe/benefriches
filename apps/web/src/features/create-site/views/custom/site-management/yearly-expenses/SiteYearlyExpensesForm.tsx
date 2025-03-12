@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { SiteYearlyExpensePurpose, typedObjectEntries } from "shared";
+import { SiteNature, SiteYearlyExpensePurpose, typedObjectEntries } from "shared";
 
 import {
   getLabelForExpensePurpose,
@@ -23,7 +23,7 @@ export type FormValues = Partial<Record<SiteYearlyExpensePurpose, FormExpense>>;
 
 type Props = {
   hasTenant: boolean;
-  isFriche: boolean;
+  siteNature: SiteNature | undefined;
   siteManagementYearlyExpensesBaseConfig: SiteManagementYearlyExpensesBaseConfig;
   siteSecurityExpensesBaseConfig: SiteSecurityYearlyExpensesBaseConfig;
   initialValues: FormValues;
@@ -110,11 +110,25 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
   }
 };
 
-const getBearerLabel = (bearer: "tenant" | "owner", isFriche: boolean) => {
+const getBearerLabel = (bearer: "tenant" | "owner", siteNature: SiteNature | undefined) => {
   if (bearer === "owner") {
     return "À la charge du propriétaire";
   }
-  return isFriche ? "À la charge du locataire" : "À la charge de l'exploitant";
+  return siteNature === "FRICHE" ? "À la charge du locataire" : "À la charge de l'exploitant";
+};
+
+const getTitle = (siteNature: SiteNature | undefined) => {
+  const baseTitle = `💸 Dépenses annuelles liées`;
+  switch (siteNature) {
+    case "FRICHE":
+      return `${baseTitle} à la friche ?`;
+    case "AGRICULTURAL_OPERATION":
+      return `${baseTitle} à l'exploitation ?`;
+    case "NATURAL_AREA":
+      return `${baseTitle} à l'espace naturel ?`;
+    default:
+      return `${baseTitle} au site ?`;
+  }
 };
 
 function SiteYearlyExpensesForm({
@@ -123,7 +137,7 @@ function SiteYearlyExpensesForm({
   siteManagementYearlyExpensesBaseConfig,
   siteSecurityExpensesBaseConfig,
   hasTenant,
-  isFriche,
+  siteNature,
   initialValues,
 }: Props) {
   const { handleSubmit, watch, register, formState } = useForm<FormValues>({
@@ -133,13 +147,13 @@ function SiteYearlyExpensesForm({
 
   const expenseBearerOptions = [
     {
-      label: getBearerLabel("tenant", isFriche),
+      label: getBearerLabel("tenant", siteNature),
       value: "tenant",
     },
-    { label: getBearerLabel("owner", isFriche), value: "owner" },
+    { label: getBearerLabel("owner", siteNature), value: "owner" },
   ];
 
-  const title = `💸 Dépenses annuelles ${isFriche ? "de la friche" : "du site"}`;
+  const title = getTitle(siteNature);
 
   const formValues = watch();
 
@@ -150,7 +164,7 @@ function SiteYearlyExpensesForm({
   return (
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {isFriche && <h3 className="!tw-mb-0">Gestion du site</h3>}
+        {siteNature === "FRICHE" && <h3 className="!tw-mb-0">Gestion du site</h3>}
 
         {siteManagementYearlyExpensesBaseConfig.map(({ purpose, fixedBearer }) => {
           const amountEntered = !!formValues[purpose]?.amount;
@@ -161,7 +175,7 @@ function SiteYearlyExpensesForm({
               <RowDecimalsNumericInput
                 key={`${purpose}.amount`}
                 hintText={
-                  fixedBearer && hasTenant ? getBearerLabel(fixedBearer, isFriche) : undefined
+                  fixedBearer && hasTenant ? getBearerLabel(fixedBearer, siteNature) : undefined
                 }
                 addonText="€ / an"
                 label={getLabelForExpense(purpose)}
@@ -184,7 +198,7 @@ function SiteYearlyExpensesForm({
             </>
           );
         })}
-        {isFriche && (
+        {siteNature === "FRICHE" && (
           <>
             <h3 className="!tw-mb-0 tw-mt-6">Sécurisation du site</h3>
             {siteSecurityExpensesBaseConfig.map(({ purpose, fixedBearer }) => {
@@ -204,7 +218,7 @@ function SiteYearlyExpensesForm({
                     )}
                     label={getLabelForExpense(purpose)}
                     hintText={
-                      hasTenant && fixedBearer ? getBearerLabel(fixedBearer, isFriche) : undefined
+                      hasTenant && fixedBearer ? getBearerLabel(fixedBearer, siteNature) : undefined
                     }
                     addonText="€ / an"
                   />

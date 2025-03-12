@@ -1,7 +1,7 @@
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
 import { useForm } from "react-hook-form";
-import { LocalAuthority } from "shared";
+import { LocalAuthority, SiteNature } from "shared";
 
 import { UserStructure } from "@/features/onboarding/core/user";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -18,7 +18,7 @@ type Props = {
   initialValues: FormValues | undefined;
   currentUserStructure?: UserStructure;
   localAuthoritiesList: { type: LocalAuthority; name: string }[];
-  isFriche: boolean;
+  siteNature: SiteNature | undefined;
 };
 
 export type FormValues =
@@ -40,13 +40,27 @@ export type FormValues =
 
 const requiredMessage = "Ce champ requis pour la suite du formulaire";
 
+const getTitle = (siteNature: SiteNature | undefined) => {
+  const baseTitle = `Qui est le propriétaire actuel`;
+  switch (siteNature) {
+    case "FRICHE":
+      return `${baseTitle} de la friche`;
+    case "AGRICULTURAL_OPERATION":
+      return `${baseTitle} de l'exploitation`;
+    case "NATURAL_AREA":
+      return `${baseTitle} de l'espace naturel`;
+    default:
+      return `${baseTitle} du site`;
+  }
+};
+
 function SiteOwnerForm({
   onSubmit,
   onBack,
   initialValues,
   currentUserStructure,
   localAuthoritiesList,
-  isFriche,
+  siteNature,
 }: Props) {
   const { register, handleSubmit, watch, formState } = useForm<FormValues>({
     shouldUnregister: true,
@@ -60,13 +74,13 @@ function SiteOwnerForm({
 
   return (
     <WizardFormLayout
-      title={`Qui est le propriétaire ${isFriche ? "de la friche" : "du site"} ?`}
+      title={getTitle(siteNature)}
       instructions={
         <FormInfo>
           <p>
-            Il n’est pas rare {isFriche ? "qu'une friche" : "qu'un site"} ait plusieurs
-            propriétaires (par exemple si elle est composée de plusieurs parcelles cadastrales ou
-            alors si le bien immobilier est en indivision).
+            Il n’est pas rare qu'un site ait plusieurs propriétaires (par exemple si elle est
+            composée de plusieurs parcelles cadastrales ou alors si le bien immobilier est en
+            indivision).
           </p>
 
           <p>

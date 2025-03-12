@@ -15,6 +15,7 @@ const mapInitialValues = (isSiteOperated: boolean | undefined): FormValues => {
 
 function IsSiteOperatedFormContainer() {
   const isSiteOperated = useAppSelector((state) => state.siteCreation.siteData.isSiteOperated);
+  const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
   const dispatch = useAppDispatch();
 
   const onSubmit = ({ isSiteOperated }: FormValues) => {
@@ -28,6 +29,7 @@ function IsSiteOperatedFormContainer() {
   return (
     <IsSiteOperatedForm
       initialValues={mapInitialValues(isSiteOperated)}
+      siteNature={siteNature}
       onSubmit={onSubmit}
       onBack={onBack}
     />
