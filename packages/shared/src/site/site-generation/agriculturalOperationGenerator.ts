@@ -1,5 +1,4 @@
-import { generateSiteName, SiteYearlyExpense } from "..";
-import { computeEstimatedPropertyTaxesAmount } from "../../financial";
+import { generateSiteName } from "..";
 import { formatMunicipalityName } from "../../local-authority";
 import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
 import {
@@ -7,7 +6,6 @@ import {
   getLabelForAgriculturalOperationActivity,
 } from "../agricultural-operation/operationActivity";
 import { AgriculturalOrNaturalSite, createAgriculturalOrNaturalSite } from "../site";
-import { computeMaintenanceDefaultCost } from "../yearlyExpenses";
 import { SiteGenerationProps, SiteGenerator } from "./siteGenerator";
 
 function getSoilsDistributionForAgriculturalOperationActivity(
@@ -81,20 +79,6 @@ export class AgriculturalOperationGenerator
       surfaceArea,
       operationActivity,
     );
-    const yearlyExpenses: SiteYearlyExpense[] = soilsDistribution.BUILDINGS
-      ? [
-          {
-            amount: computeMaintenanceDefaultCost(soilsDistribution.BUILDINGS),
-            purpose: "maintenance",
-            bearer: "owner",
-          },
-          {
-            amount: computeEstimatedPropertyTaxesAmount(soilsDistribution.BUILDINGS),
-            purpose: "propertyTaxes",
-            bearer: "owner",
-          },
-        ]
-      : [];
 
     const result = createAgriculturalOrNaturalSite({
       id,
@@ -109,7 +93,7 @@ export class AgriculturalOperationGenerator
         structureType: "company",
         name: "Actuel locataire",
       },
-      yearlyExpenses,
+      yearlyExpenses: [],
       yearlyIncomes: [],
       name: generateSiteName({
         cityName: address.city,
