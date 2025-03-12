@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { SiteNature } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -15,16 +16,48 @@ type Props = {
 };
 
 const getTitle = (siteNature: SiteNature | undefined) => {
-  const baseTitle = `Parlons d'abord des sols qui existent sur`;
+  const baseTitle = `Parlons d'abord des espaces qui existent actuellement sur`;
   switch (siteNature) {
     case "FRICHE":
-      return `${baseTitle} la friche`;
+      return `${baseTitle} la friche.`;
     case "AGRICULTURAL_OPERATION":
-      return `${baseTitle} l'exploitation`;
+      return `${baseTitle} l'exploitation.`;
     case "NATURAL_AREA":
-      return `${baseTitle} l'espace naturel`;
+      return `${baseTitle} l'espace naturel.`;
     default:
-      return `${baseTitle} le site`;
+      return `${baseTitle} le site.`;
+  }
+};
+
+const getText = (siteNature: SiteNature | undefined): ReactNode => {
+  const baseText = "Nous avons besoin de connaître les différentes espaces et leurs superficies.";
+  switch (siteNature) {
+    case "FRICHE":
+      return (
+        <>
+          <span>Bâtiments, aire bitumée ou gravillonnée, pelouse...</span>
+          <br />
+          <span>{baseText}</span>
+        </>
+      );
+    case "AGRICULTURAL_OPERATION":
+      return (
+        <>
+          <span>Cultures prairies, bâtiments...</span>
+          <br />
+          <span>{baseText}</span>
+        </>
+      );
+    case "NATURAL_AREA":
+      return (
+        <>
+          <span>Arbres, espaces minéraux...</span>
+          <br />
+          <span>{baseText}</span>
+        </>
+      );
+    default:
+      return baseText;
   }
 };
 
@@ -33,9 +66,7 @@ const SiteSoilsIntroduction = ({ siteNature, onNext, onBack }: Props) => {
     <EditorialPageLayout>
       <EditorialPageIcon>🌾</EditorialPageIcon>
       <EditorialPageTitle>{getTitle(siteNature)}</EditorialPageTitle>
-      <EditorialPageText>
-        Nous avons besoin de connaître les différentes espaces et leurs superficies.
-      </EditorialPageText>
+      <EditorialPageText>{getText(siteNature)}</EditorialPageText>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />
     </EditorialPageLayout>
   );

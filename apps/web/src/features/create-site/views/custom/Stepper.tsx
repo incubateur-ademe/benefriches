@@ -4,7 +4,7 @@ import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 const fricheStepsCategories = [
   "Introduction",
   "Adresse",
-  "Sols",
+  "Espaces",
   "Pollution et accidents",
   "Gestion du site",
   "Dénomination",
@@ -30,7 +30,7 @@ const getCurrentStepCategory = (step: SiteCreationCustomStep): StepCategory => {
     case "SOILS_SURFACE_AREAS_DISTRIBUTION":
     case "SOILS_SUMMARY":
     case "SOILS_CARBON_STORAGE":
-      return "Sols";
+      return "Espaces";
     case "SOILS_CONTAMINATION_INTRODUCTION":
     case "SOILS_CONTAMINATION":
     case "FRICHE_ACCIDENTS_INTRODUCTION":

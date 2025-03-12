@@ -1,4 +1,4 @@
-import { SoilType } from "shared";
+import { SiteNature, SoilType } from "shared";
 
 export const getLabelForSoilType = (value: SoilType): string => {
   switch (value) {
@@ -90,4 +90,70 @@ const soilTypePictogramMap: Record<SoilType, string> = {
 
 export const getPictogramForSoilType = (value: SoilType): string => {
   return `/img/pictograms/soil-types/${soilTypePictogramMap[value]}`;
+};
+
+export const BASE_SPACE_SOIL_TYPE_LABEL_MAPPING = {
+  BUILDINGS: "Bâtiments",
+  IMPERMEABLE_SOILS: "Voies d'accès ou parking bitumé",
+  MINERAL_SOIL: "Voie d'accès ou parking en gravier, sol nu",
+  ARTIFICIAL_GRASS_OR_BUSHES_FILLED: "Pelouse et buissons",
+  ARTIFICIAL_TREE_FILLED: "Espace arboré",
+  PRAIRIE_GRASS: "Prairie herbacée",
+  PRAIRIE_BUSHES: "Prairie arbustive",
+  PRAIRIE_TREES: "Prairie arborée",
+  WET_LAND: "Zone humide",
+  CULTIVATION: "Culture",
+  ORCHARD: "Verger",
+  VINEYARD: "Vigne",
+  WATER: "Plan d'eau",
+  FOREST_CONIFER: "Forêt de conifères",
+  FOREST_DECIDUOUS: "Forêt de feuillus",
+  FOREST_POPLAR: "Forêt de peupliers",
+  FOREST_MIXED: "Forêt mixte",
+} as const satisfies Record<SoilType, string>;
+
+const FRICHE_SPACE_SOIL_TYPE_LABEL_MAPPING = {
+  ...BASE_SPACE_SOIL_TYPE_LABEL_MAPPING,
+  IMPERMEABLE_SOILS: "Aire bitumée, bétonnée ou pavée",
+  MINERAL_SOIL: "Aire en gravier, semi-perméable ou sol nu",
+} as const satisfies Record<SoilType, string>;
+
+export const getSpaceLabelForSoilTypeAndSiteNature = (
+  soil: SoilType,
+  siteNature: SiteNature,
+): string => {
+  switch (siteNature) {
+    case "FRICHE":
+      return FRICHE_SPACE_SOIL_TYPE_LABEL_MAPPING[soil];
+    default:
+      return BASE_SPACE_SOIL_TYPE_LABEL_MAPPING[soil];
+  }
+};
+
+const BASE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING = {
+  PRAIRIE_GRASS: "Composée d'herbe",
+  PRAIRIE_BUSHES: "Composée d'herbe et d'arbustes",
+  PRAIRIE_TREES: "Composée d'herbe, d'arbustes et d'arbres",
+  CULTIVATION: "Céréalière ou légumière",
+} as const satisfies Partial<Record<SoilType, string>>;
+
+const FRICHE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING = {
+  ...BASE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING,
+  BUILDINGS: "À usage industriel, commercial, d'habitation...",
+} as const satisfies Partial<Record<SoilType, string>>;
+
+export const getSpaceDescriptionForSoilTypeAndSiteNature = (
+  soil: SoilType,
+  siteNature: SiteNature,
+): string | undefined => {
+  switch (siteNature) {
+    case "FRICHE":
+      return FRICHE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING[
+        soil as keyof typeof FRICHE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING
+      ];
+    default:
+      return BASE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING[
+        soil as keyof typeof BASE_SPACE_SOIL_TYPE_DESCRIPTION_MAPPING
+      ];
+  }
 };

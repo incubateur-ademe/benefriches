@@ -3,9 +3,9 @@ import { Controller, useForm } from "react-hook-form";
 import { SiteNature, SoilType } from "shared";
 
 import {
-  getDescriptionForSoilType,
-  getLabelForSoilType,
   getPictogramForSoilType,
+  getSpaceDescriptionForSoilTypeAndSiteNature,
+  getSpaceLabelForSoilTypeAndSiteNature,
 } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import classNames from "@/shared/views/clsx";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -42,22 +42,22 @@ const siteSoilTypeTilesCategories: readonly { category: string; options: SoilTyp
     options: ["WATER", "WET_LAND"],
   },
   {
-    category: "Sols artificiels végétalisés",
+    category: "Espaces artificiels végétalisés",
     options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
   },
   {
-    category: "Sols minéraux",
+    category: "Espaces minéraux",
     options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
   },
 ];
 
 const fricheSoilTypeTilesCategories = [
   {
-    category: "Sols minéraux",
+    category: "Espaces minéraux",
     options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
   },
   {
-    category: "Sols végétalisés artificiels",
+    category: "Espaces végétalisés artificiels",
     options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
   },
   {
@@ -80,13 +80,17 @@ const fricheSoilTypeTilesCategories = [
 
 type SoilTypeTileProps = {
   soilType: SoilType;
+  siteNature: SiteNature;
   isSelected: boolean;
   onSelect: () => void;
 };
 
-const SoilTypeTile = ({ soilType, isSelected, onSelect }: SoilTypeTileProps) => {
-  const title: string = getLabelForSoilType(soilType);
-  const description: string | undefined = getDescriptionForSoilType(soilType);
+const SoilTypeTile = ({ soilType, isSelected, siteNature, onSelect }: SoilTypeTileProps) => {
+  const title: string = getSpaceLabelForSoilTypeAndSiteNature(soilType, siteNature);
+  const description: string | undefined = getSpaceDescriptionForSoilTypeAndSiteNature(
+    soilType,
+    siteNature,
+  );
   const imgSrc = getPictogramForSoilType(soilType);
 
   return (
@@ -132,8 +136,8 @@ function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
         <FormInfo>
           <p>Plusieurs réponses possibles.</p>
           <p>
-            Il est important de définir la répartition des sols pour connaître la quantité de
-            carbone stocké par le site.
+            Il est important de définir les espaces présents sur le site pour connaître la typologie
+            des sols et ainsi la quantité de carbone stocké par le site.
           </p>
         </FormInfo>
       }
@@ -164,6 +168,7 @@ function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
                           return (
                             <SoilTypeTile
                               soilType={option}
+                              siteNature={siteNature!}
                               isSelected={isSelected}
                               onSelect={() => {
                                 field.onChange(

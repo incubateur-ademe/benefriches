@@ -18,7 +18,7 @@ export type FormValues = {
 };
 
 const getTitle = (siteNature: SiteNature | undefined) => {
-  const baseTitle = `Connaissez-vous les superficies des différents sols`;
+  const baseTitle = `Connaissez-vous les superficies des différents espaces`;
   switch (siteNature) {
     case "FRICHE":
       return `${baseTitle} de la friche ?`;
@@ -38,7 +38,10 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, siteNatu
   const error = formState.errors.accuracy;
 
   return (
-    <WizardFormLayout title={getTitle(siteNature)}>
+    <WizardFormLayout
+      title={getTitle(siteNature)}
+      instructions="Les types d'espaces serviront à définir la composition des sols."
+    >
       <form onSubmit={_onSubmit}>
         <RadioButtons
           {...register("accuracy", {

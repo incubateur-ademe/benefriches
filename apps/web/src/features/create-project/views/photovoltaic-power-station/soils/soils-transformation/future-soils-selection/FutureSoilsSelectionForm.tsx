@@ -35,11 +35,11 @@ type SoilTypeTileProps = {
 
 const soilTypeCategories = [
   {
-    category: "Sols minéraux",
+    category: "Espaces minéraux",
     soils: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
   },
   {
-    category: "Sols végétalisés artificiels",
+    category: "Espaces végétalisés artificiels",
     soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
   },
   {
