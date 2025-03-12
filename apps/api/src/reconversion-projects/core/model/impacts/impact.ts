@@ -25,10 +25,13 @@ export class Impact {
 
   computeTotal(annualizeFn?: AnnualizeFn) {
     if (annualizeFn) {
+      const base = annualizeFn(this.base);
+      const forecast = annualizeFn(this.forecast);
+
       return {
-        base: annualizeFn(this.base),
-        forecast: annualizeFn(this.forecast),
-        difference: annualizeFn(this.difference),
+        base,
+        forecast,
+        difference: forecast - base,
       };
     }
     return {

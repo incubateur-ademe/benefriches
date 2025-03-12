@@ -91,6 +91,6 @@ describe("Nature conservation yearly monetary values", () => {
         wetLandSurfaceArea: -4000,
         decontaminatedSurfaceArea: 150,
       }),
-    ).toBeCloseTo(1000, -31);
+    ).toBeCloseTo(-336.54);
   });
 });

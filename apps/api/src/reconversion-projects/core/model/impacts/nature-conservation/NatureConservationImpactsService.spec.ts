@@ -144,18 +144,18 @@ describe("NatureConservationImpactsService", () => {
     const waterRegulation = natureConservationImpactsService.getWaterRegulationMonetaryImpact();
 
     expect(waterRegulation).toEqual({
-      base: 154,
-      forecast: 367,
-      difference: 213,
+      base: 326,
+      forecast: 574,
+      difference: 248,
     });
     expect(storedCo2Eq).toEqual({ base: 55000, difference: 27500, forecast: 82500 });
-    expect(natureRelatedWelnessAndLeisure).toEqual({ base: 173, difference: 60, forecast: 234 });
+    expect(natureRelatedWelnessAndLeisure).toEqual({ base: 173, difference: 61, forecast: 234 });
     expect(forestRelatedProduct).toEqual(undefined);
     expect(pollination).toEqual({ base: 120, difference: 108, forecast: 228 });
     expect(invasiveSpeciesRegulation).toEqual({ base: 44, difference: 40, forecast: 84 });
-    expect(waterCycle).toEqual({ base: 1837, difference: 1523, forecast: 3359 });
+    expect(waterCycle).toEqual({ base: 1837, difference: 1522, forecast: 3359 });
     expect(nitrogenCycle).toEqual({ base: 107, difference: 71, forecast: 178 });
-    expect(soilErosion).toEqual({ base: 327, difference: 293, forecast: 619 });
+    expect(soilErosion).toEqual({ base: 327, difference: 292, forecast: 619 });
   });
 
   it("returns negative difference for water regulation and ecosystem services monetary values", () => {
@@ -191,8 +191,8 @@ describe("NatureConservationImpactsService", () => {
     const waterRegulation = natureConservationImpactsService.getWaterRegulationMonetaryImpact();
 
     expect(waterRegulation).toEqual({
-      base: 154,
-      forecast: 96,
+      base: 326,
+      forecast: 268,
       difference: -58,
     });
     expect(storedCo2Eq).toEqual({ base: 137500, difference: -55000, forecast: 82500 });

@@ -46,7 +46,8 @@ type WaterRegulationProps = {
   forestSurfaceArea?: number;
   decontaminatedSurfaceArea?: number;
 };
-const WATER_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER = 0.0118;
+const WATER_REGULATION_MONETARY_VALUE_EURO_PER_PRAIRIE_FOREST_DECONTAMINATED_SQUARE_METER = 0.01184;
+const WATER_REGULATION_MONETARY_VALUE_EURO_PER_WET_LAND_SQUARE_METER = 0.08813;
 export const computeWaterRegulationMonetaryValue = ({
   prairieSurfaceArea = 0,
   wetLandSurfaceArea = 0,
@@ -54,8 +55,9 @@ export const computeWaterRegulationMonetaryValue = ({
   decontaminatedSurfaceArea = 0,
 }: WaterRegulationProps) => {
   return (
-    (forestSurfaceArea + prairieSurfaceArea + wetLandSurfaceArea + decontaminatedSurfaceArea) *
-    WATER_REGULATION_MONETARY_VALUE_EURO_PER_SQUARE_METER
+    (forestSurfaceArea + prairieSurfaceArea + decontaminatedSurfaceArea) *
+      WATER_REGULATION_MONETARY_VALUE_EURO_PER_PRAIRIE_FOREST_DECONTAMINATED_SQUARE_METER +
+    wetLandSurfaceArea * WATER_REGULATION_MONETARY_VALUE_EURO_PER_WET_LAND_SQUARE_METER
   );
 };
 

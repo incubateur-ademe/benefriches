@@ -243,7 +243,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
         },
         impacts: {
           socioeconomic: {
-            total: 32930639,
+            total: 32930654,
             impacts: [
               {
                 actor: "Current owner",
@@ -270,7 +270,7 @@ describe("ComputeReconversionProjectImpactsUseCase", () => {
               },
               {
                 actor: "community",
-                amount: 4252,
+                amount: 4267,
                 impact: "water_regulation",
                 impactCategory: "environmental_monetary",
               },
