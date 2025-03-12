@@ -1,3 +1,7 @@
+import { useIsDark } from "@codegouvfr/react-dsfr/useIsDark";
+
+import classNames from "@/shared/views/clsx";
+
 import { ViewMode } from "../../application/projectImpacts.reducer";
 import ImpactsChartsView from "../project-page/impacts/charts-view";
 import ImpactModalDescriptionProviderContainer from "../project-page/impacts/impact-description-modals";
@@ -22,8 +26,19 @@ export default function QuickImpactsEmbedView({
   siteCity,
   siteSurfaceArea,
 }: Props) {
+  const { isDark } = useIsDark();
+
   return (
-    <div className="tw-px-4 tw-py-6 tw-bg-grey-light dark:tw-bg-grey-dark tw-h-full">
+    <div
+      className={classNames(
+        "tw-px-4 tw-py-6",
+        "tw-bg-grey-light dark:tw-bg-grey-dark",
+        "tw-h-full",
+        // Force highchart à suivre la config dsfr pour le dark mode,
+        // sinon la lib suit la config du navigateur "prefers-color-scheme"
+        isDark ? "highcharts-dark" : "highcharts-light",
+      )}
+    >
       <QuickImpactsTitle siteCity={siteCity} />
       <QuickImpactsCallout
         evaluationPeriod={evaluationPeriod}
