@@ -14,7 +14,7 @@ export const siteWithExhaustiveData = {
     ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED"]: 10000,
     ["FOREST_DECIDUOUS"]: 12000,
   },
-  soilsDistributionEntryMode: "square_meters",
+  soilsDistributionEntryMode: "square_meters_or_percentage",
   surfaceArea: 30000,
   yearlyExpenses: [
     {
@@ -95,7 +95,7 @@ export const siteWithMinimalData = {
     ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED"]: 10000,
     ["FOREST_DECIDUOUS"]: 12000,
   },
-  soilsDistributionEntryMode: "square_meters",
+  soilsDistributionEntryMode: "square_meters_or_percentage",
   surfaceArea: 30000,
   yearlyExpenses: [],
   yearlyIncomes: [],

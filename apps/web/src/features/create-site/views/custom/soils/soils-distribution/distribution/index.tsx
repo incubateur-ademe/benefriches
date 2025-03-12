@@ -1,15 +1,38 @@
-import { useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { createSoilSurfaceAreaDistribution } from "shared";
 
-import SiteSoilsDistributionByPercentage from "./by-percentage";
-import SiteSoilsDistributionBySqMeter from "./by-square-meters";
+import { revertSoilsDistributionStep } from "@/features/create-site/core/actions/createSite.actions";
+import { completeSoilsDistribution } from "@/features/create-site/core/createSite.reducer";
+import { selectSiteSoilsDistributionViewData } from "@/features/create-site/core/selectors/spaces.selectors";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+
+import SiteSoilsDistributionForm, { FormValues } from "./SiteSoilsDistributionForm";
 
 function SiteSoilsDistributionContainer() {
-  const siteData = useAppSelector((state) => state.siteCreation.siteData);
+  const dispatch = useAppDispatch();
+  const { siteSoils, siteSurfaceArea, initialValues } = useAppSelector(
+    selectSiteSoilsDistributionViewData,
+  );
 
-  return siteData.soilsDistributionEntryMode === "total_surface_percentage" ? (
-    <SiteSoilsDistributionByPercentage />
-  ) : (
-    <SiteSoilsDistributionBySqMeter />
+  const onSubmit = (formData: FormValues) => {
+    dispatch(
+      completeSoilsDistribution({
+        distribution: createSoilSurfaceAreaDistribution(formData).toJSON(),
+      }),
+    );
+  };
+
+  const onBack = () => {
+    dispatch(revertSoilsDistributionStep());
+  };
+
+  return (
+    <SiteSoilsDistributionForm
+      initialValues={initialValues.value}
+      siteSoils={siteSoils}
+      totalSurfaceArea={siteSurfaceArea}
+      onBack={onBack}
+      onSubmit={onSubmit}
+    />
   );
 }
 

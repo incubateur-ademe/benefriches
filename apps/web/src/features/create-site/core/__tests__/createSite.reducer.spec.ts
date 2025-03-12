@@ -39,7 +39,7 @@ import {
   completeSoilsDistribution,
   completeSoilsIntroduction,
   completeSoilsSummary,
-  completeSoilsSurfaceAreaDistributionEntryMode,
+  soilsSurfaceAreaDistributionEntryModeCompleted,
   completeTenant,
   completeYearlyExpenses,
   completeYearlyExpensesSummary,
@@ -470,7 +470,7 @@ describe("Create site reducer", () => {
 
           const initialRootState = store.getState();
 
-          store.dispatch(completeSoilsSurfaceAreaDistributionEntryMode("default_even_split"));
+          store.dispatch(soilsSurfaceAreaDistributionEntryModeCompleted("default_even_split"));
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, {
@@ -485,7 +485,7 @@ describe("Create site reducer", () => {
         });
       });
 
-      it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION step when step is completed with square_meters", () => {
+      it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION step when step is completed with square_meters_or_percentage", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"])
           .withCreationData({
@@ -496,11 +496,13 @@ describe("Create site reducer", () => {
 
         const initialRootState = store.getState();
 
-        store.dispatch(completeSoilsSurfaceAreaDistributionEntryMode("square_meters"));
+        store.dispatch(
+          soilsSurfaceAreaDistributionEntryModeCompleted("square_meters_or_percentage"),
+        );
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
-          soilsDistributionEntryMode: "square_meters",
+          soilsDistributionEntryMode: "square_meters_or_percentage",
         });
         expectNewCurrentStep(initialRootState, newState, "SOILS_SURFACE_AREAS_DISTRIBUTION");
       });

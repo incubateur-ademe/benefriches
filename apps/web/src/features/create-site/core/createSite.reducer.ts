@@ -130,8 +130,8 @@ export const completeSiteSurfaceArea = createAction<{ surfaceArea: number }>(
 
 export const completeSoils = createAction<{ soils: SoilType[] }>("completeSoils");
 
-export const completeSoilsSurfaceAreaDistributionEntryMode =
-  createAction<SurfaceAreaDistributionEntryMode>("completeSoilsSurfaceAreaDistributionEntryMode");
+export const soilsSurfaceAreaDistributionEntryModeCompleted =
+  createAction<SurfaceAreaDistributionEntryMode>("soilsSurfaceAreaDistributionEntryModeCompleted");
 
 export const completeSoilsDistribution = createAction<{ distribution: SoilsDistribution }>(
   "completeSoilsDistribution",
@@ -283,7 +283,7 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       state.siteData.soils = action.payload.soils;
       state.stepsHistory.push("SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE");
     })
-    .addCase(completeSoilsSurfaceAreaDistributionEntryMode, (state, action) => {
+    .addCase(soilsSurfaceAreaDistributionEntryModeCompleted, (state, action) => {
       const soilsDistributionEntryMode = action.payload;
       if (soilsDistributionEntryMode === "default_even_split") {
         const totalSurface = state.siteData.surfaceArea ?? 0;

@@ -12,10 +12,7 @@ import {
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
 
-export type SurfaceAreaDistributionEntryMode =
-  | "default_even_split"
-  | "total_surface_percentage"
-  | "square_meters";
+export type SurfaceAreaDistributionEntryMode = "default_even_split" | "square_meters_or_percentage";
 
 export type SiteCreationData = {
   id: string;

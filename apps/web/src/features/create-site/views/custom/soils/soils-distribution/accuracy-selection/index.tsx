@@ -1,5 +1,5 @@
 import { revertSoilsSurfaceAreaDistributionEntryModeStep } from "@/features/create-site/core/actions/createSite.actions";
-import { completeSoilsSurfaceAreaDistributionEntryMode } from "@/features/create-site/core/createSite.reducer";
+import { soilsSurfaceAreaDistributionEntryModeCompleted } from "@/features/create-site/core/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import AccuracySelectionForm, { type FormValues } from "./AccuracySelectionForm";
@@ -9,7 +9,7 @@ function SiteSoilsDistributionAccuracySelectionContainer() {
   const dispatch = useAppDispatch();
 
   const onSubmit = ({ accuracy }: FormValues) => {
-    dispatch(completeSoilsSurfaceAreaDistributionEntryMode(accuracy));
+    dispatch(soilsSurfaceAreaDistributionEntryModeCompleted(accuracy));
   };
 
   const onBack = () => {
