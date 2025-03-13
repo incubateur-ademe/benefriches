@@ -1,9 +1,8 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import Button from "@codegouvfr/react-dsfr/Button";
-import Dropdown from "antd/es/dropdown/dropdown";
 
 import { ProjectDevelopmentPlanType } from "@/features/projects/domain/projects.types";
 import classNames from "@/shared/views/clsx";
+import DropdownMenu from "@/shared/views/components/Menu/DropdownMenu";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 
 import { getScenarioPictoUrl } from "../../shared/scenarioType";
@@ -86,57 +85,40 @@ const ProjectPageHeader = ({
             {siteName}
           </a>
         </div>
-        <Dropdown
-          className="tw-col-start-3 sm:tw-row-span-2"
-          trigger={["click"]}
-          menu={{
-            items: [
+        <div className="tw-col-start-3 sm:tw-row-span-2">
+          <DropdownMenu
+            size="large"
+            buttonProps={{
+              size: size,
+              priority: "secondary",
+              iconId: "fr-icon-more-fill",
+              title: "Voir plus de fonctionnalités",
+            }}
+            options={[
               {
-                label: "Consulter les caractéristiques du projet",
-                icon: (
-                  <span className="fr-icon--sm fr-icon-file-text-line" aria-hidden="true"></span>
-                ),
-                key: "project-features",
+                children: "Consulter les caractéristiques du projet",
+                iconId: "fr-icon-file-text-line",
+                onClick: () => {
+                  projectFeaturesModal.open();
+                },
               },
               {
-                label: "Comprendre les impacts",
-                icon: (
-                  <span className="fr-icon--sm fr-icon-information-line" aria-hidden="true"></span>
-                ),
-                key: "about-impacts",
+                children: "Comprendre les impacts",
+                iconId: "fr-icon-information-line",
+                onClick: () => {
+                  aboutImpactsModal.open();
+                },
               },
               {
-                label: "Revoir l'introduction",
-                icon: (
-                  <span
-                    className="fr-icon--sm fr-icon-arrow-go-back-line"
-                    aria-hidden="true"
-                  ></span>
-                ),
-                key: "go-to-impacts-onboarding",
+                children: "Revoir l'introduction",
+                iconId: "fr-icon-arrow-go-back-line",
+                onClick: () => {
+                  onGoToImpactsOnBoarding();
+                },
               },
-            ],
-
-            onClick: ({ key }) => {
-              if (key === "about-impacts") {
-                aboutImpactsModal.open();
-              }
-              if (key === "project-features") {
-                projectFeaturesModal.open();
-              }
-              if (key === "go-to-impacts-onboarding") {
-                onGoToImpactsOnBoarding();
-              }
-            },
-          }}
-        >
-          <Button
-            size={size}
-            priority="secondary"
-            iconId="fr-icon-more-fill"
-            title="Voir plus de fonctionnalités"
+            ]}
           />
-        </Dropdown>
+        </div>
       </div>
     </div>
   );

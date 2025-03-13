@@ -1,13 +1,13 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useTour } from "@reactour/tour";
-import { Dropdown } from "antd";
 
 import classNames from "@/shared/views/clsx";
+import DropdownMenu from "@/shared/views/components/Menu/DropdownMenu";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 import { routes } from "@/shared/views/router";
 
 function MyProjectsPageHeader() {
-  const { setIsOpen } = useTour();
+  const { setIsOpen: setIsTourGuideOpen } = useTour();
   const isSmScreen = useIsSmallScreen();
 
   return (
@@ -24,31 +24,25 @@ function MyProjectsPageHeader() {
             Nouveau site
           </Button>
         </div>
-        <Dropdown
-          trigger={["click"]}
-          menu={{
-            className: "dark:!tw-bg-dsfr-contrastGrey",
-            items: [
-              {
-                label: "Revoir le tutoriel",
-                icon: (
-                  <span className="fr-icon--sm fr-icon-lightbulb-line" aria-hidden="true"></span>
-                ),
-                key: "1",
-              },
-            ],
-            onClick: () => {
-              setIsOpen(true);
-            },
+
+        <DropdownMenu
+          size="small"
+          buttonProps={{
+            size: isSmScreen ? "small" : "medium",
+            priority: "secondary",
+            iconId: "fr-icon-more-fill",
+            title: "Voir plus de fonctionnalités",
           }}
-        >
-          <Button
-            size={isSmScreen ? "small" : "medium"}
-            priority="secondary"
-            iconId="fr-icon-more-fill"
-            title="Voir plus de fonctionnalités"
-          />
-        </Dropdown>
+          options={[
+            {
+              children: "Revoir le tutoriel",
+              iconId: "fr-icon-lightbulb-line",
+              onClick: () => {
+                setIsTourGuideOpen(true);
+              },
+            },
+          ]}
+        />
       </div>
     </div>
   );

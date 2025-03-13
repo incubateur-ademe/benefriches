@@ -1,5 +1,4 @@
 import { startReactDsfr } from "@codegouvfr/react-dsfr/spa";
-import { ConfigProvider as AntdConfigProvider } from "antd";
 import React from "react";
 import { Suspense } from "react";
 import ReactDOM from "react-dom/client";
@@ -12,7 +11,6 @@ import QuickImpactsEmbedView from "./features/projects/views/quick-impacts-embed
 import "./main.css";
 import { appDependencies } from "./shared/core/store-config/appDependencies.ts";
 import { createStore } from "./shared/core/store-config/store.ts";
-import { theme } from "./shared/views/antdConfig.ts";
 
 startReactDsfr({ defaultColorScheme: "system" });
 
@@ -48,9 +46,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ReduxProvider store={createStore(appDependencies)}>
       <embedRoutes.RouteProvider>
-        <AntdConfigProvider theme={theme}>
-          <EmbedApp />
-        </AntdConfigProvider>
+        <EmbedApp />
       </embedRoutes.RouteProvider>
     </ReduxProvider>
   </React.StrictMode>,

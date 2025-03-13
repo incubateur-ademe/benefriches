@@ -28,9 +28,9 @@
   },
   "dependencies": {
     "@codegouvfr/react-dsfr": "~1.16.10",
+    "@headlessui/react": "^2.2.0",
     "@reactour/tour": "~3.7.0",
     "@reduxjs/toolkit": "~2.5.1",
-    "antd": "~5.23.4",
     "clsx": "~2.1.1",
     "date-fns": "~4.1.0",
     "highcharts": "~12.1.2",

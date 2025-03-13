@@ -1,7 +1,8 @@
 import Input, { InputProps } from "@codegouvfr/react-dsfr/Input";
-import { AutoComplete } from "antd";
 import { ChangeEvent, useState } from "react";
-import { Address } from "shared";
+import { Address, typedObjectEntries } from "shared";
+
+import Autocomplete from "../../Autocomplete/Autocomplete";
 
 export interface AddressService {
   search(
@@ -20,11 +21,14 @@ export type PropTypes = {
   addressType?: "municipality" | "street" | "housenumber" | "locality";
 };
 
-type Option = {
-  label: string;
-  value: string;
-  properties: Address;
-};
+type BanId = string;
+type Options = Record<
+  BanId,
+  {
+    label: string;
+    properties: Address;
+  }
+>;
 
 const formatAddressOptionLabel = (
   address: Address,
@@ -49,7 +53,7 @@ const SearchAddressAutocompleteInput = ({
 }: PropTypes) => {
   const autocompleteValue = selectedAddress?.banId;
 
-  const [suggestions, setSuggestions] = useState<Option[]>([]);
+  const [suggestions, setSuggestions] = useState<Options>({});
 
   const onSearch = async (text: string) => {
     // BAN API returns error if query is less than 3 characters
@@ -58,40 +62,50 @@ const SearchAddressAutocompleteInput = ({
     }
     const options = await addressService.search(text, { type: addressType });
     setSuggestions(
-      options.map((address) => ({
-        value: address.banId,
-        label: formatAddressOptionLabel(address, addressType),
-        properties: address,
-      })),
+      options.reduce<Options>((result, address) => {
+        return {
+          ...result,
+          [address.banId]: {
+            label: formatAddressOptionLabel(address, addressType),
+            properties: address,
+          },
+        };
+      }, {}),
     );
   };
 
-  const _onSelect = (_: string, option: Option) => {
-    onSelect(option.properties);
+  const _onSelect = (value: string) => {
+    const properties = suggestions[value]?.properties;
+    if (properties) {
+      onSelect(properties);
+    }
   };
 
+  const options = typedObjectEntries(suggestions).map(([banId, { label }]) => ({
+    label: label,
+    value: banId,
+  }));
+
   return (
-    <div>
-      <AutoComplete
-        className="tw-mb-16 tw-w-full"
-        value={autocompleteValue}
-        options={suggestions}
-        onSelect={_onSelect}
-        onSearch={onSearch}
-      >
-        <Input
-          {...searchInputProps}
-          nativeInputProps={{
-            ...searchInputProps.nativeInputProps,
-            value: searchInputValue ?? "",
-            type: "search",
-            onChange: (e: ChangeEvent<HTMLInputElement>) => {
-              onSearchInputChange(e.target.value);
-            },
-          }}
-        />
-      </AutoComplete>
-    </div>
+    <Autocomplete
+      className="tw-mb-4 tw-pb-4"
+      value={autocompleteValue}
+      options={options}
+      onSelect={_onSelect}
+    >
+      <Input
+        {...searchInputProps}
+        nativeInputProps={{
+          ...searchInputProps.nativeInputProps,
+          value: searchInputValue ?? "",
+          type: "search",
+          onChange: (e: ChangeEvent<HTMLInputElement>) => {
+            onSearchInputChange(e.target.value);
+            void onSearch(e.target.value);
+          },
+        }}
+      />
+    </Autocomplete>
   );
 };
 

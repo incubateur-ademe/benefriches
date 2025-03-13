@@ -1,28 +1,33 @@
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
-import { AutoComplete } from "antd";
 import { ChangeEvent, useEffect, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
-import { formatLocalAuthorityName, LocalAuthority } from "shared";
+import {
+  formatLocalAuthorityName,
+  LocalAuthority as LocalAuthorityType,
+  typedObjectEntries,
+} from "shared";
 
+import Autocomplete from "@/shared/views/components/Autocomplete/Autocomplete";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
 import { AdministrativeDivision, AdministrativeDivisionService } from ".";
 import { UserStructureActivity } from "../../../../core/user";
 import { FormValues } from "./CreateUserForm";
 
-type StructureCategory = Exclude<UserStructureActivity, LocalAuthority> | "local_authority";
+type StructureCategory = Exclude<UserStructureActivity, LocalAuthorityType> | "local_authority";
 
+type CityCode = AdministrativeDivision["code"];
 type Municipality = {
   label: AdministrativeDivision["name"];
-  value: AdministrativeDivision["code"];
-  localAuthorities: AdministrativeDivision["localAuthorities"];
+  localAuthorities: { type: LocalAuthorityType; name: string }[];
 };
+type Municipalities = Record<CityCode, Municipality>;
 
 export type StructureFormValues =
   | {
-      structureCategory: Exclude<UserStructureActivity, LocalAuthority>;
+      structureCategory: Exclude<UserStructureActivity, LocalAuthorityType>;
       structureName: string;
       structureMunicipalityText: undefined;
       selectedStructureMunicipality: undefined;
@@ -31,8 +36,8 @@ export type StructureFormValues =
   | {
       structureCategory: "local_authority";
       structureMunicipalityText?: string;
-      selectedStructureMunicipality?: Municipality;
-      selectedStructureLocalAuthorityType: LocalAuthority;
+      selectedStructureMunicipality?: CityCode;
+      selectedStructureLocalAuthorityType: LocalAuthorityType;
       structureName: string;
     };
 
@@ -81,8 +86,13 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
   const structureMunicipalityText = watch("structureMunicipalityText");
   const selectedStructureLocalAuthorityType = watch("selectedStructureLocalAuthorityType");
 
-  const [suggestions, setSuggestions] = useState<Municipality[]>([]);
+  const [municipalities, setMunicipalities] = useState<Municipalities>({});
   const [externalServiceError, setExternalServiceError] = useState<boolean>(false);
+
+  const suggestions = typedObjectEntries(municipalities).map(([code, { label }]) => ({
+    label: label,
+    value: code,
+  }));
 
   const onSearch = async (text: string) => {
     if (text.length <= 3) {
@@ -90,12 +100,16 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
     }
     try {
       const options = await administrativeDivisionService.searchMunicipality(text);
-      setSuggestions(
-        options.map((municipality) => ({
-          value: municipality.code,
-          label: municipality.name,
-          localAuthorities: municipality.localAuthorities,
-        })),
+      setMunicipalities(
+        options.reduce<Municipalities>((result, municipality) => {
+          return {
+            ...result,
+            [municipality.code]: {
+              label: municipality.name,
+              localAuthorities: municipality.localAuthorities,
+            },
+          };
+        }, {}),
       );
       setExternalServiceError(false);
     } catch {
@@ -126,9 +140,9 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
       return;
     }
 
-    const selectedStructureLocalAuthority = selectedStructureMunicipality.localAuthorities.find(
-      ({ type }) => type === selectedStructureLocalAuthorityType,
-    );
+    const selectedStructureLocalAuthority = municipalities[
+      selectedStructureMunicipality
+    ]?.localAuthorities.find(({ type }) => type === selectedStructureLocalAuthorityType);
 
     if (!selectedStructureLocalAuthority) {
       return;
@@ -141,7 +155,12 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
         selectedStructureLocalAuthority.name,
       ),
     );
-  }, [selectedStructureLocalAuthorityType, selectedStructureMunicipality, setValue]);
+  }, [
+    municipalities,
+    selectedStructureLocalAuthorityType,
+    selectedStructureMunicipality,
+    setValue,
+  ]);
 
   return (
     <>
@@ -163,14 +182,13 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
       />
       {structureCategory === "local_authority" ? (
         <>
-          <AutoComplete
-            className="tw-mb-16 tw-w-full"
-            value={selectedStructureMunicipality?.value}
+          <Autocomplete
+            className="tw-mb-6"
+            value={selectedStructureMunicipality}
             options={suggestions}
-            onSearch={onSearch}
-            onSelect={(_: string, option: Municipality) => {
-              setValue("selectedStructureMunicipality", option, { shouldValidate: true });
-              setValue("structureMunicipalityText", option.label);
+            onSelect={(value: string) => {
+              setValue("selectedStructureMunicipality", value, { shouldValidate: true });
+              setValue("structureMunicipalityText", municipalities[value]?.label);
             }}
           >
             <Input
@@ -187,16 +205,21 @@ function UserStructureForm({ administrativeDivisionService, formContext }: Props
                 onChange: (e: ChangeEvent<HTMLInputElement>) => {
                   setValue("structureMunicipalityText", e.target.value);
                   setValue("selectedStructureMunicipality", undefined);
+                  void onSearch(e.target.value);
                 },
               }}
             />
-          </AutoComplete>
+          </Autocomplete>
           {selectedStructureMunicipality && (
             <Select
-              options={selectedStructureMunicipality.localAuthorities.map(({ type, name }) => ({
-                label: formatLocalAuthorityName(type, name),
-                value: type,
-              }))}
+              options={
+                municipalities[selectedStructureMunicipality]?.localAuthorities.map(
+                  ({ type, name }) => ({
+                    label: formatLocalAuthorityName(type, name),
+                    value: type,
+                  }),
+                ) ?? []
+              }
               label={<RequiredLabel label="Nom de la collectivité" />}
               placeholder="Sélectionnez la collectivité"
               state={formState.errors.selectedStructureLocalAuthorityType ? "error" : "default"}
