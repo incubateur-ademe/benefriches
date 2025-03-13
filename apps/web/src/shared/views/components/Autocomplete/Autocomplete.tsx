@@ -41,6 +41,7 @@ function Autocomplete({ options, value, onSelect, className, children }: Props) 
               "tw-border",
               "tw-border-solid",
               "tw-ring-1 tw-ring-black/5",
+              "tw-bg-[var(--background-overlap-grey)]",
             )}
           >
             {options.map((option) => (
