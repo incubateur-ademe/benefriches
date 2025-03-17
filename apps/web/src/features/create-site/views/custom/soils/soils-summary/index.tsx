@@ -1,11 +1,13 @@
 import { completeSoilsSummary, revertStep } from "@/features/create-site/core/createSite.reducer";
+import { selectSiteSoilsSummaryViewData } from "@/features/create-site/core/selectors/spaces.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteSoilsSummary from "./SiteSoilsSummary";
 
 function SiteSoilsSummaryContainer() {
   const dispatch = useAppDispatch();
-  const siteData = useAppSelector((state) => state.siteCreation.siteData);
+  const { soilsDistribution, totalSurfaceArea, wasSoilsDistributionAssignedByBenefriches } =
+    useAppSelector(selectSiteSoilsSummaryViewData);
 
   return (
     <SiteSoilsSummary
@@ -13,8 +15,9 @@ function SiteSoilsSummaryContainer() {
       onBack={() => {
         dispatch(revertStep());
       }}
-      soilsDistribution={siteData.soilsDistribution ?? {}}
-      totalSurfaceArea={siteData.surfaceArea ?? 0}
+      soilsDistribution={soilsDistribution}
+      totalSurfaceArea={totalSurfaceArea}
+      wasSoilsDistributionAssignedByBenefriches={wasSoilsDistributionAssignedByBenefriches}
     />
   );
 }

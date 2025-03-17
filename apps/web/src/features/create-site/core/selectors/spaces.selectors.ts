@@ -1,5 +1,10 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { SoilType, SurfaceAreaDistribution, SurfaceAreaDistributionJson } from "shared";
+import {
+  SoilsDistribution,
+  SoilType,
+  SurfaceAreaDistribution,
+  SurfaceAreaDistributionJson,
+} from "shared";
 
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { RootState } from "@/shared/core/store-config/store";
@@ -42,5 +47,23 @@ export const selectSiteSoilsDistributionViewData = createSelector(
     );
 
     return { initialValues, siteSoils, siteSurfaceArea };
+  },
+);
+
+type SiteSoilsSummaryViewData = {
+  totalSurfaceArea: number;
+  soilsDistribution: SoilsDistribution;
+  wasSoilsDistributionAssignedByBenefriches: boolean;
+};
+
+export const selectSiteSoilsSummaryViewData = createSelector(
+  (state: RootState) => state.siteCreation,
+  (siteCreation): SiteSoilsSummaryViewData => {
+    return {
+      totalSurfaceArea: siteCreation.siteData.surfaceArea ?? 0,
+      soilsDistribution: siteCreation.siteData.soilsDistribution ?? {},
+      wasSoilsDistributionAssignedByBenefriches:
+        siteCreation.siteData.soilsDistributionEntryMode === "default_even_split",
+    };
   },
 );
