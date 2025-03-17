@@ -1,5 +1,7 @@
-import { revertIsFricheLeasedStep } from "@/features/create-site/core/actions/createSite.actions";
-import { completeIsFricheLeased } from "@/features/create-site/core/createSite.reducer";
+import {
+  isFricheLeasedStepCompleted,
+  isFricheLeasedStepReverted,
+} from "@/features/create-site/core/actions/siteManagement.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import IsFricheLeasedForm, { FormValues } from "./IsFricheLeasedForm";
@@ -18,11 +20,11 @@ function IsFricheLeasedFormContainer() {
   const isFricheLeased = useAppSelector((state) => state.siteCreation.siteData.isFricheLeased);
 
   const onSubmit = ({ isFricheLeased }: FormValues) => {
-    dispatch(completeIsFricheLeased({ isFricheLeased: isFricheLeased === "yes" }));
+    dispatch(isFricheLeasedStepCompleted({ isFricheLeased: isFricheLeased === "yes" }));
   };
 
   const onBack = () => {
-    dispatch(revertIsFricheLeasedStep());
+    dispatch(isFricheLeasedStepReverted());
   };
 
   return (

@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 
-import { revertYearlyExpensesStep } from "@/features/create-site/core/actions/createSite.actions";
+import {
+  yearlyExpensesStepCompleted,
+  yearlyExpensesStepReverted,
+} from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { completeYearlyExpenses } from "@/features/create-site/core/createSite.reducer";
 import { SiteYearlyExpensesBaseConfig } from "@/features/create-site/core/expenses.functions";
 import {
   selectEstimatedYearlyExpensesForSite,
@@ -40,11 +42,11 @@ function SiteYearlyExpensesFormContainer() {
         siteExpensesEstimatedAmounts,
       )}
       onBack={() => {
-        dispatch(revertYearlyExpensesStep());
+        dispatch(yearlyExpensesStepReverted());
       }}
       onSubmit={(formData: FormValues) => {
         const expenses = mapFormDataToExpenses(formData, expensesBaseconfig);
-        dispatch(completeYearlyExpenses(expenses));
+        dispatch(yearlyExpensesStepCompleted(expenses));
       }}
       siteManagementYearlyExpensesBaseConfig={siteManagementExpensesBaseConfig}
       siteSecurityExpensesBaseConfig={siteSecurityExpensesBaseConfig}

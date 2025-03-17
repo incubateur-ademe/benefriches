@@ -4,8 +4,8 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
+import { siteCreationInitiated } from "../core/actions/introduction.actions";
 import {
-  siteCreationInitiated,
   selectCurrentStep,
   SiteCreationCustomStep,
   SiteCreationExpressStep,

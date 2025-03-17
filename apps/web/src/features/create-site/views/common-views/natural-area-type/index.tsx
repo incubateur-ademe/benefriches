@@ -1,5 +1,7 @@
-import { naturalAreaTypeReverted } from "@/features/create-site/core/actions/createSite.actions";
-import { naturalAreaTypeCompleted } from "@/features/create-site/core/createSite.reducer";
+import {
+  naturalAreaTypeCompleted,
+  naturalAreaTypeReverted,
+} from "@/features/create-site/core/actions/introduction.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import NaturalAreaTypeForm, { FormValues } from "./NaturalAreaTypeForm";

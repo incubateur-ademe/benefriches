@@ -1,5 +1,7 @@
-import { revertFricheAccidentsIntroductionStep } from "@/features/create-site/core/actions/createSite.actions";
-import { completeFricheAccidentsIntroduction } from "@/features/create-site/core/createSite.reducer";
+import {
+  fricheAccidentsIntroductionStepCompleted,
+  fricheAccidentsIntroductionStepReverted,
+} from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import FricheAccidentsIntroduction from "./FricheAccidentsIntroduction";
@@ -10,10 +12,10 @@ function FricheAccidentsIntroductionContainer() {
   return (
     <FricheAccidentsIntroduction
       onBack={() => {
-        dispatch(revertFricheAccidentsIntroductionStep());
+        dispatch(fricheAccidentsIntroductionStepReverted());
       }}
       onNext={() => {
-        dispatch(completeFricheAccidentsIntroduction());
+        dispatch(fricheAccidentsIntroductionStepCompleted());
       }}
     />
   );

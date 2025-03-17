@@ -1,13 +1,11 @@
 import {
-  revertFricheAccidentsStep,
-  revertSoilsContaminationStep,
-} from "../../actions/createSite.actions";
-import {
-  completeFricheAccidents,
-  completeFricheAccidentsIntroduction,
-  completeSoilsContamination,
-  completeSoilsContaminationIntroductionStep,
-} from "../../createSite.reducer";
+  fricheAccidentsIntroductionStepCompleted,
+  fricheAccidentsStepCompleted,
+  fricheAccidentsStepReverted,
+  soilsContaminationIntroductionStepCompleted,
+  soilsContaminationStepCompleted,
+  soilsContaminationStepReverted,
+} from "../../actions/soilsContaminationAndAccidents.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
   expectNewCurrentStep,
@@ -26,7 +24,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeSoilsContaminationIntroductionStep());
+        store.dispatch(soilsContaminationIntroductionStepCompleted());
 
         const newState = store.getState();
         expectSiteDataUnchanged(initialRootState, newState);
@@ -41,7 +39,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
         const initialRootState = store.getState();
 
         store.dispatch(
-          completeSoilsContamination({
+          soilsContaminationStepCompleted({
             hasContaminatedSoils: true,
             contaminatedSoilSurface: 2500,
           }),
@@ -75,7 +73,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertSoilsContaminationStep());
+        store.dispatch(soilsContaminationStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -94,7 +92,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeFricheAccidentsIntroduction());
+        store.dispatch(fricheAccidentsIntroductionStepCompleted());
 
         const newState = store.getState();
         expectSiteDataUnchanged(initialRootState, newState);
@@ -109,7 +107,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
         const initialRootState = store.getState();
 
         store.dispatch(
-          completeFricheAccidents({
+          fricheAccidentsStepCompleted({
             hasRecentAccidents: true,
             accidentsDeaths: 1,
             accidentsSevereInjuries: 2,
@@ -130,7 +128,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
         const store = new StoreBuilder().withStepsHistory(["FRICHE_ACCIDENTS"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeFricheAccidents({ hasRecentAccidents: false }));
+        store.dispatch(fricheAccidentsStepCompleted({ hasRecentAccidents: false }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { hasRecentAccidents: false });
@@ -151,7 +149,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertFricheAccidentsStep());
+        store.dispatch(fricheAccidentsStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {

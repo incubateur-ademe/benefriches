@@ -1,5 +1,7 @@
-import { agriculturalOperationActivityReverted } from "@/features/create-site/core/actions/createSite.actions";
-import { agriculturalOperationActivityCompleted } from "@/features/create-site/core/createSite.reducer";
+import {
+  agriculturalOperationActivityCompleted,
+  agriculturalOperationActivityReverted,
+} from "@/features/create-site/core/actions/introduction.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import AgriculturalOperationActivityForm, { FormValues } from "./AgriculturalOperationActivityForm";

@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 
-import { revertTenantStep } from "@/features/create-site/core/actions/createSite.actions";
+import {
+  tenantStepCompleted,
+  tenantStepReverted,
+} from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { completeTenant } from "@/features/create-site/core/createSite.reducer";
 import { Tenant } from "@/features/create-site/core/siteFoncier.types";
 import {
   AvailableLocalAuthority,
@@ -81,11 +83,11 @@ function FricheTenantFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     const tenant = convertFormValuesForStore(data, localAuthoritiesList);
-    dispatch(completeTenant({ tenant }));
+    dispatch(tenantStepCompleted({ tenant }));
   };
 
   const onBack = () => {
-    dispatch(revertTenantStep());
+    dispatch(tenantStepReverted());
   };
 
   return (

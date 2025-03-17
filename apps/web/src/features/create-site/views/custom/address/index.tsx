@@ -1,10 +1,12 @@
 import { Address } from "shared";
 
+import {
+  addressStepCompleted,
+  addressStepReverted,
+} from "@/features/create-site/core/actions/introduction.actions";
 import { selectSiteAddress } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertAddressStep } from "../../../core/actions/createSite.actions";
-import { completeAddressStep } from "../../../core/createSite.reducer";
 import AddressForm from "./AddressForm";
 
 const mapInitialValues = (address: Address | undefined) => {
@@ -22,10 +24,10 @@ function AddressFormContainer() {
       initialValues={mapInitialValues(address)}
       siteNature={siteNature}
       onSubmit={(address: Address) => {
-        dispatch(completeAddressStep({ address }));
+        dispatch(addressStepCompleted({ address }));
       }}
       onBack={() => {
-        dispatch(revertAddressStep());
+        dispatch(addressStepReverted());
       }}
     />
   );

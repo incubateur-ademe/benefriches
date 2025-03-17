@@ -1,5 +1,7 @@
-import { namingIntroductionStepReverted } from "@/features/create-site/core/actions/createSite.actions";
-import { namingIntroductionStepCompleted } from "@/features/create-site/core/createSite.reducer";
+import {
+  namingIntroductionStepCompleted,
+  namingIntroductionStepReverted,
+} from "@/features/create-site/core/actions/naming.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import SiteNamingIntroduction from "./SiteNamingIntroduction";

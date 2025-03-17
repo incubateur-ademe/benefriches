@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 
-import { revertOperatorStep } from "@/features/create-site/core/actions/createSite.actions";
+import {
+  operatorStepCompleted,
+  operatorStepReverted,
+} from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { completeOperator } from "@/features/create-site/core/createSite.reducer";
 import { Tenant } from "@/features/create-site/core/siteFoncier.types";
 import {
   AvailableLocalAuthority,
@@ -51,11 +53,11 @@ function SiteOperatorFormContainer() {
   }, [dispatch]);
 
   const onSubmit = (data: FormValues) => {
-    dispatch(completeOperator({ tenant: getTenant(data, localAuthoritiesList) }));
+    dispatch(operatorStepCompleted({ tenant: getTenant(data, localAuthoritiesList) }));
   };
 
   const onBack = () => {
-    dispatch(revertOperatorStep());
+    dispatch(operatorStepReverted());
   };
 
   return (

@@ -1,7 +1,9 @@
 import { createSoilSurfaceAreaDistribution } from "shared";
 
-import { revertSoilsDistributionStep } from "@/features/create-site/core/actions/createSite.actions";
-import { completeSoilsDistribution } from "@/features/create-site/core/createSite.reducer";
+import {
+  soilsDistributionStepCompleted,
+  soilsDistributionStepReverted,
+} from "@/features/create-site/core/actions/spaces.actions";
 import { selectSiteSoilsDistributionViewData } from "@/features/create-site/core/selectors/spaces.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -15,14 +17,14 @@ function SiteSoilsDistributionContainer() {
 
   const onSubmit = (formData: FormValues) => {
     dispatch(
-      completeSoilsDistribution({
+      soilsDistributionStepCompleted({
         distribution: createSoilSurfaceAreaDistribution(formData).toJSON(),
       }),
     );
   };
 
   const onBack = () => {
-    dispatch(revertSoilsDistributionStep());
+    dispatch(soilsDistributionStepReverted());
   };
 
   return (

@@ -1,9 +1,11 @@
 import { useEffect } from "react";
 import { LocalAuthority } from "shared";
 
-import { revertOwnerStep } from "@/features/create-site/core/actions/createSite.actions";
+import {
+  ownerStepCompleted,
+  ownerStepReverted,
+} from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { completeOwner } from "@/features/create-site/core/createSite.reducer";
 import { selectSiteOwner } from "@/features/create-site/core/selectors/createSite.selectors";
 import { Owner } from "@/features/create-site/core/siteFoncier.types";
 import {
@@ -109,14 +111,14 @@ function SiteOwnerFormContainer() {
 
   const onSubmit = (data: FormValues) => {
     dispatch(
-      completeOwner({
+      ownerStepCompleted({
         owner: convertFormValuesForStore(data, localAuthoritiesList, currentUserStructure),
       }),
     );
   };
 
   const onBack = () => {
-    dispatch(revertOwnerStep());
+    dispatch(ownerStepReverted());
   };
 
   useEffect(() => {

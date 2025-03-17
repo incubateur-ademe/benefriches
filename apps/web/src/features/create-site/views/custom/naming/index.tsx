@@ -1,9 +1,11 @@
 import { generateSiteName } from "shared";
 
-import { completeNaming } from "@/features/create-site/core/createSite.reducer";
+import {
+  namingStepCompleted,
+  namingStepReverted,
+} from "@/features/create-site/core/actions/naming.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertNamingStep } from "../../../core/actions/createSite.actions";
 import SiteNameAndDescriptionForm, { FormValues } from "./SiteNameAndDescription";
 
 function SiteNameAndDescriptionFormContainer() {
@@ -24,10 +26,10 @@ function SiteNameAndDescriptionFormContainer() {
         description: siteData.description ?? "",
       }}
       onSubmit={(formData: FormValues) => {
-        dispatch(completeNaming(formData));
+        dispatch(namingStepCompleted(formData));
       }}
       onBack={() => {
-        dispatch(revertNamingStep());
+        dispatch(namingStepReverted());
       }}
     />
   );

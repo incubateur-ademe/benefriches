@@ -1,7 +1,10 @@
 import { fetchSiteSoilsCarbonStorage } from "@/features/create-site/core/actions/siteSoilsCarbonStorage.actions";
+import {
+  soilsCarbonStorageStepCompleted,
+  soilsCarbonStorageStepReverted,
+} from "@/features/create-site/core/actions/spaces.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { completeSoilsCarbonStorage, revertStep } from "../../../../core/createSite.reducer";
 import SiteSoilsCarbonStorage from "./SiteSoilsCarbonStorage";
 
 function SiteSoilsCarbonStorageContainer() {
@@ -11,10 +14,10 @@ function SiteSoilsCarbonStorageContainer() {
   return (
     <SiteSoilsCarbonStorage
       onNext={() => {
-        dispatch(completeSoilsCarbonStorage());
+        dispatch(soilsCarbonStorageStepCompleted());
       }}
       onBack={() => {
-        dispatch(revertStep());
+        dispatch(soilsCarbonStorageStepReverted());
       }}
       fetchSiteCarbonStorage={async () => {
         await dispatch(fetchSiteSoilsCarbonStorage());

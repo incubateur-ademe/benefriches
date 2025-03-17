@@ -4,7 +4,7 @@ import {
   CreateSiteGateway,
   CustomSitePayload,
   ExpressSitePayload,
-} from "../../core/actions/siteSaved.actions";
+} from "../../core/actions/finalStep.actions";
 
 export class HttpCreateSiteApi implements CreateSiteGateway {
   async saveCustom(newSite: CustomSitePayload) {

@@ -1,6 +1,8 @@
-import { revertSurfaceAreaStep } from "@/features/create-site/core/actions/createSite.actions";
-import { expressSiteSaved } from "@/features/create-site/core/actions/siteSaved.actions";
-import { completeSiteSurfaceArea } from "@/features/create-site/core/createSite.reducer";
+import { expressSiteSaved } from "@/features/create-site/core/actions/finalStep.actions";
+import {
+  siteSurfaceAreaStepCompleted,
+  siteSurfaceAreaStepReverted,
+} from "@/features/create-site/core/actions/spaces.actions";
 import { selectSiteSurfaceArea } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -16,11 +18,11 @@ function SiteSurfaceAreaFormContainer() {
       initialValues={{ surfaceArea: siteSurfaceArea }}
       siteNature={siteNature}
       onSubmit={(formData: { surfaceArea: number }) => {
-        dispatch(completeSiteSurfaceArea({ surfaceArea: formData.surfaceArea }));
+        dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: formData.surfaceArea }));
         void dispatch(expressSiteSaved());
       }}
       onBack={() => {
-        dispatch(revertSurfaceAreaStep());
+        dispatch(siteSurfaceAreaStepReverted());
       }}
     />
   );

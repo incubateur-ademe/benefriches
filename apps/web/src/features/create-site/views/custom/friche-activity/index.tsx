@@ -1,8 +1,10 @@
-import { completeFricheActivity } from "@/features/create-site/core/createSite.reducer";
+import {
+  fricheActivityStepCompleted,
+  fricheActivityStepReverted,
+} from "@/features/create-site/core/actions/introduction.actions";
 import { selectFricheActivity } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertFricheActivityStep } from "../../../core/actions/createSite.actions";
 import FricheActivityForm, { FormValues } from "./FricheActivityForm";
 
 function FricheActivityFormContainer() {
@@ -13,10 +15,10 @@ function FricheActivityFormContainer() {
     <FricheActivityForm
       initialValues={{ activity: fricheActivity }}
       onSubmit={(formData: FormValues) => {
-        dispatch(completeFricheActivity(formData.activity));
+        dispatch(fricheActivityStepCompleted(formData.activity));
       }}
       onBack={() => {
-        dispatch(revertFricheActivityStep());
+        dispatch(fricheActivityStepReverted());
       }}
     />
   );

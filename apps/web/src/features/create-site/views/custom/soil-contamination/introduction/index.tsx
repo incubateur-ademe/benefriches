@@ -1,5 +1,7 @@
-import { revertSoilContaminationIntroductionStep } from "@/features/create-site/core/actions/createSite.actions";
-import { completeSoilsContaminationIntroductionStep } from "@/features/create-site/core/createSite.reducer";
+import {
+  soilsContaminationIntroductionStepCompleted,
+  soilsContaminationIntroductionStepReverted,
+} from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import SoilContaminationIntroduction from "./SoilContaminationIntroduction";
@@ -10,10 +12,10 @@ function SoilContaminationIntroductionContainer() {
   return (
     <SoilContaminationIntroduction
       onBack={() => {
-        dispatch(revertSoilContaminationIntroductionStep());
+        dispatch(soilsContaminationIntroductionStepReverted());
       }}
       onNext={() => {
-        dispatch(completeSoilsContaminationIntroductionStep());
+        dispatch(soilsContaminationIntroductionStepCompleted());
       }}
     />
   );

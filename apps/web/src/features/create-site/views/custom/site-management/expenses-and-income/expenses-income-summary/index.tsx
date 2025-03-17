@@ -1,9 +1,9 @@
 import { SiteYearlyIncome } from "shared";
 
 import {
-  completeYearlyExpensesSummary,
-  revertStep,
-} from "@/features/create-site/core/createSite.reducer";
+  yearlyExpensesSummaryCompleted,
+  yearlyExpensesSummaryReverted,
+} from "@/features/create-site/core/actions/siteManagement.actions";
 import { hasTenant } from "@/features/create-site/core/site.functions";
 import { AppDispatch, RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -11,10 +11,6 @@ import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks
 import SiteExpensesSummary from "./SiteExpensesIncomeSummary";
 
 const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["siteData"]) => {
-  const onNext = () => {
-    dispatch(completeYearlyExpensesSummary());
-  };
-
   const rent = siteData.yearlyExpenses
     .filter(({ purpose }) => purpose === "rent")
     .map(({ purpose, amount }) => ({ source: purpose, amount })) as SiteYearlyIncome[];
@@ -29,9 +25,11 @@ const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["si
     tenantExpenses: siteData.yearlyExpenses.filter(({ bearer }) => bearer === "tenant"),
     ownerIncome: siteHasTenant ? rent : operationsIncome,
     tenantIncome: siteHasTenant ? operationsIncome : [],
-    onNext,
+    onNext: () => {
+      dispatch(yearlyExpensesSummaryCompleted());
+    },
     onBack: () => {
-      dispatch(revertStep());
+      dispatch(yearlyExpensesSummaryReverted());
     },
   };
 };

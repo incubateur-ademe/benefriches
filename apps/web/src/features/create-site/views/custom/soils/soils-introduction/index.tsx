@@ -1,6 +1,9 @@
+import {
+  soilsIntroductionStepCompleted,
+  soilsIntroductionStepReverted,
+} from "@/features/create-site/core/actions/spaces.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { completeSoilsIntroduction, revertStep } from "../../../../core/createSite.reducer";
 import SiteSoilsIntroduction from "./SoilsIntroduction";
 
 function SiteSoilsIntroductionContainer() {
@@ -10,9 +13,9 @@ function SiteSoilsIntroductionContainer() {
   return (
     <SiteSoilsIntroduction
       siteNature={siteNature}
-      onNext={() => dispatch(completeSoilsIntroduction())}
+      onNext={() => dispatch(soilsIntroductionStepCompleted())}
       onBack={() => {
-        dispatch(revertStep());
+        dispatch(soilsIntroductionStepReverted());
       }}
     />
   );

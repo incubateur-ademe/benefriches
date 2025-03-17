@@ -1,7 +1,6 @@
-import { isFricheReverted } from "@/features/create-site/core/actions/createSite.actions";
-import { isFricheCompleted } from "@/features/create-site/core/createSite.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
+import { isFricheCompleted, isFricheReverted } from "../../core/actions/introduction.actions";
 import IsFricheForm from "./IsFricheForm";
 
 const mapIsFricheValue = (isFriche: boolean | undefined) => {

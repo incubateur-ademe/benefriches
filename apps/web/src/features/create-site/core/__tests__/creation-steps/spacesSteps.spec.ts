@@ -1,18 +1,16 @@
 import {
-  revertSoilsDistributionStep,
-  revertSoilsSelectionStep,
-  revertSoilsSurfaceAreaDistributionEntryModeStep,
-  revertSurfaceAreaStep,
-} from "../../actions/createSite.actions";
-import {
-  completeSiteSurfaceArea,
-  completeSoils,
-  completeSoilsCarbonStorage,
-  completeSoilsDistribution,
-  completeSoilsIntroduction,
-  completeSoilsSummary,
+  siteSurfaceAreaStepCompleted,
+  siteSurfaceAreaStepReverted,
+  soilsCarbonStorageStepCompleted,
+  soilsDistributionStepCompleted,
+  soilsDistributionStepReverted,
+  soilsIntroductionStepCompleted,
+  soilsSelectionReverted,
+  soilsSelectionStepCompleted,
+  soilsSummaryStepCompleted,
   soilsSurfaceAreaDistributionEntryModeCompleted,
-} from "../../createSite.reducer";
+  soilsSurfaceAreaDistributionEntryModeStepReverted,
+} from "../../actions/spaces.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
   expectNewCurrentStep,
@@ -29,7 +27,7 @@ describe("Site creation: spaces steps", () => {
         const store = new StoreBuilder().withStepsHistory(["SOILS_INTRODUCTION"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeSoilsIntroduction());
+        store.dispatch(soilsIntroductionStepCompleted());
 
         const newState = store.getState();
         expectSiteDataUnchanged(initialRootState, newState);
@@ -47,7 +45,7 @@ describe("Site creation: spaces steps", () => {
             .build();
           const initialRootState = store.getState();
 
-          store.dispatch(completeSiteSurfaceArea({ surfaceArea: 143000 }));
+          store.dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: 143000 }));
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { surfaceArea: 143000 });
@@ -61,7 +59,7 @@ describe("Site creation: spaces steps", () => {
               .build();
             const initialRootState = store.getState();
 
-            store.dispatch(revertSurfaceAreaStep());
+            store.dispatch(siteSurfaceAreaStepReverted());
 
             const newState = store.getState();
             expectSiteDataDiff(initialRootState, newState, { surfaceArea: undefined });
@@ -77,7 +75,7 @@ describe("Site creation: spaces steps", () => {
             .build();
           const initialRootState = store.getState();
 
-          store.dispatch(completeSiteSurfaceArea({ surfaceArea: 143000 }));
+          store.dispatch(siteSurfaceAreaStepCompleted({ surfaceArea: 143000 }));
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { surfaceArea: 143000 });
@@ -94,7 +92,7 @@ describe("Site creation: spaces steps", () => {
         const store = new StoreBuilder().withStepsHistory(["SOILS_SELECTION"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeSoils({ soils: siteWithExhaustiveData.soils }));
+        store.dispatch(soilsSelectionStepCompleted({ soils: siteWithExhaustiveData.soils }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { soils: siteWithExhaustiveData.soils });
@@ -113,7 +111,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertSoilsSelectionStep());
+        store.dispatch(soilsSelectionReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { soils: [] });
@@ -186,7 +184,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertSoilsSurfaceAreaDistributionEntryModeStep());
+        store.dispatch(soilsSurfaceAreaDistributionEntryModeStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -206,7 +204,9 @@ describe("Site creation: spaces steps", () => {
         const initialRootState = store.getState();
 
         store.dispatch(
-          completeSoilsDistribution({ distribution: siteWithExhaustiveData.soilsDistribution }),
+          soilsDistributionStepCompleted({
+            distribution: siteWithExhaustiveData.soilsDistribution,
+          }),
         );
 
         const newState = store.getState();
@@ -234,7 +234,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertSoilsDistributionStep());
+        store.dispatch(soilsDistributionStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { soilsDistribution: undefined });
@@ -248,7 +248,7 @@ describe("Site creation: spaces steps", () => {
         const store = new StoreBuilder().withStepsHistory(["SOILS_SUMMARY"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeSoilsSummary());
+        store.dispatch(soilsSummaryStepCompleted());
 
         const newState = store.getState();
         expectSiteDataUnchanged(initialRootState, newState);
@@ -265,7 +265,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeSoilsCarbonStorage());
+        store.dispatch(soilsCarbonStorageStepCompleted());
 
         const newState = store.getState();
         expectSiteDataUnchanged(initialRootState, newState);
@@ -278,7 +278,7 @@ describe("Site creation: spaces steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeSoilsCarbonStorage());
+        store.dispatch(soilsCarbonStorageStepCompleted());
 
         const newState = store.getState();
         expectSiteDataUnchanged(initialRootState, newState);

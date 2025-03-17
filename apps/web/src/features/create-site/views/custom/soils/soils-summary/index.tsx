@@ -1,4 +1,7 @@
-import { completeSoilsSummary, revertStep } from "@/features/create-site/core/createSite.reducer";
+import {
+  soilsSummaryStepCompleted,
+  soilsSummaryStepReverted,
+} from "@/features/create-site/core/actions/spaces.actions";
 import { selectSiteSoilsSummaryViewData } from "@/features/create-site/core/selectors/spaces.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -11,9 +14,9 @@ function SiteSoilsSummaryContainer() {
 
   return (
     <SiteSoilsSummary
-      onNext={() => dispatch(completeSoilsSummary())}
+      onNext={() => dispatch(soilsSummaryStepCompleted())}
       onBack={() => {
-        dispatch(revertStep());
+        dispatch(soilsSummaryStepReverted());
       }}
       soilsDistribution={soilsDistribution}
       totalSurfaceArea={totalSurfaceArea}

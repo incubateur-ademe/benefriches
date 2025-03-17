@@ -6,8 +6,8 @@ import { SaveReconversionProjectGateway } from "@/features/create-project/core/a
 import { GetSitesByIdGateway } from "@/features/create-project/core/actions/urbanProjectCreationInitiated.action";
 import { PhotovoltaicPerformanceGateway } from "@/features/create-project/core/renewable-energy/actions/getPhotovoltaicExpectedPerformance.action";
 import { SaveExpressReconversionProjectGateway } from "@/features/create-project/core/urban-project/actions/expressUrbanProjectSaved.action";
+import { CreateSiteGateway } from "@/features/create-site/core/actions/finalStep.actions";
 import { SiteMunicipalityDataGateway as CreateSiteMunicipalityDataGateway } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
-import { CreateSiteGateway } from "@/features/create-site/core/actions/siteSaved.actions";
 import { CreateUserGateway } from "@/features/onboarding/core/createUser.action";
 import { CurrentUserGateway } from "@/features/onboarding/core/initCurrentUser.action";
 import { ReconversionProjectImpactsGateway } from "@/features/projects/application/fetchImpactsForReconversionProject.action";

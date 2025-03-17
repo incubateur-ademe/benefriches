@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { buildUser } from "@/features/onboarding/core/user.mock";
 
 import { InMemoryCreateSiteService } from "../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
-import { customSiteSaved, expressSiteSaved } from "../../actions/siteSaved.actions";
+import { customSiteSaved, expressSiteSaved } from "../../actions/finalStep.actions";
 import {
   expressFricheCreationData,
   fricheWithExhaustiveData,

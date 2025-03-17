@@ -1,24 +1,22 @@
 import {
-  revertIsFricheLeasedStep,
-  revertIsSiteOperatedStep,
-  revertOperatorStep,
-  revertOwnerStep,
-  revertTenantStep,
-  revertYearlyExpensesStep,
-  revertYearlyIncomeStep,
-} from "../../actions/createSite.actions";
-import {
-  completeIsFricheLeased,
-  completeIsSiteOperated,
-  completeManagementIntroduction,
-  completeOperator,
-  completeOwner,
-  completeTenant,
-  completeYearlyExpenses,
-  completeYearlyExpensesSummary,
-  completeYearlyIncome,
+  isFricheLeasedStepCompleted,
+  isFricheLeasedStepReverted,
+  isSiteOperatedStepCompleted,
+  isSiteOperatedStepReverted,
+  managementIntroductionCompleted,
+  operatorStepCompleted,
+  operatorStepReverted,
+  ownerStepCompleted,
+  ownerStepReverted,
+  tenantStepCompleted,
+  tenantStepReverted,
   yearlyExpensesAndIncomeIntroductionCompleted,
-} from "../../createSite.reducer";
+  yearlyExpensesStepCompleted,
+  yearlyExpensesStepReverted,
+  yearlyExpensesSummaryCompleted,
+  yearlyIncomeStepCompleted,
+  yearlyIncomeStepReverted,
+} from "../../actions/siteManagement.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
   expectNewCurrentStep,
@@ -35,7 +33,7 @@ describe("Site creation: site management steps", () => {
         const store = new StoreBuilder().withStepsHistory(["MANAGEMENT_INTRODUCTION"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeManagementIntroduction());
+        store.dispatch(managementIntroductionCompleted());
 
         const newState = store.getState();
         expectSiteDataUnchanged(initialRootState, newState);
@@ -52,7 +50,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
+        store.dispatch(ownerStepCompleted({ owner: siteWithExhaustiveData.owner }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { owner: siteWithExhaustiveData.owner });
@@ -65,7 +63,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
+        store.dispatch(ownerStepCompleted({ owner: siteWithExhaustiveData.owner }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { owner: siteWithExhaustiveData.owner });
@@ -78,7 +76,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
+        store.dispatch(ownerStepCompleted({ owner: siteWithExhaustiveData.owner }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { owner: siteWithExhaustiveData.owner });
@@ -96,7 +94,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertOwnerStep());
+        store.dispatch(ownerStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { owner: undefined });
@@ -110,7 +108,7 @@ describe("Site creation: site management steps", () => {
         const store = new StoreBuilder().withStepsHistory(["IS_FRICHE_LEASED"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeIsFricheLeased({ isFricheLeased: true }));
+        store.dispatch(isFricheLeasedStepCompleted({ isFricheLeased: true }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { isFricheLeased: true });
@@ -120,7 +118,7 @@ describe("Site creation: site management steps", () => {
         const store = new StoreBuilder().withStepsHistory(["IS_FRICHE_LEASED"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeIsFricheLeased({ isFricheLeased: false }));
+        store.dispatch(isFricheLeasedStepCompleted({ isFricheLeased: false }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { isFricheLeased: false });
@@ -138,7 +136,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertIsFricheLeasedStep());
+        store.dispatch(isFricheLeasedStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -154,7 +152,7 @@ describe("Site creation: site management steps", () => {
         const store = new StoreBuilder().withStepsHistory(["IS_SITE_OPERATED"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeIsSiteOperated({ isSiteOperated: true }));
+        store.dispatch(isSiteOperatedStepCompleted({ isSiteOperated: true }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { isSiteOperated: true });
@@ -164,7 +162,7 @@ describe("Site creation: site management steps", () => {
         const store = new StoreBuilder().withStepsHistory(["IS_SITE_OPERATED"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeIsSiteOperated({ isSiteOperated: false }));
+        store.dispatch(isSiteOperatedStepCompleted({ isSiteOperated: false }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -183,7 +181,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertIsSiteOperatedStep());
+        store.dispatch(isSiteOperatedStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -199,7 +197,7 @@ describe("Site creation: site management steps", () => {
         const store = new StoreBuilder().withStepsHistory(["OPERATOR"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeOperator({ tenant: siteWithExhaustiveData.tenant }));
+        store.dispatch(operatorStepCompleted({ tenant: siteWithExhaustiveData.tenant }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
@@ -209,7 +207,7 @@ describe("Site creation: site management steps", () => {
         const store = new StoreBuilder().withStepsHistory(["OPERATOR"]).build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeOperator({ tenant: undefined }));
+        store.dispatch(operatorStepCompleted({ tenant: undefined }));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { tenant: undefined });
@@ -226,7 +224,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertOperatorStep());
+        store.dispatch(operatorStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -249,7 +247,7 @@ describe("Site creation: site management steps", () => {
             .build();
           const initialRootState = store.getState();
 
-          store.dispatch(completeTenant({ tenant: siteWithExhaustiveData.tenant }));
+          store.dispatch(tenantStepCompleted({ tenant: siteWithExhaustiveData.tenant }));
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
@@ -269,7 +267,7 @@ describe("Site creation: site management steps", () => {
             .build();
           const initialRootState = store.getState();
 
-          store.dispatch(completeTenant({ tenant: undefined }));
+          store.dispatch(tenantStepCompleted({ tenant: undefined }));
 
           const newState = store.getState();
           expectSiteDataUnchanged(initialRootState, newState);
@@ -291,7 +289,7 @@ describe("Site creation: site management steps", () => {
             .build();
           const initialRootState = store.getState();
 
-          store.dispatch(completeTenant({ tenant: siteWithExhaustiveData.tenant }));
+          store.dispatch(tenantStepCompleted({ tenant: siteWithExhaustiveData.tenant }));
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
@@ -314,7 +312,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertTenantStep());
+        store.dispatch(tenantStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -346,7 +344,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertTenantStep());
+        store.dispatch(tenantStepReverted());
 
         const newState = store.getState();
         expectStepReverted(initialRootState, newState);
@@ -362,7 +360,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeYearlyExpenses(siteWithExhaustiveData.yearlyExpenses));
+        store.dispatch(yearlyExpensesStepCompleted(siteWithExhaustiveData.yearlyExpenses));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -377,7 +375,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeYearlyExpenses(siteWithExhaustiveData.yearlyExpenses));
+        store.dispatch(yearlyExpensesStepCompleted(siteWithExhaustiveData.yearlyExpenses));
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -397,7 +395,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertYearlyExpensesStep());
+        store.dispatch(yearlyExpensesStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -416,7 +414,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(completeYearlyExpensesSummary());
+        store.dispatch(yearlyExpensesSummaryCompleted());
 
         const newState = store.getState();
         expectSiteDataUnchanged(initialRootState, newState);
@@ -429,7 +427,7 @@ describe("Site creation: site management steps", () => {
       const store = new StoreBuilder().withStepsHistory(["YEARLY_INCOME"]).build();
       const initialRootState = store.getState();
 
-      store.dispatch(completeYearlyIncome(siteWithExhaustiveData.yearlyIncomes));
+      store.dispatch(yearlyIncomeStepCompleted(siteWithExhaustiveData.yearlyIncomes));
 
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, {
@@ -448,7 +446,7 @@ describe("Site creation: site management steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(revertYearlyIncomeStep());
+        store.dispatch(yearlyIncomeStepReverted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {

@@ -1,11 +1,13 @@
-import { completeSoilsContamination } from "@/features/create-site/core/createSite.reducer";
+import {
+  soilsContaminationStepCompleted,
+  soilsContaminationStepReverted,
+} from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
 import {
   selectSiteSoilsContamination,
   selectSiteSurfaceArea,
 } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { revertSoilsContaminationStep } from "../../../core/actions/createSite.actions";
 import SoilContaminationForm, { FormValues } from "./SoilContaminationForm";
 
 const mapInitialValues = (siteContamination: {
@@ -38,14 +40,14 @@ function SoilContaminationFormController() {
       siteSurfaceArea={siteSurfaceArea ?? 0}
       onSubmit={({ hasContaminatedSoils, contaminatedSurface }: FormValues) => {
         dispatch(
-          completeSoilsContamination({
+          soilsContaminationStepCompleted({
             hasContaminatedSoils: hasContaminatedSoils === "yes",
             contaminatedSoilSurface: contaminatedSurface,
           }),
         );
       }}
       onBack={() => {
-        dispatch(revertSoilsContaminationStep());
+        dispatch(soilsContaminationStepReverted());
       }}
     />
   );
