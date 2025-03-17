@@ -9,6 +9,7 @@ import SiteNameAndDescriptionForm from "./naming";
 import SiteNamingIntroduction from "./naming/introduction";
 import SiteCreationResult from "./result";
 import SiteExpensesIncomeSummary from "./site-management/expenses-and-income/expenses-income-summary";
+import SiteExpensesAndIncomeIntroduction from "./site-management/expenses-and-income/introduction";
 import SiteYearlyExpensesForm from "./site-management/expenses-and-income/yearly-expenses";
 import SiteYearlyIncomeForm from "./site-management/expenses-and-income/yearly-income";
 import SiteManagementIntroduction from "./site-management/introduction";
@@ -70,6 +71,8 @@ function SiteCreationCustomStepContent() {
       return <SiteOperatorForm />;
     case "TENANT":
       return <SiteTenantForm />;
+    case "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION":
+      return <SiteExpensesAndIncomeIntroduction />;
     case "YEARLY_EXPENSES":
       return <SiteYearlyExpensesForm />;
     case "YEARLY_INCOME":

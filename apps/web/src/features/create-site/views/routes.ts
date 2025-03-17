@@ -30,6 +30,7 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   IS_SITE_OPERATED: "site-est-exploite",
   TENANT: "locataire",
   OPERATOR: "exploitant",
+  YEARLY_EXPENSES_AND_INCOME_INTRODUCTION: "introduction-depenses-et-recettes-annuelles",
   YEARLY_EXPENSES: "depenses-annuelles",
   YEARLY_INCOME: "recettes-annuelles",
   YEARLY_EXPENSES_SUMMARY: "recapitulatif-depenses-annuelles",

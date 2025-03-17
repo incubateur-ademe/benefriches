@@ -46,6 +46,7 @@ export type SiteCreationCustomStep =
   | "IS_SITE_OPERATED"
   | "TENANT"
   | "OPERATOR"
+  | "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION"
   | "YEARLY_EXPENSES"
   | "YEARLY_INCOME"
   | "YEARLY_EXPENSES_SUMMARY"
@@ -179,6 +180,10 @@ export const completeFricheAccidents = createAction<
       accidentsDeaths?: number;
     }
 >("completeFricheAccidents");
+
+export const yearlyExpensesAndIncomeIntroductionCompleted = createAction(
+  "completeYearlyExpensesAndIncomeIntroduction",
+);
 
 export const completeYearlyExpenses = createAction<SiteYearlyExpense[]>("completeYearlyExpenses");
 
@@ -332,28 +337,41 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     })
     .addCase(completeOwner, (state, action) => {
       state.siteData.owner = action.payload.owner;
-      state.stepsHistory.push(state.siteData.isFriche ? "IS_FRICHE_LEASED" : "IS_SITE_OPERATED");
+      switch (state.siteData.nature) {
+        case "FRICHE":
+          state.stepsHistory.push("IS_FRICHE_LEASED");
+          break;
+        case "AGRICULTURAL_OPERATION":
+          state.stepsHistory.push("IS_SITE_OPERATED");
+          break;
+        case "NATURAL_AREA":
+          state.stepsHistory.push("NAMING");
+      }
     })
     .addCase(completeIsFricheLeased, (state, action) => {
       const { isFricheLeased } = action.payload;
       state.siteData.isFricheLeased = isFricheLeased;
-      state.stepsHistory.push(isFricheLeased ? "TENANT" : "YEARLY_EXPENSES");
+      state.stepsHistory.push(
+        isFricheLeased ? "TENANT" : "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION",
+      );
     })
     .addCase(completeIsSiteOperated, (state, action) => {
       const { isSiteOperated } = action.payload;
       state.siteData.isSiteOperated = isSiteOperated;
-      state.stepsHistory.push(isSiteOperated ? "OPERATOR" : "YEARLY_EXPENSES");
+      state.stepsHistory.push(
+        isSiteOperated ? "OPERATOR" : "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION",
+      );
     })
     .addCase(completeTenant, (state, action) => {
       state.siteData.tenant = action.payload.tenant;
-      state.stepsHistory.push("YEARLY_EXPENSES");
+      state.stepsHistory.push("YEARLY_EXPENSES_AND_INCOME_INTRODUCTION");
     })
     .addCase(completeOperator, (state, action) => {
       const { tenant } = action.payload;
       if (tenant) {
         state.siteData.tenant = tenant;
       }
-      state.stepsHistory.push("YEARLY_EXPENSES");
+      state.stepsHistory.push("YEARLY_EXPENSES_AND_INCOME_INTRODUCTION");
     })
     .addCase(completeFricheAccidentsIntroduction, (state) => {
       state.stepsHistory.push("FRICHE_ACCIDENTS");
@@ -368,6 +386,9 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
         state.siteData.accidentsDeaths = action.payload.accidentsDeaths ?? 0;
       }
       state.stepsHistory.push("MANAGEMENT_INTRODUCTION");
+    })
+    .addCase(yearlyExpensesAndIncomeIntroductionCompleted, (state) => {
+      state.stepsHistory.push("YEARLY_EXPENSES");
     })
     .addCase(completeYearlyExpenses, (state, action) => {
       state.siteData.yearlyExpenses = action.payload;

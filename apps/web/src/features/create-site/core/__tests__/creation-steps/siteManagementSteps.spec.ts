@@ -17,6 +17,7 @@ import {
   completeYearlyExpenses,
   completeYearlyExpensesSummary,
   completeYearlyIncome,
+  yearlyExpensesAndIncomeIntroductionCompleted,
 } from "../../createSite.reducer";
 import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
@@ -44,10 +45,10 @@ describe("Site creation: site management steps", () => {
   });
   describe("OWNER", () => {
     describe("complete", () => {
-      it("goes to IS_FRICHE_LEASED step if site is friche and sets owner when step is completed", () => {
+      it("goes to IS_FRICHE_LEASED step when site is friche and sets owner when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory(["OWNER"])
-          .withCreationData({ isFriche: true })
+          .withCreationData({ nature: "FRICHE" })
           .build();
         const initialRootState = store.getState();
 
@@ -57,8 +58,24 @@ describe("Site creation: site management steps", () => {
         expectSiteDataDiff(initialRootState, newState, { owner: siteWithExhaustiveData.owner });
         expectNewCurrentStep(initialRootState, newState, "IS_FRICHE_LEASED");
       });
-      it("goes to IS_SITE_OPERATED step and sets owner when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["OWNER"]).build();
+      it("goes to NAMING step when site is natural area and sets owner when step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["OWNER"])
+          .withCreationData({ nature: "NATURAL_AREA" })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { owner: siteWithExhaustiveData.owner });
+        expectNewCurrentStep(initialRootState, newState, "NAMING");
+      });
+      it("goes to IS_SITE_OPERATED step when site is agricultural operation and sets owner when step is completed", () => {
+        const store = new StoreBuilder()
+          .withCreationData({ nature: "AGRICULTURAL_OPERATION" })
+          .withStepsHistory(["OWNER"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(completeOwner({ owner: siteWithExhaustiveData.owner }));
@@ -99,7 +116,7 @@ describe("Site creation: site management steps", () => {
         expectSiteDataDiff(initialRootState, newState, { isFricheLeased: true });
         expectNewCurrentStep(initialRootState, newState, "TENANT");
       });
-      it("goes to YEARLY_EXPENSES step when step is completed and not leased", () => {
+      it("goes to YEARLY_EXPENSES_AND_INCOME_INTRODUCTION step when step is completed and not leased", () => {
         const store = new StoreBuilder().withStepsHistory(["IS_FRICHE_LEASED"]).build();
         const initialRootState = store.getState();
 
@@ -107,7 +124,7 @@ describe("Site creation: site management steps", () => {
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { isFricheLeased: false });
-        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
+        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION");
       });
     });
     describe("revert", () => {
@@ -143,7 +160,7 @@ describe("Site creation: site management steps", () => {
         expectSiteDataDiff(initialRootState, newState, { isSiteOperated: true });
         expectNewCurrentStep(initialRootState, newState, "OPERATOR");
       });
-      it("goes to YEARLY_EXPENSES step when step is completed and no tenant", () => {
+      it("goes to YEARLY_EXPENSES_AND_INCOME_INTRODUCTION step when step is completed and no tenant", () => {
         const store = new StoreBuilder().withStepsHistory(["IS_SITE_OPERATED"]).build();
         const initialRootState = store.getState();
 
@@ -153,7 +170,7 @@ describe("Site creation: site management steps", () => {
         expectSiteDataDiff(initialRootState, newState, {
           isSiteOperated: false,
         });
-        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
+        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION");
       });
     });
     describe("revert", () => {
@@ -178,7 +195,7 @@ describe("Site creation: site management steps", () => {
   });
   describe("OPERATOR", () => {
     describe("complete", () => {
-      it("goes to YEARLY_EXPENSES step and sets tenant when step is completed", () => {
+      it("goes to YEARLY_EXPENSES_AND_INCOME_INTRODUCTION step and sets tenant when step is completed", () => {
         const store = new StoreBuilder().withStepsHistory(["OPERATOR"]).build();
         const initialRootState = store.getState();
 
@@ -186,9 +203,9 @@ describe("Site creation: site management steps", () => {
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
-        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
+        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION");
       });
-      it("goes to YEARLY_EXPENSES step when step is completed with tenant", () => {
+      it("goes to YEARLY_EXPENSES_AND_INCOME_INTRODUCTION step when step is completed with tenant", () => {
         const store = new StoreBuilder().withStepsHistory(["OPERATOR"]).build();
         const initialRootState = store.getState();
 
@@ -196,7 +213,7 @@ describe("Site creation: site management steps", () => {
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { tenant: undefined });
-        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
+        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION");
       });
     });
     describe("revert", () => {
@@ -219,28 +236,71 @@ describe("Site creation: site management steps", () => {
       });
     });
   });
-
   describe("TENANT", () => {
     describe("complete", () => {
-      it("goes to YEARLY_EXPENSES step and sets tenant when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["TENANT"]).build();
-        const initialRootState = store.getState();
+      describe("when site is friche", () => {
+        it("goes to YEARLY_EXPENSES_AND_INCOME_INTRODUCTION step and sets tenant when step is completed", () => {
+          const store = new StoreBuilder()
+            .withCreationData({
+              isFriche: true,
+              nature: "FRICHE",
+            })
+            .withStepsHistory(["TENANT"])
+            .build();
+          const initialRootState = store.getState();
 
-        store.dispatch(completeTenant({ tenant: siteWithExhaustiveData.tenant }));
+          store.dispatch(completeTenant({ tenant: siteWithExhaustiveData.tenant }));
 
-        const newState = store.getState();
-        expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
-        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
+          expectNewCurrentStep(
+            initialRootState,
+            newState,
+            "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION",
+          );
+        });
+        it("goes to YEARLY_EXPENSES_AND_INCOME_INTRODUCTION step when step is completed and no tenant", () => {
+          const store = new StoreBuilder()
+            .withCreationData({
+              isFriche: true,
+              nature: "FRICHE",
+            })
+            .withStepsHistory(["TENANT"])
+            .build();
+          const initialRootState = store.getState();
+
+          store.dispatch(completeTenant({ tenant: undefined }));
+
+          const newState = store.getState();
+          expectSiteDataUnchanged(initialRootState, newState);
+          expectNewCurrentStep(
+            initialRootState,
+            newState,
+            "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION",
+          );
+        });
       });
-      it("goes to YEARLY_EXPENSES step when step is completed and no tenant", () => {
-        const store = new StoreBuilder().withStepsHistory(["TENANT"]).build();
-        const initialRootState = store.getState();
+      describe("when site is agricultural operation", () => {
+        it("goes to YEARLY_EXPENSES_AND_INCOME_INTRODUCTION step and sets tenant when step is completed", () => {
+          const store = new StoreBuilder()
+            .withCreationData({
+              isFriche: false,
+              nature: "AGRICULTURAL_OPERATION",
+            })
+            .withStepsHistory(["TENANT"])
+            .build();
+          const initialRootState = store.getState();
 
-        store.dispatch(completeTenant({ tenant: undefined }));
+          store.dispatch(completeTenant({ tenant: siteWithExhaustiveData.tenant }));
 
-        const newState = store.getState();
-        expectSiteDataUnchanged(initialRootState, newState);
-        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
+          const newState = store.getState();
+          expectSiteDataDiff(initialRootState, newState, { tenant: siteWithExhaustiveData.tenant });
+          expectNewCurrentStep(
+            initialRootState,
+            newState,
+            "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION",
+          );
+        });
       });
     });
     describe("revert", () => {
@@ -260,6 +320,35 @@ describe("Site creation: site management steps", () => {
         expectSiteDataDiff(initialRootState, newState, {
           tenant: undefined,
         });
+        expectStepReverted(initialRootState, newState);
+      });
+    });
+  });
+  describe("YEARLY_EXPENSES_AND_INCOME_INTRODUCTION", () => {
+    describe("complete", () => {
+      it("goes to YEARLY_EXPENSES step when completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["TENANT", "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(yearlyExpensesAndIncomeIntroductionCompleted());
+
+        const newState = store.getState();
+        expectSiteDataUnchanged(initialRootState, newState);
+        expectNewCurrentStep(initialRootState, newState, "YEARLY_EXPENSES");
+      });
+    });
+    describe("revert", () => {
+      it("goes to previous step", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["TENANT", "YEARLY_EXPENSES_AND_INCOME_INTRODUCTION"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(revertTenantStep());
+
+        const newState = store.getState();
         expectStepReverted(initialRootState, newState);
       });
     });
