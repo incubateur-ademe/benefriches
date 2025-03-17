@@ -345,7 +345,7 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
           state.stepsHistory.push("IS_SITE_OPERATED");
           break;
         case "NATURAL_AREA":
-          state.stepsHistory.push("NAMING");
+          state.stepsHistory.push("NAMING_INTRODUCTION");
       }
     })
     .addCase(completeIsFricheLeased, (state, action) => {

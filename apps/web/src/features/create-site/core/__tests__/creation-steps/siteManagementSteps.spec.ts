@@ -69,7 +69,7 @@ describe("Site creation: site management steps", () => {
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { owner: siteWithExhaustiveData.owner });
-        expectNewCurrentStep(initialRootState, newState, "NAMING");
+        expectNewCurrentStep(initialRootState, newState, "NAMING_INTRODUCTION");
       });
       it("goes to IS_SITE_OPERATED step when site is agricultural operation and sets owner when step is completed", () => {
         const store = new StoreBuilder()
