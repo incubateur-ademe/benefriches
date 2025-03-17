@@ -1,4 +1,5 @@
 import { fr } from "@codegouvfr/react-dsfr";
+import { Accordion } from "@codegouvfr/react-dsfr/Accordion";
 import { Controller, useForm } from "react-hook-form";
 import { SiteNature, SoilType } from "shared";
 
@@ -24,32 +25,38 @@ type Props = {
   siteNature?: SiteNature;
 };
 
-type SoilOptionsByCategory = { category: string; options: SoilType[] }[];
+type SoilOptionsByCategory = { category: string; options: SoilType[]; defaultOpen: boolean }[];
 
 const FRICHE_OPTIONS = [
   {
     category: "Espaces minéraux",
     options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
+    defaultOpen: true,
   },
   {
     category: "Espaces végétalisés artificiels",
     options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
+    defaultOpen: true,
   },
   {
     category: "Prairies naturelles ou agricoles",
     options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
+    defaultOpen: false,
   },
   {
     category: "Espaces agricoles",
     options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
+    defaultOpen: false,
   },
   {
     category: "Forêt",
     options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
+    defaultOpen: false,
   },
   {
     category: "Autre espace naturel",
     options: ["WET_LAND", "WATER"],
+    defaultOpen: false,
   },
 ] as const satisfies SoilOptionsByCategory;
 
@@ -57,26 +64,32 @@ const AGRICULTURAL_OPERATION_OPTIONS = [
   {
     category: "Espaces agricoles",
     options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
+    defaultOpen: true,
   },
   {
     category: "Prairie naturelle ou agricole",
     options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
+    defaultOpen: true,
   },
   {
     category: "Forêt",
     options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
+    defaultOpen: false,
   },
   {
     category: "Autre espace naturel",
     options: ["WATER", "WET_LAND"],
+    defaultOpen: false,
   },
   {
     category: "Espaces minéraux",
     options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
+    defaultOpen: false,
   },
   {
     category: "Espaces végétalisés artificiels",
     options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
+    defaultOpen: false,
   },
 ] as const satisfies SoilOptionsByCategory;
 
@@ -84,26 +97,32 @@ const NATURAL_AREA_OPTIONS = [
   {
     category: "Forêt",
     options: ["FOREST_DECIDUOUS", "FOREST_CONIFER", "FOREST_POPLAR", "FOREST_MIXED"],
+    defaultOpen: true,
   },
   {
     category: "Autre espace naturel",
     options: ["WATER", "WET_LAND"],
+    defaultOpen: true,
   },
   {
     category: "Prairie naturelle ou agricole",
     options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
+    defaultOpen: false,
   },
   {
     category: "Espaces minéraux",
     options: ["BUILDINGS", "IMPERMEABLE_SOILS", "MINERAL_SOIL"],
+    defaultOpen: false,
   },
   {
     category: "Espaces végétalisés artificiels",
     options: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "ARTIFICIAL_TREE_FILLED"],
+    defaultOpen: false,
   },
   {
     category: "Espaces agricoles",
     options: ["CULTIVATION", "VINEYARD", "ORCHARD"],
+    defaultOpen: false,
   },
 ] as const satisfies SoilOptionsByCategory;
 
@@ -182,48 +201,49 @@ function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
       }
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        {optionsByCategory.map(({ category, options }) => {
+        {optionsByCategory.map(({ category, options, defaultOpen }) => {
           return (
             <section key={category} className="tw-mb-10">
-              <h4>{category}</h4>
-              <div
-                className={classNames(
-                  "tw-grid",
-                  "tw-grid-cols-1",
-                  "sm:tw-grid-cols-2",
-                  "lg:tw-grid-cols-3",
-                  "tw-gap-4",
-                )}
-              >
-                {options.map((option) => {
-                  return (
-                    <div key={option}>
-                      <Controller
-                        control={control}
-                        name="soils"
-                        rules={{ required: "Veuillez sélectionner au moins un type d'espace." }}
-                        render={({ field }) => {
-                          const isSelected = field.value.includes(option);
-                          return (
-                            <SoilTypeTile
-                              soilType={option}
-                              siteNature={siteNature!}
-                              isSelected={isSelected}
-                              onSelect={() => {
-                                field.onChange(
-                                  isSelected
-                                    ? field.value.filter((v) => v !== option)
-                                    : [...field.value, option],
-                                );
-                              }}
-                            />
-                          );
-                        }}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+              <Accordion label={category} titleAs="h4" defaultExpanded={defaultOpen}>
+                <div
+                  className={classNames(
+                    "tw-grid",
+                    "tw-grid-cols-1",
+                    "sm:tw-grid-cols-2",
+                    "lg:tw-grid-cols-3",
+                    "tw-gap-4",
+                  )}
+                >
+                  {options.map((option) => {
+                    return (
+                      <div key={option}>
+                        <Controller
+                          control={control}
+                          name="soils"
+                          rules={{ required: "Veuillez sélectionner au moins un type d'espace." }}
+                          render={({ field }) => {
+                            const isSelected = field.value.includes(option);
+                            return (
+                              <SoilTypeTile
+                                soilType={option}
+                                siteNature={siteNature!}
+                                isSelected={isSelected}
+                                onSelect={() => {
+                                  field.onChange(
+                                    isSelected
+                                      ? field.value.filter((v) => v !== option)
+                                      : [...field.value, option],
+                                  );
+                                }}
+                              />
+                            );
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </Accordion>
             </section>
           );
         })}
