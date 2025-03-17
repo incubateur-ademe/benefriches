@@ -6,7 +6,7 @@ import {
   fetchSiteSoilsCarbonStorage,
   SiteSoilsCarbonStorageResult,
 } from "../actions/siteSoilsCarbonStorage.actions";
-import { StoreBuilder } from "./testUtils";
+import { StoreBuilder } from "./creation-steps/testUtils";
 
 describe("Site carbon sequestration reducer", () => {
   it("should get carbon sequestration for site city code and soils distribution", async () => {

@@ -10,7 +10,7 @@ import {
   selectAvailableLocalAuthoritiesWithoutCurrentOwner,
   selectAvailableLocalAuthoritiesWithoutCurrentUser,
 } from "../siteMunicipalityData.reducer";
-import { StoreBuilder } from "./testUtils";
+import { StoreBuilder } from "./creation-steps/testUtils";
 
 const API_MOCKED_RESULT = {
   "75110": {

@@ -3,8 +3,8 @@ import { initialState } from "@/features/onboarding/core/user.reducer";
 import { AppDependencies, createStore, RootState } from "@/shared/core/store-config/store";
 import { getTestAppDependencies } from "@/test/testAppDependencies";
 
-import { getInitialState, SiteCreationStep } from "../createSite.reducer";
-import { SiteCreationData } from "../siteFoncier.types";
+import { getInitialState, SiteCreationStep } from "../../createSite.reducer";
+import { SiteCreationData } from "../../siteFoncier.types";
 
 export const expectNewCurrentStep = (
   initialState: RootState,

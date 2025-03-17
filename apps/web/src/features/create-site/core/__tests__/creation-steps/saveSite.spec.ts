@@ -3,15 +3,15 @@ import { v4 as uuid } from "uuid";
 
 import { buildUser } from "@/features/onboarding/core/user.mock";
 
-import { InMemoryCreateSiteService } from "../../infrastructure/create-site-service/inMemoryCreateSiteApi";
-import { customSiteSaved, expressSiteSaved } from "../actions/siteSaved.actions";
+import { InMemoryCreateSiteService } from "../../../infrastructure/create-site-service/inMemoryCreateSiteApi";
+import { customSiteSaved, expressSiteSaved } from "../../actions/siteSaved.actions";
 import {
   expressFricheCreationData,
   fricheWithExhaustiveData,
   fricheWithMinimalData,
   siteWithMinimalData,
-} from "../siteData.mock";
-import { SiteCreationData, SiteExpressCreationData } from "../siteFoncier.types";
+} from "../../siteData.mock";
+import { SiteCreationData, SiteExpressCreationData } from "../../siteFoncier.types";
 import { expectNewCurrentStep, expectSiteDataUnchanged, StoreBuilder } from "./testUtils";
 
 const BLAJAN_ADDRESS: Address = {
