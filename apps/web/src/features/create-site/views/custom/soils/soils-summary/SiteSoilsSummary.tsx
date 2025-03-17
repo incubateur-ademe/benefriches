@@ -18,7 +18,7 @@ const SiteSoilsSummary = ({ totalSurfaceArea, onNext, onBack, soilsDistribution 
   );
 
   return (
-    <WizardFormLayout title="Récapitulatif de la répartition des sols">
+    <WizardFormLayout title="Récapitulatif de l'occupation des sols">
       <p>
         Superficie totale du site :{" "}
         <strong>

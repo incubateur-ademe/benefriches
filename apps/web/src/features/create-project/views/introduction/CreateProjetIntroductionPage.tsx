@@ -38,7 +38,7 @@ function CreateProjectIntroductionPage({ onNext, siteName, siteLoadingState }: P
           </EditorialPageTitle>
           <EditorialPageText>
             Nous allons ici parler de votre <strong>projet d'aménagement</strong> : la nature du
-            projet, l'aménagement des espaces et la typologie des sols associée, les acteurs du
+            projet, l'aménagement des espaces et l'occupation des sols associée, les acteurs du
             projet, les dépenses et recettes prévisionnelles, le calendrier des travaux, etc.
           </EditorialPageText>
           <Button size="large" onClick={onNext}>

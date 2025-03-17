@@ -21,8 +21,8 @@ function CreateSiteIntroductionPage({ onNext }: Props) {
         </EditorialPageIcon>
         <EditorialPageTitle>Tout commence sur un site.</EditorialPageTitle>
         <EditorialPageText>
-          Nous allons d'abord parler du <strong>site existant</strong> : la nature du site, la
-          typologie de ses sols, les dépenses associées, etc.
+          Nous allons d'abord parler du <strong>site existant</strong> : la nature du site,
+          l'occupation des sols, les dépenses associées, etc.
           <br />
           Une fois que ce site sera décrit, vous pourrez alors créer un ou plusieurs{" "}
           <strong>projets d'aménagement</strong> sur ce site.
