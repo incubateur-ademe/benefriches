@@ -6,7 +6,6 @@ import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types"
 import { splitEvenly } from "@/shared/core/split-number/splitNumber";
 import { RootState } from "@/shared/core/store-config/store";
 
-import { isStepCompletedAction } from "./actions/actionsUtils";
 import { customSiteSaved, expressSiteSaved } from "./actions/finalStep.actions";
 import {
   addressStepCompleted,
@@ -106,7 +105,7 @@ export type SiteCreationStep =
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
   siteData: SiteCreationData;
-  consecutiveStepsReverted: number;
+  stepRevertAttempted: boolean;
   createMode?: "express" | "custom";
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
@@ -116,7 +115,7 @@ export const getInitialState = (): SiteCreationState => {
     stepsHistory: ["INTRODUCTION"],
     saveLoadingState: "idle",
     createMode: undefined,
-    consecutiveStepsReverted: 0,
+    stepRevertAttempted: false,
     siteData: {
       id: uuid(),
       soils: [],
@@ -369,16 +368,13 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       }
     })
     .addCase(stepRevertConfirmed, (state) => {
-      state.consecutiveStepsReverted = 0;
+      state.stepRevertAttempted = false;
     })
     .addCase(stepRevertCancelled, (state) => {
-      state.consecutiveStepsReverted = 0;
+      state.stepRevertAttempted = false;
     })
     .addMatcher(isStepRevertAttemptedAction, (state) => {
-      state.consecutiveStepsReverted++;
-    })
-    .addMatcher(isStepCompletedAction, (state) => {
-      state.consecutiveStepsReverted = 0;
+      state.stepRevertAttempted = true;
     });
 });
 

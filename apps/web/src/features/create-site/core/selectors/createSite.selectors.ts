@@ -4,8 +4,6 @@ import { Address, SoilsDistribution } from "shared";
 import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { RootState } from "@/shared/core/store-config/store";
 
-import { shouldConfirmStepRevert } from "../stepRevert";
-
 const selectSelf = (state: RootState) => state.siteCreation;
 
 export const selectSiteAddress = createSelector(
@@ -52,9 +50,6 @@ export const selectShouldConfirmStepRevert = createSelector(
   selectSelf,
   selectAppSettings,
   (siteCreation, appSettings) => {
-    return (
-      appSettings.askForConfirmationOnStepRevert &&
-      shouldConfirmStepRevert(siteCreation.consecutiveStepsReverted)
-    );
+    return appSettings.askForConfirmationOnStepRevert && siteCreation.stepRevertAttempted;
   },
 );

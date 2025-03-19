@@ -1,13 +1,18 @@
+import { createStore } from "@/shared/core/store-config/store";
+
 import {
   addressStepReverted,
   agriculturalOperationActivityReverted,
-  isFricheCompleted,
   isFricheReverted,
   siteNatureReverted,
 } from "../actions/introduction.actions";
 import { stepRevertCancelled, stepRevertConfirmed } from "../actions/revert.actions";
 import { selectShouldConfirmStepRevert } from "../selectors/createSite.selectors";
 import { expectCurrentStep, StoreBuilder } from "./creation-steps/testUtils";
+
+const expectConfirmationAsked = (store: ReturnType<typeof createStore>) => {
+  return expect(selectShouldConfirmStepRevert(store.getState()));
+};
 
 describe("Site creation: step revert confirmation logic", () => {
   describe("when user has disabled confirmation on step revert", () => {
@@ -21,7 +26,7 @@ describe("Site creation: step revert confirmation logic", () => {
       store.dispatch(siteNatureReverted());
       store.dispatch(isFricheReverted());
 
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
+      expectConfirmationAsked(store).toBe(false);
       expectCurrentStep(store.getState(), "INTRODUCTION");
     });
   });
@@ -29,52 +34,16 @@ describe("Site creation: step revert confirmation logic", () => {
   describe("with step revert confirmation enabled", () => {
     const getStore = () => new StoreBuilder().withStepRevertConfirmation(true);
 
-    it("lets user revert one step", () => {
-      const store = getStore()
-        .withStepsHistory(["INTRODUCTION", "IS_FRICHE", "SITE_NATURE"])
-        .build();
-
-      store.dispatch(siteNatureReverted());
-
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
-    });
-
-    it("does nothing when user reverted one step, then completed one and reverted again", () => {
+    it("asks for confirmation when user reverts step", () => {
       const store = getStore()
         .withStepsHistory(["INTRODUCTION", "IS_FRICHE", "SITE_NATURE"])
         .build();
 
       // revert current step
       store.dispatch(siteNatureReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
-
-      // complete step
-      store.dispatch(isFricheCompleted({ isFriche: false }));
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
+      expectConfirmationAsked(store).toBe(true);
+      // revert was not performed
       expectCurrentStep(store.getState(), "SITE_NATURE");
-
-      // revert again
-      store.dispatch(siteNatureReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
-    });
-
-    it("shows warning when user reverted two steps in a row and does not perform second revert", () => {
-      const store = getStore()
-        .withStepsHistory(["INTRODUCTION", "IS_FRICHE", "SITE_NATURE"])
-        .build();
-
-      // revert current step
-      store.dispatch(siteNatureReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
-
-      // revert current step
-      store.dispatch(isFricheReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(true);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
     });
 
     it("asks for confirmation and then does not perform step revert when user cancels", async () => {
@@ -84,23 +53,19 @@ describe("Site creation: step revert confirmation logic", () => {
 
       // revert current step
       store.dispatch(siteNatureReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
-
-      // revert current step
-      store.dispatch(isFricheReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(true);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
+      expectConfirmationAsked(store).toBe(true);
+      expectCurrentStep(store.getState(), "SITE_NATURE");
 
       store.dispatch(stepRevertCancelled({ doNotAskAgain: false }));
       // wait for the next tick to ensure async flow in listener is done
       await new Promise((resolve) => setTimeout(resolve, 0));
-      expectCurrentStep(store.getState(), "IS_FRICHE");
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expect(store.getState().siteCreation.consecutiveStepsReverted).toBe(0);
+
+      // revert was not performed
+      expectCurrentStep(store.getState(), "SITE_NATURE");
+      expectConfirmationAsked(store).toBe(false);
     });
 
-    it("asks for confirmation and then does not perform step revert when user confirms", async () => {
+    it("asks for confirmation and then perform step revert when user confirms", async () => {
       const store = getStore()
         .withStepsHistory(["INTRODUCTION", "IS_FRICHE", "SITE_NATURE"])
         .withCreationData({ nature: "AGRICULTURAL_OPERATION", isFriche: false })
@@ -108,23 +73,18 @@ describe("Site creation: step revert confirmation logic", () => {
 
       // revert current step
       store.dispatch(siteNatureReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
-      expect(store.getState().siteCreation.siteData.nature).toBe(undefined);
-
-      // revert current step
-      store.dispatch(isFricheReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(true);
-      expectCurrentStep(store.getState(), "IS_FRICHE");
-      expect(store.getState().siteCreation.siteData.isFriche).toBe(false);
+      expectConfirmationAsked(store).toBe(true);
+      // make sure revert was not performed
+      expectCurrentStep(store.getState(), "SITE_NATURE");
+      expect(store.getState().siteCreation.siteData.nature).toBe("AGRICULTURAL_OPERATION");
 
       store.dispatch(stepRevertConfirmed({ doNotAskAgain: false }));
       // wait for the next tick to ensure async flow in listener is done
       await new Promise((resolve) => setTimeout(resolve, 0));
-      expect(store.getState().siteCreation.siteData.isFriche).toBe(undefined);
-      expectCurrentStep(store.getState(), "INTRODUCTION");
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expect(store.getState().siteCreation.consecutiveStepsReverted).toBe(0);
+      // revert should have been performed
+      expectConfirmationAsked(store).toBe(false);
+      expect(store.getState().siteCreation.siteData.nature).toBe(undefined);
+      expectCurrentStep(store.getState(), "IS_FRICHE");
     });
 
     it("will not ask again for confirmation when user has confirmed revert and doesn't want to be asked again", async () => {
@@ -140,9 +100,7 @@ describe("Site creation: step revert confirmation logic", () => {
         .build();
 
       store.dispatch(agriculturalOperationActivityReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      store.dispatch(addressStepReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(true);
+      expectConfirmationAsked(store).toBe(true);
 
       // confirm and do not ask again
       expect(store.getState().appSettings.askForConfirmationOnStepRevert).toBe(true);
@@ -152,13 +110,11 @@ describe("Site creation: step revert confirmation logic", () => {
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       // revert again
-      store.dispatch(siteNatureReverted());
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      store.dispatch(isFricheReverted());
-
+      store.dispatch(addressStepReverted());
       // user should not be asked for confirmation again
-      expect(selectShouldConfirmStepRevert(store.getState())).toBe(false);
-      expectCurrentStep(store.getState(), "INTRODUCTION");
+      expectConfirmationAsked(store).toBe(false);
+      // step should have been reverted
+      expectCurrentStep(store.getState(), "SITE_NATURE");
     });
   });
 });
