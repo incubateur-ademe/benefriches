@@ -3,6 +3,7 @@ import { LocalAuthority } from "shared";
 type Response = {
   nom: string;
   code: string;
+  codesPostaux: string[];
   epci?: {
     code: string;
     nom: string;
@@ -23,7 +24,7 @@ type Response = {
 const GEO_API_HOSTNAME = "https://geo.api.gouv.fr";
 const MUNICIPALITY_URL = "/communes";
 const FIELDS =
-  "fields=nom,code,codeEpci,epci,codeDepartement,departement,codeRegion,region,population,surface";
+  "fields=nom,code,codesPostaux,codeEpci,epci,codeDepartement,departement,codeRegion,region,population,surface";
 
 type SearchMunicipalityResult = {
   code: string;
@@ -81,9 +82,9 @@ export class AdministrativeDivisionGeoApi {
 
     const jsonResult = (await response.json()) as Response[];
 
-    return jsonResult.map(({ code, nom, epci, departement, region }) => ({
+    return jsonResult.map(({ code, codesPostaux, nom, epci, departement, region }) => ({
       code,
-      name: nom,
+      name: `${nom} (${codesPostaux.length === 1 ? codesPostaux[0] : departement.nom})`,
       localAuthorities: [
         {
           type: "municipality",
