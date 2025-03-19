@@ -4,7 +4,7 @@ import { Fragment } from "react/jsx-runtime";
 
 import classNames, { ClassValue } from "../../clsx";
 
-export type DropdownMenuProps = {
+type DropdownMenuProps = {
   classes?: Partial<Record<"root" | "menu" | "list", ClassValue>>;
   options: ButtonProps[];
   buttonProps: ButtonProps;
