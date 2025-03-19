@@ -1,10 +1,11 @@
-import { createStepCompletedAction, createStepRevertedAction } from "./actionsUtils";
+import { createStepCompletedAction } from "./actionsUtils";
+import { createStepRevertAttempted } from "./revert.actions";
 
 export const soilsContaminationIntroductionStepCompleted = createStepCompletedAction(
   "SOILS_CONTAMINATION_INTRODUCTION",
 );
 export const soilsContaminationIntroductionStepReverted = () =>
-  createStepRevertedAction("SOILS_CONTAMINATION_INTRODUCTION")();
+  createStepRevertAttempted("SOILS_CONTAMINATION_INTRODUCTION")();
 
 export const soilsContaminationStepCompleted = createStepCompletedAction<{
   hasContaminatedSoils: boolean;
@@ -12,7 +13,7 @@ export const soilsContaminationStepCompleted = createStepCompletedAction<{
 }>("SOILS_CONTAMINATION");
 
 export const soilsContaminationStepReverted = () =>
-  createStepRevertedAction("SOILS_CONTAMINATION")({
+  createStepRevertAttempted("SOILS_CONTAMINATION")({
     resetFields: ["hasContaminatedSoils", "contaminatedSoilSurface"],
   });
 
@@ -20,7 +21,7 @@ export const fricheAccidentsIntroductionStepCompleted = createStepCompletedActio
   "FRICHE_ACCIDENTS_INTRODUCTION",
 );
 export const fricheAccidentsIntroductionStepReverted = () =>
-  createStepRevertedAction("FRICHE_ACCIDENTS_INTRODUCTION")();
+  createStepRevertAttempted("FRICHE_ACCIDENTS_INTRODUCTION")();
 export const fricheAccidentsStepCompleted = createStepCompletedAction<
   | { hasRecentAccidents: false }
   | {
@@ -32,7 +33,7 @@ export const fricheAccidentsStepCompleted = createStepCompletedAction<
 >("FRICHE_ACCIDENTS");
 
 export const fricheAccidentsStepReverted = () =>
-  createStepRevertedAction("FRICHE_ACCIDENTS")({
+  createStepRevertAttempted("FRICHE_ACCIDENTS")({
     resetFields: [
       "hasRecentAccidents",
       "accidentsMinorInjuries",

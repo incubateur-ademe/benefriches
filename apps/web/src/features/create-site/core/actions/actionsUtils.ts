@@ -1,23 +1,21 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction, UnknownAction } from "@reduxjs/toolkit";
 
 import { SiteCreationStep } from "../createSite.reducer";
-import { SiteCreationData } from "../siteFoncier.types";
 
 const SITE_CREATION_PREFIX = "siteCreation";
+
+const COMPLETED_SUFFIX = "/completed";
 
 export const createSiteCreationAction = <TPayload = void>(actionName: string) =>
   createAction<TPayload>(`${SITE_CREATION_PREFIX}/${actionName}`);
 
 export const createStepCompletedAction = <TPayload = void>(stepName: SiteCreationStep) =>
-  createSiteCreationAction<TPayload>(`${stepName}/completed`);
+  createSiteCreationAction<TPayload>(`${stepName}${COMPLETED_SUFFIX}`);
 
-export type StepRevertedActionPayload = { resetFields: (keyof SiteCreationData)[] } | undefined;
-export const createStepRevertedAction = (stepName: SiteCreationStep) =>
-  createSiteCreationAction<StepRevertedActionPayload>(`${stepName}/reverted`);
+export const isSiteCreationAction = (action: UnknownAction) => {
+  return action.type.startsWith(SITE_CREATION_PREFIX);
+};
 
-export const isStepRevertedAction = (action: {
-  type: string;
-  payload?: StepRevertedActionPayload;
-}) => {
-  return action.type.startsWith(SITE_CREATION_PREFIX) && action.type.endsWith("/reverted");
+export const isStepCompletedAction = (action: UnknownAction) => {
+  return isSiteCreationAction(action) && action.type.endsWith(COMPLETED_SUFFIX);
 };

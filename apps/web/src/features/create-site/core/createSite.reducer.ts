@@ -6,12 +6,11 @@ import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types"
 import { splitEvenly } from "@/shared/core/split-number/splitNumber";
 import { RootState } from "@/shared/core/store-config/store";
 
-import { isStepRevertedAction, StepRevertedActionPayload } from "./actions/actionsUtils";
+import { isStepCompletedAction } from "./actions/actionsUtils";
 import { customSiteSaved, expressSiteSaved } from "./actions/finalStep.actions";
 import {
   addressStepCompleted,
   agriculturalOperationActivityCompleted,
-  createModeReverted,
   createModeSelectionCompleted,
   fricheActivityStepCompleted,
   introductionStepCompleted,
@@ -21,6 +20,12 @@ import {
   siteNatureCompleted,
 } from "./actions/introduction.actions";
 import { namingIntroductionStepCompleted, namingStepCompleted } from "./actions/naming.actions";
+import {
+  isStepRevertAttemptedAction,
+  stepRevertCancelled,
+  stepRevertConfirmed,
+  stepReverted,
+} from "./actions/revert.actions";
 import {
   isFricheLeasedStepCompleted,
   isSiteOperatedStepCompleted,
@@ -101,6 +106,7 @@ export type SiteCreationStep =
 export type SiteCreationState = {
   stepsHistory: SiteCreationStep[];
   siteData: SiteCreationData;
+  consecutiveStepsReverted: number;
   createMode?: "express" | "custom";
   saveLoadingState: "idle" | "loading" | "success" | "error";
 };
@@ -110,6 +116,7 @@ export const getInitialState = (): SiteCreationState => {
     stepsHistory: ["INTRODUCTION"],
     saveLoadingState: "idle",
     createMode: undefined,
+    consecutiveStepsReverted: 0,
     siteData: {
       id: uuid(),
       soils: [],
@@ -170,10 +177,6 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
           state.stepsHistory.push("ADDRESS");
           break;
       }
-    })
-    .addCase(createModeReverted, (state) => {
-      state.createMode = undefined;
-      state.stepsHistory = state.stepsHistory.slice(0, -1);
     })
     .addCase(fricheActivityStepCompleted, (state, action) => {
       state.siteData.fricheActivity = action.payload;
@@ -351,14 +354,12 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     .addCase(expressSiteSaved.rejected, (state) => {
       state.saveLoadingState = "error";
     })
-    .addMatcher(isStepRevertedAction, (state, action) => {
+    .addCase(stepReverted, (state, action) => {
       const { siteData: initialSiteData } = getInitialState();
-      const payload =
-        "payload" in action ? (action.payload as StepRevertedActionPayload) : undefined;
-      if (payload) {
+      if (action.payload) {
         /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
         /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
-        payload.resetFields.forEach(<K extends keyof SiteCreationData>(field: K) => {
+        action.payload.resetFields.forEach(<K extends keyof SiteCreationData>(field: K) => {
           state.siteData[field] = initialSiteData[field];
         });
       }
@@ -366,6 +367,18 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       if (state.stepsHistory.length > 1) {
         state.stepsHistory = state.stepsHistory.slice(0, -1);
       }
+    })
+    .addCase(stepRevertConfirmed, (state) => {
+      state.consecutiveStepsReverted = 0;
+    })
+    .addCase(stepRevertCancelled, (state) => {
+      state.consecutiveStepsReverted = 0;
+    })
+    .addMatcher(isStepRevertAttemptedAction, (state) => {
+      state.consecutiveStepsReverted++;
+    })
+    .addMatcher(isStepCompletedAction, (state) => {
+      state.consecutiveStepsReverted = 0;
     });
 });
 

@@ -1,12 +1,13 @@
-import { createStepCompletedAction, createStepRevertedAction } from "./actionsUtils";
+import { createStepCompletedAction } from "./actionsUtils";
+import { createStepRevertAttempted } from "./revert.actions";
 
 export const namingIntroductionStepCompleted = createStepCompletedAction("NAMING_INTRODUCTION");
 export const namingIntroductionStepReverted = () =>
-  createStepRevertedAction("NAMING_INTRODUCTION")();
+  createStepRevertAttempted("NAMING_INTRODUCTION")();
 
 export const namingStepCompleted = createStepCompletedAction<{
   name: string;
   description?: string;
 }>("NAMING");
 export const namingStepReverted = () =>
-  createStepRevertedAction("NAMING")({ resetFields: ["name", "description"] });
+  createStepRevertAttempted("NAMING")({ resetFields: ["name", "description"] });

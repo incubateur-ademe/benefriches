@@ -3,11 +3,11 @@ import z from "zod";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { createStepRevertedAction } from "./actionsUtils";
+import { createStepRevertAttempted } from "./revert.actions";
 
-export const siteDataSummaryStepReverted = createStepRevertedAction("FINAL_SUMMARY");
+export const siteDataSummaryStepReverted = createStepRevertAttempted("FINAL_SUMMARY");
 
-export const creationResultStepReverted = createStepRevertedAction("CREATION_RESULT");
+export const creationResultStepReverted = createStepRevertAttempted("CREATION_RESULT");
 
 const customSiteSchema = API_ROUTES.SITES.CREATE_CUSTOM_SITE.bodySchema;
 export type CustomSitePayload = z.infer<typeof customSiteSchema>;
