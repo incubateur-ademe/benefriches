@@ -1,6 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { Address, SoilsDistribution } from "shared";
 
+import { selectAppSettings } from "@/features/app-settings/core/appSettings";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { shouldConfirmStepRevert } from "../stepRevert";
@@ -49,5 +50,11 @@ export const selectSiteOwner = createSelector(selectSelf, (state) => state.siteD
 
 export const selectShouldConfirmStepRevert = createSelector(
   selectSelf,
-  (state) => !shouldConfirmStepRevert(state.consecutiveStepsReverted),
+  selectAppSettings,
+  (siteCreation, appSettings) => {
+    return (
+      appSettings.askForConfirmationOnStepRevert &&
+      shouldConfirmStepRevert(siteCreation.consecutiveStepsReverted)
+    );
+  },
 );

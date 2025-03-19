@@ -1,3 +1,4 @@
+import { DEFAULT_APP_SETTINGS } from "@/features/app-settings/core/appSettings";
 import { User } from "@/features/onboarding/core/user";
 import { initialState } from "@/features/onboarding/core/user.reducer";
 import { AppDependencies, createStore, RootState } from "@/shared/core/store-config/store";
@@ -43,9 +44,10 @@ export const expectSiteDataUnchanged = (initialState: RootState, newState: RootS
 };
 
 export class StoreBuilder {
-  preloadedRootState: Pick<RootState, "siteCreation" | "currentUser"> = {
+  preloadedRootState: Pick<RootState, "siteCreation" | "currentUser" | "appSettings"> = {
     siteCreation: getInitialState(),
     currentUser: initialState,
+    appSettings: { ...DEFAULT_APP_SETTINGS, askForConfirmationOnStepRevert: false },
   };
   _appDependencies: AppDependencies = getTestAppDependencies();
 
@@ -84,6 +86,14 @@ export class StoreBuilder {
     };
     return this;
   }
+
+  withStepRevertConfirmation = (enabled: boolean = true) => {
+    this.preloadedRootState.appSettings = {
+      ...this.preloadedRootState.appSettings,
+      askForConfirmationOnStepRevert: enabled,
+    };
+    return this;
+  };
 
   withAppDependencies(appDependencies: Partial<AppDependencies>) {
     this._appDependencies = {

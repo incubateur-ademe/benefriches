@@ -12,7 +12,6 @@ import {
   SiteCreationState,
   SiteCreationStep,
 } from "../core/createSite.reducer";
-import StepRevertConfirmationModal from "./StepRevertConfirmationModal";
 import CreateModeSelectionForm from "./create-mode-selection";
 import SiteCreationCustomStepContent from "./custom/StepContent";
 import SiteCreationCustomStepper from "./custom/Stepper";
@@ -21,6 +20,7 @@ import SiteCreationExpressStepper from "./express/Stepper";
 import SiteCreationIntroduction from "./introduction";
 import IsFricheForm from "./is-friche";
 import SiteNatureForm from "./site-nature";
+import StepRevertConfirmationModal from "./step-revert-confirmation-modal";
 import { useSyncCreationStepWithRouteQuery } from "./useSyncCreationStepWithRouteQuery";
 
 const getMainChildren = (

@@ -8,8 +8,12 @@ export type StepRevertedActionPayload = { resetFields: (keyof SiteCreationData)[
 
 export const stepReverted = createSiteCreationAction<StepRevertedActionPayload>("stepReverted");
 
-export const stepRevertConfirmed = createSiteCreationAction("stepRevertConfirmed");
-export const stepRevertCancelled = createSiteCreationAction("stepRevertCancelled");
+export const stepRevertConfirmed = createSiteCreationAction<{ doNotAskAgain: boolean }>(
+  "stepRevertConfirmed",
+);
+export const stepRevertCancelled = createSiteCreationAction<{ doNotAskAgain: boolean }>(
+  "stepRevertCancelled",
+);
 
 export const isStepRevertAttemptedAction = (
   action: Action,

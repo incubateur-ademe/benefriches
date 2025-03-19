@@ -7,7 +7,7 @@ import {
   stepReverted,
   StepRevertedActionPayload,
 } from "../actions/revert.actions";
-import { shouldConfirmStepRevert } from "../stepRevert";
+import { selectShouldConfirmStepRevert } from "../selectors/createSite.selectors";
 
 export const setupSiteCreationListeners = (startAppListening: AppStartListening) => {
   startAppListening({
@@ -15,9 +15,7 @@ export const setupSiteCreationListeners = (startAppListening: AppStartListening)
     effect: async (action, listenerApi) => {
       listenerApi.cancelActiveListeners();
 
-      const { consecutiveStepsReverted } = listenerApi.getState().siteCreation;
-
-      if (shouldConfirmStepRevert(consecutiveStepsReverted)) {
+      if (!selectShouldConfirmStepRevert(listenerApi.getState())) {
         listenerApi.dispatch(stepReverted(action.payload as StepRevertedActionPayload));
         return;
       }

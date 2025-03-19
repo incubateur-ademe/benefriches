@@ -1,33 +1,36 @@
+import Checkbox from "@codegouvfr/react-dsfr/Checkbox";
 import { createModal } from "@codegouvfr/react-dsfr/Modal";
 import { useIsModalOpen } from "@codegouvfr/react-dsfr/Modal/useIsModalOpen";
-import { useEffect } from "react";
-
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
-
-import { stepRevertCancelled, stepRevertConfirmed } from "../core/actions/revert.actions";
-import { selectShouldConfirmStepRevert } from "../core/selectors/createSite.selectors";
+import { useEffect, useState } from "react";
 
 const modal = createModal({
   id: "form-step-revert-confirmation",
   isOpenedByDefault: false,
 });
 
-export default function StepRevertConfirmationModal() {
-  const showWarning = useAppSelector(selectShouldConfirmStepRevert);
-  const dispatch = useAppDispatch();
+type CallbackPayload = {
+  doNotAskAgain: boolean;
+};
+
+type Props = {
+  open: boolean;
+  onCancel: (p: CallbackPayload) => void;
+  onConfirm: (p: CallbackPayload) => void;
+};
+
+export default function StepRevertConfirmationModal({ open, onCancel, onConfirm }: Props) {
+  const [doNotShowAgain, setDoNotShowAgain] = useState(false);
+
   useIsModalOpen(modal, {
     onConceal: () => {
-      dispatch(stepRevertCancelled());
+      onCancel({ doNotAskAgain: doNotShowAgain });
     },
   });
 
   useEffect(() => {
-    if (showWarning) {
-      modal.open();
-    } else {
-      modal.close();
-    }
-  }, [showWarning]);
+    if (open) modal.open();
+    else modal.close();
+  }, [open]);
 
   return (
     <modal.Component
@@ -40,7 +43,7 @@ export default function StepRevertConfirmationModal() {
           doClosesModal: true,
           type: "submit",
           onClick: () => {
-            dispatch(stepRevertConfirmed());
+            onConfirm({ doNotAskAgain: doNotShowAgain });
           },
         },
         {
@@ -54,6 +57,20 @@ export default function StepRevertConfirmationModal() {
         Lorsque vous revenez en arrière dans le formulaire, cela écrase les données que vous aviez
         saisies dans les pages suivantes.
       </p>
+      <Checkbox
+        options={[
+          {
+            label: "Ne plus afficher ce message",
+            nativeInputProps: {
+              defaultChecked: doNotShowAgain,
+              value: "doNotShowAgain",
+              onChange: (ev) => {
+                setDoNotShowAgain(ev.target.checked);
+              },
+            },
+          },
+        ]}
+      />
     </modal.Component>
   );
 }

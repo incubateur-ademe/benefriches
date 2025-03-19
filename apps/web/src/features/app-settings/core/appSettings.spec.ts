@@ -17,6 +17,7 @@ describe("App settings", () => {
       shouldDisplayMyProjectTourGuide: true,
       shouldDisplayDemoMyProjectTourGuide: false,
       surfaceAreaInputMode: "squareMeters",
+      askForConfirmationOnStepRevert: true,
     });
     const store = createStore(
       getTestAppDependencies({
@@ -28,6 +29,7 @@ describe("App settings", () => {
       shouldDisplayMyProjectTourGuide: true,
       shouldDisplayDemoMyProjectTourGuide: false,
       surfaceAreaInputMode: "squareMeters",
+      askForConfirmationOnStepRevert: true,
     });
   });
 

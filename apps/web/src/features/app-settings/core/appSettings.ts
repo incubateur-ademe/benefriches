@@ -6,12 +6,14 @@ export type AppSettings = {
   shouldDisplayMyProjectTourGuide: boolean;
   shouldDisplayDemoMyProjectTourGuide: boolean;
   surfaceAreaInputMode: "percentage" | "squareMeters";
+  askForConfirmationOnStepRevert: boolean;
 };
 
 export const DEFAULT_APP_SETTINGS: AppSettings = {
   shouldDisplayMyProjectTourGuide: true,
   shouldDisplayDemoMyProjectTourGuide: true,
   surfaceAreaInputMode: "percentage",
+  askForConfirmationOnStepRevert: true,
 };
 
 export const selectAppSettings = (state: RootState) => state.appSettings;
