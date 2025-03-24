@@ -1,9 +1,9 @@
 import { DevelopmentPlanCategory } from "shared";
 
-import { completeDevelopmentPlanCategories } from "@/features/create-project/core/createProject.reducer";
 import { BENEFRICHES_ENV } from "@/shared/views/envVars";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
+import { developmentPlanCategoriesCompleted } from "../../core/actions/introductionStep.actions";
 import ProjectTypeForm from "./ProjectTypesForm";
 
 function ProjectTypesFormContainer() {
@@ -13,7 +13,7 @@ function ProjectTypesFormContainer() {
   return (
     <ProjectTypeForm
       onSubmit={({ developmentPlanCategory }) => {
-        dispatch(completeDevelopmentPlanCategories(developmentPlanCategory));
+        dispatch(developmentPlanCategoriesCompleted(developmentPlanCategory));
       }}
       allowedDevelopmentPlanCategories={allowedDevelopmentPlanCategories}
     />

@@ -1,4 +1,4 @@
-import { createAction as _createAction } from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit";
 import {
   FinancialAssistanceRevenue,
   UrbanProjectPhase,
@@ -14,204 +14,281 @@ import {
   SurfaceAreaDistributionJson,
 } from "shared";
 
+import { makeProjectCreationActionType } from "../../actions/actionsUtils";
 import { ProjectStakeholderStructure, Schedule } from "../../project.types";
 
-export function prefixActionType(actionType: string) {
-  return `projectCreation/urbanProject/${actionType}`;
-}
+const URBAN_PROJECT_CREATION_PREFIX = "urbanProject";
 
-const createAction = <TPayload = void>(actionName: string) =>
-  _createAction<TPayload>(prefixActionType(actionName));
+export const makeUrbanProjectCreationActionType = (actionName: string) => {
+  return makeProjectCreationActionType(`${URBAN_PROJECT_CREATION_PREFIX}/${actionName}`);
+};
 
-export const createModeStepReverted = createAction("createModeStepReverted");
+export const createUrbanProjectCreationAction = <TPayload = void>(actionName: string) =>
+  createAction<TPayload>(makeUrbanProjectCreationActionType(actionName));
 
-export const resultStepReverted = createAction("resultStepReverted");
-export const expressCategoryStepReverted = createAction("expressCategoryStepReverted");
+export const createModeStepReverted = createUrbanProjectCreationAction("createModeStepReverted");
 
-export const customCreateModeSelected = createAction("customCreateModeSelected");
-export const expressCreateModeSelected = createAction("expressCreateModeSelected");
+export const resultStepReverted = createUrbanProjectCreationAction("resultStepReverted");
+export const expressCategoryStepReverted = createUrbanProjectCreationAction(
+  "expressCategoryStepReverted",
+);
 
-export const spacesIntroductionCompleted = createAction("spacesIntroductionCompleted");
-export const spacesIntroductionReverted = createAction("spacesIntroductionReverted");
-export const spacesSelectionCompleted = createAction<{
+export const customCreateModeSelected = createUrbanProjectCreationAction(
+  "customCreateModeSelected",
+);
+export const expressCreateModeSelected = createUrbanProjectCreationAction(
+  "expressCreateModeSelected",
+);
+
+export const spacesIntroductionCompleted = createUrbanProjectCreationAction(
+  "spacesIntroductionCompleted",
+);
+export const spacesIntroductionReverted = createUrbanProjectCreationAction(
+  "spacesIntroductionReverted",
+);
+export const spacesSelectionCompleted = createUrbanProjectCreationAction<{
   spacesCategories: UrbanSpaceCategory[];
 }>("spacesSelectionCompleted");
-export const spacesSelectionReverted = createAction("spacesSelectionReverted");
-export const spacesSurfaceAreaCompleted = createAction<{
+export const spacesSelectionReverted = createUrbanProjectCreationAction("spacesSelectionReverted");
+export const spacesSurfaceAreaCompleted = createUrbanProjectCreationAction<{
   surfaceAreaDistribution: Partial<Record<UrbanSpaceCategory, number>>;
 }>("spacesSurfaceAreaCompleted");
-export const spacesSurfaceAreaReverted = createAction("spacesSurfaceAreaReverted");
-export const spacesDevelopmentPlanIntroductionCompleted = createAction(
+export const spacesSurfaceAreaReverted = createUrbanProjectCreationAction(
+  "spacesSurfaceAreaReverted",
+);
+export const spacesDevelopmentPlanIntroductionCompleted = createUrbanProjectCreationAction(
   "spacesDevelopmentPlanIntroductionCompleted",
 );
-export const spacesDevelopmentPlanIntroductionReverted = createAction(
+export const spacesDevelopmentPlanIntroductionReverted = createUrbanProjectCreationAction(
   "spacesDevelopmentPlanIntroductionReverted",
 );
 
 // green spaces
-export const greenSpacesIntroductionCompleted = createAction("greenSpacesIntroductionCompleted");
-export const greenSpacesIntroductionReverted = createAction("greenSpacesIntroductionReverted");
-export const greenSpacesDistributionCompleted = createAction<{
+export const greenSpacesIntroductionCompleted = createUrbanProjectCreationAction(
+  "greenSpacesIntroductionCompleted",
+);
+export const greenSpacesIntroductionReverted = createUrbanProjectCreationAction(
+  "greenSpacesIntroductionReverted",
+);
+export const greenSpacesDistributionCompleted = createUrbanProjectCreationAction<{
   surfaceAreaDistribution: Partial<Record<UrbanGreenSpace, number>>;
 }>("greenSpacesDistributionCompleted");
-export const greenSpacesDistributionReverted = createAction("greenSpacesDistributionReverted");
+export const greenSpacesDistributionReverted = createUrbanProjectCreationAction(
+  "greenSpacesDistributionReverted",
+);
 
 // living and activity spaces
-export const livingAndActivitySpacesIntroductionCompleted = createAction(
+export const livingAndActivitySpacesIntroductionCompleted = createUrbanProjectCreationAction(
   "livingAndActivitySpacesIntroductionCompleted",
 );
-export const livingAndActivitySpacesIntroductionReverted = createAction(
+export const livingAndActivitySpacesIntroductionReverted = createUrbanProjectCreationAction(
   "livingAndActivitySpacesIntroductionReverted",
 );
-export const livingAndActivitySpacesDistributionCompleted = createAction<
+export const livingAndActivitySpacesDistributionCompleted = createUrbanProjectCreationAction<
   Partial<Record<UrbanLivingAndActivitySpace, number>>
 >("livingAndActivitySpacesDistributionCompleted");
-export const livingAndActivitySpacesDistributionReverted = createAction(
+export const livingAndActivitySpacesDistributionReverted = createUrbanProjectCreationAction(
   "livingAndActivitySpacesDistributionReverted",
 );
 
 // public spaces
-export const publicSpacesIntroductionCompleted = createAction("publicSpacesIntroductionCompleted");
-export const publicSpacesIntroductionReverted = createAction("publicSpacesIntroductionReverted");
-export const publicSpacesDistributionCompleted = createAction<
+export const publicSpacesIntroductionCompleted = createUrbanProjectCreationAction(
+  "publicSpacesIntroductionCompleted",
+);
+export const publicSpacesIntroductionReverted = createUrbanProjectCreationAction(
+  "publicSpacesIntroductionReverted",
+);
+export const publicSpacesDistributionCompleted = createUrbanProjectCreationAction<
   Partial<Record<UrbanPublicSpace, number>>
 >("publicSpacesDistributionCompleted");
-export const publicSpacesDistributionReverted = createAction("publicSpacesDistributionReverted");
+export const publicSpacesDistributionReverted = createUrbanProjectCreationAction(
+  "publicSpacesDistributionReverted",
+);
 
 // soils summary and carbon storage
-export const soilsSummaryCompleted = createAction("soilsSummaryCompleted");
-export const soilsSummaryReverted = createAction("soilsSummaryReverted");
+export const soilsSummaryCompleted = createUrbanProjectCreationAction("soilsSummaryCompleted");
+export const soilsSummaryReverted = createUrbanProjectCreationAction("soilsSummaryReverted");
 
-export const soilsCarbonStorageCompleted = createAction("soilsCarbonStorageCompleted");
-export const soilsCarbonStorageReverted = createAction("soilsCarbonStorageReverted");
+export const soilsCarbonStorageCompleted = createUrbanProjectCreationAction(
+  "soilsCarbonStorageCompleted",
+);
+export const soilsCarbonStorageReverted = createUrbanProjectCreationAction(
+  "soilsCarbonStorageReverted",
+);
 
 // soils decontamination
-export const soilsDecontaminationIntroductionCompleted = createAction(
+export const soilsDecontaminationIntroductionCompleted = createUrbanProjectCreationAction(
   "soilsDecontaminationIntroductionCompleted",
 );
-export const soilsDecontaminationIntroductionReverted = createAction(
+export const soilsDecontaminationIntroductionReverted = createUrbanProjectCreationAction(
   "soilsDecontaminationIntroductionReverted",
 );
-export const soilsDecontaminationSelectionCompleted = createAction<"partial" | "unknown" | "none">(
-  "soilsDecontaminationSelectionCompleted",
-);
-export const soilsDecontaminationSelectionReverted = createAction(
+export const soilsDecontaminationSelectionCompleted = createUrbanProjectCreationAction<
+  "partial" | "unknown" | "none"
+>("soilsDecontaminationSelectionCompleted");
+export const soilsDecontaminationSelectionReverted = createUrbanProjectCreationAction(
   "soilsDecontaminationSelectionReverted",
 );
-export const soilsDecontaminationSurfaceAreaCompleted = createAction<number>(
+export const soilsDecontaminationSurfaceAreaCompleted = createUrbanProjectCreationAction<number>(
   "soilsDecontaminationSurfaceAreaCompleted",
 );
-export const soilsDecontaminationSurfaceAreaReverted = createAction(
+export const soilsDecontaminationSurfaceAreaReverted = createUrbanProjectCreationAction(
   "soilsDecontaminationSurfaceAreaReverted",
 );
 
 // buildings
-export const buildingsIntroductionCompleted = createAction("buildingsIntroductionCompleted");
-export const buildingsIntroductionReverted = createAction("buildingsIntroductionReverted");
-export const buildingsFloorSurfaceAreaCompleted = createAction<number>(
+export const buildingsIntroductionCompleted = createUrbanProjectCreationAction(
+  "buildingsIntroductionCompleted",
+);
+export const buildingsIntroductionReverted = createUrbanProjectCreationAction(
+  "buildingsIntroductionReverted",
+);
+export const buildingsFloorSurfaceAreaCompleted = createUrbanProjectCreationAction<number>(
   "buildingsFloorSurfaceAreaCompleted",
 );
-export const buildingsFloorSurfaceAreaReverted = createAction("buildingsFloorSurfaceAreaReverted");
-export const buildingsUseIntroductionCompleted = createAction("buildingsUseIntroductionCompleted");
-export const buildingsUseIntroductionReverted = createAction("buildingsUseIntroductionReverted");
-export const buildingsUseSurfaceAreasCompleted = createAction<
+export const buildingsFloorSurfaceAreaReverted = createUrbanProjectCreationAction(
+  "buildingsFloorSurfaceAreaReverted",
+);
+export const buildingsUseIntroductionCompleted = createUrbanProjectCreationAction(
+  "buildingsUseIntroductionCompleted",
+);
+export const buildingsUseIntroductionReverted = createUrbanProjectCreationAction(
+  "buildingsUseIntroductionReverted",
+);
+export const buildingsUseSurfaceAreasCompleted = createUrbanProjectCreationAction<
   SurfaceAreaDistributionJson<BuildingsUse>
 >("buildingsUseSurfaceAreasCompleted");
-export const buildingsUseSurfaceAreasReverted = createAction("buildingsUseSurfaceAreasReverted");
+export const buildingsUseSurfaceAreasReverted = createUrbanProjectCreationAction(
+  "buildingsUseSurfaceAreasReverted",
+);
 
 // stakeholders
-export const stakeholderIntroductionCompleted = createAction("stakeholderIntroductionCompleted");
-export const stakeholderIntroductionReverted = createAction("stakeholderIntroductionReverted");
-export const stakeholderProjectDeveloperCompleted = createAction<{
+export const stakeholderIntroductionCompleted = createUrbanProjectCreationAction(
+  "stakeholderIntroductionCompleted",
+);
+export const stakeholderIntroductionReverted = createUrbanProjectCreationAction(
+  "stakeholderIntroductionReverted",
+);
+export const stakeholderProjectDeveloperCompleted = createUrbanProjectCreationAction<{
   name: string;
   structureType: ProjectStakeholderStructure;
 }>("stakeholderProjectDeveloperCompleted");
-export const stakeholderProjectDeveloperReverted = createAction(
+export const stakeholderProjectDeveloperReverted = createUrbanProjectCreationAction(
   "stakeholderProjectDeveloperReverted",
 );
-export const stakeholderReinstatementContractOwnerCompleted = createAction<{
+export const stakeholderReinstatementContractOwnerCompleted = createUrbanProjectCreationAction<{
   name: string;
   structureType: ProjectStakeholderStructure;
 }>("stakeholderReinstatementContractOwnerCompleted");
-export const stakeholderReinstatementContractOwnerReverted = createAction(
+export const stakeholderReinstatementContractOwnerReverted = createUrbanProjectCreationAction(
   "stakeholderReinstatementContractOwnerReverted",
 );
 
 // site resale
-export const siteResaleIntroductionCompleted = createAction("siteResaleIntroductionCompleted");
-export const siteResaleIntroductionReverted = createAction("siteResaleIntroductionReverted");
-export const siteResaleChoiceCompleted = createAction<{
+export const siteResaleIntroductionCompleted = createUrbanProjectCreationAction(
+  "siteResaleIntroductionCompleted",
+);
+export const siteResaleIntroductionReverted = createUrbanProjectCreationAction(
+  "siteResaleIntroductionReverted",
+);
+export const siteResaleChoiceCompleted = createUrbanProjectCreationAction<{
   siteResalePlannedAfterDevelopment: boolean;
 }>("siteResaleChoiceCompleted");
-export const siteResaleChoiceReverted = createAction("siteResaleChoiceReverted");
-export const buildingsResaleChoiceCompleted = createAction<{
+export const siteResaleChoiceReverted = createUrbanProjectCreationAction(
+  "siteResaleChoiceReverted",
+);
+export const buildingsResaleChoiceCompleted = createUrbanProjectCreationAction<{
   buildingsResalePlannedAfterDevelopment: boolean;
 }>("buildingsResaleChoiceCompleted");
-export const buildingsResaleChoiceReverted = createAction("buildingsResaleChoiceReverted");
+export const buildingsResaleChoiceReverted = createUrbanProjectCreationAction(
+  "buildingsResaleChoiceReverted",
+);
 
 // expenses
-export const expensesIntroductionCompleted = createAction("expensesIntroductionCompleted");
-export const expensesIntroductionReverted = createAction("expensesIntroductionReverted");
-export const sitePurchaseCompleted = createAction<{
+export const expensesIntroductionCompleted = createUrbanProjectCreationAction(
+  "expensesIntroductionCompleted",
+);
+export const expensesIntroductionReverted = createUrbanProjectCreationAction(
+  "expensesIntroductionReverted",
+);
+export const sitePurchaseCompleted = createUrbanProjectCreationAction<{
   sellingPrice?: number;
   propertyTransferDuties?: number;
 }>("sitePurchaseCompleted");
-export const sitePurchaseReverted = createAction("sitePurchaseReverted");
-export const reinstatementExpensesCompleted = createAction<ReinstatementExpense[]>(
-  "reinstatementExpensesCompleted",
+export const sitePurchaseReverted = createUrbanProjectCreationAction("sitePurchaseReverted");
+export const reinstatementExpensesCompleted = createUrbanProjectCreationAction<
+  ReinstatementExpense[]
+>("reinstatementExpensesCompleted");
+export const reinstatementExpensesReverted = createUrbanProjectCreationAction(
+  "reinstatementExpensesReverted",
 );
-export const reinstatementExpensesReverted = createAction("reinstatementExpensesReverted");
-export const installationExpensesCompleted = createAction<UrbanProjectDevelopmentExpense[]>(
-  "installationExpensesCompleted",
+export const installationExpensesCompleted = createUrbanProjectCreationAction<
+  UrbanProjectDevelopmentExpense[]
+>("installationExpensesCompleted");
+export const installationExpensesReverted = createUrbanProjectCreationAction(
+  "installationExpensesReverted",
 );
-export const installationExpensesReverted = createAction("installationExpensesReverted");
-export const buildingsOperationsExpensesCompleted = createAction<RecurringExpense[]>(
-  "buildingsOperationsExpensesCompleted",
-);
-export const buildingsOperationsExpensesReverted = createAction(
+export const buildingsOperationsExpensesCompleted = createUrbanProjectCreationAction<
+  RecurringExpense[]
+>("buildingsOperationsExpensesCompleted");
+export const buildingsOperationsExpensesReverted = createUrbanProjectCreationAction(
   "buildingsOperationsExpensesReverted",
 );
 
 // revenues
-export const revenueIntroductionCompleted = createAction("revenueIntroductionCompleted");
-export const revenueIntroductionReverted = createAction("revenueIntroductionReverted");
-export const financialAssistanceRevenuesCompleted = createAction<FinancialAssistanceRevenue[]>(
-  "financialAssistanceRevenuesCompleted",
+export const revenueIntroductionCompleted = createUrbanProjectCreationAction(
+  "revenueIntroductionCompleted",
 );
+export const revenueIntroductionReverted = createUrbanProjectCreationAction(
+  "revenueIntroductionReverted",
+);
+export const financialAssistanceRevenuesCompleted = createUrbanProjectCreationAction<
+  FinancialAssistanceRevenue[]
+>("financialAssistanceRevenuesCompleted");
 
-export const financialAssistanceRevenuesReverted = createAction(
+export const financialAssistanceRevenuesReverted = createUrbanProjectCreationAction(
   "financialAssistanceRevenuesReverted",
 );
-export const yearlyBuildingsOperationsRevenuesCompleted = createAction<
+export const yearlyBuildingsOperationsRevenuesCompleted = createUrbanProjectCreationAction<
   YearlyBuildingsOperationsRevenues[]
 >("yearlyBuildingsOperationsRevenuesCompleted");
-export const yearlyBuildingsOperationsRevenuesReverted = createAction(
+export const yearlyBuildingsOperationsRevenuesReverted = createUrbanProjectCreationAction(
   "yearlyBuildingsOperationsRevenuesReverted",
 );
-export const expectedSiteResaleRevenueReverted = createAction("expectedSiteResaleRevenueReverted");
-export const expectedSiteResaleRevenueCompleted = createAction<{
+export const expectedSiteResaleRevenueReverted = createUrbanProjectCreationAction(
+  "expectedSiteResaleRevenueReverted",
+);
+export const expectedSiteResaleRevenueCompleted = createUrbanProjectCreationAction<{
   sellingPrice?: number;
   propertyTransferDuties?: number;
 }>("expectedSiteResaleRevenueCompleted");
-export const buildingsResaleRevenueReverted = createAction("buildingsResaleRevenueReverted");
-export const buildingsResaleRevenueCompleted = createAction<{
+export const buildingsResaleRevenueReverted = createUrbanProjectCreationAction(
+  "buildingsResaleRevenueReverted",
+);
+export const buildingsResaleRevenueCompleted = createUrbanProjectCreationAction<{
   sellingPrice?: number;
   propertyTransferDuties?: number;
 }>("buildingsResaleRevenueCompleted");
 
-export const scheduleIntroductionCompleted = createAction("scheduleIntroductionCompleted");
-export const scheduleIntroductionReverted = createAction("scheduleIntroductioReverted");
-export const projectPhaseCompleted = createAction<UrbanProjectPhase>("projectPhaseCompleted");
-export const projectPhaseReverted = createAction("projectPhaseReverted");
-export const scheduleCompleted = createAction<{
+export const scheduleIntroductionCompleted = createUrbanProjectCreationAction(
+  "scheduleIntroductionCompleted",
+);
+export const scheduleIntroductionReverted = createUrbanProjectCreationAction(
+  "scheduleIntroductioReverted",
+);
+export const projectPhaseCompleted =
+  createUrbanProjectCreationAction<UrbanProjectPhase>("projectPhaseCompleted");
+export const projectPhaseReverted = createUrbanProjectCreationAction("projectPhaseReverted");
+export const scheduleCompleted = createUrbanProjectCreationAction<{
   reinstatementSchedule?: Schedule;
   installationSchedule?: Schedule;
   firstYearOfOperation: number;
 }>("scheduleCompleted");
-export const scheduleReverted = createAction("scheduleReverted");
+export const scheduleReverted = createUrbanProjectCreationAction("scheduleReverted");
 
-export const namingCompleted = createAction<{ name: string; description?: string }>(
-  "namingCompleted",
-);
-export const namingReverted = createAction("namingReverted");
-export const finalSummaryReverted = createAction("finalSummaryReverted");
+export const namingCompleted = createUrbanProjectCreationAction<{
+  name: string;
+  description?: string;
+}>("namingCompleted");
+export const namingReverted = createUrbanProjectCreationAction("namingReverted");
+export const finalSummaryReverted = createUrbanProjectCreationAction("finalSummaryReverted");

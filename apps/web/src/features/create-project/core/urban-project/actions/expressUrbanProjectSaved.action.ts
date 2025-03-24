@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { prefixActionType } from "./urbanProject.actions";
+import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
 
 const schema = z.object({
   reconversionProjectId: z.string(),
@@ -23,14 +23,17 @@ export interface SaveExpressReconversionProjectGateway {
 export const expressUrbanProjectSaved = createAppAsyncThunk<
   { id: string; name: string },
   ExpressReconversionProjectPayload["category"]
->(prefixActionType("expressUrbanProjectSaved"), async (expressCategory, { getState, extra }) => {
-  const { projectCreation, currentUser } = getState();
-  const expressProjectPayload = await schema.parseAsync({
-    reconversionProjectId: projectCreation.projectId,
-    siteId: projectCreation.siteData?.id,
-    category: expressCategory,
-    createdBy: currentUser.currentUser?.id,
-  });
+>(
+  makeUrbanProjectCreationActionType("expressUrbanProjectSaved"),
+  async (expressCategory, { getState, extra }) => {
+    const { projectCreation, currentUser } = getState();
+    const expressProjectPayload = await schema.parseAsync({
+      reconversionProjectId: projectCreation.projectId,
+      siteId: projectCreation.siteData?.id,
+      category: expressCategory,
+      createdBy: currentUser.currentUser?.id,
+    });
 
-  return await extra.saveExpressReconversionProjectService.save(expressProjectPayload);
-});
+    return await extra.saveExpressReconversionProjectService.save(expressProjectPayload);
+  },
+);

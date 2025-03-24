@@ -5,10 +5,10 @@ import {
   getUrbanProjectSpaceDistribution,
   selectUrbanProjectSoilsDistribution,
 } from "../selectors/urbanProject.selectors";
-import { prefixActionType } from "./urbanProject.actions";
+import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
 
 export const customUrbanProjectSaved = createAppAsyncThunk(
-  prefixActionType("customProjectSaved"),
+  makeUrbanProjectCreationActionType("customProjectSaved"),
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
     const { urbanProject, siteData, projectId } = projectCreation;

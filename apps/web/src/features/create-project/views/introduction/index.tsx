@@ -2,7 +2,7 @@ import { fr } from "@codegouvfr/react-dsfr";
 
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { introductionStepCompleted } from "../../core/createProject.reducer";
+import { introductionStepCompleted } from "../../core/actions/introductionStep.actions";
 import CreateProjectIntroductionPage from "./CreateProjetIntroductionPage";
 
 function CreateProjectIntroductionContainer() {

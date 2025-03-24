@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createReducer } from "@reduxjs/toolkit";
 import reduceReducers from "reduce-reducers";
 import { DevelopmentPlanCategory } from "shared";
 import { v4 as uuid } from "uuid";
@@ -6,6 +6,10 @@ import { v4 as uuid } from "uuid";
 import { ProjectSite } from "@/features/create-project/core/project.types";
 
 import { fetchSiteLocalAuthorities } from "./actions/getSiteLocalAuthorities.action";
+import {
+  developmentPlanCategoriesCompleted,
+  introductionStepCompleted,
+} from "./actions/introductionStep.actions";
 import { reconversionProjectCreationInitiated } from "./actions/urbanProjectCreationInitiated.action";
 import {
   RenewableEneryProjectState,
@@ -66,59 +70,50 @@ export const getInitialState = (): ProjectCreationState => {
   };
 };
 
-const projectCreationSlice = createSlice({
-  name: "projectCreation",
-  initialState: getInitialState(),
-  reducers: {
-    introductionStepCompleted: (state) => {
+const projectCreationReducer = createReducer(getInitialState(), (builder) => {
+  builder
+    .addCase(introductionStepCompleted, (state) => {
       state.stepsHistory.push("PROJECT_TYPES");
-    },
-    completeDevelopmentPlanCategories: (state, action: PayloadAction<DevelopmentPlanCategory>) => {
+    })
+    .addCase(developmentPlanCategoriesCompleted, (state, action) => {
       state.developmentPlanCategory = action.payload;
-    },
-  },
-  extraReducers(builder) {
-    builder.addCase(createModeStepReverted, (state) => {
+    })
+    .addCase(createModeStepReverted, (state) => {
       state.developmentPlanCategory = undefined;
-    });
-    /* fetch related site */
-    builder.addCase(reconversionProjectCreationInitiated.pending, () => {
+    })
+    .addCase(reconversionProjectCreationInitiated.pending, () => {
       return {
         ...getInitialState(),
         siteDataLoadingState: "loading",
       };
-    });
-    builder.addCase(reconversionProjectCreationInitiated.fulfilled, (state, action) => {
+    })
+    .addCase(reconversionProjectCreationInitiated.fulfilled, (state, action) => {
       state.siteDataLoadingState = "success";
       state.siteData = action.payload;
-    });
-    builder.addCase(reconversionProjectCreationInitiated.rejected, (state) => {
+    })
+    .addCase(reconversionProjectCreationInitiated.rejected, (state) => {
       state.siteDataLoadingState = "error";
-    });
+    })
     /* fetch site local authorities */
-    builder.addCase(fetchSiteLocalAuthorities.pending, (state) => {
+    .addCase(fetchSiteLocalAuthorities.pending, (state) => {
       state.siteRelatedLocalAuthorities.loadingState = "loading";
-    });
-    builder.addCase(fetchSiteLocalAuthorities.fulfilled, (state, action) => {
+    })
+    .addCase(fetchSiteLocalAuthorities.fulfilled, (state, action) => {
       state.siteRelatedLocalAuthorities = {
         loadingState: "success",
         ...action.payload,
       };
-    });
-    builder.addCase(fetchSiteLocalAuthorities.rejected, (state) => {
+    })
+    .addCase(fetchSiteLocalAuthorities.rejected, (state) => {
       state.siteRelatedLocalAuthorities.loadingState = "error";
     });
-  },
 });
 
-export const { introductionStepCompleted, completeDevelopmentPlanCategories } =
-  projectCreationSlice.actions;
-
-const projectCreationReducer = reduceReducers<ProjectCreationState>(
+const projectCreationRootReducer = reduceReducers<ProjectCreationState>(
   getInitialState(),
-  projectCreationSlice.reducer,
+  projectCreationReducer,
   urbanProjectReducer,
   renewableEnergyProjectReducer,
 );
 
-export default projectCreationReducer;
+export default projectCreationRootReducer;

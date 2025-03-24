@@ -1,9 +1,10 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
 import { saveProjectSchema } from "../../actions/saveReconversionProject.action";
+import { makeRenewableEnergyProjectCreationActionType } from "./renewableEnergy.actions";
 
 export const saveReconversionProject = createAppAsyncThunk(
-  "projectCreation/renewableEnergyProject/save",
+  makeRenewableEnergyProjectCreationActionType("saved"),
   async (_, { getState, extra }) => {
     const { projectCreation, currentUser } = getState();
     const { renewableEnergyProject, siteData, projectId } = projectCreation;

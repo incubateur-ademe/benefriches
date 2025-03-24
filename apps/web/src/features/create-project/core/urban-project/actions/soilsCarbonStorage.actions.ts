@@ -3,11 +3,11 @@ import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 import { CurrentAndProjectedSoilsCarbonStorageResult } from "../../actions/soilsCarbonStorage.action";
 import { selectSiteAddress, selectSiteSoilsDistribution } from "../../createProject.selectors";
 import { selectUrbanProjectSoilsDistribution } from "../selectors/urbanProject.selectors";
-import { prefixActionType } from "./urbanProject.actions";
+import { makeUrbanProjectCreationActionType } from "./urbanProject.actions";
 
 export const fetchCurrentAndProjectedSoilsCarbonStorage =
   createAppAsyncThunk<CurrentAndProjectedSoilsCarbonStorageResult>(
-    prefixActionType("fetchCurrentAndProjectedSoilsCarbonStorage"),
+    makeUrbanProjectCreationActionType("fetchCurrentAndProjectedSoilsCarbonStorage"),
     async (_, { extra, getState }) => {
       const rootState = getState();
       const siteAddress = selectSiteAddress(rootState);

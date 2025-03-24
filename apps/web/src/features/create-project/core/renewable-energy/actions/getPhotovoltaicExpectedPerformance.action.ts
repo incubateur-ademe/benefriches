@@ -1,5 +1,7 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
+import { makeRenewableEnergyProjectCreationActionType } from "./renewableEnergy.actions";
+
 export type PhotovoltaicPerformanceApiResult = {
   expectedPerformance: {
     kwhPerDay: number;
@@ -32,7 +34,9 @@ type FetchResult = {
 
 export const fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation =
   createAppAsyncThunk<FetchResult>(
-    "projectCreation/renewableEnergyProject/fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation",
+    makeRenewableEnergyProjectCreationActionType(
+      "fetchPhotovoltaicExpectedAnnualPowerPerformanceForLocation",
+    ),
     async (_, { extra, getState }) => {
       const { projectCreation } = getState();
       const { lat, long } = projectCreation.siteData?.address ?? {};
