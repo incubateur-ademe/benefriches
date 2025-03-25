@@ -1,7 +1,5 @@
-import {
-  completeSoilsTransformationIntroductionStep,
-  revertSoilsTransformationIntroductionStep,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeSoilsTransformationIntroductionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { soilsTransformationIntroductionStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import SoilsTransformationIntroduction from "./SoilsTransformationIntroduction";
@@ -12,7 +10,7 @@ function SoilsTransformationIntroductionContainer() {
   return (
     <SoilsTransformationIntroduction
       onNext={() => dispatch(completeSoilsTransformationIntroductionStep())}
-      onBack={() => dispatch(revertSoilsTransformationIntroductionStep())}
+      onBack={() => dispatch(soilsTransformationIntroductionStepReverted())}
     />
   );
 }

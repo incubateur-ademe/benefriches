@@ -1,7 +1,5 @@
-import {
-  completeScheduleStep,
-  revertScheduleStep,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeScheduleStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { scheduleStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { selectPhotovoltaicPowerStationScheduleInitialValues } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -16,7 +14,7 @@ function ScheduleProjectionFormContainer() {
       initialValues={initialValues}
       installationScheduleLabel="Installation de la centrale photovoltaïque"
       onBack={() => {
-        dispatch(revertScheduleStep());
+        dispatch(scheduleStepReverted());
       }}
       onSubmit={(data) => {
         dispatch(

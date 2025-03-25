@@ -1,9 +1,7 @@
 import { PhotovoltaicInstallationExpense, typedObjectEntries } from "shared";
 
-import {
-  completePhotovoltaicPanelsInstallationExpenses,
-  revertPhotovoltaicPanelsInstallationExpenses,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completePhotovoltaicPanelsInstallationExpenses } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { photovoltaicPanelsInstallationExpensesStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { selectPhotovoltaicPowerStationInstallationExpensesInitialValues } from "@/features/create-project/core/renewable-energy/selectors/expenses.selectors";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -59,7 +57,7 @@ function PhotovoltaicPanelsInstallationExpensesFormContainer() {
         dispatch(completePhotovoltaicPanelsInstallationExpenses(expenses));
       }}
       onBack={() => {
-        dispatch(revertPhotovoltaicPanelsInstallationExpenses());
+        dispatch(photovoltaicPanelsInstallationExpensesStepReverted());
       }}
     />
   );

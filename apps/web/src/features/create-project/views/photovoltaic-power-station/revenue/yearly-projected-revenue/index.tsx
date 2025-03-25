@@ -1,9 +1,7 @@
 import { RecurringRevenue } from "shared";
 
-import {
-  completeYearlyProjectedRevenue,
-  revertYearlyProjectedRevenue,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeYearlyProjectedRevenue } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { yearlyProjectedRevenueStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { selectPhotovoltaicPowerStationYearlyRevenueInitialValues } from "@/features/create-project/core/renewable-energy/selectors/revenues.selectors";
 import ProjectYearlyRevenueForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
@@ -50,7 +48,7 @@ function YearlyProjectedRevenueFormContainer() {
         other: initialValues.other,
       }}
       onBack={() => {
-        dispatch(revertYearlyProjectedRevenue());
+        dispatch(yearlyProjectedRevenueStepReverted());
       }}
       onSubmit={(formData) => {
         const yearlyProjectedRevenues: RecurringRevenue[] = [];

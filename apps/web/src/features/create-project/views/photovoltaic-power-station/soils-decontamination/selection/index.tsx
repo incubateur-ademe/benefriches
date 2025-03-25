@@ -1,7 +1,5 @@
-import {
-  completeSoilsDecontaminationSelection,
-  revertSoilsDecontaminationSelectionStep,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeSoilsDecontaminationSelection } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { soilsDecontaminationSelectionStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilsDecontaminationSelection, {
@@ -22,7 +20,7 @@ function SoilsDecontaminationSelectionContainer() {
       onSubmit={(data: FormValues) => {
         dispatch(completeSoilsDecontaminationSelection(data.decontaminationSelection ?? "unknown"));
       }}
-      onBack={() => dispatch(revertSoilsDecontaminationSelectionStep())}
+      onBack={() => dispatch(soilsDecontaminationSelectionStepReverted())}
     />
   );
 }

@@ -19,226 +19,120 @@ import {
 } from "../../project.types";
 import { SoilsTransformationProject } from "../soilsTransformation";
 
-const RENEWABLE_ENERGY = "renewableEnergy";
+export const RENEWABLE_ENERGY = "renewableEnergy";
 
 export const makeRenewableEnergyProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`${RENEWABLE_ENERGY}/${actionName}`);
 };
 
-export const createUrbanProjectCreationAction = <TPayload = void>(actionName: string) =>
+export const createRenewableEnergyAction = <TPayload = void>(actionName: string) =>
   createAction<TPayload>(makeRenewableEnergyProjectCreationActionType(actionName));
 
 export const completeRenewableEnergyType =
-  createUrbanProjectCreationAction<RenewableEnergyDevelopmentPlanType>(
-    "completeRenewableEnergyType",
-  );
-export const completeSoilsTransformationIntroductionStep = createUrbanProjectCreationAction(
+  createRenewableEnergyAction<RenewableEnergyDevelopmentPlanType>("completeRenewableEnergyType");
+export const completeSoilsTransformationIntroductionStep = createRenewableEnergyAction(
   "completeSoilsTransformationIntroductionStep",
 );
-export const completeNonSuitableSoilsNoticeStep = createUrbanProjectCreationAction(
+export const completeNonSuitableSoilsNoticeStep = createRenewableEnergyAction(
   "completeNonSuitableSoilsNoticeStep",
 );
-export const completeNonSuitableSoilsSelectionStep = createUrbanProjectCreationAction<SoilType[]>(
+export const completeNonSuitableSoilsSelectionStep = createRenewableEnergyAction<SoilType[]>(
   "completeNonSuitableSoilsSelectionStep",
 );
-export const completeNonSuitableSoilsSurfaceStep =
-  createUrbanProjectCreationAction<SoilsDistribution>("completeNonSuitableSoilsSurfaceStep");
+export const completeNonSuitableSoilsSurfaceStep = createRenewableEnergyAction<SoilsDistribution>(
+  "completeNonSuitableSoilsSurfaceStep",
+);
 export const completeSoilsTransformationProjectSelectionStep =
-  createUrbanProjectCreationAction<SoilsTransformationProject>(
+  createRenewableEnergyAction<SoilsTransformationProject>(
     "completeSoilsTransformationProjectSelectionStep",
   );
-export const completeCustomSoilsSelectionStep = createUrbanProjectCreationAction<SoilType[]>(
+export const completeCustomSoilsSelectionStep = createRenewableEnergyAction<SoilType[]>(
   "completeCustomSoilsSelectionStep",
 );
 export const completeCustomSoilsSurfaceAreaAllocationStep =
-  createUrbanProjectCreationAction<SoilsDistribution>(
-    "completeCustomSoilsSurfaceAreaAllocationStep",
-  );
+  createRenewableEnergyAction<SoilsDistribution>("completeCustomSoilsSurfaceAreaAllocationStep");
 export const completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep =
-  createUrbanProjectCreationAction(
-    "completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep",
-  );
-export const completeStakeholdersIntroductionStep = createUrbanProjectCreationAction(
+  createRenewableEnergyAction("completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep");
+export const completeStakeholdersIntroductionStep = createRenewableEnergyAction(
   "completeStakeholdersIntroductionStep",
 );
 export const futureOperatorCompleted =
-  createUrbanProjectCreationAction<ProjectStakeholder>("futureOperatorCompleted");
-export const completeProjectDeveloper = createUrbanProjectCreationAction<
+  createRenewableEnergyAction<ProjectStakeholder>("futureOperatorCompleted");
+export const completeProjectDeveloper = createRenewableEnergyAction<
   ReconversionProjectCreationData["projectDeveloper"]
 >("completeProjectDeveloper");
-export const completeReinstatementContractOwner = createUrbanProjectCreationAction<
+export const completeReinstatementContractOwner = createRenewableEnergyAction<
   ReconversionProjectCreationData["reinstatementContractOwner"]
 >("completeReinstatementContractOwner");
-export const completeExpensesIntroductionStep = createUrbanProjectCreationAction(
+export const completeExpensesIntroductionStep = createRenewableEnergyAction(
   "completeExpensesIntroductionStep",
 );
-export const completeReinstatementExpenses = createUrbanProjectCreationAction<
-  ReinstatementExpense[]
->("completeReinstatementExpenses");
-export const completeRevenuIntroductionStep = createUrbanProjectCreationAction(
+export const completeReinstatementExpenses = createRenewableEnergyAction<ReinstatementExpense[]>(
+  "completeReinstatementExpenses",
+);
+export const completeRevenuIntroductionStep = createRenewableEnergyAction(
   "completeRevenuIntroductionStep",
 );
-export const completePhotovoltaicPanelsInstallationExpenses = createUrbanProjectCreationAction<
+export const completePhotovoltaicPanelsInstallationExpenses = createRenewableEnergyAction<
   PhotovoltaicInstallationExpense[]
 >("completePhotovoltaicPanelsInstallationExpenses");
-export const completeYearlyProjectedExpenses = createUrbanProjectCreationAction<
+export const completeYearlyProjectedExpenses = createRenewableEnergyAction<
   ReconversionProjectCreationData["yearlyProjectedExpenses"]
 >("completeYearlyProjectedExpenses");
-export const completeFinancialAssistanceRevenues = createUrbanProjectCreationAction<
+export const completeFinancialAssistanceRevenues = createRenewableEnergyAction<
   FinancialAssistanceRevenue[]
 >("completeFinancialAssistanceRevenues");
-export const completeYearlyProjectedRevenue = createUrbanProjectCreationAction<
+export const completeYearlyProjectedRevenue = createRenewableEnergyAction<
   ReconversionProjectCreationData["yearlyProjectedRevenues"]
 >("completeYearlyProjectedRevenue");
-export const completeNaming = createUrbanProjectCreationAction<{
+export const completeNaming = createRenewableEnergyAction<{
   name: string;
   description?: string;
 }>("completeNaming");
 export const completePhotovoltaicKeyParameter =
-  createUrbanProjectCreationAction<PhotovoltaicKeyParameter>("completePhotovoltaicKeyParameter");
-export const completePhotovoltaicInstallationElectricalPower =
-  createUrbanProjectCreationAction<number>("completePhotovoltaicInstallationElectricalPower");
-export const completePhotovoltaicInstallationSurface = createUrbanProjectCreationAction<number>(
+  createRenewableEnergyAction<PhotovoltaicKeyParameter>("completePhotovoltaicKeyParameter");
+export const completePhotovoltaicInstallationElectricalPower = createRenewableEnergyAction<number>(
+  "completePhotovoltaicInstallationElectricalPower",
+);
+export const completePhotovoltaicInstallationSurface = createRenewableEnergyAction<number>(
   "completePhotovoltaicInstallationSurface",
 );
-export const completePhotovoltaicExpectedAnnualProduction =
-  createUrbanProjectCreationAction<number>("completePhotovoltaicExpectedAnnualProduction");
-export const completePhotovoltaicContractDuration = createUrbanProjectCreationAction<number>(
+export const completePhotovoltaicExpectedAnnualProduction = createRenewableEnergyAction<number>(
+  "completePhotovoltaicExpectedAnnualProduction",
+);
+export const completePhotovoltaicContractDuration = createRenewableEnergyAction<number>(
   "completePhotovoltaicContractDuration",
 );
-export const completeSoilsSummaryStep = createUrbanProjectCreationAction(
-  "completeSoilsSummaryStep",
-);
-export const completeSoilsCarbonStorageStep = createUrbanProjectCreationAction(
+export const completeSoilsSummaryStep = createRenewableEnergyAction("completeSoilsSummaryStep");
+export const completeSoilsCarbonStorageStep = createRenewableEnergyAction(
   "completeSoilsCarbonStorageStep",
 );
-export const completeScheduleIntroductionStep = createUrbanProjectCreationAction(
+export const completeScheduleIntroductionStep = createRenewableEnergyAction(
   "completeScheduleIntroductionStep",
 );
-export const completeScheduleStep = createUrbanProjectCreationAction<{
+export const completeScheduleStep = createRenewableEnergyAction<{
   firstYearOfOperation?: number;
   photovoltaicInstallationSchedule?: Schedule;
   reinstatementSchedule?: Schedule;
 }>("completeScheduleStep");
-export const completeSitePurchase =
-  createUrbanProjectCreationAction<boolean>("completeSitePurchase");
+export const completeSitePurchase = createRenewableEnergyAction<boolean>("completeSitePurchase");
 export const completeFutureSiteOwner =
-  createUrbanProjectCreationAction<ReconversionProjectCreationData["futureSiteOwner"]>(
+  createRenewableEnergyAction<ReconversionProjectCreationData["futureSiteOwner"]>(
     "completeFutureSiteOwner",
   );
-export const completeSitePurchaseAmounts = createUrbanProjectCreationAction<{
+export const completeSitePurchaseAmounts = createRenewableEnergyAction<{
   sellingPrice: number;
   propertyTransferDuties?: number;
 }>("completeSitePurchaseAmounts");
-export const completeProjectPhaseStep = createUrbanProjectCreationAction<{
+export const completeProjectPhaseStep = createRenewableEnergyAction<{
   phase: RenewableEnergyProjectPhase;
 }>("completeProjectPhaseStep");
-export const completeSoilsDecontaminationIntroduction = createUrbanProjectCreationAction(
+export const completeSoilsDecontaminationIntroduction = createRenewableEnergyAction(
   "completeSoilsDecontaminationIntroduction",
 );
-export const completeSoilsDecontaminationSelection = createUrbanProjectCreationAction<
+export const completeSoilsDecontaminationSelection = createRenewableEnergyAction<
   "partial" | "none" | "unknown"
 >("completeSoilsDecontaminationSelection");
-export const completeSoilsDecontaminationSurfaceArea = createUrbanProjectCreationAction<number>(
+export const completeSoilsDecontaminationSurfaceArea = createRenewableEnergyAction<number>(
   "completeSoilsDecontaminationSurfaceArea",
 );
-
-export const revertRenewableEnergyType = createUrbanProjectCreationAction(
-  "revertRenewableEnergyType",
-);
-export const revertSoilsDecontaminationIntroductionStep = createUrbanProjectCreationAction(
-  "revertSoilsDecontaminationIntroductionStep",
-);
-export const revertSoilsDecontaminationSelectionStep = createUrbanProjectCreationAction(
-  "revertSoilsDecontaminationSelectionStep",
-);
-export const revertSoilsDecontaminationSurfaceAreaStep = createUrbanProjectCreationAction(
-  "revertSoilsDecontaminationSurfaceAreaStep",
-);
-export const revertSoilsTransformationIntroductionStep = createUrbanProjectCreationAction(
-  "revertSoilsTransformationIntroductionStep",
-);
-export const revertNonSuitableSoilsNoticeStep = createUrbanProjectCreationAction(
-  "revertNonSuitableSoilsNoticeStep",
-);
-export const revertNonSuitableSoilsSelectionStep = createUrbanProjectCreationAction(
-  "revertNonSuitableSoilsSelectionStep",
-);
-export const revertNonSuitableSoilsSurfaceStep = createUrbanProjectCreationAction(
-  "revertNonSuitableSoilsSurfaceStep",
-);
-export const revertSoilsTransformationProjectSelectionStep = createUrbanProjectCreationAction(
-  "revertSoilsTransformationProjectSelectionStep",
-);
-export const revertCustomSoilsSelectionStep = createUrbanProjectCreationAction(
-  "revertCustomSoilsSelectionStep",
-);
-export const revertCustomSoilsSurfaceAreaAllocationStep = createUrbanProjectCreationAction(
-  "revertCustomSoilsSurfaceAreaAllocationStep",
-);
-export const revertBiodiversityAndClimateImpactNoticeStep = createUrbanProjectCreationAction(
-  "revertBiodiversityAndClimateImpactNoticeStep",
-);
-export const revertStakeholdersIntroductionStep = createUrbanProjectCreationAction(
-  "revertStakeholdersIntroductionStep",
-);
-export const revertProjectDeveloper = createUrbanProjectCreationAction("revertProjectDeveloper");
-export const revertFutureOperator = createUrbanProjectCreationAction("revertFutureOperator");
-export const revertReinstatementContractOwner = createUrbanProjectCreationAction(
-  "revertReinstatementContractOwner",
-);
-export const revertWillSiteBePurchased = createUrbanProjectCreationAction(
-  "revertWillSiteBePurchased",
-);
-export const revertFutureSiteOwner = createUrbanProjectCreationAction("revertFutureSiteOwner");
-export const revertExpensesIntroductionStep = createUrbanProjectCreationAction(
-  "revertExpensesIntroductionStep",
-);
-export const revertSitePurchaseAmounts = createUrbanProjectCreationAction(
-  "revertSitePurchaseAmounts",
-);
-export const revertReinstatementExpenses = createUrbanProjectCreationAction(
-  "revertReinstatementExpenses",
-);
-export const revertPhotovoltaicPanelsInstallationExpenses = createUrbanProjectCreationAction(
-  "revertPhotovoltaicPanelsInstallationExpenses",
-);
-export const revertYearlyProjectedExpenses = createUrbanProjectCreationAction(
-  "revertYearlyProjectedExpenses",
-);
-export const revertRevenuIntroductionStep = createUrbanProjectCreationAction(
-  "revertRevenuIntroductionStep",
-);
-export const revertFinancialAssistanceRevenues = createUrbanProjectCreationAction(
-  "revertFinancialAssistanceRevenues",
-);
-export const revertYearlyProjectedRevenue = createUrbanProjectCreationAction(
-  "revertYearlyProjectedRevenue",
-);
-export const revertNaming = createUrbanProjectCreationAction("revertNaming");
-export const revertPhotovoltaicKeyParameter = createUrbanProjectCreationAction(
-  "revertPhotovoltaicKeyParameter",
-);
-export const revertPhotovoltaicInstallationElectricalPower = createUrbanProjectCreationAction(
-  "revertPhotovoltaicInstallationElectricalPower",
-);
-export const revertPhotovoltaicInstallationSurface = createUrbanProjectCreationAction(
-  "revertPhotovoltaicInstallationSurface",
-);
-export const revertPhotovoltaicExpectedAnnualProduction = createUrbanProjectCreationAction(
-  "revertPhotovoltaicExpectedAnnualProduction",
-);
-export const revertPhotovoltaicContractDuration = createUrbanProjectCreationAction(
-  "revertPhotovoltaicContractDuration",
-);
-export const revertSoilsSummaryStep = createUrbanProjectCreationAction("revertSoilsSummaryStep");
-export const revertSoilsCarbonStorageStep = createUrbanProjectCreationAction(
-  "revertSoilsCarbonStorageStep",
-);
-export const revertScheduleIntroductionStep = createUrbanProjectCreationAction(
-  "revertScheduleIntroductionStep",
-);
-export const revertProjectPhaseStep = createUrbanProjectCreationAction("revertProjectPhaseStep");
-export const revertScheduleStep = createUrbanProjectCreationAction("revertScheduleStep");
-export const revertFinalSummaryStep = createUrbanProjectCreationAction("revertFinalSummaryStep");
-export const revertResultStep = createUrbanProjectCreationAction("revertResultStep");

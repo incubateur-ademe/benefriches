@@ -1,8 +1,6 @@
 import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
-import {
-  completeSoilsDecontaminationSurfaceArea,
-  revertSoilsDecontaminationSurfaceAreaStep,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeSoilsDecontaminationSurfaceArea } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { soilsDecontaminationSurfaceAreaStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { selectContaminatedSurfaceAreaPercentageToDecontaminate } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -26,7 +24,7 @@ function SoilsDecontaminationSurfaceAreaContainer() {
       }}
       contaminatedSoilSurface={contaminatedSurfaceArea}
       onSubmit={onSubmit}
-      onBack={() => dispatch(revertSoilsDecontaminationSurfaceAreaStep())}
+      onBack={() => dispatch(soilsDecontaminationSurfaceAreaStepReverted())}
     />
   );
 }

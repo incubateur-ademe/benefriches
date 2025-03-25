@@ -44,46 +44,8 @@ import {
   completeSoilsDecontaminationSelection,
   completeSoilsDecontaminationSurfaceArea,
   completeSoilsTransformationIntroductionStep,
-  revertBiodiversityAndClimateImpactNoticeStep,
-  revertCustomSoilsSelectionStep,
-  revertCustomSoilsSurfaceAreaAllocationStep,
-  revertExpensesIntroductionStep,
-  revertFinalSummaryStep,
-  revertFinancialAssistanceRevenues,
-  revertFutureOperator,
-  revertFutureSiteOwner,
-  revertNaming,
-  revertNonSuitableSoilsNoticeStep,
-  revertNonSuitableSoilsSelectionStep,
-  revertNonSuitableSoilsSurfaceStep,
-  revertPhotovoltaicContractDuration,
-  revertPhotovoltaicExpectedAnnualProduction,
-  revertPhotovoltaicInstallationElectricalPower,
-  revertPhotovoltaicInstallationSurface,
-  revertPhotovoltaicKeyParameter,
-  revertPhotovoltaicPanelsInstallationExpenses,
-  revertProjectDeveloper,
-  revertProjectPhaseStep,
-  revertReinstatementContractOwner,
-  revertReinstatementExpenses,
-  revertRenewableEnergyType,
-  revertResultStep,
-  revertRevenuIntroductionStep,
-  revertScheduleIntroductionStep,
-  revertScheduleStep,
-  revertSitePurchaseAmounts,
-  revertSoilsCarbonStorageStep,
-  revertSoilsDecontaminationSelectionStep,
-  revertSoilsDecontaminationSurfaceAreaStep,
-  revertSoilsSummaryStep,
-  revertSoilsTransformationIntroductionStep,
-  revertSoilsTransformationProjectSelectionStep,
-  revertStakeholdersIntroductionStep,
-  revertWillSiteBePurchased,
-  revertYearlyProjectedExpenses,
-  revertYearlyProjectedRevenue,
-  revertSoilsDecontaminationIntroductionStep,
 } from "./actions/renewableEnergy.actions";
+import { isRenewableEnergyStepRevertAttemptedAction } from "./actions/revert.actions";
 import { saveReconversionProject } from "./actions/saveReconversionProject.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
 import {
@@ -509,158 +471,27 @@ const addFetchCarbonStorageComparisonActionCases = (
   });
 };
 
-const revertStep = (
-  state: ProjectCreationState,
-  resetFields?: (keyof ReconversionProjectCreationData)[],
-) => {
-  const { creationData: initialData } = INITIAL_STATE;
-
-  if (resetFields) {
-    resetFields.forEach(
-      /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
-      /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
-      <K extends keyof ReconversionProjectCreationData>(field: K) => {
-        state.renewableEnergyProject.creationData[field] =
-          field in initialData ? initialData[field] : undefined;
-      },
-    );
-  }
-
-  if (state.renewableEnergyProject.stepsHistory.length > 1) {
-    state.renewableEnergyProject.stepsHistory = state.renewableEnergyProject.stepsHistory.slice(
-      0,
-      -1,
-    );
-  }
-};
-
 const addRevertStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
-  builder.addCase(revertRenewableEnergyType, (state) => {
-    state.developmentPlanCategory = undefined;
-    revertStep(state, ["renewableEnergyType"]);
-  });
-  builder.addCase(revertSoilsDecontaminationIntroductionStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertSoilsDecontaminationSelectionStep, (state) => {
-    revertStep(state, ["decontaminatedSurfaceArea", "decontaminationPlan"]);
-  });
-  builder.addCase(revertSoilsDecontaminationSurfaceAreaStep, (state) => {
-    revertStep(state, ["decontaminatedSurfaceArea"]);
-  });
-  builder.addCase(revertSoilsTransformationIntroductionStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertNonSuitableSoilsNoticeStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertNonSuitableSoilsSelectionStep, (state) => {
-    revertStep(state, ["nonSuitableSoilsToTransform"]);
-  });
+  builder.addMatcher(isRenewableEnergyStepRevertAttemptedAction, (state, action) => {
+    const { creationData: initialData } = INITIAL_STATE;
 
-  builder.addCase(revertNonSuitableSoilsSurfaceStep, (state) => {
-    revertStep(state, [
-      "baseSoilsDistributionForTransformation",
-      "nonSuitableSoilsSurfaceAreaToTransform",
-    ]);
-  });
-  builder.addCase(revertSoilsTransformationProjectSelectionStep, (state) => {
-    revertStep(state, ["soilsTransformationProject", "soilsDistribution"]);
-  });
-  builder.addCase(revertCustomSoilsSelectionStep, (state) => {
-    revertStep(state, ["futureSoilsSelection"]);
-  });
-  builder.addCase(revertCustomSoilsSurfaceAreaAllocationStep, (state) => {
-    revertStep(state, ["soilsDistribution"]);
-  });
-  builder.addCase(revertBiodiversityAndClimateImpactNoticeStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertStakeholdersIntroductionStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertProjectDeveloper, (state) => {
-    revertStep(state, ["projectDeveloper"]);
-  });
-  builder.addCase(revertFutureOperator, (state) => {
-    revertStep(state, ["futureOperator"]);
-  });
-  builder.addCase(revertReinstatementContractOwner, (state) => {
-    revertStep(state, ["reinstatementContractOwner"]);
-  });
-  builder.addCase(revertWillSiteBePurchased, (state) => {
-    revertStep(state, ["willSiteBePurchased"]);
-  });
-  builder.addCase(revertFutureSiteOwner, (state) => {
-    revertStep(state, ["futureSiteOwner"]);
-  });
-  builder.addCase(revertExpensesIntroductionStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertSitePurchaseAmounts, (state) => {
-    revertStep(state, ["sitePurchaseSellingPrice", "sitePurchasePropertyTransferDuties"]);
-  });
+    if (action.payload?.resetFields) {
+      action.payload.resetFields.forEach(
+        /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
+        /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
+        <K extends keyof ReconversionProjectCreationData>(field: K) => {
+          state.renewableEnergyProject.creationData[field] =
+            field in initialData ? initialData[field] : undefined;
+        },
+      );
+    }
 
-  builder.addCase(revertReinstatementExpenses, (state) => {
-    revertStep(state, ["reinstatementExpenses"]);
-  });
-  builder.addCase(revertPhotovoltaicPanelsInstallationExpenses, (state) => {
-    revertStep(state, ["photovoltaicPanelsInstallationExpenses"]);
-  });
-  builder.addCase(revertYearlyProjectedExpenses, (state) => {
-    revertStep(state, ["yearlyProjectedExpenses"]);
-  });
-  builder.addCase(revertRevenuIntroductionStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertFinancialAssistanceRevenues, (state) => {
-    revertStep(state, ["financialAssistanceRevenues"]);
-  });
-  builder.addCase(revertYearlyProjectedRevenue, (state) => {
-    revertStep(state, ["yearlyProjectedRevenues"]);
-  });
-  builder.addCase(revertNaming, (state) => {
-    revertStep(state, ["name", "description"]);
-  });
-  builder.addCase(revertPhotovoltaicKeyParameter, (state) => {
-    revertStep(state, ["photovoltaicKeyParameter"]);
-  });
-  builder.addCase(revertPhotovoltaicInstallationElectricalPower, (state) => {
-    revertStep(state, ["photovoltaicInstallationElectricalPowerKWc"]);
-  });
-  builder.addCase(revertPhotovoltaicInstallationSurface, (state) => {
-    revertStep(state, ["photovoltaicInstallationSurfaceSquareMeters"]);
-  });
-  builder.addCase(revertPhotovoltaicExpectedAnnualProduction, (state) => {
-    revertStep(state, ["photovoltaicExpectedAnnualProduction"]);
-  });
-  builder.addCase(revertPhotovoltaicContractDuration, (state) => {
-    revertStep(state, ["photovoltaicContractDuration"]);
-  });
-  builder.addCase(revertSoilsSummaryStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertSoilsCarbonStorageStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertScheduleIntroductionStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertProjectPhaseStep, (state) => {
-    revertStep(state, ["projectPhase"]);
-  });
-  builder.addCase(revertScheduleStep, (state) => {
-    revertStep(state, [
-      "firstYearOfOperation",
-      "reinstatementSchedule",
-      "photovoltaicInstallationSchedule",
-    ]);
-  });
-  builder.addCase(revertFinalSummaryStep, (state) => {
-    revertStep(state);
-  });
-  builder.addCase(revertResultStep, (state) => {
-    revertStep(state);
+    if (state.stepsHistory.length > 1) {
+      state.renewableEnergyProject.stepsHistory = state.renewableEnergyProject.stepsHistory.slice(
+        0,
+        -1,
+      );
+    }
   });
 };
 
@@ -668,9 +499,9 @@ export const renewableEnergyProjectReducer = createReducer(
   {} as ProjectCreationState,
   (builder) => {
     addCompleteStepActionCases(builder);
-    addRevertStepActionCases(builder);
     addSaveReconversionProjectActionCases(builder);
     addFetchExpectedPhotovoltaicPerformanceActionCases(builder);
     addFetchCarbonStorageComparisonActionCases(builder);
+    addRevertStepActionCases(builder);
   },
 );

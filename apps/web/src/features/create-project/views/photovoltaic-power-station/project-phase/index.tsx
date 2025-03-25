@@ -1,9 +1,7 @@
 import { RENEWABLE_ENERGY_PROJECT_PHASE_VALUES } from "shared";
 
-import {
-  completeProjectPhaseStep,
-  revertProjectPhaseStep,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeProjectPhaseStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { projectPhaseStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import {
   getHintTextForRenewableEnergyProjectPhase,
   getLabelForRenewableEnergyProjectPhase,
@@ -34,7 +32,7 @@ function ProjectPhaseFormContainer() {
         dispatch(completeProjectPhaseStep({ phase: phase ?? "unknown" }));
       }}
       onBack={() => {
-        dispatch(revertProjectPhaseStep());
+        dispatch(projectPhaseStepReverted());
       }}
     />
   );

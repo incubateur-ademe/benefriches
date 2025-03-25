@@ -1,7 +1,5 @@
-import {
-  completeRevenuIntroductionStep,
-  revertRevenuIntroductionStep,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeRevenuIntroductionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { revenueIntroductionStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import ProjectRevenueIntroduction from "./ProjectRevenueIntroduction";
@@ -15,7 +13,7 @@ function ProjectRevenueIntroductionContainer() {
         dispatch(completeRevenuIntroductionStep());
       }}
       onBack={() => {
-        dispatch(revertRevenuIntroductionStep());
+        dispatch(revenueIntroductionStepReverted());
       }}
     />
   );

@@ -1,8 +1,6 @@
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
-import {
-  completeFutureSiteOwner,
-  revertFutureSiteOwner,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeFutureSiteOwner } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { futureSiteOwnerStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import {
   getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   getRenewableEnergyProjectAvailableStakeholders,
@@ -23,7 +21,7 @@ function FutureOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(revertFutureSiteOwner());
+    dispatch(futureSiteOwnerStepReverted());
   };
 
   return (

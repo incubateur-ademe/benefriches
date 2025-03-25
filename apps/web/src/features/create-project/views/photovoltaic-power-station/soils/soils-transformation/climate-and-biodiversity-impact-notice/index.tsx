@@ -1,7 +1,5 @@
-import {
-  completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep,
-  revertBiodiversityAndClimateImpactNoticeStep,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { biodiversityAndClimateImpactNoticeStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import {
   selectBiodiversityAndClimateSensibleSoilsSurfaceAreaDestroyed,
   selectFutureBiodiversityAndClimateSensibleSoilsSurfaceArea,
@@ -25,7 +23,7 @@ export default function ClimateAndBiodiversityImpactNoticeContainer() {
 
   return (
     <ClimateAndBiodiversityImpactNotice
-      onBack={() => dispatch(revertBiodiversityAndClimateImpactNoticeStep())}
+      onBack={() => dispatch(biodiversityAndClimateImpactNoticeStepReverted())}
       onNext={() => dispatch(completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep())}
       hasTransformationNegativeImpact={hasTransformationNegativeImpact}
       sensibleSurfaceAreaDestroyed={biodiversityAndClimateSensitiveSoilsSurfaceAreaDestroyed}

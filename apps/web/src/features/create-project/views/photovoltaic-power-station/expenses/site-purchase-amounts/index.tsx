@@ -1,7 +1,5 @@
-import {
-  completeSitePurchaseAmounts,
-  revertSitePurchaseAmounts,
-} from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { completeSitePurchaseAmounts } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
+import { sitePurchaseAmountsStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { selectSitePurchaseAmounts } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -25,7 +23,7 @@ function SitePurchaseAmountsContainer() {
         );
       }}
       onBack={() => {
-        dispatch(revertSitePurchaseAmounts());
+        dispatch(sitePurchaseAmountsStepReverted());
       }}
     />
   );
