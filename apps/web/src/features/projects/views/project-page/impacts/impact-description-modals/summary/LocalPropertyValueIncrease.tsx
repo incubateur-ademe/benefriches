@@ -42,7 +42,7 @@ const SummaryLocalPropertyValueIncreaseDescription = ({ impactData }: Props) => 
             impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
             value={value}
             label="🏡 Valeur patrimoniale des bâtiments alentour"
-            type="default"
+            type="monetary"
             onClick={() => {
               openImpactModalDescription({
                 sectionName: "socio_economic",
