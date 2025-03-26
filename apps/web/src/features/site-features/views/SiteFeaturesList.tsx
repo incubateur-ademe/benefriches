@@ -136,21 +136,19 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           )}
         </>
         <>
-          <DataLine
-            noBorder
-            label={
-              <strong>
-                Dépenses annuelles {siteFeatures.nature === "FRICHE" ? "de la friche" : "du site"}
-              </strong>
-            }
-            value={
-              siteFeatures.expenses.length > 0 ? (
+          {siteFeatures.expenses.length > 0 && (
+            <DataLine
+              noBorder
+              label={
+                <strong>
+                  Dépenses annuelles {siteFeatures.nature === "FRICHE" ? "de la friche" : "du site"}
+                </strong>
+              }
+              value={
                 <strong>{formatNumberFr(sumListWithKey(siteFeatures.expenses, "amount"))} €</strong>
-              ) : (
-                "Aucun"
-              )
-            }
-          />
+              }
+            />
+          )}
           {siteManagementExpenses.length > 0 && (
             <>
               <DataLine
