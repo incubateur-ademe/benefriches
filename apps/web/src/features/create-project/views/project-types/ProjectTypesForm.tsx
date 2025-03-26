@@ -12,6 +12,7 @@ import DevelopmentPlanCategoryTile from "./DevelopmentPlanCategoryTile";
 
 type Props = {
   onSubmit: (data: FormValues) => void;
+  initialValues: FormValues | undefined;
   allowedDevelopmentPlanCategories: DevelopmentPlanCategory[];
 };
 
@@ -19,8 +20,10 @@ type FormValues = {
   developmentPlanCategory: DevelopmentPlanCategory;
 };
 
-function ProjectTypesForm({ onSubmit, allowedDevelopmentPlanCategories }: Props) {
-  const { control, handleSubmit, formState } = useForm<FormValues>();
+function ProjectTypesForm({ onSubmit, initialValues, allowedDevelopmentPlanCategories }: Props) {
+  const { control, handleSubmit, formState } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
   const validationError = formState.errors.developmentPlanCategory;
 
   const options = developmentPlanCategorySchema.options.map((option) => {
