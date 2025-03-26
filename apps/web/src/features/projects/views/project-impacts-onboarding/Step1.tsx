@@ -87,10 +87,9 @@ export default function Step1({
       <div className="md:tw-w-2/3">
         <h1 className="tw-text-[32px]">{getTitle(projectOverallImpact)}</h1>
         <p className="tw-text-lg tw-font-bold">
-          Voici les atouts principaux de votre projet sur{" "}
-          {evaluationPeriod <= 1
-            ? `la première année :`
-            : `les ${evaluationPeriod} premières années :`}
+          Sur{" "}
+          {evaluationPeriod <= 1 ? `la première année` : `les ${evaluationPeriod} premières années`}
+          , voici ses principaux impacts :
         </p>
         <section className="tw-flex tw-flex-col tw-space-y-6">
           {mainKeyImpactIndicators.map(({ name, value, isSuccess }) => {
