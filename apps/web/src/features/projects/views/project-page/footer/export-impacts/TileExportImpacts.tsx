@@ -66,7 +66,6 @@ function TileExportImpacts({
         title="Exporter les impacts du projet"
         badgeText="Bientôt disponible"
         iconId="fr-icon-file-download-line"
-        disabled
         button={hasExportImpactsAlert ? SUCCESS_BUTTON_PROPS : BUTTON_PROPS}
       />
 

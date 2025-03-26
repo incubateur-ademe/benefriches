@@ -61,7 +61,6 @@ function TileDuplicateProject({
         title="Dupliquer ce projet sur un autre site"
         badgeText="Bientôt disponible"
         iconId="ri-file-copy-line"
-        disabled
         button={hasDuplicateProjectAlert ? SUCCESS_BUTTON_PROPS : BUTTON_PROPS}
       />
 

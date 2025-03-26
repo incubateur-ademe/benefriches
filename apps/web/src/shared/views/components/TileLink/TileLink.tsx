@@ -42,7 +42,7 @@ const TileLink = ({ linkProps, title, badgeText, iconId, disabled, button }: Pro
           "tw-flex",
           "tw-flex-col",
           "tw-items-center",
-          "tw-justify-center",
+          button ? "tw-justify-around" : "tw-justify-center",
           "tw-text-center",
           "lg:tw-text-lg",
           "tw-font-medium",
@@ -50,13 +50,13 @@ const TileLink = ({ linkProps, title, badgeText, iconId, disabled, button }: Pro
           "tw-gap-4",
           disabled
             ? ["tw-text-text-light", "dark:tw-text-dsfr-greyDisabled"]
-            : ["tw-text-dsfr-titleBlue"],
+            : ["!tw-text-dsfr-titleBlue"],
         )}
       >
         {iconId && <span aria-hidden="true" className={classNames("fr-icon--xl", iconId)} />}
         {title}
         {badgeText && (
-          <Badge small style={disabled ? "disabled" : undefined}>
+          <Badge small style={disabled ? "disabled" : "green-tilleul"}>
             {badgeText}
           </Badge>
         )}
