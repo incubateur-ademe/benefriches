@@ -165,7 +165,6 @@ describe("CreateNewExpressSite Use case", () => {
             FOREST_MIXED: 1000,
           }),
           owner: { structureType: "municipality", name: "Mairie de Montrouge" },
-          tenant: { structureType: "company", name: "Actuel locataire" },
           yearlyExpenses: [],
           yearlyIncomes: [],
         },

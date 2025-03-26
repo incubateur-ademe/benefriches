@@ -53,10 +53,6 @@ export class NaturalAreaGenerator implements SiteGenerator<NaturalAreaGeneration
         structureType: "municipality",
         name: formatMunicipalityName(address.city),
       },
-      tenant: {
-        structureType: "company",
-        name: "Actuel locataire",
-      },
       yearlyExpenses: [],
       yearlyIncomes: [],
       name: generateSiteName({
