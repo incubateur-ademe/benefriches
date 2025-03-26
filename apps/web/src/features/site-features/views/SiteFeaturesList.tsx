@@ -19,10 +19,12 @@ type Props = SiteFeatures;
 
 export default function SiteFeaturesList(siteFeatures: Props) {
   const siteManagementExpenses = siteFeatures.expenses.filter((e) =>
-    ["rent", "propertyTaxes", "operationsTaxes", "otherManagementCosts"].includes(e.purpose),
+    ["maintenance", "rent", "propertyTaxes", "operationsTaxes", "otherManagementCosts"].includes(
+      e.purpose,
+    ),
   );
   const fricheSpecificExpenses = siteFeatures.expenses.filter((e) =>
-    ["security", "maintenance", "illegalDumpingCost", "otherSecuringCosts"].includes(e.purpose),
+    ["security", "illegalDumpingCost", "otherSecuringCosts"].includes(e.purpose),
   );
   return (
     <>
@@ -151,11 +153,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           )}
           {siteManagementExpenses.length > 0 && (
             <>
-              <DataLine
-                isDetails
-                label={<strong>Gestion du site</strong>}
-                value={`${sumListWithKey(siteManagementExpenses, "amount")} €`}
-              />
+              <DataLine isDetails label={<strong>Gestion du site</strong>} value="" />
               {siteManagementExpenses.map(({ purpose, amount }) => {
                 return (
                   <DataLine
@@ -170,11 +168,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           )}
           {fricheSpecificExpenses.length > 0 && (
             <>
-              <DataLine
-                isDetails
-                label={<strong>Sécurisation du site</strong>}
-                value={`${sumListWithKey(fricheSpecificExpenses, "amount")} €`}
-              />
+              <DataLine isDetails label={<strong>Sécurisation du site</strong>} value="" />
               {fricheSpecificExpenses.map(({ amount, purpose }) => {
                 return (
                   <DataLine
