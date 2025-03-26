@@ -28,8 +28,11 @@ export default function StepRevertConfirmationModal({ open, onCancel, onConfirm 
   });
 
   useEffect(() => {
-    if (open) modal.open();
-    else modal.close();
+    // ensure modal is actually in the DOM before opening it
+    setTimeout(() => {
+      if (open) modal.open();
+      else modal.close();
+    }, 0);
   }, [open]);
 
   return (
