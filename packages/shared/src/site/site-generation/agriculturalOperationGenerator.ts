@@ -89,10 +89,6 @@ export class AgriculturalOperationGenerator
         structureType: "municipality",
         name: formatMunicipalityName(address.city),
       },
-      tenant: {
-        structureType: "company",
-        name: "Actuel locataire",
-      },
       yearlyExpenses: [],
       yearlyIncomes: [],
       name: generateSiteName({

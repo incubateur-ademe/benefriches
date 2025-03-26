@@ -58,10 +58,6 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
         structureType: "municipality",
         name: formatMunicipalityName(address.city),
       },
-      tenant: {
-        structureType: "company",
-        name: "Actuel locataire",
-      },
       yearlyExpenses,
       name: generateSiteName({
         cityName: address.city,
