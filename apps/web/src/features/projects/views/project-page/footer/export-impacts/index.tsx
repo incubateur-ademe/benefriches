@@ -17,7 +17,7 @@ const TileExportImpactsContainer = () => {
       onSubmit={({ email, options }) => {
         void dispatch(createFeatureAlert({ email, feature: { type: "export_impacts", options } }));
       }}
-      exportImpactsAlert={exportImpactsAlert ?? false}
+      hasExportImpactsAlert={exportImpactsAlert?.hasAlert ?? false}
       onSaveLoadingState={createUserFeatureAlertState.exportImpacts}
       userEmail={userEmail}
     />

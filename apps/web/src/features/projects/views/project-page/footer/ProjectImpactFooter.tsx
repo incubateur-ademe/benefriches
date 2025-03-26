@@ -6,7 +6,7 @@ import { routes } from "@/shared/views/router";
 import { aboutImpactsModal } from "../impacts/about-impacts-modal";
 import { projectFeaturesModal } from "../impacts/project-features-modal/createProjectFeaturesModal";
 import { siteFeaturesModal } from "../impacts/site-features-modal/createSiteFeaturesModal";
-import TileCompareImpacts from "./compare-impacts";
+import ImpactComparisonSection from "./compare-impacts";
 import TileDuplicateProject from "./duplicate-impacts";
 import TileExportImpacts from "./export-impacts";
 
@@ -17,10 +17,11 @@ type Props = {
 function ProjectImpactFooter({ siteId }: Props) {
   return (
     <>
+      <ImpactComparisonSection />
+
       <p className="tw-text-lg tw-font-bold">Aller plus loin avec ce projet :</p>
-      <div className="tw-grid tw-grid-cols-[repeat(auto-fill,_282px)] tw-gap-3 md:tw-gap-6 tw-pb-6">
+      <div className="tw-grid md:tw-grid-cols-3 tw-gap-3 md:tw-gap-6 tw-pb-6">
         <TileExportImpacts />
-        <TileCompareImpacts />
         <TileDuplicateProject />
         <TileLink
           title="Créer un nouveau projet sur ce site"

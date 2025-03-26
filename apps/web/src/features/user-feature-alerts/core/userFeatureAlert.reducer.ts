@@ -2,13 +2,25 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { createFeatureAlert } from "./createFeatureAlert.action";
 import { loadFeatureAlerts } from "./loadFeatureAlerts.action";
-import { UserFeatureAlert } from "./userFeatureAlert";
+import {
+  CompareImpactsFeatureAlert,
+  ExportImpactsFeatureAlert,
+  UserFeatureAlert,
+} from "./userFeatureAlert";
 
 type Status = "idle" | "loading" | "success" | "error";
 type State = {
-  compareImpactsAlert?: boolean;
-  duplicateProjectAlert?: boolean;
-  exportImpactsAlert?: boolean;
+  compareImpactsAlert?: {
+    hasAlert: boolean;
+    options?: CompareImpactsFeatureAlert["options"];
+  };
+  duplicateProjectAlert?: {
+    hasAlert: boolean;
+  };
+  exportImpactsAlert?: {
+    hasAlert: boolean;
+    options?: ExportImpactsFeatureAlert["options"];
+  };
   createUserFeatureAlertState: {
     compareImpacts: Status;
     duplicateProject: Status;
@@ -46,18 +58,21 @@ const userFeatureAlertSlice = createSlice({
     builder.addCase(
       createFeatureAlert.fulfilled,
       (state, action: PayloadAction<UserFeatureAlert>) => {
-        const type = action.payload.feature.type;
-        switch (type) {
+        const { feature } = action.payload;
+        switch (feature.type) {
           case "compare_impacts":
-            state.compareImpactsAlert = true;
+            state.compareImpactsAlert = {
+              hasAlert: true,
+              options: feature.options,
+            };
             state.createUserFeatureAlertState.compareImpacts = "success";
             break;
           case "duplicate_project":
-            state.duplicateProjectAlert = true;
+            state.duplicateProjectAlert = { hasAlert: true };
             state.createUserFeatureAlertState.duplicateProject = "success";
             break;
           case "export_impacts":
-            state.exportImpactsAlert = true;
+            state.exportImpactsAlert = { hasAlert: true, options: feature.options };
             state.createUserFeatureAlertState.exportImpacts = "success";
             break;
         }
@@ -80,10 +95,10 @@ const userFeatureAlertSlice = createSlice({
 
     builder.addCase(
       loadFeatureAlerts.fulfilled,
-      (state, action: PayloadAction<UserFeatureAlert["feature"]["type"][]>) => {
-        state.exportImpactsAlert = action.payload.some((type) => type === "export_impacts");
-        state.duplicateProjectAlert = action.payload.some((type) => type === "duplicate_project");
-        state.compareImpactsAlert = action.payload.some((type) => type === "compare_impacts");
+      (state, action: PayloadAction<Omit<State, "createUserFeatureAlertState">>) => {
+        state.exportImpactsAlert = action.payload.exportImpactsAlert;
+        state.duplicateProjectAlert = action.payload.duplicateProjectAlert;
+        state.compareImpactsAlert = action.payload.compareImpactsAlert;
       },
     );
   },

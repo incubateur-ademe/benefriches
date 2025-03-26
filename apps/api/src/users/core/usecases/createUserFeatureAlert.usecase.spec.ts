@@ -22,7 +22,7 @@ describe("CreateUserFeatureAlert Use Case", () => {
       email: "user@ademe.fr",
       feature: {
         type: "compare_impacts",
-        options: ["other_project_on_same_site", "same_project_on_other_site"],
+        options: ["same_project_on_prairie", "same_project_on_agricultural_operation"],
       },
     });
 
@@ -36,8 +36,8 @@ describe("CreateUserFeatureAlert Use Case", () => {
         createdAt: fakeNow,
         featureType: "compare_impacts",
         featureOptions: {
-          other_project_on_same_site: true,
-          same_project_on_other_site: true,
+          same_project_on_prairie: true,
+          same_project_on_agricultural_operation: true,
           statu_quo_scenario: false,
         },
       },

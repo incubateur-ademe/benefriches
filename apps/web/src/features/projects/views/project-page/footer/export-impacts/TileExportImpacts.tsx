@@ -11,7 +11,7 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import FeatureAlertModalTitle from "../FeatureAlertModalTitle";
 
 type Props = {
-  exportImpactsAlert: boolean;
+  hasExportImpactsAlert: boolean;
   onSaveLoadingState: "idle" | "loading" | "error" | "success";
   onSubmit: (formData: FormValues) => void;
   userEmail?: string;
@@ -48,7 +48,12 @@ const BUTTON_PROPS: ButtonProps = {
   },
 };
 
-function TileExportImpacts({ exportImpactsAlert, onSubmit, onSaveLoadingState, userEmail }: Props) {
+function TileExportImpacts({
+  hasExportImpactsAlert,
+  onSubmit,
+  onSaveLoadingState,
+  userEmail,
+}: Props) {
   const { handleSubmit, register, formState } = useForm<FormValues>({
     defaultValues: { email: userEmail, options: [] },
   });
@@ -62,7 +67,7 @@ function TileExportImpacts({ exportImpactsAlert, onSubmit, onSaveLoadingState, u
         badgeText="Bientôt disponible"
         iconId="fr-icon-file-download-line"
         disabled
-        button={exportImpactsAlert ? SUCCESS_BUTTON_PROPS : BUTTON_PROPS}
+        button={hasExportImpactsAlert ? SUCCESS_BUTTON_PROPS : BUTTON_PROPS}
       />
 
       <exportImpactsFeatureAlertModal.Component

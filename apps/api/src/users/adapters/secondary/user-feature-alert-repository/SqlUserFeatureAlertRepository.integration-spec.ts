@@ -61,8 +61,8 @@ describe("SqlUserFeatureAlertRepository integration", () => {
       email: "user@ademe.fr",
       featureType: "compare_impacts",
       featureOptions: {
-        other_project_on_same_site: true,
-        same_project_on_other_site: false,
+        same_project_on_prairie: true,
+        same_project_on_agricultural_operation: false,
         statu_quo_scenario: false,
       },
       createdAt: new Date(),

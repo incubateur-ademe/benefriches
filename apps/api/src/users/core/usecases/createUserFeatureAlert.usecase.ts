@@ -31,8 +31,8 @@ const createFeatureAlertSchema = z.discriminatedUnion("featureType", [
   baseFeatureAlertSchema.extend({
     featureType: z.literal("compare_impacts"),
     featureOptions: z.object({
-      same_project_on_other_site: z.boolean(),
-      other_project_on_same_site: z.boolean(),
+      same_project_on_agricultural_operation: z.boolean(),
+      same_project_on_prairie: z.boolean(),
       statu_quo_scenario: z.boolean(),
     }),
   }),
@@ -55,8 +55,8 @@ export const createFeatureAlertProps = baseFeatureAlertSchema.omit({ createdAt: 
       options: z
         .array(
           z.enum([
-            "same_project_on_other_site",
-            "other_project_on_same_site",
+            "same_project_on_agricultural_operation",
+            "same_project_on_prairie",
             "statu_quo_scenario",
           ]),
         )
@@ -71,10 +71,11 @@ const convertArrayOptionsToObject = (feature: Request["feature"]) => {
   switch (feature.type) {
     case "compare_impacts":
       return {
-        same_project_on_other_site:
-          feature.options?.some((option) => option === "same_project_on_other_site") ?? false,
-        other_project_on_same_site:
-          feature.options?.some((option) => option === "other_project_on_same_site") ?? false,
+        same_project_on_agricultural_operation:
+          feature.options?.some((option) => option === "same_project_on_agricultural_operation") ??
+          false,
+        same_project_on_prairie:
+          feature.options?.some((option) => option === "same_project_on_prairie") ?? false,
         statu_quo_scenario:
           feature.options?.some((option) => option === "statu_quo_scenario") ?? false,
       };

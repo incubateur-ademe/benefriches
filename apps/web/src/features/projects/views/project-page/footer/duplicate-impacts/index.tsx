@@ -17,7 +17,7 @@ const TileDuplicateProjectContainer = () => {
       onSubmit={({ email }) => {
         void dispatch(createFeatureAlert({ email, feature: { type: "duplicate_project" } }));
       }}
-      duplicateProjectAlert={duplicateProjectAlert ?? false}
+      hasDuplicateProjectAlert={duplicateProjectAlert?.hasAlert ?? false}
       onSaveLoadingState={createUserFeatureAlertState.duplicateProject}
       userEmail={userEmail}
     />

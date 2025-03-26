@@ -3,7 +3,7 @@ import React, { useId } from "react";
 
 import classNames from "@/shared/views/clsx";
 
-import { getCustomCheckboxStyle, getCustomRadioButtonStyle } from "./styles";
+import { getCustomCheckboxStyle, getCustomRadioButtonStyle } from "../CheckboxCard/styles";
 
 type Props = {
   title: string;

@@ -10,7 +10,7 @@ import RequiredLabel from "@/shared/views/components/form/RequiredLabel/Required
 import FeatureAlertModalTitle from "../FeatureAlertModalTitle";
 
 type Props = {
-  duplicateProjectAlert: boolean;
+  hasDuplicateProjectAlert: boolean;
   onSaveLoadingState: "idle" | "loading" | "error" | "success";
   onSubmit: (formData: FormValues) => void;
   userEmail?: string;
@@ -45,7 +45,7 @@ const BUTTON_PROPS: ButtonProps = {
 };
 
 function TileDuplicateProject({
-  duplicateProjectAlert,
+  hasDuplicateProjectAlert,
   onSubmit,
   onSaveLoadingState,
   userEmail,
@@ -62,7 +62,7 @@ function TileDuplicateProject({
         badgeText="Bientôt disponible"
         iconId="ri-file-copy-line"
         disabled
-        button={duplicateProjectAlert ? SUCCESS_BUTTON_PROPS : BUTTON_PROPS}
+        button={hasDuplicateProjectAlert ? SUCCESS_BUTTON_PROPS : BUTTON_PROPS}
       />
 
       <duplicateImpactsFeatureAlertModal.Component

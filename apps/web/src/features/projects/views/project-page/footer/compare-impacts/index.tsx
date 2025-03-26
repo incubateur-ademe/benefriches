@@ -2,9 +2,9 @@ import { selectCurrentUserEmail } from "@/features/onboarding/core/user.reducer"
 import { createFeatureAlert } from "@/features/user-feature-alerts/core/createFeatureAlert.action";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import TileCompareImpacts from "./TileCompareImpacts";
+import ImpactComparisonSection from "./ImpactComparisonSection";
 
-const TileCompareImpactsContainer = () => {
+const ImpactComparisonSectionContainer = () => {
   const { compareImpactsAlert, createUserFeatureAlertState } = useAppSelector(
     (state) => state.userFeatureAlert,
   );
@@ -13,15 +13,15 @@ const TileCompareImpactsContainer = () => {
   const dispatch = useAppDispatch();
 
   return (
-    <TileCompareImpacts
+    <ImpactComparisonSection
       onSubmit={({ email, options }) => {
         void dispatch(createFeatureAlert({ email, feature: { type: "compare_impacts", options } }));
       }}
-      compareImpactsAlert={compareImpactsAlert ?? false}
+      userCompareImpactsAlerts={compareImpactsAlert?.options}
       onSaveLoadingState={createUserFeatureAlertState.compareImpacts}
       userEmail={userEmail}
     />
   );
 };
 
-export default TileCompareImpactsContainer;
+export default ImpactComparisonSectionContainer;

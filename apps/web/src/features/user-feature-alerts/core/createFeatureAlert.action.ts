@@ -15,7 +15,7 @@ export const createFeatureAlert = createAppAsyncThunk<
   };
 
   await extra.createUserFeatureAlertService.save(featureAlert);
-  extra.createUserFeatureAlertService.persistNewFeatureAlert(featureAlert.feature.type);
+  extra.createUserFeatureAlertService.persistNewFeatureAlert(featureAlert.feature);
 
   return featureAlert;
 });

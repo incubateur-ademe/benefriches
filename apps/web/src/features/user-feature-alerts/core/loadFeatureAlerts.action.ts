@@ -1,10 +1,10 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { UserFeatureAlert } from "./userFeatureAlert";
+import { UserFeatureAlertsResult } from "./CreateFeatureAlertGateway";
 
-export const loadFeatureAlerts = createAppAsyncThunk<UserFeatureAlert["feature"]["type"][]>(
+export const loadFeatureAlerts = createAppAsyncThunk<UserFeatureAlertsResult>(
   "user/loadFeatureAlerts",
   (_, { extra }) => {
-    return extra.createUserFeatureAlertService.getList();
+    return extra.createUserFeatureAlertService.getPersistedFeatureAlerts();
   },
 );

@@ -93,7 +93,7 @@ describe("Users controller", () => {
     it.each([
       { type: "export_impacts", options: ["pdf", "excel", "sharing_link"] },
       { type: "duplicate_project" },
-      { type: "compare_impacts", options: ["other_project_on_same_site"] },
+      { type: "compare_impacts", options: ["same_project_on_prairie"] },
     ])("get a 201 response and user is created $type", async ({ type, options }) => {
       await sqlConnection("users").insert({
         id: "cc5fefe9-3bcb-4271-a27b-50ab9bb33596",
