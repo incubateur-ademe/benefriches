@@ -1,43 +1,46 @@
+import { stepRevertAttempted } from "../../actions/actionsUtils";
 import "../actions/urbanProject.actions";
 import {
   buildingsResaleChoiceCompleted,
-  buildingsResaleChoiceReverted,
   siteResaleChoiceCompleted,
-  siteResaleChoiceReverted,
   siteResaleIntroductionCompleted,
-  siteResaleIntroductionReverted,
 } from "../actions/urbanProject.actions";
 import { expectUpdatedState, expectRevertedState, StoreBuilder } from "./testUtils";
 
 describe("Urban project creation : site resale steps", () => {
   describe("Custom creation mode", () => {
-    describe("SITE_RESALE_INTRODUCTION step", () => {
-      it("goes to SITE_RESALE_SELECTION step when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["SITE_RESALE_INTRODUCTION"]).build();
+    describe("URBAN_PROJECT_SITE_RESALE_INTRODUCTION step", () => {
+      it("goes to URBAN_PROJECT_SITE_RESALE_SELECTION step when step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["URBAN_PROJECT_SITE_RESALE_INTRODUCTION"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(siteResaleIntroductionCompleted());
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "SITE_RESALE_SELECTION",
+          currentStep: "URBAN_PROJECT_SITE_RESALE_SELECTION",
         });
       });
 
       it("goes to previous step when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["STAKEHOLDERS_PROJECT_DEVELOPER", "SITE_RESALE_INTRODUCTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
+            "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
+          ])
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(siteResaleIntroductionReverted());
+        store.dispatch(stepRevertAttempted());
 
         expectRevertedState(initialRootState, store.getState(), {});
       });
     });
 
-    describe("SITE_RESALE_SELECTION step", () => {
-      it("goes to EXPENSES_INTRODUCTION and set current owner as future owner when no site resale planned and urban project doesn't have buildings", () => {
+    describe("URBAN_PROJECT_SITE_RESALE_SELECTION step", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_INTRODUCTION and set current owner as future owner when no site resale planned and urban project doesn't have buildings", () => {
         const store = new StoreBuilder()
           .withSiteData({
             owner: {
@@ -45,7 +48,10 @@ describe("Urban project creation : site resale steps", () => {
               structureType: "municipality",
             },
           })
-          .withStepsHistory(["SITE_RESALE_INTRODUCTION", "SITE_RESALE_SELECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
+            "URBAN_PROJECT_SITE_RESALE_SELECTION",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -53,14 +59,14 @@ describe("Urban project creation : site resale steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_EXPENSES_INTRODUCTION",
           creationDataDiff: {
             siteResalePlannedAfterDevelopment: false,
             futureSiteOwner: { name: "Propriétaire de la friche", structureType: "municipality" },
           },
         });
       });
-      it("goes to EXPENSES_INTRODUCTION and set future owner as unknown when site resale planned and urban project doesn't have buildings", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_INTRODUCTION and set future owner as unknown when site resale planned and urban project doesn't have buildings", () => {
         const store = new StoreBuilder()
           .withSiteData({
             owner: {
@@ -68,7 +74,10 @@ describe("Urban project creation : site resale steps", () => {
               structureType: "municipality",
             },
           })
-          .withStepsHistory(["SITE_RESALE_INTRODUCTION", "SITE_RESALE_SELECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
+            "URBAN_PROJECT_SITE_RESALE_SELECTION",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -76,16 +85,19 @@ describe("Urban project creation : site resale steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_EXPENSES_INTRODUCTION",
           creationDataDiff: {
             siteResalePlannedAfterDevelopment: true,
             futureSiteOwner: { name: "Futur propriétaire inconnu", structureType: "unknown" },
           },
         });
       });
-      it("goes to BUILDINGS_RESALE_SELECTION and set site resale choice when step is completed and urban project has buildings", () => {
+      it("goes to URBAN_PROJECT_BUILDINGS_RESALE_SELECTION and set site resale choice when step is completed and urban project has buildings", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SITE_RESALE_INTRODUCTION", "SITE_RESALE_SELECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
+            "URBAN_PROJECT_SITE_RESALE_SELECTION",
+          ])
           .withCreationData({
             livingAndActivitySpacesDistribution: {
               BUILDINGS: 1000,
@@ -99,7 +111,7 @@ describe("Urban project creation : site resale steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "BUILDINGS_RESALE_SELECTION",
+          currentStep: "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
           creationDataDiff: {
             futureSiteOwner: {
               name: "Futur propriétaire inconnu",
@@ -111,7 +123,10 @@ describe("Urban project creation : site resale steps", () => {
       });
       it("goes to previous step and unsets site resale choice and future owner when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SITE_RESALE_INTRODUCTION", "SITE_RESALE_SELECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
+            "URBAN_PROJECT_SITE_RESALE_SELECTION",
+          ])
           .withCreationData({
             siteResalePlannedAfterDevelopment: false,
             futureSiteOwner: {
@@ -122,7 +137,7 @@ describe("Urban project creation : site resale steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(siteResaleChoiceReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
@@ -133,8 +148,8 @@ describe("Urban project creation : site resale steps", () => {
         });
       });
     });
-    describe("BUILDINGS_RESALE_SELECTION step", () => {
-      it("goes to EXPENSES_INTRODUCTION and set project developer as future operator when no buildings resale planned when step is completed", () => {
+    describe("URBAN_PROJECT_BUILDINGS_RESALE_SELECTION step", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_INTRODUCTION and set project developer as future operator when no buildings resale planned when step is completed", () => {
         const store = new StoreBuilder()
           .withCreationData({
             projectDeveloper: {
@@ -142,7 +157,10 @@ describe("Urban project creation : site resale steps", () => {
               structureType: "municipality",
             },
           })
-          .withStepsHistory(["SITE_RESALE_INTRODUCTION", "BUILDINGS_RESALE_SELECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
+            "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -152,7 +170,7 @@ describe("Urban project creation : site resale steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_EXPENSES_INTRODUCTION",
           creationDataDiff: {
             buildingsResalePlannedAfterDevelopment: false,
             futureOperator: {
@@ -162,7 +180,7 @@ describe("Urban project creation : site resale steps", () => {
           },
         });
       });
-      it("goes to EXPENSES_INTRODUCTION and set unknown future operator when buildings resale planned when step is completed", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_INTRODUCTION and set unknown future operator when buildings resale planned when step is completed", () => {
         const store = new StoreBuilder()
           .withCreationData({
             projectDeveloper: {
@@ -170,7 +188,10 @@ describe("Urban project creation : site resale steps", () => {
               structureType: "municipality",
             },
           })
-          .withStepsHistory(["SITE_RESALE_INTRODUCTION", "BUILDINGS_RESALE_SELECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SITE_RESALE_INTRODUCTION",
+            "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -180,7 +201,7 @@ describe("Urban project creation : site resale steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_EXPENSES_INTRODUCTION",
           creationDataDiff: {
             buildingsResalePlannedAfterDevelopment: true,
             futureOperator: {
@@ -192,7 +213,10 @@ describe("Urban project creation : site resale steps", () => {
       });
       it("goes to previous step and unsets buildings resale choice and future operator when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SITE_RESALE_SELECTION", "BUILDINGS_RESALE_SELECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SITE_RESALE_SELECTION",
+            "URBAN_PROJECT_BUILDINGS_RESALE_SELECTION",
+          ])
           .withCreationData({
             buildingsResalePlannedAfterDevelopment: true,
             futureOperator: {
@@ -203,7 +227,7 @@ describe("Urban project creation : site resale steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(buildingsResaleChoiceReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {

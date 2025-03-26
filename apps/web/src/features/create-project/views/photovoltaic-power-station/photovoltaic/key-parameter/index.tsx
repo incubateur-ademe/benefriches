@@ -1,5 +1,5 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { completePhotovoltaicKeyParameter } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { photovoltaicKeyParameterStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { selectPhotovoltaicPlantFeaturesKeyParameter } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -15,7 +15,7 @@ function PhotovoltaicKeyParameterContainer() {
       onSubmit={(data) => {
         dispatch(completePhotovoltaicKeyParameter(data.photovoltaicKeyParameter));
       }}
-      onBack={() => dispatch(photovoltaicKeyParameterStepReverted())}
+      onBack={() => dispatch(stepRevertAttempted())}
     />
   );
 }

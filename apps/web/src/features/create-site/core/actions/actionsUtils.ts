@@ -15,7 +15,3 @@ export const createStepCompletedAction = <TPayload = void>(stepName: SiteCreatio
 export const isSiteCreationAction = (action: UnknownAction) => {
   return action.type.startsWith(SITE_CREATION_PREFIX);
 };
-
-export const isStepCompletedAction = (action: UnknownAction) => {
-  return isSiteCreationAction(action) && action.type.endsWith(COMPLETED_SUFFIX);
-};

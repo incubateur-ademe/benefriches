@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 
-import { resultsStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import ProjectCreationResult from "../../common-views/result";
@@ -13,7 +13,7 @@ function ProjectCreationResultContainer() {
   const dispatch = useDispatch();
 
   const onBack = () => {
-    dispatch(resultsStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsCarbonStorageStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { soilsCarbonStorageStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "@/features/create-project/core/renewable-energy/actions/soilsCarbonStorage.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -23,7 +23,7 @@ function ProjectSoilsCarbonStorageContainer() {
         onNext={() => {
           dispatch(completeSoilsCarbonStorageStep());
         }}
-        onBack={() => dispatch(soilsCarbonStorageStepReverted())}
+        onBack={() => dispatch(stepRevertAttempted())}
         loadingState={state.loadingState}
         currentCarbonStorage={state.current}
         projectedCarbonStorage={state.projected}
@@ -36,7 +36,7 @@ function ProjectSoilsCarbonStorageContainer() {
       onNext={() => {
         dispatch(completeSoilsCarbonStorageStep());
       }}
-      onBack={() => dispatch(soilsCarbonStorageStepReverted())}
+      onBack={() => dispatch(stepRevertAttempted())}
       loadingState={state.loadingState}
       currentCarbonStorage={undefined}
       projectedCarbonStorage={undefined}

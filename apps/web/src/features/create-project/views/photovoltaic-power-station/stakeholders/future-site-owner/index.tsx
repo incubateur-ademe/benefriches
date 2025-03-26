@@ -1,6 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import { completeFutureSiteOwner } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { futureSiteOwnerStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import {
   getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   getRenewableEnergyProjectAvailableStakeholders,
@@ -21,7 +21,7 @@ function FutureOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(futureSiteOwnerStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

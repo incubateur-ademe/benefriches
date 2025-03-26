@@ -17,10 +17,6 @@ const selectRenewableEnergyData = createSelector(
   (state): ProjectCreationState["renewableEnergyProject"] => state.renewableEnergyProject,
 );
 
-export const selectCurrentStep = createSelector(selectRenewableEnergyData, (state) => {
-  return state.stepsHistory.at(-1) ?? "RENEWABLE_ENERGY_TYPES";
-});
-
 export const selectCreationData = createSelector(
   selectRenewableEnergyData,
   (state): RenewableEneryProjectState["creationData"] => state.creationData,

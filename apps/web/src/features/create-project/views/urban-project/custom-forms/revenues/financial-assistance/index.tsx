@@ -1,7 +1,5 @@
-import {
-  financialAssistanceRevenuesCompleted,
-  financialAssistanceRevenuesReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { financialAssistanceRevenuesCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectUrbanProjectFinancialAssistanceRevenueInitialValues } from "@/features/create-project/core/urban-project/selectors/revenues.selectors";
 import ProjectFinancialAssistanceRevenueForm from "@/features/create-project/views/common-views/revenues/financial-assistance";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -14,7 +12,7 @@ function ProjectFinancialAssistanceRevenueFormContainer() {
     <ProjectFinancialAssistanceRevenueForm
       initialValues={initialValues}
       onBack={() => {
-        dispatch(financialAssistanceRevenuesReverted());
+        dispatch(stepRevertAttempted());
       }}
       onSubmit={(revenues) => {
         dispatch(financialAssistanceRevenuesCompleted(revenues));

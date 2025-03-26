@@ -1,5 +1,5 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSitePurchase } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { willSiteBePurchasedStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SitePurchasedForm, { FormValues } from "./SitePurchasedForm";
@@ -17,7 +17,7 @@ function SitePurchasedFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(willSiteBePurchasedStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

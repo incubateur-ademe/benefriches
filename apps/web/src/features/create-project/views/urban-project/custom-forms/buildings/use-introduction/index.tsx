@@ -1,7 +1,5 @@
-import {
-  buildingsUseIntroductionCompleted,
-  buildingsUseIntroductionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { buildingsUseIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import BuildingsUseIntroduction from "./BuildingsUseIntroduction";
@@ -15,7 +13,7 @@ export default function BuildingsUseIntroductionContainer() {
         dispatch(buildingsUseIntroductionCompleted());
       }}
       onBack={() => {
-        dispatch(buildingsUseIntroductionReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

@@ -13,7 +13,7 @@ export default function UrbanProjectExpressCreationStepWizard({ currentStep }: P
   return (
     <SidebarLayout
       mainChildren={
-        currentStep === "EXPRESS_CATEGORY_SELECTION" ? (
+        currentStep === "URBAN_PROJECT_EXPRESS_CATEGORY_SELECTION" ? (
           <UrbanProjectExpressCategory />
         ) : (
           <UrbanProjectCreationResult />

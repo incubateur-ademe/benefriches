@@ -1,5 +1,5 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import {
-  createModeStepReverted,
   customCreateModeSelected,
   expressCreateModeSelected,
 } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
@@ -20,7 +20,7 @@ export default function CreateModeSelectionFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(createModeStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return <CreateModeSelectionForm onSubmit={onSubmit} onBack={onBack} />;

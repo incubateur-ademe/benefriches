@@ -1,7 +1,5 @@
-import {
-  buildingsIntroductionCompleted,
-  buildingsIntroductionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { buildingsIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectBuildingsFootprintSurfaceArea } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -14,7 +12,7 @@ export default function BuildingsIntroductionContainer() {
   return (
     <BuildingsIntroduction
       onNext={() => dispatch(buildingsIntroductionCompleted())}
-      onBack={() => dispatch(buildingsIntroductionReverted())}
+      onBack={() => dispatch(stepRevertAttempted())}
       buildingsFootprintSurfaceArea={buildingsFootprintSurfaceArea}
     />
   );

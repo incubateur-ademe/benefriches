@@ -1,7 +1,5 @@
-import {
-  livingAndActivitySpacesIntroductionCompleted,
-  livingAndActivitySpacesIntroductionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { livingAndActivitySpacesIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectSpaceCategorySurfaceArea } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -17,7 +15,7 @@ export default function LivingAndActivitySpacesIntroductionContainer() {
     <LivingAndActivitySpacesIntroduction
       livingAndActivitySpacesSurfaceArea={livingAndActivitySpacesSurfaceArea}
       onBack={() => {
-        dispatch(livingAndActivitySpacesIntroductionReverted());
+        dispatch(stepRevertAttempted());
       }}
       onNext={() => {
         dispatch(livingAndActivitySpacesIntroductionCompleted());

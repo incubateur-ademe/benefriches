@@ -1,7 +1,5 @@
-import {
-  soilsDecontaminationSelectionCompleted,
-  soilsDecontaminationSelectionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { soilsDecontaminationSelectionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import SoilsDecontaminationSelection, {
   FormValues,
 } from "@/features/create-project/views/common-views/soils-decontamination/selection/SoilsDecontaminationSelection";
@@ -23,7 +21,7 @@ function SoilsDecontaminationSelectionContainer() {
           soilsDecontaminationSelectionCompleted(data.decontaminationSelection ?? "unknown"),
         );
       }}
-      onBack={() => dispatch(soilsDecontaminationSelectionReverted())}
+      onBack={() => dispatch(stepRevertAttempted())}
     />
   );
 }

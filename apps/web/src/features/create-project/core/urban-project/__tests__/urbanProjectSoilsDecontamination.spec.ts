@@ -1,18 +1,16 @@
+import { stepRevertAttempted } from "../../actions/actionsUtils";
 import {
   soilsDecontaminationIntroductionCompleted,
-  soilsDecontaminationIntroductionReverted,
   soilsDecontaminationSelectionCompleted,
-  soilsDecontaminationSelectionReverted,
   soilsDecontaminationSurfaceAreaCompleted,
-  soilsDecontaminationSurfaceAreaReverted,
 } from "../actions/urbanProject.actions";
 import { expectRevertedState, expectUpdatedState, StoreBuilder } from "./testUtils";
 
 describe("Urban project custom creation : soils decontamination", () => {
-  describe("SOILS_DECONTAMINATION_INTRODUCTION step", () => {
-    it("goes to SOILS_DECONTAMINATION_SELECTION step when step is completed", () => {
+  describe("URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION step", () => {
+    it("goes to URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION step when step is completed", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_INTRODUCTION"])
+        .withStepsHistory(["URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION"])
         .build();
       const initialRootState = store.getState();
 
@@ -20,26 +18,32 @@ describe("Urban project custom creation : soils decontamination", () => {
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
-        currentStep: "SOILS_DECONTAMINATION_SELECTION",
+        currentStep: "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
       });
     });
 
     it("goes to previous step when step is reverted", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_CARBON_SUMMARY", "SOILS_DECONTAMINATION_INTRODUCTION"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
+        ])
         .build();
       const initialRootState = store.getState();
 
-      store.dispatch(soilsDecontaminationIntroductionReverted());
+      store.dispatch(stepRevertAttempted());
 
       const newState = store.getState();
       expectRevertedState(initialRootState, newState, {});
     });
   });
-  describe("SOILS_DECONTAMINATION_SELECTION step", () => {
-    it("goes to SOILS_DECONTAMINATION_SURFACE_AREA step when step is completed with 'partial' option", () => {
+  describe("URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION step", () => {
+    it("goes to URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA step when step is completed with 'partial' option", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_INTRODUCTION", "SOILS_DECONTAMINATION_SELECTION"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+        ])
         .build();
       const initialRootState = store.getState();
 
@@ -47,15 +51,18 @@ describe("Urban project custom creation : soils decontamination", () => {
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
-        currentStep: "SOILS_DECONTAMINATION_SURFACE_AREA",
+        currentStep: "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
         creationDataDiff: {
           decontaminationPlan: "partial",
         },
       });
     });
-    it("goes to BUILDINGS_INTRODUCTION step and set 0 to decontaminated surface when step is completed with 'none' option", () => {
+    it("goes to URBAN_PROJECT_BUILDINGS_INTRODUCTION step and set 0 to decontaminated surface when step is completed with 'none' option", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_INTRODUCTION", "SOILS_DECONTAMINATION_SELECTION"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+        ])
         .withCreationData({
           livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
         })
@@ -66,16 +73,19 @@ describe("Urban project custom creation : soils decontamination", () => {
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
-        currentStep: "BUILDINGS_INTRODUCTION",
+        currentStep: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
         creationDataDiff: {
           decontaminationPlan: "none",
           decontaminatedSurfaceArea: 0,
         },
       });
     });
-    it("goes to BUILDINGS_INTRODUCTION step when step is completed with 'unknown' option and assign default value", () => {
+    it("goes to URBAN_PROJECT_BUILDINGS_INTRODUCTION step when step is completed with 'unknown' option and assign default value", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_INTRODUCTION", "SOILS_DECONTAMINATION_SELECTION"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+        ])
         .withSiteData({
           contaminatedSoilSurface: 1000,
         })
@@ -89,7 +99,7 @@ describe("Urban project custom creation : soils decontamination", () => {
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
-        currentStep: "BUILDINGS_INTRODUCTION",
+        currentStep: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
         creationDataDiff: {
           decontaminationPlan: "unknown",
           decontaminatedSurfaceArea: 250,
@@ -97,9 +107,12 @@ describe("Urban project custom creation : soils decontamination", () => {
       });
     });
 
-    it("goes to STAKEHOLDERS_INTRODUCTION step and set 0 to decontaminated surface when step is completed with 'none' option and there is no buildings in project", () => {
+    it("goes to URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION step and set 0 to decontaminated surface when step is completed with 'none' option and there is no buildings in project", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_INTRODUCTION", "SOILS_DECONTAMINATION_SELECTION"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+        ])
         .build();
       const initialRootState = store.getState();
 
@@ -107,16 +120,19 @@ describe("Urban project custom creation : soils decontamination", () => {
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
-        currentStep: "STAKEHOLDERS_INTRODUCTION",
+        currentStep: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
         creationDataDiff: {
           decontaminationPlan: "none",
           decontaminatedSurfaceArea: 0,
         },
       });
     });
-    it("goes to STAKEHOLDERS_INTRODUCTION step when step is completed with 'unknown' option and there is no buildings in project", () => {
+    it("goes to URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION step when step is completed with 'unknown' option and there is no buildings in project", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_INTRODUCTION", "SOILS_DECONTAMINATION_SELECTION"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+        ])
         .withSiteData({
           contaminatedSoilSurface: 1000,
         })
@@ -127,7 +143,7 @@ describe("Urban project custom creation : soils decontamination", () => {
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
-        currentStep: "STAKEHOLDERS_INTRODUCTION",
+        currentStep: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
         creationDataDiff: {
           decontaminationPlan: "unknown",
           decontaminatedSurfaceArea: 250,
@@ -136,12 +152,15 @@ describe("Urban project custom creation : soils decontamination", () => {
     });
     it("goes to previous step and unset space categories when step is reverted", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_INTRODUCTION", "SOILS_DECONTAMINATION_SELECTION"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_INTRODUCTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+        ])
         .withCreationData({ decontaminatedSurfaceArea: 100, decontaminationPlan: "partial" })
         .build();
       const initialRootState = store.getState();
 
-      store.dispatch(soilsDecontaminationSelectionReverted());
+      store.dispatch(stepRevertAttempted());
 
       const newState = store.getState();
       expectRevertedState(initialRootState, newState, {
@@ -152,10 +171,13 @@ describe("Urban project custom creation : soils decontamination", () => {
       });
     });
   });
-  describe("SOILS_DECONTAMINATION_SURFACE_AREA step", () => {
-    it("goes to BUILDINGS_INTRODUCTION and sets decontaminated surface area when step is completed", () => {
+  describe("URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA step", () => {
+    it("goes to URBAN_PROJECT_BUILDINGS_INTRODUCTION and sets decontaminated surface area when step is completed", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_SELECTION", "SOILS_DECONTAMINATION_SURFACE_AREA"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+        ])
         .withCreationData({ livingAndActivitySpacesDistribution: { BUILDINGS: 5000 } })
         .build();
       const initialRootState = store.getState();
@@ -164,15 +186,18 @@ describe("Urban project custom creation : soils decontamination", () => {
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
-        currentStep: "BUILDINGS_INTRODUCTION",
+        currentStep: "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
         creationDataDiff: {
           decontaminatedSurfaceArea: 120,
         },
       });
     });
-    it("goes to STAKEHOLDERS_INTRODUCTION and sets decontaminated surface area when step is completed and there is no buildings in project", () => {
+    it("goes to URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION and sets decontaminated surface area when step is completed and there is no buildings in project", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_SELECTION", "SOILS_DECONTAMINATION_SURFACE_AREA"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+        ])
         .build();
       const initialRootState = store.getState();
 
@@ -180,7 +205,7 @@ describe("Urban project custom creation : soils decontamination", () => {
 
       const newState = store.getState();
       expectUpdatedState(initialRootState, newState, {
-        currentStep: "STAKEHOLDERS_INTRODUCTION",
+        currentStep: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
         creationDataDiff: {
           decontaminatedSurfaceArea: 120,
         },
@@ -188,12 +213,15 @@ describe("Urban project custom creation : soils decontamination", () => {
     });
     it("goes to previous step and unsets decontaminated surface area when step is reverted", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_DECONTAMINATION_SELECTION", "SOILS_DECONTAMINATION_SURFACE_AREA"])
+        .withStepsHistory([
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SELECTION",
+          "URBAN_PROJECT_SOILS_DECONTAMINATION_SURFACE_AREA",
+        ])
         .withCreationData({ decontaminatedSurfaceArea: 120 })
         .build();
       const initialRootState = store.getState();
 
-      store.dispatch(soilsDecontaminationSurfaceAreaReverted());
+      store.dispatch(stepRevertAttempted());
 
       const newState = store.getState();
       expectRevertedState(initialRootState, newState, {

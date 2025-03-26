@@ -1,7 +1,5 @@
-import {
-  namingCompleted,
-  namingReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { namingCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectNameAndDescriptionInitialValues } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import ProjectNameAndDescriptionForm from "@/features/create-project/views/common-views/name-and-description/ProjectNameAndDescriptionForm";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -14,7 +12,7 @@ function ProjectNameAndDescriptionFormContainer() {
     <ProjectNameAndDescriptionForm
       initialValues={initialValues}
       onBack={() => {
-        dispatch(namingReverted());
+        dispatch(stepRevertAttempted());
       }}
       onSubmit={(data) => {
         dispatch(namingCompleted(data));

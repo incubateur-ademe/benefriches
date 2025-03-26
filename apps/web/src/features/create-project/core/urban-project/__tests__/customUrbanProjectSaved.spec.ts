@@ -80,7 +80,7 @@ const mock = {
 describe("Urban project creation : customUrbanProjectSaved action", () => {
   it("results as success with all creationData completed", async () => {
     const store = new StoreBuilder()
-      .withStepsHistory(["FINAL_SUMMARY"])
+      .withStepsHistory(["URBAN_PROJECT_FINAL_SUMMARY"])
       .withSiteData({ id: "f590f643-cd9a-4187-8973-f90e9f1998c8" })
       .withCreationData(mock)
       .build();
@@ -92,20 +92,20 @@ describe("Urban project creation : customUrbanProjectSaved action", () => {
     const newState = store.getState();
 
     expect(newState.projectCreation.urbanProject.saveState).toEqual("success");
-    expect([...newState.projectCreation.urbanProject.stepsHistory].pop()).toEqual(
-      "CREATION_RESULT",
+    expect([...newState.projectCreation.stepsHistory].pop()).toEqual(
+      "URBAN_PROJECT_CREATION_RESULT",
     );
   });
 
   it("results as error if creationData are empty", async () => {
-    const store = new StoreBuilder().withStepsHistory(["FINAL_SUMMARY"]).build();
+    const store = new StoreBuilder().withStepsHistory(["URBAN_PROJECT_FINAL_SUMMARY"]).build();
 
     await store.dispatch(customUrbanProjectSaved());
 
     const newState = store.getState();
     expect(newState.projectCreation.urbanProject.saveState).toEqual("error");
-    expect([...newState.projectCreation.urbanProject.stepsHistory].pop()).toEqual(
-      "CREATION_RESULT",
+    expect([...newState.projectCreation.stepsHistory].pop()).toEqual(
+      "URBAN_PROJECT_CREATION_RESULT",
     );
   });
 });

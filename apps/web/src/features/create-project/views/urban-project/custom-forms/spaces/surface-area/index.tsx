@@ -1,8 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectSiteSurfaceArea } from "@/features/create-project/core/createProject.selectors";
-import {
-  spacesSurfaceAreaCompleted,
-  spacesSurfaceAreaReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { spacesSurfaceAreaCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectSpacesCategories,
   selectSpacesCategoriesSurfaceDistribution,
@@ -25,7 +23,7 @@ export default function UrbanProjectSpaceCategoriesSurfaceAreaDistributionContai
       spacesCategories={selectedSpacesCategories}
       totalSurfaceArea={totalSiteSurfaceArea}
       onBack={() => {
-        dispatch(spacesSurfaceAreaReverted());
+        dispatch(stepRevertAttempted());
       }}
       onSubmit={(data: FormValues) => {
         dispatch(spacesSurfaceAreaCompleted({ surfaceAreaDistribution: data }));

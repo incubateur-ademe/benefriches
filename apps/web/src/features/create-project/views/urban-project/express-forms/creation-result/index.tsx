@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { resultStepReverted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { fetchProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.actions";
 import { selectProjectFeatures } from "@/features/projects/application/project-features/projectFeatures.reducer";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -14,7 +14,7 @@ function UrbanProjectCreationResultContainer() {
   const projectFeatures = useAppSelector(selectProjectFeatures);
 
   const onBack = () => {
-    dispatch(resultStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   useEffect(() => {

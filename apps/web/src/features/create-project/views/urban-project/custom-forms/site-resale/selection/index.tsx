@@ -1,7 +1,5 @@
-import {
-  siteResaleChoiceCompleted,
-  siteResaleChoiceReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { siteResaleChoiceCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectCreationData } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -29,7 +27,7 @@ export default function SiteResaleFormContainer() {
         );
       }}
       onBack={() => {
-        dispatch(siteResaleChoiceReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

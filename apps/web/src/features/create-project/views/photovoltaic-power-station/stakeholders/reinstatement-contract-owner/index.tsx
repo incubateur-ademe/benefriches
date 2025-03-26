@@ -1,6 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import { completeReinstatementContractOwner } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { reinstatementContractOwnerStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import {
   getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   getRenewableEnergyProjectAvailableStakeholders,
@@ -23,7 +23,7 @@ function SiteReinstatementContractOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(reinstatementContractOwnerStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

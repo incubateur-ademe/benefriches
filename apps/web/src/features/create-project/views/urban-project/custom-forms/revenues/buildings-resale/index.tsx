@@ -1,7 +1,5 @@
-import {
-  buildingsResaleRevenueCompleted,
-  buildingsResaleRevenueReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { buildingsResaleRevenueCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectSiteResaleAmounts } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -15,7 +13,7 @@ function BuildingsResaleRevenueFormContainer() {
     <BuildingsResaleRevenueForm
       initialValues={initialValues}
       onBack={() => {
-        dispatch(buildingsResaleRevenueReverted());
+        dispatch(stepRevertAttempted());
       }}
       onSubmit={({ sellingPrice, propertyTransferDuties }) => {
         dispatch(buildingsResaleRevenueCompleted({ sellingPrice, propertyTransferDuties }));

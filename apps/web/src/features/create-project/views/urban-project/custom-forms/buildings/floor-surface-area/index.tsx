@@ -1,7 +1,5 @@
-import {
-  buildingsFloorSurfaceAreaCompleted,
-  buildingsFloorSurfaceAreaReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { buildingsFloorSurfaceAreaCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectBuildingsFloorSurfaceArea,
   selectBuildingsFootprintSurfaceArea,
@@ -21,7 +19,7 @@ export default function BuildingsFloorSurfaceAreaContainer() {
       onSubmit={({ surfaceArea }: { surfaceArea: number }) =>
         dispatch(buildingsFloorSurfaceAreaCompleted(surfaceArea))
       }
-      onBack={() => dispatch(buildingsFloorSurfaceAreaReverted())}
+      onBack={() => dispatch(stepRevertAttempted())}
       buildingsFootprintSurfaceArea={buildingsFootprintSurfaceArea}
     />
   );

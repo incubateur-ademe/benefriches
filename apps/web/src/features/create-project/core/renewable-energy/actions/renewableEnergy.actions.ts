@@ -19,13 +19,13 @@ import {
 } from "../../project.types";
 import { SoilsTransformationProject } from "../soilsTransformation";
 
-export const RENEWABLE_ENERGY = "renewableEnergy";
+const RENEWABLE_ENERGY = "renewableEnergy";
 
 export const makeRenewableEnergyProjectCreationActionType = (actionName: string) => {
   return makeProjectCreationActionType(`${RENEWABLE_ENERGY}/${actionName}`);
 };
 
-export const createRenewableEnergyAction = <TPayload = void>(actionName: string) =>
+const createRenewableEnergyAction = <TPayload = void>(actionName: string) =>
   createAction<TPayload>(makeRenewableEnergyProjectCreationActionType(actionName));
 
 export const completeRenewableEnergyType =

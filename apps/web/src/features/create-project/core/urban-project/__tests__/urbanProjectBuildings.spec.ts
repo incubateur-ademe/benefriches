@@ -1,47 +1,52 @@
+import { stepRevertAttempted } from "../../actions/actionsUtils";
 import {
   buildingsFloorSurfaceAreaCompleted,
-  buildingsFloorSurfaceAreaReverted,
   buildingsIntroductionCompleted,
-  buildingsIntroductionReverted,
   buildingsUseIntroductionCompleted,
-  buildingsUseIntroductionReverted,
   buildingsUseSurfaceAreasCompleted,
-  buildingsUseSurfaceAreasReverted,
 } from "../actions/urbanProject.actions";
 import { selectBuildingsFloorUseSurfaceAreas } from "../selectors/urbanProject.selectors";
 import { expectRevertedState, expectUpdatedState, StoreBuilder } from "./testUtils";
 
 describe("Urban project custom creation : buildings steps", () => {
   describe("actions", () => {
-    describe("BUILDINGS_INTRODUCTION step", () => {
-      it("goes to BUILDINGS_FLOOR_SURFACE_AREA step when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["BUILDINGS_INTRODUCTION"]).build();
+    describe("URBAN_PROJECT_BUILDINGS_INTRODUCTION step", () => {
+      it("goes to URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA step when step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["URBAN_PROJECT_BUILDINGS_INTRODUCTION"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(buildingsIntroductionCompleted());
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "BUILDINGS_FLOOR_SURFACE_AREA",
+          currentStep: "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
         });
       });
 
       it("goes to previous step when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SOILS_CARBON_SUMMARY", "BUILDINGS_INTRODUCTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SOILS_CARBON_SUMMARY",
+            "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
+          ])
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(buildingsIntroductionReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {});
       });
     });
-    describe("BUILDINGS_FLOOR_SURFACE_AREA step", () => {
-      it("goes to BUILDINGS_USE_INTRODUCTION step and sets floor surface area when step is completed", () => {
+    describe("URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA step", () => {
+      it("goes to URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION step and sets floor surface area when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["BUILDINGS_INTRODUCTION", "BUILDINGS_FLOOR_SURFACE_AREA"])
+          .withStepsHistory([
+            "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
+            "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -49,7 +54,7 @@ describe("Urban project custom creation : buildings steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "BUILDINGS_USE_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
           creationDataDiff: {
             buildingsFloorSurfaceArea: 32000,
           },
@@ -57,12 +62,15 @@ describe("Urban project custom creation : buildings steps", () => {
       });
       it("goes to previous step and unset floor surface area when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["BUILDINGS_INTRODUCTION", "BUILDINGS_FLOOR_SURFACE_AREA"])
+          .withStepsHistory([
+            "URBAN_PROJECT_BUILDINGS_INTRODUCTION",
+            "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
+          ])
           .withCreationData({ buildingsFloorSurfaceArea: 100 })
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(buildingsFloorSurfaceAreaReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
@@ -70,36 +78,41 @@ describe("Urban project custom creation : buildings steps", () => {
         });
       });
     });
-    describe("BUILDINGS_USE_INTRODUCTION step", () => {
-      it("goes to BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION step when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["BUILDINGS_USE_INTRODUCTION"]).build();
+    describe("URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION step", () => {
+      it("goes to URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION step when step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(buildingsUseIntroductionCompleted());
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
+          currentStep: "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
         });
       });
       it("goes to previous step when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["BUILDINGS_FLOOR_SURFACE_AREA", "BUILDINGS_USE_INTRODUCTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_BUILDINGS_FLOOR_SURFACE_AREA",
+            "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
+          ])
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(buildingsUseIntroductionReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {});
       });
     });
-    describe("BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION step", () => {
-      it("sets buildings use surface areas and goes to STAKEHOLDERS_INTRODUCTION when step is completed", () => {
+    describe("URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION step", () => {
+      it("sets buildings use surface areas and goes to URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION when step is completed", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
-            "BUILDINGS_USE_INTRODUCTION",
-            "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
+            "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
+            "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
           ])
           .build();
         const initialRootState = store.getState();
@@ -114,7 +127,7 @@ describe("Urban project custom creation : buildings steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "STAKEHOLDERS_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_STAKEHOLDERS_INTRODUCTION",
           creationDataDiff: {
             buildingsUsesDistribution: {
               RESIDENTIAL: 2000,
@@ -127,8 +140,8 @@ describe("Urban project custom creation : buildings steps", () => {
       it("goes to previous step and unsets buildings use surface areas when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
-            "BUILDINGS_USE_INTRODUCTION",
-            "BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
+            "URBAN_PROJECT_BUILDINGS_USE_INTRODUCTION",
+            "URBAN_PROJECT_BUILDINGS_USE_SURFACE_AREA_DISTRIBUTION",
           ])
           .withCreationData({
             buildingsUsesDistribution: {
@@ -140,7 +153,7 @@ describe("Urban project custom creation : buildings steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(buildingsUseSurfaceAreasReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {

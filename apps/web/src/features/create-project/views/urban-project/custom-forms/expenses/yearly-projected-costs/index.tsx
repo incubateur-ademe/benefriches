@@ -1,7 +1,5 @@
-import {
-  buildingsOperationsExpensesCompleted,
-  buildingsOperationsExpensesReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { buildingsOperationsExpensesCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import BuildingsOperationsExpensesForm from "./BuildingsOperationsExpensesForm";
@@ -27,7 +25,7 @@ function YearlyProjectedExpensesFormContainer() {
         dispatch(buildingsOperationsExpensesCompleted(expenses));
       }}
       onBack={() => {
-        dispatch(buildingsOperationsExpensesReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

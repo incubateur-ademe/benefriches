@@ -1,7 +1,5 @@
-import {
-  installationExpensesCompleted,
-  installationExpensesReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { installationExpensesCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectDefaultInstallationCosts,
   selectInstallationCosts,
@@ -39,7 +37,7 @@ function InstallationExpensesFormContainer() {
         dispatch(installationExpensesCompleted(mapFormValuesToExpenses(formData)));
       }}
       onBack={() => {
-        dispatch(installationExpensesReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

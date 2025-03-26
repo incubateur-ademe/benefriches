@@ -1,5 +1,5 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { completeSoilsTransformationProjectSelectionStep } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { soilsTransformationProjectSelectionStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SoilsTransformationProjectForm, { FormValues } from "./SoilsTransformationProjectForm";
@@ -17,7 +17,7 @@ function SoilsTransformationProjectFormContainer() {
         dispatch(completeSoilsTransformationProjectSelectionStep(data.soilsTransformationProject));
       }}
       onBack={() => {
-        dispatch(soilsTransformationProjectSelectionStepReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

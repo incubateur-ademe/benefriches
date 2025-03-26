@@ -1,7 +1,5 @@
-import {
-  livingAndActivitySpacesDistributionCompleted,
-  livingAndActivitySpacesDistributionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { livingAndActivitySpacesDistributionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectLivingAndActivitySpacessDistribution,
   selectSpaceCategorySurfaceArea,
@@ -29,7 +27,7 @@ export default function LivingAndActivitySpacesDistributionContainer() {
         dispatch(livingAndActivitySpacesDistributionCompleted(formData));
       }}
       onBack={() => {
-        dispatch(livingAndActivitySpacesDistributionReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

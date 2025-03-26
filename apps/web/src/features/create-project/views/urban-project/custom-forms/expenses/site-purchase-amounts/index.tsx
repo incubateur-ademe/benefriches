@@ -1,7 +1,5 @@
-import {
-  sitePurchaseCompleted,
-  sitePurchaseReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { sitePurchaseCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectSitePurchaseAmounts } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import SitePurchaseAmountsForm, {
   FormValues,
@@ -23,7 +21,7 @@ function SitePurchaseAmountsContainer() {
         );
       }}
       onBack={() => {
-        dispatch(sitePurchaseReverted());
+        dispatch(stepRevertAttempted());
       }}
       initialValues={initialValues}
     />

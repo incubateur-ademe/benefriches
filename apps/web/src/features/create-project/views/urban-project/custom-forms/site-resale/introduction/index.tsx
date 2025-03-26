@@ -1,7 +1,5 @@
-import {
-  siteResaleIntroductionCompleted,
-  siteResaleIntroductionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { siteResaleIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import SiteResaleIntroduction from "./SiteResaleIntroduction";
@@ -15,7 +13,7 @@ function SiteResaleIntroductionContainer() {
         dispatch(siteResaleIntroductionCompleted());
       }}
       onBack={() => {
-        dispatch(siteResaleIntroductionReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

@@ -1,8 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
-import {
-  stakeholderReinstatementContractOwnerCompleted,
-  stakeholderReinstatementContractOwnerReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stakeholderReinstatementContractOwnerCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
   getUrbanProjectAvailableStakeholders,
@@ -24,7 +22,7 @@ function SiteReinstatementContractOwnerFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(stakeholderReinstatementContractOwnerReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

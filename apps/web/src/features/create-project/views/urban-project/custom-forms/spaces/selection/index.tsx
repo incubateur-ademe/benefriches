@@ -1,7 +1,5 @@
-import {
-  spacesSelectionCompleted,
-  spacesSelectionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { spacesSelectionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectSpacesCategories } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -15,7 +13,7 @@ export default function UrbanProjectSpacesCategoriesSelectionContainer() {
     <UrbanProjectSpacesSelection
       initialValues={selectedSpacesCategories}
       onBack={() => {
-        dispatch(spacesSelectionReverted());
+        dispatch(stepRevertAttempted());
       }}
       onSubmit={(data: FormValues) => {
         dispatch(spacesSelectionCompleted({ spacesCategories: data.spaceCategories }));

@@ -3,6 +3,7 @@ import { SoilsDistribution, stripEmptySurfaces } from "shared";
 
 import { ReconversionProjectCreationData } from "@/features/create-project/core/project.types";
 
+import { stepRevertConfirmed } from "../actions/actionsUtils";
 import { SoilsCarbonStorageResult } from "../actions/soilsCarbonStorage.action";
 import { ProjectCreationState } from "../createProject.reducer";
 import { fetchPhotovoltaicExpectedAnnulPowerPerformanceForLocation } from "./actions/getPhotovoltaicExpectedPerformance.action";
@@ -45,7 +46,6 @@ import {
   completeSoilsDecontaminationSurfaceArea,
   completeSoilsTransformationIntroductionStep,
 } from "./actions/renewableEnergy.actions";
-import { isRenewableEnergyStepRevertAttemptedAction } from "./actions/revert.actions";
 import { saveReconversionProject } from "./actions/saveReconversionProject.action";
 import { fetchCurrentAndProjectedSoilsCarbonStorage } from "./actions/soilsCarbonStorage.actions";
 import {
@@ -62,7 +62,6 @@ import {
 
 export type RenewableEneryProjectState = {
   saveState: "idle" | "loading" | "success" | "error";
-  stepsHistory: PhotovoltaicProjectCreationStep[];
   creationData: Partial<ReconversionProjectCreationData>;
   soilsCarbonStorage:
     | {
@@ -81,49 +80,7 @@ export type RenewableEneryProjectState = {
   };
 };
 
-export type PhotovoltaicProjectCreationStep =
-  | "RENEWABLE_ENERGY_TYPES"
-  | "PHOTOVOLTAIC_KEY_PARAMETER"
-  | "PHOTOVOLTAIC_POWER"
-  | "PHOTOVOLTAIC_SURFACE"
-  | "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION"
-  | "PHOTOVOLTAIC_CONTRACT_DURATION"
-  | "SOILS_DECONTAMINATION_INTRODUCTION"
-  | "SOILS_DECONTAMINATION_SELECTION"
-  | "SOILS_DECONTAMINATION_SURFACE_AREA"
-  | "SOILS_TRANSFORMATION_INTRODUCTION"
-  | "NON_SUITABLE_SOILS_NOTICE"
-  | "NON_SUITABLE_SOILS_SELECTION"
-  | "NON_SUITABLE_SOILS_SURFACE"
-  | "SOILS_TRANSFORMATION_PROJECT_SELECTION"
-  | "SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION"
-  | "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION"
-  | "SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
-  | "SOILS_SUMMARY"
-  | "SOILS_CARBON_STORAGE"
-  | "STAKEHOLDERS_INTRODUCTION"
-  | "STAKEHOLDERS_PROJECT_DEVELOPER"
-  | "STAKEHOLDERS_FUTURE_OPERATOR"
-  | "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
-  | "STAKEHOLDERS_FUTURE_SITE_OWNER"
-  | "STAKEHOLDERS_SITE_PURCHASE"
-  | "EXPENSES_INTRODUCTION"
-  | "EXPENSES_SITE_PURCHASE_AMOUNTS"
-  | "EXPENSES_REINSTATEMENT"
-  | "EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION"
-  | "EXPENSES_PROJECTED_YEARLY_EXPENSES"
-  | "REVENUE_INTRODUCTION"
-  | "REVENUE_PROJECTED_YEARLY_REVENUE"
-  | "REVENUE_FINANCIAL_ASSISTANCE"
-  | "SCHEDULE_INTRODUCTION"
-  | "SCHEDULE_PROJECTION"
-  | "NAMING"
-  | "PROJECT_PHASE"
-  | "FINAL_SUMMARY"
-  | "CREATION_RESULT";
-
 export const INITIAL_STATE: RenewableEneryProjectState = {
-  stepsHistory: ["RENEWABLE_ENERGY_TYPES"],
   creationData: {
     yearlyProjectedExpenses: [],
     yearlyProjectedRevenues: [],
@@ -147,10 +104,10 @@ const willSiteNeedReinstatement = (state: ProjectCreationState) => {
 const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
   builder.addCase(completeRenewableEnergyType, (state, action) => {
     state.renewableEnergyProject.creationData.renewableEnergyType = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("PHOTOVOLTAIC_KEY_PARAMETER");
+    state.stepsHistory.push("RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER");
   });
   builder.addCase(completeSoilsDecontaminationIntroduction, (state) => {
-    state.renewableEnergyProject.stepsHistory.push("SOILS_DECONTAMINATION_SELECTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION");
   });
 
   builder.addCase(completeSoilsDecontaminationSelection, (state, action) => {
@@ -158,41 +115,41 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
     switch (action.payload) {
       case "none":
         state.renewableEnergyProject.creationData.decontaminatedSurfaceArea = 0;
-        state.renewableEnergyProject.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
+        state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
         break;
       case "unknown": {
         const contaminatedSoilSurface = state.siteData?.contaminatedSoilSurface ?? 0;
         state.renewableEnergyProject.creationData.decontaminatedSurfaceArea =
           contaminatedSoilSurface * 0.25;
-        state.renewableEnergyProject.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
+        state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
         break;
       }
       case "partial":
-        state.renewableEnergyProject.stepsHistory.push("SOILS_DECONTAMINATION_SURFACE_AREA");
+        state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA");
         break;
     }
   });
   builder.addCase(completeSoilsDecontaminationSurfaceArea, (state, action) => {
     state.renewableEnergyProject.creationData.decontaminatedSurfaceArea = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("SOILS_TRANSFORMATION_INTRODUCTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION");
   });
   builder.addCase(completeSoilsTransformationIntroductionStep, (state) => {
     const nextStep = canSiteAccomodatePhotovoltaicPanels(
       state.siteData?.soilsDistribution ?? {},
       state.renewableEnergyProject.creationData.photovoltaicInstallationSurfaceSquareMeters ?? 0,
     )
-      ? "SOILS_TRANSFORMATION_PROJECT_SELECTION"
-      : "NON_SUITABLE_SOILS_NOTICE";
-    state.renewableEnergyProject.stepsHistory.push(nextStep);
+      ? "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION"
+      : "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_NOTICE";
+    state.stepsHistory.push(nextStep);
   });
   builder.addCase(completeNonSuitableSoilsNoticeStep, (state) => {
     state.renewableEnergyProject.creationData.baseSoilsDistributionForTransformation =
       state.siteData?.soilsDistribution ?? {};
-    state.renewableEnergyProject.stepsHistory.push("NON_SUITABLE_SOILS_SELECTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION");
   });
   builder.addCase(completeNonSuitableSoilsSelectionStep, (state, action) => {
     state.renewableEnergyProject.creationData.nonSuitableSoilsToTransform = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("NON_SUITABLE_SOILS_SURFACE");
+    state.stepsHistory.push("RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE");
   });
   builder.addCase(completeNonSuitableSoilsSurfaceStep, (state, action) => {
     state.renewableEnergyProject.creationData.nonSuitableSoilsSurfaceAreaToTransform =
@@ -200,14 +157,14 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
     state.renewableEnergyProject.creationData.baseSoilsDistributionForTransformation =
       transformNonSuitableSoils(state.siteData?.soilsDistribution ?? {}, action.payload);
 
-    state.renewableEnergyProject.stepsHistory.push("SOILS_TRANSFORMATION_PROJECT_SELECTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION");
   });
   builder.addCase(completeSoilsTransformationProjectSelectionStep, (state, action) => {
     const transformationProject = action.payload;
     state.renewableEnergyProject.creationData.soilsTransformationProject = transformationProject;
 
     if (transformationProject === "custom") {
-      state.renewableEnergyProject.stepsHistory.push("SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION");
+      state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION");
       return;
     }
 
@@ -239,15 +196,13 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
     const nextStep = hasSiteSignificantBiodiversityAndClimateSensibleSoils(
       state.siteData?.soilsDistribution ?? {},
     )
-      ? "SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
-      : "SOILS_SUMMARY";
-    state.renewableEnergyProject.stepsHistory.push(nextStep);
+      ? "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
+      : "RENEWABLE_ENERGY_SOILS_SUMMARY";
+    state.stepsHistory.push(nextStep);
   });
   builder.addCase(completeCustomSoilsSelectionStep, (state, action) => {
     state.renewableEnergyProject.creationData.futureSoilsSelection = action.payload;
-    state.renewableEnergyProject.stepsHistory.push(
-      "SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION",
-    );
+    state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION");
   });
   builder.addCase(completeCustomSoilsSurfaceAreaAllocationStep, (state, action) => {
     state.renewableEnergyProject.creationData.soilsDistribution = stripEmptySurfaces(
@@ -257,26 +212,26 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
     const nextStep = hasSiteSignificantBiodiversityAndClimateSensibleSoils(
       state.siteData?.soilsDistribution ?? {},
     )
-      ? "SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
-      : "SOILS_SUMMARY";
-    state.renewableEnergyProject.stepsHistory.push(nextStep);
+      ? "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CLIMATE_AND_BIODIVERSITY_IMPACT_NOTICE"
+      : "RENEWABLE_ENERGY_SOILS_SUMMARY";
+    state.stepsHistory.push(nextStep);
   });
   builder.addCase(completeSoilsTransformationClimateAndBiodiversityImpactNoticeStep, (state) => {
-    state.renewableEnergyProject.stepsHistory.push("SOILS_SUMMARY");
+    state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_SUMMARY");
   });
   builder.addCase(completeStakeholdersIntroductionStep, (state) => {
-    state.renewableEnergyProject.stepsHistory.push("STAKEHOLDERS_PROJECT_DEVELOPER");
+    state.stepsHistory.push("RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER");
   });
   builder.addCase(completeProjectDeveloper, (state, action) => {
     state.renewableEnergyProject.creationData.projectDeveloper = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("STAKEHOLDERS_FUTURE_OPERATOR");
+    state.stepsHistory.push("RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR");
   });
   builder.addCase(futureOperatorCompleted, (state, action) => {
     state.renewableEnergyProject.creationData.futureOperator = action.payload;
     const nextStep = willSiteNeedReinstatement(state)
-      ? "STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
-      : "STAKEHOLDERS_SITE_PURCHASE";
-    state.renewableEnergyProject.stepsHistory.push(nextStep);
+      ? "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER"
+      : "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE";
+    state.stepsHistory.push(nextStep);
   });
   builder.addCase(
     completeReinstatementContractOwner,
@@ -285,31 +240,31 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
       action: PayloadAction<ReconversionProjectCreationData["reinstatementContractOwner"]>,
     ) => {
       state.renewableEnergyProject.creationData.reinstatementContractOwner = action.payload;
-      state.renewableEnergyProject.stepsHistory.push("STAKEHOLDERS_SITE_PURCHASE");
+      state.stepsHistory.push("RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE");
     },
   );
   builder.addCase(completeSitePurchase, (state, action) => {
     const willSiteBePurchased = action.payload;
     state.renewableEnergyProject.creationData.willSiteBePurchased = willSiteBePurchased;
     const nextStep = willSiteBePurchased
-      ? "STAKEHOLDERS_FUTURE_SITE_OWNER"
-      : "EXPENSES_INTRODUCTION";
-    state.renewableEnergyProject.stepsHistory.push(nextStep);
+      ? "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER"
+      : "RENEWABLE_ENERGY_EXPENSES_INTRODUCTION";
+    state.stepsHistory.push(nextStep);
   });
   builder.addCase(completeFutureSiteOwner, (state, action) => {
     state.renewableEnergyProject.creationData.futureSiteOwner = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("EXPENSES_INTRODUCTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_EXPENSES_INTRODUCTION");
   });
   builder.addCase(completeExpensesIntroductionStep, (state) => {
     if (state.renewableEnergyProject.creationData.willSiteBePurchased) {
-      state.renewableEnergyProject.stepsHistory.push("EXPENSES_SITE_PURCHASE_AMOUNTS");
+      state.stepsHistory.push("RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS");
       return;
     }
     if (willSiteNeedReinstatement(state)) {
-      state.renewableEnergyProject.stepsHistory.push("EXPENSES_REINSTATEMENT");
+      state.stepsHistory.push("RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT");
       return;
     }
-    state.renewableEnergyProject.stepsHistory.push("EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION");
   });
   builder.addCase(completeSitePurchaseAmounts, (state, action) => {
     state.renewableEnergyProject.creationData.sitePurchaseSellingPrice =
@@ -317,34 +272,34 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
     state.renewableEnergyProject.creationData.sitePurchasePropertyTransferDuties =
       action.payload.propertyTransferDuties ?? 0;
     if (willSiteNeedReinstatement(state)) {
-      state.renewableEnergyProject.stepsHistory.push("EXPENSES_REINSTATEMENT");
+      state.stepsHistory.push("RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT");
       return;
     }
-    state.renewableEnergyProject.stepsHistory.push("EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION");
   });
   builder.addCase(completeReinstatementExpenses, (state, action) => {
     state.renewableEnergyProject.creationData.reinstatementExpenses = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION");
   });
   builder.addCase(completePhotovoltaicPanelsInstallationExpenses, (state, action) => {
     state.renewableEnergyProject.creationData.photovoltaicPanelsInstallationExpenses =
       action.payload;
-    state.renewableEnergyProject.stepsHistory.push("EXPENSES_PROJECTED_YEARLY_EXPENSES");
+    state.stepsHistory.push("RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES");
   });
   builder.addCase(completeYearlyProjectedExpenses, (state, action) => {
     state.renewableEnergyProject.creationData.yearlyProjectedExpenses = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("REVENUE_INTRODUCTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_REVENUE_INTRODUCTION");
   });
   builder.addCase(completeRevenuIntroductionStep, (state) => {
-    state.renewableEnergyProject.stepsHistory.push("REVENUE_PROJECTED_YEARLY_REVENUE");
+    state.stepsHistory.push("RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE");
   });
   builder.addCase(completeFinancialAssistanceRevenues, (state, action) => {
     state.renewableEnergyProject.creationData.financialAssistanceRevenues = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("SCHEDULE_INTRODUCTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_SCHEDULE_INTRODUCTION");
   });
   builder.addCase(completeYearlyProjectedRevenue, (state, action) => {
     state.renewableEnergyProject.creationData.yearlyProjectedRevenues = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("REVENUE_FINANCIAL_ASSISTANCE");
+    state.stepsHistory.push("RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE");
   });
 
   builder.addCase(completeNaming, (state, action) => {
@@ -352,52 +307,55 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
     state.renewableEnergyProject.creationData.name = name;
     if (description) state.renewableEnergyProject.creationData.description = description;
 
-    state.renewableEnergyProject.stepsHistory.push("FINAL_SUMMARY");
+    state.stepsHistory.push("RENEWABLE_ENERGY_FINAL_SUMMARY");
   });
   builder.addCase(completePhotovoltaicKeyParameter, (state, action) => {
     state.renewableEnergyProject.creationData.photovoltaicKeyParameter = action.payload;
 
-    const nextStep = action.payload === "POWER" ? "PHOTOVOLTAIC_POWER" : "PHOTOVOLTAIC_SURFACE";
-    state.renewableEnergyProject.stepsHistory.push(nextStep);
+    const nextStep =
+      action.payload === "POWER"
+        ? "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER"
+        : "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE";
+    state.stepsHistory.push(nextStep);
   });
   builder.addCase(completePhotovoltaicInstallationElectricalPower, (state, action) => {
     state.renewableEnergyProject.creationData.photovoltaicInstallationElectricalPowerKWc =
       action.payload;
     const nextStep =
       state.renewableEnergyProject.creationData.photovoltaicKeyParameter === "POWER"
-        ? "PHOTOVOLTAIC_SURFACE"
-        : "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION";
-    state.renewableEnergyProject.stepsHistory.push(nextStep);
+        ? "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE"
+        : "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION";
+    state.stepsHistory.push(nextStep);
   });
   builder.addCase(completePhotovoltaicInstallationSurface, (state, action) => {
     state.renewableEnergyProject.creationData.photovoltaicInstallationSurfaceSquareMeters =
       action.payload;
     const nextStep =
       state.renewableEnergyProject.creationData.photovoltaicKeyParameter === "POWER"
-        ? "PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION"
-        : "PHOTOVOLTAIC_POWER";
-    state.renewableEnergyProject.stepsHistory.push(nextStep);
+        ? "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION"
+        : "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER";
+    state.stepsHistory.push(nextStep);
   });
   builder.addCase(completePhotovoltaicExpectedAnnualProduction, (state, action) => {
     state.renewableEnergyProject.creationData.photovoltaicExpectedAnnualProduction = action.payload;
-    state.renewableEnergyProject.stepsHistory.push("PHOTOVOLTAIC_CONTRACT_DURATION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION");
   });
   builder.addCase(completePhotovoltaicContractDuration, (state, action) => {
     state.renewableEnergyProject.creationData.photovoltaicContractDuration = action.payload;
-    state.renewableEnergyProject.stepsHistory.push(
+    state.stepsHistory.push(
       state.siteData?.contaminatedSoilSurface
-        ? "SOILS_DECONTAMINATION_INTRODUCTION"
-        : "SOILS_TRANSFORMATION_INTRODUCTION",
+        ? "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_INTRODUCTION"
+        : "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_INTRODUCTION",
     );
   });
   builder.addCase(completeSoilsSummaryStep, (state) => {
-    state.renewableEnergyProject.stepsHistory.push("SOILS_CARBON_STORAGE");
+    state.stepsHistory.push("RENEWABLE_ENERGY_SOILS_CARBON_STORAGE");
   });
   builder.addCase(completeSoilsCarbonStorageStep, (state) => {
-    state.renewableEnergyProject.stepsHistory.push("STAKEHOLDERS_INTRODUCTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_STAKEHOLDERS_INTRODUCTION");
   });
   builder.addCase(completeScheduleIntroductionStep, (state) => {
-    state.renewableEnergyProject.stepsHistory.push("SCHEDULE_PROJECTION");
+    state.stepsHistory.push("RENEWABLE_ENERGY_SCHEDULE_PROJECTION");
   });
   builder.addCase(completeScheduleStep, (state, action) => {
     const { firstYearOfOperation, photovoltaicInstallationSchedule, reinstatementSchedule } =
@@ -410,11 +368,11 @@ const addCompleteStepActionCases = (builder: ActionReducerMapBuilder<ProjectCrea
       state.renewableEnergyProject.creationData.photovoltaicInstallationSchedule =
         photovoltaicInstallationSchedule;
     }
-    state.renewableEnergyProject.stepsHistory.push("PROJECT_PHASE");
+    state.stepsHistory.push("RENEWABLE_ENERGY_PROJECT_PHASE");
   });
   builder.addCase(completeProjectPhaseStep, (state, action) => {
     state.renewableEnergyProject.creationData.projectPhase = action.payload.phase;
-    state.renewableEnergyProject.stepsHistory.push("NAMING");
+    state.stepsHistory.push("RENEWABLE_ENERGY_NAMING");
   });
 };
 
@@ -426,11 +384,11 @@ const addSaveReconversionProjectActionCases = (
   });
   builder.addCase(saveReconversionProject.fulfilled, (state) => {
     state.renewableEnergyProject.saveState = "success";
-    state.renewableEnergyProject.stepsHistory.push("CREATION_RESULT");
+    state.stepsHistory.push("RENEWABLE_ENERGY_CREATION_RESULT");
   });
   builder.addCase(saveReconversionProject.rejected, (state) => {
     state.renewableEnergyProject.saveState = "error";
-    state.renewableEnergyProject.stepsHistory.push("CREATION_RESULT");
+    state.stepsHistory.push("RENEWABLE_ENERGY_CREATION_RESULT");
   });
 };
 
@@ -472,25 +430,102 @@ const addFetchCarbonStorageComparisonActionCases = (
 };
 
 const addRevertStepActionCases = (builder: ActionReducerMapBuilder<ProjectCreationState>) => {
-  builder.addMatcher(isRenewableEnergyStepRevertAttemptedAction, (state, action) => {
-    const { creationData: initialData } = INITIAL_STATE;
+  builder.addCase(stepRevertConfirmed, (state, action) => {
+    switch (action.payload.revertedStep) {
+      case "RENEWABLE_ENERGY_TYPES":
+        state.renewableEnergyProject.creationData.renewableEnergyType = undefined;
+        break;
+      case "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SELECTION":
+        state.renewableEnergyProject.creationData.decontaminationPlan = undefined;
+        state.renewableEnergyProject.creationData.decontaminatedSurfaceArea = undefined;
+        break;
+      case "RENEWABLE_ENERGY_SOILS_DECONTAMINATION_SURFACE_AREA":
+        state.renewableEnergyProject.creationData.decontaminatedSurfaceArea = undefined;
+        break;
+      case "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SELECTION":
+        state.renewableEnergyProject.creationData.nonSuitableSoilsToTransform = undefined;
+        break;
+      case "RENEWABLE_ENERGY_NON_SUITABLE_SOILS_SURFACE":
+        state.renewableEnergyProject.creationData.nonSuitableSoilsSurfaceAreaToTransform =
+          undefined;
+        state.renewableEnergyProject.creationData.baseSoilsDistributionForTransformation =
+          undefined;
+        break;
+      case "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_PROJECT_SELECTION":
+        state.renewableEnergyProject.creationData.soilsTransformationProject = undefined;
+        state.renewableEnergyProject.creationData.soilsDistribution = undefined;
+        break;
+      case "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SOILS_SELECTION":
+        state.renewableEnergyProject.creationData.futureSoilsSelection = undefined;
+        break;
+      case "RENEWABLE_ENERGY_SOILS_TRANSFORMATION_CUSTOM_SURFACE_AREA_ALLOCATION":
+        state.renewableEnergyProject.creationData.soilsDistribution = undefined;
+        break;
+      case "RENEWABLE_ENERGY_STAKEHOLDERS_PROJECT_DEVELOPER":
+        state.renewableEnergyProject.creationData.projectDeveloper = undefined;
+        break;
+      case "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_OPERATOR":
+        state.renewableEnergyProject.creationData.futureOperator = undefined;
+        break;
+      case "RENEWABLE_ENERGY_STAKEHOLDERS_REINSTATEMENT_CONTRACT_OWNER":
+        state.renewableEnergyProject.creationData.reinstatementContractOwner = undefined;
+        break;
+      case "RENEWABLE_ENERGY_STAKEHOLDERS_SITE_PURCHASE":
+        state.renewableEnergyProject.creationData.willSiteBePurchased = undefined;
+        break;
+      case "RENEWABLE_ENERGY_STAKEHOLDERS_FUTURE_SITE_OWNER":
+        state.renewableEnergyProject.creationData.futureSiteOwner = undefined;
+        break;
+      case "RENEWABLE_ENERGY_EXPENSES_SITE_PURCHASE_AMOUNTS":
+        state.renewableEnergyProject.creationData.sitePurchaseSellingPrice = undefined;
+        state.renewableEnergyProject.creationData.sitePurchasePropertyTransferDuties = undefined;
+        break;
+      case "RENEWABLE_ENERGY_EXPENSES_REINSTATEMENT":
+        state.renewableEnergyProject.creationData.reinstatementExpenses = undefined;
+        break;
+      case "RENEWABLE_ENERGY_EXPENSES_PHOTOVOLTAIC_PANELS_INSTALLATION":
+        state.renewableEnergyProject.creationData.photovoltaicPanelsInstallationExpenses =
+          undefined;
+        break;
+      case "RENEWABLE_ENERGY_EXPENSES_PROJECTED_YEARLY_EXPENSES":
+        state.renewableEnergyProject.creationData.yearlyProjectedExpenses = [];
+        break;
+      case "RENEWABLE_ENERGY_REVENUE_PROJECTED_YEARLY_REVENUE":
+        state.renewableEnergyProject.creationData.yearlyProjectedRevenues = [];
+        break;
+      case "RENEWABLE_ENERGY_REVENUE_FINANCIAL_ASSISTANCE":
+        state.renewableEnergyProject.creationData.financialAssistanceRevenues = undefined;
+        break;
+      case "RENEWABLE_ENERGY_NAMING":
+        state.renewableEnergyProject.creationData.name = undefined;
+        state.renewableEnergyProject.creationData.description = undefined;
+        break;
+      case "RENEWABLE_ENERGY_PHOTOVOLTAIC_KEY_PARAMETER":
+        state.renewableEnergyProject.creationData.photovoltaicKeyParameter = undefined;
+        break;
+      case "RENEWABLE_ENERGY_PHOTOVOLTAIC_POWER":
+        state.renewableEnergyProject.creationData.photovoltaicInstallationElectricalPowerKWc =
+          undefined;
+        break;
+      case "RENEWABLE_ENERGY_PHOTOVOLTAIC_SURFACE":
+        state.renewableEnergyProject.creationData.photovoltaicInstallationSurfaceSquareMeters =
+          undefined;
+        break;
+      case "RENEWABLE_ENERGY_PHOTOVOLTAIC_EXPECTED_ANNUAL_PRODUCTION":
+        state.renewableEnergyProject.creationData.photovoltaicExpectedAnnualProduction = undefined;
+        break;
+      case "RENEWABLE_ENERGY_PHOTOVOLTAIC_CONTRACT_DURATION":
+        state.renewableEnergyProject.creationData.photovoltaicContractDuration = undefined;
+        break;
 
-    if (action.payload?.resetFields) {
-      action.payload.resetFields.forEach(
-        /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
-        /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
-        <K extends keyof ReconversionProjectCreationData>(field: K) => {
-          state.renewableEnergyProject.creationData[field] =
-            field in initialData ? initialData[field] : undefined;
-        },
-      );
-    }
-
-    if (state.stepsHistory.length > 1) {
-      state.renewableEnergyProject.stepsHistory = state.renewableEnergyProject.stepsHistory.slice(
-        0,
-        -1,
-      );
+      case "RENEWABLE_ENERGY_PROJECT_PHASE":
+        state.renewableEnergyProject.creationData.projectPhase = undefined;
+        break;
+      case "RENEWABLE_ENERGY_SCHEDULE_PROJECTION":
+        state.renewableEnergyProject.creationData.firstYearOfOperation = undefined;
+        state.renewableEnergyProject.creationData.reinstatementSchedule = undefined;
+        state.renewableEnergyProject.creationData.photovoltaicInstallationSchedule = undefined;
+        break;
     }
   });
 };

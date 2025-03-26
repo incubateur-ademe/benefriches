@@ -11,7 +11,7 @@ type Props = {
 function UrbanProjectCreationStepper({ step }: Props) {
   const currentStepCategory = "Mode de création";
   const currentStepIndex = stepCategories.findIndex((step) => step === currentStepCategory);
-  const isDone = step === "CREATION_RESULT";
+  const isDone = step === "URBAN_PROJECT_CREATION_RESULT";
 
   return (
     <FormStepper

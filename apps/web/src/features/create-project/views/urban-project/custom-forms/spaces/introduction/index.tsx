@@ -1,7 +1,5 @@
-import {
-  spacesIntroductionCompleted,
-  spacesIntroductionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { spacesIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import UrbanProjectSpacesIntroduction from "./SpacesIntroduction";
@@ -12,7 +10,7 @@ export default function UrbanProjectSpacesIntroductionContainer() {
   return (
     <UrbanProjectSpacesIntroduction
       onBack={() => {
-        dispatch(spacesIntroductionReverted());
+        dispatch(stepRevertAttempted());
       }}
       onNext={() => {
         dispatch(spacesIntroductionCompleted());

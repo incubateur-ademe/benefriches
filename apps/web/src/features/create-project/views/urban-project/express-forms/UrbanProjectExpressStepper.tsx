@@ -8,14 +8,15 @@ type Props = {
 };
 
 function UrbanProjectExpressStepper({ step }: Props) {
-  const stepCategory = step === "CREATION_RESULT" ? "Récapitulatif" : "Mode de création";
+  const stepCategory =
+    step === "URBAN_PROJECT_CREATION_RESULT" ? "Récapitulatif" : "Mode de création";
   const currentStepIndex = stepCategories.findIndex((step) => step === stepCategory);
 
   return (
     <FormStepper
       currentStepIndex={currentStepIndex}
       steps={stepCategories.map((step) => step)}
-      isDone={step === "CREATION_RESULT"}
+      isDone={step === "URBAN_PROJECT_CREATION_RESULT"}
     />
   );
 }

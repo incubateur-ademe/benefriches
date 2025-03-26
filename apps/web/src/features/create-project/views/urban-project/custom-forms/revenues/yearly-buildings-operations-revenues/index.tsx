@@ -3,10 +3,8 @@ import {
   YearlyBuildingsOperationsRevenues,
 } from "shared";
 
-import {
-  yearlyBuildingsOperationsRevenuesCompleted,
-  yearlyBuildingsOperationsRevenuesReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { yearlyBuildingsOperationsRevenuesCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import ProjectYearlyRevenuesForm from "@/features/create-project/views/common-views/revenues/yearly-projected-revenue/ProjectYearlyRevenueForm";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
@@ -21,7 +19,7 @@ export default function YearlyBuildingsOperationsRevenuesForm() {
       fields={fields}
       getFieldLabel={getLabelForYearlyBuildingsOperationsRevenues}
       onBack={() => {
-        dispatch(yearlyBuildingsOperationsRevenuesReverted());
+        dispatch(stepRevertAttempted());
       }}
       onSubmit={(formData) => {
         const revenues: YearlyBuildingsOperationsRevenues[] = [];

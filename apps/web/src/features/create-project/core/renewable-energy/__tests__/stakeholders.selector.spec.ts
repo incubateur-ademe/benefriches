@@ -51,9 +51,9 @@ const MOCK_STATES = {
     siteData,
     siteDataLoadingState: "success",
     siteRelatedLocalAuthorities: { loadingState: "idle" },
+    stepRevertAttempted: false,
     renewableEnergyProject: {
       creationData: projectWithExhaustiveData,
-      stepsHistory: [],
       expectedPhotovoltaicPerformance: {
         loadingState: "idle",
       },
@@ -63,7 +63,6 @@ const MOCK_STATES = {
     urbanProject: {
       createMode: undefined,
       expressData: {},
-      stepsHistory: [],
       saveState: "idle",
       creationData: {},
       spacesCategoriesToComplete: [],

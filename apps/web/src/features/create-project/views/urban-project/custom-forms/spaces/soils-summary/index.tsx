@@ -1,8 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectSiteSoilsDistribution } from "@/features/create-project/core/createProject.selectors";
-import {
-  soilsSummaryCompleted,
-  soilsSummaryReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { soilsSummaryCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectUrbanProjectSoilsDistribution } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -17,7 +15,7 @@ function UrbanProjectSoilsSummaryContainer() {
     <UrbanProjectSoilsSummary
       onNext={() => dispatch(soilsSummaryCompleted())}
       onBack={() => {
-        dispatch(soilsSummaryReverted());
+        dispatch(stepRevertAttempted());
       }}
       siteSoilsDistribution={siteSoilsDistribution}
       projectSoilsDistribution={projectSoilsDistribution}

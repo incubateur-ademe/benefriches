@@ -1,6 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
 import { completeProjectDeveloper } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { projectDeveloperStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import {
   getRenewableEnergyProjectAvailableLocalAuthoritiesStakeholders,
   getRenewableEnergyProjectAvailableStakeholders,
@@ -22,7 +22,7 @@ function DeveloperFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(projectDeveloperStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

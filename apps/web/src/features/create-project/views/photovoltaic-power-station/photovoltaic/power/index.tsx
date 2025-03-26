@@ -1,5 +1,5 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { completePhotovoltaicInstallationElectricalPower } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { photovoltaicInstallationElectricalPowerStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { selectPhotovoltaicPowerViewData } from "@/features/create-project/core/renewable-energy/selectors/photovoltaicPowerStation.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -25,7 +25,7 @@ function PhotovoltaicPowerContainer() {
   };
 
   const onBack = () => {
-    dispatch(photovoltaicInstallationElectricalPowerStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   if (keyParameter === "SURFACE") {

@@ -17,7 +17,6 @@ import { RootState } from "@/shared/core/store-config/store";
 import { selectDefaultSchedule, selectSiteData } from "../../createProject.selectors";
 import { generateUrbanProjectName } from "../../projectName";
 import { UrbanProjectCreationData } from "../creationData";
-import { UrbanProjectCreationStep } from "../creationSteps";
 import { UrbanProjectState } from "../urbanProject.reducer";
 import {
   getUrbanProjectSoilsDistributionFromSpaces,
@@ -40,10 +39,6 @@ export const selectProjectName = createSelector(
   selectCreationData,
   (creationData): string => creationData.name ?? "",
 );
-
-export const selectCurrentStep = createSelector([selectSelf], (state): UrbanProjectCreationStep => {
-  return state.stepsHistory.at(-1) ?? "CREATE_MODE_SELECTION";
-});
 
 export const selectCreateMode = createSelector([selectSelf], (state) => state.createMode);
 

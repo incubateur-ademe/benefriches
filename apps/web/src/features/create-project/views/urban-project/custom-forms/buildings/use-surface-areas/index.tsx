@@ -1,9 +1,7 @@
 import { BuildingsUse, SurfaceAreaDistributionJson } from "shared";
 
-import {
-  buildingsUseSurfaceAreasCompleted,
-  buildingsUseSurfaceAreasReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { buildingsUseSurfaceAreasCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectBuildingsFloorSurfaceArea,
   selectBuildingsFloorUseSurfaceAreas,
@@ -24,7 +22,7 @@ export default function BuildingsUseSurfaceAreaContainers() {
         dispatch(buildingsUseSurfaceAreasCompleted(data));
       }}
       onBack={() => {
-        dispatch(buildingsUseSurfaceAreasReverted());
+        dispatch(stepRevertAttempted());
       }}
       totalSurfaceArea={buildingsFloorSurfaceArea}
     />

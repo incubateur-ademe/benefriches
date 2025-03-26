@@ -1,8 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholderStructure } from "@/features/create-project/core/project.types";
-import {
-  stakeholderProjectDeveloperCompleted,
-  stakeholderProjectDeveloperReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stakeholderProjectDeveloperCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   getUrbanProjectAvailableStakeholders,
   getUrbanProjectAvailableLocalAuthoritiesStakeholders,
@@ -23,7 +21,7 @@ function DeveloperFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(stakeholderProjectDeveloperReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

@@ -1,14 +1,10 @@
+import { stepRevertAttempted } from "../../actions/actionsUtils";
 import {
   buildingsOperationsExpensesCompleted,
-  buildingsOperationsExpensesReverted,
   expensesIntroductionCompleted,
-  expensesIntroductionReverted,
   installationExpensesCompleted,
-  installationExpensesReverted,
   reinstatementExpensesCompleted,
-  reinstatementExpensesReverted,
   sitePurchaseCompleted,
-  sitePurchaseReverted,
 } from "../actions/urbanProject.actions";
 import {
   expectCurrentStep,
@@ -19,34 +15,42 @@ import {
 
 describe("Urban project creation : costs steps", () => {
   describe("Custom creation mode", () => {
-    describe("EXPENSES_INTRODUCTION step", () => {
-      it("goes to EXPENSES_SITE_PURCHASE_AMOUNTS step when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["EXPENSES_INTRODUCTION"]).build();
+    describe("URBAN_PROJECT_EXPENSES_INTRODUCTION step", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS step when step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["URBAN_PROJECT_EXPENSES_INTRODUCTION"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(expensesIntroductionCompleted());
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_SITE_PURCHASE_AMOUNTS",
+          currentStep: "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
         });
       });
 
-      it("goes to STAKEHOLDERS_PROJECT_DEVELOPER step when step is reverted", () => {
+      it("goes to URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER step when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["STAKEHOLDERS_PROJECT_DEVELOPER", "EXPENSES_INTRODUCTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER",
+            "URBAN_PROJECT_EXPENSES_INTRODUCTION",
+          ])
           .build();
 
-        store.dispatch(expensesIntroductionReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
-        expectCurrentStep(newState, "STAKEHOLDERS_PROJECT_DEVELOPER");
+        expectCurrentStep(newState, "URBAN_PROJECT_STAKEHOLDERS_PROJECT_DEVELOPER");
       });
     });
-    describe("EXPENSES_SITE_PURCHASE_AMOUNTS step", () => {
-      it("goes to EXPENSES_REINSTATEMENT step and sets sellingPrice and propertyTransferDuties when step is completed if site is friche", () => {
+    describe("URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS step", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_REINSTATEMENT step and sets sellingPrice and propertyTransferDuties when step is completed if site is friche", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_INTRODUCTION", "EXPENSES_SITE_PURCHASE_AMOUNTS"])
+          .withStepsHistory([
+            "URBAN_PROJECT_EXPENSES_INTRODUCTION",
+            "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+          ])
           .withSiteData({ nature: "FRICHE" })
           .build();
         const initialRootState = store.getState();
@@ -60,16 +64,19 @@ describe("Urban project creation : costs steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_REINSTATEMENT",
+          currentStep: "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
           creationDataDiff: {
             sitePurchaseSellingPrice: 50000,
             sitePurchasePropertyTransferDuties: 5000,
           },
         });
       });
-      it("goes to EXPENSES_INSTALLATION step and sets sellingPrice and propertyTransferDuties when step is completed if site is not friche", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_INSTALLATION step and sets sellingPrice and propertyTransferDuties when step is completed if site is not friche", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_INTRODUCTION", "EXPENSES_SITE_PURCHASE_AMOUNTS"])
+          .withStepsHistory([
+            "URBAN_PROJECT_EXPENSES_INTRODUCTION",
+            "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -82,7 +89,7 @@ describe("Urban project creation : costs steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_INSTALLATION",
+          currentStep: "URBAN_PROJECT_EXPENSES_INSTALLATION",
           creationDataDiff: {
             sitePurchaseSellingPrice: 50000,
             sitePurchasePropertyTransferDuties: 5000,
@@ -91,7 +98,10 @@ describe("Urban project creation : costs steps", () => {
       });
       it("goes to previous step and unset sellingPrice and propertyTransferDuties when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_INTRODUCTION", "EXPENSES_SITE_PURCHASE_AMOUNTS"])
+          .withStepsHistory([
+            "URBAN_PROJECT_EXPENSES_INTRODUCTION",
+            "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+          ])
           .withCreationData({
             sitePurchaseSellingPrice: 50000,
             sitePurchasePropertyTransferDuties: 5000,
@@ -99,7 +109,7 @@ describe("Urban project creation : costs steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(sitePurchaseReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
@@ -110,10 +120,13 @@ describe("Urban project creation : costs steps", () => {
         });
       });
     });
-    describe("EXPENSES_REINSTATEMENT step", () => {
-      it("goes to EXPENSES_INSTALLATION and sets reinstatementExpenses when step is completed", () => {
+    describe("URBAN_PROJECT_EXPENSES_REINSTATEMENT step", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_INSTALLATION and sets reinstatementExpenses when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_SITE_PURCHASE_AMOUNTS", "EXPENSES_REINSTATEMENT"])
+          .withStepsHistory([
+            "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+            "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -123,7 +136,7 @@ describe("Urban project creation : costs steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_INSTALLATION",
+          currentStep: "URBAN_PROJECT_EXPENSES_INSTALLATION",
           creationDataDiff: {
             reinstatementExpenses: [{ purpose: "asbestos_removal", amount: 1000 }],
           },
@@ -131,14 +144,17 @@ describe("Urban project creation : costs steps", () => {
       });
       it("goes to previous step and unset reinstatementExpenses when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_SITE_PURCHASE_AMOUNTS", "EXPENSES_REINSTATEMENT"])
+          .withStepsHistory([
+            "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+            "URBAN_PROJECT_EXPENSES_REINSTATEMENT",
+          ])
           .withCreationData({
             reinstatementExpenses: [{ purpose: "asbestos_removal", amount: 1000 }],
           })
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(reinstatementExpensesReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
@@ -148,10 +164,13 @@ describe("Urban project creation : costs steps", () => {
         });
       });
     });
-    describe("EXPENSES_INSTALLATION step", () => {
-      it("goes to REVENUE_INTRODUCTION when step is completed and buildings will be sold after development", () => {
+    describe("URBAN_PROJECT_EXPENSES_INSTALLATION step", () => {
+      it("goes to URBAN_PROJECT_REVENUE_INTRODUCTION when step is completed and buildings will be sold after development", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_SITE_PURCHASE_AMOUNTS", "EXPENSES_INSTALLATION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+            "URBAN_PROJECT_EXPENSES_INSTALLATION",
+          ])
           .withCreationData({
             livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
             buildingsResalePlannedAfterDevelopment: true,
@@ -165,19 +184,22 @@ describe("Urban project creation : costs steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "REVENUE_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_REVENUE_INTRODUCTION",
           creationDataDiff: {
             installationExpenses: [{ amount: 10000, purpose: "development_works" }],
           },
         });
       });
-      it("goes to EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES when step is completed and buildings will NOT be sold after development", () => {
+      it("goes to URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES when step is completed and buildings will NOT be sold after development", () => {
         const store = new StoreBuilder()
           .withCreationData({
             livingAndActivitySpacesDistribution: { BUILDINGS: 1000 },
             buildingsResalePlannedAfterDevelopment: false,
           })
-          .withStepsHistory(["EXPENSES_SITE_PURCHASE_AMOUNTS", "EXPENSES_INSTALLATION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+            "URBAN_PROJECT_EXPENSES_INSTALLATION",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -187,7 +209,7 @@ describe("Urban project creation : costs steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
+          currentStep: "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
           creationDataDiff: {
             installationExpenses: [{ amount: 10000, purpose: "development_works" }],
           },
@@ -195,7 +217,10 @@ describe("Urban project creation : costs steps", () => {
       });
       it("goes to previous step when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_SITE_PURCHASE_AMOUNTS", "EXPENSES_INSTALLATION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_EXPENSES_SITE_PURCHASE_AMOUNTS",
+            "URBAN_PROJECT_EXPENSES_INSTALLATION",
+          ])
 
           .withCreationData({
             installationExpenses: [{ amount: 10000, purpose: "development_works" }],
@@ -203,7 +228,7 @@ describe("Urban project creation : costs steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(installationExpensesReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
@@ -213,10 +238,10 @@ describe("Urban project creation : costs steps", () => {
         });
       });
     });
-    describe("EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES step", () => {
-      it("goes to REVENUE_INTRODUCTION and sets buildings operations expenses when step is completed", () => {
+    describe("URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES step", () => {
+      it("goes to URBAN_PROJECT_REVENUE_INTRODUCTION and sets buildings operations expenses when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"])
+          .withStepsHistory(["URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES"])
           .build();
         const initialRootState = store.getState();
 
@@ -226,7 +251,7 @@ describe("Urban project creation : costs steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "REVENUE_INTRODUCTION",
+          currentStep: "URBAN_PROJECT_REVENUE_INTRODUCTION",
           creationDataDiff: {
             yearlyProjectedBuildingsOperationsExpenses: [{ amount: 1000, purpose: "maintenance" }],
           },
@@ -235,8 +260,8 @@ describe("Urban project creation : costs steps", () => {
       it("goes to previous step and unset yearlyProjectedBuildingsOperationsExpenses when step is reverted", () => {
         const store = new StoreBuilder()
           .withStepsHistory([
-            "EXPENSES_INSTALLATION",
-            "EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
+            "URBAN_PROJECT_EXPENSES_INSTALLATION",
+            "URBAN_PROJECT_EXPENSES_PROJECTED_BUILDINGS_OPERATING_EXPENSES",
           ])
           .withCreationData({
             yearlyProjectedBuildingsOperationsExpenses: [{ amount: 1000, purpose: "maintenance" }],
@@ -244,7 +269,7 @@ describe("Urban project creation : costs steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(buildingsOperationsExpensesReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {

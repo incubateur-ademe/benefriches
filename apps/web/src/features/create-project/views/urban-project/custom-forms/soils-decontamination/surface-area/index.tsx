@@ -1,8 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { selectSiteContaminatedSurfaceArea } from "@/features/create-project/core/createProject.selectors";
-import {
-  soilsDecontaminationSurfaceAreaCompleted,
-  soilsDecontaminationSurfaceAreaReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { soilsDecontaminationSurfaceAreaCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { selectContaminatedSurfaceAreaPercentageToDecontaminate } from "@/features/create-project/core/urban-project/selectors/urbanProject.selectors";
 import SoilsDecontaminationSurfaceArea from "@/features/create-project/views/common-views/soils-decontamination/surface-area/SoilsDecontaminationSurfaceArea";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -23,7 +21,7 @@ function SoilsDecontaminationSurfaceAreaContainer() {
       onSubmit={(surfaceArea: number) => {
         dispatch(soilsDecontaminationSurfaceAreaCompleted(surfaceArea));
       }}
-      onBack={() => dispatch(soilsDecontaminationSurfaceAreaReverted())}
+      onBack={() => dispatch(stepRevertAttempted())}
     />
   );
 }

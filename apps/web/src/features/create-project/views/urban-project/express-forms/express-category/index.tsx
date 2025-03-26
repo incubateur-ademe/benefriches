@@ -1,5 +1,5 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { expressUrbanProjectSaved } from "@/features/create-project/core/urban-project/actions/expressUrbanProjectSaved.action";
-import { expressCategoryStepReverted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import UrbanProjectExpressCategory, { FormValues } from "./UrbanProjectExpressCategory";
@@ -8,7 +8,7 @@ function UrbanProjectExpressCategoryContainer() {
   const dispatch = useAppDispatch();
 
   const onBack = () => {
-    dispatch(expressCategoryStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   const onSubmit = (formData: FormValues) => {

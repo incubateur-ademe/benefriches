@@ -1,6 +1,6 @@
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { ProjectStakeholder } from "@/features/create-project/core/project.types";
 import { futureOperatorCompleted } from "@/features/create-project/core/renewable-energy/actions/renewableEnergy.actions";
-import { futureOperatorStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
 import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { UserStructure } from "@/features/onboarding/core/user";
 import { selectCurrentUserStructure } from "@/features/onboarding/core/user.reducer";
@@ -43,7 +43,7 @@ function FutureOperatorFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(futureOperatorStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

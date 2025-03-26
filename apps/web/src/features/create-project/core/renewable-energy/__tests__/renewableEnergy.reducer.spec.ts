@@ -30,9 +30,12 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
+      expect(state.projectCreation.stepsHistory).toEqual([
+        ...initialState.stepsHistory,
+        "RENEWABLE_ENERGY_CREATION_RESULT",
+      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
-        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
         saveState: "error",
       });
     });
@@ -58,9 +61,12 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
+      expect(state.projectCreation.stepsHistory).toEqual([
+        ...initialState.stepsHistory,
+        "RENEWABLE_ENERGY_CREATION_RESULT",
+      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
-        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
         saveState: "error",
       });
     });
@@ -87,9 +93,12 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
+      expect(state.projectCreation.stepsHistory).toEqual([
+        ...initialState.stepsHistory,
+        "RENEWABLE_ENERGY_CREATION_RESULT",
+      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
-        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
         saveState: "error",
       });
     });
@@ -208,9 +217,12 @@ describe("renewableEnergy.reducer.spec reducer", () => {
         const actionResult = await store.dispatch(saveReconversionProject());
 
         const state = store.getState();
+        expect(state.projectCreation.stepsHistory).toEqual([
+          ...initialState.stepsHistory,
+          "RENEWABLE_ENERGY_CREATION_RESULT",
+        ]);
         expect(state.projectCreation.renewableEnergyProject).toEqual({
           ...initialState.renewableEnergyProject,
-          stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
           saveState: "error",
         });
         expect(
@@ -246,9 +258,12 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
+      expect(state.projectCreation.stepsHistory).toEqual([
+        ...initialState.stepsHistory,
+        "RENEWABLE_ENERGY_CREATION_RESULT",
+      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
-        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
         saveState: "error",
       });
     });
@@ -277,9 +292,12 @@ describe("renewableEnergy.reducer.spec reducer", () => {
       await store.dispatch(saveReconversionProject());
 
       const state = store.getState();
+      expect(state.projectCreation.stepsHistory).toEqual([
+        ...initialState.stepsHistory,
+        "RENEWABLE_ENERGY_CREATION_RESULT",
+      ]);
       expect(state.projectCreation.renewableEnergyProject).toEqual({
         ...initialState.renewableEnergyProject,
-        stepsHistory: [...initialState.renewableEnergyProject.stepsHistory, "CREATION_RESULT"],
         saveState: "success",
       });
     });

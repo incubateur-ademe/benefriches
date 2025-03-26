@@ -1,7 +1,5 @@
-import {
-  greenSpacesDistributionCompleted,
-  greenSpacesDistributionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { greenSpacesDistributionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import {
   selectGreenSpacesDistribution,
   selectSpaceCategorySurfaceArea,
@@ -25,7 +23,7 @@ export default function UrbanGreenSpacesDistributionContainer() {
         dispatch(greenSpacesDistributionCompleted({ surfaceAreaDistribution: formData }));
       }}
       onBack={() => {
-        dispatch(greenSpacesDistributionReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

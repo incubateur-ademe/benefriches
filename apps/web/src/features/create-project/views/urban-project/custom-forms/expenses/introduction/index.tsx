@@ -1,7 +1,5 @@
-import {
-  expensesIntroductionCompleted,
-  expensesIntroductionReverted,
-} from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
+import { expensesIntroductionCompleted } from "@/features/create-project/core/urban-project/actions/urbanProject.actions";
 import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 
 import ProjectExpensesIntroduction from "./ProjectExpensesIntroduction";
@@ -15,7 +13,7 @@ function ProjectExpensesIntroductionContainer() {
         dispatch(expensesIntroductionCompleted());
       }}
       onBack={() => {
-        dispatch(expensesIntroductionReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

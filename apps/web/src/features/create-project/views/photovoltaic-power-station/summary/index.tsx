@@ -1,4 +1,4 @@
-import { finalSummaryStepReverted } from "@/features/create-project/core/renewable-energy/actions/revert.actions";
+import { stepRevertAttempted } from "@/features/create-project/core/actions/actionsUtils";
 import { saveReconversionProject } from "@/features/create-project/core/renewable-energy/actions/saveReconversionProject.action";
 import { selectCreationData } from "@/features/create-project/core/renewable-energy/selectors/renewableEnergy.selector";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -20,7 +20,7 @@ function ProjectionCreationDataSummaryContainer() {
   };
 
   const onBack = () => {
-    dispatch(finalSummaryStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

@@ -1,12 +1,9 @@
+import { stepRevertAttempted } from "../../actions/actionsUtils";
 import {
   namingCompleted,
-  namingReverted,
   projectPhaseCompleted,
-  projectPhaseReverted,
   scheduleCompleted,
   scheduleIntroductionCompleted,
-  scheduleIntroductionReverted,
-  scheduleReverted,
 } from "../actions/urbanProject.actions";
 import {
   expectCurrentStep,
@@ -17,34 +14,42 @@ import {
 
 describe("Urban project creation : schedule, name and phase steps", () => {
   describe("Custom creation mode", () => {
-    describe("SCHEDULE_INTRODUCTION step", () => {
-      it("goes to SCHEDULE_PROJECTION step when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["SCHEDULE_INTRODUCTION"]).build();
+    describe("URBAN_PROJECT_SCHEDULE_INTRODUCTION step", () => {
+      it("goes to URBAN_PROJECT_SCHEDULE_PROJECTION step when step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["URBAN_PROJECT_SCHEDULE_INTRODUCTION"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(scheduleIntroductionCompleted());
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "SCHEDULE_PROJECTION",
+          currentStep: "URBAN_PROJECT_SCHEDULE_PROJECTION",
         });
       });
 
       it("goes to previous step when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["REVENUE_FINANCIAL_ASSISTANCE", "SCHEDULE_INTRODUCTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE",
+            "URBAN_PROJECT_SCHEDULE_INTRODUCTION",
+          ])
           .build();
 
-        store.dispatch(scheduleIntroductionReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
-        expectCurrentStep(newState, "REVENUE_FINANCIAL_ASSISTANCE");
+        expectCurrentStep(newState, "URBAN_PROJECT_REVENUE_FINANCIAL_ASSISTANCE");
       });
     });
-    describe("SCHEDULE_PROJECTION step", () => {
-      it("goes to PROJECT_PHASE step and sets installationSchedule, reinstatementSchedule, firstYearOfOperation when step is completed", () => {
+    describe("URBAN_PROJECT_SCHEDULE_PROJECTION step", () => {
+      it("goes to URBAN_PROJECT_PROJECT_PHASE step and sets installationSchedule, reinstatementSchedule, firstYearOfOperation when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SCHEDULE_INTRODUCTION", "SCHEDULE_PROJECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SCHEDULE_INTRODUCTION",
+            "URBAN_PROJECT_SCHEDULE_PROJECTION",
+          ])
           .build();
         const initialRootState = store.getState();
 
@@ -57,7 +62,7 @@ describe("Urban project creation : schedule, name and phase steps", () => {
         );
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "PROJECT_PHASE",
+          currentStep: "URBAN_PROJECT_PROJECT_PHASE",
           creationDataDiff: {
             installationSchedule: { startDate: "2023-11-22", endDate: "2025-11-22" },
             reinstatementSchedule: { startDate: "2022-11-22", endDate: "2024-11-22" },
@@ -67,7 +72,10 @@ describe("Urban project creation : schedule, name and phase steps", () => {
       });
       it("goes to previous step and unset installationSchedule, reinstatementSchedule, firstYearOfOperation when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SCHEDULE_INTRODUCTION", "SCHEDULE_PROJECTION"])
+          .withStepsHistory([
+            "URBAN_PROJECT_SCHEDULE_INTRODUCTION",
+            "URBAN_PROJECT_SCHEDULE_PROJECTION",
+          ])
           .withCreationData({
             installationSchedule: { startDate: "2023-11-22", endDate: "2025-11-22" },
             reinstatementSchedule: { startDate: "2022-11-22", endDate: "2024-11-22" },
@@ -76,7 +84,7 @@ describe("Urban project creation : schedule, name and phase steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(scheduleReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
@@ -88,10 +96,10 @@ describe("Urban project creation : schedule, name and phase steps", () => {
         });
       });
     });
-    describe("PROJECT_PHASE step", () => {
-      it("goes to NAMING step and sets projectPhase when step is completed", () => {
+    describe("URBAN_PROJECT_PROJECT_PHASE step", () => {
+      it("goes to URBAN_PROJECT_NAMING step and sets projectPhase when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SCHEDULE_PROJECTION", "PROJECT_PHASE"])
+          .withStepsHistory(["URBAN_PROJECT_SCHEDULE_PROJECTION", "URBAN_PROJECT_PROJECT_PHASE"])
           .build();
         const initialRootState = store.getState();
 
@@ -99,7 +107,7 @@ describe("Urban project creation : schedule, name and phase steps", () => {
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "NAMING",
+          currentStep: "URBAN_PROJECT_NAMING",
           creationDataDiff: {
             projectPhase: "construction",
           },
@@ -107,14 +115,14 @@ describe("Urban project creation : schedule, name and phase steps", () => {
       });
       it("goes to previous step and unset projectPhase when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SCHEDULE_PROJECTION", "PROJECT_PHASE"])
+          .withStepsHistory(["URBAN_PROJECT_SCHEDULE_PROJECTION", "URBAN_PROJECT_PROJECT_PHASE"])
           .withCreationData({
             projectPhase: "construction",
           })
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(projectPhaseReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
@@ -124,16 +132,18 @@ describe("Urban project creation : schedule, name and phase steps", () => {
         });
       });
     });
-    describe("NAMING step", () => {
-      it("goes to FINAL_SUMMARY and sets name and description when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["PROJECT_PHASE", "NAMING"]).build();
+    describe("URBAN_PROJECT_NAMING step", () => {
+      it("goes to URBAN_PROJECT_FINAL_SUMMARY and sets name and description when step is completed", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["URBAN_PROJECT_PROJECT_PHASE", "URBAN_PROJECT_NAMING"])
+          .build();
         const initialRootState = store.getState();
 
         store.dispatch(namingCompleted({ name: "Projet test", description: "Test" }));
 
         const newState = store.getState();
         expectUpdatedState(initialRootState, newState, {
-          currentStep: "FINAL_SUMMARY",
+          currentStep: "URBAN_PROJECT_FINAL_SUMMARY",
           creationDataDiff: {
             name: "Projet test",
             description: "Test",
@@ -142,7 +152,7 @@ describe("Urban project creation : schedule, name and phase steps", () => {
       });
       it("goes to previous step and unset name and description when step is reverted", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["PROJECT_PHASE", "NAMING"])
+          .withStepsHistory(["URBAN_PROJECT_PROJECT_PHASE", "URBAN_PROJECT_NAMING"])
           .withCreationData({
             name: "Projet test",
             description: "Test",
@@ -150,7 +160,7 @@ describe("Urban project creation : schedule, name and phase steps", () => {
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(namingReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectRevertedState(initialRootState, newState, {
