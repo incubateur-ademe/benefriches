@@ -100,14 +100,14 @@ const NATURAL_AREA_OPTIONS = [
     defaultOpen: true,
   },
   {
-    category: "Autre espace naturel",
-    options: ["WATER", "WET_LAND"],
+    category: "Prairie naturelle ou agricole",
+    options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
     defaultOpen: true,
   },
   {
-    category: "Prairie naturelle ou agricole",
-    options: ["PRAIRIE_GRASS", "PRAIRIE_BUSHES", "PRAIRIE_TREES"],
-    defaultOpen: false,
+    category: "Autre espace naturel",
+    options: ["WATER", "WET_LAND"],
+    defaultOpen: true,
   },
   {
     category: "Espaces minéraux",
