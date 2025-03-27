@@ -1,7 +1,7 @@
 import { AppStartListening } from "@/shared/core/store-config/listenerMiddleware";
 
 import {
-  isStepRevertAttemptedAction,
+  stepRevertAttempted,
   stepRevertConfirmationResolved,
   stepRevertConfirmed,
 } from "../actions/actionsUtils";
@@ -10,7 +10,7 @@ import { selectShouldConfirmStepRevert } from "../createProject.selectors";
 
 export const setupProjectCreationListeners = (startAppListening: AppStartListening) => {
   startAppListening({
-    predicate: isStepRevertAttemptedAction,
+    actionCreator: stepRevertAttempted,
     effect: async (_action, listenerApi) => {
       listenerApi.cancelActiveListeners();
 

@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import { siteNatureCompleted, siteNatureReverted } from "../../core/actions/introduction.actions";
+import { siteNatureCompleted } from "../../core/actions/introduction.actions";
+import { stepRevertAttempted } from "../../core/actions/revert.actions";
 import SiteNatureForm, { FormValues } from "./SiteNatureForm";
 
 function SiteNatureFormContainer() {
@@ -14,7 +15,7 @@ function SiteNatureFormContainer() {
         dispatch(siteNatureCompleted({ nature: data.nature }));
       }}
       onBack={() => {
-        dispatch(siteNatureReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

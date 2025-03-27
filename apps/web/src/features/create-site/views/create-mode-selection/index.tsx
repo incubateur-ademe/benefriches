@@ -1,9 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import {
-  createModeReverted,
-  createModeSelectionCompleted,
-} from "../../core/actions/introduction.actions";
+import { createModeSelectionCompleted } from "../../core/actions/introduction.actions";
+import { stepRevertAttempted } from "../../core/actions/revert.actions";
 import CreateModeSelectionForm, { FormValues } from "./CreateModeSelectionForm";
 
 export default function CreateModeSelectionFormContainer() {
@@ -17,7 +15,7 @@ export default function CreateModeSelectionFormContainer() {
         dispatch(createModeSelectionCompleted(data));
       }}
       onBack={() => {
-        dispatch(createModeReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

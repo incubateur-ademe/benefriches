@@ -1,4 +1,4 @@
-import { createAction, UnknownAction } from "@reduxjs/toolkit";
+import { createAction } from "@reduxjs/toolkit";
 
 import { SiteCreationStep } from "../createSite.reducer";
 
@@ -11,7 +11,3 @@ export const createSiteCreationAction = <TPayload = void>(actionName: string) =>
 
 export const createStepCompletedAction = <TPayload = void>(stepName: SiteCreationStep) =>
   createSiteCreationAction<TPayload>(`${stepName}${COMPLETED_SUFFIX}`);
-
-export const isSiteCreationAction = (action: UnknownAction) => {
-  return action.type.startsWith(SITE_CREATION_PREFIX);
-};

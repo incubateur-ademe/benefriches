@@ -20,10 +20,9 @@ import {
 } from "./actions/introduction.actions";
 import { namingIntroductionStepCompleted, namingStepCompleted } from "./actions/naming.actions";
 import {
-  isStepRevertAttemptedAction,
-  stepRevertCancelled,
+  stepRevertAttempted,
+  stepRevertConfirmationResolved,
   stepRevertConfirmed,
-  stepReverted,
 } from "./actions/revert.actions";
 import {
   isFricheLeasedStepCompleted,
@@ -353,27 +352,82 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     .addCase(expressSiteSaved.rejected, (state) => {
       state.saveLoadingState = "error";
     })
-    .addCase(stepReverted, (state, action) => {
-      const { siteData: initialSiteData } = getInitialState();
-      if (action.payload) {
-        /* disable typescript-eslint rule: https://typescript-eslint.io/rules/no-unnecessary-type-parameters */
-        /* eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters */
-        action.payload.resetFields.forEach(<K extends keyof SiteCreationData>(field: K) => {
-          state.siteData[field] = initialSiteData[field];
-        });
+    .addCase(stepRevertConfirmed, (state) => {
+      switch (state.stepsHistory.at(-1)) {
+        case "IS_FRICHE":
+          state.siteData.isFriche = undefined;
+          break;
+        case "SITE_NATURE":
+          state.siteData.nature = undefined;
+          break;
+        case "FRICHE_ACTIVITY":
+          state.siteData.fricheActivity = undefined;
+          break;
+        case "AGRICULTURAL_OPERATION_ACTIVITY":
+          state.siteData.agriculturalOperationActivity = undefined;
+          break;
+        case "NATURAL_AREA_TYPE":
+          state.siteData.naturalAreaType = undefined;
+          break;
+        case "ADDRESS":
+          state.siteData.address = undefined;
+          break;
+        case "SURFACE_AREA":
+          state.siteData.surfaceArea = undefined;
+          break;
+        case "SOILS_SELECTION":
+          state.siteData.soils = [];
+          break;
+        case "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE":
+          state.siteData.soilsDistributionEntryMode = undefined;
+          state.siteData.soilsDistribution = undefined;
+          break;
+        case "SOILS_SURFACE_AREAS_DISTRIBUTION":
+          state.siteData.soilsDistribution = undefined;
+          break;
+        case "OWNER":
+          state.siteData.owner = undefined;
+          break;
+        case "IS_FRICHE_LEASED":
+          state.siteData.isFricheLeased = undefined;
+          break;
+        case "IS_SITE_OPERATED":
+          state.siteData.isSiteOperated = undefined;
+          break;
+        case "TENANT":
+        case "OPERATOR":
+          state.siteData.tenant = undefined;
+          break;
+        case "YEARLY_EXPENSES":
+          state.siteData.yearlyExpenses = [];
+          break;
+        case "YEARLY_INCOME":
+          state.siteData.yearlyIncomes = [];
+          break;
+        case "SOILS_CONTAMINATION":
+          state.siteData.hasContaminatedSoils = undefined;
+          state.siteData.contaminatedSoilSurface = undefined;
+          break;
+        case "FRICHE_ACCIDENTS":
+          state.siteData.hasRecentAccidents = undefined;
+          state.siteData.accidentsMinorInjuries = undefined;
+          state.siteData.accidentsSevereInjuries = undefined;
+          state.siteData.accidentsDeaths = undefined;
+          break;
+        case "NAMING":
+          state.siteData.name = undefined;
+          state.siteData.description = undefined;
+          break;
       }
 
       if (state.stepsHistory.length > 1) {
         state.stepsHistory = state.stepsHistory.slice(0, -1);
       }
     })
-    .addCase(stepRevertConfirmed, (state) => {
+    .addCase(stepRevertConfirmationResolved, (state) => {
       state.stepRevertAttempted = false;
     })
-    .addCase(stepRevertCancelled, (state) => {
-      state.stepRevertAttempted = false;
-    })
-    .addMatcher(isStepRevertAttemptedAction, (state) => {
+    .addCase(stepRevertAttempted, (state) => {
       state.stepRevertAttempted = true;
     });
 });

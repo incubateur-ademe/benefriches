@@ -1,32 +1,29 @@
 import { AppStartListening } from "@/shared/core/store-config/listenerMiddleware";
 
 import {
+  stepRevertAttempted,
+  stepRevertConfirmationResolved,
   stepRevertConfirmed,
-  stepRevertCancelled,
-  isStepRevertAttemptedAction,
-  stepReverted,
-  StepRevertedActionPayload,
 } from "../actions/revert.actions";
 import { selectShouldConfirmStepRevert } from "../selectors/createSite.selectors";
 
 export const setupSiteCreationListeners = (startAppListening: AppStartListening) => {
   startAppListening({
-    predicate: isStepRevertAttemptedAction,
-    effect: async (action, listenerApi) => {
+    actionCreator: stepRevertAttempted,
+    effect: async (_action, listenerApi) => {
       listenerApi.cancelActiveListeners();
 
       if (!selectShouldConfirmStepRevert(listenerApi.getState())) {
-        listenerApi.dispatch(stepReverted(action.payload as StepRevertedActionPayload));
+        listenerApi.dispatch(stepRevertConfirmed());
         return;
       }
 
-      const [confirmationAction] = await listenerApi.take(
-        (action) =>
-          action.type === stepRevertConfirmed.type || action.type === stepRevertCancelled.type,
+      const [confirmationResolvedAction] = await listenerApi.take((action) =>
+        stepRevertConfirmationResolved.match(action),
       );
 
-      if (confirmationAction.type === stepRevertConfirmed.type) {
-        listenerApi.dispatch(stepReverted(action.payload as StepRevertedActionPayload));
+      if (confirmationResolvedAction.payload.confirmed) {
+        listenerApi.dispatch(stepRevertConfirmed());
       }
     },
   });

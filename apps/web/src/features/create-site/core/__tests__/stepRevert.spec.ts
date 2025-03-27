@@ -1,12 +1,6 @@
 import { createStore } from "@/shared/core/store-config/store";
 
-import {
-  addressStepReverted,
-  agriculturalOperationActivityReverted,
-  isFricheReverted,
-  siteNatureReverted,
-} from "../actions/introduction.actions";
-import { stepRevertCancelled, stepRevertConfirmed } from "../actions/revert.actions";
+import { stepRevertAttempted, stepRevertConfirmationResolved } from "../actions/revert.actions";
 import { selectShouldConfirmStepRevert } from "../selectors/createSite.selectors";
 import { expectCurrentStep, StoreBuilder } from "./creation-steps/testUtils";
 
@@ -22,9 +16,9 @@ describe("Site creation: step revert confirmation logic", () => {
         .withStepsHistory(["INTRODUCTION", "IS_FRICHE", "SITE_NATURE", "ADDRESS"])
         .build();
 
-      store.dispatch(addressStepReverted());
-      store.dispatch(siteNatureReverted());
-      store.dispatch(isFricheReverted());
+      store.dispatch(stepRevertAttempted());
+      store.dispatch(stepRevertAttempted());
+      store.dispatch(stepRevertAttempted());
 
       expectConfirmationAsked(store).toBe(false);
       expectCurrentStep(store.getState(), "INTRODUCTION");
@@ -40,7 +34,7 @@ describe("Site creation: step revert confirmation logic", () => {
         .build();
 
       // revert current step
-      store.dispatch(siteNatureReverted());
+      store.dispatch(stepRevertAttempted());
       expectConfirmationAsked(store).toBe(true);
       // revert was not performed
       expectCurrentStep(store.getState(), "SITE_NATURE");
@@ -52,11 +46,11 @@ describe("Site creation: step revert confirmation logic", () => {
         .build();
 
       // revert current step
-      store.dispatch(siteNatureReverted());
+      store.dispatch(stepRevertAttempted());
       expectConfirmationAsked(store).toBe(true);
       expectCurrentStep(store.getState(), "SITE_NATURE");
 
-      store.dispatch(stepRevertCancelled({ doNotAskAgain: false }));
+      store.dispatch(stepRevertConfirmationResolved({ confirmed: false, doNotAskAgain: false }));
       // wait for the next tick to ensure async flow in listener is done
       await new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -72,13 +66,13 @@ describe("Site creation: step revert confirmation logic", () => {
         .build();
 
       // revert current step
-      store.dispatch(siteNatureReverted());
+      store.dispatch(stepRevertAttempted());
       expectConfirmationAsked(store).toBe(true);
       // make sure revert was not performed
       expectCurrentStep(store.getState(), "SITE_NATURE");
       expect(store.getState().siteCreation.siteData.nature).toBe("AGRICULTURAL_OPERATION");
 
-      store.dispatch(stepRevertConfirmed({ doNotAskAgain: false }));
+      store.dispatch(stepRevertConfirmationResolved({ confirmed: true, doNotAskAgain: false }));
       // wait for the next tick to ensure async flow in listener is done
       await new Promise((resolve) => setTimeout(resolve, 0));
       // revert should have been performed
@@ -99,18 +93,18 @@ describe("Site creation: step revert confirmation logic", () => {
         .withCreationData({ nature: "AGRICULTURAL_OPERATION", isFriche: false })
         .build();
 
-      store.dispatch(agriculturalOperationActivityReverted());
+      store.dispatch(stepRevertAttempted());
       expectConfirmationAsked(store).toBe(true);
 
       // confirm and do not ask again
       expect(store.getState().appSettings.askForConfirmationOnStepRevert).toBe(true);
-      store.dispatch(stepRevertConfirmed({ doNotAskAgain: true }));
+      store.dispatch(stepRevertConfirmationResolved({ confirmed: true, doNotAskAgain: true }));
       expect(store.getState().appSettings.askForConfirmationOnStepRevert).toBe(false);
       // wait for the next tick to ensure async flow in listener is done
       await new Promise((resolve) => setTimeout(resolve, 0));
 
       // revert again
-      store.dispatch(addressStepReverted());
+      store.dispatch(stepRevertAttempted());
       // user should not be asked for confirmation again
       expectConfirmationAsked(store).toBe(false);
       // step should have been reverted

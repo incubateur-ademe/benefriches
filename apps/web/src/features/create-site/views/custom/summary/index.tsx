@@ -1,7 +1,5 @@
-import {
-  customSiteSaved,
-  siteDataSummaryStepReverted,
-} from "@/features/create-site/core/actions/finalStep.actions";
+import { customSiteSaved } from "@/features/create-site/core/actions/finalStep.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteDataSummary from "./SiteDataSummary";
@@ -15,7 +13,7 @@ function SiteDataSummaryContainer() {
   };
 
   const onBack = () => {
-    dispatch(siteDataSummaryStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

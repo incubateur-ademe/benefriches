@@ -1,9 +1,7 @@
 import { SiteYearlyIncome } from "shared";
 
-import {
-  yearlyExpensesSummaryCompleted,
-  yearlyExpensesSummaryReverted,
-} from "@/features/create-site/core/actions/siteManagement.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { yearlyExpensesSummaryCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { hasTenant } from "@/features/create-site/core/site.functions";
 import { AppDispatch, RootState } from "@/shared/core/store-config/store";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
@@ -29,7 +27,7 @@ const mapProps = (dispatch: AppDispatch, siteData: RootState["siteCreation"]["si
       dispatch(yearlyExpensesSummaryCompleted());
     },
     onBack: () => {
-      dispatch(yearlyExpensesSummaryReverted());
+      dispatch(stepRevertAttempted());
     },
   };
 };

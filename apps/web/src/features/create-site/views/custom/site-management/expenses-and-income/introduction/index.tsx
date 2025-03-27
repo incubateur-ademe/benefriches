@@ -1,7 +1,5 @@
-import {
-  yearlyExpensesAndIncomeIntroductionCompleted,
-  yearlyExpensesAndIncomeIntroductionReverted,
-} from "@/features/create-site/core/actions/siteManagement.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { yearlyExpensesAndIncomeIntroductionCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteExpensesAndIncomeIntroduction from "./SiteExpensesAndIncomeIntroduction";
@@ -14,7 +12,7 @@ function SiteExpensesAndIncomeIntroductionContainer() {
     <SiteExpensesAndIncomeIntroduction
       siteNature={siteNature}
       onNext={() => dispatch(yearlyExpensesAndIncomeIntroductionCompleted())}
-      onBack={() => dispatch(yearlyExpensesAndIncomeIntroductionReverted())}
+      onBack={() => dispatch(stepRevertAttempted())}
     />
   );
 }

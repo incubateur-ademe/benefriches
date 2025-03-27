@@ -1,18 +1,14 @@
 import { Action } from "@reduxjs/toolkit";
 
-import { stepRevertConfirmationResolved } from "@/features/create-project/core/actions/actionsUtils";
-import {
-  stepRevertCancelled,
-  stepRevertConfirmed,
-} from "@/features/create-site/core/actions/revert.actions";
+import { stepRevertConfirmationResolved as projectCreationStepRevertConfirmationResolved } from "@/features/create-project/core/actions/actionsUtils";
+import { stepRevertConfirmationResolved as siteCreationStepRevertConfirmationResolved } from "@/features/create-site/core/actions/revert.actions";
 import { AppStartListening } from "@/shared/core/store-config/listenerMiddleware";
 
 import { appSettingUpdated } from "./appSettings";
 
 const stepRevertConfirmationActions = [
-  stepRevertConfirmed,
-  stepRevertCancelled,
-  stepRevertConfirmationResolved,
+  siteCreationStepRevertConfirmationResolved,
+  projectCreationStepRevertConfirmationResolved,
 ] as const;
 type FormStepRevertConfirmationAction = ReturnType<(typeof stepRevertConfirmationActions)[number]>;
 const isFormStepRevertConfirmationAction = (

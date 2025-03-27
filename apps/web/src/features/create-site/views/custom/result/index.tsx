@@ -1,4 +1,4 @@
-import { creationResultStepReverted } from "@/features/create-site/core/actions/finalStep.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteCreationResult from "./SiteCreationResult";
@@ -10,7 +10,7 @@ function SiteCreationResultContainer() {
   const dispatch = useAppDispatch();
 
   const onBack = () => {
-    dispatch(creationResultStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

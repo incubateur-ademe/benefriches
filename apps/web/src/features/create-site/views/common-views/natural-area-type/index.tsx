@@ -1,7 +1,5 @@
-import {
-  naturalAreaTypeCompleted,
-  naturalAreaTypeReverted,
-} from "@/features/create-site/core/actions/introduction.actions";
+import { naturalAreaTypeCompleted } from "@/features/create-site/core/actions/introduction.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import NaturalAreaTypeForm, { FormValues } from "./NaturalAreaTypeForm";
@@ -17,7 +15,7 @@ export default function NaturalAreaTypeFormContainer() {
         dispatch(naturalAreaTypeCompleted({ naturalAreaType: data.type }));
       }}
       onBack={() => {
-        dispatch(naturalAreaTypeReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

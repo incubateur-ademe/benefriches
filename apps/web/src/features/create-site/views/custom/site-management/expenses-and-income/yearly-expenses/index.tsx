@@ -1,9 +1,7 @@
 import { useEffect } from "react";
 
-import {
-  yearlyExpensesStepCompleted,
-  yearlyExpensesStepReverted,
-} from "@/features/create-site/core/actions/siteManagement.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { yearlyExpensesStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { fetchSiteMunicipalityData } from "@/features/create-site/core/actions/siteMunicipalityData.actions";
 import { SiteYearlyExpensesBaseConfig } from "@/features/create-site/core/expenses.functions";
 import {
@@ -42,7 +40,7 @@ function SiteYearlyExpensesFormContainer() {
         siteExpensesEstimatedAmounts,
       )}
       onBack={() => {
-        dispatch(yearlyExpensesStepReverted());
+        dispatch(stepRevertAttempted());
       }}
       onSubmit={(formData: FormValues) => {
         const expenses = mapFormDataToExpenses(formData, expensesBaseconfig);

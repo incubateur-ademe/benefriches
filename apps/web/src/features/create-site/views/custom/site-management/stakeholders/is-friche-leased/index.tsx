@@ -1,7 +1,5 @@
-import {
-  isFricheLeasedStepCompleted,
-  isFricheLeasedStepReverted,
-} from "@/features/create-site/core/actions/siteManagement.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { isFricheLeasedStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import IsFricheLeasedForm, { FormValues } from "./IsFricheLeasedForm";
@@ -24,7 +22,7 @@ function IsFricheLeasedFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(isFricheLeasedStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (

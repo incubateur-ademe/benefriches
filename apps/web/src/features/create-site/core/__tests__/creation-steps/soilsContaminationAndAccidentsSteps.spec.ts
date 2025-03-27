@@ -1,10 +1,9 @@
+import { stepRevertAttempted } from "../../actions/revert.actions";
 import {
   fricheAccidentsIntroductionStepCompleted,
   fricheAccidentsStepCompleted,
-  fricheAccidentsStepReverted,
   soilsContaminationIntroductionStepCompleted,
   soilsContaminationStepCompleted,
-  soilsContaminationStepReverted,
 } from "../../actions/soilsContaminationAndAccidents.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
@@ -73,7 +72,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(soilsContaminationStepReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -149,7 +148,7 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(fricheAccidentsStepReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {

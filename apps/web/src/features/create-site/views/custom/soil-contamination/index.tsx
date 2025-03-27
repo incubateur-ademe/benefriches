@@ -1,7 +1,5 @@
-import {
-  soilsContaminationStepCompleted,
-  soilsContaminationStepReverted,
-} from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { soilsContaminationStepCompleted } from "@/features/create-site/core/actions/soilsContaminationAndAccidents.actions";
 import {
   selectSiteSoilsContamination,
   selectSiteSurfaceArea,
@@ -47,7 +45,7 @@ function SoilContaminationFormController() {
         );
       }}
       onBack={() => {
-        dispatch(soilsContaminationStepReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

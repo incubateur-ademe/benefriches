@@ -1,19 +1,14 @@
 import {
   agriculturalOperationActivityCompleted,
-  agriculturalOperationActivityReverted,
   createModeSelectionCompleted,
   fricheActivityStepCompleted,
   introductionStepCompleted,
   isFricheCompleted,
-  isFricheReverted,
   naturalAreaTypeCompleted,
-  naturalAreaTypeReverted,
-  fricheActivityStepReverted,
   siteNatureCompleted,
-  siteNatureReverted,
   addressStepCompleted,
-  addressStepReverted,
 } from "../../actions/introduction.actions";
+import { stepRevertAttempted } from "../../actions/revert.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
   expectNewCurrentStep,
@@ -61,7 +56,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
       const store = new StoreBuilder().withStepsHistory(["INTRODUCTION", "IS_FRICHE"]).build();
       const initialRootState = store.getState();
 
-      store.dispatch(isFricheReverted());
+      store.dispatch(stepRevertAttempted());
 
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, { isFriche: undefined });
@@ -88,7 +83,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
         .build();
       const initialRootState = store.getState();
 
-      store.dispatch(siteNatureReverted());
+      store.dispatch(stepRevertAttempted());
 
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, { nature: undefined });
@@ -203,7 +198,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
 
       const initialRootState = store.getState();
 
-      store.dispatch(agriculturalOperationActivityReverted());
+      store.dispatch(stepRevertAttempted());
 
       const newState = store.getState();
       expectStepReverted(initialRootState, newState);
@@ -244,7 +239,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
 
       const initialRootState = store.getState();
 
-      store.dispatch(naturalAreaTypeReverted());
+      store.dispatch(stepRevertAttempted());
 
       const newState = store.getState();
       expectStepReverted(initialRootState, newState);
@@ -279,7 +274,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(fricheActivityStepReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
@@ -312,7 +307,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
           .build();
         const initialRootState = store.getState();
 
-        store.dispatch(addressStepReverted());
+        store.dispatch(stepRevertAttempted());
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, { address: undefined });

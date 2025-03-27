@@ -1,8 +1,6 @@
 import { expressSiteSaved } from "@/features/create-site/core/actions/finalStep.actions";
-import {
-  siteSurfaceAreaStepCompleted,
-  siteSurfaceAreaStepReverted,
-} from "@/features/create-site/core/actions/spaces.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { siteSurfaceAreaStepCompleted } from "@/features/create-site/core/actions/spaces.actions";
 import { selectSiteSurfaceArea } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
@@ -22,7 +20,7 @@ function SiteSurfaceAreaFormContainer() {
         void dispatch(expressSiteSaved());
       }}
       onBack={() => {
-        dispatch(siteSurfaceAreaStepReverted());
+        dispatch(stepRevertAttempted());
       }}
     />
   );

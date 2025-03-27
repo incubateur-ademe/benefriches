@@ -1,24 +1,14 @@
-import { Action } from "@reduxjs/toolkit";
-
-import { SiteCreationStep } from "../createSite.reducer";
 import { SiteCreationData } from "../siteFoncier.types";
-import { createSiteCreationAction, isSiteCreationAction } from "./actionsUtils";
+import { createSiteCreationAction } from "./actionsUtils";
 
-export type StepRevertedActionPayload = { resetFields: (keyof SiteCreationData)[] } | undefined;
+type StepRevertedActionPayload = { resetFields: (keyof SiteCreationData)[] } | undefined;
 
-export const stepReverted = createSiteCreationAction<StepRevertedActionPayload>("stepReverted");
+export const stepRevertConfirmed =
+  createSiteCreationAction<StepRevertedActionPayload>("stepRevertConfirmed");
 
-export const stepRevertConfirmed = createSiteCreationAction<{ doNotAskAgain: boolean }>(
-  "stepRevertConfirmed",
-);
-export const stepRevertCancelled = createSiteCreationAction<{ doNotAskAgain: boolean }>(
-  "stepRevertCancelled",
-);
+export const stepRevertConfirmationResolved = createSiteCreationAction<{
+  confirmed: boolean;
+  doNotAskAgain: boolean;
+}>("stepRevertConfirmationResolved");
 
-export const isStepRevertAttemptedAction = (
-  action: Action,
-): action is ReturnType<typeof createStepRevertAttempted> =>
-  isSiteCreationAction(action) && action.type.endsWith("stepRevertAttempted");
-
-export const createStepRevertAttempted = (stepName: SiteCreationStep) =>
-  createSiteCreationAction<StepRevertedActionPayload>(`${stepName}/stepRevertAttempted`);
+export const stepRevertAttempted = createSiteCreationAction("stepRevertAttempted");

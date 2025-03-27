@@ -1,7 +1,5 @@
-import {
-  isSiteOperatedStepCompleted,
-  isSiteOperatedStepReverted,
-} from "@/features/create-site/core/actions/siteManagement.actions";
+import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
+import { isSiteOperatedStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import IsSiteOperatedForm, { FormValues } from "./IsSiteOperatedForm";
@@ -25,7 +23,7 @@ function IsSiteOperatedFormContainer() {
   };
 
   const onBack = () => {
-    dispatch(isSiteOperatedStepReverted());
+    dispatch(stepRevertAttempted());
   };
 
   return (
