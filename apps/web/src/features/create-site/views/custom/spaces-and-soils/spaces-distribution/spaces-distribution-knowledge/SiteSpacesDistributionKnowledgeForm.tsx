@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
 import { SiteNature } from "shared";
 
-import { SurfaceAreaDistributionEntryMode } from "@/features/create-site/core/siteFoncier.types";
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
@@ -14,7 +13,7 @@ type Props = {
 };
 
 export type FormValues = {
-  accuracy: SurfaceAreaDistributionEntryMode;
+  knowsSurfaceAreas: "yes" | "no";
 };
 
 const getTitle = (siteNature: SiteNature | undefined) => {
@@ -31,11 +30,11 @@ const getTitle = (siteNature: SiteNature | undefined) => {
   }
 };
 
-function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, siteNature }: Props) {
+function SiteSpacesDistributionKnowledgeForm({ onSubmit, onBack, siteNature }: Props) {
   const { handleSubmit, register, formState } = useForm<FormValues>();
   const _onSubmit = handleSubmit(onSubmit);
 
-  const error = formState.errors.accuracy;
+  const error = formState.errors.knowsSurfaceAreas;
 
   return (
     <WizardFormLayout
@@ -44,27 +43,21 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, siteNatu
     >
       <form onSubmit={_onSubmit}>
         <RadioButtons
-          {...register("accuracy", {
+          {...register("knowsSurfaceAreas", {
             required: "Ce champ est requis pour déterminer l'étape suivante.",
           })}
           error={error}
-          options={
-            [
-              {
-                label: `Oui, je connais les superficies, je peux les saisir en % ou en ${SQUARE_METERS_HTML_SYMBOL}`,
-                value: "square_meters_or_percentage",
-              },
-              {
-                label: "Non, je ne connais pas les superficies",
-                value: "default_even_split",
-                hintText: "Bénéfriches affectera une superficie égale à tous les types de sols.",
-              },
-            ] satisfies {
-              label: string;
-              value: SurfaceAreaDistributionEntryMode;
-              hintText?: string;
-            }[]
-          }
+          options={[
+            {
+              label: `Oui, je connais les superficies, je peux les saisir en % ou en ${SQUARE_METERS_HTML_SYMBOL}`,
+              value: "yes",
+            },
+            {
+              label: "Non, je ne connais pas les superficies",
+              value: "no",
+              hintText: "Bénéfriches affectera une superficie égale à tous les types de sols.",
+            },
+          ]}
         />
         <BackNextButtonsGroup onBack={onBack} disabled={!formState.isValid} nextLabel="Valider" />
       </form>
@@ -72,4 +65,4 @@ function SiteSoilsDistributionAccuracySelectionForm({ onSubmit, onBack, siteNatu
   );
 }
 
-export default SiteSoilsDistributionAccuracySelectionForm;
+export default SiteSpacesDistributionKnowledgeForm;

@@ -61,7 +61,7 @@ const getText = (siteNature: SiteNature | undefined): ReactNode => {
   }
 };
 
-const SiteSoilsIntroduction = ({ siteNature, onNext, onBack }: Props) => {
+const SiteSpacesIntroduction = ({ siteNature, onNext, onBack }: Props) => {
   return (
     <EditorialPageLayout>
       <EditorialPageIcon>🌾</EditorialPageIcon>
@@ -72,4 +72,4 @@ const SiteSoilsIntroduction = ({ siteNature, onNext, onBack }: Props) => {
   );
 };
 
-export default SiteSoilsIntroduction;
+export default SiteSpacesIntroduction;

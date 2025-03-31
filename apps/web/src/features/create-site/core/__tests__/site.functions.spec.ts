@@ -9,7 +9,7 @@ const buildSite = (siteProps: Partial<SiteCreationData> = {}): SiteCreationData 
     tenant: { structureType: "company", name: "Tenant SARL" },
     soils: [],
     soilsDistribution: {},
-    soilsDistributionEntryMode: "square_meters_or_percentage",
+    spacesDistributionKnowledge: true,
     surfaceArea: 15000,
     yearlyExpenses: [],
     yearlyIncomes: [],

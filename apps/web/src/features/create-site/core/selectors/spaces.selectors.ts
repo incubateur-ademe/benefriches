@@ -63,7 +63,7 @@ export const selectSiteSoilsSummaryViewData = createSelector(
       totalSurfaceArea: siteCreation.siteData.surfaceArea ?? 0,
       soilsDistribution: siteCreation.siteData.soilsDistribution ?? {},
       wasSoilsDistributionAssignedByBenefriches:
-        siteCreation.siteData.soilsDistributionEntryMode === "default_even_split",
+        siteCreation.siteData.spacesDistributionKnowledge === false,
     };
   },
 );

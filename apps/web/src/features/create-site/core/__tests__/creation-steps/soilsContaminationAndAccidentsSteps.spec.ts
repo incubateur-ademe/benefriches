@@ -58,9 +58,9 @@ describe("Site creation: soils contamination and friche accidents steps", () => 
           .withStepsHistory([
             "IS_FRICHE",
             "ADDRESS",
-            "SOILS_SELECTION",
-            "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
-            "SOILS_SURFACE_AREAS_DISTRIBUTION",
+            "SPACES_SELECTION",
+            "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
+            "SPACES_SURFACE_AREA_DISTRIBUTION",
             "SOILS_CONTAMINATION",
           ])
           .withCreationData({

@@ -5,9 +5,9 @@ import { soilsDistributionStepCompleted } from "@/features/create-site/core/acti
 import { selectSiteSoilsDistributionViewData } from "@/features/create-site/core/selectors/spaces.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteSoilsDistributionForm, { FormValues } from "./SiteSoilsDistributionForm";
+import SiteSpacesDistributionForm, { FormValues } from "./SiteSpacesDistributionForm";
 
-function SiteSoilsDistributionContainer() {
+export default function SiteSpacesDistributionContainer() {
   const dispatch = useAppDispatch();
   const { siteSoils, siteSurfaceArea, initialValues } = useAppSelector(
     selectSiteSoilsDistributionViewData,
@@ -26,7 +26,7 @@ function SiteSoilsDistributionContainer() {
   };
 
   return (
-    <SiteSoilsDistributionForm
+    <SiteSpacesDistributionForm
       initialValues={initialValues.value}
       siteSoils={siteSoils}
       totalSurfaceArea={siteSurfaceArea}
@@ -35,5 +35,3 @@ function SiteSoilsDistributionContainer() {
     />
   );
 }
-
-export default SiteSoilsDistributionContainer;

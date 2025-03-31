@@ -3,15 +3,15 @@ import { soilsSelectionStepCompleted } from "@/features/create-site/core/actions
 import { selectSiteSoils } from "@/features/create-site/core/selectors/createSite.selectors";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
-import SiteSoilsForm, { FormValues } from "./SoilsForm";
+import SiteSpacesSelectionForm, { FormValues } from "./SpacesSelectionForm";
 
-const SiteSoilsFormContainer = () => {
+const SiteSpacesSelectionFormContainer = () => {
   const dispatch = useAppDispatch();
   const siteNature = useAppSelector((state) => state.siteCreation.siteData.nature);
   const soils = useAppSelector(selectSiteSoils);
 
   return (
-    <SiteSoilsForm
+    <SiteSpacesSelectionForm
       siteNature={siteNature}
       initialValues={{
         soils,
@@ -26,4 +26,4 @@ const SiteSoilsFormContainer = () => {
   );
 };
 
-export default SiteSoilsFormContainer;
+export default SiteSpacesSelectionFormContainer;

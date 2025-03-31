@@ -1,9 +1,8 @@
 import { SoilsDistribution, SoilType } from "shared";
 
-import { SurfaceAreaDistributionEntryMode } from "../siteFoncier.types";
 import { createStepCompletedAction } from "./actionsUtils";
 
-export const soilsIntroductionStepCompleted = createStepCompletedAction("SOILS_INTRODUCTION");
+export const soilsIntroductionStepCompleted = createStepCompletedAction("SPACES_INTRODUCTION");
 
 export const siteSurfaceAreaStepCompleted = createStepCompletedAction<{ surfaceArea: number }>(
   "SURFACE_AREA",
@@ -14,17 +13,16 @@ export const spacesKnowledgeStepCompleted = createStepCompletedAction<{ knowsSpa
 );
 
 export const soilsSelectionStepCompleted = createStepCompletedAction<{ soils: SoilType[] }>(
-  "SOILS_SELECTION",
+  "SPACES_SELECTION",
 );
 
-export const soilsSurfaceAreaDistributionEntryModeCompleted =
-  createStepCompletedAction<SurfaceAreaDistributionEntryMode>(
-    "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
-  );
+export const spacesSurfaceAreaDistributionKnowledgeCompleted = createStepCompletedAction<{
+  knowsSurfaceAreas: boolean;
+}>("SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE");
 
 export const soilsDistributionStepCompleted = createStepCompletedAction<{
   distribution: SoilsDistribution;
-}>("SOILS_SURFACE_AREAS_DISTRIBUTION");
+}>("SPACES_SURFACE_AREA_DISTRIBUTION");
 
 export const soilsSummaryStepCompleted = createStepCompletedAction("SOILS_SUMMARY");
 

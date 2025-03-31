@@ -178,7 +178,7 @@ const getTitle = (siteNature: SiteNature | undefined) => {
   }
 };
 
-function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
+function SiteSpacesSelectionForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
   const { control, handleSubmit, formState } = useForm<FormValues>({
     defaultValues: initialValues,
   });
@@ -256,4 +256,4 @@ function SiteSoilsForm({ initialValues, onSubmit, onBack, siteNature }: Props) {
   );
 }
 
-export default SiteSoilsForm;
+export default SiteSpacesSelectionForm;

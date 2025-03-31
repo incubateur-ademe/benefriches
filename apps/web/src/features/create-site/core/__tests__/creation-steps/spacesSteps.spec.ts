@@ -6,7 +6,7 @@ import {
   soilsIntroductionStepCompleted,
   soilsSelectionStepCompleted,
   soilsSummaryStepCompleted,
-  soilsSurfaceAreaDistributionEntryModeCompleted,
+  spacesSurfaceAreaDistributionKnowledgeCompleted,
   spacesKnowledgeStepCompleted,
 } from "../../actions/spaces.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
@@ -19,10 +19,10 @@ import {
 } from "./testUtils";
 
 describe("Site creation: spaces steps", () => {
-  describe("SOILS_INTRODUCTION", () => {
+  describe("SPACES_INTRODUCTION", () => {
     describe("complete", () => {
       it("goes to SURFACE_AREA step when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["SOILS_INTRODUCTION"]).build();
+        const store = new StoreBuilder().withStepsHistory(["SPACES_INTRODUCTION"]).build();
         const initialRootState = store.getState();
 
         store.dispatch(soilsIntroductionStepCompleted());
@@ -95,7 +95,7 @@ describe("Site creation: spaces steps", () => {
         store.dispatch(spacesKnowledgeStepCompleted({ knowsSpaces: true }));
 
         const newState = store.getState();
-        expectNewCurrentStep(initialRootState, newState, "SOILS_SELECTION");
+        expectNewCurrentStep(initialRootState, newState, "SPACES_SELECTION");
       });
       it("assigns soils selection from friche activity and goes to SOILS_SUMMARY when users don't know spaces", () => {
         const store = new StoreBuilder()
@@ -164,10 +164,10 @@ describe("Site creation: spaces steps", () => {
       });
     });
   });
-  describe("SOILS_SELECTION", () => {
+  describe("SPACES_SELECTION", () => {
     describe("complete", () => {
-      it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE step and sets soils when step is completed", () => {
-        const store = new StoreBuilder().withStepsHistory(["SOILS_SELECTION"]).build();
+      it("goes to SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE step and sets soils when step is completed", () => {
+        const store = new StoreBuilder().withStepsHistory(["SPACES_SELECTION"]).build();
         const initialRootState = store.getState();
 
         store.dispatch(soilsSelectionStepCompleted({ soils: siteWithExhaustiveData.soils }));
@@ -177,14 +177,14 @@ describe("Site creation: spaces steps", () => {
         expectNewCurrentStep(
           initialRootState,
           newState,
-          "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
+          "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
         );
       });
     });
     describe("revert", () => {
       it("goes to previous step and unset soils data", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["IS_FRICHE", "ADDRESS", "SOILS_SELECTION"])
+          .withStepsHistory(["IS_FRICHE", "ADDRESS", "SPACES_SELECTION"])
           .withCreationData({ isFriche: true, soils: siteWithExhaustiveData.soils })
           .build();
         const initialRootState = store.getState();
@@ -197,11 +197,11 @@ describe("Site creation: spaces steps", () => {
       });
     });
   });
-  describe("SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE", () => {
+  describe("SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE", () => {
     describe("complete", () => {
-      it("goes to SOILS_SUMMARY step when step is completed with default_even_split", () => {
+      it("goes to SOILS_SUMMARY step when step is completed and user doesn't know surface distribution", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"])
+          .withStepsHistory(["SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE"])
           .withCreationData({
             surfaceArea: 100000,
             soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "BUILDINGS", "FOREST_CONIFER"],
@@ -210,11 +210,13 @@ describe("Site creation: spaces steps", () => {
 
         const initialRootState = store.getState();
 
-        store.dispatch(soilsSurfaceAreaDistributionEntryModeCompleted("default_even_split"));
+        store.dispatch(
+          spacesSurfaceAreaDistributionKnowledgeCompleted({ knowsSurfaceAreas: false }),
+        );
 
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
-          soilsDistributionEntryMode: "default_even_split",
+          spacesDistributionKnowledge: false,
           soilsDistribution: {
             ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED"]: 33333.33,
             ["BUILDINGS"]: 33333.33,
@@ -225,9 +227,9 @@ describe("Site creation: spaces steps", () => {
       });
     });
 
-    it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION step when step is completed with square_meters_or_percentage", () => {
+    it("goes to SOILS_SURFACE_AREAS_DISTRIBUTION step when step is completed and user knows surface distribution", () => {
       const store = new StoreBuilder()
-        .withStepsHistory(["SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"])
+        .withStepsHistory(["SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE"])
         .withCreationData({
           surfaceArea: 100000,
           soils: ["ARTIFICIAL_GRASS_OR_BUSHES_FILLED", "BUILDINGS", "FOREST_CONIFER"],
@@ -236,13 +238,13 @@ describe("Site creation: spaces steps", () => {
 
       const initialRootState = store.getState();
 
-      store.dispatch(soilsSurfaceAreaDistributionEntryModeCompleted("square_meters_or_percentage"));
+      store.dispatch(spacesSurfaceAreaDistributionKnowledgeCompleted({ knowsSurfaceAreas: true }));
 
       const newState = store.getState();
       expectSiteDataDiff(initialRootState, newState, {
-        soilsDistributionEntryMode: "square_meters_or_percentage",
+        spacesDistributionKnowledge: true,
       });
-      expectNewCurrentStep(initialRootState, newState, "SOILS_SURFACE_AREAS_DISTRIBUTION");
+      expectNewCurrentStep(initialRootState, newState, "SPACES_SURFACE_AREA_DISTRIBUTION");
     });
     describe("revert", () => {
       it("goes to previous step and unset soils distribution entry mode and surface areas", () => {
@@ -250,14 +252,14 @@ describe("Site creation: spaces steps", () => {
           .withStepsHistory([
             "IS_FRICHE",
             "ADDRESS",
-            "SOILS_SELECTION",
-            "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
+            "SPACES_SELECTION",
+            "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
           ])
           .withCreationData({
             isFriche: true,
             soils: siteWithExhaustiveData.soils,
             soilsDistribution: siteWithExhaustiveData.soilsDistribution,
-            soilsDistributionEntryMode: siteWithExhaustiveData.soilsDistributionEntryMode,
+            spacesDistributionKnowledge: siteWithExhaustiveData.spacesDistributionKnowledge,
           })
           .build();
         const initialRootState = store.getState();
@@ -267,17 +269,17 @@ describe("Site creation: spaces steps", () => {
         const newState = store.getState();
         expectSiteDataDiff(initialRootState, newState, {
           soilsDistribution: undefined,
-          soilsDistributionEntryMode: undefined,
+          spacesDistributionKnowledge: undefined,
         });
         expectStepReverted(initialRootState, newState);
       });
     });
   });
-  describe("SOILS_SURFACE_AREAS_DISTRIBUTION", () => {
+  describe("SPACES_SURFACE_AREA_DISTRIBUTION", () => {
     describe("complete", () => {
       it("goes to SOILS_SUMMARY step and sets soils distribution when step is completed", () => {
         const store = new StoreBuilder()
-          .withStepsHistory(["SOILS_SURFACE_AREAS_DISTRIBUTION"])
+          .withStepsHistory(["SPACES_SURFACE_AREA_DISTRIBUTION"])
           .build();
         const initialRootState = store.getState();
 
@@ -300,9 +302,9 @@ describe("Site creation: spaces steps", () => {
           .withStepsHistory([
             "IS_FRICHE",
             "ADDRESS",
-            "SOILS_SELECTION",
-            "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE",
-            "SOILS_SURFACE_AREAS_DISTRIBUTION",
+            "SPACES_SELECTION",
+            "SPACES_SURFACE_AREAS_DISTRIBUTION_KNOWLEDGE",
+            "SPACES_SURFACE_AREA_DISTRIBUTION",
           ])
           .withCreationData({
             isFriche: true,

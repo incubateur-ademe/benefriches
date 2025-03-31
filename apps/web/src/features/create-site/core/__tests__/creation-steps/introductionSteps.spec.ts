@@ -269,7 +269,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
   });
   describe("ADDRESS", () => {
     describe("complete", () => {
-      it("goes to SOILS_INTRODUCTION step and sets address when step is completed", () => {
+      it("goes to SPACES_INTRODUCTION step and sets address when step is completed", () => {
         const store = new StoreBuilder().withStepsHistory(["ADDRESS"]).build();
         const initialRootState = store.getState();
 
@@ -279,7 +279,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
         expectSiteDataDiff(initialRootState, newState, {
           address: siteWithExhaustiveData.address,
         });
-        expectNewCurrentStep(initialRootState, newState, "SOILS_INTRODUCTION");
+        expectNewCurrentStep(initialRootState, newState, "SPACES_INTRODUCTION");
       });
     });
     describe("revert", () => {

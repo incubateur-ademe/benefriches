@@ -22,7 +22,7 @@ type Props = {
 
 export type FormValues = SurfaceAreaDistributionJson<SoilType>;
 
-function SiteSoilsDistributionForm({
+function SiteSpacesDistributionForm({
   initialValues,
   siteSoils,
   totalSurfaceArea,
@@ -53,4 +53,4 @@ function SiteSoilsDistributionForm({
   );
 }
 
-export default SiteSoilsDistributionForm;
+export default SiteSpacesDistributionForm;

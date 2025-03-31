@@ -12,8 +12,6 @@ import {
 
 import { OwnerStructureType, TenantStructureType } from "@/shared/core/stakeholder";
 
-export type SurfaceAreaDistributionEntryMode = "default_even_split" | "square_meters_or_percentage";
-
 export type SiteCreationData = {
   id: string;
   isFriche?: boolean;
@@ -24,7 +22,7 @@ export type SiteCreationData = {
   // soils
   surfaceArea?: number;
   soils: SoilType[];
-  soilsDistributionEntryMode?: SurfaceAreaDistributionEntryMode;
+  spacesDistributionKnowledge?: boolean;
   soilsDistribution?: SoilsDistribution;
   // contamination
   hasContaminatedSoils?: boolean;
