@@ -54,6 +54,7 @@ export type SiteExpressCreationData = {
   surfaceArea: number;
   agriculturalOperationActivity?: AgriculturalOperationActivity;
   naturalAreaType?: NaturalAreaType;
+  fricheActivity?: FricheActivity;
 };
 
 export type Tenant = { structureType: TenantStructureType; name: string };

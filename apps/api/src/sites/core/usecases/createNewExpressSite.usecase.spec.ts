@@ -53,6 +53,7 @@ describe("CreateNewExpressSite Use case", () => {
       usecase.execute({
         siteProps: {
           id: fricheProps.id,
+          fricheActivity: "INDUSTRY",
           surfaceArea: 1000,
           address: buildAddress(),
           nature: "FRICHE",
@@ -184,7 +185,8 @@ describe("CreateNewExpressSite Use case", () => {
         surfaceArea: 2540,
         address: buildAddress(),
         nature: "FRICHE",
-      } as const;
+        fricheActivity: "OTHER",
+      } as const satisfies ExpressSiteProps;
       await usecase.execute({ createdBy: "user-id-123", siteProps: fricheProps });
 
       const savedSites = siteRepository._getSites();
@@ -210,10 +212,10 @@ describe("CreateNewExpressSite Use case", () => {
           }),
           owner: { structureType: "municipality", name: "Mairie de Montrouge" },
           yearlyExpenses: [
-            { purpose: "maintenance", amount: 5334, bearer: "owner" },
-            { purpose: "propertyTaxes", amount: 2154, bearer: "owner" },
             { purpose: "illegalDumpingCost", amount: 0, bearer: "owner" },
             { purpose: "security", amount: 5588, bearer: "owner" },
+            { purpose: "maintenance", amount: 5334, bearer: "owner" },
+            { purpose: "propertyTaxes", amount: 2154, bearer: "owner" },
           ],
           yearlyIncomes: [],
           fricheActivity: "OTHER",

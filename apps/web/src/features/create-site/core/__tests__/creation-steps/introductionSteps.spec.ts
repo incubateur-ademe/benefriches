@@ -151,7 +151,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
       const newState = store.getState();
       expectNewCurrentStep(initialRootState, newState, "NATURAL_AREA_TYPE");
     });
-    it("goes to ADDRESS step when 'express' mode is selected and site is FRICHE or NATURAL_AREA", () => {
+    it("goes to FRICHE_ACTIVITY step when 'express' mode is selected and site is FRICHE", () => {
       const store = new StoreBuilder()
         .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
         .withCreationData({ nature: "FRICHE", isFriche: true })
@@ -161,7 +161,7 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
       store.dispatch(createModeSelectionCompleted({ createMode: "express" }));
 
       const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "ADDRESS");
+      expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
     });
   });
   describe("AGRICULTURAL_OPERATION_ACTIVITY", () => {

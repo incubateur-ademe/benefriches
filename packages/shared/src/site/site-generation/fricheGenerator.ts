@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-import { generateSiteName, SiteYearlyExpense } from "..";
+import { FricheActivity, generateSiteName, SiteYearlyExpense } from "..";
 import { computeEstimatedPropertyTaxesAmount } from "../../financial";
 import { formatMunicipalityName } from "../../local-authority";
 import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
@@ -12,31 +12,75 @@ import {
 } from "../yearlyExpenses";
 import { City, SiteGenerationProps, SiteGenerator } from "./siteGenerator";
 
-type FricheGenerationProps = SiteGenerationProps;
+type FricheGenerationProps = SiteGenerationProps & {
+  fricheActivity: FricheActivity;
+};
+
+function getSoilsDistributionForFricheActivity(
+  surfaceArea: number,
+  fricheActivity: FricheActivity,
+): SoilsDistribution {
+  switch (fricheActivity) {
+    case "AGRICULTURE":
+      return {
+        PRAIRIE_GRASS: 0.5 * surfaceArea,
+        CULTIVATION: 0.5 * surfaceArea,
+      };
+    case "INDUSTRY":
+      return {
+        BUILDINGS: 0.4 * surfaceArea,
+        IMPERMEABLE_SOILS: 0.4 * surfaceArea,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.2 * surfaceArea,
+      };
+    case "MILITARY":
+      return {
+        BUILDINGS: 0.15 * surfaceArea,
+        IMPERMEABLE_SOILS: 0.15 * surfaceArea,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.2 * surfaceArea,
+        PRAIRIE_GRASS: 0.5 * surfaceArea,
+      };
+    case "BUILDING":
+      return {
+        BUILDINGS: 0.8 * surfaceArea,
+        IMPERMEABLE_SOILS: 0.1 * surfaceArea,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.1 * surfaceArea,
+      };
+    case "RAILWAY":
+      return {
+        BUILDINGS: 0.05 * surfaceArea,
+        IMPERMEABLE_SOILS: 0.4 * surfaceArea,
+        MINERAL_SOIL: 0.5 * surfaceArea,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.05 * surfaceArea,
+      };
+    case "PORT":
+      return {
+        BUILDINGS: 0.8 * surfaceArea,
+        IMPERMEABLE_SOILS: 0.2 * surfaceArea,
+      };
+    case "TIP_OR_RECYCLING_SITE":
+      return {
+        IMPERMEABLE_SOILS: 0.45 * surfaceArea,
+        MINERAL_SOIL: 0.05 * surfaceArea,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.5 * surfaceArea,
+      };
+    case "OTHER":
+      return {
+        BUILDINGS: 0.3 * surfaceArea,
+        IMPERMEABLE_SOILS: 0.2 * surfaceArea,
+        MINERAL_SOIL: 0.15 * surfaceArea,
+        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.25 * surfaceArea,
+        ARTIFICIAL_TREE_FILLED: 0.1 * surfaceArea,
+      };
+  }
+}
 
 export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
   fromSurfaceAreaAndLocalInformation(props: FricheGenerationProps): Friche {
-    const { id, surfaceArea, address, cityPopulation } = props;
+    const { id, surfaceArea, address, cityPopulation, fricheActivity } = props;
 
-    const soilsDistribution = {
-      BUILDINGS: 0.3 * surfaceArea,
-      IMPERMEABLE_SOILS: 0.2 * surfaceArea,
-      MINERAL_SOIL: 0.15 * surfaceArea,
-      ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.25 * surfaceArea,
-      ARTIFICIAL_TREE_FILLED: 0.1 * surfaceArea,
-    } as const satisfies SoilsDistribution;
+    const soilsDistribution = getSoilsDistributionForFricheActivity(surfaceArea, fricheActivity);
 
     const yearlyExpenses: SiteYearlyExpense[] = [
-      {
-        amount: computeMaintenanceDefaultCost(soilsDistribution.BUILDINGS),
-        purpose: "maintenance",
-        bearer: "owner",
-      },
-      {
-        amount: computeEstimatedPropertyTaxesAmount(soilsDistribution.BUILDINGS),
-        purpose: "propertyTaxes",
-        bearer: "owner",
-      },
       {
         amount: computeIllegalDumpingDefaultCost(cityPopulation),
         purpose: "illegalDumpingCost",
@@ -49,6 +93,21 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       },
     ];
 
+    if (soilsDistribution.BUILDINGS) {
+      yearlyExpenses.push(
+        {
+          amount: computeMaintenanceDefaultCost(soilsDistribution.BUILDINGS),
+          purpose: "maintenance",
+          bearer: "owner",
+        },
+        {
+          amount: computeEstimatedPropertyTaxesAmount(soilsDistribution.BUILDINGS),
+          purpose: "propertyTaxes",
+          bearer: "owner",
+        },
+      );
+    }
+
     const result = createFriche({
       id,
       address,
@@ -59,6 +118,7 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
         name: formatMunicipalityName(address.city),
       },
       yearlyExpenses,
+      fricheActivity,
       name: generateSiteName({
         cityName: address.city,
         isFriche: true,
@@ -77,6 +137,7 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       id: uuid(),
       surfaceArea,
       cityPopulation: city.population,
+      fricheActivity: "OTHER",
       address: {
         city: city.name,
         value: city.name,

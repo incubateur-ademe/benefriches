@@ -2,6 +2,7 @@ import {
   Address,
   AgriculturalOperationActivity,
   AgriculturalOperationGenerator,
+  FricheActivity,
   FricheGenerator,
   NaturalAreaGenerator,
   NaturalAreaType,
@@ -20,7 +21,7 @@ export type ExpressSiteProps = {
   surfaceArea: number;
   address: Address;
 } & (
-  | { nature: "FRICHE" }
+  | { nature: "FRICHE"; fricheActivity: FricheActivity }
   | { nature: "AGRICULTURAL_OPERATION"; activity: AgriculturalOperationActivity }
   | { nature: "NATURAL_AREA"; type: NaturalAreaType }
 );

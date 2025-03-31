@@ -189,6 +189,7 @@ describe("Save created site", () => {
           address: BLAJAN_ADDRESS,
           surfaceArea: 35000,
           isFriche: true,
+          fricheActivity: "INDUSTRY",
         },
       },
       {
@@ -228,6 +229,7 @@ describe("Save created site", () => {
             createdBy: user.id,
             type: siteData.naturalAreaType,
             activity: siteData.agriculturalOperationActivity,
+            fricheActivity: siteData.fricheActivity,
           },
         ]);
       },

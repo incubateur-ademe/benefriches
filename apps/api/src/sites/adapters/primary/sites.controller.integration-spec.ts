@@ -14,6 +14,18 @@ type BadRequestResponseBody = {
   errors: { path: string[] }[];
 };
 
+function expectBadRequestWithMissingField(
+  response: supertest.Response,
+  missingField: string,
+): void {
+  expect(response.status).toEqual(400);
+  expect(response.body).toHaveProperty("errors");
+
+  const responseErrors = (response.body as BadRequestResponseBody).errors;
+  expect(responseErrors).toHaveLength(1);
+  expect(responseErrors[0]?.path).toContain(missingField);
+}
+
 describe("Sites controller", () => {
   let app: INestApplication<Server>;
   let sqlConnection: Knex;
@@ -30,6 +42,7 @@ describe("Sites controller", () => {
   });
 
   describe("POST /sites/create-express", () => {
+    // eslint-disable-next-line jest/expect-expect
     it.each(["id", "nature", "createdBy", "address"] satisfies (keyof CreateExpressSiteDto)[])(
       "can't create a site without mandatory field %s",
       async (mandatoryField) => {
@@ -56,14 +69,84 @@ describe("Sites controller", () => {
           .post("/api/sites/create-express")
           .send(requestBody);
 
-        expect(response.status).toEqual(400);
-        expect(response.body).toHaveProperty("errors");
-
-        const responseErrors = (response.body as BadRequestResponseBody).errors;
-        expect(responseErrors).toHaveLength(1);
-        expect(responseErrors[0]?.path).toContain(mandatoryField);
+        expectBadRequestWithMissingField(response, mandatoryField);
       },
     );
+
+    // eslint-disable-next-line jest/expect-expect
+    it("can't create an express friche without friche activity", async () => {
+      const requestBody: Omit<CreateExpressSiteDto, "fricheActivity"> = {
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
+        nature: "FRICHE",
+        surfaceArea: 12399,
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          city: "Paris",
+          banId: "75110_7043",
+          cityCode: "75110",
+          postCode: "75010",
+          value: "Rue de Paradis 75010 Paris",
+        },
+      };
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-express")
+        .send(requestBody);
+
+      expectBadRequestWithMissingField(response, "fricheActivity");
+    });
+
+    // eslint-disable-next-line jest/expect-expect
+    it("can't create an express agricultral operation without activity", async () => {
+      const requestBody: Omit<CreateExpressSiteDto, "activity"> = {
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
+        nature: "AGRICULTURAL_OPERATION",
+        surfaceArea: 12399,
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          city: "Paris",
+          banId: "75110_7043",
+          cityCode: "75110",
+          postCode: "75010",
+          value: "Rue de Paradis 75010 Paris",
+        },
+      };
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-express")
+        .send(requestBody);
+
+      expectBadRequestWithMissingField(response, "activity");
+    });
+
+    // eslint-disable-next-line jest/expect-expect
+    it("can't create an express natural area without activity", async () => {
+      const requestBody: Omit<CreateExpressSiteDto, "type"> = {
+        id: "03a53ffd-4f71-419e-8d04-041311eefa23",
+        createdBy: "dadf207d-f0c1-4e38-8fe9-9ae5b0e123c4",
+        nature: "NATURAL_AREA",
+        surfaceArea: 12399,
+        address: {
+          lat: 2.347,
+          long: 48.859,
+          city: "Paris",
+          banId: "75110_7043",
+          cityCode: "75110",
+          postCode: "75010",
+          value: "Rue de Paradis 75010 Paris",
+        },
+      };
+
+      const response = await supertest(app.getHttpServer())
+        .post("/api/sites/create-express")
+        .send(requestBody);
+
+      expectBadRequestWithMissingField(response, "type");
+    });
 
     it("can create an agricultural operation from express props", async () => {
       const agriculturalOperationDto: CreateExpressSiteDto = {
@@ -112,6 +195,7 @@ describe("Sites controller", () => {
         createdBy: "6c97f648-4e22-481e-9bc4-106ff00accdf",
         nature: "FRICHE",
         surfaceArea: 134000,
+        fricheActivity: "INDUSTRY",
         address: {
           lat: 2.347,
           long: 48.859,
@@ -135,6 +219,7 @@ describe("Sites controller", () => {
         "created_by",
         "is_friche",
         "surface_area",
+        "friche_activity",
       );
       expect(sitesInDb.length).toEqual(1);
       expect(sitesInDb[0]).toEqual({
@@ -143,6 +228,7 @@ describe("Sites controller", () => {
         created_by: frichDto.createdBy,
         is_friche: true,
         surface_area: 134000,
+        friche_activity: "INDUSTRY",
       });
     });
   });

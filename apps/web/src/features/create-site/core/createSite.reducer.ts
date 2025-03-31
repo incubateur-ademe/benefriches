@@ -150,19 +150,15 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
       state.createMode = createMode;
 
       switch (state.siteData.nature) {
+        case "FRICHE":
+          state.stepsHistory.push("FRICHE_ACTIVITY");
+          break;
         case "AGRICULTURAL_OPERATION":
           if (createMode === "express") {
             state.stepsHistory.push("AGRICULTURAL_OPERATION_ACTIVITY");
             break;
           }
           state.stepsHistory.push("ADDRESS");
-          break;
-        case "FRICHE":
-          if (createMode === "express") {
-            state.stepsHistory.push("ADDRESS");
-            break;
-          }
-          state.stepsHistory.push("FRICHE_ACTIVITY");
           break;
         case "NATURAL_AREA":
           if (createMode === "express") {
