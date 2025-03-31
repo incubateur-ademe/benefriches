@@ -92,7 +92,7 @@ export const getPictogramForSoilType = (value: SoilType): string => {
   return `/img/pictograms/soil-types/${soilTypePictogramMap[value]}`;
 };
 
-export const BASE_SPACE_SOIL_TYPE_LABEL_MAPPING = {
+const BASE_SPACE_SOIL_TYPE_LABEL_MAPPING = {
   BUILDINGS: "Bâtiments",
   IMPERMEABLE_SOILS: "Voies d'accès ou parking bitumé",
   MINERAL_SOIL: "Voie d'accès ou parking en gravier, sol nu",
