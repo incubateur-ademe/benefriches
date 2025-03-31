@@ -91,78 +91,61 @@ describe("Site creation: introduction steps (intro, nature, creation mode, addre
     });
   });
   describe("CREATE_MODE_SELECTION", () => {
-    it("goes to FRICHE_ACTIVITY step when 'custom' mode is selected and site is a friche", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
-        .withCreationData({
-          isFriche: true,
-          nature: "FRICHE",
-        })
-        .build();
+    it.each(["express", "custom"] as const)(
+      "goes to FRICHE_ACTIVITY step when '%s' mode is selected and site is a friche",
+      (creationMode) => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .withCreationData({
+            isFriche: true,
+            nature: "FRICHE",
+          })
+          .build();
 
-      const initialRootState = store.getState();
+        const initialRootState = store.getState();
 
-      store.dispatch(createModeSelectionCompleted({ createMode: "custom" }));
+        store.dispatch(createModeSelectionCompleted({ createMode: creationMode }));
 
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
-    });
-    it("goes to ADDRESS step when 'custom' mode is selected and site is NOT a friche", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
-        .withCreationData({
-          isFriche: false,
-        })
-        .build();
-      const initialRootState = store.getState();
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
+      },
+    );
+    it.each(["express", "custom"] as const)(
+      "goes to AGRICULTURAL_OPERATION_ACTIVITY step when '%s' mode is selected and site is agricultural operation",
+      (creationMode) => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .withCreationData({
+            isFriche: false,
+            nature: "AGRICULTURAL_OPERATION",
+          })
+          .build();
+        const initialRootState = store.getState();
 
-      store.dispatch(createModeSelectionCompleted({ createMode: "custom" }));
+        store.dispatch(createModeSelectionCompleted({ createMode: creationMode }));
 
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "ADDRESS");
-    });
-    it("goes to AGRICULTURAL_OPERATION_ACTIVITY step when 'express' mode is selected and site is agricultural operation", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
-        .withCreationData({
-          isFriche: false,
-          nature: "AGRICULTURAL_OPERATION",
-        })
-        .build();
-      const initialRootState = store.getState();
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "AGRICULTURAL_OPERATION_ACTIVITY");
+      },
+    );
+    it.each(["express", "custom"] as const)(
+      "goes to NATURAL_AREA_TYPE step when '%s' mode is selected and site is natural area",
+      (creationMode) => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
+          .withCreationData({
+            isFriche: false,
+            nature: "NATURAL_AREA",
+          })
+          .build();
+        const initialRootState = store.getState();
 
-      store.dispatch(createModeSelectionCompleted({ createMode: "express" }));
+        store.dispatch(createModeSelectionCompleted({ createMode: creationMode }));
 
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "AGRICULTURAL_OPERATION_ACTIVITY");
-    });
-    it("goes to NATURAL_AREA_TYPE step when 'express' mode is selected and site is natural area", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
-        .withCreationData({
-          isFriche: false,
-          nature: "NATURAL_AREA",
-        })
-        .build();
-      const initialRootState = store.getState();
-
-      store.dispatch(createModeSelectionCompleted({ createMode: "express" }));
-
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "NATURAL_AREA_TYPE");
-    });
-    it("goes to FRICHE_ACTIVITY step when 'express' mode is selected and site is FRICHE", () => {
-      const store = new StoreBuilder()
-        .withStepsHistory(["INTRODUCTION", "CREATE_MODE_SELECTION"])
-        .withCreationData({ nature: "FRICHE", isFriche: true })
-        .build();
-      const initialRootState = store.getState();
-
-      store.dispatch(createModeSelectionCompleted({ createMode: "express" }));
-
-      const newState = store.getState();
-      expectNewCurrentStep(initialRootState, newState, "FRICHE_ACTIVITY");
-    });
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "NATURAL_AREA_TYPE");
+      },
+    );
   });
   describe("AGRICULTURAL_OPERATION_ACTIVITY", () => {
     it("goes to ADDRESS step when completed", () => {

@@ -15,6 +15,7 @@ const SITE_CREATION_STEP_ROUTE_QUERY_STRING_MAP = {
   ADDRESS: "adresse",
   SOILS_INTRODUCTION: "sols-introduction",
   SURFACE_AREA: "superficie-du-site",
+  SPACES_KNOWLEDGE: "connaissance-des-espaces",
   SOILS_SELECTION: "sols-selection",
   SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE: "mode-renseignement-superficie-des-sols",
   SOILS_SURFACE_AREAS_DISTRIBUTION: "superficie-des-sols",

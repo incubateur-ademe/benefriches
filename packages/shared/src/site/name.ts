@@ -1,6 +1,6 @@
 import { formatCityWithPlacePreposition } from "../local-authority";
 import { isForest, isPrairie, isSoilAgricultural, SoilType } from "../soils";
-import { FricheActivity, getFricheActivityLabel } from "./fricheActivity";
+import { FricheActivity, getFricheActivityLabel } from "./friche/fricheActivity";
 
 const isSoilTypeArtificial = (soilType: SoilType) => {
   return [

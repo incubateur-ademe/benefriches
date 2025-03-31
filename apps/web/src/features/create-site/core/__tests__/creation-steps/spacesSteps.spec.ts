@@ -7,6 +7,7 @@ import {
   soilsSelectionStepCompleted,
   soilsSummaryStepCompleted,
   soilsSurfaceAreaDistributionEntryModeCompleted,
+  spacesKnowledgeStepCompleted,
 } from "../../actions/spaces.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
 import {
@@ -35,7 +36,7 @@ describe("Site creation: spaces steps", () => {
   describe("SURFACE_AREA", () => {
     describe("complete", () => {
       describe("custom mode", () => {
-        it("goes to SOILS_SELECTION step and sets surface area when step is completed", () => {
+        it("goes to SPACES_KNOWLEDGE step and sets surface area when step is completed", () => {
           const store = new StoreBuilder()
             .withCreateMode("custom")
             .withStepsHistory(["SURFACE_AREA"])
@@ -46,7 +47,7 @@ describe("Site creation: spaces steps", () => {
 
           const newState = store.getState();
           expectSiteDataDiff(initialRootState, newState, { surfaceArea: 143000 });
-          expectNewCurrentStep(initialRootState, newState, "SOILS_SELECTION");
+          expectNewCurrentStep(initialRootState, newState, "SPACES_KNOWLEDGE");
         });
         describe("revert", () => {
           it("goes to previous step and unset surface area", () => {
@@ -80,6 +81,86 @@ describe("Site creation: spaces steps", () => {
             initialRootState.siteCreation.stepsHistory,
           );
         });
+      });
+    });
+  });
+  describe("SPACES_KNOWLEDGE", () => {
+    describe("complete", () => {
+      it("goes to SPACES_SELECTION step when user knows what spaces are on the site", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["SURFACE_AREA", "SPACES_KNOWLEDGE"])
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(spacesKnowledgeStepCompleted({ knowsSpaces: true }));
+
+        const newState = store.getState();
+        expectNewCurrentStep(initialRootState, newState, "SOILS_SELECTION");
+      });
+      it("assigns soils selection from friche activity and goes to SOILS_SUMMARY when users don't know spaces", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["SURFACE_AREA", "SPACES_KNOWLEDGE"])
+          .withCreationData({
+            isFriche: true,
+            nature: "FRICHE",
+            fricheActivity: "BUILDING",
+            surfaceArea: 100,
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(spacesKnowledgeStepCompleted({ knowsSpaces: false }));
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, {
+          soils: ["BUILDINGS", "IMPERMEABLE_SOILS", "ARTIFICIAL_GRASS_OR_BUSHES_FILLED"],
+          soilsDistribution: {
+            BUILDINGS: 80,
+            IMPERMEABLE_SOILS: 10,
+            ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 10,
+          },
+        });
+        expectNewCurrentStep(initialRootState, newState, "SOILS_SUMMARY");
+      });
+      it("assigns soils selection from agricultural operation activity and goes to SOILS_SUMMARY when users don't know spaces", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["SURFACE_AREA", "SPACES_KNOWLEDGE"])
+          .withCreationData({
+            isFriche: false,
+            nature: "AGRICULTURAL_OPERATION",
+            agriculturalOperationActivity: "MARKET_GARDENING",
+            surfaceArea: 100,
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(spacesKnowledgeStepCompleted({ knowsSpaces: false }));
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, {
+          soils: ["CULTIVATION", "BUILDINGS"],
+          soilsDistribution: { BUILDINGS: 5, CULTIVATION: 95 },
+        });
+        expectNewCurrentStep(initialRootState, newState, "SOILS_SUMMARY");
+      });
+    });
+    describe("revert", () => {
+      it("goes to previous step and unset soils selection and distribution", () => {
+        const store = new StoreBuilder()
+          .withStepsHistory(["SURFACE_AREA", "SPACES_KNOWLEDGE"])
+          .withCreationData({
+            isFriche: true,
+            soils: siteWithExhaustiveData.soils,
+            soilsDistribution: siteWithExhaustiveData.soilsDistribution,
+          })
+          .build();
+        const initialRootState = store.getState();
+
+        store.dispatch(stepRevertAttempted());
+
+        const newState = store.getState();
+        expectSiteDataDiff(initialRootState, newState, { soils: [], soilsDistribution: undefined });
+        expectStepReverted(initialRootState, newState);
       });
     });
   });

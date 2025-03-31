@@ -1,76 +1,47 @@
 import { v4 as uuid } from "uuid";
 
-import { FricheActivity, generateSiteName, SiteYearlyExpense } from "..";
+import {
+  City,
+  FricheActivity,
+  generateSiteName,
+  SiteGenerationProps,
+  SiteGenerator,
+  SiteYearlyExpense,
+} from "..";
 import { computeEstimatedPropertyTaxesAmount } from "../../financial";
 import { formatMunicipalityName } from "../../local-authority";
-import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
+import { createSoilSurfaceAreaDistribution, SoilType } from "../../soils";
+import { getSoilsDistributionForFricheActivity } from "../friche/spaces";
 import { createFriche, Friche } from "../site";
 import {
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
   computeSecurityDefaultCost,
 } from "../yearlyExpenses";
-import { City, SiteGenerationProps, SiteGenerator } from "./siteGenerator";
 
 type FricheGenerationProps = SiteGenerationProps & {
   fricheActivity: FricheActivity;
 };
 
-function getSoilsDistributionForFricheActivity(
+function getContaminatedSoilSurfaceFromFricheActivity(
   surfaceArea: number,
   fricheActivity: FricheActivity,
-): SoilsDistribution {
+) {
   switch (fricheActivity) {
-    case "AGRICULTURE":
-      return {
-        PRAIRIE_GRASS: 0.5 * surfaceArea,
-        CULTIVATION: 0.5 * surfaceArea,
-      };
     case "INDUSTRY":
-      return {
-        BUILDINGS: 0.4 * surfaceArea,
-        IMPERMEABLE_SOILS: 0.4 * surfaceArea,
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.2 * surfaceArea,
-      };
+      return 0.5 * surfaceArea;
     case "MILITARY":
-      return {
-        BUILDINGS: 0.15 * surfaceArea,
-        IMPERMEABLE_SOILS: 0.15 * surfaceArea,
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.2 * surfaceArea,
-        PRAIRIE_GRASS: 0.5 * surfaceArea,
-      };
-    case "BUILDING":
-      return {
-        BUILDINGS: 0.8 * surfaceArea,
-        IMPERMEABLE_SOILS: 0.1 * surfaceArea,
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.1 * surfaceArea,
-      };
+      return 0.05 * surfaceArea;
     case "RAILWAY":
-      return {
-        BUILDINGS: 0.05 * surfaceArea,
-        IMPERMEABLE_SOILS: 0.4 * surfaceArea,
-        MINERAL_SOIL: 0.5 * surfaceArea,
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.05 * surfaceArea,
-      };
+      return 0.1 * surfaceArea;
     case "PORT":
-      return {
-        BUILDINGS: 0.8 * surfaceArea,
-        IMPERMEABLE_SOILS: 0.2 * surfaceArea,
-      };
+      return 0.15 * surfaceArea;
     case "TIP_OR_RECYCLING_SITE":
-      return {
-        IMPERMEABLE_SOILS: 0.45 * surfaceArea,
-        MINERAL_SOIL: 0.05 * surfaceArea,
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.5 * surfaceArea,
-      };
+      return 0.05 * surfaceArea;
+    case "AGRICULTURE":
+    case "BUILDING":
     case "OTHER":
-      return {
-        BUILDINGS: 0.3 * surfaceArea,
-        IMPERMEABLE_SOILS: 0.2 * surfaceArea,
-        MINERAL_SOIL: 0.15 * surfaceArea,
-        ARTIFICIAL_GRASS_OR_BUSHES_FILLED: 0.25 * surfaceArea,
-        ARTIFICIAL_TREE_FILLED: 0.1 * surfaceArea,
-      };
+      return 0;
   }
 }
 
@@ -108,11 +79,16 @@ export class FricheGenerator implements SiteGenerator<FricheGenerationProps> {
       );
     }
 
+    const contaminatedSoilSurface = getContaminatedSoilSurfaceFromFricheActivity(
+      surfaceArea,
+      fricheActivity,
+    );
+
     const result = createFriche({
       id,
       address,
       soilsDistribution: createSoilSurfaceAreaDistribution(soilsDistribution),
-      contaminatedSoilSurface: 0.5 * surfaceArea,
+      contaminatedSoilSurface,
       owner: {
         structureType: "municipality",
         name: formatMunicipalityName(address.city),

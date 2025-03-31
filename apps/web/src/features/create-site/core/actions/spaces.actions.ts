@@ -9,6 +9,10 @@ export const siteSurfaceAreaStepCompleted = createStepCompletedAction<{ surfaceA
   "SURFACE_AREA",
 );
 
+export const spacesKnowledgeStepCompleted = createStepCompletedAction<{ knowsSpaces: boolean }>(
+  "SPACES_KNOWLEDGE",
+);
+
 export const soilsSelectionStepCompleted = createStepCompletedAction<{ soils: SoilType[] }>(
   "SOILS_SELECTION",
 );

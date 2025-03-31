@@ -1,6 +1,8 @@
 import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import { selectCurrentStep } from "../../core/createSite.reducer";
+import AgriculturalOperationActivityForm from "../common-views/agricultural-operation-activity";
+import NaturalAreaTypeForm from "../common-views/natural-area-type";
 import FricheAccidentsForm from "./accidents/accidents-count";
 import FricheAccidentsIntroduction from "./accidents/introduction";
 import AddressForm from "./address";
@@ -26,6 +28,7 @@ import SiteSoilsDistribution from "./soils/soils-distribution/distribution";
 import SiteSoilsIntroduction from "./soils/soils-introduction";
 import SiteSoilsForm from "./soils/soils-selection";
 import SiteSoilsSummary from "./soils/soils-summary";
+import SpacesKnowledgeForm from "./soils/spaces-knowledge";
 import SiteSurfaceAreaForm from "./soils/surface-area";
 import SiteDataSummary from "./summary";
 
@@ -35,12 +38,18 @@ function SiteCreationCustomStepContent() {
   switch (currentStep) {
     case "FRICHE_ACTIVITY":
       return <FricheActivityForm />;
+    case "AGRICULTURAL_OPERATION_ACTIVITY":
+      return <AgriculturalOperationActivityForm />;
+    case "NATURAL_AREA_TYPE":
+      return <NaturalAreaTypeForm />;
     case "ADDRESS":
       return <AddressForm />;
     case "SOILS_INTRODUCTION":
       return <SiteSoilsIntroduction />;
     case "SURFACE_AREA":
       return <SiteSurfaceAreaForm />;
+    case "SPACES_KNOWLEDGE":
+      return <SpacesKnowledgeForm />;
     case "SOILS_SELECTION":
       return <SiteSoilsForm />;
     case "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE":

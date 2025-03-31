@@ -1,13 +1,13 @@
-import { generateSiteName } from "..";
 import { formatMunicipalityName } from "../../local-authority";
 import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
+import { generateSiteName } from "../name";
 import { getLabelForNaturalAreaType } from "../natural-area/naturalAreaType";
 import { AgriculturalOrNaturalSite, createAgriculturalOrNaturalSite } from "../site";
-import { SiteGenerationProps, SiteGenerator } from "./siteGenerator";
+import { SiteGenerationProps, SiteGenerator } from "../site-generation";
 
 type NaturalAreaType = "PRAIRIE" | "FOREST" | "WET_LAND" | "MIXED_NATURAL_AREA";
 
-function getSoilsDistributionForNaturalAreaType(
+export function getSoilsDistributionForNaturalAreaType(
   surfaceArea: number,
   naturalAreaType: NaturalAreaType,
 ): SoilsDistribution {

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { SoilType } from "../soils";
 import { SurfaceAreaDistribution } from "../surface-area";
-import { FricheActivity, fricheActivitySchema } from "./fricheActivity";
+import { FricheActivity, fricheActivitySchema } from "./friche/fricheActivity";
 import { SiteYearlyExpense, siteYearlyExpenseSchema } from "./yearlyExpenses";
 import { SiteYearlyIncome } from "./yearlyIncome";
 

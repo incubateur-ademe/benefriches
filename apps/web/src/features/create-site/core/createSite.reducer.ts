@@ -1,8 +1,14 @@
 import { createReducer, createSelector } from "@reduxjs/toolkit";
-import { SoilsDistribution } from "shared";
+import {
+  getSoilsDistributionForAgriculturalOperationActivity,
+  getSoilsDistributionForFricheActivity,
+  getSoilsDistributionForNaturalAreaType,
+  SoilsDistribution,
+} from "shared";
 import { v4 as uuid } from "uuid";
 
 import { SiteCreationData } from "@/features/create-site/core/siteFoncier.types";
+import { typedObjectKeys } from "@/shared/core/object-keys/objectKeys";
 import { splitEvenly } from "@/shared/core/split-number/splitNumber";
 import { RootState } from "@/shared/core/store-config/store";
 
@@ -50,6 +56,7 @@ import {
   soilsSelectionStepCompleted,
   soilsSummaryStepCompleted,
   soilsSurfaceAreaDistributionEntryModeCompleted,
+  spacesKnowledgeStepCompleted,
 } from "./actions/spaces.actions";
 
 export type SiteCreationCustomStep =
@@ -58,6 +65,7 @@ export type SiteCreationCustomStep =
   // soils
   | "SOILS_INTRODUCTION"
   | "SURFACE_AREA"
+  | "SPACES_KNOWLEDGE"
   | "SOILS_SELECTION"
   | "SOILS_SURFACE_AREAS_DISTRIBUTION_ENTRY_MODE"
   | "SOILS_SURFACE_AREAS_DISTRIBUTION"
@@ -154,21 +162,12 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
           state.stepsHistory.push("FRICHE_ACTIVITY");
           break;
         case "AGRICULTURAL_OPERATION":
-          if (createMode === "express") {
-            state.stepsHistory.push("AGRICULTURAL_OPERATION_ACTIVITY");
-            break;
-          }
-          state.stepsHistory.push("ADDRESS");
+          state.stepsHistory.push("AGRICULTURAL_OPERATION_ACTIVITY");
           break;
         case "NATURAL_AREA":
-          if (createMode === "express") {
-            state.stepsHistory.push("NATURAL_AREA_TYPE");
-            break;
-          }
-          state.stepsHistory.push("ADDRESS");
+          state.stepsHistory.push("NATURAL_AREA_TYPE");
           break;
         default:
-          state.stepsHistory.push("ADDRESS");
           break;
       }
     })
@@ -196,7 +195,42 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
     .addCase(siteSurfaceAreaStepCompleted, (state, action) => {
       state.siteData.surfaceArea = action.payload.surfaceArea;
       if (state.createMode === "custom") {
+        state.stepsHistory.push("SPACES_KNOWLEDGE");
+      }
+    })
+    .addCase(spacesKnowledgeStepCompleted, (state, action) => {
+      if (action.payload.knowsSpaces) {
         state.stepsHistory.push("SOILS_SELECTION");
+      } else {
+        const surfaceArea = state.siteData.surfaceArea ?? 0;
+
+        switch (state.siteData.nature) {
+          case "FRICHE":
+            state.siteData.soilsDistribution = getSoilsDistributionForFricheActivity(
+              surfaceArea,
+              state.siteData.fricheActivity ?? "OTHER",
+            );
+            break;
+          case "AGRICULTURAL_OPERATION":
+            if (state.siteData.agriculturalOperationActivity) {
+              state.siteData.soilsDistribution =
+                getSoilsDistributionForAgriculturalOperationActivity(
+                  surfaceArea,
+                  state.siteData.agriculturalOperationActivity,
+                );
+            }
+            break;
+          case "NATURAL_AREA":
+            if (state.siteData.naturalAreaType) {
+              state.siteData.soilsDistribution = getSoilsDistributionForNaturalAreaType(
+                surfaceArea,
+                state.siteData.naturalAreaType,
+              );
+            }
+            break;
+        }
+        state.siteData.soils = typedObjectKeys(state.siteData.soilsDistribution ?? {});
+        state.stepsHistory.push("SOILS_SUMMARY");
       }
     })
     .addCase(soilsSelectionStepCompleted, (state, action) => {
@@ -370,6 +404,10 @@ const siteCreationReducer = createReducer(getInitialState(), (builder) => {
           break;
         case "SURFACE_AREA":
           state.siteData.surfaceArea = undefined;
+          break;
+        case "SPACES_KNOWLEDGE":
+          state.siteData.soils = [];
+          state.siteData.soilsDistribution = undefined;
           break;
         case "SOILS_SELECTION":
           state.siteData.soils = [];

@@ -1,4 +1,4 @@
-import { generateSiteName } from "..";
+import { generateSiteName, SiteGenerationProps, SiteGenerator } from "..";
 import { formatMunicipalityName } from "../../local-authority";
 import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
 import {
@@ -6,9 +6,8 @@ import {
   getLabelForAgriculturalOperationActivity,
 } from "../agricultural-operation/operationActivity";
 import { AgriculturalOrNaturalSite, createAgriculturalOrNaturalSite } from "../site";
-import { SiteGenerationProps, SiteGenerator } from "./siteGenerator";
 
-function getSoilsDistributionForAgriculturalOperationActivity(
+export function getSoilsDistributionForAgriculturalOperationActivity(
   surfaceArea: number,
   agriculturalOperationActivity: AgriculturalOperationActivity,
 ): SoilsDistribution {
