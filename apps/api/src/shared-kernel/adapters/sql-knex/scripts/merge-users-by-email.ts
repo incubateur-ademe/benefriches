@@ -8,7 +8,9 @@ const dotEnvPath = path.resolve(process.cwd(), ".env");
 configDotenv({ path: dotEnvPath });
 
 // This script merges users with the same email address into one user.
-// It will keep the latest user, set user id as created_by for sites and reconversion_projects and delete the others.
+// It will keep the latest user
+// replace created_by in sites and reconversion_projects and user_id in users_feature_alerts with the latest user id
+// and delete the others.
 
 async function mergeUsersByEmail() {
   const sqlConnection: Knex = knex(knexConfig);
@@ -22,7 +24,6 @@ async function mergeUsersByEmail() {
 
     console.log(`🔎 Found ${duplicateEmails.length} duplicate emails`);
 
-    // 2. For every duplicate email, keep the latest user
     for (const { email } of duplicateEmails) {
       const usersWithDuplicateEmail = await sqlConnection("users")
         .select("id")
@@ -46,6 +47,9 @@ async function mergeUsersByEmail() {
           .update({
             created_by: latestUser.id,
           });
+        await trx("users_feature_alerts").whereIn("user_id", otherUsersIds).update({
+          user_id: latestUser.id,
+        });
         await trx("users").whereIn("id", otherUsersIds).delete();
 
         await trx.commit();
