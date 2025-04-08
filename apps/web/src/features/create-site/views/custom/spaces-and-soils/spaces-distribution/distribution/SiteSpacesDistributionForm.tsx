@@ -9,6 +9,7 @@ import {
   getLabelForSoilType,
   getPictogramForSoilType,
 } from "@/shared/core/label-mapping/soilTypeLabelMapping";
+import { getColorForSoilType } from "@/shared/core/soils";
 import SurfaceAreaDistributionForm from "@/shared/views/components/form/SurfaceAreaDistributionForm/SurfaceAreaDistributionForm";
 import FormInfo from "@/shared/views/layout/WizardFormLayout/FormInfo";
 
@@ -48,6 +49,7 @@ function SiteSpacesDistributionForm({
         imgSrc: getPictogramForSoilType(soilType),
         addonText: SQUARE_METERS_HTML_SYMBOL,
         hintText: getDescriptionForSoilType(soilType),
+        color: getColorForSoilType(soilType),
       }))}
     />
   );
