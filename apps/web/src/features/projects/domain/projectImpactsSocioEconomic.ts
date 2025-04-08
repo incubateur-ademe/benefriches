@@ -154,7 +154,7 @@ const getGroupedByImpactName = (impacts: { amount: number; impact: ImpactName }[
 export type SocioEconomicImpactByActor = {
   name: string;
   total: number;
-  impacts: { name: SocioEconomicImpactName; value: number }[];
+  impacts: { name: SocioEconomicMainImpactName; value: number }[];
 }[];
 export const getSocioEconomicProjectImpactsByActor = (
   impactsData?: ReconversionProjectImpactsResult["impacts"],

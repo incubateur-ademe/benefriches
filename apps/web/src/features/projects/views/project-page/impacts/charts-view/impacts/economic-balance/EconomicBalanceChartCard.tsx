@@ -1,18 +1,14 @@
-import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useContext } from "react";
 import { roundTo2Digits } from "shared";
-import { sumList } from "shared";
 
 import {
   EconomicBalance,
   EconomicBalanceMainName,
 } from "@/features/projects/domain/projectImpactsEconomicBalance";
-import HighchartBarColoredChart from "@/features/projects/views/project-page/impacts/charts-view/ImpactChartCard/ImpactBarColoredBalanceChart";
-import { getEconomicBalanceImpactLabel } from "@/features/projects/views/project-page/impacts/getImpactLabel";
+import ImpactColumnChart from "@/features/projects/views/project-page/impacts/charts-view/ImpactChartCard/ImpactColumnChart";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 
 import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
-import ImpactChartTooltipContent from "../../ImpactChartCard/ImpactChartTooltipContent";
 import ImpactsChartsSection from "../../ImpactsChartsSection";
 
 type Props = {
@@ -43,12 +39,32 @@ const getEconomicBalanceImpactColor = (name: EconomicBalanceMainName): string =>
   }
 };
 
+const getEconomicBalanceImpactLabel = (name: EconomicBalanceMainName): string => {
+  switch (name) {
+    case "site_purchase":
+      return "Acquisition du site";
+    case "site_resale":
+      return "Cession du site";
+    case "site_reinstatement":
+      return "Remise en état de la friche";
+    case "financial_assistance":
+      return "Aides financières";
+    case "development_plan_installation":
+      return "Aménagement du projet";
+    case "photovoltaic_development_plan_installation":
+      return "⚡️ Installation des panneaux photovoltaïques";
+    case "urban_project_development_plan_installation":
+      return "Aménagement du site";
+    case "operations_costs":
+      return "Charges d'exploitation";
+    case "operations_revenues":
+      return "Recettes d'exploitation";
+    case "buildings_resale":
+      return "Cession des bâtiments";
+  }
+};
+
 function EconomicBalanceChartCard({ economicBalance, bearer = "l'aménageur" }: Props) {
-  const totalValues = economicBalance.map(({ value }) => value);
-
-  const totalRevenues = sumList(totalValues.filter((value) => value > 0));
-  const totalExpenses = sumList(totalValues.filter((value) => value < 0));
-
   const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
@@ -62,33 +78,31 @@ function EconomicBalanceChartCard({ economicBalance, bearer = "l'aménageur" }: 
       {economicBalance.length === 0 ? (
         <div>Vous n'avez pas renseigné de dépenses ni de recettes pour ce projet.</div>
       ) : (
-        <Tooltip
-          kind="hover"
-          title={
-            <ImpactChartTooltipContent
-              rows={economicBalance.map(({ value, name }) => ({
-                label: getEconomicBalanceImpactLabel(name),
-                color: getEconomicBalanceImpactColor(name),
-                value: value,
-                valueText: formatMonetaryImpact(value),
-              }))}
-            />
-          }
-        >
-          <HighchartBarColoredChart
-            categoryLabels={[
-              `<strong>Dépenses</strong><br>${formatMonetaryImpact(totalExpenses)}`,
-              `<strong>Recettes</strong><br>${formatMonetaryImpact(totalRevenues)}`,
-            ]}
-            data={economicBalance.map(({ value, name }) => {
-              return {
-                label: getEconomicBalanceImpactLabel(name),
-                color: getEconomicBalanceImpactColor(name),
-                values: value > 0 ? [0, roundTo2Digits(value)] : [roundTo2Digits(value), 0],
-              };
-            })}
-          />
-        </Tooltip>
+        <ImpactColumnChart
+          formatFn={formatMonetaryImpact}
+          data={[
+            {
+              label: "Recettes",
+              values: economicBalance
+                .filter(({ value }) => value > 0)
+                .map(({ value, name }) => ({
+                  label: getEconomicBalanceImpactLabel(name),
+                  color: getEconomicBalanceImpactColor(name),
+                  value: roundTo2Digits(value),
+                })),
+            },
+            {
+              label: "Dépenses",
+              values: economicBalance
+                .filter(({ value }) => value < 0)
+                .map(({ value, name }) => ({
+                  label: getEconomicBalanceImpactLabel(name),
+                  color: getEconomicBalanceImpactColor(name),
+                  value: roundTo2Digits(value),
+                })),
+            },
+          ]}
+        />
       )}
     </ImpactsChartsSection>
   );
