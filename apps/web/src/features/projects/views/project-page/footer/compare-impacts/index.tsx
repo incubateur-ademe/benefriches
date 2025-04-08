@@ -8,9 +8,16 @@ const ImpactComparisonSectionContainer = () => {
   const { compareImpactsAlert, createUserFeatureAlertState } = useAppSelector(
     (state) => state.userFeatureAlert,
   );
+
+  const siteIsFriche = useAppSelector((state) => state.projectImpacts.relatedSiteData?.isFriche);
+
   const userEmail = useAppSelector(selectCurrentUserEmail);
 
   const dispatch = useAppDispatch();
+
+  if (!siteIsFriche) {
+    return null;
+  }
 
   return (
     <ImpactComparisonSection
