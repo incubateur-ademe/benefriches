@@ -146,6 +146,35 @@ describe("SurfaceAreaDistributionForm", () => {
       });
     });
 
+    it("should display a pie chart with non-zero surface areas displayed and a 'Non assigné' slice", async () => {
+      renderWithProviders(
+        <SurfaceAreaDistributionForm
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Area 1" },
+            { name: "field2", label: "Area 2" },
+            { name: "field3", label: "Area 3" },
+          ]}
+          totalSurfaceArea={50}
+          onBack={() => {}}
+          onSubmit={() => {}}
+        />,
+        { preloadedState: squareMetersInputModePreloadedState },
+      );
+
+      const input1 = await screen.findByRole("spinbutton", { name: /Area 1/i });
+      const input2 = await screen.findByRole("spinbutton", { name: /Area 2/i });
+
+      // enter surface areas in square meters
+      fireEvent.input(input1, { target: { value: 30 } });
+      fireEvent.input(input2, { target: { value: 15 } });
+
+      expect(screen.getAllByRole("img")).toHaveLength(3);
+      expect(screen.getByRole("img", { name: /Area 1, 30/ })).toBeVisible();
+      expect(screen.getByRole("img", { name: /Area 2, 15/ })).toBeVisible();
+      expect(screen.getByRole("img", { name: /Non assigné, 5/ })).toBeVisible();
+    });
+
     it("should let user switch to percentage mode", async () => {
       renderWithProviders(
         <SurfaceAreaDistributionForm
@@ -281,6 +310,31 @@ describe("SurfaceAreaDistributionForm", () => {
       await waitFor(() => {
         expect(onSubmitSpy).toHaveBeenCalledWith({ field1: 7000, field4: 3000 });
       });
+    });
+
+    it("should display a pie chart with non-zero surface areas displayed and a 'Non assigné' slice", async () => {
+      renderWithProviders(
+        <SurfaceAreaDistributionForm
+          title="Test form"
+          surfaces={[
+            { name: "field1", label: "Area 1" },
+            { name: "field2", label: "Area 2" },
+          ]}
+          totalSurfaceArea={50}
+          onBack={() => {}}
+          onSubmit={() => {}}
+        />,
+        { preloadedState: percentageInputModePreloadedState },
+      );
+
+      const input1 = await screen.findByRole("spinbutton", { name: /Area 1/i });
+
+      // enter surface areas in percentage
+      fireEvent.input(input1, { target: { value: 50 } });
+
+      expect(screen.getAllByRole("img")).toHaveLength(2);
+      expect(screen.getByRole("img", { name: /Area 1, 25/ })).toBeVisible();
+      expect(screen.getByRole("img", { name: /Non assigné, 25/ })).toBeVisible();
     });
 
     it("should let user switch to square meters mode", async () => {

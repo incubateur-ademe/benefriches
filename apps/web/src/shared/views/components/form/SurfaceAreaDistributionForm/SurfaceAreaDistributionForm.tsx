@@ -129,7 +129,7 @@ function SurfaceAreaDistributionForm({
     const { label, color } = surfaces.find(({ name }) => name === soilType) ?? {};
     return {
       name: label ?? soilType,
-      value: surfaceArea as number,
+      value: surfaceArea ?? 0,
       color,
     };
   });
@@ -146,7 +146,11 @@ function SurfaceAreaDistributionForm({
           {instructions}
           <SurfaceAreaPieChart
             soilsDistribution={chartSurfaceAreaDistribution}
-            remainderSurfaceArea={computeValueFromPercentage(remainder, totalSurfaceArea)}
+            remainderSurfaceArea={
+              inputMode === "squareMeters"
+                ? remainder
+                : computeValueFromPercentage(remainder, totalSurfaceArea)
+            }
           />
         </>
       }
