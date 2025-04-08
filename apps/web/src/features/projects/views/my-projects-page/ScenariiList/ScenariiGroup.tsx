@@ -34,7 +34,7 @@ function ScenarioGroupTitle({
     <h4 className="tour-guide-step-created-site">
       <a {...routes.siteFeatures({ siteId }).link}>{siteName}</a>
       {isExpressSite && (
-        <Badge small className="tw-ml-3" style="green-tilleul">
+        <Badge small className="tw-ml-3" style="blue">
           Site express
         </Badge>
       )}

@@ -38,7 +38,7 @@ function DemoMyProjects({ siteData, projectData }: Props) {
         </div>
         <h4 className="tour-guide-step-created-site">
           <a {...routes.demoSiteFeatures({ siteId: siteData.id }).link}>{siteData.name}</a>
-          <Badge small className="tw-ml-3" style="green-tilleul">
+          <Badge small className="tw-ml-3" style="blue">
             Site démo
           </Badge>
         </h4>
