@@ -76,7 +76,8 @@ const getFormValuesInSquareMeters = (input: {
   totalSurfaceArea: number;
   inputMode: "percentage" | "squareMeters";
 }): SurfaceAreaDistributionJson<string> => {
-  if (input.inputMode === "squareMeters") return input.values;
+  if (input.inputMode === "squareMeters")
+    return SurfaceAreaDistribution.fromJSON(input.values).toJSON();
 
   return SurfaceAreaDistribution.fromJSONPercentage({
     totalSurfaceArea: input.totalSurfaceArea,
