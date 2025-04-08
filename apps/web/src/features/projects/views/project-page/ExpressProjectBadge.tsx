@@ -1,35 +1,21 @@
+import { fr } from "@codegouvfr/react-dsfr";
+
 import Badge from "@/shared/views/components/Badge/Badge";
-import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
 
-type Props = {
-  siteName: string;
-};
+import { projectFeaturesModal } from "./impacts/project-features-modal/createProjectFeaturesModal";
 
-const ExpressProjectTooltipBadge = ({ siteName }: Props) => {
+const ExpressProjectTooltipBadge = () => {
   return (
-    <Badge small className="tw-my-2 sm:tw-ml-3" style="green-tilleul">
-      <span>Projet express</span>
-      <TooltipInfoButton
-        text={
-          <div>
-            <span>
-              Bénéfriches a généré, au sein du site "{siteName}", un projet urbain comprenant des
-              habitations, des espaces verts et des espaces publics.
-            </span>
-            <br />
-            <br />
-            Le projet a été créé en mode express. La plupart des données du projet (aménagement des
-            espaces, dépenses et recettes, emplois mobilisés...) ont été affectées automatiquement,
-            en se basant sur des hypothèses ou des moyennes. Cela signifie que les indicateurs du
-            bilan d'opération et les impacts socio-économiques ont été calculés à partir de montant
-            théoriques et peuvent ne pas refléter la réalité de votre projet.
-            <br />
-            {/* TODO: add link once page is available*/}
-            {/* Pour savoir quelles sont les données utilisées par Bénéfriches, rendez-vous
-                        dans l'onglet “Caractéristiques” */}
-          </div>
-        }
-      />
+    <Badge
+      small
+      className="tw-my-2 tw-shrink-1 sm:tw-ml-3 tw-py-0.5 tw-border-[#DEE5FD] hover:tw-border-[#99B3F9] tw-border-1 tw-border-solid hover:tw-cursor-pointer"
+      style="blue"
+      onClick={() => {
+        projectFeaturesModal.open();
+      }}
+    >
+      <span className="tw-mr-1">Projet express</span>
+      <span aria-hidden="true" className={fr.cx("fr-icon--sm", "fr-icon-information-line")} />
     </Badge>
   );
 };

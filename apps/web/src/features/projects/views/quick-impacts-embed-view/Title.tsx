@@ -35,7 +35,7 @@ export default function QuickImpactsEmbedViewTitle({ siteCity }: Props) {
       />
       <div className="tw-col-start-2 sm:tw-inline-flex tw-items-center">
         <h2 className="tw-my-0 tw-text-2xl">Projet de centralité urbaine</h2>
-        <ExpressProjectTooltipBadge siteName={siteCity} />
+        <ExpressProjectTooltipBadge />
       </div>
       <div className="tw-row-start-2 tw-col-start-1 sm:tw-col-start-2 tw-col-span-3 sm:tw-col-span-1">
         <span className="fr-icon-map-pin-2-line fr-icon--sm fr-mr-1w" aria-hidden="true"></span>

@@ -65,7 +65,7 @@ function ScenarioTile({
                 <p className="fr-tile__desc tw-text-sm dark:tw-text-grey-main">{details}</p>
               </div>
               {badgeText && (
-                <Badge small className="tw-mt-2" style="green-tilleul">
+                <Badge small className="tw-mt-2" style="blue">
                   {badgeText}
                 </Badge>
               )}

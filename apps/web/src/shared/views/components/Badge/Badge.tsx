@@ -1,4 +1,3 @@
-import DsfrBadge from "@codegouvfr/react-dsfr/Badge";
 import { ReactNode } from "react";
 
 import classNames, { ClassValue } from "../../clsx";
@@ -7,6 +6,7 @@ type Props = {
   children: NonNullable<ReactNode>;
   className?: ClassValue;
   small?: boolean;
+  onClick?: () => void;
   style?:
     | "default"
     | "green-emeraude"
@@ -23,25 +23,26 @@ const badgeStyleClasses = {
   ["default"]: "tw-bg-white tw-text-[#161616]",
   ["green-emeraude"]: "tw-bg-[#E3FDEB] tw-text-[#297254]",
   ["green-tilleul"]: "tw-bg-[#FEF7DA] tw-text-[#66673D]",
-  ["blue"]: "tw-bg-[#F4F6FE] tw-text-[#2F4077]",
+  ["blue"]: "tw-bg-[#DEE5FD] tw-text-[#2F4077]",
   ["disabled"]: "tw-bg-[#E5E5E5] tw-text-[#929292] dark:tw-bg-[#929292] dark:tw-text-[#E5E5E5]",
   ["success"]: "tw-bg-impacts-positive-light",
   ["error"]: "tw-bg-impacts-negative-light",
   ["neutral"]: "tw-bg-impacts-neutral-main dark:tw-bg-impacts-neutral-light",
 } as const satisfies Record<Exclude<Props["style"], undefined>, string>;
 
-export default function Badge({ children, className, small = false, style }: Props) {
+export default function Badge({ children, className, small = false, style, onClick }: Props) {
   return (
-    <DsfrBadge
-      as="span"
-      small={small}
+    <span
+      role={onClick ? "button" : undefined}
       className={classNames(
-        "tw-normal-case tw-font-normal tw-rounded-xl tw-px-2",
+        "fr-badge tw-normal-case tw-font-normal tw-rounded-xl tw-px-2",
+        small && "fr-badge--sm",
         style && badgeStyleClasses[style],
         className,
       )}
+      onClick={onClick}
     >
       {children}
-    </DsfrBadge>
+    </span>
   );
 }

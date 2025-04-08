@@ -62,7 +62,7 @@ const ProjectPageHeader = ({
 
         <div className="tw-col-start-2 sm:tw-inline-flex tw-items-center">
           <h2 className={classNames("tw-my-0", isSmallSize && "tw-text-2xl")}>{projectName}</h2>
-          {isExpressProject && !isSmallScreen && <ExpressProjectTooltipBadge siteName={siteName} />}
+          {isExpressProject && !isSmallScreen && <ExpressProjectTooltipBadge />}
         </div>
         <div
           className={classNames(
