@@ -64,6 +64,23 @@ export const getDescriptionForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCat
   }
 };
 
+export const getColorForUrbanSpaceCategory = (spaceCategory: UrbanSpaceCategory): string => {
+  switch (spaceCategory) {
+    case "LIVING_AND_ACTIVITY_SPACES":
+      return "#F80338";
+    case "GREEN_SPACES":
+      return "#59C939";
+    case "PUBLIC_SPACES":
+      return "#919CB3";
+    case "URBAN_FARM":
+      return "#F2CF5A";
+    case "RENEWABLE_ENERGY_PRODUCTION_PLANT":
+      return "#F97F05";
+    case "URBAN_POND_OR_LAKE":
+      return "#13BCEC";
+  }
+};
+
 export const getLabelForUrbanGreenSpace = (greenSpace: UrbanGreenSpace): string => {
   switch (greenSpace) {
     case "LAWNS_AND_BUSHES":

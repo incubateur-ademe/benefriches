@@ -1,6 +1,7 @@
 import { SurfaceAreaDistributionJson, UrbanSpaceCategory } from "shared";
 
 import {
+  getColorForUrbanSpaceCategory,
   getDescriptionForUrbanSpaceCategory,
   getLabelForSpaceCategory,
   getPictogramForUrbanSpaceCategory,
@@ -44,6 +45,7 @@ function SpacesCategoriesSurfaceAreaDistributionForm({
         label: getLabelForSpaceCategory(spaceCategory),
         hintText: getDescriptionForUrbanSpaceCategory(spaceCategory),
         imgSrc: getPictogramForUrbanSpaceCategory(spaceCategory),
+        color: getColorForUrbanSpaceCategory(spaceCategory),
       }))}
     />
   );
