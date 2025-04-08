@@ -1,3 +1,5 @@
+import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { SiteNature, SiteYearlyExpensePurpose, typedObjectEntries } from "shared";
 
@@ -8,7 +10,6 @@ import {
 } from "@/features/create-site/core/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
-import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
 import { optionalNumericFieldRegisterOptions } from "@/shared/views/components/form/NumericInput/registerOptions";
 import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormLayout";
@@ -42,8 +43,9 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
       return (
         <>
           {getLabelForExpensePurpose("maintenance")}
-          <TooltipInfoButton
-            text="Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
+          <Tooltip
+            kind="click"
+            title="Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
       dépenses d'entretien sont à la charge de ce dernier."
             id="maintenance-expenses-info"
           />
@@ -53,8 +55,9 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
       return (
         <>
           {getLabelForExpensePurpose("otherManagementCosts")}
-          <TooltipInfoButton
-            text="Par exemple, le maintien de bâtiments en bon état (ex&nbsp;: chauffage pour éviter le gel
+          <Tooltip
+            kind="click"
+            title="Par exemple, le maintien de bâtiments en bon état (ex&nbsp;: chauffage pour éviter le gel
           de canalisation ou la dégradation liée l'humidité), la taille de la végétation ou encore
           le règlement des factures d'eau ou d'électricité."
             id="other-management-expenses-info"
@@ -65,8 +68,9 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
       return (
         <>
           {getLabelForExpensePurpose("security")}
-          <TooltipInfoButton
-            text="Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
+          <Tooltip
+            kind="click"
+            title="Sauf en cas de défaillance de l'exploitant (faillite, liquidation judiciaire, etc.) les
       dépenses de gardiennage sont à la charge de ce dernier."
             id="security-expenses-info"
           />
@@ -76,8 +80,9 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
       return (
         <>
           {getLabelForExpensePurpose("illegalDumpingCost")}
-          <TooltipInfoButton
-            text={
+          <Tooltip
+            kind="click"
+            title={
               <span>
                 L'enquête menée en 2019 par l'ADEME indique un ratio moyen de 4,7 kg/hab/an et un
                 coût moyen de 900 €/tonne (Nb&nbsp;: bien qu'on relève une occurrence non
@@ -100,8 +105,9 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
       return (
         <>
           {getLabelForExpensePurpose("otherSecuringCosts")}
-          <TooltipInfoButton
-            text="La sécurisation peut aussi passer, par exemple, par la mise en place de portail, clôture
+          <Tooltip
+            kind="click"
+            title="La sécurisation peut aussi passer, par exemple, par la mise en place de portail, clôture
             ou de cadenas, voire de protections sur les parties vitrées."
             id="other-security-expenses-info"
           />
@@ -171,9 +177,8 @@ function SiteYearlyExpensesForm({
           const askForBearer = fixedBearer === null && amountEntered;
           const bearerError = formState.errors[purpose]?.bearer;
           return (
-            <>
+            <React.Fragment key={purpose}>
               <RowDecimalsNumericInput
-                key={`${purpose}.amount`}
                 hintText={
                   fixedBearer && hasTenant ? getBearerLabel(fixedBearer, siteNature) : undefined
                 }
@@ -187,7 +192,6 @@ function SiteYearlyExpensesForm({
 
               {askForBearer && (
                 <RadioButtons
-                  key={`${purpose}.bearer`}
                   error={bearerError}
                   {...register(`${purpose}.bearer`, {
                     required: "Cette information est obligatoire.",
@@ -195,7 +199,7 @@ function SiteYearlyExpensesForm({
                   options={expenseBearerOptions}
                 />
               )}
-            </>
+            </React.Fragment>
           );
         })}
         {siteNature === "FRICHE" && (
@@ -207,9 +211,8 @@ function SiteYearlyExpensesForm({
               const amountError = formState.errors[purpose]?.amount;
               const bearerError = formState.errors[purpose]?.bearer;
               return (
-                <>
+                <React.Fragment key={purpose}>
                   <RowDecimalsNumericInput
-                    key={`${purpose}.amount`}
                     state={amountError ? "error" : "default"}
                     stateRelatedMessage={amountError?.message}
                     nativeInputProps={register(
@@ -224,7 +227,6 @@ function SiteYearlyExpensesForm({
                   />
                   {askForBearer && (
                     <RadioButtons
-                      key={`${purpose}.bearer`}
                       error={bearerError}
                       {...register(`${purpose}.bearer`, {
                         required: "Cette information est obligatoire.",
@@ -232,7 +234,7 @@ function SiteYearlyExpensesForm({
                       options={expenseBearerOptions}
                     />
                   )}
-                </>
+                </React.Fragment>
               );
             })}
           </>

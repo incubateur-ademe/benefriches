@@ -1,11 +1,11 @@
 import { Input } from "@codegouvfr/react-dsfr/Input";
 import Select from "@codegouvfr/react-dsfr/SelectNext";
+import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
 import { useForm } from "react-hook-form";
 import { LocalAuthority, SiteNature } from "shared";
 
 import { UserStructure } from "@/features/onboarding/core/user";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
-import TooltipInfoButton from "@/shared/views/components/TooltipInfoButton/TooltipInfoButton";
 import Fieldset from "@/shared/views/components/form/Fieldset/Fieldset";
 import RadioButton from "@/shared/views/components/form/RadioButton/RadioButton";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
@@ -142,8 +142,9 @@ function SiteOwnerForm({
                 {currentUserStructure?.type === "local_authority"
                   ? `Une entreprise`
                   : "Une autre entreprise"}
-                <TooltipInfoButton
-                  text="Entreprise publique ou privée, association, EPF..."
+                <Tooltip
+                  kind="click"
+                  title="Entreprise publique ou privée, association, EPF..."
                   id="company-info"
                 />
               </span>
