@@ -63,7 +63,8 @@ text.highcharts-data-label {
     visibility 0s 0.15s;
   visibility: visible;
   white-space: normal;
-  background-image: conic-gradient(
+  background-image:
+    conic-gradient(
       from -33.69deg at 50% 100%,
       transparent 0deg,
       var(--background-overlap-grey) 0deg,
