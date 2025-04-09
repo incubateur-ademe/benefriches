@@ -20,8 +20,7 @@ const ImpactItemGroup = ({ children, isClickable = false }: Props) => {
         "tw-transition",
         isClickable && [
           "tw-transition tw-ease-in-out tw-duration-500",
-          "hover:tw-border-black hover:dark:tw-border-white",
-          "hover:tw-scale-x-[1.02]",
+          "hover:tw-border-grey-dark hover:dark:tw-border-white",
         ],
       )}
     >

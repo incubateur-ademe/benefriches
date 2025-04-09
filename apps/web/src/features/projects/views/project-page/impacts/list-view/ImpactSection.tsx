@@ -42,14 +42,13 @@ const ImpactSection = ({
         className={classNames(
           "tw-py-2 tw-px-4",
           "tw-w-full",
-          "tw-rounded",
+          "tw-rounded tw-border tw-border-solid tw-border-transparent",
           isMain
             ? ["tw-bg-impacts-dark", "dark:tw-bg-black", "tw-mb-6"]
             : ["tw-bg-impacts-main", "dark:tw-bg-black", "tw-mb-2"],
           "tw-cursor-pointer",
           "tw-transition tw-ease-in-out tw-duration-500",
-          "hover:tw-border hover:tw-border-solid",
-          "hover:tw-scale-x-[1.02]",
+          "hover:tw-border-grey-dark hover:dark:tw-border-white",
         )}
         onClick={toggleDisplaySectionContent}
       >

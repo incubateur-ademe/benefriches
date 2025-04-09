@@ -79,7 +79,7 @@ const ImpactRowValue = ({
         <Button
           className={classNames(
             "tw-col-start-1",
-            "tw-text-black",
+            "tw-text-black dark:tw-text-white",
             "tw-text-xl",
             "tw-absolute",
             "tw-left-[-0.5rem]",
