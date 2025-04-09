@@ -73,10 +73,10 @@ function ScenarioTile({
             <Checkbox
               className={classNames(
                 "tw-mt-3",
+                // Scenarii comparison is not released yet
+                "tw-hidden",
                 shouldDisplayCheckbox ? "tw-visible" : "tw-invisible",
               )}
-              // Scenarii comparison is not released yet
-              style={{ display: "none" }}
               options={[
                 {
                   label: "Comparer",
