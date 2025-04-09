@@ -1,7 +1,12 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import { useRef } from "react";
-import { SiteYearlyExpense, SiteYearlyExpensePurpose, SiteYearlyIncome } from "shared";
+import {
+  SiteYearlyExpense,
+  SiteYearlyExpensePurpose,
+  SiteYearlyIncome,
+  sumListWithKey,
+} from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
 import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
@@ -74,10 +79,10 @@ const ExpensesIncomeBarChart = ({
 }: Props) => {
   const barChartRef = useRef<HighchartsReact.RefObject>(null);
 
-  const ownerExpensesTotal = ownerExpenses.reduce((total, { amount }) => total + amount, 0);
-  const tenantExpensesTotal = tenantExpenses.reduce((total, { amount }) => total + amount, 0);
-  const tenantIncomeTotal = tenantIncome.reduce((total, { amount }) => total + amount, 0);
-  const ownerIncomeTotal = ownerIncome.reduce((total, { amount }) => total + amount, 0);
+  const ownerExpensesTotal = sumListWithKey(ownerExpenses, "amount");
+  const tenantExpensesTotal = sumListWithKey(tenantExpenses, "amount");
+  const tenantIncomeTotal = sumListWithKey(tenantIncome, "amount");
+  const ownerIncomeTotal = sumListWithKey(ownerIncome, "amount");
 
   const expenses = [
     ...ownerExpenses.map(({ purpose, amount }) => {
