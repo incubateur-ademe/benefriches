@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Route } from "type-route";
 
+import HelpButton from "@/shared/views/components/HelpButton/HelpButton";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import { routes } from "@/shared/views/router";
@@ -67,6 +68,7 @@ function ProjectCreationWizard({ route }: Props) {
     return (
       <>
         <StepRevertConfirmationModal />
+        <HelpButton />
         <UrbanProjectCreationWizard currentStep={currentStep} />
       </>
     );
@@ -76,6 +78,7 @@ function ProjectCreationWizard({ route }: Props) {
     return (
       <>
         <StepRevertConfirmationModal />
+        <HelpButton />
         <PhotovoltaicPowerStationCreationWizard currentStep={currentStep} />
       </>
     );
@@ -84,6 +87,7 @@ function ProjectCreationWizard({ route }: Props) {
   return (
     <>
       <StepRevertConfirmationModal />
+      <HelpButton />
       <ProjectCreationIntroductionWizard currentStep={currentStep} />
     </>
   );

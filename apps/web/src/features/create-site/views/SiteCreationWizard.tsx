@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import HelpButton from "@/shared/views/components/HelpButton/HelpButton";
 import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
@@ -62,6 +63,7 @@ function SiteCreationWizard() {
   return (
     <>
       <StepRevertConfirmationModal />
+      <HelpButton />
       <SidebarLayout
         mainChildren={getMainChildren(currentStep, createMode)}
         title="Renseignement du site"
