@@ -1,12 +1,12 @@
+import { fr } from "@codegouvfr/react-dsfr";
 import Alert from "@codegouvfr/react-dsfr/Alert";
 import Button from "@codegouvfr/react-dsfr/Button";
 import Input from "@codegouvfr/react-dsfr/Input";
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import classNames, { ClassValue } from "@/shared/views/clsx";
 import CheckboxCard from "@/shared/views/components/CheckboxCard/CheckboxCard";
-import CustomDsfrModal from "@/shared/views/components/Modal/CustomDsfrModal";
 import RequiredLabel from "@/shared/views/components/form/RequiredLabel/RequiredLabel";
 
 import ImpactComparisonCardContent from "./ImpactComparisonCardContent";
@@ -39,6 +39,8 @@ const SuccessDisabledButton = () => (
     Vous serez notifié·e
   </Button>
 );
+
+const DIALOG_ID = "fr-comparison-alerts-modal";
 
 const StatuQuoContent = () => {
   return (
@@ -109,8 +111,6 @@ function ImpactComparisonSection({
   onSaveLoadingState,
   userEmail,
 }: Props) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   const { handleSubmit, register, formState, control, setValue } = useForm<FormValues>({
     defaultValues: { email: userEmail, options: userCompareImpactsAlerts },
   });
@@ -143,9 +143,10 @@ function ImpactComparisonSection({
               <Button
                 size="small"
                 priority="secondary"
+                data-fr-opened="false"
+                aria-controls={DIALOG_ID}
                 onClick={() => {
                   setValue("options", [...userCompareImpactsAlerts, option]);
-                  setIsModalOpen(true);
                 }}
               >
                 Comparer
@@ -155,92 +156,121 @@ function ImpactComparisonSection({
         ))}
       </div>
 
-      <CustomDsfrModal
-        title={
-          isSuccess ? (
-            <i className="fr-icon--xl fr-icon-success-fill tw-pr-2 tw-text-impacts-positive-border"></i>
-          ) : (
-            "Cette fonctionnalité sera bientôt disponible, restez notifié·e !"
-          )
-        }
-        isOpen={isModalOpen}
-        setIsOpen={setIsModalOpen}
-        size={isSuccess ? "small" : "large"}
+      <dialog
+        aria-labelledby={`${DIALOG_ID}-title`}
+        id={DIALOG_ID}
+        className={classNames(fr.cx("fr-modal", "fr-modal--opened"), "tw-overflow-auto", "tw-z-40")}
       >
-        {isSuccess ? (
-          <>Votre demande a bien été prise en compte&nbsp;!</>
-        ) : (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="tw-grid md:tw-grid-cols-3 tw-gap-4 tw-mb-6">
-              {COMPARE_OPTIONS.map(({ option, bgClassName, content }) => (
-                <Controller
-                  key={option}
-                  control={control}
-                  name="options"
-                  render={({ field }) => {
-                    const isSelected = field.value.includes(option);
-                    return (
-                      <CheckboxCard
-                        className={classNames(bgClassName, "tw-p-6", "tw-rounded-2xl")}
-                        checked={isSelected}
-                        checkType="checkbox"
-                        disabled={userCompareImpactsAlerts.includes(option)}
-                        onChange={() => {
-                          field.onChange(
-                            isSelected
-                              ? field.value.filter((v) => v !== option)
-                              : [...field.value, option],
+        <div
+          className={classNames(
+            fr.cx("fr-container", "fr-container--fluid", "fr-container-md"),
+            isSuccess && "md:tw-w-5/12",
+          )}
+        >
+          <div
+            className={classNames(
+              fr.cx("fr-modal__body"),
+              "!tw-max-h-[unset]",
+              "tw-overflow-hidden",
+            )}
+          >
+            <div className={fr.cx("fr-modal__header")}>
+              <button
+                className={fr.cx("fr-btn--close", "fr-btn")}
+                title="Fermer"
+                aria-controls={DIALOG_ID}
+                type="button"
+              >
+                Fermer
+              </button>
+            </div>
+            <div className={fr.cx("fr-modal__content")}>
+              <h1 className={fr.cx("fr-modal__title")}>
+                {isSuccess ? (
+                  <i className="fr-icon--xl fr-icon-success-fill tw-pr-2 tw-text-impacts-positive-border"></i>
+                ) : (
+                  "Cette fonctionnalité sera bientôt disponible, restez notifié·e !"
+                )}
+              </h1>
+              {isSuccess ? (
+                <>Votre demande a bien été prise en compte&nbsp;!</>
+              ) : (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="tw-grid md:tw-grid-cols-3 tw-gap-4 tw-mb-6">
+                    {COMPARE_OPTIONS.map(({ option, bgClassName, content }) => (
+                      <Controller
+                        key={option}
+                        control={control}
+                        name="options"
+                        render={({ field }) => {
+                          const isSelected = field.value.includes(option);
+                          return (
+                            <CheckboxCard
+                              className={classNames(bgClassName, "tw-p-6", "tw-rounded-2xl")}
+                              checked={isSelected}
+                              checkType="checkbox"
+                              disabled={userCompareImpactsAlerts.includes(option)}
+                              onChange={() => {
+                                field.onChange(
+                                  isSelected
+                                    ? field.value.filter((v) => v !== option)
+                                    : [...field.value, option],
+                                );
+                              }}
+                            >
+                              {content}
+                              {userCompareImpactsAlerts.includes(option) && (
+                                <SuccessDisabledButton />
+                              )}
+                            </CheckboxCard>
                           );
                         }}
-                      >
-                        {content}
-                        {userCompareImpactsAlerts.includes(option) && <SuccessDisabledButton />}
-                      </CheckboxCard>
-                    );
-                  }}
-                />
-              ))}
-            </div>
+                      />
+                    ))}
+                  </div>
 
-            <p>Recevez un mail lorsque cette fonctionnalité sera disponible :</p>
+                  <p>Recevez un mail lorsque cette fonctionnalité sera disponible :</p>
 
-            <Input
-              label={<RequiredLabel label="Votre adresse mail" />}
-              state={formState.errors.email ? "error" : "default"}
-              stateRelatedMessage={
-                formState.errors.email ? formState.errors.email.message : undefined
-              }
-              nativeInputProps={{
-                placeholder: "utilisateur@ademe.fr",
-                ...register("email", {
-                  required: "Vous devez renseigner votre e-mail pour continuer.",
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "Veuillez entrer une adresse email valide.",
-                  },
-                }),
-              }}
-            />
-            {onSaveLoadingState === "error" && (
-              <Alert
-                description="Une erreur s'est produite lors de la sauvegarde des données... Veuillez réessayer."
-                severity="error"
-                title="Échec de l'enregistrement"
-                className="tw-my-7"
-              />
-            )}
-            <div className="tw-flex tw-justify-end">
-              <Button
-                type="submit"
-                disabled={onSaveLoadingState === "loading" || !formState.isValid}
-                iconId="fr-icon-notification-3-line"
-              >
-                {onSaveLoadingState === "loading" ? "Chargement..." : "Me notifier"}
-              </Button>
+                  <Input
+                    label={<RequiredLabel label="Votre adresse mail" />}
+                    state={formState.errors.email ? "error" : "default"}
+                    stateRelatedMessage={
+                      formState.errors.email ? formState.errors.email.message : undefined
+                    }
+                    nativeInputProps={{
+                      placeholder: "utilisateur@ademe.fr",
+                      ...register("email", {
+                        required: "Vous devez renseigner votre e-mail pour continuer.",
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: "Veuillez entrer une adresse email valide.",
+                        },
+                      }),
+                    }}
+                  />
+                  {onSaveLoadingState === "error" && (
+                    <Alert
+                      description="Une erreur s'est produite lors de la sauvegarde des données... Veuillez réessayer."
+                      severity="error"
+                      title="Échec de l'enregistrement"
+                      className="tw-my-7"
+                    />
+                  )}
+                  <div className="tw-flex tw-justify-end">
+                    <Button
+                      type="submit"
+                      disabled={onSaveLoadingState === "loading" || !formState.isValid}
+                      iconId="fr-icon-notification-3-line"
+                    >
+                      {onSaveLoadingState === "loading" ? "Chargement..." : "Me notifier"}
+                    </Button>
+                  </div>
+                </form>
+              )}
             </div>
-          </form>
-        )}
-      </CustomDsfrModal>
+          </div>
+        </div>
+      </dialog>
     </>
   );
 }
