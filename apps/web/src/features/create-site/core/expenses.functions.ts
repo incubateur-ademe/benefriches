@@ -29,19 +29,19 @@ export const getLabelForExpensePurpose = (expensePurpose: SiteYearlyExpense["pur
   }
 };
 
-export type SiteYearlyExpensesBaseConfig = {
+export type SiteYearlyExpensesConfig = {
   purpose: SiteManagementYearlyExpensePurpose | SiteSecurityYearlyExpensePurpose;
   fixedBearer: "owner" | "tenant" | null;
 }[];
 
-export type SiteManagementYearlyExpensesBaseConfig = {
+export type SiteManagementYearlyExpensesConfig = {
   purpose: SiteManagementYearlyExpensePurpose;
   fixedBearer: "owner" | "tenant" | null;
 }[];
 
-export const getFricheManagementExpensesBaseConfig = (input: {
+export const getFricheManagementExpensesConfig = (input: {
   hasTenant: boolean;
-}): SiteManagementYearlyExpensesBaseConfig => {
+}): SiteManagementYearlyExpensesConfig => {
   const { hasTenant } = input;
 
   if (hasTenant) {
@@ -59,17 +59,17 @@ export const getFricheManagementExpensesBaseConfig = (input: {
   ];
 };
 
-export type FricheSecurityYearlyExpensesBaseConfig = {
+export type FricheSecurityYearlyExpensesConfig = {
   purpose: SiteSecurityYearlyExpensePurpose;
   fixedBearer: "owner" | "tenant" | null;
 }[];
-export const getFricheSecurityExpensesBaseConfig = (input: {
+export const getFricheSecurityExpensesConfig = (input: {
   hasTenant: boolean;
   hasRecentAccidents: boolean;
-}): FricheSecurityYearlyExpensesBaseConfig => {
+}): FricheSecurityYearlyExpensesConfig => {
   const { hasTenant, hasRecentAccidents } = input;
   const expensesBearer = hasTenant ? null : "owner";
-  const expenses: FricheSecurityYearlyExpensesBaseConfig = [
+  const expenses: FricheSecurityYearlyExpensesConfig = [
     { purpose: "security", fixedBearer: expensesBearer },
     { purpose: "illegalDumpingCost", fixedBearer: expensesBearer },
     { purpose: "otherSecuringCosts", fixedBearer: expensesBearer },
@@ -81,13 +81,13 @@ export const getFricheSecurityExpensesBaseConfig = (input: {
   return expenses;
 };
 
-export const getAgriculturalOperationExpensesBaseConfig = ({
+export const getAgriculturalOperationExpensesConfig = ({
   isOperated,
   isOperatedByOwner,
 }: {
   isOperated: boolean;
   isOperatedByOwner: boolean;
-}): SiteManagementYearlyExpensesBaseConfig => {
+}): SiteManagementYearlyExpensesConfig => {
   if (!isOperated) {
     return [{ purpose: "propertyTaxes", fixedBearer: "owner" }];
   }

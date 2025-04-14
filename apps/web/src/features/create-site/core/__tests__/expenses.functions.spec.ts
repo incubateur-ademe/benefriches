@@ -1,14 +1,14 @@
 import {
-  getAgriculturalOperationExpensesBaseConfig,
-  getFricheManagementExpensesBaseConfig,
-  getFricheSecurityExpensesBaseConfig,
+  getAgriculturalOperationExpensesConfig,
+  getFricheManagementExpensesConfig,
+  getFricheSecurityExpensesConfig,
 } from "../expenses.functions";
 
 describe("Expenses functions", () => {
-  describe("getFricheManagementExpensesBaseConfig", () => {
+  describe("getFricheManagementExpensesConfig", () => {
     it("returns management expenses config for friche with tenant", () => {
       const input = { hasTenant: true };
-      expect(getFricheManagementExpensesBaseConfig(input)).toEqual([
+      expect(getFricheManagementExpensesConfig(input)).toEqual([
         { purpose: "rent", fixedBearer: "tenant" },
         { purpose: "maintenance", fixedBearer: "tenant" },
         { purpose: "propertyTaxes", fixedBearer: "owner" },
@@ -18,7 +18,7 @@ describe("Expenses functions", () => {
 
     it("returns management expenses config for friche with no tenant", () => {
       const input = { hasTenant: false };
-      expect(getFricheManagementExpensesBaseConfig(input)).toEqual([
+      expect(getFricheManagementExpensesConfig(input)).toEqual([
         { purpose: "maintenance", fixedBearer: "owner" },
         { purpose: "propertyTaxes", fixedBearer: "owner" },
         { purpose: "otherManagementCosts", fixedBearer: "owner" },
@@ -26,17 +26,17 @@ describe("Expenses functions", () => {
     });
   });
 
-  describe("getAgriculturalOperationExpensesBaseConfig", () => {
+  describe("getAgriculturalOperationExpensesConfig", () => {
     it("returns expenses config when not operated", () => {
       const input = { isOperated: false, isOperatedByOwner: false };
-      expect(getAgriculturalOperationExpensesBaseConfig(input)).toEqual([
+      expect(getAgriculturalOperationExpensesConfig(input)).toEqual([
         { purpose: "propertyTaxes", fixedBearer: "owner" },
       ]);
     });
 
     it("returns expenses config when operated by owner", () => {
       const input = { isOperated: true, isOperatedByOwner: true };
-      expect(getAgriculturalOperationExpensesBaseConfig(input)).toEqual([
+      expect(getAgriculturalOperationExpensesConfig(input)).toEqual([
         { purpose: "propertyTaxes", fixedBearer: "owner" },
         { purpose: "operationsTaxes", fixedBearer: "owner" },
         { purpose: "otherOperationsCosts", fixedBearer: "owner" },
@@ -45,7 +45,7 @@ describe("Expenses functions", () => {
 
     it("returns expenses config when operated by tenant", () => {
       const input = { isOperated: true, isOperatedByOwner: false };
-      expect(getAgriculturalOperationExpensesBaseConfig(input)).toEqual([
+      expect(getAgriculturalOperationExpensesConfig(input)).toEqual([
         { purpose: "rent", fixedBearer: "tenant" },
         { purpose: "operationsTaxes", fixedBearer: "tenant" },
         { purpose: "otherOperationsCosts", fixedBearer: "tenant" },
@@ -54,13 +54,13 @@ describe("Expenses functions", () => {
     });
   });
 
-  describe("getFricheSecurityExpensesBaseConfig", () => {
+  describe("getFricheSecurityExpensesConfig", () => {
     it("returns expenses for friche with tenant and recent accident", () => {
       const input = {
         hasTenant: true,
         hasRecentAccidents: true,
       };
-      expect(getFricheSecurityExpensesBaseConfig(input)).toEqual([
+      expect(getFricheSecurityExpensesConfig(input)).toEqual([
         { purpose: "security", fixedBearer: null },
         { purpose: "illegalDumpingCost", fixedBearer: null },
         { purpose: "otherSecuringCosts", fixedBearer: null },
@@ -73,7 +73,7 @@ describe("Expenses functions", () => {
         hasTenant: false,
         hasRecentAccidents: true,
       };
-      expect(getFricheSecurityExpensesBaseConfig(input)).toEqual([
+      expect(getFricheSecurityExpensesConfig(input)).toEqual([
         { purpose: "security", fixedBearer: "owner" },
         { purpose: "illegalDumpingCost", fixedBearer: "owner" },
         { purpose: "otherSecuringCosts", fixedBearer: "owner" },
@@ -86,7 +86,7 @@ describe("Expenses functions", () => {
         hasTenant: true,
         hasRecentAccidents: false,
       };
-      expect(getFricheSecurityExpensesBaseConfig(input)).toEqual([
+      expect(getFricheSecurityExpensesConfig(input)).toEqual([
         { purpose: "security", fixedBearer: null },
         { purpose: "illegalDumpingCost", fixedBearer: null },
         { purpose: "otherSecuringCosts", fixedBearer: null },
@@ -98,7 +98,7 @@ describe("Expenses functions", () => {
         hasTenant: false,
         hasRecentAccidents: false,
       };
-      expect(getFricheSecurityExpensesBaseConfig(input)).toEqual([
+      expect(getFricheSecurityExpensesConfig(input)).toEqual([
         { purpose: "security", fixedBearer: "owner" },
         { purpose: "illegalDumpingCost", fixedBearer: "owner" },
         { purpose: "otherSecuringCosts", fixedBearer: "owner" },

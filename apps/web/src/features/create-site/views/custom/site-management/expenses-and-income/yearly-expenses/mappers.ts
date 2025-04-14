@@ -1,14 +1,14 @@
 import { SiteYearlyExpense, SiteYearlyExpensePurpose } from "shared";
 
-import { SiteYearlyExpensesBaseConfig } from "@/features/create-site/core/expenses.functions";
+import { SiteYearlyExpensesConfig } from "@/features/create-site/core/expenses.functions";
 
 import { FormValues } from "./SiteYearlyExpensesForm";
 
 export const mapFormDataToExpenses = (
   formData: FormValues,
-  expensesBaseConfig: SiteYearlyExpensesBaseConfig,
+  expensesConfig: SiteYearlyExpensesConfig,
 ): SiteYearlyExpense[] => {
-  return expensesBaseConfig
+  return expensesConfig
     .map(({ purpose, fixedBearer }) => ({
       purpose,
       bearer: fixedBearer ?? formData[purpose]?.bearer ?? "tenant",
@@ -23,13 +23,13 @@ type SiteExpensesInitialValues = {
   bearer: "owner" | "tenant" | undefined;
 }[];
 const mapDefaultAndStoreExpensesToInitialValues = (
-  expensesBaseConfig: SiteYearlyExpensesBaseConfig,
+  expensesConfig: SiteYearlyExpensesConfig,
   predefinedExpenses: SiteYearlyExpense[],
   estimatedAmounts: Partial<Record<SiteYearlyExpensePurpose, number>>,
 ): SiteExpensesInitialValues => {
   const hasExpensesInStore = predefinedExpenses.length > 0;
   if (!hasExpensesInStore)
-    return expensesBaseConfig.map((defaultExpense) => {
+    return expensesConfig.map((defaultExpense) => {
       return {
         purpose: defaultExpense.purpose,
         amount: estimatedAmounts[defaultExpense.purpose] ?? 0,
@@ -39,7 +39,7 @@ const mapDefaultAndStoreExpensesToInitialValues = (
 
   // assign predefined amount and bearer to expenses, if it exists
   // otherwise, assign default with amount 0
-  return expensesBaseConfig.map((defaultExpense) => {
+  return expensesConfig.map((defaultExpense) => {
     const expenseInStore = predefinedExpenses.find((e) => e.purpose === defaultExpense.purpose);
     return {
       purpose: defaultExpense.purpose,
@@ -62,15 +62,11 @@ const mapExpensesListToFormValues = (expenses: SiteExpensesInitialValues): FormV
 
 // predefinedExpenses are from the store, when user has already entered expenses
 export const getInitialValues = (
-  expensesBaseConfig: SiteYearlyExpensesBaseConfig,
+  expensesConfig: SiteYearlyExpensesConfig,
   predefinedExpenses: SiteYearlyExpense[],
   estimatedAmounts: Partial<Record<SiteYearlyExpensePurpose, number>>,
 ): FormValues => {
   return mapExpensesListToFormValues(
-    mapDefaultAndStoreExpensesToInitialValues(
-      expensesBaseConfig,
-      predefinedExpenses,
-      estimatedAmounts,
-    ),
+    mapDefaultAndStoreExpensesToInitialValues(expensesConfig, predefinedExpenses, estimatedAmounts),
   );
 };

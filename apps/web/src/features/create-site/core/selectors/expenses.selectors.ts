@@ -12,11 +12,11 @@ import {
 import { RootState } from "@/shared/core/store-config/store";
 
 import {
-  getAgriculturalOperationExpensesBaseConfig,
-  getFricheManagementExpensesBaseConfig,
-  getFricheSecurityExpensesBaseConfig,
-  SiteManagementYearlyExpensesBaseConfig,
-  FricheSecurityYearlyExpensesBaseConfig,
+  getAgriculturalOperationExpensesConfig,
+  getFricheManagementExpensesConfig,
+  getFricheSecurityExpensesConfig,
+  SiteManagementYearlyExpensesConfig,
+  FricheSecurityYearlyExpensesConfig,
 } from "../expenses.functions";
 import { SiteCreationData } from "../siteFoncier.types";
 
@@ -63,37 +63,20 @@ export const selectEstimatedYearlyExpensesForSite = createSelector(
   },
 );
 
-type SiteYearlyExpensesViewData = {
-  siteNature: SiteNature;
-  hasTenant: boolean;
-  estimatedAmounts: EstimatedSiteYearlyExpensesAmounts;
-};
-
-export const selectSiteYearlyExpensesViewData = createSelector(
-  [selectSiteData, selectEstimatedYearlyExpensesForSite],
-  (siteData, estimatedYearlyExpenses): SiteYearlyExpensesViewData => {
-    return {
-      siteNature: siteData.nature!,
-      hasTenant: !!siteData.tenant,
-      estimatedAmounts: estimatedYearlyExpenses,
-    };
-  },
-);
-
-export const selectSiteManagementExpensesBaseConfig = createSelector(
+const selectSiteManagementExpensesConfig = createSelector(
   [selectSiteData],
-  (siteData): SiteManagementYearlyExpensesBaseConfig => {
+  (siteData): SiteManagementYearlyExpensesConfig => {
     const hasTenant = !!siteData.tenant;
 
     switch (siteData.nature) {
       case "FRICHE":
-        return getFricheManagementExpensesBaseConfig({
+        return getFricheManagementExpensesConfig({
           hasTenant,
         });
       case "AGRICULTURAL_OPERATION":
         const isOperated = !!siteData.isSiteOperated;
         const isOperatedByOwner = isOperated && !hasTenant;
-        return getAgriculturalOperationExpensesBaseConfig({
+        return getAgriculturalOperationExpensesConfig({
           isOperated,
           isOperatedByOwner,
         });
@@ -103,17 +86,48 @@ export const selectSiteManagementExpensesBaseConfig = createSelector(
   },
 );
 
-export const selectSiteSecurityExpensesBaseConfig = createSelector(
+const selectSiteSecurityExpensesConfig = createSelector(
   [selectSiteData],
-  (siteData): FricheSecurityYearlyExpensesBaseConfig => {
+  (siteData): FricheSecurityYearlyExpensesConfig => {
     if (siteData.nature !== "FRICHE") return [];
 
     const hasTenant = !!siteData.tenant;
     const hasRecentAccidents = !!siteData.hasRecentAccidents;
 
-    return getFricheSecurityExpensesBaseConfig({
+    return getFricheSecurityExpensesConfig({
       hasTenant,
       hasRecentAccidents,
     });
+  },
+);
+
+type SiteYearlyExpensesViewData = {
+  siteNature: SiteNature;
+  hasTenant: boolean;
+  estimatedAmounts: EstimatedSiteYearlyExpensesAmounts;
+  managementExpensesConfig: SiteManagementYearlyExpensesConfig;
+  securityExpensesConfig: FricheSecurityYearlyExpensesConfig;
+};
+
+export const selectSiteYearlyExpensesViewData = createSelector(
+  [
+    selectSiteData,
+    selectEstimatedYearlyExpensesForSite,
+    selectSiteManagementExpensesConfig,
+    selectSiteSecurityExpensesConfig,
+  ],
+  (
+    siteData,
+    estimatedYearlyExpenses,
+    managementExpensesConfig,
+    securityExpensesConfig,
+  ): SiteYearlyExpensesViewData => {
+    return {
+      siteNature: siteData.nature!,
+      hasTenant: !!siteData.tenant,
+      estimatedAmounts: estimatedYearlyExpenses,
+      managementExpensesConfig,
+      securityExpensesConfig,
+    };
   },
 );

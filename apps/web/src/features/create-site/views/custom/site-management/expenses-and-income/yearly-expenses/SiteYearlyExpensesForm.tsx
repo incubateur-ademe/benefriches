@@ -5,8 +5,8 @@ import { SiteNature, SiteYearlyExpensePurpose, typedObjectEntries } from "shared
 
 import {
   getLabelForExpensePurpose,
-  SiteManagementYearlyExpensesBaseConfig,
-  FricheSecurityYearlyExpensesBaseConfig,
+  SiteManagementYearlyExpensesConfig,
+  FricheSecurityYearlyExpensesConfig,
 } from "@/features/create-site/core/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
@@ -25,8 +25,8 @@ export type FormValues = Partial<Record<SiteYearlyExpensePurpose, FormExpense>>;
 type Props = {
   hasTenant: boolean;
   siteNature: SiteNature;
-  siteManagementYearlyExpensesBaseConfig: SiteManagementYearlyExpensesBaseConfig;
-  siteSecurityExpensesBaseConfig: FricheSecurityYearlyExpensesBaseConfig;
+  siteManagementYearlyExpensesConfig: SiteManagementYearlyExpensesConfig;
+  siteSecurityExpensesConfig: FricheSecurityYearlyExpensesConfig;
   initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
@@ -139,8 +139,8 @@ const getTitle = (siteNature: SiteNature): string => {
 export default function SiteYearlyExpensesForm({
   onSubmit,
   onBack,
-  siteManagementYearlyExpensesBaseConfig,
-  siteSecurityExpensesBaseConfig,
+  siteManagementYearlyExpensesConfig,
+  siteSecurityExpensesConfig,
   hasTenant,
   siteNature,
   initialValues,
@@ -169,9 +169,9 @@ export default function SiteYearlyExpensesForm({
   return (
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {siteSecurityExpensesBaseConfig.length > 0 && <h3 className="!tw-mb-0">Gestion du site</h3>}
+        {siteSecurityExpensesConfig.length > 0 && <h3 className="!tw-mb-0">Gestion du site</h3>}
 
-        {siteManagementYearlyExpensesBaseConfig.map(({ purpose, fixedBearer }) => {
+        {siteManagementYearlyExpensesConfig.map(({ purpose, fixedBearer }) => {
           const amountEntered = !!formValues[purpose]?.amount;
           const askForBearer = fixedBearer === null && amountEntered;
           const bearerError = formState.errors[purpose]?.bearer;
@@ -202,10 +202,10 @@ export default function SiteYearlyExpensesForm({
           );
         })}
 
-        {siteSecurityExpensesBaseConfig.length > 0 && (
+        {siteSecurityExpensesConfig.length > 0 && (
           <>
             <h3 className="!tw-mb-0 tw-mt-6">Sécurisation du site</h3>
-            {siteSecurityExpensesBaseConfig.map(({ purpose, fixedBearer }) => {
+            {siteSecurityExpensesConfig.map(({ purpose, fixedBearer }) => {
               const amountEntered = !!formValues[purpose]?.amount;
               const askForBearer = fixedBearer === null && amountEntered;
               const amountError = formState.errors[purpose]?.amount;
@@ -220,7 +220,9 @@ export default function SiteYearlyExpensesForm({
                       optionalNumericFieldRegisterOptions,
                     )}
                     label={getLabelForExpense(purpose)}
-                    hintText={hasTenant && fixedBearer ? getBearerLabel(fixedBearer) : undefined}
+                    hintText={
+                      hasTenant && fixedBearer ? getBearerLabel(fixedBearer, siteNature) : undefined
+                    }
                     addonText="€ / an"
                   />
                   {askForBearer && (
