@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { typedObjectEntries } from "shared";
+import { SiteYearlyIncome, typedObjectEntries } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
@@ -11,10 +11,7 @@ type Props = {
   onBack: () => void;
 };
 
-export type FormValues = {
-  operationsIncome: number;
-  otherIncome: number;
-};
+export type FormValues = Record<SiteYearlyIncome["source"], number | undefined>;
 
 function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
   const { register, handleSubmit, watch } = useForm<FormValues>();
@@ -29,16 +26,23 @@ function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <RowDecimalsNumericInput
           addonText="€ / an"
-          label="Recettes d'exploitation"
+          label="Vente de produits"
           className="!tw-pt-4"
-          nativeInputProps={register("operationsIncome", optionalNumericFieldRegisterOptions)}
+          nativeInputProps={register("product-sales", optionalNumericFieldRegisterOptions)}
+        />
+
+        <RowDecimalsNumericInput
+          addonText="€ / an"
+          label="Subventions"
+          className="!tw-pt-4"
+          nativeInputProps={register("subsidies", optionalNumericFieldRegisterOptions)}
         />
 
         <RowDecimalsNumericInput
           addonText="€ / an"
           label="Autres recettes"
           className="!tw-pt-4"
-          nativeInputProps={register("otherIncome", optionalNumericFieldRegisterOptions)}
+          nativeInputProps={register("other", optionalNumericFieldRegisterOptions)}
         />
 
         <BackNextButtonsGroup

@@ -1,4 +1,4 @@
-import { SiteYearlyIncome } from "shared";
+import { SiteYearlyIncome, typedObjectEntries } from "shared";
 
 import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
 import { yearlyIncomeStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
@@ -14,18 +14,9 @@ const mapProps = (dispatch: AppDispatch) => {
     },
     onSubmit: (formData: FormValues) => {
       const incomes: SiteYearlyIncome[] = [];
-      if (formData.operationsIncome) {
-        incomes.push({
-          source: "operations",
-          amount: formData.operationsIncome,
-        });
-      }
-      if (formData.otherIncome) {
-        incomes.push({
-          source: "other",
-          amount: formData.otherIncome,
-        });
-      }
+      typedObjectEntries(formData).forEach(([source, amount]) => {
+        if (amount) incomes.push({ source, amount });
+      });
       dispatch(yearlyIncomeStepCompleted(incomes));
     },
   };

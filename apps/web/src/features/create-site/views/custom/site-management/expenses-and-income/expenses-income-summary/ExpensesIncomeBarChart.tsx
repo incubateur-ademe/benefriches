@@ -43,7 +43,7 @@ const getColorForPurpose = (purpose: SiteYearlyExpensePurpose) => {
   }
 };
 
-const getColorForSourceIncome = (source: SiteYearlyIncome["source"]) => {
+const getColorForSourceIncome = (source: SiteYearlyIncome["source"]): string => {
   switch (source) {
     case "operations":
       return "#37C95D";
@@ -56,16 +56,18 @@ const getColorForSourceIncome = (source: SiteYearlyIncome["source"]) => {
   }
 };
 
-const getLabelForOperationsRevenueSource = (source: string) => {
+const getLabelForOperationsRevenueSource = (source: SiteYearlyIncome["source"]): string => {
   switch (source) {
     case "operations":
-      return "Recettes d’exploitation";
+      return "Recettes d'exploitation";
+    case "product-sales":
+      return "Vente de produits";
+    case "subsidies":
+      return "Subventions";
     case "other":
       return "Autres recettes";
     case "rent":
       return "Loyer (propriétaire)";
-    default:
-      return "Autres";
   }
 };
 
