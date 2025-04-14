@@ -12,6 +12,8 @@ export const getLabelForExpensePurpose = (expensePurpose: SiteYearlyExpense["pur
       return "Charges fiscales d'exploitation";
     case "rent":
       return "Loyer";
+    case "otherOperationsCosts":
+      return "Autres charges d'exploitation";
     case "accidentsCost":
       return "Accidents";
     case "illegalDumpingCost":
@@ -36,48 +38,38 @@ export type SiteManagementYearlyExpensesBaseConfig = {
   purpose: SiteManagementYearlyExpensePurpose;
   fixedBearer: "owner" | "tenant" | null;
 }[];
-export const getSiteManagementExpensesBaseConfig = (input: {
+
+export const getFricheManagementExpensesBaseConfig = (input: {
   hasTenant: boolean;
-  isOperated: boolean;
 }): SiteManagementYearlyExpensesBaseConfig => {
-  const { hasTenant, isOperated } = input;
+  const { hasTenant } = input;
 
   if (hasTenant) {
     return [
       { purpose: "rent", fixedBearer: "tenant" },
-      ...(isOperated
-        ? ([
-            { purpose: "operationsTaxes", fixedBearer: "tenant" },
-          ] as SiteManagementYearlyExpensesBaseConfig)
-        : []),
       { purpose: "maintenance", fixedBearer: "tenant" },
       { purpose: "propertyTaxes", fixedBearer: "owner" },
       { purpose: "otherManagementCosts", fixedBearer: null },
     ];
   }
   return [
-    ...(isOperated
-      ? ([
-          { purpose: "operationsTaxes", fixedBearer: "owner" },
-        ] as SiteManagementYearlyExpensesBaseConfig)
-      : []),
     { purpose: "maintenance", fixedBearer: "owner" },
     { purpose: "propertyTaxes", fixedBearer: "owner" },
     { purpose: "otherManagementCosts", fixedBearer: "owner" },
   ];
 };
 
-export type SiteSecurityYearlyExpensesBaseConfig = {
+export type FricheSecurityYearlyExpensesBaseConfig = {
   purpose: SiteSecurityYearlyExpensePurpose;
   fixedBearer: "owner" | "tenant" | null;
 }[];
-export const getSiteSecurityExpensesBaseConfig = (input: {
+export const getFricheSecurityExpensesBaseConfig = (input: {
   hasTenant: boolean;
   hasRecentAccidents: boolean;
-}): SiteSecurityYearlyExpensesBaseConfig => {
+}): FricheSecurityYearlyExpensesBaseConfig => {
   const { hasTenant, hasRecentAccidents } = input;
   const expensesBearer = hasTenant ? null : "owner";
-  const expenses: SiteSecurityYearlyExpensesBaseConfig = [
+  const expenses: FricheSecurityYearlyExpensesBaseConfig = [
     { purpose: "security", fixedBearer: expensesBearer },
     { purpose: "illegalDumpingCost", fixedBearer: expensesBearer },
     { purpose: "otherSecuringCosts", fixedBearer: expensesBearer },
@@ -87,4 +79,31 @@ export const getSiteSecurityExpensesBaseConfig = (input: {
     expenses.push({ purpose: "accidentsCost", fixedBearer: expensesBearer });
   }
   return expenses;
+};
+
+export const getAgriculturalOperationExpensesBaseConfig = ({
+  isOperated,
+  isOperatedByOwner,
+}: {
+  isOperated: boolean;
+  isOperatedByOwner: boolean;
+}): SiteManagementYearlyExpensesBaseConfig => {
+  if (!isOperated) {
+    return [{ purpose: "propertyTaxes", fixedBearer: "owner" }];
+  }
+
+  if (isOperatedByOwner) {
+    return [
+      { purpose: "propertyTaxes", fixedBearer: "owner" },
+      { purpose: "operationsTaxes", fixedBearer: "owner" },
+      { purpose: "otherOperationsCosts", fixedBearer: "owner" },
+    ];
+  }
+
+  return [
+    { purpose: "rent", fixedBearer: "tenant" },
+    { purpose: "operationsTaxes", fixedBearer: "tenant" },
+    { purpose: "otherOperationsCosts", fixedBearer: "tenant" },
+    { purpose: "propertyTaxes", fixedBearer: "owner" },
+  ];
 };

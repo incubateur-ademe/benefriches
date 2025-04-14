@@ -1,5 +1,7 @@
+/* eslint-disable no-case-declarations */
 import { createSelector } from "@reduxjs/toolkit";
 import {
+  SiteNature,
   SiteYearlyExpensePurpose,
   computeEstimatedPropertyTaxesAmount,
   computeIllegalDumpingDefaultCost,
@@ -10,10 +12,11 @@ import {
 import { RootState } from "@/shared/core/store-config/store";
 
 import {
-  getSiteManagementExpensesBaseConfig,
-  getSiteSecurityExpensesBaseConfig,
+  getAgriculturalOperationExpensesBaseConfig,
+  getFricheManagementExpensesBaseConfig,
+  getFricheSecurityExpensesBaseConfig,
   SiteManagementYearlyExpensesBaseConfig,
-  SiteSecurityYearlyExpensesBaseConfig,
+  FricheSecurityYearlyExpensesBaseConfig,
 } from "../expenses.functions";
 import { SiteCreationData } from "../siteFoncier.types";
 
@@ -30,23 +33,49 @@ type EstimatedSiteYearlyExpensesAmounts = Partial<Record<SiteYearlyExpensePurpos
 export const selectEstimatedYearlyExpensesForSite = createSelector(
   [selectSiteData, selectSitePopulation],
   (siteData, population): EstimatedSiteYearlyExpensesAmounts => {
-    const { soilsDistribution = {}, surfaceArea, isFriche } = siteData;
+    const { soilsDistribution = {}, surfaceArea, nature } = siteData;
+
     const buildingsSurface = soilsDistribution.BUILDINGS;
-    const maintenanceAmount = buildingsSurface
-      ? computeMaintenanceDefaultCost(buildingsSurface)
-      : undefined;
     const propertyTaxesAmount = buildingsSurface
       ? computeEstimatedPropertyTaxesAmount(buildingsSurface)
       : undefined;
-    const illegalDumpingCostAmount =
-      isFriche && population ? computeIllegalDumpingDefaultCost(population) : undefined;
-    const securityAmount = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
+
+    if (nature === "FRICHE") {
+      const maintenanceAmount = buildingsSurface
+        ? computeMaintenanceDefaultCost(buildingsSurface)
+        : undefined;
+      const illegalDumpingCostAmount = population
+        ? computeIllegalDumpingDefaultCost(population)
+        : undefined;
+      const securityAmount = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
+
+      return {
+        maintenance: maintenanceAmount,
+        propertyTaxes: propertyTaxesAmount,
+        illegalDumpingCost: illegalDumpingCostAmount,
+        security: securityAmount,
+      };
+    }
 
     return {
-      maintenance: maintenanceAmount,
       propertyTaxes: propertyTaxesAmount,
-      illegalDumpingCost: illegalDumpingCostAmount,
-      security: securityAmount,
+    };
+  },
+);
+
+type SiteYearlyExpensesViewData = {
+  siteNature: SiteNature;
+  hasTenant: boolean;
+  estimatedAmounts: EstimatedSiteYearlyExpensesAmounts;
+};
+
+export const selectSiteYearlyExpensesViewData = createSelector(
+  [selectSiteData, selectEstimatedYearlyExpensesForSite],
+  (siteData, estimatedYearlyExpenses): SiteYearlyExpensesViewData => {
+    return {
+      siteNature: siteData.nature!,
+      hasTenant: !!siteData.tenant,
+      estimatedAmounts: estimatedYearlyExpenses,
     };
   },
 );
@@ -54,23 +83,35 @@ export const selectEstimatedYearlyExpensesForSite = createSelector(
 export const selectSiteManagementExpensesBaseConfig = createSelector(
   [selectSiteData],
   (siteData): SiteManagementYearlyExpensesBaseConfig => {
-    const hasTenant = !!siteData.isFricheLeased;
-    const isOperated = !!siteData.isSiteOperated;
+    const hasTenant = !!siteData.tenant;
 
-    return getSiteManagementExpensesBaseConfig({
-      hasTenant,
-      isOperated,
-    });
+    switch (siteData.nature) {
+      case "FRICHE":
+        return getFricheManagementExpensesBaseConfig({
+          hasTenant,
+        });
+      case "AGRICULTURAL_OPERATION":
+        const isOperated = !!siteData.isSiteOperated;
+        const isOperatedByOwner = isOperated && !hasTenant;
+        return getAgriculturalOperationExpensesBaseConfig({
+          isOperated,
+          isOperatedByOwner,
+        });
+      default:
+        return [];
+    }
   },
 );
 
 export const selectSiteSecurityExpensesBaseConfig = createSelector(
   [selectSiteData],
-  (siteData): SiteSecurityYearlyExpensesBaseConfig => {
-    const hasTenant = !!siteData.isFricheLeased;
+  (siteData): FricheSecurityYearlyExpensesBaseConfig => {
+    if (siteData.nature !== "FRICHE") return [];
+
+    const hasTenant = !!siteData.tenant;
     const hasRecentAccidents = !!siteData.hasRecentAccidents;
 
-    return getSiteSecurityExpensesBaseConfig({
+    return getFricheSecurityExpensesBaseConfig({
       hasTenant,
       hasRecentAccidents,
     });

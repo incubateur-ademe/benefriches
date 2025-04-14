@@ -5,6 +5,7 @@ const siteManagementYearlyExpensePurpose = z.enum([
   "propertyTaxes",
   "operationsTaxes",
   "maintenance",
+  "otherOperationsCosts",
   "otherManagementCosts",
 ]);
 

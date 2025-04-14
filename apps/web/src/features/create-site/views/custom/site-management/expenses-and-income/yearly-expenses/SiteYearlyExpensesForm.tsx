@@ -1,12 +1,12 @@
 import Tooltip from "@codegouvfr/react-dsfr/Tooltip";
-import React from "react";
+import React, { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import { SiteNature, SiteYearlyExpensePurpose, typedObjectEntries } from "shared";
 
 import {
   getLabelForExpensePurpose,
   SiteManagementYearlyExpensesBaseConfig,
-  SiteSecurityYearlyExpensesBaseConfig,
+  FricheSecurityYearlyExpensesBaseConfig,
 } from "@/features/create-site/core/expenses.functions";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RadioButtons from "@/shared/views/components/RadioButtons/RadioButtons";
@@ -24,20 +24,21 @@ export type FormValues = Partial<Record<SiteYearlyExpensePurpose, FormExpense>>;
 
 type Props = {
   hasTenant: boolean;
-  siteNature: SiteNature | undefined;
+  siteNature: SiteNature;
   siteManagementYearlyExpensesBaseConfig: SiteManagementYearlyExpensesBaseConfig;
-  siteSecurityExpensesBaseConfig: SiteSecurityYearlyExpensesBaseConfig;
+  siteSecurityExpensesBaseConfig: FricheSecurityYearlyExpensesBaseConfig;
   initialValues: FormValues;
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
 };
 
-const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
+const getLabelForExpense = (purpose: SiteYearlyExpensePurpose): NonNullable<ReactNode> => {
   switch (purpose) {
     case "propertyTaxes":
     case "operationsTaxes":
     case "rent":
     case "accidentsCost":
+    case "otherOperationsCosts":
       return getLabelForExpensePurpose(purpose);
     case "maintenance":
       return (
@@ -116,28 +117,26 @@ const getLabelForExpense = (purpose: SiteYearlyExpensePurpose) => {
   }
 };
 
-const getBearerLabel = (bearer: "tenant" | "owner", siteNature: SiteNature | undefined) => {
+const getBearerLabel = (bearer: "tenant" | "owner", siteNature: SiteNature) => {
   if (bearer === "owner") {
     return "À la charge du propriétaire";
   }
   return siteNature === "FRICHE" ? "À la charge du locataire" : "À la charge de l'exploitant";
 };
 
-const getTitle = (siteNature: SiteNature | undefined) => {
+const getTitle = (siteNature: SiteNature): string => {
   const baseTitle = `💸 Dépenses annuelles liées`;
   switch (siteNature) {
     case "FRICHE":
-      return `${baseTitle} à la friche ?`;
+      return `${baseTitle} à la friche`;
     case "AGRICULTURAL_OPERATION":
-      return `${baseTitle} à l'exploitation ?`;
+      return `${baseTitle} à l'exploitation`;
     case "NATURAL_AREA":
-      return `${baseTitle} à l'espace naturel ?`;
-    default:
-      return `${baseTitle} au site ?`;
+      return `${baseTitle} à l'espace naturel`;
   }
 };
 
-function SiteYearlyExpensesForm({
+export default function SiteYearlyExpensesForm({
   onSubmit,
   onBack,
   siteManagementYearlyExpensesBaseConfig,
@@ -170,7 +169,7 @@ function SiteYearlyExpensesForm({
   return (
     <WizardFormLayout title={title} instructions={<SiteYearlyExpensesFormInstructions />}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {siteNature === "FRICHE" && <h3 className="!tw-mb-0">Gestion du site</h3>}
+        {siteSecurityExpensesBaseConfig.length > 0 && <h3 className="!tw-mb-0">Gestion du site</h3>}
 
         {siteManagementYearlyExpensesBaseConfig.map(({ purpose, fixedBearer }) => {
           const amountEntered = !!formValues[purpose]?.amount;
@@ -202,7 +201,8 @@ function SiteYearlyExpensesForm({
             </React.Fragment>
           );
         })}
-        {siteNature === "FRICHE" && (
+
+        {siteSecurityExpensesBaseConfig.length > 0 && (
           <>
             <h3 className="!tw-mb-0 tw-mt-6">Sécurisation du site</h3>
             {siteSecurityExpensesBaseConfig.map(({ purpose, fixedBearer }) => {
@@ -220,9 +220,7 @@ function SiteYearlyExpensesForm({
                       optionalNumericFieldRegisterOptions,
                     )}
                     label={getLabelForExpense(purpose)}
-                    hintText={
-                      hasTenant && fixedBearer ? getBearerLabel(fixedBearer, siteNature) : undefined
-                    }
+                    hintText={hasTenant && fixedBearer ? getBearerLabel(fixedBearer) : undefined}
                     addonText="€ / an"
                   />
                   {askForBearer && (
@@ -248,5 +246,3 @@ function SiteYearlyExpensesForm({
     </WizardFormLayout>
   );
 }
-
-export default SiteYearlyExpensesForm;
