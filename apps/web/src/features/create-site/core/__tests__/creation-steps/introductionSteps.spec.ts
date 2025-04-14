@@ -7,6 +7,7 @@ import {
   naturalAreaTypeCompleted,
   siteNatureCompleted,
   addressStepCompleted,
+  siteCreationInitiated,
 } from "../../actions/introduction.actions";
 import { stepRevertAttempted } from "../../actions/revert.actions";
 import { siteWithExhaustiveData } from "../../siteData.mock";
@@ -19,6 +20,24 @@ import {
 } from "./testUtils";
 
 describe("Site creation: introduction steps (intro, nature, creation mode, address)", () => {
+  describe("initial state", () => {
+    it("starts with INTRODUCTION step", () => {
+      const store = new StoreBuilder().build();
+
+      store.dispatch(siteCreationInitiated());
+
+      expect(store.getState().siteCreation.stepsHistory).toEqual(["INTRODUCTION"]);
+    });
+
+    it("starts with IS_FRICHE step when asked to skip intro", () => {
+      const store = new StoreBuilder().build();
+
+      store.dispatch(siteCreationInitiated({ skipIntroduction: true }));
+
+      expect(store.getState().siteCreation.stepsHistory).toEqual(["IS_FRICHE"]);
+    });
+  });
+
   describe("INTRODUCTION", () => {
     it("goes to IS_FRICHE step when step completed", () => {
       const store = new StoreBuilder().withStepsHistory(["INTRODUCTION"]).build();

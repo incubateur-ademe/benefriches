@@ -1,11 +1,8 @@
-import { useEffect } from "react";
-
 import HelpButton from "@/shared/views/components/HelpButton/HelpButton";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
+import { useAppSelector } from "@/shared/views/hooks/store.hooks";
 import SidebarLayout from "@/shared/views/layout/SidebarLayout/SidebarLayout";
 import FormStepper from "@/shared/views/layout/WizardFormLayout/FormStepper";
 
-import { siteCreationInitiated } from "../core/actions/introduction.actions";
 import {
   selectCurrentStep,
   SiteCreationCustomStep,
@@ -52,11 +49,6 @@ function SiteCreationWizard() {
   const currentStep = useAppSelector(selectCurrentStep);
   const { isFriche } = useAppSelector((state) => state.siteCreation.siteData);
   const createMode = useAppSelector((state) => state.siteCreation.createMode);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    dispatch(siteCreationInitiated());
-  }, [dispatch]);
 
   useSyncCreationStepWithRouteQuery();
 

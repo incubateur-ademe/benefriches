@@ -134,7 +134,15 @@ export const getInitialState = (): SiteCreationState => {
 
 const siteCreationReducer = createReducer(getInitialState(), (builder) => {
   builder
-    .addCase(siteCreationInitiated, () => getInitialState())
+    .addCase(siteCreationInitiated, (_state, action) => {
+      if (action.payload?.skipIntroduction) {
+        return {
+          ...getInitialState(),
+          stepsHistory: ["IS_FRICHE"],
+        };
+      }
+      return getInitialState();
+    })
     .addCase(introductionStepCompleted, (state) => {
       state.stepsHistory.push("IS_FRICHE");
     })

@@ -17,7 +17,7 @@ const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible", "tw-translate-y-0"] as 
 const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible", "md:tw-translate-y-44"] as const;
 
 type Props = {
-  nextLinkProps: Link;
+  nextLinkProps: Partial<ButtonProps>;
   backLinkProps: Link;
 };
 
