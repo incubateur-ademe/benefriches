@@ -1,5 +1,5 @@
-import { UserRepository } from "src/users/core/gateways/UserRepository";
-import { User } from "src/users/core/model/user";
+import { UserRepository } from "src/auth/core/createUser.usecase";
+import { User } from "src/auth/core/user";
 
 export class InMemoryUserRepository implements UserRepository {
   private users: User[] = [];
@@ -15,5 +15,10 @@ export class InMemoryUserRepository implements UserRepository {
 
   _setUsers(users: User[]) {
     this.users = users;
+  }
+
+  existsWithEmail(email: string): Promise<boolean> {
+    const user = this.users.find((user) => user.email === email);
+    return Promise.resolve(!!user);
   }
 }
