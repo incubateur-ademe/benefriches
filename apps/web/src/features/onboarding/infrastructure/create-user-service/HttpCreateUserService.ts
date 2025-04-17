@@ -3,7 +3,7 @@ import { User } from "../../core/user";
 
 export class HttpCreateUserService implements CreateUserGateway {
   async save(user: User) {
-    const response = await fetch(`/api/users`, {
+    const response = await fetch(`/api/auth/register`, {
       method: "POST",
       body: JSON.stringify(user),
       headers: {
@@ -11,6 +11,9 @@ export class HttpCreateUserService implements CreateUserGateway {
       },
     });
 
-    if (!response.ok) throw new Error("Error while creating user");
+    if (!response.ok) {
+      const { error } = (await response.json()) as Error & { error?: string };
+      throw new Error(error ?? "UNKNOWN_ERROR");
+    }
   }
 }

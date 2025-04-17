@@ -2,11 +2,13 @@ import { useEffect } from "react";
 import { createGroup } from "type-route";
 
 import FeaturesApp from "@/features/FeaturesApp";
+import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 
 import PublicApp from "../../features/public-pages/PublicApp";
 import MatomoContainer from "./MatomoContainer";
 import { trackPageView } from "./analytics";
 import { BENEFRICHES_ENV } from "./envVars";
+import { useAppDispatch } from "./hooks/store.hooks";
 import { routes, useRoute } from "./router";
 
 const groups = {
@@ -23,10 +25,15 @@ const groups = {
 
 function App() {
   const route = useRoute();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     trackPageView(route.href);
   }, [route]);
+
+  useEffect(() => {
+    void dispatch(initCurrentUser());
+  }, [dispatch]);
 
   return (
     <>

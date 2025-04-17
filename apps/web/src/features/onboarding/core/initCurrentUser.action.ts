@@ -1,10 +1,9 @@
 import { createAppAsyncThunk } from "@/shared/core/store-config/appAsyncThunk";
 
-import { User } from "./user";
+import { AuthenticatedUser } from "./user";
 
 export interface CurrentUserGateway {
-  get(): Promise<User | undefined>;
-  save(user: User): Promise<void>;
+  get(): Promise<AuthenticatedUser | undefined>;
 }
 
 export const initCurrentUser = createAppAsyncThunk("user/initCurrentUser", async (_, { extra }) => {

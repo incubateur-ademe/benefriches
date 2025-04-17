@@ -3,6 +3,7 @@ import { ConfigModule } from "@nestjs/config";
 import { APP_PIPE } from "@nestjs/core";
 import { ZodValidationPipe } from "nestjs-zod";
 
+import { AuthModule } from "./auth/adapters/auth.module";
 import { CarbonStorageModule } from "./carbon-storage/adapters/primary/carbonStorage.module";
 import { HelloModule } from "./hello-world/adapters/primary/hello.module";
 import { PhotovoltaicPerformanceModule } from "./photovoltaic-performance/adapters/primary/photovoltaicPerformance.module";
@@ -15,6 +16,7 @@ import { UsersModule } from "./users/adapters/primary/users.module";
   imports: [
     ConfigModule.forRoot(),
     SqlConnectionModule,
+    AuthModule,
     HelloModule,
     PhotovoltaicPerformanceModule,
     CarbonStorageModule,

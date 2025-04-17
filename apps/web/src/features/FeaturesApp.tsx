@@ -1,14 +1,14 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense } from "react";
 import { createGroup } from "type-route";
 
-import { initCurrentUser } from "@/features/onboarding/core/initCurrentUser.action";
 import NotFoundScreen from "@/shared/views/components/NotFound/NotFound";
-import RequireRegisteredUser from "@/shared/views/components/RequireRegisteredUser/RequireRegisteredUser";
+import RequireAuthenticatedUser from "@/shared/views/components/RequireAuthenticatedUser/RequireAuthenticatedUser";
 import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import HeaderFooterLayout from "@/shared/views/layout/HeaderFooterLayout/HeaderFooterLayout";
 import SidebarContainerLayout from "@/shared/views/layout/SidebarLayout/SidebarContainerLayout";
 import { routes, useRoute } from "@/shared/views/router";
+
+import AccessBenefrichesPage from "./onboarding/views/pages/access-benefriches";
 
 /* Lazy-loaded pages */
 const CreateUserPage = lazy(() => import("@/features/onboarding/views"));
@@ -16,7 +16,6 @@ const CreateProjectPage = lazy(
   () => import("@/features/create-project/views/ProjectCreationWizard"),
 );
 const CreateSiteFoncierPage = lazy(() => import("@/features/create-site/views/SiteCreationWizard"));
-const LoginPage = lazy(() => import("@/features/login"));
 const OnBoardingIdentityPage = lazy(
   () => import("@/features/onboarding/views/pages/identity/OnBoardingIdentityPage"),
 );
@@ -41,17 +40,12 @@ const onBoardingGroup = createGroup([
 
 function FeaturesApp() {
   const route = useRoute();
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    void dispatch(initCurrentUser());
-  }, [dispatch]);
 
   if (formsLayoutGroup.has(route)) {
     return (
       <SidebarContainerLayout>
         <Suspense fallback={<LoadingSpinner />}>
-          <RequireRegisteredUser>
+          <RequireAuthenticatedUser>
             {(() => {
               switch (route.name) {
                 case routes.createSiteFoncier.name:
@@ -60,7 +54,7 @@ function FeaturesApp() {
                   return <CreateProjectPage route={route} />;
               }
             })()}
-          </RequireRegisteredUser>
+          </RequireAuthenticatedUser>
         </Suspense>
       </SidebarContainerLayout>
     );
@@ -70,9 +64,9 @@ function FeaturesApp() {
     return (
       <HeaderFooterLayout>
         <Suspense fallback={<LoadingSpinner />}>
-          <RequireRegisteredUser>
+          <RequireAuthenticatedUser>
             <OnBoardingIntroductionPages route={route} />
-          </RequireRegisteredUser>
+          </RequireAuthenticatedUser>
         </Suspense>
       </HeaderFooterLayout>
     );
@@ -83,47 +77,47 @@ function FeaturesApp() {
       <Suspense fallback={<LoadingSpinner />}>
         {(() => {
           switch (route.name) {
+            case routes.accessBenefriches.name:
+              return <AccessBenefrichesPage />;
             case routes.onBoardingIdentity.name:
               return <OnBoardingIdentityPage />;
-            case routes.login.name:
-              return <LoginPage />;
             // protected pages
             case routes.createUser.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <CreateUserPage />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             case routes.myProjects.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <MyProjectsPage />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             case routes.projectImpacts.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <ProjectImpactsPage projectId={route.params.projectId} />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
 
             case routes.projectImpactsOnboarding.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <ProjectImpactsOnboardingPage projectId={route.params.projectId} route={route} />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             case routes.urbanSprawlImpactsComparison.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <UrbanSprawlImpactsComparisonPage route={route} />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             case routes.siteFeatures.name:
               return (
-                <RequireRegisteredUser>
+                <RequireAuthenticatedUser>
                   <SiteFeaturesPage siteId={route.params.siteId} />
-                </RequireRegisteredUser>
+                </RequireAuthenticatedUser>
               );
             // 404
             default:

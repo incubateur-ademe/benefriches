@@ -1,13 +1,17 @@
 /* eslint-disable jest/no-conditional-expect */
 import { ZodError } from "zod";
 
+import { InMemoryUserRepository } from "src/auth/adapters/user-repository/InMemoryUserRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
-import { InMemoryUserRepository } from "src/users/adapters/secondary/user-repository/InMemoryUserRepository";
 
-import { User } from "../model/user";
-import { buildExhaustiveUserProps, buildMinimalUserProps } from "../model/user.mock";
+import {
+  buildExhaustiveUserProps,
+  buildMinimalUserProps,
+  buildUser,
+} from "../../users/core/model/user.mock";
 import { CreateUserUseCase } from "./createUser.usecase";
+import { User } from "./user";
 
 describe("CreateUser Use Case", () => {
   let dateProvider: DateProvider;
@@ -52,11 +56,36 @@ describe("CreateUser Use Case", () => {
 
         const usecase = new CreateUserUseCase(userRepository, dateProvider);
 
-        await expect(async () =>
-          usecase.execute({
-            user: { ...userProps, personalDataStorageConsented: false },
+        const result = await usecase.execute({
+          user: { ...userProps, personalDataStorageConsented: false },
+        });
+
+        expect(result).toEqual({
+          success: false,
+          error: "PersonalDataStorageNotConsented",
+        });
+      });
+
+      it("Cannot create an user when email is already taken", async () => {
+        const email = "user@benefriches.ademe.fr";
+        const userProps = { ...buildExhaustiveUserProps(), email };
+
+        userRepository._setUsers([
+          buildUser({
+            email,
           }),
-        ).rejects.toThrow("Personal data storage consented field should be true");
+        ]);
+
+        const usecase = new CreateUserUseCase(userRepository, dateProvider);
+
+        const result = await usecase.execute({
+          user: userProps,
+        });
+
+        expect(result).toEqual({
+          success: false,
+          error: "UserEmailAlreadyExists",
+        });
       });
     });
   });
