@@ -5,10 +5,20 @@ const onBoarding = defineRoute("/premiers-pas");
 const { RouteProvider, useRoute, routes } = createRouter({
   home: defineRoute("/"),
   // ONBOARDING GLOBAL
-  onBoardingIdentity: onBoarding.extend("/identite"),
+  onBoardingIdentity: onBoarding.extend(
+    {
+      hintEmail: param.query.optional.string,
+      hintFirstName: param.query.optional.string,
+      hintLastName: param.query.optional.string,
+    },
+    () => "/identite",
+  ),
   onBoardingIntroductionWhy: onBoarding.extend("/pourquoi-benefriches"),
   onBoardingIntroductionHow: onBoarding.extend("/comment-ca-marche"),
-  login: defineRoute("/se-connecter"),
+  accessBenefriches: defineRoute(
+    { redirectTo: param.query.optional.string },
+    () => "/acceder-a-benefriches",
+  ),
   createUser: defineRoute("/creer-un-compte"),
   // FORMS
   createSiteFoncier: defineRoute(

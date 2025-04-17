@@ -210,5 +210,17 @@ declare module "knex/types/tables" {
     users_feature_alerts: SqlUserFeatureAlert;
 
     city_stats: CityStats;
+    // auth
+    auth_external_user_identities: {
+      id: string;
+      user_id: string;
+      provider: string;
+      provider_user_id: string;
+      created_at: Date;
+    };
+    verified_emails: {
+      email: string;
+      verified_at: Date;
+    };
   }
 }

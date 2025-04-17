@@ -29,8 +29,26 @@ const ERROR_HTTP_SERVICE = {
   },
 };
 
-export async function createTestApp() {
-  const moduleRef = await Test.createTestingModule({
+type ProviderOverride =
+  | {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      token: any;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      useValue: any;
+    }
+  | {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      token: any;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      useClass: any;
+    };
+
+type CreateTestAppInput = {
+  providerOverrides?: ProviderOverride[];
+};
+
+export async function createTestApp({ providerOverrides }: CreateTestAppInput = {}) {
+  const testingModule = Test.createTestingModule({
     imports: [AppModule],
   })
     .overrideModule(ConfigModule)
@@ -38,8 +56,19 @@ export async function createTestApp() {
     .overrideProvider(HttpService)
     .useValue(ERROR_HTTP_SERVICE)
     .overrideProvider(PhotovoltaicGeoInfoSystemApi)
-    .useClass(MockPhotovoltaicGeoInfoSystemApi)
-    .compile();
+    .useClass(MockPhotovoltaicGeoInfoSystemApi);
+
+  if (providerOverrides) {
+    providerOverrides.forEach((override) => {
+      if ("useValue" in override) {
+        testingModule.overrideProvider(override.token).useValue(override.useValue);
+      } else {
+        testingModule.overrideProvider(override.token).useClass(override.useClass);
+      }
+    });
+  }
+
+  const moduleRef = await testingModule.compile();
 
   const testApp = moduleRef.createNestApplication<NestExpressApplication>();
   configureServer(testApp);

@@ -3,8 +3,16 @@ import { z } from "zod";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
 import { UseCase } from "src/shared-kernel/usecase";
 
-import { UserRepository } from "../gateways/UserRepository";
-import { userSchema } from "../model/user";
+import { User, userSchema } from "./user";
+
+type CreateUserFailureReason = "UserEmailAlreadyExists" | "PersonalDataStorageNotConsented";
+
+type CreateUserResult = { success: true } | { success: false; error: CreateUserFailureReason };
+
+export interface UserRepository {
+  save(user: User): Promise<void>;
+  existsWithEmail(email: string): Promise<boolean>;
+}
 
 export const userPropsSchema = userSchema
   .omit({
@@ -18,19 +26,20 @@ export const userPropsSchema = userSchema
     personalDataAnalyticsUseConsented: z.boolean(),
     personalDataStorageConsented: z.boolean(),
   });
+
 export type UserProps = z.infer<typeof userPropsSchema>;
 
 type Request = {
   user: UserProps;
 };
 
-export class CreateUserUseCase implements UseCase<Request, void> {
+export class CreateUserUseCase implements UseCase<Request, CreateUserResult> {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly dateProvider: DateProvider,
   ) {}
 
-  async execute({ user: userProps }: Request): Promise<void> {
+  async execute({ user: userProps }: Request): Promise<CreateUserResult> {
     const {
       personalDataCommunicationUseConsented,
       personalDataAnalyticsUseConsented,
@@ -38,8 +47,12 @@ export class CreateUserUseCase implements UseCase<Request, void> {
       ...user
     } = await userPropsSchema.parseAsync(userProps);
 
+    if (await this.userRepository.existsWithEmail(user.email)) {
+      return { success: false, error: "UserEmailAlreadyExists" };
+    }
+
     if (!personalDataStorageConsented) {
-      throw new Error("Personal data storage consented field should be true");
+      return { success: false, error: "PersonalDataStorageNotConsented" };
     }
 
     await this.userRepository.save({
@@ -53,5 +66,7 @@ export class CreateUserUseCase implements UseCase<Request, void> {
         ? this.dateProvider.now()
         : undefined,
     });
+
+    return { success: true };
   }
 }
