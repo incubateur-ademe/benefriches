@@ -9,7 +9,7 @@ const OnBoardingIntroductionHowContainer = () => {
 
   return (
     <OnBoardingIntroductionHow
-      nextLinkProps={{
+      nextButtonProps={{
         onClick: () => {
           dispatch(siteCreationInitiated({ skipIntroduction: true }));
           routes.createSiteFoncier().push();

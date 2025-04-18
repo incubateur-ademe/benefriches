@@ -60,7 +60,11 @@ function DemoApp() {
             case routes.demoOnBoardingIntroductionHow.name:
               return (
                 <OnBoardingIntroductionHow
-                  nextLinkProps={routes.demoMyProjects().link}
+                  nextButtonProps={{
+                    onClick: () => {
+                      routes.demoMyProjects().push();
+                    },
+                  }}
                   backLinkProps={routes.demoOnBoardingIntroductionWhy().link}
                 />
               );

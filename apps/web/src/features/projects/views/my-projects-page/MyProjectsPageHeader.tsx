@@ -1,17 +1,14 @@
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useTour } from "@reactour/tour";
 
-import { siteCreationInitiated } from "@/features/create-site/core/actions/introduction.actions";
 import classNames from "@/shared/views/clsx";
 import DropdownMenu from "@/shared/views/components/Menu/DropdownMenu";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
 import { useIsSmallScreen } from "@/shared/views/hooks/useIsSmallScreen";
 import { routes } from "@/shared/views/router";
 
 function MyProjectsPageHeader() {
   const { setIsOpen: setIsTourGuideOpen } = useTour();
   const isSmScreen = useIsSmallScreen();
-  const dispatch = useAppDispatch();
 
   return (
     <div className={classNames("tw-flex", "tw-justify-between", "tw-items-center")}>
@@ -21,10 +18,7 @@ function MyProjectsPageHeader() {
           <Button
             size={isSmScreen ? "small" : "medium"}
             priority="primary"
-            onClick={() => {
-              dispatch(siteCreationInitiated({ skipIntroduction: true }));
-              routes.createSiteFoncier().push();
-            }}
+            linkProps={routes.createSiteFoncier().link}
             iconId="fr-icon-add-line"
           >
             Nouveau site

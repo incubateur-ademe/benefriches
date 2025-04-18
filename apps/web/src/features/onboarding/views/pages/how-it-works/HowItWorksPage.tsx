@@ -17,11 +17,11 @@ const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible", "tw-translate-y-0"] as 
 const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible", "md:tw-translate-y-44"] as const;
 
 type Props = {
-  nextLinkProps: Partial<ButtonProps>;
+  nextButtonProps: Partial<ButtonProps>;
   backLinkProps: Link;
 };
 
-const OnBoardingIntroductionHow = ({ nextLinkProps, backLinkProps }: Props) => {
+const OnBoardingIntroductionHow = ({ nextButtonProps, backLinkProps }: Props) => {
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
@@ -33,22 +33,6 @@ const OnBoardingIntroductionHow = ({ nextLinkProps, backLinkProps }: Props) => {
   const step2Classes = step > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES;
   const step3Classes = step > 2 ? VISIBLE_CLASSES : INVISIBLE_CLASSES;
   const step4Classes = step > 3 ? VISIBLE_CLASSES : INVISIBLE_CLASSES;
-
-  const nextButtonProps =
-    step === 4
-      ? {
-          children: "C'est parti",
-          linkProps: nextLinkProps,
-        }
-      : {
-          children: "Suivant",
-          nativeButtonProps: {
-            type: "button",
-            onClick: () => {
-              setStep((current) => current + 1);
-            },
-          },
-        };
 
   useEffect(() => {
     if (shouldDisplayStepByStep) {
@@ -181,7 +165,24 @@ const OnBoardingIntroductionHow = ({ nextLinkProps, backLinkProps }: Props) => {
             },
             {
               priority: "primary",
-              ...(nextButtonProps as ButtonProps),
+              ...(step === 4
+                ? {
+                    children: "C'est parti",
+                    nativeButtonProps: {
+                      role: "link",
+                      type: "button",
+                      ...nextButtonProps,
+                    },
+                  }
+                : {
+                    children: "Suivant",
+                    nativeButtonProps: {
+                      type: "button",
+                      onClick: () => {
+                        setStep((current) => current + 1);
+                      },
+                    },
+                  }),
             },
           ]}
         />
