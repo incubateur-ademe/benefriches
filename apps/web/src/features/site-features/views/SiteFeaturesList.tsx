@@ -91,7 +91,7 @@ export default function SiteFeaturesList(siteFeatures: Props) {
               value={
                 siteFeatures.contaminatedSurfaceArea
                   ? formatSurfaceArea(siteFeatures.contaminatedSurfaceArea)
-                  : "Pas de pollution"
+                  : "Pas de pollution déclarée"
               }
             />
           </Section>
