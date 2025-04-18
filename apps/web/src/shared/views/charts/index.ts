@@ -34,7 +34,7 @@ export function withDefaultBarChartOptions({ plotOptions = {}, ...options }: Opt
     },
     plotOptions: {
       ...plotOptions,
-      column: { borderRadius: 8, ...(plotOptions.column ?? {}) },
+      column: { borderRadius: 8, minPointLength: 4, ...(plotOptions.column ?? {}) },
     },
   };
 }
