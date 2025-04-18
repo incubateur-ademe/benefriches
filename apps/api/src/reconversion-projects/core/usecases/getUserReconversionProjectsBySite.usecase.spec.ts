@@ -1,3 +1,5 @@
+import { vi } from "vitest";
+
 import { InMemoryReconversionProjectsListQuery } from "src/reconversion-projects/adapters/secondary/queries/reconversion-project-list/InMemoryReconversionProjectsListQuery";
 
 import {
@@ -48,7 +50,7 @@ describe("GetUserReconversionProjectsBySite Use Case", () => {
     ];
     const userId = "0918223a-4d05-43a3-ad15-ccac704f7998";
     const query = new InMemoryReconversionProjectsListQuery(reconversionProjects);
-    jest.spyOn(query, "getGroupedBySite");
+    vi.spyOn(query, "getGroupedBySite");
 
     const usecase = new GetUserReconversionProjectsBySiteUseCase(query);
     const result = await usecase.execute({ userId });

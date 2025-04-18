@@ -16,7 +16,7 @@
     "start:prod": "node dist/src/main",
     "typecheck": "tsc --noEmit",
     "test": "pnpm test:unit && pnpm test:integration",
-    "test:unit": "jest --config ./test/jest.config.ts",
+    "test:unit": "vitest --config ./test/vitest.config.ts",
     "test:integration": "jest --runInBand --config ./test/jest-integration.config.ts",
     "lint": "eslint --max-warnings 0 .",
     "format": "prettier --write --cache \"./**/*.{js,jsx,ts,tsx,css,md,json}\" src/ test/",
@@ -52,7 +52,8 @@
     "ts-jest": "~29.3.1",
     "ts-node": "~10.9.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "~8.29.1"
+    "typescript-eslint": "~8.29.1",
+    "vitest": "~3.1.1"
   },
   "dependencies": {
     "@nestjs/axios": "~4.0.0",

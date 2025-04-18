@@ -1,5 +1,5 @@
 /* eslint-disable jest/no-conditional-expect */
-import { z } from "zod";
+import { ZodError } from "zod";
 
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
 import { DateProvider } from "src/shared-kernel/adapters/date/IDateProvider";
@@ -15,10 +15,8 @@ describe("CreateUser Use Case", () => {
   const fakeNow = new Date("2024-01-05T13:00:00");
 
   const getZodIssues = (err: unknown) => {
-    if (err instanceof z.ZodError) {
-      return err.issues;
-    }
-    throw new Error("Not a ZodError");
+    expect(err).toBeInstanceOf(ZodError);
+    return (err as ZodError).issues;
   };
 
   beforeEach(() => {
@@ -37,7 +35,7 @@ describe("CreateUser Use Case", () => {
 
           const usecase = new CreateUserUseCase(userRepository, dateProvider);
 
-          expect.assertions(3);
+          expect.assertions(4);
           try {
             await usecase.execute({ user: userProps });
           } catch (err) {

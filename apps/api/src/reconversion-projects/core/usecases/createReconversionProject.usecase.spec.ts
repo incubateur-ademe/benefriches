@@ -1,5 +1,5 @@
 /* eslint-disable jest/no-conditional-expect */
-import { z } from "zod";
+import { ZodError } from "zod";
 
 import { InMemoryReconversionProjectRepository } from "src/reconversion-projects/adapters/secondary/repositories/reconversion-project/InMemoryReconversionProjectRepository";
 import { DeterministicDateProvider } from "src/shared-kernel/adapters/date/DeterministicDateProvider";
@@ -23,10 +23,11 @@ describe("CreateReconversionProject Use Case", () => {
   const fakeNow = new Date("2024-01-05T13:00:00");
 
   const getZodIssues = (err: unknown) => {
-    if (err instanceof z.ZodError) {
-      return err.issues;
-    }
-    throw new Error("Not a ZodError");
+    // we cannot use `instanceof ZodError` here because the createReconversionPropsSchema
+    // is from our shared module and vitest bundling process will result in two different ZodError classes
+    // one for our api package and one for the api package
+    // very good explanation here: https://github.com/evanw/esbuild/issues/3333
+    return (err as ZodError).issues;
   };
 
   beforeEach(() => {
