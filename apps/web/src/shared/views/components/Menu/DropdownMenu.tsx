@@ -30,7 +30,7 @@ function DropdownMenu({
         className={classNames(
           "tw-absolute",
           "tw-right-0",
-          "tw-z-10",
+          "tw-z-40",
           size === "small" && "tw-w-44",
           size === "medium" && "tw-w-72",
           size === "large" && "tw-w-80",
