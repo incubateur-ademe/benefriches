@@ -9,7 +9,6 @@ export type AgriculturalOperationActivity =
   | "PIG_FARMING"
   | "POULTRY_FARMING"
   | "SHEEP_AND_GOAT_FARMING"
-  | "OTHER_HERBIVORES_FARMING"
   | "POLYCULTURE_AND_LIVESTOCK";
 
 export function getLabelForAgriculturalOperationActivity(
@@ -36,8 +35,6 @@ export function getLabelForAgriculturalOperationActivity(
       return "Élevage de volailles et granivores";
     case "SHEEP_AND_GOAT_FARMING":
       return "Élevage ovin et caprin";
-    case "OTHER_HERBIVORES_FARMING":
-      return "Autres élevages herbivores";
     case "POLYCULTURE_AND_LIVESTOCK":
       return "Polyculture / polyélevage";
   }

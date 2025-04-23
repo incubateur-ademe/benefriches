@@ -36,7 +36,6 @@ export function getSoilsDistributionForAgriculturalOperationActivity(
       };
     case "CATTLE_FARMING":
     case "SHEEP_AND_GOAT_FARMING":
-    case "OTHER_HERBIVORES_FARMING":
       return {
         PRAIRIE_GRASS: 0.95 * surfaceArea,
         BUILDINGS: 0.05 * surfaceArea,

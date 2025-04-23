@@ -57,7 +57,6 @@ function AgriculturalOperationActivityForm({ initialValues, onSubmit, onBack }: 
             "PIG_FARMING",
             "POULTRY_FARMING",
             "SHEEP_AND_GOAT_FARMING",
-            "OTHER_HERBIVORES_FARMING",
           ])}
           error={error}
         />
