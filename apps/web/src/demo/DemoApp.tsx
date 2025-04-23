@@ -92,18 +92,7 @@ function DemoApp() {
                 />
               );
             case routes.demoProjectImpactsOnboarding.name:
-              return (
-                <DemoProjectImpactsOnboarding
-                  siteData={{
-                    name: IMPACTS_DATA.relatedSiteName,
-                    id: IMPACTS_DATA.relatedSiteId,
-                    ...IMPACTS_DATA.siteData,
-                  }}
-                  impactsData={IMPACTS_DATA["impacts"]}
-                  projectId={DEMO_PROJECT.id}
-                  route={route}
-                />
-              );
+              return <DemoProjectImpactsOnboarding projectId={DEMO_PROJECT.id} route={route} />;
 
             default:
               return (

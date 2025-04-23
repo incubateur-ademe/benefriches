@@ -5,7 +5,7 @@ import { routes } from "@/shared/views/router";
 
 type Props = {
   projectId: string;
-  route: Route<typeof routes.projectImpactsOnboarding>;
+  route: Route<typeof routes.demoProjectImpactsOnboarding>;
 };
 
 function DemoProjectImpactsOnboarding({ projectId, route }: Props) {
