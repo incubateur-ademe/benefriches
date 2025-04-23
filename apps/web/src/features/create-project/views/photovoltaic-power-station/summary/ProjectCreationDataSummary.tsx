@@ -67,6 +67,7 @@ type Props = {
     surfaceArea: number;
     soilsDistribution: SoilsDistribution;
     soilsCarbonStorage?: SoilsCarbonStorageResult;
+    name: string;
   };
   onNext: () => void;
   onBack: () => void;
@@ -136,8 +137,11 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               <h3 className="tw-uppercase tw-text-base tw-text-text-light">Site existant</h3>
               <SurfaceAreaPieChart
                 soilsDistribution={siteData.soilsDistribution}
-                noLabels
+                mode="plain"
                 customHeight="250px"
+                exportConfig={{
+                  subtitle: `${siteData.name} ${formatSurfaceArea(siteData.surfaceArea)}`,
+                }}
               />
             </div>
             <span className="tw-text-3xl">➔</span>
@@ -145,8 +149,11 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
               <h3 className="tw-uppercase tw-text-base">Site avec projet</h3>
               <SurfaceAreaPieChart
                 soilsDistribution={projectData.soilsDistribution}
-                noLabels
+                mode="plain"
                 customHeight="250px"
+                exportConfig={{
+                  subtitle: `${projectData.name} sur ${siteData.name} ${formatSurfaceArea(siteData.surfaceArea)}`,
+                }}
               />
             </div>
           </div>
@@ -179,8 +186,13 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                   <h3 className="tw-uppercase tw-text-base tw-text-text-light">Site existant</h3>
                   <SoilsCarbonStorageChart
                     soilsCarbonStorage={siteData.soilsCarbonStorage.soilsStorage}
-                    noLabels
+                    mode="plain"
                     customHeight="250px"
+                    exportConfig={{
+                      title: "Stockage du carbone par les sols avant transformation",
+                      subtitle: siteData.name,
+                      caption: `${formatCarbonStorage(siteData.soilsCarbonStorage.totalCarbonStorage)} T de carbone stocké`,
+                    }}
                   />
                 </div>
                 <span className="tw-text-3xl">➔</span>
@@ -188,8 +200,13 @@ function ProjectCreationDataSummary({ projectData, siteData, onNext, onBack }: P
                   <h3 className="tw-uppercase tw-text-base">Site avec projet</h3>
                   <SoilsCarbonStorageChart
                     soilsCarbonStorage={projectData.soilsCarbonStorage.soilsStorage}
-                    noLabels
+                    mode="plain"
                     customHeight="250px"
+                    exportConfig={{
+                      title: "Stockage du carbone par les sols après transformation",
+                      subtitle: `${projectData.name} sur ${siteData.name}`,
+                      caption: `${formatCarbonStorage(projectData.soilsCarbonStorage.totalCarbonStorage)} T de carbone stocké`,
+                    }}
                   />
                 </div>
               </div>

@@ -51,8 +51,13 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           >
             <SurfaceAreaPieChart
               soilsDistribution={siteFeatures.soilsDistribution}
+              mode="plain"
               customHeight="200px"
-              noLabels
+              exportConfig={{
+                title: "Répartition de l'occupation des sols",
+                subtitle: siteFeatures.name,
+                caption: `Surface totale : ${formatSurfaceArea(siteFeatures.surfaceArea)}`,
+              }}
             />
           </div>
 

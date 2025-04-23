@@ -22,11 +22,23 @@ const UrbanProjectSoilsSummary = ({
       <div className="tw-grid tw-grid-cols-1 lg:tw-grid-cols-2 tw-gap-6 tw-pb-10">
         <div className="tw-border tw-border-solid tw-border-borderGrey tw-p-8">
           <h3 className="tw-uppercase tw-text-base">Site existant</h3>
-          <SurfaceAreaPieChart soilsDistribution={siteSoilsDistribution} />
+          <SurfaceAreaPieChart
+            soilsDistribution={siteSoilsDistribution}
+            exportConfig={{
+              title: "Récapitulatif de l'occupation des sols",
+              subtitle: `Site existant`,
+            }}
+          />
         </div>
         <div className="tw-border tw-border-solid tw-border-borderGrey tw-p-8">
           <h3 className="tw-uppercase tw-text-base">Site avec projet</h3>
-          <SurfaceAreaPieChart soilsDistribution={projectSoilsDistribution} />
+          <SurfaceAreaPieChart
+            soilsDistribution={projectSoilsDistribution}
+            exportConfig={{
+              title: "Récapitulatif de l'occupation des sols",
+              subtitle: `Site avec projet`,
+            }}
+          />
         </div>
       </div>
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />

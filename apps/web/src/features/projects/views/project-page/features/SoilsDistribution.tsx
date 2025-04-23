@@ -39,7 +39,7 @@ export default function SoilsDistribution({ soilsDistribution }: Props) {
           <SurfaceAreaPieChart
             soilsDistribution={soilsDistribution}
             customHeight="200px"
-            noLabels
+            mode="plain"
           />
         </div>
 

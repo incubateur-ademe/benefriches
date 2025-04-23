@@ -60,6 +60,7 @@ function ProjectionCreationDataSummaryContainer() {
         surfaceArea: siteData?.surfaceArea ?? 0,
         soilsDistribution: siteData?.soilsDistribution ?? {},
         soilsCarbonStorage: siteSoilsCarbonStorage,
+        name: siteData?.name ?? "",
       }}
     />
   );

@@ -1,12 +1,11 @@
 import { fr } from "@codegouvfr/react-dsfr";
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import { withDefaultChartOptions } from "@/shared/views/charts";
-
-import HighchartsCustomColorsWrapper from "../../Charts/HighchartsCustomColorsWrapper";
+import { useChartCustomPointColors } from "@/shared/views/charts/useChartCustomColors";
 
 type Props = {
   soilsDistribution: { name: string; color?: string; value: number }[];
@@ -56,15 +55,19 @@ const SurfaceAreaPieChart = ({
       },
     ],
   });
+  const id = useId();
+  useChartCustomPointColors(
+    id,
+    data.map(({ color }) => color),
+  );
 
   return (
-    <HighchartsCustomColorsWrapper colors={data.map(({ color }) => color)}>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={variablePieChartOptions}
-        ref={variablePieChartRef}
-      />
-    </HighchartsCustomColorsWrapper>
+    <HighchartsReact
+      highcharts={Highcharts}
+      containerProps={{ id }}
+      options={variablePieChartOptions}
+      ref={variablePieChartRef}
+    />
   );
 };
 

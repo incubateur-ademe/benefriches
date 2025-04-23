@@ -1,28 +1,34 @@
 import { fr } from "@codegouvfr/react-dsfr";
-import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import { SoilsDistribution, typedObjectEntries } from "shared";
 
 import { SQUARE_METERS_HTML_SYMBOL } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import { getColorForSoilType } from "@/shared/core/soils";
 
-import { withDefaultChartOptions } from "../../charts";
-import HighchartsCustomColorsWrapper from "./HighchartsCustomColorsWrapper";
+import { withDefaultPieChartOptions } from "../../charts";
+import { useChartCustomPointColors } from "../../charts/useChartCustomColors";
+import ExportableChart from "./ExportableChart";
 
 type Props = {
   soilsDistribution: SoilsDistribution;
   remainderSurfaceArea?: number;
   customHeight?: number | string;
-  noLabels?: boolean;
+  mode?: "legend" | "label" | "plain";
+  exportConfig?: {
+    title?: string;
+    subtitle?: string;
+    caption?: string;
+  };
 };
 
 const SurfaceAreaPieChart = ({
   soilsDistribution,
   remainderSurfaceArea,
   customHeight = "300px",
-  noLabels = false,
+  mode = "label",
+  exportConfig,
 }: Props) => {
   const variablePieChartRef = useRef<HighchartsReact.RefObject>(null);
   const soilsEntries = typedObjectEntries(soilsDistribution).filter(
@@ -45,15 +51,36 @@ const SurfaceAreaPieChart = ({
     });
   }
 
-  const variablePieChartOptions: Highcharts.Options = withDefaultChartOptions({
+  const variablePieChartOptions: Highcharts.Options = withDefaultPieChartOptions({
     chart: {
-      styledMode: true,
       height: customHeight,
     },
     tooltip: {
-      pointFormat: `Superficie : <strong>{point.y} ${SQUARE_METERS_HTML_SYMBOL}</strong> ({point.percentage:.2f}%)`,
+      pointFormat: `Superficie : <strong>{point.y:,.2f} ${SQUARE_METERS_HTML_SYMBOL}</strong> ({point.percentage:.2f}%)`,
     },
-    plotOptions: { pie: { cursor: "pointer", dataLabels: { enabled: !noLabels } } },
+    plotOptions: {
+      pie:
+        mode === "legend"
+          ? {
+              dataLabels: { enabled: false },
+              showInLegend: true,
+              allowPointSelect: false,
+            }
+          : { dataLabels: { enabled: mode === "label" } },
+    },
+    legend:
+      mode === "legend"
+        ? {
+            labelFormatter: function () {
+              const value = data[this.index];
+              if (value) {
+                return `
+            ${this.name} : ${value.y} ${SQUARE_METERS_HTML_SYMBOL}`;
+              }
+              return this.name;
+            },
+          }
+        : { enabled: false },
     series: [
       {
         name: "Superficie",
@@ -63,14 +90,37 @@ const SurfaceAreaPieChart = ({
     ],
   });
 
+  const containerId = useId();
+
+  useChartCustomPointColors(
+    containerId,
+    data.map(({ color }) => color),
+  );
+
   return (
-    <HighchartsCustomColorsWrapper colors={data.map(({ color }) => color)}>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={variablePieChartOptions}
-        ref={variablePieChartRef}
-      />
-    </HighchartsCustomColorsWrapper>
+    <ExportableChart
+      containerProps={{ id: containerId }}
+      options={variablePieChartOptions}
+      ref={variablePieChartRef}
+      exportingOptions={{
+        title: exportConfig?.title ?? "Répartition de l'occupation des sols",
+        subtitle: exportConfig?.subtitle ?? "",
+        caption: exportConfig?.caption,
+        csvColumnHeader: { y: "Superficie en m²" },
+        colors: data.map(({ color }) => color),
+        chartOptions: {
+          plotOptions: {
+            pie: {
+              dataLabels: {
+                enabled: mode !== "legend",
+                style: { fontSize: "12px", fontWeight: "400" },
+                format: `{point.name} ({point.y:,.2f} ${SQUARE_METERS_HTML_SYMBOL})`,
+              },
+            },
+          },
+        },
+      }}
+    />
   );
 };
 

@@ -30,6 +30,14 @@ const SiteSoilsCarbonStorage = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const totalText = siteCarbonStorage ? formatCarbonStorage(siteCarbonStorage.total) : "";
+
+  const frenchAnnualEmissionsText = siteCarbonStorage
+    ? formatNumberFr(
+        Math.round(getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson(siteCarbonStorage.total)),
+      )
+    : "";
+
   return (
     <WizardFormLayout
       title="Stockage du carbone par les sols"
@@ -95,22 +103,19 @@ const SiteSoilsCarbonStorage = ({
       {siteCarbonStorage && (
         <>
           <p>
-            Ce site stocke environ <strong>{formatCarbonStorage(siteCarbonStorage.total)} t</strong>{" "}
-            de carbone.
+            Ce site stocke environ <strong>{totalText} t</strong> de carbone.
           </p>
           <p>
             C'est l'équivalent de ce qu'émettent{" "}
-            <strong>
-              {formatNumberFr(
-                Math.round(
-                  getCarbonTonsInAverageFrenchAnnualEmissionsPerPerson(siteCarbonStorage.total),
-                ),
-              )}{" "}
-              français
-            </strong>{" "}
-            en 1 an.
+            <strong>{frenchAnnualEmissionsText} français</strong> en 1 an.
           </p>
-          <SoilsCarbonStorageChart soilsCarbonStorage={siteCarbonStorage.soils} />
+          <SoilsCarbonStorageChart
+            soilsCarbonStorage={siteCarbonStorage.soils}
+            exportConfig={{
+              title: "Stockage du carbone par les sols",
+              caption: `Ce site stocke environ <strong>${totalText} t</strong> de carbone.<br>C'est l'équivalent de ce qu'émettent <strong>${frenchAnnualEmissionsText} français</strong> en 1 an.`,
+            }}
+          />
         </>
       )}
       <BackNextButtonsGroup onBack={onBack} onNext={onNext} />

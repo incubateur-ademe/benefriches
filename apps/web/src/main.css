@@ -7,7 +7,7 @@
 /* Highcharts CSS override - pour les graphes avec le paramètre "styledMode": true */
 
 .highcharts-container {
-  font-family: Marianne;
+  font-family: Marianne, Arial, sans-serif;
 }
 
 .highcharts-background {
@@ -20,6 +20,11 @@
 
 .highcharts-graph {
   stroke-width: 0;
+}
+
+.highcharts-legend-item.highcharts-pie-series,
+.highcharts-legend-item.highcharts-pie-series .highcharts-point {
+  stroke: unset;
 }
 
 .highcharts-data-label text,
