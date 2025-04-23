@@ -127,7 +127,16 @@ export default function SiteFeaturesList(siteFeatures: Props) {
         </>
       )}
       <Section
-        title={siteFeatures.nature === "FRICHE" ? "⚙️ Gestion de la friche" : "⚙️ Gestion du site"}
+        title={(() => {
+          switch (siteFeatures.nature) {
+            case "AGRICULTURAL_OPERATION":
+              return "⚙️ Exploitation du site";
+            case "FRICHE":
+              return "⚙️ Gestion de la friche";
+            case "NATURAL_AREA":
+              return "⚙️ Gestion du site";
+          }
+        })()}
       >
         <>
           <DataLine label={<strong>Propriétaire actuel</strong>} value={siteFeatures.ownerName} />
@@ -158,7 +167,9 @@ export default function SiteFeaturesList(siteFeatures: Props) {
           )}
           {siteManagementExpenses.length > 0 && (
             <>
-              <DataLine isDetails label={<strong>Gestion du site</strong>} value="" />
+              {fricheSpecificExpenses.length > 0 && (
+                <DataLine isDetails label={<strong>Gestion du site</strong>} value="" />
+              )}
               {siteManagementExpenses.map(({ purpose, amount }) => {
                 return (
                   <DataLine
