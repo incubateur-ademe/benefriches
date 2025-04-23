@@ -14,12 +14,11 @@ import { routes } from "@/shared/views/router";
 type Props = {
   projectName: string;
   projectId: string;
-  siteName: string;
   loadingState: "idle" | "loading" | "success" | "error";
   onBack: () => void;
 };
 
-function ProjectCreationResult({ projectId, projectName, siteName, loadingState, onBack }: Props) {
+function ProjectCreationResult({ projectId, projectName, loadingState, onBack }: Props) {
   switch (loadingState) {
     case "idle":
       return null;
@@ -49,11 +48,11 @@ function ProjectCreationResult({ projectId, projectName, siteName, loadingState,
           <EditorialPageIcon>✅</EditorialPageIcon>
           <EditorialPageTitle>Le projet « {projectName} » est créé !</EditorialPageTitle>
           <EditorialPageText>
-            Bénéfriches peut maintenant calculer les impacts sociaux, économiques et
-            environnementaux de ce projet sur le site « {siteName} ».
+            Ses impacts ont été calculés et sont prêts à être consultés.
           </EditorialPageText>
+          <EditorialPageText>Mais avant cela, 3 informations importantes.</EditorialPageText>
           <Button size="large" linkProps={routes.projectImpactsOnboarding({ projectId }).link}>
-            Consulter les impacts
+            Voir les infos importantes
           </Button>
         </EditorialPageLayout>
       );

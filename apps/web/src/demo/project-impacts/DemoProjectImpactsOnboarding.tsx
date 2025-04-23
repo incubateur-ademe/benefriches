@@ -1,36 +1,26 @@
-import { ReconversionProjectImpactsResult } from "@/features/projects/application/fetchImpactsForReconversionProject.action";
-import {
-  getKeyImpactIndicatorsList,
-  getMainKeyImpactIndicators,
-  getProjectOverallImpact,
-} from "@/features/projects/domain/projectKeyImpactIndicators";
+import { Route } from "type-route";
+
 import ProjectImpactsOnboardingPage from "@/features/projects/views/project-impacts-onboarding/ProjectImpactsOnboardingPage";
 import { routes } from "@/shared/views/router";
 
-import { getImpactsDataFromEvaluationPeriod } from "../demoData";
-
 type Props = {
   projectId: string;
-  siteData: { name: string; id: string } & ReconversionProjectImpactsResult["siteData"];
-  impactsData: ReconversionProjectImpactsResult["impacts"];
+  route: Route<typeof routes.projectImpactsOnboarding>;
 };
 
-function DemoProjectImpactsOnboarding({
-  impactsData: impactsDataFor1Year,
-  siteData,
-  projectId,
-}: Props) {
-  const impactsData = getImpactsDataFromEvaluationPeriod(impactsDataFor1Year, 20);
-  const keyImpactIndicatorsList = getKeyImpactIndicatorsList(impactsData, siteData);
-
+function DemoProjectImpactsOnboarding({ projectId, route }: Props) {
   return (
     <ProjectImpactsOnboardingPage
       onFinalNext={() => {
         routes.demoProjectImpacts({ projectId }).push();
       }}
-      projectOverallImpact={getProjectOverallImpact(keyImpactIndicatorsList)}
-      mainKeyImpactIndicators={getMainKeyImpactIndicators(keyImpactIndicatorsList)}
-      evaluationPeriod={20}
+      routeStep={route.params.etape}
+      onNextToStep={(step: string) => {
+        routes.demoProjectImpactsOnboarding({ projectId, etape: step }).push();
+      }}
+      onBackToStep={(step: string) => {
+        routes.demoProjectImpactsOnboarding({ projectId, etape: step }).replace();
+      }}
     />
   );
 }

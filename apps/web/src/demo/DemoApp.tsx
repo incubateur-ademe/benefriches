@@ -101,6 +101,7 @@ function DemoApp() {
                   }}
                   impactsData={IMPACTS_DATA["impacts"]}
                   projectId={DEMO_PROJECT.id}
+                  route={route}
                 />
               );
 

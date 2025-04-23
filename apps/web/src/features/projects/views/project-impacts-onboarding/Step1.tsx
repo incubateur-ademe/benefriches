@@ -1,137 +1,102 @@
-import Button from "@codegouvfr/react-dsfr/Button";
-import { ReactNode } from "react";
+import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import { useState } from "react";
 
-import { KeyImpactIndicatorData } from "../../application/projectKeyImpactIndicators.selectors";
-import { ProjectOverallImpact } from "../../domain/projectKeyImpactIndicators";
-import ImpactSummaryAvoidedCo2eqEmissions from "../project-page/impacts/summary-view/impacts/AvoidedCo2eqEmissions";
-import ImpactSummaryAvoidedFricheCostsForLocalAuthority from "../project-page/impacts/summary-view/impacts/AvoidedFricheCostsForLocalAuthority";
-import ImpactSummaryFullTimeJobs from "../project-page/impacts/summary-view/impacts/FullTimeJobs";
-import ImpactSummaryHouseholdsPoweredByRenewableEnergy from "../project-page/impacts/summary-view/impacts/HouseholdsPoweredByRenewableEnergy";
-import ImpactSummaryLocalPropertyValueIncrease from "../project-page/impacts/summary-view/impacts/LocalPropertyValueIncrease";
-import ImpactSummaryNonContaminatedSurfaceArea from "../project-page/impacts/summary-view/impacts/NonContaminatedSurfaceArea";
-import ImpactSummaryPermeableSurfaceArea from "../project-page/impacts/summary-view/impacts/PermeableSurfaceArea";
-import ImpactSummaryProjectBalance from "../project-page/impacts/summary-view/impacts/ProjectBalance";
-import ImpactSummaryTaxesIncome from "../project-page/impacts/summary-view/impacts/TaxesIncome";
-import ImpactSummaryZanCompliance from "../project-page/impacts/summary-view/impacts/ZanCompliance";
+import classNames from "@/shared/views/clsx";
+
+import EmojiListItem from "./StepEmojiListItem";
 
 type Props = {
-  evaluationPeriod: number;
-  projectOverallImpact: ProjectOverallImpact;
-  mainKeyImpactIndicators: KeyImpactIndicatorData[];
   onNextClick: () => void;
+  skipStepByStepAnimation?: boolean;
 };
 
-function getTitle(projectOverallImpact: ProjectOverallImpact): ReactNode {
-  switch (projectOverallImpact) {
-    case "strong_negative":
-      return (
-        <>
-          Attention !<br />
-          🚨 Votre projet présente des{" "}
-          <span className="tw-bg-[#F06767] tw-text-black">impacts négatifs notables</span>.
-        </>
-      );
-    case "negative":
-      return (
-        <>
-          Votre projet présente des{" "}
-          <span className="tw-bg-[#F0BB67] tw-text-black">impacts négatifs</span>.
-        </>
-      );
-    case "positive":
-      return (
-        <>
-          Votre projet aura un impact{" "}
-          <span className="tw-bg-[#8CF07A] tw-text-black">plutôt positif</span>.
-        </>
-      );
-    case "strong_positive":
-      return (
-        <>
-          Félicitations ! 🎉
-          <br />
-          Votre projet aura un{" "}
-          <span className="tw-bg-[#34EB7B] tw-text-black">fort impact positif</span>.
-        </>
-      );
-  }
-}
+const TRANSITION_CLASSES = ["tw-transition", "tw-ease-in-out", "tw-duration-1000"] as const;
+const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible"] as const;
+const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible"] as const;
 
-const getOverallImpactIllustrationUrl = (projectOverallImpact: ProjectOverallImpact) => {
-  switch (projectOverallImpact) {
-    case "strong_negative":
-      return "/img/pictograms/project-impacts-onboarding/project-overall-impact-strong-negative.svg";
-    case "negative":
-      return "/img/pictograms/project-impacts-onboarding/project-overall-impact-negative.svg";
-    case "positive":
-      return "/img/pictograms/project-impacts-onboarding/project-overall-impact-positive.svg";
-    case "strong_positive":
-      return "/img/pictograms/project-impacts-onboarding/project-overall-impact-strong-positive.svg";
-  }
-};
+const EMOJI_CLASSNAME = "tw-bg-[#B8FEC9]";
 
-export default function Step1({
-  projectOverallImpact,
-  mainKeyImpactIndicators,
-  evaluationPeriod,
-  onNextClick,
-}: Props) {
+export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
+  const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
+
+  const onNextInnerStep = () => {
+    setInnerStep((current) => current + 1);
+  };
+
   return (
-    <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6 tw-items-start">
-      <img
-        src={getOverallImpactIllustrationUrl(projectOverallImpact)}
-        aria-hidden="true"
-        alt="pictogramme curseur des impacts"
-        className="tw-w-[90%] md:tw-w-1/3 tw-mx-auto"
-      />
-      <div className="md:tw-w-2/3">
-        <h1 className="tw-text-[32px]">{getTitle(projectOverallImpact)}</h1>
-        <p className="tw-text-lg tw-font-bold">
-          Sur{" "}
-          {evaluationPeriod <= 1 ? `la première année` : `les ${evaluationPeriod} premières années`}
-          , voici ses principaux impacts :
-        </p>
-        <section className="tw-flex tw-flex-col tw-space-y-6">
-          {mainKeyImpactIndicators.map(({ name, value, isSuccess }) => {
-            switch (name) {
-              case "zanCompliance":
-                return (
-                  <ImpactSummaryZanCompliance
-                    isAgriculturalFriche={value.isAgriculturalFriche}
-                    isSuccess={isSuccess}
-                  />
-                );
-              case "projectImpactBalance":
-                return <ImpactSummaryProjectBalance isSuccess={isSuccess} {...value} />;
+    <>
+      <h1 className="tw-text-[32px]">
+        Bénéfriches calcule <span className="tw-bg-[#B8FEC9]">6 types d'impacts</span>.
+      </h1>
+      <ul className="tw-font-bold">
+        <li
+          className={classNames(
+            "tw-text-xl",
+            TRANSITION_CLASSES,
+            innerStep > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
+          )}
+        >
+          Des impacts monétaires :
+          <ul className="tw-text-base tw-list-none">
+            <EmojiListItem emoji="💰" emojiClassName={EMOJI_CLASSNAME}>
+              Impact économiques directs <span>→</span>{" "}
+              <span className="tw-font-normal">
+                Exemple : dépenses de sécurisation de la friche évitées
+              </span>
+            </EmojiListItem>
+            <EmojiListItem emoji="🏦" emojiClassName={EMOJI_CLASSNAME}>
+              Impact économiques indirects <span>→</span>{" "}
+              <span className="tw-font-normal">Exemple : recettes fiscales</span>
+            </EmojiListItem>
+            <EmojiListItem emoji="💰👩🏻" small emojiClassName={EMOJI_CLASSNAME}>
+              Impact sociaux monétarisés <span>→</span>{" "}
+              <span className="tw-font-normal">Exemple : dépenses de santé évitées</span>
+            </EmojiListItem>
+            <EmojiListItem emoji="💰🌳" small emojiClassName={EMOJI_CLASSNAME}>
+              Impact environnementaux monétarisés <span>→</span>{" "}
+              <span className="tw-font-normal">Exemple : valeur monétaire de la décarbonation</span>
+            </EmojiListItem>
+          </ul>
+        </li>
 
-              case "avoidedFricheCostsForLocalAuthority":
-                return (
-                  <ImpactSummaryAvoidedFricheCostsForLocalAuthority
-                    isSuccess={isSuccess}
-                    {...value}
-                  />
-                );
-              case "taxesIncomesImpact":
-                return <ImpactSummaryTaxesIncome isSuccess={isSuccess} value={value} />;
-              case "fullTimeJobs":
-                return <ImpactSummaryFullTimeJobs isSuccess={isSuccess} {...value} />;
-              case "avoidedCo2eqEmissions":
-                return <ImpactSummaryAvoidedCo2eqEmissions isSuccess={isSuccess} value={value} />;
-              case "nonContaminatedSurfaceArea":
-                return <ImpactSummaryNonContaminatedSurfaceArea isSuccess={isSuccess} {...value} />;
-              case "permeableSurfaceArea":
-                return <ImpactSummaryPermeableSurfaceArea isSuccess={isSuccess} {...value} />;
-              case "householdsPoweredByRenewableEnergy":
-                return <ImpactSummaryHouseholdsPoweredByRenewableEnergy value={value} />;
-              case "localPropertyValueIncrease":
-                return <ImpactSummaryLocalPropertyValueIncrease value={value} />;
-            }
-          })}
-        </section>
-        <div className="tw-flex tw-flex-row-reverse tw-mt-5">
-          <Button onClick={onNextClick}>Suivant (1/4)</Button>
-        </div>
+        <li
+          className={classNames(
+            "tw-text-xl",
+            TRANSITION_CLASSES,
+            innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
+          )}
+        >
+          Des impacts non-monétaires :
+          <ul className="tw-text-base tw-list-none">
+            <EmojiListItem emoji="🏘️">
+              Impact sociaux <span>→</span>{" "}
+              <span className="tw-font-normal">Exemple : nombre d’emplois</span>
+            </EmojiListItem>
+            <EmojiListItem emoji="🏬">
+              Impact environnementaux <span>→</span>{" "}
+              <span className="tw-font-normal">Exemple : émissions de CO2-eq évitées </span>
+            </EmojiListItem>
+          </ul>
+        </li>
+      </ul>
+
+      <div className="tw-mt-5">
+        <ButtonsGroup
+          inlineLayoutWhen="always"
+          alignment="between"
+          buttons={[
+            {
+              children: "Retour",
+              priority: "secondary",
+            },
+            {
+              priority: "primary",
+              children: "Suivant",
+              onClick: innerStep === 2 ? onNextClick : onNextInnerStep,
+            },
+          ]}
+        />
       </div>
-    </div>
+    </>
   );
 }

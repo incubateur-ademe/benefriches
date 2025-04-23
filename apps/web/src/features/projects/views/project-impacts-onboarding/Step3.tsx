@@ -1,62 +1,93 @@
 import ButtonsGroup from "@codegouvfr/react-dsfr/ButtonsGroup";
+import { useState } from "react";
 
-import ExampleArticle from "./Example";
+import classNames from "@/shared/views/clsx";
 
 type Props = {
   onBackClick: () => void;
   onNextClick: () => void;
+  skipStepByStepAnimation?: boolean;
 };
 
-export default function Step3({ onNextClick, onBackClick }: Props) {
+const TRANSITION_CLASSES = ["tw-transition", "tw-ease-in-out", "tw-duration-1000"] as const;
+const VISIBLE_CLASSES = ["tw-opacity-100", "tw-visible"] as const;
+const INVISIBLE_CLASSES = ["md:tw-opacity-0", "md:tw-invisible"] as const;
+
+export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimation }: Props) {
+  const [innerStep, setInnerStep] = useState(skipStepByStepAnimation ? 2 : 0);
+
+  const onNextInnerStep = () => {
+    setInnerStep((current) => current + 1);
+  };
   return (
-    <div className="tw-flex tw-flex-col md:tw-flex-row md:tw-space-x-6 tw-items-start">
-      <img
-        src="/img/pictograms/project-impacts-onboarding/monetary-gains.svg"
-        aria-hidden="true"
-        alt="pictogramme gains en nature monétarisés"
-        className="tw-w-1/2 md:tw-w-1/3 tw-mx-auto"
-      />
-      <div className="md:tw-w-2/3">
-        <h1 className="tw-text-[32px]">
-          Votre projet générera des{" "}
-          <span className="tw-bg-[#FFC72780]">gains en nature monétarisés</span>.
-        </h1>
-        <p className="tw-text-lg">
-          Bénéfriches calcule tous les impacts de votre projet : économiques directs (ex :
-          fiscalité), retombées (ex&nbsp;:&nbsp;↘️&nbsp;des dépenses de sécurisation d'un site),
-          mais aussi les "gains en nature" monétarisés. Il s’agit d’effets non marchands ou
-          "externalités" (ex&nbsp;:&nbsp;↘️&nbsp; des émissions carbone) auxquels il est possible
-          d'attribuer une valeur monétaire.
-        </p>
-        <p className="tw-text-lg tw-font-bold">Par exemple :</p>
-        <section className="tw-my-6">
-          <ExampleArticle
-            name="Valeur monétaire de la décarbonation"
-            emoji="☁️"
-            text="En produisant des EnR ou en réduisant les déplacements en voiture, le projet participe
-              à la décarbonation. Cette action en faveur du climat a une valeur monétaire que
-              Bénéfriches utilise dans ses calculs."
+    <>
+      <h1 className="tw-text-[32px]">
+        Vous avez accès au <span className="tw-bg-[#96ECFF]">calcul de tous les impacts</span>.
+      </h1>
+
+      <div className="tw-flex tw-justify-between tw-gap-6">
+        <div
+          className={classNames(
+            TRANSITION_CLASSES,
+            innerStep > 0 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
+          )}
+        >
+          <p className="tw-text-xl tw-font-bold tw-max-w-72">
+            Les indicateurs d’impact sont cliquables.
+          </p>
+          <img
+            src="/img/pictograms/project-impacts-onboarding/step3-indicateur.svg"
+            aria-hidden="true"
+            alt="pictogramme indicateur"
           />
-        </section>
-        <div className="tw-mt-5">
-          <ButtonsGroup
-            inlineLayoutWhen="always"
-            alignment="between"
-            buttons={[
-              {
-                children: "Retour",
-                priority: "secondary",
-                onClick: onBackClick,
-              },
-              {
-                priority: "primary",
-                children: "Suivant (3/4)",
-                onClick: onNextClick,
-              },
-            ]}
+        </div>
+
+        <img
+          className={classNames(
+            TRANSITION_CLASSES,
+            innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
+          )}
+          src="/img/pictograms/project-impacts-onboarding/step3-arrows.svg"
+          aria-hidden="true"
+          alt="pictogramme flèches"
+        />
+
+        <div
+          className={classNames(
+            TRANSITION_CLASSES,
+            innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
+          )}
+        >
+          <p className="tw-max-w-96">
+            Ils ouvrent une fenêtre qui contient toutes les informations sur l’impact : définition,
+            données utilisées, mode de calcul, sources, etc.
+          </p>{" "}
+          <img
+            src="/img/pictograms/project-impacts-onboarding/step3-popin.png"
+            aria-hidden="true"
+            alt="pictogramme popin"
           />
         </div>
       </div>
-    </div>
+
+      <div className="tw-mt-5">
+        <ButtonsGroup
+          inlineLayoutWhen="always"
+          alignment="between"
+          buttons={[
+            {
+              children: "Retour",
+              priority: "secondary",
+              onClick: onBackClick,
+            },
+            {
+              priority: "primary",
+              children: innerStep === 2 ? "Consulter les impacts" : "Suivant",
+              onClick: innerStep === 2 ? onNextClick : onNextInnerStep,
+            },
+          ]}
+        />
+      </div>
+    </>
   );
 }

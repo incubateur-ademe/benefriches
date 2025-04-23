@@ -20,7 +20,10 @@ const { RouteProvider, useRoute, routes } = createRouter({
     (params) => `/sites/${params.siteId}/caracteristiques`,
   ),
   demoProjectImpacts: demoProject.extend(`/impacts`),
-  demoProjectImpactsOnboarding: demoProject.extend(`/onboarding-impacts`),
+  demoProjectImpactsOnboarding: demoProject.extend(
+    { etape: param.query.optional.string },
+    () => `/onboarding-impacts`,
+  ),
   demoOnBoardingIntroductionWhy: demo.extend("/pourquoi-benefriches"),
   demoOnBoardingIntroductionHow: demo.extend("/comment-ca-marche"),
 
@@ -45,7 +48,7 @@ const { RouteProvider, useRoute, routes } = createRouter({
     (params) => `/mes-projets/${params.projectId}/impacts`,
   ),
   projectImpactsOnboarding: defineRoute(
-    { projectId: param.path.string },
+    { projectId: param.path.string, etape: param.query.optional.string },
     (params) => `/mes-projets/${params.projectId}/onboarding-impacts`,
   ),
   // MES PROJETS

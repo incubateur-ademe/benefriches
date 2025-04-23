@@ -1,55 +1,27 @@
-import Alert from "@codegouvfr/react-dsfr/Alert";
-import { useEffect } from "react";
+import { Route } from "type-route";
 
-import LoadingSpinner from "@/shared/views/components/Spinner/LoadingSpinner";
-import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 import { routes } from "@/shared/views/router";
 
-import { fetchImpactsForReconversionProject } from "../../application/fetchImpactsForReconversionProject.action";
-import {
-  selectMainKeyImpactIndicators,
-  selectProjectOverallImpact,
-} from "../../application/projectKeyImpactIndicators.selectors";
 import ProjectImpactsOnboardingPage from "./ProjectImpactsOnboardingPage";
 
 type Props = {
   projectId: string;
+  route: Route<typeof routes.projectImpactsOnboarding>;
 };
 
-function ProjectImpactsOnboardingPageContainer({ projectId }: Props) {
-  const dispatch = useAppDispatch();
-
-  const { evaluationPeriod, dataLoadingState } = useAppSelector((state) => state.projectImpacts);
-  const projectOverallImpact = useAppSelector(selectProjectOverallImpact);
-  const mainKeyImpactIndicators = useAppSelector(selectMainKeyImpactIndicators);
-
-  useEffect(() => {
-    void dispatch(fetchImpactsForReconversionProject({ projectId, evaluationPeriod }));
-  }, [projectId, evaluationPeriod, dispatch]);
-
-  if (dataLoadingState === "error") {
-    return (
-      <Alert
-        description="Une erreur s'est produite lors du chargement des données, veuillez réessayer."
-        severity="error"
-        title="Impossible de charger les impacts du projet"
-        className="tw-my-7"
-      />
-    );
-  }
-
-  if (dataLoadingState === "loading") {
-    return <LoadingSpinner />;
-  }
-
+function ProjectImpactsOnboardingPageContainer({ projectId, route }: Props) {
   return (
     <ProjectImpactsOnboardingPage
+      routeStep={route.params.etape}
+      onNextToStep={(step: string) => {
+        routes.projectImpactsOnboarding({ projectId, etape: step }).push();
+      }}
+      onBackToStep={(step: string) => {
+        routes.projectImpactsOnboarding({ projectId, etape: step }).replace();
+      }}
       onFinalNext={() => {
         routes.projectImpacts({ projectId }).push();
       }}
-      projectOverallImpact={projectOverallImpact}
-      mainKeyImpactIndicators={mainKeyImpactIndicators}
-      evaluationPeriod={evaluationPeriod}
     />
   );
 }

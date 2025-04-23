@@ -115,7 +115,7 @@ function FeaturesApp() {
             case routes.projectImpactsOnboarding.name:
               return (
                 <RequireRegisteredUser>
-                  <ProjectImpactsOnboardingPage projectId={route.params.projectId} />
+                  <ProjectImpactsOnboardingPage projectId={route.params.projectId} route={route} />
                 </RequireRegisteredUser>
               );
             case routes.siteFeatures.name:
