@@ -26,7 +26,8 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
   return (
     <>
       <h1 className="tw-text-[32px]">
-        Bénéfriches calcule <span className="tw-bg-[#B8FEC9]">6 types d'impacts</span>.
+        Bénéfriches calcule{" "}
+        <span className="tw-bg-[#B8FEC9] dark:tw-text-black">6 types d'impacts</span>.
       </h1>
       <ul className="tw-font-bold">
         <li
@@ -68,11 +69,11 @@ export default function Step1({ onNextClick, skipStepByStepAnimation }: Props) {
         >
           Des impacts non-monétaires :
           <ul className="tw-text-base tw-list-none">
-            <EmojiListItem emoji="🏘️">
+            <EmojiListItem emoji="🏘️" emojiClassName={EMOJI_CLASSNAME}>
               Impact sociaux <span>→</span>{" "}
               <span className="tw-font-normal">Exemple : nombre d’emplois</span>
             </EmojiListItem>
-            <EmojiListItem emoji="🏬">
+            <EmojiListItem emoji="🏬" emojiClassName={EMOJI_CLASSNAME}>
               Impact environnementaux <span>→</span>{" "}
               <span className="tw-font-normal">Exemple : émissions de CO2-eq évitées </span>
             </EmojiListItem>

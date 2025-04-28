@@ -22,7 +22,8 @@ export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimatio
   return (
     <>
       <h1 className="tw-text-[32px]">
-        Vous avez accès au <span className="tw-bg-[#96ECFF]">calcul de tous les impacts</span>.
+        Vous avez accès au{" "}
+        <span className="tw-bg-[#96ECFF] dark:tw-text-black">calcul de tous les impacts</span>.
       </h1>
 
       <div className="tw-flex tw-justify-between tw-gap-6">
@@ -46,6 +47,7 @@ export default function Step4({ onNextClick, onBackClick, skipStepByStepAnimatio
           className={classNames(
             TRANSITION_CLASSES,
             innerStep > 1 ? VISIBLE_CLASSES : INVISIBLE_CLASSES,
+            "dark:tw-invert",
           )}
           src="/img/pictograms/project-impacts-onboarding/step3-arrows.svg"
           aria-hidden="true"
