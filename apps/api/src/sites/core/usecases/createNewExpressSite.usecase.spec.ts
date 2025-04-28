@@ -123,8 +123,37 @@ describe("CreateNewExpressSite Use case", () => {
             BUILDINGS: 50,
           }),
           owner: { structureType: "municipality", name: "Mairie de Montrouge" },
-          yearlyExpenses: [],
-          yearlyIncomes: [],
+          yearlyExpenses: [
+            {
+              amount: 101,
+              bearer: "owner",
+              purpose: "rent",
+            },
+            {
+              amount: 12,
+              bearer: "owner",
+              purpose: "operationsTaxes",
+            },
+            {
+              amount: 724,
+              bearer: "owner",
+              purpose: "otherOperationsCosts",
+            },
+          ],
+          yearlyIncomes: [
+            {
+              amount: 38,
+              source: "subsidies",
+            },
+            {
+              amount: 933,
+              source: "product-sales",
+            },
+            {
+              amount: 126,
+              source: "other",
+            },
+          ],
         },
       ]);
     });

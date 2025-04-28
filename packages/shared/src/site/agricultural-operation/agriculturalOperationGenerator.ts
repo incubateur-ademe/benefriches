@@ -1,4 +1,10 @@
-import { generateSiteName, SiteGenerationProps, SiteGenerator } from "..";
+import {
+  computeAgriculturalOperationYearlyExpenses,
+  computeAgriculturalOperationYearlyIncomes,
+  generateSiteName,
+  SiteGenerationProps,
+  SiteGenerator,
+} from "..";
 import { formatMunicipalityName } from "../../local-authority";
 import { createSoilSurfaceAreaDistribution, SoilsDistribution, SoilType } from "../../soils";
 import {
@@ -87,8 +93,15 @@ export class AgriculturalOperationGenerator
         structureType: "municipality",
         name: formatMunicipalityName(address.city),
       },
-      yearlyExpenses: [],
-      yearlyIncomes: [],
+      yearlyExpenses: computeAgriculturalOperationYearlyExpenses(
+        props.operationActivity,
+        props.surfaceArea,
+        "owner",
+      ),
+      yearlyIncomes: computeAgriculturalOperationYearlyIncomes(
+        props.operationActivity,
+        props.surfaceArea,
+      ),
       name: generateSiteName({
         cityName: address.city,
         isFriche: false,
