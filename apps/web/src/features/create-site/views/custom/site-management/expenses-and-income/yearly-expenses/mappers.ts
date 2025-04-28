@@ -8,13 +8,11 @@ export const mapFormDataToExpenses = (
   formData: FormValues,
   expensesConfig: SiteYearlyExpensesConfig,
 ): SiteYearlyExpense[] => {
-  return expensesConfig
-    .map(({ purpose, fixedBearer }) => ({
-      purpose,
-      bearer: fixedBearer ?? formData[purpose]?.bearer ?? "tenant",
-      amount: formData[purpose]?.amount,
-    }))
-    .filter(({ amount }) => !!amount) as SiteYearlyExpense[];
+  return expensesConfig.map(({ purpose, fixedBearer }) => ({
+    purpose,
+    bearer: fixedBearer ?? formData[purpose]?.bearer ?? "tenant",
+    amount: formData[purpose]?.amount ?? 0,
+  })) as SiteYearlyExpense[];
 };
 
 type SiteExpensesInitialValues = {

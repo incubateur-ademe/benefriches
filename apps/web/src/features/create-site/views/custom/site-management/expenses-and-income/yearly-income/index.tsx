@@ -1,31 +1,36 @@
-import { SiteYearlyIncome, typedObjectEntries } from "shared";
+import { SiteYearlyIncome } from "shared";
 
 import { stepRevertAttempted } from "@/features/create-site/core/actions/revert.actions";
 import { yearlyIncomeStepCompleted } from "@/features/create-site/core/actions/siteManagement.actions";
+import { selectEstimatedYearlyIncomesForSite } from "@/features/create-site/core/selectors/incomes.selectors";
 import { AppDispatch } from "@/shared/core/store-config/store";
-import { useAppDispatch } from "@/shared/views/hooks/store.hooks";
+import { useAppDispatch, useAppSelector } from "@/shared/views/hooks/store.hooks";
 
 import SiteYearlyIncomeForm, { FormValues } from "./SiteYearlyIncomeForm";
+import { getInitialValues, mapFormDataToIncomes } from "./mappers";
 
-const mapProps = (dispatch: AppDispatch) => {
+const mapProps = (
+  dispatch: AppDispatch,
+  incomesInStore: SiteYearlyIncome[],
+  estimatedIncomeAmounts: SiteYearlyIncome[],
+) => {
   return {
+    initialValues: getInitialValues(incomesInStore, estimatedIncomeAmounts),
     onBack: () => {
       dispatch(stepRevertAttempted());
     },
     onSubmit: (formData: FormValues) => {
-      const incomes: SiteYearlyIncome[] = [];
-      typedObjectEntries(formData).forEach(([source, amount]) => {
-        if (amount) incomes.push({ source, amount });
-      });
-      dispatch(yearlyIncomeStepCompleted(incomes));
+      dispatch(yearlyIncomeStepCompleted(mapFormDataToIncomes(formData)));
     },
   };
 };
 
 function SiteYearlyIncomeFormContainer() {
   const dispatch = useAppDispatch();
+  const incomesInStore = useAppSelector((state) => state.siteCreation.siteData.yearlyIncomes);
+  const estimatedIncomeAmounts = useAppSelector(selectEstimatedYearlyIncomesForSite);
 
-  return <SiteYearlyIncomeForm {...mapProps(dispatch)} />;
+  return <SiteYearlyIncomeForm {...mapProps(dispatch, incomesInStore, estimatedIncomeAmounts)} />;
 }
 
 export default SiteYearlyIncomeFormContainer;

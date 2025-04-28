@@ -3,6 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 import {
   SiteNature,
   SiteYearlyExpensePurpose,
+  computeAgriculturalOperationYearlyExpenses,
   computeEstimatedPropertyTaxesAmount,
   computeIllegalDumpingDefaultCost,
   computeMaintenanceDefaultCost,
@@ -33,33 +34,64 @@ type EstimatedSiteYearlyExpensesAmounts = Partial<Record<SiteYearlyExpensePurpos
 export const selectEstimatedYearlyExpensesForSite = createSelector(
   [selectSiteData, selectSitePopulation],
   (siteData, population): EstimatedSiteYearlyExpensesAmounts => {
-    const { soilsDistribution = {}, surfaceArea, nature } = siteData;
+    const {
+      soilsDistribution = {},
+      surfaceArea,
+      nature,
+      agriculturalOperationActivity,
+      tenant,
+      isSiteOperated,
+    } = siteData;
 
     const buildingsSurface = soilsDistribution.BUILDINGS;
     const propertyTaxesAmount = buildingsSurface
       ? computeEstimatedPropertyTaxesAmount(buildingsSurface)
       : undefined;
 
-    if (nature === "FRICHE") {
-      const maintenanceAmount = buildingsSurface
-        ? computeMaintenanceDefaultCost(buildingsSurface)
-        : undefined;
-      const illegalDumpingCostAmount = population
-        ? computeIllegalDumpingDefaultCost(population)
-        : undefined;
-      const securityAmount = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
+    switch (nature) {
+      case "FRICHE": {
+        const maintenanceAmount = buildingsSurface
+          ? computeMaintenanceDefaultCost(buildingsSurface)
+          : undefined;
+        const illegalDumpingCostAmount = population
+          ? computeIllegalDumpingDefaultCost(population)
+          : undefined;
+        const securityAmount = surfaceArea ? computeSecurityDefaultCost(surfaceArea) : undefined;
 
-      return {
-        maintenance: maintenanceAmount,
-        propertyTaxes: propertyTaxesAmount,
-        illegalDumpingCost: illegalDumpingCostAmount,
-        security: securityAmount,
-      };
+        return {
+          maintenance: maintenanceAmount,
+          propertyTaxes: propertyTaxesAmount,
+          illegalDumpingCost: illegalDumpingCostAmount,
+          security: securityAmount,
+        };
+      }
+      case "AGRICULTURAL_OPERATION": {
+        if (!agriculturalOperationActivity || !surfaceArea || !isSiteOperated) {
+          return {
+            propertyTaxes: propertyTaxesAmount,
+          };
+        }
+        const operationsExpenses = computeAgriculturalOperationYearlyExpenses(
+          agriculturalOperationActivity,
+          surfaceArea,
+          tenant ? "tenant" : "owner",
+        );
+
+        return {
+          rent: operationsExpenses.find(({ purpose }) => purpose === "rent")?.amount,
+          otherOperationsCosts: operationsExpenses.find(
+            ({ purpose }) => purpose === "otherOperationsCosts",
+          )?.amount,
+          operationsTaxes: operationsExpenses.find(({ purpose }) => purpose === "operationsTaxes")
+            ?.amount,
+          propertyTaxes: propertyTaxesAmount,
+        };
+      }
+      default:
+        return {
+          propertyTaxes: propertyTaxesAmount,
+        };
     }
-
-    return {
-      propertyTaxes: propertyTaxesAmount,
-    };
   },
 );
 

@@ -27,7 +27,16 @@ describe("Site yearly expenses mappers", () => {
           { purpose: "accidentsCost", fixedBearer: "owner" },
         ],
       ),
-    ).toEqual([]);
+    ).toEqual([
+      { purpose: "rent", bearer: "tenant", amount: 0 },
+      { purpose: "operationsTaxes", bearer: "tenant", amount: 0 },
+      { purpose: "maintenance", bearer: "tenant", amount: 0 },
+      { purpose: "propertyTaxes", bearer: "owner", amount: 0 },
+      { purpose: "otherManagementCosts", bearer: "tenant", amount: 0 },
+      { purpose: "security", bearer: "owner", amount: 0 },
+      { purpose: "illegalDumpingCost", bearer: "owner", amount: 0 },
+      { purpose: "accidentsCost", bearer: "owner", amount: 0 },
+    ]);
   });
 
   it("returns array with rent, propertyTaxes and security expenses with default bearers", () => {
@@ -62,8 +71,14 @@ describe("Site yearly expenses mappers", () => {
       ]),
     ).toEqual([
       { purpose: "rent", bearer: "tenant", amount: 140 },
+      { purpose: "operationsTaxes", bearer: "tenant", amount: 0 },
+      { purpose: "maintenance", bearer: "tenant", amount: 0 },
       { purpose: "propertyTaxes", bearer: "owner", amount: 130 },
+      { purpose: "otherManagementCosts", bearer: "tenant", amount: 0 },
       { purpose: "security", bearer: "owner", amount: 89 },
+      { purpose: "illegalDumpingCost", bearer: "owner", amount: 0 },
+      { purpose: "otherSecuringCosts", bearer: "tenant", amount: 0 },
+      { purpose: "accidentsCost", bearer: "owner", amount: 0 },
     ]);
   });
 
@@ -133,6 +148,8 @@ describe("Site yearly expenses mappers", () => {
         { purpose: "accidentsCost", fixedBearer: "owner" },
       ]),
     ).toEqual([
+      { purpose: "rent", bearer: "owner", amount: 0 },
+      { purpose: "operationsTaxes", bearer: "owner", amount: 0 },
       { purpose: "maintenance", bearer: "owner", amount: 19 },
       { purpose: "propertyTaxes", bearer: "owner", amount: 130 },
       {

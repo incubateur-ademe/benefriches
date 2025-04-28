@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { SiteYearlyIncome, typedObjectEntries } from "shared";
+import { typedObjectEntries } from "shared";
 
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
 import RowDecimalsNumericInput from "@/shared/views/components/form/NumericInput/RowDecimalsNumericInput";
@@ -9,12 +9,15 @@ import WizardFormLayout from "@/shared/views/layout/WizardFormLayout/WizardFormL
 type Props = {
   onSubmit: (data: FormValues) => void;
   onBack: () => void;
+  initialValues?: FormValues;
 };
 
-export type FormValues = Record<SiteYearlyIncome["source"], number | undefined>;
+export type FormValues = Record<"product-sales" | "subsidies" | "other", number | undefined>;
 
-function SiteYearlyIncomeForm({ onSubmit, onBack }: Props) {
-  const { register, handleSubmit, watch } = useForm<FormValues>();
+function SiteYearlyIncomeForm({ onSubmit, onBack, initialValues }: Props) {
+  const { register, handleSubmit, watch } = useForm<FormValues>({
+    defaultValues: initialValues,
+  });
 
   const formValues = watch();
 
