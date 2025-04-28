@@ -30,6 +30,7 @@ export type SiteViewModel = {
   accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
   yearlyExpenses: { amount: number; purpose: string }[];
+  yearlyIncomes: { amount: number; source: string }[];
   fricheActivity?: string;
   description?: string;
 };

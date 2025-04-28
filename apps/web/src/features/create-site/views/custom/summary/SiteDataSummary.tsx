@@ -1,4 +1,10 @@
-import { FricheActivity, SiteNature, SiteYearlyExpense, SoilsDistribution } from "shared";
+import {
+  FricheActivity,
+  SiteNature,
+  SiteYearlyExpense,
+  SiteYearlyIncome,
+  SoilsDistribution,
+} from "shared";
 
 import SiteFeaturesList from "@/features/site-features/views/SiteFeaturesList";
 import BackNextButtonsGroup from "@/shared/views/components/BackNextButtons/BackNextButtons";
@@ -16,6 +22,7 @@ type Props = {
       accidentsDeaths?: number;
     } | null;
     expenses: SiteYearlyExpense[];
+    incomes: SiteYearlyIncome[];
     totalSurfaceArea: number;
     soilsDistribution: SoilsDistribution;
     contaminatedSurfaceArea?: number;
@@ -43,6 +50,7 @@ function SiteDataSummary({ siteData, onNext, onBack }: Props) {
         tenantName={siteData.tenantName}
         accidents={siteData.accidents ?? {}}
         expenses={siteData.expenses}
+        incomes={siteData.incomes}
         surfaceArea={siteData.totalSurfaceArea}
         soilsDistribution={siteData.soilsDistribution}
         contaminatedSurfaceArea={siteData.contaminatedSurfaceArea}

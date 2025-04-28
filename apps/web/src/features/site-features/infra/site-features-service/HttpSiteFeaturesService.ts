@@ -1,4 +1,11 @@
-import { Address, FricheActivity, SiteNature, SiteYearlyExpensePurpose, SoilType } from "shared";
+import {
+  Address,
+  FricheActivity,
+  SiteNature,
+  SiteYearlyExpensePurpose,
+  SiteYearlyIncome,
+  SoilType,
+} from "shared";
 
 import { SiteFeaturesGateway } from "../../core/fetchSiteFeatures.action";
 import { SiteFeatures } from "../../core/siteFeatures";
@@ -25,6 +32,7 @@ type SiteFromApi = {
   accidentsSevereInjuries?: number;
   accidentsDeaths?: number;
   yearlyExpenses: { amount: number; purpose: string }[];
+  yearlyIncomes: { amount: number; source: string }[];
   fricheActivity?: string;
   description?: string;
 };
@@ -56,6 +64,10 @@ export class HttpSiteFeaturesService implements SiteFeaturesGateway {
       expenses: jsonResponse.yearlyExpenses as {
         amount: number;
         purpose: SiteYearlyExpensePurpose;
+      }[],
+      incomes: jsonResponse.yearlyIncomes as {
+        amount: number;
+        source: SiteYearlyIncome["source"];
       }[],
       surfaceArea: jsonResponse.surfaceArea,
       soilsDistribution: jsonResponse.soilsDistribution,

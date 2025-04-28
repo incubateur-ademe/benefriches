@@ -6,6 +6,7 @@ import {
 } from "shared";
 
 import { getLabelForExpensePurpose } from "@/features/create-site/core/expenses.functions";
+import { getLabelForIncomeSource } from "@/features/create-site/core/incomes.functions";
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import classNames from "@/shared/views/clsx";
 import SurfaceAreaPieChart from "@/shared/views/components/Charts/SurfaceAreaPieChart";
@@ -19,9 +20,14 @@ type Props = SiteFeatures;
 
 export default function SiteFeaturesList(siteFeatures: Props) {
   const siteManagementExpenses = siteFeatures.expenses.filter((e) =>
-    ["maintenance", "rent", "propertyTaxes", "operationsTaxes", "otherManagementCosts"].includes(
-      e.purpose,
-    ),
+    [
+      "maintenance",
+      "rent",
+      "propertyTaxes",
+      "operationsTaxes",
+      "otherManagementCosts",
+      "otherOperationsCosts",
+    ].includes(e.purpose),
   );
   const fricheSpecificExpenses = siteFeatures.expenses.filter((e) =>
     ["security", "illegalDumpingCost", "otherSecuringCosts"].includes(e.purpose),
@@ -192,6 +198,29 @@ export default function SiteFeaturesList(siteFeatures: Props) {
                     value={`${formatNumberFr(amount)} €`}
                     isDetails
                     key={purpose}
+                  />
+                );
+              })}
+            </>
+          )}
+          {siteFeatures.incomes.length > 0 && (
+            <>
+              <DataLine
+                noBorder
+                label={<strong>Recettes annuelles du site</strong>}
+                value={
+                  <strong>
+                    {formatNumberFr(sumListWithKey(siteFeatures.incomes, "amount"))} €
+                  </strong>
+                }
+              />
+              {siteFeatures.incomes.map(({ source, amount }) => {
+                return (
+                  <DataLine
+                    label={getLabelForIncomeSource(source)}
+                    value={`${formatNumberFr(amount)} €`}
+                    isDetails
+                    key={source}
                   />
                 );
               })}

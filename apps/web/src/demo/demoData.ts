@@ -28,6 +28,7 @@ export const DEMO_SITE = {
     { amount: 775, purpose: "illegalDumpingCost" },
     { amount: 35000, purpose: "maintenance" },
   ],
+  incomes: [],
   accidents: {},
 } as const satisfies SiteFeatures;
 

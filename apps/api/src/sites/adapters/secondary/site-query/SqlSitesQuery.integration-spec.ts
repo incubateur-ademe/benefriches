@@ -99,6 +99,7 @@ describe("SqlSitesQuery integration", () => {
           { amount: 45000, purpose: "rent" },
           { amount: 55000, purpose: "maintenance" },
         ],
+        yearlyIncomes: [],
         contaminatedSoilSurface: 1200,
         address: {
           city: "Paris",
@@ -165,6 +166,15 @@ describe("SqlSitesQuery integration", () => {
         },
       ]);
 
+      await sqlConnection("site_incomes").insert([
+        {
+          id: uuid(),
+          site_id: siteId,
+          amount: 5000,
+          source: "product-sales",
+        },
+      ]);
+
       const result = await sitesQuery.getById(siteId);
 
       const expectedResult: SiteViewModel = {
@@ -175,6 +185,7 @@ describe("SqlSitesQuery integration", () => {
         isExpressSite: true,
         owner: { structureType: "company" },
         yearlyExpenses: [{ amount: 3300, purpose: "security" }],
+        yearlyIncomes: [{ amount: 5000, source: "product-sales" }],
         address: {
           city: "Paris",
           cityCode: "75109",

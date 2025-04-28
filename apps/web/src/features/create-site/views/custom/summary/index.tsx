@@ -32,6 +32,7 @@ function SiteDataSummaryContainer() {
             }
           : null,
         expenses: siteData.yearlyExpenses,
+        incomes: siteData.yearlyIncomes,
         totalSurfaceArea: siteData.surfaceArea ?? 0,
         soilsDistribution: siteData.soilsDistribution ?? {},
         contaminatedSurfaceArea: siteData.contaminatedSoilSurface,

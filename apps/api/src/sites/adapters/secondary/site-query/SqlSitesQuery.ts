@@ -7,6 +7,7 @@ import {
   SqlAddress,
   SqlSite,
   SqlSiteExpense,
+  SqlSiteIncome,
   SqlSiteSoilsDistribution,
 } from "src/shared-kernel/adapters/sql-knex/tableTypes";
 import { SitesQuery } from "src/sites/core/gateways/SitesQuery";
@@ -20,6 +21,7 @@ export class SqlSitesQuery implements SitesQuery {
       .where("sites.id", siteId)
       .leftJoin("addresses as address", "sites.id", "address.site_id")
       .leftJoin("site_expenses as expenses", "sites.id", "expenses.site_id")
+      .leftJoin("site_incomes as incomes", "sites.id", "incomes.site_id")
       .leftJoin(
         "site_soils_distributions as soils_distribution",
         "sites.id",
@@ -58,7 +60,15 @@ export class SqlSitesQuery implements SitesQuery {
               'purpose', expenses.purpose
             ) 
           ) FILTER (WHERE expenses.id IS NOT NULL) AS "yearly_expenses"
-    `),
+        `),
+        this.sqlConnection.raw(`
+          jsonb_agg(
+            distinct jsonb_build_object(
+              'amount', incomes.amount,
+              'source', incomes.source
+            ) 
+          ) FILTER (WHERE incomes.id IS NOT NULL) AS "yearly_incomes"
+        `),
         this.sqlConnection.raw(`
           jsonb_agg(
             distinct jsonb_build_object(
@@ -98,6 +108,7 @@ export class SqlSitesQuery implements SitesQuery {
           address_street_number: SqlAddress["street_number"];
           soils_distribution: Pick<SqlSiteSoilsDistribution, "soil_type" | "surface_area">[] | null;
           yearly_expenses: Pick<SqlSiteExpense, "amount" | "purpose">[] | null;
+          yearly_incomes: Pick<SqlSiteIncome, "amount" | "source">[] | null;
         }[];
 
     const sqlSite = sqlResult?.[0];
@@ -144,6 +155,7 @@ export class SqlSitesQuery implements SitesQuery {
       accidentsSevereInjuries: sqlSite.friche_accidents_severe_injuries ?? undefined,
       accidentsDeaths: sqlSite.friche_accidents_deaths ?? undefined,
       yearlyExpenses: sqlSite.yearly_expenses ?? [],
+      yearlyIncomes: sqlSite.yearly_incomes ?? [],
     };
   }
 }

@@ -18,6 +18,7 @@ export class MockSiteFeaturesService implements SiteFeaturesGateway {
       { amount: 10300, purpose: "security" },
       { amount: 340, purpose: "illegalDumpingCost" },
     ],
+    incomes: [],
     surfaceArea: 120000,
     ownerName: "ADEME",
     soilsDistribution: {

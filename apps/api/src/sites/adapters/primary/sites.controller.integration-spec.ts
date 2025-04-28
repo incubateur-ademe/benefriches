@@ -546,6 +546,7 @@ describe("Sites controller", () => {
           bearer: "owner",
         },
       ]);
+
       const response = await supertest(app.getHttpServer()).get(`/api/sites/${siteId}`).send();
 
       expect(response.status).toEqual(200);
@@ -577,9 +578,96 @@ describe("Sites controller", () => {
         description: "Description of site",
         fricheActivity: "INDUSTRY",
         yearlyExpenses: [{ amount: 3300, purpose: "security" }],
+        yearlyIncomes: [],
         accidentsDeaths: 1,
         accidentsMinorInjuries: 2,
         accidentsSevereInjuries: 3,
+      });
+    });
+
+    it("gets a 200 response when site exists with incomes", async () => {
+      const siteId = uuid();
+      await sqlConnection("sites").insert({
+        id: siteId,
+        created_by: "74ac340f-0654-4887-9449-3dbb43ce35b5",
+        name: "Viticulture Amiens",
+        nature: "AGRICULTURAL_OPERATIONS",
+        description: "Description of site",
+        surface_area: 14000,
+        owner_name: "Owner name",
+        owner_structure_type: "company",
+        tenant_structure_type: "company",
+        created_at: new Date(),
+        is_friche: false,
+      });
+
+      await sqlConnection("addresses").insert({
+        id: uuid(),
+        site_id: siteId,
+        value: "8 Boulevard du Port 80000 Amiens",
+        street_number: "8",
+        street_name: "Boulevard du Port",
+        city_code: "80021",
+        post_code: "80000",
+        city: "Amiens",
+        ban_id: "80021_6590_00008",
+        long: 49.897443,
+        lat: 2.290084,
+      });
+
+      await sqlConnection("site_soils_distributions").insert([
+        { id: uuid(), site_id: siteId, soil_type: "FOREST_MIXED", surface_area: 1200 },
+        { id: uuid(), site_id: siteId, soil_type: "PRAIRIE_GRASS", surface_area: 12800 },
+      ]);
+
+      await sqlConnection("site_expenses").insert([
+        {
+          id: uuid(),
+          site_id: siteId,
+          amount: 3300,
+          purpose: "operationCosts",
+          bearer: "owner",
+        },
+      ]);
+
+      await sqlConnection("site_incomes").insert([
+        {
+          id: uuid(),
+          site_id: siteId,
+          amount: 5000,
+          source: "subsidies",
+        },
+      ]);
+
+      const response = await supertest(app.getHttpServer()).get(`/api/sites/${siteId}`).send();
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({
+        id: siteId,
+        name: "Viticulture Amiens",
+        nature: "AGRICULTURAL_OPERATIONS",
+        isExpressSite: false,
+        surfaceArea: 14000,
+        owner: { name: "Owner name", structureType: "company" },
+        tenant: { structureType: "company" },
+        address: {
+          value: "8 Boulevard du Port 80000 Amiens",
+          streetNumber: "8",
+          streetName: "Boulevard du Port",
+          banId: "80021_6590_00008",
+          postCode: "80000",
+          cityCode: "80021",
+          city: "Amiens",
+          long: 49.897443,
+          lat: 2.290084,
+        },
+        soilsDistribution: {
+          FOREST_MIXED: 1200,
+          PRAIRIE_GRASS: 12800,
+        },
+        description: "Description of site",
+        yearlyExpenses: [{ amount: 3300, purpose: "operationCosts" }],
+        yearlyIncomes: [{ amount: 5000, source: "subsidies" }],
       });
     });
   });

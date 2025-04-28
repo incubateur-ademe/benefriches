@@ -39,6 +39,7 @@ describe("GetSiteById Use Case", () => {
         IMPERMEABLE_SOILS: 1300,
       },
       yearlyExpenses: [{ amount: 10999, purpose: "rent" }],
+      yearlyIncomes: [{ amount: 13000, source: "subsidies" }],
       address: {
         city: "Paris",
         cityCode: "75109",
@@ -77,6 +78,7 @@ describe("GetSiteById Use Case", () => {
       accidentsMinorInjuries: 2,
       accidentsSevereInjuries: 1,
       yearlyExpenses: [{ amount: 10999, purpose: "rent" }],
+      yearlyIncomes: [{ amount: 13000, source: "subsidies" }],
       fricheActivity: site.fricheActivity,
     });
   });

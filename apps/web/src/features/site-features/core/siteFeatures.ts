@@ -1,4 +1,10 @@
-import { FricheActivity, SiteNature, SiteYearlyExpensePurpose, SoilsDistribution } from "shared";
+import {
+  FricheActivity,
+  SiteNature,
+  SiteYearlyExpensePurpose,
+  SiteYearlyIncome,
+  SoilsDistribution,
+} from "shared";
 
 export type SiteFeatures = {
   id: string;
@@ -13,6 +19,7 @@ export type SiteFeatures = {
     accidentsDeaths?: number;
   };
   expenses: { amount: number; purpose: SiteYearlyExpensePurpose }[];
+  incomes: { amount: number; source: SiteYearlyIncome["source"] }[];
   surfaceArea: number;
   soilsDistribution: SoilsDistribution;
   contaminatedSurfaceArea?: number;

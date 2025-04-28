@@ -82,6 +82,7 @@ describe("CreateReconversionProject Use Case", () => {
         lat: 48.815679,
       },
       yearlyExpenses: [],
+      yearlyIncomes: [],
     };
 
     beforeEach(() => {
@@ -563,6 +564,7 @@ describe("CreateReconversionProject Use Case", () => {
         lat: 48.815679,
       },
       yearlyExpenses: [],
+      yearlyIncomes: [],
       owner: {
         name: "Monsieur Dupont",
         structureType: "private_individual",
