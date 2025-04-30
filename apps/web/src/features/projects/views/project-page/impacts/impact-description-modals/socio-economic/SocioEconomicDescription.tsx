@@ -1,8 +1,12 @@
+import { useContext } from "react";
+
 import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
+import classNames from "@/shared/views/clsx";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import SocioEconomicImpactSection from "../../list-view/sections/SocioEconomicImpactSection";
+import ImpactRowValue from "../../list-view/ImpactRowValue";
+import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
 import ModalBarColoredChart from "../shared/ModalBarColoredChart";
 import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
@@ -18,6 +22,8 @@ type Props = {
 const SocioEconomicDescription = ({ impactsData }: Props) => {
   const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary, total } =
     impactsData;
+  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
+
   return (
     <ModalBody size="large">
       <ModalHeader
@@ -56,30 +62,125 @@ const SocioEconomicDescription = ({ impactsData }: Props) => {
             ]}
           />
           <div className="tw-flex tw-flex-col tw-gap-4">
-            <SocioEconomicImpactSection
-              sectionName="economic_direct"
-              {...economicDirect}
-              initialShowSectionContent={false}
-              noMarginBottom
-            />
-            <SocioEconomicImpactSection
-              sectionName="economic_indirect"
-              {...economicIndirect}
-              initialShowSectionContent={false}
-              noMarginBottom
-            />
-            <SocioEconomicImpactSection
-              sectionName="social_monetary"
-              {...socialMonetary}
-              initialShowSectionContent={false}
-              noMarginBottom
-            />
-            <SocioEconomicImpactSection
-              sectionName="environmental_monetary"
-              {...environmentalMonetary}
-              initialShowSectionContent={false}
-              noMarginBottom
-            />
+            <div
+              className={classNames(
+                "tw-py-2 tw-px-4",
+                "tw-w-full",
+                "tw-rounded tw-border tw-border-solid tw-border-transparent",
+                ["tw-bg-impacts-dark", "dark:tw-bg-black"],
+                "tw-cursor-pointer",
+                "tw-transition tw-ease-in-out tw-duration-500",
+                "hover:tw-border-grey-dark hover:dark:tw-border-white",
+              )}
+            >
+              <ImpactRowValue
+                label="Impacts économiques directs"
+                labelProps={{
+                  role: "heading",
+                  "aria-level": 3,
+                  className: "tw-text-base",
+                  onClick: () => {
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      subSectionName: "economic_direct",
+                    });
+                  },
+                }}
+                value={economicDirect.total}
+                type="monetary"
+                isTotal
+              />
+            </div>
+
+            <div
+              className={classNames(
+                "tw-py-2 tw-px-4",
+                "tw-w-full",
+                "tw-rounded tw-border tw-border-solid tw-border-transparent",
+                ["tw-bg-impacts-dark", "dark:tw-bg-black"],
+                "tw-cursor-pointer",
+                "tw-transition tw-ease-in-out tw-duration-500",
+                "hover:tw-border-grey-dark hover:dark:tw-border-white",
+              )}
+            >
+              <ImpactRowValue
+                label="Impacts économiques indirects"
+                labelProps={{
+                  role: "heading",
+                  "aria-level": 3,
+                  className: "tw-text-base",
+                  onClick: () => {
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      subSectionName: "economic_indirect",
+                    });
+                  },
+                }}
+                value={economicIndirect.total}
+                type="monetary"
+                isTotal
+              />
+            </div>
+
+            <div
+              className={classNames(
+                "tw-py-2 tw-px-4",
+                "tw-w-full",
+                "tw-rounded tw-border tw-border-solid tw-border-transparent",
+                ["tw-bg-impacts-dark", "dark:tw-bg-black"],
+                "tw-cursor-pointer",
+                "tw-transition tw-ease-in-out tw-duration-500",
+                "hover:tw-border-grey-dark hover:dark:tw-border-white",
+              )}
+            >
+              <ImpactRowValue
+                label="Impacts sociaux monétarisés"
+                labelProps={{
+                  role: "heading",
+                  "aria-level": 3,
+                  className: "tw-text-base",
+                  onClick: () => {
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      subSectionName: "social_monetary",
+                    });
+                  },
+                }}
+                value={socialMonetary.total}
+                type="monetary"
+                isTotal
+              />
+            </div>
+
+            <div
+              className={classNames(
+                "tw-py-2 tw-px-4",
+                "tw-w-full",
+                "tw-rounded tw-border tw-border-solid tw-border-transparent",
+                ["tw-bg-impacts-dark", "dark:tw-bg-black"],
+                "tw-cursor-pointer",
+                "tw-transition tw-ease-in-out tw-duration-500",
+                "hover:tw-border-grey-dark hover:dark:tw-border-white",
+              )}
+            >
+              <ImpactRowValue
+                label="Impacts environnementaux monétarisés"
+                labelProps={{
+                  role: "heading",
+                  "aria-level": 3,
+                  className: "tw-text-base",
+                  onClick: () => {
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      subSectionName: "environmental_monetary",
+                    });
+                  },
+                }}
+                value={environmentalMonetary.total}
+                type="monetary"
+                isTotal
+              />
+            </div>
           </div>
         </ModalData>
         <ModalContent>

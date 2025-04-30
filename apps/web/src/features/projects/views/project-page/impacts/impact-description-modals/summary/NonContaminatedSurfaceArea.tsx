@@ -59,11 +59,14 @@ const SummaryNonContaminatedSurfaceAreaDescription = ({ impactData }: Props) => 
                 value={decontaminatedSurfaceArea}
                 label="✨ Surface non polluée"
                 type="surfaceArea"
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "environmental",
-                    impactName: "non_contaminated_surface_area",
-                  });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    openImpactModalDescription({
+                      sectionName: "environmental",
+                      impactName: "non_contaminated_surface_area",
+                    });
+                  },
                 }}
               />
             </ImpactItemGroup>

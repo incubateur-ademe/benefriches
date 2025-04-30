@@ -41,11 +41,14 @@ const SummaryHouseholdsPoweredByRenewableEnergyDescription = ({ impactData }: Pr
             value={value}
             label="🏠 Foyers alimentés par les EnR"
             type="default"
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "social",
-                impactName: "households_powered_by_renewable_energy",
-              });
+            labelProps={{
+              onClick: (e) => {
+                e.stopPropagation();
+                openImpactModalDescription({
+                  sectionName: "social",
+                  impactName: "households_powered_by_renewable_energy",
+                });
+              },
             }}
           />
         </ImpactItemGroup>

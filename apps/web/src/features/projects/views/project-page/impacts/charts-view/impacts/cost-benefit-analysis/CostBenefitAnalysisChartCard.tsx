@@ -1,19 +1,27 @@
 import * as Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import { useContext } from "react";
 
 import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImpactValue";
 import { withDefaultBarChartOptions } from "@/shared/views/charts";
 
-import { ImpactModalDescriptionContext } from "../../../impact-description-modals/ImpactModalDescriptionContext";
-import ImpactsChartsSection from "../../ImpactsChartsSection";
+import ImpactModalDescription, {
+  ModalDataProps,
+} from "../../../impact-description-modals/ImpactModalDescription";
+import ImpactColumnChartCard from "../../ImpactChartCard/ImpactColumnChartCard";
 
 type Props = {
   economicBalanceTotal: number;
   socioEconomicTotalImpact: number;
+  modalData: ModalDataProps;
 };
 
-function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotalImpact }: Props) {
+const DIALOG_ID = "fr-modal-impacts-cost_benefit_analysis-Chart";
+
+function CostBenefitAnalysisChartCard({
+  economicBalanceTotal,
+  socioEconomicTotalImpact,
+  modalData,
+}: Props) {
   const barChartOptions: Highcharts.Options = withDefaultBarChartOptions({
     xAxis: {
       categories: [
@@ -36,24 +44,25 @@ function CostBenefitAnalysisChartCard({ economicBalanceTotal, socioEconomicTotal
     ],
   });
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
-
   return (
-    <ImpactsChartsSection
-      title="Analyse coûts/bénéfices"
-      onClick={() => {
-        openImpactModalDescription({
+    <>
+      <ImpactModalDescription
+        dialogId={DIALOG_ID}
+        {...modalData}
+        initialState={{
           sectionName: "charts",
           impactName: "cost_benefit_analysis",
-        });
-      }}
-    >
-      <HighchartsReact
-        containerProps={{ className: "highcharts-no-xaxis" }}
-        highcharts={Highcharts}
-        options={barChartOptions}
+        }}
       />
-    </ImpactsChartsSection>
+
+      <ImpactColumnChartCard title="Analyse coûts/bénéfices" dialogId={DIALOG_ID}>
+        <HighchartsReact
+          containerProps={{ className: "highcharts-no-xaxis" }}
+          highcharts={Highcharts}
+          options={barChartOptions}
+        />
+      </ImpactColumnChartCard>
+    </>
   );
 }
 

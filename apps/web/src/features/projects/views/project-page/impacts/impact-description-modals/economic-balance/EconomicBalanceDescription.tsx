@@ -13,8 +13,8 @@ import {
 } from "../../getImpactLabel";
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
+import { ModalDataProps } from "../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
-import { ImpactsData, ProjectData } from "../ImpactModalDescriptionProvider";
 import ModalBarColoredChart from "../shared/ModalBarColoredChart";
 import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
@@ -24,8 +24,8 @@ import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 type Props = {
-  impactsData: ImpactsData;
-  projectData: ProjectData;
+  impactsData: ModalDataProps["impactsData"];
+  projectData: ModalDataProps["projectData"];
 };
 
 const getChartColor = (impactName: EconomicBalanceMainName): string => {
@@ -88,18 +88,28 @@ const EconomicBalanceDescription = ({ impactsData, projectData }: Props) => {
                 value={value}
                 label={getEconomicBalanceImpactLabel(name)}
                 type="monetary"
-                onClick={() => {
-                  openImpactModalDescription({ sectionName: "economic_balance", impactName: name });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    openImpactModalDescription({
+                      sectionName: "economic_balance",
+                      impactName: name,
+                    });
+                  },
                 }}
                 data={details.map(({ name: detailsName, value: detailsValue }) => ({
                   label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
                   value: detailsValue,
-                  onClick: () => {
-                    openImpactModalDescription({
-                      sectionName: "economic_balance",
-                      impactName: name,
-                      impactDetailsName: detailsName,
-                    });
+                  labelProps: {
+                    onClick: (e) => {
+                      e.stopPropagation();
+
+                      openImpactModalDescription({
+                        sectionName: "economic_balance",
+                        impactName: name,
+                        impactDetailsName: detailsName,
+                      });
+                    },
                   },
                 }))}
               />

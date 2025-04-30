@@ -5,7 +5,10 @@ import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 type Props = {
   value: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
   noDescription?: boolean;
 };
 

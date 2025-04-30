@@ -1,6 +1,6 @@
 import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactValue";
 
-import { ImpactsData, ProjectData, SiteData } from "../../ImpactModalDescriptionProvider";
+import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
@@ -8,9 +8,9 @@ import SoilsStorageRelatedCo2Content from "../../shared/co2-emissions/SoilsStora
 import { breadcrumbSegments } from "./breadcrumbSegments";
 
 type Props = {
-  baseSoilsDistribution: SiteData["soilsDistribution"];
-  forecastSoilsDistribution: ProjectData["soilsDistribution"];
-  impactData: ImpactsData["environmental"]["soilsCo2eqStorage"];
+  baseSoilsDistribution: ModalDataProps["siteData"]["soilsDistribution"];
+  forecastSoilsDistribution: ModalDataProps["projectData"]["soilsDistribution"];
+  impactData: ModalDataProps["impactsData"]["environmental"]["soilsCo2eqStorage"];
 };
 
 const SoilsStorageRelatedCo2Description = ({ impactData, ...props }: Props) => {

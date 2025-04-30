@@ -8,8 +8,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
 import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
+import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import { ProjectData } from "../../ImpactModalDescriptionProvider";
 import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
@@ -21,7 +21,7 @@ import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  developmentPlan: ProjectData["developmentPlan"];
+  developmentPlan: ModalDataProps["projectData"]["developmentPlan"];
   impactData?: TaxesIncomeImpact;
 };
 
@@ -75,12 +75,16 @@ const TaxesIncomeDescription = ({ developmentPlan, impactData }: Props) => {
                 value={amount}
                 label={getSocioEconomicImpactLabel(impact)}
                 type="monetary"
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "socio_economic",
-                    impactName: "taxes_income",
-                    impactDetailsName: impact,
-                  });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      impactName: "taxes_income",
+                      impactDetailsName: impact,
+                    });
+                  },
                 }}
               />
             ))}

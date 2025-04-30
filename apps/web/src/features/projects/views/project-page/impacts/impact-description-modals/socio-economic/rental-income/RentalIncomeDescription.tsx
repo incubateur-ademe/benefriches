@@ -2,7 +2,7 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import { formatNumberFr, formatSurfaceArea } from "@/shared/core/format-number/formatNumber";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { ProjectData } from "../../ImpactModalDescriptionProvider";
+import { ModalDataProps } from "../../ImpactModalDescription";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
 import ModalHeader from "../../shared/ModalHeader";
@@ -11,7 +11,7 @@ import ModalTitleTwo from "../../shared/ModalTitleTwo";
 import { mainBreadcrumbSection, economicDirectBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  developmentPlan: ProjectData["developmentPlan"];
+  developmentPlan: ModalDataProps["projectData"]["developmentPlan"];
   impactData?: number;
 };
 

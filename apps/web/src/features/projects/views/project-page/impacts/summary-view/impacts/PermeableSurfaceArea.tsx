@@ -6,7 +6,10 @@ type Props = {
   percentageEvolution: number;
   difference: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
   noDescription?: boolean;
 };
 
@@ -15,7 +18,7 @@ const ImpactSummaryPermeableSurfaceArea = ({
   percentageEvolution,
   isSuccess,
   noDescription,
-  onClick,
+  buttonProps,
 }: Props) => {
   return isSuccess ? (
     <KeyImpactIndicatorCard
@@ -26,7 +29,7 @@ const ImpactSummaryPermeableSurfaceArea = ({
           : `${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols désimperméabilisés`
       }
       title="+ de sols perméables&nbsp;☔️"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   ) : (
     <KeyImpactIndicatorCard
@@ -37,7 +40,7 @@ const ImpactSummaryPermeableSurfaceArea = ({
           : `${formatSurfaceArea(difference)} (soit ${formatPercentage(percentageEvolution)}) de sols imperméabilisés`
       }
       title="- de sols perméables&nbsp;☔️"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

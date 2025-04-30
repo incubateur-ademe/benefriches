@@ -19,7 +19,7 @@ import ProjectImpactsActionBar from "@/features/projects/views/project-page/head
 import ProjectPageHeader from "@/features/projects/views/project-page/header/ProjectPageHeader";
 import AboutImpactsModal from "@/features/projects/views/project-page/impacts/about-impacts-modal/AboutImpactsModal";
 import ImpactsChartsView from "@/features/projects/views/project-page/impacts/charts-view/ImpactsChartsView";
-import ImpactModalDescriptionProvider from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactModalDescriptionProvider";
+import { ModalDataProps } from "@/features/projects/views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 import ImpactsListView from "@/features/projects/views/project-page/impacts/list-view/ImpactsListView";
 import ProjectFeaturesModal from "@/features/projects/views/project-page/impacts/project-features-modal/ProjectFeaturesModal";
 import ImpactSummaryView from "@/features/projects/views/project-page/impacts/summary-view/ImpactSummaryView";
@@ -52,6 +52,20 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
 
   const impactsData = getImpactsDataFromEvaluationPeriod(impactsDataFor1Year, evaluationPeriod);
 
+  const modalData: ModalDataProps = {
+    projectData: {
+      soilsDistribution: projectData.soilsDistribution,
+      contaminatedSoilSurface:
+        (projectData.decontaminatedSoilSurface ?? 0) - siteData.contaminatedSoilSurface,
+      developmentPlan: {
+        type: "URBAN_PROJECT",
+        buildingsFloorAreaDistribution: projectData.developmentPlan.buildingsFloorArea,
+      },
+    },
+    siteData,
+    impactsData,
+  };
+
   return (
     <div
       id="project-impacts-page"
@@ -74,54 +88,36 @@ function DemoProjectImpacts({ projectData, siteData, impactsData: impactsDataFor
           headerProps={headerProps}
         />
 
-        <ImpactModalDescriptionProvider
-          projectData={{
-            soilsDistribution: projectData.soilsDistribution,
-            contaminatedSoilSurface:
-              (projectData.decontaminatedSoilSurface ?? 0) - siteData.contaminatedSoilSurface,
-            developmentPlan: {
-              type: "URBAN_PROJECT",
-              buildingsFloorAreaDistribution: projectData.developmentPlan.buildingsFloorArea,
-            },
-          }}
-          siteData={{
-            soilsDistribution: siteData.soilsDistribution,
-            contaminatedSoilSurface: siteData.contaminatedSoilSurface,
-            addressLabel: siteData.addressLabel,
-            surfaceArea: siteData.surfaceArea,
-          }}
-          impactsData={impactsData}
-        >
-          <>
-            {currentViewMode === "summary" && (
-              <ImpactSummaryView
-                keyImpactIndicatorsList={getKeyImpactIndicatorsList(impactsData, siteData)}
-              />
-            )}
-            {currentViewMode === "list" && (
-              <ImpactsListView
-                economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
-                socialImpacts={getSocialProjectImpacts(impactsData)}
-                environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
-                socioEconomicImpacts={getDetailedSocioEconomicProjectImpacts(impactsData)}
-              />
-            )}
-            {currentViewMode === "charts" && (
-              <ImpactsChartsView
-                projectName={projectData.name}
-                economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
-                socialAreaChartImpactsData={getSocialAreaChartImpactsData(impactsData)}
-                environmentalAreaChartImpactsData={getEnvironmentalAreaChartImpactsData({
-                  projectContaminatedSurfaceArea: 0,
-                  siteContaminatedSurfaceArea: 0,
-                  impactsData,
-                })}
-                socioEconomicImpactsByActor={getSocioEconomicProjectImpactsByActor(impactsData)}
-                socioEconomicTotalImpact={impactsData.socioeconomic.total}
-              />
-            )}
-          </>
-        </ImpactModalDescriptionProvider>
+        {currentViewMode === "summary" && (
+          <ImpactSummaryView
+            modalData={modalData}
+            keyImpactIndicatorsList={getKeyImpactIndicatorsList(impactsData, siteData)}
+          />
+        )}
+        {currentViewMode === "list" && (
+          <ImpactsListView
+            modalData={modalData}
+            economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
+            socialImpacts={getSocialProjectImpacts(impactsData)}
+            environmentImpacts={getEnvironmentalProjectImpacts(impactsData)}
+            socioEconomicImpacts={getDetailedSocioEconomicProjectImpacts(impactsData)}
+          />
+        )}
+        {currentViewMode === "charts" && (
+          <ImpactsChartsView
+            modalData={modalData}
+            projectName={projectData.name}
+            economicBalance={getEconomicBalanceProjectImpacts("URBAN_PROJECT", impactsData)}
+            socialAreaChartImpactsData={getSocialAreaChartImpactsData(impactsData)}
+            environmentalAreaChartImpactsData={getEnvironmentalAreaChartImpactsData({
+              projectContaminatedSurfaceArea: 0,
+              siteContaminatedSurfaceArea: 0,
+              impactsData,
+            })}
+            socioEconomicImpactsByActor={getSocioEconomicProjectImpactsByActor(impactsData)}
+            socioEconomicTotalImpact={impactsData.socioeconomic.total}
+          />
+        )}
       </div>
       <AboutImpactsModal />
       <ProjectFeaturesModal projectFeaturesData={projectData} isOpen />

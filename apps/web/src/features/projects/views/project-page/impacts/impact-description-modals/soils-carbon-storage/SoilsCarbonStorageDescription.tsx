@@ -5,7 +5,7 @@ import { formatNumberFr } from "@/shared/core/format-number/formatNumber";
 import { getLabelForSoilType } from "@/shared/core/label-mapping/soilTypeLabelMapping";
 import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
-import { ProjectData, SiteData } from "../ImpactModalDescriptionProvider";
+import { ModalDataProps } from "../ImpactModalDescription";
 import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalHeader from "../shared/ModalHeader";
@@ -17,8 +17,8 @@ const formatSoilSurfaceArea = (surfaceArea: number) => {
 };
 
 type Props = {
-  baseSoilsDistribution: SiteData["soilsDistribution"];
-  forecastSoilsDistribution: ProjectData["soilsDistribution"];
+  baseSoilsDistribution: ModalDataProps["siteData"]["soilsDistribution"];
+  forecastSoilsDistribution: ModalDataProps["projectData"]["soilsDistribution"];
   impactData?: number;
 };
 

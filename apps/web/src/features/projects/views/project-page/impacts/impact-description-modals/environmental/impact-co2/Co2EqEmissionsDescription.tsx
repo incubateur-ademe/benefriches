@@ -9,8 +9,8 @@ import { formatCO2Impact } from "@/features/projects/views/shared/formatImpactVa
 import { getEnvironmentalDetailsImpactLabel } from "../../../getImpactLabel";
 import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
+import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import { ImpactsData } from "../../ImpactModalDescriptionProvider";
 import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
@@ -20,7 +20,7 @@ import ModalHeader from "../../shared/ModalHeader";
 import { co2BreadcrumbSection, mainBreadcrumbSection } from "../breadcrumbSections";
 
 type Props = {
-  impactsData: ImpactsData;
+  impactsData: ModalDataProps["impactsData"];
 };
 
 const getChartColor = (impactName: CO2BenefitDetails) => {
@@ -77,12 +77,15 @@ const Co2BenefitDescription = ({ impactsData }: Props) => {
                 value={impact.difference}
                 label={getEnvironmentalDetailsImpactLabel("co2_benefit", name)}
                 type="co2"
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "environmental",
-                    impactName: "co2_benefit",
-                    impactDetailsName: name,
-                  });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    openImpactModalDescription({
+                      sectionName: "environmental",
+                      impactName: "co2_benefit",
+                      impactDetailsName: name,
+                    });
+                  },
                 }}
               />
             </ImpactItemGroup>

@@ -72,12 +72,16 @@ const AvoidedTrafficAccidentsMonetaryValueDescription = ({ impactData }: Props) 
                 value={amount}
                 label={getSocialImpactLabel(impact)}
                 type="monetary"
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "socio_economic",
-                    impactName: "avoided_traffic_accidents",
-                    impactDetailsName: impact,
-                  });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      impactName: "avoided_traffic_accidents",
+                      impactDetailsName: impact,
+                    });
+                  },
                 }}
               />
             ))}

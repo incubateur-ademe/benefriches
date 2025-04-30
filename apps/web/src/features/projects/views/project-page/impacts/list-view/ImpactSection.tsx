@@ -3,12 +3,13 @@ import { MouseEvent, ReactNode, useState } from "react";
 import classNames from "@/shared/views/clsx";
 
 import ImpactRowValue from "./ImpactRowValue";
+import { getDialogControlButtonProps } from "./dialogControlBtnProps";
 
 type Props = {
   title: string;
   isMain?: boolean;
   total?: number;
-  onTitleClick: () => void;
+  dialogId: string;
   children: ReactNode;
   initialShowSectionContent?: boolean;
   noMarginBottom?: boolean;
@@ -18,7 +19,7 @@ const ImpactSection = ({
   title,
   total,
   isMain = false,
-  onTitleClick,
+  dialogId,
   children,
   initialShowSectionContent = true,
   noMarginBottom = false,
@@ -58,12 +59,7 @@ const ImpactSection = ({
             role: "heading",
             "aria-level": isMain ? 3 : 4,
             className: isMain ? "tw-text-xl" : "tw-text-base",
-            onClick: (e?: MouseEvent<HTMLElement>) => {
-              if (e) {
-                e.stopPropagation();
-              }
-              onTitleClick();
-            },
+            ...getDialogControlButtonProps(dialogId),
           }}
           value={total}
           type="monetary"

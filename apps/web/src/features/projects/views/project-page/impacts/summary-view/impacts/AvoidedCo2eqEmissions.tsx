@@ -7,14 +7,17 @@ import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 type Props = {
   value: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
   noDescription?: boolean;
 };
 
 const ImpactSummaryAvoidedCo2eqEmissions = ({
   value,
   isSuccess,
-  onClick,
+  buttonProps,
   noDescription,
 }: Props) => {
   const co2eqValue = Math.abs(value);
@@ -36,7 +39,7 @@ const ImpactSummaryAvoidedCo2eqEmissions = ({
             : `${co2eqValueText} de CO2-éq évitées, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`
         }
         title="- d’émissions de CO2&nbsp;☁️"
-        onClick={onClick}
+        buttonProps={buttonProps}
       />
     );
   }
@@ -50,7 +53,7 @@ const ImpactSummaryAvoidedCo2eqEmissions = ({
           : `${co2eqValueText} de CO2-éq émises, soit les émissions de ${frenchPersonAnnualEquivalentText} français pendant 1 an`
       }
       title="+ d’émissions de CO2&nbsp;☁️"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

@@ -78,11 +78,15 @@ const SummaryAvoidedFricheCostsForLocalAuthorityDescription = ({ impactData }: P
             value={amount}
             label="🏚 Dépenses de gestion et de sécurisation de la friche évitées"
             type="monetary"
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "socio_economic",
-                impactName: "avoided_friche_costs",
-              });
+            labelProps={{
+              onClick: (e) => {
+                e.stopPropagation();
+
+                openImpactModalDescription({
+                  sectionName: "socio_economic",
+                  impactName: "avoided_friche_costs",
+                });
+              },
             }}
           />
         </ImpactItemGroup>

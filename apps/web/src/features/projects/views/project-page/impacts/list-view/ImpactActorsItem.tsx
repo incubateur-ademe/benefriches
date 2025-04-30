@@ -1,22 +1,19 @@
-import ImpactItemDetails from "./ImpactItemDetails";
+import ImpactItemDetails, { ImpactItemDetailsProps } from "./ImpactItemDetails";
 import ImpactItemGroup from "./ImpactItemGroup";
+import { ImpactRowValueProps } from "./ImpactRowValue";
 
 type Props = {
   label: string;
-  onClick: () => void;
+  labelProps: ImpactRowValueProps["labelProps"];
   actors: {
     label: string;
     value: number;
-    details?: {
-      label: string;
-      value: number;
-      onClick: () => void;
-    }[];
+    details?: ImpactItemDetailsProps["data"];
   }[];
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
 };
 
-const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
+const ImpactActorsItem = ({ label, actors, type, labelProps }: Props) => {
   const [firstActor, ...othersActors] = actors;
 
   if (!firstActor?.details) {
@@ -28,7 +25,7 @@ const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
             label={label}
             actor={firstActor.label}
             type={type}
-            onClick={onClick}
+            labelProps={labelProps}
           />
         )}
         {othersActors.map(({ label: actor, value, details = [] }) => (
@@ -39,7 +36,7 @@ const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
             value={value}
             actor={actor}
             data={details}
-            onClick={onClick}
+            labelProps={labelProps}
           />
         ))}
       </ImpactItemGroup>
@@ -54,7 +51,7 @@ const ImpactActorsItem = ({ label, actors, type, onClick }: Props) => {
         actor={actor}
         data={details}
         type={type}
-        onClick={onClick}
+        labelProps={labelProps}
       />
     </ImpactItemGroup>
   ));

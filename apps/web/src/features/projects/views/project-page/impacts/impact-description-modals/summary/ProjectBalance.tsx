@@ -81,10 +81,13 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             value={economicBalanceTotal}
             label="📉 Bilan de l'opération"
             type="monetary"
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "economic_balance",
-              });
+            labelProps={{
+              onClick: (e) => {
+                e.stopPropagation();
+                openImpactModalDescription({
+                  sectionName: "economic_balance",
+                });
+              },
             }}
           />
         </ImpactItemGroup>
@@ -94,10 +97,13 @@ const SummaryProjectBalanceDescription = ({ impactData }: Props) => {
             value={socioEconomicMonetaryImpactsTotal}
             label="🌍 Impacts socio-économiques"
             type="monetary"
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "socio_economic",
-              });
+            labelProps={{
+              onClick: (e) => {
+                e.stopPropagation();
+                openImpactModalDescription({
+                  sectionName: "socio_economic",
+                });
+              },
             }}
           />
         </ImpactItemGroup>

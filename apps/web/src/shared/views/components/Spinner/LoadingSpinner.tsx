@@ -1,4 +1,11 @@
-const LoadingSpinner = ({ loadingText = "Chargement" }: { loadingText?: string }) => {
+import classNames, { ClassValue } from "../../clsx";
+
+type Props = {
+  loadingText?: string;
+  classes?: { text?: ClassValue };
+};
+
+const LoadingSpinner = ({ loadingText = "Chargement", classes }: Props) => {
   return (
     <div className="tw-flex tw-flex-col tw-items-center tw-py-8">
       <div
@@ -12,7 +19,9 @@ const LoadingSpinner = ({ loadingText = "Chargement" }: { loadingText?: string }
           <div className="tw-w-8 tw-h-8 tw-bg-blue-main tw-rounded-full tw-absolute tw-top-0 tw-left-0 tw-animate-pulse"></div>
         </div>
       </div>
-      <span className="tw-font-bold tw-uppercase">{loadingText}</span>
+      <span className={classNames("tw-font-bold", "tw-uppercase", classes?.text)}>
+        {loadingText}
+      </span>
     </div>
   );
 };

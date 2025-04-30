@@ -1,62 +1,83 @@
-import { useContext } from "react";
-
 import { EconomicBalance } from "@/features/projects/domain/projectImpactsEconomicBalance";
 
 import {
   getEconomicBalanceDetailsImpactLabel,
   getEconomicBalanceImpactLabel,
 } from "../../getImpactLabel";
-import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
+import ImpactModalDescription, {
+  ModalDataProps,
+} from "../../impact-description-modals/ImpactModalDescription";
 import ImpactActorsItem from "../ImpactActorsItem";
 import ImpactSection from "../ImpactSection";
+import { getDialogControlButtonProps } from "../dialogControlBtnProps";
 
 type Props = {
   impact: EconomicBalance;
+  modalData: ModalDataProps;
 };
 
-const EconomicBalanceListSection = ({ impact }: Props) => {
+const EconomicBalanceListSection = ({ impact, modalData }: Props) => {
   const { total, economicBalance, bearer } = impact;
 
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
-
   return (
-    <ImpactSection
-      title="Bilan de l'opération"
-      isMain
-      total={total}
-      initialShowSectionContent={false}
-      onTitleClick={() => {
-        openImpactModalDescription({ sectionName: "economic_balance" });
-      }}
-    >
-      {economicBalance.map(({ name, value, details = [] }) => (
-        <ImpactActorsItem
-          key={name}
-          label={getEconomicBalanceImpactLabel(name)}
-          onClick={() => {
-            openImpactModalDescription({ sectionName: "economic_balance", impactName: name });
-          }}
-          actors={[
-            {
-              label: bearer ?? "Aménageur",
-              value,
-              details: details.map(({ name: detailsName, value: detailsValue }) => ({
-                label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
-                value: detailsValue,
-                onClick: () => {
-                  openImpactModalDescription({
-                    sectionName: "economic_balance",
-                    impactName: name,
-                    impactDetailsName: detailsName,
-                  });
+    <>
+      <ImpactModalDescription
+        dialogId={`fr-modal-impacts-economic_balance-List`}
+        initialState={{ sectionName: "economic_balance" }}
+        {...modalData}
+      />
+      <ImpactSection
+        title="Bilan de l'opération"
+        isMain
+        total={total}
+        initialShowSectionContent={false}
+        dialogId={`fr-modal-impacts-economic_balance-List`}
+      >
+        {economicBalance.map(({ name, value, details = [] }) => (
+          <>
+            <ImpactModalDescription
+              dialogId={`fr-modal-impacts-economic_balance-${name}_List`}
+              initialState={{ sectionName: "economic_balance", impactName: name }}
+              {...modalData}
+            />
+
+            <ImpactActorsItem
+              key={name}
+              label={getEconomicBalanceImpactLabel(name)}
+              labelProps={getDialogControlButtonProps(
+                `fr-modal-impacts-economic_balance-${name}-List`,
+              )}
+              actors={[
+                {
+                  label: bearer ?? "Aménageur",
+                  value,
+                  details: details.map(({ name: detailsName, value: detailsValue }) => ({
+                    label: getEconomicBalanceDetailsImpactLabel(name, detailsName),
+                    value: detailsValue,
+                    labelProps: getDialogControlButtonProps(
+                      `fr-modal-impacts-economic_balance-${name}-${detailsName}-List`,
+                    ),
+                  })),
                 },
-              })),
-            },
-          ]}
-          type="monetary"
-        />
-      ))}
-    </ImpactSection>
+              ]}
+              type="monetary"
+            />
+            {details.map(({ name: detailsName }) => (
+              <ImpactModalDescription
+                key={detailsName}
+                dialogId={`fr-modal-impacts-economic_balance-${name}-${detailsName}-List`}
+                initialState={{
+                  sectionName: "economic_balance",
+                  impactName: name,
+                  impactDetailsName: detailsName,
+                }}
+                {...modalData}
+              />
+            ))}
+          </>
+        ))}
+      </ImpactSection>
+    </>
   );
 };
 

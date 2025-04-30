@@ -73,6 +73,8 @@ type Context = {
   openState: OpenState;
   openImpactModalDescription: (args: OpenImpactModalDescriptionArgs) => void;
   resetOpenState: () => void;
+  dialogId: string;
+  dialogTitleId: string;
 };
 
 export const INITIAL_OPEN_STATE = {
@@ -85,4 +87,6 @@ export const ImpactModalDescriptionContext = createContext<Context>({
   openState: INITIAL_OPEN_STATE,
   openImpactModalDescription: () => {},
   resetOpenState: () => {},
+  dialogId: "",
+  dialogTitleId: "",
 });

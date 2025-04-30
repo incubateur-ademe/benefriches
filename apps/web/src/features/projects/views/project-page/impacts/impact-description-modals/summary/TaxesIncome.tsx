@@ -46,11 +46,14 @@ const SummaryTaxesIncomeDescription = ({ impactData }: Props) => {
             value={value}
             label="🏛 Recettes fiscales"
             type="monetary"
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "socio_economic",
-                impactName: "taxes_income",
-              });
+            labelProps={{
+              onClick: (e) => {
+                e.stopPropagation();
+                openImpactModalDescription({
+                  sectionName: "socio_economic",
+                  impactName: "taxes_income",
+                });
+              },
             }}
           />
         </ImpactItemGroup>

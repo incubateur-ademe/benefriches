@@ -6,7 +6,10 @@ type Props = {
   economicBalanceTotal: number;
   socioEconomicMonetaryImpactsTotal: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
   noDescription?: boolean;
 };
 
@@ -15,7 +18,7 @@ const ImpactSummaryProjectBalance = ({
   economicBalanceTotal,
   isSuccess,
   noDescription,
-  onClick,
+  buttonProps,
 }: Props) => {
   return (
     <KeyImpactIndicatorCard
@@ -30,7 +33,7 @@ const ImpactSummaryProjectBalance = ({
           ? "Les impacts compensent le déficit de l'opération\u00a0💰"
           : "Les impacts ne compensent pas le déficit de l'opération\u00a0💸"
       }
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

@@ -1,35 +1,56 @@
-import { useContext } from "react";
-
 import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
-import { ImpactModalDescriptionContext } from "../../impact-description-modals/ImpactModalDescriptionContext";
+import ImpactModalDescription, {
+  ModalDataProps,
+} from "../../impact-description-modals/ImpactModalDescription";
 import ImpactSection from "../ImpactSection";
 import SocioEconomicImpactSection from "./SocioEconomicImpactSection";
 
 type Props = {
   socioEconomicImpacts: SocioEconomicDetailedImpact;
+  modalData: ModalDataProps;
 };
 
-const SocioEconomicImpactsListSection = ({ socioEconomicImpacts }: Props) => {
+const SocioEconomicImpactsListSection = ({ socioEconomicImpacts, modalData }: Props) => {
   const { economicDirect, economicIndirect, environmentalMonetary, socialMonetary, total } =
     socioEconomicImpacts;
-  const { openImpactModalDescription } = useContext(ImpactModalDescriptionContext);
 
   return (
-    <ImpactSection
-      title="Impacts socio-économiques"
-      isMain
-      total={total}
-      initialShowSectionContent={false}
-      onTitleClick={() => {
-        openImpactModalDescription({ sectionName: "socio_economic" });
-      }}
-    >
-      <SocioEconomicImpactSection sectionName="economic_direct" {...economicDirect} />
-      <SocioEconomicImpactSection sectionName="economic_indirect" {...economicIndirect} />
-      <SocioEconomicImpactSection sectionName="social_monetary" {...socialMonetary} />
-      <SocioEconomicImpactSection sectionName="environmental_monetary" {...environmentalMonetary} />
-    </ImpactSection>
+    <>
+      <ImpactModalDescription
+        dialogId={`fr-modal-impacts-socio_economic-List`}
+        initialState={{ sectionName: "socio_economic" }}
+        {...modalData}
+      />
+      <ImpactSection
+        title="Impacts socio-économiques"
+        isMain
+        total={total}
+        initialShowSectionContent={false}
+        dialogId={`fr-dialog-impacts-socio_economic-List`}
+      >
+        <SocioEconomicImpactSection
+          sectionName="economic_direct"
+          modalData={modalData}
+          {...economicDirect}
+        />
+        <SocioEconomicImpactSection
+          sectionName="economic_indirect"
+          modalData={modalData}
+          {...economicIndirect}
+        />
+        <SocioEconomicImpactSection
+          sectionName="social_monetary"
+          modalData={modalData}
+          {...socialMonetary}
+        />
+        <SocioEconomicImpactSection
+          modalData={modalData}
+          sectionName="environmental_monetary"
+          {...environmentalMonetary}
+        />
+      </ImpactSection>
+    </>
   );
 };
 

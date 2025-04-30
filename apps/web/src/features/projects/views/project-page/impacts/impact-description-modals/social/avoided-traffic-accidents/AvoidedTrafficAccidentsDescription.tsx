@@ -4,8 +4,8 @@ import { formatDefaultImpact } from "@/features/projects/views/shared/formatImpa
 
 import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
+import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import { ImpactsData } from "../../ImpactModalDescriptionProvider";
 import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
@@ -18,7 +18,7 @@ import { breadcrumbSegments } from "./breadcrumbSegments";
 const TITLE = "Personnes préservées des accidents de la route";
 
 type Props = {
-  impactData?: ImpactsData["social"]["avoidedTrafficAccidents"];
+  impactData?: ModalDataProps["impactsData"]["social"]["avoidedTrafficAccidents"];
 };
 
 const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
@@ -62,36 +62,47 @@ const AvoidedTrafficAccidentsDescription = ({ impactData }: Props) => {
               value={impactData?.minorInjuries ?? 0}
               label="🤕 Blessés légers évités"
               type="default"
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "social",
-                  impactName: "avoided_traffic_accidents",
-                  impactDetailsName: "avoided_traffic_minor_injuries",
-                });
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+                  openImpactModalDescription({
+                    sectionName: "social",
+                    impactName: "avoided_traffic_accidents",
+                    impactDetailsName: "avoided_traffic_minor_injuries",
+                  });
+                },
               }}
             />
             <ImpactItemDetails
               value={impactData?.severeInjuries ?? 0}
               label="🚑 Blessés graves évités"
               type="default"
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "social",
-                  impactName: "avoided_traffic_accidents",
-                  impactDetailsName: "avoided_traffic_severe_injuries",
-                });
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+
+                  openImpactModalDescription({
+                    sectionName: "social",
+                    impactName: "avoided_traffic_accidents",
+                    impactDetailsName: "avoided_traffic_severe_injuries",
+                  });
+                },
               }}
             />
             <ImpactItemDetails
               value={impactData?.deaths ?? 0}
               label="🪦 Décès évités"
               type="default"
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "social",
-                  impactName: "avoided_traffic_accidents",
-                  impactDetailsName: "avoided_traffic_deaths",
-                });
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+
+                  openImpactModalDescription({
+                    sectionName: "social",
+                    impactName: "avoided_traffic_accidents",
+                    impactDetailsName: "avoided_traffic_deaths",
+                  });
+                },
               }}
             />
           </ImpactItemGroup>

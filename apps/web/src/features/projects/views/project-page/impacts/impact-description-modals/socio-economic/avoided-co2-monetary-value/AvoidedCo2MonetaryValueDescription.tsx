@@ -6,8 +6,8 @@ import { formatMonetaryImpact } from "@/features/projects/views/shared/formatImp
 import { getSocioEconomicImpactLabel } from "../../../getImpactLabel";
 import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
+import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import { ImpactsData } from "../../ImpactModalDescriptionProvider";
 import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
@@ -20,7 +20,7 @@ import {
 } from "../breadcrumbSections";
 
 type Props = {
-  impactsData: ImpactsData;
+  impactsData: ModalDataProps["impactsData"];
 };
 
 const getChartColor = (impactName: AvoidedCO2EqEmissions["details"][number]["impact"]) => {
@@ -77,12 +77,16 @@ const AvoidedCo2MonetaryValueDescription = ({ impactsData }: Props) => {
                 value={amount}
                 label={getSocioEconomicImpactLabel(impact)}
                 type="monetary"
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "socio_economic",
-                    impactName: "avoided_co2_eq_emissions",
-                    impactDetailsName: impact,
-                  });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      impactName: "avoided_co2_eq_emissions",
+                      impactDetailsName: impact,
+                    });
+                  },
                 }}
               />
             </ImpactItemGroup>

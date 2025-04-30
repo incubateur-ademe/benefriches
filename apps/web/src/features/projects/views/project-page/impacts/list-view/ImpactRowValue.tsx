@@ -2,9 +2,9 @@ import { fr } from "@codegouvfr/react-dsfr";
 import Button from "@codegouvfr/react-dsfr/Button";
 import { useWindowInnerSize } from "@codegouvfr/react-dsfr/tools/useWindowInnerSize";
 import { useBreakpointsValuesPx } from "@codegouvfr/react-dsfr/useBreakpointsValuesPx";
-import { MouseEvent, useState } from "react";
+import { HtmlHTMLAttributes, MouseEvent } from "react";
 
-import classNames, { ClassValue } from "@/shared/views/clsx";
+import classNames from "@/shared/views/clsx";
 
 import {
   formatCO2Impact,
@@ -24,12 +24,7 @@ export type ImpactRowValueProps = {
   isAccordionOpened?: boolean;
   buttonInfoAlwaysDisplayed?: boolean;
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time";
-  labelProps: {
-    role?: "heading";
-    ["aria-level"]?: 3 | 4;
-    className?: ClassValue;
-    onClick: (e?: MouseEvent<HTMLElement>) => void;
-  };
+  labelProps: HtmlHTMLAttributes<HTMLButtonElement> & { "data-fr-opened"?: boolean };
 };
 
 const impactTypeFormatterMap = {
@@ -52,12 +47,10 @@ const ImpactRowValue = ({
   labelProps,
   buttonInfoAlwaysDisplayed = false,
 }: ImpactRowValueProps) => {
-  const [isSectionHovered, setIsSectionHovered] = useState(false);
-
   const { breakpointsValues } = useBreakpointsValuesPx();
   const { windowInnerWidth } = useWindowInnerSize();
 
-  const { onClick: onLabelClick, className: labelClassNames, ...labelPropsRest } = labelProps;
+  const { className: labelClassNames, ...labelPropsRest } = labelProps;
 
   return (
     <div
@@ -67,13 +60,8 @@ const ImpactRowValue = ({
         `md:tw-grid-cols-[2rem_1fr_9rem_8rem]`,
         "tw-relative",
         "tw-items-center",
+        "tw-group",
       )}
-      onMouseEnter={() => {
-        setIsSectionHovered(true);
-      }}
-      onMouseLeave={() => {
-        setIsSectionHovered(false);
-      }}
     >
       {onToggleAccordion && (
         <Button
@@ -91,33 +79,23 @@ const ImpactRowValue = ({
           title={isAccordionOpened ? "Fermer la section" : "Afficher la section"}
         />
       )}
-      <div
-        tabIndex={0}
-        onClick={onLabelClick}
-        onKeyUp={(e: React.KeyboardEvent<HTMLElement>) => {
-          if (e.key === "Enter") {
-            onLabelClick();
-          }
-        }}
+      <button
         className={classNames(
           "tw-col-start-2",
           !actor && "md:tw-col-end-4",
           isTotal && "tw-font-bold",
-          isSectionHovered && "tw-font-bold",
-          "tw-cursor-pointer",
+          "tw-text-left",
+          "group-hover:tw-font-bold",
+          "group-focus:tw-font-bold",
+          "group-hover:!tw-bg-inherit",
+          "group-focus:!tw-bg-inherit",
+          "tw-group",
           labelClassNames,
         )}
         {...labelPropsRest}
       >
         {label}
-        <button
-          tabIndex={0}
-          onClick={onLabelClick}
-          onKeyUp={(e: React.KeyboardEvent<HTMLElement>) => {
-            if (e.key === "Enter") {
-              onLabelClick();
-            }
-          }}
+        <span
           className={classNames(
             "fr-link",
             "fr-link--sm",
@@ -127,9 +105,11 @@ const ImpactRowValue = ({
             "tw-ease-in",
             "tw-duration-50",
             "tw-font-normal",
-            isSectionHovered || buttonInfoAlwaysDisplayed
-              ? "tw-visible tw-opacity-100"
-              : "md:tw-opacity-0 md:tw-invisible tw-duration-0",
+            !buttonInfoAlwaysDisplayed && [
+              "group-hover:tw-visible group-hover:tw-opacity-100",
+              "group-focus:tw-visible group-focus:tw-opacity-100",
+              "md:tw-opacity-0 md:tw-invisible tw-duration-0",
+            ],
           )}
         >
           {windowInnerWidth > breakpointsValues.md ? (
@@ -137,8 +117,8 @@ const ImpactRowValue = ({
           ) : (
             <span className={fr.cx("fr-icon--sm", "fr-icon-question-line")}></span>
           )}
-        </button>
-      </div>
+        </span>
+      </button>
 
       {actor && <span className="tw-col-start-2 md:tw-col-start-3 tw-pl-3">{actor}</span>}
 

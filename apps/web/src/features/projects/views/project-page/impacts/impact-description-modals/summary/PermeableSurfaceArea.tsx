@@ -60,11 +60,14 @@ const SummaryPermeableSurfaceAreaDescription = ({ impactData }: Props) => {
             value={difference}
             label="🌧 Surface perméable"
             type="surfaceArea"
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "environmental",
-                impactName: "permeable_surface_area",
-              });
+            labelProps={{
+              onClick: (e) => {
+                e.stopPropagation();
+                openImpactModalDescription({
+                  sectionName: "environmental",
+                  impactName: "permeable_surface_area",
+                });
+              },
             }}
           />
         </ImpactItemGroup>

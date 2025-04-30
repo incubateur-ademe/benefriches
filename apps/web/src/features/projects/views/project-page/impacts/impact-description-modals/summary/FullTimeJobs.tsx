@@ -58,11 +58,14 @@ const SummaryFullTimeJobsDescription = ({ impactData }: Props) => {
             value={difference}
             label="🧑‍🔧 Emplois équivalent temps plein"
             type="etp"
-            onClick={() => {
-              openImpactModalDescription({
-                sectionName: "social",
-                impactName: "full_time_jobs",
-              });
+            labelProps={{
+              onClick: (e) => {
+                e.stopPropagation();
+                openImpactModalDescription({
+                  sectionName: "social",
+                  impactName: "full_time_jobs",
+                });
+              },
             }}
           />
         </ImpactItemGroup>

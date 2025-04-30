@@ -1,4 +1,7 @@
-import { selectProjectName } from "@/features/projects/application/projectImpacts.reducer";
+import {
+  selectModalData,
+  selectProjectName,
+} from "@/features/projects/application/projectImpacts.reducer";
 import {
   selectEnvironmentalAreaChartImpactsData,
   selectSocialAreaChartImpactsData,
@@ -20,6 +23,8 @@ const ImpactsChartsViewContainer = () => {
   const environmentalAreaChartImpactsData = useAppSelector(selectEnvironmentalAreaChartImpactsData);
   const projectName = useAppSelector(selectProjectName);
 
+  const modalData = useAppSelector(selectModalData);
+
   return (
     <ImpactsChartsView
       projectName={projectName}
@@ -28,6 +33,7 @@ const ImpactsChartsViewContainer = () => {
       environmentalAreaChartImpactsData={environmentalAreaChartImpactsData}
       socioEconomicTotalImpact={socioEconomicTotalImpact}
       socioEconomicImpactsByActor={socioEconomicImpactsByActor}
+      modalData={modalData}
     />
   );
 };

@@ -1,3 +1,4 @@
+import { selectModalData } from "@/features/projects/application/projectImpacts.reducer";
 import { selectEconomicBalanceProjectImpacts } from "@/features/projects/application/projectImpactsEconomicBalance.selectors";
 import { selectEnvironmentalProjectImpacts } from "@/features/projects/application/projectImpactsEnvironmental.selectors";
 import { selectSocialProjectImpacts } from "@/features/projects/application/projectImpactsSocial.selectors";
@@ -12,12 +13,15 @@ const ImpactsListViewContainer = () => {
   const environmentImpacts = useAppSelector(selectEnvironmentalProjectImpacts);
   const socialImpacts = useAppSelector(selectSocialProjectImpacts);
 
+  const modalData = useAppSelector(selectModalData);
+
   return (
     <ImpactsListView
       economicBalance={economicBalance}
       socialImpacts={socialImpacts}
       environmentImpacts={environmentImpacts}
       socioEconomicImpacts={socioEconomicImpacts}
+      modalData={modalData}
     />
   );
 };

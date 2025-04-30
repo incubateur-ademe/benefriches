@@ -69,11 +69,15 @@ const SummaryAvoidedCo2eqEmissionsDescription = ({ impactData }: Props) => {
               value={co2eqValue}
               label="☁️ CO2-eq stocké ou évité"
               type="co2"
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "environmental",
-                  impactName: "co2_benefit",
-                });
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+
+                  openImpactModalDescription({
+                    sectionName: "environmental",
+                    impactName: "co2_benefit",
+                  });
+                },
               }}
             />
           </ImpactItemGroup>

@@ -72,24 +72,28 @@ const SocioEconomicSubSectionDescription = ({
                     ? actorDetails.map(({ name: detailsName, value: detailsValue }) => ({
                         label: getSocioEconomicImpactLabel(detailsName),
                         value: detailsValue,
-                        onClick: () => {
-                          openImpactModalDescription({
-                            sectionName: "socio_economic",
-                            subSectionName,
-                            impactName: name,
-                            impactDetailsName: detailsName,
-                          });
+                        labelProps: {
+                          onClick: () => {
+                            openImpactModalDescription({
+                              sectionName: "socio_economic",
+                              subSectionName,
+                              impactName: name,
+                              impactDetailsName: detailsName,
+                            });
+                          },
                         },
                       }))
                     : undefined,
                 }),
               )}
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "socio_economic",
-                  subSectionName,
-                  impactName: name,
-                });
+              labelProps={{
+                onClick: () => {
+                  openImpactModalDescription({
+                    sectionName: "socio_economic",
+                    subSectionName,
+                    impactName: name,
+                  });
+                },
               }}
               type="monetary"
             />

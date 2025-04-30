@@ -8,8 +8,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ImpactItemDetails from "../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../list-view/ImpactItemGroup";
+import { ModalDataProps } from "../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../ImpactModalDescriptionContext";
-import { ImpactsData } from "../ImpactModalDescriptionProvider";
 import ModalBody from "../shared/ModalBody";
 import ModalContent from "../shared/ModalContent";
 import ModalData from "../shared/ModalData";
@@ -18,7 +18,7 @@ import ModalHeader from "../shared/ModalHeader";
 import ModalTitleTwo from "../shared/ModalTitleTwo";
 
 type Props = {
-  impactsData: ImpactsData;
+  impactsData: ModalDataProps["impactsData"];
 };
 
 const title = "Analyse coûts bénéfices";
@@ -68,10 +68,13 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
               value={economicBalance.total}
               label="📉 Bilan de l'opération"
               type="monetary"
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "economic_balance",
-                });
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+                  openImpactModalDescription({
+                    sectionName: "economic_balance",
+                  });
+                },
               }}
             />
           </ImpactItemGroup>
@@ -81,10 +84,13 @@ const CostBenefitAnalysisDescription = ({ impactsData }: Props) => {
               value={socioeconomic.total}
               label="🌍 Impacts socio-économiques"
               type="monetary"
-              onClick={() => {
-                openImpactModalDescription({
-                  sectionName: "socio_economic",
-                });
+              labelProps={{
+                onClick: (e) => {
+                  e.stopPropagation();
+                  openImpactModalDescription({
+                    sectionName: "socio_economic",
+                  });
+                },
               }}
             />
           </ImpactItemGroup>

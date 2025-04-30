@@ -3,6 +3,7 @@ import { EnvironmentalImpact } from "@/features/projects/domain/projectImpactsEn
 import { SocialImpact } from "@/features/projects/domain/projectImpactsSocial";
 import { SocioEconomicDetailedImpact } from "@/features/projects/domain/projectImpactsSocioEconomic";
 
+import { ModalDataProps } from "../impact-description-modals/ImpactModalDescription";
 import EconomicBalanceListSection from "./sections/EconomicBalance";
 import EnvironmentalListSection from "./sections/EnvironmentalListSection";
 import SocialListSection from "./sections/SocialListSection";
@@ -13,6 +14,7 @@ type Props = {
   socioEconomicImpacts: SocioEconomicDetailedImpact;
   environmentImpacts: EnvironmentalImpact[];
   socialImpacts: SocialImpact[];
+  modalData: ModalDataProps;
 };
 
 const ImpactsListView = ({
@@ -20,20 +22,23 @@ const ImpactsListView = ({
   socioEconomicImpacts,
   environmentImpacts,
   socialImpacts,
+  ...rest
 }: Props) => {
   return (
     <div className="tw-max-w-4xl tw-mx-auto tw-pb-8">
       {economicBalance.economicBalance.length !== 0 && (
-        <EconomicBalanceListSection impact={economicBalance} />
+        <EconomicBalanceListSection impact={economicBalance} {...rest} />
       )}
 
       {socioEconomicImpacts.total !== 0 && (
-        <SocioEconomicImpactsListSection socioEconomicImpacts={socioEconomicImpacts} />
+        <SocioEconomicImpactsListSection socioEconomicImpacts={socioEconomicImpacts} {...rest} />
       )}
 
-      {environmentImpacts.length > 0 && <EnvironmentalListSection impacts={environmentImpacts} />}
+      {environmentImpacts.length > 0 && (
+        <EnvironmentalListSection impacts={environmentImpacts} {...rest} />
+      )}
 
-      {socialImpacts.length > 0 && <SocialListSection impacts={socialImpacts} />}
+      {socialImpacts.length > 0 && <SocialListSection impacts={socialImpacts} {...rest} />}
     </div>
   );
 };

@@ -78,12 +78,15 @@ const SiteReinstatementDescription = ({ impactData, bearer = "l'aménageur" }: P
                 label={getEconomicBalanceDetailsImpactLabel("site_reinstatement", purpose)}
                 type="monetary"
                 impactRowValueProps={{ buttonInfoAlwaysDisplayed: true }}
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "economic_balance",
-                    impactName: "site_reinstatement",
-                    impactDetailsName: purpose,
-                  });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    openImpactModalDescription({
+                      sectionName: "economic_balance",
+                      impactName: "site_reinstatement",
+                      impactDetailsName: purpose,
+                    });
+                  },
                 }}
               />
             </ImpactItemGroup>

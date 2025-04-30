@@ -7,7 +7,10 @@ type Props = {
   decontaminatedSurfaceArea: number;
   forecastContaminatedSurfaceArea: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
   noDescription?: boolean;
 };
 
@@ -17,7 +20,7 @@ const ImpactSummaryNonContaminatedSurfaceArea = ({
   forecastContaminatedSurfaceArea,
   isSuccess,
   noDescription,
-  onClick,
+  buttonProps,
 }: Props) => {
   return isSuccess ? (
     <KeyImpactIndicatorCard
@@ -28,7 +31,7 @@ const ImpactSummaryNonContaminatedSurfaceArea = ({
           : `${formatSurfaceArea(decontaminatedSurfaceArea)} (soit ${formatPercentage(percentageEvolution)}) de sols dépollués`
       }
       title="Des risques sanitaires réduits&nbsp;☢️"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   ) : (
     <KeyImpactIndicatorCard
@@ -39,7 +42,7 @@ const ImpactSummaryNonContaminatedSurfaceArea = ({
           : `${formatSurfaceArea(forecastContaminatedSurfaceArea)} de sols non dépollués`
       }
       title="des sols encore pollués&nbsp;☢️"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

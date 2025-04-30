@@ -4,13 +4,16 @@ import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 
 type Props = {
   value: number;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
   noDescription?: boolean;
 };
 
 const ImpactSummaryHouseholdsPoweredByRenewableEnergy = ({
   value,
-  onClick,
+  buttonProps,
   noDescription,
 }: Props) => {
   return (
@@ -20,7 +23,7 @@ const ImpactSummaryHouseholdsPoweredByRenewableEnergy = ({
         noDescription ? undefined : `${formatNumberFr(value)} nouveaux foyers alimentés en EnR`
       }
       title="+ d’énergies renouvelables&nbsp;⚡"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

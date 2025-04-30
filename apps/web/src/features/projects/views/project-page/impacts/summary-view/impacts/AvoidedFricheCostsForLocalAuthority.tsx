@@ -6,7 +6,10 @@ type Props = {
   actorName: string;
   amount: number;
   isSuccess: boolean;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
   noDescription?: boolean;
 };
 
@@ -14,7 +17,7 @@ const ImpactSummaryAvoidedFricheCostsForLocalAuthority = ({
   actorName,
   amount,
   isSuccess,
-  onClick,
+  buttonProps,
   noDescription,
 }: Props) => {
   if (isSuccess) {
@@ -27,7 +30,7 @@ const ImpactSummaryAvoidedFricheCostsForLocalAuthority = ({
             : `${formatMonetaryImpact(amount)} économisés par ${actorName} grâce à la reconversion de la friche`
         }
         title="- de dépenses de sécurisation&nbsp;💰"
-        onClick={onClick}
+        buttonProps={buttonProps}
       />
     );
   }
@@ -41,7 +44,7 @@ const ImpactSummaryAvoidedFricheCostsForLocalAuthority = ({
           : `${formatMonetaryImpact(amount)} toujours à la charge de ${actorName}`
       }
       title="Des dépenses de sécurisation demeurent&nbsp;💸"
-      onClick={onClick}
+      buttonProps={buttonProps}
     />
   );
 };

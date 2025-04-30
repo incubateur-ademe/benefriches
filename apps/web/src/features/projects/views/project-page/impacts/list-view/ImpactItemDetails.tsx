@@ -4,14 +4,14 @@ import classNames from "@/shared/views/clsx";
 
 import ImpactRowValue, { ImpactRowValueProps } from "./ImpactRowValue";
 
-type Props = {
+export type ImpactItemDetailsProps = {
   label: string;
   actor?: string;
   value: number;
-  onClick: () => void;
-  data?: { label: string; value: number; onClick: () => void }[];
+  data?: { label: string; value: number; labelProps: ImpactRowValueProps["labelProps"] }[];
   type?: "surfaceArea" | "monetary" | "co2" | "default" | "etp" | "time" | undefined;
   impactRowValueProps?: Partial<ImpactRowValueProps>;
+  labelProps: ImpactRowValueProps["labelProps"];
 };
 
 const getFromChildEventPropFunction = (fn: () => void) => {
@@ -29,9 +29,9 @@ const ImpactItemDetails = ({
   actor,
   data,
   type,
-  onClick,
+  labelProps,
   impactRowValueProps,
-}: Props) => {
+}: ImpactItemDetailsProps) => {
   const hasData = data && data.length > 0;
 
   const [displayDetails, setDisplayDetails] = useState(false);
@@ -54,24 +54,20 @@ const ImpactItemDetails = ({
         type={type}
         isTotal
         isAccordionOpened={displayDetails}
-        labelProps={{
-          onClick: getFromChildEventPropFunction(onClick),
-        }}
         onToggleAccordion={hasData ? onToggleAccordionFromChild : undefined}
         {...impactRowValueProps}
+        labelProps={labelProps}
       />
       {hasData && displayDetails && (
         <div className={classNames("tw-pl-4")}>
-          {data.map(({ label: detailsLabel, value: detailsValue, onClick: detailsOnClick }) => (
+          {data.map(({ label: detailsLabel, value: detailsValue, ...rest }) => (
             <ImpactRowValue
               value={detailsValue}
               type={type}
               key={detailsLabel}
               label={detailsLabel}
-              labelProps={{
-                onClick: getFromChildEventPropFunction(detailsOnClick),
-              }}
               {...impactRowValueProps}
+              labelProps={rest.labelProps}
             />
           ))}
         </div>

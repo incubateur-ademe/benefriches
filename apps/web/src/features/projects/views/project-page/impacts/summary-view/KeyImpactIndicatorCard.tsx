@@ -6,39 +6,36 @@ type Props = {
   title: string;
   type: "success" | "error";
   description?: string;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
 };
 
-const KeyImpactIndicatorCard = ({ title, type, description, onClick }: Props) => {
-  const actionProps = onClick
-    ? {
-        tabIndex: 0,
-        onClick,
-        onKeyUp: (e: React.KeyboardEvent<HTMLElement>) => {
-          if (e.key === "Enter") {
-            onClick();
-          }
-        },
-      }
-    : {};
+const POSITIVE_CLASSES = [
+  "tw-bg-impacts-positive-light hover:!tw-bg-impacts-positive-light",
+  "dark:tw-bg-impacts-positive-main dark:hover:!tw-bg-impacts-positive-main",
+  "hover:tw-border-impacts-positive-border",
+];
+const NEGATIVE_CLASSES = [
+  "tw-bg-impacts-negative-light hover:!tw-bg-impacts-negative-light",
+  "dark:tw-bg-impacts-negative-main dark:hover:!tw-bg-impacts-negative-main",
+  "hover:tw-border-impacts-negative-border",
+];
+
+const KeyImpactIndicatorCard = ({ title, type, description, buttonProps }: Props) => {
   return (
-    <article
-      {...actionProps}
+    <button
+      {...buttonProps}
       className={classNames(
         "tw-flex tw-justify-start tw-items-center tw-gap-4",
         "tw-p-4",
         "tw-rounded-md",
         "tw-border tw-border-solid tw-border-transparent",
-        type === "success"
-          ? ["tw-bg-impacts-positive-light", "dark:tw-bg-impacts-positive-main"]
-          : ["tw-bg-impacts-negative-light", "dark:tw-bg-impacts-negative-main"],
-        onClick && [
-          "tw-cursor-pointer",
-          "tw-transition tw-ease-in-out tw-duration-500",
-          type === "success"
-            ? "hover:tw-border-impacts-positive-border hover:tw-scale-x-105"
-            : "hover:tw-border-impacts-negative-border hover:tw-scale-x-105",
-        ],
+        "hover:tw-scale-x-105",
+        type === "success" ? POSITIVE_CLASSES : NEGATIVE_CLASSES,
+        "tw-transition tw-ease-in-out tw-duration-500",
+        "tw-text-left",
       )}
     >
       <span
@@ -54,7 +51,7 @@ const KeyImpactIndicatorCard = ({ title, type, description, onClick }: Props) =>
         <h3 className="tw-text-lg tw-font-bold tw-mb-0">{title}</h3>
         {description && <p className="tw-pt-2 tw-m-0 dark:tw-text-grey-light">{description}</p>}
       </div>
-    </article>
+    </button>
   );
 };
 

@@ -6,8 +6,8 @@ import ExternalLink from "@/shared/views/components/ExternalLink/ExternalLink";
 
 import ImpactItemDetails from "../../../list-view/ImpactItemDetails";
 import ImpactItemGroup from "../../../list-view/ImpactItemGroup";
+import { ModalDataProps } from "../../ImpactModalDescription";
 import { ImpactModalDescriptionContext } from "../../ImpactModalDescriptionContext";
-import { ImpactsData } from "../../ImpactModalDescriptionProvider";
 import ModalBarColoredChart from "../../shared/ModalBarColoredChart";
 import ModalBody from "../../shared/ModalBody";
 import ModalContent from "../../shared/ModalContent";
@@ -22,7 +22,7 @@ import {
 } from "../breadcrumbSections";
 
 type Props = {
-  impactsData: ImpactsData["socioeconomic"]["impacts"];
+  impactsData: ModalDataProps["impactsData"]["socioeconomic"]["impacts"];
 };
 
 const getEcosystemServiceDetailsTitle = (
@@ -115,12 +115,15 @@ const EcosystemServicesDescription = ({ impactsData }: Props) => {
                 value={amount}
                 label={getEcosystemServiceDetailsTitle(impact)}
                 type="monetary"
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "socio_economic",
-                    impactName: "ecosystem_services",
-                    impactDetailsName: impact,
-                  });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      impactName: "ecosystem_services",
+                      impactDetailsName: impact,
+                    });
+                  },
                 }}
               />
             </ImpactItemGroup>

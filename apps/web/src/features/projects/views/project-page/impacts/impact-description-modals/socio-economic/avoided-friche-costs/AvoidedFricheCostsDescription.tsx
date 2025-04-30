@@ -77,13 +77,16 @@ const AvoidedFricheExpensesDescription = ({ impactData = [] }: Props) => {
                     value: amount,
                   },
                 ]}
-                onClick={() => {
-                  openImpactModalDescription({
-                    sectionName: "socio_economic",
-                    subSectionName: "economic_direct",
-                    impactName: "avoided_friche_costs",
-                    impactDetailsName: impact,
-                  });
+                labelProps={{
+                  onClick: (e) => {
+                    e.stopPropagation();
+                    openImpactModalDescription({
+                      sectionName: "socio_economic",
+                      subSectionName: "economic_direct",
+                      impactName: "avoided_friche_costs",
+                      impactDetailsName: impact,
+                    });
+                  },
                 }}
                 type="monetary"
               />

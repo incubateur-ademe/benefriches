@@ -4,6 +4,7 @@ import { FricheActivity, SoilsDistribution } from "shared";
 import { RootState } from "@/shared/core/store-config/store";
 
 import { ProjectDevelopmentPlanType } from "../domain/projects.types";
+import { ModalDataProps } from "../views/project-page/impacts/impact-description-modals/ImpactModalDescription";
 import {
   fetchImpactsForReconversionProject,
   ReconversionProjectImpactsResult,
@@ -153,6 +154,15 @@ export const selectProjectContext = createSelector(
     siteId: state.relatedSiteData?.id ?? "",
     type: state.projectData?.developmentPlan.type,
     isExpressProject: !!state.projectData?.isExpressProject,
+  }),
+);
+
+export const selectModalData = createSelector(
+  selectSelf,
+  (state): ModalDataProps => ({
+    projectData: state.projectData!,
+    siteData: state.relatedSiteData!,
+    impactsData: state.impactsData!,
   }),
 );
 

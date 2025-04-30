@@ -3,7 +3,10 @@ import KeyImpactIndicatorCard from "../KeyImpactIndicatorCard";
 type Props = {
   isSuccess: boolean;
   isAgriculturalFriche: boolean;
-  onClick?: () => void;
+  buttonProps: {
+    "data-fr-opened": boolean;
+    "aria-controls": string;
+  };
   noDescription?: boolean;
 };
 
